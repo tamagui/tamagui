@@ -76,7 +76,7 @@ export function getVariableVariable(v: Variable | any) {
 export const createCSSVariable = (nameProp: string, includeVar = true) => {
   if (process.env.NODE_ENV === 'development') {
     if (!nameProp || typeof nameProp !== 'string') {
-      console.warn('invalid name', nameProp)
+      console.trace('createCSSVariable invalid name', nameProp)
       return ``
     }
   }
