@@ -37,10 +37,6 @@ export function createEvaluator({
       if (shouldPrintDebug) {
         console.log('    > found theme prop', key)
       }
-      console.log('SHOULD FIND THEME (NESTED NOW)', key) // tamaguiConfig.themes)
-      // if (!themeKeys.has(key)) {
-      //   throw new Error(`    > accessing non-existent theme key: ${key}`)
-      // }
       return createCSSVariable(key)
     }
     // variable
