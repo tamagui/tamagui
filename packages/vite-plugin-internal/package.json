@@ -1,10 +1,10 @@
 {
   "name": "@tamagui/vite-plugin-internal",
-  "version": "1.0.1-beta.130",
+  "version": "1.0.1-beta.131",
   "private": true,
   "main": "vite.config.ts",
   "devDependencies": {
-    "@tamagui/vite-plugin": "^1.0.1-beta.130",
+    "@tamagui/vite-plugin": "^1.0.1-beta.131",
     "@vitejs/plugin-react": "^2.0.0",
     "happy-dom": "^6.0.4",
     "vitest": "^0.19.1",
