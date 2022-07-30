@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-react-native",
-  "version": "1.0.1-beta.131",
+  "version": "1.0.1-beta.132",
   "source": "src/index.ts",
   "sideEffects": true,
   "license": "MIT",
@@ -14,11 +14,11 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/animate-presence": "^1.0.1-beta.131",
-    "@tamagui/core": "^1.0.1-beta.131"
+    "@tamagui/animate-presence": "^1.0.1-beta.132",
+    "@tamagui/core": "^1.0.1-beta.132"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.131",
+    "@tamagui/build": "^1.0.1-beta.132",
     "react": "*",
     "react-dom": "*",
     "react-native": "*"
