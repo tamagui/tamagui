@@ -263,11 +263,9 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   // (keyboard nav) mode.
   React.useLayoutEffect(() => {
     if (open && controlledScrolling) {
-      requestAnimationFrame(() => {
-        if (activeIndex != null) {
-          listItemsRef.current[activeIndex]?.scrollIntoView({ block: 'nearest' })
-        }
-      })
+      if (activeIndex != null) {
+        listItemsRef.current[activeIndex]?.scrollIntoView({ block: 'nearest' })
+      }
     }
 
     setScrollTop(refs.floating.current?.scrollTop ?? 0)
@@ -276,11 +274,9 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   // Scroll the `selectedIndex` into view upon opening the floating element.
   React.useLayoutEffect(() => {
     if (open && fallback) {
-      requestAnimationFrame(() => {
-        if (selectedIndex != null) {
-          listItemsRef.current[selectedIndex]?.scrollIntoView({ block: 'nearest' })
-        }
-      })
+      if (selectedIndex != null) {
+        listItemsRef.current[selectedIndex]?.scrollIntoView({ block: 'nearest' })
+      }
     }
   }, [open, fallback, selectedIndex])
 
