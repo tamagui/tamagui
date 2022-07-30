@@ -20,7 +20,7 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "size" | "disabled" | "active"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -40,7 +40,7 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "size" | "disabled" | "active"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -60,7 +60,7 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "size" | "disabled" | "active"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -393,7 +393,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, "disabled" | "size" | "active"> & {
+    }, "size" | "disabled" | "active"> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         active?: boolean | undefined;
         disabled?: boolean | undefined;
@@ -413,7 +413,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, "disabled" | "size" | "active"> & {
+    }, "size" | "disabled" | "active"> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         active?: boolean | undefined;
         disabled?: boolean | undefined;
@@ -433,7 +433,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, "disabled" | "size" | "active"> & {
+    }, "size" | "disabled" | "active"> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         active?: boolean | undefined;
         disabled?: boolean | undefined;
@@ -470,7 +470,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, "disabled" | "size" | "active"> & {
+    }, "size" | "disabled" | "active"> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         active?: boolean | undefined;
         disabled?: boolean | undefined;
@@ -490,7 +490,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, "disabled" | "size" | "active"> & {
+    }, "size" | "disabled" | "active"> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         active?: boolean | undefined;
         disabled?: boolean | undefined;
@@ -510,7 +510,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, "disabled" | "size" | "active"> & {
+    }, "size" | "disabled" | "active"> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         active?: boolean | undefined;
         disabled?: boolean | undefined;
@@ -595,7 +595,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
     Viewport: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-    }, "fontFamily" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
+    }, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
@@ -611,7 +611,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-    }, "fontFamily" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
+    }, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
@@ -627,7 +627,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-    }, "fontFamily" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
+    }, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;

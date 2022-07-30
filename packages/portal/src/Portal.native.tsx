@@ -1,18 +1,14 @@
 import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
-import { AppRegistry } from 'react-native'
+// @ts-ignore
+import { RootTagContext } from 'react-native'
 import { createPortal } from 'react-native/Libraries/Renderer/shims/ReactNative'
 
 export type PortalProps = YStackProps
 
-let root = 0
-const og = AppRegistry.runApplication.bind(AppRegistry)
-AppRegistry.runApplication = function (...args) {
-  root = args[1]?.rootTag
-  return og(...args)
-}
-
 export const Portal = (props: PortalProps) => {
+  const rootTag = React.useContext(RootTagContext)
+
   const contents = (
     <YStack
       pointerEvents="box-none"
@@ -24,8 +20,8 @@ export const Portal = (props: PortalProps) => {
     />
   )
 
-  if (root) {
-    return createPortal(contents, root)
+  if (rootTag) {
+    return createPortal(contents, rootTag)
   }
 
   return null

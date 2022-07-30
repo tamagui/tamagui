@@ -1,5 +1,6 @@
 - 1.0
 
+  - Text doesn't pick up defaultProps (others do)
   - regression on some shadows (elevation i think close buttons in dish)
   - `tamagui check`
     - checks dist/ folders exist based on package.json

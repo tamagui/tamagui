@@ -32,7 +32,7 @@ export const ThemeInverse = ({
   }, [defaultTheme, themeName])
 
   if (disable) {
-    return children
+    return children as JSX.Element
   }
 
   return <Theme name={name}>{children}</Theme>
