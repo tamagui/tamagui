@@ -4,6 +4,10 @@ import envPlugin from 'vite-plugin-environment'
 
 import { tamaguiExtractPlugin } from './extractPlugin'
 
+/**
+ * For some reason envPlugin doesnt work for vitest, but process: { env: {} } breaks vitest
+ */
+
 export function tamaguiPlugin(options: TamaguiOptions): Plugin {
   return {
     name: 'tamagui',
@@ -12,7 +16,7 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
     config(userConfig, env) {
       return {
         plugins: [
-          // envPlugin(['NODE_ENV', 'TAMAGUI_TARGET']),
+          envPlugin(['NODE_ENV', 'TAMAGUI_TARGET']),
           // ...(options.disable || (options.disableDebugAttr && options.disableExtraction)
           //   ? []
           //   : [tamaguiExtractPlugin(options)]),
@@ -25,14 +29,14 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
           'global.__x': {},
           _frameTimestamp: undefined,
           _WORKLET: false,
-          // 'process.env.TAMAGUI_TARGET': process.env.TAMAGUI_TARGET,
-          // 'process.env.NODE_ENV': process.env.NODE_ENV,
-          process: {
-            env: {
-              TAMAGUI_TARGET: process.env.TAMAGUI_TARGET || 'web',
-              NODE_ENV: process.env.NODE_ENV || env.mode,
+          ...(process.env.NODE_ENV !== 'test' && {
+            process: {
+              env: {
+                TAMAGUI_TARGET: process.env.TAMAGUI_TARGET || 'web',
+                NODE_ENV: process.env.NODE_ENV || env.mode,
+              },
             },
-          },
+          }),
         },
         optimizeDeps: {
           esbuildOptions: {
