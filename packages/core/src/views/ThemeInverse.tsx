@@ -15,7 +15,13 @@ export function setThemeInversions(next: StringRecord) {
   inversions = next
 }
 
-export const ThemeInverse = (props: { children: any }) => {
+export const ThemeInverse = ({
+  children,
+  disable,
+}: {
+  children: React.ReactNode
+  disable?: boolean
+}) => {
   const themeName = useThemeName()
   const defaultTheme = useDefaultThemeName()
   const [name, setName] = useState<null | string>(null)
@@ -25,5 +31,9 @@ export const ThemeInverse = (props: { children: any }) => {
     setName(inversions[themeName] || inversions[defaultTheme || ''] || null)
   }, [defaultTheme, themeName])
 
-  return <Theme name={name}>{props.children}</Theme>
+  if (disable) {
+    return children
+  }
+
+  return <Theme name={name}>{children}</Theme>
 }
