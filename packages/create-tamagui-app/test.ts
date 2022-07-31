@@ -11,6 +11,9 @@ test.beforeAll(async () => {
   test.setTimeout(60000)
 
   const dir = join(tmpdir(), `cta-test-${Date.now()}`)
+
+  console.log(`Making test app in`, dir)
+
   await fs.ensureDir(dir)
 
   const bin = join(__dirname, `dist/index.js`)
