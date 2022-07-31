@@ -15,7 +15,7 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<i
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: any;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -33,7 +33,7 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<i
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: any;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -51,7 +51,7 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<i
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: any;
 }>>, any, import("@tamagui/core").StackPropsBase, {
@@ -69,7 +69,7 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<i
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     size?: any;
 }>;
@@ -95,7 +95,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("react-
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: any;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -113,7 +113,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("react-
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: any;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -131,7 +131,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("react-
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: any;
 }>> & {
@@ -156,7 +156,7 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: any;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -174,7 +174,7 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: any;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -192,7 +192,7 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: any;
 }>> & {

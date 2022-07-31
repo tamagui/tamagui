@@ -5771,6 +5771,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/config-default-node@^1.0.1-beta.132, @tamagui/config-default-node@workspace:packages/config-default-node":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/config-default-node@workspace:packages/config-default-node"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.132
+    "@tamagui/core-node": ^1.0.1-beta.132
+    "@tamagui/shorthands": ^1.0.1-beta.132
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/core-node@^1.0.1-beta.132, @tamagui/core-node@workspace:packages/core-node":
   version: 0.0.0-use.local
   resolution: "@tamagui/core-node@workspace:packages/core-node"
@@ -6606,6 +6616,7 @@ __metadata:
     "@dish/babel-preset": ^0.0.6
     "@expo/match-media": ^0.3.0
     "@tamagui/build": ^1.0.1-beta.132
+    "@tamagui/config-default-node": ^1.0.1-beta.132
     "@tamagui/core-node": ^1.0.1-beta.132
     "@tamagui/fake-react-native": ^1.0.1-beta.132
     "@tamagui/helpers": ^1.0.1-beta.132
@@ -6795,6 +6806,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin-internal@workspace:packages/vite-plugin-internal"
   dependencies:
+    "@tamagui/config-default-node": ^1.0.1-beta.132
     "@tamagui/vite-plugin": ^1.0.1-beta.132
     "@vitejs/plugin-react": ^2.0.0
     happy-dom: ^6.0.4
@@ -25716,23 +25728,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.7.4":
-  version: 4.7.4
-  resolution: "typescript@npm:4.7.4"
+"typescript@npm:4.8.0-dev.20220731":
+  version: 4.8.0-dev.20220731
+  resolution: "typescript@npm:4.8.0-dev.20220731"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 5750181b1cd7e6482c4195825547e70f944114fb47e58e4aa7553e62f11b3f3173766aef9c281783edfd881f7b8299cf35e3ca8caebe73d8464528c907a164df
+  checksum: 76f2daf33214beae9654aa1ae4ca5b3894a5a716aabd2ea640f83a3291235540c8cf06e6b5aba011fc23e6890fbe565dc08068e1e5be5fe6c5048ff441f2ef79
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>":
-  version: 4.7.4
-  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=f456af"
+"typescript@patch:typescript@npm%3A4.8.0-dev.20220731#~builtin<compat/typescript>":
+  version: 4.8.0-dev.20220731
+  resolution: "typescript@patch:typescript@npm%3A4.8.0-dev.20220731#~builtin<compat/typescript>::version=4.8.0-dev.20220731&hash=f456af"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 9096d8f6c16cb80ef3bf96fcbbd055bf1c4a43bd14f3b7be45a9fbe7ada46ec977f604d5feed3263b4f2aa7d4c7477ce5f9cd87de0d6feedec69a983f3a4f93e
+  checksum: 1ba18df08fbe19376f79044aeb9e5273664d5c14e042b08d9521556b986b95045f2354faed577f6f12b434e2096c165bb36a4481484e411b2361d57ccb8859b2
   languageName: node
   linkType: hard
 

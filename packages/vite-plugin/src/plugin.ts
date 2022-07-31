@@ -15,6 +15,13 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
 
     config(userConfig, env) {
       return {
+        load(id) {
+          console.log('load', id)
+        },
+        async resolveId(id, importer) {
+          console.log('resolve', id, importer)
+        },
+
         plugins: [
           envPlugin(['NODE_ENV', 'TAMAGUI_TARGET']),
           // ...(options.disable || (options.disableDebugAttr && options.disableExtraction)

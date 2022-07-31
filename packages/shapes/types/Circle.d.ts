@@ -14,7 +14,7 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size" | "circular"> & {
     circular?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -33,7 +33,7 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size" | "circular"> & {
     circular?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -52,7 +52,7 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size" | "circular"> & {
     circular?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -71,7 +71,7 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     circular?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -92,7 +92,7 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     circular?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -113,7 +113,7 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     circular?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -134,7 +134,7 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     circular?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;

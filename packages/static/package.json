@@ -35,6 +35,7 @@
     "@babel/traverse": "^7.15.4",
     "@expo/match-media": "^0.3.0",
     "@tamagui/build": "^1.0.1-beta.132",
+    "@tamagui/config-default-node": "^1.0.1-beta.132",
     "@tamagui/core-node": "^1.0.1-beta.132",
     "@tamagui/fake-react-native": "^1.0.1-beta.132",
     "@tamagui/helpers": "^1.0.1-beta.132",

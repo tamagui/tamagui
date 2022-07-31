@@ -1,11 +1,11 @@
 import { join } from 'path'
 
+import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import type { StaticConfig, TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core-node'
 import { createTamagui } from '@tamagui/core-node'
 
 import { SHOULD_DEBUG } from '../constants'
 import { getNameToPaths, registerRequire, unregisterRequire } from '../require'
-import { getDefaultTamaguiConfig } from './defaultTamaguiConfig'
 
 let loadedTamagui: any = null
 

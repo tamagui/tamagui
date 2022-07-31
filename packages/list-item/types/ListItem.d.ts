@@ -30,7 +30,7 @@ export declare const ListItemFrame: TamaguiComponent<Omit<import("react-native")
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "disabled" | "size" | "active"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
@@ -50,7 +50,7 @@ export declare const ListItemFrame: TamaguiComponent<Omit<import("react-native")
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "disabled" | "size" | "active"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
@@ -70,7 +70,7 @@ export declare const ListItemFrame: TamaguiComponent<Omit<import("react-native")
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "disabled" | "size" | "active"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
@@ -90,7 +90,7 @@ export declare const ListItemFrame: TamaguiComponent<Omit<import("react-native")
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;

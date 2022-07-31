@@ -12,4 +12,4 @@ export declare function getDefaultTamaguiConfig(): TamaguiInternalConfig<import(
         [key: string]: any;
     };
 }, import("@tamagui/core-node").GenericFonts>;
-//# sourceMappingURL=defaultTamaguiConfig.d.ts.map
+//# sourceMappingURL=index.d.ts.map
