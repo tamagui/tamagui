@@ -12,6 +12,11 @@ import {
   radiused,
 } from './variants'
 
+const chromelessStyle = {
+  backgroundColor: 'transparent',
+  borderColor: 'transparent',
+  shadowColor: 'transparent',
+}
 export const ThemeableStack = styled(YStack, {
   name: 'SizableStack',
 
@@ -41,10 +46,12 @@ export const ThemeableStack = styled(YStack, {
     },
 
     chromeless: {
-      true: {
-        backgroundColor: 'transparent',
-        borderColor: 'transparent',
-        shadowColor: 'transparent',
+      true: chromelessStyle,
+      all: {
+        ...chromelessStyle,
+        hoverStyle: chromelessStyle,
+        pressStyle: chromelessStyle,
+        focusStyle: chromelessStyle,
       },
     },
   },
