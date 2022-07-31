@@ -279,12 +279,25 @@ export function extractToClassNames({
         const names = buildClassName(finalClassNames)
         if (t.isStringLiteral(names)) {
           names.value = concatClassName(names.value)
-          if (staticConfig.isText) {
-            let family = completeProps.fontFamily
-            if (family[0] === '$') {
-              family = family.slice(1)
+
+          if (isFlattened) {
+            // helper to see how many get flattened
+            if (process.env.TAMAGUI_DEBUG_OPTIMIZATIONS) {
+              names.value = `is_tamagui_flattened ${names.value}`
             }
-            names.value = `font_${family} ${names.value}`
+
+            // add is_Component className
+            if (staticConfig.componentName) {
+              names.value = `is_${staticConfig.componentName} ${names.value}`
+            }
+
+            if (staticConfig.isText) {
+              let family = completeProps.fontFamily
+              if (family[0] === '$') {
+                family = family.slice(1)
+              }
+              names.value = `font_${family} ${names.value}`
+            }
           }
         }
         const nameExpr = names ? hoistClassNames(jsxPath, existingHoists, names) : null

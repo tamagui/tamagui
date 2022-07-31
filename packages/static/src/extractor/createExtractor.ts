@@ -1284,7 +1284,8 @@ export function createExtractor() {
             inlined.delete('theme')
 
             for (const [key] of [...inlined]) {
-              if (INLINE_EXTRACTABLE[key] || staticConfig.variants?.[key]) {
+              const isExtractableVariant = staticConfig.variants?.[key] && variantValues.has(key)
+              if (INLINE_EXTRACTABLE[key] || isExtractableVariant) {
                 inlined.delete(key)
               }
             }
@@ -1430,9 +1431,11 @@ export function createExtractor() {
             for (const key in attrs) {
               const cur = attrs[key]
               if (cur.type === 'style') {
+                // remove variants because they are processed later, and can lead to invalid values here
+                // see <Spacer flex /> where flex looks like a valid style, but is a variant
                 foundStaticProps = {
                   ...foundStaticProps,
-                  ...expandStyles(cur.value),
+                  ...expandStylesWithoutVariants(cur.value),
                 }
                 continue
               }
@@ -1574,8 +1577,32 @@ export function createExtractor() {
             // merge styles, leave undefined values
             let prev: ExtractedAttr | null = null
 
+            function splitVariants(style: any) {
+              const variants = {}
+              const styles = {}
+              for (const key in style) {
+                if (staticConfig.variants?.[key]) {
+                  variants[key] = style[key]
+                } else {
+                  styles[key] = style[key]
+                }
+              }
+              return {
+                variants,
+                styles,
+              }
+            }
+
+            function expandStylesWithoutVariants(style: any) {
+              const { variants, styles } = splitVariants(style)
+              return {
+                ...expandStyles(styles),
+                ...variants,
+              }
+            }
+
             function mergeStyles(prev: ViewStyle & PseudoStyles, nextIn: ViewStyle & PseudoStyles) {
-              const next = expandStyles(nextIn)
+              const next = expandStylesWithoutVariants(nextIn)
               for (const key in next) {
                 // merge pseudos
                 if (pseudoDescriptors[key]) {

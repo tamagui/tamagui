@@ -1,5 +1,8 @@
 - 1.0
 
+  - cleaner output classnames in getStylesAtomic
+  - "placeholderTextColor" not working i think - add test
+  - H2 ff="$stylish" not working, only fontFamily fully
   - Text doesn't pick up defaultProps (others do)
   - regression on some shadows (elevation i think close buttons in dish)
   - `tamagui check`
