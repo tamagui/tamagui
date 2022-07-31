@@ -53,5 +53,5 @@ export interface PortalItemProps {
     handleOnUpdate?: (update: () => void) => void;
     children?: ReactNode | ReactNode[];
 }
-export declare const PortalItem: React.MemoExoticComponent<({ name: _providedName, hostName, handleOnMount: _providedHandleOnMount, handleOnUnmount: _providedHandleOnUnmount, handleOnUpdate: _providedHandleOnUpdate, children, }: PortalItemProps) => null>;
+export declare const PortalItem: React.MemoExoticComponent<({ name, hostName, handleOnMount, handleOnUnmount, handleOnUpdate, children, }: PortalItemProps) => null>;
 //# sourceMappingURL=GorhomPortal.d.ts.map

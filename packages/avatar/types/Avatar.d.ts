@@ -36,7 +36,10 @@ export declare const AvatarFallbackFrame: import("@tamagui/core").TamaguiCompone
 }>>), any, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-} & ({} | {
+} | ({
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })>;
 declare type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & {

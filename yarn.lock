@@ -5480,7 +5480,7 @@ __metadata:
   dependencies:
     "@manypkg/cli": ^0.19.1
     "@tamagui/vite-plugin": ^1.0.1-beta.132
-    "@types/react": ^17.0.21
+    "@types/react": ^18.0.15
     "@types/react-native": ^0.69.2
     "@vitejs/plugin-react": ^2.0.0
     eslint: ^8.19.0
@@ -5788,7 +5788,7 @@ __metadata:
     "@tamagui/core": ^1.0.1-beta.132
     "@tamagui/helpers": ^1.0.1-beta.132
     "@types/node": ^16.11.9
-    "@types/react": ^17.0.21
+    "@types/react": ^18.0.15
     chokidar: ^3.5.2
     esbuild: ^0.14.49
     esbuild-plugin-path-alias: ^1.0.6
@@ -5811,7 +5811,7 @@ __metadata:
     "@tamagui/use-debounce": ^1.0.1-beta.132
     "@tamagui/use-event": ^1.0.1-beta.132
     "@tamagui/use-force-update": ^1.0.1-beta.132
-    "@types/react": ^17.0.21
+    "@types/react": ^18.0.15
     csstype: ^3.0.10
     esbuild: ^0.14.49
     expo-screen-orientation: ^4.2.0
@@ -6107,7 +6107,7 @@ __metadata:
     "@tamagui/font-inter": ^1.0.1-beta.132
     "@tamagui/shorthands": ^1.0.1-beta.132
     "@tamagui/theme-base": ^1.0.1-beta.132
-    "@types/react": ^17.0.21
+    "@types/react": ^18.0.15
     babel-plugin-transform-inline-environment-variables: ^0.4.4
     expo: ~45.0.3
     expo-font: ~10.1.0
@@ -6794,7 +6794,7 @@ __metadata:
     "@tamagui/build": ^1.0.1-beta.132
     "@tamagui/use-debounce": ^1.0.1-beta.132
     "@tamagui/use-force-update": ^1.0.1-beta.132
-    "@types/react": ^17.0.21
+    "@types/react": ^18.0.15
     react: "*"
     react-native: "*"
   peerDependencies:
@@ -7442,7 +7442,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*":
+"@types/react@npm:*, @types/react@npm:^18.0.15":
   version: 18.0.15
   resolution: "@types/react@npm:18.0.15"
   dependencies:
@@ -7450,17 +7450,6 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: e22cc388d1c145aa184787e44dc28db4789976c704cd5db475c170bb76a560eb81def5f346cfe750949bb3d43ad88822b8cbb9f19b1286e3795892a8263e7715
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^17.0.21":
-  version: 17.0.48
-  resolution: "@types/react@npm:17.0.48"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: b683fa33f751ced0b8c8715df9f40de15513c1d7ce66064a75cdfb8805cc913b0b214a2e7022ef0b724bd62a1e8651d040cd265dd0452bde03cca9b8e495742d
   languageName: node
   linkType: hard
 
@@ -13126,7 +13115,7 @@ __metadata:
     "@expo/metro-config": ^0.3.16
     "@expo/webpack-config": ^0.16.23
     "@tamagui/babel-plugin": ^1.0.1-beta.132
-    "@types/react": ^17.0.21
+    "@types/react": ^18.0.15
     "@types/react-native": ^0.69.2
     app: ^1.0.1-beta.132
     babel-plugin-transform-inline-environment-variables: ^0.4.4
@@ -24837,7 +24826,7 @@ __metadata:
     "@monorepo-utils/workspaces-to-typescript-project-references": ^2.7.4
     "@types/fs-extra": ^9.0.13
     "@types/node": ^16.11.9
-    "@types/react": ^17.0.21
+    "@types/react": ^18.0.15
     "@typescript-eslint/eslint-plugin": ^5.30.5
     "@typescript-eslint/parser": ^5.30.5
     esbuild: ^0.14.49
@@ -24897,7 +24886,7 @@ __metadata:
     "@tamagui/use-event": ^1.0.1-beta.132
     "@tamagui/use-force-update": ^1.0.1-beta.132
     "@types/node": ^16.11.9
-    "@types/react": ^17.0.21
+    "@types/react": ^18.0.15
     expo-linear-gradient: ^11.0.3
     react: "*"
     react-dom: "*"

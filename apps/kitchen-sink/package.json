@@ -50,7 +50,7 @@
     "@rnx-kit/metro-config": "^1.2.32",
     "@rnx-kit/metro-resolver-symlinks": "^0.1.20",
     "@tamagui/babel-plugin": "^1.0.1-beta.132",
-    "@types/react": "^17.0.21",
+    "@types/react": "^18.0.15",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "metro-runtime": "^0.67.0"
   }

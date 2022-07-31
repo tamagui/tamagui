@@ -79,7 +79,7 @@
     "@monorepo-utils/workspaces-to-typescript-project-references": "^2.7.4",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^16.11.9",
-    "@types/react": "^17.0.21",
+    "@types/react": "^18.0.15",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
     "esbuild": "^0.14.49",

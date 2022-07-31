@@ -1232,7 +1232,7 @@ function isUnspaced(child: React.ReactNode) {
   return child?.['type']?.['isVisuallyHidden'] || child?.['type']?.['isUnspaced']
 }
 
-export function AbsoluteFill(props: { children?: React.ReactNode }) {
+function AbsoluteFill(props: { children?: any }) {
   return (
     <View pointerEvents="box-none" style={StyleSheet.absoluteFill}>
       {props.children}

@@ -18,9 +18,6 @@ export declare type SpacedChildrenProps = {
     separator?: React.ReactNode;
 };
 export declare function spacedChildren({ isZStack, children, space, direction, spaceFlex, separator, }: SpacedChildrenProps): React.ReactNode;
-export declare function AbsoluteFill(props: {
-    children?: React.ReactNode;
-}): JSX.Element;
 export declare function processIDRefList(idRefList: string | Array<string>): string;
 export declare const accessibilityRoleToWebRole: {
     adjustable: string;

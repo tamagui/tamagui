@@ -19,7 +19,9 @@ export declare const Paragraph: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>), any, import("@tamagui/core").TextPropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })>;
 export declare type ParagraphProps = PropTypes<typeof Paragraph>;
