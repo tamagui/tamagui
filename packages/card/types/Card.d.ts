@@ -21,7 +21,7 @@ export declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -39,7 +39,7 @@ export declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -57,7 +57,7 @@ export declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>>, any, import("@tamagui/core").StackPropsBase, {
@@ -75,7 +75,7 @@ export declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     size?: SizeTokens | undefined;
 }>;
@@ -94,7 +94,7 @@ export declare const CardHeader: import("@tamagui/core").TamaguiComponent<Omit<i
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -112,7 +112,7 @@ export declare const CardHeader: import("@tamagui/core").TamaguiComponent<Omit<i
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -130,7 +130,7 @@ export declare const CardHeader: import("@tamagui/core").TamaguiComponent<Omit<i
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>>, any, import("@tamagui/core").StackPropsBase, {
@@ -148,7 +148,7 @@ export declare const CardHeader: import("@tamagui/core").TamaguiComponent<Omit<i
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     size?: SizeTokens | undefined;
 }>;
@@ -167,7 +167,7 @@ export declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -185,7 +185,7 @@ export declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -203,7 +203,7 @@ export declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>>) | (Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -221,7 +221,7 @@ export declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     size?: SizeTokens | undefined;
 }, string | number> & {
@@ -241,7 +241,7 @@ export declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     size?: SizeTokens | undefined;
 }, string | number> & {
@@ -261,7 +261,7 @@ export declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     size?: SizeTokens | undefined;
 }, string | number> & {
@@ -281,7 +281,7 @@ export declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     size?: SizeTokens | undefined;
 } & ({} | {
@@ -302,7 +302,7 @@ export declare const CardBackground: import("@tamagui/core").TamaguiComponent<(O
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -318,7 +318,7 @@ export declare const CardBackground: import("@tamagui/core").TamaguiComponent<(O
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -334,7 +334,7 @@ export declare const CardBackground: import("@tamagui/core").TamaguiComponent<(O
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }>>) | (Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -350,7 +350,7 @@ export declare const CardBackground: import("@tamagui/core").TamaguiComponent<(O
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -368,7 +368,7 @@ export declare const CardBackground: import("@tamagui/core").TamaguiComponent<(O
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -386,7 +386,7 @@ export declare const CardBackground: import("@tamagui/core").TamaguiComponent<(O
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, string | number> & {
     [x: string]: undefined;
 }>>), any, import("@tamagui/core").StackPropsBase, {
@@ -404,7 +404,7 @@ export declare const CardBackground: import("@tamagui/core").TamaguiComponent<(O
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & ({} | {
     [x: string]: undefined;
 })>;
@@ -426,7 +426,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -444,7 +444,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -462,7 +462,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>> & {
@@ -486,7 +486,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, "size"> & {
         size?: SizeTokens | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -504,7 +504,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, "size"> & {
         size?: SizeTokens | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -522,7 +522,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, "size"> & {
         size?: SizeTokens | undefined;
     }>>, any, import("@tamagui/core").StackPropsBase, {
@@ -540,7 +540,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     } & {
         size?: SizeTokens | undefined;
     }>;
@@ -559,7 +559,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, "size"> & {
         size?: SizeTokens | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -577,7 +577,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, "size"> & {
         size?: SizeTokens | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -595,7 +595,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, "size"> & {
         size?: SizeTokens | undefined;
     }>>) | (Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -613,7 +613,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     } & {
         size?: SizeTokens | undefined;
     }, string | number> & {
@@ -633,7 +633,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     } & {
         size?: SizeTokens | undefined;
     }, string | number> & {
@@ -653,7 +653,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     } & {
         size?: SizeTokens | undefined;
     }, string | number> & {
@@ -673,7 +673,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     } & {
         size?: SizeTokens | undefined;
     } & ({} | {
@@ -694,7 +694,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -710,7 +710,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -726,7 +726,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }>>) | (Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -742,7 +742,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, string | number> & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -760,7 +760,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, string | number> & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -778,7 +778,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, string | number> & {
         [x: string]: undefined;
     }>>), any, import("@tamagui/core").StackPropsBase, {
@@ -796,7 +796,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     } & ({} | {
         [x: string]: undefined;
     })>;

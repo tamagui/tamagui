@@ -86,7 +86,7 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size" | "circular"> & {
     circular?: boolean | undefined;
     size?: SizeTokens | undefined;
@@ -105,7 +105,7 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size" | "circular"> & {
     circular?: boolean | undefined;
     size?: SizeTokens | undefined;
@@ -124,7 +124,7 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size" | "circular"> & {
     circular?: boolean | undefined;
     size?: SizeTokens | undefined;
@@ -143,7 +143,7 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     circular?: boolean | undefined;
     size?: SizeTokens | undefined;
@@ -164,7 +164,7 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     circular?: boolean | undefined;
     size?: SizeTokens | undefined;
@@ -185,7 +185,7 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     circular?: boolean | undefined;
     size?: SizeTokens | undefined;
@@ -206,7 +206,7 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     circular?: boolean | undefined;
     size?: SizeTokens | undefined;
@@ -229,7 +229,7 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size" | "circular"> & {
     circular?: boolean | undefined;
     size?: SizeTokens | undefined;
@@ -248,7 +248,7 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size" | "circular"> & {
     circular?: boolean | undefined;
     size?: SizeTokens | undefined;
@@ -267,7 +267,7 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size" | "circular"> & {
     circular?: boolean | undefined;
     size?: SizeTokens | undefined;
@@ -286,7 +286,7 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     circular?: boolean | undefined;
     size?: SizeTokens | undefined;
@@ -307,7 +307,7 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     circular?: boolean | undefined;
     size?: SizeTokens | undefined;
@@ -328,7 +328,7 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     circular?: boolean | undefined;
     size?: SizeTokens | undefined;

@@ -17,7 +17,7 @@ export declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -35,7 +35,7 @@ export declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -53,7 +53,7 @@ export declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>>, any, import("@tamagui/core").StackPropsBase, {
@@ -71,7 +71,7 @@ export declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & {
     size?: SizeTokens | undefined;
 }>;
@@ -91,7 +91,7 @@ export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("r
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -109,7 +109,7 @@ export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("r
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -127,7 +127,7 @@ export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("r
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>> & React.RefAttributes<HTMLSpanElement>>;
@@ -201,7 +201,7 @@ export declare const Switch: React.ForwardRefExoticComponent<Omit<import("react-
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, "size"> & {
         size?: SizeTokens | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -219,7 +219,7 @@ export declare const Switch: React.ForwardRefExoticComponent<Omit<import("react-
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, "size"> & {
         size?: SizeTokens | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -237,7 +237,7 @@ export declare const Switch: React.ForwardRefExoticComponent<Omit<import("react-
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, "size"> & {
         size?: SizeTokens | undefined;
     }>> & React.RefAttributes<HTMLSpanElement>>;

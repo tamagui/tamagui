@@ -4,6 +4,7 @@
   "private": true,
   "main": "vite.config.ts",
   "devDependencies": {
+    "@tamagui/config-default-node": "^1.0.1-beta.132",
     "@tamagui/vite-plugin": "^1.0.1-beta.132",
     "@vitejs/plugin-react": "^2.0.0",
     "happy-dom": "^6.0.4",

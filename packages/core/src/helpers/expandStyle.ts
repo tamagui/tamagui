@@ -64,7 +64,6 @@ const STYLE_SHORT_FORM_EXPANSIONS: Record<string, string[]> = {
     'borderBottomRightRadius',
     'borderBottomLeftRadius',
   ],
-  borderStyle: ['borderTopStyle', 'borderRightStyle', 'borderBottomStyle', 'borderLeftStyle'],
   borderWidth: ['borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth'],
   margin: ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'],
   marginHorizontal: ['marginRight', 'marginLeft'],
@@ -74,6 +73,8 @@ const STYLE_SHORT_FORM_EXPANSIONS: Record<string, string[]> = {
   paddingHorizontal: ['paddingRight', 'paddingLeft'],
   paddingVertical: ['paddingTop', 'paddingBottom'],
   ...(isWeb && {
+    // react-native only supports borderStyle
+    borderStyle: ['borderTopStyle', 'borderRightStyle', 'borderBottomStyle', 'borderLeftStyle'],
     // react-native doesn't support X / Y
     overflow: ['overflowX', 'overflowY'],
   }),
