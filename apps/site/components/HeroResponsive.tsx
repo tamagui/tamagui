@@ -36,6 +36,9 @@ const breakpoints = [
 ]
 const browserHeight = 485
 
+const isSafari =
+  typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+
 export const HeroResponsive = memo(() => {
   const [bounding, setBounding] = useState<DOMRect | null>(null)
   const prevMove = useRef(0)
@@ -46,11 +49,18 @@ export const HeroResponsive = memo(() => {
   const safariRef = useRef<HTMLElement | null>(null)
   const getState = useGet({ move, isDragging, bounding })
   const [sizeI, setSizeI] = useState(0)
+  // safari drags slower so lets pre-load iframe
   const [hasInteracted, setHasInteracted] = useState(false)
   const updateBoundings = useDebounce(() => {
     const rect = safariRef.current?.getBoundingClientRect() ?? null
     setBounding(rect)
   }, 350)
+
+  if (isSafari) {
+    useEffect(() => {
+      setHasInteracted(true)
+    }, [])
+  }
 
   useIsomorphicLayoutEffect(() => {
     if (!bounding) {
@@ -87,7 +97,9 @@ export const HeroResponsive = memo(() => {
     const maxMove = breakpoints[breakpoints.length - 1].at - initialWidth + 120
     const nextMove = Math.min(maxMove, Math.max(0, x))
     const next = nextMove + (prevMove.current || 0)
+
     setMove(next)
+
     prevMove.current = 0
   }, 24)
 
@@ -136,9 +148,9 @@ export const HeroResponsive = memo(() => {
 
   // ssr compat
   const nextWidth = media.sm ? breakpoints[smIndex].at : initialWidth + Math.max(0, move)
-  useEffect(() => {
+  if (width !== nextWidth) {
     setWidth(nextWidth)
-  }, [nextWidth])
+  }
 
   const handleMarkerPress = useCallback((name) => {
     setHasInteracted(true)
@@ -161,15 +173,16 @@ export const HeroResponsive = memo(() => {
           zi={1}
           f={1}
           space="$1"
-          $sm={{
+          {...(media.sm && {
             scale,
             x: 150 - width / 2 - (smIndex ? (0.9 - scale) * 200 : 0),
             y: -40,
-          }}
+          })}
         >
           <YStack
             zi={2}
             className="unselectable"
+            contain="paint layout"
             pe={isDragging ? 'none' : 'auto'}
             w={width}
             f={1}
@@ -297,7 +310,7 @@ export const Safari = memo(
     return (
       <YStack
         className="unselectable"
-        contain="paint"
+        contain="paint layout"
         elevation="$6"
         f={1}
         ov="hidden"

@@ -275,31 +275,45 @@ export function extractToClassNames({
       node.attributes = finalAttrs
 
       if (finalClassNames.length) {
+        const extraClassNames = (() => {
+          let value = ''
+          if (!isFlattened) {
+            return value
+          }
+
+          // helper to see how many get flattened
+          if (process.env.TAMAGUI_DEBUG_OPTIMIZATIONS) {
+            value += `is_tamagui_flattened`
+          }
+
+          // add is_Component className
+          if (staticConfig.componentName) {
+            value += ` is_${staticConfig.componentName}`
+          }
+
+          if (staticConfig.isText) {
+            let family = completeProps.fontFamily
+            if (family[0] === '$') {
+              family = family.slice(1)
+            }
+            value += ` font_${family}`
+          }
+
+          return value
+        })()
+
         // inserts the _cn variable and uses it for className
-        const names = buildClassName(finalClassNames)
-        if (t.isStringLiteral(names)) {
-          names.value = concatClassName(names.value)
+        let names = buildClassName(finalClassNames)
 
-          if (isFlattened) {
-            // helper to see how many get flattened
-            if (process.env.TAMAGUI_DEBUG_OPTIMIZATIONS) {
-              names.value = `is_tamagui_flattened ${names.value}`
-            }
-
-            // add is_Component className
-            if (staticConfig.componentName) {
-              names.value = `is_${staticConfig.componentName} ${names.value}`
-            }
-
-            if (staticConfig.isText) {
-              let family = completeProps.fontFamily
-              if (family[0] === '$') {
-                family = family.slice(1)
-              }
-              names.value = `font_${family} ${names.value}`
-            }
+        if (names) {
+          if (t.isStringLiteral(names)) {
+            names.value = concatClassName(names.value)
+            names.value = `${extraClassNames} ${names.value}`
+          } else {
+            names = t.binaryExpression('+', t.stringLiteral(extraClassNames), names)
           }
         }
+
         const nameExpr = names ? hoistClassNames(jsxPath, existingHoists, names) : null
         let expr = nameExpr
 
