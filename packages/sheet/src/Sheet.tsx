@@ -412,29 +412,12 @@ export const Sheet = withStaticProperties(
           let previouslyScrolling = false
 
           const onMoveShouldSet = (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
-            // if (scrollBridge.enabled) {
-            //   console.log('no')
-            //   return false
-            // }
-
-            if (scrollBridge.scrollLock) {
+            if (scrollBridge.y !== 0) {
+              previouslyScrolling = true
               return false
             }
-            if (scrollBridge.enabled) {
-              const isSheetAtTop = at.current <= positions[0]
-              // defer to scroll bridge whenever its scrolled
-              if (scrollBridge.y !== 0) {
-                previouslyScrolling = true
-                return false
-              }
-
-              // take control if at top and moving down always
-              if (isSheetAtTop && dy >= 0) {
-                return true
-              }
-              if (scrollBridge.y === 0 && dy < 0) {
-                return false
-              }
+            if (scrollBridge.y === 0 && dy < 0) {
+              return false
             }
             if (previouslyScrolling) {
               previouslyScrolling = false
@@ -476,24 +459,10 @@ export const Sheet = withStaticProperties(
           scrollBridge.release = release
 
           return PanResponder.create({
-            onShouldBlockNativeResponder: () => false,
-            // onMoveShouldSetPanResponder: () => !scrollBridge.enabled,
-            // onMoveShouldSetPanResponderCapture: (...args) => {
-            //   const res = onMoveShouldSet(...args)
-            //   if (res) {
-            //     console.warn('take')
-            //     // scrollBridge.scrollStartY = -1
-            //   }
-            //   return res
-            // },
-            onStartShouldSetPanResponder() {
-              console.log('should?', scrollBridge.scrollLock)
-              return false
-            },
+            onMoveShouldSetPanResponder: onMoveShouldSet,
             onPanResponderGrant: grant,
             onPanResponderMove: (_e, { dy }) => {
               const to = dy + startY
-              console.log('panemove', dy, to, minY, scrollBridge.y, scrollBridge)
               setPositionValue(resisted(to, minY))
             },
             onPanResponderEnd: finish,
