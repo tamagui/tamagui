@@ -104,13 +104,13 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
         onScroll={composeEventHandlers<NativeSyntheticEvent<NativeScrollEvent>>(
           props.onScroll,
           (e) => {
-            console.log('🔸')
             const { y } = e.nativeEvent.contentOffset
+            console.log('🔸', y)
             scrollBridge.y = y
-            if (y > 0 && !scrollBridge.scrollLock) {
-              console.error('reset scroll start')
-              scrollBridge.scrollStartY = -1
-            }
+            // if (y > 0 && !scrollBridge.scrollLock) {
+            //   console.error('reset scroll start')
+            //   scrollBridge.scrollStartY = -1
+            // }
           }
         )}
         onResponderEnd={() => {
@@ -128,37 +128,45 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
             state.current.lastPageY = pageY
           }
 
+          const dragTo = pageY - scrollBridge.scrollStartY
+          const dy = pageY - state.current.lastPageY
+          state.current.lastPageY = pageY // after dy
+          const isDragAboveStart = dragTo <= 0
+          const isDraggingUp = dy < 0
+          const isDraggingDown = dy > 0
+
           // scrolling up
           const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
           if (isPaneAtTop) {
             setScrollEnabled(true)
+          }
+          if (isPaneAtTop && isDraggingDown) {
+            scrollBridge.scrollLock = false
           }
 
           // scrolling down
           const isScrollAtTop = scrollBridge.y <= 0
           const { scrollLock } = scrollBridge
           const shouldDrag = isScrollAtTop || !isPaneAtTop || scrollLock
-          const dragTo = pageY - scrollBridge.scrollStartY
 
-          const dy = pageY - state.current.lastPageY
-
-          state.current.lastPageY = pageY
-
-          console.log('dragTo', Math.round(dragTo), 'dy', Math.round(dy))
-
-          const isDragAboveStart = dragTo <= 0
-          const isDraggingUp = dy < 0
-          const isDraggingDown = dy > 0
-
-          // console.warn(
-          //   'shouldDrag',
-          //   { shouldDrag, scrollLock, isPaneAtTop, isScrollAtTop },
-          //   scrollBridge.y
-          // )
+          console.table([
+            {
+              scrollLock,
+              isPaneAtTop,
+              isDragAboveStart,
+              isScrollAtTop,
+              shouldDrag,
+              dy,
+              dragTo,
+              sy: scrollBridge.y,
+            },
+          ])
 
           if (scrollLock && isPaneAtTop && isDragAboveStart) {
-            console.log('bail - scrolled tot op draging up')
+            // if (!isScrollAtTop) {
+            //   console.warn('bail')
             return
+            // }
           }
 
           if (shouldDrag) {
@@ -174,7 +182,6 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
             //     return
             //   }
             // }
-            console.log('▲ scroll drag', dragTo)
             scrollBridge.scrollLock = true
             setScrollEnabled(false)
             scrollBridge.drag(dragTo)

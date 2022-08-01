@@ -456,7 +456,6 @@ export const Sheet = withStaticProperties(
                 debugger
               }
             }
-            console.log('setpos', next, startY)
             pos.setValue(next)
           }
 
