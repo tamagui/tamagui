@@ -26,7 +26,7 @@
     "@tamagui/font-inter": "^1.0.1-beta.133",
     "@tamagui/shorthands": "^1.0.1-beta.133",
     "@tamagui/theme-base": "^1.0.1-beta.133",
-    "expo": "~45.0.3",
+    "expo": "~46.0.2",
     "expo-font": "~10.1.0",
     "expo-linear-gradient": "^11.0.3",
     "expo-linking": "^3.1.0",

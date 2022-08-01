@@ -11,6 +11,7 @@ const nameMap = {
 
 const NativeDemos = {
   ...Demos,
+  // DrawerDemo,
   // no children
   AnimationsDemo: (props) => (
     <Demos.AnimationsDemo {...props}>
@@ -21,7 +22,7 @@ const NativeDemos = {
 
 export function DemoScreen() {
   const [id] = useParam('id')
-  const name = id
+  const name = id!
     .split('-')
     .map((segment) => {
       return segment[0].toUpperCase() + segment.slice(1)
@@ -40,3 +41,36 @@ export function DemoScreen() {
 }
 
 const NotFound = () => <H1>Not found!</H1>
+
+// import { Drawer } from '@tamagui/drawer'
+// import { ChevronDown, ChevronUp } from '@tamagui/feather-icons'
+// import { useState } from 'react'
+// import { Button, Paragraph } from 'tamagui'
+// export function DrawerDemo() {
+//   const [show, setShow] = useState(false)
+//   return (
+//     <YStack minWidth={230} w="100%" h="100%" ai="center" jc="center" position="relative">
+//       <Drawer.Provider>
+//         <Button
+//           size="$6"
+//           icon={show ? ChevronDown : ChevronUp}
+//           circular
+//           onPress={() => setShow((x) => !x)}
+//           elevation="$2"
+//         />
+//         <Drawer open={show} onChangeOpen={setShow}>
+//           <Drawer.Frame h={200} ai="center" jc="center" p="$6" space>
+//             <Paragraph selectable={false}>Hello.</Paragraph>
+//             <Button
+//               size="$6"
+//               icon={show ? ChevronDown : ChevronUp}
+//               circular
+//               onPress={() => setShow((x) => !x)}
+//               elevation="$2"
+//             />
+//           </Drawer.Frame>
+//         </Drawer>
+//       </Drawer.Provider>
+//     </YStack>
+//   )
+// }

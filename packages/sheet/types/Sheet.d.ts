@@ -129,7 +129,7 @@ export declare const Sheet: ((props: Omit<{
         __scopeSheet?: import("@tamagui/create-context").Scope<any>;
     } & React.RefAttributes<unknown>>;
     Overlay: ({ __scopeSheet, ...props }: SheetScopedProps<SheetOverlayProps>) => JSX.Element;
-    ScrollView: React.ForwardRefExoticComponent<import("react-native").ScrollViewProps & React.RefAttributes<import("react-native").ScrollView>>;
+    ScrollView: React.ForwardRefExoticComponent<import("react-native").ScrollViewProps & React.RefAttributes<import("react-native-gesture-handler").ScrollView>>;
 };
 declare type SheetControllerContextValue = {
     disableDrag?: boolean;

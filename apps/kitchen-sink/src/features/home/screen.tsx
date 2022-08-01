@@ -32,7 +32,6 @@ const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & 
 
 export function HomeScreen() {
   return (
-    // @ts-expect-error
     <ScrollView>
       <YStack bc="$backgroundStrong" p="$3" pb="$8" f={1} space>
         <H1 fontFamily="$heading" size="$9">
@@ -134,6 +133,7 @@ const demos = [
       { title: 'AlertDialog', route: '/demo/alert-dialog' },
       { title: 'Dialog', route: '/demo/dialog' },
       { title: 'Sheet', route: '/demo/sheet' },
+      { title: 'Drawer', route: '/demo/drawer' },
     ],
   },
 

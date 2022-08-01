@@ -411,9 +411,10 @@ export const Sheet = withStaticProperties(
           let previouslyScrolling = false
 
           const onMoveShouldSet = (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
-            if (scrollBridge.enabled) {
-              return false
-            }
+            // if (scrollBridge.enabled) {
+            //   console.log('no')
+            //   return false
+            // }
 
             if (scrollBridge.scrollLock) {
               return false
@@ -474,7 +475,7 @@ export const Sheet = withStaticProperties(
           scrollBridge.release = release
 
           return PanResponder.create({
-            onMoveShouldSetPanResponder: (...args) => {
+            onMoveShouldSetPanResponderCapture: (...args) => {
               const res = onMoveShouldSet(...args)
               if (res) {
                 console.warn('take')
@@ -484,8 +485,8 @@ export const Sheet = withStaticProperties(
             },
             onPanResponderGrant: grant,
             onPanResponderMove: (_e, { dy }) => {
+              console.log('panemove', ,to, minY, scrollBridge.y, scrollBridge)
               const to = dy + startY
-              console.log('pane.move', { to, minY }, resisted(to, minY))
               setPositionValue(resisted(to, minY))
             },
             onPanResponderEnd: finish,
@@ -568,16 +569,16 @@ export const Sheet = withStaticProperties(
           >
             {handleComponent}
 
-            <RemoveScroll
+            {/* <RemoveScroll
               enabled={open && modal && handleDisableScroll}
               as={Slot}
               allowPinchZoom
               shards={[contentRef]}
               // causes lots of bugs on touch web on site
               removeScrollBar={false}
-            >
-              {isResizing ? null : frameComponent}
-            </RemoveScroll>
+            > */}
+            {isResizing ? null : frameComponent}
+            {/* </RemoveScroll> */}
           </Animated.View>
         </SheetProvider>
       )

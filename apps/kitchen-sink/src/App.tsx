@@ -29,7 +29,7 @@ export default function App() {
 
   return (
     <ThemeContext.Provider value={themeContext}>
-      <Provider defaultTheme={theme}>{children}</Provider>
+      <Provider defaultTheme={theme as any}>{children}</Provider>
     </ThemeContext.Provider>
   )
 }

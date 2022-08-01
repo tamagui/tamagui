@@ -1,7 +1,8 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { GestureReponderEvent, composeEventHandlers } from '@tamagui/core'
-import React, { forwardRef, useEffect, useRef, useState } from 'react'
-import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, ScrollViewProps } from 'react-native'
+import { GestureReponderEvent, composeEventHandlers, isWeb } from '@tamagui/core'
+import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { NativeScrollEvent, NativeSyntheticEvent, ScrollViewProps } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 
 import { useSheetContext } from './SheetContext'
 import { SheetScopedProps } from './types'
@@ -20,6 +21,10 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
     const [scrollEnabled, setScrollEnabled_] = useState(true)
     const setScrollEnabled = (next: boolean) => {
       setScrollEnabled_((prev) => {
+        if (!isWeb) {
+          // ref.current?.setNativeProps({ scrollEnabled: prev })
+        }
+
         if (prev !== next) {
           console.groupCollapsed('set scroll enabled', next)
           console.trace()
@@ -108,12 +113,35 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
 
     console.log('scrollEnabled', scrollEnabled)
 
+    // if (isSafari) {
+    //   useLayoutEffect(() => {
+    //     const l = (e: Event) => {
+    //       console.log('123', scrollEnabled)
+    //       if (scrollEnabled) {
+    //         return
+    //       }
+    //       e.stopImmediatePropagation()
+    //       e.preventDefault()
+    //       ref.current.scrollTop = 0
+    //       return false
+    //     }
+    //     ref.current.addEventListener('wheel', l)
+    //     ref.current.addEventListener('scroll', l)
+    //     return () => {
+    //       ref.current.removeEventListener('wheel', l)
+    //       ref.current.removeEventListener('scroll', l)
+    //     }
+    //   }, [scrollEnabled])
+    // }
+
+    const enabled = props.scrollEnabled ?? scrollEnabled
+    console.log('enabled', enabled)
+
     return (
       <ScrollView
         ref={composedRef}
         scrollEventThrottle={8} // todo release we can just grab the last dY and estimate vY using a sample of last dYs
-        {...props}
-        scrollEnabled={props.scrollEnabled ?? scrollEnabled}
+        scrollEnabled={enabled}
         onScroll={composeEventHandlers<NativeSyntheticEvent<NativeScrollEvent>>(
           props.onScroll,
           (e) => {
@@ -126,14 +154,18 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
             // }
           }
         )}
+        onResponderTerminationRequest={() => false}
         onResponderEnd={() => {
           scrollBridge.scrollStartY = -1
           scrollBridge.scrollLock = false
           console.warn('😜😜😜😜😜😜😜😜😜😜😜 end responder')
         }}
+        onMoveShouldSetResponder={() => true}
         onMoveShouldSetResponderCapture={() => true}
         onResponderMove={composeEventHandlers(props.onResponderMove, (e) => {
           const { pageY } = e.nativeEvent
+
+          console.log('move')
 
           if (scrollBridge.scrollStartY === -1) {
             console.warn('⚠️ set scroll start', pageY)
@@ -150,7 +182,7 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
 
           // scrolling up
           const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
-          if (isPaneAtTop) {
+          if (isPaneAtTop && !isDraggingDown) {
             setScrollEnabled(true)
           }
           if (isDraggingDown) {
@@ -164,32 +196,34 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
           const isScrollAtTop = scrollBridge.y <= 0
           const { scrollLock } = scrollBridge
 
-          // console.table([
-          //   {
-          //     scrollLock,
-          //     isPaneAtTop,
-          //     isAboveStart,
-          //     isScrollAtTop,
-          //     dy,
-          //     dragAt,
-          //     isDraggingUp,
-          //     sy: scrollBridge.y,
-          //   },
-          // ])
+          console.table([
+            {
+              scrollLock,
+              isPaneAtTop,
+              isAboveStart,
+              isScrollAtTop,
+              dy,
+              dragAt,
+              isDraggingUp,
+              sy: scrollBridge.y,
+            },
+          ])
 
           if (scrollLock && isPaneAtTop && isAboveStart) {
             console.warn('bail1')
+            setScrollEnabled(true)
             return
           }
           if (isPaneAtTop && (isDraggingUp || dy === 0)) {
             console.warn('bail2')
             setScrollEnabled(true)
+            // ref.current?.setNativeProps({{ scrollEnabled: true }})
             return
           }
 
           if (isScrollAtTop || !isPaneAtTop || scrollLock) {
             scrollBridge.scrollLock = true
-            console.warn('disable scroll')
+            console.warn('DRAG FROM SCROLL', dragAt, dy)
             setScrollEnabled(false)
             scrollBridge.drag(dragAt)
             state.current.dragAt = dragAt
@@ -203,13 +237,27 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
         onResponderReject={composeEventHandlers(props.onResponderReject, release)}
         onResponderTerminate={composeEventHandlers(props.onResponderTerminate, release)}
         onResponderRelease={composeEventHandlers(props.onResponderRelease, release)}
+        // overScrollMode="never"
+        // cancelsTouchesInView
+        // bounces={false}
         style={[
           {
             flex: 1,
           },
           props.style,
         ]}
-      />
+        {...props}
+      >
+        {props.children}
+      </ScrollView>
     )
   }
 )
+
+export const isSafari = (() => {
+  if (typeof navigator !== 'undefined') {
+    const ua = navigator.userAgent?.toLowerCase() ?? ''
+    return ua.includes('safari') && !ua.includes('chrome')
+  }
+  return false
+})()
