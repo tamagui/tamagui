@@ -4,7 +4,6 @@ import {
   Slot,
   TamaguiElement,
   Theme,
-  composeEventHandlers,
   isClient,
   isWeb,
   mergeEvent,
@@ -16,13 +15,11 @@ import {
   useThemeName,
   withStaticProperties,
 } from '@tamagui/core'
-import { ScopedProps, createContextScope } from '@tamagui/create-context'
 import { Portal } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { XStack, XStackProps, YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, {
-  ReactNode,
   createContext,
   forwardRef,
   isValidElement,
@@ -36,74 +33,17 @@ import React, {
 import {
   Animated,
   GestureResponderEvent,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
   PanResponder,
   PanResponderGestureState,
-  ScrollView,
-  ScrollViewProps,
   View,
 } from 'react-native'
 
-const SHEET_NAME = 'Sheet'
-const SHEET_HANDLE_NAME = 'SheetHandle'
+import { SHEET_HANDLE_NAME, SHEET_NAME } from './SHEET_HANDLE_NAME'
+import { SheetProvider, useSheetContext } from './SheetContext'
+import { SheetScrollView } from './SheetScrollView'
+import { ScrollBridge, SheetProps, SheetScopedProps } from './types'
 
-type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
-
-export type SheetProps = ScopedProps<
-  {
-    open?: boolean
-    defaultOpen?: boolean
-    onChangeOpen?: OpenChangeHandler
-    position?: number
-    defaultPosition?: number
-    snapPoints?: number[]
-    onChangePosition?: PositionChangeHandler
-    children?: ReactNode
-    dismissOnOverlayPress?: boolean
-    dismissOnSnapToBottom?: boolean
-    animationConfig?: Animated.SpringAnimationConfig
-    disableDrag?: boolean
-    modal?: boolean
-
-    /**
-     * @see https://github.com/theKashey/react-remove-scroll#usage
-     */
-    allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
-  },
-  'Sheet'
->
-
-type PositionChangeHandler = (position: number) => void
-
-type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>
-
-type ScrollBridge = {
-  enabled: boolean
-  y: number
-  scrollStartY: number
-  drag: (dy: number) => void
-  release: (state: { dy: number; vy: number }) => void
-}
-
-type SheetContextValue = Required<
-  Pick<SheetProps, 'open' | 'position' | 'snapPoints' | 'dismissOnOverlayPress'>
-> & {
-  hidden: boolean
-  setPosition: PositionChangeHandler
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  allowPinchZoom: RemoveScrollProps['allowPinchZoom']
-  contentRef: React.RefObject<TamaguiElement>
-  dismissOnSnapToBottom: boolean
-  scrollBridge: ScrollBridge
-  modal: boolean
-}
-
-const [createSheetContext, createSheetScope] = createContextScope(SHEET_NAME)
-const [SheetProvider, useSheetContext] = createSheetContext<SheetContextValue>(
-  SHEET_NAME,
-  {} as any
-)
+export { createSheetScope } from './SheetContext'
 
 /* -------------------------------------------------------------------------------------------------
  * SheetHandle
@@ -127,8 +67,6 @@ export const SheetHandleFrame = styled(XStack, {
     opacity: 0.7,
   },
 })
-
-type SheetScopedProps<A> = ScopedProps<A, 'Sheet'>
 
 export const SheetHandle = SheetHandleFrame.extractable(
   ({ __scopeSheet, ...props }: SheetScopedProps<XStackProps>) => {
@@ -186,108 +124,17 @@ export const SheetOverlay = SheetOverlayFrame.extractable(
   ({ __scopeSheet, ...props }: SheetScopedProps<SheetOverlayProps>) => {
     const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
     return (
-      <RemoveScroll
-        enabled={context.open && context.modal}
-        as={Slot}
-        allowPinchZoom={context.allowPinchZoom}
-        shards={[context.contentRef]}
-        // causes lots of bugs on touch web on site
-        removeScrollBar={false}
-      >
-        <SheetOverlayFrame
-          closed={!context.open || context.hidden}
-          {...props}
-          onPress={mergeEvent(
-            props.onPress,
-            context.dismissOnOverlayPress
-              ? () => {
-                  context.setOpen(false)
-                }
-              : undefined
-          )}
-        />
-      </RemoveScroll>
-    )
-  }
-)
-
-/* -------------------------------------------------------------------------------------------------
- * SheetScrollView
- * -----------------------------------------------------------------------------------------------*/
-
-const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
-
-export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
-  ({ __scopeSheet, ...props }: SheetScopedProps<ScrollViewProps>, ref) => {
-    const { scrollBridge } = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
-    const [scrollEnabled, setScrollEnabled] = useState(true)
-    const state = useRef({
-      dy: 0,
-      // store a few recent dys to get velocity on release
-      dys: [] as number[],
-    })
-
-    const release = () => {
-      setScrollEnabled(true)
-      const recentDys = state.current.dys.slice(-10)
-      const dist = recentDys.length
-        ? recentDys.reduce((a, b, i) => a + b - (recentDys[i - 1] ?? recentDys[0]), 0)
-        : 0
-      const avgDy = dist / recentDys.length
-      const vy = avgDy * 0.075
-      state.current.dys = []
-      scrollBridge.release({
-        dy: state.current.dy,
-        vy,
-      })
-    }
-
-    return (
-      <ScrollView
-        ref={ref}
-        scrollEventThrottle={16} // todo release we can just grab the last dY and estimate vY using a sample of last dYs
+      <SheetOverlayFrame
+        closed={!context.open || context.hidden}
         {...props}
-        scrollEnabled={props.scrollEnabled || scrollEnabled}
-        onScroll={composeEventHandlers<NativeSyntheticEvent<NativeScrollEvent>>(
-          props.onScroll,
-          (e) => {
-            const { y } = e.nativeEvent.contentOffset
-            scrollBridge.y = y
-            if (y > 0) {
-              scrollBridge.scrollStartY = -1
-            }
-          }
+        onPress={mergeEvent(
+          props.onPress,
+          context.dismissOnOverlayPress
+            ? () => {
+                context.setOpen(false)
+              }
+            : undefined
         )}
-        onResponderMove={composeEventHandlers(props.onResponderMove, (e) => {
-          const { pageY } = e.nativeEvent
-          if (scrollBridge.y <= 0) {
-            if (scrollBridge.scrollStartY === -1) {
-              scrollBridge.scrollStartY = pageY
-            }
-            const dy = pageY - scrollBridge.scrollStartY
-            if (dy <= 0) {
-              setScrollEnabled(true)
-              return
-            }
-            setScrollEnabled(false)
-            scrollBridge.drag(dy)
-            state.current.dy = dy
-            state.current.dys.push(dy)
-            // only do every so often, cut down to 10 again
-            if (state.current.dys.length > 100) {
-              state.current.dys = state.current.dys.slice(-10)
-            }
-          }
-        })}
-        onResponderReject={composeEventHandlers(props.onResponderReject, release)}
-        onResponderTerminate={composeEventHandlers(props.onResponderTerminate, release)}
-        onResponderRelease={composeEventHandlers(props.onResponderRelease, release)}
-        style={[
-          {
-            flex: 1,
-          },
-          props.style,
-        ]}
       />
     )
   }
@@ -343,7 +190,7 @@ export const Sheet = withStaticProperties(
         dismissOnSnapToBottom = false,
         disableDrag: disableDragProp,
         modal = false,
-        allowPinchZoom,
+        handleDisableScroll = true,
       } = props
 
       if (process.env.NODE_ENV === 'development') {
@@ -363,9 +210,12 @@ export const Sheet = withStaticProperties(
       const scrollBridge = useConstant<ScrollBridge>(() => ({
         enabled: false,
         y: 0,
+        paneY: 0,
+        paneMinY: 0,
         scrollStartY: -1,
         drag: () => {},
         release: () => {},
+        scrollLock: false,
       }))
 
       const onChangeOpenInternal = (val: boolean) => {
@@ -431,6 +281,11 @@ export const Sheet = withStaticProperties(
       function stopSpring() {
         spring.current?.stop()
         spring.current = null
+        console.trace()
+        if (scrollBridge.onFinishAnimate) {
+          scrollBridge.onFinishAnimate()
+          scrollBridge.onFinishAnimate = undefined
+        }
       }
 
       // open must set position
@@ -491,6 +346,7 @@ export const Sheet = withStaticProperties(
       useEffect(() => {
         positionValue.current!.addListener(({ value }) => {
           at.current = value
+          scrollBridge.paneY = value
         })
         return () => {
           positionValue.current!.removeAllListeners()
@@ -505,6 +361,7 @@ export const Sheet = withStaticProperties(
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const pos = positionValue.current!
           const minY = positions[0]
+          scrollBridge.paneMinY = minY
           let startY = at.current
 
           function makeUnselectable(val: boolean) {
@@ -540,25 +397,45 @@ export const Sheet = withStaticProperties(
           }
 
           const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
+            console.warn('FINISh')
             release(state)
           }
 
           let previouslyScrolling = false
 
           const onMoveShouldSet = (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
+            if (scrollBridge.scrollLock) {
+              return false
+            }
             if (scrollBridge.enabled) {
+              const isSheetAtTop = at.current <= positions[0]
+              // defer to scroll bridge whenever its scrolled
               if (scrollBridge.y !== 0) {
                 previouslyScrolling = true
+                console.log('should disable scrolly')
                 return false
               }
+
+              // scrollBridge.y === 0 &&
+              // isSheetAtTop &&
+              //
+
+              // take control if at top and moving down always
+              if (isSheetAtTop && dy >= 0) {
+                console.log('top drag down')
+                return true
+              }
               if (scrollBridge.y === 0 && dy < 0) {
+                console.log('should disable scrolly2')
                 return false
               }
             }
             if (previouslyScrolling) {
+              console.log('should disable scrolly3')
               previouslyScrolling = false
               return true
             }
+            console.log('should', Math.abs(dy) > 8)
             // we could do some detection of other touchables and cancel here..
             return Math.abs(dy) > 8
           }
@@ -585,12 +462,16 @@ export const Sheet = withStaticProperties(
           return PanResponder.create({
             onMoveShouldSetPanResponder: (...args) => {
               const res = onMoveShouldSet(...args)
-              // console.log('res', res, scrollBridge.y)
+              if (res) {
+                console.warn('take')
+                // scrollBridge.scrollStartY = -1
+              }
               return res
             },
             onPanResponderGrant: grant,
             onPanResponderMove: (_e, { dy }) => {
               const to = dy + startY
+              console.log('pane.move', { to, minY }, resisted(to, minY))
               pos.setValue(resisted(to, minY))
             },
             onPanResponderEnd: finish,
@@ -640,7 +521,6 @@ export const Sheet = withStaticProperties(
           contentRef={contentRef}
           dismissOnOverlayPress={dismissOnOverlayPress}
           dismissOnSnapToBottom={dismissOnSnapToBottom}
-          allowPinchZoom={allowPinchZoom}
           open={open}
           hidden={isHidden}
           scope={__scopeSheet}
@@ -653,6 +533,7 @@ export const Sheet = withStaticProperties(
           {isResizing ? null : overlayComponent}
           {/* no fancy hidden animation etc for handle for now */}
           {isHidden ? null : handleComponent}
+
           <Animated.View
             ref={ref}
             {...panResponder?.panHandlers}
@@ -673,7 +554,16 @@ export const Sheet = withStaticProperties(
               transform: [{ translateY }],
             }}
           >
-            {isResizing ? null : frameComponent}
+            <RemoveScroll
+              enabled={open && modal && handleDisableScroll}
+              as={Slot}
+              allowPinchZoom
+              shards={[contentRef]}
+              // causes lots of bugs on touch web on site
+              removeScrollBar={false}
+            >
+              {isResizing ? null : frameComponent}
+            </RemoveScroll>
           </Animated.View>
         </SheetProvider>
       )
@@ -752,5 +642,3 @@ export const SheetController = ({
     <SheetControllerContext.Provider value={memoValue}>{children}</SheetControllerContext.Provider>
   )
 }
-
-export { createSheetScope }

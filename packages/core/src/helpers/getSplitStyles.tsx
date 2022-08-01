@@ -390,14 +390,13 @@ export const getSplitStyles: StyleSplitter = (
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
-          console.log('  🔹 getSplitStyles mediaStyle', { mediaKey, mediaStyle, props, shouldDoClasses })
+          console.log('  🔹 mediaStyle', { mediaKey, mediaStyle, props, shouldDoClasses })
         }
 
         if (shouldDoClasses) {
           const mediaStyles = getStylesAtomic(mediaStyle)
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
-            // TODO handle pseudo + media, not too hard just need to set up example case
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)
