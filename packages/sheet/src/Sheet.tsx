@@ -54,28 +54,32 @@ export const SheetHandleFrame = styled(XStack, {
   height: 10,
   borderRadius: 100,
   backgroundColor: '$background',
-  position: 'absolute',
-  pointerEvents: 'auto',
   zIndex: 10,
-  y: -18,
-  top: 0,
-  left: '35%',
-  right: '35%',
+  marginHorizontal: '35%',
+  marginBottom: '$2',
   opacity: 0.5,
 
   hoverStyle: {
     opacity: 0.7,
   },
+
+  variants: {
+    open: {
+      true: {
+        pointerEvents: 'auto',
+      },
+      false: {
+        opacity: 0,
+        pointerEvents: 'none',
+      },
+    },
+  } as const,
 })
 
 export const SheetHandle = SheetHandleFrame.extractable(
   ({ __scopeSheet, ...props }: SheetScopedProps<XStackProps>) => {
     const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
-
-    if (context.open === false) {
-      return null
-    }
-
+    console.log('props', props)
     return (
       <SheetHandleFrame
         onPress={() => {
@@ -84,6 +88,7 @@ export const SheetHandle = SheetHandleFrame.extractable(
           const nextPos = (context.position + 1) % max
           context.setPosition(nextPos)
         }}
+        open={context.open}
         {...props}
       />
     )
@@ -372,11 +377,11 @@ export const Sheet = withStaticProperties(
             }
           }
 
-          const release = ({ vy, dy }: { dy: number; vy: number }) => {
+          const release = ({ vy, dragAt }: { dragAt: number; vy: number }) => {
             isExternalDrag = false
             previouslyScrolling = false
             makeUnselectable(false)
-            const at = dy + startY
+            const at = dragAt + startY
             // seems liky vy goes up to about 4 at the very most (+ is down, - is up)
             // lets base our multiplier on the total layout height
             const end = at + frameSize * vy * 0.33
@@ -397,12 +402,19 @@ export const Sheet = withStaticProperties(
 
           const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
             console.warn('FINISh')
-            release(state)
+            release({
+              vy: state.vy,
+              dragAt: state.dy,
+            })
           }
 
           let previouslyScrolling = false
 
           const onMoveShouldSet = (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
+            if (scrollBridge.enabled) {
+              return false
+            }
+
             if (scrollBridge.scrollLock) {
               return false
             }
@@ -411,30 +423,21 @@ export const Sheet = withStaticProperties(
               // defer to scroll bridge whenever its scrolled
               if (scrollBridge.y !== 0) {
                 previouslyScrolling = true
-                console.log('should disable scrolly')
                 return false
               }
 
-              // scrollBridge.y === 0 &&
-              // isSheetAtTop &&
-              //
-
               // take control if at top and moving down always
               if (isSheetAtTop && dy >= 0) {
-                console.log('top drag down')
                 return true
               }
               if (scrollBridge.y === 0 && dy < 0) {
-                console.log('should disable scrolly2')
                 return false
               }
             }
             if (previouslyScrolling) {
-              console.log('should disable scrolly3')
               previouslyScrolling = false
               return true
             }
-            console.log('should', Math.abs(dy) > 8)
             // we could do some detection of other touchables and cancel here..
             return Math.abs(dy) > 8
           }
@@ -542,8 +545,6 @@ export const Sheet = withStaticProperties(
           scrollBridge={scrollBridge}
         >
           {isResizing ? null : overlayComponent}
-          {/* no fancy hidden animation etc for handle for now */}
-          {isHidden ? null : handleComponent}
 
           <Animated.View
             ref={ref}
@@ -565,6 +566,8 @@ export const Sheet = withStaticProperties(
               transform: [{ translateY }],
             }}
           >
+            {handleComponent}
+
             <RemoveScroll
               enabled={open && modal && handleDisableScroll}
               as={Slot}

@@ -38,7 +38,7 @@ export type ScrollBridge = {
   paneMinY: number
   scrollStartY: number
   drag: (dy: number) => void
-  release: (state: { dy: number; vy: number }) => void
+  release: (state: { dragAt: number; vy: number }) => void
   scrollLock: boolean
   onFinishAnimate?: () => void
 }

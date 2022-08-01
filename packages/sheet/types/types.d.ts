@@ -30,7 +30,7 @@ export declare type ScrollBridge = {
     scrollStartY: number;
     drag: (dy: number) => void;
     release: (state: {
-        dy: number;
+        dragAt: number;
         vy: number;
     }) => void;
     scrollLock: boolean;

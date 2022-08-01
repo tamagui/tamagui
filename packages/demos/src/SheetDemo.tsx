@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { Button, Circle, Paragraph, XStack, YStack, isWeb } from 'tamagui'
 
 export const SheetDemo = () => {
-  const [position, setPosition] = useState(1)
+  const [position, setPosition] = useState(0)
   const [open, setOpen] = useState(true)
   const [modal, setModal] = useState(true)
 
@@ -25,8 +25,8 @@ export const SheetDemo = () => {
         onChangePosition={setPosition}
       >
         <Sheet.Overlay />
+        <Sheet.Handle />
         <Sheet.Frame ai="center" jc="center">
-          <Sheet.Handle />
           <Sheet.ScrollView>
             <YStack p="$4" ai="center">
               <Button

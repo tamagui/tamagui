@@ -19,24 +19,35 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
     const { scrollBridge } = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
     const [scrollEnabled, setScrollEnabled_] = useState(true)
     const setScrollEnabled = (next: boolean) => {
-      setScrollEnabled_(next)
+      setScrollEnabled_((prev) => {
+        if (prev !== next) {
+          console.groupCollapsed('set scroll enabled', next)
+          console.trace()
+          console.groupEnd()
+        }
+        return next
+      })
       // scrollBridge.scrollLock = !next
     }
     const state = useRef({
       lastPageY: 0,
-      dy: 0,
+      dragAt: 0,
       // store a few recent dys to get velocity on release
       dys: [] as number[],
     })
 
     const release = () => {
-      const recentDys = state.current.dys.slice(-10)
-      const dist = recentDys.length ? recentDys.reduce((a, b) => a + b, 0) : 0
-      const avgDy = dist / recentDys.length
-      const vy = avgDy * 0.08
+      let vy = 0
+      if (state.current.dys.length) {
+        const recentDys = state.current.dys.slice(-10)
+        const dist = recentDys.length ? recentDys.reduce((a, b) => a + b, 0) : 0
+        const avgDy = dist / recentDys.length
+        vy = avgDy * 0.04
+        console.table([{ vy, avgDy, dist, recentDys }])
+      }
       state.current.dys = []
       scrollBridge.release({
-        dy: state.current.dy,
+        dragAt: state.current.dragAt,
         vy,
       })
       // if we do it next frame when you drag up and release from mid-point it enables
@@ -44,7 +55,7 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
       // drag and scroll when it shouldn't.
       setTimeout(() => {
         setScrollEnabled(true)
-      }, 16)
+      })
     }
 
     useEffect(() => {
@@ -54,46 +65,48 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
       }
     }, [scrollBridge])
 
-    const shouldDrag = (e: GestureReponderEvent) => {
-      const { pageY } = e.nativeEvent
+    // const shouldDrag = (e: GestureReponderEvent) => {
+    //   const { pageY } = e.nativeEvent
 
-      // scrolling up
-      const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
-      if (isPaneAtTop) {
-        setScrollEnabled(true)
-        return false
-      }
+    //   // scrolling up
+    //   const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
+    //   if (isPaneAtTop) {
+    //     setScrollEnabled(true)
+    //     return false
+    //   }
 
-      // scrolling down
-      const isScrollAtTop = scrollBridge.y <= 0
-      const { scrollLock } = scrollBridge
-      const shouldDrag = isScrollAtTop || !isPaneAtTop || scrollLock
+    //   // scrolling down
+    //   const isScrollAtTop = scrollBridge.y <= 0
+    //   const { scrollLock } = scrollBridge
+    //   const shouldDrag = isScrollAtTop || !isPaneAtTop || scrollLock
 
-      if (!shouldDrag) {
-        return false
-      }
+    //   if (!shouldDrag) {
+    //     return false
+    //   }
 
-      const dy = pageY - scrollBridge.scrollStartY
-      if (!isPaneAtTop && isScrollAtTop && dy <= 0) {
-        setScrollEnabled(true)
-        return false
-      }
-      if (isScrollAtTop) {
-        if (dy <= 0) {
-          setScrollEnabled(true)
-          return false
-        }
-      }
+    //   const dy = pageY - scrollBridge.scrollStartY
+    //   if (!isPaneAtTop && isScrollAtTop && dy <= 0) {
+    //     setScrollEnabled(true)
+    //     return false
+    //   }
+    //   if (isScrollAtTop) {
+    //     if (dy <= 0) {
+    //       setScrollEnabled(true)
+    //       return false
+    //     }
+    //   }
 
-      // quicker scroll disable on up
-      // works at disabling the extra scrolltop move on quick up drags,
-      //  but then the scroll doesnt continue :/
-      // Object.assign(ref.current.style, {
-      //   overflowY: 'hidden',
-      // })
+    //   // quicker scroll disable on up
+    //   // works at disabling the extra scrolltop move on quick up drags,
+    //   //  but then the scroll doesnt continue :/
+    //   // Object.assign(ref.current.style, {
+    //   //   overflowY: 'hidden',
+    //   // })
 
-      return true
-    }
+    //   return true
+    // }
+
+    console.log('scrollEnabled', scrollEnabled)
 
     return (
       <ScrollView
@@ -118,7 +131,7 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
           scrollBridge.scrollLock = false
           console.warn('😜😜😜😜😜😜😜😜😜😜😜 end responder')
         }}
-        onMoveShouldSetResponderCapture={shouldDrag}
+        onMoveShouldSetResponderCapture={() => true}
         onResponderMove={composeEventHandlers(props.onResponderMove, (e) => {
           const { pageY } = e.nativeEvent
 
@@ -128,10 +141,10 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
             state.current.lastPageY = pageY
           }
 
-          const dragTo = pageY - scrollBridge.scrollStartY
+          const dragAt = pageY - scrollBridge.scrollStartY
           const dy = pageY - state.current.lastPageY
           state.current.lastPageY = pageY // after dy
-          const isDragAboveStart = dragTo <= 0
+          const isAboveStart = dragAt <= 0
           const isDraggingUp = dy < 0
           const isDraggingDown = dy > 0
 
@@ -140,52 +153,46 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
           if (isPaneAtTop) {
             setScrollEnabled(true)
           }
-          if (isPaneAtTop && isDraggingDown) {
+          if (isDraggingDown) {
+            scrollBridge.scrollLock = false
+          }
+          if (isDraggingUp && isPaneAtTop) {
             scrollBridge.scrollLock = false
           }
 
           // scrolling down
           const isScrollAtTop = scrollBridge.y <= 0
           const { scrollLock } = scrollBridge
-          const shouldDrag = isScrollAtTop || !isPaneAtTop || scrollLock
 
-          console.table([
-            {
-              scrollLock,
-              isPaneAtTop,
-              isDragAboveStart,
-              isScrollAtTop,
-              shouldDrag,
-              dy,
-              dragTo,
-              sy: scrollBridge.y,
-            },
-          ])
+          // console.table([
+          //   {
+          //     scrollLock,
+          //     isPaneAtTop,
+          //     isAboveStart,
+          //     isScrollAtTop,
+          //     dy,
+          //     dragAt,
+          //     isDraggingUp,
+          //     sy: scrollBridge.y,
+          //   },
+          // ])
 
-          if (scrollLock && isPaneAtTop && isDragAboveStart) {
-            // if (!isScrollAtTop) {
-            //   console.warn('bail')
+          if (scrollLock && isPaneAtTop && isAboveStart) {
+            console.warn('bail1')
             return
-            // }
+          }
+          if (isPaneAtTop && (isDraggingUp || dy === 0)) {
+            console.warn('bail2')
+            setScrollEnabled(true)
+            return
           }
 
-          if (shouldDrag) {
-            // if (isPaneAtTop && isScrollAtTop && isDragAboveStart) {
-            //   console.error('2')
-            //   setScrollEnabled(true)
-            //   return
-            // }
-            // if (isScrollAtTop) {
-            //   if (dragTo <= 0) {
-            //     console.error('3')
-            //     setScrollEnabled(true)
-            //     return
-            //   }
-            // }
+          if (isScrollAtTop || !isPaneAtTop || scrollLock) {
             scrollBridge.scrollLock = true
+            console.warn('disable scroll')
             setScrollEnabled(false)
-            scrollBridge.drag(dragTo)
-            state.current.dy = dy
+            scrollBridge.drag(dragAt)
+            state.current.dragAt = dragAt
             state.current.dys.push(dy)
             // only do every so often, cut down to 10 again
             if (state.current.dys.length > 100) {
