@@ -22,24 +22,31 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
     const { scrollBridge } = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
     const [scrollEnabled, setScrollEnabled_] = useState(true)
     const setScrollEnabled = (enabled: boolean, dragAt?: number) => {
-      if (!isWeb) {
-        const isDraggingDown = state.current.dy > 0
-        const translateY = !enabled && dragAt ? (isDraggingDown ? -dragAt / 2 : -dragAt) : 0
-        console.warn('translateY', translateY, state.current.dy, isDraggingDown, enabled, dragAt)
-        innerRef.current!.setNativeProps({
-          style: { transform: [{ translateY }] },
-        })
-        // ref.current?.setNativeProps({ scrollEnabled: enabled })
-      } else {
-        setScrollEnabled_((prev) => {
-          if (prev !== enabled) {
-            console.groupCollapsed('set scroll enabled', enabled)
-            console.trace()
-            console.groupEnd()
-          }
-          return enabled
-        })
-      }
+      setScrollEnabled_((prev) => {
+        if (prev !== enabled) {
+          console.groupCollapsed('set scroll enabled', enabled)
+          console.trace()
+          console.groupEnd()
+        }
+        return enabled
+      })
+      // if (!isWeb) {
+      //   // const isDraggingDown = state.current.dy > 0
+      //   // const translateY = !enabled && dragAt ? (isDraggingDown ? -dragAt / 2 : -dragAt) : 0
+      //   // console.table([{ translateY, isDraggingDown, enabled, dragAt }])
+      //   // if (enabled) {
+      //   //   innerRef.current!.setNativeProps({
+      //   //     style: { transform: [{ translateY: 0 }] },
+      //   //   })
+      //   //   // ref.current?.scrollTo(0)
+      //   // } else {
+      //   //   ref.current?.scrollTo(0)
+      //   //   innerRef.current!.setNativeProps({
+      //   //     style: { transform: [{ translateY }] },
+      //   //   })
+      //   // }
+      //   // ref.current?.setNativeProps({ scrollEnabled: enabled })
+      // } else {
       // scrollBridge.scrollLock = !next
     }
     const state = useRef({
@@ -147,14 +154,15 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
     const enabled = props.scrollEnabled ?? scrollEnabled
     console.log('enabled', enabled, -scrollBridge.y)
 
-    const innerRef = useRef<any>()
+    // const innerRef = useRef<any>()
+
     return (
       <ScrollView
         ref={composedRef}
         shouldCancelWhenOutside={false}
-        scrollEventThrottle={8} // todo release we can just grab the last dY and estimate vY using a sample of last dYs
+        scrollEventThrottle={0} // todo release we can just grab the last dY and estimate vY using a sample of last dYs
         showsVerticalScrollIndicator={false}
-        scrollEnabled
+        scrollEnabled={enabled}
         onScroll={composeEventHandlers<NativeSyntheticEvent<NativeScrollEvent>>(
           props.onScroll,
           (e) => {
@@ -210,18 +218,18 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
           const isScrollAtTop = scrollBridge.y <= 0
           const { scrollLock } = scrollBridge
 
-          // console.table([
-          //   {
-          //     scrollLock,
-          //     isPaneAtTop,
-          //     isAboveStart,
-          //     isScrollAtTop,
-          //     dy,
-          //     dragAt,
-          //     isDraggingUp,
-          //     sy: scrollBridge.y,
-          //   },
-          // ])
+          console.table([
+            {
+              scrollLock,
+              isPaneAtTop,
+              isAboveStart,
+              isScrollAtTop,
+              dy,
+              dragAt,
+              isDraggingUp,
+              sy: scrollBridge.y,
+            },
+          ])
 
           if (scrollLock && isPaneAtTop && isAboveStart) {
             console.warn('bail1')
@@ -261,9 +269,7 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
         ]}
         {...props}
       >
-        <YStack flex={1} ref={innerRef}>
-          {props.children}
-        </YStack>
+        {props.children}
       </ScrollView>
     )
   }
