@@ -35,6 +35,7 @@ import {
   GestureResponderEvent,
   PanResponder,
   PanResponderGestureState,
+  StyleSheet,
   View,
 } from 'react-native'
 
@@ -456,8 +457,8 @@ export const Sheet = withStaticProperties(
             if (process.env.NODE_ENV === 'development') {
               const moveAmt = Math.abs(pos['_value'] - next)
               if (moveAmt > 50) {
-                console.warn('jump!', moveAmt)
-                debugger
+                console.warn('!!!!!!!!!!!!jump!', moveAmt)
+                // debugger
               }
             }
             pos.setValue(next)
@@ -475,18 +476,24 @@ export const Sheet = withStaticProperties(
           scrollBridge.release = release
 
           return PanResponder.create({
-            onMoveShouldSetPanResponderCapture: (...args) => {
-              const res = onMoveShouldSet(...args)
-              if (res) {
-                console.warn('take')
-                // scrollBridge.scrollStartY = -1
-              }
-              return res
+            onShouldBlockNativeResponder: () => false,
+            // onMoveShouldSetPanResponder: () => !scrollBridge.enabled,
+            // onMoveShouldSetPanResponderCapture: (...args) => {
+            //   const res = onMoveShouldSet(...args)
+            //   if (res) {
+            //     console.warn('take')
+            //     // scrollBridge.scrollStartY = -1
+            //   }
+            //   return res
+            // },
+            onStartShouldSetPanResponder() {
+              console.log('should?', scrollBridge.scrollLock)
+              return false
             },
             onPanResponderGrant: grant,
             onPanResponderMove: (_e, { dy }) => {
-              console.log('panemove', ,to, minY, scrollBridge.y, scrollBridge)
               const to = dy + startY
+              console.log('panemove', dy, to, minY, scrollBridge.y, scrollBridge)
               setPositionValue(resisted(to, minY))
             },
             onPanResponderEnd: finish,
@@ -549,7 +556,6 @@ export const Sheet = withStaticProperties(
 
           <Animated.View
             ref={ref}
-            {...panResponder?.panHandlers}
             onLayout={(e) => {
               const next = e.nativeEvent.layout.height
               setFrameSize((prev) => {
@@ -568,6 +574,8 @@ export const Sheet = withStaticProperties(
             }}
           >
             {handleComponent}
+
+            <View style={StyleSheet.absoluteFill} {...panResponder?.panHandlers} />
 
             {/* <RemoveScroll
               enabled={open && modal && handleDisableScroll}

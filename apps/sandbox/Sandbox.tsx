@@ -92,7 +92,8 @@ export const Sandbox = () => {
           </FontLanguage>
         </FontLanguage> */}
 
-        <SheetDemo2 />
+        <SheetDemo />
+        {/* <SheetDemo2 /> */}
         {/* <SheetDemo /> */}
         {/* <SwitchDemo /> */}
         {/* <XStack space>

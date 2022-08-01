@@ -1,5 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { GestureReponderEvent, composeEventHandlers, isWeb } from '@tamagui/core'
+import { YStack } from '@tamagui/stacks'
 import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { NativeScrollEvent, NativeSyntheticEvent, ScrollViewProps } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -12,6 +13,7 @@ import { SheetScopedProps } from './types'
  * -----------------------------------------------------------------------------------------------*/
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
+let i
 
 export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
   ({ __scopeSheet, ...props }: SheetScopedProps<ScrollViewProps>, forwardedRef) => {
@@ -19,23 +21,31 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
     const composedRef = useComposedRefs(ref, forwardedRef)
     const { scrollBridge } = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
     const [scrollEnabled, setScrollEnabled_] = useState(true)
-    const setScrollEnabled = (next: boolean) => {
-      setScrollEnabled_((prev) => {
-        if (!isWeb) {
-          // ref.current?.setNativeProps({ scrollEnabled: prev })
-        }
-
-        if (prev !== next) {
-          console.groupCollapsed('set scroll enabled', next)
-          console.trace()
-          console.groupEnd()
-        }
-        return next
-      })
+    const setScrollEnabled = (enabled: boolean, dragAt?: number) => {
+      if (!isWeb) {
+        const isDraggingDown = state.current.dy > 0
+        const translateY = !enabled && dragAt ? (isDraggingDown ? -dragAt / 2 : -dragAt) : 0
+        console.warn('translateY', translateY, state.current.dy, isDraggingDown, enabled, dragAt)
+        innerRef.current!.setNativeProps({
+          style: { transform: [{ translateY }] },
+        })
+        // ref.current?.setNativeProps({ scrollEnabled: enabled })
+      } else {
+        setScrollEnabled_((prev) => {
+          if (prev !== enabled) {
+            console.groupCollapsed('set scroll enabled', enabled)
+            console.trace()
+            console.groupEnd()
+          }
+          return enabled
+        })
+      }
       // scrollBridge.scrollLock = !next
     }
     const state = useRef({
+      lockScrollY: null as number | null,
       lastPageY: 0,
+      dy: 0,
       dragAt: 0,
       // store a few recent dys to get velocity on release
       dys: [] as number[],
@@ -135,13 +145,16 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
     // }
 
     const enabled = props.scrollEnabled ?? scrollEnabled
-    console.log('enabled', enabled)
+    console.log('enabled', enabled, -scrollBridge.y)
 
+    const innerRef = useRef<any>()
     return (
       <ScrollView
         ref={composedRef}
+        shouldCancelWhenOutside={false}
         scrollEventThrottle={8} // todo release we can just grab the last dY and estimate vY using a sample of last dYs
-        scrollEnabled={enabled}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled
         onScroll={composeEventHandlers<NativeSyntheticEvent<NativeScrollEvent>>(
           props.onScroll,
           (e) => {
@@ -154,14 +167,14 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
             // }
           }
         )}
-        onResponderTerminationRequest={() => false}
+        // onResponderTerminationRequest={() => false}
         onResponderEnd={() => {
           scrollBridge.scrollStartY = -1
           scrollBridge.scrollLock = false
           console.warn('😜😜😜😜😜😜😜😜😜😜😜 end responder')
         }}
         onMoveShouldSetResponder={() => true}
-        onMoveShouldSetResponderCapture={() => true}
+        // onMoveShouldSetResponderCapture={() => true}
         onResponderMove={composeEventHandlers(props.onResponderMove, (e) => {
           const { pageY } = e.nativeEvent
 
@@ -176,6 +189,7 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
           const dragAt = pageY - scrollBridge.scrollStartY
           const dy = pageY - state.current.lastPageY
           state.current.lastPageY = pageY // after dy
+          state.current.dy = dy
           const isAboveStart = dragAt <= 0
           const isDraggingUp = dy < 0
           const isDraggingDown = dy > 0
@@ -196,18 +210,18 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
           const isScrollAtTop = scrollBridge.y <= 0
           const { scrollLock } = scrollBridge
 
-          console.table([
-            {
-              scrollLock,
-              isPaneAtTop,
-              isAboveStart,
-              isScrollAtTop,
-              dy,
-              dragAt,
-              isDraggingUp,
-              sy: scrollBridge.y,
-            },
-          ])
+          // console.table([
+          //   {
+          //     scrollLock,
+          //     isPaneAtTop,
+          //     isAboveStart,
+          //     isScrollAtTop,
+          //     dy,
+          //     dragAt,
+          //     isDraggingUp,
+          //     sy: scrollBridge.y,
+          //   },
+          // ])
 
           if (scrollLock && isPaneAtTop && isAboveStart) {
             console.warn('bail1')
@@ -224,7 +238,7 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
           if (isScrollAtTop || !isPaneAtTop || scrollLock) {
             scrollBridge.scrollLock = true
             console.warn('DRAG FROM SCROLL', dragAt, dy)
-            setScrollEnabled(false)
+            setScrollEnabled(false, dragAt)
             scrollBridge.drag(dragAt)
             state.current.dragAt = dragAt
             state.current.dys.push(dy)
@@ -239,7 +253,6 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
         onResponderRelease={composeEventHandlers(props.onResponderRelease, release)}
         // overScrollMode="never"
         // cancelsTouchesInView
-        // bounces={false}
         style={[
           {
             flex: 1,
@@ -248,7 +261,9 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
         ]}
         {...props}
       >
-        {props.children}
+        <YStack flex={1} ref={innerRef}>
+          {props.children}
+        </YStack>
       </ScrollView>
     )
   }
