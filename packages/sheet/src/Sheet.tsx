@@ -281,7 +281,6 @@ export const Sheet = withStaticProperties(
       function stopSpring() {
         spring.current?.stop()
         spring.current = null
-        console.trace()
         if (scrollBridge.onFinishAnimate) {
           scrollBridge.onFinishAnimate()
           scrollBridge.onFinishAnimate = undefined
@@ -448,13 +447,26 @@ export const Sheet = withStaticProperties(
 
           let isExternalDrag = false
 
+          function setPositionValue(next: number) {
+            // catches any "jumps"
+            if (process.env.NODE_ENV === 'development') {
+              const moveAmt = Math.abs(pos['_value'] - next)
+              if (moveAmt > 50) {
+                console.warn('jump!', moveAmt)
+                debugger
+              }
+            }
+            console.log('setpos', next, startY)
+            pos.setValue(next)
+          }
+
           scrollBridge.drag = (dy) => {
             if (!isExternalDrag) {
               isExternalDrag = true
               grant()
             }
             const to = dy + startY
-            pos.setValue(resisted(to, minY))
+            setPositionValue(resisted(to, minY))
           }
 
           scrollBridge.release = release
@@ -472,7 +484,7 @@ export const Sheet = withStaticProperties(
             onPanResponderMove: (_e, { dy }) => {
               const to = dy + startY
               console.log('pane.move', { to, minY }, resisted(to, minY))
-              pos.setValue(resisted(to, minY))
+              setPositionValue(resisted(to, minY))
             },
             onPanResponderEnd: finish,
             onPanResponderTerminate: finish,
