@@ -412,16 +412,17 @@ export const Sheet = withStaticProperties(
           let previouslyScrolling = false
 
           const onMoveShouldSet = (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
+            console.log('scrollBridge.y', scrollBridge.y)
+            if (previouslyScrolling) {
+              previouslyScrolling = false
+              return true
+            }
             if (scrollBridge.y !== 0) {
               previouslyScrolling = true
               return false
             }
             if (scrollBridge.y === 0 && dy < 0) {
               return false
-            }
-            if (previouslyScrolling) {
-              previouslyScrolling = false
-              return true
             }
             // we could do some detection of other touchables and cancel here..
             return Math.abs(dy) > 8
@@ -459,6 +460,7 @@ export const Sheet = withStaticProperties(
           scrollBridge.release = release
 
           return PanResponder.create({
+            onShouldBlockNativeResponder: () => true,
             onMoveShouldSetPanResponder: onMoveShouldSet,
             onPanResponderGrant: grant,
             onPanResponderMove: (_e, { dy }) => {
@@ -525,6 +527,7 @@ export const Sheet = withStaticProperties(
 
           <Animated.View
             ref={ref}
+            {...panResponder?.panHandlers}
             onLayout={(e) => {
               const next = e.nativeEvent.layout.height
               setFrameSize((prev) => {
@@ -543,8 +546,6 @@ export const Sheet = withStaticProperties(
             }}
           >
             {handleComponent}
-
-            <View style={StyleSheet.absoluteFill} {...panResponder?.panHandlers} />
 
             {/* <RemoveScroll
               enabled={open && modal && handleDisableScroll}

@@ -5466,12 +5466,12 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-beta.133
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: "*"
+    react-native-gesture-handler: ^2.5.0
     react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: "*"
+    react-native-gesture-handler: ^2.5.0
   languageName: unknown
   linkType: soft
 
@@ -5675,12 +5675,12 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-beta.133
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: "*"
+    react-native-gesture-handler: ^2.5.0
     react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: "*"
+    react-native-gesture-handler: ^2.5.0
   languageName: unknown
   linkType: soft
 
@@ -5875,12 +5875,12 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-beta.133
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: "*"
+    react-native-gesture-handler: ^2.5.0
     react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: "*"
+    react-native-gesture-handler: ^2.5.0
   languageName: unknown
   linkType: soft
 
@@ -6066,7 +6066,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native: "*"
-    react-native-gesture-handler: "*"
+    react-native-gesture-handler: ^2.5.0
     react-native-reanimated: ^2.8.0
     react-native-safe-area-context: ^4.3.1
     react-native-screens: ~3.11.1
@@ -6123,7 +6123,7 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-beta.133
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: "*"
+    react-native-gesture-handler: ^2.5.0
     react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
@@ -6804,13 +6804,6 @@ __metadata:
     react: ^18.0.0
     react-dom: ^18.0.0
   checksum: 98fd8616a7cae0ecfcbe97b5b3c5b91fbafccf449c04875395ccc0e3f0b139e53b3261b9536ec2169a5e2883a1be2098907209064061fe0c2ff21dfbc785dd40
-  languageName: node
-  linkType: hard
-
-"@tootallnate/once@npm:1":
-  version: 1.1.2
-  resolution: "@tootallnate/once@npm:1.1.2"
-  checksum: e1fb1bbbc12089a0cb9433dc290f97bddd062deadb6178ce9bcb93bb7c1aecde5e60184bc7065aec42fe1663622a213493c48bbd4972d931aae48315f18e1be9
   languageName: node
   linkType: hard
 
@@ -8174,7 +8167,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"agentkeepalive@npm:^4.1.3, agentkeepalive@npm:^4.2.1":
+"agentkeepalive@npm:^4.2.1":
   version: 4.2.1
   resolution: "agentkeepalive@npm:4.2.1"
   dependencies:
@@ -9504,7 +9497,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cacache@npm:^15.0.5, cacache@npm:^15.2.0, cacache@npm:^15.3.0":
+"cacache@npm:^15.0.5, cacache@npm:^15.3.0":
   version: 15.3.0
   resolution: "cacache@npm:15.3.0"
   dependencies:
@@ -12000,7 +11993,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"encoding@npm:^0.1.12, encoding@npm:^0.1.13":
+"encoding@npm:^0.1.13":
   version: 0.1.13
   resolution: "encoding@npm:0.1.13"
   dependencies:
@@ -15314,17 +15307,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-proxy-agent@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "http-proxy-agent@npm:4.0.1"
-  dependencies:
-    "@tootallnate/once": 1
-    agent-base: 6
-    debug: 4
-  checksum: c6a5da5a1929416b6bbdf77b1aca13888013fe7eb9d59fc292e25d18e041bb154a8dfada58e223fc7b76b9b2d155a87e92e608235201f77d34aa258707963a82
-  languageName: node
-  linkType: hard
-
 "http-proxy-agent@npm:^5.0.0":
   version: 5.0.0
   resolution: "http-proxy-agent@npm:5.0.0"
@@ -17373,30 +17355,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"make-fetch-happen@npm:^9.1.0":
-  version: 9.1.0
-  resolution: "make-fetch-happen@npm:9.1.0"
-  dependencies:
-    agentkeepalive: ^4.1.3
-    cacache: ^15.2.0
-    http-cache-semantics: ^4.1.0
-    http-proxy-agent: ^4.0.1
-    https-proxy-agent: ^5.0.0
-    is-lambda: ^1.0.1
-    lru-cache: ^6.0.0
-    minipass: ^3.1.3
-    minipass-collect: ^1.0.2
-    minipass-fetch: ^1.3.2
-    minipass-flush: ^1.0.5
-    minipass-pipeline: ^1.2.4
-    negotiator: ^0.6.2
-    promise-retry: ^2.0.1
-    socks-proxy-agent: ^6.0.0
-    ssri: ^8.0.0
-  checksum: 0eb371c85fdd0b1584fcfdf3dc3c62395761b3c14658be02620c310305a9a7ecf1617a5e6fb30c1d081c5c8aaf177fa133ee225024313afabb7aa6a10f1e3d04
-  languageName: node
-  linkType: hard
-
 "makeerror@npm:1.0.12":
   version: 1.0.12
   resolution: "makeerror@npm:1.0.12"
@@ -18689,21 +18647,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass-fetch@npm:^1.3.2":
-  version: 1.4.1
-  resolution: "minipass-fetch@npm:1.4.1"
-  dependencies:
-    encoding: ^0.1.12
-    minipass: ^3.1.0
-    minipass-sized: ^1.0.3
-    minizlib: ^2.0.0
-  dependenciesMeta:
-    encoding:
-      optional: true
-  checksum: ec93697bdb62129c4e6c0104138e681e30efef8c15d9429dd172f776f83898471bc76521b539ff913248cc2aa6d2b37b652c993504a51cc53282563640f29216
-  languageName: node
-  linkType: hard
-
 "minipass-fetch@npm:^2.0.3":
   version: 2.1.0
   resolution: "minipass-fetch@npm:2.1.0"
@@ -18756,7 +18699,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass@npm:3.1.6, minipass@npm:^3.0.0, minipass@npm:^3.1.0, minipass@npm:^3.1.1, minipass@npm:^3.1.3, minipass@npm:^3.1.6":
+"minipass@npm:3.1.6, minipass@npm:^3.0.0, minipass@npm:^3.1.1, minipass@npm:^3.1.6":
   version: 3.1.6
   resolution: "minipass@npm:3.1.6"
   dependencies:
@@ -18784,7 +18727,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minizlib@npm:^2.0.0, minizlib@npm:^2.1.1, minizlib@npm:^2.1.2":
+"minizlib@npm:^2.1.1, minizlib@npm:^2.1.2":
   version: 2.1.2
   resolution: "minizlib@npm:2.1.2"
   dependencies:
@@ -19005,7 +18948,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"negotiator@npm:0.6.3, negotiator@npm:^0.6.2, negotiator@npm:^0.6.3":
+"negotiator@npm:0.6.3, negotiator@npm:^0.6.3":
   version: 0.6.3
   resolution: "negotiator@npm:0.6.3"
   checksum: b8ffeb1e262eff7968fc90a2b6767b04cfd9842582a9d0ece0af7049537266e7b2506dfb1d107a32f06dd849ab2aea834d5830f7f4d0e5cb7d36e1ae55d021d9
@@ -19271,26 +19214,6 @@ __metadata:
     node-gyp-build-optional: optional.js
     node-gyp-build-test: build-test.js
   checksum: 972a059f960253d254e0b23ce10f54c8982236fc0edcab85166d0b7f87443b2ce98391c877cfb2f6eeafcf03c538c5f4dd3e0bfff03828eb48634f58f4c64343
-  languageName: node
-  linkType: hard
-
-"node-gyp@npm:^8.4.0":
-  version: 8.4.1
-  resolution: "node-gyp@npm:8.4.1"
-  dependencies:
-    env-paths: ^2.2.0
-    glob: ^7.1.4
-    graceful-fs: ^4.2.6
-    make-fetch-happen: ^9.1.0
-    nopt: ^5.0.0
-    npmlog: ^6.0.0
-    rimraf: ^3.0.2
-    semver: ^7.3.5
-    tar: ^6.1.2
-    which: ^2.0.2
-  bin:
-    node-gyp: bin/node-gyp.js
-  checksum: 341710b5da39d3660e6a886b37e210d33f8282047405c2e62c277bcc744c7552c5b8b972ebc3a7d5c2813794e60cc48c3ebd142c46d6e0321db4db6c92dd0355
   languageName: node
   linkType: hard
 
@@ -22092,7 +22015,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:*, react-native-gesture-handler@npm:^2.5.0":
+"react-native-gesture-handler@npm:^2.5.0":
   version: 2.5.0
   resolution: "react-native-gesture-handler@npm:2.5.0"
   dependencies:
@@ -23880,7 +23803,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"socks-proxy-agent@npm:^6.0.0, socks-proxy-agent@npm:^6.1.1":
+"socks-proxy-agent@npm:^6.1.1":
   version: 6.2.0
   resolution: "socks-proxy-agent@npm:6.2.0"
   dependencies:
@@ -24135,7 +24058,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ssri@npm:^8.0.0, ssri@npm:^8.0.1":
+"ssri@npm:^8.0.1":
   version: 8.0.1
   resolution: "ssri@npm:8.0.1"
   dependencies:
@@ -24734,7 +24657,6 @@ __metadata:
     eslint-plugin-react: ^7.30.1
     eslint-plugin-react-hooks: ^4.6.0
     import-sort-style-module: ^6.0.0
-    node-gyp: ^8.4.0
     npm-run-all: ^4.1.5
     prettier: ^2.6.1
     prettier-plugin-import-sort: ^0.0.7
@@ -25627,23 +25549,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.8.0-dev.20220731":
-  version: 4.8.0-dev.20220731
-  resolution: "typescript@npm:4.8.0-dev.20220731"
+"typescript@npm:4.8.0-dev.20220801":
+  version: 4.8.0-dev.20220801
+  resolution: "typescript@npm:4.8.0-dev.20220801"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 76f2daf33214beae9654aa1ae4ca5b3894a5a716aabd2ea640f83a3291235540c8cf06e6b5aba011fc23e6890fbe565dc08068e1e5be5fe6c5048ff441f2ef79
+  checksum: 990881e1f9c466402bae8b3611f5acce748fe35c29702717b6d933c3c28a18b0fad38fd1195140ffb25e8610bbf68a4393318a966b91046cdaebc8e1338bc621
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A4.8.0-dev.20220731#~builtin<compat/typescript>":
-  version: 4.8.0-dev.20220731
-  resolution: "typescript@patch:typescript@npm%3A4.8.0-dev.20220731#~builtin<compat/typescript>::version=4.8.0-dev.20220731&hash=f456af"
+"typescript@patch:typescript@npm%3A4.8.0-dev.20220801#~builtin<compat/typescript>":
+  version: 4.8.0-dev.20220801
+  resolution: "typescript@patch:typescript@npm%3A4.8.0-dev.20220801#~builtin<compat/typescript>::version=4.8.0-dev.20220801&hash=f456af"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 1ba18df08fbe19376f79044aeb9e5273664d5c14e042b08d9521556b986b95045f2354faed577f6f12b434e2096c165bb36a4481484e411b2361d57ccb8859b2
+  checksum: bcd217c970d65d0fe0eaf104c208ebb30a8eebbd80d4777e96367e5107b2f3853ce08f0dc22d13eb5f658da8e86d402347bdc4683ae70a0e5e3a79f729cced6f
   languageName: node
   linkType: hard
 

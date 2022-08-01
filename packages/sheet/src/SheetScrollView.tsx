@@ -40,10 +40,7 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
     return (
       <ScrollView
         ref={ref}
-        onScrollBeginDrag={() => {
-          console.log('begin drag')
-        }}
-        scrollEventThrottle={16}
+        scrollEventThrottle={8}
         scrollEnabled={scrollEnabled}
         onScroll={(e) => {
           const { y } = e.nativeEvent.contentOffset
@@ -77,7 +74,8 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
           }
         }}
         onResponderRelease={release}
-        // todo release we can just grab the last dY and estimate vY using a sample of last dYs
+        onResponderEnd={relese}
+        onResponderTerminate={release}
         {...props}
         style={[
           {
