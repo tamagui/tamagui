@@ -20,9 +20,16 @@
   "dependencies": {
     "@tamagui/proxy-worm": "^1.0.1-beta.133",
     "@tamagui/static": "^1.0.1-beta.133",
+    "@vitejs/plugin-react": "^2.0.0",
+    "abort-controller": "^3.0.0",
+    "es-module-lexer": "^0.9.3",
     "fs-extra": "^10.1.0",
     "lodash": "^4.17.21",
-    "outdent": "^0.8.0"
+    "magic-string": "^0.26.2",
+    "outdent": "^0.8.0",
+    "undici": "^5.8.0",
+    "vite-plugin-inspect": "^0.6.0",
+    "web-streams-polyfill": "^3.2.1"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.133",
