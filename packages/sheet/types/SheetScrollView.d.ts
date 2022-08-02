@@ -1,6 +1,4 @@
 import React from 'react';
-import { ScrollViewProps } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, ScrollViewProps } from 'react-native';
 export declare const SheetScrollView: React.ForwardRefExoticComponent<ScrollViewProps & React.RefAttributes<ScrollView>>;
-export declare const isSafari: boolean;
 //# sourceMappingURL=SheetScrollView.d.ts.map

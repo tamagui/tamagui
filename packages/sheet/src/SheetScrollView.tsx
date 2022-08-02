@@ -18,9 +18,12 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
       lastPageY: 0,
       dragAt: 0,
       dys: [] as number[], // store a few recent dys to get velocity on release
+      isScrolling: false,
     })
 
     const release = () => {
+      scrollBridge.scrollStartY = -1
+      state.current.isScrolling = false
       setScrollEnabled(true)
       let vy = 0
       if (state.current.dys.length) {
@@ -49,33 +52,55 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
             scrollBridge.scrollStartY = -1
           }
         }}
+        onStartShouldSetResponder={() => {
+          scrollBridge.scrollStartY = -1
+          return true
+        }}
+        onMoveShouldSetResponder={() => true}
         onResponderMove={(e) => {
           const { pageY } = e.nativeEvent
-          if (scrollBridge.y === 0) {
-            if (scrollBridge.scrollStartY === -1) {
-              scrollBridge.scrollStartY = pageY
-            }
-            const dragAt = pageY - scrollBridge.scrollStartY
-            const dy = pageY - state.current.lastPageY
-            state.current.lastPageY = pageY // after dy
-            state.current.dy = dy
-            if (dragAt <= 0) {
-              setScrollEnabled(true)
-              return
-            }
-            setScrollEnabled(false)
-            scrollBridge.drag(dragAt)
-            state.current.dragAt = dragAt
-            state.current.dys.push(dy)
-            // only do every so often, cut down to 10 again
-            if (state.current.dys.length > 100) {
-              state.current.dys = state.current.dys.slice(-10)
-            }
+
+          if (state.current.isScrolling) {
+            return
+          }
+
+          console.log('START', scrollBridge.scrollStartY)
+          if (scrollBridge.scrollStartY === -1) {
+            scrollBridge.scrollStartY = pageY
+            state.current.lastPageY = pageY
+          }
+
+          const dragAt = pageY - scrollBridge.scrollStartY
+          const dy = pageY - state.current.lastPageY
+          state.current.lastPageY = pageY // after dy
+          const isAboveStart = dragAt <= 0
+          const isDraggingUp = dy < 0
+          const isDraggingDown = dy > 0
+          const isScrollAtTop = scrollBridge.y <= 0
+          const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
+
+          console.table([
+            { isAboveStart, isDraggingUp, isScrollAtTop, isPaneAtTop, pageY, dy, dragAt },
+          ])
+
+          if ((dy === 0 || isDraggingUp) && isPaneAtTop) {
+            state.current.isScrolling = true
+            setScrollEnabled(true)
+            return
+          }
+
+          setScrollEnabled(false)
+          scrollBridge.drag(dragAt)
+          state.current.dragAt = dragAt
+          state.current.dys.push(dy)
+          // only do every so often, cut down to 10 again
+          if (state.current.dys.length > 100) {
+            state.current.dys = state.current.dys.slice(-10)
           }
         }}
         onResponderRelease={release}
-        onResponderEnd={relese}
-        onResponderTerminate={release}
+        // onResponderEnd={release}
+        // onResponderTerminate={release}
         {...props}
         style={[
           {

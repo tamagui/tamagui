@@ -385,7 +385,7 @@ export const Sheet = withStaticProperties(
             const at = dragAt + startY
             // seems liky vy goes up to about 4 at the very most (+ is down, - is up)
             // lets base our multiplier on the total layout height
-            const end = at + frameSize * vy * 0.33
+            const end = at + frameSize * vy * 0.2
             let closestPoint = 0
             let dist = Infinity
             for (let i = 0; i < positions.length; i++) {
@@ -411,22 +411,34 @@ export const Sheet = withStaticProperties(
 
           let previouslyScrolling = false
 
-          const onMoveShouldSet = (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
-            console.log('scrollBridge.y', scrollBridge.y)
-            if (previouslyScrolling) {
-              previouslyScrolling = false
-              return true
+          const log =
+            (cb: any) =>
+            (...args) => {
+              const next = cb(...args)
+              console.warn('log', next)
+              return next
             }
-            if (scrollBridge.y !== 0) {
-              previouslyScrolling = true
-              return false
+
+          const onMoveShouldSet = log(
+            (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
+              console.table([{ y: scrollBridge.y, previouslyScrolling, should: Math.abs(dy) > 8 }])
+              const isScrolled = scrollBridge.y !== 0
+              if (isScrolled) {
+                previouslyScrolling = true
+                return false
+              }
+              if (previouslyScrolling) {
+                previouslyScrolling = false
+                return true
+              }
+              const isDraggingUp = dy < 0
+              if (!isScrolled && isDraggingUp) {
+                return false
+              }
+              // we could do some detection of other touchables and cancel here..
+              return Math.abs(dy) > 8
             }
-            if (scrollBridge.y === 0 && dy < 0) {
-              return false
-            }
-            // we could do some detection of other touchables and cancel here..
-            return Math.abs(dy) > 8
-          }
+          )
 
           const grant = () => {
             makeUnselectable(true)
@@ -460,7 +472,6 @@ export const Sheet = withStaticProperties(
           scrollBridge.release = release
 
           return PanResponder.create({
-            onShouldBlockNativeResponder: () => true,
             onMoveShouldSetPanResponder: onMoveShouldSet,
             onPanResponderGrant: grant,
             onPanResponderMove: (_e, { dy }) => {
