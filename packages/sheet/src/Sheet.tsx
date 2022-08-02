@@ -80,7 +80,6 @@ export const SheetHandleFrame = styled(XStack, {
 export const SheetHandle = SheetHandleFrame.extractable(
   ({ __scopeSheet, ...props }: SheetScopedProps<XStackProps>) => {
     const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
-    console.log('props', props)
     return (
       <SheetHandleFrame
         onPress={() => {
@@ -402,7 +401,6 @@ export const Sheet = withStaticProperties(
           }
 
           const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
-            console.warn('FINISh')
             release({
               vy: state.vy,
               dragAt: state.dy,
@@ -411,34 +409,23 @@ export const Sheet = withStaticProperties(
 
           let previouslyScrolling = false
 
-          const log =
-            (cb: any) =>
-            (...args) => {
-              const next = cb(...args)
-              console.warn('log', next)
-              return next
+          const onMoveShouldSet = (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
+            const isScrolled = scrollBridge.y !== 0
+            if (isScrolled) {
+              previouslyScrolling = true
+              return false
             }
-
-          const onMoveShouldSet = log(
-            (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
-              console.table([{ y: scrollBridge.y, previouslyScrolling, should: Math.abs(dy) > 8 }])
-              const isScrolled = scrollBridge.y !== 0
-              if (isScrolled) {
-                previouslyScrolling = true
-                return false
-              }
-              if (previouslyScrolling) {
-                previouslyScrolling = false
-                return true
-              }
-              const isDraggingUp = dy < 0
-              if (!isScrolled && isDraggingUp) {
-                return false
-              }
-              // we could do some detection of other touchables and cancel here..
-              return Math.abs(dy) > 8
+            if (previouslyScrolling) {
+              previouslyScrolling = false
+              return true
             }
-          )
+            const isDraggingUp = dy < 0
+            if (!isScrolled && isDraggingUp) {
+              return false
+            }
+            // we could do some detection of other touchables and cancel here..
+            return Math.abs(dy) > 8
+          }
 
           const grant = () => {
             makeUnselectable(true)
@@ -449,14 +436,14 @@ export const Sheet = withStaticProperties(
           let isExternalDrag = false
 
           function setPositionValue(next: number) {
-            // catches any "jumps"
-            if (process.env.NODE_ENV === 'development') {
-              const moveAmt = Math.abs(pos['_value'] - next)
-              if (moveAmt > 50) {
-                console.warn('!!!!!!!!!!!!jump!', moveAmt)
-                // debugger
-              }
-            }
+            // useful to debug any "jumping"
+            // if (process.env.NODE_ENV === 'development') {
+            //   const moveAmt = Math.abs(pos['_value'] - next)
+            //   if (moveAmt > 50) {
+            //     console.warn('!!!!!!!!!!!!jump!', moveAmt)
+            //     // debugger
+            //   }
+            // }
             pos.setValue(next)
           }
 

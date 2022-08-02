@@ -64,7 +64,6 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
             return
           }
 
-          console.log('START', scrollBridge.scrollStartY)
           if (scrollBridge.scrollStartY === -1) {
             scrollBridge.scrollStartY = pageY
             state.current.lastPageY = pageY
@@ -73,15 +72,11 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
           const dragAt = pageY - scrollBridge.scrollStartY
           const dy = pageY - state.current.lastPageY
           state.current.lastPageY = pageY // after dy
-          const isAboveStart = dragAt <= 0
+          // const isAboveStart = dragAt <= 0
+          // const isDraggingDown = dy > 0
+          // const isScrollAtTop = scrollBridge.y <= 0
           const isDraggingUp = dy < 0
-          const isDraggingDown = dy > 0
-          const isScrollAtTop = scrollBridge.y <= 0
           const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
-
-          console.table([
-            { isAboveStart, isDraggingUp, isScrollAtTop, isPaneAtTop, pageY, dy, dragAt },
-          ])
 
           if ((dy === 0 || isDraggingUp) && isPaneAtTop) {
             state.current.isScrolling = true
