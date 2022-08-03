@@ -1,4 +1,4 @@
-import { relative } from 'path'
+import { basename, relative } from 'path'
 
 import traverse, { NodePath, Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
@@ -446,9 +446,8 @@ export function createExtractor() {
             ? node.loc.start.line +
               (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
             : ''
-          const tagId = [componentName, `${node.name.name}`, `${filePath}:${lineNumbers}`].filter(
-            Boolean
-          )
+
+          const codePosition = `${filePath}:${lineNumbers}`
 
           // debug just one
           const debugPropValue = node.attributes
@@ -465,41 +464,53 @@ export function createExtractor() {
             shouldPrintDebug = debugPropValue
           }
 
-          try {
-            node.attributes.find(
-              (n) =>
-                t.isJSXAttribute(n) &&
-                t.isJSXIdentifier(n.name) &&
-                n.name.name === 'debug' &&
-                n.value === null
+          if (shouldPrintDebug) {
+            console.log('\n')
+            console.log(
+              '\x1b[33m%s\x1b[0m',
+              `${componentName} | ${codePosition} -------------------`
             )
+            console.log(
+              '\x1b[1m',
+              '\x1b[32m',
+              `<${originalNodeName} />`,
+              disableDebugAttr ? '' : '🐛'
+            )
+          }
 
-            if (shouldPrintDebug) {
-              console.log('\n')
-              console.log('\x1b[33m%s\x1b[0m', `${tagId[0]} | ${tagId[2]} -------------------`)
-              console.log('\x1b[1m', '\x1b[32m', `<${originalNodeName} />`)
-            }
-
-            // add data-is
-            if (shouldAddDebugProp && !disableDebugAttr) {
-              res.modified++
+          // add data-* debug attributes
+          if (shouldAddDebugProp && !disableDebugAttr) {
+            res.modified++
+            node.attributes.unshift(
+              t.jsxAttribute(t.jsxIdentifier('data-is'), t.stringLiteral(node.name.name))
+            )
+            if (componentName) {
               node.attributes.unshift(
-                t.jsxAttribute(t.jsxIdentifier('data-is'), t.stringLiteral(tagId.join(' ')))
+                t.jsxAttribute(t.jsxIdentifier('data-in'), t.stringLiteral(componentName))
               )
             }
 
-            const shouldLog = !hasLogged
-            if (shouldLog) {
-              console.log(`  1️⃣  Inline optimized  2️⃣  Inline flattened  3️⃣  styled() extracted`)
-              const prefix = '      |'
-              // prettier-ignore
-              console.log(prefixLogs || prefix, '                         total ·  1️⃣  ·  2️⃣  ·  3️⃣')
-              hasLogged = true
-            }
-            if (disableExtraction) {
-              return
-            }
+            node.attributes.unshift(
+              t.jsxAttribute(
+                t.jsxIdentifier('data-at'),
+                t.stringLiteral(`${basename(filePath)}:${lineNumbers}`)
+              )
+            )
+          }
 
+          const shouldLog = !hasLogged
+          if (shouldLog) {
+            console.log(`  1️⃣  Inline optimized  2️⃣  Inline flattened  3️⃣  styled() extracted`)
+            const prefix = '      |'
+            // prettier-ignore
+            console.log(prefixLogs || prefix, '                         total ·  1️⃣  ·  2️⃣  ·  3️⃣')
+            hasLogged = true
+          }
+          if (disableExtraction) {
+            return
+          }
+
+          try {
             const { staticConfig } = component
             const variants = staticConfig.variants || {}
             const isTextView = staticConfig.isText || false
