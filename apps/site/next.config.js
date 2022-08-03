@@ -99,7 +99,7 @@ module.exports = function (name, opts) {
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     experimental: {
       ...out.experimental,
-      scrollRestoration: true,
+      // scrollRestoration: true,
       legacyBrowsers: false,
       browsersListForSwc: true,
     },
