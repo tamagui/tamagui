@@ -9,7 +9,7 @@ import { createVariables } from './createVariables'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
 import { getFontLanguage } from './helpers/getFontLanguage'
 import { getAtomicStyle } from './helpers/getStylesAtomic'
-import { getInsertedRules } from './helpers/insertStyleRule'
+import { getAllRules } from './helpers/insertStyleRule'
 import {
   registerCSSVariable,
   tokensValueToVariable,
@@ -282,7 +282,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const tokensParsed: any = parseTokens(config.tokens)
 
   const getCSS = () => {
-    return `${themeConfig.css}\n${getInsertedRules().join('\n')}`
+    return `${themeConfig.css}\n${getAllRules().join('\n')}`
   }
 
   const shorthands = config.shorthands || {}

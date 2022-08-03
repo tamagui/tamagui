@@ -2,7 +2,7 @@ import * as Helpers from '@tamagui/helpers'
 import * as rnw from '@tamagui/rnw'
 
 import { getConfig } from './conf'
-import { getAllSelectors, getAllTransforms, getInsertedRules } from './helpers/insertStyleRule'
+import { getAllRules, getAllSelectors, getAllTransforms } from './helpers/insertStyleRule'
 
 // serves a central store for state
 
@@ -15,7 +15,7 @@ class TamaguiManager {
   }
 
   get insertedRules() {
-    return getInsertedRules()
+    return getAllRules()
   }
 
   get allSelectors() {

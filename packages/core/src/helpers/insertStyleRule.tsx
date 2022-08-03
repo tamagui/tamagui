@@ -5,11 +5,11 @@
 import { StyleObject } from '@tamagui/helpers'
 
 const allSelectors = {}
-const insertedSelectors = {}
+const allRules = {}
 export const insertedTransforms = {}
 
 export const getAllSelectors = () => allSelectors
-export const getInsertedRules = () => Object.values(insertedSelectors)
+export const getAllRules = () => Object.values(allRules)
 export const getAllTransforms = () => insertedTransforms
 
 // keep transforms in map for merging later
@@ -109,9 +109,9 @@ updateInserted()
 
 const sheet = isClient ? document.head.appendChild(document.createElement('style')).sheet : null
 
-export function updateInsertedCache(identifier: string, rules: string[]) {
-  if (insertedSelectors[identifier]) return false
-  insertedSelectors[identifier] = rules
+export function updateRules(identifier: string, rules: string[]) {
+  if (allRules[identifier]) return false
+  allRules[identifier] = rules
   if (identifier.startsWith('_transform')) {
     return addTransform(identifier, rules[0])
   }
@@ -127,9 +127,13 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
   for (const { identifier, rules } of rulesToInsert) {
     if (allSelectors[identifier] || !sheet) return
     allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rules : true
-    updateInsertedCache(identifier, rules)
+    updateRules(identifier, rules)
     for (const rule of rules) {
       sheet.insertRule(rule, sheet.cssRules.length)
     }
   }
+}
+
+export function shouldInsertStyleRules(styleObject: PartialStyleObject) {
+  return !allSelectors[styleObject.identifier]
 }
