@@ -198,7 +198,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
                 const [_first, second, ...rest] = parentSelectors
                 parentSelectors = [second, ...rest, second]
               }
-              selectors.push(`${parentSelectors.join(' ')} ${childSelector}`)
+              // avoid .t_light .t_light at the end (make sure child is unique from last parent)
+              const lastParentSelector = parentSelectors[parentSelectors.length - 1]
+              selectors.push(
+                `${parentSelectors.join(' ')} ${
+                  childSelector === lastParentSelector ? '' : childSelector
+                }`
+              )
             })
           }
         }
