@@ -25,8 +25,9 @@ import {
   RulesToInsert,
   insertStyleRules,
   insertedTransforms,
+  shouldInsertStyleRules,
   updateInserted,
-  updateInsertedCache,
+  updateRules,
 } from './insertStyleRule'
 import { mergeTransform } from './mergeTransform'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
@@ -657,16 +658,10 @@ export const useSplitStyles: StyleSplitter = (...args) => {
 
 function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: PartialStyleObject) {
   if (process.env.TAMAGUI_TARGET === 'web') {
-    // NOTE this is super tricky
-    // for some reason, next.js dev SSR actually misses a lot of styles (pre-hydrate) with || !isClient
-    // which doesn't really make sense, because that should strictly extract *more* css, but oh well
-    // meanwhile, production builds *need* to always be truthy here for node, thus the cheat conditional
-    if (
-      styleObject.property === 'pointerEvents' ||
-      updateInsertedCache(styleObject.identifier, styleObject.rules) ||
-      (!isClient && process.env.NODE_ENV === 'production')
-    ) {
-      rulesToInsert.push(styleObject)
+    if (!shouldInsertStyleRules(styleObject)) {
+      return
     }
+    updateRules(styleObject.identifier, styleObject.rules)
+    rulesToInsert.push(styleObject)
   }
 }
