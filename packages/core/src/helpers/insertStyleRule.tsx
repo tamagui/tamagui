@@ -105,6 +105,7 @@ const getIdentifierFromTamaguiSelector = (selector: string) =>
     .replace(/:[a-z]+$/, '')
     .slice(1)
 
+// move this to probably inside createTamagui
 updateInserted()
 
 const sheet = isClient ? document.head.appendChild(document.createElement('style')).sheet : null

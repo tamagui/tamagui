@@ -8,8 +8,6 @@
     {
       "path": "../static"
     },
-    {
-      "path": "../build"
-    }
+    
   ]
 }

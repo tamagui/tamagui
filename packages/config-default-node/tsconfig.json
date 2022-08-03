@@ -6,8 +6,5 @@
     "jsx": "preserve"
   },
   "references": [
-    {
-      "path": "../core-node"
-    },
   ]
 }

@@ -4,6 +4,6 @@
   "references": [
     { "path": "../core" },
     { "path": "../stacks" },
-    { "path": "../build" }
+    
   ]
 }

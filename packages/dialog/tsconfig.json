@@ -7,7 +7,6 @@
     { "path": "../compose-refs" },
     { "path": "../use-controllable-state" },
     { "path": "../portal" },
-    { "path": "../text" },
-    { "path": "../build" }
+    { "path": "../text" }
   ]
 }

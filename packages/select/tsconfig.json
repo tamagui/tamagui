@@ -9,6 +9,6 @@
     { "path": "../stacks" },
     { "path": "../text" },
     { "path": "../use-controllable-state" },
-    { "path": "../build" }
+    
   ]
 }
