@@ -8,7 +8,7 @@ import { tamaguiExtractPlugin } from './extractPlugin'
  * For some reason envPlugin doesnt work for vitest, but process: { env: {} } breaks vitest
  */
 
-export function tamaguiConfigPlugin(options: TamaguiOptions): Plugin {
+export function tamaguiPlugin(options: TamaguiOptions): Plugin {
   return {
     name: 'tamagui',
     enforce: 'pre',

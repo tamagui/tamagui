@@ -3159,29 +3159,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/config-plugins@npm:^4.0.14":
-  version: 4.1.4
-  resolution: "@expo/config-plugins@npm:4.1.4"
-  dependencies:
-    "@expo/config-types": ^45.0.0
-    "@expo/json-file": 8.2.36
-    "@expo/plist": 0.0.18
-    "@expo/sdk-runtime-versions": ^1.0.0
-    "@react-native/normalize-color": ^2.0.0
-    chalk: ^4.1.2
-    debug: ^4.3.1
-    find-up: ~5.0.0
-    getenv: ^1.0.0
-    glob: 7.1.6
-    resolve-from: ^5.0.0
-    semver: ^7.3.5
-    slash: ^3.0.0
-    xcode: ^3.0.1
-    xml2js: 0.4.23
-  checksum: f5f46c49bc6e534ff3a200ccabca9a41e5bb23fbffbf0f5577ea1d09196940de479098fd607503399bb703245a75d1045325a69baf1e9b940fe3c46e9db79da4
-  languageName: node
-  linkType: hard
-
 "@expo/config-plugins@npm:~5.0.0":
   version: 5.0.0
   resolution: "@expo/config-plugins@npm:5.0.0"
@@ -5166,16 +5143,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/pluginutils@npm:^4.2.1":
-  version: 4.2.1
-  resolution: "@rollup/pluginutils@npm:4.2.1"
-  dependencies:
-    estree-walker: ^2.0.1
-    picomatch: ^2.2.2
-  checksum: 6bc41f22b1a0f1efec3043899e4d3b6b1497b3dea4d94292d8f83b4cf07a1073ecbaedd562a22d11913ff7659f459677b01b09e9598a98936e746780ecc93a12
-  languageName: node
-  linkType: hard
-
 "@rushstack/eslint-patch@npm:^1.1.3":
   version: 1.1.4
   resolution: "@rushstack/eslint-patch@npm:1.1.4"
@@ -5771,14 +5738,13 @@ __metadata:
     "@types/react": ^18.0.15
     csstype: ^3.0.10
     esbuild: ^0.14.49
-    expo-screen-orientation: ^4.2.0
     hyphenate-style-name: ^1.0.4
     normalize-css-color: ^1.0.2
     react: "*"
     react-dom: "*"
     react-native-web: ^0.18.3
     typescript: ^4.7.4
-    vitest: ^0.19.1
+    vitest: ^0.20.3
   peerDependencies:
     react-native-web: "*"
   languageName: unknown
@@ -6007,7 +5973,7 @@ __metadata:
     "@tamagui/helpers": ^1.0.1-beta.133
     react: "*"
     react-native: "*"
-    vitest: ^0.19.1
+    vitest: ^0.20.3
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -6603,7 +6569,7 @@ __metadata:
     style-loader: ^3.3.1
     tamagui: ^1.0.1-beta.133
     typescript: ^4.7.4
-    vitest: ^0.19.1
+    vitest: ^0.20.3
     webpack: ^5.73.0
   peerDependencies:
     react-native-web: "*"
@@ -6643,7 +6609,7 @@ __metadata:
     "@tamagui/helpers-tamagui": ^1.0.1-beta.133
     react: "*"
     react-dom: "*"
-    vitest: ^0.19.1
+    vitest: ^0.20.3
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -6768,7 +6734,7 @@ __metadata:
     "@tamagui/vite-plugin": ^1.0.1-beta.133
     "@vitejs/plugin-react": ^2.0.0
     happy-dom: ^6.0.4
-    vitest: ^0.19.1
+    vitest: ^0.20.3
     vitest-mock-process: ^1.0.4
   languageName: unknown
   linkType: soft
@@ -6780,17 +6746,10 @@ __metadata:
     "@tamagui/build": ^1.0.1-beta.133
     "@tamagui/proxy-worm": ^1.0.1-beta.133
     "@tamagui/static": ^1.0.1-beta.133
-    "@vitejs/plugin-react": ^2.0.0
-    abort-controller: ^3.0.0
-    es-module-lexer: ^0.9.3
     fs-extra: ^10.1.0
     lodash: ^4.17.21
-    magic-string: ^0.26.2
     outdent: ^0.8.0
-    undici: ^5.8.0
     vite-plugin-environment: ^1.1.2
-    vite-plugin-inspect: ^0.6.0
-    web-streams-polyfill: ^3.2.1
   languageName: unknown
   linkType: soft
 
@@ -12200,7 +12159,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-module-lexer@npm:^0.9.0, es-module-lexer@npm:^0.9.3":
+"es-module-lexer@npm:^0.9.0":
   version: 0.9.3
   resolution: "es-module-lexer@npm:0.9.3"
   checksum: 84bbab23c396281db2c906c766af58b1ae2a1a2599844a504df10b9e8dc77ec800b3211fdaa133ff700f5703d791198807bba25d9667392d27a5e9feda344da8
@@ -12902,13 +12861,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"estree-walker@npm:^2.0.1":
-  version: 2.0.2
-  resolution: "estree-walker@npm:2.0.2"
-  checksum: 6151e6f9828abe2259e57f5fd3761335bb0d2ebd76dc1a01048ccee22fabcfef3c0859300f6d83ff0d1927849368775ec5a6d265dde2f6de5a1be1721cd94efc
-  languageName: node
-  linkType: hard
-
 "estree-walker@npm:^3.0.0":
   version: 3.0.1
   resolution: "estree-walker@npm:3.0.1"
@@ -13274,17 +13226,6 @@ __metadata:
   bin:
     expo-pwa: build/cli.js
   checksum: 4bc70f85e6041fe903ba8d2768d4e72d1525af086a19803ad8f33fa195ae5ac151838a76ca503d6ef6bd9b6b8a087c9070a9366ab8f0d0c380a032a75c6f283b
-  languageName: node
-  linkType: hard
-
-"expo-screen-orientation@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "expo-screen-orientation@npm:4.2.0"
-  dependencies:
-    "@expo/config-plugins": ^4.0.14
-  peerDependencies:
-    expo: "*"
-  checksum: 68b8392712b54c4599335142f02ce9072bc841c710e966f2d291a8a38865f60b862494039b24b85d1e8aef76583e1a373fce55e6673e75376bf92f463e6e39f3
   languageName: node
   linkType: hard
 
@@ -16942,13 +16883,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"kolorist@npm:^1.5.1":
-  version: 1.5.1
-  resolution: "kolorist@npm:1.5.1"
-  checksum: c113be08834fc03a24699612141c79879fceba9ff9765ad500507fb594ee4fa3465a3453ea90bbc9b0dd82f7ba5dbd79814da28e9ebaf8da27266a0088ba2714
-  languageName: node
-  linkType: hard
-
 "language-subtag-registry@npm:~0.3.2":
   version: 0.3.22
   resolution: "language-subtag-registry@npm:0.3.22"
@@ -20498,7 +20432,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picomatch@npm:^2.0.4, picomatch@npm:^2.2.1, picomatch@npm:^2.2.2, picomatch@npm:^2.2.3, picomatch@npm:^2.3.1":
+"picomatch@npm:^2.0.4, picomatch@npm:^2.2.1, picomatch@npm:^2.2.3, picomatch@npm:^2.3.1":
   version: 2.3.1
   resolution: "picomatch@npm:2.3.1"
   checksum: 050c865ce81119c4822c45d3c84f1ced46f93a0126febae20737bd05ca20589c564d6e9226977df859ed5e03dc73f02584a2b0faad36e896936238238b0446cf
@@ -23709,17 +23643,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sirv@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "sirv@npm:2.0.2"
-  dependencies:
-    "@polka/url": ^1.0.0-next.20
-    mrmime: ^1.0.0
-    totalist: ^3.0.0
-  checksum: 6982f8ecee9392d246d7eeea8144e50334fe1b46a4fa942995a844ea88c2d518b17cce781bb09926c9a5692a7002a207d18dfd67af2aa538a15e733dc2042298
-  languageName: node
-  linkType: hard
-
 "sisteransi@npm:^1.0.0, sisteransi@npm:^1.0.5":
   version: 1.0.5
   resolution: "sisteransi@npm:1.0.5"
@@ -25176,13 +25099,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"totalist@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "totalist@npm:3.0.0"
-  checksum: ec499bddfc73d5b6c73f8ff68afd7bed286705797f928a11177fee5d1ee80e9052ffcb434638437702e16864bd5490f437a54f79bfea9564e875d34ed3254bca
-  languageName: node
-  linkType: hard
-
 "tr46@npm:^1.0.1":
   version: 1.0.1
   resolution: "tr46@npm:1.0.1"
@@ -25625,13 +25541,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ufo@npm:^0.8.5":
-  version: 0.8.5
-  resolution: "ufo@npm:0.8.5"
-  checksum: 4dcf657a906550112ab1eb045110ebb768a914fb653373a2c363776a1f6ba25ea9d20bd5ed7f4bb44fb72bd4421b37d62991cd5ce4e3a2aef7e3eae450bb9508
-  languageName: node
-  linkType: hard
-
 "uglify-es@npm:^3.1.9":
   version: 3.3.10
   resolution: "uglify-es@npm:3.3.10"
@@ -25690,13 +25599,6 @@ __metadata:
     has-symbols: ^1.0.3
     which-boxed-primitive: ^1.0.2
   checksum: b7a1cf5862b5e4b5deb091672ffa579aa274f648410009c81cca63fed3b62b610c4f3b773f912ce545bb4e31edc3138975b5bc777fc6e4817dca51affb6380e9
-  languageName: node
-  linkType: hard
-
-"undici@npm:^5.8.0":
-  version: 5.8.0
-  resolution: "undici@npm:5.8.0"
-  checksum: 7b486ad064da00628d3906e140b86223023cd3494c811da8d7aa1375c2392fe6a6ac421af236c056fd3d3136bba3a91b99e0505dde071dd946070946eb0718b8
   languageName: node
   linkType: hard
 
@@ -26402,21 +26304,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-inspect@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "vite-plugin-inspect@npm:0.6.0"
-  dependencies:
-    "@rollup/pluginutils": ^4.2.1
-    debug: ^4.3.4
-    kolorist: ^1.5.1
-    sirv: ^2.0.2
-    ufo: ^0.8.5
-  peerDependencies:
-    vite: ^3.0.0
-  checksum: 859f9eb725c93c38c5070391774ad483a5193b24269db7127100f9a69eabb019d6520f183f895695e4f87acc3f10ed017b268e177636e4fa346181830551b1ee
-  languageName: node
-  linkType: hard
-
 "vite@npm:^2.9.12 || ^3.0.0-0":
   version: 3.0.0-beta.7
   resolution: "vite@npm:3.0.0-beta.7"
@@ -26492,9 +26379,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:^0.19.1":
-  version: 0.19.1
-  resolution: "vitest@npm:0.19.1"
+"vitest@npm:^0.20.3":
+  version: 0.20.3
+  resolution: "vitest@npm:0.20.3"
   dependencies:
     "@types/chai": ^4.3.1
     "@types/chai-subset": ^1.3.3
@@ -26527,7 +26414,7 @@ __metadata:
       optional: true
   bin:
     vitest: vitest.mjs
-  checksum: f5f6bd69f2c196c072d9729805323d31dce06240cd18218e1b4387502d8c0f9cc4d2fad1e1f99a0fcbfe187d5c5e04d4ea2dd352cb99d3f06227b343e5cb4c6d
+  checksum: 1478030f2e34ee91274a544b7d2e2d447969ce37d6452bfbc8e21fe42ec6fb94c496a09b822d7c8d667cee243b6630c871640d4a8b4434e1a25b858dad3548ed
   languageName: node
   linkType: hard
 
@@ -26602,7 +26489,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-streams-polyfill@npm:^3.0.3, web-streams-polyfill@npm:^3.2.1":
+"web-streams-polyfill@npm:^3.0.3":
   version: 3.2.1
   resolution: "web-streams-polyfill@npm:3.2.1"
   checksum: b119c78574b6d65935e35098c2afdcd752b84268e18746606af149e3c424e15621b6f1ff0b42b2676dc012fc4f0d313f964b41a4b5031e525faa03997457da02

@@ -28,7 +28,6 @@
     "@tamagui/use-debounce": "^1.0.1-beta.133",
     "@tamagui/use-event": "^1.0.1-beta.133",
     "@tamagui/use-force-update": "^1.0.1-beta.133",
-    "expo-screen-orientation": "^4.2.0",
     "hyphenate-style-name": "^1.0.4",
     "normalize-css-color": "^1.0.2",
     "react": "*",
@@ -44,7 +43,7 @@
     "esbuild": "^0.14.49",
     "react-native-web": "^0.18.3",
     "typescript": "^4.7.4",
-    "vitest": "^0.19.1"
+    "vitest": "^0.20.3"
   },
   "publishConfig": {
     "access": "public"
