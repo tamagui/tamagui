@@ -1,9 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "include": [],
-  "files": [],
-  "compilerOptions": {
-    "composite": true,
-    "jsx": "preserve"
-  },
-}
