@@ -5,9 +5,10 @@ runs:
   using: composite
   steps:
     - name: Setup Node.js 16.x
-      uses: actions/setup-node@master
+      uses: actions/setup-node@v3
       with:
         node-version: 16.x
+        registry-url: 'https://registry.npmjs.org'
 
     - name: install yarn
       shell: bash
