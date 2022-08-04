@@ -3,7 +3,6 @@
 // fixing SSR issue
 
 import { startTransition, useIsSSR } from '@tamagui/core'
-import { nanoid } from 'nanoid/non-secure'
 import { ReactNode, useMemo, useRef } from 'react'
 import React, { createContext, memo, useCallback, useContext, useEffect, useReducer } from 'react'
 
@@ -329,6 +328,12 @@ const PortalComponent = ({
   //#region hooks
   const { addPortal: addUpdatePortal, removePortal } = usePortal(hostName)
   //#endregion
+
+  let id = 0
+  const nanoid = () => {
+    id = (id + 1) % Number.MAX_SAFE_INTEGER
+    return `${id}`
+  }
 
   //#region variables
   const name = useMemo(() => _providedName || nanoid(), [_providedName])
