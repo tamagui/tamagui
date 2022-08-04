@@ -24,7 +24,7 @@
     "@tamagui/core": "^1.0.1-beta.134",
     "react": "*",
     "react-dom": "*",
-    "react-native-svg": "^12.3.0"
+    "react-native-svg": "^12.4.3"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.134",

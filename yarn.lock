@@ -5889,7 +5889,7 @@ __metadata:
     prop-types: ^15.7.2
     react: "*"
     react-dom: "*"
-    react-native-svg: ^12.3.0
+    react-native-svg: ^12.4.3
     uppercamelcase: ^3.0.0
   languageName: unknown
   linkType: soft
@@ -6044,7 +6044,7 @@ __metadata:
     react-dom: "*"
     react-native: "*"
     react-native-gesture-handler: ^2.5.0
-    react-native-reanimated: ^2.9.1
+    react-native-reanimated: ^2.8.0
     react-native-safe-area-context: ^4.3.1
     react-native-screens: ^3.15.0
     react-native-svg: ^12.4.3
@@ -13168,15 +13168,6 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: 36efb39f3b7eedac8854da036b6497135da9893ecff830c4537256de1f7abcce4880791860baf79e0b9795e658b57fb037422875ae377fe0dc034af4485c485b
-  languageName: node
-  linkType: hard
-
-"expo-linear-gradient@npm:^11.0.3":
-  version: 11.3.0
-  resolution: "expo-linear-gradient@npm:11.3.0"
-  peerDependencies:
-    expo: "*"
-  checksum: e524e92b87eef63b9c51def788962d8b50a6c215be9a27acb028b6996473e13d4c390ae87b0b88d0377d4a302075eba0c9fdd5b4139de9c58c918b325040433b
   languageName: node
   linkType: hard
 
@@ -24731,7 +24722,7 @@ __metadata:
     "@tamagui/use-force-update": ^1.0.1-beta.134
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
-    expo-linear-gradient: ^11.0.3
+    expo-linear-gradient: ^11.3.0
     expo-screen-orientation: ^4.3.0
     react: "*"
     react-dom: "*"
