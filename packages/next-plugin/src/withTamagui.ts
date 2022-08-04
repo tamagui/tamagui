@@ -65,6 +65,9 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             try {
               res.push([out, resolveEsm(mod)])
             } catch (err) {
+              if (out.includes(`@gorhom/bottom-sheet`)) {
+                continue
+              }
               console.log(prefix, `withTamagui skipping resolving ${out}`)
             }
           }
