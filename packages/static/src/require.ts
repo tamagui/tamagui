@@ -1,4 +1,4 @@
-import { join } from 'path'
+import { join, sep } from 'path'
 
 import type { StaticConfig } from '@tamagui/core-node'
 
@@ -45,7 +45,7 @@ export function registerRequire() {
     if (
       path.startsWith('react-native') &&
       // allow our rnw.tsx imports through
-      !path.startsWith('react-native-web/dist/cjs/exports')
+      !path.startsWith('react-native-web/dist/cjs/exports'.replace(/\//g, sep))
     ) {
       return rnw
       // return og('react-native-web')
