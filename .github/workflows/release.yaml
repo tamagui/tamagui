@@ -1,50 +1,36 @@
-name: Release
+name: Tagged Release
 
 on:
   push:
-    paths-ignore:
-      - 'assets/**'
-      - '.vscode/**'
-    branches:
-      - master
+    tags:
+      - "v*"
 
 jobs:
-  release:
-    name: Release
-    runs-on: ubuntu-latest
-    environment: github-pages
+  # release:
+  #   name: Release beta
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Repo
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+
+  #     - name: Install
+  #       uses: ./.github/actions/install
+
+  #     - name: Publish Beta
+  #       run: yarn release:beta --ci
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+
+  tagged-release:
+    name: Tagged Release
+    runs-on: ubuntu-18.04
+    # needs: release
+
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+      - uses: marvinpinto/action-automatic-releases@latest
         with:
-          fetch-depth: 0
-
-      - name: Install
-        uses: ./.github/actions/install
-
-      - name: Check
-        run: yarn check
-
-      - name: Lint
-        run: yarn lint
-
-      # - name: Test
-      #   run: yarn test
-
-      - name: Build Site
-        shell: bash
-        run: |
-          yarn --cwd apps/site ci:build
-
-      - name: Deploy Website
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./apps/site/out
-          cname: tamagui.dev
-
-      # test this later...
-      # - name: Publish Beta
-      #   run: yarn release:beta --ci
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          repo_token: "${{ github.token }}"
+          prerelease: false
