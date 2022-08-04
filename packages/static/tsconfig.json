@@ -9,16 +9,7 @@
   ],
   "references": [
     {
-      "path": "../build"
-    },
-    {
       "path": "../core"
-    },
-    {
-      "path": "../core-node"
-    },
-    {
-      "path": "../fake-react-native"
     },
     {
       "path": "../helpers"

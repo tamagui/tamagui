@@ -5,6 +5,6 @@
     { "path": "../core" },
     { "path": "../stacks" },
     { "path": "../create-context" },
-    { "path": "../build" }
+    
   ]
 }

@@ -8,8 +8,5 @@
     "src"
   ],
   "references": [
-    {
-      "path": "../build"
-    }
   ]
 }

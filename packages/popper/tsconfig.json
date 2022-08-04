@@ -6,6 +6,6 @@
     { "path": "../create-context" },
     { "path": "../compose-refs" },
     { "path": "../use-controllable-state" },
-    { "path": "../build" }
+    
   ]
 }

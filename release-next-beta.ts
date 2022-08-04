@@ -62,7 +62,9 @@ async function run() {
           }
         })
     )
-  ).filter((x) => !x.json.private)
+  ).filter((x) => {
+    return !x.json.private
+  })
 
   async function checkDistDirs() {
     await Promise.all(

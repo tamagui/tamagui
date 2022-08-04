@@ -7,9 +7,6 @@
   "references": [
     {
       "path": "../static"
-    },
-    {
-      "path": "../build"
     }
   ]
 }

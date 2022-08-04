@@ -17,6 +17,7 @@ module.exports = {
     'react/prop-types': 'off',
     'react/display-name': 'off',
     'no-debugger': 'off',
+    'no-empty-pattern': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     'react/no-unescaped-entities': 'off',
@@ -29,6 +30,7 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'off',
     'no-constant-condition': 'off',
     '@typescript-eslint/no-empty-function': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
   settings: {
     react: {

@@ -3,7 +3,6 @@
   "compilerOptions": { "composite": true, "jsx": "preserve" },
   "references": [
     { "path": "../create-context" },
-    { "path": "../compose-refs" },
-    { "path": "../build" }
+    { "path": "../compose-refs" }
   ]
 }
