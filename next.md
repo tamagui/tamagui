@@ -1,15 +1,12 @@
 - 1.0
 
+  - Popover sheetBreakpoint
+    - ability to pass in custom sheet
+  - fix reanimated 2.9/3.0 __frame var
   - cleaner output classnames in getStylesAtomic
   - "placeholderTextColor" not working i think - add test
   - H2 ff="$stylish" not working, only fontFamily fully
   - Text doesn't pick up defaultProps (others do)
-  - regression on some shadows (elevation i think close buttons in dish)
-  - `tamagui check`
-    - checks dist/ folders exist based on package.json
-      - including whether it loads properly on node
-      - checks package.json.files fields
-      - checks types/* output actually maps to every input file
   - loadFont
   - loadTheme, updateTheme
   - fix tabbing
@@ -17,14 +14,12 @@
     - Dialog
   - windows without WSL
   - <Select /> has selectable cursor on hold down + move
-    - re-add increaseHeight
   - Image is hardcoded to w/h 100
   - way to use tamagui with custom design system tokens
     - basically map any tokens you choose to internal tamagui ones
   - site get live lighthouse score > 90
     - then try out reanimated again
     - or get overshoot clamp working for react-native animations driver
-  - popover adapt to sheet ?
   - bug: styled(ListItem, { ...styles }) styles not working fully
     - maybe extractor bug actually
   - get tests passing
@@ -118,6 +113,11 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - `tamagui check`
+    - checks dist/ folders exist based on package.json
+      - including whether it loads properly on node
+      - checks package.json.files fields
+      - checks types/* output actually maps to every input file
  - <Icon />
     - use theme values and size values
     - can swap for other icon packs (use createTamagui({ icons }))

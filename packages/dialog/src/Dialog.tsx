@@ -719,14 +719,14 @@ const Dialog = withStaticProperties(DialogInner, {
 })
 
 const DialogSheetController = (
-  props: ScopedProps<{}> & {
+  props: ScopedProps<{
     children: React.ReactNode
     onChangeOpen: React.Dispatch<React.SetStateAction<boolean>>
-  }
+  }>
 ) => {
   const context = useDialogContext('DialogSheetController', props.__scopeDialog)
   const showSheet = useShowDialogSheet(context)
-  const breakpointActive = useDialogBreakpointActive(context)
+  const breakpointActive = useSheetBreakpointActive(context)
   const getShowSheet = useGet(showSheet)
   return (
     <SheetController
@@ -743,13 +743,13 @@ const DialogSheetController = (
   )
 }
 
-const useDialogBreakpointActive = (context: DialogContextValue) => {
+const useSheetBreakpointActive = (context: DialogContextValue) => {
   const media = useMedia()
   return context.sheetBreakpoint ? media[context.sheetBreakpoint] : false
 }
 
 const useShowDialogSheet = (context: DialogContextValue) => {
-  const breakpointActive = useDialogBreakpointActive(context)
+  const breakpointActive = useSheetBreakpointActive(context)
   return context.open === false ? false : breakpointActive
 }
 

@@ -15,10 +15,18 @@ export function PopoverDemo() {
 
 export function Demo({ Icon, ...props }: PopoverProps & { Icon?: any }) {
   return (
-    <Popover size="$5" {...props}>
+    <Popover sheetBreakpoint="$sm" size="$5" {...props}>
       <Popover.Trigger>
         <Button icon={Icon} />
       </Popover.Trigger>
+
+      <Popover.Sheet modal dismissOnSnapToBottom>
+        <Popover.Sheet.Frame padding="$4">
+          <Popover.SheetContents />
+        </Popover.Sheet.Frame>
+        <Popover.Sheet.Overlay />
+      </Popover.Sheet>
+
       <Popover.Content
         bw={1}
         boc="$borderColor"
