@@ -6182,6 +6182,7 @@ __metadata:
     "@tamagui/polyfill-dev": ^1.0.1-beta.133
     "@tamagui/popper": ^1.0.1-beta.133
     "@tamagui/portal": ^1.0.1-beta.133
+    "@tamagui/sheet": ^1.0.1-beta.133
     "@tamagui/stacks": ^1.0.1-beta.133
     "@tamagui/use-controllable-state": ^1.0.1-beta.133
     "@types/react-dom": ^18.0.3

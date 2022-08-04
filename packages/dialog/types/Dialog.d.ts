@@ -2535,25 +2535,25 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     Sheet: ((props: Omit<{
         open?: boolean | undefined;
         defaultOpen?: boolean | undefined;
-        onChangeOpen?: (React.Dispatch<React.SetStateAction<boolean>> | ((open: boolean) => void)) | undefined;
+        onChangeOpen?: React.Dispatch<React.SetStateAction<boolean>> | ((open: boolean) => void) | undefined;
         position?: number | undefined;
         defaultPosition?: number | undefined;
         snapPoints?: number[] | undefined;
-        onChangePosition?: ((position: number) => void) | undefined;
+        onChangePosition?: import("@tamagui/sheet/types/types").PositionChangeHandler | undefined;
         children?: React.ReactNode;
         dismissOnOverlayPress?: boolean | undefined;
         dismissOnSnapToBottom?: boolean | undefined;
         animationConfig?: import("react-native").Animated.SpringAnimationConfig | undefined;
+        handleDisableScroll?: boolean | undefined;
         disableDrag?: boolean | undefined;
         modal?: boolean | undefined;
-        allowPinchZoom?: boolean | undefined;
     } & {
         __scopeSheet?: Scope<any>;
     } & React.RefAttributes<import("react-native").View>, "theme" | "themeInverse"> & {
         theme?: import("@tamagui/core").ThemeName | null | undefined;
         themeInverse?: boolean | undefined;
     }) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & {
-        Handle: ({ __scopeSheet, ...props }: Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
+        Handle: ({ __scopeSheet, ...props }: import("@tamagui/sheet/types/types").SheetScopedProps<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
@@ -2562,9 +2562,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-        }>> & {
-            __scopeSheet?: Scope<any>;
-        }) => JSX.Element | null;
+        }>>>) => JSX.Element;
         Frame: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -2577,7 +2575,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         }>> & {
             __scopeSheet?: Scope<any>;
         } & React.RefAttributes<unknown>>;
-        Overlay: ({ __scopeSheet, ...props }: Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
+        Overlay: ({ __scopeSheet, ...props }: import("@tamagui/sheet/types/types").SheetScopedProps<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         }, "closed"> & {
@@ -2592,9 +2590,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         }, "closed"> & {
             closed?: boolean | undefined;
-        }>> & {
-            __scopeSheet?: Scope<any>;
-        }) => JSX.Element;
+        }>>>) => JSX.Element;
         ScrollView: React.ForwardRefExoticComponent<import("react-native").ScrollViewProps & React.RefAttributes<import("react-native").ScrollView>>;
     };
 };
