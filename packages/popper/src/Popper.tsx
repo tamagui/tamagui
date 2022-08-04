@@ -100,7 +100,7 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
     }
     // Only call this when the floating element is rendered
     return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
-  }, [refs.floating.current, refs.reference.current])
+  }, [floating.update, refs.floating, refs.reference])
 
   const arrowStyle = React.useMemo(() => {
     return middlewareData.arrow

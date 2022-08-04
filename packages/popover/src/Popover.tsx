@@ -2,14 +2,6 @@
 
 import '@tamagui/polyfill-dev'
 
-import {
-  UseFloatingProps,
-  useDismiss,
-  useFloating,
-  useFocus,
-  useInteractions,
-  useRole,
-} from '@floating-ui/react-dom-interactions'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
@@ -47,6 +39,15 @@ import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { View } from 'react-native'
+
+import {
+  UseFloatingProps,
+  useDismiss,
+  useFloating,
+  useFocus,
+  useInteractions,
+  useRole,
+} from './floating'
 
 const POPOVER_NAME = 'Popover'
 
@@ -446,6 +447,7 @@ export const Popover = withStaticProperties(
             open={open}
             onOpenChange={setOpen}
             onOpenToggle={useEvent(() => {
+              console.log('wtf')
               if (open && breakpointActive) {
                 return
               }
