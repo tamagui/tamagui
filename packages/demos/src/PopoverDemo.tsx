@@ -16,7 +16,7 @@ export function PopoverDemo() {
 export function Demo({ Icon, ...props }: PopoverProps & { Icon?: any }) {
   return (
     <Popover sheetBreakpoint="$sm" size="$5" {...props}>
-      <Popover.Trigger>
+      <Popover.Trigger asChild>
         <Button icon={Icon} />
       </Popover.Trigger>
 

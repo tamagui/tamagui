@@ -1,5 +1,5 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react'
-import { debounce } from 'tamagui'
+import { debounce, isWeb } from 'tamagui'
 
 type DisposeFn = () => void
 type IntersectFn = (
@@ -11,12 +11,14 @@ export const useIsIntersecting = (
   ref: MutableRefObject<HTMLElement | null>,
   { once }: { once?: boolean } = {}
 ) => {
-  const [val, setVal] = useState(false)
-  useOnIntersecting(ref, ({ isIntersecting }) => {
-    if ((once && isIntersecting) || !once) {
-      setVal(isIntersecting)
-    }
-  })
+  const [val, setVal] = useState(!isWeb)
+  if (isWeb) {
+    useOnIntersecting(ref, ({ isIntersecting }) => {
+      if ((once && isIntersecting) || !once) {
+        setVal(isIntersecting)
+      }
+    })
+  }
   return val
 }
 
@@ -38,6 +40,7 @@ export const useOnIntersecting = (
   useEffect(() => {
     const node = ref.current
     if (!node) return
+
     // only when carousel is fully in viewport
     let dispose: DisposeFn | null = null
     let lastEntry: any

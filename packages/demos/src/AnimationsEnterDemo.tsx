@@ -5,7 +5,7 @@ import { Button, Square, YStack } from 'tamagui'
 import { LogoIcon } from './TamaguiLogo'
 import { useIsIntersecting } from './useOnIntersecting'
 
-export function AnimationsEnterDemo() {
+export function AnimationsEnterDemo(props: any) {
   const ref = useRef<HTMLElement>(null)
   const hasIntersected = useIsIntersecting(ref, { once: true })
   const [key, setKey] = useState(0)
@@ -32,7 +32,7 @@ export function AnimationsEnterDemo() {
         bc="$pink10"
         br="$9"
       >
-        <LogoIcon downscale={0.75} />
+        {props.children ?? <LogoIcon downscale={0.75} />}
       </Square>
 
       <Button size="$3" mt="$4" onPress={() => setKey(Math.random())}>

@@ -5,7 +5,7 @@ import * as fs from 'fs-extra'
 // were patching react-native-web to support className
 
 export function patchReactNativeWeb(dir: string = require.resolve('react-native-web')) {
-  const rootDir = dir.replace(/[\/\\]dist.*/, '')
+  const rootDir = dir.replace(/[/\\]dist.*/, '')
 
   const pkgJSON = fs.readJSONSync(path.join(rootDir, 'package.json'))
   if (pkgJSON.version.split('.')[1] !== '18') {

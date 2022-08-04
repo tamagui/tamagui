@@ -132,8 +132,9 @@ const demos = [
     pages: [
       { title: 'AlertDialog', route: '/demo/alert-dialog' },
       { title: 'Dialog', route: '/demo/dialog' },
+      // { title: 'Drawer', route: '/demo/drawer' },
+      { title: 'Popover', route: '/demo/popover' },
       { title: 'Sheet', route: '/demo/sheet' },
-      { title: 'Drawer', route: '/demo/drawer' },
     ],
   },
 

@@ -1,7 +1,7 @@
 import * as Demos from '@tamagui/demos'
 import React from 'react'
 import { createParam } from 'solito'
-import { H1, YStack } from 'tamagui'
+import { H1, Spacer, YStack } from 'tamagui'
 
 const { useParam } = createParam<{ id: string }>()
 
@@ -14,9 +14,15 @@ const NativeDemos = {
   // DrawerDemo,
   // no children
   AnimationsDemo: (props) => (
-    <Demos.AnimationsDemo {...props}>
-      <></>
-    </Demos.AnimationsDemo>
+    <>
+      <Demos.AnimationsDemo {...props}>
+        <></>
+      </Demos.AnimationsDemo>
+      <Spacer />
+      <Demos.AnimationsEnterDemo>
+        <></>
+      </Demos.AnimationsEnterDemo>
+    </>
   ),
 }
 
@@ -33,7 +39,7 @@ export function DemoScreen() {
 
   return (
     <YStack bc="$backgroundStrong" f={1} jc="center" ai="center" space>
-      <YStack miw={200} maw={340} ai="center" bc="$background" p="$6" br="$6">
+      <YStack miw={200} maw={340} ai="center" bc="$background" p="$10" br="$6">
         <DemoComponent />
       </YStack>
     </YStack>
