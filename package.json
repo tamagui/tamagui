@@ -31,6 +31,8 @@
     "test": "turbo run test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "release:beta": "node -r esbuild-register ./release-next-beta.ts",
+    "release:beta:dirty": "SKIP_GIT_CLEAN_CHECK=1 node -r esbuild-register ./release-next-beta.ts",
+    "release:ci": "yarn release:beta:dirty --ci",
     "publish": "lerna publish --preid beta",
     "publish:no-version": "npm publish --workspaces",
     "publish:canary": "lerna publish --canary --preid beta.0 --force-publish --dist-tag canary",

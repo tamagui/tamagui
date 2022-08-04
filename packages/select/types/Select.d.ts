@@ -696,42 +696,6 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         ({ __scopeSelect }: ScopedProps<{}>): JSX.Element;
         displayName: string;
     };
-    Sheet: ((props: Omit<{
-        open?: boolean | undefined;
-        defaultOpen?: boolean | undefined;
-        onChangeOpen?: React.Dispatch<React.SetStateAction<boolean>> | ((open: boolean) => void) | undefined;
-        position?: number | undefined;
-        defaultPosition?: number | undefined;
-        snapPoints?: number[] | undefined;
-        onChangePosition?: import("@tamagui/sheet/types/types").PositionChangeHandler | undefined;
-        children?: React.ReactNode;
-        dismissOnOverlayPress?: boolean | undefined;
-        dismissOnSnapToBottom?: boolean | undefined;
-        animationConfig?: import("react-native").Animated.SpringAnimationConfig | undefined;
-        handleDisableScroll?: boolean | undefined;
-        disableDrag?: boolean | undefined;
-        modal?: boolean | undefined;
-    } & {
-        __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-    } & React.RefAttributes<import("react-native").View>, "theme" | "themeInverse"> & {
-        theme?: import("@tamagui/core").ThemeName | null | undefined;
-        themeInverse?: boolean | undefined;
-    }) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & {
-        Handle: ({ __scopeSheet, ...props }: ScopedProps<A, "Sheet">) => JSX.Element | null;
-        Frame: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
-            readonly fullscreen?: boolean | undefined;
-            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-        } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
-            readonly fullscreen?: boolean | undefined;
-            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-        }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
-            readonly fullscreen?: boolean | undefined;
-            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-        }>> & {
-            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-        } & React.RefAttributes<unknown>>;
-        Overlay: ({ __scopeSheet, ...props }: ScopedProps<A, "Sheet">) => JSX.Element;
-        ScrollView: React.ForwardRefExoticComponent<import("react-native").ScrollViewProps & React.RefAttributes<import("react-native").ScrollView>>;
-    };
+    Sheet: any;
 };
 //# sourceMappingURL=Select.d.ts.map
