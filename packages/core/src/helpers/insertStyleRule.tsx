@@ -58,6 +58,7 @@ export function updateInserted() {
   if (!sheets) return
   for (let i = 0; i < sheets.length; i++) {
     const sheet = sheets[i]
+    if (!sheet) continue
     const rules = sheet.cssRules
     const len = rules.length
     const lastScanned = scannedNum.get(sheet) ?? 0
