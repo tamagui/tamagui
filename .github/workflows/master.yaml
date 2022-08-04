@@ -27,12 +27,11 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Test
-        run: yarn test
+      # - name: Test
+      #   run: yarn test
 
   deploy-site:
     name: Deploy site
-    needs: check
     runs-on: ubuntu-latest
     environment: github-pages
     steps:
