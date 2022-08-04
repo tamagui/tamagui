@@ -6,7 +6,8 @@ const esbuild = require('esbuild')
 const fg = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
-const { dirname } = require('path')
+const { dirname, join } = require('path')
+const { tmpdir } = require('os')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -94,20 +95,16 @@ async function buildTsc() {
     return
   }
 
-  function buildNoMap() {
-    return exec(
+  async function buildThenCopy() {
+    const targetDir = join(tmpdir(), `tamagui-${Math.random() * 100000000}`.replace('.', ''))
+    await exec(
       'npx',
-      `tsc --baseUrl . --outDir types --rootDir src --declaration --emitDeclarationOnly`.split(' ')
-    )
-  }
-
-  function buildWithMap() {
-    return exec(
-      'npx',
-      `tsc --baseUrl . --outDir types --rootDir src --declaration --emitDeclarationOnly --declarationMap`.split(
+      `tsc --baseUrl . --outDir ${targetDir} --rootDir src --declaration --emitDeclarationOnly --declarationMap`.split(
         ' '
       )
     )
+    await fs.remove('types')
+    await fs.copy(targetDir, 'types')
   }
 
   // NOTE:
@@ -115,16 +112,11 @@ async function buildTsc() {
   // but to build things nicely we need here to reset a few things:
   //  baseUrl: ., outDir: types, rootDir: src
   // for best of both worlds
-  try {
-    await buildWithMap()
-  } finally {
-    // if no types folder, patch a typescript bug...
-    if (!(await fs.pathExists('types'))) {
-      console.warn('BUG re-run without declaration first fixes no output bug...')
-      await buildNoMap()
-      await buildWithMap()
-    }
-  }
+
+  // there's a bug with typescript where outputting within the same dir just doesn't output for whatever reason
+  // i have a hunch it's some cache thing, because if i give a new outDir it works
+  // so fixing by always giving a random tmp outdir, and then copying
+  await buildThenCopy()
 }
 
 async function buildJs() {
