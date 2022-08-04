@@ -21,16 +21,18 @@ export default function DocIntroPage({ frontmatter, code }: Doc) {
   }
   const Component = React.useMemo(() => getMDXComponent(code), [code])
   return (
-    <DocsPage>
+    <>
       <TitleAndMetaTags title={`${frontmatter.title} — Tamagui`} />
       <H1 mb="$2">{frontmatter.title}</H1>
       <Spacer size="$1" />
       <SubTitle>{frontmatter.description}</SubTitle>
       <Component components={components as any} />
       <QuickNav key={frontmatter.slug} />
-    </DocsPage>
+    </>
   )
 }
+
+DocIntroPage.getLayout = (page) => <DocsPage>{page}</DocsPage>
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('docs/intro')

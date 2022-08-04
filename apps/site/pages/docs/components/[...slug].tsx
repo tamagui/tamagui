@@ -17,7 +17,7 @@ type Doc = {
 export default function DocComponentsPage({ frontmatter, code }: Doc) {
   const Component = React.useMemo(() => getMDXComponent(code), [code])
   return (
-    <DocsPage>
+    <>
       <TitleAndMetaTags
         title={`${frontmatter.title} — Tamagui`}
         description={frontmatter.description}
@@ -33,9 +33,11 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
         <Component components={components} />
       </MDXProvider>
       <QuickNav key={frontmatter.slug} />
-    </DocsPage>
+    </>
   )
 }
+
+DocComponentsPage.getLayout = (page) => <DocsPage>{page}</DocsPage>
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('docs/components')

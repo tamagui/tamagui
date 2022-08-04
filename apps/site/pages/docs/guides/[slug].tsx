@@ -21,16 +21,18 @@ export default function DocGuidesPage({ frontmatter, code }: Doc) {
   }
   const Component = React.useMemo(() => getMDXComponent(code), [code])
   return (
-    <DocsPage>
+    <>
       <TitleAndMetaTags title={`${frontmatter.title} — Tamagui Guides`} />
       <H1 mb="$2">{frontmatter.title}</H1>
       <Spacer size="$1" />
       <SubTitle>{frontmatter.description}</SubTitle>
       <Component components={components as any} />
       <QuickNav />
-    </DocsPage>
+    </>
   )
 }
+
+DocGuidesPage.getLayout = (page) => <DocsPage>{page}</DocsPage>
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('docs/guides')
