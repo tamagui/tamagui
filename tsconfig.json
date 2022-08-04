@@ -7,6 +7,9 @@
       "tamagui": [
         "packages/tamagui"
       ],
+      "tamagui-loader": [
+        "packages/loader"
+      ],
       "@tamagui/*": [
         "packages/*"
       ],
