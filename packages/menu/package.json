@@ -24,7 +24,7 @@
     "@tamagui/core": "^1.0.1-beta.133",
     "@tamagui/polyfill-dev": "^1.0.1-beta.133",
     "@tamagui/use-controllable-state": "^1.0.1-beta.133",
-    "react-native-gesture-handler": "*",
+    "react-native-gesture-handler": "^2.5.0",
     "react-native-reanimated": "^2.8.0"
   },
   "peerDependencies": {

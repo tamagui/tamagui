@@ -4,7 +4,6 @@
   "references": [
     { "path": "../core" },
     { "path": "../create-context" },
-    { "path": "../compose-refs" },
-    { "path": "../build" }
+    { "path": "../compose-refs" }
   ]
 }

@@ -58,6 +58,13 @@ export const Sandbox = () => {
         Switch theme
       </button>
 
+      <style
+        type="text/css"
+        dangerouslySetInnerHTML={{
+          __html: `html, body { overflow: hidden; height: 100vh; width: 100vw; }`,
+        }}
+      />
+
       <div
         style={{
           // test scrolling
@@ -67,6 +74,9 @@ export const Sandbox = () => {
           background: 'var(--backgroundStrong)',
           alignItems: 'center',
           justifyContent: 'center',
+          height: ' 100vh',
+          maxHeight: ' 100vh',
+          overflow: 'hidden',
         }}
       >
         {/* <AlertDialogDemo /> */}
@@ -84,7 +94,7 @@ export const Sandbox = () => {
 
         {/* <SheetDemo /> */}
         <PopoverDemo />
-
+        {/* <SheetDemo2 /> */}
         {/* <SheetDemo /> */}
         {/* <SwitchDemo /> */}
         {/* <XStack space>

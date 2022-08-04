@@ -3,6 +3,6 @@
   "compilerOptions": { "composite": true, "jsx": "preserve", "strict": true },
   "references": [
     { "path": "../core" },
-    { "path": "../build" }
+    
   ]
 }
