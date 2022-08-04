@@ -18,7 +18,7 @@ import packageJson from '../package.json'
 
 const pipeline = promisify(Stream.pipeline)
 
-let projectPath: string = ''
+let projectPath = ''
 
 const program = new Commander.Command(packageJson.name)
   .version(packageJson.version)
@@ -127,17 +127,13 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     process.exit(1)
   }
   console.log()
-  console.log(`Creating a new tamagui app in ${chalk.blueBright(projectName)}...`)
+  console.log(`Creating a new tamagui app ${chalk.blueBright(resolvedProjectPath)}...`)
   fs.mkdirSync(resolvedProjectPath)
   console.log(chalk.green(`${projectName} folder created.`))
 
   try {
     console.log(`Copying template into ${chalk.blueBright(projectName)}...`)
     await downloadAndExtractExample(resolvedProjectPath, program.template)
-    const pkgJsonPath = path.join(resolvedProjectPath, 'package.json')
-    const pkg = require(pkgJsonPath)
-    pkg.name = projectName
-    fs.writeFileSync(pkgJsonPath, JSON.stringify(pkg, null, 2))
     console.log(chalk.green(`${projectName} created!`))
   } catch (e) {
     console.error(
