@@ -1,10 +1,15 @@
-import { describe, expect, test } from 'vitest'
+import { createTamagui, expandStyles, getStylesAtomic } from '@tamagui/core-node'
+import { beforeAll, describe, expect, test } from 'vitest'
+
+import config from '../../config-default-node/dist'
 
 process.env.IDENTIFY_TAGS = 'true'
 process.env.TAMAGUI_TARGET = 'web'
 process.env.IS_STATIC = ''
 
-const { getStylesAtomic, expandStyles } = require('@tamagui/core-node')
+beforeAll(() => {
+  createTamagui(config.getDefaultTamaguiConfig())
+})
 
 describe('extract-tests', () => {
   test('converts a style object to class names', () => {
