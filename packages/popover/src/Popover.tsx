@@ -10,6 +10,7 @@ import {
   SizeTokens,
   Theme,
   composeEventHandlers,
+  isWeb,
   useEvent,
   useGet,
   useId,
@@ -276,6 +277,7 @@ const PopoverContentImpl = React.forwardRef<PopoverContentImplElement, PopoverCo
     // const popperContext = usePopperContext(CONTENT_NAME, popperScope.__scopePopper)
 
     if (showSheet) {
+      // doesn't show as popover yet on native, must use as sheet
       return <PortalItem hostName={`${context.scopeKey}SheetContents`}>{children}</PortalItem>
     }
 
@@ -515,6 +517,8 @@ const useSheetBreakpointActive = (breakpoint?: MediaPropKeys | false) => {
 }
 
 const useShowPopoverSheet = (context: PopoverContextValue) => {
+  // for now always show as sheet on native
+  if (!isWeb) return true
   const breakpointActive = useSheetBreakpointActive(context.sheetBreakpoint)
   return context.open === false ? false : breakpointActive
 }
