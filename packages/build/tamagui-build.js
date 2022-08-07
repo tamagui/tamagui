@@ -96,13 +96,15 @@ async function buildTsc() {
   }
 
   async function buildThenCopy() {
-    const targetDir = join(tmpdir(), `tamagui-${Math.random() * 100000000}`.replace('.', ''))
-    await exec(
-      'npx',
-      `tsc --baseUrl . --outDir ${targetDir} --rootDir src --declaration --emitDeclarationOnly --declarationMap`.split(
-        ' '
-      )
-    )
+    if (!(await fs.pathExists(`tsconfig.json`))) {
+      throw new Error(`No tsconfig.json found`)
+    }
+    // nest it one extra so permissions of .tsbuildinfo thats written to parent folder arent off
+    const targetDir = join(tmpdir(), `tamagui-${Math.random() * 100000000}`.replace('.', ''), 'out')
+    await fs.ensureDir(targetDir)
+    const cmd = `tsc --baseUrl . --outDir ${targetDir} --rootDir src --declaration --emitDeclarationOnly --declarationMap`
+    // console.log('\x1b[2m$', `npx ${cmd}`)
+    await exec('npx', cmd.split(' '))
     await fs.remove('types')
     await fs.copy(targetDir, 'types')
   }
