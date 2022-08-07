@@ -268,6 +268,11 @@ site optimize:
   - burntsienna (loading from potentially 3 places)
 
 
+### Image v2
+
+fast-image - https://github.com/DylanVann/react-native-fast-image
+
+
 ### Skeleton
 
 - I think we ultimately need a new prop for all tamagui components skeleton, if true it will render the component as-is, but add an overlay view (SkeletonOverlay) that covers it with some default style, plus should set various things like pointerevents and aria-disabled
