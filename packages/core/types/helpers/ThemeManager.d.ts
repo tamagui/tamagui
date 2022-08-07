@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { ThemeObject, Themes } from './types';
+import { ThemeObject, Themes } from '../types';
 declare type ThemeListener = (name: string | null, themeManager: ThemeManager) => void;
 export declare type SetActiveThemeProps = {
     className?: string;
@@ -26,12 +26,12 @@ export declare class ThemeManager {
     get didChangeTheme(): boolean | null;
     get parentName(): string | null;
     get fullName(): string;
-    getValue(key: string): import("./types").VariableVal | undefined;
+    getValue(key: string): import("../types").VariableVal | undefined;
     update({ name, theme, className }?: SetActiveThemeProps): boolean;
     getNextTheme(props?: GetNextThemeProps, debug?: any): {
         name: string;
-        theme: (Partial<import("./types").TamaguiBaseTheme> & {
-            [key: string]: import("./types").VariableVal;
+        theme: (Partial<import("../types").TamaguiBaseTheme> & {
+            [key: string]: import("../types").VariableVal;
         }) | null;
         className?: undefined;
     } | {

@@ -1,4 +1,4 @@
-import { ThemeManager } from '../ThemeManager';
+import { ThemeManager } from '../helpers/ThemeManager';
 import { ThemeName, ThemeObject } from '../types';
 export declare type ThemeProps = {
     className?: string;

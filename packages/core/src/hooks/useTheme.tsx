@@ -3,9 +3,14 @@ import React, { useContext, useLayoutEffect, useMemo, useRef, useState } from 'r
 
 import { getConfig } from '../conf'
 import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
+import { ThemeContext } from '../contexts/ThemeContext'
 import { areEqualSets } from '../helpers/areEqualSets'
-import { ThemeContext } from '../ThemeContext'
-import { GetNextThemeProps, ThemeManager, ThemeManagerContext, emptyManager } from '../ThemeManager'
+import {
+  GetNextThemeProps,
+  ThemeManager,
+  ThemeManagerContext,
+  emptyManager,
+} from '../helpers/ThemeManager'
 import { ThemeName, ThemeObject } from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
 import { useConstant } from './useConstant'

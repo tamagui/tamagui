@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useMemo } from 'react'
 
 import { getHasConfigured } from '../conf'
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
-import { ThemeContext } from '../ThemeContext'
+import { ThemeContext } from '../contexts/ThemeContext'
 import { Theme } from './Theme'
 
 // bugfix esbuild strips react jsx: 'preserve'
