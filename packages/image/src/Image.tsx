@@ -20,8 +20,8 @@ const StyledImage = styled(
 type StyledImageProps = GetProps<typeof StyledImage>
 
 type BaseProps = Omit<StyledImageProps, 'source' | 'width' | 'height' | 'style' | 'onLayout'> & {
-  width: number
-  height: number
+  width: number | string
+  height: number | string
   src: string | StyledImageProps['source']
 }
 
@@ -29,7 +29,7 @@ export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>
 
 export const Image: React.FC<ImageProps> = StyledImage.extractable((inProps) => {
   const props = getExpandedShorthands(inProps)
-  const { src, width = 100, height = 100, ...rest } = props
+  const { src, width, height, ...rest } = props
   const source = typeof src === 'string' ? { uri: src, ...(isWeb && { width, height }) } : src
   const defaultSource = Array.isArray(source) ? source[0] : source
 

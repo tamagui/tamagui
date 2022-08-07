@@ -9,7 +9,6 @@
   - loadTheme, updateTheme
   - windows without WSL
   - <Select /> has selectable cursor on hold down + move
-  - Image is hardcoded to w/h 100
   - way to use tamagui with custom design system tokens
     - basically map any tokens you choose to internal tamagui ones
   - site get live lighthouse score > 90

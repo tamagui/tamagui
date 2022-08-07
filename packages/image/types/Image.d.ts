@@ -11,8 +11,8 @@ declare const StyledImage: import("@tamagui/core").TamaguiComponent<(import("rea
 }>;
 declare type StyledImageProps = GetProps<typeof StyledImage>;
 declare type BaseProps = Omit<StyledImageProps, 'source' | 'width' | 'height' | 'style' | 'onLayout'> & {
-    width: number;
-    height: number;
+    width: number | string;
+    height: number | string;
     src: string | StyledImageProps['source'];
 };
 export declare type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>;
