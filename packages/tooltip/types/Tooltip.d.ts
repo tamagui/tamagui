@@ -1,6 +1,5 @@
 import '@tamagui/polyfill-dev';
 import { PopperProps } from '@tamagui/popper';
-import { SizableStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 export declare type TooltipProps = PopperProps & {
     children?: React.ReactNode;
@@ -57,10 +56,4 @@ export declare const Tooltip: React.FC<TooltipProps> & {
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     }>> & React.RefAttributes<HTMLElement | import("react-native").View>>;
 };
-export declare type TooltipSimpleProps = TooltipProps & {
-    label?: React.ReactNode;
-    children?: React.ReactNode;
-    contentProps?: SizableStackProps;
-};
-export declare const TooltipSimple: React.FC<TooltipSimpleProps>;
 //# sourceMappingURL=Tooltip.d.ts.map

@@ -1,6 +1,15 @@
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Circle } from '@tamagui/feather-icons'
 import React from 'react'
-import { Button, Paragraph, Tooltip, TooltipGroup, TooltipProps, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Paragraph,
+  ThemeInverse,
+  Tooltip,
+  TooltipGroup,
+  TooltipProps,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 export function TooltipDemo() {
   return (
@@ -32,20 +41,22 @@ export function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
       <Tooltip.Trigger>
         <Button icon={Icon} circular />
       </Tooltip.Trigger>
-      <Tooltip.Content
-        enterStyle={{ x: 0, y: -5, o: 0, scale: 0.9 }}
-        exitStyle={{ x: 0, y: -5, o: 0, scale: 0.9 }}
-        scale={1}
-        x={0}
-        y={0}
-        o={1}
-        animation="bouncy"
-      >
-        <Tooltip.Arrow />
-        <Paragraph size="$2" lineHeight="$1">
-          Hello world
-        </Paragraph>
-      </Tooltip.Content>
+      <ThemeInverse>
+        <Tooltip.Content
+          enterStyle={{ x: 0, y: -5, o: 0, scale: 0.9 }}
+          exitStyle={{ x: 0, y: -5, o: 0, scale: 0.9 }}
+          scale={1}
+          x={0}
+          y={0}
+          o={1}
+          animation="bouncy"
+        >
+          <Tooltip.Arrow />
+          <Paragraph size="$2" lineHeight="$1">
+            Hello world
+          </Paragraph>
+        </Tooltip.Content>
+      </ThemeInverse>
     </Tooltip>
   )
 }
