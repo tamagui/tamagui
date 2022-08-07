@@ -1,5 +1,3 @@
-import { simpleHash } from '@tamagui/helpers'
-
 import { configListeners, setConfig } from './conf'
 import { THEME_CLASSNAME_PREFIX } from './constants/constants'
 import { isWeb } from './constants/platform'
@@ -7,8 +5,6 @@ import { themeToVariableToValueMap } from './createTheme'
 import { Variable, createVariable, isVariable } from './createVariable'
 import { createVariables } from './createVariables'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
-import { getFontLanguage } from './helpers/getFontLanguage'
-import { getAtomicStyle } from './helpers/getStylesAtomic'
 import { getAllRules } from './helpers/insertStyleRule'
 import {
   registerCSSVariable,
@@ -95,10 +91,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       // fonts
       if (fontDeclarations) {
         for (const key in fontDeclarations) {
-          const { name, declarations, language } = fontDeclarations[key]
-          const languageSelector = ` .t_lang-${name}-${language || 'default'}`
+          const { name, declarations, language = 'default' } = fontDeclarations[key]
           const fontSelector = `.font_${name}`
-          const selectors = ` ${fontSelector}, :root ${languageSelector} ${fontSelector}`
+          const langSelector = `:root .t_lang-${name}-${language} ${fontSelector}`
+          const selectors =
+            language === 'default' ? ` ${fontSelector}, ${langSelector}` : langSelector
           const specificRuleSet = declarationsToRuleSet(declarations, selectors)
           cssRuleSets.push(specificRuleSet)
         }
