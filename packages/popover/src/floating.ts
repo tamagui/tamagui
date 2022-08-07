@@ -1,5 +1,5 @@
 export {
-  UseFloatingProps,
+  type UseFloatingProps,
   useDismiss,
   useFloating,
   useFocus,

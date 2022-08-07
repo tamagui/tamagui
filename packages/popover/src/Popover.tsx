@@ -41,14 +41,8 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { View } from 'react-native'
 
-import {
-  UseFloatingProps,
-  useDismiss,
-  useFloating,
-  useFocus,
-  useInteractions,
-  useRole,
-} from './floating'
+import type { UseFloatingProps } from './floating'
+import { useDismiss, useFloating, useFocus, useInteractions, useRole } from './floating'
 
 const POPOVER_NAME = 'Popover'
 
