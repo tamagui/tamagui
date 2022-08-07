@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/demos",
-  "version": "1.0.1-beta.135",
+  "version": "1.0.1-beta.136",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -17,27 +17,27 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/avatar": "^1.0.1-beta.135",
-    "@tamagui/button": "^1.0.1-beta.135",
-    "@tamagui/config-base": "^1.0.1-beta.135",
-    "@tamagui/core": "^1.0.1-beta.135",
-    "@tamagui/drawer": "^1.0.1-beta.135",
-    "@tamagui/list-item": "^1.0.1-beta.135",
-    "@tamagui/menu": "^1.0.1-beta.135",
-    "@tamagui/popover": "^1.0.1-beta.135",
-    "@tamagui/progress": "^1.0.1-beta.135",
-    "@tamagui/select": "^1.0.1-beta.135",
-    "@tamagui/sheet": "^1.0.1-beta.135",
-    "@tamagui/slider": "^1.0.1-beta.135",
-    "@tamagui/stacks": "^1.0.1-beta.135",
-    "tamagui": "^1.0.1-beta.135"
+    "@tamagui/avatar": "^1.0.1-beta.136",
+    "@tamagui/button": "^1.0.1-beta.136",
+    "@tamagui/config-base": "^1.0.1-beta.136",
+    "@tamagui/core": "^1.0.1-beta.136",
+    "@tamagui/drawer": "^1.0.1-beta.136",
+    "@tamagui/list-item": "^1.0.1-beta.136",
+    "@tamagui/menu": "^1.0.1-beta.136",
+    "@tamagui/popover": "^1.0.1-beta.136",
+    "@tamagui/progress": "^1.0.1-beta.136",
+    "@tamagui/select": "^1.0.1-beta.136",
+    "@tamagui/sheet": "^1.0.1-beta.136",
+    "@tamagui/slider": "^1.0.1-beta.136",
+    "@tamagui/stacks": "^1.0.1-beta.136",
+    "tamagui": "^1.0.1-beta.136"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.135",
+    "@tamagui/build": "^1.0.1-beta.136",
     "react": "*",
     "react-dom": "*"
   },
