@@ -24,6 +24,7 @@ import {
   Sheet,
   Square,
   Text,
+  Theme,
   YStack,
   styled,
   useMedia,
@@ -82,6 +83,8 @@ export const Sandbox = () => {
       >
         {/* <AlertDialogDemo /> */}
 
+        <DynamicThemeDemo />
+
         {/* <FontLanguage heading="default" body="cn">
           <Paragraph fos="$4" fontFamily="$body">
             hello 🇨🇳
@@ -95,7 +98,7 @@ export const Sandbox = () => {
 
         {/* <SheetDemo /> */}
         {/* <PopoverDemo /> */}
-        <TooltipDemo />
+        {/* <TooltipDemo /> */}
         {/* <SheetDemo2 /> */}
         {/* <SheetDemo /> */}
         {/* <SwitchDemo /> */}
@@ -108,6 +111,19 @@ export const Sandbox = () => {
         </XStack> */}
       </div>
     </Tamagui.Provider>
+  )
+}
+
+function DynamicThemeDemo() {
+  const [load, setLoad] = useState()
+
+  return (
+    <>
+      <Button>Load</Button>
+      <Theme name={load ?? null}>
+        <Square size={100} bc="$backgroundStrong" />
+      </Theme>
+    </>
   )
 }
 
