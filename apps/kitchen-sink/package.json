@@ -46,7 +46,6 @@
   "devDependencies": {
     "@babel/core": "^7.15.5",
     "@expo/metro-config": "^0.3.18",
-    "@expo/webpack-config": "^0.16.24",
     "@rnx-kit/metro-config": "^1.2.32",
     "@rnx-kit/metro-resolver-symlinks": "^0.1.20",
     "@tamagui/babel-plugin": "^1.0.1-beta.135",

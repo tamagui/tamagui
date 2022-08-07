@@ -119,9 +119,12 @@ module.exports = {
 
 #### Next.js
 
-Add `@tamagui/next-plugin` and configure your `next.config.js`:
+Add `@tamagui/next-plugin` and configure your `next.config.js`.
 
 ```js
+// note next-compose-plugins somewhat unmaintained
+// you can use a simple two-liner instead, see:
+// https://github.com/cyrilwanner/next-compose-plugins/issues/59#issuecomment-1192523231
 const withPlugins = require('next-compose-plugins')
 const { withTamagui } = require('@tamagui/next-plugin')
 
