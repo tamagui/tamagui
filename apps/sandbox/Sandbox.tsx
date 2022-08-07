@@ -10,6 +10,7 @@ import {
   SelectDemo,
   SheetDemo,
   SwitchDemo,
+  TooltipDemo,
 } from '@tamagui/demos'
 import { FocusScope } from '@tamagui/focus-scope'
 import React, { useState } from 'react'
@@ -93,7 +94,8 @@ export const Sandbox = () => {
         </FontLanguage> */}
 
         {/* <SheetDemo /> */}
-        <PopoverDemo />
+        {/* <PopoverDemo /> */}
+        <TooltipDemo />
         {/* <SheetDemo2 /> */}
         {/* <SheetDemo /> */}
         {/* <SwitchDemo /> */}
