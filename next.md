@@ -1,19 +1,12 @@
 - 1.0
 
   - adding `shorthandsOverride` to createTamagui should be easy enough to type with Omit<>
-  - passing in animatedStyle wholesale to view
-  - Popover sheetBreakpoint
-    - ability to pass in custom sheet
   - fix reanimated 2.9/3.0 __frame var
   - cleaner output classnames in getStylesAtomic
-  - "placeholderTextColor" not working i think - add test
   - H2 ff="$stylish" not working, only fontFamily fully
   - Text doesn't pick up defaultProps (others do)
   - loadFont
   - loadTheme, updateTheme
-  - fix tabbing
-    - AlertDialog buttons
-    - Dialog
   - windows without WSL
   - <Select /> has selectable cursor on hold down + move
   - Image is hardcoded to w/h 100
@@ -31,7 +24,6 @@
     - https://twitter.com/FernandoTheRojo/status/1470178294721036290
   - flicker on some enterStyle animation native (hermes only)
   - mismatch SSR SelectTrigger due to componentName override
-  - button inverse doesn't update on theme change (site)
   - load tamagui itself using the loadModule / fork process to avoid all register (this is also shared logic with studio loading tamagui conf..)
   - // TODO still have as const bug
   - try using react-native-web $css object support for classnames
@@ -115,6 +107,8 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - instead of .sheetBreakpoint add .adaptBreakpoint and <Adapt />
+    - ability to pass in custom sheet or other view
   - `tamagui check`
     - checks dist/ folders exist based on package.json
       - including whether it loads properly on node

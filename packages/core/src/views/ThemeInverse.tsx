@@ -4,17 +4,6 @@ import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { useDefaultThemeName, useThemeName } from '../hooks/useTheme'
 import { Theme } from './Theme'
 
-type StringRecord = { [key: string]: string }
-
-let inversions: StringRecord = {
-  light: 'dark',
-  dark: 'light',
-}
-
-export function setThemeInversions(next: StringRecord) {
-  inversions = next
-}
-
 export const ThemeInverse = ({
   children,
   disable,
@@ -28,7 +17,12 @@ export const ThemeInverse = ({
 
   // ssr
   useIsomorphicLayoutEffect(() => {
-    setName(inversions[themeName] || inversions[defaultTheme || ''] || null)
+    if (themeName.startsWith('dark')) {
+      setName('light')
+    }
+    if (themeName.startsWith('light')) {
+      setName('dark')
+    }
   }, [defaultTheme, themeName])
 
   if (disable) {
