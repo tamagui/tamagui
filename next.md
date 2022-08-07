@@ -1,5 +1,7 @@
 - 1.0
 
+  - adding `shorthandsOverride` to createTamagui should be easy enough to type with Omit<>
+  - passing in animatedStyle wholesale to view
   - Popover sheetBreakpoint
     - ability to pass in custom sheet
   - fix reanimated 2.9/3.0 __frame var

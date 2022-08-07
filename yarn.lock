@@ -6123,13 +6123,16 @@ __metadata:
     css-minimizer-webpack-plugin: ^4.0.0
     esbuild-loader: ^2.19.0
     esm-resolve: ^1.0.8
+    file-loader: ^6.2.0
     html-inline-css-webpack-plugin: ^1.11.1
+    html-webpack-plugin: ^5.5.0
     mini-css-extract-plugin: ^2.6.0
     next: ^12.2.0
     next-compose-plugins: ^2.2.1
     react-native-svg-web: ^1.0.9
     tamagui-loader: ^1.0.1-beta.135
     thread-loader: ^3.0.4
+    url-loader: ^4.1.1
   peerDependencies:
     next: ">=12.0.0"
   languageName: unknown
