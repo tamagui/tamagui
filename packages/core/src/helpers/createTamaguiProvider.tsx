@@ -2,8 +2,8 @@ import * as React from 'react'
 
 import { isClient } from '../constants/platform'
 import { ButtonInsideButtonContext } from '../contexts/ButtonInsideButtonContext'
+import { TextAncestorProvider } from '../contexts/TextAncestorContext'
 import { TamaguiInternalConfig, TamaguiProviderProps } from '../types'
-import { TextAncestorProvider } from '../views/TextAncestorContext'
 import { ThemeProvider } from '../views/ThemeProvider'
 
 export function createTamaguiProvider(config: TamaguiInternalConfig) {

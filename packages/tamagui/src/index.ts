@@ -137,6 +137,7 @@ export {
   createFont,
   createShorthands,
   createTheme,
+  loadTheme,
   createTokens,
   createVariable,
   getConfig,

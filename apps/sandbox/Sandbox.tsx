@@ -26,6 +26,7 @@ import {
   Text,
   Theme,
   YStack,
+  loadTheme,
   styled,
   useMedia,
 } from 'tamagui'
@@ -115,13 +116,27 @@ export const Sandbox = () => {
 }
 
 function DynamicThemeDemo() {
-  const [load, setLoad] = useState()
+  const [theme, setTheme] = useState<any>()
 
   return (
     <>
-      <Button>Load</Button>
-      <Theme name={load ?? null}>
-        <Square size={100} bc="$backgroundStrong" />
+      <Button
+        onPress={async () => {
+          await loadTheme({
+            name: 'newTheme',
+            theme: {
+              background: 'red',
+              color: 'blue',
+            } as any,
+            insertCSS: true,
+          })
+          setTheme('newTheme')
+        }}
+      >
+        Load
+      </Button>
+      <Theme name={theme ?? null}>
+        <Square size={100} bc="$background" />
       </Theme>
     </>
   )

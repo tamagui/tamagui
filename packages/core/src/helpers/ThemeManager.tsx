@@ -1,9 +1,9 @@
 import { createContext } from 'react'
 
-import { getThemes } from './conf'
-import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from './constants/constants'
-import { getThemeUnwrapped } from './hooks/getThemeUnwrapped'
-import { ThemeObject, Themes } from './types'
+import { getThemes } from '../conf'
+import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
+import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
+import { ThemeObject, Themes } from '../types'
 
 type ThemeListener = (name: string | null, themeManager: ThemeManager) => void
 
@@ -146,10 +146,7 @@ export class ThemeManager {
         break
       }
       if (!parentName.includes(THEME_NAME_SEPARATOR)) {
-        // not found!
-        console.warn('theme not found', name)
-        // this happens in next during _document.getInitialProps and has a terrible/non-existent stack trace
-        // throw new Error(`Theme not found: ${name}`)
+        // this is fine - some themes can not have parents
         break
       }
       // go up one

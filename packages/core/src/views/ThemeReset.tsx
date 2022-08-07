@@ -1,7 +1,7 @@
 import React, { useContext, useLayoutEffect, useState } from 'react'
 
 import { isWeb } from '../constants/platform'
-import { ThemeManagerContext } from '../ThemeManager'
+import { ThemeManagerContext } from '../helpers/ThemeManager'
 import { Theme } from './Theme'
 
 // bugfix esbuild strips react jsx: 'preserve'

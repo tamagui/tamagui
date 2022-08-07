@@ -30,6 +30,7 @@ import { getConfig, onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
 import { isWeb, useIsomorphicLayoutEffect } from './constants/platform'
 import { FontLanguageContext } from './contexts/FontLanguageContext'
+import { TextAncestorContext } from './contexts/TextAncestorContext'
 import { assignNativePropsToWeb } from './helpers/assignNativePropsToWeb'
 import { getReturnVariablesAs } from './helpers/createPropMapper'
 import { createShallowUpdate } from './helpers/createShallowUpdate'
@@ -42,7 +43,6 @@ import { useFeatures } from './hooks/useFeatures'
 import { mediaState } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
 import { getThemeManager, useTheme } from './hooks/useTheme'
-import { usePressability } from './Pressability'
 import {
   SpaceDirection,
   SpaceTokens,
@@ -57,8 +57,8 @@ import {
   TamaguiInternalConfig,
   UseAnimationHook,
 } from './types'
+import { usePressability } from './vendor/Pressability'
 import { Slot, mergeEvent } from './views/Slot'
-import { TextAncestorContext } from './views/TextAncestorContext'
 import { wrapThemeManagerContext } from './views/Theme'
 
 React['keep']

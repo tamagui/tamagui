@@ -1,8 +1,8 @@
 import React, { memo, useMemo } from 'react'
 
 import { isWeb } from '../constants/platform'
+import { ThemeManager, ThemeManagerContext } from '../helpers/ThemeManager'
 import { ThemeProps, useChangeThemeEffect } from '../hooks/useTheme'
-import { ThemeManager, ThemeManagerContext } from '../ThemeManager'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
