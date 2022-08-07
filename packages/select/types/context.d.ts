@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { SelectContextValue } from './types';
 export declare const createSelectContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType | undefined) => readonly [{
     (props: ContextValueType & {
