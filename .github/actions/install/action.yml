@@ -10,8 +10,6 @@ runs:
         node-version: 16.x
         registry-url: 'https://registry.npmjs.org'
 
-    - uses: microsoft/playwright-github-action@v1
-
     - name: install yarn
       shell: bash
       run: npm i yarn -g
