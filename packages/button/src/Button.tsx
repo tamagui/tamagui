@@ -84,7 +84,7 @@ export const ButtonFrame = styled(ThemeableStack, {
 
     disabled: {
       true: {
-        opacity: 0.5,
+        opacity: 0.375,
         pointerEvents: 'none',
       },
     },
@@ -145,6 +145,14 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
   return (
     <ButtonFrame
       fontFamily={fontFamily}
+      {...(props.disabled && {
+        // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
+        focusable: undefined,
+        // even with tabIndex unset, it will keep focusStyle on web so disable it here
+        focusStyle: {
+          borderColor: '$background',
+        },
+      })}
       // fixes SSR issue + DOM nesting issue of not allowing button in button
       {...(isInsideButton && {
         tag: 'span',
