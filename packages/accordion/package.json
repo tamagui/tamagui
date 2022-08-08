@@ -17,8 +17,8 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint-check": "eslint --cache --cache-location=node_modules/.cache/.eslintcache --ext=.js,.jsx,.ts,.tsx src",
-    "lint": "yarn lint-check --fix src"
+    "lint": "eslint",
+    "lint:fix": "yarn lint --fix src"
   },
   "dependencies": {
     "@tamagui/compose-refs": "^1.0.1-beta.137",

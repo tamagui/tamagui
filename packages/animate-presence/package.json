@@ -24,8 +24,8 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "lint-check": "eslint --cache --cache-location=node_modules/.cache/.eslintcache --ext=.js,.jsx,.ts,.tsx src",
-    "lint": "yarn lint-check --fix src"
+    "lint": "eslint",
+    "lint:fix": "yarn lint --fix src"
   },
   "publishConfig": {
     "access": "public"

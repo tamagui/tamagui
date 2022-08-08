@@ -18,7 +18,9 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+    "clean:build": "tamagui-build clean:build",
+    "lint": "eslint",
+    "lint:fix": "yarn lint --fix"
   },
   "dependencies": {
     "@floating-ui/react-dom": "^1.0.0",

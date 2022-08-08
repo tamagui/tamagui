@@ -153,16 +153,19 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
           const { delayMs = null } = animationDelay(key, animationConfig, delay)
 
           if (!animation) {
+            // eslint-disable-next-line no-console
             console.warn('No animation for', key, 'in', style)
             continue
           }
           if (!config) {
+            // eslint-disable-next-line no-console
             console.warn('No animation config for', key, 'in', style)
             continue
           }
 
           if (key === 'transform') {
             if (!Array.isArray(value)) {
+              // eslint-disable-next-line no-console
               console.error(`Invalid transform value. Needs to be an array.`)
               continue
             }
@@ -387,7 +390,6 @@ function getAnimation(
       deceleration: 2,
     }
   } else {
-    console.warn('no type of animation?', animationType)
     animation = withSpring
   }
 

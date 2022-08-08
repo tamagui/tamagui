@@ -20,8 +20,10 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "lint": "yarn lint-circular-deps",
-    "lint-circular-deps": "npx madge --circular ./src/index.ts"
+    "lint": "eslint",
+    "lint:fix": "yarn lint --fix",
+    "check": "yarn check-circular-deps",
+    "check-circular-deps": "npx madge --circular ./src/index.ts"
   },
   "dependencies": {
     "@tamagui/alert-dialog": "^1.0.1-beta.137",

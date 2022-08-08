@@ -189,6 +189,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         return {
           style: [nonAnimatedStyle, animatedStyle],
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       }, args)
     },
   }

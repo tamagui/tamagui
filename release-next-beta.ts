@@ -103,6 +103,7 @@ async function run() {
         spawnify(`yarn install`),
         checkDistDirs(),
         exec(`yarn build`),
+        exec(`yarn lint`),
         exec(`yarn fix`),
       ])
 

@@ -1,7 +1,7 @@
 import { ColorTokens, themeable, useTheme } from '@tamagui/core'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
-import { ActivityIndicator, StyleSheet } from 'react-native'
+import { ActivityIndicator } from 'react-native'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']

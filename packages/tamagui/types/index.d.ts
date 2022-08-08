@@ -29,7 +29,6 @@ export * from '@tamagui/use-debounce';
 export * from '@tamagui/use-force-update';
 export * from './createTamagui';
 export * from './viewTypes';
-export * from './hooks/useKeyboardDismissable';
 export * from './views/Anchor';
 export * from './views/EnsureFlexed';
 export * from './views/Fieldset';

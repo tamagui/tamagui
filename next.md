@@ -35,7 +35,6 @@
   - <Input /> variant doesnt override paddingHorizontal set on same input
   - input type="email", button type="submit" etc (rnw has submit, email?)
     - its fine to wrap input in HOC like button
-  - tokens-only type/docs
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
   - // TODO infer ref

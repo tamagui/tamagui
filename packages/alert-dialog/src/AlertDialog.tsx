@@ -269,23 +269,26 @@ type DescriptionWarningProps = {
 }
 
 const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef }) => {
-  const MESSAGE = `\`${CONTENT_NAME}\` requires a description for the component to be accessible for screen reader users.
-
-You can add a description to the \`${CONTENT_NAME}\` by passing a \`${DESCRIPTION_NAME}\` component as a child, which also benefits sighted users by adding visible context to the dialog.
-
-Alternatively, you can use your own component as a description by assigning it an \`id\` and passing the same value to the \`aria-describedby\` prop in \`${CONTENT_NAME}\`. If the description is confusing or duplicative for sighted users, you can use the \`@radix-ui/react-visually-hidden\` primitive as a wrapper around your description component.
-
-For more information, see https://tamagui.dev/docs/components/alert-dialog`
-
-  React.useEffect(() => {
-    if (!isWeb) return
-    const hasDescription = document.getElementById(
-      // @ts-ignore
-      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-      contentRef.current?.getAttribute('aria-describedby')!
-    )
-    if (!hasDescription) console.warn(MESSAGE)
-  }, [MESSAGE, contentRef])
+  if (process.env.NODE_ENV === 'development') {
+    React.useEffect(() => {
+      if (!isWeb) return
+      const hasDescription = document.getElementById(
+        // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+        contentRef.current?.getAttribute('aria-describedby')!
+      )
+      if (!hasDescription) {
+        // eslint-disable-next-line no-console
+        console.warn(`\`${CONTENT_NAME}\` requires a description for the component to be accessible for screen reader users.
+  
+        You can add a description to the \`${CONTENT_NAME}\` by passing a \`${DESCRIPTION_NAME}\` component as a child, which also benefits sighted users by adding visible context to the dialog.
+        
+        Alternatively, you can use your own component as a description by assigning it an \`id\` and passing the same value to the \`aria-describedby\` prop in \`${CONTENT_NAME}\`. If the description is confusing or duplicative for sighted users, you can use the \`@radix-ui/react-visually-hidden\` primitive as a wrapper around your description component.
+        
+        For more information, see https://tamagui.dev/docs/components/alert-dialog`)
+      }
+    }, [contentRef])
+  }
 
   return null
 }
@@ -335,7 +338,8 @@ const AlertDialogInner: React.FC<AlertDialogProps> = (props: ScopedProps<AlertDi
           const style = name === ACTION_NAME ? 'default' : 'cancel'
           const text = getStringChildren(child)
           const onPress = () => {
-            ;(child.props as any)?.onPress?.({ native: true })
+            const childProps = child.props as any
+            childProps?.onPress?.({ native: true })
             setOpen(false)
           }
           buttons.push({

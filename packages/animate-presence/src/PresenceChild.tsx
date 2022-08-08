@@ -55,11 +55,13 @@ export const PresenceChild = ({
      * we want to make a new context value to ensure they get re-rendered
      * so they can detect that layout change.
      */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     presenceAffectsLayout ? undefined : [isPresent, exitVariant, enterVariant]
   )
 
   React.useMemo(() => {
     presenceChildren.forEach((_, key) => presenceChildren.set(key, false))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPresent])
 
   /**
@@ -68,6 +70,7 @@ export const PresenceChild = ({
    */
   React.useEffect(() => {
     !isPresent && !presenceChildren.size && onExitComplete?.()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPresent])
 
   return <PresenceContext.Provider value={context}>{children}</PresenceContext.Provider>

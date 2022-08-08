@@ -17,6 +17,8 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
+    "lint": "eslint",
+    "lint:fix": "yarn lint --fix",
     "pretest": "node -r esbuild-register ./tests/lib/preTest.js",
     "test": "yarn pretest && vitest --config ../vite-plugin-internal/vite.config.ts --run --dom"
   },
