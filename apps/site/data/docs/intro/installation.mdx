@@ -254,8 +254,7 @@ The webpack loader and Next.js plugin accept the same configuration options:
       required: false,
       type: 'string[]',
       typeSimple: 'enum',
-      description:
-        "Array of whitelisted file paths (always end in .js) which the compiler may parse at build-time. This usually is  like ['constants.js', 'colors.js'], enabling extraction of any constant in those files",
+      description: `Array of whitelisted file paths (always end in .js) which the compiler may try and import and parse at build-time. It is normalized to ".js" ending for all file extensions (js, jsx, tsx, ts). This usually should be set to something like ['constants.js', 'colors.js'] for example, where you have a couple mostly static files of constants that are used as default values for styles.`,
     },
     {
       name: 'logTimings',

@@ -15,6 +15,7 @@ export declare const useThemeName: (opts?: {
     parent?: true;
 }) => string;
 export declare const useDefaultThemeName: () => ThemeName | undefined;
+export declare const activeThemeManagers: Set<ThemeManager>;
 export declare const useChangeThemeEffect: (name?: string | null, componentName?: string, props?: ThemeProps, forceUpdateProp?: any) => {
     themes: {
         [key: string]: Partial<import("../types").TamaguiBaseTheme> & {

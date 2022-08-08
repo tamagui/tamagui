@@ -15,7 +15,7 @@ export function FormsDemo() {
 function FormDemo(props: { size: SizeTokens }) {
   return (
     <XStack ai="center" space="$2">
-      <Input f={1} w="0%" size={props.size} placeholder={`Size ${props.size}...`} />
+      <Input f={1} size={props.size} placeholder={`Size ${props.size}...`} />
       <Button size={props.size}>Go</Button>
     </XStack>
   )
