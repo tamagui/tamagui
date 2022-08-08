@@ -75,9 +75,6 @@ export class ThemeManager {
     while (true) {
       if (!theme) return
       if (key in theme) {
-        if (key === 'color') {
-          console.log('get', theme[key])
-        }
         return theme[key]
       }
       manager = this.parentManager
