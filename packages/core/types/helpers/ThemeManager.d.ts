@@ -27,7 +27,7 @@ export declare class ThemeManager {
     get parentName(): string | null;
     get fullName(): string;
     getValue(key: string): import("../types").VariableVal | undefined;
-    update({ name, theme, className }?: SetActiveThemeProps): boolean;
+    update({ name, theme, className }?: SetActiveThemeProps, force?: boolean): boolean;
     getNextTheme(props?: GetNextThemeProps, debug?: any): {
         name: string;
         theme: (Partial<import("../types").TamaguiBaseTheme> & {

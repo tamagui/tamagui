@@ -70,13 +70,16 @@ export const useTheme = (
     }
   })
 
-  return useMemo(() => {
-    if (!theme) {
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('No theme', { themeName, theme, componentName, className })
-      }
-      return themes[getConfig().defaultTheme || 'light' || Object.keys(themes)[0]]
+  const debugProp = props && props['debug']
+
+  if (!theme) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('No theme', { themeName, theme, componentName, className })
     }
+    return themes[getConfig().defaultTheme || Object.keys(themes)[0]]
+  }
+
+  return useMemo(() => {
     return new Proxy(theme, {
       has(_, key) {
         if (typeof key === 'string') {
@@ -112,14 +115,14 @@ export const useTheme = (
         }
         if (state.current.isRendering && !state.current.keys.has(key)) {
           state.current.keys.add(key)
-          if (process.env.NODE_ENV === 'development' && props?.['debug'] === 'verbose') {
+          if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
             console.log('  🔸 tracking theme', key)
           }
         }
         return themeManager.getValue(key)
       },
     })
-  }, [name, theme, className])
+  }, [name, theme, componentName, className, debugProp])
 }
 
 const GetThemeManager = Symbol()
@@ -149,6 +152,8 @@ export const useDefaultThemeName = () => {
   return useContext(ThemeContext)?.defaultTheme
 }
 
+export const activeThemeManagers = new Set<ThemeManager>()
+
 export const useChangeThemeEffect = (
   name?: string | null,
   componentName?: string,
@@ -163,25 +168,37 @@ export const useChangeThemeEffect = (
   const next = parentManager.getNextTheme(getThemeProps, debug)
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const forceUpdate = forceUpdateProp || useForceUpdate()
+
   const themeManager = useConstant<ThemeManager | null>(() => {
     if (!next) return null
     return new ThemeManager(next.name, next.theme, parentManager, reset)
   })
 
+  // if not SSR
   if (!isWeb || typeof document !== 'undefined') {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useLayoutEffect(() => {
       if (!themeManager) return
+
+      activeThemeManagers.add(themeManager)
+
       if (next?.name) {
         themeManager.update(next)
       }
-      return parentManager.onChangeTheme(() => {
+
+      const disposeParentOnChange = parentManager.onChangeTheme(() => {
         const next = parentManager.getNextTheme(getThemeProps, debug)
         if (!next) return
         if (themeManager.update(next)) {
           forceUpdate()
         }
       })
+
+      return () => {
+        activeThemeManagers.delete(themeManager)
+        disposeParentOnChange()
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [themes, name, componentName, debug, next?.name])
   }
 

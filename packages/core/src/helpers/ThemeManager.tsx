@@ -75,24 +75,26 @@ export class ThemeManager {
     while (true) {
       if (!theme) return
       if (key in theme) {
+        if (key === 'color') {
+          console.log('get', theme[key])
+        }
         return theme[key]
       }
       manager = this.parentManager
-      if (!manager) {
-        return
-      }
-      if (manager.theme === theme) {
+      if (!manager || manager.theme === theme) {
         return
       }
       theme = manager.theme
     }
   }
 
-  update({ name, theme, className }: SetActiveThemeProps = {}) {
-    // className compare on web, avoids light/dark re-renders
-    const nameChanged = name !== this.name
-    if (!nameChanged) {
-      return false
+  update({ name, theme, className }: SetActiveThemeProps = {}, force = false) {
+    if (!force) {
+      // className compare on web, avoids light/dark re-renders
+      const nameChanged = name !== this.name
+      if (!nameChanged) {
+        return false
+      }
     }
     this.className = className || null
     this.name = name || ''

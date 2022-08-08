@@ -353,3 +353,27 @@ type Themes = {
 // 4. finally, export it with the stricter type
 export const themes: Themes = allThemes
 ```
+
+## Dynamic Themes
+
+Sometimes you want to defer loading themes, or change existing theme values at runtime. Tamagui exports two helpers for this, respectively: `addTheme` and `updateTheme`.
+
+### addTheme
+
+<HeroContainer>
+  <AddThemeDemo />
+</HeroContainer>
+
+```tsx hero template=AddTheme
+
+```
+
+### updateTheme
+
+<HeroContainer>
+  <UpdateThemeDemo />
+</HeroContainer>
+
+```tsx hero template=UpdateTheme
+
+```

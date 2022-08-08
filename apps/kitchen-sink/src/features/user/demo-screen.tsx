@@ -24,6 +24,14 @@ const NativeDemos = {
       </Demos.AnimationsEnterDemo>
     </>
   ),
+  ThemesDemo: () => {
+    return (
+      <YStack space>
+        <Demos.AddThemeDemo />
+        <Demos.UpdateThemeDemo />
+      </YStack>
+    )
+  },
 }
 
 export function DemoScreen() {

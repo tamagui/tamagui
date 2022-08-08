@@ -1,21 +1,25 @@
 import { getConfig } from './conf'
-import { ensureThemeVariable, getThemeCSSRules, proxyThemeToParents } from './helpers/themes'
+import { isWeb } from './constants/platform'
+import { getThemeCSSRules } from './helpers/getThemeCSSRules'
+import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes'
 import { ThemeObject } from './types'
 
-export const loadTheme = ({
+export function addTheme({
   name: themeName,
   theme: themeIn,
   insertCSS,
+  update,
 }: {
   name: string
   theme: ThemeObject
   insertCSS?: boolean
-}) => {
+  update?: boolean
+}) {
   const config = getConfig()
   if (!config) {
     throw new Error(`Must run createTamagui once before loading theme`)
   }
-  if (config.themes[themeName]) {
+  if (!update && config.themes[themeName]) {
     throw new Error(`Already defined theme "${themeName}", use updateTheme to change values`)
   }
   const theme = { ...themeIn }
@@ -31,10 +35,16 @@ export const loadTheme = ({
   const themeProxied = proxyThemeToParents(themeName, theme, config.themes)
   config.themes[themeName] = themeProxied
 
-  if (insertCSS && typeof document !== 'undefined') {
+  if (insertCSS && isWeb) {
+    const id = `tamagui_theme_style_${themeName}`
+    const existing = document.querySelector(`#${id}`)
     const style = document.createElement('style')
+    style.id = id
     style.appendChild(document.createTextNode(cssRules.join('\n')))
     document.head.appendChild(style)
+    if (existing) {
+      existing.parentElement?.removeChild(existing)
+    }
   }
 
   return {

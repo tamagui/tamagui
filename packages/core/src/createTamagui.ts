@@ -2,13 +2,14 @@ import { configListeners, setConfig } from './conf'
 import { isWeb } from './constants/platform'
 import { createVariables } from './createVariables'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
+import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import { getAllRules } from './helpers/insertStyleRule'
 import {
   registerCSSVariable,
   tokensValueToVariable,
   variableToCSS,
 } from './helpers/registerCSSVariable'
-import { ensureThemeVariable, getThemeCSSRules, proxyThemeToParents } from './helpers/themes'
+import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'

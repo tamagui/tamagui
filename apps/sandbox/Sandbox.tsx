@@ -4,6 +4,7 @@ import '@tamagui/polyfill-dev'
 import '../site/app.css'
 
 import {
+  AddThemeDemo,
   AlertDialogDemo,
   ButtonDemo,
   PopoverDemo,
@@ -26,8 +27,9 @@ import {
   Text,
   Theme,
   YStack,
-  loadTheme,
+  addTheme,
   styled,
+  updateTheme,
   useMedia,
 } from 'tamagui'
 
@@ -84,7 +86,7 @@ export const Sandbox = () => {
       >
         {/* <AlertDialogDemo /> */}
 
-        <DynamicThemeDemo />
+        <AddThemeDemo />
 
         {/* <FontLanguage heading="default" body="cn">
           <Paragraph fos="$4" fontFamily="$body">
@@ -112,33 +114,6 @@ export const Sandbox = () => {
         </XStack> */}
       </div>
     </Tamagui.Provider>
-  )
-}
-
-function DynamicThemeDemo() {
-  const [theme, setTheme] = useState<any>()
-
-  return (
-    <>
-      <Button
-        onPress={async () => {
-          await loadTheme({
-            name: 'newTheme',
-            theme: {
-              background: 'red',
-              color: 'blue',
-            } as any,
-            insertCSS: true,
-          })
-          setTheme('newTheme')
-        }}
-      >
-        Load
-      </Button>
-      <Theme name={theme ?? null}>
-        <Square size={100} bc="$background" />
-      </Theme>
-    </>
   )
 }
 

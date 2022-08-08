@@ -111,6 +111,7 @@ const demos = [
       { title: 'Headings', route: '/demo/headings' },
       { title: 'Paragraph', route: '/demo/text' },
       { title: 'Animations', route: '/demo/animations' },
+      { title: 'Themes', route: '/demo/themes' },
     ],
   },
 

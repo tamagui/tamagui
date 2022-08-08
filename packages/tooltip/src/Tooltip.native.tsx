@@ -18,5 +18,3 @@ export const Tooltip = withStaticProperties(RenderChildren, {
   Content: RenderNull,
   Trigger: RenderChildren,
 })
-
-export const TooltipSimple = RenderChildren

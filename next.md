@@ -1,12 +1,12 @@
 - 1.0
 
+  - Switch gesture
   - adding `shorthandsOverride` to createTamagui should be easy enough to type with Omit<>
   - fix reanimated 2.9/3.0 __frame var
   - cleaner output classnames in getStylesAtomic
   - H2 ff="$stylish" not working, only fontFamily fully
   - Text doesn't pick up defaultProps (others do)
   - loadFont
-  - loadTheme, updateTheme
   - windows without WSL
   - <Select /> has selectable cursor on hold down + move
   - way to use tamagui with custom design system tokens

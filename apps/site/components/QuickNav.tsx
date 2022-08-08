@@ -2,7 +2,7 @@ import { RemoveScroll } from '@tamagui/remove-scroll'
 import NextLink from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { H4, Paragraph, YStack } from 'tamagui'
+import { Circle, H4, Paragraph, Separator, XStack, YStack } from 'tamagui'
 
 import { LinkProps } from './Link'
 
@@ -88,10 +88,12 @@ export function QuickNav() {
             )} */}
 
             {headings.map(({ id, nodeName, innerText }, i) => {
+              const level = getLevel(nodeName)
               return (
-                <YStack tag="li" key={i} data-level={getLevel(nodeName)}>
+                <XStack key={i} tag="li" ai="center">
+                  {level > 2 && <Circle size={4} mx="$2" />}
                   <QuickNavLink href={`#${id}`}>{innerText}</QuickNavLink>
-                </YStack>
+                </XStack>
               )
             })}
           </ul>
