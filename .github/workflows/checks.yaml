@@ -33,7 +33,7 @@ jobs:
         uses: ./.github/actions/install
 
       - name: Install playwright
-        run: npx playwright install-deps chromium
+        run: npx playwright install
         
       - name: Test
         run: yarn test
