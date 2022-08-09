@@ -12,6 +12,18 @@ import {
 } from '../types'
 import { useConstant } from './useConstant'
 
+/**
+ * 🛑🛑🛑
+ *
+ *   for concurrent mode safety need to tweak this a little bit,
+ *   don't mutate mediaState in setupMediaListeners
+ *   and don't return a global mediaState
+ *   instead each component gets a local copy of just the ones they listen to
+ *
+ * 🛑🛑🛑
+ *
+ */
+
 export const mediaState: MediaQueryState = {} as any
 const mediaQueryListeners: { [key: string]: Set<Function> } = {}
 
@@ -25,6 +37,7 @@ export function removeMediaQueryListener(key: MediaQueryKey, cb: any) {
 }
 
 export const mediaQueryConfig: MediaQueries = {}
+let hasSetup = false
 
 export const getMedia = () => {
   return mediaState
@@ -37,22 +50,33 @@ export const configureMedia = ({
   defaultActive = ['sm', 'xs'],
 }: ConfigureMediaQueryOptions = {}) => {
   if (!queries) return
+
   // support hot reload
-  if (mediaQueryConfig) {
+  if (hasSetup) {
     if (JSON.stringify(queries) === JSON.stringify(mediaQueryConfig)) {
       // hmr avoid update
       return
     }
-    dispose.forEach((cb) => cb())
-    dispose.clear()
+    setupMediaListeners()
   }
 
   Object.assign(mediaQueryConfig, queries)
 
-  // setup
+  // SSR = start all in the initial state you set
   for (const key in queries) {
-    const str = mediaObjectToString(queries[key])
-    const propKey = `$${key}`
+    mediaState[key] = defaultActive.includes(key)
+  }
+
+  hasSetup = true
+}
+
+function setupMediaListeners() {
+  // hmr, undo existing before re-binding
+  dispose.forEach((cb) => cb())
+  dispose.clear()
+
+  for (const key in mediaQueryConfig) {
+    const str = mediaObjectToString(mediaQueryConfig[key])
     try {
       const getMatch = () => matchMedia(str)
       const match = getMatch()
@@ -60,16 +84,16 @@ export const configureMedia = ({
         // caught below
         throw new Error('⚠️ No match (seeing this in RN sometimes)')
       }
-      mediaState[propKey] = !!match.matches
+      mediaState[key] = !!match.matches
       // note this deprecated api works with polyfills we use now
       match.addListener(update)
       dispose.add(() => match.removeListener(update))
 
       function update() {
         const next = !!getMatch().matches
-        if (next === mediaState[propKey]) return
-        mediaState[propKey] = next
-        const listeners = mediaQueryListeners[propKey]
+        if (next === mediaState[key]) return
+        mediaState[key] = next
+        const listeners = mediaQueryListeners[key]
         if (listeners?.size) {
           for (const cb of [...listeners]) {
             cb()
@@ -79,11 +103,16 @@ export const configureMedia = ({
 
       update()
     } catch (err: any) {
+      // eslint-disable-next-line no-console
       console.error('Error running media query', str, err.message, err.stack)
-      const isDefaultActive = defaultActive?.includes(key as any) ?? true
-      mediaState[propKey] = isDefaultActive
     }
   }
+}
+
+export function useMediaQueryListeners() {
+  useIsomorphicLayoutEffect(() => {
+    return setupMediaListeners()
+  }, [])
 }
 
 type UseMediaState = {
@@ -145,8 +174,8 @@ export function useMedia(): {
     const st = state.current
     return new Proxy(mediaState, {
       get(target, key: string) {
-        if (key[0] !== '$') {
-          key = `$${key}`
+        if (key[0] === '$') {
+          key = key.slice(1)
         }
         if (!(key in mediaState)) {
           return Reflect.get(target, key)
