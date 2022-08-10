@@ -8,9 +8,8 @@ type Props = TextParentStyles & {
   size?: SizeTokens
 }
 
-export function wrapChildrenInText(
-  TextComponent: any,
-  {
+export function wrapChildrenInText(TextComponent: any, propsIn: Props) {
+  const {
     children,
     textProps,
     size,
@@ -21,8 +20,8 @@ export function wrapChildrenInText(
     fontWeight,
     letterSpacing,
     textAlign,
-  }: Props
-) {
+  } = propsIn
+
   if (noTextWrap || !children) {
     return children
   }
@@ -35,21 +34,21 @@ export function wrapChildrenInText(
   const allChildren = React.Children.toArray(children)
   const nextChildren: any[] = []
   let lastIsString = false
-  const directTextProps: any = {}
+  const props: any = {}
   // to avoid setting undefined
-  if (color) directTextProps.color = color
-  if (fontFamily) directTextProps.fontFamily = fontFamily
-  if (fontSize) directTextProps.fontSize = fontSize
-  if (fontWeight) directTextProps.fontWeight = fontWeight
-  if (letterSpacing) directTextProps.letterSpacing = letterSpacing
-  if (textAlign) directTextProps.textAlign = textAlign
+  if (color) props.color = color
+  if (fontFamily) props.fontFamily = fontFamily
+  if (fontSize) props.fontSize = fontSize
+  if (fontWeight) props.fontWeight = fontWeight
+  if (letterSpacing) props.letterSpacing = letterSpacing
+  if (textAlign) props.textAlign = textAlign
 
   function concatStringChildren() {
     if (!lastIsString) return
     const index = nextChildren.length - 1
     const childrenStrings = nextChildren[index]
     nextChildren[index] = (
-      <TextComponent key={index} {...directTextProps} size={size} {...textProps}>
+      <TextComponent key={index} {...props} size={size} {...textProps}>
         {childrenStrings}
       </TextComponent>
     )

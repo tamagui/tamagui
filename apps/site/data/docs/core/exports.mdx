@@ -115,3 +115,7 @@ SSR-friendly, returns true if SSR, false once hydrated on client.
 ### useThemeName
 
 Returns the string name of the current theme.
+
+### useSafeRef
+
+A concurrent-mode safe ref, exactly the same [as written in this article](https://dev.to/uhyo_/a-concurrent-mode-safe-version-of-useref-1325). Works the same as `useRef`, but returns the "old" `current` while concurrent mode hasn't committed effects.

@@ -273,7 +273,7 @@ export type CreateTamaguiProps = {
 
   // for the first render, determines which media queries are true
   // useful for SSR
-  mediaQueryDefaultActive?: MediaQueryKey[]
+  mediaQueryDefaultActive?: Record<MediaQueryKey, boolean>
 
   // what's between each CSS style rule, set to "\n" to be easier to read
   // defaults: "\n" when NODE_ENV=development, "" otherwise
@@ -352,7 +352,7 @@ export type MediaQueries = {
 }
 export type ConfigureMediaQueryOptions = {
   queries?: MediaQueries
-  defaultActive?: MediaQueryKey[]
+  defaultActive?: Record<MediaQueryKey, boolean>
 }
 
 export type TransformStyleProps = {
