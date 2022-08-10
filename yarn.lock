@@ -5263,12 +5263,10 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-beta.138
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: ^2.5.0
     react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: ^2.5.0
   languageName: unknown
   linkType: soft
 
@@ -5472,12 +5470,10 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-beta.138
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: ^2.5.0
     react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: ^2.5.0
   languageName: unknown
   linkType: soft
 
@@ -6234,7 +6230,6 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native: "*"
-    react-native-gesture-handler: ^2.5.0
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -12337,7 +12332,6 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-native: 0.68.2
-    react-native-gesture-handler: ^2.5.0
     react-native-reanimated: ^2.9.1
     react-native-safe-area-context: ^4.3.1
     react-native-screens: ^3.11.1
@@ -19523,7 +19517,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.4.14, postcss@npm:^8.2.15, postcss@npm:^8.4.13, postcss@npm:^8.4.14":
+"postcss@npm:8.4.14, postcss@npm:^8.4.13, postcss@npm:^8.4.14":
   version: 8.4.14
   resolution: "postcss@npm:8.4.14"
   dependencies:
@@ -19531,6 +19525,17 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: fe58766ff32e4becf65a7d57678995cfd239df6deed2fe0557f038b47c94e4132e7e5f68b5aa820c13adfec32e523b693efaeb65798efb995ce49ccd83953816
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.2.15":
+  version: 8.4.16
+  resolution: "postcss@npm:8.4.16"
+  dependencies:
+    nanoid: ^3.3.4
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 10eee25efd77868036403858577da0cefaf2e0905feeaba5770d5438ccdddba3d01cba8063e96b8aac4c6daa0ed413dd5ae0554a433a3c4db38df1d134cffc1f
   languageName: node
   linkType: hard
 
