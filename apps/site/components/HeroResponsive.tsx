@@ -146,11 +146,13 @@ export const HeroResponsive = memo(() => {
   const [width, setWidth] = useState(initialWidth)
   const isSmall = initialWidth + Math.max(0, move) < 680
 
-  // ssr compat
   const nextWidth = media.sm ? breakpoints[smIndex].at : initialWidth + Math.max(0, move)
-  if (width !== nextWidth) {
-    setWidth(nextWidth)
-  }
+  // ssr compat stay in effect
+  useIsomorphicLayoutEffect(() => {
+    if (width !== nextWidth) {
+      setWidth(nextWidth)
+    }
+  }, [nextWidth])
 
   const handleMarkerPress = useCallback((name) => {
     setHasInteracted(true)
