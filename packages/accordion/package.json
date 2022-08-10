@@ -31,14 +31,12 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-dom": "*",
-    "react-native-gesture-handler": "^2.5.0"
+    "react-dom": "*"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.138",
     "react": "*",
-    "react-dom": "*",
-    "react-native-gesture-handler": "^2.5.0"
+    "react-dom": "*"
   },
   "publishConfig": {
     "access": "public"
