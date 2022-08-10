@@ -5,7 +5,7 @@ import { Button, Paragraph, Spacer, Tooltip, TooltipSimple, XStack } from 'tamag
 
 export const InstallInput = memo(() => {
   const [hasCopied, setHasCopied] = React.useState(false)
-  const installScript = `npx create-tamagui-app@latest`
+  const installScript = `npm create tamagui-app@latest`
 
   useEffect(() => {
     if (hasCopied) {
