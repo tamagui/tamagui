@@ -8,11 +8,19 @@
  *      b, a
  */
 
-export const mergeProps = (a: Object, b: Object, leaveOutClassNames = false) => {
+export const mergeProps = (
+  a: Object,
+  b: Object,
+  leaveOutClassNames = false,
+  inverseShorthands?: Record<string, string>
+) => {
   const out: Record<string, string> = {}
   const outCns: Record<string, string> = leaveOutClassNames ? {} : (null as any)
 
-  for (const key in a) {
+  for (let key in a) {
+    if (inverseShorthands) {
+      key = inverseShorthands[key] || key
+    }
     if (!(key in b)) {
       if (leaveOutClassNames && a[key]?.[0] === '_') {
         outCns[key] = a[key]
@@ -22,7 +30,10 @@ export const mergeProps = (a: Object, b: Object, leaveOutClassNames = false) => 
     }
   }
 
-  for (const key in b) {
+  for (let key in b) {
+    if (inverseShorthands) {
+      key = inverseShorthands[key] || key
+    }
     if (leaveOutClassNames && b[key]?.[0] === '_') {
       outCns[key] = b[key]
     } else {

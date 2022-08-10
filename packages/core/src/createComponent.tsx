@@ -150,10 +150,14 @@ export function createComponent<
           componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
         }`
         const banner = `${name} ${propsIn['data-is'] || ''}`
+        // eslint-disable-next-line no-console
         console.group(`%c 🐛 ${banner}`, 'background: yellow;')
+        // eslint-disable-next-line no-console
         console.log('props', propsIn)
+        // eslint-disable-next-line no-console
         console.log('ref', hostRef, '(click to view)')
         if (props['debug'] === 'break') {
+          // eslint-disable-next-line no-debugger
           debugger
         }
       }
@@ -493,6 +497,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
       Children.toArray(props.children).forEach((item) => {
         if (typeof item === 'string') {
+          // eslint-disable-next-line no-console
           console.error(`Unexpected text node: ${item}. A text node cannot be a child of a <View>.`)
         }
       })
@@ -561,15 +566,11 @@ export function createComponent<
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      const fontFamilyName = isText
-        ? props.fontFamily || staticConfig.defaultProps.fontFamily
+      let fontFamily = isText
+        ? splitStyles.fontFamily || staticConfig.defaultProps.fontFamily
         : null
-
-      let fontFamily: string | null = null
-      if (fontFamilyName) {
-        if (fontFamilyName[0] === '$') {
-          fontFamily = fontFamilyName.slice(1)
-        }
+      if (fontFamily && fontFamily[0] === '$') {
+        fontFamily = fontFamily.slice(1)
       }
 
       const classList = [
@@ -939,13 +940,15 @@ export function createComponent<
         staticConfig.componentName,
         defaultPropsIn,
         config.defaultProps,
-        parentNames
+        parentNames,
+        conf
       )
     }
 
     const debug = process.env.NODE_ENV === 'development' ? defaultPropsIn['debug'] : false
 
     if (process.env.NODE_ENV === 'development' && debug === 'break') {
+      // eslint-disable-next-line no-debugger
       debugger
     }
 
@@ -970,10 +973,6 @@ export function createComponent<
       debug
     )
 
-    if (debug) {
-      console.log('initialSplitStyles', initialSplitStyles)
-    }
-
     // must preserve prop order
     // leave out className because we handle that already with initialSplitStyles.classNames
     // otherwise it confuses variant functions getting className props
@@ -981,6 +980,7 @@ export function createComponent<
       component.defaultProps as any,
       initialSplitStyles.viewProps,
       true
+      // conf.inverseShorthands
     )
 
     // avoid passing className props to variants
@@ -1018,6 +1018,7 @@ export function createComponent<
     // add debug logs
     if (process.env.NODE_ENV === 'development' && debug) {
       if (process.env.IS_STATIC !== 'is_static') {
+        // eslint-disable-next-line no-console
         console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
           staticConfig,
           initialSplitStyles,
@@ -1289,7 +1290,8 @@ function mergeConfigDefaultProps(
   name: string,
   props: Record<string, any>,
   configDefaults: Record<string, Object>,
-  parentNames: (string | undefined)[]
+  parentNames: (string | undefined)[],
+  conf: TamaguiInternalConfig
 ) {
   const len = parentNames.length
   let prev
@@ -1308,15 +1310,14 @@ function mergeConfigDefaultProps(
       }
       continue
     }
-    prev = mergeProps(prev || {}, props)[0]
-    console.log('set prev', prev)
+    prev = mergeProps(prev || {}, props, false, conf.inverseShorthands)[0]
     DefaultProps.set(n, prev)
   }
 
   // overwrite the user defined defaults on top of internal defined defaults
   const ourDefaultsMerged = DefaultProps.get(name)
   if (ourDefaultsMerged) {
-    return mergeProps(props, ourDefaultsMerged)[0]
+    return mergeProps(props, ourDefaultsMerged, false, conf.inverseShorthands)[0]
   }
   return props
 }

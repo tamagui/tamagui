@@ -77,6 +77,7 @@ type StyleSplitter = (
   classNames: ClassNamesObject
   rulesToInsert: RulesToInsert
   viewProps: StackProps
+  fontFamily: string | undefined
 }
 
 export const PROP_SPLIT = '-'
@@ -141,6 +142,7 @@ export const getSplitStyles: StyleSplitter = (
             transform = insertedTransforms[val]
             if (process.env.NODE_ENV === 'development') {
               if (!transform) {
+                // eslint-disable-next-line no-console
                 console.warn('no transform found', { insertedTransforms, val })
               }
             }
@@ -153,6 +155,7 @@ export const getSplitStyles: StyleSplitter = (
           }
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
+            // eslint-disable-next-line no-console
             console.log('  🔹 getSplitStyles mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
           }
         }
@@ -170,15 +173,27 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  // fontFamily is our special baby, ensure we grab the latest set one always
+  let fontFamily: string | undefined
+
   // loop backwards so we can skip already-used props
   for (let i = len - 1; i >= 0; i--) {
-    const keyInit = propKeys[i]
+    let keyInit = propKeys[i]
+    const valInit = props[keyInit]
+
+    // normalize shorthands up front
+    const expandedKey = conf.shorthands[keyInit]
+    if (expandedKey) {
+      keyInit = expandedKey
+    }
 
     if (usedKeys.has(keyInit)) continue
     if (skipProps[keyInit]) continue
     if (!isWeb && keyInit.startsWith('data-')) continue
 
-    const valInit = props[keyInit]
+    if (keyInit === 'fontFamily' && fontFamily === undefined) {
+      fontFamily = valInit
+    }
 
     if (keyInit === 'style' || keyInit.startsWith('_style')) {
       if (!valInit) continue
@@ -299,6 +314,7 @@ export const getSplitStyles: StyleSplitter = (
           )
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      // eslint-disable-next-line no-console
       console.log('  🔹 getSplitStyles', keyInit, valInit, expanded)
     }
 
@@ -391,6 +407,7 @@ export const getSplitStyles: StyleSplitter = (
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
+          // eslint-disable-next-line no-console
           console.log('  🔹 mediaStyle', { mediaKey, mediaStyle, props, shouldDoClasses })
         }
 
@@ -408,6 +425,7 @@ export const getSplitStyles: StyleSplitter = (
         } else {
           if (mediaState[mediaKey]) {
             if (process.env.NODE_ENV === 'development' && debug) {
+              // eslint-disable-next-line no-console
               console.log('apply media style', mediaKey, mediaState)
             }
             Object.assign(shouldDoClasses ? medias : style, mediaStyle)
@@ -540,11 +558,13 @@ export const getSplitStyles: StyleSplitter = (
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (typeof document !== 'undefined') {
       // prettier-ignore
+      // eslint-disable-next-line no-console
       console.log('  🔹 getSplitStyles out', { style, pseudos, medias, classNames, viewProps, state, rulesToInsert })
     }
   }
 
   return {
+    fontFamily,
     viewProps,
     style,
     medias,

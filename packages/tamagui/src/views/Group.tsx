@@ -1,5 +1,6 @@
 import {
   GetProps,
+  getConfig,
   getExpandedShorthands,
   getTokens,
   getVariableValue,
@@ -153,6 +154,6 @@ const wrapScroll = (scrollable: boolean, vertical: boolean, children: any) => {
 }
 
 const cloneElementWithPropOrder = (child: any, props: Object) => {
-  const next = mergeProps(child.props, props)[0]
+  const next = mergeProps(child.props, props, false, getConfig().inverseShorthands)[0]
   return React.cloneElement({ ...child, props: null }, next)
 }
