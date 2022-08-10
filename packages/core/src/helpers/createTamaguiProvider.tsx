@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { isClient } from '../constants/platform'
+import { isClient, isSSR } from '../constants/platform'
 import { ButtonInsideButtonContext } from '../contexts/ButtonInsideButtonContext'
 import { TextAncestorProvider } from '../contexts/TextAncestorContext'
 import { useMediaQueryListeners } from '../hooks/useMedia'
@@ -13,9 +13,11 @@ export function createTamaguiProvider(config: TamaguiInternalConfig) {
     children,
     ...themePropsProvider
   }: TamaguiProviderProps) {
-    if (isClient) {
+    if (!isSSR) {
       useMediaQueryListeners()
+    }
 
+    if (isClient) {
       // inject CSS if asked to (not SSR compliant)
       // eslint-disable-next-line react-hooks/rules-of-hooks
       React.useLayoutEffect(() => {
