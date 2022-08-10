@@ -1,8 +1,8 @@
+import { LogoIcon } from '@tamagui/logo'
 import React from 'react'
 import { useRef, useState } from 'react'
 import { Button, Square, YStack } from 'tamagui'
 
-import { LogoIcon } from './TamaguiLogo'
 import { useIsIntersecting } from './useOnIntersecting'
 
 export function AnimationsEnterDemo(props: any) {

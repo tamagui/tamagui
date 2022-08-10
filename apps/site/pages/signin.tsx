@@ -1,7 +1,7 @@
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import { useUser } from '@supabase/supabase-auth-helpers/react'
 import { Provider } from '@supabase/supabase-js'
-import { LogoIcon } from '@tamagui/demos'
+import { LogoIcon } from '@tamagui/logo'
 import Link from 'next/link'
 import React from 'react'
 import { FormEvent, useEffect, useRef, useState } from 'react'

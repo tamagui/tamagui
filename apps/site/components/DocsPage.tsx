@@ -1,7 +1,7 @@
 import { ThemeToggle } from '@components/ThemeToggle'
 import { allDocsRoutes, docsRoutes } from '@lib/docsRoutes'
-import { LogoIcon } from '@tamagui/demos'
 import { Menu } from '@tamagui/feather-icons'
+import { LogoIcon } from '@tamagui/logo'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import * as React from 'react'

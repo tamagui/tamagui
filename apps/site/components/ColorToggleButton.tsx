@@ -1,6 +1,6 @@
-import { tints } from '@tamagui/demos'
-import React, { useEffect, useState } from 'react'
-import { Button, ButtonProps, Circle, Square, ThemeName, TooltipSimple, styled } from 'tamagui'
+import { tints } from '@tamagui/logo'
+import { useEffect, useState } from 'react'
+import { Button, ButtonProps, Circle, ThemeName, TooltipSimple } from 'tamagui'
 
 // no localstorage because its not important to remember and causes a flicker
 // const tintVal = typeof localStorage !== 'undefined' ? localStorage.getItem('tint') : 0

@@ -1,4 +1,4 @@
-import { GetProps, MediaPropKeys, TamaguiElement } from '@tamagui/core';
+import { GetProps, MediaQueryKey, TamaguiElement } from '@tamagui/core';
 import { Scope } from '@tamagui/create-context';
 import { DismissableProps } from '@tamagui/dismissable';
 import { FocusScopeProps } from '@tamagui/focus-scope';
@@ -12,7 +12,7 @@ declare type ScopedProps<P> = P & {
 declare const createDialogScope: import("@tamagui/create-context").CreateScope;
 declare type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;
 interface DialogProps {
-    sheetBreakpoint?: MediaPropKeys | false;
+    sheetBreakpoint?: MediaQueryKey | false;
     children?: React.ReactNode;
     open?: boolean;
     defaultOpen?: boolean;

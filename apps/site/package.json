@@ -28,6 +28,7 @@
     "@tamagui/font-fira-mono": "^1.0.1-beta.138",
     "@tamagui/font-inter": "^1.0.1-beta.138",
     "@tamagui/font-silkscreen": "^1.0.1-beta.138",
+    "@tamagui/logo": "^1.0.1-beta.138",
     "@tamagui/menu": "^1.0.1-beta.138",
     "@tamagui/next-theme": "^1.0.1-beta.138",
     "@tamagui/remove-scroll": "^1.0.1-beta.138",
