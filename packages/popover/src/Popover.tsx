@@ -6,7 +6,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
-  MediaPropKeys,
+  MediaQueryKey,
   SizeTokens,
   Theme,
   composeEventHandlers,
@@ -53,7 +53,7 @@ export type PopoverProps = PopperProps & {
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
-  sheetBreakpoint?: MediaPropKeys | false
+  sheetBreakpoint?: MediaQueryKey | false
 }
 
 type PopoverContextValue = {
@@ -504,7 +504,7 @@ const PopoverSheetController = (
   )
 }
 
-const useSheetBreakpointActive = (breakpoint?: MediaPropKeys | false) => {
+const useSheetBreakpointActive = (breakpoint?: MediaQueryKey | false) => {
   const media = useMedia()
   return breakpoint ? media[breakpoint] : false
 }

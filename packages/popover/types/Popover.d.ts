@@ -1,5 +1,5 @@
 import '@tamagui/polyfill-dev';
-import { MediaPropKeys, SizeTokens } from '@tamagui/core';
+import { MediaQueryKey, SizeTokens } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import { DismissableProps } from '@tamagui/dismissable';
 import { FocusScopeProps } from '@tamagui/focus-scope';
@@ -16,7 +16,7 @@ export declare type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
-    sheetBreakpoint?: MediaPropKeys | false;
+    sheetBreakpoint?: MediaQueryKey | false;
 };
 declare type PopoverContextValue = {
     triggerRef: React.RefObject<HTMLButtonElement>;

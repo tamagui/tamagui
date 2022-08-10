@@ -62,7 +62,8 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>((props, f
   const controlRef = React.useRef<HTMLElement | null>(null)
   const ref = React.useRef<any>(null)
   const composedRefs = useComposedRefs(forwardedRef, ref)
-  const id = useId(idProp)
+  const backupId = useId()
+  const id = idProp ?? backupId
 
   if (isWeb) {
     React.useEffect(() => {
