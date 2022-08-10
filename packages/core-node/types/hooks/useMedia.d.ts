@@ -5,6 +5,7 @@ export declare function removeMediaQueryListener(key: MediaQueryKey, cb: any): v
 export declare const mediaQueryConfig: MediaQueries;
 export declare const getMedia: () => MediaQueryState;
 export declare const configureMedia: ({ queries, defaultActive, }?: ConfigureMediaQueryOptions) => void;
+export declare function useMediaQueryListeners(): void;
 export declare function useMedia(): {
     [key in MediaQueryKey]: boolean;
 };
