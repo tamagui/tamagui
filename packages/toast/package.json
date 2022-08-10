@@ -1,0 +1,54 @@
+{
+  "name": "@tamagui/toast",
+  "version": "1.0.1-beta.138",
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "eslint",
+    "lint:fix": "yarn lint --fix",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/animate-presence": "^1.0.1-beta.138",
+    "@tamagui/compose-refs": "^1.0.1-beta.138",
+    "@tamagui/core": "^1.0.1-beta.138",
+    "@tamagui/create-context": "^1.0.1-beta.138",
+    "@tamagui/dismissable": "^1.0.1-beta.138",
+    "@tamagui/polyfill-dev": "^1.0.1-beta.138",
+    "@tamagui/portal": "^1.0.1-beta.138",
+    "@tamagui/stacks": "^1.0.1-beta.138",
+    "@tamagui/text": "^1.0.1-beta.138",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.138",
+    "@tamagui/visually-hidden": "^1.0.1-beta.138"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*",
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.138",
+    "@types/react-dom": "^18.0.3",
+    "@types/react-native": "^0.69.2",
+    "react": "*",
+    "react-dom": "*",
+    "react-native": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

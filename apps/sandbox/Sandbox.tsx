@@ -85,23 +85,11 @@ export const Sandbox = () => {
         }}
       >
         {/* <AlertDialogDemo /> */}
-
-        <AddThemeDemo />
-
-        {/* <FontLanguage heading="default" body="cn">
-          <Paragraph fos="$4" fontFamily="$body">
-            hello 🇨🇳
-          </Paragraph>
-          <FontLanguage body="default">
-            <Paragraph fos="$4" fontFamily="$body">
-              hi again
-            </Paragraph>
-          </FontLanguage>
-        </FontLanguage> */}
-
+        {/* <AddThemeDemo /> */}
         {/* <SheetDemo /> */}
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
+        <SwitchDemo />
         {/* <SheetDemo2 /> */}
         {/* <SheetDemo /> */}
         {/* <SwitchDemo /> */}
@@ -117,24 +105,20 @@ export const Sandbox = () => {
   )
 }
 
-export const HomeH3 = styled(H3, {
-  name: 'HomeH3',
-  ta: 'center',
-  theme: 'alt3',
-  als: 'center',
-  fow: '400',
-  px: 30,
-  size: '$8',
-  ls: -0.5,
-  maw: 620,
-
-  $sm: {
-    fow: '400',
-    size: '$6',
-    color: '$color',
-    textTransform: 'none',
-  },
-})
+function FontLanguageDemo() {
+  return (
+    <FontLanguage heading="default" body="cn">
+      <Paragraph fos="$4" fontFamily="$body">
+        hello 🇨🇳
+      </Paragraph>
+      <FontLanguage body="default">
+        <Paragraph fos="$4" fontFamily="$body">
+          hi again
+        </Paragraph>
+      </FontLanguage>
+    </FontLanguage>
+  )
+}
 
 function SheetDemo2() {
   const [open, setOpen] = useState(false)

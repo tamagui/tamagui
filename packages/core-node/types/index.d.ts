@@ -41,7 +41,7 @@ export * from './hooks/useConstant';
 export * from './hooks/useId';
 export * from './hooks/useIsMounted';
 export * from './hooks/useIsTouchDevice';
-export { configureMedia, getMedia, mediaState, useMedia, mediaObjectToString, } from './hooks/useMedia';
+export { configureMedia, getMedia, mediaState, useMedia, mediaObjectToString, addMediaQueryListener, removeMediaQueryListener, mediaQueryConfig, } from './hooks/useMedia';
 export * from './hooks/usePressable';
 export * from './hooks/useTheme';
 export * from './hooks/useIsSSR';

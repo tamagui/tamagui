@@ -1,5 +1,8 @@
 - 1.0
 
+  - animation accept useAnimatedStyle
+  - swappable animation drivers + demo + site can probably increase score
+  - fix sourcemap paths aren't right with new tmp folder strategy on build
   - Switch gesture
   - adding `shorthandsOverride` to createTamagui should be easy enough to type with Omit<>
   - fix reanimated 2.9/3.0 __frame var
@@ -18,7 +21,6 @@
     - maybe extractor bug actually
   - get tests passing
   - add test that kitchen-sink loads, test a few components
-  - animation accept useAnimatedStyle
     - make sure loop/multi animations work too
     - https://twitter.com/FernandoTheRojo/status/1470178294721036290
   - flicker on some enterStyle animation native (hermes only)
@@ -86,6 +88,8 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - tamagui-build could run extraction *before* - but still needs webpack... so not sure
+    - no need for `module:jsx`, instead output `module:native` and `module:css`
   - load tamagui itself using the loadModule / fork process to avoid all register (this is also shared logic with studio loading tamagui conf..)
   - instead of .sheetBreakpoint add .adaptBreakpoint and <Adapt />
     - ability to pass in custom sheet or other view
