@@ -71,7 +71,6 @@ export type {
   Media,
   MediaPropKeys,
   MediaQueries,
-  mediaQueryConfig,
   MediaQueryState,
   RNWTextProps,
   RNWViewProps,
@@ -131,6 +130,8 @@ export {
   // helpers
   calc,
   addMediaQueryListener,
+  removeMediaQueryListener,
+  mediaQueryConfig,
   createComponent,
   createFont,
   createShorthands,

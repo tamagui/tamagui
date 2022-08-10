@@ -5915,12 +5915,9 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-beta.138
     "@tamagui/core": ^1.0.1-beta.138
-    "@tamagui/polyfill-dev": ^1.0.1-beta.138
-    "@tamagui/use-controllable-state": ^1.0.1-beta.138
+    "@tamagui/popover": ^1.0.1-beta.138
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: ^2.5.0
-    react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -6447,6 +6444,34 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/toast@workspace:packages/toast":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/toast@workspace:packages/toast"
+  dependencies:
+    "@tamagui/animate-presence": ^1.0.1-beta.138
+    "@tamagui/build": ^1.0.1-beta.138
+    "@tamagui/compose-refs": ^1.0.1-beta.138
+    "@tamagui/core": ^1.0.1-beta.138
+    "@tamagui/create-context": ^1.0.1-beta.138
+    "@tamagui/dismissable": ^1.0.1-beta.138
+    "@tamagui/polyfill-dev": ^1.0.1-beta.138
+    "@tamagui/portal": ^1.0.1-beta.138
+    "@tamagui/stacks": ^1.0.1-beta.138
+    "@tamagui/text": ^1.0.1-beta.138
+    "@tamagui/use-controllable-state": ^1.0.1-beta.138
+    "@tamagui/visually-hidden": ^1.0.1-beta.138
+    "@types/react-dom": ^18.0.3
+    "@types/react-native": ^0.69.2
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/tooltip@^1.0.1-beta.138, @tamagui/tooltip@workspace:packages/tooltip":
   version: 0.0.0-use.local
   resolution: "@tamagui/tooltip@workspace:packages/tooltip"
@@ -6544,6 +6569,20 @@ __metadata:
     react-native: "*"
   peerDependencies:
     react-native: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/visually-hidden@^1.0.1-beta.138, @tamagui/visually-hidden@workspace:packages/visually-hidden":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/visually-hidden@workspace:packages/visually-hidden"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.138
+    "@tamagui/core": ^1.0.1-beta.138
+    react: "*"
+    react-dom: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -22515,6 +22554,7 @@ __metadata:
     "@tamagui/use-debounce": ^1.0.1-beta.138
     "@tamagui/use-event": ^1.0.1-beta.138
     "@tamagui/use-force-update": ^1.0.1-beta.138
+    "@tamagui/visually-hidden": ^1.0.1-beta.138
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
     expo-linear-gradient: ^11.3.0

@@ -53,6 +53,9 @@ export {
   mediaState,
   useMedia,
   mediaObjectToString,
+  addMediaQueryListener,
+  removeMediaQueryListener,
+  mediaQueryConfig,
 } from './hooks/useMedia'
 export * from './hooks/usePressable'
 export * from './hooks/useTheme'

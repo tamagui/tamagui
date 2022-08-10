@@ -443,7 +443,6 @@ export const Popover = withStaticProperties(
             open={open}
             onOpenChange={setOpen}
             onOpenToggle={useEvent(() => {
-              console.log('wtf')
               if (open && breakpointActive) {
                 return
               }
