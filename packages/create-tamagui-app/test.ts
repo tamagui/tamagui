@@ -20,9 +20,9 @@ test.beforeAll(async () => {
 
   cd(dir)
 
-  await $`node ${bin} create-test-app`
+  await $`node ${bin} test-app`
 
-  cd(`create-test-app`)
+  cd(`test-app`)
 
   server = $`yarn web`
 
