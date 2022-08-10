@@ -6,40 +6,51 @@
  *      mergeProps({ a: 1, b: 2 }, { b: 1, a: 2 })
  *    The final key order will be:
  *      b, a
+ *
+ * Handles a couple special tamagui cases
+ *   - classNames can be extracted out separately
+ *   - shorthands can be expanded before merging
  */
+
+type StringRecord = Record<string, string>
 
 export const mergeProps = (
   a: Object,
   b: Object,
   leaveOutClassNames = false,
-  inverseShorthands?: Record<string, string>
+  inverseShorthands?: StringRecord
 ) => {
-  const out: Record<string, string> = {}
-  const outCns: Record<string, string> = leaveOutClassNames ? {} : (null as any)
-
-  for (let key in a) {
-    if (inverseShorthands) {
-      key = inverseShorthands[key] || key
-    }
-    if (!(key in b)) {
-      if (leaveOutClassNames && a[key]?.[0] === '_') {
-        outCns[key] = a[key]
-      } else {
-        out[key] = a[key]
-      }
-    }
+  const out: StringRecord = {}
+  const outCns: StringRecord = leaveOutClassNames ? {} : (null as any)
+  for (const key in a) {
+    mergeProp(out, outCns, a, b, key, leaveOutClassNames, inverseShorthands)
   }
-
-  for (let key in b) {
-    if (inverseShorthands) {
-      key = inverseShorthands[key] || key
-    }
-    if (leaveOutClassNames && b[key]?.[0] === '_') {
-      outCns[key] = b[key]
-    } else {
-      out[key] = b[key]
-    }
+  for (const key in b) {
+    mergeProp(out, outCns, b, undefined, key, leaveOutClassNames, inverseShorthands)
   }
-
   return [out, outCns] as const
+}
+
+function mergeProp(
+  out: StringRecord,
+  outCns: StringRecord,
+  a: Object,
+  b: Object | undefined,
+  key: string,
+  leaveOutClassNames: boolean,
+  inverseShorthands?: StringRecord
+) {
+  const val = a[key]
+  const shorthand = inverseShorthands ? inverseShorthands[key] : null
+  if (b && (key in b || (shorthand && shorthand in b))) {
+    return
+  }
+  if (shorthand) {
+    key = shorthand
+  }
+  if (leaveOutClassNames && val?.[0] === '_') {
+    outCns[key] = val
+  } else {
+    out[key] = val
+  }
 }
