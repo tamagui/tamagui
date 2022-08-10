@@ -28,6 +28,7 @@ export * from '@tamagui/tooltip'
 export * from '@tamagui/use-controllable-state'
 export * from '@tamagui/use-debounce'
 export * from '@tamagui/use-force-update'
+export * from '@tamagui/visually-hidden'
 
 export * from './createTamagui'
 export * from './viewTypes'
@@ -44,7 +45,6 @@ export * from './views/LinearGradient'
 // export * from './views/Skeleton'
 export * from './views/Spinner'
 export * from './views/TextArea'
-export * from './views/VisuallyHidden'
 
 // since we overlap with StackProps and potentially others
 // lets be explicit on what gets exported

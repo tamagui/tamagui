@@ -59,6 +59,7 @@
     "@tamagui/use-debounce": "^1.0.1-beta.138",
     "@tamagui/use-event": "^1.0.1-beta.138",
     "@tamagui/use-force-update": "^1.0.1-beta.138",
+    "@tamagui/visually-hidden": "^1.0.1-beta.138",
     "expo-linear-gradient": "^11.3.0",
     "expo-screen-orientation": "^4.3.0",
     "react": "*",

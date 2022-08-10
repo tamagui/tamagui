@@ -39,6 +39,7 @@ export function assignNativePropsToWeb(elementType: string, viewProps: any, nati
     viewProps['aria-colspan'] = nativeProps.accessibilityColumnSpan
   }
   if (nativeProps.accessibilityControls != null) {
+    console.log('wtf', nativeProps.accessibilityControls)
     viewProps['aria-controls'] = processIDRefList(nativeProps.accessibilityControls)
   }
   if (nativeProps.accessibilityCurrent != null) {
