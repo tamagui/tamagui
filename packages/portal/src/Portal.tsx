@@ -14,6 +14,7 @@ export const Portal = ({ host = globalThis.document?.body, ...props }: PortalPro
   const contents = (
     <YStack
       pointerEvents="box-none"
+      contain="strict"
       fullscreen
       // @ts-expect-error ok on web
       position={isWeb ? 'fixed' : 'absolute'}
