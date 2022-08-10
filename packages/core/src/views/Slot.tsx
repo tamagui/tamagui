@@ -66,7 +66,7 @@ const SlotClone = React.forwardRef<any, SlotCloneProps>((props, forwardedRef) =>
 
   if (React.isValidElement(children)) {
     const childProps = {
-      ...mergeProps(children, slotProps),
+      ...mergeSlotProps(children, slotProps),
       ref: composeRefs(forwardedRef, (children as any).ref),
     }
     return React.cloneElement(children, childProps)
@@ -101,7 +101,7 @@ const pressMap = isWeb
     }
   : {}
 
-function mergeProps(child: any, slotProps: AnyProps) {
+function mergeSlotProps(child: any, slotProps: AnyProps) {
   const childProps = child.props
 
   // all child props should override

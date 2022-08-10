@@ -20,6 +20,7 @@ import {
   Button,
   FontLanguage,
   H1,
+  H2,
   H3,
   Paragraph,
   Sheet,
@@ -84,12 +85,15 @@ export const Sandbox = () => {
           overflow: 'hidden',
         }}
       >
+        <H2 debug="verbose" ff="$alternative">
+          hello
+        </H2>
         {/* <AlertDialogDemo /> */}
         {/* <AddThemeDemo /> */}
         {/* <SheetDemo /> */}
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
-        <SwitchDemo />
+        {/* <SwitchDemo /> */}
         {/* <SheetDemo2 /> */}
         {/* <SheetDemo /> */}
         {/* <SwitchDemo /> */}

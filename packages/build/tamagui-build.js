@@ -99,15 +99,18 @@ async function buildTsc() {
     if (!(await fs.pathExists(`tsconfig.json`))) {
       throw new Error(`No tsconfig.json found`)
     }
-    // typescripts build cache messes up when doing declarationOnly so need to bust it
     const targetDir = `types${Math.floor(Math.random() * 1_000_000)}`
-    await fs.ensureDir(targetDir)
-    const cmd = `tsc --baseUrl . --outDir ${targetDir} --rootDir src --emitDeclarationOnly --declarationMap`
-    // console.log('\x1b[2m$', `npx ${cmd}`)
-    await exec('npx', cmd.split(' '))
-    await fs.remove('types')
-    await fs.copy(targetDir, 'types')
-    await fs.remove(targetDir)
+    try {
+      // typescripts build cache messes up when doing declarationOnly so need to bust it
+      await fs.ensureDir(targetDir)
+      const cmd = `tsc --baseUrl . --outDir ${targetDir} --rootDir src --emitDeclarationOnly --declarationMap`
+      // console.log('\x1b[2m$', `npx ${cmd}`)
+      await exec('npx', cmd.split(' '))
+      await fs.remove('types')
+      await fs.copy(targetDir, 'types')
+    } finally {
+      await fs.remove(targetDir)
+    }
   }
 
   // NOTE:

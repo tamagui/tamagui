@@ -1,13 +1,11 @@
 - 1.0
 
+  - changing family responsive tests
   - animation accept useAnimatedStyle
   - swappable animation drivers + demo + site can probably increase score
-  - fix sourcemap paths aren't right with new tmp folder strategy on build
   - Switch gesture
   - adding `shorthandsOverride` to createTamagui should be easy enough to type with Omit<>
   - fix reanimated 2.9/3.0 __frame var
-  - cleaner output classnames in getStylesAtomic
-  - H2 ff="$stylish" not working, only fontFamily fully
   - Text doesn't pick up defaultProps (others do)
   - loadFont
   - windows without WSL

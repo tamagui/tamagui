@@ -45,15 +45,18 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
   ) => {
     const conf = getConfig()
     if (!conf) {
-      console.trace(`No tamagui config setup`)
-      return
+      throw new Error(`No tamagui config setup`)
     }
 
     const props = state.fallbackProps || propsIn
     const returnVariablesAs = getReturnVariablesAs(props, state)
 
     // handled here because we need to resolve this off tokens, its the only one-off like this
-    const fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
+    const fontFamily =
+      props[conf.inverseShorthands.fontFamily] ||
+      props.fontFamily ||
+      defaultProps.fontFamily ||
+      '$body'
 
     const variantValue = resolveVariants(
       key,
@@ -156,6 +159,7 @@ const resolveVariants: StyleResolver = (
         return null
       }
       const name = staticConfig.componentName || '[UnnamedComponent]'
+      // eslint-disable-next-line no-console
       console.warn(
         `No variant found: ${name} has variant "${key}", but no matching value "${value}"`
       )
