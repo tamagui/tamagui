@@ -1,7 +1,5 @@
 import '@tamagui/core/reset.css'
-import '@tamagui/font-silkscreen/css/400.css'
 
-import '../public/fonts/inter.css'
 import '../app.css'
 
 import { Footer } from '@components/Footer'

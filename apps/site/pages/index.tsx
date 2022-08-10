@@ -28,8 +28,6 @@ import rehypeHighlightLine from '../lib/rehype-highlight-line'
 import rehypeHighlightWord from '../lib/rehype-highlight-word'
 
 export default function Home({ animationCode, compilationExamples }) {
-  // return <SheetDemo />
-
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
@@ -41,7 +39,6 @@ export default function Home({ animationCode, compilationExamples }) {
           <InstallInput />
         </XStack>
       </ContainerLarge>
-      {/* <Suspense fallback={null}> */}
       <YStack elevation="$1" py="$8" pb="$10">
         <HeroBelow />
       </YStack>
@@ -50,20 +47,16 @@ export default function Home({ animationCode, compilationExamples }) {
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleThemes />
       </Section>
-      {/* below the fold */}
-      {/* <Suspense fallback={null}> */}
       <Section pb="$0" zi={10}>
         <HeroResponsive />
       </Section>
-      <SectionTinted contain="paint layout" gradient bubble>
+      <SectionTinted gradient bubble>
         <HeroPerformance />
       </SectionTinted>
-      {/* </Suspense> */}
-      <SectionTinted contain="paint layout" noBorderTop zi={100}>
+      <SectionTinted noBorderTop zi={100}>
         <YStack fullscreen className="bg-grid mask-gradient-up" />
         <HeroExampleAnimations animationCode={animationCode} />
       </SectionTinted>
-      {/* <Suspense fallback={null}> */}
       <Section bc="$background" contain="paint layout" zi={10}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleCode examples={compilationExamples} />
@@ -72,7 +65,7 @@ export default function Home({ animationCode, compilationExamples }) {
         <FeaturesGrid />
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
       </Section>
-      <SectionTinted contain="paint layout" bubble gradient>
+      <SectionTinted bubble gradient>
         <HeroTypography />
       </SectionTinted>
       <Section zi={10}>
