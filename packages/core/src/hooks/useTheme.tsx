@@ -46,6 +46,7 @@ export const useTheme = (
 
   if (process.env.NODE_ENV === 'development') {
     if (props?.debug === 'verbose') {
+      // eslint-disable-next-line no-console
       console.log('  🔹 useTheme', { themeName, componentName, name, className })
     }
   }
@@ -74,9 +75,10 @@ export const useTheme = (
 
   if (!theme) {
     if (process.env.NODE_ENV === 'development') {
-      console.warn('No theme', { themeName, theme, componentName, className })
+      // eslint-disable-next-line no-console
+      console.warn('No theme with name', themeName)
     }
-    return themes[getConfig().defaultTheme || Object.keys(themes)[0]]
+    return themes[getConfig().defaultTheme || 'light']
   }
 
   return useMemo(() => {

@@ -1,6 +1,6 @@
 import { ConfigureMediaQueryOptions, MediaQueries, MediaQueryKey, MediaQueryObject, MediaQueryState } from '../types';
 export declare const mediaState: MediaQueryState;
-export declare function addMediaQueryListener(key: MediaQueryKey, cb: any): void;
+export declare function addMediaQueryListener(key: MediaQueryKey, cb: any): () => void;
 export declare function removeMediaQueryListener(key: MediaQueryKey, cb: any): void;
 export declare const mediaQueryConfig: MediaQueries;
 export declare const getMedia: () => MediaQueryState;

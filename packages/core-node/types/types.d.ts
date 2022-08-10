@@ -163,7 +163,7 @@ export declare type CreateTamaguiProps = {
         Text?: TextProps;
         Spacer?: SpacerProps;
     };
-    mediaQueryDefaultActive?: MediaQueryKey[];
+    mediaQueryDefaultActive?: Record<MediaQueryKey, boolean>;
     cssStyleSeparator?: string;
     maxDarkLightNesting?: number;
     shouldAddPrefersColorThemes?: boolean;
@@ -223,7 +223,7 @@ export declare type MediaQueries = {
 };
 export declare type ConfigureMediaQueryOptions = {
     queries?: MediaQueries;
-    defaultActive?: MediaQueryKey[];
+    defaultActive?: Record<MediaQueryKey, boolean>;
 };
 export declare type TransformStyleProps = {
     x?: number;

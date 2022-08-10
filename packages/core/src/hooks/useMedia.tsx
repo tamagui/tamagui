@@ -1,5 +1,4 @@
-import { useForceUpdate } from '@tamagui/use-force-update'
-import { useEffect, useRef } from 'react'
+import { useMemo, useState } from 'react'
 
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { matchMedia } from '../helpers/matchMedia'
@@ -10,19 +9,7 @@ import {
   MediaQueryObject,
   MediaQueryState,
 } from '../types'
-import { useConstant } from './useConstant'
-
-/**
- * 🛑🛑🛑
- *
- *   for concurrent mode safety need to tweak this a little bit,
- *   don't mutate mediaState in setupMediaListeners
- *   and don't return a global mediaState
- *   instead each component gets a local copy of just the ones they listen to
- *
- * 🛑🛑🛑
- *
- */
+import { useSafeRef } from './useSafeRef'
 
 export const mediaState: MediaQueryState = {} as any
 const mediaQueryListeners: { [key: string]: Set<Function> } = {}
@@ -30,6 +17,7 @@ const mediaQueryListeners: { [key: string]: Set<Function> } = {}
 export function addMediaQueryListener(key: MediaQueryKey, cb: any) {
   mediaQueryListeners[key] = mediaQueryListeners[key] || new Set()
   mediaQueryListeners[key].add(cb)
+  return () => removeMediaQueryListener(key, cb)
 }
 
 export function removeMediaQueryListener(key: MediaQueryKey, cb: any) {
@@ -37,7 +25,6 @@ export function removeMediaQueryListener(key: MediaQueryKey, cb: any) {
 }
 
 export const mediaQueryConfig: MediaQueries = {}
-let hasSetup = false
 
 export const getMedia = () => {
   return mediaState
@@ -45,153 +32,116 @@ export const getMedia = () => {
 
 const dispose = new Set<Function>()
 
+// for SSR capture it at time of startup
+let initialMediaState: MediaQueryState | null
+
 export const configureMedia = ({
   queries,
-  defaultActive = ['sm', 'xs'],
+  defaultActive = {},
 }: ConfigureMediaQueryOptions = {}) => {
   if (!queries) return
 
   // support hot reload
-  if (hasSetup) {
-    if (JSON.stringify(queries) === JSON.stringify(mediaQueryConfig)) {
-      // hmr avoid update
-      return
+  if (initialMediaState) {
+    if (process.env.NODE_ENV === 'development') {
+      if (JSON.stringify(queries) === JSON.stringify(mediaQueryConfig)) {
+        // hmr avoid update
+        return
+      }
     }
     setupMediaListeners()
   }
 
   Object.assign(mediaQueryConfig, queries)
-
-  // SSR = start all in the initial state you set
+  // start in the initial state
   for (const key in queries) {
-    mediaState[key] = defaultActive.includes(key)
+    mediaState[key] = defaultActive[key] || false
   }
+  initialMediaState = { ...mediaState }
+}
 
-  hasSetup = true
+function unlisten() {
+  dispose.forEach((cb) => cb())
+  dispose.clear()
 }
 
 function setupMediaListeners() {
   // hmr, undo existing before re-binding
-  dispose.forEach((cb) => cb())
-  dispose.clear()
+  unlisten()
 
   for (const key in mediaQueryConfig) {
     const str = mediaObjectToString(mediaQueryConfig[key])
-    try {
-      const getMatch = () => matchMedia(str)
-      const match = getMatch()
-      if (!match || typeof match.addListener !== 'function') {
-        // caught below
-        throw new Error('⚠️ No match (seeing this in RN sometimes)')
-      }
-      mediaState[key] = !!match.matches
-      // note this deprecated api works with polyfills we use now
-      match.addListener(update)
-      dispose.add(() => match.removeListener(update))
+    const getMatch = () => matchMedia(str)
+    const match = getMatch()
+    if (!match) {
+      throw new Error('⚠️ No match')
+    }
+    // react native needs these deprecated apis for now
+    match.addListener(update)
+    dispose.add(() => match.removeListener(update))
+    update()
 
-      function update() {
-        const next = !!getMatch().matches
-        if (next === mediaState[key]) return
-        mediaState[key] = next
-        const listeners = mediaQueryListeners[key]
-        if (listeners?.size) {
-          for (const cb of [...listeners]) {
-            cb()
-          }
+    function update() {
+      const next = !!getMatch().matches
+      if (next === mediaState[key]) return
+      mediaState[key] = next
+      const listeners = mediaQueryListeners[key]
+      if (listeners?.size) {
+        for (const cb of [...listeners]) {
+          cb()
         }
       }
-
-      update()
-    } catch (err: any) {
-      // eslint-disable-next-line no-console
-      console.error('Error running media query', str, err.message, err.stack)
     }
   }
 }
 
 export function useMediaQueryListeners() {
   useIsomorphicLayoutEffect(() => {
-    return setupMediaListeners()
+    setupMediaListeners()
+    return unlisten
   }, [])
-}
-
-type UseMediaState = {
-  selections: { [key: string]: boolean }
-  nextSelections: { [key: string]: boolean }
-  isRendering: boolean
-  isUnmounted: boolean
 }
 
 export function useMedia(): {
   [key in MediaQueryKey]: boolean
 } {
-  const forceUpdate = useForceUpdate()
-  const state = useRef() as React.MutableRefObject<UseMediaState>
-  if (!state.current) {
-    state.current = {
-      selections: {},
-      nextSelections: {},
-      isUnmounted: false,
-      isRendering: true,
-    }
-  }
-  state.current.isRendering = true
+  const [state, setState] = useState(initialMediaState!)
+  const keys = useSafeRef({} as Record<string, boolean>)
 
-  // track usage
-  useIsomorphicLayoutEffect(() => {
-    const st = state.current
-    st.isRendering = false
-    // delete old
-    for (const key in st.selections) {
-      if (!(key in st.nextSelections)) {
-        removeMediaQueryListener(key, forceUpdate)
-      }
-    }
-    // add new
-    for (const key in st.nextSelections) {
-      if (!(key in st.selections)) {
-        addMediaQueryListener(key, forceUpdate)
-      }
-    }
-  })
-
-  // unmount
-  useEffect(() => {
-    return () => {
-      const st = state.current
-      st.isUnmounted = true
-      const allKeys = {
-        ...st.selections,
-        ...st.nextSelections,
-      }
-      for (const key in allKeys) {
-        removeMediaQueryListener(key, forceUpdate)
-      }
-    }
-  }, [])
-
-  return useConstant(() => {
-    const st = state.current
-    return new Proxy(mediaState, {
-      get(target, key: string) {
-        if (key[0] === '$') {
-          key = key.slice(1)
+  function updateState() {
+    setState((prev) => {
+      for (const key in keys.current) {
+        if (prev[key] !== mediaState[key]) {
+          return { ...mediaState }
         }
-        if (!(key in mediaState)) {
-          return Reflect.get(target, key)
-        }
-        if (!st.isUnmounted) {
-          if (st.isRendering) {
-            st.nextSelections[key] = true
-          }
-        }
-        if (key in mediaState) {
-          return mediaState[key]
-        }
-        return Reflect.get(mediaState, key)
-      },
+      }
+      return prev
     })
+  }
+
+  useIsomorphicLayoutEffect(() => {
+    const listeners: Function[] = []
+    for (const key in keys.current) {
+      listeners.push(addMediaQueryListener(key, updateState))
+    }
+    updateState()
+    return () => {
+      listeners.forEach((cb) => cb())
+    }
   })
+
+  return useMemo(
+    () =>
+      new Proxy(state, {
+        get(_, key: string) {
+          if (!keys.current[key]) {
+            keys.current = { ...keys.current, [key]: true }
+          }
+          return Reflect.get(state, key)
+        },
+      }),
+    [state, keys]
+  )
 }
 
 function camelToHyphen(str: string) {

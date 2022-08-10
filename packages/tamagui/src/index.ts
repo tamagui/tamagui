@@ -173,5 +173,6 @@ export {
   usePressable,
   useTheme,
   useThemeName,
+  useSafeRef,
   useUnmountEffect,
 } from '@tamagui/core'

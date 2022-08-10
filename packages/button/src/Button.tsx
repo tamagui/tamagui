@@ -109,7 +109,7 @@ export const ButtonText = styled(SizableText, {
   ellipse: true,
 })
 
-const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
+const ButtonComponent = forwardRef(function Button(props: ButtonProps, ref) {
   // careful not to desctructure and re-order props, order is important
   const {
     children,
@@ -144,7 +144,6 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
 
   return (
     <ButtonFrame
-      fontFamily={fontFamily}
       {...(props.disabled && {
         // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
         focusable: undefined,

@@ -88,3 +88,10 @@ As long as **all** of your usages of useMedia are extractable, Tamagui will actu
 Of course, you may sometimes use `useMedia` for other purposes than styling. In fact, that's the nice part about Tamagui - if it can't extract, it always falls back to runtime gracefully.
 
 Tamagui runtime `useMedia` usage will track which keys are accessed, and only update if the media query matching that key updates. This granular updating is nice for performance.
+
+#### Limitations
+
+The `useMedia` hook uses proxies so it can track which keys you are accessing and only re-render components that need re-rendering based on those keys. The Tamagui compiler also understands straightforward uses of the hook during compile-time and can remove it entirely when targeting the web, in favor of CSS.
+
+- In order to keep things lightweight and simple, the proxied object returned by `useMedia` is not iterable, and you can't check keys on it using `in` or get them using `Object.keys`.
+- It's encouraged to write `const media = useMedia()` and then access your keys like `media.sm` to work best with the compiler. The compiler supports de-structuring, but not re-naming.

@@ -187,13 +187,13 @@ export const getSplitStyles: StyleSplitter = (
       keyInit = expandedKey
     }
 
-    if (usedKeys.has(keyInit)) continue
-    if (skipProps[keyInit]) continue
-    if (!isWeb && keyInit.startsWith('data-')) continue
-
     if (keyInit === 'fontFamily' && fontFamily === undefined) {
       fontFamily = valInit
     }
+
+    if (usedKeys.has(keyInit)) continue
+    if (skipProps[keyInit]) continue
+    if (!isWeb && keyInit.startsWith('data-')) continue
 
     if (keyInit === 'style' || keyInit.startsWith('_style')) {
       if (!valInit) continue
