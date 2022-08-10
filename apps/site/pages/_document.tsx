@@ -8,10 +8,7 @@ export default class Document extends NextDocument {
   static async getInitialProps({ renderPage }) {
     AppRegistry.registerComponent('Main', () => Main)
     const page = await renderPage()
-    // @ts-ignore
-    const { getStyleElement } = AppRegistry.getApplication('Main')
     const styles = [
-      getStyleElement(),
       <style key="tamagui-css" dangerouslySetInnerHTML={{ __html: Tamagui.getCSS() }} />,
     ]
     return { ...page, styles: Children.toArray(styles) }

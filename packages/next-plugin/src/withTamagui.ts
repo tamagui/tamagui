@@ -288,7 +288,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           const cssTest =
             tamaguiOptions.includeCSSTest ??
             ((file) => {
-              return file.endsWith('.module.css')
+              return file.endsWith('.css')
             })
 
           if (!dev) {
@@ -301,7 +301,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             })
             webpackConfig.plugins.push(
               new MiniCSSExtractPlugin({
-                filename: 'static/css/[name].[contenthash].css',
+                filename: 'static/css/[contenthash].css',
                 ignoreOrder: true,
                 runtime: false,
               })
