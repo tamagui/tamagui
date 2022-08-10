@@ -186,7 +186,7 @@ export declare const elevate: {
         shadowOpacity?: number | import("@tamagui/core").Variable<any> | undefined;
         shadowRadius?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
         transform?: import("@tamagui/core").Variable<any> | (import("react-native").PerpectiveTransform | import("react-native").RotateTransform | import("react-native").RotateXTransform | import("react-native").RotateYTransform | import("react-native").RotateZTransform | import("react-native").ScaleTransform | import("react-native").ScaleXTransform | import("react-native").ScaleYTransform | import("react-native").TranslateXTransform | import("react-native").TranslateYTransform | import("react-native").SkewXTransform | import("react-native").SkewYTransform | import("react-native").MatrixTransform)[] | undefined;
-        transformMatrix?: import("@tamagui/core").Variable<any> | number[] | undefined;
+        transformMatrix?: number[] | import("@tamagui/core").Variable<any> | undefined;
         rotation?: number | import("@tamagui/core").Variable<any> | undefined;
         scaleX?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
         scaleY?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
@@ -198,7 +198,7 @@ export declare const elevate: {
         scale?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
         skewX?: string | import("@tamagui/core").Variable<any> | undefined;
         skewY?: string | import("@tamagui/core").Variable<any> | undefined;
-        matrix?: import("@tamagui/core").Variable<any> | number[] | undefined;
+        matrix?: number[] | import("@tamagui/core").Variable<any> | undefined;
         rotate?: string | import("@tamagui/core").Variable<any> | undefined;
         rotateY?: string | import("@tamagui/core").Variable<any> | undefined;
         rotateX?: string | import("@tamagui/core").Variable<any> | undefined;
