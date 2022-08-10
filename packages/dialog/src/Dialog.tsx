@@ -683,6 +683,8 @@ const DialogInner = React.forwardRef<{ open: (val: boolean) => void }, DialogPro
     [setOpen]
   )
 
+  console.log('id is', useId())
+
   return (
     <DialogProvider
       scope={__scopeDialog}

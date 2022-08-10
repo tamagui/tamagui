@@ -27,8 +27,7 @@
     "@tamagui/create-context": "^1.0.1-beta.138",
     "@tamagui/remove-scroll": "^1.0.1-beta.138",
     "@tamagui/stacks": "^1.0.1-beta.138",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.138",
-    "react-native-gesture-handler": "^2.5.0"
+    "@tamagui/use-controllable-state": "^1.0.1-beta.138"
   },
   "peerDependencies": {
     "react": "*",

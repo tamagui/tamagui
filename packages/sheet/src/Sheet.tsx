@@ -35,7 +35,6 @@ import {
   GestureResponderEvent,
   PanResponder,
   PanResponderGestureState,
-  StyleSheet,
   View,
 } from 'react-native'
 
