@@ -1,8 +1,7 @@
 import { Play } from '@tamagui/feather-icons'
+import { LogoIcon } from '@tamagui/logo'
 import React from 'react'
 import { Button, Square, useControllableState } from 'tamagui'
-
-import { LogoIcon } from './TamaguiLogo'
 
 export function AnimationsDemo(props) {
   const [positionI, setPositionI] = useControllableState({

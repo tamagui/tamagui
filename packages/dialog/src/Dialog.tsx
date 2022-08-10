@@ -3,7 +3,7 @@ import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
-  MediaPropKeys,
+  MediaQueryKey,
   Slot,
   TamaguiElement,
   Theme,
@@ -36,7 +36,7 @@ const [createDialogContext, createDialogScope] = createContextScope(DIALOG_NAME)
 type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
 
 interface DialogProps {
-  sheetBreakpoint?: MediaPropKeys | false
+  sheetBreakpoint?: MediaQueryKey | false
   children?: React.ReactNode
   open?: boolean
   defaultOpen?: boolean

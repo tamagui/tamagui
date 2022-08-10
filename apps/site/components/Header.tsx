@@ -1,4 +1,5 @@
-import { LogoWords, TamaguiLogo, tints } from '@tamagui/demos'
+import { LogoWords, tints } from '@tamagui/logo'
+import { TamaguiLogo } from '@tamagui/logo'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -79,7 +80,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
       </XStack>
 
       {/* minwidth to prevent layout shift */}
-      <XStack jc="flex-end" miw={204} $xxs={{ miw: 150 }} pointerEvents="auto" tag="nav" space="$3">
+      <XStack jc="flex-end" miw={204} $xxs={{ miw: 150 }} pointerEvents="auto" tag="nav">
         {isTakeout ? (
           <XStack ai="center" space="$2">
             <NextLink href="/signin" passHref>

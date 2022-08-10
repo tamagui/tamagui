@@ -38,6 +38,7 @@ const HeroTop = memo(() => {
   return (
     <ContainerLarge pos="relative">
       <YStack
+        contain="strict"
         className="bg-grid mask-gradient-up"
         fullscreen
         top="auto"

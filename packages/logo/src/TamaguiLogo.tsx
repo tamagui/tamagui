@@ -21,10 +21,10 @@ export const TamaguiLogo = forwardRef(
     } & XStackProps,
     ref
   ) => (
-    <XStack ref={ref} ai="center" jc="center" space="$5" {...props}>
+    <XStack ref={ref} alignItems="center" justifyContent="center" space="$5" {...props}>
       <LogoIcon downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)} color={color} />
       {showWords && (
-        <YStack mb={-4}>
+        <YStack marginBottom={-4}>
           <LogoWords onHoverLetter={onHoverLetter} downscale={downscale ?? 2} color={color} />
         </YStack>
       )}
@@ -98,7 +98,7 @@ export const LogoIcon = ({ downscale = 2 }: any) => {
   return (
     <YStack
       className="unselectable"
-      als="center"
+      alignSelf="center"
       marginVertical={-10}
       pressStyle={{
         opacity: 0.7,

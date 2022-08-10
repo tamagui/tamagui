@@ -1,7 +1,6 @@
+import { LogoIcon } from '@tamagui/logo'
 import React from 'react'
 import { Square } from 'tamagui'
-
-import { LogoIcon } from './TamaguiLogo'
 
 export function AnimationsHoverDemo() {
   return (
