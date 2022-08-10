@@ -544,16 +544,16 @@ export const Sheet = withStaticProperties(
           >
             {handleComponent}
 
-            {/* <RemoveScroll
+            <RemoveScroll
               enabled={open && modal && handleDisableScroll}
               as={Slot}
               allowPinchZoom
               shards={[contentRef]}
               // causes lots of bugs on touch web on site
               removeScrollBar={false}
-            > */}
-            {isResizing ? null : frameComponent}
-            {/* </RemoveScroll> */}
+            >
+              {isResizing ? null : frameComponent}
+            </RemoveScroll>
           </Animated.View>
         </SheetProvider>
       )

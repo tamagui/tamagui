@@ -4,7 +4,7 @@ import { Button, Dialog, Fieldset, Input, Label, Unspaced, YStack } from 'tamagu
 
 export function DialogDemo() {
   return (
-    <Dialog sheetBreakpoint="$sm" modal>
+    <Dialog sheetBreakpoint="sm" modal>
       <Dialog.Trigger asChild>
         <Button>Edit Profile</Button>
       </Dialog.Trigger>
