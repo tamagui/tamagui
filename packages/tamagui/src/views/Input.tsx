@@ -12,6 +12,9 @@ export const InputFrame = styled(TextInput, {
   borderColor: '$borderColor',
   backgroundColor: '$background',
 
+  // this fixes a flex bug where it overflows container
+  minWidth: 0,
+
   hoverStyle: {
     borderColor: '$borderColorHover',
   },
