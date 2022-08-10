@@ -59,7 +59,16 @@ export function updateInserted() {
   for (let i = 0; i < sheets.length; i++) {
     const sheet = sheets[i]
     if (!sheet) continue
-    const rules = sheet.cssRules
+
+    // avoid errors on cross origin sheets
+    // https://stackoverflow.com/questions/49993633/uncaught-domexception-failed-to-read-the-cssrules-property
+    let rules: CSSRuleList
+    try {
+      rules = sheet.cssRules
+    } catch {
+      continue
+    }
+
     const len = rules.length
     const lastScanned = scannedNum.get(sheet) ?? 0
     if (lastScanned === len) {
