@@ -1,5 +1,5 @@
 import type { ContextData, FloatingContext, ReferenceType } from '@floating-ui/react-dom-interactions';
-import type { MediaPropKeys, SizeTokens } from '@tamagui/core';
+import type { MediaQueryKey, SizeTokens } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import type { ThemeableStackProps, YStackProps } from '@tamagui/stacks';
 import type { DispatchWithoutAction, HTMLProps, MutableRefObject, ReactNode } from 'react';
@@ -20,7 +20,7 @@ export interface SelectProps {
     name?: string;
     autoComplete?: string;
     size?: SizeTokens;
-    sheetBreakpoint?: MediaPropKeys | false;
+    sheetBreakpoint?: MediaQueryKey | false;
 }
 declare type NonNull<A> = Exclude<A, void | null>;
 export interface SelectContextValue {

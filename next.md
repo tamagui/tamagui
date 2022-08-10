@@ -1,5 +1,7 @@
 - 1.0
 
+  - next site is outputting the same stylesheet 3-4 times as link??
+  - Select is triggering sheet when not small - media query regression
   - changing family responsive tests
   - animation accept useAnimatedStyle
   - swappable animation drivers + demo + site can probably increase score
