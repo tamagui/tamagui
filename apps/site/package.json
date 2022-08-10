@@ -11,7 +11,7 @@
     "dev:extract": "DISABLE_EXTRACTION=false yarn dev",
     "next:build": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build",
     "next:export": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next export",
-    "next:start": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start"
+    "next:start": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start --port 3333"
   },
   "dependencies": {
     "@docsearch/react": "^3.0.0",
