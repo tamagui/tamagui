@@ -27,6 +27,7 @@ import {
   Square,
   Text,
   Theme,
+  XStack,
   YStack,
   addTheme,
   styled,
@@ -85,9 +86,6 @@ export const Sandbox = () => {
           overflow: 'hidden',
         }}
       >
-        <H2 debug="verbose" ff="$alternative">
-          hello
-        </H2>
         {/* <AlertDialogDemo /> */}
         {/* <AddThemeDemo /> */}
         {/* <SheetDemo /> */}
@@ -108,6 +106,38 @@ export const Sandbox = () => {
     </Tamagui.Provider>
   )
 }
+
+const ButtonFrame = styled(XStack, {
+  name: 'Button',
+  tag: 'button',
+
+  jc: 'center',
+  bc: '$background',
+  bw: 1,
+  boc: '$background',
+  py: '$sm',
+  space: '$5',
+
+  pressStyle: {
+    bc: '$color',
+    scale: 0.98,
+  },
+
+  variants: {
+    disabled: {
+      true: {
+        bc: 'red',
+        boc: 'red',
+        pointerEvents: 'none',
+      },
+      false: {},
+    },
+  },
+
+  defaultVariants: {
+    disabled: false,
+  },
+})
 
 function FontLanguageDemo() {
   return (
