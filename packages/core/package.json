@@ -18,6 +18,7 @@
   "files": [
     "types",
     "dist",
+    "src",
     "reset.css"
   ],
   "dependencies": {

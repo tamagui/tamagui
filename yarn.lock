@@ -6363,7 +6363,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native: "*"
-    react-native-web: ^0.18.3
+    react-native-web-lite: ^1.0.1-beta.140
     reading-time: 1.3.0
     refractor: ^4.7.0
     rehype: ^12.0.1
@@ -20556,6 +20556,23 @@ __metadata:
   checksum: 2dd74bf377ebac3e08dadc6016f7b827d59e1066a62d00d476ae40665988149f08cf7b6e673ea433bd7677f1bc1a454bd33f6bf8e2bc2758aeec830fc1dadc03
   languageName: node
   linkType: hard
+
+"react-native-web-lite@^1.0.1-beta.140, react-native-web-lite@workspace:react-native-web-lite":
+  version: 0.0.0-use.local
+  resolution: "react-native-web-lite@workspace:react-native-web-lite"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.140
+    create-react-class: ^15.7.0
+    fbjs: ^3.0.4
+    inline-style-prefixer: ^6.0.1
+    normalize-css-color: ^1.0.2
+    postcss-value-parser: ^4.2.0
+    styleq: ^0.1.2
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  languageName: unknown
+  linkType: soft
 
 "react-native-web@npm:0.18.7":
   version: 0.18.7
