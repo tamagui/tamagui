@@ -35,7 +35,7 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
       return () => {
         target.classList.remove(cn)
       }
-    }, [props.defaultTheme, props.disableRootThemeClass])
+    }, [props.defaultTheme, props.disableRootThemeClass, props.themeClassNameOnRoot])
   }
 
   const themeContext = useMemo(() => {
@@ -43,7 +43,7 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
       themes: props.themes,
       defaultTheme: props.defaultTheme,
     }
-  }, [props.themes])
+  }, [props.defaultTheme, props.themes])
 
   return (
     <ThemeContext.Provider value={themeContext}>

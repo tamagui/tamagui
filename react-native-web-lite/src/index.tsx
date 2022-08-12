@@ -28,9 +28,11 @@ export { default as UIManager } from './exports/UIManager'
 export { default as Vibration } from './exports/Vibration'
 
 // components
+export { default as Animated } from './exports/Animated'
 export { default as ActivityIndicator } from './exports/ActivityIndicator'
 export { default as Image } from './exports/Image'
 export { default as ImageBackground } from './exports/ImageBackground'
+export { default as FlatList } from './exports/FlatList'
 export { default as KeyboardAvoidingView } from './exports/KeyboardAvoidingView'
 export { default as Pressable } from './exports/Pressable'
 export { default as RefreshControl } from './exports/RefreshControl'
@@ -46,3 +48,11 @@ export { default as LogBox } from './exports/LogBox'
 export { default as useColorScheme } from './exports/useColorScheme'
 export { useLocaleContext } from './exports/useLocaleContext'
 export { default as useWindowDimensions } from './exports/useWindowDimensions'
+
+// useful internals
+export { default as useMergeRefs } from './exports/useMergeRefs'
+export { default as useElementLayout } from './exports/useElementLayout'
+export { default as usePlatformMethods } from './exports/usePlatformMethods'
+export { default as useResponderEvents } from './exports/useResponderEvents'
+export { default as createDOMProps } from './exports/createDOMProps'
+export { default as TextAncestorContext } from './exports/Text/TextAncestorContext'

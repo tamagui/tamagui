@@ -2,7 +2,7 @@ import { useForceUpdate } from '@tamagui/use-force-update'
 import React, { useContext, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../conf'
-import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
+import { isSSR, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { areEqualSets } from '../helpers/areEqualSets'
 import {
@@ -173,11 +173,13 @@ export const useChangeThemeEffect = (
 
   const themeManager = useConstant<ThemeManager | null>(() => {
     if (!next) return null
+    // RSC test
+    if (typeof document === 'undefined') return null
     return new ThemeManager(next.name, next.theme, parentManager, reset)
   })
 
   // if not SSR
-  if (!isWeb || typeof document !== 'undefined') {
+  if (!isSSR) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useLayoutEffect(() => {
       if (!themeManager) return

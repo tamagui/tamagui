@@ -8,9 +8,8 @@
  * @noflow
  */
 
-import invariant from 'fbjs/lib/invariant'
-
 import canUseDOM from '../../modules/canUseDom'
+import { invariant } from '../../modules/invariant'
 
 // Android 4.4 browser
 const isPrefixed =

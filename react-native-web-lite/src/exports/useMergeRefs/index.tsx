@@ -9,7 +9,7 @@
 
 import * as React from 'react'
 
-import mergeRefs from '../mergeRefs'
+import mergeRefs from '../../modules/mergeRefs'
 
 export default function useMergeRefs(
   ...args: ReadonlyArray<React.Ref<any>>

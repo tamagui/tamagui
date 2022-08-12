@@ -35,7 +35,6 @@
     "@tamagui/core": "^1.0.1-beta.140",
     "@tamagui/create-context": "^1.0.1-beta.140",
     "@tamagui/dialog": "^1.0.1-beta.140",
-    "@tamagui/expo-linear-gradient": "^11.2.8",
     "@tamagui/fake-react-native": "^1.0.1-beta.140",
     "@tamagui/font-size": "^1.0.1-beta.140",
     "@tamagui/helpers": "^1.0.1-beta.140",
@@ -60,7 +59,7 @@
     "@tamagui/use-event": "^1.0.1-beta.140",
     "@tamagui/use-force-update": "^1.0.1-beta.140",
     "@tamagui/visually-hidden": "^1.0.1-beta.140",
-    "expo-linear-gradient": "^11.3.0",
+    "expo-linear-gradient": "^11.4.0",
     "expo-screen-orientation": "^4.3.0",
     "react": "*",
     "react-dom": "*"

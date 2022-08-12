@@ -1,60 +1,45 @@
 import { isWeb } from './constants/platform'
 
-const IS_VARIABLE_SYMBOL = '__isVariable__'
+/**
+ * Should rename this to Token
+ * Moving to objects for React Server Components support
+ */
 
-type VariableIn<A extends string | number = any> = {
+const IS_VAR = '__isVar__'
+
+export type VariableValue = string | number
+
+type VariableIn<A extends VariableValue = VariableValue> = {
   val: A
   name: string
   key: string
   isFloating?: boolean
 }
 
-export class Variable<A extends string | number = any> {
-  // because we have a separate node runtime we can't do instanceof
-  // ran into issues with this and it's potentially fixable but for now
-  // lets just do this
-  [IS_VARIABLE_SYMBOL] = true
-
-  // original key => in themes maps to the base variable key
-  key: string
-
-  // CSS name => in themes generic
-  name: string
-
-  // value
-  val: A
-
-  // full CSS variable using name
-  variable: string
-
-  isFloating = false
-
-  constructor(props: VariableIn) {
-    const { val, name, key, isFloating } = props
-    // converting to px breaks rn
-    this.val = isVariable(val) ? val.val : val
-    this.name = name
-    this.key = key
-    this.variable = isWeb ? createCSSVariable(name) : ''
-    if (isFloating) {
-      this.isFloating = true
-    }
-  }
-
-  toString() {
-    return `${isWeb ? this.variable : this.val}`
-  }
+export type Variable<A extends VariableValue = VariableValue> = VariableIn<A> & {
+  [IS_VAR]?: true
+  variable?: string
 }
 
 export const createVariable = <A extends string | number = any>(props: VariableIn<A>) => {
   if (isVariable(props)) {
     return props
   }
-  return new Variable<A>(props)
+  return {
+    [IS_VAR]: true,
+    // @ts-ignore
+    ...props,
+    variable: isWeb ? createCSSVariable(props.name) : '',
+  }
+}
+
+// on the client maybe we can change the prototype of variable object toString to keep backwards compat
+export function variableToString(vrble: Variable) {
+  return `${isWeb ? vrble.variable : vrble.val}`
 }
 
 export function isVariable(v: Variable | any): v is Variable {
-  return !!(v instanceof Variable || (v && v[IS_VARIABLE_SYMBOL]))
+  return !!(v && v[IS_VAR])
 }
 
 export function getVariableValue(v: Variable | any) {
@@ -76,6 +61,7 @@ export function getVariableVariable(v: Variable | any) {
 export const createCSSVariable = (nameProp: string, includeVar = true) => {
   if (process.env.NODE_ENV === 'development') {
     if (!nameProp || typeof nameProp !== 'string') {
+      // eslint-disable-next-line no-console
       console.trace('createCSSVariable invalid name', nameProp)
       return ``
     }

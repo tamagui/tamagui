@@ -26,8 +26,7 @@
     "@tamagui/create-context": "^1.0.1-beta.140",
     "@tamagui/polyfill-dev": "^1.0.1-beta.140",
     "@tamagui/stacks": "^1.0.1-beta.140",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.140",
-    "react-native-reanimated": "^2.8.0"
+    "@tamagui/use-controllable-state": "^1.0.1-beta.140"
   },
   "peerDependencies": {
     "react": "*",

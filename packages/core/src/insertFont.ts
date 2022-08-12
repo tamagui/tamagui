@@ -33,7 +33,7 @@ export function parseFont<A extends GenericFont>(definition: A): DeepVariableObj
     }
     parsed[attrKey] = {}
     for (const key in attr) {
-      let val = attr[key] as any as Variable
+      let val = attr[key] as any
       // is a theme reference
       if (val.val?.[0] === '$') {
         val = val.val

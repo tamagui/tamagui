@@ -9,10 +9,10 @@
  */
 
 import createReactClass from 'create-react-class'
-import invariant from 'fbjs/lib/invariant'
 import React from 'react'
 
 import dismissKeyboard from '../../modules/dismissKeyboard'
+import { invariant } from '../../modules/invariant'
 import mergeRefs from '../../modules/mergeRefs'
 import ScrollResponder from '../../modules/ScrollResponder'
 import StyleSheet from '../StyleSheet'

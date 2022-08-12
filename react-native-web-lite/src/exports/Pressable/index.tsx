@@ -14,10 +14,10 @@ import { forwardRef, memo, useMemo, useRef, useState } from 'react'
 
 import type { HoverEventsConfig } from '../../modules/useHover'
 import useHover from '../../modules/useHover'
-import useMergeRefs from '../../modules/useMergeRefs'
-import usePressEvents from '../../modules/usePressEvents'
-import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder'
 import StyleSheet from '../StyleSheet'
+import useMergeRefs from '../useMergeRefs'
+import usePressEvents from '../usePressEvents'
+import type { PressResponderConfig } from '../usePressEvents/PressResponder'
 import type { ViewProps } from '../View'
 import View from '../View'
 

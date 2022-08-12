@@ -1,2 +1,2 @@
-export { LinearGradient } from '@tamagui/expo-linear-gradient'
-export type { LinearGradientProps } from '@tamagui/expo-linear-gradient'
+export { LinearGradient } from 'expo-linear-gradient'
+export type { LinearGradientProps } from 'expo-linear-gradient'

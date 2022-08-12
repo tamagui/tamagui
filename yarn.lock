@@ -5305,7 +5305,6 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-beta.140
     react: "*"
     react-dom: "*"
-    react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -5512,7 +5511,6 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-beta.140
     react: "*"
     react-dom: "*"
-    react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -5542,7 +5540,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/config-base@workspace:packages/config-base"
   dependencies:
-    "@tamagui/animations-react-native": ^1.0.1-beta.140
+    "@tamagui/animations-reanimated": ^1.0.1-beta.140
     "@tamagui/build": ^1.0.1-beta.140
     "@tamagui/colors": ^1.0.1-beta.140
     "@tamagui/core": ^1.0.1-beta.140
@@ -5719,13 +5717,6 @@ __metadata:
     react-native-gesture-handler: ^2.5.0
   languageName: unknown
   linkType: soft
-
-"@tamagui/expo-linear-gradient@npm:^11.2.8":
-  version: 11.2.8
-  resolution: "@tamagui/expo-linear-gradient@npm:11.2.8"
-  checksum: f1eeacc49bf73cebaf908c34ca63e3cf4dfae07ed65f6ca8f8e10ea79ae8291757f595a4f0e10fb715976df596749bb0bfc128e1800ed95c4fde8ab1fe7d099b
-  languageName: node
-  linkType: hard
 
 "@tamagui/fake-react-native@^1.0.1-beta.140, @tamagui/fake-react-native@workspace:packages/fake-react-native":
   version: 0.0.0-use.local
@@ -5982,7 +5973,6 @@ __metadata:
   dependencies:
     "@babel/preset-react": ^7.16.7
     "@tamagui/build": ^1.0.1-beta.140
-    "@tamagui/expo-linear-gradient": ^11.2.8
     "@tamagui/proxy-worm": ^1.0.1-beta.140
     "@tamagui/static": ^1.0.1-beta.140
     babel-loader: ^8.2.5
@@ -5991,6 +5981,7 @@ __metadata:
     css-minimizer-webpack-plugin: ^4.0.0
     esbuild-loader: ^2.19.0
     esm-resolve: ^1.0.8
+    expo-linear-gradient: ^11.4.0
     file-loader: ^6.2.0
     html-inline-css-webpack-plugin: ^1.11.1
     html-webpack-plugin: ^5.5.0
@@ -6152,6 +6143,7 @@ __metadata:
   resolution: "@tamagui/rnw@workspace:packages/rnw"
   dependencies:
     react-native-web: ^0.18.3
+    react-native-web-lite: ^1.0.1-beta.140
   peerDependencies:
     react-native-web: "*"
   languageName: unknown
@@ -6331,7 +6323,6 @@ __metadata:
     "@stripe/stripe-js": ^1.29.0
     "@supabase/supabase-auth-helpers": ^1.4.1
     "@tamagui/animate-presence": ^1.0.1-beta.140
-    "@tamagui/animations-react-native": ^1.0.1-beta.140
     "@tamagui/colors": ^1.0.1-beta.140
     "@tamagui/config-base": ^1.0.1-beta.140
     "@tamagui/demos": ^1.0.1-beta.140
@@ -12672,7 +12663,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-linear-gradient@npm:^11.3.0":
+"expo-linear-gradient@npm:^11.3.0, expo-linear-gradient@npm:^11.4.0":
   version: 11.4.0
   resolution: "expo-linear-gradient@npm:11.4.0"
   peerDependencies:
@@ -20563,7 +20554,6 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-beta.140
     create-react-class: ^15.7.0
-    fbjs: ^3.0.4
     inline-style-prefixer: ^6.0.1
     normalize-css-color: ^1.0.2
     postcss-value-parser: ^4.2.0
@@ -22961,7 +22951,6 @@ __metadata:
     "@tamagui/core": ^1.0.1-beta.140
     "@tamagui/create-context": ^1.0.1-beta.140
     "@tamagui/dialog": ^1.0.1-beta.140
-    "@tamagui/expo-linear-gradient": ^11.2.8
     "@tamagui/fake-react-native": ^1.0.1-beta.140
     "@tamagui/font-size": ^1.0.1-beta.140
     "@tamagui/helpers": ^1.0.1-beta.140
@@ -22988,7 +22977,7 @@ __metadata:
     "@tamagui/visually-hidden": ^1.0.1-beta.140
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
-    expo-linear-gradient: ^11.3.0
+    expo-linear-gradient: ^11.4.0
     expo-screen-orientation: ^4.3.0
     react: "*"
     react-dom: "*"
