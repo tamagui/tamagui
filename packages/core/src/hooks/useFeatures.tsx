@@ -205,6 +205,9 @@ function ensureBaseHasDefaults(base: ViewStyle, ...pseudos: (ViewStyle | null | 
     for (const key in pseudo) {
       const val = pseudo[key]
       if (key === 'transform') {
+        if (typeof val === 'string') {
+          continue
+        }
         for (const t of val) {
           const tkey = Object.keys(t)[0]
           const defaultVal = defaults[tkey]
