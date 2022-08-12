@@ -16,7 +16,7 @@ const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
 
-const targetDir = `types${Math.floor(Math.random() * 1_000_000)}`
+const targetDir = `.types${Math.floor(Math.random() * 1_000_000)}`
 const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
 const pkgMain = pkg.main
