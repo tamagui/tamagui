@@ -1,0 +1,51 @@
+{
+  "name": "react-native-web-lite",
+  "version": "1.0.1-beta.140",
+  "description": "React Native for Web",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "types",
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "create-react-class": "^15.7.0",
+    "fbjs": "^3.0.4",
+    "inline-style-prefixer": "^6.0.1",
+    "normalize-css-color": "^1.0.2",
+    "postcss-value-parser": "^4.2.0",
+    "styleq": "^0.1.2"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.140"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "author": "Nate Wienert",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tamagui/tamagui.git"
+  },
+  "tags": [
+    "react"
+  ],
+  "keywords": [
+    "react",
+    "react-component",
+    "react-native",
+    "web"
+  ]
+}

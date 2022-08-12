@@ -88,8 +88,8 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             // match commonjs to react-native-web
             // i'd do esm but needs better docs, have to transpile
             ['@tamagui/rnw', '@tamagui/rnw'],
-            ['react-native$', 'react-native-web'],
-            ['react-native-web$', 'react-native-web'],
+            ['react-native$', 'react-native-web-lite'],
+            ['react-native-web$', 'react-native-web-lite'],
             ['@testing-library/react-native', '@tamagui/proxy-worm'],
             ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
             // fix reanimated 3

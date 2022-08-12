@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 
 const exec = require('execa')
 const fs = require('fs-extra')
@@ -6,8 +7,7 @@ const esbuild = require('esbuild')
 const fg = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
-const { dirname, join } = require('path')
-const { tmpdir } = require('os')
+const { dirname } = require('path')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -16,6 +16,7 @@ const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
 
+const targetDir = `types${Math.floor(Math.random() * 1_000_000)}`
 const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
 const pkgMain = pkg.main
@@ -33,14 +34,18 @@ async function clean() {
       fs.remove('types'),
       fs.remove('dist'),
     ])
-  } catch {}
+  } catch {
+    // ok
+  }
   if (shouldCleanBuildOnly) {
     console.log('🔹 cleaned', pkg.name)
     process.exit(0)
   }
   try {
     await Promise.allSettled([fs.remove('node_modules')])
-  } catch {}
+  } catch {
+    // ok
+  }
   console.log('🔹 cleaned', pkg.name)
   process.exit(0)
 }
@@ -88,6 +93,18 @@ async function build() {
   }
 }
 
+const cleanup = () => {
+  try {
+    fs.removeSync(targetDir)
+  } catch {
+    // ok
+  }
+}
+
+process.once('beforeExit', cleanup)
+process.once('SIGINT', cleanup)
+process.once('SIGTERM', cleanup)
+
 async function buildTsc() {
   if (jsOnly || shouldSkipTypes) return
   if (shouldSkipInitialTypes) {
@@ -99,7 +116,6 @@ async function buildTsc() {
     if (!(await fs.pathExists(`tsconfig.json`))) {
       throw new Error(`No tsconfig.json found`)
     }
-    const targetDir = `types${Math.floor(Math.random() * 1_000_000)}`
     try {
       // typescripts build cache messes up when doing declarationOnly so need to bust it
       await fs.ensureDir(targetDir)
