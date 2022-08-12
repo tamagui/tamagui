@@ -1,3 +1,4 @@
+import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import type { TamaguiOptions } from '@tamagui/static'
 import type { Plugin } from 'vite'
 import envPlugin from 'vite-plugin-environment'
@@ -9,20 +10,14 @@ import { tamaguiExtractPlugin } from './extractPlugin'
  */
 
 export function tamaguiPlugin(options: TamaguiOptions): Plugin {
-  return {
+  const plugin: Plugin = {
     name: 'tamagui',
     enforce: 'pre',
 
     config(userConfig, env) {
       return {
-        load(id) {
-          console.log('load', id)
-        },
-        async resolveId(id, importer) {
-          console.log('resolve', id, importer)
-        },
-
         plugins: [
+          // viteCommonjs(),
           envPlugin(['NODE_ENV', 'TAMAGUI_TARGET']),
           // ...(options.disable || (options.disableDebugAttr && options.disableExtraction)
           //   ? []
@@ -45,8 +40,21 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
             },
           }),
         },
+        // build: {
+        //   commonjsOptions: {
+        //     transformMixedEsModules: true,
+        //   },
+        // },
+        ssr: {
+          noExternal: /tamagui|react-native/,
+          optimizeDeps: {
+            // disabled: true,
+          },
+        },
         optimizeDeps: {
+          // include: [/node_modules/],
           esbuildOptions: {
+            // plugins: [esbuildCommonjs(['fbjs'])],
             resolveExtensions: [
               '.web.js',
               '.web.ts',
@@ -80,10 +88,12 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
           alias: {
             'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
             'react-native/Libraries/Utilities/codegenNativeComponent': '@tamagui/proxy-worm',
-            'react-native': 'react-native-web',
+            'react-native': 'react-native-web-lite',
           },
         },
       }
     },
   }
+
+  return plugin
 }

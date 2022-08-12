@@ -9,17 +9,18 @@
 
 import { useRef } from 'react'
 
+import createDOMProps from '../../exports/createDOMProps'
 import UIManager from '../../exports/UIManager'
 import { ViewProps } from '../../exports/View'
+import useStable from '../../modules/useStable'
 import { GenericStyleProp } from '../../types'
-import createDOMProps from '../createDOMProps'
-import useStable from '../useStable'
 
 let didWarn = false
 const emptyObject = {}
 
 function setNativeProps(node, nativeProps, pointerEvents, style, previousStyleRef) {
   if (!didWarn) {
+    // eslint-disable-next-line no-console
     console.warn('setNativeProps is deprecated. Please update props using React state instead.')
     didWarn = true
   }

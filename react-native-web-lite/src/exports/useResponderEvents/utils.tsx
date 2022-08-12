@@ -7,7 +7,7 @@
  * @flow
  */
 
-import isSelectionValid from '../isSelectionValid'
+import isSelectionValid from '../../modules/isSelectionValid'
 
 const keyName = '__reactResponderId'
 

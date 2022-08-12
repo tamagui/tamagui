@@ -7,7 +7,7 @@
  * @flow
  */
 
-import getBoundingClientRect from '../getBoundingClientRect'
+import getBoundingClientRect from '../../modules/getBoundingClientRect'
 import { TouchEvent } from './ResponderEventTypes'
 import { ResponderTouchHistoryStore, TouchHistory } from './ResponderTouchHistoryStore'
 

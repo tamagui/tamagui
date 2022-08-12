@@ -44,12 +44,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           constraints: 'node',
         })
 
-        const resolveEsm = (relativePath: string) => {
-          if (isServer) return require.resolve(relativePath)
-          const esm = resolver(relativePath)
-          return esm ? path.join(dir, esm) : require.resolve(relativePath)
-        }
-
         // @ts-ignore
         if (typeof globalThis['__DEV__'] === 'undefined') {
           // @ts-ignore
@@ -62,49 +56,70 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         const safeResolves = (...resolves: [string, string][]) => {
           const res: string[][] = []
           for (const [out, mod] of resolves) {
+            if (out.endsWith('$')) {
+              res.push([out, mod])
+              continue
+            }
             try {
               res.push([out, resolveEsm(mod)])
             } catch (err) {
               if (out.includes(`@gorhom/bottom-sheet`)) {
                 continue
               }
+              // eslint-disable-next-line no-console
               console.log(prefix, `withTamagui skipping resolving ${out}`)
             }
           }
           return Object.fromEntries(res)
         }
 
+        const resolveEsm = (relativePath: string) => {
+          if (isServer) return require.resolve(relativePath)
+          const esm = resolver(relativePath)
+          return esm ? path.join(dir, esm) : require.resolve(relativePath)
+        }
+
+        const tamaguiAliases = safeResolves(
+          ['react-native-svg', 'react-native-svg-web'],
+          // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
+          ['react/jsx-runtime.js', 'react/jsx-runtime'],
+          ['react/jsx-runtime', 'react/jsx-runtime'],
+          ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
+          ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
+          ['react-native-reanimated', 'react-native-reanimated'],
+          // ['expo-linear-gradient', '@tamagui/expo-linear-gradient'],
+          // match commonjs to react-native-web
+          // i'd do esm but needs better docs, have to transpile
+          ['@tamagui/rnw', '@tamagui/rnw'],
+          ['react-native$', 'react-native-web-lite'],
+          ['react-native-web$', 'react-native-web-lite'],
+          ['@testing-library/react-native', '@tamagui/proxy-worm'],
+          ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
+          // fix reanimated 3
+          ['react-native/Libraries/Renderer/shims/ReactFabric', '@tamagui/proxy-worm'],
+          ...(tamaguiOptions.aliasReactPackages
+            ? ([
+                ['react', 'react'],
+                ['react-dom', 'react-dom'],
+              ] as any)
+            : [])
+        )
+        console.log('tamaguiAliases', tamaguiAliases)
+
         const alias = {
           ...(webpackConfig.resolve.alias || {}),
-          ...safeResolves(
-            ['react-native-svg', 'react-native-svg-web'],
-            // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
-            ['react/jsx-runtime.js', 'react/jsx-runtime'],
-            ['react/jsx-runtime', 'react/jsx-runtime'],
-            ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
-            ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
-            ['react-native-reanimated', 'react-native-reanimated'],
-            ['expo-linear-gradient', '@tamagui/expo-linear-gradient'],
-            // match commonjs to react-native-web
-            // i'd do esm but needs better docs, have to transpile
-            ['@tamagui/rnw', '@tamagui/rnw'],
-            ['react-native$', 'react-native-web-lite'],
-            ['react-native-web$', 'react-native-web-lite'],
-            ['@testing-library/react-native', '@tamagui/proxy-worm'],
-            ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
-            // fix reanimated 3
-            ['react-native/Libraries/Renderer/shims/ReactFabric', '@tamagui/proxy-worm'],
-            ...(tamaguiOptions.aliasReactPackages
-              ? ([
-                  ['react', 'react'],
-                  ['react-dom', 'react-dom'],
-                ] as any)
-              : [])
-          ),
+          ...tamaguiAliases,
         }
 
         if (process.env.DEBUG) {
+          // eslint-disable-next-line no-console
           console.log('Tamagui alias:', alias)
+        }
+
+        if (process.env.ANALYZE === 'true') {
+          Object.assign(webpackConfig.optimization, {
+            concatenateModules: false,
+          })
         }
 
         webpackConfig.resolve.alias = alias

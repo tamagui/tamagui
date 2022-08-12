@@ -24,7 +24,7 @@ export const LinearGradient: React.ForwardRefExoticComponent<
       const { start, end, colors: colorsProp, locations, ...stackProps } = props
       const colors = useLinearGradientColors(colorsProp || [])
       return (
-        // @ts-expect-error we have slight diff in RNWProps
+        // @ts-ignore
         <LinearGradientFrame ref={ref} {...stackProps}>
           <ExpoLinearGradient
             start={start}

@@ -8,10 +8,10 @@
  * @flow
  */
 
-import invariant from 'fbjs/lib/invariant'
 import { ComponentType, FunctionComponent, ReactNode } from 'react'
 import React from 'react'
 
+import { invariant } from '../../modules/invariant'
 import render, { hydrate } from '../render'
 import StyleSheet from '../StyleSheet'
 import AppContainer from './AppContainer'

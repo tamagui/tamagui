@@ -43,6 +43,8 @@
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink web",
     "site": "cd apps/site && ./scripts/dev.sh",
+    "site:vite": "cd takeout/site-vite && VITE_INSPECT=1 yarn dev",
+    "site:vite:debug": "cd takeout/site-vite && DEBUG=vite:* VITE_INSPECT=1 yarn dev",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod": "yarn workspace @tamagui/site ci:build && yarn workspace @tamagui/site next:start",
     "site:prod:analyze": "ANALYZE=true yarn site:prod",

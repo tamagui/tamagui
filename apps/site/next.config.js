@@ -43,7 +43,6 @@ const plugins = [
   (config) => {
     // for github pages
     if (process.env.ON_GITHUB_PAGES) {
-      console.log('Setting github pages base and asset paths')
       config.basePath = '/tamagui'
       config.assetPrefix = '/tamagui/'
     }

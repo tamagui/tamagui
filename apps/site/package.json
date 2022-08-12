@@ -19,7 +19,6 @@
     "@stripe/stripe-js": "^1.29.0",
     "@supabase/supabase-auth-helpers": "^1.4.1",
     "@tamagui/animate-presence": "^1.0.1-beta.140",
-    "@tamagui/animations-react-native": "^1.0.1-beta.140",
     "@tamagui/colors": "^1.0.1-beta.140",
     "@tamagui/config-base": "^1.0.1-beta.140",
     "@tamagui/demos": "^1.0.1-beta.140",

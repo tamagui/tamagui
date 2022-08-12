@@ -8,8 +8,7 @@
  * @flow
  */
 
-import invariant from 'fbjs/lib/invariant'
-
+import { invariant } from '../../modules/invariant'
 import requestIdleCallback, { cancelIdleCallback } from '../../modules/requestIdleCallback'
 
 const InteractionManager = {

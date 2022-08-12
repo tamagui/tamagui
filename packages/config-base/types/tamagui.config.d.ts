@@ -1,31 +1,14 @@
+export * from './animations.css';
 export declare const config: {
     defaultTheme: string;
     shouldAddPrefersColorThemes: boolean;
     themeClassNameOnRoot: boolean;
     animations: import("@tamagui/core").AnimationDriver<{
-        bouncy: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
-        lazy: {
-            damping: number;
-            stiffness: number;
-        };
-        slow: {
-            damping: number;
-            stiffness: number;
-        };
-        quick: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
-        tooltip: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
+        bouncy: string;
+        lazy: string;
+        slow: string;
+        quick: string;
+        tooltip: string;
     }>;
     media: {
         xl: {
@@ -14207,10 +14190,10 @@ export declare const config: {
         };
     };
     fonts: {
-        heading: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
-        body: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
-        mono: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
-        silkscreen: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+        heading: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
+        body: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
+        mono: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
+        silkscreen: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map

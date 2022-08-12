@@ -7,8 +7,8 @@
  * @noflow
  */
 
-import StyleSheet from '../../exports/StyleSheet'
-import AccessibilityUtil from '../AccessibilityUtil'
+import AccessibilityUtil from '../../modules/AccessibilityUtil'
+import StyleSheet from '../StyleSheet'
 
 const emptyObject = {}
 const hasOwnProperty = Object.prototype.hasOwnProperty

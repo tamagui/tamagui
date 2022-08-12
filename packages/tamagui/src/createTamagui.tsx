@@ -13,6 +13,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   // add our providers
   const OGProvider = conf.Provider
   conf.Provider = ({ children, ...props }: TamaguiProviderProps) => {
+    // RSC test
+    if (typeof document === 'undefined') {
+      return <OGProvider {...props}>{children}</OGProvider>
+    }
     return (
       <OGProvider {...props}>
         <PortalProvider>{children}</PortalProvider>

@@ -9,13 +9,11 @@
  * @flow
  */
 
-import invariant from 'fbjs/lib/invariant'
-import warning from 'fbjs/lib/warning'
-
 import Dimensions from '../../exports/Dimensions'
 import findNodeHandle from '../../exports/findNodeHandle'
 import Platform from '../../exports/Platform'
 import UIManager from '../../exports/UIManager'
+import { invariant, warning } from '../invariant'
 import TextInputState from '../TextInputState'
 
 /**

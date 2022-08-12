@@ -20,11 +20,12 @@ export const Theme = memo(function Theme(props: ThemeProps) {
   // may require some effort of end user to memoize but without this memo they'd have no option
   const contents = useMemo(
     () => (missingTheme ? null : wrapThemeManagerContext(props.children, themeManager)),
-    [props.children, themeManager]
+    [missingTheme, props.children, themeManager]
   )
 
   if (missingTheme) {
     if (name && !theme && process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
       console.warn(`No theme found by name ${name}`)
     }
     return props.children

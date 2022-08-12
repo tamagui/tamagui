@@ -9,10 +9,10 @@
  * @flow
  */
 
-import invariant from 'fbjs/lib/invariant'
 import { ComponentType, ReactNode } from 'react'
 import { unmountComponentAtNode } from 'react-dom'
 
+import { invariant } from '../../modules/invariant'
 import renderApplication, { getApplication } from './renderApplication'
 
 type AppParams = Object

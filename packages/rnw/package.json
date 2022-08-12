@@ -11,6 +11,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "react-native-web-lite": "^1.0.1-beta.140"
+  },
   "peerDependencies": {
     "react-native-web": "*"
   },
