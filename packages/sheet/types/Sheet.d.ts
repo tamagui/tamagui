@@ -97,7 +97,7 @@ export declare const SheetFrame: React.ForwardRefExoticComponent<Omit<import("re
 export declare const Sheet: ((props: Omit<{
     open?: boolean | undefined;
     defaultOpen?: boolean | undefined;
-    onChangeOpen?: (React.Dispatch<React.SetStateAction<boolean>> | ((open: boolean) => void)) | undefined;
+    onChangeOpen?: (((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>) | undefined;
     position?: number | undefined;
     defaultPosition?: number | undefined;
     snapPoints?: number[] | undefined;

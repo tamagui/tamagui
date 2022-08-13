@@ -31,6 +31,30 @@ type AltKeys = 1 | 2 | 3
 type AltName<Name extends string, Keys extends string | number> = `${Name}_alt${Keys}`
 type ThemeCreator<A = any> = (str: number, props: ThemeCreatorProps) => A
 
+interface SubTheme {
+  background: Variable<any> | string
+  backgroundStrong: Variable<any> | string
+  backgroundSoft: Variable<any> | string
+  backgroundHover: Variable<any> | string
+  backgroundPress: Variable<any> | string
+  backgroundFocus: Variable<any> | string
+  backgroundTransparent: Variable<any> | string
+  color: Variable<any> | string
+  colorHover: Variable<any> | string
+  colorPress: Variable<any> | string
+  colorFocus: Variable<any> | string
+  colorTranslucent: Variable<any> | string
+  colorMid: Variable<any> | string
+  shadowColor: Variable<any> | string
+  shadowColorHover: Variable<any> | string
+  shadowColorPress: Variable<any> | string
+  shadowColorFocus: Variable<any> | string
+  borderColor: Variable<any> | string
+  borderColorHover: Variable<any> | string
+  borderColorPress: Variable<any> | string
+  borderColorFocus: Variable<any> | string
+}
+
 function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = ThemeCreator>(
   name: Name,
   getTheme: GetTheme,
@@ -138,7 +162,7 @@ const themeCreator = (
 
   const colorTranslucent = setColorAlpha(getVariableValue(get(colors, 0 + str, 'color')), 0.5)
 
-  const theme = {
+  const theme: SubTheme = {
     background: get(backgrounds, str),
     backgroundStrong: backgroundStrong || get(backgrounds, str + strongerDir * 2),
     backgroundSoft: get(backgrounds, str + softerDir * 2),
@@ -265,19 +289,19 @@ const darkThemes = createThemesFrom('dark', themeCreator, {
 darkThemes.dark_darker.background = '#030303'
 darkThemes.dark_darker.backgroundStrong = '#000'
 
+type BaseTheme = {
+  [key in keyof typeof lightColors | keyof SubTheme]: Variable<string>
+}
+
 const light = createTheme({
   ...lightColors,
   ...lightThemes.light,
-})
+}) as BaseTheme
 
 const dark = createTheme({
   ...darkColors,
   ...darkThemes.dark,
-})
-
-type ThemeBase = {
-  [Key in keyof typeof dark]: string
-}
+}) as BaseTheme
 
 const baseThemes = {
   // light
@@ -308,7 +332,7 @@ const baseThemes = {
 
 const darkEntries = Object.entries(dark)
 const lightEntries = Object.entries(light)
-function findColors(prefix: string, dark = false): ThemeBase {
+function findColors(prefix: string, dark = false): BaseTheme {
   return Object.fromEntries(
     (dark ? darkEntries : lightEntries).filter(([k]) => k.startsWith(prefix))
   ) as any
@@ -367,8 +391,11 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
     // }
 
     const themeWithAlts = createThemesFrom(name, themeCreator, {
+      // @ts-ignore
       colors,
+      // @ts-ignore
       backgrounds,
+      // @ts-ignore
       borderColors: backgrounds,
       isLight,
       shift,
@@ -385,10 +412,14 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
   return [...altLightThemes, ...altDarkThemes]
 })
 
-type MyThemeBase = typeof baseThemes['light_alt1']
+type TypedColorTheme = typeof lightThemes.light_alt1
+type TypedTheme = typeof light
+type TypedThemes = {
+  [key in keyof typeof allThemes]: TypedTheme
+}
 
 const colorThemes: {
-  [key in ColorThemeNames]: MyThemeBase
+  [key in ColorThemeNames]: TypedColorTheme
 } = Object.fromEntries(colorThemeEntries) as any
 
 // add in base _active themes
@@ -412,6 +443,4 @@ const allThemes = {
   ...colorThemes,
 } as const
 
-export const themes: {
-  [key in keyof typeof allThemes]: typeof baseThemes['light']
-} = allThemes as any
+export const themes: TypedThemes = allThemes as any
