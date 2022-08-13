@@ -199,6 +199,7 @@ export const Sheet = withStaticProperties(
 
       if (process.env.NODE_ENV === 'development') {
         if (snapPointsProp.some((p) => p < 0 || p > 100)) {
+          // eslint-disable-next-line no-console
           console.warn(
             `⚠️ Invalid snapPoint given, snapPoints must be between 0 and 100, equal to percent height of frame`
           )
@@ -582,6 +583,7 @@ export const Sheet = withStaticProperties(
 function getPercentSize(point?: number, frameSize?: number) {
   if (!frameSize) return 0
   if (point === undefined) {
+    // eslint-disable-next-line no-console
     console.warn(`No snapPoint`)
     return 0
   }

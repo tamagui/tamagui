@@ -12,7 +12,7 @@ import { shouldExclude as shouldExcludeDefault } from 'tamagui-loader'
 import webpack from 'webpack'
 
 export type WithTamaguiProps = TamaguiOptions & {
-  useReactNativeLite: boolean
+  // useReactNativeLite: boolean
   disableFontSupport?: boolean
   aliasReactPackages?: boolean
   includeCSSTest?: RegExp | ((path: string) => boolean)
@@ -80,7 +80,8 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           return esm ? path.join(dir, esm) : require.resolve(relativePath)
         }
 
-        const rnw = tamaguiOptions.useReactNativeLite ? 'react-native-web-lite' : 'react-native-web'
+        // const rnw = tamaguiOptions.useReactNativeLite ? 'react-native-web-lite' : 'react-native-web'
+        const rnw = 'react-native-web'
 
         const tamaguiAliases = safeResolves(
           ['react-native-svg', 'react-native-svg-web'],

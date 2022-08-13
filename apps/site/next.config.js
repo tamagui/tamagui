@@ -21,7 +21,7 @@ const plugins = [
     openAnalyzer: process.env.ANALYZE === 'true',
   }),
   withTamagui({
-    useReactNativeLite: true,
+    // useReactNativeLite: true,
     config: './tamagui.config.ts',
     components: ['tamagui'],
     importsWhitelist: ['constants.js', 'colors.js'],
