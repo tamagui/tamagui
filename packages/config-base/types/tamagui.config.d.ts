@@ -1,14 +1,37 @@
-export * from './animations.css';
+export * from './animations.reanimated';
 export declare const config: {
     defaultTheme: string;
     shouldAddPrefersColorThemes: boolean;
     themeClassNameOnRoot: boolean;
     animations: import("@tamagui/core").AnimationDriver<{
-        bouncy: string;
-        lazy: string;
-        slow: string;
-        quick: string;
-        tooltip: string;
+        bouncy: {
+            type: "spring";
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
+        lazy: {
+            type: "spring";
+            damping: number;
+            stiffness: number;
+        };
+        slow: {
+            type: "spring";
+            damping: number;
+            stiffness: number;
+        };
+        quick: {
+            type: "spring";
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
+        tooltip: {
+            type: "spring";
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
     }>;
     media: {
         xl: {
@@ -14190,10 +14213,10 @@ export declare const config: {
         };
     };
     fonts: {
-        heading: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
-        body: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
-        mono: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
-        silkscreen: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
+        heading: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+        body: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+        mono: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+        silkscreen: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map

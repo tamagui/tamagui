@@ -56,6 +56,7 @@ export * from './views/ThemeInverse';
 export * from './views/ThemeProvider';
 export * from './views/ThemeReset';
 export * from './views/FontLanguage';
+export * from './views/TamaguiProvider';
 export * from '@tamagui/use-force-update';
 export * from '@tamagui/use-event';
 export * from '@tamagui/helpers';

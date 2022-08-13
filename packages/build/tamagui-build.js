@@ -191,7 +191,7 @@ async function buildJs() {
           outdir: flatOut ? 'dist' : 'dist/jsx',
           entryPoints: files,
           sourcemap: true,
-          target: 'es2019',
+          target: 'es2020',
           keepNames: false,
           format: 'esm',
           color: true,

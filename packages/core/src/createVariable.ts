@@ -1,4 +1,5 @@
 import { isWeb } from './constants/platform'
+import { VariableColorVal } from './types'
 
 /**
  * Should rename this to Token
@@ -34,7 +35,9 @@ export const createVariable = <A extends string | number = any>(props: VariableI
 }
 
 // on the client maybe we can change the prototype of variable object toString to keep backwards compat
-export function variableToString(vrble: Variable) {
+export function variableToString(vrble?: Variable | VariableColorVal) {
+  if (!vrble) return ''
+  if (typeof vrble === 'string') return vrble
   return `${isWeb ? vrble.variable : vrble.val}`
 }
 

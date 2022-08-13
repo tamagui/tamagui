@@ -116,8 +116,9 @@ export const Tooltip = withStaticProperties(
     }
 
     const useFloatingContext = React.useCallback(useFloatingFn, [id, delay, open])
-
-    const voidFn = React.useCallback(() => {}, [setOpen])
+    const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
+    const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
+    const contentId = useId()
 
     return (
       <FloatingOverrideContext.Provider value={useFloatingContext}>
@@ -125,7 +126,7 @@ export const Tooltip = withStaticProperties(
         <Popper size="$2" {...popperScope} {...restProps}>
           <__PopoverProviderInternal
             scope={__scopePopover}
-            contentId={useId()}
+            contentId={contentId}
             triggerRef={triggerRef}
             sheetBreakpoint={false}
             scopeKey=""
@@ -133,8 +134,8 @@ export const Tooltip = withStaticProperties(
             onOpenChange={setOpen}
             onOpenToggle={voidFn}
             hasCustomAnchor={hasCustomAnchor}
-            onCustomAnchorAdd={React.useCallback(() => setHasCustomAnchor(true), [])}
-            onCustomAnchorRemove={React.useCallback(() => setHasCustomAnchor(false), [])}
+            onCustomAnchorAdd={onCustomAnchorAdd}
+            onCustomAnchorRemove={onCustomAnchorRemove}
           >
             {children}
           </__PopoverProviderInternal>
@@ -151,3 +152,5 @@ export const Tooltip = withStaticProperties(
 )
 
 Tooltip.displayName = 'Tooltip'
+
+const voidFn = () => {}

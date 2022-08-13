@@ -1,4 +1,5 @@
 import { AnimationDriver } from '@tamagui/core'
+import { useMemo } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
@@ -14,12 +15,17 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
 
       const keys = props.animateOnly ? props.animateOnly.join(' ') : 'all'
 
-      return {
+      const style = {
         style: {
           transition: `${keys} ${animation}`,
           ...getStyle(),
         },
       }
+
+      return useMemo(() => {
+        return style
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [JSON.stringify(style)])
     },
   }
 }

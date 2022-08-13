@@ -65,7 +65,6 @@
     "@tamagui/next-plugin": "^1.0.1-beta.140",
     "@types/react-native": "^0.69.2",
     "next-remote-watch": "^1.0.0",
-    "tamagui-loader": "^1.0.1-beta.140",
-    "webpack-bundle-analyzer": "^4.5.0"
+    "tamagui-loader": "^1.0.1-beta.140"
   }
 }

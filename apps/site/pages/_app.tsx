@@ -8,14 +8,16 @@ import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { Suspense, useMemo } from 'react'
+import { TamaguiProvider } from 'tamagui'
 
 import { SearchProvider } from '../components/Search'
-import Tamagui from '../tamagui.config'
+import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
+  console.log('theme', theme)
 
   // memo to avoid re-render on dark/light change
   const contents = useMemo(() => {
@@ -33,9 +35,14 @@ export default function App(props: AppProps) {
           setTheme(next)
         }}
       >
-        <Tamagui.Provider disableInjectCSS disableRootThemeClass defaultTheme={theme}>
+        <TamaguiProvider
+          config={config}
+          disableInjectCSS
+          disableRootThemeClass
+          defaultTheme={theme}
+        >
           <Suspense fallback={null}>{contents}</Suspense>
-        </Tamagui.Provider>
+        </TamaguiProvider>
       </NextThemeProvider>
     </>
   )

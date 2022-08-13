@@ -30,7 +30,7 @@ export * from '@tamagui/use-debounce'
 export * from '@tamagui/use-force-update'
 export * from '@tamagui/visually-hidden'
 
-export * from './createTamagui'
+export * from './views/TamaguiProvider'
 export * from './viewTypes'
 
 export * from './views/Anchor'
@@ -110,6 +110,7 @@ export type {
 } from '@tamagui/core'
 
 export {
+  createTamagui,
   // components
   Spacer,
   Stack,

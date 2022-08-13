@@ -306,7 +306,6 @@ export type TamaguiInternalConfig<
   CreateTamaguiConfig<A, B, C, D, E, F> & {
     // TODO need to make it this but this breaks types, revisit
     // animations: E //AnimationDriver<E>
-    Provider: (props: TamaguiProviderProps) => any
     // with $ prefixes for fast lookups (one time cost at startup vs every render)
     tokensParsed: CreateTokens<Variable>
     themeConfig: any
@@ -631,6 +630,7 @@ type StaticComponentObject = {
 }
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
+  config: TamaguiInternalConfig
   disableInjectCSS?: boolean
   children?: React.ReactNode
 }

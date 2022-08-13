@@ -21,6 +21,7 @@ const plugins = [
     openAnalyzer: process.env.ANALYZE === 'true',
   }),
   withTamagui({
+    useReactNativeLite: true,
     config: './tamagui.config.ts',
     components: ['tamagui'],
     importsWhitelist: ['constants.js', 'colors.js'],
@@ -40,6 +41,23 @@ const plugins = [
       'SectionList',
     ],
   }),
+  // (config) => {
+  //   return {
+  //     ...config,
+  //     webpack(webpackConfig, options) {
+  //       const { StatsWriterPlugin } = require('webpack-stats-plugin')
+  //       webpackConfig.plugins.push(
+  //         new StatsWriterPlugin({
+  //           filename: 'stats.json',
+  //         })
+  //       )
+  //       if (typeof config.webpack === 'function') {
+  //         return config.webpack(webpackConfig, options)
+  //       }
+  //       return webpackConfig
+  //     },
+  //   }
+  // },
   (config) => {
     // for github pages
     if (process.env.ON_GITHUB_PAGES) {

@@ -1,6 +1,7 @@
 import React, { memo, useMemo } from 'react'
 
 import { isWeb } from '../constants/platform'
+import { variableToString } from '../createVariable'
 import { ThemeManager, ThemeManagerContext } from '../helpers/ThemeManager'
 import { ThemeProps, useChangeThemeEffect } from '../hooks/useTheme'
 
@@ -41,7 +42,7 @@ export const Theme = memo(function Theme(props: ThemeProps) {
         style={{
           display: 'contents',
           // in order to provide currentColor, set color by default
-          color: themes[name]?.color?.toString(),
+          color: variableToString(themes[name]?.color),
         }}
       >
         {contents}
