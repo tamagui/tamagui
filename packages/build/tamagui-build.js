@@ -7,7 +7,7 @@ const esbuild = require('esbuild')
 const fg = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
-const { dirname } = require('path')
+const { dirname, join } = require('path')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -16,7 +16,6 @@ const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
 
-const targetDir = `.types${Math.floor(Math.random() * 1_000_000)}`
 const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
 const pkgMain = pkg.main
@@ -93,17 +92,18 @@ async function build() {
   }
 }
 
-const cleanup = () => {
-  try {
-    fs.removeSync(targetDir)
-  } catch {
-    // ok
-  }
-}
+// const targetDir = `.types${Math.floor(Math.random() * 1_000_000)}`
+// const cleanup = () => {
+//   try {
+//     fs.removeSync(targetDir)
+//   } catch {
+//     // ok
+//   }
+// }
 
-process.once('beforeExit', cleanup)
-process.once('SIGINT', cleanup)
-process.once('SIGTERM', cleanup)
+// process.once('beforeExit', cleanup)
+// process.once('SIGINT', cleanup)
+// process.once('SIGTERM', cleanup)
 
 async function buildTsc() {
   if (jsOnly || shouldSkipTypes) return
@@ -116,16 +116,16 @@ async function buildTsc() {
     if (!(await fs.pathExists(`tsconfig.json`))) {
       throw new Error(`No tsconfig.json found`)
     }
+    const targetDir = 'types'
     try {
-      // typescripts build cache messes up when doing declarationOnly so need to bust it
+      // typescripts build cache messes up when doing declarationOnly
+      await fs.remove('tsconfig.tsbuildinfo')
       await fs.ensureDir(targetDir)
       const cmd = `tsc --baseUrl . --outDir ${targetDir} --rootDir src --emitDeclarationOnly --declarationMap`
       // console.log('\x1b[2m$', `npx ${cmd}`)
       await exec('npx', cmd.split(' '))
-      await fs.remove('types')
-      await fs.copy(targetDir, 'types')
     } finally {
-      await fs.remove(targetDir)
+      await fs.remove('tsconfig.tsbuildinfo')
     }
   }
 
