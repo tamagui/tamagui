@@ -1,4 +1,4 @@
-import { ColorTokens, styled, themeable, useTheme } from '@tamagui/core'
+import { ColorTokens, styled, themeable, useTheme, variableToString } from '@tamagui/core'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -23,6 +23,7 @@ export const LinearGradient: React.ForwardRefExoticComponent<
     React.forwardRef((props: LinearGradientProps, ref) => {
       const { start, end, colors: colorsProp, locations, ...stackProps } = props
       const colors = useLinearGradientColors(colorsProp || [])
+      console.log('>')
       return (
         // @ts-ignore
         <LinearGradientFrame ref={ref} {...stackProps}>
@@ -50,7 +51,7 @@ const useLinearGradientColors = (colors: string[]) => {
   const theme = useTheme()
   return colors.map((color) => {
     if (color[0] === '$') {
-      return theme[color]?.toString() || color
+      return variableToString(theme[color] || color)
     }
     return color
   })
