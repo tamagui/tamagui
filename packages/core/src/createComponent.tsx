@@ -20,7 +20,6 @@ import React, {
   memo,
   useCallback,
   useContext,
-  useMemo,
   useRef,
   useState,
 } from 'react'
