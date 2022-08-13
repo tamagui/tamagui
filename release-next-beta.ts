@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as proc from 'node:child_process'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
@@ -145,6 +146,7 @@ async function run() {
                 cwd,
               })
             } catch (err) {
+              // @ts-ignore
               if (err.includes(`403`)) {
                 console.log('Already published, skipping')
                 return
@@ -161,12 +163,17 @@ async function run() {
         await Promise.all(
           chunk.map(async ({ name, cwd }) => {
             console.log(`Release ${name}`)
-            await spawnify(`npm dist-tag remove ${name}@${version} prepub`, {
-              cwd,
-            })
-            await spawnify(`npm dist-tag add ${name}@${version} latest`, {
-              cwd,
-            })
+            try {
+              await spawnify(`npm dist-tag remove ${name}@${version} prepub`, {
+                cwd,
+              })
+              await spawnify(`npm dist-tag add ${name}@${version} latest`, {
+                cwd,
+              })
+            } catch (err) {
+              // @ts-ignore
+              console.error(`Package ${name} failed with error:`, err.message, err.stack)
+            }
           })
         )
       }
