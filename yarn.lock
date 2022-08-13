@@ -5265,6 +5265,7 @@ __metadata:
   resolution: "@tamagram/repo@workspace:examples/tamagram"
   dependencies:
     "@manypkg/cli": ^0.19.1
+    "@tamagui/build": ^1.0.1-beta.140
     "@tamagui/vite-plugin": ^1.0.1-beta.140
     "@types/react": ^18.0.15
     "@types/react-native": ^0.69.2
