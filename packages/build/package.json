@@ -12,7 +12,6 @@
     "access": "public"
   },
   "dependencies": {
-    "chmodr": "^1.2.0",
     "chokidar": "^3.5.2",
     "esbuild": "^0.14.49",
     "execa": "^5.0.0",
