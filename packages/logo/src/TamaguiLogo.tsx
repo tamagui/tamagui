@@ -5,22 +5,15 @@ export const tints: ThemeName[] = ['red', 'orange', 'yellow', 'green', 'blue', '
 
 export const logoColors = tints.map((t) => `var(--${t}9)`)
 
-export const TamaguiLogo = forwardRef(
-  (
-    {
-      showWords,
-      color,
-      downscale,
-      onHoverLetter,
-      ...props
-    }: {
-      onHoverLetter?: (i: number) => void
-      showWords?: boolean
-      color?: string
-      downscale?: number
-    } & XStackProps,
-    ref
-  ) => (
+type LogoProps = {
+  onHoverLetter?: (i: number) => void
+  showWords?: boolean
+  color?: string
+  downscale?: number
+} & XStackProps
+
+export const TamaguiLogo = forwardRef<any, LogoProps>(
+  ({ showWords, color, downscale, onHoverLetter, ...props }: LogoProps, ref) => (
     <XStack ref={ref} alignItems="center" justifyContent="center" space="$5" {...props}>
       <LogoIcon downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)} color={color} />
       {showWords && (

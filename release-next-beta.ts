@@ -102,9 +102,9 @@ async function run() {
         //
         spawnify(`yarn install`),
         checkDistDirs(),
-        exec(`yarn build`),
-        exec(`yarn lint`),
-        exec(`yarn fix`),
+        spawnify(`yarn build`),
+        spawnify(`yarn lint`),
+        spawnify(`yarn fix`),
       ])
 
       if (!process.env.SKIP_GIT_CLEAN_CHECK) {
