@@ -17,7 +17,7 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
     config(userConfig, env) {
       return {
         plugins: [
-          // viteCommonjs(),
+          viteCommonjs(),
           envPlugin(['NODE_ENV', 'TAMAGUI_TARGET']),
           // ...(options.disable || (options.disableDebugAttr && options.disableExtraction)
           //   ? []
@@ -40,13 +40,13 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
             },
           }),
         },
-        // build: {
-        //   commonjsOptions: {
-        //     transformMixedEsModules: true,
-        //   },
-        // },
+        build: {
+          commonjsOptions: {
+            transformMixedEsModules: true,
+          },
+        },
         ssr: {
-          noExternal: /tamagui|react-native/,
+          noExternal: /tamagui|react-native|expo-linear-gradient/,
           optimizeDeps: {
             // disabled: true,
           },
@@ -88,8 +88,8 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
           alias: {
             'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
             'react-native/Libraries/Utilities/codegenNativeComponent': '@tamagui/proxy-worm',
-            // 'react-native': 'react-native-web-lite',
-            'react-native': 'react-native-web',
+            'react-native': 'react-native-web-lite',
+            // 'react-native': 'react-native-web',
           },
         },
       }
