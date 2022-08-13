@@ -5451,6 +5451,7 @@ __metadata:
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
     "@types/fs-extra": ^9.0.13
+    chmodr: ^1.2.0
     chokidar: ^3.5.2
     esbuild: ^0.14.49
     execa: ^5.0.0
@@ -9720,6 +9721,13 @@ __metadata:
     parse5-htmlparser2-tree-adapter: ^6.0.1
     tslib: ^2.2.0
   checksum: ace2f9c5809737534b1320d11d48762013694fa905b4deacac81a634edac178c1b0534f79d7b1896a88ce489db6cb539f222317996b21c8b6923ce413dcc1a2f
+  languageName: node
+  linkType: hard
+
+"chmodr@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "chmodr@npm:1.2.0"
+  checksum: e78dfd96b8653f26af20e111c19bef8b42eee5cab9921fe08ff6aea5c28309f466860376bec158697f84310423599d77031d51659e5878b3c90149c3d37e63d4
   languageName: node
   linkType: hard
 

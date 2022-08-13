@@ -5,6 +5,7 @@ const exec = require('execa')
 const fs = require('fs-extra')
 const esbuild = require('esbuild')
 const fg = require('fast-glob')
+const chmodr = require('chmodr')
 const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
 const { dirname, join } = require('path')
@@ -124,6 +125,7 @@ async function buildTsc() {
       const cmd = `tsc --baseUrl . --outDir ${targetDir} --rootDir src --emitDeclarationOnly --declarationMap`
       // console.log('\x1b[2m$', `npx ${cmd}`)
       await exec('npx', cmd.split(' '))
+      await new Promise((res, rej) => chmodr(targetDir, 0o644, (err) => (err ? rej(err) : res())))
     } finally {
       await fs.remove('tsconfig.tsbuildinfo')
     }
