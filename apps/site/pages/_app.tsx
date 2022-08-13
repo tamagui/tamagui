@@ -17,7 +17,6 @@ Error.stackTraceLimit = Infinity
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
-  console.log('theme', theme)
 
   // memo to avoid re-render on dark/light change
   const contents = useMemo(() => {

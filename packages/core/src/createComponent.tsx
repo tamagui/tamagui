@@ -904,8 +904,8 @@ export function createComponent<
   // get default props + className and analyze styles
   onConfiguredOnce((conf) => {
     if (process.env.IS_STATIC === 'is_static') {
-      console.warn('we may want to run this in static mode?')
       // in static mode we just use these to lookup configuration
+      // ... we likely want this? need to test
       return
     }
 
