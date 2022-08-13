@@ -12,6 +12,7 @@ import { shouldExclude as shouldExcludeDefault } from 'tamagui-loader'
 import webpack from 'webpack'
 
 export type WithTamaguiProps = TamaguiOptions & {
+  useReactNativeLite: boolean
   disableFontSupport?: boolean
   aliasReactPackages?: boolean
   includeCSSTest?: RegExp | ((path: string) => boolean)
@@ -79,6 +80,8 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           return esm ? path.join(dir, esm) : require.resolve(relativePath)
         }
 
+        const rnw = tamaguiOptions.useReactNativeLite ? 'react-native-web-lite' : 'react-native-web'
+
         const tamaguiAliases = safeResolves(
           ['react-native-svg', 'react-native-svg-web'],
           // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
@@ -91,8 +94,8 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           // match commonjs to react-native-web
           // i'd do esm but needs better docs, have to transpile
           ['@tamagui/rnw', '@tamagui/rnw'],
-          ['react-native$', 'react-native-web-lite'],
-          ['react-native-web$', 'react-native-web-lite'],
+          ['react-native$', rnw],
+          ['react-native-web$', rnw],
           ['@testing-library/react-native', '@tamagui/proxy-worm'],
           ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
           // fix reanimated 3
@@ -104,7 +107,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               ] as any)
             : [])
         )
-        console.log('tamaguiAliases', tamaguiAliases)
 
         const alias = {
           ...(webpackConfig.resolve.alias || {}),
@@ -223,6 +225,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               fullPath === 'tamagui' ||
               fullPath.startsWith('@tamagui/') ||
               fullPath === 'react-native-safe-area-context' ||
+              fullPath === 'expo-linear-gradient' ||
               fullPath.startsWith('@react-navigation') ||
               fullPath === '@gorhom/bottom-sheet'
             ) {

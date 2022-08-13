@@ -13,6 +13,7 @@ export const shouldExclude = (filePath: string, projectRoot: string) => {
     filePath.includes('react-native-web') ||
     filePath.includes('react-native-reanimated') ||
     filePath.includes('react-native-gesture-handler') ||
+    // filePath.includes('expo-linear-gradient') ||
     filePath.includes('@gorhom/portal') ||
     filePath.includes(projectRoot) ||
     isTamaguiDistJSX(filePath)

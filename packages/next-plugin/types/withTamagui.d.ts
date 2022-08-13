@@ -1,5 +1,6 @@
 import type { TamaguiOptions } from '@tamagui/static';
 export declare type WithTamaguiProps = TamaguiOptions & {
+    useReactNativeLite: boolean;
     disableFontSupport?: boolean;
     aliasReactPackages?: boolean;
     includeCSSTest?: RegExp | ((path: string) => boolean);

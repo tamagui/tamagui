@@ -28,7 +28,7 @@
     "@tamagui/theme-base": "^1.0.1-beta.140",
     "expo": "^46.0.2",
     "expo-font": "^10.2.0",
-    "expo-linear-gradient": "^11.3.0",
+    "expo-linear-gradient": "^11.4.0",
     "expo-linking": "^3.1.0",
     "expo-splash-screen": "^0.16.1",
     "expo-status-bar": "^1.4.0",

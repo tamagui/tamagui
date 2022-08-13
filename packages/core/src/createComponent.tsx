@@ -27,7 +27,7 @@ import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
 import { getConfig, onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
-import { isWeb, useIsomorphicLayoutEffect } from './constants/platform'
+import { isClient, isWeb, useIsomorphicLayoutEffect } from './constants/platform'
 import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { TextAncestorContext } from './contexts/TextAncestorContext'
 import { assignNativePropsToWeb } from './helpers/assignNativePropsToWeb'
@@ -74,18 +74,13 @@ const defaultComponentState: TamaguiComponentState = Object.freeze({
 
 export const mouseUps = new Set<Function>()
 if (typeof document !== 'undefined') {
-  document.addEventListener('mouseup', () => {
+  const cancelTouches = () => {
     mouseUps.forEach((x) => x())
     mouseUps.clear()
-  })
-  document.addEventListener('touchend', () => {
-    mouseUps.forEach((x) => x())
-    mouseUps.clear()
-  })
-  document.addEventListener('touchcancel', () => {
-    mouseUps.forEach((x) => x())
-    mouseUps.clear()
-  })
+  }
+  document.addEventListener('mouseup', cancelTouches)
+  document.addEventListener('touchend', cancelTouches)
+  document.addEventListener('touchcancel', cancelTouches)
 }
 
 // mutates
@@ -512,7 +507,7 @@ export function createComponent<
 
     useIsomorphicLayoutEffect(() => {
       // we need to use state to properly have mounted go from false => true
-      if (typeof window !== 'undefined' && (hasEnterStyle || props.animation)) {
+      if (isClient && (hasEnterStyle || props.animation) && !state.mounted) {
         // for SSR we never set mounted, ensuring enterStyle={{}} is set by default
         setStateShallow({
           mounted: true,
@@ -804,8 +799,9 @@ export function createComponent<
       }
     }
 
-    // add focus events
+    // EVENTS native
     if (process.env.TAMAGUI_TARGET === 'native') {
+      // add focus events
       const attachFocus = !!(
         (pseudos && pseudos.focusStyle) ||
         (initialPseudos && initialPseudos.focusStyle)
@@ -818,11 +814,8 @@ export function createComponent<
           setStateShallow({ focus: false })
         })
       }
-    }
 
-    // EVENTS native
-    // use Pressability to get smooth unPress when you press + hold + move out
-    if (process.env.TAMAGUI_TARGET === 'native') {
+      // use Pressability to get smooth unPress when you press + hold + move out
       // only ever create once, use .configure() to update later
       const pressability = usePressability(events)
       if (attachPress && events) {
@@ -911,6 +904,7 @@ export function createComponent<
   // get default props + className and analyze styles
   onConfiguredOnce((conf) => {
     if (process.env.IS_STATIC === 'is_static') {
+      console.warn('we may want to run this in static mode?')
       // in static mode we just use these to lookup configuration
       return
     }

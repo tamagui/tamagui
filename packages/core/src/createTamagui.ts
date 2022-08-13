@@ -1,7 +1,6 @@
 import { configListeners, setConfig } from './conf'
 import { isWeb } from './constants/platform'
 import { createVariables } from './createVariables'
-import { createTamaguiProvider } from './helpers/createTamaguiProvider'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import { getAllRules } from './helpers/insertStyleRule'
 import {
@@ -19,30 +18,30 @@ import { CreateTamaguiProps, InferTamaguiConfig, TamaguiInternalConfig, ThemeObj
 const createdConfigs = new WeakMap<any, boolean>()
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
-  config: Conf
+  configIn: Conf
 ): InferTamaguiConfig<Conf> {
-  if (createdConfigs.has(config)) {
-    return config as any
+  if (createdConfigs.has(configIn)) {
+    return configIn as any
   }
 
   if (process.env.NODE_ENV === 'development') {
-    if (!config.tokens) {
+    if (!configIn.tokens) {
       throw new Error(`Must define tokens`)
     }
-    if (!config.themes) {
+    if (!configIn.themes) {
       throw new Error(`Must define themes`)
     }
-    if (!config.fonts) {
+    if (!configIn.fonts) {
       throw new Error(`Must define fonts`)
     }
   }
 
   configureMedia({
-    queries: config.media as any,
-    defaultActive: config.mediaQueryDefaultActive,
+    queries: configIn.media as any,
+    defaultActive: configIn.mediaQueryDefaultActive,
   })
 
-  const fontTokens = createVariables(config.fonts!, '', true)
+  const fontTokens = createVariables(configIn.fonts!, '', true)
   const fontsParsed = (() => {
     const res = {} as typeof fontTokens
     for (const familyName in fontTokens) {
@@ -52,7 +51,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   })()
 
   const themeConfig = (() => {
-    const themes = { ...config.themes }
+    const themes = { ...configIn.themes }
     let cssRuleSets: string[] = []
 
     if (isWeb) {
@@ -62,9 +61,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         { name: string; declarations: string[]; language?: string }
       > = {}
 
-      for (const key in config.tokens) {
-        for (const skey in config.tokens[key]) {
-          const val = config.tokens[key][skey]
+      for (const key in configIn.tokens) {
+        for (const skey in configIn.tokens[key]) {
+          const val = configIn.tokens[key][skey]
           registerCSSVariable(val)
           declarations.push(variableToCSS(val))
         }
@@ -77,7 +76,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         fontDeclarations[key] = { name: name.slice(1), declarations: fontVars, language }
       }
 
-      const sep = process.env.NODE_ENV === 'development' ? config.cssStyleSeparator || ' ' : ''
+      const sep = process.env.NODE_ENV === 'development' ? configIn.cssStyleSeparator || ' ' : ''
 
       function declarationsToRuleSet(decs: string[], selector = '') {
         return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}${sep}}`
@@ -145,7 +144,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         cssRuleSets = [
           ...cssRuleSets,
           ...getThemeCSSRules({
-            config,
+            config: configIn,
             themeName,
             ...dedupedThemes[themeName],
           }),
@@ -170,20 +169,20 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   })()
 
   // faster lookups token keys become $keys to match input
-  const tokensParsed: any = parseTokens(config.tokens)
+  const tokensParsed: any = parseTokens(configIn.tokens)
 
   const getCSS = () => {
     return `${themeConfig.css}\n${getAllRules().join('\n')}`
   }
 
-  const shorthands = config.shorthands || {}
+  const shorthands = configIn.shorthands || {}
 
-  const next: TamaguiInternalConfig = {
+  const config: TamaguiInternalConfig = {
     fontLanguages: [],
     defaultTheme: 'light',
     animations: {} as any,
     media: {},
-    ...config,
+    ...configIn,
     shorthands,
     inverseShorthands: shorthands
       ? Object.fromEntries(Object.entries(shorthands).map(([k, v]) => [v, k]))
@@ -194,19 +193,16 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     tokensParsed,
     parsed: true,
     getCSS,
-    Provider: null as any,
   }
 
-  next.Provider = createTamaguiProvider(next)
-
-  setConfig(next)
+  setConfig(config)
 
   if (configListeners.size) {
-    configListeners.forEach((cb) => cb(next))
+    configListeners.forEach((cb) => cb(config))
     configListeners.clear()
   }
 
-  createdConfigs.set(next, true)
+  createdConfigs.set(config, true)
 
   if (process.env.NODE_ENV === 'development') {
     if (!globalThis['Tamagui']) {
@@ -215,7 +211,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   // @ts-expect-error
-  return next
+  return config
 }
 
 const parseTokens = (tokens: any) => {

@@ -172,9 +172,9 @@ export const useChangeThemeEffect = (
   const forceUpdate = forceUpdateProp || useForceUpdate()
 
   const themeManager = useConstant<ThemeManager | null>(() => {
-    if (!next) return null
+    // if (!next) return null
     // RSC test
-    if (typeof document === 'undefined') return null
+    // if (typeof document === 'undefined') return null
     return new ThemeManager(next.name, next.theme, parentManager, reset)
   })
 

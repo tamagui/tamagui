@@ -170,7 +170,6 @@ export declare type CreateTamaguiProps = {
     themeClassNameOnRoot?: boolean;
 };
 export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & CreateTamaguiConfig<A, B, C, D, E, F> & {
-    Provider: (props: TamaguiProviderProps) => any;
     tokensParsed: CreateTokens<Variable>;
     themeConfig: any;
     fontsParsed: GenericFonts;
@@ -337,6 +336,7 @@ declare type StaticComponentObject = {
     extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X;
 };
 export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
+    config: TamaguiInternalConfig;
     disableInjectCSS?: boolean;
     children?: React.ReactNode;
 };

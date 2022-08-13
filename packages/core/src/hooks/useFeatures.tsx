@@ -171,6 +171,7 @@ function loadAnimationFeature() {
       })
 
       useIsomorphicLayoutEffect(() => {
+        console.warn('setting', res)
         setStateShallow({
           animation: res,
         })

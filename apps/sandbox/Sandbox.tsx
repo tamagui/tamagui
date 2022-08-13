@@ -25,6 +25,7 @@ import {
   Paragraph,
   Sheet,
   Square,
+  TamaguiProvider,
   Text,
   Theme,
   XStack,
@@ -35,7 +36,7 @@ import {
   useMedia,
 } from 'tamagui'
 
-import Tamagui from './tamagui.config'
+import config from './tamagui.config'
 
 // webpack fix..
 if (typeof require !== 'undefined') {
@@ -50,7 +51,7 @@ export const Sandbox = () => {
   const { getStyleElement } = AppRegistry.getApplication('Main')
 
   return (
-    <Tamagui.Provider defaultTheme={theme}>
+    <TamaguiProvider config={config} defaultTheme={theme}>
       <link href="/fonts/inter.css" rel="stylesheet" />
       {getStyleElement()}
 
@@ -103,7 +104,7 @@ export const Sandbox = () => {
           <Square size={50} bc="red" />
         </XStack> */}
       </div>
-    </Tamagui.Provider>
+    </TamaguiProvider>
   )
 }
 

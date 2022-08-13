@@ -4,9 +4,7 @@
   "description": "React Native for Web",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": false,
   "files": [
     "types",
     "dist",
@@ -26,7 +24,9 @@
     "styleq": "^0.1.2"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.140"
+    "@tamagui/build": "^1.0.1-beta.140",
+    "react": "*",
+    "react-dom": "*"
   },
   "peerDependencies": {
     "react": "*",
