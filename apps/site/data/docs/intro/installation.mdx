@@ -350,24 +350,27 @@ The `createTamagui` function receives a configuration object:
 
 ### Set up root
 
-Import and use the Tamagui `Provider` component at the top component in your app.
+Import and use the `TamaguiProvider` component as the top component in your app.
 
-```tsx line=5-7
+```tsx line=8-14
 import React, { Suspense } from 'react'
+import { TamaguiProvider } from 'tamagui'
 
-import Tamagui from './tamagui.config'
+import config from './tamagui.config'
 
 export default function App() {
   return (
-    <Tamagui.Provider>
-      {/* if you use suspense, you'll want one here */}
-      <Suspense>{/* The rest of your app here */}</Suspense>
-    </Tamagui.Provider>
+    <TamaguiProvider config={config}>
+      {/* if you want nice React 18 concurrent hydration, you'll want Suspense near the root */}
+      <Suspense>
+        <AppContents />
+      </Suspense>
+    </TamaguiProvider>
   )
 }
 ```
 
-Tamagui.Provider has optional props, [see the docs for them here](/docs/intro/configuration#using-tamagui-provider).
+TamaguiProvider has optional props, [see the docs for them here](/docs/intro/configuration#using-tamagui-provider).
 
 Finally, you may want to reset your CSS on your web app, we provide a very minimal one you can import. For Next.js apps, do so at the top of your `_app.tsx`:
 

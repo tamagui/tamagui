@@ -160,7 +160,6 @@ export {
   spacedChildren,
   styled,
   themeable,
-  Variable,
   withStaticProperties,
   // hooks
   useConstant,

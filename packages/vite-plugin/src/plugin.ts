@@ -88,7 +88,8 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
           alias: {
             'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
             'react-native/Libraries/Utilities/codegenNativeComponent': '@tamagui/proxy-worm',
-            'react-native': 'react-native-web-lite',
+            // 'react-native': 'react-native-web-lite',
+            'react-native': 'react-native-web',
           },
         },
       }

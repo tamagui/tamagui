@@ -57,8 +57,9 @@ import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import React, { useMemo, useState } from 'react'
+import { TamaguiProvider } from 'tamagui'
 
-import Tamagui from '../tamagui.config'
+import config from '../tamagui.config'
 
 export default function App({ Component, pageProps }: AppProps) {
   const [theme, setTheme] = useRootTheme()
@@ -73,9 +74,14 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>{/* ... */}</Head>
       <NextThemeProvider onChangeTheme={setTheme}>
-        <Tamagui.Provider disableInjectCSS disableRootThemeClass defaultTheme={theme}>
+        <TamaguiProvider
+          config={config}
+          disableInjectCSS
+          disableRootThemeClass
+          defaultTheme={theme}
+        >
           {contents}
-        </Tamagui.Provider>
+        </TamaguiProvider>
       </NextThemeProvider>
     </>
   )

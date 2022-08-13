@@ -139,16 +139,22 @@ Note, for `tamagui`, it expects certain things on tokens. Space and size should 
 Import and use the Tamagui `Provider` component at the top component in your app.
 
 ```tsx line=3-5
-import Tamagui from './tamagui.config'
+import { TamaguiProvider } from 'tamagui'
+
+import config from './tamagui.config'
 
 export default function App() {
-  return <Tamagui.Provider>{/* The rest of your app here */}</Tamagui.Provider>
+  return (
+    <TamaguiProvider config={config}>
+      <AppContents />
+    </TamaguiProvider>
+  )
 }
 ```
 
 #### Using Tamagui Provider
 
-Tamagui.Provider takes a few properties:
+TamaguiProvider takes a few optional properties:
 
 <PropsTable
   data={[

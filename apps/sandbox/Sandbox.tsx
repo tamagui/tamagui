@@ -47,6 +47,8 @@ export const Sandbox = () => {
   const scheme = useColorScheme()
   const [theme, setTheme] = useState(scheme as any)
 
+  console.log('theme', theme)
+
   // @ts-ignore
   const { getStyleElement } = AppRegistry.getApplication('Main')
 
@@ -87,6 +89,7 @@ export const Sandbox = () => {
           overflow: 'hidden',
         }}
       >
+        <ButtonFrame animation="bouncy">hello</ButtonFrame>
         {/* <AlertDialogDemo /> */}
         {/* <AddThemeDemo /> */}
         {/* <SheetDemo /> */}
@@ -116,7 +119,6 @@ const ButtonFrame = styled(XStack, {
   bc: '$background',
   bw: 1,
   boc: '$background',
-  py: '$sm',
   space: '$5',
 
   pressStyle: {
