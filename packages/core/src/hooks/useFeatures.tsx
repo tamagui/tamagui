@@ -97,6 +97,7 @@ function loadAnimationFeature() {
       } = _utils
 
       if (!useAnimations) {
+        // eslint-disable-next-line no-console
         console.error('no useAnimations hook provided')
         return null
       }

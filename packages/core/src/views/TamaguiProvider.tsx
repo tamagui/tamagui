@@ -5,8 +5,11 @@ import { isClient, isSSR } from '../constants/platform'
 import { ButtonInsideButtonContext } from '../contexts/ButtonInsideButtonContext'
 import { TextAncestorProvider } from '../contexts/TextAncestorContext'
 import { useMediaQueryListeners } from '../hooks/useMedia'
-import { TamaguiProviderProps } from '../types'
+import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
+
+// @ts-ignore
+const isRSC = process.env.ENABLE_RSC ? import.meta.env.SSR : false
 
 export function TamaguiProvider({
   children,
@@ -14,6 +17,10 @@ export function TamaguiProvider({
   config,
   ...themePropsProvider
 }: TamaguiProviderProps) {
+  if (isRSC) {
+    return <>{children}</>
+  }
+
   if (!isSSR) {
     useMediaQueryListeners()
   }

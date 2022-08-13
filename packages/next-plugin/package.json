@@ -30,7 +30,6 @@
     "css-minimizer-webpack-plugin": "^4.0.0",
     "esbuild-loader": "^2.19.0",
     "esm-resolve": "^1.0.8",
-    "expo-linear-gradient": "^11.4.0",
     "file-loader": "^6.2.0",
     "html-inline-css-webpack-plugin": "^1.11.1",
     "html-webpack-plugin": "^5.5.0",

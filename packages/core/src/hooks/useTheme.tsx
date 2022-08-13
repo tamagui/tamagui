@@ -31,12 +31,21 @@ type UseThemeState = {
   isRendering: boolean
 }
 
+// @ts-ignore
+const isRSC = process.env.ENABLE_RSC ? import.meta.env.SSR : false
+
 export const useTheme = (
   themeName?: string | null,
   componentName?: string,
   props?: ThemeProps,
   forceUpdate?: any
 ): ThemeObject => {
+  if (isRSC) {
+    const config = getConfig()
+    // @ts-ignore
+    return config.themes[config.defaultTheme]
+  }
+
   const { name, theme, themes, themeManager, className } = useChangeThemeEffect(
     themeName,
     componentName,
@@ -108,6 +117,7 @@ export const useTheme = (
           return Reflect.get(_, key)
         }
         if (!themeManager) {
+          // eslint-disable-next-line no-console
           console.error('No themeManager')
           return
         }
@@ -118,13 +128,14 @@ export const useTheme = (
         if (state.current.isRendering && !state.current.keys.has(key)) {
           state.current.keys.add(key)
           if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+            // eslint-disable-next-line no-console
             console.log('  🔸 tracking theme', key)
           }
         }
         return themeManager.getValue(key)
       },
     })
-  }, [name, theme, componentName, className, debugProp])
+  }, [theme, name, themeManager, className, debugProp])
 }
 
 const GetThemeManager = Symbol()

@@ -662,15 +662,20 @@ export const insertSplitStyles: StyleSplitter = (...args) => {
   return res
 }
 
+// @ts-ignore
+const isRSC = process.env.ENABLE_RSC ? import.meta.env.SSR : false
+
 // on native no need to insert any css
 const useInsertEffectCompat = isWeb ? useInsertionEffect || useIsomorphicLayoutEffect : () => {}
 
 export const useSplitStyles: StyleSplitter = (...args) => {
   const res = getSplitStyles(...args)
 
-  useInsertEffectCompat(() => {
-    insertStyleRules(res.rulesToInsert)
-  }, [res.rulesToInsert])
+  if (!isRSC) {
+    useInsertEffectCompat(() => {
+      insertStyleRules(res.rulesToInsert)
+    }, [res.rulesToInsert])
+  }
 
   return res
 }

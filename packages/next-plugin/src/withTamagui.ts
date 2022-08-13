@@ -91,7 +91,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
           ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
           ['react-native-reanimated', 'react-native-reanimated'],
-          // ['expo-linear-gradient', '@tamagui/expo-linear-gradient'],
           // match commonjs to react-native-web
           // i'd do esm but needs better docs, have to transpile
           ['@tamagui/rnw', '@tamagui/rnw'],

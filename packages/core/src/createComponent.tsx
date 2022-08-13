@@ -41,6 +41,7 @@ import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { useFeatures } from './hooks/useFeatures'
 import { mediaState } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
+import { useServerRef, useServerState } from './hooks/useServerHooks'
 import { getThemeManager, useTheme } from './hooks/useTheme'
 import {
   SpaceDirection,
@@ -61,6 +62,9 @@ import { Slot, mergeEvent } from './views/Slot'
 import { wrapThemeManagerContext } from './views/Theme'
 
 React['keep']
+
+// @ts-ignore
+const isRSC = process.env.ENABLE_RSC ? import.meta.env.SSR : false
 
 const defaultComponentState: TamaguiComponentState = Object.freeze({
   hover: false,
@@ -129,7 +133,6 @@ export function createComponent<
       props = propsIn
     }
 
-    const hostRef = useRef<HTMLElement | View>(null)
     const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
     const componentClassName = props.asChild
@@ -138,32 +141,12 @@ export function createComponent<
       ? `is_${props.componentName}`
       : defaultComponentClassName
 
-    if (process.env.NODE_ENV === 'development') {
-      if (props['debug']) {
-        const name = `${
-          componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
-        }`
-        const banner = `${name} ${propsIn['data-is'] || ''}`
-        // eslint-disable-next-line no-console
-        console.group(`%c 🐛 ${banner}`, 'background: yellow;')
-        // eslint-disable-next-line no-console
-        console.log('props', propsIn)
-        // eslint-disable-next-line no-console
-        console.log('ref', hostRef, '(click to view)')
-        if (props['debug'] === 'break') {
-          // eslint-disable-next-line no-debugger
-          debugger
-        }
-      }
-    }
-
     const forceUpdate = useForceUpdate()
+    config = config || getConfig()
     const theme = useTheme(props.theme, componentName, props, forceUpdate)
-    const states = useState<TamaguiComponentState>(defaultComponentState)
+
+    const states = useServerState<TamaguiComponentState>(defaultComponentState)
     const state = propsIn.forceStyle ? { ...states[0], [propsIn.forceStyle]: true } : states[0]
-    const setState = states[1]
-    const setStateShallow = createShallowUpdate(setState)
-    const languageContext = useContext(FontLanguageContext)
 
     const shouldAvoidClasses = !!(props.animation && avoidClasses)
     const shouldForcePseudo = !!propsIn.forceStyle
@@ -184,18 +167,43 @@ export function createComponent<
             resolveVariablesAs: 'value',
           } as const)
 
+    const languageContext = isRSC ? null : useContext(FontLanguageContext)
+
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
       theme,
       splitStyleState,
-      props.asChild ? null : initialSplitStyles.classNames,
+      props.asChild ? null : initialSplitStyles?.classNames,
       languageContext || undefined,
       props['debug']
     )
 
+    const hostRef = useServerRef<HTMLElement | View>(null)
+    const setState = states[1]
+    const setStateShallow = createShallowUpdate(setState)
+
+    if (process.env.NODE_ENV === 'development') {
+      if (props['debug']) {
+        const name = `${
+          componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
+        }`
+        const banner = `${name} ${propsIn['data-is'] || ''}`
+        // eslint-disable-next-line no-console
+        console.group(`%c 🐛 ${banner}`, 'background: yellow;')
+        // eslint-disable-next-line no-console
+        console.log('props', propsIn)
+        // eslint-disable-next-line no-console
+        console.log('ref', hostRef, '(click to view)')
+        if (props['debug'] === 'break') {
+          // eslint-disable-next-line no-debugger
+          debugger
+        }
+      }
+    }
+
     const { viewProps: viewPropsIn, pseudos, medias, style, classNames } = splitStyles
-    const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
+    const useAnimations = tamaguiConfig?.animations?.useAnimations as UseAnimationHook | undefined
     const isAnimated = !!(useAnimations && props.animation)
     const hasEnterStyle = !!props.enterStyle
 
@@ -404,33 +412,34 @@ export function createComponent<
 
       assignNativePropsToWeb(elementType, viewProps, nonTamaguiProps)
 
-      useElementLayout(hostRef, onLayout)
+      if (!isRSC) {
+        useElementLayout(hostRef, onLayout)
 
-      // from react-native-web
-      useResponderEvents(hostRef, {
-        onMoveShouldSetResponder,
-        onMoveShouldSetResponderCapture,
-        onResponderEnd,
-        onResponderGrant,
-        onResponderMove,
-        onResponderReject,
-        onResponderRelease,
-        onResponderStart,
-        onResponderTerminate,
-        onResponderTerminationRequest,
-        onScrollShouldSetResponder,
-        onScrollShouldSetResponderCapture,
-        onSelectionChangeShouldSetResponder,
-        onSelectionChangeShouldSetResponderCapture,
-        onStartShouldSetResponder,
-        onStartShouldSetResponderCapture,
-      })
+        // from react-native-web
+        useResponderEvents(hostRef, {
+          onMoveShouldSetResponder,
+          onMoveShouldSetResponderCapture,
+          onResponderEnd,
+          onResponderGrant,
+          onResponderMove,
+          onResponderReject,
+          onResponderRelease,
+          onResponderStart,
+          onResponderTerminate,
+          onResponderTerminationRequest,
+          onScrollShouldSetResponder,
+          onScrollShouldSetResponderCapture,
+          onSelectionChangeShouldSetResponder,
+          onSelectionChangeShouldSetResponderCapture,
+          onStartShouldSetResponder,
+          onStartShouldSetResponderCapture,
+        })
 
-      // from react-native-web
-      const platformMethodsRef = usePlatformMethods(viewProps)
-
-      const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef as any)
-      viewProps.ref = setRef
+        // from react-native-web
+        const platformMethodsRef = usePlatformMethods(viewProps)
+        const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef as any)
+        viewProps.ref = setRef
+      }
 
       if (props.href != undefined && hrefAttrs != undefined) {
         const { download, rel, target } = hrefAttrs
@@ -498,7 +507,7 @@ export function createComponent<
     }
 
     // isMounted
-    const internal = useRef<{ isMounted: boolean; unmountEffects?: Function[] }>()
+    const internal = useServerRef<{ isMounted: boolean; unmountEffects?: Function[] }>()
     if (!internal.current) {
       internal.current = {
         isMounted: true,
@@ -538,7 +547,7 @@ export function createComponent<
         animationStyles ?? style,
         medias,
       ]
-      if (!animationStyles) {
+      if (!animationStyles && initialSplitStyles) {
         const initPseudos = initialSplitStyles.pseudos
         const force = shouldForcePseudo
         !state.mounted && addPseudoToStyles(styles, initPseudos, pseudos, 'enterStyle')
@@ -599,7 +608,7 @@ export function createComponent<
     }
 
     // TODO need to loop active variants and see if they have matchin pseudos and apply as well
-    const initialPseudos = initialSplitStyles.pseudos
+    const initialPseudos = initialSplitStyles?.pseudos
     const attachPress = !!(
       pseudos?.pressStyle ||
       initialPseudos?.pressStyle ||
@@ -773,7 +782,7 @@ export function createComponent<
     }
 
     // EVENTS: web
-    if (isWeb) {
+    if (!isRSC && isWeb) {
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const [pressableProps] = usePressable(
         events
@@ -886,7 +895,7 @@ export function createComponent<
       }
     }
 
-    return features.elements.length ? (
+    return !isRSC && features.elements.length ? (
       <>
         {features.elements}
         {content}
@@ -903,11 +912,10 @@ export function createComponent<
   // Once configuration is run and all components are registered
   // get default props + className and analyze styles
   onConfiguredOnce((conf) => {
-    if (process.env.IS_STATIC === 'is_static') {
-      // in static mode we just use these to lookup configuration
-      // ... we likely want this? need to test
-      return
-    }
+    if (isRSC) return
+    // in static mode we just use these to lookup configuration
+    // ... we likely want this? need to test
+    if (process.env.IS_STATIC === 'is_static') return
 
     tamaguiConfig = conf
 
