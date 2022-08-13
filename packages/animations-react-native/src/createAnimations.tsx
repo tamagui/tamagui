@@ -123,7 +123,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       }
 
       const nonAnimatedStyle = {}
-      for (const key of Object.keys(all)) {
+      for (const key in all) {
         const val = all[key]
         if (animatedStyleKey[key]) {
           if (key === 'transform') {

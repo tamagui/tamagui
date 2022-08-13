@@ -89,7 +89,9 @@ export const Sandbox = () => {
           overflow: 'hidden',
         }}
       >
-        <ButtonFrame animation="bouncy">hello</ButtonFrame>
+        <ButtonFrame animation="bouncy" debug="verbose" pressable>
+          hello
+        </ButtonFrame>
         {/* <AlertDialogDemo /> */}
         {/* <AddThemeDemo /> */}
         {/* <SheetDemo /> */}
@@ -114,6 +116,8 @@ export const Sandbox = () => {
 const ButtonFrame = styled(XStack, {
   name: 'Button',
   tag: 'button',
+  debug: 'verbose',
+  scale: 1,
 
   jc: 'center',
   bc: '$background',
@@ -121,12 +125,16 @@ const ButtonFrame = styled(XStack, {
   boc: '$background',
   space: '$5',
 
-  pressStyle: {
-    bc: '$color',
-    scale: 0.98,
-  },
-
   variants: {
+    pressable: {
+      true: {
+        pressStyle: {
+          bc: '$color',
+          scale: 2,
+        },
+      },
+    },
+
     disabled: {
       true: {
         bc: 'red',
@@ -135,7 +143,7 @@ const ButtonFrame = styled(XStack, {
       },
       false: {},
     },
-  },
+  } as const,
 
   defaultVariants: {
     disabled: false,
