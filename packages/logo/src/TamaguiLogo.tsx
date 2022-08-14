@@ -13,16 +13,25 @@ type LogoProps = {
 } & XStackProps
 
 export const TamaguiLogo = forwardRef<any, LogoProps>(
-  ({ showWords, color, downscale, onHoverLetter, ...props }: LogoProps, ref) => (
-    <XStack ref={ref} alignItems="center" justifyContent="center" space="$5" {...props}>
-      <LogoIcon downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)} color={color} />
-      {showWords && (
-        <YStack marginBottom={-4}>
-          <LogoWords onHoverLetter={onHoverLetter} downscale={downscale ?? 2} color={color} />
-        </YStack>
-      )}
-    </XStack>
-  )
+  ({ showWords, color, downscale, onHoverLetter, ...props }: LogoProps, ref) => {
+    return (
+      <XStack
+        tag="span"
+        ref={ref}
+        alignItems="center"
+        justifyContent="center"
+        space="$5"
+        {...props}
+      >
+        <LogoIcon downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)} color={color} />
+        {showWords && (
+          <YStack tag="span" marginBottom={-4}>
+            <LogoWords onHoverLetter={onHoverLetter} downscale={downscale ?? 2} color={color} />
+          </YStack>
+        )}
+      </XStack>
+    )
+  }
 )
 
 export const LogoWords = ({
@@ -90,6 +99,7 @@ export const LogoWords = ({
 export const LogoIcon = ({ downscale = 2 }: any) => {
   return (
     <YStack
+      tag="span"
       className="unselectable"
       alignSelf="center"
       marginVertical={-10}

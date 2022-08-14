@@ -20,7 +20,7 @@ export declare const useChangeThemeEffect: (name?: string | null, componentName?
     themes: Record<string, ThemeObject>;
     themeManager: ThemeManager | null;
     name: string;
-    theme: ThemeObject;
+    theme: ThemeObject | null;
     className?: string | undefined;
 };
 //# sourceMappingURL=useTheme.d.ts.map

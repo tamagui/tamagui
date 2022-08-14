@@ -193,9 +193,15 @@ export const useChangeThemeEffect = (
   if (isRSC) {
     // we need context working for this to work well
     const config = getConfig()
+    const parentManager = new ThemeManager('light', config.themes.light)
+    const next = parentManager.getNextTheme({
+      name,
+      componentName,
+      themes: config.themes,
+      reset: props?.reset,
+    })
     return {
-      name: name || 'light',
-      theme: config.themes[name || 'light'],
+      ...next,
       themes: config.themes,
       themeManager: null,
     }

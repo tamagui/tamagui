@@ -19,9 +19,10 @@ function App() {
           <Router>
             <FileRoutes />
           </Router>
+
+          <Footer />
         </TamaguiClientProvider>
       </TamaguiProvider>
-      <Footer />
     </Suspense>
   )
 }

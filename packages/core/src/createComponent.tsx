@@ -613,7 +613,7 @@ export function createComponent<
       onClick
     )
 
-    const isHoverable = isWeb && !isRSC
+    const isHoverable = isWeb
     const attachHover =
       isHoverable &&
       !!((pseudos && pseudos.hoverStyle) || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
@@ -647,86 +647,88 @@ export function createComponent<
       })
     }, [])
 
-    const events = shouldAttach
-      ? {
-          [pressOutKey]: attachPress
-            ? (e) => {
-                unPress()
-                onPressOut?.(e)
-                onMouseUp?.(e)
-              }
-            : undefined,
-          ...(isHoverable && {
-            onMouseEnter: attachHover
+    const events =
+      shouldAttach && !isRSC
+        ? {
+            [pressOutKey]: attachPress
               ? (e) => {
-                  const next: Partial<typeof state> = {}
-                  if (attachHover) {
-                    next.hover = true
-                  }
-                  if (state.pressIn) {
-                    next.press = true
-                  }
-                  if (Object.keys(next).length) {
-                    setStateShallow(next)
-                  }
-                  onHoverIn?.(e)
-                  onMouseEnter?.(e)
+                  unPress()
+                  onPressOut?.(e)
+                  onMouseUp?.(e)
                 }
               : undefined,
-            onMouseLeave: attachHover
+            ...(isHoverable && {
+              onMouseEnter: attachHover
+                ? (e) => {
+                    const next: Partial<typeof state> = {}
+                    if (attachHover) {
+                      next.hover = true
+                    }
+                    if (state.pressIn) {
+                      next.press = true
+                    }
+                    if (Object.keys(next).length) {
+                      setStateShallow(next)
+                    }
+                    onHoverIn?.(e)
+                    onMouseEnter?.(e)
+                  }
+                : undefined,
+              onMouseLeave: attachHover
+                ? (e) => {
+                    const next: Partial<typeof state> = {}
+                    mouseUps.add(unPress)
+                    if (attachHover) {
+                      next.hover = false
+                    }
+                    if (state.pressIn) {
+                      next.press = false
+                      next.pressIn = false
+                    }
+                    if (Object.keys(next).length) {
+                      setStateShallow(next)
+                    }
+                    onHoverOut?.(e)
+                    onMouseLeave?.(e)
+                  }
+                : undefined,
+            }),
+            [pressInKey]: attachPress
               ? (e) => {
-                  const next: Partial<typeof state> = {}
-                  mouseUps.add(unPress)
-                  if (attachHover) {
-                    next.hover = false
+                  setStateShallow({
+                    press: true,
+                    pressIn: true,
+                    hover: false,
+                  })
+                  onPressIn?.(e)
+                  onMouseDown?.(e)
+                  if (isWeb) {
+                    mouseUps.add(unPress)
                   }
-                  if (state.pressIn) {
-                    next.press = false
-                    next.pressIn = false
-                  }
-                  if (Object.keys(next).length) {
-                    setStateShallow(next)
-                  }
-                  onHoverOut?.(e)
-                  onMouseLeave?.(e)
                 }
-              : undefined,
-          }),
-          [pressInKey]: attachPress
-            ? (e) => {
-                setStateShallow({
-                  press: true,
-                  pressIn: true,
-                  hover: false,
-                })
-                onPressIn?.(e)
-                onMouseDown?.(e)
-                if (isWeb) {
-                  mouseUps.add(unPress)
+              : null,
+            [pressKey]: attachPress
+              ? (e) => {
+                  unPress()
+                  onClick?.(e)
+                  onPress?.(e)
                 }
-              }
-            : null,
-          [pressKey]: attachPress
-            ? (e) => {
-                unPress()
-                onClick?.(e)
-                onPress?.(e)
-              }
-            : null,
+              : null,
 
-          // replicating TouchableWithoutFeedback
-          ...(!isWeb && {
-            cancelable: !props.rejectResponderTermination,
-            disabled: props.disabled !== null ? props.disabled : props.accessibilityState?.disabled,
-            hitSlop: props.hitSlop,
-            delayLongPress: props.delayLongPress,
-            delayPressIn: props.delayPressIn,
-            delayPressOut: props.delayPressOut,
-            focusable: viewProps.focusable ?? true,
-            minPressDuration: 0,
-          }),
-        }
-      : null
+            // replicating TouchableWithoutFeedback
+            ...(!isWeb && {
+              cancelable: !props.rejectResponderTermination,
+              disabled:
+                props.disabled !== null ? props.disabled : props.accessibilityState?.disabled,
+              hitSlop: props.hitSlop,
+              delayLongPress: props.delayLongPress,
+              delayPressIn: props.delayPressIn,
+              delayPressOut: props.delayPressOut,
+              focusable: viewProps.focusable ?? true,
+              minPressDuration: 0,
+            }),
+          }
+        : null
 
     let space = spaceProp
     // find space by media query
@@ -845,7 +847,7 @@ export function createComponent<
       const isAnimatedRNWView = isAnimated && typeof elementType !== 'string' // assuming for now as reanimated is only driver
       const shouldWrapWithComponentTheme =
         isAnimatedRNWView && getReturnVariablesAs(props, splitStyleState) === 'non-color-value'
-      const shouldWrapWithHover = events && attachHover
+      const shouldWrapWithHover = Boolean(events || isRSC) && attachHover
 
       if (shouldWrapWithHover || shouldWrapWithComponentTheme) {
         const themeClassName = shouldWrapWithComponentTheme ? `${theme.className}` : ''
@@ -856,10 +858,11 @@ export function createComponent<
             style={{
               display: 'contents',
             }}
-            {...(shouldWrapWithHover && {
-              onMouseEnter: events.onMouseEnter,
-              onMouseLeave: events.onMouseLeave,
-            })}
+            {...(events &&
+              shouldWrapWithHover && {
+                onMouseEnter: events.onMouseEnter,
+                onMouseLeave: events.onMouseLeave,
+              })}
           >
             {content}
           </span>
@@ -869,9 +872,9 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
-        // prettier-ignore
+        const element = typeof elementType === 'string' ? elementType : 'Component'
         // eslint-disable-next-line no-console
-        console.groupCollapsed('props out', viewProps, typeof elementType === 'string' ? elementType : 'Component')
+        console.groupCollapsed(`render <${element} /> with props`, viewProps)
         for (const key in viewProps) {
           // eslint-disable-next-line no-console
           console.log(key, viewProps[key])
@@ -1079,6 +1082,8 @@ export const Spacer = createComponent<SpacerProps>({
   validStyles,
   defaultProps: {
     ...stackDefaultStyles,
+    // avoid nesting issues
+    tag: 'span',
     size: true,
   },
   variants: {

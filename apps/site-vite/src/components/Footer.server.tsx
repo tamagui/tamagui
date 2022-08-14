@@ -1,4 +1,4 @@
-// import { TamaguiLogo } from '@tamagui/logo'
+import { TamaguiLogo } from '@tamagui/logo'
 import React from 'react'
 import { H4, Paragraph, Spacer, Text, XStack, YStack } from 'tamagui'
 
@@ -38,10 +38,10 @@ export const Footer = () => {
             >
               homepage
             </Text>
-            {/* <Link href="/">
+            <Link href="/">
               <TamaguiLogo showWords downscale={1} />
-            </Link> */}
-            <Paragraph mt="$2" size="$3">
+            </Link>
+            <Paragraph tag="span" mt="$2" size="$3">
               by{' '}
               <ParagraphLink
                 fontSize="inherit"
@@ -61,8 +61,6 @@ export const Footer = () => {
             <ParagraphLink href="/docs/intro/introduction">Introduction</ParagraphLink>
             <ParagraphLink href="/docs/intro/configuration">Configuration</ParagraphLink>
             <ParagraphLink href="/docs/guides/design-systems">Guides</ParagraphLink>
-            {/* <ParagraphLink href="/docs/api">API</ParagraphLink>
-          <ParagraphLink href="/docs/frequently-asked-questions">FAQ</ParagraphLink> */}
           </YStack>
 
           <YStack ai="flex-start" $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space="$3">
