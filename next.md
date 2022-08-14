@@ -1,5 +1,6 @@
 - 1.0
 
+  - Card should operate through context to properly sync size
   - FAQ
     - don't wrap in HOC if possible, will de-opt compilation
     - what works for compilation / examples

@@ -14,3 +14,47 @@ export const Section = styled(YStack, {
     },
   },
 })
+
+// todo - just use <Theme> here
+export const SectionTinted = ({
+  children,
+  gradient,
+  extraPad,
+  bubble,
+  noBorderTop,
+  ...props
+}: any) => {
+  // const { tint } = useTint()
+  // const childrenMemo = useMemo(() => children, [children])
+
+  return (
+    <YStack
+      zi={2}
+      contain="paint"
+      pos="relative"
+      py="$14"
+      elevation="$2"
+      {...(bubble && {
+        maw: 1400,
+        br: '$6',
+        bw: 1,
+        // boc: `$${tint}4`,
+        als: 'center',
+        width: '100%',
+      })}
+      {...props}
+    >
+      <YStack
+        fullscreen
+        zi={-1}
+        // bc={gradient ? `$${tint}2` : null}
+        {...(!bubble && {
+          btw: noBorderTop ? 0 : 1,
+          // bbw: 1,
+          // boc: `$${tint}3`,
+        })}
+      />
+      {children}
+    </YStack>
+  )
+}

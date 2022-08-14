@@ -3,11 +3,10 @@ import React from 'react'
 import { H4, Paragraph, Spacer, Text, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from './Container.server'
+import { ExternalIcon } from './icons/ExternalIcon.server'
 
-// import { ExternalIcon } from './ExternalIcon'
 // import { ParagraphLink } from './Link'
 
-const ExternalIcon = () => null
 const ParagraphLink = Paragraph
 const Link = Paragraph
 

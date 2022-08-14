@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "@tamagui/demos": "^1.0.1-beta.141",
     "@tamagui/config-base": "^1.0.1-beta.141",
     "@tamagui/core-node": "^1.0.1-beta.141",
     "@tamagui/unagi": "^1.0.1-beta.141",

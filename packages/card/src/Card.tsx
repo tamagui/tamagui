@@ -14,14 +14,14 @@ import { View } from 'react-native'
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
 
-const CARD_NAME = 'CARD'
+// const CARD_NAME = 'CARD'
 
-type CardContextValue = {
-  size?: SizeTokens
-}
+// type CardContextValue = {
+//   size?: SizeTokens
+// }
 
-const [createCardContext, createCardScope] = createContextScope(CARD_NAME)
-const [CardProvider, useCardContext] = createCardContext<CardContextValue>(CARD_NAME)
+// const [createCardContext, createCardScope] = createContextScope(CARD_NAME)
+// const [CardProvider, useCardContext] = createCardContext<CardContextValue>(CARD_NAME)
 
 export const CardFrame = styled(ThemeableStack, {
   name: 'Card',
@@ -89,18 +89,18 @@ export const Card = withStaticProperties(
       forwardRef<HTMLElement | View, ScopedProps<CardProps, 'Card'>>(
         ({ size, __scopeCard, children, ...props }, ref) => {
           return (
-            <CardProvider scope={__scopeCard} size={size}>
-              <CardFrame ref={ref} {...props}>
-                {React.Children.map(children, (child) => {
-                  if (isTamaguiElement(child) && !child.props.size) {
-                    return cloneElement(child, {
-                      size,
-                    })
-                  }
-                  return child
-                })}
-              </CardFrame>
-            </CardProvider>
+            // <CardProvider scope={__scopeCard} size={size}>
+            <CardFrame ref={ref} {...props}>
+              {React.Children.map(children, (child) => {
+                if (isTamaguiElement(child) && !child.props.size) {
+                  return cloneElement(child, {
+                    size,
+                  })
+                }
+                return child
+              })}
+            </CardFrame>
+            // </CardProvider>
           )
         }
       )
@@ -113,4 +113,4 @@ export const Card = withStaticProperties(
   }
 )
 
-export { createCardScope, useCardContext }
+// export { createCardScope, useCardContext }

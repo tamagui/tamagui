@@ -1,11 +1,6 @@
 import { GetProps, SizeTokens } from '@tamagui/core';
 import React from 'react';
 import { View } from 'react-native';
-declare type CardContextValue = {
-    size?: SizeTokens;
-};
-declare const createCardScope: import("@tamagui/create-context").CreateScope;
-declare const useCardContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<CardContextValue | undefined>) => CardContextValue;
 export declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -801,5 +796,4 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         [x: string]: undefined;
     })>;
 };
-export { createCardScope, useCardContext };
 //# sourceMappingURL=Card.d.ts.map
