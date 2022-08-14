@@ -7,8 +7,6 @@
  * @noflow
  */
 
-import valueParser from 'postcss-value-parser'
-
 const invalidShortforms = {
   background: true,
   borderBottom: true,
@@ -72,10 +70,11 @@ export function validate(obj: Object) {
         suggestion = 'Please use long-form properties.'
         isInvalid = true
       } else if (invalidMultiValueShortforms[prop]) {
-        if (typeof value === 'string' && valueParser(value).nodes.length > 1) {
-          suggestion = `Value is "${value}" but only single values are supported.`
-          isInvalid = true
-        }
+        // TODO
+        // if (typeof value === 'string' && valueParser(value).nodes.length > 1) {
+        //   suggestion = `Value is "${value}" but only single values are supported.`
+        //   isInvalid = true
+        // }
       }
       if (suggestion !== '') {
         error(`Invalid style property of "${prop}". ${suggestion}`)

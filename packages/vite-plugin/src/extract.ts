@@ -137,18 +137,27 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
         ssr = ssrParam?.ssr
       }
 
+      const startsWithComment = code[0] === '/' && code[1] === '/'
+      let shouldPrintDebug: boolean | 'verbose' =
+        (!!process.env.DEBUG &&
+          (process.env.DEBUG_FILE ? validId.includes(process.env.DEBUG_FILE) : true)) ||
+        // supports esbuild style //! comments
+        (startsWithComment && (code.startsWith('// debug') || code.startsWith('//! debug')))
+
+      if (shouldPrintDebug && code.startsWith('// debug-verbose')) {
+        shouldPrintDebug = 'verbose'
+      }
+
       const extracted = await extractToClassNames({
         extractor,
         source: code,
         sourcePath: validId,
         options,
-        shouldPrintDebug: false,
+        shouldPrintDebug,
       })
 
       if (!extracted) {
-        return {
-          code,
-        }
+        return
       }
 
       const rootRelativeId = `${validId}${virtualExt}`

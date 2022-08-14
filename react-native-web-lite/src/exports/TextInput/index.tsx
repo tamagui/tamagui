@@ -15,14 +15,14 @@ import pick from '../../modules/pick'
 import TextInputState from '../../modules/TextInputState'
 import useLayoutEffect from '../../modules/useLayoutEffect'
 import { getLocaleDirection, useLocaleContext } from '../../modules/useLocale'
-import { PlatformMethods } from '../../types'
+import type { PlatformMethods } from '../../types'
 import createElement from '../createElement'
 import StyleSheet from '../StyleSheet'
 import useElementLayout from '../useElementLayout'
 import useMergeRefs from '../useMergeRefs'
 import usePlatformMethods from '../usePlatformMethods'
 import useResponderEvents from '../useResponderEvents'
-import { TextInputProps } from './types'
+import type { TextInputProps } from './types'
 
 /**
  * Determines whether a 'selection' prop differs from a node's existing

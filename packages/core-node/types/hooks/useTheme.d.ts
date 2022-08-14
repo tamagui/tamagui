@@ -17,26 +17,10 @@ export declare const useThemeName: (opts?: {
 export declare const useDefaultThemeName: () => ThemeName | undefined;
 export declare const activeThemeManagers: Set<ThemeManager>;
 export declare const useChangeThemeEffect: (name?: string | null, componentName?: string, props?: ThemeProps, forceUpdateProp?: any) => {
-    themes: {
-        [key: string]: Partial<import("../types").TamaguiBaseTheme> & {
-            [key: string]: import("../types").VariableVal;
-        };
-    };
+    themes: Record<string, ThemeObject>;
     themeManager: ThemeManager | null;
     name: string;
-    theme: (Partial<import("../types").TamaguiBaseTheme> & {
-        [key: string]: import("../types").VariableVal;
-    }) | null;
-    className?: undefined;
-} | {
-    themes: {
-        [key: string]: Partial<import("../types").TamaguiBaseTheme> & {
-            [key: string]: import("../types").VariableVal;
-        };
-    };
-    themeManager: ThemeManager | null;
-    name: string;
-    theme: any;
-    className: string;
+    theme: ThemeObject;
+    className?: string | undefined;
 };
 //# sourceMappingURL=useTheme.d.ts.map

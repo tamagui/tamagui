@@ -89,19 +89,17 @@ export function createExtractor() {
   // otherwise we'd import `rnw` and cause it to evaluate react-native-web which causes errors
 
   function loadSync(props: TamaguiOptions) {
-    projectInfo ||= loadTamaguiSync({
+    return (projectInfo ||= loadTamaguiSync({
       config: props.config || 'tamagui.config.ts',
       components: props.components || ['tamagui'],
-    })
-    return projectInfo
+    }))
   }
 
   async function load(props: TamaguiOptions) {
-    projectInfo ||= await loadTamagui({
+    return (projectInfo ||= await loadTamagui({
       config: props.config || 'tamagui.config.ts',
       components: props.components || ['tamagui'],
-    })
-    return projectInfo
+    }))
   }
 
   return {
@@ -164,8 +162,8 @@ export function createExtractor() {
     if (sourcePath === '') {
       throw new Error(`Must provide a source file name`)
     }
-    if (!Array.isArray(props.components)) {
-      throw new Error(`Must provide components array with list of Tamagui component modules`)
+    if (!components) {
+      throw new Error(`Must provide components`)
     }
 
     const isTargetingHTML = target === 'html'
@@ -311,15 +309,33 @@ export function createExtractor() {
           return
         }
 
-        const Component = validComponents[name] as { staticConfig: StaticConfigParsed } | undefined
+        let Component = validComponents[name] as { staticConfig: StaticConfigParsed } | undefined
 
         if (!Component) {
           if (shouldPrintDebug) {
             console.log(
-              `Didn't recognize styled(${name}), ${name} isn't in design system provided to tamagui.config.ts`
+              `Didn't recognize styled(${name}), ${name} isn't in design system provided to tamagui.config.ts. Will attempt to build isolated and analyze.. ${programPath}`
             )
+
+            const out = loadTamaguiSync({
+              components: [sourcePath],
+            })
+
+            if (out.components?.[name]) {
+              // add new components
+              // TODO dont Clobber, do by file
+              Object.assign(validComponents, out.components)
+            }
+
+            Component = validComponents[name]
+
+            if (shouldPrintDebug) {
+              console.log(`Loaded`, Object.keys(out.components), !!Component)
+            }
           }
-          return
+          if (!Component) {
+            return
+          }
         }
 
         const componentSkipProps = new Set([
@@ -395,14 +411,15 @@ export function createExtractor() {
         // add in the style object as classnames
         const atomics = getStylesAtomic(out.style)
 
-        if (shouldPrintDebug) {
-          console.log('Exctacting styled()', styles, out, 'to', atomics)
-        }
-
         for (const atomic of atomics) {
           out.rulesToInsert = out.rulesToInsert || []
           out.rulesToInsert.push(atomic)
           classNames[atomic.property] = atomic.identifier
+        }
+
+        if (shouldPrintDebug) {
+          // prettier-ignore
+          console.log(`Extracted styled(${name})`, styles, 'to', out.rulesToInsert.flatMap((rule) => rule.rules))
         }
 
         // leave only un-parsed props...
@@ -426,7 +443,7 @@ export function createExtractor() {
         res.styled++
 
         if (shouldPrintDebug) {
-          console.log(`Extracted styled(${name}) props:`, styles)
+          console.log(`Extracted styled(${name})`)
         }
       },
 
@@ -1777,14 +1794,15 @@ export function createExtractor() {
           for (const attr of attrs) {
             try {
               switch (attr.type) {
-                case 'ternary':
+                case 'ternary': {
                   const a = getStyles(attr.value.alternate, 'ternary.alternate')
                   const c = getStyles(attr.value.consequent, 'ternary.consequent')
                   if (a) attr.value.alternate = a
                   if (c) attr.value.consequent = c
                   if (shouldPrintDebug) console.log('     => tern ', attrStr(attr))
                   continue
-                case 'style':
+                }
+                case 'style': {
                   // expand variants and such
                   const styles = getStyles(attr.value, 'style')
                   if (styles) {
@@ -1795,6 +1813,7 @@ export function createExtractor() {
                   // prettier-ignore
                   if (shouldPrintDebug) console.log('  * styles (out)', logLines(objToStr(styles)))
                   continue
+                }
               }
             } catch (err) {
               // any error de-opt

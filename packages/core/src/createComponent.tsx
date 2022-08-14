@@ -907,7 +907,6 @@ export function createComponent<
   // Once configuration is run and all components are registered
   // get default props + className and analyze styles
   onConfiguredOnce((conf) => {
-    if (isRSC) return
     // in static mode we just use these to lookup configuration
     // ... we likely want this? need to test
     if (process.env.IS_STATIC === 'is_static') return

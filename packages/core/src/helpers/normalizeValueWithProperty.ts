@@ -24,6 +24,8 @@ export function normalizeValueWithProperty(value: any, property?: string): any {
   return res
 }
 
+// TODO react-native-web-lite
+
 const colorProps = {
   backgroundColor: true,
   borderColor: true,

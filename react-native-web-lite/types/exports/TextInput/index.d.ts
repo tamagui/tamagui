@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PlatformMethods } from '../../types';
+import type { PlatformMethods } from '../../types';
 declare const TextInput: React.ForwardRefExoticComponent<{
     autoCapitalize?: "none" | "characters" | "sentences" | "words" | undefined;
     autoComplete?: string | null | undefined;

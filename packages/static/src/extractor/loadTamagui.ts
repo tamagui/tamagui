@@ -10,8 +10,6 @@ import { remove } from 'fs-extra'
 import { SHOULD_DEBUG } from '../constants'
 import { getNameToPaths, registerRequire, unregisterRequire } from '../require'
 
-let loadedTamagui: TamaguiProjectInfo | null = null
-
 type NameToPaths = {
   [key: string]: Set<string>
 }
@@ -22,34 +20,39 @@ export type TamaguiProjectInfo = {
   nameToPaths: NameToPaths
 }
 
-type Props = { components: string[]; config: string }
+type Props = { components: string[]; config?: string }
+
+const cache = {}
 
 // TODO stat dirs to determine re-build or just clear after debounce
 
 export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
-  if (loadedTamagui) {
-    return loadedTamagui
+  const key = JSON.stringify(props)
+  if (cache[key]) {
+    return cache[key]
   }
 
-  const configPath = join(process.cwd(), props.config)
   const tmpDir = join(process.cwd(), 'dist', 'tamagui-node')
   const configOutPath = join(tmpDir, `tamagui.config.js`)
   const includesCore = props.components.includes('@tamagui/core')
-  const components = props.components.filter((x) => x !== '@tamagui/core')
-  const componentOutPaths = components.map((componentModule) =>
+  const baseComponents = props.components.filter((x) => x !== '@tamagui/core')
+  const componentOutPaths = baseComponents.map((componentModule) =>
     join(tmpDir, `${componentModule.split(sep).join('-')}-components.config.js`)
   )
 
-  await Promise.all([configOutPath, ...componentOutPaths].map((p) => remove(p)))
+  const outPaths = [configOutPath, ...componentOutPaths]
+  await Promise.all(outPaths.map((p) => remove(p)))
 
   // build them to node-compat versions
   await Promise.all([
-    buildTamaguiConfig({
-      entryPoints: [configPath],
-      external: ['@tamagui/core', '@tamagui/core-node'],
-      outfile: configOutPath,
-    }),
-    ...components.map((componentModule, i) => {
+    props.config
+      ? buildTamaguiConfig({
+          entryPoints: [join(process.cwd(), props.config)],
+          external: ['@tamagui/core', '@tamagui/core-node'],
+          outfile: configOutPath,
+        })
+      : null,
+    ...baseComponents.map((componentModule, i) => {
       return buildTamaguiConfig({
         entryPoints: [componentModule],
         external: ['@tamagui/core', '@tamagui/core-node'],
@@ -58,26 +61,27 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
     }),
   ])
 
+  const coreNode = require('@tamagui/core-node')
+
   registerRequire()
   const config = require(configOutPath).default
+  unregisterRequire()
 
-  loadedTamagui = {
-    components: {
-      ...loadComponents(componentOutPaths),
-      ...(includesCore && {
-        '@tamagui/core': require('@tamagui/core-node'),
-      }),
-    },
+  const components = {
+    ...loadComponents(componentOutPaths),
+    ...(includesCore && gatherTamaguiComponentInfo([coreNode])),
+  }
+
+  cache[key] = {
+    components,
     nameToPaths: {},
     tamaguiConfig: config,
   }
 
-  unregisterRequire()
-
   // init core-node
-  createTamagui(loadedTamagui.tamaguiConfig)
+  createTamagui(cache[key].tamaguiConfig)
 
-  return loadedTamagui
+  return cache[key]
 }
 
 async function buildTamaguiConfig(options: Partial<esbuild.BuildOptions>) {
@@ -87,14 +91,14 @@ async function buildTamaguiConfig(options: Partial<esbuild.BuildOptions>) {
     ...options,
     format: 'cjs',
     target: 'node18',
-    keepNames: false,
+    keepNames: true,
     platform: 'node',
     allowOverwrite: true,
     banner: {
       // insert a shim that re-routes:
       //   react-native => react-native-web-lite
       //   @tamagui/core => @tamagui/core-node
-      // doing it this way gives us nice node REPL require'able configs
+      // doing it this way gives us nice node REPL require'able
       js: `
 // tamagui re-wire some deps for node
 const mod = require('module')
@@ -103,9 +107,13 @@ const core = require('@tamagui/core-node')
 const rnw = require('react-native-web-lite')
 mod.prototype.require = function(path) {
   if (path === '@tamagui/core') return core
+  if (path === '@tamagui/core-node') return core
   if (path === 'react-native') return rnw
   return og(path)
 }
+setTimeout(() => {
+  mod.prototype.require = og
+})
 `,
     },
     logLevel: 'warning',
@@ -121,16 +129,15 @@ mod.prototype.require = function(path) {
 
 // loads in-process using esbuild-register
 export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
-  if (loadedTamagui) {
-    return loadedTamagui
+  const key = JSON.stringify(props)
+  if (cache[key]) {
+    return cache[key]
   }
-
-  const configPath = join(process.cwd(), props.config)
 
   const { unregister } = require('esbuild-register/dist/node').register({
     target: 'es2019',
     format: 'cjs',
-  }).unregister
+  })
 
   try {
     registerRequire()
@@ -146,13 +153,16 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
 
     try {
       // import config
-      const exp = require(configPath)
-      const tamaguiConfig = (exp['default'] || exp) as TamaguiInternalConfig
+      let tamaguiConfig: TamaguiInternalConfig | null = null
 
-      if (!tamaguiConfig || !tamaguiConfig.parsed) {
-        const confPath = require.resolve(configPath)
-        console.log(`Received:`, tamaguiConfig)
-        throw new Error(`Can't find valid config in ${confPath}`)
+      if (props.config) {
+        const configPath = join(process.cwd(), props.config)
+        const exp = require(configPath)
+        tamaguiConfig = (exp['default'] || exp) as TamaguiInternalConfig
+        if (!tamaguiConfig || !tamaguiConfig.parsed) {
+          const confPath = require.resolve(configPath)
+          throw new Error(`Can't find valid config in ${confPath}`)
+        }
       }
 
       const components = loadComponents(props.components)
@@ -161,9 +171,11 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
       process.env.IS_STATIC = undefined
 
       // set up core-node
-      createTamagui(tamaguiConfig)
+      if (tamaguiConfig) {
+        createTamagui(tamaguiConfig)
+      }
 
-      loadedTamagui = {
+      cache[key] = {
         components,
         tamaguiConfig,
         nameToPaths: getNameToPaths(),
@@ -187,7 +199,7 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
       }
     }
 
-    return loadedTamagui
+    return cache[key]
   } catch (err) {
     console.log('Error loading Tamagui', err)
     throw err
@@ -197,25 +209,48 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
   }
 }
 
+function interopDefaultExport(mod: any) {
+  return mod?.default ?? mod
+}
+
 function loadComponents(componentsModules: string[]) {
-  // import components
+  const requiredModules = componentsModules.map((name) => interopDefaultExport(require(name)))
+  return gatherTamaguiComponentInfo(requiredModules)
+}
+
+function gatherTamaguiComponentInfo(packages: any[]) {
   const components = {}
-  for (const moduleName of componentsModules) {
+  for (const exported of packages) {
     try {
-      const exported = require(moduleName)
-      for (const Name in exported) {
-        const val = exported[Name]
-        const staticConfig = val?.staticConfig as StaticConfig | undefined
-        if (staticConfig) {
+      for (const componentName in exported) {
+        const found = getTamaguiComponent(componentName, exported[componentName])
+        if (found) {
           // remove non-stringifyable
-          const { Component, reactNativeWebComponent, ...sc } = staticConfig
-          Object.assign(components, { [Name]: { staticConfig: sc } })
+          const { Component, reactNativeWebComponent, ...sc } = found.staticConfig
+          Object.assign(components, { [componentName]: { staticConfig: sc } })
         }
       }
     } catch (err) {
-      console.error(`Tamagui failed loading components from: ${moduleName}`)
-      throw err
+      console.error(`Tamagui failed getting components`)
+      if (err instanceof Error) {
+        console.error(err.message, err.stack)
+      } else {
+        console.error(err)
+      }
     }
   }
   return components
+}
+
+function getTamaguiComponent(
+  name: string,
+  Component: any
+): undefined | { staticConfig: StaticConfig } {
+  if (name[0].toUpperCase() !== name[0]) {
+    return
+  }
+  const staticConfig = Component?.staticConfig as StaticConfig | undefined
+  if (staticConfig) {
+    return Component
+  }
 }

@@ -100,7 +100,14 @@ export class ThemeManager {
     return true
   }
 
-  getNextTheme(props: GetNextThemeProps = {}, debug?: any) {
+  getNextTheme(
+    props: GetNextThemeProps = {},
+    debug?: any
+  ): {
+    name: string
+    theme: ThemeObject | null
+    className: string | undefined
+  } {
     const { themes = getThemes(), name, componentName } = props
 
     if (props.reset && name) {
@@ -130,6 +137,7 @@ export class ThemeManager {
       return {
         name: this.name,
         theme: this.theme,
+        className: undefined,
       }
     }
 
@@ -137,17 +145,11 @@ export class ThemeManager {
     let parentName = parentIsReset ? this.parentName || this.fullName : this.fullName
 
     while (true) {
-      if (nextName in themes) {
-        break
-      }
+      if (nextName in themes) break
       nextName = `${parentName}_${name}`
-      if (nextName in themes) {
-        break
-      }
-      if (!parentName.includes(THEME_NAME_SEPARATOR)) {
-        // this is fine - some themes can not have parents
-        break
-      }
+      if (nextName in themes) break
+      // this is fine - some themes can not have parents
+      if (!parentName.includes(THEME_NAME_SEPARATOR)) break
       // go up one
       parentName = parentName.slice(0, parentName.lastIndexOf(THEME_NAME_SEPARATOR))
     }
@@ -172,6 +174,7 @@ export class ThemeManager {
 
     if (process.env.NODE_ENV === 'development') {
       if (debug) {
+        // eslint-disable-next-line no-console
         console.log('getNextTheme', this.getClassName(nextName), { props, nextName, parentName })
       }
     }

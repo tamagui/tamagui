@@ -1,0 +1,32 @@
+{
+  "name": "@tamagui/site-vite",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "ENABLE_RSC=1 TAMAGUI_TARGET=web vite",
+    "build:prod": "yarn build:client && yarn build:server && yarn build:worker",
+    "build:client": "ENABLE_RSC=1 TAMAGUI_TARGET=web vite build --outDir dist/client --manifest",
+    "build:server": "ENABLE_RSC=1 TAMAGUI_TARGET=web vite build --outDir dist/server --ssr @tamagui/unagi/platforms/node",
+    "build:worker": "cross-env ENABLE_RSC=1  TAMAGUI_TARGET=web WORKER=true vite build --outDir dist/worker --ssr @tamagui/unagi/platforms/worker",
+    "serve": "node --trace-warnings --enable-source-maps dist/server"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.2",
+    "cross-env": "^7.0.3",
+    "vite": "^2.9.0"
+  },
+  "dependencies": {
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "@tamagui/config-base": "^1.0.1-beta.141",
+    "@tamagui/core-node": "^1.0.1-beta.141",
+    "@tamagui/unagi": "^1.0.1-beta.141",
+    "@tamagui/vite-plugin": "^1.0.1-beta.141",
+    "body-parser": "^1.20.0",
+    "compression": "^1.7.4",
+    "copy-to-clipboard": "^3.3.2",
+    "react": "*",
+    "react-dom": "*",
+    "serve-static": "^1.14.1",
+    "tamagui": "^1.0.1-beta.141"
+  }
+}

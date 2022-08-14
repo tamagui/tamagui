@@ -22,7 +22,8 @@
     "@tamagui/static": "^1.0.1-beta.141",
     "fs-extra": "^10.1.0",
     "lodash": "^4.17.21",
-    "outdent": "^0.8.0"
+    "outdent": "^0.8.0",
+    "react-native-svg-web": "^1.0.1-beta.141"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.141",

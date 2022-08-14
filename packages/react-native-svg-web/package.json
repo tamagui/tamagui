@@ -1,0 +1,13 @@
+{
+  "name": "react-native-svg-web",
+  "version": "1.0.1-beta.141",
+  "main": "index.cjs",
+  "module": "index.mjs",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "true",
+    "watch": "true"
+  }
+}

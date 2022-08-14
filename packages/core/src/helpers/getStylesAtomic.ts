@@ -50,7 +50,10 @@ export function getAtomicStyle(style: ViewOrTextStyle, pseudo?: PseudoDescriptor
     }
   } else {
     if (!style) {
-      console.warn(`Invalid style`)
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.warn(`Invalid style`)
+      }
       return []
     }
   }

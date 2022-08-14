@@ -30,14 +30,8 @@ export declare class ThemeManager {
     update({ name, theme, className }?: SetActiveThemeProps, force?: boolean): boolean;
     getNextTheme(props?: GetNextThemeProps, debug?: any): {
         name: string;
-        theme: (Partial<import("../types").TamaguiBaseTheme> & {
-            [key: string]: import("../types").VariableVal;
-        }) | null;
-        className?: undefined;
-    } | {
-        name: string;
-        theme: any;
-        className: string;
+        theme: ThemeObject | null;
+        className: string | undefined;
     };
     getClassName(name: string): string;
     track(uuid: any, keys: Set<string>): void;

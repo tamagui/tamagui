@@ -6,7 +6,7 @@
   "devDependencies": {
     "@tamagui/config-default-node": "^1.0.1-beta.141",
     "@tamagui/vite-plugin": "^1.0.1-beta.141",
-    "@vitejs/plugin-react": "^2.0.0",
+    "@vitejs/plugin-react": "^1.3.0",
     "happy-dom": "^6.0.4",
     "vitest": "^0.20.3",
     "vitest-mock-process": "^1.0.4"

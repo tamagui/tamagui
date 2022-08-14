@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PlatformMethods } from '../../types';
+import type { PlatformMethods } from '../../types';
 declare const Text: React.ForwardRefExoticComponent<{
     accessibilityRole?: "button" | "heading" | "link" | "header" | "label" | "text" | "none" | "listitem" | undefined;
     dir?: "ltr" | "rtl" | "auto" | undefined;

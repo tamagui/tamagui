@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { PlatformMethods } from '../../types';
-import { ViewProps } from './types';
+import type { PlatformMethods } from '../../types';
+import type { ViewProps } from './types';
 declare const View: React.ForwardRefExoticComponent<{
     children?: any;
     dir?: "ltr" | "rtl" | undefined;

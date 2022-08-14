@@ -43,9 +43,23 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
           optimizeDeps: {},
         },
         optimizeDeps: {
-          // include: [/node_modules/],
+          include: [
+            'styleq',
+            'inline-style-prefixer',
+            'create-react-class',
+            'copy-to-clipboard',
+            // 'react-native-svg',
+          ],
           esbuildOptions: {
-            // plugins: [esbuildCommonjs(['fbjs'])],
+            plugins: [
+              esbuildCommonjs([
+                'styleq',
+                'inline-style-prefixer',
+                'create-react-class',
+                'copy-to-clipboard',
+                // 'react-native-svg',
+              ]),
+            ],
             resolveExtensions: [
               '.web.js',
               '.web.ts',
@@ -80,6 +94,8 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
             'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
             'react-native/Libraries/Utilities/codegenNativeComponent': '@tamagui/proxy-worm',
             'react-native': 'react-native-web-lite',
+            'react-native-web': 'react-native-web-lite',
+            'react-native-svg': 'react-native-svg-web',
             // 'react-native': 'react-native-web',
           },
         },

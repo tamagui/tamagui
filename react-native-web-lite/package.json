@@ -25,7 +25,7 @@
     "styleq": "^0.1.2"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.140",
+    "@tamagui/build": "^1.0.1-beta.141",
     "react": "*",
     "react-dom": "*"
   },

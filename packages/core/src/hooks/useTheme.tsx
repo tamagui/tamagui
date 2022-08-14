@@ -37,6 +37,7 @@ export const useTheme = (
   props?: ThemeProps,
   forceUpdate?: any
 ): ThemeObject => {
+  // TODO this can use useChangeThemeEffect almost ready
   if (isRSC) {
     const config = getConfig()
     // @ts-ignore
@@ -152,6 +153,10 @@ export const getThemeManager = (theme: any): ThemeManager | undefined => {
 }
 
 export const useThemeName = (opts?: { parent?: true }) => {
+  if (isRSC) {
+    const config = getConfig()
+    return config.defaultTheme || 'light'
+  }
   const parent = useContext(ThemeManagerContext)
   const [name, setName] = useState(parent?.name || '')
 
@@ -178,7 +183,23 @@ export const useChangeThemeEffect = (
   componentName?: string,
   props?: ThemeProps,
   forceUpdateProp?: any
-) => {
+): {
+  themes: Record<string, ThemeObject>
+  themeManager: ThemeManager | null
+  name: string
+  theme: ThemeObject | null
+  className?: string
+} => {
+  if (isRSC) {
+    // we need context working for this to work well
+    const config = getConfig()
+    return {
+      name: name || 'light',
+      theme: config.themes[name || 'light'],
+      themes: config.themes,
+      themeManager: null,
+    }
+  }
   const debug = props && props['debug']
   const parentManager = useContext(ThemeManagerContext) || emptyManager
   const { themes } = useContext(ThemeContext)!

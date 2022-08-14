@@ -1,0 +1,18 @@
+import React from 'react'
+
+export const Defs = (p) => React.createElement('defs', p)
+export const Ellipse = (p) => React.createElement('ellipse', p)
+export const G = (p) => React.createElement('g', p)
+export const Line = (p) => React.createElement('line', p)
+export const LinearGradient = (p) => React.createElement('lineargradient', p)
+export const Path = (p) => React.createElement('path', p)
+export const Polygon = (p) => React.createElement('polygon', p)
+export const Polyline = (p) => React.createElement('polyline', p)
+export const RadialGradient = (p) => React.createElement('radialgradient', p)
+export const Rect = (p) => React.createElement('rect', p)
+export const Stop = (p) => React.createElement('stop', p)
+export const Svg = (p) => React.createElement('svg', p)
+export const Symbol = (p) => React.createElement('symbol', p)
+export const Text = (p) => React.createElement('text', p)
+export const Use = (p) => React.createElement('use', p)
+export const Circle = (p) => React.createElement('circle', p)

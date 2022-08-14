@@ -13,7 +13,7 @@ import * as React from 'react'
 import * as forwardedProps from '../../modules/forwardedProps'
 import pick from '../../modules/pick'
 import { getLocaleDirection, useLocaleContext } from '../../modules/useLocale'
-import { PlatformMethods } from '../../types'
+import type { PlatformMethods } from '../../types'
 import createElement from '../createElement'
 import StyleSheet from '../StyleSheet'
 import useElementLayout from '../useElementLayout'
@@ -21,7 +21,7 @@ import useMergeRefs from '../useMergeRefs'
 import usePlatformMethods from '../usePlatformMethods'
 import useResponderEvents from '../useResponderEvents'
 import TextAncestorContext from './TextAncestorContext'
-import { TextProps } from './types'
+import type { TextProps } from './types'
 
 const forwardPropsList = Object.assign(
   {},

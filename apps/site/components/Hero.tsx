@@ -36,7 +36,7 @@ export function Hero() {
 
 const HeroTop = memo(() => {
   return (
-    <ContainerLarge pos="relative">
+    <ContainerLarge debug="verbose" pos="relative">
       <YStack
         contain="strict"
         className="bg-grid mask-gradient-up"
