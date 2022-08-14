@@ -6,6 +6,9 @@ function proxyWorm() {
       StyleSheet: {
         create() {},
       },
+      Platform: {
+        OS: 'web',
+      },
       addPoolingTo() {},
     },
     {

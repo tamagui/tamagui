@@ -15,7 +15,7 @@ export function TamaguiProvider({
 }: TamaguiProviderProps) {
   if (isRSC) {
     return (
-      <span style={{ display: 'contents' }} className="t_light">
+      <span style={{ display: 'contents' }} className={`t_${config.defaultTheme || 'light'}`}>
         {children}
       </span>
     )

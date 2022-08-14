@@ -5,6 +5,7 @@ import {
   ThemeableProps,
   getButtonSize,
   getVariableValue,
+  isRSC,
   spacedChildren,
   styled,
   themeable,
@@ -134,13 +135,28 @@ const ButtonComponent = forwardRef(function Button(props: ButtonProps, ref) {
     ...rest
   } = props as ButtonProps
 
-  const isInsideButton = useContext(ButtonInsideButtonContext)
+  const isInsideButton = isRSC ? false : useContext(ButtonInsideButtonContext)
   const size = props.size || '$4'
   const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = getVariableValue(iconSize) * scaleSpace
   const contents = wrapChildrenInText(ButtonText, props)
+
+  const inner =
+    themedIcon || themedIconAfter
+      ? spacedChildren({
+          // a bit arbitrary but scaling to font size is necessary so long as button does
+          space: spaceSize,
+          spaceFlex,
+          separator,
+          direction:
+            props.flexDirection === 'column' || props.flexDirection === 'column-reverse'
+              ? 'vertical'
+              : 'horizontal',
+          children: [themedIcon, contents, themedIconAfter],
+        })
+      : contents
 
   return (
     <ButtonFrame
@@ -159,21 +175,13 @@ const ButtonComponent = forwardRef(function Button(props: ButtonProps, ref) {
       ref={ref as any}
       {...rest}
     >
-      <ButtonInsideButtonContext.Provider value={true}>
-        {themedIcon || themedIconAfter
-          ? spacedChildren({
-              // a bit arbitrary but scaling to font size is necessary so long as button does
-              space: spaceSize,
-              spaceFlex,
-              separator,
-              direction:
-                props.flexDirection === 'column' || props.flexDirection === 'column-reverse'
-                  ? 'vertical'
-                  : 'horizontal',
-              children: [themedIcon, contents, themedIconAfter],
-            })
-          : contents}
-      </ButtonInsideButtonContext.Provider>
+      {isRSC ? (
+        inner
+      ) : (
+        <ButtonInsideButtonContext.Provider value={true}>
+          {inner}
+        </ButtonInsideButtonContext.Provider>
+      )}
     </ButtonFrame>
   )
 })

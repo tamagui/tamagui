@@ -8,10 +8,10 @@ import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath } from 'vite'
 
 const styleUpdateEvent = (fileId: string) => `tamagui-style-update:${fileId}`
+const GLOBAL_CSS_VIRTUAL_PATH = '__tamagui_global_css__.css'
 
 export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
   const disableStatic = options.disable || (options.disableDebugAttr && options.disableExtraction)
-  const GLOBAL_CSS_VIRTUAL_PATH = '__tamagui_global_css__.css'
 
   if (disableStatic) {
     return {
@@ -19,15 +19,12 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
     }
   }
 
+  const extractor = createExtractor()
+  const cssMap = new Map<string, string>()
+
   let config: ResolvedConfig
   let server: ViteDevServer
-  const cssMap = new Map<string, string>()
   let shouldReturnCSS = true //config.command === 'serve'
-
-  process.env.AVOID_ESBUILD_REGISTER = '1'
-
-  const extractor = createExtractor()
-
   let virtualExt: string
 
   const getAbsoluteVirtualFileId = (filePath: string) => {

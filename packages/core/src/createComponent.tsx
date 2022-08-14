@@ -613,7 +613,7 @@ export function createComponent<
       onClick
     )
 
-    const isHoverable = isWeb
+    const isHoverable = isWeb && !isRSC
     const attachHover =
       isHoverable &&
       !!((pseudos && pseudos.hoverStyle) || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)

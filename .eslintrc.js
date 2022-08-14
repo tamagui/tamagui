@@ -25,6 +25,7 @@ module.exports = {
     'no-extra-boolean-cast': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/ban-types': 'off',
+    'prefer-rest-params': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     'react-hooks/rules-of-hooks': 'off',
     'no-constant-condition': 'off',

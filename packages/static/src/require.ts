@@ -19,16 +19,19 @@ setInterval(() => {
 
 export function registerRequire() {
   if (Module.prototype.require !== globalThis['ogRequire']) {
+    // eslint-disable-next-line no-console
     console.warn('didnt unregister before re-registering')
     process.exit(1)
   }
 
   const proxyWorm = require('@tamagui/proxy-worm')
+  // TODO can swap with react-native-web-lite
   const rnw = require('react-native-web')
   const core = require('@tamagui/core-node')
 
   Module.prototype.require = function (path: string) {
     if (SHOULD_DEBUG) {
+      // eslint-disable-next-line no-console
       console.log('tamagui require', path)
     }
     if (path.endsWith('.css') || path.endsWith('.json') || path.endsWith('.ttf')) {
@@ -48,7 +51,6 @@ export function registerRequire() {
       !path.startsWith('react-native-web/dist/cjs/exports'.replace(/\//g, sep))
     ) {
       return rnw
-      // return og('react-native-web')
     }
     if (path === '@tamagui/core') {
       return core
@@ -80,6 +82,7 @@ export function registerRequire() {
       return out
     } catch (err: any) {
       if (SHOULD_DEBUG) {
+        // eslint-disable-next-line no-console
         console.error(
           `Tamagui failed requiring ${path} from your tamagui.config.ts file, ignoring\n`,
           err.message,
@@ -88,6 +91,7 @@ export function registerRequire() {
       }
       const max = process.env.TAMAGUI_MAX_ERRORS ? +process.env.TAMAGUI_MAX_ERRORS : 200
       if (++tries > max) {
+        // eslint-disable-next-line no-console
         console.log(
           `Too many errors loading design system, exiting (set TAMAGUI_MAX_ERRORS to override)..`
         )

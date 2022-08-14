@@ -10,7 +10,7 @@ import { remove } from 'fs-extra'
 import { SHOULD_DEBUG } from '../constants'
 import { getNameToPaths, registerRequire, unregisterRequire } from '../require'
 
-let loadedTamagui: any = null
+let loadedTamagui: TamaguiProjectInfo | null = null
 
 type NameToPaths = {
   [key: string]: Set<string>
@@ -24,9 +24,7 @@ export type TamaguiProjectInfo = {
 
 type Props = { components: string[]; config: string }
 
-// TODO we can stat the files to determine re-build
-
-// loads by pre-compiling using esbuild
+// TODO stat dirs to determine re-build or just clear after debounce
 
 export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   if (loadedTamagui) {
@@ -44,6 +42,7 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
 
   await Promise.all([configOutPath, ...componentOutPaths].map((p) => remove(p)))
 
+  // build them to node-compat versions
   await Promise.all([
     buildTamaguiConfig({
       entryPoints: [configPath],
@@ -60,6 +59,7 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   ])
 
   registerRequire()
+  const config = require(configOutPath).default
 
   loadedTamagui = {
     components: {
@@ -69,15 +69,13 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
       }),
     },
     nameToPaths: {},
-    tamaguiConfig: require(configOutPath).default,
+    tamaguiConfig: config,
   }
 
   unregisterRequire()
 
   // init core-node
   createTamagui(loadedTamagui.tamaguiConfig)
-
-  // init config for its own propMapper
 
   return loadedTamagui
 }
@@ -88,12 +86,32 @@ async function buildTamaguiConfig(options: Partial<esbuild.BuildOptions>) {
     bundle: true,
     ...options,
     format: 'cjs',
-    target: 'node16',
+    target: 'node18',
+    keepNames: false,
     platform: 'node',
+    allowOverwrite: true,
+    banner: {
+      // insert a shim that re-routes:
+      //   react-native => react-native-web-lite
+      //   @tamagui/core => @tamagui/core-node
+      // doing it this way gives us nice node REPL require'able configs
+      js: `
+// tamagui re-wire some deps for node
+const mod = require('module')
+const og = mod.prototype.require
+const core = require('@tamagui/core-node')
+const rnw = require('react-native-web-lite')
+mod.prototype.require = function(path) {
+  if (path === '@tamagui/core') return core
+  if (path === 'react-native') return rnw
+  return og(path)
+}
+`,
+    },
     logLevel: 'warning',
     plugins: [
       alias({
-        'react-native': require.resolve('@tamagui/fake-react-native'),
+        'react-native': require.resolve('react-native-web-lite'),
         'react-native-safe-area-context': require.resolve('@tamagui/fake-react-native'),
         'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
       }),
