@@ -28,6 +28,17 @@
     "@tamagui/build": "^1.0.1-beta.141",
     "vite-plugin-environment": "^1.1.2"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/esm/index.js",
+      "default": "./dist/cjs/index.js"
+    },
+    "./extract": {
+      "import": "./dist/esm/extract.js",
+      "default": "./dist/cjs/extract.js"
+    }
+  },
   "publishConfig": {
     "access": "public"
   }

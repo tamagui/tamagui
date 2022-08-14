@@ -3,26 +3,18 @@ import type { TamaguiOptions } from '@tamagui/static'
 import type { Plugin } from 'vite'
 import envPlugin from 'vite-plugin-environment'
 
-import { tamaguiExtractPlugin } from './extractPlugin'
-
 /**
  * For some reason envPlugin doesnt work for vitest, but process: { env: {} } breaks vitest
  */
 
 export function tamaguiPlugin(options: TamaguiOptions): Plugin {
-  const disableStatic = options.disable || (options.disableDebugAttr && options.disableExtraction)
-
   const plugin: Plugin = {
     name: 'tamagui-base',
     enforce: 'pre',
 
     config(userConfig, env) {
       return {
-        plugins: [
-          envPlugin(['NODE_ENV', 'TAMAGUI_TARGET']),
-          ...(disableStatic ? [] : [tamaguiExtractPlugin(options)]),
-          viteCommonjs(),
-        ],
+        plugins: [envPlugin(['NODE_ENV', 'TAMAGUI_TARGET']), viteCommonjs()],
         esbuild: {
           loader: 'tsx',
         },

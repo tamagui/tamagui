@@ -25,6 +25,13 @@
   "peerDependencies": {
     "react": "*"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/esm/index.js",
+      "default": "./dist/cjs/index.js"
+    }
+  },
   "publishConfig": {
     "access": "public"
   }

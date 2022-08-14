@@ -15,5 +15,5 @@ export declare function extractToClassNames({ extractor, source, sourcePath, opt
     sourcePath: string;
     options: TamaguiOptions;
     shouldPrintDebug: boolean | 'verbose';
-}): ExtractedResponse | null;
+}): Promise<ExtractedResponse | null>;
 //# sourceMappingURL=extractToClassNames.d.ts.map

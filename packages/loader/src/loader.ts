@@ -21,9 +21,9 @@ let hasPatched = false
 
 process.env.TAMAGUI_TARGET = 'web'
 
-export const loader: RawLoaderDefinitionFunction<TamaguiOptions> = function loader(this, sourceIn) {
+export const loader = async function loader(this, sourceIn: Buffer | string) {
   this.cacheable(true)
-  this.async()
+  const callback = this.async()
   const source = sourceIn.toString()
 
   if (!process.env.TAMAGUI_DISABLE_RNW_PATCH && !hasPatched) {
@@ -52,12 +52,12 @@ export const loader: RawLoaderDefinitionFunction<TamaguiOptions> = function load
       startsWithComment &&
       (source.startsWith('// tamagui-ignore') || source.startsWith('//! tamagui-ignore'))
     ) {
-      return this.callback(null, source)
+      return callback(null, source)
     }
 
     const cssPath = threaded ? `${sourcePath}.module.css` : `${sourcePath}.${index++}.module.css`
 
-    const extracted = extractToClassNames({
+    const extracted = await extractToClassNames({
       extractor,
       source,
       sourcePath,
@@ -66,7 +66,7 @@ export const loader: RawLoaderDefinitionFunction<TamaguiOptions> = function load
     })
 
     if (!extracted) {
-      return this.callback(null, source)
+      return callback(null, source)
     }
 
     // add import to css
@@ -87,9 +87,10 @@ export const loader: RawLoaderDefinitionFunction<TamaguiOptions> = function load
       }
     }
 
-    this.callback(null, extracted.js, extracted.map)
+    callback(null, extracted.js, extracted.map)
   } catch (err) {
-    console.error('ERROR', err)
+    // eslint-disable-next-line no-console
+    console.error('Tamagui Webpack Loader Error', err)
     return this.callback(null, source)
   }
 }

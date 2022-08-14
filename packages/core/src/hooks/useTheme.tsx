@@ -2,7 +2,7 @@ import { useForceUpdate } from '@tamagui/use-force-update'
 import React, { useContext, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../conf'
-import { isSSR, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
+import { isRSC, isSSR, useIsomorphicLayoutEffect } from '../constants/platform'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { areEqualSets } from '../helpers/areEqualSets'
 import {
@@ -30,9 +30,6 @@ interface UseThemeState {
   keys: Set<string>
   isRendering: boolean
 }
-
-// @ts-ignore
-const isRSC = process.env.ENABLE_RSC ? import.meta.env.SSR : false
 
 export const useTheme = (
   themeName?: string | null,

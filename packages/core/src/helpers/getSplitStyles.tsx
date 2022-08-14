@@ -3,7 +3,7 @@ import { useInsertionEffect } from 'react'
 import { ViewStyle } from 'react-native'
 
 import { getConfig } from '../conf'
-import { isClient, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
+import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
 import type {
   DebugProp,
@@ -661,9 +661,6 @@ export const insertSplitStyles: StyleSplitter = (...args) => {
   insertStyleRules(res.rulesToInsert)
   return res
 }
-
-// @ts-ignore
-const isRSC = process.env.ENABLE_RSC ? import.meta.env.SSR : false
 
 // on native no need to insert any css
 const useInsertEffectCompat = isWeb ? useInsertionEffect || useIsomorphicLayoutEffect : () => {}

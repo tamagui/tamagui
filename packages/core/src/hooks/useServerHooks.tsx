@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react'
 
-// @ts-ignore
-const isRSC = process.env.ENABLE_RSC ? import.meta.env.SSR : false
+import { isRSC } from '../constants/platform'
 
 export const useServerState = isRSC
   ? (((val: any) => [val, idFn]) as unknown as typeof useState)

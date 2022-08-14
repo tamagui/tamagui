@@ -7,9 +7,11 @@ export declare type TamaguiProjectInfo = {
     tamaguiConfig: TamaguiInternalConfig;
     nameToPaths: NameToPaths;
 };
-export declare function loadTamagui(props: {
+declare type Props = {
     components: string[];
     config: string;
-}): TamaguiProjectInfo;
+};
+export declare function loadTamagui(props: Props): Promise<TamaguiProjectInfo>;
+export declare function loadTamaguiSync(props: Props): TamaguiProjectInfo;
 export {};
 //# sourceMappingURL=loadTamagui.d.ts.map

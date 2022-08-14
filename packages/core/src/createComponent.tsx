@@ -20,14 +20,12 @@ import React, {
   memo,
   useCallback,
   useContext,
-  useRef,
-  useState,
 } from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
 import { getConfig, onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
-import { isClient, isWeb, useIsomorphicLayoutEffect } from './constants/platform'
+import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from './constants/platform'
 import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { TextAncestorContext } from './contexts/TextAncestorContext'
 import { assignNativePropsToWeb } from './helpers/assignNativePropsToWeb'
@@ -63,9 +61,6 @@ import { wrapThemeManagerContext } from './views/Theme'
 
 React['keep']
 
-// @ts-ignore
-const isRSC = process.env.ENABLE_RSC ? import.meta.env.SSR : false
-
 const defaultComponentState: TamaguiComponentState = Object.freeze({
   hover: false,
   press: false,
@@ -90,7 +85,7 @@ if (typeof document !== 'undefined') {
 // mutates
 function mergeShorthands({ defaultProps }: StaticConfigParsed, { shorthands }: TamaguiConfig) {
   // they are defined in correct order already { ...parent, ...child }
-  for (const key in defaultProps) {
+  for (const key of Object.keys(defaultProps)) {
     defaultProps[shorthands[key] || key] = defaultProps[key]
   }
 }

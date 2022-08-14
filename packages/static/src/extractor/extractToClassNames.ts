@@ -37,7 +37,7 @@ export type ExtractedResponse = {
   map: any // RawSourceMap from 'source-map'
 }
 
-export function extractToClassNames({
+export async function extractToClassNames({
   extractor,
   source,
   sourcePath,
@@ -49,7 +49,7 @@ export function extractToClassNames({
   sourcePath: string
   options: TamaguiOptions
   shouldPrintDebug: boolean | 'verbose'
-}): ExtractedResponse | null {
+}): Promise<ExtractedResponse | null> {
   const tm = timer()
 
   if (typeof source !== 'string') {
@@ -70,6 +70,7 @@ export function extractToClassNames({
   try {
     ast = babelParse(source)
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error('babel parse error:', sourcePath)
     throw err
   }
@@ -81,7 +82,7 @@ export function extractToClassNames({
 
   let hasFlattened = false
 
-  const res = extractor.parse(ast, {
+  const res = await extractor.parse(ast, {
     sourcePath,
     shouldPrintDebug,
     ...options,
@@ -213,15 +214,19 @@ export function extractToClassNames({
             const mediaExtraction = extractMediaStyle(
               attr.value,
               jsxPath,
-              extractor.getTamagui(),
+              extractor.getTamagui()!,
               sourcePath,
               lastMediaImportance,
               shouldPrintDebug
             )
             if (shouldPrintDebug) {
               if (mediaExtraction) {
-                // prettier-ignore
-                console.log('ternary (mediaStyles)', mediaExtraction.ternaryWithoutMedia?.inlineMediaQuery ?? '', mediaExtraction.mediaStyles.map((x) => x.identifier).join('.'))
+                // eslint-disable-next-line no-console
+                console.log(
+                  'ternary (mediaStyles)',
+                  mediaExtraction.ternaryWithoutMedia?.inlineMediaQuery ?? '',
+                  mediaExtraction.mediaStyles.map((x) => x.identifier).join('.')
+                )
               }
             }
             if (!mediaExtraction) {
@@ -268,8 +273,11 @@ export function extractToClassNames({
       }
 
       if (shouldPrintDebug) {
-        // prettier-ignore
-        console.log('  finalClassNames\n', logLines(finalClassNames.map(x => x['value']).join(' ')))
+        // eslint-disable-next-line no-console
+        console.log(
+          '  finalClassNames\n',
+          logLines(finalClassNames.map((x) => x['value']).join(' '))
+        )
       }
 
       node.attributes = finalAttrs
@@ -350,6 +358,7 @@ export function extractToClassNames({
           }
         } else if (rules.length) {
           if (rules.length > 1) {
+            // eslint-disable-next-line no-console
             console.log('  rules error', { rules })
             throw new Error(`Shouldn't have more than one rule`)
           }
@@ -364,6 +373,7 @@ export function extractToClassNames({
 
   if (!res || (!res.modified && !res.optimized && !res.flattened && !res.styled)) {
     if (shouldPrintDebug) {
+      // eslint-disable-next-line no-console
       console.log('no res or none modified', res)
     }
     return null
@@ -388,6 +398,7 @@ export function extractToClassNames({
   )
 
   if (shouldPrintDebug) {
+    // eslint-disable-next-line no-console
     console.log(
       '\n -------- output code ------- \n\n',
       result.code
@@ -395,6 +406,7 @@ export function extractToClassNames({
         .filter((x) => !x.startsWith('//'))
         .join('\n')
     )
+    // eslint-disable-next-line no-console
     console.log('\n -------- output style -------- \n\n', styles)
   }
 
@@ -418,6 +430,7 @@ export function extractToClassNames({
     const timingStr = `${timing}ms ${timingWarning}`.padStart(6)
     const pre = getPrefixLogs(options)
     const memStr = memory ? `(${memory})` : ''
+    // eslint-disable-next-line no-console
     console.log(
       `${pre} ${path}  ${numFound} · ${numOptimized} · ${numFlattened} · ${numStyled}  ${timingStr} ${memStr}`
     )

@@ -20,8 +20,9 @@ async function build() {
       entryPoints: [inPath],
       outdir: outPath,
       format: 'cjs',
-      target: 'node14',
+      target: 'node16',
       platform: 'node',
+      logLevel: 'warning',
       plugins: [
         alias({
           'react-native': require.resolve('@tamagui/fake-react-native'),

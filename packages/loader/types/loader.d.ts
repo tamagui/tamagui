@@ -1,4 +1,3 @@
-import { TamaguiOptions } from '@tamagui/static';
-import type { RawLoaderDefinitionFunction } from 'webpack';
-export declare const loader: RawLoaderDefinitionFunction<TamaguiOptions>;
+/// <reference types="node" />
+export declare const loader: (this: any, sourceIn: Buffer | string) => Promise<any>;
 //# sourceMappingURL=loader.d.ts.map

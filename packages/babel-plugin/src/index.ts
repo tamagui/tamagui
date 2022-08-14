@@ -91,7 +91,7 @@ export default declare(function snackBabelPlugin(
           }
 
           try {
-            extractor.parse(root, {
+            extractor.parseSync(root, {
               target: 'native',
               shouldPrintDebug,
               importsWhitelist: ['constants.js', 'colors.js'],

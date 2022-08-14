@@ -31,5 +31,12 @@
   "publishConfig": {
     "access": "public"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/esm/index.js",
+      "default": "./dist/cjs/index.js"
+    }
+  },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }

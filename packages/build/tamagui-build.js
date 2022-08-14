@@ -7,7 +7,7 @@ const esbuild = require('esbuild')
 const fg = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
-const { dirname, join } = require('path')
+const { dirname } = require('path')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -169,7 +169,6 @@ async function buildJs() {
           platform: 'node',
         })
       : null,
-    // dont bundle for tree shaking
     pkgModule
       ? esbuildWriteIfChanged({
           entryPoints: files,

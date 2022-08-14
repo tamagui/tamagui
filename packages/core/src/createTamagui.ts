@@ -1,5 +1,5 @@
 import { configListeners, setConfig } from './conf'
-import { isWeb } from './constants/platform'
+import { isRSC, isWeb } from './constants/platform'
 import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import { getAllRules } from './helpers/insertStyleRule'
@@ -139,7 +139,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
 
     // then, generate CSS from de-duped
-    if (isWeb) {
+    if (isWeb || isRSC) {
       for (const themeName in dedupedThemes) {
         cssRuleSets = [
           ...cssRuleSets,
@@ -183,7 +183,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     animations: {} as any,
     media: {},
     ...configIn,
-    shorthands,
+    // vite made this into a function if it wasn't set
+    shorthands: { ...shorthands },
     inverseShorthands: shorthands
       ? Object.fromEntries(Object.entries(shorthands).map(([k, v]) => [v, k]))
       : {},
