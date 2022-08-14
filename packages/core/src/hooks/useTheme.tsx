@@ -15,7 +15,7 @@ import { ThemeName, ThemeObject } from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
 import { useConstant } from './useConstant'
 
-export type ThemeProps = {
+export interface ThemeProps {
   className?: string
   disableThemeClass?: boolean
   name: Exclude<ThemeName, number> | null
@@ -25,7 +25,7 @@ export type ThemeProps = {
   debug?: boolean | 'verbose'
 }
 
-type UseThemeState = {
+interface UseThemeState {
   uuid: Object
   keys: Set<string>
   isRendering: boolean
@@ -43,7 +43,7 @@ export const useTheme = (
   if (isRSC) {
     const config = getConfig()
     // @ts-ignore
-    return config.themes[config.defaultTheme]
+    return getThemeProxied(config.themes[config.defaultTheme], config.defaultTheme)
   }
 
   const { name, theme, themes, themeManager, className } = useChangeThemeEffect(
@@ -91,40 +91,49 @@ export const useTheme = (
   }
 
   return useMemo(() => {
-    return new Proxy(theme, {
-      has(_, key) {
-        if (typeof key === 'string') {
-          if (key[0] === '$') {
-            key = key.slice(1)
-          }
-        }
-        return Reflect.has(theme, key)
-      },
-      get(_, key) {
-        if (key === GetThemeUnwrapped) {
-          return theme
-        }
-        if (key === GetThemeManager) {
-          return themeManager
-        }
-        if (key === 'name') {
-          return name
-        }
-        if (key === 'className') {
-          return className
-        }
-        if (!name || key === '__proto__' || typeof key === 'symbol' || key === '$typeof') {
-          return Reflect.get(_, key)
-        }
-        if (!themeManager) {
-          // eslint-disable-next-line no-console
-          console.error('No themeManager')
-          return
-        }
-        // auto convert variables to plain
-        if (key[0] === '$') {
-          key = key.slice(1)
-        }
+    return getThemeProxied(theme, name, className, themeManager, state, debugProp)
+  }, [theme, name, themeManager, className, debugProp])
+}
+
+function getThemeProxied(
+  theme: any,
+  name: string,
+  className?: string,
+  themeManager?: ThemeManager | null,
+  state?: React.MutableRefObject<UseThemeState>,
+  debugProp?: boolean | 'verbose'
+) {
+  return new Proxy(theme, {
+    has(_, key) {
+      if (typeof key === 'string' && key[0] === '$') {
+        key = key.slice(1)
+      }
+      return Reflect.has(theme, key)
+    },
+    get(_, key) {
+      if (key === GetThemeUnwrapped) {
+        return theme
+      }
+      if (key === GetThemeManager) {
+        return themeManager
+      }
+      if (key === 'name') {
+        return name
+      }
+      if (key === 'className') {
+        return className
+      }
+      if (!name || key === '__proto__' || typeof key === 'symbol' || key === '$typeof') {
+        return Reflect.get(_, key)
+      }
+      // auto convert variables to plain
+      if (key[0] === '$') {
+        key = key.slice(1)
+      }
+      if (!themeManager) {
+        return theme[key]
+      }
+      if (state) {
         if (state.current.isRendering && !state.current.keys.has(key)) {
           state.current.keys.add(key)
           if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
@@ -132,10 +141,10 @@ export const useTheme = (
             console.log('  🔸 tracking theme', key)
           }
         }
-        return themeManager.getValue(key)
-      },
-    })
-  }, [theme, name, themeManager, className, debugProp])
+      }
+      return themeManager.getValue(key)
+    },
+  })
 }
 
 const GetThemeManager = Symbol()

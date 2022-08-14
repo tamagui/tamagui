@@ -1,6 +1,6 @@
 import { ThemeManager } from '../helpers/ThemeManager';
 import { ThemeName, ThemeObject } from '../types';
-export declare type ThemeProps = {
+export interface ThemeProps {
     className?: string;
     disableThemeClass?: boolean;
     name: Exclude<ThemeName, number> | null;
@@ -8,7 +8,7 @@ export declare type ThemeProps = {
     children?: any;
     reset?: boolean;
     debug?: boolean | 'verbose';
-};
+}
 export declare const useTheme: (themeName?: string | null, componentName?: string, props?: ThemeProps, forceUpdate?: any) => ThemeObject;
 export declare const getThemeManager: (theme: any) => ThemeManager | undefined;
 export declare const useThemeName: (opts?: {

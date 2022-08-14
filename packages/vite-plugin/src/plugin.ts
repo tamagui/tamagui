@@ -10,18 +10,18 @@ import { tamaguiExtractPlugin } from './extractPlugin'
  */
 
 export function tamaguiPlugin(options: TamaguiOptions): Plugin {
+  const disableStatic = options.disable || (options.disableDebugAttr && options.disableExtraction)
+
   const plugin: Plugin = {
-    name: 'tamagui',
+    name: 'tamagui-base',
     enforce: 'pre',
 
     config(userConfig, env) {
       return {
         plugins: [
-          viteCommonjs(),
           envPlugin(['NODE_ENV', 'TAMAGUI_TARGET']),
-          // ...(options.disable || (options.disableDebugAttr && options.disableExtraction)
-          //   ? []
-          //   : [tamaguiExtractPlugin(options)]),
+          ...(disableStatic ? [] : [tamaguiExtractPlugin(options)]),
+          viteCommonjs(),
         ],
         esbuild: {
           loader: 'tsx',
@@ -36,6 +36,7 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
               env: {
                 TAMAGUI_TARGET: process.env.TAMAGUI_TARGET || 'web',
                 NODE_ENV: process.env.NODE_ENV || env.mode,
+                ENABLE_RSC: process.env.ENABLE_RSC,
               },
             },
           }),
@@ -47,9 +48,7 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
         },
         ssr: {
           noExternal: /tamagui|react-native|expo-linear-gradient/,
-          optimizeDeps: {
-            // disabled: true,
-          },
+          optimizeDeps: {},
         },
         optimizeDeps: {
           // include: [/node_modules/],
