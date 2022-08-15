@@ -145,7 +145,7 @@ async function buildJs() {
   if (skipJS) {
     return
   }
-  let files = (await fg(['src/**/*.(m)?ts(x)?', 'src/**/*.css'])).filter(
+  let files = (await fg(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
     (x) => !x.includes('.d.ts')
   )
   const externalPlugin = createExternalPlugin({

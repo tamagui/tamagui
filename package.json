@@ -9,8 +9,7 @@
     "apps/*",
     "packages/*",
     "takeout/*",
-    "examples/tamagram",
-    "react-native-web-lite"
+    "examples/tamagram"
   ],
   "packageManager": "yarn@3.2.2",
   "scripts": {

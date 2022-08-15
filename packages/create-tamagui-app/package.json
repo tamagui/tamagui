@@ -12,8 +12,8 @@
     "test": "node -r esbuild-register ../../node_modules/.bin/playwright test test.ts",
     "prerelease": "rimraf ./dist/",
     "prepublish": "yarn build",
-    "build": "tamagui-build skip-types",
-    "watch": "tamagui-build skip-types --watch",
+    "build": "tamagui-build --skip-types",
+    "watch": "tamagui-build --skip-types --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

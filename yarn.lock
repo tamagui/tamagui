@@ -6396,6 +6396,7 @@ __metadata:
     postcss: ^8.4.5
     react: "*"
     react-dom: "*"
+    rollup-plugin-visualizer: ^5.7.1
     tamagui: ^1.0.1-beta.141
     vite: ^2.9.15
   languageName: unknown
@@ -18765,7 +18766,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"open@npm:^8.0.4, open@npm:^8.0.9, open@npm:^8.3.0":
+"open@npm:^8.0.4, open@npm:^8.0.9, open@npm:^8.3.0, open@npm:^8.4.0":
   version: 8.4.0
   resolution: "open@npm:8.4.0"
   dependencies:
@@ -20586,9 +20587,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-web-lite@^1.0.1-beta.140, react-native-web-lite@workspace:react-native-web-lite":
+"react-native-web-lite@^1.0.1-beta.140, react-native-web-lite@workspace:packages/react-native-web-lite":
   version: 0.0.0-use.local
-  resolution: "react-native-web-lite@workspace:react-native-web-lite"
+  resolution: "react-native-web-lite@workspace:packages/react-native-web-lite"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.141
     create-react-class: ^15.7.0
@@ -21587,6 +21588,22 @@ __metadata:
   bin:
     rimraf: ./bin.js
   checksum: 3ea587b981a19016297edb96d1ffe48af7e6af69660e3b371dbfc73722a73a0b0e9be5c88089fbeeb866c389c1098e07f64929c7414290504b855f54f901ab10
+  languageName: node
+  linkType: hard
+
+"rollup-plugin-visualizer@npm:^5.7.1":
+  version: 5.7.1
+  resolution: "rollup-plugin-visualizer@npm:5.7.1"
+  dependencies:
+    nanoid: ^3.3.4
+    open: ^8.4.0
+    source-map: ^0.7.3
+    yargs: ^17.5.1
+  peerDependencies:
+    rollup: ^2.0.0
+  bin:
+    rollup-plugin-visualizer: dist/bin/cli.js
+  checksum: 8bc4ff80a149f3ac775af1307f5b1936d3d6bd31ec6969e34e7e7489105b54fe12fda05d0c9a1b682fe7a1f535468e94dd11d98ba048ca78ac733a459bdd400b
   languageName: node
   linkType: hard
 

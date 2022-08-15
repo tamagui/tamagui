@@ -39,8 +39,8 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
           },
         },
         ssr: {
+          // noExternal: /^(tamagui|react-native|expo-linear-gradient)$/,
           noExternal: /tamagui|react-native|expo-linear-gradient/,
-          optimizeDeps: {},
         },
         optimizeDeps: {
           include: [
@@ -48,16 +48,16 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
             'inline-style-prefixer',
             'create-react-class',
             'copy-to-clipboard',
-            // 'react-native-svg',
+            'react-native-reanimated',
           ],
           esbuildOptions: {
+            jsx: 'transform',
             plugins: [
               esbuildCommonjs([
                 'styleq',
                 'inline-style-prefixer',
                 'create-react-class',
                 'copy-to-clipboard',
-                // 'react-native-svg',
               ]),
             ],
             resolveExtensions: [
@@ -78,7 +78,7 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
         },
         resolve: {
           // for once it extracts
-          // mainFields: ['module:jsx', 'module', 'jsnext:main', 'jsnext'],
+          // mainFields: ['module:jsx', 'module', 'jsnext:main', 'jsnext', 'main'],
           extensions: [
             '.web.js',
             '.web.ts',

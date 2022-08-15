@@ -10,12 +10,6 @@
     "build:worker": "cross-env ENABLE_RSC=1  TAMAGUI_TARGET=web WORKER=true vite build --outDir dist/worker --ssr @tamagui/unagi/platforms/worker",
     "serve": "node --trace-warnings --enable-source-maps dist/server"
   },
-  "devDependencies": {
-    "autoprefixer": "^10.4.2",
-    "cross-env": "^7.0.3",
-    "postcss": "^8.4.5",
-    "vite": "^2.9.15"
-  },
   "dependencies": {
     "@tamagui/config-base": "^1.0.1-beta.141",
     "@tamagui/core-node": "^1.0.1-beta.141",
@@ -26,5 +20,12 @@
     "react": "*",
     "react-dom": "*",
     "tamagui": "^1.0.1-beta.141"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.2",
+    "cross-env": "^7.0.3",
+    "postcss": "^8.4.5",
+    "rollup-plugin-visualizer": "^5.7.1",
+    "vite": "^2.9.15"
   }
 }

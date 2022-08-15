@@ -96,6 +96,9 @@ async function buildTamaguiConfig(options: Partial<esbuild.BuildOptions>) {
     target: 'node18',
     keepNames: true,
     platform: 'node',
+    loader: {
+      '.js': 'jsx',
+    },
     allowOverwrite: true,
     banner: {
       // insert a shim that re-routes:

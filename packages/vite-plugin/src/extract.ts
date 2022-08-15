@@ -100,6 +100,14 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
       }
     },
 
+    /**
+     * TODO
+     *
+     *   mainFields module:jsx breaks, so lets just have a mapping here
+     *   where we load() and map it to the jsx path before transform
+     *
+     */
+
     load(id, options) {
       const [validId] = id.split('?')
 
