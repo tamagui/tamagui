@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "@tamagui/fake-react-native": "^1.0.1-beta.141",
     "@tamagui/proxy-worm": "^1.0.1-beta.141",
     "@tamagui/static": "^1.0.1-beta.141",
     "fs-extra": "^10.1.0",

@@ -1,0 +1,37 @@
+{
+  "name": "@tamagui/code-to-html",
+  "version": "1.0.1-beta.141",
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "eslint",
+    "lint:fix": "yarn lint --fix",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "hast-util-to-html": "^8.0.3",
+    "hast-util-to-string": "^2.0.0",
+    "parse-numeric-range": "^1.3.0",
+    "refractor": "^4.7.0",
+    "rehype": "^12.0.1",
+    "rehype-parse": "^8.0.4",
+    "rehype-slug": "^5.0.1",
+    "unified": "^10.1.2"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.141"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

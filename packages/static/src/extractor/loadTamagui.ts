@@ -28,6 +28,7 @@ const cache = {}
 
 export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   const key = JSON.stringify(props)
+  const start = Date.now()
   if (cache[key]) {
     if (cache[key] instanceof Promise) {
       return await cache[key]
@@ -51,19 +52,21 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   const outPaths = [configOutPath, ...componentOutPaths]
   await Promise.all(outPaths.map((p) => remove(p)))
 
+  const external = ['@tamagui/core', '@tamagui/core-node', 'react', 'react-dom']
+
   // build them to node-compat versions
   await Promise.all([
     props.config
       ? buildTamaguiConfig({
           entryPoints: [join(process.cwd(), props.config)],
-          external: ['@tamagui/core', '@tamagui/core-node'],
+          external,
           outfile: configOutPath,
         })
       : null,
     ...baseComponents.map((componentModule, i) => {
       return buildTamaguiConfig({
         entryPoints: [componentModule],
-        external: ['@tamagui/core', '@tamagui/core-node'],
+        external,
         outfile: componentOutPaths[i],
       })
     }),
@@ -97,7 +100,10 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   return cache[key]
 }
 
-async function buildTamaguiConfig(options: Partial<esbuild.BuildOptions>) {
+async function buildTamaguiConfig(
+  options: Partial<esbuild.BuildOptions>,
+  aliases?: Record<string, string>
+) {
   const alias = require('@tamagui/core-node').aliasPlugin
   return esbuild.build({
     bundle: true,
@@ -120,11 +126,13 @@ async function buildTamaguiConfig(options: Partial<esbuild.BuildOptions>) {
 const mod = require('module')
 const og = mod.prototype.require
 const core = require('@tamagui/core-node')
-const rnw = require('react-native-web-lite')
+const react = require('react')
+const reactDom = require('react-dom')
 mod.prototype.require = function(path) {
   if (path === '@tamagui/core') return core
   if (path === '@tamagui/core-node') return core
-  if (path === 'react-native') return rnw
+  if (path === 'react') return react
+  if (path === 'react-dom') return reactDom
   return og(path)
 }
 setTimeout(() => {
@@ -135,9 +143,11 @@ setTimeout(() => {
     logLevel: 'warning',
     plugins: [
       alias({
-        'react-native': require.resolve('react-native-web-lite'),
+        'react-native': require.resolve('@tamagui/fake-react-native'),
+        'react-native-web-lite': require.resolve('@tamagui/fake-react-native'),
         'react-native-safe-area-context': require.resolve('@tamagui/fake-react-native'),
         'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
+        ...aliases,
       }),
     ],
   })

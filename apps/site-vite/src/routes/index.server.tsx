@@ -1,6 +1,9 @@
+import { readFile } from 'fs/promises'
+import { join } from 'path'
+
 import { Link } from '@tamagui/unagi'
 import React from 'react'
-import { Button, Card, Paragraph, Separator, XStack, YStack } from 'tamagui'
+import { Button, Card, Paragraph, Separator, XStack, YStack, simpleHash } from 'tamagui'
 
 import { CodeDemoPreParsed } from '../components/code/CodeDemoPreParsed.server'
 import { ContainerLarge } from '../components/Container.server'
@@ -21,6 +24,7 @@ import { HomeH2, HomeH3 } from '../components/home/HomeHeading.server'
 import { InstallInput } from '../components/home/InstallInput.client'
 import { Section, SectionTinted } from '../components/Section.server'
 import { CocentricCircles } from '../components/visuals/CocentricCircles.server'
+import { useCodeExamples } from '../data/codeExamples'
 
 export default function Index() {
   return (
@@ -66,7 +70,7 @@ export default function Index() {
       </Section>
 
       {/* responsive */}
-      <ContainerLarge zi={10} mt={-80} pos="relative">
+      <ContainerLarge zi={10} mt={-20} pos="relative">
         <YStack f={1} space="$3">
           <HomeH2 ta="left" als="flex-start">
             <span className="rainbow clip-text">Responsive</span>, for real.
@@ -193,6 +197,7 @@ function TypographyCard() {
 }
 
 function CodeSection() {
+  const codeExamples = useCodeExamples()
   return (
     <ContainerLarge position="relative">
       <YStack zi={1} space="$6">
@@ -202,49 +207,14 @@ function CodeSection() {
           </HomeH2>
           <HomeH3>Modern features 🤝 unmatched performance.</HomeH3>
         </YStack>
-        <HeroCode examples={[]} />
+        <HeroCode examples={codeExamples.compilationExamples} />
       </YStack>
     </ContainerLarge>
   )
 }
 
-export async function getStaticProps() {
-  // refractor.register(tsx)
-  // refractor.register(css)
-  // function codeToHTML(source: string, language: 'tsx' | 'css' | string, line = '0') {
-  //   let result: any = refractor.highlight(source, language)
-  //   result = rehypeHighlightLine(result, rangeParser(line))
-  //   result = rehypeHighlightWord(result)
-  //   result = toHtml(result)
-  //   return result as string
-  // }
-  // const compilationExamples = compilationCode.map((item) => {
-  //   return {
-  //     ...item,
-  //     input: {
-  //       ...item.input,
-  //       examples: item.input.examples.map((ex) => {
-  //         return {
-  //           ...ex,
-  //           code: codeToHTML(ex.code, ex.language),
-  //         }
-  //       }),
-  //     },
-  //     output: {
-  //       ...item.output,
-  //       examples: item.output.examples.map((ex) => {
-  //         return {
-  //           ...ex,
-  //           code: codeToHTML(ex.code, ex.language),
-  //         }
-  //       }),
-  //     },
-  //   }
-  // })
-  // return { props: { compilationExamples, animationCode: codeToHTML(animationCode, 'tsx') } }
-}
-
 function AnimationsSection() {
+  const codeExamples = useCodeExamples()
   return (
     <ContainerLarge position="relative" space="$8">
       <YStack zi={1} space="$3">
@@ -265,7 +235,7 @@ function AnimationsSection() {
             maxWidth={530}
             minWidth={530}
             language="tsx"
-            source={`animationCode`}
+            source={codeExamples.animationCode}
           />
         </HeroAnimations>
       </XStack>

@@ -5589,6 +5589,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/code-to-html@^1.0.1-beta.141, @tamagui/code-to-html@workspace:packages/code-to-html":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/code-to-html@workspace:packages/code-to-html"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.141
+    hast-util-to-html: ^8.0.3
+    hast-util-to-string: ^2.0.0
+    parse-numeric-range: ^1.3.0
+    refractor: ^4.7.0
+    rehype: ^12.0.1
+    rehype-parse: ^8.0.4
+    rehype-slug: ^5.0.1
+    unified: ^10.1.2
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/collapsible@workspace:packages/collapsible":
   version: 0.0.0-use.local
   resolution: "@tamagui/collapsible@workspace:packages/collapsible"
@@ -6385,6 +6401,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/site-vite@workspace:apps/site-vite"
   dependencies:
+    "@tamagui/code-to-html": ^1.0.1-beta.141
     "@tamagui/config-base": ^1.0.1-beta.141
     "@tamagui/core-node": ^1.0.1-beta.141
     "@tamagui/demos": ^1.0.1-beta.141
@@ -6806,6 +6823,7 @@ __metadata:
   dependencies:
     "@originjs/vite-plugin-commonjs": ^1.0.3
     "@tamagui/build": ^1.0.1-beta.141
+    "@tamagui/fake-react-native": ^1.0.1-beta.141
     "@tamagui/proxy-worm": ^1.0.1-beta.141
     "@tamagui/static": ^1.0.1-beta.141
     fs-extra: ^10.1.0

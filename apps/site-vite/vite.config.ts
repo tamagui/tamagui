@@ -9,6 +9,7 @@ const tamaguiConfig = {
 }
 
 export default defineConfig({
+  clearScreen: false,
   plugins: [
     //
     tamaguiPlugin(tamaguiConfig),
