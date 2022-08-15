@@ -1,5 +1,6 @@
 - 1.0
 
+  - require `tamagui.config.ts` to import createTamagui() from core only
   - can probably remove "screen and" from media queries
   - Card should operate through context to properly sync size
   - FAQ

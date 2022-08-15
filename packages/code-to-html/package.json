@@ -11,8 +11,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --bundle",
+    "watch": "tamagui-build --bundle --watch",
     "lint": "eslint",
     "lint:fix": "yarn lint --fix",
     "clean": "tamagui-build clean",

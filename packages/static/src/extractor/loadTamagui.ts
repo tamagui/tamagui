@@ -91,9 +91,6 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
 
   resolver(cache[key])
 
-  // give it a tick to clear the module shim, hacky
-  await new Promise((res) => setTimeout(res, 1))
-
   // init core-node
   createTamagui(cache[key].tamaguiConfig)
 
@@ -116,32 +113,19 @@ async function buildTamaguiConfig(
       '.js': 'jsx',
     },
     allowOverwrite: true,
-    banner: {
-      // insert a shim that re-routes:
-      //   react-native => react-native-web-lite
-      //   @tamagui/core => @tamagui/core-node
-      // doing it this way gives us nice node REPL require'able
-      js: `
-// tamagui re-wire some deps for node
-const mod = require('module')
-const og = mod.prototype.require
-const core = require('@tamagui/core-node')
-const react = require('react')
-const reactDom = require('react-dom')
-mod.prototype.require = function(path) {
-  if (path === '@tamagui/core') return core
-  if (path === '@tamagui/core-node') return core
-  if (path === 'react') return react
-  if (path === 'react-dom') return reactDom
-  return og(path)
-}
-setTimeout(() => {
-  mod.prototype.require = og
-})
-`,
-    },
     logLevel: 'warning',
     plugins: [
+      {
+        name: 'external',
+        setup(build) {
+          build.onResolve({ filter: /@tamagui\/core/ }, (args) => {
+            return {
+              path: '@tamagui/core-node',
+              external: true,
+            }
+          })
+        },
+      },
       alias({
         'react-native': require.resolve('@tamagui/fake-react-native'),
         'react-native-web-lite': require.resolve('@tamagui/fake-react-native'),

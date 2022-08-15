@@ -12,6 +12,7 @@ const { dirname } = require('path')
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
 const shouldSkipTypes = !!(process.argv.includes('--skip-types') || process.env.SKIP_TYPES)
+const shouldBundle = !!process.argv.includes('--bundle')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
@@ -157,7 +158,7 @@ async function buildJs() {
       ? esbuildWriteIfChanged({
           entryPoints: files,
           outdir: flatOut ? 'dist' : 'dist/cjs',
-          bundle: false,
+          bundle: shouldBundle,
           sourcemap: true,
           target: 'node14',
           keepNames: false,
@@ -173,6 +174,7 @@ async function buildJs() {
       ? esbuildWriteIfChanged({
           entryPoints: files,
           outdir: flatOut ? 'dist' : 'dist/esm',
+          bundle: shouldBundle,
           sourcemap: true,
           target: 'node16',
           keepNames: false,
@@ -180,7 +182,7 @@ async function buildJs() {
           color: true,
           logLevel: 'error',
           minify: false,
-          platform: 'neutral',
+          platform: shouldBundle ? 'node' : 'neutral',
         })
       : null,
     pkgModuleJSX
@@ -189,6 +191,7 @@ async function buildJs() {
           jsx: 'preserve',
           outdir: flatOut ? 'dist' : 'dist/jsx',
           entryPoints: files,
+          bundle: shouldBundle,
           sourcemap: true,
           target: 'es2020',
           keepNames: false,
