@@ -34,7 +34,7 @@
     "html-inline-css-webpack-plugin": "^1.11.1",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
-    "react-native-svg-web": "^1.0.9",
+    "react-native-svg-web": "^1.0.1-beta.141",
     "tamagui-loader": "^1.0.1-beta.141",
     "thread-loader": "^3.0.4",
     "url-loader": "^4.1.1"

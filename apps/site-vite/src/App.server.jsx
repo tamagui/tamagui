@@ -12,6 +12,7 @@ import { TamaguiProvider as TamaguiClientProvider } from './components/TamaguiPr
 import config from './tamagui.config'
 
 function App() {
+  // test
   return (
     <Suspense fallback="Loading...">
       {/* <TamaguiProvider disableInjectCSS config={config} defaultTheme="light"> */}

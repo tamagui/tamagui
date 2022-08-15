@@ -5969,7 +5969,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/kitchen-sink@workspace:apps/kitchen-sink"
   dependencies:
-    "@babel/core": ^7.15.5
+    "@babel/core": ^7.18.10
     "@expo/metro-config": ^0.3.18
     "@react-navigation/native": ^6.0.10
     "@react-navigation/native-stack": ^6.7.0
@@ -6092,7 +6092,7 @@ __metadata:
     html-webpack-plugin: ^5.5.0
     mini-css-extract-plugin: ^2.6.1
     next: ^12.2.0
-    react-native-svg-web: ^1.0.9
+    react-native-svg-web: ^1.0.1-beta.141
     tamagui-loader: ^1.0.1-beta.141
     thread-loader: ^3.0.4
     url-loader: ^4.1.1
@@ -6446,7 +6446,7 @@ __metadata:
     "@tamagui/theme-base": ^1.0.1-beta.141
     "@types/react-native": ^0.69.2
     compare-versions: ^4.1.3
-    copy-to-clipboard: ^3.3.1
+    copy-to-clipboard: ^3.3.2
     date-fns: ^2.26.0
     glob: ^7.1.6
     gray-matter: ^4.0.2
@@ -10488,15 +10488,6 @@ __metadata:
   version: 0.1.1
   resolution: "copy-descriptor@npm:0.1.1"
   checksum: d4b7b57b14f1d256bb9aa0b479241048afd7f5bcf22035fc7b94e8af757adeae247ea23c1a774fe44869fd5694efba4a969b88d966766c5245fdee59837fe45b
-  languageName: node
-  linkType: hard
-
-"copy-to-clipboard@npm:^3.3.1":
-  version: 3.3.1
-  resolution: "copy-to-clipboard@npm:3.3.1"
-  dependencies:
-    toggle-selection: ^1.0.6
-  checksum: 3c7b1c333dc6a4b2e9905f52e4df6bbd34ff9f9c97ecd3ca55378a6bc1c191bb12a3252e6289c7b436e9188cff0360d393c0161626851d2301607860bbbdcfd5
   languageName: node
   linkType: hard
 
@@ -20567,17 +20558,6 @@ __metadata:
   resolution: "react-native-svg-web@workspace:packages/react-native-svg-web"
   languageName: unknown
   linkType: soft
-
-"react-native-svg-web@npm:^1.0.9":
-  version: 1.0.9
-  resolution: "react-native-svg-web@npm:1.0.9"
-  peerDependencies:
-    prop-types: "*"
-    react: "*"
-    react-native-web: ">= 0.10.1"
-  checksum: fb217afb275a3e06f8c4e5e79d6099cdabb16fa294cd7611bc4cdbbc3ffcaa6c848cdb23dbe7673d11ab57a635c82a0f752a627fbc183f4884c255346f1c53e5
-  languageName: node
-  linkType: hard
 
 "react-native-svg@npm:^12.3.0":
   version: 12.3.0
