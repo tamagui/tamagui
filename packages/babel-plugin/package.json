@@ -24,14 +24,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@babel/generator": "^7.15.4",
-    "@babel/helper-plugin-utils": "^7.14.5",
+    "@babel/generator": "^7.18.12",
+    "@babel/helper-plugin-utils": "^7.18.9",
     "@babel/template": "*",
-    "@babel/traverse": "^7.15.4",
+    "@babel/traverse": "^7.18.11",
     "@tamagui/static": "^1.0.1-beta.141"
   },
   "devDependencies": {
-    "@babel/types": "^7.15.6",
+    "@babel/types": "^7.18.10",
     "@tamagui/build": "^1.0.1-beta.141"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"

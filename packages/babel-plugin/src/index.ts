@@ -10,6 +10,7 @@ import * as t from '@babel/types'
 import {
   TamaguiOptions,
   createExtractor,
+  getPragmaOptions,
   isSimpleSpread,
   literalToAst,
   patchReactNativeWeb,
@@ -61,13 +62,16 @@ export default declare(function snackBabelPlugin(
           let hasImportedView = false
           const sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
-          const firstComment = root.node.body[0]?.leadingComments?.[0]?.value?.trim()
-          if (firstComment?.includes('tamagui-ignore')) {
+          const firstComment = root.node.body[0]?.leadingComments?.[0]?.value?.trim() ?? ''
+          const { shouldPrintDebug, shouldDisable } = getPragmaOptions({
+            disableCommentCheck: true,
+            source: firstComment,
+            path: sourcePath,
+          })
+
+          if (shouldDisable) {
             return
           }
-
-          const shouldPrintDebug =
-            firstComment?.trim() === 'debug' || process.env.DEBUG?.startsWith('tamagui')
 
           function addSheetStyle(style: any, node: t.JSXOpeningElement) {
             const styleIndex = `${Object.keys(sheetStyles).length}`

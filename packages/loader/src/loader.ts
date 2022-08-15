@@ -4,6 +4,7 @@ import {
   TamaguiOptions,
   createExtractor,
   extractToClassNames,
+  getPragmaOptions,
   patchReactNativeWeb,
 } from '@tamagui/static'
 import type { RawLoaderDefinitionFunction } from 'webpack'
@@ -35,23 +36,9 @@ export const loader = async function loader(this, sourceIn: Buffer | string) {
     const threaded = this.emitFile === undefined
     const options: TamaguiOptions = { ...this.getOptions() }
     const sourcePath = `${this.resourcePath}`
-    const startsWithComment = source[0] === '/' && source[1] === '/'
+    const { shouldDisable, shouldPrintDebug } = getPragmaOptions({ source, path: sourcePath })
 
-    let shouldPrintDebug: boolean | 'verbose' =
-      (!!process.env.DEBUG &&
-        (process.env.DEBUG_FILE ? sourcePath.includes(process.env.DEBUG_FILE) : true)) ||
-      // supports esbuild style //! comments
-      (startsWithComment && (source.startsWith('// debug') || source.startsWith('//! debug')))
-
-    if (shouldPrintDebug && source.startsWith('// debug-verbose')) {
-      shouldPrintDebug = 'verbose'
-    }
-
-    // check if should ignore
-    if (
-      startsWithComment &&
-      (source.startsWith('// tamagui-ignore') || source.startsWith('//! tamagui-ignore'))
-    ) {
+    if (shouldDisable) {
       return callback(null, source)
     }
 

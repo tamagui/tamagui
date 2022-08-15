@@ -7,4 +7,5 @@ export * from './extractor/extractHelpers';
 export * from '@tamagui/patch-rnw';
 export * from './extractor/loadTamagui';
 export * from './require';
+export * from './getPragmaOptions';
 //# sourceMappingURL=index.d.ts.map

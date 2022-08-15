@@ -422,7 +422,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
         if (shouldPrintDebug) {
           // prettier-ignore
-          logger.info([`Extracted styled(${name})`, styles, 'to', out.rulesToInsert.flatMap((rule) => rule.rules).join(', ')].join(' '))
+          logger.info([`Extracted styled(${name})\n`, JSON.stringify(styles, null, 2), '\n=>\n', out.rulesToInsert.flatMap((rule) => rule.rules).join('\n')].join(' '))
         }
 
         // leave only un-parsed props...
