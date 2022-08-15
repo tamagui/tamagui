@@ -129,7 +129,8 @@ export const PopoverTrigger = React.forwardRef<PopoverTriggerElement, PopoverTri
       <YStack
         aria-haspopup="dialog"
         aria-expanded={context.open}
-        aria-controls={context.contentId}
+        // TODO not matching
+        // aria-controls={context.contentId}
         data-state={getState(context.open)}
         {...triggerProps}
         ref={composedTriggerRef}

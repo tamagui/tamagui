@@ -1,5 +1,4 @@
-import { isRSC } from '@tamagui/core'
-// import { Search as SearchIcon } from '@tamagui/feather-icons'
+import { Search as SearchIcon } from '@tamagui/feather-icons'
 import React from 'react'
 import { memo, useContext, useEffect, useRef } from 'react'
 import { Button, ButtonProps, TooltipSimple, useIsTouchDevice } from 'tamagui'
@@ -7,7 +6,7 @@ import { Button, ButtonProps, TooltipSimple, useIsTouchDevice } from 'tamagui'
 import { SearchContext } from './SearchContext'
 
 export const SearchButton = memo((props: ButtonProps) => {
-  const { onOpen, onInput } = isRSC ? {} : useContext(SearchContext)
+  const { onOpen, onInput } = { onOpen() {}, onInput() {} } // : useContext(SearchContext)
   const isTouch = useIsTouchDevice()
   const ref = useRef()
 
@@ -33,7 +32,7 @@ export const SearchButton = memo((props: ButtonProps) => {
         accessibilityLabel="Search docs"
         ref={ref as any}
         onPress={onOpen}
-        // icon={SearchIcon}
+        icon={SearchIcon}
         iconAfter={
           isTouch ? null : (
             // TODO shouldn't need tag="span" if buttoninbutton context works - test + in prod

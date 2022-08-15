@@ -1,5 +1,6 @@
 - 1.0
 
+  - can probably remove "screen and" from media queries
   - Card should operate through context to properly sync size
   - FAQ
     - don't wrap in HOC if possible, will de-opt compilation

@@ -27,8 +27,6 @@ import {
 // @ts-ignore
 import favicon from '../../../public/favicon.svg'
 
-console.log('favicon', favicon)
-
 const breakpoints = [
   { name: 'xs', at: demoMedia[0] },
   { name: 'sm', at: demoMedia[1] },

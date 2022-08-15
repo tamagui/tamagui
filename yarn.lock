@@ -6388,6 +6388,7 @@ __metadata:
     "@originjs/vite-plugin-commonjs": ^1.0.3
     "@tamagui/config-base": ^1.0.1-beta.141
     "@tamagui/core-node": ^1.0.1-beta.141
+    "@tamagui/demos": ^1.0.1-beta.141
     "@tamagui/unagi": ^1.0.1-beta.141
     "@tamagui/vite-plugin": ^1.0.1-beta.141
     autoprefixer: ^10.4.2
@@ -6395,6 +6396,7 @@ __metadata:
     compression: ^1.7.4
     copy-to-clipboard: ^3.3.2
     cross-env: ^7.0.3
+    postcss: ^8.4.5
     react: "*"
     react-dom: "*"
     serve-static: ^1.14.1
@@ -19888,7 +19890,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.2.15":
+"postcss@npm:^8.2.15, postcss@npm:^8.4.5":
   version: 8.4.16
   resolution: "postcss@npm:8.4.16"
   dependencies:

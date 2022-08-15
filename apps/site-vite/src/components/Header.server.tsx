@@ -1,18 +1,16 @@
 import { LogoWords } from '@tamagui/logo'
-import { Link } from '@tamagui/unagi'
+import { Link, useUrl } from '@tamagui/unagi'
 import React from 'react'
 import { Button, Paragraph, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 
-import { ContainerLarge } from './Container.server'
 import { CalloutButton } from './header/CalloutButton.server'
 import { HeaderButtonsGroup } from './header/HeaderButtonsGroup.client'
 import { HeaderLogo } from './header/HeaderLogo.client'
 import { GithubIcon } from './icons/GithubIcon.server'
 
 export function Header({ floating, disableNew }: { floating?: boolean; disableNew?: boolean }) {
-  // const router = useRouter()
-  const isHome = true //router.pathname === '/'
-  const isTakeout = false //router.pathname.startsWith('/takeout')
+  const url = useUrl()
+  const isTakeout = url.pathname.startsWith('/takeout')
 
   return (
     <XStack
@@ -27,7 +25,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
       <XStack ai="center" space="$6">
         <HeaderLogo floating={floating} />
 
-        {/* <HeaderButtonsGroup /> */}
+        <HeaderButtonsGroup />
 
         {/* {isTakeout && (
           <Link to="/takeout">

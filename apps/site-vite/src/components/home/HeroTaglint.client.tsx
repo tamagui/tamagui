@@ -4,9 +4,9 @@ import { Text, TooltipSimple } from 'tamagui'
 export const HeroTagline = () => {
   return (
     <>
-      {/* <TooltipSimple label="Works the same on iOS, Android, and web">
+      <TooltipSimple label="Works the same on iOS, Android, and web">
         <span className="rainbow clip-text help">Universal</span>
-      </TooltipSimple>{' '} */}
+      </TooltipSimple>{' '}
       design systems for React&nbsp;Native&nbsp;&&nbsp;Web
       {/* TODO text inside text not working because of context */}
       <Text

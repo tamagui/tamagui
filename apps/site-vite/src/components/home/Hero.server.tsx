@@ -1,4 +1,4 @@
-// import { ArrowRight } from '@tamagui/feather-icons'
+import { ArrowRight } from '@tamagui/feather-icons'
 import { Link } from '@tamagui/unagi'
 import React from 'react'
 import { memo } from 'react'
@@ -24,17 +24,17 @@ import { HeroTagline } from './HeroTaglint.client'
 export function Hero() {
   return (
     <YStack pos="relative" pe="auto">
-      {/* <TintTheme> */}
-      <YStack fullscreen zi={0} className="hero-gradient-2" opacity={0.48} />
-      <HeroTop />
-      {/* </TintTheme> */}
+      <TintTheme>
+        <YStack fullscreen zi={0} className="hero-gradient-2" opacity={0.48} />
+        <HeroTop />
+      </TintTheme>
     </YStack>
   )
 }
 
 const HeroTop = memo(() => {
   return (
-    <ContainerLarge className="okok" pos="relative">
+    <ContainerLarge debug="verbose" className="okok" pos="relative">
       <YStack
         contain="strict"
         className="bg-grid mask-gradient-up"
@@ -122,7 +122,7 @@ const HeroTop = memo(() => {
             <Button
               accessibilityLabel="Get started (docs)"
               fontFamily="$silkscreen"
-              // iconAfter={ArrowRight}
+              iconAfter={ArrowRight}
               size="$5"
               borderRadius={1000}
               fontWeight="800"

@@ -78,6 +78,9 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
     tamaguiConfig: config,
   }
 
+  // give it a tick to clear the module shim, hacky
+  await new Promise((res) => setTimeout(res, 1))
+
   // init core-node
   createTamagui(cache[key].tamaguiConfig)
 

@@ -14,7 +14,8 @@ import {
   YStack,
 } from 'tamagui'
 
-// import image from '../public/kanye.jpg'
+// @ts-ignore
+import image from '../../../public/images/kanye.jpg'
 
 export const MediaPlayer = memo(
   ({
@@ -42,7 +43,7 @@ export const MediaPlayer = memo(
         >
           <XStack ai="center" p="$4" space="$5">
             <Square pos="relative" ov="hidden" br="$6" size={90}>
-              {/* <Image width={90} height={90} src={image.src} /> */}
+              <Image width={90} height={90} src={image} />
             </Square>
 
             <YStack miw={165} mt={-10} jc="center">

@@ -10,10 +10,11 @@ type LogoProps = {
   showWords?: boolean
   color?: string
   downscale?: number
+  pathPrefix?: string
 } & XStackProps
 
 export const TamaguiLogo = forwardRef<any, LogoProps>(
-  ({ showWords, color, downscale, onHoverLetter, ...props }: LogoProps, ref) => {
+  ({ showWords, color, downscale, onHoverLetter, pathPrefix, ...props }: LogoProps, ref) => {
     return (
       <XStack
         tag="span"
@@ -23,7 +24,11 @@ export const TamaguiLogo = forwardRef<any, LogoProps>(
         space="$5"
         {...props}
       >
-        <LogoIcon downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)} color={color} />
+        <LogoIcon
+          pathPrefix={pathPrefix}
+          downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)}
+          color={color}
+        />
         {showWords && (
           <YStack tag="span" marginBottom={-4}>
             <LogoWords onHoverLetter={onHoverLetter} downscale={downscale ?? 2} color={color} />
@@ -96,7 +101,7 @@ export const LogoWords = ({
   )
 }
 
-export const LogoIcon = ({ downscale = 2 }: any) => {
+export const LogoIcon = ({ downscale = 2, pathPrefix }: any) => {
   return (
     <YStack
       tag="span"
@@ -111,7 +116,7 @@ export const LogoIcon = ({ downscale = 2 }: any) => {
         className="tamagui-icon"
         width={450 / 8 / downscale}
         height={420 / 8 / downscale}
-        src="/tamagui-icon.svg"
+        src={`${pathPrefix || ''}/tamagui-icon.svg`}
       />
     </YStack>
   )

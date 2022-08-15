@@ -13,13 +13,14 @@
   "devDependencies": {
     "autoprefixer": "^10.4.2",
     "cross-env": "^7.0.3",
+    "postcss": "^8.4.5",
     "vite": "^2.9.0"
   },
   "dependencies": {
     "@originjs/vite-plugin-commonjs": "^1.0.3",
-    "@tamagui/demos": "^1.0.1-beta.141",
     "@tamagui/config-base": "^1.0.1-beta.141",
     "@tamagui/core-node": "^1.0.1-beta.141",
+    "@tamagui/demos": "^1.0.1-beta.141",
     "@tamagui/unagi": "^1.0.1-beta.141",
     "@tamagui/vite-plugin": "^1.0.1-beta.141",
     "body-parser": "^1.20.0",

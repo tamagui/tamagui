@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="424px" height="394px" viewBox="0 0 424 394" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-156.000000, -164.000000)">
+            <g transform="translate(155.000000, 164.000000)">
+                <g transform="translate(22.500000, 30.000000)" opacity="0.267275856">
+                    <g>
+                        <path d="M289.285714,0 L289.285714,28.75 L351,28.75 L350.999,57.5 L405,57.5 L405,143.75 L350.999,143.75 L351,172.5 L289.285714,172.5 L289.285714,287.5 L260.357,287.5 L260.357143,345 L57.8571429,345 L57.857,287.5 L0,287.5 L0,57.5 L57.857,57.5 L57.8571429,0 L289.285714,0 Z"></path>
+                    </g>
+                </g>
+                <g transform="translate(212.500000, 197.000000) scale(-1, 1) translate(-212.500000, -197.000000) translate(0.500000, 0.000000)" fill="#000">
+                    <g>
+                        <rect x="144" y="0" width="20" height="20"></rect>
+                        <rect x="172.8" y="0" width="20" height="20"></rect>
+                        <rect x="201.6" y="0" width="20" height="20"></rect>
+                        <rect x="230.4" y="0" width="20" height="20"></rect>
+                        <rect x="259.2" y="0" width="20" height="20"></rect>
+                        <rect x="288" y="0" width="20" height="20"></rect>
+                        <rect x="316.8" y="28.7142857" width="20" height="20"></rect>
+                        <rect x="345.6" y="57.4285714" width="20" height="20"></rect>
+                        <rect x="374.4" y="86.1428571" width="20" height="20"></rect>
+                        <rect x="374.4" y="114.857143" width="20" height="20"></rect>
+                        <rect x="374.4" y="143.571429" width="20" height="20"></rect>
+                        <rect x="374.4" y="172.285714" width="20" height="20"></rect>
+                        <rect x="403.2" y="201" width="20" height="20"></rect>
+                        <rect x="403.2" y="229.714286" width="20" height="20"></rect>
+                        <rect x="403.2" y="258.428571" width="20" height="20"></rect>
+                        <rect x="374.4" y="287.142857" width="20" height="20"></rect>
+                        <rect x="345.6" y="315.857143" width="20" height="20"></rect>
+                        <rect x="316.8" y="344.571429" width="20" height="20"></rect>
+                        <rect x="288" y="373.285714" width="20" height="20"></rect>
+                        <rect x="259.2" y="373.285714" width="20" height="20"></rect>
+                        <rect x="230.4" y="344.571429" width="20" height="20"></rect>
+                        <rect x="201.6" y="344.571429" width="20" height="20"></rect>
+                        <rect x="201.6" y="373.285714" width="20" height="20"></rect>
+                        <rect x="172.8" y="373.285714" width="20" height="20"></rect>
+                        <rect x="144" y="344.571429" width="20" height="20"></rect>
+                        <rect x="144" y="315.857143" width="20" height="20"></rect>
+                        <rect x="115.2" y="287.142857" width="20" height="20"></rect>
+                        <rect x="86.4" y="229.714286" width="20" height="20"></rect>
+                        <rect x="86.4" y="258.428571" width="20" height="20"></rect>
+                        <rect x="86.4" y="201" width="20" height="20"></rect>
+                        <rect x="57.6" y="172.285714" width="20" height="20"></rect>
+                        <rect x="28.8" y="172.285714" width="20" height="20"></rect>
+                        <rect x="0" y="143.571429" width="20" height="20"></rect>
+                        <rect x="28.8" y="114.857143" width="20" height="20"></rect>
+                        <rect x="57.6" y="114.857143" width="20" height="20"></rect>
+                        <rect x="86.4" y="114.857143" width="20" height="20"></rect>
+                        <rect x="0" y="86.1428571" width="20" height="20"></rect>
+                        <rect x="0" y="114.857143" width="20" height="20"></rect>
+                        <rect x="28.8" y="57.4285714" width="20" height="20"></rect>
+                        <rect x="28.8" y="57.4285714" width="20" height="20"></rect>
+                        <rect x="57.6" y="57.4285714" width="20" height="20"></rect>
+                        <rect x="115.2" y="28.7142857" width="20" height="20"></rect>
+                        <rect x="144" y="57.4285714" width="20" height="20"></rect>
+                        <rect x="230.4" y="86.1428571" width="20" height="20"></rect>
+                        <rect x="230.4" y="201" width="20" height="20"></rect>
+                        <rect x="230.4" y="229.714286" width="20" height="20"></rect>
+                        <rect x="259.2" y="258.428571" width="20" height="20"></rect>
+                        <rect x="288" y="229.714286" width="20" height="20"></rect>
+                        <rect x="288" y="201" width="20" height="20"></rect>
+                        <rect x="86.4" y="57.4285714" width="20" height="20"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
