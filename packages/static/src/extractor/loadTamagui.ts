@@ -29,8 +29,16 @@ const cache = {}
 export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   const key = JSON.stringify(props)
   if (cache[key]) {
+    if (cache[key] instanceof Promise) {
+      return await cache[key]
+    }
     return cache[key]
   }
+
+  let resolver: Function = () => {}
+  cache[key] = new Promise((res) => {
+    resolver = res
+  })
 
   const tmpDir = join(process.cwd(), 'dist', 'tamagui-node')
   const configOutPath = join(tmpDir, `tamagui.config.js`)
@@ -77,6 +85,8 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
     nameToPaths: {},
     tamaguiConfig: config,
   }
+
+  resolver(cache[key])
 
   // give it a tick to clear the module shim, hacky
   await new Promise((res) => setTimeout(res, 1))

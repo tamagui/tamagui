@@ -426,7 +426,7 @@ export async function extractToClassNames({
     const numFlattened = `${res.flattened}`.padStart(3)
     const memory = process.env.DEBUG && memUsed > 10 ? ` ${memUsed}MB` : ''
     const timing = Date.now() - start
-    const timingWarning = timing > 150 ? '⚠️' : timing > 150 ? '☢️' : ''
+    const timingWarning = timing > 150 ? '(long)' : ''
     const timingStr = `${timing}ms ${timingWarning}`.padStart(6)
     const pre = getPrefixLogs(options)
     const memStr = memory ? `(${memory})` : ''

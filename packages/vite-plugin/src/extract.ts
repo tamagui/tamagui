@@ -2,7 +2,12 @@
 
 import path from 'path'
 
-import { TamaguiOptions, createExtractor, extractToClassNames } from '@tamagui/static'
+import {
+  TamaguiOptions,
+  createExtractor,
+  extractToClassNames,
+  getPragmaOptions,
+} from '@tamagui/static'
 import outdent from 'outdent'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath } from 'vite'
@@ -161,15 +166,13 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
         ssr = ssrParam?.ssr
       }
 
-      const startsWithComment = code[0] === '/' && code[1] === '/'
-      let shouldPrintDebug: boolean | 'verbose' =
-        (!!process.env.DEBUG &&
-          (process.env.DEBUG_FILE ? validId.includes(process.env.DEBUG_FILE) : true)) ||
-        // supports esbuild style //! comments
-        (startsWithComment && (code.startsWith('// debug') || code.startsWith('//! debug')))
+      const { shouldDisable, shouldPrintDebug } = getPragmaOptions({
+        source: code,
+        path: validId,
+      })
 
-      if (shouldPrintDebug && code.startsWith('// debug-verbose')) {
-        shouldPrintDebug = 'verbose'
+      if (shouldDisable) {
+        return
       }
 
       const extracted = await extractToClassNames({

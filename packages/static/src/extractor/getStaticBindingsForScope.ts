@@ -30,15 +30,25 @@ setInterval(() => {
 
 const loadCmd = `${join(__dirname, 'loadFile.js')}`
 
-// TODO move this into createExtractor...
-
+let exited = false
 const child = fork(loadCmd, [], {
   execArgv: ['-r', 'esbuild-register'],
+  detached: true,
+  stdio: 'ignore',
 })
 
 export function cleanupBeforeExit() {
+  if (exited) return
+  child.removeAllListeners()
+  child.unref()
+  child.disconnect()
   child.kill()
+  exited = true
 }
+
+process.once('SIGTERM', cleanupBeforeExit)
+process.once('SIGINT', cleanupBeforeExit)
+process.once('beforeExit', cleanupBeforeExit)
 
 function importModule(path: string) {
   if (pending.has(path)) {

@@ -32,7 +32,7 @@ export function registerRequire() {
   Module.prototype.require = function (path: string) {
     if (SHOULD_DEBUG) {
       // eslint-disable-next-line no-console
-      console.log('tamagui require', path)
+      console.log('tamagui:require', path)
     }
     if (path.endsWith('.css') || path.endsWith('.json') || path.endsWith('.ttf')) {
       return {}
@@ -57,28 +57,29 @@ export function registerRequire() {
     }
     try {
       const out = og.apply(this, arguments)
-      if (!nameToPaths[path]) {
-        if (out && typeof out === 'object') {
-          for (const key in out) {
-            try {
-              const conf = out[key]?.staticConfig as StaticConfig
-              if (conf) {
-                if (conf.componentName) {
-                  nameToPaths[conf.componentName] ??= new Set()
-                  const fullName = path.startsWith('.')
-                    ? join(`${this.path.replace(/dist(\/cjs)?/, 'src')}`, path)
-                    : path
-                  nameToPaths[conf.componentName].add(fullName)
-                } else {
-                  // console.log('no name component', path)
-                }
-              }
-            } catch {
-              // ok
-            }
-          }
-        }
-      }
+      // only for studio disable for now
+      // if (!nameToPaths[path]) {
+      //   if (out && typeof out === 'object') {
+      //     for (const key in out) {
+      //       try {
+      //         const conf = out[key]?.staticConfig as StaticConfig
+      //         if (conf) {
+      //           if (conf.componentName) {
+      //             nameToPaths[conf.componentName] ??= new Set()
+      //             const fullName = path.startsWith('.')
+      //               ? join(`${this.path.replace(/dist(\/cjs)?/, 'src')}`, path)
+      //               : path
+      //             nameToPaths[conf.componentName].add(fullName)
+      //           } else {
+      //             // console.log('no name component', path)
+      //           }
+      //         }
+      //       } catch {
+      //         // ok
+      //       }
+      //     }
+      //   }
+      // }
       return out
     } catch (err: any) {
       if (SHOULD_DEBUG) {

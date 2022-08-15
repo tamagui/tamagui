@@ -53,6 +53,7 @@
   },
   "exports": {
     "./package.json": "./package.json",
+    "./reset.css": "./reset.css",
     ".": {
       "import": "./dist/esm/index.js",
       "default": "./dist/cjs/index.js"

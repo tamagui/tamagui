@@ -41,7 +41,7 @@ export function getPragmaOptions({
     shouldPrintDebug = true
   }
 
-  if (process.env.DEBUG?.includes('tamagui:verbose')) {
+  if (process.env.DEBUG?.includes('tamagui-verbose')) {
     shouldPrintDebug = 'verbose'
   }
 

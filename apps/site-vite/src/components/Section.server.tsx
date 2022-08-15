@@ -38,7 +38,7 @@ export const SectionTinted = ({
         maw: 1400,
         br: '$6',
         bw: 1,
-        // boc: `$${tint}4`,
+        boc: '$borderColor',
         als: 'center',
         width: '100%',
       })}
@@ -47,11 +47,11 @@ export const SectionTinted = ({
       <YStack
         fullscreen
         zi={-1}
-        // bc={gradient ? `$${tint}2` : null}
+        bc={gradient ? '$background' : null}
         {...(!bubble && {
           btw: noBorderTop ? 0 : 1,
-          // bbw: 1,
-          // boc: `$${tint}3`,
+          bbw: 1,
+          boc: '$borderColor',
         })}
       />
       {children}

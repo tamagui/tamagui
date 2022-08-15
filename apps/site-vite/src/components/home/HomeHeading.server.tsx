@@ -1,4 +1,4 @@
-// debug
+// tamagui-ignore
 import { H2, H3, styled } from 'tamagui'
 
 export const HomeH2 = styled(H2, {

@@ -177,7 +177,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       console.log('tamagui.config.ts:', { components, config })
     }
 
-    tm.mark('load-tamagui', shouldPrintDebug === 'verbose')
+    tm.mark('load-tamagui', !!shouldPrintDebug)
 
     const proxiedTheme = proxyThemeVariables(
       tamaguiConfig.themes[Object.keys(tamaguiConfig.themes)[0]]
@@ -260,7 +260,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       return null
     }
 
-    tm.mark('import-check', shouldPrintDebug === 'verbose')
+    tm.mark('import-check', !!shouldPrintDebug)
 
     let couldntParse = false
     const modifiedComponents = new Set<NodePath<any>>()
@@ -451,7 +451,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       },
 
       JSXElement(traversePath) {
-        tm.mark('jsx-element', shouldPrintDebug === 'verbose')
+        tm.mark('jsx-element', !!shouldPrintDebug)
 
         const node = traversePath.node.openingElement
         const ogAttributes = node.attributes
@@ -679,7 +679,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             return
           }
 
-          tm.mark('jsx-element-flattened', shouldPrintDebug === 'verbose')
+          tm.mark('jsx-element-flattened', !!shouldPrintDebug)
 
           // set flattened
           node.attributes = flattenedAttrs
@@ -714,7 +714,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             .flatMap((path) => {
               try {
                 const res = evaluateAttribute(path)
-                tm.mark('jsx-element-evaluate-attr', shouldPrintDebug === 'verbose')
+                tm.mark('jsx-element-evaluate-attr', !!shouldPrintDebug)
                 if (!res) {
                   path.remove()
                 }
@@ -1629,7 +1629,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             return acc
           }, [])
 
-          tm.mark('jsx-element-expanded', shouldPrintDebug === 'verbose')
+          tm.mark('jsx-element-expanded', !!shouldPrintDebug)
           if (shouldPrintDebug) {
             logger.info(
               ['  - attrs (expanded): \n', logLines(attrs.map(attrStr).join(', '))].join(' ')
@@ -1841,7 +1841,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             logger.info(['  - attrs (ternaries/combined):\n', logLines(attrs.map(attrStr).join(', '))].join(' '))
           }
 
-          tm.mark('jsx-element-styles', shouldPrintDebug === 'verbose')
+          tm.mark('jsx-element-styles', !!shouldPrintDebug)
 
           if (getStyleError) {
             logger.info([' ⚠️ postprocessing error, deopt', getStyleError].join(' '))
@@ -1951,7 +1951,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       },
     })
 
-    tm.mark('jsx-done', shouldPrintDebug === 'verbose')
+    tm.mark('jsx-done', !!shouldPrintDebug)
 
     /**
      * Step 3: Remove dead code from removed media query / theme hooks

@@ -66,7 +66,7 @@ export default function Index() {
       </Section>
 
       {/* responsive */}
-      <ContainerLarge mt={-80} pos="relative">
+      <ContainerLarge zi={10} mt={-80} pos="relative">
         <YStack f={1} space="$3">
           <HomeH2 ta="left" als="flex-start">
             <span className="rainbow clip-text">Responsive</span>, for real.
@@ -82,13 +82,21 @@ export default function Index() {
       </ContainerLarge>
 
       {/* performance */}
-      <PerformanceSection />
+      <SectionTinted>
+        <PerformanceSection />
+      </SectionTinted>
 
       {/* animations */}
-      <AnimationsSection />
+      <SectionTinted noBorderTop zi={100}>
+        <YStack fullscreen className="bg-grid mask-gradient-up" />
+        <AnimationsSection />
+      </SectionTinted>
 
       {/* code */}
-      <CodeSection />
+      <Section bc="$background" contain="paint layout" zi={10}>
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
+        <CodeSection />
+      </Section>
 
       {/* features */}
       <Section bc="$background" mt="$-10" bbw={1} bbc="$borderColor" mb="$-5">
@@ -186,19 +194,17 @@ function TypographyCard() {
 
 function CodeSection() {
   return (
-    <>
-      <ContainerLarge position="relative">
-        <YStack zi={1} space="$6">
-          <YStack space="$3">
-            <HomeH2>
-              Incredible features, <span className="rainbow clip-text">insanely&nbsp;fast</span>.
-            </HomeH2>
-            <HomeH3>Modern features 🤝 unmatched performance.</HomeH3>
-          </YStack>
-          <HeroCode examples={[]} />
+    <ContainerLarge position="relative">
+      <YStack zi={1} space="$6">
+        <YStack space="$3">
+          <HomeH2>
+            Incredible features, <span className="rainbow clip-text">insanely&nbsp;fast</span>.
+          </HomeH2>
+          <HomeH3>Modern features 🤝 unmatched performance.</HomeH3>
         </YStack>
-      </ContainerLarge>
-    </>
+        <HeroCode examples={[]} />
+      </YStack>
+    </ContainerLarge>
   )
 }
 
