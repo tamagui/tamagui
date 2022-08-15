@@ -22,7 +22,8 @@ import { HeroThemes } from '../components/home/HeroThemes.client'
 import { HeroTypography } from '../components/home/HeroTypography.client'
 import { HomeH2, HomeH3 } from '../components/home/HomeHeading.server'
 import { InstallInput } from '../components/home/InstallInput.client'
-import { Section, SectionTinted } from '../components/Section.server'
+import { Section } from '../components/Section.server'
+import { SectionTintedBackground } from '../components/SectionTintedBackground.client'
 import { CocentricCircles } from '../components/visuals/CocentricCircles.server'
 import { useCodeExamples } from '../data/codeExamples'
 
@@ -86,15 +87,15 @@ export default function Index() {
       </ContainerLarge>
 
       {/* performance */}
-      <SectionTinted>
+      <SectionTintedBackground>
         <PerformanceSection />
-      </SectionTinted>
+      </SectionTintedBackground>
 
       {/* animations */}
-      <SectionTinted noBorderTop zi={100}>
+      <SectionTintedBackground noBorderTop zi={100}>
         <YStack fullscreen className="bg-grid mask-gradient-up" />
         <AnimationsSection />
-      </SectionTinted>
+      </SectionTintedBackground>
 
       {/* code */}
       <Section bc="$background" contain="paint layout" zi={10}>
@@ -130,7 +131,7 @@ export default function Index() {
 
 function TypographySection() {
   return (
-    <SectionTinted bubble gradient>
+    <SectionTintedBackground bubble gradient>
       <YStack fullscreen className="bg-grid mask-gradient-both" o={0.1} />
       {/* -5 my to fir grid nicely */}
       <ContainerLarge my={-5} position="relative" space="$8">
@@ -169,7 +170,7 @@ function TypographySection() {
           </YStack>
         </XStack>
       </ContainerLarge>
-    </SectionTinted>
+    </SectionTintedBackground>
   )
 }
 
@@ -277,30 +278,32 @@ function PerformanceSection() {
           </HomeH3>
         </YStack>
 
-        <YStack
-          pos="relative"
-          px="$2"
-          $sm={{ px: '$0', mx: -20, width: 'calc(100% + 40px)' }}
-          h={131}
-          br="$8"
-          width="100%"
-          ai="stretch"
-          jc="center"
-        >
-          <Paragraph
-            pos="absolute"
-            b={-20}
-            r={20}
-            mt={-20}
-            theme="alt3"
-            size="$2"
-            $sm={{ display: 'none' }}
+        <SectionTintedBackground gradient bubble>
+          <YStack
+            pos="relative"
+            px="$2"
+            $sm={{ px: '$0', mx: -20, width: 'calc(100% + 40px)' }}
+            h={131}
+            br="$8"
+            width="100%"
+            ai="stretch"
+            jc="center"
           >
-            Lower is better. As of February 2022.
-          </Paragraph>
+            <Paragraph
+              pos="absolute"
+              b={-20}
+              r={20}
+              mt={-20}
+              theme="alt3"
+              size="$2"
+              $sm={{ display: 'none' }}
+            >
+              Lower is better. As of February 2022.
+            </Paragraph>
 
-          <HeroPerformanceBenchmark />
-        </YStack>
+            <HeroPerformanceBenchmark />
+          </YStack>
+        </SectionTintedBackground>
 
         <Link to="/docs/intro/benchmarks">
           <Button

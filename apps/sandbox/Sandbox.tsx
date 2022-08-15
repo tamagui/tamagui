@@ -116,7 +116,6 @@ export const Sandbox = () => {
 const ButtonFrame = styled(XStack, {
   name: 'Button',
   tag: 'button',
-  debug: 'verbose',
   scale: 1,
 
   jc: 'center',
