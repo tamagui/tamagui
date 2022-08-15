@@ -1,5 +1,6 @@
+import { isValidCSSCharCode } from '@tamagui/helpers'
+
 import { isWeb } from './constants/platform'
-import { VariableColorVal } from './types'
 
 /**
  * Should rename this to Token
@@ -74,18 +75,7 @@ export const createCSSVariable = (nameProp: string, includeVar = true) => {
   let name = ''
   for (let i = 0; i < nameProp.length; i++) {
     const code = nameProp.charCodeAt(i)
-    if (
-      // A-Z
-      (code >= 65 && code <= 90) ||
-      // a-z
-      (code >= 97 && code <= 122) ||
-      // _
-      code == 95 ||
-      // -
-      code === 45 ||
-      // 0-9
-      (code >= 48 && code <= 57)
-    ) {
+    if (isValidCSSCharCode(code)) {
       name += nameProp[i]
     } else {
       // allow any name but turn it into a stringified num
