@@ -5274,7 +5274,7 @@ __metadata:
     morgan: ^1.10.0
     ts-morph: ^15.1.0
     url: ^0.11.0
-    vite: ^2.9.0
+    vite: ^2.9.15
     zx: ^7.0.7
   bin:
     tamagui: ./dist/index.js
@@ -5366,7 +5366,7 @@ __metadata:
     turbo: ^1.4.3
     typescript: ^4.7.4
     ultra-runner: ^3.10.5
-    vite: ^2.9.0
+    vite: ^2.9.15
   languageName: unknown
   linkType: soft
 
@@ -6286,7 +6286,7 @@ __metadata:
     tamagui-loader: ^1.0.1-beta.141
     thread-loader: ^3.0.4
     url-loader: ^4.1.1
-    vite: ^2.9.0
+    vite: ^2.9.15
     vite-plugin-environment: ^1.1.2
     webpack: ^5.74.0
     webpack-bundle-analyzer: ^4.5.0
@@ -6385,23 +6385,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/site-vite@workspace:apps/site-vite"
   dependencies:
-    "@originjs/vite-plugin-commonjs": ^1.0.3
     "@tamagui/config-base": ^1.0.1-beta.141
     "@tamagui/core-node": ^1.0.1-beta.141
     "@tamagui/demos": ^1.0.1-beta.141
     "@tamagui/unagi": ^1.0.1-beta.141
     "@tamagui/vite-plugin": ^1.0.1-beta.141
     autoprefixer: ^10.4.2
-    body-parser: ^1.20.0
-    compression: ^1.7.4
     copy-to-clipboard: ^3.3.2
     cross-env: ^7.0.3
     postcss: ^8.4.5
     react: "*"
     react-dom: "*"
-    serve-static: ^1.14.1
     tamagui: ^1.0.1-beta.141
-    vite: ^2.9.0
+    vite: ^2.9.15
   languageName: unknown
   linkType: soft
 
@@ -6687,7 +6683,7 @@ __metadata:
     set-cookie-parser: ^2.5.1
     type-fest: ^2.18.0
     undici: ^5.5.1
-    vite: ^2.9.0
+    vite: ^2.9.15
     vite-plugin-environment: ^1.1.2
     vite-plugin-inspect: ^0.6.0
     vitest: ^0.20.3
@@ -6699,7 +6695,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     serve-static: ^1.14.1
-    vite: ^2.9.0
+    vite: ^2.9.15
   languageName: unknown
   linkType: soft
 
@@ -6807,6 +6803,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin@workspace:packages/vite-plugin"
   dependencies:
+    "@originjs/vite-plugin-commonjs": ^1.0.3
     "@tamagui/build": ^1.0.1-beta.141
     "@tamagui/proxy-worm": ^1.0.1-beta.141
     "@tamagui/static": ^1.0.1-beta.141
@@ -24571,35 +24568,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^2.9.0":
-  version: 2.9.15
-  resolution: "vite@npm:2.9.15"
-  dependencies:
-    esbuild: ^0.14.27
-    fsevents: ~2.3.2
-    postcss: ^8.4.13
-    resolve: ^1.22.0
-    rollup: ">=2.59.0 <2.78.0"
-  peerDependencies:
-    less: "*"
-    sass: "*"
-    stylus: "*"
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    less:
-      optional: true
-    sass:
-      optional: true
-    stylus:
-      optional: true
-  bin:
-    vite: bin/vite.js
-  checksum: 5edf8afc132a598f82a1339aa503514a0e86f6264babe94531b9000d801f157c9a32ae022542404678acca43ee260ade04c4763c4b7b8d381a6b50511b4a1447
-  languageName: node
-  linkType: hard
-
 "vite@npm:^2.9.12 || ^3.0.0-0":
   version: 3.0.0-beta.7
   resolution: "vite@npm:3.0.0-beta.7"
@@ -24629,6 +24597,35 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 04e670f1bc332d50a0b7d7a2bc3fc7b01370e2a7e1a706d27f9ed57b681558beca06a8681da45b393eeaa6725fb84457176acad4c7c7bb653167d5eea50425d8
+  languageName: node
+  linkType: hard
+
+"vite@npm:^2.9.15":
+  version: 2.9.15
+  resolution: "vite@npm:2.9.15"
+  dependencies:
+    esbuild: ^0.14.27
+    fsevents: ~2.3.2
+    postcss: ^8.4.13
+    resolve: ^1.22.0
+    rollup: ">=2.59.0 <2.78.0"
+  peerDependencies:
+    less: "*"
+    sass: "*"
+    stylus: "*"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    less:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 5edf8afc132a598f82a1339aa503514a0e86f6264babe94531b9000d801f157c9a32ae022542404678acca43ee260ade04c4763c4b7b8d381a6b50511b4a1447
   languageName: node
   linkType: hard
 

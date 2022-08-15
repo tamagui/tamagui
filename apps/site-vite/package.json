@@ -14,21 +14,17 @@
     "autoprefixer": "^10.4.2",
     "cross-env": "^7.0.3",
     "postcss": "^8.4.5",
-    "vite": "^2.9.0"
+    "vite": "^2.9.15"
   },
   "dependencies": {
-    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@tamagui/config-base": "^1.0.1-beta.141",
     "@tamagui/core-node": "^1.0.1-beta.141",
     "@tamagui/demos": "^1.0.1-beta.141",
     "@tamagui/unagi": "^1.0.1-beta.141",
     "@tamagui/vite-plugin": "^1.0.1-beta.141",
-    "body-parser": "^1.20.0",
-    "compression": "^1.7.4",
     "copy-to-clipboard": "^3.3.2",
     "react": "*",
     "react-dom": "*",
-    "serve-static": "^1.14.1",
     "tamagui": "^1.0.1-beta.141"
   }
 }
