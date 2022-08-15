@@ -2,7 +2,7 @@
 // import { AccessibleIcon } from '@tamagui/feather-icons'
 import { H3, H4, ListItem, Paragraph, Separator, XStack, YStack, styled } from 'tamagui'
 
-import { Code } from './Code'
+import { Code } from '../code/Code'
 
 type PropDef = {
   name: string

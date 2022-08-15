@@ -23,24 +23,37 @@ import {
   XStackProps,
   YStack,
 } from 'tamagui'
+import { styled } from 'tamagui'
 
-import { BenchmarkChart } from './BenchmarkChart'
-import { Code, CodeInline } from './Code'
-import * as Demos from './demos'
-import { DocCodeBlock } from './DocsCodeBlock'
-import { ExternalIcon } from './ExternalIcon'
-import { HeroContainer } from './HeroContainer'
-import { ExampleAnimations } from './HeroExampleAnimations'
-import { Highlights } from './Highlights'
-import { HR } from './HR'
-import { LI } from './LI'
-import { MediaPlayer } from './MediaPlayer'
-import { Notice } from './Notice'
-import { OffsetBox } from './OffsetBox'
-import { Preview } from './Preview'
-import { PropsTable } from './PropsTable'
-import { SubTitle } from './SubTitle'
-import { UL } from './UL'
+import { BenchmarkChart } from './BenchmarkChart.client'
+import { Code, CodeInline } from './code/Code'
+import { DocCodeBlock } from './code/DocsCodeBlock.client'
+import { Highlights } from './Highlights.server'
+import { ExampleAnimations } from './home/HeroAnimations.client'
+import { MediaPlayer } from './home/MediaPlayer'
+import { ExternalIcon } from './icons/ExternalIcon.server'
+import { HR } from './views/HR.server'
+import { LI } from './views/LI.server'
+import { Notice } from './views/Notice'
+
+export const OffsetBox = styled(YStack, {
+  name: 'OffsetBox',
+  variants: {
+    size: {
+      hero: {
+        $gtSm: { mx: '$-2' },
+        $gtMd: { mx: '$-4' },
+        $gtLg: { mx: '$-6' },
+      },
+    },
+  },
+})
+
+// import { PropsTable } from
+// import { SubTitle } from
+// import { UL } from
+
+// export { AddThemeDemo, AlertDialogDemo, AnimationsDemo, AnimationsEnterDemo, AnimationsHoverDemo, AnimationsPresenceDemo, AvatarDemo, ButtonDemo, CardDemo, DialogDemo, FeatherIconsDemo, FormsDemo, GroupDemo, HeadingsDemo, ImageDemo, LabelDemo, LinearGradientDemo, ListItemDemo, PopoverDemo, ProgressDemo, SelectDemo, SeparatorDemo, ShapesDemo, SheetDemo, SliderDemo, SpinnerDemo, StacksDemo, SwitchDemo, TextDemo, ThemeInverseDemo, TooltipDemo, UpdateThemeDemo } from '@tamagui/demos'
 
 export const components = {
   Spacer,

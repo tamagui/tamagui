@@ -1,9 +1,5 @@
-import { readFile } from 'fs/promises'
-import { join } from 'path'
-
 import { Link } from '@tamagui/unagi'
-import React from 'react'
-import { Button, Card, Paragraph, Separator, XStack, YStack, simpleHash } from 'tamagui'
+import { Button, Card, Paragraph, Separator, XStack, YStack } from 'tamagui'
 
 import { CodeDemoPreParsed } from '../components/code/CodeDemoPreParsed'
 import { ContainerLarge } from '../components/Container.server'
@@ -24,7 +20,7 @@ import { HomeH2, HomeH3 } from '../components/home/HomeHeading.server'
 import { InstallInput } from '../components/home/InstallInput.client'
 import { Section } from '../components/Section.server'
 import { SectionTintedBackground } from '../components/SectionTintedBackground.client'
-import { CocentricCircles } from '../components/visuals/CocentricCircles.server'
+import { CocentricCircles } from '../components/views/CocentricCircles.server'
 import { useCodeExamples } from '../data/codeExamples'
 
 export default function Index() {
