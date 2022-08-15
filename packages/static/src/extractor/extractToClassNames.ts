@@ -371,6 +371,8 @@ export async function extractToClassNames({
     },
   })
 
+  console.log('res', sourcePath, res)
+
   if (!res || (!res.modified && !res.optimized && !res.flattened && !res.styled)) {
     if (shouldPrintDebug) {
       // eslint-disable-next-line no-console

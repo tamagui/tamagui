@@ -14,15 +14,15 @@ import config from './tamagui.config'
 function App() {
   return (
     <Suspense fallback="Loading...">
-      <TamaguiProvider config={config} defaultTheme="light">
-        <TamaguiClientProvider defaultTheme="light">
-          <Router>
-            <FileRoutes />
-          </Router>
+      {/* <TamaguiProvider disableInjectCSS config={config} defaultTheme="light"> */}
+      <TamaguiClientProvider disableRootThemeClass disableInjectCSS defaultTheme="light">
+        <Router>
+          <FileRoutes />
+        </Router>
 
-          <Footer />
-        </TamaguiClientProvider>
-      </TamaguiProvider>
+        <Footer />
+      </TamaguiClientProvider>
+      {/* </TamaguiProvider> */}
     </Suspense>
   )
 }

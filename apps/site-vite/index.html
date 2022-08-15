@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html className="t_light" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Tamagui</title>
   </head>
+  <!-- todo immediate theme switch here: -->
+  <!-- <script>
+    try {${optimization}var e=localStorage.getItem('${storageKey}');${!defaultSystem ? updateDOM(defaultTheme) + ';' : ''}if("system"===e||(!e&&${defaultSystem})){var t="${MEDIA}",m=window.matchMedia(t);m.media!==t||m.matches?${updateDOM('dark')}:${updateDOM('light')}}else if(e) ${value ? `var x=${JSON.stringify(value)};` : ''}${updateDOM(value ? 'x[e]' : 'e', true)}}catch(e){}}()
+  </script> -->
   <body>
     <div id="root"></div>
     <script type="module" src="/@tamagui/unagi/entry-client"></script>

@@ -83,7 +83,6 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     (process.env.NODE_ENV === 'development' || process.env.DEBUG || process.env.IDENTIFY_TAGS)
 
   let projectInfo: TamaguiProjectInfo | null = null
-  const hasLogged = false
 
   // we load tamagui delayed because we need to set some global/env stuff before importing
   // otherwise we'd import `rnw` and cause it to evaluate react-native-web which causes errors
@@ -320,26 +319,26 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             logger.info(
               `Didn't recognize styled(${name}), ${name} isn't in design system provided to tamagui.config.ts. Will attempt to build isolated and analyze.. ${programPath}`
             )
-
-            const out = loadTamaguiSync({
-              components: [sourcePath],
-            })
-
-            if (out.components?.[name]) {
-              // add new components
-              // TODO dont Clobber, do by file
-              Object.assign(validComponents, out.components)
-            }
-
-            Component = validComponents[name]
-
-            if (shouldPrintDebug) {
-              logger.info([`Loaded`, Object.keys(out.components).join(', '), !!Component].join(' '))
-            }
           }
-          if (!Component) {
-            return
+
+          const out = loadTamaguiSync({
+            components: [sourcePath],
+          })
+
+          if (out.components?.[name]) {
+            // add new components
+            // TODO dont Clobber, do by file
+            Object.assign(validComponents, out.components)
           }
+
+          Component = validComponents[name]
+
+          if (shouldPrintDebug) {
+            logger.info([`Loaded`, Object.keys(out.components).join(', '), !!Component].join(' '))
+          }
+        }
+        if (!Component) {
+          return
         }
 
         const componentSkipProps = new Set([
