@@ -11,6 +11,22 @@ export interface CacheObject {
   [key: string]: any
 }
 
+export interface LogOptions {
+  clear?: boolean
+  timestamp?: boolean
+  error?: Error | null
+}
+
+export interface Logger {
+  info(msg: string, options?: LogOptions): void
+  warn(msg: string, options?: LogOptions): void
+  error(msg: string, options?: LogOptions): void
+}
+
+export type ExtractorOptions = {
+  logger?: Logger
+}
+
 export interface TamaguiOptions {
   // module paths you want to compile with tamagui (for example ['tamagui'])
   components: string[]

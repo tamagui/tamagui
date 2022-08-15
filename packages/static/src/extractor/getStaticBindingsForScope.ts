@@ -1,10 +1,8 @@
-import { fork, spawn } from 'child_process'
+import { fork } from 'child_process'
 import { dirname, extname, join, resolve } from 'path'
 
 import { Binding, NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
-import esbuild from 'esbuild'
-import { existsSync } from 'fs-extra'
 
 import { evaluateAstNode } from './evaluateAstNode'
 import { getSourceModule } from './getSourceModule'
@@ -31,9 +29,16 @@ setInterval(() => {
 }, 10)
 
 const loadCmd = `${join(__dirname, 'loadFile.js')}`
+
+// TODO move this into createExtractor...
+
 const child = fork(loadCmd, [], {
   execArgv: ['-r', 'esbuild-register'],
 })
+
+export function cleanupBeforeExit() {
+  child.kill()
+}
 
 function importModule(path: string) {
   if (pending.has(path)) {
@@ -72,9 +77,11 @@ export async function getStaticBindingsForScope(
   const bindings: Record<string, Binding> = scope.getAllBindings() as any
   const ret: Record<string, any> = {}
 
-  if (shouldPrintDebug) {
+  if (
+    shouldPrintDebug
+  ) {
     // prettier-ignore
-    console.log('  ', Object.keys(bindings).length, 'variables in scope')
+    // console.log('  ', Object.keys(bindings).length, 'variables in scope')
     // .map(x => bindings[x].identifier?.name).join(', ')
   }
 

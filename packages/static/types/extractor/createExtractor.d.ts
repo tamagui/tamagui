@@ -1,14 +1,18 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import { TamaguiInternalConfig } from '@tamagui/core-node';
-import { ExtractorParseProps, TamaguiOptions } from '../types';
+import { ExtractorOptions, ExtractorParseProps, TamaguiOptions } from '../types';
+import { cleanupBeforeExit } from './getStaticBindingsForScope';
 import { TamaguiProjectInfo } from './loadTamagui';
 export declare type Extractor = ReturnType<typeof createExtractor>;
 declare type FileOrPath = NodePath<t.Program> | t.File;
-export declare function createExtractor(): {
+export declare function createExtractor({ logger }?: ExtractorOptions): {
+    options: {
+        logger: import("../types").Logger;
+    };
+    cleanupBeforeExit: typeof cleanupBeforeExit;
     loadTamagui: (props: TamaguiOptions) => Promise<TamaguiProjectInfo>;
     loadTamaguiSync: (props: TamaguiOptions) => TamaguiProjectInfo;
-    getTamagui(): TamaguiInternalConfig<import("@tamagui/core-node").CreateTokens<import("@tamagui/core-node").VariableVal>, {
+    getTamagui(): import("@tamagui/core-node").TamaguiInternalConfig<import("@tamagui/core-node").CreateTokens<import("@tamagui/core-node").VariableVal>, {
         [key: string]: Partial<import("@tamagui/core-node").TamaguiBaseTheme> & {
             [key: string]: import("@tamagui/core-node").VariableVal;
         };

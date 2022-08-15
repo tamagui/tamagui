@@ -19,7 +19,7 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
     }
   }
 
-  const extractor = createExtractor()
+  let extractor: ReturnType<typeof createExtractor> | null = null
   const cssMap = new Map<string, string>()
 
   let config: ResolvedConfig
@@ -42,6 +42,18 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
       server = _server
     },
 
+    buildEnd() {
+      extractor!.cleanupBeforeExit()
+    },
+
+    writeBundle(this, options, bundle) {
+      setTimeout(() => {
+        // eslint-disable-next-line no-console
+        console.warn('some sort of dangling process or osmethign, exit for now...')
+        process.exit(0)
+      }, 100)
+    },
+
     config(_userConfig, env) {
       const include = env.command === 'serve' ? ['@tamagui/core/injectStyles'] : []
       return {
@@ -51,7 +63,11 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
 
     async configResolved(resolvedConfig) {
       config = resolvedConfig
+      extractor = createExtractor({
+        logger: resolvedConfig.logger,
+      })
       shouldReturnCSS = true
+      // TODO postcss work with postcss.config.js
       // packageName = getPackageInfo(config.root).name;
       // if (config.command === 'serve') {
       //   postCssConfig = await resolvePostcssConfig(config);
@@ -61,7 +77,7 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
 
     async resolveId(source) {
       if (source === 'tamagui.css') {
-        await extractor.loadTamagui(options)
+        await extractor!.loadTamagui(options)
         return GLOBAL_CSS_VIRTUAL_PATH
       }
 
@@ -88,7 +104,7 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
       const [validId] = id.split('?')
 
       if (validId === GLOBAL_CSS_VIRTUAL_PATH) {
-        return extractor.getTamagui()!.getCSS()
+        return extractor!.getTamagui()!.getCSS()
       }
 
       if (!cssMap.has(validId)) {
@@ -149,7 +165,7 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
       }
 
       const extracted = await extractToClassNames({
-        extractor,
+        extractor: extractor!,
         source: code,
         sourcePath: validId,
         options,

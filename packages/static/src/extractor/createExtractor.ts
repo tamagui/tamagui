@@ -6,7 +6,6 @@ import * as t from '@babel/types'
 import {
   PseudoStyles,
   StaticConfigParsed,
-  TamaguiInternalConfig,
   createDOMProps,
   expandStyles,
   getSplitStyles,
@@ -22,6 +21,7 @@ import {
   ExtractedAttr,
   ExtractedAttrAttr,
   ExtractedAttrStyle,
+  ExtractorOptions,
   ExtractorParseProps,
   TamaguiOptions,
   Ternary,
@@ -30,7 +30,7 @@ import { createEvaluator, createSafeEvaluator } from './createEvaluator'
 import { evaluateAstNode } from './evaluateAstNode'
 import { attrStr, findComponentName, isInsideTamagui, isPresent, objToStr } from './extractHelpers'
 import { findTopmostFunction } from './findTopmostFunction'
-import { getStaticBindingsForScope } from './getStaticBindingsForScope'
+import { cleanupBeforeExit, getStaticBindingsForScope } from './getStaticBindingsForScope'
 import { literalToAst } from './literalToAst'
 import { TamaguiProjectInfo, loadTamagui, loadTamaguiSync } from './loadTamagui'
 import { logLines } from './logLines'
@@ -69,7 +69,7 @@ export type Extractor = ReturnType<typeof createExtractor>
 
 type FileOrPath = NodePath<t.Program> | t.File
 
-export function createExtractor() {
+export function createExtractor({ logger = console }: ExtractorOptions = { logger: console }) {
   if (!process.env.TAMAGUI_TARGET) {
     console.log('⚠️ Please set process.env.TAMAGUI_TARGET to either "web" or "native"')
     process.exit(1)
@@ -83,7 +83,7 @@ export function createExtractor() {
     (process.env.NODE_ENV === 'development' || process.env.DEBUG || process.env.IDENTIFY_TAGS)
 
   let projectInfo: TamaguiProjectInfo | null = null
-  let hasLogged = false
+  const hasLogged = false
 
   // we load tamagui delayed because we need to set some global/env stuff before importing
   // otherwise we'd import `rnw` and cause it to evaluate react-native-web which causes errors
@@ -103,6 +103,10 @@ export function createExtractor() {
   }
 
   return {
+    options: {
+      logger,
+    },
+    cleanupBeforeExit,
     loadTamagui: load,
     loadTamaguiSync: loadSync,
     getTamagui() {
@@ -210,7 +214,7 @@ export function createExtractor() {
       }, {})
 
     if (shouldPrintDebug === 'verbose') {
-      console.log('validComponents', Object.keys(validComponents))
+      logger.info(`validComponents ${Object.keys(validComponents).join(', ')}`)
     }
 
     let doesUseValidImport = false
@@ -240,7 +244,7 @@ export function createExtractor() {
           return !!(validComponents[name] || validHooks[name])
         })
         if (shouldPrintDebug === 'verbose') {
-          console.log('import from', from, { isValidComponent })
+          logger.info(`import from ${from} isValidComponent ${isValidComponent}`)
         }
         if (isValidComponent) {
           doesUseValidImport = true
@@ -250,7 +254,7 @@ export function createExtractor() {
     }
 
     if (shouldPrintDebug) {
-      console.log(sourcePath, { doesUseValidImport })
+      logger.info(`source: ${sourcePath} doesUseValidImport ${doesUseValidImport}`)
     }
 
     if (!doesUseValidImport) {
@@ -313,7 +317,7 @@ export function createExtractor() {
 
         if (!Component) {
           if (shouldPrintDebug) {
-            console.log(
+            logger.info(
               `Didn't recognize styled(${name}), ${name} isn't in design system provided to tamagui.config.ts. Will attempt to build isolated and analyze.. ${programPath}`
             )
 
@@ -330,7 +334,7 @@ export function createExtractor() {
             Component = validComponents[name]
 
             if (shouldPrintDebug) {
-              console.log(`Loaded`, Object.keys(out.components), !!Component)
+              logger.info([`Loaded`, Object.keys(out.components).join(', '), !!Component].join(' '))
             }
           }
           if (!Component) {
@@ -419,7 +423,7 @@ export function createExtractor() {
 
         if (shouldPrintDebug) {
           // prettier-ignore
-          console.log(`Extracted styled(${name})`, styles, 'to', out.rulesToInsert.flatMap((rule) => rule.rules))
+          logger.info([`Extracted styled(${name})`, styles, 'to', out.rulesToInsert.flatMap((rule) => rule.rules).join(', ')].join(' '))
         }
 
         // leave only un-parsed props...
@@ -443,7 +447,7 @@ export function createExtractor() {
         res.styled++
 
         if (shouldPrintDebug) {
-          console.log(`Extracted styled(${name})`)
+          logger.info(`Extracted styled(${name})`)
         }
       },
 
@@ -510,14 +514,12 @@ export function createExtractor() {
         }
 
         if (shouldPrintDebug) {
-          console.log('\n')
-          console.log('\x1b[33m%s\x1b[0m', `${componentName} | ${codePosition} -------------------`)
-          console.log(
-            '\x1b[1m',
-            '\x1b[32m',
-            `<${originalNodeName} />`,
-            disableDebugAttr ? '' : '🐛'
+          logger.info('\n')
+          logger.info(
+            `\x1b[33m%s\x1b[0m ` + `${componentName} | ${codePosition} -------------------`
           )
+          // prettier-ignore
+          logger.info(['\x1b[1m', '\x1b[32m', `<${originalNodeName} />`, disableDebugAttr ? '' : '🐛'].join(' '))
         }
 
         // add data-* debug attributes
@@ -540,14 +542,16 @@ export function createExtractor() {
           )
         }
 
-        const shouldLog = !hasLogged
-        if (shouldLog) {
-          console.log(`  1️⃣  Inline optimized  2️⃣  Inline flattened  3️⃣  styled() extracted`)
-          const prefix = '      |'
-          // prettier-ignore
-          console.log(prefixLogs || prefix, '                         total ·  1️⃣  ·  2️⃣  ·  3️⃣')
-          hasLogged = true
-        }
+        // disable as it gets messy
+        // const shouldLog = !hasLogged
+        // if (shouldLog) {
+        //   logger.info(`  1️⃣  Inline optimized  2️⃣  Inline flattened  3️⃣  styled() extracted`)
+        //   const prefix = '      |'
+        //   // prettier-ignore
+        //   logger.info([prefixLogs || prefix, '                         total ·  1️⃣  ·  2️⃣  ·  3️⃣'].join(' '))
+        //   hasLogged = true
+        // }
+
         if (disableExtraction) {
           return
         }
@@ -609,7 +613,7 @@ export function createExtractor() {
           const attemptEvalSafe = createSafeEvaluator(attemptEval)
 
           if (shouldPrintDebug) {
-            console.log('  staticNamespace', Object.keys(staticNamespace).join(', '))
+            logger.info(`  staticNamespace ${Object.keys(staticNamespace).join(', ')}`)
           }
 
           //
@@ -637,7 +641,7 @@ export function createExtractor() {
                 arg = attemptEval(attr.argument)
               } catch (e: any) {
                 if (shouldPrintDebug) {
-                  console.log('  couldnt parse spread', e.message)
+                  logger.info(['  couldnt parse spread', e.message].join(' '))
                 }
                 flattenedAttrs.push(attr)
                 return
@@ -646,7 +650,7 @@ export function createExtractor() {
                 try {
                   if (typeof arg !== 'object' || arg == null) {
                     if (shouldPrintDebug) {
-                      console.log('  non object or null arg', arg)
+                      logger.info(['  non object or null arg', arg].join(' '))
                     }
                     flattenedAttrs.push(attr)
                   } else {
@@ -654,7 +658,7 @@ export function createExtractor() {
                       const value = arg[k]
                       // this is a null prop:
                       if (!value && typeof value === 'object') {
-                        console.log('shouldnt we handle this?', k, value, arg)
+                        logger.error(['Unhandled null prop', k, value, arg].join(' '))
                         continue
                       }
                       flattenedAttrs.push(
@@ -666,7 +670,7 @@ export function createExtractor() {
                     }
                   }
                 } catch (err) {
-                  console.warn('cant parse spread, caught err', err)
+                  logger.warn(`cant parse spread, caught err ${err}`)
                   couldntParse = true
                 }
               }
@@ -718,8 +722,8 @@ export function createExtractor() {
                 return res
               } catch (err: any) {
                 if (shouldPrintDebug) {
-                  console.log('Error extracting attribute', err.message, err.stack)
-                  console.log('node', path.node)
+                  logger.info(['Error extracting attribute', err.message, err.stack].join(' '))
+                  logger.info(`node ${path.node}`)
                 }
                 // dont flatten if we run into error
                 inlined.set(`${Math.random()}`, 'spread')
@@ -733,7 +737,9 @@ export function createExtractor() {
             .filter(isPresent)
 
           if (shouldPrintDebug) {
-            console.log('  - attrs (before):\n', logLines(attrs.map(attrStr).join(', ')))
+            logger.info(
+              ['  - attrs (before):\n', logLines(attrs.map(attrStr).join(', '))].join(' ')
+            )
           }
 
           // START function evaluateAttribute
@@ -758,7 +764,7 @@ export function createExtractor() {
                 if (!test) throw new Error(`no test`)
                 if ([alt, cons].some((side) => side && !isExtractable(side))) {
                   if (shouldPrintDebug) {
-                    console.log('not extractable', alt, cons)
+                    logger.info(`not extractable ${alt} ${cons}`)
                   }
                   return attr
                 }
@@ -784,7 +790,7 @@ export function createExtractor() {
               typeof attribute.name.name !== 'string'
             ) {
               if (shouldPrintDebug) {
-                console.log('  ! inlining, spread attr')
+                logger.info('  ! inlining, spread attr')
               }
               inlined.set(`${Math.random()}`, 'spread')
               return attr
@@ -794,7 +800,7 @@ export function createExtractor() {
 
             if (excludeProps?.has(name)) {
               if (shouldPrintDebug) {
-                console.log('  excluding prop', name)
+                logger.info(['  excluding prop', name].join(' '))
               }
               return null
             }
@@ -802,7 +808,7 @@ export function createExtractor() {
             if (inlineProps.has(name)) {
               inlined.set(name, name)
               if (shouldPrintDebug) {
-                console.log('  ! inlining, inline prop', name)
+                logger.info(['  ! inlining, inline prop', name].join(' '))
               }
               return attr
             }
@@ -812,7 +818,7 @@ export function createExtractor() {
               shouldDeopt = true
               inlined.set(name, name)
               if (shouldPrintDebug) {
-                console.log('  ! inlining, deopted prop', name)
+                logger.info(['  ! inlining, deopted prop', name].join(' '))
               }
               return attr
             }
@@ -873,7 +879,7 @@ export function createExtractor() {
 
             if (name === 'ref') {
               if (shouldPrintDebug) {
-                console.log('  ! inlining, ref', name)
+                logger.info(['  ! inlining, ref', name].join(' '))
               }
               inlined.set('ref', 'ref')
               return attr
@@ -891,7 +897,9 @@ export function createExtractor() {
               if (value) {
                 if (value.type === 'StringLiteral' && value.value[0] === '$') {
                   if (shouldPrintDebug) {
-                    console.log(`  ! inlining, native disable extract: ${name} =`, value.value)
+                    logger.info(
+                      [`  ! inlining, native disable extract: ${name} =`, value.value].join(' ')
+                    )
                   }
                   inlined.set(name, true)
                   return attr
@@ -928,7 +936,7 @@ export function createExtractor() {
 
               if (out) {
                 if (!Array.isArray(out)) {
-                  console.warn(`Error expected array but got`, out)
+                  logger.warn(`Error expected array but got`, out)
                   couldntParse = true
                   shouldDeopt = true
                 } else {
@@ -966,7 +974,7 @@ export function createExtractor() {
                   return attr
                 }
                 if (shouldPrintDebug) {
-                  console.log('  ! inlining, non-static', key)
+                  logger.info('  ! inlining, non-static ' + key)
                 }
                 didInline = true
                 inlined.set(key, val)
@@ -976,7 +984,7 @@ export function createExtractor() {
               // weird logic whats going on here
               if (didInline) {
                 if (shouldPrintDebug) {
-                  console.log('  bailing flattening due to attributes', attributes)
+                  logger.info(`  bailing flattening due to attributes ${attributes}`)
                 }
                 // bail
                 return attr
@@ -995,7 +1003,7 @@ export function createExtractor() {
 
               if (isValidStyleKey(name, staticConfig)) {
                 if (shouldPrintDebug) {
-                  console.log(`  style: ${name} =`, styleValue)
+                  logger.info(`  style: ${name} = ${styleValue}`)
                 }
                 if (!(name in staticConfig.defaultProps)) {
                   if (!hasSetOptimized) {
@@ -1025,14 +1033,14 @@ export function createExtractor() {
             // opacity={(conditional ? 0 : 1) * scale}
             if (t.isBinaryExpression(value)) {
               if (shouldPrintDebug) {
-                console.log(` binary expression ${name} = `, value)
+                logger.info(` binary expression ${name} = ${value}`)
               }
               const { operator, left, right } = value
               // if one side is a ternary, and the other side is evaluatable, we can maybe extract
               const lVal = attemptEvalSafe(left)
               const rVal = attemptEvalSafe(right)
               if (shouldPrintDebug) {
-                console.log(`  evalBinaryExpression lVal ${String(lVal)}, rVal ${String(rVal)}`)
+                logger.info(`  evalBinaryExpression lVal ${String(lVal)}, rVal ${String(rVal)}`)
               }
               if (lVal !== FAILED_EVAL && t.isConditionalExpression(right)) {
                 const ternary = addBinaryConditional(operator, left, right)
@@ -1043,7 +1051,7 @@ export function createExtractor() {
                 if (ternary) return ternary
               }
               if (shouldPrintDebug) {
-                console.log(`  evalBinaryExpression cant extract`)
+                logger.info(`  evalBinaryExpression cant extract`)
               }
               inlined.set(name, true)
               return attr
@@ -1052,7 +1060,7 @@ export function createExtractor() {
             const staticConditional = getStaticConditional(value)
             if (staticConditional) {
               if (shouldPrintDebug === 'verbose') {
-                console.log(` static conditional ${name}`, value)
+                logger.info(` static conditional ${name} ${value}`)
               }
               return { type: 'ternary', value: staticConditional }
             }
@@ -1060,7 +1068,7 @@ export function createExtractor() {
             const staticLogical = getStaticLogical(value)
             if (staticLogical) {
               if (shouldPrintDebug === 'verbose') {
-                console.log(` static ternary ${name} = `, value)
+                logger.info(` static ternary ${name} =  ${value}`)
               }
               return { type: 'ternary', value: staticLogical }
             }
@@ -1068,7 +1076,7 @@ export function createExtractor() {
             // if we've made it this far, the prop stays inline
             inlined.set(name, true)
             if (shouldPrintDebug) {
-              console.log(` ! inline no match ${name}`, value)
+              logger.info(` ! inline no match ${name} ${value}`)
             }
 
             //
@@ -1086,7 +1094,7 @@ export function createExtractor() {
                 const alt = attemptEval(t.binaryExpression(operator, staticExpr, cond.alternate))
                 const cons = attemptEval(t.binaryExpression(operator, staticExpr, cond.consequent))
                 if (shouldPrintDebug) {
-                  console.log('  binaryConditional', cond.test, cons, alt)
+                  logger.info(['  binaryConditional', cond.test, cons, alt].join(' '))
                 }
                 return {
                   type: 'ternary',
@@ -1108,7 +1116,7 @@ export function createExtractor() {
                   const cVal = attemptEval(value.consequent)
                   if (shouldPrintDebug) {
                     const type = value.test.type
-                    console.log('      static ternary', type, cVal, aVal)
+                    logger.info(['      static ternary', type, cVal, aVal].join(' '))
                   }
                   return {
                     test: value.test,
@@ -1118,7 +1126,7 @@ export function createExtractor() {
                   }
                 } catch (err: any) {
                   if (shouldPrintDebug) {
-                    console.log('       cant eval ternary', err.message)
+                    logger.info(['       cant eval ternary', err.message].join(' '))
                   }
                 }
               }
@@ -1131,7 +1139,7 @@ export function createExtractor() {
                   try {
                     const val = attemptEval(value.right)
                     if (shouldPrintDebug) {
-                      console.log('  staticLogical', value.left, name, val)
+                      logger.info(['  staticLogical', value.left, name, val].join(' '))
                     }
                     return {
                       test: value.left,
@@ -1141,7 +1149,7 @@ export function createExtractor() {
                     }
                   } catch (err) {
                     if (shouldPrintDebug) {
-                      console.log('  cant static eval logical', err)
+                      logger.info(['  cant static eval logical', err].join(' '))
                     }
                   }
                 }
@@ -1155,13 +1163,13 @@ export function createExtractor() {
               t.isObjectExpression(obj) &&
               obj.properties.every((prop) => {
                 if (!t.isObjectProperty(prop)) {
-                  console.log('not object prop', prop)
+                  logger.info(['not object prop', prop].join(' '))
                   return false
                 }
                 const propName = prop.key['name']
                 if (!isValidStyleKey(propName, staticConfig) && propName !== 'tag') {
                   if (shouldPrintDebug) {
-                    console.log('  not a valid style prop!', propName)
+                    logger.info(['  not a valid style prop!', propName].join(' '))
                   }
                   return false
                 }
@@ -1216,10 +1224,10 @@ export function createExtractor() {
                         test: t.logicalExpression('&&', value.test, test),
                       }))
                     } else {
-                      console.log('⚠️ no ternaries?', property)
+                      logger.info(['⚠️ no ternaries?', property].join(' '))
                     }
                   } else {
-                    console.log('⚠️ not expression', property)
+                    logger.info(['⚠️ not expression', property].join(' '))
                   }
                 }
               }
@@ -1268,7 +1276,7 @@ export function createExtractor() {
 
           if (couldntParse || shouldDeopt) {
             if (shouldPrintDebug) {
-              console.log(`  avoid optimizing:`, { couldntParse, shouldDeopt })
+              logger.info([`  avoid optimizing:`, { couldntParse, shouldDeopt }].join(' '))
             }
             node.attributes = ogAttributes
             return
@@ -1306,7 +1314,7 @@ export function createExtractor() {
                   return [...out, ...normalized]
                 } finally {
                   if (shouldPrintDebug) {
-                    console.log(
+                    logger.info(
                       `    normalizeTernaries (${ternaries.length} => ${normalized.length})`
                     )
                   }
@@ -1356,14 +1364,14 @@ export function createExtractor() {
             themeAccessListeners.add((key) => {
               shouldFlatten = false
               if (shouldPrintDebug) {
-                console.log(' ! accessing theme key, avoid flatten', key)
+                logger.info([' ! accessing theme key, avoid flatten', key].join(' '))
               }
             })
           }
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            console.log(' - flatten?', objToStr({ hasSpread, shouldDeopt, shouldFlatten, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', [...inlined])
+            logger.info([' - flatten?', objToStr({ hasSpread, shouldDeopt, shouldFlatten, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', [...inlined]].join(' '))
           }
 
           // wrap theme around children on flatten
@@ -1371,7 +1379,7 @@ export function createExtractor() {
           // account for shouldFlatten could change w the above block "if (disableExtractVariables)"
           if (shouldFlatten && shouldWrapTheme) {
             if (shouldPrintDebug) {
-              console.log('  - wrapping theme', themeVal)
+              logger.info(['  - wrapping theme', themeVal].join(' '))
             }
 
             // remove theme attribute from flattened node
@@ -1412,9 +1420,7 @@ export function createExtractor() {
               const value = staticConfig.defaultProps[key]
               const name = tamaguiConfig.shorthands[key] || key
               if (value === undefined) {
-                console.warn(
-                  `⚠️ Error evaluating default style for component, prop ${key} ${value}`
-                )
+                logger.warn(`⚠️ Error evaluating default style for component, prop ${key} ${value}`)
                 shouldDeopt = true
                 return
               }
@@ -1464,8 +1470,12 @@ export function createExtractor() {
           }
 
           if (shouldPrintDebug) {
-            console.log('  - attrs (flattened): \n', logLines(attrs.map(attrStr).join(', ')))
-            console.log('  - ensureOverriden:', Object.keys(ensureOverridden).join(', '))
+            logger.info(
+              ['  - attrs (flattened): \n', logLines(attrs.map(attrStr).join(', '))].join(' ')
+            )
+            logger.info(
+              ['  - ensureOverriden:', Object.keys(ensureOverridden).join(', ')].join(' ')
+            )
           }
 
           const state = {
@@ -1554,7 +1564,7 @@ export function createExtractor() {
                       out.className = cn
                     }
                     if (shouldPrintDebug) {
-                      console.log(' - expanded variant', name, out)
+                      logger.info([' - expanded variant', name, out].join(' '))
                     }
                     for (const key in out) {
                       const value = out[key]
@@ -1603,7 +1613,7 @@ export function createExtractor() {
             if (disableExtractVariables) {
               if (value[0] === '$') {
                 if (shouldPrintDebug) {
-                  console.log(`   keeping variable inline: ${key} =`, value)
+                  logger.info([`   keeping variable inline: ${key} =`, value].join(' '))
                 }
                 acc.push({
                   type: 'attr',
@@ -1622,7 +1632,9 @@ export function createExtractor() {
 
           tm.mark('jsx-element-expanded', shouldPrintDebug === 'verbose')
           if (shouldPrintDebug) {
-            console.log('  - attrs (expanded): \n', logLines(attrs.map(attrStr).join(', ')))
+            logger.info(
+              ['  - attrs (expanded): \n', logLines(attrs.map(attrStr).join(', '))].join(' ')
+            )
           }
 
           // merge styles, leave undefined values
@@ -1660,7 +1672,7 @@ export function createExtractor() {
                 prev[key] = prev[key] || {}
                 if (shouldPrintDebug) {
                   if (!next[key] || !prev[key]) {
-                    console.log('warn: missing', key, prev, next)
+                    logger.info(['warn: missing', key, prev, next].join(' '))
                   }
                 }
                 Object.assign(prev[key], next[key])
@@ -1688,7 +1700,7 @@ export function createExtractor() {
 
               if (shouldKeepOriginalAttr) {
                 if (shouldPrintDebug) {
-                  console.log('     - keeping as non-style', key)
+                  logger.info(['     - keeping as non-style', key].join(' '))
                 }
                 prev = cur
                 acc.push({
@@ -1725,23 +1737,27 @@ export function createExtractor() {
           }, [])
 
           if (shouldPrintDebug) {
-            console.log('  - attrs (combined 🔀): \n', logLines(attrs.map(attrStr).join(', ')))
-            console.log('  - defaultProps: \n', logLines(objToStr(staticConfig.defaultProps)))
+            logger.info(
+              ['  - attrs (combined 🔀): \n', logLines(attrs.map(attrStr).join(', '))].join(' ')
+            )
+            logger.info(
+              ['  - defaultProps: \n', logLines(objToStr(staticConfig.defaultProps))].join(' ')
+            )
             // prettier-ignore
-            console.log('  - foundStaticProps: \n', logLines(objToStr(foundStaticProps)))
-            console.log('  - completeProps: \n', logLines(objToStr(completeProps)))
+            logger.info(['  - foundStaticProps: \n', logLines(objToStr(foundStaticProps))].join(' '))
+            logger.info(['  - completeProps: \n', logLines(objToStr(completeProps))].join(' '))
           }
 
           // post process
           const getStyles = (props: Object | null, debugName = '') => {
             if (!props || !Object.keys(props).length) {
-              if (shouldPrintDebug) console.log(' getStyles() no props')
+              if (shouldPrintDebug) logger.info([' getStyles() no props'].join(' '))
               return {}
             }
             if (excludeProps && !!excludeProps.size) {
               for (const key in props) {
                 if (excludeProps.has(key)) {
-                  if (shouldPrintDebug) console.log(' delete excluded', key)
+                  if (shouldPrintDebug) logger.info([' delete excluded', key].join(' '))
                   delete props[key]
                 }
               }
@@ -1759,7 +1775,7 @@ export function createExtractor() {
                 props['debug']
               )
 
-              // console.log('outout', out)
+              // logger.info('outout', out)
 
               const outStyle = {
                 ...out.style,
@@ -1768,15 +1784,15 @@ export function createExtractor() {
               // omitInvalidStyles(outStyle)
               // if (shouldPrintDebug) {
               //   // prettier-ignore
-              //   console.log(`       getStyles ${debugName} (props):\n`, logLines(objToStr(props)))
+              //   logger.info(`       getStyles ${debugName} (props):\n`, logLines(objToStr(props)))
               //   // prettier-ignore
-              //   console.log(`       getStyles ${debugName} (out.viewProps):\n`, logLines(objToStr(out.viewProps)))
+              //   logger.info(`       getStyles ${debugName} (out.viewProps):\n`, logLines(objToStr(out.viewProps)))
               //   // prettier-ignore
-              //   console.log(`       getStyles ${debugName} (out.style):\n`, logLines(objToStr(outStyle || {}), true))
+              //   logger.info(`       getStyles ${debugName} (out.style):\n`, logLines(objToStr(outStyle || {}), true))
               // }
               return outStyle
             } catch (err: any) {
-              console.log('error', err.message, err.stack)
+              logger.info(['error', err.message, err.stack].join(' '))
               return {}
             }
           }
@@ -1799,7 +1815,7 @@ export function createExtractor() {
                   const c = getStyles(attr.value.consequent, 'ternary.consequent')
                   if (a) attr.value.alternate = a
                   if (c) attr.value.consequent = c
-                  if (shouldPrintDebug) console.log('     => tern ', attrStr(attr))
+                  if (shouldPrintDebug) logger.info(['     => tern ', attrStr(attr)].join(' '))
                   continue
                 }
                 case 'style': {
@@ -1809,9 +1825,9 @@ export function createExtractor() {
                     attr.value = styles
                   }
                   // prettier-ignore
-                  if (shouldPrintDebug) console.log('  * styles (in)', logLines(objToStr(attr.value)))
+                  if (shouldPrintDebug) logger.info(['  * styles (in)', logLines(objToStr(attr.value))].join(' '))
                   // prettier-ignore
-                  if (shouldPrintDebug) console.log('  * styles (out)', logLines(objToStr(styles)))
+                  if (shouldPrintDebug) logger.info(['  * styles (out)', logLines(objToStr(styles))].join(' '))
                   continue
                 }
               }
@@ -1823,13 +1839,13 @@ export function createExtractor() {
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            console.log('  - attrs (ternaries/combined):\n', logLines(attrs.map(attrStr).join(', ')))
+            logger.info(['  - attrs (ternaries/combined):\n', logLines(attrs.map(attrStr).join(', '))].join(' '))
           }
 
           tm.mark('jsx-element-styles', shouldPrintDebug === 'verbose')
 
           if (getStyleError) {
-            console.log(' ⚠️ postprocessing error, deopt', getStyleError)
+            logger.info([' ⚠️ postprocessing error, deopt', getStyleError].join(' '))
             node.attributes = ogAttributes
             return node
           }
@@ -1863,7 +1879,7 @@ export function createExtractor() {
               for (const key in attr.value) {
                 if (existingStyleKeys.has(key)) {
                   if (shouldPrintDebug) {
-                    console.log('  >> delete existing', key)
+                    logger.info([`  >> delete existing ${key}`].join(' '))
                   }
                   delete attr.value[key]
                 } else {
@@ -1900,7 +1916,7 @@ export function createExtractor() {
           if (shouldFlatten) {
             // DO FLATTEN
             if (shouldPrintDebug) {
-              console.log('  [✅] flattening', originalNodeName, flatNode)
+              logger.info(['  [✅] flattening', originalNodeName, flatNode].join(' '))
             }
             node.name.name = flatNode
             res.flattened++
@@ -1911,8 +1927,8 @@ export function createExtractor() {
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            console.log(` ❊❊ inline props (${inlined.size}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : '')
-            console.log('  - attrs (end):\n', logLines(attrs.map(attrStr).join(', ')))
+            logger.info([` ❊❊ inline props (${inlined.size}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : ''].join(' '))
+            logger.info(`  - attrs (end):\n ${logLines(attrs.map(attrStr).join(', '))}`)
           }
 
           onExtractTag({
@@ -1944,7 +1960,7 @@ export function createExtractor() {
     if (modifiedComponents.size) {
       const all = Array.from(modifiedComponents)
       if (shouldPrintDebug) {
-        console.log('  [🪝] hook check', all.length)
+        logger.info(`  [🪝] hook check ${all.length}`)
       }
       for (const comp of all) {
         removeUnusedHooks(comp, shouldPrintDebug)

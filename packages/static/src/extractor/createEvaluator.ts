@@ -35,6 +35,7 @@ export function createEvaluator({
     ) {
       const key = n.property.name
       if (shouldPrintDebug) {
+        // eslint-disable-next-line no-console
         console.log('    > found theme prop', key)
       }
       return createCSSVariable(key)
@@ -50,6 +51,7 @@ export function createEvaluator({
       .code.replace(/;\n$/, '')
 
     if (shouldPrintDebug) {
+      // eslint-disable-next-line no-console
       console.log('evaluating', code)
     }
     return vm.runInContext(code, evalContext)
