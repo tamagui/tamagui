@@ -1,4 +1,4 @@
-// tamagui-ignore
+// debug 123 123
 import { H2, H3, styled } from 'tamagui'
 
 export const HomeH2 = styled(H2, {
@@ -19,17 +19,18 @@ export const HomeH2 = styled(H2, {
 export const HomeH3 = styled(H3, {
   name: 'HomeH3',
   ta: 'center',
+  debug: 'verbose',
   theme: 'alt3',
   als: 'center',
+  size: '$8',
   fow: '400',
   px: 30,
-  size: '$8',
   ls: -0.5,
   maw: 620,
 
   $sm: {
-    fow: '400',
     size: '$6',
+    fow: '400',
     color: '$color',
     textTransform: 'none',
   },

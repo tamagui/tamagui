@@ -62,8 +62,8 @@ export function HeroFeatures() {
                 Accessibility
               </H4>
               <Paragraph theme="alt2">
-                Built on top of react-native-web, accessiblity control out of the box, plus
-                components with smart defaults.
+                Many automatic aria-attributes with full react-native-web accessibility
+                compatibility.
               </Paragraph>
             </YStack>
 

@@ -3,7 +3,8 @@ import React from 'react'
 import { memo, useState } from 'react'
 import { Button, Paragraph, XGroup, XStack, YStack } from 'tamagui'
 
-import { CodeInline } from '../code/Code.client'
+import { CodeInline } from '../code/Code'
+import { CodeDemoPreParsed } from '../code/CodeDemoPreParsed'
 import { useTint } from '../header/ColorToggleButton.client'
 
 export function HeroCode({ examples }) {
@@ -109,14 +110,14 @@ const CodeExamples = memo(({ examples }: any) => {
       </>
       <XStack maxWidth="100%" f={1}>
         <YStack f={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
-          {/* <CodeDemoPreParsed
+          <CodeDemoPreParsed
             height={300}
             theme="Card"
             maxHeight={300}
             f={1}
             language={example.language}
             source={example.code}
-          /> */}
+          />
         </YStack>
       </XStack>
     </YStack>

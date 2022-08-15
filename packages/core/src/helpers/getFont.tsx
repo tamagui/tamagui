@@ -31,7 +31,7 @@ export const getFont: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   }
   if (process.env.NODE_ENV === 'development') {
     if (props['debug']) {
-      console.groupCollapsed('  🔹 getFont', val)
+      console.groupCollapsed('  🔹 getFont', val, props['fontWeight'], props['fow'])
       console.log({ style, props, font })
       console.groupEnd()
     }

@@ -337,6 +337,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             logger.info([`Loaded`, Object.keys(out.components).join(', '), !!Component].join(' '))
           }
         }
+
         if (!Component) {
           return
         }

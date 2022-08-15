@@ -1,8 +1,8 @@
 import React from 'react'
 import { YStack, YStackProps } from 'tamagui'
 
-import { Code } from './Code.client'
-import { Pre } from './Pre.client'
+import { Code } from './Code'
+import { Pre } from './Pre'
 
 export function CodeDemoPreParsed({
   source,

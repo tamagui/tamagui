@@ -588,7 +588,7 @@ export const getSplitStyles: StyleSplitter = (
  * and to avoid re-creating it over and over, use a WeakMap
  */
 const propProxies = new WeakMap()
-function getSubStyleProxiedProps(baseProps: Object, specificProps: Object) {
+function getSubStyleProxiedProps(defaultProps: Object, baseProps: Object, specificProps: Object) {
   if (!specificProps) {
     // functional variants may want to eventually do something like:
     // have a hooks-like rule (no conditionals)
@@ -603,14 +603,11 @@ function getSubStyleProxiedProps(baseProps: Object, specificProps: Object) {
     return propProxies.get(specificProps)
   }
   const next = new Proxy(specificProps, {
-    ownKeys() {
-      return [...new Set([...Object.keys(baseProps), ...Object.keys(specificProps)])]
-    },
     has(_, key) {
-      return key in specificProps || key in baseProps
+      return key in defaultProps || key in specificProps || key in baseProps
     },
     get(_, key) {
-      return specificProps[key] ?? baseProps[key]
+      return defaultProps[key] ?? specificProps[key] ?? baseProps[key]
     },
   })
   propProxies.set(specificProps, next)
@@ -636,7 +633,7 @@ export const getSubStyle = (
       key,
       val,
       theme,
-      getSubStyleProxiedProps(props, props[subKey]),
+      getSubStyleProxiedProps(staticConfig.defaultProps, props, props[subKey]),
       state,
       languageContext,
       avoidDefaultProps

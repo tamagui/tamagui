@@ -1,5 +1,5 @@
 import { getConfig } from '../conf'
-import { GenericFonts } from '../types'
+import { GenericFonts, StaticConfig } from '../types'
 import { LanguageContextType } from '../views/FontLanguage.types'
 
 const extrasCache = new WeakMap()

@@ -5,7 +5,7 @@ import { Link } from '@tamagui/unagi'
 import React from 'react'
 import { Button, Card, Paragraph, Separator, XStack, YStack, simpleHash } from 'tamagui'
 
-import { CodeDemoPreParsed } from '../components/code/CodeDemoPreParsed.server'
+import { CodeDemoPreParsed } from '../components/code/CodeDemoPreParsed'
 import { ContainerLarge } from '../components/Container.server'
 import { Header } from '../components/Header.server'
 import { HeaderFloating } from '../components/header/HeaderFloating.client'

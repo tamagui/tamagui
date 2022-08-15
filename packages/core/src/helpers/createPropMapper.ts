@@ -31,7 +31,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
   const variants = staticConfig.variants || {}
 
   // temp remove classnames
-  const defaultProps = mergeProps(staticConfig.defaultProps || {}, {}, true)[0]
+  const defaultProps = mergeProps(staticConfig.defaultProps || {}, {}, false)[0]
 
   const mapper: PropMapper = (
     key,
