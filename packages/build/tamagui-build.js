@@ -11,7 +11,7 @@ const { dirname } = require('path')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
-const shouldSkipTypes = !!(process.argv.includes('skip-types') || process.env.SKIP_TYPES)
+const shouldSkipTypes = !!(process.argv.includes('--skip-types') || process.env.SKIP_TYPES)
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
