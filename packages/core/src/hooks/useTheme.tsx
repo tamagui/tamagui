@@ -14,6 +14,7 @@ import {
 import { ThemeName, ThemeObject } from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
 import { useConstant } from './useConstant'
+import { useServerRef } from './useServerHooks'
 
 export interface ThemeProps {
   className?: string
@@ -58,7 +59,7 @@ export const useTheme = (
     }
   }
 
-  const state = useRef() as React.MutableRefObject<UseThemeState>
+  const state = useServerRef() as React.MutableRefObject<UseThemeState>
   if (!state.current) {
     state.current = {
       uuid: {},
@@ -216,9 +217,6 @@ export const useChangeThemeEffect = (
   const forceUpdate = forceUpdateProp || useForceUpdate()
 
   const themeManager = useConstant<ThemeManager | null>(() => {
-    // if (!next) return null
-    // RSC test
-    // if (typeof document === 'undefined') return null
     return new ThemeManager(next.name, next.theme, parentManager, reset)
   })
 

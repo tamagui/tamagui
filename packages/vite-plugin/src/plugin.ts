@@ -14,7 +14,11 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
 
     config(userConfig, env) {
       return {
-        plugins: [envPlugin(['NODE_ENV', 'TAMAGUI_TARGET', 'ENABLE_RSC']), viteCommonjs()],
+        plugins: [
+          //
+          // envPlugin(['NODE_ENV', 'TAMAGUI_TARGET', 'ENABLE_RSC']),
+          viteCommonjs(),
+        ],
         esbuild: {
           loader: 'tsx',
         },
@@ -23,15 +27,11 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
           'global.__x': {},
           _frameTimestamp: undefined,
           _WORKLET: false,
-          // ...(process.env.NODE_ENV !== 'test' && {
-          //   process: {
-          //     env: {
-          //       TAMAGUI_TARGET: process.env.TAMAGUI_TARGET || 'web',
-          //       NODE_ENV: process.env.NODE_ENV || env.mode,
-          //       ENABLE_RSC: process.env.ENABLE_RSC,
-          //     },
-          //   },
-          // }),
+          ...(process.env.NODE_ENV !== 'test' && {
+            'process.env.TAMAGUI_TARGET': JSON.stringify(process.env.TAMAGUI_TARGET || 'web'),
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || env.mode),
+            'process.env.ENABLE_RSC': JSON.stringify(process.env.ENABLE_RSC || ''),
+          }),
         },
         build: {
           commonjsOptions: {
