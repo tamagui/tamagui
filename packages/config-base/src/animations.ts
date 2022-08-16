@@ -1,11 +1,12 @@
 import { createAnimations } from '@tamagui/animations-react-native'
-import { Animated } from 'react-native-web-lite'
-// @ts-ignore
-import * as AnimatedImpl from 'react-native-web-lite/animated'
 
-// TODO more work...
+// import { Animated } from 'react-native-web-lite'
+// // @ts-ignore
+// import * as AnimatedImpl from 'react-native-web-lite/animated'
 
-Animated.installAnimated(AnimatedImpl)
+// // TODO more work...
+
+// Animated.installAnimated(AnimatedImpl)
 
 export const animations = createAnimations({
   bouncy: {

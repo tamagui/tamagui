@@ -28,7 +28,6 @@ const cache = {}
 
 export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   const key = JSON.stringify(props)
-  const start = Date.now()
   if (cache[key]) {
     if (cache[key] instanceof Promise) {
       return await cache[key]
@@ -89,10 +88,10 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
     tamaguiConfig: config,
   }
 
-  resolver(cache[key])
-
   // init core-node
   createTamagui(cache[key].tamaguiConfig)
+
+  resolver(cache[key])
 
   return cache[key]
 }
@@ -124,11 +123,16 @@ async function buildTamaguiConfig(
               external: true,
             }
           })
+
+          build.onResolve({ filter: /^(react-native)$/ }, (args) => {
+            return {
+              path: 'react-native-web-lite',
+              external: true,
+            }
+          })
         },
       },
       alias({
-        'react-native': require.resolve('@tamagui/fake-react-native'),
-        'react-native-web-lite': require.resolve('@tamagui/fake-react-native'),
         'react-native-safe-area-context': require.resolve('@tamagui/fake-react-native'),
         'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
         ...aliases,

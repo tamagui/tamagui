@@ -68,7 +68,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 continue
               }
               // eslint-disable-next-line no-console
-              console.log(prefix, `withTamagui skipping resolving ${out}`)
+              console.log(prefix, `withTamagui skipping resolving ${out}`, err)
             }
           }
           return Object.fromEntries(res)
@@ -84,6 +84,8 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         const rnw = 'react-native-web'
 
         const tamaguiAliases = safeResolves(
+          ['@tamagui/core/reset.css', '@tamagui/core/reset.css'],
+          ['@tamagui/core', '@tamagui/core'],
           ['react-native-svg', 'react-native-svg-web'],
           // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
           ['react/jsx-runtime.js', 'react/jsx-runtime'],

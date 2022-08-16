@@ -52,7 +52,7 @@ export function registerRequire() {
     ) {
       return rnw
     }
-    if (path === '@tamagui/core') {
+    if (path === '@tamagui/core' || path === 'tamagui') {
       return core
     }
     try {

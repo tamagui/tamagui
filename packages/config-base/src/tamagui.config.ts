@@ -3,11 +3,11 @@ import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/theme-base'
 
-import { animations } from './animations.css'
+import { animations } from './animations'
 import { createGenericFont } from './createGenericFont'
 import { media } from './media'
 
-export * from './animations.css'
+export * from './animations'
 
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont(

@@ -7,7 +7,6 @@ import {
   getPragmaOptions,
   patchReactNativeWeb,
 } from '@tamagui/static'
-import type { RawLoaderDefinitionFunction } from 'webpack'
 
 import { extractedInfoByFile, stylePathToFilePath } from './css'
 

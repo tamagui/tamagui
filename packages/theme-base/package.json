@@ -4,7 +4,6 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
@@ -17,6 +16,13 @@
     "lint:fix": "yarn lint --fix",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
   },
   "dependencies": {
     "@tamagui/colors": "^1.0.1-beta.141",

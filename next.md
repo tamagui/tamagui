@@ -1,8 +1,11 @@
 - 1.0
 
+  - get tests passing
+  - kitchen-sink in Snack demo
+  - prod build native stuck on copying resources
+  - check animation flicker again
   - require `tamagui.config.ts` to import createTamagui() from core only
   - can probably remove "screen and" from media queries
-  - Card should operate through context to properly sync size
   - FAQ
     - don't wrap in HOC if possible, will de-opt compilation
     - what works for compilation / examples
@@ -27,7 +30,6 @@
     - or get overshoot clamp working for react-native animations driver
   - bug: styled(ListItem, { ...styles }) styles not working fully
     - maybe extractor bug actually
-  - get tests passing
   - add test that kitchen-sink loads, test a few components
     - make sure loop/multi animations work too
     - https://twitter.com/FernandoTheRojo/status/1470178294721036290
@@ -96,6 +98,7 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - Card should operate through context to properly sync size
   - tamagui-build could run extraction *before* - but still needs webpack... so not sure
     - no need for `module:jsx`, instead output `module:native` and `module:css`
   - load tamagui itself using the loadModule / fork process to avoid all register (this is also shared logic with studio loading tamagui conf..)

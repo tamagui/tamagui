@@ -60,6 +60,9 @@ export async function extractToClassNames({
     '`sourcePath` must be an absolute path to a .js file'
   )
 
+  // dont include loading in timing of parsing (one time cost)
+  await extractor.loadTamagui(options)
+
   const shouldLogTiming = options.logTimings ?? true
   const start = Date.now()
   const mem = shouldLogTiming ? process.memoryUsage() : null
@@ -426,8 +429,7 @@ export async function extractToClassNames({
     const numFlattened = `${res.flattened}`.padStart(3)
     const memory = process.env.DEBUG && memUsed > 10 ? ` ${memUsed}MB` : ''
     const timing = Date.now() - start
-    const timingWarning = timing > 150 ? '(long)' : ''
-    const timingStr = `${timing}ms ${timingWarning}`.padStart(6)
+    const timingStr = `${timing}ms`.padStart(6)
     const pre = getPrefixLogs(options)
     const memStr = memory ? `(${memory})` : ''
     // eslint-disable-next-line no-console

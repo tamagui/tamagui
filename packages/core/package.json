@@ -56,11 +56,11 @@
     "./reset.css": "./reset.css",
     ".": {
       "import": "./dist/esm/index.js",
-      "default": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js"
     },
     "./injectStyles": {
       "import": "./dist/esm/injectStyles.js",
-      "default": "./dist/cjs/injectStyles.js"
+      "require": "./dist/cjs/injectStyles.js"
     }
   },
   "repository": {

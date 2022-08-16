@@ -20,6 +20,13 @@
     "lint": "eslint",
     "lint:fix": "yarn lint --fix"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "dependencies": {
     "@tamagui/core": "^1.0.1-beta.141",
     "@tamagui/font-size": "^1.0.1-beta.141",

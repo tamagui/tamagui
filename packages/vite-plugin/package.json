@@ -35,11 +35,11 @@
     "./package.json": "./package.json",
     ".": {
       "import": "./dist/esm/index.js",
-      "default": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js"
     },
     "./extract": {
       "import": "./dist/esm/extract.js",
-      "default": "./dist/cjs/extract.js"
+      "require": "./dist/cjs/extract.js"
     }
   },
   "publishConfig": {
