@@ -41,7 +41,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     defaultActive: configIn.mediaQueryDefaultActive,
   })
 
-  const fontTokens = createVariables(configIn.fonts!, '', true)
+  const fontTokens = Object.fromEntries(
+    Object.entries(configIn.fonts!).map(([k, v]) => {
+      return [k, createVariables(v, 'f', true)]
+    })
+  )
+
   const fontsParsed = (() => {
     const res = {} as typeof fontTokens
     for (const familyName in fontTokens) {

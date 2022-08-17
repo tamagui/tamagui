@@ -1,11 +1,11 @@
-export const simpleHash = (str: string) => {
+export const simpleHash = (str: string, hashMin = 10) => {
   let hash = 0
   let valids = ``
   const len = str.length
   for (let i = 0; i < len; i++) {
     const char = str.charCodeAt(i)
     // dont do more than 10 non-hashed to avoid getting too girthy
-    if (isValidCSSCharCode(char) && len <= 10) {
+    if (isValidCSSCharCode(char) && len <= hashMin) {
       valids += str[i]
     } else {
       hash = (hash << 5) - hash + char

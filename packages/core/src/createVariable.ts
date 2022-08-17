@@ -1,4 +1,4 @@
-import { isValidCSSCharCode } from '@tamagui/helpers'
+import { isValidCSSCharCode, simpleHash } from '@tamagui/helpers'
 
 import { isWeb } from './constants/platform'
 
@@ -72,15 +72,6 @@ export const createCSSVariable = (nameProp: string, includeVar = true) => {
       return ``
     }
   }
-  let name = ''
-  for (let i = 0; i < nameProp.length; i++) {
-    const code = nameProp.charCodeAt(i)
-    if (isValidCSSCharCode(code)) {
-      name += nameProp[i]
-    } else {
-      // allow any name but turn it into a stringified num
-      name += `-c${code}-`
-    }
-  }
+  const name = simpleHash(nameProp, 60)
   return includeVar ? `var(--${name})` : name
 }
