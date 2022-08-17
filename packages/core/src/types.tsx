@@ -1198,9 +1198,42 @@ type AnimationConfig = {
   [key: string]: any
 }
 
+// includes a very limited adapter between various impls for number => style
+// this is useful only in limited scenarios like `Sheet`, but necessary in those cases
+
+export type AnimatedNumberStrategy =
+  // only values shared between reanimated/react-native for now
+  | {
+      type: 'spring'
+      stiffness?: number
+      damping?: number
+      mass?: number
+      overshootClamping?: boolean
+      restSpeedThreshold?: number
+      restDisplacementThreshold?: number
+    }
+  | { type: 'timing'; duration: number }
+  | { type: 'direct' }
+
+export type UniversalAnimatedNumber<A> = {
+  getInstance(): A
+  getValue(): number
+  setValue(next: number, config?: AnimatedNumberStrategy): void
+  stop(): void
+}
+
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   avoidClasses?: boolean
   useAnimations: UseAnimationHook
+  useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>
+  useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(
+    val: V,
+    getStyle: (current: any) => any
+  ) => void
+  useAnimatedNumberReaction: (
+    val: UniversalAnimatedNumber<any>,
+    onValue: (current: number) => void
+  ) => void
   animations: A
   View?: any
   Text?: any
