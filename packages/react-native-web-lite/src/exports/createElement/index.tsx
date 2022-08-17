@@ -10,8 +10,8 @@
 import React from 'react'
 
 import AccessibilityUtil from '../../modules/AccessibilityUtil'
+import createDOMProps from '../../modules/createDOMProps'
 import { LocaleProvider } from '../../modules/useLocale'
-import createDOMProps from '../createDOMProps'
 
 const createElement = (component, props, options?) => {
   // Use equivalent platform elements where possible.

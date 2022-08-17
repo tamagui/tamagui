@@ -27,8 +27,10 @@ export { default as StyleSheet } from './exports/StyleSheet'
 export { default as UIManager } from './exports/UIManager'
 export { default as Vibration } from './exports/Vibration'
 
+export { default as NativeEventEmitter } from './vendor/react-native/NativeEventEmitter'
+export { default as Animated } from './vendor/react-native/Animated/Animated'
+
 // components
-export { default as Animated } from './exports/Animated'
 export { default as ActivityIndicator } from './exports/ActivityIndicator'
 export { default as Image } from './exports/Image'
 export { default as ImageBackground } from './exports/ImageBackground'
@@ -50,9 +52,9 @@ export { useLocaleContext } from './exports/useLocaleContext'
 export { default as useWindowDimensions } from './exports/useWindowDimensions'
 
 // useful internals
-export { default as useMergeRefs } from './exports/useMergeRefs'
-export { default as useElementLayout } from './exports/useElementLayout'
-export { default as usePlatformMethods } from './exports/usePlatformMethods'
-export { default as useResponderEvents } from './exports/useResponderEvents'
-export { default as createDOMProps } from './exports/createDOMProps'
+export { default as useMergeRefs } from './modules/useMergeRefs'
+export { default as useElementLayout } from './modules/useElementLayout'
+export { default as usePlatformMethods } from './modules/usePlatformMethods'
+export { default as useResponderEvents } from './modules/useResponderEvents'
+export { default as createDOMProps } from './modules/createDOMProps'
 export { default as TextAncestorContext } from './exports/Text/TextAncestorContext'

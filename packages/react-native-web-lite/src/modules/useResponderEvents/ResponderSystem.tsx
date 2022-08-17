@@ -131,7 +131,7 @@ to return true:wantsResponderID|                            |
                                |                            |
                                +                            + */
 
-import canUseDOM from '../../modules/canUseDom'
+import canUseDOM from '../canUseDom'
 import { ResponderEvent } from './createResponderEvent'
 import createResponderEvent from './createResponderEvent'
 import {

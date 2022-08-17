@@ -9,8 +9,8 @@
 
 import * as React from 'react'
 
+import useMergeRefs from '../../modules/useMergeRefs'
 import StyleSheet from '../StyleSheet'
-import useMergeRefs from '../useMergeRefs'
 import type { ViewProps } from '../View'
 import View from '../View'
 
