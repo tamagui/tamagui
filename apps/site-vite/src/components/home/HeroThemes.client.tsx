@@ -7,7 +7,7 @@ import { ActiveCircle } from './ActiveCircle'
 import { MediaPlayer } from './MediaPlayer'
 
 const themes: (ThemeName | null)[][] = [
-  ['orange', 'red', 'pink', 'green', 'teal', 'blue'],
+  ['purple', 'red', 'pink', 'green', 'yellow', 'blue'],
   [null, 'alt1', 'alt2'],
 ]
 

@@ -6,15 +6,15 @@ const getBarColor = (name: string) => {
     case 'Tamagui':
       return '$pink9'
     case 'Stitches':
-      return '$violet9'
+      return '$yellow9'
     case 'Stitches 0.1.9':
-      return '$violet4'
+      return '$yellow4'
     case 'Styled Components':
     case 'SC':
       return '$red9'
     case 'react-native-web':
     case 'RNW':
-      return '$teal9'
+      return '$purple9'
     case 'Emotion':
       return '$green9'
     case 'Dripsy':

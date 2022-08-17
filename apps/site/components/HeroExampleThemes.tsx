@@ -10,7 +10,7 @@ import { HomeH2, HomeH3 } from './HomeH2'
 import { MediaPlayer } from './MediaPlayer'
 
 const themes: (ThemeName | null)[][] = [
-  ['orange', 'red', 'pink', 'green', 'teal', 'blue'],
+  ['red', 'pink', 'green', 'yellow', 'purple', 'blue'],
   [null, 'alt1', 'alt2'],
 ]
 

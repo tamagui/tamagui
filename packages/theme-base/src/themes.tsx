@@ -1,9 +1,7 @@
 import { Variable, createTheme, getVariableValue, isWeb } from '@tamagui/core'
 
 import { setColorAlpha } from './colorUtils'
-import { darkColors, lightColors, tokens } from './tokens'
-
-const { color } = tokens
+import { darkColors, lightColors } from './tokens'
 
 // spaghetti ahead
 
@@ -169,14 +167,14 @@ const themeCreator = (
     backgroundHover: get(backgrounds, str + lighterDir),
     backgroundPress: get(backgrounds, str + darkerDir),
     backgroundFocus: get(backgrounds, str + darkerDir * 2),
-    backgroundTransparent: color.grayA1Light,
+    backgroundTransparent: 'hsla(0, 0%, 0%, 0.012)',
     color: get(colors, 0 + str, 'color'),
     colorHover: get(colors, 1 + str, 'color'),
     colorPress: get(colors, 2 + str, 'color'),
     colorFocus: get(colors, 3 + str, 'color'),
     colorTranslucent,
     colorMid: (isLight ? colors : backgrounds)[Math.floor(colors.length / 2)],
-    shadowColor: isLight ? color.grayA2Light : color.grayA8Light,
+    shadowColor: isLight ? 'hsla(0, 0%, 0%, 0.03)' : 'hsla(0, 0%, 0%, 0.2)',
     shadowColorHover: darkColors[!isLight ? 1 : 8],
     shadowColorPress: darkColors[!isLight ? 1 : 8],
     shadowColorFocus: darkColors[!isLight ? 1 : 8],
@@ -234,18 +232,18 @@ const themeColors = {
   light: [
     '#fff',
     '#f4f4f4',
-    color.gray1Light,
-    color.gray2Light,
-    color.gray3Light,
-    color.gray4Light,
-    color.gray5Light,
-    color.gray6Light,
-    color.gray7Light,
-    color.gray8Light,
-    color.gray9Light,
-    color.gray10Light,
-    color.gray11Light,
-    color.gray12Light,
+    'hsl(0, 0%, 99.0%)',
+    'hsl(0, 0%, 97.3%)',
+    'hsl(0, 0%, 95.1%)',
+    'hsl(0, 0%, 93.0%)',
+    'hsl(0, 0%, 90.9%)',
+    'hsl(0, 0%, 88.7%)',
+    'hsl(0, 0%, 85.8%)',
+    'hsl(0, 0%, 78.0%)',
+    'hsl(0, 0%, 56.1%)',
+    'hsl(0, 0%, 52.3%)',
+    'hsl(0, 0%, 43.5%)',
+    'hsl(0, 0%, 9.0%)',
   ],
   dark: [
     '#111111',
@@ -355,7 +353,6 @@ export type ColorNames = typeof colorSchemes[number]['name']
 // nice and flat
 export const colorNames: ColorNames[] = [
   'blue',
-  'gray',
   'green',
   'orange',
   'pink',
@@ -363,6 +360,7 @@ export const colorNames: ColorNames[] = [
   'red',
   'yellow',
   'teal',
+  'gray',
 ]
 
 type ColorThemeNames =

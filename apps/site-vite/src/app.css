@@ -212,39 +212,11 @@ pre {
   cursor: help;
 }
 
-.gradient-blue {
-  background: linear-gradient(110deg, var(--blue2), var(--purple2), var(--blue2));
-}
-
-.gradient-pink {
-  background: linear-gradient(110deg, var(--pink2), var(--red2), var(--pink2));
-}
-
-.gradient-red {
-  background: linear-gradient(110deg, var(--red2), var(--orange2), var(--red2));
-}
-
-.gradient-orange {
-  background: linear-gradient(110deg, var(--orange2), var(--yellow2), var(--orange2));
-}
-
-.gradient-purple {
-  background: linear-gradient(110deg, var(--purple2), var(--green2), var(--purple2));
-}
-
-.gradient-green {
-  background: linear-gradient(110deg, var(--green2), var(--teal2), var(--green2));
-}
-
-.gradient-teal {
-  background: linear-gradient(110deg, var(--teal2), var(--yellow2), var(--teal2));
-}
-
 .rainbow {
   background: -webkit-linear-gradient(
     45deg,
     var(--red10),
-    var(--orange10),
+    var(--yellow10),
     var(--green10),
     var(--blue10),
     var(--purple10),
@@ -333,7 +305,7 @@ iframe {
 }
 
 .token.class-name {
-  color: var(--teal10);
+  color: var(--pink10);
 }
 
 .token.tag,
@@ -377,7 +349,7 @@ iframe {
 }
 
 .token.punctuation {
-  color: var(--teal10);
+  color: var(--pink10);
 }
 
 .token.module,
