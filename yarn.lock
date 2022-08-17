@@ -5461,7 +5461,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/animations-react-native@^1.0.1-beta.141, @tamagui/animations-react-native@workspace:packages/animations-react-native":
+"@tamagui/animations-react-native@1.0.1-beta.141, @tamagui/animations-react-native@^1.0.1-beta.141, @tamagui/animations-react-native@workspace:packages/animations-react-native":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-react-native@workspace:packages/animations-react-native"
   dependencies:
@@ -6372,6 +6372,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/sheet@workspace:packages/sheet"
   dependencies:
+    "@tamagui/animations-react-native": 1.0.1-beta.141
     "@tamagui/build": ^1.0.1-beta.141
     "@tamagui/compose-refs": ^1.0.1-beta.141
     "@tamagui/core": ^1.0.1-beta.141

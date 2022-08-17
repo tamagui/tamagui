@@ -1,3 +1,9 @@
+import {
+  AnimatedView,
+  useAnimatedNumber,
+  useAnimatedNumberReaction,
+  useAnimatedNumberStyle,
+} from '@tamagui/animations-react-native'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
@@ -268,11 +274,11 @@ export const Sheet = withStaticProperties(
         [dismissOnSnapToBottom, snapPoints.length, setPosition_, setOpen]
       )
 
-      const animatedNumber = driver.useAnimatedNumber(HIDDEN_SIZE)
+      const animatedNumber = useAnimatedNumber(HIDDEN_SIZE)
 
       // native only fix
       const at = useRef(0)
-      driver.useAnimatedNumberReaction(animatedNumber, (value) => {
+      useAnimatedNumberReaction(animatedNumber, (value) => {
         at.current = value
         scrollBridge.paneY = value
       })
@@ -344,7 +350,6 @@ export const Sheet = withStaticProperties(
           if (disableDrag) return
           if (!frameSize) return
 
-          const pos = animatedNumber.getValue()
           const minY = positions[0]
           scrollBridge.paneMinY = minY
           let startY = at.current
@@ -401,8 +406,12 @@ export const Sheet = withStaticProperties(
               return true
             }
             const isDraggingUp = dy < 0
-            if (!isScrolled && isDraggingUp) {
-              return false
+            const isAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
+            // prevent drag once at top and pulling up
+            if (isAtTop) {
+              if (!isScrolled && isDraggingUp) {
+                return false
+              }
             }
             // we could do some detection of other touchables and cancel here..
             return Math.abs(dy) > 8
@@ -470,7 +479,7 @@ export const Sheet = withStaticProperties(
 
       const preventShown = controller?.hidden && controller?.open
 
-      const animatedStyle = driver.useAnimatedNumberStyle(animatedNumber, (val) => {
+      const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
         return {
           transform: [{ translateY: frameSize === 0 ? HIDDEN_SIZE : val }],
         }
@@ -480,7 +489,7 @@ export const Sheet = withStaticProperties(
         return null
       }
 
-      const AnimatedView = driver.View
+      // const AnimatedView = driver.View
 
       const contents = (
         <SheetProvider

@@ -36,6 +36,9 @@ const animatedStyleKey = {
   opacity: true,
 }
 
+export const AnimatedView = Animated.View
+export const AnimatedText = Animated.Text
+
 export function useAnimatedNumber(initial: number): UniversalAnimatedNumber<Animated.Value> {
   const state = useRef(
     null as any as {
@@ -114,9 +117,6 @@ export function useAnimatedNumberStyle<V extends UniversalAnimatedNumber<Animate
 }
 
 export function createAnimations<A extends AnimationsConfig>(animations: A): AnimationDriver<A> {
-  const AnimatedView = Animated.View
-  const AnimatedText = Animated.Text
-
   AnimatedView['displayName'] = 'AnimatedView'
   AnimatedText['displayName'] = 'AnimatedText'
 

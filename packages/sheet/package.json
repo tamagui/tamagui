@@ -22,6 +22,7 @@
     "lint:fix": "yarn lint --fix"
   },
   "dependencies": {
+    "@tamagui/animations-react-native": "1.0.1-beta.141",
     "@tamagui/compose-refs": "^1.0.1-beta.141",
     "@tamagui/core": "^1.0.1-beta.141",
     "@tamagui/create-context": "^1.0.1-beta.141",

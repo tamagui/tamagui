@@ -97,6 +97,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           // match commonjs to react-native-web
           // i'd do esm but needs better docs, have to transpile
           ['@tamagui/rnw', '@tamagui/rnw'],
+          // this could be done by just changing out @tamagui/rnw => new package @tamagui/rnw-lite
           ...(tamaguiOptions.useReactNativeWebLite
             ? ([
                 [
