@@ -1,12 +1,37 @@
-import { AnimationDriver } from '@tamagui/core'
-import { useMemo } from 'react'
+import { AnimationDriver, Stack, Text } from '@tamagui/core'
+import { useMemo, useRef } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
     avoidClasses: false,
-    View: 'div',
-    Text: 'span',
+    View: Stack,
+    Text: Text,
     animations,
+
+    useAnimatedNumber(initial) {
+      const val = useRef(initial)
+      return {
+        getInstance() {
+          return val
+        },
+        getValue() {
+          return val.current
+        },
+        setValue(next) {
+          val.current = next
+        },
+        stop() {},
+      }
+    },
+
+    useAnimatedNumberReaction(val, reaction) {
+      // TODO use event listeners, would need access to the corresponsing node...
+    },
+
+    useAnimatedNumberStyle(val, getStyle) {
+      return getStyle(val.getValue())
+    },
+
     useAnimations: (props, { getStyle }) => {
       const animationKey = Array.isArray(props.animation) ? props.animation[0] : props.animation
       const animation = animations[animationKey as any]

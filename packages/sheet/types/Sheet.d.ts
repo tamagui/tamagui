@@ -1,7 +1,7 @@
 import { GetProps } from '@tamagui/core';
 import { XStackProps } from '@tamagui/stacks';
 import React from 'react';
-import { Animated, View } from 'react-native';
+import { View } from 'react-native';
 import { SheetScopedProps } from './types';
 export { createSheetScope } from './SheetContext';
 export declare const SheetHandleFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -105,7 +105,7 @@ export declare const Sheet: ((props: Omit<{
     children?: React.ReactNode;
     dismissOnOverlayPress?: boolean | undefined;
     dismissOnSnapToBottom?: boolean | undefined;
-    animationConfig?: Animated.SpringAnimationConfig | undefined;
+    animationConfig?: import("@tamagui/core").AnimatedNumberStrategy | undefined;
     handleDisableScroll?: boolean | undefined;
     disableDrag?: boolean | undefined;
     modal?: boolean | undefined;

@@ -1,7 +1,7 @@
+import { AnimatedNumberStrategy } from '@tamagui/core';
 import { ScopedProps } from '@tamagui/create-context';
 import { RemoveScroll } from '@tamagui/remove-scroll';
 import React, { ReactNode } from 'react';
-import { Animated } from 'react-native';
 export declare type SheetProps = ScopedProps<{
     open?: boolean;
     defaultOpen?: boolean;
@@ -13,7 +13,7 @@ export declare type SheetProps = ScopedProps<{
     children?: ReactNode;
     dismissOnOverlayPress?: boolean;
     dismissOnSnapToBottom?: boolean;
-    animationConfig?: Animated.SpringAnimationConfig;
+    animationConfig?: AnimatedNumberStrategy;
     handleDisableScroll?: boolean;
     disableDrag?: boolean;
     modal?: boolean;

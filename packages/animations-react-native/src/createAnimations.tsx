@@ -1,6 +1,14 @@
 import { PresenceContext, usePresence } from '@tamagui/animate-presence'
-import { AnimationDriver, AnimationProp, isWeb, useIsomorphicLayoutEffect } from '@tamagui/core'
-import { useContext, useMemo, useRef } from 'react'
+import {
+  AnimatedNumberStrategy,
+  AnimationDriver,
+  AnimationProp,
+  UniversalAnimatedNumber,
+  isWeb,
+  useEvent,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/core'
+import { useContext, useEffect, useMemo, useRef } from 'react'
 import { Animated } from 'react-native'
 
 type AnimationsConfig<A extends Object = any> = {
@@ -28,6 +36,83 @@ const animatedStyleKey = {
   opacity: true,
 }
 
+export function useAnimatedNumber(initial: number): UniversalAnimatedNumber<Animated.Value> {
+  const state = useRef(
+    null as any as {
+      val: Animated.Value
+      composite: Animated.CompositeAnimation | null
+      strategy: AnimatedNumberStrategy
+    }
+  )
+  if (!state.current) {
+    state.current = {
+      composite: null,
+      val: new Animated.Value(initial),
+      strategy: { type: 'spring' },
+    }
+  }
+
+  return {
+    getInstance() {
+      return state.current.val
+    },
+    getValue() {
+      return state.current.val['_value']
+    },
+    stop() {
+      state.current.composite?.stop()
+      state.current.composite = null
+    },
+    setValue(next: number, { type, ...config } = { type: 'spring' }) {
+      const val = state.current.val
+      if (type === 'direct') {
+        val.setValue(next)
+      } else if (type === 'spring') {
+        state.current.composite?.stop()
+        const composite = Animated.spring(val, {
+          ...config,
+          toValue: next,
+          useNativeDriver: !isWeb,
+        })
+        composite.start()
+        state.current.composite = composite
+      } else {
+        state.current.composite?.stop()
+        const composite = Animated.timing(val, {
+          ...config,
+          toValue: next,
+          useNativeDriver: !isWeb,
+        })
+        composite.start()
+        state.current.composite = composite
+      }
+    },
+  }
+}
+
+export function useAnimatedNumberReaction(
+  value: UniversalAnimatedNumber<Animated.Value>,
+  cb: (current: number) => void
+) {
+  const onChange = useEvent((current) => {
+    cb(current.value)
+  })
+
+  useEffect(() => {
+    const id = value.getInstance().addListener(onChange)
+    return () => {
+      value.getInstance().removeListener(id)
+    }
+  }, [value, onChange])
+}
+
+export function useAnimatedNumberStyle<V extends UniversalAnimatedNumber<Animated.Value>>(
+  value: V,
+  getStyle: (value: any) => any
+) {
+  return getStyle(value.getInstance())
+}
+
 export function createAnimations<A extends AnimationsConfig>(animations: A): AnimationDriver<A> {
   const AnimatedView = Animated.View
   const AnimatedText = Animated.Text
@@ -40,6 +125,9 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
     animations,
     View: AnimatedView,
     Text: AnimatedText,
+    useAnimatedNumber,
+    useAnimatedNumberReaction,
+    useAnimatedNumberStyle,
     useAnimations: (props, helpers) => {
       const { onDidAnimate, delay, getStyle, state } = helpers
       const [isPresent, sendExitComplete] = usePresence()

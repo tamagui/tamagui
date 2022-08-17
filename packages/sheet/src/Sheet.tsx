@@ -4,8 +4,8 @@ import {
   Slot,
   TamaguiElement,
   Theme,
+  getAnimationDriver,
   isClient,
-  isWeb,
   mergeEvent,
   styled,
   themeable,
@@ -30,13 +30,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import {
-  Animated,
-  GestureResponderEvent,
-  PanResponder,
-  PanResponderGestureState,
-  View,
-} from 'react-native'
+import { GestureResponderEvent, PanResponder, PanResponderGestureState, View } from 'react-native'
 
 import { SHEET_HANDLE_NAME, SHEET_NAME } from './SHEET_HANDLE_NAME'
 import { SheetProvider, useSheetContext } from './SheetContext'
@@ -206,6 +200,11 @@ export const Sheet = withStaticProperties(
         }
       }
 
+      const driver = getAnimationDriver()
+      if (!driver) {
+        throw new Error(`Must set animations in tamagui.config.ts`)
+      }
+
       // allows for sheets to be controlled by other components
       const controller = useContext(SheetControllerContext)
       const isHidden = controller?.hidden || false
@@ -269,10 +268,14 @@ export const Sheet = withStaticProperties(
         [dismissOnSnapToBottom, snapPoints.length, setPosition_, setOpen]
       )
 
-      const positionValue = useRef<Animated.Value>()
-      if (!positionValue.current) {
-        positionValue.current = new Animated.Value(HIDDEN_SIZE)
-      }
+      const animatedNumber = driver.useAnimatedNumber(HIDDEN_SIZE)
+
+      // native only fix
+      const at = useRef(0)
+      driver.useAnimatedNumberReaction(animatedNumber, (value) => {
+        at.current = value
+        scrollBridge.paneY = value
+      })
 
       const [isResizing, setIsResizing] = useState(true)
       useIsomorphicLayoutEffect(() => {
@@ -282,10 +285,8 @@ export const Sheet = withStaticProperties(
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [modal])
 
-      const spring = useRef<Animated.CompositeAnimation | null>(null)
       function stopSpring() {
-        spring.current?.stop()
-        spring.current = null
+        animatedNumber.stop()
         if (scrollBridge.onFinishAnimate) {
           scrollBridge.onFinishAnimate()
           scrollBridge.onFinishAnimate = undefined
@@ -306,7 +307,7 @@ export const Sheet = withStaticProperties(
       )
 
       const animateTo = useEvent((position: number) => {
-        const current = positionValue.current
+        const current = animatedNumber.getValue()
         if (isHidden && open) return
         if (!current) return
         if (frameSize === 0) return
@@ -318,26 +319,19 @@ export const Sheet = withStaticProperties(
           if (isResizing) {
             setIsResizing(false)
           }
-          Animated.timing(current, {
-            useNativeDriver: !isWeb,
-            toValue,
+          animatedNumber.setValue(toValue, {
+            type: 'timing',
             duration: 0,
-          }).start()
+          })
           at.current = toValue
           return
         }
         // dont bounce on initial measure to bottom
         const overshootClamping = at.current === HIDDEN_SIZE
-        spring.current = Animated.spring(current, {
-          useNativeDriver: !isWeb,
-          toValue,
-          overshootClamping,
+        animatedNumber.setValue(toValue, {
           ...animationConfig,
-        })
-        spring.current.start(({ finished }) => {
-          if (finished) {
-            stopSpring()
-          }
+          type: 'spring',
+          overshootClamping,
         })
       })
 
@@ -345,25 +339,12 @@ export const Sheet = withStaticProperties(
         animateTo(position)
       }, [isHidden, frameSize, position, animateTo])
 
-      // native only fix
-      const at = useRef(0)
-      useEffect(() => {
-        positionValue.current!.addListener(({ value }) => {
-          at.current = value
-          scrollBridge.paneY = value
-        })
-        return () => {
-          positionValue.current!.removeAllListeners()
-        }
-      }, [])
-
       const panResponder = useMemo(
         () => {
           if (disableDrag) return
           if (!frameSize) return
 
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          const pos = positionValue.current!
+          const pos = animatedNumber.getValue()
           const minY = positions[0]
           scrollBridge.paneMinY = minY
           let startY = at.current
@@ -435,25 +416,13 @@ export const Sheet = withStaticProperties(
 
           let isExternalDrag = false
 
-          function setPositionValue(next: number) {
-            // useful to debug any "jumping"
-            // if (process.env.NODE_ENV === 'development') {
-            //   const moveAmt = Math.abs(pos['_value'] - next)
-            //   if (moveAmt > 50) {
-            //     console.warn('!!!!!!!!!!!!jump!', moveAmt)
-            //     // debugger
-            //   }
-            // }
-            pos.setValue(next)
-          }
-
           scrollBridge.drag = (dy) => {
             if (!isExternalDrag) {
               isExternalDrag = true
               grant()
             }
             const to = dy + startY
-            setPositionValue(resisted(to, minY))
+            animatedNumber.setValue(resisted(to, minY), { type: 'direct' })
           }
 
           scrollBridge.release = release
@@ -463,7 +432,7 @@ export const Sheet = withStaticProperties(
             onPanResponderGrant: grant,
             onPanResponderMove: (_e, { dy }) => {
               const to = dy + startY
-              setPositionValue(resisted(to, minY))
+              animatedNumber.setValue(resisted(to, minY), { type: 'direct' })
             },
             onPanResponderEnd: finish,
             onPanResponderTerminate: finish,
@@ -493,6 +462,7 @@ export const Sheet = withStaticProperties(
               overlayComponent = child
               break
             default:
+              // eslint-disable-next-line no-console
               console.warn('Warning: passed invalid child to Sheet', child)
           }
         }
@@ -500,11 +470,17 @@ export const Sheet = withStaticProperties(
 
       const preventShown = controller?.hidden && controller?.open
 
+      const animatedStyle = driver.useAnimatedNumberStyle(animatedNumber, (val) => {
+        return {
+          transform: [{ translateY: frameSize === 0 ? HIDDEN_SIZE : val }],
+        }
+      })
+
       if (preventShown) {
         return null
       }
 
-      const translateY = frameSize === 0 ? HIDDEN_SIZE : positionValue.current
+      const AnimatedView = driver.View
 
       const contents = (
         <SheetProvider
@@ -523,7 +499,7 @@ export const Sheet = withStaticProperties(
         >
           {isResizing ? null : overlayComponent}
 
-          <Animated.View
+          <AnimatedView
             ref={ref}
             {...panResponder?.panHandlers}
             onLayout={(e) => {
@@ -535,13 +511,15 @@ export const Sheet = withStaticProperties(
               })
             }}
             pointerEvents={open ? 'auto' : 'none'}
-            style={{
-              position: 'absolute',
-              zIndex: 10,
-              width: '100%',
-              height: '100%',
-              transform: [{ translateY }],
-            }}
+            style={[
+              {
+                position: 'absolute',
+                zIndex: 10,
+                width: '100%',
+                height: '100%',
+              },
+              animatedStyle,
+            ]}
           >
             {handleComponent}
 
@@ -555,7 +533,7 @@ export const Sheet = withStaticProperties(
             >
               {isResizing ? null : frameComponent}
             </RemoveScroll>
-          </Animated.View>
+          </AnimatedView>
         </SheetProvider>
       )
 
