@@ -6671,9 +6671,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/unagi@^1.0.1-beta.141, @tamagui/unagi@workspace:takeout/unagi":
+"@tamagui/unagi@^1.0.1-beta.141, @tamagui/unagi@workspace:packages/unagi":
   version: 0.0.0-use.local
-  resolution: "@tamagui/unagi@workspace:takeout/unagi"
+  resolution: "@tamagui/unagi@workspace:packages/unagi"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.141
     "@tamagui/proxy-worm": ^1.0.1-beta.141

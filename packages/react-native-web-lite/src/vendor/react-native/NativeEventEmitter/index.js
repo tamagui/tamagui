@@ -9,9 +9,8 @@
  */
 'use strict'
 
-import invariant from 'fbjs/lib/invariant'
-
 import Platform from '../../../exports/Platform'
+import { invariant } from '../../../modules/invariant'
 import RCTDeviceEventEmitter from './RCTDeviceEventEmitter'
 
 /**
@@ -34,7 +33,6 @@ export default class NativeEventEmitter {
 
   addListener(eventType, listener, context) {
     var _this$_nativeModule
-
     ;(_this$_nativeModule = this._nativeModule) == null
       ? void 0
       : _this$_nativeModule.addListener(eventType)
@@ -43,7 +41,6 @@ export default class NativeEventEmitter {
       remove: () => {
         if (subscription != null) {
           var _this$_nativeModule2
-
           ;(_this$_nativeModule2 = this._nativeModule) == null
             ? void 0
             : _this$_nativeModule2.removeListeners(1) // $FlowFixMe[incompatible-use]
@@ -60,7 +57,6 @@ export default class NativeEventEmitter {
 
   removeListener(eventType, listener) {
     var _this$_nativeModule3
-
     ;(_this$_nativeModule3 = this._nativeModule) == null
       ? void 0
       : _this$_nativeModule3.removeListeners(1) // NOTE: This will report a deprecation notice via `console.error`.

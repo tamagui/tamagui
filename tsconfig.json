@@ -10,9 +10,6 @@
       "tamagui-loader": [
         "packages/loader"
       ],
-      "@tamagui/unagi": [
-        "takeout/unagi"
-      ],
       "@tamagui/*": [
         "packages/*"
       ],

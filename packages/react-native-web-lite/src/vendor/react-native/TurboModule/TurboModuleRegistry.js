@@ -9,7 +9,8 @@
  */
 'use strict'
 
-import invariant from 'fbjs/lib/invariant'
+import { invariant } from '../../../modules/invariant'
+
 export function get(name) {
   return null
 }

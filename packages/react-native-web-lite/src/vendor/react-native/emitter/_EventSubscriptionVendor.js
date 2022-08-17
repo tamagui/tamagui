@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * 
+ *
  */
-'use strict';
+'use strict'
 
-import invariant from 'fbjs/lib/invariant';
+import { invariant } from '../../../modules/invariant'
 
 /**
  * EventSubscriptionVendor stores a set of EventSubscriptions that are
@@ -17,7 +17,7 @@ import invariant from 'fbjs/lib/invariant';
  */
 class EventSubscriptionVendor {
   constructor() {
-    this._subscriptionsForType = {};
+    this._subscriptionsForType = {}
   }
   /**
    * Adds a subscription keyed by an event type.
@@ -26,21 +26,23 @@ class EventSubscriptionVendor {
    * @param {EventSubscription} subscription
    */
 
-
   addSubscription(eventType, subscription) {
-    invariant(subscription.subscriber === this, 'The subscriber of the subscription is incorrectly set.');
+    invariant(
+      subscription.subscriber === this,
+      'The subscriber of the subscription is incorrectly set.'
+    )
 
     if (!this._subscriptionsForType[eventType]) {
-      this._subscriptionsForType[eventType] = [];
+      this._subscriptionsForType[eventType] = []
     }
 
-    var key = this._subscriptionsForType[eventType].length;
+    var key = this._subscriptionsForType[eventType].length
 
-    this._subscriptionsForType[eventType].push(subscription);
+    this._subscriptionsForType[eventType].push(subscription)
 
-    subscription.eventType = eventType;
-    subscription.key = key;
-    return subscription;
+    subscription.eventType = eventType
+    subscription.key = key
+    return subscription
   }
   /**
    * Removes a bulk set of the subscriptions.
@@ -49,12 +51,11 @@ class EventSubscriptionVendor {
    *   registered supscriptions to remove, if null remove all subscriptions.
    */
 
-
   removeAllSubscriptions(eventType) {
     if (eventType == null) {
-      this._subscriptionsForType = {};
+      this._subscriptionsForType = {}
     } else {
-      delete this._subscriptionsForType[eventType];
+      delete this._subscriptionsForType[eventType]
     }
   }
   /**
@@ -64,14 +65,13 @@ class EventSubscriptionVendor {
    * @param {object} subscription
    */
 
-
   removeSubscription(subscription) {
-    var eventType = subscription.eventType;
-    var key = subscription.key;
-    var subscriptionsForType = this._subscriptionsForType[eventType];
+    var eventType = subscription.eventType
+    var key = subscription.key
+    var subscriptionsForType = this._subscriptionsForType[eventType]
 
     if (subscriptionsForType) {
-      delete subscriptionsForType[key];
+      delete subscriptionsForType[key]
     }
   }
   /**
@@ -87,11 +87,9 @@ class EventSubscriptionVendor {
    * @returns {?array}
    */
 
-
   getSubscriptionsForType(eventType) {
-    return this._subscriptionsForType[eventType];
+    return this._subscriptionsForType[eventType]
   }
-
 }
 
-export default EventSubscriptionVendor;
+export default EventSubscriptionVendor

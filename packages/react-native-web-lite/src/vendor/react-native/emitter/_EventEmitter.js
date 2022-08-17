@@ -5,14 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * 
+ *
  * @typecheck
  */
-import invariant from 'fbjs/lib/invariant';
-import EmitterSubscription from './_EmitterSubscription';
-import EventSubscriptionVendor from './_EventSubscriptionVendor';
+import { invariant } from '../../../modules/invariant'
+import EmitterSubscription from './_EmitterSubscription'
+import EventSubscriptionVendor from './_EventSubscriptionVendor'
 
-var sparseFilterPredicate = () => true;
+var sparseFilterPredicate = () => true
 
 /**
  * @class EventEmitter
@@ -35,7 +35,7 @@ class EventEmitter {
    *   to use. If omitted, a new subscriber will be created for the emitter.
    */
   constructor(subscriber) {
-    this._subscriber = subscriber || new EventSubscriptionVendor();
+    this._subscriber = subscriber || new EventSubscriptionVendor()
   }
   /**
    * Adds a listener to be invoked when events of the specified type are
@@ -52,10 +52,15 @@ class EventEmitter {
    *   listener
    */
 
-
-  addListener(eventType, // FIXME: listeners should return void instead of mixed to prevent issues
-  listener, context) {
-    return this._subscriber.addSubscription(eventType, new EmitterSubscription(this, this._subscriber, listener, context));
+  addListener(
+    eventType, // FIXME: listeners should return void instead of mixed to prevent issues
+    listener,
+    context
+  ) {
+    return this._subscriber.addSubscription(
+      eventType,
+      new EmitterSubscription(this, this._subscriber, listener, context)
+    )
   }
   /**
    * Removes all of the registered listeners, including those registered as
@@ -65,19 +70,17 @@ class EventEmitter {
    *   listeners to remove
    */
 
-
   removeAllListeners(eventType) {
-    this._subscriber.removeAllSubscriptions(eventType);
+    this._subscriber.removeAllSubscriptions(eventType)
   }
   /**
    * @deprecated Use `remove` on the EventSubscription from `addListener`.
    */
 
-
   removeSubscription(subscription) {
-    invariant(subscription.emitter === this, 'Subscription does not belong to this emitter.');
+    invariant(subscription.emitter === this, 'Subscription does not belong to this emitter.')
 
-    this._subscriber.removeSubscription(subscription);
+    this._subscriber.removeSubscription(subscription)
   }
   /**
    * Returns the number of listeners that are currently registered for the given
@@ -87,15 +90,15 @@ class EventEmitter {
    * @returns {number}
    */
 
-
   listenerCount(eventType) {
-    var subscriptions = this._subscriber.getSubscriptionsForType(eventType);
+    var subscriptions = this._subscriber.getSubscriptionsForType(eventType)
 
-    return subscriptions ? // We filter out missing entries because the array is sparse.
-    // "callbackfn is called only for elements of the array which actually
-    // exist; it is not called for missing elements of the array."
-    // https://www.ecma-international.org/ecma-262/9.0/index.html#sec-array.prototype.filter
-    subscriptions.filter(sparseFilterPredicate).length : 0;
+    return subscriptions // We filter out missing entries because the array is sparse.
+      ? // "callbackfn is called only for elements of the array which actually
+        // exist; it is not called for missing elements of the array."
+        // https://www.ecma-international.org/ecma-262/9.0/index.html#sec-array.prototype.filter
+        subscriptions.filter(sparseFilterPredicate).length
+      : 0
   }
   /**
    * Emits an event of the given type with the given data. All handlers of that
@@ -112,20 +115,23 @@ class EventEmitter {
    *   emitter.emit('someEvent', 'abc'); // logs 'abc'
    */
 
-
   emit(eventType) {
-    var subscriptions = this._subscriber.getSubscriptionsForType(eventType);
+    var subscriptions = this._subscriber.getSubscriptionsForType(eventType)
 
     if (subscriptions) {
-      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
+      for (
+        var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1;
+        _key < _len;
+        _key++
+      ) {
+        args[_key - 1] = arguments[_key]
       }
 
       for (var i = 0, l = subscriptions.length; i < l; i++) {
-        var subscription = subscriptions[i]; // The subscription may have been removed during this event loop.
+        var subscription = subscriptions[i] // The subscription may have been removed during this event loop.
 
         if (subscription && subscription.listener) {
-          subscription.listener.apply(subscription.context, args);
+          subscription.listener.apply(subscription.context, args)
         }
       }
     }
@@ -134,25 +140,31 @@ class EventEmitter {
    * @deprecated Use `remove` on the EventSubscription from `addListener`.
    */
 
+  removeListener(
+    eventType, // FIXME: listeners should return void instead of mixed to prevent issues
+    listener
+  ) {
+    console.error(
+      "EventEmitter.removeListener('" +
+        eventType +
+        "', ...): Method has been " +
+        'deprecated. Please instead use `remove()` on the subscription ' +
+        'returned by `EventEmitter.addListener`.'
+    )
 
-  removeListener(eventType, // FIXME: listeners should return void instead of mixed to prevent issues
-  listener) {
-    console.error("EventEmitter.removeListener('" + eventType + "', ...): Method has been " + 'deprecated. Please instead use `remove()` on the subscription ' + 'returned by `EventEmitter.addListener`.');
-
-    var subscriptions = this._subscriber.getSubscriptionsForType(eventType);
+    var subscriptions = this._subscriber.getSubscriptionsForType(eventType)
 
     if (subscriptions) {
       for (var i = 0, l = subscriptions.length; i < l; i++) {
-        var subscription = subscriptions[i]; // The subscription may have been removed during this event loop.
+        var subscription = subscriptions[i] // The subscription may have been removed during this event loop.
         // its listener matches the listener in method parameters
 
         if (subscription && subscription.listener === listener) {
-          subscription.remove();
+          subscription.remove()
         }
       }
     }
   }
-
 }
 
-export default EventEmitter;
+export default EventEmitter
