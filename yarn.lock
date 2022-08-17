@@ -20671,9 +20671,6 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-beta.141
     "@tamagui/normalize-css-color-lite": ^1.0.1-beta.141
-    create-react-class: ^15.7.0
-    inline-style-prefixer: ^6.0.1
-    postcss-value-parser: ^4.2.0
     react: "*"
     react-dom: "*"
     styleq: ^0.1.2
