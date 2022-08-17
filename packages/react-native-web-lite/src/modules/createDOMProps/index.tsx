@@ -268,8 +268,12 @@ const createDOMProps = (elementType, props, options?) => {
   }
 
   // "dataSet" replaced with "data-*"
+  const tmgCN = dataSet ? dataSet.className : undefined
+  const tmgID = dataSet ? dataSet.id : undefined
+
   if (dataSet != null) {
     for (const dataProp in dataSet) {
+      if (dataProp === 'className' || dataProp === 'id') continue
       if (hasOwnProperty.call(dataSet, dataProp)) {
         const dataName = hyphenateString(dataProp)
         const dataValue = dataSet[dataProp]
@@ -323,13 +327,20 @@ const createDOMProps = (elementType, props, options?) => {
   if (className) {
     domProps.className = className
   }
+
+  if (tmgCN) {
+    domProps.className = tmgCN
+  }
+
   if (inlineStyle) {
     domProps.style = inlineStyle
   }
 
   // OTHER
   // Native element ID
-  if (nativeID != null) {
+  if (tmgID) {
+    domProps.id = tmgID
+  } else if (nativeID != null) {
     domProps.id = nativeID
   }
   // Automated test IDs
