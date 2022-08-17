@@ -1,4 +1,4 @@
-import normalizeCSSColor from 'normalize-css-color'
+import normalizeCSSColor from '@tamagui/normalize-css-color-lite'
 
 export const normalizeColor = (color?: number | string | null, opacity?: number) => {
   if (color == null || color == undefined) {

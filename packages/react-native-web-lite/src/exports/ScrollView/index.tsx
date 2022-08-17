@@ -8,45 +8,39 @@
  * @noflow
  */
 
-import createReactClass from 'create-react-class'
 import React from 'react'
 
 import dismissKeyboard from '../../modules/dismissKeyboard'
 import { invariant } from '../../modules/invariant'
 import mergeRefs from '../../modules/mergeRefs'
-import ScrollResponder from '../../modules/ScrollResponder'
+import { ScrollResponderMixin } from '../../modules/ScrollResponder'
 import StyleSheet from '../StyleSheet'
 import View from '../View'
 import type { ViewProps, ViewStyle } from '../View/types'
 import ScrollViewBase from './ScrollViewBase'
 
-type ScrollViewProps = ViewProps & {
-  centerContent?: boolean
-  contentContainerStyle?: ViewStyle
-  horizontal?: boolean
-  keyboardDismissMode?: 'none' | 'interactive' | 'on-drag'
-  onContentSizeChange?: (e: any) => void
-  onScroll?: (e: any) => void
-  pagingEnabled?: boolean
-  refreshControl?: any
-  scrollEnabled?: boolean
-  scrollEventThrottle?: number
-  stickyHeaderIndices?: Array<number>
-}
-
 const emptyObject = {} as any
 
-/* eslint-disable react/prefer-es6-class */
-const ScrollView = createReactClass({
-  mixins: [ScrollResponder.Mixin],
+class ScrollView extends React.Component<any> {
+  _scrollNodeRef: any
+  _innerViewRef: any
 
-  getInitialState() {
-    return this.scrollResponderMixinGetInitialState()
-  },
+  mixin = new ScrollResponderMixin({
+    getScrollableNode: () => {
+      return this._scrollNodeRef
+    },
+    getInnerViewNode: () => {
+      return this._innerViewRef
+    },
+  })
+
+  state = {
+    ...this.mixin.scrollResponderMixinGetInitialState(),
+  }
 
   flashScrollIndicators() {
-    this.scrollResponderFlashScrollIndicators()
-  },
+    this.mixin.scrollResponderFlashScrollIndicators()
+  }
 
   /**
    * Returns a reference to the underlying scroll responder, which supports
@@ -54,25 +48,25 @@ const ScrollView = createReactClass({
    * implement this method so that they can be composed while providing access
    * to the underlying scroll responder's methods.
    */
-  getScrollResponder(): typeof ScrollView {
-    return this
-  },
+  getScrollResponder() {
+    return this.mixin
+  }
 
   getScrollableNode(): any {
     return this._scrollNodeRef
-  },
+  }
 
   getInnerViewRef(): any {
     return this._innerViewRef
-  },
+  }
 
   getInnerViewNode(): any {
     return this._innerViewRef
-  },
+  }
 
   getNativeScrollRef(): any {
     return this._scrollNodeRef
-  },
+  }
 
   /**
    * Scrolls to a given x, y offset, either immediately or with a smooth animation.
@@ -104,7 +98,7 @@ const ScrollView = createReactClass({
       y: y || 0,
       animated: animated !== false,
     })
-  },
+  }
 
   /**
    * If this is a vertical ScrollView scrolls to the bottom.
@@ -119,11 +113,11 @@ const ScrollView = createReactClass({
     const animated = (options && options.animated) !== false
     const { horizontal } = this.props
     const scrollResponder = this.getScrollResponder()
-    const scrollResponderNode = scrollResponder.scrollResponderGetScrollableNode()
+    const scrollResponderNode = this._scrollNodeRef
     const x = horizontal ? scrollResponderNode.scrollWidth : 0
     const y = horizontal ? 0 : scrollResponderNode.scrollHeight
     scrollResponder.scrollResponderScrollTo({ x, y, animated })
-  },
+  }
 
   render() {
     const {
@@ -207,22 +201,22 @@ const ScrollView = createReactClass({
     const props = {
       ...other,
       style: [baseStyle, pagingEnabled && pagingEnabledStyle, this.props.style],
-      onTouchStart: this.scrollResponderHandleTouchStart,
-      onTouchMove: this.scrollResponderHandleTouchMove,
-      onTouchEnd: this.scrollResponderHandleTouchEnd,
-      onScrollBeginDrag: this.scrollResponderHandleScrollBeginDrag,
-      onScrollEndDrag: this.scrollResponderHandleScrollEndDrag,
-      onMomentumScrollBegin: this.scrollResponderHandleMomentumScrollBegin,
-      onMomentumScrollEnd: this.scrollResponderHandleMomentumScrollEnd,
-      onStartShouldSetResponder: this.scrollResponderHandleStartShouldSetResponder,
-      onStartShouldSetResponderCapture: this.scrollResponderHandleStartShouldSetResponderCapture,
-      onScrollShouldSetResponder: this.scrollResponderHandleScrollShouldSetResponder,
+      onTouchStart: this.mixin.scrollResponderHandleTouchStart,
+      onTouchMove: this.mixin.scrollResponderHandleTouchMove,
+      onTouchEnd: this.mixin.scrollResponderHandleTouchEnd,
+      onScrollBeginDrag: this.mixin.scrollResponderHandleScrollBeginDrag,
+      onScrollEndDrag: this.mixin.scrollResponderHandleScrollEndDrag,
+      onMomentumScrollBegin: this.mixin.scrollResponderHandleMomentumScrollBegin,
+      onMomentumScrollEnd: this.mixin.scrollResponderHandleMomentumScrollEnd,
+      onStartShouldSetResponder: this.mixin.scrollResponderHandleStartShouldSetResponder,
+      onStartShouldSetResponderCapture:
+        this.mixin.scrollResponderHandleStartShouldSetResponderCapture,
+      onScrollShouldSetResponder: this.mixin.scrollResponderHandleScrollShouldSetResponder,
       onScroll: this._handleScroll,
-      onResponderGrant: this.scrollResponderHandleResponderGrant,
-      onResponderTerminationRequest: this.scrollResponderHandleTerminationRequest,
-      onResponderTerminate: this.scrollResponderHandleTerminate,
-      onResponderRelease: this.scrollResponderHandleResponderRelease,
-      onResponderReject: this.scrollResponderHandleResponderReject,
+      onResponderGrant: this.mixin.scrollResponderHandleResponderGrant,
+      onResponderTerminationRequest: this.mixin.scrollResponderHandleTerminationRequest,
+      onResponderRelease: this.mixin.scrollResponderHandleResponderRelease,
+      onResponderReject: this.mixin.scrollResponderHandleResponderReject,
     }
 
     const ScrollViewClass = ScrollViewBase
@@ -240,12 +234,12 @@ const ScrollView = createReactClass({
     }
 
     return scrollView
-  },
+  }
 
   _handleContentOnLayout(e: any) {
     const { width, height } = e.nativeEvent.layout
     this.props.onContentSizeChange(width, height)
-  },
+  }
 
   _handleScroll(e: Object) {
     if (process.env.NODE_ENV !== 'production') {
@@ -265,14 +259,14 @@ const ScrollView = createReactClass({
       dismissKeyboard()
     }
 
-    this.scrollResponderHandleScroll(e)
-  },
+    this.mixin.scrollResponderHandleScroll(e)
+  }
 
-  _setInnerViewRef(node) {
+  _setInnerViewRef = (node) => {
     this._innerViewRef = node
-  },
+  }
 
-  _setScrollNodeRef(node) {
+  _setScrollNodeRef = (node) => {
     this._scrollNodeRef = node
     // ScrollView needs to add more methods to the hostNode in addition to those
     // added by `usePlatformMethods`. This is temporarily until an API like
@@ -286,14 +280,14 @@ const ScrollView = createReactClass({
       node.scrollTo = this.scrollTo
       node.scrollToEnd = this.scrollToEnd
       node.flashScrollIndicators = this.flashScrollIndicators
-      node.scrollResponderZoomTo = this.scrollResponderZoomTo
+      node.scrollResponderZoomTo = this.mixin.scrollResponderZoomTo
       node.scrollResponderScrollNativeHandleToKeyboard =
-        this.scrollResponderScrollNativeHandleToKeyboard
+        this.mixin.scrollResponderScrollNativeHandleToKeyboard
     }
     const ref = mergeRefs(this.props.forwardedRef)
     ref(node)
-  },
-})
+  }
+}
 
 const commonStyle = {
   flexGrow: 1,
