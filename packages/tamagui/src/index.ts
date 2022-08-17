@@ -142,6 +142,7 @@ export {
   createTokens,
   createVariable,
   getConfig,
+  getAnimationDriver,
   getHasConfigured,
   getMedia,
   getStylesAtomic,

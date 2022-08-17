@@ -11,7 +11,7 @@ export default require('./loader').loader
 export const shouldExclude = (filePath: string, projectRoot: string) => {
   if (
     filePath.includes('react-native-web') ||
-    filePath.includes('react-native-reanimated') ||
+    // filePath.includes('react-native-reanimated') ||
     filePath.includes('react-native-gesture-handler') ||
     // filePath.includes('expo-linear-gradient') ||
     filePath.includes('@gorhom/portal') ||

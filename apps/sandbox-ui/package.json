@@ -21,7 +21,6 @@
     "tamagui": "^1.0.1-beta.141"
   },
   "devDependencies": {
-    "@expo/vector-icons": "^13.0.0",
     "@tamagui/build": "^1.0.1-beta.141"
   }
 }

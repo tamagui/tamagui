@@ -460,9 +460,32 @@ export declare type SplitStyleState = TamaguiComponentState & {
 declare type AnimationConfig = {
     [key: string]: any;
 };
+export declare type AnimatedNumberStrategy = {
+    type: 'spring';
+    stiffness?: number;
+    damping?: number;
+    mass?: number;
+    overshootClamping?: boolean;
+    restSpeedThreshold?: number;
+    restDisplacementThreshold?: number;
+} | {
+    type: 'timing';
+    duration: number;
+} | {
+    type: 'direct';
+};
+export declare type UniversalAnimatedNumber<A> = {
+    getInstance(): A;
+    getValue(): number;
+    setValue(next: number, config?: AnimatedNumberStrategy): void;
+    stop(): void;
+};
 export declare type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     avoidClasses?: boolean;
     useAnimations: UseAnimationHook;
+    useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>;
+    useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(val: V, getStyle: (current: any) => any) => void;
+    useAnimatedNumberReaction: (val: UniversalAnimatedNumber<any>, onValue: (current: number) => void) => void;
     animations: A;
     View?: any;
     Text?: any;

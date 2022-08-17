@@ -6257,7 +6257,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox-ui@workspace:apps/sandbox-ui"
   dependencies:
-    "@expo/vector-icons": ^13.0.0
     "@tamagui/build": ^1.0.1-beta.141
     tamagui: ^1.0.1-beta.141
   languageName: unknown
@@ -6285,6 +6284,7 @@ __metadata:
     "@tamagui/slider": ^1.0.1-beta.141
     "@tamagui/theme-base": ^1.0.1-beta.141
     "@tamagui/vite-plugin": ^1.0.1-beta.141
+    "@tamagui/vite-plugin-reanimated": ^1.0.1-beta.141
     "@vitejs/plugin-react": ^1.3.0
     babel-polyfill: ^6.26.0
     css-loader: ^5.2.4
@@ -6382,6 +6382,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native: "*"
+    react-native-reanimated: "*"
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -6817,6 +6818,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/vite-plugin-reanimated@^1.0.1-beta.141, @tamagui/vite-plugin-reanimated@workspace:packages/vite-plugin-reanimated":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/vite-plugin-reanimated@workspace:packages/vite-plugin-reanimated"
+  dependencies:
+    "@babel/core": ^7.18.10
+    "@tamagui/build": ^1.0.1-beta.141
+    "@types/babel-core": ^6.25.7
+    vite: ^2.9.15
+  peerDependencies:
+    vite: ^2.9.15
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/vite-plugin@^1.0.1-beta.141, @tamagui/vite-plugin@workspace:packages/vite-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin@workspace:packages/vite-plugin"
@@ -6929,6 +6943,63 @@ __metadata:
   dependencies:
     "@types/retry": "*"
   checksum: a56040d09d67507b7bbcbef02fd052f5d57359f358b93b3393413e8d4fe7181825d19d0ecee42f7a9100c1b6fb23e740464162709fef14c2ba9a329e172d50ec
+  languageName: node
+  linkType: hard
+
+"@types/babel-core@npm:^6.25.7":
+  version: 6.25.7
+  resolution: "@types/babel-core@npm:6.25.7"
+  dependencies:
+    "@types/babel-generator": "*"
+    "@types/babel-template": "*"
+    "@types/babel-traverse": "*"
+    "@types/babel-types": "*"
+    "@types/babylon": "*"
+  checksum: cb3bd94abbe288bbc1419b8c0188c9d4853de34ff33b03b471f6c5bdccef72e53b672aa168a7028e3ef855501add4afa90f327e5f50b805d8f3e771342980d0d
+  languageName: node
+  linkType: hard
+
+"@types/babel-generator@npm:*":
+  version: 6.25.5
+  resolution: "@types/babel-generator@npm:6.25.5"
+  dependencies:
+    "@types/babel-types": "*"
+  checksum: 5f3985ecef0aae1f692b9554255ad27759389b366efebce6755978407388f5f9844358c20190ff9b79c485822f30676b4e09a04a451f516362651d2f5a5b8ecb
+  languageName: node
+  linkType: hard
+
+"@types/babel-template@npm:*":
+  version: 6.25.2
+  resolution: "@types/babel-template@npm:6.25.2"
+  dependencies:
+    "@types/babel-types": "*"
+    "@types/babylon": "*"
+  checksum: ad4ced1819fbaf7a9ea71a53c9f40cd921bd56d70d27f18ad3a32071dbc40453373a0c8943c1c07fd65ad7e255a5ca620dd827c911ce8f6c56b88ee57efcd823
+  languageName: node
+  linkType: hard
+
+"@types/babel-traverse@npm:*":
+  version: 6.25.7
+  resolution: "@types/babel-traverse@npm:6.25.7"
+  dependencies:
+    "@types/babel-types": "*"
+  checksum: 770f3cf4a4638fd36d82669c2994c8537f23727455f150fedf379df201880444081fea7162208b6019e4c30a68835c703d0446c11c780557ce9192cf27bc1174
+  languageName: node
+  linkType: hard
+
+"@types/babel-types@npm:*":
+  version: 7.0.11
+  resolution: "@types/babel-types@npm:7.0.11"
+  checksum: 9b02719c7cf5062c9ab656a3b4efe3dd79e7a4ab49b5a2ce18d4ec1cb326588a1b40fc03863c24c9dec962f56762c53ed06cdc2a1c241c84e76e54a37a6195fc
+  languageName: node
+  linkType: hard
+
+"@types/babylon@npm:*":
+  version: 6.16.6
+  resolution: "@types/babylon@npm:6.16.6"
+  dependencies:
+    "@types/babel-types": "*"
+  checksum: c011e028bc09457b9a488e5ad8bc081b43c0c7919419343eaef95aeda5e5bb825dc93c323af8e60d97373702d94ae006016e7c641a9be24fef0d9f5ecc2e54c0
   languageName: node
   linkType: hard
 
@@ -20495,9 +20566,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:3.0.0-rc.0":
-  version: 3.0.0-rc.0
-  resolution: "react-native-reanimated@npm:3.0.0-rc.0"
+"react-native-reanimated@npm:2.8.0":
+  version: 2.8.0
+  resolution: "react-native-reanimated@npm:2.8.0"
   dependencies:
     "@babel/plugin-transform-object-assign": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
@@ -20510,7 +20581,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: e7cceeb0bb8d026587c729dd40de0dcf1b5d6bb5377ee369e5da5d752ed4387b6c8af0ef8cf613db72cc2cc1f7a9a8d4786b810da3199204462466c1579f95f0
+  checksum: 6409a941a177d04d9091953a05f493d4924eb0d3e2a4b24cf83bb20460b985f89dd879f0ab7337655dba6a3183ca50cc2ad2b3ea1c505cdc1eed6c5ee1296b59
   languageName: node
   linkType: hard
 

@@ -11,8 +11,10 @@ const tamaguiConfig = {
 export default defineConfig({
   clearScreen: false,
   plugins: [
-    //
-    tamaguiPlugin(tamaguiConfig),
+    tamaguiPlugin({
+      ...tamaguiConfig,
+      useReactNativeWebLite: true,
+    }),
     tamaguiExtractPlugin(tamaguiConfig),
     unagi({
       experimental: { css: 'global' },

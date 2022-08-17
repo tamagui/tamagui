@@ -21,6 +21,7 @@ export * from './helpers/calc';
 export * from './helpers/createShallowUpdate';
 export * from './helpers/getStackSize';
 export * from './helpers/getVariantExtras';
+export * from './helpers/getAnimationDriver';
 export * from './helpers/getExpandedShorthands';
 export * from './helpers/getSize';
 export * from './helpers/getSplitStyles';

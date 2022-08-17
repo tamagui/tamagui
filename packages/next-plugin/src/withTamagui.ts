@@ -12,7 +12,7 @@ import { shouldExclude as shouldExcludeDefault } from 'tamagui-loader'
 import webpack from 'webpack'
 
 export type WithTamaguiProps = TamaguiOptions & {
-  // useReactNativeLite: boolean
+  useReactNativeWebLite: boolean
   disableFontSupport?: boolean
   aliasReactPackages?: boolean
   includeCSSTest?: RegExp | ((path: string) => boolean)
@@ -80,8 +80,9 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           return esm ? path.join(dir, esm) : require.resolve(relativePath)
         }
 
-        // const rnw = tamaguiOptions.useReactNativeLite ? 'react-native-web-lite' : 'react-native-web'
-        const rnw = 'react-native-web'
+        const rnw = tamaguiOptions.useReactNativeWebLite
+          ? 'react-native-web-lite'
+          : 'react-native-web'
 
         const tamaguiAliases = safeResolves(
           ['@tamagui/core/reset.css', '@tamagui/core/reset.css'],
@@ -96,6 +97,34 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           // match commonjs to react-native-web
           // i'd do esm but needs better docs, have to transpile
           ['@tamagui/rnw', '@tamagui/rnw'],
+          ...(tamaguiOptions.useReactNativeWebLite
+            ? ([
+                [
+                  'react-native-web/dist/modules/createDOMProps',
+                  'react-native-web-lite/dist/modules/createDOMProps',
+                ],
+                [
+                  'react-native-web/dist/exports/Text/TextAncestorContext',
+                  'react-native-web-lite/dist/exports/Text/TextAncestorContext',
+                ],
+                [
+                  'react-native-web/dist/modules/useElementLayout',
+                  'react-native-web-lite/dist/modules/useElementLayout',
+                ],
+                [
+                  'react-native-web/dist/modules/useMergeRefs',
+                  'react-native-web-lite/dist/modules/useMergeRefs',
+                ],
+                [
+                  'react-native-web/dist/modules/usePlatformMethods',
+                  'react-native-web-lite/dist/modules/usePlatformMethods',
+                ],
+                [
+                  'react-native-web/dist/modules/useResponderEvents',
+                  'react-native-web-lite/dist/modules/useResponderEvents',
+                ],
+              ] as [string, string][])
+            : []),
           ['react-native$', rnw],
           ['react-native-web$', rnw],
           ['@testing-library/react-native', '@tamagui/proxy-worm'],

@@ -7,7 +7,11 @@ import envPlugin from 'vite-plugin-environment'
  * For some reason envPlugin doesnt work for vitest, but process: { env: {} } breaks vitest
  */
 
-export function tamaguiPlugin(options: TamaguiOptions): Plugin {
+export function tamaguiPlugin(
+  options: TamaguiOptions & {
+    useReactNativeWebLite?: boolean
+  }
+): Plugin {
   const plugin: Plugin = {
     name: 'tamagui-base',
     enforce: 'pre',
@@ -93,9 +97,12 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
           alias: {
             'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
             'react-native/Libraries/Utilities/codegenNativeComponent': '@tamagui/proxy-worm',
-            'react-native': 'react-native-web-lite',
-            'react-native-web': 'react-native-web-lite',
             'react-native-svg': 'react-native-svg-web',
+            'react-native': 'react-native-web',
+            ...(options.useReactNativeWebLite && {
+              'react-native': 'react-native-web-lite',
+              'react-native-web': 'react-native-web-lite',
+            }),
           },
         },
       }

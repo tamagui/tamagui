@@ -1,0 +1,40 @@
+{
+  "name": "@tamagui/vite-plugin-reanimated",
+  "version": "1.0.1-beta.141",
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "eslint",
+    "lint:fix": "yarn lint --fix"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "dependencies": {
+    "@babel/core": "^7.18.10"
+  },
+  "peerDependencies": {
+    "vite": "^2.9.15"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.141",
+    "@types/babel-core": "^6.25.7",
+    "vite": "^2.9.15"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

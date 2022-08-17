@@ -23,6 +23,7 @@
     "@tamagui/slider": "^1.0.1-beta.141",
     "@tamagui/theme-base": "^1.0.1-beta.141",
     "@tamagui/vite-plugin": "^1.0.1-beta.141",
+    "@tamagui/vite-plugin-reanimated": "^1.0.1-beta.141",
     "react": "*",
     "react-dom": "*",
     "react-native-reanimated": "^2.8.0",

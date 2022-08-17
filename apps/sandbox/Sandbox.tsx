@@ -6,6 +6,7 @@ import '../site/app.css'
 import {
   AddThemeDemo,
   AlertDialogDemo,
+  AnimationsDemo,
   ButtonDemo,
   PopoverDemo,
   SelectDemo,
@@ -14,8 +15,14 @@ import {
   TooltipDemo,
 } from '@tamagui/demos'
 import { FocusScope } from '@tamagui/focus-scope'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
+import Animated, {
+  useAnimatedReaction,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated'
 import {
   Button,
   FontLanguage,
@@ -47,10 +54,23 @@ export const Sandbox = () => {
   const scheme = useColorScheme()
   const [theme, setTheme] = useState(scheme as any)
 
-  console.log('theme', theme)
-
   // @ts-ignore
   const { getStyleElement } = AppRegistry.getApplication('Main')
+
+  const val = useSharedValue(0)
+  const style = useAnimatedStyle(() => ({
+    width: 100,
+    height: 100,
+    backgroundColor: 'red',
+    transform: [{ translateX: val.value }],
+  }))
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log('run2')
+      val.value = withSpring(100)
+    }, 1000)
+  }, [])
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
@@ -89,12 +109,15 @@ export const Sandbox = () => {
           overflow: 'hidden',
         }}
       >
-        <ButtonFrame animation="bouncy" debug="verbose" pressable>
+        <Animated.View style={style} />
+
+        {/* <ButtonFrame animation="bouncy" pressable>
           hello
-        </ButtonFrame>
+        </ButtonFrame> */}
         {/* <AlertDialogDemo /> */}
         {/* <AddThemeDemo /> */}
-        {/* <SheetDemo /> */}
+        <AnimationsDemo />
+        <SheetDemo />
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SwitchDemo /> */}

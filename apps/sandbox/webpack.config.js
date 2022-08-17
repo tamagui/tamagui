@@ -35,7 +35,7 @@ module.exports = /** @type { import('webpack').Configuration } */ {
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
     alias: {
       'react-native$': 'react-native-web',
-      'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
+      // 'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
       'react-native-reanimated': require.resolve('react-native-reanimated'),
       'react-native-reanimated$': require.resolve('react-native-reanimated'),
     },
@@ -55,6 +55,20 @@ module.exports = /** @type { import('webpack').Configuration } */ {
     rules: [
       {
         oneOf: [
+          // fix reanimated :/
+          {
+            test: /.*\.[tj]sx?$/,
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  plugins: ['@babel/plugin-transform-flow-strip-types'],
+                  presets: ['@babel/preset-react', '@babel/preset-typescript'],
+                },
+              },
+            ],
+          },
+
           {
             test: /\.(ts|js)x?$/,
             exclude: (path) => shouldExclude(path, __dirname, tamaguiOptions),
