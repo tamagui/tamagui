@@ -89,6 +89,7 @@ export default class AppRegistry {
           {
             hydrate: appParameters.hydrate || false,
             initialProps: appParameters.initialProps || emptyObject,
+            mode: appParameters.mode || 'legacy',
             rootTag: appParameters.rootTag,
           }
         ),
@@ -136,7 +137,7 @@ export default class AppRegistry {
         'This is either due to an import error during initialization or failure to call AppRegistry.registerComponent.'
     )
 
-    runnables[appKey].run(appParameters)
+    return runnables[appKey].run(appParameters)
   }
 
   static setComponentProviderInstrumentationHook(hook: ComponentProviderInstrumentationHook) {

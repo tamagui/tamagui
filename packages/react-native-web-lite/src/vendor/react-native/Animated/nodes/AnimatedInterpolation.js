@@ -12,11 +12,10 @@
 'use strict'
 
 import _objectSpread from '@babel/runtime/helpers/objectSpread2'
-import normalizeColor from 'normalize-css-color'
+import normalizeColor from '@tamagui/normalize-css-color-lite'
 
 import { invariant } from '../../../../modules/invariant'
 import NativeAnimatedHelper from '../NativeAnimatedHelper'
-import AnimatedNode from './AnimatedNode'
 import AnimatedWithChildren from './AnimatedWithChildren'
 
 var __DEV__ = process.env.NODE_ENV !== 'production'

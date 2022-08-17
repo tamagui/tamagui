@@ -21,7 +21,7 @@ type Props = {
 
 const RootTagContext: React.Context<any> = React.createContext(null)
 
-export default function AppContainer(props: Props) {
+const AppContainer = React.forwardRef((props: Props, forwardedRef?: React.Ref<any>) => {
   const { children, WrapperComponent } = props
 
   let innerView = (
@@ -36,12 +36,16 @@ export default function AppContainer(props: Props) {
 
   return (
     <RootTagContext.Provider value={props.rootTag}>
-      <View pointerEvents="box-none" style={styles.appContainer}>
+      <View pointerEvents="box-none" ref={forwardedRef} style={styles.appContainer}>
         {innerView}
       </View>
     </RootTagContext.Provider>
   )
-}
+})
+
+AppContainer.displayName = 'AppContainer'
+
+export default AppContainer
 
 const styles = StyleSheet.create({
   appContainer: {

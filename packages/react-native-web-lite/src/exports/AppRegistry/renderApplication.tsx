@@ -12,7 +12,7 @@ import { ComponentType, FunctionComponent, ReactNode } from 'react'
 import React from 'react'
 
 import { invariant } from '../../modules/invariant'
-import render, { hydrate } from '../render'
+import renderLegacy, { hydrate, hydrateLegacy, render } from '../render'
 import StyleSheet from '../StyleSheet'
 import AppContainer from './AppContainer'
 
@@ -23,20 +23,26 @@ export default function renderApplication<Props extends Object>(
   options: {
     hydrate: boolean
     initialProps: Props
+    mode: 'concurrent' | 'legacy'
     rootTag: any
   }
 ) {
-  const { hydrate: shouldHydrate, initialProps, rootTag } = options
-  const renderFn = shouldHydrate ? hydrate : render
+  const { hydrate: shouldHydrate, initialProps, mode, rootTag } = options
+  const renderFn = shouldHydrate
+    ? mode === 'concurrent'
+      ? hydrate
+      : hydrateLegacy
+    : mode === 'concurrent'
+    ? render
+    : renderLegacy
 
   invariant(rootTag, 'Expect to have a valid rootTag, instead got ', rootTag)
 
-  renderFn(
-    <AppContainer WrapperComponent={WrapperComponent} rootTag={rootTag}>
+  return renderFn(
+    <AppContainer WrapperComponent={WrapperComponent} ref={callback} rootTag={rootTag}>
       <RootComponent {...initialProps} />
     </AppContainer>,
-    rootTag,
-    callback
+    rootTag
   )
 }
 

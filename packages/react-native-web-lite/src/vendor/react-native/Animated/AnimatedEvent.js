@@ -9,7 +9,6 @@
  */
 'use strict'
 
-import findNodeHandle from '../../../exports/findNodeHandle'
 import { invariant } from '../../../modules/invariant'
 import NativeAnimatedHelper from './NativeAnimatedHelper'
 import { shouldUseNativeDriver } from './NativeAnimatedHelper'
@@ -43,20 +42,19 @@ export function attachNativeEvent(viewRef, eventName, argMapping) {
   ) // Assume that the event containing `nativeEvent` is always the first argument.
 
   traverse(argMapping[0].nativeEvent, [])
-  var viewTag = findNodeHandle(viewRef)
 
-  if (viewTag != null) {
+  if (viewRef != null) {
     eventMappings.forEach((mapping) => {
-      NativeAnimatedHelper.API.addAnimatedEventToView(viewTag, eventName, mapping)
+      NativeAnimatedHelper.API.addAnimatedEventToView(viewRef, eventName, mapping)
     })
   }
 
   return {
     detach() {
-      if (viewTag != null) {
+      if (viewRef != null) {
         eventMappings.forEach((mapping) => {
           NativeAnimatedHelper.API.removeAnimatedEventFromView(
-            viewTag,
+            viewRef,
             eventName, // $FlowFixMe[incompatible-call]
             mapping.animatedValueTag
           )

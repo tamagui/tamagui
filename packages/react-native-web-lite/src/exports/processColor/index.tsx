@@ -9,7 +9,7 @@
  * @flow
  */
 
-import normalizeColor from 'normalize-css-color'
+import normalizeColor from '@tamagui/normalize-css-color-lite'
 
 const processColor = (color?: string | number): number | null => {
   if (color === undefined || color === null) {

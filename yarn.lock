@@ -5694,6 +5694,7 @@ __metadata:
     "@tamagui/build": ^1.0.1-beta.141
     "@tamagui/compose-refs": ^1.0.1-beta.141
     "@tamagui/helpers": ^1.0.1-beta.141
+    "@tamagui/normalize-css-color-lite": ^1.0.1-beta.141
     "@tamagui/rnw": ^1.0.1-beta.141
     "@tamagui/use-debounce": ^1.0.1-beta.141
     "@tamagui/use-event": ^1.0.1-beta.141
@@ -5703,7 +5704,6 @@ __metadata:
     esbuild: ^0.14.49
     expo-screen-orientation: ^4.3.0
     hyphenate-style-name: ^1.0.4
-    normalize-css-color: ^1.0.2
     react: "*"
     react-dom: "*"
     react-native-web: ^0.18.3
@@ -6110,6 +6110,14 @@ __metadata:
     react: "*"
   peerDependencies:
     react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/normalize-css-color-lite@^1.0.1-beta.141, @tamagui/normalize-css-color-lite@workspace:packages/normalize-css-color-lite":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/normalize-css-color-lite@workspace:packages/normalize-css-color-lite"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.141
   languageName: unknown
   linkType: soft
 
@@ -20662,9 +20670,9 @@ __metadata:
   resolution: "react-native-web-lite@workspace:packages/react-native-web-lite"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.141
+    "@tamagui/normalize-css-color-lite": ^1.0.1-beta.141
     create-react-class: ^15.7.0
     inline-style-prefixer: ^6.0.1
-    normalize-css-color: ^1.0.2
     postcss-value-parser: ^4.2.0
     react: "*"
     react-dom: "*"

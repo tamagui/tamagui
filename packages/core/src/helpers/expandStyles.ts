@@ -81,12 +81,13 @@ function normalizeShadow({
     ...(isWeb && {
       shadowColor: normalizeColor(colorStr, shadowOpacity),
     }),
-    ...(!isWeb &&
+    ...(process.env.TAMAGUI_TARGET === 'native' &&
       (() => {
         // on native fix bug - shadows behave better if turned into non-alpha rgb() + shadowOpacity
         const rgba = colorToRGBA(colorStr)
         if (!rgba) {
           if (process.env.NODE_ENV === 'development') {
+            // eslint-disable-next-line no-console
             console.warn('No rgba form', colorStr)
           }
           return {

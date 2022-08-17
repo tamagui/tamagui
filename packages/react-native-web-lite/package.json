@@ -28,9 +28,9 @@
     "./dist/*": "./dist/cjs/*/index.js"
   },
   "dependencies": {
+    "@tamagui/normalize-css-color-lite": "^1.0.1-beta.141",
     "create-react-class": "^15.7.0",
     "inline-style-prefixer": "^6.0.1",
-    "normalize-css-color": "^1.0.2",
     "postcss-value-parser": "^4.2.0",
     "styleq": "^0.1.2"
   },

@@ -11,7 +11,6 @@
 
 import _objectSpread from '@babel/runtime/helpers/objectSpread2'
 
-import findNodeHandle from '../../../../exports/findNodeHandle'
 import { invariant } from '../../../../modules/invariant'
 import { AnimatedEvent } from '../AnimatedEvent'
 import NativeAnimatedHelper from '../NativeAnimatedHelper'
@@ -136,14 +135,14 @@ class AnimatedProps extends AnimatedNode {
 
   __connectAnimatedView() {
     invariant(this.__isNative, 'Expected node to be marked as "native"')
-    var nativeViewTag = findNodeHandle(this._animatedView)
+    var nativeViewTag = this._animatedView
     invariant(nativeViewTag != null, 'Unable to locate attached view in the native tree')
     NativeAnimatedHelper.API.connectAnimatedNodeToView(this.__getNativeTag(), nativeViewTag)
   }
 
   __disconnectAnimatedView() {
     invariant(this.__isNative, 'Expected node to be marked as "native"')
-    var nativeViewTag = findNodeHandle(this._animatedView)
+    var nativeViewTag = this._animatedView
     invariant(nativeViewTag != null, 'Unable to locate attached view in the native tree')
     NativeAnimatedHelper.API.disconnectAnimatedNodeFromView(this.__getNativeTag(), nativeViewTag)
   }
