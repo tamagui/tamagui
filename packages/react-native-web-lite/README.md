@@ -7,6 +7,7 @@ Use at your own risk.
 - Flow => Typescript
 - Full ESModule support
 - sideEffects: false for tree shaking
+- merges [concurrent mode fixes](https://github.com/necolas/react-native-web/pull/2330)
 - ❌ Remove VirtualList, FlatList, SectionList
 - ❌ normalize-css-color
 - ❌ inline-style-prefixer
