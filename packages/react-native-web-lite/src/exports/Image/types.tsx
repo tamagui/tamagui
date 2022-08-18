@@ -16,8 +16,8 @@ import {
   ShadowStyles,
   TransformStyles,
 } from '../../styleTypes'
-import { ColorValue, GenericStyleProp } from '../../types'
-import { ViewProps } from '../View/types'
+import { ColorValue, GenericStyleProp } from '../../types.js'
+import { ViewProps } from '../View/types.js'
 
 type SourceObject = {
   /**

@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/rnw",
+  "name": "@tamagui/rnw-lite",
   "version": "1.0.1-beta.141",
   "main": "index.js",
   "module": "index.esm.js",
@@ -13,9 +13,9 @@
     "access": "public"
   },
   "peerDependencies": {
-    "react-native-web": "*"
+    "react-native-web-lite": "*"
   },
   "devDependencies": {
-    "react-native-web": "^0.18.3"
+    "react-native-web-lite": "^1.0.1-beta.140"
   }
 }

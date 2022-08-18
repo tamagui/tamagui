@@ -11,11 +11,11 @@
 
 import _objectSpread from '@babel/runtime/helpers/objectSpread2'
 
-import { invariant } from '../../../../modules/invariant'
-import { AnimatedEvent } from '../AnimatedEvent'
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
-import AnimatedNode from './AnimatedNode'
-import AnimatedStyle from './AnimatedStyle'
+import { invariant } from '../../../../modules/invariant.js'
+import { AnimatedEvent } from '../AnimatedEvent.js'
+import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
+import AnimatedNode from './AnimatedNode.js'
+import AnimatedStyle from './AnimatedStyle.js'
 
 class AnimatedProps extends AnimatedNode {
   constructor(props, callback) {

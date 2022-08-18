@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const { withTamagui } = require('@tamagui/next-plugin')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
+const { join } = require('path')
 
 Error.stackTraceLimit = Infinity
 
@@ -35,29 +36,35 @@ const plugins = [
       'VirtualizedList',
       'VirtualizedSectionList',
       'AnimatedFlatList',
+      'Animated',
       'FlatList',
       'CheckBox',
       'Touchable',
       'SectionList',
     ],
   }),
-  // (config) => {
-  //   return {
-  //     ...config,
-  //     webpack(webpackConfig, options) {
-  //       const { StatsWriterPlugin } = require('webpack-stats-plugin')
-  //       webpackConfig.plugins.push(
-  //         new StatsWriterPlugin({
-  //           filename: 'stats.json',
-  //         })
-  //       )
-  //       if (typeof config.webpack === 'function') {
-  //         return config.webpack(webpackConfig, options)
-  //       }
-  //       return webpackConfig
-  //     },
-  //   }
-  // },
+  (config) => {
+    return {
+      ...config,
+      webpack(webpackConfig, options) {
+        if (process.env.ANALYZE === 'true') {
+          const { StatsWriterPlugin } = require('webpack-stats-plugin')
+          webpackConfig.plugins.push(
+            new StatsWriterPlugin({
+              filename: 'stats.json',
+              stats: {
+                all: true,
+              },
+            })
+          )
+        }
+        if (typeof config.webpack === 'function') {
+          return config.webpack(webpackConfig, options)
+        }
+        return webpackConfig
+      },
+    }
+  },
   (config) => {
     // for github pages
     if (process.env.ON_GITHUB_PAGES) {

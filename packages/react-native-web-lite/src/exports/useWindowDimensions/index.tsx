@@ -12,8 +12,8 @@
 
 import { useEffect, useState } from 'react'
 
-import { DisplayMetrics } from '../Dimensions'
-import Dimensions from '../Dimensions'
+import { DisplayMetrics } from '../Dimensions/index.js'
+import Dimensions from '../Dimensions/index.js'
 
 export default function useWindowDimensions(): DisplayMetrics {
   const [dims, setDims] = useState(() => Dimensions.get('window'))

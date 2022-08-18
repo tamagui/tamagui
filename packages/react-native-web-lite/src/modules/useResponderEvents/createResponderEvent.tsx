@@ -7,9 +7,9 @@
  * @flow
  */
 
-import getBoundingClientRect from '../getBoundingClientRect'
-import { TouchEvent } from './ResponderEventTypes'
-import { ResponderTouchHistoryStore, TouchHistory } from './ResponderTouchHistoryStore'
+import getBoundingClientRect from '../getBoundingClientRect/index.js'
+import { TouchEvent } from './ResponderEventTypes.js'
+import { ResponderTouchHistoryStore, TouchHistory } from './ResponderTouchHistoryStore.js'
 
 export type ResponderEvent = {
   bubbles: boolean

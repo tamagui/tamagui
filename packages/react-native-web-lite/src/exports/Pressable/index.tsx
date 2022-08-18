@@ -12,14 +12,14 @@
 import * as React from 'react'
 import { forwardRef, memo, useMemo, useRef, useState } from 'react'
 
-import type { HoverEventsConfig } from '../../modules/useHover'
-import useHover from '../../modules/useHover'
-import useMergeRefs from '../../modules/useMergeRefs'
-import StyleSheet from '../StyleSheet'
-import usePressEvents from '../usePressEvents'
-import type { PressResponderConfig } from '../usePressEvents/PressResponder'
-import type { ViewProps } from '../View'
-import View from '../View'
+import type { HoverEventsConfig } from '../../modules/useHover/index.js'
+import useHover from '../../modules/useHover/index.js'
+import useMergeRefs from '../../modules/useMergeRefs/index.js'
+import StyleSheet from '../StyleSheet/index.js'
+import usePressEvents from '../usePressEvents/index.js'
+import type { PressResponderConfig } from '../usePressEvents/PressResponder.js'
+import type { ViewProps } from '../View/index.js'
+import View from '../View/index.js'
 
 export type StateCallbackType = {
   focused: boolean

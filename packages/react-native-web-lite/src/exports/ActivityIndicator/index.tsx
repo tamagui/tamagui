@@ -10,9 +10,9 @@
 
 import * as React from 'react'
 
-import StyleSheet from '../StyleSheet'
-import type { ViewProps } from '../View'
-import View from '../View'
+import StyleSheet from '../StyleSheet/index.js'
+import type { ViewProps } from '../View/index.js'
+import View from '../View/index.js'
 
 const createSvgCircle = (style) => (
   <circle cx="16" cy="16" fill="none" r="14" strokeWidth="4" style={style} />

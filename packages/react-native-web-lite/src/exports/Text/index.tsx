@@ -10,18 +10,18 @@
 
 import * as React from 'react'
 
-import * as forwardedProps from '../../modules/forwardedProps'
-import pick from '../../modules/pick'
-import useElementLayout from '../../modules/useElementLayout'
-import { getLocaleDirection, useLocaleContext } from '../../modules/useLocale'
-import useMergeRefs from '../../modules/useMergeRefs'
-import usePlatformMethods from '../../modules/usePlatformMethods'
-import useResponderEvents from '../../modules/useResponderEvents'
-import type { PlatformMethods } from '../../types'
-import createElement from '../createElement'
-import StyleSheet from '../StyleSheet'
-import TextAncestorContext from './TextAncestorContext'
-import type { TextProps } from './types'
+import * as forwardedProps from '../../modules/forwardedProps/index.js'
+import pick from '../../modules/pick/index.js'
+import useElementLayout from '../../modules/useElementLayout/index.js'
+import { getLocaleDirection, useLocaleContext } from '../../modules/useLocale/index.js'
+import useMergeRefs from '../../modules/useMergeRefs/index.js'
+import usePlatformMethods from '../../modules/usePlatformMethods/index.js'
+import useResponderEvents from '../../modules/useResponderEvents/index.js'
+import type { PlatformMethods } from '../../types.js'
+import createElement from '../createElement/index.js'
+import StyleSheet from '../StyleSheet/index.js'
+import TextAncestorContext from './TextAncestorContext.js'
+import type { TextProps } from './types.js'
 
 const forwardPropsList = Object.assign(
   {},

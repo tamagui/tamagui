@@ -9,11 +9,11 @@
  * @flow
  */
 
-import Dimensions from '../../exports/Dimensions'
-import Platform from '../../exports/Platform'
-import UIManager from '../../exports/UIManager'
-import { invariant, warning } from '../invariant'
-import TextInputState from '../TextInputState'
+import Dimensions from '../../exports/Dimensions/index.js'
+import Platform from '../../exports/Platform/index.js'
+import UIManager from '../../exports/UIManager/index.js'
+import { invariant, warning } from '../invariant.js'
+import TextInputState from '../TextInputState/index.js'
 
 /**
  * Mixin that can be integrated in order to handle scrolling that plays well

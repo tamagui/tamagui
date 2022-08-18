@@ -11,7 +11,7 @@ import { hydrate as domLegacyHydrate, render as domLegacyRender } from 'react-do
 import { unmountComponentAtNode } from 'react-dom'
 import { createRoot as domCreateRoot, hydrateRoot as domHydrateRoot } from 'react-dom/client'
 
-import { createSheet } from '../StyleSheet/dom'
+import { createSheet } from '../StyleSheet/dom/index.js'
 
 export function hydrate(element, root) {
   createSheet(root)

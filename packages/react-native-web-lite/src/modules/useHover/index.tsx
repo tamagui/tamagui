@@ -7,9 +7,9 @@
  * @flow
  */
 
-import { getModality } from '../modality'
-import useEvent from '../useEvent'
-import useLayoutEffect from '../useLayoutEffect'
+import { getModality } from '../modality/index.js'
+import useEvent from '../useEvent/index.js'
+import useLayoutEffect from '../useLayoutEffect/index.js'
 
 /**
  * Types

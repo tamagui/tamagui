@@ -96,36 +96,10 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           ['react-native-reanimated', 'react-native-reanimated'],
           // match commonjs to react-native-web
           // i'd do esm but needs better docs, have to transpile
-          ['@tamagui/rnw', '@tamagui/rnw'],
-          // this could be done by just changing out @tamagui/rnw => new package @tamagui/rnw-lite
-          ...(tamaguiOptions.useReactNativeWebLite
-            ? ([
-                [
-                  'react-native-web/dist/modules/createDOMProps',
-                  'react-native-web-lite/dist/modules/createDOMProps',
-                ],
-                [
-                  'react-native-web/dist/exports/Text/TextAncestorContext',
-                  'react-native-web-lite/dist/exports/Text/TextAncestorContext',
-                ],
-                [
-                  'react-native-web/dist/modules/useElementLayout',
-                  'react-native-web-lite/dist/modules/useElementLayout',
-                ],
-                [
-                  'react-native-web/dist/modules/useMergeRefs',
-                  'react-native-web-lite/dist/modules/useMergeRefs',
-                ],
-                [
-                  'react-native-web/dist/modules/usePlatformMethods',
-                  'react-native-web-lite/dist/modules/usePlatformMethods',
-                ],
-                [
-                  'react-native-web/dist/modules/useResponderEvents',
-                  'react-native-web-lite/dist/modules/useResponderEvents',
-                ],
-              ] as [string, string][])
-            : []),
+          [
+            '@tamagui/rnw',
+            tamaguiOptions.useReactNativeWebLite ? '@tamagui/rnw-lite' : '@tamagui/rnw',
+          ],
           ['react-native$', rnw],
           ['react-native-web$', rnw],
           ['@testing-library/react-native', '@tamagui/proxy-worm'],
@@ -174,14 +148,11 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             )
           }
           try {
-            const regexStr = `react-native-web/.*(${excludeExports.join('|')}).*js`
+            const regexStr = `react-native-web(-lite)?/.*(${excludeExports.join('|')}).*js`
             const regex = new RegExp(regexStr)
             // console.log(prefix, 'exclude', regexStr)
             webpackConfig.plugins.push(
-              new webpack.NormalModuleReplacementPlugin(
-                regex,
-                resolveEsm('@tamagui/proxy-worm/empty-react-native-view')
-              )
+              new webpack.NormalModuleReplacementPlugin(regex, resolveEsm('@tamagui/proxy-worm'))
             )
           } catch (err) {
             console.warn(

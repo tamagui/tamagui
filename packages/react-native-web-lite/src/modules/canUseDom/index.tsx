@@ -7,10 +7,4 @@
  * @flow strict
  */
 
-const canUseDOM: boolean = !!(
-  typeof window !== 'undefined' &&
-  window.document &&
-  window.document.createElement
-)
-
-export default canUseDOM
+export default !!(typeof window !== 'undefined' && window.document && window.document.createElement)

@@ -10,8 +10,8 @@
 
 import * as React from 'react'
 
-import StyleSheet from '../StyleSheet'
-import View from '../View'
+import StyleSheet from '../StyleSheet/index.js'
+import View from '../View/index.js'
 
 type Props = {
   WrapperComponent?: React.FunctionComponent<any> | null

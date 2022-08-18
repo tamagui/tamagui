@@ -7,8 +7,8 @@
  * @flow strict-local
  */
 
-import normalizeColor from './normalizeColor'
-import unitlessNumbers from './unitlessNumbers'
+import unitlessNumbers from '../../../modules/unitlessNumbers/index.js'
+import normalizeColor from './normalizeColor.js'
 
 const colorProps = {
   backgroundColor: true,

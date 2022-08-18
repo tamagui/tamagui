@@ -51,8 +51,8 @@
 
 'use strict'
 
-import TouchHistoryMath from '../../vendor/react-native/TouchHistoryMath'
-import InteractionManager from '../InteractionManager'
+import TouchHistoryMath from '../../vendor/react-native/TouchHistoryMath/index.js'
+import InteractionManager from '../InteractionManager/index.js'
 
 type PressEvent = any
 

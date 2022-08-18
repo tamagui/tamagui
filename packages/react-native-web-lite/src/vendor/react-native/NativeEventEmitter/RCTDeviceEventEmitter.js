@@ -7,7 +7,7 @@
  *
  * @format
  */
-import EventEmitter from '../emitter/EventEmitter' // FIXME: use typed events
+import EventEmitter from '../emitter/EventEmitter.js' // FIXME: use typed events
 
 /**
  * Global EventEmitter used by the native platform to emit events to JavaScript.

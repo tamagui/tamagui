@@ -6080,6 +6080,7 @@ __metadata:
     "@babel/preset-react": ^7.16.7
     "@tamagui/build": ^1.0.1-beta.141
     "@tamagui/proxy-worm": ^1.0.1-beta.141
+    "@tamagui/rnw-lite": ^1.0.1-beta.141
     "@tamagui/static": ^1.0.1-beta.141
     babel-loader: ^8.2.5
     browserslist: ^4.21.1
@@ -6091,7 +6092,7 @@ __metadata:
     html-inline-css-webpack-plugin: ^1.11.1
     html-webpack-plugin: ^5.5.0
     mini-css-extract-plugin: ^2.6.1
-    next: ^12.2.0
+    next: ^12.2.5
     react-native-svg-web: ^1.0.1-beta.141
     tamagui-loader: ^1.0.1-beta.141
     thread-loader: ^3.0.4
@@ -6106,7 +6107,6 @@ __metadata:
   resolution: "@tamagui/next-theme@workspace:packages/next-theme"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.141
-    "@tamagui/core": ^1.0.1-beta.141
     react: "*"
   peerDependencies:
     react: "*"
@@ -6248,6 +6248,16 @@ __metadata:
     react-remove-scroll: ^2.5.5
   peerDependencies:
     react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/rnw-lite@^1.0.1-beta.141, @tamagui/rnw-lite@workspace:packages/rnw-lite":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/rnw-lite@workspace:packages/rnw-lite"
+  dependencies:
+    react-native-web-lite: ^1.0.1-beta.140
+  peerDependencies:
+    react-native-web-lite: "*"
   languageName: unknown
   linkType: soft
 
@@ -6482,6 +6492,7 @@ __metadata:
     tamagui-loader: ^1.0.1-beta.141
     unified: ^10.1.2
     unist-util-visit: ^2.0.3
+    webpack-stats-plugin: ^1.1.0
   languageName: unknown
   linkType: soft
 
@@ -18157,7 +18168,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:^12.2.0, next@npm:^12.2.5":
+"next@npm:^12.2.5":
   version: 12.2.5
   resolution: "next@npm:12.2.5"
   dependencies:
@@ -25021,6 +25032,13 @@ __metadata:
   version: 3.2.3
   resolution: "webpack-sources@npm:3.2.3"
   checksum: 989e401b9fe3536529e2a99dac8c1bdc50e3a0a2c8669cbafad31271eadd994bc9405f88a3039cd2e29db5e6d9d0926ceb7a1a4e7409ece021fe79c37d9c4607
+  languageName: node
+  linkType: hard
+
+"webpack-stats-plugin@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "webpack-stats-plugin@npm:1.1.0"
+  checksum: f692f3003813122a1745607c1db78fbcdf51dca570984a591f53f8e6e4a856ebb1490c43837ad4728ca2b62aed9bdadecb79e5e04efc5bff41ff075e5d809c54
   languageName: node
   linkType: hard
 

@@ -12,8 +12,8 @@
 
 import { useDebugValue, useEffect, useRef } from 'react'
 
-import { EventHandlers, PressResponderConfig } from './PressResponder'
-import PressResponder from './PressResponder'
+import { EventHandlers, PressResponderConfig } from './PressResponder.js'
+import PressResponder from './PressResponder.js'
 
 export default function usePressEvents(
   hostRef: any,

@@ -9,11 +9,11 @@
 
 import { useRef } from 'react'
 
-import UIManager from '../../exports/UIManager'
-import { ViewProps } from '../../exports/View'
-import { GenericStyleProp } from '../../types'
-import createDOMProps from '../createDOMProps'
-import useStable from '../useStable'
+import UIManager from '../../exports/UIManager/index.js'
+import { ViewProps } from '../../exports/View/index.js'
+import { GenericStyleProp } from '../../types.js'
+import createDOMProps from '../createDOMProps/index.js'
+import useStable from '../useStable/index.js'
 
 let didWarn = false
 const emptyObject = {}

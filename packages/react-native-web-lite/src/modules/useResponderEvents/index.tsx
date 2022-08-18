@@ -19,8 +19,8 @@
 
 import * as React from 'react'
 
-import { ResponderConfig } from './ResponderSystem'
-import * as ResponderSystem from './ResponderSystem'
+import { ResponderConfig } from './ResponderSystem.js'
+import * as ResponderSystem from './ResponderSystem.js'
 
 const emptyObject = {}
 let idCounter = 0

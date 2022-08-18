@@ -10,7 +10,7 @@ import { TextStyle, ViewStyle } from 'react-native'
 import { getConfig } from '../conf'
 import { TamaguiInternalConfig } from '../types'
 import { defaultOffset } from './expandStyles'
-import { normalizeValueWithProperty } from './normalizeValueWithProperty'
+import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
 
 // refactor this file away next...

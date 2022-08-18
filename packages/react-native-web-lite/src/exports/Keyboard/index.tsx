@@ -8,7 +8,7 @@
  * @flow
  */
 
-import dismissKeyboard from '../../modules/dismissKeyboard'
+import dismissKeyboard from '../../modules/dismissKeyboard/index.js'
 
 const Keyboard = {
   addListener(): {

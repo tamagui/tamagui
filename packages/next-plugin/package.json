@@ -23,6 +23,7 @@
   "dependencies": {
     "@babel/preset-react": "^7.16.7",
     "@tamagui/proxy-worm": "^1.0.1-beta.141",
+    "@tamagui/rnw-lite": "^1.0.1-beta.141",
     "@tamagui/static": "^1.0.1-beta.141",
     "babel-loader": "^8.2.5",
     "browserslist": "^4.21.1",
@@ -41,7 +42,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.141",
-    "next": "^12.2.0"
+    "next": "^12.2.5"
   },
   "peerDependencies": {
     "next": ">=12.0.0"

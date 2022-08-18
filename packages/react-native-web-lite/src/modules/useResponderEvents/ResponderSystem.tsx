@@ -131,9 +131,9 @@ to return true:wantsResponderID|                            |
                                |                            |
                                +                            + */
 
-import canUseDOM from '../canUseDom'
-import { ResponderEvent } from './createResponderEvent'
-import createResponderEvent from './createResponderEvent'
+import canUseDOM from '../canUseDom/index.js'
+import { ResponderEvent } from './createResponderEvent.js'
+import createResponderEvent from './createResponderEvent.js'
 import {
   isCancelish,
   isEndish,
@@ -141,8 +141,8 @@ import {
   isScroll,
   isSelectionChange,
   isStartish,
-} from './ResponderEventTypes'
-import { ResponderTouchHistoryStore } from './ResponderTouchHistoryStore'
+} from './ResponderEventTypes.js'
+import { ResponderTouchHistoryStore } from './ResponderTouchHistoryStore.js'
 import {
   getLowestCommonAncestor,
   getResponderPaths,
@@ -150,7 +150,7 @@ import {
   hasValidSelection,
   isPrimaryPointerDown,
   setResponderId,
-} from './utils'
+} from './utils.js'
 
 /* ------------ TYPES ------------ */
 

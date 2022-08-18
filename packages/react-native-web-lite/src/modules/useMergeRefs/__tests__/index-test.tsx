@@ -11,7 +11,7 @@ import { act } from 'react-dom/test-utils'
 
 import useMergeRefs from '..'
 
-describe('modules/useMergeRefs', () => {
+describe('modules/useMergeRefs/index.js', () => {
   function TestComponent({ refs, ...rest }) {
     const mergedRef = useMergeRefs(...refs)
     return <div ref={mergedRef} {...rest} />

@@ -9,7 +9,7 @@
  */
 'use strict'
 
-import { invariant } from '../../../modules/invariant'
+import { invariant } from '../../../modules/invariant.js'
 
 /**
  * EventSubscriptionVendor stores a set of EventSubscriptions that are

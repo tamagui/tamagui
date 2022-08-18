@@ -8,7 +8,7 @@
  * @flow
  */
 
-import { invariant } from '../../modules/invariant'
+import { invariant } from '../../modules/invariant.js'
 
 type Content =
   | {

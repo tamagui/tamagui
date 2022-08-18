@@ -7,7 +7,7 @@
 
 import Dimensions from '..'
 
-describe('apis/Dimensions', () => {
+describe('apis/Dimensions/index.js', () => {
   test('get', () => {
     expect(Dimensions.get('screen')).toMatchInlineSnapshot(`
       {

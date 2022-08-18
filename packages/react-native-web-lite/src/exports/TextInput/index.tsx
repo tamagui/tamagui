@@ -10,19 +10,19 @@
 
 import * as React from 'react'
 
-import * as forwardedProps from '../../modules/forwardedProps'
-import pick from '../../modules/pick'
-import TextInputState from '../../modules/TextInputState'
-import useElementLayout from '../../modules/useElementLayout'
-import useLayoutEffect from '../../modules/useLayoutEffect'
-import { getLocaleDirection, useLocaleContext } from '../../modules/useLocale'
-import useMergeRefs from '../../modules/useMergeRefs'
-import usePlatformMethods from '../../modules/usePlatformMethods'
-import useResponderEvents from '../../modules/useResponderEvents'
-import type { PlatformMethods } from '../../types'
-import createElement from '../createElement'
-import StyleSheet from '../StyleSheet'
-import type { TextInputProps } from './types'
+import * as forwardedProps from '../../modules/forwardedProps/index.js'
+import pick from '../../modules/pick/index.js'
+import TextInputState from '../../modules/TextInputState/index.js'
+import useElementLayout from '../../modules/useElementLayout/index.js'
+import useLayoutEffect from '../../modules/useLayoutEffect/index.js'
+import { getLocaleDirection, useLocaleContext } from '../../modules/useLocale/index.js'
+import useMergeRefs from '../../modules/useMergeRefs/index.js'
+import usePlatformMethods from '../../modules/usePlatformMethods/index.js'
+import useResponderEvents from '../../modules/useResponderEvents/index.js'
+import type { PlatformMethods } from '../../types.js'
+import createElement from '../createElement/index.js'
+import StyleSheet from '../StyleSheet/index.js'
+import type { TextInputProps } from './types.js'
 
 /**
  * Determines whether a 'selection' prop differs from a node's existing

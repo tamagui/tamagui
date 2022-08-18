@@ -1,7 +1,9 @@
+import { View } from 'react-native'
+
 export default new Proxy(
   {
     get default() {
-      return require('react-native').View
+      return View
     },
   },
   {
@@ -9,7 +11,7 @@ export default new Proxy(
       if (key === 'createAnimatedComponent') {
         return (x) => x
       }
-      return require('react-native').View
+      return View
     },
   }
 )

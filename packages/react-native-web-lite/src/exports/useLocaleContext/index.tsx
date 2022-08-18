@@ -7,4 +7,4 @@
  * @flow strict
  */
 
-export { useLocaleContext } from '../../modules/useLocale'
+export { useLocaleContext } from '../../modules/useLocale/index.js'

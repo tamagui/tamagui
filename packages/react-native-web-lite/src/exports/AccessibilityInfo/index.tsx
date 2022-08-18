@@ -6,7 +6,7 @@
  *
  * @flow
  */
-import canUseDOM from '../../modules/canUseDom'
+import canUseDOM from '../../modules/canUseDom/index.js'
 
 function isScreenReaderEnabled(): Promise<unknown> {
   return new Promise((resolve, reject) => {

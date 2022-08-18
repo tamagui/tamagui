@@ -1,9 +1,9 @@
-import {
-  AnimatedView,
-  useAnimatedNumber,
-  useAnimatedNumberReaction,
-  useAnimatedNumberStyle,
-} from '@tamagui/animations-react-native'
+// import {
+//   AnimatedView,
+//   useAnimatedNumber,
+//   useAnimatedNumberReaction,
+//   useAnimatedNumberStyle,
+// } from '@tamagui/animations-react-native'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
@@ -274,11 +274,11 @@ export const Sheet = withStaticProperties(
         [dismissOnSnapToBottom, snapPoints.length, setPosition_, setOpen]
       )
 
-      const animatedNumber = useAnimatedNumber(HIDDEN_SIZE)
+      const animatedNumber = driver.useAnimatedNumber(HIDDEN_SIZE)
 
       // native only fix
       const at = useRef(0)
-      useAnimatedNumberReaction(animatedNumber, (value) => {
+      driver.useAnimatedNumberReaction(animatedNumber, (value) => {
         at.current = value
         scrollBridge.paneY = value
       })
@@ -479,7 +479,7 @@ export const Sheet = withStaticProperties(
 
       const preventShown = controller?.hidden && controller?.open
 
-      const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
+      const animatedStyle = driver.useAnimatedNumberStyle(animatedNumber, (val) => {
         return {
           transform: [{ translateY: frameSize === 0 ? HIDDEN_SIZE : val }],
         }
@@ -489,7 +489,7 @@ export const Sheet = withStaticProperties(
         return null
       }
 
-      // const AnimatedView = driver.View
+      const AnimatedView = driver.View
 
       const contents = (
         <SheetProvider

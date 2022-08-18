@@ -7,7 +7,7 @@
  *
  * @flow
  */
-import canUseDOM from '../../modules/canUseDom'
+import canUseDOM from '../../modules/canUseDom/index.js'
 
 export type ColorSchemeName = 'light' | 'dark'
 

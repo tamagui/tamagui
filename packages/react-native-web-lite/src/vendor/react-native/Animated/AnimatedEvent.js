@@ -9,10 +9,10 @@
  */
 'use strict'
 
-import { invariant } from '../../../modules/invariant'
-import NativeAnimatedHelper from './NativeAnimatedHelper'
-import { shouldUseNativeDriver } from './NativeAnimatedHelper'
-import AnimatedValue from './nodes/AnimatedValue'
+import { invariant } from '../../../modules/invariant.js'
+import NativeAnimatedHelper from './NativeAnimatedHelper.js'
+import { shouldUseNativeDriver } from './NativeAnimatedHelper.js'
+import AnimatedValue from './nodes/AnimatedValue.js'
 
 var __DEV__ = process.env.NODE_ENV !== 'production'
 
@@ -81,7 +81,7 @@ function validateMapping(argMapping, args) {
           typeof recMapping +
           ' for key ' +
           key +
-          ', event value must map to AnimatedValue'
+          ', event value must map to AnimatedValue.js'
       )
       return
     }

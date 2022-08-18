@@ -7,7 +7,7 @@
  * @noflow
  */
 
-import UIManager from '../UIManager'
+import UIManager from '../UIManager/index.js'
 
 // NativeModules shim
 const NativeModules = {

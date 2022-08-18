@@ -8,8 +8,8 @@
  * @noflow
  */
 
-import getBoundingClientRect from '../../modules/getBoundingClientRect'
-import setValueForStyles from '../../modules/setValueForStyles'
+import getBoundingClientRect from '../../modules/getBoundingClientRect/index.js'
+import setValueForStyles from '../../modules/setValueForStyles/index.js'
 
 const getRect = (node) => {
   // Unlike the DOM's getBoundingClientRect, React Native layout measurements

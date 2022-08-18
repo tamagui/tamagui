@@ -7,8 +7,8 @@
  * @flow
  */
 
-import isWebColor from '../../../modules/isWebColor'
-import processColor from '../../processColor'
+import isWebColor from '../../../modules/isWebColor/index.js'
+import processColor from '../../processColor/index.js'
 
 const normalizeColor = (color?: number | string, opacity = 1): void | string => {
   if (color == null) return

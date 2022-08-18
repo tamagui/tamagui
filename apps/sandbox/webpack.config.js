@@ -26,15 +26,16 @@ console.log('disableExtraction', disableExtraction)
 
 module.exports = /** @type { import('webpack').Configuration } */ {
   context: __dirname,
-  // stats: 'verbose', // detailed, normal
-  mode: 'development',
+  stats: 'verbose', // detailed, normal
+  mode: NODE_ENV,
   entry: ['./index.tsx'],
   devtool: 'source-map',
   resolve: {
     extensions: [`${target}.ts`, `${target}.tsx`, '.web.js', '.ts', '.tsx', '.js'],
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
     alias: {
-      'react-native$': 'react-native-web',
+      'react-native$': 'react-native-web-lite',
+      '@tamagui/rnw': '@tamagui/rnw-lite',
       // 'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
       'react-native-reanimated': require.resolve('react-native-reanimated'),
       'react-native-reanimated$': require.resolve('react-native-reanimated'),

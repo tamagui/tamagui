@@ -10,11 +10,11 @@
 import * as React from 'react'
 import { forwardRef } from 'react'
 
-import type { ImageProps } from '../Image'
-import Image from '../Image'
-import StyleSheet from '../StyleSheet'
-import type { ViewProps } from '../View'
-import View from '../View'
+import type { ImageProps } from '../Image/index.js'
+import Image from '../Image/index.js'
+import StyleSheet from '../StyleSheet/index.js'
+import type { ViewProps } from '../View/index.js'
+import View from '../View/index.js'
 
 type ImageBackgroundProps = ImageProps & {
   imageRef?: any

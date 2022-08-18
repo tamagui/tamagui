@@ -11,12 +11,7 @@
 const Platform = {
   OS: 'web',
   select: (obj: any): any => ('web' in obj ? obj.web : obj.default),
-  get isTesting(): boolean {
-    if (process.env.NODE_ENV === 'test') {
-      return true
-    }
-    return false
-  },
+  isTesting: process.env.NODE_ENV === 'test',
 }
 
 export default Platform

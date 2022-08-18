@@ -8,7 +8,7 @@
  * @flow
  */
 
-import UIManager from '../../exports/UIManager'
+import UIManager from '../../exports/UIManager/index.js'
 
 /**
  * This class is responsible for coordinating the "focused"

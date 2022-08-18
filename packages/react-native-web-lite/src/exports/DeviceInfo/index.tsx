@@ -7,9 +7,9 @@
  * @flow
  */
 
-import canUseDOM from '../../modules/canUseDom'
-import { DisplayMetrics } from '../Dimensions'
-import Dimensions from '../Dimensions'
+import canUseDOM from '../../modules/canUseDom/index.js'
+import { DisplayMetrics } from '../Dimensions/index.js'
+import Dimensions from '../Dimensions/index.js'
 
 const DeviceInfo = {
   Dimensions: {

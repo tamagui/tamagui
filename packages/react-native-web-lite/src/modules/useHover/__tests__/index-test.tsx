@@ -15,7 +15,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { act } from 'react-dom/test-utils'
 
-import { testOnly_resetActiveModality } from '../../modality'
+import { testOnly_resetActiveModality } from '../../modality/index.js'
 import useHover from '..'
 
 function createRoot(rootNode) {

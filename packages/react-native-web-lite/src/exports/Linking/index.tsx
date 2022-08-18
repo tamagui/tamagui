@@ -8,8 +8,8 @@
  * @flow
  */
 
-import canUseDOM from '../../modules/canUseDom'
-import { invariant } from '../../modules/invariant'
+import canUseDOM from '../../modules/canUseDom/index.js'
+import { invariant } from '../../modules/invariant.js'
 
 const initialURL = canUseDOM ? window.location.href : ''
 

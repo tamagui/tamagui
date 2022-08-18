@@ -18,7 +18,7 @@ function getProperty(container, prop) {
   return container.firstChild[prop]
 }
 
-describe('exports/createElement', () => {
+describe('exports/createElement/index.js', () => {
   test('renders different DOM elements', () => {
     let { container } = render(createElement('span'))
     expect(container.firstChild).toMatchSnapshot()

@@ -3,45 +3,16 @@ import '@tamagui/polyfill-dev'
 
 import '../site/app.css'
 
-import {
-  AddThemeDemo,
-  AlertDialogDemo,
-  AnimationsDemo,
-  ButtonDemo,
-  PopoverDemo,
-  SelectDemo,
-  SheetDemo,
-  SwitchDemo,
-  TooltipDemo,
-} from '@tamagui/demos'
-import { FocusScope } from '@tamagui/focus-scope'
-import React, { useEffect, useState } from 'react'
+import { AnimationsDemo, SheetDemo } from '@tamagui/demos'
+import { useEffect, useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
-import Animated, {
-  useAnimatedReaction,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from 'react-native-reanimated'
-import {
-  Button,
-  FontLanguage,
-  H1,
-  H2,
-  H3,
-  Paragraph,
-  Sheet,
-  Square,
-  TamaguiProvider,
-  Text,
-  Theme,
-  XStack,
-  YStack,
-  addTheme,
-  styled,
-  updateTheme,
-  useMedia,
-} from 'tamagui'
+// import Animated, {
+//   useAnimatedReaction,
+//   useAnimatedStyle,
+//   useSharedValue,
+//   withSpring,
+// } from 'react-native-reanimated'
+import { Button, FontLanguage, Paragraph, Sheet, TamaguiProvider, XStack, styled } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -57,20 +28,20 @@ export const Sandbox = () => {
   // @ts-ignore
   const { getStyleElement } = AppRegistry.getApplication('Main')
 
-  const val = useSharedValue(0)
-  const style = useAnimatedStyle(() => ({
-    width: 100,
-    height: 100,
-    backgroundColor: 'red',
-    transform: [{ translateX: val.value }],
-  }))
+  // const val = useSharedValue(0)
+  // const style = useAnimatedStyle(() => ({
+  //   width: 100,
+  //   height: 100,
+  //   backgroundColor: 'red',
+  //   transform: [{ translateX: val.value }],
+  // }))
 
-  useEffect(() => {
-    setTimeout(() => {
-      console.log('run2')
-      val.value = withSpring(100)
-    }, 1000)
-  }, [])
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     console.log('run2')
+  //     val.value = withSpring(100)
+  //   }, 1000)
+  // }, [])
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
@@ -109,7 +80,7 @@ export const Sandbox = () => {
           overflow: 'hidden',
         }}
       >
-        <Animated.View style={style} />
+        {/* <Animated.View style={style} /> */}
 
         {/* <ButtonFrame animation="bouncy" pressable>
           hello

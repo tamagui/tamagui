@@ -8,8 +8,8 @@
  * @noflow
  */
 
-import canUseDOM from '../../modules/canUseDom'
-import { invariant } from '../../modules/invariant'
+import canUseDOM from '../../modules/canUseDom/index.js'
+import { invariant } from '../../modules/invariant.js'
 
 // Android 4.4 browser
 const isPrefixed =

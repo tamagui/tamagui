@@ -1,6 +1,5 @@
-import Platform from '../../../exports/Platform'
-import { invariant } from '../../../modules/invariant'
-import NativeEventEmitter from '../NativeEventEmitter'
+import { invariant } from '../../../modules/invariant.js'
+import NativeEventEmitter from '../NativeEventEmitter/index.js'
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -10,13 +9,10 @@ import NativeEventEmitter from '../NativeEventEmitter'
  *
  * @format
  */
-import NativeAnimatedNonTurboModule from './NativeAnimatedModule'
-import NativeAnimatedTurboModule from './NativeAnimatedTurboModule'
+import NativeAnimatedNonTurboModule from './NativeAnimatedModule.js'
+import NativeAnimatedTurboModule from './NativeAnimatedTurboModule.js'
 
-var NativeAnimatedModule =
-  Platform.OS === 'ios' && global.RN$Bridgeless
-    ? NativeAnimatedTurboModule
-    : NativeAnimatedNonTurboModule
+var NativeAnimatedModule = NativeAnimatedNonTurboModule
 var __nativeAnimatedNodeTagCount = 1
 /* used for animated nodes */
 
@@ -55,19 +51,11 @@ var API = {
   disableQueue: function disableQueue() {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
 
-    if (Platform.OS === 'android') {
-      NativeAnimatedModule.startOperationBatch()
-    }
-
     for (var q = 0, l = queue.length; q < l; q++) {
       queue[q]()
     }
 
     queue.length = 0
-
-    if (Platform.OS === 'android') {
-      NativeAnimatedModule.finishOperationBatch()
-    }
   },
   queueOperation: (fn) => {
     if (queueOperations) {

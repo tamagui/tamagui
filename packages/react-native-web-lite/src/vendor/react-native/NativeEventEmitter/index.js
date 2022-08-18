@@ -9,9 +9,9 @@
  */
 'use strict'
 
-import Platform from '../../../exports/Platform'
-import { invariant } from '../../../modules/invariant'
-import RCTDeviceEventEmitter from './RCTDeviceEventEmitter'
+import Platform from '../../../exports/Platform/index.js'
+import { invariant } from '../../../modules/invariant.js'
+import RCTDeviceEventEmitter from './RCTDeviceEventEmitter.js'
 
 /**
  * `NativeEventEmitter` is intended for use by Native Modules to emit events to

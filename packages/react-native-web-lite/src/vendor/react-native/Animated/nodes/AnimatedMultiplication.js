@@ -4,60 +4,59 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * 
+ *
  * @format
  */
-'use strict';
+'use strict'
 
-import AnimatedInterpolation from './AnimatedInterpolation';
-import AnimatedNode from './AnimatedNode';
-import AnimatedValue from './AnimatedValue';
-import AnimatedWithChildren from './AnimatedWithChildren';
+import AnimatedInterpolation from './AnimatedInterpolation.js'
+import AnimatedNode from './AnimatedNode.js'
+import AnimatedValue from './AnimatedValue.js'
+import AnimatedWithChildren from './AnimatedWithChildren.js'
 
 class AnimatedMultiplication extends AnimatedWithChildren {
   constructor(a, b) {
-    super();
-    this._a = typeof a === 'number' ? new AnimatedValue(a) : a;
-    this._b = typeof b === 'number' ? new AnimatedValue(b) : b;
+    super()
+    this._a = typeof a === 'number' ? new AnimatedValue(a) : a
+    this._b = typeof b === 'number' ? new AnimatedValue(b) : b
   }
 
   __makeNative() {
-    this._a.__makeNative();
+    this._a.__makeNative()
 
-    this._b.__makeNative();
+    this._b.__makeNative()
 
-    super.__makeNative();
+    super.__makeNative()
   }
 
   __getValue() {
-    return this._a.__getValue() * this._b.__getValue();
+    return this._a.__getValue() * this._b.__getValue()
   }
 
   interpolate(config) {
-    return new AnimatedInterpolation(this, config);
+    return new AnimatedInterpolation(this, config)
   }
 
   __attach() {
-    this._a.__addChild(this);
+    this._a.__addChild(this)
 
-    this._b.__addChild(this);
+    this._b.__addChild(this)
   }
 
   __detach() {
-    this._a.__removeChild(this);
+    this._a.__removeChild(this)
 
-    this._b.__removeChild(this);
+    this._b.__removeChild(this)
 
-    super.__detach();
+    super.__detach()
   }
 
   __getNativeConfig() {
     return {
       type: 'multiplication',
-      input: [this._a.__getNativeTag(), this._b.__getNativeTag()]
-    };
+      input: [this._a.__getNativeTag(), this._b.__getNativeTag()],
+    }
   }
-
 }
 
-export default AnimatedMultiplication;
+export default AnimatedMultiplication

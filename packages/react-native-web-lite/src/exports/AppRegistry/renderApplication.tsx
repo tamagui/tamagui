@@ -11,10 +11,10 @@
 import { ComponentType, FunctionComponent, ReactNode } from 'react'
 import React from 'react'
 
-import { invariant } from '../../modules/invariant'
-import renderLegacy, { hydrate, hydrateLegacy, render } from '../render'
-import StyleSheet from '../StyleSheet'
-import AppContainer from './AppContainer'
+import { invariant } from '../../modules/invariant.js'
+import renderLegacy, { hydrate, hydrateLegacy, render } from '../render/index.js'
+import StyleSheet from '../StyleSheet/index.js'
+import AppContainer from './AppContainer.js'
 
 export default function renderApplication<Props extends Object>(
   RootComponent: ComponentType<Props>,

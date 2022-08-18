@@ -10,10 +10,10 @@
 
 import * as React from 'react'
 
-import canUseDOM from '../../modules/canUseDom'
-import StyleSheet from '../StyleSheet'
-import type { ViewProps } from '../View'
-import View from '../View'
+import canUseDOM from '../../modules/canUseDom/index.js'
+import StyleSheet from '../StyleSheet/index.js'
+import type { ViewProps } from '../View/index.js'
+import View from '../View/index.js'
 
 const cssFunction: 'constant' | 'env' = (() => {
   if (

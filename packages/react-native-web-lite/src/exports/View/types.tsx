@@ -8,15 +8,15 @@
  * @flow
  */
 
-import {
+import type {
   AnimationStyles,
   BorderStyles,
   InteractionStyles,
   LayoutStyles,
   ShadowStyles,
   TransformStyles,
-} from '../../styleTypes'
-import { ColorValue, GenericStyleProp, LayoutEvent } from '../../types'
+} from '../../styleTypes.js'
+import type { ColorValue, GenericStyleProp, LayoutEvent } from '../../types.js'
 
 type NumberOrString = number | string
 type OverscrollBehaviorValue = 'auto' | 'contain' | 'none'

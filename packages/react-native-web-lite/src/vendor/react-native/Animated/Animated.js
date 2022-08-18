@@ -7,15 +7,15 @@
  *
  * @format
  */
-import Platform from '../../../exports/Platform'
-import Impl from './AnimatedImplementation'
-import Mock from './AnimatedMock'
-import Image from './components/AnimatedImage'
-import ScrollView from './components/AnimatedScrollView'
-import Text from './components/AnimatedText'
-import View from './components/AnimatedView'
+import Platform from '../../../exports/Platform/index.js'
+import Impl from './AnimatedImplementation.js'
+import Mock from './AnimatedMock.js'
+import Image from './components/AnimatedImage.js'
+import ScrollView from './components/AnimatedScrollView.js'
+import Text from './components/AnimatedText.js'
+import View from './components/AnimatedView.js'
 
-export default {
+export const Animated = {
   Platform,
   Image,
   ScrollView,

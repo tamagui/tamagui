@@ -8,8 +8,8 @@
  * @flow
  */
 
-import { invariant } from '../../modules/invariant'
-import requestIdleCallback, { cancelIdleCallback } from '../../modules/requestIdleCallback'
+import { invariant } from '../../modules/invariant.js'
+import requestIdleCallback, { cancelIdleCallback } from '../../modules/requestIdleCallback/index.js'
 
 const InteractionManager = {
   Events: {

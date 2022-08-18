@@ -10,15 +10,15 @@
 
 import * as React from 'react'
 
-import { getAssetByID } from '../../modules/AssetRegistry'
-import ImageLoader from '../../modules/ImageLoader'
-import createElement from '../createElement'
-import PixelRatio from '../PixelRatio'
-import StyleSheet from '../StyleSheet'
-import { createBoxShadowValue } from '../StyleSheet/preprocess'
-import TextAncestorContext from '../Text/TextAncestorContext'
-import View from '../View'
-import type { ImageProps } from './types'
+import { getAssetByID } from '../../modules/AssetRegistry/index.js'
+import ImageLoader from '../../modules/ImageLoader/index.js'
+import createElement from '../createElement/index.js'
+import PixelRatio from '../PixelRatio/index.js'
+import StyleSheet from '../StyleSheet/index.js'
+import { createBoxShadowValue } from '../StyleSheet/preprocess.js'
+import TextAncestorContext from '../Text/TextAncestorContext.js'
+import View from '../View/index.js'
+import type { ImageProps } from './types.js'
 
 export type { ImageProps }
 

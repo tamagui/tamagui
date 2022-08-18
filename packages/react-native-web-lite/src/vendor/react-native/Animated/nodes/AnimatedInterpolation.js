@@ -14,9 +14,9 @@
 import _objectSpread from '@babel/runtime/helpers/objectSpread2'
 import normalizeColor from '@tamagui/normalize-css-color-lite'
 
-import { invariant } from '../../../../modules/invariant'
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
-import AnimatedWithChildren from './AnimatedWithChildren'
+import { invariant } from '../../../../modules/invariant.js'
+import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
+import AnimatedWithChildren from './AnimatedWithChildren.js'
 
 var __DEV__ = process.env.NODE_ENV !== 'production'
 

@@ -8,7 +8,7 @@
  * @flow
  */
 
-import Dimensions from '../Dimensions'
+import Dimensions from '../Dimensions/index.js'
 
 /**
  * PixelRatio gives access to the device pixel density.

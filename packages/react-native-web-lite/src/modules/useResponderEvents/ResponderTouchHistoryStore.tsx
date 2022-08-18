@@ -7,8 +7,8 @@
  * @flow
  */
 
-import type { Touch, TouchEvent } from './ResponderEventTypes'
-import { isEndish, isMoveish, isStartish } from './ResponderEventTypes'
+import type { Touch, TouchEvent } from './ResponderEventTypes.js'
+import { isEndish, isMoveish, isStartish } from './ResponderEventTypes.js'
 
 type TouchRecord = {
   currentPageX: number

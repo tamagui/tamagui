@@ -9,8 +9,8 @@
  */
 'use strict'
 
-import { invariant } from '../../../../modules/invariant'
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import { invariant } from '../../../../modules/invariant.js'
+import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
 var NativeAnimatedAPI = NativeAnimatedHelper.API
 var _uniqueId = 1 // Note(vjeux): this would be better as an interface but flow doesn't
 // support them yet

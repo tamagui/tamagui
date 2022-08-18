@@ -8,10 +8,10 @@
  * @flow strict-local
  */
 
-import createReactDOMStyle from './createReactDOMStyle'
-import hash from './hash'
-import hyphenateStyleName from './hyphenateStyleName'
-import normalizeValueWithProperty from './normalizeValueWithProperty'
+import createReactDOMStyle from './createReactDOMStyle.js'
+import hash from './hash.js'
+import hyphenateStyleName from './hyphenateStyleName.js'
+import normalizeValueWithProperty from './normalizeValueWithProperty.js'
 
 type Value = Object | Array<any> | string | number
 

@@ -4,311 +4,352 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * 
+ *
  * @format
  */
-'use strict';
+'use strict'
 
-import _objectSpread from "@babel/runtime/helpers/objectSpread2";
-import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent';
-import AnimatedAddition from './nodes/AnimatedAddition';
-import AnimatedDiffClamp from './nodes/AnimatedDiffClamp';
-import AnimatedDivision from './nodes/AnimatedDivision';
-import AnimatedInterpolation from './nodes/AnimatedInterpolation';
-import AnimatedModulo from './nodes/AnimatedModulo';
-import AnimatedMultiplication from './nodes/AnimatedMultiplication';
-import AnimatedNode from './nodes/AnimatedNode';
-import AnimatedProps from './nodes/AnimatedProps';
-import AnimatedSubtraction from './nodes/AnimatedSubtraction';
-import AnimatedTracking from './nodes/AnimatedTracking';
-import AnimatedValue from './nodes/AnimatedValue';
-import AnimatedValueXY from './nodes/AnimatedValueXY';
-import DecayAnimation from './animations/DecayAnimation';
-import SpringAnimation from './animations/SpringAnimation';
-import TimingAnimation from './animations/TimingAnimation';
-import createAnimatedComponent from './createAnimatedComponent';
+import _objectSpread from '@babel/runtime/helpers/objectSpread2'
+
+import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent.js'
+import DecayAnimation from './animations/DecayAnimation.js'
+import SpringAnimation from './animations/SpringAnimation.js'
+import TimingAnimation from './animations/TimingAnimation.js'
+import createAnimatedComponent from './createAnimatedComponent.js'
+import AnimatedAddition from './nodes/AnimatedAddition.js'
+import AnimatedDiffClamp from './nodes/AnimatedDiffClamp.js'
+import AnimatedDivision from './nodes/AnimatedDivision.js'
+import AnimatedInterpolation from './nodes/AnimatedInterpolation.js'
+import AnimatedModulo from './nodes/AnimatedModulo.js'
+import AnimatedMultiplication from './nodes/AnimatedMultiplication.js'
+import AnimatedNode from './nodes/AnimatedNode.js'
+import AnimatedProps from './nodes/AnimatedProps.js'
+import AnimatedSubtraction from './nodes/AnimatedSubtraction.js'
+import AnimatedTracking from './nodes/AnimatedTracking.js'
+import AnimatedValue from './nodes/AnimatedValue.js'
+import AnimatedValueXY from './nodes/AnimatedValueXY.js'
 
 var add = function add(a, b) {
-  return new AnimatedAddition(a, b);
-};
+  return new AnimatedAddition(a, b)
+}
 
 var subtract = function subtract(a, b) {
-  return new AnimatedSubtraction(a, b);
-};
+  return new AnimatedSubtraction(a, b)
+}
 
 var divide = function divide(a, b) {
-  return new AnimatedDivision(a, b);
-};
+  return new AnimatedDivision(a, b)
+}
 
 var multiply = function multiply(a, b) {
-  return new AnimatedMultiplication(a, b);
-};
+  return new AnimatedMultiplication(a, b)
+}
 
 var modulo = function modulo(a, modulus) {
-  return new AnimatedModulo(a, modulus);
-};
+  return new AnimatedModulo(a, modulus)
+}
 
 var diffClamp = function diffClamp(a, min, max) {
-  return new AnimatedDiffClamp(a, min, max);
-};
+  return new AnimatedDiffClamp(a, min, max)
+}
 
 var _combineCallbacks = function _combineCallbacks(callback, config) {
   if (callback && config.onComplete) {
     return function () {
-      config.onComplete && config.onComplete(...arguments);
-      callback && callback(...arguments);
-    };
+      config.onComplete && config.onComplete(...arguments)
+      callback && callback(...arguments)
+    }
   } else {
-    return callback || config.onComplete;
+    return callback || config.onComplete
   }
-};
+}
 
 var maybeVectorAnim = function maybeVectorAnim(value, config, anim) {
   if (value instanceof AnimatedValueXY) {
-    var configX = _objectSpread({}, config);
+    var configX = _objectSpread({}, config)
 
-    var configY = _objectSpread({}, config);
+    var configY = _objectSpread({}, config)
 
     for (var key in config) {
       var _config$key = config[key],
-          x = _config$key.x,
-          y = _config$key.y;
+        x = _config$key.x,
+        y = _config$key.y
 
       if (x !== undefined && y !== undefined) {
-        configX[key] = x;
-        configY[key] = y;
+        configX[key] = x
+        configY[key] = y
       }
     }
 
-    var aX = anim(value.x, configX);
-    var aY = anim(value.y, configY); // We use `stopTogether: false` here because otherwise tracking will break
+    var aX = anim(value.x, configX)
+    var aY = anim(value.y, configY) // We use `stopTogether: false` here because otherwise tracking will break
     // because the second animation will get stopped before it can update.
 
     return parallel([aX, aY], {
-      stopTogether: false
-    });
+      stopTogether: false,
+    })
   }
 
-  return null;
-};
+  return null
+}
 
 var spring = function spring(value, config) {
   var _start = function start(animatedValue, configuration, callback) {
-    callback = _combineCallbacks(callback, configuration);
-    var singleValue = animatedValue;
-    var singleConfig = configuration;
-    singleValue.stopTracking();
+    callback = _combineCallbacks(callback, configuration)
+    var singleValue = animatedValue
+    var singleConfig = configuration
+    singleValue.stopTracking()
 
     if (configuration.toValue instanceof AnimatedNode) {
-      singleValue.track(new AnimatedTracking(singleValue, configuration.toValue, SpringAnimation, singleConfig, callback));
+      singleValue.track(
+        new AnimatedTracking(
+          singleValue,
+          configuration.toValue,
+          SpringAnimation,
+          singleConfig,
+          callback
+        )
+      )
     } else {
-      singleValue.animate(new SpringAnimation(singleConfig), callback);
+      singleValue.animate(new SpringAnimation(singleConfig), callback)
     }
-  };
+  }
 
-  return maybeVectorAnim(value, config, spring) || {
-    start: function start(callback) {
-      _start(value, config, callback);
-    },
-    stop: function stop() {
-      value.stopAnimation();
-    },
-    reset: function reset() {
-      value.resetAnimation();
-    },
-    _startNativeLoop: function _startNativeLoop(iterations) {
-      var singleConfig = _objectSpread(_objectSpread({}, config), {}, {
-        iterations
-      });
+  return (
+    maybeVectorAnim(value, config, spring) || {
+      start: function start(callback) {
+        _start(value, config, callback)
+      },
+      stop: function stop() {
+        value.stopAnimation()
+      },
+      reset: function reset() {
+        value.resetAnimation()
+      },
+      _startNativeLoop: function _startNativeLoop(iterations) {
+        var singleConfig = _objectSpread(
+          _objectSpread({}, config),
+          {},
+          {
+            iterations,
+          }
+        )
 
-      _start(value, singleConfig);
-    },
-    _isUsingNativeDriver: function _isUsingNativeDriver() {
-      return config.useNativeDriver || false;
+        _start(value, singleConfig)
+      },
+      _isUsingNativeDriver: function _isUsingNativeDriver() {
+        return config.useNativeDriver || false
+      },
     }
-  };
-};
+  )
+}
 
 var timing = function timing(value, config) {
   var _start2 = function start(animatedValue, configuration, callback) {
-    callback = _combineCallbacks(callback, configuration);
-    var singleValue = animatedValue;
-    var singleConfig = configuration;
-    singleValue.stopTracking();
+    callback = _combineCallbacks(callback, configuration)
+    var singleValue = animatedValue
+    var singleConfig = configuration
+    singleValue.stopTracking()
 
     if (configuration.toValue instanceof AnimatedNode) {
-      singleValue.track(new AnimatedTracking(singleValue, configuration.toValue, TimingAnimation, singleConfig, callback));
+      singleValue.track(
+        new AnimatedTracking(
+          singleValue,
+          configuration.toValue,
+          TimingAnimation,
+          singleConfig,
+          callback
+        )
+      )
     } else {
-      singleValue.animate(new TimingAnimation(singleConfig), callback);
+      singleValue.animate(new TimingAnimation(singleConfig), callback)
     }
-  };
+  }
 
-  return maybeVectorAnim(value, config, timing) || {
-    start: function start(callback) {
-      _start2(value, config, callback);
-    },
-    stop: function stop() {
-      value.stopAnimation();
-    },
-    reset: function reset() {
-      value.resetAnimation();
-    },
-    _startNativeLoop: function _startNativeLoop(iterations) {
-      var singleConfig = _objectSpread(_objectSpread({}, config), {}, {
-        iterations
-      });
+  return (
+    maybeVectorAnim(value, config, timing) || {
+      start: function start(callback) {
+        _start2(value, config, callback)
+      },
+      stop: function stop() {
+        value.stopAnimation()
+      },
+      reset: function reset() {
+        value.resetAnimation()
+      },
+      _startNativeLoop: function _startNativeLoop(iterations) {
+        var singleConfig = _objectSpread(
+          _objectSpread({}, config),
+          {},
+          {
+            iterations,
+          }
+        )
 
-      _start2(value, singleConfig);
-    },
-    _isUsingNativeDriver: function _isUsingNativeDriver() {
-      return config.useNativeDriver || false;
+        _start2(value, singleConfig)
+      },
+      _isUsingNativeDriver: function _isUsingNativeDriver() {
+        return config.useNativeDriver || false
+      },
     }
-  };
-};
+  )
+}
 
 var decay = function decay(value, config) {
   var _start3 = function start(animatedValue, configuration, callback) {
-    callback = _combineCallbacks(callback, configuration);
-    var singleValue = animatedValue;
-    var singleConfig = configuration;
-    singleValue.stopTracking();
-    singleValue.animate(new DecayAnimation(singleConfig), callback);
-  };
+    callback = _combineCallbacks(callback, configuration)
+    var singleValue = animatedValue
+    var singleConfig = configuration
+    singleValue.stopTracking()
+    singleValue.animate(new DecayAnimation(singleConfig), callback)
+  }
 
-  return maybeVectorAnim(value, config, decay) || {
-    start: function start(callback) {
-      _start3(value, config, callback);
-    },
-    stop: function stop() {
-      value.stopAnimation();
-    },
-    reset: function reset() {
-      value.resetAnimation();
-    },
-    _startNativeLoop: function _startNativeLoop(iterations) {
-      var singleConfig = _objectSpread(_objectSpread({}, config), {}, {
-        iterations
-      });
+  return (
+    maybeVectorAnim(value, config, decay) || {
+      start: function start(callback) {
+        _start3(value, config, callback)
+      },
+      stop: function stop() {
+        value.stopAnimation()
+      },
+      reset: function reset() {
+        value.resetAnimation()
+      },
+      _startNativeLoop: function _startNativeLoop(iterations) {
+        var singleConfig = _objectSpread(
+          _objectSpread({}, config),
+          {},
+          {
+            iterations,
+          }
+        )
 
-      _start3(value, singleConfig);
-    },
-    _isUsingNativeDriver: function _isUsingNativeDriver() {
-      return config.useNativeDriver || false;
+        _start3(value, singleConfig)
+      },
+      _isUsingNativeDriver: function _isUsingNativeDriver() {
+        return config.useNativeDriver || false
+      },
     }
-  };
-};
+  )
+}
 
 var sequence = function sequence(animations) {
-  var current = 0;
+  var current = 0
   return {
     start: function start(callback) {
       var onComplete = function onComplete(result) {
         if (!result.finished) {
-          callback && callback(result);
-          return;
+          callback && callback(result)
+          return
         }
 
-        current++;
+        current++
 
         if (current === animations.length) {
-          callback && callback(result);
-          return;
+          callback && callback(result)
+          return
         }
 
-        animations[current].start(onComplete);
-      };
+        animations[current].start(onComplete)
+      }
 
       if (animations.length === 0) {
-        callback && callback({
-          finished: true
-        });
+        callback &&
+          callback({
+            finished: true,
+          })
       } else {
-        animations[current].start(onComplete);
+        animations[current].start(onComplete)
       }
     },
     stop: function stop() {
       if (current < animations.length) {
-        animations[current].stop();
+        animations[current].stop()
       }
     },
     reset: function reset() {
       animations.forEach((animation, idx) => {
         if (idx <= current) {
-          animation.reset();
+          animation.reset()
         }
-      });
-      current = 0;
+      })
+      current = 0
     },
     _startNativeLoop: function _startNativeLoop() {
-      throw new Error('Loops run using the native driver cannot contain Animated.sequence animations');
+      throw new Error(
+        'Loops run using the native driver cannot contain Animated.sequence animations'
+      )
     },
     _isUsingNativeDriver: function _isUsingNativeDriver() {
-      return false;
-    }
-  };
-};
+      return false
+    },
+  }
+}
 
 var parallel = function parallel(animations, config) {
-  var doneCount = 0; // Make sure we only call stop() at most once for each animation
+  var doneCount = 0 // Make sure we only call stop() at most once for each animation
 
-  var hasEnded = {};
-  var stopTogether = !(config && config.stopTogether === false);
+  var hasEnded = {}
+  var stopTogether = !(config && config.stopTogether === false)
   var result = {
     start: function start(callback) {
       if (doneCount === animations.length) {
-        callback && callback({
-          finished: true
-        });
-        return;
+        callback &&
+          callback({
+            finished: true,
+          })
+        return
       }
 
       animations.forEach((animation, idx) => {
         var cb = function cb(endResult) {
-          hasEnded[idx] = true;
-          doneCount++;
+          hasEnded[idx] = true
+          doneCount++
 
           if (doneCount === animations.length) {
-            doneCount = 0;
-            callback && callback(endResult);
-            return;
+            doneCount = 0
+            callback && callback(endResult)
+            return
           }
 
           if (!endResult.finished && stopTogether) {
-            result.stop();
+            result.stop()
           }
-        };
+        }
 
         if (!animation) {
           cb({
-            finished: true
-          });
+            finished: true,
+          })
         } else {
-          animation.start(cb);
+          animation.start(cb)
         }
-      });
+      })
     },
     stop: function stop() {
       animations.forEach((animation, idx) => {
-        !hasEnded[idx] && animation.stop();
-        hasEnded[idx] = true;
-      });
+        !hasEnded[idx] && animation.stop()
+        hasEnded[idx] = true
+      })
     },
     reset: function reset() {
       animations.forEach((animation, idx) => {
-        animation.reset();
-        hasEnded[idx] = false;
-        doneCount = 0;
-      });
+        animation.reset()
+        hasEnded[idx] = false
+        doneCount = 0
+      })
     },
     _startNativeLoop: function _startNativeLoop() {
-      throw new Error('Loops run using the native driver cannot contain Animated.parallel animations');
+      throw new Error(
+        'Loops run using the native driver cannot contain Animated.parallel animations'
+      )
     },
     _isUsingNativeDriver: function _isUsingNativeDriver() {
-      return false;
-    }
-  };
-  return result;
-};
+      return false
+    },
+  }
+  return result
+}
 
 var delay = function delay(time) {
   // Would be nice to make a specialized implementation
@@ -316,103 +357,106 @@ var delay = function delay(time) {
     toValue: 0,
     delay: time,
     duration: 0,
-    useNativeDriver: false
-  });
-};
+    useNativeDriver: false,
+  })
+}
 
 var stagger = function stagger(time, animations) {
-  return parallel(animations.map((animation, i) => {
-    return sequence([delay(time * i), animation]);
-  }));
-};
+  return parallel(
+    animations.map((animation, i) => {
+      return sequence([delay(time * i), animation])
+    })
+  )
+}
 
 var loop = function loop(animation, _temp) {
   var _ref = _temp === void 0 ? {} : _temp,
-      _ref$iterations = _ref.iterations,
-      iterations = _ref$iterations === void 0 ? -1 : _ref$iterations,
-      _ref$resetBeforeItera = _ref.resetBeforeIteration,
-      resetBeforeIteration = _ref$resetBeforeItera === void 0 ? true : _ref$resetBeforeItera;
+    _ref$iterations = _ref.iterations,
+    iterations = _ref$iterations === void 0 ? -1 : _ref$iterations,
+    _ref$resetBeforeItera = _ref.resetBeforeIteration,
+    resetBeforeIteration = _ref$resetBeforeItera === void 0 ? true : _ref$resetBeforeItera
 
-  var isFinished = false;
-  var iterationsSoFar = 0;
+  var isFinished = false
+  var iterationsSoFar = 0
   return {
     start: function start(callback) {
       var restart = function restart(result) {
         if (result === void 0) {
           result = {
-            finished: true
-          };
+            finished: true,
+          }
         }
 
         if (isFinished || iterationsSoFar === iterations || result.finished === false) {
-          callback && callback(result);
+          callback && callback(result)
         } else {
-          iterationsSoFar++;
-          resetBeforeIteration && animation.reset();
-          animation.start(restart);
+          iterationsSoFar++
+          resetBeforeIteration && animation.reset()
+          animation.start(restart)
         }
-      };
+      }
 
       if (!animation || iterations === 0) {
-        callback && callback({
-          finished: true
-        });
+        callback &&
+          callback({
+            finished: true,
+          })
       } else {
         if (animation._isUsingNativeDriver()) {
-          animation._startNativeLoop(iterations);
+          animation._startNativeLoop(iterations)
         } else {
-          restart(); // Start looping recursively on the js thread
+          restart() // Start looping recursively on the js thread
         }
       }
     },
     stop: function stop() {
-      isFinished = true;
-      animation.stop();
+      isFinished = true
+      animation.stop()
     },
     reset: function reset() {
-      iterationsSoFar = 0;
-      isFinished = false;
-      animation.reset();
+      iterationsSoFar = 0
+      isFinished = false
+      animation.reset()
     },
     _startNativeLoop: function _startNativeLoop() {
-      throw new Error('Loops run using the native driver cannot contain Animated.loop animations');
+      throw new Error('Loops run using the native driver cannot contain Animated.loop animations')
     },
     _isUsingNativeDriver: function _isUsingNativeDriver() {
-      return animation._isUsingNativeDriver();
-    }
-  };
-};
+      return animation._isUsingNativeDriver()
+    },
+  }
+}
 
 function forkEvent(event, listener) {
   if (!event) {
-    return listener;
+    return listener
   } else if (event instanceof AnimatedEvent) {
-    event.__addListener(listener);
+    event.__addListener(listener)
 
-    return event;
+    return event
   } else {
     return function () {
-      typeof event === 'function' && event(...arguments);
-      listener(...arguments);
-    };
+      typeof event === 'function' && event(...arguments)
+      listener(...arguments)
+    }
   }
 }
 
 function unforkEvent(event, listener) {
   if (event && event instanceof AnimatedEvent) {
-    event.__removeListener(listener);
+    event.__removeListener(listener)
   }
 }
 
 var event = function event(argMapping, config) {
-  var animatedEvent = new AnimatedEvent(argMapping, config);
+  var animatedEvent = new AnimatedEvent(argMapping, config)
 
   if (animatedEvent.__isNative) {
-    return animatedEvent;
+    return animatedEvent
   } else {
-    return animatedEvent.__getHandler();
+    return animatedEvent.__getHandler()
   }
-};
+}
 /**
  * The `Animated` library is designed to make animations fluid, powerful, and
  * easy to build and maintain. `Animated` focuses on declarative relationships
@@ -423,7 +467,6 @@ var event = function event(argMapping, config) {
  *
  * See https://reactnative.dev/docs/animated.html
  */
-
 
 export default {
   /**
@@ -606,5 +649,5 @@ export default {
    * Expose Event class, so it can be used as a type for type checkers.
    */
   Event: AnimatedEvent,
-  __PropsOnlyForTests: AnimatedProps
-};
+  __PropsOnlyForTests: AnimatedProps,
+}

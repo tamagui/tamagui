@@ -8,9 +8,9 @@
  *
  * @typecheck
  */
-import { invariant } from '../../../modules/invariant'
-import EmitterSubscription from './_EmitterSubscription'
-import EventSubscriptionVendor from './_EventSubscriptionVendor'
+import { invariant } from '../../../modules/invariant.js'
+import EmitterSubscription from './_EmitterSubscription.js'
+import EventSubscriptionVendor from './_EventSubscriptionVendor.js'
 
 var sparseFilterPredicate = () => true
 

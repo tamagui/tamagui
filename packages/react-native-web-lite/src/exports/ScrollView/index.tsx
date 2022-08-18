@@ -10,14 +10,13 @@
 
 import React from 'react'
 
-import dismissKeyboard from '../../modules/dismissKeyboard'
-import { invariant } from '../../modules/invariant'
-import mergeRefs from '../../modules/mergeRefs'
-import { ScrollResponderMixin } from '../../modules/ScrollResponder'
-import StyleSheet from '../StyleSheet'
-import View from '../View'
-import type { ViewProps, ViewStyle } from '../View/types'
-import ScrollViewBase from './ScrollViewBase'
+import dismissKeyboard from '../../modules/dismissKeyboard/index.js'
+import { invariant } from '../../modules/invariant.js'
+import mergeRefs from '../../modules/mergeRefs/index.js'
+import { ScrollResponderMixin } from '../../modules/ScrollResponder/index.js'
+import StyleSheet from '../StyleSheet/index.js'
+import View from '../View/index.js'
+import ScrollViewBase from './ScrollViewBase.js'
 
 const emptyObject = {} as any
 

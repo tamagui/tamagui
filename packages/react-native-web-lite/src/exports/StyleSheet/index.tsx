@@ -9,13 +9,14 @@
  */
 
 import { styleq } from 'styleq'
-import { localizeStyle } from 'styleq/transform-localize-style'
 
-import canUseDOM from '../../modules/canUseDom'
-import { atomic, classic, inline } from './compiler'
-import { createSheet } from './dom'
-import { preprocess } from './preprocess'
-import { validate } from './validate'
+import canUseDOM from '../../modules/canUseDom/index.js'
+import { atomic, classic, inline } from './compiler/index.js'
+import { createSheet } from './dom/index.js'
+import { preprocess } from './preprocess.js'
+import { validate } from './validate.js'
+
+// import { localizeStyle } from 'styleq/transform-localize-style'
 
 const staticStyleMap: WeakMap<Object, Object> = new WeakMap()
 const sheet = createSheet()
@@ -23,10 +24,10 @@ const sheet = createSheet()
 function customStyleq(styles, isRTL) {
   return styleq.factory({
     transform(style) {
-      const compiledStyle = staticStyleMap.get(style)
-      if (compiledStyle != null) {
-        return localizeStyle(compiledStyle, isRTL)
-      }
+      // const compiledStyle = staticStyleMap.get(style)
+      // if (compiledStyle != null) {
+      //   return localizeStyle(compiledStyle, isRTL)
+      // }
       return style
     },
   })(styles)

@@ -2,7 +2,9 @@
   "name": "@tamagui/animations-react-native",
   "version": "1.0.1-beta.141",
   "source": "src/index.ts",
-  "sideEffects": true,
+  "sideEffects": [
+    "./polyfill.js"
+  ],
   "license": "MIT",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

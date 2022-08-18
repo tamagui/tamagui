@@ -9,17 +9,16 @@
  */
 'use strict'
 
-import _extends from '@babel/runtime/helpers/extends'
 import _objectSpread from '@babel/runtime/helpers/objectSpread2'
 import _objectWithoutPropertiesLoose from '@babel/runtime/helpers/objectWithoutPropertiesLoose'
 import * as React from 'react'
 
-import View from '../../../exports/View'
-import { invariant } from '../../../modules/invariant'
-import setAndForwardRef from '../Utilities/setAndForwardRef'
-import { AnimatedEvent } from './AnimatedEvent'
-import NativeAnimatedHelper from './NativeAnimatedHelper'
-import AnimatedProps from './nodes/AnimatedProps'
+import { invariant } from '../../../modules/invariant.js'
+import setAndForwardRef from '../Utilities/setAndForwardRef.js'
+import { AnimatedEvent } from './AnimatedEvent.js'
+import NativeAnimatedHelper from './NativeAnimatedHelper.js'
+import AnimatedProps from './nodes/AnimatedProps.js'
+
 var _excluded = ['style'],
   _excluded2 = ['style']
 var animatedComponentNextId = 1
@@ -223,13 +222,14 @@ function createAnimatedComponent(Component, options) {
 
       var mergedStyle = _objectSpread(_objectSpread({}, style), passthruStyle)
 
-      return /*#__PURE__*/ React.createElement(
-        Component,
-        _extends({}, props, passthruProps, {
+      return /*#__PURE__*/ React.createElement(Component, {
+        ...props,
+        ...passthruProps,
+        ...{
           style: mergedStyle,
           ref: this._setComponentRef,
-        })
-      )
+        },
+      })
     }
 
     UNSAFE_componentWillMount() {
@@ -285,18 +285,14 @@ function createAnimatedComponent(Component, options) {
   }
 
   return /*#__PURE__*/ React.forwardRef(function AnimatedComponentWrapper(props, ref) {
-    return /*#__PURE__*/ React.createElement(
-      AnimatedComponent,
-      _extends(
-        {},
-        props,
-        ref == null
-          ? null
-          : {
-              forwardedRef: ref,
-            }
-      )
-    )
+    return /*#__PURE__*/ React.createElement(AnimatedComponent, {
+      ...props,
+      ...(ref == null
+        ? null
+        : {
+            forwardedRef: ref,
+          }),
+    })
   })
 }
 

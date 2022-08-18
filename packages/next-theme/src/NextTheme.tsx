@@ -1,7 +1,6 @@
 // https://raw.githubusercontent.com/pacocoursey/next-themes/master/index.tsx
 // forked temporarily due to buggy theme change
 
-import { startTransition } from '@tamagui/core'
 import NextHead from 'next/head'
 import * as React from 'react'
 import {
@@ -104,7 +103,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   const handleMediaQuery = useCallback(
     (e?) => {
       const systemTheme = getSystemTheme(e)
-      startTransition(() => {
+      React.startTransition(() => {
         setResolvedTheme(systemTheme)
       })
       if (theme === 'system' && !forcedTheme) handleChangeTheme(systemTheme, false)

@@ -11,9 +11,9 @@
 import React from 'react'
 import { ReactNode } from 'react'
 
-import { ColorValue } from '../../types'
-import { ViewProps } from '../View'
-import View from '../View'
+import type { ColorValue } from '../../types.js'
+import type { ViewProps } from '../View/index.js'
+import View from '../View/index.js'
 
 type RefreshControlProps = {
   colors?: Array<ColorValue>

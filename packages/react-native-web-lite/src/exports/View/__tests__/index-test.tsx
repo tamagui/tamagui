@@ -10,7 +10,7 @@ import { createEventTarget } from 'dom-event-testing-library'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 
-import StyleSheet from '../../StyleSheet'
+import StyleSheet from '../../StyleSheet/index.js'
 import View from '..'
 
 describe('components/View', () => {

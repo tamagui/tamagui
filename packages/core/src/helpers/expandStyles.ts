@@ -2,7 +2,7 @@ import { getConfig } from '../conf'
 import { isWeb } from '../constants/platform'
 import { expandStyle } from './expandStyle'
 import { colorToRGBA, normalizeColor } from './normalizeColor'
-import { normalizeValueWithProperty } from './normalizeValueWithProperty'
+import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
 let shorthands: Record<string, string> | null = null

@@ -30,7 +30,7 @@ import {
   updateRules,
 } from './insertStyleRule'
 import { mergeTransform } from './mergeTransform'
-import { normalizeValueWithProperty } from './normalizeValueWithProperty'
+import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>

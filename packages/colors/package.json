@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/colors",
   "version": "1.0.1-beta.141",
+  "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

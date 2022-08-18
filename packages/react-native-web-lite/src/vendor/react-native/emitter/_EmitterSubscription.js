@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * 
+ *
  */
-'use strict';
+'use strict'
 
-import _EventSubscription from './_EventSubscription';
+import _EventSubscription from './_EventSubscription.js'
 
 /**
  * EmitterSubscription represents a subscription with listener and context data.
@@ -26,10 +26,10 @@ class EmitterSubscription extends _EventSubscription {
    *   listener
    */
   constructor(emitter, subscriber, listener, context) {
-    super(subscriber);
-    this.emitter = emitter;
-    this.listener = listener;
-    this.context = context;
+    super(subscriber)
+    this.emitter = emitter
+    this.listener = listener
+    this.context = context
   }
   /**
    * Removes this subscription from the emitter that registered it.
@@ -38,11 +38,9 @@ class EmitterSubscription extends _EventSubscription {
    * for removing the subscription lies with the EventEmitter.
    */
 
-
   remove() {
-    this.emitter.removeSubscription(this);
+    this.emitter.removeSubscription(this)
   }
-
 }
 
-export default EmitterSubscription;
+export default EmitterSubscription

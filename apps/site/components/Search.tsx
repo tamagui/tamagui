@@ -73,13 +73,11 @@ export const SearchProvider = memo(({ children }: any) => {
             indexName={INDEX}
             navigator={{
               navigate({ itemUrl }) {
-                console.log('navigate', itemUrl)
                 setIsOpen(false)
                 router.push(itemUrl)
               },
             }}
             transformItems={(items) => {
-              console.log('items, items')
               return items.map((item, index) => {
                 const aEl = document.createElement('a')
                 aEl.href = item.url

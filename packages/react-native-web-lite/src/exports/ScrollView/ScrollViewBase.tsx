@@ -9,10 +9,10 @@
 
 import * as React from 'react'
 
-import useMergeRefs from '../../modules/useMergeRefs'
-import StyleSheet from '../StyleSheet'
-import type { ViewProps } from '../View'
-import View from '../View'
+import useMergeRefs from '../../modules/useMergeRefs/index.js'
+import StyleSheet from '../StyleSheet/index.js'
+import type { ViewProps } from '../View/index.js'
+import View from '../View/index.js'
 
 type Props = ViewProps & {
   onMomentumScrollBegin?: (e: any) => void

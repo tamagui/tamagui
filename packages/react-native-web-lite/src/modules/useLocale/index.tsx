@@ -10,7 +10,7 @@
 import { ReactNode } from 'react'
 import React, { createContext, useContext } from 'react'
 
-import { isLocaleRTL } from './isLocaleRTL'
+import { isLocaleRTL } from './isLocaleRTL.js'
 
 type Locale = string
 type WritingDirection = 'ltr' | 'rtl'
