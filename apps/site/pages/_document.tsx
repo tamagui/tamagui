@@ -20,10 +20,6 @@ export default class Document extends NextDocument {
         <Head>
           <meta name="docsearch:language" content="en" />
           <meta name="docsearch:version" content="1.0.0,latest" />
-        </Head>
-        <body>
-          <Main />
-          <NextScript />
           {/* totally inline them to avoid all requests / flashes, they aren't too large */}
           <style
             className="site-fonts"
@@ -32,6 +28,10 @@ export default class Document extends NextDocument {
               __html: siteFonts,
             }}
           />
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
         </body>
       </Html>
     )
