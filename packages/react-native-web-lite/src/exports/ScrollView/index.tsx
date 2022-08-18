@@ -119,7 +119,7 @@ class ScrollView extends React.Component<any> {
     scrollResponder.scrollResponderScrollTo({ x, y, animated })
   }
 
-  render() {
+  render = () => {
     const {
       contentContainerStyle,
       horizontal,

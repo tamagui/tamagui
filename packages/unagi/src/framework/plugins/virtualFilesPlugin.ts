@@ -117,7 +117,9 @@ export default (pluginOptions: UnagiVitePluginOptions) => {
       return loaded.default
     }
 
-    const { loaded } = await viteception([VIRTUAL_PROXY_UNAGI_CONFIG_ID])
+    const { loaded } = await viteception([VIRTUAL_PROXY_UNAGI_CONFIG_ID], {
+      root: config.root,
+    })
     return loaded[0].default
   }
 }

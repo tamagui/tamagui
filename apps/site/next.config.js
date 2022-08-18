@@ -76,6 +76,8 @@ module.exports = function (name, { defaultConfig }) {
       scrollRestoration: true,
       legacyBrowsers: false,
       browsersListForSwc: true,
+      // runtime: 'nodejs',
+      // serverComponents: true,
     },
     eslint: {
       ignoreDuringBuilds: true,

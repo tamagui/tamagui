@@ -115,6 +115,9 @@ export class ScrollResponderMixin {
     }
   ) {}
 
+  keyboardWillOpenTo = null
+  additionalScrollOffset = 0
+
   // add mixin directly:
   scrollResponderMixinGetInitialState(): State {
     return {
@@ -360,7 +363,7 @@ export class ScrollResponderMixin {
    * the function also accepts separate arguments as as alternative to the options object.
    * This is deprecated due to ambiguity (y before x), and SHOULD NOT BE USED.
    */
-  scrollResponderScrollTo(
+  scrollResponderScrollTo = (
     x?:
       | number
       | {
@@ -370,7 +373,7 @@ export class ScrollResponderMixin {
         },
     y?: number,
     animated?: boolean
-  ) {
+  ) => {
     if (typeof x === 'number') {
       console.warn(
         '`scrollResponderScrollTo(x, y, animated)` is deprecated. Use `scrollResponderScrollTo({x: 5, y: 5, animated: true})` instead.'
@@ -395,7 +398,7 @@ export class ScrollResponderMixin {
    *
    * @platform ios
    */
-  scrollResponderZoomTo(
+  scrollResponderZoomTo = (
     rect: {
       x: number
       y: number
@@ -404,7 +407,7 @@ export class ScrollResponderMixin {
       animated?: boolean
     },
     animated?: boolean // deprecated, put this inside the rect argument instead
-  ) {
+  ) => {
     if (Platform.OS !== 'ios') {
       invariant('zoomToRect is not implemented')
     }
@@ -425,11 +428,11 @@ export class ScrollResponderMixin {
    * @param {bool} preventNegativeScrolling Whether to allow pulling the content
    *        down to make it meet the keyboard's top. Default is false.
    */
-  scrollResponderScrollNativeHandleToKeyboard(
+  scrollResponderScrollNativeHandleToKeyboard = (
     nodeHandle: any,
     additionalOffset?: number,
     preventNegativeScrollOffset?: boolean
-  ) {
+  ) => {
     this.additionalScrollOffset = additionalOffset || 0
     this.preventNegativeScrollOffset = !!preventNegativeScrollOffset
     UIManager.measureLayout(
@@ -450,12 +453,12 @@ export class ScrollResponderMixin {
    * @param {number} width Width of the text input.
    * @param {number} height Height of the text input.
    */
-  scrollResponderInputMeasureAndScrollToKeyboard(
+  scrollResponderInputMeasureAndScrollToKeyboard = (
     left: number,
     top: number,
     width: number,
     height: number
-  ) {
+  ) => {
     let keyboardScreenY = Dimensions.get('window').height
     if (this.keyboardWillOpenTo) {
       keyboardScreenY = this.keyboardWillOpenTo.endCoordinates.screenY
@@ -477,17 +480,6 @@ export class ScrollResponderMixin {
 
   scrollResponderTextInputFocusError = (e: Event) => {
     console.error('Error measuring text field: ', e)
-  }
-
-  /**
-   * `componentWillMount` is the closest thing to a  standard "constructor" for
-   * React components.
-   *
-   * The `keyboardWillShow` is called before input focus.
-   */
-  UNSAFE_componentWillMount() {
-    this.keyboardWillOpenTo = null
-    this.additionalScrollOffset = 0
   }
 
   /**

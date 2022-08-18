@@ -20,7 +20,7 @@ async function build() {
       entryPoints: [inPath],
       outdir: outPath,
       format: 'cjs',
-      target: 'node16',
+      target: 'node14',
       platform: 'node',
       logLevel: 'warning',
       plugins: [

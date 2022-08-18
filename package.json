@@ -63,7 +63,6 @@
     "esbuild": "0.14.49",
     "react-native": "0.69.2",
     "typescript": "4.8.0-dev.20220801",
-    "next": "12.2.4",
     "webpack": "5.74.0",
     "prettier": "2.6.2",
     "react": "18.2.0",

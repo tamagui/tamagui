@@ -300,6 +300,8 @@ function getApiRoute(url: URL, routes: ResolvedUnagiRoutes) {
 function assembleHtml({ ssrHtml, rscPayload, request, template }: AssembleHtmlParams) {
   let html = applyHtmlHead(ssrHtml, request.ctx.head, template)
 
+  console.log(rscPayload)
+
   if (rscPayload) {
     html = html.replace(
       '</body>',

@@ -28,8 +28,7 @@
     "@tamagui/create-context": "^1.0.1-beta.141",
     "@tamagui/remove-scroll": "^1.0.1-beta.141",
     "@tamagui/stacks": "^1.0.1-beta.141",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.141",
-    "react-native-reanimated": "*"
+    "@tamagui/use-controllable-state": "^1.0.1-beta.141"
   },
   "peerDependencies": {
     "react": "*",
