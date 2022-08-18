@@ -61,7 +61,7 @@ export async function getStaticPaths() {
   const latestVersionPaths = paths.map((path) => {
     const withoutVersion = path.params.slug.slice(0, path.params.slug.length - 1)
     return {
-      params: { slug: withoutVersion, version: 123 },
+      params: { slug: withoutVersion },
     }
   })
 
