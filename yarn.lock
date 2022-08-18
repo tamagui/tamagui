@@ -5688,6 +5688,7 @@ __metadata:
     rehype-parse: ^8.0.4
     rehype-slug: ^5.0.1
     unified: ^10.1.2
+    url: ^0.11.0
   languageName: unknown
   linkType: soft
 

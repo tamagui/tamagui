@@ -38,6 +38,22 @@ function addElementToFlightChunks(el: Element) {
   }
 }
 
+const requestIdleCallbackHydrogen =
+  (typeof self !== 'undefined' &&
+    self.requestIdleCallback &&
+    self.requestIdleCallback.bind(window)) ||
+  function (cb) {
+    const start = Date.now()
+    return setTimeout(function () {
+      cb({
+        didTimeout: false,
+        timeRemaining: function () {
+          return Math.max(0, 50 - (Date.now() - start))
+        },
+      })
+    }, 1)
+  }
+
 // Get initial payload
 document.querySelectorAll('[' + FLIGHT_ATTRIBUTE + ']').forEach(addElementToFlightChunks)
 
@@ -123,6 +139,8 @@ const renderUnagi: ClientHandler = async (ClientWrapper) => {
   // Fixes hydration in `useId`: https://github.com/Shopify/hydrogen/issues/1589
   const ServerRequestProviderMock = () => null
 
+  // requestIdleCallbackHydrogen(() => {
+  //   startTransition(() => {
   hydrateRoot(
     root,
     <RootComponent>
@@ -140,6 +158,8 @@ const renderUnagi: ClientHandler = async (ClientWrapper) => {
       </ErrorBoundary>
     </RootComponent>
   )
+  //   })
+  // })
 }
 
 export default renderUnagi

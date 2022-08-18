@@ -18,6 +18,9 @@ const skipVersion = process.argv.includes('--skip-version')
 const skipPublish = process.argv.includes('--skip-publish')
 const isCI = process.argv.includes('--ci')
 
+// could add only if changed checks: git diff --quiet HEAD HEAD~3 -- ./packages/core
+// but at that point would be nicer to get a whole setup for this.. lerna or whatever
+
 const spawnify = async (cmd: string, opts?: any) => {
   console.log('>', cmd)
   const [head, ...rest] = cmd.split(' ')
