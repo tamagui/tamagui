@@ -27,12 +27,16 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = React.useState(false)
 
   let currentPath = router.pathname
+  let documentVersion = ''
+  
   if (Array.isArray(router.query.slug)) {
     currentPath = currentPath.replace('[...slug]', router.query.slug[0])
+    documentVersion = router.query.slug[1]
   } else {
     currentPath = currentPath.replace('[slug]', router.query.slug as string)
   }
 
+  const documentVersionPath = documentVersion ? `/${documentVersion}` : ''
   const currentPageIndex = allNotPending.findIndex((page) => page.route === currentPath)
   const previous = allNotPending[currentPageIndex - 1]
   let nextIndex = currentPageIndex + 1
@@ -43,7 +47,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
 
   const GITHUB_URL = 'https://github.com'
   const REPO_NAME = 'tamagui/tamagui'
-  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/apps/site/data${currentPath}.mdx`
+  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/apps/site/data${currentPath}${documentVersionPath}.mdx`
 
   useEffect(() => {
     const handleRouteChange = () => {
