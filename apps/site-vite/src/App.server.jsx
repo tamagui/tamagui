@@ -1,6 +1,7 @@
 import 'tamagui.css'
 
 import './app.css'
+import './fonts.css'
 
 import { FileRoutes, Router } from '@tamagui/unagi'
 import renderUnagi from '@tamagui/unagi/entry-server'
@@ -12,7 +13,6 @@ import { TamaguiProvider as TamaguiClientProvider } from './components/TamaguiPr
 import config from './tamagui.config'
 
 function App() {
-  // test
   return (
     <Suspense fallback="Loading...">
       <TamaguiProvider disableInjectCSS config={config} defaultTheme="light">

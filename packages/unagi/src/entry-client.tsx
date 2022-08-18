@@ -8,6 +8,7 @@ import React, {
   Fragment,
   StrictMode,
   Suspense,
+  startTransition,
   useEffect,
   useState,
 } from 'react'
@@ -38,21 +39,11 @@ function addElementToFlightChunks(el: Element) {
   }
 }
 
-const requestIdleCallbackHydrogen =
+const onceReady =
   (typeof self !== 'undefined' &&
     self.requestIdleCallback &&
     self.requestIdleCallback.bind(window)) ||
-  function (cb) {
-    const start = Date.now()
-    return setTimeout(function () {
-      cb({
-        didTimeout: false,
-        timeRemaining: function () {
-          return Math.max(0, 50 - (Date.now() - start))
-        },
-      })
-    }, 1)
-  }
+  setTimeout
 
 // Get initial payload
 document.querySelectorAll('[' + FLIGHT_ATTRIBUTE + ']').forEach(addElementToFlightChunks)
@@ -139,27 +130,29 @@ const renderUnagi: ClientHandler = async (ClientWrapper) => {
   // Fixes hydration in `useId`: https://github.com/Shopify/hydrogen/issues/1589
   const ServerRequestProviderMock = () => null
 
-  // requestIdleCallbackHydrogen(() => {
-  //   startTransition(() => {
-  hydrateRoot(
-    root,
-    <RootComponent>
-      <ServerRequestProviderMock />
-      <ErrorBoundary
-        FallbackComponent={
-          CustomErrorPage
-            ? ({ error }) => <CustomErrorWrapper error={error} errorPage={CustomErrorPage} />
-            : DefaultError
-        }
-      >
-        <Suspense fallback={null}>
-          <Content clientWrapper={ClientWrapper} />
-        </Suspense>
-      </ErrorBoundary>
-    </RootComponent>
-  )
-  //   })
-  // })
+  onceReady(() => {
+    startTransition(() => {
+      hydrateRoot(
+        root,
+        <React.StrictMode>
+          <RootComponent>
+            <ServerRequestProviderMock />
+            <ErrorBoundary
+              FallbackComponent={
+                CustomErrorPage
+                  ? ({ error }) => <CustomErrorWrapper error={error} errorPage={CustomErrorPage} />
+                  : DefaultError
+              }
+            >
+              <Suspense fallback={null}>
+                <Content clientWrapper={ClientWrapper} />
+              </Suspense>
+            </ErrorBoundary>
+          </RootComponent>
+        </React.StrictMode>
+      )
+    })
+  })
 }
 
 export default renderUnagi
