@@ -55,13 +55,23 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   )
 
   const external = ['@tamagui/core', '@tamagui/core-node', 'react', 'react-dom']
+  const configEntry = props.config ? join(process.cwd(), props.config) : ''
+
+  if (process.env.DEBUG?.startsWith('tamagui')) {
+    console.log(`Building config entry`, configEntry)
+  }
 
   // build them to node-compat versions
-  await ensureDir(tmpDir)
+  try {
+    await ensureDir(tmpDir)
+  } catch {
+    //
+  }
+
   await Promise.all([
     props.config
       ? buildTamaguiConfig({
-          entryPoints: [join(process.cwd(), props.config)],
+          entryPoints: [configEntry],
           external,
           outfile: configOutPath,
         })
@@ -74,6 +84,10 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
       })
     }),
   ])
+
+  if (process.env.DEBUG?.startsWith('tamagui')) {
+    console.log(`Built configs`)
+  }
 
   const coreNode = require('@tamagui/core-node')
 
@@ -107,9 +121,16 @@ async function buildTamaguiConfig(
   const alias = require('@tamagui/core-node').aliasPlugin
   // until i do fancier things w plugins:
   const lockFile = join(dirname(options.outfile), basename(options.outfile, '.lock'))
-  const lockStat = await stat(lockFile)
-  const lockedMsAgo = new Date().getTime() - new Date(lockStat.mtime).getTime()
+  const lockStat = await stat(lockFile).catch(() => {
+    // ok
+  })
+  const lockedMsAgo = !lockStat
+    ? Infinity
+    : new Date().getTime() - new Date(lockStat.mtime).getTime()
   if (lockedMsAgo < 500) {
+    if (process.env.DEBUG?.startsWith('tamagui')) {
+      console.log(`Waiting for existing build`, options.entryPoints)
+    }
     let tries = 5
     while (tries--) {
       if (await pathExists(options.outfile)) {
@@ -120,6 +141,9 @@ async function buildTamaguiConfig(
     }
   }
   writeFile(lockFile, '')
+  if (process.env.DEBUG?.startsWith('tamagui')) {
+    console.log(`Building`, options.entryPoints)
+  }
   return esbuild.build({
     bundle: true,
     ...options,
