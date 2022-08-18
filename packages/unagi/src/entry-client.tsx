@@ -12,7 +12,7 @@ import React, {
   useState,
 } from 'react'
 import { hydrateRoot } from 'react-dom/client'
-import { ErrorBoundary } from 'react-error-boundary'
+import { ErrorBoundary } from 'react-error-boundary/dist/react-error-boundary.esm'
 // @ts-expect-error
 import CustomErrorPage from 'virtual__error.js'
 

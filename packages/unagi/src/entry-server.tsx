@@ -3,6 +3,8 @@ import type { PassThrough as PassThroughType } from 'stream'
 
 import React, { Suspense } from 'react'
 import { splitCookiesString } from 'set-cookie-parser'
+// @ts-ignore
+import stream from 'virtual__stream'
 
 import { getBuiltInRoute } from './foundation/BuiltInRoutes/BuiltInRoutes.js'
 import {
@@ -53,6 +55,13 @@ import {
 } from './utilities/log/index.js'
 import { parseJSON } from './utilities/parse.js'
 import { stripScriptsFromTemplate } from './utilities/template.js'
+
+// Importing 'stream' directly breaks Vite resolve
+// when building for workers, even though this code
+// does not run in a worker. Looks like tree-shaking
+// kicks in after the import analysis/bundle.
+// @ts-ignore
+const PassThrough = stream.PassThrough as typeof PassThroughType
 
 declare global {
   // This is provided by a Vite plugin
@@ -566,7 +575,7 @@ async function runSSR({
           return nodeResponse.end()
         }
 
-        const bufferedResponse = await createNodeWriter()
+        const bufferedResponse = new PassThrough()
         const bufferedRscPromise = bufferReadableStream(rscReadable.getReader())
 
         let ssrHtml = ''
@@ -728,16 +737,6 @@ function writeHeadToNodeResponse(
 function isRedirect(response: { status?: number; statusCode?: number }) {
   const status = response.status ?? response.statusCode ?? 0
   return status >= 300 && status < 400
-}
-
-async function createNodeWriter() {
-  // Importing 'stream' directly breaks Vite resolve
-  // when building for workers, even though this code
-  // does not run in a worker. Looks like tree-shaking
-  // kicks in after the import analysis/bundle.
-  const streamImport = __UNAGI_WORKER__ ? '' : 'stream'
-  const { PassThrough } = await import(streamImport)
-  return new PassThrough() as InstanceType<typeof PassThroughType>
 }
 
 function flightContainer(chunk: string) {

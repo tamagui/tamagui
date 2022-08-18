@@ -10,9 +10,9 @@
 
 import { init, parse } from 'es-module-lexer';
 import MagicString from 'magic-string';
-import { normalizePath, transformWithEsbuild, createServer } from 'vite';
 import { promises } from 'fs';
 import path from 'path';
+import { version, normalizePath as normalizePath$1, transformWithEsbuild as transformWithEsbuild$1, createServer as createServer$1 } from 'vite';
 
 function _unsupportedIterableToArray(o, minLen) {
   if (!o) return;
@@ -90,6 +90,10 @@ function _createForOfIteratorHelper(o, allowArrayLike) {
 
 var assign = Object.assign;
 
+var normalizePath = normalizePath$1,
+    transformWithEsbuild = transformWithEsbuild$1,
+    createServer = createServer$1;
+var isVite3 = version && version.startsWith('3.');
 var rscViteFileRE = /\/react-server-dom-vite.js/;
 var noProxyRE = /[&?]no-proxy($|&)/;
 
@@ -124,10 +128,10 @@ function ReactFlightVitePlugin() {
     enforce: 'pre',
     buildStart: function () {
       // Let other plugins differentiate between pure SSR and RSC builds
-      if (config?.build?.ssr) process.env.RSC_BUILD = 'true';
+      if (config?.build?.ssr) process.env.VITE_RSC_BUILD = 'true';
     },
     buildEnd: function () {
-      if (config?.build?.ssr) delete process.env.RSC_BUILD;
+      if (config?.build?.ssr) delete process.env.VITE_RSC_BUILD;
     },
     configureServer: function (_server) {
       server = _server;
@@ -194,7 +198,8 @@ function ReactFlightVitePlugin() {
     },
     load: function (id) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      if (!options.ssr || !isClientComponent(id) || noProxyRE.test(id)) return;      
+      if (!options.ssr || !isClientComponent(id) || noProxyRE.test(id)) return;
+
       if (server) {
         var mod = server.moduleGraph.idToModuleMap.get(id.replace('/@fs', ''));
 
@@ -403,11 +408,13 @@ function findClientBoundaries(moduleGraph) {
 async function findClientBoundariesForClientBuild(serverEntries, optimizeBoundaries, root) {
   // Viteception
   var server = await createServer({
-    root,
+    root: root,
     clearScreen: false,
     server: {
-      middlewareMode: 'ssr'
-    }
+      middlewareMode: isVite3 ? true : 'ssr',
+      hmr: false
+    },
+    appType: 'custom'
   });
 
   try {
@@ -430,7 +437,8 @@ var hashImportsPlugin = {
     if (rscViteFileRE.test(id)) {
       var s = new MagicString(code);
       s.replace(/\/\*\s*HASH_BEGIN\s*\*\/\s*([^]+?)\/\*\s*HASH_END\s*\*\//gm, function (_, imports) {
-        return imports.trim().replace(/"([^"]+?)":/gm, function (__, relativePath) {
+        return imports.trim().replace(/"([^"]+?)":/gm, function (all, relativePath) {
+          if (relativePath === '__VITE_PRELOAD__') return all;
           var absolutePath = path.resolve(path.dirname(id.split('?')[0]), relativePath);
           return "\"" + getComponentId(normalizePath(absolutePath)) + "\":";
         });
@@ -524,17 +532,20 @@ function isDirectImportInServer(originalMod, currentMod, accModInfo) {
   });
 }
 
-function resolveModPath(modPath, dirname, retryExtension) {
-  var absolutePath = '';
+var RESOLVE_EXTENSIONS = ['', '.js', '.ts', '.jsx', '.tsx', '/index', '/index.js', '/index.ts', '/index.jsx', '/index.tsx']; // Resolve relative paths  and aliases. Examples:
+// - import {XYZ} from '~/components' => import {XYZ} from '<absolute>/src/components/index.ts'
+// - import {XYZ} from '/src/component.client' => import {XYZ} from '<absolute>/src/component.client.jsx'`
 
-  try {
-    absolutePath = modPath.startsWith('.') ? normalizePath(path.resolve(dirname, modPath)) : modPath;
-    return normalizePath(require.resolve(absolutePath + (retryExtension || '')));
-  } catch (error) {
-    if (!/\.[jt]sx?$/.test(absolutePath) && retryExtension !== '.tsx') {
-      // Node cannot infer .[jt]sx extensions.
-      // Append them here and retry a couple of times.
-      return resolveModPath(absolutePath, dirname, retryExtension ? '.tsx' : '.jsx');
+function resolveModPath(modPath, dirname) {
+  var extensions = /\.[jt]sx?$/.test(modPath) ? [''] : RESOLVE_EXTENSIONS;
+
+  for (var i = 0; i < extensions.length; i++) {
+    var extension = extensions[i];
+
+    try {
+      var absolutePath = modPath.startsWith('.') ? normalizePath(path.resolve(dirname, modPath)) : modPath;
+      return normalizePath(require.resolve(absolutePath + extension));
+    } catch (error) {// Do not throw, this is likely a virtual module or another exception
     }
   }
 }

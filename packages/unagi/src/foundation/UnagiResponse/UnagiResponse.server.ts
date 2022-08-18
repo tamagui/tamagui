@@ -8,8 +8,29 @@ export class UnagiResponse extends Response {
   private wait = false
   private cacheOptions: CachingStrategy = CacheShort()
 
-  public status = 200
-  public statusText = ''
+  // still breaks for me
+  // https://github.com/Shopify/hydrogen/pull/1560
+
+  private proxy = Object.defineProperties(Object.create(null), {
+    // Default values:
+    status: { value: 200, writable: true },
+    statusText: { value: '', writable: true },
+  })
+
+  // @ts-ignore
+  public status: number
+  // @ts-ignore
+  public statusText: string
+
+  constructor(...args: ConstructorParameters<typeof Response>) {
+    super(...args)
+
+    return new Proxy(this, {
+      get: (target, key) => target.proxy[key] ?? Reflect.get(target, key),
+      set: (target, key, value) =>
+        Reflect.set(key in target.proxy ? target.proxy : target, key, value),
+    })
+  }
 
   /**
    * Buffer the current response until all queries have resolved,

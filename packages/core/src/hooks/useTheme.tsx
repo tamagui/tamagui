@@ -191,7 +191,6 @@ export const useChangeThemeEffect = (
   theme: ThemeObject | null
   className?: string
 } => {
-  console.log('?', isRSC, name, !!getConfig().themes?.light)
   if (isRSC) {
     // we need context working for this to work well
     const config = getConfig()

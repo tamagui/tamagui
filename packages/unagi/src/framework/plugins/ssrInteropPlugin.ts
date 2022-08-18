@@ -7,6 +7,17 @@ export default () => {
   return {
     name: 'vite-plugin-ssr-interop',
     enforce: 'pre',
+
+    config() {
+      return {
+        ssr: {
+          legacy: {
+            buildSsrCjsExternalHeuristics: true,
+          },
+        },
+      }
+    },
+
     transform(code, id, options = {}) {
       if (options.ssr && id.includes('foundation/ssrInterop')) {
         const serverPath = join(

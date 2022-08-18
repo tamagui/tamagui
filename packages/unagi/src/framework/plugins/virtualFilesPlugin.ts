@@ -3,6 +3,7 @@ import path from 'path'
 
 import { Plugin, ResolvedConfig, ViteDevServer, normalizePath } from 'vite'
 
+import { isVite3 } from '../../utilities/vite.js'
 import type { UnagiVitePluginOptions } from '../types.js'
 import { viteception } from '../viteception.js'
 
@@ -22,6 +23,8 @@ export const VIRTUAL_PROXY_UNAGI_CONFIG_ID = VIRTUAL_PREFIX + PROXY_PREFIX + UNA
 const UNAGI_ROUTES_ID = 'unagi-routes.server.jsx'
 const VIRTUAL_UNAGI_ROUTES_ID = VIRTUAL_PREFIX + UNAGI_ROUTES_ID
 export const VIRTUAL_PROXY_UNAGI_ROUTES_ID = VIRTUAL_PREFIX + PROXY_PREFIX + UNAGI_ROUTES_ID
+
+const VIRTUAL_STREAM_ID = 'virtual__stream'
 
 export default (pluginOptions: UnagiVitePluginOptions) => {
   let config: ResolvedConfig
@@ -50,6 +53,7 @@ export default (pluginOptions: UnagiVitePluginOptions) => {
           VIRTUAL_PROXY_UNAGI_ROUTES_ID,
           VIRTUAL_UNAGI_ROUTES_ID,
           VIRTUAL_ERROR_FILE,
+          VIRTUAL_STREAM_ID,
         ].includes(source)
       ) {
         // Virtual modules convention
@@ -59,6 +63,12 @@ export default (pluginOptions: UnagiVitePluginOptions) => {
       }
     },
     load(id) {
+      if (id === '\0' + VIRTUAL_STREAM_ID) {
+        return {
+          code: process.env.WORKER ? `export default {};` : `export {default} from 'stream';`,
+        }
+      }
+
       // Likely due to a bug in Vite, but virtual modules cannot be loaded
       // directly using ssrLoadModule from a Vite plugin. It needs to be proxied as follows:
       if (id === '\0' + VIRTUAL_PROXY_UNAGI_CONFIG_ID) {
@@ -87,9 +97,13 @@ export default (pluginOptions: UnagiVitePluginOptions) => {
 
           const [dirPrefix] = routesPath.split('/*')
 
+          const importGlob = isVite3
+            ? `import.meta.glob('${routesPath}', {eager: true})`
+            : `import.meta.globEager('${routesPath}')`
+
           let code = `export default {\n  dirPrefix: '${dirPrefix}',\n  basePath: '${
             hc.routes?.basePath ?? ''
-          }',\n  files: import.meta.globEager('${routesPath}')\n};`
+          }',\n  files: ${importGlob}\n};`
 
           if (config.command === 'serve') {
             // Add dependency on Unagi config for HMR

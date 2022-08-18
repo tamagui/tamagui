@@ -5359,7 +5359,7 @@ __metadata:
     morgan: ^1.10.0
     ts-morph: ^15.1.0
     url: ^0.11.0
-    vite: ^2.9.15
+    vite: ^3.0.8
     zx: ^7.0.7
   bin:
     tamagui: ./dist/index.js
@@ -5451,7 +5451,7 @@ __metadata:
     turbo: ^1.4.3
     typescript: ^4.7.4
     ultra-runner: ^3.10.5
-    vite: ^2.9.15
+    vite: ^3.0.8
   languageName: unknown
   linkType: soft
 
@@ -6406,7 +6406,7 @@ __metadata:
     tamagui-loader: ^1.0.1-beta.141
     thread-loader: ^3.0.4
     url-loader: ^4.1.1
-    vite: ^2.9.15
+    vite: ^3.0.8
     vite-plugin-environment: ^1.1.2
     webpack: ^5.74.0
     webpack-bundle-analyzer: ^4.5.0
@@ -6520,7 +6520,7 @@ __metadata:
     react-dom: "*"
     rollup-plugin-visualizer: ^5.7.1
     tamagui: ^1.0.1-beta.141
-    vite: ^2.9.15
+    vite: ^3.0.8
   languageName: unknown
   linkType: soft
 
@@ -6807,7 +6807,7 @@ __metadata:
     set-cookie-parser: ^2.5.1
     type-fest: ^2.18.0
     undici: ^5.5.1
-    vite: ^2.9.15
+    vite: ^3.0.8
     vite-plugin-environment: ^1.1.2
     vite-plugin-inspect: ^0.6.0
     vitest: ^0.20.3
@@ -6819,7 +6819,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     serve-static: ^1.14.1
-    vite: ^2.9.15
+    vite: ^3.0.8
   languageName: unknown
   linkType: soft
 
@@ -6930,9 +6930,9 @@ __metadata:
     "@babel/core": ^7.18.10
     "@tamagui/build": ^1.0.1-beta.141
     "@types/babel-core": ^6.25.7
-    vite: ^2.9.15
+    vite: ^3.0.8
   peerDependencies:
-    vite: ^2.9.15
+    vite: ^3.0.8
   languageName: unknown
   linkType: soft
 
@@ -20093,7 +20093,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.2.15, postcss@npm:^8.4.5":
+"postcss@npm:^8.2.15, postcss@npm:^8.4.16, postcss@npm:^8.4.5":
   version: 8.4.16
   resolution: "postcss@npm:8.4.16"
   dependencies:
@@ -21798,7 +21798,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:>=2.59.0 <2.78.0":
+"rollup@npm:>=2.75.6 <2.77.0 || ~2.77.0":
   version: 2.77.3
   resolution: "rollup@npm:2.77.3"
   dependencies:
@@ -24808,19 +24808,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^2.9.15":
-  version: 2.9.15
-  resolution: "vite@npm:2.9.15"
+"vite@npm:^3.0.8":
+  version: 3.0.8
+  resolution: "vite@npm:3.0.8"
   dependencies:
-    esbuild: ^0.14.27
+    esbuild: ^0.14.47
     fsevents: ~2.3.2
-    postcss: ^8.4.13
-    resolve: ^1.22.0
-    rollup: ">=2.59.0 <2.78.0"
+    postcss: ^8.4.16
+    resolve: ^1.22.1
+    rollup: ">=2.75.6 <2.77.0 || ~2.77.0"
   peerDependencies:
     less: "*"
     sass: "*"
     stylus: "*"
+    terser: ^5.4.0
   dependenciesMeta:
     fsevents:
       optional: true
@@ -24831,9 +24832,11 @@ __metadata:
       optional: true
     stylus:
       optional: true
+    terser:
+      optional: true
   bin:
     vite: bin/vite.js
-  checksum: 5edf8afc132a598f82a1339aa503514a0e86f6264babe94531b9000d801f157c9a32ae022542404678acca43ee260ade04c4763c4b7b8d381a6b50511b4a1447
+  checksum: ec3f57d52f2bf28f2f89898053c2156f025a108a95e9308ce6580f43d8fdaae866f7988afa8207a8c8509069d3a0b50ee79b9a8050590a825f4b7771646c2755
   languageName: node
   linkType: hard
 

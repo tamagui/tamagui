@@ -28,6 +28,6 @@
     "cross-env": "^7.0.3",
     "postcss": "^8.4.5",
     "rollup-plugin-visualizer": "^5.7.1",
-    "vite": "^2.9.15"
+    "vite": "^3.0.8"
   }
 }

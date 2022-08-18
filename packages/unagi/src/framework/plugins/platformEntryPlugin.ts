@@ -5,6 +5,7 @@ import fastGlob from 'fast-glob'
 import MagicString from 'magic-string'
 import { Plugin, ResolvedConfig, normalizePath } from 'vite'
 
+import { isVite3 } from '../../utilities/vite.js'
 import { UNAGI_DEFAULT_SERVER_ENTRY } from './virtualFilesPlugin'
 
 const SSR_BUNDLE_NAME = 'index.js'
@@ -25,7 +26,7 @@ export default () => {
 
       if (config.build.ssr) {
         const { output = {} } = config.build.rollupOptions || {}
-        const { format = '' } = (Array.isArray(output) ? output[0] : output) || {}
+        const { format = isVite3 ? 'es' : '' } = (Array.isArray(output) ? output[0] : output) || {}
 
         isESM = Boolean(process.env.WORKER) || ['es', 'esm'].includes(format)
       }

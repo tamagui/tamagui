@@ -21,7 +21,7 @@ export function tamaguiPlugin(
         plugins: [
           //
           // envPlugin(['NODE_ENV', 'TAMAGUI_TARGET', 'ENABLE_RSC']),
-          viteCommonjs(),
+          // viteCommonjs(),
         ],
         esbuild: {
           loader: 'tsx',
@@ -35,35 +35,32 @@ export function tamaguiPlugin(
             'process.env.TAMAGUI_TARGET': JSON.stringify(process.env.TAMAGUI_TARGET || 'web'),
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || env.mode),
             'process.env.ENABLE_RSC': JSON.stringify(process.env.ENABLE_RSC || ''),
+            'process.env.ENABLE_STEPS': JSON.stringify(process.env.ENABLE_STEPS || ''),
+            'process.env.IS_STATIC': JSON.stringify(false),
           }),
         },
-        build: {
-          commonjsOptions: {
-            transformMixedEsModules: true,
-          },
-        },
+        // build: {
+        //   commonjsOptions: {
+        //     transformMixedEsModules: true,
+        //   },
+        // },
         ssr: {
           // noExternal: /^(tamagui|react-native|expo-linear-gradient)$/,
           noExternal: /tamagui|react-native|expo-linear-gradient/,
         },
         optimizeDeps: {
-          include: [
-            'styleq',
-            'inline-style-prefixer',
-            'create-react-class',
-            'copy-to-clipboard',
-            'react-native-reanimated',
-          ],
+          // disabled: false,
+          include: ['styleq', 'copy-to-clipboard', 'react-native-reanimated'],
           esbuildOptions: {
             jsx: 'transform',
-            plugins: [
-              esbuildCommonjs([
-                'styleq',
-                'inline-style-prefixer',
-                'create-react-class',
-                'copy-to-clipboard',
-              ]),
-            ],
+            // plugins: [
+            //   esbuildCommonjs([
+            //     'styleq',
+            //     'inline-style-prefixer',
+            //     'create-react-class',
+            //     'copy-to-clipboard',
+            //   ]),
+            // ],
             resolveExtensions: [
               '.web.js',
               '.web.ts',
