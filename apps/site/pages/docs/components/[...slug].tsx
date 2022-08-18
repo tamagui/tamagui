@@ -4,7 +4,8 @@ import { QuickNav } from '@components/QuickNav'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { getAllFrontmatter, getAllVersionsFromPath, getMdxBySlug } from '@lib/mdx'
 import { getMDXComponent } from 'mdx-bundler/client'
-import React from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect } from 'react'
 
 import { DocsPage } from '../../../components/DocsPage'
 import type { Frontmatter } from '../../../frontmatter'
@@ -16,6 +17,16 @@ type Doc = {
 
 export default function DocComponentsPage({ frontmatter, code }: Doc) {
   const Component = React.useMemo(() => getMDXComponent(code), [code])
+  const router = useRouter()
+
+  useEffect(() => {
+    let pathWithVersion = `${router.pathname}/${frontmatter.version}`
+    if(Array.isArray(router.query.slug)) {
+      pathWithVersion = pathWithVersion.replace('[...slug]', router.query.slug[0])
+    }
+    router.replace(pathWithVersion, undefined, {shallow: true})
+  }, [])
+
   return (
     <>
       <TitleAndMetaTags
@@ -50,7 +61,7 @@ export async function getStaticPaths() {
   const latestVersionPaths = paths.map((path) => {
     const withoutVersion = path.params.slug.slice(0, path.params.slug.length - 1)
     return {
-      params: { slug: withoutVersion },
+      params: { slug: withoutVersion, version: 123 },
     }
   })
 
