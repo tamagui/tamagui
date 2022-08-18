@@ -24,7 +24,7 @@ import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { HomeH2 } from './HomeH2'
 
-const families = ['silkscreen', 'mono', 'inter']
+const families = ['silkscreen', 'mono', 'heading']
 
 export const HeroTypography = () => {
   const [family, setFamily] = useState(`silkscreen`)
