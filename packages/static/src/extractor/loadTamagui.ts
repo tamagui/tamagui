@@ -5,7 +5,7 @@ import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import type { StaticConfig, TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core-node'
 import { createTamagui } from '@tamagui/core-node'
 import esbuild from 'esbuild'
-import { pathExists, remove, stat, writeFile } from 'fs-extra'
+import { ensureDir, pathExists, remove, stat, writeFile } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants'
 import { getNameToPaths, registerRequire, unregisterRequire } from '../require'
@@ -57,6 +57,7 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   const external = ['@tamagui/core', '@tamagui/core-node', 'react', 'react-dom']
 
   // build them to node-compat versions
+  await ensureDir(tmpDir)
   await Promise.all([
     props.config
       ? buildTamaguiConfig({

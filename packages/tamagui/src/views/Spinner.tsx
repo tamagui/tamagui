@@ -3,8 +3,6 @@ import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { ActivityIndicator } from 'react-native'
 
-console.log('ActivityIndicator', ActivityIndicator)
-
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
 
