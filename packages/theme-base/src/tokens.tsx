@@ -13,8 +13,6 @@ import {
   purpleDark,
   red,
   redDark,
-  teal,
-  tealDark,
   yellow,
   yellowDark,
 } from '@tamagui/colors'
@@ -105,7 +103,6 @@ const colorTokens = {
     purple: purple,
     red: red,
     yellow: yellow,
-    teal: teal,
   },
   dark: {
     blue: blueDark,
@@ -116,7 +113,6 @@ const colorTokens = {
     purple: purpleDark,
     red: redDark,
     yellow: yellowDark,
-    teal: tealDark,
   },
 }
 
@@ -129,7 +125,6 @@ export const darkColors = {
   ...colorTokens.dark.purple,
   ...colorTokens.dark.red,
   ...colorTokens.dark.yellow,
-  ...colorTokens.dark.teal,
 }
 
 export const lightColors = {
@@ -141,7 +136,6 @@ export const lightColors = {
   ...colorTokens.light.purple,
   ...colorTokens.light.red,
   ...colorTokens.light.yellow,
-  ...colorTokens.light.teal,
 }
 
 const allColors = {

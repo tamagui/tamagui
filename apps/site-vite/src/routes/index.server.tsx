@@ -73,7 +73,7 @@ export default function Index() {
             <span className="rainbow clip-text">Responsive</span>, for real.
           </HomeH2>
 
-          <HomeH3 ta="left" als="flex-start" p={0} maxWidth={450} theme="alt3">
+          <HomeH3 ta="left" als="flex-start" p={0} maxWidth={450} theme="alts">
             Simple syntax for universal responsive styling - compiled to @media on the web for
             amazing performance.
           </HomeH3>
@@ -290,7 +290,7 @@ function PerformanceSection() {
               b={-20}
               r={20}
               mt={-20}
-              theme="alt3"
+              theme="alts"
               size="$2"
               $sm={{ display: 'none' }}
             >

@@ -14,7 +14,7 @@ const getBarColor = (name: string) => {
       return '$red9'
     case 'react-native-web':
     case 'RNW':
-      return '$teal9'
+      return '$purple9'
     case 'Emotion':
       return '$green9'
     case 'Dripsy':

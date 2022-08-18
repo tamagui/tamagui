@@ -19,9 +19,9 @@ export default defineConfig({
     unagi({
       experimental: { css: 'global' },
     }),
-    // not working..
     analyze({
       emitFile: true,
+      gzipSize: true,
       filename: '.stats.html',
     }),
   ],

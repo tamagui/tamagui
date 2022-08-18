@@ -100,6 +100,7 @@ export function tamaguiPlugin(
             'react-native-svg': 'react-native-svg-web',
             'react-native': 'react-native-web',
             ...(options.useReactNativeWebLite && {
+              '@tamagui/rnw': '@tamagui/rnw-lite',
               'react-native': 'react-native-web-lite',
               'react-native-web': 'react-native-web-lite',
             }),

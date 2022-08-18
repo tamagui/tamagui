@@ -13,9 +13,6 @@ export function TextDemo() {
         <SizableText theme="alt2" size="$3">
           alt2
         </SizableText>
-        <SizableText theme="alt3" size="$3">
-          alt3
-        </SizableText>
       </XStack>
       <Paragraph size="$2" fow="800">
         Paragraph

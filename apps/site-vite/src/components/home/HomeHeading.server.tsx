@@ -18,7 +18,7 @@ export const HomeH2 = styled(H2, {
 export const HomeH3 = styled(H3, {
   name: 'HomeH3',
   ta: 'center',
-  theme: 'alt3',
+  theme: 'alt2',
   als: 'center',
   size: '$8',
   fow: '400',

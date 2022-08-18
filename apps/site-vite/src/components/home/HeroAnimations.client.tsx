@@ -166,7 +166,7 @@ export const ExampleAnimations = memo(() => {
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
             return (
-              <Theme key={item.name} name={isActive ? 'active' : 'alt3'}>
+              <Theme key={item.name} name={isActive ? 'active' : 'alt2'}>
                 <YStack
                   {...(isActive && {
                     bc: '$backgroundHover',

@@ -297,7 +297,7 @@ const Header = memo(() => {
         </HomeH2>
       </XStack>
 
-      <HomeH3 ta="left" als="flex-start" p={0} maxWidth={450} theme="alt3">
+      <HomeH3 ta="left" als="flex-start" p={0} maxWidth={450} theme="alt2">
         Simple syntax for universal responsive styling - compiled to @media on the web for amazing
         performance.
       </HomeH3>

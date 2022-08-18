@@ -15,15 +15,15 @@ function App() {
   // test
   return (
     <Suspense fallback="Loading...">
-      {/* <TamaguiProvider disableInjectCSS config={config} defaultTheme="light"> */}
-      <TamaguiClientProvider disableRootThemeClass disableInjectCSS defaultTheme="light">
-        <Router>
-          <FileRoutes />
-        </Router>
+      <TamaguiProvider disableInjectCSS config={config} defaultTheme="light">
+        <TamaguiClientProvider disableRootThemeClass disableInjectCSS defaultTheme="light">
+          <Router>
+            <FileRoutes />
+          </Router>
 
-        <Footer />
-      </TamaguiClientProvider>
-      {/* </TamaguiProvider> */}
+          <Footer />
+        </TamaguiClientProvider>
+      </TamaguiProvider>
     </Suspense>
   )
 }

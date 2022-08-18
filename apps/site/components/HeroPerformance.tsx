@@ -54,7 +54,7 @@ export function HeroPerformance() {
             b={-20}
             r={20}
             mt={-20}
-            theme="alt3"
+            theme="alt2"
             size="$2"
             $sm={{ display: 'none' }}
           >

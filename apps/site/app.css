@@ -306,7 +306,7 @@ iframe {
 }
 
 .token.class-name {
-  color: var(--teal10);
+  color: var(--green10);
 }
 
 .token.tag,
@@ -350,7 +350,7 @@ iframe {
 }
 
 .token.punctuation {
-  color: var(--teal10);
+  color: var(--green10);
 }
 
 .token.module,

@@ -8,7 +8,8 @@
     "build:client": "ENABLE_RSC=1 TAMAGUI_TARGET=web vite build --outDir dist/client --manifest",
     "build:server": "ENABLE_RSC=1 TAMAGUI_TARGET=web vite build --outDir dist/server --ssr @tamagui/unagi/platforms/node",
     "build:worker": "cross-env ENABLE_RSC=1  TAMAGUI_TARGET=web WORKER=true vite build --outDir dist/worker --ssr @tamagui/unagi/platforms/worker",
-    "serve": "node --trace-warnings --enable-source-maps dist/server"
+    "serve": "node --trace-warnings --enable-source-maps dist/server",
+    "serve:worker": "node --trace-warnings --enable-source-maps dist/worker"
   },
   "dependencies": {
     "@tamagui/code-to-html": "^1.0.1-beta.141",

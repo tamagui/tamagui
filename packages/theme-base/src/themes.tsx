@@ -23,9 +23,9 @@ type ThemeCreatorProps = {
 
 // helpers
 
-const alternates = [1, 2, 3, 4] as const
-const alts = [1, 2, 3] as const
-type AltKeys = 1 | 2 | 3
+const alternates = [1, 2, 3] as const
+const alts = [1, 2] as const
+type AltKeys = 1 | 2
 type AltName<Name extends string, Keys extends string | number> = `${Name}_alt${Keys}`
 type ThemeCreator<A = any> = (str: number, props: ThemeCreatorProps) => A
 
@@ -113,8 +113,8 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
     ...altButtonThemes.slice(0, alts.length),
     [`${name}_Button`, altThemes2[1][1]],
     [`${name}_DrawerFrame`, altThemes2[1][1]],
-    [`${name}_SliderTrack`, altThemes[2][1]],
-    [`${name}_SliderTrackActive`, altThemes[3][1]],
+    [`${name}_SliderTrack`, altThemes[0][1]],
+    [`${name}_SliderTrackActive`, altThemes[2][1]],
     [`${name}_SliderThumb`, inverted[2]],
     [`${name}_Progress`, altThemes[2][1]],
     [`${name}_ProgressIndicator`, inverted[2]],
@@ -308,9 +308,9 @@ const baseThemes = {
   // reserving in types, updating later
   light_active: lightThemes.light,
   light_Card: lightThemes.light,
-  light_SliderTrack: lightThemes.light_alt2,
-  light_SliderTrackActive: lightThemes.light_alt3,
-  light_Switch: lightThemes.light_alt3,
+  light_SliderTrack: lightThemes.light_alt1,
+  light_SliderTrackActive: lightThemes.light_alt2,
+  light_Switch: lightThemes.light_alt2,
   light_SwitchThumb: lightThemes.light,
   light_DrawerFrame: lightThemes.light_alt1,
 
@@ -320,10 +320,10 @@ const baseThemes = {
   // reserving in types, updating later
   dark_active: darkThemes.dark,
   dark_Card: darkThemes.dark,
-  dark_DrawerFrame: darkThemes.dark_alt2,
+  dark_DrawerFrame: darkThemes.dark_alt1,
   dark_SliderTrack: darkThemes.dark_darker,
-  dark_SliderTrackActive: darkThemes.dark_alt3,
-  dark_Switch: darkThemes.dark_alt3,
+  dark_SliderTrackActive: darkThemes.dark_alt2,
+  dark_Switch: darkThemes.dark_alt2,
   dark_SwitchThumb: darkThemes.dark_darker,
   dark_Button: darkThemes.dark_alt1,
 }
@@ -345,7 +345,6 @@ export const colorSchemes = [
   { name: 'purple', colors: findColors('purple'), darkColors: findColors('purple', true) },
   { name: 'red', colors: findColors('red'), darkColors: findColors('red', true) },
   { name: 'yellow', colors: findColors('yellow'), darkColors: findColors('yellow', true) },
-  { name: 'teal', colors: findColors('teal'), darkColors: findColors('teal', true) },
 ] as const
 
 export type ColorNames = typeof colorSchemes[number]['name']
@@ -359,7 +358,6 @@ export const colorNames: ColorNames[] = [
   'purple',
   'red',
   'yellow',
-  'teal',
   'gray',
 ]
 
@@ -422,7 +420,7 @@ const colorThemes: {
 
 // add in base _active themes
 baseThemes.dark_active = {
-  ...colorThemes.dark_blue_alt3,
+  ...colorThemes.dark_blue_alt2,
   background: darkColors.blue10,
   backgroundHover: darkColors.blue11,
   backgroundPress: darkColors.blue9,

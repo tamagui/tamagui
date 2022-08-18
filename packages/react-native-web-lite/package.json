@@ -40,12 +40,7 @@
     "react": "*",
     "react-dom": "*"
   },
-  "author": "Nate Wienert",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/tamagui/tamagui.git"
-  },
   "tags": [
     "react"
   ],

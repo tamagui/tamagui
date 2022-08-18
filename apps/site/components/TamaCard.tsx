@@ -75,19 +75,19 @@ export const TamaCard = ({
             {!!(subtitlePre || subtitlePost) && (
               <XStack>
                 {!!subtitlePre && (
-                  <Paragraph cursor="default" tag="time" size="$7" theme="alt3">
+                  <Paragraph cursor="default" tag="time" size="$7" theme="alt2">
                     {subtitlePre}
                   </Paragraph>
                 )}
                 {!!subtitlePost && (
-                  <Paragraph cursor="default" fow="800" theme="alt3" size="$7">
+                  <Paragraph cursor="default" fow="800" theme="alt2" size="$7">
                     {subtitlePost}
                   </Paragraph>
                 )}
               </XStack>
             )}
 
-            <Paragraph o={0.65} cursor="default" theme="alt3" size="$4" fow="500">
+            <Paragraph o={0.65} cursor="default" theme="alt2" size="$4" fow="500">
               {children || description}
             </Paragraph>
 

@@ -19,7 +19,7 @@ export default function Blog({ frontmatters }) {
       <Container>
         <YStack space="$2" ai="center">
           <H1>Blog</H1>
-          <H2 size="$8" theme="alt3" fontWeight="300">
+          <H2 size="$8" theme="alt2" fontWeight="300">
             What's new with Tamagui
           </H2>
         </YStack>
@@ -46,10 +46,10 @@ export default function Blog({ frontmatters }) {
                       {frontmatter.title}
                     </H3>
                     <XStack>
-                      <Paragraph cursor="inherit" tag="time" size="$3" theme="alt3">
+                      <Paragraph cursor="inherit" tag="time" size="$3" theme="alt2">
                         {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')}
                       </Paragraph>
-                      <Paragraph cursor="inherit" fow="800" theme="alt3" size="$3">
+                      <Paragraph cursor="inherit" fow="800" theme="alt2" size="$3">
                         &nbsp;by {authors[frontmatter.by].name}
                       </Paragraph>
                       {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}
