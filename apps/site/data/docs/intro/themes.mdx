@@ -204,7 +204,7 @@ export default config
 Let's start with an example of inline styling with a subset of the configuration:
 
 ```tsx
-import { createTokens, createTamagui, YStack, Theme } from 'tamagui'
+import { TamaguiProvider, createTokens, createTamagui, YStack, Theme } from 'tamagui'
 
 const tokens = createTokens({
   color: {
@@ -213,7 +213,7 @@ const tokens = createTokens({
   }
 })
 
-const { Provider } = createTamagui({
+const config = createTamagui({
   tokens,
   themes: {
     dark: {
@@ -226,12 +226,12 @@ const { Provider } = createTamagui({
 })
 
 export const App = () => (
-  <Provider defaultTheme="light">
+  <TamaguiProvider config={config} defaultTheme="light">
     <YStack backgroundColor="$red" />
     <Theme name="dark">
       <YStack backgroundColor="$red" />
     </Theme>
-  </Provider>
+  </TamaguiProvider>
 )
 ```
 
