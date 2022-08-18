@@ -43,7 +43,21 @@ export function styled<
       if (defaultVariants) {
         Object.assign(defaultProps, defaultVariants)
       }
-      const isReactNativeWeb = parentStaticConfig?.isReactNativeWeb || RNComponents.has(Component)
+      let isReactNativeWeb = parentStaticConfig?.isReactNativeWeb || RNComponents.has(Component)
+      // this can happen due to smart-ness in fake-react-native, rough heuristic here to ensure we match (could be better..)
+      if (!('staticConfig' in Component) && !isReactNativeWeb) {
+        if (RNComponents.has(Component['displayName'])) {
+          RNComponents.add(Component)
+          isReactNativeWeb = true
+        } else {
+          if (process.env.NODE_ENV === 'development') {
+            // eslint-disable-next-line no-console
+            console.warn(
+              `Invalid styled() component: Tamagui only accepts react-native Text, View, Image, TextInput, or another styled Tamagui view`
+            )
+          }
+        }
+      }
       const reactNativeWebComponent = isReactNativeWeb
         ? parentStaticConfig?.reactNativeWebComponent || Component
         : null

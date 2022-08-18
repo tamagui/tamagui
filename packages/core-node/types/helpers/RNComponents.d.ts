@@ -1,2 +1,2 @@
-export declare const RNComponents: WeakMap<object, any>;
+export declare const RNComponents: Set<any>;
 //# sourceMappingURL=RNComponents.d.ts.map

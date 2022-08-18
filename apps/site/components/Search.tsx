@@ -51,9 +51,6 @@ export const SearchProvider = memo(({ children }: any) => {
 
   return (
     <>
-      <Head>
-        <link rel="preconnect" href={`https://${APP_ID}-dsn.algolia.net`} crossOrigin="true" />
-      </Head>
       <SearchContext.Provider value={contextValue}>{children}</SearchContext.Provider>
       {isOpen &&
         createPortal(

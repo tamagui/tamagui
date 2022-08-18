@@ -74,11 +74,11 @@ describe('flatten-tests', () => {
     })
 
     expect(sheetStyles['3']).toEqual({
-      backgroundColor: 'rgba(255,0,0,1.00)',
+      backgroundColor: 'red',
     })
 
     expect(sheetStyles['5']).toEqual({
-      backgroundColor: 'rgba(0,0,255,1.00)',
+      backgroundColor: 'blue',
     })
   })
 })

@@ -5,6 +5,7 @@
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
+  "type": "module",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
   "files": [
@@ -15,6 +16,14 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./photo/*": "./public/*.jpg",
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
   },
   "dependencies": {
     "@tamagui/avatar": "^1.0.1-beta.141",

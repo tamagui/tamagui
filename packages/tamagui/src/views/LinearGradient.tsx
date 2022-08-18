@@ -23,7 +23,6 @@ export const LinearGradient: React.ForwardRefExoticComponent<
     React.forwardRef((props: LinearGradientProps, ref) => {
       const { start, end, colors: colorsProp, locations, ...stackProps } = props
       const colors = useLinearGradientColors(colorsProp || [])
-      console.log('>')
       return (
         // @ts-ignore
         <LinearGradientFrame ref={ref} {...stackProps}>

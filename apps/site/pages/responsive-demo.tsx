@@ -1,7 +1,10 @@
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
-import img1 from '@tamagui/demos/public/photo1.jpg'
-import img2 from '@tamagui/demos/public/photo2.jpg'
-import img3 from '@tamagui/demos/public/photo3.jpg'
+// @ts-ignore
+import img1 from '@tamagui/demos/photo/photo1'
+// @ts-ignore
+import img2 from '@tamagui/demos/photo/photo2'
+// @ts-ignore
+import img3 from '@tamagui/demos/photo/photo3'
 import { MapPin, Star } from '@tamagui/feather-icons'
 import React from 'react'
 import {

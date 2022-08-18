@@ -141,21 +141,11 @@ View.displayName = 'View'
 const styles = StyleSheet.create({
   view$raw: {
     alignItems: 'stretch',
-    backgroundColor: 'transparent',
-    border: '0 solid black',
     boxSizing: 'border-box',
     display: 'flex',
     flexBasis: 'auto',
     flexDirection: 'column',
     flexShrink: 0,
-    listStyle: 'none',
-    margin: 0,
-    minHeight: 0,
-    minWidth: 0,
-    padding: 0,
-    position: 'relative',
-    textDecoration: 'none',
-    zIndex: 0,
   },
   inline: {
     display: 'inline-flex',

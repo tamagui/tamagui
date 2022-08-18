@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
-import { join, sep } from 'path'
+import { basename, dirname, join, sep } from 'path'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import type { StaticConfig, TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core-node'
 import { createTamagui } from '@tamagui/core-node'
 import esbuild from 'esbuild'
-import { remove } from 'fs-extra'
+import { pathExists, remove, stat, writeFile } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants'
 import { getNameToPaths, registerRequire, unregisterRequire } from '../require'
@@ -24,7 +24,7 @@ type Props = { components: string[]; config?: string }
 
 const cache = {}
 
-// TODO stat dirs to determine re-build or just clear after debounce
+// TODO needs a plugin for webpack / vite to run this once at startup and not again until changed...
 
 export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   const key = JSON.stringify(props)
@@ -53,9 +53,6 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
         .replace(/[^a-z0-9]+/gi, '')}-components.config.js`
     )
   )
-
-  const outPaths = [configOutPath, ...componentOutPaths]
-  await Promise.all(outPaths.map((p) => remove(p)))
 
   const external = ['@tamagui/core', '@tamagui/core-node', 'react', 'react-dom']
 
@@ -103,10 +100,25 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
 }
 
 async function buildTamaguiConfig(
-  options: Partial<esbuild.BuildOptions>,
+  options: Partial<esbuild.BuildOptions> & { outfile: string },
   aliases?: Record<string, string>
 ) {
   const alias = require('@tamagui/core-node').aliasPlugin
+  // until i do fancier things w plugins:
+  const lockFile = join(dirname(options.outfile), basename(options.outfile, '.lock'))
+  const lockStat = await stat(lockFile)
+  const lockedMsAgo = new Date().getTime() - new Date(lockStat.mtime).getTime()
+  if (lockedMsAgo < 500) {
+    let tries = 5
+    while (tries--) {
+      if (await pathExists(options.outfile)) {
+        return
+      } else {
+        await new Promise((res) => setTimeout(res, 50))
+      }
+    }
+  }
+  writeFile(lockFile, '')
   return esbuild.build({
     bundle: true,
     ...options,
@@ -233,13 +245,22 @@ function interopDefaultExport(mod: any) {
   return mod?.default ?? mod
 }
 
+const cacheComponents = {}
+
 function loadComponents(componentsModules: string[]) {
-  const x = Date.now()
+  const key = componentsModules.join('')
+  if (cacheComponents[key]) {
+    return cacheComponents[key]
+  }
   try {
-    const requiredModules = componentsModules.map((name) => interopDefaultExport(require(name)))
-    return gatherTamaguiComponentInfo(requiredModules)
-  } finally {
-    console.log('now', componentsModules, Date.now() - x)
+    const requiredModules = componentsModules.map((name) => {
+      return interopDefaultExport(require(name))
+    })
+    const res = gatherTamaguiComponentInfo(requiredModules)
+    cacheComponents[key] = res
+    return res
+  } catch (err: any) {
+    console.log(`Tamagui error bundling components`, err.message, err.stack)
   }
 }
 

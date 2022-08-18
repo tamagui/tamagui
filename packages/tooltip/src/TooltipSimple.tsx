@@ -36,7 +36,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = ({
           x={0}
           scale={1}
           y={0}
-          elevation="$1"
+          elevation="$0.5"
           opacity={1}
           animation={[
             'bouncy',

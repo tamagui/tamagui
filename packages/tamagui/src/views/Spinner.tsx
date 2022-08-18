@@ -1,7 +1,9 @@
-import { ColorTokens, themeable, useTheme } from '@tamagui/core'
+import { ColorTokens, themeable, useTheme, variableToString } from '@tamagui/core'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { ActivityIndicator } from 'react-native'
+
+console.log('ActivityIndicator', ActivityIndicator)
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
@@ -19,7 +21,7 @@ export const Spinner: React.ForwardRefExoticComponent<SpinnerProps & React.RefAt
         const theme = useTheme()
         let color = colorProp as string
         if (color && color[0] === '$') {
-          color = theme[color]?.toString()
+          color = variableToString(theme[color])
         }
         return (
           <YStack ref={ref} {...stackProps}>

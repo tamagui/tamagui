@@ -224,8 +224,14 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       const node = ('node' in bodyPath ? bodyPath.node : bodyPath) as t.ImportDeclaration
       const from = node.source.value
       // if importing styled()
+      const isValidImport =
+        props.components.includes(from) ||
+        isInternalImport(from) ||
+        from === '@tamagui/core' ||
+        from === 'tamagui'
+
       if (extractStyledDefinitions) {
-        if (from === '@tamagui/core' || from === 'tamagui') {
+        if (isValidImport) {
           if (
             node.specifiers.some((specifier) => {
               return specifier.local.name === 'styled'
@@ -236,7 +242,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           }
         }
       }
-      const isValidImport = props.components.includes(from) || isInternalImport(from)
+
       if (isValidImport) {
         const isValidComponent = node.specifiers.some((specifier) => {
           const name = specifier.local.name

@@ -200,10 +200,9 @@ const ornaments = {
 }
 ```
 
-- vite plugin css
+- swappable animation drivers to load css initially and change out
+- better profiling tools / startup / dep analysis
 - hoverStyle={{ [XStack]: {} }}
-- next css shaker 
-  - loads every page after build and finds all unused styles, produces minimal css
 - <List.Section /> see (https://developer.apple.com/documentation/swiftui/list Section)
 - compiler could insert special props like:
   - __noAnimations, __noTheme, __noSpace

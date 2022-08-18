@@ -183,13 +183,16 @@ export function createComponent<
         const name = `${
           componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
         }`
-        const banner = `${name} ${propsIn['data-is'] || ''}`
+        const type = staticConfig.isReactNativeWeb ? 'rnw' : 'tamagui'
+        const banner = `${name} ${propsIn['data-is'] || ''} ${type}`
         // eslint-disable-next-line no-console
         console.group(`%c 🐛 ${banner}`, 'background: yellow;')
         // eslint-disable-next-line no-console
-        console.log('props', propsIn)
-        // eslint-disable-next-line no-console
-        console.log('ref', hostRef, '(click to view)')
+        console.log('props in', propsIn)
+        if (typeof window !== 'undefined') {
+          // eslint-disable-next-line no-console
+          console.log('ref', hostRef, '(click to view)')
+        }
         if (props['debug'] === 'break') {
           // eslint-disable-next-line no-debugger
           debugger
@@ -590,8 +593,14 @@ export function createComponent<
           className,
           id: props.id,
         }
-        if (props['data-is']) {
-          viewProps.dataSet.is = props['data-is']
+        if (process.env.NODE_ENV === 'development') {
+          // turn debug data- props into dataSet in dev mode
+          Object.keys(viewProps).forEach((key) => {
+            if (key.startsWith('data-')) {
+              viewProps.dataSet[key.replace('data-', '')] = viewProps[key]
+              delete viewProps[key]
+            }
+          })
         }
       } else {
         viewProps.className = className

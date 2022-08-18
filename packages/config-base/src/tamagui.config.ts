@@ -3,11 +3,11 @@ import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/theme-base'
 
-import { animations } from './animations.css'
+import { animations } from './animations'
 import { createGenericFont } from './createGenericFont'
 import { media } from './media'
 
-export * from './animations.css'
+export * from './animations'
 
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont(
@@ -43,7 +43,10 @@ const headingFont = createInterFont(
   { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 0)) }
 )
 const bodyFont = createInterFont(
-  {},
+  {
+    family:
+      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+  },
   {
     sizeSize: (size) => Math.round(size),
     sizeLineHeight: (size) => Math.round(size * 1.1 + (size >= 12 ? 10 : 4)),

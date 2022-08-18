@@ -9,6 +9,10 @@ function proxyWorm() {
       Platform: {
         OS: 'web',
       },
+      Image: 'Image',
+      View: 'View',
+      Text: 'Text',
+      TextInput: 'TextInput',
       addPoolingTo() {},
     },
     {

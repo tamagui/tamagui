@@ -21,7 +21,7 @@ test('basic extraction', async () => {
   expect(code).toMatchInlineSnapshot(`
     "const _sheet = ReactNativeStyleSheet.create({
       \\"0\\": {
-        \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\",
+        \\"backgroundColor\\": \\"red\\",
         \\"flexDirection\\": \\"column\\",
         \\"flexShrink\\": 0,
         \\"alignItems\\": \\"stretch\\"
@@ -58,10 +58,10 @@ test('basic conditional extraction', async () => {
         \\"alignItems\\": \\"stretch\\"
       },
       \\"1\\": {
-        \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
+        \\"backgroundColor\\": \\"red\\"
       },
       \\"2\\": {
-        \\"backgroundColor\\": \\"rgba(0,0,255,1.00)\\"
+        \\"backgroundColor\\": \\"blue\\"
       },
       \\"3\\": {
         \\"flexDirection\\": \\"column\\",
@@ -69,7 +69,7 @@ test('basic conditional extraction', async () => {
         \\"alignItems\\": \\"stretch\\"
       },
       \\"4\\": {
-        \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
+        \\"backgroundColor\\": \\"red\\"
       },
       \\"5\\": {}
     });

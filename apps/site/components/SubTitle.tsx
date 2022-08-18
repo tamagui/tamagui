@@ -13,6 +13,7 @@ export const SubTitle = ({ children, ...props }) => {
         size="$8"
         letterSpacing={-1}
         theme="alt1"
+        fontFamily="$body"
         fontWeight="300"
         tag="p"
         maxWidth="100%"

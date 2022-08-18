@@ -6,12 +6,6 @@ import '../site/app.css'
 import { AnimationsDemo, SheetDemo } from '@tamagui/demos'
 import { useEffect, useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
-// import Animated, {
-//   useAnimatedReaction,
-//   useAnimatedStyle,
-//   useSharedValue,
-//   withSpring,
-// } from 'react-native-reanimated'
 import { Button, FontLanguage, Paragraph, Sheet, TamaguiProvider, XStack, styled } from 'tamagui'
 
 import config from './tamagui.config'

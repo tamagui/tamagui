@@ -193,21 +193,6 @@ pre {
 .ms300 {
   transition-duration: 300ms;
 }
-.ms400 {
-  transition-duration: 400ms;
-}
-.ms500 {
-  transition-duration: 500ms;
-}
-.ms750 {
-  transition-duration: 750ms;
-}
-.s1 {
-  transition-duration: 1s;
-}
-.s2 {
-  transition-duration: 2s;
-}
 
 .help {
   cursor: help;
@@ -285,10 +270,6 @@ iframe {
 
 .mask-gradient-both {
   mask-image: linear-gradient(rgba(0, 0, 0, 1.0), transparent, rgba(0, 0, 0, 1.0));
-}
-
-.mask-gradient-right {
-  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1.0), transparent);
 }
 
 .mask-gradient-down {
@@ -477,28 +458,6 @@ iframe {
 input, textarea {
   outline: none;
   color: var(--color);
-}
-
-.universal {
-  position: relative;
-}
-
-.universal::before {
-  content: ' ';
-  display: flex;
-  position: absolute;
-  top: 60%;
-  bottom: 4px;
-  left: -4px;
-  right: -8px;
-  z-index: -1;
-  background-color: var(--yellow6);
-  display: inline-flex;
-  transform: rotate(-1.25deg);
-}
-
-.universal:hover::before {
-  top: 24%;
 }
 
 .ta-right {

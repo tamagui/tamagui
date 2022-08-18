@@ -384,6 +384,8 @@ function createAtomicRules(identifier: string, property, value): Rules {
  */
 function createDeclarationBlock(style: Style): string {
   const domStyle = createReactDOMStyle(style)
+
+  console.log('got', domStyle, 'from', style)
   const declarationsString = Object.keys(domStyle)
     .map((property) => {
       const value = domStyle[property]

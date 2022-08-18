@@ -196,20 +196,6 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         return [+number * (neg ? -1 : 1), after] as const
       }
 
-      function getInterpolated(val: Animated.Value, postfix: string, next: number) {
-        const cur = val['_value'] as number
-        const inputRange = [cur, next]
-        const outputRange = [`${cur}deg`, `${next}deg`]
-        if (next < cur) {
-          inputRange.reverse()
-          outputRange.reverse()
-        }
-        return val.interpolate({
-          inputRange,
-          outputRange,
-        })
-      }
-
       const nonAnimatedStyle = {}
       for (const key in all) {
         const val = all[key]
@@ -281,6 +267,20 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       }, args)
     },
   }
+}
+
+function getInterpolated(val: Animated.Value, postfix: string, next: number) {
+  const cur = val['_value'] as number
+  const inputRange = [cur, next]
+  const outputRange = [`${cur}deg`, `${next}deg`]
+  if (next < cur) {
+    inputRange.reverse()
+    outputRange.reverse()
+  }
+  return val.interpolate({
+    inputRange,
+    outputRange,
+  })
 }
 
 function getAnimationConfig(key: string, animations: AnimationsConfig, animation?: AnimationProp) {

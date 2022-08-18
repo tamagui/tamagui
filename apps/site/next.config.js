@@ -36,7 +36,6 @@ const plugins = [
       'VirtualizedList',
       'VirtualizedSectionList',
       'AnimatedFlatList',
-      'Animated',
       'FlatList',
       'CheckBox',
       'Touchable',
