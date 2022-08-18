@@ -9,9 +9,9 @@
 
 import * as React from 'react'
 
-import mergeRefs from '../mergeRefs/index.js'
+import { mergeRefs } from '../mergeRefs/index.js'
 
-export default function useMergeRefs(
+export function useMergeRefs(
   ...args: ReadonlyArray<React.Ref<any>>
 ): (node: HTMLElement | null) => void {
   return React.useMemo(

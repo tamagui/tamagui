@@ -3,9 +3,9 @@
   "version": "1.0.1-beta.140",
   "description": "React Native for Web",
   "private": true,
+  "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/esm",
-  "sideEffects": false,
   "files": [
     "types",
     "dist",

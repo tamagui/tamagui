@@ -11,7 +11,7 @@ import { useRef } from 'react'
 
 import UIManager from '../../exports/UIManager/index.js'
 import { ViewProps } from '../../exports/View/index.js'
-import { GenericStyleProp } from '../../types.js'
+import type { GenericStyleProp } from '../../types.js'
 import createDOMProps from '../createDOMProps/index.js'
 import useStable from '../useStable/index.js'
 
@@ -19,10 +19,12 @@ let didWarn = false
 const emptyObject = {}
 
 function setNativeProps(node, nativeProps, pointerEvents, style, previousStyleRef) {
-  if (!didWarn) {
-    // eslint-disable-next-line no-console
-    console.warn('setNativeProps is deprecated. Please update props using React state instead.')
-    didWarn = true
+  if (process.env.NODE_ENV === 'development') {
+    if (!didWarn) {
+      // eslint-disable-next-line no-console
+      console.warn('setNativeProps is deprecated. Please update props using React state instead.')
+      didWarn = true
+    }
   }
 
   if (node != null && nativeProps) {

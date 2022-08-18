@@ -7,7 +7,7 @@
     "dev:extract": "DISABLE_EXTRACTION=false NODE_ENV=development webpack serve",
     "dev:webpack": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
     "dev:webpack:extract": "NODE_ENV=development webpack serve",
-    "prod": "NODE_ENV=production webpack"
+    "prod": "NODE_ENV=production webpack --json=compilation-stats.json"
   },
   "dependencies": {
     "@tamagui/animations-css": "^1.0.1-beta.141",

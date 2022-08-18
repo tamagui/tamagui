@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/normalize-css-color-lite",
   "version": "1.0.1-beta.141",
+  "sideEffects": false,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

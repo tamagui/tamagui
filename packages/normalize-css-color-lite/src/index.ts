@@ -144,10 +144,6 @@ function hslToRgb(h, s, l) {
 const NUMBER = '[-+]?\\d*\\.?\\d+'
 const PERCENTAGE = NUMBER + '%'
 
-function toArray(arrayLike) {
-  return Array.prototype.slice.call(arrayLike, 0)
-}
-
 function call(...args) {
   return '\\(\\s*(' + args.join(')\\s*,\\s*(') + ')\\s*\\)'
 }

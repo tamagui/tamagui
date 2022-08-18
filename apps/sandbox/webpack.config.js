@@ -26,10 +26,14 @@ console.log('disableExtraction', disableExtraction)
 
 module.exports = /** @type { import('webpack').Configuration } */ {
   context: __dirname,
-  stats: 'verbose', // detailed, normal
+  stats: 'detailed', // detailed, normal
   mode: NODE_ENV,
   entry: ['./index.tsx'],
   devtool: 'source-map',
+  optimization: {
+    concatenateModules: false,
+    minimize: false,
+  },
   resolve: {
     extensions: [`${target}.ts`, `${target}.tsx`, '.web.js', '.ts', '.tsx', '.js'],
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
@@ -57,18 +61,18 @@ module.exports = /** @type { import('webpack').Configuration } */ {
       {
         oneOf: [
           // fix reanimated :/
-          {
-            test: /.*\.[tj]sx?$/,
-            use: [
-              {
-                loader: 'babel-loader',
-                options: {
-                  plugins: ['@babel/plugin-transform-flow-strip-types'],
-                  presets: ['@babel/preset-react', '@babel/preset-typescript'],
-                },
-              },
-            ],
-          },
+          // {
+          //   test: /.*\.[tj]sx?$/,
+          //   use: [
+          //     {
+          //       loader: 'babel-loader',
+          //       options: {
+          //         plugins: ['@babel/plugin-transform-flow-strip-types'],
+          //         presets: ['@babel/preset-react', '@babel/preset-typescript'],
+          //       },
+          //     },
+          //   ],
+          // },
 
           {
             test: /\.(ts|js)x?$/,
@@ -114,7 +118,7 @@ module.exports = /** @type { import('webpack').Configuration } */ {
     ],
   },
   plugins: [
-    // new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin(),
     new MiniCSSExtractPlugin({
       filename: 'static/css/[name].[contenthash].css',
       ignoreOrder: true,

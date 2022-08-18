@@ -14,7 +14,7 @@ import { forwardRef, memo, useMemo, useRef, useState } from 'react'
 
 import type { HoverEventsConfig } from '../../modules/useHover/index.js'
 import useHover from '../../modules/useHover/index.js'
-import useMergeRefs from '../../modules/useMergeRefs/index.js'
+import { useMergeRefs } from '../../modules/useMergeRefs/index.js'
 import StyleSheet from '../StyleSheet/index.js'
 import usePressEvents from '../usePressEvents/index.js'
 import type { PressResponderConfig } from '../usePressEvents/PressResponder.js'

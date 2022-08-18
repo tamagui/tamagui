@@ -45,7 +45,13 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   const includesCore = props.components.includes('@tamagui/core')
   const baseComponents = props.components.filter((x) => x !== '@tamagui/core')
   const componentOutPaths = baseComponents.map((componentModule) =>
-    join(tmpDir, `${componentModule.split(sep).join('-')}-components.config.js`)
+    join(
+      tmpDir,
+      `${componentModule
+        .split(sep)
+        .join('-')
+        .replace(/[^a-z0-9]+/gi, '')}-components.config.js`
+    )
   )
 
   const outPaths = [configOutPath, ...componentOutPaths]
@@ -228,8 +234,13 @@ function interopDefaultExport(mod: any) {
 }
 
 function loadComponents(componentsModules: string[]) {
-  const requiredModules = componentsModules.map((name) => interopDefaultExport(require(name)))
-  return gatherTamaguiComponentInfo(requiredModules)
+  const x = Date.now()
+  try {
+    const requiredModules = componentsModules.map((name) => interopDefaultExport(require(name)))
+    return gatherTamaguiComponentInfo(requiredModules)
+  } finally {
+    console.log('now', componentsModules, Date.now() - x)
+  }
 }
 
 function gatherTamaguiComponentInfo(packages: any[]) {

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -10,7 +9,7 @@
 
 import * as React from 'react'
 
-export default function mergeRefs(
+export function mergeRefs(
   ...args: ReadonlyArray<React.Ref<any>>
 ): (node: HTMLElement | null) => void {
   return function forwardRef(node: HTMLElement | null) {
@@ -23,6 +22,7 @@ export default function mergeRefs(
         return
       }
       if (typeof ref === 'object') {
+        // @ts-ignore
         ref.current = node
         return
       }

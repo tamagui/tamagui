@@ -9,7 +9,7 @@
 
 import * as React from 'react'
 
-import useMergeRefs from '../../modules/useMergeRefs/index.js'
+import { useMergeRefs } from '../../modules/useMergeRefs/index.js'
 import StyleSheet from '../StyleSheet/index.js'
 import type { ViewProps } from '../View/index.js'
 import View from '../View/index.js'

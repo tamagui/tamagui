@@ -52,7 +52,7 @@ export { useLocaleContext } from './exports/useLocaleContext/index.js'
 export { default as useWindowDimensions } from './exports/useWindowDimensions/index.js'
 
 // useful internals
-export { default as useMergeRefs } from './modules/useMergeRefs/index.js'
+export { useMergeRefs } from './modules/useMergeRefs/index.js'
 export { default as useElementLayout } from './modules/useElementLayout/index.js'
 export { default as usePlatformMethods } from './modules/usePlatformMethods/index.js'
 export { default as useResponderEvents } from './modules/useResponderEvents/index.js'

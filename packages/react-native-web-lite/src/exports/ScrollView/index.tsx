@@ -12,7 +12,7 @@ import React from 'react'
 
 import dismissKeyboard from '../../modules/dismissKeyboard/index.js'
 import { invariant } from '../../modules/invariant.js'
-import mergeRefs from '../../modules/mergeRefs/index.js'
+import { mergeRefs } from '../../modules/mergeRefs/index.js'
 import { ScrollResponderMixin } from '../../modules/ScrollResponder/index.js'
 import StyleSheet from '../StyleSheet/index.js'
 import View from '../View/index.js'
