@@ -1,5 +1,6 @@
 - 1.0
 
+  - CSS driver + loadable driver
   - get tests passing
   - kitchen-sink in Snack demo
   - prod build native stuck on copying resources

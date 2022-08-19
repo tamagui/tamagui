@@ -1,3 +1,4 @@
+import { useForceUpdate } from '@tamagui/use-force-update'
 import * as React from 'react'
 
 import { isClient, isRSC, isSSR } from '../constants/platform'
@@ -43,7 +44,6 @@ export function TamaguiProvider({
     <ButtonInsideButtonContext.Provider value={false}>
       <TextAncestorProvider>
         <ThemeProvider
-          themes={config.themes}
           defaultTheme={config.defaultTheme || 'light'}
           themeClassNameOnRoot={config.themeClassNameOnRoot}
           disableRootThemeClass={config.disableRootThemeClass}

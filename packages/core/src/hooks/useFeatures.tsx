@@ -2,7 +2,7 @@ import React from 'react'
 import { RefObject } from 'react'
 import { View, ViewStyle } from 'react-native'
 
-import { getConfig } from '../conf'
+import { getConfig } from '../config'
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { getSubStyle } from '../helpers/getSplitStyles'
 import {

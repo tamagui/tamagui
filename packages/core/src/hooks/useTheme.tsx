@@ -1,7 +1,7 @@
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, { useContext, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
-import { getConfig } from '../conf'
+import { getConfig } from '../config'
 import { isRSC, isSSR, useIsomorphicLayoutEffect } from '../constants/platform'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { areEqualSets } from '../helpers/areEqualSets'
@@ -191,27 +191,31 @@ export const useChangeThemeEffect = (
   theme: ThemeObject | null
   className?: string
 } => {
+  const { themes } = getConfig()
   if (isRSC) {
     // we need context working for this to work well
-    const config = getConfig()
-    const parentManager = new ThemeManager('light', config.themes.light)
+    const parentManager = new ThemeManager('light', themes.light)
     const next = parentManager.getNextTheme({
       name,
       componentName,
-      themes: config.themes,
+      themes,
       reset: props?.reset,
     })
     return {
       ...next,
-      themes: config.themes,
+      themes,
       themeManager: null,
     }
   }
   const debug = props && props['debug']
   const parentManager = useContext(ThemeManagerContext) || emptyManager
-  const { themes } = useContext(ThemeContext)!
   const reset = props?.reset || false
-  const getThemeProps: GetNextThemeProps = { name, componentName, themes, reset }
+  const getThemeProps: GetNextThemeProps = {
+    name,
+    componentName,
+    themes,
+    reset,
+  }
   const next = parentManager.getNextTheme(getThemeProps, debug)
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const forceUpdate = forceUpdateProp || useForceUpdate()

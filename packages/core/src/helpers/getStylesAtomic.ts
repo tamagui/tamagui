@@ -7,7 +7,7 @@ import { StyleObject, simpleHash } from '@tamagui/helpers'
 import hyphenateStyleName from 'hyphenate-style-name'
 import { TextStyle, ViewStyle } from 'react-native'
 
-import { getConfig } from '../conf'
+import { getConfig } from '../config'
 import { TamaguiInternalConfig } from '../types'
 import { defaultOffset } from './expandStyles'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'

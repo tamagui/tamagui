@@ -5569,6 +5569,7 @@ __metadata:
   resolution: "@tamagui/animations-reanimated@workspace:packages/animations-reanimated"
   dependencies:
     "@tamagui/animate-presence": ^1.0.1-beta.141
+    "@tamagui/animations-react-native": ^1.0.1-beta.141
     "@tamagui/build": ^1.0.1-beta.141
     "@tamagui/core": ^1.0.1-beta.141
     react-native-reanimated: ^2.8.0
@@ -5793,11 +5794,11 @@ __metadata:
     hyphenate-style-name: ^1.0.4
     react: "*"
     react-dom: "*"
-    react-native-web: ^0.18.3
     typescript: ^4.7.4
     vitest: ^0.20.3
   peerDependencies:
-    react-native-web: "*"
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 

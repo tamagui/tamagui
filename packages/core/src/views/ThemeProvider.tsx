@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useMemo } from 'react'
 
-import { getHasConfigured } from '../conf'
+import { getConfig, getHasConfigured } from '../config'
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { Theme } from './Theme'
@@ -10,7 +10,6 @@ React['createElement']
 
 export type ThemeProviderProps = {
   className?: string
-  themes: any
   defaultTheme: string
   disableRootThemeClass?: boolean
   themeClassNameOnRoot?: boolean
@@ -19,8 +18,10 @@ export type ThemeProviderProps = {
 }
 
 export const ThemeProvider = (props: ThemeProviderProps) => {
-  if (!getHasConfigured()) {
-    throw new Error(`Missing configureThemes() call, add to your root file`)
+  if (process.env.NODE_ENV === 'development') {
+    if (!getHasConfigured()) {
+      throw new Error(`Missing configureThemes() call, add to your root file`)
+    }
   }
 
   // ensure theme is attached to root body node as well to work with modals by default
@@ -40,10 +41,12 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
 
   const themeContext = useMemo(() => {
     return {
-      themes: props.themes,
+      get themes() {
+        return getConfig().themes
+      },
       defaultTheme: props.defaultTheme,
     }
-  }, [props.defaultTheme, props.themes])
+  }, [props.defaultTheme])
 
   return (
     <ThemeContext.Provider value={themeContext}>

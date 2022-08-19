@@ -1,4 +1,4 @@
-import { setConfigFont } from './conf'
+import { setConfigFont } from './config'
 import { createFont } from './createFont'
 import { Variable } from './createVariable'
 import { DeepVariableObject, createVariables } from './createVariables'

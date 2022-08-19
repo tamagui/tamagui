@@ -1,4 +1,4 @@
-import { getTokens } from '../conf'
+import { getTokens } from '../config'
 import { SizeTokens, SpaceTokens } from '../types'
 
 export const getSize = (size?: SizeTokens | undefined, shift = 0, bounds = [0]) => {

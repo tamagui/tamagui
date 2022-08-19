@@ -1,4 +1,4 @@
-import { getConfig } from '../conf'
+import { getConfig } from '../config'
 import { GenericFonts, StaticConfig } from '../types'
 import { LanguageContextType } from '../views/FontLanguage.types'
 

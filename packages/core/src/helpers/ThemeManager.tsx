@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-import { getThemes } from '../conf'
+import { getThemes } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
 import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
 import { ThemeObject, Themes } from '../types'

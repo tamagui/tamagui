@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "@tamagui/animate-presence": "^1.0.1-beta.141",
+    "@tamagui/animations-react-native": "^1.0.1-beta.141",
     "@tamagui/core": "^1.0.1-beta.141",
     "react-native-reanimated": "^2.8.0"
   },

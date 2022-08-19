@@ -35,19 +35,19 @@
     "@tamagui/use-event": "^1.0.1-beta.141",
     "@tamagui/use-force-update": "^1.0.1-beta.141",
     "expo-screen-orientation": "^4.3.0",
-    "hyphenate-style-name": "^1.0.4",
-    "react": "*",
-    "react-dom": "*"
+    "hyphenate-style-name": "^1.0.4"
   },
   "peerDependencies": {
-    "react-native-web": "*"
+    "react": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.141",
     "@types/react": "^18.0.15",
     "csstype": "^3.0.10",
     "esbuild": "^0.14.49",
-    "react-native-web": "^0.18.3",
+    "react": "*",
+    "react-dom": "*",
     "typescript": "^4.7.4",
     "vitest": "^0.20.3"
   },

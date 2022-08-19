@@ -23,7 +23,7 @@ import React, {
 } from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
-import { getConfig, onConfiguredOnce } from './conf'
+import { getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from './constants/platform'
 import { FontLanguageContext } from './contexts/FontLanguageContext'

@@ -32,3 +32,7 @@ export const onConfiguredOnce = (cb: ConfigListener) => {
     configListeners.add(cb)
   }
 }
+
+export const updateConfig = (key: string, value: any) => {
+  Object.assign(key, value)
+}

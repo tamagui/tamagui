@@ -1,4 +1,4 @@
-import { getConfig } from '../conf'
+import { getConfig } from '../config'
 import { isWeb } from '../constants/platform'
 import { Variable, isVariable } from '../createVariable'
 import {

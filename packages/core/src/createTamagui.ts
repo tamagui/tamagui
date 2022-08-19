@@ -1,4 +1,4 @@
-import { configListeners, setConfig } from './conf'
+import { configListeners, setConfig } from './config'
 import { isRSC, isWeb } from './constants/platform'
 import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'

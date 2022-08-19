@@ -1,22 +1,26 @@
 import { PresenceContext, usePresence } from '@tamagui/animate-presence'
-import { AnimationDriver, AnimationProp, UniversalAnimatedNumber, useEvent } from '@tamagui/core'
+import { AnimationDriver, AnimationProp, useEvent } from '@tamagui/core'
 import { useContext, useMemo } from 'react'
+// until we fix Sheet
+import { Animated as RNAnimated } from 'react-native'
 import Animated, {
-  SharedValue,
   WithDecayConfig,
   WithSpringConfig,
   WithTimingConfig,
-  cancelAnimation,
   runOnJS,
-  useAnimatedReaction,
   useAnimatedStyle,
-  useSharedValue,
   withDecay,
   withDelay,
   withRepeat,
   withSpring,
   withTiming,
 } from 'react-native-reanimated'
+
+import {
+  useAnimatedNumber,
+  useAnimatedNumberReaction,
+  useAnimatedNumberStyle,
+} from './useAnimatedNumber'
 
 type AnimationsConfig<A extends Object = any> = {
   [Key in keyof A]: AnimationConfig
@@ -34,62 +38,6 @@ const animatedStyleKey = {
   // color: true,
 }
 
-type ReanimatedAnimatedNumber = SharedValue<number>
-
-export function useAnimatedNumber(
-  initial: number
-): UniversalAnimatedNumber<ReanimatedAnimatedNumber> {
-  const val = useSharedValue(initial)
-  return {
-    getInstance() {
-      return val
-    },
-    getValue() {
-      return val.value
-    },
-    stop() {
-      cancelAnimation(val)
-    },
-    setValue(next: number, config = { type: 'spring' }) {
-      'worklet'
-      if (config.type === 'direct') {
-        val.value = next
-      } else if (config.type === 'spring') {
-        val.value = withSpring(next, config)
-      } else {
-        val.value = withTiming(next, config)
-      }
-    },
-  }
-}
-
-export function useAnimatedNumberReaction(
-  value: UniversalAnimatedNumber<ReanimatedAnimatedNumber>,
-  cb: (current: number) => void
-) {
-  useAnimatedReaction(
-    () => {
-      'worklet'
-      return value.getValue()
-    },
-    (result, prev) => {
-      'worklet'
-      if (result !== prev) cb(result)
-    },
-    [value]
-  )
-}
-
-export function useAnimatedNumberStyle<V extends UniversalAnimatedNumber<ReanimatedAnimatedNumber>>(
-  value: V,
-  getStyle: (value: number) => any
-) {
-  return useAnimatedStyle(() => {
-    'worklet'
-    return getStyle(value.getValue())
-  })
-}
-
 export function createAnimations<A extends AnimationsConfig>(animations: A): AnimationDriver<A> {
   const AnimatedView = Animated.View
   const AnimatedText = Animated.Text
@@ -102,6 +50,11 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
     animations,
     View: AnimatedView,
     Text: AnimatedText,
+
+    // temp
+    // @ts-ignore
+    NumberView: RNAnimated.View,
+
     useAnimatedNumber,
     useAnimatedNumberReaction,
     useAnimatedNumberStyle,

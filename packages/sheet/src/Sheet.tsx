@@ -1,9 +1,3 @@
-// import {
-//   AnimatedView,
-//   useAnimatedNumber,
-//   useAnimatedNumberReaction,
-//   useAnimatedNumberStyle,
-// } from '@tamagui/animations-react-native'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
@@ -489,7 +483,8 @@ export const Sheet = withStaticProperties(
         return null
       }
 
-      const AnimatedView = driver.View
+      // temp until reanimated useAnimatedNumber fix
+      const AnimatedView = driver['NumberView'] ?? driver.View
 
       const contents = (
         <SheetProvider
@@ -575,7 +570,7 @@ function getPercentSize(point?: number, frameSize?: number) {
     return 0
   }
   const pct = point / 100
-  const next = frameSize - pct * frameSize
+  const next = Math.round(frameSize - pct * frameSize)
   return next
 }
 

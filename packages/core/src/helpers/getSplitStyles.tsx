@@ -2,7 +2,7 @@ import { stylePropsText, stylePropsTransform, validPseudoKeys, validStyles } fro
 import { useInsertionEffect } from 'react'
 import { ViewStyle } from 'react-native'
 
-import { getConfig } from '../conf'
+import { getConfig } from '../config'
 import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
 import type {
