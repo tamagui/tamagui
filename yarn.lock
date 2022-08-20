@@ -6660,6 +6660,7 @@ __metadata:
     null-loader: ^4.0.1
     react: "*"
     react-dom: "*"
+    react-native-svg-web: ^1.0.1-beta.141
     react-native-web: ^0.18.3
     react-test-renderer: ^18.2.0
     style-loader: ^3.3.1

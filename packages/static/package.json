@@ -53,6 +53,7 @@
     "fs-extra": "^10.1.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.21",
+    "react-native-svg-web": "^1.0.1-beta.141",
     "tamagui": "^1.0.1-beta.141"
   },
   "devDependencies": {
