@@ -10,7 +10,8 @@ Slimming down react-native-web, this does the following:
 - merges [concurrent mode fixes](https://github.com/necolas/react-native-web/pull/2330)
 - Removes:
   - ❌ VirtualList, FlatList, SectionList
-  - ❌ deprecated Touchable* views (prefer Pressable)
+  - ❌ Switch, Modal (going to be split out, in Tamagui already)
+  - ❌ Touchable* views (going to be deprecated, prefer Pressable)
   - ❌ normalize-css-color
   - ❌ inline-style-prefixer
   - ❌ create-react-class
