@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-base",
-  "version": "1.0.1-beta.148",
+  "version": "1.0.1-beta.149",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -26,16 +26,16 @@
     }
   },
   "dependencies": {
-    "@tamagui/animations-reanimated": "^1.0.1-beta.148",
-    "@tamagui/colors": "^1.0.1-beta.148",
-    "@tamagui/core": "^1.0.1-beta.148",
-    "@tamagui/font-inter": "^1.0.1-beta.148",
-    "@tamagui/font-silkscreen": "^1.0.1-beta.148",
-    "@tamagui/shorthands": "^1.0.1-beta.148",
-    "@tamagui/theme-base": "^1.0.1-beta.148"
+    "@tamagui/animations-reanimated": "^1.0.1-beta.149",
+    "@tamagui/colors": "^1.0.1-beta.149",
+    "@tamagui/core": "^1.0.1-beta.149",
+    "@tamagui/font-inter": "^1.0.1-beta.149",
+    "@tamagui/font-silkscreen": "^1.0.1-beta.149",
+    "@tamagui/shorthands": "^1.0.1-beta.149",
+    "@tamagui/theme-base": "^1.0.1-beta.149"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.148"
+    "@tamagui/build": "^1.0.1-beta.149"
   },
   "publishConfig": {
     "access": "public"
