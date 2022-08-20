@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/rnw-lite",
-  "version": "1.0.1-beta.144",
+  "version": "1.0.1-beta.145",
   "main": "index.cjs",
   "type": "module",
   "module": "index.mjs",
@@ -23,6 +23,6 @@
     "react-native-web-lite": "*"
   },
   "devDependencies": {
-    "react-native-web-lite": "^1.0.1-beta.144"
+    "react-native-web-lite": "^1.0.1-beta.145"
   }
 }
