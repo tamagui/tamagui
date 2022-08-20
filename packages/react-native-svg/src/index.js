@@ -25,3 +25,31 @@ export const Text = (p) => createElement('text', p)
 export const TextPath = (p) => createElement('clipPath', p)
 export const TSpan = (p) => createElement('tSpan', p)
 export const Use = (p) => createElement('use', p)
+
+export default {
+  Circle,
+  ClipPath,
+  Defs,
+  Ellipse,
+  ForeignObject,
+  G,
+  Image,
+  Line,
+  LinearGradient,
+  Marker,
+  Mask,
+  Path,
+  Pattern,
+  Polygon,
+  Polyline,
+  RadialGradient,
+  Rect,
+  Shape,
+  Stop,
+  Svg,
+  Symbol,
+  Text,
+  TextPath,
+  TSpan,
+  Use,
+}
