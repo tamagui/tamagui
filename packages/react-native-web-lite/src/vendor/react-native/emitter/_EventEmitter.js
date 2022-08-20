@@ -34,8 +34,8 @@ class EventEmitter {
    * @param {EventSubscriptionVendor} subscriber - Optional subscriber instance
    *   to use. If omitted, a new subscriber will be created for the emitter.
    */
-  constructor(subscriber) {
-    this._subscriber = subscriber || new EventSubscriptionVendor()
+  constructor(subscriber = new EventSubscriptionVendor()) {
+    this._subscriber = subscriber
   }
   /**
    * Adds a listener to be invoked when events of the specified type are
