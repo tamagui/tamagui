@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/logo",
-  "version": "1.0.1-beta.143",
+  "version": "1.0.1-beta.144",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -21,7 +21,7 @@
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.143",
+    "@tamagui/build": "^1.0.1-beta.144",
     "react": "*",
     "react-dom": "*"
   },
