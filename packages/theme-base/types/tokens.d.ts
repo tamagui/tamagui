@@ -1,17 +1,5 @@
 import { Variable } from '@tamagui/core';
 export declare const darkColors: {
-    teal1: string;
-    teal2: string;
-    teal3: string;
-    teal4: string;
-    teal5: string;
-    teal6: string;
-    teal7: string;
-    teal8: string;
-    teal9: string;
-    teal10: string;
-    teal11: string;
-    teal12: string;
     yellow1: string;
     yellow2: string;
     yellow3: string;
@@ -110,18 +98,6 @@ export declare const darkColors: {
     blue12: string;
 };
 export declare const lightColors: {
-    teal1: string;
-    teal2: string;
-    teal3: string;
-    teal4: string;
-    teal5: string;
-    teal6: string;
-    teal7: string;
-    teal8: string;
-    teal9: string;
-    teal10: string;
-    teal11: string;
-    teal12: string;
     yellow1: string;
     yellow2: string;
     yellow3: string;
@@ -221,18 +197,6 @@ export declare const lightColors: {
 };
 export declare const tokens: {
     color: {
-        teal1Dark: Variable<import("@tamagui/core").VariableValue>;
-        teal2Dark: Variable<import("@tamagui/core").VariableValue>;
-        teal3Dark: Variable<import("@tamagui/core").VariableValue>;
-        teal4Dark: Variable<import("@tamagui/core").VariableValue>;
-        teal5Dark: Variable<import("@tamagui/core").VariableValue>;
-        teal6Dark: Variable<import("@tamagui/core").VariableValue>;
-        teal7Dark: Variable<import("@tamagui/core").VariableValue>;
-        teal8Dark: Variable<import("@tamagui/core").VariableValue>;
-        teal9Dark: Variable<import("@tamagui/core").VariableValue>;
-        teal10Dark: Variable<import("@tamagui/core").VariableValue>;
-        teal11Dark: Variable<import("@tamagui/core").VariableValue>;
-        teal12Dark: Variable<import("@tamagui/core").VariableValue>;
         yellow1Dark: Variable<import("@tamagui/core").VariableValue>;
         yellow2Dark: Variable<import("@tamagui/core").VariableValue>;
         yellow3Dark: Variable<import("@tamagui/core").VariableValue>;
@@ -329,18 +293,6 @@ export declare const tokens: {
         blue10Dark: Variable<import("@tamagui/core").VariableValue>;
         blue11Dark: Variable<import("@tamagui/core").VariableValue>;
         blue12Dark: Variable<import("@tamagui/core").VariableValue>;
-        teal1Light: Variable<import("@tamagui/core").VariableValue>;
-        teal2Light: Variable<import("@tamagui/core").VariableValue>;
-        teal3Light: Variable<import("@tamagui/core").VariableValue>;
-        teal4Light: Variable<import("@tamagui/core").VariableValue>;
-        teal5Light: Variable<import("@tamagui/core").VariableValue>;
-        teal6Light: Variable<import("@tamagui/core").VariableValue>;
-        teal7Light: Variable<import("@tamagui/core").VariableValue>;
-        teal8Light: Variable<import("@tamagui/core").VariableValue>;
-        teal9Light: Variable<import("@tamagui/core").VariableValue>;
-        teal10Light: Variable<import("@tamagui/core").VariableValue>;
-        teal11Light: Variable<import("@tamagui/core").VariableValue>;
-        teal12Light: Variable<import("@tamagui/core").VariableValue>;
         yellow1Light: Variable<import("@tamagui/core").VariableValue>;
         yellow2Light: Variable<import("@tamagui/core").VariableValue>;
         yellow3Light: Variable<import("@tamagui/core").VariableValue>;

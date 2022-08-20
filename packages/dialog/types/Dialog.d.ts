@@ -2543,7 +2543,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         children?: React.ReactNode;
         dismissOnOverlayPress?: boolean | undefined;
         dismissOnSnapToBottom?: boolean | undefined;
-        animationConfig?: import("react-native").Animated.SpringAnimationConfig | undefined;
+        animationConfig?: import("@tamagui/core").AnimatedNumberStrategy | undefined;
         handleDisableScroll?: boolean | undefined;
         disableDrag?: boolean | undefined;
         modal?: boolean | undefined;

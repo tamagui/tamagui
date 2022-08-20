@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/accordion",
-  "version": "1.0.1-beta.141",
+  "version": "1.0.1-beta.142",
   "sideEffects": [
     "*.css"
   ],
@@ -21,19 +21,19 @@
     "lint:fix": "yarn lint --fix src"
   },
   "dependencies": {
-    "@tamagui/compose-refs": "^1.0.1-beta.141",
-    "@tamagui/core": "^1.0.1-beta.141",
-    "@tamagui/create-context": "^1.0.1-beta.141",
-    "@tamagui/polyfill-dev": "^1.0.1-beta.141",
-    "@tamagui/stacks": "^1.0.1-beta.141",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.141"
+    "@tamagui/compose-refs": "^1.0.1-beta.142",
+    "@tamagui/core": "^1.0.1-beta.142",
+    "@tamagui/create-context": "^1.0.1-beta.142",
+    "@tamagui/polyfill-dev": "^1.0.1-beta.142",
+    "@tamagui/stacks": "^1.0.1-beta.142",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.142"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.141",
+    "@tamagui/build": "^1.0.1-beta.142",
     "react": "*",
     "react-dom": "*"
   },

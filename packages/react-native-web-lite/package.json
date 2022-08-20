@@ -1,6 +1,6 @@
 {
   "name": "react-native-web-lite",
-  "version": "1.0.1-beta.140",
+  "version": "1.0.1-beta.142",
   "description": "React Native for Web",
   "private": true,
   "sideEffects": false,
@@ -29,11 +29,11 @@
     "./dist/*": "./dist/cjs/*/index.js"
   },
   "dependencies": {
-    "@tamagui/normalize-css-color-lite": "^1.0.1-beta.141",
+    "@tamagui/normalize-css-color-lite": "^1.0.1-beta.142",
     "styleq": "^0.1.2"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.141",
+    "@tamagui/build": "^1.0.1-beta.142",
     "react": "*",
     "react-dom": "*"
   },

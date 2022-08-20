@@ -1,6 +1,6 @@
 {
   "name": "react-native-svg-web",
-  "version": "1.0.1-beta.141",
+  "version": "1.0.1-beta.142",
   "type": "module",
   "main": "index.js",
   "module": "index.esm.js",
