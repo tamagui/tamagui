@@ -1,18 +1,29 @@
 const React = require('react')
 
-module.exports.Defs = (p) => React.createElement('defs', p)
-module.exports.Ellipse = (p) => React.createElement('ellipse', p)
-module.exports.G = (p) => React.createElement('g', p)
-module.exports.Line = (p) => React.createElement('line', p)
-module.exports.LinearGradient = (p) => React.createElement('lineargradient', p)
-module.exports.Path = (p) => React.createElement('path', p)
-module.exports.Polygon = (p) => React.createElement('polygon', p)
-module.exports.Polyline = (p) => React.createElement('polyline', p)
-module.exports.RadialGradient = (p) => React.createElement('radialgradient', p)
-module.exports.Rect = (p) => React.createElement('rect', p)
-module.exports.Stop = (p) => React.createElement('stop', p)
-module.exports.Svg = (p) => React.createElement('svg', p)
-module.exports.Symbol = (p) => React.createElement('symbol', p)
-module.exports.Text = (p) => React.createElement('text', p)
-module.exports.Use = (p) => React.createElement('use', p)
-module.exports.Circle = (p) => React.createElement('circle', p)
+Object.assign(module.exports, {
+  Circle: (p) => React.createElement('circle', p),
+  ClipPath: (p) => React.createElement('clipPath', p),
+  Defs: (p) => React.createElement('defs', p),
+  Ellipse: (p) => React.createElement('ellipse', p),
+  ForeignObject: (p) => React.createElement('foreignObject', p),
+  G: (p) => React.createElement('g', p),
+  Image: (p) => React.createElement('image', p),
+  Line: (p) => React.createElement('line', p),
+  LinearGradient: (p) => React.createElement('lineargradient', p),
+  Marker: (p) => React.createElement('marker', p),
+  Mask: (p) => React.createElement('mask', p),
+  Path: (p) => React.createElement('path', p),
+  Pattern: (p) => React.createElement('pattern', p),
+  Polygon: (p) => React.createElement('polygon', p),
+  Polyline: (p) => React.createElement('polyline', p),
+  RadialGradient: (p) => React.createElement('radialgradient', p),
+  Rect: (p) => React.createElement('rect', p),
+  Shape: (p) => React.createElement('shape', p),
+  Stop: (p) => React.createElement('stop', p),
+  Svg: (p) => React.createElement('svg', p),
+  Symbol: (p) => React.createElement('symbol', p),
+  Text: (p) => React.createElement('text', p),
+  TextPath: (p) => React.createElement('clipPath', p),
+  TSpan: (p) => React.createElement('tSpan', p),
+  Use: (p) => React.createElement('use', p),
+})
