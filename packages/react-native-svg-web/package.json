@@ -1,13 +1,21 @@
 {
   "name": "react-native-svg-web",
   "version": "1.0.1-beta.141",
-  "main": "index.cjs",
-  "module": "index.mjs",
+  "type": "module",
+  "main": "index.js",
+  "module": "index.esm.js",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "build": "true",
     "watch": "true"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./index.esm.js",
+      "require": "./index.js"
+    }
   }
 }
