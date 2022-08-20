@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/list-item",
-  "version": "1.0.1-beta.146",
+  "version": "1.0.1-beta.147",
   "sideEffects": [
     "*.css"
   ],
@@ -21,16 +21,16 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.146",
-    "@tamagui/font-size": "^1.0.1-beta.146",
-    "@tamagui/helpers-tamagui": "^1.0.1-beta.146"
+    "@tamagui/core": "^1.0.1-beta.147",
+    "@tamagui/font-size": "^1.0.1-beta.147",
+    "@tamagui/helpers-tamagui": "^1.0.1-beta.147"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.146",
+    "@tamagui/build": "^1.0.1-beta.147",
     "react": "*",
     "react-dom": "*"
   },
