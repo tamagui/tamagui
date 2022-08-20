@@ -220,16 +220,13 @@ export const useChangeThemeEffect = (
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const forceUpdate = forceUpdateProp || useForceUpdate()
 
-  const themeManager = useConstant<ThemeManager | null>(() => {
+  const themeManager = useConstant(() => {
     return new ThemeManager(next.name, next.theme, parentManager, reset)
   })
 
   // if not SSR
   if (!isSSR) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     useLayoutEffect(() => {
-      if (!themeManager) return
-
       activeThemeManagers.add(themeManager)
 
       if (next?.name) {
@@ -240,6 +237,9 @@ export const useChangeThemeEffect = (
         const next = parentManager.getNextTheme(getThemeProps, debug)
         if (!next) return
         if (themeManager.update(next)) {
+          if (process.env.NODE_ENV === 'development' && debug) {
+            console.log('Changed theme', componentName, next, { props })
+          }
           forceUpdate()
         }
       })

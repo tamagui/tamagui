@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
-import { Button, H3, Square, Theme, YStack, addTheme, updateTheme } from 'tamagui'
+import { Button, H3, Square, Theme, YStack, addTheme, updateTheme, useForceUpdate } from 'tamagui'
 
 export function AddThemeDemo() {
   const [theme, setTheme] = useState<string>()
+  const fu = useForceUpdate()
 
   return (
     <YStack ai="center" space>
       <H3>Theme: {theme ?? 'inherit'}</H3>
 
       {/* @ts-ignore */}
-      <Theme name={theme ?? null}>
-        <Square borderRadius="$8" size={100} backgroundColor="$color" />
+      <Theme name={theme ?? 'red'}>
+        <Square debug="verbose" borderRadius="$8" size={100} backgroundColor="$color" />
       </Theme>
 
       <Button
@@ -29,6 +30,8 @@ export function AddThemeDemo() {
       >
         Add superblue theme
       </Button>
+
+      <Button onPress={() => fu()}>test</Button>
     </YStack>
   )
 }

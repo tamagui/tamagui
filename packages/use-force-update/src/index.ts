@@ -1,9 +1,10 @@
 import { useReducer } from 'react'
 
+export const isServerSide = process.env.TAMAGUI_TARGET === 'web' && typeof window === 'undefined'
+
 export function useForceUpdate() {
-  // RSC
-  if (typeof document === 'undefined') {
+  if (isServerSide) {
     return () => {}
   }
-  return useReducer((x) => (x + 1) % Number.MAX_SAFE_INTEGER, 0)[1]
+  return useReducer((x) => x + 1, 0)[1] as () => void
 }

@@ -145,7 +145,6 @@ export function createComponent<
 
     const shouldAvoidClasses = !!(props.animation && avoidClasses)
     const shouldForcePseudo = !!propsIn.forceStyle
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
     const splitStyleState =
       !shouldAvoidClasses && !shouldForcePseudo
