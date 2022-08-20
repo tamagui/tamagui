@@ -52,6 +52,10 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         }
 
         const isNext12 = typeof options.config?.swcMinify === 'boolean'
+        if (!isNext12) {
+          throw new Error(`Next.js 12 only supported`)
+        }
+
         const prefix = `${isServer ? ' ssr ' : ' web '} |`
 
         const safeResolves = (...resolves: [string, string][]) => {
@@ -67,8 +71,10 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               if (out.includes(`@gorhom/bottom-sheet`)) {
                 continue
               }
-              // eslint-disable-next-line no-console
-              console.log(prefix, `withTamagui skipping resolving ${out}`, err)
+              if (process.env.DEBUG?.startsWith('tamagui')) {
+                // eslint-disable-next-line no-console
+                console.log(prefix, `withTamagui skipping resolving ${out}`, err)
+              }
             }
           }
           return Object.fromEntries(res)
@@ -339,73 +345,42 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           }
         }
 
-        if (isNext12) {
-          const firstOneOfRule = webpackConfig.module.rules.findIndex((x) => x && !!x.oneOf)
-          const oneOfJSRules: any[] = webpackConfig.module.rules[firstOneOfRule].oneOf
-          const afterSWCLoaderIndex =
-            oneOfJSRules.findIndex(
-              (x) => x && x.use && x.use.loader === 'next-swc-loader' && x.issuerLayer !== 'api'
-            ) + 1
-          const swcLoader = oneOfJSRules[afterSWCLoaderIndex]
+        const firstOneOfRule = webpackConfig.module.rules.findIndex((x) => x && !!x.oneOf)
+        const oneOfJSRules: any[] = webpackConfig.module.rules[firstOneOfRule].oneOf
+        const afterSWCLoaderIndex =
+          oneOfJSRules.findIndex(
+            (x) => x && x.use && x.use.loader === 'next-swc-loader' && x.issuerLayer !== 'api'
+          ) + 1
+        const swcLoader = oneOfJSRules[afterSWCLoaderIndex]
 
-          // put an earlier loader where we just do tamagui stuff before regular swc
-          oneOfJSRules.splice(
-            afterSWCLoaderIndex,
-            0,
-            {
-              test: /(bottom-sheet).*\.[tj]sx?$/,
-              use: [
-                {
-                  loader: 'babel-loader',
-                  options: {
-                    presets: ['@babel/preset-react'],
-                    plugins: ['react-native-reanimated/plugin'],
-                  },
+        // put an earlier loader where we just do tamagui stuff before regular swc
+        oneOfJSRules.splice(
+          afterSWCLoaderIndex,
+          0,
+          {
+            test: /(bottom-sheet|react-native-reanimated).*\.[tj]sx?$/,
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  presets: ['@babel/preset-react'],
+                  plugins: ['react-native-reanimated/plugin'],
                 },
-              ],
-            },
-            {
-              test: /\.(jsx?|tsx?)$/,
-              exclude: (path: string) => shouldExclude(path, options.dir),
-              use: [
-                ...[].concat(swcLoader.use),
-                {
-                  loader: 'tamagui-loader',
-                  options: tamaguiOptions,
-                },
-              ],
-            }
-          )
-        } else {
-          // next 11 modify loader
-          const [first, second, ...rest] = webpackConfig.module.rules
-          webpackConfig.module.rules = [
-            first,
-            second,
-            {
-              test: /\.(tsx|jsx)$/,
-              exclude: (path: string) => shouldExclude(path, options.dir),
-              use: [
-                'thread-loader',
-                {
-                  loader: 'esbuild-loader',
-                  options: {
-                    loader: 'tsx',
-                    minify: false,
-                  },
-                },
-                {
-                  loader: 'tamagui-loader',
-                  options: {
-                    prefixLogs: prefix,
-                    ...tamaguiOptions,
-                  },
-                },
-              ],
-            },
-            ...rest,
-          ]
-        }
+              },
+            ],
+          },
+          {
+            test: /\.(jsx?|tsx?)$/,
+            exclude: (path: string) => shouldExclude(path, options.dir),
+            use: [
+              ...[].concat(swcLoader.use),
+              {
+                loader: 'tamagui-loader',
+                options: tamaguiOptions,
+              },
+            ],
+          }
+        )
 
         if (typeof nextConfig.webpack === 'function') {
           return nextConfig.webpack(webpackConfig, options)
