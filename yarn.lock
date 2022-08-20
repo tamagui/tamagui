@@ -6168,6 +6168,7 @@ __metadata:
     "@babel/preset-react": ^7.16.7
     "@tamagui/build": ^1.0.1-beta.142
     "@tamagui/proxy-worm": ^1.0.1-beta.142
+    "@tamagui/react-native-svg": ^1.0.1-beta.142
     "@tamagui/rnw-lite": ^1.0.1-beta.142
     "@tamagui/static": ^1.0.1-beta.142
     babel-loader: ^8.2.5
@@ -6181,7 +6182,6 @@ __metadata:
     html-webpack-plugin: ^5.5.0
     mini-css-extract-plugin: ^2.6.1
     next: ^12.2.5
-    react-native-svg-web: ^1.0.1-beta.142
     tamagui-loader: ^1.0.1-beta.142
     thread-loader: ^3.0.4
     url-loader: ^4.1.1
@@ -6324,6 +6324,12 @@ __metadata:
 "@tamagui/proxy-worm@^1.0.1-beta.142, @tamagui/proxy-worm@workspace:packages/proxy-worm":
   version: 0.0.0-use.local
   resolution: "@tamagui/proxy-worm@workspace:packages/proxy-worm"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/react-native-svg@^1.0.1-beta.142, @tamagui/react-native-svg@workspace:packages/react-native-svg":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/react-native-svg@workspace:packages/react-native-svg"
   languageName: unknown
   linkType: soft
 
@@ -6642,6 +6648,7 @@ __metadata:
     "@tamagui/helpers": ^1.0.1-beta.142
     "@tamagui/patch-rnw": ^1.0.1-beta.142
     "@tamagui/proxy-worm": ^1.0.1-beta.142
+    "@tamagui/react-native-svg": ^1.0.1-beta.142
     "@tamagui/shorthands": ^1.0.1-beta.142
     "@testing-library/react": ^13.3.0
     "@types/node": ^16.11.9
@@ -6660,7 +6667,6 @@ __metadata:
     null-loader: ^4.0.1
     react: "*"
     react-dom: "*"
-    react-native-svg-web: ^1.0.1-beta.142
     react-native-web: ^0.18.3
     react-test-renderer: ^18.2.0
     style-loader: ^3.3.1
@@ -6947,11 +6953,11 @@ __metadata:
     "@tamagui/build": ^1.0.1-beta.142
     "@tamagui/fake-react-native": ^1.0.1-beta.142
     "@tamagui/proxy-worm": ^1.0.1-beta.142
+    "@tamagui/react-native-svg": ^1.0.1-beta.142
     "@tamagui/static": ^1.0.1-beta.142
     fs-extra: ^10.1.0
     lodash: ^4.17.21
     outdent: ^0.8.0
-    react-native-svg-web: ^1.0.1-beta.142
     vite-plugin-environment: ^1.1.2
   languageName: unknown
   linkType: soft
@@ -20751,12 +20757,6 @@ __metadata:
   checksum: ebc3cded19d594aafa748d5ab6e237533f68dc33e28a584c99b8a6cac993585919f01413b94e9801f01af4a138810575f55ee25f90d7a77cb13c49d3252edb2a
   languageName: node
   linkType: hard
-
-"react-native-svg-web@^1.0.1-beta.142, react-native-svg-web@workspace:packages/react-native-svg-web":
-  version: 0.0.0-use.local
-  resolution: "react-native-svg-web@workspace:packages/react-native-svg-web"
-  languageName: unknown
-  linkType: soft
 
 "react-native-svg@npm:^12.3.0":
   version: 12.3.0

@@ -176,7 +176,7 @@ async function buildTamaguiConfig(
         },
       },
       alias({
-        'react-native-svg': require.resolve('react-native-svg-web'),
+        'react-native-svg': require.resolve('@tamagui/react-native-svg'),
         'react-native-safe-area-context': require.resolve('@tamagui/fake-react-native'),
         'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
         ...aliases,

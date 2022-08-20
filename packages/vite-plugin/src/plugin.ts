@@ -94,7 +94,7 @@ export function tamaguiPlugin(
           alias: {
             'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
             'react-native/Libraries/Utilities/codegenNativeComponent': '@tamagui/proxy-worm',
-            'react-native-svg': 'react-native-svg-web',
+            'react-native-svg': '@tamagui/react-native-svg',
             'react-native': 'react-native-web',
             ...(options.useReactNativeWebLite && {
               '@tamagui/rnw': '@tamagui/rnw-lite',

@@ -87,7 +87,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         const tamaguiAliases = safeResolves(
           ['@tamagui/core/reset.css', '@tamagui/core/reset.css'],
           ['@tamagui/core', '@tamagui/core'],
-          ['react-native-svg', 'react-native-svg-web'],
+          ['react-native-svg', '@tamagui/react-native-svg'],
           // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
           ['react/jsx-runtime.js', 'react/jsx-runtime'],
           ['react/jsx-runtime', 'react/jsx-runtime'],

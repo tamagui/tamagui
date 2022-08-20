@@ -45,6 +45,7 @@
     "@tamagui/helpers": "^1.0.1-beta.142",
     "@tamagui/patch-rnw": "^1.0.1-beta.142",
     "@tamagui/proxy-worm": "^1.0.1-beta.142",
+    "@tamagui/react-native-svg": "^1.0.1-beta.142",
     "@tamagui/shorthands": "^1.0.1-beta.142",
     "babel-literal-to-ast": "^2.1.0",
     "esbuild": "^0.14.49",
@@ -53,7 +54,6 @@
     "fs-extra": "^10.1.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.21",
-    "react-native-svg-web": "^1.0.1-beta.142",
     "tamagui": "^1.0.1-beta.142"
   },
   "devDependencies": {

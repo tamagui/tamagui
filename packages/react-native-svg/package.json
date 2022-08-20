@@ -1,5 +1,5 @@
 {
-  "name": "react-native-svg-web",
+  "name": "@tamagui/react-native-svg",
   "version": "1.0.1-beta.142",
   "type": "module",
   "main": "index.js",

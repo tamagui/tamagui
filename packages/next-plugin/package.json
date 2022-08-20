@@ -23,6 +23,7 @@
   "dependencies": {
     "@babel/preset-react": "^7.16.7",
     "@tamagui/proxy-worm": "^1.0.1-beta.142",
+    "@tamagui/react-native-svg": "^1.0.1-beta.142",
     "@tamagui/rnw-lite": "^1.0.1-beta.142",
     "@tamagui/static": "^1.0.1-beta.142",
     "babel-loader": "^8.2.5",
@@ -35,7 +36,6 @@
     "html-inline-css-webpack-plugin": "^1.11.1",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
-    "react-native-svg-web": "^1.0.1-beta.142",
     "tamagui-loader": "^1.0.1-beta.142",
     "thread-loader": "^3.0.4",
     "url-loader": "^4.1.1"

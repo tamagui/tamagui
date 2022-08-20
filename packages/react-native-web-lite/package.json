@@ -2,7 +2,6 @@
   "name": "react-native-web-lite",
   "version": "1.0.1-beta.142",
   "description": "React Native for Web",
-  "private": true,
   "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/esm",

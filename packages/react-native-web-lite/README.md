@@ -24,4 +24,4 @@ Alias the following
 
 - react-native-web$ => react-native-web-lite
 - @tamagui/rnw => @tamagui/rnw-lite
-- react-native-svg => react-native-svg-web
+- react-native-svg => @tamagui/react-native-svg
