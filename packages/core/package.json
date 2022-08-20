@@ -31,6 +31,7 @@
     "@tamagui/helpers": "^1.0.1-beta.148",
     "@tamagui/normalize-css-color-lite": "^1.0.1-beta.148",
     "@tamagui/rnw": "^1.0.1-beta.148",
+    "@tamagui/rnw-lite": "^1.0.1-beta.148",
     "@tamagui/use-debounce": "^1.0.1-beta.148",
     "@tamagui/use-event": "^1.0.1-beta.148",
     "@tamagui/use-force-update": "^1.0.1-beta.148",
