@@ -6,7 +6,7 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "bin": {
-    "patch": "./patch.js"
+    "rnw-patch": "./patch.js"
   },
   "files": [
     "patches",
