@@ -1,6 +1,6 @@
 const React = require('react')
 
-Object.assign(module.exports, {
+const exports = {
   Circle: (p) => React.createElement('circle', p),
   ClipPath: (p) => React.createElement('clipPath', p),
   Defs: (p) => React.createElement('defs', p),
@@ -26,4 +26,7 @@ Object.assign(module.exports, {
   TextPath: (p) => React.createElement('clipPath', p),
   TSpan: (p) => React.createElement('tSpan', p),
   Use: (p) => React.createElement('use', p),
-})
+}
+
+Object.assign(module.exports, exports)
+export default exports

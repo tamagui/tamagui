@@ -180,6 +180,7 @@ async function buildTamaguiConfig(
         'react-native-svg': require.resolve('@tamagui/react-native-svg'),
         'react-native-safe-area-context': require.resolve('@tamagui/fake-react-native'),
         'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
+        'react-native-reanimated': require.resolve('@tamagui/proxy-worm'),
         ...aliases,
       }),
     ],
