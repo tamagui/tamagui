@@ -70,14 +70,14 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
 
   await Promise.all([
     props.config
-      ? buildTamaguiConfig({
+      ? buildTamaguiConfig(props, {
           entryPoints: [configEntry],
           external,
           outfile: configOutPath,
         })
       : null,
     ...baseComponents.map((componentModule, i) => {
-      return buildTamaguiConfig({
+      return buildTamaguiConfig(props, {
         entryPoints: [componentModule],
         external,
         outfile: componentOutPaths[i],
@@ -115,6 +115,7 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
 }
 
 async function buildTamaguiConfig(
+  props: Props,
   options: Partial<esbuild.BuildOptions> & { outfile: string },
   aliases?: Record<string, string>
 ) {
@@ -167,7 +168,7 @@ async function buildTamaguiConfig(
             }
           })
 
-          build.onResolve({ filter: /^(react-native)$/ }, (args) => {
+          build.onResolve({ filter: /^(react-native|react-native\/.*)$/ }, (args) => {
             return {
               path: 'react-native-web-lite',
               external: true,

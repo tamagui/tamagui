@@ -36,6 +36,7 @@
     "@babel/parser": "^7.18.11",
     "@babel/plugin-transform-react-jsx": "^7.18.10",
     "@babel/runtime": "^7.18.9",
+    "react-native-web-lite": "^1.0.1-beta.144",
     "@babel/traverse": "^7.18.11",
     "@expo/match-media": "^0.3.0",
     "@tamagui/build": "^1.0.1-beta.144",
