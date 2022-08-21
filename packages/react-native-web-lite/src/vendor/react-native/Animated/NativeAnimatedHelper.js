@@ -1,4 +1,3 @@
-import { invariant } from '../../../modules/invariant.js'
 import NativeEventEmitter from '../NativeEventEmitter/index.js'
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.

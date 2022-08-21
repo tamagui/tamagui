@@ -9,7 +9,7 @@
  */
 'use strict'
 
-import { invariant } from '../../../modules/invariant.js'
+import { invariant } from 'react-native-web-internals'
 
 /**
  * EventSubscriptionVendor stores a set of EventSubscriptions that are

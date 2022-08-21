@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "jsx": "preserve"
+    
   },
   "references": [
     { "path": "../tamagui" },

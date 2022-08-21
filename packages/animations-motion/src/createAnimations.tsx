@@ -1,6 +1,7 @@
 import { PresenceContext, usePresence } from '@tamagui/animate-presence'
 import {
   AnimatedNumberStrategy,
+  AnimationConfigType,
   AnimationDriver,
   AnimationProp,
   UniversalAnimatedNumber,
@@ -89,7 +90,8 @@ export function useAnimatedNumberStyle<V extends UniversalAnimatedNumber<any>>(
   return getStyle(value.getInstance())
 }
 
-export function createAnimations<A extends any>(animations: A): AnimationDriver<A> {
+// @ts-ignore
+export function createAnimations<A extends AnimationConfigType>(animations: A): AnimationDriver<A> {
   AnimatedView['displayName'] = 'AnimatedView'
   AnimatedText['displayName'] = 'AnimatedText'
 

@@ -110,3 +110,34 @@ export const styleProps = {
   classList: true,
   style: true,
 }
+
+export const forwardedProps = {
+  defaultProps,
+  accessibilityProps,
+  clickProps,
+  focusProps,
+  keyboardProps,
+  mouseProps,
+  touchProps,
+  styleProps,
+}
+
+export const forwardPropsListText = {
+  ...defaultProps,
+  ...accessibilityProps,
+  ...clickProps,
+  ...focusProps,
+  ...keyboardProps,
+  ...mouseProps,
+  ...touchProps,
+  ...styleProps,
+  href: true,
+  lang: true,
+  pointerEvents: true,
+}
+
+export const forwardPropsListView = {
+  ...forwardPropsListText,
+  onScroll: true,
+  onWheel: true,
+}

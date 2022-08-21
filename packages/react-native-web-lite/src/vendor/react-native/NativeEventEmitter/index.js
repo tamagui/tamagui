@@ -9,8 +9,9 @@
  */
 'use strict'
 
-import Platform from '../../../exports/Platform/index.js'
-import { invariant } from '../../../modules/invariant.js'
+import { invariant } from 'react-native-web-internals'
+import { Platform } from 'react-native-web-internals'
+
 import RCTDeviceEventEmitter from './RCTDeviceEventEmitter.js'
 
 /**

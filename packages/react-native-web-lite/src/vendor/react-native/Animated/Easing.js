@@ -57,7 +57,7 @@ var ease
  * - [`out`](docs/easing.html#out) runs an easing function backwards
  */
 
-class Easing {
+export class Easing {
   /**
    * A stepping function, returns 1 for any positive value of `n`.
    */
@@ -254,5 +254,3 @@ class Easing {
     }
   }
 }
-
-export default Easing

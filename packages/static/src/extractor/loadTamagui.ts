@@ -72,7 +72,7 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
     '\x1b[36m%s\x1b[0m',
     `Building your tamagui.config.ts and componets into node-friendly bundles for usage during compulation:`
   )
-  console.log(`"\x1b[2m"
+  console.log(`\x1b[2m
     - Config: ${configOutPath}
     - Components: ${componentOutPaths.join(', ')}
 `)
@@ -100,7 +100,6 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
 
   const coreNode = require('@tamagui/core-node')
 
-  console.log(``)
   registerRequire()
   const config = require(configOutPath).default
   unregisterRequire()
@@ -163,12 +162,15 @@ async function buildTamaguiConfig(
     ...options,
     format: 'cjs',
     target: 'node18',
+    jsx: 'transform',
+    jsxFactory: 'react',
+    allowOverwrite: true,
     keepNames: true,
     platform: 'node',
+    tsconfig: join(__dirname, '..', '..', '..', 'tamagui.tsconfig.json'),
     loader: {
       '.js': 'jsx',
     },
-    allowOverwrite: true,
     logLevel: 'warning',
     plugins: [
       {

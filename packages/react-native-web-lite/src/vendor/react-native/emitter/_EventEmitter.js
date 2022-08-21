@@ -8,7 +8,8 @@
  *
  * @typecheck
  */
-import { invariant } from '../../../modules/invariant.js'
+import { invariant } from 'react-native-web-internals'
+
 import EmitterSubscription from './_EmitterSubscription.js'
 import EventSubscriptionVendor from './_EventSubscriptionVendor.js'
 

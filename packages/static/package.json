@@ -6,6 +6,7 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "files": [
+    "tamagui.tsconfig.json",
     "patches",
     "src",
     "types",

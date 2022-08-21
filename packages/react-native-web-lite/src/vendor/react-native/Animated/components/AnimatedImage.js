@@ -9,8 +9,9 @@
  */
 import * as React from 'react'
 
-import Image from '../../../../exports/Image/index.js'
+import Image from '../../../../Image/index.js'
 import createAnimatedComponent from '../createAnimatedComponent.js'
+
 export default createAnimatedComponent(Image, {
   collapsable: false,
 })

@@ -8,13 +8,13 @@ import { useState } from 'react'
 import { Button, Image, XStack, YStack, styled } from 'tamagui'
 
 // @ts-ignore
-// import photo1 from '../../public/photo1.jpg'
-// // @ts-ignore
-// import photo2 from '../../public/photo2.jpg'
-// // @ts-ignore
-// import photo3 from '../../public/photo3.jpg'
+import photo1 from '../../public/photo1.jpg'
+// @ts-ignore
+import photo2 from '../../public/photo2.jpg'
+// @ts-ignore
+import photo3 from '../../public/photo3.jpg'
 
-// export const images = [photo1.src, photo2.src, photo3.src]
+export const images = [photo1.src, photo2.src, photo3.src]
 
 const YStackEnterable = styled(YStack, {
   variants: {

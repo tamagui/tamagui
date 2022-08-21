@@ -13,8 +13,8 @@
 
 import _objectSpread from '@babel/runtime/helpers/objectSpread2'
 import normalizeColor from '@tamagui/normalize-css-color-lite'
+import { invariant } from 'react-native-web-internals'
 
-import { invariant } from '../../../../modules/invariant.js'
 import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
 import AnimatedWithChildren from './AnimatedWithChildren.js'
 

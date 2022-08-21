@@ -23,7 +23,7 @@ export function patchReactNativeWeb(dir: string = require.resolve('react-native-
     },
     {
       target: path.join(rootDir, 'dist', 'cjs', 'modules', 'createDOMProps', 'index.js'),
-      patched: path.join(__dirname, '..', '..', 'patches', '18', 'createDOMProps..js'),
+      patched: path.join(__dirname, '..', '..', 'patches', '18', 'createDOMProps.cjs.js'),
     },
   ]
 

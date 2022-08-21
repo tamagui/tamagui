@@ -10,8 +10,8 @@
 'use strict'
 
 import _objectSpread from '@babel/runtime/helpers/objectSpread2'
+import { invariant } from 'react-native-web-internals'
 
-import { invariant } from '../../../../modules/invariant.js'
 import { AnimatedEvent } from '../AnimatedEvent.js'
 import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
 import AnimatedNode from './AnimatedNode.js'
