@@ -9,7 +9,8 @@
     "types",
     "dist",
     "css",
-    "ttf"
+    "otf",
+    "woff2"
   ],
   "scripts": {
     "build": "tamagui-build",
