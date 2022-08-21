@@ -48,6 +48,7 @@ export function registerFontVariables(parsedFont: any) {
   const response: string[] = []
 
   for (const fkey in parsedFont) {
+    if (fkey === 'face') continue
     if (fkey === 'family') {
       const val = parsedFont[fkey] as Variable
       registerCSSVariable(val)

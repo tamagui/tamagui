@@ -141,10 +141,13 @@ async function buildTamaguiConfig(
       }
     }
   }
-  writeFile(lockFile, '')
+
+  void writeFile(lockFile, '')
+
   if (process.env.DEBUG?.startsWith('tamagui')) {
     console.log(`Building`, options.entryPoints)
   }
+
   return esbuild.build({
     bundle: true,
     ...options,

@@ -16,6 +16,7 @@ export const HomeH2 = styled(H2, {
 })
 
 export const HomeH3 = styled(H3, {
+  fontFamily: '$body',
   name: 'HomeH3',
   ta: 'center',
   theme: 'alt2',
