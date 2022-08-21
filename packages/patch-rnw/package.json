@@ -15,7 +15,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build && node node_modules/.bin/patch",
+    "patch": "tamagui-build && node node_modules/.bin/rnw-patch",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
