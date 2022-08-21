@@ -19,6 +19,9 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "dependencies": {
+    "@tamagui/simple-hash": "^1.0.1-beta.151"
+  },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.151",
     "react": "*",

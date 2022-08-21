@@ -1,0 +1,38 @@
+export declare const unitlessNumbers: {
+    WebkitLineClamp: boolean;
+    animationIterationCount: boolean;
+    aspectRatio: boolean;
+    borderImageOutset: boolean;
+    borderImageSlice: boolean;
+    borderImageWidth: boolean;
+    columnCount: boolean;
+    flex: boolean;
+    flexGrow: boolean;
+    flexOrder: boolean;
+    flexPositive: boolean;
+    flexShrink: boolean;
+    flexNegative: boolean;
+    fontWeight: boolean;
+    gridRow: boolean;
+    gridRowEnd: boolean;
+    gridRowGap: boolean;
+    gridRowStart: boolean;
+    gridColumn: boolean;
+    gridColumnEnd: boolean;
+    gridColumnGap: boolean;
+    gridColumnStart: boolean;
+    lineClamp: boolean;
+    opacity: boolean;
+    order: boolean;
+    orphans: boolean;
+    tabSize: boolean;
+    widows: boolean;
+    zIndex: boolean;
+    zoom: boolean;
+    scale: boolean;
+    scaleX: boolean;
+    scaleY: boolean;
+    scaleZ: boolean;
+    shadowOpacity: boolean;
+};
+//# sourceMappingURL=unitlessNumbers.d.ts.map

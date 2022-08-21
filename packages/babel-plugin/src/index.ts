@@ -7,6 +7,7 @@ import { declare } from '@babel/helper-plugin-utils'
 import template from '@babel/template'
 import { Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
+import { simpleHash } from '@tamagui/simple-hash'
 import {
   TamaguiOptions,
   createExtractor,
@@ -231,16 +232,6 @@ function assertValidTag(node: t.JSXOpeningElement) {
     // need to make onExtractTag have a special catch error or similar
     console.warn(`⚠️ Cannot pass style attribute to extracted style`)
   }
-}
-
-const simpleHash = (str: string) => {
-  let hash = 0
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i)
-    hash = (hash << 5) - hash + char
-    hash &= hash // Convert to 32bit integer
-  }
-  return new Uint32Array([hash])[0].toString(36)
 }
 
 function splitThemeStyles(style: Object) {

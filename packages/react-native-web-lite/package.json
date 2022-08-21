@@ -4,7 +4,7 @@
   "description": "React Native for Web",
   "sideEffects": false,
   "main": "dist/cjs",
-  "module": "dist/esm",
+  "module": "dist/cjs",
   "files": [
     "types",
     "dist",
@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@tamagui/normalize-css-color-lite": "^1.0.1-beta.151",
+    "react-native-web-internal": "^1.0.1-beta.151",
     "styleq": "^0.1.2"
   },
   "devDependencies": {

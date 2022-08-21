@@ -8,7 +8,7 @@
  * @flow
  */
 
-import { invariant } from '../../modules/invariant.js'
+import { invariant } from 'react-native-web-internal'
 
 type Content =
   | {

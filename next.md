@@ -5,8 +5,6 @@
   - kitchen-sink in Snack demo
   - prod build native stuck on copying resources
   - check animation flicker again
-  - require `tamagui.config.ts` to import createTamagui() from core only
-  - can probably remove "screen and" from media queries
   - FAQ
     - don't wrap in HOC if possible, will de-opt compilation
     - what works for compilation / examples
@@ -16,11 +14,9 @@
   - Select is triggering sheet when not small - media query regression
   - changing family responsive tests
   - animation accept useAnimatedStyle
-  - swappable animation drivers + demo + site can probably increase score
   - Switch gesture
   - adding `shorthandsOverride` to createTamagui should be easy enough to type with Omit<>
   - fix reanimated 2.9/3.0 __frame var
-  - Text doesn't pick up defaultProps (others do)
   - loadFont
   - windows without WSL
   - <Select /> has selectable cursor on hold down + move
@@ -40,7 +36,6 @@
   - try using react-native-web $css object support for classnames
   - add ui package setting custom types example in starter
   - fix Label + new form inputs (native too)  
-  - <Form onSubmit /> 
     - native works by attaching state (mutable refs) to a FormContext
     - web works by just listening for event and using FormData()
   - Group make media style size use properly
@@ -276,8 +271,6 @@ fast-image - https://github.com/DylanVann/react-native-fast-image
 - skeleton prop can also accept any react element, so you can do <Button skeleton={<MyCustomSkeleton />} and maybe that even receives some special prop that gives info on the Button to skeleton
 
 - we can add a defaultSkeleton to createTamagui so you can control that out of the box (defaults to SkeletonOverlay)
-
-- been wanting to add this to tamagui since forever but its a good use case here: we can add a  new option defaultProps to createTamagui, so you can do defaultProps: { Button: { skeleton: <SomeSpecialOneJustForButton /> } } which may be useful for if certain components have different needs
 
 - may eventually want something like skeletonStyle which only applies to the parent component when skeleton is on, this probably is necessary so you can do things like overflow: hidden; position: relative when skeletons are on, so they fit inside nicely and shadows dont overlap
 

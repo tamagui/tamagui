@@ -7,7 +7,7 @@
  *
  * @flow
  */
-import canUseDOM from '../../modules/canUseDom/index.js'
+import { canUseDOM } from 'react-native-web-internal'
 
 export type ColorSchemeName = 'light' | 'dark'
 

@@ -9,6 +9,7 @@
  */
 
 import * as React from 'react'
+import { StyleSheet } from 'react-native-web-internal'
 
 import * as forwardedProps from '../../modules/forwardedProps/index.js'
 import pick from '../../modules/pick/index.js'
@@ -21,7 +22,6 @@ import usePlatformMethods from '../../modules/usePlatformMethods/index.js'
 import useResponderEvents from '../../modules/useResponderEvents/index.js'
 import type { PlatformMethods } from '../../types.js'
 import createElement from '../createElement/index.js'
-import StyleSheet from '../StyleSheet/index.js'
 import type { TextInputProps } from './types.js'
 
 /**

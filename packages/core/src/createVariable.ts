@@ -27,6 +27,9 @@ export const createVariable = <A extends string | number = any>(props: VariableI
   if (isVariable(props)) {
     return props
   }
+  if (!props.name) {
+    debugger
+  }
   return {
     [IS_VAR]: true,
     // @ts-ignore

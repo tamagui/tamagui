@@ -9,9 +9,9 @@
  */
 
 import * as React from 'react'
+import { StyleSheet } from 'react-native-web-internal'
+import { canUseDOM } from 'react-native-web-internal'
 
-import canUseDOM from '../../modules/canUseDom/index.js'
-import StyleSheet from '../StyleSheet/index.js'
 import type { ViewProps } from '../View/index.js'
 import View from '../View/index.js'
 

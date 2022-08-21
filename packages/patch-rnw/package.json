@@ -15,8 +15,9 @@
     "patch.js"
   ],
   "scripts": {
-    "patch": "tamagui-build && node node_modules/.bin/rnw-patch",
+    "build": "tamagui-build",
     "watch": "tamagui-build --watch",
+    "patch": "tamagui-build && node node_modules/.bin/rnw-patch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

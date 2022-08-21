@@ -28,6 +28,7 @@
     "@babel/helper-plugin-utils": "^7.18.9",
     "@babel/template": "*",
     "@babel/traverse": "^7.18.11",
+    "@tamagui/simple-hash": "^1.0.1-beta.151",
     "@tamagui/static": "^1.0.1-beta.151"
   },
   "devDependencies": {

@@ -10,15 +10,15 @@
  */
 
 import React from 'react'
+import { StyleSheet } from 'react-native-web-internal'
 
-import Dimensions from '../../exports/Dimensions/index.js'
-import Platform from '../../exports/Platform/index.js'
-import UIManager from '../../exports/UIManager/index.js'
+import Platform from '../../../../react-native-web-internal/src/modules/Platform/index.js'
 import dismissKeyboard from '../../modules/dismissKeyboard/index.js'
 import { invariant, warning } from '../../modules/invariant.js'
 import { mergeRefs } from '../../modules/mergeRefs/index.js'
 import TextInputState from '../../modules/TextInputState/index.js'
-import StyleSheet from '../StyleSheet/index.js'
+import Dimensions from '../Dimensions/index.js'
+import UIManager from '../UIManager/index.js'
 import View from '../View/index.js'
 import ScrollViewBase from './ScrollViewBase.js'
 
