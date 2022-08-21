@@ -39,13 +39,21 @@ const headingFont = createInterFont(
       14: -3,
       15: -4,
     },
+    // for native
+    face: {
+      700: { normal: 'InterBold' },
+      800: { normal: 'InterBold' },
+      900: { normal: 'InterBold' },
+    },
   },
   { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 0)) }
 )
 const bodyFont = createInterFont(
   {
     family:
-      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+      process.env.TAMAGUI_TARGET === 'native'
+        ? 'Inter'
+        : '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
   },
   {
     sizeSize: (size) => Math.round(size),
