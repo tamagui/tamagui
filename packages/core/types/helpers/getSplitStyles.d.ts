@@ -15,6 +15,7 @@ declare type StyleSplitter = (props: {
     rulesToInsert: RulesToInsert;
     viewProps: StackProps;
     fontFamily: string | undefined;
+    mediaKeys: string[];
 };
 export declare const PROP_SPLIT = "-";
 export declare const pseudoCNInverse: {

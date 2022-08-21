@@ -78,6 +78,7 @@ type StyleSplitter = (
   rulesToInsert: RulesToInsert
   viewProps: StackProps
   fontFamily: string | undefined
+  mediaKeys: string[]
 }
 
 export const PROP_SPLIT = '-'
@@ -108,12 +109,14 @@ export const getSplitStyles: StyleSplitter = (
 ) => {
   conf = conf || getConfig()
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
+  const mediaKeys: string[] = []
   const viewProps: StackProps = {}
   const pseudos: PseudoStyles = {}
   const medias: Record<MediaQueryKey, ViewStyle> = {}
   const usedKeys = new Set<string>()
   const propKeys = Object.keys(props)
-  const shouldDoClasses = (isWeb || process.env.IS_STATIC === 'is_static') && !state.noClassNames
+  const shouldDoClasses =
+    (isWeb || process.env.IS_STATIC === 'is_static') && !state.noClassNames && !props.animation
   const len = propKeys.length
   const rulesToInsert: RulesToInsert = []
   const style: ViewStyle = {}
@@ -125,54 +128,7 @@ export const getSplitStyles: StyleSplitter = (
   let classNames: ClassNamesObject = {}
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
-  let transforms = null as Record<TransformNamespaceKey, [string, string]> | null
-
-  function mergeClassName(key: string, val: string, isMediaOrPseudo = false) {
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      // empty classnames passed by compiler sometimes
-      if (!val) return
-      if (val.startsWith('_transform-')) {
-        const namespace: TransformNamespaceKey = isMediaOrPseudo ? key : 'transform'
-
-        let transform = insertedTransforms[val]
-        if (isClient) {
-          if (!transform) {
-            // HMR or loaded a new chunk
-            updateInserted()
-            transform = insertedTransforms[val]
-            if (process.env.NODE_ENV === 'development') {
-              if (!transform) {
-                // eslint-disable-next-line no-console
-                console.warn('no transform found', { insertedTransforms, val })
-              }
-            }
-          }
-          if (!transform) {
-            if (isWeb && val[0] !== '_') {
-              // runtime insert
-              transform = val
-            }
-          }
-          if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-            // prettier-ignore
-            // eslint-disable-next-line no-console
-            console.log('  🔹 getSplitStyles mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
-          }
-        }
-        transforms = transforms || {}
-        transforms[namespace] = transforms[namespace] || ['', '']
-        const identifier = val.replace('_transform', '')
-        transforms[namespace][0] += identifier
-        // ssr doesn't need to do anything just make the right classname
-        if (transform) {
-          transforms[namespace][1] += transform
-        }
-      } else {
-        classNames[key] = val
-      }
-    }
-  }
-
+  const transforms: Record<TransformNamespaceKey, [string, string]> = {}
   // fontFamily is our special baby, ensure we grab the latest set one always
   let fontFamily: string | undefined
 
@@ -237,14 +193,14 @@ export const getSplitStyles: StyleSplitter = (
               fullKey += `${PROP_SPLIT}${pseudoShortKey}`
             }
             usedKeys.add(fullKey)
-            mergeClassName(fullKey, cn, isMediaOrPseudo)
+            mergeClassName(transforms, classNames, fullKey, cn, isMediaOrPseudo)
           } else {
             nonTamaguis += ' ' + cn
           }
         }
         if (nonTamaguis) {
           usedKeys.add(keyInit)
-          mergeClassName(keyInit, nonTamaguis)
+          mergeClassName(transforms, classNames, keyInit, nonTamaguis)
         }
         continue
       }
@@ -259,7 +215,7 @@ export const getSplitStyles: StyleSplitter = (
           validStyles[keyInit.split(PROP_SPLIT)[0]]
         if (isValidClassName || isMediaOrPseudo) {
           usedKeys.add(keyInit)
-          mergeClassName(keyInit, valInit, isMediaOrPseudo)
+          mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
           continue
         }
       }
@@ -350,7 +306,7 @@ export const getSplitStyles: StyleSplitter = (
           continue
         }
         pseudos[key] = pseudos[key] || {}
-        pseudos[key] = getSubStyle(
+        const pseudoStyleObject = getSubStyle(
           key,
           val,
           staticConfig,
@@ -361,15 +317,16 @@ export const getSplitStyles: StyleSplitter = (
           languageContext,
           true
         )
-        if (shouldDoClasses) {
-          const pseudoStyles = getAtomicStyle(pseudos[key], pseudoDescriptors[key])
+        pseudos[key] = pseudoStyleObject
+        if (shouldDoClasses && key !== 'enterStyle' && key !== 'exitStyle') {
+          const pseudoStyles = getAtomicStyle(pseudoStyleObject, pseudoDescriptors[key])
           for (const style of pseudoStyles) {
             const postfix = pseudoDescriptors[key]?.name || key // exitStyle/enterStyle dont have pseudoDescriptors
             const fullKey = `${style.property}${PROP_SPLIT}${postfix}`
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)
               addStyleToInsertRules(rulesToInsert, style)
-              mergeClassName(fullKey, style.identifier, isMediaOrPseudo)
+              mergeClassName(transforms, classNames, fullKey, style.identifier, isMediaOrPseudo)
             }
           }
         }
@@ -379,6 +336,7 @@ export const getSplitStyles: StyleSplitter = (
       // media
       if (isMedia) {
         const mediaKey = key
+        mediaKeys.push(key)
         const mediaKeyShort = mediaKey.slice(1)
 
         if (!mediaQueryConfig[mediaKeyShort]) {
@@ -419,7 +377,7 @@ export const getSplitStyles: StyleSplitter = (
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)
               addStyleToInsertRules(rulesToInsert, out)
-              mergeClassName(fullKey, out.identifier, true)
+              mergeClassName(transforms, classNames, fullKey, out.identifier, true)
             }
           }
         } else {
@@ -428,7 +386,14 @@ export const getSplitStyles: StyleSplitter = (
               // eslint-disable-next-line no-console
               console.log('apply media style', mediaKey, mediaState)
             }
-            Object.assign(shouldDoClasses ? medias : style, mediaStyle)
+            if (shouldDoClasses) {
+              Object.assign(medias, mediaStyle)
+            } else {
+              for (const key in mediaStyle) {
+                usedKeys.add(key)
+                style[key] = mediaStyle[key]
+              }
+            }
           }
         }
         continue
@@ -447,13 +412,7 @@ export const getSplitStyles: StyleSplitter = (
         } else if (key in stylePropsTransform) {
           mergeTransform(style, key, val, true)
         } else {
-          // if (key === 'pointerEvents') {
-          //   // pointer events can be box-none which requires css
-          //   addStyleToInsertRules(out.identifier, out.styleRule)
-          //   mergeClassName(fullKey, out.identifier, true)
-          // } else {
           style[key] = normalizeValueWithProperty(val, key)
-          // }
         }
         continue
       }
@@ -489,7 +448,7 @@ export const getSplitStyles: StyleSplitter = (
       // should probably have a few more exceptions here!
       if (key === 'pointerEvents' || !state.dynamicStylesInline) {
         addStyleToInsertRules(rulesToInsert, atomicStyle)
-        mergeClassName(key, atomicStyle.identifier)
+        mergeClassName(transforms, classNames, key, atomicStyle.identifier)
       } else {
         style[key] = atomicStyle.value
       }
@@ -568,9 +527,55 @@ export const getSplitStyles: StyleSplitter = (
     viewProps,
     style,
     medias,
+    mediaKeys,
     pseudos,
     classNames,
     rulesToInsert,
+  }
+}
+
+function mergeClassName(
+  transforms: Record<string, any[]>,
+  classNames: Record<string, string>,
+  key: string,
+  val: string,
+  isMediaOrPseudo = false
+) {
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    // empty classnames passed by compiler sometimes
+    if (!val) return
+    if (val.startsWith('_transform-')) {
+      const namespace: TransformNamespaceKey = isMediaOrPseudo ? key : 'transform'
+      let transform = insertedTransforms[val]
+      if (isClient) {
+        if (!transform) {
+          // HMR or loaded a new chunk
+          updateInserted()
+          transform = insertedTransforms[val]
+          if (process.env.NODE_ENV === 'development') {
+            if (!transform) {
+              // eslint-disable-next-line no-console
+              console.warn('no transform found', { insertedTransforms, val })
+            }
+          }
+        }
+        if (!transform) {
+          if (isWeb && val[0] !== '_') {
+            // runtime insert
+            transform = val
+          }
+        }
+      }
+      transforms[namespace] = transforms[namespace] || ['', '']
+      const identifier = val.replace('_transform', '')
+      transforms[namespace][0] += identifier
+      // ssr doesn't need to do anything just make the right classname
+      if (transform) {
+        transforms[namespace][1] += transform
+      }
+    } else {
+      classNames[key] = val
+    }
   }
 }
 

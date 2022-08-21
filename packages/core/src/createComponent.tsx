@@ -20,6 +20,7 @@ import React, {
   memo,
   useCallback,
   useContext,
+  useEffect,
 } from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
@@ -32,12 +33,16 @@ import { assignNativePropsToWeb } from './helpers/assignNativePropsToWeb'
 import { getReturnVariablesAs } from './helpers/createPropMapper'
 import { createShallowUpdate } from './helpers/createShallowUpdate'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
-import { SplitStyleResult, insertSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
+import {
+  SplitStyleResult,
+  getSubStyle,
+  insertSplitStyles,
+  useSplitStyles,
+} from './helpers/getSplitStyles'
 import { getAllSelectors } from './helpers/insertStyleRule'
 import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
-import { useFeatures } from './hooks/useFeatures'
-import { mediaState } from './hooks/useMedia'
+import { addMediaQueryListener, mediaState, removeMediaQueryListener } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
 import { getThemeManager, useTheme } from './hooks/useTheme'
@@ -54,6 +59,7 @@ import {
   TamaguiElement,
   TamaguiInternalConfig,
   UseAnimationHook,
+  UseAnimationProps,
 } from './types'
 import { usePressability } from './vendor/Pressability'
 import { Slot, mergeEvent } from './views/Slot'
@@ -92,6 +98,7 @@ function mergeShorthands({ defaultProps }: StaticConfigParsed, { shorthands }: T
 
 let initialTheme: any
 let config: TamaguiInternalConfig
+let mediaPropNames: string[] = []
 
 export function createComponent<
   ComponentPropTypes extends Object = {},
@@ -199,25 +206,114 @@ export function createComponent<
       }
     }
 
-    const { viewProps: viewPropsIn, pseudos, medias, style, classNames } = splitStyles
+    const { viewProps: viewPropsIn, pseudos, medias, style, classNames, mediaKeys } = splitStyles
+
+    // media queries
+    useIsomorphicLayoutEffect(() => {
+      for (const key of mediaKeys) {
+        addMediaQueryListener(key, forceUpdate)
+      }
+      return () => {
+        for (const key of mediaKeys) {
+          removeMediaQueryListener(key, forceUpdate)
+        }
+      }
+    }, [mediaKeys.join(',')])
+
+    // animations
     const useAnimations = tamaguiConfig?.animations?.useAnimations as UseAnimationHook | undefined
     const isAnimated = !!(useAnimations && props.animation)
     const hasEnterStyle = !!props.enterStyle
-
     const animationFeatureStylesIn = props.animation ? { ...defaultNativeStyle, ...style } : null
+    const propsWithAnimation = props as UseAnimationProps
 
-    const features = useFeatures(props, {
-      forceUpdate,
-      setStateShallow,
-      useAnimations,
-      state,
-      style: animationFeatureStylesIn,
-      pseudos,
-      staticConfig,
-      theme,
-      hostRef,
-      onDidAnimate: props.onDidAnimate,
-    })
+    // lets make changing the key mandatory for adding/removing animations
+    // reason is animations are heavy no way around it, and must be run inline here (🙅 loading as a sub-component)
+    // because they need to sync update on first render. it's pretty rare too going to/from no animation => animation
+    // so requiring key change on animation change is least-bad option.
+    // plus, React use() may let us get away with conditional hooks soon :)
+    if (isAnimated) {
+      const animationState = useAnimations(propsWithAnimation, {
+        state,
+        pseudos,
+        onDidAnimate: props.onDidAnimate,
+        hostRef,
+        staticConfig,
+        getStyle({ isExiting, isEntering, exitVariant, enterVariant } = {}) {
+          // we have to merge such that transforms keys all exist
+          const style = animationFeatureStylesIn
+
+          const enterStyle = isEntering
+            ? enterVariant && staticConfig.variants?.[enterVariant]['true']
+              ? getSubStyle(
+                  '',
+                  staticConfig.variants?.[enterVariant]['true'],
+                  staticConfig,
+                  theme,
+                  props,
+                  state,
+                  tamaguiConfig
+                ) || pseudos.enterStyle
+              : null || pseudos.enterStyle
+            : null
+
+          const exitStyle = isExiting
+            ? exitVariant && staticConfig.variants?.[exitVariant]['true']
+              ? getSubStyle(
+                  '',
+                  staticConfig.variants?.[exitVariant]['true'],
+                  staticConfig,
+                  theme,
+                  props,
+                  state,
+                  tamaguiConfig
+                ) || pseudos.exitStyle
+              : null || pseudos.exitStyle
+            : null
+
+          // if you have hoverStyle={{ scale: 1.1 }} and don't have scale set on the base style
+          // no animation will run! this is really confusing. this will look at all variants,
+          // and fill in base styles if they don't exist. eg:
+          // input:
+          //   base: {}
+          //   hoverStyle: { scale: 2 }
+          //   enterStyle: { x: 100 }
+          // output:
+          //   base: { x: 0, scale: 1 }
+          ensureBaseHasDefaults(
+            style,
+            // enterStyle,
+            pseudos.hoverStyle,
+            pseudos.focusStyle,
+            pseudos.pressStyle,
+            pseudos.pressStyle
+          )
+
+          enterStyle && isEntering && merge(style, enterStyle)
+          state.hover && pseudos.hoverStyle && merge(style, pseudos.hoverStyle)
+          state.focus && pseudos.focusStyle && merge(style, pseudos.focusStyle)
+          state.press && pseudos.pressStyle && merge(style, pseudos.pressStyle)
+          exitStyle && isExiting && merge(style, exitStyle)
+
+          if (process.env.NODE_ENV === 'development') {
+            if (props['debug']) {
+              // eslint-disable-next-line no-console
+              console.log('animation style', style)
+            }
+          }
+
+          return style
+        },
+        //, delay
+      })
+
+      // must be properly memoized
+      if (animationState !== state.animation) {
+        setStateShallow({
+          animation: animationState,
+        })
+      }
+    }
 
     const {
       tag,
@@ -434,7 +530,27 @@ export function createComponent<
 
         // from react-native-web
         const platformMethodsRef = usePlatformMethods(viewProps)
-        const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef as any)
+
+        const shouldSetMounted = Boolean(
+          isClient && (hasEnterStyle || props.animation) && !state.mounted
+        )
+
+        const setRef = useMergeRefs(
+          hostRef,
+          platformMethodsRef,
+          forwardedRef as any,
+          shouldSetMounted
+            ? () => {
+                // for some reason without some small delay it doesn't animate css
+                requestIdleCallback(() => {
+                  setStateShallow({
+                    mounted: true,
+                  })
+                })
+              }
+            : undefined
+        )
+
         viewProps.ref = setRef
       }
 
@@ -503,30 +619,11 @@ export function createComponent<
       })
     }
 
-    // isMounted
-    const internal = useServerRef<{ isMounted: boolean; unmountEffects?: Function[] }>()
-    if (!internal.current) {
-      internal.current = {
-        isMounted: true,
-      }
-    }
-
-    useIsomorphicLayoutEffect(() => {
-      // we need to use state to properly have mounted go from false => true
-      if (isClient && (hasEnterStyle || props.animation) && !state.mounted) {
-        // for SSR we never set mounted, ensuring enterStyle={{}} is set by default
-        setStateShallow({
-          mounted: true,
-        })
-      }
-
-      internal.current!.isMounted = true
+    useEffect(() => {
       return () => {
         mouseUps.delete(unPress)
-        internal.current!.isMounted = false
-        internal.current!.unmountEffects?.forEach((cb) => cb())
       }
-    }, [hasEnterStyle, props.animation])
+    }, [])
 
     let styles: any[]
 
@@ -546,11 +643,13 @@ export function createComponent<
       ]
       if (!animationStyles && initialSplitStyles) {
         const initPseudos = initialSplitStyles.pseudos
-        const force = shouldForcePseudo
         !state.mounted && addPseudoToStyles(styles, initPseudos, pseudos, 'enterStyle')
-        state.hover && addPseudoToStyles(styles, initPseudos, pseudos, 'hoverStyle', force)
-        state.focus && addPseudoToStyles(styles, initPseudos, pseudos, 'focusStyle', force)
-        state.press && addPseudoToStyles(styles, initPseudos, pseudos, 'pressStyle', force)
+        state.hover &&
+          addPseudoToStyles(styles, initPseudos, pseudos, 'hoverStyle', shouldForcePseudo)
+        state.focus &&
+          addPseudoToStyles(styles, initPseudos, pseudos, 'focusStyle', shouldForcePseudo)
+        state.press &&
+          addPseudoToStyles(styles, initPseudos, pseudos, 'pressStyle', shouldForcePseudo)
       }
       // ugly but for now...
       if (shouldForcePseudo) {
@@ -648,7 +747,6 @@ export function createComponent<
             'onMouseLeave' in props)))
 
     const unPress = useCallback(() => {
-      if (!internal.current!.isMounted) return
       setStateShallow({
         press: false,
         pressIn: false,
@@ -739,8 +837,9 @@ export function createComponent<
         : null
 
     let space = spaceProp
+
     // find space by media query
-    if (features.enabled.mediaQuery) {
+    if (mediaKeys.length) {
       for (const key in mediaState) {
         if (!mediaState[key]) continue
         if (props[key] && props[key].space !== undefined) {
@@ -854,7 +953,9 @@ export function createComponent<
       // only necessary when animating because some AnimatedView which wraps RNW View doesn't forward dataSet className
       const isAnimatedRNWView = isAnimated && typeof elementType !== 'string' // assuming for now as reanimated is only driver
       const shouldWrapWithComponentTheme =
-        isAnimatedRNWView && getReturnVariablesAs(props, splitStyleState) === 'non-color-value'
+        !!theme.className &&
+        isAnimatedRNWView &&
+        getReturnVariablesAs(props, splitStyleState) === 'non-color-value'
       const shouldWrapWithHover = Boolean(events || isRSC) && attachHover
 
       if (shouldWrapWithHover || shouldWrapWithComponentTheme) {
@@ -901,14 +1002,7 @@ export function createComponent<
       }
     }
 
-    return !isRSC && features.elements.length ? (
-      <>
-        {features.elements}
-        {content}
-      </>
-    ) : (
-      content
-    )
+    return content
   })
 
   if (staticConfig.componentName) {
@@ -1334,4 +1428,70 @@ function mergeConfigDefaultProps(
     return mergeProps(props, ourDefaultsMerged, false, conf.inverseShorthands)[0]
   }
   return props
+}
+
+const defaults = {
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  opacity: 1,
+  translateX: 0,
+  translateY: 0,
+  skew: 0,
+  skewX: 0,
+  skewY: 0,
+  scale: 1,
+  rotate: '0deg',
+  rotateY: '0deg',
+  rotateX: '0deg',
+}
+
+function ensureBaseHasDefaults(base: ViewStyle, ...pseudos: (ViewStyle | null | undefined)[]) {
+  for (const pseudo of pseudos) {
+    if (!pseudo) continue
+    for (const key in pseudo) {
+      const val = pseudo[key]
+      // can we just use merge() here?
+      if (key === 'transform') {
+        if (typeof val === 'string') {
+          continue
+        }
+        for (const t of val) {
+          const tkey = Object.keys(t)[0]
+          const defaultVal = defaults[tkey]
+          const tDefaultVal = { [tkey]: defaultVal } as any
+          if (!base.transform) {
+            base.transform = [tDefaultVal]
+          } else {
+            if (!base.transform.find((x) => x[tkey])) {
+              base.transform.push(tDefaultVal)
+            }
+          }
+        }
+      } else {
+        if (!(key in base)) {
+          base[key] = defaults[key]
+        }
+      }
+    }
+  }
+}
+
+function merge(base: ViewStyle, next: ViewStyle) {
+  if (!next.transform || !base.transform) {
+    Object.assign(base, next)
+    return
+  }
+  const { transform, ...rest } = next
+  Object.assign(base, rest)
+  for (const t of transform) {
+    const key = Object.keys(t)[0]
+    const existing = base.transform.find((x) => key in x)
+    if (existing) {
+      existing[key] = t[key]
+    } else {
+      base.transform.push(t)
+    }
+  }
 }

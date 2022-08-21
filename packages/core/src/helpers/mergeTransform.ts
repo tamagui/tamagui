@@ -4,10 +4,12 @@ export const mergeTransform = (obj: ViewStyle, key: string, val: any, backwards 
   obj.transform ||= []
   obj.transform[backwards ? 'unshift' : 'push']({ [mapTransformKeys[key] || key]: val } as any)
 }
+
 const mapTransformKeys = {
   x: 'translateX',
   y: 'translateY',
 }
+
 export const invertMapTransformKeys = {
   translateX: 'x',
   translateY: 'y',

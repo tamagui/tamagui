@@ -16,7 +16,6 @@ declare type FeatureUtils = {
 export declare const useFeatures: (props: any, utils?: FeatureUtils) => {
     elements: JSX.Element[];
     enabled: {
-        animation?: boolean | undefined;
         mediaQuery?: boolean | undefined;
     };
 };

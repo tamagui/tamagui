@@ -1,5 +1,5 @@
 import { Properties } from 'csstype';
-import React from 'react';
+import React, { RefObject } from 'react';
 import { GestureResponderEvent, Image, PressableProps, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import { Variable } from './createVariable';
 import { ResolveVariableTypes } from './helpers/createPropMapper';
@@ -492,6 +492,7 @@ export declare type AnimationDriver<A extends AnimationConfig = AnimationConfig>
 };
 export declare type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>;
 export declare type UseAnimationHelpers = {
+    hostRef: RefObject<HTMLElement | View>;
     staticConfig: StaticConfigParsed;
     getStyle: (props?: {
         isEntering?: boolean;
@@ -504,7 +505,7 @@ export declare type UseAnimationHelpers = {
     onDidAnimate?: any;
     delay?: number;
 };
-export declare type UseAnimationHook = (props: UseAnimationProps, helpers: UseAnimationHelpers) => {
+export declare type UseAnimationHook = (props: UseAnimationProps, helpers: UseAnimationHelpers) => null | {
     style?: StackStylePropsBase | StackStylePropsBase[];
 };
 export {};

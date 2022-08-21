@@ -1,7 +1,7 @@
 // TODO split this into own package @tamagui/types to share with animations packages
 
 import { Properties } from 'csstype'
-import React from 'react'
+import React, { RefObject } from 'react'
 import {
   GestureResponderEvent,
   Image,
@@ -1242,6 +1242,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
 export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>
 
 export type UseAnimationHelpers = {
+  hostRef: RefObject<HTMLElement | View>
   staticConfig: StaticConfigParsed
   getStyle: (props?: {
     isEntering?: boolean
@@ -1262,6 +1263,6 @@ export type UseAnimationHelpers = {
 export type UseAnimationHook = (
   props: UseAnimationProps,
   helpers: UseAnimationHelpers
-) => {
+) => null | {
   style?: StackStylePropsBase | StackStylePropsBase[]
 }
