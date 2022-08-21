@@ -41,6 +41,7 @@ export const HeroTypography = () => {
       })
     }
     const tm = setInterval(next, 4200)
+    next()
     return () => {
       clearInterval(tm)
     }
@@ -77,7 +78,7 @@ export const HeroTypography = () => {
             jc="center"
             scale={1.1}
             x={-20}
-            y={-10}
+            y={5}
             $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }}
           >
             <YStack ai="flex-end" h={270}>

@@ -232,7 +232,7 @@ export function createComponent<
     // because they need to sync update on first render. it's pretty rare too going to/from no animation => animation
     // so requiring key change on animation change is least-bad option.
     // plus, React use() may let us get away with conditional hooks soon :)
-    if (isAnimated) {
+    if (!isRSC && isAnimated) {
       const animationState = useAnimations(propsWithAnimation, {
         state,
         pseudos,
@@ -542,11 +542,11 @@ export function createComponent<
           shouldSetMounted
             ? () => {
                 // for some reason without some small delay it doesn't animate css
-                requestIdleCallback(() => {
+                setTimeout(() => {
                   setStateShallow({
                     mounted: true,
                   })
-                })
+                }, 10)
               }
             : undefined
         )
@@ -619,11 +619,13 @@ export function createComponent<
       })
     }
 
-    useEffect(() => {
-      return () => {
-        mouseUps.delete(unPress)
-      }
-    }, [])
+    if (!isRSC) {
+      useEffect(() => {
+        return () => {
+          mouseUps.delete(unPress)
+        }
+      }, [])
+    }
 
     let styles: any[]
 

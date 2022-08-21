@@ -5190,6 +5190,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@shopify/react-testing@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "@shopify/react-testing@npm:4.1.1"
+  dependencies:
+    "@shopify/useful-types": ^5.1.0
+    jest-matcher-utils: ^26.6.2
+    react-reconciler: ^0.28.0
+  peerDependencies:
+    react: ">=16.8.0 <19.0.0"
+    react-dom: ">=16.8.0 <19.0.0"
+  checksum: cd55e80995a4d0159a24e54eeb6734b3300171789384f2da61756fea7c53ab729ea50a0a405d9788457096d1d16ca2fdf3c0f43b84eeeb8e8752e2a93af027ad
+  languageName: node
+  linkType: hard
+
+"@shopify/useful-types@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "@shopify/useful-types@npm:5.1.0"
+  checksum: 6c4bb3afa0151a0afdd5471e8434df21ef540ea5ef904fd71359c27a3183f72f108a70743c5280043bb71f752a61b3ae6954977d050501438a60c0a465e70465
+  languageName: node
+  linkType: hard
+
 "@sideway/address@npm:^4.1.3":
   version: 4.1.4
   resolution: "@sideway/address@npm:4.1.4"
@@ -6793,6 +6814,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/unagi@workspace:packages/unagi"
   dependencies:
+    "@shopify/react-testing": ^4.1.1
     "@tamagui/build": ^1.0.1-beta.149
     "@tamagui/proxy-worm": ^1.0.1-beta.149
     "@tamagui/static": ^1.0.1-beta.149
@@ -11554,6 +11576,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"diff-sequences@npm:^26.6.2":
+  version: 26.6.2
+  resolution: "diff-sequences@npm:26.6.2"
+  checksum: 79af871776ef149a7ff3345d6b1bf37fe6e81f68632aa5542787851f6f60fba19b0be22fdd1e06046f56ae7382763ccfe94a982c39ee72bd107aef435ecbc0cf
+  languageName: node
+  linkType: hard
+
 "diff-sequences@npm:^28.1.1":
   version: 28.1.1
   resolution: "diff-sequences@npm:28.1.1"
@@ -15823,6 +15852,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jest-diff@npm:^26.6.2":
+  version: 26.6.2
+  resolution: "jest-diff@npm:26.6.2"
+  dependencies:
+    chalk: ^4.0.0
+    diff-sequences: ^26.6.2
+    jest-get-type: ^26.3.0
+    pretty-format: ^26.6.2
+  checksum: d00d297f31e1ac0252127089892432caa7a11c69bde29cf3bb6c7a839c8afdb95cf1fd401f9df16a4422745da2e6a5d94b428b30666a2540c38e1c5699915c2d
+  languageName: node
+  linkType: hard
+
 "jest-diff@npm:^28.1.3":
   version: 28.1.3
   resolution: "jest-diff@npm:28.1.3"
@@ -15870,6 +15911,18 @@ __metadata:
     fsevents:
       optional: true
   checksum: e092a1412829a9254b4725531ee72926de530f77fda7b0d9ea18008fb7623c16f72e772d8e93be71cac9e591b2c6843a669610887dd2c89bd9eb528856e3ab47
+  languageName: node
+  linkType: hard
+
+"jest-matcher-utils@npm:^26.6.2":
+  version: 26.6.2
+  resolution: "jest-matcher-utils@npm:26.6.2"
+  dependencies:
+    chalk: ^4.0.0
+    jest-diff: ^26.6.2
+    jest-get-type: ^26.3.0
+    pretty-format: ^26.6.2
+  checksum: 74d2165c1ac7fe98fe27cd2b5407499478e6b2fe99dd54e26d8ee5c9f5f913bdd7bdc07c7221b9b04df0c15e9be0e866ff3455b03e38cc66c480d9996d6d5405
   languageName: node
   linkType: hard
 
@@ -20867,6 +20920,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-reconciler@npm:^0.28.0":
+  version: 0.28.0
+  resolution: "react-reconciler@npm:0.28.0"
+  dependencies:
+    loose-envify: ^1.1.0
+    scheduler: ^0.22.0
+  peerDependencies:
+    react: ^18.1.0
+  checksum: 6421f9500827219556ead3d86cbdf0553c47d633ecda2144720bf235d404f5e4e1e585336c4dfa80e26a04f1a6117c455a60964917d5600c73a91d8374f0232f
+  languageName: node
+  linkType: hard
+
 "react-refresh@npm:0.14.0":
   version: 0.14.0
   resolution: "react-refresh@npm:0.14.0"
@@ -21918,6 +21983,15 @@ __metadata:
   dependencies:
     loose-envify: ^1.1.0
   checksum: 4f8285076041ed2c81acdd1faa987f1655fdbd30554bc667c1ea64743fc74fb3a04ca7d27454b3d678735df5a230137a3b84756061b43dc5796e80701b66d124
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.22.0":
+  version: 0.22.0
+  resolution: "scheduler@npm:0.22.0"
+  dependencies:
+    loose-envify: ^1.1.0
+  checksum: a8ef5cab769c020cd6382ad9ecc3f72dbde56a50a36639b3a42ad9c11f7724f03700bcad373044059b8067d4a6365154dc7c0ca8027ef20ff4900cf58a0fc2c5
   languageName: node
   linkType: hard
 
