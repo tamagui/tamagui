@@ -336,6 +336,8 @@ export type GenericFont<Key extends number | string = number | string> = {
   style?: Partial<{ [key in Key]: TextStyle['fontStyle'] | Variable }>
   transform?: Partial<{ [key in Key]: TextStyle['textTransform'] | Variable }>
   color?: Partial<{ [key in Key]: string | Variable }>
+  // for native use only, lets you map to alternative fonts
+  face?: { [key in FontWeightSteps]: { normal?: string; italic?: string } }
 }
 
 // media
@@ -429,9 +431,8 @@ export type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>
 export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number
 export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number
-export type FontWeightTokens =
-  | `$${GetTokenFontKeysFor<'weight'>}`
-  | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`
+export type FontWeightSteps = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`
+export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightSteps
 export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number
 export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number
 export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | TextStyle['fontStyle']

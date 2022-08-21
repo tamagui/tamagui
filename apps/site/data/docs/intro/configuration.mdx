@@ -226,6 +226,14 @@ const interFont = createFont({
     4: 0,
     8: -1,
   },
+
+  // for native only, alternate family based on weight/style
+  face: {
+    // pass in weights as keys
+    700: { normal: 'InterBold', italic: 'InterBold-Italic' },
+    800: { normal: 'InterBold', italic: 'InterBold-Italic' },
+    900: { normal: 'InterBold', italic: 'InterBold-Italic' },
+  },
 })
 ```
 

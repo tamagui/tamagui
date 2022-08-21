@@ -38,7 +38,7 @@ const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & 
 export function HomeScreen() {
   return (
     <ScrollView>
-      <YStack bc="$backgroundStrong" p="$3" pb="$8" f={1} space>
+      <YStack bc="$backgroundStrong" p="$3" pt="$6" pb="$8" f={1} space>
         <H1 fontFamily="$heading" size="$9">
           Demos
         </H1>

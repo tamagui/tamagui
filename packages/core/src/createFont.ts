@@ -4,8 +4,11 @@ export const createFont = <A extends GenericFont>(font: A): A => {
   // fills in any missing values based on size keys being standard
   const sizeKeys = Object.keys(font.size)
 
+  // fill in intermediate values
   for (const key in font) {
-    if (key === 'size' || key === 'family') continue
+    if (key === 'size' || key === 'family' || key === 'face') {
+      continue
+    }
     const section = font[key] as Object
     const keys = Object.keys(section)
 

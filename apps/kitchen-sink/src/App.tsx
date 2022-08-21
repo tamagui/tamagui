@@ -9,7 +9,8 @@ import { ThemeContext } from './useTheme'
 export default function App() {
   const [theme, setTheme] = useState(Appearance.getColorScheme())
   const [loaded] = useFonts({
-    Inter: require('@tamagui/font-inter/ttf/Inter.ttf'),
+    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
+    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
   })
 
   const children = useMemo(() => {

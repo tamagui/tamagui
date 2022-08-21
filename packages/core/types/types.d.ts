@@ -205,6 +205,12 @@ export declare type GenericFont<Key extends number | string = number | string> =
     color?: Partial<{
         [key in Key]: string | Variable;
     }>;
+    face?: {
+        [key in FontWeightSteps]: {
+            normal?: string;
+            italic?: string;
+        };
+    };
 };
 export declare type MediaQueryObject = {
     [key: string]: string | number | string;
@@ -264,7 +270,8 @@ export declare type RadiusTokens = GetTokenString<keyof Tokens['radius']> | numb
 export declare type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>;
 export declare type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number;
 export declare type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number;
-export declare type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`;
+export declare type FontWeightSteps = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`;
+export declare type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightSteps;
 export declare type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number;
 export declare type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number;
 export declare type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | TextStyle['fontStyle'];

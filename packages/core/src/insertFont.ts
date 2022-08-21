@@ -27,7 +27,7 @@ export function parseFont<A extends GenericFont>(definition: A): DeepVariableObj
   const parsed: any = {}
   for (const attrKey in definition) {
     const attr = definition[attrKey]
-    if (attrKey === 'family') {
+    if (attrKey === 'family' || attrKey === 'face') {
       parsed[attrKey] = attr
       continue
     }

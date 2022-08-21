@@ -707,7 +707,34 @@ export function createComponent<
       }
 
       viewProps.style = style
-    } else {
+    }
+
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      // swap out the right family based on weight/style
+      if (splitStyles.fontFamily) {
+        const faceInfo = config.fontsParsed[splitStyles.fontFamily]?.face
+        if (faceInfo) {
+          const [weight, style] = (() => {
+            let weight: string | undefined
+            let style: string | undefined
+            for (let i = styles.length; i >= 0; i--) {
+              weight ??= styles[i]?.fontWeight
+              style ??= styles[i]?.fontStyle
+            }
+            return [weight || '400', style || 'normal'] as const
+          })()
+          const overrideFace = faceInfo[weight]?.[style]?.val
+          if (overrideFace) {
+            for (const style of styles) {
+              if (style?.fontFamily) {
+                style.fontFamily = overrideFace
+              }
+            }
+          }
+        }
+      }
+
+      // assign styles
       viewProps.style = styles
     }
 

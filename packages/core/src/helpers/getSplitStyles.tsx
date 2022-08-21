@@ -392,6 +392,9 @@ export const getSplitStyles: StyleSplitter = (
               for (const key in mediaStyle) {
                 usedKeys.add(key)
                 style[key] = mediaStyle[key]
+                if (key === 'fontFamily') {
+                  fontFamily = mediaStyle[key]
+                }
               }
             }
           }
