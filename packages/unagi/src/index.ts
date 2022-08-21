@@ -18,7 +18,6 @@ export { Route } from './foundation/Route/Route.server.js'
 export { Router } from './foundation/Router/Router.server.js'
 export { log, type Logger } from './utilities/log/index.js'
 //  export {LocalizationProvider} from './components/LocalizationProvider/LocalizationProvider.server.js';
-//  export {ShopifyProvider} from './foundation/ShopifyProvider/ShopifyProvider.server.js';
 export {
   generateCacheControlHeader,
   CacheNone,
@@ -27,9 +26,6 @@ export {
   CacheCustom,
 } from './foundation/Cache/strategies/index.js'
 export { useRequestContext } from './foundation/useRequestContext/index.js'
-//  export {useServerAnalytics} from './foundation/Analytics/hook.js';
-//  export {ShopifyAnalytics} from './foundation/Analytics/connectors/Shopify/ShopifyAnalytics.server.js';
-//  export {ShopifyAnalyticsConstants} from './foundation/Analytics/connectors/Shopify/const.js';
 export { useSession } from './foundation/useSession.js'
 export { Cookie } from './foundation/Cookie/Cookie.js'
 

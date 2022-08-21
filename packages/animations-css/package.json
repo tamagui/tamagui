@@ -14,8 +14,8 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.149",
-    "@tamagui/animate-presence": "^1.0.1-beta.149"
+    "@tamagui/animate-presence": "^1.0.1-beta.149",
+    "@tamagui/core": "^1.0.1-beta.149"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.149"

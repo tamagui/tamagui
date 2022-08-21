@@ -5532,6 +5532,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-css@workspace:packages/animations-css"
   dependencies:
+    "@tamagui/animate-presence": ^1.0.1-beta.149
     "@tamagui/build": ^1.0.1-beta.149
     "@tamagui/core": ^1.0.1-beta.149
   languageName: unknown
@@ -6220,7 +6221,7 @@ __metadata:
   peerDependencies:
     react-native-web: "*"
   bin:
-    patch: ./patch.js
+    rnw-patch: ./patch.js
   languageName: unknown
   linkType: soft
 
