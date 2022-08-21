@@ -158,10 +158,8 @@ export const ExampleAnimations = memo(() => {
     if (isIntersecting) {
       if (!hasScrolledOnce) {
         hasScrolledOnce = true
-        // dont rush
-        setTimeout(() => {
-          next()
-        }, 400)
+        // setting a long timeout extends the total render time a lot.., just slow down animation
+        next()
       }
       window.addEventListener('keydown', onKey)
       return () => {

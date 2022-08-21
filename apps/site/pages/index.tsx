@@ -169,5 +169,10 @@ export async function getStaticProps() {
     }
   })
 
-  return { props: { compilationExamples, animationCode: codeToHTML(animationCode, 'tsx') } }
+  return {
+    props: {
+      compilationExamples,
+      animationCode: codeToHTML(animationCode, 'tsx'),
+    },
+  }
 }

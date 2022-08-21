@@ -237,6 +237,10 @@ iframe {
   filter: blur(170px);
 }
 
+.blur {
+  backdrop-filter: blur(8px);
+}
+
 .bg-dot-grid {
   contain: paint;
   background-position: center center;

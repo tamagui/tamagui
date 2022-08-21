@@ -1,6 +1,7 @@
 import '@tamagui/core/reset.css'
 
 import '../app.css'
+import '../public/fonts/fonts.css'
 
 import { Footer } from '@components/Footer'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
@@ -14,6 +15,14 @@ import { SearchProvider } from '../components/Search'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
+
+// prevent next.js from prefetching stuff
+if (typeof navigator !== 'undefined') {
+  // @ts-ignore
+  navigator.connection ??= {}
+  // @ts-ignore
+  navigator.connection['saveData'] = true
+}
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()

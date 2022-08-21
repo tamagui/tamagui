@@ -68,18 +68,23 @@ const HeroTop = memo(() => {
             size="$9"
             als="center"
             maw={500}
+            // prevent layout shift
+            h={96}
             $gtSm={{
+              h: 126,
               mx: 0,
               maxWidth: 800,
               size: '$11',
               ta: 'center',
             }}
             $gtMd={{
+              h: 136,
               maxWidth: 900,
               ta: 'center',
               size: '$12',
             }}
             $gtLg={{
+              h: 156,
               size: '$13',
               maxWidth: 1200,
             }}
@@ -96,7 +101,10 @@ const HeroTop = memo(() => {
           <YStack
             px={0}
             maw={500}
+            // prevent layout shift
+            h={84}
             $gtMd={{
+              h: 66,
               px: 90,
               maw: 1000,
             }}

@@ -40,8 +40,7 @@ export const HeroTypography = () => {
         return families[(families.indexOf(cur) + 1) % families.length]
       })
     }
-    const tm = setInterval(next, 4500)
-    next()
+    const tm = setInterval(next, 4200)
     return () => {
       clearInterval(tm)
     }

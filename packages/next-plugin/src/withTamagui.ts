@@ -301,11 +301,11 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 {
                   loader: require.resolve('url-loader'),
                   options: {
-                    limit: nextConfig.inlineFontLimit || 8192,
+                    limit: nextConfig.inlineFontLimit || 1024,
                     fallback: require.resolve('file-loader'),
                     publicPath: `${nextConfig.assetPrefix || ''}/_next/static/chunks/fonts/`,
                     outputPath: `${isServer ? '../' : ''}static/chunks/fonts/`,
-                    name: '[name]-[hash].[ext]',
+                    name: '[name].[ext]',
                   },
                 },
               ],

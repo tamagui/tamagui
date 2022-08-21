@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { Paragraph, XStack, YStack } from 'tamagui'
 
 const getBarColor = (name: string) => {

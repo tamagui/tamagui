@@ -9,7 +9,7 @@
     "types",
     "dist",
     "css",
-    "ttf"
+    "files"
   ],
   "scripts": {
     "build": "tamagui-build",
