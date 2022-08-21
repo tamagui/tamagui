@@ -27,9 +27,9 @@ export const createMediaStyle = (
     ogPrefix,
     `${ogPrefix}${MEDIA_SEP}${mediaKey}${negKey}${MEDIA_SEP}`
   )}`
-  const screenStr = negate ? 'not all' : 'screen'
+  const screenStr = negate ? 'not all and' : ''
   const mediaSelector = mediaObjectToString(mediaQueries[mediaKey])
-  const mediaQuery = `${screenStr} and ${mediaSelector}`
+  const mediaQuery = `${screenStr} ${mediaSelector}`
   const styleInner = rules.map((rule) => rule.replace(identifier, nextIdentifier)).join(';')
   // combines media queries if they already exist
   let styleRule = ''

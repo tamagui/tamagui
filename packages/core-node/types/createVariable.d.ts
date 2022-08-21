@@ -18,7 +18,7 @@ export declare const createVariable: <A extends string | number = any>(props: Va
     isFloating?: boolean | undefined;
     __isVar__: boolean;
 };
-export declare function variableToString(vrble?: any): string;
+export declare function variableToString(vrble?: any, getValue?: boolean): string;
 export declare function isVariable(v: Variable | any): v is Variable;
 export declare function getVariableValue(v: Variable | any): any;
 export declare function getVariableName(v: Variable | any): any;
