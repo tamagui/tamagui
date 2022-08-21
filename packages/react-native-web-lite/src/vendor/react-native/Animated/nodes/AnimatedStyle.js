@@ -10,8 +10,8 @@
 'use strict'
 
 import _objectSpread from '@babel/runtime/helpers/objectSpread2'
+import { StyleSheet } from 'react-native-web-internals'
 
-import StyleSheet from '../../../../exports/StyleSheet/index.js'
 import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
 import AnimatedNode from './AnimatedNode.js'
 import AnimatedTransform from './AnimatedTransform.js'

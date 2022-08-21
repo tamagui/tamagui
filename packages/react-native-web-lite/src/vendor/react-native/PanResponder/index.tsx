@@ -10,7 +10,8 @@
 
 'use strict'
 
-import InteractionManager from '../../../exports/InteractionManager/index.js'
+import { InteractionManager } from 'react-native-web-internals'
+
 import TouchHistoryMath from '../TouchHistoryMath/index.js'
 
 type PressEvent = any

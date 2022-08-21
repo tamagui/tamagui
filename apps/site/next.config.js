@@ -46,6 +46,11 @@ const plugins = [
     return {
       ...config,
       webpack(webpackConfig, options) {
+        webpackConfig.resolve.alias ??= {}
+        Object.assign(webpackConfig.resolve.alias, {
+          tslib: '@tamagui/proxy-worm',
+        })
+
         if (process.env.ANALYZE === 'true') {
           const { StatsWriterPlugin } = require('webpack-stats-plugin')
           webpackConfig.plugins.push(

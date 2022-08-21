@@ -7,7 +7,8 @@
  *
  * @format
  */
-import Platform from '../../../exports/Platform/index.js'
+import { Platform } from 'react-native-web-internals'
+
 import Impl from './AnimatedImplementation.js'
 import Mock from './AnimatedMock.js'
 import Image from './components/AnimatedImage.js'

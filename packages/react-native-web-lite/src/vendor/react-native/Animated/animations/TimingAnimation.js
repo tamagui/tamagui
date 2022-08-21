@@ -9,7 +9,7 @@
  */
 'use strict'
 
-import Easing from '../../../../exports/Easing/index.js'
+import { Easing } from '../Easing.js'
 import { shouldUseNativeDriver } from '../NativeAnimatedHelper.js'
 import Animation from './Animation.js'
 

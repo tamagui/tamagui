@@ -27,7 +27,7 @@
     "strict": true,
     "esModuleInterop": true,
     "preserveSymlinks": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "module": "system",
     "moduleResolution": "node",
     "noEmitOnError": false,

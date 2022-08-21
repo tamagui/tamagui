@@ -117,6 +117,8 @@ function reduceAnimatedProps(node) {
   }
 }
 
+const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
+
 /**
  * Manages the lifecycle of the supplied `AnimatedProps` by invoking `__attach`
  * and `__detach`. However, this is more complicated because `AnimatedProps`
@@ -130,7 +132,7 @@ function useAnimatedPropsLifecycle(node) {
 
   const [animatedComponentId] = useState(() => `${animatedComponentNextId++}:animatedComponent`)
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     NativeAnimatedHelper.API.setWaitingForIdentifier(animatedComponentId)
   })
 
@@ -138,14 +140,14 @@ function useAnimatedPropsLifecycle(node) {
     NativeAnimatedHelper.API.unsetWaitingForIdentifier(animatedComponentId)
   })
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     isUnmountingRef.current = false
     return () => {
       isUnmountingRef.current = true
     }
   }, [])
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     node.__attach()
     if (prevNodeRef.current != null) {
       const prevNode = prevNodeRef.current

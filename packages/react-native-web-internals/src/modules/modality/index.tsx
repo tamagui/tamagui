@@ -7,7 +7,7 @@
  * @flow
  */
 
-import canUseDOM from '../canUseDOM/index.js'
+import canUseDOM from '../canUseDOM.js'
 import createEventHandle from '../createEventHandle/index.js'
 
 export type Modality = 'keyboard' | 'mouse' | 'touch' | 'pen'

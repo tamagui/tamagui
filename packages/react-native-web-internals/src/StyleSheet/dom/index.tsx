@@ -8,7 +8,7 @@
  * @flow strict-local
  */
 
-import canUseDOM from '../../modules/canUseDOM/index.js'
+import canUseDOM from '../../modules/canUseDOM.js'
 import createCSSStyleSheet from './createCSSStyleSheet.js'
 import { OrderedCSSStyleSheet } from './createOrderedCSSStyleSheet.js'
 import createOrderedCSSStyleSheet from './createOrderedCSSStyleSheet.js'

@@ -1,1 +1,1 @@
-module.exports = require('react-native-web-lite')
+module.exports = require('react-native-web-internals')

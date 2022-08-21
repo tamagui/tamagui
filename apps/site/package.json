@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "./scripts/dev.sh",
     "clean:build": "./scripts/clean.sh",
-    "ci:build": "ls -la ../../node_modules/@tamagui/patch-rnw/dist/cjs && yarn next:build && yarn next:export",
+    "ci:build": "yarn next:build && yarn next:export",
     "ci:build:debug": "DEBUG=tamagui yarn ci:build",
     "dev:analyze": "ANALYZE=true yarn dev",
     "dev:inspect": "PORT=${PORT:-5005} NODE_OPTIONS='--no-deprecation' NODE_ENV=development node --inspect-brk ../../node_modules/next/dist/bin/next dev",
@@ -18,7 +18,7 @@
     "@docsearch/react": "^3.0.0",
     "@github/mini-throttle": "^2.1.0",
     "@stripe/stripe-js": "^1.29.0",
-    "@supabase/supabase-auth-helpers": "^1.4.1",
+    "@supabase/supabase-auth-helpers": "^1.4.2",
     "@tamagui/animate-presence": "^1.0.1-beta.151",
     "@tamagui/colors": "^1.0.1-beta.151",
     "@tamagui/config-base": "^1.0.1-beta.151",

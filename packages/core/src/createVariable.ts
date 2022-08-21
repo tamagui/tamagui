@@ -27,9 +27,6 @@ export const createVariable = <A extends string | number = any>(props: VariableI
   if (isVariable(props)) {
     return props
   }
-  if (!props.name) {
-    debugger
-  }
   return {
     [IS_VAR]: true,
     // @ts-ignore
@@ -39,9 +36,10 @@ export const createVariable = <A extends string | number = any>(props: VariableI
 }
 
 // on the client maybe we can change the prototype of variable object toString to keep backwards compat
-export function variableToString(vrble?: any) {
+export function variableToString(vrble?: any, getValue = false) {
   if (!vrble) return ''
   if (isVariable(vrble)) {
+    if (getValue) return `${vrble.val}`
     return `${isWeb ? vrble.variable : vrble.val}`
   }
   return `${vrble}`

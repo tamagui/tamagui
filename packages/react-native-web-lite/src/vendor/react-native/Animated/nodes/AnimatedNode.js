@@ -9,8 +9,10 @@
  */
 'use strict'
 
-import { invariant } from '../../../../modules/invariant.js'
+import { invariant } from 'react-native-web-internals'
+
 import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
+
 var NativeAnimatedAPI = NativeAnimatedHelper.API
 var _uniqueId = 1 // Note(vjeux): this would be better as an interface but flow doesn't
 // support them yet

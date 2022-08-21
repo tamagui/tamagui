@@ -66,13 +66,17 @@ export const Animated: {
         _isUsingNativeDriver: () => any;
     };
     event: (argMapping: any, config: any) => import("./AnimatedEvent.js").AnimatedEvent | ((...args: any[]) => void);
-    createAnimatedComponent: typeof import("./createAnimatedComponent.jsx").default;
+    createAnimatedComponent: typeof import("./createAnimatedComponent.js").default;
     attachNativeEvent: typeof import("./AnimatedEvent.js").attachNativeEvent;
     forkEvent: (event: any, listener: any) => any;
     unforkEvent: (event: any, listener: any) => void;
     Event: typeof import("./AnimatedEvent.js").AnimatedEvent;
     __PropsOnlyForTests: typeof import("./nodes/AnimatedProps.js").default;
-    Platform: any;
+    Platform: {
+        OS: string;
+        select: (obj: any) => any;
+        isTesting: boolean;
+    };
     Image: import("react").ForwardRefExoticComponent<import("react").RefAttributes<unknown>>;
     ScrollView: import("react").ForwardRefExoticComponent<import("react").RefAttributes<unknown>>;
     Text: import("react").ForwardRefExoticComponent<import("react").RefAttributes<unknown>>;
@@ -145,13 +149,17 @@ export const Animated: {
         _isUsingNativeDriver: () => boolean;
     };
     event: (argMapping: any, config: any) => null;
-    createAnimatedComponent: typeof import("./createAnimatedComponent.jsx").default;
+    createAnimatedComponent: typeof import("./createAnimatedComponent.js").default;
     attachNativeEvent: typeof import("./AnimatedEvent.js").attachNativeEvent;
     forkEvent: (event: any, listener: any) => any;
     unforkEvent: (event: any, listener: any) => void;
     Event: typeof import("./AnimatedEvent.js").AnimatedEvent;
     __PropsOnlyForTests: typeof import("./nodes/AnimatedProps.js").default;
-    Platform: any;
+    Platform: {
+        OS: string;
+        select: (obj: any) => any;
+        isTesting: boolean;
+    };
     Image: import("react").ForwardRefExoticComponent<import("react").RefAttributes<unknown>>;
     ScrollView: import("react").ForwardRefExoticComponent<import("react").RefAttributes<unknown>>;
     Text: import("react").ForwardRefExoticComponent<import("react").RefAttributes<unknown>>;

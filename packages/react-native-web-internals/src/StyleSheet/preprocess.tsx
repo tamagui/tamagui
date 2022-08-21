@@ -109,4 +109,4 @@ export const preprocess = <
   return nextStyle
 }
 
-export default preprocess
+export const processStyle = preprocess

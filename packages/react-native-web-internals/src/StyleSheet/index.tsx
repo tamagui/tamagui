@@ -146,7 +146,7 @@ function getSheet(): { id: string; textContent: string } {
 type StyleProps = [string, { [key: string]: any } | null]
 type Options = { writingDirection: 'ltr' | 'rtl' }
 
-function StyleSheet(styles: any, options?: Options): StyleProps {
+export default function StyleSheet(styles: any, options?: Options): StyleProps {
   const isRTL = options != null && options.writingDirection === 'rtl'
   const styleProps: StyleProps = customStyleq(styles, isRTL)
   if (Array.isArray(styleProps) && styleProps[1] != null) {
@@ -165,10 +165,6 @@ StyleSheet.getSheet = getSheet
 // round sub-pixel values down to `0`, causing the line not to be rendered.
 StyleSheet.hairlineWidth = 1
 
-if (canUseDOM && window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
-  window.__REACT_DEVTOOLS_GLOBAL_HOOK__.resolveRNStyle = StyleSheet.flatten
-}
-
 export type IStyleSheet = {
   (styles: any, options?: Options): StyleProps
   absoluteFill: Object
@@ -180,6 +176,8 @@ export type IStyleSheet = {
   hairlineWidth: number
 }
 
-const stylesheet: IStyleSheet = StyleSheet
-
-export default stylesheet
+setTimeout(() => {
+  if (canUseDOM && window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+    window.__REACT_DEVTOOLS_GLOBAL_HOOK__.resolveRNStyle = StyleSheet.flatten
+  }
+}, 100)

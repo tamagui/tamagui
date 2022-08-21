@@ -8,7 +8,7 @@
  * @flow
  */
 
-import canUseDOM from '../../modules/canUseDOM/index.js'
+import canUseDOM from '../../modules/canUseDOM.js'
 import normalizeValueWithProperty from './normalizeValueWithProperty'
 
 type Style = {

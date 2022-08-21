@@ -1,5 +1,5 @@
 {
   "extends": "../../tsconfig.json",
-  "compilerOptions": { "composite": true, "jsx": "preserve" },
+  "compilerOptions": { "composite": true},
   "references": []
 }

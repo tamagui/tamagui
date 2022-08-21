@@ -21,6 +21,9 @@ async function build() {
       outdir: outPath,
       format: 'cjs',
       target: 'node14',
+      jsx: 'transform',
+      jsxFactory: 'react',
+      allowOverwrite: true,
       platform: 'node',
       logLevel: 'warning',
       plugins: [

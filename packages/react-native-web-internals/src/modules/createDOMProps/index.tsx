@@ -7,8 +7,7 @@
  * @noflow
  */
 
-import { StyleSheet } from 'react-native-web-internal'
-
+import StyleSheet from '../../StyleSheet/index.js'
 import AccessibilityUtil from '../AccessibilityUtil/index.js'
 
 const emptyObject = {}

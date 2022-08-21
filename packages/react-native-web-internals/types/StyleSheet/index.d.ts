@@ -13,6 +13,28 @@ declare type StyleProps = [string, {
 declare type Options = {
     writingDirection: 'ltr' | 'rtl';
 };
+declare function StyleSheet(styles: any, options?: Options): StyleProps;
+declare namespace StyleSheet {
+    var absoluteFill: any;
+    var absoluteFillObject: {
+        position: string;
+        left: number;
+        right: number;
+        top: number;
+        bottom: number;
+    };
+    var create: (styles: any) => any;
+    var compose: (style1: any, style2: any) => any;
+    var flatten: (...styles: any) => {
+        [key: string]: any;
+    };
+    var getSheet: () => {
+        id: string;
+        textContent: string;
+    };
+    var hairlineWidth: number;
+}
+export default StyleSheet;
 export declare type IStyleSheet = {
     (styles: any, options?: Options): StyleProps;
     absoluteFill: Object;
@@ -23,6 +45,4 @@ export declare type IStyleSheet = {
     getSheet: typeof getSheet;
     hairlineWidth: number;
 };
-declare const stylesheet: IStyleSheet;
-export default stylesheet;
 //# sourceMappingURL=index.d.ts.map

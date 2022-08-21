@@ -9,8 +9,9 @@
  */
 import * as React from 'react'
 
-import View from '../../../../exports/View/index.js'
+import View from '../../../../View/index.js'
 import createAnimatedComponent from '../createAnimatedComponent.js'
+
 export default createAnimatedComponent(View, {
   collapsable: true,
 })

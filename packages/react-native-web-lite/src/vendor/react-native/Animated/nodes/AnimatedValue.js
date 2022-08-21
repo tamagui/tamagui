@@ -9,10 +9,12 @@
  */
 'use strict'
 
-import InteractionManager from '../../../../exports/InteractionManager/index.js'
+import { InteractionManager } from 'react-native-web-internals'
+
 import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
 import AnimatedInterpolation from './AnimatedInterpolation.js'
 import AnimatedWithChildren from './AnimatedWithChildren.js'
+
 var NativeAnimatedAPI = NativeAnimatedHelper.API
 /**
  * Animated works by building a directed acyclic graph of dependencies

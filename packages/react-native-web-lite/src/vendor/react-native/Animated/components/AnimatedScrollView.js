@@ -10,7 +10,7 @@ import _extends from '@babel/runtime/helpers/extends'
  */
 import * as React from 'react'
 
-import ScrollView from '../../../../exports/ScrollView/index.js'
+import ScrollView from '../../../../ScrollView/index.js'
 import createAnimatedComponent from '../createAnimatedComponent.js'
 
 /**

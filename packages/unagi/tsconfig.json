@@ -2,8 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "types": ["vite/client", "vitest/globals"],
-    "jsx": "preserve"
+    "types": ["vite/client", "vitest/globals"]
   },
   "include": ["src/**/*"],
   "references": []

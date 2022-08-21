@@ -131,7 +131,7 @@ to return true:wantsResponderID|                            |
                                |                            |
                                +                            + */
 
-import canUseDOM from '../canUseDOM/index.js'
+import canUseDOM from '../canUseDOM.js'
 import { ResponderEvent } from './createResponderEvent.js'
 import createResponderEvent from './createResponderEvent.js'
 import {
