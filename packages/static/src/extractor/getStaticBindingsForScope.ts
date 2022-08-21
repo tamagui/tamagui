@@ -4,8 +4,8 @@ import { dirname, extname, join, resolve } from 'path'
 import { Binding, NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 
-import { evaluateAstNode } from './evaluateAstNode'
-import { getSourceModule } from './getSourceModule'
+import { evaluateAstNode } from './evaluateAstNode.js'
+import { getSourceModule } from './getSourceModule.js'
 
 const isLocalImport = (path: string) => path.startsWith('.') || path.startsWith('/')
 

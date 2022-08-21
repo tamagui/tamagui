@@ -16,8 +16,8 @@ import {
 } from '@tamagui/core-node'
 import type { ViewStyle } from 'react-native'
 
-import { FAILED_EVAL } from '../constants'
-import {
+import { FAILED_EVAL } from '../constants.js'
+import type {
   ExtractedAttr,
   ExtractedAttrAttr,
   ExtractedAttrStyle,
@@ -25,19 +25,25 @@ import {
   ExtractorParseProps,
   TamaguiOptions,
   Ternary,
-} from '../types'
-import { createEvaluator, createSafeEvaluator } from './createEvaluator'
-import { evaluateAstNode } from './evaluateAstNode'
-import { attrStr, findComponentName, isInsideTamagui, isPresent, objToStr } from './extractHelpers'
-import { findTopmostFunction } from './findTopmostFunction'
-import { cleanupBeforeExit, getStaticBindingsForScope } from './getStaticBindingsForScope'
-import { literalToAst } from './literalToAst'
-import { TamaguiProjectInfo, loadTamagui, loadTamaguiSync } from './loadTamagui'
-import { logLines } from './logLines'
-import { normalizeTernaries } from './normalizeTernaries'
-import { removeUnusedHooks } from './removeUnusedHooks'
-import { timer } from './timer'
-import { validHTMLAttributes } from './validHTMLAttributes'
+} from '../types.js'
+import { createEvaluator, createSafeEvaluator } from './createEvaluator.js'
+import { evaluateAstNode } from './evaluateAstNode.js'
+import {
+  attrStr,
+  findComponentName,
+  isInsideTamagui,
+  isPresent,
+  objToStr,
+} from './extractHelpers.js'
+import { findTopmostFunction } from './findTopmostFunction.js'
+import { cleanupBeforeExit, getStaticBindingsForScope } from './getStaticBindingsForScope.js'
+import { literalToAst } from './literalToAst.js'
+import { TamaguiProjectInfo, loadTamagui, loadTamaguiSync } from './loadTamagui.js'
+import { logLines } from './logLines.js'
+import { normalizeTernaries } from './normalizeTernaries.js'
+import { removeUnusedHooks } from './removeUnusedHooks.js'
+import { timer } from './timer.js'
+import { validHTMLAttributes } from './validHTMLAttributes.js'
 
 const UNTOUCHED_PROPS = {
   key: true,

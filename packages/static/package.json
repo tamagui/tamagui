@@ -3,8 +3,7 @@
   "version": "1.0.1-beta.151",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
+  "main": "dist",
   "files": [
     "tamagui.tsconfig.json",
     "patches",
@@ -39,6 +38,7 @@
     "@babel/traverse": "^7.18.11",
     "@expo/match-media": "^0.3.0",
     "@tamagui/build": "^1.0.1-beta.151",
+    "@tamagui/cli-color": "^1.0.1-beta.151",
     "@tamagui/config-default-node": "^1.0.1-beta.151",
     "@tamagui/core-node": "^1.0.1-beta.151",
     "@tamagui/fake-react-native": "^1.0.1-beta.151",

@@ -1,6 +1,6 @@
 import * as t from '@babel/types'
 
-import { ClassNameObject } from '../types'
+import type { ClassNameObject } from '../types.js'
 
 export function buildClassName(
   classNameObjects: ClassNameObject[]

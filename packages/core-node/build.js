@@ -7,6 +7,7 @@ const alias = require('./src/esbuildAliasPlugin')
 const _ = require('lodash')
 const tmpDir = require('os').tmpdir()
 const path = require('path')
+const { join } = require('path')
 
 async function build() {
   console.log('building core-node...')
@@ -15,25 +16,49 @@ async function build() {
     await fs.remove(outPath)
     await fs.mkdir(outPath)
     const inPath = path.join(__dirname, '..', 'core', 'src', 'static.ts')
-    await esbuild.build({
-      bundle: true,
-      entryPoints: [inPath],
-      outdir: outPath,
-      format: 'cjs',
-      target: 'node14',
-      jsx: 'transform',
-      jsxFactory: 'react',
-      allowOverwrite: true,
-      platform: 'node',
-      logLevel: 'warning',
-      plugins: [
-        alias({
-          'react-native': require.resolve('@tamagui/fake-react-native'),
-          'react-native-safe-area-context': require.resolve('@tamagui/fake-react-native'),
-          'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
-        }),
-      ],
-    })
+    await Promise.all([
+      esbuild.build({
+        bundle: true,
+        entryPoints: [inPath],
+        outdir: outPath,
+        format: 'cjs',
+        target: 'node14',
+        jsx: 'transform',
+        jsxFactory: 'react',
+        allowOverwrite: true,
+        platform: 'node',
+        logLevel: 'warning',
+        define: {
+          'process.env.ENABLE_RSC': 'undefined',
+        },
+        plugins: [
+          alias({
+            'react-native': require.resolve('@tamagui/fake-react-native'),
+            'react-native-safe-area-context': require.resolve('@tamagui/fake-react-native'),
+            'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
+          }),
+        ],
+      }),
+      esbuild.build({
+        bundle: true,
+        entryPoints: [inPath],
+        outfile: join(outPath, 'static.esm.js'),
+        format: 'esm',
+        target: 'node16',
+        jsx: 'transform',
+        jsxFactory: 'react',
+        allowOverwrite: true,
+        platform: 'node',
+        logLevel: 'warning',
+        plugins: [
+          alias({
+            'react-native': require.resolve('@tamagui/fake-react-native'),
+            'react-native-safe-area-context': require.resolve('@tamagui/fake-react-native'),
+            'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
+          }),
+        ],
+      }),
+    ])
     await Promise.allSettled([fs.remove('./dist'), fs.remove('./types')])
     await fs.copy(outPath, './dist')
     if (process.env.SKIP_TYPES !== '1') {

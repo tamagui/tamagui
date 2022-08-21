@@ -2,11 +2,29 @@
   "name": "@tamagui/vite-plugin-internal",
   "version": "1.0.1-beta.151",
   "private": true,
-  "main": "vite.config.ts",
-  "devDependencies": {
+  "type": "module",
+  "main": "./dist/cjs/vite.config.js",
+  "module": "./dist/esm/vite.config.js",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/esm/vite.config.js",
+      "require": "./dist/cjs/vite.config.js"
+    }
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@tamagui/config-default-node": "^1.0.1-beta.151",
     "@tamagui/vite-plugin": "^1.0.1-beta.151",
-    "@vitejs/plugin-react": "^1.3.0",
+    "@vitejs/plugin-react": "^1.3.0"
+  },
+  "devDependencies": {
     "happy-dom": "^6.0.4",
     "vitest": "^0.20.3",
     "vitest-mock-process": "^1.0.4"

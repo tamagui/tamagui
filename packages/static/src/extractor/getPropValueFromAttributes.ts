@@ -1,7 +1,7 @@
 import generate from '@babel/generator'
 import * as t from '@babel/types'
 
-import { accessSafe } from './accessSafe'
+import { accessSafe } from './accessSafe.js'
 
 /**
  * getPropValueFromAttributes gets a prop by name from a list of attributes and accounts for potential spread operators.
@@ -23,7 +23,7 @@ export function getPropValueFromAttributes(
   propName: string,
   attrs: (t.JSXAttribute | t.JSXSpreadAttribute)[]
 ): t.Expression | null {
-  let propIndex: number = -1
+  let propIndex = -1
   let jsxAttr: t.JSXAttribute | null = null
   for (let idx = -1, len = attrs.length; ++idx < len; ) {
     const attr = attrs[idx]

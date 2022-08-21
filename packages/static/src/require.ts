@@ -2,7 +2,7 @@ import { join, sep } from 'path'
 
 import type { StaticConfig } from '@tamagui/core-node'
 
-import { SHOULD_DEBUG } from './constants'
+import { SHOULD_DEBUG } from './constants.js'
 
 const nameToPaths = {}
 const Module = require('module')

@@ -27,7 +27,7 @@
         "react-native-web"
       ]
     },
-    "target": "es5",
+    "target": "es2021",
     "lib": [
       "dom",
       "dom.iterable",
