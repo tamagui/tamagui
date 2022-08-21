@@ -22,6 +22,7 @@ let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
 const pkgMain = pkg.main
 const pkgModule = pkg.module
 const pkgModuleJSX = pkg['module:jsx']
+const pkgTypes = Boolean(pkg['types'] || pkg['typings'])
 
 const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
 
@@ -107,6 +108,7 @@ async function build() {
 // process.once('SIGTERM', cleanup)
 
 async function buildTsc() {
+  if (!pkgTypes) return
   if (jsOnly || shouldSkipTypes) return
   if (shouldSkipInitialTypes) {
     shouldSkipInitialTypes = false
@@ -163,7 +165,6 @@ async function buildJs() {
           target: 'node14',
           keepNames: false,
           format: 'cjs',
-          jsx: 'automatic',
           color: true,
           allowOverwrite: true,
           jsx: 'automatic',
@@ -202,7 +203,6 @@ async function buildJs() {
           allowOverwrite: true,
           target: 'es2020',
           keepNames: false,
-          jsx: 'preserve',
           format: 'esm',
           color: true,
           logLevel: 'error',

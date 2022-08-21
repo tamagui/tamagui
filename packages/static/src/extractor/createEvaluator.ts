@@ -7,9 +7,9 @@ import type { TamaguiConfig } from '@tamagui/core-node'
 import { createCSSVariable } from '@tamagui/core-node'
 import esbuild from 'esbuild'
 
-import { FAILED_EVAL } from '../constants'
-import { evaluateAstNode } from './evaluateAstNode'
-import { isValidThemeHook } from './extractHelpers'
+import { FAILED_EVAL } from '../constants.js'
+import { evaluateAstNode } from './evaluateAstNode.js'
+import { isValidThemeHook } from './extractHelpers.js'
 
 export function createEvaluator({
   tamaguiConfig,

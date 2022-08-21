@@ -1,6 +1,6 @@
 import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import { ExtractedAttr, Ternary } from '../types';
+import type { ExtractedAttr, Ternary } from '../types.js';
 export declare function isPresent<T extends Object>(input: null | void | undefined | T): input is T;
 export declare function isSimpleSpread(node: t.JSXSpreadAttribute): boolean;
 export declare const attrStr: (attr?: ExtractedAttr) => string | t.JSXIdentifier;

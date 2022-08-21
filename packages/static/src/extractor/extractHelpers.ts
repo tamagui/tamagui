@@ -2,8 +2,9 @@ import generate from '@babel/generator'
 import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 
-import { ExtractedAttr, Ternary } from '../types'
-import { astToLiteral } from './literalToAst'
+import type { ExtractedAttr, Ternary } from '../types.js'
+
+// import { astToLiteral } from './literalToAst'
 
 export function isPresent<T extends Object>(input: null | void | undefined | T): input is T {
   return input != null
@@ -68,7 +69,7 @@ export const ternaryStr = (x: Ternary) => {
 const isFilledObj = (obj: any) => obj && Object.keys(obj).length
 
 export function findComponentName(scope) {
-  let componentName = ''
+  const componentName = ''
   let cur = scope.path
   while (cur.parentPath && !t.isProgram(cur.parentPath.parent)) {
     cur = cur.parentPath

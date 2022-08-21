@@ -3,9 +3,9 @@ import * as t from '@babel/types'
 import { TamaguiInternalConfig, getStylesAtomic, mediaObjectToString } from '@tamagui/core-node'
 import { ViewStyle } from 'react-native'
 
-import { MEDIA_SEP } from '../constants'
-import { StyleObject, Ternary } from '../types'
-import { isInsideTamagui, isPresent } from './extractHelpers'
+import { MEDIA_SEP } from '../constants.js'
+import type { StyleObject, Ternary } from '../types.js'
+import { isInsideTamagui, isPresent } from './extractHelpers.js'
 
 export function extractMediaStyle(
   ternary: Ternary,

@@ -5922,6 +5922,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/cli-color@^1.0.1-beta.151, @tamagui/cli-color@workspace:packages/cli-color":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/cli-color@workspace:packages/cli-color"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/code-to-html@^1.0.1-beta.141, @tamagui/code-to-html@workspace:packages/code-to-html":
   version: 0.0.0-use.local
   resolution: "@tamagui/code-to-html@workspace:packages/code-to-html"
@@ -6908,6 +6914,7 @@ __metadata:
     "@dish/babel-preset": ^0.0.6
     "@expo/match-media": ^0.3.0
     "@tamagui/build": ^1.0.1-beta.151
+    "@tamagui/cli-color": ^1.0.1-beta.151
     "@tamagui/config-default-node": ^1.0.1-beta.151
     "@tamagui/core-node": ^1.0.1-beta.151
     "@tamagui/fake-react-native": ^1.0.1-beta.151
@@ -7191,6 +7198,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin-internal@workspace:packages/vite-plugin-internal"
   dependencies:
+    "@originjs/vite-plugin-commonjs": ^1.0.3
     "@tamagui/config-default-node": ^1.0.1-beta.151
     "@tamagui/vite-plugin": ^1.0.1-beta.151
     "@vitejs/plugin-react": ^1.3.0

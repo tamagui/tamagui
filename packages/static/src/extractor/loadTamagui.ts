@@ -1,14 +1,15 @@
 /* eslint-disable no-console */
 import { basename, dirname, join, sep } from 'path'
 
+import { Color, colorLog } from '@tamagui/cli-color'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import type { StaticConfig, TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core-node'
 import { createTamagui } from '@tamagui/core-node'
 import esbuild from 'esbuild'
-import { ensureDir, pathExists, remove, stat, writeFile } from 'fs-extra'
+import { ensureDir, pathExists, stat, writeFile } from 'fs-extra'
 
-import { SHOULD_DEBUG } from '../constants'
-import { getNameToPaths, registerRequire, unregisterRequire } from '../require'
+import { SHOULD_DEBUG } from '../constants.js'
+import { getNameToPaths, registerRequire, unregisterRequire } from '../require.js'
 
 type NameToPaths = {
   [key: string]: Set<string>
@@ -68,14 +69,18 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
     //
   }
 
-  console.log(
-    '\x1b[36m%s\x1b[0m',
-    `Building your tamagui.config.ts and componets into node-friendly bundles for usage during compulation:`
+  colorLog(
+    Color.FgYellow,
+    `
+Building your tamagui.config.ts and componets into node-friendly bundles for usage during compulation:`
   )
-  console.log(`\x1b[2m
-    - Config: ${configOutPath}
-    - Components: ${componentOutPaths.join(', ')}
-`)
+  colorLog(
+    Color.Dim,
+    `
+  - Config: ${configOutPath}
+  - Components: ${componentOutPaths.join(', ')}
+`
+  )
 
   await Promise.all([
     props.config
@@ -157,6 +162,8 @@ async function buildTamaguiConfig(
     console.log(`Building`, options.entryPoints)
   }
 
+  const tsconfig = join(__dirname, '..', '..', 'tamagui.tsconfig.json')
+
   return esbuild.build({
     bundle: true,
     ...options,
@@ -167,7 +174,7 @@ async function buildTamaguiConfig(
     allowOverwrite: true,
     keepNames: true,
     platform: 'node',
-    tsconfig: join(__dirname, '..', '..', '..', 'tamagui.tsconfig.json'),
+    tsconfig,
     loader: {
       '.js': 'jsx',
     },

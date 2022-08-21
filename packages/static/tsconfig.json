@@ -2,6 +2,8 @@
   "extends": "../../tsconfig",
   "compilerOptions": {
     "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "Node16",
     "rootDir": "../.."
   },
   "include": [

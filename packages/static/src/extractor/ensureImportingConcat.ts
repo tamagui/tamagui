@@ -1,7 +1,7 @@
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 
-import { CONCAT_CLASSNAME_IMPORT } from '../constants'
+import { CONCAT_CLASSNAME_IMPORT } from '../constants.js'
 
 const importConcatPkg = '@tamagui/helpers'
 

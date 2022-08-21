@@ -1,3 +1,3 @@
-export * from './plugin';
-export * from './extract';
+export * from './plugin.js';
+export * from './extract.js';
 //# sourceMappingURL=index.d.ts.map
