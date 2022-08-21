@@ -2,7 +2,6 @@
   "name": "@tamagui/simple-hash",
   "version": "1.0.1-beta.151",
   "sideEffects": false,
-  "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -16,6 +15,9 @@
     "watch": "tamagui-build --watch",
     "lint": "eslint",
     "lint:fix": "yarn lint --fix"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.151"
   },
   "publishConfig": {
     "access": "public"
