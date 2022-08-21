@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 import { createFromFetch } from '@tamagui/unagi/vendor/react-server-dom-vite'
 import React from 'react'
 

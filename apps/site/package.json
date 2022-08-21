@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "./scripts/dev.sh",
     "clean:build": "./scripts/clean.sh",
-    "ci:build": "yarn next:build && yarn next:export",
+    "ci:build": "ls -la ../../node_modules/@tamagui/patch-rnw/dist/cjs && yarn next:build && yarn next:export",
     "ci:build:debug": "DEBUG=tamagui yarn ci:build",
     "dev:analyze": "ANALYZE=true yarn dev",
     "dev:inspect": "PORT=${PORT:-5005} NODE_OPTIONS='--no-deprecation' NODE_ENV=development node --inspect-brk ../../node_modules/next/dist/bin/next dev",
