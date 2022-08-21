@@ -6,12 +6,14 @@ Slimming down react-native-web, this does the following:
 
 - Flow => Typescript
 - Full ESModule support
-- sideEffects: false for tree shaking
+- Vite compatibility
+- `sideEffects: false` + tree shaking support changes
 - merges [concurrent mode fixes](https://github.com/necolas/react-native-web/pull/2330)
+- merges the [experimental fully concurrent safe / functional `Animated`](https://github.com/facebook/react-native/blob/main/Libraries/Animated/createAnimatedComponent_EXPERIMENTAL.js)
 - Removes:
   - ❌ VirtualList, FlatList, SectionList
   - ❌ Switch, Modal (going to be split out, in Tamagui already)
-  - ❌ Touchable* views (going to be deprecated, prefer Pressable)
+  - ❌ Touchable* views (prefer Pressable)
   - ❌ normalize-css-color
   - ❌ inline-style-prefixer
   - ❌ create-react-class
