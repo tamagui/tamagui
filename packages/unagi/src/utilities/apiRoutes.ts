@@ -140,6 +140,15 @@ export async function renderApiRoute(
       unagiConfig,
       session: session
         ? {
+            async getFlash(key: string) {
+              const data = await session.get(request)
+              const value = data[key]
+              if (value) {
+                delete data[key]
+                await session.set(request, data)
+              }
+              return value
+            },
             async get() {
               return session.get(request)
             },

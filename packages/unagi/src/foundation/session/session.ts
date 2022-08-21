@@ -24,12 +24,24 @@ export function getSyncSessionApi(
           }
           return sessionPromises.getPromise.read()
         },
+        set(data: Record<string, any>) {
+          if (!sessionPromises.setPromise) {
+            sessionPromises.setPromise = wrapPromise(session.set(request, data))
+          }
+          const cookie = sessionPromises.setPromise.read()
+          componentResponse.headers.set('Set-Cookie', cookie)
+          return cookie
+        },
       }
     : emptySyncSessionImplementation(log)
 }
 
 export const emptySessionImplementation = function (log: Logger) {
   return {
+    async getFlash(key: string) {
+      log.warn('No session adapter has been configured!')
+      return null
+    },
     async get() {
       log.warn('No session adapter has been configured!')
       return {}
@@ -49,6 +61,10 @@ export const emptySyncSessionImplementation = function (log: Logger) {
     get() {
       log.warn('No session adapter has been configured!')
       return {}
+    },
+    set(data: Record<string, any>) {
+      log.warn('No session adapter has been configured!')
+      return null
     },
   }
 }

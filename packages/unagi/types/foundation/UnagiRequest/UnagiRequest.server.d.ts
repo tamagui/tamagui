@@ -29,8 +29,8 @@ export declare class UnagiRequest extends Request {
         preloadQueries: PreloadQueriesByURL;
         analyticsData: any;
         router: RouterContextData;
-        buyerIpHeader?: string;
         session?: SessionSyncApi;
+        flashSession: Record<string, any>;
         runtime?: RuntimeContext;
         scopes: Map<string, Record<string, any>>;
         [key: string]: any;
