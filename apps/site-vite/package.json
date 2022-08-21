@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "ENABLE_RSC=1 TAMAGUI_TARGET=web vite",
-    "build:prod": "yarn build:client && yarn build:server && yarn build:worker",
+    "build:prod": "yarn build:client && yarn build:server",
     "build:client": "ENABLE_RSC=1 TAMAGUI_TARGET=web vite build --outDir dist/client --manifest",
     "build:server": "ENABLE_RSC=1 TAMAGUI_TARGET=web vite build --outDir dist/server --ssr @tamagui/unagi/platforms/node",
     "build:worker": "cross-env ENABLE_RSC=1  TAMAGUI_TARGET=web WORKER=true vite build --outDir dist/worker --ssr @tamagui/unagi/platforms/worker",

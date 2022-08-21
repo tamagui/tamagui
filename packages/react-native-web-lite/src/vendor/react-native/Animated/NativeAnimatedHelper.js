@@ -12,7 +12,6 @@ import NativeEventEmitter from '../NativeEventEmitter/index.js'
 import NativeAnimatedNonTurboModule from './NativeAnimatedModule.js'
 
 var NativeAnimatedModule = NativeAnimatedNonTurboModule
-console.log('NativeAnimatedModule', NativeAnimatedModule)
 var __nativeAnimatedNodeTagCount = 1
 /* used for animated nodes */
 

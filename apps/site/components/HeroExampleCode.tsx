@@ -21,7 +21,7 @@ export function HeroExampleCode({ examples }) {
         <YStack zi={1} space="$6">
           <YStack space="$3">
             <HomeH2>
-              Incredible features, <span className="rainbow clip-text">insanely&nbsp;fast</span>.
+              More features, <span className="rainbow clip-text">faster</span>.
             </HomeH2>
             <HomeH3>Modern features 🤝 unmatched performance.</HomeH3>
           </YStack>

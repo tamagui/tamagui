@@ -1,7 +1,6 @@
 {
   "name": "@tamagui/patch-rnw",
   "version": "1.0.1-beta.151",
-  "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -12,7 +11,8 @@
     "patches",
     "src",
     "types",
-    "dist"
+    "dist",
+    "patch.js"
   ],
   "scripts": {
     "patch": "tamagui-build && node node_modules/.bin/rnw-patch",
