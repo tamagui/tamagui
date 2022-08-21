@@ -47,9 +47,13 @@ const plugins = [
       ...config,
       webpack(webpackConfig, options) {
         webpackConfig.resolve.alias ??= {}
+
+        // https://github.com/theKashey/react-remove-scroll/pull/78
+        // react-remove-scroll + getting rid of tslib in general
         Object.assign(webpackConfig.resolve.alias, {
           tslib: '@tamagui/proxy-worm',
         })
+        webpackConfig.resolve.mainFields.unshift('module:es2019')
 
         if (process.env.ANALYZE === 'true') {
           const { StatsWriterPlugin } = require('webpack-stats-plugin')
