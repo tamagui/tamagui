@@ -7,7 +7,8 @@
  * @flow
  */
 
-import canUseDOM from '../../modules/canUseDom/index.js'
+import { canUseDOM } from 'react-native-web-internal'
+
 import { DisplayMetrics } from '../Dimensions/index.js'
 import Dimensions from '../Dimensions/index.js'
 

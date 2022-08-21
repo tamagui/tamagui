@@ -8,8 +8,8 @@
  * @flow
  */
 
-import canUseDOM from '../../modules/canUseDom/index.js'
-import { invariant } from '../../modules/invariant.js'
+import { invariant } from 'react-native-web-internal'
+import { canUseDOM } from 'react-native-web-internal'
 
 const initialURL = canUseDOM ? window.location.href : ''
 

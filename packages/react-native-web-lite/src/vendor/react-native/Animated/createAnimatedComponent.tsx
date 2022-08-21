@@ -9,9 +9,9 @@
  */
 
 import * as React from 'react'
+import { StyleSheet } from 'react-native-web-internal'
+import { useMergeRefs } from 'react-native-web-internal'
 
-import StyleSheet from '../../../exports/StyleSheet/index.js'
-import { useMergeRefs } from '../../../modules/useMergeRefs/index.js'
 import useAnimatedProps from './useAnimatedProps.js'
 
 /**

@@ -9,13 +9,13 @@
  */
 
 import * as React from 'react'
+import { StyleSheet } from 'react-native-web-internal'
+import { createBoxShadowValue } from 'react-native-web-internal'
 
 import { getAssetByID } from '../../modules/AssetRegistry/index.js'
 import ImageLoader from '../../modules/ImageLoader/index.js'
 import createElement from '../createElement/index.js'
 import PixelRatio from '../PixelRatio/index.js'
-import StyleSheet from '../StyleSheet/index.js'
-import { createBoxShadowValue } from '../StyleSheet/preprocess.js'
 import TextAncestorContext from '../Text/TextAncestorContext.js'
 import View from '../View/index.js'
 import type { ImageProps } from './types.js'

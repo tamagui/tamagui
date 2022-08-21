@@ -9,10 +9,10 @@
 
 import * as React from 'react'
 import { forwardRef } from 'react'
+import { StyleSheet } from 'react-native-web-internal'
 
 import type { ImageProps } from '../Image/index.js'
 import Image from '../Image/index.js'
-import StyleSheet from '../StyleSheet/index.js'
 import type { ViewProps } from '../View/index.js'
 import View from '../View/index.js'
 

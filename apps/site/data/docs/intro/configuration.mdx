@@ -10,9 +10,9 @@ Create a `tamagui.config.ts` in the root of your app to set up your design syste
 To get started more quickly, try out `@tamagui/shorthands` and `@tamagui/theme-base` to set up nice defaults for shorthands, themes and tokens:
 
 ```tsx
+import { createTamagui } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/theme-base'
-import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   themes,
@@ -26,7 +26,7 @@ export default createTamagui({
 Let's start with a full yet slimmed down `tamagui.config.ts`:
 
 ```tsx
-import { createFont, createTamagui, createTokens } from 'tamagui'
+import { createFont, createTamagui, createTokens } from '@tamagui/core'
 
 const interFont = createFont({
   family: 'Inter, Helvetica, Arial, sans-serif',
@@ -117,6 +117,7 @@ const config = createTamagui({
 type Conf = typeof config
 
 // this will give you types for your components
+// note - if using your own design system, put the package name here instead of tamagui
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
 }
@@ -133,6 +134,12 @@ The `createTamagui` function receives a configuration object:
 - `defaultProps`: For more advanced uses, you can override all named `styled()` components initial values. These merge downwards, so `styled(Text, { name: 'Paragraph' })` will get any defaultProps set for `Text`.
 
 Note, for `tamagui`, it expects certain things on tokens. Space and size should both have 1-10 defined, as well as a value for `true` that maps to `4`.
+
+<Notice>
+  The compiler will parse your tamagui.config.ts file at build-time. For this reason, we comment
+  keeping it relatively simple. Don't import heavy dependencies, and prefer to import
+  `createTamagui` and other helpers directly from @tamagui/core.
+</Notice>
 
 ### Add Provider
 

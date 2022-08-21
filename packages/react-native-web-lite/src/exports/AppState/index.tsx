@@ -8,8 +8,8 @@
  * @noflow
  */
 
-import canUseDOM from '../../modules/canUseDom/index.js'
-import { invariant } from '../../modules/invariant.js'
+import { invariant } from 'react-native-web-internal'
+import { canUseDOM } from 'react-native-web-internal'
 
 // Android 4.4 browser
 const isPrefixed =

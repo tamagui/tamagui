@@ -10,10 +10,10 @@
 
 import { ComponentType, FunctionComponent, ReactNode } from 'react'
 import React from 'react'
+import { StyleSheet } from 'react-native-web-internal'
+import { invariant } from 'react-native-web-internal'
 
-import { invariant } from '../../modules/invariant.js'
 import renderLegacy, { hydrate, hydrateLegacy, render } from '../render/index.js'
-import StyleSheet from '../StyleSheet/index.js'
 import AppContainer from './AppContainer.js'
 
 export default function renderApplication<Props extends Object>(

@@ -8,8 +8,7 @@
  * @flow
  */
 
-import canUseDOM from '../../modules/canUseDom/index.js'
-import { invariant } from '../../modules/invariant.js'
+import { canUseDOM, invariant } from 'react-native-web-internal'
 
 export type DisplayMetrics = {
   fontScale: number
