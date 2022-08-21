@@ -8,7 +8,7 @@ export * from './modules/usePlatformMethods/index.js';
 export * from './modules/useResponderEvents/index.js';
 export { colorProps } from './colorProps.js';
 export { default as AccessibilityUtil } from './modules/AccessibilityUtil/index.js';
-export { default as canUseDOM } from './modules/canUseDOM/index.js';
+export { default as canUseDOM } from './modules/canUseDOM.js';
 export { default as createDOMProps } from './modules/createDOMProps/index.js';
 export { default as createEventHandle } from './modules/createEventHandle/index.js';
 export { default as dismissKeyboard } from './modules/dismissKeyboard/index.js';

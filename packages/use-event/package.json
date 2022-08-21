@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-event",
-  "version": "1.0.1-beta.151",
+  "version": "1.0.1-beta.152",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -19,7 +19,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.151",
+    "@tamagui/build": "^1.0.1-beta.152",
     "react": "*"
   },
   "peerDependencies": {

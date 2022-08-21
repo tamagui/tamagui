@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/stacks",
-  "version": "1.0.1-beta.151",
+  "version": "1.0.1-beta.152",
   "sideEffects": [
     "*.css"
   ],
@@ -21,14 +21,14 @@
     "lint:fix": "yarn lint --fix"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.151"
+    "@tamagui/core": "^1.0.1-beta.152"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.151",
+    "@tamagui/build": "^1.0.1-beta.152",
     "react": "*",
     "react-dom": "*"
   },
