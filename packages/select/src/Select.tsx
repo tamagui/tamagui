@@ -63,7 +63,7 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
         data-disabled={disabled ? '' : undefined}
         {...triggerProps}
         ref={forwardedRef}
-        {...(context.interactions
+        {...(process.env.TAMAGUI_TARGET === 'web' && context.interactions
           ? context.interactions.getReferenceProps()
           : {
               onPress() {

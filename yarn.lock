@@ -5856,7 +5856,6 @@ __metadata:
     "@tamagui/build": ^1.0.1-beta.150
     "@tamagui/core": ^1.0.1-beta.150
     subset-font: ^1.6.1
-    woff2otf: ^1.0.0
   languageName: unknown
   linkType: soft
 
@@ -16149,13 +16148,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"long@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "long@npm:4.0.0"
-  checksum: 16afbe8f749c7c849db1f4de4e2e6a31ac6e617cead3bdc4f9605cb703cd20e1e9fc1a7baba674ffcca57d660a6e5b53a9e236d7b25a295d3855cca79cc06744
-  languageName: node
-  linkType: hard
-
 "longest-streak@npm:^3.0.0":
   version: 3.0.1
   resolution: "longest-streak@npm:3.0.1"
@@ -19948,15 +19940,6 @@ __metadata:
   version: 2.1.1
   resolution: "punycode@npm:2.1.1"
   checksum: 823bf443c6dd14f669984dea25757b37993f67e8d94698996064035edd43bed8a5a17a9f12e439c2b35df1078c6bec05a6c86e336209eb1061e8025c481168e8
-  languageName: node
-  linkType: hard
-
-"python-struct@npm:^1.1.3":
-  version: 1.1.3
-  resolution: "python-struct@npm:1.1.3"
-  dependencies:
-    long: ^4.0.0
-  checksum: a325ffb9b2e5f63d2836bd313b480fb7d7e1986bc8bc1ce58ac667bc4d87060cdc61d5e1a6d121a8625f5125c7be0139b0f23be1904a134309470f4b122f917d
   languageName: node
   linkType: hard
 
@@ -24894,17 +24877,6 @@ __metadata:
   version: 2.0.0
   resolution: "wildcard@npm:2.0.0"
   checksum: 1f4fe4c03dfc492777c60f795bbba597ac78794f1b650d68f398fbee9adb765367c516ebd4220889b6a81e9626e7228bbe0d66237abb311573c2ee1f4902a5ad
-  languageName: node
-  linkType: hard
-
-"woff2otf@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "woff2otf@npm:1.0.0"
-  dependencies:
-    python-struct: ^1.1.3
-  bin:
-    woff2otf: src/cli.js
-  checksum: 55824b24003da55a7a63276d0ecb692bd26162c9b0bee74ee32e31d896e739b8e01ba2b89d3ec9fdb3619c76ee5e3eeeacde7bdafc814a63aad0a1c9e4ddfb03
   languageName: node
   linkType: hard
 
