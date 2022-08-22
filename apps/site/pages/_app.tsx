@@ -18,10 +18,14 @@ Error.stackTraceLimit = Infinity
 
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {
-  // @ts-ignore
-  navigator.connection ??= {}
-  // @ts-ignore
-  navigator.connection['saveData'] = true
+  try {
+    // @ts-ignore
+    navigator.connection = navigator.connection || {}
+    // @ts-ignore
+    navigator.connection['saveData'] = true
+  } catch {
+    // ignore err
+  }
 }
 
 export default function App(props: AppProps) {
