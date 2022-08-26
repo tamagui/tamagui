@@ -28,7 +28,7 @@ Tamagui is a monorepo that makes it easy to contribute.
 As of now Tamagui has some encrypted files relating to upcoming features that you'll need to remove before install:
 
 ```
-./script/ci-prepare.sh
+./scripts/ci-prepare.sh
 ```
 
 Then install:
