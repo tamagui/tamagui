@@ -159,7 +159,7 @@ export default withPlugins([
     // By default, we configure webpack to pass anything inside your root or design system
     // to the Tamagui loader. If you are importing files from an external package, use this:
     shouldExtract: (path: string, projectRoot: string) => {
-      if (path.includes('../packages/my-app')) {
+      if (path.includes('../packages/myapp')) {
         return true
       }
     },

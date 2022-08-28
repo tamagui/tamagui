@@ -2,12 +2,12 @@
 
   - get tests passing
 
+  - Image JSON error on kitchen-sink
+  - Sheet drag up small bug native with scrollable content
   - prod build native stuck on copying resources
   - kitchen-sink in Snack demo
   - check animation flicker again
-  - FAQ
-    - don't wrap in HOC if possible, will de-opt compilation
-    - what works for compilation / examples
+    - flicker on some enterStyle animation native (hermes only)
   - reduce bundle size by sharing accessibility prop validity and a few others
     - see https://discord.com/channels/909986013848412191/909986013848412194/1006909946010542221
   - Select is triggering sheet when not small - media query regression
@@ -25,7 +25,6 @@
   - add test that kitchen-sink loads, test a few components
     - make sure loop/multi animations work too
     - https://twitter.com/FernandoTheRojo/status/1470178294721036290
-  - flicker on some enterStyle animation native (hermes only)
   - mismatch SSR SelectTrigger due to componentName override
   - // TODO still have as const bug
   - try using react-native-web $css object support for classnames
@@ -43,6 +42,9 @@
   - // TODO infer ref
   - forms working bubble / label
 
+  - FAQ
+    - don't wrap in HOC if possible, will de-opt compilation
+    - what works for compilation / examples
 ---
 
 <Menu />

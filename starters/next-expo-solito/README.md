@@ -1,7 +1,7 @@
 # Tamagui + Solito + Next + Expo Monorepo
 
 ```sh
-npx create-tamagui-app@latest my-app
+npx create-tamagui-app@latest myapp
 ```
 
 ## ⚡️ Instant clone & deploy
