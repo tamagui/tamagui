@@ -6012,6 +6012,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/core-node@workspace:packages/core-node"
   dependencies:
+    "@babel/runtime": ^7.18.9
     "@tamagui/core": ^1.0.1-beta.153
     "@tamagui/helpers": ^1.0.1-beta.153
     "@types/node": ^16.11.9
