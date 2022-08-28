@@ -1,5 +1,5 @@
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
-import { Variable } from '../createVariable'
+import { Variable, variableToString } from '../createVariable'
 import { CreateTamaguiProps, ThemeObject } from '../types'
 import { tokensValueToVariable } from './registerCSSVariable'
 
@@ -95,7 +95,7 @@ export function getThemeCSSRules({
     const isDark = themeName.startsWith('dark')
     cssRuleSets.push(
       `@media(prefers-color-scheme: ${isDark ? 'dark' : 'light'}) {
-body { background:${theme.background}; color: ${theme.color} }
+body { background:${variableToString(theme.background)}; color: ${variableToString(theme.color)} }
 :root {${vars} } 
 }`
     )
