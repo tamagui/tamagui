@@ -1,7 +1,9 @@
 import React from 'react'
-import { Circle, YStack } from 'tamagui'
+import { Circle, CircleProps, YStack } from 'tamagui'
 
-export const ActiveCircle = ({ isActive, backgroundColor, opacity, ...props }: any) => {
+export const ActiveCircle = (props: CircleProps & { isActive?: boolean }) => {
+  const { isActive, backgroundColor, opacity, ...rest } = props
+
   return (
     <YStack
       ai="center"
@@ -18,7 +20,7 @@ export const ActiveCircle = ({ isActive, backgroundColor, opacity, ...props }: a
           borderColor: '$colorMid',
         },
       })}
-      {...props}
+      {...rest}
     >
       <YStack
         br="$10"

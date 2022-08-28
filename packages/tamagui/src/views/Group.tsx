@@ -154,6 +154,6 @@ const wrapScroll = (scrollable: boolean, vertical: boolean, children: any) => {
 }
 
 const cloneElementWithPropOrder = (child: any, props: Object) => {
-  const next = mergeProps(child.props, props, false, getConfig().inverseShorthands)[0]
+  const next = mergeProps(child.props, props, false, getConfig().shorthands)[0]
   return React.cloneElement({ ...child, props: null }, next)
 }

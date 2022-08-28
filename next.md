@@ -1,9 +1,9 @@
 - 1.0
 
-  - CSS driver + loadable driver
   - get tests passing
-  - kitchen-sink in Snack demo
+
   - prod build native stuck on copying resources
+  - kitchen-sink in Snack demo
   - check animation flicker again
   - FAQ
     - don't wrap in HOC if possible, will de-opt compilation
@@ -13,10 +13,8 @@
   - Select is triggering sheet when not small - media query regression
   - changing family responsive tests
   - animation accept useAnimatedStyle
-  - Switch gesture
   - adding `shorthandsOverride` to createTamagui should be easy enough to type with Omit<>
   - fix reanimated 2.9/3.0 __frame var
-  - loadFont
   - windows without WSL
   - <Select /> has selectable cursor on hold down + move
   - way to use tamagui with custom design system tokens
@@ -91,6 +89,8 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - Switch gesture
+  - loadFont, loadAnimations
   - Card should operate through context to properly sync size
   - tamagui-build could run extraction *before* - but still needs webpack... so not sure
     - no need for `module:jsx`, instead output `module:native` and `module:css`
