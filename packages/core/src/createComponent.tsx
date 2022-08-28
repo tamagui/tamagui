@@ -22,7 +22,7 @@ import React, {
   useContext,
   useEffect,
 } from 'react'
-import { StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { Text, View, ViewStyle } from 'react-native'
 
 import { getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
@@ -98,7 +98,7 @@ function mergeShorthands({ defaultProps }: StaticConfigParsed, { shorthands }: T
 
 let initialTheme: any
 let config: TamaguiInternalConfig
-let mediaPropNames: string[] = []
+const mediaPropNames: string[] = []
 
 export function createComponent<
   ComponentPropTypes extends Object = {},
@@ -120,7 +120,6 @@ export function createComponent<
   let AnimatedView: any
   let avoidClasses = true
   let defaultNativeStyle: any
-  let defaultNativeStyleSheet: StyleSheet.NamedStyles<{ base: {} }>
   let tamaguiDefaultProps: any
   let initialSplitStyles: SplitStyleResult
 
@@ -180,7 +179,7 @@ export function createComponent<
       props['debug']
     )
 
-    const hostRef = useServerRef<HTMLElement | View>(null)
+    const hostRef = useServerRef<TamaguiElement>(null)
     const setState = states[1]
     const setStateShallow = createShallowUpdate(setState)
 
@@ -638,11 +637,7 @@ export function createComponent<
         ...medias,
       }
     } else {
-      styles = [
-        isWeb ? null : defaultNativeStyleSheet ? (defaultNativeStyleSheet.base as ViewStyle) : null,
-        animationStyles ?? style,
-        medias,
-      ]
+      styles = [isWeb ? null : defaultNativeStyle, animationStyles ?? style, medias]
       if (!animationStyles && initialSplitStyles) {
         const initPseudos = initialSplitStyles.pseudos
         !state.mounted && addPseudoToStyles(styles, initPseudos, pseudos, 'enterStyle')
@@ -672,6 +667,10 @@ export function createComponent<
         : null
       if (fontFamily && fontFamily[0] === '$') {
         fontFamily = fontFamily.slice(1)
+      }
+
+      if (props['debug']) {
+        console.log('???', fontFamily, isText)
       }
 
       const classList = [
@@ -1142,10 +1141,6 @@ export function createComponent<
       }
     }
 
-    defaultNativeStyleSheet = StyleSheet.create({
-      base: defaultNativeStyle,
-    })
-
     if (Object.keys(defaults).length) {
       tamaguiDefaultProps = defaults
     }
@@ -1372,11 +1367,19 @@ function isUnspaced(child: React.ReactNode) {
 
 function AbsoluteFill(props: { children?: any }) {
   return (
-    <View pointerEvents="box-none" style={StyleSheet.absoluteFill}>
+    <View pointerEvents="box-none" style={absoluteFill}>
       {props.children}
     </View>
   )
 }
+
+const absoluteFill = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+} as const
 
 // this can be done with CSS entirely right?
 // const shouldWrapTextAncestor = isWeb && isText && !hasTextAncestor

@@ -5,7 +5,7 @@
 
 import { StyleObject, simpleHash } from '@tamagui/helpers'
 import hyphenateStyleName from 'hyphenate-style-name'
-import { TextStyle, ViewStyle } from 'react-native'
+import type { TextStyle, ViewStyle } from 'react-native'
 
 import { getConfig } from '../config'
 import { TamaguiInternalConfig } from '../types'

@@ -1,5 +1,5 @@
 import { StyleObject } from '@tamagui/helpers';
-import { TextStyle, ViewStyle } from 'react-native';
+import type { TextStyle, ViewStyle } from 'react-native';
 import { PseudoDescriptor } from './pseudoDescriptors';
 declare type ViewOrTextStyle = ViewStyle | TextStyle;
 export declare type ViewStyleWithPseudos = ViewOrTextStyle & {

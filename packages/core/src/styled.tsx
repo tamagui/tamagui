@@ -1,5 +1,3 @@
-import { Image, Text, TextInput } from 'react-native'
-
 import { createComponent } from './createComponent'
 import { RNComponents } from './helpers/RNComponents'
 import {
@@ -63,9 +61,11 @@ export function styled<
         : null
       const isTamagui = !isReactNativeWeb && !!parentStaticConfig
       const Comp = reactNativeWebComponent || (Component as any)
-      const isImage = !!(defaultProps.isImage || (!isTamagui ? Comp === Image : false))
-      const isInput = !!(defaultProps.isInput || (!isTamagui ? Comp === TextInput : false))
-      const isText = !!(defaultProps.isText || (!isTamagui ? isInput || Comp === Text : false))
+      const isImage = Boolean(staticExtractionOptions?.isImage ?? parentStaticConfig?.isImage)
+      const isInput = Boolean(staticExtractionOptions?.isInput ?? parentStaticConfig?.isInput)
+      const isText = Boolean(
+        isInput || (staticExtractionOptions?.isText ?? parentStaticConfig?.isText)
+      )
 
       const conf: Partial<StaticConfig> = {
         ...staticExtractionOptions,

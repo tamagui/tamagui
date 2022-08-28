@@ -4,7 +4,7 @@ name: inputs
 component: Input
 ---
 
-# Forms
+# Input and Textarea
 
 <HeroContainer demoMultiple>
   <FormsDemo />
@@ -39,22 +39,6 @@ import { Textarea } from 'tamagui'
 export const App = () => (
   // Accepts size and style properties directly
   <Textarea size="$4" borderWidth={2} />
-)
-```
-
-### Form
-
-A helper element that only has functionality on the web, but falls back to a view on native:
-
-```tsx
-import { Form } from 'tamagui'
-
-export const App = () => (
-  <Form>
-    {/* ... */}
-    {/* form elements here */}
-    {/* ... */}
-  </Form>
 )
 ```
 

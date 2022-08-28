@@ -1,6 +1,6 @@
 import { stylePropsText, stylePropsTransform, validPseudoKeys, validStyles } from '@tamagui/helpers'
 import { useInsertionEffect } from 'react'
-import { ViewStyle } from 'react-native'
+import type { ViewStyle } from 'react-native'
 
 import { getConfig } from '../config'
 import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
