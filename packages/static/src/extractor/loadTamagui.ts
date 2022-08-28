@@ -72,7 +72,7 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   colorLog(
     Color.FgYellow,
     `
-Building your tamagui.config.ts and componets into node-friendly bundles for usage during compulation:`
+Building your tamagui.config.ts and components into node-friendly bundles for usage during compulation:`
   )
   colorLog(
     Color.Dim,

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { tmpdir } from 'os'
 import { join } from 'path'
 

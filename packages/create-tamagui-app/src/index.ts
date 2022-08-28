@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
+import { execSync } from 'child_process'
 import fs from 'fs'
 import { homedir } from 'os'
 import path, { join } from 'path'
@@ -11,7 +12,7 @@ import { promisify } from 'util'
 import * as PackageManager from '@expo/package-manager'
 import chalk from 'chalk'
 import Commander from 'commander'
-import { ensureDir, pathExists } from 'fs-extra'
+import { copy, ensureDir, pathExists } from 'fs-extra'
 import got from 'got'
 import prompts from 'prompts'
 import tar from 'tar'
@@ -67,6 +68,15 @@ export function downloadAndExtractExample(root: string, name: string): Promise<v
 
 async function run() {
   console.log(chalk.bold('Creating tamagui app...'))
+
+  const gitVersionString = parseFloat(
+    execSync(`git --version`).toString().replace(`git version `, '').trim()
+  )
+  if (gitVersionString < 2.19) {
+    console.error(`Git version must be >= 2.19`)
+    process.exit(1)
+  }
+
   if (typeof projectPath === 'string') {
     projectPath = projectPath.trim()
   }
@@ -144,34 +154,42 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
 
     await ensureDir(tamaguiDir)
 
-    // TODO check git version >= 2.19
-
-    const cwd = process.cwd()
-
     cd(tamaguiDir)
+
+    const branch = `master`
 
     if (!(await pathExists(tamaguiGitDir))) {
       console.log(`Cloning tamagui base directory`)
-      await $`git clone --depth 1 --filter=blob:none --sparse git@github.com:tamagui/tamagui.git`
+      await $`git clone --branch ${branch} --depth 1 --filter=blob:none --sparse https://github.com/tamagui/tamagui.git`
     } else {
       if (!(await pathExists(join(tamaguiGitDir, '.git')))) {
-        console.warn(`Corrupt Tamagui directory, please delete ${tamaguiGitDir} and re-run`)
+        console.error(`Corrupt Tamagui directory, please delete ${tamaguiGitDir} and re-run`)
         process.exit(1)
       }
     }
 
+    console.log(`Updating tamagui starters repo`)
     cd(tamaguiGitDir)
     await $`git sparse-checkout set starters`
+    await $`git pull --depth 1 origin ${branch}`
 
-    // console.log(`Copying template into ${chalk.blueBright(projectName)}...`)
-    // await downloadAndExtractExample(resolvedProjectPath, program.template)
-    // console.log(chalk.green(`${projectName} created!`))
+    const starterDir = join(tamaguiGitDir, 'starters', program.template)
+    if (!(await pathExists(starterDir))) {
+      console.error(`Missing template for ${program.template} in ${starterDir}`)
+      process.exit(1)
+    }
+
+    console.log(`Copying starter from ${starterDir} into ${chalk.blueBright(projectName)}...`)
+    await copy(starterDir, resolvedProjectPath)
+
+    console.log(chalk.green(`${projectName} created!`))
+
+    cd(resolvedProjectPath)
+    await $`git init`
   } catch (e) {
-    console.error(`[tamagui] Failed to download/extract example into ${resolvedProjectPath}\n\n`, e)
+    console.error(`[tamagui] Failed to copy example into ${resolvedProjectPath}\n\n`, e)
     process.exit(1)
   }
-
-  process.exit(0)
 
   console.log('Installing packages. This might take a couple of minutes.')
   console.log()
