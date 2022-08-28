@@ -1,13 +1,13 @@
 /// <reference types="vitest" />
 
-import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
+// import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
-    viteCommonjs(),
+    // viteCommonjs(),
     react({
       jsxRuntime: 'automatic',
       fastRefresh: true,
@@ -18,11 +18,11 @@ export default defineConfig({
       config: './tamagui.config.ts',
     }),
   ],
-  optimizeDeps: {
-    esbuildOptions: {
-      plugins: [esbuildCommonjs(['@tamagui/core-node'])],
-    },
-  },
+  // optimizeDeps: {
+  //   esbuildOptions: {
+  //     plugins: [esbuildCommonjs(['@tamagui/core-node'])],
+  //   },
+  // },
   // @ts-ignore
   test: {
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],

@@ -19,7 +19,7 @@
     "lint": "eslint",
     "lint:fix": "yarn lint --fix",
     "pretest": "node -r esbuild-register ./tests/lib/preTest.js",
-    "test": "yarn pretest && vitest --config ../vite-plugin-internal/vite.config.ts --run --dom"
+    "test": "yarn pretest && vitest --config ../vite-plugin-internal/src/vite.config.ts --run --dom"
   },
   "tests": {
     "parallel": true

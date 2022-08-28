@@ -21,9 +21,7 @@
   - <Select /> has selectable cursor on hold down + move
   - way to use tamagui with custom design system tokens
     - basically map any tokens you choose to internal tamagui ones
-  - site get live lighthouse score > 90
-    - then try out reanimated again
-    - or get overshoot clamp working for react-native animations driver
+  - or get overshoot clamp working for react-native animations driver
   - bug: styled(ListItem, { ...styles }) styles not working fully
     - maybe extractor bug actually
   - add test that kitchen-sink loads, test a few components
