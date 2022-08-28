@@ -1,7 +1,9 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 
 import fs from 'fs'
-import path from 'path'
+import { homedir } from 'os'
+import path, { join } from 'path'
 import { Stream } from 'stream'
 import { promisify } from 'util'
 
@@ -9,10 +11,12 @@ import { promisify } from 'util'
 import * as PackageManager from '@expo/package-manager'
 import chalk from 'chalk'
 import Commander from 'commander'
+import { ensureDir, pathExists } from 'fs-extra'
 import got from 'got'
 import prompts from 'prompts'
 import tar from 'tar'
 import validateProjectName from 'validate-npm-package-name'
+import { $, cd } from 'zx'
 
 import packageJson from '../package.json'
 
@@ -132,16 +136,42 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
   console.log(chalk.green(`${projectName} folder created.`))
 
   try {
-    console.log(`Copying template into ${chalk.blueBright(projectName)}...`)
-    await downloadAndExtractExample(resolvedProjectPath, program.template)
-    console.log(chalk.green(`${projectName} created!`))
+    const home = homedir()
+    const tamaguiDir = join(home, '.tamagui')
+    const tamaguiGitDir = join(tamaguiDir, 'tamagui')
+
+    console.log(`Setting up ${chalk.blueBright(tamaguiDir)}...`)
+
+    await ensureDir(tamaguiDir)
+
+    // TODO check git version >= 2.19
+
+    const cwd = process.cwd()
+
+    cd(tamaguiDir)
+
+    if (!(await pathExists(tamaguiGitDir))) {
+      console.log(`Cloning tamagui base directory`)
+      await $`git clone --depth 1 --filter=blob:none --sparse git@github.com:tamagui/tamagui.git`
+    } else {
+      if (!(await pathExists(join(tamaguiGitDir, '.git')))) {
+        console.warn(`Corrupt Tamagui directory, please delete ${tamaguiGitDir} and re-run`)
+        process.exit(1)
+      }
+    }
+
+    cd(tamaguiGitDir)
+    await $`git sparse-checkout set starters`
+
+    // console.log(`Copying template into ${chalk.blueBright(projectName)}...`)
+    // await downloadAndExtractExample(resolvedProjectPath, program.template)
+    // console.log(chalk.green(`${projectName} created!`))
   } catch (e) {
-    console.error(
-      `[tamagui] Failed to download/extract example\n from: ${DOWNLOAD_URL}\n into: ${resolvedProjectPath}\n\n`,
-      e
-    )
+    console.error(`[tamagui] Failed to download/extract example into ${resolvedProjectPath}\n\n`, e)
     process.exit(1)
   }
+
+  process.exit(0)
 
   console.log('Installing packages. This might take a couple of minutes.')
   console.log()

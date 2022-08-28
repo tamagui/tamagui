@@ -1,0 +1,30 @@
+{
+  "name": "@my/ui",
+  "version": "0.0.1",
+  "sideEffects": [
+    "*.css"
+  ],
+  "private": true,
+  "types": "./types/index",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
+  },
+  "dependencies": {
+    "@my/config": "*",
+    "@tamagui/use-debounce": "^1.0.1-beta.153",
+    "@tamagui/use-force-update": "^1.0.1-beta.153",
+    "@tamagui/use-window-size": "^1.0.1-beta.152",
+    "tamagui": "^1.0.1-beta.153"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.153"
+  }
+}
