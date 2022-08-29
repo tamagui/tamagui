@@ -147,19 +147,19 @@ export function styled<
 
 // import { Stack } from './views/Stack'
 // const X = styled(Stack, {
-//   variants: {
-//     size: {
-//       '...size': (val) => {
-//         return {}
-//       }
-//     },
-//     disabled: {
-//       true: {
-//         opacity: 0.5,
-//         pointerEvents: 'none',
-//       },
-//     },
-//   }
+//   // variants: {
+//   //   size: {
+//   //     '...size': (val) => {
+//   //       return {}
+//   //     }
+//   //   },
+//   //   disabled: {
+//   //     true: {
+//   //       opacity: 0.5,
+//   //       pointerEvents: 'none',
+//   //     },
+//   //   },
+//   // }
 // })
-// type variants = GetStyledVariants<typeof X>
+// // type variants = GetStyledVariants<typeof X>
 // const y = <X disabled size="$10" />

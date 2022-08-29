@@ -156,7 +156,8 @@ export type CreateTamaguiConfig<
   C extends GenericShorthands = GenericShorthands,
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
-  F extends GenericFonts = GenericFonts
+  F extends GenericFonts = GenericFonts,
+  G extends boolean = boolean
 > = {
   fonts: RemoveLanguagePostfixes<F>
   fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[]
@@ -165,6 +166,7 @@ export type CreateTamaguiConfig<
   shorthands: C
   media: D
   animations: AnimationDriver<E>
+  onlyAllowShorthands: G
 }
 
 type GetLanguagePostfix<Set> = Set extends string
@@ -185,13 +187,7 @@ type RemoveLanguagePostfixes<F extends GenericFonts> = {
 
 type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>
 
-// test RemoveLanguagePostfixes
-// type x = CreateTamaguiConfig<any, any, any, any, any, {
-//   body: any,
-//   body_en: any
-// }>['fonts']
-
-type ConfProps<
+type InferrableConfProps<
   A extends GenericTokens,
   B extends GenericThemes,
   C extends GenericShorthands = GenericShorthands,
@@ -205,9 +201,10 @@ type ConfProps<
   media?: D
   animations?: AnimationDriver<E>
   fonts: F
+  onlyAllowShorthands?: boolean
 }
 
-export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
+export type InferTamaguiConfig<Conf> = Conf extends InferrableConfProps<
   infer A,
   infer B,
   infer C,
@@ -215,7 +212,7 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   infer E,
   infer F
 >
-  ? TamaguiInternalConfig<A, B, C, D, E, F>
+  ? TamaguiInternalConfig<A, B, C, D, E, F, Conf['onlyAllowShorthands'] extends true ? true : false>
   : unknown
 
 // for use in creation functions so it doesnt get overwrtitten
@@ -292,6 +289,11 @@ export type CreateTamaguiProps = {
 
   // only if you put the theme classname on the html element we have to generate diff
   themeClassNameOnRoot?: boolean
+
+  /**
+   * Only allow shorthands when enabled
+   */
+  onlyAllowShorthands?: boolean
 }
 
 // this is the config generated via createTamagui()
@@ -301,9 +303,10 @@ export type TamaguiInternalConfig<
   C extends GenericShorthands = GenericShorthands,
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
-  F extends GenericFonts = GenericFonts
+  F extends GenericFonts = GenericFonts,
+  G extends boolean = boolean
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
-  CreateTamaguiConfig<A, B, C, D, E, F> & {
+  CreateTamaguiConfig<A, B, C, D, E, F, G> & {
     // TODO need to make it this but this breaks types, revisit
     // animations: E //AnimationDriver<E>
     // with $ prefixes for fast lookups (one time cost at startup vs every render)
@@ -345,9 +348,7 @@ export type MediaQueryObject = { [key: string]: string | number | string }
 export type MediaQueryKey = keyof Media
 export type MediaPropKeys = `$${MediaQueryKey}`
 export type MediaQueryState = { [key in MediaPropKeys]: boolean }
-export type MediaProps<A> = {
-  [key in MediaPropKeys]?: A
-}
+
 export type MediaQueries = {
   [key in MediaQueryKey]: MediaQueryObject
 }
@@ -506,22 +507,18 @@ export type WithThemeValues<T extends object> = {
 }
 
 // adds shorthand props
-export type WithShorthands<StyleProps> = {
+export type ShorthandsOnly<StyleProps extends Record<string, any>> = {
   [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps
     ? StyleProps[Shorthands[Key]] | null
     : undefined
 }
 
-// adds pseudo props
-export type PseudoProps<A> = {
-  hoverStyle?: A | null
-  pressStyle?: A | null
-  focusStyle?: A | null
-  exitStyle?: A | null
-  enterStyle?: A | null
-}
-
-export type PseudoPropKeys = keyof PseudoProps<any>
+export type Longhands = TamaguiConfig['shorthands'][keyof TamaguiConfig['shorthands']]
+export type OmitLonghands<R extends Record<string, any>> = Longhands extends never
+  ? R
+  : TamaguiConfig['onlyAllowShorthands'] extends true
+  ? Omit<R, Longhands>
+  : R
 
 export type PseudoStyles = {
   hoverStyle?: ViewStyle
@@ -531,11 +528,23 @@ export type PseudoStyles = {
   exitStyle?: ViewStyle
 }
 
-//
-// add both theme and shorthands
-//
-type WithThemeAndShorthands<A extends object> = WithThemeValues<A> &
-  WithShorthands<WithThemeValues<A>>
+// adds pseudo props
+export type PseudoProps<A extends Record<string, any>> = {
+  hoverStyle?: A | null
+  pressStyle?: A | null
+  focusStyle?: A | null
+  exitStyle?: A | null
+  enterStyle?: A | null
+}
+
+export type PseudoPropKeys = keyof PseudoProps<any>
+
+/**
+ * Add both theme and shorthands
+ *    note: ShorthandsOnly<> needs to happen with longhands present, keep OmitLonghands parallel
+ */
+type WithThemeAndShorthands<A extends object> = OmitLonghands<WithThemeValues<A>> &
+  ShorthandsOnly<WithThemeValues<A>>
 
 //
 // combines all of theme, shorthands, pseudos...
@@ -546,6 +555,9 @@ type WithThemeShorthandsAndPseudos<A extends object> =
 //
 // ... media queries and animations
 //
+export type MediaProps<A extends Record<string, any>> = {
+  [key in MediaPropKeys]?: A
+}
 type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> &
   MediaProps<WithThemeShorthandsAndPseudos<A>>
 
@@ -568,9 +580,9 @@ export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibilit
   TransformStyleProps &
   WebOnlyStyleProps
 
-export type StackPropsBaseShared = Omit<ViewProps, 'display' | 'children'> &
-  RNWViewProps &
-  TamaguiComponentPropsBase
+export type StackPropsBaseShared = OmitLonghands<
+  Omit<ViewProps, 'display' | 'children'> & RNWViewProps & TamaguiComponentPropsBase
+>
 
 export type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>
 export type StackPropsBase = StackPropsBaseShared & WithThemeAndShorthands<StackStylePropsBase>
@@ -597,9 +609,10 @@ export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility
     wordWrap?: Properties['wordWrap']
   }
 
-export type TextPropsBaseShared = Omit<ReactTextProps, 'children'> &
-  RNWTextProps &
-  TamaguiComponentPropsBase
+export type TextPropsBaseShared = OmitLonghands<
+  Omit<ReactTextProps, 'children'> & RNWTextProps & TamaguiComponentPropsBase
+>
+
 export type TextPropsBase = TextPropsBaseShared & WithThemeAndShorthands<TextStylePropsBase>
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>
 export type TextProps = TextPropsBaseShared & TextStyleProps
@@ -616,6 +629,7 @@ export type ViewOrTextProps = WithThemeShorthandsPseudosMediaAnimation<
 export type TamaguiComponent<
   Props = any,
   Ref = any,
+  // just storing these for inferring later
   BaseProps = {},
   VariantProps = {}
 > = ReactComponentWithRef<Props, Ref> & StaticComponentObject

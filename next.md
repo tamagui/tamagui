@@ -1,7 +1,5 @@
 - 1.0
 
-  - get tests passing
-
   - Image JSON error on kitchen-sink
   - Sheet drag up small bug native with scrollable content
   - prod build native stuck on copying resources
@@ -10,7 +8,6 @@
     - flicker on some enterStyle animation native (hermes only)
   - reduce bundle size by sharing accessibility prop validity and a few others
     - see https://discord.com/channels/909986013848412191/909986013848412194/1006909946010542221
-  - Select is triggering sheet when not small - media query regression
   - changing family responsive tests
   - animation accept useAnimatedStyle
   - adding `shorthandsOverride` to createTamagui should be easy enough to type with Omit<>

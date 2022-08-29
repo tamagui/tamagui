@@ -103,7 +103,7 @@ export interface TamaguiCustomConfig {
 }
 export interface TamaguiConfig extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>, TamaguiCustomConfig {
 }
-export declare type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = {
+export declare type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends boolean = boolean> = {
     fonts: RemoveLanguagePostfixes<F>;
     fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[];
     tokens: A;
@@ -111,6 +111,7 @@ export declare type CreateTamaguiConfig<A extends GenericTokens, B extends Gener
     shorthands: C;
     media: D;
     animations: AnimationDriver<E>;
+    onlyAllowShorthands: G;
 };
 declare type GetLanguagePostfix<Set> = Set extends string ? Set extends `${string}_${infer Postfix}` ? Postfix : never : never;
 declare type OmitLanguagePostfix<Set> = Set extends string ? Set extends `${infer Prefix}_${string}` ? Prefix : Set : never;
@@ -118,15 +119,16 @@ declare type RemoveLanguagePostfixes<F extends GenericFonts> = {
     [Key in OmitLanguagePostfix<keyof F>]: F[Key];
 };
 declare type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>;
-declare type ConfProps<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = {
+declare type InferrableConfProps<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = {
     tokens: A;
     themes: B;
     shorthands?: C;
     media?: D;
     animations?: AnimationDriver<E>;
     fonts: F;
+    onlyAllowShorthands?: boolean;
 };
-export declare type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F> ? TamaguiInternalConfig<A, B, C, D, E, F> : unknown;
+export declare type InferTamaguiConfig<Conf> = Conf extends InferrableConfProps<infer A, infer B, infer C, infer D, infer E, infer F> ? TamaguiInternalConfig<A, B, C, D, E, F, Conf['onlyAllowShorthands'] extends true ? true : false> : unknown;
 export declare type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 export declare type ThemeObject = TamaguiConfig['themes'][keyof TamaguiConfig['themes']];
 export declare type Tokens = TamaguiConfig['tokens'];
@@ -168,8 +170,9 @@ export declare type CreateTamaguiProps = {
     maxDarkLightNesting?: number;
     shouldAddPrefersColorThemes?: boolean;
     themeClassNameOnRoot?: boolean;
+    onlyAllowShorthands?: boolean;
 };
-export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & CreateTamaguiConfig<A, B, C, D, E, F> & {
+export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends boolean = boolean> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & CreateTamaguiConfig<A, B, C, D, E, F, G> & {
     tokensParsed: CreateTokens<Variable>;
     themeConfig: any;
     fontsParsed: GenericFonts;
@@ -219,9 +222,6 @@ export declare type MediaQueryKey = keyof Media;
 export declare type MediaPropKeys = `$${MediaQueryKey}`;
 export declare type MediaQueryState = {
     [key in MediaPropKeys]: boolean;
-};
-export declare type MediaProps<A> = {
-    [key in MediaPropKeys]?: A;
 };
 export declare type MediaQueries = {
     [key in MediaQueryKey]: MediaQueryObject;
@@ -291,17 +291,11 @@ export declare type ThemeValueFallback = UnionableString | Variable;
 export declare type WithThemeValues<T extends object> = {
     [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback;
 };
-export declare type WithShorthands<StyleProps> = {
+export declare type ShorthandsOnly<StyleProps extends Record<string, any>> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };
-export declare type PseudoProps<A> = {
-    hoverStyle?: A | null;
-    pressStyle?: A | null;
-    focusStyle?: A | null;
-    exitStyle?: A | null;
-    enterStyle?: A | null;
-};
-export declare type PseudoPropKeys = keyof PseudoProps<any>;
+export declare type Longhands = TamaguiConfig['shorthands'][keyof TamaguiConfig['shorthands']];
+export declare type OmitLonghands<R extends Record<string, any>> = Longhands extends never ? R : TamaguiConfig['onlyAllowShorthands'] extends true ? Omit<R, Longhands> : R;
 export declare type PseudoStyles = {
     hoverStyle?: ViewStyle;
     pressStyle?: ViewStyle;
@@ -309,8 +303,19 @@ export declare type PseudoStyles = {
     enterStyle?: ViewStyle;
     exitStyle?: ViewStyle;
 };
-declare type WithThemeAndShorthands<A extends object> = WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
+export declare type PseudoProps<A extends Record<string, any>> = {
+    hoverStyle?: A | null;
+    pressStyle?: A | null;
+    focusStyle?: A | null;
+    exitStyle?: A | null;
+    enterStyle?: A | null;
+};
+export declare type PseudoPropKeys = keyof PseudoProps<any>;
+declare type WithThemeAndShorthands<A extends object> = OmitLonghands<WithThemeValues<A>> & ShorthandsOnly<WithThemeValues<A>>;
 declare type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>;
+export declare type MediaProps<A extends Record<string, any>> = {
+    [key in MediaPropKeys]?: A;
+};
 declare type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>;
 declare type WebOnlyStyleProps = {
     cursor?: string;
@@ -319,7 +324,7 @@ declare type WebOnlyStyleProps = {
     pointerEvents?: ViewProps['pointerEvents'];
 };
 export declare type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & WebOnlyStyleProps;
-export declare type StackPropsBaseShared = Omit<ViewProps, 'display' | 'children'> & RNWViewProps & TamaguiComponentPropsBase;
+export declare type StackPropsBaseShared = OmitLonghands<Omit<ViewProps, 'display' | 'children'> & RNWViewProps & TamaguiComponentPropsBase>;
 export declare type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>;
 export declare type StackPropsBase = StackPropsBaseShared & WithThemeAndShorthands<StackStylePropsBase>;
 export declare type StackProps = StackPropsBaseShared & StackStyleProps;
@@ -332,7 +337,7 @@ export declare type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVi
     whiteSpace?: Properties['whiteSpace'];
     wordWrap?: Properties['wordWrap'];
 };
-export declare type TextPropsBaseShared = Omit<ReactTextProps, 'children'> & RNWTextProps & TamaguiComponentPropsBase;
+export declare type TextPropsBaseShared = OmitLonghands<Omit<ReactTextProps, 'children'> & RNWTextProps & TamaguiComponentPropsBase>;
 export declare type TextPropsBase = TextPropsBaseShared & WithThemeAndShorthands<TextStylePropsBase>;
 export declare type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;
 export declare type TextProps = TextPropsBaseShared & TextStyleProps;

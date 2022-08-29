@@ -14,6 +14,6 @@ export declare function expandStyles(style: Record<string, any>, config?: import
     [key: string]: string | {
         [key: string]: any;
     };
-}, import("..").GenericFonts>): Record<string, any>;
+}, import("..").GenericFonts, boolean>): Record<string, any>;
 export declare function fixStyles(style: Record<string, any>): void;
 //# sourceMappingURL=expandStyles.d.ts.map

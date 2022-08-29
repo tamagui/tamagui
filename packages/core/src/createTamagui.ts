@@ -187,6 +187,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     defaultTheme: 'light',
     animations: {} as any,
     media: {},
+    onlyAllowShorthands: false,
     ...configIn,
     // vite made this into a function if it wasn't set
     shorthands: { ...shorthands },

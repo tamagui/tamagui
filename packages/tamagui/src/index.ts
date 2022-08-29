@@ -59,6 +59,8 @@ export type {
   FontSizeTokens,
   FontStyleTokens,
   FontTokens,
+  Longhands,
+  OmitLonghands,
   FontTransformTokens,
   FontWeightTokens,
   GenericFont,

@@ -9,5 +9,6 @@
     { "path": "apps/site" },
     { "path": "apps/sandbox" },
     { "path": "apps/kitchen-sink" },
+    { "path": "takeout/studio" },
   ]
 }

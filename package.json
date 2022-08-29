@@ -47,7 +47,7 @@
     "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start:clean",
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink web",
-    "studio": "cd apps/site && ../../node_modules/.bin/tg studio",
+    "studio": "cd apps/site && ../../node_modules/.bin/tamagui studio",
     "sandbox:webpack": "yarn workspace @tamagui/sandbox dev:webpack",
     "sandbox": "yarn workspace @tamagui/sandbox dev",
     "sandbox:extract": "yarn workspace @tamagui/sandbox dev:extract",

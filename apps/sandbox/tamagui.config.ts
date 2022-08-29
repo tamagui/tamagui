@@ -1,5 +1,7 @@
 import { config } from '@tamagui/config-base'
-import { createFont, createTamagui } from 'tamagui'
+import { Longhands, createFont, createTamagui } from 'tamagui'
+
+type x = Longhands
 
 const body_cn = createFont({
   family: 'noto_cn',
@@ -26,6 +28,7 @@ const tamaConf = createTamagui({
     alternative: body_cn,
   },
   themeClassNameOnRoot: false,
+  onlyAllowShorthands: true,
 })
 
 export type Conf = typeof tamaConf
