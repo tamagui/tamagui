@@ -1,18 +1,12 @@
 - 1.0
 
-  - get tests passing
-
   - Image JSON error on kitchen-sink
   - Sheet drag up small bug native with scrollable content
   - prod build native stuck on copying resources
   - kitchen-sink in Snack demo
   - check animation flicker again
     - flicker on some enterStyle animation native (hermes only)
-  - reduce bundle size by sharing accessibility prop validity and a few others
-    - see https://discord.com/channels/909986013848412191/909986013848412194/1006909946010542221
-  - Select is triggering sheet when not small - media query regression
   - changing family responsive tests
-  - animation accept useAnimatedStyle
   - adding `shorthandsOverride` to createTamagui should be easy enough to type with Omit<>
   - fix reanimated 2.9/3.0 __frame var
   - windows without WSL
@@ -33,8 +27,6 @@
   - Group make media style size use properly
   - sell sizing story better - home hero, blog post?
   - <Input /> variant doesnt override paddingHorizontal set on same input
-  - input type="email", button type="submit" etc (rnw has submit, email?)
-    - its fine to wrap input in HOC like button
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
   - forms working bubble / label
@@ -88,6 +80,9 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - animation accept useAnimatedStyle
+  - reduce bundle size by sharing accessibility prop validity and a few others
+    - see https://discord.com/channels/909986013848412191/909986013848412194/1006909946010542221
   - Switch gesture
   - loadFont, loadAnimations
   - Card should operate through context to properly sync size
