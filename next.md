@@ -20,8 +20,6 @@
   - way to use tamagui with custom design system tokens
     - basically map any tokens you choose to internal tamagui ones
   - or get overshoot clamp working for react-native animations driver
-  - bug: styled(ListItem, { ...styles }) styles not working fully
-    - maybe extractor bug actually
   - add test that kitchen-sink loads, test a few components
     - make sure loop/multi animations work too
     - https://twitter.com/FernandoTheRojo/status/1470178294721036290

@@ -766,7 +766,7 @@ export type StaticConfig = {
   /**
    * Used internally to handle extractable HoC separate
    */
-  isExtractable?: boolean
+  isHOC?: boolean
 
   /**
    * Used insternally to attach default props to names

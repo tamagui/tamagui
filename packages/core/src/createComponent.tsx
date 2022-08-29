@@ -31,7 +31,6 @@ import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { TextAncestorContext } from './contexts/TextAncestorContext'
 import { assignNativePropsToWeb } from './helpers/assignNativePropsToWeb'
 import { getReturnVariablesAs } from './helpers/createPropMapper'
-import { createShallowUpdate } from './helpers/createShallowUpdate'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import {
   SplitStyleResult,
@@ -42,6 +41,7 @@ import {
 import { getAllSelectors } from './helpers/insertStyleRule'
 import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
+import { useShallowSetState } from './helpers/useShallowSetState'
 import { addMediaQueryListener, mediaState, removeMediaQueryListener } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
@@ -98,7 +98,6 @@ function mergeShorthands({ defaultProps }: StaticConfigParsed, { shorthands }: T
 
 let initialTheme: any
 let config: TamaguiInternalConfig
-const mediaPropNames: string[] = []
 
 export function createComponent<
   ComponentPropTypes extends Object = {},
@@ -181,7 +180,7 @@ export function createComponent<
 
     const hostRef = useServerRef<TamaguiElement>(null)
     const setState = states[1]
-    const setStateShallow = createShallowUpdate(setState)
+    const setStateShallow = useShallowSetState(setState)
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
@@ -609,7 +608,7 @@ export function createComponent<
       }
     }
 
-    if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
+    if (process.env.NODE_ENV === 'development' && !isText && isWeb && !staticConfig.isHOC) {
       Children.toArray(props.children).forEach((item) => {
         if (typeof item === 'string') {
           // eslint-disable-next-line no-console
@@ -618,12 +617,19 @@ export function createComponent<
       })
     }
 
+    const unPress = useCallback(() => {
+      setStateShallow({
+        press: false,
+        pressIn: false,
+      })
+    }, [setStateShallow])
+
     if (!isRSC) {
       useEffect(() => {
         return () => {
           mouseUps.delete(unPress)
         }
-      }, [])
+      }, [unPress])
     }
 
     let styles: any[]
@@ -667,10 +673,6 @@ export function createComponent<
         : null
       if (fontFamily && fontFamily[0] === '$') {
         fontFamily = fontFamily.slice(1)
-      }
-
-      if (props['debug']) {
-        console.log('???', fontFamily, isText)
       }
 
       const classList = [
@@ -773,13 +775,6 @@ export function createComponent<
             'onHoverOut' in props ||
             'onMouseEnter' in props ||
             'onMouseLeave' in props)))
-
-    const unPress = useCallback(() => {
-      setStateShallow({
-        press: false,
-        pressIn: false,
-      })
-    }, [])
 
     const events =
       shouldAttach && !isRSC
@@ -1179,7 +1174,7 @@ export function createComponent<
         Component,
         ...conf,
         neverFlatten: true,
-        isExtractable: true,
+        isHOC: true,
         defaultProps: {
           ...Component.defaultProps,
           ...conf?.defaultProps,

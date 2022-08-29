@@ -22,7 +22,7 @@ export * from './constants/platform'
 export { createDOMProps } from '@tamagui/rnw'
 
 export * from './helpers/calc'
-export * from './helpers/createShallowUpdate'
+export * from './helpers/useShallowSetState'
 export * from './helpers/getStackSize'
 export * from './helpers/getVariantExtras'
 export * from './helpers/getAnimationDriver'

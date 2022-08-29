@@ -774,7 +774,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
               if (conditional) {
                 const [test, alt, cons] = conditional
                 if (!test) throw new Error(`no test`)
-                if ([alt, cons].some((side) => side && !isExtractable(side))) {
+                if ([alt, cons].some((side) => side && !isStaticObject(side))) {
                   if (shouldPrintDebug) {
                     logger.info(`not extractable ${alt} ${cons}`)
                   }
@@ -1170,7 +1170,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             }
           } // END function evaluateAttribute
 
-          function isExtractable(obj: t.Node): obj is t.ObjectExpression {
+          function isStaticObject(obj: t.Node): obj is t.ObjectExpression {
             return (
               t.isObjectExpression(obj) &&
               obj.properties.every((prop) => {
@@ -1207,7 +1207,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             if (!side) {
               return null
             }
-            if (!isExtractable(side)) {
+            if (!isStaticObject(side)) {
               throw new Error('not extractable')
             }
             return side.properties.flatMap((property) => {
@@ -1355,8 +1355,8 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           inlined.delete('theme')
 
           for (const [key] of [...inlined]) {
-            const isExtractableVariant = staticConfig.variants?.[key] && variantValues.has(key)
-            if (INLINE_EXTRACTABLE[key] || isExtractableVariant) {
+            const isStaticObjectVariant = staticConfig.variants?.[key] && variantValues.has(key)
+            if (INLINE_EXTRACTABLE[key] || isStaticObjectVariant) {
               inlined.delete(key)
             }
           }

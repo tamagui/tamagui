@@ -1,3 +1,5 @@
+import { Image, Text, TextInput } from 'react-native'
+
 import { createComponent } from './createComponent'
 import { RNComponents } from './helpers/RNComponents'
 import {
@@ -36,6 +38,16 @@ export function styled<
   const staticConfigProps = (() => {
     const parentStaticConfig =
       'staticConfig' in Component ? (Component.staticConfig as StaticConfig) : null
+
+    if (process.env.NODE_ENV === 'development') {
+      if (parentStaticConfig?.isHOC) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `Warning: Parent component is a functional component, not a Tamagui styled() component. Extending with styled() will break and lead to incorrect styles.`
+        )
+      }
+    }
+
     if (options) {
       const { variants, name, defaultVariants, ...defaultProps } = options
       if (defaultVariants) {
@@ -61,10 +73,14 @@ export function styled<
         : null
       const isTamagui = !isReactNativeWeb && !!parentStaticConfig
       const Comp = reactNativeWebComponent || (Component as any)
-      const isImage = Boolean(staticExtractionOptions?.isImage ?? parentStaticConfig?.isImage)
-      const isInput = Boolean(staticExtractionOptions?.isInput ?? parentStaticConfig?.isInput)
+      const isImage = Boolean(
+        staticExtractionOptions?.isImage || parentStaticConfig?.isImage || Comp === Image
+      )
+      const isInput = Boolean(
+        staticExtractionOptions?.isInput || parentStaticConfig?.isInput || Comp === TextInput
+      )
       const isText = Boolean(
-        isInput || (staticExtractionOptions?.isText ?? parentStaticConfig?.isText)
+        isInput || staticExtractionOptions?.isText || parentStaticConfig?.isText || Comp === Text
       )
 
       const conf: Partial<StaticConfig> = {

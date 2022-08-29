@@ -15,6 +15,8 @@ if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
 
+AppRegistry.registerComponent('Main', () => Sandbox)
+
 export const Sandbox = () => {
   const scheme = useColorScheme()
   const [theme, setTheme] = useState(scheme as any)
@@ -75,14 +77,10 @@ export const Sandbox = () => {
         }}
       >
         {/* <Animated.View style={style} /> */}
-
-        {/* <ButtonFrame animation="bouncy" pressable>
-          hello
-        </ButtonFrame> */}
         {/* <AlertDialogDemo /> */}
         {/* <AddThemeDemo /> */}
-        <AnimationsDemo />
-        <SheetDemo />
+        {/* <AnimationsDemo /> */}
+        {/* <SheetDemo /> */}
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SwitchDemo /> */}
@@ -100,42 +98,6 @@ export const Sandbox = () => {
     </TamaguiProvider>
   )
 }
-
-const ButtonFrame = styled(XStack, {
-  name: 'Button',
-  tag: 'button',
-  scale: 1,
-
-  jc: 'center',
-  bc: '$background',
-  bw: 1,
-  boc: '$background',
-  space: '$5',
-
-  variants: {
-    pressable: {
-      true: {
-        pressStyle: {
-          bc: '$color',
-          scale: 2,
-        },
-      },
-    },
-
-    disabled: {
-      true: {
-        bc: 'red',
-        boc: 'red',
-        pointerEvents: 'none',
-      },
-      false: {},
-    },
-  } as const,
-
-  defaultVariants: {
-    disabled: false,
-  },
-})
 
 function FontLanguageDemo() {
   return (

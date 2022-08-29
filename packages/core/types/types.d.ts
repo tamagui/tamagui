@@ -390,7 +390,7 @@ export declare type StaticConfig = {
     reactNativeWebComponent?: any;
     memo?: boolean;
     isTamagui?: boolean;
-    isExtractable?: boolean;
+    isHOC?: boolean;
     parentNames?: string[];
 };
 export declare type StylableComponent = TamaguiComponent | React.Component | React.ForwardRefExoticComponent<any> | ReactComponentWithRef<any, any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
