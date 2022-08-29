@@ -75,7 +75,7 @@ export declare const ListItemFrame: TamaguiComponent<Omit<import("react-native")
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
     disabled?: boolean | undefined;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -114,7 +114,7 @@ export declare const ListItemText: TamaguiComponent<(Omit<import("react-native")
     size?: FontSizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").TextPropsBase, {
+}>>), TamaguiElement, import("@tamagui/core").TextPropsBase, {
     size?: FontSizeTokens | undefined;
 } | ({
     size?: FontSizeTokens | undefined;
@@ -187,7 +187,7 @@ export declare const ListItemSubtitle: TamaguiComponent<(Omit<import("react-nati
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").TextPropsBase, ({
+}>>), TamaguiElement, import("@tamagui/core").TextPropsBase, ({
     size?: FontSizeTokens | undefined;
 } | ({
     size?: FontSizeTokens | undefined;
@@ -220,7 +220,7 @@ export declare const ListItem: import("@tamagui/core").ReactComponentWithRef<Lis
         size?: FontSizeTokens | undefined;
     }, string | number> & {
         [x: string]: undefined;
-    }>>), any, import("@tamagui/core").TextPropsBase, {
+    }>>), TamaguiElement, import("@tamagui/core").TextPropsBase, {
         size?: FontSizeTokens | undefined;
     } | ({
         size?: FontSizeTokens | undefined;
@@ -293,7 +293,7 @@ export declare const ListItem: import("@tamagui/core").ReactComponentWithRef<Lis
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    }>>), any, import("@tamagui/core").TextPropsBase, ({
+    }>>), TamaguiElement, import("@tamagui/core").TextPropsBase, ({
         size?: FontSizeTokens | undefined;
     } | ({
         size?: FontSizeTokens | undefined;

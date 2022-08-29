@@ -1,4 +1,4 @@
-import { GetProps, styled } from '@tamagui/core'
+import { GetProps, TamaguiElement, styled } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import { forwardRef } from 'react'
 
@@ -15,7 +15,7 @@ export const SkeletonFrame = styled(YStack, {
 export type SkeletonProps = GetProps<typeof SkeletonFrame>
 
 export const Skeleton = SkeletonFrame.extractable(
-  forwardRef(({ children, ...props }: SkeletonProps, ref) => {
+  forwardRef<TamaguiElement>(({ children, ...props }: SkeletonProps, ref) => {
     return (
       <SkeletonFrame ref={ref} {...props}>
         <SkeletonShine />

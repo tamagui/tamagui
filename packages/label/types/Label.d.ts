@@ -12,7 +12,7 @@ export declare const LabelFrame: import("@tamagui/core").TamaguiComponent<Omit<i
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
-}>>, any, import("@tamagui/core").TextPropsBase, {
+}>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").TextPropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | undefined;

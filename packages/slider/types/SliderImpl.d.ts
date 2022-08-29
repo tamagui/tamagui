@@ -16,7 +16,7 @@ export declare const DirectionalYStack: import("@tamagui/core").TamaguiComponent
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, "orientation"> & {
     orientation?: "vertical" | "horizontal" | undefined;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -43,7 +43,7 @@ export declare const SliderFrame: import("@tamagui/core").TamaguiComponent<Omit<
     orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     size?: any;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {

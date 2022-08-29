@@ -37,7 +37,6 @@
     - its fine to wrap input in HOC like button
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
-  - // TODO infer ref
   - forms working bubble / label
 
   - FAQ

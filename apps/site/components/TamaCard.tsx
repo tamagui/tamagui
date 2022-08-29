@@ -38,7 +38,7 @@ export const TamaCard = ({
       zIndex: -1,
     },
   })
-  const containerRef = useComposedRefs(glow.parentRef, shadow.parentRef)
+  const containerRef = useComposedRefs<any>(glow.parentRef, shadow.parentRef)
   return (
     <YStack
       className="transition all ease-in ms100"

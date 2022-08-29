@@ -103,7 +103,7 @@ export declare const SelectIcon: import("@tamagui/core").TamaguiComponent<(Omit<
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } | ({
@@ -185,7 +185,7 @@ export declare const SelectItemTextFrame: import("@tamagui/core").TamaguiCompone
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").TextPropsBase, ({
+}>>), TamaguiElement, import("@tamagui/core").TextPropsBase, ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 } | ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
@@ -220,7 +220,7 @@ export declare const SelectGroupFrame: import("@tamagui/core").TamaguiComponent<
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } | ({
@@ -248,7 +248,7 @@ export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<(
     vertical?: boolean | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), TamaguiElement, import("@tamagui/core").StackPropsBase, {
     vertical?: boolean | undefined;
 } | ({
     vertical?: boolean | undefined;
@@ -312,7 +312,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     }, string | number> & {
         [x: string]: undefined;
-    }>>), any, import("@tamagui/core").StackPropsBase, {
+    }>>), TamaguiElement, import("@tamagui/core").StackPropsBase, {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     } | ({

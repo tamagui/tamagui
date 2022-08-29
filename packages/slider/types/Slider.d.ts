@@ -52,7 +52,7 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     size?: any;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -111,7 +111,7 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     size?: any;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -225,7 +225,7 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {

@@ -64,7 +64,7 @@ export declare const Heading: import("@tamagui/core").TamaguiComponent<(Omit<imp
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").TextPropsBase, ({
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").TextPropsBase, ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 } | ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
@@ -285,7 +285,7 @@ export declare const H1: import("@tamagui/core").TamaguiComponent<(Omit<import("
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").TextPropsBase, (({
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").TextPropsBase, (({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 } | ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
@@ -514,7 +514,7 @@ export declare const H2: import("@tamagui/core").TamaguiComponent<(Omit<import("
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").TextPropsBase, (({
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").TextPropsBase, (({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 } | ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
@@ -743,7 +743,7 @@ export declare const H3: import("@tamagui/core").TamaguiComponent<(Omit<import("
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").TextPropsBase, (({
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").TextPropsBase, (({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 } | ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
@@ -972,7 +972,7 @@ export declare const H4: import("@tamagui/core").TamaguiComponent<(Omit<import("
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").TextPropsBase, (({
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").TextPropsBase, (({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 } | ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
@@ -1201,7 +1201,7 @@ export declare const H5: import("@tamagui/core").TamaguiComponent<(Omit<import("
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").TextPropsBase, (({
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").TextPropsBase, (({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 } | ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
@@ -1430,7 +1430,7 @@ export declare const H6: import("@tamagui/core").TamaguiComponent<(Omit<import("
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").TextPropsBase, (({
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").TextPropsBase, (({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 } | ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;

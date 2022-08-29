@@ -54,7 +54,7 @@ interface ToastTitleProps extends PrimitiveDivProps {
 declare const ToastTitle: React.ForwardRefExoticComponent<Pick<ToastTitleProps, string | number> & React.RefAttributes<TamaguiElement>>;
 interface ToastDescriptionProps extends PrimitiveDivProps {
 }
-declare const ToastDescription: React.ForwardRefExoticComponent<Pick<ToastDescriptionProps, string | number> & React.RefAttributes<any>>;
+declare const ToastDescription: React.ForwardRefExoticComponent<Pick<ToastDescriptionProps, string | number> & React.RefAttributes<TamaguiElement>>;
 interface ToastActionProps extends ToastCloseProps {
     altText: string;
 }
@@ -67,7 +67,7 @@ declare const Provider: React.FC<ToastProviderProps>;
 declare const Viewport: React.ForwardRefExoticComponent<Pick<ToastViewportProps, keyof ToastViewportProps> & React.RefAttributes<TamaguiElement>>;
 declare const Root: React.ForwardRefExoticComponent<Pick<ToastProps, keyof ToastProps> & React.RefAttributes<TamaguiElement>>;
 declare const Title: React.ForwardRefExoticComponent<Pick<ToastTitleProps, string | number> & React.RefAttributes<TamaguiElement>>;
-declare const Description: React.ForwardRefExoticComponent<Pick<ToastDescriptionProps, string | number> & React.RefAttributes<any>>;
+declare const Description: React.ForwardRefExoticComponent<Pick<ToastDescriptionProps, string | number> & React.RefAttributes<TamaguiElement>>;
 declare const Action: React.ForwardRefExoticComponent<Pick<ToastActionProps, keyof ToastActionProps> & React.RefAttributes<TamaguiElement>>;
 declare const Close: React.ForwardRefExoticComponent<Pick<ToastCloseProps, string | number> & React.RefAttributes<TamaguiElement>>;
 export { ToastProvider, ToastViewport, Toast, ToastTitle, ToastDescription, ToastAction, ToastClose, Provider, Viewport, Root, Title, Description, Action, Close, };

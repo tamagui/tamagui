@@ -119,7 +119,7 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     size?: import("@tamagui/core").SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {

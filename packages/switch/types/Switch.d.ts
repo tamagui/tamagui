@@ -56,7 +56,7 @@ export declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -146,7 +146,7 @@ export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly elevation?: SizeTokens | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {

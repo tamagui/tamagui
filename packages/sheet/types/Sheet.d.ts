@@ -1,4 +1,4 @@
-import { GetProps } from '@tamagui/core';
+import { GetProps, TamaguiElement } from '@tamagui/core';
 import { XStackProps } from '@tamagui/stacks';
 import React from 'react';
 import { View } from 'react-native';
@@ -19,7 +19,7 @@ export declare const SheetHandleFrame: import("@tamagui/core").TamaguiComponent<
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, "open"> & {
     readonly open?: boolean | undefined;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -41,7 +41,7 @@ export declare const SheetOverlayFrame: import("@tamagui/core").TamaguiComponent
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, "closed"> & {
     closed?: boolean | undefined;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -73,7 +73,7 @@ export declare const SheetFrameFrame: import("@tamagui/core").TamaguiComponent<(
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } | ({

@@ -55,7 +55,7 @@ export declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -128,7 +128,7 @@ export declare const CardHeader: import("@tamagui/core").TamaguiComponent<Omit<i
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -261,7 +261,7 @@ export declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<
     size?: SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -384,7 +384,7 @@ export declare const CardBackground: import("@tamagui/core").TamaguiComponent<(O
     chromeless?: boolean | "all" | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -462,7 +462,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     size?: SizeTokens | undefined;
 }>> & {
     __scopeCard?: import("@tamagui/create-context").Scope<any>;
-} & React.RefAttributes<View | HTMLElement>, "theme" | "themeInverse"> & {
+} & React.RefAttributes<HTMLElement | View>, "theme" | "themeInverse"> & {
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     themeInverse?: boolean | undefined;
 }) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & {
@@ -520,7 +520,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         chromeless?: boolean | "all" | undefined;
     }, "size"> & {
         size?: SizeTokens | undefined;
-    }>>, any, import("@tamagui/core").StackPropsBase, {
+    }>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
@@ -653,7 +653,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         size?: SizeTokens | undefined;
     }, string | number> & {
         [x: string]: undefined;
-    }>>), any, import("@tamagui/core").StackPropsBase, {
+    }>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
@@ -776,7 +776,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         chromeless?: boolean | "all" | undefined;
     }, string | number> & {
         [x: string]: undefined;
-    }>>), any, import("@tamagui/core").StackPropsBase, {
+    }>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {

@@ -107,7 +107,7 @@ export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComp
     chromeless?: boolean | "all" | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -182,7 +182,7 @@ export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<Omi
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {

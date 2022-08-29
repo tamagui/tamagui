@@ -1,4 +1,4 @@
-import { GetProps } from '@tamagui/core';
+import { GetProps, TamaguiElement } from '@tamagui/core';
 import React from 'react';
 export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -54,7 +54,7 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<i
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: any;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -140,7 +140,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("react-
     vertical?: boolean | undefined;
     disablePassBorderRadius?: boolean | undefined;
     disablePassSize?: boolean | undefined;
-} & React.RefAttributes<unknown>>;
+} & React.RefAttributes<TamaguiElement>>;
 export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -201,5 +201,5 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-
     vertical?: boolean | undefined;
     disablePassBorderRadius?: boolean | undefined;
     disablePassSize?: boolean | undefined;
-} & React.RefAttributes<unknown>>;
+} & React.RefAttributes<TamaguiElement>>;
 //# sourceMappingURL=Group.d.ts.map

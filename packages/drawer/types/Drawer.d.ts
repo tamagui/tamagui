@@ -27,7 +27,7 @@ export declare const DrawerHandle: import("@tamagui/core").TamaguiComponent<(Omi
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } | ({
@@ -61,7 +61,7 @@ export declare const DrawerBackdrop: import("@tamagui/core").TamaguiComponent<(O
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } | ({
@@ -94,7 +94,7 @@ export declare const DrawerFrame: import("@tamagui/core").TamaguiComponent<(Omit
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } | ({
@@ -145,7 +145,7 @@ export declare const Drawer: ((props: Omit<Omit<Partial<BottomSheetModalProps>, 
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     }, string | number> & {
         [x: string]: undefined;
-    }>>), any, import("@tamagui/core").StackPropsBase, {
+    }>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     } | ({
@@ -178,7 +178,7 @@ export declare const Drawer: ((props: Omit<Omit<Partial<BottomSheetModalProps>, 
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     }, string | number> & {
         [x: string]: undefined;
-    }>>), any, import("@tamagui/core").StackPropsBase, {
+    }>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     } | ({
@@ -211,7 +211,7 @@ export declare const Drawer: ((props: Omit<Omit<Partial<BottomSheetModalProps>, 
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     }, string | number> & {
         [x: string]: undefined;
-    }>>), any, import("@tamagui/core").StackPropsBase, {
+    }>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     } | ({

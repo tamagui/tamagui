@@ -11,7 +11,7 @@ export declare const TextAreaFrame: import("@tamagui/core").TamaguiComponent<imp
     size?: import("@tamagui/core").SizeTokens | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
-}>>, any, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, {
+}>>, import("@tamagui/core").TamaguiElement, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, {
     size?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -29,7 +29,7 @@ export declare const TextArea: import("@tamagui/core").TamaguiComponent<import("
     size?: import("@tamagui/core").SizeTokens | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
-}>>, any, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, {
+}>>, import("@tamagui/core").TamaguiElement, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, {
     size?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | undefined;

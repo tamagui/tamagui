@@ -1,5 +1,6 @@
 import {
   GetProps,
+  TamaguiElement,
   getConfig,
   getExpandedShorthands,
   getTokens,
@@ -42,7 +43,7 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
 
 function createGroup(verticalDefault: boolean) {
   return GroupFrame.extractable(
-    forwardRef((propsIn: GroupProps, ref) => {
+    forwardRef<TamaguiElement, GroupProps>((propsIn, ref) => {
       const {
         children: childrenProp,
         space,

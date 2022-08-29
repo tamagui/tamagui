@@ -47,7 +47,7 @@ export declare const ThemeableStack: import("@tamagui/core").TamaguiComponent<Om
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {

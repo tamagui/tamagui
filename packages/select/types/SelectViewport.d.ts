@@ -54,7 +54,7 @@ export declare const SelectViewportFrame: import("@tamagui/core").TamaguiCompone
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {

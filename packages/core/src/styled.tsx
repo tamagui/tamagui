@@ -10,6 +10,7 @@ import {
   StaticConfig,
   StylableComponent,
   TamaguiComponent,
+  TamaguiElement,
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
@@ -138,8 +139,7 @@ export function styled<
 
   return component as TamaguiComponent<
     Props,
-    // TODO infer ref
-    any,
+    TamaguiElement,
     ParentPropsBase,
     ParentVariants & OurVariants
   >

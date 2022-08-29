@@ -75,7 +75,7 @@ export declare const ButtonFrame: TamaguiComponent<Omit<import("react-native").V
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -114,7 +114,7 @@ export declare const ButtonText: TamaguiComponent<(Omit<import("react-native").T
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").TextPropsBase, {
+}>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").TextPropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 } | ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;

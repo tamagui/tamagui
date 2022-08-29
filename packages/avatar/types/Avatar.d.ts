@@ -33,7 +33,7 @@ export declare const AvatarFallbackFrame: import("@tamagui/core").TamaguiCompone
     readonly elevation?: SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } | ({
@@ -194,7 +194,7 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     size?: SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {

@@ -65,7 +65,7 @@ export declare const DialogPortalFrame: import("@tamagui/core").TamaguiComponent
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}>>), TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } | ({
@@ -133,7 +133,7 @@ declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<Omit<
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
-}>>, any, import("@tamagui/core").StackPropsBase, {
+}>>, TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -860,7 +860,7 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").TextPropsBase, ((({
+}>>), TamaguiElement, import("@tamagui/core").TextPropsBase, ((({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 } | ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
@@ -1653,7 +1653,7 @@ declare const DialogDescriptionFrame: import("@tamagui/core").TamaguiComponent<(
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), any, import("@tamagui/core").TextPropsBase, ({
+}>>), TamaguiElement, import("@tamagui/core").TextPropsBase, ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 } | ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
