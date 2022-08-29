@@ -489,3 +489,8 @@ input, textarea {
   display:none;
 }
 .custom-scroll:hover ::-webkit-scrollbar-thumb{display:flex;}
+
+.scroll-horizontal {
+  max-width: 100%;
+  overflow-x: auto;
+}
