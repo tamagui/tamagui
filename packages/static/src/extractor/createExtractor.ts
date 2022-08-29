@@ -287,7 +287,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     /**
      * Step 2: Statically extract from JSX < /> nodes
      */
-    let programPath: NodePath<t.Program>
+    let programPath: NodePath<t.Program> | null = null
 
     const res = {
       styled: 0,
@@ -1390,37 +1390,43 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           // TODO move this to bottom and re-check shouldFlatten
           // account for shouldFlatten could change w the above block "if (disableExtractVariables)"
           if (shouldFlatten && shouldWrapTheme) {
-            if (shouldPrintDebug) {
-              logger.info(['  - wrapping theme', themeVal].join(' '))
-            }
+            if (!programPath) {
+              console.warn(
+                `No program path found, avoiding importing flattening / importing theme in ${sourcePath}`
+              )
+            } else {
+              if (shouldPrintDebug) {
+                logger.info(['  - wrapping theme', themeVal].join(' '))
+              }
 
-            // remove theme attribute from flattened node
-            attrs = attrs.filter((x) =>
-              x.type === 'attr' && t.isJSXAttribute(x.value) && x.value.name.name === 'theme'
-                ? false
-                : true
-            )
+              // remove theme attribute from flattened node
+              attrs = attrs.filter((x) =>
+                x.type === 'attr' && t.isJSXAttribute(x.value) && x.value.name.name === 'theme'
+                  ? false
+                  : true
+              )
 
-            // add import
-            if (!hasImportedTheme) {
-              hasImportedTheme = true
-              programPath.node.body.push(
-                t.importDeclaration(
-                  [t.importSpecifier(t.identifier('_TamaguiTheme'), t.identifier('Theme'))],
-                  t.stringLiteral('@tamagui/core')
+              // add import
+              if (!hasImportedTheme) {
+                hasImportedTheme = true
+                programPath.node.body.push(
+                  t.importDeclaration(
+                    [t.importSpecifier(t.identifier('_TamaguiTheme'), t.identifier('Theme'))],
+                    t.stringLiteral('@tamagui/core')
+                  )
+                )
+              }
+
+              traversePath.replaceWith(
+                t.jsxElement(
+                  t.jsxOpeningElement(t.jsxIdentifier('_TamaguiTheme'), [
+                    t.jsxAttribute(t.jsxIdentifier('name'), themeVal.value),
+                  ]),
+                  t.jsxClosingElement(t.jsxIdentifier('_TamaguiTheme')),
+                  [traversePath.node]
                 )
               )
             }
-
-            traversePath.replaceWith(
-              t.jsxElement(
-                t.jsxOpeningElement(t.jsxIdentifier('_TamaguiTheme'), [
-                  t.jsxAttribute(t.jsxIdentifier('name'), themeVal.value),
-                ]),
-                t.jsxClosingElement(t.jsxIdentifier('_TamaguiTheme')),
-                [traversePath.node]
-              )
-            )
           }
 
           // only if we flatten, ensure the default styles are there
