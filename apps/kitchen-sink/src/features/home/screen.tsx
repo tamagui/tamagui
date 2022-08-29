@@ -5,15 +5,21 @@ import { Alert, Pressable, ScrollView, View } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
+  Card,
+  Circle,
   FontLanguage,
   H1,
+  H2,
+  Image,
   ListItem,
   ListItemProps,
+  Paragraph,
   Separator,
   Spacer,
   Square,
   Switch,
   Text,
+  XStack,
   YGroup,
   YStack,
   useTheme,
@@ -53,6 +59,8 @@ export function HomeScreen() {
           <Square size={50} bc="red" />
         </XStack> */}
 
+        {/* <SkeletonDemo /> */}
+
         <YGroup size="$4">
           <ColorSchemeListItem />
         </YGroup>
@@ -75,6 +83,63 @@ export function HomeScreen() {
       </YStack>
     </ScrollView>
   )
+}
+
+/**
+ * we'll add a selector to each atomic style output within a boolean variant, so if we define:
+
+const Circle = styled(Stack, {
+  variants: {
+    bl: {
+      true: {
+        color: 'blue'
+      }
+    }
+  }
+})
+
+
+instead of just:
+
+.color-blue { color: blue }
+
+
+we generate:
+
+.color-blue, .variant-bl .color-blue { color: blue }
+
+
+and then <Variant /> is super lightweight, it adds a new internal-only context VariantContext that is only used for non-flattened views, and that's really simple it basically just overrides the prop on the way in, only a couple lines change of code total. And then it also does a <span className="display-contents variant-bl" /> on web
+ */
+
+const SkeletonDemo = () => {
+  return (
+    <Variant skeleton>
+      <Card theme="dark" elevate size="$4" bordered>
+        <Card.Header padded>
+          <H2>Sony A7IV</H2>
+          <Paragraph theme="alt2">Now available</Paragraph>
+        </Card.Header>
+        <Card.Footer padded>
+          <Circle size="$3" bc="red" />
+          <XStack f={1} />
+          <Button br="$10">Purchase</Button>
+        </Card.Footer>
+        <Card.Background>
+          <Square bc="green" pos="absolute" width={400} height={500} />
+        </Card.Background>
+      </Card>
+    </Variant>
+  )
+}
+
+// web
+// <div is="card" />
+//
+// .skeleton .card {}
+
+const Variant = (props) => {
+  return props.children
 }
 
 const ColorSchemeListItem = () => {

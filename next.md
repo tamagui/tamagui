@@ -10,7 +10,6 @@
     - flicker on some enterStyle animation native (hermes only)
   - reduce bundle size by sharing accessibility prop validity and a few others
     - see https://discord.com/channels/909986013848412191/909986013848412194/1006909946010542221
-  - Select is triggering sheet when not small - media query regression
   - changing family responsive tests
   - animation accept useAnimatedStyle
   - adding `shorthandsOverride` to createTamagui should be easy enough to type with Omit<>
@@ -20,9 +19,6 @@
   - way to use tamagui with custom design system tokens
     - basically map any tokens you choose to internal tamagui ones
   - or get overshoot clamp working for react-native animations driver
-  - add test that kitchen-sink loads, test a few components
-    - make sure loop/multi animations work too
-    - https://twitter.com/FernandoTheRojo/status/1470178294721036290
   - mismatch SSR SelectTrigger due to componentName override
   - // TODO still have as const bug
   - try using react-native-web $css object support for classnames
@@ -88,6 +84,8 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - make sure loop/multi animations work too
+    - https://twitter.com/FernandoTheRojo/status/1470178294721036290
   - Switch gesture
   - loadFont, loadAnimations
   - Card should operate through context to properly sync size
