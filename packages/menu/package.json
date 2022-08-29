@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/menu",
-  "version": "1.0.1-beta.155",
+  "version": "1.0.1-beta.156",
   "sideEffects": [
     "*.css"
   ],
@@ -23,15 +23,15 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.155",
-    "@tamagui/popover": "^1.0.1-beta.155"
+    "@tamagui/core": "^1.0.1-beta.156",
+    "@tamagui/popover": "^1.0.1-beta.156"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.155",
+    "@tamagui/build": "^1.0.1-beta.156",
     "react": "*",
     "react-dom": "*"
   },
