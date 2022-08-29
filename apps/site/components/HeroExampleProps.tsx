@@ -8,11 +8,11 @@ import { HomeH2 } from './HomeH2'
 const FeatureItem = ({ label, children }) => {
   return (
     <SizableText>
-      <SizableText size="$4" fow="800">
+      <SizableText size="$5" fow="800">
         {label}
       </SizableText>
       &nbsp;&nbsp;-&nbsp;&nbsp;
-      <SizableText size="$4" tag="span" theme="alt2">
+      <SizableText size="$5" tag="span" theme="alt2">
         {children}
       </SizableText>
     </SizableText>

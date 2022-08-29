@@ -7,6 +7,7 @@ export function getUserLayout(page) {
 }
 
 function UserLayout({ children }) {
+  return children
   return (
     <UserProvider supabaseClient={supabaseClient}>
       <MyUserContextProvider supabaseClient={supabaseClient}>{children}</MyUserContextProvider>

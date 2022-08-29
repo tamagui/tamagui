@@ -5,7 +5,19 @@ import { getAllFrontmatter } from '@lib/mdx'
 import { format, parseISO } from 'date-fns'
 import Link from 'next/link'
 import React from 'react'
-import { H1, H2, H3, Paragraph, Spacer, XStack, YStack } from 'tamagui'
+import {
+  H1,
+  H2,
+  H3,
+  Paragraph,
+  SizableText,
+  Spacer,
+  Square,
+  Text,
+  ThemeInverse,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { Card } from '../../components/Card'
 import { Container, ContainerLarge } from '../../components/Container'
@@ -17,10 +29,9 @@ export default function Blog({ frontmatters }) {
       <HeaderIndependent />
       <Spacer size="$7" />
       <Container>
-        <YStack space="$2" ai="center">
-          <H1>Blog</H1>
-          <H2 size="$8" theme="alt2" fontWeight="300">
-            What's new with Tamagui
+        <YStack space="$4" ai="center">
+          <H2 size="$8" theme="alt2" fontFamily="$silkscreen">
+            What's new
           </H2>
         </YStack>
       </Container>
@@ -38,25 +49,28 @@ export default function Blog({ frontmatters }) {
                 }}
                 $sm={{ width: 'auto', maxWidth: 'auto', minWidth: '100%' }}
                 p="$4"
-                mb="$6"
+                mb="$2"
               >
                 <YStack space="$2">
-                  <YStack space="$2">
-                    <H3 fontFamily="$silkscreen" size="$6" color="$color" cursor="pointer">
-                      {frontmatter.title}
-                    </H3>
-                    <XStack>
-                      <Paragraph cursor="inherit" tag="time" size="$3" theme="alt2">
-                        {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')}
-                      </Paragraph>
-                      <Paragraph cursor="inherit" fow="800" theme="alt2" size="$3">
-                        &nbsp;by {authors[frontmatter.by].name}
-                      </Paragraph>
-                      {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}
-                    </XStack>
+                  <H3 fontFamily="$silkscreen" size="$9" color="$color" cursor="pointer">
+                    {frontmatter.title}
+                  </H3>
+
+                  <Spacer f={0.5} />
+
+                  <YStack>
+                    <Paragraph cursor="inherit" tag="time" size="$5" theme="alt2">
+                      {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')}
+                    </Paragraph>
+                    <Paragraph cursor="inherit" fow="800" theme="alt2" size="$4">
+                      &nbsp;by {authors[frontmatter.by].name}
+                    </Paragraph>
+                    {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}
                   </YStack>
 
-                  <Paragraph cursor="inherit" theme="alt2">
+                  <Spacer f={0.5} />
+
+                  <Paragraph size="$6" cursor="inherit" theme="alt2">
                     {frontmatter.description}
                   </Paragraph>
                 </YStack>

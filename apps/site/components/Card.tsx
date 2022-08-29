@@ -4,12 +4,12 @@ export const Card = styled(YStack, {
   name: 'Card',
   className: 'transition all ease-in ms100',
   borderRadius: '$2',
-  backgroundColor: '$background',
+  backgroundColor: 'transparent',
   flexShrink: 1,
-  elevation: '$2',
+  elevation: '$1',
   hoverStyle: {
-    backgroundColor: '$backgroundHover',
-    elevation: '$4',
+    backgroundColor: '$background',
+    elevation: '$3',
     y: -4,
   },
   pressStyle: {

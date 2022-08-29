@@ -17,9 +17,12 @@ export const createSilkscreenFont = <A extends GenericFont<keyof typeof size>>(
       4: '300',
     },
     letterSpacing: {
-      4: 0,
-      5: 1,
-      6: 2,
+      4: 1,
+      5: 3,
+      6: 3,
+      9: -2,
+      10: -3,
+      12: -4,
     },
     ...(font as any),
   })

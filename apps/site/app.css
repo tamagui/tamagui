@@ -116,15 +116,6 @@ span._display-1adg3ll > span._display-xoduu5 {
   );
 }
 
-.hero-gradient-white {
-  background: linear-gradient(
-    330deg,
-    rgba(0,0,0,0) 0%,
-    var(--red2) 50%,
-    rgba(0,0,0,0) 100%
-  );
-}
-
 /* reset */
 
 p,
@@ -244,7 +235,7 @@ iframe {
 .bg-dot-grid {
   contain: paint;
   background-position: center center;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='23px' height='23px' viewBox='0 0 23 23' fill='none'%3E%3Ccircle cx='22' cy='22' r='0.88' fill='rgba(115,115,115,0.4)' /%3E%3C/svg%3E%0A");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='23px' height='23px' viewBox='0 0 23 23' fill='none'%3E%3Ccircle cx='22' cy='22' r='0.88' fill='rgba(115,115,115,0.3)' /%3E%3C/svg%3E%0A");
 }
 
 .bg-grid {
@@ -254,7 +245,7 @@ iframe {
   opacity: 0.1;
 }
 
-.t_dark .bg-grid { opacity: 0.2; }
+.t_dark .bg-grid { opacity: 0.15; }
 
 .tamagui-icon {
   pointer-events: none;
@@ -439,16 +430,6 @@ iframe {
 
 .typewriter {
   opacity: 0;
-}
-
-.scroll-vertical {
-  max-width: 100%;
-  overflow-y: auto;
-}
-
-.scroll-horizontal {
-  max-width: 100%;
-  overflow-x: auto;
 }
 
 .no-scrollbar {

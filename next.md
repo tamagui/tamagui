@@ -19,7 +19,6 @@
     - https://twitter.com/FernandoTheRojo/status/1470178294721036290
   - mismatch SSR SelectTrigger due to componentName override
   - // TODO still have as const bug
-  - try using react-native-web $css object support for classnames
   - add ui package setting custom types example in starter
   - fix Label + new form inputs (native too)  
     - native works by attaching state (mutable refs) to a FormContext
@@ -80,6 +79,7 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - try using react-native-web $css object support for classnames
   - animation accept useAnimatedStyle
   - reduce bundle size by sharing accessibility prop validity and a few others
     - see https://discord.com/channels/909986013848412191/909986013848412194/1006909946010542221

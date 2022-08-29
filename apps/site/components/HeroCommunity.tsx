@@ -30,7 +30,7 @@ export function Community() {
             href="https://twitter.com/tamagui_js"
             target="_blank"
             rel="noopener noreferrer"
-            p="$5"
+            p="$6"
           >
             <svg
               width="30"
@@ -69,7 +69,7 @@ export function Community() {
             href="https://discord.gg/4qh6tdcVDa"
             target="_blank"
             rel="noopener noreferrer"
-            p="$5"
+            p="$6"
           >
             <DiscordIcon />
             {/* TODO this is using $body for other attributes not $silkscreen */}
@@ -89,7 +89,7 @@ export function Community() {
             href="https://github.com/tamagui/tamagui"
             target="_blank"
             rel="noopener noreferrer"
-            p="$5"
+            p="$6"
           >
             <GithubIcon />
             <H4 cursor="pointer" fontFamily="$silkscreen">

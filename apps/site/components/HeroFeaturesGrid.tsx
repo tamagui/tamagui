@@ -29,21 +29,21 @@ export function FeaturesGrid() {
 
             <YStack space="$2" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
-                Fast, all ways
+                SSR
               </H4>
               <Paragraph theme="alt2">
-                Get faster feedback - inline styles author much faster, without performance
-                downside.
+                Server-side rendering works by default, including responsive styles, themes and
+                variants.
               </Paragraph>
             </YStack>
 
             <YStack space="$2" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
-                SSR
+                Server Components
               </H4>
               <Paragraph theme="alt2">
-                Cross-browser server-side rendering, even for responsive styles and variants out of
-                the box.
+                Initial support for React Server Components delivering server-side rendered CSS
+                without hydration cost.
               </Paragraph>
             </YStack>
 
@@ -52,18 +52,18 @@ export function FeaturesGrid() {
                 Dev tools
               </H4>
               <Paragraph theme="alt2">
-                Debug props and pragmas, dev-time fileName/lineNumber props added on every element,
-                global Tamagui for state introspection.
+                Jump between source and code faster with compile-time file/line/component
+                data-props. Debug runtime and compile-time output with props and pragmas.
               </Paragraph>
             </YStack>
 
             <YStack space="$2" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
-                Accessibility
+                Compatibility
               </H4>
               <Paragraph theme="alt2">
-                Built on top of react-native-web, accessiblity control out of the box, plus
-                components with smart defaults.
+                Runs entirely without plugins, with optional optimizing plugins for Metro, Vite, and
+                Webpack.
               </Paragraph>
             </YStack>
 

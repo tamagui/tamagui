@@ -3,7 +3,12 @@ import { YStack, styled } from 'tamagui'
 export const FlatBubbleCard = styled(YStack, {
   padding: '$6',
   borderRadius: '$3',
-  backgroundColor: '$gray2',
+  // backgroundColor: '$gray1',
+  borderColor: '$gray3',
+  hoverStyle: {
+    borderColor: '$gray5',
+  },
+  borderWidth: 1,
   flex: 1,
   mb: '$4',
   mx: '$2',
@@ -12,6 +17,12 @@ export const FlatBubbleCard = styled(YStack, {
     feature: {
       true: {
         minWidth: 500,
+      },
+    },
+
+    flat: {
+      true: {
+        backgroundColor: '$gray1',
       },
     },
 

@@ -127,7 +127,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
               </Paragraph>
             </NextLink>
 
-            <NextLink prefetch={false} href="/blog" passHref>
+            <NextLink prefetch={false} href="/community" passHref>
               <Paragraph
                 fontFamily="$silkscreen"
                 px="$3"
@@ -143,7 +143,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
                   display: 'none',
                 }}
               >
-                Blog
+                Community
               </Paragraph>
             </NextLink>
 

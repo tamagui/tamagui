@@ -1,4 +1,5 @@
 import React from 'react'
+import { ScrollView } from 'react-native'
 import { YStack, YStackProps } from 'tamagui'
 
 import { Code } from './Code'
@@ -15,16 +16,18 @@ export function CodeDemoPreParsed({
   return (
     <YStack
       br="$8"
-      className={`scroll-horizontal scroll-vertical language-${language}`}
+      className={`language-${language}`}
       bc="$backgroundHover"
       boc="$borderColor"
       bw={1}
       f={1}
       {...props}
     >
-      <Pre f={1}>
-        <Code dangerouslySetInnerHTML={{ __html: source }} />
-      </Pre>
+      <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+        <Pre f={1}>
+          <Code dangerouslySetInnerHTML={{ __html: source }} />
+        </Pre>
+      </ScrollView>
     </YStack>
   )
 }
