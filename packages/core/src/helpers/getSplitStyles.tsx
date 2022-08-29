@@ -1,8 +1,9 @@
 import { stylePropsText, stylePropsTransform, validPseudoKeys, validStyles } from '@tamagui/helpers'
-import { useInsertionEffect } from 'react'
+import { useInsertionEffect, useMemo } from 'react'
 import type { ViewStyle } from 'react-native'
 
 import { getConfig } from '../config'
+import { isDevTools } from '../constants/isDevTools'
 import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
 import type {
@@ -255,6 +256,11 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      // eslint-disable-next-line no-console
+      console.groupCollapsed('  🔹 styles', keyInit, valInit)
+    }
+
     const expanded =
       isMedia || isPseudo
         ? [[keyInit, valInit]]
@@ -271,7 +277,11 @@ export const getSplitStyles: StyleSplitter = (
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       // eslint-disable-next-line no-console
-      console.log('  🔹 getSplitStyles', keyInit, valInit, expanded)
+      console.log('expanded', expanded)
+      // eslint-disable-next-line no-console
+      console.log('usedKeys', [...usedKeys])
+      // eslint-disable-next-line no-console
+      console.groupEnd()
     }
 
     if (!expanded) {
@@ -456,46 +466,49 @@ export const getSplitStyles: StyleSplitter = (
         style[key] = atomicStyle.value
       }
     }
-  } else {
-    if (classNames && state.resolveVariablesAs === 'value') {
-      // getting real values for colors for animations (reverse mapped from CSS)
-      // this isn't beautiful, but will do relatively fine performance for now
-      // has a bug still - try adding <Switch theme="bouncy" /> should animate bg color on active
-      // const selectors = getAllSelectors()
-      // for (const key in classNames) {
-      //   if (key.endsWith('Color')) {
-      //     const selector = classNames[key]
-      //     let value = selectorValuesCache[selector]
-      //     if (!value) {
-      //       const css = selectors[selector]
-      //       value = css.replace(/.*:/, '').replace(/;.*/, '')
-      //       if (value) {
-      //         const themeUnwrapped = getThemeUnwrapped(theme)
-      //         const map = themeToVariableToValueMap.get(themeUnwrapped)
-      //         if (map && value.startsWith('var(')) {
-      //           value = map[value]
-      //         }
-      //         if (value) {
-      //           selectorValuesCache[selector] = value
-      //         }
-      //       } else {
-      //         // err
-      //         continue
-      //       }
-      //     }
-      //     if (value) {
-      //       style[key] = value
-      //     }
-      //   }
-      // }
-    }
   }
+
+  // else {
+  // if (classNames && state.resolveVariablesAs === 'value') {
+  // getting real values for colors for animations (reverse mapped from CSS)
+  // this isn't beautiful, but will do relatively fine performance for now
+  // has a bug still - try adding <Switch theme="bouncy" /> should animate bg color on active
+  // const selectors = getAllSelectors()
+  // for (const key in classNames) {
+  //   if (key.endsWith('Color')) {
+  //     const selector = classNames[key]
+  //     let value = selectorValuesCache[selector]
+  //     if (!value) {
+  //       const css = selectors[selector]
+  //       value = css.replace(/.*:/, '').replace(/;.*/, '')
+  //       if (value) {
+  //         const themeUnwrapped = getThemeUnwrapped(theme)
+  //         const map = themeToVariableToValueMap.get(themeUnwrapped)
+  //         if (map && value.startsWith('var(')) {
+  //           value = map[value]
+  //         }
+  //         if (value) {
+  //           selectorValuesCache[selector] = value
+  //         }
+  //       } else {
+  //         // err
+  //         continue
+  //       }
+  //     }
+  //     if (value) {
+  //       style[key] = value
+  //     }
+  //   }
+  // }
+  // }
+  // }
 
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (transforms) {
       for (const namespace in transforms) {
         if (!transforms[namespace]) {
           if (process.env.NODE_ENV === 'development') {
+            // eslint-disable-next-line no-console
             console.warn('Error no transform', transforms, namespace)
           }
           continue
@@ -518,10 +531,17 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    if (typeof document !== 'undefined') {
+    if (isDevTools) {
       // prettier-ignore
       // eslint-disable-next-line no-console
-      console.log('  🔹 getSplitStyles out', { style, pseudos, medias, classNames, viewProps, state, rulesToInsert })
+      console.groupCollapsed('  🔹 styles =>')
+      const logs = { style, pseudos, medias, classNames, viewProps, state, rulesToInsert }
+      for (const key in logs) {
+        // eslint-disable-next-line no-console
+        console.log(key, logs[key])
+      }
+      // eslint-disable-next-line no-console
+      console.groupEnd()
     }
   }
 

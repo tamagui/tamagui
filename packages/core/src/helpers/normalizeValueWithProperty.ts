@@ -9,7 +9,9 @@ const cache = {}
 
 export function normalizeValueWithProperty(value: any, property?: string): any {
   const cached = cache[value]
-  if (cached) return cached
+  if (cached) {
+    return cached
+  }
   let res = value
   if (
     process.env.TAMAGUI_TARGET === 'web' &&

@@ -2,6 +2,7 @@ import { useForceUpdate } from '@tamagui/use-force-update'
 import React, { useContext, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
+import { isDevTools } from '../constants/isDevTools'
 import { isRSC, isSSR, useIsomorphicLayoutEffect } from '../constants/platform'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { areEqualSets } from '../helpers/areEqualSets'
@@ -55,7 +56,14 @@ export const useTheme = (
   if (process.env.NODE_ENV === 'development') {
     if (props?.debug === 'verbose') {
       // eslint-disable-next-line no-console
-      console.log('  🔹 useTheme', { themeName, componentName, name, className })
+      console.groupCollapsed('  🔹 useTheme =>', name)
+      const logs = { themeName, componentName, name, className, ...(isDevTools && { theme }) }
+      for (const key in logs) {
+        // eslint-disable-next-line no-console
+        console.log('  ', key, logs[key])
+      }
+      // eslint-disable-next-line no-console
+      console.groupEnd()
     }
   }
 
@@ -91,7 +99,7 @@ export const useTheme = (
 
   return useMemo(() => {
     return getThemeProxied(theme, name, className, themeManager, state, debugProp)
-  }, [theme, name, themeManager, className, debugProp])
+  }, [theme, name, className, themeManager, state, debugProp])
 }
 
 function getThemeProxied(
@@ -224,20 +232,21 @@ export const useChangeThemeEffect = (
     return new ThemeManager(next.name, next.theme, parentManager, reset)
   })
 
-  // if not SSR
+  // not concurrent safe for now but fixes bug in showing old value
+  if (next?.name !== themeManager.name || next?.className !== themeManager.className) {
+    themeManager.update(next)
+  }
+
   if (!isSSR) {
     useLayoutEffect(() => {
       activeThemeManagers.add(themeManager)
-
-      if (next?.name) {
-        themeManager.update(next)
-      }
 
       const disposeParentOnChange = parentManager.onChangeTheme(() => {
         const next = parentManager.getNextTheme(getThemeProps, debug)
         if (!next) return
         if (themeManager.update(next)) {
           if (process.env.NODE_ENV === 'development' && debug) {
+            // eslint-disable-next-line no-console
             console.log('Changed theme', componentName, next, { props })
           }
           forceUpdate()

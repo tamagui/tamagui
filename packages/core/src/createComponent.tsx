@@ -192,11 +192,17 @@ export function createComponent<
         // eslint-disable-next-line no-console
         console.group(`%c 🐛 ${banner}`, 'background: yellow;')
         // eslint-disable-next-line no-console
-        console.log('props in', propsIn)
+        console.groupCollapsed('initial state')
+        // eslint-disable-next-line no-console
+        console.log('props', propsIn)
+        // eslint-disable-next-line no-console
+        console.log('splitStyles', splitStyles)
         if (typeof window !== 'undefined') {
           // eslint-disable-next-line no-console
           console.log('ref', hostRef, '(click to view)')
         }
+        // eslint-disable-next-line no-console
+        console.groupEnd()
         if (props['debug'] === 'break') {
           // eslint-disable-next-line no-debugger
           debugger

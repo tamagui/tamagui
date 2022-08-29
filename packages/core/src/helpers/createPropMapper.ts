@@ -1,4 +1,5 @@
 import { getConfig } from '../config'
+import { isDevTools } from '../constants/isDevTools'
 import { isWeb } from '../constants/platform'
 import { Variable, isVariable } from '../createVariable'
 import {
@@ -380,21 +381,24 @@ const getToken = (
     }
   }
   if (hasSet) {
+    if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
+      // eslint-disable-next-line no-console
+      console.log(`   ﹒ propMapper getToken`, key, valOrVar)
+    }
     return getVariableValue(key, valOrVar, resolveAs)
   }
   if (process.env.NODE_ENV === 'development') {
     if (value && value[0] === '$') {
+      // eslint-disable-next-line no-console
       console.trace(
         `⚠️ You've passed the value "${value}" to the style property "${key}", but there's no theme or token with the key "${value}". Using theme "${theme.name}".
 
 Set the debug prop to true to see more detailed debug information.`
       )
       if (debug) {
-        if (typeof window !== 'undefined') {
-          console.log('Looked in:')
-          console.log('Theme:', theme)
-          console.log('Tokens:', tokensParsed)
-          console.log('Fonts:', fontsParsed)
+        if (isDevTools) {
+          // eslint-disable-next-line no-console
+          console.log('Looked in:', { theme, tokensParsed, fontsParsed })
         }
       }
       return null
