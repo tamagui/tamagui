@@ -10,13 +10,11 @@ export const FlatBubbleCard = styled(YStack, {
   },
   borderWidth: 1,
   flex: 1,
-  mb: '$4',
-  mx: '$2',
 
   variants: {
     feature: {
       true: {
-        minWidth: 500,
+        minWidth: 480,
       },
     },
 

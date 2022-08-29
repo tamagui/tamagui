@@ -98,13 +98,26 @@ span._display-1adg3ll > span._display-xoduu5 {
 }
 
 .hero-gradient {
+  position: relative;
+}
+
+.hero-gradient::before {
+  display: flex;
+  pointer-events: none;
+  content: ' ';
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   border: 1px solid var(--borderColor);
   background: linear-gradient(
     330deg,
-    var(--background) 0%,
-    transparent 25%,
-    transparent 75%,
-    var(--background) 100%
+    var(--backgroundHover) 0%,
+    transparent 30%,
+    transparent 70%,
+    var(--backgroundHover) 100%
   );
 }
 

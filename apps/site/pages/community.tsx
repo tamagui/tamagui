@@ -5,16 +5,32 @@ import { getAllFrontmatter } from '@lib/mdx'
 import { format, parseISO } from 'date-fns'
 import Link from 'next/link'
 import React from 'react'
-import { EnsureFlexed, H1, H2, H3, H4, Image, Paragraph, Spacer, XStack, YStack } from 'tamagui'
+import {
+  EnsureFlexed,
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  Image,
+  Paragraph,
+  Spacer,
+  XStack,
+  YStack,
+  useComposedRefs,
+  useThemeName,
+} from 'tamagui'
 
 import { Card } from '../components/Card'
+import { CocentricCircles } from '../components/CocentricCircles'
 import { Container, ContainerLarge } from '../components/Container'
 import { DiscordIcon } from '../components/DiscordIcon'
 import { FlatBubbleCard } from '../components/FlatBubbleCard'
 import { GithubIcon } from '../components/GithubIcon'
 import { HomeH2, HomeH3 } from '../components/HomeH2'
+import { useHoverGlow } from '../components/HoverGlow'
 
-export default function Community() {
+export default function Community({ frontmatters }) {
   return (
     <>
       <TitleAndMetaTags
@@ -22,45 +38,90 @@ export default function Community() {
         description="Tamagui latest news and discussion."
       />
 
+      <YStack ai="center" jc="center" fullscreen zi={-1} scale={3} o={0.1}>
+        <CocentricCircles />
+      </YStack>
+
       <HeaderIndependent />
 
-      <Spacer size="$6" />
+      <Spacer size="$4" />
 
-      <ContainerLarge space="$2">
-        <FlatBubbleCard ai="center" feature flat>
-          <H2 size="$9" ta="center">
-            Get Started
-          </H2>
+      <ContainerLarge space="$4">
+        <H1 fontFamily="$silkscreen" size="$9" als="center">
+          Community
+        </H1>
 
-          <Spacer />
+        <Spacer />
 
-          <YStack ai="center" space>
-            <H4 size="$5">Figma Design Kit</H4>
-            <Link target="_blank" href="https://www.figma.com/community/file/1125992524818379922">
-              <Image
-                animation="quick"
-                bw={0.5}
-                boc="$borderColor"
-                cur="pointer"
-                hoverStyle={{
-                  scale: 1.025,
-                  borderColor: '$color',
-                }}
-                o={0.5}
-                width={1466 * 0.25}
-                height={776 * 0.25}
-                src={'/sponsors/design-kit.png'}
-              />
-            </Link>
-          </YStack>
-        </FlatBubbleCard>
+        <XStack $sm={{ flexDirection: 'column' }}>
+          <FlatBubbleCard ai="center" feature className="hero-gradient">
+            <H2 size="$9" ta="center">
+              The Blog
+            </H2>
+            <Spacer />
+            <YStack w="100%" space>
+              {frontmatters.map((frontmatter) => (
+                <Link key={frontmatter.title} href={frontmatter.slug} passHref>
+                  <Card tag="a" p="$4" f={1}>
+                    <YStack space="$2">
+                      <H3 fontFamily="$silkscreen" size="$6" color="$color" cursor="pointer">
+                        {frontmatter.title}
+                      </H3>
+                      <XStack ai="center" space="$2">
+                        <Paragraph cursor="inherit" tag="time" size="$5" theme="alt2" fow="300">
+                          {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')}
+                        </Paragraph>
+                        <Paragraph cursor="inherit" theme="alt2" size="$4" fow="300">
+                          &nbsp;by {authors[frontmatter.by].name}
+                        </Paragraph>
+                      </XStack>
+                    </YStack>
+                  </Card>
+                </Link>
+              ))}
+            </YStack>
+          </FlatBubbleCard>
+
+          <Spacer size="$4" />
+          <FlatBubbleCard ai="center" feature flat>
+            <H2 size="$9" ta="center">
+              Design Kit
+            </H2>
+            <Spacer size="$2" />
+            <YStack ai="center" space>
+              <H4 size="$5">Figma Design Kit</H4>
+              <Link href="https://www.figma.com/community/file/1125992524818379922" passHref>
+                <YStack target="_blank" rel="noopener noreferrer" tag="a">
+                  <Image
+                    animation="quick"
+                    bw={0.5}
+                    boc="$borderColor"
+                    cur="pointer"
+                    br="$5"
+                    shac="$shadowColor"
+                    shar="$4"
+                    overflow="hidden"
+                    hoverStyle={{
+                      scale: 1.2,
+                      borderColor: '$color',
+                    }}
+                    o={0.5}
+                    width={1466 * 0.25}
+                    height={776 * 0.25}
+                    src={'/sponsors/design-kit.png'}
+                  />
+                </YStack>
+              </Link>
+            </YStack>
+          </FlatBubbleCard>
+        </XStack>
 
         <FlatBubbleCard feature>
           <H2 size="$9" ta="center">
             Get Involved
           </H2>
 
-          <Spacer size="$6" />
+          <Spacer size="$4" />
 
           <YStack maxWidth="100%" fs={0} als="center">
             <XStack space="$4" $sm={{ flexDirection: 'column' }}>
@@ -73,7 +134,7 @@ export default function Community() {
                 href="https://twitter.com/tamagui_js"
                 target="_blank"
                 rel="noopener noreferrer"
-                p="$6"
+                p="$5"
               >
                 <svg
                   width="30"
@@ -112,7 +173,7 @@ export default function Community() {
                 href="https://discord.gg/4qh6tdcVDa"
                 target="_blank"
                 rel="noopener noreferrer"
-                p="$6"
+                p="$5"
               >
                 <DiscordIcon />
                 {/* TODO this is using $body for other attributes not $silkscreen */}
@@ -132,7 +193,7 @@ export default function Community() {
                 href="https://github.com/tamagui/tamagui"
                 target="_blank"
                 rel="noopener noreferrer"
-                p="$6"
+                p="$5"
               >
                 <GithubIcon />
                 <H4 cursor="pointer" fontFamily="$silkscreen">
@@ -146,78 +207,102 @@ export default function Community() {
           </YStack>
         </FlatBubbleCard>
 
-        <FlatBubbleCard feature>
-          <H2 size="$9" ta="center">
+        <FlatBubbleCard className="rainbow">
+          <H2 size="$9" color="#fff" ta="center">
             Sponsors
           </H2>
           <Spacer size="$2" />
-          <H4 size="$4" ta="center">
+          <H4 size="$7" color="#fff" ta="center">
             $50 monthly tier
           </H4>
 
-          <Spacer size="$6" />
+          <Spacer size="$2" />
 
           <YStack maxWidth="100%" fs={0} als="center">
             <XStack space="$4" $sm={{ flexDirection: 'column' }}>
-              <YStack>
-                <Link target="_blank" href="https://codingscape.com">
-                  <Image width={540 * 0.4} height={162 * 0.4} src={'/sponsors/coding-scape.png'} />
-                </Link>
-              </YStack>
+              <Link passHref href="https://codingscape.com">
+                <YStack
+                  target="_blank"
+                  tag="a"
+                  p="$4"
+                  br="$4"
+                  hoverStyle={{ bc: 'rgba(0,0,0,0.1)' }}
+                  pressStyle={{ bc: 'rgba(0,0,0,0.2)' }}
+                  space
+                >
+                  <Image
+                    accessibilityLabel="CodingScape sponsor"
+                    width={540 * 0.4}
+                    height={162 * 0.4}
+                    src={'/sponsors/coding-scape.png'}
+                  />
+                  <H5 color="#fff" als="center" letterSpacing={4} ai="center">
+                    CondigScape
+                  </H5>
+                </YStack>
+              </Link>
             </XStack>
           </YStack>
         </FlatBubbleCard>
 
-        <FlatBubbleCard flat feature>
+        <FlatBubbleCard>
           <H2 size="$9" ta="center">
             Community starter repos
           </H2>
         </FlatBubbleCard>
 
-        <FlatBubbleCard feature>
-          <XStack flexWrap="wrap">
-            <Card
-              width="33.33%"
-              jc="center"
-              $sm={{ width: 'auto' }}
-              space="$2"
-              tag="a"
-              href="https://github.com/ivopr/tamagui-expo"
-              target="_blank"
-              rel="noopener noreferrer"
-              p="$6"
-            >
-              <GithubIcon />
-              <H4 cursor="pointer" fontFamily="$silkscreen">
-                Tamagui Expo
-              </H4>
-              <Paragraph cursor="pointer" theme="alt2">
-                by Ivo
-              </Paragraph>
-            </Card>
+        <XStack flexWrap="wrap" space="$4">
+          <Card
+            width="33.33%"
+            jc="center"
+            $sm={{ width: 'auto' }}
+            space="$2"
+            tag="a"
+            href="https://github.com/ivopr/tamagui-expo"
+            target="_blank"
+            rel="noopener noreferrer"
+            p="$6"
+          >
+            <GithubIcon />
+            <H4 cursor="pointer" fontFamily="$silkscreen">
+              Tamagui Expo
+            </H4>
+            <Paragraph cursor="pointer" theme="alt2">
+              by Ivo
+            </Paragraph>
+          </Card>
 
-            <Card
-              width="33.33%"
-              jc="center"
-              $sm={{ width: 'auto' }}
-              space="$2"
-              tag="a"
-              href="https://github.com/dohomi/tamagui-kitchen-sink"
-              target="_blank"
-              rel="noopener noreferrer"
-              p="$6"
-            >
-              <GithubIcon />
-              <H4 cursor="pointer" fontFamily="$silkscreen">
-                Kitchen Sink with Storybook
-              </H4>
-              <Paragraph cursor="pointer" theme="alt2">
-                by dohomi
-              </Paragraph>
-            </Card>
-          </XStack>
-        </FlatBubbleCard>
+          <Card
+            width="33.33%"
+            jc="center"
+            $sm={{ width: 'auto' }}
+            space="$2"
+            tag="a"
+            href="https://github.com/dohomi/tamagui-kitchen-sink"
+            target="_blank"
+            rel="noopener noreferrer"
+            p="$6"
+          >
+            <GithubIcon />
+            <H4 cursor="pointer" fontFamily="$silkscreen">
+              Kitchen Sink with Storybook
+            </H4>
+            <Paragraph cursor="pointer" theme="alt2">
+              by dohomi
+            </Paragraph>
+          </Card>
+        </XStack>
       </ContainerLarge>
+
+      <Spacer size="$10" />
     </>
   )
+}
+
+export function getStaticProps() {
+  const frontmatters = getAllFrontmatter('blog')
+  const sortedFrontmatters = frontmatters.sort(
+    (a, b) => Number(new Date(b.publishedAt || '')) - Number(new Date(a.publishedAt || ''))
+  )
+  return { props: { frontmatters: sortedFrontmatters.slice(0, 3) } }
 }
