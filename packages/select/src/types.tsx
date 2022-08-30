@@ -80,7 +80,7 @@ export type SelectViewportProps = ThemeableStackProps & {
   size?: SizeTokens
 }
 
-export type SelectContentProps = ScopedProps<{ children?: React.ReactNode }>
+export type SelectContentProps = ScopedProps<{ children?: React.ReactNode; zIndex?: number }>
 
 export interface SelectScrollButtonImplProps extends YStackProps {
   dir: 'up' | 'down'
