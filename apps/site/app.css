@@ -111,6 +111,7 @@ span._display-1adg3ll > span._display-xoduu5 {
   left: 0;
   right: 0;
   bottom: 0;
+  border-radius: 5px;
   background: linear-gradient(
     330deg,
     var(--backgroundHover) 0%,

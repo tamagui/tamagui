@@ -49,11 +49,13 @@ export default function Community({ frontmatters }) {
       <Spacer size="$4" />
 
       <ContainerLarge space="$4">
-        <H1 fontFamily="$silkscreen" size="$9" als="center">
-          Community
-        </H1>
-
-        <Spacer />
+        <XStack ai="center" space>
+          <Separator o={0.5} />
+          <H1 fontFamily="$silkscreen" size="$7" als="center">
+            Community
+          </H1>
+          <Separator o={0.5} />
+        </XStack>
 
         <XStack $sm={{ flexDirection: 'column' }}>
           <FlatBubbleCard w="50%" $sm={{ w: 'auto' }} ai="center" feature className="hero-gradient">
@@ -120,12 +122,6 @@ export default function Community({ frontmatters }) {
         </XStack>
 
         <FlatBubbleCard feature>
-          <H2 size="$9" ta="center">
-            Get Involved
-          </H2>
-
-          <Spacer size="$4" />
-
           <YStack maxWidth="100%" fs={0} als="center">
             <XStack space="$4" $sm={{ flexDirection: 'column' }}>
               <Card
@@ -268,7 +264,7 @@ export default function Community({ frontmatters }) {
 
         <Separator />
 
-        <FlatBubbleCard className="hero-gradient">
+        <FlatBubbleCard className="hero-gradient" ov="hidden">
           <YStack maxWidth="100%" fs={0} als="center">
             <XStack space="$4" $sm={{ flexDirection: 'column' }}>
               <Link passHref href="https://codingscape.com">
