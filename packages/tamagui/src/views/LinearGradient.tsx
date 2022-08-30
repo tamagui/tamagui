@@ -21,7 +21,7 @@ export const LinearGradient: React.ForwardRefExoticComponent<
 > = YStack.extractable(
   themeable(
     React.forwardRef((props: LinearGradientProps, ref) => {
-      const { start, end, colors: colorsProp, locations, ...stackProps } = props
+      const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
       const colors = useLinearGradientColors(colorsProp || [])
       return (
         // @ts-ignore
@@ -32,7 +32,9 @@ export const LinearGradient: React.ForwardRefExoticComponent<
             colors={colors}
             locations={locations}
             style={[StyleSheet.absoluteFill]}
-          />
+          >
+            {children}
+          </ExpoLinearGradient>
         </LinearGradientFrame>
       )
     })
