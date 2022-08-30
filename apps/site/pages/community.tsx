@@ -30,7 +30,7 @@ export default function Community({ frontmatters }) {
   return (
     <>
       <TitleAndMetaTags
-        title="Commujnity — Tamagui"
+        title="Community — Tamagui"
         description="Tamagui latest news and discussion."
       />
 

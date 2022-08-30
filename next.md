@@ -1,5 +1,6 @@
 - 1.0
 
+  - VisuallyHidden + mediaquery + space
   - Select id="" + Label focus
   - Image JSON error on kitchen-sink
   - Sheet drag up small bug native with scrollable content
