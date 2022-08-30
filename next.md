@@ -1,5 +1,6 @@
 - 1.0
 
+  - Select id="" + Label focus
   - Image JSON error on kitchen-sink
   - Sheet drag up small bug native with scrollable content
   - prod build native stuck on copying resources
@@ -14,15 +15,9 @@
   - way to use tamagui with custom design system tokens
     - basically map any tokens you choose to internal tamagui ones
   - or get overshoot clamp working for react-native animations driver
-  - add test that kitchen-sink loads, test a few components
-    - make sure loop/multi animations work too
-    - https://twitter.com/FernandoTheRojo/status/1470178294721036290
   - mismatch SSR SelectTrigger due to componentName override
   - // TODO still have as const bug
   - add ui package setting custom types example in starter
-  - fix Label + new form inputs (native too)  
-    - native works by attaching state (mutable refs) to a FormContext
-    - web works by just listening for event and using FormData()
   - Group make media style size use properly
   - sell sizing story better - home hero, blog post?
   - <Input /> variant doesnt override paddingHorizontal set on same input
@@ -79,6 +74,9 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - fix Label + new form inputs (native too)  
+    - native works by attaching state (mutable refs) to a FormContext
+    - web works by just listening for event and using FormData()
   - try using react-native-web $css object support for classnames
   - animation accept useAnimatedStyle
   - reduce bundle size by sharing accessibility prop validity and a few others

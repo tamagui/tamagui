@@ -6702,6 +6702,8 @@ __metadata:
     "@tamagui/compose-refs": ^1.0.1-beta.156
     "@tamagui/core": ^1.0.1-beta.156
     "@tamagui/create-context": ^1.0.1-beta.156
+    "@tamagui/dismissable": ^1.0.1-beta.156
+    "@tamagui/focus-scope": ^1.0.1-beta.156
     "@tamagui/list-item": ^1.0.1-beta.156
     "@tamagui/portal": ^1.0.1-beta.156
     "@tamagui/separator": ^1.0.1-beta.156

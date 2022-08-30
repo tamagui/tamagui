@@ -1,3 +1,4 @@
+import { FloatingFocusManager } from '@floating-ui/react-dom-interactions'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'

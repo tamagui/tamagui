@@ -3,7 +3,7 @@ import '@tamagui/polyfill-dev'
 
 import '../site/app.css'
 
-import { AnimationsDemo, SheetDemo } from '@tamagui/demos'
+import { AnimationsDemo, DialogDemo, SheetDemo } from '@tamagui/demos'
 import { useEffect, useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
 import { Button, FontLanguage, Paragraph, Sheet, TamaguiProvider, XStack, styled } from 'tamagui'
@@ -81,6 +81,7 @@ export const Sandbox = () => {
         {/* <AddThemeDemo /> */}
         {/* <AnimationsDemo /> */}
         {/* <SheetDemo /> */}
+        <DialogDemo />
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SwitchDemo /> */}

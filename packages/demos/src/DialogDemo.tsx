@@ -2,6 +2,8 @@ import { X } from '@tamagui/feather-icons'
 import React from 'react'
 import { Button, Dialog, Fieldset, Input, Label, Unspaced, YStack } from 'tamagui'
 
+import { SelectDemo } from './SelectDemo'
+
 export function DialogDemo() {
   return (
     <Dialog sheetBreakpoint="sm" modal>
@@ -56,9 +58,9 @@ export function DialogDemo() {
             </Fieldset>
             <Fieldset space="$4" horizontal>
               <Label w={160} justifyContent="flex-end" htmlFor="username">
-                Username
+                Food
               </Label>
-              <Input f={1} id="username" defaultValue="@natebirdman" />
+              <SelectDemo />
             </Fieldset>
 
             <YStack ai="flex-end" mt="$2">
@@ -71,7 +73,7 @@ export function DialogDemo() {
 
             <Unspaced>
               <Dialog.Close asChild>
-                <Button pos="absolute" t="$4" r="$4" circular icon={X} />
+                <Button pos="absolute" t="$4" r="$4" size="$3" circular icon={X} />
               </Dialog.Close>
             </Unspaced>
           </YStack>
