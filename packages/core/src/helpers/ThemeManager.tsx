@@ -96,7 +96,6 @@ export class ThemeManager {
     this.className = className || null
     this.name = name || ''
     this.theme = theme
-    this.notifyListeners()
     return true
   }
 

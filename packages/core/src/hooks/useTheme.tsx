@@ -233,12 +233,17 @@ export const useChangeThemeEffect = (
   })
 
   // not concurrent safe for now but fixes bug in showing old value
+  let didUpdate = false
   if (next?.name !== themeManager.name || next?.className !== themeManager.className) {
-    themeManager.update(next)
+    didUpdate = themeManager.update(next)
   }
 
   if (!isSSR) {
     useLayoutEffect(() => {
+      if (didUpdate) {
+        themeManager.notifyListeners()
+      }
+
       activeThemeManagers.add(themeManager)
 
       const disposeParentOnChange = parentManager.onChangeTheme(() => {
@@ -258,7 +263,7 @@ export const useChangeThemeEffect = (
         disposeParentOnChange()
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [themes, name, componentName, debug, next?.name])
+    }, [didUpdate, themes, name, componentName, debug, next?.name])
   }
 
   return {

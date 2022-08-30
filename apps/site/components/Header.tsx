@@ -2,7 +2,7 @@ import { LogoWords, tints } from '@tamagui/logo'
 import { TamaguiLogo } from '@tamagui/logo'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { Button, Paragraph, ParagraphProps, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
@@ -156,8 +156,9 @@ export function Header({ floating, disableNew, showExtra }: HeaderProps) {
   )
 }
 
-const HeadAnchor = (props: ParagraphProps) => (
+const HeadAnchor = forwardRef((props: ParagraphProps, ref) => (
   <Paragraph
+    ref={ref as any}
     fontFamily="$silkscreen"
     px="$3"
     py="$2"
@@ -169,4 +170,4 @@ const HeadAnchor = (props: ParagraphProps) => (
     tag="a"
     {...props}
   />
-)
+))
