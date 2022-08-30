@@ -4,9 +4,7 @@ import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { format, parseISO } from 'date-fns'
 import Link from 'next/link'
-import React from 'react'
 import {
-  EnsureFlexed,
   H1,
   H2,
   H3,
@@ -14,21 +12,19 @@ import {
   H5,
   Image,
   Paragraph,
+  Separator,
   Spacer,
+  ThemeInverse,
   XStack,
   YStack,
-  useComposedRefs,
-  useThemeName,
 } from 'tamagui'
 
 import { Card } from '../components/Card'
 import { CocentricCircles } from '../components/CocentricCircles'
-import { Container, ContainerLarge } from '../components/Container'
+import { ContainerLarge } from '../components/Container'
 import { DiscordIcon } from '../components/DiscordIcon'
 import { FlatBubbleCard } from '../components/FlatBubbleCard'
 import { GithubIcon } from '../components/GithubIcon'
-import { HomeH2, HomeH3 } from '../components/HomeH2'
-import { useHoverGlow } from '../components/HoverGlow'
 
 export default function Community({ frontmatters }) {
   return (
@@ -38,9 +34,15 @@ export default function Community({ frontmatters }) {
         description="Tamagui latest news and discussion."
       />
 
-      <YStack ai="center" jc="center" fullscreen zi={-1} scale={3} o={0.1}>
-        <CocentricCircles />
-      </YStack>
+      <YStack
+        ai="center"
+        jc="center"
+        fullscreen
+        zi={-1}
+        scale={3}
+        o={0.15}
+        className="bg-dot-grid"
+      ></YStack>
 
       <HeaderIndependent />
 
@@ -54,7 +56,7 @@ export default function Community({ frontmatters }) {
         <Spacer />
 
         <XStack $sm={{ flexDirection: 'column' }}>
-          <FlatBubbleCard ai="center" feature className="hero-gradient">
+          <FlatBubbleCard w="50%" $sm={{ w: 'auto' }} ai="center" feature className="hero-gradient">
             <H2 size="$9" ta="center">
               The Blog
             </H2>
@@ -83,6 +85,7 @@ export default function Community({ frontmatters }) {
           </FlatBubbleCard>
 
           <Spacer size="$4" />
+
           <FlatBubbleCard ai="center" feature flat>
             <H2 size="$9" ta="center">
               Design Kit
@@ -207,44 +210,6 @@ export default function Community({ frontmatters }) {
           </YStack>
         </FlatBubbleCard>
 
-        <FlatBubbleCard className="rainbow">
-          <H2 size="$9" color="#fff" ta="center">
-            Sponsors
-          </H2>
-          <Spacer size="$2" />
-          <H4 size="$7" color="#fff" ta="center">
-            $50 monthly tier
-          </H4>
-
-          <Spacer size="$2" />
-
-          <YStack maxWidth="100%" fs={0} als="center">
-            <XStack space="$4" $sm={{ flexDirection: 'column' }}>
-              <Link passHref href="https://codingscape.com">
-                <YStack
-                  target="_blank"
-                  tag="a"
-                  p="$4"
-                  br="$4"
-                  hoverStyle={{ bc: 'rgba(0,0,0,0.1)' }}
-                  pressStyle={{ bc: 'rgba(0,0,0,0.2)' }}
-                  space
-                >
-                  <Image
-                    accessibilityLabel="CodingScape sponsor"
-                    width={540 * 0.4}
-                    height={162 * 0.4}
-                    src={'/sponsors/coding-scape.png'}
-                  />
-                  <H5 color="#fff" als="center" letterSpacing={4} ai="center">
-                    CondigScape
-                  </H5>
-                </YStack>
-              </Link>
-            </XStack>
-          </YStack>
-        </FlatBubbleCard>
-
         <FlatBubbleCard>
           <H2 size="$9" ta="center">
             Community starter repos
@@ -292,6 +257,80 @@ export default function Community({ frontmatters }) {
             </Paragraph>
           </Card>
         </XStack>
+
+        <Separator />
+
+        <FlatBubbleCard className="rainbow">
+          <H2 size="$9" color="#fff" ta="center">
+            Gold Sponsors
+          </H2>
+        </FlatBubbleCard>
+
+        <Separator />
+
+        <FlatBubbleCard className="hero-gradient">
+          <YStack maxWidth="100%" fs={0} als="center">
+            <XStack space="$4" $sm={{ flexDirection: 'column' }}>
+              <Link passHref href="https://codingscape.com">
+                <YStack
+                  cursor="pointer"
+                  target="_blank"
+                  tag="a"
+                  p="$4"
+                  br="$4"
+                  hoverStyle={{ bc: 'rgba(0,0,0,0.1)' }}
+                  pressStyle={{ bc: 'rgba(0,0,0,0.2)' }}
+                  space
+                >
+                  <Image
+                    accessibilityLabel="CodingScape sponsor"
+                    width={540 * 0.4}
+                    height={162 * 0.4}
+                    src={'/sponsors/coding-scape.png'}
+                  />
+                  <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
+                    CodingScape
+                  </H5>
+                </YStack>
+              </Link>
+            </XStack>
+          </YStack>
+        </FlatBubbleCard>
+
+        <Separator />
+
+        <FlatBubbleCard bc="$backgroundStrong">
+          <H2 size="$9" ta="center">
+            Individual Sponsors
+          </H2>
+        </FlatBubbleCard>
+
+        <Separator />
+
+        <>
+          <FlatBubbleCard flat>
+            <YStack maxWidth="100%" fs={0} als="center">
+              <XStack space="$4" $sm={{ flexDirection: 'column' }}>
+                <Link passHref href="https://twitter.com/barelyreaper">
+                  <YStack
+                    cursor="pointer"
+                    target="_blank"
+                    tag="a"
+                    p="$4"
+                    br="$4"
+                    hoverStyle={{ bc: 'rgba(0,0,0,0.1)' }}
+                    pressStyle={{ bc: 'rgba(0,0,0,0.2)' }}
+                    space
+                  >
+                    <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
+                      @barelyreaper
+                    </H5>
+                  </YStack>
+                </Link>
+              </XStack>
+            </YStack>
+          </FlatBubbleCard>
+        </>
       </ContainerLarge>
 
       <Spacer size="$10" />

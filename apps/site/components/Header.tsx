@@ -3,7 +3,7 @@ import { TamaguiLogo } from '@tamagui/logo'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { Button, Paragraph, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
+import { Button, Paragraph, ParagraphProps, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
 import { useTint } from './ColorToggleButton'
@@ -12,21 +12,23 @@ import { GithubIcon } from './GithubIcon'
 import { HeaderFloating } from './HeaderFloating'
 import { ThemeSearchButtonGroup } from './ThemeSearchButtonGroup'
 
-export const HeaderIndependent = ({ disableNew }: { disableNew?: boolean }) => {
+export const HeaderIndependent = (props: Omit<HeaderProps, 'floating'>) => {
   return (
     <>
       <ContainerLarge>
-        <Header disableNew={disableNew} />
+        <Header {...props} />
       </ContainerLarge>
-      <HeaderFloating disableNew={disableNew} />
+      <HeaderFloating {...props} />
     </>
   )
 }
 
-export function Header({ floating, disableNew }: { floating?: boolean; disableNew?: boolean }) {
+type HeaderProps = { floating?: boolean; disableNew?: boolean; showExtra?: boolean }
+
+export function Header({ floating, disableNew, showExtra }: HeaderProps) {
   const router = useRouter()
   const isHome = router.pathname === '/'
-  const isTakeout = router.pathname.startsWith('/takeout')
+  const isInSubApp = router.pathname.startsWith('/takeout') || router.pathname.startsWith('/studio')
   const { setNextTint, setTint } = useTint()
 
   return (
@@ -54,17 +56,19 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
 
         <ThemeSearchButtonGroup />
 
-        {/* {isTakeout && (
-          <Link href="/takeout">
-            <Button size="$2">Back to takeout</Button>
-          </Link>
-        )} */}
+        {isInSubApp && (
+          <NextLink href="/">
+            <Button size="$2">Back to Tamagui</Button>
+          </NextLink>
+        )}
       </XStack>
 
       <XStack
         position="absolute"
-        $sm={{
-          display: 'none',
+        className="all ease-in ms150"
+        $md={{
+          opacity: 0,
+          pointerEvents: 'none',
         }}
         zIndex={-1}
         jc="center"
@@ -81,14 +85,13 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
 
       {/*  prevent layout shift */}
       <XStack h={40} jc="flex-end" miw={204} $xxs={{ miw: 150 }} pointerEvents="auto" tag="nav">
-        {isTakeout ? (
+        {isInSubApp ? (
           <XStack ai="center" space="$2">
             <NextLink href="/signin" passHref>
               <Paragraph
                 fontFamily="$silkscreen"
                 px="$3"
                 py="$2"
-                letterSpacing={2}
                 cursor="pointer"
                 size="$3"
                 o={0.7}
@@ -109,45 +112,34 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
             </NextLink>
           </XStack>
         ) : (
-          <XStack ai="center" space="$2">
+          <XStack ai="center" space="$1">
             <NextLink prefetch={false} href="/docs/intro/installation" passHref>
-              <Paragraph
-                fontFamily="$silkscreen"
-                px="$3"
-                py="$2"
-                letterSpacing={2}
-                cursor="pointer"
-                size="$3"
-                o={0.7}
-                hoverStyle={{ opacity: 1 }}
-                pressStyle={{ opacity: 0.5 }}
-                tag="a"
-              >
-                Docs
-              </Paragraph>
+              <HeadAnchor>Docs</HeadAnchor>
             </NextLink>
 
             <NextLink prefetch={false} href="/community" passHref>
-              <Paragraph
-                fontFamily="$silkscreen"
-                px="$3"
-                py="$2"
-                letterSpacing={2}
-                cursor="pointer"
-                size="$3"
-                o={0.7}
-                hoverStyle={{ opacity: 1 }}
-                pressStyle={{ opacity: 0.5 }}
-                tag="a"
+              <HeadAnchor
                 $xxs={{
                   display: 'none',
                 }}
               >
                 Community
-              </Paragraph>
+              </HeadAnchor>
             </NextLink>
 
-            {!disableNew && <AlphaButton />}
+            {showExtra && (
+              <NextLink prefetch={false} href="/studio" passHref>
+                <HeadAnchor>Studio</HeadAnchor>
+              </NextLink>
+            )}
+
+            {showExtra && (
+              <NextLink prefetch={false} href="/takeout" passHref>
+                <HeadAnchor>Takeout</HeadAnchor>
+              </NextLink>
+            )}
+
+            {!disableNew && !showExtra && <AlphaButton />}
 
             <NextLink href="https://github.com/tamagui/tamagui" passHref>
               <YStack p="$2" opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
@@ -163,3 +155,18 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
     </XStack>
   )
 }
+
+const HeadAnchor = (props: ParagraphProps) => (
+  <Paragraph
+    fontFamily="$silkscreen"
+    px="$3"
+    py="$2"
+    cursor="pointer"
+    size="$3"
+    o={0.7}
+    hoverStyle={{ opacity: 1 }}
+    pressStyle={{ opacity: 0.5 }}
+    tag="a"
+    {...props}
+  />
+)

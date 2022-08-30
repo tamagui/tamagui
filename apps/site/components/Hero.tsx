@@ -69,7 +69,12 @@ const HeroTop = memo(() => {
             als="center"
             maw={500}
             // prevent layout shift
-            h={96}
+            $xxs={{
+              h: 96,
+            }}
+            $gtXs={{
+              h: 70,
+            }}
             $gtSm={{
               h: 126,
               mx: 0,

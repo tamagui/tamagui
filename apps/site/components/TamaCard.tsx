@@ -14,31 +14,31 @@ export const TamaCard = ({
   footer,
   children,
 }: any) => {
-  const shadow = useHoverGlow({
-    resist: 92,
-    borderRadius: 0,
-    strategy: 'blur',
-    blurPct: 4,
-    initialOffset: {
-      y: -100,
-    },
-    full: true,
-    scale: 1,
-    color: '$colorMid',
-    background: 'transparent',
-    opacity: 1,
-    inverse: true,
-  })
-  const glow = useHoverGlow({
-    resist: 0,
-    size: 300,
-    color: 'var(--color)',
-    opacity: 0.18,
-    style: {
-      zIndex: -1,
-    },
-  })
-  const containerRef = useComposedRefs<any>(glow.parentRef, shadow.parentRef)
+  // const shadow = useHoverGlow({
+  //   resist: 92,
+  //   borderRadius: 0,
+  //   strategy: 'blur',
+  //   blurPct: 4,
+  //   initialOffset: {
+  //     y: -100,
+  //   },
+  //   full: true,
+  //   scale: 1,
+  //   color: '$colorMid',
+  //   background: 'transparent',
+  //   opacity: 1,
+  //   inverse: true,
+  // })
+  // const glow = useHoverGlow({
+  //   resist: 0,
+  //   size: 300,
+  //   color: 'var(--color)',
+  //   opacity: 0.18,
+  //   style: {
+  //     zIndex: -1,
+  //   },
+  // })
+  // const containerRef = useComposedRefs<any>(glow.parentRef, shadow.parentRef)
   return (
     <YStack
       className="transition all ease-in ms100"
@@ -54,10 +54,14 @@ export const TamaCard = ({
       }}
     >
       {/* shadow */}
-      {shadow.element}
-      <FancyCard ref={containerRef} ov="hidden" y={0}>
+      {/* {shadow.element} */}
+      <FancyCard
+        // ref={containerRef}
+        ov="hidden"
+        y={0}
+      >
         {/* glow */}
-        {glow.element}
+        {/* {glow.element} */}
         <XStack bc="$backgroundStrong" f={1} p="$5" m={1} br="$6" space>
           <YStack f={1} space="$2" ai="center">
             <H3

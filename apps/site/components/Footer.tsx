@@ -74,7 +74,12 @@ export const Footer = () => {
             <H4 mb="$3" size="$4" fontFamily="$silkscreen">
               Community
             </H4>
-            {/* <ParagraphLink href="/blog">Blog</ParagraphLink> */}
+            <XStack space="$1" ai="center">
+              <ParagraphLink href="/community">Community</ParagraphLink>
+            </XStack>
+            <XStack space="$1" ai="center">
+              <ParagraphLink href="/blog">Blog</ParagraphLink>
+            </XStack>
             <XStack space="$1" ai="center">
               <ParagraphLink href="https://github.com/tamagui/tamagui" target="_blank">
                 GitHub

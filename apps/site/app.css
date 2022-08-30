@@ -111,7 +111,6 @@ span._display-1adg3ll > span._display-xoduu5 {
   left: 0;
   right: 0;
   bottom: 0;
-  border: 1px solid var(--borderColor);
   background: linear-gradient(
     330deg,
     var(--backgroundHover) 0%,
@@ -493,4 +492,9 @@ input, textarea {
 .scroll-horizontal {
   max-width: 100%;
   overflow-x: auto;
+}
+
+.font_silkscreen {
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
 }

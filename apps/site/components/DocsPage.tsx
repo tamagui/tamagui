@@ -28,7 +28,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
 
   let currentPath = router.pathname
   let documentVersion = ''
-  
+
   if (Array.isArray(router.query.slug)) {
     currentPath = currentPath.replace('[...slug]', router.query.slug[0])
     documentVersion = router.query.slug[1]

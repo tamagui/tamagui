@@ -4,7 +4,7 @@ export const FlatBubbleCard = styled(YStack, {
   padding: '$6',
   borderRadius: '$3',
   // backgroundColor: '$gray1',
-  borderColor: '$gray3',
+  borderColor: '$gray4',
   hoverStyle: {
     borderColor: '$gray5',
   },
@@ -14,7 +14,7 @@ export const FlatBubbleCard = styled(YStack, {
   variants: {
     feature: {
       true: {
-        minWidth: 480,
+        minWidth: 280,
       },
     },
 

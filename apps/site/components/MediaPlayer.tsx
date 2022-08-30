@@ -82,7 +82,8 @@ export const MediaPlayer = memo(
               icon={Pause}
               size="$8"
               circular
-              elevation="$4"
+              elevation="$2"
+              shac="rgba(0,0,0,0.12)"
               pointerEvents={pointerEventsControls}
             />
             <FastForward size={20} />
