@@ -185,7 +185,6 @@ async function buildJs() {
           keepNames: false,
           jsx: 'automatic',
           allowOverwrite: true,
-          jsxFactory: '_jsx',
           format: 'esm',
           color: true,
           logLevel: 'error',
