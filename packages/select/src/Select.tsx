@@ -1,5 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { GetProps, TamaguiElement, isWeb, useMedia } from '@tamagui/core'
+import { GetProps, TamaguiElement, isWeb } from '@tamagui/core'
 import { styled, useGet, useIsomorphicLayoutEffect, withStaticProperties } from '@tamagui/core'
 import { useId } from '@tamagui/core'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
@@ -18,7 +18,8 @@ import { SelectContent } from './SelectContent'
 import { SelectImplProps, SelectInlineImpl } from './SelectImpl'
 import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
 import { SelectViewport } from './SelectViewport'
-import { ScopedProps, SelectContextValue, SelectProps } from './types'
+import { ScopedProps, SelectProps } from './types'
+import { useSelectBreakpointActive, useShowSelectSheet } from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectTrigger
@@ -442,18 +443,6 @@ SelectLabel.displayName = LABEL_NAME
 export const SelectSeparator = styled(Separator, {
   name: 'SelectSeparator',
 })
-
-export const useSelectBreakpointActive = (
-  sheetBreakpoint: SelectContextValue['sheetBreakpoint']
-) => {
-  const media = useMedia()
-  return sheetBreakpoint ? media[sheetBreakpoint] : false
-}
-
-export const useShowSelectSheet = (context: SelectContextValue) => {
-  const breakpointActive = useSelectBreakpointActive(context.sheetBreakpoint)
-  return context.open === false ? false : breakpointActive
-}
 
 const SelectSheetController = (
   props: ScopedProps<{}> & {

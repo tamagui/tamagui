@@ -1,5 +1,6 @@
 - 1.0
 
+  - light/dark theme change is re-rendering more than it should
   - VisuallyHidden + mediaquery + space
   - Select id="" + Label focus
   - Image JSON error on kitchen-sink

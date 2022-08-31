@@ -2,7 +2,7 @@ import { TamaguiElement } from '@tamagui/core';
 import { ListItemProps } from '@tamagui/list-item';
 import { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
-import { ScopedProps, SelectContextValue, SelectProps } from './types';
+import { ScopedProps, SelectProps } from './types';
 export declare type SelectTriggerProps = ListItemProps;
 export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/text").TextParentStyles, "TextComponent"> & Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -255,8 +255,6 @@ export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<(
 } & {
     [x: string]: undefined;
 })>;
-export declare const useSelectBreakpointActive: (sheetBreakpoint: SelectContextValue['sheetBreakpoint']) => boolean;
-export declare const useShowSelectSheet: (context: SelectContextValue) => boolean;
 export declare const SelectSheetContents: {
     ({ __scopeSelect }: ScopedProps<{}>): JSX.Element;
     displayName: string;

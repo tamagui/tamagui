@@ -15,18 +15,19 @@ export declare type GetNextThemeProps = {
 };
 export declare class ThemeManager {
     name: string;
+    className: string;
     theme: ThemeObject | null;
     parentManager: ThemeManager | null;
     reset: boolean;
     keys: Map<any, Set<string>>;
     listeners: Map<any, Function>;
     themeListeners: Set<ThemeListener>;
-    className: string | null;
-    constructor(name?: string, theme?: ThemeObject | null, parentManager?: ThemeManager | null, reset?: boolean);
+    constructor(name?: string, className?: string, theme?: ThemeObject | null, parentManager?: ThemeManager | null, reset?: boolean);
     get didChangeTheme(): boolean | null;
     get parentName(): string | null;
     get fullName(): string;
     getValue(key: string): import("../types").VariableVal | undefined;
+    isTracking(uuid: Object): boolean;
     update({ name, theme, className }?: SetActiveThemeProps, force?: boolean): boolean;
     getNextTheme(props?: GetNextThemeProps, debug?: any): {
         name: string;

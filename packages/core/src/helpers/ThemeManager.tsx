@@ -25,10 +25,10 @@ export class ThemeManager {
   keys = new Map<any, Set<string>>()
   listeners = new Map<any, Function>()
   themeListeners = new Set<ThemeListener>()
-  className: string | null = null
 
   constructor(
     public name: string = '',
+    public className: string = '',
     public theme: ThemeObject | null = null,
     public parentManager: ThemeManager | null = null,
     public reset: boolean = false
@@ -85,6 +85,10 @@ export class ThemeManager {
     }
   }
 
+  isTracking(uuid: Object) {
+    return Boolean(this.keys.get(uuid)?.size)
+  }
+
   update({ name, theme, className }: SetActiveThemeProps = {}, force = false) {
     if (!force) {
       // className compare on web, avoids light/dark re-renders
@@ -93,9 +97,10 @@ export class ThemeManager {
         return false
       }
     }
-    this.className = className || null
+    this.className = className || ''
     this.name = name || ''
     this.theme = theme
+    this.notifyListeners()
     return true
   }
 
@@ -136,7 +141,7 @@ export class ThemeManager {
       return {
         name: this.name,
         theme: this.theme,
-        className: undefined,
+        className: this.className,
       }
     }
 

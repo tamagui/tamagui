@@ -7,8 +7,8 @@ import * as React from 'react'
 
 import { VIEWPORT_NAME } from './constants'
 import { useSelectContext } from './context'
-import { useSelectBreakpointActive } from './Select'
 import { ScopedProps, SelectViewportProps } from './types'
+import { useSelectBreakpointActive } from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectViewport

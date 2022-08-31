@@ -46,11 +46,21 @@ export const useTheme = (
     return getThemeProxied(config.themes[config.defaultTheme], config.defaultTheme)
   }
 
+  const state = useServerRef() as React.MutableRefObject<UseThemeState>
+  if (!state.current) {
+    state.current = {
+      uuid: {},
+      keys: new Set(),
+      isRendering: true,
+    }
+  }
+
   const { name, theme, themes, themeManager, className } = useChangeThemeEffect(
     themeName,
     componentName,
     props,
-    forceUpdate
+    forceUpdate,
+    state.current.uuid
   )
 
   if (process.env.NODE_ENV === 'development') {
@@ -67,17 +77,8 @@ export const useTheme = (
     }
   }
 
-  const state = useServerRef() as React.MutableRefObject<UseThemeState>
-  if (!state.current) {
-    state.current = {
-      uuid: {},
-      keys: new Set(),
-      isRendering: true,
-    }
-  }
-  state.current.isRendering = true
-
   // track usage
+  state.current.isRendering = true
   useIsomorphicLayoutEffect(() => {
     const st = state.current
     st.isRendering = false
@@ -191,7 +192,8 @@ export const useChangeThemeEffect = (
   name?: string | null,
   componentName?: string,
   props?: ThemeProps,
-  forceUpdateProp?: any
+  forceUpdateProp?: any,
+  uuid?: Object
 ): {
   themes: Record<string, ThemeObject>
   themeManager: ThemeManager | null
@@ -200,9 +202,10 @@ export const useChangeThemeEffect = (
   className?: string
 } => {
   const { themes } = getConfig()
+
   if (isRSC) {
     // we need context working for this to work well
-    const parentManager = new ThemeManager('light', themes.light)
+    const parentManager = new ThemeManager('light', 'light', themes.light)
     const next = parentManager.getNextTheme({
       name,
       componentName,
@@ -215,6 +218,7 @@ export const useChangeThemeEffect = (
       themeManager: null,
     }
   }
+
   const debug = props && props['debug']
   const parentManager = useContext(ThemeManagerContext) || emptyManager
   const reset = props?.reset || false
@@ -229,20 +233,12 @@ export const useChangeThemeEffect = (
   const forceUpdate = forceUpdateProp || useForceUpdate()
 
   const themeManager = useConstant(() => {
-    return new ThemeManager(next.name, next.theme, parentManager, reset)
+    return new ThemeManager(next.name, next.className, next.theme, parentManager, reset)
   })
-
-  // not concurrent safe for now but fixes bug in showing old value
-  let didUpdate = false
-  if (next?.name !== themeManager.name || next?.className !== themeManager.className) {
-    didUpdate = themeManager.update(next)
-  }
 
   if (!isSSR) {
     useLayoutEffect(() => {
-      if (didUpdate) {
-        themeManager.notifyListeners()
-      }
+      themeManager.update(next)
 
       activeThemeManagers.add(themeManager)
 
@@ -250,6 +246,10 @@ export const useChangeThemeEffect = (
         const next = parentManager.getNextTheme(getThemeProps, debug)
         if (!next) return
         if (themeManager.update(next)) {
+          if (uuid && !themeManager.isTracking(uuid)) {
+            // no need to re-render if not tracking any keys
+            return
+          }
           if (process.env.NODE_ENV === 'development' && debug) {
             // eslint-disable-next-line no-console
             console.log('Changed theme', componentName, next, { props })
@@ -263,7 +263,7 @@ export const useChangeThemeEffect = (
         disposeParentOnChange()
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [didUpdate, themes, name, componentName, debug, next?.name])
+    }, [themes, next?.name, next?.className, componentName, debug])
   }
 
   return {
@@ -272,6 +272,7 @@ export const useChangeThemeEffect = (
       theme: parentManager.theme,
     }),
     ...next,
+    className: next.className === parentManager.className ? undefined : next.className,
     themes,
     themeManager,
   }

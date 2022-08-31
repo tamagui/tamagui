@@ -16,7 +16,7 @@ export declare const useThemeName: (opts?: {
 }) => string;
 export declare const useDefaultThemeName: () => ThemeName | undefined;
 export declare const activeThemeManagers: Set<ThemeManager>;
-export declare const useChangeThemeEffect: (name?: string | null, componentName?: string, props?: ThemeProps, forceUpdateProp?: any) => {
+export declare const useChangeThemeEffect: (name?: string | null, componentName?: string, props?: ThemeProps, forceUpdateProp?: any, uuid?: Object) => {
     themes: Record<string, ThemeObject>;
     themeManager: ThemeManager | null;
     name: string;

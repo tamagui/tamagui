@@ -4,8 +4,8 @@ import { Dismissable } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
 
 import { useSelectContext } from './context'
-import { useShowSelectSheet } from './Select'
 import { SelectContentProps } from './types'
+import { useShowSelectSheet } from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectContent
