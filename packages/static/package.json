@@ -48,7 +48,7 @@
     "@tamagui/react-native-svg": "^1.0.1-beta.157",
     "@tamagui/shorthands": "^1.0.1-beta.157",
     "babel-literal-to-ast": "^2.1.0",
-    "esbuild": "^0.14.49",
+    "esbuild": "^0.15.6",
     "esbuild-register": "^3.3.3",
     "find-cache-dir": "^3.3.2",
     "fs-extra": "^10.1.0",

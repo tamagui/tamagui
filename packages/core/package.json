@@ -46,7 +46,7 @@
     "@tamagui/build": "^1.0.1-beta.157",
     "@types/react": "^18.0.15",
     "csstype": "^3.0.10",
-    "esbuild": "^0.14.49",
+    "esbuild": "^0.15.6",
     "react": "*",
     "react-dom": "*",
     "typescript": "^4.7.4",
