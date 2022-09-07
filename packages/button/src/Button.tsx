@@ -1,7 +1,7 @@
 import {
   ButtonInsideButtonContext,
   GetProps,
-  TamaguiComponent,
+  TamaguiElement,
   ThemeableProps,
   getButtonSize,
   getVariableValue,
@@ -15,7 +15,6 @@ import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack } from '@tamagui/stacks'
 import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
 import React, { FunctionComponent, forwardRef, useContext } from 'react'
-import { View } from 'react-native'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
@@ -110,7 +109,7 @@ export const ButtonText = styled(SizableText, {
   ellipse: true,
 })
 
-const ButtonComponent = forwardRef(function Button(props: ButtonProps, ref) {
+export function useButton(props: ButtonProps, TextComponent = ButtonText) {
   // careful not to desctructure and re-order props, order is important
   const {
     children,
@@ -133,7 +132,7 @@ const ButtonComponent = forwardRef(function Button(props: ButtonProps, ref) {
     textAlign,
     textProps,
     ...rest
-  } = props as ButtonProps
+  } = props
 
   const isInsideButton = isRSC ? false : useContext(ButtonInsideButtonContext)
   const size = props.size || '$4'
@@ -141,8 +140,7 @@ const ButtonComponent = forwardRef(function Button(props: ButtonProps, ref) {
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = getVariableValue(iconSize) * scaleSpace
-  const contents = wrapChildrenInText(ButtonText, props)
-
+  const contents = wrapChildrenInText(TextComponent, props)
   const inner =
     themedIcon || themedIconAfter
       ? spacedChildren({
@@ -158,43 +156,50 @@ const ButtonComponent = forwardRef(function Button(props: ButtonProps, ref) {
         })
       : contents
 
-  return (
-    <ButtonFrame
-      {...(props.disabled && {
+  return {
+    spaceSize,
+    isInsideButton,
+    props: {
+      ...(props.disabled && {
         // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
         focusable: undefined,
         // even with tabIndex unset, it will keep focusStyle on web so disable it here
         focusStyle: {
           borderColor: '$background',
         },
-      })}
+      }),
       // fixes SSR issue + DOM nesting issue of not allowing button in button
-      {...(isInsideButton && {
+      ...(isInsideButton && {
         tag: 'span',
-      })}
-      ref={ref as any}
-      {...rest}
-    >
-      {isRSC ? (
+      }),
+      ...rest,
+      children: isRSC ? (
         inner
       ) : (
         <ButtonInsideButtonContext.Provider value={true}>
           {inner}
         </ButtonInsideButtonContext.Provider>
-      )}
-    </ButtonFrame>
-  )
+      ),
+    },
+  }
+}
+
+const ButtonComponent = forwardRef<TamaguiElement, ButtonProps>(function Button(props, ref) {
+  const { props: buttonProps } = useButton(props)
+  return <ButtonFrame {...buttonProps} ref={ref} />
 })
 
-export const Button: TamaguiComponent<ButtonProps, HTMLButtonElement | View> =
-  ButtonFrame.extractable(themeable(ButtonComponent as any) as any, {
-    inlineProps: new Set([
-      // text props go here (can't really optimize them, but we never fully extract button anyway)
-      'color',
-      'fontWeight',
-      'fontSize',
-      'fontFamily',
-      'letterSpacing',
-      'textAlign',
-    ]),
-  })
+export const buttonStaticConfig = {
+  inlineProps: new Set([
+    // text props go here (can't really optimize them, but we never fully extract button anyway)
+    // may be able to remove this entirely, as the compiler / runtime have gotten better
+    'color',
+    'fontWeight',
+    'fontSize',
+    'fontFamily',
+    'letterSpacing',
+    'textAlign',
+  ]),
+}
+
+export const Button = ButtonFrame.extractable(themeable(ButtonComponent), buttonStaticConfig)
