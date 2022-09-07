@@ -5003,6 +5003,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@playwright/test@npm:^1.25.1":
+  version: 1.25.1
+  resolution: "@playwright/test@npm:1.25.1"
+  dependencies:
+    "@types/node": "*"
+    playwright-core: 1.25.1
+  bin:
+    playwright: cli.js
+  checksum: 788ae0a7a576c599ce539ad75ee442b8c7f2a979d1dfd58d214ae4309ed2d595fa82fa8a8740e5c32f9da497a4e1ee90501483d33666d3004e76e50ce0269ef0
+  languageName: node
+  linkType: hard
+
 "@pmmmwh/react-refresh-webpack-plugin@npm:^0.5.7":
   version: 0.5.7
   resolution: "@pmmmwh/react-refresh-webpack-plugin@npm:0.5.7"
@@ -5627,35 +5639,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@takeout/cli@workspace:takeout/cli":
-  version: 0.0.0-use.local
-  resolution: "@takeout/cli@workspace:takeout/cli"
-  dependencies:
-    "@takeout/studio": ^1.0.1-beta.160
-    "@tamagui/build": ^1.0.1-beta.160
-    "@tamagui/static": ^1.0.1-beta.160
-    "@tamagui/vite-plugin": ^1.0.1-beta.160
-    "@types/compression": ^1.7.2
-    "@types/morgan": ^1.9.3
-    arg: ^5.0.2
-    chalk: ^4.1.2
-    compression: ^1.7.4
-    express: ^4.18.1
-    express-http-proxy: ^1.6.3
-    fs-extra: ^10.1.0
-    get-port: ^6.1.2
-    graphology: ^0.24.1
-    morgan: ^1.10.0
-    ts-morph: ^15.1.0
-    url: ^0.11.0
-    vite: ^3.0.8
-    zx: ^7.0.7
-  bin:
-    tamagui: ./dist/index.js
-    tg: ./dist/index.js
-  languageName: unknown
-  linkType: soft
-
 "@takeout/font-noto-emoji@workspace:takeout/font-noto-emoji":
   version: 0.0.0-use.local
   resolution: "@takeout/font-noto-emoji@workspace:takeout/font-noto-emoji"
@@ -5665,7 +5648,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@takeout/studio@^1.0.1-beta.160, @takeout/studio@workspace:takeout/studio":
+"@takeout/studio@workspace:takeout/studio":
   version: 0.0.0-use.local
   resolution: "@takeout/studio@workspace:takeout/studio"
   dependencies:
@@ -5928,6 +5911,37 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/cli@^1.0.1-beta.160, @tamagui/cli@workspace:takeout/cli":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/cli@workspace:takeout/cli"
+  dependencies:
+    "@playwright/test": ^1.25.1
+    "@tamagui/build": ^1.0.1-beta.160
+    "@tamagui/static": ^1.0.1-beta.160
+    "@tamagui/vite-plugin": ^1.0.1-beta.160
+    "@types/compression": ^1.7.2
+    "@types/morgan": ^1.9.3
+    arg: ^5.0.2
+    chalk: ^4.1.2
+    compression: ^1.7.4
+    express: ^4.18.1
+    express-http-proxy: ^1.6.3
+    fs-extra: ^10.1.0
+    get-port: ^6.1.2
+    graphology: ^0.24.1
+    morgan: ^1.10.0
+    playwright: ^1.25.1
+    ts-morph: ^15.1.0
+    url: ^0.11.0
+    vite: ^3.0.8
+    zx: ^7.0.7
+  peerDependencies:
+    playwright: ^1.25.1
+  bin:
+    tamagui: ./dist/index.js
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/code-to-html@^1.0.1-beta.141, @tamagui/code-to-html@workspace:packages/code-to-html":
   version: 0.0.0-use.local
   resolution: "@tamagui/code-to-html@workspace:packages/code-to-html"
@@ -6074,6 +6088,7 @@ __metadata:
     "@tamagui/avatar": ^1.0.1-beta.160
     "@tamagui/build": ^1.0.1-beta.160
     "@tamagui/button": ^1.0.1-beta.160
+    "@tamagui/cli": ^1.0.1-beta.160
     "@tamagui/config-base": ^1.0.1-beta.160
     "@tamagui/core": ^1.0.1-beta.160
     "@tamagui/drawer": ^1.0.1-beta.160
@@ -19772,6 +19787,26 @@ __metadata:
   bin:
     playwright: cli.js
   checksum: 78a9c8857428c8e9fe3a2061672a2e9ce0106afec473281d3a6389ec29918fd1d29c9d2792edde90bfd92c4477151fbd2d8f9f5061fbddaf8c6995a91c9cf2de
+  languageName: node
+  linkType: hard
+
+"playwright-core@npm:1.25.1":
+  version: 1.25.1
+  resolution: "playwright-core@npm:1.25.1"
+  bin:
+    playwright: cli.js
+  checksum: 34d5602816f73d68de3c022423ef64f0214f5e9827c584bffa608ecf66a9058f2f578e037bd7cbe7f98be53d5b01602f1f98aec73db5b475d8ab22417c803db5
+  languageName: node
+  linkType: hard
+
+"playwright@npm:^1.25.1":
+  version: 1.25.1
+  resolution: "playwright@npm:1.25.1"
+  dependencies:
+    playwright-core: 1.25.1
+  bin:
+    playwright: cli.js
+  checksum: 39745f159bac378234aa1ec9a3ebbc474876fc5907256f5365a5c844a990164c2ebf8a721bc0e738d74e83a789e5043af6a07e08f8a5be15a7cf905dd0dbc4f0
   languageName: node
   linkType: hard
 

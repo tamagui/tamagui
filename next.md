@@ -1,5 +1,11 @@
 - 1.0
 
+  - Button exports separately for customization:
+    - Button.Frame
+    - Button.Contents
+    - useButtonContents()
+  - pass in SharedValue to any prop for animations
+  - delete / clean tamagui build on watch
   - light/dark theme change is re-rendering more than it should
   - VisuallyHidden + mediaquery + space
   - Select id="" + Label focus

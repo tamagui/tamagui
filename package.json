@@ -28,6 +28,7 @@
     "pretty": "pretty-quick",
     "pretty:all": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "turbo run --concurrency=1 test",
+    "test:demos": "yarn workspace @tamagui/demos test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "release:beta": "node -r esbuild-register ./release-next-beta.ts",
     "release:beta:dirty": "SKIP_GIT_CLEAN_CHECK=1 node -r esbuild-register ./release-next-beta.ts",

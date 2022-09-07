@@ -15,6 +15,7 @@
   ],
   "scripts": {
     "build": "tamagui-build",
+    "test": "tamagui test",
     "watch": "tamagui-build --watch"
   },
   "exports": {
@@ -48,6 +49,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.160",
+    "@tamagui/cli": "^1.0.1-beta.160",
     "react": "*",
     "react-dom": "*"
   },
