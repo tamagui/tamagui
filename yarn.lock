@@ -5934,9 +5934,8 @@ __metadata:
     ts-morph: ^15.1.0
     url: ^0.11.0
     vite: ^3.0.8
+    vitest: ^0.20.3
     zx: ^7.0.7
-  peerDependencies:
-    playwright: ^1.25.1
   bin:
     tamagui: ./dist/index.js
   languageName: unknown
@@ -23336,6 +23335,7 @@ __metadata:
     "@tamagui/fake-react-native": ^1.0.1-beta.160
     "@tamagui/font-size": ^1.0.1-beta.160
     "@tamagui/helpers": ^1.0.1-beta.160
+    "@tamagui/helpers-tamagui": ^1.0.1-beta.160
     "@tamagui/image": ^1.0.1-beta.160
     "@tamagui/label": ^1.0.1-beta.160
     "@tamagui/list-item": ^1.0.1-beta.160

@@ -38,6 +38,7 @@
     "@tamagui/fake-react-native": "^1.0.1-beta.160",
     "@tamagui/font-size": "^1.0.1-beta.160",
     "@tamagui/helpers": "^1.0.1-beta.160",
+    "@tamagui/helpers-tamagui": "^1.0.1-beta.160",
     "@tamagui/image": "^1.0.1-beta.160",
     "@tamagui/label": "^1.0.1-beta.160",
     "@tamagui/list-item": "^1.0.1-beta.160",
