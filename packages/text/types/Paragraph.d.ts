@@ -19,8 +19,10 @@ export declare const Paragraph: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").TextPropsBase, {
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+} | ({
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & {
     [x: string]: undefined;
-}>;
+})>;
 export declare type ParagraphProps = PropTypes<typeof Paragraph>;
 //# sourceMappingURL=Paragraph.d.ts.map

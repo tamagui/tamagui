@@ -6,7 +6,7 @@ declare const StyledImage: import("@tamagui/core").TamaguiComponent<(import("rea
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>>), import("@tamagui/core").TamaguiElement, import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>, {
+}>>), import("@tamagui/core").TamaguiElement, import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>, {} | {
     [x: string]: undefined;
 }>;
 declare type StyledImageProps = GetProps<typeof StyledImage>;

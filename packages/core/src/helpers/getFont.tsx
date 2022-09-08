@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { getVariableValue } from '../createVariable'
 import { FontSizeTokens, TextProps, VariantSpreadFunction } from '../types'
 
@@ -8,7 +9,9 @@ export const getFont: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   const family = getVariableValue(props.fontFamily) || '$body'
   const font = fonts[family] || fonts['$body']
   if (!font) {
-    console.warn('⚠️ no font found', { family, fontTokens: Object.keys(fonts), val })
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('⚠️ no font found', { family, fontTokens: Object.keys(fonts), val })
+    }
     return {} as any
   }
   const fontFamily = font.family

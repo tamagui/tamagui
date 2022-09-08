@@ -36,9 +36,12 @@ export declare const AvatarFallbackFrame: import("@tamagui/core").TamaguiCompone
 }>>), TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
+} | ({
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     [x: string]: undefined;
-}>;
+})>;
 declare type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & {
     delayMs?: number;
 };
@@ -210,9 +213,9 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
 } & {
     readonly circular?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
-} & {
+} & ({} | {
     [x: string]: undefined;
-}>;
+})>;
 declare type AvatarProps = GetProps<typeof AvatarFrame>;
 declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;

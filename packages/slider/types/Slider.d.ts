@@ -59,9 +59,9 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
     readonly size?: any;
-} & {
+} & ({} | {
     [x: string]: undefined;
-}>;
+})>;
 declare const SliderTrack: React.ForwardRefExoticComponent<SliderTrackProps & React.RefAttributes<SliderTrackElement>>;
 export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -118,9 +118,9 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
     readonly size?: any;
-} & {
+} & ({} | {
     [x: string]: undefined;
-}>;
+})>;
 declare type SliderTrackActiveProps = GetProps<typeof SliderTrackActiveFrame>;
 declare const SliderTrackActive: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
