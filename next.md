@@ -6,7 +6,6 @@
   - light/dark theme change is re-rendering more than it should
   - VisuallyHidden + mediaquery + space
   - Select id="" + Label focus
-  - Image JSON error on kitchen-sink
   - Sheet drag up small bug native with scrollable content
   - prod build native stuck on copying resources
   - kitchen-sink in Snack demo

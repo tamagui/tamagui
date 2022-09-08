@@ -31,20 +31,9 @@ export const Image: React.FC<ImageProps> = StyledImage.extractable((inProps) => 
   const props = getExpandedShorthands(inProps)
   const { src, width, height, ...rest } = props
   const source = typeof src === 'string' ? { uri: src, ...(isWeb && { width, height }) } : src
-  const defaultSource = Array.isArray(source) ? source[0] : source
-
-  if (!defaultSource) {
-    // placeholder with customizability
-    return null
-  }
 
   // must set defaultSource to allow SSR, default it to the same as src
   return (
-    <StyledImage
-      {...(!isWeb && { style: { width, height } })}
-      defaultSource={defaultSource}
-      source={source}
-      {...(rest as any)}
-    />
+    <StyledImage {...(!isWeb && { style: { width, height } })} source={source} {...(rest as any)} />
   )
 })
