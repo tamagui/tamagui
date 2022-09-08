@@ -1,13 +1,14 @@
+<div align="center">
+  <img margin="auto" width="572px" src="https://github.com/tamagui/tamagui/raw/master/apps/site/public/social.png" alt="Tamagui">
+</div>
+
 <h1 align="center">
-  <img margin="auto" width="612px" src="https://github.com/tamagui/tamagui/raw/master/apps/site/public/social.jpg" alt="Tamagui">
-  <br>
+  Universal design systems for React Native & Web, faster.
 </h1>
 
-<h4 align="center">The faster, more complete style system for React Native & Web.</h4>
+<h3>Build better apps faster with a vertically integrated style system, UI kit, and optimizing compiler.</h3>
 
 See [tamagui.dev](https://tamagui.dev) for documentation.
-
----
 
 Tamagui lets you **share more code between web and native apps while improving, rather than sacrificing, DX, performance, and code maintainability**.
 
@@ -18,8 +19,6 @@ The compiler enables a **win-win-win**: more performance, easier to write, works
 The compiler actually partially evaluates code including imports, logic, spreads, and nested ternaries. Any fully analyzable JSX usage will be flattened entirely (to a `div` on web, or `View` on native, rather than your custom defined component), leading to large reductions in tree-size.
 
 [Learn more on the website](https://tamagui.dev/docs/intro/introduction).
-
----
 
 ## Contributing
 
