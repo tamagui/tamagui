@@ -4991,18 +4991,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.23.4":
-  version: 1.25.0
-  resolution: "@playwright/test@npm:1.25.0"
-  dependencies:
-    "@types/node": "*"
-    playwright-core: 1.25.0
-  bin:
-    playwright: cli.js
-  checksum: 7694f2f342e5e24af2c4989d70c5e33385dcd56a253ee36b9cf317eb04d2f5b414f8f4d17d4e7f859b41ece8cd83ce88bf9dbb4f15dbebff8b0404f83202e6d2
-  languageName: node
-  linkType: hard
-
 "@playwright/test@npm:^1.25.1":
   version: 1.25.1
   resolution: "@playwright/test@npm:1.25.1"
@@ -5911,7 +5899,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/cli@^1.0.1-beta.160, @tamagui/cli@workspace:takeout/cli":
+"@tamagui/cli@workspace:takeout/cli":
   version: 0.0.0-use.local
   resolution: "@tamagui/cli@workspace:takeout/cli"
   dependencies:
@@ -6087,7 +6075,6 @@ __metadata:
     "@tamagui/avatar": ^1.0.1-beta.160
     "@tamagui/build": ^1.0.1-beta.160
     "@tamagui/button": ^1.0.1-beta.160
-    "@tamagui/cli": ^1.0.1-beta.160
     "@tamagui/config-base": ^1.0.1-beta.160
     "@tamagui/core": ^1.0.1-beta.160
     "@tamagui/drawer": ^1.0.1-beta.160
@@ -11005,7 +10992,7 @@ __metadata:
   resolution: "create-tamagui-app@workspace:packages/create-tamagui-app"
   dependencies:
     "@expo/package-manager": ^0.0.50
-    "@playwright/test": ^1.23.4
+    "@playwright/test": ^1.25.1
     "@tamagui/build": ^1.0.1-beta.160
     "@types/async-retry": 1.4.2
     "@types/cross-spawn": ^6.0.2
@@ -19787,15 +19774,6 @@ __metadata:
   dependencies:
     find-up: ^3.0.0
   checksum: 5bac346b7c7c903613c057ae3ab722f320716199d753f4a7d053d38f2b5955460f3e6ab73b4762c62fd3e947f58e04f1343e92089e7bb6091c90877406fcd8c8
-  languageName: node
-  linkType: hard
-
-"playwright-core@npm:1.25.0":
-  version: 1.25.0
-  resolution: "playwright-core@npm:1.25.0"
-  bin:
-    playwright: cli.js
-  checksum: 78a9c8857428c8e9fe3a2061672a2e9ce0106afec473281d3a6389ec29918fd1d29c9d2792edde90bfd92c4477151fbd2d8f9f5061fbddaf8c6995a91c9cf2de
   languageName: node
   linkType: hard
 
