@@ -145,7 +145,7 @@ export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<Omi
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -163,7 +163,7 @@ export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<Omi
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -181,7 +181,7 @@ export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<Omi
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -199,7 +199,7 @@ export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<Omi
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }>;
 declare type ProgressProps = GetProps<typeof ProgressFrame> & {
     value?: number | null | undefined;
@@ -223,7 +223,7 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("react-nativ
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -241,7 +241,7 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("react-nativ
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -259,7 +259,7 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("react-nativ
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }>> & {
     value?: number | null | undefined;
     max?: number | undefined;

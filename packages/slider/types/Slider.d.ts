@@ -8,57 +8,57 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
-    size?: any;
+    readonly size?: any;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
-    size?: any;
+    readonly size?: any;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
-    size?: any;
+    readonly size?: any;
 }>>) | (Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
-    size?: any;
+    readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
-    size?: any;
+    readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
-    size?: any;
+    readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
 }>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
-    size?: any;
+    readonly size?: any;
 } & ({} | {
     [x: string]: undefined;
 })>;
@@ -67,57 +67,57 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
-    size?: any;
+    readonly size?: any;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
-    size?: any;
+    readonly size?: any;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
-    size?: any;
+    readonly size?: any;
 }>>) | (Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
-    size?: any;
+    readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
-    size?: any;
+    readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
-    size?: any;
+    readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
 }>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
-    size?: any;
+    readonly size?: any;
 } & ({} | {
     [x: string]: undefined;
 })>;
@@ -126,48 +126,48 @@ declare const SliderTrackActive: React.ForwardRefExoticComponent<((Omit<import("
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
-    size?: any;
+    readonly size?: any;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
-    size?: any;
+    readonly size?: any;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
-    size?: any;
+    readonly size?: any;
 }>>) | Pick<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
-    size?: any;
+    readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
-    size?: any;
+    readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
-    size?: any;
+    readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
 }>>, string | number>) & React.RefAttributes<View>>;
@@ -188,7 +188,7 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -206,7 +206,7 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -224,7 +224,7 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -242,7 +242,7 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>;
 interface SliderThumbProps extends SizableStackProps {
     index: number;
@@ -254,48 +254,48 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
-        orientation?: "vertical" | "horizontal" | undefined;
+        readonly orientation?: "vertical" | "horizontal" | undefined;
     }, "size"> & {
-        size?: any;
+        readonly size?: any;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
-        orientation?: "vertical" | "horizontal" | undefined;
+        readonly orientation?: "vertical" | "horizontal" | undefined;
     }, "size"> & {
-        size?: any;
+        readonly size?: any;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
-        orientation?: "vertical" | "horizontal" | undefined;
+        readonly orientation?: "vertical" | "horizontal" | undefined;
     }, "size"> & {
-        size?: any;
+        readonly size?: any;
     }>>) | Pick<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
-        orientation?: "vertical" | "horizontal" | undefined;
+        readonly orientation?: "vertical" | "horizontal" | undefined;
     } & {
-        size?: any;
+        readonly size?: any;
     }, string | number> & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
-        orientation?: "vertical" | "horizontal" | undefined;
+        readonly orientation?: "vertical" | "horizontal" | undefined;
     } & {
-        size?: any;
+        readonly size?: any;
     }, string | number> & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
-        orientation?: "vertical" | "horizontal" | undefined;
+        readonly orientation?: "vertical" | "horizontal" | undefined;
     } & {
-        size?: any;
+        readonly size?: any;
     }, string | number> & {
         [x: string]: undefined;
     }>>, string | number>) & React.RefAttributes<View>>;
@@ -306,48 +306,48 @@ declare const Range: React.ForwardRefExoticComponent<((Omit<import("react-native
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
-    size?: any;
+    readonly size?: any;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
-    size?: any;
+    readonly size?: any;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
-    size?: any;
+    readonly size?: any;
 }>>) | Pick<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
-    size?: any;
+    readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
-    size?: any;
+    readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    orientation?: "vertical" | "horizontal" | undefined;
+    readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
-    size?: any;
+    readonly size?: any;
 }, string | number> & {
     [x: string]: undefined;
 }>>, string | number>) & React.RefAttributes<View>>;

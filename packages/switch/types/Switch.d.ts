@@ -19,7 +19,7 @@ export declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -37,7 +37,7 @@ export declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -55,7 +55,7 @@ export declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -73,7 +73,7 @@ export declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>;
 export declare type SwitchThumbProps = GetProps<typeof SwitchThumbFrame>;
 export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -93,7 +93,7 @@ export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("r
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -111,7 +111,7 @@ export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("r
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -129,28 +129,28 @@ export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("r
     transparent?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>> & React.RefAttributes<HTMLSpanElement>>;
 export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>;
 declare type SwitchButtonProps = GetProps<typeof SwitchFrame>;
 export declare type SwitchProps = SwitchButtonProps & {
@@ -166,17 +166,17 @@ export declare const Switch: React.ForwardRefExoticComponent<Omit<import("react-
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "size"> & {
-    size?: SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>> & {
     labeledBy?: string | undefined;
     name?: string | undefined;
@@ -203,7 +203,7 @@ export declare const Switch: React.ForwardRefExoticComponent<Omit<import("react-
         transparent?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     }, "size"> & {
-        size?: SizeTokens | undefined;
+        readonly size?: SizeTokens | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -221,7 +221,7 @@ export declare const Switch: React.ForwardRefExoticComponent<Omit<import("react-
         transparent?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     }, "size"> & {
-        size?: SizeTokens | undefined;
+        readonly size?: SizeTokens | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -239,7 +239,7 @@ export declare const Switch: React.ForwardRefExoticComponent<Omit<import("react-
         transparent?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     }, "size"> & {
-        size?: SizeTokens | undefined;
+        readonly size?: SizeTokens | undefined;
     }>> & React.RefAttributes<HTMLSpanElement>>;
 };
 export {};

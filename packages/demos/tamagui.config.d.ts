@@ -1,3 +1,3 @@
-import Conf from './src/conf';
-export default Conf;
+import { config } from './src/conf';
+export default config;
 //# sourceMappingURL=tamagui.config.d.ts.map
