@@ -3,10 +3,12 @@
 </div>
 
 <h1 align="center">
-  Universal design systems for React Native & Web, faster.
+  Universal UI for React Native & Web
 </h1>
 
-<h3>Build better apps faster with a vertically integrated style system, UI kit, and optimizing compiler.</h3>
+- `@tamagui/core` - Independent minimal style system on top of React Native/Web.
+- `tamagui` - Complete universal UI kit built on top of `@tamagui/core`.
+- `@tamagui/static` - Optimizing compiler that works with `core` and `tamagui`.
 
 See [tamagui.dev](https://tamagui.dev) for documentation.
 
