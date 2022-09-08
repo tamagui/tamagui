@@ -6270,6 +6270,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers-node@workspace:packages/helpers-node"
   dependencies:
+    "@tamagui/build": ^1.0.1-beta.160
     fs-extra: ^10.1.0
   languageName: unknown
   linkType: soft

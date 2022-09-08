@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { ThemeName, XStack, XStackProps, YStack } from 'tamagui'
 
-export const tints: ThemeName[] = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'red']
+export const tints: ThemeName[] = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
 
 export const logoColors = tints.map((t) => `var(--${t}9)`)
 

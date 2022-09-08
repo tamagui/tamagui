@@ -205,12 +205,13 @@ pre {
 .rainbow {
   background: -webkit-linear-gradient(
     45deg,
-    var(--red10),
-    var(--orange10),
-    var(--green10),
-    var(--blue10),
-    var(--purple10),
-    var(--pink10)
+    var(--red11),
+    var(--orange11),
+    var(--yellow11),
+    var(--green11),
+    var(--blue11),
+    var(--purple11),
+    var(--pink11)
   );
 }
 
