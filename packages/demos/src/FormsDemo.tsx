@@ -6,7 +6,7 @@ export function FormsDemo() {
       <FormDemo size="$2" />
       <FormDemo size="$3" />
       <FormDemo size="$4" />
-      <TextArea numberOfLines={4} />
+      <TextArea placeholder="Enter your details..." numberOfLines={4} />
     </YStack>
   )
 }
@@ -14,7 +14,7 @@ export function FormsDemo() {
 function FormDemo(props: { size: SizeTokens }) {
   return (
     <XStack ai="center" space="$2">
-      <Input debug="verbose" f={1} size={props.size} placeholder={`Size ${props.size}...`} />
+      <Input f={1} size={props.size} placeholder={`Size ${props.size}...`} />
       <Button size={props.size}>Go</Button>
     </XStack>
   )

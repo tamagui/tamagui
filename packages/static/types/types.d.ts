@@ -2,7 +2,7 @@ import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import type { PseudoStyles, StaticConfig } from '@tamagui/core-node';
 import type { StyleObject } from '@tamagui/helpers';
-import { TamaguiOptions } from '@tamagui/helpers-node';
+import type { TamaguiOptions } from '@tamagui/helpers-node';
 import type { ViewStyle } from 'react-native';
 export type { TamaguiOptions } from '@tamagui/helpers-node';
 export type { StyleObject } from '@tamagui/helpers';

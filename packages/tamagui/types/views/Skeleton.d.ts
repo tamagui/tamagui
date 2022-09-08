@@ -28,12 +28,9 @@ export declare const SkeletonFrame: import("@tamagui/core").TamaguiComponent<(Om
 }>>), TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-} | ({
-    readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     [x: string]: undefined;
-})>;
+}>;
 export declare type SkeletonProps = GetProps<typeof SkeletonFrame>;
 export declare const Skeleton: import("react").ForwardRefExoticComponent<import("react").RefAttributes<TamaguiElement>>;
 export declare const SkeletonShine: (props: LinearGradientProps) => JSX.Element;

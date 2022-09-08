@@ -192,7 +192,7 @@ export function createComponent<
         // eslint-disable-next-line no-console
         console.group(`%c 🐛 ${banner}`, 'background: yellow;')
         // eslint-disable-next-line no-console
-        console.groupCollapsed('initial state')
+        console.groupCollapsed('initial props/state')
         // eslint-disable-next-line no-console
         console.log('props', propsIn)
         // eslint-disable-next-line no-console

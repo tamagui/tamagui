@@ -21,7 +21,6 @@
     - basically map any tokens you choose to internal tamagui ones
   - mismatch SSR SelectTrigger due to componentName override
   - Group make media style size use properly
-  - <Input /> variant doesnt override paddingHorizontal set on same input
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
   - forms working bubble / label
