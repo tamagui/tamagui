@@ -15,9 +15,6 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "dependencies": {
-    "@tamagui/static": "^1.0.1-beta.160"
-  },
   "devDependencies": {
     "fs-extra": "^10.1.0"
   }

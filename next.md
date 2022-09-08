@@ -1,7 +1,5 @@
 - 1.0
 
-  - use helpers-node in Webpack/babel/vite to pull config from your tamagui.json
-  - pass in SharedValue to any prop for animations
   - delete / clean tamagui build on watch
   - light/dark theme change is re-rendering more than it should
   - VisuallyHidden + mediaquery + space
@@ -12,7 +10,6 @@
   - check animation flicker again
     - flicker on some enterStyle animation native (hermes only)
   - changing family responsive tests
-  - adding `shorthandsOverride` to createTamagui should be easy enough to type with Omit<>
   - fix reanimated 2.9/3.0 __frame var
   - windows without WSL
   - <Select /> has selectable cursor on hold down + move
@@ -73,6 +70,8 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - pass in SharedValue to any prop for animations
+  - use helpers-node in Webpack/babel/vite to pull config from your tamagui.json
   - fix Label + new form inputs (native too)  
     - native works by attaching state (mutable refs) to a FormContext
     - web works by just listening for event and using FormData()
