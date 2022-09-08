@@ -12,7 +12,7 @@ import { promisify } from 'util'
 import * as PackageManager from '@expo/package-manager'
 import chalk from 'chalk'
 import Commander from 'commander'
-import { copy, ensureDir, pathExists } from 'fs-extra'
+import { copy, ensureDir, pathExists, remove } from 'fs-extra'
 import got from 'got'
 import prompts from 'prompts'
 import tar from 'tar'
@@ -150,28 +150,44 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     const tamaguiDir = join(home, '.tamagui')
     const tamaguiGitDir = join(tamaguiDir, 'tamagui')
 
-    console.log(`Setting up ${chalk.blueBright(tamaguiDir)}...`)
+    async function setupTamaguiDotDir(isRetry = false) {
+      console.log(`Setting up ${chalk.blueBright(tamaguiDir)}...`)
+      await ensureDir(tamaguiDir)
+      cd(tamaguiDir)
+      const branch = `master`
+      if (!(await pathExists(tamaguiGitDir))) {
+        console.log(`Cloning tamagui base directory`)
+        await $`git clone --branch ${branch} --depth 1 --filter=blob:none --sparse https://github.com/tamagui/tamagui.git`
+      } else {
+        if (!(await pathExists(join(tamaguiGitDir, '.git')))) {
+          console.error(`Corrupt Tamagui directory, please delete ${tamaguiGitDir} and re-run`)
+          process.exit(1)
+        }
+      }
 
-    await ensureDir(tamaguiDir)
-
-    cd(tamaguiDir)
-
-    const branch = `master`
-
-    if (!(await pathExists(tamaguiGitDir))) {
-      console.log(`Cloning tamagui base directory`)
-      await $`git clone --branch ${branch} --depth 1 --filter=blob:none --sparse https://github.com/tamagui/tamagui.git`
-    } else {
-      if (!(await pathExists(join(tamaguiGitDir, '.git')))) {
-        console.error(`Corrupt Tamagui directory, please delete ${tamaguiGitDir} and re-run`)
-        process.exit(1)
+      console.log(`Updating tamagui starters repo`)
+      cd(tamaguiGitDir)
+      await $`git sparse-checkout set starters`
+      try {
+        await $`git pull --rebase --allow-unrelated-histories --depth 1 origin ${branch}`
+      } catch (err: any) {
+        console.log(
+          `Error updating: ${err.message} ${
+            isRetry ? `failing.\n${err.stack}` : 'trying from fresh.'
+          }`
+        )
+        if (isRetry) {
+          console.log(
+            `Please file an issue: https://github.com/tamagui/tamagui/issues/new?assignees=&labels=&template=bug_report.md&title=`
+          )
+          process.exit(1)
+        }
+        await remove(tamaguiGitDir)
+        await setupTamaguiDotDir(true)
       }
     }
 
-    console.log(`Updating tamagui starters repo`)
-    cd(tamaguiGitDir)
-    await $`git sparse-checkout set starters`
-    await $`git pull --rebase --allow-unrelated-histories --depth 1 origin ${branch}`
+    await setupTamaguiDotDir()
 
     const starterDir = join(tamaguiGitDir, 'starters', program.template)
     if (!(await pathExists(starterDir))) {
