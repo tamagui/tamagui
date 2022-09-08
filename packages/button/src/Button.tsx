@@ -109,7 +109,10 @@ export const ButtonText = styled(SizableText, {
   ellipse: true,
 })
 
-export function useButton(props: ButtonProps, TextComponent = ButtonText) {
+export function useButton(
+  props: ButtonProps,
+  { Text = ButtonText }: { Text: any } = { Text: ButtonText }
+) {
   // careful not to desctructure and re-order props, order is important
   const {
     children,
@@ -140,7 +143,7 @@ export function useButton(props: ButtonProps, TextComponent = ButtonText) {
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = getVariableValue(iconSize) * scaleSpace
-  const contents = wrapChildrenInText(TextComponent, props)
+  const contents = wrapChildrenInText(Text, props)
   const inner =
     themedIcon || themedIconAfter
       ? spacedChildren({

@@ -118,7 +118,7 @@ export function styled<
   type ParentVariants = ParentComponent extends TamaguiComponent<any, any, any, infer V> ? V : {}
 
   type OurVariants = Variants extends void
-    ? never
+    ? {}
     : {
         [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<any, infer Val>
           ? Val

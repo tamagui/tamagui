@@ -138,8 +138,8 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
 } & {
     readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
-} & {
+} & ({} | {
     [x: string]: undefined;
-}>;
+})>;
 export declare type CircleProps = GetProps<typeof Circle>;
 //# sourceMappingURL=Circle.d.ts.map

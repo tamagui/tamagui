@@ -90,10 +90,11 @@ export const ListItemFrame = styled(ThemeableStack, {
 export const ListItemText = styled(SizableText, {
   name: 'ListItemText',
   color: '$color',
-  selectable: false,
+  userSelect: 'none',
   flexGrow: 1,
   flexShrink: 1,
   ellipse: true,
+  cursor: 'default',
 })
 
 export const ListItemSubtitle = styled(ListItemText, {
@@ -101,17 +102,26 @@ export const ListItemSubtitle = styled(ListItemText, {
   color: '$colorPress',
   marginTop: '$-2',
   opacity: 0.65,
-  ellipse: true,
   maxWidth: '100%',
   size: '$3',
 })
 
-const ListItemTitle = styled(ListItemText, {
+export const ListItemTitle = styled(ListItemText, {
   name: 'ListItemTitle',
-  ellipse: true,
 })
 
-const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
+export const useListItem = (
+  props: ListItemProps,
+  {
+    Text = ListItemText,
+    Subtitle = ListItemSubtitle,
+    Title = ListItemTitle,
+  }: {
+    Title?: any
+    Subtitle?: any
+    Text?: any
+  } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle }
+) => {
   // careful not to desctructure and re-order props, order is important
   const {
     children,
@@ -135,7 +145,7 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
     textProps,
     title,
     ...rest
-  } = props as ListItemProps
+  } = props
 
   const size = props.size || '$4'
   const subtitleSizeToken = getSize(size, -3)
@@ -144,60 +154,71 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = getVariableValue(iconSize) * scaleSpace
-  const contents = wrapChildrenInText(ListItemText, props)
+  const contents = wrapChildrenInText(Text, props)
 
-  return (
-    <ListItemFrame fontFamily={fontFamily} ref={ref as any} {...rest}>
-      {themedIcon ? (
+  return {
+    props: {
+      fontFamily,
+      ...rest,
+      children: (
         <>
-          {themedIcon}
-          <Spacer size={spaceSize} />
-        </>
-      ) : null}
-      {/* helper for common title/subtitle pttern */}
-      {Boolean(title || subTitle) ? (
-        <YStack flex={1}>
-          <ListItemTitle>{title}</ListItemTitle>
-          {subTitle ? (
-            typeof subTitle === 'string' ? (
-              // TODO can use theme but we need to standardize to alt themes
-              // or standardize on subtle colors in themes
-              <ListItemSubtitle size={subtitleSize}>{subTitle}</ListItemSubtitle>
-            ) : (
-              subTitle
-            )
+          {themedIcon ? (
+            <>
+              {themedIcon}
+              <Spacer size={spaceSize} />
+            </>
           ) : null}
-          {contents}
-        </YStack>
-      ) : (
-        contents
-      )}
-      {themedIconAfter ? (
-        <>
-          <Spacer flex size={spaceSize} />
-          {themedIconAfter}
+          {/* helper for common title/subtitle pttern */}
+          {Boolean(title || subTitle) ? (
+            <YStack flex={1}>
+              <Title>{title}</Title>
+              {subTitle ? (
+                typeof subTitle === 'string' ? (
+                  // TODO can use theme but we need to standardize to alt themes
+                  // or standardize on subtle colors in themes
+                  <Subtitle size={subtitleSize}>{subTitle}</Subtitle>
+                ) : (
+                  subTitle
+                )
+              ) : null}
+              {contents}
+            </YStack>
+          ) : (
+            contents
+          )}
+          {themedIconAfter ? (
+            <>
+              <Spacer flex size={spaceSize} />
+              {themedIconAfter}
+            </>
+          ) : null}
         </>
-      ) : null}
-    </ListItemFrame>
-  )
+      ),
+    },
+  }
+}
+
+const ListItemComponent = forwardRef<TamaguiElement, ListItemProps>((props, ref) => {
+  const { props: listItemProps } = useListItem(props)
+  return <ListItemFrame ref={ref} {...listItemProps} />
 })
 
-const ListItemInner: TamaguiComponent<ListItemProps, TamaguiElement> = ListItemFrame.extractable(
-  themeable(ListItemComponent as any) as any,
+export const listItemStaticConfig = {
+  inlineProps: new Set([
+    // text props go here (can't really optimize them, but we never fully extract listItem anyway)
+    'color',
+    'fontWeight',
+    'fontSize',
+    'fontFamily',
+    'letterSpacing',
+    'textAlign',
+  ]),
+}
+
+export const ListItem = withStaticProperties(
+  ListItemFrame.extractable(themeable(ListItemComponent), listItemStaticConfig),
   {
-    inlineProps: new Set([
-      // text props go here (can't really optimize them, but we never fully extract listItem anyway)
-      'color',
-      'fontWeight',
-      'fontSize',
-      'fontFamily',
-      'letterSpacing',
-      'textAlign',
-    ]),
+    Text: ListItemText,
+    Subtitle: ListItemSubtitle,
   }
 )
-
-export const ListItem = withStaticProperties(ListItemInner, {
-  Text: ListItemText,
-  Subtitle: ListItemSubtitle,
-})
