@@ -18,6 +18,7 @@ export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = '$4', ext
   if (!isWeb && fontStyle) {
     delete fontStyle['lineHeight']
   }
+  console.log('paddingHorizontal', paddingHorizontal)
   return {
     ...fontStyle,
     ...buttonStyles,

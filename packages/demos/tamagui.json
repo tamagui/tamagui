@@ -1,0 +1,4 @@
+{
+  "config": "./src/tamagui.config.ts",
+  "components": ["tamagui"]
+}

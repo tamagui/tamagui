@@ -2,7 +2,10 @@ import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import type { PseudoStyles, StaticConfig } from '@tamagui/core-node'
 import type { StyleObject } from '@tamagui/helpers'
+import type { TamaguiOptions } from '@tamagui/helpers-node'
 import type { ViewStyle } from 'react-native'
+
+export type { TamaguiOptions } from '@tamagui/helpers-node'
 
 export type { StyleObject } from '@tamagui/helpers'
 
@@ -26,32 +29,6 @@ export interface Logger {
 
 export type ExtractorOptions = {
   logger?: Logger
-}
-
-export interface TamaguiOptions {
-  // module paths you want to compile with tamagui (for example ['tamagui'])
-  components: string[]
-  // your tamagui.config.ts
-  config?: string
-  evaluateVars?: boolean
-  importsWhitelist?: string[]
-  disable?: boolean
-  disableExtraction?: boolean
-  disableDebugAttr?: boolean
-  disableExtractInlineMedia?: boolean
-  disableExtractVariables?: boolean
-  excludeReactNativeWebExports?: string[]
-  exclude?: RegExp
-  logTimings?: boolean
-  prefixLogs?: string
-
-  // probably non user options
-  cssPath?: string
-  cssData?: any
-  deoptProps?: Set<string>
-  excludeProps?: Set<string>
-  inlineProps?: Set<string>
-  forceExtractStyleDefinitions?: boolean
 }
 
 export type ExtractedAttrAttr = {

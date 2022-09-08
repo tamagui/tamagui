@@ -1,5 +1,6 @@
 - 1.0
 
+  - use helpers-node in Webpack/babel/vite to pull config from your tamagui.json
   - pass in SharedValue to any prop for animations
   - delete / clean tamagui build on watch
   - light/dark theme change is re-rendering more than it should
@@ -18,11 +19,8 @@
   - <Select /> has selectable cursor on hold down + move
   - way to use tamagui with custom design system tokens
     - basically map any tokens you choose to internal tamagui ones
-  - or get overshoot clamp working for react-native animations driver
   - mismatch SSR SelectTrigger due to componentName override
-  - add ui package setting custom types example in starter
   - Group make media style size use properly
-  - sell sizing story better - home hero, blog post?
   - <Input /> variant doesnt override paddingHorizontal set on same input
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit

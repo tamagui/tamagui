@@ -43,6 +43,7 @@
     "@tamagui/core-node": "^1.0.1-beta.160",
     "@tamagui/fake-react-native": "^1.0.1-beta.160",
     "@tamagui/helpers": "^1.0.1-beta.160",
+    "@tamagui/helpers-node": "^1.0.1-beta.160",
     "@tamagui/patch-rnw": "^1.0.1-beta.160",
     "@tamagui/proxy-worm": "^1.0.1-beta.160",
     "@tamagui/react-native-svg": "^1.0.1-beta.160",

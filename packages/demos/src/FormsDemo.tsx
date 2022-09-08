@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button, Input, SizeTokens, TextArea, XStack, YStack } from 'tamagui'
 
 export function FormsDemo() {

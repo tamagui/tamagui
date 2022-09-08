@@ -6279,6 +6279,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/helpers-node@^1.0.1-beta.160, @tamagui/helpers-node@workspace:packages/helpers-node":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/helpers-node@workspace:packages/helpers-node"
+  dependencies:
+    "@tamagui/static": ^1.0.1-beta.160
+    fs-extra: ^10.1.0
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/helpers-tamagui@^1.0.1-beta.160, @tamagui/helpers-tamagui@workspace:packages/helpers-tamagui":
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers-tamagui@workspace:packages/helpers-tamagui"
@@ -6938,6 +6947,7 @@ __metadata:
     "@tamagui/core-node": ^1.0.1-beta.160
     "@tamagui/fake-react-native": ^1.0.1-beta.160
     "@tamagui/helpers": ^1.0.1-beta.160
+    "@tamagui/helpers-node": ^1.0.1-beta.160
     "@tamagui/patch-rnw": ^1.0.1-beta.160
     "@tamagui/proxy-worm": ^1.0.1-beta.160
     "@tamagui/react-native-svg": ^1.0.1-beta.160
