@@ -19,11 +19,18 @@ export function CodeDemoPreParsed({
       className={`language-${language}`}
       bc="$backgroundHover"
       boc="$borderColor"
+      ov="hidden"
       bw={1}
       f={1}
       {...props}
     >
-      <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={{
+          flex: 1,
+        }}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+      >
         <Pre f={1}>
           <Code dangerouslySetInnerHTML={{ __html: source }} />
         </Pre>
