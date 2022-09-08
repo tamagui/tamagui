@@ -132,7 +132,7 @@ export const ProgressFrame = styled(ThemeableStack, {
         }
       },
     },
-  },
+  } as const,
 })
 
 type ProgressProps = GetProps<typeof ProgressFrame> & {

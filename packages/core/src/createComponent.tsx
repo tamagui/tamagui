@@ -1244,7 +1244,7 @@ export const Spacer = createComponent<SpacerProps>({
       },
       both: {},
     },
-  },
+  } as const,
 
   defaultVariants: {
     direction: 'both',

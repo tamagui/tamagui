@@ -36,9 +36,17 @@ export const Circle = styled(Stack, {
         }
       },
     },
-  },
+  } as const,
 })
 ```
+
+<Notice>
+  Please use `as const` for the variants definition until Typescript gains{' '}
+  <a href="https://github.com/microsoft/TypeScript/issues/30680">
+    the ability to infer generics as const
+  </a>
+  . It's not necessary, but without it types can break in weird ways.
+</Notice>
 
 We can use these like so:
 
@@ -60,7 +68,7 @@ export const MyStack = styled(Stack, {
     doubleMargin: (val: number) => ({
       margin: val * 2,
     }),
-  },
+  } as const,
 })
 ```
 
@@ -96,7 +104,7 @@ export const ColorfulStack = styled(Stack, {
         }
       },
     },
-  },
+  } as const,
 })
 ```
 
@@ -135,7 +143,7 @@ const MyButton = styled(Stack, {
       },
       // ...
     }
-  }
+  } as const
 })
 
 // now you can
@@ -170,7 +178,7 @@ const MyButton = styled(Stack, {
         padding: tokens.size[val]
       }),
     }
-  }
+  } as const
 })
 
 // now you can
@@ -199,7 +207,7 @@ const Square = styled(Stack, {
         }
       },
     },
-  },
+  } as const,
 })
 ```
 
@@ -223,7 +231,7 @@ export const ColorfulStack = styled(Stack, {
         }
       },
     },
-  },
+  } as const,
 })
 ```
 
@@ -246,7 +254,7 @@ const Square = styled(Stack, {
         }
       },
     },
-  },
+  } as const,
 
   // <Square /> will get size '$10' from size tokens automatically
   defaultVariants: {
@@ -275,7 +283,7 @@ const SizedText = styled(Text, {
          }
       }
     }
-  }
+  } as const
 })
 ```
 
@@ -297,7 +305,7 @@ const ColorfulText = styled(Text, {
         fontSize: '$8'
       }
     }
-  }
+  } as const
 })
 
 const MyParagraph = styled(ColorfulText, {
@@ -309,6 +317,6 @@ const MyParagraph = styled(ColorfulText, {
         large: true,
       }
     }
-  }
+  } as const
 })
 ```

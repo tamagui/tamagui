@@ -30,7 +30,7 @@ export const SelectViewportFrame = styled(ThemeableStack, {
         }
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     size: '$2',

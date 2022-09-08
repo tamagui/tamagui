@@ -20,7 +20,7 @@ export const TextAreaFrame = styled(InputFrame, {
     size: {
       '...size': textAreaSizeVariant,
     },
-  },
+  } as const,
 })
 
 export type TextAreaProps = GetProps<typeof TextArea>

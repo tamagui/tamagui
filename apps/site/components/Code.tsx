@@ -16,7 +16,7 @@ export const Code = styled(Paragraph, {
         backgroundColor: '$background',
       },
     },
-  },
+  } as const,
 })
 
 export const CodeInline = styled(Paragraph, {

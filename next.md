@@ -20,7 +20,6 @@
     - basically map any tokens you choose to internal tamagui ones
   - or get overshoot clamp working for react-native animations driver
   - mismatch SSR SelectTrigger due to componentName override
-  - // TODO still have as const bug
   - add ui package setting custom types example in starter
   - Group make media style size use properly
   - sell sizing story better - home hero, blog post?

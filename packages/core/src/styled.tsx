@@ -159,7 +159,7 @@ export function styled<
 //         pointerEvents: 'none',
 //       },
 //     },
-//   }
+//   } as const
 // })
 // type variants = GetStyledVariants<typeof X>
 // const y = <X disabled size="$10" />

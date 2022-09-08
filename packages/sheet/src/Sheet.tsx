@@ -111,9 +111,8 @@ export const SheetOverlayFrame = styled(YStack, {
       false: {
         pointerEvents: 'auto',
       },
-      // TODO still have as const bug
-    } as const,
-  },
+    },
+  } as const,
 })
 
 export type SheetOverlayProps = GetProps<typeof SheetOverlayFrame>

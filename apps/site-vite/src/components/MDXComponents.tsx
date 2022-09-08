@@ -46,7 +46,7 @@ export const OffsetBox = styled(YStack, {
         $gtLg: { mx: '$-6' },
       },
     },
-  },
+  } as const,
 })
 
 // import { PropsTable } from

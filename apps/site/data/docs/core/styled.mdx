@@ -68,9 +68,17 @@ export const Circle = styled(Stack, {
         }
       },
     },
-  },
+  } as const,
 })
 ```
+
+<Notice>
+  Please use `as const` for the variants definition until Typescript gains{' '}
+  <a href="https://github.com/microsoft/TypeScript/issues/30680">
+    the ability to infer generics as const
+  </a>
+  .
+</Notice>
 
 We can use these like so:
 

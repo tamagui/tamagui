@@ -8,7 +8,7 @@ export const SizableText = styled(
 
     variants: {
       size: getFont,
-    },
+    } as const,
 
     defaultVariants: {
       size: '$4',

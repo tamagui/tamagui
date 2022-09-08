@@ -11,8 +11,6 @@ export const Fieldset = styled(YStack, {
         alignItems: 'center',
       },
     },
-
-    // TODO see core/styled.ts bug
   } as const,
 })
 

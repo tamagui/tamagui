@@ -54,7 +54,7 @@ export const ThemeableStack = styled(YStack, {
         focusStyle: chromelessStyle,
       },
     },
-  },
+  } as const,
 })
 
 export type ThemeableStackProps = GetProps<typeof ThemeableStack>

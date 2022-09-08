@@ -37,7 +37,7 @@ export const CardFrame = styled(ThemeableStack, {
         }
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     size: '$4',
@@ -58,7 +58,7 @@ export const CardHeader = styled(ThemeableStack, {
         }
       },
     },
-  },
+  } as const,
 })
 
 export const CardFooter = styled(CardHeader, {

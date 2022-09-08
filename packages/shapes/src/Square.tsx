@@ -19,7 +19,7 @@ export const Square = styled(ThemeableStack, {
     size: {
       '...size': getShapeSize,
     },
-  },
+  } as const,
 })
 
 export type SquareProps = GetProps<typeof Square>

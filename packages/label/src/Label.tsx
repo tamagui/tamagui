@@ -50,7 +50,7 @@ export const LabelFrame = styled(SizableText, {
         }
       },
     },
-  },
+  } as const,
 })
 
 export type LabelProps = GetProps<typeof LabelFrame> & {

@@ -27,5 +27,5 @@ export const Separator = styled(Stack, {
         borderRightWidth: 1,
       },
     },
-  },
+  } as const,
 })

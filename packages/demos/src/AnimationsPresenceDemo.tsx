@@ -20,7 +20,7 @@ const YStackEnterable = styled(YStack, {
   variants: {
     isLeft: { true: { x: -300, opacity: 0 } },
     isRight: { true: { x: 300, opacity: 0 } },
-  },
+  } as const,
 })
 
 export function AnimationsPresenceDemo() {

@@ -80,7 +80,7 @@ export const ListItemFrame = styled(ThemeableStack, {
         pointerEvents: 'none' as any,
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     size: '$4',

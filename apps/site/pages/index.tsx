@@ -94,7 +94,7 @@ const Section = styled(YStack, {
         zi: 1,
       },
     },
-  },
+  } as const,
 })
 
 const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTop, ...props }: any) => {

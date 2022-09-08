@@ -299,7 +299,7 @@ export const SliderThumbFrame = styled(ThemeableStack, {
     size: {
       '...size': getThumbSize,
     },
-  },
+  } as const,
 })
 
 interface SliderThumbProps extends SizableStackProps {

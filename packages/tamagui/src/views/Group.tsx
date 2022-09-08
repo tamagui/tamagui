@@ -26,7 +26,7 @@ export const GroupFrame = styled(ThemeableStack, {
         borderRadius,
       }
     },
-  },
+  } as const,
 
   defaultVariants: {
     size: '$4',

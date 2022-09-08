@@ -255,7 +255,7 @@ const DialogContentFrame = styled(ThemeableStack, {
         return {}
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     size: '$4',

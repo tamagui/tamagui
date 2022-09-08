@@ -16,7 +16,7 @@ export const DirectionalYStack = styled(YStack, {
       horizontal: {},
       vertical: {},
     },
-  },
+  } as const,
 })
 
 export const SliderFrame = styled(DirectionalYStack, {
@@ -39,7 +39,7 @@ export const SliderFrame = styled(DirectionalYStack, {
         alignItems: 'center',
       }
     },
-  },
+  } as const,
 })
 
 export const SliderImpl = React.forwardRef<View, SliderImplProps>(

@@ -12,5 +12,5 @@ export const Section = styled(YStack, {
         zi: 1,
       },
     },
-  },
+  } as const,
 })

@@ -23,7 +23,7 @@ export const SizableStack = styled(YStack, {
     size: {
       '...size': getButtonSize,
     },
-  },
+  } as const,
 })
 
 export type SizableStackProps = GetProps<typeof SizableStack>

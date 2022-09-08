@@ -55,7 +55,7 @@ export const SwitchThumbFrame = styled(ThemeableStack, {
         width: getSwitchHeight(val),
       }),
     },
-  },
+  } as const,
 
   defaultVariants: {
     size: '$4',
@@ -117,7 +117,7 @@ export const SwitchFrame = styled(XStack, {
         }
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     size: '$4',

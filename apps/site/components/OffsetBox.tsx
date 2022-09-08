@@ -10,5 +10,5 @@ export const OffsetBox = styled(YStack, {
         $gtLg: { mx: '$-6' },
       },
     },
-  },
+  } as const,
 })

@@ -49,5 +49,5 @@ export const FlatBubbleCard = styled(YStack, {
     //   //   borderColor: '$borderColorPress',
     //   // },
     // },
-  },
+  } as const,
 })
