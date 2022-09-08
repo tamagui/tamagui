@@ -18,18 +18,18 @@ export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    fontFamily?: unknown;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    circular?: boolean | undefined;
-    padded?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    readonly fontFamily?: unknown;
+    readonly backgrounded?: boolean | undefined;
+    readonly radiused?: boolean | undefined;
+    readonly hoverTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined;
+    readonly circular?: boolean | undefined;
+    readonly padded?: boolean | undefined;
+    readonly elevate?: boolean | undefined;
+    readonly bordered?: number | boolean | undefined;
+    readonly transparent?: boolean | undefined;
+    readonly chromeless?: boolean | "all" | undefined;
 }, "disabled" | "size" | "active"> & {
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
@@ -38,18 +38,18 @@ export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    fontFamily?: unknown;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    circular?: boolean | undefined;
-    padded?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    readonly fontFamily?: unknown;
+    readonly backgrounded?: boolean | undefined;
+    readonly radiused?: boolean | undefined;
+    readonly hoverTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined;
+    readonly circular?: boolean | undefined;
+    readonly padded?: boolean | undefined;
+    readonly elevate?: boolean | undefined;
+    readonly bordered?: number | boolean | undefined;
+    readonly transparent?: boolean | undefined;
+    readonly chromeless?: boolean | "all" | undefined;
 }, "disabled" | "size" | "active"> & {
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
@@ -58,18 +58,18 @@ export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    fontFamily?: unknown;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    circular?: boolean | undefined;
-    padded?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    readonly fontFamily?: unknown;
+    readonly backgrounded?: boolean | undefined;
+    readonly radiused?: boolean | undefined;
+    readonly hoverTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined;
+    readonly circular?: boolean | undefined;
+    readonly padded?: boolean | undefined;
+    readonly elevate?: boolean | undefined;
+    readonly bordered?: number | boolean | undefined;
+    readonly transparent?: boolean | undefined;
+    readonly chromeless?: boolean | "all" | undefined;
 }, "disabled" | "size" | "active"> & {
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
@@ -78,73 +78,69 @@ export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    fontFamily?: unknown;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    circular?: boolean | undefined;
-    padded?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    readonly fontFamily?: unknown;
+    readonly backgrounded?: boolean | undefined;
+    readonly radiused?: boolean | undefined;
+    readonly hoverTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined;
+    readonly circular?: boolean | undefined;
+    readonly padded?: boolean | undefined;
+    readonly elevate?: boolean | undefined;
+    readonly bordered?: number | boolean | undefined;
+    readonly transparent?: boolean | undefined;
+    readonly chromeless?: boolean | "all" | undefined;
 } & {
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
 }>;
 export declare const ButtonText: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
 }>>), TamaguiElement, import("@tamagui/core").TextPropsBase, {
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
-} | ({
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & {
     [x: string]: undefined;
-})>;
+}>;
 export declare function useButton(props: ButtonProps, TextComponent?: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
 }>>), TamaguiElement, import("@tamagui/core").TextPropsBase, {
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
-} | ({
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & {
     [x: string]: undefined;
-})>): {
+}>): {
     spaceSize: number;
     isInsideButton: boolean;
     props: {
@@ -366,18 +362,18 @@ export declare function useButton(props: ButtonProps, TextComponent?: import("@t
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            fontFamily?: unknown;
-            backgrounded?: boolean | undefined;
-            radiused?: boolean | undefined;
-            hoverTheme?: boolean | undefined;
-            pressTheme?: boolean | undefined;
-            focusTheme?: boolean | undefined;
-            circular?: boolean | undefined;
-            padded?: boolean | undefined;
-            elevate?: boolean | undefined;
-            bordered?: number | boolean | undefined;
-            transparent?: boolean | undefined;
-            chromeless?: boolean | "all" | undefined;
+            readonly fontFamily?: unknown;
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
         }, "disabled" | "size" | "active"> & {
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
@@ -387,18 +383,18 @@ export declare function useButton(props: ButtonProps, TextComponent?: import("@t
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            fontFamily?: unknown;
-            backgrounded?: boolean | undefined;
-            radiused?: boolean | undefined;
-            hoverTheme?: boolean | undefined;
-            pressTheme?: boolean | undefined;
-            focusTheme?: boolean | undefined;
-            circular?: boolean | undefined;
-            padded?: boolean | undefined;
-            elevate?: boolean | undefined;
-            bordered?: number | boolean | undefined;
-            transparent?: boolean | undefined;
-            chromeless?: boolean | "all" | undefined;
+            readonly fontFamily?: unknown;
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
         }, "disabled" | "size" | "active"> & {
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
@@ -408,18 +404,18 @@ export declare function useButton(props: ButtonProps, TextComponent?: import("@t
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            fontFamily?: unknown;
-            backgrounded?: boolean | undefined;
-            radiused?: boolean | undefined;
-            hoverTheme?: boolean | undefined;
-            pressTheme?: boolean | undefined;
-            focusTheme?: boolean | undefined;
-            circular?: boolean | undefined;
-            padded?: boolean | undefined;
-            elevate?: boolean | undefined;
-            bordered?: number | boolean | undefined;
-            transparent?: boolean | undefined;
-            chromeless?: boolean | "all" | undefined;
+            readonly fontFamily?: unknown;
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
         }, "disabled" | "size" | "active"> & {
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
@@ -429,18 +425,18 @@ export declare function useButton(props: ButtonProps, TextComponent?: import("@t
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            fontFamily?: unknown;
-            backgrounded?: boolean | undefined;
-            radiused?: boolean | undefined;
-            hoverTheme?: boolean | undefined;
-            pressTheme?: boolean | undefined;
-            focusTheme?: boolean | undefined;
-            circular?: boolean | undefined;
-            padded?: boolean | undefined;
-            elevate?: boolean | undefined;
-            bordered?: number | boolean | undefined;
-            transparent?: boolean | undefined;
-            chromeless?: boolean | "all" | undefined;
+            readonly fontFamily?: unknown;
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
         }, "disabled" | "size" | "active"> & {
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
@@ -450,18 +446,18 @@ export declare function useButton(props: ButtonProps, TextComponent?: import("@t
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            fontFamily?: unknown;
-            backgrounded?: boolean | undefined;
-            radiused?: boolean | undefined;
-            hoverTheme?: boolean | undefined;
-            pressTheme?: boolean | undefined;
-            focusTheme?: boolean | undefined;
-            circular?: boolean | undefined;
-            padded?: boolean | undefined;
-            elevate?: boolean | undefined;
-            bordered?: number | boolean | undefined;
-            transparent?: boolean | undefined;
-            chromeless?: boolean | "all" | undefined;
+            readonly fontFamily?: unknown;
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
         }, "disabled" | "size" | "active"> & {
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
@@ -477,18 +473,18 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    fontFamily?: unknown;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    circular?: boolean | undefined;
-    padded?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    readonly fontFamily?: unknown;
+    readonly backgrounded?: boolean | undefined;
+    readonly radiused?: boolean | undefined;
+    readonly hoverTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined;
+    readonly circular?: boolean | undefined;
+    readonly padded?: boolean | undefined;
+    readonly elevate?: boolean | undefined;
+    readonly bordered?: number | boolean | undefined;
+    readonly transparent?: boolean | undefined;
+    readonly chromeless?: boolean | "all" | undefined;
 }, "disabled" | "size" | "active"> & {
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
@@ -497,18 +493,18 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    fontFamily?: unknown;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    circular?: boolean | undefined;
-    padded?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    readonly fontFamily?: unknown;
+    readonly backgrounded?: boolean | undefined;
+    readonly radiused?: boolean | undefined;
+    readonly hoverTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined;
+    readonly circular?: boolean | undefined;
+    readonly padded?: boolean | undefined;
+    readonly elevate?: boolean | undefined;
+    readonly bordered?: number | boolean | undefined;
+    readonly transparent?: boolean | undefined;
+    readonly chromeless?: boolean | "all" | undefined;
 }, "disabled" | "size" | "active"> & {
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
@@ -517,18 +513,18 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    fontFamily?: unknown;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    circular?: boolean | undefined;
-    padded?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    readonly fontFamily?: unknown;
+    readonly backgrounded?: boolean | undefined;
+    readonly radiused?: boolean | undefined;
+    readonly hoverTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined;
+    readonly circular?: boolean | undefined;
+    readonly padded?: boolean | undefined;
+    readonly elevate?: boolean | undefined;
+    readonly bordered?: number | boolean | undefined;
+    readonly transparent?: boolean | undefined;
+    readonly chromeless?: boolean | "all" | undefined;
 }, "disabled" | "size" | "active"> & {
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;

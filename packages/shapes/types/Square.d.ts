@@ -3,18 +3,18 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    fontFamily?: unknown;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    circular?: boolean | undefined;
-    padded?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    readonly fontFamily?: unknown;
+    readonly backgrounded?: boolean | undefined;
+    readonly radiused?: boolean | undefined;
+    readonly hoverTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined;
+    readonly circular?: boolean | undefined;
+    readonly padded?: boolean | undefined;
+    readonly elevate?: boolean | undefined;
+    readonly bordered?: number | boolean | undefined;
+    readonly transparent?: boolean | undefined;
+    readonly chromeless?: boolean | "all" | undefined;
 }, "size" | "circular"> & {
     readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
@@ -22,18 +22,18 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    fontFamily?: unknown;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    circular?: boolean | undefined;
-    padded?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    readonly fontFamily?: unknown;
+    readonly backgrounded?: boolean | undefined;
+    readonly radiused?: boolean | undefined;
+    readonly hoverTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined;
+    readonly circular?: boolean | undefined;
+    readonly padded?: boolean | undefined;
+    readonly elevate?: boolean | undefined;
+    readonly bordered?: number | boolean | undefined;
+    readonly transparent?: boolean | undefined;
+    readonly chromeless?: boolean | "all" | undefined;
 }, "size" | "circular"> & {
     readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
@@ -41,18 +41,18 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    fontFamily?: unknown;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    circular?: boolean | undefined;
-    padded?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    readonly fontFamily?: unknown;
+    readonly backgrounded?: boolean | undefined;
+    readonly radiused?: boolean | undefined;
+    readonly hoverTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined;
+    readonly circular?: boolean | undefined;
+    readonly padded?: boolean | undefined;
+    readonly elevate?: boolean | undefined;
+    readonly bordered?: number | boolean | undefined;
+    readonly transparent?: boolean | undefined;
+    readonly chromeless?: boolean | "all" | undefined;
 }, "size" | "circular"> & {
     readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
@@ -60,18 +60,18 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    fontFamily?: unknown;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    circular?: boolean | undefined;
-    padded?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    readonly fontFamily?: unknown;
+    readonly backgrounded?: boolean | undefined;
+    readonly radiused?: boolean | undefined;
+    readonly hoverTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined;
+    readonly circular?: boolean | undefined;
+    readonly padded?: boolean | undefined;
+    readonly elevate?: boolean | undefined;
+    readonly bordered?: number | boolean | undefined;
+    readonly transparent?: boolean | undefined;
+    readonly chromeless?: boolean | "all" | undefined;
 } & {
     readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;

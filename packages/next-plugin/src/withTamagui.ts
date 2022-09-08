@@ -214,8 +214,10 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               }
             }
 
+            const SEP = path.sep
+
             // must inline react-native so we can alias to react-native-web
-            if (fullPath === 'react-native' || fullPath.startsWith('react-native/')) {
+            if (fullPath === 'react-native' || fullPath.startsWith(`react-native${SEP}`)) {
               return false
             }
 
@@ -223,24 +225,24 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               // feather icons uses react-native-svg which needs to be aliased
               // fullPath.includes('/feather-icons/') ||
               fullPath.startsWith('react-native-web') ||
-              fullPath.includes('node_modules/react-native-web') ||
-              /^(react-dom|react)\/$/.test(fullPath)
+              fullPath.includes(`node_modules${SEP}react-native-web`) ||
+              new RegExp(`^(react-dom|react)${SEP}$`).test(fullPath)
             ) {
               return `commonjs ${fullPath}`
             }
             if (
-              fullPath.includes('/moti/') ||
-              fullPath.includes('/solito/') ||
+              fullPath.startsWith('moti') ||
+              fullPath.startsWith('solito') ||
               fullPath === 'tamagui' ||
               fullPath.startsWith('@tamagui/') ||
               fullPath === 'react-native-safe-area-context' ||
               fullPath === 'expo-linear-gradient' ||
               fullPath.startsWith('@react-navigation') ||
-              fullPath === '@gorhom/bottom-sheet'
+              fullPath.startsWith('@gorhom')
             ) {
               return
             }
-            if (/^\@?react-native-/.test(request)) {
+            if (/^@?react-native-/.test(request)) {
               return false
             }
             return true
