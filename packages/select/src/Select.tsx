@@ -260,6 +260,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
         <ListItem
           backgrounded
           pressTheme
+          cursor=""
           focusTheme
           componentName={ITEM_NAME}
           ref={composedRefs}
