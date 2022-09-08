@@ -89,7 +89,7 @@ yarn
 If you're installing a library with any native code, you must install it in `expo`:
 
 ```sh
-cd expo
+cd apps/expo
 yarn add react-native-reanimated
 cd ..
 yarn
