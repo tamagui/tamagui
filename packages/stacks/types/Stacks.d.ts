@@ -56,12 +56,9 @@ export declare const ZStack: import("@tamagui/core").TamaguiComponent<(Omit<impo
 }>>), import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-} | ({
-    readonly fullscreen?: boolean | undefined;
-    readonly elevation?: SizeTokens | undefined;
 } & {
     [x: string]: undefined;
-})>;
+}>;
 export declare const getSizedElevation: (val: SizeTokens | number | boolean, { theme, tokens }: VariantSpreadExtras<any>) => {
     shadowColor: import("@tamagui/core").VariableColorVal | undefined;
     shadowRadius: number;
