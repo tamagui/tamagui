@@ -6,7 +6,18 @@ import '../site/app.css'
 import { AnimationsDemo, DialogDemo, FormsDemo, SheetDemo } from '@tamagui/demos'
 import { useEffect, useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
-import { Button, FontLanguage, Paragraph, Sheet, TamaguiProvider, XStack, styled } from 'tamagui'
+import {
+  Button,
+  FontLanguage,
+  Hidden,
+  Paragraph,
+  Sheet,
+  Square,
+  TamaguiProvider,
+  VisuallyHidden,
+  XStack,
+  styled,
+} from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -82,7 +93,8 @@ export const Sandbox = () => {
         {/* <AnimationsDemo /> */}
         {/* <SheetDemo /> */}
         {/* <DialogDemo /> */}
-        <FormsDemo />
+        {/* <FormsDemo /> */}
+        <VisuallyHiddenMediaQuerySpaceDemo />
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SwitchDemo /> */}
@@ -98,6 +110,20 @@ export const Sandbox = () => {
         </XStack> */}
       </div>
     </TamaguiProvider>
+  )
+}
+
+function VisuallyHiddenMediaQuerySpaceDemo() {
+  return (
+    <XStack space="$4" $sm={{ space: '$2' }}>
+      <Hidden from="$xs" to="$sm">
+        <Square size={100} bc="red" />
+      </Hidden>
+      <VisuallyHidden>
+        <Square size={100} bc="red" />
+      </VisuallyHidden>
+      <Square size={100} bc="red" />
+    </XStack>
   )
 }
 

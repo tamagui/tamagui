@@ -14,10 +14,10 @@ import {
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
 import * as DismissableLayer from '@tamagui/dismissable'
+import { VisuallyHidden } from '@tamagui/hidden'
 import { Portal } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 

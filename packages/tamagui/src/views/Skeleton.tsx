@@ -1,9 +1,9 @@
 import { GetProps, TamaguiElement, styled } from '@tamagui/core'
+import { VisuallyHidden } from '@tamagui/hidden'
 import { YStack } from '@tamagui/stacks'
 import { forwardRef } from 'react'
 
 import { LinearGradient, LinearGradientProps } from './LinearGradient'
-import { VisuallyHidden } from './VisuallyHidden'
 
 export const SkeletonFrame = styled(YStack, {
   name: 'Skeleton',

@@ -216,7 +216,7 @@ export declare type MediaQueryObject = {
     [key: string]: string | number | string;
 };
 export declare type MediaQueryKey = keyof Media;
-export declare type MediaPropKeys = `$${MediaQueryKey}`;
+export declare type MediaPropKeys = MediaQueryKey extends never ? never : `$${MediaQueryKey}`;
 export declare type MediaQueryState = {
     [key in MediaPropKeys]: boolean;
 };

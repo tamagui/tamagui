@@ -343,7 +343,9 @@ export type GenericFont<Key extends number | string = number | string> = {
 // media
 export type MediaQueryObject = { [key: string]: string | number | string }
 export type MediaQueryKey = keyof Media
-export type MediaPropKeys = `$${MediaQueryKey}`
+// this extends never trick prevents files that use MediaPropKeys from having their .d.ts usages expanded
+// we want them to keep MediaPropKeys as the reference, so the overriden types later on propagate
+export type MediaPropKeys = MediaQueryKey extends never ? never : `$${MediaQueryKey}`
 export type MediaQueryState = { [key in MediaPropKeys]: boolean }
 export type MediaProps<A> = {
   [key in MediaPropKeys]?: A

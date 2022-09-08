@@ -28,7 +28,7 @@ export * from '@tamagui/tooltip'
 export * from '@tamagui/use-controllable-state'
 export * from '@tamagui/use-debounce'
 export * from '@tamagui/use-force-update'
-export * from '@tamagui/visually-hidden'
+export * from '@tamagui/hidden'
 
 export * from './views/TamaguiProvider'
 export * from './viewTypes'

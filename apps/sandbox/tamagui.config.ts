@@ -30,7 +30,7 @@ const tamaConf = createTamagui({
 
 export type Conf = typeof tamaConf
 
-declare module 'tamagui' {
+declare module '@tamagui/core' {
   interface TamaguiCustomConfig extends Conf {}
 }
 

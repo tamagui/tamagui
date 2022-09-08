@@ -49,7 +49,7 @@
     "esbuild": "^0.15.6",
     "react": "*",
     "react-dom": "*",
-    "typescript": "^4.7.4",
+    "typescript": "^4.8.2",
     "vitest": "^0.20.3"
   },
   "exports": {

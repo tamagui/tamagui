@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/visually-hidden",
+  "name": "@tamagui/hidden",
   "version": "1.0.1-beta.161",
   "sideEffects": [
     "*.css"

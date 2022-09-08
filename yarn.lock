@@ -5852,7 +5852,7 @@ __metadata:
     fast-glob: ^3.2.11
     fs-extra: ^10.1.0
     lodash.debounce: ^4.0.8
-    typescript: ^4.7.4
+    typescript: ^4.8.2
   bin:
     tamagui-build: tamagui-build.js
   languageName: unknown
@@ -6049,7 +6049,7 @@ __metadata:
     hyphenate-style-name: ^1.0.4
     react: "*"
     react-dom: "*"
-    typescript: ^4.7.4
+    typescript: ^4.8.2
     vitest: ^0.20.3
   peerDependencies:
     react: "*"
@@ -6302,6 +6302,20 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/hidden@^1.0.1-beta.161, @tamagui/hidden@workspace:packages/hidden":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/hidden@workspace:packages/hidden"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.161
+    "@tamagui/core": ^1.0.1-beta.161
+    react: "*"
+    react-dom: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -6961,7 +6975,7 @@ __metadata:
     react-test-renderer: ^18.2.0
     style-loader: ^3.3.1
     tamagui: ^1.0.1-beta.161
-    typescript: ^4.7.4
+    typescript: ^4.8.2
     vitest: ^0.20.3
     webpack: ^5.74.0
   peerDependencies:
@@ -7029,12 +7043,12 @@ __metadata:
     "@tamagui/core": ^1.0.1-beta.161
     "@tamagui/create-context": ^1.0.1-beta.161
     "@tamagui/dismissable": ^1.0.1-beta.161
+    "@tamagui/hidden": ^1.0.1-beta.161
     "@tamagui/polyfill-dev": ^1.0.1-beta.161
     "@tamagui/portal": ^1.0.1-beta.161
     "@tamagui/stacks": ^1.0.1-beta.161
     "@tamagui/text": ^1.0.1-beta.161
     "@tamagui/use-controllable-state": ^1.0.1-beta.161
-    "@tamagui/visually-hidden": ^1.0.1-beta.161
     "@types/react-dom": ^18.0.3
     "@types/react-native": ^0.69.2
     react: "*"
@@ -7193,20 +7207,6 @@ __metadata:
     react-native: "*"
   peerDependencies:
     react-native: "*"
-  languageName: unknown
-  linkType: soft
-
-"@tamagui/visually-hidden@^1.0.1-beta.161, @tamagui/visually-hidden@workspace:packages/visually-hidden":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/visually-hidden@workspace:packages/visually-hidden"
-  dependencies:
-    "@tamagui/build": ^1.0.1-beta.161
-    "@tamagui/core": ^1.0.1-beta.161
-    react: "*"
-    react-dom: "*"
-  peerDependencies:
-    react: "*"
-    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -23301,7 +23301,7 @@ __metadata:
     pretty-quick: ^3.1.2
     prompts: 2.1.0
     turbo: ^1.4.3
-    typescript: ^4.7.4
+    typescript: ^4.8.2
     ultra-runner: ^3.10.5
   languageName: unknown
   linkType: soft
@@ -23324,6 +23324,7 @@ __metadata:
     "@tamagui/font-size": ^1.0.1-beta.161
     "@tamagui/helpers": ^1.0.1-beta.161
     "@tamagui/helpers-tamagui": ^1.0.1-beta.161
+    "@tamagui/hidden": ^1.0.1-beta.161
     "@tamagui/image": ^1.0.1-beta.161
     "@tamagui/label": ^1.0.1-beta.161
     "@tamagui/list-item": ^1.0.1-beta.161
@@ -23344,7 +23345,6 @@ __metadata:
     "@tamagui/use-debounce": ^1.0.1-beta.161
     "@tamagui/use-event": ^1.0.1-beta.161
     "@tamagui/use-force-update": ^1.0.1-beta.161
-    "@tamagui/visually-hidden": ^1.0.1-beta.161
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
     expo-linear-gradient: ^11.4.0
@@ -24128,23 +24128,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.8.0-dev.20220801":
-  version: 4.8.0-dev.20220801
-  resolution: "typescript@npm:4.8.0-dev.20220801"
+"typescript@npm:4.8.2":
+  version: 4.8.2
+  resolution: "typescript@npm:4.8.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 990881e1f9c466402bae8b3611f5acce748fe35c29702717b6d933c3c28a18b0fad38fd1195140ffb25e8610bbf68a4393318a966b91046cdaebc8e1338bc621
+  checksum: 7f5b81d0d558c9067f952c7af52ab7f19c2e70a916817929e4a5b256c93990bf3178eccb1ac8a850bc75df35f6781b6f4cb3370ce20d8b1ded92ed462348f628
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A4.8.0-dev.20220801#~builtin<compat/typescript>":
-  version: 4.8.0-dev.20220801
-  resolution: "typescript@patch:typescript@npm%3A4.8.0-dev.20220801#~builtin<compat/typescript>::version=4.8.0-dev.20220801&hash=f456af"
+"typescript@patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>":
+  version: 4.8.2
+  resolution: "typescript@patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=f456af"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: bcd217c970d65d0fe0eaf104c208ebb30a8eebbd80d4777e96367e5107b2f3853ce08f0dc22d13eb5f658da8e86d402347bdc4683ae70a0e5e3a79f729cced6f
+  checksum: 6f49363af8af2fe480da1d5fa68712644438785208b06690a3cbe5e7365fd652c3a0f1e587bc8684d78fb69de3dde4de185c0bad7bb4f3664ddfc813ce8caad6
   languageName: node
   linkType: hard
 
