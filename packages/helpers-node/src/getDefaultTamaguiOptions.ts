@@ -1,6 +1,5 @@
-import type { TamaguiOptions } from '@tamagui/static'
-
 import { getDefaultTamaguiConfigPath } from './getTamaguiDefaultPath'
+import type { TamaguiOptions } from './types'
 
 export async function getDefaultTamaguiOptions({
   cwd = '.',

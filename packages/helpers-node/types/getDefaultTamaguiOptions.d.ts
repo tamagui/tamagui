@@ -1,4 +1,4 @@
-import type { TamaguiOptions } from '@tamagui/static';
+import type { TamaguiOptions } from './types';
 export declare function getDefaultTamaguiOptions({ cwd, }: {
     cwd: string;
 }): Promise<TamaguiOptions>;

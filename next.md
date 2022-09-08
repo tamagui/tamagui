@@ -12,7 +12,6 @@
   - changing family responsive tests
   - fix reanimated 2.9/3.0 __frame var
   - windows without WSL
-  - <Select /> has selectable cursor on hold down + move
   - way to use tamagui with custom design system tokens
     - basically map any tokens you choose to internal tamagui ones
   - mismatch SSR SelectTrigger due to componentName override
