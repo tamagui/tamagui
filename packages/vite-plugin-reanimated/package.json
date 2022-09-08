@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin-reanimated",
-  "version": "1.0.1-beta.160",
+  "version": "1.0.1-beta.161",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -30,7 +30,7 @@
     "vite": "^3.0.8"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.160",
+    "@tamagui/build": "^1.0.1-beta.161",
     "@types/babel-core": "^6.25.7",
     "vite": "^3.0.8"
   },
