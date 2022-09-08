@@ -171,7 +171,7 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     console.log(`Updating tamagui starters repo`)
     cd(tamaguiGitDir)
     await $`git sparse-checkout set starters`
-    await $`git pull --depth 1 origin ${branch}`
+    await $`git pull --rebase --depth 1 origin ${branch}`
 
     const starterDir = join(tamaguiGitDir, 'starters', program.template)
     if (!(await pathExists(starterDir))) {
