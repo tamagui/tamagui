@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers",
-  "version": "1.0.1-beta.163",
+  "version": "1.0.1-beta.164",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -20,10 +20,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/simple-hash": "^1.0.1-beta.163"
+    "@tamagui/simple-hash": "^1.0.1-beta.164"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.163",
+    "@tamagui/build": "^1.0.1-beta.164",
     "react": "*",
     "react-native": "*"
   },

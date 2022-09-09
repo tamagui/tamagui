@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/rnw-lite",
-  "version": "1.0.1-beta.163",
+  "version": "1.0.1-beta.164",
   "main": "index.cjs",
   "type": "module",
   "module": "index.mjs",
@@ -20,12 +20,12 @@
     "access": "public"
   },
   "dependencies": {
-    "react-native-web-internals": "^1.0.1-beta.163"
+    "react-native-web-internals": "^1.0.1-beta.164"
   },
   "peerDependencies": {
     "react-native-web-lite": "*"
   },
   "devDependencies": {
-    "react-native-web-lite": "^1.0.1-beta.163"
+    "react-native-web-lite": "^1.0.1-beta.164"
   }
 }
