@@ -20,6 +20,7 @@
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
   - forms working bubble / label
+  - inlineWhenUnflattened fontFamily on text should just be default
 
   - FAQ
     - don't wrap in HOC if possible, will de-opt compilation

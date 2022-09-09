@@ -133,6 +133,9 @@ export function createComponent<
       props = propsIn
     }
 
+    const debugProp = props['debug'] || propsIn.children === `Welcome to the Tamagui Kitchen Sink.`
+    console.log('propsIn.children', propsIn.children)
+
     const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
     const componentClassName = props.asChild
@@ -175,7 +178,7 @@ export function createComponent<
       splitStyleState,
       props.asChild ? null : initialSplitStyles?.classNames,
       languageContext || undefined,
-      props['debug']
+      debugProp
     )
 
     const hostRef = useServerRef<TamaguiElement>(null)
@@ -183,7 +186,7 @@ export function createComponent<
     const setStateShallow = useShallowSetState(setState)
 
     if (process.env.NODE_ENV === 'development') {
-      if (props['debug']) {
+      if (debugProp) {
         const name = `${
           componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
         }`
@@ -203,7 +206,7 @@ export function createComponent<
         }
         // eslint-disable-next-line no-console
         console.groupEnd()
-        if (props['debug'] === 'break') {
+        if (debugProp === 'break') {
           // eslint-disable-next-line no-debugger
           debugger
         }
@@ -299,7 +302,7 @@ export function createComponent<
           exitStyle && isExiting && merge(style, exitStyle)
 
           if (process.env.NODE_ENV === 'development') {
-            if (props['debug']) {
+            if (debugProp) {
               // eslint-disable-next-line no-console
               console.log('animation style', style)
             }
@@ -1012,7 +1015,7 @@ export function createComponent<
     }
 
     if (process.env.NODE_ENV === 'development') {
-      if (props['debug']) {
+      if (debugProp) {
         const element = typeof elementType === 'string' ? elementType : 'Component'
         // eslint-disable-next-line no-console
         console.groupCollapsed(`render <${element} /> with props`, viewProps)

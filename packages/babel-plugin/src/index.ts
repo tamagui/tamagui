@@ -60,7 +60,7 @@ export default declare(function snackBabelPlugin(
             return
           }
 
-          let hasImportedView = false
+          const hasImportedView = false
           const sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
           const firstComment = root.node.body[0]?.leadingComments?.[0]?.value?.trim() ?? ''
@@ -119,13 +119,22 @@ export default declare(function snackBabelPlugin(
               // disable extracting variables as no native concept of them
               disableExtractVariables: true,
               sourcePath,
-              getFlattenedNode({ isTextView }) {
-                if (!hasImportedView) {
-                  hasImportedView = true
-                  root.unshiftContainer('body', importNativeView())
-                }
-                return isTextView ? '__ReactNativeText' : '__ReactNativeView'
-              },
+
+              // disabling flattening for now
+              // it's flattening a plain <Paragraph>hello</Paragraph> which breaks things because themes
+              // thinking it's not really worth the effort to do much compilation on native
+              // for now just disable flatten as it can only run in narrow places on native
+              disableFlattening: true,
+
+              // getFlattenedNode({ isTextView }) {
+              //   console.log('FLATTENING')
+              //   if (!hasImportedView) {
+              //     hasImportedView = true
+              //     root.unshiftContainer('body', importNativeView())
+              //   }
+              //   return isTextView ? '__ReactNativeText' : '__ReactNativeView'
+              // },
+
               onExtractTag(props) {
                 assertValidTag(props.node)
                 const stylesExpr = t.arrayExpression([])
@@ -189,9 +198,12 @@ export default declare(function snackBabelPlugin(
           } catch (err) {
             if (err instanceof Error) {
               // metro doesn't show stack so we can
-              console.warn('Error in Tamagui parse', err)
+              console.warn(
+                'Error in Tamagui parse, skipping',
+                shouldPrintDebug === 'verbose' ? err : err.message
+              )
+              return
             }
-            throw err
           }
 
           if (!Object.keys(sheetStyles).length) {

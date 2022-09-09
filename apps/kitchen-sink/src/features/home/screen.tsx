@@ -9,6 +9,7 @@ import {
   H1,
   ListItem,
   ListItemProps,
+  Paragraph,
   Separator,
   Spacer,
   Square,
@@ -42,6 +43,10 @@ export function HomeScreen() {
         <H1 fontFamily="$heading" size="$9">
           Demos
         </H1>
+
+        <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
+          <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
+        </YStack>
 
         {/* fix media + space */}
         {/* 

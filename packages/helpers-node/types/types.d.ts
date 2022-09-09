@@ -5,6 +5,7 @@ export interface TamaguiOptions {
     importsWhitelist?: string[];
     disable?: boolean;
     disableExtraction?: boolean;
+    disableFlattening?: boolean;
     disableDebugAttr?: boolean;
     disableExtractInlineMedia?: boolean;
     disableExtractVariables?: boolean;

@@ -588,7 +588,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
               tagName = val.value
             })
 
-          const flatNode = getFlattenedNode({ isTextView, tag: tagName })
+          const flatNode = getFlattenedNode?.({ isTextView, tag: tagName })
 
           const inlineProps = new Set([
             ...(props.inlineProps || []),
@@ -734,8 +734,16 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                 return res
               } catch (err: any) {
                 if (shouldPrintDebug) {
-                  logger.info(['Error extracting attribute', err.message, err.stack].join(' '))
-                  logger.info(`node ${path.node}`)
+                  logger.info(
+                    [
+                      'Recoverable error extracting attribute',
+                      err.message,
+                      shouldPrintDebug === 'verbose' ? err.stack : '',
+                    ].join(' ')
+                  )
+                  if (shouldPrintDebug === 'verbose') {
+                    logger.info(`node ${path.node?.type}`)
+                  }
                 }
                 // dont flatten if we run into error
                 inlined.set(`${Math.random()}`, 'spread')
@@ -1364,6 +1372,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           const canFlattenProps = inlined.size === 0
 
           let shouldFlatten =
+            flatNode &&
             !shouldDeopt &&
             canFlattenProps &&
             !hasSpread &&
