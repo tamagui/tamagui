@@ -227,7 +227,6 @@ export function createComponent<
     // animations
     const useAnimations = tamaguiConfig?.animations?.useAnimations as UseAnimationHook | undefined
     const isAnimated = !!(useAnimations && props.animation)
-    const hasEnterStyle = !!props.enterStyle
     const animationFeatureStylesIn = props.animation ? { ...defaultNativeStyle, ...style } : null
     const propsWithAnimation = props as UseAnimationProps
 
@@ -258,7 +257,7 @@ export function createComponent<
                   state,
                   tamaguiConfig
                 ) || pseudos.enterStyle
-              : null || pseudos.enterStyle
+              : pseudos.enterStyle
             : null
 
           const exitStyle = isExiting
@@ -272,7 +271,7 @@ export function createComponent<
                   state,
                   tamaguiConfig
                 ) || pseudos.exitStyle
-              : null || pseudos.exitStyle
+              : pseudos.exitStyle
             : null
 
           // if you have hoverStyle={{ scale: 1.1 }} and don't have scale set on the base style
@@ -371,6 +370,24 @@ export function createComponent<
     // these can ultimately be for DOM, react-native-web views, or animated views
     // so the type is pretty loose
     let viewProps: Record<string, any>
+
+    const hasEnterStyle = !!props.enterStyle
+    const shouldSetMounted = Boolean(
+      (isWeb ? isClient : true) && (hasEnterStyle || props.animation) && !state.mounted
+    )
+    const setMounted = shouldSetMounted
+      ? () => {
+          // for some reason without some small delay it doesn't animate css
+          setTimeout(
+            () => {
+              setStateShallow({
+                mounted: true,
+              })
+            },
+            isWeb ? 10 : 0
+          )
+        }
+      : undefined
 
     // if react-native-web view just pass all props down
     if (process.env.TAMAGUI_TARGET === 'web' && !staticConfig.isReactNativeWeb) {
@@ -535,25 +552,7 @@ export function createComponent<
         // from react-native-web
         const platformMethodsRef = usePlatformMethods(viewProps)
 
-        const shouldSetMounted = Boolean(
-          isClient && (hasEnterStyle || props.animation) && !state.mounted
-        )
-
-        const setRef = useMergeRefs(
-          hostRef,
-          platformMethodsRef,
-          forwardedRef as any,
-          shouldSetMounted
-            ? () => {
-                // for some reason without some small delay it doesn't animate css
-                setTimeout(() => {
-                  setStateShallow({
-                    mounted: true,
-                  })
-                }, 10)
-              }
-            : undefined
-        )
+        const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef as any, setMounted)
 
         viewProps.ref = setRef
       }
@@ -717,6 +716,10 @@ export function createComponent<
     }
 
     if (process.env.TAMAGUI_TARGET === 'native') {
+      // add ref
+      const mergedRef = useMergeRefs(forwardedRef, hostRef, setMounted)
+      viewProps.ref = mergedRef
+
       // swap out the right family based on weight/style
       if (splitStyles.fontFamily) {
         const faceInfo = config.fontsParsed[splitStyles.fontFamily]?.face
