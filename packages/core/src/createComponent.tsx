@@ -133,9 +133,7 @@ export function createComponent<
       props = propsIn
     }
 
-    const debugProp = props['debug'] || propsIn.children === `Welcome to the Tamagui Kitchen Sink.`
-    console.log('propsIn.children', propsIn.children)
-
+    const debugProp = props['debug']
     const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
     const componentClassName = props.asChild
