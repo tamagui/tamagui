@@ -84,7 +84,7 @@ async function run() {
     const res = await prompts({
       type: 'text',
       name: 'path',
-      message: 'What is your project named?',
+      message: 'Project name:',
       initial: 'myapp',
       validate: (name) => {
         const validation = validateNpmName(path.basename(path.resolve(name)))
@@ -148,25 +148,36 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
   try {
     const home = homedir()
     const tamaguiDir = join(home, '.tamagui')
-    const tamaguiGitDir = join(tamaguiDir, 'tamagui')
+    const targetGitDir =
+      process.env.NODE_ENV === 'test'
+        ? join(tamaguiDir, 'tamagui-test')
+        : join(tamaguiDir, 'tamagui')
 
     async function setupTamaguiDotDir(isRetry = false) {
       console.log(`Setting up ${chalk.blueBright(tamaguiDir)}...`)
       await ensureDir(tamaguiDir)
+
       cd(tamaguiDir)
+
       const branch = `master`
-      if (!(await pathExists(tamaguiGitDir))) {
+      if (!(await pathExists(targetGitDir))) {
         console.log(`Cloning tamagui base directory`)
-        await $`git clone --branch ${branch} --depth 1 --filter=blob:none --sparse https://github.com/tamagui/tamagui.git`
+
+        const sourceGitRepo =
+          process.env.NODE_ENV === 'test'
+            ? join(__dirname, '..', '..', '..')
+            : `https://github.com/tamagui/tamagui.git`
+
+        await $`git clone --branch ${branch} --depth 1 --filter=blob:none --sparse ${sourceGitRepo} ${targetGitDir}`
       } else {
-        if (!(await pathExists(join(tamaguiGitDir, '.git')))) {
-          console.error(`Corrupt Tamagui directory, please delete ${tamaguiGitDir} and re-run`)
+        if (!(await pathExists(join(targetGitDir, '.git')))) {
+          console.error(`Corrupt Tamagui directory, please delete ${targetGitDir} and re-run`)
           process.exit(1)
         }
       }
 
       console.log(`Updating tamagui starters repo`)
-      cd(tamaguiGitDir)
+      cd(targetGitDir)
       await $`git sparse-checkout set starters`
       try {
         await $`git pull --rebase --allow-unrelated-histories --depth 1 origin ${branch}`
@@ -182,14 +193,14 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
           )
           process.exit(1)
         }
-        await remove(tamaguiGitDir)
+        await remove(targetGitDir)
         await setupTamaguiDotDir(true)
       }
     }
 
     await setupTamaguiDotDir()
 
-    const starterDir = join(tamaguiGitDir, 'starters', program.template)
+    const starterDir = join(targetGitDir, 'starters', program.template)
     if (!(await pathExists(starterDir))) {
       console.error(`Missing template for ${program.template} in ${starterDir}`)
       process.exit(1)

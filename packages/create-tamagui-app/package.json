@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "start": "./run.js",
-    "test": "node -r esbuild-register ../../node_modules/.bin/playwright test test.ts",
+    "test": "node -r esbuild-register ../../node_modules/.bin/playwright test integration.test.ts",
     "prerelease": "rimraf ./dist/",
     "prepublish": "yarn build",
     "build": "tamagui-build --skip-types --bundle --bundle-modules",
@@ -32,6 +32,7 @@
     "validate-npm-package-name": "3.0.0"
   },
   "devDependencies": {
+    "playwright": "^1.25.1",
     "@playwright/test": "^1.25.1",
     "@tamagui/build": "^1.0.1-beta.165",
     "@types/async-retry": "1.4.2",

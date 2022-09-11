@@ -1,6 +1,6 @@
 - 1.0
 
-  - make extra logs etc fail lint
+  - take any component fallback to inline style tag
   - make create-tamagui-app test test using local changes somehow
   - delete / clean tamagui build on watch
   - light/dark theme change is re-rendering more than it should
