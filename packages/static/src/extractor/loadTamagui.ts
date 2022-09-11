@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { basename, dirname, join, sep } from 'path'
+import { basename, dirname, join, relative, sep } from 'path'
 
 import { Color, colorLog } from '@tamagui/cli-color'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
@@ -72,13 +72,13 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   colorLog(
     Color.FgYellow,
     `
-Building your tamagui.config.ts and components into node-friendly bundles:`
+Tamagui built config and components:`
   )
   colorLog(
     Color.Dim,
     `
-  - Config: ${configOutPath}
-  - Components: ${componentOutPaths.join(', ')}
+  - Config: ${relative(process.cwd(), configOutPath)}
+  - Components: ${relative(process.cwd(), componentOutPaths.join(', '))}
 `
   )
 

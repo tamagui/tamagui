@@ -1,3 +1,4 @@
+import { execSync } from 'child_process'
 /* eslint-disable no-console */
 import { tmpdir } from 'os'
 import { join } from 'path'
@@ -6,22 +7,32 @@ import { expect, test } from '@playwright/test'
 import waitPort from 'wait-port'
 import { $, ProcessPromise, cd, fetch, fs, sleep } from 'zx'
 
+process.env.NODE_ENV = 'test'
+
 let server: ProcessPromise | null = null
+
+const PACKAGE_ROOT = __dirname
+
+if (process.env.NODE_ENV === 'test') {
+  try {
+    execSync(`git diff --exit-code`)
+  } catch (err) {
+    console.error(`\n⚠️  -- Must commit changes to git repo before running test --\n`)
+    process.exit(1)
+  }
+}
 
 test.beforeAll(async () => {
   test.setTimeout(15 * 60 * 1_000)
 
   const dir = join(tmpdir(), `cta-test-${Date.now()}`)
+  const tamaguiBin = join(PACKAGE_ROOT, `dist`, `index.js`)
 
   console.log(`Making test app in`, dir)
-
   await fs.ensureDir(dir)
-
-  const bin = join(__dirname, `dist/index.js`)
-
   cd(dir)
 
-  await $`node ${bin} test-app`
+  await $`node ${tamaguiBin} test-app`
 
   cd(`test-app`)
 
