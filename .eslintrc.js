@@ -12,8 +12,9 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
   ],
   rules: {
-    'no-inner-declarations': 'off',
+    'no-console': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'no-inner-declarations': 'off',
     'react/prop-types': 'off',
     'react/display-name': 'off',
     'no-empty-pattern': 'off',
@@ -29,7 +30,6 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     'react-hooks/rules-of-hooks': 'off',
     'no-constant-condition': 'off',
-    'no-console': 'error',
     '@typescript-eslint/no-empty-function': 'off',
     'react/react-in-jsx-scope': 'off',
   },
