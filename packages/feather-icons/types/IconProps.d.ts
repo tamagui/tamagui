@@ -3,5 +3,6 @@ export declare type IconProps = Omit<SvgProps, 'onPress' | 'onPressIn' | 'onPres
     size?: number;
     color?: string;
     style?: any;
+    onClick?: ()=> void;
 };
 //# sourceMappingURL=IconProps.d.ts.map
