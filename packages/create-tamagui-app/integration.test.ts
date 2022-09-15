@@ -15,7 +15,7 @@ const PACKAGE_ROOT = __dirname
 
 if (process.env.NODE_ENV === 'test') {
   try {
-    execSync(`git diff --exit-code`)
+    execSync(`git status --porcelain`)
   } catch (err) {
     console.error(`\n⚠️  -- Must commit changes to git repo before running test --\n`)
     process.exit(1)
