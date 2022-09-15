@@ -4,7 +4,8 @@ export const Code = styled(Paragraph, {
   name: 'Code',
   tag: 'code',
   fontFamily: '$mono',
-  size: '$4',
+  lineHeight: 20,
+  size: '$3',
   whiteSpace: 'pre',
   padding: '$1',
   borderRadius: '$4',
@@ -26,7 +27,7 @@ export const CodeInline = styled(Paragraph, {
   color: '$colorHover',
   backgroundColor: '$background',
   br: '$4',
-  size: '$4',
+  size: '$3',
   px: '$2',
   py: '$2',
 })

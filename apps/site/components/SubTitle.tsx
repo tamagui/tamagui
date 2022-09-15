@@ -2,6 +2,10 @@ import React from 'react'
 import { H3, ThemeReset } from 'tamagui'
 
 export const SubTitle = ({ children, ...props }) => {
+  if (!children) {
+    return null
+  }
+
   // takes the text even if it's wrapped in `<p>`
   // https://github.com/wooorm/xdm/issues/47
   const childText = typeof children === 'string' ? children : children.props.children

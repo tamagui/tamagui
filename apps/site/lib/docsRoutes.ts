@@ -47,7 +47,7 @@ export const docsRoutes = [
     label: 'Forms',
     pages: [
       { title: 'Button', route: '/docs/components/button' },
-      { title: 'Input & Textarea', route: '/docs/components/inputs' },
+      { title: 'Text Inputs', route: '/docs/components/inputs' },
       { title: 'Label', route: '/docs/components/label' },
       { title: 'Progress', route: '/docs/components/progress' },
       { title: 'Select', route: '/docs/components/select' },

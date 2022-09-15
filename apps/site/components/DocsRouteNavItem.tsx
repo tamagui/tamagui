@@ -15,6 +15,7 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
         {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         tag="a"
         ai="center"
+        jc="flex-end"
         py="$1"
         px="$4"
         opacity={pending ? 0.25 : 1}
@@ -33,8 +34,8 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
           pos="absolute"
           t={0}
           b={0}
-          l={0}
-          w="$0.5"
+          r={0}
+          w={1}
           bc={active ? '$color' : '$backgroundHover'}
         />
         <SizableText

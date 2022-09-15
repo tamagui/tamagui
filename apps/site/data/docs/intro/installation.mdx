@@ -13,21 +13,87 @@ If you'd rather build your own design system on top of core, [see the Design Sys
 
 Try out [create-tamagui-app](/docs/guides/create-tamagui-app) for a helpful starter template which comes with `@tamagui/shorthands` and `@tamagui/theme-base` for easy default shorthands, themes and tokens.
 
-You can also instantly fork the starter repo to your Github and deploy it with Vercel:
-
-<XStack my="$4" jc="center">
-  <DeployToVercel />
-</XStack>
-
-### Install Tamagui
+### Install
 
 ```bash
 yarn add tamagui react-native-web
 ```
 
-From here you can skip to configuration! The rest of this document helps you set up compilation, which is completely optional. All Tamagui features work at runtime as well.
+### Environment variables
 
-The compiler does add helpful debug properties with line, component and filename to every component, but it's completely optional and we recommend continuing to [Configuration](/docs/intro/configuration) if you're just starting out, before you get into the weeds of setting up compile-time optimization.
+Be sure to set the environment variable `TAMAGUI_TARGET` to the string `web` or `native`, respectively.
+
+### Config file
+
+Create a `tamagui.config.js` (or ts) file at the root of your project and export default the result of `createTamagui`. To start quickly you can use our pre-made one.
+
+```tsx
+import { createTamagui } from '@tamagui/core'
+import { shorthands } from '@tamagui/shorthands'
+import { themes, tokens } from '@tamagui/theme-base'
+
+export default createTamagui({
+  themes,
+  tokens,
+  shorthands,
+})
+```
+
+The next page, [Configuration](/docs/intro/configuration) explains this file in detail.
+
+### Root export
+
+Import and use the `TamaguiProvider` component as the top component in your app.
+
+```tsx line=8-14
+import React, { Suspense } from 'react'
+import { TamaguiProvider } from 'tamagui'
+
+import config from './tamagui.config'
+
+export default function App() {
+  return (
+    <TamaguiProvider config={config}>
+      {/* if you want nice React 18 concurrent hydration, you'll want Suspense near the root */}
+      <Suspense>
+        <AppContents />
+      </Suspense>
+    </TamaguiProvider>
+  )
+}
+```
+
+TamaguiProvider has optional props, [see the docs for them here](/docs/intro/configuration#using-tamagui-provider).
+
+Finally, you may want to reset your CSS on your web app, we provide a very minimal one you can import. For Next.js apps, do so at the top of your `_app.tsx`:
+
+```tsx
+import '@tamagui/core/reset.css'
+```
+
+### Done!
+
+You're now ready to use Tamagui, import and use any components:
+
+<Preview>
+  <DemoButton />
+</Preview>
+
+```tsx class=preview line=5
+import { Button } from 'tamagui'
+
+export default function Demo() {
+  return <Button>Button</Button>
+}
+```
+
+### Set up compilation
+
+<Notice>
+  For beginners, we recommend skipping to [Configuration](/docs/intro/configuration). The compiler
+  requires more time to set up and should only be enabled in production once you have gotten
+  everything running.
+</Notice>
 
 ```bash
 # for web, webpack, only:
@@ -35,14 +101,6 @@ yarn add tamagui-loader
 # for react-native, only:
 yarn add @tamagui/babel-plugin
 ```
-
-### Set up your build
-
-For more information on the options, see the [compiler options](#compiler-options). Whether using Webpack or Next.js, **be sure to not use the Tamagui babel plugin in your web build!** They are either-or: the babel plugin only for React Native, and tamagui-loader or next plugin only for web.
-
-<Notice>
-  Be sure to set the environment variable TAMAGUI_TARGET to "web" or "native" appropriately.
-</Notice>
 
 ### Web
 
@@ -285,114 +343,6 @@ The webpack loader and Next.js plugin accept the same configuration options:
     },
   ]}
 />
-
-### Set up your theme
-
-Create a `tamagui.config.js` (or ts) file at the root of your project that passes in a theme. For more documentation see [Themes](/docs/intro/themes).
-
-```ts
-import { createTamagui } from 'tamagui'
-
-const config = createTamagui({
-  // Initial theme
-  defaultTheme: 'light',
-
-  // Generates @media(prefers-color-scheme) queries for light/dark
-  shouldAddPrefersColorThemes: true,
-
-  // Shorthand properties
-  shorthands: {
-    px: 'paddingHorizontal',
-  },
-
-  // Themes, light/dark are treatest special
-  themes: {
-    light: {
-      bg: '#fff',
-      color: '#000'
-    }
-  },
-
-  media: {
-    xs: { maxWidth: 660 },
-    gtXs: { minWidth: 660 + 1 },
-    sm: { maxWidth: 860 },
-    gtSm: { minWidth: 860 + 1 },
-    md: { minWidth: 980 },
-    gtMd: { minWidth: 980 + 1 },
-    short: { maxHeight: 820 },
-    tall: { minHeight: 820 },
-    hoverNone: { hover: 'none' },
-    pointerCoarse: { pointer: 'coarse' },
-  },
-
-  // ... see Themes docs
-  tokens: {},
-  fonts: {},
-  animations: {},
-})
-
-type Conf = typeof config
-
-declare module 'tamagui' {
-  interface TamaguiCustomConfig extends Conf {}
-}
-
-export default config
-```
-
-The `createTamagui` function receives a configuration object:
-
-- `tokens`: Use `createTokens` to generate variables in your theme and app.
-- `theme`: Define your design [theme](/docs/intro/themes), which map to CSS properties.
-- `media`: Define reusable responsive [media queries](/docs/use-media).
-- `shorthands`: Define any props you want to expand to style values, keys being the shorthand and values being the expanded style prop.
-
-### Set up root
-
-Import and use the `TamaguiProvider` component as the top component in your app.
-
-```tsx line=8-14
-import React, { Suspense } from 'react'
-import { TamaguiProvider } from 'tamagui'
-
-import config from './tamagui.config'
-
-export default function App() {
-  return (
-    <TamaguiProvider config={config}>
-      {/* if you want nice React 18 concurrent hydration, you'll want Suspense near the root */}
-      <Suspense>
-        <AppContents />
-      </Suspense>
-    </TamaguiProvider>
-  )
-}
-```
-
-TamaguiProvider has optional props, [see the docs for them here](/docs/intro/configuration#using-tamagui-provider).
-
-Finally, you may want to reset your CSS on your web app, we provide a very minimal one you can import. For Next.js apps, do so at the top of your `_app.tsx`:
-
-```tsx
-import '@tamagui/core/reset.css'
-```
-
-### Done!
-
-You're now ready to use Tamagui, import and use any components:
-
-<Preview>
-  <DemoButton />
-</Preview>
-
-```tsx class=preview line=5
-import { Button } from 'tamagui'
-
-export default function Demo() {
-  return <Button>Button</Button>
-}
-```
 
 ### Web-only configurations
 
