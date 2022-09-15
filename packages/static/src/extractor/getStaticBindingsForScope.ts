@@ -119,14 +119,21 @@ export async function getStaticBindingsForScope(
             }
           }
         }
-      } catch (err) {
-        console.warn(`⚠️ Failed evaluating module, continuing: ${moduleName}`)
+      } catch (err: any) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `    | Skipping evaluating module: ${moduleName} ${err.message} (DEBUG=tamagui for stack)`
+        )
+        if (process.env.DEBUG?.startsWith('tamagui')) {
+          // eslint-disable-next-line no-console
+          console.log(err.stack)
+        }
       }
     }
   }
 
   if (!bindingCache) {
-    throw new Error('bindingCache is a required param')
+    throw new Error('BindingCache is a required param')
   }
 
   for (const k in bindings) {
@@ -147,8 +154,9 @@ export async function getStaticBindingsForScope(
       if (isOnWhitelist) {
         const src = importModule(moduleName)
         if (!src) {
+          // eslint-disable-next-line no-console
           console.log(
-            `⚠️ missing file ${moduleName} via ${sourcePath} import ${sourceModule.sourceModule}?`
+            `    | ⚠️ Missing file ${moduleName} via ${sourcePath} import ${sourceModule.sourceModule}?`
           )
           return {}
         }
@@ -163,7 +171,7 @@ export async function getStaticBindingsForScope(
       continue
     }
 
-    const { parent, parentPath } = binding.path
+    const { parent } = binding.path
 
     if (!t.isVariableDeclaration(parent) || parent.kind !== 'const') {
       continue
@@ -180,11 +188,13 @@ export async function getStaticBindingsForScope(
 
     // missing start/end will break caching
     if (typeof dec.id.start !== 'number' || typeof dec.id.end !== 'number') {
+      // eslint-disable-next-line no-console
       console.error('dec.id.start/end is not a number')
       continue
     }
 
     if (!t.isIdentifier(dec.id)) {
+      // eslint-disable-next-line no-console
       console.error('dec is not an identifier')
       continue
     }
