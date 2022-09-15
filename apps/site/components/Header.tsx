@@ -10,20 +10,25 @@ import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { GithubIcon } from './GithubIcon'
 import { HeaderFloating } from './HeaderFloating'
+import { HeaderProps } from './HeaderProps'
+import { SearchButton } from './SearchButton'
 import { ThemeSearchButtonGroup } from './ThemeSearchButtonGroup'
 
-export const HeaderIndependent = (props: Omit<HeaderProps, 'floating'>) => {
+export const HeaderIndependent = ({
+  alwaysFloating = true,
+  ...props
+}: Omit<HeaderProps, 'floating'> & {
+  alwaysFloating?: boolean
+}) => {
   return (
     <>
-      <ContainerLarge>
+      <ContainerLarge o={alwaysFloating ? 0 : 1} pe={alwaysFloating ? 'none' : 'auto'}>
         <Header {...props} />
       </ContainerLarge>
-      <HeaderFloating {...props} />
+      <HeaderFloating alwaysFloating={alwaysFloating} {...props} />
     </>
   )
 }
-
-type HeaderProps = { floating?: boolean; disableNew?: boolean; showExtra?: boolean }
 
 export function Header({ floating, disableNew, showExtra }: HeaderProps) {
   const router = useRouter()
@@ -112,7 +117,7 @@ export function Header({ floating, disableNew, showExtra }: HeaderProps) {
             </NextLink>
           </XStack>
         ) : (
-          <XStack ai="center" space="$1">
+          <XStack ai="center" space="$2">
             <NextLink prefetch={false} href="/docs/intro/installation" passHref>
               <HeadAnchor>Docs</HeadAnchor>
             </NextLink>
@@ -139,7 +144,7 @@ export function Header({ floating, disableNew, showExtra }: HeaderProps) {
               </NextLink>
             )}
 
-            {!disableNew && !showExtra && <AlphaButton />}
+            <SearchButton size="$2" br="$10" elevation="$4" />
 
             <NextLink href="https://github.com/tamagui/tamagui" passHref>
               <YStack p="$2" opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">

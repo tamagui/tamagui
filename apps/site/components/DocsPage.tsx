@@ -7,13 +7,24 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, Paragraph, Separator, Text, Theme, VisuallyHidden, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Paragraph,
+  Separator,
+  Spacer,
+  Text,
+  Theme,
+  VisuallyHidden,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
 import { ColorToggleButton, useTint } from './ColorToggleButton'
 import { Container } from './Container'
 import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { GithubIcon } from './GithubIcon'
+import { Header, HeaderIndependent } from './Header'
 import { Link } from './Link'
 import { NavHeading } from './NavHeading'
 import { SearchButton } from './SearchButton'
@@ -59,81 +70,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  const menuContents = React.useMemo(() => {
-    return (
-      <>
-        {docsRoutes.map((section, i) => {
-          if ('type' in section) {
-            if (section.type === 'hr') {
-              return (
-                <YStack key={`sep-${i}`} mx="$4">
-                  {!!section.title ? (
-                    <XStack ai="center" space="$6" spaceDirection="horizontal" mb="$2" mt="$3">
-                      <Paragraph size="$4">{section.title}</Paragraph>
-                      <Separator />
-                    </XStack>
-                  ) : (
-                    <Separator my="$4" />
-                  )}
-                </YStack>
-              )
-            }
-            return null
-          }
-          return (
-            <YStack key={`${section.label}${i}`} mb="$4">
-              {!!section.label && <NavHeading>{section.label}</NavHeading>}
-              {section.pages.map((page) => {
-                return (
-                  <DocsRouteNavItem
-                    key={`${page.route}`}
-                    href={page.route}
-                    active={currentPath === page.route}
-                    pending={page['pending']}
-                  >
-                    {page.title}
-                  </DocsRouteNavItem>
-                )
-              })}
-            </YStack>
-          )
-        })}
-
-        <YStack
-          height="$5"
-          $gtSm={{
-            height: '$8',
-          }}
-        />
-      </>
-    )
-  }, [docsRoutes, currentPath])
-
   const pageContents = React.useMemo(() => {
     return (
       <>
-        <XStack
-          $sm={{ display: 'none' }}
-          position="absolute"
-          top={15}
-          right={30}
-          ai="center"
-          space="$4"
-        >
-          <AlphaButton />
-
-          <SearchButton br="$10" elevation="$4" />
-
-          <NextLink href="https://github.com/tamagui/tamagui" passHref>
-            <YStack opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
-              <VisuallyHidden>
-                <Text>Github</Text>
-              </VisuallyHidden>
-              <GithubIcon width={23} />
-            </YStack>
-          </NextLink>
-        </XStack>
-
         <Container>{children}</Container>
 
         <Container>
@@ -216,8 +155,35 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
 
   return (
     <Theme name={tint}>
+      <HeaderIndependent alwaysFloating />
+
+      <Spacer size="$4" />
+
+      <Container>
+        <YStack
+          ml="$2"
+          pos="absolute"
+          t="$2"
+          r="$2"
+          $gtSm={{
+            display: 'none',
+          }}
+        >
+          <Button
+            size="$3"
+            chromeless
+            noTextWrap
+            onPress={() => setOpen(!open)}
+            theme={open ? 'alt1' : undefined}
+          >
+            <Menu size={16} color="var(--color)" />
+          </Button>
+        </YStack>
+      </Container>
+
       <YStack
         overflow="hidden"
+        mx="auto"
         $gtSm={{
           flexDirection: 'row',
         }}
@@ -227,55 +193,81 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
       >
         <YStack
           overflow="hidden"
-          className="custom-scroll"
+          // className="custom-scroll"
           $gtSm={{
             position: 'fixed' as any,
             top: 0,
-            left: 0,
+            left: 'calc(min(100vw, 1650px))px',
             bottom: 0,
             width: 230,
           }}
         >
           <ScrollView>
-            <XStack ai="center" p="$4">
-              <Link href="/">
-                <VisuallyHidden>
-                  <Text>Homepage</Text>
-                </VisuallyHidden>
-                <LogoIcon downscale={2} />
-              </Link>
-
-              <XStack space="$1" ml="auto">
-                <ColorToggleButton chromeless />
-                <ThemeToggle chromeless />
-              </XStack>
-
-              <YStack
-                ml="$2"
-                $gtSm={{
-                  display: 'none',
-                }}
-              >
-                <Button
-                  size="$3"
-                  chromeless
-                  noTextWrap
-                  onPress={() => setOpen(!open)}
-                  theme={open ? 'alt1' : undefined}
-                >
-                  <Menu size={16} color="var(--color)" />
-                </Button>
-              </YStack>
-            </XStack>
-
             <YStack
               display={open ? 'flex' : 'none'}
-              mt="$2"
-              $gtSm={{
+              mt={108}
+              $gtMd={{
                 display: 'block',
+                pr: '$6',
               }}
             >
-              {menuContents}
+              {/* mobile web made a diff on open close */}
+              {React.useMemo(
+                () => (
+                  <>
+                    {docsRoutes.map((section, i) => {
+                      if ('type' in section) {
+                        if (section.type === 'hr') {
+                          return (
+                            <YStack key={`sep-${i}`} mx="$4">
+                              {!!section.title ? (
+                                <XStack
+                                  ai="center"
+                                  space="$6"
+                                  spaceDirection="horizontal"
+                                  mb="$2"
+                                  mt="$3"
+                                >
+                                  <Separator />
+                                  <Paragraph size="$4">{section.title}</Paragraph>
+                                </XStack>
+                              ) : (
+                                <Separator my="$4" />
+                              )}
+                            </YStack>
+                          )
+                        }
+                        return null
+                      }
+                      return (
+                        <YStack key={`${section.label}${i}`} mb="$4">
+                          {!!section.label && <NavHeading>{section.label}</NavHeading>}
+                          {section.pages.map((page) => {
+                            return (
+                              <DocsRouteNavItem
+                                key={`${page.route}`}
+                                href={page.route}
+                                active={currentPath === page.route}
+                                pending={page['pending']}
+                              >
+                                {page.title}
+                              </DocsRouteNavItem>
+                            )
+                          })}
+                        </YStack>
+                      )
+                    })}
+
+                    <YStack
+                      height="$5"
+                      $gtMd={{
+                        height: '$8',
+                      }}
+                    />
+                  </>
+                ),
+                [docsRoutes, currentPath]
+              )}
             </YStack>
           </ScrollView>
         </YStack>
@@ -284,14 +276,10 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           maxWidth="100%"
           flex={1}
           py="$5"
-          $gtSm={{
-            pt: 67,
+          $gtMd={{
             pb: '$9',
             pl: 230,
-            pr: 0,
-          }}
-          $gtMd={{
-            pr: 150,
+            pr: 100,
           }}
         >
           {pageContents}

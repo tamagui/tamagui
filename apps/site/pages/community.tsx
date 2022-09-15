@@ -77,7 +77,7 @@ export default function Community({ frontmatters }) {
 
           <Spacer size="$4" />
 
-          <FlatBubbleCard ai="center" feature flat>
+          <FlatBubbleCard ai="center" feature>
             <H2 size="$9" ta="center">
               Design Kit
             </H2>
@@ -262,8 +262,8 @@ export default function Community({ frontmatters }) {
 
         <Spacer />
 
-        <FlatBubbleCard className="rainbow">
-          <H2 size="$9" color="#fff" ta="center">
+        <FlatBubbleCard>
+          <H2 size="$9" color="#fff" ta="center" className="rainbow clip-text">
             Gold Sponsors
           </H2>
         </FlatBubbleCard>

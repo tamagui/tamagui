@@ -57,13 +57,9 @@ export function QuickNav() {
         flexShrink: 0,
         zIndex: 1,
         // @ts-ignore
-        position: 'fixed',
-        right: 0,
-        top: 94,
-      }}
-      $gtXl={{
-        right: 'auto',
-        left: 1650 - 230,
+        position: 'absolute',
+        right: -100,
+        marginTop: 20,
       }}
     >
       <ScrollView>
