@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { Button, SizableText, Text } from 'tamagui'
 
-import { useTint } from './ColorToggleButton'
+import { useTint } from './useTint'
 
 export const AlphaButton = () => {
   // if (process.env.STUDIO_ON === '1') {

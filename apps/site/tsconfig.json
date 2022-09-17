@@ -9,7 +9,7 @@
         "../tamagui"
       ],
       "@tamagui/*": [
-        "../*"
+        "../../packages/*"
       ],
       "@takeout/*": [
         "../../takeout/*"

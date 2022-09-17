@@ -26,7 +26,7 @@ import { useCodeExamples } from '../data/codeExamples'
 export default function Index() {
   return (
     <>
-      <HeaderFloating isHome>
+      <HeaderFloating>
         <ContainerLarge>
           <Header floating />
         </ContainerLarge>

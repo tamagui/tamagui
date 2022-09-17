@@ -1,5 +1,7 @@
 - 1.0
 
+  - `tag` => `as` (keep fallback around as deprecated)
+    - `as={['a', { ...props }]}`
   - take any component fallback to inline style tag
   - make create-tamagui-app test test using local changes somehow
   - delete / clean tamagui build on watch

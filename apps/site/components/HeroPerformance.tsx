@@ -8,7 +8,7 @@ import { BenchmarkChart } from '../components/BenchmarkChart'
 import { ContainerLarge } from '../components/Container'
 import { HomeH2, HomeH3 } from '../components/HomeH2'
 import { CocentricCircles } from './CocentricCircles'
-import { useTint } from './ColorToggleButton'
+import { useTint } from './useTint'
 
 export function HeroPerformance() {
   const ref = useRef<HTMLElement>(null)

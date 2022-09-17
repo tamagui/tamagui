@@ -6,6 +6,7 @@ import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
 import { H1, Spacer } from 'tamagui'
 
+import { Container } from '../../../components/Container'
 import { DocsPage } from '../../../components/DocsPage'
 import { SubTitle } from '../../../components/SubTitle'
 import type { Frontmatter } from '../../../frontmatter'

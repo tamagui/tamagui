@@ -20,9 +20,9 @@ import {
   YStack,
 } from 'tamagui'
 
-import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { HomeH2 } from './HomeH2'
+import { useTint } from './useTint'
 
 const families = ['silkscreen', 'mono', 'heading']
 

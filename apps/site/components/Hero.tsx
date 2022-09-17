@@ -15,11 +15,11 @@ import {
   YStack,
 } from 'tamagui'
 
-import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
 import { GithubIcon } from './GithubIcon'
 import { Header } from './Header'
+import { useTint } from './useTint'
 
 export function Hero() {
   const { tint } = useTint()
