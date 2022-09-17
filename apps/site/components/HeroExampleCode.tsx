@@ -5,10 +5,10 @@ import { Button, Paragraph, XGroup, XStack, YStack } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
-import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
 import { IconStack } from './IconStack'
+import { useTint } from './useTint'
 
 export function HeroExampleCode({ examples }) {
   const { tint } = useTint()

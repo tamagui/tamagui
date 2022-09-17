@@ -31,15 +31,16 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = ({
       <Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
       <ThemeInverse>
         <Tooltip.Content
-          enterStyle={{ x: 0, y: -10, opacity: 0, scale: 0.9 }}
-          exitStyle={{ x: 0, y: -10, opacity: 0, scale: 0.9 }}
+          enterStyle={{ x: 0, y: -8, opacity: 0, scale: 0.93 }}
+          exitStyle={{ x: 0, y: -8, opacity: 0, scale: 0.93 }}
           x={0}
           scale={1}
           y={0}
           elevation="$0.5"
           opacity={1}
+          paddingVertical="$1"
           animation={[
-            'bouncy',
+            'quick',
             {
               opacity: {
                 overshootClamping: true,
@@ -49,7 +50,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = ({
           {...contentProps}
         >
           <Tooltip.Arrow />
-          <Paragraph size="$2" lineHeight="$1">
+          <Paragraph size="$2" lineHeight="$0">
             {label}
           </Paragraph>
         </Tooltip.Content>

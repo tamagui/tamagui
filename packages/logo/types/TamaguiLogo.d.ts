@@ -8,6 +8,7 @@ export declare const TamaguiLogo: React.ForwardRefExoticComponent<{
     color?: string | undefined;
     downscale?: number | undefined;
     pathPrefix?: string | undefined;
+    animated?: boolean | undefined;
 } & Omit<import("react-native").ViewProps, "display" | "children"> & import("tamagui").RNWViewProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("tamagui").SizeTokens | undefined;
@@ -18,10 +19,11 @@ export declare const TamaguiLogo: React.ForwardRefExoticComponent<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("tamagui").SizeTokens | undefined;
 }>> & React.RefAttributes<any>>;
-export declare const LogoWords: ({ color, downscale, onHoverLetter, }: {
+export declare const LogoWords: ({ color, downscale, onHoverLetter, animated, }: {
     color?: string | undefined;
     downscale?: number | undefined;
     onHoverLetter?: any;
+    animated?: boolean | undefined;
 }) => JSX.Element;
 export declare const LogoIcon: ({ downscale, pathPrefix }: any) => JSX.Element;
 //# sourceMappingURL=TamaguiLogo.d.ts.map

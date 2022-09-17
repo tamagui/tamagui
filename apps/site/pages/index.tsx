@@ -11,7 +11,6 @@ import tsx from 'refractor/lang/tsx'
 import { Separator, XStack, YStack, styled } from 'tamagui'
 
 import { CocentricCircles } from '../components/CocentricCircles'
-import { useTint } from '../components/ColorToggleButton'
 import { ContainerLarge } from '../components/Container'
 import { HeaderFloating } from '../components/HeaderFloating'
 import { HeroBelow } from '../components/HeroBelow'
@@ -23,6 +22,7 @@ import { HeroPerformance } from '../components/HeroPerformance'
 import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { InstallInput } from '../components/InstallInput'
+import { useTint } from '../components/useTint'
 import { animationCode, compilationCode } from '../lib/codeExamples'
 import rehypeHighlightLine from '../lib/rehype-highlight-line'
 import rehypeHighlightWord from '../lib/rehype-highlight-word'
@@ -31,7 +31,7 @@ export default function Home({ animationCode, compilationExamples }) {
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
-      <HeaderFloating isHome />
+      <HeaderFloating />
       <Hero />
       <Separator />
       <ContainerLarge contain="layout" fd="column" pos="relative" zi={100000}>

@@ -58,7 +58,7 @@ export function QuickNav() {
         zIndex: 1,
         // @ts-ignore
         position: 'absolute',
-        right: -100,
+        right: -200,
         marginTop: 20,
       }}
     >

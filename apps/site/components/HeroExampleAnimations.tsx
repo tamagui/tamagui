@@ -7,9 +7,9 @@ import { Button, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 
 import { AnimationsDemo } from './AnimationsDemo'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
-import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
+import { useTint } from './useTint'
 
 const animationDescriptions = [
   {

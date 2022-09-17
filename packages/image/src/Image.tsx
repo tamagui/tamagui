@@ -29,11 +29,12 @@ export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>
 
 export const Image: React.FC<ImageProps> = StyledImage.extractable((inProps) => {
   const props = getExpandedShorthands(inProps)
-  const { src, width, height, ...rest } = props
-  const source = typeof src === 'string' ? { uri: src, ...(isWeb && { width, height }) } : src
+  const { src, ...rest } = props
+  const source =
+    typeof src === 'string'
+      ? { uri: src, ...(isWeb && { width: props.width, height: props.height }) }
+      : src
 
   // must set defaultSource to allow SSR, default it to the same as src
-  return (
-    <StyledImage {...(!isWeb && { style: { width, height } })} source={source} {...(rest as any)} />
-  )
+  return <StyledImage source={source} {...(rest as any)} />
 })

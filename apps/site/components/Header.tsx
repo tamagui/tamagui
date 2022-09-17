@@ -1,18 +1,29 @@
-import { LogoWords, tints } from '@tamagui/logo'
-import { TamaguiLogo } from '@tamagui/logo'
+import { Menu } from '@tamagui/feather-icons'
+import { LogoWords, TamaguiLogo, tints } from '@tamagui/logo'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import React, { forwardRef } from 'react'
-import { Button, Paragraph, ParagraphProps, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
+import * as React from 'react'
+import { ScrollView } from 'react-native'
+import {
+  Button,
+  Paragraph,
+  ParagraphProps,
+  Popover,
+  Text,
+  VisuallyHidden,
+  XStack,
+  YStack,
+} from 'tamagui'
 
-import { AlphaButton } from './AlphaButton'
-import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
+import { DocsMenuContents } from './DocsMenuContents'
 import { GithubIcon } from './GithubIcon'
 import { HeaderFloating } from './HeaderFloating'
 import { HeaderProps } from './HeaderProps'
 import { SearchButton } from './SearchButton'
 import { ThemeSearchButtonGroup } from './ThemeSearchButtonGroup'
+import { useDocsMenu } from './useDocsMenu'
+import { useTint } from './useTint'
 
 export const HeaderIndependent = ({
   alwaysFloating = true,
@@ -30,7 +41,7 @@ export const HeaderIndependent = ({
   )
 }
 
-export function Header({ floating, disableNew, showExtra }: HeaderProps) {
+export function Header(props: HeaderProps) {
   const router = useRouter()
   const isHome = router.pathname === '/'
   const isInSubApp = router.pathname.startsWith('/takeout') || router.pathname.startsWith('/studio')
@@ -43,18 +54,18 @@ export function Header({ floating, disableNew, showExtra }: HeaderProps) {
       tag="header"
       jc="space-between"
       pos="relative"
-      py={floating ? 0 : '$2'}
+      py={props.floating ? 0 : '$2'}
       zi={1}
     >
       <XStack ai="center" space="$6">
         {isHome ? (
           <YStack cursor="pointer" my={-20}>
-            <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 1.5} />
+            <TamaguiLogo onPress={setNextTint} downscale={props.floating ? 2 : 1.5} />
           </YStack>
         ) : (
           <NextLink href="/" passHref>
             <YStack cursor="pointer" tag="a" my={-20}>
-              <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 1.5} />
+              <TamaguiLogo onPress={setNextTint} downscale={props.floating ? 2 : 1.5} />
             </YStack>
           </NextLink>
         )}
@@ -71,7 +82,7 @@ export function Header({ floating, disableNew, showExtra }: HeaderProps) {
       <XStack
         position="absolute"
         className="all ease-in ms150"
-        $md={{
+        $sm={{
           opacity: 0,
           pointerEvents: 'none',
         }}
@@ -83,7 +94,7 @@ export function Header({ floating, disableNew, showExtra }: HeaderProps) {
       >
         <NextLink href="/" passHref>
           <XStack pointerEvents="auto" tag="a" als="center">
-            <LogoWords onHoverLetter={(i) => setTint(tints[i])} />
+            <LogoWords animated onHoverLetter={(i) => setTint(tints[i])} />
           </XStack>
         </NextLink>
       </XStack>
@@ -118,31 +129,7 @@ export function Header({ floating, disableNew, showExtra }: HeaderProps) {
           </XStack>
         ) : (
           <XStack ai="center" space="$2">
-            <NextLink prefetch={false} href="/docs/intro/installation" passHref>
-              <HeadAnchor>Docs</HeadAnchor>
-            </NextLink>
-
-            <NextLink prefetch={false} href="/community" passHref>
-              <HeadAnchor
-                $xxs={{
-                  display: 'none',
-                }}
-              >
-                Community
-              </HeadAnchor>
-            </NextLink>
-
-            {showExtra && (
-              <NextLink prefetch={false} href="/studio" passHref>
-                <HeadAnchor>Studio</HeadAnchor>
-              </NextLink>
-            )}
-
-            {showExtra && (
-              <NextLink prefetch={false} href="/takeout" passHref>
-                <HeadAnchor>Takeout</HeadAnchor>
-              </NextLink>
-            )}
+            <HeaderLinks {...props} />
 
             <SearchButton size="$2" br="$10" elevation="$4" />
 
@@ -154,6 +141,8 @@ export function Header({ floating, disableNew, showExtra }: HeaderProps) {
                 <GithubIcon width={23} />
               </YStack>
             </NextLink>
+
+            <SmallMenu />
           </XStack>
         )}
       </XStack>
@@ -161,7 +150,105 @@ export function Header({ floating, disableNew, showExtra }: HeaderProps) {
   )
 }
 
-const HeadAnchor = forwardRef((props: ParagraphProps, ref) => (
+const HeaderLinks = ({ showExtra }: HeaderProps) => {
+  return (
+    <>
+      <NextLink prefetch={false} href="/docs/intro/installation" passHref>
+        <HeadAnchor
+          $sm={{
+            display: 'none',
+          }}
+        >
+          Docs
+        </HeadAnchor>
+      </NextLink>
+
+      <NextLink prefetch={false} href="/community" passHref>
+        <HeadAnchor
+          $md={{
+            display: 'none',
+          }}
+        >
+          Community
+        </HeadAnchor>
+      </NextLink>
+
+      {showExtra && (
+        <NextLink prefetch={false} href="/studio" passHref>
+          <HeadAnchor>Studio</HeadAnchor>
+        </NextLink>
+      )}
+
+      {showExtra && (
+        <NextLink prefetch={false} href="/takeout" passHref>
+          <HeadAnchor>Takeout</HeadAnchor>
+        </NextLink>
+      )}
+    </>
+  )
+}
+
+const SmallMenu = React.memo(() => {
+  const { router, open, setOpen } = useDocsMenu()
+  const isDocs = router.pathname.startsWith('/docs')
+
+  return (
+    <Popover sheetBreakpoint="sm" size="$5">
+      <Popover.Trigger asChild>
+        <YStack
+          $gtMd={{
+            display: 'none',
+          }}
+        >
+          <Button
+            size="$3"
+            chromeless
+            noTextWrap
+            onPress={() => setOpen(!open)}
+            theme={open ? 'alt1' : undefined}
+          >
+            <Menu size={16} color="var(--color)" />
+          </Button>
+        </YStack>
+      </Popover.Trigger>
+
+      <Popover.Sheet modal dismissOnSnapToBottom>
+        <Popover.Sheet.Frame padding="$4">
+          <Popover.Sheet.ScrollView>
+            <Popover.SheetContents />
+          </Popover.Sheet.ScrollView>
+        </Popover.Sheet.Frame>
+        <Popover.Sheet.Overlay />
+      </Popover.Sheet>
+
+      <Popover.Content
+        bw={1}
+        boc="$borderColor"
+        enterStyle={{ x: 0, y: -10, o: 0 }}
+        exitStyle={{ x: 0, y: -10, o: 0 }}
+        x={0}
+        y={0}
+        o={1}
+        animation="bouncy"
+        elevate
+      >
+        <Popover.Arrow bw={1} boc="$borderColor" />
+
+        {isDocs && (
+          <YStack
+            miw={280}
+            // display={open ? 'flex' : 'none'}
+          >
+            <HeaderLinks />
+            <DocsMenuContents />
+          </YStack>
+        )}
+      </Popover.Content>
+    </Popover>
+  )
+})
+
+const HeadAnchor = React.forwardRef((props: ParagraphProps, ref) => (
   <Paragraph
     ref={ref as any}
     fontFamily="$silkscreen"
