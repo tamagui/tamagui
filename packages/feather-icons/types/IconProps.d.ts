@@ -1,5 +1,5 @@
 import { SvgProps } from 'react-native-svg';
-export declare type IconProps = Omit<SvgProps, 'onPress' | 'onPressIn' | 'onPressOut'> & {
+export declare type IconProps = SvgProps & {
     size?: number;
     color?: string;
     style?: any;
