@@ -15,7 +15,7 @@ export const docsRoutes = [
 
   {
     pages: [
-      { title: 'Configuration', route: '/docs/intro/configuration' },
+      { title: 'Configuration', route: '/docs/core/configuration' },
       { title: 'Themes', route: '/docs/intro/themes' },
       { title: 'Props', route: '/docs/intro/props' },
       { title: 'styled', route: '/docs/core/styled' },

@@ -58,7 +58,7 @@ export const Footer = () => {
               Overview
             </H4>
             <ParagraphLink href="/docs/intro/introduction">Introduction</ParagraphLink>
-            <ParagraphLink href="/docs/intro/configuration">Configuration</ParagraphLink>
+            <ParagraphLink href="/docs/core/configuration">Configuration</ParagraphLink>
             <ParagraphLink href="/docs/guides/design-systems">Guides</ParagraphLink>
           </YStack>
 

@@ -162,7 +162,7 @@ const OverlayCard = () => {
           letter-spacing, color and more.
         </Paragraph>
 
-        <Link href="/docs/intro/configuration" passHref>
+        <Link href="/docs/core/configuration" passHref>
           <Button
             accessibilityLabel="Fonts docs"
             fontFamily="$silkscreen"

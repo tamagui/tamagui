@@ -183,7 +183,7 @@ function TypographyCard() {
           letter-spacing, color and more.
         </Paragraph>
 
-        <Link to="/docs/intro/configuration">
+        <Link to="/docs/core/configuration">
           <Button accessibilityLabel="Fonts docs" fontFamily="$silkscreen" als="flex-end">
             Fonts &raquo;
           </Button>
