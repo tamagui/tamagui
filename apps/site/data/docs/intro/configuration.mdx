@@ -7,19 +7,52 @@ Create a `tamagui.config.ts` in the root of your app to set up your design syste
 
 ## Quick Start
 
-To get started more quickly, try out `@tamagui/shorthands` and `@tamagui/theme-base` to set up nice defaults for shorthands, themes and tokens:
+You can use `@tamagui/config-base` a totally complete config out of the box, the same one this site uses.
+
+```tsx
+import { config } from '@tamagui/config-base'
+import { createTamagui } from 'tamagui'
+
+const appConfig = createTamagui(config)
+
+export type AppConfig = typeof appConfig
+
+declare module 'tamagui' {
+  // overrides TamaguiCustomConfig so your custom types
+  // work everywhere you import `tamagui`
+  interface TamaguiCustomConfig extends AppConfig {}
+}
+
+export default appConfig
+```
+
+[The source for that config is also useful](https://github.com/tamagui/tamagui/blob/master/packages/config-base/src/tamagui.config.ts) as a reference for a more complete config file.
+
+---
+
+Another quick start that gives a bit more customization is using `@tamagui/shorthands` for our preset shorthands, and `@tamagui/theme-base` for the same themes and tokens used for this site. The you'll just want to bring along any fonts, media queries, and animations you need.
 
 ```tsx
 import { createTamagui } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/theme-base'
 
-export default createTamagui({
+const appConfig = createTamagui({
   themes,
   tokens,
   shorthands,
 })
+
+export type AppConfig = typeof appConfig
+
+declare module '@tamagui/core' {
+  interface TamaguiCustomConfig extends AppConfig {}
+}
+
+export default appConfig
 ```
+
+Depending on if you're using just `@tamagui/core`, `tamagui`, or your own custom design library, be sure the import of `createTamagui` and `declare module` type matches to the one you're using.
 
 ## Overview
 
@@ -114,12 +147,12 @@ const config = createTamagui({
   },
 })
 
-type Conf = typeof config
+type AppConfig = typeof config
 
 // this will give you types for your components
 // note - if using your own design system, put the package name here instead of tamagui
 declare module 'tamagui' {
-  interface TamaguiCustomConfig extends Conf {}
+  interface TamaguiCustomConfig extends AppConfig {}
 }
 
 export default config
@@ -296,10 +329,10 @@ const config = createTamagui({
   ...yourConfig,
 })
 
-type Conf = typeof config
+type AppConfig = typeof config
 
 declare module 'tamagui' {
-  interface TamaguiCustomConfig extends Conf {}
+  interface TamaguiCustomConfig extends AppConfig {}
   // add this line:
   type ThemeFallbackValue = {}
 }
