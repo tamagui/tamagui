@@ -170,8 +170,6 @@ export const components = {
           tag="a"
           display="inline"
           cursor="pointer"
-          // @ts-ignore
-          dontUnwrap
           {...props}
         >
           {children}

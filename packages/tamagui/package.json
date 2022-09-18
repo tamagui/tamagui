@@ -46,6 +46,7 @@
     "@tamagui/popper": "^1.0.1-beta.167",
     "@tamagui/portal": "^1.0.1-beta.167",
     "@tamagui/progress": "^1.0.1-beta.167",
+    "@tamagui/scroll-view": "^1.0.1-beta.167",
     "@tamagui/select": "^1.0.1-beta.167",
     "@tamagui/separator": "^1.0.1-beta.167",
     "@tamagui/shapes": "^1.0.1-beta.167",

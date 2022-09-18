@@ -142,3 +142,18 @@ export default () => <CustomCircle className={_cn}>{/* ... your contents ... */}
 ```
 
 This nets you some runtime performance and ensures any unique styles are pulled into CSS at build-time.
+
+## Compatibility
+
+The `styled()` function supports Tamagui views, React Native views, and any other React component that accepts a `style` prop. If you wrap an external component that Tamagui doesn't recognize, Tamagui will assume it only supports the `style` prop and not optimize it.
+
+If it does accept `className`, you can opt-in to className, CSS media queries, and compile-time optimization by adding `acceptsClassName`:
+
+```tsx
+import { styled } from '@tamagui/core'
+import { SomeCustomComponent } from 'some-library'
+
+export const TamaguiCustomComponent = styled(SomeCustomComponent, {
+  acceptsClassName: true,
+})
+```
