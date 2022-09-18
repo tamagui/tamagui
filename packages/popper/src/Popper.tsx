@@ -49,8 +49,8 @@ export type PopperProps = {
   size?: SizeTokens
   children?: React.ReactNode
   placement?: Placement
-  stayInFrame?: ShiftProps
-  allowFlip?: FlipProps
+  stayInFrame?: ShiftProps | boolean
+  allowFlip?: FlipProps | boolean
   strategy?: Strategy
 }
 
@@ -79,8 +79,8 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
     strategy,
     placement,
     middleware: [
-      stayInFrame ? shift(stayInFrame) : (null as any),
-      allowFlip ? flip(allowFlip) : (null as any),
+      stayInFrame ? shift(typeof stayInFrame === 'boolean' ? {} : stayInFrame) : (null as any),
+      allowFlip ? flip(typeof allowFlip === 'boolean' ? {} : allowFlip) : (null as any),
       arrowEl ? arrow({ element: arrowEl }) : (null as any),
       arrowSize ? offset(arrowSize) : (null as any),
     ].filter(Boolean),
