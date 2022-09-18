@@ -64,10 +64,11 @@ export function FeaturesGrid() {
 
             <YStack space="$2" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
-                Components
+                Full Featured
               </H4>
               <Paragraph theme="alt2">
-                Components that smooth out bumps and add features between Native and Web.
+                A styled factory, variants, tokens, fonts, themes, media queries, shorthands and
+                more.
               </Paragraph>
             </YStack>
           </Grid>

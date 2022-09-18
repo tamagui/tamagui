@@ -61,13 +61,13 @@ export function Header(props: HeaderProps) {
     >
       <XStack ai="center" space="$6">
         {isHome ? (
-          <YStack cursor="pointer" my={-20}>
+          <YStack my={-20}>
             <TamaguiLogo onPress={setNextTint} downscale={props.floating ? 2 : 1.5} />
           </YStack>
         ) : (
           <NextLink href="/" passHref>
-            <YStack cursor="pointer" tag="a" my={-20}>
-              <TamaguiLogo onPress={setNextTint} downscale={props.floating ? 2 : 1.5} />
+            <YStack cur="pointer" tag="a" my={-20}>
+              <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
             </YStack>
           </NextLink>
         )}
@@ -95,7 +95,7 @@ export function Header(props: HeaderProps) {
         ai="center"
       >
         <NextLink href="/" passHref>
-          <XStack pointerEvents="auto" tag="a" als="center">
+          <XStack cursor={isHome ? 'default' : 'pointer'} pointerEvents="auto" tag="a" als="center">
             <LogoWords animated onHoverLetter={(i) => setTint(tints[i])} />
           </XStack>
         </NextLink>
