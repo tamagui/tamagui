@@ -1,35 +1,13 @@
-import { ThemeToggle } from '@components/ThemeToggle'
-import { allDocsRoutes, docsRoutes } from '@lib/docsRoutes'
-import { Menu, User } from '@tamagui/feather-icons'
-import { LogoIcon } from '@tamagui/logo'
+import { allDocsRoutes } from '@lib/docsRoutes'
 import NextLink from 'next/link'
-import { useRouter } from 'next/router'
 import * as React from 'react'
-import { useEffect } from 'react'
 import { ScrollView } from 'react-native'
-import {
-  Button,
-  EnsureFlexed,
-  Paragraph,
-  Separator,
-  Spacer,
-  Text,
-  Theme,
-  VisuallyHidden,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { EnsureFlexed, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
 
-import { AlphaButton } from './AlphaButton'
-import { ColorToggleButton } from './ColorToggleButton'
 import { Container } from './Container'
 import { DocsMenuContents } from './DocsMenuContents'
-import { DocsRouteNavItem } from './DocsRouteNavItem'
-import { GithubIcon } from './GithubIcon'
-import { Header, HeaderIndependent } from './Header'
+import { HeaderIndependent } from './Header'
 import { Link } from './Link'
-import { NavHeading } from './NavHeading'
-import { SearchButton } from './SearchButton'
 import { useDocsMenu } from './useDocsMenu'
 import { useTint } from './useTint'
 

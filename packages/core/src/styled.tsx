@@ -104,6 +104,11 @@ export function styled<
         isImage,
       }
 
+      // TODO compiler doesn't have logic to include children, de-opt (see EnsureFlexed for test usage)
+      if (defaultProps.children) {
+        conf.neverFlatten = true
+      }
+
       return conf
     }
     return {}
