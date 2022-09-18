@@ -6700,6 +6700,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/scroll-view@^1.0.1-beta.167, @tamagui/scroll-view@workspace:packages/scroll-view":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/scroll-view@workspace:packages/scroll-view"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.167
+    "@tamagui/core": ^1.0.1-beta.167
+    react: "*"
+    react-dom: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/select@^1.0.1-beta.167, @tamagui/select@workspace:packages/select":
   version: 0.0.0-use.local
   resolution: "@tamagui/select@workspace:packages/select"
@@ -23332,6 +23346,7 @@ __metadata:
     "@tamagui/popper": ^1.0.1-beta.167
     "@tamagui/portal": ^1.0.1-beta.167
     "@tamagui/progress": ^1.0.1-beta.167
+    "@tamagui/scroll-view": ^1.0.1-beta.167
     "@tamagui/select": ^1.0.1-beta.167
     "@tamagui/separator": ^1.0.1-beta.167
     "@tamagui/shapes": ^1.0.1-beta.167

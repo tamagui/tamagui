@@ -109,8 +109,6 @@ const CodeExamples = memo(({ examples }: any) => {
   const example = examples[activeIndex]
   const { tint } = useTint()
 
-  console.log('tint', tint)
-
   return (
     <YStack overflow="hidden" flex={1}>
       <>

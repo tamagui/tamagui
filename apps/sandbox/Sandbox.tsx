@@ -6,7 +6,17 @@ import '../site/app.css'
 import { AnimationsDemo, DialogDemo, FormsDemo, SheetDemo } from '@tamagui/demos'
 import { useEffect, useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
-import { Button, FontLanguage, Paragraph, Sheet, TamaguiProvider, XStack, styled } from 'tamagui'
+import {
+  Button,
+  FontLanguage,
+  Paragraph,
+  ScrollView,
+  Sheet,
+  Square,
+  TamaguiProvider,
+  XStack,
+  styled,
+} from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -82,7 +92,15 @@ export const Sandbox = () => {
         {/* <AnimationsDemo /> */}
         {/* <SheetDemo /> */}
         {/* <DialogDemo /> */}
-        <FormsDemo />
+        {/* <FormsDemo /> */}
+        <ScrollView bc="yellow" p="$1" $gtXs={{ bc: 'blue', p: '$4' }} maxHeight={200}>
+          <Square bc="red" size={100} />
+          <Square bc="red" size={100} />
+          <Square bc="red" size={100} />
+          <Square bc="red" size={100} />
+          <Square bc="red" size={100} />
+          <Square bc="red" size={100} />
+        </ScrollView>
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SwitchDemo /> */}

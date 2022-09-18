@@ -111,6 +111,15 @@ export async function extractToClassNames({
       completeProps,
       staticConfig,
     }) => {
+      // bail out of views that don't accept className (falls back to runtime + style={})
+      if (staticConfig.acceptsClassName === false) {
+        if (shouldPrintDebug) {
+          // eslint-disable-next-line no-console
+          console.log(`bail, acceptsClassName is false`)
+        }
+        return
+      }
+
       // reset hasFlattened
       const didFlattenThisTag = hasFlattened
       hasFlattened = false

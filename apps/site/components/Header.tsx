@@ -227,7 +227,7 @@ const SmallMenu = React.memo(() => {
       </Popover.Trigger>
 
       <Popover.Sheet zIndex={100000000} modal dismissOnSnapToBottom>
-        <Popover.Sheet.Frame padding="$4">
+        <Popover.Sheet.Frame>
           <Popover.Sheet.ScrollView>
             <Popover.SheetContents />
           </Popover.Sheet.ScrollView>
