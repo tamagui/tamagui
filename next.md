@@ -76,6 +76,7 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - // TODO compiler doesn't have logic to include children, de-opt (see EnsureFlexed for test usage)
   - pass in SharedValue to any prop for animations
   - use helpers-node in Webpack/babel/vite to pull config from your tamagui.json
   - fix Label + new form inputs (native too)  
