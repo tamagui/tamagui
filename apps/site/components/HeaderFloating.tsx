@@ -30,7 +30,7 @@ export const HeaderFloating = ({
   return (
     <XStack
       className="blur ease-out all ms200"
-      y={shown ? (shiftDown ? 7 : -1) : -60}
+      y={shown ? 1 : -60}
       o={shown ? 1 : 0}
       py={0}
       bbc="$borderColor"

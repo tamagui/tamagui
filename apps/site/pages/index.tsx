@@ -39,11 +39,15 @@ export default function Home({ animationCode, compilationExamples }) {
           <InstallInput />
         </XStack>
       </ContainerLarge>
-      <YStack elevation="$1" py="$8" pb="$10">
+      <YStack pos="relative" zi={2000000} elevation="$1" py="$8" pb="$10">
         <HeroBelow />
       </YStack>
       <Separator />
-      <Section contain="paint layout" pos="relative" zi={1000}>
+      <Section contain="paint layout" zi={1000}>
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
+        <HeroExampleCode examples={compilationExamples} />
+      </Section>
+      <Section contain="paint layout" pos="relative" zi={100}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleThemes />
       </Section>
@@ -53,18 +57,14 @@ export default function Home({ animationCode, compilationExamples }) {
       <SectionTinted gradient bubble>
         <HeroPerformance />
       </SectionTinted>
+      <Section bbw={1} bbc="$borderColor">
+        <FeaturesGrid />
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
+      </Section>
       <SectionTinted noBorderTop zi={100}>
         <YStack fullscreen className="bg-grid mask-gradient-up" />
         <HeroExampleAnimations animationCode={animationCode} />
       </SectionTinted>
-      <Section bc="$background" contain="paint layout" zi={10}>
-        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
-        <HeroExampleCode examples={compilationExamples} />
-      </Section>
-      <Section bc="$background" mt="$-10" bbw={1} bbc="$borderColor" mb="$-5">
-        <FeaturesGrid />
-        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
-      </Section>
       <SectionTinted bubble gradient>
         <HeroTypography />
       </SectionTinted>

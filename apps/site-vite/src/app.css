@@ -111,8 +111,8 @@ span._display-1adg3ll > span._display-xoduu5 {
 .hero-gradient-2 {
   background: linear-gradient(
     180deg,
-    var(--backgroundStrong) 0%,
-    transparent 60%
+    transparent 60%,
+    var(--backgroundStrong) 0%
   );
 }
 

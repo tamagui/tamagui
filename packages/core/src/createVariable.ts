@@ -1,5 +1,6 @@
-import { isValidCSSCharCode, simpleHash } from '@tamagui/helpers'
+import { simpleHash } from '@tamagui/helpers'
 
+import { getConfig } from './config'
 import { isWeb } from './constants/platform'
 
 /**
@@ -47,6 +48,13 @@ export function variableToString(vrble?: any, getValue = false) {
 
 export function isVariable(v: Variable | any): v is Variable {
   return !!(v && v[IS_VAR])
+}
+
+export function getVariable(nameOrVariable: Variable | string) {
+  if (isVariable(nameOrVariable)) return variableToString(nameOrVariable)
+  const tokens = getConfig().tokensParsed
+  console.log('tokens', tokens, nameOrVariable)
+  return variableToString(tokens[nameOrVariable] ?? nameOrVariable)
 }
 
 export function getVariableValue(v: Variable | any) {

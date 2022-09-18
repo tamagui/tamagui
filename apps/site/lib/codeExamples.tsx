@@ -77,15 +77,30 @@ export const compilationCode = [
         {
           name: 'app.tsx',
           language: 'tsx',
-          code: `import { YStack, Text } from 'tamagui'
+          code: `import { styled, Stack, Text } from '@tamagui/core'
 
 const App = () => (
-  <YStack px="$2" w={550} $gtSm={{ px: '$6' }}>
-    <Text fs="$2">
+  <Stack px="$2" w={550} $gtSm={{ px: '$6' }}>
+    <Heading fs="$2">
       Lorem ipsum dolor.
     </Text>
-  </YStack>
-)`,
+  </Stack>
+)
+
+const Heading = styled(Text, {
+  tag: 'h1',
+  c: '$color',
+  bc: '$background',
+
+  variants: {
+    inverse: {
+      true: {
+        bc: '$color',
+        c: '$background',
+      }
+    }
+  }
+})`,
         },
 
         {
@@ -96,6 +111,7 @@ const App = () => (
     px: 'paddingHorizontal',
     w: 'width',
     c: 'color',
+    bc: 'backgroundColor',
     fs: 'fontSize',
   }
 })`,
@@ -110,12 +126,11 @@ const App = () => (
           name: 'app.js',
           code: `const _cn2 = " _color-scmqyp _display-1471scf _fontFamily-187pbxx _fontSize-7uzi8p"
 const _cn = " _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx _paddingLeft-11jtx42 _paddingRight-4a8ukp _width-11mp6g5 _paddingLeft-_gtSm_1hxi05q _paddingRight-_gtSm_poy3ov"
-import { Text, YStack } from 'tamagui'
 
 const App = () => <div className={_cn}>
-  <span className={_cn2}>
+  <h1 className={_cn2}>
     Lorem ipsum dolor.
-  </span>
+  </h1>
 </div>`,
           language: 'tsx',
         },

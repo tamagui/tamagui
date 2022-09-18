@@ -148,6 +148,8 @@ export {
   getStylesAtomic,
   getThemes,
   getTokens,
+  getVariable,
+  variableToString,
   getVariableValue,
   getVariableName,
   insertFont,

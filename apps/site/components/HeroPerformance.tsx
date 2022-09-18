@@ -18,7 +18,7 @@ export function HeroPerformance() {
     if (isIntersecting) {
       setTimeout(() => {
         setShow(true)
-      }, 100)
+      }, 800)
     }
   })
 
@@ -30,12 +30,12 @@ export function HeroPerformance() {
 
       <YStack ai="center" zi={1} space="$4">
         <YStack ai="center" space="$2">
-          <HomeH2 maw={400} ref={ref}>
-            Best in class.
+          <HomeH2 size="$10" maw={500} ref={ref}>
+            Performance included
           </HomeH2>
-          <HomeH3 maw={680}>
-            Advanced optimizing compilation flattens views & turns all types of styling (even
-            inline, logical ones) into fast CSS.
+          <HomeH3>
+            Partial evaluation & tree flattening extract nearly every inline style at build-time,
+            turning complex views into a div.
           </HomeH3>
         </YStack>
 

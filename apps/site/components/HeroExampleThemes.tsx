@@ -141,11 +141,11 @@ export function HeroExampleThemes() {
         return (
           <ContainerLarge position="relative" space="$3">
             <HomeH2>
-              A colorful <span className="rainbow clip-text">revolution.</span>
+              A <span className="rainbow clip-text">colorful</span> revolution
             </HomeH2>
             <HomeH3>
-              Next-generation theme system that compiles to CSS. Unlimited sub-themes down to the
-              element.
+              Fully typed themes with many shades, compiled away to CSS. With&nbsp;Nested themes and
+              Component themes.
             </HomeH3>
           </ContainerLarge>
         )

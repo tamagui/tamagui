@@ -41,6 +41,7 @@ import { Preview } from './Preview'
 import { PropsTable } from './PropsTable'
 import { SubTitle } from './SubTitle'
 import { UL } from './UL'
+import { unwrapText } from './unwrapText'
 
 export const components = {
   Spacer,
@@ -97,8 +98,8 @@ export const components = {
 
   IntroParagraph: ({ children, ...props }) => {
     return (
-      <Paragraph tag="span" size="$5" className="paragraph" display="block" mt="$1" {...props}>
-        {children}
+      <Paragraph tag="span" size="$7" className="paragraph" display="block" my="$4" {...props}>
+        {unwrapText(children)}
       </Paragraph>
     )
   },
@@ -163,7 +164,16 @@ export const components = {
     return (
       <NextLink href={href} passHref>
         {/* @ts-ignore */}
-        <Paragraph fontSize="inherit" tag="a" display="inline" cursor="pointer" {...props}>
+        <Paragraph
+          className="link"
+          fontSize="inherit"
+          tag="a"
+          display="inline"
+          cursor="pointer"
+          // @ts-ignore
+          dontUnwrap
+          {...props}
+        >
           {children}
           {href.startsWith('http') ? (
             <>
@@ -189,13 +199,7 @@ export const components = {
   ol: (props) => <YStack {...props} tag="ol" mb="$3" />,
 
   li: (props) => {
-    return (
-      <LI>
-        <Paragraph size="$5" tag="span">
-          {props.children}
-        </Paragraph>
-      </LI>
-    )
+    return <LI my="$2">{props.children}</LI>
   },
 
   strong: (props) => <Paragraph tag="strong" fontSize="inherit" {...props} fontWeight="700" />,

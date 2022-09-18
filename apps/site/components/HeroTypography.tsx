@@ -49,7 +49,7 @@ export const HeroTypography = () => {
 
   return (
     <>
-      <YStack fullscreen className="bg-grid mask-gradient-both" o={0.1} />
+      <YStack fullscreen className="" o={0.1} />
       {/* -5 my to fir grid nicely */}
       <ContainerLarge my={-5} position="relative" space="$8">
         <YStack ref={ref} ai="center" space="$3">

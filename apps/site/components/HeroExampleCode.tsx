@@ -1,4 +1,5 @@
-import { FastForward } from '@tamagui/feather-icons'
+import { ChevronRight, FastForward } from '@tamagui/feather-icons'
+import Link from 'next/link'
 import React from 'react'
 import { memo, useState } from 'react'
 import { Button, Paragraph, XGroup, XStack, YStack } from 'tamagui'
@@ -19,11 +20,13 @@ export function HeroExampleCode({ examples }) {
     <>
       <ContainerLarge position="relative">
         <YStack zi={1} space="$6">
-          <YStack space="$3">
-            <HomeH2>
-              More features, <span className="rainbow clip-text">faster</span>.
-            </HomeH2>
-            <HomeH3>Modern features 🤝 unmatched performance.</HomeH3>
+          <YStack ai="center" space="$3">
+            <HomeH2 size="$10">Less syntax, better performance</HomeH2>
+            {/* <Link passHref href="/blog/how-tamagui-optimizes"> */}
+            <HomeH3 tag="a" ai="center" jc="center">
+              A complete design system that optimizes away.
+            </HomeH3>
+            {/* </Link> */}
           </YStack>
 
           <XGroup bordered theme={tint} maxWidth="100%" als="center" scrollable>

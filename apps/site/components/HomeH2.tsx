@@ -22,10 +22,10 @@ export const HomeH3 = styled(H3, {
   theme: 'alt2',
   als: 'center',
   fow: '400',
-  px: 30,
+  px: 20,
   size: '$8',
-  ls: -0.5,
-  maw: 620,
+  ls: -0.15,
+  maw: 690,
 
   $sm: {
     fow: '400',

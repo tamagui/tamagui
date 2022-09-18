@@ -1,5 +1,14 @@
 import { YStack, styled } from 'tamagui'
 
+const variants = {
+  hide: {
+    true: {
+      pointerEvents: 'none',
+      opacity: 0,
+    },
+  },
+} as const
+
 export const Container = styled(YStack, {
   mx: 'auto',
   px: '$4',
@@ -19,6 +28,8 @@ export const Container = styled(YStack, {
     maxWidth: 760,
     pr: '$10',
   },
+
+  variants,
 })
 
 export const ContainerLarge = styled(YStack, {
@@ -33,6 +44,8 @@ export const ContainerLarge = styled(YStack, {
   $gtMd: {
     maxWidth: 1140,
   },
+
+  variants,
 })
 
 export const ContainerXL = styled(YStack, {
@@ -51,4 +64,6 @@ export const ContainerXL = styled(YStack, {
   $gtLg: {
     maxWidth: 1440,
   },
+
+  variants,
 })

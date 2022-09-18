@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, H4, Paragraph, YStack } from 'tamagui'
+import { EnsureFlexed, Grid, H4, Paragraph, YStack } from 'tamagui'
 
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
@@ -8,13 +8,6 @@ export function FeaturesGrid() {
   return (
     <>
       <ContainerLarge space="$8">
-        <YStack zi={1} space="$3">
-          <HomeH2>
-            <span className="rainbow clip-text">Years of developer-time</span> out of the box.
-          </HomeH2>
-          <HomeH3>Start day one with more than you'd build by year two.</HomeH3>
-        </YStack>
-
         <YStack maw={950} als="center">
           <Grid gap={25} itemMinWidth={280}>
             <YStack space="$2" p="$4">
@@ -22,6 +15,7 @@ export function FeaturesGrid() {
                 Fully typed
               </H4>
               <Paragraph theme="alt2">
+                <EnsureFlexed />
                 Typed inline styles, themes, tokens, shorthands, media queries, animations, and
                 hooks that optimize.
               </Paragraph>
@@ -42,18 +36,19 @@ export function FeaturesGrid() {
                 Server Components
               </H4>
               <Paragraph theme="alt2">
-                Initial support for React Server Components delivering server-side rendered CSS
-                without hydration cost.
+                Beta support for React Server Components for dramatically less up-front bundle size
+                and parsing.
               </Paragraph>
             </YStack>
 
             <YStack space="$2" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
-                Dev tools
+                Introspection
               </H4>
               <Paragraph theme="alt2">
-                Jump between source and code faster with compile-time file/line/component
-                data-props. Debug runtime and compile-time output with props and pragmas.
+                <EnsureFlexed />
+                Multi-level debug pragrma and props, compile-time JSX props for quick
+                file:line:component jump.
               </Paragraph>
             </YStack>
 

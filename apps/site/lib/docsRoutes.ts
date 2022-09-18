@@ -3,9 +3,6 @@ export const docsRoutes = [
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
-      { title: 'Configuration', route: '/docs/intro/configuration' },
-      { title: 'Themes', route: '/docs/intro/themes' },
-      { title: 'Props', route: '/docs/intro/props' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
       { title: 'Releases', route: 'https://github.com/tamagui/tamagui/releases' },
     ],
@@ -18,6 +15,9 @@ export const docsRoutes = [
 
   {
     pages: [
+      { title: 'Configuration', route: '/docs/intro/configuration' },
+      { title: 'Themes', route: '/docs/intro/themes' },
+      { title: 'Props', route: '/docs/intro/props' },
       { title: 'styled', route: '/docs/core/styled' },
       { title: 'Variants', route: '/docs/core/variants' },
       { title: 'Animations', route: '/docs/core/animations' },
@@ -26,7 +26,7 @@ export const docsRoutes = [
       { title: 'useMedia', route: '/docs/core/use-media' },
       { title: 'useTheme', route: '/docs/core/use-theme' },
       { title: 'FontLanguage', route: '/docs/core/font-language' },
-      { title: 'Other exports', route: '/docs/core/exports' },
+      { title: 'Extras', route: '/docs/core/exports' },
     ],
   },
 

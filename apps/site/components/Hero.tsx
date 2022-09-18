@@ -1,6 +1,5 @@
 import { ArrowRight } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
-import React from 'react'
 import { memo } from 'react'
 import {
   Button,
@@ -23,14 +22,11 @@ import { useTint } from './useTint'
 
 export function Hero() {
   const { tint } = useTint()
-
   return (
-    <YStack pos="relative" pe="auto">
-      <Theme name={tint}>
-        <YStack fullscreen zi={0} className="hero-gradient-2" opacity={0.48} />
-        <HeroTop />
-      </Theme>
-    </YStack>
+    <Theme name={tint}>
+      <YStack o={0.5} zi={-1} pos="absolute" t={0} l={0} r={0} h={2000} className="hero-blur" />
+      <HeroTop />
+    </Theme>
   )
 }
 
@@ -46,6 +42,7 @@ const HeroTop = memo(() => {
         left={-1000}
         right={-1000}
         pe="none"
+        o={0.1}
       />
 
       <Header />
@@ -55,8 +52,8 @@ const HeroTop = memo(() => {
         ov="hidden"
         space="$6"
         position="relative"
-        pt="$12"
-        mb="$11"
+        pt="$13"
+        mb="$12"
         $sm={{
           maxWidth: '100%',
           mx: 'auto',
@@ -97,7 +94,7 @@ const HeroTop = memo(() => {
             <TooltipSimple label="Works the same on iOS, Android, and web">
               <span className="rainbow clip-text help">Universal</span>
             </TooltipSimple>{' '}
-            design systems for React&nbsp;Native&nbsp;&&nbsp;Web
+            design systems for React&nbsp;Native&nbsp;+&nbsp;Web
             <Text fontSize="inherit" ls="inherit" fontFamily="inherit" $sm={{ display: 'none' }}>
               , faster.
             </Text>
@@ -132,8 +129,8 @@ const HeroTop = memo(() => {
                 maw: 650,
               }}
             >
-              <span className="rainbow clip-text">Write&nbsp;once,&nbsp;run&nbsp;everywhere</span>{' '}
-              without downsides thanks&nbsp;to&nbsp;an optimizing&nbsp;compiler.
+              Join <span className="rainbow clip-text">Native</span> and{' '}
+              <span className="rainbow clip-text">Web</span> with a smart optimizing&nbsp;compiler.
             </Paragraph>
           </YStack>
         </YStack>
@@ -153,7 +150,7 @@ const HeroTop = memo(() => {
               // @ts-ignore
               tabIndex={0}
             >
-              Get started
+              Docs
             </Button>
           </NextLink>
 

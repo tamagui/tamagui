@@ -293,13 +293,12 @@ const Header = memo(() => {
     <YStack f={1} space="$3">
       <XStack>
         <HomeH2 ta="left" als="flex-start">
-          <span className="rainbow clip-text">Responsive</span>, for real.
+          Regularly responsive
         </HomeH2>
       </XStack>
 
       <HomeH3 ta="left" als="flex-start" p={0} maxWidth={450} theme="alt2">
-        Simple syntax for universal responsive styling - compiled to @media on the web for amazing
-        performance.
+        Responsive inline props and hooks that compile to CSS at build-time.
       </HomeH3>
     </YStack>
   )
