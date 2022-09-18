@@ -109,6 +109,7 @@ export declare const Sheet: ((props: Omit<{
     handleDisableScroll?: boolean | undefined;
     disableDrag?: boolean | undefined;
     modal?: boolean | undefined;
+    zIndex?: number | undefined;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & React.RefAttributes<View>, "theme" | "themeInverse"> & {

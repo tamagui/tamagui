@@ -19,6 +19,7 @@ export type SheetProps = ScopedProps<
     handleDisableScroll?: boolean
     disableDrag?: boolean
     modal?: boolean
+    zIndex?: number
   },
   'Sheet'
 >

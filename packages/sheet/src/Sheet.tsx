@@ -188,6 +188,7 @@ export const Sheet = withStaticProperties(
         disableDrag: disableDragProp,
         modal = false,
         handleDisableScroll = true,
+        zIndex = 40,
       } = props
 
       if (process.env.NODE_ENV === 'development') {
@@ -517,7 +518,7 @@ export const Sheet = withStaticProperties(
             style={[
               {
                 position: 'absolute',
-                zIndex: 10,
+                zIndex,
                 width: '100%',
                 height: '100%',
               },
@@ -542,7 +543,7 @@ export const Sheet = withStaticProperties(
 
       if (modal) {
         return (
-          <Portal>
+          <Portal zIndex={zIndex}>
             <Theme name={themeName}>{contents}</Theme>
           </Portal>
         )
