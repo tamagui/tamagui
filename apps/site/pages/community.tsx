@@ -62,7 +62,7 @@ export default function Community({ frontmatters }) {
               bw={1}
               mt="$-3"
               tag="a"
-              href=""
+              href="/blog"
               size="$6"
               iconAfter={ChevronRight}
               br="$10"
