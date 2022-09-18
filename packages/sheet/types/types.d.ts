@@ -17,6 +17,7 @@ export declare type SheetProps = ScopedProps<{
     handleDisableScroll?: boolean;
     disableDrag?: boolean;
     modal?: boolean;
+    zIndex?: number;
 }, 'Sheet'>;
 export declare type PositionChangeHandler = (position: number) => void;
 declare type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>;
