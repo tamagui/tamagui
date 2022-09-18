@@ -77,6 +77,8 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - breaking change notifier on upgrade
+    - takes any commit with BREAKING CHANGE and logs to console as yellow
   - VSCode => "turn JSX into styled()"
   - * excessively deep type instantiation styled(<Stack />)
   - textUnderline styles not typed?

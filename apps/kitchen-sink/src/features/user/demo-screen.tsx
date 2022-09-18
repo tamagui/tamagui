@@ -72,7 +72,7 @@ const NotFound = () => <H1>Not found!</H1>
 //           onPress={() => setShow((x) => !x)}
 //           elevation="$2"
 //         />
-//         <Drawer open={show} onChangeOpen={setShow}>
+//         <Drawer open={show} onOpenChange={setShow}>
 //           <Drawer.Frame h={200} ai="center" jc="center" p="$6" space>
 //             <Paragraph selectable={false}>Hello.</Paragraph>
 //             <Button

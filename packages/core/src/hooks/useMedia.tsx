@@ -63,7 +63,7 @@ function unlisten() {
  * *and then* re-render with the actual media query state.
  */
 let configuredKey = ''
-function setupMediaListeners(config: TamaguiInternalConfig) {
+function setupMediaListeners() {
   // avoid setting up more than once per config
   const nextKey = JSON.stringify(mediaQueryConfig)
   if (nextKey === configuredKey) {
@@ -85,9 +85,7 @@ function setupMediaListeners(config: TamaguiInternalConfig) {
     match.addListener(update)
     dispose.add(() => match.removeListener(update))
 
-    if (config.disableSSR) {
-      update()
-    }
+    update()
 
     function update() {
       const next = !!getMatch().matches
@@ -107,7 +105,7 @@ export function useMediaQueryListeners(config: TamaguiInternalConfig) {
   }
 
   useEffect(() => {
-    setupMediaListeners(config)
+    setupMediaListeners()
     return unlisten
   }, [])
 }

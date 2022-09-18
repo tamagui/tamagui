@@ -85,6 +85,7 @@ export default function Home({ animationCode, compilationExamples }) {
 const Section = styled(YStack, {
   name: 'Section',
   pos: 'relative',
+  className: 'content-visibility-auto',
   py: '$14',
   zi: 2,
 

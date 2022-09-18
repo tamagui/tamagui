@@ -207,7 +207,13 @@ const SmallMenu = React.memo(() => {
   }
 
   return (
-    <Popover sheetBreakpoint="sm" size="$5" stayInFrame={{ padding: 20 }}>
+    <Popover
+      open={open}
+      onOpenChange={setOpen}
+      sheetBreakpoint="sm"
+      size="$5"
+      stayInFrame={{ padding: 20 }}
+    >
       <Popover.Trigger asChild>
         <YStack
           $gtMd={{
@@ -264,6 +270,7 @@ const SmallMenu = React.memo(() => {
               <>
                 <Separator my="$4" w="100%" />
                 <DocsMenuContents />
+                <YStack h={400} />
               </>
             )}
           </YStack>

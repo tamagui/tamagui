@@ -10,7 +10,7 @@ export function MenuDemo() {
     <Menu.Provider>
       <Menu
         open={show}
-        onChangeOpen={setShow}
+        onOpenChange={setShow}
         trigger={
           <Button
             size="$6"

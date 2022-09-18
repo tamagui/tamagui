@@ -218,7 +218,7 @@ export const useRelativePositionedItem = (
   props: BoundedCursorProps & {
     itemRef?: { current?: HTMLElement | null }
   },
-  onChangePosition?: (props: {
+  onPositionChange?: (props: {
     position: { x: number; y: number }
     transform: string
     isResting: boolean
@@ -276,7 +276,7 @@ export const useRelativePositionedItem = (
 
   const callback = useCallback(
     (position: { x: number; y: number } = state.current.currentPosition) => {
-      if (!onChangePosition) return
+      if (!onPositionChange) return
       if (disableUpdates) return
       state.current.currentPosition = position
       const { width, height } = getGlowBounds()
@@ -340,7 +340,7 @@ export const useRelativePositionedItem = (
         })
       }
 
-      onChangePosition({
+      onPositionChange({
         isResting: !state.current.tracking,
         position: {
           x,
@@ -354,7 +354,7 @@ export const useRelativePositionedItem = (
       })
     },
     [
-      onChangePosition,
+      onPositionChange,
       disableUpdates,
       getGlowBounds,
       getParentBounds,

@@ -138,7 +138,7 @@ export declare const Sheet: ((props: Omit<{
         [x: string]: undefined;
     }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
 };
-export declare const ControlledSheet: React.FunctionComponent<Omit<SheetProps, "open" | "onChangeOpen"> & React.RefAttributes<View>> & {
+export declare const ControlledSheet: React.FunctionComponent<Omit<SheetProps, "open" | "onOpenChange"> & React.RefAttributes<View>> & {
     Handle: ({ __scopeSheet, ...props }: SheetScopedProps<XStackProps>) => JSX.Element;
     Frame: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;

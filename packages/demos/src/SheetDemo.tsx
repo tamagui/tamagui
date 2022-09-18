@@ -18,11 +18,11 @@ export const SheetDemo = () => {
       <Sheet
         modal={modal}
         open={open}
-        onChangeOpen={setOpen}
+        onOpenChange={setOpen}
         snapPoints={[85, 50, 25]}
         dismissOnSnapToBottom
         position={position}
-        onChangePosition={setPosition}
+        onPositionChange={setPosition}
       >
         <Sheet.Overlay />
         <Sheet.Handle />
