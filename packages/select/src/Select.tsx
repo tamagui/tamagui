@@ -448,7 +448,7 @@ export const SelectSeparator = styled(Separator, {
 const SelectSheetController = (
   props: ScopedProps<{}> & {
     children: React.ReactNode
-    onChangeOpen: React.Dispatch<React.SetStateAction<boolean>>
+    onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
   }
 ) => {
   const context = useSelectContext('SelectSheetController', props.__scopeSelect)
@@ -458,9 +458,9 @@ const SelectSheetController = (
 
   return (
     <SheetController
-      onChangeOpen={(val) => {
+      onOpenChange={(val) => {
         if (getShowSheet()) {
-          props.onChangeOpen(val)
+          props.onOpenChange(val)
         }
       }}
       open={context.open}
@@ -573,7 +573,7 @@ export const Select = withStaticProperties(
         value={value}
         open={open}
       >
-        <SelectSheetController onChangeOpen={setOpen} __scopeSelect={__scopeSelect}>
+        <SelectSheetController onOpenChange={setOpen} __scopeSelect={__scopeSelect}>
           <SelectImpl
             activeIndexRef={activeIndexRef}
             listContentRef={listContentRef}

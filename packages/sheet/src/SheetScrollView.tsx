@@ -1,5 +1,6 @@
-import React, { forwardRef, useRef, useState } from 'react'
-import { ScrollView, ScrollViewProps } from 'react-native'
+import { TamaguiElement } from '@tamagui/core'
+import { ScrollView, ScrollViewProps } from '@tamagui/scroll-view'
+import { forwardRef, useRef, useState } from 'react'
 
 import { useSheetContext } from './SheetContext'
 import { SheetScopedProps } from './types'
@@ -10,7 +11,7 @@ import { SheetScopedProps } from './types'
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
-export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
+export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
   ({ __scopeSheet, ...props }: SheetScopedProps<ScrollViewProps>, ref) => {
     const { scrollBridge } = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
     const [scrollEnabled, setScrollEnabled] = useState(true)
@@ -31,7 +32,6 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
         const dist = recentDys.length ? recentDys.reduce((a, b) => a + b, 0) : 0
         const avgDy = dist / recentDys.length
         vy = avgDy * 0.04
-        console.table([{ vy, avgDy, dist, recentDys }])
       }
       state.current.dys = []
       scrollBridge.release({
@@ -43,6 +43,7 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
     return (
       <ScrollView
         ref={ref}
+        flex={1}
         scrollEventThrottle={8}
         scrollEnabled={scrollEnabled}
         onScroll={(e) => {
@@ -97,12 +98,6 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
         // onResponderEnd={release}
         // onResponderTerminate={release}
         {...props}
-        style={[
-          {
-            flex: 1,
-          },
-          props.style,
-        ]}
       />
     )
   }

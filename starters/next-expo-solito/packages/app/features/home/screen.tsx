@@ -53,10 +53,10 @@ function SheetDemo() {
       <Sheet
         modal
         open={open}
-        onChangeOpen={setOpen}
+        onOpenChange={setOpen}
         snapPoints={[80]}
         position={position}
-        onChangePosition={setPosition}
+        onPositionChange={setPosition}
         dismissOnSnapToBottom
       >
         <Sheet.Overlay />

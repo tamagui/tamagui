@@ -759,7 +759,13 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         }, "closed"> & {
             readonly closed?: boolean | undefined;
         }>>>) => JSX.Element;
-        ScrollView: React.ForwardRefExoticComponent<import("react-native").ScrollViewProps & React.RefAttributes<import("react-native").ScrollView>>;
+        ScrollView: React.ForwardRefExoticComponent<((import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps>) | Pick<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, string | number> & {
+            [x: string]: undefined;
+        } & import("@tamagui/core").MediaProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, string | number> & {
+            [x: string]: undefined;
+        }>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, string | number> & {
+            [x: string]: undefined;
+        }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
     };
 };
 //# sourceMappingURL=Select.d.ts.map

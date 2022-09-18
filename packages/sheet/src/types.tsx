@@ -7,11 +7,11 @@ export type SheetProps = ScopedProps<
   {
     open?: boolean
     defaultOpen?: boolean
-    onChangeOpen?: OpenChangeHandler
+    onOpenChange?: OpenChangeHandler
     position?: number
     defaultPosition?: number
     snapPoints?: number[]
-    onChangePosition?: PositionChangeHandler
+    onPositionChange?: PositionChangeHandler
     children?: ReactNode
     dismissOnOverlayPress?: boolean
     dismissOnSnapToBottom?: boolean
