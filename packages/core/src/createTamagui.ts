@@ -36,11 +36,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
   }
 
-  configureMedia({
-    queries: configIn.media as any,
-    defaultActive: configIn.mediaQueryDefaultActive,
-  })
-
   const fontTokens = Object.fromEntries(
     Object.entries(configIn.fonts!).map(([k, v]) => {
       return [k, createVariables(v, 'f', true)]
@@ -202,6 +197,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   setConfig(config)
+  configureMedia(config)
 
   if (configListeners.size) {
     configListeners.forEach((cb) => cb(config))

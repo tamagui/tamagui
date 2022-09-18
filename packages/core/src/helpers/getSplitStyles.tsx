@@ -346,8 +346,9 @@ export const getSplitStyles: StyleSplitter = (
       // media
       if (isMedia) {
         const mediaKey = key
-        mediaKeys.push(key)
         const mediaKeyShort = mediaKey.slice(1)
+
+        mediaKeys.push(mediaKeyShort)
 
         if (!mediaQueryConfig[mediaKeyShort]) {
           if (!usedKeys.has(key)) {
@@ -376,7 +377,7 @@ export const getSplitStyles: StyleSplitter = (
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
           // eslint-disable-next-line no-console
-          console.log('  🔹 mediaStyle', { mediaKey, mediaStyle, props, shouldDoClasses })
+          console.log(`  🔹 ${mediaKey}`, mediaState[mediaKeyShort], { mediaKey, mediaStyle, props, shouldDoClasses, mediaState: { ...mediaState } })
         }
 
         if (shouldDoClasses) {
@@ -391,7 +392,7 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
         } else {
-          if (mediaState[mediaKey]) {
+          if (mediaState[mediaKeyShort]) {
             if (process.env.NODE_ENV === 'development' && debug) {
               // eslint-disable-next-line no-console
               console.log('apply media style', mediaKey, mediaState)

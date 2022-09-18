@@ -158,6 +158,7 @@ export declare type CreateTamaguiProps = {
         };
     };
     defaultTheme?: string;
+    disableSSR?: boolean;
     disableRootThemeClass?: boolean;
     defaultProps?: Record<string, any> & {
         Stack?: StackProps;
@@ -226,10 +227,6 @@ export declare type MediaProps<A> = {
 };
 export declare type MediaQueries = {
     [key in MediaQueryKey]: MediaQueryObject;
-};
-export declare type ConfigureMediaQueryOptions = {
-    queries?: MediaQueries;
-    defaultActive?: Record<MediaQueryKey, boolean>;
 };
 export declare type TransformStyleProps = {
     x?: number;
@@ -393,6 +390,7 @@ export declare type StaticConfig = {
     isTamagui?: boolean;
     isHOC?: boolean;
     parentNames?: string[];
+    acceptsClassName?: boolean;
 };
 export declare type StylableComponent = TamaguiComponent | React.Component | React.ForwardRefExoticComponent<any> | ReactComponentWithRef<any, any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
 export declare type GetStyledVariants<A extends TamaguiComponent> = A extends TamaguiComponent<any, any, any, infer Variants> ? Variants : never;

@@ -23,7 +23,7 @@ export function TamaguiProvider({
   }
 
   if (!isSSR) {
-    useMediaQueryListeners()
+    useMediaQueryListeners(config)
   }
 
   if (isClient) {
