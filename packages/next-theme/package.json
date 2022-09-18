@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-theme",
-  "version": "1.0.1-beta.166",
+  "version": "1.0.1-beta.167",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -19,7 +19,7 @@
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.166",
+    "@tamagui/build": "^1.0.1-beta.167",
     "react": "*"
   },
   "publishConfig": {
