@@ -1,9 +1,7 @@
 import React from 'react';
-import { StaticConfig } from '../types';
-export declare type TamaguiReactElement = React.ReactElement & {
-    type: {
-        staticConfig: StaticConfig;
-    };
+import { TamaguiComponent } from '../types';
+export declare type TamaguiReactElement<P = any> = React.ReactElement<P> & {
+    type: TamaguiComponent;
 };
-export declare const isTamaguiElement: (child: any, name?: string) => child is TamaguiReactElement;
+export declare const isTamaguiElement: (child: any, name?: string) => child is TamaguiReactElement<any>;
 //# sourceMappingURL=isTamaguiElement.d.ts.map

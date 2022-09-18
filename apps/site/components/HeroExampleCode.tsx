@@ -38,7 +38,7 @@ export function HeroExampleCode({ examples }) {
                   theme={i === activeIndex ? 'active' : null}
                   key={i}
                   borderRadius={0}
-                  size="$3"
+                  size="$4"
                   fontFamily="$silkscreen"
                 >
                   {example.name}
@@ -109,6 +109,8 @@ const CodeExamples = memo(({ examples }: any) => {
   const example = examples[activeIndex]
   const { tint } = useTint()
 
+  console.log('tint', tint)
+
   return (
     <YStack overflow="hidden" flex={1}>
       <>
@@ -118,7 +120,7 @@ const CodeExamples = memo(({ examples }: any) => {
               accessibilityLabel="See example"
               onPress={() => setActiveIndex(i)}
               theme={i === activeIndex ? 'active' : 'alt1'}
-              size="$2"
+              size="$3"
               key={i}
               borderRadius="$0"
             >

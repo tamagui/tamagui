@@ -10,6 +10,15 @@ export const docsRoutes = [
 
   {
     type: 'hr',
+    title: 'Static',
+  },
+
+  {
+    pages: [{ title: 'Static', route: '/docs/core/static' }],
+  },
+
+  {
+    type: 'hr',
     title: 'Core',
   },
 

@@ -15,7 +15,7 @@ export function CodeDemoPreParsed({
 }) {
   return (
     <YStack
-      br="$8"
+      br="$4"
       className={`language-${language}`}
       bc="$backgroundHover"
       boc="$borderColor"

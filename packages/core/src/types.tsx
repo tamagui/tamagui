@@ -17,6 +17,7 @@ import {
 
 import { Variable } from './createVariable'
 import { ResolveVariableTypes } from './helpers/createPropMapper'
+import { TamaguiReactElement } from './static'
 import { RNWTextProps, RNWViewProps } from './types-rnw'
 import { FontLanguageProps } from './views/FontLanguage.types'
 import { ThemeProviderProps } from './views/ThemeProvider'
@@ -782,6 +783,8 @@ export type StaticConfig = {
 
 export type StylableComponent =
   | TamaguiComponent
+  // * excessively deep type instantiation
+  // | TamaguiReactElement
   | React.Component
   | React.ForwardRefExoticComponent<any>
   | ReactComponentWithRef<any, any>
@@ -809,6 +812,8 @@ export type GetBaseProps<A extends StylableComponent> = A extends TamaguiCompone
   : never
 
 export type GetProps<A extends StylableComponent> = A extends TamaguiComponent<infer Props>
+  ? Props
+  : A extends TamaguiReactElement<infer Props>
   ? Props
   : A extends React.Component<infer Props>
   ? GetGenericComponentTamaguiProps<Props>

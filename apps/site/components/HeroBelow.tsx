@@ -2,7 +2,7 @@ import { ChevronRight, Code, Compass, Cpu, Layers } from '@tamagui/feather-icons
 import Link from 'next/link'
 import React from 'react'
 import { memo } from 'react'
-import { H3, Paragraph, Theme, XStack, YStack, YStackProps, getTokens } from 'tamagui'
+import { H3, Paragraph, Theme, XStack, YStack, YStackProps, getTokens, styled } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'
@@ -51,9 +51,9 @@ export const HeroBelowContent = memo(() => {
         py="$4"
         $sm={{ flexDirection: 'column' }}
       >
-        <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
+        <Section>
           <IconStack theme="pink_alt2">
-            <Code size={18} color="var(--colorHover)" />
+            <Code size={20} color="var(--colorHover)" />
           </IconStack>
           <TitleLink href="/docs/core/configuration">Core</TitleLink>
           <Paragraph size="$4" theme="alt1">
@@ -61,11 +61,11 @@ export const HeroBelowContent = memo(() => {
             themes, fonts and more and gives you a typed <CodeInline>styled</CodeInline>
             function with all sorts of goodies.
           </Paragraph>
-        </YStack>
+        </Section>
 
-        <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
+        <Section>
           <IconStack theme="purple_alt2">
-            <Cpu size={18} color="var(--colorHover)" />
+            <Cpu size={20} color="var(--colorHover)" />
           </IconStack>
           <TitleLink href="/docs/intro/benchmarks">Static</TitleLink>
           <Paragraph size="$4" theme="alt1">
@@ -73,19 +73,30 @@ export const HeroBelowContent = memo(() => {
             compile-time optimizes your app on native and web, with CSS extraction, partial
             evaluation and tree flattening.
           </Paragraph>
-        </YStack>
+        </Section>
 
-        <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
+        <Section>
           <IconStack theme="green_alt2">
-            <Layers size={18} color="var(--colorHover)" />
+            <Layers size={20} color="var(--colorHover)" />
           </IconStack>
           <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
           <Paragraph size="$4" theme="alt1">
             A large universal UI kit built on top of Core and Static that features typed sizing
             across every component, and Radix-style composable components.
           </Paragraph>
-        </YStack>
+        </Section>
       </XStack>
     </ContainerLarge>
   )
 })
+
+const Section = (props: YStackProps) => (
+  <YStack
+    width="33%"
+    $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }}
+    flexShrink={1}
+    {...props}
+  />
+)
+
+const x = <Section />

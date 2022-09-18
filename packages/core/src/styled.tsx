@@ -1,6 +1,7 @@
 import { Image, Text, TextInput } from 'react-native'
 
 import { createComponent } from './createComponent'
+import { TamaguiReactElement, isTamaguiElement } from './helpers/isTamaguiElement'
 import { RNComponents } from './helpers/RNComponents'
 import {
   GetProps,
@@ -22,6 +23,20 @@ export type StyledOptions<ParentComponent extends StylableComponent> = GetProps<
   defaultVariants?: { [key: string]: any }
 }
 
+// can't infer from styled(<YStack />) which would be nice
+// * excessively deep type instantiation
+
+type GetBaseProps<A extends StylableComponent> =
+  // A extends TamaguiReactElement
+  //   ? GetBaseProps<A['type']> :
+  A extends TamaguiComponent<any, any, infer P> ? P : GetProps<A>
+
+type GetVariantProps<A extends StylableComponent> =
+  // A extends TamaguiReactElement
+  //   ? GetVariantProps<A['type']>
+  //   :
+  A extends TamaguiComponent<any, any, any, infer V> ? V : {}
+
 export function styled<
   ParentComponent extends StylableComponent,
   Variants extends VariantDefinitions<ParentComponent> | void = VariantDefinitions<ParentComponent> | void
@@ -36,6 +51,14 @@ export function styled<
   },
   staticExtractionOptions?: Partial<StaticConfig>
 ) {
+  // * excessively deep type instantiation
+  // if (isTamaguiElement(Component)) {
+  //   const props = Component.props
+  //   // @ts-ignore
+  //   Component = Component.type
+  //   options = options ? { ...props, ...options } : props
+  // }
+
   const staticConfigProps = (() => {
     const parentStaticConfig =
       'staticConfig' in Component ? (Component.staticConfig as StaticConfig) : null
@@ -117,10 +140,9 @@ export function styled<
   const component = createComponent(staticConfigProps, Component)
 
   // get parent props without pseudos and medias so we can rebuild both with new variants
-  type ParentPropsBase = ParentComponent extends TamaguiComponent<any, any, infer P>
-    ? P
-    : GetProps<ParentComponent>
-  type ParentVariants = ParentComponent extends TamaguiComponent<any, any, any, infer V> ? V : {}
+  // get parent props without pseudos and medias so we can rebuild both with new variants
+  type ParentPropsBase = GetBaseProps<ParentComponent>
+  type ParentVariants = GetVariantProps<ParentComponent>
 
   type OurVariants = Variants extends void
     ? {}

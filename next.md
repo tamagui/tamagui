@@ -1,5 +1,6 @@
 - 1.0
 
+  - input like button
   - `tag` => `as` (keep fallback around as deprecated)
     - `as={['a', { ...props }]}`
   - take any component fallback to inline style tag
@@ -76,6 +77,8 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - VSCode => "turn JSX into styled()"
+  - * excessively deep type instantiation styled(<Stack />)
   - textUnderline styles not typed?
   - // TODO compiler doesn't have logic to include children, de-opt (see EnsureFlexed for test usage)
   - pass in SharedValue to any prop for animations

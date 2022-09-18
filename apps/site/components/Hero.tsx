@@ -119,18 +119,19 @@ const HeroTop = memo(() => {
               letterSpacing={-1.3}
               $gtSm={{
                 ta: 'center',
-                size: '$7',
-                fontWeight: '400',
-                maw: 650,
-              }}
-              $gtMd={{
                 size: '$8',
                 fontWeight: '400',
                 maw: 650,
               }}
+              $gtMd={{
+                size: '$9',
+                fontWeight: '400',
+                maw: 650,
+              }}
             >
-              Join <span className="rainbow clip-text">Native</span> and{' '}
-              <span className="rainbow clip-text">Web</span> with a smart optimizing&nbsp;compiler.
+              Unify <span className="rainbow clip-text">Native</span> and{' '}
+              <span className="rainbow clip-text">Web</span> UI with a
+              smart&nbsp;optimizing&nbsp;compiler.
             </Paragraph>
           </YStack>
         </YStack>

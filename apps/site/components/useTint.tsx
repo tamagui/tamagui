@@ -6,6 +6,9 @@ import { ThemeName } from 'tamagui'
 // const tintVal = typeof localStorage !== 'undefined' ? localStorage.getItem('tint') : 0
 // const tint = tintVal ? +tintVal 0
 export const initialTint = 3
+
+let currentTint = initialTint
+
 const listeners = new Set<Function>()
 
 globalThis['onChangeTint'] = (listener) => {
@@ -16,11 +19,15 @@ globalThis['onChangeTint'] = (listener) => {
 }
 
 export const useTint = () => {
-  const [colorI, setColorI] = useState<number>(initialTint)
+  const [colorI, setColorI] = useState<number>(currentTint)
   const color = tints[colorI] as ThemeName
 
   useEffect(() => {
-    const updateVal = (next) => setColorI(next)
+    const updateVal = (next: number) => {
+      currentTint = next
+      setColorI(next)
+    }
+
     listeners.add(updateVal)
     return () => {
       listeners.delete(updateVal)
