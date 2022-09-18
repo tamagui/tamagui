@@ -3,6 +3,8 @@
   - `tag` => `as` (keep fallback around as deprecated)
     - `as={['a', { ...props }]}`
   - take any component fallback to inline style tag
+  - <Button size="$2" $sm={{ size: '$8' }} /> size not overriding
+  - <Button iconAfter={<YStack $sm={{ display: 'none' }} />}> space adding when iconAfter is display: none
   - make create-tamagui-app test test using local changes somehow
   - delete / clean tamagui build on watch
   - light/dark theme change is re-rendering more than it should
