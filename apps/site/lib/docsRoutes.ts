@@ -8,14 +8,14 @@ export const docsRoutes = [
     ],
   },
 
-  {
-    type: 'hr',
-    title: 'Static',
-  },
+  // {
+  //   type: 'hr',
+  //   title: 'Static',
+  // },
 
-  {
-    pages: [{ title: 'Static', route: '/docs/core/static' }],
-  },
+  // {
+  //   pages: [{ title: 'Static', route: '/docs/core/static' }],
+  // },
 
   {
     type: 'hr',
