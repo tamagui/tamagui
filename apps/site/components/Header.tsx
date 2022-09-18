@@ -96,7 +96,14 @@ export function Header(props: HeaderProps) {
       >
         <NextLink href="/" passHref>
           <XStack cursor={isHome ? 'default' : 'pointer'} pointerEvents="auto" tag="a" als="center">
-            <LogoWords animated onHoverLetter={(i) => setTint(tints[i])} />
+            <LogoWords
+              animated
+              onHoverLetter={(i) => {
+                React.startTransition(() => {
+                  setTint(tints[i])
+                })
+              }}
+            />
           </XStack>
         </NextLink>
       </XStack>
