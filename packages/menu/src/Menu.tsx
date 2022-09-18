@@ -12,17 +12,17 @@ type MenuProps = {
   open?: boolean
   defaultOpen?: boolean
   trigger?: any
-  onChangeOpen?: (next: boolean) => void
+  onOpenChange?: (next: boolean) => void
 }
 
 export const Menu = withStaticProperties(
-  ({ children, open: openProp, defaultOpen, trigger, onChangeOpen }: MenuProps) => {
+  ({ children, open: openProp, defaultOpen, trigger, onOpenChange }: MenuProps) => {
     const media = useMedia()
     const [open, setOpen] = useControllableState({
       prop: openProp,
       defaultProp: defaultOpen || false,
       onChange(next) {
-        onChangeOpen?.(next)
+        onOpenChange?.(next)
       },
     })
 
@@ -50,7 +50,7 @@ export const Menu = withStaticProperties(
     //   <Popover
     //     trigger={(props) => cloneElement(trigger, { ...props, ...triggerProps })}
     //     open={open}
-    //     onChangeOpen={setOpen}
+    //     onOpenChange={setOpen}
     //   >
     //     <Popover.Content>
     //       <Popover.Arrow />

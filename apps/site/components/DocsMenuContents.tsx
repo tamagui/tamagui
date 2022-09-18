@@ -1,13 +1,12 @@
 import { docsRoutes } from '@lib/docsRoutes'
 import * as React from 'react'
-import { ScrollView } from 'react-native'
-import { EnsureFlexed, Paragraph, Separator, Spacer, XStack, YStack, useMedia } from 'tamagui'
+import { Paragraph, Separator, XStack, YStack } from 'tamagui'
 
 import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { NavHeading } from './NavHeading'
 import { useDocsMenu } from './useDocsMenu'
 
-export const DocsMenuContents = () => {
+export const DocsMenuContents = React.memo(() => {
   const { currentPath } = useDocsMenu()
 
   return (
@@ -50,4 +49,4 @@ export const DocsMenuContents = () => {
       })}
     </>
   )
-}
+})

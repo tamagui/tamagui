@@ -1,4 +1,3 @@
-import { FloatingFocusManager } from '@floating-ui/react-dom-interactions'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
@@ -22,7 +21,7 @@ import { Dismissable, DismissableProps } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
 import { PortalHost, PortalItem, PortalItemProps } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
-import { Sheet, SheetController } from '@tamagui/sheet'
+import { ControlledSheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -700,7 +699,7 @@ const DialogInner = React.forwardRef<{ open: (val: boolean) => void }, DialogPro
       allowPinchZoom={allowPinchZoom}
       sheetBreakpoint={sheetBreakpoint}
     >
-      <DialogSheetController onChangeOpen={setOpen} __scopeDialog={__scopeDialog}>
+      <DialogSheetController onOpenChange={setOpen} __scopeDialog={__scopeDialog}>
         {children}
       </DialogSheetController>
     </DialogProvider>
@@ -716,13 +715,13 @@ const Dialog = withStaticProperties(DialogInner, {
   Description: DialogDescription,
   Close: DialogClose,
   SheetContents: DialogSheetContents,
-  Sheet,
+  Sheet: ControlledSheet,
 })
 
 const DialogSheetController = (
   props: ScopedProps<{
     children: React.ReactNode
-    onChangeOpen: React.Dispatch<React.SetStateAction<boolean>>
+    onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
   }>
 ) => {
   const context = useDialogContext('DialogSheetController', props.__scopeDialog)
@@ -731,9 +730,9 @@ const DialogSheetController = (
   const getShowSheet = useGet(showSheet)
   return (
     <SheetController
-      onChangeOpen={(val) => {
+      onOpenChange={(val) => {
         if (getShowSheet()) {
-          props.onChangeOpen(val)
+          props.onOpenChange(val)
         }
       }}
       open={context.open}

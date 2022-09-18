@@ -4,9 +4,9 @@ declare type MenuProps = {
     open?: boolean;
     defaultOpen?: boolean;
     trigger?: any;
-    onChangeOpen?: (next: boolean) => void;
+    onOpenChange?: (next: boolean) => void;
 };
-export declare const Menu: (({ children, open, defaultOpen, trigger, onChangeOpen }: MenuProps) => JSX.Element | null) & {
+export declare const Menu: (({ children, open, defaultOpen, trigger, onOpenChange }: MenuProps) => JSX.Element | null) & {
     Item: (props: any) => any;
     Provider: ({ children, }: import("@gorhom/bottom-sheet/lib/typescript/components/bottomSheetModalProvider/types").BottomSheetModalProviderProps) => JSX.Element;
 };

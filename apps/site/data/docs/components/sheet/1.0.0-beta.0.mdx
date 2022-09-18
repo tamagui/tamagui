@@ -53,7 +53,7 @@ Contains every component for the sheet.
     { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
     { name: 'defaultOpen', type: 'boolean', description: `Uncontrolled open state on mount.` },
     {
-      name: 'onChangeOpen',
+      name: 'onOpenChange',
       type: '(open: boolean) => void',
       description: `Called on change open, controlled or uncontrolled.`,
     },
@@ -74,7 +74,7 @@ Contains every component for the sheet.
       description: `Array of numbers, 0-100 that correspont to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
     },
     {
-      name: 'onChangePosition',
+      name: 'onPositionChange',
       type: '(position: number) => void',
       description: `Called on change position, controlled or uncontrolled.`,
     },
@@ -103,8 +103,8 @@ Contains every component for the sheet.
     {
       name: 'dismissOnSnapToBottom',
       type: 'boolean',
-      description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`
-    }
+      description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
+    },
   ]}
 />
 
