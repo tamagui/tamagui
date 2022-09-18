@@ -699,28 +699,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         ({ __scopeSelect }: ScopedProps<{}>): JSX.Element;
         displayName: string;
     };
-    Sheet: ((props: Omit<{
-        open?: boolean | undefined;
-        defaultOpen?: boolean | undefined;
-        onChangeOpen?: React.Dispatch<React.SetStateAction<boolean>> | ((open: boolean) => void) | undefined;
-        position?: number | undefined;
-        defaultPosition?: number | undefined;
-        snapPoints?: number[] | undefined;
-        onChangePosition?: import("@tamagui/sheet/types/types").PositionChangeHandler | undefined;
-        children?: React.ReactNode;
-        dismissOnOverlayPress?: boolean | undefined;
-        dismissOnSnapToBottom?: boolean | undefined;
-        animationConfig?: import("@tamagui/core").AnimatedNumberStrategy | undefined;
-        handleDisableScroll?: boolean | undefined;
-        disableDrag?: boolean | undefined;
-        modal?: boolean | undefined;
-        zIndex?: number | undefined;
-    } & {
-        __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-    } & React.RefAttributes<import("react-native").View>, "theme" | "themeInverse"> & {
-        theme?: import("@tamagui/core").ThemeName | null | undefined;
-        themeInverse?: boolean | undefined;
-    }) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & {
+    Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet/types/types").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native").View>> & {
         Handle: ({ __scopeSheet, ...props }: import("@tamagui/sheet/types/types").SheetScopedProps<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
