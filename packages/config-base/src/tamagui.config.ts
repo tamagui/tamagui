@@ -101,6 +101,12 @@ export const config = {
   themeClassNameOnRoot: true,
   animations,
   media,
+  // start as mobile
+  mediaQueryDefaultActive: {
+    xxs: true,
+    xs: true,
+    sm: true,
+  },
   shorthands,
   themes,
   tokens,

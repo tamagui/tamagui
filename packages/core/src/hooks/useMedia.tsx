@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { matchMedia } from '../helpers/matchMedia'
 import {
-  CreateTamaguiProps,
   MediaQueries,
   MediaQueryKey,
   MediaQueryObject,
@@ -16,6 +15,10 @@ export const mediaState: MediaQueryState = {} as any
 const mediaQueryListeners: { [key: string]: Set<Function> } = {}
 
 export function addMediaQueryListener(key: MediaQueryKey, cb: any) {
+  if (process.env.NODE_ENV === 'development' && key[0] === '$') {
+    // eslint-disable-next-line no-console
+    console.warn(`Warning, listening to media queries shouldn't use the "$" prefix`)
+  }
   mediaQueryListeners[key] = mediaQueryListeners[key] || new Set()
   mediaQueryListeners[key].add(cb)
   return () => removeMediaQueryListener(key, cb)
@@ -60,7 +63,7 @@ function unlisten() {
  * *and then* re-render with the actual media query state.
  */
 let configuredKey = ''
-function setupMediaListeners() {
+function setupMediaListeners(config: TamaguiInternalConfig) {
   // avoid setting up more than once per config
   const nextKey = JSON.stringify(mediaQueryConfig)
   if (nextKey === configuredKey) {
@@ -79,10 +82,12 @@ function setupMediaListeners() {
       throw new Error('⚠️ No match')
     }
     // react native needs these deprecated apis for now
-    // match.addListener(update)
-    // dispose.add(() => match.removeListener(update))
+    match.addListener(update)
+    dispose.add(() => match.removeListener(update))
 
-    // update()
+    if (config.disableSSR) {
+      update()
+    }
 
     function update() {
       const next = !!getMatch().matches
@@ -102,7 +107,7 @@ export function useMediaQueryListeners(config: TamaguiInternalConfig) {
   }
 
   useEffect(() => {
-    setupMediaListeners()
+    setupMediaListeners(config)
     return unlisten
   }, [])
 }

@@ -30,6 +30,7 @@ import {
   updateInserted,
   updateRules,
 } from './insertStyleRule'
+import { mergeProps } from './mergeProps'
 import { mergeTransform } from './mergeTransform'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { pseudoDescriptors } from './pseudoDescriptors'
@@ -126,7 +127,7 @@ export const getSplitStyles: StyleSplitter = (
     // parity with react-native-web
     style.display = 'inline-flex' as any
   }
-  let classNames: ClassNamesObject = {}
+  const classNames: ClassNamesObject = {}
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
   const transforms: Record<TransformNamespaceKey, [string, string]> = {}
@@ -351,6 +352,13 @@ export const getSplitStyles: StyleSplitter = (
         mediaKeys.push(mediaKeyShort)
 
         if (!mediaQueryConfig[mediaKeyShort]) {
+          if (process.env.NODE_ENV === 'development' && debug) {
+            // eslint-disable-next-line no-console
+            console.warn(
+              `Warning: using a $ prefixed prop that doesn't match to a media query, may be an error`,
+              key
+            )
+          }
           if (!usedKeys.has(key)) {
             // this isn't a media key, pass through
             viewProps[key] = val
@@ -377,7 +385,7 @@ export const getSplitStyles: StyleSplitter = (
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
           // eslint-disable-next-line no-console
-          console.log(`  🔹 ${mediaKey}`, mediaState[mediaKeyShort], { mediaKey, mediaStyle, props, shouldDoClasses, mediaState: { ...mediaState } })
+          console.log(`  🔹 ${mediaKey}`, mediaState[mediaKey], { mediaKey, mediaStyle, props, shouldDoClasses, mediaState: { ...mediaState } })
         }
 
         if (shouldDoClasses) {
@@ -392,7 +400,7 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
         } else {
-          if (mediaState[mediaKeyShort]) {
+          if (mediaState[mediaKey]) {
             if (process.env.NODE_ENV === 'development' && debug) {
               // eslint-disable-next-line no-console
               console.log('apply media style', mediaKey, mediaState)
@@ -448,9 +456,10 @@ export const getSplitStyles: StyleSplitter = (
 
   // add in defaults if not set:
   if (defaultClassNames) {
-    classNames = {
-      ...defaultClassNames,
-      ...classNames,
+    for (const key in defaultClassNames) {
+      if (!(key in classNames)) {
+        classNames[key] = defaultClassNames[key]
+      }
     }
   }
 

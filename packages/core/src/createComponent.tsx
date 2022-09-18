@@ -135,6 +135,7 @@ export function createComponent<
     }
 
     const debugProp = props['debug']
+
     const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
     const componentClassName = props.asChild
@@ -199,6 +200,8 @@ export function createComponent<
         console.log('props', propsIn)
         // eslint-disable-next-line no-console
         console.log('splitStyles', splitStyles)
+        // eslint-disable-next-line no-console
+        console.log('className', Object.values(splitStyles.classNames))
         if (typeof window !== 'undefined') {
           // eslint-disable-next-line no-console
           console.log('ref', hostRef, '(click to view)')
@@ -217,8 +220,6 @@ export function createComponent<
     }, [])
 
     const { viewProps: viewPropsIn, pseudos, medias, style, classNames, mediaKeys } = splitStyles
-
-    if (debugProp) console.log('mediaKeys', mediaKeys, splitStyles, mediaState)
 
     // media queries
     useIsomorphicLayoutEffect(() => {
@@ -1094,7 +1095,7 @@ export function createComponent<
       )
     }
 
-    const debug = true ? defaultPropsIn['debug'] : false
+    const debug = defaultPropsIn['debug']
 
     if (process.env.NODE_ENV === 'development' && debug === 'break') {
       // eslint-disable-next-line no-debugger
