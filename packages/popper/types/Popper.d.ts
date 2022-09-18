@@ -24,8 +24,8 @@ export declare type PopperProps = {
     size?: SizeTokens;
     children?: React.ReactNode;
     placement?: Placement;
-    stayInFrame?: ShiftProps;
-    allowFlip?: FlipProps;
+    stayInFrame?: ShiftProps | boolean;
+    allowFlip?: FlipProps | boolean;
     strategy?: Strategy;
 };
 export declare const Popper: React.FC<PopperProps>;
