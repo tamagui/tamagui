@@ -54,6 +54,10 @@ const bodyFont = createInterFont(
       process.env.TAMAGUI_TARGET === 'native'
         ? 'Inter'
         : '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+    weight: {
+      1: '500',
+      7: '600',
+    },
   },
   {
     sizeSize: (size) => Math.round(size),

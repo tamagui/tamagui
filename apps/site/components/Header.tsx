@@ -14,6 +14,7 @@ import {
   VisuallyHidden,
   XStack,
   YStack,
+  useMedia,
 } from 'tamagui'
 
 import { ContainerLarge } from './Container'
@@ -192,6 +193,11 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
 const SmallMenu = React.memo(() => {
   const { router, open, setOpen } = useDocsMenu()
   const isDocs = router.pathname.startsWith('/docs')
+  const media = useMedia()
+
+  if (media.gtMd) {
+    return null
+  }
 
   return (
     <Popover sheetBreakpoint="sm" size="$5" stayInFrame={{ padding: 20 }}>
