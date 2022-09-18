@@ -41,11 +41,8 @@ export const Circle = styled(Stack, {
 ```
 
 <Notice>
-  Please use `as const` for the variants definition until Typescript gains{' '}
-  <a href="https://github.com/microsoft/TypeScript/issues/30680">
-    the ability to infer generics as const
-  </a>
-  . It's not necessary, but without it types can break in weird ways.
+  Please use `as const` for the variants definition until Typescript gains the ability to infer
+  generics as const . It's not necessary, but without it types can break in weird ways.
 </Notice>
 
 We can use these like so:
@@ -272,18 +269,18 @@ const SizedText = styled(Text, {
   variants: {
     size: {
       md: {
-         fontSize: '$sm',
+        fontSize: '$sm',
 
-         $gtMd: {
-            fontSize: '$md',
-         },
+        $gtMd: {
+          fontSize: '$md',
+        },
 
         $gt2xl: {
-            fontSize: '$lg',
-         }
-      }
-    }
-  } as const
+          fontSize: '$lg',
+        },
+      },
+    },
+  } as const,
 })
 ```
 
@@ -296,16 +293,16 @@ const ColorfulText = styled(Text, {
   variants: {
     colored: {
       true: {
-        color: '$color'
-      }
+        color: '$color',
+      },
     },
 
     large: {
       true: {
-        fontSize: '$8'
-      }
-    }
-  } as const
+        fontSize: '$8',
+      },
+    },
+  } as const,
 })
 
 const MyParagraph = styled(ColorfulText, {
@@ -315,8 +312,8 @@ const MyParagraph = styled(ColorfulText, {
     hero: {
       true: {
         large: true,
-      }
-    }
-  } as const
+      },
+    },
+  } as const,
 })
 ```
