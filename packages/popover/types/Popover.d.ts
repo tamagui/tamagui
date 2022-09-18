@@ -7,7 +7,7 @@ import { PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popp
 import { RemoveScrollProps } from '@tamagui/remove-scroll';
 import { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
-import { View } from 'react-native';
+import { ScrollView, ScrollViewProps, View } from 'react-native';
 declare type ScopedProps<P> = P & {
     __scopePopover?: Scope;
 };
@@ -157,6 +157,7 @@ export declare const Popover: React.FC<PopoverProps> & {
         ({ __scopePopover }: ScopedProps<{}>): JSX.Element;
         displayName: string;
     };
+    ScrollView: React.ForwardRefExoticComponent<ScrollViewProps & React.RefAttributes<ScrollView>>;
     Sheet: ((props: Omit<{
         open?: boolean | undefined;
         defaultOpen?: boolean | undefined;
@@ -172,6 +173,7 @@ export declare const Popover: React.FC<PopoverProps> & {
         handleDisableScroll?: boolean | undefined;
         disableDrag?: boolean | undefined;
         modal?: boolean | undefined;
+        zIndex?: number | undefined;
     } & {
         __scopeSheet?: Scope<any>;
     } & React.RefAttributes<View>, "theme" | "themeInverse"> & {
@@ -216,7 +218,7 @@ export declare const Popover: React.FC<PopoverProps> & {
         }, "closed"> & {
             readonly closed?: boolean | undefined;
         }>>>) => JSX.Element;
-        ScrollView: React.ForwardRefExoticComponent<import("react-native").ScrollViewProps & React.RefAttributes<import("react-native").ScrollView>>;
+        ScrollView: React.ForwardRefExoticComponent<ScrollViewProps & React.RefAttributes<ScrollView>>;
     };
 };
 export {};

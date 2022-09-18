@@ -48,13 +48,6 @@ export const DocsMenuContents = () => {
           </YStack>
         )
       })}
-
-      <YStack
-        height="$5"
-        $gtMd={{
-          height: '$8',
-        }}
-      />
     </>
   )
 }
