@@ -20,6 +20,8 @@ import { RemoveScroll } from '@tamagui/remove-scroll'
 import { XStack, XStackProps, YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, {
+  FunctionComponent,
+  RefAttributes,
   createContext,
   forwardRef,
   isValidElement,
@@ -169,6 +171,13 @@ export const SheetFrame = SheetFrameFrame.extractable(
 // set all the way off screen
 const HIDDEN_SIZE = 10_000
 
+const sheetComponents = {
+  Handle: SheetHandle,
+  Frame: SheetFrame,
+  Overlay: SheetOverlay,
+  ScrollView: SheetScrollView,
+}
+
 export const Sheet = withStaticProperties(
   themeable(
     forwardRef<View, SheetProps>(function Sheet(props, ref) {
@@ -179,8 +188,8 @@ export const Sheet = withStaticProperties(
         defaultOpen,
         children: childrenProp,
         position: positionProp,
-        onChangePosition,
-        onChangeOpen,
+        onPositionChange,
+        onOpenChange,
         defaultPosition,
         dismissOnOverlayPress = true,
         animationConfig,
@@ -222,15 +231,15 @@ export const Sheet = withStaticProperties(
         scrollLock: false,
       }))
 
-      const onChangeOpenInternal = (val: boolean) => {
-        controller?.onChangeOpen?.(val)
-        onChangeOpen?.(val)
+      const onOpenChangeInternal = (val: boolean) => {
+        controller?.onOpenChange?.(val)
+        onOpenChange?.(val)
       }
 
       const [open, setOpen] = useControllableState({
         prop: controller?.open ?? openProp,
         defaultProp: defaultOpen || true,
-        onChange: onChangeOpenInternal,
+        onChange: onOpenChangeInternal,
         strategy: 'most-recent-wins',
       })
 
@@ -246,7 +255,7 @@ export const Sheet = withStaticProperties(
       const [position_, setPosition_] = useControllableState({
         prop: positionProp,
         defaultProp: defaultPosition || (open ? 0 : -1),
-        onChange: onChangePosition,
+        onChange: onPositionChange,
         strategy: 'most-recent-wins',
       })
       const position = open === false ? -1 : position_
@@ -552,13 +561,13 @@ export const Sheet = withStaticProperties(
       return contents
     })
   ),
-  {
-    Handle: SheetHandle,
-    Frame: SheetFrame,
-    Overlay: SheetOverlay,
-    ScrollView: SheetScrollView,
-  }
+  sheetComponents
 )
+
+export const ControlledSheet = Sheet as FunctionComponent<
+  Omit<SheetProps, 'open' | 'onChangeOpen'> & RefAttributes<View>
+> &
+  typeof sheetComponents
 
 /* -------------------------------------------------------------------------------------------------*/
 
@@ -590,26 +599,26 @@ type SheetControllerContextValue = {
   open?: boolean
   // hide without "closing" to prevent re-animation when shown again
   hidden?: boolean
-  onChangeOpen?: React.Dispatch<React.SetStateAction<boolean>> | ((val: boolean) => void)
+  onOpenChange?: React.Dispatch<React.SetStateAction<boolean>> | ((val: boolean) => void)
 }
 
 const SheetControllerContext = createContext<SheetControllerContextValue | null>(null)
 
 export const SheetController = ({
   children,
-  onChangeOpen: onChangeOpenProp,
+  onOpenChange: onOpenChangeProp,
   ...value
 }: Partial<SheetControllerContextValue> & { children?: React.ReactNode }) => {
-  const onChangeOpen = useEvent(onChangeOpenProp)
+  const onOpenChange = useEvent(onOpenChangeProp)
 
   const memoValue = useMemo(
     () => ({
       open: value.open,
       hidden: value.hidden,
       disableDrag: value.disableDrag,
-      onChangeOpen,
+      onOpenChange,
     }),
-    [onChangeOpen, value.open, value.hidden, value.disableDrag]
+    [onOpenChange, value.open, value.hidden, value.disableDrag]
   )
 
   return (
