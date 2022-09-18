@@ -3,12 +3,6 @@ title: styled()
 description: Extend and build custom and optimizable components.
 ---
 
-<Notice>
-  For custom styled() components to be optimized by the compiler, you'll need to place them in a
-  node module and update your build configuration. See the [Design Systems
-  guide](/docs/guides/design-systems).
-</Notice>
-
 Create a new component by extending an existing one:
 
 ```tsx
@@ -147,11 +141,7 @@ Now, when use CustomCircle, the compiler can do something like this:
 ```tsx
 const _cn = `transform-1234 hover-transform-1234`
 
-export default () => (
-  <CustomCircle className={_cn}>
-    {/* ... your contents ... */}
-  </CustomCircle>
-)
+export default () => <CustomCircle className={_cn}>{/* ... your contents ... */}</CustomCircle>
 ```
 
 This nets you some runtime performance and ensures any unique styles are pulled into CSS at build-time.
