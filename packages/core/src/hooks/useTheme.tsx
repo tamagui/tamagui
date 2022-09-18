@@ -3,7 +3,7 @@ import React, { useContext, useLayoutEffect, useMemo, useRef, useState } from 'r
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
-import { isRSC, isSSR, useIsomorphicLayoutEffect } from '../constants/platform'
+import { isRSC, isServer, useIsomorphicLayoutEffect } from '../constants/platform'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { areEqualSets } from '../helpers/areEqualSets'
 import {
@@ -236,7 +236,7 @@ export const useChangeThemeEffect = (
     return new ThemeManager(next.name, next.className, next.theme, parentManager, reset)
   })
 
-  if (!isSSR) {
+  if (!isServer) {
     useLayoutEffect(() => {
       themeManager.update(next)
 

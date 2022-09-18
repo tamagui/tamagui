@@ -1,10 +1,8 @@
-import { useForceUpdate } from '@tamagui/use-force-update'
 import * as React from 'react'
 
-import { isClient, isRSC, isSSR } from '../constants/platform'
+import { isClient, isRSC, isServer } from '../constants/platform'
 import { ButtonInsideButtonContext } from '../contexts/ButtonInsideButtonContext'
 import { TextAncestorProvider } from '../contexts/TextAncestorContext'
-import { useIsSSR } from '../hooks/useIsSSR'
 import { useMediaQueryListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
@@ -23,9 +21,7 @@ export function TamaguiProvider({
     )
   }
 
-  if (!isSSR) {
-    const isSSR = useIsSSR()
-    console.log('isSSR', isSSR)
+  if (!isServer) {
     useMediaQueryListeners(config)
   }
 

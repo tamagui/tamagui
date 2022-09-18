@@ -11,9 +11,9 @@ Let's take a quick look through some of the useful other exports in `@tamagui/co
 
 - `isWeb` - `process.env.TAMAGUI_TARGET === 'web'`. Should be true both for SSR and Client side web targets.
 - `isWindowDefined` - `typeof window === 'undefined'`
-- `isSSR` - `isWeb && !isWindowDefined`.
+- `isServer` - `isWeb && !isWindowDefined`.
 - `isClient` - `isWeb && isWindowDefined`.
-- `useIsomorphicLayoutEffect` - `isSSR ? useEffect : useLayoutEffect`. Helper for SSR rendering without warnings.
+- `useIsomorphicLayoutEffect` - `isServer ? useEffect : useLayoutEffect`. Helper for SSR rendering without warnings.
 - `isChrome` - client-side Chrome
 - `isWebTouchable` - web-only touch-device (client side only)
 - `isTouchable` - True for any touch device (client side only).
