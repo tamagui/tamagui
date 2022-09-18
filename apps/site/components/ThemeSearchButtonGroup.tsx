@@ -9,7 +9,7 @@ export function ThemeSearchButtonGroup() {
   return (
     <TooltipGroup delay={{ open: 3000, close: 100 }}>
       <XGroup bordered mah={32} bc="transparent" ai="center" size="$3">
-        <SearchButton borderWidth={0} chromeless iconAfter={null} />
+        {/* <SearchButton borderWidth={0} chromeless iconAfter={null} /> */}
         <ThemeToggle borderWidth={0} chromeless />
         <ColorToggleButton borderWidth={0} chromeless $xxs={{ display: 'none' }} />
       </XGroup>
