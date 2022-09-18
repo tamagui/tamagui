@@ -129,8 +129,8 @@ const HeroTop = memo(() => {
                 maw: 650,
               }}
             >
-              Unify <span className="rainbow clip-text">Native</span> and{' '}
-              <span className="rainbow clip-text">Web</span> UI with a
+              Better <span className="rainbow clip-text">Native</span> and{' '}
+              <span className="rainbow clip-text">Web</span> interfaces with a
               smart&nbsp;optimizing&nbsp;compiler.
             </Paragraph>
           </YStack>

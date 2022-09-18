@@ -196,8 +196,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     getCSS,
   }
 
-  setConfig(config)
   configureMedia(config)
+  setConfig(config)
 
   if (configListeners.size) {
     configListeners.forEach((cb) => cb(config))
