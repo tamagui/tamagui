@@ -48,6 +48,7 @@ export function styled<
     variants?: Variants | undefined
     // thought i had this typed, but can't get it linked
     defaultVariants?: { [key: string]: any }
+    acceptsClassName?: boolean
   },
   staticExtractionOptions?: Partial<StaticConfig>
 ) {
@@ -73,7 +74,13 @@ export function styled<
     }
 
     if (options) {
-      const { variants, name, defaultVariants, ...defaultProps } = options
+      const {
+        variants,
+        name,
+        defaultVariants,
+        acceptsClassName: acceptsClassNameProp,
+        ...defaultProps
+      } = options
       if (defaultVariants) {
         Object.assign(defaultProps, defaultVariants)
       }
@@ -84,12 +91,7 @@ export function styled<
           RNComponents.add(Component)
           isReactNativeWeb = true
         } else {
-          if (process.env.NODE_ENV === 'development') {
-            // eslint-disable-next-line no-console
-            console.warn(
-              `Invalid styled() component: Tamagui only accepts react-native Text, View, Image, TextInput, or another styled Tamagui view`
-            )
-          }
+          // assuming some sort of non-tamagui non-rn view, will always use style={}
         }
       }
       const reactNativeWebComponent = isReactNativeWeb
@@ -106,6 +108,8 @@ export function styled<
       const isText = Boolean(
         isInput || staticExtractionOptions?.isText || parentStaticConfig?.isText || Comp === Text
       )
+
+      const acceptsClassName = acceptsClassNameProp ?? (isTamagui || isReactNativeWeb)
 
       const conf: Partial<StaticConfig> = {
         ...staticExtractionOptions,
@@ -125,10 +129,12 @@ export function styled<
         isInput,
         isText,
         isImage,
+        acceptsClassName,
       }
 
       // TODO compiler doesn't have logic to include children, de-opt (see EnsureFlexed for test usage)
-      if (defaultProps.children) {
+      // bail on non className views as well
+      if (defaultProps.children || !acceptsClassName) {
         conf.neverFlatten = true
       }
 

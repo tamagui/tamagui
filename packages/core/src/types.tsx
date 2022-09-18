@@ -264,6 +264,26 @@ export type CreateTamaguiProps = {
   }
 
   defaultTheme?: string
+
+  /**
+   * *Advanced use case* For all CSS extracted views, this has no effect.
+   *
+   * For SSR compatibility on the web, Tamagui will render once with the settings
+   * from `mediaQueryDefaultActive` set for all media queries. Then, it will render
+   * again after the initial render using the proper media query values. This is so that
+   * hydration will match perfectly with the server.
+   *
+   * Setting disableSSR will avoid this second render by setting the media query state
+   * to the actual browser dimensions on initial load. This is only useful for client-only
+   * apps.
+   *
+   */
+  disableSSR?: boolean
+
+  /**
+   * Disable inserting a theme class in the DOM or context, allowing you to manually place it higher.
+   * For custom use cases like integration with next-theme.
+   */
   disableRootThemeClass?: boolean
 
   defaultProps?: Record<string, any> & {
@@ -351,10 +371,6 @@ export type MediaProps<A> = {
 }
 export type MediaQueries = {
   [key in MediaQueryKey]: MediaQueryObject
-}
-export type ConfigureMediaQueryOptions = {
-  queries?: MediaQueries
-  defaultActive?: Record<MediaQueryKey, boolean>
 }
 
 export type TransformStyleProps = {
@@ -773,6 +789,13 @@ export type StaticConfig = {
    * Used insternally to attach default props to names
    */
   parentNames?: string[]
+
+  /**
+   * By default if styled() doesn't recognize a parent Tamagui compoent or specific react-native views,
+   * it will assume the passed in component only accepts style={} for react-native compatibility.
+   * Setting `acceptsClassName: true` indicates Tamagui can pass in className props.
+   */
+  acceptsClassName?: boolean
 }
 
 /**

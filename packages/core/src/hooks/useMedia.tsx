@@ -3,11 +3,12 @@ import { useMemo, useState } from 'react'
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { matchMedia } from '../helpers/matchMedia'
 import {
-  ConfigureMediaQueryOptions,
+  CreateTamaguiProps,
   MediaQueries,
   MediaQueryKey,
   MediaQueryObject,
   MediaQueryState,
+  TamaguiInternalConfig,
 } from '../types'
 import { useSafeRef } from './useSafeRef'
 
@@ -35,29 +36,17 @@ const dispose = new Set<Function>()
 // for SSR capture it at time of startup
 let initialMediaState: MediaQueryState | null
 
-export const configureMedia = ({
-  queries,
-  defaultActive = {},
-}: ConfigureMediaQueryOptions = {}) => {
-  if (!queries) return
-
-  // support hot reload
-  if (initialMediaState) {
-    if (process.env.NODE_ENV === 'development') {
-      if (JSON.stringify(queries) === JSON.stringify(mediaQueryConfig)) {
-        // hmr avoid update
-        return
-      }
-    }
-    setupMediaListeners()
+export const configureMedia = (config: TamaguiInternalConfig) => {
+  const { media, mediaQueryDefaultActive } = config
+  if (!media) return
+  for (const key in media) {
+    mediaState[key] = mediaQueryDefaultActive?.[key] || false
   }
-
-  Object.assign(mediaQueryConfig, queries)
-  // start in the initial state
-  for (const key in queries) {
-    mediaState[key] = defaultActive[key] || false
-  }
+  Object.assign(mediaQueryConfig, media)
   initialMediaState = { ...mediaState }
+  if (config.disableSSR) {
+    setupMediaListeners(config)
+  }
 }
 
 function unlisten() {
@@ -65,7 +54,20 @@ function unlisten() {
   dispose.clear()
 }
 
-function setupMediaListeners() {
+/**
+ * Note: This should *not* set the state on the first render!
+ * Because to avoid hydration issues SSR must match the server
+ * *and then* re-render with the actual media query state.
+ */
+let configuredKey = ''
+function setupMediaListeners({ disableSSR }: TamaguiInternalConfig) {
+  // avoid setting up more than once per config
+  const nextKey = JSON.stringify(mediaQueryConfig)
+  if (nextKey === configuredKey) {
+    return
+  }
+  configuredKey = nextKey
+
   // hmr, undo existing before re-binding
   unlisten()
 
@@ -79,6 +81,7 @@ function setupMediaListeners() {
     // react native needs these deprecated apis for now
     match.addListener(update)
     dispose.add(() => match.removeListener(update))
+
     update()
 
     function update() {
@@ -87,17 +90,15 @@ function setupMediaListeners() {
       mediaState[key] = next
       const listeners = mediaQueryListeners[key]
       if (listeners?.size) {
-        for (const cb of [...listeners]) {
-          cb()
-        }
+        listeners.forEach((cb) => cb())
       }
     }
   }
 }
 
-export function useMediaQueryListeners() {
+export function useMediaQueryListeners(config: TamaguiInternalConfig) {
   useIsomorphicLayoutEffect(() => {
-    setupMediaListeners()
+    setupMediaListeners(config)
     return unlisten
   }, [])
 }
@@ -135,7 +136,7 @@ export function useMedia(): {
       new Proxy(state, {
         get(_, key: string) {
           if (!keys.current[key]) {
-            keys.current = { ...keys.current, [key]: true }
+            keys.current[key] = true
           }
           return Reflect.get(state, key)
         },
