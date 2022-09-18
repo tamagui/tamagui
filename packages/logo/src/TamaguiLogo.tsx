@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useState } from 'react'
 import { Circle, ThemeName, XStack, XStackProps, YStack } from 'tamagui'
 
-export const tints: ThemeName[] = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
+export const tints: ThemeName[] = ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red']
 
 export const logoColors = tints.map((t) => `var(--${t}9)`)
 
@@ -60,6 +60,8 @@ export const LogoWords = ({
   animated?: boolean
 }) => {
   const [index, setIndex] = useState(3)
+  const [hovered, setHovered] = useState(false)
+  const [mounted, setMounted] = useState<'start' | 'animate' | 'done'>('start')
 
   const updateHoveredLetter = (index: number) => {
     setIndex(index)
@@ -69,6 +71,16 @@ export const LogoWords = ({
   }
 
   useEffect(() => {
+    setTimeout(() => {
+      setMounted('animate')
+    })
+
+    setTimeout(() => {
+      setMounted('done')
+    }, 2000)
+  }, [])
+
+  useEffect(() => {
     // temp hack
     return globalThis['onChangeTint']?.((index) => {
       setIndex(index)
@@ -76,23 +88,35 @@ export const LogoWords = ({
   }, [])
 
   const getColor = (i: number) => {
-    const isActive = i === index
-    return isActive ? 'var(--color)' : logoColors[index]
+    const isActive = mounted !== 'start' && i === index
+    if (mounted !== 'done' || hovered) {
+      return isActive ? 'var(--color)' : logoColors[index]
+    }
+    if (isActive) {
+      return 'var(--color)'
+    }
+    return logoColors[i]
   }
 
   return (
-    <XStack pos="relative">
+    <XStack
+      onHoverIn={() => setHovered(true)}
+      onHoverOut={() => setHovered(false)}
+      paddingVertical="$2"
+      marginVertical="$-2"
+      position="relative"
+    >
       {animated && (
         <Circle
           animation="quick"
-          pos="absolute"
-          t={0}
-          l={0}
-          y={-10}
+          position="absolute"
+          top={0}
+          left={0}
+          y={mounted === 'start' ? -30 : -3}
           // the last i is less wide
           x={index * 18.5 + (18 / 2) * (index / logoColors.length) + 3 + (index === 6 ? -3 : 0)}
           size={4}
-          bc={logoColors[index]}
+          backgroundColor={logoColors[index]}
         />
       )}
       <svg
