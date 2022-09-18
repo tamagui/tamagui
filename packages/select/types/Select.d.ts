@@ -714,6 +714,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         handleDisableScroll?: boolean | undefined;
         disableDrag?: boolean | undefined;
         modal?: boolean | undefined;
+        zIndex?: number | undefined;
     } & {
         __scopeSheet?: import("@tamagui/create-context").Scope<any>;
     } & React.RefAttributes<import("react-native").View>, "theme" | "themeInverse"> & {

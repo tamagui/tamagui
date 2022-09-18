@@ -2547,6 +2547,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         handleDisableScroll?: boolean | undefined;
         disableDrag?: boolean | undefined;
         modal?: boolean | undefined;
+        zIndex?: number | undefined;
     } & {
         __scopeSheet?: Scope<any>;
     } & React.RefAttributes<import("react-native").View>, "theme" | "themeInverse"> & {
