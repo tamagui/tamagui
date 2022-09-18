@@ -14,7 +14,6 @@ import {
   useEvent,
   useGet,
   useId,
-  useIsSSR,
   useMedia,
   useThemeName,
   withStaticProperties,
@@ -36,7 +35,7 @@ import {
 } from '@tamagui/popper'
 import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
 import { RemoveScroll, RemoveScrollProps } from '@tamagui/remove-scroll'
-import { Sheet, SheetController } from '@tamagui/sheet'
+import { ControlledSheet, SheetController } from '@tamagui/sheet'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -479,7 +478,7 @@ export const Popover = withStaticProperties(
             onCustomAnchorAdd={React.useCallback(() => setHasCustomAnchor(true), [])}
             onCustomAnchorRemove={React.useCallback(() => setHasCustomAnchor(false), [])}
           >
-            <PopoverSheetController onChangeOpen={setOpen} __scopePopover={__scopePopover}>
+            <PopoverSheetController onOpenChange={setOpen} __scopePopover={__scopePopover}>
               {children}
             </PopoverSheetController>
           </PopoverProviderInternal>
@@ -495,7 +494,7 @@ export const Popover = withStaticProperties(
     Close: PopoverClose,
     SheetContents: PopoverSheetContents,
     ScrollView: PopoverScrollView,
-    Sheet,
+    Sheet: ControlledSheet,
   }
 )
 
@@ -510,7 +509,7 @@ function getState(open: boolean) {
 const PopoverSheetController = (
   props: ScopedProps<{
     children: React.ReactNode
-    onChangeOpen: React.Dispatch<React.SetStateAction<boolean>>
+    onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
   }>
 ) => {
   const context = usePopoverInternalContext('PopoverSheetController', props.__scopePopover)
@@ -519,9 +518,9 @@ const PopoverSheetController = (
   const getShowSheet = useGet(showSheet)
   return (
     <SheetController
-      onChangeOpen={(val) => {
+      onOpenChange={(val) => {
         if (getShowSheet()) {
-          props.onChangeOpen(val)
+          props.onOpenChange(val)
         }
       }}
       open={context.open}

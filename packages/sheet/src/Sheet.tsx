@@ -565,7 +565,7 @@ export const Sheet = withStaticProperties(
 )
 
 export const ControlledSheet = Sheet as FunctionComponent<
-  Omit<SheetProps, 'open' | 'onChangeOpen'> & RefAttributes<View>
+  Omit<SheetProps, 'open' | 'onOpenChange'> & RefAttributes<View>
 > &
   typeof sheetComponents
 

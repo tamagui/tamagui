@@ -34,6 +34,7 @@
     "@tamagui/polyfill-dev": "^1.0.1-beta.167",
     "@tamagui/popper": "^1.0.1-beta.167",
     "@tamagui/portal": "^1.0.1-beta.167",
+    "@tamagui/scroll-view": "^1.0.1-beta.167",
     "@tamagui/sheet": "^1.0.1-beta.167",
     "@tamagui/stacks": "^1.0.1-beta.167",
     "@tamagui/use-controllable-state": "^1.0.1-beta.167"
