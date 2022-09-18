@@ -11,7 +11,7 @@ export function AddThemeDemo() {
 
       {/* @ts-ignore */}
       <Theme name={theme ?? 'red'}>
-        <Square debug="verbose" borderRadius="$8" size={100} backgroundColor="$color" />
+        <Square borderRadius="$8" size={100} backgroundColor="$color" />
       </Theme>
 
       <Button

@@ -87,11 +87,6 @@ export declare const config: {
             minWidth: number;
         };
     };
-    mediaQueryDefaultActive: {
-        xxs: boolean;
-        xs: boolean;
-        sm: boolean;
-    };
     shorthands: {
         readonly ac: "alignContent";
         readonly ai: "alignItems";
