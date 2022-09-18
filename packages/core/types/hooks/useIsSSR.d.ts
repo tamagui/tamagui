@@ -1,2 +1,4 @@
-export declare const useIsSSR: () => boolean;
+export declare const useIsSSR: (props?: {
+    immediate?: boolean;
+}) => boolean;
 //# sourceMappingURL=useIsSSR.d.ts.map

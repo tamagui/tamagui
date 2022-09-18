@@ -36,14 +36,15 @@ export const ContainerLarge = styled(YStack, {
   mx: 'auto',
   px: '$4',
   width: '100%',
+  debug: 'verbose',
 
-  $gtSm: {
-    maxWidth: 980,
-  },
+  // $gtSm: {
+  //   maxWidth: 980,
+  // },
 
-  $gtMd: {
-    maxWidth: 1140,
-  },
+  // $gtMd: {
+  //   maxWidth: 1140,
+  // },
 
   variants,
 })
