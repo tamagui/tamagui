@@ -1,9 +1,6 @@
 - 1.0
 
   - input like button
-  - `tag` => `as` (keep fallback around as deprecated)
-    - `as={['a', { ...props }]}`
-  - take any component fallback to inline style tag
   - <Button size="$2" $sm={{ size: '$8' }} /> size not overriding
   - <Button iconAfter={<YStack $sm={{ display: 'none' }} />}> space adding when iconAfter is display: none
   - make create-tamagui-app test test using local changes somehow
@@ -77,6 +74,8 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - `tag` => `as` (keep fallback around as deprecated)
+    - `as={['a', { ...props }]}`
   - breaking change notifier on upgrade
     - takes any commit with BREAKING CHANGE and logs to console as yellow
   - VSCode => "turn JSX into styled()"

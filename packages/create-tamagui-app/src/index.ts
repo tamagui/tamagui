@@ -148,6 +148,7 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
   try {
     const home = homedir()
     const tamaguiDir = join(home, '.tamagui')
+    const repoRoot = join(__dirname, '..', '..', '..')
     const targetGitDir =
       process.env.NODE_ENV === 'test'
         ? join(tamaguiDir, 'tamagui-test')
@@ -155,17 +156,32 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
 
     async function setupTamaguiDotDir(isRetry = false) {
       console.log(`Setting up ${chalk.blueBright(tamaguiDir)}...`)
-      await ensureDir(tamaguiDir)
 
+      // setup tests for CI
+      if (process.env.NODE_ENV === 'test') {
+        // always clean for test
+        await remove(targetGitDir)
+        cd(repoRoot)
+        if (!(await pathExists(join(repoRoot, '.git')))) {
+          throw new Error(`Not in a git folder`)
+        }
+      }
+
+      await ensureDir(tamaguiDir)
       cd(tamaguiDir)
 
-      const branch = `master`
+      const branch =
+        process.env.NODE_ENV === 'test'
+          ? // use current branch
+            (await $`git rev-parse --abbrev-ref HEAD`).stdout.trim()
+          : `master`
+
       if (!(await pathExists(targetGitDir))) {
         console.log(`Cloning tamagui base directory`)
 
         const sourceGitRepo =
           process.env.NODE_ENV === 'test'
-            ? join(__dirname, '..', '..', '..')
+            ? `file://${repoRoot}`
             : `https://github.com/tamagui/tamagui.git`
 
         await $`git clone --branch ${branch} --depth 1 --filter=blob:none --sparse ${sourceGitRepo} ${targetGitDir}`
