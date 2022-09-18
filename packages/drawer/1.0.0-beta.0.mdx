@@ -63,7 +63,7 @@ export function App() {
 
 function MyPage() {
   return (
-    <Drawer open={show} onChangeOpen={setShow}>
+    <Drawer open={show} onOpenChange={setShow}>
       <Drawer.Handle />
       <Drawer.Backdrop />
       <Drawer.Frame>
@@ -79,7 +79,7 @@ If you want scrolling that plays well with gestures (see [BottomSheetScrollView]
 ```tsx
 function MyPage() {
   return (
-    <Drawer open={show} onChangeOpen={setShow}>
+    <Drawer open={show} onOpenChange={setShow}>
       <Drawer.Frame>
         <Drawer.ScrollView></Drawer.ScrollView>
       </Drawer.Frame>
@@ -100,7 +100,7 @@ function MyPage() {
     []
   )
   return (
-    <Drawer open={show} onChangeOpen={setShow}>
+    <Drawer open={show} onOpenChange={setShow}>
       <Drawer.Frame>
         <Drawer.FlatList
           data={data}
@@ -133,7 +133,7 @@ All the props from [react-native-bottom-sheet](https://gorhom.github.io/react-na
       description: `Show drawer.`,
     },
     {
-      name: 'onChangeOpen',
+      name: 'onOpenChange',
       required: false,
       type: '(showing: boolean) => void',
       description: `Called on change show (if dismissed).`,
