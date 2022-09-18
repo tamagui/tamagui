@@ -106,7 +106,7 @@ export declare const DrawerFrame: import("@tamagui/core").TamaguiComponent<(Omit
 export declare type DrawerProps = ScopedProps<Omit<Partial<BottomSheetModalProps>, 'onChange' | 'backgroundStyle' | 'style'>, 'Drawer'> & {
     open?: boolean;
     defaultOpen?: boolean;
-    onChangeOpen?: OpenChangeHandler;
+    onOpenChange?: OpenChangeHandler;
     children?: ReactNode;
 };
 export declare const Drawer: ((props: Omit<Omit<Partial<BottomSheetModalProps>, "style" | "onChange" | "backgroundStyle"> & {
@@ -114,7 +114,7 @@ export declare const Drawer: ((props: Omit<Omit<Partial<BottomSheetModalProps>, 
 } & {
     open?: boolean | undefined;
     defaultOpen?: boolean | undefined;
-    onChangeOpen?: OpenChangeHandler | undefined;
+    onOpenChange?: OpenChangeHandler | undefined;
     children?: ReactNode;
 } & React.RefAttributes<import("@gorhom/bottom-sheet/lib/typescript/types").BottomSheetModalMethods>, "theme" | "themeInverse"> & {
     theme?: import("@tamagui/core").ThemeName | null | undefined;

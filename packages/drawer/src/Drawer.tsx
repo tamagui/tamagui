@@ -49,7 +49,7 @@ export const DrawerHandle = styled(XStack, {
 
 type DrawerContextValue = {
   open?: boolean
-  onChangeOpen?: OpenChangeHandler
+  onOpenChange?: OpenChangeHandler
   backgroundComponent?: any
   handleComponent?: any
 }
@@ -82,7 +82,7 @@ export type DrawerProps = ScopedProps<
 > & {
   open?: boolean
   defaultOpen?: boolean
-  onChangeOpen?: OpenChangeHandler
+  onOpenChange?: OpenChangeHandler
   children?: ReactNode
 }
 
@@ -94,14 +94,14 @@ export const Drawer = withStaticProperties(
         children: childrenProp,
         open: openProp,
         defaultOpen,
-        onChangeOpen,
+        onOpenChange,
         ...rest
       } = props
       const isServerSide = useIsSSR()
       const [open, setOpen] = useControllableState({
         prop: openProp,
         defaultProp: defaultOpen || false,
-        onChange: onChangeOpen,
+        onChange: onOpenChange,
         strategy: 'most-recent-wins',
       })
       const sheetRef = useRef<BottomSheetModal>(null)
@@ -148,7 +148,7 @@ export const Drawer = withStaticProperties(
       })
 
       return (
-        <DrawerRootProvider scope={__scopeDrawer} open={open} onChangeOpen={setOpen}>
+        <DrawerRootProvider scope={__scopeDrawer} open={open} onOpenChange={setOpen}>
           <BottomSheetModal
             handleComponent={() => handleComponent}
             backdropComponent={() => backdropComponent}
