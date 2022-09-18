@@ -190,6 +190,11 @@ async function run() {
       await spawnify(`git push origin head`)
       await spawnify(`git push origin v${version}`)
       console.log(`✅ Pushed and versioned\n`)
+
+      console.log(`Update starters to v${version}...`)
+      await spawnify(`yarn upgrade starters`)
+      await spawnify(`git commit -am "Update starters to v${version}"`)
+      await spawnify(`git push origin head`)
     }
   } catch (err) {
     console.log('\nError:\n', err)
