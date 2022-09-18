@@ -101,12 +101,6 @@ export const config = {
   themeClassNameOnRoot: true,
   animations,
   media,
-  // start as mobile
-  mediaQueryDefaultActive: {
-    xxs: true,
-    xs: true,
-    sm: true,
-  },
   shorthands,
   themes,
   tokens,
@@ -117,4 +111,12 @@ export const config = {
     mono: monoFont,
     silkscreen: silkscreenFont,
   },
+}
+
+// messing up types...
+// @ts-ignore
+config.mediaQueryDefaultActive = {
+  xxs: true,
+  xs: true,
+  sm: true,
 }

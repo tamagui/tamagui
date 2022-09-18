@@ -215,10 +215,6 @@ export function createComponent<
       }
     }
 
-    useIsomorphicLayoutEffect(() => {
-      console.log('MOUNTED')
-    }, [])
-
     const { viewProps: viewPropsIn, pseudos, medias, style, classNames, mediaKeys } = splitStyles
 
     // media queries

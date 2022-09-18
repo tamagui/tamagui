@@ -334,9 +334,6 @@ export type TamaguiInternalConfig<
     getCSS: () => string
     parsed: boolean
     inverseShorthands: Record<string, string>
-
-    // just passed in from CreateTamaguiProps
-    themeClassNameOnRoot?: boolean
   }
 
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']['animations']

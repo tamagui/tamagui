@@ -14,7 +14,6 @@ export function AvatarDemo() {
 
       <Avatar circular size="$8">
         <Avatar.Image
-          debug="verbose"
           accessibilityLabel="Nate Wienert"
           src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?&w=100&h=100&dpr=2&q=80"
         />
