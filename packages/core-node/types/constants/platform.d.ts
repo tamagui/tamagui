@@ -3,7 +3,7 @@ export declare const isAndroid: boolean;
 export declare const isIOS: boolean;
 export declare const isWeb: boolean;
 export declare const isWindowDefined: boolean;
-export declare const isSSR: boolean;
+export declare const isServer: boolean;
 export declare const isClient: boolean;
 export declare const isRSC: any;
 export declare const useIsomorphicLayoutEffect: typeof useEffect;

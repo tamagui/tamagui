@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { matchMedia } from '../helpers/matchMedia'
@@ -101,7 +101,7 @@ export function useMediaQueryListeners(config: TamaguiInternalConfig) {
     return
   }
 
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     setupMediaListeners()
     return unlisten
   }, [])

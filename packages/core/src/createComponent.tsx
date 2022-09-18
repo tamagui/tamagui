@@ -21,6 +21,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
 } from 'react'
 import { Text, View, ViewStyle } from 'react-native'
 
@@ -149,7 +150,7 @@ export function createComponent<
     const states = useServerState<TamaguiComponentState>(defaultComponentState)
     const state = propsIn.forceStyle ? { ...states[0], [propsIn.forceStyle]: true } : states[0]
 
-    const shouldAvoidClasses = !!(props.animation && avoidClasses) || !staticConfig.acceptsClassName
+    const shouldAvoidClasses = !!(props.animation && avoidClasses) // || !staticConfig.acceptsClassName
     const shouldForcePseudo = !!propsIn.forceStyle
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
     const splitStyleState =
@@ -211,15 +212,19 @@ export function createComponent<
       }
     }
 
+    useIsomorphicLayoutEffect(() => {
+      console.log('MOUNTED')
+    }, [])
+
     const { viewProps: viewPropsIn, pseudos, medias, style, classNames, mediaKeys } = splitStyles
 
     if (debugProp) console.log('mediaKeys', mediaKeys, splitStyles, mediaState)
 
     // media queries
     useIsomorphicLayoutEffect(() => {
-      if (!mediaKeys.length) {
-        return
-      }
+      // if (!mediaKeys.length) {
+      //   return
+      // }
       for (const key of mediaKeys) {
         addMediaQueryListener(key, forceUpdate)
       }
@@ -1110,7 +1115,7 @@ export function createComponent<
         pressIn: false,
         focus: false,
         resolveVariablesAs: 'both',
-        noClassNames: !staticConfig.acceptsClassName,
+        // noClassNames: !staticConfig.acceptsClassName,
         keepVariantsAsProps: true,
       },
       undefined,
