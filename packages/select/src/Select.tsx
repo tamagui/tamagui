@@ -5,7 +5,7 @@ import { useId } from '@tamagui/core'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
-import { Sheet, SheetController } from '@tamagui/sheet'
+import { ControlledSheet, SheetController } from '@tamagui/sheet'
 import { XStack, YStack, YStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -602,7 +602,7 @@ export const Select = withStaticProperties(
     Value: SelectValue,
     Viewport: SelectViewport,
     SheetContents: SelectSheetContents,
-    Sheet,
+    Sheet: ControlledSheet,
   }
 )
 
