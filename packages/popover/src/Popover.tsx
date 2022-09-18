@@ -40,7 +40,7 @@ import { Sheet, SheetController } from '@tamagui/sheet'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import { View } from 'react-native'
+import { ScrollView, ScrollViewProps, View } from 'react-native'
 
 import type { UseFloatingProps } from './floating'
 import { useDismiss, useFloating, useFocus, useInteractions, useRole } from './floating'
@@ -273,8 +273,22 @@ const PopoverContentImpl = React.forwardRef<PopoverContentImplElement, PopoverCo
     // const popperContext = usePopperContext(CONTENT_NAME, popperScope.__scopePopper)
 
     if (showSheet) {
+      // unwrap the PopoverScrollView if used, as it will use the SheetScrollView if that exists
+      const childrenWithoutScrollView = React.Children.toArray(children).map((child) => {
+        if (React.isValidElement(child)) {
+          if (child.type === PopoverScrollView) {
+            return child.props.children
+          }
+        }
+        return child
+      })
+
       // doesn't show as popover yet on native, must use as sheet
-      return <PortalItem hostName={`${context.scopeKey}SheetContents`}>{children}</PortalItem>
+      return (
+        <PortalItem hostName={`${context.scopeKey}SheetContents`}>
+          {childrenWithoutScrollView}
+        </PortalItem>
+      )
     }
 
     // const handleDismiss = React.useCallback(() => context.onOpenChange(false), [])
@@ -304,6 +318,9 @@ const PopoverContentImpl = React.forwardRef<PopoverContentImplElement, PopoverCo
               allowPinchZoom
               // causes lots of bugs on touch web on site
               removeScrollBar={false}
+              style={{
+                display: 'contents',
+              }}
             >
               {trapFocus === false ? (
                 children
@@ -383,6 +400,14 @@ export const PopoverSheetContents = ({ __scopePopover }: ScopedProps<{}>) => {
 PopoverSheetContents.displayName = SHEET_CONTENTS_NAME
 
 /* -------------------------------------------------------------------------------------------------
+ * PopoverScrollView
+ * -----------------------------------------------------------------------------------------------*/
+
+const PopoverScrollView = React.forwardRef<ScrollView, ScrollViewProps>((props, ref) => {
+  return <ScrollView ref={ref} {...props} />
+})
+
+/* -------------------------------------------------------------------------------------------------
  * Popover
  * -----------------------------------------------------------------------------------------------*/
 
@@ -435,7 +460,7 @@ export const Popover = withStaticProperties(
 
     return (
       <FloatingOverrideContext.Provider value={useFloatingContext as any}>
-        <Popper {...popperScope} {...restProps}>
+        <Popper {...popperScope} stayInFrame {...restProps}>
           <PopoverProviderInternal
             scope={__scopePopover}
             scopeKey={__scopePopover ? Object.keys(__scopePopover)[0] : ''}
@@ -469,6 +494,7 @@ export const Popover = withStaticProperties(
     Content: PopoverContent,
     Close: PopoverClose,
     SheetContents: PopoverSheetContents,
+    ScrollView: PopoverScrollView,
     Sheet,
   }
 )

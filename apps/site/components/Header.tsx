@@ -9,6 +9,7 @@ import {
   Paragraph,
   ParagraphProps,
   Popover,
+  Separator,
   Text,
   VisuallyHidden,
   XStack,
@@ -150,13 +151,13 @@ export function Header(props: HeaderProps) {
   )
 }
 
-const HeaderLinks = ({ showExtra }: HeaderProps) => {
+const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
   return (
     <>
       <NextLink prefetch={false} href="/docs/intro/installation" passHref>
         <HeadAnchor
           $sm={{
-            display: 'none',
+            display: forceShowAllLinks ? 'flex' : 'none',
           }}
         >
           Docs
@@ -166,7 +167,7 @@ const HeaderLinks = ({ showExtra }: HeaderProps) => {
       <NextLink prefetch={false} href="/community" passHref>
         <HeadAnchor
           $md={{
-            display: 'none',
+            display: forceShowAllLinks ? 'flex' : 'none',
           }}
         >
           Community
@@ -193,7 +194,7 @@ const SmallMenu = React.memo(() => {
   const isDocs = router.pathname.startsWith('/docs')
 
   return (
-    <Popover sheetBreakpoint="sm" size="$5">
+    <Popover sheetBreakpoint="sm" size="$5" stayInFrame={{ padding: 20 }}>
       <Popover.Trigger asChild>
         <YStack
           $gtMd={{
@@ -212,13 +213,13 @@ const SmallMenu = React.memo(() => {
         </YStack>
       </Popover.Trigger>
 
-      <Popover.Sheet modal dismissOnSnapToBottom>
+      <Popover.Sheet zIndex={100000000} modal dismissOnSnapToBottom>
         <Popover.Sheet.Frame padding="$4">
           <Popover.Sheet.ScrollView>
             <Popover.SheetContents />
           </Popover.Sheet.ScrollView>
         </Popover.Sheet.Frame>
-        <Popover.Sheet.Overlay />
+        <Popover.Sheet.Overlay zIndex={100} />
       </Popover.Sheet>
 
       <Popover.Content
@@ -230,19 +231,30 @@ const SmallMenu = React.memo(() => {
         y={0}
         o={1}
         animation="bouncy"
+        bc="green"
+        p={0}
+        maxHeight="80vh"
         elevate
       >
         <Popover.Arrow bw={1} boc="$borderColor" />
 
-        {isDocs && (
+        <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
           <YStack
-            miw={280}
+            miw={230}
+            p="$3"
+            ai="flex-end"
             // display={open ? 'flex' : 'none'}
           >
-            <HeaderLinks />
-            <DocsMenuContents />
+            <HeaderLinks forceShowAllLinks />
+
+            {isDocs && (
+              <>
+                <Separator my="$4" w="100%" />
+                <DocsMenuContents />
+              </>
+            )}
           </YStack>
-        )}
+        </Popover.ScrollView>
       </Popover.Content>
     </Popover>
   )
@@ -260,6 +272,8 @@ const HeadAnchor = React.forwardRef((props: ParagraphProps, ref) => (
     hoverStyle={{ opacity: 1 }}
     pressStyle={{ opacity: 0.5 }}
     tag="a"
+    // @ts-ignore
+    tabIndex={-1}
     {...props}
   />
 ))
