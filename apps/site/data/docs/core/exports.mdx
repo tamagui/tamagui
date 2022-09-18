@@ -112,6 +112,8 @@ SSR-friendly, only true on client side touch device.
 
 SSR-friendly, returns true if SSR, false once hydrated on client.
 
+Wraps the update in `React.startTransition` unless `useIsSSR({ immediate: true })` is set.
+
 ### useThemeName
 
 Returns the string name of the current theme.

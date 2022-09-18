@@ -45,7 +45,7 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   Object.assign(mediaQueryConfig, media)
   initialMediaState = { ...mediaState }
   if (config.disableSSR) {
-    setupMediaListeners(config)
+    setupMediaListeners()
   }
 }
 
@@ -60,7 +60,7 @@ function unlisten() {
  * *and then* re-render with the actual media query state.
  */
 let configuredKey = ''
-function setupMediaListeners({ disableSSR }: TamaguiInternalConfig) {
+function setupMediaListeners() {
   // avoid setting up more than once per config
   const nextKey = JSON.stringify(mediaQueryConfig)
   if (nextKey === configuredKey) {
@@ -79,10 +79,10 @@ function setupMediaListeners({ disableSSR }: TamaguiInternalConfig) {
       throw new Error('⚠️ No match')
     }
     // react native needs these deprecated apis for now
-    match.addListener(update)
-    dispose.add(() => match.removeListener(update))
+    // match.addListener(update)
+    // dispose.add(() => match.removeListener(update))
 
-    update()
+    // update()
 
     function update() {
       const next = !!getMatch().matches
@@ -97,8 +97,12 @@ function setupMediaListeners({ disableSSR }: TamaguiInternalConfig) {
 }
 
 export function useMediaQueryListeners(config: TamaguiInternalConfig) {
+  if (config.disableSSR) {
+    return
+  }
+
   useIsomorphicLayoutEffect(() => {
-    setupMediaListeners(config)
+    setupMediaListeners()
     return unlisten
   }, [])
 }
@@ -121,13 +125,12 @@ export function useMedia(): {
   }
 
   useIsomorphicLayoutEffect(() => {
-    const listeners: Function[] = []
-    for (const key in keys.current) {
-      listeners.push(addMediaQueryListener(key, updateState))
-    }
+    const disposes: Function[] = Object.keys(keys.current).map((key) =>
+      addMediaQueryListener(key, updateState)
+    )
     updateState()
     return () => {
-      listeners.forEach((cb) => cb())
+      disposes.forEach((cb) => cb())
     }
   })
 
