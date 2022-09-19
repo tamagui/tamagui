@@ -1,6 +1,6 @@
 import { tints } from '@tamagui/logo'
-import { useEffect, useState } from 'react'
-import { ThemeName } from 'tamagui'
+import { useCallback, useEffect, useState } from 'react'
+import { ThemeName, useEvent } from 'tamagui'
 
 // no localstorage because its not important to remember and causes a flicker
 // const tintVal = typeof localStorage !== 'undefined' ? localStorage.getItem('tint') : 0
@@ -36,12 +36,12 @@ export const useTint = () => {
 
   const nextIndex = (tints.indexOf(color) + 1) % tints.length
   const next = tints[nextIndex]
-  const setTint = (next: ThemeName) => {
+  const setTint = useEvent((next: ThemeName) => {
     const i = tints.indexOf(next as any)
     // localStorage.setItem('tint', `${i}`)
     setColorI(i)
     listeners.forEach((x) => x(i))
-  }
+  })
 
   return {
     tint: color,

@@ -526,7 +526,7 @@ input, textarea {
   content-visibility: auto;
 }
 
-.tag, .tag.active {
+.hero-tag, .hero-tag.active {
   text-decoration: underline;
   text-decoration-style: dotted;
   text-decoration-thickness: 0.5px;

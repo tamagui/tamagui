@@ -1,5 +1,8 @@
-import { useEffect } from 'react'
+import { tints } from '@tamagui/logo'
+import { useCallback, useEffect } from 'react'
 import { useForceUpdate } from 'tamagui'
+
+import { useTint } from './useTint'
 
 const heroState = {
   index: 0,
@@ -13,6 +16,7 @@ export const updateHeroHovered = (index: number) => {
 }
 
 export const useHeroHovered = () => {
+  const { setTint } = useTint()
   const update = useForceUpdate()
 
   useEffect(() => {
@@ -22,5 +26,14 @@ export const useHeroHovered = () => {
     }
   }, [update])
 
-  return [heroState.index, updateHeroHovered] as const
+  return [
+    heroState.index,
+    useCallback(
+      (next: number) => {
+        setTint(tints[next + 2])
+        updateHeroHovered(next)
+      },
+      [setTint]
+    ),
+  ] as const
 }

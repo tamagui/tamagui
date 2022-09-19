@@ -202,7 +202,7 @@ const HeroTop = memo(() => {
 })
 
 const Tag = styled(Text, {
-  className: 'tag',
+  className: 'hero-tag',
   fontFamily: 'inherit',
   fontSize: 'inherit',
   cursor: 'default',

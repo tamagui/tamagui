@@ -55,7 +55,7 @@ export const HeroBelowContent = memo(() => {
         $sm={{ flexDirection: 'column' }}
       >
         <Section onHoverIn={() => setHovered(0)}>
-          <IconStack o={hovered === 0 ? 1 : 0.5} theme="pink_alt2">
+          <IconStack o={hovered === 0 ? 1 : 0.5} theme="green_alt2">
             <Code size={20} color="var(--colorHover)" />
           </IconStack>
           <TitleLink href="/docs/core/configuration">Core</TitleLink>
@@ -67,7 +67,7 @@ export const HeroBelowContent = memo(() => {
         </Section>
 
         <Section onHoverIn={() => setHovered(1)}>
-          <IconStack o={hovered === 1 ? 1 : 0.5} theme="purple_alt2">
+          <IconStack o={hovered === 1 ? 1 : 0.5} theme="blue_alt2">
             <Layers size={20} color="var(--colorHover)" />
           </IconStack>
           <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
@@ -78,7 +78,7 @@ export const HeroBelowContent = memo(() => {
         </Section>
 
         <Section onHoverIn={() => setHovered(2)}>
-          <IconStack o={hovered === 2 ? 1 : 0.5} theme="green_alt2">
+          <IconStack o={hovered === 2 ? 1 : 0.5} theme="purple_alt2">
             <Cpu size={20} color="var(--colorHover)" />
           </IconStack>
           <TitleLink href="/docs/intro/benchmarks">Static</TitleLink>
