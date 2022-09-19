@@ -235,8 +235,8 @@ export type GenericTamaguiConfig = CreateTamaguiConfig<
 >
 
 // since TamaguiConfig will be re-declared, these will all be typed globally
-export type ThemeKeys = keyof TamaguiConfig['themes']
-export type ThemeDefinition = TamaguiConfig['themes'][ThemeKeys]
+export type ThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']]
+export type ThemeKeys = keyof ThemeDefinition
 export type ThemeParsed = {
   [key in ThemeKeys]: Variable
 }

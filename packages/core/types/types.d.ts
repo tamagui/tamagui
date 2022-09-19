@@ -133,8 +133,8 @@ declare type ConfProps<A extends GenericTokens, B extends GenericThemes, C exten
 };
 export declare type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F> ? TamaguiInternalConfig<A, B, C, D, E, F> : unknown;
 export declare type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
-export declare type ThemeKeys = keyof TamaguiConfig['themes'];
-export declare type ThemeDefinition = TamaguiConfig['themes'][ThemeKeys];
+export declare type ThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']];
+export declare type ThemeKeys = keyof ThemeDefinition;
 export declare type ThemeParsed = {
     [key in ThemeKeys]: Variable;
 };
