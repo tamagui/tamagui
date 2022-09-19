@@ -72,8 +72,8 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
           <Paragraph o={hovered === 1 ? 1 : 0.75} size="$4" theme="alt1">
-            A large universal UI kit built on top of Core with a complete set of composable
-            components, size scaling, themes, and more.
+            UI kit that adapts to native and web, built using Core. Composable component APIs,
+            consistent size props, nested themes, and more.
           </Paragraph>
         </Section>
 

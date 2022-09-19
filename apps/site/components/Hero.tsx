@@ -3,6 +3,7 @@ import NextLink from 'next/link'
 import { memo, useCallback } from 'react'
 import {
   Button,
+  ButtonText,
   H1,
   Paragraph,
   Spacer,
@@ -38,6 +39,8 @@ export function Hero() {
 
 const HeroTop = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
+
+  const spaceEl = <> + </>
 
   return (
     <ContainerLarge pos="relative">
@@ -114,7 +117,7 @@ const HeroTop = memo(() => {
             // prevent layout shift
             h={84}
             $gtMd={{
-              h: 66,
+              h: 86,
               px: 90,
               maw: 1000,
             }}
@@ -124,32 +127,27 @@ const HeroTop = memo(() => {
               size="$6"
               fontFamily="$silkscreen"
               ta="left"
-              letterSpacing={-1.3}
               $gtSm={{
                 ta: 'center',
                 size: '$8',
-                fontWeight: '400',
               }}
               $gtMd={{
                 size: '$9',
-                fontWeight: '400',
               }}
             >
-              faster UI on <span className="rainbow clip-text">Native</span> and{' '}
-              <span className="rainbow clip-text">Web</span>.
+              UI faster on React Native + Web
               <br />
-              <Tag onHoverIn={() => setHovered(0)} active={hovered === 0}>
+              <Tag color="$green10" onHoverIn={() => setHovered(0)} active={hovered === 0}>
                 styles
               </Tag>
-              ,{' '}
-              <Tag onHoverIn={() => setHovered(1)} active={hovered === 1}>
+              {spaceEl}
+              <Tag color="$blue10" onHoverIn={() => setHovered(1)} active={hovered === 1}>
                 Components
               </Tag>
-              ,{' '}
-              <Tag onHoverIn={() => setHovered(2)} active={hovered === 2}>
+              {spaceEl}
+              <Tag color="$purple10" onHoverIn={() => setHovered(2)} active={hovered === 2}>
                 compiler
               </Tag>
-              .
             </Paragraph>
           </YStack>
         </YStack>
@@ -161,7 +159,7 @@ const HeroTop = memo(() => {
               fontFamily="$silkscreen"
               iconAfter={ArrowRight}
               tag="a"
-              size="$5"
+              size="$6"
               borderRadius={1000}
               fontWeight="800"
               bordered
@@ -169,7 +167,9 @@ const HeroTop = memo(() => {
               // @ts-ignore
               tabIndex={0}
             >
-              Docs
+              <ButtonText fontFamily="$silkscreen" size="$7">
+                Start
+              </ButtonText>
             </Button>
           </NextLink>
 

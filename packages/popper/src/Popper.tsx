@@ -104,6 +104,7 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
 
   const arrowStyle = React.useMemo(() => {
     return middlewareData.arrow
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(middlewareData.arrow || {})])
 
   return (

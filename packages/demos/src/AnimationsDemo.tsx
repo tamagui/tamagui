@@ -22,10 +22,11 @@ export function AnimationsDemo(props) {
         focusable={false}
         animation={props.animation || 'bouncy'}
         onPress={() => next()}
-        size={110}
-        boc="$borderColor"
+        size={104}
+        boc="$backgroundHover"
         bw={1}
         br="$9"
+        bc="$backgroundStrong"
         hoverStyle={{
           scale: 1.1,
         }}
