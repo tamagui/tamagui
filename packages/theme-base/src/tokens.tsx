@@ -30,7 +30,7 @@ import { Variable, createTokens } from '@tamagui/core'
 //  but also one more wrinkle...
 //  space is used in conjunction with size
 //  i'm setting space to generally just a fixed fraction of size (~1/3-2/3 still fine tuning)
-const size = {
+export const size = {
   0: 0,
   0.25: 2,
   0.5: 4,
@@ -77,14 +77,14 @@ const spaces = Object.entries(size).map(([k, v]) => [
 
 const spacesNegative = spaces.map(([k, v]) => [`-${k}`, -v])
 
-const space: {
+export const space: {
   [Key in `-${SizeKeys}` | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number
 } = {
   ...Object.fromEntries(spaces),
   ...Object.fromEntries(spacesNegative),
 } as any
 
-const zIndex = {
+export const zIndex = {
   0: 0,
   1: 100,
   2: 200,
@@ -138,7 +138,7 @@ export const lightColors = {
   ...colorTokens.light.yellow,
 }
 
-const allColors = {
+export const color = {
   ...postfixObjKeys(lightColors, 'Light'),
   ...postfixObjKeys(darkColors, 'Dark'),
 }
@@ -152,7 +152,7 @@ function postfixObjKeys<A extends { [key: string]: Variable<string> | string }, 
   return Object.fromEntries(Object.entries(obj).map(([k, v]) => [`${k}${postfix}`, v])) as any
 }
 
-const radius = {
+export const radius = {
   0: 0,
   1: 3,
   2: 5,
@@ -169,7 +169,7 @@ const radius = {
 }
 
 export const tokens = createTokens({
-  color: allColors,
+  color,
   radius,
   zIndex,
   space,
