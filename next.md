@@ -1,5 +1,10 @@
 - 1.0
 
+  - kitchen sink
+    - native toggle one-behind issue came back
+    - select inside dialog breaking context
+    - card no bg
+    - placeholder input color dark
   - animation="" types
   - input like button
   - <Button size="$2" $sm={{ size: '$8' }} /> size not overriding
