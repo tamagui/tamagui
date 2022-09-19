@@ -34,7 +34,7 @@ describe('flatten-tests', () => {
     const code = output?.code ?? ''
     expect(
       code.includes(
-        `[_sheet["0"], media.sm ? _sheet["1"] : _sheet["2"], media.sm && isLoading ? _sheet["3"] : _sheet["4"], media.sm && !isLoading ? _sheet["5"] : _sheet["6"]]`
+        `_stylev7m7fq={_sheet["0"]} _style1i9cxmd={media.sm ? _sheet["1"] : _sheet["2"]} _style1x8g24d={media.sm && isLoading ? _sheet["3"] : _sheet["4"]} _style17pi2jm={media.sm && !isLoading ? _sheet["5"] : _sheet["6"]}`
       )
     ).toBeTruthy()
 
@@ -56,9 +56,6 @@ describe('flatten-tests', () => {
           rotate: '10deg',
         },
       ],
-      flexDirection: 'column',
-      flexShrink: 0,
-      alignItems: 'stretch',
     })
 
     expect(sheetStyles['1']).toEqual({
