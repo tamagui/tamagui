@@ -12,6 +12,10 @@ interface CollapsibleTriggerProps extends StackProps {
 }
 declare const CollapsibleTrigger: React.ForwardRefExoticComponent<CollapsibleTriggerProps & React.RefAttributes<TamaguiElement>>;
 interface CollapsibleContentProps extends Omit<CollapsibleContentImplProps, 'present'> {
+    /**
+     * Used to force mounting when more control is needed. Useful when
+     * controlling animation with React animation libraries.
+     */
     forceMount?: true;
 }
 declare const CollapsibleContent: React.ForwardRefExoticComponent<CollapsibleContentProps & React.RefAttributes<TamaguiElement>>;

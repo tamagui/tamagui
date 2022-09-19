@@ -1,5 +1,16 @@
+/**
+ * Copyright (c) Nicolas Gallagher.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow
+ */
 import { ColorValue, DimensionValue } from './types.js';
 declare type NumberOrString = number | string;
+/**
+ * Animations and transitions
+ */
 declare type AnimationDirection = 'alternate' | 'alternate-reverse' | 'normal' | 'reverse';
 declare type AnimationFillMode = 'none' | 'forwards' | 'backwards' | 'both';
 declare type AnimationIterationCount = number | 'infinite';
@@ -19,6 +30,9 @@ export declare type AnimationStyles = {
     transitionProperty?: string | Array<string> | null;
     transitionTimingFunction?: string | Array<string> | null;
 };
+/**
+ * Border
+ */
 declare type BorderRadiusValue = number | string;
 declare type BorderStyleValue = 'solid' | 'dotted' | 'dashed';
 export declare type BorderStyles = {
@@ -46,6 +60,9 @@ export declare type BorderStyles = {
     borderStartStyle?: BorderStyleValue | null;
     borderTopStyle?: BorderStyleValue | null;
 };
+/**
+ * Interactions
+ */
 declare type CursorValue = 'alias' | 'all-scroll' | 'auto' | 'cell' | 'context-menu' | 'copy' | 'crosshair' | 'default' | 'grab' | 'grabbing' | 'help' | 'pointer' | 'progress' | 'wait' | 'text' | 'vertical-text' | 'move' | 'none' | 'no-drop' | 'not-allowed' | 'zoom-in' | 'zoom-out' | 'col-resize' | 'e-resize' | 'ew-resize' | 'n-resize' | 'ne-resize' | 'ns-resize' | 'nw-resize' | 'row-resize' | 's-resize' | 'se-resize' | 'sw-resize' | 'w-resize' | 'nesw-resize' | 'nwse-resize';
 declare type TouchActionValue = 'auto' | 'inherit' | 'manipulation' | 'none' | 'pan-down' | 'pan-left' | 'pan-right' | 'pan-up' | 'pan-x' | 'pan-y' | 'pinch-zoom';
 declare type UserSelect = 'all' | 'auto' | 'contain' | 'none' | 'text';
@@ -55,6 +72,9 @@ export declare type InteractionStyles = {
     userSelect?: UserSelect | null;
     willChange?: string | null;
 };
+/**
+ * Layout
+ */
 declare type OverflowValue = 'auto' | 'hidden' | 'scroll' | 'visible';
 declare type VisiblilityValue = 'hidden' | 'visible';
 export declare type LayoutStyles = {
@@ -117,6 +137,9 @@ export declare type LayoutStyles = {
     visibility?: VisiblilityValue | null;
     width?: DimensionValue | null;
     zIndex?: number | null;
+    /**
+     * @platform web
+     */
     gridAutoColumns?: string | null;
     gridAutoFlow?: string | null;
     gridAutoRows?: string | null;
@@ -130,6 +153,9 @@ export declare type LayoutStyles = {
     gridTemplateRows?: string | null;
     gridTemplateAreas?: string | null;
 };
+/**
+ * Shadows
+ */
 export declare type ShadowStyles = {
     shadowColor?: ColorValue | null;
     shadowOffset?: {
@@ -139,6 +165,9 @@ export declare type ShadowStyles = {
     shadowOpacity?: number | null;
     shadowRadius?: DimensionValue | null;
 };
+/**
+ * Transforms
+ */
 export declare type TransformStyles = {
     perspective?: NumberOrString | null;
     perspectiveOrigin?: string | null;

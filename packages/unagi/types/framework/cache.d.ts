@@ -1,3 +1,9 @@
+/**
+ * This is a limited implementation of an in-memory cache.
+ * It only supports the `cache-control` header.
+ * It does NOT support `age` or `expires` headers.
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Cache
+ */
 export declare class InMemoryCache implements Cache {
     #private;
     constructor();

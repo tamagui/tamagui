@@ -36,21 +36,70 @@ export declare const usePortal: (hostName?: string) => {
     removePortal: (name: string) => void;
 };
 export interface PortalProviderProps {
+    /**
+     * Defines whether to add a default root host or not.
+     *
+     * @default true
+     * @type boolean
+     */
     shouldAddRootHost?: boolean;
+    /**
+     * Defines the root portal host name.
+     *
+     * @default "root"
+     * @type string
+     */
     rootHostName?: string;
     children: ReactNode | ReactNode[];
 }
 export declare const PortalProvider: React.MemoExoticComponent<({ rootHostName, shouldAddRootHost, children, }: PortalProviderProps) => JSX.Element>;
 export interface PortalHostProps {
+    /**
+     * Host's key or name to be used as an identifier.
+     * @type string
+     */
     name: string;
 }
 export declare const PortalHost: React.MemoExoticComponent<({ name }: PortalHostProps) => JSX.Element>;
 export interface PortalItemProps {
+    /**
+     * Portal's key or name to be used as an identifier.
+     * @type string
+     * @default nanoid generated unique key.
+     */
     name?: string;
+    /**
+     * Host's name to teleport the portal content to.
+     * @type string
+     * @default 'root'
+     */
     hostName?: string;
+    /**
+     * Override internal mounting functionality, this is useful
+     * if you want to trigger any action before mounting the portal content.
+     * @type (mount?: () => void) => void
+     * @default undefined
+     */
     handleOnMount?: (mount: () => void) => void;
+    /**
+     * Override internal un-mounting functionality, this is useful
+     * if you want to trigger any action before un-mounting the portal content.
+     * @type (unmount?: () => void) => void
+     * @default undefined
+     */
     handleOnUnmount?: (unmount: () => void) => void;
+    /**
+     * Override internal updating functionality, this is useful
+     * if you want to trigger any action before updating the portal content.
+     * @type (update?: () => void) => void
+     * @default undefined
+     */
     handleOnUpdate?: (update: () => void) => void;
+    /**
+     * Portal's content.
+     * @type ReactNode
+     * @default undefined
+     */
     children?: ReactNode | ReactNode[];
 }
 export declare const PortalItem: React.MemoExoticComponent<({ name, hostName, handleOnMount, handleOnUnmount, handleOnUpdate, children, }: PortalItemProps) => null>;

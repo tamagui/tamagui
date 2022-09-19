@@ -5,6 +5,9 @@ export declare class ResponseSync extends Response {
     constructor(init: ResponseSyncInit);
     text(): string;
     json(): any;
+    /**
+     * @deprecated Access response properties at the top level instead.
+     */
     get response(): this;
     static toSerializable(response: Response): Promise<ResponseSyncInit>;
 }

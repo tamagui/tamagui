@@ -1,12 +1,35 @@
+/**
+ * Copyright (c) Nicolas Gallagher.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow
+ */
+/**
+ * create
+ */
 declare function create(styles: any): any;
+/**
+ * compose
+ */
 declare function compose(style1: any, style2: any): any;
+/**
+ * flatten
+ */
 declare function flatten(...styles: any): {
     [key: string]: any;
 };
+/**
+ * getSheet
+ */
 declare function getSheet(): {
     id: string;
     textContent: string;
 };
+/**
+ * resolve
+ */
 declare type StyleProps = [string, {
     [key: string]: any;
 } | null];

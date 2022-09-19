@@ -1,3 +1,6 @@
+/**
+ * See ssrInterop for context!
+ */
 import type { UnagiRequest } from './UnagiRequest/UnagiRequest.server.js';
 declare type ServerGetter<T> = (request: UnagiRequest) => T;
 export declare const META_ENV_SSR: boolean;

@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) Nicolas Gallagher
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow
+ */
 import { TouchEvent } from './ResponderEventTypes.js';
 import { ResponderTouchHistoryStore, TouchHistory } from './ResponderTouchHistoryStore.js';
 export declare type ResponderEvent = {
@@ -24,5 +32,9 @@ export declare type ResponderEvent = {
     timeStamp: number;
     touchHistory: TouchHistory;
 };
+/**
+ * Converts a native DOM event to a ResponderEvent.
+ * Mouse events are transformed into fake touch events.
+ */
 export default function createResponderEvent(domEvent: any, responderTouchHistoryStore: ResponderTouchHistoryStore): ResponderEvent;
 //# sourceMappingURL=createResponderEvent.d.ts.map

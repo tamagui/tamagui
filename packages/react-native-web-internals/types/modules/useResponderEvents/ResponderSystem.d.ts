@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) Nicolas Gallagher
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow
+ */
 import { ResponderEvent } from './createResponderEvent.js';
 declare type ResponderId = number;
 export declare type ResponderConfig = {
@@ -19,9 +27,24 @@ export declare type ResponderConfig = {
     onSelectionChangeShouldSetResponderCapture?: ((e: ResponderEvent) => boolean) | null;
 };
 export declare function attachListeners(): void;
+/**
+ * Register a node with the ResponderSystem.
+ */
 export declare function addNode(id: ResponderId, node: any, config: ResponderConfig): void;
+/**
+ * Unregister a node with the ResponderSystem.
+ */
 export declare function removeNode(id: ResponderId): void;
+/**
+ * Allow the current responder to be terminated from within components to support
+ * more complex requirements, such as use with other React libraries for working
+ * with scroll views, input views, etc.
+ */
 export declare function terminateResponder(): void;
+/**
+ * Allow unit tests to inspect the current responder in the system.
+ * FOR TESTING ONLY.
+ */
 export declare function getResponderNode(): any;
 export {};
 //# sourceMappingURL=ResponderSystem.d.ts.map

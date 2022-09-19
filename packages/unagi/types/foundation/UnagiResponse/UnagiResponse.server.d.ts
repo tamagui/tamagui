@@ -7,6 +7,10 @@ export declare class UnagiResponse extends Response {
     status: number;
     statusText: string;
     constructor(...args: ConstructorParameters<typeof Response>);
+    /**
+     * Buffer the current response until all queries have resolved,
+     * and prevent it from streaming back early.
+     */
     doNotStream(): void;
     canStream(): boolean;
     cache(options?: CachingStrategy): import("../../types.js").AllCacheOptions;

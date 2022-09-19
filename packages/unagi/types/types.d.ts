@@ -64,6 +64,7 @@ export declare type ResolvedUnagiConfig = Omit<InlineUnagiConfig, 'routes'> & {
     routes: ResolvedUnagiRoutes;
 };
 export declare type ClientConfig = {
+    /** React's StrictMode is on by default for your client side app; if you want to turn it off (not recommended), you can pass `false` */
     strictMode?: boolean;
 };
 export declare type ClientHandler = (App: React.ElementType, config: ClientConfig) => Promise<void>;

@@ -1,4 +1,8 @@
 export * from './client.js';
+/**
+ * The following are exported from this file because they are intended to be available
+ * *only* on the server.
+ */
 export { ServerPropsProvider, ServerPropsContext, type ServerProps, type ServerPropsContextValue, } from './foundation/ServerPropsProvider/index.js';
 export { useUrl } from './foundation/useUrl/index.js';
 export { useQuery, type UnagiUseQueryOptions } from './foundation/useQuery/hooks.js';
@@ -11,6 +15,9 @@ export { generateCacheControlHeader, CacheNone, CacheShort, CacheLong, CacheCust
 export { useRequestContext } from './foundation/useRequestContext/index.js';
 export { useSession } from './foundation/useSession.js';
 export { Cookie } from './foundation/Cookie/Cookie.js';
+/**
+ * Override the client version of `fetchSync` with the server version.
+ */
 export { fetchSync } from './foundation/fetchSync/server/fetchSync.js';
 export { type UnagiRequest } from './foundation/UnagiRequest/UnagiRequest.server.js';
 export { type UnagiResponse } from './foundation/UnagiResponse/UnagiResponse.server.js';

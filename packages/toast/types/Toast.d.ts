@@ -3,15 +3,41 @@ import * as React from 'react';
 declare type SwipeDirection = 'up' | 'down' | 'left' | 'right';
 interface ToastProviderProps {
     children?: React.ReactNode;
+    /**
+     * An author-localized label for each toast. Used to help screen reader users
+     * associate the interruption with a toast.
+     * @defaultValue 'Notification'
+     */
     label?: string;
+    /**
+     * Time in milliseconds that each toast should remain visible for.
+     * @defaultValue 5000
+     */
     duration?: number;
+    /**
+     * Direction of pointer swipe that should close the toast.
+     * @defaultValue 'right'
+     */
     swipeDirection?: SwipeDirection;
+    /**
+     * Distance in pixels that the swipe must pass before a close is triggered.
+     * @defaultValue 50
+     */
     swipeThreshold?: number;
 }
 declare const ToastProvider: React.FC<ToastProviderProps>;
 declare type PrimitiveOrderedListProps = any;
 interface ToastViewportProps extends PrimitiveOrderedListProps {
+    /**
+     * The keys to use as the keyboard shortcut that will move focus to the toast viewport.
+     * @defaultValue ['F8']
+     */
     hotkey?: string[];
+    /**
+     * An author-localized label for the toast viewport to provide context for screen reader users
+     * when navigating page landmarks. The available `{hotkey}` placeholder will be replaced for you.
+     * @defaultValue 'Notifications ({hotkey})'
+     */
     label?: string;
 }
 declare const ToastViewport: React.ForwardRefExoticComponent<Pick<ToastViewportProps, keyof ToastViewportProps> & React.RefAttributes<TamaguiElement>>;
@@ -20,6 +46,10 @@ interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?(open: boolean): void;
+    /**
+     * Used to force mounting when more control is needed. Useful when
+     * controlling animation with React animation libraries.
+     */
     forceMount?: true;
 }
 declare const Toast: React.ForwardRefExoticComponent<Pick<ToastProps, keyof ToastProps> & React.RefAttributes<TamaguiElement>>;
@@ -41,6 +71,10 @@ declare type ToastImplPrivateProps = {
 declare type PrimitiveListItemProps = any;
 interface ToastImplProps extends ToastImplPrivateProps, PrimitiveListItemProps {
     type?: 'foreground' | 'background';
+    /**
+     * Time in milliseconds that toast should remain visible for. Overrides value
+     * given to `ToastProvider`.
+     */
     duration?: number;
     onEscapeKeyDown?: DismissableLayerProps['onEscapeKeyDown'];
     onSwipeStart?(event: SwipeEvent): void;
@@ -56,6 +90,12 @@ interface ToastDescriptionProps extends PrimitiveDivProps {
 }
 declare const ToastDescription: React.ForwardRefExoticComponent<Pick<ToastDescriptionProps, string | number> & React.RefAttributes<TamaguiElement>>;
 interface ToastActionProps extends ToastCloseProps {
+    /**
+     * A short description for an alternate way to carry out the action. For screen reader users
+     * who will not be able to navigate to the button easily/quickly.
+     * @example <ToastAction altText="Goto account settings to updgrade">Upgrade</ToastAction>
+     * @example <ToastAction altText="Undo (Alt+U)">Undo</ToastAction>
+     */
     altText: string;
 }
 declare const ToastAction: React.ForwardRefExoticComponent<Pick<ToastActionProps, keyof ToastActionProps> & React.RefAttributes<TamaguiElement>>;

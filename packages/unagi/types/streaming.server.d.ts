@@ -1,4 +1,5 @@
-export { renderToPipeableStream as ssrRenderToPipeableStream, renderToReadableStream as ssrRenderToReadableStream, } from 'react-dom/server';
+export { renderToPipeableStream as ssrRenderToPipeableStream, // Only available in Node context
+renderToReadableStream as ssrRenderToReadableStream, } from 'react-dom/server';
 declare type ServerContextJSONValue = string | boolean | number | null | Readonly<ServerContextJSONValueCircular> | {
     [key: string]: ServerContextJSONValueCircular;
 };

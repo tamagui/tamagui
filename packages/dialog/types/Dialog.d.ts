@@ -18,6 +18,9 @@ interface DialogProps {
     defaultOpen?: boolean;
     onOpenChange?(open: boolean): void;
     modal?: boolean;
+    /**
+     * @see https://github.com/theKashey/react-remove-scroll#usage
+     */
     allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
 }
 declare type NonNull<A> = Exclude<A, void | null>;
@@ -39,6 +42,10 @@ interface DialogTriggerProps extends YStackProps {
 }
 declare const DialogTrigger: React.ForwardRefExoticComponent<DialogTriggerProps & React.RefAttributes<TamaguiElement>>;
 declare type DialogPortalProps = Omit<PortalItemProps, 'asChild'> & YStackProps & {
+    /**
+     * Used to force mounting when more control is needed. Useful when
+     * controlling animation with React animation libraries.
+     */
     forceMount?: true;
 };
 export declare const DialogPortalFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
@@ -76,6 +83,10 @@ export declare const DialogPortalFrame: import("@tamagui/core").TamaguiComponent
 })>;
 declare const DialogPortal: React.FC<DialogPortalProps>;
 interface DialogOverlayProps extends YStackProps {
+    /**
+     * Used to force mounting when more control is needed. Useful when
+     * controlling animation with React animation libraries.
+     */
     forceMount?: true;
 }
 declare const DialogOverlay: React.ForwardRefExoticComponent<DialogOverlayProps & React.RefAttributes<TamaguiElement>>;
@@ -154,6 +165,10 @@ declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<Omit<
 }>;
 declare type DialogContentFrameProps = GetProps<typeof DialogContentFrame>;
 interface DialogContentProps extends DialogContentFrameProps, Omit<DialogContentTypeProps, 'context'> {
+    /**
+     * Used to force mounting when more control is needed. Useful when
+     * controlling animation with React animation libraries.
+     */
     forceMount?: true;
 }
 declare const DialogContent: React.ForwardRefExoticComponent<DialogContentProps & React.RefAttributes<TamaguiElement>>;
@@ -161,8 +176,21 @@ interface DialogContentTypeProps extends Omit<DialogContentImplProps, 'trapFocus
     context: DialogContextValue;
 }
 declare type DialogContentImplProps = DialogContentFrameProps & Omit<DismissableProps, 'onDismiss'> & {
+    /**
+     * When `true`, focus cannot escape the `Content` via keyboard,
+     * pointer, or a programmatic focus.
+     * @defaultValue false
+     */
     trapFocus?: FocusScopeProps['trapped'];
+    /**
+     * Event handler called when auto-focusing on open.
+     * Can be prevented.
+     */
     onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus'];
+    /**
+     * Event handler called when auto-focusing on close.
+     * Can be prevented.
+     */
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'];
     context: DialogContextValue;
 };
@@ -2532,7 +2560,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         ({ __scopeDialog }: ScopedProps<{}>): JSX.Element;
         displayName: string;
     };
-    Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet/types/types").SheetProps, "open" | "onChangeOpen"> & React.RefAttributes<import("react-native").View>> & {
+    Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet/types/types").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native").View>> & {
         Handle: ({ __scopeSheet, ...props }: import("@tamagui/sheet/types/types").SheetScopedProps<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;

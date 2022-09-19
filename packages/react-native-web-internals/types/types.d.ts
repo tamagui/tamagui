@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) Nicolas Gallagher.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow
+ */
 export declare type ColorValue = null | string;
 export declare type DimensionValue = null | number | string;
 export declare type EdgeInsetsValue = {

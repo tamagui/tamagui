@@ -14,6 +14,10 @@ declare type RequestCacheResult<T> = {
     data?: never;
     error: Response | Error;
 };
+/**
+ * Returns data stored in the request cache.
+ * It will throw the promise if data is not ready.
+ */
 export declare function useRequestCacheData<T>(key: QueryKey, fetcher: (request: UnagiRequest) => T | Promise<T>): RequestCacheResult<T>;
 export declare function preloadRequestCacheData(request: UnagiRequest): void;
 export {};
