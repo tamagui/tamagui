@@ -182,8 +182,8 @@ export function HeroExampleThemes() {
               A <span className="rainbow clip-text">colorful</span> revolution
             </HomeH2>
             <HomeH3>
-              Fully typed themes with nested sub-themes, and per-component customization, compiled
-              to CSS.
+              Fully typed themes with nested sub-themes and component themes, all compiled to CSS
+              that avoids rendering.
             </HomeH3>
           </ContainerLarge>
         )

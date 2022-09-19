@@ -239,7 +239,6 @@ export const useChangeThemeEffect = (
   if (!isServer) {
     useLayoutEffect(() => {
       themeManager.update(next)
-
       activeThemeManagers.add(themeManager)
 
       const disposeParentOnChange = parentManager.onChangeTheme(() => {
