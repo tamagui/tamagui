@@ -6,7 +6,7 @@ import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
 
 import { VIEWPORT_NAME } from './constants'
-import { useSelectContext } from './context'
+import { ForwardSelectContext, useSelectContext } from './context'
 import { ScopedProps, SelectViewportProps } from './types'
 import { useSelectBreakpointActive } from './useSelectBreakpointActive'
 
@@ -44,7 +44,11 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
     const breakpointActive = useSelectBreakpointActive(context.sheetBreakpoint)
 
     if (breakpointActive || !isWeb) {
-      return <PortalItem hostName={`${context.scopeKey}SheetContents`}>{children}</PortalItem>
+      return (
+        <PortalItem hostName={`${context.scopeKey}SheetContents`}>
+          <ForwardSelectContext context={context}>{children}</ForwardSelectContext>
+        </PortalItem>
+      )
     }
 
     if (!context.floatingContext) {

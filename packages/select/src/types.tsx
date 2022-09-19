@@ -52,6 +52,9 @@ export interface SelectContextValue {
   onValueNodeHasChildrenChange(hasChildren: boolean): void
   forceUpdate: DispatchWithoutAction
 
+  // SheetImpl only:
+  isInSheet?: boolean
+
   // InlineImpl only:
   fallback: boolean
   blockSelection: boolean

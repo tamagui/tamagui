@@ -1,5 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { GetProps, TamaguiElement, isWeb } from '@tamagui/core'
+import { GetProps, TamaguiElement, isClient, isWeb } from '@tamagui/core'
 import { styled, useGet, useIsomorphicLayoutEffect, withStaticProperties } from '@tamagui/core'
 import { useId } from '@tamagui/core'
 import { ListItem, ListItemProps } from '@tamagui/list-item'

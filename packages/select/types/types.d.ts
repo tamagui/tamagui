@@ -44,6 +44,7 @@ export interface SelectContextValue {
     valueNodeHasChildren: boolean;
     onValueNodeHasChildrenChange(hasChildren: boolean): void;
     forceUpdate: DispatchWithoutAction;
+    isInSheet?: boolean;
     fallback: boolean;
     blockSelection: boolean;
     allowSelectRef?: MutableRefObject<boolean>;
