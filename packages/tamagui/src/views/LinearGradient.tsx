@@ -13,7 +13,7 @@ React['createElement']
 
 export type LinearGradientProps = Omit<ExpoLinearGradientProps, 'colors'> &
   Omit<YStackProps, 'children' | keyof ExpoLinearGradientProps> & {
-    colors?: (ColorTokens | string)[]
+    colors?: (ColorTokens | (string & {}))[]
   }
 
 export const LinearGradient: React.ForwardRefExoticComponent<
@@ -22,7 +22,7 @@ export const LinearGradient: React.ForwardRefExoticComponent<
   themeable(
     React.forwardRef((props: LinearGradientProps, ref) => {
       const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
-      const colors = useLinearGradientColors(colorsProp || [])
+      const colors = useThemeColors(colorsProp || [])
       return (
         // @ts-ignore
         <LinearGradientFrame ref={ref} {...stackProps}>
@@ -48,7 +48,7 @@ const LinearGradientFrame = styled(YStack, {
 })
 
 // resolve tamagui theme values
-const useLinearGradientColors = (colors: string[]) => {
+const useThemeColors = (colors: string[]) => {
   const theme = useTheme()
   return colors.map((color) => {
     if (color[0] === '$') {
