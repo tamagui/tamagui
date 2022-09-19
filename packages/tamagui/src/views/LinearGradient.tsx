@@ -1,4 +1,4 @@
-import { ColorTokens, styled, themeable, useTheme, variableToString } from '@tamagui/core'
+import { ColorTokens, getVariable, styled, themeable, useTheme } from '@tamagui/core'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -52,7 +52,7 @@ const useThemeColors = (colors: string[]) => {
   const theme = useTheme()
   return colors.map((color) => {
     if (color[0] === '$') {
-      return variableToString(theme[color] || color)
+      return getVariable(theme[color] || color)
     }
     return color
   })

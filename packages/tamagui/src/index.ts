@@ -99,7 +99,7 @@ export type {
   TextPropsBaseShared,
   ThemeKeys,
   ThemeName,
-  ThemeObject,
+  ThemeParsed,
   ThemeProps,
   Themes,
   ThemeValueFallback,
