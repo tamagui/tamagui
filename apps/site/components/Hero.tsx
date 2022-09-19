@@ -1,6 +1,6 @@
 import { ArrowRight } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 import {
   Button,
   H1,
@@ -12,12 +12,14 @@ import {
   VisuallyHidden,
   XStack,
   YStack,
+  styled,
 } from 'tamagui'
 
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
 import { GithubIcon } from './GithubIcon'
 import { Header } from './Header'
+import { useHeroHovered } from './heroState'
 import { useTint } from './useTint'
 
 export function Hero() {
@@ -31,6 +33,8 @@ export function Hero() {
 }
 
 const HeroTop = memo(() => {
+  const [hovered, setHovered] = useHeroHovered()
+
   return (
     <ContainerLarge pos="relative">
       <YStack
@@ -53,7 +57,7 @@ const HeroTop = memo(() => {
         space="$6"
         position="relative"
         pt="$13"
-        mb="$12"
+        mb="$10"
         $sm={{
           maxWidth: '100%',
           mx: 'auto',
@@ -86,7 +90,7 @@ const HeroTop = memo(() => {
               size: '$12',
             }}
             $gtLg={{
-              h: 156,
+              h: 166,
               size: '$13',
               maxWidth: 1200,
             }}
@@ -94,7 +98,7 @@ const HeroTop = memo(() => {
             <TooltipSimple label="Works the same on iOS, Android, and web">
               <span className="rainbow clip-text help">Universal</span>
             </TooltipSimple>{' '}
-            design systems for React&nbsp;Native&nbsp;+&nbsp;Web
+            design systems for React&nbsp;Native&nbsp;and&nbsp;Web
             <Text fontSize="inherit" ls="inherit" fontFamily="inherit" $sm={{ display: 'none' }}>
               , faster.
             </Text>
@@ -102,7 +106,7 @@ const HeroTop = memo(() => {
 
           <YStack
             px={0}
-            maw={500}
+            maw="calc(100vw - 20px)"
             // prevent layout shift
             h={84}
             $gtMd={{
@@ -121,17 +125,26 @@ const HeroTop = memo(() => {
                 ta: 'center',
                 size: '$8',
                 fontWeight: '400',
-                maw: 650,
               }}
               $gtMd={{
                 size: '$9',
                 fontWeight: '400',
-                maw: 650,
               }}
             >
-              Better <span className="rainbow clip-text">Native</span> and{' '}
-              <span className="rainbow clip-text">Web</span> interfaces with a
-              smart&nbsp;optimizing&nbsp;compiler.
+              (really) fast UI on <span className="rainbow clip-text">Native</span> and{' '}
+              <span className="rainbow clip-text">Web</span>.
+              <br />
+              <Tag onHoverIn={() => setHovered(0)} active={hovered === 0}>
+                styles
+              </Tag>{' '}
+              +{' '}
+              <Tag onHoverIn={() => setHovered(1)} active={hovered === 1}>
+                Components
+              </Tag>{' '}
+              +{' '}
+              <Tag onHoverIn={() => setHovered(2)} active={hovered === 2}>
+                compiler
+              </Tag>
             </Paragraph>
           </YStack>
         </YStack>
@@ -186,4 +199,23 @@ const HeroTop = memo(() => {
       <Spacer size="$9" />
     </ContainerLarge>
   )
+})
+
+const Tag = styled(Text, {
+  className: 'tag',
+  fontFamily: 'inherit',
+  fontSize: 'inherit',
+  cursor: 'default',
+
+  hoverStyle: {
+    color: '$color',
+  },
+
+  variants: {
+    active: {
+      true: {
+        color: '$color',
+      },
+    },
+  },
 })

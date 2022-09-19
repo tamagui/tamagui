@@ -6,6 +6,7 @@ import { H3, Paragraph, Theme, XStack, YStack, YStackProps, getTokens, styled } 
 
 import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'
+import { useHeroHovered } from './heroState'
 import { IconStack } from './IconStack'
 import { useTint } from './useTint'
 
@@ -38,6 +39,9 @@ export const HeroBelow = memo(() => {
 })
 
 export const HeroBelowContent = memo(() => {
+  const [hovered, setHovered] = useHeroHovered()
+  console.log('hovered', hovered)
+
   return (
     <ContainerLarge>
       <XStack
@@ -51,36 +55,36 @@ export const HeroBelowContent = memo(() => {
         py="$4"
         $sm={{ flexDirection: 'column' }}
       >
-        <Section>
-          <IconStack theme="pink_alt2">
+        <Section onHoverIn={() => setHovered(0)}>
+          <IconStack o={hovered === 0 ? 1 : 0.5} theme="pink_alt2">
             <Code size={20} color="var(--colorHover)" />
           </IconStack>
           <TitleLink href="/docs/core/configuration">Core</TitleLink>
-          <Paragraph size="$4" theme="alt1">
+          <Paragraph o={hovered === 0 ? 1 : 0.75} size="$4" theme="alt1">
             A lightweight design-system library for React Native (and Web) that takes tokens,
             themes, fonts and more and gives you a typed <CodeInline>styled</CodeInline>
             function with all sorts of goodies.
           </Paragraph>
         </Section>
 
-        <Section>
-          <IconStack theme="purple_alt2">
+        <Section onHoverIn={() => setHovered(1)}>
+          <IconStack o={hovered === 1 ? 1 : 0.5} theme="purple_alt2">
             <Cpu size={20} color="var(--colorHover)" />
           </IconStack>
           <TitleLink href="/docs/intro/benchmarks">Static</TitleLink>
-          <Paragraph size="$4" theme="alt1">
+          <Paragraph o={hovered === 1 ? 1 : 0.75} size="$4" theme="alt1">
             The <CodeInline>@tamagui/static</CodeInline> package plugs into many build tools and
             compile-time optimizes your app on native and web, with CSS extraction, partial
             evaluation and tree flattening.
           </Paragraph>
         </Section>
 
-        <Section>
-          <IconStack theme="green_alt2">
+        <Section onHoverIn={() => setHovered(2)}>
+          <IconStack o={hovered === 2 ? 1 : 0.5} theme="green_alt2">
             <Layers size={20} color="var(--colorHover)" />
           </IconStack>
           <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
-          <Paragraph size="$4" theme="alt1">
+          <Paragraph o={hovered === 2 ? 1 : 0.75} size="$4" theme="alt1">
             A large universal UI kit built on top of Core and Static that features typed sizing
             across every component, and Radix-style composable components.
           </Paragraph>

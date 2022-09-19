@@ -74,6 +74,7 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - built in jsx => css converter
   - `tag` => `as` (keep fallback around as deprecated)
     - `as={['a', { ...props }]}`
   - breaking change notifier on upgrade
@@ -152,7 +153,6 @@ takeout:
   - ios/android specific themes
   - VSCode
     - move from functional component to styled() and back
-    - built in jsx => css converter
     - "move to my design system" (finds tamagui package.json and moves there)
       - grab a selection of any styled() or functional component
       - moves it into your design system

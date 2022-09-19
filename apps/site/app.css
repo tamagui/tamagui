@@ -525,3 +525,11 @@ input, textarea {
 .content-visibility-auto {
   content-visibility: auto;
 }
+
+.tag, .tag.active {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 0.5px;
+  text-decoration-color: rgba(150,150,150,0.25);
+  text-underline-offset: 6px;
+}
