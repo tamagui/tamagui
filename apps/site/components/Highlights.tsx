@@ -53,61 +53,6 @@ export function Highlights({ features, disableLinks }: any) {
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
 
-          <YStack ai="center">
-            <Select
-              size="$2"
-              value={frontmatter.version}
-              onValueChange={(value) => {
-                if (value) {
-                  router.push(`./${frontmatter.name}/${value}`)
-                }
-              }}
-            >
-              <Select.Trigger w={200} iconAfter={ChevronDown}>
-                <Select.Value placeholder="Something" />
-              </Select.Trigger>
-
-              <Select.Content>
-                <Select.ScrollUpButton ai="center" jc="center" pos="relative" w="100%" h="$3">
-                  <YStack zi={10}>
-                    <ChevronUp size={20} />
-                  </YStack>
-                  <LinearGradient
-                    start={[0, 0]}
-                    end={[0, 1]}
-                    fullscreen
-                    colors={['$background', '$backgroundTransparent']}
-                  />
-                </Select.ScrollUpButton>
-
-                <Select.Viewport minWidth={180}>
-                  <Select.Group>
-                    <Select.Label>Versions</Select.Label>
-                    {(frontmatter.versions || []).map((version, i) => {
-                      return (
-                        <Select.Item index={i + 1} key={version} value={version}>
-                          <Select.ItemText>{version}</Select.ItemText>
-                        </Select.Item>
-                      )
-                    })}
-                  </Select.Group>
-                </Select.Viewport>
-
-                <Select.ScrollDownButton ai="center" jc="center" pos="relative" w="100%" h="$3">
-                  <YStack zi={10}>
-                    <ChevronDown size={20} />
-                  </YStack>
-                  <LinearGradient
-                    start={[0, 0]}
-                    end={[0, 1]}
-                    fullscreen
-                    colors={['$backgroundTransparent', '$background']}
-                  />
-                </Select.ScrollDownButton>
-              </Select.Content>
-            </Select>
-          </YStack>
-
           <Separator />
 
           <YStack mb="$4" space="$1">

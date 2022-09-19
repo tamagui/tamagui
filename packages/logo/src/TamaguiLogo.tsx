@@ -77,7 +77,7 @@ export const LogoWords = ({
 
     setTimeout(() => {
       setMounted('done')
-    }, 2000)
+    }, 1500)
   }, [])
 
   useEffect(() => {
@@ -92,7 +92,7 @@ export const LogoWords = ({
     if (mounted !== 'done' || hovered) {
       return isActive ? 'var(--color)' : logoColors[index]
     }
-    if (isActive) {
+    if (hovered && isActive) {
       return 'var(--color)'
     }
     return logoColors[i]

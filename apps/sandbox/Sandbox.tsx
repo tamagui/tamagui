@@ -3,7 +3,7 @@ import '@tamagui/polyfill-dev'
 
 import '../site/app.css'
 
-import { AnimationsDemo, DialogDemo, FormsDemo, SheetDemo } from '@tamagui/demos'
+import { AnimationsDemo, DialogDemo, FormsDemo, SelectDemo, SheetDemo } from '@tamagui/demos'
 import { useEffect, useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
 import {
@@ -94,14 +94,15 @@ export const Sandbox = () => {
         {/* <SheetDemo /> */}
         {/* <DialogDemo /> */}
         {/* <FormsDemo /> */}
-        <ScrollView bc="yellow" p="$1" $gtXs={{ bc: 'blue', p: '$4' }} maxHeight={200}>
+        <SelectDemo />
+        {/* <ScrollView bc="yellow" p="$1" $gtXs={{ bc: 'blue', p: '$4' }} maxHeight={200}>
           <Square bc="red" size={100} />
           <Square bc="red" size={100} />
           <Square bc="red" size={100} />
           <Square bc="red" size={100} />
           <Square bc="red" size={100} />
           <Square bc="red" size={100} />
-        </ScrollView>
+        </ScrollView> */}
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SwitchDemo /> */}

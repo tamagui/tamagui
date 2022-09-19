@@ -545,6 +545,9 @@ export const Select = withStaticProperties(
       activeIndexRef.current = activeIndex
     })
 
+    const id = useId()
+    const scopeKey = __scopeSelect ? Object.keys(__scopeSelect)[0] ?? id : id
+
     return (
       <SelectProvider
         dir={dir}
@@ -558,7 +561,7 @@ export const Select = withStaticProperties(
         onValueNodeChange={setValueNode}
         onValueNodeHasChildrenChange={setValueNodeHasChildren}
         valueNodeHasChildren={valueNodeHasChildren}
-        scopeKey={__scopeSelect ? Object.keys(__scopeSelect)[0] : ''}
+        scopeKey={scopeKey}
         sheetBreakpoint={sheetBreakpoint}
         scope={__scopeSelect}
         setValueAtIndex={(index, value) => {
