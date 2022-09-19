@@ -50,8 +50,6 @@ export const Sandbox = () => {
   //   }, 1000)
   // }, [])
 
-  console.log(getTokens())
-
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
       <link href="/fonts/inter.css" rel="stylesheet" />

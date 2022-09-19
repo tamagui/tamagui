@@ -118,7 +118,10 @@ export const getSplitStyles: StyleSplitter = (
   const usedKeys = new Set<string>()
   const propKeys = Object.keys(props)
   const shouldDoClasses =
-    (isWeb || process.env.IS_STATIC === 'is_static') && !state.noClassNames && !props.animation
+    staticConfig.acceptsClassName &&
+    (isWeb || process.env.IS_STATIC === 'is_static') &&
+    !state.noClassNames &&
+    !props.animation
   const len = propKeys.length
   const rulesToInsert: RulesToInsert = []
   const style: ViewStyle = {}
@@ -385,7 +388,7 @@ export const getSplitStyles: StyleSplitter = (
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
           // eslint-disable-next-line no-console
-          console.log(`  🔹 ${mediaKey}`, mediaState[mediaKey], { mediaKey, mediaStyle, props, shouldDoClasses, mediaState: { ...mediaState } })
+          console.log(`  📺 ${mediaKey}`, mediaState[mediaKeyShort], { mediaKey, mediaStyle, props, shouldDoClasses, mediaState: { ...mediaState } })
         }
 
         if (shouldDoClasses) {
@@ -400,7 +403,7 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
         } else {
-          if (mediaState[mediaKey]) {
+          if (mediaState[mediaKeyShort]) {
             if (process.env.NODE_ENV === 'development' && debug) {
               // eslint-disable-next-line no-console
               console.log('apply media style', mediaKey, mediaState)

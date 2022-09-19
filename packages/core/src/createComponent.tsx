@@ -151,7 +151,7 @@ export function createComponent<
     const states = useServerState<TamaguiComponentState>(defaultComponentState)
     const state = propsIn.forceStyle ? { ...states[0], [propsIn.forceStyle]: true } : states[0]
 
-    const shouldAvoidClasses = !!(props.animation && avoidClasses) // || !staticConfig.acceptsClassName
+    const shouldAvoidClasses = !!(props.animation && avoidClasses) || !staticConfig.acceptsClassName
     const shouldForcePseudo = !!propsIn.forceStyle
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
     const splitStyleState =
@@ -1112,7 +1112,7 @@ export function createComponent<
         pressIn: false,
         focus: false,
         resolveVariablesAs: 'both',
-        // noClassNames: !staticConfig.acceptsClassName,
+        noClassNames: !staticConfig.acceptsClassName,
         keepVariantsAsProps: true,
       },
       undefined,
