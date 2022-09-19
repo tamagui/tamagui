@@ -1,7 +1,7 @@
-import { ThemeObject } from './types';
+import { ThemeDefinition } from './types';
 export declare function addTheme({ name: themeName, theme: themeIn, insertCSS, update, }: {
     name: string;
-    theme: ThemeObject;
+    theme: ThemeDefinition;
     insertCSS?: boolean;
     update?: boolean;
 }): {

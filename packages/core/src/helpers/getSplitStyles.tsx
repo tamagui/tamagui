@@ -1,5 +1,5 @@
 import { stylePropsText, stylePropsTransform, validPseudoKeys, validStyles } from '@tamagui/helpers'
-import { useInsertionEffect, useMemo } from 'react'
+import { useInsertionEffect } from 'react'
 import type { ViewStyle } from 'react-native'
 
 import { getConfig } from '../config'
@@ -15,7 +15,7 @@ import type {
   StackProps,
   StaticConfigParsed,
   TamaguiInternalConfig,
-  ThemeObject,
+  ThemeParsed,
 } from '../types'
 import { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types'
 import { createMediaStyle } from './createMediaStyle'
@@ -67,7 +67,7 @@ let conf: TamaguiInternalConfig
 type StyleSplitter = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
-  theme: ThemeObject,
+  theme: ThemeParsed,
   state: SplitStyleState,
   defaultClassNames?: any,
   languageContext?: LanguageContextType,
@@ -659,7 +659,7 @@ export const getSubStyle = (
   subKey: string,
   styleIn: Object,
   staticConfig: StaticConfigParsed,
-  theme: ThemeObject,
+  theme: ThemeParsed,
   props: any,
   state: SplitStyleState,
   conf: TamaguiInternalConfig,

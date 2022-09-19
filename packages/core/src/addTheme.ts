@@ -2,7 +2,7 @@ import { getConfig, updateConfig } from './config'
 import { isWeb } from './constants/platform'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes'
-import { ThemeObject } from './types'
+import { ThemeDefinition, ThemeParsed } from './types'
 
 export function addTheme({
   name: themeName,
@@ -11,7 +11,7 @@ export function addTheme({
   update,
 }: {
   name: string
-  theme: ThemeObject
+  theme: ThemeDefinition
   insertCSS?: boolean
   update?: boolean
 }) {
@@ -25,7 +25,7 @@ export function addTheme({
     }
   }
 
-  const theme = { ...themeIn }
+  const theme = { ...themeIn } as ThemeParsed
   for (const key in theme) {
     ensureThemeVariable(theme, key)
   }

@@ -1,3 +1,7 @@
+/**
+ * Should rename this to Token
+ * Moving to objects for React Server Components support
+ */
 declare const IS_VAR = "__isVar__";
 export declare type VariableValue = string | number;
 declare type VariableIn<A extends VariableValue = VariableValue> = {

@@ -108,7 +108,11 @@ export declare type CreateTamaguiConfig<A extends GenericTokens, B extends Gener
     fonts: RemoveLanguagePostfixes<F>;
     fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[];
     tokens: A;
-    themes: B;
+    themes: {
+        [Name in keyof B]: {
+            [Key in keyof B[Name]]: Variable;
+        };
+    };
     shorthands: C;
     media: D;
     animations: AnimationDriver<E>;
@@ -129,13 +133,16 @@ declare type ConfProps<A extends GenericTokens, B extends GenericThemes, C exten
 };
 export declare type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F> ? TamaguiInternalConfig<A, B, C, D, E, F> : unknown;
 export declare type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
-export declare type ThemeObject = TamaguiConfig['themes'][keyof TamaguiConfig['themes']];
+export declare type ThemeKeys = keyof TamaguiConfig['themes'];
+export declare type ThemeDefinition = TamaguiConfig['themes'][ThemeKeys];
+export declare type ThemeParsed = {
+    [key in ThemeKeys]: Variable;
+};
 export declare type Tokens = TamaguiConfig['tokens'];
 export declare type Shorthands = TamaguiConfig['shorthands'];
 export declare type Media = TamaguiConfig['media'];
 export declare type Themes = TamaguiConfig['themes'];
 export declare type ThemeName = GetAltThemeNames<keyof Themes>;
-export declare type ThemeKeys = keyof ThemeObject;
 export declare type ThemeTokens = `$${ThemeKeys}`;
 export declare type AnimationKeys = Omit<GetAnimationKeys<TamaguiConfig>, number>;
 export declare type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>;
@@ -158,7 +165,24 @@ export declare type CreateTamaguiProps = {
         };
     };
     defaultTheme?: string;
+    /**
+     * *Advanced use case* For all CSS extracted views, this has no effect.
+     *
+     * For SSR compatibility on the web, Tamagui will render once with the settings
+     * from `mediaQueryDefaultActive` set for all media queries. Then, it will render
+     * again after the initial render using the proper media query values. This is so that
+     * hydration will match perfectly with the server.
+     *
+     * Setting disableSSR will avoid this second render by setting the media query state
+     * to the actual browser dimensions on initial load. This is only useful for client-only
+     * apps.
+     *
+     */
     disableSSR?: boolean;
+    /**
+     * Disable inserting a theme class in the DOM or context, allowing you to manually place it higher.
+     * For custom use cases like integration with next-theme.
+     */
     disableRootThemeClass?: boolean;
     defaultProps?: Record<string, any> & {
         Stack?: StackProps;
@@ -261,7 +285,7 @@ declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' |
 declare type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export declare type SizeTokens = GetTokenString<keyof Tokens['size']> | number;
 export declare type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean;
-export declare type ColorTokens = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeObject> | CSSColorNames;
+export declare type ColorTokens = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
 export declare type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number;
 export declare type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number;
 export declare type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>;
@@ -344,7 +368,7 @@ export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'chi
     disableInjectCSS?: boolean;
     children?: React.ReactNode;
 };
-export declare type PropMapper = (key: string, value: any, theme: ThemeObject, props: Record<string, any>, state: Partial<SplitStyleState>, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean, debug?: DebugProp) => undefined | [string, any][];
+export declare type PropMapper = (key: string, value: any, theme: ThemeParsed, props: Record<string, any>, state: Partial<SplitStyleState>, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean, debug?: DebugProp) => undefined | [string, any][];
 export declare type StaticConfigParsed = StaticConfig & {
     parsed: true;
     propMapper: PropMapper;
@@ -364,33 +388,106 @@ export declare type GenericVariantDefinitions = {
 export declare type StaticConfig = {
     Component?: React.FunctionComponent<any> & StaticComponentObject;
     variants?: GenericVariantDefinitions;
+    /**
+     * Used for applying sub theme style
+     */
     componentName?: string;
+    /**
+     * (compiler) If you need to pass context or something, prevents from ever
+     * flattening. The 'jsx' option means it will never flatten. if you
+     * pass JSX as a children (if its purely string, it will still flatten).
+     */
     neverFlatten?: boolean | 'jsx';
+    /**
+     * Determines ultimate output tag (Text vs View)
+     */
     isText?: boolean;
+    /**
+     * Attempts to attach focus styles at runtime (useful for native)
+     */
     isInput?: boolean;
+    /**
+     * React native web images need special handling for className support
+     */
     isImage?: boolean;
+    /**
+     * Which style keys are allowed to be extracted.
+     */
     validStyles?: {
         [key: string]: boolean;
     };
+    /**
+     * Same as React.defaultProps, be sure to sync
+     */
     defaultProps: Record<string, any>;
+    /**
+     * (compiler) If these props are encountered, bail on all optimization.
+     */
     deoptProps?: Set<string>;
+    /**
+     * (compiler) If these props are encountered, leave them un-extracted.
+     */
     inlineProps?: Set<string>;
+    /**
+     * (compiler) If not flattening, leave this prop as original value.
+     * Only applies to style attributes
+     */
     inlineWhenUnflattened?: Set<string>;
+    /**
+     * (compiler) A bit odd, only for more advanced heirarchies.
+     * Indicates that the component will set this prop so the
+     * static extraction can ensure it sets them to ={undefined}
+     * so they get overriddent. In the future, this can be smarter.
+     */
     ensureOverriddenProp?: {
         [key: string]: boolean;
     };
+    /**
+     * Auto-detected, but can ovverride. Wraps children to space them on top
+     */
     isZStack?: boolean;
+    /**
+     * Merges into defaultProps later on, used internally yonly
+     */
     defaultVariants?: {
         [key: string]: any;
     };
+    /**
+     * Auto-detect, but can ovverride, passes styles properly to react-native-web
+     */
     isReactNativeWeb?: boolean;
+    /**
+     * Used internally to keep reference to the original rnw component
+     */
     reactNativeWebComponent?: any;
+    /**
+     * Memoize the component
+     */
     memo?: boolean;
+    /**
+     * Auto-detect, but can ovverride, passes styles properly to react-native-web
+     */
     isTamagui?: boolean;
+    /**
+     * Used internally to handle extractable HoC separate
+     */
     isHOC?: boolean;
+    /**
+     * Used insternally to attach default props to names
+     */
     parentNames?: string[];
+    /**
+     * By default if styled() doesn't recognize a parent Tamagui compoent or specific react-native views,
+     * it will assume the passed in component only accepts style={} for react-native compatibility.
+     * Setting `acceptsClassName: true` indicates Tamagui can pass in className props.
+     */
     acceptsClassName?: boolean;
 };
+/**
+ * --------------------------------------------
+ *   variants
+ * --------------------------------------------
+ */
 export declare type StylableComponent = TamaguiComponent | React.Component | React.ForwardRefExoticComponent<any> | ReactComponentWithRef<any, any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
 export declare type GetStyledVariants<A extends TamaguiComponent> = A extends TamaguiComponent<any, any, any, infer Variants> ? Variants : never;
 export declare type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer BaseProps> ? BaseProps : never;
@@ -439,6 +536,11 @@ export declare type FontTransformVariantSpreadFunction<A extends PropLike> = Var
 export declare type ZIndexVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ZIndexTokens>;
 export declare type RadiusVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, RadiusTokens>;
 export declare type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ThemeTokens>;
+/**
+ * --------------------------------------------
+ *   end variants
+ * --------------------------------------------
+ */
 declare type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight' | 'shadowRadius';
 declare type ColorKeys = 'color' | 'backgroundColor' | 'borderColor' | 'borderBottomColor' | 'borderTopColor' | 'borderLeftColor' | 'borderRightColor' | 'shadowColor' | 'textShadowColor';
 declare type SpaceKeys = 'space' | 'padding' | 'paddingHorizontal' | 'paddingVertical' | 'paddingLeft' | 'paddingTop' | 'paddingBottom' | 'paddingLeft' | 'paddingRight' | 'paddingEnd' | 'paddingStart' | 'margin' | 'marginHorizontal' | 'marginVertical' | 'marginLeft' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight' | 'marginEnd' | 'marginStart' | 'x' | 'y' | 'scale' | 'scaleX' | 'scaleY' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderTopStartRadius' | 'borderBottomEndRadius' | 'borderBottomLeftRadius' | 'borderBottomRightRadius' | 'borderBottomStartRadius' | 'borderBottomWidth' | 'borderLeftWidth' | 'borderRadius' | 'borderRightWidth' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderEndWidth' | 'borderStartWidth' | 'borderTopStartRadius' | 'borderTopWidth' | 'borderWidth' | 'left' | 'top' | 'right' | 'bottom' | 'shadowOffset';

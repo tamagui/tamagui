@@ -1,5 +1,5 @@
 import type { ViewStyle } from 'react-native';
-import type { DebugProp, MediaQueryKey, PseudoStyles, SplitStyleState, StackProps, StaticConfigParsed, TamaguiInternalConfig, ThemeObject } from '../types';
+import type { DebugProp, MediaQueryKey, PseudoStyles, SplitStyleState, StackProps, StaticConfigParsed, TamaguiInternalConfig, ThemeParsed } from '../types';
 import { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types';
 import { RulesToInsert } from './insertStyleRule';
 export declare type SplitStyles = ReturnType<typeof getSplitStyles>;
@@ -7,7 +7,7 @@ export declare type ClassNamesObject = Record<string, string>;
 export declare type SplitStyleResult = ReturnType<typeof getSplitStyles>;
 declare type StyleSplitter = (props: {
     [key: string]: any;
-}, staticConfig: StaticConfigParsed, theme: ThemeObject, state: SplitStyleState, defaultClassNames?: any, languageContext?: LanguageContextType, debug?: DebugProp) => {
+}, staticConfig: StaticConfigParsed, theme: ThemeParsed, state: SplitStyleState, defaultClassNames?: any, languageContext?: LanguageContextType, debug?: DebugProp) => {
     pseudos: PseudoStyles;
     medias: Record<MediaQueryKey, ViewStyle>;
     style: ViewStyle;
@@ -24,7 +24,7 @@ export declare const pseudoCNInverse: {
     press: string;
 };
 export declare const getSplitStyles: StyleSplitter;
-export declare const getSubStyle: (subKey: string, styleIn: Object, staticConfig: StaticConfigParsed, theme: ThemeObject, props: any, state: SplitStyleState, conf: TamaguiInternalConfig, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean) => ViewStyle;
+export declare const getSubStyle: (subKey: string, styleIn: Object, staticConfig: StaticConfigParsed, theme: ThemeParsed, props: any, state: SplitStyleState, conf: TamaguiInternalConfig, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean) => ViewStyle;
 export declare const insertSplitStyles: StyleSplitter;
 export declare const useSplitStyles: StyleSplitter;
 export {};

@@ -1,7 +1,7 @@
-import { ThemeObject } from './types';
+import { ThemeDefinition } from './types';
 export declare function updateTheme({ name, theme }: {
     name: string;
-    theme: ThemeObject;
+    theme: ThemeDefinition;
 }): {
     theme: any;
     cssRules: string[];

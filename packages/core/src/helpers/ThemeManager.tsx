@@ -3,7 +3,7 @@ import { createContext } from 'react'
 import { getThemes } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
 import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
-import { ThemeObject, Themes } from '../types'
+import { ThemeParsed, Themes } from '../types'
 
 type ThemeListener = (name: string | null, themeManager: ThemeManager) => void
 
@@ -29,7 +29,7 @@ export class ThemeManager {
   constructor(
     public name: string = '',
     public className: string = '',
-    public theme: ThemeObject | null = null,
+    public theme: ThemeParsed | null = null,
     public parentManager: ThemeManager | null = null,
     public reset: boolean = false
   ) {
@@ -109,7 +109,7 @@ export class ThemeManager {
     debug?: any
   ): {
     name: string
-    theme: ThemeObject | null
+    theme: ThemeParsed | null
     className: string | undefined
   } {
     const { themes = getThemes(), name, componentName } = props
@@ -117,7 +117,7 @@ export class ThemeManager {
     if (props.reset && name) {
       return {
         name: name,
-        theme: themes[name],
+        theme: themes[name] as ThemeParsed,
         className: this.getClassName(name),
       }
     }

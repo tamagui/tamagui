@@ -1,3 +1,7 @@
+/**
+ * Some parts adapted from react-native-web
+ * Copyright (c) Nicolas Gallagher licensed under the MIT license.
+ */
 import { StyleObject } from '@tamagui/helpers';
 import type { TextStyle, ViewStyle } from 'react-native';
 import { PseudoDescriptor } from './pseudoDescriptors';
