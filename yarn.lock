@@ -6461,6 +6461,7 @@ __metadata:
   resolution: "@tamagui/next-theme@workspace:packages/next-theme"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.167
+    "@tamagui/use-event": ^1.0.1-beta.167
     react: "*"
   peerDependencies:
     react: "*"

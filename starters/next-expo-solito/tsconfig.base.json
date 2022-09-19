@@ -20,10 +20,10 @@
     "experimentalDecorators": true,
     "useUnknownInCatchVariables": false,
     "preserveConstEnums": true,
-    "removeComments": true,
+    // DONT DO THIS so jsdoc will remain
+    "removeComments": false,
     "skipLibCheck": true,
     "sourceMap": false,
-    // "strict": true,
     "strictNullChecks": true,
     "target": "es2019",
     "types": ["node"],

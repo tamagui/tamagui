@@ -15,6 +15,9 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch"
   },
+  "dependencies": {
+    "@tamagui/use-event": "^1.0.1-beta.167"
+  },
   "peerDependencies": {
     "react": "*"
   },
