@@ -113,7 +113,7 @@ export function useMediaQueryListeners(config: TamaguiInternalConfig) {
 export function useMedia(): {
   [key in MediaQueryKey]: boolean
 } {
-  const [state, setState] = useState(initialMediaState!)
+  const [state, setState] = useState(initialMediaState || {})
   const keys = useSafeRef({} as Record<string, boolean>)
 
   function updateState() {
@@ -141,6 +141,13 @@ export function useMedia(): {
     () =>
       new Proxy(state, {
         get(_, key: string) {
+          if (process.env.NODE_ENV === 'development') {
+            if (!initialMediaState) {
+              throw new Error(
+                `To use useMedia() you must pass in media configuration to createTamagui, none was found.`
+              )
+            }
+          }
           if (!keys.current[key]) {
             keys.current[key] = true
           }
