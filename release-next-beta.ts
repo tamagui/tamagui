@@ -193,7 +193,7 @@ async function run() {
 
       console.log(`Update starters to v${version}...`)
       await spawnify(`yarn upgrade:starters`)
-      await spawnify(`git commit -am "Update starters to v${version}"`)
+      await spawnify(`git commit -am update-starters-v${version}`)
       await spawnify(`git push origin head`)
     }
   } catch (err) {
