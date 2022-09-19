@@ -10,14 +10,14 @@ Create a `tamagui.config.ts` in the root of your app to set up your design syste
 You can use `@tamagui/config-base` a totally complete config out of the box, the same one this site uses.
 
 ```tsx
+import { createTamagui } from '@tamagui/core'
 import { config } from '@tamagui/config-base'
-import { createTamagui } from 'tamagui'
 
 const appConfig = createTamagui(config)
 
 export type AppConfig = typeof appConfig
 
-declare module 'tamagui' {
+declare module '@tamagui/core' {
   // overrides TamaguiCustomConfig so your custom types
   // work everywhere you import `tamagui`
   interface TamaguiCustomConfig extends AppConfig {}
