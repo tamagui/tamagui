@@ -8,8 +8,8 @@ import { startTransition } from '../helpers/startTransition'
 export const useIsSSR = (props?: { immediate?: boolean }) => {
   const [val, setVal] = useState(true)
 
-  useIsomorphicLayoutEffect(() => {
-    if (isWeb && !isServer) {
+  if (isWeb && !isServer) {
+    useIsomorphicLayoutEffect(() => {
       // could also have a global tamagui `config.immediateSSRTransition`
       if (props?.immediate) {
         setVal(false)
@@ -18,8 +18,8 @@ export const useIsSSR = (props?: { immediate?: boolean }) => {
           setVal(false)
         })
       }
-    }
-  }, [])
+    }, [])
+  }
 
   return val
 }

@@ -44,6 +44,7 @@ const splitToFlat = ([a, b]: number[]) => {
   return a * 4 + b
 }
 
+const START_INDEX = 4 * 1
 let hasScrolledOnce = false
 
 export function HeroExampleThemes() {
@@ -139,7 +140,7 @@ export function HeroExampleThemes() {
         hasScrolledOnce = true
         // dont rush
         setTimeout(() => {
-          const index = themeCombos.indexOf('pink')
+          const index = START_INDEX
           moveToIndex(index)
           setScrollLock('shouldAnimate')
           scrollToIndex(index, true)

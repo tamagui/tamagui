@@ -43,7 +43,11 @@ import { getAllSelectors } from './helpers/insertStyleRule'
 import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { useShallowSetState } from './helpers/useShallowSetState'
-import { addMediaQueryListener, mediaState, removeMediaQueryListener } from './hooks/useMedia'
+import {
+  addMediaQueryListener,
+  getInitialMediaState,
+  removeMediaQueryListener,
+} from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
 import { getThemeManager, useTheme } from './hooks/useTheme'
@@ -68,16 +72,7 @@ import { wrapThemeManagerContext } from './views/Theme'
 
 React['keep']
 
-const defaultComponentState: TamaguiComponentState = Object.freeze({
-  hover: false,
-  press: false,
-  pressIn: false,
-  focus: false,
-  // only used by enterStyle
-  mounted: false,
-  animation: null,
-})
-
+let defaultComponentState: TamaguiComponentState | null = null
 export const mouseUps = new Set<Function>()
 if (typeof document !== 'undefined') {
   const cancelTouches = () => {
@@ -148,7 +143,7 @@ export function createComponent<
     config = config || getConfig()
     const theme = useTheme(props.theme, componentName, props, forceUpdate)
 
-    const states = useServerState<TamaguiComponentState>(defaultComponentState)
+    const states = useServerState<TamaguiComponentState>(defaultComponentState!)
     const state = propsIn.forceStyle ? { ...states[0], [propsIn.forceStyle]: true } : states[0]
 
     const shouldAvoidClasses = !!(props.animation && avoidClasses) || !staticConfig.acceptsClassName
@@ -219,17 +214,29 @@ export function createComponent<
 
     // media queries
     useIsomorphicLayoutEffect(() => {
-      // if (!mediaKeys.length) {
-      //   return
-      // }
+      if (!mediaKeys.length) {
+        return
+      }
+      const disposers: any[] = []
       for (const key of mediaKeys) {
-        addMediaQueryListener(key, forceUpdate)
+        disposers.push(
+          addMediaQueryListener(key, (next: boolean) => {
+            setState((prev) => {
+              if (prev.mediaState![key] !== next) {
+                return {
+                  ...prev,
+                  mediaState: {
+                    ...prev.mediaState,
+                    [key]: next,
+                  },
+                }
+              }
+              return prev
+            })
+          })
+        )
       }
-      return () => {
-        for (const key of mediaKeys) {
-          removeMediaQueryListener(key, forceUpdate)
-        }
-      }
+      return () => {}
     }, [mediaKeys.join(',')])
 
     // animations
@@ -879,9 +886,9 @@ export function createComponent<
     let space = spaceProp
 
     // find space by media query
-    if (mediaKeys.length) {
-      for (const key in mediaState) {
-        if (!mediaState[key]) continue
+    if (state.mediaState && mediaKeys.length) {
+      for (const key in state.mediaState) {
+        if (!state.mediaState[key]) continue
         if (props[key] && props[key].space !== undefined) {
           space = props[key].space
         }
@@ -1052,6 +1059,19 @@ export function createComponent<
   // Once configuration is run and all components are registered
   // get default props + className and analyze styles
   onConfiguredOnce((conf) => {
+    if (!defaultComponentState) {
+      defaultComponentState = Object.freeze({
+        hover: false,
+        press: false,
+        pressIn: false,
+        focus: false,
+        // only used by enterStyle
+        mounted: false,
+        animation: null,
+        mediaState: getInitialMediaState(),
+      })
+    }
+
     // in static mode we just use these to lookup configuration
     // ... we likely want this? need to test
     if (process.env.IS_STATIC === 'is_static') return

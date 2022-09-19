@@ -73,8 +73,8 @@ export default function Home({ animationCode, compilationExamples }) {
         <FeaturesGrid />
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
       </TintSection>
-      <TintSection p={0} index={5} zIndex={0}>
-        <SectionTinted my="$-4" zi={1000} bubble gradient>
+      <TintSection my="$-4" p={0} index={5} zIndex={100}>
+        <SectionTinted zi={1000} bubble gradient>
           <HeroTypography />
         </SectionTinted>
       </TintSection>
@@ -97,17 +97,26 @@ const Glow = () => {
 
   return (
     <YStack
-      fullscreen
-      bottom="auto"
+      pos="absolute"
+      t={0}
+      l={0}
       pe="none"
-      overflow="hidden"
       animation="lazy"
-      contain="strict"
-      h="100vh"
+      key={0}
       zi={-1}
       y={typeof document !== 'undefined' ? document.documentElement?.scrollTop ?? 0 : 0}
     >
-      <YStack theme={tint} o={0.5} fullscreen className="hero-blur" />
+      <YStack
+        overflow="hidden"
+        h="100vh"
+        w="100vw"
+        maw={1200}
+        theme={tint}
+        o={0.5}
+        fullscreen
+        left="calc(50vw - 600px)"
+        className="hero-blur"
+      />
     </YStack>
   )
 }

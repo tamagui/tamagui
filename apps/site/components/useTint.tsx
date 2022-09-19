@@ -56,7 +56,6 @@ export const ThemeTint = (props: { children: any }) => {
 
 export const setTintIndex = (index: number) => {
   if (index === currentTint) return
-  console.trace('set', index)
   currentTint = index
   listeners.forEach((x) => x(index % tints.length))
 }

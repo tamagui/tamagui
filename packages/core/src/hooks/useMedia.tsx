@@ -27,9 +27,11 @@ export const mediaState: MediaQueryState =
       )
     : ({} as any)
 
-const mediaQueryListeners: { [key: string]: Set<Function> } = {}
+type MediaListener = (next: boolean) => void
 
-export function addMediaQueryListener(key: MediaQueryKey, cb: any) {
+const mediaQueryListeners: { [key: string]: Set<MediaListener> } = {}
+
+export function addMediaQueryListener(key: MediaQueryKey, cb: MediaListener) {
   if (process.env.NODE_ENV === 'development' && key[0] === '$') {
     // eslint-disable-next-line no-console
     console.warn(`Warning, listening to media queries shouldn't use the "$" prefix`)
@@ -39,7 +41,7 @@ export function addMediaQueryListener(key: MediaQueryKey, cb: any) {
   return () => removeMediaQueryListener(key, cb)
 }
 
-export function removeMediaQueryListener(key: MediaQueryKey, cb: any) {
+export function removeMediaQueryListener(key: MediaQueryKey, cb: MediaListener) {
   mediaQueryListeners[key]?.delete(cb)
 }
 
@@ -66,6 +68,8 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
     setupMediaListeners()
   }
 }
+
+export const getInitialMediaState = () => initialMediaState
 
 function unlisten() {
   dispose.forEach((cb) => cb())
@@ -108,7 +112,7 @@ function setupMediaListeners() {
       mediaState[key] = next
       const listeners = mediaQueryListeners[key]
       if (listeners?.size) {
-        listeners.forEach((cb) => cb())
+        listeners.forEach((cb) => cb(next))
       }
     }
   }

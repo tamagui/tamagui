@@ -5,7 +5,7 @@ import type { ViewStyle } from 'react-native'
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
-import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
+import { mediaState as globalMediaState, mediaQueryConfig } from '../hooks/useMedia'
 import type {
   DebugProp,
   MediaQueryKey,
@@ -115,6 +115,7 @@ export const getSplitStyles: StyleSplitter = (
   const viewProps: StackProps = {}
   const pseudos: PseudoStyles = {}
   const medias: Record<MediaQueryKey, ViewStyle> = {}
+  const mediaState = state.mediaState || globalMediaState
   const usedKeys = new Set<string>()
   const propKeys = Object.keys(props)
   const shouldDoClasses =
