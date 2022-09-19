@@ -11,7 +11,22 @@ import {
 } from '../types'
 import { useSafeRef } from './useSafeRef'
 
-export const mediaState: MediaQueryState = {} as any
+export const mediaState: MediaQueryState =
+  // development time safeguard
+  process.env.NODE_ENV === 'development'
+    ? new Proxy(
+        {},
+        {
+          get(target, key) {
+            if (typeof key === 'string' && key[0] === '$') {
+              throw new Error(`Access of mediaState should never include $`)
+            }
+            return Reflect.get(target, key)
+          },
+        }
+      )
+    : ({} as any)
+
 const mediaQueryListeners: { [key: string]: Set<Function> } = {}
 
 export function addMediaQueryListener(key: MediaQueryKey, cb: any) {
