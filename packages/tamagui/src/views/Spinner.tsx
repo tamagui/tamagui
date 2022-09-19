@@ -1,4 +1,11 @@
-import { ColorTokens, TamaguiElement, themeable, useTheme, variableToString } from '@tamagui/core'
+import {
+  ColorTokens,
+  TamaguiElement,
+  ThemeTokens,
+  themeable,
+  useTheme,
+  variableToString,
+} from '@tamagui/core'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { ActivityIndicator } from 'react-native'
@@ -8,7 +15,7 @@ React['createElement']
 
 export type SpinnerProps = Omit<YStackProps, 'children'> & {
   size?: 'small' | 'large'
-  color?: ColorTokens | null
+  color?: (ColorTokens | ThemeTokens | (string & {})) | null
 }
 
 export const Spinner: React.ForwardRefExoticComponent<SpinnerProps & React.RefAttributes<any>> =
