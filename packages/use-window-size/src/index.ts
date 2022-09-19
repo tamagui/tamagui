@@ -4,8 +4,8 @@ import { useEffect, useLayoutEffect } from 'react'
 import { Dimensions, Platform } from 'react-native'
 
 const isWeb = process.env.TAMAGUI_TARGET === 'web' ? true : Platform?.OS === 'web'
-const isSSR = isWeb && typeof window === 'undefined'
-const useIsomorphicLayoutEffect = isSSR ? useEffect : useLayoutEffect
+const isServer = isWeb && typeof window === 'undefined'
+const useIsomorphicLayoutEffect = isServer ? useEffect : useLayoutEffect
 
 type WindowSize = [number, number]
 

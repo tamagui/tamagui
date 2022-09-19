@@ -5,7 +5,7 @@ export const isAndroid = Platform?.OS === 'android'
 export const isIOS = Platform?.OS === 'ios'
 export const isWeb = false
 export const isWindowDefined = false
-export const isSSR = false
+export const isServer = false
 export const isClient = false
 export const isRSC = false
 export const useIsomorphicLayoutEffect = useLayoutEffect
