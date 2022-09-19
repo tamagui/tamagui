@@ -15,6 +15,7 @@ import {
   Square,
   TamaguiProvider,
   XStack,
+  getTokens,
   styled,
 } from 'tamagui'
 
@@ -48,6 +49,8 @@ export const Sandbox = () => {
   //     val.value = withSpring(100)
   //   }, 1000)
   // }, [])
+
+  console.log(getTokens())
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>

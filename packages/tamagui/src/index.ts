@@ -125,7 +125,7 @@ export {
   TextAncestorContext,
   // constants
   isChrome,
-  isSSR,
+  isServer,
   isTouchable,
   isWeb,
   isWebTouchable,

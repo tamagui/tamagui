@@ -157,11 +157,18 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     async function setupTamaguiDotDir(isRetry = false) {
       console.log(`Setting up ${chalk.blueBright(tamaguiDir)}...`)
 
+      cd(repoRoot)
+
+      const branch =
+        process.env.NODE_ENV === 'test'
+          ? // use current branch
+            (await $`git rev-parse --abbrev-ref HEAD`).stdout.trim()
+          : `master`
+
       // setup tests for CI
       if (process.env.NODE_ENV === 'test') {
         // always clean for test
         await remove(targetGitDir)
-        cd(repoRoot)
         if (!(await pathExists(join(repoRoot, '.git')))) {
           throw new Error(`Not in a git folder`)
         }
@@ -169,12 +176,6 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
 
       await ensureDir(tamaguiDir)
       cd(tamaguiDir)
-
-      const branch =
-        process.env.NODE_ENV === 'test'
-          ? // use current branch
-            (await $`git rev-parse --abbrev-ref HEAD`).stdout.trim()
-          : `master`
 
       if (!(await pathExists(targetGitDir))) {
         console.log(`Cloning tamagui base directory`)
