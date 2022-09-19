@@ -1,8 +1,8 @@
 import { useOnIntersecting } from '@tamagui/demos'
-import { useTheme } from '@tamagui/next-theme'
+import { useThemeSetting } from '@tamagui/next-theme'
 import React from 'react'
 import { SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Theme, ThemeName, XGroup, XStack, YStack, debounce, useGet } from 'tamagui'
+import { Theme, ThemeName, XGroup, XStack, YStack, debounce, useEvent, useGet } from 'tamagui'
 
 import { ActiveCircle } from './ActiveCircle'
 import { ContainerLarge } from './Container'
@@ -37,7 +37,7 @@ const splitToFlat = ([a, b]: number[]) => {
 let hasScrolledOnce = false
 
 export function HeroExampleThemes() {
-  const { setTheme, theme: userTheme, systemTheme } = useTheme()
+  const themeSetting = useThemeSetting()
   const [activeI, setActiveI] = useState([0, 0])
   const [curColorI, curShadeI] = activeI
   const [theme, setSelTheme] = useState('')
@@ -67,7 +67,7 @@ export function HeroExampleThemes() {
   const width = 180
   const scale = 0.6
 
-  function scrollToIndex(index: number, force = false) {
+  const scrollToIndex = useEvent((index: number, force = false) => {
     const node = scrollView.current
     const lock = getLock()
     const isReadyToAnimate = lock === 'shouldAnimate'
@@ -77,12 +77,12 @@ export function HeroExampleThemes() {
     const left = (width + 30) * index + width / 2 + 30
     if (node.scrollLeft === left) return
     node.scrollTo({ left, top: 0, behavior: 'smooth' })
-  }
+  })
 
   useEffect(() => {
     if (scrollLock !== 'shouldAnimate') return
     scrollToIndex(nextIndex)
-  }, [nextIndex, scrollLock, scrollView.current])
+  }, [nextIndex, scrollLock, scrollToIndex])
 
   if (typeof document !== 'undefined') {
     // scroll lock unset
@@ -131,9 +131,13 @@ export function HeroExampleThemes() {
   })
 
   useEffect(() => {
-    if (typeof userTheme === 'boolean') return
-    setSelTheme(userTheme === 'system' ? systemTheme || 'light' : userTheme || 'light')
-  }, [userTheme, systemTheme])
+    if (typeof themeSetting.current === 'boolean') return
+    setSelTheme(
+      themeSetting.current === 'system'
+        ? themeSetting.systemTheme || 'light'
+        : themeSetting.current || 'light'
+    )
+  }, [themeSetting])
 
   return (
     <YStack>
@@ -161,7 +165,7 @@ export function HeroExampleThemes() {
                   <ActiveCircle
                     key={name}
                     backgroundColor={name === 'dark' ? '#000' : '#fff'}
-                    onPress={() => setTheme(name)}
+                    onPress={() => themeSetting.set(name)}
                     isActive={isActive}
                   />
                 )

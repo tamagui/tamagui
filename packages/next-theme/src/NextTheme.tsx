@@ -1,12 +1,12 @@
 // https://raw.githubusercontent.com/pacocoursey/next-themes/master/index.tsx
 // forked temporarily due to buggy theme change
 
+import { useEvent } from '@tamagui/use-event'
 import NextHead from 'next/head'
 import * as React from 'react'
 import {
   createContext,
   memo,
-  useCallback,
   useContext,
   useEffect,
   useLayoutEffect,
@@ -23,9 +23,11 @@ export interface UseThemeProps {
   /** Forced theme name for the current page */
   forcedTheme?: string
   /** Update the theme */
-  setTheme: (theme: string) => void
-  toggleTheme: () => void
-  /** Active theme name */
+  set: (theme: string) => void
+  toggle: () => void
+  /** Active theme name - will return "system" if not overriden, see "resolvedTheme" for getting resolved system value */
+  current?: string
+  /** @deprecated Use `current` instead (deprecating avoid confusion with useTheme) */
   theme?: string
   /** If `enableSystem` is true and the active theme is "system", this returns whether the system preference resolved to "dark" or "light". Otherwise, identical to `theme` */
   resolvedTheme?: string
@@ -57,12 +59,18 @@ export interface ThemeProviderProps {
   onChangeTheme?: (name: string) => void
 }
 
-const ThemeContext = createContext<UseThemeProps>({
-  toggleTheme: () => {},
-  setTheme: (_) => {},
+const ThemeSettingContext = createContext<UseThemeProps>({
+  toggle: () => {},
+  set: (_) => {},
   themes: [],
 })
-export const useTheme = () => useContext(ThemeContext)
+
+/**
+ * @deprecated renamed to `useThemeSetting` to avoid confusion with core `useTheme` hook
+ */
+export const useTheme = () => useContext(ThemeSettingContext)
+
+export const useThemeSetting = () => useContext(ThemeSettingContext)
 
 const colorSchemes = ['light', 'dark']
 const MEDIA = '(prefers-color-scheme: dark)'
@@ -100,22 +108,19 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   // const resolvedTheme = React.useDeferredValue(resolvedThemeFast)
   const attrs = !value ? themes : Object.values(value)
 
-  const handleMediaQuery = useCallback(
-    (e?) => {
-      const systemTheme = getSystemTheme(e)
-      React.startTransition(() => {
-        setResolvedTheme(systemTheme)
-      })
-      if (theme === 'system' && !forcedTheme) handleChangeTheme(systemTheme, false)
-    },
-    [theme, forcedTheme]
-  )
+  const handleMediaQuery = useEvent((e?) => {
+    const systemTheme = getSystemTheme(e)
+    React.startTransition(() => {
+      setResolvedTheme(systemTheme)
+    })
+    if (theme === 'system' && !forcedTheme) handleChangeTheme(systemTheme, false)
+  })
 
   // Ref hack to avoid adding handleMediaQuery as a dep
   const mediaListener = useRef(handleMediaQuery)
   mediaListener.current = handleMediaQuery
 
-  const handleChangeTheme = useCallback((theme, updateStorage = true, updateDOM = true) => {
+  const handleChangeTheme = useEvent((theme, updateStorage = true, updateDOM = true) => {
     let name = value?.[theme] || theme
 
     if (updateStorage) {
@@ -142,7 +147,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
         d.setAttribute(attribute, name)
       }
     }
-  }, [])
+  })
 
   useIsomorphicLayoutEffect(() => {
     const handler = (...args: any) => mediaListener.current(...args)
@@ -156,17 +161,14 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
     }
   }, [])
 
-  const setTheme = useCallback(
-    (newTheme) => {
-      if (forcedTheme) {
-        handleChangeTheme(newTheme, true, false)
-      } else {
-        handleChangeTheme(newTheme)
-      }
-      setThemeState(newTheme)
-    },
-    [forcedTheme]
-  )
+  const set = useEvent((newTheme) => {
+    if (forcedTheme) {
+      handleChangeTheme(newTheme, true, false)
+    } else {
+      handleChangeTheme(newTheme)
+    }
+    setThemeState(newTheme)
+  })
 
   // localStorage event handling
   useEffect(() => {
@@ -176,13 +178,13 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
       }
       // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
       const theme = e.newValue || defaultTheme
-      setTheme(theme)
+      set(theme)
     }
     window.addEventListener('storage', handleStorage)
     return () => {
       window.removeEventListener('storage', handleStorage)
     }
-  }, [])
+  }, [defaultTheme, set, storageKey])
 
   // color-scheme handling
   useIsomorphicLayoutEffect(() => {
@@ -218,24 +220,27 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   }, [enableColorScheme, theme, resolvedTheme, forcedTheme])
 
   const contextValue = useMemo(() => {
-    return {
+    const value: UseThemeProps = {
       theme,
-      setTheme,
-      toggleTheme() {
+      current: theme,
+      set,
+      toggle() {
         const order =
           resolvedTheme === 'dark' ? ['system', 'light', 'dark'] : ['system', 'dark', 'light']
         const next = order[(order.indexOf(theme) + 1) % order.length]
-        setTheme(next)
+        set(next)
       },
       forcedTheme,
       resolvedTheme: theme === 'system' ? resolvedTheme : theme,
       themes: enableSystem ? [...themes, 'system'] : themes,
       systemTheme: (enableSystem ? resolvedTheme : undefined) as 'light' | 'dark' | undefined,
     } as const
-  }, [theme, forcedTheme, resolvedTheme, enableSystem])
+
+    return value
+  }, [theme, set, forcedTheme, resolvedTheme, enableSystem, themes])
 
   return (
-    <ThemeContext.Provider value={contextValue}>
+    <ThemeSettingContext.Provider value={contextValue}>
       <ThemeScript
         {...{
           forcedTheme,
@@ -249,7 +254,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
         }}
       />
       {children}
-    </ThemeContext.Provider>
+    </ThemeSettingContext.Provider>
   )
 }
 
