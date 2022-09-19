@@ -130,9 +130,9 @@ const CodeExamples = memo(({ examples }: any) => {
       <XStack maxWidth="100%" f={1}>
         <YStack f={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
           <CodeDemoPreParsed
-            height={360}
+            height={300}
             theme="Card"
-            maxHeight={360}
+            maxHeight={300}
             f={1}
             language={example.language}
             source={example.code}

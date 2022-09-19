@@ -1,5 +1,5 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react'
-import { debounce, isWeb } from 'tamagui'
+import { debounce, isWeb, useEvent } from 'tamagui'
 
 type DisposeFn = () => void
 type IntersectFn = (
@@ -9,15 +9,19 @@ type IntersectFn = (
 
 export const useIsIntersecting = (
   ref: MutableRefObject<HTMLElement | null>,
-  { once }: { once?: boolean } = {}
+  { once, ...opts }: IntersectionObserverInit & { once?: boolean } = {}
 ) => {
   const [val, setVal] = useState(!isWeb)
   if (isWeb) {
-    useOnIntersecting(ref, ({ isIntersecting }) => {
-      if ((once && isIntersecting) || !once) {
-        setVal(isIntersecting)
-      }
-    })
+    useOnIntersecting(
+      ref,
+      useEvent(({ isIntersecting }) => {
+        if ((once && isIntersecting) || !once) {
+          setVal(isIntersecting)
+        }
+      }),
+      opts
+    )
   }
   return val
 }
@@ -30,35 +34,26 @@ export const useOnIntersecting = (
   },
   mountArgs: any[] = []
 ) => {
-  const cb = useRef<IntersectFn>()
-
-  useEffect(() => {
-    cb.current = incomingCb
-  }, [incomingCb])
-
-  // arrow keys
   useEffect(() => {
     const node = ref.current
-    if (!node) return
+    if (!node || !incomingCb) return
 
     // only when carousel is fully in viewport
     let dispose: DisposeFn | null = null
     let lastEntry: any
 
     const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        lastEntry = new Proxy(entry, {
-          get(target, key) {
-            if (key === 'dispose') {
-              return dispose
-            }
-            return Reflect.get(target, key)
-          },
-        })
-        dispose?.()
-        dispose = cb.current?.(lastEntry) || null
+      lastEntry = new Proxy(entry, {
+        get(target, key) {
+          if (key === 'dispose') return dispose
+          return target[key]
+        },
+      })
+      dispose?.()
+      if (!entry.isIntersecting) {
+        incomingCb(lastEntry)
       } else {
-        dispose?.()
+        dispose = incomingCb(lastEntry) || null
       }
     }, options)
 
@@ -67,8 +62,8 @@ export const useOnIntersecting = (
         if (!lastEntry) {
           return
         }
-        dispose = cb.current?.(lastEntry, true) || null
-      }, 150)
+        dispose = incomingCb(lastEntry, true) || null
+      }, 80)
     )
 
     ro.observe(document.body)
@@ -79,5 +74,5 @@ export const useOnIntersecting = (
       ro.disconnect()
       io.disconnect()
     }
-  }, [ref.current, ...mountArgs])
+  }, [ref.current, incomingCb, ...mountArgs])
 }

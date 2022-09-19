@@ -218,6 +218,9 @@ pre {
 .ms300 {
   transition-duration: 300ms;
 }
+.ms1000 {
+  transition-duration: 300ms;
+}
 
 .help {
   cursor: help;
@@ -526,10 +529,6 @@ input, textarea {
   content-visibility: auto;
 }
 
-.hero-tag, .hero-tag.active {
-  text-decoration: underline;
-  text-decoration-style: dotted;
-  text-decoration-thickness: 0.5px;
-  text-decoration-color: rgba(150,150,150,0.25);
-  text-underline-offset: 6px;
+.hero-tag:hover, .hero-tag.active {
+  text-shadow: 0 0 10px rgba(255,255,255,0.2);
 }

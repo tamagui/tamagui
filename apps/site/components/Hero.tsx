@@ -22,6 +22,10 @@ import { Header } from './Header'
 import { useHeroHovered } from './heroState'
 import { useTint } from './useTint'
 
+export const HeroGlow = () => {
+  return <YStack o={0.4} zi={-1} pos="absolute" t={0} l={0} r={0} h={2000} className="hero-blur" />
+}
+
 export function Hero() {
   const { tint } = useTint()
   return (
@@ -131,20 +135,21 @@ const HeroTop = memo(() => {
                 fontWeight: '400',
               }}
             >
-              (really) fast UI on <span className="rainbow clip-text">Native</span> and{' '}
+              faster UI on <span className="rainbow clip-text">Native</span> and{' '}
               <span className="rainbow clip-text">Web</span>.
               <br />
               <Tag onHoverIn={() => setHovered(0)} active={hovered === 0}>
                 styles
-              </Tag>{' '}
-              +{' '}
+              </Tag>
+              ,{' '}
               <Tag onHoverIn={() => setHovered(1)} active={hovered === 1}>
                 Components
-              </Tag>{' '}
-              +{' '}
+              </Tag>
+              ,{' '}
               <Tag onHoverIn={() => setHovered(2)} active={hovered === 2}>
                 compiler
               </Tag>
+              .
             </Paragraph>
           </YStack>
         </YStack>

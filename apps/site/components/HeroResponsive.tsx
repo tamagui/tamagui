@@ -2,7 +2,7 @@ import { throttle } from '@github/mini-throttle'
 import { demoMedia } from '@tamagui/config-base'
 import { useOnIntersecting } from '@tamagui/demos'
 import { ChevronLeft, ChevronRight, Lock, MapPin, Monitor, Star } from '@tamagui/feather-icons'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import {
   Button,
@@ -17,6 +17,7 @@ import {
   Theme,
   XStack,
   YStack,
+  YStackProps,
   isTouchable,
   useDebounce,
   useGet,
@@ -27,6 +28,7 @@ import {
 import favicon from '../public/favicon.svg'
 import { Container, ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
+import { useTint } from './useTint'
 
 const breakpoints = [
   { name: 'xs', at: demoMedia[0] },
@@ -293,33 +295,45 @@ const Header = memo(() => {
     <YStack f={1} space="$3">
       <XStack>
         <HomeH2 ta="left" als="flex-start">
-          Regularly responsive
+          Easily responsive
         </HomeH2>
       </XStack>
 
       <HomeH3 ta="left" als="flex-start" p={0} maxWidth={450} theme="alt2">
-        Responsive inline props and hooks that compile to CSS at build-time.
+        Responsive props - even inline ones containing logic - are compiled to atomic CSS on web, or
+        hooks on native.
       </HomeH3>
     </YStack>
   )
 })
+
+const SafariFrame = ({ children, ...props }: YStackProps) => {
+  const { tint } = useTint()
+  return (
+    <YStack
+      theme={tint}
+      className="unselectable"
+      contain="paint layout"
+      elevation="$6"
+      f={1}
+      ov="hidden"
+      br="$4"
+      boc="$borderColor"
+      borderWidth={1}
+      w="99%"
+      {...props}
+    >
+      {useMemo(() => children, [children])}
+    </YStack>
+  )
+}
 
 export const Safari = memo(
   ({ isSmall, shouldLoad }: { isSmall?: boolean; shouldLoad?: boolean }) => {
     const [isLoaded, setIsLoaded] = useState(false)
 
     return (
-      <YStack
-        className="unselectable"
-        contain="paint layout"
-        elevation="$6"
-        f={1}
-        ov="hidden"
-        br="$4"
-        boc="$borderColor"
-        borderWidth={1}
-        w="99%"
-      >
+      <SafariFrame>
         <YStack bc="$background" px="$4" jc="center" borderBottomWidth={0} h={50}>
           <XStack pos="relative" ai="center" space="$4">
             <XStack space="$2">
@@ -451,7 +465,7 @@ export const Safari = memo(
             </YStack>
           </YStack>
         </YStack>
-      </YStack>
+      </SafariFrame>
     )
   }
 )

@@ -77,7 +77,8 @@ export const compilationCode = [
         {
           name: 'app.tsx',
           language: 'tsx',
-          code: `import { styled, Stack, Text } from '@tamagui/core'
+          code: `import { styled, Stack } from '@tamagui/core'
+import { Heading } from './Heading'
 
 const App = () => (
   <Stack px="$2" w={550} $gtSm={{ px: '$6' }}>
@@ -85,9 +86,15 @@ const App = () => (
       Lorem ipsum dolor.
     </Text>
   </Stack>
-)
+)`,
+        },
 
-const Heading = styled(Text, {
+        {
+          name: 'heading.tsx',
+          language: 'tsx',
+          code: `import { styled, Text } from '@tamagui/core'
+
+export const Heading = styled(Text, {
   tag: 'h1',
   c: '$color',
   bc: '$background',

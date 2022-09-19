@@ -31,11 +31,11 @@ export function HeroPerformance() {
       <YStack ai="center" zi={1} space="$4">
         <YStack ai="center" space="$2">
           <HomeH2 size="$10" maw={500} ref={ref}>
-            <span className="rainbow clip-text">Super</span>fast
+            Automatically fast
           </HomeH2>
           <HomeH3>
-            Partial evaluation & tree flattening extract nearly every inline style at build-time,
-            turning complex views into a div.
+            Partial evaluation + tree flattening extract nearly all inline styles at build-time,
+            greatly reducing render depth and time.
           </HomeH3>
         </YStack>
 

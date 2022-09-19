@@ -1,14 +1,17 @@
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { useIsIntersecting } from '@tamagui/demos'
+import { tints } from '@tamagui/logo'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { toHtml } from 'hast-util-to-html'
 import rangeParser from 'parse-numeric-range'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
+import { useWindowDimensions } from 'react-native'
 import { refractor } from 'refractor'
 import css from 'refractor/lang/css'
 import tsx from 'refractor/lang/tsx'
-import { Separator, XStack, YStack, styled } from 'tamagui'
+import { GetProps, Separator, TamaguiElement, ThemeName, XStack, YStack, styled } from 'tamagui'
 
 import { CocentricCircles } from '../components/CocentricCircles'
 import { ContainerLarge } from '../components/Container'
@@ -22,7 +25,7 @@ import { HeroPerformance } from '../components/HeroPerformance'
 import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { InstallInput } from '../components/InstallInput'
-import { useTint } from '../components/useTint'
+import { setTintIndex, useTint } from '../components/useTint'
 import { animationCode, compilationCode } from '../lib/codeExamples'
 import rehypeHighlightLine from '../lib/rehype-highlight-line'
 import rehypeHighlightWord from '../lib/rehype-highlight-word'
@@ -32,8 +35,11 @@ export default function Home({ animationCode, compilationExamples }) {
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <HeaderFloating />
-      <Hero />
+      <TintSection index={3} p={0}>
+        <Hero />
+      </TintSection>
       <Separator />
+      <Glow />
       <ContainerLarge contain="layout" fd="column" pos="relative" zi={100000}>
         <XStack als="center" pos="absolute" y={-28} jc="center" ai="center">
           <InstallInput />
@@ -43,35 +49,39 @@ export default function Home({ animationCode, compilationExamples }) {
         <HeroBelow />
       </YStack>
       <Separator />
-      <Section contain="paint layout" zi={1000}>
+      <TintSection index={0} contain="paint layout" zi={1000}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleCode examples={compilationExamples} />
-      </Section>
-      <Section contain="paint layout" pos="relative" zi={100}>
+      </TintSection>
+      <TintSection index={1} contain="paint layout" pos="relative" zi={100}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleThemes />
-      </Section>
-      <Section pb="$0" zi={10}>
+      </TintSection>
+      <TintSection index={2} mb={-120} zIndex={1000}>
         <HeroResponsive />
-      </Section>
-      <SectionTinted gradient bubble>
-        <HeroPerformance />
-      </SectionTinted>
-      <Section bbw={1} bbc="$borderColor">
-        <FeaturesGrid />
-        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
-      </Section>
-      <SectionTinted noBorderTop zi={100}>
+      </TintSection>
+      <TintSection p={0} index={3} zIndex={0}>
+        <SectionTinted gradient bubble>
+          <HeroPerformance />
+        </SectionTinted>
+      </TintSection>
+      <TintSection index={4} zi={100}>
         <YStack fullscreen className="bg-grid mask-gradient-up" />
         <HeroExampleAnimations animationCode={animationCode} />
-      </SectionTinted>
-      <SectionTinted my="$-4" zi={1000} bubble gradient>
-        <HeroTypography />
-      </SectionTinted>
-      <Section zi={10}>
+      </TintSection>
+      <TintSection index={4} zi={-1}>
+        <FeaturesGrid />
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
+      </TintSection>
+      <TintSection p={0} index={5} zIndex={0}>
+        <SectionTinted my="$-4" zi={1000} bubble gradient>
+          <HeroTypography />
+        </SectionTinted>
+      </TintSection>
+      <TintSection themed index={6} zi={10}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleProps />
-      </Section>
+      </TintSection>
       <Section zi={0}>
         <YStack pe="none" zi={-1} pos="absolute" o={0.1} top={-615} left={0} right={0} ai="center">
           <CocentricCircles />
@@ -79,6 +89,51 @@ export default function Home({ animationCode, compilationExamples }) {
         <Community />
       </Section>
     </>
+  )
+}
+
+const Glow = () => {
+  const { tint } = useTint()
+
+  return (
+    <YStack
+      fullscreen
+      bottom="auto"
+      pe="none"
+      overflow="hidden"
+      animation="lazy"
+      contain="strict"
+      h="100vh"
+      zi={-1}
+      y={typeof document !== 'undefined' ? document.documentElement?.scrollTop ?? 0 : 0}
+    >
+      <YStack theme={tint} o={0.5} fullscreen className="hero-blur" />
+    </YStack>
+  )
+}
+
+const TintSection = ({
+  children,
+  index,
+  themed,
+  ...props
+}: SectionProps & { themed?: boolean; index: number }) => {
+  const ref = useRef<HTMLElement>(null)
+  const { tint } = useTint()
+  const isIntersecting = useIsIntersecting(ref, {
+    threshold: 0.6,
+  })
+
+  useEffect(() => {
+    if (isIntersecting) {
+      setTintIndex(index)
+    }
+  }, [index, isIntersecting])
+
+  return (
+    <Section ref={ref} {...(themed && { theme: tint })} {...props}>
+      {useMemo(() => children, [children])}
+    </Section>
   )
 }
 
@@ -97,6 +152,8 @@ const Section = styled(YStack, {
     },
   } as const,
 })
+
+type SectionProps = GetProps<typeof Section>
 
 const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTop, ...props }: any) => {
   const { tint } = useTint()
@@ -121,6 +178,7 @@ const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTop, ...p
     >
       <YStack
         fullscreen
+        className="all ease-in ms1000"
         zi={-1}
         bc={gradient ? `$${tint}2` : null}
         {...(!bubble && {

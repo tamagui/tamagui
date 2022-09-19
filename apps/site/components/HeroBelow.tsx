@@ -13,9 +13,10 @@ import { useTint } from './useTint'
 const TitleLink = ({ href, children }: { children: any; href: string }) => {
   return (
     <Link passHref href={href}>
-      <H3 cursor="pointer" tag="a" fontFamily="$mono" color="$color" size="$6" my="$5">
+      <H3 cursor="pointer" tag="a" color="$color" size="$6" my="$5">
         <CodeInline
           cursor="pointer"
+          fontFamily="$silkscreen"
           hoverStyle={{
             backgroundColor: '$backgroundStrong',
           }}
@@ -51,7 +52,7 @@ export const HeroBelowContent = memo(() => {
         flexWrap="nowrap"
         px="$2"
         mb={-8}
-        py="$4"
+        py="$2"
         $sm={{ flexDirection: 'column' }}
       >
         <Section onHoverIn={() => setHovered(0)}>
@@ -60,9 +61,8 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/core/configuration">Core</TitleLink>
           <Paragraph o={hovered === 0 ? 1 : 0.75} size="$4" theme="alt1">
-            A lightweight design-system library for React Native (and Web) that takes tokens,
-            themes, fonts and more and gives you a typed <CodeInline>styled</CodeInline>
-            function with all sorts of goodies.
+            A lightweight design-system library for React Native & Web with tokens, themes, fonts
+            and more + a nice typed <CodeInline>styled</CodeInline> utility.
           </Paragraph>
         </Section>
 
@@ -83,8 +83,8 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/intro/benchmarks">Static</TitleLink>
           <Paragraph o={hovered === 2 ? 1 : 0.75} size="$4" theme="alt1">
-            Plugs into many Webpack, Vite, Metro and more to compile-time optimize styles and take
-            work out of render functions using partial evaluation and tree flattening.
+            Compile-time optimize styles both static and inline, with partial evaluation and tree
+            flattening. Plugins for Webpack, Vite, Metro & more.
           </Paragraph>
         </Section>
       </XStack>

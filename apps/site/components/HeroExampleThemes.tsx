@@ -1,18 +1,28 @@
-import { useOnIntersecting } from '@tamagui/demos'
+import { useIsIntersecting, useOnIntersecting } from '@tamagui/demos'
+import { tints } from '@tamagui/logo'
 import { useThemeSetting } from '@tamagui/next-theme'
 import React from 'react'
 import { SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Theme, ThemeName, XGroup, XStack, YStack, debounce, useEvent, useGet } from 'tamagui'
+import {
+  Theme,
+  ThemeName,
+  XGroup,
+  XStack,
+  YStack,
+  debounce,
+  useDebounce,
+  useEvent,
+  useGet,
+} from 'tamagui'
 
 import { ActiveCircle } from './ActiveCircle'
 import { ContainerLarge } from './Container'
+import { HeroGlow } from './Hero'
 import { HomeH2, HomeH3 } from './HomeH2'
 import { MediaPlayer } from './MediaPlayer'
+import { ThemeTint, setTintIndex } from './useTint'
 
-const themes: (ThemeName | null)[][] = [
-  ['red', 'pink', 'green', 'yellow', 'purple', 'blue'],
-  [null, 'alt1', 'alt2'],
-]
+const themes: (ThemeName | null)[][] = [tints, [null, 'alt1', 'alt2']]
 
 const themeCombos: string[] = []
 for (let i = 0; i < themes[0].length; i++) {
@@ -38,19 +48,33 @@ let hasScrolledOnce = false
 
 export function HeroExampleThemes() {
   const themeSetting = useThemeSetting()
+
   const [activeI, setActiveI] = useState([0, 0])
+  const activeIndex = splitToFlat(activeI)
+
   const [curColorI, curShadeI] = activeI
   const [theme, setSelTheme] = useState('')
-  const nextIndex = splitToFlat(activeI)
   const colorName = themes[0][curColorI]
   const scrollView = useRef<HTMLElement | null>(null)
   const [scrollLock, setScrollLock] = useState<null | 'shouldAnimate' | 'animate' | 'scroll'>(null)
   const getLock = useGet(scrollLock)
+  const setTintIndexDebounce = useDebounce(setTintIndex, 100)
 
   const updateActiveI = (to: SetStateAction<number[]>) => {
     setScrollLock('shouldAnimate')
     setActiveI(to)
   }
+
+  const isIntersecting = useIsIntersecting(scrollView, {
+    threshold: 0.5,
+  })
+
+  const tintIndex = Math.floor(activeIndex / 4)
+  useEffect(() => {
+    if (isIntersecting) {
+      setTintIndexDebounce(tintIndex)
+    }
+  }, [isIntersecting, setTintIndexDebounce, tintIndex])
 
   const move = (dir = 0) => {
     updateActiveI((prev) => {
@@ -81,8 +105,8 @@ export function HeroExampleThemes() {
 
   useEffect(() => {
     if (scrollLock !== 'shouldAnimate') return
-    scrollToIndex(nextIndex)
-  }, [nextIndex, scrollLock, scrollToIndex])
+    scrollToIndex(activeIndex)
+  }, [activeIndex, scrollLock, scrollToIndex])
 
   if (typeof document !== 'undefined') {
     // scroll lock unset
@@ -130,6 +154,15 @@ export function HeroExampleThemes() {
     }
   })
 
+  const moveToIndexDbc = useDebounce(moveToIndex, 100)
+
+  useEffect(() => {
+    // @ts-ignore
+    return onChangeTint((index: nunber) => {
+      moveToIndexDbc(index * 3)
+    })
+  }, [])
+
   useEffect(() => {
     if (typeof themeSetting.current === 'boolean') return
     setSelTheme(
@@ -140,7 +173,7 @@ export function HeroExampleThemes() {
   }, [themeSetting])
 
   return (
-    <YStack>
+    <YStack pos="relative">
       {useMemo(() => {
         return (
           <ContainerLarge position="relative" space="$3">

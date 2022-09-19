@@ -1,5 +1,6 @@
 - 1.0
 
+  - animation="" types
   - input like button
   - <Button size="$2" $sm={{ size: '$8' }} /> size not overriding
   - <Button iconAfter={<YStack $sm={{ display: 'none' }} />}> space adding when iconAfter is display: none

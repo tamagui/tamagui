@@ -1,6 +1,8 @@
 import { tints } from '@tamagui/logo'
-import { useCallback, useEffect, useState } from 'react'
-import { ThemeName, useEvent } from 'tamagui'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Theme, ThemeName, useEvent } from 'tamagui'
+
+// TODO useSyncExternalStore
 
 // no localstorage because its not important to remember and causes a flicker
 // const tintVal = typeof localStorage !== 'undefined' ? localStorage.getItem('tint') : 0
@@ -11,43 +13,50 @@ let currentTint = initialTint
 
 const listeners = new Set<Function>()
 
-globalThis['onChangeTint'] = (listener) => {
+export const useTintListener = (listener: (cur: number) => void) => {
   listeners.add(listener)
   return () => {
     listeners.delete(listener)
   }
 }
 
+globalThis['onChangeTint'] = useTintListener
+
 export const useTint = () => {
   const [colorI, setColorI] = useState<number>(currentTint)
   const color = tints[colorI] as ThemeName
 
   useEffect(() => {
-    const updateVal = (next: number) => {
+    return useTintListener((next) => {
       currentTint = next
       setColorI(next)
-    }
-
-    listeners.add(updateVal)
-    return () => {
-      listeners.delete(updateVal)
-    }
+    })
   }, [])
 
   const nextIndex = (tints.indexOf(color) + 1) % tints.length
   const next = tints[nextIndex]
   const setTint = useEvent((next: ThemeName) => {
     const i = tints.indexOf(next as any)
-    // localStorage.setItem('tint', `${i}`)
-    setColorI(i)
-    listeners.forEach((x) => x(i))
+    setTintIndex(i)
   })
 
   return {
+    tintIndex: colorI,
     tint: color,
     setTint,
     setNextTint: () => {
       setTint(next)
     },
   } as const
+}
+
+export const ThemeTint = (props: { children: any }) => {
+  return <Theme name={useTint().tint}>{useMemo(() => props.children, [props.children])}</Theme>
+}
+
+export const setTintIndex = (index: number) => {
+  if (index === currentTint) return
+  console.trace('set', index)
+  currentTint = index
+  listeners.forEach((x) => x(index % tints.length))
 }
