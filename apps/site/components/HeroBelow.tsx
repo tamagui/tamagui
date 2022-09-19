@@ -40,7 +40,6 @@ export const HeroBelow = memo(() => {
 
 export const HeroBelowContent = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
-  console.log('hovered', hovered)
 
   return (
     <ContainerLarge>
@@ -69,24 +68,23 @@ export const HeroBelowContent = memo(() => {
 
         <Section onHoverIn={() => setHovered(1)}>
           <IconStack o={hovered === 1 ? 1 : 0.5} theme="purple_alt2">
-            <Cpu size={20} color="var(--colorHover)" />
+            <Layers size={20} color="var(--colorHover)" />
           </IconStack>
-          <TitleLink href="/docs/intro/benchmarks">Static</TitleLink>
+          <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
           <Paragraph o={hovered === 1 ? 1 : 0.75} size="$4" theme="alt1">
-            The <CodeInline>@tamagui/static</CodeInline> package plugs into many build tools and
-            compile-time optimizes your app on native and web, with CSS extraction, partial
-            evaluation and tree flattening.
+            A large universal UI kit built on top of Core with a complete set of composable
+            components, size scaling, themes, and more.
           </Paragraph>
         </Section>
 
         <Section onHoverIn={() => setHovered(2)}>
           <IconStack o={hovered === 2 ? 1 : 0.5} theme="green_alt2">
-            <Layers size={20} color="var(--colorHover)" />
+            <Cpu size={20} color="var(--colorHover)" />
           </IconStack>
-          <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
+          <TitleLink href="/docs/intro/benchmarks">Static</TitleLink>
           <Paragraph o={hovered === 2 ? 1 : 0.75} size="$4" theme="alt1">
-            A large universal UI kit built on top of Core and Static that features typed sizing
-            across every component, and Radix-style composable components.
+            Plugs into many Webpack, Vite, Metro and more to compile-time optimize styles and take
+            work out of render functions using partial evaluation and tree flattening.
           </Paragraph>
         </Section>
       </XStack>

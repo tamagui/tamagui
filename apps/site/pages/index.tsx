@@ -65,7 +65,7 @@ export default function Home({ animationCode, compilationExamples }) {
         <YStack fullscreen className="bg-grid mask-gradient-up" />
         <HeroExampleAnimations animationCode={animationCode} />
       </SectionTinted>
-      <SectionTinted bubble gradient>
+      <SectionTinted my="$-4" zi={1000} bubble gradient>
         <HeroTypography />
       </SectionTinted>
       <Section zi={10}>
