@@ -31,6 +31,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = ({
       <Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
       <ThemeInverse>
         <Tooltip.Content
+          zIndex={1000}
           enterStyle={{ x: 0, y: -8, opacity: 0, scale: 0.93 }}
           exitStyle={{ x: 0, y: -8, opacity: 0, scale: 0.93 }}
           x={0}
