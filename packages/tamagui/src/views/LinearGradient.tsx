@@ -1,4 +1,4 @@
-import { ColorTokens, getVariable, styled, themeable, useTheme } from '@tamagui/core'
+import { ColorTokens, ThemeTokens, getVariable, styled, themeable, useTheme } from '@tamagui/core'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -13,7 +13,7 @@ React['createElement']
 
 export type LinearGradientProps = Omit<ExpoLinearGradientProps, 'colors'> &
   Omit<YStackProps, 'children' | keyof ExpoLinearGradientProps> & {
-    colors?: (ColorTokens | (string & {}))[]
+    colors?: (ColorTokens | ThemeTokens | (string & {}))[]
   }
 
 export const LinearGradient: React.ForwardRefExoticComponent<

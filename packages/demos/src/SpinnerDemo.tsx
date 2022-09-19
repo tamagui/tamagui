@@ -1,4 +1,3 @@
-import React from 'react'
 import { Spinner, YStack } from 'tamagui'
 
 export function SpinnerDemo() {
