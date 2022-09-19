@@ -1,4 +1,4 @@
-import { ConfigListener, TamaguiInternalConfig } from './types'
+import { ConfigListener, TamaguiInternalConfig, ThemeParsed } from './types'
 
 let conf: TamaguiInternalConfig | null
 

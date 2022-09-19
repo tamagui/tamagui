@@ -12,7 +12,7 @@ import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
-import { CreateTamaguiProps, InferTamaguiConfig, TamaguiInternalConfig, ThemeObject } from './types'
+import { CreateTamaguiProps, InferTamaguiConfig, TamaguiInternalConfig, ThemeParsed } from './types'
 
 // config is re-run by the @tamagui/static, dont double validate
 const createdConfigs = new WeakMap<any, boolean>()
@@ -102,16 +102,16 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     // dedupe themes to avoid duplicate CSS generation
     type DedupedTheme = {
       names: string[]
-      theme: ThemeObject
+      theme: ThemeParsed
     }
     const dedupedThemes: {
       [key: string]: DedupedTheme
     } = {}
-    const existing = new WeakMap<ThemeObject, DedupedTheme>()
+    const existing = new WeakMap<ThemeParsed, DedupedTheme>()
 
     // first, de-dupe and parse them
     for (const themeName in themes) {
-      const rawTheme = themes[themeName]
+      const rawTheme = themes[themeName] as ThemeParsed
 
       // if existing, avoid
       if (existing.has(rawTheme)) {
@@ -162,6 +162,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     const css = cssRuleSets.join('\n')
 
     return {
+      // could improve types but we do ensureThemeVariable so its accurate
       themes,
       cssRuleSets,
       css,
@@ -188,7 +189,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     inverseShorthands: shorthands
       ? Object.fromEntries(Object.entries(shorthands).map(([k, v]) => [v, k]))
       : {},
-    themes: themeConfig.themes,
+    themes: themeConfig.themes as any,
     fontsParsed,
     themeConfig,
     tokensParsed,

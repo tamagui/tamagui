@@ -1,6 +1,6 @@
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
 import { Variable, variableToString } from '../createVariable'
-import { CreateTamaguiProps, ThemeObject } from '../types'
+import { CreateTamaguiProps, ThemeParsed } from '../types'
 import { tokensValueToVariable } from './registerCSSVariable'
 
 export function getThemeCSSRules({
@@ -11,7 +11,7 @@ export function getThemeCSSRules({
 }: {
   config: CreateTamaguiProps
   themeName: string
-  theme: ThemeObject
+  theme: ThemeParsed
   names: string[]
 }) {
   const cssRuleSets: string[] = []

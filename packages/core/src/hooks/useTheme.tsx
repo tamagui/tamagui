@@ -12,7 +12,7 @@ import {
   ThemeManagerContext,
   emptyManager,
 } from '../helpers/ThemeManager'
-import { ThemeName, ThemeObject } from '../types'
+import { ThemeName, ThemeParsed } from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
 import { useConstant } from './useConstant'
 import { useServerRef } from './useServerHooks'
@@ -38,7 +38,7 @@ export const useTheme = (
   componentName?: string,
   props?: ThemeProps,
   forceUpdate?: any
-): ThemeObject => {
+): ThemeParsed => {
   // TODO this can use useChangeThemeEffect almost ready
   if (isRSC) {
     const config = getConfig()
@@ -195,10 +195,10 @@ export const useChangeThemeEffect = (
   forceUpdateProp?: any,
   uuid?: Object
 ): {
-  themes: Record<string, ThemeObject>
+  themes: Record<string, ThemeParsed>
   themeManager: ThemeManager | null
   name: string
-  theme: ThemeObject | null
+  theme: ThemeParsed | null
   className?: string
 } => {
   const { themes } = getConfig()

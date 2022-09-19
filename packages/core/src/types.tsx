@@ -162,7 +162,12 @@ export type CreateTamaguiConfig<
   fonts: RemoveLanguagePostfixes<F>
   fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[]
   tokens: A
-  themes: B
+  // parsed
+  themes: {
+    [Name in keyof B]: {
+      [Key in keyof B[Name]]: Variable
+    }
+  }
   shorthands: C
   media: D
   animations: AnimationDriver<E>
@@ -230,13 +235,16 @@ export type GenericTamaguiConfig = CreateTamaguiConfig<
 >
 
 // since TamaguiConfig will be re-declared, these will all be typed globally
-export type ThemeObject = TamaguiConfig['themes'][keyof TamaguiConfig['themes']]
+export type ThemeKeys = keyof TamaguiConfig['themes']
+export type ThemeDefinition = TamaguiConfig['themes'][ThemeKeys]
+export type ThemeParsed = {
+  [key in ThemeKeys]: Variable
+}
 export type Tokens = TamaguiConfig['tokens']
 export type Shorthands = TamaguiConfig['shorthands']
 export type Media = TamaguiConfig['media']
 export type Themes = TamaguiConfig['themes']
 export type ThemeName = GetAltThemeNames<keyof Themes>
-export type ThemeKeys = keyof ThemeObject
 export type ThemeTokens = `$${ThemeKeys}`
 export type AnimationKeys = Omit<GetAnimationKeys<TamaguiConfig>, number>
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>
@@ -436,7 +444,7 @@ export type SizeTokens = GetTokenString<keyof Tokens['size']> | number
 export type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean
 export type ColorTokens =
   | GetTokenString<keyof Tokens['color']>
-  | GetTokenString<keyof ThemeObject>
+  | GetTokenString<keyof ThemeParsed>
   | CSSColorNames
 export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number
 export type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number
@@ -653,7 +661,7 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
 export type PropMapper = (
   key: string,
   value: any,
-  theme: ThemeObject,
+  theme: ThemeParsed,
   props: Record<string, any>,
   state: Partial<SplitStyleState>,
   languageContext?: FontLanguageProps,
