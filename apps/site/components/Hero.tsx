@@ -124,12 +124,17 @@ const HeroTop = memo(() => {
               fontFamily="$silkscreen"
               className="font-smooth"
               ta="left"
+              $sm={{
+                ls: -1,
+              }}
               $gtSm={{
                 ta: 'center',
                 size: '$8',
+                ls: 0,
               }}
               $gtMd={{
                 size: '$9',
+                ls: 0,
               }}
             >
               UI faster on React Native + Web
