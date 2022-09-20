@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'react-native'
+import { Button, View } from 'react-native'
 
 const benchmarks = ['Tamagui', 'ReactNative', 'NativeBase']
 
@@ -16,7 +16,6 @@ export const HomeScreen = ({ navigation }: any) => {
 const BenchButton = ({ name, navigation }) => {
   return (
     <Button
-      key={name}
       title={name}
       onPress={() => {
         // eslint-disable-next-line no-console

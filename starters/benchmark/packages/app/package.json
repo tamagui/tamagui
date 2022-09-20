@@ -1,6 +1,6 @@
 {
   "version": "0.0.0",
-  "name": "app",
+  "name": "@my/app",
   "main": "index.ts",
   "dependencies": {
     "@my/config": "*",

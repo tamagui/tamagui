@@ -1,15 +1,9 @@
-/** @type {import('next').NextConfig} */
 const withPlugins = require('next-compose-plugins')
-const { withTamagui } = require('@tamagui/next-plugin')
 const withTM = require('next-transpile-modules')
+const { withNativebase } = require('@native-base/next-adapter')
+const path = require('path')
 
-process.env.IGNORE_TS_CONFIG_PATHS = 'true'
-process.env.TAMAGUI_TARGET = 'web'
-
-const disableExtraction = process.env.NODE_ENV === 'development'
-if (disableExtraction) {
-  console.log('Disabling static extraction in development mode for better HMR')
-}
+const rnw = path.join(require.resolve('react-native-web'), '..', '..', '..')
 
 const transform = withPlugins([
   withTM([
@@ -19,18 +13,18 @@ const transform = withPlugins([
     'expo-constants',
     'expo-modules-core',
     '@my/config',
+    '@my/app',
   ]),
-  withTamagui({
-    config: './tamagui.config.ts',
-    components: ['tamagui', '@my/ui'],
-    importsWhitelist: ['constants.js', 'colors.js'],
-    logTimings: true,
-    useReactNativeWebLite: true,
-    disableExtraction,
-    shouldExtract: (path) => {
-      if (path.includes('packages/app')) {
-        return true
-      }
+  withNativebase({
+    nextConfig: {
+      webpack: (config, options) => {
+        config.resolve.alias = {
+          ...(config.resolve.alias || {}),
+          'react-native$': rnw,
+        }
+        config.resolve.extensions = ['.web.js', '.web.ts', '.web.tsx', ...config.resolve.extensions]
+        return config
+      },
     },
   }),
 ])
