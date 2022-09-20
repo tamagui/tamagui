@@ -143,13 +143,11 @@ span._display-1adg3ll > span._display-xoduu5 {
   );
 }
 
-@media (prefer-color-scheme: dark) {
-  .hero-blur {
-    background: radial-gradient(
-      var(--backgroundStrong) 0%,
-      transparent 75%
-    );
-  }
+.t_dark .hero-blur {
+  background: radial-gradient(
+    var(--backgroundStrong) 0%,
+    transparent 75%
+  );
 }
 
 
