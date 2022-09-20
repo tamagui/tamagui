@@ -1101,9 +1101,14 @@ export function createComponent<
       AnimatedView = tamaguiConfig.animations.View
     }
 
-    initialTheme =
-      initialTheme ||
-      proxyThemeVariables(conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]])
+    if (!initialTheme) {
+      const next = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
+      initialTheme = proxyThemeVariables(next)
+      if (!initialTheme && process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.log(`Warning: Missing theme`)
+      }
+    }
 
     // adds in user defined default props
     config = getConfig()
