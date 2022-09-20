@@ -60,7 +60,7 @@ export default declare(function snackBabelPlugin(
             return
           }
 
-          const hasImportedView = false
+          let hasImportedView = false
           const sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
           const firstComment = root.node.body[0]?.leadingComments?.[0]?.value?.trim() ?? ''
@@ -124,16 +124,15 @@ export default declare(function snackBabelPlugin(
               // it's flattening a plain <Paragraph>hello</Paragraph> which breaks things because themes
               // thinking it's not really worth the effort to do much compilation on native
               // for now just disable flatten as it can only run in narrow places on native
-              disableFlattening: true,
+              // disableFlattening: 'styled',
 
-              // getFlattenedNode({ isTextView }) {
-              //   console.log('FLATTENING')
-              //   if (!hasImportedView) {
-              //     hasImportedView = true
-              //     root.unshiftContainer('body', importNativeView())
-              //   }
-              //   return isTextView ? '__ReactNativeText' : '__ReactNativeView'
-              // },
+              getFlattenedNode({ isTextView }) {
+                if (!hasImportedView) {
+                  hasImportedView = true
+                  root.unshiftContainer('body', importNativeView())
+                }
+                return isTextView ? '__ReactNativeText' : '__ReactNativeView'
+              },
 
               onExtractTag(props) {
                 assertValidTag(props.node)
