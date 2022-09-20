@@ -216,6 +216,13 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         return obj
       }, {})
 
+    if (Object.keys(validComponents).length === 0) {
+      console.warn(`Warning: Tamagui didn't find any valid components (DEBUG=tamagui for more)`)
+      if (process.env.DEBUG === 'tamagui') {
+        console.log(`components`, Object.keys(components), components)
+      }
+    }
+
     if (shouldPrintDebug === 'verbose') {
       logger.info(`validComponents ${Object.keys(validComponents).join(', ')}`)
     }
@@ -248,12 +255,12 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       }
 
       if (isValidImport) {
-        const isValidComponent = node.specifiers.some((specifier) => {
-          const name = specifier.local.name
-          return !!(validComponents[name] || validHooks[name])
-        })
+        const names = node.specifiers.map((specifier) => specifier.local.name)
+        const isValidComponent = names.some((name) => !!(validComponents[name] || validHooks[name]))
         if (shouldPrintDebug === 'verbose') {
-          logger.info(`import from ${from} isValidComponent ${isValidComponent}`)
+          logger.info(
+            `import ${names.join(', ')} from ${from} isValidComponent ${isValidComponent}`
+          )
         }
         if (isValidComponent) {
           doesUseValidImport = true
