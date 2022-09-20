@@ -8,6 +8,7 @@
   "scripts": {
     "bench": "",
     "native": "cd apps/expo && yarn start",
+    "native:prod": "cd apps/expo && yarn start --no-dev --minify",
     "web": "cd apps/next && yarn next",
     "web:prod": "yarn workspace next-app build",
     "watch": "yarn workspaces foreach -pi run watch",

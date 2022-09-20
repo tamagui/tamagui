@@ -82,14 +82,12 @@ export function registerRequire() {
       // }
       return out
     } catch (err: any) {
-      if (SHOULD_DEBUG) {
-        // eslint-disable-next-line no-console
-        console.error(
-          `Tamagui failed requiring ${path} from your tamagui.config.ts file, ignoring\n`,
-          err.message,
-          err.stack
-        )
-      }
+      // eslint-disable-next-line no-console
+      console.error(
+        `Tamagui failed requiring ${path} from your tamagui.config.ts file, ignoring\n`,
+        err.message,
+        err.stack
+      )
       const max = process.env.TAMAGUI_MAX_ERRORS ? +process.env.TAMAGUI_MAX_ERRORS : 200
       if (++tries > max) {
         // eslint-disable-next-line no-console
