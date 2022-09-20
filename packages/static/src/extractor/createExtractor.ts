@@ -193,9 +193,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     const themeAccessListeners = new Set<AccessListener>()
     const defaultTheme = new Proxy(proxiedTheme, {
       get(target, key) {
-        if (key[0] === '$') {
-          themeAccessListeners.forEach((cb) => cb(String(key)))
-        }
+        themeAccessListeners.forEach((cb) => cb(String(key)))
         return Reflect.get(target, key)
       },
     })
@@ -410,7 +408,6 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           }
         }
 
-        // turn parsed styles into CSS
         const out = getSplitStyles(styles, Component.staticConfig, defaultTheme, {
           focus: false,
           hover: false,
@@ -519,7 +516,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             if (n.value === null) return true
             if (t.isStringLiteral(n.value)) return n.value.value as 'verbose'
             return false
-          })[0]
+          })[0] as boolean | 'verbose' | undefined
 
         if (debugPropValue) {
           shouldPrintDebug = debugPropValue
@@ -1382,6 +1379,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           const shouldWrapTheme = shouldFlatten && themeVal
 
           if (disableExtractVariables) {
+            // if it accesses any theme values during evaluation
             themeAccessListeners.add((key) => {
               shouldFlatten = false
               if (shouldPrintDebug) {
@@ -1391,8 +1389,12 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           }
 
           if (shouldPrintDebug) {
-            // prettier-ignore
-            logger.info([' - flatten?', objToStr({ hasSpread, shouldDeopt, shouldFlatten, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', [...inlined]].join(' '))
+            try {
+              // prettier-ignore
+              logger.info([' - flatten?', objToStr({ hasSpread, shouldDeopt, shouldFlatten, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', [...inlined]].join(' '))
+            } catch {
+              // ok
+            }
           }
 
           // wrap theme around children on flatten
@@ -1799,10 +1801,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                   fallbackProps: completeProps,
                 },
                 undefined,
-                props['debug']
+                undefined,
+                debugPropValue
               )
-
-              // logger.info('outout', out)
 
               const outStyle = {
                 ...out.style,

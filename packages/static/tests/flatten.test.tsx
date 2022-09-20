@@ -32,11 +32,48 @@ describe('flatten-tests', () => {
       }
     `)
     const code = output?.code ?? ''
-    expect(
-      code.includes(
-        `_stylev7m7fq={_sheet["0"]} _style1i9cxmd={media.sm ? _sheet["1"] : _sheet["2"]} _style1x8g24d={media.sm && isLoading ? _sheet["3"] : _sheet["4"]} _style17pi2jm={media.sm && !isLoading ? _sheet["5"] : _sheet["6"]}`
-      )
-    ).toBeTruthy()
+    expect(code).toMatchInlineSnapshot(`
+      "const _sheet = ReactNativeStyleSheet.create({
+        \\"0\\": {
+          \\"transform\\": [{
+            \\"translateY\\": 10
+          }, {
+            \\"translateX\\": 20
+          }, {
+            \\"rotate\\": \\"10deg\\"
+          }],
+          \\"flexDirection\\": \\"column\\",
+          \\"flexShrink\\": 0,
+          \\"alignItems\\": \\"stretch\\"
+        },
+        \\"1\\": {
+          \\"borderTopLeftRadius\\": 10,
+          \\"borderTopRightRadius\\": 10,
+          \\"borderBottomRightRadius\\": 10,
+          \\"borderBottomLeftRadius\\": 10,
+          \\"transform\\": [{
+            \\"scale\\": 2
+          }]
+        },
+        \\"2\\": {},
+        \\"3\\": {
+          \\"backgroundColor\\": \\"red\\"
+        },
+        \\"4\\": {},
+        \\"5\\": {
+          \\"backgroundColor\\": \\"blue\\"
+        },
+        \\"6\\": {}
+      });
+
+      import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+      import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+      import { YStack, useMedia } from 'tamagui';
+      export function Test(isLoading) {
+        const media = useMedia();
+        return <__ReactNativeView style={[_sheet[\\"0\\"], media.sm ? _sheet[\\"1\\"] : _sheet[\\"2\\"], media.sm && isLoading ? _sheet[\\"3\\"] : _sheet[\\"4\\"], media.sm && !isLoading ? _sheet[\\"5\\"] : _sheet[\\"6\\"]]} />;
+      }"
+    `)
 
     const startStr = `ReactNativeStyleSheet.create(`
     const start = code.indexOf(startStr)
@@ -56,6 +93,9 @@ describe('flatten-tests', () => {
           rotate: '10deg',
         },
       ],
+      flexDirection: 'column',
+      flexShrink: 0,
+      alignItems: 'stretch',
     })
 
     expect(sheetStyles['1']).toEqual({

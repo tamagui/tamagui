@@ -21,14 +21,76 @@ test('basic extraction', async () => {
   expect(code).toMatchInlineSnapshot(`
     "const _sheet = ReactNativeStyleSheet.create({
       \\"0\\": {
-        \\"backgroundColor\\": \\"red\\"
+        \\"backgroundColor\\": \\"red\\",
+        \\"flexDirection\\": \\"column\\",
+        \\"flexShrink\\": 0,
+        \\"alignItems\\": \\"stretch\\"
       }
     });
 
     import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+    import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { YStack } from 'tamagui';
     export function Test() {
-      return <YStack _style1jujyhc={_sheet[\\"0\\"]} />;
+      return <__ReactNativeView style={[_sheet[\\"0\\"]]} />;
+    }"
+  `)
+})
+
+test('theme value extraction should work when no theme variables used', async () => {
+  // here we override default "$color" so it should flatten totally
+  const output = await extractBabel(`
+    import { Paragraph } from 'tamagui'
+    export function Test() {
+      return (
+        <Paragraph color="red">hello world</Paragraph>
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  expect(code).toMatchInlineSnapshot(`
+    "const _sheet = ReactNativeStyleSheet.create({
+      \\"0\\": {
+        \\"display\\": \\"flex\\"
+      },
+      \\"1\\": {
+        \\"color\\": \\"red\\"
+      }
+    });
+
+    import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+    import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+    import { Paragraph } from 'tamagui';
+    export function Test() {
+      return <__ReactNativeText fontFamily={\\"$body\\"} size={\\"$4\\"} style={[_sheet[\\"0\\"], _sheet[\\"1\\"]]}>hello world</__ReactNativeText>;
+    }"
+  `)
+})
+
+test('theme value extraction should NOT work when theme variables used', async () => {
+  // here we DO NOT override default "$color" so it WONT flatten
+  const output = await extractBabel(`
+    import { Paragraph } from 'tamagui'
+    export function Test() {
+      return (
+        <Paragraph>hello world</Paragraph>
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  expect(code).toMatchInlineSnapshot(`
+    "const _sheet = ReactNativeStyleSheet.create({
+      \\"0\\": {
+        \\"display\\": \\"flex\\"
+      },
+      \\"1\\": {}
+    });
+
+    import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+    import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+    import { Paragraph } from 'tamagui';
+    export function Test() {
+      return <Paragraph _style1lkilf={_sheet[\\"0\\"]} fontFamily={\\"$body\\"} size={\\"$4\\"} _style31e={_sheet[\\"1\\"]}>hello world</Paragraph>;
     }"
   `)
 })
@@ -49,23 +111,34 @@ test('basic conditional extraction', async () => {
   expect(code).toMatchInlineSnapshot(`
     "const _sheet = ReactNativeStyleSheet.create({
       \\"0\\": {
-        \\"backgroundColor\\": \\"red\\"
+        \\"flexDirection\\": \\"column\\",
+        \\"flexShrink\\": 0,
+        \\"alignItems\\": \\"stretch\\"
       },
       \\"1\\": {
-        \\"backgroundColor\\": \\"blue\\"
-      },
-      \\"2\\": {
         \\"backgroundColor\\": \\"red\\"
       },
-      \\"3\\": {}
+      \\"2\\": {
+        \\"backgroundColor\\": \\"blue\\"
+      },
+      \\"3\\": {
+        \\"flexDirection\\": \\"column\\",
+        \\"flexShrink\\": 0,
+        \\"alignItems\\": \\"stretch\\"
+      },
+      \\"4\\": {
+        \\"backgroundColor\\": \\"red\\"
+      },
+      \\"5\\": {}
     });
 
     import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+    import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { YStack } from 'tamagui';
     export function Test() {
       return <>
-              <YStack _stylelabka6={x ? _sheet[\\"0\\"] : _sheet[\\"1\\"]} />
-              <YStack _style1x8g24d={x ? _sheet[\\"2\\"] : _sheet[\\"3\\"]} />
+              <__ReactNativeView style={[_sheet[\\"0\\"], x ? _sheet[\\"1\\"] : _sheet[\\"2\\"]]} />
+              <__ReactNativeView style={[_sheet[\\"3\\"], x ? _sheet[\\"4\\"] : _sheet[\\"5\\"]]} />
             </>;
     }"
   `)
@@ -89,16 +162,21 @@ test('flat transform props', async () => {
   expect(code).toMatchInlineSnapshot(`
     "const _sheet = ReactNativeStyleSheet.create({
       \\"0\\": {
+        \\"flexDirection\\": \\"column\\",
+        \\"flexShrink\\": 0,
+        \\"alignItems\\": \\"stretch\\"
+      },
+      \\"1\\": {
         \\"transform\\": [{
           \\"scale\\": 1
         }]
       },
-      \\"1\\": {
+      \\"2\\": {
         \\"transform\\": [{
           \\"scale\\": 2
         }]
       },
-      \\"2\\": {
+      \\"3\\": {
         \\"transform\\": [{
           \\"translateX\\": 10
         }, {
@@ -110,9 +188,10 @@ test('flat transform props', async () => {
     });
 
     import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+    import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { YStack } from 'tamagui';
     export function Test(isLoading) {
-      return <YStack _style1rhtpsq={isLoading ? _sheet[\\"0\\"] : _sheet[\\"1\\"]} _style47lnc6={_sheet[\\"2\\"]} />;
+      return <__ReactNativeView style={[_sheet[\\"0\\"], isLoading ? _sheet[\\"1\\"] : _sheet[\\"2\\"], _sheet[\\"3\\"]]} />;
     }"
   `)
 })
@@ -153,6 +232,7 @@ test('handles style order merge properly', async () => {
     });
 
     import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+    import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { YStack } from 'tamagui';
     export function Test(props) {
       return <YStack _style1rhtpsq={props.isLoading ? _sheet[\\"0\\"] : _sheet[\\"1\\"]} _style31e={_sheet[\\"2\\"]} {...props} _style9zfgt4={_sheet[\\"3\\"]} />;
