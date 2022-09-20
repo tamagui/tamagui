@@ -31,7 +31,7 @@ export function UserDetailScreen({ route }: any) {
     <ScrollView>
       <Text>{time}ms</Text>
       <Bench.Provider>
-        {data.map((item) => {
+        {[...data, ...data].map((item) => {
           return <Bench.ListItem key={item.id} item={item} />
         })}
       </Bench.Provider>

@@ -249,6 +249,10 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
 
       const components = loadComponents(props.components)
 
+      if (process.env.DEBUG === 'tamagui') {
+        console.log(`components`, components)
+      }
+
       // undo shims
       process.env.IS_STATIC = undefined
 

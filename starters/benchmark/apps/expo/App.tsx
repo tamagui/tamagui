@@ -1,7 +1,7 @@
 import 'expo-dev-client'
 import React from 'react'
-import { NativeNavigation } from 'app/navigation/native'
-import { Provider } from 'app/provider'
+import { NativeNavigation } from '@my/app/navigation/native'
+import { Provider } from '@my/app/provider'
 import { useFonts } from 'expo-font'
 
 export default function App() {

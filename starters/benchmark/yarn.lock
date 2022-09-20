@@ -6717,13 +6717,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"array-find-index@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "array-find-index@npm:1.0.2"
-  checksum: aac128bf369e1ac6c06ff0bb330788371c0e256f71279fb92d745e26fb4b9db8920e485b4ec25e841c93146bf71a34dcdbcefa115e7e0f96927a214d237b7081
-  languageName: node
-  linkType: hard
-
 "array-includes@npm:^3.1.4":
   version: 3.1.5
   resolution: "array-includes@npm:3.1.5"
@@ -10381,7 +10374,7 @@ __metadata:
     react-native-safe-area-context: ^4.3.1
     react-native-screens: ^3.15.0
     react-native-svg: ^12.4.3
-    react-native-web: ~0.18.7
+    react-native-web: 0.18.7
     typescript: ^4.7.4
   languageName: unknown
   linkType: soft
@@ -12331,7 +12324,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inline-style-prefixer@npm:^6.0.0, inline-style-prefixer@npm:^6.0.1":
+"inline-style-prefixer@npm:^6.0.1":
   version: 6.0.1
   resolution: "inline-style-prefixer@npm:6.0.1"
   dependencies:
@@ -16893,7 +16886,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -17375,43 +17368,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-web@npm:0.17.7":
-  version: 0.17.7
-  resolution: "react-native-web@npm:0.17.7"
-  dependencies:
-    array-find-index: ^1.0.2
-    create-react-class: ^15.7.0
-    fbjs: ^3.0.0
-    hyphenate-style-name: ^1.0.4
-    inline-style-prefixer: ^6.0.0
-    normalize-css-color: ^1.0.2
-    prop-types: ^15.6.0
-  peerDependencies:
-    react: ">=17.0.1"
-    react-dom: ">=17.0.1"
-  checksum: 9a32073d18e12f7d0e77befc0489f07a60e4aea9b7d6da9228387f488956b8f3e04eff02102f70bc427d8ee5047b6f393dc6cb4b3d34501504b9799344054e34
-  languageName: node
-  linkType: hard
-
-"react-native-web@npm:0.18.6":
-  version: 0.18.6
-  resolution: "react-native-web@npm:0.18.6"
-  dependencies:
-    "@babel/runtime": ^7.18.6
-    create-react-class: ^15.7.0
-    fbjs: ^3.0.4
-    inline-style-prefixer: ^6.0.1
-    normalize-css-color: ^1.0.2
-    postcss-value-parser: ^4.2.0
-    styleq: ^0.1.2
-  peerDependencies:
-    react: ^17.0.2
-    react-dom: ^17.0.2
-  checksum: 6d12e5cc69bc9350519840ba661fc0e66a55834e3e3e43bdb76295e23ef6421064e9dfe4d6921144eb071be3657e3646b218093d5d6baccde10e082c1f138838
-  languageName: node
-  linkType: hard
-
-"react-native-web@npm:~0.18.7":
+"react-native-web@npm:0.18.9":
   version: 0.18.9
   resolution: "react-native-web@npm:0.18.9"
   dependencies:

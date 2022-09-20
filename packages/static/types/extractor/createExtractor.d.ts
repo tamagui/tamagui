@@ -12,16 +12,16 @@ export declare function createExtractor({ logger }?: ExtractorOptions): {
     cleanupBeforeExit: typeof cleanupBeforeExit;
     loadTamagui: (props: TamaguiOptions) => Promise<TamaguiProjectInfo>;
     loadTamaguiSync: (props: TamaguiOptions) => TamaguiProjectInfo;
-    getTamagui(): import("@tamagui/core-node").TamaguiInternalConfig<import("@tamagui/core-node").CreateTokens<import("@tamagui/core-node").VariableVal>, {
+    getTamagui(): import("@tamagui/core-node").TamaguiInternalConfig<import("@tamagui/core-node").CreateTokens<any>, {
         [key: string]: Partial<import("@tamagui/core-node").TamaguiBaseTheme> & {
-            [key: string]: import("@tamagui/core-node").VariableVal;
+            [key: string]: any;
         };
     }, {}, {
         [key: string]: {
             [key: string]: string | number;
         };
     }, {
-        [key: string]: string | {
+        [key: string]: string | any[] | {
             [key: string]: any;
         };
     }, import("@tamagui/core-node").GenericFonts> | undefined;

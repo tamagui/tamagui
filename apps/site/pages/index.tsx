@@ -44,7 +44,7 @@ export default function Home({ animationCode, compilationExamples }) {
         </XStack>
       </ContainerLarge>
       <YStack pos="relative" zi={1000} elevation="$1" py="$8" pb="$10">
-        <YStack fullscreen bc="$color1" zi={-1} o={0.25} $light={{}} />
+        <YStack fullscreen bc="$color1" zi={-1} o={0.25} />
         <HeroBelow />
       </YStack>
       <Glow />

@@ -1,8 +1,7 @@
-import { ChevronRight, Code, Compass, Cpu, Layers } from '@tamagui/feather-icons'
+import { ChevronRight, Code, Cpu, Layers } from '@tamagui/feather-icons'
 import Link from 'next/link'
-import React from 'react'
 import { memo } from 'react'
-import { H3, Paragraph, Theme, XStack, YStack, YStackProps, getTokens, styled } from 'tamagui'
+import { H3, Paragraph, Theme, XStack, YStack, YStackProps } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'
@@ -10,7 +9,7 @@ import { useHeroHovered } from './heroState'
 import { IconStack } from './IconStack'
 import { useTint } from './useTint'
 
-const TitleLink = ({ href, children, ...props }: { children: any; href: string }) => {
+const TitleLink = ({ href, children, ...props }: any) => {
   return (
     <Link passHref href={href}>
       <H3 cursor="pointer" tag="a" color="$color" size="$6" my="$5">
