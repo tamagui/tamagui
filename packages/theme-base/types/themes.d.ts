@@ -22,6 +22,18 @@ interface SubTheme {
     borderColorHover: Variable<any> | string;
     borderColorPress: Variable<any> | string;
     borderColorFocus: Variable<any> | string;
+    color1: Variable<any> | string;
+    color2: Variable<any> | string;
+    color3: Variable<any> | string;
+    color4: Variable<any> | string;
+    color5: Variable<any> | string;
+    color6: Variable<any> | string;
+    color7: Variable<any> | string;
+    color8: Variable<any> | string;
+    color9: Variable<any> | string;
+    color10: Variable<any> | string;
+    color11: Variable<any> | string;
+    color12: Variable<any> | string;
 }
 declare type BaseTheme = {
     [key in keyof typeof lightColors | keyof SubTheme]: Variable<string>;
