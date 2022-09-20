@@ -236,7 +236,7 @@ export default function Community({ frontmatters }) {
                 </YStack>
               </Link>
 
-              <Link passHref href="https://github.com/QuestPortal">
+              <Link passHref href="https://www.questportal.com">
                 <YStack
                   cursor="pointer"
                   target="_blank"
@@ -250,7 +250,7 @@ export default function Community({ frontmatters }) {
                   <Image
                     resizeMethod="resize"
                     resizeMode="contain"
-                    accessibilityLabel="QuestPortal sponsor"
+                    accessibilityLabel="Quest Portal"
                     width={540 * 0.4}
                     height={162 * 0.4}
                     src={'/sponsors/quest-portal.png'}
