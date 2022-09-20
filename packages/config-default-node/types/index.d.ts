@@ -8,7 +8,7 @@ export declare function getDefaultTamaguiConfig(): TamaguiInternalConfig<import(
         [key: string]: string | number;
     };
 }, {
-    [key: string]: string | {
+    [key: string]: string | any[] | {
         [key: string]: any;
     };
 }, import("@tamagui/core-node").GenericFonts>;
