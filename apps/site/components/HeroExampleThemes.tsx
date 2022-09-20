@@ -1,7 +1,6 @@
 import { useIsIntersecting, useOnIntersecting } from '@tamagui/demos'
 import { tints } from '@tamagui/logo'
 import { useThemeSetting } from '@tamagui/next-theme'
-import React from 'react'
 import { SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import {
   Theme,
@@ -17,10 +16,9 @@ import {
 
 import { ActiveCircle } from './ActiveCircle'
 import { ContainerLarge } from './Container'
-import { HeroGlow } from './Hero'
 import { HomeH2, HomeH3 } from './HomeH2'
 import { MediaPlayer } from './MediaPlayer'
-import { ThemeTint, setTintIndex } from './useTint'
+import { setTintIndex } from './useTint'
 
 const themes: (ThemeName | null)[][] = [tints, [null, 'alt1', 'alt2']]
 

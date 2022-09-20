@@ -38,17 +38,16 @@ export default function Home({ animationCode, compilationExamples }) {
       <TintSection index={3} p={0}>
         <Hero />
       </TintSection>
-      <Separator />
-      <Glow />
       <ContainerLarge contain="layout" fd="column" pos="relative" zi={100000}>
         <XStack als="center" pos="absolute" y={-28} jc="center" ai="center">
           <InstallInput />
         </XStack>
       </ContainerLarge>
-      <YStack pos="relative" zi={2000000} elevation="$1" py="$8" pb="$10">
+      <YStack pos="relative" zi={1000} elevation="$1" py="$8" pb="$10">
+        <YStack fullscreen bc="$color1" zi={-1} o={0.25} $light={{}} />
         <HeroBelow />
       </YStack>
-      <Separator />
+      <Glow />
       <TintSection index={0} contain="paint layout" zi={1000}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleCode examples={compilationExamples} />

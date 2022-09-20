@@ -38,8 +38,7 @@
 
 <Menu />
 
-- borrow from radix
-  - https://www.radix-ui.com/docs/primitives/components/dropdown-menu
+- https://www.radix-ui.com/docs/primitives/components/dropdown-menu
 - basically a popover + mouse helpers + built in item element
 - don't need sub-menu for first iteration but... could if it's easier to at once
 - floating-ui has helpers for this too
@@ -80,6 +79,7 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - media `$light` and `$dark` for overrides
   - built in jsx => css converter
   - `tag` => `as` (keep fallback around as deprecated)
     - `as={['a', { ...props }]}`

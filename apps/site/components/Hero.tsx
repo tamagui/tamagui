@@ -1,6 +1,6 @@
 import { ArrowRight } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
-import { memo, useCallback } from 'react'
+import { memo } from 'react'
 import {
   Button,
   ButtonText,
@@ -22,10 +22,6 @@ import { GithubIcon } from './GithubIcon'
 import { Header } from './Header'
 import { useHeroHovered } from './heroState'
 import { useTint } from './useTint'
-
-export const HeroGlow = () => {
-  return <YStack o={0.4} zi={-1} pos="absolute" t={0} l={0} r={0} h={2000} className="hero-blur" />
-}
 
 export function Hero() {
   const { tint } = useTint()
