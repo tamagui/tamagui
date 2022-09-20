@@ -8,16 +8,11 @@ module.exports = function (api) {
       [
         '@tamagui/babel-plugin',
         {
-          components: ['tamagui'],
+          components: ['@my/ui', 'tamagui'],
           config: './tamagui.config.ts',
         },
       ],
-      [
-        'transform-inline-environment-variables',
-        {
-          include: 'TAMAGUI_TARGET',
-        },
-      ],
+      'transform-inline-environment-variables',
     ],
   }
 }

@@ -1,3 +1,4 @@
+//! debug-verbose
 import { TamaguiProvider, XStack, YStack, Image, Text } from '@my/ui'
 import { Icon } from './ListIcon'
 import config from '../../tamagui.config'
@@ -13,6 +14,7 @@ export const ListItem = (item: any) => {
     <XStack
       bw={1}
       bc="$background"
+      debug="verbose"
       p="$3"
       h={88}
       boc="$borderColor"
@@ -52,11 +54,11 @@ export const ListItem = (item: any) => {
 
 function Label({ text }: { text: string }) {
   return (
-    <XStack h={6} px={2} py={1} bg="brand.black" mr={2} borderRadius="4" alignItems="center">
+    <XStack h={6} px={2} py={1} bc="$background" mr={2} borderRadius={4} alignItems="center">
       <YStack mr={1}>
         <Icon />
       </YStack>
-      <Text fontSize="xs" fontWeight="bold" lineHeight="14px" ellipse>
+      <Text fontSize="xs" fontWeight="bold" lineHeight={14} ellipse>
         {text}
       </Text>
     </XStack>

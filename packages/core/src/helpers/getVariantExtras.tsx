@@ -1,5 +1,5 @@
 import { getConfig } from '../config'
-import { GenericFonts, StaticConfig } from '../types'
+import { GenericFonts } from '../types'
 import { LanguageContextType } from '../views/FontLanguage.types'
 
 const extrasCache = new WeakMap()
@@ -17,9 +17,10 @@ export function getVariantExtras(
     return extrasCache.get(props)
   }
 
-  const fonts = languageContext
-    ? getFontsForLanguage(conf.fontsParsed, languageContext)
-    : conf.fontsParsed
+  let fonts = conf.fontsParsed
+  if (languageContext) {
+    fonts = getFontsForLanguage(conf.fontsParsed, languageContext)
+  }
 
   const next = {
     fonts,
