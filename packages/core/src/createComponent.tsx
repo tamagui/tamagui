@@ -181,6 +181,11 @@ export function createComponent<
     const setStateShallow = useShallowSetState(setState)
 
     if (process.env.NODE_ENV === 'development') {
+      if (!process.env.TAMAGUI_TARGET) {
+        // eslint-disable-next-line no-console
+        console.error(`No process.env.TAMAGUI_TARGET set, please set it to "native" or "web".`)
+      }
+
       if (debugProp) {
         const name = `${
           componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
@@ -210,7 +215,14 @@ export function createComponent<
       }
     }
 
-    const { viewProps: viewPropsIn, pseudos, medias, style, classNames, mediaKeys } = splitStyles
+    const {
+      viewProps: viewPropsIn,
+      pseudos,
+      medias,
+      style: splitStylesStyle,
+      classNames,
+      mediaKeys,
+    } = splitStyles
 
     // media queries
     useIsomorphicLayoutEffect(() => {
@@ -242,7 +254,9 @@ export function createComponent<
     // animations
     const useAnimations = tamaguiConfig?.animations?.useAnimations as UseAnimationHook | undefined
     const isAnimated = !!(useAnimations && props.animation)
-    const animationFeatureStylesIn = props.animation ? { ...defaultNativeStyle, ...style } : null
+    const animationFeatureStylesIn = props.animation
+      ? { ...defaultNativeStyle, ...splitStylesStyle }
+      : null
     const propsWithAnimation = props as UseAnimationProps
 
     // lets make changing the key mandatory for adding/removing animations
@@ -659,11 +673,11 @@ export function createComponent<
     if (isStringElement && shouldAvoidClasses && !shouldForcePseudo) {
       styles = {
         ...defaultNativeStyle,
-        ...(animationStyles ?? style),
+        ...(animationStyles ?? splitStylesStyle),
         ...medias,
       }
     } else {
-      styles = [isWeb ? null : defaultNativeStyle, animationStyles ?? style, medias]
+      styles = [isWeb ? null : defaultNativeStyle, animationStyles ?? splitStylesStyle, medias]
       if (!animationStyles && initialSplitStyles) {
         const initPseudos = initialSplitStyles.pseudos
         !state.mounted && addPseudoToStyles(styles, initPseudos, pseudos, 'enterStyle')
@@ -1042,7 +1056,7 @@ export function createComponent<
         if (typeof window !== 'undefined') {
           // prettier-ignore
           // eslint-disable-next-line no-console
-          console.log({ state, shouldProvideThemeManager, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
+          console.log({ state, shouldProvideThemeManager, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style: splitStylesStyle, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
         }
         // eslint-disable-next-line no-console
         console.groupEnd()
