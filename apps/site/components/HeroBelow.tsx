@@ -10,17 +10,19 @@ import { useHeroHovered } from './heroState'
 import { IconStack } from './IconStack'
 import { useTint } from './useTint'
 
-const TitleLink = ({ href, children }: { children: any; href: string }) => {
+const TitleLink = ({ href, children, ...props }: { children: any; href: string }) => {
   return (
     <Link passHref href={href}>
       <H3 cursor="pointer" tag="a" color="$color" size="$6" my="$5">
         <CodeInline
           cursor="pointer"
           fontFamily="$silkscreen"
+          bc="$color2"
           hoverStyle={{
-            backgroundColor: '$backgroundStrong',
+            backgroundColor: '$color3',
           }}
           size="$7"
+          {...props}
         >
           {children} <ChevronRight size={12} />
         </CodeInline>
@@ -59,8 +61,10 @@ export const HeroBelowContent = memo(() => {
           <IconStack o={hovered === 0 ? 1 : 0.5} theme="green_alt2">
             <Code size={20} color="var(--colorHover)" />
           </IconStack>
-          <TitleLink href="/docs/core/configuration">Core</TitleLink>
-          <Paragraph o={hovered === 0 ? 1 : 0.75} size="$4" theme="alt1">
+          <TitleLink theme="green_alt2" href="/docs/core/configuration">
+            Core
+          </TitleLink>
+          <Paragraph o={hovered === 0 ? 1 : 0.75} size="$4" theme="green_alt2">
             A lightweight design-system library for React Native & Web with tokens, themes, fonts
             and more + a nice typed <CodeInline>styled</CodeInline> utility.
           </Paragraph>
@@ -70,8 +74,10 @@ export const HeroBelowContent = memo(() => {
           <IconStack o={hovered === 1 ? 1 : 0.5} theme="blue_alt2">
             <Layers size={20} color="var(--colorHover)" />
           </IconStack>
-          <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
-          <Paragraph o={hovered === 1 ? 1 : 0.75} size="$4" theme="alt1">
+          <TitleLink theme="blue_alt2" href="/docs/components/stacks">
+            Tamagui
+          </TitleLink>
+          <Paragraph o={hovered === 1 ? 1 : 0.75} size="$4" theme="blue_alt2">
             UI kit that adapts to native and web, built using Core. Composable component APIs,
             consistent size props, nested themes, and more.
           </Paragraph>
@@ -81,8 +87,10 @@ export const HeroBelowContent = memo(() => {
           <IconStack o={hovered === 2 ? 1 : 0.5} theme="purple_alt2">
             <Cpu size={20} color="var(--colorHover)" />
           </IconStack>
-          <TitleLink href="/docs/intro/benchmarks">Static</TitleLink>
-          <Paragraph o={hovered === 2 ? 1 : 0.75} size="$4" theme="alt1">
+          <TitleLink theme="purple_alt2" href="/docs/intro/benchmarks">
+            Static
+          </TitleLink>
+          <Paragraph o={hovered === 2 ? 1 : 0.75} size="$4" theme="purple_alt2">
             Compile-time optimize styles both static and inline, with partial evaluation and tree
             flattening. Plugins for Webpack, Vite, Metro & more.
           </Paragraph>

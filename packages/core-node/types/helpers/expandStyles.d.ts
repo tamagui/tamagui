@@ -18,7 +18,7 @@ export declare function expandStyles(style: Record<string, any>, config?: import
         [key: string]: string | number;
     };
 }, {
-    [key: string]: string | {
+    [key: string]: string | any[] | {
         [key: string]: any;
     };
 }, import("..").GenericFonts>): Record<string, any>;

@@ -1,5 +1,5 @@
 export declare function getAnimationDriver(): import("..").AnimationDriver<{
-    [key: string]: string | {
+    [key: string]: string | any[] | {
         [key: string]: any;
     };
 }>;

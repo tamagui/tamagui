@@ -11,7 +11,7 @@ export declare const getConfig: () => TamaguiInternalConfig<import("./types").Cr
         [key: string]: string | number;
     };
 }, {
-    [key: string]: string | {
+    [key: string]: string | any[] | {
         [key: string]: any;
     };
 }, import("./types").GenericFonts>;

@@ -12,7 +12,7 @@ declare class TamaguiManager {
             [key: string]: string | number;
         };
     }, {
-        [key: string]: string | {
+        [key: string]: string | any[] | {
             [key: string]: any;
         };
     }, import("./types").GenericFonts>;

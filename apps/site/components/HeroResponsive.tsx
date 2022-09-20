@@ -385,7 +385,7 @@ export const Safari = memo(
           </Tab>
         </XStack>
 
-        <YStack pos="relative" bc="$backgroundStrong" h={browserHeight}>
+        <YStack pos="relative" bc="$color1" h={browserHeight}>
           <YStack h="100%" pe="none">
             {shouldLoad && (
               <YStack

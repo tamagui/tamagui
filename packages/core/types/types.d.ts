@@ -98,7 +98,7 @@ export declare type GenericFonts = Record<string, GenericFont>;
 declare type GenericAnimations = {
     [key: string]: string | {
         [key: string]: any;
-    };
+    } | any[];
 };
 export interface TamaguiCustomConfig {
 }
@@ -144,7 +144,7 @@ export declare type Media = TamaguiConfig['media'];
 export declare type Themes = TamaguiConfig['themes'];
 export declare type ThemeName = GetAltThemeNames<keyof Themes>;
 export declare type ThemeTokens = `$${ThemeKeys}`;
-export declare type AnimationKeys = Omit<GetAnimationKeys<TamaguiConfig>, number>;
+export declare type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<infer Config> ? keyof Config : string;
 export declare type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>;
 declare type ArrayIntersection<A extends any[]> = A[keyof A];
 declare type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
@@ -203,7 +203,7 @@ export declare type TamaguiInternalConfig<A extends GenericTokens = GenericToken
     parsed: boolean;
     inverseShorthands: Record<string, string>;
 };
-export declare type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']['animations'];
+export declare type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations'];
 export declare type UnionableString = string & {};
 export declare type UnionableNumber = number & {};
 export declare type PropTypes<A extends TamaguiComponent> = A extends React.FunctionComponent<infer Props> ? Props : unknown;

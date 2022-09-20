@@ -143,12 +143,15 @@ span._display-1adg3ll > span._display-xoduu5 {
   );
 }
 
-.hero-blur {
-  background: radial-gradient(
-    var(--backgroundStrong) 0%,
-    transparent 75%
-  );
+@media (prefer-color-scheme: dark) {
+  .hero-blur {
+    background: radial-gradient(
+      var(--backgroundStrong) 0%,
+      transparent 75%
+    );
+  }
 }
+
 
 /* reset */
 
@@ -519,11 +522,15 @@ input, textarea {
   max-width: 100%;
   overflow-x: auto;
 }
-/* 
+
 .font_silkscreen {
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;
-} */
+}
+
+.font-smooth {
+  -webkit-font-smoothing: auto;
+}
 
 .content-visibility-auto {
   content-visibility: auto;

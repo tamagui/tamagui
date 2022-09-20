@@ -126,6 +126,7 @@ const HeroTop = memo(() => {
               color="$gray10"
               size="$6"
               fontFamily="$silkscreen"
+              className="font-smooth"
               ta="left"
               $gtSm={{
                 ta: 'center',

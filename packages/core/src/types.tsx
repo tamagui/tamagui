@@ -133,6 +133,7 @@ type GenericAnimations = {
     | {
         [key: string]: any
       }
+    | any[]
 }
 
 // this is the "main" typed object, which users re-define
@@ -246,7 +247,9 @@ export type Media = TamaguiConfig['media']
 export type Themes = TamaguiConfig['themes']
 export type ThemeName = GetAltThemeNames<keyof Themes>
 export type ThemeTokens = `$${ThemeKeys}`
-export type AnimationKeys = Omit<GetAnimationKeys<TamaguiConfig>, number>
+export type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<infer Config>
+  ? keyof Config
+  : string
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>
 
 type ArrayIntersection<A extends any[]> = A[keyof A]
@@ -344,7 +347,7 @@ export type TamaguiInternalConfig<
     inverseShorthands: Record<string, string>
   }
 
-export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']['animations']
+export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']
 
 // prevents const intersections from being clobbered into string, keeping the consts
 export type UnionableString = string & {}
