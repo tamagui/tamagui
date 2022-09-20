@@ -3,6 +3,7 @@ import { Paragraph, XStack, YStack } from 'tamagui'
 
 const getBarColor = (name: string) => {
   switch (name) {
+    case 'Tamagui (No Compiler)':
     case 'Tamagui':
       return '$pink9'
     case 'Stitches':
@@ -13,7 +14,9 @@ const getBarColor = (name: string) => {
     case 'SC':
       return '$red9'
     case 'react-native-web':
+    case 'RN':
     case 'RNW':
+    case 'Native':
       return '$purple9'
     case 'Emotion':
       return '$green9'

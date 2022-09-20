@@ -75,7 +75,7 @@ export const ListItem = (item: any) => {
   const { name, thumbnail, label1, label2, label3 } = item.item.values
 
   return (
-    <Pressable bg="brand.blackGrey" borderRadius="8" my="1" onPress={() => console.log('click')}>
+    <Pressable bg="brand.blackGrey" borderRadius="8" my="1">
       <Box
         height="88"
         bg="brand.blackGrey"

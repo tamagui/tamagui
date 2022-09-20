@@ -4,9 +4,9 @@ import React from 'react'
 import { useRef, useState } from 'react'
 import { Button, Paragraph, YStack } from 'tamagui'
 
-import { BenchmarkChart } from '../components/BenchmarkChart'
 import { ContainerLarge } from '../components/Container'
 import { HomeH2, HomeH3 } from '../components/HomeH2'
+import { BenchmarkChartWeb } from './BenchmarkChartWeb'
 import { CocentricCircles } from './CocentricCircles'
 import { useTint } from './useTint'
 
@@ -61,19 +61,7 @@ export function HeroPerformance() {
             Lower is better. As of February 2022.
           </Paragraph>
 
-          {show && (
-            <BenchmarkChart
-              animateEnter
-              skipOthers
-              large
-              data={[
-                { name: 'Tamagui', value: 0.02 },
-                { name: 'react-native-web', value: 0.063 },
-                { name: 'Dripsy', value: 0.108 },
-                { name: 'NativeBase', value: 0.73 },
-              ]}
-            />
-          )}
+          {show && <BenchmarkChartWeb />}
         </YStack>
 
         <BenchmarksLink />

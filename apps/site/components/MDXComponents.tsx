@@ -25,6 +25,8 @@ import {
 } from 'tamagui'
 
 import { BenchmarkChart } from './BenchmarkChart'
+import { BenchmarkChartNative } from './BenchmarkChartNative'
+import { BenchmarkChartWeb } from './BenchmarkChartWeb'
 import { Code, CodeInline } from './Code'
 import * as Demos from './demos'
 import { DocCodeBlock } from './DocsCodeBlock'
@@ -56,6 +58,8 @@ export const components = {
   Separator,
   Code,
   HeroContainer,
+  BenchmarkChartNative,
+  BenchmarkChartWeb,
 
   ...Demos,
 
@@ -64,6 +68,12 @@ export const components = {
   Description: SubTitle,
   UL,
   LI,
+
+  TLDR: (props) => {
+    return (
+      <YStack my="$4" px="$6" py="$2" br="$6" bc="$color1" bw={1} boc="$borderColor" {...props} />
+    )
+  },
 
   DeployToVercel: () => {
     return (
@@ -98,7 +108,7 @@ export const components = {
 
   IntroParagraph: ({ children, ...props }) => {
     return (
-      <Paragraph tag="span" size="$7" className="paragraph" display="block" my="$4" {...props}>
+      <Paragraph tag="span" size="$8" className="paragraph" my="$3" fow="400" {...props}>
         {unwrapText(children)}
       </Paragraph>
     )
@@ -124,15 +134,7 @@ export const components = {
   h1: (props) => <H1 width="max-content" pos="relative" mb="$2" {...props} />,
 
   h2: ({ children, ...props }) => (
-    <H2
-      pos="relative"
-      width={`fit-content` as any}
-      mt="$5"
-      size="$9"
-      letterSpacing={-0.5}
-      data-heading
-      {...props}
-    >
+    <H2 pos="relative" width={`fit-content` as any} mt="$5" size="$9" data-heading {...props}>
       {children}
     </H2>
   ),
@@ -197,13 +199,13 @@ export const components = {
   ol: (props) => <YStack {...props} tag="ol" mb="$3" />,
 
   li: (props) => {
-    return <LI my="$2">{props.children}</LI>
+    return <LI>{props.children}</LI>
   },
 
   strong: (props) => <Paragraph tag="strong" fontSize="inherit" {...props} fontWeight="700" />,
 
   img: ({ ...props }) => (
-    <YStack my="$6">
+    <YStack tag="span" my="$6">
       {/* TODO make this a proper <Image /> component */}
       <YStack tag="img" {...props} maxWidth="100%" />
     </YStack>

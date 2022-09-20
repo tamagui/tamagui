@@ -1,0 +1,38 @@
+---
+title: Compiler
+description: Faster frontends with ½ the code
+---
+
+<TLDR>
+
+The Tamagui compiler is good for 5-15% better performance on Native, but anywhere from 50-300% better performance on web, without hand-optimization.
+
+</TLDR>
+
+<IntroParagraph>
+  React Native has a good motto:{' '}
+  <span style={{ color: 'var(--yellow10)' }}>learn once, write anywhere</span>. It's an admission
+  that your app only feels good as much as it uses the native platform primitives.
+</IntroParagraph>
+
+<YStack maw={650} als="center">
+  ![The Code Sharing Trilemma](/trilemma.svg)
+</YStack>
+
+Most people choose two and get on with it. They may just focus on web or native to start. Or maybe they have a lot of money, so they just write everything twice.
+
+If you do need both a native and web app, you can `npm install` one of the many React Native + Web UI kits... but in exchange, you'll get ~70% off Lighthouse scores, main-thread jank, and neverending stress over your performance budget.
+
+##### Web
+
+<BenchmarkChartWeb />
+
+##### Native
+
+<BenchmarkChartNative />
+
+See [the full Benchmarks with explanations](/docs/intro/benchmarks).
+
+---
+
+## How

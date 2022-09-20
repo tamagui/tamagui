@@ -8,7 +8,7 @@ export const ListItem = (item: any) => {
   const { name, thumbnail, label1, label2, label3 } = item.item
 
   return (
-    <TouchableOpacity onPress={() => console.log('click')}>
+    <TouchableOpacity>
       <View
         style={{
           backgroundColor: '#23262F',

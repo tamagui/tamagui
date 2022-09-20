@@ -1,5 +1,4 @@
 //! debug-verbose
-// 123 123
 import { TamaguiProvider, XStack, YStack, Image, Text } from '@my/ui'
 import { Icon } from './ListIcon'
 import config from '../../tamagui.config'
@@ -12,17 +11,7 @@ export const ListItem = (item: any) => {
   const { name, thumbnail, label1, label2, label3 } = item.item.values
 
   return (
-    <XStack
-      bw={1}
-      bc="$background"
-      debug="verbose"
-      p="$3"
-      h={88}
-      boc="$borderColor"
-      borderRadius="$4"
-      my="$1"
-      onPress={() => console.log('click')}
-    >
+    <XStack bw={1} bc="$background" p="$3" h={88} boc="$borderColor" borderRadius="$4" my="$1">
       <YStack h={64} w={64} mr={3}>
         <YStack
           position="absolute"

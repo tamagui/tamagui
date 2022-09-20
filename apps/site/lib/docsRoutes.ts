@@ -3,19 +3,22 @@ export const docsRoutes = [
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
-      { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
       { title: 'Releases', route: 'https://github.com/tamagui/tamagui/releases' },
     ],
   },
 
-  // {
-  //   type: 'hr',
-  //   title: 'Static',
-  // },
+  {
+    type: 'hr',
+    title: 'Compiler',
+  },
 
-  // {
-  //   pages: [{ title: 'Static', route: '/docs/core/static' }],
-  // },
+  {
+    pages: [
+      { title: 'Intro', route: '/docs/intro/compiler' },
+      { title: 'Install', route: '/docs/intro/compiler-install' },
+      { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
+    ],
+  },
 
   {
     type: 'hr',

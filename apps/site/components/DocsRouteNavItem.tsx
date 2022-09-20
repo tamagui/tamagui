@@ -16,7 +16,7 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
         tag="a"
         ai="center"
         jc="flex-end"
-        py="$1"
+        py="$0.5"
         px="$4"
         opacity={pending ? 0.25 : 1}
         pressStyle={{

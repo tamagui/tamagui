@@ -137,7 +137,7 @@ const HeroTop = memo(() => {
                 ls: 0,
               }}
             >
-              UI faster on React Native + Web
+              Amazing UI tooling for React Native
               <br />
               <Tag color="$green10" onHoverIn={() => setHovered(0)} active={hovered === 0}>
                 styles

@@ -15,8 +15,7 @@ export const SubTitle = ({ children, ...props }) => {
         pos="relative"
         width="max-content"
         size="$8"
-        letterSpacing={-1}
-        theme="alt1"
+        theme="alt2"
         fontFamily="$body"
         fontWeight="300"
         tag="p"
