@@ -287,6 +287,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly gray: {
             color: import("@tamagui/core").Variable<string>;
@@ -406,6 +418,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly green: {
             color: import("@tamagui/core").Variable<string>;
@@ -525,6 +549,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly orange: {
             color: import("@tamagui/core").Variable<string>;
@@ -644,6 +680,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly pink: {
             color: import("@tamagui/core").Variable<string>;
@@ -763,6 +811,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly purple: {
             color: import("@tamagui/core").Variable<string>;
@@ -882,6 +942,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly red: {
             color: import("@tamagui/core").Variable<string>;
@@ -1001,6 +1073,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly yellow: {
             color: import("@tamagui/core").Variable<string>;
@@ -1120,6 +1204,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_blue_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -1239,6 +1335,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_blue_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -1358,6 +1466,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_gray_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -1477,6 +1597,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_gray_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -1596,6 +1728,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_green_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -1715,6 +1859,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_green_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -1834,6 +1990,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_orange_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -1953,6 +2121,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_orange_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -2072,6 +2252,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_pink_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -2191,6 +2383,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_pink_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -2310,6 +2514,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_purple_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -2429,6 +2645,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_purple_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -2548,6 +2776,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_red_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -2667,6 +2907,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_red_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -2786,6 +3038,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_yellow_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -2905,6 +3169,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_yellow_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -3024,6 +3300,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_blue_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -3143,6 +3431,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_blue_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -3262,6 +3562,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_gray_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -3381,6 +3693,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_gray_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -3500,6 +3824,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_green_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -3619,6 +3955,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_green_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -3738,6 +4086,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_orange_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -3857,6 +4217,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_orange_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -3976,6 +4348,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_pink_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -4095,6 +4479,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_pink_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -4214,6 +4610,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_purple_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -4333,6 +4741,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_purple_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -4452,6 +4872,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_red_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -4571,6 +5003,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_red_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -4690,6 +5134,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_yellow_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -4809,6 +5265,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_yellow_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -4928,6 +5396,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark: {
             color: import("@tamagui/core").Variable<string>;
@@ -5047,6 +5527,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_active: {
             color: import("@tamagui/core").Variable<string>;
@@ -5166,6 +5658,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_Card: {
             color: import("@tamagui/core").Variable<string>;
@@ -5285,6 +5789,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_DrawerFrame: {
             color: import("@tamagui/core").Variable<string>;
@@ -5404,6 +5920,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_SliderTrack: {
             color: import("@tamagui/core").Variable<string>;
@@ -5523,6 +6051,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_SliderTrackActive: {
             color: import("@tamagui/core").Variable<string>;
@@ -5642,6 +6182,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_Switch: {
             color: import("@tamagui/core").Variable<string>;
@@ -5761,6 +6313,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_SwitchThumb: {
             color: import("@tamagui/core").Variable<string>;
@@ -5880,6 +6444,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_Button: {
             color: import("@tamagui/core").Variable<string>;
@@ -5999,6 +6575,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -6118,6 +6706,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -6237,6 +6837,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly dark_darker: {
             color: import("@tamagui/core").Variable<string>;
@@ -6356,6 +6968,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light: {
             color: import("@tamagui/core").Variable<string>;
@@ -6475,6 +7099,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_active: {
             color: import("@tamagui/core").Variable<string>;
@@ -6594,6 +7230,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_Card: {
             color: import("@tamagui/core").Variable<string>;
@@ -6713,6 +7361,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_SliderTrack: {
             color: import("@tamagui/core").Variable<string>;
@@ -6832,6 +7492,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_SliderTrackActive: {
             color: import("@tamagui/core").Variable<string>;
@@ -6951,6 +7623,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_Switch: {
             color: import("@tamagui/core").Variable<string>;
@@ -7070,6 +7754,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_SwitchThumb: {
             color: import("@tamagui/core").Variable<string>;
@@ -7189,6 +7885,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_DrawerFrame: {
             color: import("@tamagui/core").Variable<string>;
@@ -7308,6 +8016,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_alt1: {
             color: import("@tamagui/core").Variable<string>;
@@ -7427,6 +8147,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_alt2: {
             color: import("@tamagui/core").Variable<string>;
@@ -7546,6 +8278,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
         readonly light_darker: {
             color: import("@tamagui/core").Variable<string>;
@@ -7665,6 +8409,18 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            color1: import("@tamagui/core").Variable<string>;
+            color2: import("@tamagui/core").Variable<string>;
+            color3: import("@tamagui/core").Variable<string>;
+            color4: import("@tamagui/core").Variable<string>;
+            color5: import("@tamagui/core").Variable<string>;
+            color6: import("@tamagui/core").Variable<string>;
+            color7: import("@tamagui/core").Variable<string>;
+            color8: import("@tamagui/core").Variable<string>;
+            color9: import("@tamagui/core").Variable<string>;
+            color10: import("@tamagui/core").Variable<string>;
+            color11: import("@tamagui/core").Variable<string>;
+            color12: import("@tamagui/core").Variable<string>;
         };
     };
     tokens: {
