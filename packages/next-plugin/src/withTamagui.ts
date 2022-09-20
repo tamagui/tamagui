@@ -234,7 +234,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               fullPath.startsWith('moti') ||
               fullPath.startsWith('solito') ||
               fullPath === 'tamagui' ||
-              fullPath.startsWith('@tamagui/') ||
+              fullPath.startsWith('@tamagui') ||
               fullPath === 'react-native-safe-area-context' ||
               fullPath === 'expo-linear-gradient' ||
               fullPath.startsWith('@react-navigation') ||
