@@ -88,9 +88,14 @@ export const Sandbox = () => {
           overflow: 'hidden',
         }}
       >
-        <TestFontTokensInVariants type="H1" size="large">
+        {/* <TestFontTokensInVariants type="H1" size="large">
           Hello world
-        </TestFontTokensInVariants>
+        </TestFontTokensInVariants> */}
+
+        <Button size="$2" $sm={{ size: '$8' }}>
+          test
+        </Button>
+
         {/* <Animated.View style={style} /> */}
         {/* <AlertDialogDemo /> */}
         {/* <AddThemeDemo /> */}

@@ -9,6 +9,7 @@ import {
   spacedChildren,
   styled,
   themeable,
+  useMediaPropsActive,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
@@ -138,12 +139,13 @@ export function useButton(
   } = props
 
   const isInsideButton = isRSC ? false : useContext(ButtonInsideButtonContext)
-  const size = props.size || '$4'
+  const mediaActiveProps = useMediaPropsActive(props)
+  const size = mediaActiveProps.size || '$4'
   const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = getVariableValue(iconSize) * scaleSpace
-  const contents = wrapChildrenInText(Text, props)
+  const contents = wrapChildrenInText(Text, mediaActiveProps)
   const inner =
     themedIcon || themedIconAfter
       ? spacedChildren({
