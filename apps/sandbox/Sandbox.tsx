@@ -20,6 +20,7 @@ import {
 } from 'tamagui'
 
 import config from './tamagui.config'
+import { TestFontTokensInVariants } from './TestFontTokensInVariants'
 
 // webpack fix..
 if (typeof require !== 'undefined') {
@@ -87,6 +88,9 @@ export const Sandbox = () => {
           overflow: 'hidden',
         }}
       >
+        <TestFontTokensInVariants debug="verbose" type="H1" size="large">
+          Hello world
+        </TestFontTokensInVariants>
         {/* <Animated.View style={style} /> */}
         {/* <AlertDialogDemo /> */}
         {/* <AddThemeDemo /> */}
