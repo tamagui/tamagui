@@ -9,6 +9,7 @@ import {
   getVariableValue,
   styled,
   themeable,
+  useMediaPropsActive,
   withStaticProperties,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
@@ -147,14 +148,15 @@ export const useListItem = (
     ...rest
   } = props
 
-  const size = props.size || '$4'
+  const mediaActiveProps = useMediaPropsActive(props)
+  const size = mediaActiveProps.size || '$4'
   const subtitleSizeToken = getSize(size, -3)
   const subtitleSize = `$${subtitleSizeToken.key}` as FontSizeTokens
   const iconSize = getFontSize(size) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = getVariableValue(iconSize) * scaleSpace
-  const contents = wrapChildrenInText(Text, props)
+  const contents = wrapChildrenInText(Text, mediaActiveProps)
 
   return {
     props: {
