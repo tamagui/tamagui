@@ -72,8 +72,8 @@ async function run() {
   const gitVersionString = parseFloat(
     execSync(`git --version`).toString().replace(`git version `, '').trim()
   )
-  if (gitVersionString < 2.19) {
-    console.error(`Git version must be >= 2.19`)
+  if (gitVersionString < 2.27) {
+    console.error(`Git version must be >= 2.27`)
     process.exit(1)
   }
 
