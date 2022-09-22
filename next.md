@@ -19,8 +19,6 @@
   - changing family responsive tests
   - fix reanimated 2.9/3.0 __frame var
   - windows without WSL
-  - way to use tamagui with custom design system tokens
-    - basically map any tokens you choose to internal tamagui ones
   - mismatch SSR SelectTrigger due to componentName override
   - Group make media style size use properly
   - test Android in starters repo
@@ -76,6 +74,8 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - way to use tamagui with custom design system tokens
+    - basically map any tokens you choose to internal tamagui ones
   - input like button
   - allow string values alongside numbers (nativebase port)
   - media `$light` and `$dark` for overrides
