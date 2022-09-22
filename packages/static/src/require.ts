@@ -1,6 +1,4 @@
-import { join, sep } from 'path'
-
-import type { StaticConfig } from '@tamagui/core-node'
+import { sep } from 'path'
 
 import { SHOULD_DEBUG } from './constants.js'
 
@@ -17,7 +15,7 @@ setInterval(() => {
   tries = 0
 }, 50)
 
-export function registerRequire() {
+export function registerRequire(bubbleErrors?: boolean) {
   if (Module.prototype.require !== globalThis['ogRequire']) {
     // eslint-disable-next-line no-console
     console.warn('didnt unregister before re-registering')
@@ -82,6 +80,10 @@ export function registerRequire() {
       // }
       return out
     } catch (err: any) {
+      if (bubbleErrors) {
+        throw err
+      }
+
       // eslint-disable-next-line no-console
       console.error(
         `Tamagui failed requiring ${path} from your tamagui.config.ts file, ignoring\n`,

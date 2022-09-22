@@ -21,7 +21,12 @@ export type TamaguiProjectInfo = {
   nameToPaths: NameToPaths
 }
 
-type Props = { components: string[]; config?: string }
+type Props = {
+  components: string[]
+  config?: string
+  forceExports?: boolean
+  bubbleErrors?: boolean
+}
 
 const cache = {}
 
@@ -77,8 +82,8 @@ Tamagui built config and components:`
   colorLog(
     Color.Dim,
     `
-  - Config: ${relative(process.cwd(), configOutPath)}
-  - Components: ${relative(process.cwd(), componentOutPaths.join(', '))}
+  - Config: .${sep}${relative(process.cwd(), configOutPath)}
+  - Components: .${sep}${relative(process.cwd(), componentOutPaths.join(', '))}
 `
   )
 
@@ -105,12 +110,15 @@ Tamagui built config and components:`
 
   const coreNode = require('@tamagui/core-node')
 
-  registerRequire()
+  registerRequire(props.bubbleErrors)
   const config = require(configOutPath).default
   unregisterRequire()
 
   const components = {
-    ...loadComponents(componentOutPaths),
+    ...loadComponents({
+      ...props,
+      components: componentOutPaths,
+    }),
     ...(includesCore && gatherTamaguiComponentInfo([coreNode])),
   }
 
@@ -209,6 +217,12 @@ async function buildTamaguiConfig(
   })
 }
 
+const esbuildOptions: esbuild.BuildOptions = {
+  target: 'es2019',
+  format: 'cjs',
+  jsx: 'transform',
+}
+
 // loads in-process using esbuild-register
 export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
   const key = JSON.stringify(props)
@@ -216,13 +230,10 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
     return cache[key]
   }
 
-  const { unregister } = require('esbuild-register/dist/node').register({
-    target: 'es2019',
-    format: 'cjs',
-  })
+  const { unregister } = require('esbuild-register/dist/node').register(esbuildOptions)
 
   try {
-    registerRequire()
+    registerRequire(props.bubbleErrors)
 
     // lets shim require and avoid importing react-native + react-native-web
     // we just need to read the config around them
@@ -247,7 +258,7 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
         }
       }
 
-      const components = loadComponents(props.components)
+      const components = loadComponents(props)
 
       if (process.env.DEBUG === 'tamagui') {
         console.log(`components`, components)
@@ -267,6 +278,10 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
         nameToPaths: getNameToPaths(),
       }
     } catch (err) {
+      if (props.bubbleErrors) {
+        throw err
+      }
+
       if (err instanceof Error) {
         console.warn(
           `Error loading tamagui.config.ts (set DEBUG=tamagui to see full stack), running tamagui without custom config`
@@ -287,7 +302,9 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
 
     return cache[key]
   } catch (err) {
-    console.log('Error loading Tamagui', err)
+    if (!props.bubbleErrors) {
+      console.log('Error loading Tamagui', err)
+    }
     throw err
   } finally {
     unregister()
@@ -301,7 +318,8 @@ function interopDefaultExport(mod: any) {
 
 const cacheComponents = {}
 
-function loadComponents(componentsModules: string[]) {
+function loadComponents(props: Props) {
+  const componentsModules = props.components
   const key = componentsModules.join('')
   if (cacheComponents[key]) {
     return cacheComponents[key]
@@ -314,6 +332,9 @@ function loadComponents(componentsModules: string[]) {
     cacheComponents[key] = res
     return res
   } catch (err: any) {
+    if (props.bubbleErrors) {
+      throw err
+    }
     console.log(`Tamagui error bundling components`, err.message, err.stack)
   }
 }
