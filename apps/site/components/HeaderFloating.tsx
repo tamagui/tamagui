@@ -13,7 +13,7 @@ export const HeaderFloating = ({
 }: HeaderProps & { alwaysFloating?: boolean }) => {
   const [isScrolled, setIsScrolled] = useState(false)
   const shown = alwaysFloating ?? isScrolled
-  const shiftDown = !isScrolled && alwaysFloating
+  const shouldPad = !isScrolled && alwaysFloating
 
   if (typeof document !== 'undefined') {
     useEffect(() => {
@@ -32,7 +32,6 @@ export const HeaderFloating = ({
       className="blur ease-out all ms200"
       y={shown ? 1 : -60}
       o={shown ? 1 : 0}
-      py={0}
       bbc="$borderColor"
       zi={10000000}
       // @ts-ignore
@@ -41,7 +40,8 @@ export const HeaderFloating = ({
       my={-1}
       left={0}
       right={0}
-      elevation={shiftDown ? 0 : '$3'}
+      elevation={shouldPad ? 0 : '$3'}
+      py={shouldPad ? '$2' : 0}
     >
       <YStack className="all ease-in ms200" o={isScrolled ? 0.4 : 0} fullscreen bc="$background" />
       <ContainerLarge>

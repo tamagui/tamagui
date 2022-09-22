@@ -86,7 +86,7 @@ export const HeroBelowContent = memo(() => {
           <IconStack o={hovered === 2 ? 1 : 0.5} theme="purple_alt2">
             <Cpu size={20} color="var(--colorHover)" />
           </IconStack>
-          <TitleLink theme="purple_alt2" href="/docs/intro/benchmarks">
+          <TitleLink theme="purple_alt2" href="/docs/intro/compiler">
             Static
           </TitleLink>
           <Paragraph o={hovered === 2 ? 1 : 0.75} size="$4" theme="purple_alt2">

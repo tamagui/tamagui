@@ -1,0 +1,16 @@
+### CSS-in-JS is SLOW (but AMAZING)
+
+The <span style={{ color: 'var(--yellow10)' }}>reason we don't "write once, run anywhere" isn't because it's technically impossible </span>. It's just that... well, imagine you're writing a native app, but you want a challenge. Try this out for fun:
+
+- _Every screen of the app must be fetched at runtime over the web only once the user wants to navigate to it_ - including on the initial app load, for every load.
+- Your style engine must run on the same thread as everything else - layout, paint, all of it.
+- Your app is single threaded.
+- Oh, and it's written entirely in Javascript
+
+This is the reality for web developers. It's a harsh one.
+
+But the web is also a beautiful platform. Despite (because?) of this harsh environment, the tooling, libraries, and developer experience of building apps for the web is actually _leaps and bounds_ ahead of any native platform (part of that is the console and inspector, which turns the JS curse into a blessing). The distribution method is A++. The convenience for users unmatched. And the whole decentralized, democratic ethos doesn't hurt.
+
+That said, <span style={{ color: 'var(--yellow10)' }}>any time you're running JS when you could be running CSS instead, your app is running something like 10x slower than it could</span>.
+
+That's right, I said it.

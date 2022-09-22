@@ -3,7 +3,6 @@ import { LogoWords, TamaguiLogo, tints } from '@tamagui/logo'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import * as React from 'react'
-import { ScrollView } from 'react-native'
 import {
   Button,
   Paragraph,

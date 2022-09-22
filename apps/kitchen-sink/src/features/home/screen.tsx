@@ -1,40 +1,22 @@
 import { variableToString } from '@tamagui/core'
 import { ChevronRight, Moon, Sun } from '@tamagui/feather-icons'
-import React from 'react'
-import { Alert, Pressable, ScrollView, View } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
-  FontLanguage,
   H1,
   ListItem,
   ListItemProps,
   Paragraph,
+  ScrollView,
   Separator,
   Spacer,
-  Square,
   Switch,
-  Text,
   YGroup,
   YStack,
   useTheme,
 } from 'tamagui'
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
-
-const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & ListItemProps) => {
-  const linkProps = useLink({ href, as, shallow })
-  const theme = useTheme()
-  return (
-    <ListItem
-      {...linkProps}
-      {...props}
-      iconAfter={<ChevronRight color={variableToString(theme.colorPress)} />}
-    >
-      {children}
-    </ListItem>
-  )
-}
 
 export function HomeScreen() {
   return (
@@ -79,6 +61,20 @@ export function HomeScreen() {
         </YStack>
       </YStack>
     </ScrollView>
+  )
+}
+
+const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & ListItemProps) => {
+  const linkProps = useLink({ href, as, shallow })
+  const theme = useTheme()
+  return (
+    <ListItem
+      {...linkProps}
+      {...props}
+      iconAfter={<ChevronRight color={variableToString(theme.colorPress)} />}
+    >
+      {children}
+    </ListItem>
   )
 }
 
