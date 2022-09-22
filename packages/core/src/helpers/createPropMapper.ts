@@ -1,7 +1,7 @@
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import { isWeb } from '../constants/platform'
-import { Variable, isVariable } from '../createVariable'
+import { Variable, getVariableValue, isVariable } from '../createVariable'
 import {
   DebugProp,
   GenericVariantDefinitions,
@@ -57,6 +57,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
       props[conf.inverseShorthands.fontFamily] ||
       props.fontFamily ||
       defaultProps.fontFamily ||
+      propsIn.fontFamily ||
       '$body'
 
     const variantValue = resolveVariants(
@@ -72,7 +73,8 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
       staticConfig,
       '',
       languageContext,
-      avoidDefaultProps
+      avoidDefaultProps,
+      debug
     )
 
     if (variantValue) {
@@ -100,7 +102,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
           debug
         )
       } else if (isVariable(value)) {
-        value = getVariableValue(key, value, returnVariablesAs)
+        value = resolveVariableValue(key, value, returnVariablesAs)
       }
     }
 
@@ -146,7 +148,10 @@ const resolveVariants: StyleResolver = (
   debug
 ) => {
   const variant = variants && variants[key]
-  if (!variant || value === undefined) return
+  if (!variant || value === undefined) {
+    return
+  }
+
   let variantValue = getVariantDefinition(variant, key, value, conf)
 
   if (!variantValue) {
@@ -176,7 +181,15 @@ const resolveVariants: StyleResolver = (
     )
   }
 
+  let fontFamilyResult: any
+
   if (isObj(variantValue)) {
+    const fontFamilyUpdate =
+      variantValue.fontFamily || variantValue[conf.inverseShorthands.fontFamily]
+    if (fontFamilyUpdate?.[0] === '$') {
+      fontFamilyResult = fontFamilyUpdate
+    }
+
     variantValue = resolveTokensAndVariants(
       key,
       variantValue,
@@ -184,7 +197,7 @@ const resolveVariants: StyleResolver = (
       defaultProps,
       theme,
       variants,
-      fontFamily,
+      fontFamilyResult || fontFamily,
       conf,
       returnVariablesAs,
       staticConfig,
@@ -196,8 +209,21 @@ const resolveVariants: StyleResolver = (
   }
 
   if (variantValue) {
-    return Object.entries(expandStyles(variantValue))
+    const next = Object.entries(expandStyles(variantValue))
+
+    // store any changed font family (only support variables for now)
+    if (fontFamilyResult && fontFamilyResult[0] === '$') {
+      fontFamilyCache.set(next, getVariableValue(fontFamilyResult))
+    }
+
+    return next
   }
+}
+
+// special helper for special font family
+const fontFamilyCache = new WeakMap()
+export const getPropMappedFontFamily = (expanded?: any) => {
+  return expanded && fontFamilyCache.get(expanded)
 }
 
 const resolveTokensAndVariants: StyleResolver = (
@@ -220,6 +246,7 @@ const resolveTokensAndVariants: StyleResolver = (
   for (const rKey in value) {
     const fKey = conf.shorthands[rKey] || rKey
     const val = value[rKey]
+
     if (isVariable(val)) {
       res[fKey] = !isWeb || returnVariablesAs === 'value' ? val.val : val.variable
     } else if (variants[fKey]) {
@@ -385,7 +412,7 @@ const getToken = (
       // eslint-disable-next-line no-console
       console.log(`   ﹒ propMapper getToken`, key, valOrVar)
     }
-    return getVariableValue(key, valOrVar, resolveAs)
+    return resolveVariableValue(key, valOrVar, resolveAs)
   }
   if (process.env.NODE_ENV === 'development') {
     if (value && value[0] === '$') {
@@ -407,7 +434,7 @@ Set the debug prop to true to see more detailed debug information.`
   return value
 }
 
-function getVariableValue(
+function resolveVariableValue(
   key: string,
   valOrVar: Variable | any,
   resolveAs: ResolveVariableTypes = 'auto'

@@ -8,6 +8,8 @@ import fs from 'fs-extra'
 import _ from 'lodash'
 import prompts from 'prompts'
 
+// --resume would be cool here where it stores the last failed step somewhere and tries resuming
+
 const exec = promisify(proc.exec)
 const spawn = proc.spawn
 
