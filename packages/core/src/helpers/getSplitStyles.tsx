@@ -19,6 +19,7 @@ import type {
 } from '../types'
 import { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types'
 import { createMediaStyle } from './createMediaStyle'
+import { getPropMappedFontFamily } from './createPropMapper'
 import { fixStyles } from './expandStyles'
 import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
@@ -149,10 +150,6 @@ export const getSplitStyles: StyleSplitter = (
       keyInit = expandedKey
     }
 
-    if (keyInit === 'fontFamily' && fontFamily === undefined) {
-      fontFamily = valInit
-    }
-
     if (usedKeys.has(keyInit)) continue
     if (skipProps[keyInit]) continue
     if (!isWeb && keyInit.startsWith('data-')) continue
@@ -279,6 +276,10 @@ export const getSplitStyles: StyleSplitter = (
             undefined,
             debug
           )
+
+    if (!fontFamily) {
+      fontFamily = getPropMappedFontFamily(expanded)
+    }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       // eslint-disable-next-line no-console
@@ -429,6 +430,10 @@ export const getSplitStyles: StyleSplitter = (
         usedKeys.add(key)
         viewProps[key] = val
         continue
+      }
+
+      if (key === 'fontFamily' && !fontFamily) {
+        fontFamily = val
       }
 
       if (validStyleProps[key]) {
