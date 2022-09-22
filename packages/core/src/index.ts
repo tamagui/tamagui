@@ -53,6 +53,7 @@ export {
   getMedia,
   mediaState,
   useMedia,
+  useMediaPropsActive,
   mediaObjectToString,
   addMediaQueryListener,
   removeMediaQueryListener,

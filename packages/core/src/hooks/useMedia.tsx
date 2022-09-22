@@ -177,6 +177,60 @@ export function useMedia(): {
   )
 }
 
+/**
+ * Useful for more complex components that need access to the currently active props,
+ * accounting for the currently active media queries.
+ *
+ * Use sparingly, is will loop props and trigger re-render on all media queries.
+ *
+ * */
+export function useMediaPropsActive<A extends Object>(
+  props: A
+): {
+  // remove all media
+  [Key in keyof A extends `$${string}` ? never : keyof A]: A[Key]
+} {
+  const media = useMedia()
+
+  return useMemo(() => {
+    const evaluated = {} as A
+    const lastSetImportanceForKey = {}
+    const propNames = Object.keys(props)
+    const mediaKeysOrdered = Object.keys(getMedia())
+
+    function update(k: string, v: any, importance = 0) {
+      if (lastSetImportanceForKey[k] > importance) {
+        return
+      }
+      lastSetImportanceForKey[k] = importance
+      evaluated[k] = v
+    }
+
+    for (let i = propNames.length - 1; i >= 0; i--) {
+      const key = propNames[i]
+      const val = props[key]
+      if (key[0] === '$') {
+        const shortKey = key.slice(1)
+        if (!media[shortKey]) {
+          continue
+        }
+        if (val && typeof val === 'object') {
+          const subPropNames = Object.keys(val)
+          const mediaImportance = mediaKeysOrdered.indexOf(shortKey)
+          for (let j = subPropNames.length; j--; j >= 0) {
+            const skey = subPropNames[j]
+            update(skey, val[skey], mediaImportance)
+          }
+        }
+      } else {
+        update(key, val)
+      }
+    }
+
+    return evaluated
+  }, [media, props])
+}
+
 function camelToHyphen(str: string) {
   return str.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`).toLowerCase()
 }
