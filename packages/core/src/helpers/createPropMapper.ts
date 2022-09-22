@@ -186,8 +186,9 @@ const resolveVariants: StyleResolver = (
   if (isObj(variantValue)) {
     const fontFamilyUpdate =
       variantValue.fontFamily || variantValue[conf.inverseShorthands.fontFamily]
-    if (fontFamilyUpdate?.[0] === '$') {
-      fontFamilyResult = fontFamilyUpdate
+
+    if (fontFamilyUpdate) {
+      fontFamilyResult = getFontFamilyFromNameOrVariable(fontFamilyUpdate, conf)
     }
 
     variantValue = resolveTokensAndVariants(
@@ -219,6 +220,39 @@ const resolveVariants: StyleResolver = (
     return next
   }
 }
+
+// handles finding and resolving the fontFamily to the token name
+// this is used as `font_[name]` in className for nice css variable support
+export function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInternalConfig) {
+  if (isVariable(input)) {
+    const val = variableToFontNameCache.get(input)
+    if (val) {
+      return val
+    } else {
+      for (const key in conf.fontsParsed) {
+        const familyVariable = conf.fontsParsed[key].family
+        if (isVariable(familyVariable)) {
+          variableToFontNameCache.set(familyVariable, key)
+          if (familyVariable === input) {
+            return key
+          }
+        }
+      }
+    }
+  } else if (typeof input === 'string') {
+    if (input?.[0] === '$') {
+      return input
+    } else {
+      // this could be mapped back to
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.log('[tamagui] should map back', input)
+      }
+    }
+  }
+}
+
+const variableToFontNameCache = new WeakMap<Variable, string>()
 
 // special helper for special font family
 const fontFamilyCache = new WeakMap()
