@@ -144,7 +144,7 @@ const DialogPortal: React.FC<DialogPortalProps> = DialogPortalFrame.extractable(
       return contents
     }
     return (
-      <PortalItem>
+      <PortalItem name={`${context.scopeKey}SheetContents`}>
         {/* until we can use react-native portals natively */}
         {/* have to re-propogate context, sketch */}
         <DialogProvider scope={__scopeDialog} {...context}>
@@ -683,10 +683,13 @@ const DialogInner = React.forwardRef<{ open: (val: boolean) => void }, DialogPro
     [setOpen]
   )
 
+  const scopeId = useId()
+  const scopeKey = __scopeDialog ? Object.keys(__scopeDialog)[0] : scopeId
+
   return (
     <DialogProvider
       scope={__scopeDialog}
-      scopeKey={__scopeDialog ? Object.keys(__scopeDialog)[0] : ''}
+      scopeKey={scopeKey}
       triggerRef={triggerRef}
       contentRef={contentRef}
       contentId={useId() || ''}
