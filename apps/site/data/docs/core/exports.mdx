@@ -96,10 +96,6 @@ useGet<A>(currentValue: A): () => A
 
 Create a getter function that's always up to date with the given currentValue
 
-### useId
-
-Backwards compatible [React useId](https://reactjs.org/docs/hooks-reference.html#useid).
-
 ### useIsMounted
 
 Returns a ref that is false once unmounted.
@@ -121,3 +117,17 @@ Returns the string name of the current theme.
 ### useSafeRef
 
 A concurrent-mode safe ref, exactly the same [as written in this article](https://dev.to/uhyo_/a-concurrent-mode-safe-version-of-useref-1325). Works the same as `useRef`, but returns the "old" `current` while concurrent mode hasn't committed effects.
+
+### useMediaPropsActive
+
+Pass in props that include media styles, get back a flat object of styles with the current media styles merged. This is an advanced pattern that should be used sparingly, as it will trigger updates on every media query used. Helpful for more complex components that need to pass down props they are given to children (a common example being the `size` prop, if it's controlling children that also accept size).
+
+```tsx
+// if props is:
+//   { size: '$2', $sm: { size: '$4' } }
+// and $sm is active, activeProps will be:
+//   { size: '$4' }
+function MyButton(props) {
+  const activeProps = useMediaPropsActive(props)
+}
+```
