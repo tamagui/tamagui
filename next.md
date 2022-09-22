@@ -5,9 +5,6 @@
     - select inside dialog breaking context
     - card no bg
     - placeholder input color dark
-  - animation="" types
-  - input like button
-  - <Button size="$2" $sm={{ size: '$8' }} /> size not overriding
   - <Button iconAfter={<YStack $sm={{ display: 'none' }} />}> space adding when iconAfter is display: none
   - make create-tamagui-app test test using local changes somehow
   - delete / clean tamagui build on watch
@@ -79,6 +76,8 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - input like button
+  - allow string values alongside numbers (nativebase port)
   - media `$light` and `$dark` for overrides
   - built in jsx => css converter
   - `tag` => `as` (keep fallback around as deprecated)

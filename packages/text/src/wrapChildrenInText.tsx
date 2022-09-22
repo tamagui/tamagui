@@ -42,13 +42,14 @@ export function wrapChildrenInText(TextComponent: any, propsIn: Props) {
   if (fontWeight) props.fontWeight = fontWeight
   if (letterSpacing) props.letterSpacing = letterSpacing
   if (textAlign) props.textAlign = textAlign
+  if (size) props.size = size
 
   function concatStringChildren() {
     if (!lastIsString) return
     const index = nextChildren.length - 1
     const childrenStrings = nextChildren[index]
     nextChildren[index] = (
-      <TextComponent key={index} {...props} size={size} {...textProps}>
+      <TextComponent key={index} {...props} {...textProps}>
         {childrenStrings}
       </TextComponent>
     )

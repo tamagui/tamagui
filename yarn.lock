@@ -6042,6 +6042,7 @@ __metadata:
     "@tamagui/use-debounce": ^1.0.1-beta.173
     "@tamagui/use-event": ^1.0.1-beta.173
     "@tamagui/use-force-update": ^1.0.1-beta.173
+    "@types/node": ^16.11.9
     "@types/react": ^18.0.15
     csstype: ^3.0.10
     esbuild: ^0.15.6
