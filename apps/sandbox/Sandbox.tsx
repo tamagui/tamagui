@@ -88,7 +88,7 @@ export const Sandbox = () => {
           overflow: 'hidden',
         }}
       >
-        <TestFontTokensInVariants debug="verbose" type="H1" size="large">
+        <TestFontTokensInVariants type="H1" size="large">
           Hello world
         </TestFontTokensInVariants>
         {/* <Animated.View style={style} /> */}

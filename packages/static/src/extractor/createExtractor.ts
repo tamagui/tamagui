@@ -36,6 +36,7 @@ import {
   objToStr,
 } from './extractHelpers.js'
 import { findTopmostFunction } from './findTopmostFunction.js'
+import { getPrefixLogs } from './getPrefixLogs.js'
 import { cleanupBeforeExit, getStaticBindingsForScope } from './getStaticBindingsForScope.js'
 import { literalToAst } from './literalToAst.js'
 import { TamaguiProjectInfo, loadTamagui, loadTamaguiSync } from './loadTamagui.js'
@@ -144,11 +145,12 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
   function parseWithConfig(
     { components, tamaguiConfig }: TamaguiProjectInfo,
     fileOrPath: FileOrPath,
-    {
+    options: ExtractorParseProps
+  ) {
+    const {
       config = 'tamagui.config.ts',
       importsWhitelist = ['constants.js'],
       evaluateVars = true,
-      shouldPrintDebug = false,
       sourcePath = '',
       onExtractTag,
       onStyleRule,
@@ -158,13 +160,16 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       disableExtractInlineMedia,
       disableExtractVariables,
       disableDebugAttr,
+      disableExtractFoundComponents,
       extractStyledDefinitions = false,
       prefixLogs,
       excludeProps,
       target,
       ...props
-    }: ExtractorParseProps
-  ) {
+    } = options
+
+    let shouldPrintDebug = options.shouldPrintDebug || false
+
     if (disable) {
       return null
     }
@@ -332,26 +337,40 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         let Component = validComponents[name] as { staticConfig: StaticConfigParsed } | undefined
 
         if (!Component) {
-          if (shouldPrintDebug) {
+          if (disableExtractFoundComponents) {
+            return
+          }
+
+          try {
+            const out = loadTamaguiSync({
+              // TODO would extract more, is NO-OP for now..
+              forceExports: true,
+              bubbleErrors: true,
+              components: [sourcePath],
+            })
+
+            if (out.components?.[name]) {
+              // add new components
+              // TODO dont Clobber, do by file
+              Object.assign(validComponents, out.components)
+            }
+
+            Component = validComponents[name]
+
+            if (shouldPrintDebug) {
+              logger.info([`Loaded`, Object.keys(out.components).join(', '), !!Component].join(' '))
+            }
+          } catch (err: any) {
             logger.info(
-              `Didn't recognize styled(${name}), ${name} isn't in design system provided to tamagui.config.ts. Will attempt to build isolated and analyze.. ${programPath}`
+              `${getPrefixLogs(
+                options
+              )} skip optimize styled(${name}), unable to pre-process (DEBUG=tamagui for more)`
             )
-          }
-
-          const out = loadTamaguiSync({
-            components: [sourcePath],
-          })
-
-          if (out.components?.[name]) {
-            // add new components
-            // TODO dont Clobber, do by file
-            Object.assign(validComponents, out.components)
-          }
-
-          Component = validComponents[name]
-
-          if (shouldPrintDebug) {
-            logger.info([`Loaded`, Object.keys(out.components).join(', '), !!Component].join(' '))
+            if (process.env.DEBUG === 'tamagui') {
+              logger.info(
+                ` Disable this with "disableExtractFoundComponents" in your build-time configuration. \n\n ${err.message} ${err.stack}`
+              )
+            }
           }
         }
 

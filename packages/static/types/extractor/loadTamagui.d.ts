@@ -10,6 +10,8 @@ export declare type TamaguiProjectInfo = {
 declare type Props = {
     components: string[];
     config?: string;
+    forceExports?: boolean;
+    bubbleErrors?: boolean;
 };
 export declare function loadTamagui(props: Props): Promise<TamaguiProjectInfo>;
 export declare function loadTamaguiSync(props: Props): TamaguiProjectInfo;
