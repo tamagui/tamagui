@@ -270,7 +270,7 @@ export default function Community({ frontmatters }) {
           </H2>
         </FlatBubbleCard>
 
-        <>
+        <XStack space flexWrap="wrap">
           <FlatBubbleCard flat>
             <YStack maxWidth="100%" fs={0} als="center">
               <XStack space="$4" $sm={{ flexDirection: 'column' }}>
@@ -293,7 +293,30 @@ export default function Community({ frontmatters }) {
               </XStack>
             </YStack>
           </FlatBubbleCard>
-        </>
+
+          <FlatBubbleCard flat>
+            <YStack maxWidth="100%" fs={0} als="center">
+              <XStack space="$4" $sm={{ flexDirection: 'column' }}>
+                <Link passHref href="https://twitter.com/pontusab">
+                  <YStack
+                    cursor="pointer"
+                    target="_blank"
+                    tag="a"
+                    p="$4"
+                    br="$4"
+                    hoverStyle={{ bc: 'rgba(0,0,0,0.1)' }}
+                    pressStyle={{ bc: 'rgba(0,0,0,0.2)' }}
+                    space
+                  >
+                    <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
+                      @pontusab
+                    </H5>
+                  </YStack>
+                </Link>
+              </XStack>
+            </YStack>
+          </FlatBubbleCard>
+        </XStack>
       </ContainerLarge>
 
       <Spacer size="$10" />

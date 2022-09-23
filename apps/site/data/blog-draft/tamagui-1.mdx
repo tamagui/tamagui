@@ -1,0 +1,226 @@
+---
+title: Tamagui 1.0
+publishedAt: '2022-04-23'
+description: ½ the time, 2x the performance
+by: nate
+---
+
+<Image title="Layout tools image" src="/social.jpg" size="hero" height={150} width={900} />
+
+<IntroParagraph>
+  Tamagui is a style system with an optimizing compiler that allows for sharing 50% more code
+  between web and native apps, while increasing - rather than decreasing - performance, native-feel,
+  and ease of development.
+</IntroParagraph>
+
+It's been six months since the Tamagui beta and almost exactly a year since alpha. And incredibly, the difference between 1.0 and the beta is even bigger than the already massive beta release.
+
+There's simply so much to cover.
+
+What's new?
+
+### A whole lot of new components 🎁
+
+With the beta release, we had mostly finalized the core feature-set we wanted in Tamagui, especially in `@tamagui/core`, the style system that underlies it all. It was time to cut our teeth building out a suite of components to really test it out.
+
+As of 1.0, we've added seven new large components that cover some of the most complex use cases you find in any apps. Each comes with a **Radix-like** composable component API surface that allows for nearly total control over customization.
+
+And like every component in the `tamagui` package, every new component is completely sizable, themable, and responsive using your design system tokens.
+
+Let's dig in.
+
+#### Sheet
+
+#### Select
+
+#### Dialog
+
+#### AlertDialog
+
+#### Slider
+
+#### Label
+
+#### Card
+
+#### ListItem
+
+#### Avatar
+
+#### Spinner
+
+#### Progress
+
+#### Unspaced
+
+Label has been updated to work with all the new form inputs.
+
+---
+
+### The Kitchen Sink
+
+---
+
+### React Native Animation Driver
+
+---
+
+### Performance
+
+Focus on performance has been a big overarching theme of the beta releases. We've sped up the compiler by about 2x, and the runtime likewise has had an ongoing series of patches that in local tests speed up common use cases likewise by 2-3x.
+
+This is a result of many small changes. For example, on the frontend we changed our style strategy which took extensive refactoring in three stages:
+
+We started with entirely relying on React Native Web's internal style engine, but found it was a big bottleneck both to our correctness, and speed. We instead forked their style system internally, and then step by step went about merging it into our own.
+
+Today the style loop now does 3^N less loops over styles than vanilla React Native.
+
+---
+
+### Community
+
+- Sponsors
+- Community page
+- Figma
+- Discord
+- Starter repos
+
+---
+
+### SSR
+
+Tamagui is the only UI kit that works on both React Native and React Native Web today that supports SSR across every feature and components, right out of the box. During the beta we landed a wide variety of correctness fixes for this functionality.
+
+---
+
+### Compiler improvements
+
+Over a dozen major improvements to the compiler have made their way in since beta. Some of the highlights are:
+
+#### Up-front bundling of components and config
+
+Tamagui now fully bundles your `components` and `config` that you provide it before it begins compilation, writing them out into the `./dist/tamagui` directory in your app. This is much better for debugging and introspection, and in the process we fixed a large variety of issues.
+
+The compiler now also supports analyzing components outside of your design system, allowing for even less friction when writing apps. Previously, Tamagui only knew how to optimize components found in your separated design system package. But it's common to have one-off `styled` component you use just for small pieces of your app, that don't need to be inside your design system. With beta [...] we added a bigger feature, in which the compiler now attempts to load and analyze components inline as it discovers new ones. This led to a 25% increase in compile-time optimized components in our largest production Tamagui apps.
+
+####
+
+---
+
+### Load and define themes dynamically
+
+---
+
+### React 0.69, React 18, React Native Web 18
+
+---
+
+### Vite Plugin + Vite Compiler
+
+---
+
+### React Server Components
+
+---
+
+### react-native-web-lite
+
+---
+
+### Concurrent Mode Support
+
+(ties into react-native-web-lite)
+
+We've updated Tamagui's base React version to be 18, and landed a large amount of fixes relating to concurrent mode.
+
+---
+
+### react-native-svg-lite
+
+---
+
+---
+
+### FontLanguage
+
+---
+
+### `fontFaceByWeight` option
+
+---
+
+### The `themeShallow` prop
+
+---
+
+### `useMediaPropsActive` helper
+
+---
+
+### `@tamagui/next-theme`
+
+---
+
+### `@tamagui/theme-base` upgrades
+
+The default theme package now includes `_active` sub-themes, paving the way for a consistent way to style all active states across every component in `tamagui`.
+
+It also now includes theme values for `color1` => `color12` as part of each theme. This gives you granular access outside of the more specific color values like `background`, or `borderColor`.
+
+---
+
+### `styled` upgrades
+
+The `styled` factory has undergone a number of improvements. It now supports wrapping just about any component you give it, so long as that component accepts a `style` prop.
+
+---
+
+### Starter repos
+
+`create-tamagui-app` underwent some big improvements that will set it up to be much more useful going forward. We moved official starters to be part of the actual Tamagui monorepo itself, which lets us much more rapidly iterate on them, and more importantly, to have them integrated into CI and tested before each release.
+
+It also now leverages a custom home directory `~/.tamagui` directory that will keep track of the last version you used in each app. In the future we can use this to give you automatic upgrade help, and diffs of changes you'll want to make.
+
+The `next-expo-solito` starter repo has had extensive polish as well, with fixes for using Expo EAS out of the box.
+
+---
+
+### Correctness
+
+More than any other section in this release, the biggest amount of effort for 1.0 went into correctness. Nearly every day, Tamagui has steadily landed fixes across every feature and component.
+
+Speaking personally, I'm most proud of the gains made here. The components introduced before the beta were ambitious, and they continued at a rapid pace during beta.
+
+---
+
+### Documentation
+
+The docs have undergone continuous improvements. Some highlights are:
+
+- The [compiler now has an extensive article breaking down the whys and hows of how it works](/docs/intro/compiler).
+
+---
+
+### Testing
+
+We've expanded our testing signficantly, with CI now passing on every merge into master and adding stricted linting and custom validation before every release.
+
+We now have a custom `release.ts` script that controls our release process as well, ensuring releases are tightly coordinated and that starters are integration tested as part of CI.
+
+---
+
+### Benchmarks
+
+---
+
+### Apps in production
+
+We now have multiple users deploying larger scale apps with Tamagui in production.
+
+---
+
+### Acknowledgements
+
+This release once again is inspired by or forks code from a variety of other libraries and developers.
+
+I'd like to thank:
