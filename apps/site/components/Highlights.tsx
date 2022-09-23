@@ -1,11 +1,8 @@
-import { ChevronDown, ChevronUp, ExternalLink } from '@tamagui/feather-icons'
-import { useRouter } from 'next/router'
+import { ExternalLink } from '@tamagui/feather-icons'
 import React from 'react'
 import {
   H2,
-  LinearGradient,
   Paragraph,
-  Select,
   Separator,
   SizableText,
   Text,
@@ -19,7 +16,6 @@ import { FrontmatterContext } from './FrontmatterContext'
 import { Link } from './Link'
 
 export function Highlights({ features, disableLinks }: any) {
-  const router = useRouter()
   const frontmatter = React.useContext(FrontmatterContext)
 
   return (
@@ -57,7 +53,11 @@ export function Highlights({ features, disableLinks }: any) {
 
           <YStack mb="$4" space="$1">
             <Link
-              href={`https://github.com/tamagui/tamagui/tree/master/packages/tamagui/src/views/${frontmatter.component}.tsx`}
+              href={`https://github.com/tamagui/tamagui/tree/master/packages/${
+                frontmatter.package
+                  ? `${frontmatter.package}/src/${frontmatter.component}.tsx`
+                  : `tamagui/src/views/${frontmatter.component}.tsx`
+              }`}
               target="_blank"
             >
               <XStack ai="center" space="$1">

@@ -13,4 +13,5 @@ export type Frontmatter = {
   slug: string
   image?: string
   component?: string
+  package?: string
 }
