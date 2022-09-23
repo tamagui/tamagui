@@ -265,13 +265,9 @@ const SmallMenu = React.memo(() => {
           >
             <HeaderLinks forceShowAllLinks />
 
-            {isDocs && (
-              <>
-                <Separator my="$4" w="100%" />
-                <DocsMenuContents />
-                <YStack h={400} />
-              </>
-            )}
+            <Separator my="$4" w="100%" />
+            <DocsMenuContents />
+            <YStack h={400} />
           </YStack>
         </Popover.ScrollView>
       </Popover.Content>
