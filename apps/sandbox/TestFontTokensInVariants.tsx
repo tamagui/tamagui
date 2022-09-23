@@ -9,27 +9,28 @@ export const TestFontTokensInVariants = styled(TamaguiText, {
         fontFamily: '$mono',
         fontSize: '1.43rem',
       },
-      semiBold: {
-        fontFamily: '"Comic Sans"',
-      },
-      medium: {
-        fontFamily: 'Garamond',
-      },
-      regular: {
-        fontFamily: '"Comic Sans"',
-      },
+      // semiBold: {
+      //   fontFamily: '"Comic Sans"',
+      // },
+      // medium: {
+      //   fontFamily: 'Garamond',
+      // },
+      // regular: {
+      //   fontFamily: '"Comic Sans"',
+      // },
     },
-    size: {
-      normal: {
-        fontSize: '1rem',
-      },
-      large: {
-        fontSize: '1.2rem',
-      },
-      small: {
-        fontSize: '0.85rem',
-      },
-    },
+
+    // size: {
+    //   normal: {
+    //     fontSize: '1rem',
+    //   },
+    //   large: {
+    //     fontSize: '1.2rem',
+    //   },
+    //   small: {
+    //     fontSize: '0.85rem',
+    //   },
+    // },
   } as const,
 
   defaultVariants: {

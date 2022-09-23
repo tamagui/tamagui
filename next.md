@@ -22,6 +22,7 @@
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
   - forms working bubble / label
   - inlineWhenUnflattened fontFamily on text should just be default
+  - TestFontTokensInVariants types no autocompleting in variants... but showing properly on hover/type property
 
   - FAQ
     - don't wrap in HOC if possible, will de-opt compilation

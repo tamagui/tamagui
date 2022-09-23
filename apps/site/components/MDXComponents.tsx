@@ -64,7 +64,9 @@ const Table = ({ heading, children, ...props }) => {
           {heading}
         </TableCell>
       )}
-      <XStack>{children}</XStack>
+      <XStack minWidth="100%" ai="stretch">
+        {children}
+      </XStack>
     </TableFrame>
   )
 }
@@ -82,6 +84,7 @@ const TableCell = styled(Paragraph, {
   p: '$2',
   px: '$3',
   size: '$5',
+  ellipse: true,
 
   variants: {
     head: {
@@ -101,6 +104,8 @@ const TableCell = styled(Paragraph, {
 const TableCol = styled(ThemeableStack, {
   brw: 1,
   brc: '$borderColor',
+  f: 1,
+  mr: -1,
   fd: 'column',
 })
 
