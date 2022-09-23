@@ -709,6 +709,21 @@ export function createComponent<
         fontFamily = fontFamily.slice(1)
       }
 
+      if (process.env.NODE_ENV === 'development') {
+        if (fontFamily?.startsWith(`var(`)) {
+          // eslint-disable-next-line no-console
+          console.warn(
+            `Received variable instead of resolved name of font, this is a bug. Please report on Github.`,
+            {
+              fontFamily,
+              props,
+              splitStyles,
+              staticConfig,
+            }
+          )
+        }
+      }
+
       const classList = [
         componentName ? componentClassName : '',
         fontFamily ? `font_${fontFamily}` : '',

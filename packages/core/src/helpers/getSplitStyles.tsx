@@ -432,8 +432,8 @@ export const getSplitStyles: StyleSplitter = (
         continue
       }
 
-      if (key === 'fontFamily' && !fontFamily) {
-        fontFamily = val
+      if (key === 'fontFamily' && !fontFamily && valInit && val) {
+        fontFamily = valInit[0] === '$' ? valInit : val
       }
 
       if (validStyleProps[key]) {
