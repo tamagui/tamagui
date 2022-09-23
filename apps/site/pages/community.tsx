@@ -2,10 +2,10 @@ import { HeaderIndependent } from '@components/Header'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
-import { ChevronRight, ExternalLink } from '@tamagui/feather-icons'
+import { ChevronRight } from '@tamagui/feather-icons'
 import { format, parseISO } from 'date-fns'
 import Link from 'next/link'
-import { Children, ReactPropTypes, useMemo } from 'react'
+import { useMemo } from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
@@ -18,13 +18,11 @@ import {
   Paragraph,
   Separator,
   Spacer,
-  ThemeInverse,
   XStack,
   YStack,
 } from 'tamagui'
 
 import { Card } from '../components/Card'
-import { CocentricCircles } from '../components/CocentricCircles'
 import { ContainerLarge } from '../components/Container'
 import { DiscordIcon } from '../components/DiscordIcon'
 import { FlatBubbleCard } from '../components/FlatBubbleCard'
