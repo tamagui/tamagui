@@ -15,9 +15,9 @@ description: Breaking out of the frontend trilemma.
   only feel as good as they use The Platform™ they deploy to.
 </IntroParagraph>
 
-React Native's raison dêtre is allowing sharing concepts across platforms along with _the UI that makes sense_. It does this well, allowing for large parts of the non-interface logic and smaller parts of the interface itself to be unified, saving a lot of developer time.
+React Native's raison dêtre is allowing sharing concepts across platforms along with _the UI that makes sense_. It does this well, allowing for large parts of the non-interface logic and smaller parts of the interface itself to be unified, saving much developer time.
 
-But as of today, there's still a large amount of interface that we don't share, but could, with only (somewhat) straightforward optimizations for the web platform. This article goes into how the Tamagui compiler achieves just that.
+But today, there's still a large amount of interface that we don't share, but could, with only (somewhat) straightforward optimizations for the web platform. This article goes into how the Tamagui compiler achieves just that.
 
 Lets start with a hard choice all frontend developers must make:
 
@@ -106,14 +106,15 @@ The web is more sensitive to performance, especially when it comes to Javascript
 
 ### What's holding us back
 
-For all the great things its done, there are four things React Native Web needs to do that that would individually have a big effect on improving code sharing:
+For all the great things its done, there are a few things React Native Web needs to do that that would individually have a big effect on improving code sharing:
 
 - Don't serve styles in Javascript.
+- Support Server Side Rendering (SSR)
 - Use CSS media queries for responsivity.
 - Use CSS variables for themes.
 - Use CSS psuedo attributes for interactive styles.
 
-Funny enough, the last three things would also all be big developer wins for regular old React Native.
+Plus, support for the last three points would also all be a big win for developer experience for plain old React Native.
 
 Most of these limitations come from the React Native `StyleSheet` API. It has no concept of responsive styling (media queries), themes or sizing (CSS variables), or [pseudo styling](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes).
 
@@ -189,6 +190,8 @@ With tree flattening we've been able to dramatically increase render performance
 <BenchmarkChartWeb />
 
 Keep in mind - a typical simple page will render hundreds of these components, and you have a 16ms or so budget before any animations will stutter (plus you have to account for browser layout and paint times).
+
+Tamagui also supports SSR _with media queries_ out of the box. This is another win for code sharing because SSR is one of the biggest performance gains you make to any app. Running `npm create tamagui-app` sets you up for this from the beginning with our [Next.js adapter](/docs/guides/next-js).
 
 Meanwhile, on Native, because we can't optimize to anything beyond vanilla React Native code, the gains are less. Still, the results are impressive given you are now getting a huge amount of features and nice syntax that normally would eat up a lot of performance, and the net result is basically even with hand-optimized React Native:
 
