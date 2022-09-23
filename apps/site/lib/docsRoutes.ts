@@ -14,7 +14,7 @@ export const docsRoutes = [
 
   {
     pages: [
-      { title: 'Intro', route: '/docs/intro/compiler' },
+      // { title: 'Intro', route: '/docs/intro/compiler' },
       { title: 'Install', route: '/docs/intro/compiler-install' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
     ],
