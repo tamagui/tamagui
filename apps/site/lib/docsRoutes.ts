@@ -105,6 +105,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Anchor', route: '/docs/components/anchor' },
       { title: 'HTML Elements', route: '/docs/components/html-elements' },
+      { title: 'ScrollView', route: '/docs/components/scroll-view' },
       { title: 'Spinner', route: '/docs/components/spinner' },
       { title: 'Unspaced', route: '/docs/components/unspaced' },
       { title: 'VisuallyHidden', route: '/docs/components/visually-hidden' },
