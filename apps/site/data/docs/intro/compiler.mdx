@@ -1,5 +1,5 @@
 ---
-title: The React Compiler
+title: React Native Everywhere
 description: Breaking out of the frontend trilemma.
 ---
 
@@ -15,9 +15,9 @@ description: Breaking out of the frontend trilemma.
   only feel as good as they use The Platform™ they deploy to.
 </IntroParagraph>
 
-React Native's raison dêtre is to allow sharing concepts across platforms, along with _the UI that makes sense_. It does this adeptly, allowing for large parts of the non-interface logic and smaller parts of the interface itself to be unified, saving a lot of developer time.
+React Native's raison dêtre is allowing sharing concepts across platforms along with _the UI that makes sense_. It does this well, allowing for large parts of the non-interface logic and smaller parts of the interface itself to be unified, saving a lot of developer time.
 
-But as of today, there's still a large amount of interface that we don't share, but could, with only straightforward optimizations for the web platform. This article goes into how the Tamagui compiler achieves just that.
+But as of today, there's still a large amount of interface that we don't share, but could, with only (somewhat) straightforward optimizations for the web platform. This article goes into how the Tamagui compiler achieves just that.
 
 Lets start with a hard choice all frontend developers must make:
 
@@ -60,11 +60,9 @@ Lets start with a hard choice all frontend developers must make:
   </TableCol>
 </Table>
 
-The `Feels Native` column is the one to pay attention to here. What's really happening here is what I've been thinking of as **the frontend trilemma**.
+The "Feels Native" column is the one to pay attention to here. What's really happening here is something that I've been thinking of as **The Frontend Trilemma**:
 
-The same table above can be re-framed as a "choose two of three":
-
-<Table heading="Choose two">
+<Table heading="You can only choose two">
   <TableCol>
     <TableCell>Multi-platform</TableCell>
   </TableCol>
@@ -83,7 +81,7 @@ Or, better illustrated in a diagram:
   time).](/trilemma.svg)
 </YStack>
 
-This choice is as old as software: target more platforms with one codebase, and sacrifice UX and performance, or target each platform and nearly double (or more) the time to ship each feature.
+This choice is as old as software: target more platforms with one codebase but sacrifice UX and performance, or, target each platform individually but nearly double the time to ship each feature.
 
 With React Native it's been no different. But, it's also true that incremental progress towards sharing more code, in a way that maintains native feel, has been happening steadily.
 
