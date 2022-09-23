@@ -402,6 +402,7 @@ export const Sheet = withStaticProperties(
 
           const onMoveShouldSet = (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
             const isScrolled = scrollBridge.y !== 0
+            console.log('isScrolled', isScrolled, previouslyScrolling)
             if (isScrolled) {
               previouslyScrolling = true
               return false
@@ -412,6 +413,7 @@ export const Sheet = withStaticProperties(
             }
             const isDraggingUp = dy < 0
             const isAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
+            console.log('isAtTop', isAtTop, isDraggingUp)
             // prevent drag once at top and pulling up
             if (isAtTop) {
               if (!isScrolled && isDraggingUp) {
@@ -419,6 +421,7 @@ export const Sheet = withStaticProperties(
               }
             }
             // we could do some detection of other touchables and cancel here..
+            console.log(Math.abs(dy) > 8)
             return Math.abs(dy) > 8
           }
 
@@ -445,8 +448,10 @@ export const Sheet = withStaticProperties(
             onMoveShouldSetPanResponder: onMoveShouldSet,
             onPanResponderGrant: grant,
             onPanResponderMove: (_e, { dy }) => {
-              const to = dy + startY
-              animatedNumber.setValue(resisted(to, minY), { type: 'direct' })
+              const toFull = dy + startY
+              const to = resisted(toFull, minY)
+              console.log('move', to)
+              animatedNumber.setValue(to, { type: 'direct' })
             },
             onPanResponderEnd: finish,
             onPanResponderTerminate: finish,
