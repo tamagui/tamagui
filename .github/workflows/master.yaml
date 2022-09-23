@@ -27,8 +27,8 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      # - name: Test
-      #   run: yarn test
+      - name: Test
+        run: yarn test
 
   deploy-site:
     name: Deploy site

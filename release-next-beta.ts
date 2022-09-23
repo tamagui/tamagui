@@ -18,6 +18,7 @@ const nextVersion = `1.0.1-beta.${+curVersion.split('.')[3] + 1}`
 
 const skipVersion = process.argv.includes('--skip-version')
 const skipPublish = process.argv.includes('--skip-publish')
+const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = process.argv.includes('--ci')
 
 // could add only if changed checks: git diff --quiet HEAD HEAD~3 -- ./packages/core
@@ -88,6 +89,11 @@ async function run() {
   }
 
   try {
+    if (tamaguiGitUser) {
+      await spawnify(`git config --global user.name 'Tamagui'`)
+      await spawnify(`git config --global user.email 'tamagui@users.noreply.github.com`)
+    }
+
     let version = curVersion
 
     if (!skipVersion) {

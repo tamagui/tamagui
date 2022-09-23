@@ -1,28 +1,32 @@
-name: Tagged Release
+name: Release
+
+# testing on a branch for now
 
 on:
   push:
+    branches:
+      - test-release
     tags:
-      - "v*"
+      - "release-*"
 
 jobs:
-  # release:
-  #   name: Release beta
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Repo
-  #       uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: 0
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT }}
+          fetch-depth: 0
 
-  #     - name: Install
-  #       uses: ./.github/actions/install
+      - name: Install
+        uses: ./.github/actions/install
 
-  #     - name: Publish Beta
-  #       run: yarn release:beta --ci
-  #       env:
-  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
+      - name: Publish
+        run: yarn release:beta:dirty --ci --tamagui-git-user --skip-publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   tagged-release:
     name: Tagged Release
