@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toast",
-  "version": "1.0.1-beta.173",
+  "version": "1.0.1-beta.174",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -23,17 +23,17 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/animate-presence": "^1.0.1-beta.173",
-    "@tamagui/compose-refs": "^1.0.1-beta.173",
-    "@tamagui/core": "^1.0.1-beta.173",
-    "@tamagui/create-context": "^1.0.1-beta.173",
-    "@tamagui/dismissable": "^1.0.1-beta.173",
-    "@tamagui/polyfill-dev": "^1.0.1-beta.173",
-    "@tamagui/portal": "^1.0.1-beta.173",
-    "@tamagui/stacks": "^1.0.1-beta.173",
-    "@tamagui/text": "^1.0.1-beta.173",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.173",
-    "@tamagui/visually-hidden": "^1.0.1-beta.173"
+    "@tamagui/animate-presence": "^1.0.1-beta.174",
+    "@tamagui/compose-refs": "^1.0.1-beta.174",
+    "@tamagui/core": "^1.0.1-beta.174",
+    "@tamagui/create-context": "^1.0.1-beta.174",
+    "@tamagui/dismissable": "^1.0.1-beta.174",
+    "@tamagui/polyfill-dev": "^1.0.1-beta.174",
+    "@tamagui/portal": "^1.0.1-beta.174",
+    "@tamagui/stacks": "^1.0.1-beta.174",
+    "@tamagui/text": "^1.0.1-beta.174",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.174",
+    "@tamagui/visually-hidden": "^1.0.1-beta.174"
   },
   "peerDependencies": {
     "react": "*",
@@ -41,7 +41,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.173",
+    "@tamagui/build": "^1.0.1-beta.174",
     "@types/react-dom": "^18.0.3",
     "@types/react-native": "^0.69.2",
     "react": "*",
