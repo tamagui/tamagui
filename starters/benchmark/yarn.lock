@@ -2529,7 +2529,7 @@ __metadata:
     "@react-navigation/native-stack": ^6.7.0
     "@tamagui/animations-react-native": 1.0.1-beta.174
     "@tamagui/colors": 1.0.1-beta.174
-    "@tamagui/feather-icons": 1.0.1-beta.171
+    "@tamagui/feather-icons": 1.0.1-beta.174
     "@tamagui/font-inter": 1.0.1-beta.174
     "@tamagui/shorthands": 1.0.1-beta.174
     "@tamagui/theme-base": 1.0.1-beta.174
@@ -4381,7 +4381,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/core@npm:^1.0.1-beta.171, @tamagui/core@npm:^1.0.1-beta.174":
+"@tamagui/core@npm:^1.0.1-beta.174":
   version: 1.0.1-beta.174
   resolution: "@tamagui/core@npm:1.0.1-beta.174"
   dependencies:
@@ -4461,15 +4461,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/feather-icons@npm:1.0.1-beta.171":
-  version: 1.0.1-beta.171
-  resolution: "@tamagui/feather-icons@npm:1.0.1-beta.171"
+"@tamagui/feather-icons@npm:1.0.1-beta.174":
+  version: 1.0.1-beta.174
+  resolution: "@tamagui/feather-icons@npm:1.0.1-beta.174"
   dependencies:
-    "@tamagui/core": ^1.0.1-beta.171
+    "@tamagui/core": ^1.0.1-beta.174
     react: "*"
     react-dom: "*"
     react-native-svg: ^12.4.3
-  checksum: 5671ac613bbf3374c00c84c0eb608e70645f4aabcaa516a77052e61f3ef03a844e94be8c1378cdcb591656fa27f5cb1b12688f447e9a23235234a941be09299b
+  checksum: c1e045732bd28cdce7e1485907e706b0dfad0d0ddb4305bdbff6a368669429079b51ae568b647e45c061db9517c178de3eb768016129702a2b2c50712ec1f042
   languageName: node
   linkType: hard
 
