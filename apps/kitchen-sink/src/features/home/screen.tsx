@@ -20,7 +20,7 @@ import {
   useTheme,
 } from 'tamagui'
 
-import { useThemeControl } from '../../useTheme'
+import { useThemeControl } from '../../useKitchenSinkTheme'
 
 const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & ListItemProps) => {
   const linkProps = useLink({ href, as, shallow })

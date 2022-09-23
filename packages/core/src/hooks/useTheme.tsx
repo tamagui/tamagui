@@ -236,9 +236,20 @@ export const useChangeThemeEffect = (
     return new ThemeManager(next.name, next.className, next.theme, parentManager, reset)
   })
 
+  // not concurrent safe but fixes native (but breaks SSR and not needed on web (i think) so leave only on native)
+  let didChange = false
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    didChange = Boolean(
+      next?.name !== themeManager.name || next?.className !== themeManager.className
+    )
+    if (didChange) {
+      themeManager.update(next, false, false)
+    }
+  }
+
   if (!isServer) {
     useLayoutEffect(() => {
-      themeManager.update(next)
+      themeManager.update(next, didChange)
       activeThemeManagers.add(themeManager)
 
       const disposeParentOnChange = parentManager.onChangeTheme(() => {
@@ -262,7 +273,7 @@ export const useChangeThemeEffect = (
         disposeParentOnChange()
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [themes, next?.name, next?.className, componentName, debug])
+    }, [didChange, themes, next?.name, next?.className, componentName, debug])
   }
 
   return {
