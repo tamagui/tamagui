@@ -92,9 +92,11 @@ export const Sandbox = () => {
           Hello world
         </TestFontTokensInVariants> */}
 
-        <Button size="$2" $sm={{ size: '$8' }}>
+        {/* <Button size="$2" $sm={{ size: '$8' }} >
           test
-        </Button>
+        </Button> */}
+
+        <Button pressStyle={{ backgroundColor: 'blue' }}>hi</Button>
 
         {/* <Animated.View style={style} /> */}
         {/* <AlertDialogDemo /> */}

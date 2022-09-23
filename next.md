@@ -1,5 +1,6 @@
 - 1.0
 
+  - // TODO we should likely account for importance here to match CSS, right??
   - kitchen sink
     - select inside dialog - select modal comes up behind dialog
     - card no bg
@@ -70,6 +71,7 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - `variantsOnly: true` on styled(), removes types for anything but variants (and className/theme etc)
   - way to use tamagui with custom design system tokens
     - basically map any tokens you choose to internal tamagui ones
   - input like button

@@ -96,13 +96,15 @@ Here's how in very official and indisputable graph:
 
 React Native allowed us to share more between platforms. State, logical code, utility functions, and hooks (when they came out).
 
-A bit later, with React Native Web, more became share-able: the big standardized API's of React Native, as well as the possibility of sharing quite a bit more UI code - at a cost.
+A bit later, with React Native Web, more became shareable: the big standardized API's of React Native, as well as the possibility of sharing quite a bit more UI code - though not without a cost.
 
 The general trend upwards in between those two releases represents amazing work by all sorts of library authors to create smoother, better libraries and APIs all along the way - from [React Navigation](https://reactnavigation.org/) (and [Solito](https://solito.dev/)), to [React Native Skia](https://github.com/Shopify/react-native-skia) and [Reanimated](https://docs.swmansion.com/react-native-reanimated/) and really just [all](https://github.com/react-native-svg/react-native-svg) [sorts](https://github.com/expo/match-media) [of](https://gorhom.github.io/react-native-bottom-sheet) [other](https://github.com/rnmapbox/maps) [libraries](https://www.google.com/search?q=expo+linear+gradient&oq=expo+linear+gradient&aqs=chrome..69i57j69i59j69i60.3994j0j1&sourceid=chrome&ie=UTF-8).
 
-Yet even with React Native Web, in the best cases it's simply impossible to share more than a pretty small fraction of your frontend without immediately sacrificing look and feel. This is mostly because of the web.
+Yet even with React Native Web, in the best cases it's simply impossible to share more than a pretty small fraction of your frontend without immediately sacrificing look and feel.
 
-The web is very sensitive to Javascript in general, and the CSS-in-JS strategy that React Native Web uses basically forces you to keep all your styles in JS. This is generally a bad thing. Browsers really want you to use CSS, especailly for anything interactive. Further, React Native lacks many concept important to CSS features that make web apps feel great.
+This is mostly because of the web.
+
+The web is more sensitive to performance, especially when it comes to Javascript, and the CSS-in-JS strategy that React Native Web uses basically forces you to keep all your styles in JS. This is generally a bad thing. Browsers really want you to use CSS, especially for anything interactive. Further, React Native lacks many concept important to CSS features that make web apps feel great.
 
 ### What's holding us back
 

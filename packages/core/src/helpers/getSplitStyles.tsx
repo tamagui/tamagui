@@ -333,7 +333,12 @@ export const getSplitStyles: StyleSplitter = (
           languageContext,
           true
         )
-        pseudos[key] = pseudoStyleObject
+
+        pseudos[key] = {
+          ...pseudoStyleObject,
+          ...pseudos[key],
+        }
+
         if (shouldDoClasses && key !== 'enterStyle' && key !== 'exitStyle') {
           const pseudoStyles = getAtomicStyle(pseudoStyleObject, pseudoDescriptors[key])
           for (const style of pseudoStyles) {
@@ -414,6 +419,7 @@ export const getSplitStyles: StyleSplitter = (
               Object.assign(medias, mediaStyle)
             } else {
               for (const key in mediaStyle) {
+                // TODO we should likely account for importance here to match CSS, right??
                 usedKeys.add(key)
                 style[key] = mediaStyle[key]
                 if (key === 'fontFamily') {
