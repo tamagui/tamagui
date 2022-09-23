@@ -4,18 +4,15 @@
     - select inside dialog - select modal comes up behind dialog
     - card no bg
     - placeholder input color dark
-  - <Button iconAfter={<YStack $sm={{ display: 'none' }} />}> space adding when iconAfter is display: none
   - make create-tamagui-app test test using local changes somehow
   - delete / clean tamagui build on watch
   - light/dark theme change is re-rendering more than it should
   - VisuallyHidden + mediaquery + space
   - Select id="" + Label focus
   - Sheet drag up small bug native with scrollable content
-  - prod build native stuck on copying resources
   - kitchen-sink in Snack demo
   - check animation flicker again
     - flicker on some enterStyle animation native (hermes only)
-  - changing family responsive tests
   - fix reanimated 2.9/3.0 __frame var
   - windows without WSL
   - mismatch SSR SelectTrigger due to componentName override
@@ -99,8 +96,6 @@ plan for space + display none, two pronged
   - Switch gesture
   - loadFont, loadAnimations
   - Card should operate through context to properly sync size
-  - tamagui-build could run extraction *before* - but still needs webpack... so not sure
-    - no need for `module:jsx`, instead output `module:native` and `module:css`
   - load tamagui itself using the loadModule / fork process to avoid all register (this is also shared logic with studio loading tamagui conf..)
   - instead of .sheetBreakpoint add .adaptBreakpoint and <Adapt />
     - ability to pass in custom sheet or other view
@@ -115,17 +110,12 @@ plan for space + display none, two pronged
   - <Toast />
   - <Toggle><Group><Toggle.Item><Item /></Toggle.Item></Group></Toggle>
   - <Tabs />
+    - needs RovingFocusGroup / check Showtimes
   - <Accordion />
   - <Autocomplete />
   - <Select.SearchInput />
-  
-  - principles doc to explain:
-    - everything works runtime + compile the same
-    - designed for apps - so runtime performance key
-      - trades off bigger bundle size / a bit more init/memory
-  - sell compiler / open source better on home
+
   - maybe <UL /> <LI /> <OL />
-  - super short classnames for themes in production
   - Input based on Button for icon/iconAfter
   - cache at variant level (?)
   - another couple passes over style system to reduce work and size
@@ -133,8 +123,6 @@ plan for space + display none, two pronged
    - (size = height of button, 1 = smallest button, 10 = largest, 4 = natural, 6 = typical largest, 2 = typical smallest)
   - ci should include a fake publish + reinstall step, because sometimes package.json.files[] is missing new files
   - // native doesn't support until next react-native version, need to remove eventually
-  - <Tabs />
-    - needs RovingFocusGroup
   - `blur` style prop
   - `space` should work with media queries
   - Text numberOfLines / context fix
@@ -240,7 +228,6 @@ const ornaments = {
 - <SizableFrame />, <EnsureFlexed />
 - document/release <ThemeReverse />
 - container queries
-- // TODO only on hoverable/pressable!
 - options to render to native components in more places
 - transformOrigin
   - may be able to translate to matrix https://www.jianshu.com/p/c67559b8f691
@@ -257,15 +244,9 @@ const ornaments = {
 - blur prop built in ?
 - // TODO fix any type
 
-
-site optimize:
-  - burntsienna (loading from potentially 3 places)
-
-
 ### Image v2
 
 fast-image - https://github.com/DylanVann/react-native-fast-image
-
 
 ### Skeleton
 
