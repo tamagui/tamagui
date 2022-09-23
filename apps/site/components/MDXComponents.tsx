@@ -6,6 +6,7 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
+  EnsureFlexed,
   H1,
   H2,
   H3,
@@ -57,7 +58,7 @@ const TableFrame = styled(ThemeableStack, {
 
 const Table = ({ heading, children, ...props }) => {
   return (
-    <TableFrame {...props}>
+    <TableFrame className="no-scrollbar" overflow={'scroll' as any} {...props}>
       {!!heading && (
         <TableCell size="$6" bc="$color1" fow="800">
           {heading}
@@ -74,10 +75,12 @@ const TableCell = styled(Paragraph, {
   fd: 'row',
   ai: 'center',
   pos: 'relative',
+  f: 1,
   jc: 'center',
   ta: 'center',
   h: '$4',
   p: '$2',
+  px: '$3',
   size: '$5',
 
   variants: {
@@ -98,7 +101,6 @@ const TableCell = styled(Paragraph, {
 const TableCol = styled(ThemeableStack, {
   brw: 1,
   brc: '$borderColor',
-  f: 1,
   fd: 'column',
 })
 

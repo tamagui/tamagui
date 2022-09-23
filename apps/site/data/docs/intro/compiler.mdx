@@ -17,11 +17,9 @@ description: Breaking out of the frontend trilemma.
 
 React Native's raison dêtre is to allow sharing concepts across platforms, along with _the UI that makes sense_. It does this adeptly, allowing for large parts of the non-interface logic and smaller parts of the interface itself to be unified, saving a lot of developer time.
 
-But as of today, there's still a large amount of interface that we don't share, but could, if only we could optimize for the web platform quite a bit better. In fact, we can do better than hand-optimization in many cases, while allowing simpler syntax!
+But as of today, there's still a large amount of interface that we don't share, but could, with only straightforward optimizations for the web platform. This article goes into how the Tamagui compiler achieves just that.
 
-This document goes into how the Tamagui compiler achieves a good portion of that.
-
-But first, let's start with a hard choice all frontend developers have been making since nearly the beginning of software itself:
+Lets start with a hard choice all frontend developers must make:
 
 <Table heading="Choose one">
   <TableCol>
@@ -78,58 +76,64 @@ The same table above can be re-framed as a "choose two of three":
   </TableCol>
 </Table>
 
-Or, much better illustrated in a diagram:
+Or, better illustrated in a diagram:
 
 <YStack maw={650} als="center">
   ![The Frontend Trilemma: Choose two of DX, UX, and multi-platform (or run out of
   time).](/trilemma.svg)
 </YStack>
 
-This choice is as old as software, and has applied way before React ever came along. With React Native, I'd make the claim that we've made real, incremental progress towards allowing all three.
+This choice is as old as software: target more platforms with one codebase, and sacrifice UX and performance, or target each platform and nearly double (or more) the time to ship each feature.
 
-Here's a very official and indisputable graph:
+With React Native, it's been no different. But it's also true that incremental progress towards sharing more code, in a way that maintains native feel, has been happening steadily.
+
+Here's how in very official and indisputable graph:
 
 <YStack maw={650} als="center">
   ![Sharing code between web and native without sacrificing native feel has gone way up with the
   release of React Native, and later with the release of React Native Web](/code-sharing.svg)
 </YStack>
 
-React Native allowed us to share more between platforms: state and logical code, utilities, and hooks (once they came out). A bit later, with React Native Web, could now share a small portion of visual components as well.
+React Native allowed us to share more between platforms. State, logical code, utility function, and hooks (when they came out).
 
-The general trend upwards in between those two releases represents amazing work by all sorts of library authors to create smoother, better libraries and APIs in the interim - from [React Navigation](https://reactnavigation.org/) (and [Solito](https://solito.dev/)), to [React Native Skia](https://github.com/Shopify/react-native-skia) and [Reanimated](https://docs.swmansion.com/react-native-reanimated/) and really just [all](https://github.com/react-native-svg/react-native-svg) [sorts](https://github.com/expo/match-media) [of](https://gorhom.github.io/react-native-bottom-sheet) [other](https://github.com/rnmapbox/maps) [libraries](https://www.google.com/search?q=expo+linear+gradient&oq=expo+linear+gradient&aqs=chrome..69i57j69i59j69i60.3994j0j1&sourceid=chrome&ie=UTF-8).
+A bit later, with React Native Web, more became share-able: the big standardized API's of React Native, as well as the possibility of sharing quite a bit more UI code - at a cost.
 
-Yet, even with React Native Web, in the best cases it's simply impossible to share more than a pretty small fraction of your frontend without immediately sacrificing look and feel. This is mostly because the web is very sensitive to Javascript in general, and the CSS-in-JS strategy that React Native Web uses as of today basically forces all styles into JS, and doesn't give you access to primitives that browsers are highly optimized for.
+The general trend upwards in between those two releases represents amazing work by all sorts of library authors to create smoother, better libraries and APIs all along the way - from [React Navigation](https://reactnavigation.org/) (and [Solito](https://solito.dev/)), to [React Native Skia](https://github.com/Shopify/react-native-skia) and [Reanimated](https://docs.swmansion.com/react-native-reanimated/) and really just [all](https://github.com/react-native-svg/react-native-svg) [sorts](https://github.com/expo/match-media) [of](https://gorhom.github.io/react-native-bottom-sheet) [other](https://github.com/rnmapbox/maps) [libraries](https://www.google.com/search?q=expo+linear+gradient&oq=expo+linear+gradient&aqs=chrome..69i57j69i59j69i60.3994j0j1&sourceid=chrome&ie=UTF-8).
 
-Browsers really want you to use CSS for anything interactive, and React Native simply has no concept of many important CSS features that web apps need to feel great.
+Yet even with React Native Web, in the best cases it's simply impossible to share more than a pretty small fraction of your frontend without immediately sacrificing look and feel. This is mostly because of the web.
+
+The web is very sensitive to Javascript in general, and the CSS-in-JS strategy that React Native Web uses basically forces you to keep all your styles in JS. This is generally a bad thing. Browsers really want you to use CSS, especailly for anything interactive. Further, React Native lacks many concept important to CSS features that make web apps feel great.
 
 ### What's holding us back
 
-For all the great things its done, there are four things React Native Web needs to do that that would each individually have a big effect on sharing code. Funny enough - the last three would also all be big DX wins for regular old React Native. They are:
+For all the great things its done, there are four things React Native Web needs to do that that would individually have a big effect on improving code sharing:
 
 - Don't serve styles in Javascript.
 - Use CSS media queries for responsivity.
 - Use CSS variables for themes.
 - Use CSS psuedo attributes for interactive styles.
 
-React Native Web makes you write your styles in Javascript, and it only supports the limited React Native `StyleSheet` API. Unfortunately, that API is, well, limited - it has no concept of responsive styles (media queries), themes (CSS variables), or [pseudo styling](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes).
+Funny enough, the last three things would also all be big developer wins for regular old React Native.
 
-This means that every style you write is part of your Javascript bundle. But it gets worse because some of the most important features you need to really share code are the performance sensitive - media queries, for example are essential to sharing code and are useful at almost level of your components tree. Pseudo styles and theme styles have similar profiles - very important for UX, very sensitive to performance, and very much better in CSS.
+Most of these limitations come from the React Native `StyleSheet` API. It has no concept of responsive styling (media queries), themes or sizing (CSS variables), or [pseudo styling](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes).
+
+This means that every style you write is part of your Javascript bundle. The worst part is these features are some of the most performance sensitive - media queries, for example, are totally essential to sharing code and running them as hooks de-opts web-apps so much they will bring modern browsers to a halt at the slightest resize.
+
+Meanwhile, pseudo styling and theme or size styling have similar profiles: very important for UX, very sensitive to performance, and very much better in CSS. The effect of the combination of all these factors is hard to understate: <span style={{ color: 'var(--yellow10)' }}>it's absolutely devastating for web performance</span>.
 
 And then there's the authoring experience.
 
-Want dark and light mode? Or just a nice style when a user presses or hovers on a button? You'll need about 8 lines of code for what usually took 2 in CSS.
+Want dark and light mode? Or just a nice style when a user presses or hovers on a button? Without a syntax for it, you need about 8 lines of code for what usually took 2 in CSS.
 
-The effect of the combination of all these factors is hard to understate: <span style={{ color: 'var(--yellow10)' }}>it's absolutely devastating for web performance</span>. Not to mention code quality and boilerplate.
-
-These downsides really work together to demoralize the naive Universal app developer. Especially if they are used to writing High Quality Web Apps. They go from writing DRY, simple, performant CSS to cumbersome, verbose and brittle styles that eat up main-thread time.
+These downsides really work together to demoralize the naive, beginning Universal app developer. Especially if they are used to writing High Quality Web Apps. They go from writing DRY, simple, performant CSS to cumbersome, verbose and brittle styles that eat up main-thread time.
 
 But if you can't afford to develop your app twice, it's either that, or nothing.
 
-And this is nothing against React Native Web. It's simply a matter of will.
+And this is nothing against React Native Web! It's responsible for a that huge bump in developer productivity.
 
-And it just so happened I had a bit of time during the pandemic, and I really, really didn't want to have to choose two in the trilemma.
+It's simply a matter of effort to try and fix the issues. And it just so happened I had a bit of time during the pandemic, [a bit of prior art](https://github.com/jsxstyle/jsxstyle), and a really, really strong will to not have to choose two of those three options.
 
-### How Tamagui fixes all that stuff
+### How Tamagui compiles
 
 The Tamagui compiler starts with the essentials: **it extracts all your styles to CSS**. This alone leads to about 30% increases in general performance - measured in bundle size, startup time, runtime, or Lighthouse scores.
 
