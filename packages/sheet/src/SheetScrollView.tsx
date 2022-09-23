@@ -5,6 +5,8 @@ import { forwardRef, useRef, useState } from 'react'
 import { useSheetContext } from './SheetContext'
 import { SheetScopedProps } from './types'
 
+// TODO ideally would replicate https://github.com/ammarahm-ed/react-native-actions-sheet/blob/master/src/index.tsx
+
 /* -------------------------------------------------------------------------------------------------
  * SheetScrollView
  * -----------------------------------------------------------------------------------------------*/
@@ -73,9 +75,6 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
           const dragAt = pageY - scrollBridge.scrollStartY
           const dy = pageY - state.current.lastPageY
           state.current.lastPageY = pageY // after dy
-          // const isAboveStart = dragAt <= 0
-          // const isDraggingDown = dy > 0
-          // const isScrollAtTop = scrollBridge.y <= 0
           const isDraggingUp = dy < 0
           const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
 
@@ -95,8 +94,6 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
           }
         }}
         onResponderRelease={release}
-        // onResponderEnd={release}
-        // onResponderTerminate={release}
         {...props}
       />
     )
