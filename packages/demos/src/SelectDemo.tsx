@@ -6,7 +6,7 @@ export function SelectDemo() {
   const [val, setVal] = useState('apple')
   return (
     <Select id="food" sheetBreakpoint="sm" value={val} onValueChange={setVal}>
-      <Select.Trigger w={240} iconAfter={ChevronDown}>
+      <Select.Trigger w={180} iconAfter={ChevronDown}>
         <Select.Value placeholder="Something" />
       </Select.Trigger>
 

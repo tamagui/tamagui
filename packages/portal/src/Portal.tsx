@@ -2,13 +2,11 @@
 import '@tamagui/polyfill-dev'
 
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/core'
-import { YStack, YStackProps } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { createPortal } from 'react-dom'
 
-export type PortalProps = YStackProps & {
-  host?: any // element
-}
+import { PortalProps } from './PortalProps'
 
 export const Portal = ({ host = globalThis.document?.body, ...props }: PortalProps) => {
   const contents = (

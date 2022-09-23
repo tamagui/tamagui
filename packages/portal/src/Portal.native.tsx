@@ -4,7 +4,7 @@ import * as React from 'react'
 import { RootTagContext } from 'react-native'
 import { createPortal } from 'react-native/Libraries/Renderer/shims/ReactNative'
 
-export type PortalProps = YStackProps
+import { PortalProps } from './PortalProps'
 
 export const Portal = (props: PortalProps) => {
   const rootTag = React.useContext(RootTagContext)
@@ -22,6 +22,13 @@ export const Portal = (props: PortalProps) => {
 
   if (rootTag) {
     return createPortal(contents, rootTag)
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `Missing rootTag, this is a bug - you may need a different React Native version, or to avoid using "modal" on native.`
+    )
   }
 
   return null

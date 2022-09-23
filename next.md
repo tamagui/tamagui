@@ -27,6 +27,16 @@
   - FAQ
     - don't wrap in HOC if possible, will de-opt compilation
     - what works for compilation / examples
+  
+---
+
+compiler article
+
+- mention SSR is impossible without it
+- add section + two diagrams for compiler internals
+- improve code demo to show media queries
+- add image showing before/after of render performance (on and off compiler)
+
 ---
 
 <Menu />

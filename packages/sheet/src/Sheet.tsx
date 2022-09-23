@@ -6,6 +6,7 @@ import {
   Theme,
   getAnimationDriver,
   isClient,
+  isWeb,
   mergeEvent,
   styled,
   themeable,
@@ -28,6 +29,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -495,6 +497,23 @@ export const Sheet = withStaticProperties(
       // temp until reanimated useAnimatedNumber fix
       const AnimatedView = driver['NumberView'] ?? driver.View
 
+      /**
+       * This is a hacky workaround for native:
+       */
+      const [isShowingInnerSheet, setIsShowingInnerSheet] = useState(false)
+      const shouldHideParentSheet = !isWeb && modal && isShowingInnerSheet
+      const parentSheetContext = useContext(SheetInsideSheetContext)
+      const onInnerSheet = useCallback((hasChild: boolean) => {
+        setIsShowingInnerSheet(hasChild)
+      }, [])
+      useIsomorphicLayoutEffect(() => {
+        if (!parentSheetContext || !open) return
+        parentSheetContext(true)
+        return () => {
+          parentSheetContext(false)
+        }
+      }, [parentSheetContext, open])
+
       const contents = (
         <SheetProvider
           modal={modal}
@@ -510,7 +529,7 @@ export const Sheet = withStaticProperties(
           setOpen={setOpen}
           scrollBridge={scrollBridge}
         >
-          {isResizing ? null : overlayComponent}
+          {isResizing || shouldHideParentSheet ? null : overlayComponent}
 
           <AnimatedView
             ref={ref}
@@ -523,13 +542,14 @@ export const Sheet = withStaticProperties(
                 return next
               })
             }}
-            pointerEvents={open ? 'auto' : 'none'}
+            pointerEvents={open && !shouldHideParentSheet ? 'auto' : 'none'}
             style={[
               {
                 position: 'absolute',
                 zIndex,
                 width: '100%',
                 height: '100%',
+                opacity: shouldHideParentSheet ? 0 : 1,
               },
               animatedStyle,
             ]}
@@ -551,10 +571,21 @@ export const Sheet = withStaticProperties(
       )
 
       if (modal) {
-        return (
+        const modalContents = (
           <Portal zIndex={zIndex}>
             <Theme name={themeName}>{contents}</Theme>
           </Portal>
+        )
+
+        if (isWeb) {
+          return modalContents
+        }
+
+        // on native we don't support multiple modals yet... fix for now is to hide outer one
+        return (
+          <SheetInsideSheetContext.Provider value={onInnerSheet}>
+            {modalContents}
+          </SheetInsideSheetContext.Provider>
         )
       }
 
@@ -563,6 +594,8 @@ export const Sheet = withStaticProperties(
   ),
   sheetComponents
 )
+
+const SheetInsideSheetContext = createContext<((hasChild: boolean) => void) | null>(null)
 
 export const ControlledSheet = Sheet as FunctionComponent<
   Omit<SheetProps, 'open' | 'onOpenChange'> & RefAttributes<View>
