@@ -201,7 +201,17 @@ export const useChangeThemeEffect = (
   theme: ThemeParsed | null
   className?: string
 } => {
-  const { themes } = getConfig()
+  const config = getConfig()
+
+  if (process.env.NODE_ENV === 'development') {
+    if (!config) {
+      throw new Error(
+        `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before renderig.`
+      )
+    }
+  }
+
+  const { themes } = config
 
   if (isRSC) {
     // we need context working for this to work well
