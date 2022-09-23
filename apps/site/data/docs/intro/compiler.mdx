@@ -85,7 +85,7 @@ Or, better illustrated in a diagram:
 
 This choice is as old as software: target more platforms with one codebase, and sacrifice UX and performance, or target each platform and nearly double (or more) the time to ship each feature.
 
-With React Native, it's been no different. But it's also true that incremental progress towards sharing more code, in a way that maintains native feel, has been happening steadily.
+With React Native it's been no different. But, it's also true that incremental progress towards sharing more code, in a way that maintains native feel, has been happening steadily.
 
 Here's how in very official and indisputable graph:
 
@@ -104,7 +104,7 @@ Yet even with React Native Web, in the best cases it's simply impossible to shar
 
 This is mostly because of the web.
 
-The web is more sensitive to performance, especially when it comes to Javascript, and the CSS-in-JS strategy that React Native Web uses basically forces you to keep all your styles in JS. This is generally a bad thing. Browsers really want you to use CSS, especially for anything interactive. Further, React Native lacks many concept important to CSS features that make web apps feel great.
+The web is more sensitive to performance, especially when it comes to Javascript, and the CSS-in-JS strategy that React Native Web uses basically forces you to keep all your styles in JS. This is generally a bad thing. Browsers really want you to use CSS, especially for anything interactive. Further, React Native lacks many concepts important to CSS features that make web apps feel great.
 
 ### What's holding us back
 
@@ -190,17 +190,21 @@ With tree flattening we've been able to dramatically increase render performance
 
 <BenchmarkChartWeb />
 
-Meanwhile, on Native, because we can't optimize to anything beyond vanilla React Native code, the gains are less, but still impressive given you are now leveraging a huge amount of features that normally would eat up a lot of performance. Once again, tree flattening really helps make up the difference:
+Keep in mind - a typical simple page will render hundreds of these components, and you have a 16ms or so budget before any animations will stutter (plus you have to account for browser layout and paint times).
+
+Meanwhile, on Native, because we can't optimize to anything beyond vanilla React Native code, the gains are less. Still, the results are impressive given you are now getting a huge amount of features and nice syntax that normally would eat up a lot of performance, and the net result is basically even with hand-optimized React Native:
 
 <BenchmarkChartNative />
 
 You can see [the full Benchmarks with explanations here](/docs/intro/benchmarks).
 
-### End
+### Conclusion
 
-I think Tamagui opens to door to a new option. It will take time for it to stabilize completely, and certainly there's tons of room for improvement, but already today we've seen apps go from sharing ~25% of code, to over 70%.
+I think Tamagui opens to door to all sorts of cool things. Big wins in developer experience, maintenance, and performance. A path towards a really awesome ecosystem of components that adapt to web and native.
 
-<Table heading="Choose one">
+And ultimately, apps that go from sharing ~25% of truly native-feeling code, to over 70%.
+
+<Table heading="The new options">
   <TableCol>
     <TableCell head></TableCell>
     <TableCell>1</TableCell>
