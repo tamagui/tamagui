@@ -1,8 +1,7 @@
 - 1.0
 
   - kitchen sink
-    - native toggle one-behind issue came back
-    - select inside dialog breaking context
+    - select inside dialog - select modal comes up behind dialog
     - card no bg
     - placeholder input color dark
   - <Button iconAfter={<YStack $sm={{ display: 'none' }} />}> space adding when iconAfter is display: none

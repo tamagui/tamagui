@@ -4,7 +4,7 @@ import { Appearance } from 'react-native'
 
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
-import { ThemeContext } from './useTheme'
+import { ThemeContext } from './useKitchenSinkTheme'
 
 export default function App() {
   const [theme, setTheme] = useState(Appearance.getColorScheme())

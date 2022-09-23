@@ -89,7 +89,7 @@ export class ThemeManager {
     return Boolean(this.keys.get(uuid)?.size)
   }
 
-  update({ name, theme, className }: SetActiveThemeProps = {}, force = false) {
+  update({ name, theme, className }: SetActiveThemeProps = {}, force = false, notify = true) {
     if (!force) {
       // className compare on web, avoids light/dark re-renders
       const nameChanged = name !== this.name
@@ -100,7 +100,9 @@ export class ThemeManager {
     this.className = className || ''
     this.name = name || ''
     this.theme = theme
-    this.notifyListeners()
+    if (notify) {
+      this.notifyListeners()
+    }
     return true
   }
 

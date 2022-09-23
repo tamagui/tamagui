@@ -28,7 +28,7 @@ export declare class ThemeManager {
     get fullName(): string;
     getValue(key: string): import("..").Variable<import("..").VariableValue> | undefined;
     isTracking(uuid: Object): boolean;
-    update({ name, theme, className }?: SetActiveThemeProps, force?: boolean): boolean;
+    update({ name, theme, className }?: SetActiveThemeProps, force?: boolean, notify?: boolean): boolean;
     getNextTheme(props?: GetNextThemeProps, debug?: any): {
         name: string;
         theme: ThemeParsed | null;

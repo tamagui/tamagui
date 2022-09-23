@@ -1,4 +1,3 @@
-import React from 'react'
 import { Label, Separator, SizeTokens, Switch, XStack, YStack } from 'tamagui'
 
 export function SwitchDemo() {
