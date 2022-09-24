@@ -1,15 +1,16 @@
 ---
 title: Write once, feels native
+description: React is already saved, boomer.
 ---
 
 <TLDR>
 
-**TLDR**: The Tamagui compiler makes sharing significantly more code between native and web feel native. It speeds up web apps 100-300%, and native 15-20%.
+Tamagui's compiler makes sharing significantly more code between native and web **not** cost performance vs hand-optimized. It speeds up web apps 1-3x, and native ~1.25x.
 
 </TLDR>
 
 <IntroParagraph>
-  Let's start with a choice all frontend developers make implicitly, presented three ways.
+  Let's start with a choice all frontend developers make implicitly, presented three ways:
 </IntroParagraph>
 
 <Table heading="You can only choose two">
@@ -23,6 +24,8 @@ title: Write once, feels native
     <TableCell>Feels native</TableCell>
   </TableCol>
 </Table>
+
+Or, as a choose-two-of-three:
 
 <Table heading="Choose one">
   <TableCol>
@@ -63,42 +66,51 @@ title: Write once, feels native
   </TableCol>
 </Table>
 
+A diagram reveals a fourth option, with a center that is today largely impossible:
+
 <YStack maw={650} als="center">
   ![The Frontend Trilemma: Choose two of DX, UX, and multi-platform (or run out of
   time).](/trilemma.svg)
 </YStack>
 
-This choice is as old as software: target more platforms with one codebase but sacrifice UX and performance, or, target each platform individually but nearly double the time to ship each feature. With React Native it's been no different.
+You either target more platforms with one codebase and sacrifice UX/performance, or target each platform individually but double your time to ship each feature.
 
-Here's a chart:
+Many people choose the former, and it's unfortunate but understandable. For a variety of reasons: you're a small team, you have to ship, and supporting more platforms or testing your idea out is more important than absolute speed. Life's tough.
+
+But I don't think it's necessary for React to be slow, even when sharing a lot of code. **Even using fancy CSS-in-JS solutions**. We just need some help - and compilers will do just that.
+
+First, a chart:
 
 <YStack maw={650} als="center">
   ![Sharing code between web and native without sacrificing native feel has gone way up with the
   release of React Native, and later with the release of React Native Web](/code-sharing.svg)
 </YStack>
 
-You can define your own "feels native" and set the Y axis appropriately, make small if you want.
+You can define your own "feels native" and set the Y axis appropriately, make small if you want. I put a general upward trend as all sort of amazing library authors have made sharing so much more performance and well-designed, a few being [React Navigation](https://reactnavigation.org/) (+ [Solito](https://solito.dev/)), [React Native Skia](https://github.com/Shopify/react-native-skia) or [Reanimated](https://docs.swmansion.com/react-native-reanimated/) and [many](https://github.com/react-native-svg/react-native-svg) [many](https://github.com/expo/match-media) [many](https://gorhom.github.io/react-native-bottom-sheet) [many](https://github.com/rnmapbox/maps) [more](https://www.google.com/search?q=expo+linear+gradient&oq=expo+linear+gradient&aqs=chrome..69i57j69i59j69i60.3994j0j1&sourceid=chrome&ie=UTF-8).
 
-I put a general upward trend as all sort of amazing library authors have made sharing so much more performance and well-designed, a few being [React Navigation](https://reactnavigation.org/) (+ [Solito](https://solito.dev/)), [React Native Skia](https://github.com/Shopify/react-native-skia) or [Reanimated](https://docs.swmansion.com/react-native-reanimated/) and [many](https://github.com/react-native-svg/react-native-svg) [many](https://github.com/expo/match-media) [many](https://gorhom.github.io/react-native-bottom-sheet) [many](https://github.com/rnmapbox/maps) [more](https://www.google.com/search?q=expo+linear+gradient&oq=expo+linear+gradient&aqs=chrome..69i57j69i59j69i60.3994j0j1&sourceid=chrome&ie=UTF-8).
+With React Native Web today it's hard to share more than a pretty small fraction of your frontend without immediately sacrificing look and feel.
 
-With React Native Web today it's hard to share more than a pretty small fraction of your frontend without immediately sacrificing look and feel. This is mostly because of the web. The web is extra sensitive to performance, especially when it comes to Javascript, and the CSS-in-JS needs compilers to avoid shipping a lot more of it.
+This is mostly because of the web. The web is extra sensitive to performance, especially when it comes to Javascript, and the CSS-in-JS needs compilers to avoid shipping a lot more of it.
 
-It's not just light bundles that are the limiting factor. Properly extracting even logic-ful components down to CSS for all the following is often more important in terms of overall app performance and responsitivy:
+It's not just light bundles that are the limiting factor. <span style={{ color: 'var(--yellow10)' }}>Properly extracting even logic-filled components down to CSS for all of the following is even more important for overall app performance and responsivity</span>.
 
+Extracting all of the following would unlock a huge amount of performance for a huge set of existing React apps in the wild today:
+
+- Inline styles
 - Responsive styles (media queries)
 - Themes, colors, sizing (CSS variables)
 - Interactive styles (pseudo styles)
 
-Media queries are basically table-stakes for sharing code, but running them as hooks de-opts web-apps such that even simpler apps bring modern browsers to a halt on resize. Pseudo styles and theme styles are also in places very sensitive to re-renders (especially as interactive changes often animate).
+Media queries are especially table-stakes for sharing code, but running them as hooks de-opts web-apps such that even simpler apps bring modern browsers to a halt on resize. Pseudo styles and theme styles are also in places very sensitive to re-renders (especially as interactive changes often animate).
 
 ### How the compiler works
 
-The Tamagui compiler optimizes four things:
+Tamagui fixes many of these problems with a compiler. It optimizes four things:
 
-- Static styles (`styled()`)
-- Dynamic (inline) styles
-- Hooks
-- Tree-depth
+- Static styles via the `styled` function
+- Dynamic (inline) styles, using partial evaluation
+- Hooks for themes or media queries
+- Tree-depth (via tree-flattening)
 
 It turns this:
 

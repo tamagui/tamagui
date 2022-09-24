@@ -77,7 +77,8 @@ plan for space + display none, two pronged
 
 ---
 
-(potentially 1.0)
+Roadmap
+
   - native should probably avoid all optimization when it can't flatten or else pass in a __optimized attribute, otherwise its duplicating the style processing by putting __style with all the defaults + re-adding it at runtime
   - have tamagui automatically build your components?
   - `variantsOnly: true` on styled(), removes types for anything but variants (and className/theme etc)
@@ -125,6 +126,11 @@ plan for space + display none, two pronged
   - <Accordion />
   - <Autocomplete />
   - <Select.SearchInput />
+
+```tsx
+  fontSize="parent"
+  // not inherit, actually matches the `size` token
+```
 
   - maybe <UL /> <LI /> <OL />
   - Input based on Button for icon/iconAfter
