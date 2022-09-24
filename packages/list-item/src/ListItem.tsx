@@ -2,7 +2,6 @@ import {
   FontSizeTokens,
   GetProps,
   Spacer,
-  TamaguiComponent,
   TamaguiElement,
   ThemeableProps,
   getSize,
