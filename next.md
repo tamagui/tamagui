@@ -79,6 +79,8 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
+  - native should probably avoid all optimization when it can't flatten or else pass in a __optimized attribute, otherwise its duplicating the style processing by putting __style with all the defaults + re-adding it at runtime
+  - have tamagui automatically build your components?
   - `variantsOnly: true` on styled(), removes types for anything but variants (and className/theme etc)
   - way to use tamagui with custom design system tokens
     - basically map any tokens you choose to internal tamagui ones

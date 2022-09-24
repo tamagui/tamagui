@@ -198,7 +198,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     const themeAccessListeners = new Set<AccessListener>()
     const defaultTheme = new Proxy(proxiedTheme, {
       get(target, key) {
-        themeAccessListeners.forEach((cb) => cb(String(key)))
+        if (Reflect.has(target, key)) {
+          themeAccessListeners.forEach((cb) => cb(String(key)))
+        }
         return Reflect.get(target, key)
       },
     })
@@ -936,7 +938,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             }
 
             // native shouldn't extract variables
-            if (disableExtractVariables) {
+            if (disableExtractVariables === true) {
               if (value) {
                 if (value.type === 'StringLiteral' && value.value[0] === '$') {
                   if (shouldPrintDebug) {
@@ -1403,11 +1405,13 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
 
           const shouldWrapTheme = shouldFlatten && themeVal
+          const usedThemeKeys = new Set<string>()
 
           if (disableExtractVariables) {
             // if it accesses any theme values during evaluation
             themeAccessListeners.add((key) => {
               shouldFlatten = false
+              usedThemeKeys.add(key)
               if (shouldPrintDebug) {
                 logger.info([' ! accessing theme key, avoid flatten', key].join(' '))
               }
@@ -1666,7 +1670,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             // finally we have all styles + expansions, lets see if we need to skip
             // any and keep them as attrs
             if (disableExtractVariables) {
-              if (value[0] === '$') {
+              if (value[0] === '$' && (usedThemeKeys.has(key) || usedThemeKeys.has(fullKey))) {
                 if (shouldPrintDebug) {
                   logger.info([`   keeping variable inline: ${key} =`, value].join(' '))
                 }
