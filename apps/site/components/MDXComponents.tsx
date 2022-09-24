@@ -148,7 +148,7 @@ export const components = {
     return (
       <YStack
         $gtMd={{ mx: '$-4' }}
-        my="$3"
+        my="$5"
         px="$6"
         py="$2"
         br="$6"

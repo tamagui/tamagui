@@ -1,6 +1,5 @@
 ---
-title: React Native Everywhere
-description: Breaking out of the frontend trilemma.
+title: Write once, feels native
 ---
 
 <TLDR>
@@ -10,16 +9,20 @@ description: Breaking out of the frontend trilemma.
 </TLDR>
 
 <IntroParagraph>
-  The React Native motto{' '}
-  <span style={{ color: 'var(--yellow10)' }}>learn once, write anywhere</span> belies a truth: apps
-  only feel as good as they use The Platform™ they deploy to.
+  Let's start with a choice all frontend developers make implicitly, presented three ways.
 </IntroParagraph>
 
-React Native's raison dêtre is allowing sharing concepts across platforms along with _the UI that makes sense_. It does this well, allowing for large parts of the non-interface logic and smaller parts of the interface itself to be unified, saving much developer time.
-
-But today, there's still a large amount of interface that we don't share, but could, with only (somewhat) straightforward optimizations for the web platform. This article goes into how the Tamagui compiler achieves just that.
-
-Lets start with a hard choice all frontend developers must make:
+<Table heading="You can only choose two">
+  <TableCol>
+    <TableCell>Multi-platform</TableCell>
+  </TableCol>
+  <TableCol>
+    <TableCell>Single codebase</TableCell>
+  </TableCol>
+  <TableCol>
+    <TableCell>Feels native</TableCell>
+  </TableCol>
+</Table>
 
 <Table heading="Choose one">
   <TableCol>
@@ -60,90 +63,51 @@ Lets start with a hard choice all frontend developers must make:
   </TableCol>
 </Table>
 
-The "Feels Native" column is the one to pay attention to here. What's really happening here is something that I've been thinking of as **The Frontend Trilemma**:
-
-<Table heading="You can only choose two">
-  <TableCol>
-    <TableCell>Multi-platform</TableCell>
-  </TableCol>
-  <TableCol>
-    <TableCell>Single codebase</TableCell>
-  </TableCol>
-  <TableCol>
-    <TableCell>Feels native</TableCell>
-  </TableCol>
-</Table>
-
-Or, better illustrated in a diagram:
-
 <YStack maw={650} als="center">
   ![The Frontend Trilemma: Choose two of DX, UX, and multi-platform (or run out of
   time).](/trilemma.svg)
 </YStack>
 
-This choice is as old as software: target more platforms with one codebase but sacrifice UX and performance, or, target each platform individually but nearly double the time to ship each feature.
+This choice is as old as software: target more platforms with one codebase but sacrifice UX and performance, or, target each platform individually but nearly double the time to ship each feature. With React Native it's been no different.
 
-With React Native it's been no different. But, it's also true that incremental progress towards sharing more code, in a way that maintains native feel, has been happening steadily.
-
-Here's how in very official and indisputable graph:
+Here's a chart:
 
 <YStack maw={650} als="center">
   ![Sharing code between web and native without sacrificing native feel has gone way up with the
   release of React Native, and later with the release of React Native Web](/code-sharing.svg)
 </YStack>
 
-React Native allowed us to share more between platforms. State, logical code, utility functions, and hooks (when they came out).
+You can define your own "feels native" and set the Y axis appropriately, but I'll defend it's true _on some level_ and I'll argue it's non-trivial (sometime else).
 
-A bit later, with React Native Web, more became shareable: the big standardized API's of React Native, as well as the possibility of sharing quite a bit more UI code - though not without a cost.
-
-The general trend upwards in between those two releases represents amazing work by all sorts of library authors to create smoother, better libraries and APIs all along the way - from [React Navigation](https://reactnavigation.org/) (and [Solito](https://solito.dev/)), to [React Native Skia](https://github.com/Shopify/react-native-skia) and [Reanimated](https://docs.swmansion.com/react-native-reanimated/) and really just [all](https://github.com/react-native-svg/react-native-svg) [sorts](https://github.com/expo/match-media) [of](https://gorhom.github.io/react-native-bottom-sheet) [other](https://github.com/rnmapbox/maps) [libraries](https://www.google.com/search?q=expo+linear+gradient&oq=expo+linear+gradient&aqs=chrome..69i57j69i59j69i60.3994j0j1&sourceid=chrome&ie=UTF-8).
+I put a general upward trend as all sort of amazing library authors have made sharing so much more performance and well-designed, a few being [React Navigation](https://reactnavigation.org/) (+ [Solito](https://solito.dev/)), [React Native Skia](https://github.com/Shopify/react-native-skia) or [Reanimated](https://docs.swmansion.com/react-native-reanimated/) and [many](https://github.com/react-native-svg/react-native-svg) [many](https://github.com/expo/match-media) [many](https://gorhom.github.io/react-native-bottom-sheet) [many](https://github.com/rnmapbox/maps) [more](https://www.google.com/search?q=expo+linear+gradient&oq=expo+linear+gradient&aqs=chrome..69i57j69i59j69i60.3994j0j1&sourceid=chrome&ie=UTF-8).
 
 Yet even with React Native Web, in the best cases it's simply impossible to share more than a pretty small fraction of your frontend without immediately sacrificing look and feel.
 
-This is mostly because of the web.
+This is mostly because of the web. The web is extra sensitive to performance, especially when it comes to Javascript, and the CSS-in-JS needs compilers to avoid shipping a lot more of it.
 
-The web is more sensitive to performance, especially when it comes to Javascript, and the CSS-in-JS strategy that React Native Web uses basically forces you to keep all your styles in JS. This is generally a bad thing. Browsers really want you to use CSS, especially for anything interactive. Further, React Native lacks many concepts important to CSS features that make web apps feel great.
+It's not just light bundles that are the limiting factor. Properly extracting even logic-ful components down to CSS for all the following is often more important in terms of overall app performance and responsitivy:
 
-### What's holding us back
+- Responsive styles (media queries)
+- Themes, colors, sizing (CSS variables)
+- Interactive styles (pseudo styles)
 
-For all the great things its done, there are a few things React Native Web needs to do that that would individually have a big effect on improving code sharing:
+Media queries are basically table-stakes for sharing code, but running them as hooks de-opts web-apps such that even simpler apps bring modern browsers to a halt on resize. Pseudo styles and theme styles are also in places very sensitive to re-renders (especially as interactive changes often animate).
 
-- Don't serve styles in Javascript.
-- Support Server Side Rendering (SSR)
-- Use CSS media queries for responsivity.
-- Use CSS variables for themes.
-- Use CSS psuedo attributes for interactive styles.
+### How the compiler works
 
-Plus, support for the last three points would also all be a big win for developer experience for plain old React Native.
+The Tamagui compiler optimizes four things:
 
-Most of these limitations come from the React Native `StyleSheet` API. It has no concept of responsive styling (media queries), themes or sizing (CSS variables), or [pseudo styling](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes).
+- Static styles (`styled()`)
+- Dynamic (inline) styles
+- Hooks
+- Tree-depth
 
-This means that every style you write is part of your Javascript bundle. The worst part is these features are some of the most performance sensitive - media queries, for example, are totally essential to sharing code and running them as hooks de-opts web-apps so much they will bring modern browsers to a halt at the slightest resize.
-
-Meanwhile, pseudo styling and theme or size styling have similar profiles: very important for UX, very sensitive to performance, and very much better in CSS. The effect of the combination of all these factors is hard to understate: <span style={{ color: 'var(--yellow10)' }}>it's absolutely devastating for web performance</span>.
-
-And then there's the authoring experience.
-
-Want dark and light mode? Or just a nice style when a user presses or hovers on a button? Without a syntax for it, you need about 8 lines of code for what usually took 2 in CSS.
-
-These downsides really work together to demoralize the naive, beginning Universal app developer. Especially if they are used to writing High Quality Web Apps. They go from writing DRY, simple, performant CSS to cumbersome, verbose and brittle styles that eat up main-thread time.
-
-But if you can't afford to develop your app twice, it's either that, or nothing.
-
-And this is nothing against React Native Web! It's responsible for a that huge bump in developer productivity.
-
-It's simply a matter of effort to try and fix the issues. And it just so happened I had a bit of time during the pandemic, [a bit of prior art](https://github.com/jsxstyle/jsxstyle), and a really, really strong will to not have to choose two of those three options.
-
-### How Tamagui compiles
-
-The Tamagui compiler starts with the essentials: **it extracts all your styles to CSS**. This alone leads to about 30% increases in general performance - measured in bundle size, startup time, runtime, or Lighthouse scores.
-
-It also gives us <span style={{ color: 'var(--yellow10)' }}>three features today that all optimize completely to CSS on the web</span>: **responsive styles (media queries)**, **theme values (CSS variables)**, **interactive styling (pseudo styles)**. Each of these features were designed hand-in-hand with the compiler to extract on the web to CSS, leaving behind nothing at all but simple render functions:
+It turns this:
 
 ##### Input
 
 ```tsx
-import { Paragraph, YStack } from 'tamagui'
+import { Text, YStack } from '@tamagui/core'
 
 const App = (props) => (
   <YStack
@@ -152,15 +116,25 @@ const App = (props) => (
       backgroundColor: 'green',
     })}
   >
-    <Paragraph size="$2">Lorem ipsum dolor.</Paragraph>
+    <Text
+      color="green"
+      $large={{
+        color: 'yellow',
+        $hover: {
+          color: 'green'
+        }
+      }}
+    >
+      Lorem ipsum dolor.
+    </Text>
   </YStack>
 )
 ```
 
-##### Output
+Intos something like this:
 
 ```tsx
-import { Paragraph, YStack, concatClassName } from 'tamagui'
+import { YStack, concatClassName } from 'tamagui'
 
 const App = (props) => (
   <div
@@ -168,7 +142,7 @@ const App = (props) => (
       _cn + (props.big ? _cn2 : _cn3) + (' ' + (props.colored ? _cn4 : ' '))
     )}
   >
-    <span className={_cn5}>Lorem ipsum dolor.</span>
+    <p className={_cn5}>Lorem ipsum dolor.</p>
   </div>
 )
 
@@ -176,22 +150,14 @@ const _cn5 = ' _c-scmqyp _d-1471scf _ff-xeweqh _fs-7uzi8p _lh-1l6ykvy'
 const _cn4 = '  _bc-1542mo4'
 const _cn3 = ' _pb_-12bic3x _pl_-7ztw5e _pr-g6vdx7 _pt-1vq430g'
 const _cn2 = ' _pb-z3qxl0 _pl-14km6ah _pr-1qpq1qc _pt-1medp4i'
-const _cn = ' _d-6koalj _fd-eqz5dr _fls-1q142lx '
+const _cn = ' _bc-abc123 _d-6koalj _fd-eqz5dr _fls-1q142lx '
 ```
 
-For something like resizing a browser window, changing a theme, or hovering over a component, these changes have huge performance benefits. Extracting everything to CSS media queries alone (completely avoiding JS re-renders) increases browser resizing paint speed by 10x.
+Along with CSS (which you can see, alongside more examples see [on the homepage](/)).
 
-And it lets us write our code naturally. No more unecessary naming and glue between `StyleSheet` and your render function. No more worrying about peformance cliffs by inline anything you want.
-
-Notice one really interesting thing the compiler does - it removes the `YStack` and `Paragraph` altogether. So not only do you get a big bump in performance from extracting to CSS at build-time, but you also net a pretty big benefit at runtime. The name for this sort of optimization is <span style={{ color: 'var(--yellow10)' }}>tree flattening</span>, and the Tamagui compiler uses [partial evaluation](https://en.wikipedia.org/wiki/Partial_evaluation) to ensure it can actually flatten a lot of your views.
-
-With tree flattening we've been able to dramatically increase render performance on the web, above the already large gains from CSS compilation. This is a benchmark of rendering a single view that has a few "variants." Typically, your app would have to render a large View with many hooks. With Tamagui, it just hands a `div` over to React:
+The tree flattening here (turning `Text` into `p`) dramatically increases render performance on the web, above the already large gains from CSS compilation. This is a benchmark of rendering a single view that has a few "variants." Typically, your app would have to render a large View with many hooks. With Tamagui, it just hands a `div` over to React:
 
 <BenchmarkChartWeb />
-
-Keep in mind - a typical simple page will render hundreds of these components, and you have a 16ms or so budget before any animations will stutter (plus you have to account for browser layout and paint times).
-
-Tamagui also supports SSR _with media queries_ out of the box. This is another win for code sharing because SSR is one of the biggest performance gains you make to any app. Running `npm create tamagui-app` sets you up for this from the beginning with our [Next.js adapter](/docs/guides/next-js).
 
 Meanwhile, on Native, because we can't optimize to anything beyond vanilla React Native code, the gains are less. Still, the results are impressive given you are now getting a huge amount of features and nice syntax that normally would eat up a lot of performance, and the net result is basically even with hand-optimized React Native:
 
@@ -199,13 +165,13 @@ Meanwhile, on Native, because we can't optimize to anything beyond vanilla React
 
 You can see [the full Benchmarks with explanations here](/docs/intro/benchmarks).
 
-### Conclusion
+More detailed docs on how the compiler, optimizer and partial evaluation works Coming Soon™️.
 
-I think Tamagui opens to door to all sorts of cool things. Big wins in developer experience, maintenance, and performance. A path towards a really awesome ecosystem of components that adapt to web and native.
+Give Tamagui a try with `npm create tamagui-app`.
 
-And ultimately, apps that go from sharing ~25% of truly native-feeling code, to over 70%.
+---
 
-<Table heading="The new options">
+<Table>
   <TableCol>
     <TableCell head></TableCell>
     <TableCell>1</TableCell>
@@ -232,7 +198,7 @@ And ultimately, apps that go from sharing ~25% of truly native-feeling code, to 
     <TableCell>\> 70%</TableCell>
     <TableCell>-</TableCell>
     <TableCell>\< 30%</TableCell>
-    <TableCell highlight>\> 75%</TableCell>
+    <TableCell highlight>~60-90%</TableCell>
   </TableCol>
   <TableCol>
     <TableCell head>Ship Fast</TableCell>
