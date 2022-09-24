@@ -188,7 +188,7 @@ export function useMediaPropsActive<A extends Object>(
   props: A
 ): {
   // remove all media
-  [Key in keyof A extends `$${string}` ? never : keyof A]: A[Key]
+  [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 } {
   const media = useMedia()
 

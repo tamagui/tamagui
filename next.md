@@ -2,7 +2,6 @@
 
   - // TODO we should likely account for importance here to match CSS, right??
   - kitchen sink placeholder input color dark
-  - make create-tamagui-app test test using local changes somehow
   - delete / clean tamagui build on watch
   - light/dark theme change is re-rendering more than it should
   - VisuallyHidden + mediaquery + space
