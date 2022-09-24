@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sheet",
-  "version": "1.0.1-beta.175",
+  "version": "1.0.1-beta.176",
   "sideEffects": [
     "*.css"
   ],
@@ -22,14 +22,14 @@
     "lint:fix": "yarn lint --fix"
   },
   "dependencies": {
-    "@tamagui/animations-react-native": "^1.0.1-beta.175",
-    "@tamagui/compose-refs": "^1.0.1-beta.175",
-    "@tamagui/core": "^1.0.1-beta.175",
-    "@tamagui/create-context": "^1.0.1-beta.175",
-    "@tamagui/remove-scroll": "^1.0.1-beta.175",
-    "@tamagui/scroll-view": "^1.0.1-beta.175",
-    "@tamagui/stacks": "^1.0.1-beta.175",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.175"
+    "@tamagui/animations-react-native": "^1.0.1-beta.176",
+    "@tamagui/compose-refs": "^1.0.1-beta.176",
+    "@tamagui/core": "^1.0.1-beta.176",
+    "@tamagui/create-context": "^1.0.1-beta.176",
+    "@tamagui/remove-scroll": "^1.0.1-beta.176",
+    "@tamagui/scroll-view": "^1.0.1-beta.176",
+    "@tamagui/stacks": "^1.0.1-beta.176",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.176"
   },
   "peerDependencies": {
     "react": "*",
@@ -37,7 +37,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.175",
+    "@tamagui/build": "^1.0.1-beta.176",
     "react": "*",
     "react-dom": "*",
     "react-native": "*"

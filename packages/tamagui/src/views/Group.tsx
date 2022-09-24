@@ -8,6 +8,7 @@ import {
   mergeProps,
   spacedChildren,
   styled,
+  useMediaPropsActive,
 } from '@tamagui/core'
 import { ThemeableStack } from '@tamagui/stacks'
 import React, { Children, forwardRef, isValidElement } from 'react'
@@ -43,21 +44,23 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
 
 function createGroup(verticalDefault: boolean) {
   return GroupFrame.extractable(
-    forwardRef<TamaguiElement, GroupProps>((propsIn, ref) => {
+    forwardRef<TamaguiElement, GroupProps>((props, ref) => {
+      const activeProps = useMediaPropsActive(props)
+
       const {
         children: childrenProp,
         space,
+        size: sizeProp = '$4',
         spaceDirection,
         separator,
-        size: sizeProp = '$4',
         scrollable,
         vertical = verticalDefault,
         disabled: disabledProp,
         disablePassBorderRadius: disablePassBorderRadiusProp,
         disablePassSize: disablePassSizeProp,
         borderRadius,
-        ...props
-      } = getExpandedShorthands(propsIn)
+        ...restProps
+      } = getExpandedShorthands(activeProps)
 
       const radius =
         borderRadius ?? (sizeProp ? getVariableValue(getTokens().radius[sizeProp]) - 1 : undefined)
@@ -115,7 +118,7 @@ function createGroup(verticalDefault: boolean) {
           size={sizeProp}
           flexDirection={!vertical ? 'row' : 'column'}
           borderRadius={borderRadius}
-          {...props}
+          {...restProps}
         >
           {wrapScroll(
             !!scrollable,
