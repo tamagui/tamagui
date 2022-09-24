@@ -51,10 +51,13 @@ test('theme value extraction should work when no theme variables used', async ()
   expect(code).toMatchInlineSnapshot(`
     "const _sheet = ReactNativeStyleSheet.create({
       \\"0\\": {
+        \\"color\\": \\"red\\",
+        \\"fontFamily\\": \\"Inter\\",
+        \\"fontWeight\\": \\"500\\",
+        \\"letterSpacing\\": 0,
+        \\"fontSize\\": 14,
+        \\"lineHeight\\": 25,
         \\"display\\": \\"flex\\"
-      },
-      \\"1\\": {
-        \\"color\\": \\"red\\"
       }
     });
 
@@ -62,7 +65,7 @@ test('theme value extraction should work when no theme variables used', async ()
     import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { Paragraph } from 'tamagui';
     export function Test() {
-      return <__ReactNativeText fontFamily={\\"$body\\"} size={\\"$4\\"} style={[_sheet[\\"0\\"], _sheet[\\"1\\"]]}>hello world</__ReactNativeText>;
+      return <__ReactNativeText style={[_sheet[\\"0\\"]]}>hello world</__ReactNativeText>;
     }"
   `)
 })
@@ -81,16 +84,20 @@ test('theme value extraction should NOT work when theme variables used', async (
   expect(code).toMatchInlineSnapshot(`
     "const _sheet = ReactNativeStyleSheet.create({
       \\"0\\": {
+        \\"color\\": \\"rgba(23,23,23,1.00)\\",
+        \\"fontWeight\\": \\"500\\",
+        \\"letterSpacing\\": 0,
+        \\"fontSize\\": 14,
+        \\"lineHeight\\": 25,
         \\"display\\": \\"flex\\"
-      },
-      \\"1\\": {}
+      }
     });
 
     import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
     import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { Paragraph } from 'tamagui';
     export function Test() {
-      return <Paragraph _style1lkilf={_sheet[\\"0\\"]} fontFamily={\\"$body\\"} size={\\"$4\\"} _style31e={_sheet[\\"1\\"]}>hello world</Paragraph>;
+      return <Paragraph _style1onns4v={_sheet[\\"0\\"]}>hello world</Paragraph>;
     }"
   `)
 })
