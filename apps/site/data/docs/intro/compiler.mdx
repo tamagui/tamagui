@@ -77,13 +77,11 @@ Here's a chart:
   release of React Native, and later with the release of React Native Web](/code-sharing.svg)
 </YStack>
 
-You can define your own "feels native" and set the Y axis appropriately, but I'll defend it's true _on some level_ and I'll argue it's non-trivial (sometime else).
+You can define your own "feels native" and set the Y axis appropriately, make small if you want.
 
 I put a general upward trend as all sort of amazing library authors have made sharing so much more performance and well-designed, a few being [React Navigation](https://reactnavigation.org/) (+ [Solito](https://solito.dev/)), [React Native Skia](https://github.com/Shopify/react-native-skia) or [Reanimated](https://docs.swmansion.com/react-native-reanimated/) and [many](https://github.com/react-native-svg/react-native-svg) [many](https://github.com/expo/match-media) [many](https://gorhom.github.io/react-native-bottom-sheet) [many](https://github.com/rnmapbox/maps) [more](https://www.google.com/search?q=expo+linear+gradient&oq=expo+linear+gradient&aqs=chrome..69i57j69i59j69i60.3994j0j1&sourceid=chrome&ie=UTF-8).
 
-Yet even with React Native Web, in the best cases it's simply impossible to share more than a pretty small fraction of your frontend without immediately sacrificing look and feel.
-
-This is mostly because of the web. The web is extra sensitive to performance, especially when it comes to Javascript, and the CSS-in-JS needs compilers to avoid shipping a lot more of it.
+With React Native Web today it's hard to share more than a pretty small fraction of your frontend without immediately sacrificing look and feel. This is mostly because of the web. The web is extra sensitive to performance, especially when it comes to Javascript, and the CSS-in-JS needs compilers to avoid shipping a lot more of it.
 
 It's not just light bundles that are the limiting factor. Properly extracting even logic-ful components down to CSS for all the following is often more important in terms of overall app performance and responsitivy:
 
@@ -121,8 +119,8 @@ const App = (props) => (
       $large={{
         color: 'yellow',
         $hover: {
-          color: 'green'
-        }
+          color: 'green',
+        },
       }}
     >
       Lorem ipsum dolor.
