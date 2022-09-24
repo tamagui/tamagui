@@ -10,7 +10,7 @@ export interface TamaguiOptions {
   disableFlattening?: boolean
   disableDebugAttr?: boolean
   disableExtractInlineMedia?: boolean
-  disableExtractVariables?: boolean
+  disableExtractVariables?: boolean | 'theme'
   disableExtractFoundComponents?: boolean
   excludeReactNativeWebExports?: string[]
   exclude?: RegExp

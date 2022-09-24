@@ -120,13 +120,14 @@ export async function getStaticBindingsForScope(
           }
         }
       } catch (err: any) {
-        // eslint-disable-next-line no-console
-        console.warn(
-          `    | Skipping evaluating module: ${moduleName} ${err.message} (DEBUG=tamagui for stack)`
-        )
         if (process.env.DEBUG?.startsWith('tamagui')) {
           // eslint-disable-next-line no-console
-          console.log(err.stack)
+          console.log(`Error in partial evaluation`, err.message, err.stack)
+        } else {
+          // eslint-disable-next-line no-console
+          console.warn(
+            `    | Skipping partial evaluation of constant file: ${moduleName} (DEBUG=tamagui for more)`
+          )
         }
       }
     }
