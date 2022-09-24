@@ -203,6 +203,8 @@ async function run() {
       await spawnify(`yarn upgrade:starters`)
       await spawnify(`git commit -am update-starters-v${version}`)
       await spawnify(`git push origin head`)
+    } else {
+      console.log(`Skipped publish`)
     }
   } catch (err) {
     console.log('\nError:\n', err)

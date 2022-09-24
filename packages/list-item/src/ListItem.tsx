@@ -172,15 +172,18 @@ export const useListItem = (
           {/* helper for common title/subtitle pttern */}
           {Boolean(title || subTitle) ? (
             <YStack flex={1}>
-              <Title>{title}</Title>
+              <Title size={size}>{title}</Title>
               {subTitle ? (
-                typeof subTitle === 'string' ? (
-                  // TODO can use theme but we need to standardize to alt themes
-                  // or standardize on subtle colors in themes
-                  <Subtitle size={subtitleSize}>{subTitle}</Subtitle>
-                ) : (
-                  subTitle
-                )
+                <>
+                  <Spacer flex size={spaceSize * 0.333} />
+                  {typeof subTitle === 'string' ? (
+                    // TODO can use theme but we need to standardize to alt themes
+                    // or standardize on subtle colors in themes
+                    <Subtitle size={subtitleSize}>{subTitle}</Subtitle>
+                  ) : (
+                    subTitle
+                  )}
+                </>
               ) : null}
               {contents}
             </YStack>

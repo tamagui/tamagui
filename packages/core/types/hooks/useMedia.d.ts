@@ -19,7 +19,7 @@ export declare function useMedia(): {
  *
  * */
 export declare function useMediaPropsActive<A extends Object>(props: A): {
-    [Key in keyof A extends `$${string}` ? never : keyof A]: A[Key];
+    [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key];
 };
 export declare function mediaObjectToString(query: string | MediaQueryObject): string;
 export {};

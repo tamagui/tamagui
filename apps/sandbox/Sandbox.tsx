@@ -3,7 +3,14 @@ import '@tamagui/polyfill-dev'
 
 import '../site/app.css'
 
-import { AnimationsDemo, DialogDemo, FormsDemo, SelectDemo, SheetDemo } from '@tamagui/demos'
+import {
+  AnimationsDemo,
+  DialogDemo,
+  FormsDemo,
+  GroupDemo,
+  SelectDemo,
+  SheetDemo,
+} from '@tamagui/demos'
 import { useEffect, useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
 import {
@@ -96,7 +103,9 @@ export const Sandbox = () => {
           test
         </Button> */}
 
-        <Button pressStyle={{ backgroundColor: 'blue' }}>hi</Button>
+        {/* <Button pressStyle={{ backgroundColor: 'blue' }}>hi</Button> */}
+
+        <GroupDemo />
 
         {/* <Animated.View style={style} /> */}
         {/* <AlertDialogDemo /> */}
