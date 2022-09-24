@@ -152,8 +152,8 @@ export const components = {
         px="$6"
         py="$2"
         br="$6"
-        bc="$color1"
         bw={1}
+        o={0.8}
         boc="$borderColor"
         {...props}
       />
