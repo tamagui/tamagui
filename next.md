@@ -13,7 +13,6 @@
   - fix reanimated 2.9/3.0 __frame var
   - windows without WSL
   - mismatch SSR SelectTrigger due to componentName override
-  - Group make media style size use properly
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
   - forms working bubble / label
