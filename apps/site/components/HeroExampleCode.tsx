@@ -112,13 +112,12 @@ const CodeExamples = memo(({ examples }: any) => {
   return (
     <YStack overflow="hidden" flex={1}>
       <>
-        <XGroup theme={tint} bordered zi={10} mb="$-3" als="center">
+        <XGroup size="$2" theme={tint} bordered zi={10} mb="$-3" als="center">
           {examples.map((example, i) => (
             <Button
               accessibilityLabel="See example"
               onPress={() => setActiveIndex(i)}
               theme={i === activeIndex ? 'active' : 'alt1'}
-              size="$3"
               key={i}
               borderRadius="$0"
             >

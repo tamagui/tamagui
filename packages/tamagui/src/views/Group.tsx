@@ -50,7 +50,7 @@ function createGroup(verticalDefault: boolean) {
       const {
         children: childrenProp,
         space,
-        size: sizeProp = '$4',
+        size = '$4',
         spaceDirection,
         separator,
         scrollable,
@@ -63,15 +63,14 @@ function createGroup(verticalDefault: boolean) {
       } = getExpandedShorthands(activeProps)
 
       const radius =
-        borderRadius ?? (sizeProp ? getVariableValue(getTokens().radius[sizeProp]) - 1 : undefined)
+        borderRadius ?? (size ? getVariableValue(getTokens().radius[size]) - 1 : undefined)
       const hasRadius = radius !== undefined
       const disablePassBorderRadius = disablePassBorderRadiusProp ?? !hasRadius
       const childrens = Children.toArray(childrenProp)
-      const disablePassSize = disablePassSizeProp ?? sizeProp === undefined
+      const disablePassSize = disablePassSizeProp ?? size === undefined
       const children = childrens.map((child, i) => {
         if (!isValidElement(child)) return child
         const disabled = child.props.disabled ?? disabledProp
-        const size = child.props.size ?? sizeProp
 
         const isFirst = i === 0
         const isLast = i === childrens.length - 1
@@ -115,7 +114,7 @@ function createGroup(verticalDefault: boolean) {
       return (
         <GroupFrame
           ref={ref}
-          size={sizeProp}
+          size={size}
           flexDirection={!vertical ? 'row' : 'column'}
           borderRadius={borderRadius}
           {...restProps}

@@ -9,11 +9,11 @@ export function ButtonDemo(props) {
       <Button als="center" icon={Airplay} size="$6">
         Large
       </Button>
-      <XGroup>
-        <Button w="50%" size="$3" theme="alt2">
+      <XGroup size="$3">
+        <Button w="50%" theme="alt2">
           Alt2
         </Button>
-        <Button w="50%" size="$3" theme="yellow">
+        <Button w="50%" theme="yellow">
           Yellow
         </Button>
       </XGroup>
@@ -25,7 +25,7 @@ export function ButtonDemo(props) {
           After
         </Button>
       </XStack>
-      <XGroup>
+      <XGroup disablePassSize>
         <Button w="50%" size="$2" disabled>
           disabled
         </Button>
