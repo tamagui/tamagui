@@ -60,7 +60,7 @@ const Table = ({ heading, children, ...props }) => {
   return (
     <TableFrame className="no-scrollbar" overflow={'scroll' as any} {...props}>
       {!!heading && (
-        <TableCell size="$6" bc="$color1" fow="800">
+        <TableCell size="$4" bc="$color1" fow="500" color="$color9">
           {heading}
         </TableCell>
       )}
@@ -90,7 +90,6 @@ const TableCell = styled(Paragraph, {
     head: {
       true: {
         bc: '$color1',
-        fow: '600',
       },
     },
     highlight: {

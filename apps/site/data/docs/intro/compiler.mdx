@@ -1,11 +1,11 @@
 ---
 title: Write once, feels native
-description: React is already saved, boomer.
+description: A React optimizing compiler for shipping better, faster.
 ---
 
 <TLDR>
 
-Tamagui's compiler makes sharing significantly more code between native and web **not** cost performance vs hand-optimized. It speeds up web apps 1-3x, and native ~1.25x.
+Tamagui compiler enables much more code share between native & web **without costing perf vs individually written apps**. It speeds up web 1-3x, native ~0.25x.
 
 </TLDR>
 
@@ -13,7 +13,7 @@ Tamagui's compiler makes sharing significantly more code between native and web 
   Let's start with a choice all frontend developers make implicitly, presented three ways:
 </IntroParagraph>
 
-<Table heading="You can only choose two">
+<Table heading="You can only choose two:">
   <TableCol>
     <TableCell>Multi-platform</TableCell>
   </TableCol>
@@ -25,9 +25,16 @@ Tamagui's compiler makes sharing significantly more code between native and web 
   </TableCol>
 </Table>
 
-Or, as a choose-two-of-three:
+Here's the same two-of-three, but in a diagram that reveals a center - a center that's been attempted largely unsuccessfully since the dawn of GUI:
 
-<Table heading="Choose one">
+<YStack maw={650} als="center">
+  ![The Frontend Trilemma: Choose two of DX, UX, and multi-platform (or run out of
+  time).](/trilemma.svg)
+</YStack>
+
+If you've internalized that, you can re-phrase the two-of-three constratints as a simple single choice in your frontend strategy. Note, the numbers are contextualized to React Native developers today, though they hold somewhat generally:
+
+<Table heading="Choose one:">
   <TableCol>
     <TableCell head></TableCell>
     <TableCell>1</TableCell>
@@ -53,27 +60,22 @@ Or, as a choose-two-of-three:
     <TableCell>\< 30%</TableCell>
   </TableCol>
   <TableCol>
-    <TableCell head>Ship Fast</TableCell>
-    <TableCell>✅</TableCell>
-    <TableCell>✅</TableCell>
-    <TableCell>❌</TableCell>
-  </TableCol>
-  <TableCol>
     <TableCell head>Feels native</TableCell>
     <TableCell>❌</TableCell>
     <TableCell>✅</TableCell>
     <TableCell>✅</TableCell>
   </TableCol>
+    <TableCol>
+    <TableCell head>Ship Fast</TableCell>
+    <TableCell>✅</TableCell>
+    <TableCell>✅</TableCell>
+    <TableCell>❌</TableCell>
+  </TableCol>
 </Table>
 
-A diagram reveals a fourth option, with a center that is today largely impossible:
+You either target more platforms with one codebase and sacrifice UX and performance, or target each platform individually but double your time to ship each feature.
 
-<YStack maw={650} als="center">
-  ![The Frontend Trilemma: Choose two of DX, UX, and multi-platform (or run out of
-  time).](/trilemma.svg)
-</YStack>
-
-You either target more platforms with one codebase and sacrifice UX/performance, or target each platform individually but double your time to ship each feature.
+**Code Sharing** should be expanded to **Code Sharing without sacrificing UX or performance**, which is why for the "Big-budget" option is typically ends up below 50%. We'll go into more on why in the next section.
 
 Many people choose the former, and it's unfortunate but understandable. For a variety of reasons: you're a small team, you have to ship, and supporting more platforms or testing your idea out is more important than absolute speed. Life's tough.
 
@@ -86,24 +88,26 @@ First, a chart:
   release of React Native, and later with the release of React Native Web](/code-sharing.svg)
 </YStack>
 
-You can define your own "feels native" and set the Y axis appropriately, make small if you want. I put a general upward trend as all sort of amazing library authors have made sharing so much more performance and well-designed, a few being [React Navigation](https://reactnavigation.org/) (+ [Solito](https://solito.dev/)), [React Native Skia](https://github.com/Shopify/react-native-skia) or [Reanimated](https://docs.swmansion.com/react-native-reanimated/) and [many](https://github.com/react-native-svg/react-native-svg) [many](https://github.com/expo/match-media) [many](https://gorhom.github.io/react-native-bottom-sheet) [many](https://github.com/rnmapbox/maps) [more](https://www.google.com/search?q=expo+linear+gradient&oq=expo+linear+gradient&aqs=chrome..69i57j69i59j69i60.3994j0j1&sourceid=chrome&ie=UTF-8).
+You can define your own "feels native" and set the Y axis appropriately, even making small if you want. I put a general upward trend as all sort of amazing library authors have made sharing so much more performance and well-designed, a few being [React Navigation](https://reactnavigation.org/) (+ [Solito](https://solito.dev/)), [React Native Skia](https://github.com/Shopify/react-native-skia) or [Reanimated](https://docs.swmansion.com/react-native-reanimated/) and [many](https://github.com/react-native-svg/react-native-svg) [many](https://github.com/expo/match-media) [many](https://gorhom.github.io/react-native-bottom-sheet) [many](https://github.com/rnmapbox/maps) [more](https://www.google.com/search?q=expo+linear+gradient&oq=expo+linear+gradient&aqs=chrome..69i57j69i59j69i60.3994j0j1&sourceid=chrome&ie=UTF-8).
+
+### Why we can't share effectively today
 
 With React Native Web today it's hard to share more than a pretty small fraction of your frontend without immediately sacrificing look and feel.
 
-This is mostly because of the web. The web is extra sensitive to performance, especially when it comes to Javascript, and the CSS-in-JS needs compilers to avoid shipping a lot more of it.
+This is mostly because of the web. The web is extra sensitive to performance, especially when it comes to Javascript, but the CSS-in-JS strategy of React Native Web ends up shipping a lot of it.
 
-It's not just light bundles that are the limiting factor. <span style={{ color: 'var(--yellow10)' }}>Properly extracting even logic-filled components down to CSS for all of the following is even more important for overall app performance and responsivity</span>.
+It's not just light bundles that are the limiting factor. <span style={{ color: 'var(--yellow9)' }}>Way too many platform features aren't supported in React Native StyleSheet</span>, leading to lots of JS logic in places it shouldn't ever be.
 
-Extracting all of the following would unlock a huge amount of performance for a huge set of existing React apps in the wild today:
+All of the following being moved into CSS would unlock a huge amount of performance:
 
-- Inline styles
+- Inline or logically determined styles (often written as objects to save time)
 - Responsive styles (media queries)
 - Themes, colors, sizing (CSS variables)
 - Interactive styles (pseudo styles)
 
 Media queries are especially table-stakes for sharing code, but running them as hooks de-opts web-apps such that even simpler apps bring modern browsers to a halt on resize. Pseudo styles and theme styles are also in places very sensitive to re-renders (especially as interactive changes often animate).
 
-### How the compiler works
+### How Tamagui compiles
 
 Tamagui fixes many of these problems with a compiler. It optimizes four things:
 
@@ -175,11 +179,9 @@ Meanwhile, on Native, because we can't optimize to anything beyond vanilla React
 
 You can see [the full Benchmarks with explanations here](/docs/intro/benchmarks).
 
-More detailed docs on how the compiler, optimizer and partial evaluation works Coming Soon™️.
+More detailed docs on how the compiler, optimizer and partial evaluation works will come in a follow-up article.
 
-Give Tamagui a try with `npm create tamagui-app`.
-
----
+I think with a compiler, we can dramatically improve code sharing without sacrificing rendering to native, and feeling great on each platform, enabling a new option:
 
 <Table>
   <TableCol>
@@ -225,3 +227,7 @@ Give Tamagui a try with `npm create tamagui-app`.
     <TableCell highlight>✅</TableCell>
   </TableCol>
 </Table>
+
+---
+
+Give Tamagui a try with `npm create tamagui-app`.
