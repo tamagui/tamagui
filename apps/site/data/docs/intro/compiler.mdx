@@ -25,7 +25,7 @@ Tamagui's compiler makes sharing significantly more code between native and web 
   </TableCol>
 </Table>
 
-Or, as a choose-two-of-three:
+Or, as a choose one-of-three:
 
 <Table heading="Choose one">
   <TableCol>
@@ -101,7 +101,7 @@ Extracting all of the following would unlock a huge amount of performance for a 
 - Themes, colors, sizing (CSS variables)
 - Interactive styles (pseudo styles)
 
-Media queries are especially table-stakes for sharing code, but running them as hooks de-opts web-apps such that even simpler apps bring modern browsers to a halt on resize. Pseudo styles and theme styles are also in places very sensitive to re-renders (especially as interactive changes often animate).
+Media queries are especially table-stakes for sharing code, but running them as hooks de-optimizes web-apps such that even simpler apps bring modern browsers to a halt on resize. Pseudo styles and theme styles are also in places very sensitive to re-renders (especially as interactive changes often animate).
 
 ### How the compiler works
 
@@ -169,7 +169,7 @@ The tree flattening here (turning `Text` into `p`) dramatically increases rende
 
 <BenchmarkChartWeb />
 
-Meanwhile, on Native, because we can't optimize to anything beyond vanilla React Native code, the gains are less. Still, the results are impressive given you are now getting a huge amount of features and nice syntax that normally would eat up a lot of performance, and the net result is basically even with hand-optimized React Native:
+Meanwhile, on Native, because we can't optimize to anything beyond vanilla React Native code, the gains are less. Still, the results are impressive given you are now getting a huge amount of features and nice syntax that normally would eat up a lot of performance, and the net result is basically the same as hand-optimized React Native:
 
 <BenchmarkChartNative />
 
