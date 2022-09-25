@@ -184,7 +184,7 @@ export const PopoverContent = React.forwardRef<PopoverContentTypeElement, Popove
     }, [context.open])
 
     return (
-      <Portal zIndex={props.zIndex}>
+      <Portal zIndex={props.zIndex ?? 1000}>
         <Theme name={themeName}>
           <PopoverContentImpl
             {...contentModalProps}
