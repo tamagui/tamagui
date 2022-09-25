@@ -491,10 +491,6 @@ export const Sheet = withStaticProperties(
         }
       })
 
-      if (preventShown) {
-        return null
-      }
-
       // temp until reanimated useAnimatedNumber fix
       const AnimatedView = driver['NumberView'] ?? driver.View
 
@@ -570,6 +566,10 @@ export const Sheet = withStaticProperties(
           </AnimatedView>
         </SheetProvider>
       )
+
+      if (preventShown) {
+        return null
+      }
 
       if (modal) {
         const modalContents = (
