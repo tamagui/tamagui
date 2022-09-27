@@ -1,6 +1,6 @@
 ---
 title: Write once, feels native
-description: A React optimizing compiler for shipping better, faster.
+description: An optimizing compiler for React.
 ---
 
 <TLDR>
@@ -10,10 +10,12 @@ Tamagui compiler enables much more code share between native & web **without cos
 </TLDR>
 
 <IntroParagraph>
-  Let's start with a choice all frontend developers make implicitly, presented three ways:
+  Let's start with a choice all frontend developers make implicitly, presented three ways.
 </IntroParagraph>
 
-<Table heading="You can only choose two:">
+The first way is
+
+<Table heading="Choose two of three:">
   <TableCol>
     <TableCell>Multi-platform</TableCell>
   </TableCol>
@@ -25,16 +27,16 @@ Tamagui compiler enables much more code share between native & web **without cos
   </TableCol>
 </Table>
 
-Here's the same two-of-three, but in a diagram that reveals a center - a center that's been attempted largely unsuccessfully since the dawn of GUI:
+Here's the same two-of-three, but in a diagram:
 
 <YStack maw={650} als="center">
   ![The Frontend Trilemma: Choose two of DX, UX, and multi-platform (or run out of
   time).](/trilemma.svg)
 </YStack>
 
-If you've internalized that, you can re-phrase the two-of-three constratints as a simple single choice in your frontend strategy. Note, the numbers are contextualized to React Native developers today, though they hold somewhat generally:
+You either target more platforms with one codebase and sacrifice UX and performance, or target each platform individually but double your time to ship each feature.
 
-<Table heading="Choose one:">
+<Table heading="Choose your path:">
   <TableCol>
     <TableCell head></TableCell>
     <TableCell>1</TableCell>
@@ -73,8 +75,6 @@ If you've internalized that, you can re-phrase the two-of-three constratints as 
   </TableCol>
 </Table>
 
-You either target more platforms with one codebase and sacrifice UX and performance, or target each platform individually but double your time to ship each feature.
-
 **Code Sharing** should be expanded to **Code Sharing without sacrificing UX or performance**, which is why for the "Big-budget" option is typically ends up below 50%. We'll go into more on why in the next section.
 
 Many people choose the former, and it's unfortunate but understandable. For a variety of reasons: you're a small team, you have to ship, and supporting more platforms or testing your idea out is more important than absolute speed. Life's tough.
@@ -105,7 +105,7 @@ All of the following being moved into CSS would unlock a huge amount of performa
 - Themes, colors, sizing (CSS variables)
 - Interactive styles (pseudo styles)
 
-Media queries are especially table-stakes for sharing code, but running them as hooks de-opts web-apps such that even simpler apps bring modern browsers to a halt on resize. Pseudo styles and theme styles are also in places very sensitive to re-renders (especially as interactive changes often animate).
+Media queries are especially table-stakes for sharing code, but running them as hooks de-optimizes web-apps such that even simpler apps bring modern browsers to a halt on resize. Pseudo styles and theme styles are also in places very sensitive to re-renders (especially as interactive changes often animate).
 
 ### How Tamagui compiles
 
@@ -173,7 +173,7 @@ The tree flattening here (turning `Text` into `p`) dramatically increases rende
 
 <BenchmarkChartWeb />
 
-Meanwhile, on Native, because we can't optimize to anything beyond vanilla React Native code, the gains are less. Still, the results are impressive given you are now getting a huge amount of features and nice syntax that normally would eat up a lot of performance, and the net result is basically even with hand-optimized React Native:
+Meanwhile, on Native, because we can't optimize to anything beyond vanilla React Native code, the gains are less. Still, the results are impressive given you are now getting a huge amount of features and nice syntax that normally would eat up a lot of performance, and the net result is basically the same as hand-optimized React Native:
 
 <BenchmarkChartNative />
 

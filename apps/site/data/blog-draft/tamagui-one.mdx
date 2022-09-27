@@ -19,6 +19,66 @@ There's simply so much to cover.
 
 What's new?
 
+For this release, I'll be splitting into sections features added in `core` (the style system), `static` (the optimizing compiler), and `tamagui` (the UI kit).
+
+## What's new in Core
+
+It's all about maturity. Core has had over 500 bugs fixed, performance and memory usage improvements, and updates to compatibility with the latest and greatest in React and React Native.
+
+### React 0.69, React 18, React Native Web 18
+
+Across all of Tamagui, we've bumped support to the latest versions.
+
+### Correctness, bugs, performance
+
+More than any area, `core` has matured the most. One of the first big steps was to separate it entirely from `react-native-web`. Before 1.0, we had to run a patch to `react-native-web` that allowed us to pass in `className`, and also re-use some of the internal atomic CSS generation to avoid duplicating functionality (and therefore bundle size).
+
+Fixing this was a many-step process, but it was helped when profiling and analysis of the `react-native-web` style system showed that there were large performance cliffs in a variety of areas of their CSS generation steps. Namely, the design of the entire setup was a highly functional plugin system. This led to up to O(N^3) performance (up to 3 loops iterating one inside of the other over style props) and a large number of total loops, plus high memory usage with many objects being created. Because Tamagui was built on top of this, we further compounded the problem with a few loops of our own.
+
+During the early betas this became a priority. We accepted a temporary bundle size increase by essentially copying in the relevant bits of the `react-native-web` style system, and then slowly began the process of refactoring and inlining the logic into our own already fairly well-optimized single pass over styles.
+
+Today, the style system is now a lot closer to ideal. We've removed almost all the nested looping, and generate most styles in one pass.
+
+### `styled` upgrades
+
+The `styled` factory has undergone a number of improvements. It now supports wrapping just about any component you give it, so long as that component accepts a `style` prop.
+
+#### A note on `styled` types
+
+We now recommend using `as const` after your `variants` object definition to fix some tricky issues related to some [outstanding Typescript limitations around inferring const generics]().
+
+### Fonts
+
+One theme in the betas for `core` was upgrading how fonts worked. Two big helpers landed:
+
+#### &lt;FontLanguage /&gt;
+
+#### The `fontFaceByWeight` config
+
+### The `themeShallow` prop
+
+### Helpers
+
+### The `loadTheme` and `updateTheme` helpers
+
+### The `useMediaPropsActive` hook
+
+---
+
+## Static
+
+Over a dozen major improvements to the compiler have made their way in since beta. Some of the highlights are:
+
+#### Up-front bundling of components and config
+
+Tamagui now fully bundles your `components` and `config` that you provide it before it begins compilation, writing them out into the `./dist/tamagui` directory in your app. This is much better for debugging and introspection, and in the process we fixed a large variety of issues.
+
+The compiler now also supports analyzing components outside of your design system, allowing for even less friction when writing apps. Previously, Tamagui only knew how to optimize components found in your separated design system package. But it's common to have one-off `styled` component you use just for small pieces of your app, that don't need to be inside your design system. With beta [...] we added a bigger feature, in which the compiler now attempts to load and analyze components inline as it discovers new ones. This led to a 25% increase in compile-time optimized components in our largest production Tamagui apps.
+
+---
+
+## Tamagui
+
 ### A whole lot of new components 🎁
 
 With the beta release, we had mostly finalized the core feature set we wanted in Tamagui, especially in `@tamagui/core`, the base style system that works underlies the compiler and UI kit. It was time to cut our teeth building out a suite of components to really test it out.
@@ -30,6 +90,10 @@ And like every component in the `tamagui` package, every new component is comple
 Let's dig in.
 
 #### Sheet
+
+A decent bottom sheet is essential for any UI kit, but it represents one of the hardest components to build due to the need for complex interactive behavior at high performance, alongside delicate interplat between the outer draggable sheet and any inner scrollable content.
+
+This is made especially tricky because Tamagui allows for pluggable drivers. So, where normally you'd implement your interactivity once, the Tamagui UI kit
 
 #### Select
 
@@ -95,28 +159,6 @@ Tamagui is the only UI kit that works on both React Native and React Native Web 
 
 ---
 
-### Compiler improvements
-
-Over a dozen major improvements to the compiler have made their way in since beta. Some of the highlights are:
-
-#### Up-front bundling of components and config
-
-Tamagui now fully bundles your `components` and `config` that you provide it before it begins compilation, writing them out into the `./dist/tamagui` directory in your app. This is much better for debugging and introspection, and in the process we fixed a large variety of issues.
-
-The compiler now also supports analyzing components outside of your design system, allowing for even less friction when writing apps. Previously, Tamagui only knew how to optimize components found in your separated design system package. But it's common to have one-off `styled` component you use just for small pieces of your app, that don't need to be inside your design system. With beta [...] we added a bigger feature, in which the compiler now attempts to load and analyze components inline as it discovers new ones. This led to a 25% increase in compile-time optimized components in our largest production Tamagui apps.
-
-####
-
----
-
-### Load and define themes dynamically
-
----
-
-### React 0.69, React 18, React Native Web 18
-
----
-
 ### Vite Plugin + Vite Compiler
 
 ---
@@ -141,24 +183,6 @@ We've updated Tamagui's base React version to be 18, and landed a large amount o
 
 ---
 
----
-
-### FontLanguage
-
----
-
-### `fontFaceByWeight` option
-
----
-
-### The `themeShallow` prop
-
----
-
-### `useMediaPropsActive` helper
-
----
-
 ### `@tamagui/next-theme`
 
 ---
@@ -170,10 +194,6 @@ The default theme package now includes `_active` sub-themes, paving the way for 
 It also now includes theme values for `color1` => `color12` as part of each theme. This gives you granular access outside of the more specific color values like `background`, or `borderColor`.
 
 ---
-
-### `styled` upgrades
-
-The `styled` factory has undergone a number of improvements. It now supports wrapping just about any component you give it, so long as that component accepts a `style` prop.
 
 ---
 
