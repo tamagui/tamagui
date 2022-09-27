@@ -169,7 +169,7 @@ export interface PopoverContentTypeProps
 
 export const PopoverContent = React.forwardRef<PopoverContentTypeElement, PopoverContentTypeProps>(
   (props: ScopedProps<PopoverContentTypeProps>, forwardedRef) => {
-    const { allowPinchZoom, trapFocus, disableRemoveScroll, ...contentModalProps } = props
+    const { allowPinchZoom, trapFocus, disableRemoveScroll = true, ...contentModalProps } = props
     const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
