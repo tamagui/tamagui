@@ -2,7 +2,7 @@ import { useOnIntersecting } from '@tamagui/demos'
 import Link from 'next/link'
 import React from 'react'
 import { useRef, useState } from 'react'
-import { Button, Paragraph, YStack } from 'tamagui'
+import { Button, Paragraph, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from '../components/Container'
 import { HomeH2, HomeH3 } from '../components/HomeH2'
@@ -64,7 +64,10 @@ export function HeroPerformance() {
           {show && <BenchmarkChartWeb />}
         </YStack>
 
-        <BenchmarksLink />
+        <XStack space flexWrap="wrap">
+          <BenchmarksLink />
+          <CompilerLink />
+        </XStack>
       </YStack>
     </ContainerLarge>
   )
@@ -81,6 +84,17 @@ const BenchmarksLink = () => {
         tag="a"
       >
         Benchmarks &raquo;
+      </Button>
+    </Link>
+  )
+}
+
+const CompilerLink = () => {
+  const { tint } = useTint()
+  return (
+    <Link href="/docs/intro/compiler" passHref>
+      <Button accessibilityLabel="Compiler" fontFamily="$silkscreen" theme={tint} tag="a">
+        About the Compiler &raquo;
       </Button>
     </Link>
   )
