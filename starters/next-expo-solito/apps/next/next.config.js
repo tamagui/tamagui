@@ -2,6 +2,7 @@
 const withPlugins = require('next-compose-plugins')
 const { withTamagui } = require('@tamagui/next-plugin')
 const withTM = require('next-transpile-modules')
+const { join } = require('path')
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 process.env.TAMAGUI_TARGET = 'web'
@@ -27,7 +28,7 @@ const transform = withPlugins([
     logTimings: true,
     disableExtraction,
     shouldExtract: (path) => {
-      if (path.includes('packages/app')) {
+      if (path.includes(join('packages', 'app'))) {
         return true
       }
     },
