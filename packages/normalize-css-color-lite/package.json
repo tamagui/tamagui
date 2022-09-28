@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/normalize-css-color-lite",
-  "version": "1.0.1-beta.179",
+  "version": "1.0.1-beta.180",
   "sideEffects": false,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -11,7 +11,7 @@
     "watch": "tamagui-build --watch"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.179"
+    "@tamagui/build": "^1.0.1-beta.180"
   },
   "exports": {
     "./package.json": "./package.json",

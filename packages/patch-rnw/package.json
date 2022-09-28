@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/patch-rnw",
-  "version": "1.0.1-beta.179",
+  "version": "1.0.1-beta.180",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -26,7 +26,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@tamagui/build": "^1.0.1-beta.179",
+    "@tamagui/build": "^1.0.1-beta.180",
     "fs-extra": "^10.1.0"
   },
   "peerDependencies": {
