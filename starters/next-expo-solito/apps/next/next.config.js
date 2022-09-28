@@ -27,6 +27,8 @@ const transform = withPlugins([
     importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,
     disableExtraction,
+    // experiment - reduced bundle size react-native-web
+    useReactNativeWebLite: false,
     shouldExtract: (path) => {
       if (path.includes(join('packages', 'app'))) {
         return true

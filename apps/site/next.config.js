@@ -1,3 +1,5 @@
+// const withPreact = require('next-plugin-preact')
+
 /** @type {import('next').NextConfig} */
 const { withTamagui } = require('@tamagui/next-plugin')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
@@ -41,6 +43,7 @@ const plugins = [
       'SectionList',
     ],
   }),
+  // withPreact,
   (config) => {
     return {
       ...config,
@@ -87,6 +90,8 @@ module.exports = function (name, { defaultConfig }) {
   let config = {
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     experimental: {
+      // for preact...
+      // esmExternals: false,
       scrollRestoration: true,
       legacyBrowsers: false,
       browsersListForSwc: true,

@@ -5049,6 +5049,59 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@prefresh/babel-plugin@npm:0.4.3":
+  version: 0.4.3
+  resolution: "@prefresh/babel-plugin@npm:0.4.3"
+  checksum: 0bd68589b1491da7b5c4920a9958b74fbdf75f54c12b5713e1c708e4a21df7f47f9d265d8ee291bdc03c3c4fcd12bd97b34835b565292c0a69a5858ff37e556c
+  languageName: node
+  linkType: hard
+
+"@prefresh/core@npm:^1.3.3, @prefresh/core@npm:^1.4.0":
+  version: 1.4.1
+  resolution: "@prefresh/core@npm:1.4.1"
+  peerDependencies:
+    preact: ^10.0.0
+  checksum: afac93e1225d871d88c47717f8b6a328abc9760b212836986fd8bb3017bb6737bb397e016b31c4f542722d0b9c05e1e43d1b5710a61c8efb5208d717d2bb1bba
+  languageName: node
+  linkType: hard
+
+"@prefresh/next@npm:^1.4.6":
+  version: 1.6.0
+  resolution: "@prefresh/next@npm:1.6.0"
+  dependencies:
+    "@prefresh/babel-plugin": 0.4.3
+    "@prefresh/core": ^1.4.0
+    "@prefresh/utils": ^1.1.2
+    "@prefresh/webpack": ^3.3.3
+  peerDependencies:
+    next: ^9.4.0 || ^10.0.0 || ^11.0.0 || ^12.0.0
+    preact: ^10.4.0
+    webpack: ^4.0.0 || ^5.0.0
+  checksum: d4d5c58a1cc43fb840d60efaeb723924bd8dc2ccd1bcb00e56f015233cf62ba32629204f94bc4146658a8fa2c77b0dbd17a18f303cabbe09e3a7eaa06adb20d3
+  languageName: node
+  linkType: hard
+
+"@prefresh/utils@npm:^1.1.2":
+  version: 1.1.3
+  resolution: "@prefresh/utils@npm:1.1.3"
+  checksum: a95b816d08a68f499489f1e0098effcda99ccba06c80986cb0dfbcda4fc9c8f8e3238603ead4ee35bb9fb7985de66b1a785d12c64fbc61600e0a8bd388fc2de0
+  languageName: node
+  linkType: hard
+
+"@prefresh/webpack@npm:^3.3.0, @prefresh/webpack@npm:^3.3.3":
+  version: 3.3.4
+  resolution: "@prefresh/webpack@npm:3.3.4"
+  dependencies:
+    "@prefresh/core": ^1.3.3
+    "@prefresh/utils": ^1.1.2
+  peerDependencies:
+    "@prefresh/babel-plugin": ^0.4.0
+    preact: ^10.4.0
+    webpack: ^4.0.0 || ^5.0.0
+  checksum: 49d2184856f7c3335d339b3cff52c85b9524c6b215c120f701bfc7053781adea8db8908f158a756a9234af09acedff101fd087f4adcda367b38ca6403a9e5442
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-use-callback-ref@npm:0.1.0":
   version: 0.1.0
   resolution: "@radix-ui/react-use-callback-ref@npm:0.1.0"
@@ -6872,9 +6925,12 @@ __metadata:
     hast-util-to-string: ^2.0.0
     mdx-bundler: ^9.0.1
     next: ^12.2.5
+    next-plugin-preact: ^3.0.7
     next-remote-watch: ^1.0.0
     nextjs-progressbar: ^0.0.14
     parse-numeric-range: ^1.3.0
+    preact: ^10.11.0
+    preact-render-to-string: ^5.2.4
     react: "*"
     react-dom: "*"
     react-native: "*"
@@ -18175,6 +18231,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"module-alias@npm:^2.0.0":
+  version: 2.2.2
+  resolution: "module-alias@npm:2.2.2"
+  checksum: 4b5543f834b484033e5bd184096ca8276b9195e32e88883ee6ea8d3a4789d97c470d26f5fa7271bd7a26588bf67e4d27dbdb594ee327aef1c9619d855dc78342
+  languageName: node
+  linkType: hard
+
 "morgan@npm:^1.10.0":
   version: 1.10.0
   resolution: "morgan@npm:1.10.0"
@@ -18360,6 +18423,21 @@ __metadata:
   version: 2.0.1
   resolution: "nested-error-stacks@npm:2.0.1"
   checksum: 8430d7d80ad69b1add2992ee2992a363db6c1a26a54740963bc99a004c5acb1d2a67049397062eab2caa3a312b4da89a0b85de3bdf82d7d472a6baa166311fe6
+  languageName: node
+  linkType: hard
+
+"next-plugin-preact@npm:^3.0.7":
+  version: 3.0.7
+  resolution: "next-plugin-preact@npm:3.0.7"
+  dependencies:
+    "@prefresh/next": ^1.4.6
+    "@prefresh/webpack": ^3.3.0
+    module-alias: ^2.0.0
+  peerDependencies:
+    preact: ">=10"
+    preact-render-to-string: ">=5"
+    preact-ssr-prepass: ">=1"
+  checksum: f272e851483794b92ec6b757a19e17dd13df7eb6156b562fd7071f7f1e9a59127e0f78b07245d91ab580ce36cc3c7a695f81cb383a52345d98bb995f7ae1d9f8
   languageName: node
   linkType: hard
 
@@ -20235,6 +20313,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"preact-render-to-string@npm:^5.2.4":
+  version: 5.2.4
+  resolution: "preact-render-to-string@npm:5.2.4"
+  dependencies:
+    pretty-format: ^3.8.0
+  peerDependencies:
+    preact: ">=10"
+  checksum: cb29e280174bb4e8a77be454b927dfa35f2672d9bf2eb11d6634208b076d81508a35d53a38a5dfee7676fc48be2c1e0db2e83fca955f7016ce5ed844f35d92b4
+  languageName: node
+  linkType: hard
+
+"preact@npm:^10.11.0":
+  version: 10.11.0
+  resolution: "preact@npm:10.11.0"
+  checksum: 1e3f8e6fe88f26a2896826f69121b70eb69c63a46bfc1160da8672b37618fcfd294128979ed27e37499604df90c1505c30545f75683f23d8f7e6ac0693d2ff14
+  languageName: node
+  linkType: hard
+
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
@@ -20330,6 +20426,13 @@ __metadata:
     ansi-styles: ^5.0.0
     react-is: ^18.0.0
   checksum: e69f857358a3e03d271252d7524bec758c35e44680287f36c1cb905187fbc82da9981a6eb07edfd8a03bc3cbeebfa6f5234c13a3d5b59f2bbdf9b4c4053e0a7f
+  languageName: node
+  linkType: hard
+
+"pretty-format@npm:^3.8.0":
+  version: 3.8.0
+  resolution: "pretty-format@npm:3.8.0"
+  checksum: 21a114d43ef06978f8f7f6212be4649b0b094f05d9b30e14e37550bf35c8ca24d8adbca9e5adc4cc15d9eaf7a1e7a30478a4dc37b30982bfdf0292a5b385484c
   languageName: node
   linkType: hard
 
