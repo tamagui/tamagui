@@ -3,12 +3,16 @@ title: Write once, feels native
 description: An optimizing compiler for React.
 ---
 
-<IntroParagraph>Let's start with a choice all frontend developers make implicitly.</IntroParagraph>
+<IntroParagraph>
+  If developing a web + mobile app today and using React Native, you've made this trade-off:
+</IntroParagraph>
 
 <YStack maw={650} als="center">
   ![The Frontend Trilemma: Choose two of DX, UX, and multi-platform (or run out of
   time).](/trilemma.svg)
 </YStack>
+
+The three intersecting three parts are your choices of can be framed as:
 
 <Table heading="Choose your path:">
   <TableCol>
@@ -49,12 +53,18 @@ description: An optimizing compiler for React.
   </TableCol>
 </Table>
 
-Tamagui optimizes four things:
+The middle of the Venn diagram could be titled "write once, feels native" - aspirationally.
 
-- Static styles via the `styled` function
-- Dynamic (inline) styles, using partial evaluation
-- Hooks for themes or media queries
-- Tree-depth (via tree-flattening)
+Many teams choose shipping fast over native feel, for a diverse set of rational reasons. Tamagui looks at it as a two sided problem. The first half, components that adapt to native controls, is something that React Native developers have been chipping away at over time.
+
+But a huge blocker is just that React Native apps .
+
+The Tamagui compiler does build-time optimization, including:
+
+- Static `styled` factory extracts to atomic CSS.
+- Inline styles extracted with partial evaluation and inlining.
+- Tree-flattening by turning `styled` components into `div` or `View` when possible.
+- Logically parses hooks for `useMedia` and `useTheme` into media queries and CSS variables.
 
 It turns this:
 
