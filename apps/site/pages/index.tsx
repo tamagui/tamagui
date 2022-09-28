@@ -1,17 +1,15 @@
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { useIsIntersecting } from '@tamagui/demos'
-import { tints } from '@tamagui/logo'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { toHtml } from 'hast-util-to-html'
 import rangeParser from 'parse-numeric-range'
-import React, { useEffect, useMemo, useRef } from 'react'
-import { useWindowDimensions } from 'react-native'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { refractor } from 'refractor'
 import css from 'refractor/lang/css'
 import tsx from 'refractor/lang/tsx'
-import { GetProps, Separator, TamaguiElement, ThemeName, XStack, YStack, styled } from 'tamagui'
+import { GetProps, XStack, YStack, styled } from 'tamagui'
 
 import { CocentricCircles } from '../components/CocentricCircles'
 import { ContainerLarge } from '../components/Container'
@@ -43,11 +41,8 @@ export default function Home({ animationCode, compilationExamples }) {
           <InstallInput />
         </XStack>
       </ContainerLarge>
-      <YStack pos="relative" zi={1000} elevation="$1" py="$8" pb="$10">
-        <YStack fullscreen bc="$color1" zi={-1} o={0.25} />
-        <HeroBelow />
-      </YStack>
-      <Glow />
+      <HeroBelow />
+      {/* <Glow /> inside HeroBelow anchors to it */}
       <TintSection index={0} contain="paint layout" zi={1000}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleCode examples={compilationExamples} />
@@ -88,35 +83,6 @@ export default function Home({ animationCode, compilationExamples }) {
         <Community />
       </Section>
     </>
-  )
-}
-
-const Glow = () => {
-  const { tint } = useTint()
-
-  return (
-    <YStack
-      pos="absolute"
-      t={0}
-      l={0}
-      pe="none"
-      animation="lazy"
-      key={0}
-      zi={-1}
-      y={typeof document !== 'undefined' ? document.documentElement?.scrollTop ?? 0 : 0}
-    >
-      <YStack
-        overflow="hidden"
-        h="100vh"
-        w="100vw"
-        maw={1200}
-        theme={tint}
-        o={0.5}
-        fullscreen
-        left="calc(50vw - 600px)"
-        className="hero-blur"
-      />
-    </YStack>
   )
 }
 

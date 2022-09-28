@@ -268,7 +268,7 @@ iframe {
 }
 
 .blur {
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(40px);
 }
 
 .bg-dot-grid {

@@ -3,38 +3,12 @@ title: Write once, feels native
 description: An optimizing compiler for React.
 ---
 
-<TLDR>
-
-Tamagui compiler enables much more code share between native & web **without costing perf vs individually written apps**. It speeds up web 1-3x, native ~0.25x.
-
-</TLDR>
-
-<IntroParagraph>
-  Let's start with a choice all frontend developers make implicitly, presented three ways.
-</IntroParagraph>
-
-The first way is
-
-<Table heading="Choose two of three:">
-  <TableCol>
-    <TableCell>Multi-platform</TableCell>
-  </TableCol>
-  <TableCol>
-    <TableCell>Single codebase</TableCell>
-  </TableCol>
-  <TableCol>
-    <TableCell>Feels native</TableCell>
-  </TableCol>
-</Table>
-
-Here's the same two-of-three, but in a diagram:
+<IntroParagraph>Let's start with a choice all frontend developers make implicitly.</IntroParagraph>
 
 <YStack maw={650} als="center">
   ![The Frontend Trilemma: Choose two of DX, UX, and multi-platform (or run out of
   time).](/trilemma.svg)
 </YStack>
-
-You either target more platforms with one codebase and sacrifice UX and performance, or target each platform individually but double your time to ship each feature.
 
 <Table heading="Choose your path:">
   <TableCol>
@@ -75,41 +49,7 @@ You either target more platforms with one codebase and sacrifice UX and performa
   </TableCol>
 </Table>
 
-**Code Sharing** should be expanded to **Code Sharing without sacrificing UX or performance**, which is why for the "Big-budget" option is typically ends up below 50%. We'll go into more on why in the next section.
-
-Many people choose the former, and it's unfortunate but understandable. For a variety of reasons: you're a small team, you have to ship, and supporting more platforms or testing your idea out is more important than absolute speed. Life's tough.
-
-But I don't think it's necessary for React to be slow, even when sharing a lot of code. **Even using fancy CSS-in-JS solutions**. We just need some help - and compilers will do just that.
-
-First, a chart:
-
-<YStack maw={650} als="center">
-  ![Sharing code between web and native without sacrificing native feel has gone way up with the
-  release of React Native, and later with the release of React Native Web](/code-sharing.svg)
-</YStack>
-
-You can define your own "feels native" and set the Y axis appropriately, even making small if you want. I put a general upward trend as all sort of amazing library authors have made sharing so much more performance and well-designed, a few being [React Navigation](https://reactnavigation.org/) (+ [Solito](https://solito.dev/)), [React Native Skia](https://github.com/Shopify/react-native-skia) or [Reanimated](https://docs.swmansion.com/react-native-reanimated/) and [many](https://github.com/react-native-svg/react-native-svg) [many](https://github.com/expo/match-media) [many](https://gorhom.github.io/react-native-bottom-sheet) [many](https://github.com/rnmapbox/maps) [more](https://www.google.com/search?q=expo+linear+gradient&oq=expo+linear+gradient&aqs=chrome..69i57j69i59j69i60.3994j0j1&sourceid=chrome&ie=UTF-8).
-
-### Why we can't share effectively today
-
-With React Native Web today it's hard to share more than a pretty small fraction of your frontend without immediately sacrificing look and feel.
-
-This is mostly because of the web. The web is extra sensitive to performance, especially when it comes to Javascript, but the CSS-in-JS strategy of React Native Web ends up shipping a lot of it.
-
-It's not just light bundles that are the limiting factor. <span style={{ color: 'var(--yellow9)' }}>Way too many platform features aren't supported in React Native StyleSheet</span>, leading to lots of JS logic in places it shouldn't ever be.
-
-All of the following being moved into CSS would unlock a huge amount of performance:
-
-- Inline or logically determined styles (often written as objects to save time)
-- Responsive styles (media queries)
-- Themes, colors, sizing (CSS variables)
-- Interactive styles (pseudo styles)
-
-Media queries are especially table-stakes for sharing code, but running them as hooks de-optimizes web-apps such that even simpler apps bring modern browsers to a halt on resize. Pseudo styles and theme styles are also in places very sensitive to re-renders (especially as interactive changes often animate).
-
-### How Tamagui compiles
-
-Tamagui fixes many of these problems with a compiler. It optimizes four things:
+Tamagui optimizes four things:
 
 - Static styles via the `styled` function
 - Dynamic (inline) styles, using partial evaluation
@@ -122,12 +62,13 @@ It turns this:
 
 ```tsx
 import { Text, YStack } from '@tamagui/core'
+import { brandColor } from './constants'
 
 const App = (props) => (
   <YStack
     padding={props.big ? '$5' : '$3'}
     {...(props.colored && {
-      backgroundColor: 'green',
+      backgroundColor: brandColor,
     })}
   >
     <Text
@@ -169,62 +110,50 @@ const _cn = ' _bc-abc123 _d-6koalj _fd-eqz5dr _fls-1q142lx '
 
 Along with CSS (which you can see, alongside more examples see [on the homepage](/)).
 
-The tree flattening here (turning `Text` into `p`) dramatically increases render performance on the web, above the already large gains from CSS compilation. This is a benchmark of rendering a single view that has a few "variants." Typically, your app would have to render a large View with many hooks. With Tamagui, it just hands a `div` over to React:
+It uses tree flattening (turning the `Text` into `p`) which helps render performance above pure gains from CSS compilation. In a small benchmark just rendering a single view with logically changing "variants," you'll see large increases:
 
-<BenchmarkChartWeb />
+<YStack my="$2">
+  <BenchmarkChartWeb />
+</YStack>
+
+Across a few apps, we've seen 30-50% of components typically flatten, with a higher percent achievable just by being aware of how the flattening de-optimizes (adding the `// debug` comment to the top of the file will show a fuller output).
 
 Meanwhile, on Native, because we can't optimize to anything beyond vanilla React Native code, the gains are less. Still, the results are impressive given you are now getting a huge amount of features and nice syntax that normally would eat up a lot of performance, and the net result is basically the same as hand-optimized React Native:
 
-<BenchmarkChartNative />
+<YStack my="$2">
+  <BenchmarkChartNative />
+</YStack>
 
 You can see [the full Benchmarks with explanations here](/docs/intro/benchmarks).
 
 More detailed docs on how the compiler, optimizer and partial evaluation works will come in a follow-up article.
 
-I think with a compiler, we can dramatically improve code sharing without sacrificing rendering to native, and feeling great on each platform, enabling a new option:
+Compilers can dramatically improve code sharing without sacrificing performance, and improve adaptation to platforms.
 
 <Table>
   <TableCol>
     <TableCell head></TableCell>
-    <TableCell>1</TableCell>
-    <TableCell>2</TableCell>
-    <TableCell>3</TableCell>
-    <TableCell highlight>4</TableCell>
+    <TableCell>4</TableCell>
   </TableCol>
   <TableCol>
     <TableCell head>Strategy</TableCell>
-    <TableCell>Universal</TableCell>
-    <TableCell>Lean</TableCell>
-    <TableCell>Big-Budget</TableCell>
-    <TableCell highlight>Universal + Compiler</TableCell>
+    <TableCell>Universal + Compiler</TableCell>
   </TableCol>
   <TableCol>
     <TableCell head>Native + Web</TableCell>
     <TableCell>✅</TableCell>
-    <TableCell>❌</TableCell>
-    <TableCell>✅</TableCell>
-    <TableCell highlight>✅</TableCell>
   </TableCol>
   <TableCol>
     <TableCell head>Code Sharing</TableCell>
-    <TableCell>\> 70%</TableCell>
-    <TableCell>-</TableCell>
-    <TableCell>\< 30%</TableCell>
-    <TableCell highlight>~60-90%</TableCell>
+    <TableCell>~60-90%</TableCell>
   </TableCol>
   <TableCol>
     <TableCell head>Ship Fast</TableCell>
     <TableCell>✅</TableCell>
-    <TableCell>✅</TableCell>
-    <TableCell>❌</TableCell>
-    <TableCell highlight>✅</TableCell>
   </TableCol>
   <TableCol>
     <TableCell head>Feels native</TableCell>
-    <TableCell>❌</TableCell>
     <TableCell>✅</TableCell>
-    <TableCell>✅</TableCell>
-    <TableCell highlight>✅</TableCell>
   </TableCol>
 </Table>
 
