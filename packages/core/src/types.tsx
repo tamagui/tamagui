@@ -239,7 +239,7 @@ export type GenericTamaguiConfig = CreateTamaguiConfig<
 export type ThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']]
 export type ThemeKeys = keyof ThemeDefinition
 export type ThemeParsed = {
-  [key in ThemeKeys]: Variable
+  [key in ThemeKeys]: Variable<any>
 }
 export type Tokens = TamaguiConfig['tokens']
 export type Shorthands = TamaguiConfig['shorthands']
