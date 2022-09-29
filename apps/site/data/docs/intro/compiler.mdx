@@ -26,11 +26,11 @@ This is a smart strategy, and it can pay off in more native-feeling and performi
 
 Still, the reality is that many companies large and small make _rational_ decisions to share code to some degree, up to and including nearly all of the visual code besides maybe a few high level views. In React, this is generally done using the excellent [React Native Web](https://necolas.github.io/react-native-web/).
 
-The reason it simple - shipping, and iterating, faster. There's a ton of reasons why this may be crucial - you're pre-product-market fit, or have an app with a large surface area. Or you simply are low on budget, time or both. Even bigger companies choose this strategy. Twitter, or Tinder are examples of this. It comes down to whether they can afford to sacrifice SEO, initial load times, and can afford to ship less complex interfaces.
+Pre product-market fit, for most types of apps it makes sense. Any app with a large surface area of features. Or any app where you want to experiment often and cheaply. Often the reason is as simple as budget, or time.
 
-The reasons for wanting to write less code are fairly inherent. It's just the outcome we often don't like: the sacrifice of peformance and native-specific UI elements.
+But it's common for bigger companies to do this too to a larger degree, Twitter and Tinder both do to a significant degree. Usually though this makes sense on apps that can sacrifice SEO, load time, and complex interfaces. The reasons for wanting to write less code are fairly inherent. It's just the outcome we often don't like: the sacrifice of peformance and native feel.
 
-Those three intersecting parts of the diagram at the top could be framed as a choice between "Universal", "Lean", or "Big-Budget" app-building.
+We can rephrase the diagram above as follows:
 
 <Table heading="Choose your path:">
   <TableCol>
@@ -71,11 +71,9 @@ Those three intersecting parts of the diagram at the top could be framed as a ch
   </TableCol>
 </Table>
 
-At best, without sacrificing performance, a React Native app today can share much of its state and utilities (like hooks), as well as _some amount of visual components_. But it's true that the more code you share, the lower the performance your app will have, sometimes in incredible critical areas like media queries, or animations.
+At best, without sacrificing performance, a React Native app today can share much of its state and utilities (like hooks), as well as _some amount of visual components_. But the more code it shares, the more performance suffers. This is more true on the web, where the CSS-in-JS approach of React Native Web leads to large bundle-sizes and largely reduced performance in critical areas like responsive styles. This is mostly due to limitations in the `StyleSheet` API, some of which have proposals to fix.
 
-This is more true on the web, where the CSS-in-JS approach of React Native Web leads to very large bundle-sizes and hugely reduced performance in critical areas like responsive styles (mostly due to the `StyleSheet` API not supporting that, and other web-optimized features).
-
-This means your media queries run, your interactive styles like hover or click effects, and any and all themes, animations, or dynamic styles end up causing expensive re-renders (oftentimes the entire tree) in sensitive areas.
+For now, this means your media queries, interactive styles, and all theme, animation, and dynamic styles end up running on your main thread, oftentimes re-reconciling a large percents of the React tree, and causing laggy behavior in areas that most contribute to UX.
 
 ### How Tamagui Helps
 
