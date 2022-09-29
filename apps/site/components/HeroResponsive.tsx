@@ -300,8 +300,7 @@ const Header = memo(() => {
       </XStack>
 
       <HomeH3 ta="left" als="flex-start" p={0} maxWidth={450} theme="alt2">
-        Responsive props - even inline ones containing logic - are compiled to atomic CSS on web, or
-        hooks on native.
+        Responsive props and hooks, compiled to atomic CSS on web.
       </HomeH3>
     </YStack>
   )

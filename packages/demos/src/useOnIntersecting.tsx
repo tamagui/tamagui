@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef, useState } from 'react'
+import { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { debounce, isWeb, useEvent } from 'tamagui'
 
 type DisposeFn = () => void
@@ -7,14 +7,16 @@ type IntersectFn = (
   didResize?: boolean
 ) => void | DisposeFn
 
+type HTMLRef = MutableRefObject<HTMLElement | null>
+
 export const useIsIntersecting = (
-  ref: MutableRefObject<HTMLElement | null>,
+  refs: HTMLRef | HTMLRef[],
   { once, ...opts }: IntersectionObserverInit & { once?: boolean } = {}
 ) => {
   const [val, setVal] = useState(!isWeb)
   if (isWeb) {
     useOnIntersecting(
-      ref,
+      refs,
       useEvent(({ isIntersecting }) => {
         if ((once && isIntersecting) || !once) {
           setVal(isIntersecting)
@@ -27,7 +29,7 @@ export const useIsIntersecting = (
 }
 
 export const useOnIntersecting = (
-  ref: MutableRefObject<HTMLElement | null>,
+  refsIn: HTMLRef | HTMLRef[],
   incomingCb: IntersectFn,
   options: IntersectionObserverInit = {
     threshold: 1,
@@ -35,8 +37,8 @@ export const useOnIntersecting = (
   mountArgs: any[] = []
 ) => {
   useEffect(() => {
-    const node = ref.current
-    if (!node || !incomingCb) return
+    const refs = Array.isArray(refsIn) ? refsIn : [refsIn]
+    if (!refs.length || !incomingCb) return
 
     // only when carousel is fully in viewport
     let dispose: DisposeFn | null = null
@@ -67,12 +69,17 @@ export const useOnIntersecting = (
     )
 
     ro.observe(document.body)
-    io.observe(node)
+    for (const ref of refs) {
+      if (ref.current) {
+        io.observe(ref.current)
+      }
+    }
 
     return () => {
       dispose?.()
       ro.disconnect()
       io.disconnect()
     }
-  }, [ref.current, incomingCb, ...mountArgs])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [incomingCb, refsIn, options, ...mountArgs])
 }

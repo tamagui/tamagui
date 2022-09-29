@@ -10,7 +10,6 @@ import { ParagraphLink } from './Link'
 export const Footer = () => {
   return (
     <YStack tag="footer" pos="relative">
-      <YStack fullscreen className="bg-dot-grid mask-gradient-up" pe="none" zi={-1} />
       <ContainerLarge>
         <XStack py="$7" $sm={{ flexDirection: 'column', ai: 'center' }}>
           <YStack

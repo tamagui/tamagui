@@ -40,8 +40,11 @@ body .preview {
   clip: rect(0, 0, 0, 0);
 }
 
-a {
+a, .text-decoration-none {
   text-decoration: none;
+}
+
+a {
   color: inherit;
   font-weight: 300;
 }

@@ -1,12 +1,13 @@
 import { ChevronRight, Code, Cpu, Layers } from '@tamagui/feather-icons'
 import Link from 'next/link'
-import { memo, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import { H3, Paragraph, Theme, XStack, YStack, YStackProps } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'
 import { useHeroHovered } from './heroState'
 import { IconStack } from './IconStack'
+import { useTintSectionIndex } from './TintSection'
 import { ThemeTint, useTint } from './useTint'
 
 const TitleLink = ({ href, children, ...props }: any) => {
@@ -56,7 +57,19 @@ export const HeroBelow = memo(() => {
 
 const Glow = ({ top }: { top: number }) => {
   const { tint } = useTint()
-  const isHeroBelow = tint === 'blue' || tint === 'green' || tint === 'purple'
+  const isHeroBelowColor = tint === 'blue' || tint === 'green' || tint === 'purple'
+  const [index, setIndex] = useState(0)
+  const isAtTop = index <= 1
+  const isOnHeroBelow = isAtTop && isHeroBelowColor
+  const [scrollTop, setScrollTop] = useState(0)
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return
+    const next = document.documentElement?.scrollTop ?? 0
+    setScrollTop(next + 100)
+  }, [index])
+
+  useTintSectionIndex(setIndex)
 
   return (
     <YStack
@@ -64,17 +77,16 @@ const Glow = ({ top }: { top: number }) => {
       t={0}
       l={0}
       pe="none"
-      animation={isHeroBelow ? 'quick' : 'lazy'}
+      animation="lazy"
       key={0}
       zi={-1}
-      x={tint === 'green' ? -400 : tint === 'purple' ? 400 : 0}
-      y={
-        isHeroBelow
-          ? top
-          : typeof document !== 'undefined'
-          ? document.documentElement?.scrollTop ?? 0
-          : 0
-      }
+      x={0}
+      y={scrollTop}
+      {...(isOnHeroBelow && {
+        animation: 'quick',
+        x: tint === 'green' ? -400 : tint === 'purple' ? 400 : 0,
+        y: top - 70,
+      })}
     >
       <YStack
         overflow="hidden"
@@ -85,7 +97,7 @@ const Glow = ({ top }: { top: number }) => {
         o={0.5}
         fullscreen
         left="calc(50vw - 600px)"
-        scale={isHeroBelow ? 0.5 : 1}
+        scale={isOnHeroBelow ? 0.5 : 1}
         className="hero-blur"
       />
     </YStack>

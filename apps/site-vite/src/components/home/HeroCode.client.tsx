@@ -12,7 +12,9 @@ export function HeroCode({ examples }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const activeExample = examples[activeIndex]
 
-  if (!activeExample) return null
+  if (!activeExample) {
+    return null
+  }
 
   return (
     <>

@@ -1,15 +1,14 @@
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
-import { useIsIntersecting } from '@tamagui/demos'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { toHtml } from 'hast-util-to-html'
 import rangeParser from 'parse-numeric-range'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useState } from 'react'
 import { refractor } from 'refractor'
 import css from 'refractor/lang/css'
 import tsx from 'refractor/lang/tsx'
-import { GetProps, XStack, YStack, styled } from 'tamagui'
+import { XStack, YStack } from 'tamagui'
 
 import { CocentricCircles } from '../components/CocentricCircles'
 import { ContainerLarge } from '../components/Container'
@@ -23,14 +22,14 @@ import { HeroPerformance } from '../components/HeroPerformance'
 import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { InstallInput } from '../components/InstallInput'
-import { setTintIndex, useTint } from '../components/useTint'
+import { Section, SectionTinted, TintSection } from '../components/TintSection'
 import { animationCode, compilationCode } from '../lib/codeExamples'
 import rehypeHighlightLine from '../lib/rehype-highlight-line'
 import rehypeHighlightWord from '../lib/rehype-highlight-word'
 
 export default function Home({ animationCode, compilationExamples }) {
   return (
-    <>
+    <YStack contain="paint" ov="hidden">
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <HeaderFloating />
       <TintSection index={3} p={0}>
@@ -77,91 +76,8 @@ export default function Home({ animationCode, compilationExamples }) {
         <HeroExampleProps />
       </TintSection>
       <Section zi={0}>
-        <YStack pe="none" zi={-1} pos="absolute" o={0.1} top={-615} left={0} right={0} ai="center">
-          <CocentricCircles />
-        </YStack>
         <Community />
       </Section>
-    </>
-  )
-}
-
-const TintSection = ({
-  children,
-  index,
-  themed,
-  ...props
-}: SectionProps & { themed?: boolean; index: number }) => {
-  const ref = useRef<HTMLElement>(null)
-  const { tint } = useTint()
-  const isIntersecting = useIsIntersecting(ref, {
-    threshold: 0.6,
-  })
-
-  useEffect(() => {
-    if (isIntersecting) {
-      setTintIndex(index)
-    }
-  }, [index, isIntersecting])
-
-  return (
-    <Section ref={ref} {...(themed && { theme: tint })} {...props}>
-      {useMemo(() => children, [children])}
-    </Section>
-  )
-}
-
-const Section = styled(YStack, {
-  name: 'Section',
-  pos: 'relative',
-  className: 'content-visibility-auto',
-  py: '$14',
-  zi: 2,
-
-  variants: {
-    below: {
-      true: {
-        zi: 1,
-      },
-    },
-  } as const,
-})
-
-type SectionProps = GetProps<typeof Section>
-
-const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTop, ...props }: any) => {
-  const { tint } = useTint()
-  const childrenMemo = useMemo(() => children, [children])
-
-  return (
-    <YStack
-      zi={2}
-      contain="paint"
-      pos="relative"
-      py="$14"
-      elevation="$2"
-      {...(bubble && {
-        maw: 1400,
-        br: '$6',
-        bw: 1,
-        boc: `$${tint}4`,
-        als: 'center',
-        width: '100%',
-      })}
-      {...props}
-    >
-      <YStack
-        fullscreen
-        className="all ease-in ms1000"
-        zi={-1}
-        bc={gradient ? `$${tint}2` : null}
-        {...(!bubble && {
-          btw: noBorderTop ? 0 : 1,
-          bbw: 1,
-          boc: `$${tint}3`,
-        })}
-      />
-      {childrenMemo}
     </YStack>
   )
 }

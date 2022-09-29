@@ -87,7 +87,7 @@ export function HeroExampleThemes() {
     updateActiveI(flatToSplit(index))
   }
 
-  const width = 180
+  const width = 120
   const scale = 0.6
 
   const scrollToIndex = useEvent((index: number, force = false) => {
@@ -97,7 +97,7 @@ export function HeroExampleThemes() {
     const isForced = force && (isReadyToAnimate || lock === null)
     const shouldPrevent = !isReadyToAnimate && !isForced
     if (!node || shouldPrevent) return
-    const left = (width + 30) * index + width / 2 + 30
+    const left = width * index + width / 2
     if (node.scrollLeft === left) return
     node.scrollTo({ left, top: 0, behavior: 'smooth' })
   })

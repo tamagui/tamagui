@@ -1,4 +1,5 @@
 import { ArrowRight } from '@tamagui/feather-icons'
+import Link from 'next/link'
 import NextLink from 'next/link'
 import { memo } from 'react'
 import {
@@ -139,42 +140,46 @@ const HeroTop = memo(() => {
             >
               Amazing UI tooling for React Native
               <br />
-              <Tag color="$green10" onHoverIn={() => setHovered(0)} active={hovered === 0}>
-                styles
-              </Tag>
+              <Link href="/" passHref>
+                <Tag
+                  tag="a"
+                  theme="green"
+                  bc="$green5"
+                  onHoverIn={() => setHovered(0)}
+                  active={hovered === 0}
+                >
+                  styles
+                </Tag>
+              </Link>
               {spaceEl}
-              <Tag color="$blue10" onHoverIn={() => setHovered(1)} active={hovered === 1}>
-                Components
-              </Tag>
+              <Link href="/" passHref>
+                <Tag
+                  tag="a"
+                  theme="blue"
+                  bc="$blue5"
+                  onHoverIn={() => setHovered(1)}
+                  active={hovered === 1}
+                >
+                  Components
+                </Tag>
+              </Link>
               {spaceEl}
-              <Tag color="$purple10" onHoverIn={() => setHovered(2)} active={hovered === 2}>
-                compiler
-              </Tag>
+              <Link href="/" passHref>
+                <Tag
+                  tag="a"
+                  theme="purple"
+                  bc="$purple5"
+                  onHoverIn={() => setHovered(2)}
+                  active={hovered === 2}
+                >
+                  compiler
+                </Tag>
+              </Link>
             </Paragraph>
           </YStack>
         </YStack>
 
         <XStack ai="center" jc="center" space="$4">
-          <NextLink prefetch={false} href="/docs/intro/introduction" passHref>
-            <Button
-              accessibilityLabel="Get started (docs)"
-              fontFamily="$silkscreen"
-              iconAfter={ArrowRight}
-              tag="a"
-              size="$6"
-              borderRadius={1000}
-              fontWeight="800"
-              bordered
-              bw={2}
-              // @ts-ignore
-              tabIndex={0}
-            >
-              <ButtonText fontFamily="$silkscreen" size="$7">
-                Start
-              </ButtonText>
-            </Button>
-          </NextLink>
-
           <NextLink href="https://github.com/tamagui/tamagui" passHref>
             <YStack p="$2" opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
               <VisuallyHidden>
@@ -184,11 +189,30 @@ const HeroTop = memo(() => {
             </YStack>
           </NextLink>
 
+          <NextLink prefetch={false} href="/docs/intro/introduction" passHref>
+            <Button
+              accessibilityLabel="Get started (docs)"
+              fontFamily="$silkscreen"
+              tag="a"
+              size="$5"
+              borderRadius={1000}
+              fontWeight="800"
+              bordered
+              bw={2}
+              mx="$2"
+              // @ts-ignore
+              tabIndex={0}
+            >
+              <ButtonText fontFamily="$silkscreen" size="$7">
+                Docs
+              </ButtonText>
+            </Button>
+          </NextLink>
+
           <NextLink href="https://discord.gg/4qh6tdcVDa" passHref>
             <YStack
               p="$2"
               ml="$-2"
-              $sm={{ height: 0, width: 0, overflow: 'hidden', mx: -18 }}
               opacity={0.65}
               hoverStyle={{ opacity: 1 }}
               tag="a"
@@ -209,19 +233,22 @@ const HeroTop = memo(() => {
 })
 
 const Tag = styled(Text, {
-  className: 'hero-tag',
+  className: 'hero-tag text-decoration-none',
   fontFamily: 'inherit',
   fontSize: 'inherit',
   cursor: 'default',
+  color: '$color10',
+  backgroundColor: '$color5',
 
   hoverStyle: {
     color: '$color',
+    backgroundColor: '$color5',
   },
 
   variants: {
     active: {
       true: {
-        color: '$color',
+        color: '$color10',
       },
     },
   },
