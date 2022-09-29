@@ -5,6 +5,8 @@ import { GetProps, Separator, YStack, styled } from 'tamagui'
 
 import { setTintIndex, useTint } from './useTint'
 
+const curIndexStr: number[] = []
+
 export const TintSection = ({
   children,
   index,
@@ -13,10 +15,14 @@ export const TintSection = ({
 }: SectionProps & { themed?: boolean; index: number }) => {
   const top = useRef<HTMLElement>(null)
   const bottom = useRef<HTMLElement>(null)
+  const mid = useRef<HTMLElement>(null)
   const { tint } = useTint()
-  const isIntersecting = useIsIntersecting([top, bottom], {
-    threshold: 0.6,
-  })
+  const isIntersecting = useIsIntersecting(
+    useMemo(() => [top, bottom, mid], []),
+    {
+      threshold: 0.6,
+    }
+  )
   const [windowHeight, setWindowHeight] = useState(0)
 
   // ssr
@@ -26,32 +32,32 @@ export const TintSection = ({
   }, [next])
 
   useEffect(() => {
+    curIndexStr[index] ??= 0
+
     if (isIntersecting) {
-      setTintIndex(index)
-      listeners.forEach((cb) => cb(index))
+      // top section page defaults to middle color:
+      setTintIndex(index === 0 ? 3 : 0)
+      curIndexStr[index]++
+    } else {
+      curIndexStr[index] = Math.max(0, curIndexStr[index] - 1)
     }
+
+    let topIndex = -1
+    let topStr = -1
+    curIndexStr.forEach((str, index) => {
+      if (str > topStr) {
+        topIndex = index
+        topStr = str
+      }
+    })
+    listeners.forEach((cb) => cb(topIndex))
   }, [index, isIntersecting])
 
   return (
     <YStack pos="relative">
-      <Separator
-        ref={top}
-        pos="absolute"
-        t={-windowHeight * 0.33}
-        l={0}
-        r={0}
-        o={0}
-        // boc="red"
-      />
-      <Separator
-        ref={bottom}
-        pos="absolute"
-        b={-windowHeight * 0.33}
-        l={0}
-        r={0}
-        o={0}
-        // boc="blue"
-      />
+      <Separator ref={top} pos="absolute" t={-windowHeight * 0.33} l={0} r={0} o={0} />
+      <Separator ref={mid} pos="absolute" t="50%" l={0} r={0} o={0} />
+      <Separator ref={bottom} pos="absolute" b={-windowHeight * 0.33} l={0} r={0} o={0} />
       <Section {...(themed && { theme: tint })} {...props}>
         {useMemo(() => children, [children])}
       </Section>
@@ -96,7 +102,7 @@ export const SectionTinted = ({
   noBorderTop,
   ...props
 }: any) => {
-  const { tint } = useTint()
+  const { tint, tintIndex } = useTint()
   const childrenMemo = useMemo(() => children, [children])
 
   return (

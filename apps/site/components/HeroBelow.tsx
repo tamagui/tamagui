@@ -1,7 +1,7 @@
 import { ChevronRight, Code, Cpu, Layers } from '@tamagui/feather-icons'
 import Link from 'next/link'
-import { memo, useEffect, useRef, useState } from 'react'
-import { H3, Paragraph, Theme, XStack, YStack, YStackProps } from 'tamagui'
+import { memo, useEffect, useState } from 'react'
+import { H3, Paragraph, XStack, YStack, YStackProps } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'

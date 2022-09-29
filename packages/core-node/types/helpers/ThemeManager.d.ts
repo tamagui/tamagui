@@ -26,7 +26,7 @@ export declare class ThemeManager {
     get didChangeTheme(): boolean | null;
     get parentName(): string | null;
     get fullName(): string;
-    getValue(key: string): import("..").Variable<import("..").VariableValue> | undefined;
+    getValue(key: string): import("..").Variable<any> | undefined;
     isTracking(uuid: Object): boolean;
     update({ name, theme, className }?: SetActiveThemeProps, force?: boolean, notify?: boolean): boolean;
     getNextTheme(props?: GetNextThemeProps, debug?: any): {

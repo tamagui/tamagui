@@ -136,7 +136,7 @@ export declare type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, Ge
 export declare type ThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']];
 export declare type ThemeKeys = keyof ThemeDefinition;
 export declare type ThemeParsed = {
-    [Key in ThemeKeys]: ThemeDefinition[Key];
+    [key in ThemeKeys]: Variable<any>;
 };
 export declare type Tokens = TamaguiConfig['tokens'];
 export declare type Shorthands = TamaguiConfig['shorthands'];

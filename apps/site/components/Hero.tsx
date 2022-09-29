@@ -1,6 +1,4 @@
-import { ArrowRight } from '@tamagui/feather-icons'
-import Link from 'next/link'
-import NextLink from 'next/link'
+import { default as Link, default as NextLink } from 'next/link'
 import { memo } from 'react'
 import {
   Button,
@@ -14,8 +12,8 @@ import {
   VisuallyHidden,
   XStack,
   YStack,
+  getTokens,
   styled,
-  useTheme,
 } from 'tamagui'
 
 import { ContainerLarge } from './Container'
@@ -27,6 +25,7 @@ import { useTint } from './useTint'
 
 export function Hero() {
   const { tint } = useTint()
+
   return (
     <Theme name={tint}>
       <YStack o={0.5} zi={-1} pos="absolute" t={0} l={0} r={0} h={2000} className="hero-blur" />

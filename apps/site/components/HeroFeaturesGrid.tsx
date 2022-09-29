@@ -1,8 +1,6 @@
-import React from 'react'
 import { EnsureFlexed, Grid, H4, Paragraph, YStack } from 'tamagui'
 
 import { ContainerLarge } from './Container'
-import { HomeH2, HomeH3 } from './HomeH2'
 
 export function FeaturesGrid() {
   return (
@@ -47,7 +45,7 @@ export function FeaturesGrid() {
               </H4>
               <Paragraph theme="alt2">
                 <EnsureFlexed />
-                Multi-level debug pragrma and props, compile-time JSX props for quick
+                Multi-level debug pragma and props, compile-time JSX props for quick
                 file:line:component jump.
               </Paragraph>
             </YStack>
