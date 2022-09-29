@@ -21,7 +21,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useLayoutEffect,
 } from 'react'
 import { Text, View, ViewStyle } from 'react-native'
 
@@ -253,7 +252,14 @@ export function createComponent<
 
     // animations
     const useAnimations = tamaguiConfig?.animations?.useAnimations as UseAnimationHook | undefined
-    const isAnimated = !!(useAnimations && props.animation)
+
+    const nextIsAnimated = !!(useAnimations && props.animation)
+    // conditional but if ever true stays true
+    const isAnimated = nextIsAnimated || state.hasAnimation
+    if (nextIsAnimated && !state.hasAnimation) {
+      setStateShallow({ hasAnimation: true })
+    }
+
     const animationFeatureStylesIn = props.animation
       ? { ...defaultNativeStyle, ...splitStylesStyle }
       : null
@@ -264,7 +270,7 @@ export function createComponent<
     // because they need to sync update on first render. it's pretty rare too going to/from no animation => animation
     // so requiring key change on animation change is least-bad option.
     // plus, React use() may let us get away with conditional hooks soon :)
-    if (!isRSC && isAnimated) {
+    if (!isRSC && isAnimated && useAnimations) {
       const animationState = useAnimations(propsWithAnimation, {
         state,
         pseudos,

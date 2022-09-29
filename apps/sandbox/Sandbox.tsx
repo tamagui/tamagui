@@ -57,6 +57,7 @@ export const Sandbox = () => {
   //     val.value = withSpring(100)
   //   }, 1000)
   // }, [])
+  const [x, setX] = useState(0)
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
@@ -105,7 +106,15 @@ export const Sandbox = () => {
 
         {/* <Button pressStyle={{ backgroundColor: 'blue' }}>hi</Button> */}
 
-        <GroupDemo />
+        {/* <GroupDemo /> */}
+
+        <Button onPress={() => setX((x) => x + 1)}>ok</Button>
+
+        {x % 2 === 0 ? (
+          <Square animation="bouncy" bc="blue" size={200} />
+        ) : (
+          <Square bc="red" size={100} />
+        )}
 
         {/* <Animated.View style={style} /> */}
         {/* <AlertDialogDemo /> */}
