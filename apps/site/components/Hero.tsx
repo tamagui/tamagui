@@ -140,7 +140,7 @@ const HeroTop = memo(() => {
             >
               Amazing UI tooling for React Native
               <br />
-              <Link href="/" passHref>
+              <Link href="/docs/core/configuration" passHref>
                 <Tag
                   tag="a"
                   theme="green"
@@ -152,7 +152,7 @@ const HeroTop = memo(() => {
                 </Tag>
               </Link>
               {spaceEl}
-              <Link href="/" passHref>
+              <Link href="/docs/components/stacks" passHref>
                 <Tag
                   tag="a"
                   theme="blue"
@@ -164,7 +164,7 @@ const HeroTop = memo(() => {
                 </Tag>
               </Link>
               {spaceEl}
-              <Link href="/" passHref>
+              <Link href="/docs/intro/compiler" passHref>
                 <Tag
                   tag="a"
                   theme="purple"
