@@ -50,6 +50,28 @@ Given your theme defines a size `6`, the listItem will adjust all of the propert
 
 You can pass icons as either elements or components. If passing components, Tamagui will automatically pass the `size` and `color` prop to them based on your theme.
 
+### Customization
+
+ListItem only supports a limited subset of text props directly, and doesn't accept `hoverStyle` text props. If you need more control, you can do a simple customization:
+
+```tsx
+import { forwardRef } from 'React'
+import { styled, themeable, ListItemFrame, ListItemText, useListItem, ListItemProps } from 'tamagui'
+
+const CustomListItemFrame = styled(ButtonFrame, {
+  // ...
+})
+
+const CustomListItemText = styled(ButtonText, {
+  // ...
+})
+
+export const ListItem = forwardRef<TamaguiElement, ListItemProps>(themeable((propsIn, ref) => {
+  const { props } = useListItem(propsIn, { Text: CustomListItemText })
+  return <CustomListItemFrame {...props} ref={ref} />
+})
+```
+
 ### ListItem props
 
 ListItems extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
@@ -148,37 +170,3 @@ ListItems extend Stack views inheriting all the [Tamagui standard props](/docs/i
     },
   ]}
 />
-
-### Advanced ListItem Customization
-
-Tamagui `<ListItem />` is a React functional component that renders multiple styled() components, not a single Tamagui styled() element itself. This means you can't wrap it with `styled(ListItem)` to change variants.
-
-[We'd like to support this feature eventually](https://github.com/tamagui/tamagui/issues/190), but until then we've exported a `useListItem` hook, alongside `ListItemFrame`, `ListItemText`, `ListItemTitle`, `ListItemSubTitle`, and `listItemStaticConfig` that make it simple to create your own ListItem.
-
-Your custom `ListItem.tsx` in your design system would look something like this:
-
-```tsx
-import { forwardRef } from 'React'
-import { styled, themeable, ListItemFrame, ListItemText, useListItem, listItemStaticConfig } from 'tamagui'
-
-const CustomListItemFrame = styled(ListItemFrame, {
-  // ... customize your listItem frame base styles
-
-  variants: {
-    // ... customize your listItem frame variants
-  } as const
-})
-
-const ListItemComponent = forwardRef<TamaguiElement, ListItemProps>(function ListItem(props, ref) {
-  const { props: listItemProps } = useListItem(
-    props,
-    // optionally customize the inner Text, Subtitle, Title
-    { Text: ListItemText }
-  )
-  return <CustomListItemFrame {...listItemProps} ref={ref} />
-})
-
-// Wrapping in extractable() lets the compiler run build-time optimizations on your custom ListItem
-// Wrapping in themable means `<ListItem theme="" />` properly updates theme before useListItem needs it
-export const ListItem = ListItemFrame.extractable(themeable(ListItemComponent), listItemStaticConfig)
-```

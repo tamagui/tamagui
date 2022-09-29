@@ -52,6 +52,28 @@ You can pass icons as either elements or components. If passing components, Tama
 
 You can [use the source of Button itself](https://github.com/tamagui/tamagui/blob/master/packages/button/src/Button.tsx) to see in more detail what variants you can override, and how we use this pattern internally to create our Button component.
 
+### Customization
+
+Button only supports a limited subset of text props directly, and doesn't accept `hoverStyle` text props. If you need more control, you can do a simple customization:
+
+```tsx
+import { forwardRef } from 'React'
+import { styled, themeable, ButtonFrame, ButtonText, useButton, ButtonProps } from 'tamagui'
+
+const CustomButtonFrame = styled(ButtonFrame, {
+  // ...
+})
+
+const CustomButtonText = styled(ButtonText, {
+  // ...
+})
+
+export const Button = forwardRef<TamaguiElement, ButtonProps>(themeable((propsIn, ref) => {
+  const { props } = useButton(propsIn, { Text: CustomButtonText })
+  return <CustomButtonFrame {...props} ref={ref} />
+})
+```
+
 ### Button props
 
 Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
@@ -144,37 +166,3 @@ Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/int
     },
   ]}
 />
-
-### Advanced Button Customization
-
-Tamagui `<Button />` is a React functional component that renders multiple styled() components, not a single Tamagui styled() element itself. This means you can't wrap it with `styled(Button)` to change variants.
-
-[We'd like to support this feature eventually](https://github.com/tamagui/tamagui/issues/190), but until then we've exported a `useButton` hook, alongside `ButtonFrame`, `ButtonText`, and `buttonStaticConfig` that make it simple to create your own Button.
-
-Your custom `Button.tsx` in your design system would look something like this:
-
-```tsx
-import { forwardRef } from 'React'
-import { styled, themeable, ButtonFrame, ButtonText, useButton, buttonStaticConfig } from 'tamagui'
-
-const CustomButtonFrame = styled(ButtonFrame, {
-  // ... customize your button frame base styles
-
-  variants: {
-    // ... customize your button frame variants
-  } as const
-})
-
-const ButtonComponent = forwardRef<TamaguiElement, ButtonProps>(function Button(props, ref) {
-  const { props: buttonProps } = useButton(
-    props,
-    // optionally customize the inner Text
-    { Text: ButtonText }
-  )
-  return <CustomButtonFrame {...buttonProps} ref={ref} />
-})
-
-// Wrapping in extractable() lets the compiler run build-time optimizations on your custom Button
-// Wrapping in themable means `<Button theme="" />` properly updates theme before useButton needs it
-export const Button = ButtonFrame.extractable(themeable(ButtonComponent), buttonStaticConfig)
-```
