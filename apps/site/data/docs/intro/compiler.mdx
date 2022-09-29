@@ -1,10 +1,12 @@
 ---
-title: Write once, feels native
-description: An optimizing compiler for React.
+title: React, Faster
+description: Tamagui's optimizing compiler for React nets 30-to-1,000% performance, in nearly ½ the code.
 ---
 
 <IntroParagraph>
-  If developing a web + mobile app today and using React Native, you've made this trade-off:
+  If you are developing a web and mobile app using React Native (or really any platform) today,
+  you've already made a decision. This decision can be thought of as a sort of **frontend
+  development trilemma**, illustrated as a choose-two-of-three:
 </IntroParagraph>
 
 <YStack maw={650} als="center">
@@ -12,7 +14,23 @@ description: An optimizing compiler for React.
   time).](/trilemma.svg)
 </YStack>
 
-The three intersecting three parts are your choices of can be framed as:
+The center of this trilemma could be titled, "Write once, feels native." As of today it's nearly impossible (and at the limit perhaps not even desirable), but not for good reason. This document isn't arguing every reason why, but will focus on React Native, and how we can realistically gain 20-50% more code share without sacrificing any UX compared to writing separate apps targeted to each platform.
+
+The Tamagui Compiler does just this by optimizing apps in four different ways. To skip to the details, [head to the next section](#how-tamagui-helps).
+
+### Why Universal
+
+React Native enables quite a bit more code-sharing than ever before while still rendering to native primitives. But it recommends writing things twice generally for the best UX - as is made very clear in the `<title>` of the homepage itself: "[learn once, write anywhere](https://reactnative.dev/)" as opposed to "write once, runs everywhere."
+
+This is a smart strategy, and it can pay off in more native-feeling and performing apps.
+
+Still, the reality is that many companies large and small make _rational_ decisions to share code to some degree, up to and including nearly all of the visual code besides maybe a few high level views. In React, this is generally done using the excellent [React Native Web](https://necolas.github.io/react-native-web/).
+
+The reason it simple - shipping, and iterating, faster. There's a ton of reasons why this may be crucial - you're pre-product-market fit, or have an app with a large surface area. Or you simply are low on budget, time or both. Even bigger companies choose this strategy. Twitter, or Tinder are examples of this. It comes down to whether they can afford to sacrifice SEO, initial load times, and can afford to ship less complex interfaces.
+
+The reasons for wanting to write less code are fairly inherent. It's just the outcome we often don't like: the sacrifice of peformance and native-specific UI elements.
+
+Those three intersecting parts of the diagram at the top could be framed as a choice between "Universal", "Lean", or "Big-Budget" app-building.
 
 <Table heading="Choose your path:">
   <TableCol>
@@ -53,25 +71,30 @@ The three intersecting three parts are your choices of can be framed as:
   </TableCol>
 </Table>
 
-The middle of the Venn diagram could be titled "write once, feels native" - aspirationally.
+At best, without sacrificing performance, a React Native app today can share much of its state and utilities (like hooks), as well as _some amount of visual components_. But it's true that the more code you share, the lower the performance your app will have, sometimes in incredible critical areas like media queries, or animations.
 
-Many teams choose shipping fast over native feel, for a diverse set of rational reasons. Tamagui looks at it as a two sided problem. The first half, components that adapt to native controls, is something that React Native developers have been chipping away at over time.
+This is more true on the web, where the CSS-in-JS approach of React Native Web leads to very large bundle-sizes and hugely reduced performance in critical areas like responsive styles (mostly due to the `StyleSheet` API not supporting that, and other web-optimized features).
 
-But a huge blocker is just that React Native apps .
+This means your media queries run, your interactive styles like hover or click effects, and any and all themes, animations, or dynamic styles end up causing expensive re-renders (oftentimes the entire tree) in sensitive areas.
 
-The Tamagui compiler does build-time optimization, including:
+### How Tamagui Helps
 
-- Static `styled` factory extracts to atomic CSS.
-- Inline styles extracted with partial evaluation and inlining.
-- Tree-flattening by turning `styled` components into `div` or `View` when possible.
-- Logically parses hooks for `useMedia` and `useTheme` into media queries and CSS variables.
+The Tamagui compiler makes writing Universal Apps much faster - especially on the web - through its optimizing compiler. It reduces bundle size, improves runtime performance, and outputs code that targets native primitives instead of running in JS (on the web, that's CSS media queries, CSS variables, and CSS pseudo styles).
 
-It turns this:
+It optimizes:
+
+- Any usage of the `styled` factory function into atomic CSS.
+- Most inline styles using both `partial evaluation` and `hoisting`.
+- Tree depth, by turning your custom components into `div` or `View` when possible.
+- The included hooks `useMedia` and `useTheme`, turning even logical conditionals into static media queries or CSS variables.
+
+It can turn something like this:
 
 ##### Input
 
 ```tsx
 import { Text, YStack } from '@tamagui/core'
+
 import { brandColor } from './constants'
 
 const App = (props) => (
@@ -96,7 +119,7 @@ const App = (props) => (
 )
 ```
 
-Intos something like this:
+Into this:
 
 ```tsx
 import { YStack, concatClassName } from 'tamagui'
@@ -118,9 +141,11 @@ const _cn2 = ' _pb-z3qxl0 _pl-14km6ah _pr-1qpq1qc _pt-1medp4i'
 const _cn = ' _bc-abc123 _d-6koalj _fd-eqz5dr _fls-1q142lx '
 ```
 
-Along with CSS (which you can see, alongside more examples see [on the homepage](/)).
+Along with a CSS (of which you can see alongside many more examples see [on the homepage](/)).
 
-It uses tree flattening (turning the `Text` into `p`) which helps render performance above pure gains from CSS compilation. In a small benchmark just rendering a single view with logically changing "variants," you'll see large increases:
+Notice that the compiler turned the `Text` into a `p`, and the `YStack` into a `div`. This is known as tree-flattening, and for both web and native it yields very nice improvements to render performance.
+
+This is a typical performance improvement, where much of the gains come from flattening:
 
 <YStack my="$2">
   <BenchmarkChartWeb />
@@ -128,19 +153,21 @@ It uses tree flattening (turning the `Text` into `p`) which helps render perfor
 
 Across a few apps, we've seen 30-50% of components typically flatten, with a higher percent achievable just by being aware of how the flattening de-optimizes (adding the `// debug` comment to the top of the file will show a fuller output).
 
-Meanwhile, on Native, because we can't optimize to anything beyond vanilla React Native code, the gains are less. Still, the results are impressive given you are now getting a huge amount of features and nice syntax that normally would eat up a lot of performance, and the net result is basically the same as hand-optimized React Native:
+Meanwhile, on Native, because we can't optimize to anything beyond vanilla React Native code, the gains are less. Still, the results are impressive given you now have performance within 5% of hand-optimizing React Native code, except you get a whole suite of features for free.
 
 <YStack my="$2">
   <BenchmarkChartNative />
 </YStack>
 
-You can see [the full Benchmarks with explanations here](/docs/intro/benchmarks).
+You can see [more Benchmarks with explanations here](/docs/intro/benchmarks).
 
-More detailed docs on how the compiler, optimizer and partial evaluation works will come in a follow-up article.
+The compiler itself deserves more detail, which we'll expand on in the blog. For now, this serves as a decent introduction.
 
-Compilers can dramatically improve code sharing without sacrificing performance, and improve adaptation to platforms.
+Compilers can dramatically improve code sharing without the typical sacrifice of performance. They don't solve every problem of universal apps, but by making responsive styling, themes and interactive styles all perform at native levels, they unlock sharing a much larger percentage of the "middle to leaf" components in apps.
 
-<Table>
+It gives us a new choice:
+
+<Table my="$8">
   <TableCol>
     <TableCell head></TableCell>
     <TableCell>4</TableCell>
@@ -166,7 +193,5 @@ Compilers can dramatically improve code sharing without sacrificing performance,
     <TableCell>✅</TableCell>
   </TableCol>
 </Table>
-
----
 
 Give Tamagui a try with `npm create tamagui-app`.
