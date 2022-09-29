@@ -15,6 +15,7 @@ import {
   XStack,
   YStack,
   styled,
+  useTheme,
 } from 'tamagui'
 
 import { ContainerLarge } from './Container'
@@ -144,7 +145,7 @@ const HeroTop = memo(() => {
                 <Tag
                   tag="a"
                   theme="green"
-                  bc="$green5"
+                  bc="$color5"
                   onHoverIn={() => setHovered(0)}
                   active={hovered === 0}
                 >
@@ -156,7 +157,7 @@ const HeroTop = memo(() => {
                 <Tag
                   tag="a"
                   theme="blue"
-                  bc="$blue5"
+                  bc="$color5"
                   onHoverIn={() => setHovered(1)}
                   active={hovered === 1}
                 >
@@ -168,7 +169,7 @@ const HeroTop = memo(() => {
                 <Tag
                   tag="a"
                   theme="purple"
-                  bc="$purple5"
+                  bc="$color5"
                   onHoverIn={() => setHovered(2)}
                   active={hovered === 2}
                 >

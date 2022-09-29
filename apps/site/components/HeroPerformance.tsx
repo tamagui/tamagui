@@ -94,7 +94,7 @@ const CompilerLink = () => {
   return (
     <Link href="/docs/intro/compiler" passHref>
       <Button accessibilityLabel="Compiler" fontFamily="$silkscreen" theme={tint} tag="a">
-        About the Compiler &raquo;
+        About &raquo;
       </Button>
     </Link>
   )

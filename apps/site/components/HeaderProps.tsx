@@ -3,4 +3,5 @@ export type HeaderProps = {
   disableNew?: boolean
   showExtra?: boolean
   forceShowAllLinks?: boolean
+  minimal?: boolean
 }

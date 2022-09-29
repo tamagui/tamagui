@@ -13,7 +13,7 @@ import { ThemeTint, useTint } from './useTint'
 const TitleLink = ({ href, children, ...props }: any) => {
   return (
     <Link passHref href={href}>
-      <H3 cursor="pointer" tag="a" color="$color" size="$6" my="$5">
+      <H3 cursor="pointer" tag="a" color="$color" size="$6" my="$3">
         <CodeInline
           cursor="pointer"
           fontFamily="$silkscreen"

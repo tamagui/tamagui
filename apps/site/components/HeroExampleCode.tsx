@@ -15,6 +15,12 @@ export function HeroExampleCode({ examples }) {
   const { tint } = useTint()
   const [activeIndex, setActiveIndex] = useState(0)
   const activeExample = examples[activeIndex]
+  const subtitles = [
+    'atomic CSS extraction',
+    'partial evaluation',
+    'tree flattening',
+    'code elimination',
+  ]
 
   return (
     <>
@@ -23,8 +29,9 @@ export function HeroExampleCode({ examples }) {
           <YStack ai="center" space="$3">
             <HomeH2 size="$10">Less syntax, better performance</HomeH2>
             {/* <Link passHref href="/blog/how-tamagui-optimizes"> */}
-            <HomeH3 tag="a" ai="center" jc="center">
-              A complete design system that optimizes away.
+            <HomeH3 maw={500} tag="a" ai="center" jc="center">
+              A complete design system that optimizes away with{' '}
+              <strong>{subtitles[activeIndex]}</strong>.
             </HomeH3>
             {/* </Link> */}
           </YStack>
@@ -57,8 +64,8 @@ export function HeroExampleCode({ examples }) {
               space="$4"
             >
               <CodeExamples {...activeExample.input} />
-              <Paragraph size="$4" minHeight={50} ta="center" px="$7">
-                <CodeInline size="$4">Input</CodeInline>
+              <Paragraph size="$5" minHeight={50} ta="center" px="$7">
+                <CodeInline size="$5">Input</CodeInline>
                 <span style={{ opacity: 0.65 }}>
                   &nbsp;－&nbsp;{activeExample.input.description}
                 </span>
@@ -90,8 +97,8 @@ export function HeroExampleCode({ examples }) {
               space="$4"
             >
               <CodeExamples {...activeExample.output} />
-              <Paragraph size="$4" minHeight={50} ta="center" px="$6">
-                <CodeInline size="$4">Output</CodeInline>
+              <Paragraph size="$5" minHeight={50} ta="center" px="$6">
+                <CodeInline size="$5">Output</CodeInline>
                 <span style={{ opacity: 0.65 }}>
                   &nbsp;－&nbsp;{activeExample.output.description}
                 </span>

@@ -69,7 +69,7 @@ export const positions = [
 
 export const compilationCode = [
   {
-    name: 'Shorthands',
+    name: 'Styles',
     input: {
       description:
         'Fully typed shorthands you can set up yourself work with all the features of Tamagui.',

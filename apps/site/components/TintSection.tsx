@@ -1,5 +1,5 @@
 import { useIsIntersecting } from '@tamagui/demos'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useWindowDimensions } from 'react-native'
 import { GetProps, Separator, YStack, styled } from 'tamagui'
 
@@ -17,7 +17,13 @@ export const TintSection = ({
   const isIntersecting = useIsIntersecting([top, bottom], {
     threshold: 0.6,
   })
-  const windowHeight = useWindowDimensions().height
+  const [windowHeight, setWindowHeight] = useState(0)
+
+  // ssr
+  const next = useWindowDimensions().height
+  useEffect(() => {
+    setWindowHeight(next)
+  }, [next])
 
   useEffect(() => {
     if (isIntersecting) {
