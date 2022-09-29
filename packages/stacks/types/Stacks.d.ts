@@ -63,7 +63,7 @@ export declare const ZStack: import("@tamagui/core").TamaguiComponent<(Omit<impo
     [x: string]: undefined;
 })>;
 export declare const getSizedElevation: (val: SizeTokens | number | boolean, { theme, tokens }: VariantSpreadExtras<any>) => {
-    shadowColor: import("@tamagui/core").Variable<import("@tamagui/core").VariableValue> | undefined;
+    shadowColor: import("@tamagui/core").Variable<any> | undefined;
     shadowRadius: number;
     shadowOffset: {
         height: number;
