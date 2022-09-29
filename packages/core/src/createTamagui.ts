@@ -213,8 +213,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
   }
 
-  // @ts-expect-error
-  return config
+  return config as any
 }
 
 const parseTokens = (tokens: any) => {

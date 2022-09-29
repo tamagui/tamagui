@@ -1,4 +1,4 @@
-import { ConfigListener, TamaguiInternalConfig, ThemeParsed } from './types'
+import { ConfigListener, TamaguiInternalConfig, ThemeParsed, Tokens } from './types'
 
 let conf: TamaguiInternalConfig | null
 
@@ -20,7 +20,11 @@ export const setConfigFont = (name: string, font: any, fontParsed: any) => {
 
 export const getHasConfigured = () => !!conf
 export const getConfig = () => conf!
-export const getTokens = () => conf!.tokensParsed
+export const getTokens = (): Tokens => conf!.tokensParsed
+/**
+ * Note: this is the same as `getTokens`
+ */
+export const useTokens = getTokens
 export const getThemes = () => conf!.themes
 
 export const configListeners = new Set<ConfigListener>()

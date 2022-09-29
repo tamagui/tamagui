@@ -10,16 +10,14 @@ import { isWeb } from './constants/platform'
 
 const IS_VAR = '__isVar__'
 
-export type VariableValue = string | number
-
-type VariableIn<A extends VariableValue = VariableValue> = {
+type VariableIn<A = any> = {
   val: A
   name: string
   key: string
   isFloating?: boolean
 }
 
-export type Variable<A extends VariableValue = VariableValue> = VariableIn<A> & {
+export type Variable<A = any> = VariableIn<A> & {
   [IS_VAR]?: true
   variable?: string
 }
