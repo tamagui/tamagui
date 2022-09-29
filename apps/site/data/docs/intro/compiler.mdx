@@ -1,22 +1,28 @@
 ---
 title: React, Faster
-description: Tamagui's optimizing compiler for React nets 30-to-1,000% performance, in nearly ½ the code.
+description: About ½ the code, up to twice the performance.
 ---
 
 <IntroParagraph>
-  If you are developing a web and mobile app using React Native (or really any platform) today,
-  you've already made a decision. This decision can be thought of as a sort of **frontend
-  development trilemma**, illustrated as a choose-two-of-three:
+  If you are developing a cross-platform app, you've made an implicit decision. This decision can be
+  thought of as a **frontend development trilemma**, illustrated as a choose-two-of-three:
 </IntroParagraph>
 
-<YStack maw={650} als="center">
-  ![The Frontend Trilemma: Choose two of DX, UX, and multi-platform (or run out of
-  time).](/trilemma.svg)
+<YStack w="100%" mih={500} my="$4" als="center" $gtMd={{ scale: 1.5, my: 100 }}>
+  <Image
+    title="The Frontend Trilemma: Choose two of DX, UX, and multi-platform"
+    src="/trilemma.svg"
+    size="hero"
+    height={380}
+    width={380}
+  />
 </YStack>
 
-The center of this trilemma could be titled, "Write once, feels native." As of today it's nearly impossible (and at the limit perhaps not even desirable), but not for good reason. This document isn't arguing every reason why, but will focus on React Native, and how we can realistically gain 20-50% more code share without sacrificing any UX compared to writing separate apps targeted to each platform.
+The center would be something like "write once, feels native." As of today it's basically impossible, and at the limit maybe not even desirable.
 
-The Tamagui Compiler does just this by optimizing apps in four different ways. To skip to the details, [head to the next section](#how-tamagui-helps).
+This document doesn't argue every reason for or against that at the limit, but instead focuses how we can realistically gain 20-50% more code share on React Native without sacrificing (and oftentimes improving) UX compared to writing separate apps targeted to each platform.
+
+The Tamagui Compiler does this by optimizing apps in four different ways beyond basic CSS extraction, including partial evaluation, static hoisting and tree-flattening. For a bit more on that, you can skip the Why and [go to the next section](#how-tamagui-helps).
 
 ### Why Universal
 
@@ -95,26 +101,28 @@ import { Text, YStack } from '@tamagui/core'
 
 import { brandColor } from './constants'
 
-const App = (props) => (
-  <YStack
-    padding={props.big ? '$5' : '$3'}
-    {...(props.colored && {
-      backgroundColor: brandColor,
-    })}
-  >
-    <Text
-      color="green"
-      $large={{
-        color: 'yellow',
-        $hover: {
-          color: 'green',
-        },
-      }}
+const App = (props) => {
+  return (
+    <YStack
+      padding={props.big ? '$5' : '$3'}
+      {...(props.colored && {
+        backgroundColor: brandColor,
+      })}
     >
-      Lorem ipsum dolor.
-    </Text>
-  </YStack>
-)
+      <Text
+        color="green"
+        $large={{
+          color: 'yellow',
+          $hover: {
+            color: 'green',
+          },
+        }}
+      >
+        Lorem ipsum dolor.
+      </Text>
+    </YStack>
+  )
+}
 ```
 
 Into this:
@@ -139,9 +147,61 @@ const _cn2 = ' _pb-z3qxl0 _pl-14km6ah _pr-1qpq1qc _pt-1medp4i'
 const _cn = ' _bc-abc123 _d-6koalj _fd-eqz5dr _fls-1q142lx '
 ```
 
-Along with a CSS (of which you can see alongside many more examples see [on the homepage](/)).
+Along with a CSS roughy like follows:
 
-Notice that the compiler turned the `Text` into a `p`, and the `YStack` into a `div`. This is known as tree-flattening, and for both web and native it yields very nice improvements to render performance.
+```css
+._d-6koalj {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+._fd-eqz5dr {
+  -ms-flex-direction: column;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+._fs-1q142lx {
+  -ms-flex-negative: 0;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+}
+._pl-11jtx42 {
+  padding-left: var(--space-2);
+}
+._pr-4a8ukp {
+  padding-right: var(--space-2);
+}
+._w-11mp6g5 {
+  width: 550px;
+}
+@media screen and (min-width: 861px) {
+  :root:root ._pl-_gtSm_1hxi05q {
+    padding-left: var(--space-6);
+  }
+}
+@media screen and (min-width: 861px) {
+  :root:root ._pr-_gtSm_poy3ov {
+    padding-right: var(--space-6);
+  }
+}
+._d-1471scf {
+  display: inline;
+}
+._ff-187pbxx {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+._fs-7uzi8p {
+  font-size: var(--fontSize-2);
+}
+```
+
+See ([more code examples on the homepage](/)).
+
+Notice that the compiler turned the `Text` into a `p`, and the `YStack` into a `div` (on native, this would be `Text` and `View`). This is known as tree-flattening, and for both web and native it yields very nice improvements to render performance.
 
 This is a typical performance improvement, where much of the gains come from flattening:
 
@@ -149,7 +209,7 @@ This is a typical performance improvement, where much of the gains come from fla
   <BenchmarkChartWeb />
 </YStack>
 
-Across a few apps, we've seen 30-50% of components typically flatten, with a higher percent achievable just by being aware of how the flattening de-optimizes (adding the `// debug` comment to the top of the file will show a fuller output).
+Across a few apps, we've seen 30-50% of components typically flatten, with a higher percent achievable just by being aware of how the flattening optimizes (adding the `// debug` comment to the top of the file will show a fuller output).
 
 Meanwhile, on Native, because we can't optimize to anything beyond vanilla React Native code, the gains are less. Still, the results are impressive given you now have performance within 5% of hand-optimizing React Native code, except you get a whole suite of features for free.
 
@@ -161,7 +221,7 @@ You can see [more Benchmarks with explanations here](/docs/intro/benchmarks).
 
 The compiler itself deserves more detail, which we'll expand on in the blog. For now, this serves as a decent introduction.
 
-Compilers can dramatically improve code sharing without the typical sacrifice of performance. They don't solve every problem of universal apps, but by making responsive styling, themes and interactive styles all perform at native levels, they unlock sharing a much larger percentage of the "middle to leaf" components in apps.
+Compilers can dramatically improve code sharing without the typical sacrifice of performance. They don't solve every problem of universal apps, but by making responsive styling, themes and interactive styles all perform at native levels, they unlock sharing a much larger percentage of the components located in the middle to bottom of the render tree in apps.
 
 It gives us a new choice:
 

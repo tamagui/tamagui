@@ -1,5 +1,9 @@
 - 1.0
 
+  - kitchen sink in snack
+  - 1.0 blog post
+  - 
+
   - add $hover or just hover as preferred to `hoverStyle`
   - // TODO we should likely account for importance here to match CSS, right??
   - kitchen sink placeholder input color dark

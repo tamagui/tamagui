@@ -193,7 +193,7 @@ export const components = {
 
   IntroParagraph: ({ children, ...props }) => {
     return (
-      <Paragraph tag="span" size="$8" className="paragraph" my="$3" fow="400" {...props}>
+      <Paragraph tag="span" size="$7" className="paragraph" my="$3" fow="400" {...props}>
         {unwrapText(children)}
       </Paragraph>
     )
