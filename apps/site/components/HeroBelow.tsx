@@ -1,6 +1,7 @@
 import { ChevronRight, Code, Cpu, Layers } from '@tamagui/feather-icons'
 import Link from 'next/link'
 import { memo, useEffect, useState } from 'react'
+import { useWindowDimensions } from 'react-native'
 import { H3, Paragraph, XStack, YStack, YStackProps } from 'tamagui'
 
 import { CodeInline } from './Code'
@@ -62,6 +63,8 @@ const Glow = ({ top }: { top: number }) => {
   const isAtTop = index <= 1
   const isOnHeroBelow = isAtTop && isHeroBelowColor
   const [scrollTop, setScrollTop] = useState(0)
+  const windowWidth = useWindowDimensions().width
+  const xs = Math.min(400, windowWidth * 0.25)
 
   useEffect(() => {
     if (typeof document === 'undefined') return
@@ -70,6 +73,8 @@ const Glow = ({ top }: { top: number }) => {
   }, [index])
 
   useTintSectionIndex(setIndex)
+
+  const scale = isOnHeroBelow ? 0.5 : 1
 
   return (
     <YStack
@@ -84,20 +89,19 @@ const Glow = ({ top }: { top: number }) => {
       y={scrollTop}
       {...(isOnHeroBelow && {
         animation: 'quick',
-        x: tint === 'green' ? -400 : tint === 'purple' ? 400 : 0,
+        x: tint === 'green' ? -xs : tint === 'purple' ? xs : 0,
         y: top - 70,
       })}
     >
       <YStack
         overflow="hidden"
         h="100vh"
-        w="100vw"
-        maw={1200}
+        w={1200}
         theme={tint}
         o={0.5}
         fullscreen
         left="calc(50vw - 600px)"
-        scale={isOnHeroBelow ? 0.5 : 1}
+        scale={scale}
         className="hero-blur"
       />
     </YStack>

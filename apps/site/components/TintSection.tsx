@@ -35,8 +35,6 @@ export const TintSection = ({
     curIndexStr[index] ??= 0
 
     if (isIntersecting) {
-      // top section page defaults to middle color:
-      setTintIndex(index === 0 ? 3 : 0)
       curIndexStr[index]++
     } else {
       curIndexStr[index] = Math.max(0, curIndexStr[index] - 1)
@@ -45,12 +43,16 @@ export const TintSection = ({
     let topIndex = -1
     let topStr = -1
     curIndexStr.forEach((str, index) => {
-      if (str > topStr) {
+      if (str >= topStr) {
         topIndex = index
         topStr = str
       }
     })
-    listeners.forEach((cb) => cb(topIndex))
+
+    if (topIndex === index) {
+      setTintIndex(topIndex === 0 ? 3 : topIndex)
+      listeners.forEach((cb) => cb(topIndex))
+    }
   }, [index, isIntersecting])
 
   return (
