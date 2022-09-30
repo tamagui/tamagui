@@ -1,5 +1,6 @@
 - 1.0
 
+  - `display: flex; is not being applied to elements correctly`
   - kitchen sink in snack
   - 1.0 blog post
   - 
