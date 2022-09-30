@@ -94,7 +94,7 @@ const HeroTop = memo(() => {
               size: '$12',
             }}
             $gtLg={{
-              h: 166,
+              h: 155,
               size: '$13',
               maxWidth: 1200,
             }}
@@ -139,12 +139,12 @@ const HeroTop = memo(() => {
               }}
             >
               Amazing UI tooling for React Native
-              <br />
+              <Spacer size="$2" />
               <Link href="/docs/core/configuration" passHref>
                 <Tag
                   tag="a"
-                  theme="green"
-                  bc="$color5"
+                  theme="green_alt2"
+                  bc="$color3"
                   onHoverIn={() => setHovered(0)}
                   active={hovered === 0}
                 >
@@ -155,8 +155,8 @@ const HeroTop = memo(() => {
               <Link href="/docs/components/stacks" passHref>
                 <Tag
                   tag="a"
-                  theme="blue"
-                  bc="$color5"
+                  theme="blue_alt2"
+                  bc="$color3"
                   onHoverIn={() => setHovered(1)}
                   active={hovered === 1}
                 >
@@ -167,8 +167,8 @@ const HeroTop = memo(() => {
               <Link href="/docs/intro/compiler" passHref>
                 <Tag
                   tag="a"
-                  theme="purple"
-                  bc="$color5"
+                  theme="purple_alt2"
+                  bc="$color3"
                   onHoverIn={() => setHovered(2)}
                   active={hovered === 2}
                 >

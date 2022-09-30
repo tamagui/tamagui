@@ -40,7 +40,7 @@
     "lighthouse:prod": "npx lighthouse http://localhost:3333 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:vite:prod": "npx lighthouse http://localhost:8080 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:live": "npx lighthouse https://tamagui.dev --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
-    "site": "yarn watch & cd apps/site && ./scripts/dev.sh & wait",
+    "site": "cd apps/site && ./scripts/dev.sh",
     "site:vite": "cd apps/site-vite && VITE_INSPECT=1 yarn dev",
     "site:vite:prod": "cd apps/site-vite && VITE_INSPECT=1 yarn build:prod && yarn serve",
     "site:vite:debug": "cd apps/site-vite && DEBUG=vite:* VITE_INSPECT=1 yarn dev",

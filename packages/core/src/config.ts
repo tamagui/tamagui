@@ -20,11 +20,14 @@ export const setConfigFont = (name: string, font: any, fontParsed: any) => {
 
 export const getHasConfigured = () => !!conf
 export const getConfig = () => conf!
-export const getTokens = (): Tokens => conf!.tokens
+export const getTokens = (prefixed?: boolean): Tokens =>
+  prefixed ? conf!.tokensParsed : conf!.tokens
+
 /**
  * Note: this is the same as `getTokens`
  */
 export const useTokens = getTokens
+
 export const getThemes = () => conf!.themes
 
 export const configListeners = new Set<ConfigListener>()

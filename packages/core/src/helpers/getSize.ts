@@ -2,7 +2,7 @@ import { getTokens } from '../config'
 import { SizeTokens, SpaceTokens } from '../types'
 
 export const getSize = (size?: SizeTokens | undefined, shift = 0, bounds = [0]) => {
-  return stepTokenUpOrDown(getTokens().size, size, shift, bounds)
+  return stepTokenUpOrDown(getTokens(true).size, size, shift, bounds)
 }
 
 export const stepTokenUpOrDown = (

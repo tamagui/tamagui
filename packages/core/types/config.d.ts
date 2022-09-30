@@ -15,11 +15,11 @@ export declare const getConfig: () => TamaguiInternalConfig<import("./types").Cr
         [key: string]: any;
     };
 }, import("./types").GenericFonts>;
-export declare const getTokens: () => Tokens;
+export declare const getTokens: (prefixed?: boolean) => Tokens;
 /**
  * Note: this is the same as `getTokens`
  */
-export declare const useTokens: () => Tokens;
+export declare const useTokens: (prefixed?: boolean) => Tokens;
 export declare const getThemes: () => {
     [x: string]: {
         [x: string]: import("./createVariable").Variable<any>;
