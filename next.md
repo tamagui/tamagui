@@ -1,5 +1,8 @@
 - 1.0
 
+  - document simple functional variants: { sx: ()=>{} }
+  - add guide "Migrating from Dripsy/etc" sx prop demo
+  - release tailwind package + guide "Tailind style props"
   - `display: flex; is not being applied to elements correctly`
   - kitchen sink in snack
   - 1.0 blog post
