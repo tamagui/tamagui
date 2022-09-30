@@ -23,7 +23,9 @@ import {
   TamaguiProvider,
   XStack,
   getTokens,
+  getVariable,
   styled,
+  useTheme,
 } from 'tamagui'
 
 import config from './tamagui.config'
@@ -96,6 +98,7 @@ export const Sandbox = () => {
           overflow: 'hidden',
         }}
       >
+        <Test />
         {/* <TestFontTokensInVariants type="H1" size="large">
           Hello world
         </TestFontTokensInVariants> */}
@@ -148,6 +151,10 @@ export const Sandbox = () => {
       </div>
     </TamaguiProvider>
   )
+}
+
+function Test() {
+  return null
 }
 
 function FontLanguageDemo() {

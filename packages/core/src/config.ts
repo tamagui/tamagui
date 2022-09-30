@@ -20,7 +20,7 @@ export const setConfigFont = (name: string, font: any, fontParsed: any) => {
 
 export const getHasConfigured = () => !!conf
 export const getConfig = () => conf!
-export const getTokens = (): Tokens => conf!.tokensParsed
+export const getTokens = (): Tokens => conf!.tokens
 /**
  * Note: this is the same as `getTokens`
  */
