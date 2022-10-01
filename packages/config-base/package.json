@@ -26,7 +26,6 @@
     }
   },
   "dependencies": {
-    "@tamagui/animations-reanimated": "^1.0.1-beta.184",
     "@tamagui/colors": "^1.0.1-beta.184",
     "@tamagui/core": "^1.0.1-beta.184",
     "@tamagui/font-inter": "^1.0.1-beta.184",
