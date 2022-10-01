@@ -1,5 +1,9 @@
 - 1.0
 
+  - being able to set a value!!!!!!
+    - <Token tint="red">
+    - "$tint"
+
   - document simple functional variants: { sx: ()=>{} }
   - add guide "Migrating from Dripsy/etc" sx prop demo
   - release tailwind package + guide "Tailind style props"

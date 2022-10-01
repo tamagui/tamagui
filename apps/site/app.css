@@ -232,14 +232,14 @@ pre {
 
 .rainbow {
   background: -webkit-linear-gradient(
-    45deg,
-    var(--red11),
-    var(--orange11),
-    var(--yellow11),
-    var(--green11),
-    var(--blue11),
-    var(--purple11),
-    var(--pink11)
+    40deg,
+    var(--red10),
+    var(--orange10),
+    var(--yellow10),
+    var(--green10),
+    var(--blue10),
+    var(--purple10),
+    var(--pink10)
   );
 }
 
@@ -331,7 +331,7 @@ iframe {
 .token.selector,
 .token.selector .class,
 .token.function {
-  color: var(--green11);
+  color: var(--green10);
 }
 
 .highlight-line:hover {
@@ -352,7 +352,7 @@ iframe {
 .token.number,
 .token.unit,
 .token.color {
-  color: var(--purple11);
+  color: var(--purple10);
 }
 
 .token.operator {
@@ -364,7 +364,7 @@ iframe {
 .token.rule,
 .token.pseudo-class,
 .token.important {
-  color: var(--pink11);
+  color: var(--pink10);
 }
 
 .token.punctuation {
@@ -454,7 +454,7 @@ iframe {
 }
 
 .token.deleted .highlight-word.on {
-  color: var(--red11);
+  color: var(--red10);
 }
 
 .token.inserted .highlight-word {
@@ -462,7 +462,7 @@ iframe {
 }
 
 .token.inserted .highlight-word.on {
-  color: var(--yellow11);
+  color: var(--yellow10);
 }
 
 *[data-line-numbers='true'].highlight-line {

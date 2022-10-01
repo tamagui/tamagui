@@ -70,42 +70,26 @@ const HeroTop = memo(() => {
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$5">
           <H1
             ta="left"
-            size="$9"
+            size="$10"
             als="center"
             maw={500}
-            // prevent layout shift
-            $xxs={{
-              h: 96,
-            }}
-            $gtXs={{
-              h: 70,
-            }}
             $gtSm={{
-              h: 126,
               mx: 0,
               maxWidth: 800,
-              size: '$11',
+              size: '$12',
               ta: 'center',
             }}
             $gtMd={{
-              h: 136,
               maxWidth: 900,
               ta: 'center',
-              size: '$12',
+              size: '$14',
             }}
             $gtLg={{
-              h: 155,
-              size: '$13',
+              size: '$16',
               maxWidth: 1200,
             }}
           >
-            <TooltipSimple label="Works the same on iOS, Android, and web">
-              <span className="rainbow clip-text help">Universal</span>
-            </TooltipSimple>{' '}
-            design systems for React&nbsp;Native&nbsp;and&nbsp;Web
-            <Text fontSize="inherit" ls="inherit" fontFamily="inherit" $sm={{ display: 'none' }}>
-              , faster.
-            </Text>
+            <span className="rainbow clip-text">Write less,</span> runs&nbsp;faster.
           </H1>
 
           <YStack
@@ -131,14 +115,13 @@ const HeroTop = memo(() => {
               $gtSm={{
                 ta: 'center',
                 size: '$8',
-                ls: 0,
               }}
               $gtMd={{
                 size: '$9',
-                ls: 0,
               }}
             >
               Amazing UI tooling for React Native
+              <br />
               <Spacer size="$2" />
               <Link href="/docs/core/configuration" passHref>
                 <Tag
@@ -179,14 +162,41 @@ const HeroTop = memo(() => {
           </YStack>
         </YStack>
 
-        <XStack ai="center" jc="center" space="$4">
+        <XStack ai="center" jc="center" space="$2" $sm={{ fd: 'column', ai: 'center' }}>
           <NextLink href="https://github.com/tamagui/tamagui" passHref>
-            <YStack p="$2" opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
+            <YStack
+              p="$4"
+              opacity={0.65}
+              elevation="$2"
+              hoverStyle={{ opacity: 1 }}
+              tag="a"
+              target="_blank"
+            >
               <VisuallyHidden>
                 <Text>Github</Text>
               </VisuallyHidden>
               <GithubIcon width={23} />
             </YStack>
+          </NextLink>
+
+          <NextLink prefetch={false} href="/docs/intro/compiler" passHref>
+            <Button
+              accessibilityLabel="Get started (docs)"
+              fontFamily="$silkscreen"
+              tag="a"
+              size="$5"
+              borderRadius={1000}
+              fontWeight="800"
+              bordered
+              bw={2}
+              mx="$2"
+              // @ts-ignore
+              tabIndex={0}
+            >
+              <ButtonText fontFamily="$silkscreen" size="$7">
+                How?
+              </ButtonText>
+            </Button>
           </NextLink>
 
           <NextLink prefetch={false} href="/docs/intro/introduction" passHref>
@@ -211,9 +221,10 @@ const HeroTop = memo(() => {
 
           <NextLink href="https://discord.gg/4qh6tdcVDa" passHref>
             <YStack
-              p="$2"
+              p="$4"
               ml="$-2"
               opacity={0.65}
+              elevation="$2"
               hoverStyle={{ opacity: 1 }}
               tag="a"
               target="_blank"
