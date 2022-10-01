@@ -2684,9 +2684,6 @@ __metadata:
   dependencies:
     "@my/config": "*"
     "@tamagui/build": ^1.0.1-beta.184
-    "@tamagui/use-debounce": ^1.0.1-beta.184
-    "@tamagui/use-force-update": ^1.0.1-beta.184
-    "@tamagui/use-window-size": ^1.0.1-beta.184
     tamagui: ^1.0.1-beta.184
   languageName: unknown
   linkType: soft
@@ -4131,19 +4128,6 @@ __metadata:
   peerDependencies:
     react: "*"
   checksum: fb5eb912e374317992f4ffb527ccc4a526490cefc86b20457390f04b91f122617279d2d0a12401a9c916fe3897c34f0f95c24ff082a97c8153e634bf14281e60
-  languageName: node
-  linkType: hard
-
-"@tamagui/use-window-size@npm:^1.0.1-beta.184":
-  version: 1.0.1-beta.184
-  resolution: "@tamagui/use-window-size@npm:1.0.1-beta.184"
-  dependencies:
-    "@tamagui/use-debounce": ^1.0.1-beta.184
-    "@tamagui/use-force-update": ^1.0.1-beta.184
-    react: "*"
-  peerDependencies:
-    react-native: "*"
-  checksum: 743b0b86644ed3aad1fb6e51c67196b0aa7bb883d25711495e0e52c3a60c83b423b1a2d7bd6db92218e1ae7d338be60c27fed8c84fe57f5f63e87b30564c0cba
   languageName: node
   linkType: hard
 
