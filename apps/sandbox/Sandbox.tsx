@@ -5,7 +5,16 @@ import '../site/app.css'
 
 import { useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
-import { Button, FontLanguage, ListItem, Paragraph, Sheet, Square, TamaguiProvider } from 'tamagui'
+import {
+  Button,
+  FontLanguage,
+  ListItem,
+  Paragraph,
+  Sheet,
+  Square,
+  TamaguiProvider,
+  useMedia,
+} from 'tamagui'
 
 import config from './tamagui.config'
 

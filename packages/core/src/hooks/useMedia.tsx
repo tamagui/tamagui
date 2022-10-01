@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { startTransition, useEffect, useMemo, useState } from 'react'
 
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { matchMedia } from '../helpers/matchMedia'
@@ -53,9 +53,6 @@ export const getMedia = () => {
 
 const dispose = new Set<Function>()
 
-// for SSR capture it at time of startup
-let initialMediaState: MediaQueryState | null
-
 export const configureMedia = (config: TamaguiInternalConfig) => {
   const { media, mediaQueryDefaultActive } = config
   if (!media) return
@@ -63,13 +60,15 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
     mediaState[key] = mediaQueryDefaultActive?.[key] || false
   }
   Object.assign(mediaQueryConfig, media)
-  initialMediaState = { ...mediaState }
+  currentMediaState = { ...mediaState }
   if (config.disableSSR) {
     setupMediaListeners()
   }
 }
 
-export const getInitialMediaState = () => initialMediaState
+// for SSR capture it at time of startup
+let currentMediaState: MediaQueryState | null
+export const getCurrentMediaState = () => currentMediaState
 
 function unlisten() {
   dispose.forEach((cb) => cb())
@@ -93,29 +92,34 @@ function setupMediaListeners() {
   // hmr, undo existing before re-binding
   unlisten()
 
-  for (const key in mediaQueryConfig) {
-    const str = mediaObjectToString(mediaQueryConfig[key])
-    const getMatch = () => matchMedia(str)
-    const match = getMatch()
-    if (!match) {
-      throw new Error('⚠️ No match')
-    }
-    // react native needs these deprecated apis for now
-    match.addListener(update)
-    dispose.add(() => match.removeListener(update))
+  // theoretically this should make media reactions smoother but potentially delayed?
+  // but i believe consistent, so that's a nicer default (we'll see)
+  startTransition(() => {
+    for (const key in mediaQueryConfig) {
+      const str = mediaObjectToString(mediaQueryConfig[key])
+      const getMatch = () => matchMedia(str)
+      const match = getMatch()
+      if (!match) {
+        throw new Error('⚠️ No match')
+      }
+      // react native needs these deprecated apis for now
+      match.addListener(update)
+      dispose.add(() => match.removeListener(update))
 
-    update()
+      update()
 
-    function update() {
-      const next = !!getMatch().matches
-      if (next === mediaState[key]) return
-      mediaState[key] = next
-      const listeners = mediaQueryListeners[key]
-      if (listeners?.size) {
-        listeners.forEach((cb) => cb(next))
+      function update() {
+        const next = !!getMatch().matches
+        if (next === mediaState[key]) return
+        mediaState[key] = next
+        currentMediaState = { ...mediaState }
+        const listeners = mediaQueryListeners[key]
+        if (listeners?.size) {
+          listeners.forEach((cb) => cb(next))
+        }
       }
     }
-  }
+  })
 }
 
 export function useMediaQueryListeners(config: TamaguiInternalConfig) {
@@ -132,7 +136,7 @@ export function useMediaQueryListeners(config: TamaguiInternalConfig) {
 export function useMedia(): {
   [key in MediaQueryKey]: boolean
 } {
-  const [state, setState] = useState(initialMediaState || {})
+  const [state, setState] = useState(currentMediaState || {})
   const keys = useSafeRef({} as Record<string, boolean>)
 
   function updateState() {
@@ -161,7 +165,7 @@ export function useMedia(): {
       new Proxy(state, {
         get(_, key: string) {
           if (process.env.NODE_ENV === 'development') {
-            if (!initialMediaState) {
+            if (!currentMediaState) {
               throw new Error(
                 `To use useMedia() you must pass in media configuration to createTamagui, none was found.`
               )

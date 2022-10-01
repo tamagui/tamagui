@@ -42,11 +42,7 @@ import { getAllSelectors } from './helpers/insertStyleRule'
 import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { useShallowSetState } from './helpers/useShallowSetState'
-import {
-  addMediaQueryListener,
-  getInitialMediaState,
-  removeMediaQueryListener,
-} from './hooks/useMedia'
+import { addMediaQueryListener, getCurrentMediaState } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
 import { getThemeManager, useTheme } from './hooks/useTheme'
@@ -1103,7 +1099,7 @@ export function createComponent<
         // only used by enterStyle
         mounted: false,
         animation: null,
-        mediaState: getInitialMediaState(),
+        mediaState: getCurrentMediaState(),
       })
     }
 
