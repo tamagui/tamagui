@@ -120,7 +120,7 @@ const HeroTop = memo(() => {
                 size: '$9',
               }}
             >
-              Amazing UI tooling for React Native
+              Universal UI for React Native / Web
               <br />
               <Spacer size="$2" />
               <Link href="/docs/core/configuration" passHref>

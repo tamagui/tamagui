@@ -1,4 +1,3 @@
-// debug
 import { ChevronRight, FastForward } from '@tamagui/feather-icons'
 import Link from 'next/link'
 import React from 'react'

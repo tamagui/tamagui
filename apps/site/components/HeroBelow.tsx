@@ -38,7 +38,7 @@ export const HeroBelow = memo(() => {
   return (
     <>
       <Glow top={top} />
-      <YStack pos="relative" zi={1000} elevation="$1" py="$8" pb="$10">
+      <YStack pos="relative" zi={1000} elevation="$1" py="$9" pb="$10">
         <ThemeTint>
           <YStack
             onLayout={(event) => {
@@ -158,8 +158,8 @@ export const HeroBelowContent = memo(() => {
             Static
           </TitleLink>
           <Paragraph o={hovered === 2 ? 1 : 0.75} size="$4" theme="purple_alt2">
-            Compile-time optimize styles both static and inline, with partial evaluation and tree
-            flattening. Plugins for Webpack, Vite, Metro & more.
+            An optimizing compiler for styles both static and inline. Partial evaluation, tree
+            flattening & more. Plugins for Next, Webpack, Vite, Metro.
           </Paragraph>
         </Section>
       </XStack>
