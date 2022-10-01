@@ -2,7 +2,7 @@ import { ChevronRight, FastForward } from '@tamagui/feather-icons'
 import Link from 'next/link'
 import React from 'react'
 import { memo, useState } from 'react'
-import { Button, Paragraph, XGroup, XStack, YStack } from 'tamagui'
+import { Button, H5, Paragraph, XGroup, XStack, YStack, useMedia } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
@@ -11,7 +11,7 @@ import { HomeH2, HomeH3 } from './HomeH2'
 import { IconStack } from './IconStack'
 import { useTint } from './useTint'
 
-export function HeroExampleCode({ examples }) {
+export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDemo?: boolean }) {
   const { tint } = useTint()
   const [activeIndex, setActiveIndex] = useState(0)
   const activeExample = examples[activeIndex]
@@ -21,32 +21,38 @@ export function HeroExampleCode({ examples }) {
     'tree flattening',
     'code elimination',
   ]
+  const media = useMedia()
+  const shouldShowCol = media.sm || onlyDemo
 
   return (
     <>
       <ContainerLarge position="relative">
         <YStack zi={1} space="$6">
-          <YStack ai="center" space="$3">
-            <HomeH2 size="$10">Less syntax, better performance</HomeH2>
-            {/* <Link passHref href="/blog/how-tamagui-optimizes"> */}
-            <HomeH3 maw={500} tag="a" ai="center" jc="center">
-              A complete design system that optimizes away with{' '}
-              <strong>{subtitles[activeIndex]}</strong>.
-            </HomeH3>
-            {/* </Link> */}
-          </YStack>
+          {!onlyDemo && (
+            <YStack ai="center" space="$3">
+              <HomeH2 size="$10">Less syntax, better performance</HomeH2>
+              {/* <Link passHref href="/blog/how-tamagui-optimizes"> */}
+              <HomeH3 maw={500} tag="a" ai="center" jc="center">
+                A complete design system that optimizes away with{' '}
+                <strong>{subtitles[activeIndex]}</strong>.
+              </HomeH3>
+              {/* </Link> */}
+            </YStack>
+          )}
 
-          <XGroup bordered theme={tint} maxWidth="100%" als="center" scrollable>
+          <XGroup chromeless theme={tint} maxWidth="100%" als="center" scrollable>
             {examples.map((example, i) => {
               return (
                 <Button
                   accessibilityLabel="See example"
                   onPress={() => setActiveIndex(i)}
                   theme={i === activeIndex ? 'active' : null}
+                  o={i === activeIndex ? 1 : 0.5}
                   key={i}
                   borderRadius={0}
                   size="$4"
                   fontFamily="$silkscreen"
+                  chromeless
                 >
                   {example.name}
                 </Button>
@@ -54,26 +60,31 @@ export function HeroExampleCode({ examples }) {
             })}
           </XGroup>
 
-          <XStack pos="relative" $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
+          <XStack
+            pos="relative"
+            $sm={{ flexDirection: 'column' }}
+            jc="space-between"
+            {...(shouldShowCol && {
+              fd: onlyDemo ? 'column' : 'row',
+            })}
+          >
             <YStack
               key={`input${activeIndex}`}
               f={1}
               maxWidth="50%"
-              $sm={{ maxWidth: '100%' }}
+              {...(shouldShowCol && { maxWidth: '100%' })}
               px="$2"
               space="$4"
             >
-              <CodeExamples {...activeExample.input} />
-              <Paragraph size="$5" minHeight={50} ta="center" px="$7">
-                <CodeInline size="$5">Input</CodeInline>
-                <span style={{ opacity: 0.65 }}>
-                  &nbsp;－&nbsp;{activeExample.input.description}
-                </span>
+              <H5 als="center">Input</H5>
+              <Paragraph size="$5" minHeight={50} ta="center" px="$6">
+                <span style={{ opacity: 0.65 }}>{activeExample.input.description}</span>
               </Paragraph>
+              <CodeExamples {...activeExample.input} />
             </YStack>
 
             <YStack
-              $sm={{ display: 'none' }}
+              {...(shouldShowCol && { display: 'none' })}
               pos="absolute"
               left={0}
               right={0}
@@ -92,17 +103,15 @@ export function HeroExampleCode({ examples }) {
               key={`output${activeIndex}`}
               f={1}
               maxWidth="50%"
-              $sm={{ maxWidth: '100%', mt: '$6' }}
+              {...(shouldShowCol && { maxWidth: '100%', mt: '$6' })}
               px="$2"
               space="$4"
             >
-              <CodeExamples {...activeExample.output} />
+              <H5 als="center">Output</H5>
               <Paragraph size="$5" minHeight={50} ta="center" px="$6">
-                <CodeInline size="$5">Output</CodeInline>
-                <span style={{ opacity: 0.65 }}>
-                  &nbsp;－&nbsp;{activeExample.output.description}
-                </span>
+                <span style={{ opacity: 0.65 }}>{activeExample.output.description}</span>
               </Paragraph>
+              <CodeExamples {...activeExample.output} />
             </YStack>
           </XStack>
         </YStack>

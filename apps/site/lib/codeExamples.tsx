@@ -71,8 +71,7 @@ export const compilationCode = [
   {
     name: 'Styles',
     input: {
-      description:
-        'Fully typed shorthands you can set up yourself work with all the features of Tamagui.',
+      description: 'A powerful `styled` constructor, inline props, shorthands and more.',
       examples: [
         {
           name: 'app.tsx',
@@ -80,9 +79,9 @@ export const compilationCode = [
           code: `import { styled, Stack } from '@tamagui/core'
 import { Heading } from './Heading'
 
-const App = () => (
+const App = (props) => (
   <Stack px="$2" w={550} $gtSm={{ px: '$6' }}>
-    <Heading fs="$2">
+    <Heading fs={props.large ? '$2' : '$1'}>
       Lorem ipsum dolor.
     </Text>
   </Stack>
@@ -127,15 +126,16 @@ export const Heading = styled(Text, {
     },
     output: {
       description:
-        'Shorthands work with the compiler support of media queries, pseudo styling and conditional logic.',
+        'Styles extracted, logic evaluated, and a flatter tree with atomic CSS styles per-file.',
       examples: [
         {
           name: 'app.js',
-          code: `const _cn2 = " _color-scmqyp _display-1471scf _fontFamily-187pbxx _fontSize-7uzi8p"
-const _cn = " _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx _paddingLeft-11jtx42 _paddingRight-4a8ukp _width-11mp6g5 _paddingLeft-_gtSm_1hxi05q _paddingRight-_gtSm_poy3ov"
+          code: `const _cn3 = " _color-scmqyp _d-1471scf _ff-187pbxx _fs-7uzi8p"
+const _cn2 = " _color-scmqyp _d-1471scf _ff-187pbxx"
+const _cn = " _d-6koalj _fd-eqz5dr _fs-1q142lx _pl-11jtx42 _pr-4a8ukp _w-11mp6g5 _pl-_gtSm_1hxi05q _pr-_gtSm_poy3ov"
 
-const App = () => <div className={_cn}>
-  <h1 className={_cn2}>
+const App = (props) => <div className={_cn}>
+  <h1 className={_cn2 + ' ' + props.large ? _cn3 : _cn4}>
     Lorem ipsum dolor.
   </h1>
 </div>`,
@@ -143,15 +143,15 @@ const App = () => <div className={_cn}>
         },
         {
           name: 'app.css',
-          code: `._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
-._flexDirection-eqz5dr{-ms-flex-direction:column;-webkit-box-direction:normal;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
-._flexShrink-1q142lx{-ms-flex-negative:0;-webkit-flex-shrink:0;flex-shrink:0;}
-._paddingLeft-11jtx42{padding-left:var(--space-2);}
-._paddingRight-4a8ukp{padding-right:var(--space-2);}
-._width-11mp6g5{width:550px;}
-@media screen and (min-width: 861px) { :root:root ._paddingLeft-_gtSm_1hxi05q{padding-left:var(--space-6);} }
-@media screen and (min-width: 861px) { :root:root ._paddingRight-_gtSm_poy3ov{padding-right:var(--space-6);} }
-._display-1471scf{display:inline;}
+          code: `._d-6koalj{display:flex;}
+._fd-eqz5dr{flex-direction:column;}
+._fs-1q142lx{flex-shrink:0;}
+._pl-11jtx42{padding-left:var(--space-2);}
+._pr-4a8ukp{padding-right:var(--space-2);}
+._w-11mp6g5{width:550px;}
+@media screen and (min-width: 861px) { :root:root ._pl-_gtSm_1hxi05q{padding-left:var(--space-6);} }
+@media screen and (min-width: 861px) { :root:root ._pr-_gtSm_poy3ov{padding-right:var(--space-6);} }
+._d-1471scf{display:inline;}
 ._fontFamily-187pbxx{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
 ._fontSize-7uzi8p{font-size:var(--fontSize-2);}`,
           language: 'css',
@@ -163,7 +163,7 @@ const App = () => <div className={_cn}>
   {
     name: 'Logic',
     input: {
-      description: `use logical statements, spreads, imported constants, and other expressions as you would normally.`,
+      description: `Node VM powered partial evaluation across imports and evaluation and flattening of nested logicals and spreads.`,
       examples: [
         {
           name: 'app.tsx',
@@ -173,7 +173,7 @@ const App = () => <div className={_cn}>
 const App = (props) => (
   <YStack
     padding={props.big ? '$5' : '$3'}
-    {...(props.colored && {
+    {...(props.colorful && {
       backgroundColor: 'green',
     })}
   >
@@ -188,19 +188,19 @@ const App = (props) => (
     },
     output: {
       description:
-        'the compiler evaluates ternaries, spreads, and nested logic, reducing objects and runtime CSS insertion.',
+        'Reduced object and increased render performance, improved SSR with inlinable CSS per-page.',
       examples: [
         {
           name: 'app.js',
-          code: `const _cn5 = " _color-scmqyp _display-1471scf _fontFamily-xeweqh _fontSize-7uzi8p _lineHeight-1l6ykvy"
-const _cn4 = "  _backgroundColor-1542mo4"
-const _cn3 = " _paddingBottom-12bic3x _paddingLeft-7ztw5e _paddingRight-g6vdx7 _paddingTop-1vq430g"
-const _cn2 = " _paddingBottom-z3qxl0 _paddingLeft-14km6ah _paddingRight-1qpq1qc _paddingTop-1medp4i"
-const _cn = " _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx "
+          code: `const _cn5 = " _color-scmqyp _d-1471scf _ff-xeweqh _fs-7uzi8p _lineHeight-1l6ykvy"
+const _cn4 = "  _bc-1542mo4"
+const _cn3 = " _pb-12bic3x _pl-7ztw5e _pr-g6vdx7 _pt-1vq430g"
+const _cn2 = " _pb-z3qxl0 _pl-14km6ah _pr-1qpq1qc _pt-1medp4i"
+const _cn = " _d-6koalj _fd-eqz5dr _fs-1q142lx "
 import { concatClassName } from "@tamagui/helpers"
 import { Paragraph, YStack } from 'tamagui'
 
-const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _cn3) + (" " + (props.colored ? _cn4 : " ")))}>
+const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _cn3) + (" " + (props.colorful ? _cn4 : " ")))}>
     <span className={_cn5}>
       Lorem ipsum dolor.
     </span>
@@ -210,19 +210,19 @@ const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _
         },
         {
           name: 'app.css',
-          code: `._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
-._flexDirection-eqz5dr{-ms-flex-direction:column;-webkit-box-direction:normal;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
-._flexShrink-1q142lx{-ms-flex-negative:0;-webkit-flex-shrink:0;flex-shrink:0;}
-._paddingBottom-z3qxl0{padding-bottom:var(--space-5);}
-._paddingLeft-14km6ah{padding-left:var(--space-5);}
-._paddingRight-1qpq1qc{padding-right:var(--space-5);}
-._paddingTop-1medp4i{padding-top:var(--space-5);}
-._paddingBottom-12bic3x{padding-bottom:var(--space-3);}
-._paddingLeft-7ztw5e{padding-left:var(--space-3);}
-._paddingRight-g6vdx7{padding-right:var(--space-3);}
-._paddingTop-1vq430g{padding-top:var(--space-3);}
-._backgroundColor-1542mo4{background-color:rgba(0,128,0,1.00);}
-._display-1471scf{display:inline;}
+          code: `._d-6koalj{display:flex;}
+._fd-eqz5dr{flex-direction:column;}
+._fs-1q142lx{flex-shrink:0;}
+._pb-z3qxl0{padding-bottom:var(--space-5);}
+._pl-14km6ah{padding-left:var(--space-5);}
+._pr-1qpq1qc{padding-right:var(--space-5);}
+._pt-1medp4i{padding-top:var(--space-5);}
+._pb-12bic3x{padding-bottom:var(--space-3);}
+._pl-7ztw5e{padding-left:var(--space-3);}
+._pr-g6vdx7{padding-right:var(--space-3);}
+._pt-1vq430g{padding-top:var(--space-3);}
+._bc-1542mo4{background-color:rgba(0,128,0,1.00);}
+._d-1471scf{display:inline;}
 ._fontFamily-xeweqh{font-family:var(--font-body);}
 ._fontSize-7uzi8p{font-size:var(--fontSize-2);}
 ._lineHeight-1l6ykvy{line-height:var(--lineHeight-2);}`,
@@ -236,27 +236,33 @@ const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _
     name: 'Media',
     input: {
       description:
-        'Pseudo and media query styles extract at compile-time, fallback gracefully at runtime.',
+        'Use simple inline media queries, or combine the useMedia hook with logic, both are partially evalauted, flattened, and turned into static generated CSS media queries.',
       examples: [
         {
           name: 'app.tsx',
           language: 'tsx',
           code: `import { YStack } from 'tamagui'
 
-const App = () => (
-  <YStack
-    backgroundColor="red"
-    hoverStyle={{
-      backgroundColor: 'blue',
-    }}
-    $gtSm={{
-      backgroundColor: 'green',
-      pressStyle: {
-        backgroundColor: 'yellow',
-      }
-    }}
-  />
-)
+const App = (props) => {
+  const media = useMedia()
+  return (
+    <YStack
+      backgroundColor="red"
+      hoverStyle={{
+        backgroundColor: 'blue',
+      }}
+      $gtSm={{
+        backgroundColor: 'green',
+        pressStyle: {
+          backgroundColor: 'yellow',
+        }
+      }}
+      {...props.shrinks && media.sm && {
+        scale: 0.5
+      }}
+    />
+  )
+}
 `,
         },
       ],
@@ -267,22 +273,23 @@ const App = () => (
       examples: [
         {
           name: 'app.js',
-          code: `const _cn = " _backgroundColor-1g6456j _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx _backgroundColor--hover-57dg7b _backgroundColor-_gtSm_1542mo4 _backgroundColor-_gtSm_-active-98uye2"
+          code: `const _cn = " _bc-1g6456j _d-6koalj _fd-eqz5dr _fs-1q142lx _bc--hover-57dg7b _bc-_gtSm_1542mo4 _bc-_gtSm_-active-98uye2 _bc-_gtSm_abc1234"
 import { YStack } from 'tamagui'
 
-const App = () => <div className={_cn} />`,
+const App = (props) => <div className={_cn + (props.shrinks ? ' _bc-_gtSm_abc1234' : '')} />`,
           language: 'tsx',
         },
         {
           name: 'app.css',
           code: `
-._backgroundColor-1g6456j{background-color:rgba(255,0,0,1.00);}
-._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
-._flexDirection-eqz5dr{-ms-flex-direction:column;-webkit-box-direction:normal;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
-._flexShrink-1q142lx{-ms-flex-negative:0;-webkit-flex-shrink:0;flex-shrink:0;}
-@media not all and (hover: none) { :root  ._backgroundColor--hover-57dg7b:hover{background-color:rgba(0,0,255,1.00);} }
-@media screen and (min-width: 861px) { :root:root ._backgroundColor-_gtSm_1542mo4{background-color:rgba(0,128,0,1.00);} }
-@media screen and (min-width: 861px) { :root:root :root:root  ._backgroundColor-_gtSm_-active-98uye2:active{background-color:rgba(255,255,0,1.00);} }`,
+._bc-1g6456j{background-color:rgba(255,0,0,1.00);}
+._d-6koalj{display:flex;}
+._fd-eqz5dr{flex-direction:column;}
+._fs-1q142lx{flex-shrink:0;}
+@media not all and (hover: none) { :root  ._bc--hover-57dg7b:hover{background-color:rgba(0,0,255,1.00);} }
+@media screen and (min-width: 861px) { :root:root ._bc-_gtSm_1542mo4{background-color:rgba(0,128,0,1.00);} }
+@media screen and (min-width: 861px) { :root:root ._bc-_gtSm_-active-98uye2:active{background-color:rgba(255,255,0,1.00);} }
+@media screen and (min-width: 861px) { :root:root ._bc-_gtSm_abc1234{background-color:rgba(0,128,0,1.00);} }`,
           language: 'css',
         },
       ],
@@ -323,7 +330,7 @@ const App = () => {
       examples: [
         {
           name: 'app.js',
-          code: `const _cn = " _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx _transform-_sm_1exagq _transform-_sm0_1wpzndr _backgroundColor-_lg_no4z4g _backgroundColor-_lg0_1qoifqd _transform-_xl_gqa6p0"
+          code: `const _cn = " _d-6koalj _fd-eqz5dr _fs-1q142lx _t-_sm_1exagq _t-_sm0_1wpzndr _bc-_lg_no4z4g _bc-_lg0_1qoifqd _t-_xl_gqa6p0"
 import { YStack, useMedia, useTheme } from 'tamagui'
 
 const App = () => {
@@ -333,14 +340,14 @@ const App = () => {
         },
         {
           name: 'app.css',
-          code: `._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
-._flexDirection-eqz5dr{-ms-flex-direction:column;-webkit-box-direction:normal;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
-._flexShrink-1q142lx{-ms-flex-negative:0;-webkit-flex-shrink:0;flex-shrink:0;}
-@media screen and (max-width: 860px) { :root:root ._transform-_sm_1exagq{-webkit-transform:translateY(10px);transform:translateY(10px);} }
-@media not all and (max-width: 860px) { :root:root ._transform-_sm0_1wpzndr{-webkit-transform:translateY(0px);transform:translateY(0px);} }
-@media screen and (min-width: 1120px) { :root:root:root ._backgroundColor-_lg_no4z4g{background-color:var(--red);} }
-@media not all and (min-width: 1120px) { :root:root:root ._backgroundColor-_lg0_1qoifqd{background-color:var(--blue);} }
-@media screen and (min-width: 1280px) { :root:root:root:root ._transform-_xl_gqa6p0{-webkit-transform:translateY(var(--space2));transform:translateY(var(--space2));} }`,
+          code: `._d-6koalj{display:flex;}
+._fd-eqz5dr{flex-direction:column;}
+._fs-1q142lx{flex-shrink:0;}
+@media screen and (max-width: 860px) { :root:root ._t-_sm_1exagq{-webkit-transform:translateY(10px);transform:translateY(10px);} }
+@media not all and (max-width: 860px) { :root:root ._t-_sm0_1wpzndr{-webkit-transform:translateY(0px);transform:translateY(0px);} }
+@media screen and (min-width: 1120px) { :root:root:root ._bc-_lg_no4z4g{background-color:var(--red);} }
+@media not all and (min-width: 1120px) { :root:root:root ._bc-_lg0_1qoifqd{background-color:var(--blue);} }
+@media screen and (min-width: 1280px) { :root:root:root:root ._t-_xl_gqa6p0{-webkit-transform:translateY(var(--space2));transform:translateY(var(--space2));} }`,
           language: 'css',
         },
       ],

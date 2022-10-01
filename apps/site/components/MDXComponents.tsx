@@ -46,6 +46,7 @@ import { OffsetBox } from './OffsetBox'
 import { Preview } from './Preview'
 import { PropsTable } from './PropsTable'
 import { SubTitle } from './SubTitle'
+import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
 
@@ -142,6 +143,8 @@ export const components = {
   Description: SubTitle,
   UL,
   LI,
+
+  TamaguiExamplesCode,
 
   TLDR: (props) => {
     return (

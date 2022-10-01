@@ -162,7 +162,7 @@ const HeroTop = memo(() => {
           </YStack>
         </YStack>
 
-        <XStack ai="center" jc="center" space="$2" $sm={{ fd: 'column', ai: 'center' }}>
+        <XStack ai="center" jc="center" space="$2" $xxs={{ fd: 'column', ai: 'center' }}>
           <NextLink href="https://github.com/tamagui/tamagui" passHref>
             <YStack
               p="$4"

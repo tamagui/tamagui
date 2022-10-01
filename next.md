@@ -1,9 +1,6 @@
 - 1.0
 
-  - being able to set a value!!!!!!
-    - <Token tint="red">
-    - "$tint"
-
+  - kitchen sink snack
   - document simple functional variants: { sx: ()=>{} }
   - add guide "Migrating from Dripsy/etc" sx prop demo
   - release tailwind package + guide "Tailind style props"
@@ -92,6 +89,8 @@ plan for space + display none, two pronged
 
 Roadmap
 
+  - container queries
+  - // enable shorthand for not having to switch modes to test when disabled by default
   - native should probably avoid all optimization when it can't flatten or else pass in a __optimized attribute, otherwise its duplicating the style processing by putting __style with all the defaults + re-adding it at runtime
   - have tamagui automatically build your components?
   - `variantsOnly: true` on styled(), removes types for anything but variants (and className/theme etc)

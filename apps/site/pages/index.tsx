@@ -2,15 +2,8 @@ import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
-import { toHtml } from 'hast-util-to-html'
-import rangeParser from 'parse-numeric-range'
-import { useState } from 'react'
-import { refractor } from 'refractor'
-import css from 'refractor/lang/css'
-import tsx from 'refractor/lang/tsx'
 import { XStack, YStack } from 'tamagui'
 
-import { CocentricCircles } from '../components/CocentricCircles'
 import { ContainerLarge } from '../components/Container'
 import { HeaderFloating } from '../components/HeaderFloating'
 import { HeroBelow } from '../components/HeroBelow'
@@ -23,9 +16,7 @@ import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { InstallInput } from '../components/InstallInput'
 import { Section, SectionTinted, TintSection } from '../components/TintSection'
-import { animationCode, compilationCode } from '../lib/codeExamples'
-import rehypeHighlightLine from '../lib/rehype-highlight-line'
-import rehypeHighlightWord from '../lib/rehype-highlight-word'
+import { getCompilationExamples } from '../lib/getCompilationExamples'
 
 export default function Home({ animationCode, compilationExamples }) {
   return (
@@ -85,45 +76,7 @@ export default function Home({ animationCode, compilationExamples }) {
 }
 
 export async function getStaticProps() {
-  refractor.register(tsx)
-  refractor.register(css)
-
-  function codeToHTML(source: string, language: 'tsx' | 'css' | string, line = '0') {
-    let result: any = refractor.highlight(source, language)
-    result = rehypeHighlightLine(result, rangeParser(line))
-    result = rehypeHighlightWord(result)
-    result = toHtml(result)
-    return result as string
-  }
-
-  const compilationExamples = compilationCode.map((item) => {
-    return {
-      ...item,
-      input: {
-        ...item.input,
-        examples: item.input.examples.map((ex) => {
-          return {
-            ...ex,
-            code: codeToHTML(ex.code, ex.language),
-          }
-        }),
-      },
-      output: {
-        ...item.output,
-        examples: item.output.examples.map((ex) => {
-          return {
-            ...ex,
-            code: codeToHTML(ex.code, ex.language),
-          }
-        }),
-      },
-    }
-  })
-
   return {
-    props: {
-      compilationExamples,
-      animationCode: codeToHTML(animationCode, 'tsx'),
-    },
+    props: getCompilationExamples(),
   }
 }

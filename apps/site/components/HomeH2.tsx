@@ -19,7 +19,7 @@ export const HomeH3 = styled(H3, {
   fontFamily: '$body',
   name: 'HomeH3',
   ta: 'center',
-  theme: 'alt2',
+  theme: 'alt1',
   als: 'center',
   fow: '400',
   px: 20,

@@ -9,27 +9,30 @@ import { H1, Spacer } from 'tamagui'
 import { Container } from '../../../components/Container'
 import { DocsPage } from '../../../components/DocsPage'
 import { SubTitle } from '../../../components/SubTitle'
+import { TamaguiExamples } from '../../../components/TamaguiExamplesCode'
 import type { Frontmatter } from '../../../frontmatter'
+import { getCompilationExamples } from '../../../lib/getCompilationExamples'
 
 type Doc = {
   frontmatter: Frontmatter
   code: any
+  examples: any
 }
 
-export default function DocIntroPage({ frontmatter, code }: Doc) {
+export default function DocIntroPage({ frontmatter, code, examples }: Doc) {
   if (!frontmatter) {
     return null
   }
   const Component = React.useMemo(() => getMDXComponent(code), [code])
   return (
-    <>
+    <TamaguiExamples.Provider value={examples}>
       <TitleAndMetaTags title={`${frontmatter.title} — Tamagui`} />
       <H1 mb="$2">{frontmatter.title}</H1>
       <Spacer size="$1" />
       <SubTitle>{frontmatter.description}</SubTitle>
       <Component components={components as any} />
       <QuickNav key={frontmatter.slug} />
-    </>
+    </TamaguiExamples.Provider>
   )
 }
 
@@ -52,6 +55,7 @@ export async function getStaticProps(context) {
     props: {
       frontmatter,
       code,
+      examples: getCompilationExamples(),
     },
   }
 }
