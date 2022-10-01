@@ -101,6 +101,11 @@ export default createTamagui({
 
 [Reanimated](https://docs.swmansion.com/react-native-reanimated/) is an animation library that targets React Native and React Native Web. It runs off-thread animations, and provides nicer syntax and hooks. It weighs over 100Kb minified though, which makes it not always useful for the web.
 
+<Notice>
+  If using the starter, it configures `excludeReactNativeWebExports` to omit FlatList and other
+  views reanimated expects, change that config to fix errors.
+</Notice>
+
 To install it add to your package.json:
 
 ```bash
