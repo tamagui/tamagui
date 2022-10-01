@@ -2,7 +2,7 @@ import { PresenceContext, usePresence } from '@tamagui/animate-presence'
 import { AnimationDriver, AnimationProp, useEvent } from '@tamagui/core'
 import { useContext, useMemo } from 'react'
 // until we fix Sheet
-import { Animated as RNAnimated } from 'react-native'
+import { FlatList, Animated as RNAnimated } from 'react-native'
 import Animated, {
   WithDecayConfig,
   WithSpringConfig,
@@ -21,6 +21,16 @@ import {
   useAnimatedNumberReaction,
   useAnimatedNumberStyle,
 } from './useAnimatedNumber'
+
+// add nice warning for if mis-configured next config:
+if (process.env.NODE_ENV === 'development') {
+  if (FlatList?.['_isProxyWorm']) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `Using reanimated with excludeReactNativeWebExports including FlatList, adjust your next.config.js, reanimated currently doesn't support tree-shaking and needs *List components around.`
+    )
+  }
+}
 
 type AnimationsConfig<A extends Object = any> = {
   [Key in keyof A]: AnimationConfig

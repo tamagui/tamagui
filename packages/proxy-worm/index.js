@@ -8,6 +8,19 @@ function worm(root = false) {
         },
       }
     : function () {
+        //  dev warning in debug mode
+        if (process.env.NODE_ENV === 'development' && process.env.DEBUG?.startsWith('tamagui')) {
+          // eslint-disable-next-line no-console
+          console.warn(`
+
+This has been excluded via Tamagui!
+Check "excludeReactNativeWebExports" setting and include it to fix.
+
+${new Error().stack}
+
+`)
+        }
+
         return worm()
       }
 
