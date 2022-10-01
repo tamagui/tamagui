@@ -1,6 +1,7 @@
 import { Anchor, Button, H1, Paragraph, Separator, XStack, YStack, Sheet } from '@my/ui'
 import { ChevronDown, ChevronUp } from '@tamagui/feather-icons'
 import React, { useState } from 'react'
+import { FlatList } from 'react-native'
 import { useLink } from 'solito/link'
 
 export function HomeScreen() {
@@ -16,6 +17,14 @@ export function HomeScreen() {
           Here's a basic starter to show navigating from one screen to another. This screen uses the
           same code on Next.js and React Native.
         </Paragraph>
+
+        <FlatList
+          keyExtractor={(item) => item.id}
+          data={[]}
+          renderItem={() => <YStack />}
+          showsVerticalScrollIndicator={false}
+        />
+
         <Separator />
         <Paragraph ta="center">
           Tamagui is made by{' '}
