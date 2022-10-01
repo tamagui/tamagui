@@ -1,8 +1,7 @@
 import { ChevronRight, Code, Cpu, Layers } from '@tamagui/feather-icons'
 import Link from 'next/link'
 import { memo, useEffect, useState } from 'react'
-import { useWindowDimensions } from 'react-native'
-import { H3, Paragraph, XStack, YStack, YStackProps } from 'tamagui'
+import { H3, Paragraph, XStack, YStack, YStackProps, useWindowDimensions } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'

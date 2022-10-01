@@ -7,9 +7,6 @@
   - `display: flex; is not being applied to elements correctly`
   - can actually remove react-native dep entirely without a lot of trouble
   - 1.0 blog post
-  - 
-
-  - `useWindowDimensions` but its SSR safe
   - add $hover or just hover as preferred to `hoverStyle`
   - // TODO we should likely account for importance here to match CSS, right??
   - kitchen sink placeholder input color dark

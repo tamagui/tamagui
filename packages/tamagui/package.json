@@ -60,6 +60,7 @@
     "@tamagui/use-debounce": "^1.0.1-beta.184",
     "@tamagui/use-event": "^1.0.1-beta.184",
     "@tamagui/use-force-update": "^1.0.1-beta.184",
+    "@tamagui/use-window-dimensions": "^1.0.1-beta.184",
     "@tamagui/visually-hidden": "^1.0.1-beta.184",
     "expo-linear-gradient": "^11.4.0",
     "expo-screen-orientation": "^4.3.0",
