@@ -199,7 +199,11 @@ async function run() {
       await spawnify(`git push origin v${version}`)
       console.log(`✅ Pushed and versioned\n`)
 
-      console.log(`Update starters to v${version}...`)
+      const seconds = 5
+      console.log(
+        `Update starters to v${version} in (${seconds}) seconds (give time to propogate)...`
+      )
+      await new Promise((res) => setTimeout(res, 5 * 1000))
       await spawnify(`yarn upgrade:starters`)
       await spawnify(`git commit -am update-starters-v${version}`)
       await spawnify(`git push origin head`)

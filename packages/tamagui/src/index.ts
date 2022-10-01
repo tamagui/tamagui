@@ -29,6 +29,7 @@ export * from '@tamagui/text'
 export * from '@tamagui/tooltip'
 export * from '@tamagui/use-controllable-state'
 export * from '@tamagui/use-debounce'
+export * from '@tamagui/use-window-dimensions'
 export * from '@tamagui/use-force-update'
 export * from '@tamagui/visually-hidden'
 

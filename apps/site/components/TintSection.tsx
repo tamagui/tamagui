@@ -1,7 +1,6 @@
 import { useIsIntersecting } from '@tamagui/demos'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useWindowDimensions } from 'react-native'
-import { GetProps, Separator, YStack, styled } from 'tamagui'
+import { GetProps, Separator, YStack, styled, useWindowDimensions } from 'tamagui'
 
 import { setTintIndex, useTint } from './useTint'
 

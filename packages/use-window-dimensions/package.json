@@ -1,10 +1,9 @@
 {
-  "name": "@tamagui/use-window-size",
+  "name": "@tamagui/use-window-dimensions",
   "version": "1.0.1-beta.184",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
