@@ -6,14 +6,42 @@ declare type ListItemIconProps = {
     size?: number;
 };
 declare type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null;
-export declare type ListItemProps = Omit<TextParentStyles, 'TextComponent'> & GetProps<typeof ListItemFrame> & ThemeableProps & {
+export declare type ListItemProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> & GetProps<typeof ListItemFrame> & ThemeableProps & {
+    /**
+     * add icon before, passes color and size automatically if Component
+     */
     icon?: IconProp;
+    /**
+     * add icon after, passes color and size automatically if Component
+     */
     iconAfter?: IconProp;
+    /**
+     * adjust icon relative to size
+     */
+    /**
+     * default: -1
+     */
     scaleIcon?: number;
+    /**
+     * make the spacing elements flex
+     */
     spaceFlex?: number | boolean;
+    /**
+     * adjust internal space relative to icon size
+     */
     scaleSpace?: number;
+    /**
+     * title
+     */
     title?: React.ReactNode;
+    /**
+     * subtitle
+     */
     subTitle?: React.ReactNode;
+    /**
+     * will not wrap text around `children` only, "all" will not wrap title or subTitle
+     */
+    noTextWrap?: boolean | 'all';
 };
 export declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -339,7 +367,9 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         accessibilityIgnoresInvertColors?: boolean | undefined;
         dataSet?: any;
         target?: any;
-        rel?: any;
+        rel?: any; /**
+         * add icon after, passes color and size automatically if Component
+         */
         download?: any;
         href?: string | undefined;
         hrefAttrs?: {
@@ -608,7 +638,7 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
 export declare const listItemStaticConfig: {
     inlineProps: Set<string>;
 };
-export declare const ListItem: ((props: Omit<Omit<TextParentStyles, "TextComponent"> & Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
+export declare const ListItem: ((props: Omit<Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -669,13 +699,41 @@ export declare const ListItem: ((props: Omit<Omit<TextParentStyles, "TextCompone
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
 }>> & ThemeableProps & {
+    /**
+     * add icon before, passes color and size automatically if Component
+     */
     icon?: IconProp | undefined;
+    /**
+     * add icon after, passes color and size automatically if Component
+     */
     iconAfter?: IconProp | undefined;
+    /**
+     * adjust icon relative to size
+     */
+    /**
+     * default: -1
+     */
     scaleIcon?: number | undefined;
+    /**
+     * make the spacing elements flex
+     */
     spaceFlex?: number | boolean | undefined;
+    /**
+     * adjust internal space relative to icon size
+     */
     scaleSpace?: number | undefined;
+    /**
+     * title
+     */
     title?: React.ReactNode;
+    /**
+     * subtitle
+     */
     subTitle?: React.ReactNode;
+    /**
+     * will not wrap text around `children` only, "all" will not wrap title or subTitle
+     */
+    noTextWrap?: boolean | "all" | undefined;
 } & React.RefAttributes<TamaguiElement>, "theme" | "themeInverse"> & {
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     themeInverse?: boolean | undefined;

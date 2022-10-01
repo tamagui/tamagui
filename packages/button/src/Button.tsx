@@ -26,18 +26,28 @@ type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
 export type ButtonProps = Omit<TextParentStyles, 'TextComponent'> &
   GetProps<typeof ButtonFrame> &
   ThemeableProps & {
-    // add icon before, passes color and size automatically if Component
+    /**
+     * add icon before, passes color and size automatically if Component
+     */
     icon?: IconProp
-    // add icon after, passes color and size automatically if Component
+    /**
+     * add icon after, passes color and size automatically if Component
+     */
     iconAfter?: IconProp
-    // adjust icon relative to size
-    // default: -1
+    /**
+     * adjust icon relative to size
+     */
+    /**
+     * default: -1
+     */
     scaleIcon?: number
-    // dont wrap inner contents in a text element
-    noTextWrap?: boolean
-    // make the spacing elements flex
+    /**
+     * make the spacing elements flex
+     */
     spaceFlex?: number | boolean
-    // adjust internal space relative to icon size
+    /**
+     * adjust internal space relative to icon size
+     */
     scaleSpace?: number
   }
 
