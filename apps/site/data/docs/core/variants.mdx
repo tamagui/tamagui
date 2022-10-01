@@ -208,9 +208,26 @@ const Square = styled(Stack, {
 })
 ```
 
-#### Catch-all spread variant
+#### Dynamic variants
 
-Using '...' lets you use a function to grab all variants that don't match:
+If you want full control, a simple function works as a Variant:
+
+```tsx
+const Square = styled(Stack, {
+  variants: {
+    size: (size: number) => {
+      return {
+        width: size,
+        height: size,
+      }
+    },
+  } as const,
+})
+```
+
+#### Catch-all variants
+
+Much like a dynamic variant, except it lets you use it alongside the other typed variants you need. Use '...' and it will grab all variants that don't match:
 
 ```tsx
 import { Stack, styled } from '@tamagui/core'
@@ -221,7 +238,7 @@ export const ColorfulStack = styled(Stack, {
       true: {
         color: 'red',
       },
-      '...': (val) => {
+      '...': (val: string) => {
         // this will catch any other values that don't match
         return {
           color: val,
