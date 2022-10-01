@@ -9,7 +9,7 @@
  */
 
 import * as React from 'react'
-import { StyleSheet } from 'react-native-web-internals'
+import { StyleSheet, TextAncestorContext } from 'react-native-web-internals'
 import {
   forwardPropsListView,
   getLocaleDirection,
@@ -22,7 +22,6 @@ import {
 } from 'react-native-web-internals'
 
 import createElement from '../createElement/index.js'
-import TextAncestorContext from '../Text/TextAncestorContext.js'
 import type { PlatformMethods } from '../types.js'
 import type { ViewProps } from './types.js'
 

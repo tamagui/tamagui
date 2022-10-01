@@ -9,7 +9,7 @@
  */
 
 import * as React from 'react'
-import { StyleSheet, getLocaleDirection } from 'react-native-web-internals'
+import { StyleSheet, TextAncestorContext, getLocaleDirection } from 'react-native-web-internals'
 import {
   forwardPropsListText,
   pick,
@@ -22,7 +22,6 @@ import {
 
 import createElement from '../createElement/index.js'
 import type { PlatformMethods } from '../types.js'
-import TextAncestorContext from './TextAncestorContext.js'
 import type { TextProps } from './types.js'
 
 const pickProps = (props) => pick(props, forwardPropsListText)

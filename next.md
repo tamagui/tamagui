@@ -5,7 +5,7 @@
   - add guide "Migrating from Dripsy/etc" sx prop demo
   - release tailwind package + guide "Tailind style props"
   - `display: flex; is not being applied to elements correctly`
-  - kitchen sink in snack
+  - can actually remove react-native dep entirely without a lot of trouble
   - 1.0 blog post
   - 
 

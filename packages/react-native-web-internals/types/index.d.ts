@@ -6,6 +6,7 @@ export * from './modules/useLocale/index.js';
 export * from './modules/useMergeRefs/index.js';
 export * from './modules/usePlatformMethods/index.js';
 export * from './modules/useResponderEvents/index.js';
+export { default as TextAncestorContext } from './TextAncestorContext';
 export { colorProps } from './colorProps.js';
 export { default as AccessibilityUtil } from './modules/AccessibilityUtil/index.js';
 export { default as canUseDOM } from './modules/canUseDOM.js';

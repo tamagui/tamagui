@@ -75,5 +75,4 @@ export { useLocaleContext } from './useLocaleContext/index.js'
 export { default as useWindowDimensions } from './useWindowDimensions/index.js'
 
 // // useful internals
-export { default as TextAncestorContext } from './Text/TextAncestorContext.js'
 export * from 'react-native-web-internals'

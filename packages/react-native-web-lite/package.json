@@ -22,7 +22,6 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
-    "./dist/exports/Text/TextAncestorContext": "./dist/esm/exports/Text/TextAncestorContext.js",
     "./dist/modules/*": "./dist/esm/modules/*/index.js",
     "./dist/exports/*": "./dist/esm/exports/*/index.js",
     "./dist/*": "./dist/cjs/*/index.js"
