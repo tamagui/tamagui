@@ -297,6 +297,7 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
         }
         if (shouldBlurOnSubmit && hostNode != null) {
           hostNode.blur()
+          setTimeout(() => hostNode.blur(), 0)
         }
       }
     }
