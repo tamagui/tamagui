@@ -89,7 +89,9 @@ const HeroTop = memo(() => {
               maxWidth: 1200,
             }}
           >
-            <span className="rainbow clip-text">Write less,</span> runs&nbsp;faster.
+            <span className="rainbow clip-text">Write less,</span>
+            <br />
+            runs&nbsp;faster.
           </H1>
 
           <YStack

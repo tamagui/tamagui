@@ -10,6 +10,7 @@ import {
   TamaguiInternalConfig,
 } from '../types'
 import { useSafeRef } from './useSafeRef'
+import { getConfig } from '..'
 
 export const mediaState: MediaQueryState =
   // development time safeguard
@@ -51,6 +52,18 @@ export const getMedia = () => {
   return mediaState
 }
 
+// for SSR capture it at time of startup
+let currentMediaState: MediaQueryState | null
+let initialMediaState: MediaQueryState | null
+// fairly concurrent mode sketchy but such an edge case ok for now
+let hasFinishedInitialRender = false
+export const getCurrentMediaState = () => {
+  if (getConfig().disableSSR || hasFinishedInitialRender) {
+    return currentMediaState || {}
+  }
+  return initialMediaState || {}
+}
+
 const dispose = new Set<Function>()
 
 export const configureMedia = (config: TamaguiInternalConfig) => {
@@ -61,14 +74,11 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   }
   Object.assign(mediaQueryConfig, media)
   currentMediaState = { ...mediaState }
+  initialMediaState = currentMediaState
   if (config.disableSSR) {
     setupMediaListeners()
   }
 }
-
-// for SSR capture it at time of startup
-let currentMediaState: MediaQueryState | null
-export const getCurrentMediaState = () => currentMediaState
 
 function unlisten() {
   dispose.forEach((cb) => cb())
@@ -122,6 +132,9 @@ function setupMediaListeners() {
   })
 }
 
+const onIdle =
+  typeof requestIdleCallback === 'undefined' ? (cb) => setTimeout(cb, 100) : requestIdleCallback
+
 export function useMediaQueryListeners(config: TamaguiInternalConfig) {
   if (config.disableSSR) {
     return
@@ -129,6 +142,11 @@ export function useMediaQueryListeners(config: TamaguiInternalConfig) {
 
   useEffect(() => {
     setupMediaListeners()
+
+    onIdle(() => {
+      hasFinishedInitialRender = true
+    })
+
     return unlisten
   }, [])
 }
@@ -136,7 +154,7 @@ export function useMediaQueryListeners(config: TamaguiInternalConfig) {
 export function useMedia(): {
   [key in MediaQueryKey]: boolean
 } {
-  const [state, setState] = useState(currentMediaState || {})
+  const [state, setState] = useState(getCurrentMediaState())
   const keys = useSafeRef({} as Record<string, boolean>)
 
   function updateState() {
