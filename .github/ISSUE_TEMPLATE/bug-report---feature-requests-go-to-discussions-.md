@@ -23,7 +23,7 @@ Make your changes and then push and link it here. 🙏🙏🙏🙏🙏
 
 **System Info (please complete the following information):** 
 
-Output of `npx envinfo --system --npmPackages '{vitest,vite,@vitejs/*}' --binaries --browsers`
+Output of `npx envinfo --system --npmPackages --binaries --browsers`
 
 **Tamagui info**
 
