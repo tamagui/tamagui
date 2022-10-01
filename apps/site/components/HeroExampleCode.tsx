@@ -1,3 +1,4 @@
+// debug
 import { ChevronRight, FastForward } from '@tamagui/feather-icons'
 import Link from 'next/link'
 import React from 'react'
@@ -21,8 +22,6 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
     'tree flattening',
     'code elimination',
   ]
-  const media = useMedia()
-  const shouldShowCol = media.sm || onlyDemo
 
   return (
     <>
@@ -40,7 +39,13 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
             </YStack>
           )}
 
-          <XGroup chromeless theme={tint} maxWidth="100%" als="center" scrollable>
+          <XGroup
+            className="scroll-horizontal"
+            chromeless
+            theme={tint}
+            maxWidth="100%"
+            als="center"
+          >
             {examples.map((example, i) => {
               return (
                 <Button
@@ -62,17 +67,18 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
 
           <XStack
             pos="relative"
-            $sm={{ flexDirection: 'column' }}
             jc="space-between"
-            {...(shouldShowCol && {
-              fd: onlyDemo ? 'column' : 'row',
+            $sm={{ fd: 'column' }}
+            {...(onlyDemo && {
+              fd: 'column',
             })}
           >
             <YStack
               key={`input${activeIndex}`}
               f={1}
               maxWidth="50%"
-              {...(shouldShowCol && { maxWidth: '100%' })}
+              {...(onlyDemo && { maxWidth: '100%' })}
+              $sm={{ maxWidth: '100%' }}
               px="$2"
               space="$4"
             >
@@ -84,7 +90,8 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
             </YStack>
 
             <YStack
-              {...(shouldShowCol && { display: 'none' })}
+              $sm={{ display: 'none' }}
+              {...(onlyDemo && { display: 'none' })}
               pos="absolute"
               left={0}
               right={0}
@@ -103,7 +110,8 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
               key={`output${activeIndex}`}
               f={1}
               maxWidth="50%"
-              {...(shouldShowCol && { maxWidth: '100%', mt: '$6' })}
+              {...(onlyDemo && { maxWidth: '100%', mt: '$6' })}
+              $sm={{ maxWidth: '100%', mt: '$6' }}
               px="$2"
               space="$4"
             >
