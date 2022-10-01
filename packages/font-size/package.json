@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-size",
-  "version": "1.0.1-beta.183",
+  "version": "1.0.1-beta.184",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -19,14 +19,14 @@
     "lint:fix": "yarn lint --fix"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.183"
+    "@tamagui/core": "^1.0.1-beta.184"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.183",
+    "@tamagui/build": "^1.0.1-beta.184",
     "react": "*",
     "react-dom": "*"
   },

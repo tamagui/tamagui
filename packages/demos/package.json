@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/demos",
-  "version": "1.0.1-beta.183",
+  "version": "1.0.1-beta.184",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -26,28 +26,28 @@
     }
   },
   "dependencies": {
-    "@tamagui/avatar": "^1.0.1-beta.183",
-    "@tamagui/button": "^1.0.1-beta.183",
-    "@tamagui/config-base": "^1.0.1-beta.183",
-    "@tamagui/core": "^1.0.1-beta.183",
-    "@tamagui/drawer": "^1.0.1-beta.183",
-    "@tamagui/list-item": "^1.0.1-beta.183",
-    "@tamagui/logo": "^1.0.1-beta.183",
-    "@tamagui/menu": "^1.0.1-beta.183",
-    "@tamagui/popover": "^1.0.1-beta.183",
-    "@tamagui/progress": "^1.0.1-beta.183",
-    "@tamagui/select": "^1.0.1-beta.183",
-    "@tamagui/sheet": "^1.0.1-beta.183",
-    "@tamagui/slider": "^1.0.1-beta.183",
-    "@tamagui/stacks": "^1.0.1-beta.183",
-    "tamagui": "^1.0.1-beta.183"
+    "@tamagui/avatar": "^1.0.1-beta.184",
+    "@tamagui/button": "^1.0.1-beta.184",
+    "@tamagui/config-base": "^1.0.1-beta.184",
+    "@tamagui/core": "^1.0.1-beta.184",
+    "@tamagui/drawer": "^1.0.1-beta.184",
+    "@tamagui/list-item": "^1.0.1-beta.184",
+    "@tamagui/logo": "^1.0.1-beta.184",
+    "@tamagui/menu": "^1.0.1-beta.184",
+    "@tamagui/popover": "^1.0.1-beta.184",
+    "@tamagui/progress": "^1.0.1-beta.184",
+    "@tamagui/select": "^1.0.1-beta.184",
+    "@tamagui/sheet": "^1.0.1-beta.184",
+    "@tamagui/slider": "^1.0.1-beta.184",
+    "@tamagui/stacks": "^1.0.1-beta.184",
+    "tamagui": "^1.0.1-beta.184"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.183",
+    "@tamagui/build": "^1.0.1-beta.184",
     "react": "*",
     "react-dom": "*"
   },

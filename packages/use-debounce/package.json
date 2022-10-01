@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-debounce",
-  "version": "1.0.1-beta.183",
+  "version": "1.0.1-beta.184",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -19,7 +19,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.183",
+    "@tamagui/build": "^1.0.1-beta.184",
     "react": "*"
   },
   "peerDependencies": {
