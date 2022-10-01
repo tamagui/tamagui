@@ -7,11 +7,28 @@ declare type ButtonIconProps = {
 };
 declare type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null;
 export declare type ButtonProps = Omit<TextParentStyles, 'TextComponent'> & GetProps<typeof ButtonFrame> & ThemeableProps & {
+    /**
+     * add icon before, passes color and size automatically if Component
+     */
     icon?: IconProp;
+    /**
+     * add icon after, passes color and size automatically if Component
+     */
     iconAfter?: IconProp;
+    /**
+     * adjust icon relative to size
+     */
+    /**
+     * default: -1
+     */
     scaleIcon?: number;
-    noTextWrap?: boolean;
+    /**
+     * make the spacing elements flex
+     */
     spaceFlex?: number | boolean;
+    /**
+     * adjust internal space relative to icon size
+     */
     scaleSpace?: number;
 };
 export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -190,6 +207,9 @@ export declare function useButton(props: ButtonProps, { Text }?: {
         hrefAttrs?: {
             target?: "top" | "_blank" | "_self" | "_top" | "blank" | "self" | undefined;
             rel?: string | undefined;
+            /**
+             * make the spacing elements flex
+             */
             download?: boolean | undefined;
         } | undefined;
         onMouseDown?: (((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) & ((e: MouseEvent) => any)) | undefined;
@@ -210,7 +230,9 @@ export declare function useButton(props: ButtonProps, { Text }?: {
         animation?: import("@tamagui/core").AnimationProp | undefined;
         animateOnly?: string[] | undefined;
         debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined;
+        disabled?: boolean | undefined; /**
+         * make the spacing elements flex
+         */
         className?: string | undefined;
         themeShallow?: boolean | undefined;
         id?: string | undefined;
@@ -512,11 +534,28 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
 }>> & ThemeableProps & {
+    /**
+     * add icon before, passes color and size automatically if Component
+     */
     icon?: IconProp | undefined;
+    /**
+     * add icon after, passes color and size automatically if Component
+     */
     iconAfter?: IconProp | undefined;
+    /**
+     * adjust icon relative to size
+     */
+    /**
+     * default: -1
+     */
     scaleIcon?: number | undefined;
-    noTextWrap?: boolean | undefined;
+    /**
+     * make the spacing elements flex
+     */
     spaceFlex?: number | boolean | undefined;
+    /**
+     * adjust internal space relative to icon size
+     */
     scaleSpace?: number | undefined;
 } & React.RefAttributes<TamaguiElement>, "theme" | "themeInverse"> & {
     theme?: import("@tamagui/core").ThemeName | null | undefined;

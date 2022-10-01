@@ -23,24 +23,44 @@ React['createElement']
 type ListItemIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
 
-export type ListItemProps = Omit<TextParentStyles, 'TextComponent'> &
+export type ListItemProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> &
   GetProps<typeof ListItemFrame> &
   ThemeableProps & {
-    // add icon before, passes color and size automatically if Component
+    /**
+     * add icon before, passes color and size automatically if Component
+     */
     icon?: IconProp
-    // add icon after, passes color and size automatically if Component
+    /**
+     * add icon after, passes color and size automatically if Component
+     */
     iconAfter?: IconProp
-    // adjust icon relative to size
-    // default: -1
+    /**
+     * adjust icon relative to size
+     */
+    /**
+     * default: -1
+     */
     scaleIcon?: number
-    // make the spacing elements flex
+    /**
+     * make the spacing elements flex
+     */
     spaceFlex?: number | boolean
-    // adjust internal space relative to icon size
+    /**
+     * adjust internal space relative to icon size
+     */
     scaleSpace?: number
-    // title
+    /**
+     * title
+     */
     title?: React.ReactNode
-    // subtitle
+    /**
+     * subtitle
+     */
     subTitle?: React.ReactNode
+    /**
+     * will not wrap text around `children` only, "all" will not wrap title or subTitle
+     */
+    noTextWrap?: boolean | 'all'
   }
 
 export const ListItemFrame = styled(ThemeableStack, {
@@ -155,6 +175,7 @@ export const useListItem = (
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = getVariableValue(iconSize) * scaleSpace
+  // @ts-ignore noTextWrap = all is ok
   const contents = wrapChildrenInText(Text, mediaActiveProps)
 
   return {
@@ -172,11 +193,11 @@ export const useListItem = (
           {/* helper for common title/subtitle pttern */}
           {Boolean(title || subTitle) ? (
             <YStack flex={1}>
-              <Title size={size}>{title}</Title>
+              {noTextWrap === 'all' ? title : <Title size={size}>{title}</Title>}
               {subTitle ? (
                 <>
                   <Spacer flex size={spaceSize * 0.333} />
-                  {typeof subTitle === 'string' ? (
+                  {typeof subTitle === 'string' && noTextWrap !== 'all' ? (
                     // TODO can use theme but we need to standardize to alt themes
                     // or standardize on subtle colors in themes
                     <Subtitle size={subtitleSize}>{subTitle}</Subtitle>

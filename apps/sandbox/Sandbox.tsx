@@ -3,33 +3,11 @@ import '@tamagui/polyfill-dev'
 
 import '../site/app.css'
 
-import {
-  AnimationsDemo,
-  DialogDemo,
-  FormsDemo,
-  GroupDemo,
-  SelectDemo,
-  SheetDemo,
-} from '@tamagui/demos'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
-import {
-  Button,
-  FontLanguage,
-  Paragraph,
-  ScrollView,
-  Sheet,
-  Square,
-  TamaguiProvider,
-  XStack,
-  getTokens,
-  getVariable,
-  styled,
-  useTheme,
-} from 'tamagui'
+import { Button, FontLanguage, ListItem, Paragraph, Sheet, Square, TamaguiProvider } from 'tamagui'
 
 import config from './tamagui.config'
-import { TestFontTokensInVariants } from './TestFontTokensInVariants'
 
 // webpack fix..
 if (typeof require !== 'undefined') {
@@ -99,6 +77,9 @@ export const Sandbox = () => {
         }}
       >
         <Test />
+
+        <ListItem noTextWrap>hello</ListItem>
+
         {/* <TestFontTokensInVariants type="H1" size="large">
           Hello world
         </TestFontTokensInVariants> */}
