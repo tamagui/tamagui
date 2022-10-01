@@ -81,7 +81,7 @@ import { Heading } from './Heading'
 
 const App = (props) => (
   <Stack px="$2" w={550} $gtSm={{ px: '$6' }}>
-    <Heading fs={props.large ? '$2' : '$1'}>
+    <Heading inverse={props.inverse}>
       Lorem ipsum dolor.
     </Text>
   </Stack>
@@ -119,7 +119,8 @@ export const Heading = styled(Text, {
     c: 'color',
     bc: 'backgroundColor',
     fs: 'fontSize',
-  }
+  },
+  // ...the rest of your configuration
 })`,
         },
       ],
@@ -135,7 +136,7 @@ const _cn2 = " _color-scmqyp _d-1471scf _ff-187pbxx"
 const _cn = " _d-6koalj _fd-eqz5dr _fs-1q142lx _pl-11jtx42 _pr-4a8ukp _w-11mp6g5 _pl-_gtSm_1hxi05q _pr-_gtSm_poy3ov"
 
 const App = (props) => <div className={_cn}>
-  <h1 className={_cn2 + ' ' + props.large ? _cn3 : _cn4}>
+  <h1 className={_cn2 + ' ' + props.inverse ? _cn3 : _cn4}>
     Lorem ipsum dolor.
   </h1>
 </div>`,
@@ -152,7 +153,7 @@ const App = (props) => <div className={_cn}>
 @media screen and (min-width: 861px) { :root:root ._pl-_gtSm_1hxi05q{padding-left:var(--space-6);} }
 @media screen and (min-width: 861px) { :root:root ._pr-_gtSm_poy3ov{padding-right:var(--space-6);} }
 ._d-1471scf{display:inline;}
-._fontFamily-187pbxx{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+._fontFamily-187pbxx{font-family:-apple-system,Helvetica,Arial,sans-serif;}
 ._fontSize-7uzi8p{font-size:var(--fontSize-2);}`,
           language: 'css',
         },
@@ -343,11 +344,11 @@ const App = () => {
           code: `._d-6koalj{display:flex;}
 ._fd-eqz5dr{flex-direction:column;}
 ._fs-1q142lx{flex-shrink:0;}
-@media screen and (max-width: 860px) { :root:root ._t-_sm_1exagq{-webkit-transform:translateY(10px);transform:translateY(10px);} }
-@media not all and (max-width: 860px) { :root:root ._t-_sm0_1wpzndr{-webkit-transform:translateY(0px);transform:translateY(0px);} }
+@media screen and (max-width: 860px) { :root:root ._t-_sm_1exagq{transform:translateY(10px);} }
+@media not all and (max-width: 860px) { :root:root ._t-_sm0_1wpzndr{transform:translateY(0px);} }
 @media screen and (min-width: 1120px) { :root:root:root ._bc-_lg_no4z4g{background-color:var(--red);} }
 @media not all and (min-width: 1120px) { :root:root:root ._bc-_lg0_1qoifqd{background-color:var(--blue);} }
-@media screen and (min-width: 1280px) { :root:root:root:root ._t-_xl_gqa6p0{-webkit-transform:translateY(var(--space2));transform:translateY(var(--space2));} }`,
+@media screen and (min-width: 1280px) { :root:root:root:root ._t-_xl_gqa6p0{transform:translateY(var(--space2));} }`,
           language: 'css',
         },
       ],

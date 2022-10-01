@@ -50,7 +50,7 @@ const HeroTop = memo(() => {
         left={-1000}
         right={-1000}
         pe="none"
-        o={0.1}
+        o={0.08}
       />
 
       <Header />
@@ -162,12 +162,12 @@ const HeroTop = memo(() => {
           </YStack>
         </YStack>
 
-        <XStack ai="center" jc="center" space="$2" $xxs={{ fd: 'column', ai: 'center' }}>
+        <XStack ai="center" jc="center" space="$2" $xxs={{ ai: 'center', fw: 'wrap' }}>
           <NextLink href="https://github.com/tamagui/tamagui" passHref>
             <YStack
-              p="$4"
+              p="$6"
+              $sm={{ p: '$3' }}
               opacity={0.65}
-              elevation="$2"
               hoverStyle={{ opacity: 1 }}
               tag="a"
               target="_blank"
@@ -179,52 +179,72 @@ const HeroTop = memo(() => {
             </YStack>
           </NextLink>
 
-          <NextLink prefetch={false} href="/docs/intro/compiler" passHref>
-            <Button
-              accessibilityLabel="Get started (docs)"
-              fontFamily="$silkscreen"
-              tag="a"
-              size="$5"
-              borderRadius={1000}
-              fontWeight="800"
-              bordered
-              bw={2}
-              mx="$2"
+          <XStack
+            ai="center"
+            jc="center"
+            space="$2"
+            $xxs={{
+              // words web-only
               // @ts-ignore
-              tabIndex={0}
-            >
-              <ButtonText fontFamily="$silkscreen" size="$7">
-                How?
-              </ButtonText>
-            </Button>
-          </NextLink>
+              order: '-1',
+              mx: '50%',
+            }}
+          >
+            <NextLink prefetch={false} href="/docs/intro/compiler" passHref>
+              <Button
+                accessibilityLabel="Get started (docs)"
+                fontFamily="$silkscreen"
+                tag="a"
+                size="$5"
+                borderRadius={1000}
+                fontWeight="800"
+                bordered
+                bw={2}
+                mx="$2"
+                // @ts-ignore
+                tabIndex={0}
+                elevation="$2"
+                pressStyle={{
+                  elevation: '$0',
+                }}
+              >
+                <ButtonText fontFamily="$silkscreen" size="$7">
+                  How?
+                </ButtonText>
+              </Button>
+            </NextLink>
 
-          <NextLink prefetch={false} href="/docs/intro/introduction" passHref>
-            <Button
-              accessibilityLabel="Get started (docs)"
-              fontFamily="$silkscreen"
-              tag="a"
-              size="$5"
-              borderRadius={1000}
-              fontWeight="800"
-              bordered
-              bw={2}
-              mx="$2"
-              // @ts-ignore
-              tabIndex={0}
-            >
-              <ButtonText fontFamily="$silkscreen" size="$7">
-                Docs
-              </ButtonText>
-            </Button>
-          </NextLink>
+            <NextLink prefetch={false} href="/docs/intro/introduction" passHref>
+              <Button
+                accessibilityLabel="Get started (docs)"
+                fontFamily="$silkscreen"
+                tag="a"
+                size="$5"
+                borderRadius={1000}
+                fontWeight="800"
+                bordered
+                bw={2}
+                mx="$2"
+                // @ts-ignore
+                tabIndex={0}
+                elevation="$2"
+                pressStyle={{
+                  elevation: '$0',
+                }}
+              >
+                <ButtonText fontFamily="$silkscreen" size="$7">
+                  Docs
+                </ButtonText>
+              </Button>
+            </NextLink>
+          </XStack>
 
           <NextLink href="https://discord.gg/4qh6tdcVDa" passHref>
             <YStack
-              p="$4"
+              p="$6"
+              $sm={{ p: '$3' }}
               ml="$-2"
               opacity={0.65}
-              elevation="$2"
               hoverStyle={{ opacity: 1 }}
               tag="a"
               target="_blank"
@@ -238,7 +258,7 @@ const HeroTop = memo(() => {
         </XStack>
       </YStack>
 
-      <Spacer size="$9" />
+      <Spacer size="$7" />
     </ContainerLarge>
   )
 })
