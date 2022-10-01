@@ -11,8 +11,12 @@ function worm(root = false) {
         return worm()
       }
 
+  obj.displayName = `ProxyWorm - Check excludeReactNativeWebExports`
+  obj._isProxyWorm = true
+
   return new Proxy(obj, {
-    get() {
+    get(_, key) {
+      if (Reflect.has(obj, key)) return Reflect.get(obj, key)
       return worm()
     },
     apply() {
