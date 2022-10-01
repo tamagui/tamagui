@@ -34,9 +34,12 @@ jobs:
 
       - name: Install playwright
         run: npx playwright install
-        
-      - name: Test
-        run: yarn test
+
+      - uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          command: 'yarn test'
 
   lint:
     runs-on: ubuntu-latest
