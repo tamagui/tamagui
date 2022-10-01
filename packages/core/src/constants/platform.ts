@@ -23,3 +23,19 @@ export const useIsomorphicLayoutEffect = isRSC ? idFn : isServer ? useEffect : u
 export const isChrome = typeof navigator !== 'undefined' && /Chrome/.test(navigator.userAgent || '')
 export const isWebTouchable = isClient && 'ontouchstart' in window
 export const isTouchable = !isWeb || isWebTouchable
+
+if (process.env.NODE_ENV === 'development') {
+  if (!process.env.TAMAGUI_TARGET) {
+    // eslint-disable-next-line no-console
+    console.warn(`Must set TAMAGUI_TARGET to "web" or "native"`)
+  } else if (
+    isClient &&
+    process.env.TAMAGUI_TARGET !== 'web' &&
+    process.env.TAMAGUI_IGNORE_TARGET !== '1'
+  ) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `Must set TAMAGUI_TARGET to "web" for web apps - if you have window defined outside of the browser, set TAMAGUI_IGNORE_TARGET=1 to hide this`
+    )
+  }
+}
