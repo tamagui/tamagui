@@ -5,8 +5,8 @@ export declare function addMediaQueryListener(key: MediaQueryKey, cb: MediaListe
 export declare function removeMediaQueryListener(key: MediaQueryKey, cb: MediaListener): void;
 export declare const mediaQueryConfig: MediaQueries;
 export declare const getMedia: () => MediaQueryState;
+export declare const getCurrentMediaState: () => MediaQueryState;
 export declare const configureMedia: (config: TamaguiInternalConfig) => void;
-export declare const getCurrentMediaState: () => MediaQueryState | null;
 export declare function useMediaQueryListeners(config: TamaguiInternalConfig): void;
 export declare function useMedia(): {
     [key in MediaQueryKey]: boolean;
