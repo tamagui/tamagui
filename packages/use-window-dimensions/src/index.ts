@@ -13,7 +13,7 @@ const initialValue: ScaledSize = {
 }
 
 export function useWindowDimensions() {
-  const next = useWindowDimensionsRN()
+  const current = useWindowDimensionsRN()
   const didFinishSSR = useDidFinishSSR()
-  return didFinishSSR ? initialValue : next
+  return didFinishSSR ? current : initialValue
 }

@@ -1,9 +1,12 @@
-import { isRSC, isServer, isWeb } from '@tamagui/constants'
+import { isRSC, isServer } from '@tamagui/constants'
 import { useEffect, useState } from 'react'
 
 let finished = false
 const listeners = new Set<Function>()
 
+/**
+ * This effect should be at your root, so React finishes it "last"
+ */
 export function useSetupHasSSRRendered() {
   if (isServer || isRSC) {
     return

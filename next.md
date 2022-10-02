@@ -19,7 +19,6 @@
   - check animation flicker again
     - flicker on some enterStyle animation native (hermes only)
   - fix reanimated 2.9/3.0 __frame var
-  - windows without WSL
   - mismatch SSR SelectTrigger due to componentName override
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
@@ -86,6 +85,7 @@ plan for space + display none, two pronged
 
 Roadmap
 
+  - document tamagui "extras" use-did-finish-ssr etc
   - container queries
   - // enable shorthand for not having to switch modes to test when disabled by default
   - native should probably avoid all optimization when it can't flatten or else pass in a __optimized attribute, otherwise its duplicating the style processing by putting __style with all the defaults + re-adding it at runtime
