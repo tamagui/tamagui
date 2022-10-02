@@ -1,4 +1,4 @@
-import { isWeb } from '@tamagui/constants'
+import { isClient, isWeb } from '@tamagui/constants'
 import React, { useContext, useLayoutEffect, useState } from 'react'
 
 import { ThemeManagerContext } from '../helpers/ThemeManager'
@@ -15,20 +15,20 @@ export const ThemeReset = (props: { children?: any }) => {
   // this component doesn't work with SSR, so must run only client side
   // we could at least prevent more flickering by having the ssr head script
   // that changes to dark initially also go through and change all of these
-  if (!isWeb || typeof document !== 'undefined') {
+  if (isClient) {
     useLayoutEffect(() => {
       if (!themeManager) return
       if (name !== themeManager.parentName) {
         setName(themeManager.parentName)
       }
-    }, [themeManager?.parentName])
+    }, [name, themeManager, themeManager?.parentName])
 
     useLayoutEffect(() => {
       if (!themeManager) return
       return themeManager.onChangeTheme(() => {
         setName(themeManager.parentName)
       })
-    }, [])
+    }, [themeManager])
   }
 
   if (!themeManager || !props.children) {
