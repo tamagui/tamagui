@@ -35,6 +35,7 @@ import { Code, CodeInline } from './Code'
 import * as Demos from './demos'
 import { DocCodeBlock } from './DocsCodeBlock'
 import { ExternalIcon } from './ExternalIcon'
+import { Features } from './Features'
 import { HeroContainer } from './HeroContainer'
 import { ExampleAnimations } from './HeroExampleAnimations'
 import { Highlights } from './Highlights'
@@ -123,6 +124,7 @@ export const components = {
   Spacer,
   ExampleAnimations,
   ScrollView,
+  Features,
   Text,
   Paragraph,
   OffsetBox,

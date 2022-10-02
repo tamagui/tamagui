@@ -1,6 +1,6 @@
 ---
 title: The Frontend Trilemma
-description: Can we write ½ the code for 2x performance? Probably.
+description: Attempting to 2x the performance for apps written in ~½ the code.
 ---
 
 <IntroParagraph>
@@ -19,25 +19,19 @@ description: Can we write ½ the code for 2x performance? Probably.
   />
 </YStack>
 
-Let's call the center "write once, feels native." The **feels native** part is important because it's mostly impossible today (and at the limit, likely not even desirable).
+React Native recommends writing things twice generally for the best UX - as is made very clear in the `<title>` of the homepage itself: "[learn once, write anywhere](https://reactnative.dev/)" as opposed to "write once, runs everywhere". This pays off today with native-feeling and performing apps, but still saving a lot of development time.
 
-The reasons for that are many, but a primary one is simply that you lose optimizations that'd normally be easy by targeting platforms individually. In this document, we introduce **a realistic 20-50% extra code-sharing on React Native + Web, without sacrificing that performance** (oftentimes even improving it).
+But we can imagine that center, a sort of platonic ideal of <strong>"write once, runs great everywhere"</strong>, as we're far from perfect today.
 
-The Tamagui Compiler optimizes apps in four different ways beyond basic CSS extraction with partial evaluation, static hoisting, code elimination, and tree-flattening.
+It would involve a few things:
 
-You can [skip the backstory to get straight to technical details](#how-tamagui-helps).
+- Some Rails-for-React framework with unified routing, generators, or whatever "all the batteries" means.
+- A huge UI kit that outputs to beautiful platform primitives confidently with flexible APIs.
+- An optimizing compiler that removes inline styles and outputs to native primitives.
 
-### Why Universal
+This document goes over the last one. The second one the Tamagui UI kit attempting to solve, but that will take a lot of time. And the first sounds hard.
 
-React Native enables quite a bit more code-sharing than ever before while still rendering to native primitives. But it recommends writing things twice generally for the best UX - as is made very clear in the `<title>` of the homepage itself: "[learn once, write anywhere](https://reactnative.dev/)" as opposed to "write once, runs everywhere."
-
-This is a smart strategy, and it can pay off in more native-feeling and performing apps.
-
-Still, the reality is that many companies large and small make _rational_ decisions to share code to some degree, up to and including nearly all of the visual code besides maybe a few high level views. In React, this is generally done using the excellent [React Native Web](https://necolas.github.io/react-native-web/).
-
-Pre product-market fit, for most types of apps it makes sense. Any app with a large surface area of features. Or any app where you want to experiment often and cheaply. Often the reason is as simple as budget, or time. It's not uncommon for bigger companies to share nearly all their code, too. To a significant degree, Twitter and Tinder both do this, but it only makes sense on apps like those that can sacrifice SEO, load time, and any complex interface.
-
-So that's where we are. Here's a very back-of-napkit chart of the % of code a team could share fully between Native and Web, using React Native, without sacrificing performance today:
+We'll argue that a "bump" much like the one with React Native Web made here, is possible with an optimizing compiler by reducing JS bundle size by a large %, and increasing render performance similarly:
 
 <YStack w="100%" mih={220} my="$4" als="center" $gtMd={{ scale: 1.5, my: 100 }}>
   <Image
@@ -50,9 +44,9 @@ So that's where we are. Here's a very back-of-napkit chart of the % of code a te
   />
 </YStack>
 
-Don't sweat the details too much - and label the Y how you want, a decent estimate would be 0-100%, but depending on how picky you are, it could swing to something like 0-50%.
+The Tamagui Compiler optimizes apps in four different ways beyond basic CSS extraction with partial evaluation, static hoisting, code elimination, and tree-flattening.
 
-Our original trilemma is maybe easier seen as a "choose your path" of three options:
+You can [kkip this next section to get technical details without backstory](#how-tamagui-helps).
 
 <Table>
   <TableCol>
@@ -93,22 +87,31 @@ Our original trilemma is maybe easier seen as a "choose your path" of three opti
   </TableCol>
 </Table>
 
-At best, without sacrificing performance, a React Native app today can share much of its state and utilities (like hooks), as well as _some amount of visual components_. But the more code it shares, the more performance suffers. This is more true on the web, where the CSS-in-JS approach of React Native Web leads to large bundle-sizes and largely reduced performance in critical areas like responsive styles. This is mostly due to limitations in the `StyleSheet` API.
+Universal apps (those that you "write once" and they "runs everywhere") make sense today for many cases, whether side-projecting, SEO-insensitive, enterprise-only, shipping faster, experimenting more, pre-product-market fit, or just generally a simple app. Twitter and Tinder both do this to a larger degree.
 
-For now, this means your media queries, interactive styles, and all theme, animation, and dynamic styles end up running on your main thread, oftentimes re-reconciling a large percents of the React tree, and causing laggy behavior in areas that most contribute to UX.
+But today at best we use hooks for media queries and themes, causing big render costs on the web where both are more performance sensitive. Combined with the CSS-in-JS approach of React Native Web and even low-complexity pages easily drop from 100% Lighthouse to half or worse.
+
+For now, this means your media queries, interactive styles, and all theme, animation, and dynamic styles end up running on your main thread, oftentimes re-reconciling a large percents of the React tree in sensitive areas to UX.
 
 ### How Tamagui Helps
 
-The Tamagui compiler makes writing Universal Apps much faster - especially on the web - through its optimizing compiler. It reduces bundle size, improves runtime performance, and outputs code that targets native primitives instead of running in JS (on the web, that's CSS media queries, CSS variables, and CSS pseudo styles).
+`@tamagui/static` is an optimizing compiler for React Native with four main features:
 
-It optimizes:
+<YStack py="$4">
+  <Features
+    size="$5"
+    items={[
+      `Extracts all types of styling syntax into atomic CSS.`,
+      `Removes a high % of inline styles with partial evaluation and hoisting.`,
+      `Reduces tree depth, flattening expensive styled components into div or View.`,
+      `Evaluates useMedia and useTheme hooks, turning logical expressions into media queries and CSS variables.`,
+    ]}
+  />
+</YStack>
 
-- Any usage of the `styled` factory function into atomic CSS.
-- Most inline styles using both `partial evaluation` and `hoisting`.
-- Tree depth, by turning your custom components into `div` or `View` when possible.
-- The included hooks `useMedia` and `useTheme`, turning even logical conditionals into static media queries or CSS variables.
+The output is smaller bundles, better runtime performance, and many more native primitives used on the web.
 
-A short demo:
+Here's what it does, in code:
 
 <TamaguiExamplesCode />
 
