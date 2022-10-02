@@ -58,7 +58,6 @@
     "@tamagui/tooltip": "^1.0.1-beta.188",
     "@tamagui/use-controllable-state": "^1.0.1-beta.188",
     "@tamagui/use-debounce": "^1.0.1-beta.188",
-    "@tamagui/use-did-finish-ssr": "^1.0.1-beta.188",
     "@tamagui/use-event": "^1.0.1-beta.188",
     "@tamagui/use-force-update": "^1.0.1-beta.188",
     "@tamagui/use-window-dimensions": "^1.0.1-beta.188",

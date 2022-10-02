@@ -104,6 +104,10 @@ Returns a ref that is false once unmounted.
 
 SSR-friendly, only true on client side touch device.
 
+### useDidFinishSSR
+
+SSR-friendly, returns true if SSR has completed on the client, false before hydration done. On server it's always false.
+
 ### useThemeName
 
 Returns the string name of the current theme.
