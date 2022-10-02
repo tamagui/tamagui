@@ -1,0 +1,35 @@
+{
+  "name": "@tamagui/use-did-finish-ssr",
+  "version": "1.0.1-beta.186",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "eslint",
+    "lint:fix": "yarn lint --fix",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "react": "*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.186",
+    "@types/react": "^18.0.15",
+    "react-native": "*"
+  },
+  "peerDependencies": {
+    "react-native": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+}
