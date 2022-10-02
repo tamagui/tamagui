@@ -1,6 +1,6 @@
 ---
 title: Bye, frontend trilemma
-description: Getting ~2x the performance in ~½ the code.
+description: Getting ~2x the performance in ~½ the code on React.
 ---
 
 <IntroParagraph>
@@ -34,7 +34,7 @@ This document goes over the last one. The second one Tamagui UI is attempting, s
 <YStack w="100%" mih={220} my="$4" als="center" $gtMd={{ scale: 1.5, my: 100 }}>
   <Image
     title="How possible it is to share more code: a lot more with React Native, and again with React Native Web"
-    src="/code-sharing.svg"
+    src="/code-sharing2.svg"
     size="hero"
     height={220}
     width={380}
@@ -42,7 +42,7 @@ This document goes over the last one. The second one Tamagui UI is attempting, s
   />
 </YStack>
 
-This can be done especially on the web by reducing JS bundle size by a large % and greatly increasing render performance with reduced tree depth, logic, objects, and hooks. The Tamagui Compiler these all using partial evaluation, static hoisting, code elimination, and tree-flattening.
+This can be done especially on the web by reducing JS bundle size by a large % and greatly increasing render performance with reduced tree depth, logic, objects, and hooks. The Tamagui Compiler does this using partial evaluation, static extraction and hoisting, code elimination, and tree-flattening.
 
 You can [skip to the technical details without the backstory](#how-tamagui-helps) from here if you'd like.
 
@@ -85,11 +85,11 @@ You can [skip to the technical details without the backstory](#how-tamagui-helps
   </TableCol>
 </Table>
 
-Universal apps (those that you "write once" and they "runs everywhere") make sense today for many cases, whether side-projecting, SEO-insensitive, enterprise-only, shipping faster, experimenting more, pre product-market fit, or just generally have a simple UI. Twitter and Tinder are both examples, to a significant degree.
+Universal apps (those you "write once" that "run everywhere") make sense today for many cases: side-projecting, SEO-insensitive or enterprise-only apps, people who want to ship fast, experimenting more, or are pre-product-market fit, or generally any apps that needs simpler UI. Twitter and Tinder are two larger examples.
 
-But today, at best, we use hooks for media queries and themes, which basically touch most component. This causes whole-tree re-renders of expensive main-thread time on the web. Combine that with the CSS-in-JS approach of React Native Web greatly increasing bundle size, and even medium-complexity pages will drop from 100% Lighthouse to half or worse (our homepage, a good complex example due to showing off many features goes from in the 20s without the compiler on (and using well-written code that was optimized many times for low CLS, etc) to over 85 (though Lighthouse and it's seemingly stochastic scoring is another story).
+But today, at best, we use hooks for media queries and themes, which basically touch every component. This causes whole-tree re-renders and more expensive main-thread time in critical areas on the web. Combine that with the CSS-in-JS approach of React Native Web greatly increasing bundle size, and even medium-complexity pages will drop from 100% Lighthouse to half or worse (our homepage, a good complex example due to showing off many features that are well-optimized, goes from ~80s down to ~20s with the compiler off).
 
-All your media queries, interactive styles, themes, animations, and dynamic styles end up running on your main thread, and its easy to feel, especially if you want to make ambitious apps.
+With all your media queries, interactive styles, themes, animations, and dynamic styles in JS, it's hard to make ambitious apps that don't feel janky.
 
 ### How Tamagui Helps
 
