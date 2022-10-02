@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.0.1-beta.187",
+  "version": "1.0.1-beta.188",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -28,15 +28,15 @@
   ],
   "dependencies": {
     "@expo/match-media": "^0.3.0",
-    "@tamagui/compose-refs": "^1.0.1-beta.187",
-    "@tamagui/constants": "^1.0.1-beta.187",
-    "@tamagui/helpers": "^1.0.1-beta.187",
-    "@tamagui/normalize-css-color-lite": "^1.0.1-beta.187",
-    "@tamagui/rnw": "^1.0.1-beta.187",
-    "@tamagui/rnw-lite": "^1.0.1-beta.187",
-    "@tamagui/use-debounce": "^1.0.1-beta.187",
-    "@tamagui/use-event": "^1.0.1-beta.187",
-    "@tamagui/use-force-update": "^1.0.1-beta.187",
+    "@tamagui/compose-refs": "^1.0.1-beta.188",
+    "@tamagui/constants": "^1.0.1-beta.188",
+    "@tamagui/helpers": "^1.0.1-beta.188",
+    "@tamagui/normalize-css-color-lite": "^1.0.1-beta.188",
+    "@tamagui/rnw": "^1.0.1-beta.188",
+    "@tamagui/rnw-lite": "^1.0.1-beta.188",
+    "@tamagui/use-debounce": "^1.0.1-beta.188",
+    "@tamagui/use-event": "^1.0.1-beta.188",
+    "@tamagui/use-force-update": "^1.0.1-beta.188",
     "expo-screen-orientation": "^4.3.0",
     "hyphenate-style-name": "^1.0.4"
   },
@@ -45,7 +45,7 @@
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.187",
+    "@tamagui/build": "^1.0.1-beta.188",
     "@types/node": "^16.11.9",
     "@types/react": "^18.0.15",
     "csstype": "^3.0.10",
