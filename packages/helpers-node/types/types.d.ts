@@ -1,7 +1,6 @@
 export interface TamaguiOptions {
     components: string[];
     config?: string;
-    evaluateVars?: boolean;
     importsWhitelist?: string[];
     disable?: boolean;
     disableExtraction?: boolean;
@@ -9,11 +8,11 @@ export interface TamaguiOptions {
     disableDebugAttr?: boolean;
     disableExtractInlineMedia?: boolean;
     disableExtractVariables?: boolean | 'theme';
-    disableExtractFoundComponents?: boolean;
     excludeReactNativeWebExports?: string[];
-    exclude?: RegExp;
     logTimings?: boolean;
     prefixLogs?: string;
+    disableExtractFoundComponents?: boolean;
+    evaluateVars?: boolean;
     cssPath?: string;
     cssData?: any;
     deoptProps?: Set<string>;
