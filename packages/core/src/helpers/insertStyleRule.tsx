@@ -2,7 +2,7 @@
 // this should avoid re-inserts, but need to test the perf trade-offs
 // i tested with the site itself and the initial insert was trivial
 
-import { StyleObject } from '@tamagui/helpers'
+import type { StyleObject } from '@tamagui/helpers'
 
 const allSelectors = {}
 const allRules = {}
@@ -95,11 +95,12 @@ export function updateInserted() {
 
 function getTamaguiSelector(rule: CSSRule | null): readonly [string, CSSStyleRule] | null {
   if (rule instanceof CSSStyleRule) {
-    if (rule.selectorText.startsWith('._')) {
-      return [rule.selectorText.slice(1), rule]
+    const text = rule.selectorText
+    if (text.startsWith('._')) {
+      return [text.slice(1), rule]
     }
-    if (rule.selectorText.startsWith(':root') && rule.selectorText.includes('._')) {
-      return [getIdentifierFromTamaguiSelector(rule.selectorText), rule]
+    if (text.startsWith(':root') && text.includes('._')) {
+      return [getIdentifierFromTamaguiSelector(text), rule]
     }
   } else if (rule instanceof CSSMediaRule) {
     // tamagui only ever inserts 1 rule per media

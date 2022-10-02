@@ -1,5 +1,6 @@
 - 1.0
 
+  - lint isn't catching no console as error
   - intellisense on "lh" shorthand props and "letterSpacing"
   - kitchen sink snack
   - document simple functional variants: { sx: ()=>{} }

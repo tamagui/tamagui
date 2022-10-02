@@ -538,6 +538,7 @@ class ScrollView extends React.Component<any> {
     animated?: boolean
   ) {
     if (typeof x === 'number') {
+      // eslint-disable-next-line no-console
       console.warn(
         '`scrollResponderScrollTo(x, y, animated)` is deprecated. Use `scrollResponderScrollTo({x: 5, y: 5, animated: true})` instead.'
       )

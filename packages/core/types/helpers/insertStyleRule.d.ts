@@ -1,4 +1,4 @@
-import { StyleObject } from '@tamagui/helpers';
+import type { StyleObject } from '@tamagui/helpers';
 export declare const insertedTransforms: {};
 export declare const getAllSelectors: () => {};
 export declare const getAllRules: () => unknown[];
