@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@my/config": "*",
-    "tamagui": "^1.0.1-beta.188"
+    "tamagui": "^1.0.1-beta.189"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.188"
+    "@tamagui/build": "^1.0.1-beta.189"
   }
 }
