@@ -7286,6 +7286,7 @@ __metadata:
   resolution: "@tamagui/use-window-dimensions@workspace:packages/use-window-dimensions"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.189
+    "@tamagui/constants": ^1.0.1-beta.189
     "@types/react": ^18.0.15
     react: "*"
     react-native: "*"

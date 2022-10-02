@@ -1,4 +1,5 @@
-import { useLayoutEffect, useState } from 'react'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useState } from 'react'
 import { ScaledSize, useWindowDimensions as useWindowDimensionsRN } from 'react-native'
 
 /**
@@ -16,7 +17,7 @@ export function useWindowDimensions() {
   const [state, setState] = useState(initialValue)
   const current = useWindowDimensionsRN()
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setState(current)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current.height, current.width, current.fontScale, current.scale])
