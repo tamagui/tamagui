@@ -10,3 +10,52 @@ If you just want to start building an app, we recommend starting with the Tamagu
 ### Props
 
 See the [Props](/docs/intro/props) docs for more on the props they accept.
+
+### Usage
+
+You can use them directly:
+
+```tsx
+import { Stack, Text } from '@tamagui/core'
+
+export default () => (
+  <Stack margin={10}>
+    <Text color="$color">Hello</Text>
+  </Stack>
+)
+```
+
+or use them [with styled](/docs/core/styled) to create your own base level design system:
+
+```tsx
+import { Stack, styled } from '@tamagui/core'
+
+export const Circle = styled(Stack, {
+  borderRadius: 100_000_000,
+
+  variants: {
+    pin: {
+      top: {
+        position: 'absolute',
+        top: 0,
+      },
+    },
+
+    centered: {
+      true: {
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    },
+
+    size: {
+      '...size': (size, { tokens }) => {
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  } as const,
+})
+```

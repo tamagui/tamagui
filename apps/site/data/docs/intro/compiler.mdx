@@ -85,7 +85,7 @@ You can [skip to the technical details without the backstory](#how-tamagui-helps
   </TableCol>
 </Table>
 
-Universal apps (those you "write once" that "run everywhere") make sense today for many cases: side-projecting, SEO-insensitive or enterprise-only apps, people who want to ship fast, experimenting more, or are pre-product-market fit, or generally any apps that needs simpler UI. Twitter and Tinder are two larger examples.
+Universal apps (those you "write once" that "run everywhere") make sense today for many cases: side-projecting, SEO-insensitive or enterprise-only apps, people who want to ship fast, experiment more, are pre-product-market fit, or generally have apps with simpler UI. Twitter and Tinder are two larger examples of this.
 
 But today, at best, we use hooks for media queries and themes, which basically touch every component. This causes whole-tree re-renders and more expensive main-thread time in critical areas on the web. Combine that with the CSS-in-JS approach of React Native Web greatly increasing bundle size, and even medium-complexity pages will drop from 100% Lighthouse to half or worse (our homepage, a good complex example due to showing off many features that are well-optimized, goes from ~80s down to ~20s with the compiler off).
 
@@ -137,7 +137,7 @@ The compiler itself deserves more detail, which we'll expand on in the blog. For
 
 Compilers can dramatically improve code sharing without the typical sacrifice of performance. They don't solve every problem of universal apps, but by making responsive styling, themes and interactive styles all perform at native levels, they unlock sharing a much larger percentage of the components located in the middle to bottom of the render tree in apps.
 
-It gives us a new choice:
+It gives us a new choice, "Universal + Compiler" that lets us ship fast while still feeling native:
 
 <Table my="$8">
   <TableCol>

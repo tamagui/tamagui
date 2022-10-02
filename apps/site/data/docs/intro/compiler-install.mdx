@@ -11,7 +11,7 @@ description: Adding the compiler to your apps.
 
 The Tamagui Compiler has plugins available for [Webpack](#webpack), [Next.js](#nextjs), [Vite](#vite), [Metro](#metro) and [Expo](#expo). With more detail in the guides for [Next.js](/docs/guides/next-js), [Expo](/docs/guides/expo), and [Vite](/docs/guides/vite).
 
-The all accept the following options:
+They all accept the following options:
 
 <PropsTable
   data={[
@@ -44,7 +44,7 @@ The all accept the following options:
       required: false,
       type: 'boolean',
       typeSimple: 'enum',
-      default: true,
+      default: 'true',
       description:
         'Tamagui outputs information for each file it compiles on how long it took to run, how many components it optimized, and how many it flattened. Set to false to disable these logs.',
     },
@@ -53,7 +53,7 @@ The all accept the following options:
       required: false,
       type: 'boolean',
       typeSimple: 'enum',
-      default: false,
+      default: 'false',
       description: 'Disable everything - debug and extraction.',
     },
     {
@@ -61,7 +61,7 @@ The all accept the following options:
       required: false,
       type: 'boolean',
       typeSimple: 'enum',
-      default: false,
+      default: 'false',
       description:
         'Disable extraction to CSS completely, instead fully relying on runtime. Setting this to true speed up development as generally your app will hot reload the Tamagui configuration itself.',
     },
@@ -70,7 +70,7 @@ The all accept the following options:
       required: false,
       type: 'boolean',
       typeSimple: 'enum',
-      default: false,
+      default: 'false',
       description:
         'If enabled along with disableExtraction, all parsing will turn off. Normally turning off disableExtraction will keep the helpful debug attributes in DOM',
     },
@@ -79,7 +79,7 @@ The all accept the following options:
       required: false,
       type: 'boolean',
       typeSimple: 'enum',
-      default: false,
+      default: 'false',
       description: 'Turns off tree-flattening.',
     },
   ]}
@@ -288,10 +288,6 @@ Tamagui uses `@expo/match-media` and `expo-linear-gradient`, so you'll want `exp
 
 [Check out the Expo guide](/docs/guides/expo) for more information on setting up Expo.
 
-### Compiler options
-
-The webpack loader and Next.js plugin accept the same configuration options:
-
-### Web-only configurations
+### Web-only apps
 
 If you want autocompleted imports of `react-native` without having to install all the weight of react-native, you can set `react-native` version to `0.0.0`, and add `@types/react-native` at the latest version.

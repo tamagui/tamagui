@@ -6,6 +6,9 @@ export const nbspLastWord = (sentence: string) => {
     return sentence
   }
   const titleWords = sentence.split(' ')
+  if (titleWords.length === 1) {
+    return sentence
+  }
   return titleWords.map((word, i) => {
     return i === titleWords.length - 1 ? <>&nbsp;{word}</> : <> {word}</>
   })
