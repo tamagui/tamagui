@@ -71,17 +71,16 @@ const HeroTop = memo(() => {
           <H1
             ta="left"
             size="$10"
-            als="center"
             maw={500}
             $gtSm={{
               mx: 0,
               maxWidth: 800,
               size: '$12',
               ta: 'center',
+              als: 'center',
             }}
             $gtMd={{
               maxWidth: 900,
-              ta: 'center',
               size: '$14',
             }}
             $gtLg={{

@@ -36,6 +36,10 @@ export const GroupFrame = styled(ThemeableStack, {
 
 export type GroupProps = GetProps<typeof GroupFrame> & {
   scrollable?: boolean
+  /**
+   * @default false
+   */
+  showScrollIndicator?: boolean
   disabled?: boolean
   vertical?: boolean
   disablePassBorderRadius?: boolean
@@ -120,8 +124,7 @@ function createGroup(verticalDefault: boolean) {
           {...restProps}
         >
           {wrapScroll(
-            !!scrollable,
-            !!vertical,
+            activeProps,
             spacedChildren({
               direction: spaceDirection,
               separator,
@@ -138,16 +141,16 @@ function createGroup(verticalDefault: boolean) {
 export const YGroup = createGroup(true)
 export const XGroup = createGroup(false)
 
-const wrapScroll = (scrollable: boolean, vertical: boolean, children: any) => {
+const wrapScroll = ({ scrollable, vertical, showScrollIndicator = false }: GroupProps, children: any) => {
   if (scrollable)
     return (
       <ScrollView
         {...(vertical && {
-          showsVerticalScrollIndicator: false,
+          showsVerticalScrollIndicator: showScrollIndicator,
         })}
         {...(!vertical && {
           horizontal: true,
-          showsHorizontalScrollIndicator: false,
+          showsHorizontalScrollIndicator: showScrollIndicator,
         })}
       >
         {children}

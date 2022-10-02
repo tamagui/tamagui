@@ -15,12 +15,7 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
   const { tint } = useTint()
   const [activeIndex, setActiveIndex] = useState(0)
   const activeExample = examples[activeIndex]
-  const subtitles = [
-    'atomic CSS extraction',
-    'partial evaluation',
-    'tree flattening',
-    'code elimination',
-  ]
+  const subtitles = ['atomic CSS', 'partial evaluation', 'tree flattening', 'code elimination']
 
   return (
     <>
@@ -31,20 +26,13 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
               <HomeH2 size="$10">Less syntax, better performance</HomeH2>
               {/* <Link passHref href="/blog/how-tamagui-optimizes"> */}
               <HomeH3 maw={500} tag="a" ai="center" jc="center">
-                A complete design system that optimizes away with{' '}
-                <strong>{subtitles[activeIndex]}</strong>.
+                Optimized with <strong>{subtitles[activeIndex]}</strong>.
               </HomeH3>
               {/* </Link> */}
             </YStack>
           )}
 
-          <XGroup
-            className="scroll-horizontal"
-            chromeless
-            theme={tint}
-            maxWidth="100%"
-            als="center"
-          >
+          <XGroup scrollable chromeless theme={tint} maxWidth="100%" als="center">
             {examples.map((example, i) => {
               return (
                 <Button

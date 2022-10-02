@@ -75,6 +75,10 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<i
 }>;
 export declare type GroupProps = GetProps<typeof GroupFrame> & {
     scrollable?: boolean;
+    /**
+     * @default false
+     */
+    showScrollIndicator?: boolean;
     disabled?: boolean;
     vertical?: boolean;
     disablePassBorderRadius?: boolean;
@@ -136,6 +140,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("react-
     readonly size?: any;
 }>> & {
     scrollable?: boolean | undefined;
+    /**
+     * @default false
+     */
+    showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
     vertical?: boolean | undefined;
     disablePassBorderRadius?: boolean | undefined;
@@ -197,6 +205,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-
     readonly size?: any;
 }>> & {
     scrollable?: boolean | undefined;
+    /**
+     * @default false
+     */
+    showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
     vertical?: boolean | undefined;
     disablePassBorderRadius?: boolean | undefined;
