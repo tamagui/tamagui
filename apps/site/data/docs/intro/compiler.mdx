@@ -8,30 +8,28 @@ description: Attempting to 2x the performance for apps written in ~½ the code.
   thought of as a **frontend development trilemma**, illustrated as a choose-two-of-three:
 </IntroParagraph>
 
-<YStack w="100%" mih={500} my="$4" als="center" $gtMd={{ scale: 1.5, my: 100 }}>
+<YStack w="100%" scale={0.5} mih={500} my="$-4" als="center" $gtMd={{ scale: 1, my: '$4' }}>
   <Image
     title="The Frontend Trilemma: Choose two of DX, UX, and multi-platform"
     src="/trilemma.svg"
     size="hero"
-    height={380}
-    width={380}
+    height={270 * 2}
+    width={270 * 2}
     resizeMode="contain"
   />
 </YStack>
 
-React Native recommends writing things twice generally for the best UX - as is made very clear in the `<title>` of the homepage itself: "[learn once, write anywhere](https://reactnative.dev/)" as opposed to "write once, runs everywhere". This pays off today with native-feeling and performing apps, but still saving a lot of development time.
+React Native recommends writing things twice generally for the best UX - as is made very clear in the `<title>` of the homepage itself: "[learn once, write anywhere](https://reactnative.dev/)" as opposed to "write once, runs everywhere". This pays off today with native-feeling and performing apps while still saving much development time.
 
-But we can imagine that center, a sort of platonic ideal of <strong>"write once, runs great everywhere"</strong>, as we're far from perfect today.
-
-It would involve a few things:
+But we can imagine that center, the sort of platonic ideal of <strong>"write once, runs great everywhere"</strong>, as we're still pretty far from it. It would involve a few things:
 
 - Some Rails-for-React framework with unified routing, generators, or whatever "all the batteries" means.
 - A huge UI kit that outputs to beautiful platform primitives confidently with flexible APIs.
 - An optimizing compiler that removes inline styles and outputs to native primitives.
 
-This document goes over the last one. The second one the Tamagui UI kit attempting to solve, but that will take a lot of time. And the first sounds hard.
+This document goes over the last one. The second one Tamagui UI is attempting, slowly, and the first just sounds hard.
 
-We'll argue that a "bump" much like the one with React Native Web made here, is possible with an optimizing compiler by reducing JS bundle size by a large %, and increasing render performance similarly:
+**The hope is to make another "bump" like the one React Native Web made here:**
 
 <YStack w="100%" mih={220} my="$4" als="center" $gtMd={{ scale: 1.5, my: 100 }}>
   <Image
@@ -44,11 +42,11 @@ We'll argue that a "bump" much like the one with React Native Web made here, is 
   />
 </YStack>
 
-The Tamagui Compiler optimizes apps in four different ways beyond basic CSS extraction with partial evaluation, static hoisting, code elimination, and tree-flattening.
+This can be done especially on the web by reducing JS bundle size by a large % and greatly increasing render performance with reduced tree depth, logic, objects, and hooks. The Tamagui Compiler these all using partial evaluation, static hoisting, code elimination, and tree-flattening.
 
-You can [kkip this next section to get technical details without backstory](#how-tamagui-helps).
+You can [skip to the technical details without the backstory](#how-tamagui-helps) from here if you'd like.
 
-<Table>
+<Table heading="Choose your journey">
   <TableCol>
     <TableCell head></TableCell>
     <TableCell>1</TableCell>
@@ -87,11 +85,11 @@ You can [kkip this next section to get technical details without backstory](#how
   </TableCol>
 </Table>
 
-Universal apps (those that you "write once" and they "runs everywhere") make sense today for many cases, whether side-projecting, SEO-insensitive, enterprise-only, shipping faster, experimenting more, pre-product-market fit, or just generally a simple app. Twitter and Tinder both do this to a larger degree.
+Universal apps (those that you "write once" and they "runs everywhere") make sense today for many cases, whether side-projecting, SEO-insensitive, enterprise-only, shipping faster, experimenting more, pre product-market fit, or just generally have a simple UI. Twitter and Tinder are both examples, to a significant degree.
 
-But today at best we use hooks for media queries and themes, causing big render costs on the web where both are more performance sensitive. Combined with the CSS-in-JS approach of React Native Web and even low-complexity pages easily drop from 100% Lighthouse to half or worse.
+But today, at best, we use hooks for media queries and themes, which basically touch most component. This causes whole-tree re-renders of expensive main-thread time on the web. Combine that with the CSS-in-JS approach of React Native Web greatly increasing bundle size, and even medium-complexity pages will drop from 100% Lighthouse to half or worse (our homepage, a good complex example due to showing off many features goes from in the 20s without the compiler on (and using well-written code that was optimized many times for low CLS, etc) to over 85 (though Lighthouse and it's seemingly stochastic scoring is another story).
 
-For now, this means your media queries, interactive styles, and all theme, animation, and dynamic styles end up running on your main thread, oftentimes re-reconciling a large percents of the React tree in sensitive areas to UX.
+All your media queries, interactive styles, themes, animations, and dynamic styles end up running on your main thread, and its easy to feel, especially if you want to make ambitious apps.
 
 ### How Tamagui Helps
 
