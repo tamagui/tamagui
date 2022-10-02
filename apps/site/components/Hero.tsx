@@ -72,20 +72,26 @@ const HeroTop = memo(() => {
             ta="left"
             size="$10"
             maw={500}
+            h={90}
+            // FOR CLS IMPORTANT TO SET EXACT HEIGHT IDK WHY LINE HEIGHT SHOULD BE STABLE
+
             $gtSm={{
               mx: 0,
               maxWidth: 800,
               size: '$12',
+              h: 140,
               ta: 'center',
               als: 'center',
             }}
             $gtMd={{
               maxWidth: 900,
               size: '$14',
+              h: 205,
             }}
             $gtLg={{
               size: '$16',
               maxWidth: 1200,
+              h: 290,
             }}
           >
             <span className="rainbow clip-text">Write less,</span>
@@ -104,26 +110,8 @@ const HeroTop = memo(() => {
               maw: 1000,
             }}
           >
-            <Paragraph
-              color="$gray10"
-              size="$6"
-              fontFamily="$silkscreen"
-              className="font-smooth"
-              ta="left"
-              $sm={{
-                ls: -1,
-              }}
-              $gtSm={{
-                ta: 'center',
-                size: '$8',
-              }}
-              $gtMd={{
-                size: '$9',
-              }}
-            >
-              Universal UI for React Native / Web
-              <br />
-              <Spacer size="$2" />
+            <Subtitle>Universal UI for React Native / Web</Subtitle>
+            <Subtitle>
               <Link href="/docs/core/configuration" passHref>
                 <Tag
                   tag="a"
@@ -159,7 +147,7 @@ const HeroTop = memo(() => {
                   compiler
                 </Tag>
               </Link>
-            </Paragraph>
+            </Subtitle>
           </YStack>
         </YStack>
 
@@ -262,6 +250,24 @@ const HeroTop = memo(() => {
       <Spacer size="$7" />
     </ContainerLarge>
   )
+})
+
+const Subtitle = styled(Paragraph, {
+  color: '$gray10',
+  size: '$6',
+  fontFamily: '$silkscreen',
+  className: 'font-smooth',
+  ta: 'left',
+  ls: -1,
+
+  $gtSm: {
+    ta: 'center',
+    size: '$8',
+  },
+
+  $gtMd: {
+    size: '$9',
+  },
 })
 
 const Tag = styled(Text, {
