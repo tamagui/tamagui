@@ -3,7 +3,7 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 
-import { isWeb } from '../constants/platform'
+import { isWeb } from '@tamagui/constants'
 
 export function expandStyle(key: string, value: any) {
   if (process.env.TAMAGUI_TARGET === 'web') {

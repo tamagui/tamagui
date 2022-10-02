@@ -6061,6 +6061,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/constants@^1.0.1-beta.186, @tamagui/constants@workspace:packages/constants":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/constants@workspace:packages/constants"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.186
+    "@types/react": ^18.0.15
+    react: "*"
+    react-native: "*"
+  peerDependencies:
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/core-node@^1.0.1-beta.141, @tamagui/core-node@^1.0.1-beta.186, @tamagui/core-node@workspace:packages/core-node":
   version: 0.0.0-use.local
   resolution: "@tamagui/core-node@workspace:packages/core-node"
@@ -6087,6 +6100,7 @@ __metadata:
     "@expo/match-media": ^0.3.0
     "@tamagui/build": ^1.0.1-beta.186
     "@tamagui/compose-refs": ^1.0.1-beta.186
+    "@tamagui/constants": ^1.0.1-beta.186
     "@tamagui/helpers": ^1.0.1-beta.186
     "@tamagui/normalize-css-color-lite": ^1.0.1-beta.186
     "@tamagui/rnw": ^1.0.1-beta.186
@@ -7221,6 +7235,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/use-did-finish-ssr@^1.0.1-beta.186, @tamagui/use-did-finish-ssr@workspace:packages/use-did-finish-ssr":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-did-finish-ssr@workspace:packages/use-did-finish-ssr"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.186
+    "@types/react": ^18.0.15
+    react: "*"
+    react-native: "*"
+  peerDependencies:
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/use-direction@^1.0.1-beta.186, @tamagui/use-direction@workspace:packages/use-direction":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-direction@workspace:packages/use-direction"
@@ -7259,8 +7286,7 @@ __metadata:
   resolution: "@tamagui/use-window-dimensions@workspace:packages/use-window-dimensions"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.186
-    "@tamagui/use-debounce": ^1.0.1-beta.186
-    "@tamagui/use-force-update": ^1.0.1-beta.186
+    "@tamagui/use-did-finish-ssr": ^1.0.1-beta.186
     "@types/react": ^18.0.15
     react: "*"
     react-native: "*"
@@ -23465,6 +23491,7 @@ __metadata:
     "@tamagui/tooltip": ^1.0.1-beta.186
     "@tamagui/use-controllable-state": ^1.0.1-beta.186
     "@tamagui/use-debounce": ^1.0.1-beta.186
+    "@tamagui/use-did-finish-ssr": ^1.0.1-beta.186
     "@tamagui/use-event": ^1.0.1-beta.186
     "@tamagui/use-force-update": ^1.0.1-beta.186
     "@tamagui/use-window-dimensions": ^1.0.1-beta.186

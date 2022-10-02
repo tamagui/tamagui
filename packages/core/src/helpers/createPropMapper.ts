@@ -1,6 +1,7 @@
+import { isWeb } from '@tamagui/constants'
+
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
-import { isWeb } from '../constants/platform'
 import { Variable, getVariableValue, isVariable } from '../createVariable'
 import {
   DebugProp,

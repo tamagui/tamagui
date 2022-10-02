@@ -1,6 +1,6 @@
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import React, { useState } from 'react'
 
-import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { useDefaultThemeName, useThemeName } from '../hooks/useTheme'
 import { Theme } from './Theme'
 

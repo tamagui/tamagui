@@ -15,7 +15,7 @@ export * from './types';
 export type { RNWTextProps, RNWViewProps } from './types-rnw';
 export { getHasConfigured, getConfig, getThemes, getTokens, onConfiguredOnce } from './config';
 export * from './constants/constants';
-export * from './constants/platform';
+export * from '@tamagui/constants';
 export { createDOMProps } from '@tamagui/rnw';
 export * from './helpers/calc';
 export * from './helpers/useShallowSetState';

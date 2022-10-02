@@ -1,4 +1,5 @@
-import { isWeb } from '../constants/platform'
+import { isWeb } from '@tamagui/constants'
+
 import { getVariableVariable } from '../createVariable'
 import { FontLineHeightTokens, FontSizeTokens, SizeTokens, SpaceTokens } from '../types'
 

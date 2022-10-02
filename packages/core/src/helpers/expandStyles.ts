@@ -1,5 +1,6 @@
+import { isWeb } from '@tamagui/constants'
+
 import { getConfig } from '../config'
-import { isWeb } from '../constants/platform'
 import { expandStyle } from './expandStyle'
 import { colorToRGBA, normalizeColor } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'

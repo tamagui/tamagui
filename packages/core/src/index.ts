@@ -18,7 +18,7 @@ export type { RNWTextProps, RNWViewProps } from './types-rnw'
 export { getHasConfigured, getConfig, getThemes, getTokens, onConfiguredOnce } from './config'
 
 export * from './constants/constants'
-export * from './constants/platform'
+export * from '@tamagui/constants'
 export { createDOMProps } from '@tamagui/rnw'
 
 export * from './helpers/calc'
@@ -48,6 +48,7 @@ export * from './hooks/useConstant'
 export * from './hooks/useId'
 export * from './hooks/useIsMounted'
 export * from './hooks/useIsTouchDevice'
+
 export {
   configureMedia,
   getMedia,

@@ -1,6 +1,5 @@
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useRef } from 'react'
-
-import { useIsomorphicLayoutEffect } from '../constants/platform'
 
 // dai-shi 🙏
 // https://dev.to/uhyo_/a-concurrent-mode-safe-version-of-useref-1325

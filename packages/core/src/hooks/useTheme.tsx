@@ -1,9 +1,9 @@
+import { isRSC, isServer, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, { useContext, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
-import { isRSC, isServer, useIsomorphicLayoutEffect } from '../constants/platform'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { areEqualSets } from '../helpers/areEqualSets'
 import {

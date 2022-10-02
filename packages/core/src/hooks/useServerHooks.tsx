@@ -1,6 +1,5 @@
+import { isRSC } from '@tamagui/constants'
 import { useRef, useState } from 'react'
-
-import { isRSC } from '../constants/platform'
 
 export const useServerState = isRSC
   ? (((val: any) => [val, idFn]) as unknown as typeof useState)

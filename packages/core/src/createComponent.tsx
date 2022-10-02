@@ -1,3 +1,4 @@
+import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
   composeEventHandlers,
@@ -26,7 +27,6 @@ import { Text, View, ViewStyle } from 'react-native'
 
 import { getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
-import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from './constants/platform'
 import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { TextAncestorContext } from './contexts/TextAncestorContext'
 import { assignNativePropsToWeb } from './helpers/assignNativePropsToWeb'

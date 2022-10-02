@@ -1,6 +1,5 @@
+import { isServer, isTouchable, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useState } from 'react'
-
-import { isServer, isTouchable, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 
 // ssr friendly
 

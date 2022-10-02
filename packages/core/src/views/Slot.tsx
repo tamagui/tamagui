@@ -1,9 +1,8 @@
 // via radix
 
 import { composeRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
 import * as React from 'react'
-
-import { isWeb } from '../constants/platform'
 
 /* -------------------------------------------------------------------------------------------------
  * Slot

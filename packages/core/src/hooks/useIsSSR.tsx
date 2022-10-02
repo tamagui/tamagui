@@ -1,6 +1,6 @@
+import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useState } from 'react'
 
-import { isServer, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { startTransition } from '../helpers/startTransition'
 
 // because any change before first useEffect causes hydration / mismatch issues

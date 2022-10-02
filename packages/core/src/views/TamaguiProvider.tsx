@@ -1,6 +1,7 @@
+import { isClient, isRSC, isServer } from '@tamagui/constants'
+import { useSetupHasSSRRendered } from '@tamagui/use-did-finish-ssr'
 import * as React from 'react'
 
-import { isClient, isRSC, isServer } from '../constants/platform'
 import { ButtonInsideButtonContext } from '../contexts/ButtonInsideButtonContext'
 import { TextAncestorProvider } from '../contexts/TextAncestorContext'
 import { useMediaQueryListeners } from '../hooks/useMedia'
@@ -22,6 +23,7 @@ export function TamaguiProvider({
   }
 
   if (!isServer) {
+    useSetupHasSSRRendered()
     useMediaQueryListeners(config)
   }
 

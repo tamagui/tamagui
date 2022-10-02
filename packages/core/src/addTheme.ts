@@ -1,5 +1,6 @@
+import { isWeb } from '@tamagui/constants'
+
 import { getConfig, updateConfig } from './config'
-import { isWeb } from './constants/platform'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes'
 import { ThemeDefinition, ThemeParsed } from './types'

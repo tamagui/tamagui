@@ -1,6 +1,6 @@
+import { isWeb } from '@tamagui/constants'
 import React, { useContext, useLayoutEffect, useState } from 'react'
 
-import { isWeb } from '../constants/platform'
 import { ThemeManagerContext } from '../helpers/ThemeManager'
 import { Theme } from './Theme'
 

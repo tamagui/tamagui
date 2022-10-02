@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { ScaledSize, useWindowDimensions as useWindowDimensionsRN } from 'react-native'
 
 /**
  * SSR safe useWindowDimensions
  */
 
-let lastKnownValue: ScaledSize = {
+const initialValue: ScaledSize = {
   fontScale: 1,
   height: 800,
   width: 600,
@@ -14,12 +14,6 @@ let lastKnownValue: ScaledSize = {
 
 export function useWindowDimensions() {
   const next = useWindowDimensionsRN()
-  const [current, setCurrent] = useState(lastKnownValue)
-
-  if (next !== current) {
-    setCurrent(next)
-    lastKnownValue = next
-  }
-
-  return current
+  const didFinishSSR = useDidFinishSSR()
+  return didFinishSSR ? initialValue : next
 }

@@ -1,10 +1,10 @@
+import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { stylePropsText, stylePropsTransform, validPseudoKeys, validStyles } from '@tamagui/helpers'
 import { useInsertionEffect } from 'react'
 import type { ViewStyle } from 'react-native'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
-import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { mediaState as globalMediaState, mediaQueryConfig } from '../hooks/useMedia'
 import type {
   DebugProp,

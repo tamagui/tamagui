@@ -1,6 +1,6 @@
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { startTransition, useEffect, useMemo, useState } from 'react'
 
-import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { matchMedia } from '../helpers/matchMedia'
 import {
   MediaQueries,
