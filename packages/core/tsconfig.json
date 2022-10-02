@@ -10,9 +10,6 @@
       "path": "../helpers"
     },
     {
-      "path": "../use-debounce"
-    },
-    {
       "path": "../use-force-update"
     },
   ]

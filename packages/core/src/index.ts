@@ -18,7 +18,6 @@ export type { RNWTextProps, RNWViewProps } from './types-rnw'
 export { getHasConfigured, getConfig, getThemes, getTokens, onConfiguredOnce } from './config'
 
 export * from './constants/constants'
-export * from '@tamagui/constants'
 export { createDOMProps } from '@tamagui/rnw'
 
 export * from './helpers/calc'
@@ -62,7 +61,6 @@ export {
 } from './hooks/useMedia'
 export * from './hooks/usePressable'
 export * from './hooks/useTheme'
-export * from './hooks/useIsSSR'
 export * from './hooks/useUnmountEffect'
 export * from './hooks/useSafeRef'
 
@@ -79,4 +77,6 @@ export * from './views/TamaguiProvider'
 
 export * from '@tamagui/use-force-update'
 export * from '@tamagui/use-event'
+export * from '@tamagui/compose-refs'
 export * from '@tamagui/helpers'
+export * from '@tamagui/constants'

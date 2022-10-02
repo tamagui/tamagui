@@ -85,7 +85,6 @@ plan for space + display none, two pronged
 
 Roadmap
 
-  - document tamagui "extras" use-did-finish-ssr etc
   - container queries
   - // enable shorthand for not having to switch modes to test when disabled by default
   - native should probably avoid all optimization when it can't flatten or else pass in a __optimized attribute, otherwise its duplicating the style processing by putting __style with all the defaults + re-adding it at runtime

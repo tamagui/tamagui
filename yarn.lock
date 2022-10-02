@@ -6106,6 +6106,7 @@ __metadata:
     "@tamagui/rnw": ^1.0.1-beta.188
     "@tamagui/rnw-lite": ^1.0.1-beta.188
     "@tamagui/use-debounce": ^1.0.1-beta.188
+    "@tamagui/use-did-finish-ssr": ^1.0.1-beta.188
     "@tamagui/use-event": ^1.0.1-beta.188
     "@tamagui/use-force-update": ^1.0.1-beta.188
     "@types/node": ^16.11.9

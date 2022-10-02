@@ -2,7 +2,7 @@
 // MIT License Copyright (c) 2020 Mo Gorhom
 // fixing SSR issue
 
-import { startTransition, useIsSSR } from '@tamagui/core'
+import { startTransition, useDidFinishSSR } from '@tamagui/core'
 import { ReactNode, useMemo, useRef } from 'react'
 import React, { createContext, memo, useCallback, useContext, useEffect, useReducer } from 'react'
 
@@ -251,7 +251,7 @@ export interface PortalHostProps {
 
 const PortalHostComponent = ({ name }: PortalHostProps) => {
   //#region hooks
-  const isServer = useIsSSR()
+  const isServer = !useDidFinishSSR()
   const state = usePortalState(name)
   const { registerHost, deregisterHost } = usePortal(name)
   //#endregion

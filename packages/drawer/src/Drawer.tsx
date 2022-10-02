@@ -11,7 +11,7 @@ import { composeRefs } from '@tamagui/compose-refs'
 import {
   styled,
   themeable,
-  useIsSSR,
+  useDidFinishSSR,
   useIsomorphicLayoutEffect,
   withStaticProperties,
 } from '@tamagui/core'
@@ -97,7 +97,7 @@ export const Drawer = withStaticProperties(
         onOpenChange,
         ...rest
       } = props
-      const isServerSide = useIsSSR()
+      const isSSRDone = useDidFinishSSR()
       const [open, setOpen] = useControllableState({
         prop: openProp,
         defaultProp: defaultOpen || false,
@@ -121,7 +121,7 @@ export const Drawer = withStaticProperties(
         }
       }, [open])
 
-      if (isServerSide) {
+      if (!isSSRDone) {
         return null
       }
 

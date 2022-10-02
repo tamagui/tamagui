@@ -1,4 +1,4 @@
-import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import { useLayoutEffect, useState } from 'react'
 import { ScaledSize, useWindowDimensions as useWindowDimensionsRN } from 'react-native'
 
 /**
@@ -13,7 +13,13 @@ const initialValue: ScaledSize = {
 }
 
 export function useWindowDimensions() {
+  const [state, setState] = useState(initialValue)
   const current = useWindowDimensionsRN()
-  const didFinishSSR = useDidFinishSSR()
-  return didFinishSSR ? current : initialValue
+
+  useLayoutEffect(() => {
+    setState(current)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current.height, current.width, current.fontScale, current.scale])
+
+  return state
 }

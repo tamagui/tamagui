@@ -42,7 +42,7 @@ import { getAllSelectors } from './helpers/insertStyleRule'
 import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { useShallowSetState } from './helpers/useShallowSetState'
-import { addMediaQueryListener, getCurrentMediaState } from './hooks/useMedia'
+import { addMediaQueryListener, getInitialMediaState } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
 import { getThemeManager, useTheme } from './hooks/useTheme'
@@ -68,6 +68,7 @@ import { wrapThemeManagerContext } from './views/Theme'
 React['keep']
 
 let defaultComponentState: TamaguiComponentState | null = null
+
 export const mouseUps = new Set<Function>()
 if (typeof document !== 'undefined') {
   const cancelTouches = () => {
@@ -1099,7 +1100,7 @@ export function createComponent<
         // only used by enterStyle
         mounted: false,
         animation: null,
-        mediaState: getCurrentMediaState(),
+        mediaState: getInitialMediaState(),
       })
     }
 

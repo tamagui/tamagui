@@ -1,6 +1,7 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { startTransition, useEffect, useMemo, useState } from 'react'
 
+import { getConfig } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
 import {
   MediaQueries,
@@ -10,7 +11,6 @@ import {
   TamaguiInternalConfig,
 } from '../types'
 import { useSafeRef } from './useSafeRef'
-import { getConfig } from '..'
 
 export const mediaState: MediaQueryState =
   // development time safeguard
@@ -55,10 +55,9 @@ export const getMedia = () => {
 // for SSR capture it at time of startup
 let currentMediaState: MediaQueryState | null
 let initialMediaState: MediaQueryState | null
-// fairly concurrent mode sketchy but such an edge case ok for now
-let hasFinishedInitialRender = false
-export const getCurrentMediaState = () => {
-  if (getConfig().disableSSR || hasFinishedInitialRender) {
+
+export const getInitialMediaState = () => {
+  if (getConfig().disableSSR) {
     return currentMediaState || {}
   }
   return initialMediaState || {}
@@ -132,21 +131,12 @@ function setupMediaListeners() {
   })
 }
 
-const onIdle =
-  typeof requestIdleCallback === 'undefined' ? (cb) => setTimeout(cb, 100) : requestIdleCallback
-
 export function useMediaQueryListeners(config: TamaguiInternalConfig) {
   if (config.disableSSR) {
     return
   }
-
   useEffect(() => {
     setupMediaListeners()
-
-    onIdle(() => {
-      hasFinishedInitialRender = true
-    })
-
     return unlisten
   }, [])
 }
@@ -154,7 +144,7 @@ export function useMediaQueryListeners(config: TamaguiInternalConfig) {
 export function useMedia(): {
   [key in MediaQueryKey]: boolean
 } {
-  const [state, setState] = useState(getCurrentMediaState())
+  const [state, setState] = useState<MediaQueryState>(initialMediaState || {})
   const keys = useSafeRef({} as Record<string, boolean>)
 
   function updateState() {
