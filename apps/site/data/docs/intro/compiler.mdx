@@ -1,10 +1,10 @@
 ---
 title: The Frontend Trilemma
-description: About ½ the code, up to twice the performance.
+description: Can we write ½ the code for 2x performance? Probably.
 ---
 
 <IntroParagraph>
-  If you are developing a cross-platform app, you've made an implicit decision. This decision can be
+  If you're developing a cross-platform app, you've made an implicit decision. This decision can be
   thought of as a **frontend development trilemma**, illustrated as a choose-two-of-three:
 </IntroParagraph>
 
@@ -19,11 +19,13 @@ description: About ½ the code, up to twice the performance.
   />
 </YStack>
 
-The center would be something like "write once, feels native." As of today it's basically impossible, and at the limit maybe not even desirable.
+Let's call the center "write once, feels native." The **feels native** part is important because it's mostly impossible today (and at the limit, likely not even desirable).
 
-This document focuses just on **how we can realistically gain 20-50% more code share on React Native without sacrificing, and oftentimes improving, performance** (and UX) compared to writing separate apps targeted to each platform.
+The reasons for that are many, but a primary one is simply that you lose optimizations that'd normally be easy by targeting platforms individually. In this document, we introduce **a realistic 20-50% extra code-sharing on React Native + Web, without sacrificing that performance** (oftentimes even improving it).
 
-The Tamagui Compiler does this by optimizing apps in four different ways beyond basic CSS extraction, including partial evaluation, static hoisting and tree-flattening. For a bit more on that, you can skip the Why and [go to the next section](#how-tamagui-helps).
+The Tamagui Compiler optimizes apps in four different ways beyond basic CSS extraction with partial evaluation, static hoisting, code elimination, and tree-flattening.
+
+You can [skip the backstory to get straight to technical details](#how-tamagui-helps).
 
 ### Why Universal
 
@@ -33,13 +35,26 @@ This is a smart strategy, and it can pay off in more native-feeling and performi
 
 Still, the reality is that many companies large and small make _rational_ decisions to share code to some degree, up to and including nearly all of the visual code besides maybe a few high level views. In React, this is generally done using the excellent [React Native Web](https://necolas.github.io/react-native-web/).
 
-Pre product-market fit, for most types of apps it makes sense. Any app with a large surface area of features. Or any app where you want to experiment often and cheaply. Often the reason is as simple as budget, or time.
+Pre product-market fit, for most types of apps it makes sense. Any app with a large surface area of features. Or any app where you want to experiment often and cheaply. Often the reason is as simple as budget, or time. It's not uncommon for bigger companies to share nearly all their code, too. To a significant degree, Twitter and Tinder both do this, but it only makes sense on apps like those that can sacrifice SEO, load time, and any complex interface.
 
-But it's common for bigger companies to do this too to a larger degree, Twitter and Tinder both do to a significant degree. Usually though this makes sense on apps that can sacrifice SEO, load time, and complex interfaces. The reasons for wanting to write less code are fairly inherent. It's just the outcome we often don't like: the sacrifice of peformance and native feel.
+So that's where we are. Here's a very back-of-napkit chart of the % of code a team could share fully between Native and Web, using React Native, without sacrificing performance today:
 
-We can rephrase the diagram above as follows:
+<YStack w="100%" mih={220} my="$4" als="center" $gtMd={{ scale: 1.5, my: 100 }}>
+  <Image
+    title="How possible it is to share more code: a lot more with React Native, and again with React Native Web"
+    src="/code-sharing.svg"
+    size="hero"
+    height={220}
+    width={380}
+    resizeMode="contain"
+  />
+</YStack>
 
-<Table heading="Choose your path:">
+Don't sweat the details too much - and label the Y how you want, a decent estimate would be 0-100%, but depending on how picky you are, it could swing to something like 0-50%.
+
+Our original trilemma is maybe easier seen as a "choose your path" of three options:
+
+<Table>
   <TableCol>
     <TableCell head></TableCell>
     <TableCell>1</TableCell>
@@ -78,7 +93,7 @@ We can rephrase the diagram above as follows:
   </TableCol>
 </Table>
 
-At best, without sacrificing performance, a React Native app today can share much of its state and utilities (like hooks), as well as _some amount of visual components_. But the more code it shares, the more performance suffers. This is more true on the web, where the CSS-in-JS approach of React Native Web leads to large bundle-sizes and largely reduced performance in critical areas like responsive styles. This is mostly due to limitations in the `StyleSheet` API, some of which have proposals to fix.
+At best, without sacrificing performance, a React Native app today can share much of its state and utilities (like hooks), as well as _some amount of visual components_. But the more code it shares, the more performance suffers. This is more true on the web, where the CSS-in-JS approach of React Native Web leads to large bundle-sizes and largely reduced performance in critical areas like responsive styles. This is mostly due to limitations in the `StyleSheet` API.
 
 For now, this means your media queries, interactive styles, and all theme, animation, and dynamic styles end up running on your main thread, oftentimes re-reconciling a large percents of the React tree, and causing laggy behavior in areas that most contribute to UX.
 

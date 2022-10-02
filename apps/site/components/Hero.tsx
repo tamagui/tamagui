@@ -268,7 +268,7 @@ const Tag = styled(Text, {
   className: 'hero-tag text-decoration-none',
   fontFamily: 'inherit',
   fontSize: 'inherit',
-  cursor: 'default',
+  cursor: 'pointer',
   color: '$color10',
   backgroundColor: '$color5',
 
