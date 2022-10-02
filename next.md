@@ -1,5 +1,6 @@
 - 1.0
 
+  - intellisense on "lh" shorthand props and "letterSpacing"
   - kitchen sink snack
   - document simple functional variants: { sx: ()=>{} }
   - add guide "Migrating from Dripsy/etc" sx prop demo

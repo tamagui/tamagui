@@ -171,13 +171,23 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
+      <NextLink prefetch={false} href="/blog" passHref>
+        <HeadAnchor
+          $md={{
+            display: forceShowAllLinks ? 'flex' : 'none',
+          }}
+        >
+          Blog
+        </HeadAnchor>
+      </NextLink>
+
       <NextLink prefetch={false} href="/community" passHref>
         <HeadAnchor
           $md={{
             display: forceShowAllLinks ? 'flex' : 'none',
           }}
         >
-          Community
+          More
         </HeadAnchor>
       </NextLink>
 

@@ -2,55 +2,27 @@
 title: Introduction
 ---
 
-<IntroParagraph>Design system library ♥️ optimizing compiler ♥️ UI kit</IntroParagraph>
+<IntroParagraph>
+  Tamagui is a design system that works with an optimizing compiler. On top we've added a UI kit
+  that aims with one set of components to adapt natively for each platform React Native and React
+  Native Web support.
+</IntroParagraph>
 
-- Create React Native and web apps at the same time with the `@tamagui/core` and the `styled()` function that supports fully typed design systems, variants, and more. Use it as a lightweight library to build your a complete UI kit with design system on top of React Native and React Native web.
+#### Core
 
-- Add the `@tamagui/static` compiler for partial analysis of all types of common JSX patterns, pulling logic and styling out of your render functions, and often flattening your React tree for significant performance gains.
+A complete UI kit builder for your next web, native, or universal app.
 
-- If you like it, add the highly customizable `tamagui` UI Kit for building full-featured app interfaces right out of the box. Featuring powerful, themable components that scale across every size in your design system. Enjoy Radix-like composable component APIs that always visually adapt properly to each platform.
+It generates fully typed design systems (colors, tokens, spacing, sizing, fonts, and more) that work with both a powerful [styled() component Factory](/docs/core/styled) with features like variants, media queries, themes, pseudo styles and more.
 
----
+Plus base `<Stack />` and `<Text />` components give you nicely typed short inline styles, lots of helpful built-in features, and animations through pluggable animation drivers. Use it as a lightweight library to build your a complete UI kit with design system on top of React Native and React Native web.
 
-### Hooks
+#### Static
 
-Inline typed theme and media props accompany `useTheme` and `useMedia` hooks, so you have everything you need to build truly cross-platform UIs without sacrificing DX or performance.
+Add [the @tamagui/static compiler](/docs/intro/compiler) for all types of optimization and CSS extraction.
 
-### SSR and Server Components
+#### Tamagui
 
-Tamagui fully supports cross-browser server-side rendering ([see how we do it with Next.js](https://github.com/tamagui/tamagui/tree/master/apps/site)), even for themes, responsive styles and variants. It has beta support for React Server Components.
-
-### Variants
-
-[Variants](/docs/core/styled#variants) as a first-class citizen, so you can design composable component APIs. Define a single variant, multiple variants, and even [Spread Variants](/docs/core/styled#spread-variants) which allow you to return dynamic styles, even at compile-time.
-
-### Shorthands
-
-[Shorthands](/docs/core/configuration#shorthands) allow you to map shorthand properties to their longer cousins. This lets you create Tailwinds-like quick properties to style. These work with TypeScript as well, and are designed so you can bring them with you across different tamagui component kits.
-
-### Tokens
-
-Define your own [tokens](/docs/core/configuration) and seamlessly apply them as CSS values. CSS Properties are automatically mapped to token scales. Tokens can even be used in shorthand CSS properties.
-
-### Themes
-
-Tamagui has [powerful theming](/docs/intro/themes). Create as many themes as you need, and apply them wherever you want. Each theme generates a CSS class name which overrides the default tokens.
-
-### Media Queries
-
-Tamagui lets you configure [media queries](/docs/core/use-media) and apply variants responsively using `$` props.
-
-### Animations
-
-Plug-in [animations](/docs/core/animations) with incredibly simple syntax.
-
-### Fonts
-
-A unique font system means you can publish and share font bundles including all their styles, vertical rhythms and all, and still get all the benefits of compilation speed.
-
-### Debugging
-
-Tamagui provides a fully-typed API so all your TypeScript style properties, values, media queries and shorthands will be auto-completed for you. It provides a `// debug` pragma and `debug` prop that both allow easy introspection into whats happening at compile and runtime. In dev mode it puts a `data-` attribute that links every DOM node back to your original source.
+Above that, [the Tamagui UI Kit](/docs/components/stacks) for building full-featured app interfaces right out of the box. Featuring powerful, themable components that scale across every size in your design system. Enjoy Radix-like composable component APIs that always visually adapt properly to each platform.
 
 ---
 

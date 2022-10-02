@@ -1,3 +1,12 @@
+---
+title: Themes
+publishedAt: '2021-09-22'
+description: A better base layer for building cross-platform apps
+by: nate
+# relatedIds:
+#   - 'tamagui-alpha'
+---
+
 The Grails of Frontend pt 1: Themes
 
 On the surface, theming seems straightforward. Define some colors, split them into similarly named scales within "dark" and "light", and tada.
@@ -8,21 +17,19 @@ But first, what is an ideal theme system?
 
 1. Allows light and dark themes.
 1. Allows re-theming components without changing their internals.
-2. Allows type-safe colors that are easy to access and share between themes.
-4. Allows nesting - both on definition side and on usage side
-    1. For definition: "**blue** dark" and "**blue** light" are sub-themes.
-    2. On the usage side, allowing a <Theme blue> inside <Theme dark> or light.
+1. Allows type-safe colors that are easy to access and share between themes.
+1. Allows nesting - both on definition side and on usage side
+   1. For definition: "**blue** dark" and "**blue** light" are sub-themes.
+   2. On the usage side, allowing a `<Theme blue>` inside `<Theme dark>` or light.
 
 Let's put it all together into a simple-enough demo:
 
 ```tsx
 <Theme name="dark">
   <Stack backgroundColor="$background">
-    <Button>Dark  button</Button>
+    <Button>Dark button</Button>
     <Theme name="blue">
-      <Button>
-        Dark blue button
-      </Button>
+      <Button>Dark blue button</Button>
     </Theme>
   </Stack>
 </Theme>
@@ -45,7 +52,7 @@ const MostNaiveTheme = {
     blue2: 'blue',
     blue3: 'lightblue',
     blue3: 'lightestblue',
-  }
+  },
 }
 
 const Button = styled(Stack, {

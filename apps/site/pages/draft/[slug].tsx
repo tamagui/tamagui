@@ -22,19 +22,19 @@ export default function BlogSlug(props: BlogPost) {
 }
 
 export async function getStaticPaths() {
-  const frontmatters = getAllFrontmatter('blog')
+  const frontmatters = getAllFrontmatter('draft')
   return {
-    paths: frontmatters.map(({ slug }) => ({ params: { slug: slug.replace('blog/', '') } })),
+    paths: frontmatters.map(({ slug }) => ({ params: { slug: slug.replace('draft/', '') } })),
     fallback: false,
   }
 }
 
 export async function getStaticProps(context) {
-  const { frontmatter, code } = await getMdxBySlug('blog', context.params.slug)
+  const { frontmatter, code } = await getMdxBySlug('draft', context.params.slug)
   const relatedPosts = frontmatter.relatedIds
     ? await Promise.all(
         frontmatter.relatedIds.map(async (id) => {
-          const { frontmatter } = await getMdxBySlug('blog', id)
+          const { frontmatter } = await getMdxBySlug('draft', id)
           return frontmatter
         })
       )

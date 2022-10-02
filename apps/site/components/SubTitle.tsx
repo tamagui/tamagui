@@ -1,6 +1,16 @@
 import React from 'react'
 import { H3, ThemeReset } from 'tamagui'
 
+export const nbspLastWord = (sentence: string) => {
+  if (typeof sentence !== 'string') {
+    return sentence
+  }
+  const titleWords = sentence.split(' ')
+  return titleWords.map((word, i) => {
+    return i === titleWords.length - 1 ? <>&nbsp;{word}</> : <> {word}</>
+  })
+}
+
 export const SubTitle = ({ children, ...props }) => {
   if (!children) {
     return null
@@ -18,12 +28,15 @@ export const SubTitle = ({ children, ...props }) => {
       fontFamily="$body"
       fontWeight="300"
       tag="p"
-      maxWidth="100%"
       mb="$2"
       mt="$0"
+      maxWidth="80%"
+      $sm={{
+        maxWidth: '100%',
+      }}
       {...props}
     >
-      {childText}
+      {nbspLastWord(childText)}
     </H3>
   )
 }

@@ -36,43 +36,43 @@ export default function Blog({ frontmatters }) {
         </YStack>
       </Container>
       <ContainerLarge mt="$6" mb="$7" space="$2">
-        <XStack flexWrap="wrap" space="$4">
+        <XStack flexWrap="wrap" jc="space-between">
           {frontmatters.map((frontmatter) => (
             <Link key={frontmatter.title} href={frontmatter.slug} passHref>
               <Card
                 tag="a"
                 width="33.33%"
-                maxWidth="calc(33.33% - var(--space-2))"
-                $md={{
-                  width: '50%',
-                  maxWidth: 'calc(50% - var(--space-2))',
-                }}
-                $sm={{ width: 'auto', maxWidth: 'auto', minWidth: '100%' }}
+                maxWidth="calc(33.33% - var(--space-6))"
                 p="$4"
                 mb="$2"
+                mx="$1"
+                my="$4"
+                $sm={{ width: 'auto', maxWidth: 'auto', minWidth: '100%' }}
+                $md={{
+                  width: '50%',
+                  maxWidth: 'calc(50% - var(--space-6))',
+                }}
               >
-                <YStack space="$2">
-                  <H3 fontFamily="$silkscreen" size="$9" color="$color" cursor="pointer">
+                <YStack space="$3">
+                  <H3 fontFamily="$silkscreen" size="$8" color="$color" cursor="pointer" ls={0}>
                     {frontmatter.title}
                   </H3>
 
-                  <Spacer f={0.5} />
+                  <YStack space="$4">
+                    <XStack>
+                      <Paragraph cursor="inherit" tag="time" size="$3" theme="alt2">
+                        {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')} by
+                      </Paragraph>
+                      <Paragraph cursor="inherit" theme="alt1" size="$3">
+                        &nbsp;{authors[frontmatter.by].name}
+                      </Paragraph>
+                      {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}
+                    </XStack>
 
-                  <YStack>
-                    <Paragraph cursor="inherit" tag="time" size="$5" theme="alt2">
-                      {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')}
+                    <Paragraph size="$6" cursor="inherit" theme="alt2">
+                      {frontmatter.description}
                     </Paragraph>
-                    <Paragraph cursor="inherit" fow="800" theme="alt2" size="$4">
-                      &nbsp;by {authors[frontmatter.by].name}
-                    </Paragraph>
-                    {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}
                   </YStack>
-
-                  <Spacer f={0.5} />
-
-                  <Paragraph size="$6" cursor="inherit" theme="alt2">
-                    {frontmatter.description}
-                  </Paragraph>
                 </YStack>
               </Card>
             </Link>
