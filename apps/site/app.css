@@ -197,6 +197,9 @@ pre {
   transition-property: right;
 }
 
+.linear {
+  transition-timing-function: linear;
+}
 .ease-in {
   transition-timing-function: ease-in;
 }
@@ -222,8 +225,14 @@ pre {
 .ms300 {
   transition-duration: 300ms;
 }
-.ms1000 {
-  transition-duration: 300ms;
+.s1, .ms1000 {
+  transition-duration: 1s;
+}
+.s2 {
+  transition-duration: 2s;
+}
+.s5 {
+  transition-duration: 5s;
 }
 
 .help {
@@ -543,4 +552,8 @@ input, textarea {
 
 .word-break-keep-all {
   word-break: keep-all;
+}
+
+.transition-bg-color {
+  transform: background-color ease-in 1000ms;
 }

@@ -32,7 +32,15 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
             </YStack>
           )}
 
-          <XGroup scrollable chromeless theme={tint} maxWidth="100%" als="center">
+          <XGroup
+            scrollable
+            bordered
+            bc="$color2"
+            chromeless
+            theme={tint}
+            maxWidth="100%"
+            als="center"
+          >
             {examples.map((example, i) => {
               return (
                 <Button

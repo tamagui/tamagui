@@ -107,7 +107,7 @@ export function HeroThemes() {
   }
 
   // arrow keys
-  useOnIntersecting(scrollView, ({ isIntersecting, dispose }) => {
+  useOnIntersecting(scrollView, ({ isIntersecting }) => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') {
         move(1)
@@ -132,8 +132,6 @@ export function HeroThemes() {
       return () => {
         window.removeEventListener('keydown', onKey)
       }
-    } else {
-      dispose?.()
     }
   })
 

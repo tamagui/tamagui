@@ -145,17 +145,16 @@ export const ExampleAnimations = memo(() => {
       ? [['transition', animation.settings]]
       : Object.entries(animation.settings)
 
-  useOnIntersecting(container, ({ isIntersecting, dispose }) => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') {
-        next()
+  useOnIntersecting(container, ([entry]) => {
+    if (entry?.isIntersecting) {
+      const onKey = (e: KeyboardEvent) => {
+        if (e.key === 'ArrowRight') {
+          next()
+        }
+        if (e.key === 'ArrowLeft') {
+          next(-1)
+        }
       }
-      if (e.key === 'ArrowLeft') {
-        next(-1)
-      }
-    }
-
-    if (isIntersecting) {
       if (!hasScrolledOnce) {
         hasScrolledOnce = true
         // setting a long timeout extends the total render time a lot.., just slow down animation
@@ -165,8 +164,6 @@ export const ExampleAnimations = memo(() => {
       return () => {
         window.removeEventListener('keydown', onKey)
       }
-    } else {
-      dispose?.()
     }
   })
 

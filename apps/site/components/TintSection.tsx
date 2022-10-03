@@ -1,10 +1,11 @@
-import { useIsIntersecting } from '@tamagui/demos'
+import { useIsIntersecting, useOnIntersecting } from '@tamagui/demos'
+import { tints } from '@tamagui/logo'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { GetProps, Separator, YStack, styled, useWindowDimensions } from 'tamagui'
+import { GetProps, Separator, XStack, YStack, styled, useWindowDimensions } from 'tamagui'
 
 import { setTintIndex, useTint } from './useTint'
 
-const curIndexStr: number[] = []
+const numIntersectingAtSection: number[] = tints.map((_) => 0)
 
 export const TintSection = ({
   children,
@@ -16,49 +17,40 @@ export const TintSection = ({
   const bottom = useRef<HTMLElement>(null)
   const mid = useRef<HTMLElement>(null)
   const { tint } = useTint()
-  const isIntersecting = useIsIntersecting(
-    useMemo(() => [top, bottom, mid], []),
+
+  useOnIntersecting(
+    useMemo(() => [top, mid, bottom], []),
+    (entries) => {
+      const count = entries.reduce((a, b) => a + (b?.isIntersecting ? 1 : 0), 0)
+      numIntersectingAtSection[index] = count
+
+      let topIndex = -1
+      let topStr = -1
+      numIntersectingAtSection.forEach((str, index) => {
+        if (str >= topStr) {
+          topIndex = index
+          topStr = str
+        }
+      })
+
+      if (topIndex === index && topIndex !== current) {
+        const tintIndex = topIndex <= 1 ? 3 : topIndex % tints.length
+        setTintIndex(tintIndex)
+        current = index
+        listeners.forEach((cb) => cb(topIndex, count))
+      }
+    },
     {
-      threshold: 0.6,
+      ignoreResize: true,
+      threshold: 0.1,
     }
   )
-  const [windowHeight, setWindowHeight] = useState(0)
-
-  // ssr
-  const next = useWindowDimensions().height
-  useEffect(() => {
-    setWindowHeight(next)
-  }, [next])
-
-  useEffect(() => {
-    curIndexStr[index] ??= 0
-
-    if (isIntersecting) {
-      curIndexStr[index]++
-    } else {
-      curIndexStr[index] = Math.max(0, curIndexStr[index] - 1)
-    }
-
-    let topIndex = -1
-    let topStr = -1
-    curIndexStr.forEach((str, index) => {
-      if (str >= topStr) {
-        topIndex = index
-        topStr = str
-      }
-    })
-
-    if (topIndex === index) {
-      setTintIndex(topIndex === 0 ? 3 : topIndex)
-      listeners.forEach((cb) => cb(topIndex))
-    }
-  }, [index, isIntersecting])
 
   return (
     <YStack pos="relative">
-      <Separator ref={top} pos="absolute" t={-windowHeight * 0.33} l={0} r={0} o={0} />
-      <Separator ref={mid} pos="absolute" t="50%" l={0} r={0} o={0} />
-      <Separator ref={bottom} pos="absolute" b={-windowHeight * 0.33} l={0} r={0} o={0} />
+      <XStack ref={top} pos="absolute" t="10%" l={0} r={0} h={10} o={0} pe="none" />
+      <XStack ref={mid} pos="absolute" t="50%" l={0} r={0} h={10} o={0} pe="none" />
+      <XStack ref={bottom} pos="absolute" b="10%" l={0} r={0} h={10} o={0} pe="none" />
       <Section {...(themed && { theme: tint })} {...props}>
         {useMemo(() => children, [children])}
       </Section>
@@ -66,9 +58,10 @@ export const TintSection = ({
   )
 }
 
+let current = 0
 const listeners = new Set<Function>()
 
-export const useTintSectionIndex = (cb: (index: number) => void) => {
+export const useTintSectionIndex = (cb: (index: number, str: number) => void) => {
   useEffect(() => {
     listeners.add(cb)
     return () => {

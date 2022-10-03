@@ -42,8 +42,7 @@ const splitToFlat = ([a, b]: number[]) => {
   return a * 4 + b
 }
 
-const START_INDEX = 4 * 1
-let hasScrolledOnce = false
+const hasScrolledOnce = false
 
 export function HeroExampleThemes() {
   const themeSetting = useThemeSetting()
@@ -123,33 +122,20 @@ export function HeroExampleThemes() {
   }
 
   // arrow keys
-  useOnIntersecting(scrollView, ({ isIntersecting, dispose }) => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') {
-        move(1)
-      }
-      if (e.key === 'ArrowLeft') {
-        move(-1)
-      }
-    }
-    if (isIntersecting) {
-      if (!hasScrolledOnce) {
-        // scroll to middle on first intersection
-        hasScrolledOnce = true
-        // dont rush
-        setTimeout(() => {
-          const index = START_INDEX
-          moveToIndex(index)
-          setScrollLock('shouldAnimate')
-          scrollToIndex(index, true)
-        }, 400)
+  useOnIntersecting(scrollView, ([entry]) => {
+    if (entry?.isIntersecting) {
+      const onKey = (e: KeyboardEvent) => {
+        if (e.key === 'ArrowRight') {
+          move(1)
+        }
+        if (e.key === 'ArrowLeft') {
+          move(-1)
+        }
       }
       window.addEventListener('keydown', onKey)
       return () => {
         window.removeEventListener('keydown', onKey)
       }
-    } else {
-      dispose?.()
     }
   })
 

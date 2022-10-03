@@ -172,6 +172,11 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
           completions.push(promise)
 
           runners.push(() => {
+            if (animated['_value'] === val) {
+              // avoid update when its the same
+              return
+            }
+            animated.stopAnimation()
             Animated.spring(animated, {
               toValue: val,
               useNativeDriver: !isWeb,

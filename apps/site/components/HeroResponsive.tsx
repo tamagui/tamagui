@@ -112,9 +112,8 @@ export const HeroResponsive = memo(() => {
 
   useOnIntersecting(
     ref,
-    ({ isIntersecting, dispose }, didResize) => {
-      dispose?.()
-      if (!isIntersecting) return
+    ([entry], didResize) => {
+      if (!entry?.isIntersecting) return
       const node = safariRef.current
       if (!node) return
       if (didResize) {
@@ -124,7 +123,6 @@ export const HeroResponsive = memo(() => {
       window.addEventListener('pointermove', onMove)
       return () => {
         onMove.cancel()
-        dispose?.()
         window.removeEventListener('pointermove', onMove)
         stop()
       }

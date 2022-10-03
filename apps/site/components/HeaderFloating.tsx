@@ -43,7 +43,7 @@ export const HeaderFloating = ({
       elevation={shouldPad ? 0 : '$3'}
       py={shouldPad ? '$2' : 0}
     >
-      <YStack className="all ease-in ms200" o={isScrolled ? 0.4 : 0} fullscreen bc="$background" />
+      <YStack className="all ease-in ms200" o={isScrolled ? 0.9 : 0} fullscreen bc="$background" />
       <ContainerLarge>
         <Header floating {...props} />
       </ContainerLarge>

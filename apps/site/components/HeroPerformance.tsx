@@ -1,21 +1,19 @@
 import { useOnIntersecting } from '@tamagui/demos'
 import Link from 'next/link'
-import React from 'react'
 import { useRef, useState } from 'react'
 import { Button, Paragraph, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from '../components/Container'
 import { HomeH2, HomeH3 } from '../components/HomeH2'
 import { BenchmarkChartWeb } from './BenchmarkChartWeb'
-import { CocentricCircles } from './CocentricCircles'
 import { useTint } from './useTint'
 
 export function HeroPerformance() {
   const ref = useRef<HTMLElement>(null)
   const [show, setShow] = useState(false)
 
-  useOnIntersecting(ref, ({ isIntersecting }) => {
-    if (isIntersecting) {
+  useOnIntersecting(ref, ([entry]) => {
+    if (entry?.isIntersecting) {
       setTimeout(() => {
         setShow(true)
       }, 800)
@@ -24,10 +22,6 @@ export function HeroPerformance() {
 
   return (
     <ContainerLarge position="relative">
-      <YStack pos="absolute" o={0.15} top={-1000} left={0} right={0} x={500} ai="center">
-        <CocentricCircles />
-      </YStack>
-
       <YStack ai="center" zi={1} space="$4">
         <YStack ai="center" space="$2">
           <HomeH2 size="$10" maw={500} ref={ref}>

@@ -1,7 +1,7 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useIsIntersecting } from '@tamagui/demos'
 import Link from 'next/link'
-import React from 'react'
+import React, { memo } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import {
   Button,
@@ -26,7 +26,7 @@ import { useTint } from './useTint'
 
 const families = ['silkscreen', 'mono', 'heading']
 
-export const HeroTypography = () => {
+export const HeroTypography = memo(() => {
   const [family, setFamily] = useState(`silkscreen`)
   const ref = useRef<any>()
   const isIntersecting = useIsIntersecting(ref)
@@ -144,7 +144,7 @@ export const HeroTypography = () => {
       </ContainerLarge>
     </>
   )
-}
+})
 
 const OverlayCard = () => {
   const { tint } = useTint()

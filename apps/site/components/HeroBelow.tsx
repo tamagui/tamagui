@@ -1,14 +1,13 @@
 import { ChevronRight, Code, Cpu, Layers } from '@tamagui/feather-icons'
 import Link from 'next/link'
-import { memo, useEffect, useState } from 'react'
-import { H3, Paragraph, XStack, YStack, YStackProps, useWindowDimensions } from 'tamagui'
+import { memo, useEffect } from 'react'
+import { H3, Paragraph, XStack, YStack, YStackProps } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'
 import { useHeroHovered } from './heroState'
 import { IconStack } from './IconStack'
-import { useTintSectionIndex } from './TintSection'
-import { ThemeTint, useTint } from './useTint'
+import { ThemeTint } from './useTint'
 
 const TitleLink = ({ href, children, ...props }: any) => {
   return (
@@ -31,20 +30,18 @@ const TitleLink = ({ href, children, ...props }: any) => {
   )
 }
 
-export const HeroBelow = memo(() => {
-  const [top, setTop] = useState(0)
-
+export const HeroBelow = memo((props: any) => {
   return (
     <>
-      <Glow top={top} />
       <YStack pos="relative" zi={1000} elevation="$1" py="$9" pb="$10">
         <ThemeTint>
           <YStack
             onLayout={(event) => {
-              setTop(event.nativeEvent.layout.y - event.nativeEvent.layout.height)
+              props.onChangeTop(event.nativeEvent.layout.y - event.nativeEvent.layout.height)
             }}
             fullscreen
             bc="$color3"
+            className="all linear s1"
             zi={-1}
             o={0.33}
           />
@@ -54,58 +51,6 @@ export const HeroBelow = memo(() => {
     </>
   )
 })
-
-const Glow = ({ top }: { top: number }) => {
-  const { tint } = useTint()
-  const isHeroBelowColor = tint === 'blue' || tint === 'green' || tint === 'purple'
-  const [index, setIndex] = useState(0)
-  const isAtTop = index <= 1
-  const isOnHeroBelow = isAtTop && isHeroBelowColor
-  const [scrollTop, setScrollTop] = useState(0)
-  const windowWidth = useWindowDimensions().width
-  const xs = Math.min(400, windowWidth * 0.25)
-
-  useEffect(() => {
-    if (typeof document === 'undefined') return
-    const next = document.documentElement?.scrollTop ?? 0
-    setScrollTop(next + 100)
-  }, [index])
-
-  useTintSectionIndex(setIndex)
-
-  const scale = isOnHeroBelow ? 0.5 : 1
-
-  return (
-    <YStack
-      pos="absolute"
-      t={0}
-      l={0}
-      pe="none"
-      animation="lazy"
-      key={0}
-      zi={-1}
-      x={0}
-      y={scrollTop}
-      {...(isOnHeroBelow && {
-        animation: 'quick',
-        x: tint === 'green' ? -xs : tint === 'purple' ? xs : 0,
-        y: top - 70,
-      })}
-    >
-      <YStack
-        overflow="hidden"
-        h="100vh"
-        w={1200}
-        theme={tint}
-        o={0.5}
-        fullscreen
-        left="calc(50vw - 600px)"
-        scale={scale}
-        className="hero-blur"
-      />
-    </YStack>
-  )
-}
 
 export const HeroBelowContent = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
