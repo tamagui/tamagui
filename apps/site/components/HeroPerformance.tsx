@@ -28,8 +28,7 @@ export function HeroPerformance() {
             Automatically fast
           </HomeH2>
           <HomeH3>
-            Partial evaluation + tree flattening extract nearly all inline styles at build-time,
-            greatly reducing render depth and time.
+            Partial evaluation, tree flattening, hoisting and dead-code elimination ✅
           </HomeH3>
         </YStack>
 

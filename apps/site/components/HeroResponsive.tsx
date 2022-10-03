@@ -161,13 +161,13 @@ export const HeroResponsive = memo(() => {
     prevMove.current = 0
   }, [])
 
-  const scale = 0.8 - Math.min(0.25, smIndex * 0.18)
+  const scale = 0.7 - smIndex * 0.05
 
   return (
     <YStack ref={ref} y={0} mt={-80} pos="relative">
       <ContainerLarge pos="relative">
         <Header />
-        <Spacer size="$6" />
+        <Spacer size="$6" $sm={{ size: '$0' }} />
         <YStack h={browserHeight + 80} />
         <XStack
           b={-20}
@@ -177,7 +177,7 @@ export const HeroResponsive = memo(() => {
           space="$1"
           {...(media.sm && {
             scale,
-            x: 150 - width / 2 - (smIndex ? (0.9 - scale) * 200 : 0),
+            x: 150 - width / 2 - (smIndex ? (0.68 - scale) * 920 : 0),
             y: -40,
           })}
         >
