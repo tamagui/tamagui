@@ -28,7 +28,7 @@ export function HeroPerformance() {
             Automatically fast
           </HomeH2>
           <HomeH3>
-            Partial evaluation, tree flattening, hoisting and dead-code elimination ✅
+            Partial evaluation, tree flattening, hoisting and dead-code&nbsp;elimination&nbsp;✅
           </HomeH3>
         </YStack>
 

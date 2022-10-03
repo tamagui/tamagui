@@ -76,8 +76,8 @@ export const HeroBelowContent = memo(() => {
             Core
           </TitleLink>
           <Paragraph o={hovered === 0 ? 1 : 0.75} size="$4" theme="green_alt2">
-            A lightweight design-system library for React Native & Web with tokens, themes, fonts
-            and more + a nice typed <CodeInline>styled</CodeInline> utility.
+            A lightweight style + design system library for React Native & Web. Themes, responsive
+            styles, <CodeInline>styled</CodeInline> with variants and a host of features.
           </Paragraph>
         </Section>
 
@@ -89,8 +89,8 @@ export const HeroBelowContent = memo(() => {
             Tamagui
           </TitleLink>
           <Paragraph o={hovered === 1 ? 1 : 0.75} size="$4" theme="blue_alt2">
-            UI kit that adapts to native and web, built using Core. Composable component APIs,
-            consistent size props, nested themes, and more.
+            Large UI kit built using Core. All the base views for apps, with composable
+            component-first APIs, size variance, incredible themes, platform optimized.
           </Paragraph>
         </Section>
 
