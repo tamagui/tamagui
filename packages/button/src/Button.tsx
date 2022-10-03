@@ -49,6 +49,7 @@ export type ButtonProps = Omit<TextParentStyles, 'TextComponent'> &
      * adjust internal space relative to icon size
      */
     scaleSpace?: number
+    value?: string
   }
 
 export const ButtonFrame = styled(ThemeableStack, {
