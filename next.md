@@ -1,5 +1,6 @@
 - 1.0
 
+  - Select lg appears below site floating header
   - lint isn't catching no console as error
   - intellisense on "lh" shorthand props and "letterSpacing"
   - kitchen sink snack

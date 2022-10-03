@@ -19,15 +19,15 @@ description: How the Tamagui compiler enables less duplicate code, better perfor
   />
 </YStack>
 
-React Native recommends writing things twice generally for the best UX - as is made very clear in the `<title>` of the homepage itself: "[learn once, write anywhere](https://reactnative.dev/)" as opposed to "write once, runs everywhere". This pays off today with native-feeling and performing apps while still saving much development time.
+React Native recommends writing things twice generally for the best UX - as is made very clear in the `<title>` of the homepage itself: "[learn once, write anywhere](https://reactnative.dev/)" as opposed to "write once, runs everywhere". This pays off today with native-feeling and performing apps while saving quite a bit of dev time.
 
-But we can imagine that center, the sort of platonic ideal of <strong>"write once, runs great everywhere"</strong>, as we're still pretty far from it. It would involve a few things:
+The center of the Venn diagram is a platonic ideal - <strong>"write once, runs _well_ everywhere"</strong>, and we're pretty far from it. We could imagine a few ways to get closer:
 
-- Some Rails-for-React framework with unified routing, generators, or whatever "all the batteries" means.
-- A huge UI kit that outputs to beautiful platform primitives confidently with flexible APIs.
-- An optimizing compiler that removes inline styles and outputs to native primitives.
+- A sort-of Rails-for-React with simple routing, patterns, code gen, "all the batteries".
+- An all-encompassing UI kit that targeted each platform's primitives confidently with flexible APIs.
+- An optimizing compiler that let you write comfy inline styles even with logic, and it extracts all styling out and flattens down to base views.
 
-This document goes over the last one. The second one Tamagui UI is attempting, slowly, and the first just sounds hard.
+This document goes over the last one. The first one just sounds hard, and the second one [Tamagui UI](/docs/components/stacks) is working towards, slowly.
 
 **The hope is to make another "bump" like the one React Native Web made here:**
 
