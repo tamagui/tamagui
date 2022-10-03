@@ -148,11 +148,13 @@ export declare type AnimationKeys = TamaguiConfig['animations'] extends Animatio
 export declare type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>;
 declare type ArrayIntersection<A extends any[]> = A[keyof A];
 declare type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
-export declare type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> & {
+declare type SpacerPropsBase = {
     size?: number | SpaceTokens | null;
     flex?: boolean | number;
     direction?: SpaceDirection;
 };
+declare type SpacerOwnProps = SpacerPropsBase & WithThemeShorthandsPseudosMediaAnimation<SpacerPropsBase>;
+export declare type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> & SpacerOwnProps;
 export declare type CreateTamaguiProps = {
     shorthands?: GenericTamaguiConfig['shorthands'];
     media?: GenericTamaguiConfig['media'];

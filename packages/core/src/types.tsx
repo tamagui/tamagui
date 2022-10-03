@@ -256,11 +256,18 @@ type ArrayIntersection<A extends any[]> = A[keyof A]
 
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S
 
-export type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> & {
+type SpacerPropsBase = {
   size?: number | SpaceTokens | null
   flex?: boolean | number
   direction?: SpaceDirection
 }
+type SpacerOwnProps = SpacerPropsBase &
+  //
+  WithThemeShorthandsPseudosMediaAnimation<SpacerPropsBase>
+
+export type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> &
+  //
+  SpacerOwnProps
 
 export type CreateTamaguiProps = {
   shorthands?: GenericTamaguiConfig['shorthands']
