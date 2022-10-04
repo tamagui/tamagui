@@ -88,7 +88,9 @@ declare type GenericThemes = {
         [key: string]: VariableVal;
     });
 };
-declare type GenericShorthands = {};
+export declare type GenericShorthands = {
+    [key: string]: keyof (ViewStyle | TextStyle);
+};
 declare type GenericMedia = {
     [key: string]: {
         [key: string]: number | string;
