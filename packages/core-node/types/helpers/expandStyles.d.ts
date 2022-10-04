@@ -9,9 +9,9 @@ export declare const defaultOffset: {
  *   2. Normalizes various inconsistent styles to be more consistent
  *   3. Expands react-native shorthands, ie paddingHorizontal => paddingLeft, paddingRight
  */
-export declare function expandStyles(style: Record<string, any>, config?: import("..").TamaguiInternalConfig<import("..").CreateTokens<import("..").VariableVal>, {
-    [key: string]: Partial<import("..").TamaguiBaseTheme> & {
-        [key: string]: import("..").VariableVal;
+export declare function expandStyles(style: Record<string, any>, config?: import("../types").TamaguiInternalConfig<import("../types").CreateTokens<import("../types").VariableVal>, {
+    [key: string]: Partial<import("../types").TamaguiBaseTheme> & {
+        [key: string]: import("../types").VariableVal;
     };
 }, {}, {
     [key: string]: {
@@ -21,6 +21,6 @@ export declare function expandStyles(style: Record<string, any>, config?: import
     [key: string]: string | any[] | {
         [key: string]: any;
     };
-}, import("..").GenericFonts>): Record<string, any>;
+}, import("../types").GenericFonts>): Record<string, any>;
 export declare function fixStyles(style: Record<string, any>): void;
 //# sourceMappingURL=expandStyles.d.ts.map
