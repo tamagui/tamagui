@@ -1,5 +1,6 @@
 - 1.0
 
+  - add docs link to config-base/types/tamagui.config.d.ts its really helpful
   - path-specific imports `import { Stack } from 'something/ds/View'`
   - validate tokens tamagui expects in dev mode
   - lint isn't catching no console as error

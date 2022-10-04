@@ -1,5 +1,7 @@
-// type helper
+import { CreateShorthands } from './types'
 
-export function createShorthands<A extends Record<string, string>>(shorthands: A): A {
+// just a type helper util
+
+export function createShorthands<A extends CreateShorthands>(shorthands: A): A {
   return Object.freeze(shorthands) as any
 }

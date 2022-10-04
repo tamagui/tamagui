@@ -38,7 +38,8 @@
     "@tamagui/use-event": "^1.0.1-beta.190",
     "@tamagui/use-force-update": "^1.0.1-beta.190",
     "expo-screen-orientation": "^4.3.0",
-    "hyphenate-style-name": "^1.0.4"
+    "hyphenate-style-name": "^1.0.4",
+    "ts-toolbelt": "^9.6.0"
   },
   "peerDependencies": {
     "react": "*",

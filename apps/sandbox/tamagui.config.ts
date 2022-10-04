@@ -26,9 +26,17 @@ const tamaConf = createTamagui({
     alternative: body_cn,
   },
   themeClassNameOnRoot: false,
+
+  // test out type narrowing
+  shorthands: {
+    ...config.shorthands,
+    b2b2: 'backgroundColor',
+  },
 })
 
 export type Conf = typeof tamaConf
+
+type test = Conf['shorthands']['b2b2']
 
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}

@@ -28,9 +28,8 @@ export type TamaguiElement = HTMLElement | View
 
 export type DebugProp = boolean | 'break' | 'verbose'
 
-//
 // base props that are accepted by createComponent (additional to react-native-web)
-//
+
 export type TamaguiComponentPropsBase = {
   hitSlop?: PressableProps['hitSlop']
   asChild?: boolean
@@ -49,6 +48,9 @@ export type TamaguiComponentPropsBase = {
   tag?: string
   theme?: ThemeName | null
   componentName?: string
+  /**
+   * Forces the pseudo style state to be on
+   */
   forceStyle?: 'hover' | 'press' | 'focus'
   onHoverIn?: (e: MouseEvent) => any
   onHoverOut?: (e: MouseEvent) => any
@@ -59,9 +61,6 @@ export type TamaguiComponentPropsBase = {
   onMouseEnter?: (e: MouseEvent) => any
   onMouseLeave?: (e: MouseEvent) => any
   onMouseDown?: (e: MouseEvent) => any
-  // WEB STYLES
-  userSelect?: Properties['userSelect']
-  cursor?: Properties['cursor']
 }
 
 export type ReactComponentWithRef<Props, Ref> = React.ForwardRefExoticComponent<
@@ -116,11 +115,12 @@ type GenericThemes = {
       }
 }
 
-// making this full breaks types so define it instead below and use more limited
-type GenericShorthands = {}
+// export type GenericShorthands = {
+//   [key: string]: keyof StackStylePropsBase | keyof TextStylePropsBase
+// }
 
-export type CreateShorthands = {
-  [key: string]: keyof StackStylePropsBase | keyof TextStylePropsBase
+export type GenericShorthands = {
+  [key: string]: string //keyof StackStylePropsBase | keyof TextStylePropsBase
 }
 
 // sm: { minWidth: 100 }
@@ -586,46 +586,30 @@ type WithThemeShorthandsAndPseudos<A extends object> =
 type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> &
   MediaProps<WithThemeShorthandsAndPseudos<A>>
 
-//
-// Stack
-//
+/**
+ * Base style-only props (no media, pseudo):
+ */
 
-type WebOnlyStyleProps = {
+type StylePropsWebOnly = {
+  // we make this a style prop as it is on web
+  pointerEvents?: ViewProps['pointerEvents']
   // WEB ONLY
-  cursor?: string
+  cursor?: Properties['cursor']
   // WEB ONLY
-  contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string
+  contain?: Properties['contain']
   // WEB ONLY values: inherit, inline, block, content
   display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
-  // WEB ONLY pointerEvents can be a style prop
-  pointerEvents?: ViewProps['pointerEvents']
+  // WEB ONLY
+  userSelect?: Properties['userSelect']
 }
 
 export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> &
   TransformStyleProps &
-  WebOnlyStyleProps
-
-export type StackPropsBaseShared = Omit<ViewProps, 'display' | 'children'> &
-  RNWViewProps &
-  TamaguiComponentPropsBase
-
-export type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>
-export type StackPropsBase = StackPropsBaseShared & WithThemeAndShorthands<StackStylePropsBase>
-export type StackProps = StackPropsBaseShared & StackStyleProps
-
-export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (
-  event: infer Event
-) => void
-  ? Event
-  : never
-
-//
-// Text props
-//
+  StylePropsWebOnly
 
 export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> &
   TransformStyleProps &
-  WebOnlyStyleProps & {
+  StylePropsWebOnly & {
     ellipse?: boolean
     selectable?: boolean
     textDecorationDistance?: number
@@ -634,12 +618,29 @@ export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility
     wordWrap?: Properties['wordWrap']
   }
 
-export type TextPropsBaseShared = Omit<ReactTextProps, 'children'> &
+//
+// Stack
+//
+
+export type StackNonStyleProps = Omit<ViewProps, 'display' | 'children'> &
+  RNWViewProps &
+  TamaguiComponentPropsBase
+
+export type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>
+export type StackPropsBase = StackNonStyleProps & WithThemeAndShorthands<StackStylePropsBase>
+export type StackProps = StackNonStyleProps & StackStyleProps
+
+//
+// Text props
+//
+
+export type TextNonStyleProps = Omit<ReactTextProps, 'children'> &
   RNWTextProps &
   TamaguiComponentPropsBase
-export type TextPropsBase = TextPropsBaseShared & WithThemeAndShorthands<TextStylePropsBase>
+
+export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStylePropsBase>
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>
-export type TextProps = TextPropsBaseShared & TextStyleProps
+export type TextProps = TextNonStyleProps & TextStyleProps
 
 // could actually infer from parent
 export type ViewOrTextProps = WithThemeShorthandsPseudosMediaAnimation<
@@ -1317,3 +1318,9 @@ export type UseAnimationHook = (
 ) => null | {
   style?: StackStylePropsBase | StackStylePropsBase[]
 }
+
+export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (
+  event: infer Event
+) => void
+  ? Event
+  : never

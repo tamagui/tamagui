@@ -102,8 +102,6 @@ export declare const elevate: {
         onPress?: ((e: import("react-native").GestureResponderEvent) => any) | import("@tamagui/core").Variable<any> | undefined;
         onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | import("@tamagui/core").Variable<any> | undefined;
         onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | import("@tamagui/core").Variable<any> | undefined;
-        userSelect?: import("@tamagui/core").Variable<any> | import("csstype").Property.UserSelect | undefined;
-        cursor?: string | import("@tamagui/core").Variable<any> | undefined;
         backgroundColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
         borderBottomColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
         borderBottomEndRadius?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | undefined;
@@ -174,7 +172,7 @@ export declare const elevate: {
         top?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | undefined;
         width?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | undefined;
         zIndex?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ZIndexTokens | undefined;
-        direction?: "inherit" | import("@tamagui/core").Variable<any> | "ltr" | "rtl" | undefined;
+        direction?: import("@tamagui/core").Variable<any> | "inherit" | "ltr" | "rtl" | undefined;
         shadowColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
         shadowOffset?: import("@tamagui/core").ThemeValueFallback | {
             width: import("@tamagui/core").SpaceTokens;
@@ -203,8 +201,10 @@ export declare const elevate: {
         rotateY?: string | import("@tamagui/core").Variable<any> | undefined;
         rotateX?: string | import("@tamagui/core").Variable<any> | undefined;
         rotateZ?: string | import("@tamagui/core").Variable<any> | undefined;
-        contain?: string | import("@tamagui/core").Variable<any> | undefined;
-        display?: "flex" | "none" | "inherit" | import("@tamagui/core").Variable<any> | "inline" | "block" | "contents" | "inline-flex" | undefined;
+        cursor?: import("@tamagui/core").Variable<any> | import("csstype").Property.Cursor | undefined;
+        contain?: import("@tamagui/core").Variable<any> | import("csstype").Property.Contain | undefined;
+        display?: "flex" | "none" | import("@tamagui/core").Variable<any> | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
+        userSelect?: import("@tamagui/core").Variable<any> | import("csstype").Property.UserSelect | undefined;
         hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>) | import("@tamagui/core").Variable<any> | null | undefined;
         pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>) | import("@tamagui/core").Variable<any> | null | undefined;
         focusStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>) | import("@tamagui/core").Variable<any> | null | undefined;

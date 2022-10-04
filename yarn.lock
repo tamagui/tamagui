@@ -6116,6 +6116,7 @@ __metadata:
     hyphenate-style-name: ^1.0.4
     react: "*"
     react-dom: "*"
+    ts-toolbelt: ^9.6.0
     typescript: ^4.7.4
     vitest: ^0.20.3
   peerDependencies:
@@ -6870,6 +6871,7 @@ __metadata:
   resolution: "@tamagui/shorthands@workspace:packages/shorthands"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.190
+    "@tamagui/core": ^1.0.1-beta.190
   languageName: unknown
   linkType: soft
 
@@ -23938,6 +23940,13 @@ __metadata:
     "@ts-morph/common": ~0.16.0
     code-block-writer: ^11.0.0
   checksum: 95e026214282850f08d1d4de673e969cdc166cb6d9366e455e1ea0251a204f80cffcb958c8ed7b1f351e56b972c4244e0dc7be0b13df3c4a6f22abdd4d4608e4
+  languageName: node
+  linkType: hard
+
+"ts-toolbelt@npm:^9.6.0":
+  version: 9.6.0
+  resolution: "ts-toolbelt@npm:9.6.0"
+  checksum: 9f35fd95d895a5d32ea9fd2e532a695b0bae6cbff6832b77292efa188a0ed1ed6e54f63f74a8920390f3d909a7a3adb20a144686372a8e78b420246a9bd3d58a
   languageName: node
   linkType: hard
 
