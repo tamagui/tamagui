@@ -25,21 +25,20 @@ export function useIsIntersecting<Ref extends HTMLRef | HTMLRef[]>(
       refs,
       (entries) => {
         const intersecting = entries.some((x) => x?.isIntersecting)
-        if ((once && intersecting) || !once) {
-          setValues((prev) => {
-            const next = entries.map((e) => e?.isIntersecting ?? false)
-            if (prev.every((e, i) => e === next[i])) {
-              return prev
-            }
-            return next
-          })
-        }
+        if (once && !intersecting) return
+        setValues((prev) => {
+          const next = entries.map((e) => e?.isIntersecting ?? false)
+          if (prev.length === next.length && prev.every((e, i) => e === next[i])) {
+            return prev
+          }
+          return next
+        })
       },
       opts
     )
   }
 
-  return (Array.isArray(refs) ? values : Boolean(values[0])) as any
+  return (Array.isArray(refs) ? values : values[0]) as any
 }
 
 export function useOnIntersecting<Ref extends HTMLRef | HTMLRef[]>(

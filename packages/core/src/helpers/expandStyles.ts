@@ -1,12 +1,13 @@
 import { isWeb } from '@tamagui/constants'
 
 import { getConfig } from '../config'
+import { GenericShorthands } from '../types'
 import { expandStyle } from './expandStyle'
 import { colorToRGBA, normalizeColor } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
-let shorthands: Record<string, string> | null = null
+let shorthands: GenericShorthands | null = null
 export const defaultOffset = { height: 0, width: 0 }
 
 /**
