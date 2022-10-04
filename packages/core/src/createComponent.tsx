@@ -895,6 +895,7 @@ export function createComponent<
             [pressKey]: attachPress
               ? (e) => {
                   unPress()
+                  // @ts-ignore
                   onClick?.(e)
                   onPress?.(e)
                 }
@@ -1419,12 +1420,13 @@ type CreateSpacerProps = SpacedChildrenProps & { key: string }
 
 function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
   return (
+    // @ts-ignore this one blew up but the types seem better
     <Spacer
       key={key}
       size={space}
       direction={direction}
-      {...(spaceFlex && {
-        flex: spaceFlex,
+      {...(typeof spaceFlex !== 'undefined' && {
+        flex: spaceFlex === true ? 1 : spaceFlex === false ? 0 : spaceFlex,
       })}
     />
   )
