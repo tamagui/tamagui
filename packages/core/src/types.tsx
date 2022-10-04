@@ -116,7 +116,9 @@ type GenericThemes = {
       }
 }
 
-type GenericShorthands = {}
+export type GenericShorthands = {
+  [key: string]: keyof (ViewStyle | TextStyle)
+}
 
 // sm: { minWidth: 100 }
 type GenericMedia = {
