@@ -116,8 +116,11 @@ type GenericThemes = {
       }
 }
 
-export type GenericShorthands = {
-  [key: string]: keyof (ViewStyle | TextStyle)
+// making this full breaks types so define it instead below and use more limited
+type GenericShorthands = {}
+
+export type CreateShorthands = {
+  [key: string]: keyof StackStylePropsBase | keyof TextStylePropsBase
 }
 
 // sm: { minWidth: 100 }
@@ -272,7 +275,7 @@ export type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> &
   SpacerOwnProps
 
 export type CreateTamaguiProps = {
-  shorthands?: GenericTamaguiConfig['shorthands']
+  shorthands?: CreateShorthands
   media?: GenericTamaguiConfig['media']
   animations?: AnimationDriver<any>
   fonts: GenericTamaguiConfig['fonts']
