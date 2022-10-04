@@ -363,11 +363,13 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
               logger.info([`Loaded`, Object.keys(out.components).join(', '), !!Component].join(' '))
             }
           } catch (err: any) {
-            logger.info(
-              `${getPrefixLogs(
-                options
-              )} skip optimize styled(${name}), unable to pre-process (DEBUG=tamagui for more)`
-            )
+            if (shouldPrintDebug) {
+              logger.info(
+                `${getPrefixLogs(
+                  options
+                )} skip optimize styled(${name}), unable to pre-process (DEBUG=tamagui for more)`
+              )
+            }
             if (process.env.DEBUG === 'tamagui') {
               logger.info(
                 ` Disable this with "disableExtractFoundComponents" in your build-time configuration. \n\n ${err.message} ${err.stack}`
@@ -506,19 +508,33 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
         if (binding) {
           if (!t.isImportDeclaration(binding.path.parent)) {
+            if (shouldPrintDebug) {
+              logger.info(` - No import binding`)
+            }
             return
           }
           const source = binding.path.parent.source
           if (!props.components.includes(source.value) && !isInternalImport(source.value)) {
+            if (shouldPrintDebug) {
+              logger.info(` - Not internal import ${source.value}`)
+            }
             return
           }
           if (!validComponents[binding.identifier.name]) {
+            if (shouldPrintDebug) {
+              logger.info(
+                ` - Not valid component (binding.identifier.name) ${binding.identifier.name}`
+              )
+            }
             return
           }
         }
 
         const component = validComponents[node.name.name] as { staticConfig?: StaticConfigParsed }
         if (!component || !component.staticConfig) {
+          if (shouldPrintDebug) {
+            logger.info(` - No Tamagui conf on this: ${node.name.name}`)
+          }
           return
         }
 

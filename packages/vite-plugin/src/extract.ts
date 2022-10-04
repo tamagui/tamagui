@@ -166,8 +166,9 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
         ssr = ssrParam?.ssr
       }
 
+      const firstCommentIndex = code.indexOf('// ')
       const { shouldDisable, shouldPrintDebug } = getPragmaOptions({
-        source: code,
+        source: firstCommentIndex >= 0 ? code.slice(firstCommentIndex) : '',
         path: validId,
       })
 
