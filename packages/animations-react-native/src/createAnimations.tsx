@@ -173,6 +173,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
 
           runners.push(() => {
             if (animated['_value'] === val) {
+              resolve()
               // avoid update when its the same
               return
             }
