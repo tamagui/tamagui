@@ -3,8 +3,8 @@
   "version": "1.0.1-beta.190",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development TAMAGUI_TARGET=web DISABLE_EXTRACTION=true vite --host",
-    "dev:extract": "DISABLE_EXTRACTION=false NODE_ENV=development webpack serve",
+    "dev": "NODE_ENV=development TAMAGUI_TARGET=web vite --host",
+    "dev:extract": "EXTRACT=1 yarn dev",
     "dev:webpack": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
     "dev:webpack:extract": "NODE_ENV=development webpack serve",
     "prod": "NODE_ENV=production webpack --json=compilation-stats.json"

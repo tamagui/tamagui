@@ -1,12 +1,12 @@
 - 1.0
 
-  - Select lg appears below site floating header
+  - path-specific imports `import { Stack } from 'something/ds/View'`
+  - validate tokens tamagui expects in dev mode
   - lint isn't catching no console as error
   - intellisense on "lh" shorthand props and "letterSpacing"
   - kitchen sink snack
-  - document simple functional variants: { sx: ()=>{} }
-  - add guide "Migrating from Dripsy/etc" sx prop demo
-  - release tailwind package + guide "Tailind style props"
+  - @tamagui/sx
+  - @tamagui/tailwind
   - `display: flex; is not being applied to elements correctly`
   - can actually remove react-native dep entirely without a lot of trouble
   - 1.0 blog post
@@ -87,6 +87,12 @@ plan for space + display none, two pronged
 ---
 
 Roadmap
+
+can optimize useMedia:
+ - https://twitter.com/sebmarkbage/status/1576603375814070273
+ - "some tricky with either useDeferredValue or useSyncExternalStore you can use for this"
+
+
 
   - container queries
   - // enable shorthand for not having to switch modes to test when disabled by default

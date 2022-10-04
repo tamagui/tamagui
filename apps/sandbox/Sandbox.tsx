@@ -1,3 +1,4 @@
+// debug-verbose
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
@@ -13,6 +14,7 @@ import {
   Sheet,
   Square,
   TamaguiProvider,
+  YStack,
   useMedia,
 } from 'tamagui'
 
@@ -88,6 +90,8 @@ export const Sandbox = () => {
         <Test />
 
         <ListItem noTextWrap>hello</ListItem>
+
+        <YStack backgroundColor="red" />
 
         {/* <TestFontTokensInVariants type="H1" size="large">
           Hello world
