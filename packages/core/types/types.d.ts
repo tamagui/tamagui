@@ -88,8 +88,9 @@ declare type GenericThemes = {
         [key: string]: VariableVal;
     });
 };
-export declare type GenericShorthands = {
-    [key: string]: keyof (ViewStyle | TextStyle);
+declare type GenericShorthands = {};
+export declare type CreateShorthands = {
+    [key: string]: keyof StackStylePropsBase | keyof TextStylePropsBase;
 };
 declare type GenericMedia = {
     [key: string]: {
@@ -158,7 +159,7 @@ declare type SpacerPropsBase = {
 declare type SpacerOwnProps = SpacerPropsBase & WithThemeShorthandsPseudosMediaAnimation<SpacerPropsBase>;
 export declare type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> & SpacerOwnProps;
 export declare type CreateTamaguiProps = {
-    shorthands?: GenericTamaguiConfig['shorthands'];
+    shorthands?: CreateShorthands;
     media?: GenericTamaguiConfig['media'];
     animations?: AnimationDriver<any>;
     fonts: GenericTamaguiConfig['fonts'];
