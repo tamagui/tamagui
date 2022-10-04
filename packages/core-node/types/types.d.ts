@@ -39,8 +39,6 @@ export declare type TamaguiComponentPropsBase = {
     onMouseEnter?: (e: MouseEvent) => any;
     onMouseLeave?: (e: MouseEvent) => any;
     onMouseDown?: (e: MouseEvent) => any;
-    userSelect?: Properties['userSelect'];
-    cursor?: Properties['cursor'];
 };
 export declare type ReactComponentWithRef<Props, Ref> = React.ForwardRefExoticComponent<Props & React.RefAttributes<Ref>>;
 export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
@@ -89,7 +87,7 @@ declare type GenericThemes = {
     });
 };
 export declare type GenericShorthands = {
-    [key: string]: keyof (ViewStyle | TextStyle);
+    [key: string]: string;
 };
 declare type GenericMedia = {
     [key: string]: {
@@ -337,18 +335,22 @@ export declare type PseudoStyles = {
 declare type WithThemeAndShorthands<A extends object> = WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
 declare type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>;
 declare type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>;
-declare type WebOnlyStyleProps = {
-    cursor?: string;
-    contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string;
-    display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
-    pointerEvents?: ViewProps['pointerEvents'];
-};
-export declare type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & WebOnlyStyleProps;
 export declare type StackPropsBaseShared = Omit<ViewProps, 'display' | 'children'> & RNWViewProps & TamaguiComponentPropsBase;
 export declare type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>;
 export declare type StackPropsBase = StackPropsBaseShared & WithThemeAndShorthands<StackStylePropsBase>;
 export declare type StackProps = StackPropsBaseShared & StackStyleProps;
 export declare type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
+/**
+ * Base style-only props (no media, pseudo):
+ */
+declare type WebOnlyStyleProps = {
+    pointerEvents?: ViewProps['pointerEvents'];
+    cursor?: Properties['cursor'];
+    contain?: Properties['contain'];
+    display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
+    userSelect?: Properties['userSelect'];
+};
+export declare type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & WebOnlyStyleProps;
 export declare type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps & {
     ellipse?: boolean;
     selectable?: boolean;

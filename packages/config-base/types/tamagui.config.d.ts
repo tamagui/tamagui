@@ -88,6 +88,7 @@ export declare const config: {
         };
     };
     shorthands: {
+<<<<<<< HEAD
         readonly ac: "alignContent";
         readonly ai: "alignItems";
         readonly als: "alignSelf";
@@ -99,7 +100,6 @@ export declare const config: {
         readonly bbw: "borderBottomWidth";
         readonly bg: "backgroundColor";
         readonly blc: "borderLeftColor";
-        readonly bls: "borderLeftStyle";
         readonly blw: "borderLeftWidth";
         readonly boc: "borderColor";
         readonly boxs: "boxSizing";
@@ -167,6 +167,82 @@ export declare const config: {
         readonly w: "width";
         readonly ww: "wordWrap";
         readonly zi: "zIndex";
+=======
+        ussel: "userSelect";
+        cur: "cursor";
+        pe: "pointerEvents";
+        col: "color";
+        ff: "fontFamily";
+        fos: "fontSize";
+        fost: "fontStyle";
+        fow: "fontWeight";
+        ls: "letterSpacing";
+        lh: "lineHeight";
+        ta: "textAlign";
+        tt: "textTransform";
+        ww: "wordWrap";
+        ac: "alignContent";
+        ai: "alignItems";
+        als: "alignSelf";
+        b: "bottom";
+        bc: "backgroundColor";
+        bg: "backgroundColor";
+        bbc: "borderBottomColor";
+        bblr: "borderBottomLeftRadius";
+        bbrr: "borderBottomRightRadius";
+        bbw: "borderBottomWidth";
+        blc: "borderLeftColor";
+        blw: "borderLeftWidth";
+        boc: "borderColor";
+        br: "borderRadius";
+        bs: "borderStyle";
+        brw: "borderRightWidth";
+        brc: "borderRightColor";
+        btc: "borderTopColor";
+        btlr: "borderTopLeftRadius";
+        btrr: "borderTopRightRadius";
+        btw: "borderTopWidth";
+        bw: "borderWidth";
+        dsp: "display";
+        f: "flex";
+        fb: "flexBasis";
+        fd: "flexDirection";
+        fg: "flexGrow";
+        fs: "flexShrink";
+        fw: "flexWrap";
+        h: "height";
+        jc: "justifyContent";
+        l: "left";
+        m: "margin";
+        mah: "maxHeight";
+        maw: "maxWidth";
+        mb: "marginBottom";
+        mih: "minHeight";
+        miw: "minWidth";
+        ml: "marginLeft";
+        mr: "marginRight";
+        mt: "marginTop";
+        mx: "marginHorizontal";
+        my: "marginVertical";
+        o: "opacity";
+        ov: "overflow";
+        p: "padding";
+        pb: "paddingBottom";
+        pl: "paddingLeft";
+        pos: "position";
+        pr: "paddingRight";
+        pt: "paddingTop";
+        px: "paddingHorizontal";
+        py: "paddingVertical";
+        r: "right";
+        shac: "shadowColor";
+        shar: "shadowRadius";
+        shof: "shadowOffset";
+        shop: "shadowOpacity";
+        t: "top";
+        w: "width";
+        zi: "zIndex";
+>>>>>>> 5d100e23d (feat(core): Better autocomplete shorthands)
     };
     themes: {
         readonly blue: {
