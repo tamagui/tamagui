@@ -1,13 +1,14 @@
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import { TamaguiInternalConfig, getStylesAtomic, mediaObjectToString } from '@tamagui/core-node'
-import { ViewStyle } from 'react-native'
+import type { ViewStyle } from 'react-native'
 
 import { MEDIA_SEP } from '../constants.js'
-import type { StyleObject, Ternary } from '../types.js'
-import { isInsideTamagui, isPresent } from './extractHelpers.js'
+import type { StyleObject, TamaguiOptionsWithFileInfo, Ternary } from '../types.js'
+import { isPresent, isValidImport } from './extractHelpers.js'
 
 export function extractMediaStyle(
+  props: TamaguiOptionsWithFileInfo,
   ternary: Ternary,
   jsxPath: NodePath<t.JSXElement>,
   tamaguiConfig: TamaguiInternalConfig,
@@ -15,13 +16,14 @@ export function extractMediaStyle(
   importance = 0,
   shouldPrintDebug: boolean | 'verbose' = false
 ) {
-  const mt = getMediaQueryTernary(ternary, jsxPath, sourcePath)
+  const mt = getMediaQueryTernary(props, ternary, jsxPath, sourcePath)
   if (!mt) {
     return null
   }
   const { key } = mt
   const mq = tamaguiConfig.media[key]
   if (!mq) {
+    // eslint-disable-next-line no-console
     console.error(`Media query "${key}" not found: ${Object.keys(tamaguiConfig.media)}`)
     return null
   }
@@ -33,6 +35,7 @@ export function extractMediaStyle(
     getStyleObj(ternary.alternate, true),
   ].filter(isPresent)
   if (shouldPrintDebug && !styleOpts.length) {
+    // eslint-disable-next-line no-console
     console.log('  media query, no styles?')
     return null
   }
@@ -80,6 +83,7 @@ export function extractMediaStyle(
     })
     if (shouldPrintDebug === 'verbose') {
       // prettier-ignore
+      // eslint-disable-next-line no-console
       console.log('  media styles:', importance, styleObj, singleMediaStyles.map(x => x.identifier).join(', '))
     }
     // add to output
@@ -91,6 +95,7 @@ export function extractMediaStyle(
 }
 
 function getMediaQueryTernary(
+  props: TamaguiOptionsWithFileInfo,
   ternary: Ternary,
   jsxPath: NodePath<t.JSXElement>,
   sourcePath: string
@@ -104,6 +109,7 @@ function getMediaQueryTernary(
   if (t.isLogicalExpression(ternary.test) && ternary.test.operator === '&&') {
     // *should* be normalized to always be on left side
     const mediaLeft = getMediaInfoFromExpression(
+      props,
       ternary.test.left,
       jsxPath,
       sourcePath,
@@ -122,6 +128,7 @@ function getMediaQueryTernary(
   // const media = useMedia()
   // ... media.sm
   const result = getMediaInfoFromExpression(
+    props,
     ternary.test,
     jsxPath,
     sourcePath,
@@ -137,6 +144,7 @@ function getMediaQueryTernary(
 }
 
 function getMediaInfoFromExpression(
+  props: TamaguiOptionsWithFileInfo,
   test: t.Expression,
   jsxPath: NodePath<t.JSXElement>,
   sourcePath: string,
@@ -156,20 +164,21 @@ function getMediaInfoFromExpression(
     if (!binding) return false
     const bindingNode = binding.path?.node
     if (!t.isVariableDeclarator(bindingNode) || !bindingNode.init) return false
-    if (!isValidMediaCall(jsxPath, bindingNode.init, sourcePath)) return false
+    if (!isValidMediaCall(props, jsxPath, bindingNode.init, sourcePath)) return false
     return { key, bindingName: name }
   }
   if (t.isIdentifier(test)) {
     const key = test.name
     const node = jsxPath.scope.getBinding(test.name)?.path?.node
     if (!t.isVariableDeclarator(node)) return false
-    if (!node.init || !isValidMediaCall(jsxPath, node.init, sourcePath)) return false
+    if (!node.init || !isValidMediaCall(props, jsxPath, node.init, sourcePath)) return false
     return { key, bindingName: key }
   }
   return null
 }
 
 export function isValidMediaCall(
+  props: TamaguiOptionsWithFileInfo,
   jsxPath: NodePath<t.JSXElement>,
   init: t.Expression,
   sourcePath: string
@@ -183,10 +192,8 @@ export function isValidMediaCall(
   if (!mediaBinding) return false
   const useMediaImport = mediaBinding.path.parent
   if (!t.isImportDeclaration(useMediaImport)) return false
-  if (useMediaImport.source.value !== 'tamagui') {
-    if (!isInsideTamagui(sourcePath)) {
-      return false
-    }
+  if (!isValidImport(props, sourcePath)) {
+    return false
   }
   return true
 }

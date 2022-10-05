@@ -1,8 +1,12 @@
+import { basename, relative } from 'path'
+
 import generate from '@babel/generator'
 import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
+import findRoot from 'find-root'
+import { memoize } from 'lodash'
 
-import type { ExtractedAttr, Ternary } from '../types.js'
+import type { ExtractedAttr, TamaguiOptionsWithFileInfo, Ternary } from '../types.js'
 
 // import { astToLiteral } from './literalToAst'
 
@@ -91,6 +95,7 @@ export function findComponentName(scope) {
 }
 
 export function isValidThemeHook(
+  props: TamaguiOptionsWithFileInfo,
   jsxPath: NodePath<t.JSXElement>,
   n: t.MemberExpression,
   sourcePath: string
@@ -107,14 +112,52 @@ export function isValidThemeHook(
   if (init.callee.name !== 'useTheme') return false
   const importNode = binding.scope.getBinding('useTheme')?.path.parent
   if (!t.isImportDeclaration(importNode)) return false
-  if (importNode.source.value !== 'tamagui') {
-    if (!isInsideTamagui(sourcePath)) {
-      return false
-    }
+  if (!isValidImport(props, sourcePath)) {
+    return false
   }
   return true
 }
 
-export const isInsideTamagui = (srcName: string) => {
-  return srcName.includes('/dist/jsx') || srcName.includes('/core/src')
+export const isInsideComponentPackage = (props: TamaguiOptionsWithFileInfo, srcName: string) => {
+  return getValidComponentsPaths(props).some((path) => {
+    console.log(
+      'isInsideComponentPackage',
+      srcName.startsWith(path),
+      srcName,
+      path,
+      relative(process.cwd(), path)
+    )
+    return srcName.startsWith(path)
+  })
 }
+
+export const isComponentPackage = (props: TamaguiOptionsWithFileInfo, srcName: string) => {
+  return getValidComponentsPaths(props).some((path) => {
+    console.log(
+      'isComponentPackage',
+      srcName.startsWith(path),
+      srcName,
+      path,
+      relative(process.cwd(), path)
+    )
+    return srcName.startsWith(path)
+  })
+}
+
+export const isValidImport = (props: TamaguiOptionsWithFileInfo, srcName: string) => {
+  return srcName.startsWith('.')
+    ? isInsideComponentPackage(props, srcName)
+    : isComponentPackage(props, srcName)
+}
+
+const getValidComponentPackages = memoize((props: TamaguiOptionsWithFileInfo) => {
+  // just always look for `tamagui` and `@tamagui/core`
+  return [...new Set(['@tamagui/core', 'tamagui', ...props.components])]
+})
+
+const getValidComponentsPaths = memoize((props: TamaguiOptionsWithFileInfo) => {
+  return getValidComponentPackages(props).map((pkg) => {
+    const root = findRoot(pkg)
+    return basename(root)
+  })
+})

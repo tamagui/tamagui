@@ -3,22 +3,22 @@ import vm from 'vm'
 import generate from '@babel/generator'
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
-import type { TamaguiConfig } from '@tamagui/core-node'
 import { createCSSVariable } from '@tamagui/core-node'
 import esbuild from 'esbuild'
 
 import { FAILED_EVAL } from '../constants.js'
+import { TamaguiOptionsWithFileInfo } from '../types.js'
 import { evaluateAstNode } from './evaluateAstNode.js'
 import { isValidThemeHook } from './extractHelpers.js'
 
 export function createEvaluator({
-  tamaguiConfig,
+  props,
   staticNamespace,
   sourcePath,
   traversePath,
   shouldPrintDebug,
 }: {
-  tamaguiConfig: TamaguiConfig
+  props: TamaguiOptionsWithFileInfo
   staticNamespace: Record<string, any>
   sourcePath: string
   traversePath?: NodePath<t.JSXElement>
@@ -31,7 +31,7 @@ export function createEvaluator({
       t.isMemberExpression(n) &&
       t.isIdentifier(n.property) &&
       traversePath &&
-      isValidThemeHook(traversePath, n, sourcePath)
+      isValidThemeHook(props, traversePath, n, sourcePath)
     ) {
       const key = n.property.name
       if (shouldPrintDebug) {
@@ -41,7 +41,7 @@ export function createEvaluator({
       return createCSSVariable(key)
     }
     // variable
-    if (t.isIdentifier(n) && staticNamespace.hasOwnProperty(n.name)) {
+    if (t.isIdentifier(n) && typeof staticNamespace[n.name] !== 'undefined') {
       return staticNamespace[n.name]
     }
     const evalContext = vm.createContext(staticNamespace)

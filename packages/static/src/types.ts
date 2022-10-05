@@ -62,9 +62,12 @@ export type ExtractTagProps = {
   staticConfig: StaticConfig
 }
 
-export type ExtractorParseProps = TamaguiOptions & {
+export type TamaguiOptionsWithFileInfo = TamaguiOptions & {
+  sourcePath: string
+}
+
+export type ExtractorParseProps = TamaguiOptionsWithFileInfo & {
   target: 'native' | 'html'
-  sourcePath?: string
   shouldPrintDebug?: boolean | 'verbose'
   onExtractTag: (props: ExtractTagProps) => void
   getFlattenedNode?: (props: { isTextView: boolean; tag: string }) => string
