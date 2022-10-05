@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-default-node",
-  "version": "1.0.1-beta.190",
+  "version": "1.0.1-beta.191",
   "source": "src/index.ts",
   "main": "dist",
   "types": "./types/index.d.ts",
@@ -15,11 +15,11 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/core-node": "^1.0.1-beta.190",
-    "@tamagui/shorthands": "^1.0.1-beta.190"
+    "@tamagui/core-node": "^1.0.1-beta.191",
+    "@tamagui/shorthands": "^1.0.1-beta.191"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.190"
+    "@tamagui/build": "^1.0.1-beta.191"
   },
   "publishConfig": {
     "access": "public"
