@@ -9,8 +9,6 @@
   - lint isn't catching no console as error
   - intellisense on "lh" shorthand props and "letterSpacing"
   - kitchen sink snack
-  - @tamagui/sx
-  - @tamagui/tailwind
   - `display: flex; is not being applied to elements correctly`
   - can actually remove react-native dep entirely without a lot of trouble
   - 1.0 blog post
@@ -32,6 +30,10 @@
   - forms working bubble / label
   - inlineWhenUnflattened fontFamily on text should just be default
   - TestFontTokensInVariants types no autocompleting in variants... but showing properly on hover/type property
+
+  - @tamagui/sx
+  - @tamagui/tailwind
+  - starter don't need compilation step refer direct to types
 
   - FAQ
     - don't wrap in HOC if possible, will de-opt compilation

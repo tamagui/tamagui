@@ -33,7 +33,7 @@ export const HeaderFloating = ({
         y={shown ? 1 : -60}
         o={shown ? 1 : 0}
         bbc="$borderColor"
-        zi={500}
+        zi={50000}
         // @ts-ignore
         pos="fixed"
         top={0}

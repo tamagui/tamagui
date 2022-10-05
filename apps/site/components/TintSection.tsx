@@ -73,7 +73,6 @@ export const useTintSectionIndex = (cb: (index: number, str: number) => void) =>
 export const HomeSection = styled(YStack, {
   name: 'Section',
   pos: 'relative',
-  debug: true,
   className: 'content-visibility-auto',
   py: '$14',
   zi: 2,

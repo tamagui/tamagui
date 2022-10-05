@@ -53,7 +53,7 @@ export function Header(props: HeaderProps) {
       jc="space-between"
       pos="relative"
       py={props.floating ? 0 : '$2'}
-      zi={1}
+      zi={50000}
     >
       <XStack ai="center" space="$6">
         {isHome ? (
