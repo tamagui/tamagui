@@ -370,13 +370,8 @@ export async function extractToClassNames({
             cssMap.set(className, val)
           }
         } else if (rules.length) {
-          if (rules.length > 1) {
-            // eslint-disable-next-line no-console
-            console.log('  rules error', { rules })
-            throw new Error(`Shouldn't have more than one rule`)
-          }
           cssMap.set(className, {
-            css: rules[0],
+            css: rules.join('\n'),
             commentTexts: [comment],
           })
         }

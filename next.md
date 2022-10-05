@@ -3,6 +3,8 @@
   - add docs link to config-base/types/tamagui.config.d.ts its really helpful
   - path-specific imports `import { Stack } from 'something/ds/View'`
   - validate tokens tamagui expects in dev mode
+  - validate tokens tamagui expects in dev mode
+  - Select lg appears below site floating header
   - lint isn't catching no console as error
   - intellisense on "lh" shorthand props and "letterSpacing"
   - kitchen sink snack
