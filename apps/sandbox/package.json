@@ -3,7 +3,7 @@
   "version": "1.0.1-beta.190",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development TAMAGUI_TARGET=web vite --host",
+    "dev": "NODE_ENV=development TAMAGUI_TARGET=web vite --host --clearScreen false",
     "dev:extract": "EXTRACT=1 yarn dev",
     "dev:webpack": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
     "dev:webpack:extract": "NODE_ENV=development webpack serve",

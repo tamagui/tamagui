@@ -1,6 +1,6 @@
 // perf sensitive so doing some weird stuff
 
-import { ViewStyle } from 'react-native'
+import type { ViewStyle } from 'react-native'
 
 export function concatClassName(...args: any[]): any
 export function concatClassName(_cn: ViewStyle | null | undefined): string {

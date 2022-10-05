@@ -17,17 +17,16 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
   const s = css.indexOf('transform:')
   if (s === -1) {
     if (process.env.NODE_ENV === 'development') {
-      // sometimes getting empty style rules from webpack... :/ only in dev
-      if (css.indexOf('{ }')) {
-        console.log('wah wah')
-        return false
-      }
+      // eslint-disable-next-line no-console
       console.groupCollapsed(`❌ Invalid transform, likely used deg/% improperly ${identifier}`)
+      // eslint-disable-next-line no-console
       console.log('rule:', rule)
+      // eslint-disable-next-line no-console
       console.trace()
+      // eslint-disable-next-line no-console
       console.groupEnd()
     } else {
-      console.warn(`Missing transform`, identifier, css, rule)
+      // missing transform
     }
     return false
   }
