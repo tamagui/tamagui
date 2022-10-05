@@ -9,7 +9,6 @@ import { concatClassName } from '@tamagui/helpers'
 import invariant from 'invariant'
 import type { ViewStyle } from 'react-native'
 
-import { CONCAT_CLASSNAME_IMPORT } from '../constants.js'
 import type { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../types.js'
 import { babelParse } from './babelParse.js'
 import { buildClassName } from './buildClassName.js'
@@ -324,16 +323,7 @@ export async function extractToClassNames({
         })()
 
         // inserts the _cn variable and uses it for className
-        let names = buildClassName(finalClassNames)
-
-        if (names) {
-          if (t.isStringLiteral(names)) {
-            names.value = concatClassName(names.value)
-            names.value = `${extraClassNames} ${names.value}`
-          } else {
-            names = t.binaryExpression('+', t.stringLiteral(extraClassNames), names)
-          }
-        }
+        const names = buildClassName(finalClassNames, extraClassNames)
 
         const nameExpr = names ? hoistClassNames(jsxPath, existingHoists, names) : null
         let expr = nameExpr
@@ -347,7 +337,7 @@ export async function extractToClassNames({
             const simpleSpreads = attrs.filter(
               (x) => t.isJSXSpreadAttribute(x.value) && isSimpleSpread(x.value)
             )
-            expr = t.callExpression(t.identifier(CONCAT_CLASSNAME_IMPORT), [
+            expr = t.callExpression(t.identifier('concatClassName'), [
               expr,
               ...simpleSpreads.map((val) => val.value['argument']),
             ])

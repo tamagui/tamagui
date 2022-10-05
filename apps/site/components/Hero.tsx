@@ -52,9 +52,6 @@ const HeroTop = memo(() => {
         pe="none"
         o={0.08}
       />
-
-      <Header />
-
       <YStack
         f={1}
         ov="hidden"

@@ -343,8 +343,11 @@ const resolveTokensAndVariants: StyleResolver = (
       }
     }
     if (process.env.NODE_ENV === 'development') {
-      if (res[fKey]?.[0] === '$') {
-        console.warn(`⚠️ Missing token in theme ${theme.name}:`, fKey, res[fKey])
+      if (debug) {
+        if (res[fKey]?.[0] === '$') {
+          // eslint-disable-next-line no-console
+          console.warn(`⚠️ Missing token in theme ${theme.name}:`, fKey, res[fKey], theme)
+        }
       }
     }
   }

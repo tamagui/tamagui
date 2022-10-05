@@ -34,9 +34,6 @@ export const HeaderIndependent = ({
 }) => {
   return (
     <>
-      <ContainerLarge hide={alwaysFloating}>
-        <Header {...props} />
-      </ContainerLarge>
       <HeaderFloating alwaysFloating={alwaysFloating} {...props} />
     </>
   )

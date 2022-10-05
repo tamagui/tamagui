@@ -1,7 +1,6 @@
 import { throttle } from '@github/mini-throttle'
-import React, { useId } from 'react'
 import { useEffect, useState } from 'react'
-import { XStack, YStack } from 'tamagui'
+import { XStack, YStack, isClient } from 'tamagui'
 
 import { ContainerLarge } from '../components/Container'
 import { Header } from '../components/Header'
@@ -15,7 +14,7 @@ export const HeaderFloating = ({
   const shown = alwaysFloating ?? isScrolled
   const shouldPad = !isScrolled && alwaysFloating
 
-  if (typeof document !== 'undefined') {
+  if (isClient) {
     useEffect(() => {
       const onScroll = throttle(() => {
         setIsScrolled(window.scrollY > 30)
@@ -28,25 +27,34 @@ export const HeaderFloating = ({
   }
 
   return (
-    <XStack
-      className="blur ease-out all ms200"
-      y={shown ? 1 : -60}
-      o={shown ? 1 : 0}
-      bbc="$borderColor"
-      zi={500}
-      // @ts-ignore
-      pos="fixed"
-      top={0}
-      my={-1}
-      left={0}
-      right={0}
-      elevation={shouldPad ? 0 : '$3'}
-      py={shouldPad ? '$2' : 0}
-    >
-      <YStack className="all ease-in ms200" o={isScrolled ? 0.9 : 0} fullscreen bc="$background" />
-      <ContainerLarge>
-        <Header floating {...props} />
-      </ContainerLarge>
-    </XStack>
+    <>
+      <XStack
+        className="blur ease-out all ms200"
+        y={shown ? 1 : -60}
+        o={shown ? 1 : 0}
+        bbc="$borderColor"
+        zi={500}
+        // @ts-ignore
+        pos="fixed"
+        top={0}
+        my={-1}
+        left={0}
+        right={0}
+        elevation={shouldPad ? 0 : '$3'}
+        py={shouldPad ? '$2' : 0}
+      >
+        <YStack
+          className="all ease-in ms200"
+          o={isScrolled ? 0.9 : 0}
+          fullscreen
+          bc="$background"
+        />
+        <ContainerLarge>
+          <Header floating {...props} />
+        </ContainerLarge>
+      </XStack>
+      {/* push page down */}
+      {!!alwaysFloating && <YStack height={54} w="100%" />}
+    </>
   )
 }

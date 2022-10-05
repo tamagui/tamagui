@@ -110,8 +110,6 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
     <Theme name={tint}>
       <HeaderIndependent alwaysFloating />
 
-      <Spacer size="$4" />
-
       <YStack
         overflow="hidden"
         mx="auto"
@@ -151,7 +149,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
       <YStack
         maxWidth="100%"
         flex={1}
-        py="$5"
+        py="$8"
         $gtMd={{
           pb: '$9',
           pl: 230,

@@ -2,16 +2,23 @@
 
 import type { ViewStyle } from 'react-native'
 
+/**
+ * next - take objects:
+ *
+ * { _shorthand: 'postfix' }
+ *
+ */
+
 export function concatClassName(...args: any[]): any
 export function concatClassName(_cn: ViewStyle | null | undefined): string {
-  const cnOrPropObjcet = arguments
+  const args = arguments
   const usedPrefixes: string[] = []
   let final = ''
 
-  const len = cnOrPropObjcet.length
+  const len = args.length
   let propObjects: any = null
   for (let x = len; x >= 0; x--) {
-    const cns = cnOrPropObjcet[x]
+    const cns = args[x]
 
     if (!cns) continue
     if (!Array.isArray(cns) && typeof cns !== 'string') {

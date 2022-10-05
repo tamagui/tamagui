@@ -84,3 +84,7 @@ export const shorthands = {
   w: 'width',
   zi: 'zIndex',
 } as const
+
+// add in some just for compiler output
+shorthands['bxs'] = 'boxSizing'
+shorthands['bxsh'] = 'boxShadow'
