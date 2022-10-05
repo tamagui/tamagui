@@ -1,6 +1,4 @@
 import { useLayoutEffect } from 'react';
-export declare const isAndroid: boolean;
-export declare const isIOS: boolean;
 export declare const isWeb: boolean;
 export declare const isWindowDefined: boolean;
 export declare const isServer: boolean;

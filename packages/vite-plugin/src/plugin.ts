@@ -1,7 +1,5 @@
-import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import type { TamaguiOptions } from '@tamagui/static'
 import type { Plugin } from 'vite'
-import envPlugin from 'vite-plugin-environment'
 
 /**
  * For some reason envPlugin doesnt work for vitest, but process: { env: {} } breaks vitest
@@ -12,6 +10,12 @@ export function tamaguiPlugin(
     useReactNativeWebLite?: boolean
   }
 ): Plugin {
+  const components = [...new Set([...options.components, 'tamagui', '@tamagui/core'])]
+  const noExternalSSR = new RegExp(
+    `${components.join('|')}|react-native|expo-linear-gradient`,
+    'ig'
+  )
+
   const plugin: Plugin = {
     name: 'tamagui-base',
     enforce: 'pre',
@@ -45,8 +49,7 @@ export function tamaguiPlugin(
         //   },
         // },
         ssr: {
-          // noExternal: /^(tamagui|react-native|expo-linear-gradient)$/,
-          noExternal: /tamagui|react-native|expo-linear-gradient/,
+          noExternal: noExternalSSR,
         },
         optimizeDeps: {
           // disabled: false,

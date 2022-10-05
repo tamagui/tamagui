@@ -26,7 +26,7 @@ export default defineConfig({
     }),
     tamaguiPlugin({
       ...tamaguiConfig,
-      useReactNativeWebLite: true,
+      // useReactNativeWebLite: true,
     }),
     ...(shouldExtract
       ? [

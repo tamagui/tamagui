@@ -1,5 +1,5 @@
-import { FocusEvent } from 'react'
-import { GestureResponderEvent, NativeScrollEvent, NativeSyntheticEvent } from 'react-native'
+import type { FocusEvent } from 'react'
+import type { GestureResponderEvent, NativeScrollEvent, NativeSyntheticEvent } from 'react-native'
 
 type Events = Event | GestureResponderEvent | FocusEvent | NativeSyntheticEvent<NativeScrollEvent>
 
