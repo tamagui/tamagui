@@ -17,7 +17,7 @@ import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { HomeGlow } from '../components/HomeGlow'
 import { InstallInput } from '../components/InstallInput'
-import { Section, SectionTinted, TintSection } from '../components/TintSection'
+import { HomeSection, SectionTinted, TintSection } from '../components/TintSection'
 import { getCompilationExamples } from '../lib/getCompilationExamples'
 
 export default function Home({ animationCode, compilationExamples }) {
@@ -26,7 +26,7 @@ export default function Home({ animationCode, compilationExamples }) {
   return (
     <>
       <HomeGlow top={top} />
-      <HeaderFloating />
+      <HeaderFloating alwaysFloating />
       <YStack>
         <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
         <TintSection index={0} p={0}>
@@ -70,13 +70,13 @@ export default function Home({ animationCode, compilationExamples }) {
             <HeroTypography />
           </SectionTinted>
         </TintSection>
-        <Section zi={10}>
+        <HomeSection zi={10}>
           <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
           <HeroExampleProps />
-        </Section>
-        <Section zi={0}>
+        </HomeSection>
+        <HomeSection zi={0}>
           <Community />
-        </Section>
+        </HomeSection>
       </YStack>
     </>
   )

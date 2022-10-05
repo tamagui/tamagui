@@ -1,7 +1,7 @@
-import { useIsIntersecting, useOnIntersecting } from '@tamagui/demos'
+import { useOnIntersecting } from '@tamagui/demos'
 import { tints } from '@tamagui/logo'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { GetProps, Separator, XStack, YStack, styled, useWindowDimensions } from 'tamagui'
+import { useEffect, useMemo, useRef } from 'react'
+import { GetProps, XStack, YStack, styled } from 'tamagui'
 
 import { setTintIndex, useTint } from './useTint'
 
@@ -51,9 +51,9 @@ export const TintSection = ({
       <XStack ref={top} pos="absolute" t="10%" l={0} r={0} h={10} o={0} pe="none" />
       <XStack ref={mid} pos="absolute" t="50%" l={0} r={0} h={10} o={0} pe="none" />
       <XStack ref={bottom} pos="absolute" b="10%" l={0} r={0} h={10} o={0} pe="none" />
-      <Section {...(themed && { theme: tint })} {...props}>
+      <HomeSection {...(themed && { theme: tint })} {...props}>
         {useMemo(() => children, [children])}
-      </Section>
+      </HomeSection>
     </YStack>
   )
 }
@@ -70,9 +70,10 @@ export const useTintSectionIndex = (cb: (index: number, str: number) => void) =>
   }, [])
 }
 
-export const Section = styled(YStack, {
+export const HomeSection = styled(YStack, {
   name: 'Section',
   pos: 'relative',
+  debug: true,
   className: 'content-visibility-auto',
   py: '$14',
   zi: 2,
@@ -86,7 +87,7 @@ export const Section = styled(YStack, {
   } as const,
 })
 
-type SectionProps = GetProps<typeof Section>
+type SectionProps = GetProps<typeof HomeSection>
 
 export const SectionTinted = ({
   children,

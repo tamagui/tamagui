@@ -63,7 +63,7 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   const external = ['@tamagui/core', '@tamagui/core-node', 'react', 'react-dom']
   const configEntry = props.config ? join(process.cwd(), props.config) : ''
 
-  if (process.env.DEBUG?.startsWith('tamagui')) {
+  if (process.env.NODE_ENV === 'development' && process.env.DEBUG?.startsWith('tamagui')) {
     console.log(`Building config entry`, configEntry)
   }
 
@@ -104,10 +104,6 @@ Tamagui built config and components:`
     }),
   ])
 
-  if (process.env.DEBUG?.startsWith('tamagui')) {
-    console.log(`Built configs`)
-  }
-
   const coreNode = require('@tamagui/core-node')
 
   registerRequire(props.bubbleErrors)
@@ -120,6 +116,10 @@ Tamagui built config and components:`
       components: componentOutPaths,
     }),
     ...(includesCore && gatherTamaguiComponentInfo([coreNode])),
+  }
+
+  if (process.env.NODE_ENV === 'development' && process.env.DEBUG?.startsWith('tamagui')) {
+    console.log('Loaded components', components)
   }
 
   cache[key] = {

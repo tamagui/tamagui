@@ -10,6 +10,5 @@ export const MEDIA_SEP = '_'
 export const cacheDir = findCacheDir({ name: 'tamagui', create: true })
 
 export const FAILED_EVAL = Symbol('failed_style_eval')
-export const CONCAT_CLASSNAME_IMPORT = 'concatClassName'
 
 export const SHOULD_DEBUG = process.env.DEBUG === '*' || process.env.DEBUG?.startsWith('tamagui')
