@@ -3,7 +3,7 @@ export declare function getDefaultTamaguiConfig(): TamaguiInternalConfig<import(
     [key: string]: Partial<import("@tamagui/core-node").TamaguiBaseTheme> & {
         [key: string]: import("@tamagui/core-node").VariableVal;
     };
-}, {}, {
+}, import("@tamagui/core-node").GenericShorthands, {
     [key: string]: {
         [key: string]: string | number;
     };

@@ -89,15 +89,11 @@ declare type GenericThemes = {
         [key: string]: VariableVal;
     });
 };
-<<<<<<< HEAD
-declare type GenericShorthands = {};
+declare type AllStyleKeys = keyof StackStylePropsBase | keyof TextStylePropsBase;
 export declare type CreateShorthands = {
-    [key: string]: keyof StackStylePropsBase | keyof TextStylePropsBase;
-=======
-export declare type GenericShorthands = {
-    [key: string]: string;
->>>>>>> e1de8a31e (save)
+    [key: string]: AllStyleKeys;
 };
+export declare type GenericShorthands = {};
 declare type GenericMedia = {
     [key: string]: {
         [key: string]: number | string;

@@ -507,7 +507,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             return
           }
           const source = binding.path.parent.source
-          if (!isValidImport(propsWithFileInfo, source)) {
+          if (!isValidImport(propsWithFileInfo, source.value)) {
             if (shouldPrintDebug) {
               logger.info(` - Binding not internal import or from components ${source.value}`)
             }
@@ -1023,7 +1023,10 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                 if (
                   validHTMLAttributes[key] ||
                   key.startsWith('aria-') ||
-                  key.startsWith('data-')
+                  key.startsWith('data-') ||
+                  // this is debug stuff added by vite / new jsx transform
+                  key === '__source' ||
+                  key === '__self'
                 ) {
                   return attr
                 }

@@ -16,7 +16,7 @@ export declare function createExtractor({ logger }?: ExtractorOptions): {
         [key: string]: Partial<import("@tamagui/core-node").TamaguiBaseTheme> & {
             [key: string]: import("@tamagui/core-node").VariableVal;
         };
-    }, {}, {
+    }, import("@tamagui/core-node").GenericShorthands, {
         [key: string]: {
             [key: string]: string | number;
         };

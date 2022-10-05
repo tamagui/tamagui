@@ -24,6 +24,8 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 test.beforeAll(async () => {
+  $.env.NODE_ENV = 'test'
+
   test.setTimeout(15 * 60 * 1_000)
 
   const dir = join(tmpdir(), `cta-test-${Date.now()}`)
@@ -36,9 +38,6 @@ test.beforeAll(async () => {
   await $`node ${tamaguiBin} test-app`
 
   cd(`test-app`)
-
-  // copy in local tamagui files to ensure we're testing repo versions
-  await copyTamaguiPackages(join(dir, 'test-app'))
 
   server = $`yarn web`
 
@@ -75,11 +74,3 @@ test(`Navigates to user page`, async ({ page }) => {
   await expect(page.locator('text=User ID: nate')).toBeVisible()
   await expect(page).toHaveURL('http://localhost:3000/user/nate')
 })
-
-async function copyTamaguiPackages(dir: string) {
-  const modulesDir = join(dir, 'node_modules')
-  const tamaguiModulesDir = join(modulesDir, '@tamagui')
-  await fs.remove(tamaguiModulesDir)
-  console.log(`Copying in tamagui local modules from ${PACKAGES_ROOT} to ${tamaguiModulesDir}`)
-  await fs.copy(PACKAGES_ROOT, tamaguiModulesDir)
-}

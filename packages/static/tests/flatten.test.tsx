@@ -12,7 +12,8 @@ window['React'] = React
 describe('flatten-tests', () => {
   test('flat transform props', async () => {
     const output = await extractBabel(`
-      import { YStack, useMedia } from 'tamagui'
+      import { YStack } from 'tamagui/src/YStack'
+      import { useMedia } from 'tamagui'
   
       export function Test(isLoading) {
         const media = useMedia()
@@ -68,7 +69,8 @@ describe('flatten-tests', () => {
 
       import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
       import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
-      import { YStack, useMedia } from 'tamagui';
+      import { YStack } from 'tamagui/src/YStack';
+      import { useMedia } from 'tamagui';
       export function Test(isLoading) {
         const media = useMedia();
         return <__ReactNativeView style={[_sheet[\\"0\\"], media.sm ? _sheet[\\"1\\"] : _sheet[\\"2\\"], media.sm && isLoading ? _sheet[\\"3\\"] : _sheet[\\"4\\"], media.sm && !isLoading ? _sheet[\\"5\\"] : _sheet[\\"6\\"]]} />;

@@ -7,7 +7,7 @@ import { colorToRGBA, normalizeColor } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
-let shorthands: CreateShorthands | null = null
+let shorthands: Record<string, string> | null = null
 export const defaultOffset = { height: 0, width: 0 }
 
 /**

@@ -115,13 +115,13 @@ type GenericThemes = {
       }
 }
 
-// export type GenericShorthands = {
-//   [key: string]: keyof StackStylePropsBase | keyof TextStylePropsBase
-// }
+type AllStyleKeys = keyof StackStylePropsBase | keyof TextStylePropsBase
 
-export type GenericShorthands = {
-  [key: string]: string //keyof StackStylePropsBase | keyof TextStylePropsBase
+export type CreateShorthands = {
+  [key: string]: AllStyleKeys
 }
+
+export type GenericShorthands = {}
 
 // sm: { minWidth: 100 }
 type GenericMedia = {
