@@ -269,7 +269,7 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
 
       // set up core-node
       if (tamaguiConfig) {
-        createTamagui(tamaguiConfig)
+        createTamagui(tamaguiConfig as any)
       }
 
       cache[key] = {

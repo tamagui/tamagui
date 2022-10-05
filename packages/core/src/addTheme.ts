@@ -39,6 +39,7 @@ export function addTheme({
   if (isWeb) {
     if (insertCSS) {
       cssRules = getThemeCSSRules({
+        // @ts-ignore this works but should be fixed types
         config,
         themeName,
         names: [themeName],

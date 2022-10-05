@@ -244,8 +244,6 @@ export declare function useButton(props: ButtonProps, { Text }?: {
         onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
         onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
         onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-        userSelect?: import("csstype").Property.UserSelect | undefined;
-        cursor?: string | undefined;
         backgroundColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
         borderBottomColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
         borderBottomEndRadius?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | undefined;
@@ -345,8 +343,10 @@ export declare function useButton(props: ButtonProps, { Text }?: {
         rotateY?: string | undefined;
         rotateX?: string | undefined;
         rotateZ?: string | undefined;
-        contain?: string | undefined;
+        cursor?: import("csstype").Property.Cursor | undefined;
+        contain?: import("csstype").Property.Contain | undefined;
         display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
+        userSelect?: import("csstype").Property.UserSelect | undefined;
         elevation?: import("@tamagui/core").SizeTokens | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;

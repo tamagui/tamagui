@@ -120,31 +120,22 @@ export function isValidThemeHook(
 
 export const isInsideComponentPackage = (props: TamaguiOptionsWithFileInfo, srcName: string) => {
   return getValidComponentsPaths(props).some((path) => {
-    console.log(
-      'isInsideComponentPackage',
-      srcName.startsWith(path),
-      srcName,
-      path,
-      relative(process.cwd(), path)
-    )
     return srcName.startsWith(path)
   })
 }
 
 export const isComponentPackage = (props: TamaguiOptionsWithFileInfo, srcName: string) => {
   return getValidComponentsPaths(props).some((path) => {
-    console.log(
-      'isComponentPackage',
-      srcName.startsWith(path),
-      srcName,
-      path,
-      relative(process.cwd(), path)
-    )
     return srcName.startsWith(path)
   })
 }
 
 export const isValidImport = (props: TamaguiOptionsWithFileInfo, srcName: string) => {
+  if (typeof srcName !== 'string') {
+    // eslint-disable-next-line no-console
+    console.trace(`Invalid file name: ${srcName}`)
+    return false
+  }
   return srcName.startsWith('.')
     ? isInsideComponentPackage(props, srcName)
     : isComponentPackage(props, srcName)

@@ -79,7 +79,10 @@ export const getSizedElevation = (
     num = +val
   }
   if (process.env.NODE_ENV === 'development') {
-    if (isNaN(num)) console.warn('NaN shadow', num, val)
+    if (num !== null && isNaN(num)) {
+      // eslint-disable-next-line no-console
+      console.warn('NaN shadow', num, val)
+    }
   }
   const [height, shadowRadius] = [Math.round(num / 4 + 1), Math.round(num / 2 + 2)]
   const shadow = {

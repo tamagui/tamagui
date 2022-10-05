@@ -402,14 +402,14 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         id?: string | undefined;
         tag?: string | undefined;
         componentName?: string | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined; /**
+         * subtitle
+         */
         onHoverIn?: ((e: MouseEvent) => any) | undefined;
         onHoverOut?: ((e: MouseEvent) => any) | undefined;
         onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
         onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
         onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-        userSelect?: import("csstype").Property.UserSelect | undefined;
-        cursor?: string | undefined;
         backgroundColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
         borderBottomColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
         borderBottomEndRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
@@ -509,8 +509,10 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         rotateY?: string | undefined;
         rotateX?: string | undefined;
         rotateZ?: string | undefined;
-        contain?: string | undefined;
+        cursor?: import("csstype").Property.Cursor | undefined;
+        contain?: import("csstype").Property.Contain | undefined;
         display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
+        userSelect?: import("csstype").Property.UserSelect | undefined;
         elevation?: import("@tamagui/core").SizeTokens | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
