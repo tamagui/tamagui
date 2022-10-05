@@ -7,7 +7,7 @@ import * as t from '@babel/types'
 import { getStylesAtomic } from '@tamagui/core-node'
 import { concatClassName } from '@tamagui/helpers'
 import invariant from 'invariant'
-import { ViewStyle } from 'react-native'
+import type { ViewStyle } from 'react-native'
 
 import { CONCAT_CLASSNAME_IMPORT } from '../constants.js'
 import type { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../types.js'
@@ -86,9 +86,9 @@ export async function extractToClassNames({
   let hasFlattened = false
 
   const res = await extractor.parse(ast, {
-    sourcePath,
     shouldPrintDebug,
     ...options,
+    sourcePath,
     target: 'html',
     extractStyledDefinitions: true,
     onStyleRule(identifier, rules) {
@@ -224,6 +224,7 @@ export async function extractToClassNames({
           }
           case 'ternary': {
             const mediaExtraction = extractMediaStyle(
+              { ...options, sourcePath },
               attr.value,
               jsxPath,
               extractor.getTamagui()!,

@@ -1,8 +1,8 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import type { TamaguiConfig } from '@tamagui/core-node';
-export declare function createEvaluator({ tamaguiConfig, staticNamespace, sourcePath, traversePath, shouldPrintDebug, }: {
-    tamaguiConfig: TamaguiConfig;
+import { TamaguiOptionsWithFileInfo } from '../types.js';
+export declare function createEvaluator({ props, staticNamespace, sourcePath, traversePath, shouldPrintDebug, }: {
+    props: TamaguiOptionsWithFileInfo;
     staticNamespace: Record<string, any>;
     sourcePath: string;
     traversePath?: NodePath<t.JSXElement>;

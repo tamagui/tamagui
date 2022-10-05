@@ -7,7 +7,7 @@ declare class TamaguiManager {
         [key: string]: Partial<import("./types").TamaguiBaseTheme> & {
             [key: string]: import("./types").VariableVal;
         };
-    }, import("./types").GenericShorthands, {
+    }, {}, {
         [key: string]: {
             [key: string]: string | number;
         };

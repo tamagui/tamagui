@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { basename, relative } from 'path'
+import path, { basename, relative } from 'path'
 
 import traverse, { NodePath, Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
@@ -24,17 +24,12 @@ import type {
   ExtractorOptions,
   ExtractorParseProps,
   TamaguiOptions,
+  TamaguiOptionsWithFileInfo,
   Ternary,
 } from '../types.js'
 import { createEvaluator, createSafeEvaluator } from './createEvaluator.js'
 import { evaluateAstNode } from './evaluateAstNode.js'
-import {
-  attrStr,
-  findComponentName,
-  isInsideTamagui,
-  isPresent,
-  objToStr,
-} from './extractHelpers.js'
+import { attrStr, findComponentName, isPresent, isValidImport, objToStr } from './extractHelpers.js'
 import { findTopmostFunction } from './findTopmostFunction.js'
 import { getPrefixLogs } from './getPrefixLogs.js'
 import { cleanupBeforeExit, getStaticBindingsForScope } from './getStaticBindingsForScope.js'
@@ -165,7 +160,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       prefixLogs,
       excludeProps,
       target,
-      ...props
+      ...restProps
     } = options
 
     let shouldPrintDebug = options.shouldPrintDebug || false
@@ -183,6 +178,10 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     const isTargetingHTML = target === 'html'
     const ogDebug = shouldPrintDebug
     const tm = timer()
+    const propsWithFileInfo: TamaguiOptionsWithFileInfo = {
+      ...options,
+      sourcePath,
+    }
 
     if (shouldPrintDebug === 'verbose') {
       console.log('tamagui.config.ts:', { components, config })
@@ -211,9 +210,6 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     /**
      * Step 1: Determine if importing any statically extractable components
      */
-    const isInternalImport = (importStr: string) => {
-      return isInsideTamagui(sourcePath) && importStr[0] === '.'
-    }
 
     const validComponents: { [key: string]: any } = Object.keys(components)
       // check if uppercase to avoid hitting media query proxy before init
@@ -241,15 +237,12 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       if (bodyPath.type !== 'ImportDeclaration') continue
       const node = ('node' in bodyPath ? bodyPath.node : bodyPath) as t.ImportDeclaration
       const from = node.source.value
+
       // if importing styled()
-      const isValidImport =
-        props.components.includes(from) ||
-        isInternalImport(from) ||
-        from === '@tamagui/core' ||
-        from === 'tamagui'
+      const valid = isValidImport(propsWithFileInfo, from)
 
       if (extractStyledDefinitions) {
-        if (isValidImport) {
+        if (valid) {
           if (
             node.specifiers.some((specifier) => {
               return specifier.local.name === 'styled'
@@ -261,7 +254,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         }
       }
 
-      if (isValidImport) {
+      if (valid) {
         const names = node.specifiers.map((specifier) => specifier.local.name)
         const isValidComponent = names.some((name) => !!(validComponents[name] || validHooks[name]))
         if (shouldPrintDebug === 'verbose') {
@@ -410,7 +403,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         const attemptEval = !evaluateVars
           ? evaluateAstNode
           : createEvaluator({
-              tamaguiConfig,
+              props: options,
               staticNamespace,
               sourcePath,
               shouldPrintDebug,
@@ -509,21 +502,21 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         if (binding) {
           if (!t.isImportDeclaration(binding.path.parent)) {
             if (shouldPrintDebug) {
-              logger.info(` - No import binding`)
+              logger.info(` - Binding not import declaration, skip`)
             }
             return
           }
           const source = binding.path.parent.source
-          if (!props.components.includes(source.value) && !isInternalImport(source.value)) {
+          if (!isValidImport(propsWithFileInfo, source)) {
             if (shouldPrintDebug) {
-              logger.info(` - Not internal import ${source.value}`)
+              logger.info(` - Binding not internal import or from components ${source.value}`)
             }
             return
           }
           if (!validComponents[binding.identifier.name]) {
             if (shouldPrintDebug) {
               logger.info(
-                ` - Not valid component (binding.identifier.name) ${binding.identifier.name}`
+                ` - Binding not valid component (binding.identifier.name) ${binding.identifier.name}`
               )
             }
             return
@@ -632,14 +625,14 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           const flatNode = getFlattenedNode?.({ isTextView, tag: tagName })
 
           const inlineProps = new Set([
-            ...(props.inlineProps || []),
+            ...(restProps.inlineProps || []),
             ...(staticConfig.inlineProps || []),
           ])
 
           const deoptProps = new Set([
             // always de-opt animation
             'animation',
-            ...(props.deoptProps || []),
+            ...(restProps.deoptProps || []),
             ...(staticConfig.deoptProps || []),
           ])
 
@@ -657,7 +650,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           const attemptEval = !evaluateVars
             ? evaluateAstNode
             : createEvaluator({
-                tamaguiConfig,
+                props: options,
                 staticNamespace,
                 sourcePath,
                 traversePath,

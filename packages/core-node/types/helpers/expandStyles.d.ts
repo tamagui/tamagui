@@ -1,4 +1,3 @@
-import { GenericShorthands } from '../types';
 export declare const defaultOffset: {
     height: number;
     width: number;
@@ -14,7 +13,7 @@ export declare function expandStyles(style: Record<string, any>, config?: import
     [key: string]: Partial<import("../types").TamaguiBaseTheme> & {
         [key: string]: import("../types").VariableVal;
     };
-}, GenericShorthands, {
+}, {}, {
     [key: string]: {
         [key: string]: string | number;
     };

@@ -50,9 +50,11 @@ export declare type ExtractTagProps = {
     completeProps: Record<string, any>;
     staticConfig: StaticConfig;
 };
-export declare type ExtractorParseProps = TamaguiOptions & {
+export declare type TamaguiOptionsWithFileInfo = TamaguiOptions & {
+    sourcePath: string;
+};
+export declare type ExtractorParseProps = TamaguiOptionsWithFileInfo & {
     target: 'native' | 'html';
-    sourcePath?: string;
     shouldPrintDebug?: boolean | 'verbose';
     onExtractTag: (props: ExtractTagProps) => void;
     getFlattenedNode?: (props: {

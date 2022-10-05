@@ -7029,6 +7029,7 @@ __metadata:
     "@tamagui/react-native-svg": ^1.0.1-beta.190
     "@tamagui/shorthands": ^1.0.1-beta.190
     "@testing-library/react": ^13.3.0
+    "@types/find-root": ^1.1.2
     "@types/node": ^16.11.9
     "@types/react-native": ^0.69.2
     "@types/webpack": ^4.41.26
@@ -7039,6 +7040,7 @@ __metadata:
     esbuild-loader: ^2.19.0
     esbuild-register: ^3.3.3
     find-cache-dir: ^3.3.2
+    find-root: ^1.1.0
     fs-extra: ^10.1.0
     invariant: ^2.2.4
     lodash: ^4.17.21
@@ -7691,6 +7693,13 @@ __metadata:
     "@types/qs": "*"
     "@types/serve-static": "*"
   checksum: 12a2a0e6c4b993fc0854bec665906788aea0d8ee4392389d7a98a5de1eefdd33c9e1e40a91f3afd274011119c506f7b4126acb97fae62ae20b654974d44cba12
+  languageName: node
+  linkType: hard
+
+"@types/find-root@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@types/find-root@npm:1.1.2"
+  checksum: 658492cc913d30de0bb6cbc1ae8ad70be329f8938cdcc20521f66114464c66c5d14755c2fe7f38bc28230bb769ac6bf35367bdadee0c2275d38e4e99eb652b74
   languageName: node
   linkType: hard
 
@@ -13618,7 +13627,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"find-root@npm:^1.0.0":
+"find-root@npm:^1.0.0, find-root@npm:^1.1.0":
   version: 1.1.0
   resolution: "find-root@npm:1.1.0"
   checksum: b2a59fe4b6c932eef36c45a048ae8f93c85640212ebe8363164814990ee20f154197505965f3f4f102efc33bfb1cbc26fd17c4a2fc739ebc51b886b137cbefaf
