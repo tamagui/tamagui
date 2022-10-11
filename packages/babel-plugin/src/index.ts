@@ -207,6 +207,7 @@ export default declare(function snackBabelPlugin(
 
           if (!Object.keys(sheetStyles).length) {
             if (shouldPrintDebug) {
+              // eslint-disable-next-line no-console
               console.log('END no styles')
             }
             return
@@ -223,7 +224,9 @@ export default declare(function snackBabelPlugin(
           sheetOuter.declarations[0].init.arguments[0] = sheetObject
           root.unshiftContainer('body', sheetOuter)
           if (shouldPrintDebug) {
+            // eslint-disable-next-line no-console
             console.log('\n -------- output code ------- \n')
+            // eslint-disable-next-line no-console
             console.log(
               generator(root.parent)
                 .code.split('\n')
@@ -241,7 +244,10 @@ function assertValidTag(node: t.JSXOpeningElement) {
   if (node.attributes.find((x) => x.type === 'JSXAttribute' && x.name.name === 'style')) {
     // we can just deopt here instead and log warning
     // need to make onExtractTag have a special catch error or similar
-    console.warn(`⚠️ Cannot pass style attribute to extracted style`)
+    if (process.env.DEBUG?.startsWith('tamagui')) {
+      // eslint-disable-next-line no-console
+      console.warn(`⚠️ Cannot pass style attribute to extracted style`)
+    }
   }
 }
 
