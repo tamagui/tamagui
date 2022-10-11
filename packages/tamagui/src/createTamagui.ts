@@ -32,11 +32,12 @@ Received: ${Object.keys(tokenSet).join(', ')}
           }
         }
 
-        // others can be partially defined
+        // others must define at least size tokens
+        const sizeTokenKeys = Object.keys(parsed.tokensParsed.size);
         for (const name of ['radius', 'zIndex'] as const) {
           const tokenSet = parsed.tokensParsed[name]
           const givenKeys = Object.keys(tokenSet)
-          const missing = givenKeys.find((k) => !parsed.tokensParsed.size[k])
+          const missing = sizeTokenKeys.find((k) => givenKeys.includes(k))
           if (missing?.length) {
             throw new Error(`
 createTamagui() invalid tokens.${name}:
