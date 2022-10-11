@@ -58,13 +58,13 @@ const HeroTop = memo(() => {
         space="$6"
         position="relative"
         pt="$13"
-        mb="$10"
+        mb="$8"
         $sm={{
           maxWidth: '100%',
           mx: 'auto',
         }}
       >
-        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$5">
+        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$2">
           <H1
             ta="left"
             size="$10"
@@ -87,8 +87,9 @@ const HeroTop = memo(() => {
             }}
             $gtLg={{
               size: '$16',
+              lh: '$15',
               maxWidth: 1200,
-              h: 290,
+              h: 260,
             }}
           >
             <span className="rainbow clip-text">Write less,</span>
@@ -102,7 +103,7 @@ const HeroTop = memo(() => {
             // prevent layout shift
             h={84}
             $gtMd={{
-              h: 86,
+              h: 90,
               px: 90,
               maw: 1000,
             }}
@@ -148,7 +149,7 @@ const HeroTop = memo(() => {
           </YStack>
         </YStack>
 
-        <XStack ai="center" jc="center" space="$2" $xxs={{ ai: 'center', fw: 'wrap' }}>
+        <XStack ai="center" jc="center" $xxs={{ ai: 'center', fw: 'wrap' }}>
           <NextLink href="https://github.com/tamagui/tamagui" passHref>
             <YStack
               p="$6"
@@ -264,6 +265,7 @@ const Subtitle = styled(Paragraph, {
 
   $gtMd: {
     size: '$9',
+    lh: 50,
   },
 })
 

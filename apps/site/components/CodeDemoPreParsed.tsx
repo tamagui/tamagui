@@ -31,9 +31,18 @@ export function CodeDemoPreParsed({
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
       >
-        <Pre f={1}>
-          <Code dangerouslySetInnerHTML={{ __html: source }} />
-        </Pre>
+        <ScrollView
+          horizontal
+          contentContainerStyle={{
+            flex: 1,
+          }}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+        >
+          <Pre f={1}>
+            <Code dangerouslySetInnerHTML={{ __html: source }} />
+          </Pre>
+        </ScrollView>
       </ScrollView>
     </YStack>
   )

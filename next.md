@@ -31,6 +31,7 @@
   - forms working bubble / label
   - inlineWhenUnflattened fontFamily on text should just be default
   - TestFontTokensInVariants types no autocompleting in variants... but showing properly on hover/type property
+  - dual direction scrollview shouldn't need two nested see CodeDemoPreParsed
 
   - @tamagui/sx
   - @tamagui/tailwind
