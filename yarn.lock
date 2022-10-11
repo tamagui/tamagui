@@ -23429,6 +23429,7 @@ __metadata:
   resolution: "tamagui-loader@workspace:packages/loader"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.192
+    "@tamagui/cli-color": ^1.0.1-beta.192
     "@tamagui/static": ^1.0.1-beta.192
     fs-extra: ^10.1.0
     lodash: ^4.17.21

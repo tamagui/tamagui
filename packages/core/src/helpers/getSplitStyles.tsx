@@ -20,6 +20,7 @@ import type {
 import { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types'
 import { createMediaStyle } from './createMediaStyle'
 import { getPropMappedFontFamily } from './createPropMapper'
+import { createProxy } from './createProxy'
 import { fixStyles } from './expandStyles'
 import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
@@ -654,7 +655,7 @@ function getSubStyleProxiedProps(defaultProps: Object, baseProps: Object, specif
   if (propProxies.has(specificProps)) {
     return propProxies.get(specificProps)
   }
-  const next = new Proxy(specificProps, {
+  const next = createProxy(specificProps, {
     has(_, key) {
       return key in defaultProps || key in specificProps || key in baseProps
     },

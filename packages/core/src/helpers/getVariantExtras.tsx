@@ -1,6 +1,7 @@
 import { getConfig } from '../config'
 import { GenericFonts } from '../types'
 import { LanguageContextType } from '../views/FontLanguage.types'
+import { createProxy } from './createProxy'
 
 const extrasCache = new WeakMap()
 
@@ -30,7 +31,7 @@ export function getVariantExtras(
     // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
     props: avoidDefaultProps
       ? props
-      : new Proxy(props, {
+      : createProxy(props, {
           // handles shorthands
           get(target, key) {
             const shorthand = conf.inverseShorthands[key as any]

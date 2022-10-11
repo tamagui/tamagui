@@ -200,7 +200,6 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     }
 
     const proxiedTheme = proxyThemeVariables(firstTheme)
-
     type AccessListener = (key: string) => void
     const themeAccessListeners = new Set<AccessListener>()
     const defaultTheme = new Proxy(proxiedTheme, {

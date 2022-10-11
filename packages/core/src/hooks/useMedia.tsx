@@ -2,6 +2,7 @@ import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { startTransition, useEffect, useMemo, useState } from 'react'
 
 import { getConfig } from '../config'
+import { createProxy } from '../helpers/createProxy'
 import { matchMedia } from '../helpers/matchMedia'
 import {
   MediaQueries,
@@ -15,7 +16,7 @@ import { useSafeRef } from './useSafeRef'
 export const mediaState: MediaQueryState =
   // development time safeguard
   process.env.NODE_ENV === 'development'
-    ? new Proxy(
+    ? createProxy(
         {},
         {
           get(target, key) {

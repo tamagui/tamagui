@@ -1,5 +1,4 @@
-Error.stackTraceLimit = Infinity
-
+import { Color, colorLog } from '@tamagui/cli-color'
 import {
   TamaguiOptions,
   createExtractor,
@@ -9,6 +8,8 @@ import {
 } from '@tamagui/static'
 
 import { extractedInfoByFile, stylePathToFilePath } from './css'
+
+Error.stackTraceLimit = Infinity
 
 // pass loader as path
 const CSS_LOADER_PATH = require.resolve('./css')
@@ -75,8 +76,19 @@ export const loader = async function loader(this, sourceIn: Buffer | string) {
 
     callback(null, extracted.js, extracted.map)
   } catch (err) {
+    const message = err instanceof Error ? `${err.message}\n${err.stack}` : String(err)
+
     // eslint-disable-next-line no-console
-    console.error('Tamagui Webpack Loader Error', err)
+    console.error('Tamagui Webpack Loader Error:\n', `  ${message}\n`)
+
+    if (message.includes(`Cannot create proxy`)) {
+      // eslint-disable-next-line no-console
+      console.log(
+        `This is usually due to components not loading at build-time. Check for logs just below the line above:`
+      )
+      colorLog(Color.FgYellow, `"Tamagui built config and components"`)
+    }
+
     return this.callback(null, source)
   }
 }

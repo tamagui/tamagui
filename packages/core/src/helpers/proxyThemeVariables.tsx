@@ -1,12 +1,7 @@
+import { createProxy } from './createProxy'
+
 export function proxyThemeVariables<A extends Object>(obj: A): A {
-  if (process.env.NODE_ENV === 'development') {
-    if (!obj || typeof obj !== 'object') {
-      // eslint-disable-next-line no-console
-      console.trace(`Empty value for proxyThemeVariables, broken config`, obj)
-      return obj
-    }
-  }
-  return new Proxy<A>(obj || {}, {
+  return createProxy<A>(obj || {}, {
     has(target, key) {
       return Reflect.has(target, removeStarting$(key))
     },

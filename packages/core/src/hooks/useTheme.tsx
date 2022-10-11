@@ -6,6 +6,7 @@ import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { areEqualSets } from '../helpers/areEqualSets'
+import { createProxy } from '../helpers/createProxy'
 import {
   GetNextThemeProps,
   ThemeManager,
@@ -111,7 +112,7 @@ function getThemeProxied(
   state?: React.MutableRefObject<UseThemeState>,
   debugProp?: boolean | 'verbose'
 ) {
-  return new Proxy(theme, {
+  return createProxy(theme, {
     has(_, key) {
       if (typeof key === 'string' && key[0] === '$') {
         key = key.slice(1)
