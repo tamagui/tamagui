@@ -109,7 +109,7 @@ export function createComponent<
   let tamaguiConfig: TamaguiInternalConfig
   let AnimatedText: any
   let AnimatedView: any
-  let avoidClasses = true
+  let avoidClassesWhileAnimating = true
   let defaultNativeStyle: any
   let tamaguiDefaultProps: any
   let initialSplitStyles: SplitStyleResult
@@ -142,7 +142,8 @@ export function createComponent<
     const states = useServerState<TamaguiComponentState>(defaultComponentState!)
     const state = propsIn.forceStyle ? { ...states[0], [propsIn.forceStyle]: true } : states[0]
 
-    const shouldAvoidClasses = !!(props.animation && avoidClasses) || !staticConfig.acceptsClassName
+    const shouldAvoidClasses =
+      !!(props.animation && avoidClassesWhileAnimating) || !staticConfig.acceptsClassName
     const shouldForcePseudo = !!propsIn.forceStyle
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
     const splitStyleState =
@@ -738,18 +739,19 @@ export function createComponent<
       const style = animationStyles ?? splitStyles.style
 
       // TODO this is specific to reanimated rn
-      const isAnimatedReactNativeWeb = props.animation && avoidClasses
+      const isAnimatedReactNativeWeb = props.animation && avoidClassesWhileAnimating
 
       if (staticConfig.isReactNativeWeb || isAnimatedReactNativeWeb) {
-        viewProps.dataSet = {
-          ...viewProps.dataSet,
-          className,
-          id: props.id,
+        const rnwStyle = { $$css: true }
+        for (const name of className.split(' ')) {
+          rnwStyle[name] = name
         }
+        viewProps.style = [rnwStyle, ...(Array.isArray(style) ? style : [style])]
         if (process.env.NODE_ENV === 'development') {
           // turn debug data- props into dataSet in dev mode
           Object.keys(viewProps).forEach((key) => {
             if (key.startsWith('data-')) {
+              viewProps.dataSet ??= {}
               viewProps.dataSet[key.replace('data-', '')] = viewProps[key]
               delete viewProps[key]
             }
@@ -757,9 +759,8 @@ export function createComponent<
         }
       } else {
         viewProps.className = className
+        viewProps.style = style
       }
-
-      viewProps.style = style
     }
 
     if (process.env.TAMAGUI_TARGET === 'native') {
@@ -1075,7 +1076,7 @@ export function createComponent<
         if (typeof window !== 'undefined') {
           // prettier-ignore
           // eslint-disable-next-line no-console
-          console.log({ state, shouldProvideThemeManager, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style: splitStylesStyle, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
+          console.log({ state, shouldProvideThemeManager, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
         }
         // eslint-disable-next-line no-console
         console.groupEnd()
@@ -1115,7 +1116,7 @@ export function createComponent<
     mergeShorthands(staticConfig, tamaguiConfig)
 
     if (tamaguiConfig.animations) {
-      avoidClasses = !!tamaguiConfig.animations.avoidClasses
+      avoidClassesWhileAnimating = !!tamaguiConfig.animations.avoidClasses
       AnimatedText = tamaguiConfig.animations.Text
       AnimatedView = tamaguiConfig.animations.View
     }

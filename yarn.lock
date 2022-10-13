@@ -6544,20 +6544,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/patch-rnw@^1.0.1-beta.191, @tamagui/patch-rnw@workspace:packages/patch-rnw":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/patch-rnw@workspace:packages/patch-rnw"
-  dependencies:
-    "@tamagui/build": ^1.0.1-beta.191
-    fs-extra: ^10.1.0
-    react-native-web: ^0.18.3
-  peerDependencies:
-    react-native-web: "*"
-  bin:
-    rnw-patch: ./patch.js
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/polyfill-dev@^1.0.1-beta.191, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
   version: 0.0.0-use.local
   resolution: "@tamagui/polyfill-dev@workspace:packages/polyfill-dev"
@@ -7024,7 +7010,6 @@ __metadata:
     "@tamagui/fake-react-native": ^1.0.1-beta.191
     "@tamagui/helpers": ^1.0.1-beta.191
     "@tamagui/helpers-node": ^1.0.1-beta.191
-    "@tamagui/patch-rnw": ^1.0.1-beta.191
     "@tamagui/proxy-worm": ^1.0.1-beta.191
     "@tamagui/react-native-svg": ^1.0.1-beta.191
     "@tamagui/shorthands": ^1.0.1-beta.191

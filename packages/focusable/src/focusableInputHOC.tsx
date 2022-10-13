@@ -37,7 +37,7 @@ export function focusableInputHOC<A extends Function>(Component: A): A {
             }),
           })
         },
-        [props.id]
+        [isInput, props.id]
       )
 
       const combinedRefs = composeRefs(ref, inputRef)

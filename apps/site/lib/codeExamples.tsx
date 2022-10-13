@@ -236,8 +236,7 @@ const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _
   {
     name: 'Media',
     input: {
-      description:
-        'Use simple inline media queries, or combine the useMedia hook with logic, both are partially evalauted, flattened, and turned into static generated CSS media queries.',
+      description: `Use inline media queries or the useMedia hook. Even with logic, it's evalauted, flattened, and turned into CSS media queries.`,
       examples: [
         {
           name: 'app.tsx',

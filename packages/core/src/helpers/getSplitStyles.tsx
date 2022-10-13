@@ -45,8 +45,11 @@ const skipProps = {
   animateOnly: true,
   debug: true,
   componentName: true,
+}
 
-  ...(!isWeb && {
+// native only skips
+if (process.env.TAMAGUI_TARGET === 'native') {
+  Object.assign(skipProps, {
     tag: true,
     whiteSpace: true,
     wordWrap: true,
@@ -58,7 +61,7 @@ const skipProps = {
     contain: true,
     boxSizing: true,
     boxShadow: true,
-  }),
+  })
 }
 
 type TransformNamespaceKey = 'transform' | PseudoPropKeys | MediaQueryKey
@@ -478,17 +481,13 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (shouldDoClasses) {
-    const atomic = getStylesAtomic(style)
-    for (const atomicStyle of atomic) {
-      const key = atomicStyle.property
-      // pointerEvents box-none must be CSS-ified
-      // should probably have a few more exceptions here!
-      if (key === 'pointerEvents' || !state.dynamicStylesInline) {
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    if (shouldDoClasses) {
+      const atomic = getStylesAtomic(style)
+      for (const atomicStyle of atomic) {
+        const key = atomicStyle.property
         addStyleToInsertRules(rulesToInsert, atomicStyle)
         mergeClassName(transforms, classNames, key, atomicStyle.identifier)
-      } else {
-        style[key] = atomicStyle.value
       }
     }
   }
