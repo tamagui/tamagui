@@ -32,17 +32,17 @@ Received: ${Object.keys(tokenSet).join(', ')}
           }
         }
 
-        // others must define at least size tokens
-        const sizeTokenKeys = Object.keys(parsed.tokensParsed.size);
+        // others must define subset of size tokens
+        const parsedSizeTokenKeys = Object.keys(parsed.tokensParsed.size)
         for (const name of ['radius', 'zIndex'] as const) {
           const tokenSet = parsed.tokensParsed[name]
           const givenKeys = Object.keys(tokenSet)
-          const missing = sizeTokenKeys.find((k) => givenKeys.includes(k))
+          const missing = parsedSizeTokenKeys.find((k) => givenKeys.includes(k))
           if (missing?.length) {
             throw new Error(`
 createTamagui() invalid tokens.${name}:
 
-Expected subset of: ${Object.keys(parsed.tokensParsed.size).join(', ')}
+Expected subset of: ${parsedSizeTokenKeys.join(', ')}
 
 Received: ${givenKeys.join(', ')}
 
