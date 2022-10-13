@@ -24,29 +24,27 @@ export const createTamagui: typeof createTamaguiCore =
             throw new Error(`
 createTamagui() missing definition for expected tokens.${name}:
 
-Expected keys for: ${sizeTokenKeys.join(', ')}
-
 Received: ${Object.keys(tokenSet).join(', ')}
+
+Expected: ${sizeTokenKeys.join(', ')}
 
 `)
           }
         }
 
         // others must define subset of size tokens
-        const parsedSizeTokenKeys = Object.keys(parsed.tokensParsed.size)
+        const expected = Object.keys(parsed.tokensParsed.size)
         for (const name of ['radius', 'zIndex'] as const) {
           const tokenSet = parsed.tokensParsed[name]
-          const givenKeys = Object.keys(tokenSet)
-          const missing = parsedSizeTokenKeys.find((k) => givenKeys.includes(k))
-          if (missing?.length) {
+          const received = Object.keys(tokenSet)
+          const hasSomeOverlap = received.some((rk) => expected.includes(rk))
+          if (!hasSomeOverlap) {
             throw new Error(`
 createTamagui() invalid tokens.${name}:
 
-Expected subset of: ${parsedSizeTokenKeys.join(', ')}
+Received: ${received.join(', ')}
 
-Received: ${givenKeys.join(', ')}
-
-Missing: ${missing}
+Expected a subset of: ${expected.join(', ')}
 
 `)
           }
