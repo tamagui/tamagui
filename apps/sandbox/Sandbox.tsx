@@ -9,6 +9,7 @@ import { AppRegistry, useColorScheme } from 'react-native'
 import {
   Button,
   FontLanguage,
+  Input,
   ListItem,
   Paragraph,
   Sheet,
@@ -87,11 +88,7 @@ export const Sandbox = () => {
           overflow: 'hidden',
         }}
       >
-        <Test />
-
-        <ListItem noTextWrap>hello</ListItem>
-
-        <YStack backgroundColor="red" />
+        <Input />
 
         {/* <TestFontTokensInVariants type="H1" size="large">
           Hello world
@@ -104,14 +101,6 @@ export const Sandbox = () => {
         {/* <Button pressStyle={{ backgroundColor: 'blue' }}>hi</Button> */}
 
         {/* <GroupDemo /> */}
-
-        <Button onPress={() => setX((x) => x + 1)}>ok</Button>
-
-        {x % 2 === 0 ? (
-          <Square animation="bouncy" bc="blue" size={200} />
-        ) : (
-          <Square bc="red" size={100} />
-        )}
 
         {/* <Animated.View style={style} /> */}
         {/* <AlertDialogDemo /> */}

@@ -741,25 +741,24 @@ export function createComponent<
       const isAnimatedReactNativeWeb = props.animation && avoidClasses
 
       if (staticConfig.isReactNativeWeb || isAnimatedReactNativeWeb) {
-        viewProps.dataSet = {
-          ...viewProps.dataSet,
-          className,
-          id: props.id,
+        viewProps.style = {
+          $$css: true,
+          ...classNames,
         }
-        if (process.env.NODE_ENV === 'development') {
-          // turn debug data- props into dataSet in dev mode
-          Object.keys(viewProps).forEach((key) => {
-            if (key.startsWith('data-')) {
-              viewProps.dataSet[key.replace('data-', '')] = viewProps[key]
-              delete viewProps[key]
-            }
-          })
-        }
+        // if (process.env.NODE_ENV === 'development') {
+        //   // turn debug data- props into dataSet in dev mode
+        //   Object.keys(viewProps).forEach((key) => {
+        //     if (key.startsWith('data-')) {
+        //       viewProps.dataSet[key.replace('data-', '')] = viewProps[key]
+        //       delete viewProps[key]
+        //     }
+        //   })
+        // }
       } else {
         viewProps.className = className
       }
 
-      viewProps.style = style
+      // viewProps.style = style
     }
 
     if (process.env.TAMAGUI_TARGET === 'native') {
