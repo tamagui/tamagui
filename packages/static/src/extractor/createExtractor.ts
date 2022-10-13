@@ -189,9 +189,17 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
     tm.mark('load-tamagui', !!shouldPrintDebug)
 
-    const proxiedTheme = proxyThemeVariables(
-      tamaguiConfig.themes[Object.keys(tamaguiConfig.themes)[0]]
-    )
+    const firstThemeName = Object.keys(tamaguiConfig.themes)[0]
+    const firstTheme = tamaguiConfig.themes[firstThemeName]
+
+    if (!firstTheme || typeof firstTheme !== 'object') {
+      console.error(`Missing theme, an error occurred when importing your config`)
+      console.log(`Got themes:`, tamaguiConfig.themes)
+      console.log(`Looking for theme:`, firstThemeName)
+      process.exit(0)
+    }
+
+    const proxiedTheme = proxyThemeVariables(firstTheme)
 
     type AccessListener = (key: string) => void
     const themeAccessListeners = new Set<AccessListener>()

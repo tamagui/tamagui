@@ -1,8 +1,10 @@
 export function proxyThemeVariables<A extends Object>(obj: A): A {
-  if (process.env.NODE_ENV === 'development' && !obj) {
-    // eslint-disable-next-line no-console
-    console.trace(`empty value for proxyThemeVariables`, obj)
-    return obj
+  if (process.env.NODE_ENV === 'development') {
+    if (!obj || typeof obj !== 'object') {
+      // eslint-disable-next-line no-console
+      console.trace(`Empty value for proxyThemeVariables, broken config`, obj)
+      return obj
+    }
   }
   return new Proxy<A>(obj || {}, {
     has(target, key) {
