@@ -1,6 +1,6 @@
 import { isWeb } from '@tamagui/constants'
 import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
-import { Text as TextView } from 'react-native'
+import type { Text as TextView } from 'react-native'
 
 import { createComponent } from '../createComponent'
 import { TextProps, TextPropsBase } from '../types'

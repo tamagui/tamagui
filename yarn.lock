@@ -4585,6 +4585,7 @@ __metadata:
     "@tamagui/use-force-update": ^1.0.1-beta.193
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
+    "@types/react-native": ^0.70.4
     csstype: ^3.0.10
     esbuild: ^0.15.11
     expo-screen-orientation: ^4.3.0

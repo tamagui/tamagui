@@ -1,12 +1,12 @@
-import { Properties } from 'csstype';
-import React, { RefObject } from 'react';
-import { GestureResponderEvent, Image, PressableProps, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
-import { Variable } from './createVariable';
-import { ResolveVariableTypes } from './helpers/createPropMapper';
-import { TamaguiReactElement } from './static';
-import { RNWTextProps, RNWViewProps } from './types-rnw';
-import { FontLanguageProps } from './views/FontLanguage.types';
-import { ThemeProviderProps } from './views/ThemeProvider';
+import type { Properties } from 'csstype';
+import type { Component, ForwardRefExoticComponent, FunctionComponent, ReactNode, RefAttributes, RefObject } from 'react';
+import type { GestureResponderEvent, Image, PressableProps, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
+import type { Variable } from './createVariable';
+import type { ResolveVariableTypes } from './helpers/createPropMapper';
+import type { TamaguiReactElement } from './static';
+import type { RNWTextProps, RNWViewProps } from './types-rnw';
+import type { FontLanguageProps } from './views/FontLanguage.types';
+import type { ThemeProviderProps } from './views/ThemeProvider';
 export declare type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export declare type TamaguiElement = HTMLElement | View;
 export declare type DebugProp = boolean | 'break' | 'verbose';
@@ -15,7 +15,7 @@ export declare type TamaguiComponentPropsBase = {
     asChild?: boolean;
     space?: SpaceTokens | null;
     spaceDirection?: SpaceDirection;
-    separator?: React.ReactNode;
+    separator?: ReactNode;
     dangerouslySetInnerHTML?: {
         __html: string;
     };
@@ -43,7 +43,7 @@ export declare type TamaguiComponentPropsBase = {
     onMouseLeave?: (e: MouseEvent) => any;
     onMouseDown?: (e: MouseEvent) => any;
 };
-export declare type ReactComponentWithRef<Props, Ref> = React.ForwardRefExoticComponent<Props & React.RefAttributes<Ref>>;
+export declare type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
 export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export declare type VariableVal = number | string | Variable;
 export declare type VariableColorVal = string | Variable;
@@ -161,6 +161,7 @@ declare type SpacerPropsBase = {
 declare type SpacerOwnProps = SpacerPropsBase & WithThemeShorthandsPseudosMediaAnimation<SpacerPropsBase>;
 export declare type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> & SpacerOwnProps;
 export declare type CreateTamaguiProps = {
+    native?: any;
     shorthands?: CreateShorthands;
     media?: GenericTamaguiConfig['media'];
     animations?: AnimationDriver<any>;
@@ -213,7 +214,7 @@ export declare type TamaguiInternalConfig<A extends GenericTokens = GenericToken
 export declare type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations'];
 export declare type UnionableString = string & {};
 export declare type UnionableNumber = number & {};
-export declare type PropTypes<A extends TamaguiComponent> = A extends React.FunctionComponent<infer Props> ? Props : unknown;
+export declare type PropTypes<A extends TamaguiComponent> = A extends FunctionComponent<infer Props> ? Props : unknown;
 export declare type GenericFont<Key extends number | string = number | string> = {
     size: {
         [key in Key]: number | Variable;
@@ -376,7 +377,7 @@ declare type StaticComponentObject = {
 export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
     config: TamaguiInternalConfig;
     disableInjectCSS?: boolean;
-    children?: React.ReactNode;
+    children?: ReactNode;
 };
 export declare type PropMapper = (key: string, value: any, theme: ThemeParsed, props: Record<string, any>, state: Partial<SplitStyleState>, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean, debug?: DebugProp) => undefined | [string, any][];
 export declare type StaticConfigParsed = StaticConfig & {
@@ -396,7 +397,7 @@ export declare type GenericVariantDefinitions = {
     };
 };
 export declare type StaticConfig = {
-    Component?: React.FunctionComponent<any> & StaticComponentObject;
+    Component?: FunctionComponent<any> & StaticComponentObject;
     variants?: GenericVariantDefinitions;
     /**
      * Used for applying sub theme style
@@ -498,10 +499,10 @@ export declare type StaticConfig = {
  *   variants
  * --------------------------------------------
  */
-export declare type StylableComponent = TamaguiComponent | React.Component | React.ForwardRefExoticComponent<any> | ReactComponentWithRef<any, any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
+export declare type StylableComponent = TamaguiComponent | Component | ForwardRefExoticComponent<any> | ReactComponentWithRef<any, any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
 export declare type GetStyledVariants<A extends TamaguiComponent> = A extends TamaguiComponent<any, any, any, infer Variants> ? Variants : never;
 export declare type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer BaseProps> ? BaseProps : never;
-export declare type GetProps<A extends StylableComponent> = A extends TamaguiComponent<infer Props> ? Props : A extends TamaguiReactElement<infer Props> ? Props : A extends React.Component<infer Props> ? GetGenericComponentTamaguiProps<Props> : A extends new (props: infer Props) => any ? GetGenericComponentTamaguiProps<Props> : {};
+export declare type GetProps<A extends StylableComponent> = A extends TamaguiComponent<infer Props> ? Props : A extends TamaguiReactElement<infer Props> ? Props : A extends Component<infer Props> ? GetGenericComponentTamaguiProps<Props> : A extends new (props: infer Props) => any ? GetGenericComponentTamaguiProps<Props> : {};
 declare type GetGenericComponentTamaguiProps<P> = P & Omit<'textAlign' extends keyof P ? TextProps : StackProps, keyof P>;
 export declare type SpreadKeys = '...fontSize' | '...fontStyle' | '...fontTransform' | '...lineHeight' | '...letterSpacing' | '...size' | '...space' | '...color' | '...zIndex' | '...theme' | '...radius';
 export declare type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, MyProps extends Object = GetProps<Parent>, Val = any> = VariantDefinitionFromProps<MyProps, Val>;
