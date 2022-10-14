@@ -88,7 +88,9 @@ export const Sandbox = () => {
           overflow: 'hidden',
         }}
       >
-        <Input />
+        {/* <Input /> */}
+
+        <Square size={100} bc="red" />
 
         {/* <TestFontTokensInVariants type="H1" size="large">
           Hello world

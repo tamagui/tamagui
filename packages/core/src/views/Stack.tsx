@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import type { View } from 'react-native'
 
 import { stackDefaultStyles } from '../constants/constants'
 import { createComponent } from '../createComponent'

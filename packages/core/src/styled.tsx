@@ -1,7 +1,6 @@
 import { Image, Text, TextInput } from 'react-native'
 
 import { createComponent } from './createComponent'
-import { TamaguiReactElement, isTamaguiElement } from './helpers/isTamaguiElement'
 import { RNComponents } from './helpers/RNComponents'
 import {
   GetProps,

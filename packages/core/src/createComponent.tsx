@@ -23,7 +23,7 @@ import React, {
   useContext,
   useEffect,
 } from 'react'
-import { Text, View, ViewStyle } from 'react-native'
+import type { ViewStyle } from 'react-native'
 
 import { getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
@@ -107,6 +107,8 @@ export function createComponent<
 
   const defaultComponentClassName = `is_${staticConfig.componentName}`
   let tamaguiConfig: TamaguiInternalConfig
+  let BaseText: any
+  let BaseView: any
   let AnimatedText: any
   let AnimatedView: any
   let avoidClassesWhileAnimating = true
@@ -387,11 +389,12 @@ export function createComponent<
 
     // default to tag, fallback to component (when both strings)
     const element = isWeb ? (isTaggable ? tag || Component : Component) : Component
-    const BaseTextComponent = !isWeb ? Text : element || 'span'
-    const BaseViewComponent = !isWeb ? View : element || (hasTextAncestor ? 'span' : 'div')
+
+    const BaseTextComponent = BaseText || element || 'span'
+    const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
     let elementType = isText
-      ? (isAnimated ? AnimatedText || Text : null) || BaseTextComponent
-      : (isAnimated ? AnimatedView || View : null) || BaseViewComponent
+      ? (isAnimated ? AnimatedText : null) || BaseTextComponent
+      : (isAnimated ? AnimatedView : null) || BaseViewComponent
 
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
@@ -1123,6 +1126,22 @@ export function createComponent<
     // do this to make sure shorthands don't duplicate with.. longhands
     mergeShorthands(staticConfig, tamaguiConfig)
 
+    // alow configuration of base view/text
+    BaseText = tamaguiConfig.native?.Text
+    BaseView = tamaguiConfig.native?.View
+
+    AbsoluteFill = (props) => {
+      if (process.env.TAMAGUI_TARGET === 'web') {
+        return <div style={absoluteFill}></div>
+      } else {
+        return (
+          <BaseView pointerEvents="box-none" style={absoluteFill}>
+            {props.children}
+          </BaseView>
+        )
+      }
+    }
+
     if (tamaguiConfig.animations) {
       avoidClassesWhileAnimating = !!tamaguiConfig.animations.avoidClasses
       AnimatedText = tamaguiConfig.animations.Text
@@ -1446,13 +1465,8 @@ function isUnspaced(child: React.ReactNode) {
   return child?.['type']?.['isVisuallyHidden'] || child?.['type']?.['isUnspaced']
 }
 
-function AbsoluteFill(props: { children?: any }) {
-  return (
-    <View pointerEvents="box-none" style={absoluteFill}>
-      {props.children}
-    </View>
-  )
-}
+type AbsoluteFillComponent = React.FunctionComponent<React.PropsWithChildren<{}>>
+let AbsoluteFill: AbsoluteFillComponent
 
 const absoluteFill = {
   position: 'absolute',
@@ -1461,6 +1475,10 @@ const absoluteFill = {
   right: 0,
   bottom: 0,
 } as const
+
+if (process.env.TAMAGUI_TARGET === 'web') {
+  absoluteFill['pointerEvents'] = 'none'
+}
 
 // this can be done with CSS entirely right?
 // const shouldWrapTextAncestor = isWeb && isText && !hasTextAncestor
