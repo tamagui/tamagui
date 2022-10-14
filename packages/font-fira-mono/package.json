@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-fira-mono",
-  "version": "1.0.1-beta.192",
+  "version": "1.0.1-beta.193",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -20,10 +20,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.192"
+    "@tamagui/core": "^1.0.1-beta.193"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.192"
+    "@tamagui/build": "^1.0.1-beta.193"
   },
   "publishConfig": {
     "access": "public"
