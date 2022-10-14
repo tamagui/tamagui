@@ -741,7 +741,15 @@ export function createComponent<
       // TODO this is specific to reanimated rn
       const isAnimatedReactNativeWeb = props.animation && avoidClassesWhileAnimating
 
-      if (staticConfig.isReactNativeWeb || isAnimatedReactNativeWeb) {
+      // temp fix for animated react-native-web restore pre-styleq functionality
+      if (isAnimatedReactNativeWeb) {
+        viewProps.style = style
+        viewProps.dataSet = {
+          ...viewProps.dataSet,
+          className,
+          id: props.id,
+        }
+      } else if (staticConfig.isReactNativeWeb) {
         const rnwStyle = { $$css: true }
         for (const name of className.split(' ')) {
           rnwStyle[name] = name
