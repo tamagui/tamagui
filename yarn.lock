@@ -3983,35 +3983,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gorhom/bottom-sheet@npm:^4.4.3":
-  version: 4.4.3
-  resolution: "@gorhom/bottom-sheet@npm:4.4.3"
-  dependencies:
-    "@gorhom/portal": 1.0.13
-    invariant: ^2.2.4
-    nanoid: ^3.3.3
-    react-native-redash: ^16.1.1
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-    react-native-gesture-handler: ">=1.10.1"
-    react-native-reanimated: ">=2.2.0"
-  checksum: d71305d2c87f5b264411a8c0096bce4e8be7e481d8a0a50e923ac512a10e65833c5118c4a81dd4d6b33fdf6b3a2febf93bfa9cdabd206ed3f85ff357548451a9
-  languageName: node
-  linkType: hard
-
-"@gorhom/portal@npm:1.0.13":
-  version: 1.0.13
-  resolution: "@gorhom/portal@npm:1.0.13"
-  dependencies:
-    nanoid: ^3.3.1
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 4dd471feedc0dbcc06e9ba725695727448b79550fdc95e5888ea3c2aa9dd51ffffaa0ec2c3e762526c8eef4a36cebd625f73271a3bc31b80786af5a90ba2ea5b
-  languageName: node
-  linkType: hard
-
 "@graphql-typed-document-node/core@npm:^3.1.0, @graphql-typed-document-node/core@npm:^3.1.1":
   version: 3.1.1
   resolution: "@graphql-typed-document-node/core@npm:3.1.1"
@@ -5701,7 +5672,6 @@ __metadata:
     "@tamagui/colors": ^1.0.1-beta.193
     "@tamagui/config-base": ^1.0.1-beta.193
     "@tamagui/core": ^1.0.1-beta.193
-    "@tamagui/drawer": ^1.0.1-beta.193
     "@tamagui/feather-icons": ^1.0.1-beta.193
     "@tamagui/polyfill-dev": ^1.0.1-beta.193
     "@tamagui/static": ^1.0.1-beta.193
@@ -6145,7 +6115,6 @@ __metadata:
     "@tamagui/button": ^1.0.1-beta.193
     "@tamagui/config-base": ^1.0.1-beta.193
     "@tamagui/core": ^1.0.1-beta.193
-    "@tamagui/drawer": ^1.0.1-beta.193
     "@tamagui/list-item": ^1.0.1-beta.193
     "@tamagui/logo": ^1.0.1-beta.193
     "@tamagui/menu": ^1.0.1-beta.193
@@ -6210,29 +6179,6 @@ __metadata:
   peerDependencies:
     react: "*"
     react-dom: "*"
-  languageName: unknown
-  linkType: soft
-
-"@tamagui/drawer@^1.0.1-beta.193, @tamagui/drawer@workspace:packages/drawer":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/drawer@workspace:packages/drawer"
-  dependencies:
-    "@gorhom/bottom-sheet": ^4.4.3
-    "@tamagui/build": ^1.0.1-beta.193
-    "@tamagui/compose-refs": ^1.0.1-beta.193
-    "@tamagui/core": ^1.0.1-beta.193
-    "@tamagui/create-context": ^1.0.1-beta.193
-    "@tamagui/polyfill-dev": ^1.0.1-beta.193
-    "@tamagui/stacks": ^1.0.1-beta.193
-    "@tamagui/use-controllable-state": ^1.0.1-beta.193
-    react: "*"
-    react-dom: "*"
-    react-native-gesture-handler: ^2.5.0
-    react-native-reanimated: ^2.8.0
-  peerDependencies:
-    react: "*"
-    react-dom: "*"
-    react-native-gesture-handler: ^2.5.0
   languageName: unknown
   linkType: soft
 
@@ -6403,7 +6349,6 @@ __metadata:
     "@tamagui/config-base": ^1.0.1-beta.193
     "@tamagui/core": ^1.0.1-beta.193
     "@tamagui/demos": ^1.0.1-beta.193
-    "@tamagui/drawer": ^1.0.1-beta.193
     "@tamagui/feather-icons": ^1.0.1-beta.193
     "@tamagui/font-inter": ^1.0.1-beta.193
     "@tamagui/shorthands": ^1.0.1-beta.193
@@ -6734,7 +6679,6 @@ __metadata:
     "@tamagui/colors": ^1.0.1-beta.193
     "@tamagui/core": ^1.0.1-beta.193
     "@tamagui/demos": ^1.0.1-beta.193
-    "@tamagui/drawer": ^1.0.1-beta.193
     "@tamagui/feather-icons": ^1.0.1-beta.193
     "@tamagui/font-inter": ^1.0.1-beta.193
     "@tamagui/sandbox-ui": ^1.0.1-beta.193
@@ -6918,7 +6862,6 @@ __metadata:
     "@tamagui/colors": ^1.0.1-beta.193
     "@tamagui/config-base": ^1.0.1-beta.193
     "@tamagui/demos": ^1.0.1-beta.193
-    "@tamagui/drawer": ^1.0.1-beta.193
     "@tamagui/feather-icons": ^1.0.1-beta.193
     "@tamagui/font-fira-mono": ^1.0.1-beta.193
     "@tamagui/font-inter": ^1.0.1-beta.193
@@ -8679,13 +8622,6 @@ __metadata:
   dependencies:
     event-target-shim: ^5.0.0
   checksum: 170bdba9b47b7e65906a28c8ce4f38a7a369d78e2271706f020849c1bfe0ee2067d4261df8bbb66eb84f79208fd5b710df759d64191db58cfba7ce8ef9c54b75
-  languageName: node
-  linkType: hard
-
-"abs-svg-path@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "abs-svg-path@npm:0.1.1"
-  checksum: af1a167c09e8bdb76c80adca7333f3d828e5b50e37b9702aa03675e271919e7b1eeaa35cce939970ecba14769953b7465ea34c2129ab683ddff9d973a07f164f
   languageName: node
   linkType: hard
 
@@ -18390,7 +18326,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.1.23, nanoid@npm:^3.3.1, nanoid@npm:^3.3.3, nanoid@npm:^3.3.4":
+"nanoid@npm:^3.1.23, nanoid@npm:^3.3.4":
   version: 3.3.4
   resolution: "nanoid@npm:3.3.4"
   bin:
@@ -18795,15 +18731,6 @@ __metadata:
   version: 0.1.2
   resolution: "normalize-range@npm:0.1.2"
   checksum: 9b2f14f093593f367a7a0834267c24f3cb3e887a2d9809c77d8a7e5fd08738bcd15af46f0ab01cc3a3d660386f015816b5c922cea8bf2ee79777f40874063184
-  languageName: node
-  linkType: hard
-
-"normalize-svg-path@npm:^1.0.1":
-  version: 1.1.0
-  resolution: "normalize-svg-path@npm:1.1.0"
-  dependencies:
-    svg-arc-to-cubic-bezier: ^3.0.0
-  checksum: 106e108b2f99e9e222a1c6edfc859523c6c3c2b0a6ba64743ed08af120b23b9bc2c16682bc2ae043a24c011c34c8252376c68525cf11735c6f110b571740eb2e
   languageName: node
   linkType: hard
 
@@ -19605,13 +19532,6 @@ __metadata:
   dependencies:
     pngjs: ^3.3.0
   checksum: 0c6b6c42c8830cd16f6f9e9aedafd53111c0ad2ff350ba79c629996887567558f5639ad0c95764f96f7acd1f9ff63d4ac73737e80efa3911a6de9839ee520c96
-  languageName: node
-  linkType: hard
-
-"parse-svg-path@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "parse-svg-path@npm:0.1.2"
-  checksum: bba7d4b4207fcc9eaf553b0d34db96ea8a1173635bc94528b5b66e1581902d4792d8d6229103764f01af4d839274234e97a4fa1c6f0fe7dcce195383848cec56
   languageName: node
   linkType: hard
 
@@ -20968,22 +20888,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 6409a941a177d04d9091953a05f493d4924eb0d3e2a4b24cf83bb20460b985f89dd879f0ab7337655dba6a3183ca50cc2ad2b3ea1c505cdc1eed6c5ee1296b59
-  languageName: node
-  linkType: hard
-
-"react-native-redash@npm:^16.1.1":
-  version: 16.2.4
-  resolution: "react-native-redash@npm:16.2.4"
-  dependencies:
-    abs-svg-path: ^0.1.1
-    normalize-svg-path: ^1.0.1
-    parse-svg-path: ^0.1.2
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-    react-native-gesture-handler: "*"
-    react-native-reanimated: ">=2.0.0"
-  checksum: 34507c7e708531fd78b3a10c96afc131a23c53249e1dd81b35fe0795921af10425f6b7a115d604f84d12c37ec9577a47ce1731ae6172108c6dd519f2353f38a0
   languageName: node
   linkType: hard
 
@@ -23377,13 +23281,6 @@ __metadata:
   version: 1.0.0
   resolution: "supports-preserve-symlinks-flag@npm:1.0.0"
   checksum: 53b1e247e68e05db7b3808b99b892bd36fb096e6fba213a06da7fab22045e97597db425c724f2bbd6c99a3c295e1e73f3e4de78592289f38431049e1277ca0ae
-  languageName: node
-  linkType: hard
-
-"svg-arc-to-cubic-bezier@npm:^3.0.0":
-  version: 3.2.0
-  resolution: "svg-arc-to-cubic-bezier@npm:3.2.0"
-  checksum: 55bf17756d558b9c0daddf636a6c9f2fe01fd5ac412229dfa2d4b29740226a82c980bcd3b5eb09ce311cbea282106c7549d97f8c8dba3a5a7b75f786bcb5e155
   languageName: node
   linkType: hard
 

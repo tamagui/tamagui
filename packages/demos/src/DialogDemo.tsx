@@ -11,7 +11,7 @@ export function DialogDemo() {
         <Button>Edit Profile</Button>
       </Dialog.Trigger>
 
-      <Dialog.Sheet modal dismissOnSnapToBottom>
+      <Dialog.Sheet zIndex={200_000} modal dismissOnSnapToBottom>
         <Dialog.Sheet.Frame padding="$4">
           <Dialog.SheetContents />
         </Dialog.Sheet.Frame>
