@@ -102,14 +102,16 @@ const SelectValue = SelectValueFrame.extractable(
       // We ignore `className` and `style` as this part shouldn't be styled.
       const context = useSelectContext(VALUE_NAME, __scopeSelect)
       const { onValueNodeHasChildrenChange } = context
-      const hasChildren = childrenProp !== undefined
       const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
+
+      const children = childrenProp ?? context.selectedItem
+      const hasChildren = !!children
+      const selectValueChildren =
+        context.value === undefined && placeholder !== undefined ? placeholder : children
 
       useIsomorphicLayoutEffect(() => {
         onValueNodeHasChildrenChange(hasChildren)
       }, [onValueNodeHasChildrenChange, hasChildren])
-
-      const children = childrenProp ?? context.selectedItem
 
       return (
         <SelectValueFrame
@@ -119,7 +121,7 @@ const SelectValue = SelectValueFrame.extractable(
           // through the item they came from
           pointerEvents="none"
         >
-          {context.value === undefined && placeholder !== undefined ? placeholder : children}
+          {selectValueChildren}
         </SelectValueFrame>
       )
     }
@@ -301,36 +303,39 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
     const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect)
     const ref = React.useRef<TamaguiElement | null>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
-    const isSelected = itemContext.isSelected && context.valueNode && !context.valueNodeHasChildren
+    const isSelected = Boolean(itemContext.isSelected && context.valueNode)
 
-    const contents = (
-      <SelectItemTextFrame
-        className={className}
-        size={context.size}
-        id={itemContext.textId}
-        {...itemTextProps}
-        ref={composedRefs}
-      />
+    const contents = React.useMemo(
+      () => (
+        <SelectItemTextFrame
+          className={className}
+          size={context.size}
+          id={itemContext.textId}
+          {...itemTextProps}
+          ref={composedRefs}
+        />
+      ),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [props, context.size, className, itemContext.textId]
     )
 
     // until portals work in sub-trees on RN, use this just for native:
-    if (!isWeb) {
-      React.useEffect(() => {
-        if (isSelected) {
-          context.setSelectedItem(contents)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [isSelected])
-    }
+    React.useEffect(() => {
+      if (isSelected) {
+        context.setSelectedItem(contents)
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSelected, contents])
 
     return (
       <>
         {contents}
 
         {/* Portal the select item text into the trigger value node */}
-        {isWeb && isSelected
+        {/* this needs some extra stability between renders */}
+        {/* {isWeb && isSelected
           ? ReactDOM.createPortal(itemTextProps.children, context.valueNode!)
-          : null}
+          : null} */}
 
         {/* Portal an option in the bubble select */}
         {/* {context.bubbleSelect

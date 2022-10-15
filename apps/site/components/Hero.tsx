@@ -69,7 +69,7 @@ const HeroTop = memo(() => {
             ta="left"
             size="$10"
             maw={500}
-            h={90}
+            h={110}
             // FOR CLS IMPORTANT TO SET EXACT HEIGHT IDK WHY LINE HEIGHT SHOULD BE STABLE
 
             $gtSm={{

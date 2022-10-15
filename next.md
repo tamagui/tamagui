@@ -4,8 +4,6 @@
   - overshootClamping fix
   - compiler path => component map to de-deup name collision (Section in tamagui / custom Section)
   - path-specific imports `import { Stack } from 'something/ds/View'`
-  - validate tokens tamagui expects in dev mode
-  - validate tokens tamagui expects in dev mode
   - Select lg appears below site floating header
   - lint isn't catching no console as error
   - intellisense on "lh" shorthand props and "letterSpacing"
