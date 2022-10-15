@@ -1,5 +1,6 @@
 - 1.0
 
+  - detect index.web.ts
   - site: fix search
   - overshootClamping fix
   - Select lg appears below site floating header
