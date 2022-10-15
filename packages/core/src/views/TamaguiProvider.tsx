@@ -2,7 +2,7 @@ import { isClient, isRSC, isServer } from '@tamagui/constants'
 import * as React from 'react'
 
 import { ButtonInsideButtonContext } from '../contexts/ButtonInsideButtonContext'
-import { TextAncestorProvider } from '../contexts/TextAncestorContext'
+import { TextAncestorContext } from '../contexts/TextAncestorContext'
 import { useMediaQueryListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
@@ -41,7 +41,7 @@ export function TamaguiProvider({
 
   return (
     <ButtonInsideButtonContext.Provider value={false}>
-      <TextAncestorProvider>
+      <TextAncestorContext.Provider value={false}>
         <ThemeProvider
           defaultTheme={config.defaultTheme || 'light'}
           themeClassNameOnRoot={config.themeClassNameOnRoot}
@@ -50,7 +50,7 @@ export function TamaguiProvider({
         >
           {children}
         </ThemeProvider>
-      </TextAncestorProvider>
+      </TextAncestorContext.Provider>
     </ButtonInsideButtonContext.Provider>
   )
 }

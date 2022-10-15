@@ -1,5 +1,3 @@
 import React from 'react';
-export declare const FallbackNativeContext: React.Context<boolean>;
-export declare const TextAncestorContext: any;
-export declare const TextAncestorProvider: (props: any) => JSX.Element;
+export declare const TextAncestorContext: React.Context<boolean>;
 //# sourceMappingURL=TextAncestorContext.d.ts.map

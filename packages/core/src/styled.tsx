@@ -98,9 +98,6 @@ export function styled<
         : null
       const isTamagui = !isReactNativeWeb && !!parentStaticConfig
       const Comp = reactNativeWebComponent || (Component as any)
-      const isImage = Boolean(
-        staticExtractionOptions?.isImage || parentStaticConfig?.isImage || Comp === Image
-      )
       const isInput = Boolean(
         staticExtractionOptions?.isInput || parentStaticConfig?.isInput || Comp === TextInput
       )
@@ -127,7 +124,6 @@ export function styled<
         reactNativeWebComponent,
         isInput,
         isText,
-        isImage,
         acceptsClassName,
       }
 

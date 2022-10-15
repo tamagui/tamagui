@@ -1,3 +1,4 @@
+import { useComposedRefs } from '@tamagui/compose-refs'
 import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
@@ -6,16 +7,12 @@ import {
   validPseudoKeys,
   validStyles,
 } from '@tamagui/helpers'
-import {
-  useElementLayout,
-  useMergeRefs,
-  usePlatformMethods,
-  useResponderEvents,
-} from '@tamagui/rnw'
+import type { ViewStyle } from '@tamagui/types-react-native'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, {
   Children,
   Fragment,
+  RefObject,
   createElement,
   forwardRef,
   memo,
@@ -23,7 +20,6 @@ import React, {
   useContext,
   useEffect,
 } from 'react'
-import type { ViewStyle } from 'react-native'
 
 import { getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
@@ -42,6 +38,7 @@ import { getAllSelectors } from './helpers/insertStyleRule'
 import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { useShallowSetState } from './helpers/useShallowSetState'
+import { useElementLayout } from './hooks/useElementLayout'
 import { addMediaQueryListener, getInitialMediaState } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
@@ -563,32 +560,9 @@ export function createComponent<
       assignNativePropsToWeb(elementType, viewProps, nonTamaguiProps)
 
       if (!isRSC) {
-        useElementLayout(hostRef, onLayout)
+        useElementLayout(hostRef as RefObject<Element>, onLayout as any)
 
-        // from react-native-web
-        useResponderEvents(hostRef, {
-          onMoveShouldSetResponder,
-          onMoveShouldSetResponderCapture,
-          onResponderEnd,
-          onResponderGrant,
-          onResponderMove,
-          onResponderReject,
-          onResponderRelease,
-          onResponderStart,
-          onResponderTerminate,
-          onResponderTerminationRequest,
-          onScrollShouldSetResponder,
-          onScrollShouldSetResponderCapture,
-          onSelectionChangeShouldSetResponder,
-          onSelectionChangeShouldSetResponderCapture,
-          onStartShouldSetResponder,
-          onStartShouldSetResponderCapture,
-        })
-
-        // from react-native-web
-        const platformMethodsRef = usePlatformMethods(viewProps)
-
-        const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef as any, setMounted)
+        const setRef = useComposedRefs(hostRef, forwardedRef as any, setMounted)
 
         viewProps.ref = setRef
       }
@@ -776,7 +750,7 @@ export function createComponent<
 
     if (process.env.TAMAGUI_TARGET === 'native') {
       // add ref
-      const mergedRef = useMergeRefs(forwardedRef, hostRef, setMounted)
+      const mergedRef = useComposedRefs(forwardedRef, hostRef as any, setMounted)
       viewProps.ref = mergedRef
 
       // swap out the right family based on weight/style

@@ -418,10 +418,6 @@ export declare type StaticConfig = {
      */
     isInput?: boolean;
     /**
-     * React native web images need special handling for className support
-     */
-    isImage?: boolean;
-    /**
      * Which style keys are allowed to be extracted.
      */
     validStyles?: {
