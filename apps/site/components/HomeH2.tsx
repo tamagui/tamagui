@@ -1,4 +1,15 @@
-import { H2, H3, styled } from 'tamagui'
+import { H1, H2, H3, styled } from 'tamagui'
+
+export const HomeH1 = styled(H1, {
+  className: 'word-break-keep-all',
+  size: '$9',
+  mb: '$2',
+
+  $gtSm: {
+    size: '$10',
+    maxWidth: '90%',
+  },
+})
 
 export const HomeH2 = styled(H2, {
   className: 'word-break-keep-all',

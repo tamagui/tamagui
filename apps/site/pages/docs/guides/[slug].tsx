@@ -4,9 +4,10 @@ import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
 import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
-import { H1, Spacer } from 'tamagui'
+import { Spacer } from 'tamagui'
 
 import { DocsPage } from '../../../components/DocsPage'
+import { HomeH1 } from '../../../components/HomeH2'
 import { SubTitle } from '../../../components/SubTitle'
 import type { Frontmatter } from '../../../frontmatter'
 
@@ -23,7 +24,7 @@ export default function DocGuidesPage({ frontmatter, code }: Doc) {
   return (
     <>
       <TitleAndMetaTags title={`${frontmatter.title} — Tamagui Guides`} />
-      <H1 mb="$2">{frontmatter.title}</H1>
+      <HomeH1>{frontmatter.title}</HomeH1>
       <Spacer size="$1" />
       <SubTitle>{frontmatter.description}</SubTitle>
       <Component components={components as any} />

@@ -7,6 +7,7 @@ import React from 'react'
 import { H1, Spacer } from 'tamagui'
 
 import { DocsPage } from '../../../components/DocsPage'
+import { HomeH1 } from '../../../components/HomeH2'
 import { SubTitle, nbspLastWord } from '../../../components/SubTitle'
 import { TamaguiExamples } from '../../../components/TamaguiExamplesCode'
 import type { Frontmatter } from '../../../frontmatter'
@@ -26,16 +27,7 @@ export default function DocIntroPage({ frontmatter, code, examples }: Doc) {
   return (
     <TamaguiExamples.Provider value={examples}>
       <TitleAndMetaTags title={`${frontmatter.title} — Tamagui`} />
-      <H1
-        className="word-break-keep-all"
-        size="$9"
-        fos={40}
-        lh={55}
-        mb="$2"
-        $gtSm={{ maxWidth: '90%' }}
-      >
-        {nbspLastWord(frontmatter.title)}
-      </H1>
+      <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
       <Spacer size="$1" />
       <SubTitle>{frontmatter.description}</SubTitle>
       <Component components={components as any} />

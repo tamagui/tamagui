@@ -36,6 +36,7 @@ export const SubTitle = ({ children, ...props }) => {
       maxWidth="80%"
       $sm={{
         maxWidth: '100%',
+        size: '$6',
       }}
       {...props}
     >
