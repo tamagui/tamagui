@@ -11,7 +11,7 @@ if (shouldExtract) {
 }
 
 const tamaguiConfig = {
-  components: ['tamagui'],
+  components: ['@tamagui/sandbox-ui', 'tamagui'],
   config: 'tamagui.config.ts',
 }
 

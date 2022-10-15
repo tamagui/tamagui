@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
-import { basename, dirname, join, relative, sep } from 'path'
+import { basename, dirname, extname, join, relative, sep } from 'path'
 
 import { Color, colorLog } from '@tamagui/cli-color'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import type { StaticConfig, TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core-node'
 import { createTamagui } from '@tamagui/core-node'
 import esbuild from 'esbuild'
-import { ensureDir, pathExists, stat, writeFile } from 'fs-extra'
+import { ensureDir, existsSync, pathExists, stat, writeFile } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants.js'
 import { getNameToPaths, registerRequire, unregisterRequire } from '../require.js'
@@ -89,15 +89,16 @@ Tamagui built config and components:`
 
   await Promise.all([
     props.config
-      ? buildTamaguiConfig(props, {
+      ? bundle(props, {
           entryPoints: [configEntry],
           external,
           outfile: configOutPath,
         })
       : null,
     ...baseComponents.map((componentModule, i) => {
-      return buildTamaguiConfig(props, {
+      return bundle(props, {
         entryPoints: [componentModule],
+        resolvePlatformSpecificEntries: true,
         external,
         outfile: componentOutPaths[i],
       })
@@ -136,9 +137,29 @@ Tamagui built config and components:`
   return cache[key]
 }
 
-async function buildTamaguiConfig(
+function resolveWebOrNativeSpecificEntry(entry: string) {
+  const resolved = require.resolve(entry)
+  const ext = extname(resolved)
+  const fileName = basename(resolved).replace(ext, '')
+  const specificExt = process.env.TAMAGUI_TARGET === 'web' ? 'web' : 'native'
+  const specificFile = join(dirname(resolved), fileName + '.' + specificExt + ext)
+  if (existsSync(specificFile)) {
+    return specificFile
+  }
+  return entry
+}
+
+async function bundle(
   props: Props,
-  options: Partial<esbuild.BuildOptions> & { outfile: string },
+  {
+    entryPoints,
+    resolvePlatformSpecificEntries,
+    ...options
+  }: Omit<Partial<esbuild.BuildOptions>, 'entryPoints'> & {
+    outfile: string
+    entryPoints: string[]
+    resolvePlatformSpecificEntries?: boolean
+  },
   aliases?: Record<string, string>
 ) {
   const alias = require('@tamagui/core-node').aliasPlugin
@@ -152,7 +173,7 @@ async function buildTamaguiConfig(
     : new Date().getTime() - new Date(lockStat.mtime).getTime()
   if (lockedMsAgo < 500) {
     if (process.env.DEBUG?.startsWith('tamagui')) {
-      console.log(`Waiting for existing build`, options.entryPoints)
+      console.log(`Waiting for existing build`, entryPoints)
     }
     let tries = 5
     while (tries--) {
@@ -167,14 +188,19 @@ async function buildTamaguiConfig(
   void writeFile(lockFile, '')
 
   if (process.env.DEBUG?.startsWith('tamagui')) {
-    console.log(`Building`, options.entryPoints)
+    console.log(`Building`, entryPoints)
   }
 
   const tsconfig = join(__dirname, '..', '..', 'tamagui.tsconfig.json')
 
+  const resolvedEntryPoints = !resolvePlatformSpecificEntries
+    ? entryPoints
+    : entryPoints.map(resolveWebOrNativeSpecificEntry)
+
   return esbuild.build({
     bundle: true,
     ...options,
+    entryPoints: resolvedEntryPoints,
     format: 'cjs',
     target: 'node18',
     jsx: 'transform',
