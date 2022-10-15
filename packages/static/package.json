@@ -47,6 +47,7 @@
     "@tamagui/patch-rnw": "^1.0.1-beta.193",
     "@tamagui/proxy-worm": "^1.0.1-beta.193",
     "@tamagui/react-native-svg": "^1.0.1-beta.193",
+    "@tamagui/rnw": "^1.0.1-beta.193",
     "@tamagui/shorthands": "^1.0.1-beta.193",
     "babel-literal-to-ast": "^2.1.0",
     "esbuild": "^0.15.11",

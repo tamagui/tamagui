@@ -6,7 +6,6 @@ import * as t from '@babel/types'
 import {
   PseudoStyles,
   StaticConfigParsed,
-  createDOMProps,
   expandStyles,
   getSplitStyles,
   getStylesAtomic,
@@ -14,6 +13,7 @@ import {
   proxyThemeVariables,
   pseudoDescriptors,
 } from '@tamagui/core-node'
+import { createDOMProps } from '@tamagui/rnw'
 import type { ViewStyle } from 'react-native'
 
 import { FAILED_EVAL } from '../constants.js'

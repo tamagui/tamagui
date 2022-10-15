@@ -4578,8 +4578,7 @@ __metadata:
     "@tamagui/constants": ^1.0.1-beta.193
     "@tamagui/helpers": ^1.0.1-beta.193
     "@tamagui/normalize-css-color-lite": ^1.0.1-beta.193
-    "@tamagui/rnw": ^1.0.1-beta.193
-    "@tamagui/rnw-lite": ^1.0.1-beta.193
+    "@tamagui/types-react-native": ^1.0.1-beta.193
     "@tamagui/use-did-finish-ssr": ^1.0.1-beta.193
     "@tamagui/use-event": ^1.0.1-beta.193
     "@tamagui/use-force-update": ^1.0.1-beta.193
@@ -4796,12 +4795,6 @@ __metadata:
   resolution: "@tamagui/helpers@workspace:packages/helpers"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.193
-    "@tamagui/simple-hash": ^1.0.1-beta.193
-    react: "*"
-    react-native: "*"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -5484,6 +5477,7 @@ __metadata:
     "@tamagui/patch-rnw": ^1.0.1-beta.193
     "@tamagui/proxy-worm": ^1.0.1-beta.193
     "@tamagui/react-native-svg": ^1.0.1-beta.193
+    "@tamagui/rnw": ^1.0.1-beta.193
     "@tamagui/shorthands": ^1.0.1-beta.193
     "@tamagui/test-design-system": ^1.0.1-beta.193
     "@testing-library/react": ^13.3.0
@@ -5632,6 +5626,14 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/types-react-native@^1.0.1-beta.193, @tamagui/types-react-native@workspace:packages/types-react-native":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/types-react-native@workspace:packages/types-react-native"
+  dependencies:
+    "@types/react": "*"
   languageName: unknown
   linkType: soft
 

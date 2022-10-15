@@ -1,7 +1,5 @@
 // perf sensitive so doing some weird stuff
 
-import type { ViewStyle } from 'react-native'
-
 /**
  * next - take objects:
  *
@@ -10,7 +8,7 @@ import type { ViewStyle } from 'react-native'
  */
 
 export function concatClassName(...args: any[]): any
-export function concatClassName(_cn: ViewStyle | null | undefined): string {
+export function concatClassName(_cn: Record<string, any> | null | undefined): string {
   const args = arguments
   const usedPrefixes: string[] = []
   let final = ''

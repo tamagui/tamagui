@@ -19,17 +19,8 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "dependencies": {
-    "@tamagui/simple-hash": "^1.0.1-beta.193"
-  },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.193",
-    "react": "*",
-    "react-native": "*"
-  },
-  "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "@tamagui/build": "^1.0.1-beta.193"
   },
   "publishConfig": {
     "access": "public"

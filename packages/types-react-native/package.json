@@ -1,0 +1,236 @@
+{
+  "name": "@tamagui/types-react-native",
+  "version": "1.0.1-beta.193",
+  "description": "TypeScript definitions for react-native",
+  "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-native",
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Eloy Durán",
+      "url": "https://github.com/alloy",
+      "githubUsername": "alloy"
+    },
+    {
+      "name": "HuHuanming",
+      "url": "https://github.com/huhuanming",
+      "githubUsername": "huhuanming"
+    },
+    {
+      "name": "Kyle Roach",
+      "url": "https://github.com/iRoachie",
+      "githubUsername": "iRoachie"
+    },
+    {
+      "name": "Tim Wang",
+      "url": "https://github.com/timwangdev",
+      "githubUsername": "timwangdev"
+    },
+    {
+      "name": "Kamal Mahyuddin",
+      "url": "https://github.com/kamal",
+      "githubUsername": "kamal"
+    },
+    {
+      "name": "Alex Dunne",
+      "url": "https://github.com/alexdunne",
+      "githubUsername": "alexdunne"
+    },
+    {
+      "name": "Manuel Alabor",
+      "url": "https://github.com/swissmanu",
+      "githubUsername": "swissmanu"
+    },
+    {
+      "name": "Michele Bombardi",
+      "url": "https://github.com/bm-software",
+      "githubUsername": "bm-software"
+    },
+    {
+      "name": "Martin van Dam",
+      "url": "https://github.com/mvdam",
+      "githubUsername": "mvdam"
+    },
+    {
+      "name": "Kacper Wiszczuk",
+      "url": "https://github.com/esemesek",
+      "githubUsername": "esemesek"
+    },
+    {
+      "name": "Ryan Nickel",
+      "url": "https://github.com/mrnickel",
+      "githubUsername": "mrnickel"
+    },
+    {
+      "name": "Souvik Ghosh",
+      "url": "https://github.com/souvik-ghosh",
+      "githubUsername": "souvik-ghosh"
+    },
+    {
+      "name": "Cheng Gibson",
+      "url": "https://github.com/nossbigg",
+      "githubUsername": "nossbigg"
+    },
+    {
+      "name": "Saransh Kataria",
+      "url": "https://github.com/saranshkataria",
+      "githubUsername": "saranshkataria"
+    },
+    {
+      "name": "Wojciech Tyczynski",
+      "url": "https://github.com/tykus160",
+      "githubUsername": "tykus160"
+    },
+    {
+      "name": "Jake Bloom",
+      "url": "https://github.com/jakebloom",
+      "githubUsername": "jakebloom"
+    },
+    {
+      "name": "Ceyhun Ozugur",
+      "url": "https://github.com/ceyhun",
+      "githubUsername": "ceyhun"
+    },
+    {
+      "name": "Mike Martin",
+      "url": "https://github.com/mcmar",
+      "githubUsername": "mcmar"
+    },
+    {
+      "name": "Theo Henry de Villeneuve",
+      "url": "https://github.com/theohdv",
+      "githubUsername": "theohdv"
+    },
+    {
+      "name": "Romain Faust",
+      "url": "https://github.com/romain-faust",
+      "githubUsername": "romain-faust"
+    },
+    {
+      "name": "Be Birchall",
+      "url": "https://github.com/bebebebebe",
+      "githubUsername": "bebebebebe"
+    },
+    {
+      "name": "Jesse Katsumata",
+      "url": "https://github.com/Naturalclar",
+      "githubUsername": "Naturalclar"
+    },
+    {
+      "name": "Xianming Zhong",
+      "url": "https://github.com/chinesedfan",
+      "githubUsername": "chinesedfan"
+    },
+    {
+      "name": "Valentyn Tolochko",
+      "url": "https://github.com/vtolochk",
+      "githubUsername": "vtolochk"
+    },
+    {
+      "name": "Sergey Sychev",
+      "url": "https://github.com/SychevSP",
+      "githubUsername": "SychevSP"
+    },
+    {
+      "name": "Daiki Ihara",
+      "url": "https://github.com/sasurau4",
+      "githubUsername": "sasurau4"
+    },
+    {
+      "name": "Abe Dolinger",
+      "url": "https://github.com/256hz",
+      "githubUsername": "256hz"
+    },
+    {
+      "name": "Dominique Richard",
+      "url": "https://github.com/doumart",
+      "githubUsername": "doumart"
+    },
+    {
+      "name": "Mohamed Shaban",
+      "url": "https://github.com/drmas",
+      "githubUsername": "drmas"
+    },
+    {
+      "name": "Jérémy Barbet",
+      "url": "https://github.com/jeremybarbet",
+      "githubUsername": "jeremybarbet"
+    },
+    {
+      "name": "David Sheldrick",
+      "url": "https://github.com/ds300",
+      "githubUsername": "ds300"
+    },
+    {
+      "name": "Natsathorn Yuthakovit",
+      "url": "https://github.com/natsathorn",
+      "githubUsername": "natsathorn"
+    },
+    {
+      "name": "ConnectDotz",
+      "url": "https://github.com/connectdotz",
+      "githubUsername": "connectdotz"
+    },
+    {
+      "name": "Alexey Molchan",
+      "url": "https://github.com/alexeymolchan",
+      "githubUsername": "alexeymolchan"
+    },
+    {
+      "name": "Alex Brazier",
+      "url": "https://github.com/alexbrazier",
+      "githubUsername": "alexbrazier"
+    },
+    {
+      "name": "Arafat Zahan",
+      "url": "https://github.com/kuasha420",
+      "githubUsername": "kuasha420"
+    },
+    {
+      "name": "Pedro Hernández",
+      "url": "https://github.com/phvillegas",
+      "githubUsername": "phvillegas"
+    },
+    {
+      "name": "Sebastian Silbermann",
+      "url": "https://github.com/eps1lon",
+      "githubUsername": "eps1lon"
+    },
+    {
+      "name": "Zihan Chen",
+      "url": "https://github.com/ZihanChen-MSFT",
+      "githubUsername": "ZihanChen-MSFT"
+    },
+    {
+      "name": "Lorenzo Sciandra",
+      "url": "https://github.com/kelset",
+      "githubUsername": "kelset"
+    },
+    {
+      "name": "Mateusz Wit",
+      "url": "https://github.com/MateWW",
+      "githubUsername": "MateWW"
+    },
+    {
+      "name": "Luna Wei",
+      "url": "https://github.com/lunaleaps",
+      "githubUsername": "lunaleaps"
+    },
+    {
+      "name": "Saad Najmi",
+      "url": "https://github.com/saadnajmi",
+      "githubUsername": "saadnajmi"
+    }
+  ],
+  "main": "",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+    "directory": "types/react-native"
+  },
+  "dependencies": {
+    "@types/react": "*"
+  },
+  "typesPublisherContentHash": "59453d8ff4df1b72029fbc31e81bb99c1236cbdee905aaec6915496ddde4ad9f",
+  "typeScriptVersion": "4.1"
+}
