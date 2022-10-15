@@ -3,7 +3,6 @@
   - site: fix search
   - overshootClamping fix
   - compiler path => component map to de-deup name collision (Section in tamagui / custom Section)
-  - add docs link to config-base/types/tamagui.config.d.ts its really helpful
   - path-specific imports `import { Stack } from 'something/ds/View'`
   - validate tokens tamagui expects in dev mode
   - validate tokens tamagui expects in dev mode
