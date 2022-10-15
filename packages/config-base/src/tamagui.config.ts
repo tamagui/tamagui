@@ -46,7 +46,7 @@ const headingFont = createInterFont(
       900: { normal: 'InterBold' },
     },
   },
-  { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 0)) }
+  { sizeLineHeight: (size) => Math.round(size * 1.15 + (size < 30 ? 10 : 5)) }
 )
 const bodyFont = createInterFont(
   {
