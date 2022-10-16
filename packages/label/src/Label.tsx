@@ -1,16 +1,9 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import {
-  GetProps,
-  ReactComponentWithRef,
-  getButtonSize,
-  getFont,
-  isWeb,
-  styled,
-  themeable,
-  useId,
-} from '@tamagui/core'
+import { GetProps, ReactComponentWithRef, isWeb, styled, themeable, useId } from '@tamagui/core'
 import { createContext } from '@tamagui/create-context'
 import { focusFocusable } from '@tamagui/focusable'
+import { getButtonSized } from '@tamagui/get-button-sized'
+import { getFontSized } from '@tamagui/get-font-sized'
 import { SizableText } from '@tamagui/text'
 import * as React from 'react'
 import { View } from 'react-native'
@@ -42,9 +35,9 @@ export const LabelFrame = styled(SizableText, {
   variants: {
     size: {
       '...size': (val, extras) => {
-        const buttonStyle = getButtonSize(val, extras)
+        const buttonStyle = getButtonSized(val, extras)
         return {
-          ...getFont(val, extras),
+          ...getFontSized(val, extras),
           height: buttonStyle.height,
           lineHeight: buttonStyle.height,
         }

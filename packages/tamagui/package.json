@@ -37,6 +37,8 @@
     "@tamagui/dialog": "^1.0.1-beta.193",
     "@tamagui/fake-react-native": "^1.0.1-beta.193",
     "@tamagui/font-size": "^1.0.1-beta.193",
+    "@tamagui/get-button-sized": "^1.0.1-beta.193",
+    "@tamagui/get-font-sized": "^1.0.1-beta.193",
     "@tamagui/helpers": "^1.0.1-beta.193",
     "@tamagui/helpers-tamagui": "^1.0.1-beta.193",
     "@tamagui/image": "^1.0.1-beta.193",

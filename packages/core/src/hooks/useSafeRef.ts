@@ -5,9 +5,9 @@ import { useRef } from 'react'
 // https://dev.to/uhyo_/a-concurrent-mode-safe-version-of-useref-1325
 
 type Raw<T> = {
-  isRendering: boolean
-  comittedValue: T
-  currentValue: T
+  hold: boolean
+  next: T
+  cur: T
   ref: { current: T }
 }
 
@@ -17,32 +17,32 @@ export const useSafeRef = <T>(initialValue: T) => {
   const raw: Raw<T> =
     rawRef.current ??
     (rawRef.current = {
-      isRendering: true,
-      comittedValue: initialValue,
-      currentValue: initialValue,
+      hold: true,
+      next: initialValue,
+      cur: initialValue,
       ref: {
         get current() {
-          if (raw.isRendering) {
-            return raw.currentValue
+          if (raw.hold) {
+            return raw.cur
           } else {
-            return raw.comittedValue
+            return raw.next
           }
         },
         set current(v) {
-          if (!raw.isRendering) {
-            raw.comittedValue = v
+          if (!raw.hold) {
+            raw.next = v
           }
-          raw.currentValue = v
+          raw.cur = v
         },
       },
     })
 
-  raw.isRendering = true
-  Promise.resolve().then(() => (raw.isRendering = false))
-  raw.currentValue = raw.comittedValue
+  raw.hold = true
+  Promise.resolve().then(() => (raw.hold = false))
+  raw.cur = raw.next
 
   useIsomorphicLayoutEffect(() => {
-    raw.comittedValue = raw.currentValue
+    raw.next = raw.cur
   })
 
   return raw.ref

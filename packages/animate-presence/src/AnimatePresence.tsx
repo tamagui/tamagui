@@ -1,9 +1,4 @@
-import {
-  useForceUpdate,
-  useIsMounted,
-  useIsomorphicLayoutEffect,
-  useUnmountEffect,
-} from '@tamagui/core'
+import { useForceUpdate, useIsomorphicLayoutEffect, useUnmountEffect } from '@tamagui/core'
 import React, {
   Children,
   ReactElement,
@@ -11,6 +6,7 @@ import React, {
   cloneElement,
   isValidElement,
   useContext,
+  useEffect,
   useRef,
 } from 'react'
 
@@ -121,7 +117,13 @@ export const AnimatePresence: React.FunctionComponent<
   const forceRenderLayoutGroup = useContext(LayoutGroupContext).forceRender
   if (forceRenderLayoutGroup) forceRender = forceRenderLayoutGroup
 
-  const isMounted = useIsMounted()
+  const isMounted = useRef(false)
+  useEffect(() => {
+    isMounted.current = true
+    return () => {
+      isMounted.current = false
+    }
+  }, [])
 
   // Filter out any children that aren't ReactElements. We can only track ReactElements with a props.key
   const filteredChildren = onlyElements(children)

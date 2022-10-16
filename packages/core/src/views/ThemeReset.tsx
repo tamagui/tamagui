@@ -1,4 +1,4 @@
-import { isClient, isWeb } from '@tamagui/constants'
+import { isClient } from '@tamagui/constants'
 import React, { useContext, useLayoutEffect, useState } from 'react'
 
 import { ThemeManagerContext } from '../helpers/ThemeManager'
@@ -9,7 +9,7 @@ React['createElement']
 
 // resets the theme to the parent theme
 export const ThemeReset = (props: { children?: any }) => {
-  const themeManager = useContext(ThemeManagerContext)
+  const manager = useContext(ThemeManagerContext)
   const [name, setName] = useState<string | null>(null)
 
   // this component doesn't work with SSR, so must run only client side
@@ -17,21 +17,21 @@ export const ThemeReset = (props: { children?: any }) => {
   // that changes to dark initially also go through and change all of these
   if (isClient) {
     useLayoutEffect(() => {
-      if (!themeManager) return
-      if (name !== themeManager.parentName) {
-        setName(themeManager.parentName)
+      if (!manager) return
+      if (name !== manager.parentName) {
+        setName(manager.parentName)
       }
-    }, [name, themeManager, themeManager?.parentName])
+    }, [name, manager, manager?.parentName])
 
     useLayoutEffect(() => {
-      if (!themeManager) return
-      return themeManager.onChangeTheme(() => {
-        setName(themeManager.parentName)
+      if (!manager) return
+      return manager.onChangeTheme(() => {
+        setName(manager.parentName)
       })
-    }, [themeManager])
+    }, [manager])
   }
 
-  if (!themeManager || !props.children) {
+  if (!manager || !props.children) {
     return props.children || null
   }
 

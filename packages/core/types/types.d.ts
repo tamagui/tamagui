@@ -414,10 +414,6 @@ export declare type StaticConfig = {
      */
     isText?: boolean;
     /**
-     * Attempts to attach focus styles at runtime (useful for native)
-     */
-    isInput?: boolean;
-    /**
      * Which style keys are allowed to be extracted.
      */
     validStyles?: {

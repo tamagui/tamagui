@@ -9,13 +9,13 @@
 
 'use strict'
 
+import { usePressable } from '@tamagui/use-pressable'
+import type { PressResponderConfig } from '@tamagui/use-pressable'
 import * as React from 'react'
 import { forwardRef, memo, useMemo, useRef, useState } from 'react'
 import { StyleSheet } from 'react-native-web-internals'
 import { useHover, useMergeRefs } from 'react-native-web-internals'
 
-import usePressEvents from '../usePressEvents/index.js'
-import type { PressResponderConfig } from '../usePressEvents/PressResponder.js'
 import type { ViewProps } from '../View/index.js'
 import View from '../View/index.js'
 
@@ -126,7 +126,7 @@ function Pressable(props: Props, forwardedRef): React.ReactNode {
     ]
   )
 
-  const pressEventHandlers = usePressEvents(hostRef, pressConfig)
+  const pressEventHandlers = usePressable(hostRef, pressConfig)
 
   const { onContextMenu: onContextMenuPress, onKeyDown: onKeyDownPress } = pressEventHandlers
 

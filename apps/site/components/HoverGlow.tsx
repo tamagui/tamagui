@@ -2,7 +2,6 @@ import { throttle as throttleFn } from '@github/mini-throttle'
 import React from 'react'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { CSSProperties, DetailedHTMLProps, HTMLAttributes } from 'react'
-import { useIsMounted } from 'tamagui'
 
 import { getBoundingClientRectAsync } from '../lib/getBoundingClientRectAsync'
 
@@ -241,7 +240,6 @@ export const useRelativePositionedItem = (
     disableUpdates,
   } = props
   const [parentNode, setParentNode] = useState<HTMLElement>()
-  const isMounted = useIsMounted()
   const state = useRef({
     tracking: false,
     currentPosition: { x: 0, y: 0 },
@@ -397,7 +395,6 @@ export const useRelativePositionedItem = (
 
     const handleMove = async (e: MouseEvent) => {
       if (!state.current.tracking) return
-      if (!isMounted.current) return
       const [x, y] = await getOffset(e, parentNode)
       callback({
         x: x + offX,
@@ -420,7 +417,7 @@ export const useRelativePositionedItem = (
     return () => {
       disposers.forEach((d) => d())
     }
-  }, [debug, callback, offX, offY, parentNode, throttle, isMounted, setInitialPosition])
+  }, [debug, callback, offX, offY, parentNode, throttle, setInitialPosition])
 
   return {
     recalculate: callback,

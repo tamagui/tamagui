@@ -14,9 +14,5 @@ export declare type ViewStyleWithPseudos = ViewOrTextStyle & {
 export declare function getStylesAtomic(stylesIn: ViewStyleWithPseudos): StyleObject[];
 export declare function getAtomicStyle(style: ViewOrTextStyle, pseudo?: PseudoDescriptor): StyleObject[];
 export declare function styleToCSS(style: Record<string, any>): void;
-declare type Value = Object | Array<any> | string | number;
-export declare type Style = {
-    [key: string]: Value;
-};
 export {};
 //# sourceMappingURL=getStylesAtomic.d.ts.map

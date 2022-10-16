@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
-import { getVariableValue } from '../createVariable'
-import { FontSizeTokens, TextProps, VariantSpreadFunction } from '../types'
+import { getVariableValue } from '@tamagui/core'
+import type { FontSizeTokens, TextProps, VariantSpreadFunction } from '@tamagui/core'
 
-export const getFont: VariantSpreadFunction<TextProps, FontSizeTokens> = (
+export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   val = '$4',
   { fonts, theme, props }
 ) => {
@@ -10,6 +9,7 @@ export const getFont: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   const font = fonts[family] || fonts['$body']
   if (!font) {
     if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
       console.warn('⚠️ no font found', { family, fontTokens: Object.keys(fonts), val })
     }
     return {} as any
@@ -34,8 +34,11 @@ export const getFont: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   }
   if (process.env.NODE_ENV === 'development') {
     if (props['debug']) {
+      // eslint-disable-next-line no-console
       console.groupCollapsed('  🔹 getFont', val, props['fontWeight'], props['fow'])
+      // eslint-disable-next-line no-console
       console.log({ style, props, font })
+      // eslint-disable-next-line no-console
       console.groupEnd()
     }
   }

@@ -96,13 +96,9 @@ useGet<A>(currentValue: A): () => A
 
 Create a getter function that's always up to date with the given currentValue
 
-### useIsMounted
-
-Returns a ref that is false once unmounted.
-
 ### useIsTouchDevice
 
-SSR-friendly, only true on client side touch device.
+SSR-friendly, only true on if native touchable or web touchable device (client side, not server side).
 
 ### useDidFinishSSR
 

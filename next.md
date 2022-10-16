@@ -1,5 +1,7 @@
 - 1.0
 
+  - core: slim down: Slot, concatClassName / unify usePressable+usePressability
+  - site: document more helpers: getSize / stepTokenUpOrDown / spacedChildren
   - site: fix search
   - overshootClamping fix
   - Select lg appears below site floating header
