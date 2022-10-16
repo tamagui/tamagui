@@ -1,6 +1,5 @@
 import { getConfig } from './config'
 import { createComponent } from './createComponent'
-import { RNComponents } from './helpers/RNComponents'
 import {
   GetProps,
   GetVariantValues,
@@ -86,23 +85,16 @@ export function styled<
       if (defaultVariants) {
         Object.assign(defaultProps, defaultVariants)
       }
-      let isReactNativeWeb = parentStaticConfig?.isReactNativeWeb || RNComponents.has(Component)
-      // this can happen due to smart-ness in fake-react-native, rough heuristic here to ensure we match (could be better..)
-      if (!('staticConfig' in Component) && !isReactNativeWeb) {
-        if (RNComponents.has(Component['displayName'])) {
-          RNComponents.add(Component)
-          isReactNativeWeb = true
-        } else {
-          // assuming some sort of non-tamagui non-rn view, will always use style={}
-        }
-      }
+      const isReactNativeWeb = Boolean(
+        parentStaticConfig?.isReactNativeWeb || staticExtractionOptions?.isReactNativeWeb
+      )
       const reactNativeWebComponent = isReactNativeWeb
         ? parentStaticConfig?.reactNativeWebComponent || Component
         : null
       const isTamagui = !isReactNativeWeb && !!parentStaticConfig
       const Comp = reactNativeWebComponent || (Component as any)
 
-      console.warn('need to conf Text', tamaguiConfig)
+      console.warn('need to conf Text')
       const isText = Boolean(
         staticExtractionOptions?.isText || parentStaticConfig?.isText || Comp === null
       )
@@ -114,7 +106,6 @@ export function styled<
         ...(!isTamagui && {
           Component: Comp,
         }),
-        isTamagui,
         // this type gets messed up by options?: Partial<GetProps<ParentComponent>> above
         // take away the Partial<> and it's fine
         variants,

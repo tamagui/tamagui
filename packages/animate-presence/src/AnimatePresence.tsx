@@ -1,4 +1,4 @@
-import { useForceUpdate, useIsomorphicLayoutEffect, useUnmountEffect } from '@tamagui/core'
+import { useForceUpdate, useIsomorphicLayoutEffect } from '@tamagui/core'
 import React, {
   Children,
   ReactElement,
@@ -148,11 +148,14 @@ export const AnimatePresence: React.FunctionComponent<
     presentChildren.current = childrenToRender
   })
 
-  useUnmountEffect(() => {
-    isInitialRender.current = true
-    allChildren.clear()
-    exiting.clear()
-  })
+  useEffect(() => {
+    return () => {
+      isInitialRender.current = true
+      allChildren.clear()
+      exiting.clear()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (isInitialRender.current) {
     return (

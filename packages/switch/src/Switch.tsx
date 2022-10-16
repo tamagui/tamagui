@@ -6,7 +6,6 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
   SizeTokens,
-  calc,
   getSize,
   getVariableValue,
   isWeb,
@@ -108,8 +107,8 @@ export const SwitchFrame = styled(XStack, {
   variants: {
     size: {
       '...size': (val) => {
-        const height = calc(getSwitchHeight(val), '+', 4)
-        const width = calc(getSwitchWidth(val), '+', 4)
+        const height = getSwitchHeight(val) + 4
+        const width = getSwitchWidth(val) + 4
         return {
           height,
           minHeight: height,
