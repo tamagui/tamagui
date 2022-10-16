@@ -3,7 +3,7 @@
 </div>
 
 <h1 align="center">
-  Universal UI for React Native & Web
+  A style system, UI kit and optimizing compiler for React Native & Web
 </h1>
 
 - `@tamagui/core` - Independent minimal style system on top of React Native/Web.

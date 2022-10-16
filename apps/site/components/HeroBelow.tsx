@@ -68,8 +68,8 @@ export const HeroBelowContent = memo(() => {
         py="$2"
         $sm={{ flexDirection: 'column' }}
       >
-        <Section onHoverIn={() => setHovered(0)}>
-          <IconStack o={hovered === 0 ? 1 : 0.5} theme="green_alt2">
+        <Section o={hovered === 0 ? 1 : 0.55} onHoverIn={() => setHovered(0)}>
+          <IconStack theme="green_alt2">
             <Code size={20} color="var(--colorHover)" />
           </IconStack>
           <TitleLink theme="green_alt2" href="/docs/core/configuration">
@@ -81,21 +81,8 @@ export const HeroBelowContent = memo(() => {
           </Paragraph>
         </Section>
 
-        <Section onHoverIn={() => setHovered(1)}>
-          <IconStack o={hovered === 1 ? 1 : 0.5} theme="blue_alt2">
-            <Layers size={20} color="var(--colorHover)" />
-          </IconStack>
-          <TitleLink theme="blue_alt2" href="/docs/components/stacks">
-            Tamagui
-          </TitleLink>
-          <Paragraph o={hovered === 1 ? 1 : 0.75} size="$4" theme="blue_alt2">
-            Large UI kit built using Core. All the base views for apps, with composable
-            component-first APIs, size variance, incredible themes, platform optimized.
-          </Paragraph>
-        </Section>
-
-        <Section onHoverIn={() => setHovered(2)}>
-          <IconStack o={hovered === 2 ? 1 : 0.5} theme="purple_alt2">
+        <Section o={hovered === 1 ? 1 : 0.55} onHoverIn={() => setHovered(1)}>
+          <IconStack theme="purple_alt2">
             <Cpu size={20} color="var(--colorHover)" />
           </IconStack>
           <TitleLink theme="purple_alt2" href="/docs/intro/compiler">
@@ -104,6 +91,19 @@ export const HeroBelowContent = memo(() => {
           <Paragraph o={hovered === 2 ? 1 : 0.75} size="$4" theme="purple_alt2">
             An optimizing compiler for styles both static and inline. Partial evaluation, tree
             flattening & more. Plugins for Next, Webpack, Vite, Metro.
+          </Paragraph>
+        </Section>
+
+        <Section o={hovered === 2 ? 1 : 0.55} onHoverIn={() => setHovered(2)}>
+          <IconStack theme="blue_alt2">
+            <Layers size={20} color="var(--colorHover)" />
+          </IconStack>
+          <TitleLink theme="blue_alt2" href="/docs/components/stacks">
+            Tamagui
+          </TitleLink>
+          <Paragraph o={hovered === 1 ? 1 : 0.75} size="$4" theme="blue_alt2">
+            Large UI kit built using Core. All the base views for apps, with composable
+            component-first APIs, size variance, incredible themes, platform optimized.
           </Paragraph>
         </Section>
       </XStack>

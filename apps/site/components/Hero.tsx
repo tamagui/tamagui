@@ -83,13 +83,13 @@ const HeroTop = memo(() => {
             $gtMd={{
               maxWidth: 900,
               size: '$14',
-              h: 205,
+              h: 240,
             }}
             $gtLg={{
               size: '$16',
               lh: '$15',
               maxWidth: 1200,
-              h: 260,
+              h: 290,
             }}
           >
             <span className="rainbow clip-text">Write less,</span>
@@ -108,7 +108,6 @@ const HeroTop = memo(() => {
               maw: 1000,
             }}
           >
-            <Subtitle>Universal UI for React Native / Web</Subtitle>
             <Subtitle>
               <Link href="/docs/core/configuration" passHref>
                 <Tag
@@ -118,11 +117,11 @@ const HeroTop = memo(() => {
                   onHoverIn={() => setHovered(0)}
                   active={hovered === 0}
                 >
-                  styles
+                  style system
                 </Tag>
               </Link>
-              {spaceEl}
-              <Link href="/docs/components/stacks" passHref>
+              ,{' '}
+              <Link href="/docs/intro/compiler" passHref>
                 <Tag
                   tag="a"
                   theme="blue_alt2"
@@ -130,11 +129,11 @@ const HeroTop = memo(() => {
                   onHoverIn={() => setHovered(1)}
                   active={hovered === 1}
                 >
-                  Components
+                  optimizing compiler
                 </Tag>
-              </Link>
-              {spaceEl}
-              <Link href="/docs/intro/compiler" passHref>
+              </Link>{' '}
+              &{' '}
+              <Link href="/docs/components/stacks" passHref>
                 <Tag
                   tag="a"
                   theme="purple_alt2"
@@ -142,9 +141,11 @@ const HeroTop = memo(() => {
                   onHoverIn={() => setHovered(2)}
                   active={hovered === 2}
                 >
-                  compiler
+                  UI kit
                 </Tag>
               </Link>
+              <br />
+              that&nbsp;unify react native & web
             </Subtitle>
           </YStack>
         </YStack>
