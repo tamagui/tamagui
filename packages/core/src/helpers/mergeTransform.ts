@@ -1,4 +1,4 @@
-import type { ViewStyle } from 'react-native'
+import type { ViewStyle } from '@tamagui/types-react-native'
 
 export const mergeTransform = (obj: ViewStyle, key: string, val: any, backwards = false) => {
   obj.transform ||= []
