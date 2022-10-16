@@ -1,14 +1,5 @@
 // TODO split this into own package @tamagui/types to share with animations packages
 
-import type { Properties } from 'csstype'
-import type {
-  Component,
-  ForwardRefExoticComponent,
-  FunctionComponent,
-  ReactNode,
-  RefAttributes,
-  RefObject,
-} from 'react'
 import type {
   GestureResponderEvent,
   Image,
@@ -20,7 +11,16 @@ import type {
   View,
   ViewProps,
   ViewStyle,
-} from 'react-native'
+} from '@tamagui/types-react-native'
+import type { Properties } from 'csstype'
+import type {
+  Component,
+  ForwardRefExoticComponent,
+  FunctionComponent,
+  ReactNode,
+  RefAttributes,
+  RefObject,
+} from 'react'
 
 import type { Variable } from './createVariable'
 import type { ResolveVariableTypes } from './helpers/createPropMapper'
@@ -734,11 +734,6 @@ export type StaticConfig = {
    * Determines ultimate output tag (Text vs View)
    */
   isText?: boolean
-
-  /**
-   * Attempts to attach focus styles at runtime (useful for native)
-   */
-  isInput?: boolean
 
   /**
    * Which style keys are allowed to be extracted.

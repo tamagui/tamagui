@@ -41,7 +41,6 @@ export function extendStaticConfig(config: Partial<StaticConfig>, parent?: Styla
     parentNames,
     isZStack: config.isZStack || parentStaticConf.isZStack,
     isText: config.isText || parentStaticConf.isText || false,
-    isInput: config.isInput || parentStaticConf.isInput || false,
     neverFlatten: config.neverFlatten || parentStaticConf.neverFlatten,
     ensureOverriddenProp: config.ensureOverriddenProp ?? parentStaticConf.ensureOverriddenProp,
     validStyles: config.validStyles

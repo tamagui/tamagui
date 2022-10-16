@@ -1,4 +1,4 @@
-import type { ViewStyle } from 'react-native';
+import type { ViewStyle } from '@tamagui/types-react-native';
 import type { DebugProp, MediaQueryKey, PseudoStyles, SplitStyleState, StackProps, StaticConfigParsed, TamaguiInternalConfig, ThemeParsed } from '../types';
 import { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types';
 import { RulesToInsert } from './insertStyleRule';

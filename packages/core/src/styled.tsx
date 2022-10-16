@@ -1,5 +1,4 @@
-import { Image, Text, TextInput } from 'react-native'
-
+import { getConfig } from './config'
 import { createComponent } from './createComponent'
 import { RNComponents } from './helpers/RNComponents'
 import {
@@ -51,13 +50,17 @@ export function styled<
   },
   staticExtractionOptions?: Partial<StaticConfig>
 ) {
-  // * excessively deep type instantiation
-  // if (isTamaguiElement(Component)) {
+  // allows passing styled(<H1 bc="red" />)
+  // but to get types right would be tricky
+  // if (isValidElement(Component) && isTamaguiComponent(Component.type)) {
   //   const props = Component.props
-  //   // @ts-ignore
-  //   Component = Component.type
-  //   options = options ? { ...props, ...options } : props
+  //   if (props && typeof props === 'object') {
+  //     Component = Component.type as any
+  //     options = options ? ({ ...props, ...options } as any) : props
+  //   }
   // }
+
+  const tamaguiConfig = getConfig()
 
   const staticConfigProps = (() => {
     const parentStaticConfig =
@@ -98,11 +101,10 @@ export function styled<
         : null
       const isTamagui = !isReactNativeWeb && !!parentStaticConfig
       const Comp = reactNativeWebComponent || (Component as any)
-      const isInput = Boolean(
-        staticExtractionOptions?.isInput || parentStaticConfig?.isInput || Comp === TextInput
-      )
+
+      console.warn('need to conf Text', tamaguiConfig)
       const isText = Boolean(
-        isInput || staticExtractionOptions?.isText || parentStaticConfig?.isText || Comp === Text
+        staticExtractionOptions?.isText || parentStaticConfig?.isText || Comp === null
       )
 
       const acceptsClassName = acceptsClassNameProp ?? (isTamagui || isReactNativeWeb)
@@ -122,7 +124,6 @@ export function styled<
         isReactNativeWeb,
         // for nesting multiple levels of rnw styled() need keep use the OG component
         reactNativeWebComponent,
-        isInput,
         isText,
         acceptsClassName,
       }
@@ -165,12 +166,14 @@ export function styled<
         // add in pseudos
         PseudoProps<Partial<OurPropsBase>>
 
-  return component as TamaguiComponent<
+  type StyledComponent = TamaguiComponent<
     Props,
     TamaguiElement,
     ParentPropsBase,
     ParentVariants & OurVariants
   >
+
+  return component as StyledComponent
 }
 
 // import { Stack } from './views/Stack'

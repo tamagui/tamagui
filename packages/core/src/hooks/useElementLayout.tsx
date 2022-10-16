@@ -1,4 +1,4 @@
-import { MutableRefObject, RefObject, useLayoutEffect } from 'react'
+import { RefObject, useLayoutEffect } from 'react'
 
 const DOM_LAYOUT_HANDLER_NAME = '__reactLayoutHandler'
 
@@ -21,7 +21,7 @@ export type LayoutEvent = {
 
 let resizeObserver: ResizeObserver | null = null
 
-if (typeof window.ResizeObserver !== 'undefined') {
+if (typeof window !== 'undefined') {
   resizeObserver = new ResizeObserver((entries) => {
     for (const { target } of entries) {
       const onLayout = target[DOM_LAYOUT_HANDLER_NAME]

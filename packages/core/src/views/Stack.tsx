@@ -1,4 +1,4 @@
-import type { View } from 'react-native'
+import type { View } from '@tamagui/types-react-native'
 
 import { stackDefaultStyles } from '../constants/constants'
 import { createComponent } from '../createComponent'
