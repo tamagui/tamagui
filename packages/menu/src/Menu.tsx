@@ -1,5 +1,5 @@
 import { useMedia, withStaticProperties } from '@tamagui/core'
-import { Drawer, DrawerProvider } from '@tamagui/drawer'
+// import { Drawer, DrawerProvider } from '@tamagui/drawer'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, { cloneElement, useEffect, useMemo, useState } from 'react'
 
@@ -34,16 +34,16 @@ export const Menu = withStaticProperties(
       }
     }, [])
 
-    if (media.sm) {
-      return (
-        <>
-          {cloneElement(trigger, triggerProps)}
-          <Drawer open={open} onDismiss={() => setOpen(false)}>
-            {children}
-          </Drawer>
-        </>
-      )
-    }
+    // if (media.sm) {
+    //   return (
+    //     <>
+    //       {cloneElement(trigger, triggerProps)}
+    //       <Drawer open={open} onDismiss={() => setOpen(false)}>
+    //         {children}
+    //       </Drawer>
+    //     </>
+    //   )
+    // }
 
     return null
     // return (
@@ -63,6 +63,6 @@ export const Menu = withStaticProperties(
   },
   {
     Item: MenuItem,
-    Provider: DrawerProvider,
+    // Provider: DrawerProvider,
   }
 )

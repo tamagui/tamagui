@@ -1,5 +1,4 @@
-import { throttle } from '@github/mini-throttle'
-import { useEffect, useState } from 'react'
+import { startTransition, useEffect, useState } from 'react'
 import { XStack, YStack, isClient } from 'tamagui'
 
 import { ContainerLarge } from '../components/Container'
@@ -16,9 +15,11 @@ export const HeaderFloating = ({
 
   if (isClient) {
     useEffect(() => {
-      const onScroll = throttle(() => {
-        setIsScrolled(window.scrollY > 30)
-      }, 20)
+      const onScroll = () => {
+        startTransition(() => {
+          setIsScrolled(window.scrollY > 30)
+        })
+      }
       window.addEventListener('scroll', onScroll, { passive: true })
       return () => {
         window.removeEventListener('scroll', onScroll)

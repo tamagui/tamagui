@@ -25,8 +25,8 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
             <YStack ai="center" space="$3">
               <HomeH2 size="$10">Less syntax, better performance</HomeH2>
               {/* <Link passHref href="/blog/how-tamagui-optimizes"> */}
-              <HomeH3 maw={500} tag="a" ai="center" jc="center">
-                Optimized with <strong>{subtitles[activeIndex]}</strong>.
+              <HomeH3 tag="a" ai="center" jc="center">
+                An optimizing compiler that does <strong>{subtitles[activeIndex]}</strong>.
               </HomeH3>
               {/* </Link> */}
             </YStack>
