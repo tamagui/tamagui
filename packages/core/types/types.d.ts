@@ -396,13 +396,7 @@ export declare type GenericVariantDefinitions = {
         };
     };
 };
-export declare type StaticConfig = {
-    Component?: FunctionComponent<any> & StaticComponentObject;
-    variants?: GenericVariantDefinitions;
-    /**
-     * Used for applying sub theme style
-     */
-    componentName?: string;
+export declare type StaticConfigPublic = {
     /**
      * (compiler) If you need to pass context or something, prevents from ever
      * flattening. The 'jsx' option means it will never flatten. if you
@@ -419,10 +413,6 @@ export declare type StaticConfig = {
     validStyles?: {
         [key: string]: boolean;
     };
-    /**
-     * Same as React.defaultProps, be sure to sync
-     */
-    defaultProps: Record<string, any>;
     /**
      * (compiler) If these props are encountered, bail on all optimization.
      */
@@ -450,15 +440,33 @@ export declare type StaticConfig = {
      */
     isZStack?: boolean;
     /**
+     * Auto-detect, but can override, passes styles properly to react-native-web
+     */
+    isReactNativeWeb?: boolean;
+    /**
+     * By default if styled() doesn't recognize a parent Tamagui compoent or specific react-native views,
+     * it will assume the passed in component only accepts style={} for react-native compatibility.
+     * Setting `acceptsClassName: true` indicates Tamagui can pass in className props.
+     */
+    acceptsClassName?: boolean;
+};
+export declare type StaticConfig = StaticConfigPublic & {
+    Component?: FunctionComponent<any> & StaticComponentObject;
+    variants?: GenericVariantDefinitions;
+    /**
+     * Used for applying sub theme style
+     */
+    componentName?: string;
+    /**
+     * Same as React.defaultProps, be sure to sync
+     */
+    defaultProps: Record<string, any>;
+    /**
      * Merges into defaultProps later on, used internally yonly
      */
     defaultVariants?: {
         [key: string]: any;
     };
-    /**
-     * Auto-detect, but can ovverride, passes styles properly to react-native-web
-     */
-    isReactNativeWeb?: boolean;
     /**
      * Used internally to keep reference to the original rnw component
      */
@@ -467,10 +475,6 @@ export declare type StaticConfig = {
      * Memoize the component
      */
     memo?: boolean;
-    /**
-     * Auto-detect, but can ovverride, passes styles properly to react-native-web
-     */
-    isTamagui?: boolean;
     /**
      * Used internally to handle extractable HoC separate
      */
