@@ -5,9 +5,7 @@ import { RulesToInsert } from './insertStyleRule';
 export declare type SplitStyles = ReturnType<typeof getSplitStyles>;
 export declare type ClassNamesObject = Record<string, string>;
 export declare type SplitStyleResult = ReturnType<typeof getSplitStyles>;
-declare type StyleSplitter = (props: {
-    [key: string]: any;
-}, staticConfig: StaticConfigParsed, theme: ThemeParsed, state: SplitStyleState, defaultClassNames?: any, languageContext?: LanguageContextType, debug?: DebugProp) => {
+declare type SplitStylesAndProps = {
     pseudos: PseudoStyles;
     medias: Record<MediaQueryKey, ViewStyle>;
     style: ViewStyle;
@@ -17,6 +15,9 @@ declare type StyleSplitter = (props: {
     fontFamily: string | undefined;
     mediaKeys: string[];
 };
+declare type StyleSplitter = (props: {
+    [key: string]: any;
+}, staticConfig: StaticConfigParsed, theme: ThemeParsed, state: SplitStyleState, parentSplitStyles?: SplitStylesAndProps | null, languageContext?: LanguageContextType, debug?: DebugProp) => SplitStylesAndProps;
 export declare const PROP_SPLIT = "-";
 export declare const pseudoCNInverse: {
     hover: string;

@@ -108,7 +108,7 @@ export function createComponent<
   let BaseView: any
   let AnimatedText: any
   let AnimatedView: any
-  let avoidClassesWhileAnimating = true
+  const avoidClassesWhileAnimating = true
   let defaultNativeStyle: any
   let tamaguiDefaultProps: any
   let initialSplitStyles: SplitStyleResult
@@ -167,7 +167,7 @@ export function createComponent<
       staticConfig,
       theme,
       splitStyleState,
-      props.asChild ? null : initialSplitStyles?.classNames,
+      props.asChild ? null : initialSplitStyles,
       languageContext || undefined,
       debugProp
     )
@@ -175,6 +175,19 @@ export function createComponent<
     const hostRef = useServerRef<TamaguiElement>(null)
     const setState = states[1]
     const setStateShallow = useShallowSetState(setState)
+
+    // animation setup
+    const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
+    const nextIsAnimated = !!(useAnimations && props.animation)
+    // conditional but if ever true stays true
+    const isAnimated = nextIsAnimated || state.hasAnimation
+    if (nextIsAnimated && !state.hasAnimation) {
+      setStateShallow({ hasAnimation: true })
+    }
+    const isReactNativeWeb = Boolean(
+      staticConfig.isReactNativeWeb || (isAnimated && tamaguiConfig.animations.isReactNativeWeb)
+    )
+    const isAnimatedReactNativeWeb = isAnimated && avoidClassesWhileAnimating
 
     if (process.env.NODE_ENV === 'development') {
       if (!process.env.TAMAGUI_TARGET) {
@@ -186,7 +199,7 @@ export function createComponent<
         const name = `${
           componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
         }`
-        const type = staticConfig.isReactNativeWeb ? 'rnw' : 'tamagui'
+        const type = isReactNativeWeb ? 'rnw' : 'tamagui'
         const banner = `${name} ${propsIn['data-is'] || ''} ${type}`
         // eslint-disable-next-line no-console
         console.group(`%c 🐛 ${banner}`, 'background: yellow;')
@@ -246,16 +259,6 @@ export function createComponent<
       }
       return () => {}
     }, [mediaKeys.join(',')])
-
-    // animations
-    const useAnimations = tamaguiConfig?.animations?.useAnimations as UseAnimationHook | undefined
-
-    const nextIsAnimated = !!(useAnimations && props.animation)
-    // conditional but if ever true stays true
-    const isAnimated = nextIsAnimated || state.hasAnimation
-    if (nextIsAnimated && !state.hasAnimation) {
-      setStateShallow({ hasAnimation: true })
-    }
 
     const animationFeatureStylesIn = props.animation
       ? { ...defaultNativeStyle, ...splitStylesStyle }
@@ -423,7 +426,7 @@ export function createComponent<
       : undefined
 
     // if react-native-web view just pass all props down
-    if (process.env.TAMAGUI_TARGET === 'web' && !staticConfig.isReactNativeWeb) {
+    if (process.env.TAMAGUI_TARGET === 'web' && !isReactNativeWeb) {
       // otherwise replicate react-native-web functionality
       const {
         // event props
@@ -715,18 +718,9 @@ export function createComponent<
       const className = classList.join(' ')
       const style = animationStyles ?? splitStyles.style
 
-      // TODO this is specific to reanimated rn
-      const isAnimatedReactNativeWeb = props.animation && avoidClassesWhileAnimating
-
-      // temp fix for animated react-native-web restore pre-styleq functionality
       if (isAnimatedReactNativeWeb) {
         viewProps.style = style
-        viewProps.dataSet = {
-          ...viewProps.dataSet,
-          className,
-          id: props.id,
-        }
-      } else if (staticConfig.isReactNativeWeb) {
+      } else if (isReactNativeWeb) {
         const rnwStyle = { $$css: true }
         for (const name of className.split(' ')) {
           rnwStyle[name] = name
@@ -1117,7 +1111,6 @@ export function createComponent<
     }
 
     if (tamaguiConfig.animations) {
-      avoidClassesWhileAnimating = !!tamaguiConfig.animations.avoidClasses
       AnimatedText = tamaguiConfig.animations.Text
       AnimatedView = tamaguiConfig.animations.View
     }

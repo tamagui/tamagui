@@ -597,7 +597,7 @@ export declare type UniversalAnimatedNumber<A> = {
     stop(): void;
 };
 export declare type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
-    avoidClasses?: boolean;
+    isReactNativeWeb?: boolean;
     useAnimations: UseAnimationHook;
     useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>;
     useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(val: V, getStyle: (current: any) => any) => void;

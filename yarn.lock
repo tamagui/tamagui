@@ -4432,6 +4432,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/calc@workspace:packages/calc":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/calc@workspace:packages/calc"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.193
+    "@tamagui/core": ^1.0.1-beta.193
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/card@^1.0.1-beta.193, @tamagui/card@workspace:packages/card":
   version: 0.0.0-use.local
   resolution: "@tamagui/card@workspace:packages/card"
@@ -5581,6 +5590,7 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-beta.193
     "@tamagui/core": ^1.0.1-beta.193
+    "@tamagui/get-font-sized": ^1.0.1-beta.193
     "@tamagui/helpers-tamagui": ^1.0.1-beta.193
     react: "*"
     react-dom: "*"

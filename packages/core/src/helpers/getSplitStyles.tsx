@@ -69,15 +69,7 @@ type TransformNamespaceKey = 'transform' | PseudoPropKeys | MediaQueryKey
 
 let conf: TamaguiInternalConfig
 
-type StyleSplitter = (
-  props: { [key: string]: any },
-  staticConfig: StaticConfigParsed,
-  theme: ThemeParsed,
-  state: SplitStyleState,
-  defaultClassNames?: any,
-  languageContext?: LanguageContextType,
-  debug?: DebugProp
-) => {
+type SplitStylesAndProps = {
   pseudos: PseudoStyles
   medias: Record<MediaQueryKey, ViewStyle>
   style: ViewStyle
@@ -87,6 +79,16 @@ type StyleSplitter = (
   fontFamily: string | undefined
   mediaKeys: string[]
 }
+
+type StyleSplitter = (
+  props: { [key: string]: any },
+  staticConfig: StaticConfigParsed,
+  theme: ThemeParsed,
+  state: SplitStyleState,
+  parentSplitStyles?: SplitStylesAndProps | null,
+  languageContext?: LanguageContextType,
+  debug?: DebugProp
+) => SplitStylesAndProps
 
 export const PROP_SPLIT = '-'
 
@@ -110,7 +112,7 @@ export const getSplitStyles: StyleSplitter = (
   staticConfig,
   theme,
   state,
-  defaultClassNames,
+  parentSplitStyles,
   languageContext,
   debug
 ) => {
@@ -123,11 +125,13 @@ export const getSplitStyles: StyleSplitter = (
   const mediaState = state.mediaState || globalMediaState
   const usedKeys = new Set<string>()
   const propKeys = Object.keys(props)
+
   const shouldDoClasses =
     staticConfig.acceptsClassName &&
+    !staticConfig.isReactNativeWeb &&
     (isWeb || process.env.IS_STATIC === 'is_static') &&
-    !state.noClassNames &&
-    !props.animation
+    !state.noClassNames
+
   const len = propKeys.length
   const rulesToInsert: RulesToInsert = []
   const style: ViewStyle = {}
@@ -473,16 +477,23 @@ export const getSplitStyles: StyleSplitter = (
     styleToCSS(style)
   }
 
-  // add in defaults if not set:
-  if (defaultClassNames) {
-    for (const key in defaultClassNames) {
-      if (!(key in classNames)) {
-        classNames[key] = defaultClassNames[key]
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    // add in defaults if not set:
+    if (parentSplitStyles) {
+      if (shouldDoClasses) {
+        for (const key in parentSplitStyles.classNames) {
+          if (key in classNames) continue
+          // if (key in style) continue
+          classNames[key] = parentSplitStyles.classNames[key]
+        }
+      } else {
+        for (const key in parentSplitStyles.style) {
+          if (key in style) continue
+          style[key] = parentSplitStyles.style[key]
+        }
       }
     }
-  }
 
-  if (process.env.TAMAGUI_TARGET === 'web') {
     if (shouldDoClasses) {
       const atomic = getStylesAtomic(style)
       for (const atomicStyle of atomic) {
@@ -491,44 +502,7 @@ export const getSplitStyles: StyleSplitter = (
         mergeClassName(transforms, classNames, key, atomicStyle.identifier)
       }
     }
-  }
 
-  // else {
-  // if (classNames && state.resolveVariablesAs === 'value') {
-  // getting real values for colors for animations (reverse mapped from CSS)
-  // this isn't beautiful, but will do relatively fine performance for now
-  // has a bug still - try adding <Switch theme="bouncy" /> should animate bg color on active
-  // const selectors = getAllSelectors()
-  // for (const key in classNames) {
-  //   if (key.endsWith('Color')) {
-  //     const selector = classNames[key]
-  //     let value = selectorValuesCache[selector]
-  //     if (!value) {
-  //       const css = selectors[selector]
-  //       value = css.replace(/.*:/, '').replace(/;.*/, '')
-  //       if (value) {
-  //         const themeUnwrapped = getThemeUnwrapped(theme)
-  //         const map = themeToVariableToValueMap.get(themeUnwrapped)
-  //         if (map && value.startsWith('var(')) {
-  //           value = map[value]
-  //         }
-  //         if (value) {
-  //           selectorValuesCache[selector] = value
-  //         }
-  //       } else {
-  //         // err
-  //         continue
-  //       }
-  //     }
-  //     if (value) {
-  //       style[key] = value
-  //     }
-  //   }
-  // }
-  // }
-  // }
-
-  if (process.env.TAMAGUI_TARGET === 'web') {
     if (transforms) {
       for (const namespace in transforms) {
         if (!transforms[namespace]) {

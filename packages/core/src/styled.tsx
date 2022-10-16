@@ -93,11 +93,7 @@ export function styled<
         : null
       const isTamagui = !isReactNativeWeb && !!parentStaticConfig
       const Comp = reactNativeWebComponent || (Component as any)
-
-      console.warn('need to conf Text')
-      const isText = Boolean(
-        staticExtractionOptions?.isText || parentStaticConfig?.isText || Comp === null
-      )
+      const isText = Boolean(staticExtractionOptions?.isText || parentStaticConfig?.isText)
 
       const acceptsClassName = acceptsClassNameProp ?? (isTamagui || isReactNativeWeb)
 

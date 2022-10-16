@@ -4,6 +4,7 @@ import '@tamagui/polyfill-dev'
 
 import '../site/app.css'
 
+import { SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
 import {
@@ -90,7 +91,9 @@ export const Sandbox = () => {
       >
         {/* <Input /> */}
 
-        <Square size={100} bc="red" />
+        {/* <Square size={100} bc="red" /> */}
+
+        <SwitchDemo />
 
         {/* <TestFontTokensInVariants type="H1" size="large">
           Hello world
