@@ -9,6 +9,7 @@ import {
 } from '@tamagui/helpers'
 import type { ViewStyle } from '@tamagui/types-react-native'
 import { useForceUpdate } from '@tamagui/use-force-update'
+import { usePressable } from '@tamagui/use-pressable'
 import React, {
   Children,
   Fragment,
@@ -40,7 +41,6 @@ import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { useShallowSetState } from './helpers/useShallowSetState'
 import { useElementLayout } from './hooks/useElementLayout'
 import { addMediaQueryListener, getInitialMediaState } from './hooks/useMedia'
-import { usePressable } from './hooks/usePressable'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
 import { getThemeManager, useTheme } from './hooks/useTheme'
 import {
@@ -954,7 +954,7 @@ export function createComponent<
     // EVENTS: web
     if (!isRSC && isWeb) {
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      const [pressableProps] = usePressable(
+      const pressableProps = usePressable(
         events
           ? {
               disabled,

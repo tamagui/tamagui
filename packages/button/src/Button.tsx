@@ -3,7 +3,6 @@ import {
   GetProps,
   TamaguiElement,
   ThemeableProps,
-  getButtonSize,
   getVariableValue,
   isRSC,
   spacedChildren,
@@ -12,6 +11,7 @@ import {
   useMediaPropsActive,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
+import { getButtonSized } from '@tamagui/get-button-sized'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack } from '@tamagui/stacks'
 import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
@@ -82,7 +82,7 @@ export const ButtonFrame = styled(ThemeableStack, {
 
   variants: {
     size: {
-      '...size': getButtonSize,
+      '...size': getButtonSized,
     },
 
     active: {

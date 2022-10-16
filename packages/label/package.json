@@ -27,6 +27,8 @@
     "@tamagui/core": "^1.0.1-beta.193",
     "@tamagui/create-context": "^1.0.1-beta.193",
     "@tamagui/focusable": "^1.0.1-beta.193",
+    "@tamagui/get-button-sized": "^1.0.1-beta.193",
+    "@tamagui/get-font-sized": "^1.0.1-beta.193",
     "@tamagui/text": "^1.0.1-beta.193"
   },
   "peerDependencies": {

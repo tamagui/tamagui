@@ -1,6 +1,6 @@
+import type { GestureResponderEvent, Image, PressableProps, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from '@tamagui/types-react-native';
 import type { Properties } from 'csstype';
 import type { Component, ForwardRefExoticComponent, FunctionComponent, ReactNode, RefAttributes, RefObject } from 'react';
-import type { GestureResponderEvent, Image, PressableProps, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import type { Variable } from './createVariable';
 import type { ResolveVariableTypes } from './helpers/createPropMapper';
 import type { TamaguiReactElement } from './static';
@@ -413,10 +413,6 @@ export declare type StaticConfig = {
      * Determines ultimate output tag (Text vs View)
      */
     isText?: boolean;
-    /**
-     * Attempts to attach focus styles at runtime (useful for native)
-     */
-    isInput?: boolean;
     /**
      * Which style keys are allowed to be extracted.
      */

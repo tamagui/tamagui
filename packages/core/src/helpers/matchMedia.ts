@@ -6,6 +6,7 @@ function matchMediaFallback(query: string): MediaQueryList {
     !process.env.IS_STATIC &&
     process.env.TAMAGUI_TARGET !== 'web'
   ) {
+    // eslint-disable-next-line no-console
     console.log('warning: matchMedia not loading! Native not picking up .native.js files?')
   }
   return {

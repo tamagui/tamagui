@@ -1,0 +1,31 @@
+{
+  "name": "@tamagui/get-button-sized",
+  "version": "1.0.1-beta.193",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "eslint",
+    "lint:fix": "yarn lint --fix",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/core": "^1.0.1-beta.193",
+    "react": "*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.193",
+    "@types/react": "^18.0.15"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

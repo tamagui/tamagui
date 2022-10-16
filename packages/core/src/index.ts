@@ -19,9 +19,7 @@ export { getHasConfigured, getConfig, getThemes, getTokens, onConfiguredOnce } f
 
 export * from './constants/constants'
 
-export * from './helpers/calc'
 export * from './helpers/useShallowSetState'
-export * from './helpers/getStackSize'
 export * from './helpers/getVariantExtras'
 export * from './helpers/getAnimationDriver'
 export * from './helpers/getExpandedShorthands'
@@ -31,12 +29,9 @@ export * from './helpers/getStylesAtomic'
 export * from './helpers/pseudoDescriptors'
 export * from './helpers/mergeProps'
 export * from './helpers/expandStyles'
-export * from './helpers/getFont'
-export * from './helpers/isObj'
 export * from './helpers/isTamaguiElement'
 export * from './helpers/isTamaguiComponent'
 export * from './helpers/matchMedia'
-export * from './helpers/startTransition'
 export * from './helpers/themeable'
 export * from './helpers/withStaticProperties'
 
@@ -44,7 +39,6 @@ export * from './contexts/ButtonInsideButtonContext'
 
 export * from './hooks/useConstant'
 export * from './hooks/useId'
-export * from './hooks/useIsMounted'
 export * from './hooks/useIsTouchDevice'
 
 export {
@@ -58,9 +52,7 @@ export {
   removeMediaQueryListener,
   mediaQueryConfig,
 } from './hooks/useMedia'
-export * from './hooks/usePressable'
 export * from './hooks/useTheme'
-export * from './hooks/useUnmountEffect'
 export * from './hooks/useSafeRef'
 
 export * from './views/Slot'

@@ -9,6 +9,7 @@ import hyphenateStyleName from 'hyphenate-style-name'
 
 import { getConfig } from '../config'
 import { TamaguiInternalConfig } from '../types'
+import { Style, cache } from './cache'
 import { defaultOffset } from './expandStyles'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
@@ -166,31 +167,14 @@ const mapTransform = (transform) => {
   }
 }
 
-// cache
-type Value = Object | Array<any> | string | number
-export type Style = { [key: string]: Value }
-class Cache {
-  values: Record<string, any> = {}
-
-  get(key: string, valStr: string) {
-    return this.values[key]?.[valStr]
-  }
-
-  set(key: string, valStr: string, object: any) {
-    this.values[key] ??= {}
-    this.values[key][valStr] = object
-  }
-}
-const cache = new Cache()
-
 function createDeclarationBlock(style: Style, important = false) {
-  let declarations = ''
+  let next = ''
   for (const key in style) {
     const prop = hyphenateStyleName(key)
     const value = style[key]
-    declarations += `${prop}:${value}${important ? ` !important` : ''};`
+    next += `${prop}:${value}${important ? ` !important` : ''};`
   }
-  return `{${declarations}}`
+  return `{${next}}`
 }
 
 const pseudoSelectorPrefixes = (() => {
@@ -239,7 +223,6 @@ function createAtomicRules(
     }
 
     // Polyfill for additional 'pointer-events' values
-    // See d13f78622b233a0afc0c7a200c0a0792c8ca9e58
     case 'pointerEvents': {
       let finalValue = value
       if (value === 'auto' || value === 'box-only') {
@@ -254,17 +237,6 @@ function createAtomicRules(
         }
       }
       const block = createDeclarationBlock({ pointerEvents: finalValue }, true)
-      rules.push(`${selector}${block}`)
-      break
-    }
-
-    // Polyfill for draft spec
-    // https://drafts.csswg.org/css-scrollbars-1/
-    case 'scrollbarWidth': {
-      if (value === 'none') {
-        rules.push(`${selector}::-webkit-scrollbar{display:none}`)
-      }
-      const block = createDeclarationBlock({ scrollbarWidth: value }, important)
       rules.push(`${selector}${block}`)
       break
     }

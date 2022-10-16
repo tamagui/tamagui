@@ -2,8 +2,8 @@
 // MIT License Copyright (c) 2020 Mo Gorhom
 // fixing SSR issue
 
-import { startTransition, useDidFinishSSR } from '@tamagui/core'
-import { ReactNode, useMemo, useRef } from 'react'
+import { useDidFinishSSR } from '@tamagui/core'
+import { ReactNode, startTransition, useMemo, useRef } from 'react'
 import React, { createContext, memo, useCallback, useContext, useEffect, useReducer } from 'react'
 
 interface PortalType {

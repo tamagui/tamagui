@@ -39,7 +39,7 @@ export const InputFrame = styled(
     },
   },
   {
-    isInput: true,
+    isText: true,
   }
 )
 
