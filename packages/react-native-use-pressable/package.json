@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/use-pressable",
+  "name": "@tamagui/react-native-use-pressable",
   "version": "1.0.1-beta.193",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

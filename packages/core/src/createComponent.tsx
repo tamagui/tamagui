@@ -7,9 +7,9 @@ import {
   validPseudoKeys,
   validStyles,
 } from '@tamagui/helpers'
+import { usePressable } from '@tamagui/react-native-use-pressable'
 import type { ViewStyle } from '@tamagui/types-react-native'
 import { useForceUpdate } from '@tamagui/use-force-update'
-import { usePressable } from '@tamagui/use-pressable'
 import React, {
   Children,
   Fragment,
@@ -963,6 +963,7 @@ export function createComponent<
               disabled: true,
             }
       )
+      console.log('pressableProps', pressableProps)
       if (events) {
         if (handlesPressEvents) {
           Object.assign(viewProps, pressableProps)

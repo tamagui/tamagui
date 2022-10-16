@@ -9,8 +9,8 @@
 
 'use strict'
 
-import { usePressable } from '@tamagui/use-pressable'
-import type { PressResponderConfig } from '@tamagui/use-pressable'
+import { usePressable } from '@tamagui/react-native-use-pressable'
+import type { PressResponderConfig } from '@tamagui/react-native-use-pressable'
 import * as React from 'react'
 import { forwardRef, memo, useMemo, useRef, useState } from 'react'
 import { StyleSheet } from 'react-native-web-internals'
