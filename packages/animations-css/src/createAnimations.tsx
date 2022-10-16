@@ -4,7 +4,6 @@ import { useContext, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
-    avoidClasses: false,
     View: Stack,
     Text: Text,
     animations,

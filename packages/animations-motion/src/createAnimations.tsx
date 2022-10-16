@@ -96,7 +96,6 @@ export function createAnimations<A extends AnimationConfigType>(animations: A): 
   AnimatedText['displayName'] = 'AnimatedText'
 
   return {
-    avoidClasses: true,
     animations,
     View: AnimatedView,
     Text: AnimatedText,

@@ -121,7 +121,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
   AnimatedText['displayName'] = 'AnimatedText'
 
   return {
-    avoidClasses: true,
+    isReactNativeWeb: true,
     animations,
     View: AnimatedView,
     Text: AnimatedText,
