@@ -133,9 +133,7 @@ function setupMediaListeners() {
 }
 
 export function useMediaQueryListeners(config: TamaguiInternalConfig) {
-  if (config.disableSSR) {
-    return
-  }
+  if (config.disableSSR) return
   useEffect(() => {
     setupMediaListeners()
     return unlisten
@@ -160,14 +158,14 @@ export function useMedia(): {
   }
 
   useIsomorphicLayoutEffect(() => {
+    updateState()
     const disposes: Function[] = Object.keys(keys.current).map((key) =>
       addMediaQueryListener(key, updateState)
     )
-    updateState()
     return () => {
       disposes.forEach((cb) => cb())
     }
-  })
+  }, [keys.current])
 
   return useMemo(
     () =>
