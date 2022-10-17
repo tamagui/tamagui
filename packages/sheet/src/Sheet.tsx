@@ -29,7 +29,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useId,
   useMemo,
   useRef,
   useState,
@@ -503,6 +502,7 @@ export const Sheet = withStaticProperties(
       const onInnerSheet = useCallback((hasChild: boolean) => {
         setIsShowingInnerSheet(hasChild)
       }, [])
+
       useIsomorphicLayoutEffect(() => {
         if (!parentSheetContext || !open) return
         parentSheetContext(true)
@@ -530,6 +530,7 @@ export const Sheet = withStaticProperties(
 
           <AnimatedView
             ref={ref}
+            debug="verbose"
             {...panResponder?.panHandlers}
             onLayout={(e) => {
               const next = e.nativeEvent.layout.height

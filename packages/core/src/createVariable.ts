@@ -75,9 +75,7 @@ export function getVariableVariable(v: Variable | any) {
 export const createCSSVariable = (nameProp: string, includeVar = true) => {
   if (process.env.NODE_ENV === 'development') {
     if (!nameProp || typeof nameProp !== 'string') {
-      // eslint-disable-next-line no-console
-      console.trace('createCSSVariable invalid name', nameProp)
-      return ``
+      throw new Error(`createCSSVariable expected string: ${nameProp}`)
     }
   }
   const name = simpleHash(nameProp, 60)

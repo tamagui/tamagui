@@ -31,20 +31,20 @@ export const mediaState: MediaQueryState =
 
 type MediaListener = (next: boolean) => void
 
-const mediaQueryListeners: { [key: string]: Set<MediaListener> } = {}
+const listeners: { [key: string]: Set<MediaListener> } = {}
 
 export function addMediaQueryListener(key: MediaQueryKey, cb: MediaListener) {
   if (process.env.NODE_ENV === 'development' && key[0] === '$') {
     // eslint-disable-next-line no-console
     console.warn(`Warning, listening to media queries shouldn't use the "$" prefix`)
   }
-  mediaQueryListeners[key] = mediaQueryListeners[key] || new Set()
-  mediaQueryListeners[key].add(cb)
+  listeners[key] = listeners[key] || new Set()
+  listeners[key].add(cb)
   return () => removeMediaQueryListener(key, cb)
 }
 
 export function removeMediaQueryListener(key: MediaQueryKey, cb: MediaListener) {
-  mediaQueryListeners[key]?.delete(cb)
+  listeners[key]?.delete(cb)
 }
 
 export const mediaQueryConfig: MediaQueries = {}
@@ -54,15 +54,16 @@ export const getMedia = () => {
 }
 
 // for SSR capture it at time of startup
-let currentMediaState: MediaQueryState | null
-let initialMediaState: MediaQueryState | null
-
+let curState: MediaQueryState
+let initState: MediaQueryState
 export const getInitialMediaState = () => {
-  if (getConfig().disableSSR) {
-    return currentMediaState || {}
-  }
-  return initialMediaState || {}
+  return (getConfig().disableSSR ? curState : initState) || {}
 }
+
+let mediaKeysOrdered: string[]
+export const getMediaKeyImportance = (key: string) =>
+  // + 2 because we set base usedKeys=1 in getSplitStyles and all media go above 1
+  mediaKeysOrdered.indexOf(key[0] === '$' ? key.slice(1) : key) + 2
 
 const dispose = new Set<Function>()
 
@@ -73,8 +74,9 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
     mediaState[key] = mediaQueryDefaultActive?.[key] || false
   }
   Object.assign(mediaQueryConfig, media)
-  currentMediaState = { ...mediaState }
-  initialMediaState = currentMediaState
+  curState = { ...mediaState }
+  initState = curState
+  mediaKeysOrdered = Object.keys(media)
   if (config.disableSSR) {
     setupMediaListeners()
   }
@@ -122,17 +124,17 @@ function setupMediaListeners() {
         const next = !!getMatch().matches
         if (next === mediaState[key]) return
         mediaState[key] = next
-        currentMediaState = { ...mediaState }
-        const listeners = mediaQueryListeners[key]
-        if (listeners?.size) {
-          listeners.forEach((cb) => cb(next))
+        curState = { ...mediaState }
+        const cur = listeners[key]
+        if (cur?.size) {
+          cur.forEach((cb) => cb(next))
         }
       }
     }
   })
 }
 
-export function useMediaQueryListeners(config: TamaguiInternalConfig) {
+export function useListeners(config: TamaguiInternalConfig) {
   if (config.disableSSR) return
   useEffect(() => {
     setupMediaListeners()
@@ -143,7 +145,7 @@ export function useMediaQueryListeners(config: TamaguiInternalConfig) {
 export function useMedia(): {
   [key in MediaQueryKey]: boolean
 } {
-  const [state, setState] = useState<MediaQueryState>(initialMediaState || {})
+  const [state, setState] = useState<MediaQueryState>(initState || {})
   const keys = useSafeRef({} as Record<string, boolean>)
 
   function updateState() {
@@ -159,11 +161,11 @@ export function useMedia(): {
 
   useIsomorphicLayoutEffect(() => {
     updateState()
-    const disposes: Function[] = Object.keys(keys.current).map((key) =>
+    const disposers = Object.keys(keys.current).map((key) =>
       addMediaQueryListener(key, updateState)
     )
     return () => {
-      disposes.forEach((cb) => cb())
+      disposers.forEach((cb) => cb())
     }
   }, [keys.current])
 
@@ -171,13 +173,6 @@ export function useMedia(): {
     () =>
       new Proxy(state, {
         get(_, key: string) {
-          if (process.env.NODE_ENV === 'development') {
-            if (!currentMediaState) {
-              throw new Error(
-                `To use useMedia() you must pass in media configuration to createTamagui, none was found.`
-              )
-            }
-          }
           if (!keys.current[key]) {
             keys.current[key] = true
           }
@@ -204,42 +199,47 @@ export function useMediaPropsActive<A extends Object>(
   const media = useMedia()
 
   return useMemo(() => {
-    const evaluated = {} as A
-    const lastSetImportanceForKey = {}
+    const next = {} as A
+    const importancesUsed = {}
     const propNames = Object.keys(props)
-    const mediaKeysOrdered = Object.keys(getMedia())
-
-    function update(k: string, v: any, importance = 0) {
-      if (lastSetImportanceForKey[k] > importance) {
-        return
-      }
-      lastSetImportanceForKey[k] = importance
-      evaluated[k] = v
-    }
 
     for (let i = propNames.length - 1; i >= 0; i--) {
       const key = propNames[i]
       const val = props[key]
       if (key[0] === '$') {
-        const shortKey = key.slice(1)
-        if (!media[shortKey]) {
+        if (!media[key.slice(1)]) {
+          console.log('wtf', key)
           continue
         }
         if (val && typeof val === 'object') {
-          const subPropNames = Object.keys(val)
-          const mediaImportance = mediaKeysOrdered.indexOf(shortKey)
-          for (let j = subPropNames.length; j--; j >= 0) {
-            const skey = subPropNames[j]
-            update(skey, val[skey], mediaImportance)
+          const subKeys = Object.keys(val)
+          for (let j = subKeys.length; j--; j >= 0) {
+            const subKey = subKeys[j]
+            mergeMediaByImportance(next, subKey, val[subKey], importancesUsed)
           }
         }
       } else {
-        update(key, val)
+        mergeMediaByImportance(next, key, val, importancesUsed)
       }
     }
 
-    return evaluated
+    return next
   }, [media, props])
+}
+
+export function mergeMediaByImportance(
+  onto: Record<string, any>,
+  key: string,
+  value: any,
+  importancesUsed: Record<string, number>
+) {
+  const importance = getMediaKeyImportance(key)
+  if (importancesUsed[key] > importance) {
+    return false
+  }
+  importancesUsed[key] = importance
+  onto[key] = value
+  return true
 }
 
 function camelToHyphen(str: string) {

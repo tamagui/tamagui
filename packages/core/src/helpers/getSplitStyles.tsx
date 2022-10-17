@@ -5,7 +5,11 @@ import { useInsertionEffect } from 'react'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
-import { mediaState as globalMediaState, mediaQueryConfig } from '../hooks/useMedia'
+import {
+  mediaState as globalMediaState,
+  mediaQueryConfig,
+  mergeMediaByImportance,
+} from '../hooks/useMedia'
 import type {
   DebugProp,
   MediaQueryKey,
@@ -32,7 +36,6 @@ import {
   updateInserted,
   updateRules,
 } from './insertStyleRule'
-import { mergeProps } from './mergeProps'
 import { mergeTransform } from './mergeTransform'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { pseudoDescriptors } from './pseudoDescriptors'
@@ -170,6 +173,8 @@ const accessibilityRoleToWebRole = {
 //     const styles = {}
 //     const classNames = {}
 
+const isMediaKey = (key: string) => Boolean(key[0] === '$' && mediaQueryConfig[key.slice(1)])
+
 export const getSplitStyles: StyleSplitter = (
   props,
   staticConfig,
@@ -187,7 +192,7 @@ export const getSplitStyles: StyleSplitter = (
   const pseudos: PseudoStyles = {}
   const medias: Record<MediaQueryKey, ViewStyle> = {}
   const mediaState = state.mediaState || globalMediaState
-  const usedKeys = new Set<string>()
+  const usedKeys: Record<string, number> = {}
   const propKeys = Object.keys(props)
 
   const shouldDoClasses =
@@ -199,11 +204,6 @@ export const getSplitStyles: StyleSplitter = (
   const len = propKeys.length
   const rulesToInsert: RulesToInsert = []
   const style: ViewStyle = {}
-  // TODO make this CSS, not compile-friendly
-  if (state.hasTextAncestor) {
-    // parity with react-native-web
-    style.display = 'inline-flex' as any
-  }
   const classNames: ClassNamesObject = {}
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
@@ -222,24 +222,21 @@ export const getSplitStyles: StyleSplitter = (
       keyInit = expandedKey
     }
 
-    if (usedKeys.has(keyInit)) continue
+    if (usedKeys[keyInit]) continue
     if (skipProps[keyInit]) continue
     if (!isWeb && keyInit.startsWith('data-')) continue
 
     if (keyInit === 'style' || keyInit.startsWith('_style')) {
       if (!valInit) continue
-      for (const key in valInit) {
-        if (usedKeys.has(key)) continue
-        if (valInit && typeof valInit === 'object') {
-          // newer react native versions return a full object instead of ID
-          for (const skey in valInit) {
-            if (usedKeys.has(skey)) continue
-            usedKeys.add(skey)
-            style[skey] = valInit[skey]
-          }
-        } else {
-          usedKeys.add(key)
-          style[key] = valInit
+      const styles = Array.isArray(valInit) ? valInit : [valInit]
+      const styleLen = styles.length
+      for (let j = styleLen; j >= 0; j--) {
+        const cur = styles[j]
+        if (!cur) continue
+        for (const key in cur) {
+          if (usedKeys[key]) continue
+          usedKeys[key] = 1
+          style[key] = cur[key]
         }
       }
       continue
@@ -251,7 +248,7 @@ export const getSplitStyles: StyleSplitter = (
        * Keeps it in a single loop, avoids dup de-structuring to avoid bundle size
        */
       if (keyInit === 'disabled' && valInit === true) {
-        usedKeys.add(keyInit)
+        usedKeys[keyInit] = 1
         viewProps['aria-disabled'] = true
         // Enhance with native semantics
         if (
@@ -268,7 +265,7 @@ export const getSplitStyles: StyleSplitter = (
 
       if (accessibilityDirectMap[keyInit]) {
         viewProps[accessibilityDirectMap[keyInit]] = valInit
-        usedKeys.add(keyInit)
+        usedKeys[keyInit] = 1
         continue
       }
 
@@ -334,7 +331,7 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (didUseKeyInit) {
-        usedKeys.add(keyInit)
+        usedKeys[keyInit] = 1
         continue
       }
 
@@ -359,14 +356,14 @@ export const getSplitStyles: StyleSplitter = (
               const pseudoShortKey = mediaOrPseudo.slice(1)
               fullKey += `${PROP_SPLIT}${pseudoShortKey}`
             }
-            usedKeys.add(fullKey)
+            usedKeys[fullKey] = 1
             mergeClassName(transforms, classNames, fullKey, cn, isMediaOrPseudo)
           } else {
             nonTamaguis += ' ' + cn
           }
         }
         if (nonTamaguis) {
-          usedKeys.add(keyInit)
+          usedKeys[keyInit] = 1
           mergeClassName(transforms, classNames, keyInit, nonTamaguis)
         }
         continue
@@ -381,7 +378,7 @@ export const getSplitStyles: StyleSplitter = (
           keyInit.includes(PROP_SPLIT) &&
           validStyles[keyInit.split(PROP_SPLIT)[0]]
         if (isValidClassName || isMediaOrPseudo) {
-          usedKeys.add(keyInit)
+          usedKeys[keyInit] = 1
           mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
           continue
         }
@@ -406,9 +403,8 @@ export const getSplitStyles: StyleSplitter = (
      * for if there's a pseudo/media returned from it.
      */
 
-    let isMedia = keyInit[0] === '$'
+    let isMedia = isMediaKey(keyInit)
     let isPseudo = validPseudoKeys[keyInit]
-    let isMediaOrPseudo = isMedia || isPseudo
 
     if (
       !isMedia &&
@@ -417,7 +413,7 @@ export const getSplitStyles: StyleSplitter = (
       !validStyleProps[keyInit] &&
       !conf.shorthands[keyInit]
     ) {
-      usedKeys.add(keyInit)
+      usedKeys[keyInit] = 1
       viewProps[keyInit] = valInit
       continue
     }
@@ -449,32 +445,30 @@ export const getSplitStyles: StyleSplitter = (
       // eslint-disable-next-line no-console
       console.log('expanded', expanded)
       // eslint-disable-next-line no-console
-      console.log('usedKeys', [...usedKeys])
+      console.log('usedKeys', usedKeys)
       // eslint-disable-next-line no-console
       console.groupEnd()
     }
 
-    if (!expanded) {
-      continue
-    }
+    if (!expanded) continue
 
     for (const [key, val] of expanded) {
       if (val === undefined) continue
 
-      isMedia = key[0] === '$'
+      isMedia = isMediaKey(key)
       isPseudo = validPseudoKeys[key]
-      isMediaOrPseudo = isMedia || isPseudo
+      const isMediaOrPseudo = isMedia || isPseudo
 
-      if (!isMediaOrPseudo) {
-        if (usedKeys.has(key)) continue
+      if (!isMediaOrPseudo && usedKeys[key]) {
+        continue
       }
 
       if (
-        (staticConfig.deoptProps && staticConfig.deoptProps.has(key)) ||
-        (staticConfig.inlineProps && staticConfig.inlineProps.has(key)) ||
-        (staticConfig.inlineWhenUnflattened && staticConfig.inlineWhenUnflattened.has(key))
+        staticConfig.deoptProps?.has(key) ||
+        staticConfig.inlineProps?.has(key) ||
+        staticConfig.inlineWhenUnflattened?.has(key)
       ) {
-        usedKeys.add(key)
+        usedKeys[key] = 1
         viewProps[key] = props[key] ?? val
       }
 
@@ -508,8 +502,8 @@ export const getSplitStyles: StyleSplitter = (
           for (const style of pseudoStyles) {
             const postfix = pseudoDescriptors[key]?.name || key // exitStyle/enterStyle dont have pseudoDescriptors
             const fullKey = `${style.property}${PROP_SPLIT}${postfix}`
-            if (!usedKeys.has(fullKey)) {
-              usedKeys.add(fullKey)
+            if (!usedKeys[fullKey]) {
+              usedKeys[fullKey] = 1
               addStyleToInsertRules(rulesToInsert, style)
               mergeClassName(transforms, classNames, fullKey, style.identifier, isMediaOrPseudo)
             }
@@ -522,27 +516,8 @@ export const getSplitStyles: StyleSplitter = (
       if (isMedia) {
         const mediaKey = key
         const mediaKeyShort = mediaKey.slice(1)
-
         mediaKeys.push(mediaKeyShort)
 
-        if (!mediaQueryConfig[mediaKeyShort]) {
-          if (process.env.NODE_ENV === 'development' && debug) {
-            // eslint-disable-next-line no-console
-            console.warn(
-              `Warning: using a $ prefixed prop that doesn't match to a media query, may be an error`,
-              key
-            )
-          }
-          if (!usedKeys.has(key)) {
-            // this isn't a media key, pass through
-            viewProps[key] = val
-          }
-          continue
-        }
-
-        // dont check if media is active, we just apply *all* media styles
-        // we combine the media props on top regular props, could proxy this
-        // TODO test proxy here instead of merge
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
         const mediaStyle = getSubStyle(
@@ -567,29 +542,18 @@ export const getSplitStyles: StyleSplitter = (
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
-            if (!usedKeys.has(fullKey)) {
-              usedKeys.add(fullKey)
+            if (!usedKeys[fullKey]) {
+              usedKeys[fullKey] = 1
               addStyleToInsertRules(rulesToInsert, out)
               mergeClassName(transforms, classNames, fullKey, out.identifier, true)
             }
           }
-        } else {
-          if (mediaState[mediaKeyShort]) {
-            if (process.env.NODE_ENV === 'development' && debug) {
-              // eslint-disable-next-line no-console
-              console.log('apply media style', mediaKey, mediaState)
-            }
-            if (shouldDoClasses) {
-              Object.assign(medias, mediaStyle)
-            } else {
-              for (const key in mediaStyle) {
-                // TODO we should likely account for importance here to match CSS, right??
-                usedKeys.add(key)
-                style[key] = mediaStyle[key]
-                if (key === 'fontFamily') {
-                  fontFamily = mediaStyle[key]
-                }
-              }
+        } else if (mediaState[mediaKeyShort]) {
+          for (const key in mediaStyle) {
+            const didMerge = mergeMediaByImportance(style, key, mediaStyle[key], usedKeys)
+            console.log('didMerge', didMerge, key)
+            if (didMerge && key === 'fontFamily') {
+              fontFamily = mediaStyle[key]
             }
           }
         }
@@ -597,7 +561,7 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (!isWeb && key === 'pointerEvents') {
-        usedKeys.add(key)
+        usedKeys[key] = 1
         viewProps[key] = val
         continue
       }
@@ -607,7 +571,7 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (validStyleProps[key]) {
-        usedKeys.add(key)
+        usedKeys[key] = 1
         if (val && val[0] === '_') {
           classNames[key] = val
         } else if (key in stylePropsTransform) {
@@ -622,7 +586,7 @@ export const getSplitStyles: StyleSplitter = (
       if (!staticConfig.variants || !(key in staticConfig.variants)) {
         if (!skipProps[key]) {
           viewProps[key] = val
-          usedKeys.add(key)
+          usedKeys[key] = 1
         }
       }
     }

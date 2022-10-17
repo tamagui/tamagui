@@ -170,15 +170,20 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
   })()
 
-  // faster lookups token keys become $keys to match input
-  const tokensParsed: any = parseTokens(configIn.tokens)
-
-  const getCSS = () => {
-    return `${themeConfig.css}\n${getAllRules().join('\n')}`
-  }
+  // faster $lookups
+  const tokensParsed: any = Object.fromEntries(
+    Object.entries(configIn.tokens).map(([k, v]) => [
+      k,
+      Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v])),
+    ])
+  )
+  const css = `
+${themeConfig.css}
+${getAllRules().join('\n')}
+.is_Text .is_Text { display: inline-flex; }
+`
 
   const shorthands = configIn.shorthands || {}
-
   const config: TamaguiInternalConfig = {
     fontLanguages: [],
     defaultTheme: 'light',
@@ -195,7 +200,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     themeConfig,
     tokensParsed,
     parsed: true,
-    getCSS,
+    css,
+    getCSS: () => css,
   }
 
   configureMedia(config)
@@ -209,21 +215,14 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   createdConfigs.set(config, true)
 
   if (process.env.NODE_ENV === 'development') {
+    if (process.env.DEBUG?.startsWith('tamagui')) {
+      // eslint-disable-next-line no-console
+      console.log('Tamagui config:', config)
+    }
     if (!globalThis['Tamagui']) {
       globalThis['Tamagui'] = Tamagui
     }
   }
 
   return config as any
-}
-
-const parseTokens = (tokens: any) => {
-  const res: any = {}
-  for (const key in tokens) {
-    res[key] = {}
-    for (const skey in tokens[key]) {
-      res[key][`$${skey}`] = tokens[key][skey]
-    }
-  }
-  return res
 }

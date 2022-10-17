@@ -8,17 +8,12 @@
   - intellisense on "lh" shorthand props and "letterSpacing"
   - kitchen sink snack
   - 1.0 blog post
-  - // TODO we should likely account for importance here to match CSS, right??
   - kitchen sink placeholder input color dark
-  - delete / clean tamagui build on watch
-  - light/dark theme change is re-rendering more than it should
   - VisuallyHidden + mediaquery + space
   - Select id="" + Label focus
   - Sheet drag up small bug native with scrollable content
   - kitchen-sink in Snack demo
-  - check animation flicker again
-    - flicker on some enterStyle animation native (hermes only)
-  - fix reanimated 2.9/3.0 __frame var
+  - reanimated bugfix runthrough
   - mismatch SSR SelectTrigger due to componentName override
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit

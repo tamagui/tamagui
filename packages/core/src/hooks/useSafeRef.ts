@@ -3,6 +3,7 @@ import { useRef } from 'react'
 
 // dai-shi 🙏
 // https://dev.to/uhyo_/a-concurrent-mode-safe-version-of-useref-1325
+// probably can live without it though to save a bit of b
 
 type Raw<T> = {
   hold: boolean
@@ -38,7 +39,9 @@ export const useSafeRef = <T>(initialValue: T) => {
     })
 
   raw.hold = true
-  Promise.resolve().then(() => (raw.hold = false))
+  Promise.resolve().then(() => {
+    raw.hold = false
+  })
   raw.cur = raw.next
 
   useIsomorphicLayoutEffect(() => {

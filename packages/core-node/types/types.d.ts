@@ -208,6 +208,7 @@ export declare type TamaguiInternalConfig<A extends GenericTokens = GenericToken
     themeConfig: any;
     fontsParsed: GenericFonts;
     getCSS: () => string;
+    css: string;
     parsed: boolean;
     inverseShorthands: Record<string, string>;
     reactNative?: any;
@@ -601,7 +602,7 @@ export declare type AnimationDriver<A extends AnimationConfig = AnimationConfig>
     isReactNativeWeb?: boolean;
     useAnimations: UseAnimationHook;
     useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>;
-    useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(val: V, getStyle: (current: any) => any) => void;
+    useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(val: V, getStyle: (current: any) => any) => any;
     useAnimatedNumberReaction: (val: UniversalAnimatedNumber<any>, onValue: (current: number) => void) => void;
     animations: A;
     View?: any;

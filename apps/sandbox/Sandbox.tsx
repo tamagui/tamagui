@@ -8,6 +8,7 @@ import '../site/app.css'
 import { TamaguiProvider } from '@tamagui/core'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
+import { Square } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -80,7 +81,7 @@ export const Sandbox = () => {
       >
         {/* <Input /> */}
 
-        {/* <Square size={100} bc="red" /> */}
+        <Square size={100} bc="red" />
 
         {/* <SliderDemo /> */}
 

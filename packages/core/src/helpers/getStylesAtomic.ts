@@ -5,7 +5,6 @@
 
 import { StyleObject, simpleHash } from '@tamagui/helpers'
 import type { TextStyle, ViewStyle } from '@tamagui/types-react-native'
-import hyphenateStyleName from 'hyphenate-style-name'
 
 import { getConfig } from '../config'
 import { TamaguiInternalConfig } from '../types'
@@ -175,6 +174,15 @@ function createDeclarationBlock(style: Style, important = false) {
     next += `${prop}:${value}${important ? ` !important` : ''};`
   }
   return `{${next}}`
+}
+
+const hcache = {}
+const toHyphenLower = (match: string) => `-${match.toLowerCase()}`
+const hyphenateStyleName = (key: string) => {
+  let val = hcache[key]
+  if (val) return val
+  hcache[key] = val = key.replace(/[A-Z]/g, toHyphenLower)
+  return val
 }
 
 const pseudoSelectorPrefixes = (() => {
