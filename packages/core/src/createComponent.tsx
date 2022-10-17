@@ -8,6 +8,7 @@ import {
   validStyles,
 } from '@tamagui/helpers'
 import { usePressable } from '@tamagui/react-native-use-pressable'
+import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import type { ViewStyle } from '@tamagui/types-react-native'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, {
@@ -39,7 +40,7 @@ import { getAllSelectors } from './helpers/insertStyleRule'
 import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { useShallowSetState } from './helpers/useShallowSetState'
-import { useElementLayout } from './hooks/useElementLayout'
+import { getRect, measureLayout, useElementLayout } from './hooks/useElementLayout'
 import { addMediaQueryListener, getInitialMediaState } from './hooks/useMedia'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
 import { getThemeManager, useTheme } from './hooks/useTheme'
@@ -563,7 +564,28 @@ export function createComponent<
       assignNativePropsToWeb(elementType, viewProps, nonTamaguiProps)
 
       if (!isRSC) {
+        usePlatformMethods(hostRef as RefObject<Element>)
+
         useElementLayout(hostRef as RefObject<Element>, onLayout as any)
+
+        useResponderEvents(hostRef, {
+          onMoveShouldSetResponder,
+          onMoveShouldSetResponderCapture,
+          onResponderEnd,
+          onResponderGrant,
+          onResponderMove,
+          onResponderReject,
+          onResponderRelease,
+          onResponderStart,
+          onResponderTerminate,
+          onResponderTerminationRequest,
+          onScrollShouldSetResponder,
+          onScrollShouldSetResponderCapture,
+          onSelectionChangeShouldSetResponder,
+          onSelectionChangeShouldSetResponderCapture,
+          onStartShouldSetResponder,
+          onStartShouldSetResponderCapture,
+        } as any)
 
         const setRef = useComposedRefs(hostRef, forwardedRef as any, setMounted)
 
@@ -963,7 +985,7 @@ export function createComponent<
               disabled: true,
             }
       )
-      console.log('pressableProps', pressableProps)
+
       if (events) {
         if (handlesPressEvents) {
           Object.assign(viewProps, pressableProps)
@@ -1593,4 +1615,24 @@ function merge(base: ViewStyle, next: ViewStyle) {
       base.transform.push(t)
     }
   }
+}
+
+// react native compat (web only)
+function usePlatformMethods(hostRef: RefObject<Element>) {
+  useIsomorphicLayoutEffect(() => {
+    const node = hostRef.current
+    if (!node) return
+    // @ts-ignore
+    node.measure = (callback) => measureLayout(node, null, callback)
+    // @ts-ignore
+    node.measureLayout = (relativeToNode, success) => measureLayout(node, relativeToNode, success)
+    // @ts-ignore
+    node.measureInWindow = (callback) => {
+      if (!node) return
+      setTimeout(() => {
+        const { height, left, top, width } = getRect(node as HTMLElement)!
+        callback(left, top, width, height)
+      }, 0)
+    }
+  }, [hostRef])
 }

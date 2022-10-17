@@ -88,7 +88,6 @@ export const SliderImpl = React.forwardRef<View, SliderImplProps>(
           return false
         }}
         onResponderGrant={composeEventHandlers(props.onResponderGrant, (event) => {
-          console.warn('okie')
           const target = event.target as HTMLElement | number
           const isStartingOnThumb = context.thumbs.has(target)
           // // Prevent browser focus behaviour because we focus a thumb manually when values change.

@@ -20,7 +20,7 @@ import {
 
 /* ------------ TYPES ------------ */
 
-type ResponderId = number
+type ResponderId = string
 
 type ActiveResponderInstance = {
   id: ResponderId
@@ -176,7 +176,7 @@ function eventListener(domEvent: any) {
         trackedTouchCount = 0
       }
     }
-    responderTouchHistoryStore.recordTouchTrack(eventType, responderEvent.nativeEvent)
+    responderTouchHistoryStore.recordTouchTrack(eventType, responderEvent.nativeEvent as any)
   }
 
   /**

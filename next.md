@@ -89,80 +89,81 @@ plan for space + display none, two pronged
 
 Inbox
 
-can optimize useMedia:
- - https://twitter.com/sebmarkbage/status/1576603375814070273
- - "some tricky with either useDeferredValue or useSyncExternalStore you can use for this"
-
+- can optimize useMedia:
+  - https://twitter.com/sebmarkbage/status/1576603375814070273
+  - "some tricky with either useDeferredValue or useSyncExternalStore you can use for this"
 - dual direction scrollview shouldn't need two nested see CodeDemoPreParsed
-  - container queries
-  - // enable shorthand for not having to switch modes to test when disabled by default
-  - native should probably avoid all optimization when it can't flatten or else pass in a __optimized attribute, otherwise its duplicating the style processing by putting __style with all the defaults + re-adding it at runtime
-  - have tamagui automatically build your components?
-  - `variantsOnly: true` on styled(), removes types for anything but variants (and className/theme etc)
-  - way to use tamagui with custom design system tokens
-    - basically map any tokens you choose to internal tamagui ones
-  - input like button
-  - allow string values alongside numbers (nativebase port)
-  - media `$light` and `$dark` for overrides
-  - built in jsx => css converter
-  - `tag` => `as` (keep fallback around as deprecated)
-    - `as={['a', { ...props }]}`
-  - breaking change notifier on upgrade
-    - takes any commit with BREAKING CHANGE and logs to console as yellow
-  - VSCode => "turn JSX into styled()"
-  - * excessively deep type instantiation styled(<Stack />)
-  - textUnderline styles not typed?
-  - // TODO compiler doesn't have logic to include children, de-opt (see EnsureFlexed for test usage)
-  - pass in SharedValue to any prop for animations
-  - use helpers-node in Webpack/babel/vite to pull config from your tamagui.json
-  - fix Label + new form inputs (native too)  
-    - native works by attaching state (mutable refs) to a FormContext
-    - web works by just listening for event and using FormData()
-  - try using react-native-web $css object support for classnames
-  - animation accept useAnimatedStyle
-  - reduce bundle size by sharing accessibility prop validity and a few others
-    - see https://discord.com/channels/909986013848412191/909986013848412194/1006909946010542221
-  - Switch gesture
-  - loadFont, loadAnimations
-  - Card should operate through context to properly sync size
-  - load tamagui itself using the loadModule / fork process to avoid all register (this is also shared logic with studio loading tamagui conf..)
-  - instead of .sheetBreakpoint add .adaptBreakpoint and <Adapt />
-    - ability to pass in custom sheet or other view
-  - `tamagui check`
-    - checks dist/ folders exist based on package.json
-      - including whether it loads properly on node
-      - checks package.json.files fields
-      - checks types/* output actually maps to every input file
- - <Icon />
-    - use theme values and size values
-    - can swap for other icon packs (use createTamagui({ icons }))
-  - <Toast />
-  - <Toggle><Group><Toggle.Item><Item /></Toggle.Item></Group></Toggle>
-  - <Tabs />
-    - needs RovingFocusGroup / check Showtimes
-  - <Accordion />
-  - <Autocomplete />
-  - <Select.SearchInput />
+- the useElementLayout and usePlatform hooks could use getBoundingClientRectAsync
+- feather icons => https://lucide.dev
+- container queries
+- // enable shorthand for not having to switch modes to test when disabled by default
+- native should probably avoid all optimization when it can't flatten or else pass in a __optimized attribute, otherwise its duplicating the style processing by putting __style with all the defaults + re-adding it at runtime
+- have tamagui automatically build your components?
+- `variantsOnly: true` on styled(), removes types for anything but variants (and className/theme etc)
+- way to use tamagui with custom design system tokens
+  - basically map any tokens you choose to internal tamagui ones
+- input like button
+- allow string values alongside numbers (nativebase port)
+- media `$light` and `$dark` for overrides
+- built in jsx => css converter
+- `tag` => `as` (keep fallback around as deprecated)
+  - `as={['a', { ...props }]}`
+- breaking change notifier on upgrade
+  - takes any commit with BREAKING CHANGE and logs to console as yellow
+- VSCode => "turn JSX into styled()"
+- * excessively deep type instantiation styled(<Stack />)
+- textUnderline styles not typed?
+- // TODO compiler doesn't have logic to include children, de-opt (see EnsureFlexed for test usage)
+- pass in SharedValue to any prop for animations
+- use helpers-node in Webpack/babel/vite to pull config from your tamagui.json
+- fix Label + new form inputs (native too)  
+  - native works by attaching state (mutable refs) to a FormContext
+  - web works by just listening for event and using FormData()
+- try using react-native-web $css object support for classnames
+- animation accept useAnimatedStyle
+- reduce bundle size by sharing accessibility prop validity and a few others
+  - see https://discord.com/channels/909986013848412191/909986013848412194/1006909946010542221
+- Switch gesture
+- loadFont, loadAnimations
+- Card should operate through context to properly sync size
+- load tamagui itself using the loadModule / fork process to avoid all register (this is also shared logic with studio loading tamagui conf..)
+- instead of .sheetBreakpoint add .adaptBreakpoint and <Adapt />
+  - ability to pass in custom sheet or other view
+- `tamagui check`
+  - checks dist/ folders exist based on package.json
+    - including whether it loads properly on node
+    - checks package.json.files fields
+    - checks types/* output actually maps to every input file
+- <Icon />
+  - use theme values and size values
+  - can swap for other icon packs (use createTamagui({ icons }))
+- <Toast />
+- <Toggle><Group><Toggle.Item><Item /></Toggle.Item></Group></Toggle>
+- <Tabs />
+  - needs RovingFocusGroup / check Showtimes
+- <Accordion />
+- <Autocomplete />
+- <Select.SearchInput />
 
 ```tsx
-  fontSize="parent"
-  // not inherit, actually matches the `size` token
+fontSize="parent"
+// not inherit, actually matches the `size` token
 ```
 
-  - maybe <UL /> <LI /> <OL />
-  - Input based on Button for icon/iconAfter
-  - cache at variant level (?)
-  - another couple passes over style system to reduce work and size
-  - sizing.mdx - rationale on size/space 
-   - (size = height of button, 1 = smallest button, 10 = largest, 4 = natural, 6 = typical largest, 2 = typical smallest)
-  - ci should include a fake publish + reinstall step, because sometimes package.json.files[] is missing new files
-  - // native doesn't support until next react-native version, need to remove eventually
-  - `blur` style prop
-  - `space` should work with media queries
-  - Text numberOfLines / context fix
-  - OmitShorthands<> + expandShorthands helper (latter exists already diff name...) (see ActiveCirlce in site)
-    - Docs/ability to configure stricted theme values (dont accept anything but tokens)
-  - add fonts section to guides
+- maybe <UL /> <LI /> <OL />
+- Input based on Button for icon/iconAfter
+- cache at variant level (?)
+- another couple passes over style system to reduce work and size
+- sizing.mdx - rationale on size/space 
+  - (size = height of button, 1 = smallest button, 10 = largest, 4 = natural, 6 = typical largest, 2 = typical smallest)
+- ci should include a fake publish + reinstall step, because sometimes package.json.files[] is missing new files
+- // native doesn't support until next react-native version, need to remove eventually
+- `blur` style prop
+- `space` should work with media queries
+- Text numberOfLines / context fix
+- OmitShorthands<> + expandShorthands helper (latter exists already diff name...) (see ActiveCirlce in site)
+  - Docs/ability to configure stricted theme values (dont accept anything but tokens)
+- add fonts section to guides
 
 ---
 

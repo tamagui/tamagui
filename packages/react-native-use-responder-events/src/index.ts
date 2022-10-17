@@ -8,22 +8,15 @@ import * as React from 'react'
 
 import * as ResponderSystem from './ResponderSystem'
 
-const emptyObject = {}
-let idCounter = 0
+export * from './utils'
 
-function useStable<T>(getInitialValue: () => T): T {
-  const ref = React.useRef<T | null>(null)
-  if (ref.current == null) {
-    ref.current = getInitialValue()
-  }
-  return ref.current
-}
+const emptyObject = {}
 
 export function useResponderEvents(
   hostRef: any,
   config: ResponderSystem.ResponderConfig = emptyObject
 ) {
-  const id = useStable(() => idCounter++)
+  const id = React.useId()
   const isAttachedRef = React.useRef(false)
 
   // This is a separate effects so it doesn't run when the config changes.
