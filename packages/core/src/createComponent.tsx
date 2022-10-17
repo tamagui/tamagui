@@ -60,12 +60,51 @@ import {
   UseAnimationProps,
 } from './types'
 import { usePressability } from './vendor/Pressability'
+import { AbsoluteFill } from './views/AbsoluteFill'
 import { Slot, mergeEvent } from './views/Slot'
 import { wrapThemeManagerContext } from './views/Theme'
 
 React['keep']
 
+/**
+ * All things that need one-time setup after createTamagui is called
+ */
 let defaultComponentState: TamaguiComponentState | null = null
+let tamaguiConfig: TamaguiInternalConfig
+let AnimatedText: any
+let AnimatedView: any
+let initialTheme: any
+
+onConfiguredOnce((conf) => {
+  tamaguiConfig = conf
+
+  if (!defaultComponentState) {
+    defaultComponentState = Object.freeze({
+      hover: false,
+      press: false,
+      pressIn: false,
+      focus: false,
+      // only used by enterStyle
+      mounted: false,
+      animation: null,
+      mediaState: getInitialMediaState(),
+    })
+  }
+
+  if (tamaguiConfig.animations) {
+    AnimatedText = tamaguiConfig.animations.Text
+    AnimatedView = tamaguiConfig.animations.View
+  }
+
+  if (!initialTheme) {
+    const next = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
+    initialTheme = proxyThemeVariables(next)
+    if (!initialTheme && process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.log(`Warning: Missing theme`)
+    }
+  }
+})
 
 export const mouseUps = new Set<Function>()
 if (typeof document !== 'undefined') {
@@ -86,8 +125,17 @@ function mergeShorthands({ defaultProps }: StaticConfigParsed, { shorthands }: T
   }
 }
 
-let initialTheme: any
-let config: TamaguiInternalConfig
+/**
+ * Only on native do we need the actual underlying View/Text
+ * On the web we avoid react-native altogether in core.
+ */
+let BaseText: any
+let BaseView: any
+if (process.env.TAMAGUI_TARGET === 'native') {
+  const native = require('react-native')
+  BaseText = native.Text || native.default.Text
+  BaseView = native.View || native.default.View
+}
 
 export function createComponent<
   ComponentPropTypes extends Object = {},
@@ -104,18 +152,120 @@ export function createComponent<
   })()
 
   const defaultComponentClassName = `is_${staticConfig.componentName}`
-  let tamaguiConfig: TamaguiInternalConfig
-  let BaseText: any
-  let BaseView: any
-  let AnimatedText: any
-  let AnimatedView: any
   const avoidClassesWhileAnimating = true
   let defaultNativeStyle: any
   let tamaguiDefaultProps: any
   let initialSplitStyles: SplitStyleResult
+  let hasConfigured = false
 
   // see onConfiguredOnce below which attaches a name then to this component
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
+    /**
+     * One-time configuration, runs once per createComponent (must be after createTamagui)
+     */
+    if (!hasConfigured) {
+      hasConfigured = true
+      // in static mode we just use these to lookup configuration
+      if (process.env.IS_STATIC === 'is_static') return
+
+      // do this to make sure shorthands don't duplicate with.. longhands
+      mergeShorthands(staticConfig, tamaguiConfig)
+
+      let defaultPropsIn = staticConfig.defaultProps || {}
+
+      // because we run createTamagui after styled() defs, have to do some work here
+      // gather defaults props one time and merge downwards
+      // find last unprocessed and process
+      const parentNames = [...(staticConfig.parentNames || []), staticConfig.componentName]
+
+      if (tamaguiConfig.defaultProps && parentNames && staticConfig.componentName) {
+        defaultPropsIn = mergeConfigDefaultProps(
+          staticConfig.componentName,
+          defaultPropsIn,
+          tamaguiConfig.defaultProps,
+          parentNames,
+          tamaguiConfig
+        )
+      }
+
+      const debug = defaultPropsIn['debug']
+
+      // remove all classNames
+      const [parentProps, parentClassNames] = mergeProps(defaultPropsIn, {}, true)
+
+      initialSplitStyles = insertSplitStyles(
+        parentProps,
+        staticConfig,
+        initialTheme,
+        {
+          mounted: true,
+          hover: false,
+          press: false,
+          pressIn: false,
+          focus: false,
+          resolveVariablesAs: 'both',
+          noClassNames: !staticConfig.acceptsClassName,
+          keepVariantsAsProps: true,
+        },
+        undefined,
+        undefined,
+        debug
+      )
+
+      // must preserve prop order
+      // leave out className because we handle that already with initialSplitStyles.classNames
+      // otherwise it confuses variant functions getting className props
+      const [defaults, defaultsClassnames] = mergeProps(
+        component.defaultProps as any,
+        initialSplitStyles.viewProps,
+        true
+        // conf.inverseShorthands
+      )
+
+      // avoid passing className props to variants
+      initialSplitStyles.classNames = {
+        ...parentClassNames,
+        ...defaultsClassnames,
+        ...initialSplitStyles.classNames,
+      }
+
+      defaultNativeStyle = {}
+
+      const validStyles = staticConfig.validStyles || stylePropsView
+
+      // split - keep variables on props to be processed using theme values at runtime (native)
+      if (!isWeb) {
+        for (const key in staticConfig.defaultProps) {
+          const val = staticConfig.defaultProps[key]
+          if (validPseudoKeys[key]) continue
+          if ((typeof val === 'string' && val[0] === '$') || !validStyles[key]) {
+            defaults[key] = val
+          } else {
+            defaultNativeStyle[key] = val
+          }
+        }
+      }
+
+      if (Object.keys(defaults).length) {
+        tamaguiDefaultProps = defaults
+      }
+
+      // add debug logs
+      if (process.env.NODE_ENV === 'development' && debug) {
+        if (process.env.IS_STATIC !== 'is_static') {
+          // eslint-disable-next-line no-console
+          console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
+            staticConfig,
+            initialSplitStyles,
+            tamaguiDefaultProps,
+            defaultNativeStyle,
+            defaults,
+            defaultPropsIn,
+          })
+        }
+      }
+    }
+
     // React inserts default props after your props for some reason...
     // order important so we do loops, you can't just spread because JS does weird things
     let props: any
@@ -136,7 +286,6 @@ export function createComponent<
       : defaultComponentClassName
 
     const forceUpdate = useForceUpdate()
-    config = config || getConfig()
     const theme = useTheme(props.theme, componentName, props, forceUpdate)
 
     const states = useServerState<TamaguiComponentState>(defaultComponentState!)
@@ -718,7 +867,7 @@ export function createComponent<
       if (process.env.NODE_ENV === 'development') {
         if (fontFamily?.startsWith(`var(`)) {
           // eslint-disable-next-line no-console
-          console.warn(
+          console.log(
             `Received variable instead of resolved name of font, this is a bug. Please report on Github.`,
             {
               fontFamily,
@@ -771,7 +920,7 @@ export function createComponent<
 
       // swap out the right family based on weight/style
       if (splitStyles.fontFamily) {
-        const faceInfo = config.fontsParsed[splitStyles.fontFamily]?.face
+        const faceInfo = tamaguiConfig.fontsParsed[splitStyles.fontFamily]?.face
         if (faceInfo) {
           const [weight, style] = (() => {
             let weight: string | undefined
@@ -1092,164 +1241,6 @@ export function createComponent<
     component.displayName = staticConfig.componentName
   }
 
-  // Once configuration is run and all components are registered
-  // get default props + className and analyze styles
-  onConfiguredOnce((conf) => {
-    if (!defaultComponentState) {
-      defaultComponentState = Object.freeze({
-        hover: false,
-        press: false,
-        pressIn: false,
-        focus: false,
-        // only used by enterStyle
-        mounted: false,
-        animation: null,
-        mediaState: getInitialMediaState(),
-      })
-    }
-
-    // in static mode we just use these to lookup configuration
-    // ... we likely want this? need to test
-    if (process.env.IS_STATIC === 'is_static') return
-
-    tamaguiConfig = conf
-
-    // do this to make sure shorthands don't duplicate with.. longhands
-    mergeShorthands(staticConfig, tamaguiConfig)
-
-    // alow configuration of base view/text
-    BaseText = tamaguiConfig.native?.Text
-    BaseView = tamaguiConfig.native?.View
-
-    AbsoluteFill = (props) => {
-      if (process.env.TAMAGUI_TARGET === 'web') {
-        return <div style={absoluteFill}></div>
-      } else {
-        return (
-          <BaseView pointerEvents="box-none" style={absoluteFill}>
-            {props.children}
-          </BaseView>
-        )
-      }
-    }
-
-    if (tamaguiConfig.animations) {
-      AnimatedText = tamaguiConfig.animations.Text
-      AnimatedView = tamaguiConfig.animations.View
-    }
-
-    if (!initialTheme) {
-      const next = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
-      initialTheme = proxyThemeVariables(next)
-      if (!initialTheme && process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.log(`Warning: Missing theme`)
-      }
-    }
-
-    // adds in user defined default props
-    config = getConfig()
-
-    let defaultPropsIn = staticConfig.defaultProps || {}
-
-    // because we run createTamagui after styled() defs, have to do some work here
-    // gather defaults props one time and merge downwards
-    // find last unprocessed and process
-    const parentNames = [...(staticConfig.parentNames || []), staticConfig.componentName]
-
-    if (config.defaultProps && parentNames && staticConfig.componentName) {
-      defaultPropsIn = mergeConfigDefaultProps(
-        staticConfig.componentName,
-        defaultPropsIn,
-        config.defaultProps,
-        parentNames,
-        conf
-      )
-    }
-
-    const debug = defaultPropsIn['debug']
-
-    if (process.env.NODE_ENV === 'development' && debug === 'break') {
-      // eslint-disable-next-line no-debugger
-      debugger
-    }
-
-    // remove all classNames
-    const [parentProps, parentClassNames] = mergeProps(defaultPropsIn, {}, true)
-
-    initialSplitStyles = insertSplitStyles(
-      parentProps,
-      staticConfig,
-      initialTheme,
-      {
-        mounted: true,
-        hover: false,
-        press: false,
-        pressIn: false,
-        focus: false,
-        resolveVariablesAs: 'both',
-        noClassNames: !staticConfig.acceptsClassName,
-        keepVariantsAsProps: true,
-      },
-      undefined,
-      undefined,
-      debug
-    )
-
-    // must preserve prop order
-    // leave out className because we handle that already with initialSplitStyles.classNames
-    // otherwise it confuses variant functions getting className props
-    const [defaults, defaultsClassnames] = mergeProps(
-      component.defaultProps as any,
-      initialSplitStyles.viewProps,
-      true
-      // conf.inverseShorthands
-    )
-
-    // avoid passing className props to variants
-    initialSplitStyles.classNames = {
-      ...parentClassNames,
-      ...defaultsClassnames,
-      ...initialSplitStyles.classNames,
-    }
-
-    defaultNativeStyle = {}
-
-    const validStyles = staticConfig.validStyles || stylePropsView
-
-    // split - keep variables on props to be processed using theme values at runtime (native)
-    if (!isWeb) {
-      for (const key in staticConfig.defaultProps) {
-        const val = staticConfig.defaultProps[key]
-        if (validPseudoKeys[key]) continue
-        if ((typeof val === 'string' && val[0] === '$') || !validStyles[key]) {
-          defaults[key] = val
-        } else {
-          defaultNativeStyle[key] = val
-        }
-      }
-    }
-
-    if (Object.keys(defaults).length) {
-      tamaguiDefaultProps = defaults
-    }
-
-    // add debug logs
-    if (process.env.NODE_ENV === 'development' && debug) {
-      if (process.env.IS_STATIC !== 'is_static') {
-        // eslint-disable-next-line no-console
-        console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
-          staticConfig,
-          initialSplitStyles,
-          tamaguiDefaultProps,
-          defaultNativeStyle,
-          defaults,
-          defaultPropsIn,
-        })
-      }
-    }
-  })
-
   let res: TamaguiComponent<ComponentPropTypes, Ref, BaseProps> = component as any
 
   if (configIn.memo) {
@@ -1295,12 +1286,14 @@ export const Spacer = createComponent<SpacerProps>({
   memo: true,
   componentName: 'Spacer',
   validStyles,
+
   defaultProps: {
     ...stackDefaultStyles,
     // avoid nesting issues
     tag: 'span',
     size: true,
   },
+
   variants: {
     size: {
       '...size': (size, { tokens }) => {
@@ -1453,21 +1446,6 @@ function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
 function isUnspaced(child: React.ReactNode) {
   // console.log('unspaced?', child, getMedia())
   return child?.['type']?.['isVisuallyHidden'] || child?.['type']?.['isUnspaced']
-}
-
-type AbsoluteFillComponent = React.FunctionComponent<React.PropsWithChildren<{}>>
-let AbsoluteFill: AbsoluteFillComponent
-
-const absoluteFill = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-} as const
-
-if (process.env.TAMAGUI_TARGET === 'web') {
-  absoluteFill['pointerEvents'] = 'none'
 }
 
 // this can be done with CSS entirely right?

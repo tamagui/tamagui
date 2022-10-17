@@ -13,7 +13,9 @@ export function normalizeValueWithProperty(value: any, property?: string): any {
     return cached
   }
   let res = value
-  if (
+  if (property && unitlessNumbers[property]) {
+    res = `${res}`
+  } else if (
     process.env.TAMAGUI_TARGET === 'web' &&
     typeof value === 'number' &&
     (property === undefined || !unitlessNumbers[property])
