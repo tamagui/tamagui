@@ -34,11 +34,10 @@ export declare class ThemeManager {
         theme: ThemeParsed | null;
         className: string | undefined;
     };
-    getClassName(name: string): string;
+    getCN(name: string): string;
     track(uuid: any, keys: Set<string>): void;
-    notifyListeners(): void;
+    notify(): void;
     onChangeTheme(cb: ThemeListener): () => void;
-    onUpdate(uuid: any, cb: Function): () => void;
 }
 export declare const ThemeManagerContext: import("react").Context<ThemeManager | null>;
 export declare const emptyManager: ThemeManager;

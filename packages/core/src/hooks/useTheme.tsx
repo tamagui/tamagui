@@ -15,7 +15,6 @@ import {
 } from '../helpers/ThemeManager'
 import { ThemeName, ThemeParsed } from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
-import { useConstant } from './useConstant'
 import { useServerRef } from './useServerHooks'
 
 export interface ThemeProps {
@@ -243,9 +242,10 @@ export const useChangeThemeEffect = (
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const forceUpdate = forceUpdateProp || useForceUpdate()
 
-  const themeManager = useConstant(() => {
+  const themeManager = useMemo(() => {
     return new ThemeManager(next.name, next.className, next.theme, parentManager, reset)
-  })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // not concurrent safe but fixes native (but breaks SSR and not needed on web (i think) so leave only on native)
   let didChange = false

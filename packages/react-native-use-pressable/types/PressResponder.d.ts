@@ -50,10 +50,10 @@ export declare class PressResponder {
     _config: PressResponderConfig;
     _eventHandlers?: EventHandlers | null;
     _isPointerTouch?: boolean;
-    _longPressDelayTimeout?: TimeoutID;
+    _longPDT?: TimeoutID;
     _longPressDispatched?: boolean;
-    _pressDelayTimeout?: TimeoutID;
-    _pressOutDelayTimeout?: TimeoutID;
+    _pDT?: TimeoutID;
+    _pODT?: TimeoutID;
     _selectionTerminated?: boolean;
     _touchActivatePosition?: {
         pageX: number;
@@ -70,7 +70,7 @@ export declare class PressResponder {
      * Returns a set of props to spread into the interactive element.
      */
     getEventHandlers(): EventHandlers;
-    _createEventHandlers(): EventHandlers;
+    _createHandlers(): EventHandlers;
     /**
      * Receives a state machine signal, performs side effects of the transition
      * and stores the new state. Validates the transition as well.
@@ -80,13 +80,13 @@ export declare class PressResponder {
      * Performs a transition between touchable states and identify any activations
      * or deactivations (and callback invocations).
      */
-    _performTransitionSideEffects(prevState: TouchState, nextState: TouchState, signal: TouchSignal, event: ResponderEvent): void;
+    _sideEff(prevState: TouchState, nextState: TouchState, signal: TouchSignal, event: ResponderEvent): void;
     _activate(event: ResponderEvent): void;
     _deactivate(event: ResponderEvent): void;
     _handleLongPress(event: ResponderEvent): void;
-    _cancelLongPressDelayTimeout(): void;
-    _cancelPressDelayTimeout(): void;
-    _cancelPressOutDelayTimeout(): void;
+    _cancelLongPDT(): void;
+    _cancelPDT(): void;
+    _cancelPODT(): void;
 }
 export {};
 //# sourceMappingURL=PressResponder.d.ts.map

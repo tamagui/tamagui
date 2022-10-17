@@ -31,7 +31,6 @@ export * from './helpers/matchMedia';
 export * from './helpers/themeable';
 export * from './helpers/withStaticProperties';
 export * from './contexts/ButtonInsideButtonContext';
-export * from './hooks/useConstant';
 export * from './hooks/useId';
 export * from './hooks/useIsTouchDevice';
 export { configureMedia, getMedia, mediaState, useMedia, useMediaPropsActive, mediaObjectToString, addMediaQueryListener, removeMediaQueryListener, mediaQueryConfig, } from './hooks/useMedia';

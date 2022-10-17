@@ -18,16 +18,16 @@ declare type TouchRecord = {
 };
 export declare type TouchHistory = {
     indexOfSingleActiveTouch: number;
-    mostRecentTimeStamp: number;
-    numberActiveTouches: number;
+    mostRecentTS: number;
+    numActive: number;
     touchBank: Array<TouchRecord>;
 };
 export declare class ResponderTouchHistoryStore {
-    _touchHistory: {
+    _hist: {
         touchBank: never[];
-        numberActiveTouches: number;
+        numActive: number;
         indexOfSingleActiveTouch: number;
-        mostRecentTimeStamp: number;
+        mostRecentTS: number;
     };
     recordTouchTrack(topLevelType: string, nativeEvent: TouchEvent): void;
     get touchHistory(): TouchHistory;
