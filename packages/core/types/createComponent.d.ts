@@ -18,19 +18,4 @@ export declare type SpacedChildrenProps = {
     separator?: React.ReactNode;
 };
 export declare function spacedChildren({ isZStack, children, space, direction, spaceFlex, separator, }: SpacedChildrenProps): React.ReactNode;
-export declare function processIDRefList(idRefList: string | Array<string>): string;
-export declare const accessibilityRoleToWebRole: {
-    adjustable: string;
-    button: string;
-    header: string;
-    image: string;
-    imagebutton: null;
-    keyboardkey: null;
-    label: null;
-    link: string;
-    none: string;
-    search: string;
-    summary: string;
-    text: null;
-};
 //# sourceMappingURL=createComponent.d.ts.map

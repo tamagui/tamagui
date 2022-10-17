@@ -27,7 +27,6 @@ import { getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { TextAncestorContext } from './contexts/TextAncestorContext'
-import { assignNativePropsToWeb } from './helpers/assignNativePropsToWeb'
 import { getReturnVariablesAs } from './helpers/createPropMapper'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import {
@@ -161,7 +160,8 @@ export function createComponent<
   // see onConfiguredOnce below which attaches a name then to this component
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
     /**
-     * One-time configuration, runs once per createComponent (must be after createTamagui)
+     * ONE TIME CONFIGURATION
+     * $uns once per createComponent (must be after createTamagui)
      */
     if (!hasConfigured) {
       hasConfigured = true
@@ -265,6 +265,9 @@ export function createComponent<
         }
       }
     }
+    /**
+     * END ONE TIME CONFIGURATION
+     */
 
     // React inserts default props after your props for some reason...
     // order important so we do loops, you can't just spread because JS does weird things
@@ -288,8 +291,13 @@ export function createComponent<
     const forceUpdate = useForceUpdate()
     const theme = useTheme(props.theme, componentName, props, forceUpdate)
 
+    /**
+     * Component state for tracking animations, pseudos
+     */
     const states = useServerState<TamaguiComponentState>(defaultComponentState!)
     const state = propsIn.forceStyle ? { ...states[0], [propsIn.forceStyle]: true } : states[0]
+    const setState = states[1]
+    const setStateShallow = useShallowSetState(setState)
 
     const shouldAvoidClasses =
       !!(props.animation && avoidClassesWhileAnimating) || !staticConfig.acceptsClassName
@@ -312,21 +320,6 @@ export function createComponent<
 
     const languageContext = isRSC ? null : useContext(FontLanguageContext)
 
-    const splitStyles = useSplitStyles(
-      props,
-      staticConfig,
-      theme,
-      splitStyleState,
-      props.asChild ? null : initialSplitStyles,
-      languageContext || undefined,
-      debugProp
-    )
-
-    const hostRef = useServerRef<TamaguiElement>(null)
-    const setState = states[1]
-    const setStateShallow = useShallowSetState(setState)
-
-    // animation setup
     const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
     const nextIsAnimated = !!(useAnimations && props.animation)
     // conditional but if ever true stays true
@@ -334,6 +327,34 @@ export function createComponent<
     if (nextIsAnimated && !state.hasAnimation) {
       setStateShallow({ hasAnimation: true })
     }
+
+    const isTaggable = !Component || typeof Component === 'string'
+    // default to tag, fallback to component (when both strings)
+    const element = isWeb ? (isTaggable ? props.tag || Component : Component) : Component
+
+    const BaseTextComponent = BaseText || element || 'span'
+    const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
+    let elementType = isText
+      ? (isAnimated ? AnimatedText : null) || BaseTextComponent
+      : (isAnimated ? AnimatedView : null) || BaseViewComponent
+
+    elementType = Component || elementType
+    const isStringElement = typeof elementType === 'string'
+
+    const splitStyles = useSplitStyles(
+      props,
+      staticConfig,
+      theme,
+      splitStyleState,
+      props.asChild ? null : initialSplitStyles,
+      languageContext || undefined,
+      elementType,
+      debugProp
+    )
+
+    const hostRef = useServerRef<TamaguiElement>(null)
+
+    // animation setup
     const isReactNativeWeb = Boolean(
       staticConfig.isReactNativeWeb || (isAnimated && tamaguiConfig.animations.isReactNativeWeb)
     )
@@ -504,7 +525,6 @@ export function createComponent<
     }
 
     const {
-      tag,
       hitSlop,
       asChild,
       children,
@@ -533,21 +553,6 @@ export function createComponent<
 
       ...nonTamaguiProps
     } = viewPropsIn
-
-    // get the right component
-    const isTaggable = !Component || typeof Component === 'string'
-
-    // default to tag, fallback to component (when both strings)
-    const element = isWeb ? (isTaggable ? tag || Component : Component) : Component
-
-    const BaseTextComponent = BaseText || element || 'span'
-    const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
-    let elementType = isText
-      ? (isAnimated ? AnimatedText : null) || BaseTextComponent
-      : (isAnimated ? AnimatedView : null) || BaseViewComponent
-
-    elementType = Component || elementType
-    const isStringElement = typeof elementType === 'string'
 
     const disabled =
       (props.accessibilityState != null && props.accessibilityState.disabled === true) ||
@@ -597,111 +602,13 @@ export function createComponent<
         onStartShouldSetResponder,
         onStartShouldSetResponderCapture,
 
-        // react-native props
-        nativeID,
-
-        // react-native-web accessibility props
-        // @ts-ignore
-        accessibilityActiveDescendant,
-        // @ts-ignore
-        accessibilityAtomic,
-        // @ts-ignore
-        accessibilityAutoComplete,
-        // @ts-ignore
-        accessibilityBusy,
-        // @ts-ignore
-        accessibilityChecked,
-        // @ts-ignore
-        accessibilityColumnCount,
-        // @ts-ignore
-        accessibilityColumnIndex,
-        // @ts-ignore
-        accessibilityColumnSpan,
-        // @ts-ignore
-        accessibilityControls,
-        // @ts-ignore
-        accessibilityCurrent,
-        // @ts-ignore
-        accessibilityDescribedBy,
-        // @ts-ignore
-        accessibilityDetails,
-        // @ts-ignore
-        accessibilityDisabled,
-        // @ts-ignore
-        accessibilityErrorMessage,
-        // @ts-ignore
-        accessibilityExpanded,
-        // @ts-ignore
-        accessibilityFlowTo,
-        // @ts-ignore
-        accessibilityHasPopup,
-        // @ts-ignore
-        accessibilityHidden,
-        // @ts-ignore
-        accessibilityInvalid,
-        // @ts-ignore
-        accessibilityKeyShortcuts,
-        // @ts-ignore
-        accessibilityLabel,
-        // @ts-ignore
-        accessibilityLabelledBy,
-        // @ts-ignore
-        accessibilityLevel,
-        // @ts-ignore
-        accessibilityLiveRegion,
-        // @ts-ignore
-        accessibilityModal,
-        // @ts-ignore
-        accessibilityMultiline,
-        // @ts-ignore
-        accessibilityMultiSelectable,
-        // @ts-ignore
-        accessibilityOrientation,
-        // @ts-ignore
-        accessibilityOwns,
-        // @ts-ignore
-        accessibilityPlaceholder,
-        // @ts-ignore
-        accessibilityPosInSet,
-        // @ts-ignore
-        accessibilityPressed,
-        // @ts-ignore
-        accessibilityReadOnly,
-        // @ts-ignore
-        accessibilityRequired,
-        // @ts-ignore
-        accessibilityRole,
-        // @ts-ignore
-        accessibilityRoleDescription,
-        // @ts-ignore
-        accessibilityRowCount,
-        // @ts-ignore
-        accessibilityRowIndex,
-        // @ts-ignore
-        accessibilityRowSpan,
-        // @ts-ignore
-        accessibilitySelected,
-        // @ts-ignore
-        accessibilitySetSize,
-        // @ts-ignore
-        accessibilitySort,
-        // @ts-ignore
-        accessibilityValueMax,
-        // @ts-ignore
-        accessibilityValueMin,
-        // @ts-ignore
-        accessibilityValueNow,
-        // @ts-ignore
-        accessibilityValueText,
-
-        // deprecated
-        accessible,
-        accessibilityState,
-        accessibilityValue,
-
         // android
         collapsable,
         focusable,
+
+        // deprecated,
+        accessible,
+        accessibilityDisabled,
 
         onLayout,
 
@@ -709,8 +616,6 @@ export function createComponent<
       } = nonTamaguiProps
 
       viewProps = webProps
-
-      assignNativePropsToWeb(elementType, viewProps, nonTamaguiProps)
 
       if (!isRSC) {
         usePlatformMethods(hostRef as RefObject<Element>)
@@ -1446,32 +1351,6 @@ function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
 function isUnspaced(child: React.ReactNode) {
   // console.log('unspaced?', child, getMedia())
   return child?.['type']?.['isVisuallyHidden'] || child?.['type']?.['isUnspaced']
-}
-
-// this can be done with CSS entirely right?
-// const shouldWrapTextAncestor = isWeb && isText && !hasTextAncestor
-// if (shouldWrapTextAncestor) {
-//   // from react-native-web
-//   content = createElement(TextAncestorContext.Provider, { value: true }, content)
-// }
-
-export function processIDRefList(idRefList: string | Array<string>): string {
-  return Array.isArray(idRefList) ? idRefList.join(' ') : idRefList
-}
-
-export const accessibilityRoleToWebRole = {
-  adjustable: 'slider',
-  button: 'button',
-  header: 'heading',
-  image: 'img',
-  imagebutton: null,
-  keyboardkey: null,
-  label: null,
-  link: 'link',
-  none: 'presentation',
-  search: 'search',
-  summary: 'region',
-  text: null,
 }
 
 function addPseudoToStyles(

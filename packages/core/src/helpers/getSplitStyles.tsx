@@ -46,12 +46,13 @@ const skipProps = {
   animateOnly: true,
   debug: true,
   componentName: true,
+  role: true,
+  tag: true,
 }
 
 // native only skips
 if (process.env.TAMAGUI_TARGET === 'native') {
   Object.assign(skipProps, {
-    tag: true,
     whiteSpace: true,
     wordWrap: true,
     textOverflow: true,
@@ -65,6 +66,57 @@ if (process.env.TAMAGUI_TARGET === 'native') {
   })
 }
 
+// web only maps accessibility to aria props
+const accessibilityDirectMap: Record<string, string> = {}
+if (process.env.TAMAGUI_TARGET === 'web') {
+  // bundle size shave
+  const items = {
+    Hidden: true,
+    ActiveDescendant: true,
+    Atomic: true,
+    AutoComplete: true,
+    Busy: true,
+    Checked: true,
+    ColumnCount: 'colcount',
+    ColumnIndex: 'colindex',
+    ColumnSpan: 'colspan',
+    Current: true,
+    Details: true,
+    ErrorMessage: true,
+    Expanded: true,
+    HasPopup: true,
+    Invalid: true,
+    Label: true,
+    Level: true,
+    Modal: true,
+    Multiline: true,
+    MultiSelectable: true,
+    Orientation: true,
+    Owns: true,
+    Placeholder: true,
+    PosInSet: true,
+    Pressed: true,
+    RoleDescription: true,
+    RowCount: true,
+    RowIndex: true,
+    RowSpan: true,
+    Selected: true,
+    SetSize: true,
+    Sort: true,
+    ValueMax: true,
+    ValueMin: true,
+    ValueNow: true,
+    ValueText: true,
+  }
+  for (const key in items) {
+    let val = items[key]
+    if (val === true) {
+      val = key.toLowerCase()
+    }
+    accessibilityDirectMap[`accessibility${key}`] = `aria-${val}`
+  }
+}
+
 type TransformNamespaceKey = 'transform' | PseudoPropKeys | MediaQueryKey
 
 let conf: TamaguiInternalConfig
@@ -75,7 +127,7 @@ type SplitStylesAndProps = {
   style: ViewStyle
   classNames: ClassNamesObject
   rulesToInsert: RulesToInsert
-  viewProps: StackProps
+  viewProps: StackProps & Record<string, any>
   fontFamily: string | undefined
   mediaKeys: string[]
 }
@@ -87,6 +139,8 @@ type StyleSplitter = (
   state: SplitStyleState,
   parentSplitStyles?: SplitStylesAndProps | null,
   languageContext?: LanguageContextType,
+  // web-only
+  elementType?: string,
   debug?: DebugProp
 ) => SplitStylesAndProps
 
@@ -98,6 +152,21 @@ export const pseudoCNInverse = {
   hover: 'hoverStyle',
   focus: 'focusStyle',
   press: 'pressStyle',
+}
+
+const accessibilityRoleToWebRole = {
+  adjustable: 'slider',
+  button: 'button',
+  header: 'heading',
+  image: 'img',
+  imagebutton: null,
+  keyboardkey: null,
+  label: null,
+  link: 'link',
+  none: 'presentation',
+  search: 'search',
+  summary: 'region',
+  text: null,
 }
 
 // loop props backwards
@@ -114,12 +183,13 @@ export const getSplitStyles: StyleSplitter = (
   state,
   parentSplitStyles,
   languageContext,
+  elementType,
   debug
 ) => {
   conf = conf || getConfig()
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const mediaKeys: string[] = []
-  const viewProps: StackProps = {}
+  const viewProps: SplitStylesAndProps['viewProps'] = {}
   const pseudos: PseudoStyles = {}
   const medias: Record<MediaQueryKey, ViewStyle> = {}
   const mediaState = state.mediaState || globalMediaState
@@ -182,6 +252,98 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
+      /**
+       * Copying in the accessibility/prop handling from react-native-web here
+       * Keeps it in a single loop, avoids dup de-structuring to avoid bundle size
+       */
+      if (keyInit === 'disabled' && valInit === true) {
+        usedKeys.add(keyInit)
+        viewProps['aria-disabled'] = true
+        // Enhance with native semantics
+        if (
+          elementType === 'button' ||
+          elementType === 'form' ||
+          elementType === 'input' ||
+          elementType === 'select' ||
+          elementType === 'textarea'
+        ) {
+          viewProps.disabled = true
+        }
+        continue
+      }
+
+      if (accessibilityDirectMap[keyInit]) {
+        viewProps[accessibilityDirectMap[keyInit]] = valInit
+        usedKeys.add(keyInit)
+        continue
+      }
+
+      let didUseKeyInit = true
+      switch (keyInit) {
+        case 'nativeID': {
+          viewProps.id = valInit
+          break
+        }
+        case 'accessibilityRole': {
+          if (valInit === 'none') {
+            viewProps.role = 'presentation'
+          } else {
+            viewProps.role = accessibilityRoleToWebRole[valInit] || valInit
+          }
+          break
+        }
+        case 'accessibilityControls': {
+          viewProps['aria-controls'] = processIDRefList(valInit)
+          break
+        }
+        case 'accessibilityDescribedBy': {
+          viewProps['aria-describedby'] = processIDRefList(valInit)
+          break
+        }
+        case 'accessibilityFlowTo': {
+          viewProps['aria-flowto'] = processIDRefList(valInit)
+          break
+        }
+        case 'accessibilityLabelledBy': {
+          viewProps['aria-labelledby'] = processIDRefList(valInit)
+          break
+        }
+        case 'accessibilityKeyShortcuts': {
+          if (Array.isArray(valInit)) {
+            viewProps['aria-keyshortcuts'] = valInit.join(' ')
+          }
+          break
+        }
+        case 'accessibilityLiveRegion': {
+          viewProps['aria-live'] = valInit === 'none' ? 'off' : valInit
+          break
+        }
+        case 'accessibilityReadOnly': {
+          viewProps['aria-readonly'] = valInit
+          // Enhance with native semantics
+          if (elementType === 'input' || elementType === 'select' || elementType === 'textarea') {
+            viewProps.readOnly = true
+          }
+          break
+        }
+        case 'accessibilityRequired': {
+          viewProps['aria-required'] = valInit
+          // Enhance with native semantics
+          if (elementType === 'input' || elementType === 'select' || elementType === 'textarea') {
+            viewProps.required = true
+          }
+          break
+        }
+        default: {
+          didUseKeyInit = false
+        }
+      }
+
+      if (didUseKeyInit) {
+        usedKeys.add(keyInit)
+        continue
+      }
+
       if (keyInit === 'className') {
         let nonTamaguis = ''
         if (!valInit) continue
@@ -709,4 +871,8 @@ function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: Partia
     updateRules(styleObject.identifier, styleObject.rules)
     rulesToInsert.push(styleObject)
   }
+}
+
+function processIDRefList(idRefList: string | Array<string>): string {
+  return Array.isArray(idRefList) ? idRefList.join(' ') : idRefList
 }
