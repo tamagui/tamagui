@@ -1,33 +1,30 @@
 {
-  "name": "@tamagui/animations-css",
+  "name": "@tamagui/use-presence",
   "version": "1.0.1-beta.193",
-  "source": "src/index.ts",
-  "sideEffects": false,
-  "license": "MIT",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.193",
-    "@tamagui/use-presence": "^1.0.1-beta.193"
-  },
-  "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.193"
-  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
+    "lint": "eslint",
+    "lint:fix": "yarn lint --fix",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.193",
+    "react": "*"
+  },
+  "peerDependencies": {
+    "react": "*"
+  },
   "publishConfig": {
     "access": "public"
-  },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  }
 }

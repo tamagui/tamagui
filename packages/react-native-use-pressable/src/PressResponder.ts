@@ -52,79 +52,77 @@ enum States {
   ERROR,
   LONG_PRESS_DETECTED,
   NOT_RESPONDER,
-  RESPONDER_ACTIVE_LONG_PRESS_START,
-  RESPONDER_ACTIVE_PRESS_START,
-  RESPONDER_INACTIVE_PRESS_START,
-  RESPONDER_GRANT,
-  RESPONDER_RELEASE,
-  RESPONDER_TERMINATED,
+  R_ACTIVE_LONG_PRESS_START,
+  R_ACTIVE_PRESS_START,
+  R_INACTIVE_PRESS_START,
+  R_GRANT,
+  R_RELEASE,
+  R_TERMINATED,
 }
 
 type TouchState =
   | States.NOT_RESPONDER
-  | States.RESPONDER_INACTIVE_PRESS_START
-  | States.RESPONDER_ACTIVE_PRESS_START
-  | States.RESPONDER_ACTIVE_LONG_PRESS_START
+  | States.R_INACTIVE_PRESS_START
+  | States.R_ACTIVE_PRESS_START
+  | States.R_ACTIVE_LONG_PRESS_START
   | States.ERROR
 
 type TouchSignal =
   | States.DELAY
-  | States.RESPONDER_GRANT
-  | States.RESPONDER_RELEASE
-  | States.RESPONDER_TERMINATED
+  | States.R_GRANT
+  | States.R_RELEASE
+  | States.R_TERMINATED
   | States.LONG_PRESS_DETECTED
 
 const Transitions = Object.freeze({
   [States.NOT_RESPONDER]: {
     [States.DELAY]: States.ERROR,
-    [States.RESPONDER_GRANT]: States.RESPONDER_INACTIVE_PRESS_START,
-    [States.RESPONDER_RELEASE]: States.ERROR,
-    [States.RESPONDER_TERMINATED]: States.ERROR,
+    [States.R_GRANT]: States.R_INACTIVE_PRESS_START,
+    [States.R_RELEASE]: States.ERROR,
+    [States.R_TERMINATED]: States.ERROR,
     [States.LONG_PRESS_DETECTED]: States.ERROR,
   },
-  [States.RESPONDER_INACTIVE_PRESS_START]: {
-    [States.DELAY]: States.RESPONDER_ACTIVE_PRESS_START,
-    [States.RESPONDER_GRANT]: States.ERROR,
-    [States.RESPONDER_RELEASE]: States.NOT_RESPONDER,
-    [States.RESPONDER_TERMINATED]: States.NOT_RESPONDER,
+  [States.R_INACTIVE_PRESS_START]: {
+    [States.DELAY]: States.R_ACTIVE_PRESS_START,
+    [States.R_GRANT]: States.ERROR,
+    [States.R_RELEASE]: States.NOT_RESPONDER,
+    [States.R_TERMINATED]: States.NOT_RESPONDER,
     [States.LONG_PRESS_DETECTED]: States.ERROR,
   },
-  [States.RESPONDER_ACTIVE_PRESS_START]: {
+  [States.R_ACTIVE_PRESS_START]: {
     [States.DELAY]: States.ERROR,
-    [States.RESPONDER_GRANT]: States.ERROR,
-    [States.RESPONDER_RELEASE]: States.NOT_RESPONDER,
-    [States.RESPONDER_TERMINATED]: States.NOT_RESPONDER,
-    [States.LONG_PRESS_DETECTED]: States.RESPONDER_ACTIVE_LONG_PRESS_START,
+    [States.R_GRANT]: States.ERROR,
+    [States.R_RELEASE]: States.NOT_RESPONDER,
+    [States.R_TERMINATED]: States.NOT_RESPONDER,
+    [States.LONG_PRESS_DETECTED]: States.R_ACTIVE_LONG_PRESS_START,
   },
-  [States.RESPONDER_ACTIVE_LONG_PRESS_START]: {
+  [States.R_ACTIVE_LONG_PRESS_START]: {
     [States.DELAY]: States.ERROR,
-    [States.RESPONDER_GRANT]: States.ERROR,
-    [States.RESPONDER_RELEASE]: States.NOT_RESPONDER,
-    [States.RESPONDER_TERMINATED]: States.NOT_RESPONDER,
-    [States.LONG_PRESS_DETECTED]: States.RESPONDER_ACTIVE_LONG_PRESS_START,
+    [States.R_GRANT]: States.ERROR,
+    [States.R_RELEASE]: States.NOT_RESPONDER,
+    [States.R_TERMINATED]: States.NOT_RESPONDER,
+    [States.LONG_PRESS_DETECTED]: States.R_ACTIVE_LONG_PRESS_START,
   },
   [States.ERROR]: {
     [States.DELAY]: States.NOT_RESPONDER,
-    [States.RESPONDER_GRANT]: States.RESPONDER_INACTIVE_PRESS_START,
-    [States.RESPONDER_RELEASE]: States.NOT_RESPONDER,
-    [States.RESPONDER_TERMINATED]: States.NOT_RESPONDER,
+    [States.R_GRANT]: States.R_INACTIVE_PRESS_START,
+    [States.R_RELEASE]: States.NOT_RESPONDER,
+    [States.R_TERMINATED]: States.NOT_RESPONDER,
     [States.LONG_PRESS_DETECTED]: States.NOT_RESPONDER,
   },
 })
 
 const isActiveSignal = (signal) =>
-  signal === States.RESPONDER_ACTIVE_PRESS_START ||
-  signal === States.RESPONDER_ACTIVE_LONG_PRESS_START
+  signal === States.R_ACTIVE_PRESS_START || signal === States.R_ACTIVE_LONG_PRESS_START
 
 const isButtonRole = (element) => element.getAttribute('role') === 'button'
 
 const isPressStartSignal = (signal) =>
-  signal === States.RESPONDER_INACTIVE_PRESS_START ||
-  signal === States.RESPONDER_ACTIVE_PRESS_START ||
-  signal === States.RESPONDER_ACTIVE_LONG_PRESS_START
+  signal === States.R_INACTIVE_PRESS_START ||
+  signal === States.R_ACTIVE_PRESS_START ||
+  signal === States.R_ACTIVE_LONG_PRESS_START
 
-const isTerminalSignal = (signal) =>
-  signal === States.RESPONDER_TERMINATED || signal === States.RESPONDER_RELEASE
+const isTerminalSignal = (signal) => signal === States.R_TERMINATED || signal === States.R_RELEASE
 
 const isValidKeyPress = (event) => {
   const { key, target } = event
@@ -147,8 +145,8 @@ export class PressResponder {
   _longPressDispatched?: boolean = false
   _pDT?: TimeoutID = null
   _pODT?: TimeoutID = null
-  _selectionTerminated?: boolean
-  _touchActivatePosition?: {
+  _selTerm?: boolean
+  _touchActPos?: {
     pageX: number
     pageY: number
   } | null
@@ -188,11 +186,11 @@ export class PressResponder {
       this._cancelPODT()
 
       this._longPressDispatched = false
-      this._selectionTerminated = false
+      this._selTerm = false
       this._touchState = States.NOT_RESPONDER
       this._isPointerTouch = event.nativeEvent.type === 'touchstart'
 
-      this._receiveSignal(States.RESPONDER_GRANT, event)
+      this._receiveSignal(States.R_GRANT, event)
 
       const delayPressStart = normalizeDelay(
         // @ts-ignore
@@ -215,12 +213,12 @@ export class PressResponder {
         DEFAULT_LONG_PRESS_DELAY_MS
       )
       this._longPDT = setTimeout(() => {
-        this._handleLongPress(event)
+        this._hndlLngPrs(event)
       }, delayLongPress + delayPressStart)
     }
 
     const end = (event: ResponderEvent): void => {
-      this._receiveSignal(States.RESPONDER_RELEASE, event)
+      this._receiveSignal(States.R_RELEASE, event)
     }
 
     const keyupHandler = (event: KeyboardEvent) => {
@@ -288,9 +286,9 @@ export class PressResponder {
           this._config.onPressMove(event)
         }
         const touch = getTouchFromResponderEvent(event)
-        if (this._touchActivatePosition != null) {
-          const deltaX = this._touchActivatePosition.pageX - touch.pageX
-          const deltaY = this._touchActivatePosition.pageY - touch.pageY
+        if (this._touchActPos != null) {
+          const deltaX = this._touchActPos.pageX - touch.pageX
+          const deltaY = this._touchActPos.pageY - touch.pageY
           if (Math.hypot(deltaX, deltaY) > 10) {
             this._cancelLongPDT()
           }
@@ -301,9 +299,9 @@ export class PressResponder {
 
       onResponderTerminate: (event) => {
         if (event.nativeEvent.type === 'selectionchange') {
-          this._selectionTerminated = true
+          this._selTerm = true
         }
-        this._receiveSignal(States.RESPONDER_TERMINATED, event)
+        this._receiveSignal(States.R_TERMINATED, event)
       },
 
       onResponderTerminationRequest: (event): boolean => {
@@ -339,7 +337,7 @@ export class PressResponder {
           // If the responder terminated because text was selected during the gesture,
           // cancel the default click behavior.
           event.stopPropagation()
-          if (this._longPressDispatched || this._selectionTerminated) {
+          if (this._longPressDispatched || this._selTerm) {
             event.preventDefault()
           } else if (onPress != null && event.altKey === false) {
             onPress(event)
@@ -379,7 +377,7 @@ export class PressResponder {
     if (Transitions[prevState] != null) {
       nextState = Transitions[prevState][signal] as TouchState
     }
-    if (this._touchState === States.NOT_RESPONDER && signal === States.RESPONDER_RELEASE) {
+    if (this._touchState === States.NOT_RESPONDER && signal === States.R_RELEASE) {
       return
     }
     if (nextState == null || nextState === States.ERROR) {
@@ -408,7 +406,7 @@ export class PressResponder {
       setTimeout(() => {
         this._isPointerTouch = false
       }, 0)
-      this._touchActivatePosition = null
+      this._touchActPos = null
       this._cancelLongPDT()
     }
 
@@ -431,11 +429,11 @@ export class PressResponder {
       this._deactivate(event)
     }
 
-    if (isPressStartSignal(prevState) && signal === States.RESPONDER_RELEASE) {
+    if (isPressStartSignal(prevState) && signal === States.R_RELEASE) {
       const { onLongPress, onPress } = this._config
       if (onPress != null) {
         const isPressCanceledByLongPress =
-          onLongPress != null && prevState === States.RESPONDER_ACTIVE_LONG_PRESS_START
+          onLongPress != null && prevState === States.R_ACTIVE_LONG_PRESS_START
         if (!isPressCanceledByLongPress) {
           // If we never activated (due to delays), activate and deactivate now.
           if (!isNextActive && !isPrevActive) {
@@ -452,7 +450,7 @@ export class PressResponder {
   _activate(event: ResponderEvent): void {
     const { onPressChange, onPressStart } = this._config
     const touch = getTouchFromResponderEvent(event)
-    this._touchActivatePosition = {
+    this._touchActPos = {
       pageX: touch.pageX,
       pageY: touch.pageY,
     }
@@ -484,10 +482,10 @@ export class PressResponder {
     }
   }
 
-  _handleLongPress(event: ResponderEvent): void {
+  _hndlLngPrs(event: ResponderEvent): void {
     if (
-      this._touchState === States.RESPONDER_ACTIVE_PRESS_START ||
-      this._touchState === States.RESPONDER_ACTIVE_LONG_PRESS_START
+      this._touchState === States.R_ACTIVE_PRESS_START ||
+      this._touchState === States.R_ACTIVE_LONG_PRESS_START
     ) {
       this._receiveSignal(States.LONG_PRESS_DETECTED, event)
     }

@@ -36,15 +36,15 @@ declare enum States {
     ERROR = 1,
     LONG_PRESS_DETECTED = 2,
     NOT_RESPONDER = 3,
-    RESPONDER_ACTIVE_LONG_PRESS_START = 4,
-    RESPONDER_ACTIVE_PRESS_START = 5,
-    RESPONDER_INACTIVE_PRESS_START = 6,
-    RESPONDER_GRANT = 7,
-    RESPONDER_RELEASE = 8,
-    RESPONDER_TERMINATED = 9
+    R_ACTIVE_LONG_PRESS_START = 4,
+    R_ACTIVE_PRESS_START = 5,
+    R_INACTIVE_PRESS_START = 6,
+    R_GRANT = 7,
+    R_RELEASE = 8,
+    R_TERMINATED = 9
 }
-declare type TouchState = States.NOT_RESPONDER | States.RESPONDER_INACTIVE_PRESS_START | States.RESPONDER_ACTIVE_PRESS_START | States.RESPONDER_ACTIVE_LONG_PRESS_START | States.ERROR;
-declare type TouchSignal = States.DELAY | States.RESPONDER_GRANT | States.RESPONDER_RELEASE | States.RESPONDER_TERMINATED | States.LONG_PRESS_DETECTED;
+declare type TouchState = States.NOT_RESPONDER | States.R_INACTIVE_PRESS_START | States.R_ACTIVE_PRESS_START | States.R_ACTIVE_LONG_PRESS_START | States.ERROR;
+declare type TouchSignal = States.DELAY | States.R_GRANT | States.R_RELEASE | States.R_TERMINATED | States.LONG_PRESS_DETECTED;
 declare type TimeoutID = NodeJS.Timer | null;
 export declare class PressResponder {
     _config: PressResponderConfig;
@@ -54,8 +54,8 @@ export declare class PressResponder {
     _longPressDispatched?: boolean;
     _pDT?: TimeoutID;
     _pODT?: TimeoutID;
-    _selectionTerminated?: boolean;
-    _touchActivatePosition?: {
+    _selTerm?: boolean;
+    _touchActPos?: {
         pageX: number;
         pageY: number;
     } | null;
@@ -83,7 +83,7 @@ export declare class PressResponder {
     _sideEff(prevState: TouchState, nextState: TouchState, signal: TouchSignal, event: ResponderEvent): void;
     _activate(event: ResponderEvent): void;
     _deactivate(event: ResponderEvent): void;
-    _handleLongPress(event: ResponderEvent): void;
+    _hndlLngPrs(event: ResponderEvent): void;
     _cancelLongPDT(): void;
     _cancelPDT(): void;
     _cancelPODT(): void;

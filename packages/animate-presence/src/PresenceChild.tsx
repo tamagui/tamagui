@@ -1,7 +1,7 @@
+import { PresenceContext, PresenceContextProps } from '@tamagui/use-presence'
 import * as React from 'react'
 import { useId } from 'react'
 
-import { PresenceContext, PresenceContextProps } from './PresenceContext'
 import { VariantLabels } from './types'
 
 interface PresenceChildProps {
@@ -24,7 +24,7 @@ export const PresenceChild = ({
   enterVariant,
   presenceAffectsLayout,
 }: PresenceChildProps) => {
-  const presenceChildren = React.useMemo(() => newChildrenMap, [])
+  const presenceChildren = React.useMemo(newChildrenMap, [])
   const id = useId() || ''
 
   const context = React.useMemo(
