@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/react-native-use-responder",
+  "name": "@tamagui/react-native-use-responder-events",
   "version": "1.0.1-beta.193",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
