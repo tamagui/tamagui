@@ -1,5 +1,5 @@
 import { config } from '@tamagui/config-base'
-import { createFont, createTamagui } from '@tamagui/core'
+import { createFont, createTamagui } from 'tamagui'
 
 const body_cn = createFont({
   family: 'noto_cn',
@@ -38,7 +38,7 @@ export type Conf = typeof tamaConf
 
 // type test = Conf['shorthands']['b2b2']
 
-declare module '@tamagui/core' {
+declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
 }
 

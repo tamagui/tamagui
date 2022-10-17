@@ -1,6 +1,6 @@
 import { AnimationDriver, Stack, Text, useIsomorphicLayoutEffect } from '@tamagui/core'
 import { PresenceContext, usePresence } from '@tamagui/use-presence'
-import { useContext, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import { useContext, useMemo, useRef } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
@@ -70,6 +70,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       }
 
       if (process.env.NODE_ENV === 'development' && props['debug']) {
+        // eslint-disable-next-line no-console
         console.log('CSS animation', style, { isEntering, isExiting })
       }
 

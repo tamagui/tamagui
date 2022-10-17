@@ -363,6 +363,7 @@ export type TamaguiInternalConfig<
     themeConfig: any
     fontsParsed: GenericFonts
     getCSS: () => string
+    css: string
     parsed: boolean
     inverseShorthands: Record<string, string>
     reactNative?: any
@@ -1284,7 +1285,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(
     val: V,
     getStyle: (current: any) => any
-  ) => void
+  ) => any
   useAnimatedNumberReaction: (
     val: UniversalAnimatedNumber<any>,
     onValue: (current: number) => void

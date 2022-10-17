@@ -234,7 +234,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
     if (!firstTheme || typeof firstTheme !== 'object') {
       console.error(`Missing theme, an error occurred when importing your config`)
-      console.log(`Got themes:`, tamaguiConfig.themes)
+      console.log(`Got config:`, tamaguiConfig)
       console.log(`Looking for theme:`, firstThemeName)
       process.exit(0)
     }

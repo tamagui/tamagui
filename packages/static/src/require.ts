@@ -1,4 +1,4 @@
-import { sep } from 'path'
+import { relative, sep } from 'path'
 
 import { SHOULD_DEBUG } from './constants.js'
 
@@ -86,11 +86,19 @@ export function registerRequire(bubbleErrors?: boolean) {
 
       // eslint-disable-next-line no-console
       console.error(
-        `Tamagui failed requiring ${path} from your tamagui.config.ts file, ignoring\n`,
-        err.message,
-        err.stack
+        `Tamagui failed loading the pre-built tamagui.config.ts
+
+${err.message}
+${err.stack}
+
+  You can see if it loads in the node repl:
+
+  require("./${relative(process.cwd(), path)}").default
+
+`
       )
-      const max = process.env.TAMAGUI_MAX_ERRORS ? +process.env.TAMAGUI_MAX_ERRORS : 200
+
+      const max = process.env.TAMAGUI_MAX_ERRORS ? +process.env.TAMAGUI_MAX_ERRORS : 50
       if (++tries > max) {
         // eslint-disable-next-line no-console
         console.log(
@@ -99,8 +107,8 @@ export function registerRequire(bubbleErrors?: boolean) {
         // avoid infinite loops
         process.exit(1)
       }
-      // return proxyWorm by default
-      return proxyWorm
+
+      return null
     }
   }
 

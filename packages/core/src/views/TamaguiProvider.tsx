@@ -3,7 +3,6 @@ import * as React from 'react'
 
 import { ButtonInsideButtonContext } from '../contexts/ButtonInsideButtonContext'
 import { TextAncestorContext } from '../contexts/TextAncestorContext'
-import { useMediaQueryListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
 
@@ -19,10 +18,6 @@ export function TamaguiProvider({
         {children}
       </span>
     )
-  }
-
-  if (!isServer) {
-    useMediaQueryListeners(config)
   }
 
   if (isClient) {
