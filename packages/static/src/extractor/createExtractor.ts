@@ -1918,6 +1918,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                 },
                 undefined,
                 undefined,
+                undefined,
                 debugPropValue
               )
 

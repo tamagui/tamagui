@@ -11,13 +11,13 @@ declare type SplitStylesAndProps = {
     style: ViewStyle;
     classNames: ClassNamesObject;
     rulesToInsert: RulesToInsert;
-    viewProps: StackProps;
+    viewProps: StackProps & Record<string, any>;
     fontFamily: string | undefined;
     mediaKeys: string[];
 };
 declare type StyleSplitter = (props: {
     [key: string]: any;
-}, staticConfig: StaticConfigParsed, theme: ThemeParsed, state: SplitStyleState, parentSplitStyles?: SplitStylesAndProps | null, languageContext?: LanguageContextType, debug?: DebugProp) => SplitStylesAndProps;
+}, staticConfig: StaticConfigParsed, theme: ThemeParsed, state: SplitStyleState, parentSplitStyles?: SplitStylesAndProps | null, languageContext?: LanguageContextType, elementType?: string, debug?: DebugProp) => SplitStylesAndProps;
 export declare const PROP_SPLIT = "-";
 export declare const pseudoCNInverse: {
     hover: string;

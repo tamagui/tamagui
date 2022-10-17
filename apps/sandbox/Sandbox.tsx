@@ -4,21 +4,10 @@ import '@tamagui/polyfill-dev'
 
 import '../site/app.css'
 
-import { SliderDemo, SwitchDemo } from '@tamagui/demos'
+// import { AppRegistry, useColorScheme } from 'react-native'
+import { TamaguiProvider } from '@tamagui/core'
+// import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
-import { AppRegistry, useColorScheme } from 'react-native'
-import {
-  Button,
-  FontLanguage,
-  Input,
-  ListItem,
-  Paragraph,
-  Sheet,
-  Square,
-  TamaguiProvider,
-  YStack,
-  useMedia,
-} from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -27,14 +16,14 @@ if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
 
-AppRegistry.registerComponent('Main', () => Sandbox)
+// AppRegistry.registerComponent('Main', () => Sandbox)
 
 export const Sandbox = () => {
-  const scheme = useColorScheme()
-  const [theme, setTheme] = useState(scheme as any)
+  // const scheme = useColorScheme()
+  const [theme, setTheme] = useState('light')
 
   // @ts-ignore
-  const { getStyleElement } = AppRegistry.getApplication('Main')
+  // const { getStyleElement } = AppRegistry.getApplication('Main')
 
   // const val = useSharedValue(0)
   // const style = useAnimatedStyle(() => ({
@@ -55,7 +44,7 @@ export const Sandbox = () => {
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
       <link href="/fonts/inter.css" rel="stylesheet" />
-      {getStyleElement()}
+      {/* {getStyleElement()} */}
 
       <button
         style={{
@@ -93,7 +82,7 @@ export const Sandbox = () => {
 
         {/* <Square size={100} bc="red" /> */}
 
-        <SliderDemo />
+        {/* <SliderDemo /> */}
 
         {/* <TestFontTokensInVariants type="H1" size="large">
           Hello world
@@ -141,52 +130,52 @@ export const Sandbox = () => {
   )
 }
 
-function Test() {
-  return null
-}
+// function Test() {
+//   return null
+// }
 
-function FontLanguageDemo() {
-  return (
-    <FontLanguage heading="default" body="cn">
-      <Paragraph fos="$4" fontFamily="$body">
-        hello 🇨🇳
-      </Paragraph>
-      <FontLanguage body="default">
-        <Paragraph fos="$4" fontFamily="$body">
-          hi again
-        </Paragraph>
-      </FontLanguage>
-    </FontLanguage>
-  )
-}
+// function FontLanguageDemo() {
+//   return (
+//     <FontLanguage heading="default" body="cn">
+//       <Paragraph fos="$4" fontFamily="$body">
+//         hello 🇨🇳
+//       </Paragraph>
+//       <FontLanguage body="default">
+//         <Paragraph fos="$4" fontFamily="$body">
+//           hi again
+//         </Paragraph>
+//       </FontLanguage>
+//     </FontLanguage>
+//   )
+// }
 
-function SheetDemo2() {
-  const [open, setOpen] = useState(false)
-  const [position, setPosition] = useState(0)
-  return (
-    <>
-      <Button size="$6" circular onPress={() => setOpen((x) => !x)} />
-      <Sheet
-        modal
-        open={open}
-        onOpenChange={setOpen}
-        snapPoints={[80]}
-        position={position}
-        onPositionChange={setPosition}
-        dismissOnSnapToBottom
-      >
-        <Sheet.Overlay />
-        <Sheet.Frame ai="center" jc="center">
-          <Sheet.Handle />
-          <Button
-            size="$6"
-            circular
-            onPress={() => {
-              setOpen(false)
-            }}
-          />
-        </Sheet.Frame>
-      </Sheet>
-    </>
-  )
-}
+// function SheetDemo2() {
+//   const [open, setOpen] = useState(false)
+//   const [position, setPosition] = useState(0)
+//   return (
+//     <>
+//       <Button size="$6" circular onPress={() => setOpen((x) => !x)} />
+//       <Sheet
+//         modal
+//         open={open}
+//         onOpenChange={setOpen}
+//         snapPoints={[80]}
+//         position={position}
+//         onPositionChange={setPosition}
+//         dismissOnSnapToBottom
+//       >
+//         <Sheet.Overlay />
+//         <Sheet.Frame ai="center" jc="center">
+//           <Sheet.Handle />
+//           <Button
+//             size="$6"
+//             circular
+//             onPress={() => {
+//               setOpen(false)
+//             }}
+//           />
+//         </Sheet.Frame>
+//       </Sheet>
+//     </>
+//   )
+// }
