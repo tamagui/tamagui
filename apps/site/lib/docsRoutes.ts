@@ -118,7 +118,10 @@ export const docsRoutes = [
   },
 
   {
-    pages: [{ title: 'Feather Icons', route: '/docs/components/feather-icons' }],
+    pages: [
+      { title: 'Lucide Icons', route: '/docs/components/lucide-icons' },
+      { title: 'Feather Icons', route: '/docs/components/feather-icons' },
+    ],
   },
 
   {

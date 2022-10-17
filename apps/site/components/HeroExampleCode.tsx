@@ -1,4 +1,4 @@
-import { ChevronRight, FastForward } from '@tamagui/feather-icons'
+import { ChevronRight, FastForward } from '@tamagui/lucide-icons'
 import Link from 'next/link'
 import React from 'react'
 import { memo, useState } from 'react'

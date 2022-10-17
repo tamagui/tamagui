@@ -1,4 +1,4 @@
-import { Link } from '@tamagui/feather-icons'
+import { Link } from '@tamagui/lucide-icons'
 import NextLink from 'next/link'
 import NextRouter from 'next/router'
 import rangeParser from 'parse-numeric-range'

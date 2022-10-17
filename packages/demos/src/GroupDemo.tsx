@@ -1,4 +1,4 @@
-import { Activity, Airplay } from '@tamagui/feather-icons'
+import { Activity, Airplay } from '@tamagui/lucide-icons'
 import { Button, ListItem, Separator, XGroup, YGroup, YStack } from 'tamagui'
 
 export function GroupDemo() {

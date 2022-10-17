@@ -1,4 +1,4 @@
-import { Monitor, Moon, Sun } from '@tamagui/feather-icons'
+import { Monitor, Moon, Sun } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
 import React from 'react'
 import { useState } from 'react'

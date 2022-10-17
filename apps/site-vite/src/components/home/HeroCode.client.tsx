@@ -1,4 +1,3 @@
-import { FastForward } from '@tamagui/feather-icons'
 import React from 'react'
 import { memo, useState } from 'react'
 import { Button, Paragraph, XGroup, XStack, YStack } from 'tamagui'

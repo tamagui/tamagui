@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from '@tamagui/feather-icons'
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from '@tamagui/lucide-icons'
 import React from 'react'
 import { Button, Input, Label, Popover, PopoverProps, XStack, YStack } from 'tamagui'
 
