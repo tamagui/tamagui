@@ -1,5 +1,4 @@
-import { useId } from '@tamagui/core'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useId } from 'react'
 
 import { PresenceContext, PresenceContextProps } from './PresenceContext'
 

@@ -168,7 +168,6 @@ export {
   themeable,
   withStaticProperties,
   // hooks
-  useConstant,
   useGet,
   useEvent,
   useDefaultThemeName,

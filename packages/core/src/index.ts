@@ -37,7 +37,6 @@ export * from './helpers/withStaticProperties'
 
 export * from './contexts/ButtonInsideButtonContext'
 
-export * from './hooks/useConstant'
 export * from './hooks/useId'
 export * from './hooks/useIsTouchDevice'
 

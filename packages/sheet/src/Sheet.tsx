@@ -10,7 +10,6 @@ import {
   mergeEvent,
   styled,
   themeable,
-  useConstant,
   useEvent,
   useIsomorphicLayoutEffect,
   useThemeName,
@@ -19,6 +18,7 @@ import {
 import { Portal } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { XStack, XStackProps, YStack, YStackProps } from '@tamagui/stacks'
+import { useConstant } from '@tamagui/use-constant'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, {
   FunctionComponent,

@@ -101,7 +101,7 @@ export class ThemeManager {
     this.name = name || ''
     this.theme = theme
     if (notify) {
-      this.notifyListeners()
+      this.notify()
     }
     return true
   }
@@ -120,7 +120,7 @@ export class ThemeManager {
       return {
         name: name,
         theme: themes[name] as ThemeParsed,
-        className: this.getClassName(name),
+        className: this.getCN(name),
       }
     }
 
@@ -135,7 +135,7 @@ export class ThemeManager {
         ]
         for (const name of names) {
           if (name in themes) {
-            const className = this.getClassName(name)
+            const className = this.getCN(name)
             return { name, theme: themes[name], className }
           }
         }
@@ -181,18 +181,18 @@ export class ThemeManager {
     if (process.env.NODE_ENV === 'development') {
       if (debug) {
         // eslint-disable-next-line no-console
-        console.log('getNextTheme', this.getClassName(nextName), { props, nextName, parentName })
+        console.log('getNextTheme', this.getCN(nextName), { props, nextName, parentName })
       }
     }
 
     return {
       name: nextName,
       theme: getThemeUnwrapped(theme),
-      className: this.getClassName(nextName),
+      className: this.getCN(nextName),
     }
   }
 
-  getClassName(name: string) {
+  getCN(name: string) {
     return `${THEME_CLASSNAME_PREFIX}${name} t_Theme`.replace('light_', '').replace('dark_', '')
   }
 
@@ -201,7 +201,7 @@ export class ThemeManager {
     this.keys.set(uuid, keys)
   }
 
-  notifyListeners() {
+  notify() {
     if (!this.name) {
       this.keys.clear()
     }
@@ -217,14 +217,6 @@ export class ThemeManager {
     this.themeListeners.add(cb)
     return () => {
       this.themeListeners.delete(cb)
-    }
-  }
-
-  onUpdate(uuid: any, cb: Function) {
-    this.listeners.set(uuid, cb)
-    return () => {
-      this.listeners.delete(uuid)
-      this.keys.delete(uuid)
     }
   }
 }

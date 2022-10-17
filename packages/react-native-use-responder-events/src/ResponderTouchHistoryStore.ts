@@ -22,8 +22,8 @@ type TouchRecord = {
 
 export type TouchHistory = {
   indexOfSingleActiveTouch: number
-  mostRecentTimeStamp: number
-  numberActiveTouches: number
+  mostRecentTS: number
+  numActive: number
   touchBank: Array<TouchRecord>
 }
 
@@ -33,7 +33,6 @@ export type TouchHistory = {
  * when touches end and start again.
  */
 
-const __DEV__ = process.env.NODE_ENV !== 'production'
 const MAX_TOUCH_BANK = 20
 
 function timestampForTouch(touch: Touch): number {
@@ -79,7 +78,7 @@ function getTouchIdentifier({ identifier }: Touch): number {
     // eslint-disable-next-line no-console
     console.error('Touch object is missing identifier.')
   }
-  if (__DEV__) {
+  if (process.env.NODE_ENV === 'development') {
     if (identifier > MAX_TOUCH_BANK) {
       // eslint-disable-next-line no-console
       console.error(
@@ -101,7 +100,7 @@ function recordTouchStart(touch: Touch, touchHistory): void {
   } else {
     touchHistory.touchBank[identifier] = createTouchRecord(touch)
   }
-  touchHistory.mostRecentTimeStamp = timestampForTouch(touch)
+  touchHistory.mostRecentTS = timestampForTouch(touch)
 }
 
 function recordTouchMove(touch: Touch, touchHistory): void {
@@ -114,14 +113,16 @@ function recordTouchMove(touch: Touch, touchHistory): void {
     touchRecord.currentPageX = touch.pageX
     touchRecord.currentPageY = touch.pageY
     touchRecord.currentTimeStamp = timestampForTouch(touch)
-    touchHistory.mostRecentTimeStamp = timestampForTouch(touch)
+    touchHistory.mostRecentTS = timestampForTouch(touch)
   } else {
-    // eslint-disable-next-line no-console
-    console.warn(
-      'Cannot record touch move without a touch start.\n',
-      `Touch Move: ${printTouch(touch)}\n`,
-      `Touch Bank: ${printTouchBank(touchHistory)}`
-    )
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.warn(
+        'Cannot record touch move without a touch start.\n',
+        `Touch Move: ${printTouch(touch)}\n`,
+        `Touch Bank: ${printTouchBank(touchHistory)}`
+      )
+    }
   }
 }
 
@@ -135,14 +136,16 @@ function recordTouchEnd(touch: Touch, touchHistory): void {
     touchRecord.currentPageX = touch.pageX
     touchRecord.currentPageY = touch.pageY
     touchRecord.currentTimeStamp = timestampForTouch(touch)
-    touchHistory.mostRecentTimeStamp = timestampForTouch(touch)
+    touchHistory.mostRecentTS = timestampForTouch(touch)
   } else {
-    // eslint-disable-next-line no-console
-    console.warn(
-      'Cannot record touch end without a touch start.\n',
-      `Touch End: ${printTouch(touch)}\n`,
-      `Touch Bank: ${printTouchBank(touchHistory)}`
-    )
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.warn(
+        'Cannot record touch end without a touch start.\n',
+        `Touch End: ${printTouch(touch)}\n`,
+        `Touch Bank: ${printTouchBank(touchHistory)}`
+      )
+    }
   }
 }
 
@@ -165,30 +168,30 @@ function printTouchBank(touchHistory): string {
 }
 
 export class ResponderTouchHistoryStore {
-  _touchHistory = {
+  _hist = {
     touchBank: [], //Array<TouchRecord>
-    numberActiveTouches: 0,
+    numActive: 0,
     // If there is only one active touch, we remember its location. This prevents
     // us having to loop through all of the touches all the time in the most
     // common case.
     indexOfSingleActiveTouch: -1,
-    mostRecentTimeStamp: 0,
+    mostRecentTS: 0,
   }
 
   recordTouchTrack(topLevelType: string, nativeEvent: TouchEvent): void {
-    const touchHistory = this._touchHistory
+    const touchHistory = this._hist
     if (isMoveish(topLevelType)) {
       nativeEvent.changedTouches.forEach((touch) => recordTouchMove(touch, touchHistory))
     } else if (isStartish(topLevelType)) {
       nativeEvent.changedTouches.forEach((touch) => recordTouchStart(touch, touchHistory))
-      touchHistory.numberActiveTouches = nativeEvent.touches.length
-      if (touchHistory.numberActiveTouches === 1) {
+      touchHistory.numActive = nativeEvent.touches.length
+      if (touchHistory.numActive === 1) {
         touchHistory.indexOfSingleActiveTouch = nativeEvent.touches[0].identifier
       }
     } else if (isEndish(topLevelType)) {
       nativeEvent.changedTouches.forEach((touch) => recordTouchEnd(touch, touchHistory))
-      touchHistory.numberActiveTouches = nativeEvent.touches.length
-      if (touchHistory.numberActiveTouches === 1) {
+      touchHistory.numActive = nativeEvent.touches.length
+      if (touchHistory.numActive === 1) {
         const { touchBank } = touchHistory
         for (let i = 0; i < touchBank.length; i++) {
           const touchTrackToCheck = touchBank[i] as any
@@ -197,7 +200,7 @@ export class ResponderTouchHistoryStore {
             break
           }
         }
-        if (__DEV__) {
+        if (process.env.NODE_ENV === 'development') {
           const activeRecord = touchBank[touchHistory.indexOfSingleActiveTouch] as any
           if (!(activeRecord != null && activeRecord.touchActive)) {
             // eslint-disable-next-line no-console
@@ -209,6 +212,6 @@ export class ResponderTouchHistoryStore {
   }
 
   get touchHistory(): TouchHistory {
-    return this._touchHistory
+    return this._hist
   }
 }

@@ -143,10 +143,10 @@ export class PressResponder {
   _config: PressResponderConfig
   _eventHandlers?: EventHandlers | null = null
   _isPointerTouch?: boolean = false
-  _longPressDelayTimeout?: TimeoutID = null
+  _longPDT?: TimeoutID = null
   _longPressDispatched?: boolean = false
-  _pressDelayTimeout?: TimeoutID = null
-  _pressOutDelayTimeout?: TimeoutID = null
+  _pDT?: TimeoutID = null
+  _pODT?: TimeoutID = null
   _selectionTerminated?: boolean
   _touchActivatePosition?: {
     pageX: number
@@ -166,9 +166,9 @@ export class PressResponder {
    * Resets any pending timers. This should be called on unmount.
    */
   reset(): void {
-    this._cancelLongPressDelayTimeout()
-    this._cancelPressDelayTimeout()
-    this._cancelPressOutDelayTimeout()
+    this._cancelLongPDT()
+    this._cancelPDT()
+    this._cancelPODT()
   }
 
   /**
@@ -176,16 +176,16 @@ export class PressResponder {
    */
   getEventHandlers(): EventHandlers {
     if (this._eventHandlers == null) {
-      this._eventHandlers = this._createEventHandlers()
+      this._eventHandlers = this._createHandlers()
     }
     return this._eventHandlers
   }
 
-  _createEventHandlers(): EventHandlers {
+  _createHandlers(): EventHandlers {
     const start = (event: ResponderEvent, shouldDelay?: boolean): void => {
       event.persist()
 
-      this._cancelPressOutDelayTimeout()
+      this._cancelPODT()
 
       this._longPressDispatched = false
       this._selectionTerminated = false
@@ -202,7 +202,7 @@ export class PressResponder {
       )
 
       if (shouldDelay !== false && delayPressStart > 0) {
-        this._pressDelayTimeout = setTimeout(() => {
+        this._pDT = setTimeout(() => {
           this._receiveSignal(States.DELAY, event)
         }, delayPressStart)
       } else {
@@ -214,7 +214,7 @@ export class PressResponder {
         10,
         DEFAULT_LONG_PRESS_DELAY_MS
       )
-      this._longPressDelayTimeout = setTimeout(() => {
+      this._longPDT = setTimeout(() => {
         this._handleLongPress(event)
       }, delayLongPress + delayPressStart)
     }
@@ -292,7 +292,7 @@ export class PressResponder {
           const deltaX = this._touchActivatePosition.pageX - touch.pageX
           const deltaY = this._touchActivatePosition.pageY - touch.pageY
           if (Math.hypot(deltaX, deltaY) > 10) {
-            this._cancelLongPressDelayTimeout()
+            this._cancelLongPDT()
           }
         }
       },
@@ -386,7 +386,7 @@ export class PressResponder {
       // eslint-disable-next-line no-console
       console.error(`PressResponder: Invalid signal ${signal} for state ${prevState} on responder`)
     } else if (prevState !== nextState) {
-      this._performTransitionSideEffects(prevState, nextState, signal, event)
+      this._sideEff(prevState, nextState, signal, event)
       this._touchState = nextState
     }
   }
@@ -395,7 +395,7 @@ export class PressResponder {
    * Performs a transition between touchable states and identify any activations
    * or deactivations (and callback invocations).
    */
-  _performTransitionSideEffects(
+  _sideEff(
     prevState: TouchState,
     nextState: TouchState,
     signal: TouchSignal,
@@ -409,7 +409,7 @@ export class PressResponder {
         this._isPointerTouch = false
       }, 0)
       this._touchActivatePosition = null
-      this._cancelLongPressDelayTimeout()
+      this._cancelLongPDT()
     }
 
     if (isPressStartSignal(prevState) && signal === States.LONG_PRESS_DETECTED) {
@@ -446,7 +446,7 @@ export class PressResponder {
       }
     }
 
-    this._cancelPressDelayTimeout()
+    this._cancelPDT()
   }
 
   _activate(event: ResponderEvent): void {
@@ -476,7 +476,7 @@ export class PressResponder {
     }
     const delayPressEnd = normalizeDelay(this._config.delayPressEnd)
     if (delayPressEnd > 0) {
-      this._pressOutDelayTimeout = setTimeout(() => {
+      this._pODT = setTimeout(() => {
         end()
       }, delayPressEnd)
     } else {
@@ -493,24 +493,24 @@ export class PressResponder {
     }
   }
 
-  _cancelLongPressDelayTimeout(): void {
-    if (this._longPressDelayTimeout != null) {
-      clearTimeout(this._longPressDelayTimeout)
-      this._longPressDelayTimeout = null
+  _cancelLongPDT(): void {
+    if (this._longPDT) {
+      clearTimeout(this._longPDT)
+      this._longPDT = null
     }
   }
 
-  _cancelPressDelayTimeout(): void {
-    if (this._pressDelayTimeout != null) {
-      clearTimeout(this._pressDelayTimeout)
-      this._pressDelayTimeout = null
+  _cancelPDT(): void {
+    if (this._pDT) {
+      clearTimeout(this._pDT)
+      this._pDT = null
     }
   }
 
-  _cancelPressOutDelayTimeout(): void {
-    if (this._pressOutDelayTimeout != null) {
-      clearTimeout(this._pressOutDelayTimeout)
-      this._pressOutDelayTimeout = null
+  _cancelPODT(): void {
+    if (this._pODT) {
+      clearTimeout(this._pODT)
+      this._pODT = null
     }
   }
 }
@@ -521,10 +521,10 @@ function normalizeDelay(delay: number | null | undefined, min = 0, fallback = 0)
 
 function getTouchFromResponderEvent(event: ResponderEvent) {
   const { changedTouches, touches } = event.nativeEvent
-  if (touches != null && touches.length > 0) {
+  if (touches && touches.length > 0) {
     return touches[0]
   }
-  if (changedTouches != null && changedTouches.length > 0) {
+  if (changedTouches && changedTouches.length > 0) {
     return changedTouches[0]
   }
   return event.nativeEvent
