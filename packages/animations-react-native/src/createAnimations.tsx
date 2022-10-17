@@ -1,4 +1,3 @@
-import { PresenceContext, usePresence } from '@tamagui/animate-presence'
 import {
   AnimatedNumberStrategy,
   AnimationDriver,
@@ -8,6 +7,7 @@ import {
   useEvent,
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
+import { PresenceContext, usePresence } from '@tamagui/use-presence'
 import { useContext, useEffect, useMemo, useRef } from 'react'
 import { Animated } from 'react-native'
 

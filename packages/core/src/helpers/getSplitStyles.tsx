@@ -156,17 +156,11 @@ export const pseudoCNInverse = {
 
 const accessibilityRoleToWebRole = {
   adjustable: 'slider',
-  button: 'button',
   header: 'heading',
   image: 'img',
-  imagebutton: null,
-  keyboardkey: null,
-  label: null,
   link: 'link',
   none: 'presentation',
-  search: 'search',
   summary: 'region',
-  text: null,
 }
 
 // loop props backwards

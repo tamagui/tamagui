@@ -1,5 +1,5 @@
-import { PresenceContext, usePresence } from '@tamagui/animate-presence'
 import { AnimationDriver, Stack, Text, useIsomorphicLayoutEffect } from '@tamagui/core'
+import { PresenceContext, usePresence } from '@tamagui/use-presence'
 import { useContext, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {

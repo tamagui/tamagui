@@ -4297,6 +4297,7 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-beta.193
     "@tamagui/core": ^1.0.1-beta.193
+    "@tamagui/use-presence": ^1.0.1-beta.193
   languageName: unknown
   linkType: soft
 
@@ -4304,9 +4305,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-css@workspace:packages/animations-css"
   dependencies:
-    "@tamagui/animate-presence": ^1.0.1-beta.193
     "@tamagui/build": ^1.0.1-beta.193
     "@tamagui/core": ^1.0.1-beta.193
+    "@tamagui/use-presence": ^1.0.1-beta.193
   languageName: unknown
   linkType: soft
 
@@ -4324,9 +4325,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-react-native@workspace:packages/animations-react-native"
   dependencies:
-    "@tamagui/animate-presence": ^1.0.1-beta.193
     "@tamagui/build": ^1.0.1-beta.193
     "@tamagui/core": ^1.0.1-beta.193
+    "@tamagui/use-presence": ^1.0.1-beta.193
     react: "*"
     react-dom: "*"
     react-native: "*"
@@ -4341,10 +4342,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:packages/animations-reanimated"
   dependencies:
-    "@tamagui/animate-presence": ^1.0.1-beta.193
     "@tamagui/animations-react-native": ^1.0.1-beta.193
     "@tamagui/build": ^1.0.1-beta.193
     "@tamagui/core": ^1.0.1-beta.193
+    "@tamagui/use-presence": ^1.0.1-beta.193
     react-native-reanimated: ^2.8.0
   languageName: unknown
   linkType: soft
@@ -5362,6 +5363,7 @@ __metadata:
     "@tamagui/remove-scroll": ^1.0.1-beta.193
     "@tamagui/scroll-view": ^1.0.1-beta.193
     "@tamagui/stacks": ^1.0.1-beta.193
+    "@tamagui/use-constant": ^1.0.1-beta.193
     "@tamagui/use-controllable-state": ^1.0.1-beta.193
     react: "*"
     react-dom: "*"
@@ -5744,6 +5746,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/use-constant@^1.0.1-beta.193, @tamagui/use-constant@workspace:packages/use-constant":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-constant@workspace:packages/use-constant"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.193
+    react: "*"
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/use-controllable-state@^1.0.1-beta.193, @tamagui/use-controllable-state@workspace:packages/use-controllable-state":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-controllable-state@workspace:packages/use-controllable-state"
@@ -5808,6 +5821,17 @@ __metadata:
 "@tamagui/use-force-update@^1.0.1-beta.193, @tamagui/use-force-update@workspace:packages/use-force-update":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-force-update@workspace:packages/use-force-update"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.193
+    react: "*"
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/use-presence@^1.0.1-beta.193, @tamagui/use-presence@workspace:packages/use-presence":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-presence@workspace:packages/use-presence"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.193
     react: "*"

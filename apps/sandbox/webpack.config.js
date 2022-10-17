@@ -33,7 +33,7 @@ module.exports = /** @type { import('webpack').Configuration } */ {
   devtool: 'source-map',
   optimization: {
     concatenateModules: false,
-    minimize: false,
+    // minimize: false,
   },
   resolve: {
     extensions: [`${target}.ts`, `${target}.tsx`, '.web.js', '.ts', '.tsx', '.js'],

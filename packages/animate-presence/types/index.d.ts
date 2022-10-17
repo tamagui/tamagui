@@ -1,4 +1,3 @@
 export * from './AnimatePresence';
-export * from './usePresence';
-export { PresenceContext } from './PresenceContext';
+export * from '@tamagui/use-presence';
 //# sourceMappingURL=index.d.ts.map

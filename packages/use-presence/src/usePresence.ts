@@ -9,8 +9,7 @@ type NotPresent = [false, SafeToRemove]
 
 export function usePresence(): AlwaysPresent | Present | NotPresent {
   const context = useContext(PresenceContext)
-
-  if (context === null) {
+  if (!context) {
     return [true, null]
   }
 
@@ -25,7 +24,7 @@ export function usePresence(): AlwaysPresent | Present | NotPresent {
 
 /**
  * Similar to `usePresence`, except `useIsPresent` simply returns whether or not the component is present.
- * There is no `safeToRemove` function. ```
+ * There is no `safeToRemove` function.
  */
 export function useIsPresent() {
   return isPresent(useContext(PresenceContext))
