@@ -161,7 +161,7 @@ declare type SpacerPropsBase = {
 declare type SpacerOwnProps = SpacerPropsBase & WithThemeShorthandsPseudosMediaAnimation<SpacerPropsBase>;
 export declare type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> & SpacerOwnProps;
 export declare type CreateTamaguiProps = {
-    native?: any;
+    reactNative?: any;
     shorthands?: CreateShorthands;
     media?: GenericTamaguiConfig['media'];
     animations?: AnimationDriver<any>;
@@ -210,6 +210,7 @@ export declare type TamaguiInternalConfig<A extends GenericTokens = GenericToken
     getCSS: () => string;
     parsed: boolean;
     inverseShorthands: Record<string, string>;
+    reactNative?: any;
 };
 export declare type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations'];
 export declare type UnionableString = string & {};

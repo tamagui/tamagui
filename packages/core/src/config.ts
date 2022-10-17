@@ -5,8 +5,7 @@ let conf: TamaguiInternalConfig | null
 export const setConfig = (next: TamaguiInternalConfig) => {
   conf = next
   if (configListeners.size) {
-    configListeners.forEach((cb) => cb(conf!))
-    configListeners.clear()
+    configListeners.forEach((cb) => cb(next))
   }
 }
 
@@ -34,7 +33,7 @@ export const configListeners = new Set<ConfigListener>()
 
 export const onConfiguredOnce = (cb: ConfigListener) => {
   if (conf) {
-    cb(conf!)
+    cb(conf)
   } else {
     configListeners.add(cb)
   }

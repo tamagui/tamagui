@@ -282,7 +282,7 @@ export type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> &
   SpacerOwnProps
 
 export type CreateTamaguiProps = {
-  native?: any
+  reactNative?: any
   shorthands?: CreateShorthands
   media?: GenericTamaguiConfig['media']
   animations?: AnimationDriver<any>
@@ -365,6 +365,7 @@ export type TamaguiInternalConfig<
     getCSS: () => string
     parsed: boolean
     inverseShorthands: Record<string, string>
+    reactNative?: any
   }
 
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']
