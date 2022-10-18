@@ -33,8 +33,9 @@ describe('styled() tests', () => {
 
     expect(output.js).toMatchInlineSnapshot(`
       "import { MyStack } from '@tamagui/test-design-system';
-      import { styled } from '@tamagui/core'; // not exported
+      import { styled } from '@tamagui/core';
 
+      // not exported
       const InlineStyled = styled(MyStack, {
         \\"backgroundColor\\": \\"_bg-orange\\"
       });
