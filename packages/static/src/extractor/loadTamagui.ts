@@ -396,32 +396,50 @@ function loadComponents(props: Props): null | LoadedComponents[] {
     const info: LoadedComponents[] = componentsModules.flatMap((name) => {
       const extension = extname(name)
       const isLocal = extension.includes('.')
+      const fileContents = isLocal ? readFileSync(name, 'utf-8') : ''
       const localTmpFile = join(dirname(name), `.tamagui-dynamic-eval${extension || '.tsx'}`)
-      const requirePath = isLocal ? localTmpFile : name
-      try {
-        if (isLocal) {
-          // could babel but this works?
-          const allexported = readFileSync(name, 'utf-8')
-            .split('\n')
-            .map((l) => l.replace(/^(const|let)(\s[a-z]+)/gi, 'export $1$2'))
-            .join('\n')
+
+      function attemptLoad({ forceExports = false } = {}) {
+        const shouldWriteTmpFile = isLocal && forceExports
+
+        // need to write to tsx to enable reading it properly (:/ esbuild-register)
+        if (shouldWriteTmpFile) {
+          // could babel but this works alright
+          const tmpFile = forceExports
+            ? fileContents
+                .split('\n')
+                .map((l) => l.replace(/^(const|let)(\s[a-z]+)/gi, 'export $1$2'))
+                .join('\n')
+            : fileContents
 
           if (process.env.DEBUG?.startsWith('tamagui')) {
-            console.log('allexported', allexported)
+            console.log('temp file to read all exports', tmpFile)
           }
-
           // make everything export
-          writeFileSync(localTmpFile, allexported)
+          writeFileSync(localTmpFile, tmpFile)
         }
-        const imported = interopDefaultExport(require(requirePath))
+
         return {
           moduleName: name,
-          nameToInfo: getComponentStaticConfigByName(name, imported),
+          nameToInfo: getComponentStaticConfigByName(
+            name,
+            interopDefaultExport(require(shouldWriteTmpFile ? localTmpFile : name))
+          ),
         }
+      }
+
+      try {
+        return attemptLoad({
+          forceExports: true,
+        })
+      } catch {
+        // ok
+      }
+      try {
+        return attemptLoad({
+          forceExports: false,
+        })
       } catch (err) {
-        if (`${err}`.includes(`SyntaxError: Unexpected token 'export'`)) {
-          // its fine
-        }
         if (!process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD) {
           console.log(`
 
