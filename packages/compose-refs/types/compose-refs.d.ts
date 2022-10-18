@@ -1,5 +1,5 @@
 import * as React from 'react';
-declare type PossibleRef<T> = React.Ref<T> | undefined;
+declare type PossibleRef<T> = React.Ref<T> | React.ForwardedRef<T> | React.RefObject<T> | undefined;
 /**
  * A utility to compose multiple refs together
  * Accepts callback refs and RefObject(s)

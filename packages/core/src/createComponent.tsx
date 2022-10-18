@@ -401,9 +401,7 @@ export function createComponent<
 
     // media queries
     useIsomorphicLayoutEffect(() => {
-      if (!mediaKeys.length) {
-        return
-      }
+      if (!mediaKeys.length) return
       const disposers: any[] = []
       for (const key of mediaKeys) {
         disposers.push(
@@ -423,7 +421,11 @@ export function createComponent<
           })
         )
       }
-      return () => {}
+      return () => {
+        for (const disposer of disposers) {
+          disposer()
+        }
+      }
     }, [mediaKeys.join(',')])
 
     const animationFeatureStylesIn = props.animation
@@ -561,8 +563,16 @@ export function createComponent<
     const shouldSetMounted = Boolean(
       (isWeb ? isClient : true) && (hasEnterStyle || props.animation) && !state.mounted
     )
+
+    if (props['debug']) {
+      console.log('shouldSetMounted', shouldSetMounted)
+    }
+
     const setMounted = shouldSetMounted
       ? () => {
+          if (props['debug']) {
+            console.log('setttin')
+          }
           // for some reason without some small delay it doesn't animate css
           setTimeout(
             () => {
@@ -635,10 +645,6 @@ export function createComponent<
           onStartShouldSetResponder,
           onStartShouldSetResponderCapture,
         } as any)
-
-        const setRef = useComposedRefs(hostRef, forwardedRef as any, setMounted)
-
-        viewProps.ref = setRef
       }
 
       if (props.href != undefined && hrefAttrs != undefined) {
@@ -691,11 +697,9 @@ export function createComponent<
       }
     } else {
       viewProps = nonTamaguiProps
-      if (forwardedRef) {
-        // @ts-ignore
-        viewProps.ref = forwardedRef
-      }
     }
+
+    viewProps.ref = useComposedRefs(hostRef as any, forwardedRef, setMounted)
 
     if (process.env.NODE_ENV === 'development' && !isText && isWeb && !staticConfig.isHOC) {
       Children.toArray(props.children).forEach((item) => {
@@ -814,10 +818,6 @@ export function createComponent<
     }
 
     if (process.env.TAMAGUI_TARGET === 'native') {
-      // add ref
-      const mergedRef = useComposedRefs(forwardedRef, hostRef as any, setMounted)
-      viewProps.ref = mergedRef
-
       // swap out the right family based on weight/style
       if (splitStyles.fontFamily) {
         const faceInfo = tamaguiConfig.fontsParsed[splitStyles.fontFamily]?.face

@@ -19,11 +19,6 @@ declare type StyleSplitter = (props: {
     [key: string]: any;
 }, staticConfig: StaticConfigParsed, theme: ThemeParsed, state: SplitStyleState, parentSplitStyles?: SplitStylesAndProps | null, languageContext?: LanguageContextType, elementType?: string, debug?: DebugProp) => SplitStylesAndProps;
 export declare const PROP_SPLIT = "-";
-export declare const pseudoCNInverse: {
-    hover: string;
-    focus: string;
-    press: string;
-};
 export declare const getSplitStyles: StyleSplitter;
 export declare const getSubStyle: (subKey: string, styleIn: Object, staticConfig: StaticConfigParsed, theme: ThemeParsed, props: any, state: SplitStyleState, conf: TamaguiInternalConfig, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean) => ViewStyle;
 export declare const insertSplitStyles: StyleSplitter;

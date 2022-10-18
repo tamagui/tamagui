@@ -1,5 +1,5 @@
-import { Menu } from '@tamagui/lucide-icons'
 import { LogoWords, TamaguiLogo, tints } from '@tamagui/logo'
+import { Menu } from '@tamagui/lucide-icons'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import * as React from 'react'
@@ -289,8 +289,7 @@ const HeadAnchor = React.forwardRef((props: ParagraphProps, ref) => (
     px="$3"
     py="$2"
     cursor="pointer"
-    size="$3"
-    o={0.7}
+    size="$4"
     hoverStyle={{ opacity: 1 }}
     pressStyle={{ opacity: 0.5 }}
     tag="a"
