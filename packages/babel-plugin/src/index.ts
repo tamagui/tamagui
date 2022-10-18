@@ -14,7 +14,6 @@ import {
   getPragmaOptions,
   isSimpleSpread,
   literalToAst,
-  patchReactNativeWeb,
 } from '@tamagui/static'
 
 const importNativeView = template(`
@@ -37,10 +36,6 @@ export default declare(function snackBabelPlugin(
   visitor: Visitor
 } {
   api.assertVersion(7)
-
-  if (!process.env.TAMAGUI_DISABLE_RNW_PATCH) {
-    patchReactNativeWeb()
-  }
 
   return {
     name: 'tamagui',

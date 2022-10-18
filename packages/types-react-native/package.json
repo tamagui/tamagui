@@ -229,7 +229,7 @@
     "directory": "types/react-native"
   },
   "dependencies": {
-    "@types/react": "*"
+    "@types/react": "^18.0.15"
   },
   "typesPublisherContentHash": "59453d8ff4df1b72029fbc31e81bb99c1236cbdee905aaec6915496ddde4ad9f",
   "typeScriptVersion": "4.1"
