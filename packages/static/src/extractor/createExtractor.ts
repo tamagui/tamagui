@@ -2062,9 +2062,11 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             if (shouldPrintDebug) {
               logger.info(['  [✅] flattening', originalNodeName, flatNode].join(' '))
             }
+            // @ts-ignore
             node.name.name = flatNode
             res.flattened++
             if (closingElement) {
+              // @ts-ignore
               closingElement.name.name = flatNode
             }
           }
