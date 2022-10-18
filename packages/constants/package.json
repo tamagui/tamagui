@@ -17,15 +17,14 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "dependencies": {
-    "react": "*"
-  },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.193",
     "@types/react": "^18.0.15",
+    "react": "*",
     "react-native": "*"
   },
   "peerDependencies": {
+    "react": "*",
     "react-native": "*"
   },
   "publishConfig": {
