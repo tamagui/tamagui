@@ -4,7 +4,6 @@ export { literalToAst } from './extractor/literalToAst.js';
 export * from './constants.js';
 export * from './extractor/extractToClassNames.js';
 export * from './extractor/extractHelpers.js';
-export * from '@tamagui/patch-rnw';
 export * from './extractor/loadTamagui.js';
 export * from './require.js';
 export * from './getPragmaOptions.js';

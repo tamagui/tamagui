@@ -1,5 +1,6 @@
 - 1.0
 
+  - polyfill for rn 17
   - core: slim down: Slot, concatClassName / unify usePressable+usePressability
   - site: document more helpers: getSize / stepTokenUpOrDown / spacedChildren
   - site: fix search

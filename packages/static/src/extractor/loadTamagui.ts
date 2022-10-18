@@ -120,13 +120,29 @@ Tamagui built config and components:`
     }),
   ])
 
-  try {
-    registerRequire(props.bubbleErrors)
-    const out = require(configOutPath)
-    const config = out.default || out
+  registerRequire(props.bubbleErrors)
+  const out = require(configOutPath)
+  const tamaguiConfig = out.default || out
+  unregisterRequire()
 
-    if (!config) {
-      throw new Error(`No config: ${config}`)
+  if (!tamaguiConfig) {
+    throw new Error(`No config: ${tamaguiConfig}`)
+  }
+
+  let components = loadComponents({
+    ...props,
+    components: componentOutPaths,
+  })
+
+  if (!components) {
+    throw new Error(`No components found: ${componentOutPaths.join(', ')}`)
+  }
+
+  // map from built back to original module names
+  for (const component of components) {
+    component.moduleName = baseComponents[componentOutPaths.indexOf(component.moduleName)]
+    if (!component.moduleName) {
+      throw new Error(`Tamagui internal err`)
     }
 
     let components = loadComponents({
@@ -214,9 +230,10 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
     process.env.IS_STATIC = 'is_static'
     globalThis['__DEV__' as any] = process.env.NODE_ENV === 'development'
 
+    // config
+    let tamaguiConfig: TamaguiInternalConfig | null = null
+
     try {
-      // config
-      let tamaguiConfig: TamaguiInternalConfig | null = null
       if (props.config) {
         const configPath = join(process.cwd(), props.config)
         const exp = require(configPath)

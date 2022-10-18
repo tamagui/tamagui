@@ -6,7 +6,6 @@
   "main": "dist",
   "files": [
     "tamagui.tsconfig.json",
-    "patches",
     "src",
     "types",
     "dist"
@@ -44,7 +43,6 @@
     "@tamagui/fake-react-native": "^1.0.1-beta.193",
     "@tamagui/helpers": "^1.0.1-beta.193",
     "@tamagui/helpers-node": "^1.0.1-beta.193",
-    "@tamagui/patch-rnw": "^1.0.1-beta.193",
     "@tamagui/proxy-worm": "^1.0.1-beta.193",
     "@tamagui/react-native-svg": "^1.0.1-beta.193",
     "@tamagui/rnw": "^1.0.1-beta.193",

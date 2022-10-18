@@ -4,7 +4,6 @@ import {
   createExtractor,
   extractToClassNames,
   getPragmaOptions,
-  patchReactNativeWeb,
 } from '@tamagui/static'
 
 import { extractedInfoByFile, stylePathToFilePath } from './css'
@@ -18,7 +17,6 @@ Error.stackTraceLimit = Infinity
 const extractor = createExtractor()
 
 let index = 0
-let hasPatched = false
 
 process.env.TAMAGUI_TARGET = 'web'
 
@@ -26,11 +24,6 @@ export const loader = async function loader(this, sourceIn: Buffer | string) {
   this.cacheable(true)
   const callback = this.async()
   const source = sourceIn.toString()
-
-  if (!process.env.TAMAGUI_DISABLE_RNW_PATCH && !hasPatched) {
-    patchReactNativeWeb()
-    hasPatched = true
-  }
 
   try {
     const threaded = this.emitFile === undefined
