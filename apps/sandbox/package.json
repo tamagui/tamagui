@@ -18,6 +18,7 @@
     "@tamagui/demos": "^1.0.1-beta.193",
     "@tamagui/feather-icons": "^1.0.1-beta.193",
     "@tamagui/font-inter": "^1.0.1-beta.193",
+    "@tamagui/lucide-icons": "^1.0.1-beta.193",
     "@tamagui/select": "^1.0.1-beta.193",
     "@tamagui/shorthands": "^1.0.1-beta.193",
     "@tamagui/slider": "^1.0.1-beta.193",

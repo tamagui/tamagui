@@ -1,4 +1,4 @@
-import { Activity, Airplay } from '@tamagui/feather-icons'
+import { Activity, Airplay } from '@tamagui/lucide-icons'
 import React from 'react'
 import { Button, XGroup, XStack, YStack } from 'tamagui'
 

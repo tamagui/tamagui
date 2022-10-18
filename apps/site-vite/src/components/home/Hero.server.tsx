@@ -1,4 +1,4 @@
-import { ArrowRight } from '@tamagui/feather-icons'
+import { ArrowRight } from '@tamagui/lucide-icons'
 import { Link } from '@tamagui/unagi'
 import React from 'react'
 import { memo } from 'react'

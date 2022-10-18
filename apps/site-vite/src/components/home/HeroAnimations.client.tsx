@@ -1,7 +1,7 @@
 import { animations } from '@tamagui/config-base'
 import { useOnIntersecting } from '@tamagui/demos'
 import { AnimationsDemo as AnimationsDemoBase } from '@tamagui/demos'
-import { ArrowDown } from '@tamagui/feather-icons'
+import { ArrowDown } from '@tamagui/lucide-icons'
 import React, { memo, useRef, useState } from 'react'
 import { Button, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 

@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronUp, ExternalLink } from '@tamagui/feather-icons'
+import { ChevronDown, ChevronUp, ExternalLink } from '@tamagui/lucide-icons'
 import { Link } from '@tamagui/unagi'
 import { useRouter } from 'next/router'
 import React from 'react'

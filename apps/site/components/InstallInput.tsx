@@ -1,4 +1,4 @@
-import { Check, Copy } from '@tamagui/feather-icons'
+import { Check, Copy } from '@tamagui/lucide-icons'
 import copy from 'copy-to-clipboard'
 import React, { memo, useEffect } from 'react'
 import { Button, Paragraph, Spacer, Tooltip, TooltipSimple, XStack } from 'tamagui'

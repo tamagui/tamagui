@@ -1,4 +1,4 @@
-import { Check } from '@tamagui/feather-icons'
+import { Check } from '@tamagui/lucide-icons'
 import React from 'react'
 import { YStack } from 'tamagui'
 

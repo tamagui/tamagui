@@ -1,4 +1,4 @@
-import { Compass, Cpu, Layers } from '@tamagui/feather-icons'
+import { Compass, Cpu, Layers } from '@tamagui/lucide-icons'
 import React from 'react'
 import { memo } from 'react'
 import { H3, Paragraph, XStack, YStack } from 'tamagui'
