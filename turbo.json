@@ -1,8 +1,10 @@
 {
   "baseBranch": "origin/master",
   "pipeline": {
+    "build:js": {
+      "outputs": ["dist/**"]
+    },
     "build": {
-      "dependsOn": ["^build"],
       "outputs": [".next/**", "dist/**", "types/**"]
     },
     "start": {
@@ -10,11 +12,7 @@
       "outputs": []
     },
     "test": {
-      "dependsOn": ["^build"],
-      "outputs": []
-    },
-    "test-update": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build:js"],
       "outputs": []
     },
     "clean": {

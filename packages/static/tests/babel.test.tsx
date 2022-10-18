@@ -27,7 +27,6 @@ test('basic extraction', async () => {
         \\"alignItems\\": \\"stretch\\"
       }
     });
-
     import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
     import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { YStack } from 'tamagui';
@@ -60,7 +59,6 @@ test('theme value extraction should work when no theme variables used', async ()
         \\"display\\": \\"flex\\"
       }
     });
-
     import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
     import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { Paragraph } from 'tamagui';
@@ -92,7 +90,6 @@ test('theme value extraction should NOT work when theme variables used', async (
         \\"display\\": \\"flex\\"
       }
     });
-
     import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
     import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { Paragraph } from 'tamagui';
@@ -138,7 +135,6 @@ test('basic conditional extraction', async () => {
       },
       \\"5\\": {}
     });
-
     import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
     import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { YStack } from 'tamagui';
@@ -193,7 +189,6 @@ test('flat transform props', async () => {
         }]
       }
     });
-
     import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
     import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { YStack } from 'tamagui';
@@ -237,7 +232,6 @@ test('handles style order merge properly', async () => {
         }]
       }
     });
-
     import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
     import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { YStack } from 'tamagui';
