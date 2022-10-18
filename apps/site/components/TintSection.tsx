@@ -41,7 +41,6 @@ export const TintSection = ({
       }
     },
     {
-      ignoreResize: true,
       threshold: 0.1,
     }
   )
