@@ -4,6 +4,7 @@
     "composite": true,
     
   },
+  "exclude": ["subset.ts"],
   "references": [
     {
       "path": "../core"

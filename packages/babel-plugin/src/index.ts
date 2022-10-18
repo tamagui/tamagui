@@ -56,10 +56,6 @@ export default declare(function snackBabelPlugin(
             sourcePath = sourcePath.replace('/ios', '')
           }
 
-          if (options.exclude?.test(sourcePath)) {
-            return
-          }
-
           let hasImportedView = false
           const sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')

@@ -4,8 +4,8 @@ export interface TamaguiOptions {
   // your tamagui.config.ts
   config?: string
   importsWhitelist?: string[]
-  disable?: boolean
-  disableExtraction?: boolean
+  disable?: boolean | string[]
+  disableExtraction?: boolean | string[]
   disableFlattening?: boolean
   disableDebugAttr?: boolean
   disableExtractInlineMedia?: boolean

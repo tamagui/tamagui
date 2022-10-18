@@ -180,7 +180,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
     let shouldPrintDebug = options.shouldPrintDebug || false
 
-    if (disable) {
+    if (disable === true || (Array.isArray(disable) && disable.includes(sourcePath))) {
       return null
     }
     if (sourcePath === '') {
@@ -342,6 +342,10 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       return fileOrPath.type === 'File' ? traverse(fileOrPath, a) : fileOrPath.traverse(a)
     }
 
+    const shouldDisableExtraction =
+      disableExtraction === true ||
+      (Array.isArray(disableExtraction) && disableExtraction.includes(sourcePath))
+
     /**
      * Step 2: Statically extract from JSX < /> nodes
      */
@@ -365,7 +369,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
       // styled() calls
       CallExpression(path) {
-        if (disable || disableExtraction || extractStyledDefinitions === false) {
+        if (disable || shouldDisableExtraction || extractStyledDefinitions === false) {
           return
         }
 
@@ -391,7 +395,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             return
           }
           if (
-            typeof disableExtractFoundComponents === 'string' &&
+            Array.isArray(disableExtractFoundComponents) &&
             disableExtractFoundComponents.includes(name)
           ) {
             return
@@ -555,6 +559,10 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       },
 
       JSXElement(traversePath) {
+        if (shouldDisableExtraction) {
+          return
+        }
+
         tm.mark('jsx-element', !!shouldPrintDebug)
 
         const node = traversePath.node.openingElement
@@ -2054,11 +2062,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             if (shouldPrintDebug) {
               logger.info(['  [✅] flattening', originalNodeName, flatNode].join(' '))
             }
-            // @ts-expect-error
             node.name.name = flatNode
             res.flattened++
             if (closingElement) {
-              // @ts-expect-error
               closingElement.name.name = flatNode
             }
           }
