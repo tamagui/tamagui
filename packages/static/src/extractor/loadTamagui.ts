@@ -403,7 +403,7 @@ function loadComponents(props: Props): null | LoadedComponents[] {
           // could babel but this works?
           const allexported = readFileSync(name, 'utf-8')
             .split('\n')
-            .map((l) => l.replace(/^\s*(const|let)(\s)/gi, 'export $1$2'))
+            .map((l) => l.replace(/^(const|let)(\s[a-z]+)/gi, 'export $1$2'))
             .join('\n')
 
           if (process.env.DEBUG?.startsWith('tamagui')) {
@@ -419,6 +419,9 @@ function loadComponents(props: Props): null | LoadedComponents[] {
           nameToInfo: getComponentStaticConfigByName(name, imported),
         }
       } catch (err) {
+        if (`${err}`.includes(`SyntaxError: Unexpected token 'export'`)) {
+          // its fine
+        }
         if (!process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD) {
           console.log(`
 

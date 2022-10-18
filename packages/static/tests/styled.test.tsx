@@ -1,3 +1,4 @@
+import dedent from 'dedent'
 import * as React from 'react'
 import { describe, expect, test } from 'vitest'
 
@@ -12,7 +13,7 @@ window['React'] = React
 describe('styled() tests', () => {
   test('loads dynamic styled() in file and extracts CSS', async () => {
     const output = await extractForWeb(
-      `
+      dedent`
       import { MyStack } from '@tamagui/test-design-system'
       import { styled } from '@tamagui/core'
       
