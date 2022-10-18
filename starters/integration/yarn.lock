@@ -3545,18 +3545,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/feather-icons@npm:1.0.1-beta.193":
-  version: 1.0.1-beta.193
-  resolution: "@tamagui/feather-icons@npm:1.0.1-beta.193"
-  dependencies:
-    "@tamagui/core": ^1.0.1-beta.193
-    react: "*"
-    react-dom: "*"
-    react-native-svg: ^12.4.3
-  checksum: ae384602aeaa895cdc0f553f0fcaa1c883cd74a7367847f5684c8094f818753ac4bd70794d26bccc6ef98b9da6e3f21608519c95b5f69d976bdf9aab54292086
-  languageName: node
-  linkType: hard
-
 "@tamagui/focus-scope@npm:^1.0.1-beta.193":
   version: 1.0.1-beta.193
   resolution: "@tamagui/focus-scope@npm:1.0.1-beta.193"
@@ -3676,6 +3664,18 @@ __metadata:
     react: "*"
     react-dom: "*"
   checksum: d5c82a35d920bd2b279d1ee5d62bdd7028ad62a613fe42c5e54543ac2a6a3ba52d4ddcdbe9fdbe8257839fdba3697693118dbbe1a55cb70ca3419b4a6e725660
+  languageName: node
+  linkType: hard
+
+"@tamagui/lucide-icons@npm:1.0.1-beta.193":
+  version: 1.0.1-beta.193
+  resolution: "@tamagui/lucide-icons@npm:1.0.1-beta.193"
+  dependencies:
+    "@tamagui/core": ^1.0.1-beta.193
+    react: "*"
+    react-dom: "*"
+    react-native-svg: ^12.4.3
+  checksum: cb6f2c5bbd86c5dc92a0523dcb94b0d47afd0bdc98ec4b4b436ac683c9d93e1fffcafa9d343bd0541589b6fac31559c0de601f1d9edaa0b09dc3512e1f6c0ca1
   languageName: node
   linkType: hard
 
@@ -4738,8 +4738,8 @@ __metadata:
     "@react-navigation/native-stack": ^6.7.0
     "@tamagui/animations-react-native": 1.0.1-beta.193
     "@tamagui/colors": 1.0.1-beta.193
-    "@tamagui/feather-icons": 1.0.1-beta.193
     "@tamagui/font-inter": 1.0.1-beta.193
+    "@tamagui/lucide-icons": 1.0.1-beta.193
     "@tamagui/shorthands": 1.0.1-beta.193
     "@tamagui/theme-base": 1.0.1-beta.193
     expo-linking: ^3.2.2
