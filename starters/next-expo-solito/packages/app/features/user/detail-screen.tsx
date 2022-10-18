@@ -1,5 +1,5 @@
 import { Button, Paragraph, YStack } from '@my/ui'
-import { ChevronLeft } from '@tamagui/feather-icons'
+import { ChevronLeft } from '@tamagui/lucide-icons'
 import React from 'react'
 import { createParam } from 'solito'
 import { useLink } from 'solito/link'

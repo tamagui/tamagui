@@ -6128,18 +6128,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/feather-icons@npm:^1.0.1-beta.193":
-  version: 1.0.1-beta.193
-  resolution: "@tamagui/feather-icons@npm:1.0.1-beta.193"
-  dependencies:
-    "@tamagui/core": ^1.0.1-beta.193
-    react: "*"
-    react-dom: "*"
-    react-native-svg: ^12.4.3
-  checksum: ae384602aeaa895cdc0f553f0fcaa1c883cd74a7367847f5684c8094f818753ac4bd70794d26bccc6ef98b9da6e3f21608519c95b5f69d976bdf9aab54292086
-  languageName: node
-  linkType: hard
-
 "@tamagui/focus-scope@^1.0.1-beta.193, @tamagui/focus-scope@workspace:packages/focus-scope":
   version: 0.0.0-use.local
   resolution: "@tamagui/focus-scope@workspace:packages/focus-scope"
@@ -6281,7 +6269,6 @@ __metadata:
     "@tamagui/config-base": ^1.0.1-beta.193
     "@tamagui/core": ^1.0.1-beta.193
     "@tamagui/demos": ^1.0.1-beta.193
-    "@tamagui/feather-icons": ^1.0.1-beta.193
     "@tamagui/font-inter": ^1.0.1-beta.193
     "@tamagui/lucide-icons": ^1.0.1-beta.193
     "@tamagui/shorthands": ^1.0.1-beta.193
@@ -6632,7 +6619,6 @@ __metadata:
     "@tamagui/colors": ^1.0.1-beta.193
     "@tamagui/core": ^1.0.1-beta.193
     "@tamagui/demos": ^1.0.1-beta.193
-    "@tamagui/feather-icons": ^1.0.1-beta.193
     "@tamagui/font-inter": ^1.0.1-beta.193
     "@tamagui/lucide-icons": ^1.0.1-beta.193
     "@tamagui/sandbox-ui": ^1.0.1-beta.193
@@ -6816,7 +6802,6 @@ __metadata:
     "@tamagui/colors": ^1.0.1-beta.193
     "@tamagui/config-base": ^1.0.1-beta.193
     "@tamagui/demos": ^1.0.1-beta.193
-    "@tamagui/feather-icons": ^1.0.1-beta.193
     "@tamagui/font-fira-mono": ^1.0.1-beta.193
     "@tamagui/font-inter": ^1.0.1-beta.193
     "@tamagui/font-silkscreen": ^1.0.1-beta.193

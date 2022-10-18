@@ -223,7 +223,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
             if (
               // feather icons uses react-native-svg which needs to be aliased
-              // fullPath.includes('/feather-icons/') ||
+              // fullPath.includes('/lucide-icons/') ||
               fullPath.startsWith('react-native-web') ||
               fullPath.includes(`node_modules${SEP}react-native-web`) ||
               new RegExp(`^(react-dom|react)${SEP}$`).test(fullPath)

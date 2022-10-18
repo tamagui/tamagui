@@ -1,4 +1,4 @@
-import { ArrowRight } from '@tamagui/feather-icons'
+import { ArrowRight } from '@tamagui/lucide-icons'
 
 export function Icon() {
   return <ArrowRight />
