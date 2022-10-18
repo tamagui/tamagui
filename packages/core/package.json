@@ -50,7 +50,7 @@
     "@types/node": "^16.11.9",
     "@types/react": "^18.0.15",
     "csstype": "^3.0.10",
-    "esbuild": "^0.15.6",
+    "esbuild": "^0.15.11",
     "react": "*",
     "react-dom": "*",
     "typescript": "^4.7.4",

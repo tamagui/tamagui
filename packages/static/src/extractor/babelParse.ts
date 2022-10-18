@@ -1,4 +1,5 @@
 import * as babelParser from '@babel/parser'
+import * as t from '@babel/types'
 
 const plugins: babelParser.ParserPlugin[] = [
   'asyncGenerators',
@@ -22,6 +23,6 @@ export const parserOptions: babelParser.ParserOptions = Object.freeze({
 
 const parser = babelParser.parse.bind(babelParser)
 
-export function babelParse(code: string | Buffer): any {
-  return parser(code.toString(), parserOptions)
+export function babelParse(code: string | Buffer): t.File {
+  return parser(code.toString(), parserOptions) as any
 }

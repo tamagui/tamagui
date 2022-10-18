@@ -386,7 +386,7 @@ export async function extractToClassNames({
     .trim()
 
   const result = generate(
-    ast,
+    ast as any,
     {
       concise: false,
       filename: sourcePath,

@@ -70,7 +70,7 @@ export function getPropValueFromAttributes(
             return false
           }
           throw new Error(
-            `unsupported spread of type "${attr.argument.type}": ${generate(attr).code}`
+            `unsupported spread of type "${attr.argument.type}": ${generate(attr as any).code}`
           )
         }
         return false

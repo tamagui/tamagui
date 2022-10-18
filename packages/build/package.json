@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "chokidar": "^3.5.2",
-    "esbuild": "^0.15.6",
+    "esbuild": "^0.15.11",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
     "fs-extra": "^10.1.0",

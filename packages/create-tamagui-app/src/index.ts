@@ -241,10 +241,7 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
   try {
     await installDependenciesAsync(resolvedProjectPath, packageManager)
   } catch (e: any) {
-    console.error(
-      '[tamagui] error installing node_modules with ' + packageManager + '\n',
-      e?.message
-    )
+    console.error('[tamagui] error installing with ' + packageManager + '\n', e?.message)
     process.exit(1)
   }
 

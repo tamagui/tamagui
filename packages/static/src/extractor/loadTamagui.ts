@@ -2,24 +2,20 @@ import { readFileSync } from 'fs'
 /* eslint-disable no-console */
 import { basename, dirname, extname, join, relative, sep } from 'path'
 
+import generate from '@babel/generator'
+import traverse from '@babel/traverse'
+import * as t from '@babel/types'
 import { Color, colorLog } from '@tamagui/cli-color'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/core-node'
 import { createTamagui } from '@tamagui/core-node'
 import esbuild from 'esbuild'
-import {
-  ensureDir,
-  existsSync,
-  pathExists,
-  remove,
-  removeSync,
-  stat,
-  writeFile,
-  writeFileSync,
-} from 'fs-extra'
+import { ensureDir, existsSync, removeSync, writeFileSync } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants.js'
 import { getNameToPaths, registerRequire, unregisterRequire } from '../require.js'
+import { babelParse } from './babelParse'
+import { bundle } from './bundle'
 
 type NameToPaths = {
   [key: string]: Set<string>
@@ -108,14 +104,14 @@ Tamagui built config and components:`
 
   await Promise.all([
     props.config
-      ? bundle(props, {
+      ? bundle({
           entryPoints: [configEntry],
           external,
           outfile: configOutPath,
         })
       : null,
     ...baseComponents.map((componentModule, i) => {
-      return bundle(props, {
+      return bundle({
         entryPoints: [componentModule],
         resolvePlatformSpecificEntries: true,
         external,
@@ -124,61 +120,64 @@ Tamagui built config and components:`
     }),
   ])
 
-  registerRequire(props.bubbleErrors)
-  const out = require(configOutPath)
-  const config = out.default || out
-  unregisterRequire()
+  try {
+    registerRequire(props.bubbleErrors)
+    const out = require(configOutPath)
+    const config = out.default || out
 
-  if (!config) {
-    throw new Error(`No config: ${config}`)
-  }
-
-  let components = loadComponents({
-    ...props,
-    components: componentOutPaths,
-  })
-
-  if (!components) {
-    throw new Error(`No components found: ${componentOutPaths.join(', ')}`)
-  }
-
-  // map from built back to original module names
-  for (const component of components) {
-    component.moduleName = baseComponents[componentOutPaths.indexOf(component.moduleName)]
-    if (!component.moduleName) {
-      throw new Error(`Tamagui internal err`)
+    if (!config) {
+      throw new Error(`No config: ${config}`)
     }
+
+    let components = loadComponents({
+      ...props,
+      components: componentOutPaths,
+    })
+
+    if (!components) {
+      throw new Error(`No components found: ${componentOutPaths.join(', ')}`)
+    }
+
+    // map from built back to original module names
+    for (const component of components) {
+      component.moduleName = baseComponents[componentOutPaths.indexOf(component.moduleName)]
+      if (!component.moduleName) {
+        throw new Error(`Tamagui internal err`)
+      }
+    }
+
+    // always load core so we can optimize if directly importing
+    const coreComponents = loadComponents({
+      ...props,
+      components: ['@tamagui/core-node'],
+    })
+    if (coreComponents) {
+      coreComponents[0].moduleName = '@tamagui/core'
+      components = [...components, ...coreComponents]
+    }
+
+    if (process.env.NODE_ENV === 'development' && process.env.DEBUG?.startsWith('tamagui')) {
+      console.log('Loaded components', components)
+    }
+
+    cache[key] = {
+      components,
+      nameToPaths: {},
+      tamaguiConfig: config,
+    }
+
+    // init core-node
+    createTamagui(cache[key].tamaguiConfig)
+
+    resolver(cache[key])
+
+    return cache[key]
+  } finally {
+    unregisterRequire()
   }
-
-  // always load core so we can optimize if directly importing
-  const coreComponents = loadComponents({
-    ...props,
-    components: ['@tamagui/core-node'],
-  })
-  if (coreComponents) {
-    coreComponents[0].moduleName = '@tamagui/core'
-    components = [...components, ...coreComponents]
-  }
-
-  if (process.env.NODE_ENV === 'development' && process.env.DEBUG?.startsWith('tamagui')) {
-    console.log('Loaded components', components)
-  }
-
-  cache[key] = {
-    components,
-    nameToPaths: {},
-    tamaguiConfig: config,
-  }
-
-  // init core-node
-  createTamagui(cache[key].tamaguiConfig)
-
-  resolver(cache[key])
-
-  return cache[key]
 }
 
-function resolveWebOrNativeSpecificEntry(entry: string) {
+export function resolveWebOrNativeSpecificEntry(entry: string) {
   const resolved = require.resolve(entry)
   const ext = extname(resolved)
   const fileName = basename(resolved).replace(ext, '')
@@ -190,105 +189,13 @@ function resolveWebOrNativeSpecificEntry(entry: string) {
   return entry
 }
 
-async function bundle(
-  props: Props,
-  {
-    entryPoints,
-    resolvePlatformSpecificEntries,
-    ...options
-  }: Omit<Partial<esbuild.BuildOptions>, 'entryPoints'> & {
-    outfile: string
-    entryPoints: string[]
-    resolvePlatformSpecificEntries?: boolean
-  },
-  aliases?: Record<string, string>
-) {
-  const alias = require('@tamagui/core-node').aliasPlugin
-  // until i do fancier things w plugins:
-  const lockFile = join(dirname(options.outfile), basename(options.outfile, '.lock'))
-  const lockStat = await stat(lockFile).catch(() => {
-    // ok
-  })
-  const lockedMsAgo = !lockStat
-    ? Infinity
-    : new Date().getTime() - new Date(lockStat.mtime).getTime()
-  if (lockedMsAgo < 500) {
-    if (process.env.DEBUG?.startsWith('tamagui')) {
-      console.log(`Waiting for existing build`, entryPoints)
-    }
-    let tries = 5
-    while (tries--) {
-      if (await pathExists(options.outfile)) {
-        return
-      } else {
-        await new Promise((res) => setTimeout(res, 50))
-      }
-    }
-  }
-
-  void writeFile(lockFile, '')
-
-  if (process.env.DEBUG?.startsWith('tamagui')) {
-    console.log(`Building`, entryPoints)
-  }
-
-  const tsconfig = join(__dirname, '..', '..', 'tamagui.tsconfig.json')
-
-  const resolvedEntryPoints = !resolvePlatformSpecificEntries
-    ? entryPoints
-    : entryPoints.map(resolveWebOrNativeSpecificEntry)
-
-  return esbuild.build({
-    bundle: true,
-    ...options,
-    entryPoints: resolvedEntryPoints,
-    format: 'cjs',
-    target: 'node18',
-    jsx: 'transform',
-    jsxFactory: 'react',
-    allowOverwrite: true,
-    keepNames: true,
-    platform: 'node',
-    tsconfig,
-    loader: {
-      '.js': 'jsx',
-    },
-    logLevel: 'warning',
-    plugins: [
-      {
-        name: 'external',
-        setup(build) {
-          build.onResolve({ filter: /@tamagui\/core/ }, (args) => {
-            return {
-              path: '@tamagui/core-node',
-              external: true,
-            }
-          })
-
-          build.onResolve({ filter: /^(react-native|react-native\/.*)$/ }, (args) => {
-            return {
-              path: 'react-native-web-lite',
-              external: true,
-            }
-          })
-        },
-      },
-      alias({
-        'react-native-svg': require.resolve('@tamagui/react-native-svg'),
-        'react-native-safe-area-context': require.resolve('@tamagui/fake-react-native'),
-        'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
-        'react-native-reanimated': require.resolve('@tamagui/proxy-worm'),
-        ...aliases,
-      }),
-    ],
-  })
-}
-
-const esbuildOptions: esbuild.BuildOptions = {
-  target: 'es2019',
+const esbuildOptions = {
+  loader: 'tsx',
+  target: 'es2018',
   format: 'cjs',
   jsx: 'transform',
-}
+  platform: 'node',
+} as const
 
 // loads in-process using esbuild-register
 export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
@@ -386,6 +293,47 @@ function interopDefaultExport(mod: any) {
 
 const cacheComponents: Record<string, LoadedComponents[]> = {}
 
+function transformAddExports(ast: t.File) {
+  const usedNames = new Set<string>()
+
+  // avoid clobbering
+  traverse(ast, {
+    ExportNamedDeclaration(nodePath) {
+      if (nodePath.node.specifiers) {
+        for (const spec of nodePath.node.specifiers) {
+          usedNames.add(t.isIdentifier(spec.exported) ? spec.exported.name : spec.exported.value)
+        }
+      }
+    },
+  })
+
+  traverse(ast, {
+    VariableDeclaration(nodePath) {
+      // top level only
+      if (!t.isProgram(nodePath.parent)) return
+      const decs = nodePath.node.declarations
+      if (decs.length > 1) return
+      const [dec] = decs
+      if (!t.isIdentifier(dec.id)) return
+      if (!dec.init) return
+      if (usedNames.has(dec.id.name)) return
+      usedNames.add(dec.id.name)
+      nodePath.replaceWith(
+        t.exportNamedDeclaration(t.variableDeclaration('let', [dec]), [
+          t.exportSpecifier(t.identifier(dec.id.name), t.identifier(dec.id.name)),
+        ])
+      )
+    },
+  })
+
+  return generate(ast as any, {
+    concise: false,
+    filename: 'test.tsx',
+    retainLines: false,
+    sourceMaps: false,
+  }).code
+}
+
 function loadComponents(props: Props): null | LoadedComponents[] {
   const componentsModules = props.components
   const key = componentsModules.join('')
@@ -395,46 +343,67 @@ function loadComponents(props: Props): null | LoadedComponents[] {
   try {
     const info: LoadedComponents[] = componentsModules.flatMap((name) => {
       const extension = extname(name)
-      const isLocal = extension.includes('.')
-      const fileContents = isLocal ? readFileSync(name, 'utf-8') : ''
-      const localTmpFile = join(dirname(name), `.tamagui-dynamic-eval${extension || '.tsx'}`)
+      const isLocal = Boolean(extension)
+      // during props.config pass we are passing in pre-bundled stuff
+      const writeTmp = isLocal && !props.config
+      const fileContents = writeTmp ? readFileSync(name, 'utf-8') : ''
+      const loadModule = writeTmp
+        ? join(dirname(name), `.tamagui-dynamic-eval-${basename(name)}.tsx`)
+        : name
+      let writtenContents = fileContents
+      let didBabel = false
+
+      const esbuildit = (src: string, target?: 'modern') =>
+        esbuild.transformSync(src, {
+          ...esbuildOptions,
+          ...(target === 'modern' && {
+            target: 'es2022',
+            jsx: 'transform',
+            loader: 'tsx',
+            platform: 'neutral',
+            format: 'esm',
+          }),
+        }).code
 
       function attemptLoad({ forceExports = false } = {}) {
-        const shouldWriteTmpFile = isLocal && forceExports
-
         // need to write to tsx to enable reading it properly (:/ esbuild-register)
-        if (shouldWriteTmpFile) {
-          // could babel but this works alright
-          const tmpFile = forceExports
-            ? fileContents
-                .split('\n')
-                .map((l) => l.replace(/^(const|let)(\s[a-z]+)/gi, 'export $1$2'))
-                .join('\n')
-            : fileContents
+        if (writeTmp) {
+          writtenContents = forceExports
+            ? esbuildit(transformAddExports(babelParse(esbuildit(fileContents, 'modern'))))
+            : esbuildit(fileContents)
 
-          if (process.env.DEBUG?.startsWith('tamagui')) {
-            console.log('temp file to read all exports', tmpFile)
-          }
-          // make everything export
-          writeFileSync(localTmpFile, tmpFile)
+          writeFileSync(loadModule, writtenContents)
         }
-
         return {
           moduleName: name,
           nameToInfo: getComponentStaticConfigByName(
             name,
-            interopDefaultExport(require(shouldWriteTmpFile ? localTmpFile : name))
+            interopDefaultExport(require(loadModule))
           ),
         }
       }
 
+      const dispose = () => {
+        writeTmp && removeSync(loadModule)
+      }
+
       try {
-        return attemptLoad({
+        const res = attemptLoad({
           forceExports: true,
         })
-      } catch {
+        didBabel = true
+        return res
+      } catch (err) {
+        console.log('babel err', err, writtenContents)
         // ok
+        writtenContents = fileContents
+        if (process.env.DEBUG?.startsWith('tamagui')) {
+          console.log(`Error parsing babel likely`, err)
+        }
+      } finally {
+        dispose()
       }
+
       try {
         return attemptLoad({
           forceExports: false,
@@ -443,26 +412,32 @@ function loadComponents(props: Props): null | LoadedComponents[] {
         if (!process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD) {
           console.log(`
 
-⚠️ Tamagui attempted but failed to dynamically load components in "${name}".
-This is ok, it just won't completely optimize this file, but it will still
-optimize others, and the rest will work fine by generating at runtime.
-    
-  You can quiet this warning most of the time with the environment variable:
+Tamagui attempted but failed to dynamically load components in:
+  ${name}
+
+This will leave some styled() tags unoptimized.
+Disable this file (or dynamic loading altogether):
+
+  disableExtractFoundComponents: ['${name}'] | true
+
+Quiet this warning with environment variable:
       
   TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD=1
 
-  Or just disable it for this component in your compiler settings:
-
-    disableExtractFoundComponents: ['${name}'] | true
-
 `)
           console.log(err)
+          console.log(
+            `At: ${loadModule}`,
+            `\ndidBabel: ${didBabel}`,
+            `\nIn:`,
+            writtenContents,
+            `\nwriteTmp: `,
+            writeTmp
+          )
         }
         return []
       } finally {
-        if (isLocal) {
-          removeSync(localTmpFile)
-        }
+        dispose()
       }
     })
     cacheComponents[key] = info

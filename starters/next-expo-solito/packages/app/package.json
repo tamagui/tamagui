@@ -9,7 +9,7 @@
     "@react-navigation/native-stack": "^6.7.0",
     "@tamagui/animations-react-native": "1.0.1-beta.193",
     "@tamagui/colors": "1.0.1-beta.193",
-    "@tamagui/feather-icons": "1.0.1-beta.193",
+    "@tamagui/lucide-icons": "1.0.1-beta.193",
     "@tamagui/font-inter": "1.0.1-beta.193",
     "@tamagui/shorthands": "1.0.1-beta.193",
     "@tamagui/theme-base": "1.0.1-beta.193",

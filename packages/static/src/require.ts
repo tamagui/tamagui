@@ -32,7 +32,7 @@ export function registerRequire(bubbleErrors?: boolean) {
       // eslint-disable-next-line no-console
       console.log('tamagui:require', path)
     }
-    if (path.endsWith('.css') || path.endsWith('.json') || path.endsWith('.ttf')) {
+    if (/\.(gif|jpe?g|png|svg|ttf|otf|woff2?|bmp|webp)$/.test(path)) {
       return {}
     }
     if (

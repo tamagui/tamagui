@@ -38,7 +38,7 @@ export function normalizeTernaries(ternaries: Ternary[]) {
       }
     }
 
-    const key = generate(ternaryTest).code
+    const key = generate(ternaryTest as any).code
 
     if (!ternariesByKey[key]) {
       ternariesByKey[key] = {

@@ -1,4 +1,4 @@
-import * as FeatherIcons from '@tamagui/feather-icons'
+import * as FeatherIcons from '@tamagui/lucide-icons'
 import React from 'react'
 import { useMemo, useState } from 'react'
 import { ScrollView } from 'react-native'

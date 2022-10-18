@@ -58,7 +58,7 @@ export const ternaryStr = (x: Ternary) => {
     ? x.test.name
     : t.isMemberExpression(x.test)
     ? [x.test.object['name'], x.test.property['name']]
-    : generate(x.test).code
+    : generate(x.test as any).code
   return [
     'ternary(',
     conditional,
