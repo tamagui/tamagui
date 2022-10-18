@@ -9,11 +9,12 @@ export declare type ExtractedResponse = {
     ast: t.File;
     map: any;
 };
-export declare function extractToClassNames({ extractor, source, sourcePath, options, shouldPrintDebug, }: {
+export declare type ExtractToClassNamesProps = {
     extractor: Extractor;
     source: string | Buffer;
     sourcePath: string;
     options: TamaguiOptions;
     shouldPrintDebug: boolean | 'verbose';
-}): Promise<ExtractedResponse | null>;
+};
+export declare function extractToClassNames({ extractor, source, sourcePath, options, shouldPrintDebug, }: ExtractToClassNamesProps): Promise<ExtractedResponse | null>;
 //# sourceMappingURL=extractToClassNames.d.ts.map

@@ -1,6 +1,10 @@
-import * as babel from '@babel/core'
+import { tmpdir } from 'os'
+import { join } from 'path'
 
-import { createExtractor, extractToClassNames } from '../../src'
+import * as babel from '@babel/core'
+import { readFile, remove, writeFile } from 'fs-extra'
+
+import { ExtractToClassNamesProps, createExtractor, extractToClassNames } from '../../src'
 
 export async function extractBabel(code: string) {
   return await babel.transformAsync(code, {
@@ -9,15 +13,24 @@ export async function extractBabel(code: string) {
   })
 }
 
-export async function extractForWeb(source: string) {
-  return await extractToClassNames({
-    extractor: createExtractor(),
-    options: {
-      components: ['@tamagui/core', '@tamagui/test-design-system'],
-      config: './tests/lib/tamagui.config.js',
-    },
-    sourcePath: '/tmp/test.js',
-    shouldPrintDebug: false,
-    source,
-  })
+let i = 0
+export async function extractForWeb(source: string, opts?: Partial<ExtractToClassNamesProps>) {
+  const tmpfile = join(__dirname, `${++i}.tsx`)
+  await writeFile(tmpfile, source)
+  try {
+    return await extractToClassNames({
+      extractor: createExtractor(),
+      sourcePath: tmpfile,
+      shouldPrintDebug: false,
+      source,
+      ...opts,
+      options: {
+        components: ['@tamagui/core', '@tamagui/test-design-system'],
+        config: './tests/lib/tamagui.config.js',
+        ...opts?.options,
+      },
+    })
+  } finally {
+    await remove(tmpfile)
+  }
 }

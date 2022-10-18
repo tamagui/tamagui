@@ -36,19 +36,21 @@ export type ExtractedResponse = {
   map: any // RawSourceMap from 'source-map'
 }
 
+export type ExtractToClassNamesProps = {
+  extractor: Extractor
+  source: string | Buffer
+  sourcePath: string
+  options: TamaguiOptions
+  shouldPrintDebug: boolean | 'verbose'
+}
+
 export async function extractToClassNames({
   extractor,
   source,
   sourcePath,
   options,
   shouldPrintDebug,
-}: {
-  extractor: Extractor
-  source: string | Buffer
-  sourcePath: string
-  options: TamaguiOptions
-  shouldPrintDebug: boolean | 'verbose'
-}): Promise<ExtractedResponse | null> {
+}: ExtractToClassNamesProps): Promise<ExtractedResponse | null> {
   const tm = timer()
 
   if (typeof source !== 'string') {
