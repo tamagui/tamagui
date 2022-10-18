@@ -1,4 +1,4 @@
-import { FastForward, Pause, Rewind } from '@tamagui/feather-icons'
+import { FastForward, Pause, Rewind } from '@tamagui/lucide-icons'
 import React, { memo } from 'react'
 import {
   Button,

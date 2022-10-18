@@ -1,4 +1,4 @@
-import { Tag } from '@tamagui/feather-icons'
+import { Tag } from '@tamagui/lucide-icons'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'

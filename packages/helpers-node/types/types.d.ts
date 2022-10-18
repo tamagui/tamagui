@@ -2,8 +2,8 @@ export interface TamaguiOptions {
     components: string[];
     config?: string;
     importsWhitelist?: string[];
-    disable?: boolean;
-    disableExtraction?: boolean;
+    disable?: boolean | string[];
+    disableExtraction?: boolean | string[];
     disableFlattening?: boolean;
     disableDebugAttr?: boolean;
     disableExtractInlineMedia?: boolean;

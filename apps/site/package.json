@@ -28,6 +28,7 @@
     "@tamagui/font-inter": "^1.0.1-beta.193",
     "@tamagui/font-silkscreen": "^1.0.1-beta.193",
     "@tamagui/logo": "^1.0.1-beta.193",
+    "@tamagui/lucide-icons": "^1.0.1-beta.193",
     "@tamagui/menu": "^1.0.1-beta.193",
     "@tamagui/next-theme": "^1.0.1-beta.193",
     "@tamagui/remove-scroll": "^1.0.1-beta.193",

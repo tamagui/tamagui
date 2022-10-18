@@ -1,4 +1,4 @@
-import { Menu } from '@tamagui/feather-icons'
+import { Menu } from '@tamagui/lucide-icons'
 import { LogoWords, TamaguiLogo, tints } from '@tamagui/logo'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'

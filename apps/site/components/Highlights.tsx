@@ -1,4 +1,4 @@
-import { ExternalLink } from '@tamagui/feather-icons'
+import { ExternalLink } from '@tamagui/lucide-icons'
 import React from 'react'
 import {
   H2,

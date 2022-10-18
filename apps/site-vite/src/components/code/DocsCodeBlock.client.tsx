@@ -1,4 +1,4 @@
-import { CheckCircle, Clipboard } from '@tamagui/feather-icons'
+import { CheckCircle, Clipboard } from '@tamagui/lucide-icons'
 import copy from 'copy-to-clipboard'
 import React from 'react'
 import { forwardRef, useEffect, useRef, useState } from 'react'

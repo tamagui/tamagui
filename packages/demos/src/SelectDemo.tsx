@@ -1,4 +1,4 @@
-import { Check, ChevronDown, ChevronUp } from '@tamagui/feather-icons'
+import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
 import { LinearGradient, Select, YStack } from 'tamagui'
 

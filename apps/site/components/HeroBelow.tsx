@@ -1,4 +1,4 @@
-import { ChevronRight, Code, Cpu, Layers } from '@tamagui/feather-icons'
+import { ChevronRight, Code, Cpu, Layers } from '@tamagui/lucide-icons'
 import Link from 'next/link'
 import { memo, useEffect } from 'react'
 import { H3, Paragraph, XStack, YStack, YStackProps } from 'tamagui'

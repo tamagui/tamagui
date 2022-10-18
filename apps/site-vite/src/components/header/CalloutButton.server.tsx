@@ -1,4 +1,4 @@
-import { Tag } from '@tamagui/feather-icons'
+import { Tag } from '@tamagui/lucide-icons'
 import { Link } from '@tamagui/unagi'
 import React from 'react'
 import { Button, SizableText, Text } from 'tamagui'

@@ -1,4 +1,4 @@
-import { Menu as MenuIcon } from '@tamagui/feather-icons'
+import { Menu as MenuIcon } from '@tamagui/lucide-icons'
 import { Menu } from '@tamagui/menu'
 import React, { useState } from 'react'
 import { Button, H4, Paragraph, YStack } from 'tamagui'

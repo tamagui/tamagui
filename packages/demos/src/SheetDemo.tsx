@@ -1,4 +1,4 @@
-import { ChevronDown } from '@tamagui/feather-icons'
+import { ChevronDown } from '@tamagui/lucide-icons'
 import { Sheet } from '@tamagui/sheet'
 import React, { useState } from 'react'
 import { Button, Circle, Paragraph, XStack, YStack, isWeb } from 'tamagui'

@@ -1,4 +1,4 @@
-import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/feather-icons'
+import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/lucide-icons'
 import React from 'react'
 import { ListItem, Separator, XStack, YGroup } from 'tamagui'
 

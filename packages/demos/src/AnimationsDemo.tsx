@@ -1,4 +1,4 @@
-import { Play } from '@tamagui/feather-icons'
+import { Play } from '@tamagui/lucide-icons'
 import { LogoIcon } from '@tamagui/logo'
 import React from 'react'
 import { Button, Square, useControllableState } from 'tamagui'

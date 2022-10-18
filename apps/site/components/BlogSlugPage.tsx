@@ -1,7 +1,7 @@
 import { Container } from '@components/Container'
 import { components } from '@components/MDXComponents'
 import { authors } from '@data/authors'
-import { ArrowLeft } from '@tamagui/feather-icons'
+import { ArrowLeft } from '@tamagui/lucide-icons'
 import { format, parseISO } from 'date-fns'
 import NextLink from 'next/link'
 import Link from 'next/link'

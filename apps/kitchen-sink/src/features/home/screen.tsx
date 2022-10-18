@@ -1,5 +1,5 @@
 import { variableToString } from '@tamagui/core'
-import { ChevronRight, Moon, Sun } from '@tamagui/feather-icons'
+import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
@@ -31,7 +31,7 @@ export function HomeScreen() {
         </YStack>
 
         {/* fix media + space */}
-        {/* 
+        {/*
         <XStack space>
           <Square size={50} bc="red" />
           <Square $sm={{ display: 'none' }} size={50} bc="red" />
