@@ -1,0 +1,16 @@
+{
+  "name": "@tamagui/react-17-patch",
+  "version": "1.0.1-beta.193",
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "true",
+    "watch": "true",
+    "clean": "true"
+  },
+  "dependencies": {
+    "@reach/auto-id": "^0.18.0"
+  }
+}
