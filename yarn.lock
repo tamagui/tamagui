@@ -6936,6 +6936,7 @@ __metadata:
     babel-literal-to-ast: ^2.1.0
     babel-loader: ^8.2.5
     css-loader: ^5.2.4
+    dedent: ^0.7.0
     esbuild: ^0.15.6
     esbuild-loader: ^2.19.0
     esbuild-register: ^3.3.3
