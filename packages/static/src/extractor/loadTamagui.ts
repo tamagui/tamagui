@@ -1,3 +1,4 @@
+import { readFileSync } from 'fs'
 /* eslint-disable no-console */
 import { basename, dirname, extname, join, relative, sep } from 'path'
 
@@ -6,7 +7,16 @@ import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/core-node'
 import { createTamagui } from '@tamagui/core-node'
 import esbuild from 'esbuild'
-import { ensureDir, existsSync, pathExists, stat, writeFile } from 'fs-extra'
+import {
+  ensureDir,
+  existsSync,
+  pathExists,
+  remove,
+  removeSync,
+  stat,
+  writeFile,
+  writeFileSync,
+} from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants.js'
 import { getNameToPaths, registerRequire, unregisterRequire } from '../require.js'
@@ -295,16 +305,11 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
     // lets shim require and avoid importing react-native + react-native-web
     // we just need to read the config around them
     process.env.IS_STATIC = 'is_static'
-    // @ts-ignore
-    if (typeof globalThis['__DEV__'] === 'undefined') {
-      // @ts-ignore
-      globalThis['__DEV__'] = process.env.NODE_ENV === 'development'
-    }
+    globalThis['__DEV__' as any] = process.env.NODE_ENV === 'development'
 
     try {
-      // import config
+      // config
       let tamaguiConfig: TamaguiInternalConfig | null = null
-
       if (props.config) {
         const configPath = join(process.cwd(), props.config)
         const exp = require(configPath)
@@ -317,17 +322,18 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
         }
       }
 
+      // components
       const components = loadComponents(props)
       if (!components) {
         throw new Error(`No components loaded`)
       }
-
       if (process.env.DEBUG === 'tamagui') {
         console.log(`components`, components)
       }
 
       // undo shims
       process.env.IS_STATIC = undefined
+      delete globalThis['__DEV__' as any]
 
       // set up core-node
       if (props.config && tamaguiConfig) {
@@ -387,11 +393,55 @@ function loadComponents(props: Props): null | LoadedComponents[] {
     return cacheComponents[key]
   }
   try {
-    const info: LoadedComponents[] = componentsModules.map((name) => {
-      const imported = interopDefaultExport(require(name))
-      return {
-        moduleName: name,
-        nameToInfo: getComponentStaticConfigByName(name, imported),
+    const info: LoadedComponents[] = componentsModules.flatMap((name) => {
+      const extension = extname(name)
+      const isLocal = extension.includes('.')
+      const localTmpFile = join(dirname(name), `.tamagui-dynamic-eval${extension || '.tsx'}`)
+      const requirePath = isLocal ? localTmpFile : name
+      try {
+        if (isLocal) {
+          // could babel but this works?
+          const allexported = readFileSync(name, 'utf-8')
+            .split('\n')
+            .map((l) => l.replace(/^\s*(const|let)(\s)/gi, 'export $1$2'))
+            .join('\n')
+
+          if (process.env.DEBUG?.startsWith('tamagui')) {
+            console.log('allexported', allexported)
+          }
+
+          // make everything export
+          writeFileSync(localTmpFile, allexported)
+        }
+        const imported = interopDefaultExport(require(requirePath))
+        return {
+          moduleName: name,
+          nameToInfo: getComponentStaticConfigByName(name, imported),
+        }
+      } catch (err) {
+        if (!process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD) {
+          console.log(`
+
+⚠️ Tamagui attempted but failed to dynamically load components in "${name}".
+This is ok, it just won't completely optimize this file, but it will still
+optimize others, and the rest will work fine by generating at runtime.
+    
+  You can quiet this warning most of the time with the environment variable:
+      
+  TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD=1
+
+  Or just disable it for this component in your compiler settings:
+
+    disableExtractFoundComponents: ['${name}'] | true
+
+`)
+          console.log(err)
+        }
+        return []
+      } finally {
+        if (isLocal) {
+          removeSync(localTmpFile)
+        }
       }
     })
     cacheComponents[key] = info

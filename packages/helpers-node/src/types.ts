@@ -15,7 +15,7 @@ export interface TamaguiOptions {
   prefixLogs?: string
 
   // probably non user options
-  disableExtractFoundComponents?: boolean
+  disableExtractFoundComponents?: boolean | string[]
   evaluateVars?: boolean
   cssPath?: string
   cssData?: any

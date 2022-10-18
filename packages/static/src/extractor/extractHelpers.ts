@@ -7,7 +7,6 @@ import findRoot from 'find-root'
 import { memoize } from 'lodash'
 
 import type { ExtractedAttr, TamaguiOptionsWithFileInfo, Ternary } from '../types.js'
-import { LoadedComponents } from './loadTamagui.js'
 
 // import { astToLiteral } from './literalToAst'
 

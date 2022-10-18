@@ -387,7 +387,13 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         let Component = getValidImportedComponent(name)
 
         if (!Component) {
-          if (disableExtractFoundComponents) {
+          if (disableExtractFoundComponents === true) {
+            return
+          }
+          if (
+            typeof disableExtractFoundComponents === 'string' &&
+            disableExtractFoundComponents.includes(name)
+          ) {
             return
           }
 
@@ -403,17 +409,22 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
               components: [sourcePath],
             })
 
-            if (out?.components) {
-              propsWithFileInfo.allLoadedComponents = [
-                ...propsWithFileInfo.allLoadedComponents,
-                ...out.components,
-              ]
+            if (!out?.components) {
+              if (shouldPrintDebug) {
+                logger.info(`Couldn't load, got ${out}`)
+              }
+              return
             }
 
-            Component = getValidImportedComponent(name)
+            propsWithFileInfo.allLoadedComponents = [
+              ...propsWithFileInfo.allLoadedComponents,
+              ...out.components,
+            ]
+
+            Component = out.components.flatMap((x) => x.nameToInfo[name] ?? [])[0]
 
             if (shouldPrintDebug) {
-              logger.info([`Loaded`, Object.keys(out.components).join(', '), !!Component].join(' '))
+              logger.info([`Tamagui Loaded`, JSON.stringify(out.components), !!Component].join(' '))
             }
           } catch (err: any) {
             if (shouldPrintDebug) {

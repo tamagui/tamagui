@@ -11,7 +11,7 @@ export interface TamaguiOptions {
     excludeReactNativeWebExports?: string[];
     logTimings?: boolean;
     prefixLogs?: string;
-    disableExtractFoundComponents?: boolean;
+    disableExtractFoundComponents?: boolean | string[];
     evaluateVars?: boolean;
     cssPath?: string;
     cssData?: any;
