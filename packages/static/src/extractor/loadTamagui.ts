@@ -3,7 +3,7 @@ import { basename, dirname, extname, join, relative, sep } from 'path'
 
 import { Color, colorLog } from '@tamagui/cli-color'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
-import type { StaticConfig, TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core-node'
+import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/core-node'
 import { createTamagui } from '@tamagui/core-node'
 import esbuild from 'esbuild'
 import { ensureDir, existsSync, pathExists, stat, writeFile } from 'fs-extra'
@@ -15,8 +15,18 @@ type NameToPaths = {
   [key: string]: Set<string>
 }
 
+export type LoadedComponents = {
+  moduleName: string
+  nameToInfo: Record<
+    string,
+    {
+      staticConfig: StaticConfigParsed
+    }
+  >
+}
+
 export type TamaguiProjectInfo = {
-  components: Record<string, TamaguiComponent>
+  components: LoadedComponents[]
   tamaguiConfig: TamaguiInternalConfig
   nameToPaths: NameToPaths
 }
@@ -48,7 +58,6 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
 
   const tmpDir = join(process.cwd(), 'dist', 'tamagui-node')
   const configOutPath = join(tmpDir, `tamagui.config.js`)
-  const includesCore = props.components.includes('@tamagui/core')
   const baseComponents = props.components.filter((x) => x !== '@tamagui/core')
   const componentOutPaths = baseComponents.map((componentModule) =>
     join(
@@ -105,18 +114,40 @@ Tamagui built config and components:`
     }),
   ])
 
-  const coreNode = require('@tamagui/core-node')
-
   registerRequire(props.bubbleErrors)
-  const config = require(configOutPath).default
+  const out = require(configOutPath)
+  const config = out.default || out
   unregisterRequire()
 
-  const components = {
-    ...loadComponents({
-      ...props,
-      components: componentOutPaths,
-    }),
-    ...(includesCore && gatherTamaguiComponentInfo([coreNode])),
+  if (!config) {
+    throw new Error(`No config: ${config}`)
+  }
+
+  let components = loadComponents({
+    ...props,
+    components: componentOutPaths,
+  })
+
+  if (!components) {
+    throw new Error(`No components found: ${componentOutPaths.join(', ')}`)
+  }
+
+  // map from built back to original module names
+  for (const component of components) {
+    component.moduleName = baseComponents[componentOutPaths.indexOf(component.moduleName)]
+    if (!component.moduleName) {
+      throw new Error(`Tamagui internal err`)
+    }
+  }
+
+  // always load core so we can optimize if directly importing
+  const coreComponents = loadComponents({
+    ...props,
+    components: ['@tamagui/core-node'],
+  })
+  if (coreComponents) {
+    coreComponents[0].moduleName = '@tamagui/core'
+    components = [...components, ...coreComponents]
   }
 
   if (process.env.NODE_ENV === 'development' && process.env.DEBUG?.startsWith('tamagui')) {
@@ -287,6 +318,9 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
       }
 
       const components = loadComponents(props)
+      if (!components) {
+        throw new Error(`No components loaded`)
+      }
 
       if (process.env.DEBUG === 'tamagui') {
         console.log(`components`, components)
@@ -296,7 +330,7 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
       process.env.IS_STATIC = undefined
 
       // set up core-node
-      if (tamaguiConfig) {
+      if (props.config && tamaguiConfig) {
         createTamagui(tamaguiConfig as any)
       }
 
@@ -322,7 +356,7 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
         console.error(`Error loading tamagui.config.ts`, err)
       }
       return {
-        components: {},
+        components: [],
         tamaguiConfig: getDefaultTamaguiConfig(),
         nameToPaths: {},
       }
@@ -344,48 +378,53 @@ function interopDefaultExport(mod: any) {
   return mod?.default ?? mod
 }
 
-const cacheComponents = {}
+const cacheComponents: Record<string, LoadedComponents[]> = {}
 
-function loadComponents(props: Props) {
+function loadComponents(props: Props): null | LoadedComponents[] {
   const componentsModules = props.components
   const key = componentsModules.join('')
   if (cacheComponents[key]) {
     return cacheComponents[key]
   }
   try {
-    const requiredModules = componentsModules.map((name) => {
-      return interopDefaultExport(require(name))
+    const info: LoadedComponents[] = componentsModules.map((name) => {
+      const imported = interopDefaultExport(require(name))
+      return {
+        moduleName: name,
+        nameToInfo: getComponentStaticConfigByName(name, imported),
+      }
     })
-    const res = gatherTamaguiComponentInfo(requiredModules)
-    cacheComponents[key] = res
-    return res
+    cacheComponents[key] = info
+    return info
   } catch (err: any) {
     if (props.bubbleErrors) {
       throw err
     }
     console.log(`Tamagui error bundling components`, err.message, err.stack)
+    return null
   }
 }
 
-function gatherTamaguiComponentInfo(packages: any[]) {
-  const components = {}
-  for (const exported of packages) {
-    try {
-      for (const componentName in exported) {
-        const found = getTamaguiComponent(componentName, exported[componentName])
-        if (found) {
-          // remove non-stringifyable
-          const { Component, reactNativeWebComponent, ...sc } = found.staticConfig
-          Object.assign(components, { [componentName]: { staticConfig: sc } })
-        }
+function getComponentStaticConfigByName(name: string, exported: any) {
+  if (!exported || typeof exported !== 'object' || Array.isArray(exported)) {
+    throw new Error(`Invalid export from package ${name}: ${typeof exported}`)
+  }
+  const components: Record<string, { staticConfig: StaticConfigParsed }> = {}
+  try {
+    for (const key in exported) {
+      const found = getTamaguiComponent(key, exported[key])
+      if (found) {
+        // remove non-stringifyable
+        const { Component, reactNativeWebComponent, ...sc } = found.staticConfig
+        components[key] = { staticConfig: sc }
       }
-    } catch (err) {
-      console.error(`Tamagui failed getting components`)
-      if (err instanceof Error) {
-        console.error(err.message, err.stack)
-      } else {
-        console.error(err)
-      }
+    }
+  } catch (err) {
+    console.error(`Tamagui failed getting components`)
+    if (err instanceof Error) {
+      console.error(err.message, err.stack)
+    } else {
+      console.error(err)
     }
   }
   return components
@@ -394,11 +433,11 @@ function gatherTamaguiComponentInfo(packages: any[]) {
 function getTamaguiComponent(
   name: string,
   Component: any
-): undefined | { staticConfig: StaticConfig } {
+): undefined | { staticConfig: StaticConfigParsed } {
   if (name[0].toUpperCase() !== name[0]) {
     return
   }
-  const staticConfig = Component?.staticConfig as StaticConfig | undefined
+  const staticConfig = Component?.staticConfig as StaticConfigParsed | undefined
   if (staticConfig) {
     return Component
   }

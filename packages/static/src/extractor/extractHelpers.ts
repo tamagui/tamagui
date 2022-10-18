@@ -7,6 +7,7 @@ import findRoot from 'find-root'
 import { memoize } from 'lodash'
 
 import type { ExtractedAttr, TamaguiOptionsWithFileInfo, Ternary } from '../types.js'
+import { LoadedComponents } from './loadTamagui.js'
 
 // import { astToLiteral } from './literalToAst'
 
@@ -118,9 +119,9 @@ export function isValidThemeHook(
   return true
 }
 
-export const isInsideComponentPackage = (props: TamaguiOptionsWithFileInfo, srcName: string) => {
+export const isInsideComponentPackage = (props: TamaguiOptionsWithFileInfo, moduleName: string) => {
   return getValidComponentsPaths(props).some((path) => {
-    return srcName.startsWith(path)
+    return moduleName.startsWith(path)
   })
 }
 
@@ -130,15 +131,62 @@ export const isComponentPackage = (props: TamaguiOptionsWithFileInfo, srcName: s
   })
 }
 
-export const isValidImport = (props: TamaguiOptionsWithFileInfo, srcName: string) => {
-  if (typeof srcName !== 'string') {
-    // eslint-disable-next-line no-console
-    console.trace(`Invalid file name: ${srcName}`)
+export function getValidComponent(
+  props: TamaguiOptionsWithFileInfo,
+  moduleName: string,
+  componentName: string
+) {
+  // must be uppercase of course
+  if (componentName[0].toUpperCase() !== componentName[0]) {
     return false
   }
-  return srcName.startsWith('.')
-    ? isInsideComponentPackage(props, srcName)
-    : isComponentPackage(props, srcName)
+
+  for (const loaded of props.allLoadedComponents) {
+    const isInModule = moduleName === '*' || moduleName.startsWith(loaded.moduleName)
+    const foundComponent = loaded.nameToInfo[componentName]
+    // eslint-disable-next-line no-console
+    if (isInModule && foundComponent) {
+      return foundComponent
+    }
+  }
+
+  return null
+}
+
+export const isValidModule = (props: TamaguiOptionsWithFileInfo, moduleName: string) => {
+  if (typeof moduleName !== 'string') {
+    throw new Error(`No module name`)
+  }
+  const isLocal = moduleName.startsWith('.')
+  return {
+    isLocal,
+    isValid: isLocal
+      ? isInsideComponentPackage(props, moduleName)
+      : isComponentPackage(props, moduleName),
+  }
+}
+
+export const getValidImport = (
+  props: TamaguiOptionsWithFileInfo,
+  moduleName: string,
+  componentName?: string
+) => {
+  const { isValid, isLocal } = isValidModule(props, moduleName)
+  if (!isValid || !componentName) {
+    return null
+  }
+  return getValidComponent(props, isLocal ? '*' : moduleName, componentName) || null
+}
+
+export const isValidImport = (
+  props: TamaguiOptionsWithFileInfo,
+  moduleName: string,
+  componentName?: string
+) => {
+  if (!componentName) {
+    return isValidModule(props, moduleName).isValid
+  }
+  return Boolean(getValidImport(props, moduleName, componentName))
 }
 
 const getValidComponentPackages = memoize((props: TamaguiOptionsWithFileInfo) => {

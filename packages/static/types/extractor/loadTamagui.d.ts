@@ -1,9 +1,15 @@
-import type { TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core-node';
+import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/core-node';
 declare type NameToPaths = {
     [key: string]: Set<string>;
 };
+export declare type LoadedComponents = {
+    moduleName: string;
+    nameToInfo: Record<string, {
+        staticConfig: StaticConfigParsed;
+    }>;
+};
 export declare type TamaguiProjectInfo = {
-    components: Record<string, TamaguiComponent>;
+    components: LoadedComponents[];
     tamaguiConfig: TamaguiInternalConfig;
     nameToPaths: NameToPaths;
 };

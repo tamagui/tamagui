@@ -3,7 +3,7 @@ module.exports = {
     [
       '@tamagui/babel-plugin',
       {
-        components: ['tamagui'],
+        components: ['tamagui', '@tamagui/test-design-system'],
         config: './tests/lib/tamagui.config.js',
         forceExtractStyleDefinitions: true,
       },

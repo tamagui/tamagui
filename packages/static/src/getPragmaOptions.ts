@@ -17,7 +17,8 @@ export function getPragmaOptions({
   let shouldPrintDebug: boolean | 'verbose' = false
   let shouldDisable = false
 
-  const firstLine = source.split('\n', 1)[0]
+  // try and avoid too much parsing but sometimes esbuild adds helpers above..
+  const firstLine = source.slice(0, 800).split('\n')[0]
 
   if (firstLine.includes('tamagui-ignore')) {
     shouldDisable = true
