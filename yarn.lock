@@ -3635,6 +3635,7 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "@reach/auto-id@npm:^0.18.0":
   version: 0.18.0
   resolution: "@reach/auto-id@npm:0.18.0"
@@ -3674,6 +3675,25 @@ __metadata:
   resolution: "@react-native-community/cli-config@npm:9.2.1"
   dependencies:
     "@react-native-community/cli-tools": ^9.2.1
+=======
+"@react-native-community/cli-clean@npm:^9.1.0":
+  version: 9.2.1
+  resolution: "@react-native-community/cli-clean@npm:9.2.1"
+  dependencies:
+    "@react-native-community/cli-tools": ^9.2.1
+    chalk: ^4.1.2
+    execa: ^1.0.0
+    prompts: ^2.4.0
+  checksum: 52286695a7197a3679125bf05e33bbcecd9d116d25ba2960a55888d35a9cecc5b1a6857d8edff7bfa2593e11ad496b823f7a5fae5d838c41556a63abd3d62955
+  languageName: node
+  linkType: hard
+
+"@react-native-community/cli-config@npm:^9.1.0, @react-native-community/cli-config@npm:^9.2.1":
+  version: 9.2.1
+  resolution: "@react-native-community/cli-config@npm:9.2.1"
+  dependencies:
+    "@react-native-community/cli-tools": ^9.2.1
+>>>>>>> 44c8eb98d (feat(core): Much improved loading of dynamic styled() usage, falls back)
     cosmiconfig: ^5.1.0
     deepmerge: ^3.2.0
     glob: ^7.1.3
@@ -4261,7 +4281,11 @@ __metadata:
     "@tamagui/colors": ^1.0.1-beta.193
     "@tamagui/config-base": ^1.0.1-beta.193
     "@tamagui/core": ^1.0.1-beta.193
+<<<<<<< HEAD
     "@tamagui/feather-icons": ^1.0.1-beta.193
+=======
+    "@tamagui/lucide-icons": ^1.0.1-beta.193
+>>>>>>> 22d1e9e19 (feat(core): Much improved loading of dynamic styled() usage, falls back)
     "@tamagui/polyfill-dev": ^1.0.1-beta.193
     "@tamagui/static": ^1.0.1-beta.193
     "@tamagui/theme-base": ^1.0.1-beta.193
@@ -4685,12 +4709,21 @@ __metadata:
     "@types/react-native": ^0.69.2
     csstype: ^3.0.10
 <<<<<<< HEAD
+<<<<<<< HEAD
     esbuild: ^0.15.11
     expo-screen-orientation: ^4.3.0
     hyphenate-style-name: ^1.0.4
 =======
     esbuild: ^0.15.6
 >>>>>>> a8db3b8c2 (remove(patch-rnw): Remove all patching of rnw)
+=======
+    esbuild: ^0.15.6
+=======
+    esbuild: ^0.15.11
+    expo-screen-orientation: ^4.3.0
+    hyphenate-style-name: ^1.0.4
+>>>>>>> 22d1e9e19 (feat(core): Much improved loading of dynamic styled() usage, falls back)
+>>>>>>> 44c8eb98d (feat(core): Much improved loading of dynamic styled() usage, falls back)
     react: "*"
     react-dom: "*"
     ts-toolbelt: ^9.6.0
@@ -9101,6 +9134,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
+=======
+"cmd-shim@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "cmd-shim@npm:5.0.0"
+  dependencies:
+    mkdirp-infer-owner: ^2.0.0
+  checksum: 83d2a46cdf4adbb38d3d3184364b2df0e4c001ac770f5ca94373825d7a48838b4cb8a59534ef48f02b0d556caa047728589ca65c640c17c0b417b3afb34acfbb
+  languageName: node
+  linkType: hard
+
+>>>>>>> 22d1e9e19 (feat(core): Much improved loading of dynamic styled() usage, falls back)
 "code-block-writer@npm:^11.0.0":
   version: 11.0.3
   resolution: "code-block-writer@npm:11.0.3"
@@ -10028,6 +10073,72 @@ __metadata:
   version: 3.1.1
   resolution: "csstype@npm:3.1.1"
   checksum: 1f7b4f5fdd955b7444b18ebdddf3f5c699159f13e9cf8ac9027ae4a60ae226aef9bbb14a6e12ca7dba3358b007cee6354b116e720262867c398de6c955ea451d
+<<<<<<< HEAD
+=======
+  languageName: node
+  linkType: hard
+
+"d3-array@npm:2, d3-array@npm:^2.3.0":
+  version: 2.12.1
+  resolution: "d3-array@npm:2.12.1"
+  dependencies:
+    internmap: ^1.0.0
+  checksum: 97853b7b523aded17078f37c67742f45d81e88dda2107ae9994c31b9e36c5fa5556c4c4cf39650436f247813602dfe31bf7ad067ff80f127a16903827f10c6eb
+  languageName: node
+  linkType: hard
+
+"d3-color@npm:1 - 2":
+  version: 2.0.0
+  resolution: "d3-color@npm:2.0.0"
+  checksum: b887354aa383937abd04fbffed3e26e5d6a788472cd3737fb10735930e427763e69fe93398663bccf88c0b53ee3e638ac6fcf0c02226b00ed9e4327c2dfbf3dc
+  languageName: node
+  linkType: hard
+
+"d3-format@npm:1 - 2":
+  version: 2.0.0
+  resolution: "d3-format@npm:2.0.0"
+  checksum: c4d3c8f9941d097d514d3986f54f21434e08e5876dc08d1d65226447e8e167600d5b9210235bb03fd45327225f04f32d6e365f08f76d2f4b8bff81594851aaf7
+  languageName: node
+  linkType: hard
+
+"d3-interpolate@npm:1.2.0 - 2":
+  version: 2.0.1
+  resolution: "d3-interpolate@npm:2.0.1"
+  dependencies:
+    d3-color: 1 - 2
+  checksum: 4a2018ac34fbcc3e0e7241e117087ca1b2274b8b33673913658623efacc5db013b8d876586d167b23e3145bdb34ec8e441d301299b082e1a90985b2f18d4299c
+  languageName: node
+  linkType: hard
+
+"d3-scale@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "d3-scale@npm:3.3.0"
+  dependencies:
+    d3-array: ^2.3.0
+    d3-format: 1 - 2
+    d3-interpolate: 1.2.0 - 2
+    d3-time: ^2.1.1
+    d3-time-format: 2 - 3
+  checksum: f77e73f0fb422292211d0687914c30d26e29011a936ad2a535a868ae92f306c3545af1fe7ea5db1b3e67dbce7a6c6cd952e53d02d1d557543e7e5d30e30e52f2
+  languageName: node
+  linkType: hard
+
+"d3-time-format@npm:2 - 3":
+  version: 3.0.0
+  resolution: "d3-time-format@npm:3.0.0"
+  dependencies:
+    d3-time: 1 - 2
+  checksum: c20c1667dbea653f81d923e741f84c23e4b966002ba0d6ed94cbc70692105566e55e89d18d175404534a879383fd1123300bd12885a3c924fe924032bb0060db
+  languageName: node
+  linkType: hard
+
+"d3-time@npm:1 - 2, d3-time@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "d3-time@npm:2.1.1"
+  dependencies:
+    d3-array: 2
+  checksum: d1c7b9658c20646e46c3dd19e11c38e02dec098e8baa7d2cd868af8eb01953668f5da499fa33dc63541cf74a26e788786f8828c4381dbbf475a76b95972979a6
+>>>>>>> 44c8eb98d (feat(core): Much improved loading of dynamic styled() usage, falls back)
   languageName: node
   linkType: hard
 
@@ -11817,9 +11928,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "express@npm:^4.17.1, express@npm:^4.17.3":
+<<<<<<< HEAD
   version: 4.18.2
   resolution: "express@npm:4.18.2"
+=======
+  version: 4.18.1
+  resolution: "express@npm:4.18.1"
+=======
+"express@npm:^4.17.1, express@npm:^4.17.3, express@npm:^4.18.1":
+  version: 4.18.2
+  resolution: "express@npm:4.18.2"
+>>>>>>> 22d1e9e19 (feat(core): Much improved loading of dynamic styled() usage, falls back)
+>>>>>>> 44c8eb98d (feat(core): Much improved loading of dynamic styled() usage, falls back)
   dependencies:
     accepts: ~1.3.8
     array-flatten: 1.1.1
@@ -12997,11 +13119,22 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 44c8eb98d (feat(core): Much improved loading of dynamic styled() usage, falls back)
 "grapheme-splitter@npm:^1.0.4":
   version: 1.0.4
   resolution: "grapheme-splitter@npm:1.0.4"
   checksum: 0c22ec54dee1b05cd480f78cf14f732cb5b108edc073572c4ec205df4cd63f30f8db8025afc5debc8835a8ddeacf648a1c7992fe3dcd6ad38f9a476d84906620
+<<<<<<< HEAD
 =======
+=======
+  languageName: node
+  linkType: hard
+
+>>>>>>> 22d1e9e19 (feat(core): Much improved loading of dynamic styled() usage, falls back)
+>>>>>>> 44c8eb98d (feat(core): Much improved loading of dynamic styled() usage, falls back)
 "graphology@npm:^0.24.1":
   version: 0.24.1
   resolution: "graphology@npm:0.24.1"
@@ -13436,6 +13569,16 @@ __metadata:
   dependencies:
     lru-cache: ^7.5.1
   checksum: 85aeb79a1902416eab622ccffd61ccf428260b0f8949e02f5abe70ee2702b7af2bdd7a9b77e6573190464602d42bb05c4d8300873f86ce62bc450365398da1fb
+<<<<<<< HEAD
+=======
+  languageName: node
+  linkType: hard
+
+"hotkeys-js@npm:3.9.4":
+  version: 3.9.4
+  resolution: "hotkeys-js@npm:3.9.4"
+  checksum: 98c3121d458f960c8804f5d8d6be02c4187aaeee5a0b7df28c8d99705e5f65f67b1140658d8128401892bb07b19d18c5e9ea9e84fe170fb06206b639ad53438b
+>>>>>>> 44c8eb98d (feat(core): Much improved loading of dynamic styled() usage, falls back)
   languageName: node
   linkType: hard
 
@@ -19470,10 +19613,17 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "qs@npm:6.11.0, qs@npm:^6.10.3, qs@npm:^6.4.0, qs@npm:^6.9.1":
 =======
 "qs@npm:6.11.0, qs@npm:^6.4.0":
 >>>>>>> a8db3b8c2 (remove(patch-rnw): Remove all patching of rnw)
+=======
+"qs@npm:6.11.0, qs@npm:^6.4.0":
+=======
+"qs@npm:6.11.0, qs@npm:^6.10.3, qs@npm:^6.4.0, qs@npm:^6.9.1":
+>>>>>>> 22d1e9e19 (feat(core): Much improved loading of dynamic styled() usage, falls back)
+>>>>>>> 44c8eb98d (feat(core): Much improved loading of dynamic styled() usage, falls back)
   version: 6.11.0
   resolution: "qs@npm:6.11.0"
   dependencies:
@@ -19660,11 +19810,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "react-is@npm:^16.12.0 || ^17.0.0 || ^18.0.0":
   version: 18.1.0
   resolution: "react-is@npm:18.1.0"
   checksum: d206a0fe6790851bff168727bfb896de02c5591695afb0c441163e8630136a3e13ee1a7ddd59fdccddcc93968b4721ae112c10f790b194b03b35a3dc13a355ef
+<<<<<<< HEAD
 >>>>>>> a8db3b8c2 (remove(patch-rnw): Remove all patching of rnw)
+=======
+=======
+"react-is@npm:^16.12.0 || ^17.0.0 || ^18.0.0, react-is@npm:^18.0.0, react-is@npm:^18.2.0":
+  version: 18.2.0
+  resolution: "react-is@npm:18.2.0"
+  checksum: e72d0ba81b5922759e4aff17e0252bd29988f9642ed817f56b25a3e217e13eea8a7f2322af99a06edb779da12d5d636e9fda473d620df9a3da0df2a74141d53e
+>>>>>>> 22d1e9e19 (feat(core): Much improved loading of dynamic styled() usage, falls back)
+>>>>>>> 44c8eb98d (feat(core): Much improved loading of dynamic styled() usage, falls back)
   languageName: node
   linkType: hard
 
