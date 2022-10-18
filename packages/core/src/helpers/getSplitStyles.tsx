@@ -149,14 +149,6 @@ type StyleSplitter = (
 
 export const PROP_SPLIT = '-'
 
-// this is how compiler outputs psueodo identifier
-// TODO remove in next refactor
-export const pseudoCNInverse = {
-  hover: 'hoverStyle',
-  focus: 'focusStyle',
-  press: 'pressStyle',
-}
-
 const accessibilityRoleToWebRole = {
   adjustable: 'slider',
   header: 'heading',
@@ -197,7 +189,6 @@ export const getSplitStyles: StyleSplitter = (
 
   const shouldDoClasses =
     staticConfig.acceptsClassName &&
-    !staticConfig.isReactNativeWeb &&
     (isWeb || process.env.IS_STATIC === 'is_static') &&
     !state.noClassNames
 
@@ -479,7 +470,7 @@ export const getSplitStyles: StyleSplitter = (
           // once mounted we can ignore enterStyle
           continue
         }
-        pseudos[key] = pseudos[key] || {}
+        pseudos[key] ??= {}
         const pseudoStyleObject = getSubStyle(
           key,
           val,
@@ -497,7 +488,11 @@ export const getSplitStyles: StyleSplitter = (
           ...pseudos[key],
         }
 
-        if (shouldDoClasses && key !== 'enterStyle' && key !== 'exitStyle') {
+        if (key === 'enterStyle' || key === 'exitStyle') {
+          continue
+        }
+
+        if (shouldDoClasses) {
           const pseudoStyles = getAtomicStyle(pseudoStyleObject, pseudoDescriptors[key])
           for (const style of pseudoStyles) {
             const postfix = pseudoDescriptors[key]?.name || key // exitStyle/enterStyle dont have pseudoDescriptors
@@ -508,6 +503,8 @@ export const getSplitStyles: StyleSplitter = (
               mergeClassName(transforms, classNames, fullKey, style.identifier, isMediaOrPseudo)
             }
           }
+        } else {
+          // need same treatment as media (individual merge + importance) + can avoid calling getSubStyle entirely when state = off
         }
         continue
       }
@@ -551,7 +548,6 @@ export const getSplitStyles: StyleSplitter = (
         } else if (mediaState[mediaKeyShort]) {
           for (const key in mediaStyle) {
             const didMerge = mergeMediaByImportance(style, key, mediaStyle[key], usedKeys)
-            console.log('didMerge', didMerge, key)
             if (didMerge && key === 'fontFamily') {
               fontFamily = mediaStyle[key]
             }

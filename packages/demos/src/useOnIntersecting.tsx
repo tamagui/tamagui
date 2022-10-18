@@ -47,9 +47,7 @@ export function useIsIntersecting<Ref extends HTMLRef | HTMLRef[]>(
 export function useOnIntersecting<Ref extends HTMLRef | HTMLRef[]>(
   refsIn: Ref,
   incomingCbRaw: IntersectCallback,
-  { threshold = 1, root, rootMargin }: IntersectionObserverInit = {
-    threshold: 1,
-  },
+  { threshold = 0, root, rootMargin }: IntersectionObserverInit = {},
   mountArgs: any[] = []
 ) {
   const onIntersectEvent = useEvent(incomingCbRaw)

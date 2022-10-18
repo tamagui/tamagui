@@ -15,7 +15,7 @@ export const DocsMenuContents = React.memo(() => {
         if ('type' in section) {
           if (section.type === 'hr') {
             return (
-              <YStack key={`sep-${i}`} mx="$4">
+              <YStack key={`sep${i}`} mx="$4">
                 {!!section.title ? (
                   <XStack ai="center" space="$6" spaceDirection="horizontal" mb="$2" mt="$3">
                     <Separator />
@@ -32,10 +32,10 @@ export const DocsMenuContents = React.memo(() => {
         return (
           <YStack key={`${section.label}${i}`} mb="$4">
             {!!section.label && <NavHeading>{section.label}</NavHeading>}
-            {section.pages.map((page) => {
+            {section.pages.map((page, index) => {
               return (
                 <DocsRouteNavItem
-                  key={`${page.route}`}
+                  key={`${page.route}${index}`}
                   href={page.route}
                   active={currentPath === page.route}
                   pending={page['pending']}

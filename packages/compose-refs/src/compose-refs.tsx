@@ -3,7 +3,7 @@
 
 import * as React from 'react'
 
-type PossibleRef<T> = React.Ref<T> | undefined
+type PossibleRef<T> = React.Ref<T> | React.ForwardedRef<T> | React.RefObject<T> | undefined
 
 /**
  * Set a given ref to a given value
@@ -13,7 +13,8 @@ function setRef<T>(ref: PossibleRef<T>, value: T) {
   if (typeof ref === 'function') {
     ref(value)
   } else if (ref !== null && ref !== undefined) {
-    ;(ref as React.MutableRefObject<T>).current = value
+    const next = ref as React.MutableRefObject<T>
+    next.current = value
   }
 }
 

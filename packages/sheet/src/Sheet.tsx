@@ -530,7 +530,6 @@ export const Sheet = withStaticProperties(
 
           <AnimatedView
             ref={ref}
-            debug="verbose"
             {...panResponder?.panHandlers}
             onLayout={(e) => {
               const next = e.nativeEvent.layout.height

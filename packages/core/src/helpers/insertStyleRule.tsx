@@ -134,9 +134,16 @@ export type PartialStyleObject = Pick<StyleObject, 'identifier' | 'property' | '
 export type RulesToInsert = PartialStyleObject[]
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
-  // // pointerevents can have more than one, others could to needs some refactor
+  if (!isClient) return
+  if (!sheet) {
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.warn(`Missing sheet`)
+    }
+    return
+  }
   for (const { identifier, rules } of rulesToInsert) {
-    if (allSelectors[identifier] || !sheet) return
+    if (allSelectors[identifier]) continue
     allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rules : true
     updateRules(identifier, rules)
     for (const rule of rules) {
