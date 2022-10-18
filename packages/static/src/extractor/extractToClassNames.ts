@@ -98,6 +98,7 @@ export async function extractToClassNames({
       return tag
     },
     onExtractTag: ({
+      parserProps,
       attrs,
       node,
       attemptEval,
@@ -223,7 +224,7 @@ export async function extractToClassNames({
           }
           case 'ternary': {
             const mediaExtraction = extractMediaStyle(
-              { ...options, sourcePath },
+              parserProps,
               attr.value,
               jsxPath,
               extractor.getTamagui()!,

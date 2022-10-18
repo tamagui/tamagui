@@ -10,7 +10,7 @@ process.env.IS_STATIC = ''
 window['React'] = React
 
 describe('flatten-tests', () => {
-  test('flat transform props', async () => {
+  test('flattend media queries', async () => {
     const output = await extractBabel(`
       import { YStack } from 'tamagui/src/YStack'
       import { useMedia } from 'tamagui'

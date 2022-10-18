@@ -871,6 +871,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/helper-string-parser@npm:^7.19.4":
+  version: 7.19.4
+  resolution: "@babel/helper-string-parser@npm:7.19.4"
+  checksum: b2f8a3920b30dfac81ec282ac4ad9598ea170648f8254b10f475abe6d944808fb006aab325d3eb5a8ad3bea8dfa888cfa6ef471050dae5748497c110ec060943
+  languageName: node
+  linkType: hard
+
 "@babel/helper-validator-identifier@npm:^7.16.7":
   version: 7.16.7
   resolution: "@babel/helper-validator-identifier@npm:7.16.7"
@@ -882,6 +889,13 @@ __metadata:
   version: 7.18.6
   resolution: "@babel/helper-validator-identifier@npm:7.18.6"
   checksum: e295254d616bbe26e48c196a198476ab4d42a73b90478c9842536cf910ead887f5af6b5c4df544d3052a25ccb3614866fa808dc1e3a5a4291acd444e243c0648
+  languageName: node
+  linkType: hard
+
+"@babel/helper-validator-identifier@npm:^7.19.1":
+  version: 7.19.1
+  resolution: "@babel/helper-validator-identifier@npm:7.19.1"
+  checksum: 0eca5e86a729162af569b46c6c41a63e18b43dbe09fda1d2a3c8924f7d617116af39cac5e4cd5d431bb760b4dca3c0970e0c444789b1db42bcf1fa41fbad0a3a
   languageName: node
   linkType: hard
 
@@ -3307,6 +3321,17 @@ __metadata:
     "@babel/helper-validator-identifier": ^7.18.6
     to-fast-properties: ^2.0.0
   checksum: f0e0147267895fd8a5b82133e711ce7ce99941f3ce63647e0e3b00656a7afe48a8aa48edbae27543b701794d2b29a562a08f51f88f41df401abce7c3acc5e13a
+  languageName: node
+  linkType: hard
+
+"@babel/types@npm:^7.3.0":
+  version: 7.19.4
+  resolution: "@babel/types@npm:7.19.4"
+  dependencies:
+    "@babel/helper-string-parser": ^7.19.4
+    "@babel/helper-validator-identifier": ^7.19.1
+    to-fast-properties: ^2.0.0
+  checksum: 4032f6407093f80dd4f4764be676f7527d2a5c0381586967cd79683cf8af01cdc16745a381b9cef045f702f0c9b0dffd880d84ee55dad59ba01bd23d5d52a8e0
   languageName: node
   linkType: hard
 
@@ -6971,7 +6996,9 @@ __metadata:
     "@tamagui/proxy-worm": ^1.0.1-beta.193
     "@tamagui/react-native-svg": ^1.0.1-beta.193
     "@tamagui/shorthands": ^1.0.1-beta.193
+    "@tamagui/test-design-system": ^1.0.1-beta.193
     "@testing-library/react": ^13.3.0
+    "@types/babel__traverse": ^7.18.2
     "@types/find-root": ^1.1.2
     "@types/node": ^16.11.9
     "@types/react-native": ^0.69.2
@@ -7024,6 +7051,15 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/test-design-system@^1.0.1-beta.193, @tamagui/test-design-system@workspace:packages/test-design-system":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/test-design-system@workspace:packages/test-design-system"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.193
+    "@tamagui/core": ^1.0.1-beta.193
   languageName: unknown
   linkType: soft
 
@@ -7443,6 +7479,15 @@ __metadata:
   version: 7.0.11
   resolution: "@types/babel-types@npm:7.0.11"
   checksum: 9b02719c7cf5062c9ab656a3b4efe3dd79e7a4ab49b5a2ce18d4ec1cb326588a1b40fc03863c24c9dec962f56762c53ed06cdc2a1c241c84e76e54a37a6195fc
+  languageName: node
+  linkType: hard
+
+"@types/babel__traverse@npm:^7.18.2":
+  version: 7.18.2
+  resolution: "@types/babel__traverse@npm:7.18.2"
+  dependencies:
+    "@babel/types": ^7.3.0
+  checksum: 05972775e21cf07753b3bec725bf76f5a9804f99f660d323040746e3c8a4fe1b4ef6df17d7a80c4e2e335382cc72c62fc5a7079af836871ff9cbf0c21804e6d9
   languageName: node
   linkType: hard
 

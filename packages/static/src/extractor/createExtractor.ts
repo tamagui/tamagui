@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import path, { basename, relative } from 'path'
+import { basename, join, relative } from 'path'
 
-import traverse, { NodePath, Visitor } from '@babel/traverse'
+import traverse, { NodePath, TraverseOptions } from '@babel/traverse'
 import * as t from '@babel/types'
 import {
   PseudoStyles,
@@ -29,12 +29,25 @@ import type {
 } from '../types.js'
 import { createEvaluator, createSafeEvaluator } from './createEvaluator.js'
 import { evaluateAstNode } from './evaluateAstNode.js'
-import { attrStr, findComponentName, isPresent, isValidImport, objToStr } from './extractHelpers.js'
+import {
+  attrStr,
+  findComponentName,
+  getValidComponent,
+  getValidImport,
+  isPresent,
+  isValidImport,
+  objToStr,
+} from './extractHelpers.js'
 import { findTopmostFunction } from './findTopmostFunction.js'
 import { getPrefixLogs } from './getPrefixLogs.js'
 import { cleanupBeforeExit, getStaticBindingsForScope } from './getStaticBindingsForScope.js'
 import { literalToAst } from './literalToAst.js'
-import { TamaguiProjectInfo, loadTamagui, loadTamaguiSync } from './loadTamagui.js'
+import {
+  LoadedComponents,
+  TamaguiProjectInfo,
+  loadTamagui,
+  loadTamaguiSync,
+} from './loadTamagui.js'
 import { logLines } from './logLines.js'
 import { normalizeTernaries } from './normalizeTernaries.js'
 import { removeUnusedHooks } from './removeUnusedHooks.js'
@@ -70,6 +83,8 @@ const createTernary = (x: Ternary) => x
 export type Extractor = ReturnType<typeof createExtractor>
 
 type FileOrPath = NodePath<t.Program> | t.File
+
+let hasLoggedBaseInfo = false
 
 export function createExtractor({ logger = console }: ExtractorOptions = { logger: console }) {
   if (!process.env.TAMAGUI_TARGET) {
@@ -175,16 +190,41 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       throw new Error(`Must provide components`)
     }
 
+    /**
+     * Step 1: Determine if importing any statically extractable components
+     */
+
     const isTargetingHTML = target === 'html'
     const ogDebug = shouldPrintDebug
     const tm = timer()
     const propsWithFileInfo: TamaguiOptionsWithFileInfo = {
       ...options,
       sourcePath,
+      allLoadedComponents: [...components],
     }
 
-    if (shouldPrintDebug === 'verbose') {
-      console.log('tamagui.config.ts:', { components, config })
+    if (!hasLoggedBaseInfo) {
+      hasLoggedBaseInfo = true
+      if (shouldPrintDebug) {
+        logger.info(
+          [
+            'loaded components:',
+            propsWithFileInfo.allLoadedComponents
+              .map((comp) => Object.keys(comp.nameToInfo).join(', '))
+              .join(', '),
+          ].join(' ')
+        )
+      }
+      if (process.env.DEBUG?.startsWith('tamagui')) {
+        const next = [...propsWithFileInfo.allLoadedComponents].map((info) => {
+          const nameToInfo = { ...info.nameToInfo }
+          for (const key in nameToInfo) {
+            delete nameToInfo[key].staticConfig.validStyles
+          }
+          return { ...info, nameToInfo }
+        })
+        logger.info(['loaded:', JSON.stringify(next, null, 2)].join('\n'))
+      }
     }
 
     tm.mark('load-tamagui', !!shouldPrintDebug)
@@ -214,19 +254,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     // @ts-ignore
     const body = fileOrPath.type === 'Program' ? fileOrPath.get('body') : fileOrPath.program.body
 
-    /**
-     * Step 1: Determine if importing any statically extractable components
-     */
-
-    const validComponents: { [key: string]: any } = Object.keys(components)
-      // check if uppercase to avoid hitting media query proxy before init
-      .filter((key) => key[0].toUpperCase() === key[0] && !!components[key]?.staticConfig)
-      .reduce((obj, name) => {
-        obj[name] = components[name]
-        return obj
-      }, {})
-
-    if (Object.keys(validComponents).length === 0) {
+    if (Object.keys(components).length === 0) {
       console.warn(`Warning: Tamagui didn't find any valid components (DEBUG=tamagui for more)`)
       if (process.env.DEBUG === 'tamagui') {
         console.log(`components`, Object.keys(components), components)
@@ -234,27 +262,33 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     }
 
     if (shouldPrintDebug === 'verbose') {
-      logger.info(`validComponents ${Object.keys(validComponents).join(', ')}`)
+      logger.info(
+        `allLoadedComponent modules ${propsWithFileInfo.allLoadedComponents
+          .map((k) => k.moduleName)
+          .join(', ')}`
+      )
     }
 
     let doesUseValidImport = false
     let hasImportedTheme = false
 
+    const importDeclarations: t.ImportDeclaration[] = []
+
     for (const bodyPath of body) {
       if (bodyPath.type !== 'ImportDeclaration') continue
       const node = ('node' in bodyPath ? bodyPath.node : bodyPath) as t.ImportDeclaration
-      const from = node.source.value
+      const moduleName = node.source.value
 
-      // if importing styled()
-      const valid = isValidImport(propsWithFileInfo, from)
+      // if importing valid module
+      const valid = isValidImport(propsWithFileInfo, moduleName)
+
+      if (valid) {
+        importDeclarations.push(node)
+      }
 
       if (extractStyledDefinitions) {
         if (valid) {
-          if (
-            node.specifiers.some((specifier) => {
-              return specifier.local.name === 'styled'
-            })
-          ) {
+          if (node.specifiers.some((specifier) => specifier.local.name === 'styled')) {
             doesUseValidImport = true
             break
           }
@@ -263,10 +297,12 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
       if (valid) {
         const names = node.specifiers.map((specifier) => specifier.local.name)
-        const isValidComponent = names.some((name) => !!(validComponents[name] || validHooks[name]))
+        const isValidComponent = names.some((name) =>
+          Boolean(isValidImport(propsWithFileInfo, moduleName, name) || validHooks[name])
+        )
         if (shouldPrintDebug === 'verbose') {
           logger.info(
-            `import ${names.join(', ')} from ${from} isValidComponent ${isValidComponent}`
+            `import ${names.join(', ')} from ${moduleName} isValidComponent ${isValidComponent}`
           )
         }
         if (isValidComponent) {
@@ -277,11 +313,21 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     }
 
     if (shouldPrintDebug) {
-      logger.info(`source: ${sourcePath} doesUseValidImport ${doesUseValidImport}`)
+      logger.info(`file: ${sourcePath} ${JSON.stringify({ doesUseValidImport, hasImportedTheme })}`)
     }
 
     if (!doesUseValidImport) {
       return null
+    }
+
+    function getValidImportedComponent(componentName: string) {
+      const importDeclaration = importDeclarations.find((dec) =>
+        dec.specifiers.some((spec) => spec.local.name === componentName)
+      )
+      if (!importDeclaration) {
+        return null
+      }
+      return getValidImport(propsWithFileInfo, importDeclaration.source.value, componentName)
     }
 
     tm.mark('import-check', !!shouldPrintDebug)
@@ -292,7 +338,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     // only keeping a cache around per-file, reset it if it changes
     const bindingCache: Record<string, string | null> = {}
 
-    const callTraverse = (a: Visitor<{}>) => {
+    const callTraverse = (a: TraverseOptions<any>) => {
       return fileOrPath.type === 'File' ? traverse(fileOrPath, a) : fileOrPath.traverse(a)
     }
 
@@ -310,6 +356,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     }
 
     callTraverse({
+      // @ts-ignore
       Program: {
         enter(path) {
           programPath = path
@@ -330,13 +377,14 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           t.isVariableDeclarator(path.parent) && t.isIdentifier(path.parent.id)
             ? path.parent.id.name
             : 'unknown'
+
         const definition = path.node.arguments[1]
 
         if (!name || !definition || !t.isObjectExpression(definition)) {
           return
         }
 
-        let Component = validComponents[name] as { staticConfig: StaticConfigParsed } | undefined
+        let Component = getValidImportedComponent(name)
 
         if (!Component) {
           if (disableExtractFoundComponents) {
@@ -344,6 +392,10 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           }
 
           try {
+            if (shouldPrintDebug) {
+              logger.info(`Unknown component ${name}, attempting dynamic load: ${sourcePath}`)
+            }
+
             const out = loadTamaguiSync({
               // TODO would extract more, is NO-OP for now..
               forceExports: true,
@@ -351,13 +403,14 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
               components: [sourcePath],
             })
 
-            if (out.components?.[name]) {
-              // add new components
-              // TODO dont Clobber, do by file
-              Object.assign(validComponents, out.components)
+            if (out?.components) {
+              propsWithFileInfo.allLoadedComponents = [
+                ...propsWithFileInfo.allLoadedComponents,
+                ...out.components,
+              ]
             }
 
-            Component = validComponents[name]
+            Component = getValidImportedComponent(name)
 
             if (shouldPrintDebug) {
               logger.info([`Loaded`, Object.keys(out.components).join(', '), !!Component].join(' '))
@@ -410,7 +463,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         const attemptEval = !evaluateVars
           ? evaluateAstNode
           : createEvaluator({
-              props: options,
+              props: propsWithFileInfo,
               staticNamespace,
               sourcePath,
               shouldPrintDebug,
@@ -505,6 +558,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
         // validate its a proper import from tamagui (or internally inside tamagui)
         const binding = traversePath.scope.getBinding(node.name.name)
+        let modulePath = ''
 
         if (binding) {
           if (!t.isImportDeclaration(binding.path.parent)) {
@@ -513,24 +567,16 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             }
             return
           }
-          const source = binding.path.parent.source
-          if (!isValidImport(propsWithFileInfo, source.value)) {
+          modulePath = binding.path.parent.source.value
+          if (!isValidImport(propsWithFileInfo, modulePath, binding.identifier.name)) {
             if (shouldPrintDebug) {
-              logger.info(` - Binding not internal import or from components ${source.value}`)
-            }
-            return
-          }
-          if (!validComponents[binding.identifier.name]) {
-            if (shouldPrintDebug) {
-              logger.info(
-                ` - Binding not valid component (binding.identifier.name) ${binding.identifier.name}`
-              )
+              logger.info(` - Binding not internal import or from components ${modulePath}`)
             }
             return
           }
         }
 
-        const component = validComponents[node.name.name] as { staticConfig?: StaticConfigParsed }
+        const component = getValidComponent(propsWithFileInfo, modulePath, node.name.name)
         if (!component || !component.staticConfig) {
           if (shouldPrintDebug) {
             logger.info(` - No Tamagui conf on this: ${node.name.name}`)
@@ -556,7 +602,8 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           .filter(
             (n) => t.isJSXAttribute(n) && t.isJSXIdentifier(n.name) && n.name.name === 'debug'
           )
-          .map((n) => {
+          // @ts-ignore
+          .map((n: t.JSXAttribute) => {
             if (n.value === null) return true
             if (t.isStringLiteral(n.value)) return n.value.value as 'verbose'
             return false
@@ -657,7 +704,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           const attemptEval = !evaluateVars
             ? evaluateAstNode
             : createEvaluator({
-                props: options,
+                props: propsWithFileInfo,
                 staticNamespace,
                 sourcePath,
                 traversePath,
@@ -1415,13 +1462,14 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
           const canFlattenProps = inlined.size === 0
 
-          let shouldFlatten =
+          let shouldFlatten = Boolean(
             flatNode &&
-            !shouldDeopt &&
-            canFlattenProps &&
-            !hasSpread &&
-            staticConfig.neverFlatten !== true &&
-            (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
+              !shouldDeopt &&
+              canFlattenProps &&
+              !hasSpread &&
+              staticConfig.neverFlatten !== true &&
+              (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
+          )
 
           const shouldWrapTheme = shouldFlatten && themeVal
           const usedThemeKeys = new Set<string>()
@@ -1995,9 +2043,11 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             if (shouldPrintDebug) {
               logger.info(['  [✅] flattening', originalNodeName, flatNode].join(' '))
             }
+            // @ts-expect-error
             node.name.name = flatNode
             res.flattened++
             if (closingElement) {
+              // @ts-expect-error
               closingElement.name.name = flatNode
             }
           }
@@ -2009,6 +2059,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           }
 
           onExtractTag({
+            parserProps: propsWithFileInfo,
             attrs,
             node,
             lineNumbers,
@@ -2017,7 +2068,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             jsxPath: traversePath,
             originalNodeName,
             isFlattened: shouldFlatten,
-            programPath,
+            programPath: programPath!,
             completeProps,
             staticConfig,
           })

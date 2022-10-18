@@ -39,6 +39,10 @@ export const loader = async function loader(this, sourceIn: Buffer | string) {
     const { shouldDisable, shouldPrintDebug } = getPragmaOptions({ source, path: sourcePath })
 
     if (shouldDisable) {
+      if (shouldPrintDebug) {
+        // eslint-disable-next-line no-console
+        console.log(`Disabling on file via pragma`)
+      }
       return callback(null, source)
     }
 

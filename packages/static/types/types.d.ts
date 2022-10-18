@@ -4,6 +4,7 @@ import type { PseudoStyles, StaticConfig } from '@tamagui/core-node';
 import type { StyleObject } from '@tamagui/helpers';
 import type { TamaguiOptions } from '@tamagui/helpers-node';
 import type { ViewStyle } from 'react-native';
+import { LoadedComponents } from './index';
 export type { TamaguiOptions } from '@tamagui/helpers-node';
 export type { StyleObject } from '@tamagui/helpers';
 export declare type ClassNameObject = t.StringLiteral | t.Expression;
@@ -38,6 +39,7 @@ export declare type ExtractedAttr = ExtractedAttrAttr | {
     value: Ternary;
 } | ExtractedAttrStyle;
 export declare type ExtractTagProps = {
+    parserProps: TamaguiOptionsWithFileInfo;
     attrs: ExtractedAttr[];
     node: t.JSXOpeningElement;
     attemptEval: (exprNode: t.Node, evalFn?: ((node: t.Node) => any) | undefined) => any;
@@ -52,8 +54,9 @@ export declare type ExtractTagProps = {
 };
 export declare type TamaguiOptionsWithFileInfo = TamaguiOptions & {
     sourcePath: string;
+    allLoadedComponents: LoadedComponents[];
 };
-export declare type ExtractorParseProps = TamaguiOptionsWithFileInfo & {
+export declare type ExtractorParseProps = Omit<TamaguiOptionsWithFileInfo, 'allLoadedComponents'> & {
     target: 'native' | 'html';
     shouldPrintDebug?: boolean | 'verbose';
     onExtractTag: (props: ExtractTagProps) => void;

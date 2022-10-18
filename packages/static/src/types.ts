@@ -5,6 +5,8 @@ import type { StyleObject } from '@tamagui/helpers'
 import type { TamaguiOptions } from '@tamagui/helpers-node'
 import type { ViewStyle } from 'react-native'
 
+import { LoadedComponents } from './index'
+
 export type { TamaguiOptions } from '@tamagui/helpers-node'
 
 export type { StyleObject } from '@tamagui/helpers'
@@ -49,6 +51,7 @@ export type ExtractedAttr =
   | ExtractedAttrStyle
 
 export type ExtractTagProps = {
+  parserProps: TamaguiOptionsWithFileInfo
   attrs: ExtractedAttr[]
   node: t.JSXOpeningElement
   attemptEval: (exprNode: t.Node, evalFn?: ((node: t.Node) => any) | undefined) => any
@@ -64,9 +67,10 @@ export type ExtractTagProps = {
 
 export type TamaguiOptionsWithFileInfo = TamaguiOptions & {
   sourcePath: string
+  allLoadedComponents: LoadedComponents[]
 }
 
-export type ExtractorParseProps = TamaguiOptionsWithFileInfo & {
+export type ExtractorParseProps = Omit<TamaguiOptionsWithFileInfo, 'allLoadedComponents'> & {
   target: 'native' | 'html'
   shouldPrintDebug?: boolean | 'verbose'
   onExtractTag: (props: ExtractTagProps) => void
