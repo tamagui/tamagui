@@ -1,5 +1,6 @@
 - 1.0
 
+  - quite a bit of testing around core - useMedia, useTheme
   - polyfill for rn 17
   - core: slim down: Slot, concatClassName / unify usePressable+usePressability
   - site: document more helpers: getSize / stepTokenUpOrDown / spacedChildren
