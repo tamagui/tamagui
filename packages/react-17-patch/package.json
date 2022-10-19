@@ -11,6 +11,7 @@
     "clean": "true"
   },
   "dependencies": {
-    "@reach/auto-id": "^0.18.0"
+    "@reach/auto-id": "^0.18.0",
+    "use-sync-external-store": "^1.2.0"
   }
 }

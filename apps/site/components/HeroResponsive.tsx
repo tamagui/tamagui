@@ -163,8 +163,6 @@ export const HeroResponsive = memo(() => {
 
   const scale = 0.7 - smIndex * 0.05
 
-  console.log('wut is', media.sm, media)
-
   return (
     <YStack ref={ref} y={0} mt={-80} pos="relative">
       <ContainerLarge pos="relative">
