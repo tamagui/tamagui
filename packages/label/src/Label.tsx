@@ -93,7 +93,7 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>((props, f
         role="label"
         id={id}
         {...labelProps}
-        ref={composedRefs}
+        ref={composedRefs as any}
         onMouseDown={(event) => {
           props.onMouseDown?.(event)
           // prevent text selection when double clicking label
