@@ -45,7 +45,7 @@
     "esbuild-register": "^3.3.3",
     "playwright": "^1.25.1",
     "wait-port": "^0.3.0",
-    "zx": "^7.0.7"
+    "zx": "^7.1.1"
   },
   "engines": {
     "node": ">=12.22.0"
