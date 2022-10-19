@@ -42,8 +42,6 @@ const splitToFlat = ([a, b]: number[]) => {
   return a * 4 + b
 }
 
-const hasScrolledOnce = false
-
 export function HeroExampleThemes() {
   const themeSetting = useThemeSetting()
 
@@ -173,7 +171,7 @@ export function HeroExampleThemes() {
         )
       }, [])}
 
-      <YStack mt="$6" ai="center" jc="center">
+      <YStack my="$8" ai="center" jc="center">
         <XStack className="scroll-horizontal no-scrollbar">
           <XStack px="$4" space="$2">
             <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">

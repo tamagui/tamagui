@@ -133,7 +133,7 @@ export function Header(props: HeaderProps) {
             </NextLink>
           </XStack>
         ) : (
-          <XStack ai="center" space="$2">
+          <XStack ai="center" space="$3">
             <HeaderLinks {...props} />
 
             <SearchButton size="$2" br="$10" elevation="$4" />
@@ -271,7 +271,6 @@ const SmallMenu = React.memo(() => {
             // display={open ? 'flex' : 'none'}
           >
             <HeaderLinks forceShowAllLinks />
-
             <Separator my="$4" w="100%" />
             <DocsMenuContents />
             <YStack h={400} />
@@ -289,9 +288,10 @@ const HeadAnchor = React.forwardRef((props: ParagraphProps, ref) => (
     px="$3"
     py="$2"
     cursor="pointer"
-    size="$4"
+    size="$3"
+    opacity={0.65}
     hoverStyle={{ opacity: 1 }}
-    pressStyle={{ opacity: 0.5 }}
+    pressStyle={{ opacity: 0.25 }}
     tag="a"
     // @ts-ignore
     tabIndex={-1}
