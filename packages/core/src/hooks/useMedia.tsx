@@ -1,5 +1,5 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { startTransition, useEffect, useMemo, useState } from 'react'
+import { MutableRefObject, useEffect, useMemo, useState } from 'react'
 
 import { getConfig } from '../config'
 import { createProxy } from '../helpers/createProxy'
@@ -104,37 +104,33 @@ function setupMediaListeners() {
   // hmr, undo existing before re-binding
   unlisten()
 
-  // theoretically this should make media reactions smoother but potentially delayed?
-  // but i believe consistent, so that's a nicer default (we'll see)
-  startTransition(() => {
-    for (const key in mediaQueryConfig) {
-      const str = mediaObjectToString(mediaQueryConfig[key])
-      const getMatch = () => matchMedia(str)
-      const match = getMatch()
-      if (!match) {
-        throw new Error('⚠️ No match')
-      }
-      // react native needs these deprecated apis for now
-      match.addListener(update)
-      dispose.add(() => match.removeListener(update))
+  for (const key in mediaQueryConfig) {
+    const str = mediaObjectToString(mediaQueryConfig[key])
+    const getMatch = () => matchMedia(str)
+    const match = getMatch()
+    if (!match) {
+      throw new Error('⚠️ No match')
+    }
+    // react native needs these deprecated apis for now
+    match.addListener(update)
+    dispose.add(() => match.removeListener(update))
 
-      update()
+    update()
 
-      function update() {
-        const next = !!getMatch().matches
-        if (next === mediaState[key]) return
-        mediaState[key] = next
-        curState = { ...mediaState }
-        const cur = listeners[key]
-        if (cur?.size) {
-          cur.forEach((cb) => cb(next))
-        }
+    function update() {
+      const next = !!getMatch().matches
+      if (next === mediaState[key]) return
+      mediaState[key] = next
+      curState = { ...mediaState }
+      const cur = listeners[key]
+      if (cur?.size) {
+        cur.forEach((cb) => cb(next))
       }
     }
-  })
+  }
 }
 
-export function useListeners(config: TamaguiInternalConfig) {
+export function useMediaListeners(config: TamaguiInternalConfig) {
   if (config.disableSSR) return
   useEffect(() => {
     setupMediaListeners()
@@ -145,14 +141,14 @@ export function useListeners(config: TamaguiInternalConfig) {
 export function useMedia(): {
   [key in MediaQueryKey]: boolean
 } {
-  const [state, setState] = useState<MediaQueryState>(initState || {})
   const keys = useSafeRef({} as Record<string, boolean>)
+  const [state, setState] = useState<MediaQueryState>(() => getMediaState(initState || {}, keys))
 
   function updateState() {
     setState((prev) => {
       for (const key in keys.current) {
         if (prev[key] !== mediaState[key]) {
-          return { ...mediaState }
+          return getMediaState({ ...mediaState }, keys)
         }
       }
       return prev
@@ -169,18 +165,18 @@ export function useMedia(): {
     }
   }, [keys.current])
 
-  return useMemo(
-    () =>
-      new Proxy(state, {
-        get(_, key: string) {
-          if (!keys.current[key]) {
-            keys.current[key] = true
-          }
-          return Reflect.get(state, key)
-        },
-      }),
-    [state, keys]
-  )
+  return state
+}
+
+function getMediaState(state: MediaQueryState, keys: MutableRefObject<Record<string, boolean>>) {
+  return new Proxy(state, {
+    get(_, key: string) {
+      if (!keys.current[key]) {
+        keys.current[key] = true
+      }
+      return Reflect.get(state, key)
+    },
+  })
 }
 
 /**
@@ -207,6 +203,9 @@ export function useMediaPropsActive<A extends Object>(
       const key = propNames[i]
       const val = props[key]
       if (key[0] === '$') {
+        if (!media[key.slice(1)]) {
+          continue
+        }
         if (val && typeof val === 'object') {
           const subKeys = Object.keys(val)
           for (let j = subKeys.length; j--; j >= 0) {

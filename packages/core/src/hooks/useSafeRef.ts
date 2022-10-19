@@ -23,11 +23,7 @@ export const useSafeRef = <T>(initialValue: T) => {
       cur: initialValue,
       ref: {
         get current() {
-          if (raw.hold) {
-            return raw.cur
-          } else {
-            return raw.next
-          }
+          return raw.hold ? raw.cur : raw.next
         },
         set current(v) {
           if (!raw.hold) {

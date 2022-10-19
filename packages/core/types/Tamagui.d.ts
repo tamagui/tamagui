@@ -1,6 +1,10 @@
 import * as Helpers from '@tamagui/helpers';
 declare class TamaguiManager {
     Helpers: typeof Helpers;
+    get mediaState(): {
+        [x: `$${string}`]: boolean;
+        [x: `$${number}`]: boolean;
+    };
     get config(): import("./types").TamaguiInternalConfig<import("./types").CreateTokens<import("./types").VariableVal>, {
         [key: string]: Partial<import("./types").TamaguiBaseTheme> & {
             [key: string]: import("./types").VariableVal;
