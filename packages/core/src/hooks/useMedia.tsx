@@ -207,10 +207,6 @@ export function useMediaPropsActive<A extends Object>(
       const key = propNames[i]
       const val = props[key]
       if (key[0] === '$') {
-        if (!media[key.slice(1)]) {
-          console.log('wtf', key)
-          continue
-        }
         if (val && typeof val === 'object') {
           const subKeys = Object.keys(val)
           for (let j = subKeys.length; j--; j >= 0) {

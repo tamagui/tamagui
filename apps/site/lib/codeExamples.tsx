@@ -164,7 +164,7 @@ const App = (props) => <div className={_cn}>
   {
     name: 'Logic',
     input: {
-      description: `Node VM powered partial evaluation across imports and evaluation and flattening of nested logicals and spreads.`,
+      description: `V8 partial evaluation of your rendered conditional expressions, spreads, imports, and more.`,
       examples: [
         {
           name: 'app.tsx',
@@ -236,7 +236,7 @@ const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _
   {
     name: 'Media',
     input: {
-      description: `Use inline media queries or the useMedia hook. Even with logic, it's evalauted, flattened, and turned into CSS media queries.`,
+      description: `Inline media props & useMedia hook. Even with logic, it's evaluated, flattened, and turned into CSS.`,
       examples: [
         {
           name: 'app.tsx',

@@ -69,14 +69,13 @@ const HeroTop = memo(() => {
             ta="left"
             size="$10"
             maw={500}
-            h={110}
+            h={130}
             // FOR CLS IMPORTANT TO SET EXACT HEIGHT IDK WHY LINE HEIGHT SHOULD BE STABLE
-
             $gtSm={{
               mx: 0,
               maxWidth: 800,
-              size: '$12',
-              h: 140,
+              size: '$13',
+              h: 190,
               ta: 'center',
               als: 'center',
             }}
@@ -99,13 +98,13 @@ const HeroTop = memo(() => {
 
           <YStack
             px={0}
-            maw="calc(100vw - 20px)"
+            maw={500}
             // prevent layout shift
-            h={84}
+            h={70}
             $gtMd={{
               h: 90,
               px: 90,
-              maw: 1000,
+              maw: 900,
             }}
           >
             <Subtitle>
@@ -117,7 +116,7 @@ const HeroTop = memo(() => {
                   onHoverIn={() => setHovered(0)}
                   active={hovered === 0}
                 >
-                  style system
+                  styles
                 </Tag>
               </Link>
               ,{' '}
@@ -141,11 +140,10 @@ const HeroTop = memo(() => {
                   onHoverIn={() => setHovered(2)}
                   active={hovered === 2}
                 >
-                  UI kit
+                  UI&nbsp;kit
                 </Tag>
-              </Link>
-              <br />
-              that&nbsp;unify react native & web
+              </Link>{' '}
+              that&nbsp;unifies react native + web
             </Subtitle>
           </YStack>
         </YStack>
@@ -259,6 +257,10 @@ const Subtitle = styled(Paragraph, {
   ta: 'left',
   ls: -1,
 
+  $gtXs: {
+    size: '$7',
+  },
+
   $gtSm: {
     ta: 'center',
     size: '$8',
@@ -274,6 +276,9 @@ const Tag = styled(Text, {
   className: 'hero-tag text-decoration-none',
   fontFamily: 'inherit',
   fontSize: 'inherit',
+  borderRadius: '$2',
+  px: '$1',
+  mx: '$-1',
   cursor: 'pointer',
   color: '$color10',
   backgroundColor: '$color5',

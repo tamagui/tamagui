@@ -20,7 +20,9 @@ const TitleLink = ({ href, children, ...props }: any) => {
           hoverStyle={{
             backgroundColor: '$color3',
           }}
-          size="$7"
+          size="$9"
+          fontSize="$7"
+          ls={0}
           {...props}
         >
           {children} <ChevronRight size={12} />
@@ -55,6 +57,10 @@ export const HeroBelow = memo((props: any) => {
 export const HeroBelowContent = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
 
+  const greenTheme = hovered === 0 ? 'green_alt2' : 'green'
+  const purpleTheme = hovered === 1 ? 'purple_alt2' : 'purple'
+  const blueTheme = hovered === 2 ? 'blue_alt2' : 'blue'
+
   return (
     <ContainerLarge>
       <XStack
@@ -68,42 +74,36 @@ export const HeroBelowContent = memo(() => {
         py="$2"
         $sm={{ flexDirection: 'column' }}
       >
-        <Section o={hovered === 0 ? 1 : 0.55} onHoverIn={() => setHovered(0)}>
-          <IconStack theme="green_alt2">
+        <Section theme={greenTheme} onHoverIn={() => setHovered(0)}>
+          <IconStack>
             <Code size={20} color="var(--colorHover)" />
           </IconStack>
-          <TitleLink theme="green_alt2" href="/docs/core/configuration">
-            Core
-          </TitleLink>
-          <Paragraph o={hovered === 0 ? 1 : 0.75} size="$4" theme="green_alt2">
+          <TitleLink href="/docs/core/configuration">Core</TitleLink>
+          <Paragraph size="$4">
             A lightweight style + design system library for React Native & Web. Themes, responsive
-            styles, <CodeInline>styled</CodeInline> with variants and a host of features.
+            styles, <CodeInline>styled()</CodeInline> with variants and a host of features.
           </Paragraph>
         </Section>
 
-        <Section o={hovered === 1 ? 1 : 0.55} onHoverIn={() => setHovered(1)}>
-          <IconStack theme="purple_alt2">
+        <Section theme={purpleTheme} onHoverIn={() => setHovered(1)}>
+          <IconStack>
             <Cpu size={20} color="var(--colorHover)" />
           </IconStack>
-          <TitleLink theme="purple_alt2" href="/docs/intro/compiler">
-            Static
-          </TitleLink>
-          <Paragraph o={hovered === 2 ? 1 : 0.75} size="$4" theme="purple_alt2">
-            An optimizing compiler for styles both static and inline. Partial evaluation, tree
-            flattening & more. Plugins for Next, Webpack, Vite, Metro.
+          <TitleLink href="/docs/intro/compiler">Static</TitleLink>
+          <Paragraph size="$4">
+            An <CodeInline>optimizing compiler</CodeInline> for styles both static and inline.
+            Partial evaluation, tree flattening & more. Plugins for Next, Webpack, Vite, Metro.
           </Paragraph>
         </Section>
 
-        <Section o={hovered === 2 ? 1 : 0.55} onHoverIn={() => setHovered(2)}>
-          <IconStack theme="blue_alt2">
+        <Section theme={blueTheme} onHoverIn={() => setHovered(2)}>
+          <IconStack>
             <Layers size={20} color="var(--colorHover)" />
           </IconStack>
-          <TitleLink theme="blue_alt2" href="/docs/components/stacks">
-            Tamagui
-          </TitleLink>
-          <Paragraph o={hovered === 1 ? 1 : 0.75} size="$4" theme="blue_alt2">
-            Large UI kit built using Core. All the base views for apps, with composable
-            component-first APIs, size variance, incredible themes, platform optimized.
+          <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
+          <Paragraph size="$4">
+            A complete <CodeInline>suite of UI components</CodeInline> built using Core. Composable
+            component APIs, size variance, incredible themes, platform optimized.
           </Paragraph>
         </Section>
       </XStack>

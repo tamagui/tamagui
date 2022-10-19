@@ -23,6 +23,7 @@ import { getCompilationExamples } from '../lib/getCompilationExamples'
 export default function Home({ animationCode, compilationExamples }) {
   const [top, setTop] = useState(0)
 
+  return <HeroResponsive />
   return (
     <>
       <HomeGlow top={top} />
@@ -37,7 +38,7 @@ export default function Home({ animationCode, compilationExamples }) {
             <InstallInput />
           </XStack>
         </ContainerLarge>
-        <TintSection index={1} p={0}>
+        <TintSection btw={1} bbw={1} boc="$borderColor" index={1} p={0}>
           <HeroBelow onChangeTop={setTop} />
         </TintSection>
         {/* <Glow /> inside HeroBelow anchors to it */}
@@ -45,7 +46,7 @@ export default function Home({ animationCode, compilationExamples }) {
           <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
           <HeroExampleCode examples={compilationExamples} />
         </TintSection>
-        <TintSection index={3} contain="paint layout" pos="relative" zi={100}>
+        <TintSection my={-50} index={3} contain="paint layout" pos="relative" zi={100}>
           <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
           <HeroExampleThemes />
         </TintSection>
