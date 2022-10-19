@@ -10,6 +10,9 @@ export function themed<A extends React.FC>(Component: A) {
         color={getVariable(
           theme[props.color] || props.color || (!props.disableTheme ? theme.color : null) || '#000'
         )}
+        size={
+          typeof props.size === 'string' ? getVariable(theme[props.size] || props.size) : props.size
+        }
       />
     )
   }
