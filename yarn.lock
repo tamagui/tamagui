@@ -2835,91 +2835,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@motionone/animation@npm:^10.14.0":
-  version: 10.14.0
-  resolution: "@motionone/animation@npm:10.14.0"
-  dependencies:
-    "@motionone/easing": ^10.14.0
-    "@motionone/types": ^10.14.0
-    "@motionone/utils": ^10.14.0
-    tslib: ^2.3.1
-  checksum: 664f7f036418e3604bdcb267636ed21057a2036a21cdff90f9fa49b62e788cdfc3149f6f9a27e9530ebfbee3a39d6e7dcd73adaa95d16af25bfcf1e01bd95cbb
-  languageName: node
-  linkType: hard
-
-"@motionone/dom@npm:^10.14.2":
-  version: 10.14.2
-  resolution: "@motionone/dom@npm:10.14.2"
-  dependencies:
-    "@motionone/animation": ^10.14.0
-    "@motionone/generators": ^10.14.0
-    "@motionone/types": ^10.14.0
-    "@motionone/utils": ^10.14.0
-    hey-listen: ^1.0.8
-    tslib: ^2.3.1
-  checksum: 54487733746c4f9706ab7985b329c033c9ede2307f1ce2c097f63d6f67428abc51c7e3e8c70c030583ef69802f8d4a380064df99f6938c7afde58e79e5bac193
-  languageName: node
-  linkType: hard
-
-"@motionone/easing@npm:^10.14.0":
-  version: 10.14.0
-  resolution: "@motionone/easing@npm:10.14.0"
-  dependencies:
-    "@motionone/utils": ^10.14.0
-    tslib: ^2.3.1
-  checksum: c845b7a445d6dbfb6d9d830fe8c88050345988fb6e423e63c1962506995e99efe899d6e7b14a8960b7df27aa279dfdfb02202a20de01bc65dcbd416ec2315d37
-  languageName: node
-  linkType: hard
-
-"@motionone/generators@npm:^10.14.0":
-  version: 10.14.0
-  resolution: "@motionone/generators@npm:10.14.0"
-  dependencies:
-    "@motionone/types": ^10.14.0
-    "@motionone/utils": ^10.14.0
-    tslib: ^2.3.1
-  checksum: 14cb500441f7b19dd84672c00ebeda0380fa151922118ac7e1bd13bf7b7b6bd87f876454863f3acf0849bb9c7b83a496eb0fba8f7b4d720f99bf5fa2121f056f
-  languageName: node
-  linkType: hard
-
-"@motionone/svelte@npm:^10.14.2":
-  version: 10.14.2
-  resolution: "@motionone/svelte@npm:10.14.2"
-  dependencies:
-    "@motionone/dom": ^10.14.2
-    tslib: ^2.3.1
-  checksum: 1cfedfdc4946c250e162d97a067e5b1edd619a609ed457b9c38474ccbcfe54f9042914ba121530005a9a5807329083c3be08b107e25e1b16866c5d70eaba270a
-  languageName: node
-  linkType: hard
-
-"@motionone/types@npm:^10.14.0":
-  version: 10.14.0
-  resolution: "@motionone/types@npm:10.14.0"
-  checksum: 2fbd65f925c786b190d99867010960ffb458beda5f9b5499eeb0822094871ecbeded1aae917c194b605d80f0c56a55a13ff1e0fa4f6bad3ad8ff32fe5a3201dc
-  languageName: node
-  linkType: hard
-
-"@motionone/utils@npm:^10.14.0":
-  version: 10.14.0
-  resolution: "@motionone/utils@npm:10.14.0"
-  dependencies:
-    "@motionone/types": ^10.14.0
-    hey-listen: ^1.0.8
-    tslib: ^2.3.1
-  checksum: eb4c0a50e458ba7e7944dba7d0b063665744fed60aef9b4670bbc26fe02bed43f26595e9515f8ca6e4899ff5f31e7d81708feb42c16bf6e91c871d310085bc48
-  languageName: node
-  linkType: hard
-
-"@motionone/vue@npm:^10.14.2":
-  version: 10.14.2
-  resolution: "@motionone/vue@npm:10.14.2"
-  dependencies:
-    "@motionone/dom": ^10.14.2
-    tslib: ^2.3.1
-  checksum: b8caf2c58e7f160a645eb689a3f8f9954a01d4a61dfdc13e96be3462f77cfb17cf4f5444e8cada2e12c7e36fd91527c531cb6a92737847365131f10f367169eb
-  languageName: node
-  linkType: hard
-
 "@mrmlnc/readdir-enhanced@npm:^2.2.1":
   version: 2.2.1
   resolution: "@mrmlnc/readdir-enhanced@npm:2.2.1"
@@ -4372,7 +4287,6 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-beta.193
     "@tamagui/core": ^1.0.1-beta.193
-    motion: ^10.14.0
   languageName: unknown
   linkType: soft
 
@@ -13326,13 +13240,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hey-listen@npm:^1.0.8":
-  version: 1.0.8
-  resolution: "hey-listen@npm:1.0.8"
-  checksum: 6bad60b367688f5348e25e7ca3276a74b59ac5a09b0455e6ff8ab7d4a9e38cd2116c708a7dcd8a954d27253ce1d8717ec891d175723ea739885b828cf44e4072
-  languageName: node
-  linkType: hard
-
 "history@npm:^5.3.0":
   version: 5.3.0
   resolution: "history@npm:5.3.0"
@@ -16909,20 +16816,6 @@ __metadata:
     on-finished: ~2.3.0
     on-headers: ~1.0.2
   checksum: fb41e226ab5a1abf7e8909e486b387076534716d60207e361acfb5df78b84d703a7b7ea58f3046a9fd0b83d3c94bfabde32323341a1f1b26ce50680abd2ea5dd
-  languageName: node
-  linkType: hard
-
-"motion@npm:^10.14.0":
-  version: 10.14.2
-  resolution: "motion@npm:10.14.2"
-  dependencies:
-    "@motionone/animation": ^10.14.0
-    "@motionone/dom": ^10.14.2
-    "@motionone/svelte": ^10.14.2
-    "@motionone/types": ^10.14.0
-    "@motionone/utils": ^10.14.0
-    "@motionone/vue": ^10.14.2
-  checksum: c72787448947711552bd44595605a42ca8064bd13e19515f831b77b2b23cd0a76f553d3888c503c7c2edc1c62503be898c9a9002be4d903f1095effa8f5eae2e
   languageName: node
   linkType: hard
 
