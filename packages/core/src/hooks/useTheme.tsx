@@ -207,7 +207,7 @@ export const useChangeThemeEffect = (
   if (process.env.NODE_ENV === 'development') {
     if (!config) {
       throw new Error(
-        `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before renderig.`
+        `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before rendering.`
       )
     }
   }
