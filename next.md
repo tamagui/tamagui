@@ -86,6 +86,7 @@ plan for space + display none, two pronged
 
 Inbox
 
+- check deps are matching in compiler startup
 - can optimize useMedia:
   - https://twitter.com/sebmarkbage/status/1576603375814070273
   - "some tricky with either useDeferredValue or useSyncExternalStore you can use for this"
