@@ -19655,9 +19655,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-native-web@npm:0.18.7":
-  version: 0.18.7
-  resolution: "react-native-web@npm:0.18.7"
+"react-native-web@npm:0.18.9":
+  version: 0.18.9
+  resolution: "react-native-web@npm:0.18.9"
   dependencies:
     "@babel/runtime": ^7.18.6
     create-react-class: ^15.7.0
@@ -19669,7 +19669,7 @@ __metadata:
   peerDependencies:
     react: ^17.0.2 || ^18.0.0
     react-dom: ^17.0.2 || ^18.0.0
-  checksum: fda86e0f0b533ebefbfab87bdca0908dd0f67eaeeba02d1b582b0b10c37bb4f1b73f4a34b3d649c8a98c6b4525c775967d948cf7cb7d0c4b205a4ff3a413b9ec
+  checksum: 2cd2c08d8ff92bf969a54124d21f101e8d4645b1eb0625aeabccc70ba55b05c0d1fc6ab570b237417be674346d140edc387c5deac403050a9e1f1d87b15b2253
   languageName: node
   linkType: hard
 

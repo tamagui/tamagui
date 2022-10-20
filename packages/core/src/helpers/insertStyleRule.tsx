@@ -4,8 +4,8 @@
 
 import type { StyleObject } from '@tamagui/helpers'
 
-const allSelectors = {}
-const allRules = {}
+const allSelectors: Record<string, string> = {}
+const allRules: Record<string, boolean | string[]> = {}
 export const insertedTransforms = {}
 
 export const getAllSelectors = () => allSelectors
@@ -84,7 +84,7 @@ export function updateInserted() {
         const isTransform = identifier.startsWith('_transform')
         const shouldInsert = isTransform ? addTransform(identifier, cssRule.cssText, cssRule) : true
         if (shouldInsert) {
-          allSelectors[identifier] = process.env.NODE_ENV === 'development' ? cssRule.cssText : true
+          allSelectors[identifier] = cssRule.cssText
         }
       }
     }
@@ -143,7 +143,7 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
   }
   for (const { identifier, rules } of rulesToInsert) {
     if (allSelectors[identifier]) continue
-    allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rules : true
+    allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rules.join('\n') : ''
     updateRules(identifier, rules)
     if (sheet) {
       for (const rule of rules) {

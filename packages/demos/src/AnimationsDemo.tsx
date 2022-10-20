@@ -1,5 +1,5 @@
-import { Play } from '@tamagui/lucide-icons'
 import { LogoIcon } from '@tamagui/logo'
+import { Play } from '@tamagui/lucide-icons'
 import React from 'react'
 import { Button, Square, useControllableState } from 'tamagui'
 
