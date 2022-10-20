@@ -3,6 +3,7 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 
+import { getAllSelectors } from './insertStyleRule'
 import { normalizeColor } from './normalizeColor'
 
 const cache = {}
@@ -79,4 +80,27 @@ const unitlessNumbers = {
   scaleY: true,
   scaleZ: true,
   shadowOpacity: true,
+}
+
+// getting real values for colors for animations (reverse mapped from CSS)
+// this isn't beautiful, but will do relatively fine performance for now
+const rcache = {}
+export function reverseMapClassNameToValue(key: string, className: string) {
+  const selectors = getAllSelectors()
+  const cssRule = selectors[className]
+  if (rcache[cssRule]) return rcache[cssRule]
+  if (!cssRule) {
+    return
+  }
+  const cssVal = cssRule.replace(/.*:/, '').replace(/;.*/, '')
+  let res: any
+  if (unitlessNumbers[key]) {
+    res = +cssVal.trim()
+  } else if (cssVal.endsWith('px')) {
+    res = +cssVal.replace('px', '').trim()
+  } else {
+    res = cssVal
+  }
+  rcache[cssRule] = res
+  return res
 }

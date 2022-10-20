@@ -37,7 +37,10 @@ import {
   updateRules,
 } from './insertStyleRule'
 import { mergeTransform } from './mergeTransform'
-import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
+import {
+  normalizeValueWithProperty,
+  reverseMapClassNameToValue,
+} from './normalizeValueWithProperty.js'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
@@ -517,6 +520,7 @@ export const getSplitStyles: StyleSplitter = (
 
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
+
         const mediaStyle = getSubStyle(
           key,
           val,
@@ -593,23 +597,29 @@ export const getSplitStyles: StyleSplitter = (
     styleToCSS(style)
   }
 
-  if (process.env.TAMAGUI_TARGET === 'web') {
-    // add in defaults if not set:
-    if (parentSplitStyles) {
-      if (shouldDoClasses) {
-        for (const key in parentSplitStyles.classNames) {
-          if (key in classNames) continue
-          // if (key in style) continue
-          classNames[key] = parentSplitStyles.classNames[key]
-        }
-      } else {
-        for (const key in parentSplitStyles.style) {
-          if (key in style) continue
-          style[key] = parentSplitStyles.style[key]
+  // add in defaults if not set:
+  if (parentSplitStyles) {
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      for (const key in parentSplitStyles.classNames) {
+        if (key in classNames) continue
+        if (key in style) continue
+        const val = parentSplitStyles.classNames[key]
+        if (!shouldDoClasses) {
+          style[key] = reverseMapClassNameToValue(key, val)
+        } else {
+          classNames[key] = val
         }
       }
     }
+    if (!shouldDoClasses) {
+      for (const key in parentSplitStyles.style) {
+        if (key in style) continue
+        style[key] = parentSplitStyles.style[key]
+      }
+    }
+  }
 
+  if (process.env.TAMAGUI_TARGET === 'web') {
     if (shouldDoClasses) {
       const atomic = getStylesAtomic(style)
       for (const atomicStyle of atomic) {

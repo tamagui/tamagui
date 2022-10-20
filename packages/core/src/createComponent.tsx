@@ -428,15 +428,8 @@ export function createComponent<
       (isWeb ? isClient : true) && (hasEnterStyle || props.animation) && !state.mounted
     )
 
-    if (props['debug']) {
-      console.log('shouldSetMounted', shouldSetMounted)
-    }
-
     const setMounted = shouldSetMounted
       ? () => {
-          if (props['debug']) {
-            console.log('setttin')
-          }
           // for some reason without some small delay it doesn't animate css
           setTimeout(
             () => {

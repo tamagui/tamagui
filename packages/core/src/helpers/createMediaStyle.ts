@@ -8,19 +8,27 @@ import { PartialStyleObject } from './insertStyleRule'
 // not synced to static/constants for now
 export const MEDIA_SEP = '_'
 
+let prefixes: Record<string, string> | null = null
+let selectors: Record<string, string> | null = null
+
 export const createMediaStyle = (
   { property, identifier, rules }: StyleObject,
   mediaKey: string,
   mediaQueries: MediaQueries,
-  negate?: boolean,
-  importance?: number
+  negate?: boolean
 ): PartialStyleObject => {
-  const mediaKeys = Object.keys(mediaQueries)
-  const importance_ = Math.max(
-    0,
-    importance == undefined ? mediaKeys.indexOf(mediaKey) : importance || 0
-  )
-  const precendencePrefix = new Array(importance_ + 1).fill(':root').join('')
+  if (!prefixes || !selectors) {
+    // TODO move this into useMedia calc once there and unify w getMediaImportance
+    const mediaKeys = Object.keys(mediaQueries)
+    prefixes = Object.fromEntries(
+      mediaKeys.map((key, index) => [key, new Array(index + 1).fill(':root').join('')])
+    )
+    selectors = Object.fromEntries(
+      mediaKeys.map((key) => [key, mediaObjectToString(mediaQueries[key])])
+    )
+  }
+  const precendencePrefix = prefixes[mediaKey]
+  const mediaSelector = selectors[mediaKey]
   const negKey = negate ? '0' : ''
   const ogPrefix = identifier.slice(0, identifier.indexOf('-') + 1)
   const nextIdentifier = `${identifier.replace(
@@ -28,7 +36,6 @@ export const createMediaStyle = (
     `${ogPrefix}${MEDIA_SEP}${mediaKey}${negKey}${MEDIA_SEP}`
   )}`
   const screenStr = negate ? 'not all and' : ''
-  const mediaSelector = mediaObjectToString(mediaQueries[mediaKey])
   const mediaQuery = `${screenStr} ${mediaSelector}`
   const styleInner = rules.map((rule) => rule.replace(identifier, nextIdentifier)).join(';')
   // combines media queries if they already exist
