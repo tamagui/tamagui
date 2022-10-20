@@ -255,11 +255,18 @@ const SmallMenu = React.memo(() => {
         x={0}
         y={0}
         o={1}
-        animation="bouncy"
-        bc="green"
+        animation={[
+          'quick',
+          {
+            opacity: {
+              overshootClamping: true,
+            },
+          },
+        ]}
         p={0}
         maxHeight="80vh"
         elevate
+        zIndex={100000000}
       >
         <Popover.Arrow bw={1} boc="$borderColor" />
 

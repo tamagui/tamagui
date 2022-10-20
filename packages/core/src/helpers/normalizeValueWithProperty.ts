@@ -9,14 +9,15 @@ import { normalizeColor } from './normalizeColor'
 const cache = {}
 
 export function normalizeValueWithProperty(value: any, property?: string): any {
+  if (property && unitlessNumbers[property]) {
+    return value
+  }
   const cached = cache[value]
   if (cached) {
     return cached
   }
   let res = value
-  if (property && unitlessNumbers[property]) {
-    res = `${res}`
-  } else if (
+  if (
     process.env.TAMAGUI_TARGET === 'web' &&
     typeof value === 'number' &&
     (property === undefined || !unitlessNumbers[property])
@@ -95,11 +96,14 @@ export function reverseMapClassNameToValue(key: string, className: string) {
   const cssVal = cssRule.replace(/.*:/, '').replace(/;.*/, '')
   let res: any
   if (unitlessNumbers[key]) {
-    res = +cssVal.trim()
+    res = +cssVal
   } else if (cssVal.endsWith('px')) {
-    res = +cssVal.replace('px', '').trim()
+    res = +cssVal.replace('px', '')
   } else {
     res = cssVal
+  }
+  if (res) {
+    res = res.trim()
   }
   rcache[cssRule] = res
   return res
