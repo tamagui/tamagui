@@ -1,5 +1,13 @@
 - 1.0
 
+  - https://github.com/tamagui/tamagui/issues/186
+  - https://github.com/tamagui/tamagui/issues/270
+  - https://github.com/tamagui/tamagui/issues/266
+  - https://github.com/tamagui/tamagui/issues/261
+  - https://github.com/tamagui/tamagui/issues/256
+  - https://github.com/tamagui/tamagui/issues/242
+  _ 'Portal related components are not working on the Android side"
+  - theme-base - align to radix, allow configuarble colors
   - quite a bit of testing around core - useMedia, useTheme
   - polyfill for rn 17
   - core: slim down: Slot, concatClassName / unify usePressable+usePressability
