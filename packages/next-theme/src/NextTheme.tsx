@@ -93,7 +93,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   enableSystem = true,
   enableColorScheme = true,
   storageKey = 'theme',
-  themes = ['light', 'dark'],
+  themes = colorSchemes,
   defaultTheme = enableSystem ? 'system' : 'light',
   attribute = 'class',
   onChangeTheme,
@@ -219,25 +219,28 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
     }
   }, [enableColorScheme, theme, resolvedTheme, forcedTheme])
 
+  const toggle = useEvent(() => {
+    const order =
+      resolvedTheme === 'dark' ? ['system', 'light', 'dark'] : ['system', 'dark', 'light']
+    const next = order[(order.indexOf(theme) + 1) % order.length]
+    set(next)
+  })
+
+  const contextResolvedTheme = theme === 'system' ? resolvedTheme : theme
+  const systemTheme = (enableSystem ? resolvedTheme : undefined) as 'light' | 'dark' | undefined
   const contextValue = useMemo(() => {
     const value: UseThemeProps = {
       theme,
       current: theme,
       set,
-      toggle() {
-        const order =
-          resolvedTheme === 'dark' ? ['system', 'light', 'dark'] : ['system', 'dark', 'light']
-        const next = order[(order.indexOf(theme) + 1) % order.length]
-        set(next)
-      },
+      toggle,
       forcedTheme,
-      resolvedTheme: theme === 'system' ? resolvedTheme : theme,
+      resolvedTheme: contextResolvedTheme,
       themes: enableSystem ? [...themes, 'system'] : themes,
-      systemTheme: (enableSystem ? resolvedTheme : undefined) as 'light' | 'dark' | undefined,
+      systemTheme,
     } as const
-
     return value
-  }, [theme, set, forcedTheme, resolvedTheme, enableSystem, themes])
+  }, [theme, set, toggle, forcedTheme, contextResolvedTheme, enableSystem, themes, systemTheme])
 
   return (
     <ThemeSettingContext.Provider value={contextValue}>
@@ -253,7 +256,8 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
           attrs,
         }}
       />
-      {children}
+      {/* because on SSR we re-run and can avoid whole tree re-render */}
+      {useMemo(() => children, [children])}
     </ThemeSettingContext.Provider>
   )
 }

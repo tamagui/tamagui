@@ -1,4 +1,4 @@
-import { useIsIntersecting, useOnIntersecting } from '@tamagui/demos'
+import { useIsIntersecting } from '@tamagui/demos'
 import { tints } from '@tamagui/logo'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
@@ -62,7 +62,7 @@ export function HeroExampleThemes() {
   }
 
   const isIntersecting = useIsIntersecting(scrollView, {
-    threshold: 0.5,
+    threshold: 0.2,
   })
 
   const tintIndex = Math.floor(activeIndex / 4)
@@ -120,31 +120,33 @@ export function HeroExampleThemes() {
   }
 
   // arrow keys
-  useOnIntersecting(scrollView, ([entry]) => {
-    if (entry?.isIntersecting) {
-      const onKey = (e: KeyboardEvent) => {
-        if (e.key === 'ArrowRight') {
-          move(1)
-        }
-        if (e.key === 'ArrowLeft') {
-          move(-1)
-        }
+  useEffect(() => {
+    if (!isIntersecting) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') {
+        move(1)
       }
-      window.addEventListener('keydown', onKey)
-      return () => {
-        window.removeEventListener('keydown', onKey)
+      if (e.key === 'ArrowLeft') {
+        move(-1)
       }
     }
-  })
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isIntersecting])
 
   const moveToIndexDbc = useDebounce(moveToIndex, 100)
 
   useEffect(() => {
+    if (!isIntersecting) return
     // @ts-ignore
     return onChangeTint((index: nunber) => {
       moveToIndexDbc(index * 3)
     })
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isIntersecting])
 
   useEffect(() => {
     if (typeof themeSetting.current === 'boolean') return

@@ -253,6 +253,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       ]
 
       useIsomorphicLayoutEffect(() => {
+        console.log('aniamte')
         //
         for (const runner of runners) {
           runner()
