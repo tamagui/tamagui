@@ -134,8 +134,7 @@ export type PartialStyleObject = Pick<StyleObject, 'identifier' | 'property' | '
 export type RulesToInsert = PartialStyleObject[]
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
-  if (!isClient) return
-  if (!sheet) {
+  if (isClient && !sheet) {
     if (process.env.NODE_ENV === 'development') {
       // eslint-disable-next-line no-console
       console.warn(`Missing sheet`)
@@ -146,8 +145,10 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
     if (allSelectors[identifier]) continue
     allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rules : true
     updateRules(identifier, rules)
-    for (const rule of rules) {
-      sheet.insertRule(rule, sheet.cssRules.length)
+    if (sheet) {
+      for (const rule of rules) {
+        sheet.insertRule(rule, sheet.cssRules.length)
+      }
     }
   }
 }

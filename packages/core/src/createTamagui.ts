@@ -177,11 +177,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v])),
     ])
   )
-  const css = `
-${themeConfig.css}
-${getAllRules().join('\n')}
-.is_Text .is_Text { display: inline-flex; }
-`
 
   const shorthands = configIn.shorthands || {}
   const config: TamaguiInternalConfig = {
@@ -200,8 +195,11 @@ ${getAllRules().join('\n')}
     themeConfig,
     tokensParsed,
     parsed: true,
-    css,
-    getCSS: () => css,
+    getCSS: () => `
+${themeConfig.css}
+${getAllRules().join('\n')}
+.is_Text .is_Text { display: inline-flex; }
+`,
   }
 
   configureMedia(config)
