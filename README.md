@@ -24,15 +24,7 @@ The compiler actually partially evaluates code including imports, logic, spreads
 
 ## Contributing
 
-Tamagui is a monorepo that makes it easy to contribute.
-
-As of now Tamagui has some encrypted files relating to upcoming features that you'll need to remove before install:
-
-```
-./scripts/ci-prepare.sh
-```
-
-Then install:
+Tamagui is a monorepo that makes it easy to contribute. Install:
 
 ```
 yarn
