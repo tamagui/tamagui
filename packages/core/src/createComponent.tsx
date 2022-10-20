@@ -617,14 +617,13 @@ export function createComponent<
       }
     }
 
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      let fontFamily = isText
-        ? splitStyles.fontFamily || staticConfig.defaultProps.fontFamily
-        : null
-      if (fontFamily && fontFamily[0] === '$') {
-        fontFamily = fontFamily.slice(1)
-      }
+    let fontFamily = isText ? splitStyles.fontFamily || staticConfig.defaultProps.fontFamily : null
+    if (fontFamily && fontFamily[0] === '$') {
+      fontFamily = fontFamily.slice(1)
+    }
+    const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
 
+    if (process.env.TAMAGUI_TARGET === 'web') {
       if (process.env.NODE_ENV === 'development') {
         if (fontFamily?.startsWith(`var(`)) {
           // eslint-disable-next-line no-console
@@ -642,7 +641,7 @@ export function createComponent<
 
       const classList = [
         componentName ? componentClassName : '',
-        fontFamily ? `font_${fontFamily}` : '',
+        fontFamilyClassName,
         theme.className,
         classNames ? Object.values(classNames).join(' ') : '',
       ]
@@ -953,15 +952,23 @@ export function createComponent<
         content = (
           <span
             className={`${hoverClassName} ${themeClassName}`}
-            style={{
-              display: 'contents',
-            }}
+            style={styleDisplayContents}
             {...(events &&
               shouldWrapWithHover && {
                 onMouseEnter: events.onMouseEnter,
                 onMouseLeave: events.onMouseLeave,
               })}
           >
+            {content}
+          </span>
+        )
+      }
+
+      // special weird case since there's a bug in RNW where we can't animate + pass style { $$css }
+      // but we need is_font classnames... need to see about RNW bug and then can remove this
+      if (isText && isAnimatedReactNativeWeb) {
+        content = (
+          <span className={fontFamilyClassName} style={styleDisplayContents}>
             {content}
           </span>
         )
@@ -1491,3 +1498,7 @@ const AbsoluteFill: any = createComponent({
     pointerEvents: 'box-none',
   },
 })
+
+const styleDisplayContents = {
+  display: 'contents',
+}
