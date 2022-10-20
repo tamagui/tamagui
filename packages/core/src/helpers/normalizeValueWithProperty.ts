@@ -102,7 +102,7 @@ export function reverseMapClassNameToValue(key: string, className: string) {
   } else {
     res = cssVal
   }
-  if (res) {
+  if (typeof res === 'string') {
     res = res.trim()
   }
   rcache[cssRule] = res
