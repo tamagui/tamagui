@@ -49,7 +49,14 @@ export function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
           x={0}
           y={0}
           o={1}
-          animation="bouncy"
+          animation={[
+            'quick',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
         >
           <Tooltip.Arrow />
           <Paragraph size="$2" lineHeight="$1">
