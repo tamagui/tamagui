@@ -126,6 +126,10 @@ export default declare(function snackBabelPlugin(
               },
 
               onExtractTag(props) {
+                if (!props.isFlattened) {
+                  return
+                }
+
                 assertValidTag(props.node)
                 const stylesExpr = t.arrayExpression([])
                 const finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
