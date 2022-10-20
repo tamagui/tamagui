@@ -68,7 +68,7 @@ const CustomButtonText = styled(ButtonText, {
   // ...
 })
 
-export const Button = forwardRef<TamaguiElement, ButtonProps>(themeable((propsIn, ref) => {
+export const Button = themeable(forwardRef<TamaguiElement, ButtonProps>((propsIn, ref) => {
   const { props } = useButton(propsIn, { Text: CustomButtonText })
   return <CustomButtonFrame {...props} ref={ref} />
 })

@@ -1,5 +1,6 @@
 - 1.0
 
+  - explain prop order importance
   - https://github.com/tamagui/tamagui/issues/186
   - https://github.com/tamagui/tamagui/issues/270
   - https://github.com/tamagui/tamagui/issues/266

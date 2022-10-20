@@ -66,7 +66,7 @@ const CustomListItemText = styled(ButtonText, {
   // ...
 })
 
-export const ListItem = forwardRef<TamaguiElement, ListItemProps>(themeable((propsIn, ref) => {
+export const ListItem = themeable(forwardRef<TamaguiElement, ListItemProps>((propsIn, ref) => {
   const { props } = useListItem(propsIn, { Text: CustomListItemText })
   return <CustomListItemFrame {...props} ref={ref} />
 })
