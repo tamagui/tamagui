@@ -55,7 +55,7 @@ test('theme value extraction should work when no theme variables used', async ()
         \\"fontWeight\\": \\"500\\",
         \\"letterSpacing\\": 0,
         \\"fontSize\\": 14,
-        \\"lineHeight\\": 25,
+        \\"lineHeight\\": 23,
         \\"display\\": \\"flex\\"
       }
     });
@@ -86,7 +86,7 @@ test('theme value extraction should NOT work when theme variables used', async (
         \\"fontWeight\\": \\"500\\",
         \\"letterSpacing\\": 0,
         \\"fontSize\\": 14,
-        \\"lineHeight\\": 25,
+        \\"lineHeight\\": 23,
         \\"display\\": \\"flex\\"
       }
     });
@@ -94,7 +94,7 @@ test('theme value extraction should NOT work when theme variables used', async (
     import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { Paragraph } from 'tamagui';
     export function Test() {
-      return <Paragraph _style1onns4v={_sheet[\\"0\\"]}>hello world</Paragraph>;
+      return <Paragraph _stylehk3nhp={_sheet[\\"0\\"]}>hello world</Paragraph>;
     }"
   `)
 })
