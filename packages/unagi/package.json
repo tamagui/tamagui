@@ -15,9 +15,7 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build",
-    "test": "vitest",
-    "test:ci": "vitest run --coverage"
+    "clean:build": "tamagui-build clean:build"
   },
   "exports": {
     ".": "./dist/esm/index.js",
