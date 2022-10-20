@@ -16,7 +16,7 @@ runs:
 
     - name: Install Dependencies
       shell: bash
-      run: ./scripts/ci-prepare.sh && YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
+      run: yarn install
 
     - name: Build JS
       shell: bash
