@@ -24,7 +24,7 @@ export type LayoutEvent = {
 
 let resizeObserver: ResizeObserver | null = null
 
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && 'ResizeObserver' in window) {
   resizeObserver = new ResizeObserver((entries) => {
     for (const { target } of entries) {
       const onLayout = LayoutHandlers.get(target)
