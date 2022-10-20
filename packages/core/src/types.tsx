@@ -363,7 +363,6 @@ export type TamaguiInternalConfig<
     themeConfig: any
     fontsParsed: GenericFonts
     getCSS: () => string
-    css: string
     parsed: boolean
     inverseShorthands: Record<string, string>
     reactNative?: any

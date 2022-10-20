@@ -208,7 +208,6 @@ export declare type TamaguiInternalConfig<A extends GenericTokens = GenericToken
     themeConfig: any;
     fontsParsed: GenericFonts;
     getCSS: () => string;
-    css: string;
     parsed: boolean;
     inverseShorthands: Record<string, string>;
     reactNative?: any;
