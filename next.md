@@ -11,7 +11,7 @@
   - https://github.com/tamagui/tamagui/issues/261
   - https://github.com/tamagui/tamagui/issues/256
   - https://github.com/tamagui/tamagui/issues/242
-  _ 'Portal related components are not working on the Android side"
+  - `Portal` related components are not working on the Android side
   - theme-base - align to radix, allow configuarble colors
   - polyfill for rn 17
   - site: document more helpers: getSize / stepTokenUpOrDown / spacedChildren
