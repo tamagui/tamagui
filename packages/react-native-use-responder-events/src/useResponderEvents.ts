@@ -1,40 +1,22 @@
 /**
  * Copyright (c) Nicolas Gallagher
- *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- *
- * @flow
- */
-
-/**
- * Hook for integrating the Responder System into React
- *
- *   function SomeComponent({ onStartShouldSetResponder }) {
- *     const ref = useRef(null);
- *     useResponderEvents(ref, { onStartShouldSetResponder });
- *     return <div ref={ref} />
- *   }
  */
 
 import * as React from 'react'
 
-import { ResponderConfig } from './ResponderSystem.js'
-import * as ResponderSystem from './ResponderSystem.js'
+import * as ResponderSystem from './ResponderSystem'
+
+export * from './utils'
 
 const emptyObject = {}
-let idCounter = 0
 
-function useStable<T>(getInitialValue: () => T): T {
-  const ref = React.useRef<T | null>(null)
-  if (ref.current == null) {
-    ref.current = getInitialValue()
-  }
-  return ref.current
-}
-
-export default function useResponderEvents(hostRef: any, config: ResponderConfig = emptyObject) {
-  const id = useStable(() => idCounter++)
+export function useResponderEvents(
+  hostRef: any,
+  config: ResponderSystem.ResponderConfig = emptyObject
+) {
+  const id = React.useId()
   const isAttachedRef = React.useRef(false)
 
   // This is a separate effects so it doesn't run when the config changes.
@@ -81,8 +63,10 @@ export default function useResponderEvents(hostRef: any, config: ResponderConfig
     }
   }, [config, hostRef, id])
 
-  React.useDebugValue({
-    isResponder: hostRef.current === ResponderSystem.getResponderNode(),
-  })
-  React.useDebugValue(config)
+  if (process.env.NODE_ENV === 'development') {
+    React.useDebugValue({
+      isResponder: hostRef.current === ResponderSystem.getResponderNode(),
+    })
+    React.useDebugValue(config)
+  }
 }

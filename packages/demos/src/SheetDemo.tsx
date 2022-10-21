@@ -1,7 +1,7 @@
 import { ChevronDown } from '@tamagui/lucide-icons'
 import { Sheet } from '@tamagui/sheet'
-import React, { useState } from 'react'
-import { Button, Circle, Paragraph, XStack, YStack, isWeb } from 'tamagui'
+import { useState } from 'react'
+import { Button, Circle, Square, XStack, YStack, isWeb } from 'tamagui'
 
 export const SheetDemo = () => {
   const [position, setPosition] = useState(0)
@@ -26,19 +26,27 @@ export const SheetDemo = () => {
       >
         <Sheet.Overlay />
         <Sheet.Handle />
-        <Sheet.Frame ai="center" jc="center">
-          <Sheet.ScrollView>
-            <YStack p="$4" jc="center" ai="center">
-              <Button
-                size="$6"
-                circular
-                icon={ChevronDown}
-                onPress={() => {
-                  setOpen(false)
-                }}
-              />
-            </YStack>
-          </Sheet.ScrollView>
+        <Sheet.Frame>
+          {/* <Sheet.ScrollView
+            contentContainerStyle={{
+              minHeight: '100%',
+            }}
+          > */}
+          <YStack f={1} p="$4" jc="center" ai="center">
+            <Button
+              size="$6"
+              circular
+              icon={ChevronDown}
+              onPress={() => {
+                setOpen(false)
+              }}
+            />
+          </YStack>
+
+          <Square m="$4" size={120} bc="$red9" />
+          <Circle m="$4" size={120} bc="$orange9" />
+          <Square m="$4" size={120} bc="$yellow9" />
+          {/* </Sheet.ScrollView> */}
         </Sheet.Frame>
       </Sheet>
     </>
