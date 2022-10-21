@@ -1,6 +1,10 @@
 - 1.0
 
-  - explain prop order importance
+  - canary release channel
+  - test sprint
+    - native integration tests
+    - useMedia, useTheme
+    - reanimated
   - https://github.com/tamagui/tamagui/issues/186
   - https://github.com/tamagui/tamagui/issues/270
   - https://github.com/tamagui/tamagui/issues/266
@@ -9,22 +13,19 @@
   - https://github.com/tamagui/tamagui/issues/242
   _ 'Portal related components are not working on the Android side"
   - theme-base - align to radix, allow configuarble colors
-  - quite a bit of testing around core - useMedia, useTheme
   - polyfill for rn 17
-  - core: slim down: Slot, concatClassName / unify usePressable+usePressability
   - site: document more helpers: getSize / stepTokenUpOrDown / spacedChildren
   - site: fix search
   - overshootClamping fix
   - Select lg appears below site floating header
   - intellisense on "lh" shorthand props and "letterSpacing"
-  - kitchen sink snack
+  - kitchen sink snack on site
   - 1.0 blog post
   - kitchen sink placeholder input color dark
   - VisuallyHidden + mediaquery + space
   - Select id="" + Label focus
   - Sheet drag up small bug native with scrollable content
   - kitchen-sink in Snack demo
-  - reanimated bugfix runthrough
   - mismatch SSR SelectTrigger due to componentName override
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
@@ -34,11 +35,16 @@
 
   - @tamagui/sx
   - @tamagui/tailwind
-  - starter don't need compilation step refer direct to types
 
-  - FAQ
+  - Docs
+    - tamagui design tokens docs (not 1.0 necessary)
     - don't wrap in HOC if possible, will de-opt compilation
     - what works for compilation / examples
+    - prop ordering
+  
+  - core:
+    - move to object style extraction
+    - slim down: Slot, concatClassName / unify usePressable+usePressability
   
 ---
 

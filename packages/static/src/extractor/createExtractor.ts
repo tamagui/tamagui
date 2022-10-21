@@ -1498,7 +1498,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             themeAccessListeners.add((key) => {
               shouldFlatten = false
               usedThemeKeys.add(key)
-              if (shouldPrintDebug) {
+              if (shouldPrintDebug === 'verbose') {
                 logger.info([' ! accessing theme key, avoid flatten', key].join(' '))
               }
             })
@@ -1583,6 +1583,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           }
 
           if (shouldDeopt) {
+            if (shouldPrintDebug) {
+              logger.info(`Deopting`)
+            }
             node.attributes = ogAttributes
             return
           }
@@ -1947,6 +1950,15 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
           if (!completeStyles) {
             throw new Error(`Impossible, no styles`)
+          }
+
+          const isNativeNotFlat = !shouldFlatten && target === 'native'
+          if (isNativeNotFlat) {
+            if (shouldPrintDebug) {
+              logger.info(`Disabled flattening except for simple cases on native for now`)
+              node.attributes = ogAttributes
+              return node
+            }
           }
 
           let getStyleError: any = null

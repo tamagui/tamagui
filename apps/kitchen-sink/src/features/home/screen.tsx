@@ -95,6 +95,7 @@ const ColorSchemeListItem = () => {
       <Button chromeless disabled w={20} icon={Moon} />
       <Switch checked={checked} themeShallow>
         <Switch.Thumb
+          debug="verbose"
           animation={[
             'quick',
             {

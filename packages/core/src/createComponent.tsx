@@ -366,9 +366,11 @@ export function createComponent<
           exitStyle && isExiting && merge(style, exitStyle)
 
           if (process.env.NODE_ENV === 'development') {
-            if (debugProp) {
+            if (debugProp === 'verbose') {
               // eslint-disable-next-line no-console
-              console.log('animation style', style)
+              console.log('animation style keys', Object.keys(style))
+              // eslint-disable-next-line no-console
+              console.log('animation style values', Object.values(style))
             }
           }
 

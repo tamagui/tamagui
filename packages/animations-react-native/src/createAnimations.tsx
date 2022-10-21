@@ -149,7 +149,10 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
 
       const animateStyles = useRef<Record<string, Animated.Value>>({})
       const animatedTranforms = useRef<{ [key: string]: Animated.Value }[]>([])
-      const interpolations = useRef(new WeakMap<Animated.Value, Animated.AnimatedInterpolation>())
+      const interpolations = useRef<WeakMap<Animated.Value, Animated.AnimatedInterpolation>>()
+      if (!interpolations.current) {
+        interpolations.current = new WeakMap<Animated.Value, Animated.AnimatedInterpolation>()
+      }
 
       // TODO loop and create values, run them if they change
 
@@ -160,7 +163,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         const [val, type] = getValue(valIn)
         const value = animated || new Animated.Value(val)
         if (type) {
-          interpolations.current.set(value, getInterpolated(value, type, val))
+          interpolations.current!.set(value, getInterpolated(value, type, val))
         }
         if (animated) {
           const animationConfig = getAnimationConfig(key, animations, props.animation)
@@ -172,11 +175,6 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
           completions.push(promise)
 
           runners.push(() => {
-            if (animated['_value'] === val) {
-              resolve()
-              // avoid update when its the same
-              return
-            }
             animated.stopAnimation()
             Animated.spring(animated, {
               toValue: val,
@@ -190,16 +188,6 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
           })
         }
         return value
-      }
-
-      function getValue(input: number | string) {
-        if (typeof input !== 'string') {
-          return [input] as const
-        }
-        const neg = input[0] === '-'
-        if (neg) input = input.slice(1)
-        const [_, number, after] = input.match(/([-0-9]+)(deg|%)/) ?? []
-        return [+number * (neg ? -1 : 1), after] as const
       }
 
       const nonAnimatedStyle = {}
@@ -229,11 +217,11 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         ...Object.fromEntries(
           Object.entries({
             ...animateStyles.current,
-          }).map(([k, v]) => [k, interpolations.current.get(v) || v])
+          }).map(([k, v]) => [k, interpolations.current!.get(v) || v])
         ),
         transform: animatedTranforms.current.map((r) => {
           const key = Object.keys(r)[0]
-          const val = interpolations.current.get(r[key]) || r[key]
+          const val = interpolations.current!.get(r[key]) || r[key]
           return { [key]: val }
         }),
       }
@@ -253,8 +241,6 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       ]
 
       useIsomorphicLayoutEffect(() => {
-        console.log('aniamte')
-        //
         for (const runner of runners) {
           runner()
         }
@@ -320,4 +306,14 @@ function getAnimationConfig(key: string, animations: AnimationsConfig, animation
     ...found,
     ...extraConf,
   }
+}
+
+function getValue(input: number | string) {
+  if (typeof input !== 'string') {
+    return [input] as const
+  }
+  const neg = input[0] === '-'
+  if (neg) input = input.slice(1)
+  const [_, number, after] = input.match(/([-0-9]+)(deg|%)/) ?? []
+  return [+number * (neg ? -1 : 1), after] as const
 }
