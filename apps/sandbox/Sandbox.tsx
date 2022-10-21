@@ -9,6 +9,7 @@ import { TamaguiProvider } from '@tamagui/core'
 import { SheetDemo } from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { AnimationsDemo } from '@tamagui/demos'
+// import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { Square } from 'tamagui'
 
