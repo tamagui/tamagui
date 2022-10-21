@@ -3,16 +3,13 @@
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- *
- * @flow
- * @format
  */
 
 'use strict'
 
 import { InteractionManager } from 'react-native-web-internals'
 
-import TouchHistoryMath from '../TouchHistoryMath/index.js'
+import TouchHistoryMath from '../TouchHistoryMath'
 
 type PressEvent = any
 
@@ -198,7 +195,7 @@ type PanResponderConfig = {
    * callsites return void and this TODO notice is found in it:
    *   TODO: t7467124 investigate if this can be removed
    */
-  onPanResponderGrant?: (PassiveCallback | ActiveCallback) | null
+  onPanResponderGrant?: PassiveCallback | null | ActiveCallback
   onPanResponderReject?: PassiveCallback | null
   onPanResponderStart?: PassiveCallback | null
   onPanResponderEnd?: PassiveCallback | null
@@ -311,7 +308,7 @@ const PanResponder = {
    * typical responder callback pattern (without using `PanResponder`), but
    * avoids more dispatches than necessary.
    */
-  _updateGestureStateOnMove(gestureState: GestureState, touchHistory: PressEvent['touchHistory']) {
+  _updateGestureStateOnMove(gestureState: GestureState, touchHistory: any) {
     gestureState.numberActiveTouches = touchHistory.numberActiveTouches
     gestureState.moveX = currentCentroidXOfTouchesChangedAfter(
       touchHistory,
@@ -333,6 +330,10 @@ const PanResponder = {
     const dt = touchHistory.mostRecentTimeStamp - gestureState._accountsForMovesUpTo
     gestureState.vx = (nextDX - gestureState.dx) / dt
     gestureState.vy = (nextDY - gestureState.dy) / dt
+
+    if (isNaN(gestureState.vy)) {
+      debugger
+    }
 
     gestureState.dx = nextDX
     gestureState.dy = nextDY
@@ -468,10 +469,17 @@ const PanResponder = {
       },
 
       onResponderReject(event: PressEvent): void {
-        clearInteractionHandle(interactionState, config.onPanResponderReject, event, gestureState)
+        clearInteractionHandle(
+          interactionState,
+          // @ts-ignore
+          config.onPanResponderReject,
+          event,
+          gestureState
+        )
       },
 
       onResponderRelease(event: PressEvent): void {
+        // @ts-ignore
         clearInteractionHandle(interactionState, config.onPanResponderRelease, event, gestureState)
         setInteractionTimeout(interactionState)
         PanResponder._initializeGestureState(gestureState)
@@ -503,12 +511,14 @@ const PanResponder = {
       onResponderEnd(event: PressEvent): void {
         const touchHistory = event.touchHistory
         gestureState.numberActiveTouches = touchHistory.numberActiveTouches
+        // @ts-ignore
         clearInteractionHandle(interactionState, config.onPanResponderEnd, event, gestureState)
       },
 
       onResponderTerminate(event: PressEvent): void {
         clearInteractionHandle(
           interactionState,
+          // @ts-ignore
           config.onPanResponderTerminate,
           event,
           gestureState
@@ -546,7 +556,7 @@ const PanResponder = {
 
 function clearInteractionHandle(
   interactionState: InteractionState,
-  callback: (ActiveCallback | PassiveCallback) | null | undefined,
+  callback: any,
   event: PressEvent,
   gestureState: GestureState
 ) {
@@ -568,7 +578,5 @@ function setInteractionTimeout(interactionState: InteractionState) {
     interactionState.shouldCancelClick = false
   }, 250)
 }
-
-export type PanResponderInstance = any
 
 export default PanResponder

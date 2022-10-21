@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "@tamagui/normalize-css-color-lite": "^1.0.1-beta.193",
-    "@tamagui/react-native-use-pressable": "^1.0.1-beta.193",
     "react-native-web-internals": "^1.0.1-beta.193",
     "styleq": "^0.1.2"
   },

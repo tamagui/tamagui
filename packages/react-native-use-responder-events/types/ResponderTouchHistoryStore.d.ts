@@ -1,5 +1,6 @@
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
@@ -18,16 +19,16 @@ declare type TouchRecord = {
 };
 export declare type TouchHistory = {
     indexOfSingleActiveTouch: number;
-    mostRecentTS: number;
-    numActive: number;
+    mostRecentTimeStamp: number;
+    numberActiveTouches: number;
     touchBank: Array<TouchRecord>;
 };
 export declare class ResponderTouchHistoryStore {
-    _hist: {
+    _touchHistory: {
         touchBank: never[];
-        numActive: number;
+        numberActiveTouches: number;
         indexOfSingleActiveTouch: number;
-        mostRecentTS: number;
+        mostRecentTimeStamp: number;
     };
     recordTouchTrack(topLevelType: string, nativeEvent: TouchEvent): void;
     get touchHistory(): TouchHistory;

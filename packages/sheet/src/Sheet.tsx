@@ -351,6 +351,7 @@ export const Sheet = withStaticProperties(
 
       const panResponder = useMemo(
         () => {
+          console.log('pan responder', { disableDrag, frameSize })
           if (disableDrag) return
           if (!frameSize) return
 
@@ -401,6 +402,8 @@ export const Sheet = withStaticProperties(
 
           const onMoveShouldSet = (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
             const isScrolled = scrollBridge.y !== 0
+            const isDraggingUp = dy < 0
+            const isAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
             if (isScrolled) {
               previouslyScrolling = true
               return false
@@ -409,8 +412,6 @@ export const Sheet = withStaticProperties(
               previouslyScrolling = false
               return true
             }
-            const isDraggingUp = dy < 0
-            const isAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
             // prevent drag once at top and pulling up
             if (isAtTop) {
               if (!isScrolled && isDraggingUp) {
@@ -418,7 +419,7 @@ export const Sheet = withStaticProperties(
               }
             }
             // we could do some detection of other touchables and cancel here..
-            return Math.abs(dy) > 8
+            return Math.abs(dy) > 5
           }
 
           const grant = () => {
