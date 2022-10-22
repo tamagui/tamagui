@@ -143,7 +143,7 @@ const HeroTop = memo(() => {
                   UI&nbsp;kit
                 </Tag>
               </Link>{' '}
-              that&nbsp;unifies react native + web
+              that&nbsp;unify react native + web
             </Subtitle>
           </YStack>
         </YStack>

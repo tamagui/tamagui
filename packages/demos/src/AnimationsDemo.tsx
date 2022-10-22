@@ -1,7 +1,6 @@
 import { LogoIcon } from '@tamagui/logo'
 import { Play } from '@tamagui/lucide-icons'
-import React from 'react'
-import { Button, Square, useControllableState } from 'tamagui'
+import { Button, Square, useControllableState, useEvent } from 'tamagui'
 
 export function AnimationsDemo(props) {
   const [positionI, setPositionI] = useControllableState({
@@ -10,18 +9,18 @@ export function AnimationsDemo(props) {
     defaultProp: 0,
   })
   const position = positions[positionI]
-  const next = (to = 1) => {
+  const onPress = useEvent(() => {
     setPositionI((x) => {
-      return (x + to) % positions.length
+      return (x + 1) % positions.length
     })
-  }
+  })
 
   return (
     <>
       <Square
         focusable={false}
         animation={props.animation || 'bouncy'}
-        onPress={() => next()}
+        onPress={onPress}
         size={104}
         boc="$backgroundHover"
         bw={1}
@@ -46,7 +45,7 @@ export function AnimationsDemo(props) {
         theme={props.tint}
         size="$5"
         circular
-        onPress={() => next()}
+        onPress={onPress}
       />
     </>
   )

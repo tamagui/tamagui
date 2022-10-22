@@ -21,6 +21,7 @@ export default defineConfig({
     reanimated(),
     react({
       jsxRuntime: 'classic',
+      jsxImportSource: '@welldone-software/why-did-you-render',
       fastRefresh: true,
       jsxPure: true,
     }),

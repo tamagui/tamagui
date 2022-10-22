@@ -6,7 +6,7 @@ import '../site/app.css'
 
 // import { AppRegistry, useColorScheme } from 'react-native'
 import { TamaguiProvider } from '@tamagui/core'
-// import { SliderDemo, SwitchDemo } from '@tamagui/demos'
+import { AnimationsDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { Square } from 'tamagui'
 
@@ -82,6 +82,8 @@ export const Sandbox = () => {
         {/* <Input /> */}
 
         <Square size={100} bc="red" />
+
+        <AnimationsDemo />
 
         {/* <SliderDemo /> */}
 

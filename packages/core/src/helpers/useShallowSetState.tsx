@@ -3,7 +3,6 @@ import React, { useCallback } from 'react'
 export function useShallowSetState<State extends Object>(
   setter: React.Dispatch<React.SetStateAction<State>>
 ) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   return useCallback(
     (next: Partial<State>) => {
       setter((prev) => {

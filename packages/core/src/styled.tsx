@@ -58,8 +58,7 @@ export function styled<
   //     options = options ? ({ ...props, ...options } as any) : props
   //   }
   // }
-
-  const tamaguiConfig = getConfig()
+  // const tamaguiConfig = getConfig()
 
   const staticConfigProps = (() => {
     const parentStaticConfig =
@@ -94,7 +93,6 @@ export function styled<
       const isTamagui = !isReactNativeWeb && !!parentStaticConfig
       const Comp = reactNativeWebComponent || (Component as any)
       const isText = Boolean(staticExtractionOptions?.isText || parentStaticConfig?.isText)
-
       const acceptsClassName = acceptsClassNameProp ?? (isTamagui || isReactNativeWeb)
 
       const conf: Partial<StaticConfig> = {
