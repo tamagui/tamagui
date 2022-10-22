@@ -117,6 +117,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           flexDirection: 'row',
         }}
         maw={1250}
+        zi={100}
         pos="relative"
       >
         <EnsureFlexed />
