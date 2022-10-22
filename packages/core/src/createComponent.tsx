@@ -7,7 +7,6 @@ import {
   validPseudoKeys,
   validStyles,
 } from '@tamagui/helpers'
-import { usePressable } from '@tamagui/react-native-use-pressable'
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import type { ViewStyle } from '@tamagui/types-react-native'
 import { useForceUpdate } from '@tamagui/use-force-update'
@@ -69,6 +68,7 @@ React['keep']
  * All things that need one-time setup after createTamagui is called
  */
 let defaultComponentState: TamaguiComponentState | null = null
+let defaultComponentStateMounted: TamaguiComponentState | null = null
 let tamaguiConfig: TamaguiInternalConfig
 let AnimatedText: any
 let AnimatedView: any
@@ -137,7 +137,6 @@ export function createComponent<
     }
 
     const debugProp = props['debug']
-
     const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
     const componentClassName = props.asChild
@@ -152,10 +151,29 @@ export function createComponent<
     /**
      * Component state for tracking animations, pseudos
      */
-    const states = useServerState<TamaguiComponentState>(defaultComponentState!)
+    const hasEnterStyle = !!props.enterStyle
+    const states = useServerState<TamaguiComponentState>(
+      hasEnterStyle ? defaultComponentState! : defaultComponentStateMounted!
+    )
+
     const state = propsIn.forceStyle ? { ...states[0], [propsIn.forceStyle]: true } : states[0]
     const setState = states[1]
     const setStateShallow = useShallowSetState(setState)
+
+    const shouldSetMounted = Boolean((!isWeb || isClient) && hasEnterStyle && !state.mounted)
+    const setMounted = shouldSetMounted
+      ? () => {
+          // for some reason without some small delay it doesn't animate css
+          setTimeout(
+            () => {
+              setStateShallow({
+                mounted: true,
+              })
+            },
+            isWeb ? 10 : 0
+          )
+        }
+      : undefined
 
     const shouldAvoidClasses =
       !!(props.animation && avoidClassesWhileAnimating) || !staticConfig.acceptsClassName
@@ -263,47 +281,16 @@ export function createComponent<
       mediaKeys,
     } = splitStyles
 
-    // media queries
-    useIsomorphicLayoutEffect(() => {
-      if (!mediaKeys.length) return
-      const disposers: any[] = []
-      for (const key of mediaKeys) {
-        disposers.push(
-          addMediaQueryListener(key, (next: boolean) => {
-            setState((prev) => {
-              if (prev.mediaState![key] !== next) {
-                return {
-                  ...prev,
-                  mediaState: {
-                    ...prev.mediaState,
-                    [key]: next,
-                  },
-                }
-              }
-              return prev
-            })
-          })
-        )
-      }
-      return () => {
-        for (const disposer of disposers) {
-          disposer()
-        }
-      }
-    }, [mediaKeys.join(',')])
-
     const animationFeatureStylesIn = props.animation
       ? { ...defaultNativeStyle, ...splitStylesStyle }
       : null
     const propsWithAnimation = props as UseAnimationProps
 
-    // lets make changing the key mandatory for adding/removing animations
-    // reason is animations are heavy no way around it, and must be run inline here (🙅 loading as a sub-component)
-    // because they need to sync update on first render. it's pretty rare too going to/from no animation => animation
-    // so requiring key change on animation change is least-bad option.
-    // plus, React use() may let us get away with conditional hooks soon :)
+    // once you set animation prop don't remove it, you can set to undefined/false
+    // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
+    let animationStyles: any
     if (!isRSC && isAnimated && useAnimations) {
-      const animationState = useAnimations(propsWithAnimation, {
+      const animations = useAnimations(propsWithAnimation, {
         state,
         pseudos,
         onDidAnimate: props.onDidAnimate,
@@ -355,7 +342,6 @@ export function createComponent<
             // enterStyle,
             pseudos.hoverStyle,
             pseudos.focusStyle,
-            pseudos.pressStyle,
             pseudos.pressStyle
           )
 
@@ -366,11 +352,9 @@ export function createComponent<
           exitStyle && isExiting && merge(style, exitStyle)
 
           if (process.env.NODE_ENV === 'development') {
-            if (debugProp === 'verbose') {
+            if (debugProp === 'verbose' && isClient) {
               // eslint-disable-next-line no-console
-              console.log('animation style keys', Object.keys(style))
-              // eslint-disable-next-line no-console
-              console.log('animation style values', Object.values(style))
+              console.log('animation style', style)
             }
           }
 
@@ -379,13 +363,39 @@ export function createComponent<
         //, delay
       })
 
-      // must be properly memoized
-      if (animationState !== state.animation) {
-        setStateShallow({
-          animation: animationState,
-        })
+      if (animations) {
+        animationStyles = animations.style
       }
     }
+
+    // media queries
+    useIsomorphicLayoutEffect(() => {
+      if (!mediaKeys.length) return
+      const disposers: any[] = []
+      for (const key of mediaKeys) {
+        disposers.push(
+          addMediaQueryListener(key, (next: boolean) => {
+            setState((prev) => {
+              if (prev.mediaState![key] !== next) {
+                return {
+                  ...prev,
+                  mediaState: {
+                    ...prev.mediaState,
+                    [key]: next,
+                  },
+                }
+              }
+              return prev
+            })
+          })
+        )
+      }
+      return () => {
+        for (const disposer of disposers) {
+          disposer()
+        }
+      }
+    }, [mediaKeys.join(',')])
 
     const {
       hitSlop,
@@ -424,25 +434,6 @@ export function createComponent<
     // these can ultimately be for DOM, react-native-web views, or animated views
     // so the type is pretty loose
     let viewProps: Record<string, any>
-
-    const hasEnterStyle = !!props.enterStyle
-    const shouldSetMounted = Boolean(
-      (isWeb ? isClient : true) && (hasEnterStyle || props.animation) && !state.mounted
-    )
-
-    const setMounted = shouldSetMounted
-      ? () => {
-          // for some reason without some small delay it doesn't animate css
-          setTimeout(
-            () => {
-              setStateShallow({
-                mounted: true,
-              })
-            },
-            isWeb ? 10 : 0
-          )
-        }
-      : undefined
 
     // if react-native-web view just pass all props down
     if (process.env.TAMAGUI_TARGET === 'web' && !isReactNativeWeb) {
@@ -586,8 +577,6 @@ export function createComponent<
 
     let styles: any[]
 
-    const animationStyles = state.animation ? state.animation.style : null
-
     if (isStringElement && shouldAvoidClasses && !shouldForcePseudo) {
       styles = {
         ...defaultNativeStyle,
@@ -626,21 +615,6 @@ export function createComponent<
     const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      if (process.env.NODE_ENV === 'development') {
-        if (fontFamily?.startsWith(`var(`)) {
-          // eslint-disable-next-line no-console
-          console.log(
-            `Received variable instead of resolved name of font, this is a bug. Please report on Github.`,
-            {
-              fontFamily,
-              props,
-              splitStyles,
-              staticConfig,
-            }
-          )
-        }
-      }
-
       const classList = [
         componentName ? componentClassName : '',
         fontFamilyClassName,
@@ -720,10 +694,7 @@ export function createComponent<
       isHoverable &&
       !!((pseudos && pseudos.hoverStyle) || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
 
-    const handlesPressEvents = !isStringElement && !asChild
-    const pressKey = handlesPressEvents ? 'onPress' : 'onClick'
-    const pressInKey = handlesPressEvents ? 'onPressIn' : 'onMouseDown'
-    const pressOutKey = handlesPressEvents ? 'onPressOut' : 'onMouseUp'
+    const handlesPressEvents = !isWeb && !asChild
 
     // check presence to prevent reparenting bugs, allows for onPress={x ? function : undefined} usage
     const shouldAttach =
@@ -744,7 +715,7 @@ export function createComponent<
     const events =
       shouldAttach && !isRSC
         ? {
-            [pressOutKey]: attachPress
+            onPressOut: attachPress
               ? (e) => {
                   unPress()
                   onPressOut?.(e)
@@ -761,7 +732,7 @@ export function createComponent<
                     if (state.pressIn) {
                       next.press = true
                     }
-                    if (Object.keys(next).length) {
+                    if (attachHover || state.pressIn) {
                       setStateShallow(next)
                     }
                     onHoverIn?.(e)
@@ -787,7 +758,7 @@ export function createComponent<
                   }
                 : undefined,
             }),
-            [pressInKey]: attachPress
+            onPressIn: attachPress
               ? (e) => {
                   setStateShallow({
                     press: true,
@@ -800,15 +771,15 @@ export function createComponent<
                     mouseUps.add(unPress)
                   }
                 }
-              : null,
-            [pressKey]: attachPress
+              : undefined,
+            onPress: attachPress
               ? (e) => {
                   unPress()
                   // @ts-ignore
                   onClick?.(e)
                   onPress?.(e)
                 }
-              : null,
+              : undefined,
 
             // replicating TouchableWithoutFeedback
             ...(!isWeb && {
@@ -874,34 +845,6 @@ export function createComponent<
       }
     }
 
-    // EVENTS: web
-    if (!isRSC && isWeb) {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const pressableProps = usePressable(
-        events
-          ? {
-              disabled,
-              ...(hitSlop && {
-                hitSlop,
-              }),
-              onPressOut: events[pressOutKey],
-              onPressIn: events[pressInKey],
-              onPress: events[pressKey],
-            }
-          : {
-              disabled: true,
-            }
-      )
-
-      if (events) {
-        if (handlesPressEvents) {
-          Object.assign(viewProps, pressableProps)
-        } else {
-          Object.assign(viewProps, events)
-        }
-      }
-    }
-
     // EVENTS native
     if (process.env.TAMAGUI_TARGET === 'native') {
       // add focus events
@@ -922,9 +865,6 @@ export function createComponent<
       // only ever create once, use .configure() to update later
       const pressability = usePressability(events)
       if (attachPress && events) {
-        const dontComposePressabilityKeys = {
-          onClick: true,
-        }
         if (hitSlop) {
           viewProps.hitSlop = hitSlop
         }
@@ -940,26 +880,17 @@ export function createComponent<
     content = createElement(elementType, viewProps, childEls)
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      // only necessary when animating because some AnimatedView which wraps RNW View doesn't forward dataSet className
-      const isAnimatedRNWView = isAnimated && typeof elementType !== 'string' // assuming for now as reanimated is only driver
-      const shouldWrapWithComponentTheme =
-        !!theme.className &&
-        isAnimatedRNWView &&
-        getReturnVariablesAs(props, splitStyleState) === 'non-color-value'
-      const shouldWrapWithHover = Boolean(events || isRSC) && attachHover
-
-      if (shouldWrapWithHover || shouldWrapWithComponentTheme) {
-        const themeClassName = shouldWrapWithComponentTheme ? `${theme.className}` : ''
-        const hoverClassName = shouldWrapWithHover ? 't_Hoverable' : ''
+      if (events) {
         content = (
           <span
-            className={`${hoverClassName} ${themeClassName}`}
             style={styleDisplayContents}
-            {...(events &&
-              shouldWrapWithHover && {
-                onMouseEnter: events.onMouseEnter,
-                onMouseLeave: events.onMouseLeave,
-              })}
+            onMouseEnter={events.onMouseEnter}
+            onMouseLeave={events.onMouseLeave}
+            onClick={events.onPress}
+            onMouseDown={events.onPressIn}
+            onMouseUp={events.onPressOut}
+            onTouchStart={events.onPressIn}
+            onTouchEnd={events.onPressOut}
           >
             {content}
           </span>
@@ -1013,16 +944,18 @@ export function createComponent<
       tamaguiConfig = conf
 
       if (!defaultComponentState) {
-        defaultComponentState = Object.freeze({
+        defaultComponentState = {
           hover: false,
           press: false,
           pressIn: false,
           focus: false,
-          // only used by enterStyle
           mounted: false,
-          animation: null,
           mediaState: getInitialMediaState(),
-        })
+        }
+        defaultComponentStateMounted = {
+          ...defaultComponentState,
+          mounted: true,
+        }
       }
 
       if (tamaguiConfig.animations) {
@@ -1221,13 +1154,8 @@ export const Spacer = createComponent<SpacerProps>({
         width: 0,
         minWidth: 0,
       },
-      both: {},
     },
   } as const,
-
-  defaultVariants: {
-    direction: 'both',
-  },
 })
 
 export type SpacedChildrenProps = {
@@ -1287,7 +1215,7 @@ export function spacedChildren({
         if (hasSpace) {
           final.push(
             createSpacer({
-              key: `_${index}_before_sep_spacer`,
+              key: `_${index}_00tmgui`,
               direction,
               space,
               spaceFlex,
@@ -1302,7 +1230,7 @@ export function spacedChildren({
         if (hasSpace) {
           final.push(
             createSpacer({
-              key: `_${index}_after_sep_spacer`,
+              key: `_${index}01tmgui`,
               direction,
               space,
               spaceFlex,
@@ -1312,7 +1240,7 @@ export function spacedChildren({
       } else {
         final.push(
           createSpacer({
-            key: `_${index}_spacer`,
+            key: `_${index}02tmgui`,
             direction,
             space,
             spaceFlex,
@@ -1503,4 +1431,8 @@ const AbsoluteFill: any = createComponent({
 
 const styleDisplayContents = {
   display: 'contents',
+}
+
+const dontComposePressabilityKeys = {
+  onClick: true,
 }
