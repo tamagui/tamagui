@@ -351,7 +351,6 @@ export const Sheet = withStaticProperties(
 
       const panResponder = useMemo(
         () => {
-          console.log('pan responder', { disableDrag, frameSize })
           if (disableDrag) return
           if (!frameSize) return
 

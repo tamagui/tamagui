@@ -17,7 +17,6 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
   ({ __scopeSheet, ...props }: SheetScopedProps<ScrollViewProps>, ref) => {
     const { scrollBridge } = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
     const [scrollEnabled, setScrollEnabled] = useState(true)
-    console.log('scrollEnabled', scrollEnabled)
     const state = useRef({
       lastPageY: 0,
       dragAt: 0,

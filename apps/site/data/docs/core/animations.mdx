@@ -21,11 +21,6 @@ description: Pluggable animation drivers.
   ]}
 />
 
-<Notice>
-  Animations are still a work in progress. In order to support full compilation alongside
-  animations, there will likely be some changes in semantics. Read more at the end of this doc.
-</Notice>
-
 Add animations to Tamagui with an animation driver.
 
 Animation drivers are designed to be swappable, so you can use lightweight CSS animations or other web-focused animation libraries on the web, while using larger but more advanced libraries like `reanimated` on native - all without having to change a line outside of configuration.
@@ -328,9 +323,3 @@ export const MyComponent = ({ isVisible }) => (
 ```
 
 Note that it will always find the `true` variant and use that. In the future, Tamagui may be able to add support for more flexible variants here.
-
-## Beta
-
-Animations, variants, and static compilation are somewhat at odds in that if we want to extract fully to CSS, we'd remove some information that non-CSS animation drivers want to know.
-
-As of today, we recommend only using variants for animations as they aren't extracted as fully as base-level styled props. In the future, there will likely be a change to Tamagui where you'll need to either indicate animated properties/variants on the `styled()` call itself in some form.
