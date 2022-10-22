@@ -154,8 +154,6 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         interpolations.current = new WeakMap<Animated.Value, Animated.AnimatedInterpolation>()
       }
 
-      // TODO loop and create values, run them if they change
-
       const runners: Function[] = []
       const completions: Promise<void>[] = []
 
@@ -190,42 +188,6 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         return value
       }
 
-      const nonAnimatedStyle = {}
-      for (const key in all) {
-        const val = all[key]
-        if (animatedStyleKey[key]) {
-          if (key === 'transform') {
-            // for now just support one transform key
-            if (val) {
-              for (const [index, transform] of val.entries()) {
-                if (!transform) continue
-                const tkey = Object.keys(transform)[0]
-                animatedTranforms.current[index] = {
-                  [tkey]: update(tkey, animatedTranforms.current[index]?.[tkey], transform[tkey]),
-                }
-              }
-            }
-          } else {
-            animateStyles.current[key] = update(key, animateStyles.current[key], val)
-          }
-        } else {
-          nonAnimatedStyle[key] = val
-        }
-      }
-
-      const animatedStyle = {
-        ...Object.fromEntries(
-          Object.entries({
-            ...animateStyles.current,
-          }).map(([k, v]) => [k, interpolations.current!.get(v) || v])
-        ),
-        transform: animatedTranforms.current.map((r) => {
-          const key = Object.keys(r)[0]
-          const val = interpolations.current!.get(r[key]) || r[key]
-          return { [key]: val }
-        }),
-      }
-
       const args = [
         JSON.stringify(all),
         state.mounted,
@@ -240,6 +202,49 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         presence?.enterVariant,
       ]
 
+      const res = useMemo(() => {
+        const animatedStyle = {
+          ...Object.fromEntries(
+            Object.entries({
+              ...animateStyles.current,
+            }).map(([k, v]) => [k, interpolations.current!.get(v) || v])
+          ),
+          transform: animatedTranforms.current.map((r) => {
+            const key = Object.keys(r)[0]
+            const val = interpolations.current!.get(r[key]) || r[key]
+            return { [key]: val }
+          }),
+        }
+
+        const nonAnimatedStyle = {}
+        for (const key in all) {
+          const val = all[key]
+          if (animatedStyleKey[key]) {
+            if (key === 'transform') {
+              // for now just support one transform key
+              if (val) {
+                for (const [index, transform] of val.entries()) {
+                  if (!transform) continue
+                  const tkey = Object.keys(transform)[0]
+                  animatedTranforms.current[index] = {
+                    [tkey]: update(tkey, animatedTranforms.current[index]?.[tkey], transform[tkey]),
+                  }
+                }
+              }
+            } else {
+              animateStyles.current[key] = update(key, animateStyles.current[key], val)
+            }
+          } else {
+            nonAnimatedStyle[key] = val
+          }
+        }
+
+        return {
+          style: [nonAnimatedStyle, animatedStyle],
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, args)
+
       useIsomorphicLayoutEffect(() => {
         for (const runner of runners) {
           runner()
@@ -252,12 +257,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         })
       }, args)
 
-      return useMemo(() => {
-        return {
-          style: [nonAnimatedStyle, animatedStyle],
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, args)
+      return res
     },
   }
 }

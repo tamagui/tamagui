@@ -9,8 +9,8 @@
  */
 'use strict'
 
-import { shouldUseNativeDriver } from '../NativeAnimatedHelper.js'
-import Animation from './Animation.js'
+import { shouldUseNativeDriver } from '../NativeAnimatedHelper'
+import Animation from './Animation'
 
 class DecayAnimation extends Animation {
   constructor(config) {

@@ -11,12 +11,12 @@
 /* eslint no-bitwise: 0 */
 'use strict'
 
-import _objectSpread from '@babel/runtime/helpers/objectSpread2'
-import normalizeColor from '@tamagui/normalize-css-color-lite'
-import { invariant } from 'react-native-web-internals'
+import invariant from 'fbjs/lib/invariant'
+import normalizeColor from 'normalize-css-color'
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
-import AnimatedWithChildren from './AnimatedWithChildren.js'
+import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import AnimatedNode from './AnimatedNode'
+import AnimatedWithChildren from './AnimatedWithChildren'
 
 var __DEV__ = process.env.NODE_ENV !== 'production'
 
@@ -198,15 +198,7 @@ function createInterpolationFromStringOutputRange(config) {
     /* $FlowFixMe(>=0.18.0): `outputRange[0].match()` can return `null`. Need
      * to guard against this possibility. */
     .map((value, i) => {
-      return createInterpolation(
-        _objectSpread(
-          _objectSpread({}, config),
-          {},
-          {
-            outputRange: outputRanges[i],
-          }
-        )
-      )
+      return createInterpolation({ ...config, outputRange: outputRanges[i] })
     }) // rgba requires that the r,g,b are integers.... so we want to round them, but we *dont* want to
   // round the opacity (4th column).
 

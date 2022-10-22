@@ -9,18 +9,18 @@
  */
 import { Platform } from 'react-native-web-internals'
 
-import Impl from './AnimatedImplementation.js'
-import Mock from './AnimatedMock.js'
-import Image from './components/AnimatedImage.js'
-import ScrollView from './components/AnimatedScrollView.js'
-import Text from './components/AnimatedText.js'
-import View from './components/AnimatedView.js'
+import AnimatedImplementation from './AnimatedImplementation'
+import AnimatedMock from './AnimatedMock'
+import Image from './components/AnimatedImage'
+import ScrollView from './components/AnimatedScrollView'
+import Text from './components/AnimatedText'
+import View from './components/AnimatedView'
 
-export const Animated = {
-  Platform,
+var Animated = Platform.isTesting ? AnimatedMock : AnimatedImplementation
+export default {
   Image,
   ScrollView,
   Text,
   View,
-  ...(Platform.isTesting ? Mock : Impl),
+  ...Animated,
 }

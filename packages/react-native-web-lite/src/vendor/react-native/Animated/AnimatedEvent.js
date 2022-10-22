@@ -9,11 +9,12 @@
  */
 'use strict'
 
-import { invariant } from 'react-native-web-internals'
+import invariant from 'fbjs/lib/invariant'
 
-import NativeAnimatedHelper from './NativeAnimatedHelper.js'
-import { shouldUseNativeDriver } from './NativeAnimatedHelper.js'
-import AnimatedValue from './nodes/AnimatedValue.js'
+import { findNodeHandle } from '../../../findNodeHandle'
+import NativeAnimatedHelper from './NativeAnimatedHelper'
+import { shouldUseNativeDriver } from './NativeAnimatedHelper'
+import AnimatedValue from './nodes/AnimatedValue'
 
 var __DEV__ = process.env.NODE_ENV !== 'production'
 
@@ -43,19 +44,20 @@ export function attachNativeEvent(viewRef, eventName, argMapping) {
   ) // Assume that the event containing `nativeEvent` is always the first argument.
 
   traverse(argMapping[0].nativeEvent, [])
+  var viewTag = findNodeHandle(viewRef)
 
-  if (viewRef != null) {
+  if (viewTag != null) {
     eventMappings.forEach((mapping) => {
-      NativeAnimatedHelper.API.addAnimatedEventToView(viewRef, eventName, mapping)
+      NativeAnimatedHelper.API.addAnimatedEventToView(viewTag, eventName, mapping)
     })
   }
 
   return {
     detach() {
-      if (viewRef != null) {
+      if (viewTag != null) {
         eventMappings.forEach((mapping) => {
           NativeAnimatedHelper.API.removeAnimatedEventFromView(
-            viewRef,
+            viewTag,
             eventName, // $FlowFixMe[incompatible-call]
             mapping.animatedValueTag
           )
@@ -82,7 +84,7 @@ function validateMapping(argMapping, args) {
           typeof recMapping +
           ' for key ' +
           key +
-          ', event value must map to AnimatedValue.js'
+          ', event value must map to AnimatedValue'
       )
       return
     }

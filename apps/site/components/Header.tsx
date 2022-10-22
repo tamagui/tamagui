@@ -55,28 +55,6 @@ export function Header(props: HeaderProps) {
       py={props.floating ? 0 : '$2'}
       zi={50000}
     >
-      <XStack ai="center" space="$6">
-        {isHome ? (
-          <YStack my={-20}>
-            <TamaguiLogo onPress={setNextTint} downscale={props.floating ? 2 : 1.5} />
-          </YStack>
-        ) : (
-          <NextLink href="/" passHref>
-            <YStack cur="pointer" tag="a" my={-20}>
-              <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
-            </YStack>
-          </NextLink>
-        )}
-
-        <ThemeSearchButtonGroup />
-
-        {isInSubApp && (
-          <NextLink href="/">
-            <Button size="$2">Back to Tamagui</Button>
-          </NextLink>
-        )}
-      </XStack>
-
       <XStack
         position="absolute"
         className="all ease-in ms150"

@@ -9,11 +9,10 @@
  */
 'use strict'
 
-import { invariant } from 'react-native-web-internals'
+import invariant from 'fbjs/lib/invariant'
 
-import AnimatedValue from './AnimatedValue.js'
-import AnimatedWithChildren from './AnimatedWithChildren.js'
-
+import AnimatedValue from './AnimatedValue'
+import AnimatedWithChildren from './AnimatedWithChildren'
 var _uniqueId = 1
 /**
  * 2D Value for driving 2D animations, such as pan gestures. Almost identical

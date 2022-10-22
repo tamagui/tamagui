@@ -9,19 +9,12 @@ export declare const webOnlyDefaultStyles: {
     minWidth: number;
 };
 export declare const stackDefaultStyles: {
-<<<<<<< HEAD
     display: string;
     flexBasis: string;
     boxSizing: string;
     position: string;
     minHeight: number;
     minWidth: number;
-=======
-    display?: string | undefined;
-    flexBasis?: string | undefined;
-    boxSizing?: string | undefined;
-    position?: string | undefined;
->>>>>>> ca0dcebde (fix(core): Position relative all views)
     alignItems: string;
     flexShrink: number;
 };

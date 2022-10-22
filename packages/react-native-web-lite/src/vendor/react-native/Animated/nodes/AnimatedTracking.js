@@ -9,11 +9,9 @@
  */
 'use strict'
 
-import _objectSpread from '@babel/runtime/helpers/objectSpread2'
-
-import { generateNewAnimationId, shouldUseNativeDriver } from '../NativeAnimatedHelper.js'
-import AnimatedNode from './AnimatedNode.js'
-import AnimatedValue from './AnimatedValue.js'
+import { generateNewAnimationId, shouldUseNativeDriver } from '../NativeAnimatedHelper'
+import AnimatedNode from './AnimatedNode'
+import AnimatedValue from './AnimatedValue'
 
 class AnimatedTracking extends AnimatedNode {
   constructor(value, parent, animationClass, animationConfig, callback) {
@@ -63,30 +61,20 @@ class AnimatedTracking extends AnimatedNode {
 
   update() {
     this._value.animate(
-      new this._animationClass(
-        _objectSpread(
-          _objectSpread({}, this._animationConfig),
-          {},
-          {
-            toValue: this._animationConfig.toValue.__getValue(),
-          }
-        )
-      ),
+      new this._animationClass({
+        ...this._animationConfig,
+        toValue: this._animationConfig.toValue.__getValue(),
+      }),
       this._callback
     )
   }
 
   __getNativeConfig() {
-    var animation = new this._animationClass(
-      _objectSpread(
-        _objectSpread({}, this._animationConfig),
-        {},
-        {
-          // remove toValue from the config as it's a ref to Animated.Value
-          toValue: undefined,
-        }
-      )
-    )
+    var animation = new this._animationClass({
+      ...this._animationConfig,
+      // remove toValue from the config as it's a ref to Animated.Value
+      toValue: undefined,
+    })
 
     var animationConfig = animation.__getNativeAnimationConfig()
 

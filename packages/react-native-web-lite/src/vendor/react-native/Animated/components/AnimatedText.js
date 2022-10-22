@@ -9,8 +9,8 @@
  */
 import * as React from 'react'
 
-import Text from '../../../../Text/index.js'
-import createAnimatedComponent from '../createAnimatedComponent.js'
+import Text from '../../../../Text'
+import createAnimatedComponent from '../createAnimatedComponent'
 
 export default createAnimatedComponent(Text, {
   collapsable: false,

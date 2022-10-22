@@ -16,7 +16,7 @@ export { default as render } from './render/index.js'
 export { unmountComponentAtNode } from 'react-dom'
 export { default as NativeModules } from './NativeModules/index.js'
 export { findNodeHandle } from './findNodeHandle.js'
-export { Easing } from './vendor/react-native/Animated/Easing.js'
+export { default as Easing } from './vendor/react-native/Animated/Easing.js'
 
 // APIs
 export { default as AccessibilityInfo } from './AccessibilityInfo/index.js'
@@ -52,7 +52,7 @@ export { default as SectionList } from './UnimplementedView.js'
 export { default as Modal } from './UnimplementedView.js'
 
 export { default as NativeEventEmitter } from './vendor/react-native/NativeEventEmitter/index.js'
-export { Animated } from './vendor/react-native/Animated/Animated.js'
+export { default as Animated } from './vendor/react-native/Animated/Animated.js'
 
 // components
 export { default as ActivityIndicator } from './ActivityIndicator/index.js'

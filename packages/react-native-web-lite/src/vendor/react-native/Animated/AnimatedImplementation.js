@@ -9,25 +9,23 @@
  */
 'use strict'
 
-import _objectSpread from '@babel/runtime/helpers/objectSpread2'
-
-import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent.js'
-import DecayAnimation from './animations/DecayAnimation.js'
-import SpringAnimation from './animations/SpringAnimation.js'
-import TimingAnimation from './animations/TimingAnimation.js'
-import createAnimatedComponent from './createAnimatedComponent.js'
-import AnimatedAddition from './nodes/AnimatedAddition.js'
-import AnimatedDiffClamp from './nodes/AnimatedDiffClamp.js'
-import AnimatedDivision from './nodes/AnimatedDivision.js'
-import AnimatedInterpolation from './nodes/AnimatedInterpolation.js'
-import AnimatedModulo from './nodes/AnimatedModulo.js'
-import AnimatedMultiplication from './nodes/AnimatedMultiplication.js'
-import AnimatedNode from './nodes/AnimatedNode.js'
-import AnimatedProps from './nodes/AnimatedProps.js'
-import AnimatedSubtraction from './nodes/AnimatedSubtraction.js'
-import AnimatedTracking from './nodes/AnimatedTracking.js'
-import AnimatedValue from './nodes/AnimatedValue.js'
-import AnimatedValueXY from './nodes/AnimatedValueXY.js'
+import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent'
+import DecayAnimation from './animations/DecayAnimation'
+import SpringAnimation from './animations/SpringAnimation'
+import TimingAnimation from './animations/TimingAnimation'
+import createAnimatedComponent from './createAnimatedComponent'
+import AnimatedAddition from './nodes/AnimatedAddition'
+import AnimatedDiffClamp from './nodes/AnimatedDiffClamp'
+import AnimatedDivision from './nodes/AnimatedDivision'
+import AnimatedInterpolation from './nodes/AnimatedInterpolation'
+import AnimatedModulo from './nodes/AnimatedModulo'
+import AnimatedMultiplication from './nodes/AnimatedMultiplication'
+import AnimatedNode from './nodes/AnimatedNode'
+import AnimatedProps from './nodes/AnimatedProps'
+import AnimatedSubtraction from './nodes/AnimatedSubtraction'
+import AnimatedTracking from './nodes/AnimatedTracking'
+import AnimatedValue from './nodes/AnimatedValue'
+import AnimatedValueXY from './nodes/AnimatedValueXY'
 
 var add = function add(a, b) {
   return new AnimatedAddition(a, b)
@@ -66,9 +64,9 @@ var _combineCallbacks = function _combineCallbacks(callback, config) {
 
 var maybeVectorAnim = function maybeVectorAnim(value, config, anim) {
   if (value instanceof AnimatedValueXY) {
-    var configX = _objectSpread({}, config)
+    var configX = { ...config }
 
-    var configY = _objectSpread({}, config)
+    var configY = { ...config }
 
     for (var key in config) {
       var _config$key = config[key],
@@ -127,14 +125,7 @@ var spring = function spring(value, config) {
         value.resetAnimation()
       },
       _startNativeLoop: function _startNativeLoop(iterations) {
-        var singleConfig = _objectSpread(
-          _objectSpread({}, config),
-          {},
-          {
-            iterations,
-          }
-        )
-
+        var singleConfig = { ...config, iterations }
         _start(value, singleConfig)
       },
       _isUsingNativeDriver: function _isUsingNativeDriver() {
@@ -178,13 +169,7 @@ var timing = function timing(value, config) {
         value.resetAnimation()
       },
       _startNativeLoop: function _startNativeLoop(iterations) {
-        var singleConfig = _objectSpread(
-          _objectSpread({}, config),
-          {},
-          {
-            iterations,
-          }
-        )
+        var singleConfig = { ...config, iterations }
 
         _start2(value, singleConfig)
       },
@@ -216,13 +201,7 @@ var decay = function decay(value, config) {
         value.resetAnimation()
       },
       _startNativeLoop: function _startNativeLoop(iterations) {
-        var singleConfig = _objectSpread(
-          _objectSpread({}, config),
-          {},
-          {
-            iterations,
-          }
-        )
+        var singleConfig = { ...config, iterations }
 
         _start3(value, singleConfig)
       },

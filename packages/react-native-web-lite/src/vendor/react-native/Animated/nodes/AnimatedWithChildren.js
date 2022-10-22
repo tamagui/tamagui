@@ -11,8 +11,8 @@
 
 import _createForOfIteratorHelperLoose from '@babel/runtime/helpers/createForOfIteratorHelperLoose'
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
-import AnimatedNode from './AnimatedNode.js'
+import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import AnimatedNode from './AnimatedNode'
 
 class AnimatedWithChildren extends AnimatedNode {
   constructor() {

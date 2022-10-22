@@ -15,13 +15,13 @@
  */
 'use strict' // These values are established by empiricism with tests (tradeoff: performance VS precision)
 
-const NEWTON_ITERATIONS = 4
-const NEWTON_MIN_SLOPE = 0.001
-const SUBDIVISION_PRECISION = 0.0000001
-const SUBDIVISION_MAX_ITERATIONS = 10
-const kSplineTableSize = 11
-const kSampleStepSize = 1.0 / (kSplineTableSize - 1.0)
-const float32ArraySupported = typeof Float32Array === 'function'
+var NEWTON_ITERATIONS = 4
+var NEWTON_MIN_SLOPE = 0.001
+var SUBDIVISION_PRECISION = 0.0000001
+var SUBDIVISION_MAX_ITERATIONS = 10
+var kSplineTableSize = 11
+var kSampleStepSize = 1.0 / (kSplineTableSize - 1.0)
+var float32ArraySupported = typeof Float32Array === 'function'
 
 function A(aA1, aA2) {
   return 1.0 - 3.0 * aA2 + 3.0 * aA1

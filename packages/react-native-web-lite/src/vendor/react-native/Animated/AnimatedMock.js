@@ -9,14 +9,14 @@
  */
 'use strict'
 
-import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent.js'
-import AnimatedImplementation from './AnimatedImplementation.js'
-import createAnimatedComponent from './createAnimatedComponent.js'
-import AnimatedInterpolation from './nodes/AnimatedInterpolation.js'
-import AnimatedNode from './nodes/AnimatedNode.js'
-import AnimatedProps from './nodes/AnimatedProps.js'
-import AnimatedValue from './nodes/AnimatedValue.js'
-import AnimatedValueXY from './nodes/AnimatedValueXY.js'
+import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent'
+import AnimatedImplementation from './AnimatedImplementation'
+import createAnimatedComponent from './createAnimatedComponent'
+import AnimatedInterpolation from './nodes/AnimatedInterpolation'
+import AnimatedNode from './nodes/AnimatedNode'
+import AnimatedProps from './nodes/AnimatedProps'
+import AnimatedValue from './nodes/AnimatedValue'
+import AnimatedValueXY from './nodes/AnimatedValueXY'
 var emptyAnimation = {
   start: () => {},
   stop: () => {},

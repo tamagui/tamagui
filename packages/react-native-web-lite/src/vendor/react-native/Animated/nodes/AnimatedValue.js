@@ -11,9 +11,9 @@
 
 import { InteractionManager } from 'react-native-web-internals'
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
-import AnimatedInterpolation from './AnimatedInterpolation.js'
-import AnimatedWithChildren from './AnimatedWithChildren.js'
+import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import AnimatedInterpolation from './AnimatedInterpolation'
+import AnimatedWithChildren from './AnimatedWithChildren'
 
 var NativeAnimatedAPI = NativeAnimatedHelper.API
 /**

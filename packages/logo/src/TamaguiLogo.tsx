@@ -109,6 +109,7 @@ export const LogoWords = ({
       {animated && (
         <Circle
           animation="quick"
+          debug="verbose"
           position="absolute"
           top={0}
           left={0}

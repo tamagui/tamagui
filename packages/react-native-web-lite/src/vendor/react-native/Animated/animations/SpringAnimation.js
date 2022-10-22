@@ -9,13 +9,14 @@
  */
 'use strict'
 
-import { invariant } from 'react-native-web-internals'
+import invariant from 'fbjs/lib/invariant'
 
-import { shouldUseNativeDriver } from '../NativeAnimatedHelper.js'
-import AnimatedInterpolation from '../nodes/AnimatedInterpolation.js'
-import AnimatedValue from '../nodes/AnimatedValue.js'
-import SpringConfig from '../SpringConfig.js'
-import Animation from './Animation.js'
+import { shouldUseNativeDriver } from '../NativeAnimatedHelper'
+import AnimatedInterpolation from '../nodes/AnimatedInterpolation'
+import AnimatedValue from '../nodes/AnimatedValue'
+import AnimatedValueXY from '../nodes/AnimatedValueXY'
+import SpringConfig from '../SpringConfig'
+import Animation from './Animation'
 
 class SpringAnimation extends Animation {
   constructor(config) {

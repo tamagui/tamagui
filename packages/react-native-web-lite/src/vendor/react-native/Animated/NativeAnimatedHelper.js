@@ -1,4 +1,7 @@
-import NativeEventEmitter from '../NativeEventEmitter/index.js'
+import invariant from 'fbjs/lib/invariant' // TODO T69437152 @petetheheat - Delete this fork when Fabric ships to 100%.
+import { Platform } from 'react-native-web-internals'
+
+import NativeEventEmitter from '../NativeEventEmitter'
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -8,9 +11,13 @@ import NativeEventEmitter from '../NativeEventEmitter/index.js'
  *
  * @format
  */
-import NativeAnimatedNonTurboModule from './NativeAnimatedModule.js'
+import NativeAnimatedNonTurboModule from './NativeAnimatedModule'
+import NativeAnimatedTurboModule from './NativeAnimatedTurboModule'
 
-var NativeAnimatedModule = NativeAnimatedNonTurboModule
+var NativeAnimatedModule =
+  Platform.OS === 'ios' && global.RN$Bridgeless
+    ? NativeAnimatedTurboModule
+    : NativeAnimatedNonTurboModule
 var __nativeAnimatedNodeTagCount = 1
 /* used for animated nodes */
 
@@ -28,6 +35,8 @@ var queue = []
 
 var API = {
   getValue: function getValue(tag, saveValueCallback) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
+
     if (NativeAnimatedModule.getValue) {
       NativeAnimatedModule.getValue(tag, saveValueCallback)
     }
@@ -45,11 +54,21 @@ var API = {
     }
   },
   disableQueue: function disableQueue() {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
+
+    if (Platform.OS === 'android') {
+      NativeAnimatedModule.startOperationBatch()
+    }
+
     for (var q = 0, l = queue.length; q < l; q++) {
       queue[q]()
     }
 
     queue.length = 0
+
+    if (Platform.OS === 'android') {
+      NativeAnimatedModule.finishOperationBatch()
+    }
   },
   queueOperation: (fn) => {
     if (queueOperations) {
@@ -59,61 +78,79 @@ var API = {
     }
   },
   createAnimatedNode: function createAnimatedNode(tag, config) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.createAnimatedNode(tag, config))
   },
   startListeningToAnimatedNodeValue: function startListeningToAnimatedNodeValue(tag) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.startListeningToAnimatedNodeValue(tag))
   },
   stopListeningToAnimatedNodeValue: function stopListeningToAnimatedNodeValue(tag) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.stopListeningToAnimatedNodeValue(tag))
   },
   connectAnimatedNodes: function connectAnimatedNodes(parentTag, childTag) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.connectAnimatedNodes(parentTag, childTag))
   },
   disconnectAnimatedNodes: function disconnectAnimatedNodes(parentTag, childTag) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.disconnectAnimatedNodes(parentTag, childTag))
   },
   startAnimatingNode: function startAnimatingNode(animationId, nodeTag, config, endCallback) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() =>
       NativeAnimatedModule.startAnimatingNode(animationId, nodeTag, config, endCallback)
     )
   },
   stopAnimation: function stopAnimation(animationId) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.stopAnimation(animationId))
   },
   setAnimatedNodeValue: function setAnimatedNodeValue(nodeTag, value) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.setAnimatedNodeValue(nodeTag, value))
   },
   setAnimatedNodeOffset: function setAnimatedNodeOffset(nodeTag, offset) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.setAnimatedNodeOffset(nodeTag, offset))
   },
   flattenAnimatedNodeOffset: function flattenAnimatedNodeOffset(nodeTag) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.flattenAnimatedNodeOffset(nodeTag))
   },
   extractAnimatedNodeOffset: function extractAnimatedNodeOffset(nodeTag) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.extractAnimatedNodeOffset(nodeTag))
   },
   connectAnimatedNodeToView: function connectAnimatedNodeToView(nodeTag, viewTag) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.connectAnimatedNodeToView(nodeTag, viewTag))
   },
   disconnectAnimatedNodeFromView: function disconnectAnimatedNodeFromView(nodeTag, viewTag) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.disconnectAnimatedNodeFromView(nodeTag, viewTag))
   },
   restoreDefaultValues: function restoreDefaultValues(nodeTag) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available') // Backwards compat with older native runtimes, can be removed later.
+
     if (NativeAnimatedModule.restoreDefaultValues != null) {
       API.queueOperation(() => NativeAnimatedModule.restoreDefaultValues(nodeTag))
     }
   },
   dropAnimatedNode: function dropAnimatedNode(tag) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.dropAnimatedNode(tag))
   },
   addAnimatedEventToView: function addAnimatedEventToView(viewTag, eventName, eventMapping) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() =>
       NativeAnimatedModule.addAnimatedEventToView(viewTag, eventName, eventMapping)
     )
   },
 
   removeAnimatedEventFromView(viewTag, eventName, animatedNodeTag) {
+    invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() =>
       NativeAnimatedModule.removeAnimatedEventFromView(viewTag, eventName, animatedNodeTag)
     )
@@ -219,7 +256,9 @@ export function generateNewAnimationId() {
   return __nativeAnimationIdCount++
 }
 
-function assertNativeAnimatedModule() {}
+function assertNativeAnimatedModule() {
+  invariant(NativeAnimatedModule, 'Native animated module is not available')
+}
 
 var _warnedMissingNativeAnimated = false
 export function shouldUseNativeDriver(config) {
