@@ -179,9 +179,15 @@ const sheetComponents = {
   ScrollView: SheetScrollView,
 }
 
+const ParentSheetContext = createContext({
+  zIndex: 40,
+})
+
 export const Sheet = withStaticProperties(
   themeable(
     forwardRef<View, SheetProps>(function Sheet(props, ref) {
+      const parentSheet = useContext(ParentSheetContext)
+
       const {
         __scopeSheet,
         snapPoints: snapPointsProp = [80],
@@ -198,7 +204,7 @@ export const Sheet = withStaticProperties(
         disableDrag: disableDragProp,
         modal = false,
         handleDisableScroll = true,
-        zIndex = 40,
+        zIndex = parentSheet.zIndex + 1,
       } = props
 
       if (process.env.NODE_ENV === 'development') {
@@ -511,60 +517,69 @@ export const Sheet = withStaticProperties(
         }
       }, [parentSheetContext, open])
 
+      const nextParentContext = useMemo(
+        () => ({
+          zIndex,
+        }),
+        [zIndex]
+      )
+
       const contents = (
-        <SheetProvider
-          modal={modal}
-          contentRef={contentRef}
-          dismissOnOverlayPress={dismissOnOverlayPress}
-          dismissOnSnapToBottom={dismissOnSnapToBottom}
-          open={open}
-          hidden={isHidden}
-          scope={__scopeSheet}
-          position={position}
-          snapPoints={snapPoints}
-          setPosition={setPosition}
-          setOpen={setOpen}
-          scrollBridge={scrollBridge}
-        >
-          {isResizing || shouldHideParentSheet ? null : overlayComponent}
-
-          <AnimatedView
-            ref={ref}
-            {...panResponder?.panHandlers}
-            onLayout={(e) => {
-              const next = e.nativeEvent.layout.height
-              setFrameSize((prev) => {
-                const isBigChange = Math.abs(prev - next) > 50
-                setIsResizing(isBigChange)
-                return next
-              })
-            }}
-            pointerEvents={open && !shouldHideParentSheet ? 'auto' : 'none'}
-            style={[
-              {
-                position: 'absolute',
-                zIndex,
-                width: '100%',
-                height: '100%',
-                opacity: shouldHideParentSheet ? 0 : 1,
-              },
-              animatedStyle,
-            ]}
+        <ParentSheetContext.Provider value={nextParentContext}>
+          <SheetProvider
+            modal={modal}
+            contentRef={contentRef}
+            dismissOnOverlayPress={dismissOnOverlayPress}
+            dismissOnSnapToBottom={dismissOnSnapToBottom}
+            open={open}
+            hidden={isHidden}
+            scope={__scopeSheet}
+            position={position}
+            snapPoints={snapPoints}
+            setPosition={setPosition}
+            setOpen={setOpen}
+            scrollBridge={scrollBridge}
           >
-            {handleComponent}
+            {isResizing || shouldHideParentSheet ? null : overlayComponent}
 
-            <RemoveScroll
-              enabled={open && modal && handleDisableScroll}
-              as={Slot}
-              allowPinchZoom
-              shards={[contentRef]}
-              // causes lots of bugs on touch web on site
-              removeScrollBar={false}
+            <AnimatedView
+              ref={ref}
+              {...panResponder?.panHandlers}
+              onLayout={(e) => {
+                const next = e.nativeEvent.layout.height
+                setFrameSize((prev) => {
+                  const isBigChange = Math.abs(prev - next) > 50
+                  setIsResizing(isBigChange)
+                  return next
+                })
+              }}
+              pointerEvents={open && !shouldHideParentSheet ? 'auto' : 'none'}
+              style={[
+                {
+                  position: 'absolute',
+                  zIndex,
+                  width: '100%',
+                  height: '100%',
+                  opacity: shouldHideParentSheet ? 0 : 1,
+                },
+                animatedStyle,
+              ]}
             >
-              {isResizing ? null : frameComponent}
-            </RemoveScroll>
-          </AnimatedView>
-        </SheetProvider>
+              {handleComponent}
+
+              <RemoveScroll
+                enabled={open && modal && handleDisableScroll}
+                as={Slot}
+                allowPinchZoom
+                shards={[contentRef]}
+                // causes lots of bugs on touch web on site
+                removeScrollBar={false}
+              >
+                {isResizing ? null : frameComponent}
+              </RemoveScroll>
+            </AnimatedView>
+          </SheetProvider>
+        </ParentSheetContext.Provider>
       )
 
       if (preventShown) {
