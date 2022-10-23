@@ -185,6 +185,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             })
           })
         }
+        if (props['debug']) console.log('return', key, value)
         return value
       }
 
@@ -203,19 +204,6 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       ]
 
       const res = useMemo(() => {
-        const animatedStyle = {
-          ...Object.fromEntries(
-            Object.entries({
-              ...animateStyles.current,
-            }).map(([k, v]) => [k, interpolations.current!.get(v) || v])
-          ),
-          transform: animatedTranforms.current.map((r) => {
-            const key = Object.keys(r)[0]
-            const val = interpolations.current!.get(r[key]) || r[key]
-            return { [key]: val }
-          }),
-        }
-
         const nonAnimatedStyle = {}
         for (const key in all) {
           const val = all[key]
@@ -237,6 +225,19 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
           } else {
             nonAnimatedStyle[key] = val
           }
+        }
+
+        const animatedStyle = {
+          ...Object.fromEntries(
+            Object.entries({
+              ...animateStyles.current,
+            }).map(([k, v]) => [k, interpolations.current!.get(v) || v])
+          ),
+          transform: animatedTranforms.current.map((r) => {
+            const key = Object.keys(r)[0]
+            const val = interpolations.current!.get(r[key]) || r[key]
+            return { [key]: val }
+          }),
         }
 
         return {

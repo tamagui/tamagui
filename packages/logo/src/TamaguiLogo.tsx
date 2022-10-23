@@ -98,6 +98,8 @@ export const LogoWords = ({
     return logoColors[i]
   }
 
+  const x = index * 18.5 + (18 / 2) * (index / logoColors.length) + 3 + (index === 6 ? -3 : 0)
+
   return (
     <XStack
       onHoverIn={() => setHovered(true)}
@@ -109,13 +111,12 @@ export const LogoWords = ({
       {animated && (
         <Circle
           animation="quick"
-          debug="verbose"
           position="absolute"
           top={0}
           left={0}
           y={mounted === 'start' ? -30 : -3}
           // the last i is less wide
-          x={index * 18.5 + (18 / 2) * (index / logoColors.length) + 3 + (index === 6 ? -3 : 0)}
+          x={x}
           size={4}
           backgroundColor={logoColors[index]}
         />

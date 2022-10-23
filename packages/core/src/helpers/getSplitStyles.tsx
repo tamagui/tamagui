@@ -436,10 +436,12 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      // eslint-disable-next-line no-console
-      console.log('expanded', expanded)
-      // eslint-disable-next-line no-console
-      console.log('usedKeys', usedKeys)
+      if (isClient) {
+        // eslint-disable-next-line no-console
+        console.log('expanded', expanded)
+        // eslint-disable-next-line no-console
+        console.log('usedKeys', usedKeys)
+      }
       // eslint-disable-next-line no-console
       console.groupEnd()
     }
