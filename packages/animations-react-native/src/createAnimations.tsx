@@ -160,8 +160,10 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       function update(key: string, animated: Animated.Value | undefined, valIn: string | number) {
         const [val, type] = getValue(valIn)
         const value = animated || new Animated.Value(val)
+        let interpolateArgs: any
         if (type) {
-          interpolations.current!.set(value, getInterpolated(value, type, val))
+          interpolateArgs = getInterpolated(value, type, val)
+          interpolations.current!.set(value, value.interpolate(interpolateArgs))
         }
         if (animated) {
           const animationConfig = getAnimationConfig(key, animations, props.animation)
@@ -185,7 +187,13 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             })
           })
         }
-        if (props['debug']) console.log('return', key, value)
+        if (process.env.NODE_ENV === 'development') {
+          if (props['debug']) {
+            // prettier-ignore
+            // eslint-disable-next-line no-console
+            console.log('AnimatedValue', key, 'mapped value', valIn, 'of type', type, 'from parsed', val, 'interpolated', interpolateArgs, 'then to Animated.Value', value['_value'])
+          }
+        }
         return value
       }
 
@@ -203,30 +211,30 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         presence?.enterVariant,
       ]
 
-      const res = useMemo(() => {
-        const nonAnimatedStyle = {}
-        for (const key in all) {
-          const val = all[key]
-          if (animatedStyleKey[key]) {
-            if (key === 'transform') {
-              // for now just support one transform key
-              if (val) {
-                for (const [index, transform] of val.entries()) {
-                  if (!transform) continue
-                  const tkey = Object.keys(transform)[0]
-                  animatedTranforms.current[index] = {
-                    [tkey]: update(tkey, animatedTranforms.current[index]?.[tkey], transform[tkey]),
-                  }
+      const nonAnimatedStyle = {}
+      for (const key in all) {
+        const val = all[key]
+        if (animatedStyleKey[key]) {
+          if (key === 'transform') {
+            // for now just support one transform key
+            if (val) {
+              for (const [index, transform] of val.entries()) {
+                if (!transform) continue
+                const tkey = Object.keys(transform)[0]
+                animatedTranforms.current[index] = {
+                  [tkey]: update(tkey, animatedTranforms.current[index]?.[tkey], transform[tkey]),
                 }
               }
-            } else {
-              animateStyles.current[key] = update(key, animateStyles.current[key], val)
             }
           } else {
-            nonAnimatedStyle[key] = val
+            animateStyles.current[key] = update(key, animateStyles.current[key], val)
           }
+        } else {
+          nonAnimatedStyle[key] = val
         }
+      }
 
+      const res = useMemo(() => {
         const animatedStyle = {
           ...Object.fromEntries(
             Object.entries({
@@ -271,10 +279,10 @@ function getInterpolated(val: Animated.Value, postfix: string, next: number) {
     inputRange.reverse()
     outputRange.reverse()
   }
-  return val.interpolate({
+  return {
     inputRange,
     outputRange,
-  })
+  }
 }
 
 function getAnimationConfig(key: string, animations: AnimationsConfig, animation?: AnimationProp) {
