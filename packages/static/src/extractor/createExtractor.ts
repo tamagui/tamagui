@@ -171,6 +171,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       disableExtractVariables,
       disableDebugAttr,
       disableExtractFoundComponents,
+      includeExtensions = ['.tsx', '.jsx'],
       extractStyledDefinitions = false,
       prefixLogs,
       excludeProps,
@@ -188,6 +189,16 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     }
     if (!components) {
       throw new Error(`Must provide components`)
+    }
+    if (includeExtensions && !includeExtensions.some((ext) => sourcePath.endsWith(ext))) {
+      if (shouldPrintDebug) {
+        logger.info(
+          `Ignoring file due to includeExtensions: ${sourcePath}, includeExtensions: ${includeExtensions.join(
+            ', '
+          )}`
+        )
+      }
+      return null
     }
 
     /**
@@ -1470,7 +1481,11 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                 traversePath.node.children.every((x) => x.type === 'JSXText')))
 
           const themeVal = inlined.get('theme')
-          inlined.delete('theme')
+
+          // on native we can't flatten when theme prop is set
+          if (target !== 'native') {
+            inlined.delete('theme')
+          }
 
           for (const [key] of [...inlined]) {
             const isStaticObjectVariant = staticConfig.variants?.[key] && variantValues.has(key)
@@ -1957,7 +1972,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             if (shouldPrintDebug) {
               logger.info(`Disabled flattening except for simple cases on native for now`)
               node.attributes = ogAttributes
-              return node
+              return null
             }
           }
 
@@ -2004,7 +2019,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           if (getStyleError) {
             logger.info([' ⚠️ postprocessing error, deopt', getStyleError].join(' '))
             node.attributes = ogAttributes
-            return node
+            return null
           }
 
           // final lazy extra loop:
