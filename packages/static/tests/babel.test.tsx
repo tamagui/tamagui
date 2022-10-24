@@ -23,6 +23,11 @@ test('basic extraction', async () => {
       \\"0\\": {
         \\"backgroundColor\\": \\"red\\",
         \\"flexDirection\\": \\"column\\",
+        \\"minWidth\\": 0,
+        \\"minHeight\\": 0,
+        \\"position\\": \\"relative\\",
+        \\"flexBasis\\": \\"auto\\",
+        \\"display\\": \\"flex\\",
         \\"flexShrink\\": 0,
         \\"alignItems\\": \\"stretch\\"
       }
@@ -116,6 +121,11 @@ test('basic conditional extraction', async () => {
     "const _sheet = ReactNativeStyleSheet.create({
       \\"0\\": {
         \\"flexDirection\\": \\"column\\",
+        \\"minWidth\\": 0,
+        \\"minHeight\\": 0,
+        \\"position\\": \\"relative\\",
+        \\"flexBasis\\": \\"auto\\",
+        \\"display\\": \\"flex\\",
         \\"flexShrink\\": 0,
         \\"alignItems\\": \\"stretch\\"
       },
@@ -127,6 +137,11 @@ test('basic conditional extraction', async () => {
       },
       \\"3\\": {
         \\"flexDirection\\": \\"column\\",
+        \\"minWidth\\": 0,
+        \\"minHeight\\": 0,
+        \\"position\\": \\"relative\\",
+        \\"flexBasis\\": \\"auto\\",
+        \\"display\\": \\"flex\\",
         \\"flexShrink\\": 0,
         \\"alignItems\\": \\"stretch\\"
       },
@@ -166,6 +181,11 @@ test('flat transform props', async () => {
     "const _sheet = ReactNativeStyleSheet.create({
       \\"0\\": {
         \\"flexDirection\\": \\"column\\",
+        \\"minWidth\\": 0,
+        \\"minHeight\\": 0,
+        \\"position\\": \\"relative\\",
+        \\"flexBasis\\": \\"auto\\",
+        \\"display\\": \\"flex\\",
         \\"flexShrink\\": 0,
         \\"alignItems\\": \\"stretch\\"
       },

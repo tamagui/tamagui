@@ -59,7 +59,7 @@ describe('styled() tests', () => {
     }
 
     expect(output.js).toMatchInlineSnapshot(`
-      "const _cn = \\"  _bg-green _fd-column _fs-0 _ai-stretch \\";
+      "const _cn = \\"  _bg-green _fd-column _miw-0px _mih-0px _pos-relative _fb-auto _dsp-flex _fs-0 _ai-stretch \\";
       import { MyStack } from '@tamagui/test-design-system';
       export function Test() {
         return <div className={_cn} />;
@@ -68,6 +68,11 @@ describe('styled() tests', () => {
     expect(output.styles).toMatchInlineSnapshot(`
       "._bg-green{background-color:green;}
       ._fd-column{flex-direction:column;}
+      ._miw-0px{min-width:0px;}
+      ._mih-0px{min-height:0px;}
+      ._pos-relative{position:relative;}
+      ._fb-auto{flex-basis:auto;}
+      ._dsp-flex{display:flex;}
       ._fs-0{flex-shrink:0;}
       ._ai-stretch{align-items:stretch;}"
     `)

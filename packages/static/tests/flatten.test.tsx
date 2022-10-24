@@ -44,6 +44,11 @@ describe('flatten-tests', () => {
             \\"rotate\\": \\"10deg\\"
           }],
           \\"flexDirection\\": \\"column\\",
+          \\"minWidth\\": 0,
+          \\"minHeight\\": 0,
+          \\"position\\": \\"relative\\",
+          \\"flexBasis\\": \\"auto\\",
+          \\"display\\": \\"flex\\",
           \\"flexShrink\\": 0,
           \\"alignItems\\": \\"stretch\\"
         },
@@ -97,6 +102,11 @@ describe('flatten-tests', () => {
       flexDirection: 'column',
       flexShrink: 0,
       alignItems: 'stretch',
+      minHeight: 0,
+      minWidth: 0,
+      position: 'relative',
+      display: 'flex',
+      flexBasis: 'auto',
     })
 
     expect(sheetStyles['1']).toEqual({
