@@ -118,12 +118,6 @@ export const AnimatePresence: React.FunctionComponent<
   if (forceRenderLayoutGroup) forceRender = forceRenderLayoutGroup
 
   const isMounted = useRef(false)
-  useEffect(() => {
-    isMounted.current = true
-    return () => {
-      isMounted.current = false
-    }
-  }, [])
 
   // Filter out any children that aren't ReactElements. We can only track ReactElements with a props.key
   const filteredChildren = onlyElements(children)
@@ -142,20 +136,22 @@ export const AnimatePresence: React.FunctionComponent<
   // we play onMount animations or not.
   const isInitialRender = useRef(true)
 
-  useIsomorphicLayoutEffect(() => {
-    isInitialRender.current = false
-    updateChildLookup(filteredChildren, allChildren)
-    presentChildren.current = childrenToRender
-  })
-
   useEffect(() => {
+    isMounted.current = true
     return () => {
+      isMounted.current = false
       isInitialRender.current = true
       allChildren.clear()
       exiting.clear()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useIsomorphicLayoutEffect(() => {
+    isInitialRender.current = false
+    updateChildLookup(filteredChildren, allChildren)
+    presentChildren.current = childrenToRender
+  })
 
   if (isInitialRender.current) {
     return (

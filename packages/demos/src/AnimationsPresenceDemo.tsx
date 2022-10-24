@@ -1,9 +1,5 @@
-// adapted from Framer Motion
-// https://codesandbox.io/s/framer-motion-image-gallery-pqvx3?from-embed=&file=/src/Example.tsx:1422-1470
-
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
-import React from 'react'
 import { useState } from 'react'
 import { Button, Image, XStack, YStack, styled } from 'tamagui'
 

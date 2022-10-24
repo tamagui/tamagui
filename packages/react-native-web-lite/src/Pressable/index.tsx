@@ -9,7 +9,7 @@
 
 'use strict'
 
-import { usePressable } from '@tamagui/react-native-use-pressable'
+import { usePressEvents } from '@tamagui/react-native-use-pressable'
 import type { PressResponderConfig } from '@tamagui/react-native-use-pressable'
 import * as React from 'react'
 import { forwardRef, memo, useMemo, useRef, useState } from 'react'
@@ -126,7 +126,7 @@ function Pressable(props: Props, forwardedRef): React.ReactNode {
     ]
   )
 
-  const pressEventHandlers = usePressable(hostRef, pressConfig)
+  const pressEventHandlers = usePressEvents(hostRef, pressConfig)
 
   const { onContextMenu: onContextMenuPress, onKeyDown: onKeyDownPress } = pressEventHandlers
 
