@@ -1,5 +1,5 @@
 import { useFonts } from 'expo-font'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Appearance } from 'react-native'
 
 import { Navigation } from './Navigation'

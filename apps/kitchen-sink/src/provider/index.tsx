@@ -1,4 +1,3 @@
-import React from 'react'
 import { TamaguiProvider, TamaguiProviderProps } from 'tamagui'
 
 import config from '../tamagui.config'

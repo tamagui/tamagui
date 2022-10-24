@@ -145,7 +145,7 @@ export default declare(function snackBabelPlugin(
 
                 for (const attr of props.attrs) {
                   switch (attr.type) {
-                    case 'style':
+                    case 'style': {
                       // split theme properties and leave them as props since RN has no concept of theme
                       const { themed, plain } = splitThemeStyles(attr.value)
                       for (const key in themed) {
@@ -156,7 +156,8 @@ export default declare(function snackBabelPlugin(
                       const ident = addSheetStyle(plain, props.node)
                       addStyle(ident, simpleHash(JSON.stringify(plain)))
                       break
-                    case 'ternary':
+                    }
+                    case 'ternary': {
                       // TODO use splitThemeStyles
                       const { consequent, alternate } = attr.value
                       const cons = addSheetStyle(consequent, props.node)
@@ -164,7 +165,8 @@ export default declare(function snackBabelPlugin(
                       const styleExpr = t.conditionalExpression(attr.value.test, cons, alt)
                       addStyle(styleExpr, simpleHash(JSON.stringify({ consequent, alternate })))
                       break
-                    case 'attr':
+                    }
+                    case 'attr': {
                       if (t.isJSXSpreadAttribute(attr.value)) {
                         if (isSimpleSpread(attr.value)) {
                           stylesExpr.elements.push(
@@ -174,6 +176,7 @@ export default declare(function snackBabelPlugin(
                       }
                       finalAttrs.push(attr.value)
                       break
+                    }
                   }
                 }
 
@@ -188,10 +191,12 @@ export default declare(function snackBabelPlugin(
           } catch (err) {
             if (err instanceof Error) {
               // metro doesn't show stack so we can
-              console.warn(
-                'Error in Tamagui parse, skipping',
-                shouldPrintDebug === 'verbose' ? err : err.message
-              )
+              let message = `${shouldPrintDebug === 'verbose' ? err : err.message}`
+              if (message.includes(`Unexpected return value from visitor method`)) {
+                message = `Unexpected return value from visitor method`
+              }
+              // eslint-disable-next-line no-console
+              console.warn('Error in Tamagui parse, skipping', message, err.stack)
               return
             }
           }

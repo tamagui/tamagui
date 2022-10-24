@@ -1154,6 +1154,7 @@ export const Spacer = createComponent<SpacerProps>({
         width: 0,
         minWidth: 0,
       },
+      both: {},
     },
   } as const,
 })

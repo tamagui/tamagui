@@ -6,6 +6,7 @@ import {
   isWeb,
   useEvent,
   useIsomorphicLayoutEffect,
+  useSafeRef,
 } from '@tamagui/core'
 import { PresenceContext, usePresence } from '@tamagui/use-presence'
 import { useContext, useEffect, useMemo, useRef } from 'react'
@@ -40,7 +41,7 @@ export const AnimatedView = Animated.View
 export const AnimatedText = Animated.Text
 
 export function useAnimatedNumber(initial: number): UniversalAnimatedNumber<Animated.Value> {
-  const state = useRef(
+  const state = useSafeRef(
     null as any as {
       val: Animated.Value
       composite: Animated.CompositeAnimation | null
@@ -147,55 +148,17 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         enterVariant: presence?.enterVariant,
       })
 
-      const animateStyles = useRef<Record<string, Animated.Value>>({})
-      const animatedTranforms = useRef<{ [key: string]: Animated.Value }[]>([])
-      const interpolations = useRef<WeakMap<Animated.Value, Animated.AnimatedInterpolation>>()
-      if (!interpolations.current) {
-        interpolations.current = new WeakMap<Animated.Value, Animated.AnimatedInterpolation>()
-      }
+      const animateStyles = useSafeRef<Record<string, Animated.Value>>({})
+      const animatedTranforms = useSafeRef<{ [key: string]: Animated.Value }[]>([])
+      const interpolations = useSafeRef(
+        new WeakMap<
+          Animated.Value,
+          { interopolation: Animated.AnimatedInterpolation; current?: number }
+        >()
+      )
 
       const runners: Function[] = []
       const completions: Promise<void>[] = []
-
-      function update(key: string, animated: Animated.Value | undefined, valIn: string | number) {
-        const [val, type] = getValue(valIn)
-        const value = animated || new Animated.Value(val)
-        let interpolateArgs: any
-        if (type) {
-          interpolateArgs = getInterpolated(value, type, val)
-          interpolations.current!.set(value, value.interpolate(interpolateArgs))
-        }
-        if (animated) {
-          const animationConfig = getAnimationConfig(key, animations, props.animation)
-
-          let resolve
-          const promise = new Promise<void>((res) => {
-            resolve = res
-          })
-          completions.push(promise)
-
-          runners.push(() => {
-            animated.stopAnimation()
-            Animated.spring(animated, {
-              toValue: val,
-              useNativeDriver: !isWeb,
-              ...animationConfig,
-            }).start(({ finished }) => {
-              if (finished) {
-                resolve()
-              }
-            })
-          })
-        }
-        if (process.env.NODE_ENV === 'development') {
-          if (props['debug']) {
-            // prettier-ignore
-            // eslint-disable-next-line no-console
-            console.log('AnimatedValue', key, 'mapped value', valIn, 'of type', type, 'from parsed', val, 'interpolated', interpolateArgs, 'then to Animated.Value', value['_value'])
-          }
-        }
-        return value
-      }
 
       const args = [
         JSON.stringify(all),
@@ -211,39 +174,87 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         presence?.enterVariant,
       ]
 
-      const nonAnimatedStyle = {}
-      for (const key in all) {
-        const val = all[key]
-        if (animatedStyleKey[key]) {
-          if (key === 'transform') {
-            // for now just support one transform key
-            if (val) {
-              for (const [index, transform] of val.entries()) {
-                if (!transform) continue
-                const tkey = Object.keys(transform)[0]
-                animatedTranforms.current[index] = {
-                  [tkey]: update(tkey, animatedTranforms.current[index]?.[tkey], transform[tkey]),
+      const res = useMemo(() => {
+        function update(key: string, animated: Animated.Value | undefined, valIn: string | number) {
+          const [val, type] = getValue(valIn)
+          const value = animated || new Animated.Value(val)
+          let interpolateArgs: any
+          if (type) {
+            const curInterpolation = interpolations.current.get(value)
+            interpolateArgs = getInterpolated(
+              curInterpolation?.current ?? value['_value'],
+              val,
+              type
+            )
+            interpolations.current!.set(value, {
+              interopolation: value.interpolate(interpolateArgs),
+              current: val,
+            })
+          }
+          if (animated) {
+            const animationConfig = getAnimationConfig(key, animations, props.animation)
+
+            let resolve
+            const promise = new Promise<void>((res) => {
+              resolve = res
+            })
+            completions.push(promise)
+
+            runners.push(() => {
+              animated.stopAnimation()
+              Animated.spring(animated, {
+                toValue: val,
+                useNativeDriver: !isWeb,
+                ...animationConfig,
+              }).start(({ finished }) => {
+                if (finished) {
+                  resolve()
+                }
+              })
+            })
+          }
+          if (process.env.NODE_ENV === 'development') {
+            if (props['debug']) {
+              // prettier-ignore
+              // eslint-disable-next-line no-console
+              console.log('AnimatedValue', key, 'mapped value', valIn, 'of type', type, 'to', val, 'interpolated', interpolateArgs, '- current Animated.Value', value['_value'])
+            }
+          }
+          return value
+        }
+
+        const nonAnimatedStyle = {}
+        for (const key in all) {
+          const val = all[key]
+          if (animatedStyleKey[key]) {
+            if (key === 'transform') {
+              // for now just support one transform key
+              if (val) {
+                for (const [index, transform] of val.entries()) {
+                  if (!transform) continue
+                  const tkey = Object.keys(transform)[0]
+                  animatedTranforms.current[index] = {
+                    [tkey]: update(tkey, animatedTranforms.current[index]?.[tkey], transform[tkey]),
+                  }
                 }
               }
+            } else {
+              animateStyles.current[key] = update(key, animateStyles.current[key], val)
             }
           } else {
-            animateStyles.current[key] = update(key, animateStyles.current[key], val)
+            nonAnimatedStyle[key] = val
           }
-        } else {
-          nonAnimatedStyle[key] = val
         }
-      }
 
-      const res = useMemo(() => {
         const animatedStyle = {
           ...Object.fromEntries(
             Object.entries({
               ...animateStyles.current,
-            }).map(([k, v]) => [k, interpolations.current!.get(v) || v])
+            }).map(([k, v]) => [k, interpolations.current!.get(v)?.interopolation || v])
           ),
           transform: animatedTranforms.current.map((r) => {
             const key = Object.keys(r)[0]
-            const val = interpolations.current!.get(r[key]) || r[key]
+            const val = interpolations.current!.get(r[key])?.interopolation || r[key]
             return { [key]: val }
           }),
         }
@@ -271,11 +282,13 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
   }
 }
 
-function getInterpolated(val: Animated.Value, postfix: string, next: number) {
-  const cur = val['_value'] as number
-  const inputRange = [cur, next]
-  const outputRange = [`${cur}deg`, `${next}deg`]
-  if (next < cur) {
+function getInterpolated(current: number, next: number, postfix = 'deg') {
+  if (next === current) {
+    current = next - 0.000000001
+  }
+  const inputRange = [current, next]
+  const outputRange = [`${current}${postfix}`, `${next}${postfix}`]
+  if (next < current) {
     inputRange.reverse()
     outputRange.reverse()
   }

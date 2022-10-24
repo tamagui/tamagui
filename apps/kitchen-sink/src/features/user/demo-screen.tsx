@@ -1,5 +1,4 @@
 import * as Demos from '@tamagui/demos'
-import React from 'react'
 import { createParam } from 'solito'
 import { H1, Spacer, YStack } from 'tamagui'
 
