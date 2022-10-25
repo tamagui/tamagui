@@ -152,15 +152,16 @@ export function createComponent<
      * Component state for tracking animations, pseudos
      */
     const hasEnterStyle = !!props.enterStyle
+    const needsMount = Boolean((isWeb ? isClient : true) && (hasEnterStyle || props.animation))
     const states = useServerState<TamaguiComponentState>(
-      hasEnterStyle ? defaultComponentState! : defaultComponentStateMounted!
+      needsMount ? defaultComponentState! : defaultComponentStateMounted!
     )
 
     const state = propsIn.forceStyle ? { ...states[0], [propsIn.forceStyle]: true } : states[0]
     const setState = states[1]
     const setStateShallow = useShallowSetState(setState)
 
-    const shouldSetMounted = Boolean((!isWeb || isClient) && hasEnterStyle && !state.mounted)
+    const shouldSetMounted = needsMount && !state.mounted
     const setMounted = shouldSetMounted
       ? () => {
           // for some reason without some small delay it doesn't animate css
