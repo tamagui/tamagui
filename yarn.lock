@@ -4777,6 +4777,7 @@ __metadata:
     "@tamagui/demos": ^1.0.1-beta.194
     "@tamagui/font-inter": ^1.0.1-beta.194
     "@tamagui/lucide-icons": ^1.0.1-beta.194
+    "@tamagui/sandbox-ui": ^1.0.1-beta.194
     "@tamagui/shorthands": ^1.0.1-beta.194
     "@tamagui/theme-base": ^1.0.1-beta.194
     "@types/react": ^18.0.15
@@ -4853,7 +4854,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/lucide-icons@^1.0.1-beta.194, @tamagui/lucide-icons@workspace:packages/lucide-icons":
+"@tamagui/lucide-icons@1.0.1-beta.194, @tamagui/lucide-icons@^1.0.1-beta.194, @tamagui/lucide-icons@workspace:packages/lucide-icons":
   version: 0.0.0-use.local
   resolution: "@tamagui/lucide-icons@workspace:packages/lucide-icons"
   dependencies:
@@ -5125,6 +5126,7 @@ __metadata:
   resolution: "@tamagui/sandbox-ui@workspace:apps/sandbox-ui"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.194
+    "@tamagui/lucide-icons": 1.0.1-beta.194
     tamagui: ^1.0.1-beta.194
   languageName: unknown
   linkType: soft
@@ -19173,9 +19175,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:^2.5.0":
-  version: 2.7.1
-  resolution: "react-native-gesture-handler@npm:2.7.1"
+"react-native-gesture-handler@npm:2.5.0":
+  version: 2.5.0
+  resolution: "react-native-gesture-handler@npm:2.5.0"
   dependencies:
     "@egjs/hammerjs": ^2.0.17
     hoist-non-react-statics: ^3.3.0
@@ -19185,7 +19187,7 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: ddc0e9c11f88e2fc6ec148ba6ccb2955e61593d32b27fb115c640b49d16d9bc93e7dc78b0979c213427e341179436b25a5d65e5ce986b8561d9f244e0e5db906
+  checksum: d086f14da7f45c24c675402a4e9dec0a5c32e7279110f1af0c178cae0b6ca40dea99f878120d7034ce9c84f01465f68d0f21dcc9c3869fd527ebd18255b73432
   languageName: node
   linkType: hard
 

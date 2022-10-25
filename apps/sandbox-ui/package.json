@@ -18,6 +18,7 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
+    "@tamagui/lucide-icons": "1.0.1-beta.194",
     "tamagui": "^1.0.1-beta.194"
   },
   "devDependencies": {

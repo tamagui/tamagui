@@ -22,6 +22,7 @@
     "@tamagui/demos": "^1.0.1-beta.194",
     "@tamagui/font-inter": "^1.0.1-beta.194",
     "@tamagui/lucide-icons": "^1.0.1-beta.194",
+    "@tamagui/sandbox-ui": "^1.0.1-beta.194",
     "@tamagui/shorthands": "^1.0.1-beta.194",
     "@tamagui/theme-base": "^1.0.1-beta.194",
     "expo": "^46.0.2",

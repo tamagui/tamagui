@@ -25,7 +25,7 @@ const plugins = [
   withTamagui({
     useReactNativeWebLite: true,
     config: './tamagui.config.ts',
-    components: ['tamagui'],
+    components: ['tamagui', '@tamagui/sandbox-ui'],
     importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,
     disableExtraction,

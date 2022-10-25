@@ -75,7 +75,7 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
     )
   )
 
-  const external = ['@tamagui/core', '@tamagui/core-node', 'react', 'react-dom']
+  const external = ['@tamagui/core', '@tamagui/core-node', 'react', 'react-dom', 'react-native-svg']
   const configEntry = props.config ? join(process.cwd(), props.config) : ''
 
   if (process.env.NODE_ENV === 'development' && process.env.DEBUG?.startsWith('tamagui')) {

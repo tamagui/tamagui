@@ -1,5 +1,5 @@
 import { variableToString } from '@tamagui/core'
-import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
+import { ChevronRight, Moon, Sun } from '@tamagui/sandbox-ui'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
