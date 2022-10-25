@@ -998,10 +998,10 @@ export function createComponent<
     const debug = defaultPropsIn['debug']
 
     // remove all classNames
-    const [parentProps, parentClassNames] = mergeProps(defaultPropsIn, {}, true)
+    const [ourProps, ourClassNames] = mergeProps(defaultPropsIn, {}, true)
 
     initialSplitStyles = insertSplitStyles(
-      parentProps,
+      ourProps,
       staticConfig,
       initialTheme,
       {
@@ -1031,9 +1031,9 @@ export function createComponent<
 
     // avoid passing className props to variants
     initialSplitStyles.classNames = {
-      ...parentClassNames,
       ...defaultsClassnames,
       ...initialSplitStyles.classNames,
+      ...ourClassNames,
     }
 
     defaultNativeStyle = {}
@@ -1068,6 +1068,11 @@ export function createComponent<
           defaultNativeStyle,
           defaults,
           defaultPropsIn,
+          defaultPropsKeyOrder: Object.keys(staticConfig.defaultProps),
+          defaultPropsInKeyOrder: Object.keys(defaultPropsIn).map((k) => [k, defaultPropsIn[k]]),
+          ourProps,
+          ourClassNames,
+          defaultsClassnames,
         })
       }
     }
