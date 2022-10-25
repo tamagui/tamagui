@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/visually-hidden",
-  "version": "1.0.1-beta.194",
+  "version": "1.0.1-beta.195",
   "sideEffects": [
     "*.css"
   ],
@@ -23,14 +23,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.194"
+    "@tamagui/core": "^1.0.1-beta.195"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.194",
+    "@tamagui/build": "^1.0.1-beta.195",
     "react": "*",
     "react-dom": "*"
   },
