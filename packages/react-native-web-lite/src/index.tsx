@@ -76,3 +76,9 @@ export { default as useWindowDimensions } from './useWindowDimensions/index.js'
 
 // // useful internals
 export * from 'react-native-web-internals'
+
+export function requireNativeComponent(name: string) {
+  return function FakeComponent() {
+    return null
+  }
+}
