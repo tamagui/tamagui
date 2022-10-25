@@ -40,7 +40,7 @@ export const InputFrame = styled(
   },
   {
     isText: true,
-    isReactNativeWeb: true,
+    isReactNative: true,
   }
 )
 

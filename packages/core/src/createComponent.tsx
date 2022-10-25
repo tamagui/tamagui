@@ -233,8 +233,8 @@ export function createComponent<
     const hostRef = useServerRef<TamaguiElement>(null)
 
     // animation setup
-    const isReactNativeWeb = Boolean(
-      staticConfig.isReactNativeWeb || (isAnimated && tamaguiConfig.animations.isReactNativeWeb)
+    const isReactNative = Boolean(
+      staticConfig.isReactNative || (isAnimated && tamaguiConfig.animations.isReactNative)
     )
     const isAnimatedReactNativeWeb = isAnimated && avoidClassesWhileAnimating
 
@@ -248,7 +248,7 @@ export function createComponent<
         const name = `${
           componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
         }`
-        const type = isReactNativeWeb ? 'rnw' : 'tamagui'
+        const type = isReactNative ? 'rnw' : 'tamagui'
         const banner = `${name} ${propsIn['data-is'] || ''} ${type}`
         // eslint-disable-next-line no-console
         console.group(`%c 🐛 ${banner}`, 'background: yellow;')
@@ -437,7 +437,7 @@ export function createComponent<
     let viewProps: Record<string, any>
 
     // if react-native-web view just pass all props down
-    if (process.env.TAMAGUI_TARGET === 'web' && !isReactNativeWeb) {
+    if (process.env.TAMAGUI_TARGET === 'web' && !isReactNative) {
       // otherwise replicate react-native-web functionality
       const {
         // event props
@@ -628,7 +628,7 @@ export function createComponent<
 
       if (isAnimatedReactNativeWeb) {
         viewProps.style = style
-      } else if (isReactNativeWeb) {
+      } else if (isReactNative) {
         const rnwStyle = { $$css: true }
         for (const name of className.split(' ')) {
           rnwStyle[name] = name

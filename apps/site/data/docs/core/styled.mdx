@@ -25,7 +25,19 @@ Usage:
 
 Note, `tamagui` and `@tamagui/core` both export many of the same helpers, like styled. If you are using `tamagui`, you don't need to ever add `@tamagui/core` to your package.json or import it and can instead import directly from `tamagui` itself.
 
-The `styled` function only accepts Tamagui components or components that accept the `className` property, for now. There is a workaround option to support react-native-web components, but it's not a public API as it will likely change with their next release.
+The `styled` function accepts all types of components, but if you're passing in a native component be sure to add the following:
+
+```tsx
+import { Image } from 'react-native'
+
+const MyImage = styled(Image, {
+  backgroundColor: 'red'
+}, {
+  isReactNative: true
+})
+```
+
+This requirement allows our core to be light and not depend on the huge react-native library, which is key to allowing tree shaking and small bundle sizes on the web.
 
 You can pass any prop that is supported by the component you are extending, even variants of the parent component. Tamagui will figure out the style props up-front, turn them into classNames, and then pass the non-style props down to the component as defaultProps.
 

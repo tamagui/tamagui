@@ -14,7 +14,7 @@ const StyledImage = styled(
   },
   {
     inlineProps: new Set(['src', 'width', 'height']),
-    isReactNativeWeb: true,
+    isReactNative: true,
   }
 )
 

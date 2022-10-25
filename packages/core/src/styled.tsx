@@ -83,16 +83,16 @@ export function styled<
       if (defaultVariants) {
         Object.assign(defaultProps, defaultVariants)
       }
-      const isReactNativeWeb = Boolean(
-        parentStaticConfig?.isReactNativeWeb || staticExtractionOptions?.isReactNativeWeb
+      const isReactNative = Boolean(
+        parentStaticConfig?.isReactNative || staticExtractionOptions?.isReactNative
       )
-      const reactNativeWebComponent = isReactNativeWeb
+      const reactNativeWebComponent = isReactNative
         ? parentStaticConfig?.reactNativeWebComponent || Component
         : null
-      const isTamagui = !isReactNativeWeb && !!parentStaticConfig
+      const isTamagui = !isReactNative && !!parentStaticConfig
       const Comp = reactNativeWebComponent || (Component as any)
       const isText = Boolean(staticExtractionOptions?.isText || parentStaticConfig?.isText)
-      const acceptsClassName = acceptsClassNameProp ?? (isTamagui || isReactNativeWeb)
+      const acceptsClassName = acceptsClassNameProp ?? (isTamagui || isReactNative)
 
       const conf: Partial<StaticConfig> = {
         ...staticExtractionOptions,
@@ -105,7 +105,7 @@ export function styled<
         defaultProps,
         defaultVariants,
         componentName: name,
-        isReactNativeWeb,
+        isReactNative,
         // for nesting multiple levels of rnw styled() need keep use the OG component
         reactNativeWebComponent,
         isText,
