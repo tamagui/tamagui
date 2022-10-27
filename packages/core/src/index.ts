@@ -12,6 +12,7 @@ export * from './addTheme'
 export * from './updateTheme'
 export * from './styled'
 export * from './types'
+export * from './setupReactNative'
 
 // for type portability
 export type { RNWTextProps, RNWViewProps } from './types-rnw'

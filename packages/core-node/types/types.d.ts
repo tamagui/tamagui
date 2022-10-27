@@ -469,10 +469,6 @@ export declare type StaticConfig = StaticConfigPublic & {
         [key: string]: any;
     };
     /**
-     * Used internally to keep reference to the original rnw component
-     */
-    reactNativeWebComponent?: any;
-    /**
      * Memoize the component
      */
     memo?: boolean;

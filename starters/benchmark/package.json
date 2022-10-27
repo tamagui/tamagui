@@ -17,14 +17,6 @@
     "build": "yarn workspaces foreach --exclude next-app -pi run build",
     "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader"
   },
-  "resolutions": {
-    "esbuild": "0.15.6",
-    "@types/react": "17.0.21",
-    "react": "18.2.0",
-    "react-native-web": "0.18.9",
-    "react-dom": "18.2.0",
-    "react-refresh": "^0.14.0"
-  },
   "dependencies": {
     "@babel/runtime": "^7.18.9"
   },

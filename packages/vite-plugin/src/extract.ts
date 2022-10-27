@@ -60,7 +60,7 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
     },
 
     config(_userConfig, env) {
-      const include = env.command === 'serve' ? ['@tamagui/core/injectStyles'] : []
+      const include = env.command === 'serve' ? ['@tamagui/core/inject-styles'] : []
       return {
         optimizeDeps: { include },
       }
@@ -135,7 +135,7 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
       }
 
       return outdent`
-        import { injectStyles } from '@tamagui/core/injectStyles';
+        import { injectStyles } from '@tamagui/core/inject-styles';
 
         const inject = (css) => injectStyles({
           filePath: "${validId}",

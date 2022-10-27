@@ -1,5 +1,5 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { isTamaguiComponent } from '@tamagui/core'
+import { isTamaguiComponent, useEvent } from '@tamagui/core'
 import React, { useRef } from 'react'
 import { forwardRef, useCallback, useEffect } from 'react'
 
@@ -49,13 +49,15 @@ export function focusableInputHOC<A extends Function>(Component: A): A {
         }
       }, [props.id])
 
+      const onChangeText = useEvent((value) => {
+        inputValue.current = value
+        props.onChangeText?.(value)
+      })
+
       const finalProps = isInput
         ? {
             ...props,
-            onChangeText(value) {
-              inputValue.current = value
-              props.onChangeText?.(value)
-            },
+            onChangeText,
           }
         : props
 

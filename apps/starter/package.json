@@ -23,7 +23,7 @@
     "react-native-web": "0.18.6"
   },
   "dependencies": {
-    "@babel/runtime": "^7.18.9"
+    "@babel/runtime": "^7.19.4"
   },
   "devDependencies": {
     "@manypkg/cli": "^0.19.1",

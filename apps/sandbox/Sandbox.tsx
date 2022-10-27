@@ -11,7 +11,7 @@ import { SheetDemo } from '@tamagui/demos'
 import { AnimationsDemo, AnimationsPresenceDemo } from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
-import { Square } from 'tamagui'
+import { Input, Square } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -86,6 +86,8 @@ export const Sandbox = () => {
 
         <Square size={100} bc="red" />
         <SheetDemo />
+
+        <Input placeholder="hi" />
 
         {/* <AnimationsDemo /> */}
         {/* <AnimationsPresenceDemo /> */}

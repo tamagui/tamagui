@@ -18,10 +18,11 @@ const tamaguiConfig = {
 export default defineConfig({
   clearScreen: false,
   plugins: [
-    reanimated(),
+    // reanimated(),
     react({
-      jsxRuntime: 'classic',
-      jsxImportSource: '@welldone-software/why-did-you-render',
+      jsxRuntime: 'automatic',
+      // jsxRuntime: 'classic',
+      // jsxImportSource: '@welldone-software/why-did-you-render',
       fastRefresh: true,
       jsxPure: true,
     }),

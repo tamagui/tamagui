@@ -43,7 +43,7 @@
     "solito": "^0.0.26"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.10",
+    "@babel/core": "^7.19.6",
     "@expo/metro-config": "^0.3.18",
     "@rnx-kit/metro-config": "^1.2.32",
     "@rnx-kit/metro-resolver-symlinks": "^0.1.20",

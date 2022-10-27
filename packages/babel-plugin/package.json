@@ -23,10 +23,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@babel/generator": "^7.18.12",
-    "@babel/helper-plugin-utils": "^7.18.9",
-    "@babel/template": "*",
-    "@babel/traverse": "^7.18.11",
+    "@babel/generator": "^7.19.6",
+    "@babel/helper-plugin-utils": "^7.19.0",
+    "@babel/template": "7.18.10",
+    "@babel/traverse": "^7.19.6",
     "@tamagui/simple-hash": "^1.0.1-beta.197",
     "@tamagui/static": "^1.0.1-beta.197"
   },

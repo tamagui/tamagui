@@ -207,7 +207,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.13.16, @babel/core@npm:^7.14.0, @babel/core@npm:^7.15.5, @babel/core@npm:^7.17.10, @babel/core@npm:^7.18.10, @babel/core@npm:^7.2.2":
+"@babel/core@npm:^7.13.16, @babel/core@npm:^7.14.0, @babel/core@npm:^7.15.5, @babel/core@npm:^7.2.2":
   version: 7.19.3
   resolution: "@babel/core@npm:7.19.3"
   dependencies:
@@ -230,7 +230,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.17.9":
+"@babel/core@npm:^7.17.9, @babel/core@npm:^7.19.6":
   version: 7.19.6
   resolution: "@babel/core@npm:7.19.6"
   dependencies:
@@ -573,7 +573,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.0.0-beta.54, @babel/parser@npm:^7.1.6, @babel/parser@npm:^7.13.16, @babel/parser@npm:^7.14.0, @babel/parser@npm:^7.18.10, @babel/parser@npm:^7.18.11, @babel/parser@npm:^7.19.3, @babel/parser@npm:^7.19.4":
+"@babel/parser@npm:^7.0.0-beta.54, @babel/parser@npm:^7.1.6, @babel/parser@npm:^7.13.16, @babel/parser@npm:^7.14.0, @babel/parser@npm:^7.18.10, @babel/parser@npm:^7.19.3, @babel/parser@npm:^7.19.4":
   version: 7.19.4
   resolution: "@babel/parser@npm:7.19.4"
   bin:
@@ -1387,7 +1387,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx-development@npm:^7.16.7, @babel/plugin-transform-react-jsx-development@npm:^7.18.6":
+"@babel/plugin-transform-react-jsx-development@npm:^7.18.6":
   version: 7.18.6
   resolution: "@babel/plugin-transform-react-jsx-development@npm:7.18.6"
   dependencies:
@@ -1398,7 +1398,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx-self@npm:^7.0.0, @babel/plugin-transform-react-jsx-self@npm:^7.16.7":
+"@babel/plugin-transform-react-jsx-self@npm:^7.0.0, @babel/plugin-transform-react-jsx-self@npm:^7.18.6":
   version: 7.18.6
   resolution: "@babel/plugin-transform-react-jsx-self@npm:7.18.6"
   dependencies:
@@ -1409,7 +1409,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx-source@npm:^7.0.0, @babel/plugin-transform-react-jsx-source@npm:^7.16.7":
+"@babel/plugin-transform-react-jsx-source@npm:^7.0.0":
   version: 7.18.6
   resolution: "@babel/plugin-transform-react-jsx-source@npm:7.18.6"
   dependencies:
@@ -1420,7 +1420,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx@npm:^7.0.0, @babel/plugin-transform-react-jsx@npm:^7.12.17, @babel/plugin-transform-react-jsx@npm:^7.14.9, @babel/plugin-transform-react-jsx@npm:^7.17.3, @babel/plugin-transform-react-jsx@npm:^7.18.10, @babel/plugin-transform-react-jsx@npm:^7.18.6":
+"@babel/plugin-transform-react-jsx-source@npm:^7.19.6":
+  version: 7.19.6
+  resolution: "@babel/plugin-transform-react-jsx-source@npm:7.19.6"
+  dependencies:
+    "@babel/helper-plugin-utils": ^7.19.0
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 1e9e29a4efc5b79840bd4f68e404f5ab7765ce48c7bd22f12f2b185f9c782c66933bdf54a1b21879e4e56e6b50b4e88aca82789ecb1f61123af6dfa9ab16c555
+  languageName: node
+  linkType: hard
+
+"@babel/plugin-transform-react-jsx@npm:^7.0.0, @babel/plugin-transform-react-jsx@npm:^7.12.17, @babel/plugin-transform-react-jsx@npm:^7.14.9, @babel/plugin-transform-react-jsx@npm:^7.18.6, @babel/plugin-transform-react-jsx@npm:^7.19.0":
   version: 7.19.0
   resolution: "@babel/plugin-transform-react-jsx@npm:7.19.0"
   dependencies:
@@ -1691,7 +1702,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-react@npm:^7.14.5, @babel/preset-react@npm:^7.16.7":
+"@babel/preset-react@npm:^7.14.5, @babel/preset-react@npm:^7.16.7, @babel/preset-react@npm:^7.18.6":
   version: 7.18.6
   resolution: "@babel/preset-react@npm:7.18.6"
   dependencies:
@@ -1707,7 +1718,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-typescript@npm:^7.13.0, @babel/preset-typescript@npm:^7.15.0, @babel/preset-typescript@npm:^7.16.7":
+"@babel/preset-typescript@npm:^7.13.0, @babel/preset-typescript@npm:^7.15.0, @babel/preset-typescript@npm:^7.16.7, @babel/preset-typescript@npm:^7.18.6":
   version: 7.18.6
   resolution: "@babel/preset-typescript@npm:7.18.6"
   dependencies:
@@ -1745,7 +1756,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.18.9, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.18.9, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
   version: 7.19.4
   resolution: "@babel/runtime@npm:7.19.4"
   dependencies:
@@ -1754,7 +1765,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/template@npm:*, @babel/template@npm:^7.0.0, @babel/template@npm:^7.18.10":
+"@babel/template@npm:*, @babel/template@npm:7.18.10, @babel/template@npm:^7.0.0, @babel/template@npm:^7.18.10":
   version: 7.18.10
   resolution: "@babel/template@npm:7.18.10"
   dependencies:
@@ -4729,10 +4740,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/babel-plugin@workspace:packages/babel-plugin"
   dependencies:
-    "@babel/generator": ^7.18.12
-    "@babel/helper-plugin-utils": ^7.18.9
-    "@babel/template": "*"
-    "@babel/traverse": ^7.18.11
+    "@babel/generator": ^7.19.6
+    "@babel/helper-plugin-utils": ^7.19.0
+    "@babel/template": 7.18.10
+    "@babel/traverse": ^7.19.6
     "@babel/types": ^7.19.4
     "@tamagui/build": ^1.0.1-beta.197
     "@tamagui/simple-hash": ^1.0.1-beta.197
@@ -4926,7 +4937,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/core-node@workspace:packages/core-node"
   dependencies:
-    "@babel/runtime": ^7.18.9
+    "@babel/runtime": ^7.19.4
     "@tamagui/core": ^1.0.1-beta.197
     "@tamagui/helpers": ^1.0.1-beta.197
     "@types/node": ^16.11.9
@@ -4966,7 +4977,7 @@ __metadata:
     react-dom: "*"
     ts-toolbelt: ^9.6.0
     typescript: ^4.7.4
-    vitest: ^0.20.3
+    vitest: ^0.24.3
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -5187,7 +5198,7 @@ __metadata:
     "@tamagui/helpers": ^1.0.1-beta.197
     react: "*"
     react-native: "*"
-    vitest: ^0.20.3
+    vitest: ^0.24.3
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -5220,7 +5231,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/kitchen-sink@workspace:apps/kitchen-sink"
   dependencies:
-    "@babel/core": ^7.18.10
+    "@babel/core": ^7.19.6
     "@expo/metro-config": ^0.3.18
     "@react-navigation/native": ^6.0.10
     "@react-navigation/native-stack": ^6.7.0
@@ -5362,7 +5373,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/next-plugin@workspace:packages/next-plugin"
   dependencies:
-    "@babel/preset-react": ^7.16.7
+    "@babel/preset-react": ^7.18.6
     "@tamagui/build": ^1.0.1-beta.197
     "@tamagui/proxy-worm": ^1.0.1-beta.197
     "@tamagui/react-native-svg": ^1.0.1-beta.197
@@ -5624,8 +5635,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox@workspace:apps/sandbox"
   dependencies:
-    "@babel/preset-react": ^7.16.7
-    "@babel/preset-typescript": ^7.16.7
+    "@babel/preset-react": ^7.18.6
+    "@babel/preset-typescript": ^7.18.6
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.7
     "@tamagui/animations-css": ^1.0.1-beta.197
     "@tamagui/animations-motion": ^1.0.1-beta.197
@@ -5642,7 +5653,7 @@ __metadata:
     "@tamagui/theme-base": ^1.0.1-beta.197
     "@tamagui/vite-plugin": ^1.0.1-beta.197
     "@tamagui/vite-plugin-reanimated": ^1.0.1-beta.197
-    "@vitejs/plugin-react": ^1.3.0
+    "@vitejs/plugin-react": ^2.2.0
     babel-polyfill: ^6.26.0
     css-loader: ^5.2.4
     esbuild-loader: ^2.19.0
@@ -5659,8 +5670,8 @@ __metadata:
     tamagui-loader: ^1.0.1-beta.197
     thread-loader: ^3.0.4
     url-loader: ^4.1.1
-    vite: ^3.0.8
-    vite-plugin-environment: ^1.1.2
+    vite: ^3.2.0
+    vite-plugin-environment: ^1.1.3
     webpack: ^5.74.0
     webpack-bundle-analyzer: ^4.5.0
     webpack-cli: ^4.9.2
@@ -5807,7 +5818,7 @@ __metadata:
     react-dom: "*"
     rollup-plugin-visualizer: ^5.7.1
     tamagui: ^1.0.1-beta.141
-    vite: ^3.0.8
+    vite: ^3.2.0
   languageName: unknown
   linkType: soft
 
@@ -5912,7 +5923,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/starter@workspace:apps/starter"
   dependencies:
-    "@babel/runtime": ^7.18.9
+    "@babel/runtime": ^7.19.4
     "@manypkg/cli": ^0.19.1
     "@types/react": ^18.0.15
     "@types/react-native": ^0.69.2
@@ -5927,14 +5938,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/static@workspace:packages/static"
   dependencies:
-    "@babel/core": ^7.18.10
-    "@babel/generator": ^7.18.12
-    "@babel/helper-plugin-utils": ^7.18.9
-    "@babel/parser": ^7.18.11
+    "@babel/core": ^7.19.6
+    "@babel/generator": ^7.19.6
+    "@babel/helper-plugin-utils": ^7.19.0
+    "@babel/parser": ^7.19.6
     "@babel/plugin-syntax-typescript": ^7.18.6
-    "@babel/plugin-transform-react-jsx": ^7.18.10
-    "@babel/runtime": ^7.18.9
-    "@babel/traverse": ^7.18.11
+    "@babel/plugin-transform-react-jsx": ^7.19.0
+    "@babel/runtime": ^7.19.4
+    "@babel/traverse": ^7.19.6
     "@babel/types": ^7.19.4
     "@dish/babel-preset": ^0.0.6
     "@expo/match-media": ^0.3.0
@@ -5976,7 +5987,7 @@ __metadata:
     react-test-renderer: ^18.2.0
     style-loader: ^3.3.1
     typescript: ^4.7.4
-    vitest: ^0.20.3
+    vitest: ^0.24.3
     webpack: ^5.74.0
   peerDependencies:
     react-native-web: "*"
@@ -6026,7 +6037,7 @@ __metadata:
     "@tamagui/helpers-tamagui": ^1.0.1-beta.197
     react: "*"
     react-dom: "*"
-    vitest: ^0.20.3
+    vitest: ^0.24.3
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -6126,7 +6137,7 @@ __metadata:
     "@tamagui/static": ^1.0.1-beta.197
     "@tamagui/vite-plugin": ^1.0.1-beta.197
     "@testing-library/jest-dom": ^5.16.4
-    "@vitejs/plugin-react": ^1.3.0
+    "@vitejs/plugin-react": ^2.2.0
     abort-controller: ^3.0.0
     body-parser: ^1.20.0
     compression: ^1.7.4
@@ -6149,10 +6160,10 @@ __metadata:
     set-cookie-parser: ^2.5.1
     type-fest: ^2.18.0
     undici: ^5.5.1
-    vite: ^3.0.8
-    vite-plugin-environment: ^1.1.2
+    vite: ^3.2.0
+    vite-plugin-environment: ^1.1.3
     vite-plugin-inspect: ^0.6.0
-    vitest: ^0.20.3
+    vitest: ^0.24.3
     web-streams-polyfill: ^3.2.1
     worktop: ^0.7.3
   peerDependencies:
@@ -6161,7 +6172,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     serve-static: ^1.14.1
-    vite: ^3.0.8
+    vite: ^3.2.0
   languageName: unknown
   linkType: soft
 
@@ -6295,9 +6306,9 @@ __metadata:
     "@originjs/vite-plugin-commonjs": ^1.0.3
     "@tamagui/config-default-node": ^1.0.1-beta.197
     "@tamagui/vite-plugin": ^1.0.1-beta.197
-    "@vitejs/plugin-react": ^1.3.0
+    "@vitejs/plugin-react": ^2.2.0
     happy-dom: ^6.0.4
-    vitest: ^0.20.3
+    vitest: ^0.24.3
     vitest-mock-process: ^1.0.4
   languageName: unknown
   linkType: soft
@@ -6306,12 +6317,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin-reanimated@workspace:packages/vite-plugin-reanimated"
   dependencies:
-    "@babel/core": ^7.18.10
+    "@babel/core": ^7.19.6
     "@tamagui/build": ^1.0.1-beta.197
     "@types/babel-core": ^6.25.7
-    vite: ^3.0.8
+    vite: ^3.2.0
   peerDependencies:
-    vite: ^3.0.8
+    vite: ^3.2.0
   languageName: unknown
   linkType: soft
 
@@ -6328,7 +6339,7 @@ __metadata:
     fs-extra: ^10.1.0
     lodash: ^4.17.21
     outdent: ^0.8.0
-    vite-plugin-environment: ^1.1.2
+    vite-plugin-environment: ^1.1.3
   languageName: unknown
   linkType: soft
 
@@ -6533,7 +6544,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chai@npm:*, @types/chai@npm:^4.3.1":
+"@types/chai@npm:*, @types/chai@npm:^4.3.3":
   version: 4.3.3
   resolution: "@types/chai@npm:4.3.3"
   checksum: 20cd094753e137cfc35939cae7f0ed78ecda7861e5c94704efab6979b9121a63807e9b631bdcf3a2792d6c6dba44050b13387262f9e63ebb040741c01c345f0a
@@ -7420,19 +7431,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-react@npm:^1.3.0":
-  version: 1.3.2
-  resolution: "@vitejs/plugin-react@npm:1.3.2"
+"@vitejs/plugin-react@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@vitejs/plugin-react@npm:2.2.0"
   dependencies:
-    "@babel/core": ^7.17.10
-    "@babel/plugin-transform-react-jsx": ^7.17.3
-    "@babel/plugin-transform-react-jsx-development": ^7.16.7
-    "@babel/plugin-transform-react-jsx-self": ^7.16.7
-    "@babel/plugin-transform-react-jsx-source": ^7.16.7
-    "@rollup/pluginutils": ^4.2.1
-    react-refresh: ^0.13.0
-    resolve: ^1.22.0
-  checksum: 9e083e561145cad00bdd2bc93d56b7ec8e209a05c4a9ebce8d1891e88e74de7eda197934c716023a1642582f250e330da6269e0cd1dc2285762f628c82f32229
+    "@babel/core": ^7.19.6
+    "@babel/plugin-transform-react-jsx": ^7.19.0
+    "@babel/plugin-transform-react-jsx-development": ^7.18.6
+    "@babel/plugin-transform-react-jsx-self": ^7.18.6
+    "@babel/plugin-transform-react-jsx-source": ^7.19.6
+    magic-string: ^0.26.7
+    react-refresh: ^0.14.0
+  peerDependencies:
+    vite: ^3.0.0
+  checksum: cc85ab31b4689ab137c4b1e65383dccce494371523eb164c579096e513a2abbaa7efb49ba08655fae9f6692f5b7b2602ad339bdce4ae5982fc08fe444fb8a4e5
   languageName: node
   linkType: hard
 
@@ -16099,7 +16111,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.26.2":
+"magic-string@npm:^0.26.2, magic-string@npm:^0.26.7":
   version: 0.26.7
   resolution: "magic-string@npm:0.26.7"
   dependencies:
@@ -20093,7 +20105,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.2.15, postcss@npm:^8.4.16, postcss@npm:^8.4.17, postcss@npm:^8.4.5":
+"postcss@npm:^8.2.15, postcss@npm:^8.4.17, postcss@npm:^8.4.18, postcss@npm:^8.4.5":
   version: 8.4.18
   resolution: "postcss@npm:8.4.18"
   dependencies:
@@ -21873,9 +21885,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:~2.78.0":
-  version: 2.78.1
-  resolution: "rollup@npm:2.78.1"
+"rollup@npm:^2.79.1":
+  version: 2.79.1
+  resolution: "rollup@npm:2.79.1"
   dependencies:
     fsevents: ~2.3.2
   dependenciesMeta:
@@ -21883,7 +21895,7 @@ __metadata:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: 9034814383ca5bdb4bea6d499270aeb31cdb0bb884f81b0c6a1d19c63cc973f040e6ee09b7af8a7169dd231c090f4b44ef8b99c4bfdf884aceeb3dcefb8cfa14
+  checksum: 6a2bf167b3587d4df709b37d149ad0300692cc5deb510f89ac7bdc77c8738c9546ae3de9322b0968e1ed2b0e984571f5f55aae28fa7de4cfcb1bc5402a4e2be6
   languageName: node
   linkType: hard
 
@@ -22999,6 +23011,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"strip-literal@npm:^0.4.2":
+  version: 0.4.2
+  resolution: "strip-literal@npm:0.4.2"
+  dependencies:
+    acorn: ^8.8.0
+  checksum: 831cdcaba61bc82c14ef5ca423a64bb8044b3b128abd15dff454d3fd05b0dbc7b4403760a7a636923d3c2e71a8e65174cef28ee9aef61f9a66819f865da4fdda
+  languageName: node
+  linkType: hard
+
 "stripe@npm:^9.1.0":
   version: 9.16.0
   resolution: "stripe@npm:9.16.0"
@@ -23567,14 +23588,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinypool@npm:^0.2.4":
-  version: 0.2.4
-  resolution: "tinypool@npm:0.2.4"
-  checksum: f050bd36c89529a2a0d3f9c1fdbba3f317114e3ee6eb5d5ba72c51e887d45ef3ef8d8533fb2ca2eba7189d19d2231712b81b3a75e099248532f5563369929c33
+"tinybench@npm:^2.3.0":
+  version: 2.3.1
+  resolution: "tinybench@npm:2.3.1"
+  checksum: 74d45fa546d964a8123f98847fc59550945ed7f0d3e5a4ce0f9596d836b51c1d340c2ae0277a8023c15dc9ea3d7cb948a79173bfc46338c9b367c6323ea1eaf3
   languageName: node
   linkType: hard
 
-"tinyspy@npm:^1.0.0":
+"tinypool@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "tinypool@npm:0.3.0"
+  checksum: 92291c309ed8d004c1ee1ef7f610cd90352383f12c52b0ec16abd9ebc665c03626e7afbc9993df97f63e67fea002b5cc18ba5e8f90260643867cbcac278a183c
+  languageName: node
+  linkType: hard
+
+"tinyspy@npm:^1.0.2":
   version: 1.0.2
   resolution: "tinyspy@npm:1.0.2"
   checksum: 32096121aa8d52bb625ad62c9314b3e4daba4ab9ac428217b12b1e1dfe9860e3c94d54a7affa279cc70dc6f10d88c6ba46b51de68896b318a06d02f05e87dcc3
@@ -24735,7 +24763,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-environment@npm:^1.1.2":
+"vite-plugin-environment@npm:^1.1.3":
   version: 1.1.3
   resolution: "vite-plugin-environment@npm:1.1.3"
   peerDependencies:
@@ -24759,19 +24787,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^2.9.12 || ^3.0.0-0, vite@npm:^3.0.8":
-  version: 3.1.8
-  resolution: "vite@npm:3.1.8"
+"vite@npm:^3.0.0, vite@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "vite@npm:3.2.0"
   dependencies:
     esbuild: ^0.15.9
     fsevents: ~2.3.2
-    postcss: ^8.4.16
+    postcss: ^8.4.18
     resolve: ^1.22.1
-    rollup: ~2.78.0
+    rollup: ^2.79.1
   peerDependencies:
     less: "*"
     sass: "*"
     stylus: "*"
+    sugarss: "*"
     terser: ^5.4.0
   dependenciesMeta:
     fsevents:
@@ -24783,11 +24812,13 @@ __metadata:
       optional: true
     stylus:
       optional: true
+    sugarss:
+      optional: true
     terser:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 982696ad134577dd9915c4c3548ad36ddcf5dc6d341058548a670a13d860e4cdaaf2b320a59221f178018df089d148b9980e9a344316bef12b698a1c1abc7390
+  checksum: 2b3acfe74549c4be2d35786b40f253fa8ba53d8a7b29d1b7397f0536ab6a831e9cdbd27c628265fc2ddcf5c616254022d2c9cbd2a0e2b0443cf0c14455e101d6
   languageName: node
   linkType: hard
 
@@ -24802,24 +24833,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:^0.20.3":
-  version: 0.20.3
-  resolution: "vitest@npm:0.20.3"
+"vitest@npm:^0.24.3":
+  version: 0.24.3
+  resolution: "vitest@npm:0.24.3"
   dependencies:
-    "@types/chai": ^4.3.1
+    "@types/chai": ^4.3.3
     "@types/chai-subset": ^1.3.3
     "@types/node": "*"
     chai: ^4.3.6
     debug: ^4.3.4
     local-pkg: ^0.4.2
-    tinypool: ^0.2.4
-    tinyspy: ^1.0.0
-    vite: ^2.9.12 || ^3.0.0-0
+    strip-literal: ^0.4.2
+    tinybench: ^2.3.0
+    tinypool: ^0.3.0
+    tinyspy: ^1.0.2
+    vite: ^3.0.0
   peerDependencies:
     "@edge-runtime/vm": "*"
     "@vitest/browser": "*"
     "@vitest/ui": "*"
-    c8: "*"
     happy-dom: "*"
     jsdom: "*"
   peerDependenciesMeta:
@@ -24829,15 +24861,13 @@ __metadata:
       optional: true
     "@vitest/ui":
       optional: true
-    c8:
-      optional: true
     happy-dom:
       optional: true
     jsdom:
       optional: true
   bin:
     vitest: vitest.mjs
-  checksum: 1478030f2e34ee91274a544b7d2e2d447969ce37d6452bfbc8e21fe42ec6fb94c496a09b822d7c8d667cee243b6630c871640d4a8b4434e1a25b858dad3548ed
+  checksum: dd954f57396b81df466dd4346aa6c95709a1b3c2409d5526d3172fa34ec684f756a855f885778929a6b903a22b2517ff79d22f936fb3e4d7d54ff24e8e577459
   languageName: node
   linkType: hard
 

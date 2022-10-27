@@ -18,7 +18,7 @@
     ]
   },
   "dependencies": {
-    "@babel/runtime": "^7.18.9",
+    "@babel/runtime": "^7.19.4",
     "@tamagui/core": "^1.0.1-beta.197",
     "@tamagui/helpers": "^1.0.1-beta.197"
   },

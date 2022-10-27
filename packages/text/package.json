@@ -36,7 +36,7 @@
     "@tamagui/build": "^1.0.1-beta.197",
     "react": "*",
     "react-dom": "*",
-    "vitest": "^0.20.3"
+    "vitest": "^0.24.3"
   },
   "publishConfig": {
     "access": "public"

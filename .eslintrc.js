@@ -13,7 +13,7 @@ module.exports = {
   ],
   rules: {
     'no-console': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
+    'react-hooks/exhaustive-deps': 'off',
     'no-inner-declarations': 'off',
     'react/prop-types': 'off',
     'react/display-name': 'off',

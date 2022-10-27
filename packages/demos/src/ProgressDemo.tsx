@@ -25,7 +25,7 @@ export function ProgressDemo() {
         </Progress>
       </YStack>
 
-      <XStack ai="center" space pos="absolute" b={10} l={20} $sm={{ dsp: 'none' }}>
+      <XStack ai="center" space pos="absolute" b={10} l={20} $xxs={{ dsp: 'none' }}>
         <Slider
           size="$2"
           w={130}
