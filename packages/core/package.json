@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.0.1-beta.196",
+  "version": "1.0.1-beta.197",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -28,16 +28,16 @@
   ],
   "dependencies": {
     "@expo/match-media": "^0.3.0",
-    "@tamagui/compose-refs": "^1.0.1-beta.196",
-    "@tamagui/constants": "^1.0.1-beta.196",
-    "@tamagui/helpers": "^1.0.1-beta.196",
-    "@tamagui/normalize-css-color-lite": "^1.0.1-beta.196",
-    "@tamagui/react-native-use-pressable": "^1.0.1-beta.196",
-    "@tamagui/react-native-use-responder-events": "^1.0.1-beta.196",
-    "@tamagui/types-react-native": "^1.0.1-beta.196",
-    "@tamagui/use-did-finish-ssr": "^1.0.1-beta.196",
-    "@tamagui/use-event": "^1.0.1-beta.196",
-    "@tamagui/use-force-update": "^1.0.1-beta.196",
+    "@tamagui/compose-refs": "^1.0.1-beta.197",
+    "@tamagui/constants": "^1.0.1-beta.197",
+    "@tamagui/helpers": "^1.0.1-beta.197",
+    "@tamagui/normalize-css-color-lite": "^1.0.1-beta.197",
+    "@tamagui/react-native-use-pressable": "^1.0.1-beta.197",
+    "@tamagui/react-native-use-responder-events": "^1.0.1-beta.197",
+    "@tamagui/types-react-native": "^1.0.1-beta.197",
+    "@tamagui/use-did-finish-ssr": "^1.0.1-beta.197",
+    "@tamagui/use-event": "^1.0.1-beta.197",
+    "@tamagui/use-force-update": "^1.0.1-beta.197",
     "ts-toolbelt": "^9.6.0"
   },
   "peerDependencies": {
@@ -45,7 +45,7 @@
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.196",
+    "@tamagui/build": "^1.0.1-beta.197",
     "@types/node": "^16.11.9",
     "@types/react": "^18.0.15",
     "@types/react-native": "^0.69.2",
