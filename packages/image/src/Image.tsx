@@ -4,19 +4,12 @@ import { Image as RNImage } from 'react-native'
 
 React['createElement']
 
-const StyledImage = styled(
-  RNImage,
-  {
-    name: 'Image',
-    position: 'relative',
-    source: { uri: '' },
-    zIndex: 1,
-  },
-  {
-    inlineProps: new Set(['src', 'width', 'height']),
-    isReactNative: true,
-  }
-)
+const StyledImage = styled(RNImage, {
+  name: 'Image',
+  position: 'relative',
+  source: { uri: '' },
+  zIndex: 1,
+})
 
 type StyledImageProps = GetProps<typeof StyledImage>
 
