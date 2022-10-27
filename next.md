@@ -1,5 +1,12 @@
 - 1.0
 
+  - site design system docs (for use in cli later)
+  - blog post / home: lighthouse score diff between compiler on / off
+  - runthrough and check:
+    - expo guide
+    - 
+  - document fontFaceByWeight
+  - document themeShallow
   - canary release channel
   - test sprint
     - native integration tests
@@ -12,6 +19,7 @@
   - https://github.com/tamagui/tamagui/issues/256
   - https://github.com/tamagui/tamagui/issues/242
   - `Portal` related components are not working on the Android side
+  - <Adapt> change
   - theme-base - align to radix, allow configuarble colors
   - polyfill for rn 17
   - site: document more helpers: getSize / stepTokenUpOrDown / spacedChildren

@@ -10,40 +10,57 @@ by: nate
 <Image title="Layout tools image" src="/social.jpg" size="hero" height={150} width={900} />
 
 <IntroParagraph>
-  Tamagui is a style system with an optimizing compiler that allows for sharing 50% more code
-  between web and native apps, while increasing - rather than decreasing - performance, native-feel,
-  and ease of development.
+  Tamagui is a style system and component kit made great by an optimizing compiler. The compiler
+  allows for sharing significantly more code between web and native apps without the typical
+  downsides, due to it's ability to increase both performance and usage of platform-native
+  primitives.
 </IntroParagraph>
 
-It's been six months since the Tamagui beta and almost exactly a year since alpha. And incredibly, the difference between 1.0 and the beta is even bigger than the already massive beta release.
+It's been just over six months since the Tamagui beta and almost a year since alpha. While the beta was a huge amount of work, getting to 1.0 has been even more. There's so much to cover.
 
-There's simply so much to cover.
-
-What's new?
-
-For this release, I'll be splitting into sections features added in `core` (the style system), `static` (the optimizing compiler), and `tamagui` (the UI kit).
+For this release, I'll be splitting the release post into sections - `core` (the style system), `static` (the optimizing compiler), and `tamagui` (the UI kit).
 
 ## What's new in Core
 
-It's all about maturity. Core has had over 500 bugs fixed, performance and memory usage improvements, and updates to compatibility with the latest and greatest in React and React Native.
+It's all about maturity. Core has had over 500 bugs fixed, landed large performance and memory improvements, and brings compatibility with the latest and greatest in React and React Native.
 
 ### React 0.69, React 18, React Native Web 18
 
-Across all of Tamagui, we've bumped support to the latest versions.
+Across all of Tamagui, we've bumped support to the latest versions. Due to improvements in react-native-web 18, we were also able to dramatically simplify setup, no longer having to patch the library to support classnames.
 
-### Correctness, bugs, performance
+### Making web-only use cases shine
 
-More than any area, `core` has matured the most. One of the first big steps was to separate it entirely from `react-native-web`. Before 1.0, we had to run a patch to `react-native-web` that allowed us to pass in `className`, and also re-use some of the internal atomic CSS generation to avoid duplicating functionality (and therefore bundle size).
+Core is an incredibly powerful CSS-in-JS library for React, and the only one that has an optimizing compiler that makes your apps faster. But for web-only use cases, it had a big downside of requiring you to bundle all of `react-native-web` in your app.
 
-Fixing this was a many-step process, but it was helped when profiling and analysis of the `react-native-web` style system showed that there were large performance cliffs in a variety of areas of their CSS generation steps. Namely, the design of the entire setup was a highly functional plugin system. This led to up to O(N^3) performance (up to 3 loops iterating one inside of the other over style props) and a large number of total loops, plus high memory usage with many objects being created. Because Tamagui was built on top of this, we further compounded the problem with a few loops of our own.
+For 1.0, we've made `@tamagui/core` have no dependency at all on `react-native-web` when targeting the web, while still maintaining 100% compatibility with the React Native APIs.
 
-During the early betas this became a priority. We accepted a temporary bundle size increase by essentially copying in the relevant bits of the `react-native-web` style system, and then slowly began the process of refactoring and inlining the logic into our own already fairly well-optimized single pass over styles.
+This unlocks a few use cases:
 
-Today, the style system is now a lot closer to ideal. We've removed almost all the nested looping, and generate most styles in one pass.
+- You want all the amazing features of `core` and the optimizing compiler, but you're not targeting native at all, saving ~30Kb of bundle size by avoiding `react-native-web`.
+- You're doing the above, but planning to build a Native app in the future.
+- You're using Tamagui to target Native and Web, but want to build one-off pages that are web-only while still sharing your typed design system and various Tamagui components.
+
+Now you can get all the benefits of the optimizing compiler and full-featured design system primitives on the web, without the extra bloat if you don't need to bring along the rest of React Native.
+
+### Bundle size reduction
+
+De-coupling core from `react-native` is a big win for web-only use cases. Even beyond that, we've shaved nearly ~12Kb from core through many optimizations all over.
+
+But we've also set up core to go much futher in size savings.
+
+As of today, core is about 18Kb with GZIP. This gives you a whole lot of features, from powerful hooks for themes and media queries, a complete typed design system (tokens, colors, fonts, and more), the truly powerful `styled()` utility function with variants that lets you build type-safe style components that are fast, output atomic CSS, and a all the helpers and hooks that you need to go alongside that.
+
+Going forward, there's a direct path to make core even better for web-only use cases. Directly, we can likely get another 5Kb saved through hand-optimization. And after that, we can split core in half with `@tamagui/web`, which will drop all the unified event and layout APIs from React Native and simply give you back typed web props, bringing the runtime down to below 5Kb.
+
+### Large performance improvements
+
+Previously, Core used `react-native-web` to handle the final steps of taking styles and converting them into CSS. In profiling and reading over the code, we found this to be a large bottleneck to performance as it would iterate over objects many times, and generate many intermediate objects in the process.
+
+There was a many-step process during the beta
 
 ### `styled` upgrades
 
-The `styled` factory has undergone a number of improvements. It now supports wrapping just about any component you give it, so long as that component accepts a `style` prop.
+The `styled` factory has undergone a number of improvements. It now supports wrapping any component you give it, so long as that component accepts a `style` prop.
 
 #### A note on `styled` types
 
@@ -55,15 +72,89 @@ One theme in the betas for `core` was upgrading how fonts worked. Two big helper
 
 #### &lt;FontLanguage /&gt;
 
+Supporting fonts per-language is now possible with &lt;FontLanguage /&gt;, like so. First, you can specify language-specific fonts with a suffix in your configuration, much like a sub-theme:
+
+```tsx
+const bodyFontEn = createFont({
+  family: '"Helvetica"'
+  // ... per-font design tokens
+})
+
+const bodyFontMandarin = createFont({
+  family: '"Helvetica Mandarin"',
+  // ... per-font design tokens
+})
+
+export const config = createTamagui({
+  fonts: {
+    body: bodyFontEn,
+    body_mandarin: bodyFontMandarin,
+  }
+})
+```
+
+Then you can change the family to Mandarin at any point in your React tree, fully typed:
+
+```tsx
+import { FontLanguage, Text } from '@tamagui/core'
+
+export default () => (
+  <FontLanguage body="mandarin">
+    <Text fontFamily="$body">
+      {/* TODO hello world in mandarin */}
+    </Text>
+  </FontLanguage>
+)
+```
+
 #### The `fontFaceByWeight` config
 
+React Native makes loading fonts a bit trickier than the web, and the easiest way to do it involved naming your font family differently per-weight. On the web you'd have `Helvetica` and just change `font-weight`, but on Native you set the family from `Helvetica` to `Helvetica Bold` instead of the weight.
+
+Tamagui added support for this through [the `fontFaceByWeight` option on font configurations]().
+
 ### The `themeShallow` prop
+
+The `theme` prop in Tamagui by default will re-theme all sub-component. As of beta `TODO`, Tamagui supports the boolean `themeShallow` prop on any Tamagui component, which will _only_ theme that exact component, leaving all children components with the same theme as their parent.
 
 ### Helpers
 
 ### The `loadTheme` and `updateTheme` helpers
 
+Themes load in a large variety of tokens for spacing, sizing, radius, colors, and more. They are incredibly powerful, but they also have some cost in bundle size.
+
+The `loadTheme` utility function means you can only load the default themes you want to serve, saving on bundle size, and then add in alternative themes later on.
+
+Meanwhile `updateTheme` gives you the ability to dynamically modify themes on the fly, changing any of their values. On the web, themes work through CSS variables, meaning `updateTheme` is incredibly fast as it avoids all React re-rendering if no theme values are currently being relied on for dynamic styles.
+
 ### The `useMediaPropsActive` hook
+
+This hook is useful for authoring your own custom components built on Tamagui. The Tamagui UI kit makes use of this hook extensively.
+
+Tamagui has a philosophy that everything should work at runtime as well as compile-time. The compile-time side just makes it all a lot faster. But working fully runtime, means you have more flexiblity (no need to run any plugins at all), but also lots of power. For example, if Tamagui didn't work fully runtime, you couldn't do dynamic animations at all, let along bringing along [the Reanimated driver]() for beautiful spring or layout animations.
+
+Anyway, the `useMediaPropsActive` hook makes it easy to properly access the "currently active" set of styles given the current screen size, properly typed. Here's an example:
+
+```tsx
+import { Stack, StackProps, useMediaPropsActive } from '@tamagui/core'
+
+const CustomWidget = (props: StackProps) => {
+  const activeProps = useMediaPropsActive(props)
+
+  console.log(`The current color is`, activeProps.backgroundColor)
+
+  return <Stack {...modifyProps(activeProps)} />
+}
+
+export default () => (
+  <CustomWidget
+    backgroundColor="red"
+    $large={{
+      backgroundColor: 'green'
+    }}
+  />
+)
+```
 
 ---
 
@@ -71,11 +162,51 @@ One theme in the betas for `core` was upgrading how fonts worked. Two big helper
 
 Over a dozen major improvements to the compiler have made their way in since beta. Some of the highlights are:
 
-#### Up-front bundling of components and config
+### Performance
 
-Tamagui now fully bundles your `components` and `config` that you provide it before it begins compilation, writing them out into the `./dist/tamagui` directory in your app. This is much better for debugging and introspection, and in the process we fixed a large variety of issues.
+The compiler uses `babel` to parse and optimize components, which it can get away for performance with largely because it only needs to parse a subset of your files, and it only needs to look for a few areas - namely JSX elements and `styled()` functions. We find that it adds about 10ms of time for each file that it runs on, end-to-end. In exchange, you get massive runtime performance gains and bundle-size reductions.
 
-The compiler now also supports analyzing components outside of your design system, allowing for even less friction when writing apps. Previously, Tamagui only knew how to optimize components found in your separated design system package. But it's common to have one-off `styled` component you use just for small pieces of your app, that don't need to be inside your design system. With beta [...] we added a bigger feature, in which the compiler now attempts to load and analyze components inline as it discovers new ones. This led to a 25% increase in compile-time optimized components in our largest production Tamagui apps.
+During the beta we landed many performance improvements. By default now Tamagui avoids even parsing many more files, by only looking for `tsx` or `jsx` extensions by default (configurable with the [`includeExtensions`](/TODO) option).
+
+Tamagui Static now fully bundles your `components` and `config` that you provide it before it begins compilation, writing them out into the `./.tamagui` directory beside your app. This greatly improves debugging and introspection and has led to large improvements in compatibility with many libraries.
+
+### Optimizing more
+
+Previously, Tamagui Static only knew how to optimize components found in your separated design system package. But it's both common and desirable to have one-off `styled()` definitions that are just used for small areas of your app that live alongside those areas, outside your design system.
+
+The compiler now supports analyzing components outside of just your design system, allowing for even less friction when writing apps. It means you can put your `styled()` definitions _anywhere_ without worrying, and Tamagui Static will load and optimize those components as it discovers theme.
+
+### Vite plugin
+
+Tamagui now fully works with Vite 3, both with the compiler and without. A simple `vite.config.js` would look like this:
+
+```tsx
+import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+
+const tamaguiCompilerConfig = {
+  components: ['tamagui'],
+  config: 'tamagui.config.ts',
+  useReactNativeWebLite: true,
+}
+
+export default defineConfig({
+  clearScreen: false,
+  plugins: [
+    react({
+      fastRefresh: true,
+      jsxPure: true,
+    }),
+    tamaguiPlugin(tamaguiCompilerConfig),
+    tamaguiExtractPlugin(tamaguiCompilerConfig),
+  ],
+})
+```
+
+### Correctness
+
+Most of the work during beta focused on correctness. We've increased testing to cover many more areas, and landed a number of important correctness fixes alongside the ones in `core`.
 
 ---
 
@@ -85,47 +216,169 @@ The compiler now also supports analyzing components outside of your design syste
 
 With the beta release, we had mostly finalized the core feature set we wanted in Tamagui, especially in `@tamagui/core`, the base style system that works underlies the compiler and UI kit. It was time to cut our teeth building out a suite of components to really test it out.
 
-As of 1.0, we've added seven new large components that cover some of the most complex use cases you find in any apps. Each comes with a **Radix-like** composable component API surface that allows for nearly total control over customization.
+Between then and 1.0, we've released seven new large components that cover some of the most complex use cases you find in any apps. Each comes with a Radix-like composable component API surface that allows for nearly total control over customization - in fact many components were built by taking Radix components APIs, and simply re-building the internal logic to use Tamagui primitives.
 
-And like every component in the `tamagui` package, every new component is completely sizable, themable, and responsive using your design system tokens.
+Like all existing components in Tamagui, every new component is completely sizable, themable, and able to responsively style using your entire design system.
 
-Let's dig in.
+The new components are:
 
 #### Sheet
 
-A decent bottom sheet is essential for any UI kit, but it represents one of the hardest components to build due to the need for complex interactive behavior at high performance, alongside delicate interplat between the outer draggable sheet and any inner scrollable content.
+A decent bottom sheet is essential for any UI kit, but it represents one of the hardest components to build due to the need for complex interactive behavior at high performance, alongside delicate interplay of touch events between the outer sheet and any inner scrollable content.
 
-This is made especially tricky because Tamagui allows for pluggable drivers. So, where normally you'd implement your interactivity once, the Tamagui UI kit
+This is made especially tricky because Tamagui allows for pluggable animation drivers, letting you choose between using Reanimated, React Native Animated, or simply CSS animations (plus any other animation drivers in the future that the community builds).
+
+This was an excellent test of the unified animation drivers on Tamagui, and unfied interaction primitives of React Native, and we're happy with how it's turned out.
+
+Internally, we've come up with some helpers for each animation driver to support a consistent API for taking a number value and interpolating it with some style properties. Each driver handles this quite differently on the surface, but the Tamagui drivers now give a consistent interface across them all.
 
 #### Select
 
+<HeroContainer>
+  <SelectDemo />
+</HeroContainer>
+
+Select components are deceptively hard to build. They involve some of the most complex interactions you'll find in any frontend app, as they must support complex keyboard and mouse based behaviors, a lot of accesibility logic, and a UI that adjusts to the window and contents in very dynamic ways.
+
+Luckily, Tamagui stands on the shoulders of giants to make this possible: React Native's unified layout and gesture handling, [Radix](/TODO-link-to-radix-select) which inspired and served as the base structure for the components and their API surface, [Floating UI]() which handles all of the _incredibly complex and finnicky_ logic around interactions and the floating elements.
+
 #### Dialog
+
+[Show content in a Dialog](/docs/components/dialog) that can adapt to another component depending on the screen size.
+
+<HeroContainer>
+  <DialogDemo />
+</HeroContainer>
+
+```tsx hero template=Dialog
+
+```
 
 #### AlertDialog
 
+Show a Dialog specialized for confirming or denying an action [with AlertDialog](/docs/components/alert-dialog).
+
+<HeroContainer>
+  <AlertDialogDemo />
+</HeroContainer>
+
+```tsx hero template=AlertDialog
+
+```
+
+AlertDialog is the first of our components to include the `native` prop, which we are excited about. When set to true, it attempts to adapt the element to use platform-primitives when possible For AlertDialog, this means that on iOS, you'll see a native Alert instead the custom Tamagui one.
+
 #### Slider
+
+A [draggable Slider](/docs/components/slider) allows users to input values within a range.
+
+<HeroContainer>
+  <SliderDemo />
+</HeroContainer>
+
+```tsx hero template=Slider
+
+```
 
 #### Label
 
+Label has been updated to work with all the new form inputs.
+
+<HeroContainer>
+  <LabelDemo />
+</HeroContainer>
+
+```tsx hero template=Label
+
+```
+
 #### Card
+
+Display content with a header, footer, background image, title, subtitle and description [using Card](/docs/components/card).
+
+<HeroContainer>
+  <CardDemo />
+</HeroContainer>
+
+```tsx hero template=Card
+
+```
 
 #### ListItem
 
+[ListItem](/docs/components/list-item) allows you to display consistent with title, subtitle, before and after images or icons, and more.
+
+<HeroContainer>
+  <ListItemDemo />
+</HeroContainer>
+
+```tsx hero template=ListItem
+
+```
+
 #### Avatar
+
+<HeroContainer>
+  <AvatarDemo />
+</HeroContainer>
+
+```tsx hero template=Avatar
+
+```
 
 #### Spinner
 
+<HeroContainer>
+  <SpinnerDemo />
+</HeroContainer>
+
+```tsx hero template=Spinner
+
+```
+
 #### Progress
+
+<HeroContainer>
+  <ProgressDemo />
+</HeroContainer>
+
+```tsx hero template=Progress
+
+```
 
 #### Unspaced
 
+When using the `space` prop, you sometimes want just one area to not add space. This was impossible before, but [with Unspaced now you can](/docs/components/unspaced).
+
+```tsx
+<YStack space="$10">
+  {/* The components in Unspaced will not be separated */}
+  <Unspaced>
+    <H1>Title</H1>
+    <Paragraph>Sub-title</Paragraph>
+    <Paragraph>Author: ...</Paragraph>
+    {/* Now you can control the space independently */}
+    <Spacer size="$2" />
+  </Unspaced>
+  <Paragraph>Lorem...</Paragraph>
+  <Paragraph>Ipsum...</Paragraph>
+  <Paragraph>Dolor...</Paragraph>
+</YStack>
+```
+
 #### ScrollView
 
-Label has been updated to work with all the new form inputs.
+Tamagui [now exports ScrollView](/docs/components/scroll-view), the exact same as React Native ScrollView but with all the Tamagui style props added.
+
+#### XGroup and YGroup
+
+The `Group` component has been split into [XGroup and YGroup](/docs/components/group) to match Stacks. It's been upgraded across the board with the ability to be scrollable and to better handle passing children radius and size styles.
 
 ---
 
 ### The Kitchen Sink
+
+The monorepo now includes `apps/kitchen-sink` which is an Expo app that loads every demo you see for every component in the [Docs](/docs/TODO).
 
 ---
 
@@ -142,6 +395,8 @@ This is a result of many small changes. For example, on the frontend we changed 
 We started with entirely relying on React Native Web's internal style engine, but found it was a big bottleneck both to our correctness, and speed. We instead forked their style system internally, and then step by step went about merging it into our own.
 
 Today the style loop now does 3^N less loops over styles than vanilla React Native.
+
+Animations got a big performance boost by avoiding double-rendering each time they change. This was necessary before because we didn't want to pay the cost of loading all the extra hooks that animations need for every single component, so we had to load a sub-component that would callback when animations were present, leading to a signficant cost only for animated components. Instead, we've landed on a compromise (that will likely be able to be removed in a future release): if a component is going to be animated, always keep the `animation` prop on that component (just set to null, undefined, or false when animations should be off).
 
 ---
 
