@@ -9,13 +9,7 @@ globalThis['ogRequire'] = og
 
 export const getNameToPaths = () => nameToPaths
 
-// just for catching egregious amounts of errors in a tight loop
-let tries = 0
-setInterval(() => {
-  tries = 0
-}, 50)
-
-export function registerRequire(bubbleErrors?: boolean) {
+export function registerRequire() {
   if (Module.prototype.require !== globalThis['ogRequire']) {
     // eslint-disable-next-line no-console
     console.warn('didnt unregister before re-registering')
@@ -80,35 +74,28 @@ export function registerRequire(bubbleErrors?: boolean) {
       // }
       return out
     } catch (err: any) {
-      if (bubbleErrors) {
-        throw err
-      }
+      /**
+       * Allow errors to happen, we're just reading config and components but sometimes external modules cause problems
+       * We can't fix every problem, so just swap them out with proxyWorm which is a sort of generic object that can be read.
+       */
 
-      // eslint-disable-next-line no-console
-      console.error(
-        `Tamagui failed loading the pre-built tamagui.config.ts
-
-${err.message}
-${err.stack}
-
-  You can see if it loads in the node repl:
-
-  require("./${relative(process.cwd(), path)}").default
-
-`
-      )
-
-      const max = process.env.TAMAGUI_MAX_ERRORS ? +process.env.TAMAGUI_MAX_ERRORS : 50
-      if (++tries > max) {
+      if (process.env.DEBUG?.startsWith('tamagui')) {
         // eslint-disable-next-line no-console
-        console.log(
-          `Too many errors loading design system, exiting (set TAMAGUI_MAX_ERRORS to override)..`
+        console.error(
+          `Tamagui failed loading the pre-built tamagui.config.ts
+  
+  ${err.message}
+  ${err.stack}
+  
+    You can see if it loads in the node repl:
+  
+    require("./${relative(process.cwd(), path)}").default
+  
+  `
         )
-        // avoid infinite loops
-        process.exit(1)
       }
 
-      return null
+      return proxyWorm
     }
   }
 

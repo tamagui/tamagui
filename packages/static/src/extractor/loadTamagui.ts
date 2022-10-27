@@ -41,7 +41,6 @@ type Props = {
   components: string[]
   config?: string
   forceExports?: boolean
-  bubbleErrors?: boolean
 }
 
 const cache = {}
@@ -121,7 +120,7 @@ Tamagui built config and components:`
   ])
 
   try {
-    registerRequire(props.bubbleErrors)
+    registerRequire()
     const out = require(configOutPath)
     const config = out.default || out
 
@@ -207,11 +206,12 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
   const { unregister } = require('esbuild-register/dist/node').register(esbuildOptions)
 
   try {
-    registerRequire(props.bubbleErrors)
+    registerRequire()
 
     // lets shim require and avoid importing react-native + react-native-web
     // we just need to read the config around them
     process.env.IS_STATIC = 'is_static'
+    const devValueOG = globalThis['__DEV__' as any]
     globalThis['__DEV__' as any] = process.env.NODE_ENV === 'development'
 
     try {
@@ -240,7 +240,7 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
 
       // undo shims
       process.env.IS_STATIC = undefined
-      delete globalThis['__DEV__' as any]
+      globalThis['__DEV__' as any] = devValueOG
 
       // set up core-node
       if (props.config && tamaguiConfig) {
@@ -253,10 +253,6 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
         nameToPaths: getNameToPaths(),
       }
     } catch (err) {
-      if (props.bubbleErrors) {
-        throw err
-      }
-
       if (err instanceof Error) {
         console.warn(
           `Error loading tamagui.config.ts (set DEBUG=tamagui to see full stack), running tamagui without custom config`
@@ -276,11 +272,6 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
     }
 
     return cache[key]
-  } catch (err) {
-    if (!props.bubbleErrors) {
-      console.log('Error loading Tamagui', err)
-    }
-    throw err
   } finally {
     unregister()
     unregisterRequire()
@@ -443,9 +434,6 @@ Quiet this warning with environment variable:
     cacheComponents[key] = info
     return info
   } catch (err: any) {
-    if (props.bubbleErrors) {
-      throw err
-    }
     console.log(`Tamagui error bundling components`, err.message, err.stack)
     return null
   }

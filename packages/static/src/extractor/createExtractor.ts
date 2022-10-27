@@ -418,9 +418,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             }
 
             const out = loadTamaguiSync({
-              // TODO would extract more, is NO-OP for now..
               forceExports: true,
-              bubbleErrors: true,
               components: [sourcePath],
             })
 
