@@ -44,8 +44,6 @@
     "@tamagui/helpers": "^1.0.1-beta.195",
     "@tamagui/helpers-node": "^1.0.1-beta.195",
     "@tamagui/proxy-worm": "^1.0.1-beta.195",
-    "@tamagui/react-native-svg": "^1.0.1-beta.195",
-    "@tamagui/rnw": "^1.0.1-beta.195",
     "@tamagui/shorthands": "^1.0.1-beta.195",
     "babel-literal-to-ast": "^2.1.0",
     "esbuild": "^0.15.11",
@@ -55,8 +53,8 @@
     "fs-extra": "^10.1.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.21",
-    "react-native-web-lite": "^1.0.1-beta.195",
-    "tamagui": "^1.0.1-beta.195"
+    "react-native-web-internals": "^1.0.1-beta.195",
+    "react-native-web-lite": "^1.0.1-beta.195"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.18.6",

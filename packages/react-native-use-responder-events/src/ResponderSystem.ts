@@ -470,7 +470,7 @@ const documentEventsBubblePhase = [
   'selectionchange',
 ]
 export function attachListeners() {
-  if (canUseDOM && window['__reactResponderSystemActive'] == null) {
+  if (canUseDOM && window['__tamaguiReactResponderSystemActive'] == null) {
     window.addEventListener('blur', eventListener)
     documentEventsBubblePhase.forEach((eventType) => {
       document.addEventListener(eventType, eventListener)
@@ -478,7 +478,7 @@ export function attachListeners() {
     documentEventsCapturePhase.forEach((eventType) => {
       document.addEventListener(eventType, eventListener, true)
     })
-    window['__reactResponderSystemActive'] = true
+    window['__tamaguiReactResponderSystemActive'] = true
   }
 }
 

@@ -13,8 +13,8 @@ import {
   proxyThemeVariables,
   pseudoDescriptors,
 } from '@tamagui/core-node'
-import { createDOMProps } from '@tamagui/rnw'
 import type { ViewStyle } from 'react-native'
+import { createDOMProps } from 'react-native-web-internals'
 
 import { FAILED_EVAL } from '../constants.js'
 import type {

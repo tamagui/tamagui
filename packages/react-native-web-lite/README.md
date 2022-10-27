@@ -25,5 +25,4 @@ With webpack:
 Alias the following
 
 - react-native-web$ => react-native-web-lite
-- @tamagui/rnw => @tamagui/rnw-lite
 - react-native-svg => @tamagui/react-native-svg

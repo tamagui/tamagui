@@ -123,12 +123,9 @@ module.exports = {
       // built-in List components, and removes many deprecated APIs and code-reduction, slimming
       // bundle sizes down nearly 30-50Kb.
       'react-native$': 'react-native-web-lite',
-      '@tamagui/rnw': '@tamagui/rnw-lite',
+      'react-native-web$': 'react-native-web-lite',
 
-      // @tamagui/rnw exports a couple internal hooks from react-native-web
-      // resolve both to CommonJS so they match
-      '@tamagui/rnw': require.resolve('@tamagui/rnw'),
-      // optional, for svg icons
+      // optional, for lighter svg icons
       'react-native-svg': require.resolve('@tamagui/react-native-svg'),
     }
   },

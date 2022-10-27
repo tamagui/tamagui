@@ -24,7 +24,6 @@
     "@babel/preset-react": "^7.16.7",
     "@tamagui/proxy-worm": "^1.0.1-beta.195",
     "@tamagui/react-native-svg": "^1.0.1-beta.195",
-    "@tamagui/rnw-lite": "^1.0.1-beta.195",
     "@tamagui/static": "^1.0.1-beta.195",
     "babel-loader": "^8.2.5",
     "browserslist": "^4.21.1",

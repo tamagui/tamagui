@@ -88,7 +88,7 @@ export const Sandbox = () => {
         <SheetDemo />
 
         {/* <AnimationsDemo /> */}
-        <AnimationsPresenceDemo />
+        {/* <AnimationsPresenceDemo /> */}
 
         {/* <SliderDemo /> */}
 

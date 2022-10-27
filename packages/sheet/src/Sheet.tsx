@@ -409,6 +409,7 @@ export const Sheet = withStaticProperties(
             const isScrolled = scrollBridge.y !== 0
             const isDraggingUp = dy < 0
             const isAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
+            console.log('>??')
             if (isScrolled) {
               previouslyScrolling = true
               return false

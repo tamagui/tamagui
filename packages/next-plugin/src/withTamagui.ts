@@ -100,12 +100,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
           ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
           ['react-native-reanimated', 'react-native-reanimated'],
-          // match commonjs to react-native-web
-          // i'd do esm but needs better docs, have to transpile
-          [
-            '@tamagui/rnw',
-            tamaguiOptions.useReactNativeWebLite ? '@tamagui/rnw-lite' : '@tamagui/rnw',
-          ],
           ['react-native$', rnw],
           ['react-native-web$', rnw],
           ['@testing-library/react-native', '@tamagui/proxy-worm'],
