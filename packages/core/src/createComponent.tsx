@@ -26,7 +26,6 @@ import { onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { TextAncestorContext } from './contexts/TextAncestorContext'
-import { getReturnVariablesAs } from './helpers/createPropMapper'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import {
   SplitStyleResult,
@@ -59,7 +58,6 @@ import {
 } from './types'
 import { usePressability } from './vendor/Pressability'
 import { Slot, mergeEvent } from './views/Slot'
-import { Stack } from './views/Stack'
 import { wrapThemeManagerContext } from './views/Theme'
 
 React['keep']
@@ -123,6 +121,7 @@ export function createComponent<
   const avoidClassesWhileAnimating = true
   let defaultNativeStyle: any
   let tamaguiDefaultProps: any
+  let defaultTag: string | undefined
   let initialSplitStyles: SplitStyleResult
 
   // see onConfiguredOnce below which attaches a name then to this component
@@ -208,7 +207,11 @@ export function createComponent<
 
     const isTaggable = !Component || typeof Component === 'string'
     // default to tag, fallback to component (when both strings)
-    const element = isWeb ? (isTaggable ? props.tag || Component : Component) : Component
+    const element = isWeb
+      ? isTaggable
+        ? props.tag || defaultTag || Component
+        : Component
+      : Component
 
     const BaseTextComponent = BaseText || element || 'span'
     const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
@@ -1000,6 +1003,10 @@ export function createComponent<
     // remove all classNames
     const [ourProps, ourClassNames] = mergeProps(defaultPropsIn, {}, true)
 
+    if (ourProps.tag) {
+      defaultTag = ourProps.tag
+    }
+
     initialSplitStyles = insertSplitStyles(
       ourProps,
       staticConfig,
@@ -1073,6 +1080,7 @@ export function createComponent<
           ourProps,
           ourClassNames,
           defaultsClassnames,
+          defaultTag,
         })
       }
     }

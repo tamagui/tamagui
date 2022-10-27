@@ -443,7 +443,7 @@ export declare type StaticConfigPublic = {
     /**
      * Auto-detect, but can override, passes styles properly to react-native-web
      */
-    isReactNativeWeb?: boolean;
+    isReactNative?: boolean;
     /**
      * By default if styled() doesn't recognize a parent Tamagui compoent or specific react-native views,
      * it will assume the passed in component only accepts style={} for react-native compatibility.
@@ -598,7 +598,7 @@ export declare type UniversalAnimatedNumber<A> = {
     stop(): void;
 };
 export declare type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
-    isReactNativeWeb?: boolean;
+    isReactNative?: boolean;
     useAnimations: UseAnimationHook;
     useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>;
     useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(val: V, getStyle: (current: any) => any) => any;
