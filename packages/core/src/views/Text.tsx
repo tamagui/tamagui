@@ -26,6 +26,8 @@ export const Text = createComponent<TextProps, TextView, TextPropsBase>({
     }),
   },
 
+  inlineWhenUnflattened: new Set(['fontFamily']),
+
   variants: {
     ...(isWeb && {
       numberOfLines: {
