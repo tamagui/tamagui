@@ -64,9 +64,9 @@ Now, create and export the components. You can re-export components from `tamagu
 `Circle.tsx`:
 
 ```tsx
-import { ZStack, styled } from 'tamagui'
+import { GetProps, YStack, styled } from 'tamagui' // or @tamagui/core if extending just that
 
-export const ZCircle = styled(ZStack, {
+export const Circle = styled(YStack, {
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: 100_000_000,
@@ -83,6 +83,8 @@ export const ZCircle = styled(ZStack, {
     },
   },
 })
+
+export type CircleProps = GetProps<typeof Circle>
 ```
 
 And then export from `index.tsx`:

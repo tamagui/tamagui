@@ -618,15 +618,15 @@ export function createComponent<
     }
     const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
 
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      const classList = [
-        componentName ? componentClassName : '',
-        fontFamilyClassName,
-        theme.className,
-        classNames ? Object.values(classNames).join(' ') : '',
-      ]
+    const classList = [
+      componentName ? componentClassName : '',
+      fontFamilyClassName,
+      theme.className,
+      classNames ? Object.values(classNames).join(' ') : '',
+    ]
+    const className = classList.join(' ')
 
-      const className = classList.join(' ')
+    if (process.env.TAMAGUI_TARGET === 'web') {
       const style = animationStyles ?? splitStyles.style
 
       if (isAnimatedReactNativeWeb) {
@@ -884,17 +884,20 @@ export function createComponent<
     content = createElement(elementType, viewProps, childEls)
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      if (events) {
+      if (events || isAnimatedReactNativeWeb) {
         content = (
           <span
             style={styleDisplayContents}
-            onMouseEnter={events.onMouseEnter}
-            onMouseLeave={events.onMouseLeave}
-            onClick={events.onPress}
-            onMouseDown={events.onPressIn}
-            onMouseUp={events.onPressOut}
-            onTouchStart={events.onPressIn}
-            onTouchEnd={events.onPressOut}
+            className={isAnimatedReactNativeWeb ? className : undefined}
+            {...(events && {
+              onMouseEnter: events.onMouseEnter,
+              onMouseLeave: events.onMouseLeave,
+              onClick: events.onPress,
+              onMouseDown: events.onPressIn,
+              onMouseUp: events.onPressOut,
+              onTouchStart: events.onPressIn,
+              onTouchEnd: events.onPressOut,
+            })}
           >
             {content}
           </span>
@@ -928,7 +931,7 @@ export function createComponent<
         if (typeof window !== 'undefined') {
           // prettier-ignore
           // eslint-disable-next-line no-console
-          console.log({ state, shouldProvideThemeManager, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
+          console.log({ state, shouldProvideThemeManager, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
         }
         // eslint-disable-next-line no-console
         console.groupEnd()

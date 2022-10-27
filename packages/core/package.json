@@ -54,7 +54,7 @@
     "react": "*",
     "react-dom": "*",
     "typescript": "^4.7.4",
-    "vitest": "^0.20.3"
+    "vitest": "^0.24.3"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -63,9 +63,13 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
-    "./injectStyles": {
-      "import": "./dist/esm/injectStyles.js",
-      "require": "./dist/cjs/injectStyles.js"
+    "./inject-styles": {
+      "import": "./dist/esm/inject-styles.js",
+      "require": "./dist/cjs/inject-styles.js"
+    },
+    "./react-native": {
+      "import": "./dist/esm/react-native.js",
+      "require": "./dist/cjs/react-native.js"
     }
   },
   "repository": {

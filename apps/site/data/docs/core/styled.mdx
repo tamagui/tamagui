@@ -23,21 +23,24 @@ Usage:
 <Circle x={10} y={10} backgroundColor="red" />
 ```
 
-Note, `tamagui` and `@tamagui/core` both export many of the same helpers, like styled. If you are using `tamagui`, you don't need to ever add `@tamagui/core` to your package.json or import it and can instead import directly from `tamagui` itself.
+Note, `tamagui` and `@tamagui/core` both export many of the same helpers, like styled. If you are using `tamagui`, you don't need to ever add `@tamagui/core` to your package.json or import it and can instead import directly from `tamagui` itself and don't need the following.
 
-The `styled` function accepts all types of components, but if you're passing in a native component be sure to add the following:
+If using just `core` but passing in React Native components, be sure to run `setupReactNative` once first, typically near your entry file:
 
 ```tsx
-import { Image } from 'react-native'
+import { setupReactNative, styled } from '@tamagui/core'
+import * as RN from 'react-native'
 
-const MyImage = styled(Image, {
+setupReactNative(RN)
+
+const MyImage = styled(RN.Image, {
   backgroundColor: 'red'
-}, {
-  isReactNative: true
 })
 ```
 
-This requirement allows our core to be light and not depend on the huge react-native library, which is key to allowing tree shaking and small bundle sizes on the web.
+This requirement allows core to be light and not depend on react-native for web-only use cases.
+
+The `tamagui` package applies this polyfill automatically as it uses React Native.
 
 You can pass any prop that is supported by the component you are extending, even variants of the parent component. Tamagui will figure out the style props up-front, turn them into classNames, and then pass the non-style props down to the component as defaultProps.
 

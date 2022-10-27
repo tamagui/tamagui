@@ -10,8 +10,12 @@ Create a `tamagui.config.ts` in the root of your app to set up your design syste
 You can use `@tamagui/config-base` a totally complete config out of the box, the same one this site uses.
 
 ```tsx
-import { createTamagui } from '@tamagui/core'
+import { createTamagui, setupReactNative } from '@tamagui/core'
+import * as ReactNative from 'react-native'
 import { config } from '@tamagui/config-base'
+
+// if using with `react-native` components
+setupReactNative(ReactNative)
 
 const appConfig = createTamagui(config)
 
