@@ -67,7 +67,10 @@ export function styled<
       if (parentStaticConfig?.isHOC) {
         // eslint-disable-next-line no-console
         console.warn(
-          `Warning: Parent component is a functional component, not a Tamagui styled() component. Extending with styled() will break and lead to incorrect styles.`
+          `Warning: Parent component is a functional component, not a Tamagui styled() component. Extending with styled() will break and lead to incorrect styles.`,
+          `Given options:`,
+          options,
+          new Error().stack
         )
       }
     }
