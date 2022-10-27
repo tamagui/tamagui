@@ -375,7 +375,6 @@ const SliderThumb = React.forwardRef<View, SliderThumbProps>(
             })}
         size={sizeProp ?? context.size ?? '$4'}
         onLayout={(e) => {
-          console.log('did layout')
           setSize(e.nativeEvent.layout[orientation.sizeProp])
         }}
         {...{
