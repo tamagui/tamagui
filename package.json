@@ -91,7 +91,7 @@
     "@typescript-eslint/parser": "^5.30.5",
     "esbuild": "^0.15.11",
     "esbuild-register": "^3.3.3",
-    "eslint": "^8.19.0",
+    "eslint": "^8.21.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",

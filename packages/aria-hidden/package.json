@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/aria-hidden",
-  "version": "1.0.1-beta.195",
+  "version": "1.0.1-beta.196",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -20,7 +20,7 @@
     "aria-hidden": "^1.1.3"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.195",
+    "@tamagui/build": "^1.0.1-beta.196",
     "react": "*"
   },
   "peerDependencies": {

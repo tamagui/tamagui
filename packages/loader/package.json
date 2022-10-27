@@ -1,6 +1,6 @@
 {
   "name": "tamagui-loader",
-  "version": "1.0.1-beta.195",
+  "version": "1.0.1-beta.196",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -19,13 +19,13 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/cli-color": "^1.0.1-beta.195",
-    "@tamagui/static": "^1.0.1-beta.195",
+    "@tamagui/cli-color": "^1.0.1-beta.196",
+    "@tamagui/static": "^1.0.1-beta.196",
     "fs-extra": "^10.1.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.195"
+    "@tamagui/build": "^1.0.1-beta.196"
   },
   "publishConfig": {
     "access": "public"
