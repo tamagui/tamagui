@@ -449,7 +449,7 @@ function getComponentStaticConfigByName(name: string, exported: any) {
       const found = getTamaguiComponent(key, exported[key])
       if (found) {
         // remove non-stringifyable
-        const { Component, reactNativeWebComponent, ...sc } = found.staticConfig
+        const { Component, ...sc } = found.staticConfig
         components[key] = { staticConfig: sc }
       }
     }

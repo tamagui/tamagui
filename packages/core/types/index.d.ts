@@ -12,6 +12,7 @@ export * from './addTheme';
 export * from './updateTheme';
 export * from './styled';
 export * from './types';
+export * from './setupReactNative';
 export type { RNWTextProps, RNWViewProps } from './types-rnw';
 export { getHasConfigured, getConfig, getThemes, getTokens, onConfiguredOnce } from './config';
 export * from './constants/constants';
