@@ -95,7 +95,7 @@ export const SectionTinted = ({
   noBorderTop,
   ...props
 }: any) => {
-  const { tint, tintIndex } = useTint()
+  const { tint } = useTint()
   const childrenMemo = useMemo(() => children, [children])
 
   return (

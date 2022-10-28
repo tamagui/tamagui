@@ -37,8 +37,7 @@
     "@tamagui/types-react-native": "^1.0.1-beta.198",
     "@tamagui/use-did-finish-ssr": "^1.0.1-beta.198",
     "@tamagui/use-event": "^1.0.1-beta.198",
-    "@tamagui/use-force-update": "^1.0.1-beta.198",
-    "ts-toolbelt": "^9.6.0"
+    "@tamagui/use-force-update": "^1.0.1-beta.198"
   },
   "peerDependencies": {
     "react": "*",

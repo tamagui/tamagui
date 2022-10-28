@@ -8,8 +8,9 @@
  *
  */
 import * as React from 'react'
-import { StyleSheet, UIManager, canUseDOM, createElement } from 'react-native-web-internals'
+import { StyleSheet, UIManager, canUseDOM } from 'react-native-web-internals'
 
+import createElement from '../createElement/index.js'
 import View from '../View'
 
 /**

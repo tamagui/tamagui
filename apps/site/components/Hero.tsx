@@ -98,12 +98,18 @@ const HeroTop = memo(() => {
 
           <YStack
             px={0}
-            maw={500}
+            maw={420}
             // prevent layout shift
             h={70}
+            $gtSm={{
+              maw: 500,
+            }}
             $gtMd={{
               h: 90,
               px: 90,
+              maw: 700,
+            }}
+            $gtLg={{
               maw: 900,
             }}
           >
@@ -257,16 +263,16 @@ const Subtitle = styled(Paragraph, {
   ta: 'left',
   ls: -1,
 
-  $gtXs: {
+  $gtSm: {
+    ta: 'center',
     size: '$7',
   },
 
-  $gtSm: {
-    ta: 'center',
+  $gtMd: {
     size: '$8',
   },
 
-  $gtMd: {
+  $gtLg: {
     size: '$9',
     lh: 50,
   },

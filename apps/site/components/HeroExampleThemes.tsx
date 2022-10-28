@@ -84,8 +84,8 @@ export function HeroExampleThemes() {
     updateActiveI(flatToSplit(index))
   }
 
-  const width = 120
-  const scale = 0.6
+  const width = 110
+  const scale = 0.5
 
   const scrollToIndex = useEvent((index: number, force = false) => {
     const node = scrollView.current
@@ -235,6 +235,7 @@ export function HeroExampleThemes() {
           pointerEvents={scrollLock === 'animate' ? 'none' : 'auto'}
           maxWidth={1400}
         >
+          <YStack fullscreen pe="none" zIndex={1000000000} className="themes-fader" />
           <XStack
             className="scroll-horizontal no-scrollbar"
             ref={scrollView}
@@ -252,7 +253,6 @@ export function HeroExampleThemes() {
               }
             }}
           >
-            <YStack fullscreen pe="none" zIndex={100} className="themes-fader" />
             <XStack
               ai="center"
               jc="center"
@@ -270,8 +270,8 @@ export function HeroExampleThemes() {
                       key={i}
                       width={width}
                       scale={scale}
+                      className="all ease ms100"
                       cursor="pointer"
-                      opacity={0.75}
                       hoverStyle={{
                         scale: scale + 0.025,
                       }}

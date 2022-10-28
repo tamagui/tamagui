@@ -8,7 +8,9 @@
  *
  */
 import * as React from 'react'
-import { StyleSheet, createElement } from 'react-native-web-internals'
+import { StyleSheet } from 'react-native-web-internals'
+
+import createElement from '../createElement/index.js'
 
 var ANIMATION_DURATION = 300
 
