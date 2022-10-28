@@ -1,11 +1,11 @@
 - 1.0
 
+  - select had a perf regression
   - label htmlFor broke
   - site design system docs (for use in cli later)
   - blog post / home: lighthouse score diff between compiler on / off
   - runthrough and check:
     - expo guide
-    - 
   - document fontFaceByWeight
   - document themeShallow
   - canary release channel
