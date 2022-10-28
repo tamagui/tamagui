@@ -84,10 +84,11 @@ export const Sandbox = () => {
       >
         {/* <Input /> */}
 
-        <Square size={100} bc="red" />
         <SheetDemo />
 
-        <Input placeholder="hi" />
+        {/* <Square size={100} bc="red" /> */}
+        {/* <SheetDemo /> */}
+        {/* <Input placeholder="hi" /> */}
 
         {/* <AnimationsDemo /> */}
         {/* <AnimationsPresenceDemo /> */}

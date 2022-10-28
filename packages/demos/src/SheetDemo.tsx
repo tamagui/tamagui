@@ -12,7 +12,7 @@ export const SheetDemo = () => {
     <>
       <XStack space>
         <Button onPress={() => setOpen(true)}>Open</Button>
-        {isWeb && <Button onPress={() => setModal((x) => !x)}>{modal ? 'Modal' : 'Inline'}</Button>}
+        <Button onPress={() => setModal((x) => !x)}>{modal ? 'Modal' : 'Inline'}</Button>
       </XStack>
 
       <Sheet
@@ -23,30 +23,22 @@ export const SheetDemo = () => {
         dismissOnSnapToBottom
         position={position}
         onPositionChange={setPosition}
+        zIndex={100_000}
       >
         <Sheet.Overlay />
         <Sheet.Handle />
-        <Sheet.Frame>
-          {/* <Sheet.ScrollView
-            contentContainerStyle={{
-              minHeight: '100%',
+        <Sheet.Frame f={1} p="$4" jc="center" ai="center" space="$5">
+          <Button
+            size="$6"
+            circular
+            icon={ChevronDown}
+            onPress={() => {
+              setOpen(false)
             }}
-          > */}
-          <YStack f={1} p="$4" jc="center" ai="center">
-            <Button
-              size="$6"
-              circular
-              icon={ChevronDown}
-              onPress={() => {
-                setOpen(false)
-              }}
-            />
-          </YStack>
-
-          <Square m="$4" size={120} bc="$red9" />
-          <Circle m="$4" size={120} bc="$orange9" />
-          <Square m="$4" size={120} bc="$yellow9" />
-          {/* </Sheet.ScrollView> */}
+          />
+          <Square size="$2" bc="$red9" />
+          <Circle size="$2" bc="$orange9" />
+          <Square size="$2" bc="$yellow9" />
         </Sheet.Frame>
       </Sheet>
     </>

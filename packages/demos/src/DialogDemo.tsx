@@ -73,7 +73,7 @@ export function DialogDemo() {
 
             <Unspaced>
               <Dialog.Close asChild>
-                <Button pos="absolute" t="$4" r="$4" size="$3" circular icon={X} />
+                <Button pos="absolute" t="$-2" r="$-2" size="$3" circular icon={X} />
               </Dialog.Close>
             </Unspaced>
           </YStack>

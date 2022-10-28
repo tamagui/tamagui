@@ -13,6 +13,7 @@ if (shouldExtract) {
 const tamaguiConfig = {
   components: ['@tamagui/sandbox-ui', 'tamagui'],
   config: 'tamagui.config.ts',
+  useReactNativeWebLite: true,
 }
 
 export default defineConfig({
@@ -26,15 +27,7 @@ export default defineConfig({
       fastRefresh: true,
       jsxPure: true,
     }),
-    tamaguiPlugin({
-      ...tamaguiConfig,
-      useReactNativeWebLite: true,
-    }),
-    ...(shouldExtract
-      ? [
-          //
-          tamaguiExtractPlugin(tamaguiConfig),
-        ]
-      : []),
-  ],
+    tamaguiPlugin(tamaguiConfig),
+    shouldExtract ? tamaguiExtractPlugin(tamaguiConfig) : null,
+  ].filter(Boolean),
 })
