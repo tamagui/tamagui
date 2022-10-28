@@ -4810,7 +4810,7 @@ __metadata:
     "@tamagui/shorthands": 1.0.1-beta.198
     "@tamagui/theme-base": 1.0.1-beta.198
     expo-linking: ^3.2.2
-    solito: ^0.0.26
+    solito: ^1.0.12
   languageName: unknown
   linkType: soft
 
@@ -13968,10 +13968,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solito@npm:^0.0.26":
-  version: 0.0.26
-  resolution: "solito@npm:0.0.26"
-  checksum: c3cbee8e33bd9849d85bbe3e1c9d862eca06b17a2b76cd9d856d39cea01755faad92a2cfe37c77a8419ca8efa133b93935034996a3bc14522c270cb727a297d0
+"solito@npm:^1.0.12":
+  version: 1.0.12
+  resolution: "solito@npm:1.0.12"
+  checksum: 7fa9e4666cd12e21b7e647ac5abbd5e517045936e9ef996c89895d8561b938451940115ea3b38d060ba6fc1251f8593cfe2dcd8668fc59f6a77d7a7c3e11ac23
   languageName: node
   linkType: hard
 

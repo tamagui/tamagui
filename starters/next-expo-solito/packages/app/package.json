@@ -15,7 +15,7 @@
     "@tamagui/shorthands": "1.0.1-beta.198",
     "@tamagui/theme-base": "1.0.1-beta.198",
     "expo-linking": "^3.2.2",
-    "solito": "^0.0.26"
+    "solito": "^1.0.12"
   },
   "sideEffects": false
 }
