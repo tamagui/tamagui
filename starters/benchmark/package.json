@@ -13,7 +13,6 @@
     "web": "cd apps/next && yarn next",
     "web:prod": "yarn workspace next-app build",
     "watch": "yarn workspaces foreach -pi run watch",
-    "postinstall": "yarn build",
     "build": "yarn workspaces foreach --exclude next-app -pi run build",
     "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader"
   },
