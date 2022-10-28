@@ -88,3 +88,5 @@ export const shorthands = {
 // add in some just for compiler output
 shorthands['bxs'] = 'boxSizing'
 shorthands['bxsh'] = 'boxShadow'
+shorthands['ox'] = 'overflowX'
+shorthands['oy'] = 'overflowY'
