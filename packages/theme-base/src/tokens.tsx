@@ -88,7 +88,7 @@ export const zIndex = {
   5: 500,
 }
 
-const colorTokens = {
+export const colorTokens = {
   light: {
     blue: blue,
     gray: gray,
