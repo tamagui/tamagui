@@ -139,6 +139,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 display: 'block',
                 pr: '$6',
                 mt: 108,
+                pb: '$18',
               }}
             >
               <DocsMenuContents />

@@ -3,11 +3,15 @@ title: Install the Compiler
 description: Adding the compiler to your apps.
 ---
 
-You don't need to setup anything to start using Tamagui. Go ahead and [skip to configuration](/docs/core/configuration).
+You don't need to setup the compiler to start using Tamagui, we recommend moving to [configuration](/docs/core/configuration) to get a feel for how you like it before investing in setup.
 
-This article helps set up the compiler, which, while it does add few helpful debug properties to your DOM, is not necessary to get configured to start your app.
+Install on most platforms is as easy as a library:
 
-The compiler runs with [Webpack](#webpack), [Next.js](#nextjs), [Vite](#vite), [Metro](#metro) and [Expo](#expo). There are dedicated guides for [Next.js](/docs/guides/next-js), [Expo](/docs/guides/expo), and [Vite](/docs/guides/vite).
+- [Webpack](#webpack)
+- [Next.js](#nextjs) ([guide](/docs/guides/next-js))
+- [Vite](#vite) ([guide](/docs/guides/vite))
+- [Metro](#metro)
+- [Expo](/docs/guides/expo))
 
 ### Props
 
@@ -85,7 +89,7 @@ All compiler plugins accept the same options:
   ]}
 />
 
-### General setup
+### Note
 
 The compiler will generate built versions of your components and config into the `.tamagui` directory, relative to your app. You'll want to add this to your `.gitignore` if you don't already ignore dotfiles.
 
