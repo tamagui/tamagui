@@ -12,7 +12,7 @@ Slimming down react-native-web, this does the following:
 - merges the [experimental fully concurrent safe / functional `Animated`](https://github.com/facebook/react-native/blob/main/Libraries/Animated/createAnimatedComponent_EXPERIMENTAL.js)
 - Removes:
   - ❌ VirtualList, FlatList, SectionList
-  - ❌ Switch, Modal (going to be split out, in Tamagui already)
+  - ❌ Switch (going to be split out, in Tamagui already)
   - ❌ Touchable* views (prefer Pressable)
   - ❌ normalize-css-color
   - ❌ inline-style-prefixer
