@@ -9,17 +9,13 @@
  */
 'use strict'
 
-import _objectWithoutPropertiesLoose from '@babel/runtime/helpers/objectWithoutPropertiesLoose'
-import invariant from 'fbjs/lib/invariant'
 import * as React from 'react'
+import { invariant } from 'react-native-web-internals'
 
 import setAndForwardRef from '../Utilities/setAndForwardRef'
 import { AnimatedEvent } from './AnimatedEvent'
 import NativeAnimatedHelper from './NativeAnimatedHelper'
 import AnimatedProps from './nodes/AnimatedProps'
-
-const _excluded = ['style'],
-  _excluded2 = ['style']
 
 let animatedComponentNextId = 1
 
