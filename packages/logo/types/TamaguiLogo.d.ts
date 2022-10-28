@@ -1,8 +1,8 @@
-import React from 'react';
+/// <reference types="react" />
 import { ThemeName } from 'tamagui';
 export declare const tints: ThemeName[];
 export declare const logoColors: string[];
-export declare const TamaguiLogo: React.ForwardRefExoticComponent<{
+export declare const TamaguiLogo: import("react").ForwardRefExoticComponent<{
     onHoverLetter?: ((i: number) => void) | undefined;
     showWords?: boolean | undefined;
     color?: string | undefined;
@@ -18,7 +18,7 @@ export declare const TamaguiLogo: React.ForwardRefExoticComponent<{
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("tamagui").RNWViewProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("tamagui").SizeTokens | undefined;
-}>> & React.RefAttributes<any>>;
+}>> & import("react").RefAttributes<any>>;
 export declare const LogoWords: ({ color, downscale, onHoverLetter, animated, }: {
     color?: string | undefined;
     downscale?: number | undefined;

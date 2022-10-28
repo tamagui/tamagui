@@ -3,7 +3,7 @@
   "version": "1.0.1-beta.198",
   "sideEffects": [
     "*.css",
-    "polyfills.ts"
+    "*setup.js"
   ],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",

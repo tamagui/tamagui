@@ -1,4 +1,4 @@
-import './polyfills';
+export * from './setup';
 export * from '@tamagui/animate-presence';
 export * from '@tamagui/alert-dialog';
 export * from '@tamagui/avatar';

@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import { Circle, ThemeName, XStack, XStackProps, YStack } from 'tamagui'
 
 export const tints: ThemeName[] = ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red']

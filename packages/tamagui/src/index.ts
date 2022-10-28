@@ -1,15 +1,4 @@
-import './polyfills'
-
-import { setupReactNative } from '@tamagui/core'
-import { Image, Text, TextInput, View } from 'react-native'
-
-setupReactNative({
-  Image,
-  View,
-  Text,
-  TextInput,
-})
-
+export * from './setup'
 export * from '@tamagui/animate-presence'
 export * from '@tamagui/alert-dialog'
 export * from '@tamagui/avatar'
