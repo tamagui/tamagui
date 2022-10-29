@@ -13,7 +13,7 @@ export function normalizeValueWithProperty(value: any, property?: string): any {
     return value
   }
   const cached = cache[value]
-  if (cached) {
+  if (cached !== undefined) {
     return cached
   }
   let res = value

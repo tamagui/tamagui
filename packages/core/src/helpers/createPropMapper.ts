@@ -184,6 +184,8 @@ const resolveVariants: StyleResolver = (
 
   let fontFamilyResult: any
 
+  console.log('variantValue before', variantValue)
+
   if (isObj(variantValue)) {
     const fontFamilyUpdate =
       variantValue.fontFamily || variantValue[conf.inverseShorthands.fontFamily]
@@ -339,7 +341,7 @@ const resolveTokensAndVariants: StyleResolver = (
         )
       } else {
         // nullish values cant be tokens, need no extra parsing
-        res[fKey] = value[fKey]
+        res[fKey] = val
       }
     }
     if (process.env.NODE_ENV === 'development') {

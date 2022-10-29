@@ -23,12 +23,13 @@ if (typeof require !== 'undefined') {
 // AppRegistry.registerComponent('Main', () => Sandbox)
 
 const Frame = styled(ButtonFrame, {
+  debug: 'verbose',
   variants: {
     square: {
       ':number': (size, { tokens }) => {
         return {
           width: tokens.size[size] ?? size,
-          p: '$0',
+          p: 0,
         }
       },
     },
@@ -99,7 +100,7 @@ export const Sandbox = () => {
 
         {/* <SheetDemo /> */}
 
-        <Frame square={100} bc="red" />
+        <Frame debug="verbose" square={100} bc="red" />
 
         {/* <Square size={100} bc="red" /> */}
         {/* <SheetDemo /> */}

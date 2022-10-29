@@ -258,7 +258,7 @@ export function createComponent<
         // eslint-disable-next-line no-console
         console.groupCollapsed('initial props/state')
         // eslint-disable-next-line no-console
-        console.log('props', propsIn)
+        console.log('propsIn', propsIn, 'turned into', props, 'order', Object.keys(props))
         // eslint-disable-next-line no-console
         console.log('splitStyles', splitStyles)
         // eslint-disable-next-line no-console
