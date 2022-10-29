@@ -61,6 +61,8 @@ import { Slot, mergeEvent } from './views/Slot'
 import { wrapThemeManagerContext } from './views/Theme'
 
 React['keep']
+// this appears to fix expo / babel not picking this up sometimes? really odd
+process.env.TAMAGUI_TARGET
 
 /**
  * All things that need one-time setup after createTamagui is called

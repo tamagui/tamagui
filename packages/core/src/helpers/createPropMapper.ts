@@ -184,8 +184,6 @@ const resolveVariants: StyleResolver = (
 
   let fontFamilyResult: any
 
-  console.log('variantValue before', variantValue)
-
   if (isObj(variantValue)) {
     const fontFamilyUpdate =
       variantValue.fontFamily || variantValue[conf.inverseShorthands.fontFamily]
