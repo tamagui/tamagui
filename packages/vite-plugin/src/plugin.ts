@@ -27,9 +27,6 @@ export function tamaguiPlugin(
           // envPlugin(['NODE_ENV', 'TAMAGUI_TARGET', 'ENABLE_RSC']),
           // viteCommonjs(),
         ],
-        esbuild: {
-          loader: 'tsx',
-        },
         define: {
           // reanimated support
           'global.__x': {},
