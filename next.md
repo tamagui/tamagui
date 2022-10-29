@@ -1,5 +1,6 @@
 - 1.0
 
+  - When you focus an input in a dialog on mobile or a propover etc. then it disappears
   - select had a perf regression
   - label htmlFor broke
   - site design system docs (for use in cli later)

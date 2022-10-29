@@ -11,7 +11,7 @@ import { SheetDemo } from '@tamagui/demos'
 import { AnimationsDemo, AnimationsPresenceDemo } from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
-import { ButtonFrame, Input, Square } from 'tamagui'
+import { ButtonFrame, Circle, Input, Square, YStack } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -23,7 +23,6 @@ if (typeof require !== 'undefined') {
 // AppRegistry.registerComponent('Main', () => Sandbox)
 
 const Frame = styled(ButtonFrame, {
-  debug: 'verbose',
   variants: {
     square: {
       ':number': (size, { tokens }) => {
@@ -100,7 +99,11 @@ export const Sandbox = () => {
 
         {/* <SheetDemo /> */}
 
-        <Frame debug="verbose" square={100} bc="red" />
+        <YStack space="$2" $gtMd={{ space: '$10' }}>
+          <Circle bc="red" size="$10" />
+          <Circle bc="red" size="$10" />
+          <Circle bc="red" size="$10" />
+        </YStack>
 
         {/* <Square size={100} bc="red" /> */}
         {/* <SheetDemo /> */}

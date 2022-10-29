@@ -385,10 +385,10 @@ export function createComponent<
               if (prev.mediaState![key] !== next) {
                 return {
                   ...prev,
-                  mediaState: {
+                  mediaState: getMediaStateObject({
                     ...prev.mediaState,
                     [key]: next,
-                  },
+                  }),
                 }
               }
               return prev
@@ -807,8 +807,7 @@ export function createComponent<
     // find space by media query
     if (state.mediaState && mediaKeys.length) {
       for (const key in state.mediaState) {
-        if (!state.mediaState[key]) continue
-        if (props[key] && props[key].space !== undefined) {
+        if (state.mediaState[key] && props[key] && props[key].space !== undefined) {
           space = props[key].space
         }
       }
@@ -959,7 +958,7 @@ export function createComponent<
           pressIn: false,
           focus: false,
           mounted: false,
-          mediaState: getInitialMediaState(),
+          mediaState: getMediaStateObject(getInitialMediaState()),
         }
         defaultComponentStateMounted = {
           ...defaultComponentState,
@@ -1456,3 +1455,6 @@ const styleDisplayContents = {
 const dontComposePressabilityKeys = {
   onClick: true,
 }
+
+const getMediaStateObject = (obj: Object) =>
+  Object.fromEntries(Object.entries(obj).flatMap(([k, v]) => (v ? [[`$${k}`, v]] : [])))
