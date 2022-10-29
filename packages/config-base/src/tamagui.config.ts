@@ -9,7 +9,7 @@ import { media } from './media'
 
 export * from './animations'
 
-const interFamily =
+const systemFamily =
   process.env.TAMAGUI_TARGET === 'native'
     ? 'Inter'
     : '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
@@ -17,7 +17,6 @@ const interFamily =
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont(
   {
-    family: interFamily,
     size: {
       5: 13,
       6: 15,
@@ -56,7 +55,7 @@ const headingFont = createInterFont(
 )
 const bodyFont = createInterFont(
   {
-    family: interFamily,
+    family: systemFamily,
     weight: {
       1: '500',
       7: '600',
