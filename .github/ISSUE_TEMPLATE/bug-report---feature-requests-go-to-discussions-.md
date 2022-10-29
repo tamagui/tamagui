@@ -7,6 +7,10 @@ assignees: ''
 
 ---
 
+**Note**: You can help a lot by adding `debug="verbose"` prop to JSX, as well as to the `styled` definition. Always test disabling the compiler before filing, you can disable per-file with `//! tamagui-ignore` at the top of the file.
+
+---
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
