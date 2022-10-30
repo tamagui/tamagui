@@ -1,4 +1,3 @@
-import React from 'react'
 import { Input, Label, Switch, XStack, YStack } from 'tamagui'
 
 export function LabelDemo() {

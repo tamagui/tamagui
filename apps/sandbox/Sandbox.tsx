@@ -6,7 +6,7 @@ import '../site/app.css'
 
 // import { AppRegistry, useColorScheme } from 'react-native'
 import { TamaguiProvider, styled } from '@tamagui/core'
-import { SheetDemo } from '@tamagui/demos'
+import { LabelDemo, SheetDemo } from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { AnimationsDemo, AnimationsPresenceDemo } from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
@@ -99,11 +99,14 @@ export const Sandbox = () => {
 
         {/* <SheetDemo /> */}
 
-        <YStack space="$2" $gtMd={{ space: '$10' }}>
+        {/* space */}
+        {/* <YStack space="$2" $gtMd={{ space: '$10' }}>
           <Circle bc="red" size="$10" />
           <Circle bc="red" size="$10" />
           <Circle bc="red" size="$10" />
-        </YStack>
+        </YStack> */}
+
+        <LabelDemo />
 
         {/* <Square size={100} bc="red" /> */}
         {/* <SheetDemo /> */}

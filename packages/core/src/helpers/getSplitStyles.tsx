@@ -257,70 +257,81 @@ export const getSplitStyles: StyleSplitter = (
         continue
       }
 
-      if (accessibilityDirectMap[keyInit]) {
-        viewProps[accessibilityDirectMap[keyInit]] = valInit
+      if (keyInit === 'id' || keyInit === 'nativeID') {
         usedKeys[keyInit] = 1
+        if (staticConfig.isReactNative) {
+          viewProps.nativeID = valInit
+        } else {
+          viewProps.id = valInit
+        }
         continue
       }
 
       let didUseKeyInit = true
-      switch (keyInit) {
-        case 'nativeID': {
-          viewProps.id = valInit
-          break
+
+      if (staticConfig.isReactNative) {
+        didUseKeyInit = false
+      } else {
+        if (accessibilityDirectMap[keyInit]) {
+          viewProps[accessibilityDirectMap[keyInit]] = valInit
+          usedKeys[keyInit] = 1
+          continue
         }
-        case 'accessibilityRole': {
-          if (valInit === 'none') {
-            viewProps.role = 'presentation'
-          } else {
-            viewProps.role = accessibilityRoleToWebRole[valInit] || valInit
+
+        switch (keyInit) {
+          case 'accessibilityRole': {
+            if (valInit === 'none') {
+              viewProps.role = 'presentation'
+            } else {
+              viewProps.role = accessibilityRoleToWebRole[valInit] || valInit
+            }
+            break
           }
-          break
-        }
-        case 'accessibilityControls': {
-          viewProps['aria-controls'] = processIDRefList(valInit)
-          break
-        }
-        case 'accessibilityDescribedBy': {
-          viewProps['aria-describedby'] = processIDRefList(valInit)
-          break
-        }
-        case 'accessibilityFlowTo': {
-          viewProps['aria-flowto'] = processIDRefList(valInit)
-          break
-        }
-        case 'accessibilityLabelledBy': {
-          viewProps['aria-labelledby'] = processIDRefList(valInit)
-          break
-        }
-        case 'accessibilityKeyShortcuts': {
-          if (Array.isArray(valInit)) {
-            viewProps['aria-keyshortcuts'] = valInit.join(' ')
+          case 'accessibilityControls': {
+            viewProps['aria-controls'] = processIDRefList(valInit)
+            break
           }
-          break
-        }
-        case 'accessibilityLiveRegion': {
-          viewProps['aria-live'] = valInit === 'none' ? 'off' : valInit
-          break
-        }
-        case 'accessibilityReadOnly': {
-          viewProps['aria-readonly'] = valInit
-          // Enhance with native semantics
-          if (elementType === 'input' || elementType === 'select' || elementType === 'textarea') {
-            viewProps.readOnly = true
+          case 'accessibilityDescribedBy': {
+            viewProps['aria-describedby'] = processIDRefList(valInit)
+            break
           }
-          break
-        }
-        case 'accessibilityRequired': {
-          viewProps['aria-required'] = valInit
-          // Enhance with native semantics
-          if (elementType === 'input' || elementType === 'select' || elementType === 'textarea') {
-            viewProps.required = true
+          case 'accessibilityFlowTo': {
+            viewProps['aria-flowto'] = processIDRefList(valInit)
+            break
           }
-          break
-        }
-        default: {
-          didUseKeyInit = false
+          case 'accessibilityLabelledBy': {
+            viewProps['aria-labelledby'] = processIDRefList(valInit)
+            break
+          }
+          case 'accessibilityKeyShortcuts': {
+            if (Array.isArray(valInit)) {
+              viewProps['aria-keyshortcuts'] = valInit.join(' ')
+            }
+            break
+          }
+          case 'accessibilityLiveRegion': {
+            viewProps['aria-live'] = valInit === 'none' ? 'off' : valInit
+            break
+          }
+          case 'accessibilityReadOnly': {
+            viewProps['aria-readonly'] = valInit
+            // Enhance with native semantics
+            if (elementType === 'input' || elementType === 'select' || elementType === 'textarea') {
+              viewProps.readOnly = true
+            }
+            break
+          }
+          case 'accessibilityRequired': {
+            viewProps['aria-required'] = valInit
+            // Enhance with native semantics
+            if (elementType === 'input' || elementType === 'select' || elementType === 'textarea') {
+              viewProps.required = true
+            }
+            break
+          }
+          default: {
+            didUseKeyInit = false
+          }
         }
       }
 
@@ -615,6 +626,7 @@ export const getSplitStyles: StyleSplitter = (
     }
     if (!shouldDoClasses) {
       for (const key in parentSplitStyles.style) {
+        if (key in classNames) continue
         if (key in style) continue
         style[key] = parentSplitStyles.style[key]
       }
