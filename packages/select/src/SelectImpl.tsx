@@ -15,12 +15,17 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react-dom-interactions'
-import { useIsTouchDevice, useIsomorphicLayoutEffect } from '@tamagui/core'
+import { useEvent, useIsTouchDevice, useIsomorphicLayoutEffect } from '@tamagui/core'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
 
 import { SCROLL_ARROW_THRESHOLD, WINDOW_PADDING } from './constants'
-import { SelectProvider, useSelectContext } from './context'
+import {
+  SelectProvider,
+  SelectedItemProvider,
+  useSelectContext,
+  useSelectedItemContext,
+} from './context'
 import { ScopedProps, SelectProps } from './types'
 
 export type SelectImplProps = ScopedProps<SelectProps> & {
@@ -34,10 +39,11 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const { __scopeSelect, children, open = false, selectedIndexRef, listContentRef } = props
 
   const selectContext = useSelectContext('SelectSheetImpl', __scopeSelect)
-  const { setActiveIndex, setOpen, setSelectedIndex, selectedIndex, activeIndex, forceUpdate } =
-    selectContext
+  const selectedItemContext = useSelectedItemContext('SelectSheetImpl', __scopeSelect)
+  const { selectedIndex, activeIndex } = selectedItemContext
+  const { setActiveIndex, setOpen, setSelectedIndex } = selectContext
   const [scrollTop, setScrollTop] = React.useState(0)
-  const touch = useIsTouchDevice()
+  const isTouchable = useIsTouchDevice()
 
   const listItemsRef = React.useRef<Array<HTMLElement | null>>([])
   const overflowRef = React.useRef<null | SideObject>(null)
@@ -101,7 +107,15 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     padding: WINDOW_PADDING,
   })
 
-  const { x, y, reference, floating, strategy, context, refs } = useFloating({
+  const {
+    x,
+    y,
+    reference,
+    floating,
+    strategy,
+    context: fcontext,
+    refs,
+  } = useFloating({
     open,
     onOpenChange: setOpen,
     whileElementsMounted: autoUpdate,
@@ -110,7 +124,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       ? [
           offset(5),
           ...[
-            touch
+            isTouchable
               ? shift({ crossAxis: true, padding: WINDOW_PADDING })
               : flip({ padding: WINDOW_PADDING }),
           ],
@@ -124,13 +138,14 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
             offset: innerOffset,
             onFallbackChange: setFallback,
             padding: 10,
-            minItemsVisible: touch ? 10 : 4,
+            minItemsVisible: isTouchable ? 10 : 4,
             referenceOverflowThreshold: 20,
           }),
           updateFloatingSize,
         ],
   })
 
+  const context = fcontext //React.useMemo(() => fcontext, [])
   const floatingRef = refs.floating
 
   const showUpArrow = open && scrollTop > SCROLL_ARROW_THRESHOLD
@@ -140,9 +155,12 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     scrollTop <
       floatingRef.current.scrollHeight - floatingRef.current.clientHeight - SCROLL_ARROW_THRESHOLD
 
+  /**
+   * TODO this updates every hover move, need to prevent that
+   */
   const interactions = useInteractions([
-    useClick(context, { pointerDown: true }),
-    useDismiss(context, { outsidePointerDown: false }),
+    useClick(context, { event: 'mousedown' }),
+    useDismiss(context, { outsidePress: false }),
     useRole(context, { role: 'listbox' }),
     useInnerOffset(context, {
       enabled: !fallback,
@@ -163,60 +181,65 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }),
   ])
 
-  const interactionsContext = {
-    ...interactions,
-    getReferenceProps() {
-      return interactions.getReferenceProps({
-        ref: reference,
-        className: 'SelectTrigger',
-        onKeyDown(event) {
-          if (event.key === 'Enter' || (event.key === ' ' && !context.dataRef.current.typing)) {
-            event.preventDefault()
-            setOpen(true)
-          }
-        },
-      })
-    },
-    getFloatingProps(props) {
-      return interactions.getFloatingProps({
-        ref: floating,
-        className: 'Select',
-        ...props,
-        style: {
-          position: strategy,
-          top: y ?? '',
-          left: x ?? '',
-          outline: 0,
-          listStyleType: 'none',
-          scrollbarWidth: 'none',
-          ...floatingStyle.current,
-          ...props?.style,
-        },
-        onPointerEnter() {
-          setControlledScrolling(false)
-          state.current.isMouseOutside = false
-        },
-        onPointerLeave() {
-          state.current.isMouseOutside = true
-        },
-        onPointerMove() {
-          state.current.isMouseOutside = false
-          setControlledScrolling(false)
-        },
-        onKeyDown() {
-          setControlledScrolling(true)
-        },
-        onContextMenu(e) {
-          e.preventDefault()
-        },
-        onScroll(event) {
-          // In React 18, the ScrollArrows need to synchronously know this value to prevent
-          // painting at the wrong time.
-          flushSync(() => setScrollTop(event.currentTarget.scrollTop))
-        },
-      })
-    },
-  }
+  const interactionsContext = React.useMemo(() => {
+    return {
+      ...interactions,
+      getReferenceProps() {
+        return interactions.getReferenceProps({
+          ref: reference,
+          className: 'SelectTrigger',
+          onKeyDown(event) {
+            if (event.key === 'Enter' || (event.key === ' ' && !context.dataRef.current.typing)) {
+              event.preventDefault()
+              setOpen(true)
+            }
+          },
+        })
+      },
+      getFloatingProps(props) {
+        return interactions.getFloatingProps({
+          ref: floating,
+          className: 'Select',
+          ...props,
+          style: {
+            position: strategy,
+            top: y ?? '',
+            left: x ?? '',
+            outline: 0,
+            listStyleType: 'none',
+            scrollbarWidth: 'none',
+            ...floatingStyle.current,
+            ...props?.style,
+          },
+          onPointerEnter() {
+            setControlledScrolling(false)
+            state.current.isMouseOutside = false
+          },
+          onPointerLeave() {
+            state.current.isMouseOutside = true
+          },
+          onPointerMove() {
+            state.current.isMouseOutside = false
+            setControlledScrolling(false)
+          },
+          onKeyDown() {
+            setControlledScrolling(true)
+          },
+          onContextMenu(e) {
+            e.preventDefault()
+          },
+          onScroll(event) {
+            // In React 18, the ScrollArrows need to synchronously know this value to prevent
+            // painting at the wrong time.
+            flushSync(() => setScrollTop(event.currentTarget.scrollTop))
+          },
+        })
+      },
+    }
+  }, [interactions, reference])
+
+  React.useEffect(() => console.warn('IT CHANGE'), [interactions])
+  React.useEffect(() => console.warn('IT CHANGE2'), [interactions.getFloatingProps])
 
   // effects
 
@@ -295,6 +318,37 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   // const [bubbleSelect, setBubbleSelect] = React.useState<HTMLSelectElement | null>(null)
   // const triggerPointerDownPosRef = React.useRef<{ x: number; y: number } | null>(null)
 
+  const setValueAtIndex = useEvent((index, value) => {
+    listContentRef.current[index] = value
+  })
+
+  // this is changing too often
+  const floatingContext = context
+
+  React.useEffect(() => console.warn('setScrollTop123', setScrollTop), [setScrollTop])
+  React.useEffect(() => console.warn('setInnerOffset123', setInnerOffset), [setInnerOffset])
+  React.useEffect(() => console.warn('floatingRef123', floatingRef), [floatingRef])
+  React.useEffect(() => console.warn('setValueAtIndex123', setValueAtIndex), [setValueAtIndex])
+  React.useEffect(() => console.warn('fallback123', fallback), [fallback])
+  React.useEffect(
+    () => console.warn('interactionsContext123', interactionsContext),
+    [interactionsContext]
+  )
+  React.useEffect(() => console.warn('context123', context), [context])
+  React.useEffect(() => console.warn('floatingContext123', floatingContext), [floatingContext])
+  React.useEffect(() => console.warn('canScrollDown123', showDownArrow), [showDownArrow])
+  React.useEffect(() => console.warn('canScrollUp123', showUpArrow), [showUpArrow])
+  React.useEffect(
+    () => console.warn('controlledScrollin123', controlledScrolling),
+    [controlledScrolling]
+  )
+  React.useEffect(() => console.warn('blockSelection123', blockSelection), [blockSelection])
+  React.useEffect(() => console.warn('allowMouseUpRef123', allowMouseUpRef), [allowMouseUpRef])
+  React.useEffect(() => console.warn('upArrowRef123', upArrowRef), [upArrowRef])
+  React.useEffect(() => console.warn('downArrowRef123', downArrowRef), [downArrowRef])
+  React.useEffect(() => console.warn('selectTimeoutRef123', selectTimeoutRef), [selectTimeoutRef])
+  React.useEffect(() => console.warn('allowSelectRef123', allowSelectRef), [allowSelectRef])
+
   return (
     <SelectProvider
       scope={__scopeSelect}
@@ -302,13 +356,10 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       setScrollTop={setScrollTop}
       setInnerOffset={setInnerOffset}
       floatingRef={floatingRef}
-      setValueAtIndex={(index, value) => {
-        listContentRef.current[index] = value
-      }}
+      setValueAtIndex={setValueAtIndex}
       fallback={fallback}
       interactions={interactionsContext}
-      floatingContext={context}
-      activeIndex={activeIndex}
+      floatingContext={floatingContext}
       canScrollDown={!!showDownArrow}
       canScrollUp={!!showUpArrow}
       controlledScrolling
@@ -321,7 +372,14 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       selectTimeoutRef={selectTimeoutRef}
       allowSelectRef={allowSelectRef}
     >
-      {children}
+      <SelectedItemProvider
+        scope={__scopeSelect}
+        {...(selectedItemContext as Required<typeof selectedItemContext>)}
+        activeIndex={activeIndex}
+        selectedIndex={selectedIndex}
+      >
+        {children}
+      </SelectedItemProvider>
       {/* {isFormControl ? (
             <BubbleSelect
               ref={setBubbleSelect}

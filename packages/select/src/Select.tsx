@@ -1,7 +1,15 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { GetProps, TamaguiElement, isClient, isWeb } from '@tamagui/core'
-import { styled, useGet, useIsomorphicLayoutEffect, withStaticProperties } from '@tamagui/core'
-import { useId } from '@tamagui/core'
+import {
+  GetProps,
+  TamaguiElement,
+  isWeb,
+  styled,
+  useEvent,
+  useGet,
+  useId,
+  useIsomorphicLayoutEffect,
+  withStaticProperties,
+} from '@tamagui/core'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
@@ -10,10 +18,15 @@ import { XStack, YStack, YStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 
 import { SELECT_NAME } from './constants'
-import { SelectProvider, createSelectContext, useSelectContext } from './context'
+import {
+  SelectProvider,
+  SelectedItemProvider,
+  createSelectContext,
+  useSelectContext,
+  useSelectedItemContext,
+} from './context'
 import { SelectContent } from './SelectContent'
 import { SelectImplProps, SelectInlineImpl } from './SelectImpl'
 import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
@@ -39,6 +52,7 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
       ...triggerProps
     } = props
     const context = useSelectContext(TRIGGER_NAME, __scopeSelect)
+    const itemContext = useSelectedItemContext(TRIGGER_NAME, __scopeSelect)
     // const composedRefs = useComposedRefs(forwardedRef, context.onTriggerChange)
     // const getItems = useCollection(__scopeSelect)
     // const labelId = useLabelContext(context.trigger)
@@ -56,7 +70,7 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
         borderWidth={1}
         size={context.size}
         // aria-controls={context.contentId}
-        aria-expanded={context.open}
+        aria-expanded={itemContext.open}
         aria-autocomplete="none"
         aria-labelledby={labelledBy}
         dir={context.dir}
@@ -68,7 +82,7 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
           ? context.interactions.getReferenceProps()
           : {
               onPress() {
-                context.setOpen(!context.open)
+                context.setOpen(!itemContext.open)
               },
             })}
       />
@@ -101,10 +115,11 @@ const SelectValue = SelectValueFrame.extractable(
     ) => {
       // We ignore `className` and `style` as this part shouldn't be styled.
       const context = useSelectContext(VALUE_NAME, __scopeSelect)
+      const selectedItemContext = useSelectedItemContext(VALUE_NAME, __scopeSelect)
       const { onValueNodeHasChildrenChange } = context
       const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
 
-      const children = childrenProp ?? context.selectedItem
+      const children = childrenProp ?? selectedItemContext.item
       const hasChildren = !!children
       const selectValueChildren =
         context.value === undefined && placeholder !== undefined ? placeholder : children
@@ -178,13 +193,10 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
     const textId = useId()
 
     const {
-      selectedIndex,
       setSelectedIndex,
       listRef,
-      open,
       setOpen,
       onChange,
-      setActiveIndex,
       allowMouseUpRef,
       allowSelectRef,
       setValueAtIndex,
@@ -457,18 +469,20 @@ const SelectSheetController = (
   }
 ) => {
   const context = useSelectContext('SelectSheetController', props.__scopeSelect)
-  const showSheet = useShowSelectSheet(context)
+  const itemContext = useSelectedItemContext('SelectSheetController', props.__scopeSelect)
+  const showSheet = useShowSelectSheet(context, itemContext)
   const breakpointActive = useSelectBreakpointActive(context.sheetBreakpoint)
   const getShowSheet = useGet(showSheet)
+  const onOpenChange = useEvent((val) => {
+    if (getShowSheet()) {
+      props.onOpenChange(val)
+    }
+  })
 
   return (
     <SheetController
-      onOpenChange={(val) => {
-        if (getShowSheet()) {
-          props.onOpenChange(val)
-        }
-      }}
-      open={context.open}
+      onOpenChange={onOpenChange}
+      open={itemContext.open}
       hidden={breakpointActive === false}
     >
       {props.children}
@@ -553,13 +567,16 @@ export const Select = withStaticProperties(
     const id = useId()
     const scopeKey = __scopeSelect ? Object.keys(__scopeSelect)[0] ?? id : id
 
+    const setValueAtIndex = useEvent((index, value) => {
+      listContentRef.current[index] = value
+    })
+
     return (
       <SelectProvider
         dir={dir}
         blockSelection={false}
         size={sizeProp}
         fallback={false}
-        selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
         forceUpdate={forceUpdate}
         valueNode={valueNode}
@@ -569,30 +586,33 @@ export const Select = withStaticProperties(
         scopeKey={scopeKey}
         sheetBreakpoint={sheetBreakpoint}
         scope={__scopeSelect}
-        setValueAtIndex={(index, value) => {
-          listContentRef.current[index] = value
-        }}
-        activeIndex={activeIndex}
+        setValueAtIndex={setValueAtIndex}
         onChange={setValue}
-        selectedIndex={selectedIndex}
         setActiveIndex={setActiveIndex}
         setOpen={setOpen}
         setSelectedIndex={setSelectedIndex}
         value={value}
-        open={open}
       >
-        <SelectSheetController onOpenChange={setOpen} __scopeSelect={__scopeSelect}>
-          <SelectImpl
-            activeIndexRef={activeIndexRef}
-            listContentRef={listContentRef}
-            selectedIndexRef={selectedIndexRef}
-            {...props}
-            open={open}
-            value={value}
-          >
-            {children}
-          </SelectImpl>
-        </SelectSheetController>
+        <SelectedItemProvider
+          scope={__scopeSelect}
+          open={open}
+          item={selectedItem}
+          activeIndex={activeIndex}
+          selectedIndex={selectedIndex}
+        >
+          <SelectSheetController onOpenChange={setOpen} __scopeSelect={__scopeSelect}>
+            <SelectImpl
+              activeIndexRef={activeIndexRef}
+              listContentRef={listContentRef}
+              selectedIndexRef={selectedIndexRef}
+              {...props}
+              open={open}
+              value={value}
+            >
+              {children}
+            </SelectImpl>
+          </SelectSheetController>
+        </SelectedItemProvider>
       </SelectProvider>
     )
   },

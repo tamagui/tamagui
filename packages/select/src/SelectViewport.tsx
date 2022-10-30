@@ -6,7 +6,7 @@ import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
 
 import { VIEWPORT_NAME } from './constants'
-import { ForwardSelectContext, useSelectContext } from './context'
+import { ForwardSelectContext, useSelectContext, useSelectedItemContext } from './context'
 import { ScopedProps, SelectViewportProps } from './types'
 import { useSelectBreakpointActive } from './useSelectBreakpointActive'
 
@@ -41,12 +41,15 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
   (props: ScopedProps<SelectViewportProps>, forwardedRef) => {
     const { __scopeSelect, children, ...viewportProps } = props
     const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
+    const itemContext = useSelectedItemContext(VIEWPORT_NAME, __scopeSelect)
     const breakpointActive = useSelectBreakpointActive(context.sheetBreakpoint)
 
     if (breakpointActive || !isWeb) {
       return (
         <PortalItem hostName={`${context.scopeKey}SheetContents`}>
-          <ForwardSelectContext context={context}>{children}</ForwardSelectContext>
+          <ForwardSelectContext itemContext={itemContext} context={context}>
+            {children}
+          </ForwardSelectContext>
         </PortalItem>
       )
     }
@@ -55,7 +58,7 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
       return null
     }
 
-    if (!context.open) {
+    if (!itemContext.open) {
       return children
     }
 
@@ -71,7 +74,7 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
             __html: selectViewportCSS,
           }}
         />
-        <FloatingFocusManager context={context.floatingContext} preventTabbing>
+        <FloatingFocusManager context={context.floatingContext}>
           <SelectViewportFrame
             size={context.size}
             // @ts-ignore

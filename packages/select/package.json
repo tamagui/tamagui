@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@floating-ui/react-dom": "^1.0.0",
-    "@floating-ui/react-dom-interactions": "^0.8.1",
+    "@floating-ui/react-dom-interactions": "^0.10.3",
     "@floating-ui/react-native": "^0.8.0",
     "@radix-ui/react-use-previous": "^0.1.1",
     "@tamagui/compose-refs": "^1.0.1-beta.199",

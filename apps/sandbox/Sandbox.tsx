@@ -4,13 +4,13 @@ import '@tamagui/polyfill-dev'
 
 import '../site/app.css'
 
-// import { AppRegistry, useColorScheme } from 'react-native'
-import { TamaguiProvider, styled } from '@tamagui/core'
-import { SheetDemo } from '@tamagui/demos'
+import { SelectDemo, SheetDemo } from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { AnimationsDemo, AnimationsPresenceDemo } from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
+// import { AppRegistry, useColorScheme } from 'react-native'
+import { TamaguiProvider, styled } from 'tamagui'
 import { ButtonFrame, Input, Square } from 'tamagui'
 
 import config from './tamagui.config'
@@ -100,7 +100,9 @@ export const Sandbox = () => {
 
         {/* <SheetDemo /> */}
 
-        <Frame debug="verbose" square={100} bc="red" />
+        {/* <Frame debug="verbose" square={100} bc="red" /> */}
+
+        <SelectDemo />
 
         {/* <Square size={100} bc="red" /> */}
         {/* <SheetDemo /> */}

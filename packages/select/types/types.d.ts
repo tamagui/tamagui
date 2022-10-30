@@ -23,20 +23,25 @@ export interface SelectProps {
     sheetBreakpoint?: MediaQueryKey | false;
 }
 declare type NonNull<A> = Exclude<A, void | null>;
+/**
+ * Keep separate to avoid many re-renders
+ */
+export interface SelectedItemContext {
+    item: ReactNode;
+    open: boolean;
+    selectedIndex: number;
+    activeIndex: number | null;
+}
 export interface SelectContextValue {
     dir?: Direction;
     scopeKey: string;
     sheetBreakpoint: NonNull<SelectProps['sheetBreakpoint']>;
     size?: SizeTokens;
     value: any;
-    selectedItem: ReactNode;
     setSelectedItem: (item: ReactNode) => void;
-    selectedIndex: number;
     setSelectedIndex: (index: number) => void;
-    activeIndex: number | null;
     setActiveIndex: (index: number | null) => void;
     setValueAtIndex: (index: number, value: string) => void;
-    open: boolean;
     setOpen: (open: boolean) => void;
     onChange: (value: string) => void;
     valueNode: Element | null;

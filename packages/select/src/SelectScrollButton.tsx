@@ -5,7 +5,7 @@ import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
 
-import { useSelectContext } from './context'
+import { useSelectContext, useSelectedItemContext } from './context'
 import { ScopedProps, SelectScrollButtonImplProps, SelectScrollButtonProps } from './types'
 
 /* -------------------------------------------------------------------------------------------------
@@ -56,8 +56,9 @@ const SelectScrollButtonImpl = React.memo(
   React.forwardRef<SelectScrollButtonImplElement, SelectScrollButtonImplProps>(
     (props: ScopedProps<SelectScrollButtonImplProps>, forwardedRef) => {
       const { __scopeSelect, dir, componentName, ...scrollIndicatorProps } = props
-      const { floatingRef, forceUpdate, open, fallback, setScrollTop, setInnerOffset, ...context } =
+      const { floatingRef, forceUpdate, fallback, setScrollTop, setInnerOffset, ...context } =
         useSelectContext(componentName, __scopeSelect)
+      const { open } = useSelectedItemContext(componentName, __scopeSelect)
 
       const [element, setElement] = React.useState<HTMLElement | null>(null)
       const statusRef = React.useRef<'idle' | 'active'>('idle')

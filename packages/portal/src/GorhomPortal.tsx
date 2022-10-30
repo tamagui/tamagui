@@ -94,6 +94,7 @@ const removePortal = (
   portalName: string
 ) => {
   if (!(hostName in state)) {
+    // eslint-disable-next-line no-console
     console.log(`Failed to remove portal '${portalName}', '${hostName}' was not registered!`)
     return state
   }
