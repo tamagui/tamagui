@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-controllable-state",
-  "version": "1.0.1-beta.199",
+  "version": "1.0.1-beta.200",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -20,14 +20,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/use-event": "^1.0.1-beta.199"
+    "@tamagui/use-event": "^1.0.1-beta.200"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.199",
+    "@tamagui/build": "^1.0.1-beta.200",
     "react": "*",
     "react-dom": "*"
   },
