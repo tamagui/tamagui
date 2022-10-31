@@ -94,7 +94,7 @@ export declare const SheetFrame: React.ForwardRefExoticComponent<Omit<import("@t
 }>> & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & React.RefAttributes<unknown>>;
-export declare const Sheet: ((props: Omit<{
+export declare const Sheet: React.ForwardRefExoticComponent<{
     open?: boolean | undefined;
     defaultOpen?: boolean | undefined;
     onOpenChange?: (((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>) | undefined;
@@ -112,10 +112,7 @@ export declare const Sheet: ((props: Omit<{
     zIndex?: number | undefined;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-} & React.RefAttributes<View>, "theme" | "themeInverse"> & {
-    theme?: import("@tamagui/core").ThemeName | null | undefined;
-    themeInverse?: boolean | undefined;
-}) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & {
+} & React.RefAttributes<View>> & {
     Handle: ({ __scopeSheet, ...props }: SheetScopedProps<XStackProps>) => JSX.Element;
     Frame: React.ForwardRefExoticComponent<Omit<import("@tamagui/types-react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;
