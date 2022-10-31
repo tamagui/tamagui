@@ -18,7 +18,7 @@ Many thanks to  [@FernandoTheRojo](https://twitter.com/fernandotherojo) for the 
 
 - `tamagui` for cross-platform views, themes and animations
 - `solito` for cross-platform navigation
-- Expo SDK 44
+- Expo SDK 46
 - Next.js 12
 - React Navigation 6
 
@@ -96,5 +96,19 @@ yarn
 ```
 
 You can also install the native library inside of `packages/app` if you want to get autoimport for that package inside of the `app` folder. However, you need to be careful and install the _exact_ same version in both packages. If the versions mismatch at all, you'll potentially get terrible bugs. This is a classic monorepo issue. I use `lerna-update-wizard` to help with this (you don't need to use Lerna to use that lib).
+
+You may potentially want to have the native module transpiled for the next app. Add the module name to the list for `withTM` in the [`apps/next/next.config.js`](apps/next/next.config.js#L47) file.
+
+```ts
+withTM([
+  'solito',
+  'react-native-web',
+  'expo-linking',
+  'expo-constants',
+  'expo-modules-core',
+  'expo-crypto', // <-- add this or any other native module
+  '@my/config',
+])
+```
 
 ## 🧐 Why use Expo + Next.js?
