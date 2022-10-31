@@ -20,8 +20,13 @@ export const mediaState: MediaQueryState =
         {},
         {
           get(target, key) {
-            if (typeof key === 'string' && key[0] === '$') {
-              throw new Error(`Access of mediaState should never include $`)
+            if (
+              typeof key === 'string' &&
+              key[0] === '$' &&
+              // dont error on $$typeof
+              key[1] !== '$'
+            ) {
+              throw new Error(`Access mediaState should not use "$": ${key}`)
             }
             return Reflect.get(target, key)
           },
