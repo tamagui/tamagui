@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/simple-hash",
-  "version": "1.0.1-beta.200",
+  "version": "1.0.1-beta.201",
   "sideEffects": false,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -17,7 +17,7 @@
     "lint:fix": "yarn lint --fix"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.200"
+    "@tamagui/build": "^1.0.1-beta.201"
   },
   "publishConfig": {
     "access": "public"
