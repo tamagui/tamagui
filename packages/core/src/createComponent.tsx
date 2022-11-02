@@ -1456,5 +1456,6 @@ const dontComposePressabilityKeys = {
   onClick: true,
 }
 
-const getMediaStateObject = (obj: Object) =>
-  Object.fromEntries(Object.entries(obj).flatMap(([k, v]) => (v ? [[`$${k}`, v]] : [])))
+function getMediaStateObject(obj: Object) {
+  return Object.fromEntries(Object.entries(obj).flatMap(([k, v]) => (v ? [[`$${k}`, v]] : [])))
+}

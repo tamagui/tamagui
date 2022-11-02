@@ -8,6 +8,8 @@ export function HomeScreen() {
     href: '/user/nate',
   })
 
+  return <Button>hi</Button>
+
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
       <YStack space="$4" maw={600}>
