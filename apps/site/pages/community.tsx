@@ -206,61 +206,29 @@ export default function Community({ frontmatters }) {
           </H2>
         </FlatBubbleCard>
 
-        <Separator />
-
-        <FlatBubbleCard className="hero-gradient" ov="hidden">
-          <YStack maxWidth="100%" fs={0} als="center">
-            <XStack space="$4" $sm={{ flexDirection: 'column' }}>
-              <Link passHref href="https://codingscape.com">
-                <YStack
-                  cursor="pointer"
-                  target="_blank"
-                  tag="a"
-                  p="$4"
-                  br="$4"
-                  hoverStyle={{ bc: 'rgba(0,0,0,0.1)' }}
-                  pressStyle={{ bc: 'rgba(0,0,0,0.2)' }}
-                  space
-                >
-                  <Image
-                    accessibilityLabel="CodingScape sponsor"
-                    width={540 * 0.4}
-                    height={162 * 0.4}
-                    src={'/sponsors/coding-scape.png'}
-                  />
-                  <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
-                    CodingScape
-                  </H5>
-                </YStack>
-              </Link>
-
-              <Link passHref href="https://www.questportal.com">
-                <YStack
-                  cursor="pointer"
-                  target="_blank"
-                  tag="a"
-                  p="$4"
-                  br="$4"
-                  hoverStyle={{ bc: 'rgba(0,0,0,0.1)' }}
-                  pressStyle={{ bc: 'rgba(0,0,0,0.2)' }}
-                  space
-                >
-                  <Image
-                    resizeMethod="resize"
-                    resizeMode="contain"
-                    accessibilityLabel="Quest Portal"
-                    width={540 * 0.4}
-                    height={162 * 0.4}
-                    src={'/sponsors/quest-portal.png'}
-                  />
-                  <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
-                    Quest Portal
-                  </H5>
-                </YStack>
-              </Link>
-            </XStack>
-          </YStack>
-        </FlatBubbleCard>
+        <XStack space flexWrap="wrap">
+          <GoldSponsor
+            name="CodingScape"
+            link="https://codingscape.com"
+            image="/sponsors/coding-scape.png"
+            imageWidth={566 * 0.35}
+            imageHeight={162 * 0.35}
+          />
+          <GoldSponsor
+            name="Quest Portal"
+            link="https://www.questportal.com"
+            image="/sponsors/quest-portal.png"
+            imageWidth={200 * 0.3}
+            imageHeight={200 * 0.3}
+          />
+          <GoldSponsor
+            name="BeatGig"
+            link="https://beatgig.com"
+            image="/sponsors/beatgig.jpg"
+            imageWidth={400 * 0.5}
+            imageHeight={84 * 0.5}
+          />
+        </XStack>
 
         <Spacer />
 
@@ -271,56 +239,77 @@ export default function Community({ frontmatters }) {
         </FlatBubbleCard>
 
         <XStack space flexWrap="wrap">
-          <FlatBubbleCard flat>
-            <YStack maxWidth="100%" fs={0} als="center">
-              <XStack space="$4" $sm={{ flexDirection: 'column' }}>
-                <Link passHref href="https://twitter.com/barelyreaper">
-                  <YStack
-                    cursor="pointer"
-                    target="_blank"
-                    tag="a"
-                    p="$4"
-                    br="$4"
-                    hoverStyle={{ bc: 'rgba(0,0,0,0.1)' }}
-                    pressStyle={{ bc: 'rgba(0,0,0,0.2)' }}
-                    space
-                  >
-                    <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
-                      @barelyreaper
-                    </H5>
-                  </YStack>
-                </Link>
-              </XStack>
-            </YStack>
-          </FlatBubbleCard>
-
-          <FlatBubbleCard flat>
-            <YStack maxWidth="100%" fs={0} als="center">
-              <XStack space="$4" $sm={{ flexDirection: 'column' }}>
-                <Link passHref href="https://twitter.com/pontusab">
-                  <YStack
-                    cursor="pointer"
-                    target="_blank"
-                    tag="a"
-                    p="$4"
-                    br="$4"
-                    hoverStyle={{ bc: 'rgba(0,0,0,0.1)' }}
-                    pressStyle={{ bc: 'rgba(0,0,0,0.2)' }}
-                    space
-                  >
-                    <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
-                      @pontusab
-                    </H5>
-                  </YStack>
-                </Link>
-              </XStack>
-            </YStack>
-          </FlatBubbleCard>
+          <IndividualSponsor name="@barelyreaper" link="https://twitter.com/barelyreaper" />
+          <IndividualSponsor name="@pontusab" link="https://twitter.com/pontusab" />
+          <IndividualSponsor name="@AntelaBrais" link="https://twitter.com/AntelaBrais" />
         </XStack>
       </ContainerLarge>
 
       <Spacer size="$10" />
     </CommunityLayout>
+  )
+}
+
+function GoldSponsor(props: {
+  name: string
+  link: string
+  image: string
+  imageWidth: number
+  imageHeight: number
+}) {
+  return (
+    <FlatBubbleCard flat p={0}>
+      <Link href={props.link} target="_blank">
+        <YStack
+          ai="center"
+          jc="center"
+          f={1}
+          cursor="pointer"
+          target="_blank"
+          tag="a"
+          p="$8"
+          br="$4"
+          space
+        >
+          <Image
+            accessibilityLabel={props.name}
+            width={props.imageWidth}
+            height={props.imageHeight}
+            src={props.image}
+          />
+          <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
+            {props.name}
+          </H5>
+        </YStack>
+      </Link>
+    </FlatBubbleCard>
+  )
+}
+
+function IndividualSponsor(props: { name: string; link: string }) {
+  return (
+    <FlatBubbleCard flat>
+      <YStack maxWidth="100%" fs={0} als="center">
+        <XStack space="$4" $sm={{ flexDirection: 'column' }}>
+          <Link passHref href={props.link}>
+            <YStack
+              cursor="pointer"
+              target="_blank"
+              tag="a"
+              p="$4"
+              br="$4"
+              hoverStyle={{ bc: 'rgba(0,0,0,0.1)' }}
+              pressStyle={{ bc: 'rgba(0,0,0,0.2)' }}
+              space
+            >
+              <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
+                {props.name}
+              </H5>
+            </YStack>
+          </Link>
+        </XStack>
+      </YStack>
+    </FlatBubbleCard>
   )
 }
 
