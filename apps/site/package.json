@@ -3,7 +3,7 @@
   "version": "1.0.1-beta.201",
   "private": true,
   "scripts": {
-    "dev": "./scripts/dev.sh",
+    "dev": "next dev",
     "clean:build": "./scripts/clean.sh",
     "ci:build": "yarn next:build && yarn next:export",
     "ci:build:debug": "DEBUG=tamagui yarn ci:build",
@@ -12,7 +12,8 @@
     "dev:extract": "DISABLE_EXTRACTION=false yarn dev",
     "next:build": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build",
     "next:export": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next export",
-    "next:start": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start --port 3333"
+    "next:start": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start --port 3333",
+    "watch:site-data": "next-remote-watch ./data"
   },
   "dependencies": {
     "@docsearch/react": "^3.0.0",
