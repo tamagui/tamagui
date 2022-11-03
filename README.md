@@ -57,10 +57,12 @@ Before submitting a PR, check everything works across every combination of envir
 To do so, run the site, first in development to test if it works entirely at runtime:
 
 ```
+# Make sure you have run `yarn watch` before you excute this command.
+
 yarn site
 ```
 
-You replace _app.tsx to return just your component/use case. If it looks good, try running again with the compiler on:
+You replace \_app.tsx to return just your component/use case. If it looks good, try running again with the compiler on:
 
 ```
 yarn site:extract
