@@ -39,36 +39,10 @@ export function HomeScreen() {
   })
 
   return (
-    <>
-      <Button onPress={() => console.log('hi')}>hi</Button>
-
-      <ThemeableStack
-        accessibilityLabel="test"
-        tag="button"
-        onPress={() => alert('ds')}
-        focusable
-        pressStyle={{
-          borderColor: 'transparent',
-        }}
-      >
-        <ListItem>
-          <YGroup>
-            <H1>hello</H1>
-          </YGroup>
-        </ListItem>
-      </ThemeableStack>
-
-      {/* <MyStack>
-        <Paragraph>test</Paragraph>
-      </MyStack> */}
-    </>
-  )
-
-  return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
       <YStack space="$4" maw={600}>
         <H1 ta="center">Welcome to Tamagui.</H1>
-        <Paragraph ta="center">
+        <Paragraph debug="verbose" ta="center">
           Here's a basic starter to show navigating from one screen to another. This screen uses the
           same code on Next.js and React Native.
         </Paragraph>

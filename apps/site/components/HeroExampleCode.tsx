@@ -142,6 +142,7 @@ const CodeExamples = memo(({ examples }: any) => {
               accessibilityLabel="See example"
               onPress={() => setActiveIndex(i)}
               theme={i === activeIndex ? 'active' : 'alt1'}
+              size="$2"
               key={i}
               borderRadius="$0"
             >
