@@ -486,6 +486,10 @@ export declare type StaticConfig = StaticConfigPublic & {
      * Setting `acceptsClassName: true` indicates Tamagui can pass in className props.
      */
     acceptsClassName?: boolean;
+    /**
+     * Used internally for handling focus
+     */
+    isInput?: boolean;
 };
 /**
  * --------------------------------------------
