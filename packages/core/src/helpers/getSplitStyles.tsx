@@ -199,7 +199,7 @@ export const getSplitStyles: StyleSplitter = (
 
   const len = propKeys.length
   const rulesToInsert: RulesToInsert = []
-  let style: ViewStyle = {}
+  const style: ViewStyle = {}
   const classNames: ClassNamesObject = {}
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
@@ -589,8 +589,6 @@ export const getSplitStyles: StyleSplitter = (
         usedKeys[key] = 1
         if (val && val[0] === '_') {
           classNames[key] = val
-        } else if (key in classNames) {
-          continue
         } else if (key in stylePropsTransform) {
           mergeTransform(style, key, val, true)
         } else {
@@ -645,7 +643,7 @@ export const getSplitStyles: StyleSplitter = (
         addStyleToInsertRules(rulesToInsert, atomicStyle)
         mergeClassName(transforms, classNames, key, atomicStyle.identifier)
       }
-      style = emptyObject
+      // style = emptyObject
     }
 
     if (transforms) {
