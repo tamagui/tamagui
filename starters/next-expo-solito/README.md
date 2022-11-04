@@ -4,10 +4,6 @@
 npx create-tamagui-app@latest myapp
 ```
 
-## ⚡️ Instant clone & deploy
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftamagui%2Fstarters&env=ENABLE_ROOT_PATH_BUILD_CACHE&root-directory=apps/next&envDescription=Set%20this%20environment%20variable%20to%201%20for%20Turborepo%20to%20cache%20your%20node_modules.&envLink=https%3A%2F%2Ftwitter.com%2Fjaredpalmer%2Fstatus%2F1488954563533189124&project-name=tamagui-app&repo-name=tamagui-app&demo-title=Tamagui%20App%20%E2%9A%A1%EF%B8%8F&demo-description=Tamagui%20React%20Native%20%2B%20Next.js%20starter&demo-url=https%3A%2F%2Ftamagui.dev%2Fstarter&demo-image=https%3A%2F%2Ftamagui.dev%2Fimg%2Fog.png)
-
 ## 🔦 About
 
 This monorepo is a starter for an Expo + Next.js + Tamagui + Solito app.
@@ -102,5 +98,3 @@ withTM([
   '@my/config',
 ])
 ```
-
-## 🧐 Why use Expo + Next.js?
