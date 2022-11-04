@@ -39,7 +39,7 @@ export const MemorySessionStorage = function (
       },
 
       async set(request: Request, value: Record<string, string>) {
-        let sid = cookie.getSessionId(request)
+        let sid = cookie.getSessionId(request) || ''
 
         if (!sid) {
           sid = uid()

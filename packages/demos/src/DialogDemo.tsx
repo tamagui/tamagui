@@ -1,5 +1,4 @@
 import { X } from '@tamagui/lucide-icons'
-import React from 'react'
 import { Button, Dialog, Fieldset, Input, Label, Unspaced, YStack } from 'tamagui'
 
 import { SelectDemo } from './SelectDemo'

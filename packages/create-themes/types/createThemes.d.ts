@@ -3,6 +3,8 @@ declare type ColorsByName = {
     [key: string]: Record<string, string>;
 };
 declare type ColorsList = string[];
+declare type AltKeys = 1 | 2;
+declare type AltName<Name extends string, Keys extends string | number> = `${Name}_alt${Keys}`;
 declare type GeneratedTheme = {
     backgroundStrong: Variable<string>;
     background: Variable<string>;
@@ -44,6 +46,6 @@ export declare const createThemes: <C extends string>({ activeColor, light, dark
     dark: ColorsList;
     colorsLight: ColorsByName;
     colorsDark: ColorsByName;
-}) => { [key in C | "light" | "dark"]: GeneratedTheme; };
+}) => { [key in C | "light" | "dark" | "light_alt1" | "light_alt2" | "dark_alt1" | "dark_alt2" | `light_${C}_alt1` | `light_${C}_alt2` | `dark_${C}_alt1` | `dark_${C}_alt2`]: GeneratedTheme; };
 export {};
 //# sourceMappingURL=createThemes.d.ts.map

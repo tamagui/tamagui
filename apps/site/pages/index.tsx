@@ -3,7 +3,7 @@ import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { useState } from 'react'
-import { XStack, YStack } from 'tamagui'
+import { Theme, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from '../components/Container'
 import { HeaderFloating } from '../components/HeaderFloating'

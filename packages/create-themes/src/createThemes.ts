@@ -8,6 +8,10 @@ type ColorsByName = {
 
 type ColorsList = string[]
 
+// can make configurable
+type AltKeys = 1 | 2
+type AltName<Name extends string, Keys extends string | number> = `${Name}_alt${Keys}`
+
 type GeneratedTheme = {
   backgroundStrong: Variable<string>
   background: Variable<string>
@@ -57,7 +61,14 @@ export const createThemes = <C extends string>({
   colorsLight: ColorsByName
   colorsDark: ColorsByName
 }): {
-  [key in C | 'light' | 'dark']: GeneratedTheme
+  [key in
+    | C
+    | 'light'
+    | 'dark'
+    | AltName<`light`, AltKeys>
+    | AltName<`dark`, AltKeys>
+    | AltName<`light_${C}`, AltKeys>
+    | AltName<`dark_${C}`, AltKeys>]: GeneratedTheme
 } => {
   function flatten(obj: ColorsByName) {
     const next = {}
@@ -92,8 +103,6 @@ export const createThemes = <C extends string>({
 
   const alternates = [1, 2, 3] as const
   const alts = [1, 2] as const
-  type AltKeys = 1 | 2
-  type AltName<Name extends string, Keys extends string | number> = `${Name}_alt${Keys}`
   type ThemeCreator<A = any> = (str: number, props: ThemeCreatorProps) => A
 
   interface SubTheme {
