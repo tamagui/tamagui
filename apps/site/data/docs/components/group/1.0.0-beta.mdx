@@ -47,7 +47,7 @@ This ensures any items inside will get appropriately scaled border radius.
 
 ### Sizing
 
-The `size` property will use your tokens to grab the appropriate radius for borderRadius values. It will also pass the `size` prop directly to `children` unless you set `disablePassSize`:
+The `size` property will use your tokens to grab the appropriate radius for borderRadius values which it will pass to the first and last child as style props for borderRadius.
 
 ```tsx
 import { Button, XGroup } from 'tamagui'

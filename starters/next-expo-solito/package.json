@@ -8,6 +8,7 @@
   "scripts": {
     "native": "yarn build && cd apps/expo && yarn start",
     "web": "yarn build && cd apps/next && yarn next",
+    "web:extract": "DISABLE_EXTRACTION=false yarn workspace next-app dev",
     "web:prod": "yarn workspace next-app build",
     "web:prod:serve": " && yarn workspace next-app serve",
     "watch": "yarn workspaces foreach -pi run watch",

@@ -1,7 +1,9 @@
 - 1.0
 
+  - pass Size down context (see Group) but really this is just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)
   - Sheet on android: https://github.com/tamagui/tamagui/issues/261
   - When you focus an input in a dialog on mobile or a propover etc. then it disappears
+  - duplicating styles on className + style
   - select had a perf regression
   - site design system docs (for use in cli later)
   - blog post / home: lighthouse score diff between compiler on / off

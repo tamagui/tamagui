@@ -3,11 +3,13 @@ import {
   Anchor,
   Button,
   H1,
+  ListItem,
   Paragraph,
   Separator,
   Sheet,
   ThemeableStack,
   XStack,
+  YGroup,
   YStack,
   styled,
 } from '@my/ui'
@@ -49,7 +51,11 @@ export function HomeScreen() {
           borderColor: 'transparent',
         }}
       >
-        <Paragraph color="$color12">OKKK</Paragraph>
+        <ListItem>
+          <YGroup>
+            <H1>hello</H1>
+          </YGroup>
+        </ListItem>
       </ThemeableStack>
 
       {/* <MyStack>

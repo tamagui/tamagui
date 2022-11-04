@@ -5,6 +5,7 @@ import {
   getExpandedShorthands,
   getTokens,
   getVariableValue,
+  isTamaguiElement,
   mergeProps,
   spacedChildren,
   styled,
@@ -47,43 +48,39 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
 }
 
 function createGroup(verticalDefault: boolean) {
-  return GroupFrame.extractable(
-    forwardRef<TamaguiElement, GroupProps>((props, ref) => {
-      const activeProps = useMediaPropsActive(props)
+  return forwardRef<TamaguiElement, GroupProps>((props, ref) => {
+    const activeProps = useMediaPropsActive(props)
 
-      const {
-        children: childrenProp,
-        space,
-        size = '$4',
-        spaceDirection,
-        separator,
-        scrollable,
-        vertical = verticalDefault,
-        disabled: disabledProp,
-        disablePassBorderRadius: disablePassBorderRadiusProp,
-        disablePassSize: disablePassSizeProp,
-        borderRadius,
-        ...restProps
-      } = getExpandedShorthands(activeProps)
+    const {
+      children: childrenProp,
+      space,
+      size = '$4',
+      spaceDirection,
+      separator,
+      scrollable,
+      vertical = verticalDefault,
+      disabled: disabledProp,
+      disablePassBorderRadius: disablePassBorderRadiusProp,
+      disablePassSize: disablePassSizeProp,
+      borderRadius,
+      ...restProps
+    } = getExpandedShorthands(activeProps)
 
-      const radius =
-        borderRadius ?? (size ? getVariableValue(getTokens(true).radius[size]) - 1 : undefined)
-      const hasRadius = radius !== undefined
-      const disablePassBorderRadius = disablePassBorderRadiusProp ?? !hasRadius
-      const childrens = Children.toArray(childrenProp)
-      const disablePassSize = disablePassSizeProp ?? size === undefined
-      const children = childrens.map((child, i) => {
-        if (!isValidElement(child)) return child
-        const disabled = child.props.disabled ?? disabledProp
+    const radius =
+      borderRadius ?? (size ? getVariableValue(getTokens(true).radius[size]) - 1 : undefined)
+    const hasRadius = radius !== undefined
+    const disablePassBorderRadius = disablePassBorderRadiusProp ?? !hasRadius
+    const childrens = Children.toArray(childrenProp)
+    const children = childrens.map((child, i) => {
+      if (!isValidElement(child)) return child
+      const disabled = child.props.disabled ?? disabledProp
 
-        const isFirst = i === 0
-        const isLast = i === childrens.length - 1
-        const props = {
-          disabled,
-          ...(!disablePassSize && {
-            size,
-          }),
-          ...(!disablePassBorderRadius && {
+      const isFirst = i === 0
+      const isLast = i === childrens.length - 1
+
+      const radiusStyles = disablePassBorderRadius
+        ? null
+        : {
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
             borderBottomLeftRadius: 0,
@@ -110,38 +107,45 @@ function createGroup(verticalDefault: boolean) {
                   borderBottomRightRadius: radius,
                 }),
             }),
-          }),
-        }
-        return cloneElementWithPropOrder(child, props)
-      })
+          }
 
-      return (
-        <GroupFrame
-          ref={ref}
-          size={size}
-          flexDirection={!vertical ? 'row' : 'column'}
-          borderRadius={borderRadius}
-          {...restProps}
-        >
-          {wrapScroll(
-            activeProps,
-            spacedChildren({
-              direction: spaceDirection,
-              separator,
-              space,
-              children,
-            })
-          )}
-        </GroupFrame>
-      )
+      const props = {
+        disabled,
+        ...(isTamaguiElement(child) ? radiusStyles : { style: radiusStyles }),
+      }
+
+      return cloneElementWithPropOrder(child, props)
     })
-  )
+
+    return (
+      <GroupFrame
+        ref={ref}
+        size={size}
+        flexDirection={!vertical ? 'row' : 'column'}
+        borderRadius={borderRadius}
+        {...restProps}
+      >
+        {wrapScroll(
+          activeProps,
+          spacedChildren({
+            direction: spaceDirection,
+            separator,
+            space,
+            children,
+          })
+        )}
+      </GroupFrame>
+    )
+  })
 }
 
 export const YGroup = createGroup(true)
 export const XGroup = createGroup(false)
 
-const wrapScroll = ({ scrollable, vertical, showScrollIndicator = false }: GroupProps, children: any) => {
+const wrapScroll = (
+  { scrollable, vertical, showScrollIndicator = false }: GroupProps,
+  children: any
+) => {
   if (scrollable)
     return (
       <ScrollView

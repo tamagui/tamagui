@@ -7,10 +7,13 @@ const { join } = require('path')
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 process.env.TAMAGUI_TARGET = 'web'
 
-const disableExtraction = process.env.NODE_ENV === 'development'
-if (disableExtraction) {
-  console.log('Disabling static extraction in development mode for better HMR')
+const boolVals = {
+  true: true,
+  false: false,
 }
+
+const disableExtraction =
+  boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
 
 console.log(`
 

@@ -12,8 +12,12 @@ export function GroupDemo() {
 
       {/* responsive + size */}
       <XGroup size="$3" $gtSm={{ size: '$5' }}>
-        <Button icon={Activity}>First</Button>
-        <Button icon={Airplay}>Second</Button>
+        <Button size="$3" icon={Activity}>
+          First
+        </Button>
+        <Button size="$3" icon={Airplay}>
+          Second
+        </Button>
       </XGroup>
 
       <YGroup separator={<Separator />}>
