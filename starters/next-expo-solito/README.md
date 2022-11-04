@@ -57,14 +57,6 @@ You need to watch it to have changes propagate, we've added a root `watch` comma
 yarn watch
 ```
 
-If you want to see Tamagui extract, try running `yarn web:optimize` and put a debug pragma at the top of `packages/app/features/home.tsx`, like so:
-
-```tsx
-// debug
-```
-
-You'll see lots of output including the compiled HTML, CSS and all the steps it takes to get there.
-
 ## UI Kit
 
 Note we're following the [design systems guide](https://tamagui.dev/docs/guides/design-systems) and creating our own package for components.
