@@ -26,7 +26,7 @@
     "@tamagui/vite-plugin-reanimated": "^1.0.1-beta.201",
     "react": "*",
     "react-dom": "*",
-    "react-native-reanimated": "^2.8.0",
+    "react-native-reanimated": "^2.12.0",
     "react-native-web": "^0.18.3",
     "tamagui": "^1.0.1-beta.201"
   },

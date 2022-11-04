@@ -1,5 +1,6 @@
 import { variableToString } from '@tamagui/core'
 import { ChevronRight, Moon, Sun } from '@tamagui/sandbox-ui'
+import { ScrollView } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
@@ -7,7 +8,6 @@ import {
   ListItem,
   ListItemProps,
   Paragraph,
-  ScrollView,
   Separator,
   Spacer,
   Switch,

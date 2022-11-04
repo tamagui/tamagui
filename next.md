@@ -1,5 +1,6 @@
 - 1.0
 
+  - Sheet on android: https://github.com/tamagui/tamagui/issues/261
   - When you focus an input in a dialog on mobile or a propover etc. then it disappears
   - select had a perf regression
   - site design system docs (for use in cli later)
@@ -16,7 +17,6 @@
   - https://github.com/tamagui/tamagui/issues/186
   - https://github.com/tamagui/tamagui/issues/270
   - https://github.com/tamagui/tamagui/issues/266
-  - https://github.com/tamagui/tamagui/issues/261
   - https://github.com/tamagui/tamagui/issues/256
   - https://github.com/tamagui/tamagui/issues/242
   - `Portal` related components are not working on the Android side

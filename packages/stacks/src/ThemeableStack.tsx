@@ -17,6 +17,7 @@ const chromelessStyle = {
   borderColor: 'transparent',
   shadowColor: 'transparent',
 }
+
 export const ThemeableStack = styled(YStack, {
   name: 'SizableStack',
 

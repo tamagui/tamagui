@@ -1,9 +1,10 @@
-import { YStack, YStackProps } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 // @ts-ignore
-import { RootTagContext } from 'react-native'
+import { Platform, RootTagContext } from 'react-native'
 import { createPortal } from 'react-native/Libraries/Renderer/shims/ReactNative'
 
+import { PortalItem } from './GorhomPortal'
 import { PortalProps } from './PortalProps'
 
 export const Portal = (props: PortalProps) => {
@@ -19,6 +20,10 @@ export const Portal = (props: PortalProps) => {
       {...props}
     />
   )
+
+  if (Platform.OS === 'android') {
+    return <PortalItem name="_tamagui_root_portal">{contents}</PortalItem>
+  }
 
   if (rootTag) {
     return createPortal(contents, rootTag)

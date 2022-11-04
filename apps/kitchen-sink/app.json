@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
-    "scheme": "my-app",
+    "name": "myapp",
+    "slug": "myapp",
+    "scheme": "myapp",
     "version": "1.0.0",
     "jsEngine": "jsc",
     "orientation": "portrait",
@@ -19,10 +19,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.natew.my-app"
+      "bundleIdentifier": "com.natew.myapp"
     },
     "android": {
-      "package": "com.tamagui.my-app",
+      "package": "com.tamagui.myapp",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

@@ -4650,7 +4650,7 @@ __metadata:
     "@tamagui/build": ^1.0.1-beta.201
     "@tamagui/core": ^1.0.1-beta.201
     "@tamagui/use-presence": ^1.0.1-beta.201
-    react-native-reanimated: ^2.8.0
+    react-native-reanimated: ^2.12.0
   languageName: unknown
   linkType: soft
 
@@ -5210,18 +5210,18 @@ __metadata:
     "@tamagui/theme-base": ^1.0.1-beta.201
     "@types/react": ^18.0.15
     babel-plugin-transform-inline-environment-variables: ^0.4.4
-    expo: ^46.0.2
+    expo: ~46.0.16
     expo-font: ^10.2.0
     expo-linear-gradient: ^11.4.0
     expo-linking: ^3.1.0
-    expo-splash-screen: ^0.16.1
+    expo-splash-screen: ~0.16.2
     expo-status-bar: ^1.4.0
     metro-runtime: ^0.67.0
     react: "*"
     react-dom: "*"
     react-native: "*"
     react-native-gesture-handler: ^2.5.0
-    react-native-reanimated: ^2.8.0
+    react-native-reanimated: ^2.12.0
     react-native-safe-area-context: ^4.3.1
     react-native-screens: ^3.15.0
     react-native-svg: ^12.4.3
@@ -5610,7 +5610,7 @@ __metadata:
     mini-css-extract-plugin: ^2.6.1
     react: "*"
     react-dom: "*"
-    react-native-reanimated: ^2.8.0
+    react-native-reanimated: ^2.12.0
     react-native-web: ^0.18.3
     react-refresh: ^0.14.0
     style-loader: ^3.3.1
@@ -12037,7 +12037,7 @@ __metadata:
     "@types/react-native": ^0.69.5
     app: "*"
     babel-plugin-transform-inline-environment-variables: ^0.4.4
-    expo: ~46.0.9
+    expo: ~46.0.16
     expo-constants: ^13.2.3
     expo-dev-client: ^1.2.1
     expo-font: ^10.2.0
@@ -12048,7 +12048,7 @@ __metadata:
     expo-updates: ^0.14.3
     react: 18.0.0
     react-dom: ^18.2.0
-    react-native: 0.69.5
+    react-native: 0.69.6
     react-native-gesture-handler: ^2.5.0
     react-native-safe-area-context: ^4.3.1
     react-native-screens: ^3.15.0
@@ -12293,7 +12293,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-splash-screen@npm:^0.16.1, expo-splash-screen@npm:~0.16.2":
+"expo-splash-screen@npm:~0.16.2":
   version: 0.16.2
   resolution: "expo-splash-screen@npm:0.16.2"
   dependencies:
@@ -12352,7 +12352,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo@npm:^46.0.2, expo@npm:~46.0.9":
+"expo@npm:~46.0.16":
   version: 46.0.16
   resolution: "expo@npm:46.0.16"
   dependencies:
@@ -20355,9 +20355,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:2.8.0":
-  version: 2.8.0
-  resolution: "react-native-reanimated@npm:2.8.0"
+"react-native-reanimated@npm:2.12.0":
+  version: 2.12.0
+  resolution: "react-native-reanimated@npm:2.12.0"
   dependencies:
     "@babel/plugin-transform-object-assign": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
@@ -20370,7 +20370,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: 6409a941a177d04d9091953a05f493d4924eb0d3e2a4b24cf83bb20460b985f89dd879f0ab7337655dba6a3183ca50cc2ad2b3ea1c505cdc1eed6c5ee1296b59
+  checksum: ef94d7888ad77859a9cf13156a88d6b7f2d96622bf8f7a19415fd3b7f2a588a1a78214711ce77259bfc45ceb5112c43cad8b96b034dc3ab749a1e0a835a923d0
   languageName: node
   linkType: hard
 

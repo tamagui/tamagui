@@ -1,14 +1,62 @@
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack } from '@my/ui'
+//! debug-verbose
+import {
+  Anchor,
+  Button,
+  H1,
+  Paragraph,
+  Separator,
+  Sheet,
+  ThemeableStack,
+  XStack,
+  YStack,
+  styled,
+} from '@my/ui'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
 import { useLink } from 'solito/link'
+
+const MyStack = styled(ThemeableStack, {
+  focusable: true,
+
+  pressStyle: {
+    backgroundColor: 'transparent',
+  },
+
+  hoverStyle: {
+    backgroundColor: 'red',
+  },
+
+  focusStyle: {
+    backgroundColor: '$borderColorFocus',
+  },
+})
 
 export function HomeScreen() {
   const linkProps = useLink({
     href: '/user/nate',
   })
 
-  return <Button>hi</Button>
+  return (
+    <>
+      <Button onPress={() => console.log('hi')}>hi</Button>
+
+      <ThemeableStack
+        accessibilityLabel="test"
+        tag="button"
+        onPress={() => alert('ds')}
+        focusable
+        pressStyle={{
+          borderColor: 'transparent',
+        }}
+      >
+        <Paragraph color="$color12">OKKK</Paragraph>
+      </ThemeableStack>
+
+      {/* <MyStack>
+        <Paragraph>test</Paragraph>
+      </MyStack> */}
+    </>
+  )
 
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>

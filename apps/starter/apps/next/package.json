@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "cd .. && yarn build && cd next && next build",
-    "start": "next start",
+    "start": "next start --port 4444",
     "lint": "next lint"
   },
   "dependencies": {
