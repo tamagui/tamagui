@@ -199,6 +199,8 @@ export function createComponent<
 
     const languageContext = isRSC ? null : useContext(FontLanguageContext)
 
+    const isDisabled = props.disabled ?? props.accessibilityState?.disabled
+
     const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
     const nextIsAnimated = !!(useAnimations && props.animation)
     // conditional but if ever true stays true
@@ -722,7 +724,7 @@ export function createComponent<
         )
 
     const events =
-      shouldAttach && !isRSC
+      shouldAttach && !isRSC && !isDisabled
         ? {
             onPressOut: attachPress
               ? (e) => {
@@ -793,7 +795,7 @@ export function createComponent<
             // replicating TouchableWithoutFeedback
             ...(!isWeb && {
               cancelable: !props.rejectResponderTermination,
-              disabled: props.disabled ?? props.accessibilityState?.disabled,
+              disabled: isDisabled,
               hitSlop: props.hitSlop,
               delayLongPress: props.delayLongPress,
               delayPressIn: props.delayPressIn,
