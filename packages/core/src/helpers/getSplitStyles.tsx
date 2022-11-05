@@ -256,7 +256,9 @@ export const getSplitStyles: StyleSplitter = (
         ) {
           viewProps.disabled = true
         }
-        continue
+        if (!staticConfig.variants?.disabled) {
+          continue
+        }
       }
 
       if (keyInit === 'id' || keyInit === 'nativeID') {

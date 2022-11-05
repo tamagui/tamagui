@@ -45,6 +45,11 @@ export const Text = createComponent<TextProps, TextView, TextPropsBase>({
       },
     }),
 
+    // ??
+    ellipsizeMode: {
+      '...': () => null,
+    },
+
     selectable: {
       true: {
         userSelect: 'text',
