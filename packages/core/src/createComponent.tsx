@@ -909,7 +909,7 @@ export function createComponent<
       }
     }
 
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' && process.env.DEBUG !== 'tamagui') {
       if (debugProp) {
         const element = typeof elementType === 'string' ? elementType : 'Component'
         // eslint-disable-next-line no-console
