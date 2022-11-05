@@ -1,4 +1,5 @@
-import path, { join } from 'path'
+import { existsSync } from 'fs'
+import path, { dirname, join } from 'path'
 
 import type { TamaguiOptions } from '@tamagui/static'
 import browserslist from 'browserslist'
@@ -26,15 +27,6 @@ export type WithTamaguiProps = TamaguiOptions & {
 }
 
 export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
-  // allows configuration
-  const shouldExclude = (path: string, projectRoot: string) => {
-    const res = tamaguiOptions.shouldExtract?.(path, projectRoot)
-    if (typeof res === 'boolean') {
-      return !res
-    }
-    return shouldExcludeDefault(path, projectRoot)
-  }
-
   return (nextConfig: any = {}) => {
     return {
       ...nextConfig,
@@ -84,6 +76,47 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           if (isServer) return require.resolve(relativePath)
           const esm = resolver(relativePath)
           return esm ? path.join(dir, esm) : require.resolve(relativePath)
+        }
+
+        const SEP = path.sep
+
+        // automatically compile our given components
+        const componentsFullPaths = safeResolves(
+          ...tamaguiOptions.components.map(
+            (moduleName) => [moduleName, moduleName] as [string, string]
+          )
+        )
+
+        const componentsBaseDirs = Object.entries(componentsFullPaths).map(
+          ([_moduleName, fullPath]) => {
+            let rootPath = dirname(fullPath as string)
+            while (rootPath.length > 1) {
+              const pkg = join(rootPath, 'package.json')
+              const hasPkg = existsSync(pkg)
+              if (hasPkg) {
+                return rootPath
+              } else {
+                rootPath = join(rootPath, '..')
+              }
+            }
+            throw new Error(`Couldn't find package.json in any path above: ${fullPath}`)
+          }
+        )
+
+        function isInComponentModule(fullPath: string) {
+          return componentsBaseDirs.some((componentDir) => fullPath.startsWith(componentDir))
+        }
+
+        // allows configuration
+        const shouldExclude = (path: string, projectRoot: string) => {
+          const res = tamaguiOptions.shouldExtract?.(path, projectRoot)
+          if (typeof res === 'boolean') {
+            return !res
+          }
+          if (isInComponentModule(path)) {
+            return false
+          }
+          return shouldExcludeDefault(path, projectRoot)
         }
 
         const rnw = tamaguiOptions.useReactNativeWebLite
@@ -155,6 +188,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               new webpack.NormalModuleReplacementPlugin(regex, resolveEsm('@tamagui/proxy-worm'))
             )
           } catch (err) {
+            // eslint-disable-next-line no-console
             console.warn(
               `Invalid names provided to excludeReactNativeWebExports: ${excludeExports.join(', ')}`
             )
@@ -163,6 +197,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         if (process.env.IGNORE_TS_CONFIG_PATHS) {
           if (process.env.DEBUG) {
+            // eslint-disable-next-line no-console
             console.log(prefix, 'ignoring tsconfig paths')
           }
           if (webpackConfig.resolve.plugins[0]) {
@@ -208,12 +243,14 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               }
             }
 
+            if (isInComponentModule(fullPath)) {
+              return false
+            }
+
             if (fullPath.includes('react-native-web-lite')) {
               // always inline react-native-web-lite due to errors where next.js resolved the path to esm
               return false
             }
-
-            const SEP = path.sep
 
             // must inline react-native so we can alias to react-native-web
             if (fullPath === 'react-native' || fullPath.startsWith(`react-native${SEP}`)) {
