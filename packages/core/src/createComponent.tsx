@@ -793,8 +793,7 @@ export function createComponent<
             // replicating TouchableWithoutFeedback
             ...(!isWeb && {
               cancelable: !props.rejectResponderTermination,
-              disabled:
-                props.disabled !== null ? props.disabled : props.accessibilityState?.disabled,
+              disabled: props.disabled ?? props.accessibilityState?.disabled,
               hitSlop: props.hitSlop,
               delayLongPress: props.delayLongPress,
               delayPressIn: props.delayPressIn,
