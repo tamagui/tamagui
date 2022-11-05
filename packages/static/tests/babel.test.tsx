@@ -85,21 +85,10 @@ test('theme value extraction should NOT work when theme variables used', async (
   `)
   const code = output?.code ?? ''
   expect(code).toMatchInlineSnapshot(`
-    "const _sheet = ReactNativeStyleSheet.create({
-      \\"0\\": {
-        \\"color\\": \\"rgba(23,23,23,1.00)\\",
-        \\"fontWeight\\": \\"500\\",
-        \\"letterSpacing\\": 0,
-        \\"fontSize\\": 14,
-        \\"lineHeight\\": 23,
-        \\"display\\": \\"flex\\"
-      }
-    });
-    import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
-    import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+    "import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { Paragraph } from 'tamagui';
     export function Test() {
-      return <Paragraph _stylehk3nhp={_sheet[\\"0\\"]}>hello world</Paragraph>;
+      return <Paragraph>hello world</Paragraph>;
     }"
   `)
 })
@@ -234,29 +223,10 @@ test('handles style order merge properly', async () => {
   `)
   const code = output?.code ?? ''
   expect(code).toMatchInlineSnapshot(`
-    "const _sheet = ReactNativeStyleSheet.create({
-      \\"0\\": {
-        \\"transform\\": [{
-          \\"scale\\": 1
-        }]
-      },
-      \\"1\\": {
-        \\"transform\\": [{
-          \\"scale\\": 2
-        }]
-      },
-      \\"2\\": {},
-      \\"3\\": {
-        \\"transform\\": [{
-          \\"rotate\\": \\"10deg\\"
-        }]
-      }
-    });
-    import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
-    import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+    "import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { YStack } from 'tamagui';
     export function Test(props) {
-      return <YStack _style1rhtpsq={props.isLoading ? _sheet[\\"0\\"] : _sheet[\\"1\\"]} _style31e={_sheet[\\"2\\"]} {...props} _style9zfgt4={_sheet[\\"3\\"]} />;
+      return <YStack {...props} />;
     }"
   `)
 })
