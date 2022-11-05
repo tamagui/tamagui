@@ -1,9 +1,6 @@
 - 1.0
 
-  - duplicating styles on className + style
-  - why animations on prod site got glitchy, must be a slowdown somewhere
   - pass Size down context (see Group) but really this is just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)
-  - Sheet on android: https://github.com/tamagui/tamagui/issues/261
   - When you focus an input in a dialog on mobile or a propover etc. then it disappears
   - site design system docs (for use in cli later)
   - blog post / home: lighthouse score diff between compiler on / off
