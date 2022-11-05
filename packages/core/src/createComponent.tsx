@@ -904,16 +904,6 @@ export function createComponent<
           </span>
         )
       }
-
-      // special weird case since there's a bug in RNW where we can't animate + pass style { $$css }
-      // but we need is_font classnames... need to see about RNW bug and then can remove this
-      if (isText && isAnimatedReactNativeWeb) {
-        content = (
-          <span className={fontFamilyClassName} style={styleDisplayContents}>
-            {content}
-          </span>
-        )
-      }
     }
 
     if (process.env.NODE_ENV === 'development') {
