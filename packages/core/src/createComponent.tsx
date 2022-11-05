@@ -1004,6 +1004,8 @@ export function createComponent<
       defaultTag = ourProps.tag
     }
 
+    const noClassNames = !staticConfig.acceptsClassName
+
     initialSplitStyles = insertSplitStyles(
       ourProps,
       staticConfig,
@@ -1015,7 +1017,7 @@ export function createComponent<
         pressIn: false,
         focus: false,
         resolveVariablesAs: 'both',
-        noClassNames: !staticConfig.acceptsClassName,
+        noClassNames,
         keepVariantsAsProps: true,
       },
       undefined,
@@ -1078,6 +1080,7 @@ export function createComponent<
           ourClassNames,
           defaultsClassnames,
           defaultTag,
+          noClassNames,
         })
       }
     }

@@ -93,7 +93,12 @@ export async function extractToClassNames({
     target: 'html',
     extractStyledDefinitions: true,
     onStyleRule(identifier, rules) {
-      cssMap.set(`.${identifier}`, { css: rules.join(';'), commentTexts: [] })
+      const css = rules.join(';')
+      if (shouldPrintDebug) {
+        // eslint-disable-next-line no-console
+        console.log(`adding styled() rule: .${identifier} ${css}`)
+      }
+      cssMap.set(`.${identifier}`, { css, commentTexts: [] })
     },
     getFlattenedNode: ({ tag }) => {
       hasFlattened = true

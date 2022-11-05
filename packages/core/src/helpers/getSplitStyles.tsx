@@ -57,6 +57,7 @@ const skipProps = {
 }
 
 const emptyObject = {}
+const IS_STATIC = process.env.IS_STATIC === 'is_static'
 
 // native only skips
 if (process.env.TAMAGUI_TARGET === 'native') {
@@ -193,13 +194,12 @@ export const getSplitStyles: StyleSplitter = (
   const propKeys = Object.keys(props)
 
   const shouldDoClasses =
-    staticConfig.acceptsClassName &&
-    (isWeb || process.env.IS_STATIC === 'is_static') &&
-    !state.noClassNames
+    staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
+
+  let style: ViewStyle = {}
 
   const len = propKeys.length
   const rulesToInsert: RulesToInsert = []
-  const style: ViewStyle = {}
   const classNames: ClassNamesObject = {}
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
@@ -464,6 +464,10 @@ export const getSplitStyles: StyleSplitter = (
     for (const [key, val] of expanded) {
       if (val === undefined) continue
 
+      if (debug) {
+        console.log(`ok`, key, val)
+      }
+
       isMedia = isMediaKey(key)
       isPseudo = validPseudoKeys[key]
       const isMediaOrPseudo = isMedia || isPseudo
@@ -643,7 +647,9 @@ export const getSplitStyles: StyleSplitter = (
         addStyleToInsertRules(rulesToInsert, atomicStyle)
         mergeClassName(transforms, classNames, key, atomicStyle.identifier)
       }
-      // style = emptyObject
+      if (!IS_STATIC) {
+        style = emptyObject
+      }
     }
 
     if (transforms) {

@@ -436,7 +436,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
             Component = out.components.flatMap((x) => x.nameToInfo[name] ?? [])[0]
 
-            if (shouldPrintDebug) {
+            if (shouldPrintDebug === 'verbose') {
               logger.info([`Tamagui Loaded`, JSON.stringify(out.components), !!Component].join(' '))
             }
           } catch (err: any) {
@@ -522,24 +522,16 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           press: false,
           pressIn: false,
           resolveVariablesAs: 'variable',
+          noClassNames: false,
         })
 
         const classNames = {
           ...out.classNames,
         }
 
-        // add in the style object as classnames
-        const atomics = getStylesAtomic(out.style)
-
-        for (const atomic of atomics) {
-          out.rulesToInsert = out.rulesToInsert || []
-          out.rulesToInsert.push(atomic)
-          classNames[atomic.property] = atomic.identifier
-        }
-
         if (shouldPrintDebug) {
           // prettier-ignore
-          logger.info([`Extracted styled(${name})\n`, JSON.stringify(styles, null, 2), '\n=>\n', out.rulesToInsert.flatMap((rule) => rule.rules).join('\n')].join(' '))
+          logger.info([`Extracted styled(${name})\n`, JSON.stringify(styles, null, 2), '\n  rulesToInsert:', out.rulesToInsert.flatMap((rule) => rule.rules).join('\n')].join(' '))
         }
 
         // leave only un-parsed props...

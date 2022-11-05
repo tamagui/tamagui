@@ -153,6 +153,11 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
   }
 }
 
+const IS_STATIC = process.env.IS_STATIC === 'is_static'
+
 export function shouldInsertStyleRules(styleObject: PartialStyleObject) {
+  if (IS_STATIC) {
+    return true
+  }
   return !allSelectors[styleObject.identifier]
 }
