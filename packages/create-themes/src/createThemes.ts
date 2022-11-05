@@ -146,11 +146,23 @@ export const createThemes = <C extends string>({
     getTheme: GetTheme,
     props: ThemeCreatorProps
   ): {
-    [key in `${Name}_alt${AltKeys}` | `${Name}` | `${Name}_darker`]: GetTheme extends ThemeCreator<
-      infer Theme
-    >
-      ? Theme
-      : never
+    [key in
+      | `${Name}_alt${AltKeys}`
+      | `${Name}`
+      | `${Name}_darker`
+      | `${Name}_active`
+      | `${Name}_Card`
+      | `${Name}_SliderTrack`
+      | `${Name}_SliderTrackActive`
+      | `${Name}_Switch`
+      | `${Name}_SwitchThumb`
+      | `${Name}_DrawerFrame`
+      | `${Name}_Button`
+      | `${Name}_SliderThumb`
+      | `${Name}_Progress`
+      | `${Name}_ProgressIndicator`
+      | `${Name}_TooltipArrow`
+      | `${Name}_TooltipContent`]: GetTheme extends ThemeCreator<infer Theme> ? Theme : never
   } {
     const { shift = 0 } = props
     const theme = getTheme(0 + shift, props)
