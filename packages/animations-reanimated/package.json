@@ -16,11 +16,11 @@
   "dependencies": {
     "@tamagui/animations-react-native": "^1.0.1-beta.202",
     "@tamagui/core": "^1.0.1-beta.202",
-    "@tamagui/use-presence": "^1.0.1-beta.202",
-    "react-native-reanimated": "^2.12.0"
+    "@tamagui/use-presence": "^1.0.1-beta.202"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.202"
+    "@tamagui/build": "^1.0.1-beta.202",
+    "react-native-reanimated": "^2.12.0"
   },
   "scripts": {
     "build": "tamagui-build",
