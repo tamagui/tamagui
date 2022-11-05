@@ -261,6 +261,12 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
 
+      if (keyInit === 'testID') {
+        usedKeys[keyInit] = 1
+        viewProps['data-testid'] = valInit
+        continue
+      }
+
       if (keyInit === 'id' || keyInit === 'nativeID') {
         usedKeys[keyInit] = 1
         if (staticConfig.isReactNative) {
@@ -275,6 +281,13 @@ export const getSplitStyles: StyleSplitter = (
 
       if (staticConfig.isReactNative) {
         didUseKeyInit = false
+
+        // pass along to react-native-web
+        if (accessibilityDirectMap[keyInit] || keyInit.startsWith('accessibility')) {
+          viewProps[keyInit] = valInit
+          usedKeys[keyInit] = 1
+          continue
+        }
       } else {
         if (accessibilityDirectMap[keyInit]) {
           viewProps[accessibilityDirectMap[keyInit]] = valInit
