@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { basename, join, relative } from 'path'
+import { basename, relative } from 'path'
 
 import traverse, { NodePath, TraverseOptions } from '@babel/traverse'
 import * as t from '@babel/types'
@@ -8,7 +8,6 @@ import {
   StaticConfigParsed,
   expandStyles,
   getSplitStyles,
-  getStylesAtomic,
   mediaQueryConfig,
   proxyThemeVariables,
   pseudoDescriptors,
@@ -42,12 +41,7 @@ import { findTopmostFunction } from './findTopmostFunction.js'
 import { getPrefixLogs } from './getPrefixLogs.js'
 import { cleanupBeforeExit, getStaticBindingsForScope } from './getStaticBindingsForScope.js'
 import { literalToAst } from './literalToAst.js'
-import {
-  LoadedComponents,
-  TamaguiProjectInfo,
-  loadTamagui,
-  loadTamaguiSync,
-} from './loadTamagui.js'
+import { TamaguiProjectInfo, loadTamagui, loadTamaguiSync } from './loadTamagui.js'
 import { logLines } from './logLines.js'
 import { normalizeTernaries } from './normalizeTernaries.js'
 import { removeUnusedHooks } from './removeUnusedHooks.js'
@@ -567,7 +561,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         tm.mark('jsx-element', !!shouldPrintDebug)
 
         const node = traversePath.node.openingElement
-        const ogAttributes = node.attributes
+        const ogAttributes = node.attributes.map((attr) => ({ ...attr }))
         const componentName = findComponentName(traversePath.scope)
         const closingElement = traversePath.node.closingElement
 

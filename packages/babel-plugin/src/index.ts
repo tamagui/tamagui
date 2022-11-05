@@ -126,6 +126,9 @@ export default declare(function snackBabelPlugin(
               },
 
               onExtractTag(props) {
+                if (!props.isFlattened) {
+                  return
+                }
                 assertValidTag(props.node)
                 const stylesExpr = t.arrayExpression([])
                 const finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
@@ -219,6 +222,7 @@ export default declare(function snackBabelPlugin(
           // replace the null with our object
           sheetOuter.declarations[0].init.arguments[0] = sheetObject
           root.unshiftContainer('body', sheetOuter)
+
           if (shouldPrintDebug) {
             // eslint-disable-next-line no-console
             console.log('\n -------- output code ------- \n')
