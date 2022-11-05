@@ -13,6 +13,7 @@
     - native integration tests
     - useMedia, useTheme
     - reanimated
+  - https://github.com/tamagui/tamagui/issues/298
   - https://github.com/tamagui/tamagui/issues/186
   - https://github.com/tamagui/tamagui/issues/270
   - https://github.com/tamagui/tamagui/issues/266

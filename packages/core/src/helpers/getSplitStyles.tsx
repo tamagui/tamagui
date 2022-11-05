@@ -464,10 +464,6 @@ export const getSplitStyles: StyleSplitter = (
     for (const [key, val] of expanded) {
       if (val === undefined) continue
 
-      if (debug) {
-        console.log(`ok`, key, val)
-      }
-
       isMedia = isMediaKey(key)
       isPseudo = validPseudoKeys[key]
       const isMediaOrPseudo = isMedia || isPseudo
