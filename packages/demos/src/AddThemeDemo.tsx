@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
-import { Button, H3, Square, Theme, YStack, addTheme, updateTheme, useForceUpdate } from 'tamagui'
+import { useState } from 'react'
+import { Button, H3, Square, Theme, YStack, addTheme } from 'tamagui'
 
 export function AddThemeDemo() {
   const [theme, setTheme] = useState<string>()
-  const fu = useForceUpdate()
 
   return (
     <YStack ai="center" space>
@@ -30,8 +29,6 @@ export function AddThemeDemo() {
       >
         Add superblue theme
       </Button>
-
-      <Button onPress={() => fu()}>test</Button>
     </YStack>
   )
 }

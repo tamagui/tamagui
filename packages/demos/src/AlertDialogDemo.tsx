@@ -1,4 +1,3 @@
-import React from 'react'
 import { AlertDialog, Button, XStack, YStack } from 'tamagui'
 
 export function AlertDialogDemo() {
