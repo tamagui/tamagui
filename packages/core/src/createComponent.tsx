@@ -702,21 +702,24 @@ export function createComponent<
 
     const handlesPressEvents = !isWeb && !asChild
 
-    // check presence to prevent reparenting bugs, allows for onPress={x ? function : undefined} usage
-    const shouldAttach =
-      !asChild &&
-      (attachPress ||
-        attachHover ||
-        'pressStyle' in props ||
-        'onPress' in props ||
-        'onPressIn' in props ||
-        'onPressOut' in props ||
-        (isWeb &&
-          ('hoverStyle' in props ||
-            'onHoverIn' in props ||
-            'onHoverOut' in props ||
-            'onMouseEnter' in props ||
-            'onMouseLeave' in props)))
+    // check presence rather than value to prevent reparenting bugs
+    // allows for onPress={x ? function : undefined} without re-ordering dom
+    const shouldAttach = asChild
+      ? false
+      : Boolean(
+          attachPress ||
+            attachHover ||
+            'pressStyle' in props ||
+            'onPress' in props ||
+            'onPressIn' in props ||
+            'onPressOut' in props ||
+            (isWeb &&
+              ('hoverStyle' in props ||
+                'onHoverIn' in props ||
+                'onHoverOut' in props ||
+                'onMouseEnter' in props ||
+                'onMouseLeave' in props))
+        )
 
     const events =
       shouldAttach && !isRSC
