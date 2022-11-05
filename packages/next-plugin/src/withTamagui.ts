@@ -208,6 +208,11 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               }
             }
 
+            if (fullPath.includes('react-native-web-lite')) {
+              // always inline react-native-web-lite due to errors where next.js resolved the path to esm
+              return false
+            }
+
             const SEP = path.sep
 
             // must inline react-native so we can alias to react-native-web
