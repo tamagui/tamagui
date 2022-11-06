@@ -13,8 +13,9 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
   const [theme, setTheme] = useRootTheme()
 
   const contents = useMemo(() => {
+    // @ts-ignore
     return <Component {...pageProps} />
-  }, [pageProps])
+  }, [Component, pageProps])
 
   return (
     <>
