@@ -13,8 +13,27 @@ description: Cross-platform compatible SVG based icons.
 
 ### Usage
 
-Add `@tamagui/lucide-icons` to your package.json and import them directly for use as React elements.
+Add `@tamagui/lucide-icons` to your package.json and import them directly for use as React elements:
+
+```tsx
+import { Button } from 'tamagui'
+import { Plus } from '@tamagui/lucide-icons'
+
+// Button will automatically pass size/theme to icon
+export default () => (
+  <Button icon={Plus}>
+    Hello world
+  </Button>
+)
+
+// or you can control it
+export default () => (
+  <Button icon={<Plus size="$4" />}>
+    Hello world
+  </Button>
+)
+```
 
 ### Credit
 
-The wonderful [Lucide Icons](https://lucide.dev/) built on top of the wonderful [Feather Icons](https://feathericons.com/).
+The great [Lucide Icons](https://lucide.dev/), a superset of the wonderful [Feather Icons](https://feathericons.com/).
