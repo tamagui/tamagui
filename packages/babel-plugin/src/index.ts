@@ -212,8 +212,6 @@ export default declare(function snackBabelPlugin(
             return
           }
 
-          root.unshiftContainer('body', importStyleSheet())
-
           const sheetObject = literalToAst(sheetStyles)
           const sheetOuter = template(`const SHEET = ReactNativeStyleSheet.create(null)`)({
             SHEET: sheetIdentifier.name,
@@ -222,6 +220,8 @@ export default declare(function snackBabelPlugin(
           // replace the null with our object
           sheetOuter.declarations[0].init.arguments[0] = sheetObject
           root.unshiftContainer('body', sheetOuter)
+          // add import
+          root.unshiftContainer('body', importStyleSheet())
 
           if (shouldPrintDebug) {
             // eslint-disable-next-line no-console

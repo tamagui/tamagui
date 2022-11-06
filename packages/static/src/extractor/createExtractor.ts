@@ -1955,9 +1955,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           if (isNativeNotFlat) {
             if (shouldPrintDebug) {
               logger.info(`Disabled flattening except for simple cases on native for now`)
-              node.attributes = ogAttributes
-              return null
             }
+            node.attributes = ogAttributes
+            return null
           }
 
           let getStyleError: any = null
