@@ -257,7 +257,7 @@ export type Tokens = TamaguiConfig['tokens']
 export type Shorthands = TamaguiConfig['shorthands']
 export type Media = TamaguiConfig['media']
 export type Themes = TamaguiConfig['themes']
-export type ThemeName = GetAltThemeNames<keyof Themes>
+export type ThemeName = Exclude<GetAltThemeNames<keyof Themes>, number>
 export type ThemeTokens = `$${ThemeKeys}`
 export type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<infer Config>
   ? keyof Config
@@ -293,8 +293,6 @@ export type CreateTamaguiProps = {
       [key: string]: string | number | Variable
     }
   }
-
-  defaultTheme?: string
 
   /**
    * *Advanced use case* For all CSS extracted views, this has no effect.

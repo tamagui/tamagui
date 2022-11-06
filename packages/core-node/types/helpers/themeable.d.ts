@@ -6,7 +6,7 @@ export declare type ThemeableProps = {
 export declare function themeable<Component extends (props: any) => any>(component: Component, opts?: {
     componentName?: string;
 }): Component extends (props: infer P) => infer R ? (props: Omit<P, "theme" | "themeInverse"> & {
-    theme?: ThemeName | null | undefined;
+    theme?: string | null | undefined;
     themeInverse?: boolean | undefined;
 }) => R : unknown;
 //# sourceMappingURL=themeable.d.ts.map

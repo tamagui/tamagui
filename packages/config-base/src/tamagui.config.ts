@@ -98,7 +98,6 @@ const monoFont = createGenericFont(
 )
 
 export const config = {
-  defaultTheme: 'light',
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
   animations,

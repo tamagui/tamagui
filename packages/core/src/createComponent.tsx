@@ -966,11 +966,13 @@ export function createComponent<
       }
 
       if (!initialTheme) {
-        const next = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
+        const next = conf.themes[Object.keys(conf.themes)[0]]
         initialTheme = proxyThemeVariables(next)
-        if (!initialTheme && process.env.NODE_ENV === 'development') {
-          // eslint-disable-next-line no-console
-          console.log(`Warning: Missing theme`)
+        if (process.env.NODE_ENV === 'development') {
+          if (!initialTheme) {
+            // eslint-disable-next-line no-console
+            console.log(`Warning: Missing theme`)
+          }
         }
       }
     }

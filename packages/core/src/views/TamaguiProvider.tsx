@@ -6,6 +6,7 @@ import { TextAncestorContext } from '../contexts/TextAncestorContext'
 import { useMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
+import { getConfig } from '..'
 
 export function TamaguiProvider({
   children,
@@ -14,8 +15,9 @@ export function TamaguiProvider({
   ...themePropsProvider
 }: TamaguiProviderProps) {
   if (isRSC) {
+    const { themes } = getConfig()
     return (
-      <span style={{ display: 'contents' }} className={`t_${config.defaultTheme || 'light'}`}>
+      <span style={{ display: 'contents' }} className={`t_${Object.keys(themes)[0] || 'light'}`}>
         {children}
       </span>
     )
@@ -39,14 +41,16 @@ export function TamaguiProvider({
     }, [config, disableInjectCSS])
   }
 
+  const { themes } = getConfig()
+
   return (
     <ButtonInsideButtonContext.Provider value={false}>
       <TextAncestorContext.Provider value={false}>
         <ThemeProvider
-          defaultTheme={config.defaultTheme || 'light'}
           themeClassNameOnRoot={config.themeClassNameOnRoot}
           disableRootThemeClass={config.disableRootThemeClass}
           {...themePropsProvider}
+          defaultTheme={themePropsProvider.defaultTheme ?? Object.keys(themes)[0]}
         >
           {children}
         </ThemeProvider>

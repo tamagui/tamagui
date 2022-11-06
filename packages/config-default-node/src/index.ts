@@ -120,7 +120,6 @@ export function getDefaultTamaguiConfig() {
   }
 
   return createTamagui({
-    defaultTheme: 'light',
     shouldAddPrefersColorThemes: true,
     themeClassNameOnRoot: true,
     shorthands,

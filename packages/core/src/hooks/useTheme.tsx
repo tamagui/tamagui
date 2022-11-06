@@ -95,7 +95,7 @@ export const useTheme = (
       // eslint-disable-next-line no-console
       console.warn('No theme with name', themeName)
     }
-    return themes[getConfig().defaultTheme || 'light']
+    return themes[Object.keys(themes)[0]]
   }
 
   return useMemo(() => {
@@ -162,10 +162,10 @@ export const getThemeManager = (theme: any): ThemeManager | undefined => {
   return theme[GetThemeManager]
 }
 
-export const useThemeName = (opts?: { parent?: true }) => {
+export function useThemeName(opts?: { parent?: true }): ThemeName {
   if (isRSC) {
     const config = getConfig()
-    return config.defaultTheme || 'light'
+    return config.themes[Object.keys(config.themes)[0]] as any
   }
   const parent = useContext(ThemeManagerContext)
   const [name, setName] = useState(parent?.name || '')
