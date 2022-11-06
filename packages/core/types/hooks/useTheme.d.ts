@@ -11,10 +11,10 @@ export interface ThemeProps {
 }
 export declare const useTheme: (themeName?: string | null, componentName?: string, props?: ThemeProps, forceUpdate?: any) => ThemeParsed;
 export declare const getThemeManager: (theme: any) => ThemeManager | undefined;
-export declare const useThemeName: (opts?: {
+export declare function useThemeName(opts?: {
     parent?: true;
-}) => string;
-export declare const useDefaultThemeName: () => ThemeName | undefined;
+}): ThemeName;
+export declare const useDefaultThemeName: () => string | undefined;
 export declare const activeThemeManagers: Set<ThemeManager>;
 export declare const useChangeThemeEffect: (name?: string | null, componentName?: string, props?: ThemeProps, forceUpdateProp?: any, uuid?: Object) => {
     themes: Record<string, ThemeParsed>;

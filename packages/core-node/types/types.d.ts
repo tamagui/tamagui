@@ -147,7 +147,7 @@ export declare type Tokens = TamaguiConfig['tokens'];
 export declare type Shorthands = TamaguiConfig['shorthands'];
 export declare type Media = TamaguiConfig['media'];
 export declare type Themes = TamaguiConfig['themes'];
-export declare type ThemeName = GetAltThemeNames<keyof Themes>;
+export declare type ThemeName = Exclude<GetAltThemeNames<keyof Themes>, number>;
 export declare type ThemeTokens = `$${ThemeKeys}`;
 export declare type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<infer Config> ? keyof Config : string;
 export declare type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>;
@@ -172,7 +172,6 @@ export declare type CreateTamaguiProps = {
             [key: string]: string | number | Variable;
         };
     };
-    defaultTheme?: string;
     /**
      * *Advanced use case* For all CSS extracted views, this has no effect.
      *

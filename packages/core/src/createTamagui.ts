@@ -181,7 +181,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const shorthands = configIn.shorthands || {}
   const config: TamaguiInternalConfig = {
     fontLanguages: [],
-    defaultTheme: 'light',
     animations: {} as any,
     media: {},
     ...configIn,
