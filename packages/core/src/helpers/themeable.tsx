@@ -4,8 +4,8 @@ import { ThemeName } from '../types'
 import { Theme } from '../views/Theme'
 import { ThemeInverse } from '../views/ThemeInverse'
 
-export type ThemeableProps = {
-  theme?: ThemeName | string | null
+export interface ThemeableProps {
+  theme?: Exclude<ThemeName, number>
   themeInverse?: boolean
 }
 
@@ -35,11 +35,6 @@ export function themeable<Component extends (props: any) => any>(
   })`
 
   return withTheme as Component extends (props: infer P) => infer R
-    ? (
-        props: Omit<P, 'theme' | 'themeInverse'> & {
-          theme?: ThemeName | null
-          themeInverse?: boolean
-        }
-      ) => R
+    ? (props: Omit<P, 'theme' | 'themeInverse'> & ThemeableProps) => R
     : unknown
 }

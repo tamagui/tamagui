@@ -574,9 +574,6 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
      * adjust internal space relative to icon size
      */
     scaleSpace?: number | undefined;
-} & React.RefAttributes<TamaguiElement>, "theme" | "themeInverse"> & {
-    theme?: import("@tamagui/core").ThemeName | null | undefined;
-    themeInverse?: boolean | undefined;
-}) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
+} & React.RefAttributes<TamaguiElement>, "theme" | "themeInverse"> & ThemeableProps) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
 export {};
 //# sourceMappingURL=Button.d.ts.map

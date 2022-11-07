@@ -753,7 +753,7 @@ export declare const ListItem: ((props: Omit<Omit<TextParentStyles, "TextCompone
      */
     noTextWrap?: boolean | "all" | undefined;
 } & React.RefAttributes<TamaguiElement>, "theme" | "themeInverse"> & {
-    theme?: import("@tamagui/core").ThemeName | null | undefined;
+    theme?: string | null | undefined;
     themeInverse?: boolean | undefined;
 }) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & {
     Text: import("@tamagui/core").TamaguiComponent<(Omit<import("@tamagui/types-react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
