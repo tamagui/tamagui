@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/stacks",
-  "version": "1.0.1-beta.209",
+  "version": "1.0.1-beta.210",
   "sideEffects": [
     "*.css"
   ],
@@ -21,15 +21,15 @@
     "lint:fix": "yarn lint --fix"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.209"
+    "@tamagui/core": "^1.0.1-beta.210"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.209",
-    "@tamagui/get-button-sized": "^1.0.1-beta.209",
+    "@tamagui/build": "^1.0.1-beta.210",
+    "@tamagui/get-button-sized": "^1.0.1-beta.210",
     "react": "*",
     "react-dom": "*"
   },
