@@ -188,6 +188,7 @@ export const getSplitStyles: StyleSplitter = (
   const mediaKeys: string[] = []
   const viewProps: SplitStylesAndProps['viewProps'] = {}
   const pseudos: PseudoStyles = {}
+  let psuedosUsed: Record<string, number> | null = null
   const medias: Record<MediaQueryKey, ViewStyle> = {}
   const mediaState = state.mediaState || globalMediaState
   const usedKeys: Record<string, number> = {}
@@ -525,19 +526,33 @@ export const getSplitStyles: StyleSplitter = (
           continue
         }
 
-        if (shouldDoClasses) {
-          const pseudoStyles = getAtomicStyle(pseudoStyleObject, pseudoDescriptors[key])
-          for (const style of pseudoStyles) {
-            const postfix = pseudoDescriptors[key]?.name || key // exitStyle/enterStyle dont have pseudoDescriptors
-            const fullKey = `${style.property}${PROP_SPLIT}${postfix}`
-            if (!usedKeys[fullKey]) {
-              usedKeys[fullKey] = 1
-              addStyleToInsertRules(rulesToInsert, style)
-              mergeClassName(transforms, classNames, fullKey, style.identifier, isMediaOrPseudo)
+        const pseudoStyles = getAtomicStyle(pseudoStyleObject, pseudoDescriptors[key])
+        for (const psuedoStyle of pseudoStyles) {
+          const postfix = pseudoDescriptors[key]?.name || key // exitStyle/enterStyle dont have pseudoDescriptors
+          const fullKey = shouldDoClasses
+            ? `${psuedoStyle.property}${PROP_SPLIT}${postfix}`
+            : psuedoStyle.property
+          if (!usedKeys[fullKey]) {
+            usedKeys[fullKey] = 1
+            if (shouldDoClasses) {
+              addStyleToInsertRules(rulesToInsert, psuedoStyle)
+              mergeClassName(
+                transforms,
+                classNames,
+                fullKey,
+                psuedoStyle.identifier,
+                isMediaOrPseudo
+              )
+            } else {
+              psuedosUsed ??= {}
+              psuedosUsed[psuedoStyle.property] ??= 0
+              const importance = pseudoDescriptors[key].priority
+              if (psuedosUsed[importance] <= importance) {
+                psuedosUsed[psuedoStyle.property] = importance
+                style[psuedoStyle.property] = psuedoStyle.value
+              }
             }
           }
-        } else {
-          // need same treatment as media (individual merge + importance) + can avoid calling getSubStyle entirely when state = off
         }
         continue
       }
@@ -652,14 +667,18 @@ export const getSplitStyles: StyleSplitter = (
 
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (shouldDoClasses) {
-      const atomic = getStylesAtomic(style)
-      for (const atomicStyle of atomic) {
-        const key = atomicStyle.property
-        addStyleToInsertRules(rulesToInsert, atomicStyle)
-        mergeClassName(transforms, classNames, key, atomicStyle.identifier)
-      }
-      if (!IS_STATIC) {
-        style = emptyObject
+      if (style['$$css']) {
+        // avoid re-processing for rnw
+      } else {
+        const atomic = getStylesAtomic(style)
+        for (const atomicStyle of atomic) {
+          const key = atomicStyle.property
+          addStyleToInsertRules(rulesToInsert, atomicStyle)
+          mergeClassName(transforms, classNames, key, atomicStyle.identifier)
+        }
+        if (!IS_STATIC) {
+          style = emptyObject
+        }
       }
     }
 
