@@ -44,6 +44,19 @@ export const docsRoutes = [
 
   {
     type: 'hr',
+    title: 'Theme',
+  },
+
+  {
+    pages: [
+      { title: 'Colors', route: '/docs/intro/colors' },
+      { title: 'Tokens', route: '/docs/intro/tokens' },
+      { title: 'Themes', route: '/docs/intro/themes' },
+    ],
+  },
+
+  {
+    type: 'hr',
     title: 'Tamagui',
   },
 
