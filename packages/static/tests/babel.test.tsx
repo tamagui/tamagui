@@ -19,7 +19,8 @@ test('basic extraction', async () => {
   `)
   const code = output?.code ?? ''
   expect(code).toMatchInlineSnapshot(`
-    "const _sheet = ReactNativeStyleSheet.create({
+    "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+    const _sheet = ReactNativeStyleSheet.create({
       \\"0\\": {
         \\"backgroundColor\\": \\"red\\",
         \\"flexDirection\\": \\"column\\",
@@ -32,7 +33,6 @@ test('basic extraction', async () => {
         \\"alignItems\\": \\"stretch\\"
       }
     });
-    import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
     import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { YStack } from 'tamagui';
     export function Test() {
@@ -53,7 +53,8 @@ test('theme value extraction should work when no theme variables used', async ()
   `)
   const code = output?.code ?? ''
   expect(code).toMatchInlineSnapshot(`
-    "const _sheet = ReactNativeStyleSheet.create({
+    "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+    const _sheet = ReactNativeStyleSheet.create({
       \\"0\\": {
         \\"color\\": \\"red\\",
         \\"fontFamily\\": \\"Inter\\",
@@ -64,7 +65,6 @@ test('theme value extraction should work when no theme variables used', async ()
         \\"display\\": \\"flex\\"
       }
     });
-    import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
     import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { Paragraph } from 'tamagui';
     export function Test() {
@@ -107,7 +107,8 @@ test('basic conditional extraction', async () => {
   `)
   const code = output?.code ?? ''
   expect(code).toMatchInlineSnapshot(`
-    "const _sheet = ReactNativeStyleSheet.create({
+    "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+    const _sheet = ReactNativeStyleSheet.create({
       \\"0\\": {
         \\"flexDirection\\": \\"column\\",
         \\"minWidth\\": 0,
@@ -139,7 +140,6 @@ test('basic conditional extraction', async () => {
       },
       \\"5\\": {}
     });
-    import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
     import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { YStack } from 'tamagui';
     export function Test() {
@@ -167,7 +167,8 @@ test('flat transform props', async () => {
   `)
   const code = output?.code ?? ''
   expect(code).toMatchInlineSnapshot(`
-    "const _sheet = ReactNativeStyleSheet.create({
+    "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+    const _sheet = ReactNativeStyleSheet.create({
       \\"0\\": {
         \\"flexDirection\\": \\"column\\",
         \\"minWidth\\": 0,
@@ -198,7 +199,6 @@ test('flat transform props', async () => {
         }]
       }
     });
-    import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
     import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { YStack } from 'tamagui';
     export function Test(isLoading) {
@@ -226,7 +226,7 @@ test('handles style order merge properly', async () => {
     "import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
     import { YStack } from 'tamagui';
     export function Test(props) {
-      return <YStack {...props} />;
+      return <YStack scale={props.isLoading ? 1 : 2} x={10} {...props} rotate=\\"10deg\\" />;
     }"
   `)
 })

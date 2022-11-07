@@ -34,7 +34,8 @@ describe('flatten-tests', () => {
     `)
     const code = output?.code ?? ''
     expect(code).toMatchInlineSnapshot(`
-      "const _sheet = ReactNativeStyleSheet.create({
+      "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+      const _sheet = ReactNativeStyleSheet.create({
         \\"0\\": {
           \\"transform\\": [{
             \\"translateY\\": 10
@@ -71,7 +72,6 @@ describe('flatten-tests', () => {
         },
         \\"6\\": {}
       });
-      import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
       import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
       import { YStack } from 'tamagui/src/YStack';
       import { useMedia } from 'tamagui';
