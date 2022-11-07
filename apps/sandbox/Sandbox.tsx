@@ -35,6 +35,14 @@ const Frame = styled(ButtonFrame, {
   } as const,
 })
 
+const StyledInput = styled(Input, {
+  debug: 'verbose',
+  backgroundColor: 'red',
+  hoverStyle: {
+    backgroundColor: 'blue',
+  },
+})
+
 export const Sandbox = () => {
   // const scheme = useColorScheme()
   const [theme, setTheme] = useState('light')
@@ -97,6 +105,8 @@ export const Sandbox = () => {
       >
         {/* <Input /> */}
 
+        <StyledInput debug="verbose" />
+
         {/* <SheetDemo /> */}
 
         {/* space */}
@@ -107,7 +117,7 @@ export const Sandbox = () => {
         </YStack> */}
 
         {/* <LabelDemo /> */}
-        <SelectDemo />
+        {/* <SelectDemo /> */}
 
         {/* <Square size={100} bc="red" /> */}
         {/* <SheetDemo /> */}

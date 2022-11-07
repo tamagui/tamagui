@@ -1,6 +1,6 @@
 import { ThemeName } from '../types';
 export interface ThemeableProps {
-    theme?: Exclude<ThemeName, number>;
+    theme?: ThemeName | null;
     themeInverse?: boolean;
 }
 export declare function themeable<Component extends (props: any) => any>(component: Component, opts?: {

@@ -5,7 +5,7 @@ import { Theme } from '../views/Theme'
 import { ThemeInverse } from '../views/ThemeInverse'
 
 export interface ThemeableProps {
-  theme?: Exclude<ThemeName, number>
+  theme?: ThemeName | null
   themeInverse?: boolean
 }
 
