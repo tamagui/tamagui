@@ -108,13 +108,19 @@ async function run() {
 
       version = answer.version
 
-      console.log('running checks')
+      console.log('install and build')
 
       await Promise.all([
         //
         spawnify(`yarn install`),
         checkDistDirs(),
         spawnify(`yarn build`),
+      ])
+
+      console.log('run checks')
+
+      await Promise.all([
+        //
         spawnify(`yarn lint`),
         spawnify(`yarn fix`),
       ])
