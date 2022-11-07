@@ -108,7 +108,7 @@ export declare const elevate: {
         themeShallow?: boolean | import("@tamagui/core").Variable<any> | undefined;
         id?: string | import("@tamagui/core").Variable<any> | undefined;
         tag?: string | import("@tamagui/core").Variable<any> | undefined;
-        theme?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeName | null | undefined;
+        theme?: string | import("@tamagui/core").Variable<any> | null | undefined;
         componentName?: string | import("@tamagui/core").Variable<any> | undefined;
         forceStyle?: import("@tamagui/core").Variable<any> | "hover" | "press" | "focus" | undefined;
         onHoverIn?: import("@tamagui/core").Variable<any> | ((e: MouseEvent) => any) | undefined;

@@ -752,10 +752,7 @@ export declare const ListItem: ((props: Omit<Omit<TextParentStyles, "TextCompone
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
      */
     noTextWrap?: boolean | "all" | undefined;
-} & React.RefAttributes<TamaguiElement>, "theme" | "themeInverse"> & {
-    theme?: string | null | undefined;
-    themeInverse?: boolean | undefined;
-}) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & {
+} & React.RefAttributes<TamaguiElement>, "theme" | "themeInverse"> & ThemeableProps) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & {
     Text: import("@tamagui/core").TamaguiComponent<(Omit<import("@tamagui/types-react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
         readonly size?: FontSizeTokens | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("@tamagui/types-react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
