@@ -1,4 +1,4 @@
-import { default as Link, default as NextLink } from 'next/link'
+import NextLink from 'next/link'
 import { memo } from 'react'
 import {
   Button,
@@ -114,7 +114,7 @@ const HeroTop = memo(() => {
             }}
           >
             <Subtitle>
-              <Link href="/docs/core/configuration" passHref>
+              <NextLink legacyBehavior href="/docs/core/configuration" passHref>
                 <Tag
                   tag="a"
                   theme="green_alt2"
@@ -124,9 +124,9 @@ const HeroTop = memo(() => {
                 >
                   styles
                 </Tag>
-              </Link>
+              </NextLink>
               ,{' '}
-              <Link href="/docs/intro/compiler" passHref>
+              <NextLink legacyBehavior href="/docs/intro/compiler" passHref>
                 <Tag
                   tag="a"
                   theme="blue_alt2"
@@ -136,9 +136,9 @@ const HeroTop = memo(() => {
                 >
                   optimizing compiler
                 </Tag>
-              </Link>{' '}
+              </NextLink>{' '}
               &{' '}
-              <Link href="/docs/components/stacks" passHref>
+              <NextLink legacyBehavior href="/docs/components/stacks" passHref>
                 <Tag
                   tag="a"
                   theme="purple_alt2"
@@ -148,14 +148,14 @@ const HeroTop = memo(() => {
                 >
                   UI&nbsp;kit
                 </Tag>
-              </Link>{' '}
+              </NextLink>{' '}
               that&nbsp;unify&nbsp;React Native + Web
             </Subtitle>
           </YStack>
         </YStack>
 
         <XStack ai="center" jc="center" $xxs={{ ai: 'center', fw: 'wrap' }}>
-          <NextLink href="https://github.com/tamagui/tamagui" passHref>
+          <NextLink legacyBehavior href="https://github.com/tamagui/tamagui" passHref>
             <YStack
               p="$6"
               $sm={{ p: '$3' }}
@@ -182,7 +182,7 @@ const HeroTop = memo(() => {
               mx: '50%',
             }}
           >
-            <NextLink prefetch={false} href="/docs/intro/compiler" passHref>
+            <NextLink legacyBehavior prefetch={false} href="/docs/intro/compiler" passHref>
               <Button
                 accessibilityLabel="Get started (docs)"
                 fontFamily="$silkscreen"
@@ -206,7 +206,7 @@ const HeroTop = memo(() => {
               </Button>
             </NextLink>
 
-            <NextLink prefetch={false} href="/docs/intro/introduction" passHref>
+            <NextLink legacyBehavior prefetch={false} href="/docs/intro/introduction" passHref>
               <Button
                 accessibilityLabel="Get started (docs)"
                 fontFamily="$silkscreen"
@@ -231,7 +231,7 @@ const HeroTop = memo(() => {
             </NextLink>
           </XStack>
 
-          <NextLink href="https://discord.gg/4qh6tdcVDa" passHref>
+          <NextLink legacyBehavior href="https://discord.gg/4qh6tdcVDa" passHref>
             <YStack
               p="$6"
               $sm={{ p: '$3' }}

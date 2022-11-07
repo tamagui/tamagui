@@ -31,7 +31,7 @@ export function BlogSlugPage({ frontmatter, relatedPosts, Component }: BlogPost)
   return (
     <Container>
       <YStack ai="flex-start">
-        <NextLink href={isDraft ? '/draft' : '/blog'} passHref>
+        <NextLink legacyBehavior href={isDraft ? '/draft' : '/blog'} passHref>
           <Button chromeless icon={ArrowLeft} tag="a" ml="$-2" theme="alt1">
             {isDraft ? 'Drafts' : 'Blog'}
           </Button>

@@ -14,7 +14,7 @@ export const CalloutButton = () => {
 
   //   return (
   //     <>
-  //       <NextLink href={isTakeoutPurchase ? '/takeout' : isTakeout ? '/' : '/takeout'}>
+  //       <NextLink legacyBehavior href={isTakeoutPurchase ? '/takeout' : isTakeout ? '/' : '/takeout'}>
   //         <Button
   //           rotate="1.25deg"
   //           // @ts-ignore

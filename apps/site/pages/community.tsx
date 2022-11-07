@@ -4,7 +4,7 @@ import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { ChevronRight } from '@tamagui/lucide-icons'
 import { format, parseISO } from 'date-fns'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import { useMemo } from 'react'
 import { ScrollView } from 'react-native'
 import {
@@ -72,7 +72,7 @@ export default function Community({ frontmatters }) {
             <Spacer />
             <YStack w="100%" space>
               {frontmatters.map((frontmatter) => (
-                <Link key={frontmatter.title} href={frontmatter.slug} passHref>
+                <NextLink legacyBehavior key={frontmatter.title} href={frontmatter.slug} passHref>
                   <Card bc="transparent" tag="a" p="$4" f={1}>
                     <YStack space="$2">
                       <H3 fontFamily="$silkscreen" size="$6" color="$color" cursor="pointer">
@@ -88,7 +88,7 @@ export default function Community({ frontmatters }) {
                       </XStack>
                     </YStack>
                   </Card>
-                </Link>
+                </NextLink>
               ))}
             </YStack>
           </FlatBubbleCard>
@@ -102,7 +102,11 @@ export default function Community({ frontmatters }) {
             <Spacer size="$2" />
             <YStack ai="center" space>
               <H4 size="$5">Figma Design Kit</H4>
-              <Link href="https://www.figma.com/community/file/1125992524818379922" passHref>
+              <NextLink
+                legacyBehavior
+                href="https://www.figma.com/community/file/1125992524818379922"
+                passHref
+              >
                 <YStack
                   target="_blank"
                   rel="noopener noreferrer"
@@ -127,7 +131,7 @@ export default function Community({ frontmatters }) {
                     src={'/sponsors/design-kit.png'}
                   />
                 </YStack>
-              </Link>
+              </NextLink>
             </YStack>
           </FlatBubbleCard>
         </XStack>
@@ -259,7 +263,7 @@ function GoldSponsor(props: {
 }) {
   return (
     <FlatBubbleCard flat p={0}>
-      <Link href={props.link} target="_blank">
+      <NextLink legacyBehavior href={props.link} target="_blank">
         <YStack
           ai="center"
           jc="center"
@@ -281,7 +285,7 @@ function GoldSponsor(props: {
             {props.name}
           </H5>
         </YStack>
-      </Link>
+      </NextLink>
     </FlatBubbleCard>
   )
 }
@@ -291,7 +295,7 @@ function IndividualSponsor(props: { name: string; link: string }) {
     <FlatBubbleCard flat>
       <YStack maxWidth="100%" fs={0} als="center">
         <XStack space="$4" $sm={{ flexDirection: 'column' }}>
-          <Link passHref href={props.link}>
+          <NextLink legacyBehavior passHref href={props.link}>
             <YStack
               cursor="pointer"
               target="_blank"
@@ -306,7 +310,7 @@ function IndividualSponsor(props: { name: string; link: string }) {
                 {props.name}
               </H5>
             </YStack>
-          </Link>
+          </NextLink>
         </XStack>
       </YStack>
     </FlatBubbleCard>

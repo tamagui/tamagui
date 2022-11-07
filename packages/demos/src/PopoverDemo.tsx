@@ -34,7 +34,14 @@ export function Demo({ Icon, ...props }: PopoverProps & { Icon?: any }) {
         x={0}
         y={0}
         o={1}
-        animation="bouncy"
+        animation={[
+          'quick',
+          {
+            opacity: {
+              overshootClamping: true,
+            },
+          },
+        ]}
         elevate
       >
         <Popover.Arrow bw={1} boc="$borderColor" />

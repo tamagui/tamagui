@@ -3,7 +3,7 @@ import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { format, parseISO } from 'date-fns'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import React from 'react'
 import {
   H1,
@@ -38,7 +38,7 @@ export default function Blog({ frontmatters }) {
       <ContainerLarge mt="$6" mb="$7" space="$2">
         <XStack flexWrap="wrap" jc="space-between">
           {frontmatters.map((frontmatter) => (
-            <Link key={frontmatter.title} href={frontmatter.slug} passHref>
+            <NextLink legacyBehavior key={frontmatter.title} href={frontmatter.slug} passHref>
               <Card
                 tag="a"
                 width="33.33%"
@@ -75,7 +75,7 @@ export default function Blog({ frontmatters }) {
                   </YStack>
                 </YStack>
               </Card>
-            </Link>
+            </NextLink>
           ))}
         </XStack>
       </ContainerLarge>

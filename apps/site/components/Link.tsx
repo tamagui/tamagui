@@ -20,7 +20,7 @@ export const Link = ({
   ...props
 }: LinkProps) => {
   return (
-    <NextLink passHref {...{ href, replace, scroll, shallow, prefetch, locale }}>
+    <NextLink legacyBehavior passHref {...{ href, replace, scroll, shallow, prefetch, locale }}>
       <SizableText cursor="pointer" tag="a" {...props}>
         {children}
       </SizableText>
@@ -40,7 +40,7 @@ export const ParagraphLink = ({
 }: LinkProps) => {
   const allChildrenStrings = React.Children.toArray(children).every((x) => typeof x === 'string')
   return (
-    <NextLink passHref {...{ href, replace, scroll, shallow, prefetch, locale }}>
+    <NextLink legacyBehavior passHref {...{ href, replace, scroll, shallow, prefetch, locale }}>
       <Paragraph
         className="paragraph-link"
         cursor="pointer"

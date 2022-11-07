@@ -7,7 +7,7 @@ import { Circle, H4, Paragraph, Separator, XStack, YStack } from 'tamagui'
 import { LinkProps } from './Link'
 
 const QuickNavLink = ({ href, ...rest }: LinkProps) => (
-  <NextLink passHref href={href}>
+  <NextLink legacyBehavior passHref href={href}>
     <Paragraph
       tag="a"
       size="$3"

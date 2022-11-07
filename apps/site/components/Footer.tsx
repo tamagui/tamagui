@@ -1,5 +1,5 @@
 import { TamaguiLogo } from '@tamagui/logo'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import React from 'react'
 import { H4, Paragraph, Spacer, Text, XStack, YStack } from 'tamagui'
 
@@ -33,9 +33,9 @@ export const Footer = () => {
             >
               homepage
             </Text>
-            <Link href="/" passHref>
+            <NextLink legacyBehavior href="/" passHref>
               <TamaguiLogo showWords downscale={1} />
-            </Link>
+            </NextLink>
             <Paragraph mt="$2" size="$3">
               by{' '}
               <ParagraphLink

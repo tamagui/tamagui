@@ -7,7 +7,7 @@ import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { CheckCircle, XCircle } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { GetStaticPropsResult } from 'next'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useRef, useState } from 'react'
 import {
@@ -156,7 +156,7 @@ export default function TakeoutPurchasePage({ products }: Props) {
                   <Spacer />
                   <Separator />
                   <Spacer />
-                  <Link href="/signin" passHref>
+                  <NextLink legacyBehavior href="/signin" passHref>
                     <Button
                       theme={level.highlight ? 'blue' : null}
                       br="$10"
@@ -168,7 +168,7 @@ export default function TakeoutPurchasePage({ products }: Props) {
                     >
                       Purchase
                     </Button>
-                  </Link>
+                  </NextLink>
                 </FlatBubbleCard>
               )
             })}

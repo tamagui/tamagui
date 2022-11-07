@@ -1,7 +1,7 @@
 import { animations } from '@tamagui/config-base'
 import { useOnIntersecting } from '@tamagui/demos'
 import { ArrowDown } from '@tamagui/lucide-icons'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import React, { memo, useRef, useState } from 'react'
 import { Button, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 
@@ -110,21 +110,21 @@ export function HeroExampleAnimations({ animationCode }) {
         </XStack>
 
         <XStack als="center" space="$3">
-          <Link href="/docs/core/animations#css" passHref>
+          <NextLink legacyBehavior href="/docs/core/animations#css" passHref>
             <Button accessibilityLabel="CSS docs" fontFamily="$silkscreen" theme={tint} tag="a">
               CSS &raquo;
             </Button>
-          </Link>
-          <Link href="/docs/core/animations#reanimated" passHref>
+          </NextLink>
+          <NextLink legacyBehavior href="/docs/core/animations#reanimated" passHref>
             <Button accessibilityLabel="Reanimated docs" fontFamily="$silkscreen" tag="a">
               Reanimated &raquo;
             </Button>
-          </Link>
-          <Link href="/docs/core/animations" passHref>
+          </NextLink>
+          <NextLink legacyBehavior href="/docs/core/animations" passHref>
             <Button accessibilityLabel="Animation docs" fontFamily="$silkscreen" tag="a">
               Docs &raquo;
             </Button>
-          </Link>
+          </NextLink>
         </XStack>
       </ContainerLarge>
     </YStack>
@@ -145,27 +145,35 @@ export const ExampleAnimations = memo(() => {
       ? [['transition', animation.settings]]
       : Object.entries(animation.settings)
 
-  useOnIntersecting(container, ([entry]) => {
-    if (entry?.isIntersecting) {
-      const onKey = (e: KeyboardEvent) => {
-        if (e.key === 'ArrowRight') {
-          next()
+  useOnIntersecting(
+    container,
+    ([entry]) => {
+      if (entry?.isIntersecting) {
+        const onKey = (e: KeyboardEvent) => {
+          if (e.key === 'ArrowRight') {
+            next()
+          }
+          if (e.key === 'ArrowLeft') {
+            next(-1)
+          }
         }
-        if (e.key === 'ArrowLeft') {
-          next(-1)
+        if (!hasScrolledOnce) {
+          hasScrolledOnce = true
+          setTimeout(() => {
+            // setting a long timeout extends the total render time a lot.., just slow down animation
+            next()
+          }, 250)
+        }
+        window.addEventListener('keydown', onKey)
+        return () => {
+          window.removeEventListener('keydown', onKey)
         }
       }
-      if (!hasScrolledOnce) {
-        hasScrolledOnce = true
-        // setting a long timeout extends the total render time a lot.., just slow down animation
-        next()
-      }
-      window.addEventListener('keydown', onKey)
-      return () => {
-        window.removeEventListener('keydown', onKey)
-      }
+    },
+    {
+      threshold: 0.5,
     }
-  })
+  )
 
   return (
     <XStack

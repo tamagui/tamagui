@@ -76,12 +76,13 @@ module.exports = function (name, { defaultConfig }) {
   /** @type {import('next').NextConfig} */
   let config = {
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
+    // todo fix:
+    // swcMinify: true,
     experimental: {
       // for preact...
       // esmExternals: false,
       scrollRestoration: true,
       legacyBrowsers: false,
-      browsersListForSwc: true,
       // runtime: 'nodejs',
       // serverComponents: true,
     },

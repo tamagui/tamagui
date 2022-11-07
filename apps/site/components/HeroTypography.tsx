@@ -1,6 +1,6 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useIsIntersecting } from '@tamagui/demos'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import React, { memo } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import {
@@ -162,7 +162,7 @@ const OverlayCard = () => {
           letter-spacing, color and more.
         </Paragraph>
 
-        <Link href="/docs/core/configuration" passHref>
+        <NextLink legacyBehavior href="/docs/core/configuration" passHref>
           <Button
             accessibilityLabel="Fonts docs"
             fontFamily="$silkscreen"
@@ -172,7 +172,7 @@ const OverlayCard = () => {
           >
             Fonts &raquo;
           </Button>
-        </Link>
+        </NextLink>
       </YStack>
     </Card>
   )

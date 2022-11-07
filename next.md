@@ -1,6 +1,5 @@
-- 1.0
+- rc.0
 
-  - pass Size down context (see Group) but really this is just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)
   - When you focus an input in a dialog on mobile or a propover etc. then it disappears
   - site design system docs (for use in cli later)
   - blog post / home: lighthouse score diff between compiler on / off
@@ -22,19 +21,13 @@
   - `Portal` related components are not working on the Android side
   - <Adapt> change
   - theme-base - align to radix, allow configuarble colors
-  - polyfill for rn 17
-  - site: document more helpers: getSize / stepTokenUpOrDown / spacedChildren
   - site: fix search
-  - overshootClamping fix
-  - Select lg appears below site floating header
-  - intellisense on "lh" shorthand props and "letterSpacing"
   - kitchen sink snack on site
   - 1.0 blog post
   - kitchen sink placeholder input color dark
   - VisuallyHidden + mediaquery + space
   - Select id="" + Label focus
   - Sheet drag up small bug native with scrollable content
-  - kitchen-sink in Snack demo
   - mismatch SSR SelectTrigger due to componentName override
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
@@ -55,6 +48,18 @@
     - move to object style extraction
     - slim down: Slot, concatClassName / unify usePressable+usePressability
   
+---
+
+1.0
+
+  - kitchen-sink in Snack demo
+  
+---
+
+inbox
+
+- pass Size down context (see Group) but really this is just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)
+
 ---
 
 compiler article

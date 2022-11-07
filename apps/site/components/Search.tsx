@@ -1,9 +1,7 @@
 import dynamic from 'next/dynamic'
-import Head from 'next/head'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import React from 'react'
-import { lazy, memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Paragraph } from 'tamagui'
 
@@ -103,9 +101,9 @@ export const SearchProvider = memo(({ children }: any) => {
 
 const ResultItem = ({ hit, children }) => {
   return (
-    <Link href={hit.url}>
+    <NextLink legacyBehavior href={hit.url}>
       <Paragraph tag="a">{children}</Paragraph>
-    </Link>
+    </NextLink>
   )
 }
 

@@ -254,7 +254,7 @@ export const components = {
 
   a: ({ href = '', children, ...props }) => {
     return (
-      <NextLink href={href} passHref>
+      <NextLink legacyBehavior href={href} passHref>
         {/* @ts-ignore */}
         <Paragraph
           className="link"
