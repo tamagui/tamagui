@@ -4,7 +4,6 @@ declare type ColorsByName = {
 };
 declare type ColorsList = string[];
 declare type AltKeys = 1 | 2;
-declare type AltName<Name extends string, Keys extends string | number> = `${Name}_alt${Keys}`;
 declare type GeneratedTheme = {
     backgroundStrong: Variable<string>;
     background: Variable<string>;
@@ -40,12 +39,13 @@ declare type GeneratedTheme = {
     color11: Variable<string>;
     color12: Variable<string>;
 };
+declare type GetSubThemes<Name extends string> = `${Name}` | `${Name}_alt${AltKeys}` | `${Name}_darker` | `${Name}_active` | `${Name}_Card` | `${Name}_SliderTrack` | `${Name}_SliderTrackActive` | `${Name}_Switch` | `${Name}_SwitchThumb` | `${Name}_DrawerFrame` | `${Name}_Button` | `${Name}_SliderThumb` | `${Name}_Progress` | `${Name}_ProgressIndicator` | `${Name}_TooltipArrow` | `${Name}_TooltipContent`;
 export declare const createThemes: <C extends string>({ activeColor, light, dark, colorsLight, colorsDark, }: {
     activeColor: string;
     light: ColorsList;
     dark: ColorsList;
     colorsLight: ColorsByName;
     colorsDark: ColorsByName;
-}) => { [key in C | "light" | "dark" | "light_alt1" | "light_alt2" | "dark_alt1" | "dark_alt2" | `light_${C}_alt1` | `light_${C}_alt2` | `dark_${C}_alt1` | `dark_${C}_alt2`]: GeneratedTheme; };
+}) => { [key in GetSubThemes<C> | GetSubThemes<"light"> | GetSubThemes<"dark">]: GeneratedTheme; };
 export {};
 //# sourceMappingURL=createThemes.d.ts.map

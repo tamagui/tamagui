@@ -48,6 +48,24 @@ type GeneratedTheme = {
   color12: Variable<string>
 }
 
+type GetSubThemes<Name extends string> =
+  | `${Name}`
+  | `${Name}_alt${AltKeys}`
+  | `${Name}_darker`
+  | `${Name}_active`
+  | `${Name}_Card`
+  | `${Name}_SliderTrack`
+  | `${Name}_SliderTrackActive`
+  | `${Name}_Switch`
+  | `${Name}_SwitchThumb`
+  | `${Name}_DrawerFrame`
+  | `${Name}_Button`
+  | `${Name}_SliderThumb`
+  | `${Name}_Progress`
+  | `${Name}_ProgressIndicator`
+  | `${Name}_TooltipArrow`
+  | `${Name}_TooltipContent`
+
 export const createThemes = <C extends string>({
   activeColor,
   light,
@@ -61,14 +79,7 @@ export const createThemes = <C extends string>({
   colorsLight: ColorsByName
   colorsDark: ColorsByName
 }): {
-  [key in
-    | C
-    | 'light'
-    | 'dark'
-    | AltName<`light`, AltKeys>
-    | AltName<`dark`, AltKeys>
-    | AltName<`light_${C}`, AltKeys>
-    | AltName<`dark_${C}`, AltKeys>]: GeneratedTheme
+  [key in GetSubThemes<C> | GetSubThemes<`light`> | GetSubThemes<`dark`>]: GeneratedTheme
 } => {
   function flatten(obj: ColorsByName) {
     const next = {}
@@ -146,23 +157,7 @@ export const createThemes = <C extends string>({
     getTheme: GetTheme,
     props: ThemeCreatorProps
   ): {
-    [key in
-      | `${Name}_alt${AltKeys}`
-      | `${Name}`
-      | `${Name}_darker`
-      | `${Name}_active`
-      | `${Name}_Card`
-      | `${Name}_SliderTrack`
-      | `${Name}_SliderTrackActive`
-      | `${Name}_Switch`
-      | `${Name}_SwitchThumb`
-      | `${Name}_DrawerFrame`
-      | `${Name}_Button`
-      | `${Name}_SliderThumb`
-      | `${Name}_Progress`
-      | `${Name}_ProgressIndicator`
-      | `${Name}_TooltipArrow`
-      | `${Name}_TooltipContent`]: GetTheme extends ThemeCreator<infer Theme> ? Theme : never
+    [key in GetSubThemes<Name>]: GetTheme extends ThemeCreator<infer Theme> ? Theme : never
   } {
     const { shift = 0 } = props
     const theme = getTheme(0 + shift, props)
