@@ -213,22 +213,13 @@ const DialogOverlayImpl = React.forwardRef<TamaguiElement, DialogOverlayImplProp
     return (
       // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
       // ie. when `Overlay` and `Content` are siblings
-      <RemoveScroll
-        enabled={context.open}
-        as={Slot}
-        allowPinchZoom={context.allowPinchZoom}
-        shards={[context.contentRef]}
-        // causes lots of bugs on touch web on site
-        removeScrollBar={false}
-      >
-        <DialogOverlayFrame
-          data-state={getState(context.open)}
-          // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
-          pointerEvents={context.open ? 'auto' : 'none'}
-          {...overlayProps}
-          ref={forwardedRef}
-        />
-      </RemoveScroll>
+      <DialogOverlayFrame
+        data-state={getState(context.open)}
+        // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
+        pointerEvents={context.open ? 'auto' : 'none'}
+        {...overlayProps}
+        ref={forwardedRef}
+      />
     )
   }
 )
@@ -281,13 +272,19 @@ const DialogContent = DialogContentFrame.extractable(
       const context = useDialogContext(CONTENT_NAME, __scopeDialog)
 
       return (
-        <>
+        <RemoveScroll
+          enabled={context.open}
+          allowPinchZoom={context.allowPinchZoom}
+          shards={[context.contentRef]}
+          // causes lots of bugs on touch web on site
+          removeScrollBar={false}
+        >
           {context.modal ? (
             <DialogContentModal context={context} {...contentProps} ref={forwardedRef} />
           ) : (
             <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
           )}
-        </>
+        </RemoveScroll>
       )
     }
   )
