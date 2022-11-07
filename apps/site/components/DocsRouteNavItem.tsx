@@ -8,7 +8,7 @@ import { ExternalIcon } from './ExternalIcon'
 export function DocsRouteNavItem({ children, active, href, pending, ...props }: NavItemProps) {
   const isExternal = href.startsWith('http')
   return (
-    <NextLink href={href} passHref>
+    <NextLink legacyBehavior href={href} passHref>
       <XStack
         className="docs-nav-item all ease-in ms150"
         {...props}

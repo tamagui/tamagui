@@ -1,5 +1,5 @@
 import { useOnIntersecting } from '@tamagui/demos'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import { useRef, useState } from 'react'
 import { Button, Paragraph, XStack, YStack } from 'tamagui'
 
@@ -69,7 +69,7 @@ export function HeroPerformance() {
 const BenchmarksLink = () => {
   const { tint } = useTint()
   return (
-    <Link href="/docs/intro/benchmarks" passHref>
+    <NextLink legacyBehavior href="/docs/intro/benchmarks" passHref>
       <Button
         accessibilityLabel="Performance benchmarks"
         fontFamily="$silkscreen"
@@ -78,17 +78,17 @@ const BenchmarksLink = () => {
       >
         Benchmarks &raquo;
       </Button>
-    </Link>
+    </NextLink>
   )
 }
 
 const CompilerLink = () => {
   const { tint } = useTint()
   return (
-    <Link href="/docs/intro/compiler" passHref>
+    <NextLink legacyBehavior href="/docs/intro/compiler" passHref>
       <Button accessibilityLabel="Compiler" fontFamily="$silkscreen" theme={tint} tag="a">
         About &raquo;
       </Button>
-    </Link>
+    </NextLink>
   )
 }

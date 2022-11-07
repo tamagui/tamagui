@@ -60,7 +60,7 @@ export function Header(props: HeaderProps) {
             <TamaguiLogo onPress={setNextTint} downscale={props.floating ? 2 : 1.5} />
           </YStack>
         ) : (
-          <NextLink href="/" passHref>
+          <NextLink legacyBehavior href="/" passHref>
             <YStack cur="pointer" tag="a" my={-20}>
               <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
             </YStack>
@@ -70,7 +70,7 @@ export function Header(props: HeaderProps) {
         <ThemeSearchButtonGroup />
 
         {isInSubApp && (
-          <NextLink href="/">
+          <NextLink legacyBehavior href="/">
             <Button size="$2">Back to Tamagui</Button>
           </NextLink>
         )}
@@ -89,7 +89,7 @@ export function Header(props: HeaderProps) {
         pointerEvents="none"
         ai="center"
       >
-        <NextLink href="/" passHref>
+        <NextLink legacyBehavior href="/" passHref>
           <XStack cursor={isHome ? 'default' : 'pointer'} pointerEvents="auto" tag="a" als="center">
             <LogoWords
               animated
@@ -107,7 +107,7 @@ export function Header(props: HeaderProps) {
       <XStack h={40} jc="flex-end" miw={204} $xxs={{ miw: 150 }} pointerEvents="auto" tag="nav">
         {isInSubApp ? (
           <XStack ai="center" space="$2">
-            <NextLink href="/signin" passHref>
+            <NextLink legacyBehavior href="/signin" passHref>
               <Paragraph
                 fontFamily="$silkscreen"
                 px="$3"
@@ -125,7 +125,7 @@ export function Header(props: HeaderProps) {
               </Paragraph>
             </NextLink>
 
-            <NextLink href="/takeout/purchase" passHref>
+            <NextLink legacyBehavior href="/takeout/purchase" passHref>
               <Button fontFamily="$silkscreen" size="$3" tag="a">
                 Purchase
               </Button>
@@ -137,7 +137,7 @@ export function Header(props: HeaderProps) {
 
             <SearchButton size="$2" br="$10" elevation="$4" />
 
-            <NextLink href="https://github.com/tamagui/tamagui" passHref>
+            <NextLink legacyBehavior href="https://github.com/tamagui/tamagui" passHref>
               <YStack p="$2" opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
                 <VisuallyHidden>
                   <Text>Github</Text>
@@ -157,7 +157,7 @@ export function Header(props: HeaderProps) {
 const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
   return (
     <>
-      <NextLink prefetch={false} href="/docs/intro/installation" passHref>
+      <NextLink legacyBehavior prefetch={false} href="/docs/intro/installation" passHref>
         <HeadAnchor
           $sm={{
             display: forceShowAllLinks ? 'flex' : 'none',
@@ -167,7 +167,7 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      <NextLink prefetch={false} href="/blog" passHref>
+      <NextLink legacyBehavior prefetch={false} href="/blog" passHref>
         <HeadAnchor
           $md={{
             display: forceShowAllLinks ? 'flex' : 'none',
@@ -177,7 +177,7 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      <NextLink prefetch={false} href="/community" passHref>
+      <NextLink legacyBehavior prefetch={false} href="/community" passHref>
         <HeadAnchor
           $md={{
             display: forceShowAllLinks ? 'flex' : 'none',
@@ -188,13 +188,13 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
       </NextLink>
 
       {showExtra && (
-        <NextLink prefetch={false} href="/studio" passHref>
+        <NextLink legacyBehavior prefetch={false} href="/studio" passHref>
           <HeadAnchor>Studio</HeadAnchor>
         </NextLink>
       )}
 
       {showExtra && (
-        <NextLink prefetch={false} href="/takeout" passHref>
+        <NextLink legacyBehavior prefetch={false} href="/takeout" passHref>
           <HeadAnchor>Takeout</HeadAnchor>
         </NextLink>
       )}

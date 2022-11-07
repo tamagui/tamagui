@@ -1,10 +1,7 @@
-import { ChevronRight, FastForward } from '@tamagui/lucide-icons'
-import Link from 'next/link'
-import React from 'react'
+import { FastForward } from '@tamagui/lucide-icons'
 import { memo, useState } from 'react'
-import { Button, H5, Paragraph, XGroup, XStack, YStack, useMedia } from 'tamagui'
+import { Button, H5, Paragraph, XGroup, XStack, YStack } from 'tamagui'
 
-import { CodeInline } from './Code'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'

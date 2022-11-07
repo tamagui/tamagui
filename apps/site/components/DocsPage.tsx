@@ -31,7 +31,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             {(previous || next) && (
               <XStack aria-label="Pagination navigation" my="$9" jc="space-between" space>
                 {previous && (
-                  <NextLink href={previous.route} passHref>
+                  <NextLink legacyBehavior href={previous.route} passHref>
                     <YStack
                       hoverStyle={{
                         borderColor: '$borderColorHover',
@@ -59,7 +59,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                   </NextLink>
                 )}
                 {next && (
-                  <NextLink href={next.route} passHref>
+                  <NextLink legacyBehavior href={next.route} passHref>
                     <YStack
                       hoverStyle={{
                         borderColor: '$borderColorHover',

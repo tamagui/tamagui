@@ -1,5 +1,5 @@
 import { ChevronRight, Code, Cpu, Layers } from '@tamagui/lucide-icons'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import { memo, useEffect } from 'react'
 import { H3, Paragraph, XStack, YStack, YStackProps } from 'tamagui'
 
@@ -11,7 +11,7 @@ import { ThemeTint } from './useTint'
 
 const TitleLink = ({ href, children, ...props }: any) => {
   return (
-    <Link passHref href={href}>
+    <NextLink legacyBehavior passHref href={href}>
       <H3 cursor="pointer" tag="a" color="$color" size="$6" my="$3">
         <CodeInline
           cursor="pointer"
@@ -28,7 +28,7 @@ const TitleLink = ({ href, children, ...props }: any) => {
           {children} <ChevronRight size={12} />
         </CodeInline>
       </H3>
-    </Link>
+    </NextLink>
   )
 }
 

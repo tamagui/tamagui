@@ -3,7 +3,7 @@ import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { format, parseISO } from 'date-fns'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import React from 'react'
 import {
   H1,
@@ -30,7 +30,7 @@ export default function Blog({ frontmatters }) {
       <ContainerLarge mt="$6" mb="$7" space="$2">
         <YStack space="$8">
           {frontmatters.map((frontmatter) => (
-            <Link key={frontmatter.title} href={frontmatter.slug} passHref>
+            <NextLink legacyBehavior key={frontmatter.title} href={frontmatter.slug} passHref>
               <YStack space="$2">
                 <H3 fontFamily="$silkscreen" size="$9" color="$color" cursor="pointer">
                   {frontmatter.title}
@@ -50,7 +50,7 @@ export default function Blog({ frontmatters }) {
                   {frontmatter.description}
                 </Paragraph>
               </YStack>
-            </Link>
+            </NextLink>
           ))}
         </YStack>
       </ContainerLarge>

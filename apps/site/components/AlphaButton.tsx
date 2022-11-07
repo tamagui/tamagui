@@ -15,7 +15,7 @@ export const AlphaButton = () => {
 
   //   return (
   //     <>
-  //       <NextLink href={isTakeoutPurchase ? '/takeout' : isTakeout ? '/' : '/takeout'} passHref>
+  //       <NextLink legacyBehavior href={isTakeoutPurchase ? '/takeout' : isTakeout ? '/' : '/takeout'} passHref>
   //         <Button
   //           rotate="1.25deg"
   //           // @ts-ignore
@@ -49,7 +49,7 @@ export const AlphaButton = () => {
   // }
 
   return (
-    <NextLink href="/blog/tamagui-enters-beta-themes-and-animations" passHref>
+    <NextLink legacyBehavior href="/blog/tamagui-enters-beta-themes-and-animations" passHref>
       <Button
         accessibilityLabel="Beta blog post"
         rotate="1.25deg"
