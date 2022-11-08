@@ -20,6 +20,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useRef,
 } from 'react'
 
 import { onConfiguredOnce } from './config'
@@ -146,6 +147,11 @@ export function createComponent<
       ? `is_${props.componentName}`
       : defaultComponentClassName
 
+    if (debugProp) {
+      // eslint-disable-next-line no-console
+      console.log(`render ${componentName}`)
+    }
+
     const forceUpdate = useForceUpdate()
     const theme = useTheme(props.theme, componentName, props, forceUpdate)
 
@@ -160,7 +166,7 @@ export function createComponent<
 
     const state = propsIn.forceStyle ? { ...states[0], [propsIn.forceStyle]: true } : states[0]
     const setState = states[1]
-    const setStateShallow = useShallowSetState(setState)
+    const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
     const shouldSetMounted = needsMount && !state.mounted
     const setMounted = shouldSetMounted
@@ -202,12 +208,16 @@ export function createComponent<
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
 
     const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
-    const nextIsAnimated = !!(useAnimations && props.animation)
+
     // conditional but if ever true stays true
-    const isAnimated = nextIsAnimated || state.hasAnimation
-    if (nextIsAnimated && !state.hasAnimation) {
-      setStateShallow({ hasAnimation: true })
-    }
+    const hasEverAnimated = useRef(false)
+    const isAnimated = (() => {
+      const next = !!(useAnimations && props.animation)
+      if (next && !hasEverAnimated.current) {
+        hasEverAnimated.current = true
+      }
+      return next || hasEverAnimated.current
+    })()
 
     const isTaggable = !Component || typeof Component === 'string'
     // default to tag, fallback to component (when both strings)
@@ -893,7 +903,7 @@ export function createComponent<
         content = (
           <span
             style={styleDisplayContents}
-            className={isAnimatedReactNativeWeb ? className : undefined}
+            className={(isAnimatedReactNativeWeb ? className : '') + `  _tamagui_skip_`}
             {...(events && {
               onMouseEnter: events.onMouseEnter,
               onMouseLeave: events.onMouseLeave,

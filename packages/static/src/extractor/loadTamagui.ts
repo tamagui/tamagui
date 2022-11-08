@@ -97,7 +97,7 @@ Tamagui built config and components:`
     Color.Dim,
     `
   - Config: .${sep}${relative(process.cwd(), configOutPath)}
-  - Components: .${sep}${relative(process.cwd(), componentOutPaths.join(', '))}
+  - Components: .${sep}${relative(process.cwd(), componentOutPaths.join('\n                '))}
 `
   )
 

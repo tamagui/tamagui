@@ -102,18 +102,13 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
     return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
   }, [floating.update, refs.floating, refs.reference])
 
-  const arrowStyle = React.useMemo(() => {
-    return middlewareData.arrow
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(middlewareData.arrow || {})])
-
   return (
     <PopperProvider
       scope={__scopePopper}
       anchorRef={anchorRef}
       size={size}
       arrowRef={composedArrowRefs}
-      arrowStyle={arrowStyle}
+      arrowStyle={middlewareData.arrow}
       onArrowSize={setArrowSize}
       isMounted={isMounted}
       {...floating}
