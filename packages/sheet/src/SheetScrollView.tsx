@@ -1,7 +1,7 @@
 import { TamaguiElement, composeRefs } from '@tamagui/core'
 import { ScrollView, ScrollViewProps } from '@tamagui/scroll-view'
 import { forwardRef, useMemo, useRef, useState } from 'react'
-import { ScrollView as RNScrollVeiw } from 'react-native'
+import { ScrollView as RNScrollView } from 'react-native'
 
 import { useSheetContext } from './SheetContext'
 import { SheetScopedProps } from './types'
@@ -18,7 +18,7 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
   ({ __scopeSheet, children, ...props }: SheetScopedProps<ScrollViewProps>, ref) => {
     const { scrollBridge } = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
     const [scrollEnabled, setScrollEnabled_] = useState(true)
-    const scrollRef = useRef<RNScrollVeiw | null>(null)
+    const scrollRef = useRef<RNScrollView | null>(null)
 
     const setScrollEnabled = (next: boolean) => {
       scrollRef.current?.setNativeProps?.({
