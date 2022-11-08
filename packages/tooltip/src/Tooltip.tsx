@@ -36,11 +36,9 @@ const TooltipContent = React.forwardRef(
   ({ __scopePopover, ...props }: ScopedProps<PopoverContentProps, 'Popover'>, ref: any) => {
     const popperScope = usePopoverScope(__scopePopover)
     const popper = usePopperContext('PopperContent', popperScope['__scopePopper'])
-    console.warn(`TooltipContent`)
     return (
       <PopoverContent
         componentName="TooltipContent"
-        debug="verbose"
         disableRemoveScroll
         trapFocus={false}
         padding={props.size || popper.size || '$2'}

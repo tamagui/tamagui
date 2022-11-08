@@ -6014,6 +6014,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tamagui/timer@workspace:packages/timer":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/timer@workspace:packages/timer"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.210
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/toast@workspace:packages/toast":
   version: 0.0.0-use.local
   resolution: "@tamagui/toast@workspace:packages/toast"

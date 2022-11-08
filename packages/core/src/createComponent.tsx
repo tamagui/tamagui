@@ -81,9 +81,9 @@ if (typeof document !== 'undefined') {
     mouseUps.forEach((x) => x())
     mouseUps.clear()
   }
-  document.addEventListener('mouseup', cancelTouches)
-  document.addEventListener('touchend', cancelTouches)
-  document.addEventListener('touchcancel', cancelTouches)
+  addEventListener('mouseup', cancelTouches)
+  addEventListener('touchend', cancelTouches)
+  addEventListener('touchcancel', cancelTouches)
 }
 
 // mutates
@@ -105,6 +105,14 @@ if (process.env.TAMAGUI_TARGET === 'native') {
   BaseText = native.Text || native.default.Text
   BaseView = native.View || native.default.View
 }
+
+// const t = require('@tamagui/timer').timer()
+// setTimeout(() => {
+//   const out = t.print()
+//   if (isClient) {
+//     alert(out)
+//   }
+// }, 2000)
 
 export function createComponent<
   ComponentPropTypes extends Object = {},
@@ -129,6 +137,8 @@ export function createComponent<
 
   // see onConfiguredOnce below which attaches a name then to this component
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
+    // const time = t.start({ quiet: true })
+
     // React inserts default props after your props for some reason...
     // order important so we do loops, you can't just spread because JS does weird things
     let props: any
@@ -137,6 +147,8 @@ export function createComponent<
     } else {
       props = propsIn
     }
+
+    // time`mergeProps`
 
     const debugProp = props['debug']
     const { Component, isText, isZStack } = staticConfig
@@ -154,6 +166,8 @@ export function createComponent<
 
     const forceUpdate = useForceUpdate()
     const theme = useTheme(props.theme, componentName, props, forceUpdate)
+
+    // time`useTheme`
 
     /**
      * Component state for tracking animations, pseudos
@@ -236,6 +250,8 @@ export function createComponent<
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
 
+    // time`setupStateConf`
+
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
@@ -246,6 +262,8 @@ export function createComponent<
       elementType,
       debugProp
     )
+
+    // time`splitStyles`
 
     const hostRef = useServerRef<TamaguiElement>(null)
 
@@ -385,6 +403,8 @@ export function createComponent<
         animationStyles = animations.style
       }
     }
+
+    // time`animations`
 
     // media queries
     useIsomorphicLayoutEffect(() => {
@@ -577,6 +597,8 @@ export function createComponent<
         }
       })
     }
+
+    // time`webHooks`
 
     const unPress = useCallback(() => {
       setStateShallow({
@@ -816,6 +838,8 @@ export function createComponent<
           }
         : null
 
+    // time`events`
+
     let space = spaceProp
 
     // find space by media query
@@ -942,6 +966,8 @@ export function createComponent<
         console.groupEnd()
       }
     }
+
+    // time`done`
 
     return content
   })

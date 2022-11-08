@@ -1,5 +1,6 @@
 import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { stylePropsText, stylePropsTransform, validPseudoKeys, validStyles } from '@tamagui/helpers'
+import { timer } from '@tamagui/timer'
 import type { ViewStyle } from '@tamagui/types-react-native'
 import { useInsertionEffect } from 'react'
 
@@ -799,30 +800,19 @@ function mergeClassName(
  *
  * and to avoid re-creating it over and over, use a WeakMap
  */
-const propProxies = new WeakMap()
-function getSubStyleProxiedProps(defaultProps: Object, baseProps: Object, specificProps: Object) {
-  if (!specificProps) {
-    // functional variants may want to eventually do something like:
-    // have a hooks-like rule (no conditionals)
-    // then we run them once on compile with a proxy to capture the keys accessed
-    // then add those keys to `inlineProps` so we know we must inline them
-    // for now this will trigger because compiled away
-    // right now also we don't pass in any pre-extracted styled() props but we should pass them in..
-    return baseProps
-  }
+const cache = new WeakMap()
+function getSubStyleProps(defaultProps: Object, baseProps: Object, specificProps: Object) {
+  const key = specificProps || baseProps
   // can cache based only on specific it's always referentially consistent with base
-  if (propProxies.has(specificProps)) {
-    return propProxies.get(specificProps)
+  if (cache.has(key)) {
+    return cache.get(key)
   }
-  const next = createProxy(specificProps, {
-    has(_, key) {
-      return key in defaultProps || key in specificProps || key in baseProps
-    },
-    get(_, key) {
-      return defaultProps[key] ?? specificProps[key] ?? baseProps[key]
-    },
-  })
-  propProxies.set(specificProps, next)
+  const next = {
+    ...defaultProps,
+    ...baseProps,
+    ...specificProps,
+  }
+  cache.set(key, next)
   return next
 }
 
@@ -845,7 +835,7 @@ export const getSubStyle = (
       key,
       val,
       theme,
-      getSubStyleProxiedProps(staticConfig.defaultProps, props, props[subKey]),
+      getSubStyleProps(staticConfig.defaultProps, props, props[subKey]),
       state,
       languageContext,
       avoidDefaultProps
