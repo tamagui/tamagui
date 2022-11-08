@@ -273,6 +273,7 @@ const DialogContent = DialogContentFrame.extractable(
 
       return (
         <RemoveScroll
+          forwardProps
           enabled={context.open}
           allowPinchZoom={context.allowPinchZoom}
           shards={[context.contentRef]}

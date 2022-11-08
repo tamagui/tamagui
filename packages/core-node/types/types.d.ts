@@ -559,7 +559,6 @@ export declare type TamaguiComponentState = {
     focus: boolean;
     mounted: boolean;
     mediaState?: null | Record<string, boolean>;
-    hasAnimation?: boolean;
     animation?: null | {
         style?: any;
         avoidClasses?: boolean;

@@ -23,7 +23,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@floating-ui/react-dom-interactions": "^0.8.1",
+    "@floating-ui/react-dom-interactions": "^0.10.3",
     "@tamagui/animate-presence": "^1.0.1-beta.210",
     "@tamagui/aria-hidden": "^1.0.1-beta.210",
     "@tamagui/compose-refs": "^1.0.1-beta.210",
