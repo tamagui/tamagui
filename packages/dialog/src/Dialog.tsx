@@ -271,6 +271,16 @@ const DialogContent = DialogContentFrame.extractable(
       const { forceMount = portalContext.forceMount, ...contentProps } = props
       const context = useDialogContext(CONTENT_NAME, __scopeDialog)
 
+      const contents = context.modal ? (
+        <DialogContentModal context={context} {...contentProps} ref={forwardedRef} />
+      ) : (
+        <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
+      )
+
+      if (!isWeb) {
+        return contents
+      }
+
       return (
         <RemoveScroll
           forwardProps
@@ -280,11 +290,7 @@ const DialogContent = DialogContentFrame.extractable(
           // causes lots of bugs on touch web on site
           removeScrollBar={false}
         >
-          {context.modal ? (
-            <DialogContentModal context={context} {...contentProps} ref={forwardedRef} />
-          ) : (
-            <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
-          )}
+          <div className="_dsp_contents">{contents}</div>
         </RemoveScroll>
       )
     }

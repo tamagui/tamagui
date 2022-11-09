@@ -251,8 +251,7 @@ export declare const circular: {
         minWidth: any;
         minHeight: any;
         borderRadius: number;
-        paddingVertical: number;
-        paddingHorizontal: number;
+        padding: number;
     };
 };
 export declare const hoverTheme: {

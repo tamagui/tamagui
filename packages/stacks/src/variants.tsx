@@ -61,8 +61,7 @@ export const circular = {
       minWidth: size,
       minHeight: size,
       borderRadius: 100_000,
-      paddingVertical: 0,
-      paddingHorizontal: 0,
+      padding: 0,
     }
   },
 }

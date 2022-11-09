@@ -141,8 +141,8 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       floatingRef.current.scrollHeight - floatingRef.current.clientHeight - SCROLL_ARROW_THRESHOLD
 
   const interactions = useInteractions([
-    useClick(context, { pointerDown: true }),
-    useDismiss(context, { outsidePointerDown: false }),
+    useClick(context, { event: 'mousedown' }),
+    useDismiss(context, { outsidePress: false }),
     useRole(context, { role: 'listbox' }),
     useInnerOffset(context, {
       enabled: !fallback,
