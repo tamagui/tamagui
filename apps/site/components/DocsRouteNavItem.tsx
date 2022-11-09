@@ -25,7 +25,7 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
         pointerEvents={pending ? 'none' : 'auto'}
         pos="relative"
         $sm={{
-          py: '$1.5',
+          py: '$1',
         }}
       >
         <YStack

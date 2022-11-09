@@ -195,10 +195,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     tokensParsed,
     parsed: true,
     getCSS: () => `
+.is_Text .is_Text { display: inline-flex; }
+._dsp_contents { display: contents; }
 ${themeConfig.css}
 ${getAllRules().join('\n')}
-.is_Text .is_Text { display: inline-flex; }
 `,
+    // const tokens = [...getToken(tokens.size[0])]
+    // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
   }
 
   configureMedia(config)
