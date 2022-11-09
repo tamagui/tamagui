@@ -106,13 +106,16 @@ if (process.env.TAMAGUI_TARGET === 'native') {
   BaseView = native.View || native.default.View
 }
 
-// const t = require('@tamagui/timer').timer()
-// setTimeout(() => {
-//   const out = t.print()
-//   if (isClient) {
-//     alert(out)
-//   }
-// }, 2000)
+// let t
+// if (process.env.ANALYZE) {
+//   const t = require('@tamagui/timer').timer()
+//   setTimeout(() => {
+//     const out = t.print()
+//     if (isClient) {
+//       alert(out)
+//     }
+//   }, 2000)
+// }
 
 export function createComponent<
   ComponentPropTypes extends Object = {},
@@ -926,8 +929,7 @@ export function createComponent<
       if (events || isAnimatedReactNativeWeb) {
         content = (
           <span
-            style={styleDisplayContents}
-            className={(isAnimatedReactNativeWeb ? className : '') + `  _tamagui_skip_`}
+            className={(isAnimatedReactNativeWeb ? className : '') + `  _dsp_contents`}
             {...(events && {
               onMouseEnter: events.onMouseEnter,
               onMouseLeave: events.onMouseLeave,
@@ -1482,10 +1484,6 @@ const AbsoluteFill: any = createComponent({
     pointerEvents: 'box-none',
   },
 })
-
-const styleDisplayContents = {
-  display: 'contents',
-}
 
 const dontComposePressabilityKeys = {
   onClick: true,
