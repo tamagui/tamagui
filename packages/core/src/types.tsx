@@ -385,7 +385,7 @@ export type GenericFont<Key extends number | string = number | string> = {
   transform?: Partial<{ [key in Key]: TextStyle['textTransform'] | Variable }>
   color?: Partial<{ [key in Key]: string | Variable }>
   // for native use only, lets you map to alternative fonts
-  face?: { [key in FontWeightSteps]: { normal?: string; italic?: string } }
+  face?: Partial<{ [key in FontWeightSteps]: { normal?: string; italic?: string } }>
 }
 
 // media
