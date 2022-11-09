@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/text",
-  "version": "1.0.1-beta.210",
+  "version": "1.0.1-beta.211",
   "sideEffects": [
     "*.css"
   ],
@@ -24,16 +24,16 @@
     "test": "vitest --config ../vite-plugin-internal/src/vite.config.ts --run"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.210",
-    "@tamagui/get-font-sized": "^1.0.1-beta.210",
-    "@tamagui/helpers-tamagui": "^1.0.1-beta.210"
+    "@tamagui/core": "^1.0.1-beta.211",
+    "@tamagui/get-font-sized": "^1.0.1-beta.211",
+    "@tamagui/helpers-tamagui": "^1.0.1-beta.211"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.210",
+    "@tamagui/build": "^1.0.1-beta.211",
     "react": "*",
     "react-dom": "*",
     "vitest": "^0.24.3"
