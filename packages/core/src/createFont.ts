@@ -32,7 +32,7 @@ const processSection = <T>(
 export const createFont = <A extends GenericFont>(font: A): A => {
   const sizeKeys = Object.keys(font.size)
 
-  Object.fromEntries(
+  const processedFont = Object.fromEntries(
     Object.entries(font).map(([key, section]) => {
       const fillKeys = key === 'face' ? fontWeights : sizeKeys
 
@@ -40,5 +40,5 @@ export const createFont = <A extends GenericFont>(font: A): A => {
     })
   )
 
-  return Object.freeze(font)
+  return Object.freeze(processedFont) as A
 }
