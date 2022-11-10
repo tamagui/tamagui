@@ -238,12 +238,12 @@ export declare type GenericFont<Key extends number | string = number | string> =
     color?: Partial<{
         [key in Key]: string | Variable;
     }>;
-    face?: {
+    face?: Partial<{
         [key in FontWeightSteps]: {
             normal?: string;
             italic?: string;
         };
-    };
+    }>;
 };
 export declare type MediaQueryObject = {
     [key: string]: string | number | string;

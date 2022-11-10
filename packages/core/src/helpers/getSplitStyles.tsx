@@ -601,7 +601,7 @@ export const getSplitStyles: StyleSplitter = (
               mergeClassName(transforms, classNames, fullKey, out.identifier, true)
             }
           }
-        } else if (mediaState[mediaKeyShort]) {
+        } else if (mediaState[mediaKey]) {
           for (const key in mediaStyle) {
             const didMerge = mergeMediaByImportance(style, key, mediaStyle[key], usedKeys)
             if (didMerge && key === 'fontFamily') {
