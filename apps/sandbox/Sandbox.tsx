@@ -1,10 +1,8 @@
 // debug-verbose
-import '@tamagui/core/reset.css'
+// import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import '../site/app.css'
-
-import { LabelDemo, SelectDemo, SheetDemo, TooltipDemo } from '@tamagui/demos'
+import { DialogDemo, LabelDemo, SelectDemo, SheetDemo, TooltipDemo } from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { AnimationsDemo, AnimationsPresenceDemo } from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
@@ -14,6 +12,8 @@ import { TamaguiProvider, TooltipGroup, styled } from 'tamagui'
 import { ButtonFrame, Circle, Input, Square, YStack } from 'tamagui'
 
 import config from './tamagui.config'
+
+// import '../site/app.css'
 
 // webpack fix..
 if (typeof require !== 'undefined') {
@@ -89,68 +89,72 @@ export const Sandbox = () => {
         }}
       />
 
-      <div
-        style={{
-          // test scrolling
-          pointerEvents: 'auto',
-          display: 'flex',
-          flexDirection: 'column',
-          background: 'var(--backgroundStrong)',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: ' 100vh',
-          maxHeight: ' 100vh',
-          overflow: 'hidden',
-        }}
-      >
-        {/* <Input /> */}
+      <div style={{ overflow: 'scroll', maxHeight: '100vh' }}>
+        <div
+          style={{
+            // test scrolling
+            pointerEvents: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            background: 'var(--backgroundStrong)',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: 3000,
+            overflow: 'hidden',
+          }}
+        >
+          {/* <Input /> */}
 
-        <TooltipDemo />
+          {/* <TooltipDemo /> */}
 
-        {/* <StyledInput debug="verbose" /> */}
+          <SelectDemo />
 
-        {/* <SheetDemo /> */}
+          <DialogDemo />
 
-        {/* space */}
-        {/* <YStack space="$2" $gtMd={{ space: '$10' }}>
+          {/* <StyledInput debug="verbose" /> */}
+
+          {/* <SheetDemo /> */}
+
+          {/* space */}
+          {/* <YStack space="$2" $gtMd={{ space: '$10' }}>
           <Circle bc="red" size="$10" />
           <Circle bc="red" size="$10" />
           <Circle bc="red" size="$10" />
         </YStack> */}
 
-        {/* <LabelDemo /> */}
-        {/* <SelectDemo /> */}
+          {/* <LabelDemo /> */}
+          {/* <SelectDemo /> */}
 
-        {/* <Square size={100} bc="red" /> */}
-        {/* <SheetDemo /> */}
-        {/* <Input placeholder="hi" /> */}
+          {/* <Square size={100} bc="red" /> */}
+          {/* <SheetDemo /> */}
+          {/* <Input placeholder="hi" /> */}
 
-        {/* <AnimationsDemo /> */}
-        {/* <AnimationsPresenceDemo /> */}
+          {/* <AnimationsDemo /> */}
+          {/* <AnimationsPresenceDemo /> */}
 
-        {/* <SliderDemo /> */}
+          {/* <SliderDemo /> */}
 
-        {/* <TestFontTokensInVariants type="H1" size="large">
+          {/* <TestFontTokensInVariants type="H1" size="large">
           Hello world
         </TestFontTokensInVariants> */}
 
-        {/* <Button size="$2" $sm={{ size: '$8' }} >
+          {/* <Button size="$2" $sm={{ size: '$8' }} >
           test
         </Button> */}
 
-        {/* <Button pressStyle={{ backgroundColor: 'blue' }}>hi</Button> */}
+          {/* <Button pressStyle={{ backgroundColor: 'blue' }}>hi</Button> */}
 
-        {/* <GroupDemo /> */}
+          {/* <GroupDemo /> */}
 
-        {/* <Animated.View style={style} /> */}
-        {/* <AlertDialogDemo /> */}
-        {/* <AddThemeDemo /> */}
-        {/* <AnimationsDemo /> */}
-        {/* <SheetDemo /> */}
-        {/* <DialogDemo /> */}
-        {/* <FormsDemo /> */}
-        {/* <SelectDemo /> */}
-        {/* <ScrollView bc="yellow" p="$1" $gtXs={{ bc: 'blue', p: '$4' }} maxHeight={200}>
+          {/* <Animated.View style={style} /> */}
+          {/* <AlertDialogDemo /> */}
+          {/* <AddThemeDemo /> */}
+          {/* <AnimationsDemo /> */}
+          {/* <SheetDemo /> */}
+          {/* <DialogDemo /> */}
+          {/* <FormsDemo /> */}
+          {/* <SelectDemo /> */}
+          {/* <ScrollView bc="yellow" p="$1" $gtXs={{ bc: 'blue', p: '$4' }} maxHeight={200}>
           <Square bc="red" size={100} />
           <Square bc="red" size={100} />
           <Square bc="red" size={100} />
@@ -158,19 +162,20 @@ export const Sandbox = () => {
           <Square bc="red" size={100} />
           <Square bc="red" size={100} />
         </ScrollView> */}
-        {/* <PopoverDemo /> */}
-        {/* <TooltipDemo /> */}
-        {/* <SwitchDemo /> */}
-        {/* <SheetDemo2 /> */}
-        {/* <SheetDemo /> */}
-        {/* <SwitchDemo /> */}
-        {/* <XStack space>
+          {/* <PopoverDemo /> */}
+          {/* <TooltipDemo /> */}
+          {/* <SwitchDemo /> */}
+          {/* <SheetDemo2 /> */}
+          {/* <SheetDemo /> */}
+          {/* <SwitchDemo /> */}
+          {/* <XStack space>
           <Square size={50} bc="red" />
           <Square $sm={{ display: 'none' }} size={50} bc="red" />
           <Square size={50} bc="red" />
           <Square disp="none" size={50} bc="red" />
           <Square size={50} bc="red" />
         </XStack> */}
+        </div>
       </div>
     </TamaguiProvider>
   )

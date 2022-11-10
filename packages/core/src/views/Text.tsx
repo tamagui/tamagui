@@ -23,6 +23,7 @@ export const Text = createComponent<TextProps, TextView, TextPropsBase>({
       display: 'inline',
       boxSizing: 'border-box',
       wordWrap: 'break-word',
+      margin: 0,
     }),
   },
 

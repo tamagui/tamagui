@@ -3,9 +3,6 @@ rc.0
 - TestFontTokensInVariants types not autocompleting in variants... but showing properly on hover/type property
 - site lighthouse fix
 - focus an input in a dialog on mobile or a propover etc. then it disappears
-- https://github.com/tamagui/tamagui/issues/298
-- https://github.com/tamagui/tamagui/issues/186
-- https://github.com/tamagui/tamagui/issues/270
 - https://github.com/tamagui/tamagui/issues/266
 - https://github.com/tamagui/tamagui/issues/256
 - https://github.com/tamagui/tamagui/issues/242

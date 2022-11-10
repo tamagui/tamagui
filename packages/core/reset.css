@@ -23,15 +23,7 @@ li, select, input, button, [role="slider"], [role="listbox"] {
   outline: none;
 }
 
-p,
-input,
-textarea,
-button,
-ul,
-ol,
-li,
-pre,
-dialog {
+p, input, textarea, button, ul, ol, li, pre, dialog {
   all: unset;
   box-sizing: border-box;
 }

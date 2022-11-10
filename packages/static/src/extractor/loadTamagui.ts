@@ -96,10 +96,10 @@ Tamagui built config and components:`
   colorLog(
     Color.Dim,
     `
-  - Config     .${sep}${relative(process.cwd(), configOutPath)}
-  - Components ${componentOutPaths
+  Config     .${sep}${relative(process.cwd(), configOutPath)}
+  Components ${componentOutPaths
     .map((p) => `.${sep}${relative(process.cwd(), p)}`)
-    .join('\n                ')}
+    .join('\n               ')}
 `
   )
 
