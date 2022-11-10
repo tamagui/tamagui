@@ -132,20 +132,6 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     },
   }
 
-  function isValidStyleKey(name: string, staticConfig: StaticConfigParsed) {
-    if (!projectInfo) {
-      throw new Error(`Tamagui extractor not loaded yet`)
-    }
-    return !!(
-      !!staticConfig.validStyles?.[name] ||
-      !!pseudoDescriptors[name] ||
-      // dont disable variants or else you lose many things flattening
-      staticConfig.variants?.[name] ||
-      projectInfo?.tamaguiConfig.shorthands[name] ||
-      (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
-    )
-  }
-
   function parseWithConfig(
     { components, tamaguiConfig }: TamaguiProjectInfo,
     fileOrPath: FileOrPath,
@@ -193,6 +179,23 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         )
       }
       return null
+    }
+
+    function isValidStyleKey(name: string, staticConfig: StaticConfigParsed) {
+      if (!projectInfo) {
+        throw new Error(`Tamagui extractor not loaded yet`)
+      }
+      if (target === 'native' && name[0] === '$' && mediaQueryConfig[name.slice(1)]) {
+        return false
+      }
+      return !!(
+        !!staticConfig.validStyles?.[name] ||
+        !!pseudoDescriptors[name] ||
+        // dont disable variants or else you lose many things flattening
+        staticConfig.variants?.[name] ||
+        projectInfo?.tamaguiConfig.shorthands[name] ||
+        (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
+      )
     }
 
     /**
@@ -1506,7 +1509,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           if (shouldPrintDebug) {
             try {
               // prettier-ignore
-              logger.info([' - flatten?', objToStr({ hasSpread, shouldDeopt, shouldFlatten, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', [...inlined]].join(' '))
+              logger.info([' flatten?', objToStr({ hasSpread, shouldDeopt, shouldFlatten, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', [...inlined]].join(' '))
             } catch {
               // ok
             }
