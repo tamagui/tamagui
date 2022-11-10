@@ -136,7 +136,6 @@ export function styled<
         ...nativeConf,
       }
 
-      // TODO compiler doesn't have logic to include children, de-opt (see EnsureFlexed for test usage)
       // bail on non className views as well
       if (defaultProps.children || !acceptsClassName) {
         conf.neverFlatten = true

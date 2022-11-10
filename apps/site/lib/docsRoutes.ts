@@ -52,6 +52,11 @@ export const docsRoutes = [
       { title: 'Colors', route: '/docs/intro/colors' },
       { title: 'Tokens', route: '/docs/intro/tokens' },
       // { title: 'Themes', route: '/docs/intro/themes' },
+      // { title: 'Fonts', route: '/docs/intro/themes' },
+      // { title: 'Icons', route: '/docs/intro/themes' },
+      // { title: 'Animations', route: '/docs/intro/themes' },
+      // { title: 'Shorthands', route: '/docs/intro/themes' },
+      // { title: 'Media Queries', route: '/docs/intro/themes' },
     ],
   },
 
