@@ -100,6 +100,13 @@ const expectedProcessedFont: GenericFont = {
     4: 2,
     5: 2,
     6: 1,
+    7: 0,
+    8: 0,
+    9: -1,
+    10: -1.5,
+    12: -2,
+    14: -3,
+    15: -4,
   },
   face: {
     100: { normal: 'InterBold' },

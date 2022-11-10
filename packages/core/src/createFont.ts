@@ -18,10 +18,11 @@ const processSection = <T>(
 ): string | Record<string, T> => {
   if (typeof section === 'string') return section
 
-  let fillValue = section[Object.keys(section)[0]]
+  const sectionKeys = Object.keys(section)
+  let fillValue = section[sectionKeys[0]]
 
   return Object.fromEntries(
-    keys.map((key) => {
+    [...new Set([...keys, ...sectionKeys])].map((key) => {
       const value = section[key] ?? fillValue
       fillValue = value
       return [key, value]
