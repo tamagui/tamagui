@@ -8,7 +8,7 @@ import { AnimationsDemo, AnimationsPresenceDemo } from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
 // import { AppRegistry, useColorScheme } from 'react-native'
-import { TamaguiProvider, TooltipGroup, styled } from 'tamagui'
+import { TamaguiProvider, Text, TooltipGroup, getTokens, styled } from 'tamagui'
 import { ButtonFrame, Circle, Input, Square, YStack } from 'tamagui'
 
 import config from './tamagui.config'
@@ -40,6 +40,18 @@ const StyledInput = styled(Input, {
   backgroundColor: 'red',
   hoverStyle: {
     backgroundColor: 'blue',
+  },
+})
+
+const StyledText = styled(Text, {
+  fontFamily: '$alternative',
+
+  variants: {
+    cool: {
+      true: {
+        fontFamily: '',
+      },
+    },
   },
 })
 
@@ -99,7 +111,7 @@ export const Sandbox = () => {
             background: 'var(--backgroundStrong)',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: 3000,
+            minHeight: '120vh',
             overflow: 'hidden',
           }}
         >
@@ -109,7 +121,7 @@ export const Sandbox = () => {
 
           <SelectDemo />
 
-          <DialogDemo />
+          {/* <DialogDemo /> */}
 
           {/* <StyledInput debug="verbose" /> */}
 

@@ -1,20 +1,16 @@
 rc.0
 
-- TestFontTokensInVariants types not autocompleting in variants... but showing properly on hover/type property
 - site lighthouse fix
-- focus an input in a dialog on mobile or a propover etc. then it disappears
-- https://github.com/tamagui/tamagui/issues/266
-- https://github.com/tamagui/tamagui/issues/256
-- https://github.com/tamagui/tamagui/issues/242
-- kitchen sink placeholder input color dark
-- VisuallyHidden + mediaquery + space
-- mismatch SSR SelectTrigger due to componentName override
-
+- rc.0 blog post
+- <Adapt /> instead of sheetBreakpoint
 
 1.0
 
-- getTokens(): TokensParsed
-- <Adapt /> instead of sheetBreakpoint
+- https://github.com/tamagui/tamagui/issues/318
+- focus an input in a dialog on mobile or a propover etc. then it disappears
+- https://github.com/tamagui/tamagui/issues/256
+- kitchen sink placeholder input color dark
+- VisuallyHidden + mediaquery + space
 - test sprint
   - native integration tests
   - useMedia, useTheme
@@ -42,6 +38,7 @@ content
 
 inbox
 
+- TestFontTokensInVariants types not autocompleting in variants... but showing properly on hover/type property
 - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
 - pass Size down context (see Group) is this just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)?
 - kitchen sink snack on site

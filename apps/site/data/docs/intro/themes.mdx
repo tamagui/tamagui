@@ -3,7 +3,9 @@ title: Themes
 description: How to create and use themes in Tamagui.
 ---
 
-Themes in Tamagui are very flexible, and work a bit differently than you may expect. If you just want to dive in and copy a complete theme config, head down to [Quick Start](#quick-start).
+Themes map neatly to CSS variables for your components: they should contain colors and other values that you'd want to contextually change at any point in your React tree.
+
+All themes must be of the same type, an object with consistent values. If you just want to dive in and copy a complete theme, check out the [Quick Start](#quick-start).
 
 You make a theme with `createTheme`, like so:
 
@@ -15,7 +17,9 @@ const dark = createTheme({
 })
 ```
 
-You can pass tokens as values to any theme property, doing share colors in a type-friendly way and saves on bundle-size (using CSS Variables):
+### Using tokens
+
+Tokens are CSS variables that _don't change contextually_. Think of them as your constants. You should put _all_ your color values into tokens first, like so:
 
 ```tsx
 const tokens = createTokens({
@@ -24,14 +28,18 @@ const tokens = createTokens({
     white: '#fff',
   },
 })
+```
 
+Then, you can use them in any theme:
+
+```tsx
 const dark = createTheme({
   background: tokens.color.black,
   color: tokens.color.white,
 })
 ```
 
-Think of tokens as your base variables which can be shared downwards to themes. Themes meanwhile are meant to be concise, we typically define a handful of "common" properties that any of your `styled()` components can use.
+Think of tokens as your base constants that share downwards.
 
 <Notice>
   Tamagui make some assumptions about the themes `dark` and `light`. If you use them, changing
@@ -57,75 +65,65 @@ And you're able to then access them (fully typed):
 </Theme>
 ```
 
-You can also do:
+You can also access a specific subset more directly:
 
 ```tsx
-<Theme name="dark_green">
-  <Button theme="subtle">Hello world</Button>
+<Theme name="dark">
+  <Button theme="green_subtle">Hello world</Button>
 </Theme>
 ```
 
-#### Component subset themes
+#### Component themes
 
-Finally, each component in Tamagui can be set up to accept a component specific theme by passing the `name` property to the second argument of `styled()`. For example, for the Button component, we define the frame of it like so:
+Every Tamagui `styled()` component looks for it's own specific theme if you pass it the `name` property. For example:
 
 ```tsx
-const ButtonFrame = styled(SizableFrame, {
-  name: 'Button',
-  tag: 'button',
+import { styled, Stack } from '@tamagui/core'
+
+const Circle = styled(Stack, {
+  name: 'Circle',
+  backgroundColor: '$background',
 })
 ```
 
-<Notice>
-  We've decided to enforce the first letter being capitalized. This makes it easier to users to
-  distinguish component themes, and allows Tamagui internally to avoid extra work and nesting.
-</Notice>
+The `name` attribute will be removed from the defaultProps and used internally by Tamagui to check for a sub-theme that ends with `_Circle`.
 
-The `name` attribute will be removed from the defaultProps and used internally by Tamagui to check for the sub-theme that matches. This means any theme named with an ending of `_Button` will apply. So you can add the following themes to customize buttons at any level:
+Now you can create the default theme for all Circle components at any level of nesting:
 
-- `dark_Button`
-- `dark_green_Button`
-- `dark_green_subtle_Button`
+```tsx
+const dark_Circle = createTheme({
+  background: 'darkred',
+  color: 'white',
+})
 
-### Tamagui theme keys
+const light_Circle = createTheme({
+  background: 'lightred',
+  color: 'black',
+})
+```
 
-While `@tamagui/core` isn't prescriptive at all, `tamagui` is. This is because standardizing on specific shared theme keys unlocks huge upside. In `tamagui`, all components will look for the following keys:
+<Notice>Component themes must have the first letter capitalized.</Notice>
+
+- `dark_Circle`
+- `dark_green_Circle`
+- `dark_green_subtle_Circle`
+
+This is an incredibly powerful and unique feature that allows authors of UI components control over design, while still letting users customize them completely.
+
+---
+
+While `@tamagui/core` isn't prescriptive at all, `tamagui` is. This is because standardizing on specific shared theme keys unlocks huge upside. We recommend authors to use these values as well, to enable maximum sharing.
+
+In `tamagui`, all components will look for the following keys:
 
 - `background`
 - `color`
 - `borderColor`
 - `shadowColor`
 
-Plus all the "pseudo" variants for each, so for example, `backgroundHover`, `backgroundPress`, and `backgroundFocus`.
-
-<Notice>In the future, `tamagui` will expand use more, like `borderWidth`.</Notice>
-
-Putting this all together, you'll see how you can get complete control over Tamagui component themes:
-
-```tsx
-// this will customize all `Button` styles
-const dark_Button = createTheme({
-  background: '#333',
-  color: '#999',
-})
-
-// this will customize all `Button` styles inside the `dark_green` theme:
-const dark_green_Button = createTheme({
-  background: 'darkgreen',
-  color: 'lightgreen',
-})
-```
+...plus all the pseudo variants for each, eg, `backgroundHover`, `backgroundPress`, and `backgroundFocus`.
 
 You can of course do all of this yourself in your own design system with `styled`:
-
-```tsx
-import { Stack, styled } from '@tamagui/core'
-
-const Button = styled(Stack, {
-  // note: this name will match it to any theme ending with `_Button`:
-  name: 'Button',
-})
-```
 
 If you are building a component with more than one sub-components, you can follow this pattern:
 
@@ -157,8 +155,6 @@ export const Button = ButtonFrame.extractable(({ children, ...props }: ButtonPro
 ```
 
 And now you can add two themes: `dark_Button` and `dark_ButtonText`, and override their default styles.
-
-We'd like to better organize some helpers to allow for composable components as well, but just note you can use these same patterns to build any type of API you'd like - you could export ButtonText separately, for example, for a more verbose but flexible API.
 
 ## Quick start
 
