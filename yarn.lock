@@ -5170,6 +5170,7 @@ __metadata:
   resolution: "@tamagui/helpers@workspace:packages/helpers"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.213
+    "@tamagui/simple-hash": ^1.0.1-beta.213
   languageName: unknown
   linkType: soft
 
