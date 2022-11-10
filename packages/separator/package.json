@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/separator",
-  "version": "1.0.1-beta.211",
+  "version": "1.0.1-beta.212",
   "sideEffects": [
     "*.css"
   ],
@@ -21,14 +21,14 @@
     "lint:fix": "yarn lint --fix"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.211"
+    "@tamagui/core": "^1.0.1-beta.212"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.211",
+    "@tamagui/build": "^1.0.1-beta.212",
     "react": "*",
     "react-dom": "*"
   },

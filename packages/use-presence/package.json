@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-presence",
-  "version": "1.0.1-beta.211",
+  "version": "1.0.1-beta.212",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,7 +18,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.211",
+    "@tamagui/build": "^1.0.1-beta.212",
     "react": "*"
   },
   "peerDependencies": {

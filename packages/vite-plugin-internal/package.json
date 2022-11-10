@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin-internal",
-  "version": "1.0.1-beta.211",
+  "version": "1.0.1-beta.212",
   "private": true,
   "type": "module",
   "main": "./dist/cjs/vite.config.js",
@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@originjs/vite-plugin-commonjs": "^1.0.3",
-    "@tamagui/config-default-node": "^1.0.1-beta.211",
-    "@tamagui/vite-plugin": "^1.0.1-beta.211",
+    "@tamagui/config-default-node": "^1.0.1-beta.212",
+    "@tamagui/vite-plugin": "^1.0.1-beta.212",
     "@vitejs/plugin-react": "^2.2.0"
   },
   "devDependencies": {
