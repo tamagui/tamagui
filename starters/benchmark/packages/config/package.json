@@ -3,10 +3,10 @@
   "name": "@my/config",
   "main": "tamagui.config.ts",
   "dependencies": {
-    "@tamagui/animations-react-native": "1.0.1-beta.211",
-    "@tamagui/font-inter": "1.0.1-beta.211",
-    "@tamagui/shorthands": "1.0.1-beta.211",
-    "@tamagui/theme-base": "1.0.1-beta.211"
+    "@tamagui/animations-react-native": "1.0.1-beta.213",
+    "@tamagui/font-inter": "1.0.1-beta.213",
+    "@tamagui/shorthands": "1.0.1-beta.213",
+    "@tamagui/theme-base": "1.0.1-beta.213"
   },
   "sideEffects": false
 }
