@@ -30,6 +30,9 @@ rc.0
 - kitchen-sink in Snack demo
 - remove/tim Slot
 - web: forms dix bubble / label
+- nice to have: visual regression testing:
+  - https://formidable.com/open-source/react-native-owl/
+  - https://hughmccamphill.com/visual-regression-testing-react-native-apps-with-detox-and-jest
 
 content
 

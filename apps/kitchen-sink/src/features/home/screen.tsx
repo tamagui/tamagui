@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
+  Circle,
   H1,
   ListItem,
   ListItemProps,
@@ -11,6 +12,7 @@ import {
   Separator,
   Spacer,
   Switch,
+  XStack,
   YGroup,
   YStack,
   useTheme,
@@ -29,6 +31,12 @@ export function HomeScreen() {
         <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
           <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
         </YStack>
+
+        <XStack $xs={{ fd: 'column' }}>
+          <Circle bc="red" size="$5" />
+          <Circle bc="red" size="$5" />
+          <Circle bc="red" size="$5" />
+        </XStack>
 
         {/* fix media + space */}
         {/*
