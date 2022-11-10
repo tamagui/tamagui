@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/colors",
-  "version": "1.0.1-beta.212",
+  "version": "1.0.1-beta.213",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -21,7 +21,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.212"
+    "@tamagui/build": "^1.0.1-beta.213"
   },
   "publishConfig": {
     "access": "public"

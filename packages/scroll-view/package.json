@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/scroll-view",
-  "version": "1.0.1-beta.212",
+  "version": "1.0.1-beta.213",
   "sideEffects": [
     "*.css"
   ],
@@ -21,14 +21,14 @@
     "lint:fix": "yarn lint --fix"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.212"
+    "@tamagui/core": "^1.0.1-beta.213"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.212",
+    "@tamagui/build": "^1.0.1-beta.213",
     "react": "*",
     "react-dom": "*"
   },
