@@ -11,10 +11,16 @@ export default class Document extends NextDocument {
 
     // @ts-ignore
     const { getStyleElement } = AppRegistry.getApplication('Main')
+
+    /**
+     * Note: be sure to keep tamagui styles after react-native-web styles like it is here!
+     * So Tamagui styles can override the react-native-web styles.
+     */
     const styles = [
       getStyleElement(),
       <style key="tamagui-css" dangerouslySetInnerHTML={{ __html: Tamagui.getCSS() }} />,
     ]
+
     return { ...page, styles: Children.toArray(styles) }
   }
 

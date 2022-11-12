@@ -239,6 +239,13 @@ const css = Tamagui.getCSS()
 // insert into your head
 ```
 
+If using Next.js, see how to do this in the [Next.js guide](/docs/guides/next-js).
+
+<Notice>
+  Make sure the style tag you insert with the `getCSS` styles is inserted after any
+  `react-native-web` style tags to ensure Tamagui can override the built-in styles.
+</Notice>
+
 ## Tokens
 
 Tokens have a structure inspired by but divergent from the [Theme UI spec](https://theme-ui.com/theme-spec/). They are mapped to CSS variables at build time.

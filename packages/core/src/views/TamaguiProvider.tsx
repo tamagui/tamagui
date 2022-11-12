@@ -1,12 +1,12 @@
 import { isClient, isRSC, isServer } from '@tamagui/constants'
 import * as React from 'react'
 
+import { getConfig } from '../config'
 import { ButtonInsideButtonContext } from '../contexts/ButtonInsideButtonContext'
 import { TextAncestorContext } from '../contexts/TextAncestorContext'
 import { useMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
-import { getConfig } from '..'
 
 export function TamaguiProvider({
   children,

@@ -9,7 +9,12 @@ Also check out the [source for this site](https://github.com/tamagui/tamagui/tre
 
 ### \_document.tsx
 
-You'll want to set up a `_document.tsx` and gather both the `react-native-web` style object using AppRegistry, as well as Tamagui styles using `Tamagui.getCSS()` into the head element:
+You'll want to set up a `_document.tsx` and gather both the `react-native-web` style object using AppRegistry, as well as Tamagui styles using `Tamagui.getCSS()` into the head element.
+
+<Notice>
+  Make sure the Tamagui style tag always comes after the `getStyleElement` style tag to ensure
+  Tamagui styles override built-in `react-native-web` ones.
+</Notice>
 
 ```tsx
 import NextDocument, { Head, Html, Main, NextScript } from 'next/document'
