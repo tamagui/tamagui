@@ -52,13 +52,15 @@ You can pass icons as either elements or components. If passing components, Tama
 
 You can [use the source of Button itself](https://github.com/tamagui/tamagui/blob/master/packages/button/src/Button.tsx) to see in more detail what variants you can override, and how we use this pattern internally to create our Button component.
 
-### Customization
+### Customization (Advanced)
 
-Button only supports a limited subset of text props directly, and doesn't accept `hoverStyle` text props. If you need more control, you can do a simple customization:
+Button only supports a limited subset of text props directly, and doesn't accept `hoverStyle` text props. If you need more control, you can do a simple customization using some exported helpers.
+
+Please note that this pattern is a bit antithetical to the multiple-components APIs that Tamagui generally prefers. In a future release we hope to fix this, but that change should be easy to migrate to.
 
 ```tsx
 import { forwardRef } from 'React'
-import { styled, themeable, ButtonFrame, ButtonText, useButton, ButtonProps } from 'tamagui'
+import { styled, themeable, ButtonFrame, ButtonText, ButtonProps as TamaguiButtonProps, GetProps, useButton } from 'tamagui'
 
 const CustomButtonFrame = styled(ButtonFrame, {
   // ...
@@ -67,6 +69,13 @@ const CustomButtonFrame = styled(ButtonFrame, {
 const CustomButtonText = styled(ButtonText, {
   // ...
 })
+
+type CustomButtonProps = GetProps<typeof CustomButtonFrame>;
+type CustomButtonTextProps = GetProps<typeof CustomButtonText>;
+
+export type ButtonProps = TamaguiButtonProps &
+  CustomButtonProps &
+  CustomButtonTextProps;
 
 export const Button = themeable(forwardRef<TamaguiElement, ButtonProps>((propsIn, ref) => {
   const { props } = useButton(propsIn, { Text: CustomButtonText })
