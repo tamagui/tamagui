@@ -185,9 +185,6 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       if (!projectInfo) {
         throw new Error(`Tamagui extractor not loaded yet`)
       }
-
-      console.log('checking', name, target, Object.keys(mediaQueryConfig)[0])
-
       if (target === 'native' && name[0] === '$' && mediaQueryConfig[name.slice(1)]) {
         return false
       }

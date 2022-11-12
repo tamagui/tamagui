@@ -1,14 +1,17 @@
 export declare const pseudoDescriptors: {
     readonly hoverStyle: {
         readonly name: "hover";
+        readonly stateKey: "hover";
         readonly priority: 1;
     };
     readonly pressStyle: {
         readonly name: "active";
+        readonly stateKey: "press";
         readonly priority: 2;
     };
     readonly focusStyle: {
         readonly name: "focus";
+        readonly stateKey: "focus";
         readonly priority: 3;
     };
 };
