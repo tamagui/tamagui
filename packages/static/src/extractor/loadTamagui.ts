@@ -99,7 +99,7 @@ Tamagui built config and components:`
   Config     .${sep}${relative(process.cwd(), configOutPath)}
   Components ${componentOutPaths
     .map((p) => `.${sep}${relative(process.cwd(), p)}`)
-    .join('\n              ')}
+    .join('\n             ')}
 `
   )
 
