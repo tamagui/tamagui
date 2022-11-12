@@ -185,6 +185,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       if (!projectInfo) {
         throw new Error(`Tamagui extractor not loaded yet`)
       }
+
+      console.log('checking', name, target, Object.keys(mediaQueryConfig)[0])
+
       if (target === 'native' && name[0] === '$' && mediaQueryConfig[name.slice(1)]) {
         return false
       }
@@ -964,13 +967,17 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
             // shorthand media queries
             if (name[0] === '$' && t.isJSXExpressionContainer(attribute?.value)) {
-              // allow disabling this extraction
-              if (disableExtractInlineMedia) {
-                return attr
-              }
-
               const shortname = name.slice(1)
               if (mediaQueryConfig[shortname]) {
+                if (target === 'native') {
+                  shouldDeopt = true
+                }
+
+                // allow disabling this extraction
+                if (disableExtractInlineMedia) {
+                  return attr
+                }
+
                 const expression = attribute.value.expression
                 if (!t.isJSXEmptyExpression(expression)) {
                   const ternaries = createTernariesFromObjectProperties(
@@ -1399,9 +1406,6 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             })
           }
 
-          // now update to new values
-          node.attributes = attrs.filter(isAttr).map((x) => x.value)
-
           if (couldntParse || shouldDeopt) {
             if (shouldPrintDebug) {
               logger.info([`  avoid optimizing:`, { couldntParse, shouldDeopt }].join(' '))
@@ -1409,6 +1413,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             node.attributes = ogAttributes
             return
           }
+
+          // now update to new values
+          node.attributes = attrs.filter(isAttr).map((x) => x.value)
 
           // before deopt, can still optimize
           const parentFn = findTopmostFunction(traversePath)

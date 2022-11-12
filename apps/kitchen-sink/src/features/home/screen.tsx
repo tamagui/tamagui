@@ -1,3 +1,4 @@
+// debug
 import { variableToString } from '@tamagui/core'
 import { ChevronRight, Moon, Sun } from '@tamagui/sandbox-ui'
 import { ScrollView } from 'react-native'
@@ -32,7 +33,7 @@ export function HomeScreen() {
           <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
         </YStack>
 
-        <XStack $xs={{ fd: 'column' }}>
+        <XStack $sm={{ fd: 'column' }}>
           <Circle bc="red" size="$5" />
           <Circle bc="red" size="$5" />
           <Circle bc="red" size="$5" />
