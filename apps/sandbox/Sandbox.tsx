@@ -8,7 +8,7 @@ import { AnimationsDemo, AnimationsPresenceDemo } from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
 // import { AppRegistry, useColorScheme } from 'react-native'
-import { Paragraph, TamaguiProvider, Text, TooltipGroup, getTokens, styled } from 'tamagui'
+import { Button, Paragraph, TamaguiProvider, Text, TooltipGroup, getTokens, styled } from 'tamagui'
 import { ButtonFrame, Circle, Input, Square, YStack } from 'tamagui'
 
 import config from './tamagui.config'
@@ -162,9 +162,11 @@ export const Sandbox = () => {
             overflow: 'hidden',
           }}
         >
-          <CustomButtonFrame debug="verbose">
+          {/* <CustomButtonFrame debug="verbose">
             <Paragraph>hihi</Paragraph>
-          </CustomButtonFrame>
+          </CustomButtonFrame> */}
+
+          <Button>hi</Button>
 
           {/* <Input /> */}
 

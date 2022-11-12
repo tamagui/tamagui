@@ -516,49 +516,51 @@ export const getSplitStyles: StyleSplitter = (
           true
         )
 
-        pseudos[key] = {
-          ...pseudoStyleObject,
-          ...pseudos[key],
-        }
-
-        if (key === 'enterStyle' || key === 'exitStyle') {
-          continue
-        }
+        const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
 
         if (shouldDoClasses) {
-          const pseudoStyles = getAtomicStyle(pseudoStyleObject, pseudoDescriptors[key])
+          pseudos[key] = {
+            ...pseudos[key],
+            ...pseudoStyleObject,
+          }
+
+          if (!descriptor) {
+            continue
+          }
+          const pseudoStyles = getAtomicStyle(pseudoStyleObject, descriptor)
           for (const psuedoStyle of pseudoStyles) {
-            const postfix = pseudoDescriptors[key]?.name || key // (exit/enterStyle have no pseudoDescriptors)
-            const fullKey = `${psuedoStyle.property}${PROP_SPLIT}${postfix}`
+            const fullKey = `${psuedoStyle.property}${PROP_SPLIT}${descriptor.name}`
             if (!usedKeys[fullKey]) {
               usedKeys[fullKey] = 1
-              if (shouldDoClasses) {
-                addStyleToInsertRules(rulesToInsert, psuedoStyle)
-                mergeClassName(
-                  transforms,
-                  classNames,
-                  fullKey,
-                  psuedoStyle.identifier,
-                  isMediaOrPseudo
-                )
-              }
+              addStyleToInsertRules(rulesToInsert, psuedoStyle)
+              mergeClassName(
+                transforms,
+                classNames,
+                fullKey,
+                psuedoStyle.identifier,
+                isMediaOrPseudo
+              )
             }
           }
         } else {
+          if (!state[descriptor.stateKey]) {
+            continue
+          }
           psuedosUsed ??= {}
-          const importance = pseudoDescriptors[key].priority
+          const importance = descriptor.priority
           for (const pkey in pseudoStyleObject) {
-            const curImportance = psuedosUsed[importance]
+            const curImportance = psuedosUsed[importance] ?? 0
             // change after curImportance
             psuedosUsed[pkey] = importance
             const val = pseudoStyleObject[pkey]
-            if (curImportance <= importance) {
+            if (importance >= curImportance) {
               psuedosUsed[pkey] = importance
+              usedKeys[pkey] = 1
               style[pkey] = val
+              pseudos[key][pkey] = val
             }
           }
         }
-
         continue
       }
 

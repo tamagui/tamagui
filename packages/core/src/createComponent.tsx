@@ -376,18 +376,9 @@ export function createComponent<
           //   enterStyle: { x: 100 }
           // output:
           //   base: { x: 0, scale: 1 }
-          ensureBaseHasDefaults(
-            style,
-            // enterStyle,
-            pseudos.hoverStyle,
-            pseudos.focusStyle,
-            pseudos.pressStyle
-          )
+          ensureBaseHasDefaults(style, pseudos.hoverStyle, pseudos.focusStyle, pseudos.pressStyle)
 
           enterStyle && isEntering && merge(style, enterStyle)
-          state.hover && pseudos.hoverStyle && merge(style, pseudos.hoverStyle)
-          state.focus && pseudos.focusStyle && merge(style, pseudos.focusStyle)
-          state.press && pseudos.pressStyle && merge(style, pseudos.pressStyle)
           exitStyle && isExiting && merge(style, exitStyle)
 
           if (process.env.NODE_ENV === 'development') {
