@@ -409,15 +409,13 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (state.keepVariantsAsProps) {
-      if (
-        (staticConfig.defaultVariants && keyInit in staticConfig.defaultVariants) ||
-        // may want to just: not compile styled() into classnames, always do this, and always pass in all values in extras.props
-        // but we'd want to add styled({ extracted: true }) or something at compile time to save on parsing a bit...
-        (staticConfig.variants && keyInit in staticConfig.variants)
-      ) {
-        viewProps[keyInit] = valInit
-      }
+    if (
+      (staticConfig.defaultVariants && keyInit in staticConfig.defaultVariants) ||
+      // may want to just: not compile styled() into classnames, always do this, and always pass in all values in extras.props
+      // but we'd want to add styled({ extracted: true }) or something at compile time to save on parsing a bit...
+      (state.keepVariantsAsProps && staticConfig.variants && keyInit in staticConfig.variants)
+    ) {
+      viewProps[keyInit] = valInit
     }
 
     /**
@@ -651,6 +649,12 @@ export const getSplitStyles: StyleSplitter = (
 
   // add in defaults if not set:
   if (parentSplitStyles) {
+    if (process.env.NODE_ENV === 'development') {
+      if (debug === 'verbose') {
+        // eslint-disable-next-line no-console
+        console.log(`  add in styled() parent styles`, { parentSplitStyles, shouldDoClasses })
+      }
+    }
     if (process.env.TAMAGUI_TARGET === 'web') {
       for (const key in parentSplitStyles.classNames) {
         if (key in classNames) continue
