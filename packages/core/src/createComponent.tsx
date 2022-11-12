@@ -628,16 +628,7 @@ export function createComponent<
       }
     } else {
       styles = [isWeb ? null : defaultNativeStyle, animationStyles ?? splitStylesStyle, medias]
-      if (!animationStyles && initialSplitStyles) {
-        const initPseudos = initialSplitStyles.pseudos
-        !state.mounted && addPseudoToStyles(styles, initPseudos, pseudos, 'enterStyle')
-        state.hover &&
-          addPseudoToStyles(styles, initPseudos, pseudos, 'hoverStyle', shouldForcePseudo)
-        state.focus &&
-          addPseudoToStyles(styles, initPseudos, pseudos, 'focusStyle', shouldForcePseudo)
-        state.press &&
-          addPseudoToStyles(styles, initPseudos, pseudos, 'pressStyle', shouldForcePseudo)
-      }
+
       // ugly but for now...
       if (shouldForcePseudo) {
         const next = {}
@@ -1059,7 +1050,6 @@ export function createComponent<
         focus: false,
         resolveVariablesAs: 'both',
         noClassNames,
-        keepVariantsAsProps: true,
       },
       undefined,
       undefined,
@@ -1071,7 +1061,7 @@ export function createComponent<
     // otherwise it confuses variant functions getting className props
     const [defaults, defaultsClassnames] = mergeProps(
       component.defaultProps as any,
-      initialSplitStyles.viewProps,
+      { ...initialSplitStyles.pseudos, ...initialSplitStyles.viewProps },
       true
       // conf.inverseShorthands
     )
@@ -1328,23 +1318,6 @@ function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
 function isUnspaced(child: React.ReactNode) {
   // console.log('unspaced?', child, getMedia())
   return child?.['type']?.['isVisuallyHidden'] || child?.['type']?.['isUnspaced']
-}
-
-function addPseudoToStyles(
-  styles: any[],
-  initialPseudos: SplitStyleResult['pseudos'],
-  pseudos: any,
-  name: string,
-  force = false
-) {
-  // on web use pseudo object { hoverStyle } to keep specificity with concatClassName
-  const pseudoStyle = pseudos[name]
-  const shouldNestObject = isWeb && name !== 'enterStyle' && name !== 'exitStyle'
-  const defaultPseudoStyle = initialPseudos[name]
-  const style = defaultPseudoStyle ? { ...defaultPseudoStyle, ...pseudoStyle } : pseudoStyle
-  if (style) {
-    styles.push(shouldNestObject && !force ? { [name]: style } : style)
-  }
 }
 
 const DefaultProps = new Map()
