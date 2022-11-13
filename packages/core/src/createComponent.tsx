@@ -3,6 +3,7 @@ import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from '@tamagui/cons
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
   composeEventHandlers,
+  stylePropsTransform,
   stylePropsView,
   validPseudoKeys,
   validStyles,
@@ -36,6 +37,7 @@ import {
 } from './helpers/getSplitStyles'
 import { getAllSelectors } from './helpers/insertStyleRule'
 import { mergeProps } from './helpers/mergeProps'
+import { mergeTransform } from './helpers/mergeTransform'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { useShallowSetState } from './helpers/useShallowSetState'
 import { getRect, measureLayout, useElementLayout } from './hooks/useElementLayout'
@@ -326,6 +328,10 @@ export function createComponent<
         hostRef,
         staticConfig,
         getStyle({ isExiting, isEntering, exitVariant, enterVariant } = {}) {
+          // TODO this function can mostly be moved entirely inside getSplitStyles
+          // I think theres bugs in merge(), and we can remove that fn entirely then
+          // also i think we need to merge both the exitVariant AND psuedos.exitStyle right now it chooses one
+
           // we have to merge such that transforms keys all exist
           const animationStyle = { ...defaultNativeStyle, ...splitStylesStyle }
 
@@ -340,8 +346,8 @@ export function createComponent<
                   props,
                   state,
                   tamaguiConfig
-                ) || pseudos.enterStyle
-              : [pseudos.enterStyle]
+                )
+              : pseudos.enterStyle
             : null
 
           const exitStyle = isExiting
@@ -354,15 +360,15 @@ export function createComponent<
                   props,
                   state,
                   tamaguiConfig
-                ) || pseudos.exitStyle
-              : [pseudos.exitStyle]
+                )
+              : pseudos.exitStyle
             : null
 
-          if (enterStyle?.[0] && isEntering) {
-            merge(animationStyle, enterStyle[0])
+          if (isEntering && enterStyle) {
+            merge(animationStyle, enterStyle)
           }
-          if (exitStyle?.[0] && isExiting) {
-            merge(animationStyle, exitStyle[0])
+          if (isExiting && exitStyle) {
+            merge(animationStyle, exitStyle)
           }
 
           return animationStyle
@@ -1322,19 +1328,12 @@ function mergeConfigDefaultProps(
 }
 
 function merge(base: ViewStyle, next: ViewStyle) {
-  if (!next.transform || !base.transform) {
-    Object.assign(base, next)
-    return
-  }
-  const { transform, ...rest } = next
-  Object.assign(base, rest)
-  for (const t of transform) {
-    const key = Object.keys(t)[0]
-    const existing = base.transform.find((x) => key in x)
-    if (existing) {
-      existing[key] = t[key]
+  for (const key in next) {
+    const val = next[key]
+    if (key in stylePropsTransform) {
+      mergeTransform(base, key, val, true)
     } else {
-      base.transform.push(t)
+      base[key] = val
     }
   }
 }

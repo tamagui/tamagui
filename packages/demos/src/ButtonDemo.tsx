@@ -12,7 +12,7 @@ export function ButtonDemo(props) {
         <Button w="50%" theme="alt2">
           Alt2
         </Button>
-        <Button debug="verbose" w="50%" theme="yellow">
+        <Button w="50%" theme="yellow">
           Yellow
         </Button>
       </XGroup>

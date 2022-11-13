@@ -536,7 +536,7 @@ export const getSplitStyles: StyleSplitter = (
           continue
         }
 
-        if (key !== 'enterStyle' && key !== 'exitStyle') {
+        if (key !== 'enterStyle') {
           if (!shouldDoClasses || IS_STATIC) {
             pseudos[key] ||= {}
             Object.assign(pseudos[key], pseudoStyleObject)
