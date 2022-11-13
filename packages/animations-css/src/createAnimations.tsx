@@ -36,7 +36,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       const [isPresent, sendExitComplete] = usePresence()
       const presence = useContext(PresenceContext)
       const isExiting = isPresent === false
-      const isEntering = !state.mounted
+      const isEntering = state.unmounted
       const animationKey = Array.isArray(props.animation) ? props.animation[0] : props.animation
       const animation = animations[animationKey as any]
       if (!animation) {

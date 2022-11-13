@@ -82,7 +82,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       })
 
       const isExiting = isPresent === false
-      const isEntering = !state.mounted
+      const isEntering = state.unmounted
 
       const all = getStyle({
         isExiting,
@@ -104,7 +104,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       const key =
         animatedString +
         JSON.stringify([
-          state.mounted,
+          state.unmounted,
           state.hover,
           state.press,
           state.pressIn,
