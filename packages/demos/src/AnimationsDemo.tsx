@@ -22,6 +22,7 @@ export function AnimationsDemo(props) {
         animation={props.animation || 'bouncy'}
         onPress={onPress}
         size={104}
+        debug="verbose"
         boc="$backgroundHover"
         bw={1}
         br="$9"

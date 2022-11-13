@@ -205,20 +205,20 @@ export function createComponent<
 
     const shouldForcePseudo = !!propsIn.forceStyle
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
-    const splitStyleState =
-      !shouldAvoidClasses && !shouldForcePseudo
-        ? {
-            ...state,
-            hasTextAncestor,
-            dynamicStylesInline: true,
-          }
-        : ({
-            ...state,
-            noClassNames: true,
-            dynamicStylesInline: true,
-            hasTextAncestor,
-            resolveVariablesAs: 'value',
-          } as const)
+    const noClassNames = shouldAvoidClasses || shouldForcePseudo
+    const splitStyleState = noClassNames
+      ? {
+          ...state,
+          hasTextAncestor,
+          dynamicStylesInline: true,
+        }
+      : ({
+          ...state,
+          noClassNames: true,
+          dynamicStylesInline: true,
+          hasTextAncestor,
+          resolveVariablesAs: 'value',
+        } as const)
 
     const languageContext = isRSC ? null : useContext(FontLanguageContext)
 
@@ -350,7 +350,7 @@ export function createComponent<
                   state,
                   tamaguiConfig
                 ) || pseudos.enterStyle
-              : pseudos.enterStyle
+              : [pseudos.enterStyle]
             : null
 
           const exitStyle = isExiting
@@ -364,7 +364,7 @@ export function createComponent<
                   state,
                   tamaguiConfig
                 ) || pseudos.exitStyle
-              : pseudos.exitStyle
+              : [pseudos.exitStyle]
             : null
 
           // if you have hoverStyle={{ scale: 1.1 }} and don't have scale set on the base style
@@ -378,13 +378,21 @@ export function createComponent<
           //   base: { x: 0, scale: 1 }
           ensureBaseHasDefaults(style, pseudos.hoverStyle, pseudos.focusStyle, pseudos.pressStyle)
 
-          enterStyle && isEntering && merge(style, enterStyle)
-          exitStyle && isExiting && merge(style, exitStyle)
+          if (enterStyle && enterStyle[0] && isEntering) {
+            merge(style, enterStyle[0])
+          }
+          if (exitStyle && exitStyle[0] && isExiting) {
+            merge(style, exitStyle[0])
+          }
 
           if (process.env.NODE_ENV === 'development') {
             if (debugProp === 'verbose') {
               // eslint-disable-next-line no-console
-              console.log('animation style', style)
+              console.log('animation style', {
+                enterStyle,
+                exitStyle,
+                style,
+              })
             }
           }
 
@@ -706,8 +714,7 @@ export function createComponent<
     // TODO need to loop active variants and see if they have matchin pseudos and apply as well
     const initialPseudos = initialSplitStyles?.pseudos
     const attachPress = !!(
-      pseudos?.pressStyle ||
-      initialPseudos?.pressStyle ||
+      (noClassNames && (pseudos?.pressStyle || initialPseudos?.pressStyle)) ||
       onPress ||
       onPressOut ||
       onPressIn ||
@@ -717,7 +724,26 @@ export function createComponent<
     const isHoverable = isWeb
     const attachHover =
       isHoverable &&
-      !!((pseudos && pseudos.hoverStyle) || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
+      !!(
+        (noClassNames && pseudos?.hoverStyle) ||
+        onHoverIn ||
+        onHoverOut ||
+        onMouseEnter ||
+        onMouseLeave
+      )
+
+    if (attachHover) {
+      if (pseudos.hoverStyle && Object.keys(pseudos).length === 0) {
+        console.log('attachHover', attachHover, {
+          noClassNames,
+          pseudos,
+          onHoverIn,
+          onHoverOut,
+          onMouseEnter,
+          onMouseLeave,
+        })
+      }
+    }
 
     const handlesPressEvents = !isWeb && !asChild
 
@@ -750,7 +776,7 @@ export function createComponent<
                   onMouseUp?.(e)
                 }
               : undefined,
-            ...(isHoverable && {
+            ...(attachHover && {
               onMouseEnter: attachHover
                 ? (e) => {
                     const next: Partial<typeof state> = {}
@@ -877,8 +903,8 @@ export function createComponent<
     if (process.env.TAMAGUI_TARGET === 'native') {
       // add focus events
       const attachFocus = !!(
-        (pseudos && pseudos.focusStyle) ||
-        (initialPseudos && initialPseudos.focusStyle)
+        (noClassNames && pseudos.focusStyle) ||
+        (noClassNames && initialPseudos && initialPseudos.focusStyle)
       )
       if (attachFocus) {
         viewProps.onFocus = mergeEvent(viewProps.onFocus, () => {
