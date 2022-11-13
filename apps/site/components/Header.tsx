@@ -1,4 +1,3 @@
-// debug
 import { LogoWords, TamaguiLogo, tints } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
 import NextLink from 'next/link'

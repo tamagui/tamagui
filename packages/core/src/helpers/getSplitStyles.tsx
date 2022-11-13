@@ -204,7 +204,7 @@ export const getSplitStyles: StyleSplitter = (
     if (val && val[0] === '_') {
       classNames[key] = val
     } else if (key in stylePropsTransform) {
-      flatTransforms ??= {}
+      flatTransforms ||= {}
       flatTransforms[key] = val
     } else {
       style[key] = normalizeValueWithProperty(val, key)

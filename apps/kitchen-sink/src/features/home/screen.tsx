@@ -1,4 +1,3 @@
-// debug
 import { variableToString } from '@tamagui/core'
 import { ChevronRight, Moon, Sun } from '@tamagui/sandbox-ui'
 import { ScrollView } from 'react-native'
