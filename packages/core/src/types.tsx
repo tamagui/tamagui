@@ -1227,7 +1227,7 @@ export type TamaguiComponentState = {
   press: boolean
   pressIn: boolean
   focus: boolean
-  mounted: boolean
+  unmounted: boolean
   mediaState?: null | Record<string, boolean>
   animation?: null | {
     style?: any

@@ -141,7 +141,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       const isExiting = isPresent === false
       const isEntering = !state.mounted
 
-      const all = getStyle({
+      const mergedStyles = getStyle({
         isExiting,
         isEntering,
         exitVariant: presence?.exitVariant,
@@ -150,18 +150,24 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
 
       const animateStyles = useSafeRef<Record<string, Animated.Value>>({})
       const animatedTranforms = useSafeRef<{ [key: string]: Animated.Value }[]>([])
-      const interpolations = useSafeRef(
-        new WeakMap<
+      const animationsState = useSafeRef<
+        WeakMap<
           Animated.Value,
-          { interopolation: Animated.AnimatedInterpolation; current?: number }
-        >()
-      )
+          {
+            interopolation: Animated.AnimatedInterpolation
+            current?: number | undefined
+          }
+        >
+      >(null as any)
+      if (!animationsState.current) {
+        animationsState.current = new WeakMap()
+      }
 
       const runners: Function[] = []
       const completions: Promise<void>[] = []
 
       const args = [
-        JSON.stringify(all),
+        JSON.stringify(mergedStyles),
         state.mounted,
         state.hover,
         state.press,
@@ -175,23 +181,65 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       ]
 
       const res = useMemo(() => {
+        const nonAnimatedStyle = {}
+        for (const key in mergedStyles) {
+          const val = mergedStyles[key]
+          if (!animatedStyleKey[key]) {
+            nonAnimatedStyle[key] = val
+            continue
+          }
+          if (key !== 'transform') {
+            animateStyles.current[key] = update(key, animateStyles.current[key], val)
+            continue
+          }
+          // key: 'transform'
+          // for now just support one transform key
+          if (!val) continue
+          for (const [index, transform] of val.entries()) {
+            if (!transform) continue
+            const tkey = Object.keys(transform)[0]
+            const currentTransform = animatedTranforms.current[index]?.[tkey]
+            animatedTranforms.current[index] = {
+              [tkey]: update(tkey, currentTransform, transform[tkey]),
+            }
+            animatedTranforms.current = [...animatedTranforms.current]
+          }
+        }
+
+        const animatedStyle = {
+          ...Object.fromEntries(
+            Object.entries({
+              ...animateStyles.current,
+            }).map(([k, v]) => [k, animationsState.current!.get(v)?.interopolation || v])
+          ),
+          transform: animatedTranforms.current.map((r) => {
+            const key = Object.keys(r)[0]
+            const val = animationsState.current!.get(r[key])?.interopolation || r[key]
+            return { [key]: val }
+          }),
+        }
+
+        return {
+          style: [nonAnimatedStyle, animatedStyle],
+        }
+
         function update(key: string, animated: Animated.Value | undefined, valIn: string | number) {
           const [val, type] = getValue(valIn)
           const value = animated || new Animated.Value(val)
           let interpolateArgs: any
           if (type) {
-            const curInterpolation = interpolations.current.get(value)
+            const curInterpolation = animationsState.current.get(value)
             interpolateArgs = getInterpolated(
               curInterpolation?.current ?? value['_value'],
               val,
               type
             )
-            interpolations.current!.set(value, {
+            animationsState.current!.set(value, {
               interopolation: value.interpolate(interpolateArgs),
               current: val,
             })
           }
-          if (animated) {
+          if (value) {
             const animationConfig = getAnimationConfig(key, animations, props.animation)
 
             let resolve
@@ -201,8 +249,8 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             completions.push(promise)
 
             runners.push(() => {
-              animated.stopAnimation()
-              Animated.spring(animated, {
+              value.stopAnimation()
+              Animated.spring(value, {
                 toValue: val,
                 useNativeDriver: !isWeb,
                 ...animationConfig,
@@ -217,64 +265,27 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             if (props['debug']) {
               // prettier-ignore
               // eslint-disable-next-line no-console
-              console.log('AnimatedValue', key, `from ${value['_value']} to`, valIn, `(${val})`, 'of type', type, 'interpolate', interpolateArgs)
+              console.log(' 💠 animate', key, `from ${value['_value']} to`, valIn, `(${val})`, 'type', type, 'interpolate', interpolateArgs)
             }
           }
           return value
-        }
-
-        const nonAnimatedStyle = {}
-        for (const key in all) {
-          const val = all[key]
-          if (animatedStyleKey[key]) {
-            if (key === 'transform') {
-              // for now just support one transform key
-              if (val) {
-                for (const [index, transform] of val.entries()) {
-                  if (!transform) continue
-                  const tkey = Object.keys(transform)[0]
-                  animatedTranforms.current[index] = {
-                    [tkey]: update(tkey, animatedTranforms.current[index]?.[tkey], transform[tkey]),
-                  }
-                }
-              }
-            } else {
-              animateStyles.current[key] = update(key, animateStyles.current[key], val)
-            }
-          } else {
-            nonAnimatedStyle[key] = val
-          }
-        }
-
-        const animatedStyle = {
-          ...Object.fromEntries(
-            Object.entries({
-              ...animateStyles.current,
-            }).map(([k, v]) => [k, interpolations.current!.get(v)?.interopolation || v])
-          ),
-          transform: animatedTranforms.current.map((r) => {
-            const key = Object.keys(r)[0]
-            const val = interpolations.current!.get(r[key])?.interopolation || r[key]
-            return { [key]: val }
-          }),
-        }
-
-        return {
-          style: [nonAnimatedStyle, animatedStyle],
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, args)
 
       useIsomorphicLayoutEffect(() => {
-        for (const runner of runners) {
-          runner()
-        }
+        runners.forEach((r) => r())
+        let cancel = false
         Promise.all(completions).then(() => {
+          if (cancel) return
           onDidAnimate?.()
           if (isExiting) {
             sendExitComplete?.()
           }
         })
+        return () => {
+          cancel = true
+        }
       }, args)
 
       if (process.env.NODE_ENV === 'development') {

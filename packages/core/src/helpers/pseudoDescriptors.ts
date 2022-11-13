@@ -1,9 +1,8 @@
 // *0 order matches to *1
 
-export const pseudoDescriptors = {
+export const pseudoDescriptors: Record<string, PseudoDescriptor> = {
   hoverStyle: {
     name: 'hover',
-    stateKey: 'hover',
     priority: 1,
   },
   pressStyle: {
@@ -13,19 +12,25 @@ export const pseudoDescriptors = {
   },
   focusStyle: {
     name: 'focus',
-    stateKey: 'focus',
     priority: 3,
   },
   enterStyle: {
     name: 'enter',
-    stateKey: 'enter',
+    stateKey: 'unmounted',
     priority: 4,
   },
   exitStyle: {
     name: 'exit',
-    stateKey: 'exit',
-    priority: 4,
+    priority: 5,
   },
-} as const
+}
 
-export type PseudoDescriptor = typeof pseudoDescriptors[keyof typeof pseudoDescriptors]
+export type PseudoDescriptor = {
+  name: string
+  priority: number
+  stateKey?: string
+}
+
+export type PseudoDescriptors = {
+  [Key in keyof typeof pseudoDescriptors]: PseudoDescriptor
+}

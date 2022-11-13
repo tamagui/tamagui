@@ -35,7 +35,7 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
   return (
     <YStack space="$2" my="$4">
       {data.map((result, i) => {
-        const width = `${(result.value / maxValue) * 100}%`
+        const width = `${Math.round((result.value / maxValue) * 100)}%`
         return (
           <XStack space="$3" key={i}>
             <YStack w={large ? 120 : 70}>
