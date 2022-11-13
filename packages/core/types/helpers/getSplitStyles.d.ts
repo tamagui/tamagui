@@ -20,7 +20,7 @@ declare type StyleSplitter = (props: {
 }, staticConfig: StaticConfigParsed, theme: ThemeParsed, state: SplitStyleState, parentSplitStyles?: SplitStylesAndProps | null, languageContext?: LanguageContextType, elementType?: string, debug?: DebugProp) => SplitStylesAndProps;
 export declare const PROP_SPLIT = "-";
 export declare const getSplitStyles: StyleSplitter;
-export declare const getSubStyle: (subKey: string, styleIn: Object, staticConfig: StaticConfigParsed, theme: ThemeParsed, props: any, state: SplitStyleState, conf: TamaguiInternalConfig, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean) => ViewStyle;
+export declare const getSubStyle: (subKey: string, styleIn: Object, staticConfig: StaticConfigParsed, theme: ThemeParsed, props: any, state: SplitStyleState, conf: TamaguiInternalConfig, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean) => [ViewStyle, Record<string, number>];
 export declare const insertSplitStyles: StyleSplitter;
 export declare const useSplitStyles: StyleSplitter;
 export {};

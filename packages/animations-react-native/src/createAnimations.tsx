@@ -217,7 +217,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             if (props['debug']) {
               // prettier-ignore
               // eslint-disable-next-line no-console
-              console.log('AnimatedValue', key, 'mapped value', valIn, 'of type', type, 'to', val, 'interpolated', interpolateArgs, '- current Animated.Value', value['_value'])
+              console.log('AnimatedValue', key, `from ${value['_value']} to`, valIn, `(${val})`, 'of type', type, 'interpolate', interpolateArgs)
             }
           }
           return value
@@ -276,6 +276,13 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
           }
         })
       }, args)
+
+      if (process.env.NODE_ENV === 'development') {
+        if (props['debug']) {
+          // eslint-disable-next-line no-console
+          console.log(`Returning animated`, res)
+        }
+      }
 
       return res
     },

@@ -102,7 +102,7 @@ const generateAtomicStyles = (
         const rules = createAtomicRules(identifier, key, value, pseudo)
         const styleObject: StyleObject = {
           property: key,
-          pseudo: pseudo?.name,
+          pseudo: pseudo?.name as any,
           value,
           identifier,
           rules,

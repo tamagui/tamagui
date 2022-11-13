@@ -14,6 +14,16 @@ export declare const pseudoDescriptors: {
         readonly stateKey: "focus";
         readonly priority: 3;
     };
+    readonly enterStyle: {
+        readonly name: "enter";
+        readonly stateKey: "enter";
+        readonly priority: 4;
+    };
+    readonly exitStyle: {
+        readonly name: "exit";
+        readonly stateKey: "exit";
+        readonly priority: 4;
+    };
 };
 export declare type PseudoDescriptor = typeof pseudoDescriptors[keyof typeof pseudoDescriptors];
 //# sourceMappingURL=pseudoDescriptors.d.ts.map

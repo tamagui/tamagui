@@ -1,6 +1,5 @@
 import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { stylePropsText, stylePropsTransform, validPseudoKeys, validStyles } from '@tamagui/helpers'
-import { timer } from '@tamagui/timer'
 import type { ViewStyle } from '@tamagui/types-react-native'
 import { useInsertionEffect } from 'react'
 
@@ -25,7 +24,6 @@ import type {
 import { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types'
 import { createMediaStyle } from './createMediaStyle'
 import { getPropMappedFontFamily } from './createPropMapper'
-import { createProxy } from './createProxy'
 import { fixStyles } from './expandStyles'
 import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
@@ -473,6 +471,8 @@ export const getSplitStyles: StyleSplitter = (
         console.log('expanded', expanded)
         // eslint-disable-next-line no-console
         console.log('usedKeys', usedKeys)
+        // eslint-disable-next-line no-console
+        console.log('current', { ...style })
       }
       // eslint-disable-next-line no-console
       console.groupEnd()
@@ -507,8 +507,9 @@ export const getSplitStyles: StyleSplitter = (
           // once mounted we can ignore enterStyle
           continue
         }
+
         pseudos[key] ??= {}
-        const pseudoStyleObject = getSubStyle(
+        const [pseudoStyleObject, usedPseudoTransforms] = getSubStyle(
           key,
           val,
           staticConfig,
@@ -520,17 +521,18 @@ export const getSplitStyles: StyleSplitter = (
           true
         )
 
-        const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
-
         if (shouldDoClasses) {
           pseudos[key] = {
             ...pseudos[key],
             ...pseudoStyleObject,
           }
+        }
 
-          if (!descriptor) {
-            continue
-          }
+        const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
+        if (!descriptor) {
+          continue
+        }
+        if (shouldDoClasses) {
           const pseudoStyles = getAtomicStyle(pseudoStyleObject, descriptor)
           for (const psuedoStyle of pseudoStyles) {
             const fullKey = `${psuedoStyle.property}${PROP_SPLIT}${descriptor.name}`
@@ -556,6 +558,11 @@ export const getSplitStyles: StyleSplitter = (
             const curImportance = psuedosUsed[importance] ?? 0
             // change after curImportance
             psuedosUsed[pkey] = importance
+
+            if (pkey === 'transform') {
+              Object.assign(usedKeys, usedPseudoTransforms)
+            }
+
             const val = pseudoStyleObject[pkey]
             if (importance >= curImportance) {
               psuedosUsed[pkey] = importance
@@ -570,6 +577,8 @@ export const getSplitStyles: StyleSplitter = (
 
       // media
       if (isMedia) {
+        if (!val) continue
+
         const mediaKey = key
         const mediaKeyShort = mediaKey.slice(1)
         mediaKeys.push(mediaKeyShort)
@@ -577,7 +586,7 @@ export const getSplitStyles: StyleSplitter = (
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
 
-        const mediaStyle = getSubStyle(
+        const [mediaStyle, mediaTransformKeys] = getSubStyle(
           key,
           val,
           staticConfig,
@@ -608,8 +617,12 @@ export const getSplitStyles: StyleSplitter = (
         } else if (mediaState[mediaKey]) {
           for (const key in mediaStyle) {
             const didMerge = mergeMediaByImportance(style, key, mediaStyle[key], usedKeys)
-            if (didMerge && key === 'fontFamily') {
-              fontFamily = mediaStyle[key]
+            if (didMerge) {
+              if (key === 'fontFamily') {
+                fontFamily = mediaStyle[key]
+              } else if (key === 'transform') {
+                Object.assign(usedKeys, mediaTransformKeys)
+              }
             }
           }
         }
@@ -836,8 +849,10 @@ export const getSubStyle = (
   conf: TamaguiInternalConfig,
   languageContext?: FontLanguageProps,
   avoidDefaultProps?: boolean
-): ViewStyle => {
+): [ViewStyle, Record<string, number>] => {
   const styleOut: ViewStyle = {}
+  const usedTransformKeys: Record<string, number> = {}
+
   for (let key in styleIn) {
     const val = styleIn[key]
     key = conf.shorthands[key] || key
@@ -854,6 +869,7 @@ export const getSubStyle = (
     for (const [skey, sval] of expanded) {
       if (skey in stylePropsTransform) {
         mergeTransform(styleOut, skey, sval)
+        usedTransformKeys[skey] = 1
       } else {
         styleOut[skey] = normalizeValueWithProperty(sval, key)
       }
@@ -862,7 +878,7 @@ export const getSubStyle = (
 
   fixStyles(styleOut)
 
-  return styleOut
+  return [styleOut, usedTransformKeys]
 }
 
 export const insertSplitStyles: StyleSplitter = (...args) => {
