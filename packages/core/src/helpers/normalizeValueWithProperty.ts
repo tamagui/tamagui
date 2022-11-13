@@ -93,18 +93,24 @@ export function reverseMapClassNameToValue(key: string, className: string) {
   if (!cssRule) {
     return
   }
-  const cssVal = cssRule.replace(/.*:/, '').replace(/;.*/, '')
+  const cssVal = cssRule.replace(/.*:/, '').replace(/;.*/, '').trim()
   let res: any
-  if (unitlessNumbers[key]) {
+  if (cssVal.startsWith('var(')) {
+    res = cssVal
+  } else if (unitlessNumbers[key]) {
     res = +cssVal
   } else if (cssVal.endsWith('px')) {
     res = +cssVal.replace('px', '')
   } else {
     res = cssVal
   }
-  if (typeof res === 'string') {
-    res = res.trim()
-  }
   rcache[cssRule] = res
+  if (process.env.NODE_ENV === 'development') {
+    // ensure we are parsing properly
+    if (typeof res === 'number' && isNaN(res)) {
+      // eslint-disable-next-line no-console
+      console.log(`Tamagui invalid parsed value, NaN:`, { res, cssVal, cssRule, key, className })
+    }
+  }
   return res
 }

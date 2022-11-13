@@ -535,6 +535,14 @@ export const getSplitStyles: StyleSplitter = (
         if (!descriptor) {
           continue
         }
+
+        if (key !== 'enterStyle' && key !== 'exitStyle') {
+          if (!shouldDoClasses || IS_STATIC) {
+            pseudos[key] ||= {}
+            Object.assign(pseudos[key], pseudoStyleObject)
+          }
+        }
+
         if (shouldDoClasses) {
           const pseudoStyles = getAtomicStyle(pseudoStyleObject, descriptor)
           for (const psuedoStyle of pseudoStyles) {
@@ -552,9 +560,6 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
         } else {
-          pseudos[key] ||= {}
-          Object.assign(pseudos[key], pseudoStyleObject)
-
           if (!state[descriptor.stateKey || descriptor.name]) {
             continue
           }
@@ -566,6 +571,7 @@ export const getSplitStyles: StyleSplitter = (
             const val = pseudoStyleObject[pkey]
             if (importance >= curImportance) {
               psuedosUsed[pkey] = importance
+              pseudos[key] ||= {}
               pseudos[key][pkey] = val
               mergeStyle(pkey, val)
             }

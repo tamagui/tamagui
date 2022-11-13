@@ -1,4 +1,4 @@
-export declare const pseudoDescriptors: Record<string, PseudoDescriptor>;
+export declare const pseudoDescriptors: Record<'hoverStyle' | 'pressStyle' | 'focusStyle' | 'enterStyle' | 'exitStyle', PseudoDescriptor>;
 export declare type PseudoDescriptor = {
     name: string;
     priority: number;

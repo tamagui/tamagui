@@ -1,6 +1,9 @@
 // *0 order matches to *1
 
-export const pseudoDescriptors: Record<string, PseudoDescriptor> = {
+export const pseudoDescriptors: Record<
+  'hoverStyle' | 'pressStyle' | 'focusStyle' | 'enterStyle' | 'exitStyle',
+  PseudoDescriptor
+> = {
   hoverStyle: {
     name: 'hover',
     priority: 1,
