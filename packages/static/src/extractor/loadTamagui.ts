@@ -61,7 +61,7 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
     resolver = res
   })
 
-  const tmpDir = join(process.cwd(), '.tamagui', 'tamagui-node')
+  const tmpDir = join(process.cwd(), '.tamagui')
   const configOutPath = join(tmpDir, `tamagui.config.js`)
   const baseComponents = props.components.filter((x) => x !== '@tamagui/core')
   const componentOutPaths = baseComponents.map((componentModule) =>

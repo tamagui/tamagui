@@ -139,7 +139,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       //   : pseudos.exitStyle
 
       const isExiting = isPresent === false
-      const isEntering = !state.mounted
+      const isEntering = state.unmounted
 
       const mergedStyles = getStyle({
         isExiting,
@@ -168,7 +168,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
 
       const args = [
         JSON.stringify(mergedStyles),
-        state.mounted,
+        state.unmounted,
         state.hover,
         state.press,
         state.pressIn,
@@ -352,8 +352,6 @@ function getValue(input: number | string) {
   if (typeof input !== 'string') {
     return [input] as const
   }
-  const neg = input[0] === '-'
-  if (neg) input = input.slice(1)
-  const [_, number, after] = input.match(/([-0-9]+)(deg|%)/) ?? []
-  return [+number * (neg ? -1 : 1), after] as const
+  const [_, number, after] = input.match(/([-0-9]+)(deg|%|px)/) ?? []
+  return [+number, after] as const
 }

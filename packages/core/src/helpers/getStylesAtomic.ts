@@ -23,7 +23,12 @@ export type ViewStyleWithPseudos = ViewOrTextStyle & {
   focusStyle?: ViewOrTextStyle
 }
 
-const pseudosOrdered = Object.values(pseudoDescriptors)
+// matching order of the below *0
+const pseudosOrdered = [
+  pseudoDescriptors.hoverStyle,
+  pseudoDescriptors.pressStyle,
+  pseudoDescriptors.focusStyle,
+]
 
 export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
   // performance optimization
