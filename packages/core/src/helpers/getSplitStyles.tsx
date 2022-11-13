@@ -197,6 +197,19 @@ export const getSplitStyles: StyleSplitter = (
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
 
   let style: ViewStyle = {}
+  let flatTransforms: Record<string, any> | undefined
+
+  function mergeStyle(key: string, val: any) {
+    usedKeys[key] = usedKeys[key] || 1
+    if (val && val[0] === '_') {
+      classNames[key] = val
+    } else if (key in stylePropsTransform) {
+      flatTransforms ??= {}
+      flatTransforms[key] = val
+    } else {
+      style[key] = normalizeValueWithProperty(val, key)
+    }
+  }
 
   const len = propKeys.length
   const rulesToInsert: RulesToInsert = []
@@ -503,13 +516,9 @@ export const getSplitStyles: StyleSplitter = (
       // pseudo
       if (isPseudo) {
         if (!val) continue
-        if (key === 'enterStyle' && state.mounted) {
-          // once mounted we can ignore enterStyle
-          continue
-        }
 
-        pseudos[key] ??= {}
-        const [pseudoStyleObject, usedPseudoTransforms] = getSubStyle(
+        // TODO can avoid processing this if !shouldDoClasses + state is off
+        const pseudoStyleObject = getSubStyle(
           key,
           val,
           staticConfig,
@@ -518,15 +527,9 @@ export const getSplitStyles: StyleSplitter = (
           state,
           conf,
           languageContext,
+          true,
           true
         )
-
-        if (shouldDoClasses) {
-          pseudos[key] = {
-            ...pseudos[key],
-            ...pseudoStyleObject,
-          }
-        }
 
         const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
         if (!descriptor) {
@@ -549,26 +552,22 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
         } else {
-          if (!state[descriptor.stateKey]) {
+          pseudos[key] ||= {}
+          Object.assign(pseudos[key], pseudoStyleObject)
+
+          if (!state[descriptor.stateKey || descriptor.name]) {
             continue
           }
-          psuedosUsed ??= {}
+
+          psuedosUsed ||= {}
           const importance = descriptor.priority
           for (const pkey in pseudoStyleObject) {
-            const curImportance = psuedosUsed[importance] ?? 0
-            // change after curImportance
-            psuedosUsed[pkey] = importance
-
-            if (pkey === 'transform') {
-              Object.assign(usedKeys, usedPseudoTransforms)
-            }
-
+            const curImportance = psuedosUsed[importance] || 0
             const val = pseudoStyleObject[pkey]
             if (importance >= curImportance) {
               psuedosUsed[pkey] = importance
-              usedKeys[pkey] = 1
-              style[pkey] = val
               pseudos[key][pkey] = val
+              mergeStyle(pkey, val)
             }
           }
         }
@@ -586,7 +585,7 @@ export const getSplitStyles: StyleSplitter = (
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
 
-        const [mediaStyle, mediaTransformKeys] = getSubStyle(
+        const mediaStyle = getSubStyle(
           key,
           val,
           staticConfig,
@@ -594,7 +593,10 @@ export const getSplitStyles: StyleSplitter = (
           props,
           state,
           conf,
-          languageContext
+          languageContext,
+          // TODO try true like pseudo
+          false,
+          true
         )
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -620,8 +622,6 @@ export const getSplitStyles: StyleSplitter = (
             if (didMerge) {
               if (key === 'fontFamily') {
                 fontFamily = mediaStyle[key]
-              } else if (key === 'transform') {
-                Object.assign(usedKeys, mediaTransformKeys)
               }
             }
           }
@@ -641,13 +641,7 @@ export const getSplitStyles: StyleSplitter = (
 
       if (validStyleProps[key]) {
         usedKeys[key] = 1
-        if (val && val[0] === '_') {
-          classNames[key] = val
-        } else if (key in stylePropsTransform) {
-          mergeTransform(style, key, val, true)
-        } else {
-          style[key] = normalizeValueWithProperty(val, key)
-        }
+        mergeStyle(key, val)
         continue
       }
 
@@ -664,6 +658,14 @@ export const getSplitStyles: StyleSplitter = (
   fixStyles(style)
   if (isWeb) {
     styleToCSS(style)
+  }
+
+  // always do this at the very end to preserve the order strictly (animations, origin)
+  // and allow proper merging of all pseudos before applying
+  if (flatTransforms) {
+    for (const key in flatTransforms) {
+      mergeTransform(style, key, flatTransforms[key], true)
+    }
   }
 
   // add in defaults if not set:
@@ -848,10 +850,10 @@ export const getSubStyle = (
   state: SplitStyleState,
   conf: TamaguiInternalConfig,
   languageContext?: FontLanguageProps,
-  avoidDefaultProps?: boolean
-): [ViewStyle, Record<string, number>] => {
+  avoidDefaultProps?: boolean,
+  avoidMergeTransform?: boolean
+): ViewStyle => {
   const styleOut: ViewStyle = {}
-  const usedTransformKeys: Record<string, number> = {}
 
   for (let key in styleIn) {
     const val = styleIn[key]
@@ -867,9 +869,8 @@ export const getSubStyle = (
     )
     if (!expanded) continue
     for (const [skey, sval] of expanded) {
-      if (skey in stylePropsTransform) {
+      if (!avoidMergeTransform && skey in stylePropsTransform) {
         mergeTransform(styleOut, skey, sval)
-        usedTransformKeys[skey] = 1
       } else {
         styleOut[skey] = normalizeValueWithProperty(sval, key)
       }
@@ -878,7 +879,7 @@ export const getSubStyle = (
 
   fixStyles(styleOut)
 
-  return [styleOut, usedTransformKeys]
+  return styleOut
 }
 
 export const insertSplitStyles: StyleSplitter = (...args) => {

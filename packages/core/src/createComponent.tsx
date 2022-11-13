@@ -46,6 +46,7 @@ import {
   SpaceDirection,
   SpaceTokens,
   SpacerProps,
+  SplitStyleState,
   StaticConfig,
   StaticConfigParsed,
   StylableComponent,
@@ -162,16 +163,6 @@ export function createComponent<
       ? `is_${props.componentName}`
       : defaultComponentClassName
 
-    if (debugProp) {
-      // eslint-disable-next-line no-console
-      console.log(`render ${componentName}`)
-    }
-
-    const forceUpdate = useForceUpdate()
-    const theme = useTheme(props.theme, componentName, props, forceUpdate)
-
-    // time`useTheme`
-
     /**
      * Component state for tracking animations, pseudos
      */
@@ -185,14 +176,46 @@ export function createComponent<
     const setState = states[1]
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
-    const shouldSetMounted = needsMount && !state.mounted
+    const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
+    // conditional but if ever true stays true
+    const hasEverAnimated = useRef(false)
+    const isAnimated = (() => {
+      const next = !!(useAnimations && props.animation)
+      if (next && !hasEverAnimated.current) {
+        hasEverAnimated.current = true
+      }
+      return next || hasEverAnimated.current
+    })()
+    const isReactNative = Boolean(
+      staticConfig.isReactNative || (isAnimated && tamaguiConfig.animations.isReactNative)
+    )
+
+    if (process.env.NODE_ENV === 'development') {
+      if (props['debug']) {
+        const name = `${
+          componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
+        }`
+        const type = isReactNative ? '(rnw)' : ''
+        const dataIs = propsIn['data-is'] || ''
+        const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type}`
+        // eslint-disable-next-line no-console
+        console.group(`%c ${banner}`, 'background: yellow;')
+        // eslint-disable-next-line no-console
+        console.log(`state`, state)
+      }
+    }
+
+    const forceUpdate = useForceUpdate()
+    const theme = useTheme(props.theme, componentName, props, forceUpdate)
+
+    const shouldSetMounted = needsMount && state.unmounted
     const setMounted = shouldSetMounted
       ? () => {
           // for some reason without some small delay it doesn't animate css
           setTimeout(
             () => {
               setStateShallow({
-                mounted: true,
+                unmounted: false,
               })
             },
             isWeb ? 10 : 0
@@ -206,35 +229,8 @@ export function createComponent<
     const shouldForcePseudo = !!propsIn.forceStyle
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
-    const splitStyleState = noClassNames
-      ? {
-          ...state,
-          hasTextAncestor,
-          dynamicStylesInline: true,
-        }
-      : ({
-          ...state,
-          noClassNames: true,
-          dynamicStylesInline: true,
-          hasTextAncestor,
-          resolveVariablesAs: 'value',
-        } as const)
-
     const languageContext = isRSC ? null : useContext(FontLanguageContext)
-
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
-
-    const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
-
-    // conditional but if ever true stays true
-    const hasEverAnimated = useRef(false)
-    const isAnimated = (() => {
-      const next = !!(useAnimations && props.animation)
-      if (next && !hasEverAnimated.current) {
-        hasEverAnimated.current = true
-      }
-      return next || hasEverAnimated.current
-    })()
 
     const isTaggable = !Component || typeof Component === 'string'
     // default to tag, fallback to component (when both strings)
@@ -255,6 +251,13 @@ export function createComponent<
 
     // time`setupStateConf`
 
+    const splitStyleState: SplitStyleState = {
+      ...state,
+      noClassNames,
+      dynamicStylesInline: noClassNames,
+      hasTextAncestor,
+      resolveVariablesAs: 'value',
+    }
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
@@ -271,9 +274,6 @@ export function createComponent<
     const hostRef = useServerRef<TamaguiElement>(null)
 
     // animation setup
-    const isReactNative = Boolean(
-      staticConfig.isReactNative || (isAnimated && tamaguiConfig.animations.isReactNative)
-    )
     const isAnimatedReactNativeWeb = isAnimated && avoidClassesWhileAnimating
 
     if (process.env.NODE_ENV === 'development') {
@@ -283,22 +283,15 @@ export function createComponent<
       }
 
       if (debugProp) {
-        const name = `${
-          componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
-        }`
-        const type = isReactNative ? 'rnw' : 'tamagui'
-        const banner = `${name} ${propsIn['data-is'] || ''} ${type}`
         // eslint-disable-next-line no-console
-        console.group(`%c 🐛 ${banner}`, 'background: yellow;')
+        console.groupCollapsed('props')
         // eslint-disable-next-line no-console
-        console.groupCollapsed('initial props/state')
-        // eslint-disable-next-line no-console
-        console.log('propsIn', propsIn, 'turned into', props, 'order', Object.keys(props))
+        console.log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
         // eslint-disable-next-line no-console
         console.log('splitStyles', splitStyles)
         // eslint-disable-next-line no-console
         console.log('className', Object.values(splitStyles.classNames))
-        if (typeof window !== 'undefined') {
+        if (isClient) {
           // eslint-disable-next-line no-console
           console.log('ref', hostRef, '(click to view)')
         }
@@ -320,9 +313,6 @@ export function createComponent<
       mediaKeys,
     } = splitStyles
 
-    const animationFeatureStylesIn = props.animation
-      ? { ...defaultNativeStyle, ...splitStylesStyle }
-      : null
     const propsWithAnimation = props as UseAnimationProps
 
     // once you set animation prop don't remove it, you can set to undefined/false
@@ -337,8 +327,9 @@ export function createComponent<
         staticConfig,
         getStyle({ isExiting, isEntering, exitVariant, enterVariant } = {}) {
           // we have to merge such that transforms keys all exist
-          const style = animationFeatureStylesIn
+          const animationStyle = { ...defaultNativeStyle, ...splitStylesStyle }
 
+          // allows for enter/exit variants on styled()
           const enterStyle = isEntering
             ? enterVariant && staticConfig.variants?.[enterVariant]['true']
               ? getSubStyle(
@@ -367,36 +358,14 @@ export function createComponent<
               : [pseudos.exitStyle]
             : null
 
-          // if you have hoverStyle={{ scale: 1.1 }} and don't have scale set on the base style
-          // no animation will run! this is really confusing. this will look at all variants,
-          // and fill in base styles if they don't exist. eg:
-          // input:
-          //   base: {}
-          //   hoverStyle: { scale: 2 }
-          //   enterStyle: { x: 100 }
-          // output:
-          //   base: { x: 0, scale: 1 }
-          ensureBaseHasDefaults(style, pseudos.hoverStyle, pseudos.focusStyle, pseudos.pressStyle)
-
-          if (enterStyle && enterStyle[0] && isEntering) {
-            merge(style, enterStyle[0])
+          if (enterStyle?.[0] && isEntering) {
+            merge(animationStyle, enterStyle[0])
           }
-          if (exitStyle && exitStyle[0] && isExiting) {
-            merge(style, exitStyle[0])
+          if (exitStyle?.[0] && isExiting) {
+            merge(animationStyle, exitStyle[0])
           }
 
-          if (process.env.NODE_ENV === 'development') {
-            if (debugProp === 'verbose') {
-              // eslint-disable-next-line no-console
-              console.log('animation style', {
-                enterStyle,
-                exitStyle,
-                style,
-              })
-            }
-          }
-
-          return style
+          return animationStyle
         },
         //, delay
       })
@@ -713,37 +682,14 @@ export function createComponent<
 
     // TODO need to loop active variants and see if they have matchin pseudos and apply as well
     const initialPseudos = initialSplitStyles?.pseudos
-    const attachPress = !!(
-      (noClassNames && (pseudos?.pressStyle || initialPseudos?.pressStyle)) ||
-      onPress ||
-      onPressOut ||
-      onPressIn ||
-      onClick
-    )
+    const runtimePressStyle = noClassNames && (pseudos?.pressStyle || initialPseudos?.pressStyle)
+    const attachPress = !!(runtimePressStyle || onPress || onPressOut || onPressIn || onClick)
 
     const isHoverable = isWeb
+    const runtimeHoverStyle = noClassNames && (pseudos?.hoverStyle || initialPseudos.hoverStyle)
     const attachHover =
       isHoverable &&
-      !!(
-        (noClassNames && pseudos?.hoverStyle) ||
-        onHoverIn ||
-        onHoverOut ||
-        onMouseEnter ||
-        onMouseLeave
-      )
-
-    if (attachHover) {
-      if (pseudos.hoverStyle && Object.keys(pseudos).length === 0) {
-        console.log('attachHover', attachHover, {
-          noClassNames,
-          pseudos,
-          onHoverIn,
-          onHoverOut,
-          onMouseEnter,
-          onMouseLeave,
-        })
-      }
-    }
+      !!(runtimeHoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
 
     const handlesPressEvents = !isWeb && !asChild
 
@@ -997,12 +943,12 @@ export function createComponent<
           press: false,
           pressIn: false,
           focus: false,
-          mounted: false,
+          unmounted: true,
           mediaState: getMediaStateObject(getInitialMediaState()),
         }
         defaultComponentStateMounted = {
           ...defaultComponentState,
-          mounted: true,
+          unmounted: false,
         }
       }
 
@@ -1060,7 +1006,7 @@ export function createComponent<
       staticConfig,
       initialTheme,
       {
-        mounted: true,
+        unmounted: false,
         hover: false,
         press: false,
         pressIn: false,
@@ -1373,54 +1319,6 @@ function mergeConfigDefaultProps(
     return mergeProps(props, ourDefaultsMerged, false, conf.inverseShorthands)[0]
   }
   return props
-}
-
-const defaults = {
-  left: 0,
-  right: 0,
-  top: 0,
-  bottom: 0,
-  opacity: 1,
-  translateX: 0,
-  translateY: 0,
-  skew: 0,
-  skewX: 0,
-  skewY: 0,
-  scale: 1,
-  rotate: '0deg',
-  rotateY: '0deg',
-  rotateX: '0deg',
-}
-
-function ensureBaseHasDefaults(base: ViewStyle, ...pseudos: (ViewStyle | null | undefined)[]) {
-  for (const pseudo of pseudos) {
-    if (!pseudo) continue
-    for (const key in pseudo) {
-      const val = pseudo[key]
-      // can we just use merge() here?
-      if (key === 'transform') {
-        if (typeof val === 'string') {
-          continue
-        }
-        for (const t of val) {
-          const tkey = Object.keys(t)[0]
-          const defaultVal = defaults[tkey]
-          const tDefaultVal = { [tkey]: defaultVal } as any
-          if (!base.transform) {
-            base.transform = [tDefaultVal]
-          } else {
-            if (!base.transform.find((x) => x[tkey])) {
-              base.transform.push(tDefaultVal)
-            }
-          }
-        }
-      } else {
-        if (!(key in base)) {
-          base[key] = defaults[key]
-        }
-      }
-    }
-  }
 }
 
 function merge(base: ViewStyle, next: ViewStyle) {

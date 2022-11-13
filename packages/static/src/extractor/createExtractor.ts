@@ -515,7 +515,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         const out = getSplitStyles(styles, Component.staticConfig, defaultTheme, {
           focus: false,
           hover: false,
-          mounted: false,
+          unmounted: true,
           press: false,
           pressIn: false,
           resolveVariablesAs: 'variable',
@@ -1636,7 +1636,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             noClassNames: false,
             focus: false,
             hover: false,
-            mounted: true, // TODO match logic in createComponent
+            unmounted: false, // TODO match logic in createComponent
             press: false,
             pressIn: false,
           }
