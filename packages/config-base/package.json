@@ -26,6 +26,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/animations-react-native": "^1.0.1-beta.214",
     "@tamagui/colors": "^1.0.1-beta.214",
     "@tamagui/core": "^1.0.1-beta.214",
     "@tamagui/font-inter": "^1.0.1-beta.214",
