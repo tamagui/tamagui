@@ -1,4 +1,3 @@
-// debug-verbose
 // import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 

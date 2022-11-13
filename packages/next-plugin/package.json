@@ -28,7 +28,7 @@
     "babel-loader": "^8.2.5",
     "browserslist": "^4.21.1",
     "css-loader": "^5.2.4",
-    "css-minimizer-webpack-plugin": "^4.0.0",
+    "css-minimizer-webpack-plugin": "^4.2.2",
     "esbuild-loader": "^2.19.0",
     "esm-resolve": "^1.0.8",
     "file-loader": "^6.2.0",
