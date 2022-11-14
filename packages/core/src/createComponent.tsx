@@ -29,18 +29,18 @@ import { stackDefaultStyles } from './constants/constants'
 import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { TextAncestorContext } from './contexts/TextAncestorContext'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
-import { SplitStyleResult, getSubStyle, useSplitStyles } from './helpers/getSplitStyles'
+import { getSubStyle, useSplitStyles } from './helpers/getSplitStyles'
 import { getAllSelectors } from './helpers/insertStyleRule'
 import { mergeProps } from './helpers/mergeProps'
 import { mergeTransform } from './helpers/mergeTransform'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
-import { pseudoDescriptors } from './helpers/pseudoDescriptors'
 import { useShallowSetState } from './helpers/useShallowSetState'
 import { getRect, measureLayout, useElementLayout } from './hooks/useElementLayout'
 import { addMediaQueryListener, getInitialMediaState } from './hooks/useMedia'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
 import { getThemeManager, useTheme } from './hooks/useTheme'
 import {
+  DebugProp,
   SpaceDirection,
   SpaceTokens,
   SpacerProps,
@@ -151,7 +151,7 @@ export function createComponent<
 
     // time`mergeProps`
 
-    const debugProp = props['debug']
+    const debugProp = props['debug'] as DebugProp
     const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
     const componentClassName = props.asChild
@@ -188,7 +188,7 @@ export function createComponent<
     )
 
     if (process.env.NODE_ENV === 'development') {
-      if (props['debug']) {
+      if (debugProp) {
         const name = `${
           componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
         }`
@@ -587,7 +587,7 @@ export function createComponent<
       }, [unPress])
     }
 
-    let styles: any[]
+    let styles: Object[]
 
     if (isStringElement && shouldAvoidClasses && !shouldForcePseudo) {
       styles = {
@@ -601,11 +601,7 @@ export function createComponent<
       // ugly but for now...
       if (shouldForcePseudo) {
         const next = {}
-        for (const style of styles) {
-          if (style) {
-            Object.assign(next, style)
-          }
-        }
+        styles.forEach((style) => Object.assign(next, style))
         // @ts-ignore
         Object.assign(splitStyles.style, next)
       }
@@ -681,15 +677,11 @@ export function createComponent<
       viewProps.style = styles
     }
 
-    // TODO need to loop active variants and see if they have matchin pseudos and apply as well
-    const runtimePressStyle = noClassNames && pseudos?.pressStyle
+    const runtimePressStyle = !disabled && noClassNames && pseudos?.pressStyle
     const attachPress = !!(runtimePressStyle || onPress || onPressOut || onPressIn || onClick)
-
-    const isHoverable = isWeb
-    const runtimeHoverStyle = noClassNames && pseudos?.hoverStyle
-    const attachHover =
-      isHoverable &&
-      !!(runtimeHoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
+    const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
+    const isHoverable =
+      isWeb && !!(runtimeHoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
 
     const handlesPressEvents = !isWeb && !asChild
 
@@ -699,7 +691,7 @@ export function createComponent<
       ? false
       : Boolean(
           attachPress ||
-            attachHover ||
+            isHoverable ||
             'pressStyle' in props ||
             'onPress' in props ||
             'onPressIn' in props ||
@@ -722,28 +714,28 @@ export function createComponent<
                   onMouseUp?.(e)
                 }
               : undefined,
-            ...(attachHover && {
-              onMouseEnter: attachHover
+            ...(isHoverable && {
+              onMouseEnter: isHoverable
                 ? (e) => {
                     const next: Partial<typeof state> = {}
-                    if (attachHover) {
+                    if (isHoverable) {
                       next.hover = true
                     }
                     if (state.pressIn) {
                       next.press = true
                     }
-                    if (attachHover || state.pressIn) {
+                    if (isHoverable || state.pressIn) {
                       setStateShallow(next)
                     }
                     onHoverIn?.(e)
                     onMouseEnter?.(e)
                   }
                 : undefined,
-              onMouseLeave: attachHover
+              onMouseLeave: isHoverable
                 ? (e) => {
                     const next: Partial<typeof state> = {}
                     mouseUps.add(unPress)
-                    if (attachHover) {
+                    if (isHoverable) {
                       next.hover = false
                     }
                     if (state.pressIn) {
@@ -987,24 +979,22 @@ export function createComponent<
     const debug = defaultPropsIn['debug']
 
     // remove all classNames
-    const [ourProps, ourClassNames] = mergeProps(defaultPropsIn, {}, true)
+    const [ourProps, ourClassNames] = mergeProps(defaultPropsIn, {})
 
     if (ourProps.tag) {
       defaultTag = ourProps.tag
     }
 
     const noClassNames = !staticConfig.acceptsClassName
-
     const { name, variants, defaultVariants, ...restProps } = ourProps
 
     // must preserve prop order
     // leave out className because we handle that already with initialSplitStyles.classNames
     // otherwise it confuses variant functions getting className props
-    const [defaults, defaultsClassnames] = mergeProps(
-      component.defaultProps as any,
-      { ...defaultVariants, ...restProps },
-      true
-    )
+    const [defaults, defaultsClassnames] = mergeProps(component.defaultProps as any, {
+      ...defaultVariants,
+      ...restProps,
+    })
 
     defaultNativeStyle = {}
 
@@ -1023,28 +1013,15 @@ export function createComponent<
       }
     }
 
-    if (Object.keys(defaults).length) {
-      tamaguiDefaultProps = defaults
-    }
+    // set to global
+    tamaguiDefaultProps = defaults
 
     // add debug logs
     if (process.env.NODE_ENV === 'development' && debug) {
       if (process.env.IS_STATIC !== 'is_static') {
+        // prettier-ignore
         // eslint-disable-next-line no-console
-        console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
-          staticConfig,
-          tamaguiDefaultProps,
-          defaultNativeStyle,
-          defaults,
-          defaultPropsIn,
-          defaultPropsKeyOrder: Object.keys(staticConfig.defaultProps),
-          defaultPropsInKeyOrder: Object.keys(defaultPropsIn).map((k) => [k, defaultPropsIn[k]]),
-          ourProps,
-          ourClassNames,
-          defaultsClassnames,
-          defaultTag,
-          noClassNames,
-        })
+        console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, { staticConfig, tamaguiDefaultProps, defaultNativeStyle, defaults, defaultPropsIn, defaultPropsKeyOrder: Object.keys(staticConfig.defaultProps), defaultPropsInKeyOrder: Object.keys(defaultPropsIn).map((k) => [k, defaultPropsIn[k]]), ourProps, ourClassNames, defaultsClassnames, defaultTag, noClassNames, })
       }
     }
   })

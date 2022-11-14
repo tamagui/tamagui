@@ -193,23 +193,15 @@ export const getSplitStyles: StyleSplitter = (
   const usedKeys: Record<string, number> = {}
   const propKeys = Object.keys(props)
 
+  if (Object.keys(props).some((p) => p.toLowerCase() === 'lineheight-gtsm')) {
+    debugger
+  }
+
   const shouldDoClasses =
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
 
   const style: ViewStyle = {}
   let flatTransforms: Record<string, any> | undefined
-
-  function mergeStyle(key: string, val: any) {
-    usedKeys[key] = usedKeys[key] || 1
-    if (val && val[0] === '_') {
-      classNames[key] = val
-    } else if (key in stylePropsTransform) {
-      flatTransforms ||= {}
-      flatTransforms[key] = val
-    } else {
-      style[key] = normalizeValueWithProperty(val, key)
-    }
-  }
 
   const len = propKeys.length
   const rulesToInsert: RulesToInsert = []
@@ -224,6 +216,11 @@ export const getSplitStyles: StyleSplitter = (
   for (let i = len - 1; i >= 0; i--) {
     let keyInit = propKeys[i]
     const valInit = props[keyInit]
+
+    if (valInit && valInit[0] === '_') {
+      classNames[keyInit] = valInit
+      continue
+    }
 
     // normalize shorthands up front
     const expandedKey = conf.shorthands[keyInit]
@@ -249,6 +246,18 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
       continue
+    }
+
+    function mergeStyle(key: string, val: any) {
+      usedKeys[key] = usedKeys[key] || 1
+      if (val && val[0] === '_') {
+        classNames[key] = val
+      } else if (key in stylePropsTransform) {
+        flatTransforms ||= {}
+        flatTransforms[key] = val
+      } else {
+        style[key] = normalizeValueWithProperty(val, key)
+      }
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -416,6 +425,9 @@ export const getSplitStyles: StyleSplitter = (
           !isValidClassName &&
           keyInit.includes(PROP_SPLIT) &&
           validStyles[keyInit.split(PROP_SPLIT)[0]]
+
+        console.log('goog', keyInit, valInit, { isValidClassName, isMediaOrPseudo })
+
         if (isValidClassName || isMediaOrPseudo) {
           usedKeys[keyInit] = 1
           mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
@@ -479,13 +491,9 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      if (!isServer) {
+      if (!isServer && isWeb) {
         // eslint-disable-next-line no-console
-        console.log('expanded', expanded)
-        // eslint-disable-next-line no-console
-        console.log('usedKeys', usedKeys)
-        // eslint-disable-next-line no-console
-        console.log('current', { ...style })
+        console.log('expanded', expanded, '\nusedKeys', usedKeys, '\ncurrent', { ...style })
       }
       // eslint-disable-next-line no-console
       console.groupEnd()
