@@ -1,7 +1,9 @@
 {
   "name": "@tamagui/demos",
   "version": "1.0.1-beta.216",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -21,7 +23,7 @@
     "./package.json": "./package.json",
     "./photo/*": "./public/*.jpg",
     ".": {
-      "import": "./dist/esm/index.js",
+      "import": "./dist/jsx/index.js",
       "require": "./dist/cjs/index.js"
     }
   },

@@ -1,4 +1,3 @@
-//! debug
 import { Circle, ScrollView, Square, XStack } from 'tamagui'
 
 export function ScrollViewDemo() {

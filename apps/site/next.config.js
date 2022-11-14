@@ -77,7 +77,7 @@ module.exports = function (name, { defaultConfig }) {
   let config = {
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     // todo fix:
-    // swcMinify: true,
+    swcMinify: true,
     experimental: {
       // for preact...
       // esmExternals: false,
@@ -111,8 +111,6 @@ module.exports = function (name, { defaultConfig }) {
       ...plugin(config),
     }
   }
-
-  console.log('config', config)
 
   return config
 }

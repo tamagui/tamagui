@@ -341,11 +341,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           new TamaguiPlugin({
             commonjs: isServer,
             exclude: (path: string) => {
-              console.log(
-                `exclude (${isServer ? 'server' : 'client'})`,
-                shouldExclude(path, options.dir),
-                path
-              )
               return shouldExclude(path, options.dir)
             },
             ...tamaguiOptions,
