@@ -4,18 +4,14 @@ process.env.TAMAGUI_TARGET = process.env.TAMAGUI_TARGET || 'web'
 process.env.TAMAGUI_COMPILE_PROCESS = '1'
 process.env.IS_STATIC = 'is_static'
 
+export * from './plugin'
+
 export default require('./loader').loader
 
 // helper for webpack exclude specific to tamagui
 
 export const shouldExclude = (filePath: string, projectRoot: string) => {
-  if (
-    filePath.includes('react-native-web') ||
-    filePath.includes('react-native-gesture-handler') ||
-    filePath.includes('@gorhom') ||
-    filePath.includes(projectRoot) ||
-    isTamaguiDistJSX(filePath)
-  ) {
+  if ((filePath.includes(projectRoot) && filePath.endsWith('sx')) || isTamaguiDistJSX(filePath)) {
     return false
   }
   return true

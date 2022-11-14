@@ -1,4 +1,4 @@
-import { existsSync } from 'fs'
+import { existsSync, fstat } from 'fs'
 import path, { dirname, join } from 'path'
 
 import type { TamaguiOptions } from '@tamagui/static'
@@ -6,7 +6,7 @@ import browserslist from 'browserslist'
 import buildResolver from 'esm-resolve'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
-import { shouldExclude as shouldExcludeDefault } from 'tamagui-loader'
+import { TamaguiPlugin, shouldExclude as shouldExcludeDefault } from 'tamagui-loader'
 import webpack from 'webpack'
 
 export type WithTamaguiProps = TamaguiOptions & {
@@ -197,28 +197,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           }
         }
 
-        // TODO document and make configurable
-        // replaces minifier with css-minimizer-webpack-plugin which handles deduping atomic styles
-        // if (!dev) {
-        //   const cssMin = webpackConfig.optimization.minimizer.find((x) =>
-        //     x.toString().includes('css-minimizer-plugin')
-        //   )
-        //   if (cssMin) {
-        //     webpackConfig.optimization.minimizer = webpackConfig.optimization.minimizer.slice(
-        //       cssMin.index,
-        //       1
-        //     )
-        //   }
-        //   webpackConfig.optimization.minimizer.push(new CssMinimizerPlugin())
-        // }
-
-        webpackConfig.resolve.extensions = [
-          ...new Set(['.web.tsx', '.web.ts', '.web.js', ...webpackConfig.resolve.extensions]),
-        ]
-
-        // look for compiled js with jsx intact as specified by module:jsx
-        webpackConfig.resolve.mainFields.unshift('module:jsx')
-
         if (isServer) {
           const externalize = (context: string, request: string) => {
             const fullPath = request[0] === '.' ? path.join(context, request) : request
@@ -359,41 +337,19 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           })
         }
 
-        const firstOneOfRule = webpackConfig.module.rules.findIndex((x) => x && !!x.oneOf)
-        const oneOfJSRules: any[] = webpackConfig.module.rules[firstOneOfRule].oneOf
-        const afterSWCLoaderIndex =
-          oneOfJSRules.findIndex(
-            (x) => x && x.use && x.use.loader === 'next-swc-loader' && x.issuerLayer !== 'api'
-          ) + 1
-        const swcLoader = oneOfJSRules[afterSWCLoaderIndex]
-
-        // put an earlier loader where we just do tamagui stuff before regular swc
-        oneOfJSRules.splice(
-          afterSWCLoaderIndex,
-          0,
-          {
-            test: /(bottom-sheet|react-native-reanimated).*\.[tj]sx?$/,
-            use: [
-              {
-                loader: 'babel-loader',
-                options: {
-                  presets: ['@babel/preset-react'],
-                  plugins: ['react-native-reanimated/plugin'],
-                },
-              },
-            ],
-          },
-          {
-            test: /\.(jsx?|tsx?)$/,
-            exclude: (path: string) => shouldExclude(path, options.dir),
-            use: [
-              ...[].concat(swcLoader.use),
-              {
-                loader: 'tamagui-loader',
-                options: tamaguiOptions,
-              },
-            ],
-          }
+        webpackConfig.plugins.push(
+          new TamaguiPlugin({
+            commonjs: isServer,
+            exclude: (path: string) => {
+              console.log(
+                `exclude (${isServer ? 'server' : 'client'})`,
+                shouldExclude(path, options.dir),
+                path
+              )
+              return shouldExclude(path, options.dir)
+            },
+            ...tamaguiOptions,
+          })
         )
 
         if (typeof nextConfig.webpack === 'function') {
@@ -413,7 +369,8 @@ function getSupportedBrowsers(dir, isDevelopment) {
       path: dir,
       env: isDevelopment ? 'development' : 'production',
     })
-  } catch {}
-
+  } catch {
+    //
+  }
   return browsers
 }

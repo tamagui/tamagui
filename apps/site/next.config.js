@@ -81,6 +81,7 @@ module.exports = function (name, { defaultConfig }) {
     experimental: {
       // for preact...
       // esmExternals: false,
+      forceSwcTransforms: true,
       scrollRestoration: true,
       legacyBrowsers: false,
       // runtime: 'nodejs',
@@ -110,6 +111,8 @@ module.exports = function (name, { defaultConfig }) {
       ...plugin(config),
     }
   }
+
+  console.log('config', config)
 
   return config
 }

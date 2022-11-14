@@ -22,10 +22,6 @@ export function registerRequire() {
   const core = require('@tamagui/core-node')
 
   Module.prototype.require = function (path: string) {
-    if (SHOULD_DEBUG) {
-      // eslint-disable-next-line no-console
-      console.log('tamagui:require', path)
-    }
     if (/\.(gif|jpe?g|png|svg|ttf|otf|woff2?|bmp|webp)$/.test(path)) {
       return {}
     }
