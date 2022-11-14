@@ -29,12 +29,7 @@ import { stackDefaultStyles } from './constants/constants'
 import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { TextAncestorContext } from './contexts/TextAncestorContext'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
-import {
-  SplitStyleResult,
-  getSubStyle,
-  insertSplitStyles,
-  useSplitStyles,
-} from './helpers/getSplitStyles'
+import { SplitStyleResult, getSubStyle, useSplitStyles } from './helpers/getSplitStyles'
 import { getAllSelectors } from './helpers/insertStyleRule'
 import { mergeProps } from './helpers/mergeProps'
 import { mergeTransform } from './helpers/mergeTransform'
@@ -140,7 +135,6 @@ export function createComponent<
   let defaultNativeStyle: any
   let tamaguiDefaultProps: any
   let defaultTag: string | undefined
-  let initialSplitStyles: SplitStyleResult
 
   // see onConfiguredOnce below which attaches a name then to this component
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
@@ -266,7 +260,7 @@ export function createComponent<
       staticConfig,
       theme,
       splitStyleState,
-      props.asChild ? null : initialSplitStyles,
+      null,
       languageContext || undefined,
       elementType,
       debugProp
@@ -688,12 +682,11 @@ export function createComponent<
     }
 
     // TODO need to loop active variants and see if they have matchin pseudos and apply as well
-    const initialPseudos = initialSplitStyles?.pseudos
-    const runtimePressStyle = noClassNames && (pseudos?.pressStyle || initialPseudos?.pressStyle)
+    const runtimePressStyle = noClassNames && pseudos?.pressStyle
     const attachPress = !!(runtimePressStyle || onPress || onPressOut || onPressIn || onClick)
 
     const isHoverable = isWeb
-    const runtimeHoverStyle = noClassNames && (pseudos?.hoverStyle || initialPseudos.hoverStyle)
+    const runtimeHoverStyle = noClassNames && pseudos?.hoverStyle
     const attachHover =
       isHoverable &&
       !!(runtimeHoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
@@ -855,7 +848,7 @@ export function createComponent<
     // EVENTS native
     if (process.env.TAMAGUI_TARGET === 'native') {
       // add focus events
-      const attachFocus = !!(pseudos.focusStyle || (initialPseudos && initialPseudos.focusStyle))
+      const attachFocus = !!pseudos.focusStyle
       if (attachFocus) {
         viewProps.onFocus = mergeEvent(viewProps.onFocus, () => {
           setStateShallow({ focus: true })
@@ -917,7 +910,7 @@ export function createComponent<
         if (typeof window !== 'undefined') {
           // prettier-ignore
           // eslint-disable-next-line no-console
-          console.log({ state, shouldProvideThemeManager, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
+          console.log({ state, shouldProvideThemeManager, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, defaultNativeStyle, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
         }
         // eslint-disable-next-line no-console
         console.groupEnd()
@@ -1002,42 +995,16 @@ export function createComponent<
 
     const noClassNames = !staticConfig.acceptsClassName
 
-    initialSplitStyles = insertSplitStyles(
-      ourProps,
-      staticConfig,
-      initialTheme,
-      {
-        unmounted: false,
-        hover: false,
-        press: false,
-        pressIn: false,
-        focus: false,
-        resolveVariablesAs: 'both',
-        noClassNames,
-      },
-      undefined,
-      undefined,
-      debug
-    )
+    const { name, variants, defaultVariants, ...restProps } = ourProps
 
     // must preserve prop order
     // leave out className because we handle that already with initialSplitStyles.classNames
     // otherwise it confuses variant functions getting className props
     const [defaults, defaultsClassnames] = mergeProps(
       component.defaultProps as any,
-      isWeb
-        ? { ...initialSplitStyles.pseudos, ...initialSplitStyles.viewProps }
-        : initialSplitStyles.viewProps,
+      { ...defaultVariants, ...restProps },
       true
-      // conf.inverseShorthands
     )
-
-    // avoid passing className props to variants
-    initialSplitStyles.classNames = {
-      ...defaultsClassnames,
-      ...initialSplitStyles.classNames,
-      ...ourClassNames,
-    }
 
     defaultNativeStyle = {}
 
@@ -1058,17 +1025,6 @@ export function createComponent<
 
     if (Object.keys(defaults).length) {
       tamaguiDefaultProps = defaults
-
-      // temp bugfix, splitStyles isn't returning variables when resolveVariablesAs == 'both'
-      if (!isWeb) {
-        Object.keys(pseudoDescriptors).forEach((k) => {
-          if (ourProps[k]) {
-            // @ts-ignore
-            initialSplitStyles.pseudos[k] = null
-            tamaguiDefaultProps[k] = ourProps[k]
-          }
-        })
-      }
     }
 
     // add debug logs
@@ -1077,7 +1033,6 @@ export function createComponent<
         // eslint-disable-next-line no-console
         console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
           staticConfig,
-          initialSplitStyles,
           tamaguiDefaultProps,
           defaultNativeStyle,
           defaults,

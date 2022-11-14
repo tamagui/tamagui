@@ -677,29 +677,31 @@ export const getSplitStyles: StyleSplitter = (
 
   // add in defaults if not set:
   if (parentSplitStyles) {
-    if (process.env.NODE_ENV === 'development') {
-      if (debug === 'verbose') {
-        // eslint-disable-next-line no-console
-        console.log(`  add in styled() parent styles`, { parentSplitStyles, shouldDoClasses })
-      }
-    }
     if (process.env.TAMAGUI_TARGET === 'web') {
-      for (const key in parentSplitStyles.classNames) {
-        if (key in classNames) continue
-        if (key in style) continue
-        const val = parentSplitStyles.classNames[key]
-        if (!shouldDoClasses) {
-          style[key] = reverseMapClassNameToValue(key, val)
-        } else {
+      if (shouldDoClasses) {
+        for (const key in parentSplitStyles.classNames) {
+          const val = parentSplitStyles.classNames[key]
+          if (key in style) continue
+          if (key in classNames) continue
           classNames[key] = val
         }
       }
     }
     if (!shouldDoClasses) {
       for (const key in parentSplitStyles.style) {
-        if (key in classNames) continue
-        if (key in style) continue
+        if (key in classNames || key in style) continue
         style[key] = parentSplitStyles.style[key]
+      }
+    }
+    if (process.env.NODE_ENV === 'development') {
+      if (debug === 'verbose') {
+        // eslint-disable-next-line no-console
+        console.log(`  add in parent styled()`, {
+          parentSplitStyles,
+          shouldDoClasses,
+          style: { ...style },
+          classNames: { ...classNames },
+        })
       }
     }
   }

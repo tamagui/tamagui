@@ -12,16 +12,16 @@
  *   - shorthands can be expanded before merging
  */
 
-type StringRecord = Record<string, string>
+type AnyRecord = Record<string, any>
 
 export const mergeProps = (
   a: Object,
   b: Object,
   leaveOutClassNames = false,
-  inverseShorthands?: StringRecord
+  inverseShorthands?: AnyRecord
 ) => {
-  const out: StringRecord = {}
-  const outCns: StringRecord = leaveOutClassNames ? {} : (null as any)
+  const out: AnyRecord = {}
+  const outCns: AnyRecord = leaveOutClassNames ? {} : (null as any)
   for (const key in a) {
     mergeProp(out, outCns, a, b, key, leaveOutClassNames, inverseShorthands)
   }
@@ -32,13 +32,13 @@ export const mergeProps = (
 }
 
 function mergeProp(
-  out: StringRecord,
-  outCns: StringRecord,
+  out: AnyRecord,
+  outCns: AnyRecord,
   a: Object,
   b: Object | undefined,
   key: string,
   leaveOutClassNames: boolean,
-  inverseShorthands?: StringRecord
+  inverseShorthands?: AnyRecord
 ) {
   const val = a[key]
   const shorthand = inverseShorthands ? inverseShorthands[key] : null

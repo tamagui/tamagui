@@ -20,9 +20,11 @@ export function normalizeValueWithProperty(value: any, property?: string): any {
   if (
     process.env.TAMAGUI_TARGET === 'web' &&
     typeof value === 'number' &&
-    (property === undefined || !unitlessNumbers[property])
+    (property === undefined || (!unitlessNumbers[property] && !stringNumbers[property]))
   ) {
     res = `${value}px`
+  } else if (property !== undefined && stringNumbers[property]) {
+    res = `${res}`
   } else if (property && colorProps[property]) {
     res = normalizeColor(value)
     cache[value] = res
@@ -43,6 +45,10 @@ const colorProps = {
   shadowColor: true,
   textDecorationColor: true,
   textShadowColor: true,
+}
+
+const stringNumbers = {
+  zIndex: true,
 }
 
 const unitlessNumbers = {
@@ -74,7 +80,6 @@ const unitlessNumbers = {
   orphans: true,
   tabSize: true,
   widows: true,
-  zIndex: true,
   zoom: true,
   scale: true,
   scaleX: true,

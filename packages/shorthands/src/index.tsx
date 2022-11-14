@@ -86,6 +86,10 @@ export const shorthands = {
 } as const
 
 // add in some just for compiler output
+shorthands['bls'] = 'borderLeftStyle'
+shorthands['brs'] = 'borderRightStyle'
+shorthands['bts'] = 'borderTopStyle'
+shorthands['bbs'] = 'borderBottomStyle'
 shorthands['bxs'] = 'boxSizing'
 shorthands['bxsh'] = 'boxShadow'
 shorthands['ox'] = 'overflowX'

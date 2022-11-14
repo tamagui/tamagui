@@ -95,9 +95,8 @@ const CustomButtonFrame = styled(ButtonFrame, {
 
   defaultVariants: {
     // <---- none of these are applied as default variants
-    big: true,
-    primary: true,
-    rounded: true,
+    // big: true,
+    // primary: true,
   },
 })
 
@@ -161,9 +160,9 @@ export const Sandbox = () => {
             overflow: 'hidden',
           }}
         >
-          {/* <CustomButtonFrame debug="verbose">
+          <CustomButtonFrame debug="verbose">
             <Paragraph>hihi</Paragraph>
-          </CustomButtonFrame> */}
+          </CustomButtonFrame>
 
           <Button>hi</Button>
 
