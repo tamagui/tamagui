@@ -1,23 +1,26 @@
 ---
-name: Bug report - Feature requests go to Discussions!
-about: Create a report to help us improve
+name: Bug (Feature requests and all else in discussions)
+about: Bug
 title: "[bug] "
 labels: ''
 assignees: ''
 
 ---
 
-**Note**: You can help a lot by adding `debug="verbose"` prop to JSX, as well as to the `styled` definition. Always test disabling the compiler before filing, you can disable per-file with `//! tamagui-ignore` at the top of the file.
+**Avoid having to fill out an issue and get much faster response time by** forking this repo, reproducing  the bug, and then submitting it was a PR with the title "[Issue] ...".
+
+If it's a bug in the starter use `apps/starter` to reproduce. For native-only bugs editing `apps/kitchen-sink` is easier.
+
+---
+
+**Note**: Add `debug="verbose"` prop to JSX, as well as to the `styled` definition. Always test disabling the compiler before filing, you can disable per-file with `//! tamagui-ignore` at the top of the file.
 
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+
 
 **To Reproduce**
-Include steps to reproduce.
-
-If you want a 5x higher chance of getting it fixed ASAP, make a repo with a reproduction!
 
 ```
 npm create tamagui-app@latest
@@ -29,9 +32,7 @@ Make your changes and then push and link it here. 🙏🙏🙏🙏🙏
 
 Output of `npx envinfo --system --npmPackages --binaries --browsers`
 
-**Tamagui info**
-
-Paste all the following below:
+---
 
 - [ ] yarn.lock or similar
 - [ ] If it's a specific file, add `//! debug` to the top (the `!` works in esbuild compiled packages but not necessary always) and include that (only for compiler, but helps to know if it's on or off).
