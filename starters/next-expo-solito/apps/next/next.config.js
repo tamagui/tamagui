@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const withPlugins = require('next-compose-plugins')
 const { withTamagui } = require('@tamagui/next-plugin')
+const withImages = require('next-images')
 const withTM = require('next-transpile-modules')
 const { join } = require('path')
 
@@ -46,6 +47,7 @@ Cheers 🍻
 `)
 
 const transform = withPlugins([
+  withImages,
   withTM([
     'solito',
     'react-native-web',
@@ -85,6 +87,8 @@ const transform = withPlugins([
 
 module.exports = function (name, { defaultConfig }) {
   defaultConfig.webpack5 = true
+  defaultConfig.images ??= {}
+  defaultConfig.images.disableStaticImages = true
   // defaultConfig.experimental.reactRoot = 'concurrent'
   defaultConfig.typescript.ignoreBuildErrors = true
   return transform(name, {

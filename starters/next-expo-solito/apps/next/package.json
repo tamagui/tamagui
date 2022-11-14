@@ -27,6 +27,7 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "next-compose-plugins": "^2.2.1",
+    "next-images": "^1.8.4",
     "next-transpile-modules": "^9.0.0",
     "url-loader": "^4.1.1"
   }
