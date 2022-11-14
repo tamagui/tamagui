@@ -1,6 +1,6 @@
 import { ChevronRight, Code, Cpu, Layers } from '@tamagui/lucide-icons'
 import NextLink from 'next/link'
-import { memo, useEffect } from 'react'
+import { memo } from 'react'
 import { H3, Paragraph, XStack, YStack, YStackProps } from 'tamagui'
 
 import { CodeInline } from './Code'
@@ -43,7 +43,6 @@ export const HeroBelow = memo((props: any) => {
             }}
             fullscreen
             bc="$color3"
-            className="all linear s1"
             zi={-1}
             o={0.33}
           />

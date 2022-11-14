@@ -63,6 +63,7 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
                 animation="lazy"
                 {...(animateEnter && {
                   enterStyle: {
+                    opacity: 0,
                     scaleX: 0,
                   },
                 })}

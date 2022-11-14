@@ -1,4 +1,4 @@
-import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isClient, isRSC, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { stylePropsText, stylePropsTransform, validPseudoKeys, validStyles } from '@tamagui/helpers'
 import type { ViewStyle } from '@tamagui/types-react-native'
 import { useInsertionEffect } from 'react'
@@ -479,7 +479,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      if (isClient) {
+      if (!isServer) {
         // eslint-disable-next-line no-console
         console.log('expanded', expanded)
         // eslint-disable-next-line no-console
@@ -565,6 +565,7 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           psuedosUsed ||= {}
+          usedKeys[key] ||= 1
           const importance = descriptor.priority
           for (const pkey in pseudoStyleObject) {
             const curImportance = psuedosUsed[importance] || 0

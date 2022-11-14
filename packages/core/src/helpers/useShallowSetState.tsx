@@ -13,7 +13,7 @@ export function useShallowSetState<State extends Object>(
             if (process.env.NODE_ENV === 'development') {
               if (debug === 'verbose') {
                 // eslint-disable-next-line no-console
-                console.warn(`.setState ${debugName}`, next)
+                console.log(` ▲ setState ${debugName}`, next)
               }
             }
             return { ...prev, ...next }

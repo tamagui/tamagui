@@ -226,7 +226,7 @@ export function createComponent<
       : undefined
 
     const shouldAvoidClasses =
-      !!(props.animation && avoidClassesWhileAnimating) || !staticConfig.acceptsClassName
+      !isWeb || !!(props.animation && avoidClassesWhileAnimating) || !staticConfig.acceptsClassName
 
     const shouldForcePseudo = !!propsIn.forceStyle
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
@@ -347,7 +347,7 @@ export function createComponent<
                   state,
                   tamaguiConfig
                 )
-              : pseudos.enterStyle
+              : null
             : null
 
           const exitStyle = isExiting
@@ -854,10 +854,7 @@ export function createComponent<
     // EVENTS native
     if (process.env.TAMAGUI_TARGET === 'native') {
       // add focus events
-      const attachFocus = !!(
-        (noClassNames && pseudos.focusStyle) ||
-        (noClassNames && initialPseudos && initialPseudos.focusStyle)
-      )
+      const attachFocus = !!(pseudos.focusStyle || (initialPseudos && initialPseudos.focusStyle))
       if (attachFocus) {
         viewProps.onFocus = mergeEvent(viewProps.onFocus, () => {
           setStateShallow({ focus: true })
@@ -869,11 +866,8 @@ export function createComponent<
 
       // use Pressability to get smooth unPress when you press + hold + move out
       // only ever create once, use .configure() to update later
-      const pressability = usePressability(events)
+      const pressability = usePressability(events ? { ...events, hitSlop } : {})
       if (attachPress && events) {
-        if (hitSlop) {
-          viewProps.hitSlop = hitSlop
-        }
         for (const key in pressability) {
           const og = props[key]
           const val = pressability[key]
@@ -1327,6 +1321,10 @@ function mergeConfigDefaultProps(
   return props
 }
 
+// TODO need to delete existing prop because of weirdness in how we do this
+// real solution is to handle all this in getSplitStyle and have animation drviers
+// return a useAnimationIsExiting() so we can pass that as part of state: { exiting: true }
+// then we can remove this function and the getStyle() altogether
 function merge(base: ViewStyle, next: ViewStyle) {
   for (const key in next) {
     const val = next[key]
