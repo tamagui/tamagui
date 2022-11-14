@@ -37,13 +37,6 @@ describe('flatten-tests', () => {
       "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
       const _sheet = ReactNativeStyleSheet.create({
         \\"0\\": {
-          \\"transform\\": [{
-            \\"translateY\\": 10
-          }, {
-            \\"translateX\\": 20
-          }, {
-            \\"rotate\\": \\"10deg\\"
-          }],
           \\"flexDirection\\": \\"column\\",
           \\"minWidth\\": 0,
           \\"minHeight\\": 0,
@@ -51,7 +44,14 @@ describe('flatten-tests', () => {
           \\"flexBasis\\": \\"auto\\",
           \\"display\\": \\"flex\\",
           \\"flexShrink\\": 0,
-          \\"alignItems\\": \\"stretch\\"
+          \\"alignItems\\": \\"stretch\\",
+          \\"transform\\": [{
+            \\"translateY\\": 10
+          }, {
+            \\"translateX\\": 20
+          }, {
+            \\"rotate\\": \\"10deg\\"
+          }]
         },
         \\"1\\": {
           \\"borderTopLeftRadius\\": 10,
