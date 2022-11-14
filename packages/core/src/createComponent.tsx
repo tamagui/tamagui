@@ -676,6 +676,8 @@ export function createComponent<
             for (const style of styles) {
               if (style?.fontFamily) {
                 style.fontFamily = overrideFace
+                delete style.fontWeight
+                delete style.fontStyle
               }
             }
           }
