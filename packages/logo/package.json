@@ -17,13 +17,13 @@
     "watch": "tamagui-build --watch"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.216",
-    "react": "*",
-    "react-dom": "*"
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "publishConfig": {
     "access": "public"

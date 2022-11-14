@@ -1,6 +1,5 @@
 rc.0
 
-- site lighthouse fix
 - rc.0 blog post
 - <Adapt /> instead of sheetBreakpoint
 

@@ -27,11 +27,11 @@
     "@tamagui/stacks": "^1.0.1-beta.216"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": ">=18"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.216",
-    "react": "*"
+    "react": ">=18"
   },
   "publishConfig": {
     "access": "public"

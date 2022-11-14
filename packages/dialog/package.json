@@ -47,16 +47,16 @@
     "@tamagui/use-controllable-state": "^1.0.1-beta.216"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*",
+    "react": ">=18",
+    "react-dom": ">=18",
     "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.216",
     "@types/react-dom": "^18.0.3",
     "@types/react-native": "^0.69.2",
-    "react": "*",
-    "react-dom": "*",
+    "react": ">=18",
+    "react-dom": ">=18",
     "react-native": "*"
   },
   "publishConfig": {

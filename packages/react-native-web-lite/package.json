@@ -33,12 +33,12 @@
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.216",
-    "react": "*",
-    "react-dom": "*"
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "license": "MIT",
   "tags": [

@@ -19,8 +19,8 @@
     "@tamagui/unagi": "^1.0.1-beta.141",
     "@tamagui/vite-plugin": "^1.0.1-beta.141",
     "copy-to-clipboard": "^3.3.2",
-    "react": "*",
-    "react-dom": "*",
+    "react": ">=18",
+    "react-dom": ">=18",
     "tamagui": "^1.0.1-beta.141"
   },
   "devDependencies": {
