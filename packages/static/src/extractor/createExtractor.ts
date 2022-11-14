@@ -8,6 +8,7 @@ import {
   StaticConfigParsed,
   expandStyles,
   getSplitStyles,
+  getStylesAtomic,
   mediaQueryConfig,
   proxyThemeVariables,
   pseudoDescriptors,
@@ -525,6 +526,14 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         const classNames = {
           ...out.classNames,
         }
+
+        // // add in the style object as classnames
+        // const atomics = getStylesAtomic(out.style)
+        // for (const atomic of atomics) {
+        //   out.rulesToInsert = out.rulesToInsert || []
+        //   out.rulesToInsert.push(atomic)
+        //   classNames[atomic.property] = atomic.identifier
+        // }
 
         if (shouldPrintDebug) {
           // prettier-ignore
