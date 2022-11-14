@@ -3,10 +3,7 @@ import path, { dirname, join } from 'path'
 
 import type { TamaguiOptions } from '@tamagui/static'
 import browserslist from 'browserslist'
-import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import buildResolver from 'esm-resolve'
-import InlineCSSPlugin from 'html-inline-css-webpack-plugin'
-import MiniCSSExtractPlugin from 'mini-css-extract-plugin'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
 import { shouldExclude as shouldExcludeDefault } from 'tamagui-loader'
@@ -17,7 +14,6 @@ export type WithTamaguiProps = TamaguiOptions & {
   disableFontSupport?: boolean
   aliasReactPackages?: boolean
   includeCSSTest?: RegExp | ((path: string) => boolean)
-  inlineCSS?: boolean
   shouldExtract?: (path: string, projectRoot: string) => boolean | undefined
   shouldExcludeFromServer?: (props: {
     context: string
@@ -175,11 +171,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         const excludeExports = tamaguiOptions.excludeReactNativeWebExports
         if (Array.isArray(excludeExports)) {
-          if (excludeExports.includes('PressResponder')) {
-            console.warn(
-              `⚠️ Warning: as of beta 118, PressReponder shouldn't be excluded in excludeReactNativeWebExports`
-            )
-          }
           try {
             const regexStr = `react-native-web(-lite)?/.*(${excludeExports.join('|')}).*js`
             const regex = new RegExp(regexStr)
@@ -208,18 +199,18 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         // TODO document and make configurable
         // replaces minifier with css-minimizer-webpack-plugin which handles deduping atomic styles
-        if (!dev) {
-          const cssMin = webpackConfig.optimization.minimizer.find((x) =>
-            x.toString().includes('css-minimizer-plugin')
-          )
-          if (cssMin) {
-            webpackConfig.optimization.minimizer = webpackConfig.optimization.minimizer.slice(
-              cssMin.index,
-              1
-            )
-          }
-          webpackConfig.optimization.minimizer.push(new CssMinimizerPlugin())
-        }
+        // if (!dev) {
+        //   const cssMin = webpackConfig.optimization.minimizer.find((x) =>
+        //     x.toString().includes('css-minimizer-plugin')
+        //   )
+        //   if (cssMin) {
+        //     webpackConfig.optimization.minimizer = webpackConfig.optimization.minimizer.slice(
+        //       cssMin.index,
+        //       1
+        //     )
+        //   }
+        //   webpackConfig.optimization.minimizer.push(new CssMinimizerPlugin())
+        // }
 
         webpackConfig.resolve.extensions = [
           ...new Set(['.web.tsx', '.web.ts', '.web.js', ...webpackConfig.resolve.extensions]),
@@ -361,30 +352,11 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
           const cssTest = tamaguiOptions.includeCSSTest ?? /\.css$/
 
-          if (!dev) {
-            const postCSSLoader = cssLoader[cssLoader.length - 1]
-            // replace nextjs picky style rules with simple minicssextract
-            cssRules.unshift({
-              test: cssTest,
-              use: [MiniCSSExtractPlugin.loader, 'css-loader', postCSSLoader],
-              sideEffects: true,
-            })
-            webpackConfig.plugins.push(
-              new MiniCSSExtractPlugin({
-                filename: 'static/css/[contenthash].css',
-                ignoreOrder: true,
-              })
-            )
-            if (tamaguiOptions.inlineCSS) {
-              webpackConfig.plugins.push(new InlineCSSPlugin())
-            }
-          } else {
-            cssRules.unshift({
-              test: cssTest,
-              sideEffects: true,
-              use: cssLoader,
-            })
-          }
+          cssRules.unshift({
+            test: cssTest,
+            sideEffects: true,
+            use: cssLoader,
+          })
         }
 
         const firstOneOfRule = webpackConfig.module.rules.findIndex((x) => x && !!x.oneOf)
