@@ -32,11 +32,11 @@ export function HomeScreen() {
           <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
         </YStack>
 
-        <XStack $sm={{ fd: 'column' }}>
+        {/* <XStack $sm={{ fd: 'column' }}>
           <Circle bc="red" size="$5" />
           <Circle bc="red" size="$5" />
           <Circle bc="red" size="$5" />
-        </XStack>
+        </XStack> */}
 
         {/* fix media + space */}
         {/*
