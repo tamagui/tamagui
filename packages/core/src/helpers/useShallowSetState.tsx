@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react'
 
+import { DebugProp } from '../types'
+
 export function useShallowSetState<State extends Object>(
   setter: React.Dispatch<React.SetStateAction<State>>,
-  debug?: boolean | 'verbose',
+  debug?: DebugProp,
   debugName?: string
 ) {
   return useCallback(

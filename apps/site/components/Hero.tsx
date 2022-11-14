@@ -38,8 +38,6 @@ export function Hero() {
 const HeroTop = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
 
-  const spaceEl = <> + </>
-
   return (
     <ContainerLarge pos="relative">
       <YStack

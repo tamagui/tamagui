@@ -1,5 +1,5 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { MutableRefObject, useEffect, useMemo, useState } from 'react'
+import { MutableRefObject, useEffect, useMemo, useState, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { createProxy } from '../helpers/createProxy'
@@ -54,15 +54,12 @@ export function removeMediaQueryListener(key: MediaQueryKey, cb: MediaListener) 
 
 export const mediaQueryConfig: MediaQueries = {}
 
-export const getMedia = () => {
-  return mediaState
-}
+export const getMedia = () => mediaState
 
 // for SSR capture it at time of startup
-let curState: MediaQueryState
 let initState: MediaQueryState
 export const getInitialMediaState = () => {
-  return (getConfig().disableSSR ? curState : initState) || {}
+  return (getConfig().disableSSR ? mediaState : initState) || {}
 }
 
 let mediaKeysOrdered: string[]
@@ -79,8 +76,8 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
     mediaState[key] = mediaQueryDefaultActive?.[key] || false
   }
   Object.assign(mediaQueryConfig, media)
-  curState = { ...mediaState }
-  initState = curState
+  initState = { ...mediaState }
+  updateCurrentState()
   mediaKeysOrdered = Object.keys(media)
   if (config.disableSSR) {
     setupMediaListeners()
@@ -126,7 +123,7 @@ function setupMediaListeners() {
       const next = !!getMatch().matches
       if (next === mediaState[key]) return
       mediaState[key] = next
-      curState = { ...mediaState }
+      updateCurrentState()
       const cur = listeners[key]
       if (cur?.size) {
         cur.forEach((cb) => cb(next))
@@ -143,45 +140,55 @@ export function useMediaListeners(config: TamaguiInternalConfig) {
   }, [])
 }
 
+const currentStateListeners = new Set<any>()
+let isUpdating = false
+function updateCurrentState() {
+  if (isUpdating) return
+  isUpdating = true
+  process.nextTick(() => {
+    currentStateListeners.forEach((cb) => cb(mediaState))
+    isUpdating = false
+  })
+}
+function subscribe(subscriber: any) {
+  currentStateListeners.add(subscriber)
+  return () => currentStateListeners.delete(subscriber)
+}
+
+type MediaKeysState = {
+  [key: string]: any
+}
+
 export function useMedia(): {
   [key in MediaQueryKey]: boolean
 } {
-  const keys = useSafeRef({} as Record<string, boolean>)
-  const [state, setState] = useState<MediaQueryState>(() => getMediaState(initState || {}, keys))
+  const keys = useSafeRef<MediaKeysState>({ prev: initState })
 
-  function updateState() {
-    setState((prev) => {
-      for (const key in keys.current) {
-        if (prev[key] !== mediaState[key]) {
-          return getMediaState({ ...mediaState }, keys)
-        }
+  const state = useSyncExternalStore<MediaQueryState>(
+    subscribe,
+    () => {
+      const { prev, ...curKeys } = keys.current
+      const shouldUpdate = !prev || Object.keys(curKeys).some((k) => mediaState[k] !== prev[k])
+      if (shouldUpdate) {
+        const next = { ...mediaState }
+        keys.current.prev = next
+        return next
       }
       return prev
-    })
-  }
-
-  useIsomorphicLayoutEffect(() => {
-    updateState()
-    const disposers = Object.keys(keys.current).map((key) =>
-      addMediaQueryListener(key, updateState)
-    )
-    return () => {
-      disposers.forEach((cb) => cb())
-    }
-  }, [keys.current])
-
-  return state
-}
-
-function getMediaState(state: MediaQueryState, keys: MutableRefObject<Record<string, boolean>>) {
-  return new Proxy(state, {
-    get(_, key: string) {
-      if (!keys.current[key]) {
-        keys.current[key] = true
-      }
-      return Reflect.get(state, key)
     },
-  })
+    () => initState
+  )
+
+  return useMemo(() => {
+    return new Proxy(state, {
+      get(_, key: string) {
+        if (!keys.current[key]) {
+          keys.current[key] = true
+        }
+        return Reflect.get(state, key)
+      },
+    })
+  }, [state])
 }
 
 /**

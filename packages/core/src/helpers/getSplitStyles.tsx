@@ -193,10 +193,6 @@ export const getSplitStyles: StyleSplitter = (
   const usedKeys: Record<string, number> = {}
   const propKeys = Object.keys(props)
 
-  if (Object.keys(props).some((p) => p.toLowerCase() === 'lineheight-gtsm')) {
-    debugger
-  }
-
   const shouldDoClasses =
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
 
@@ -217,9 +213,12 @@ export const getSplitStyles: StyleSplitter = (
     let keyInit = propKeys[i]
     const valInit = props[keyInit]
 
-    if (valInit && valInit[0] === '_') {
-      classNames[keyInit] = valInit
-      continue
+    if (validStyleProps[keyInit] || keyInit.includes('-')) {
+      if (valInit && valInit[0] === '_') {
+        classNames[keyInit] = valInit
+        usedKeys[keyInit] = 1
+        continue
+      }
     }
 
     // normalize shorthands up front
@@ -425,8 +424,6 @@ export const getSplitStyles: StyleSplitter = (
           !isValidClassName &&
           keyInit.includes(PROP_SPLIT) &&
           validStyles[keyInit.split(PROP_SPLIT)[0]]
-
-        console.log('goog', keyInit, valInit, { isValidClassName, isMediaOrPseudo })
 
         if (isValidClassName || isMediaOrPseudo) {
           usedKeys[keyInit] = 1
@@ -689,8 +686,7 @@ export const getSplitStyles: StyleSplitter = (
       if (shouldDoClasses) {
         for (const key in parentSplitStyles.classNames) {
           const val = parentSplitStyles.classNames[key]
-          if (key in style) continue
-          if (key in classNames) continue
+          if (key in style || key in classNames) continue
           classNames[key] = val
         }
       }

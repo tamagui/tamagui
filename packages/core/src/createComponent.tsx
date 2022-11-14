@@ -1,5 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isClient, isRSC, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isClient, isRSC, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
   composeEventHandlers,
@@ -197,8 +197,18 @@ export function createComponent<
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type}`
         // eslint-disable-next-line no-console
         console.group(`%c ${banner}`, 'background: yellow;')
-        // eslint-disable-next-line no-console
-        console.log(`state`, state)
+        if (!isServer) {
+          // eslint-disable-next-line no-console
+          console.log(`state`, state)
+          // eslint-disable-next-line no-console
+          console.groupCollapsed('props')
+          // eslint-disable-next-line no-console
+          console.log(props)
+          // eslint-disable-next-line no-console
+          console.log('order', Object.keys(props))
+          // eslint-disable-next-line no-console
+          console.groupEnd()
+        }
       }
     }
 
@@ -587,7 +597,7 @@ export function createComponent<
       }, [unPress])
     }
 
-    let styles: Object[]
+    let styles: Record<string, any>[]
 
     if (isStringElement && shouldAvoidClasses && !shouldForcePseudo) {
       styles = {
