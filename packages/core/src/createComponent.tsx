@@ -39,6 +39,7 @@ import { getAllSelectors } from './helpers/insertStyleRule'
 import { mergeProps } from './helpers/mergeProps'
 import { mergeTransform } from './helpers/mergeTransform'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
+import { pseudoDescriptors } from './helpers/pseudoDescriptors'
 import { useShallowSetState } from './helpers/useShallowSetState'
 import { getRect, measureLayout, useElementLayout } from './hooks/useElementLayout'
 import { addMediaQueryListener, getInitialMediaState } from './hooks/useMedia'
@@ -1024,7 +1025,9 @@ export function createComponent<
     // otherwise it confuses variant functions getting className props
     const [defaults, defaultsClassnames] = mergeProps(
       component.defaultProps as any,
-      { ...initialSplitStyles.pseudos, ...initialSplitStyles.viewProps },
+      isWeb
+        ? { ...initialSplitStyles.pseudos, ...initialSplitStyles.viewProps }
+        : initialSplitStyles.viewProps,
       true
       // conf.inverseShorthands
     )
@@ -1055,6 +1058,17 @@ export function createComponent<
 
     if (Object.keys(defaults).length) {
       tamaguiDefaultProps = defaults
+
+      // temp bugfix, splitStyles isn't returning variables when resolveVariablesAs == 'both'
+      if (!isWeb) {
+        Object.keys(pseudoDescriptors).forEach((k) => {
+          if (ourProps[k]) {
+            // @ts-ignore
+            initialSplitStyles.pseudos[k] = null
+            tamaguiDefaultProps[k] = ourProps[k]
+          }
+        })
+      }
     }
 
     // add debug logs
@@ -1197,7 +1211,6 @@ export function spacedChildren({
   for (const [index, child] of childrenList.entries()) {
     const isEmpty =
       child === null || child === undefined || (Array.isArray(child) && child.length === 0)
-
     // push them all, but wrap some in Fragment
     if (isEmpty || !child || (child['key'] && !isZStack)) {
       final.push(child)
@@ -1208,14 +1221,9 @@ export function spacedChildren({
     }
 
     // first child unspaced avoid insert space
-    if (isUnspaced(child) && index === 0) {
-      continue
-    }
-
+    if (isUnspaced(child) && index === 0) continue
     // no spacing on ZStack
-    if (isZStack) {
-      continue
-    }
+    if (isZStack) continue
 
     const next = childrenList[index + 1]
 
