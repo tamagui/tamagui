@@ -39,7 +39,7 @@ export const loader = async function loader(this, sourceIn: Buffer | string) {
       return callback(null, source)
     }
 
-    const cssPath = threaded ? `${sourcePath}.tamagui.css` : `${sourcePath}.${index++}.tamagui.css`
+    const cssPath = threaded ? `${sourcePath}.module.css` : `${sourcePath}.${index++}.module.css`
 
     const extracted = await extractToClassNames({
       extractor,

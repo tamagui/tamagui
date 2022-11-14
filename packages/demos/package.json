@@ -23,7 +23,7 @@
     "./package.json": "./package.json",
     "./photo/*": "./public/*.jpg",
     ".": {
-      "import": "./dist/jsx/index.js",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     }
   },

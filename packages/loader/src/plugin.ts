@@ -78,9 +78,10 @@ export class TamaguiPlugin {
               {
                 loader: require.resolve('esbuild-loader'),
                 options: {
-                  loader: 'tsx',
                   target: 'es2021',
                   keepNames: true,
+                  loader: { '.tsx': 'tsx', '.png': 'copy', '.jpg': 'copy', '.gif': 'copy' },
+
                   tsconfigRaw: {
                     module: this.options.commonjs ? 'commonjs' : 'esnext',
                     isolatedModules: true,

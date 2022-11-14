@@ -76,7 +76,6 @@ module.exports = function (name, { defaultConfig }) {
   /** @type {import('next').NextConfig} */
   let config = {
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
-    // todo fix:
     swcMinify: true,
     experimental: {
       // for preact...
@@ -114,27 +113,3 @@ module.exports = function (name, { defaultConfig }) {
 
   return config
 }
-
-// // template for modifying webpack further:
-// (nextConfig = {}) => {
-//   return Object.assign({}, nextConfig, {
-//     webpack(config, options) {
-//       const webpack = require('webpack')
-//       config.plugins.push(
-//         new webpack.NormalModuleReplacementPlugin(
-//           /.*web-vitals.*/,
-//           require.resolve('@tamagui/proxy-worm')
-//         )
-//       )
-
-//       // Object.assign(config.resolve.alias, {
-//       //   'react-native-reanimated': require.resolve('react-native-reanimated/lib/index'),
-//       // })
-//       // console.log('config', config.resolve.alias)
-//       if (typeof nextConfig.webpack === 'function') {
-//         return nextConfig.webpack(config, options)
-//       }
-//       return config
-//     },
-//   })
-// },

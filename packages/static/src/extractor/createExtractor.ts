@@ -151,7 +151,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       disableExtractVariables,
       disableDebugAttr,
       disableExtractFoundComponents,
-      includeExtensions = ['.tsx', '.jsx'],
+      includeExtensions = ['.tsx', '.jsx', '.js'],
       extractStyledDefinitions = false,
       prefixLogs,
       excludeProps,
