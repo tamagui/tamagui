@@ -1,4 +1,3 @@
-//! debug-verbose
 import { TamaguiProvider, XStack, YStack, Image, Text } from '@my/ui'
 import { Icon } from './ListIcon'
 import config from '../../tamagui.config'

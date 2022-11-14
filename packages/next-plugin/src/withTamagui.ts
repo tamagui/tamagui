@@ -293,21 +293,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             )
         ).oneOf
 
-        const cssLoader = getGlobalCssLoader(
-          // @ts-ignore
-          {
-            assetPrefix: options.config.assetPrefix || config.assetPrefix,
-            future: nextConfig.future,
-            experimental: nextConfig.experimental || {},
-            isClient: !isServer,
-            isServer,
-            isDevelopment: dev,
-          },
-          // @ts-ignore
-          () => lazyPostCSS(dir, getSupportedBrowsers(dir, dev)),
-          []
-        )
-
         if (cssRules) {
           if (!tamaguiOptions.disableFontSupport) {
             // fonts support
@@ -328,12 +313,26 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             })
           }
 
-          const cssTest = tamaguiOptions.includeCSSTest ?? /\.css$/
-
           cssRules.unshift({
-            test: cssTest,
+            test: tamaguiOptions.includeCSSTest ?? /\.css$/,
             sideEffects: true,
-            use: cssLoader,
+            use: getGlobalCssLoader(
+              // @ts-ignore
+              {
+                assetPrefix: options.config.assetPrefix || config.assetPrefix,
+                future: nextConfig.future,
+                experimental: nextConfig.experimental || {},
+                isEdgeRuntime: true,
+                isProduction: !dev,
+                targetWeb: true,
+                isClient: !isServer,
+                isServer,
+                isDevelopment: dev,
+              },
+              // @ts-ignore
+              () => lazyPostCSS(dir, getSupportedBrowsers(dir, dev)),
+              []
+            ),
           })
         }
 
@@ -341,7 +340,9 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           new TamaguiPlugin({
             commonjs: isServer,
             exclude: (path: string) => {
-              return shouldExclude(path, options.dir)
+              const res = shouldExclude(path, options.dir)
+              // console.log(`shouldExclude`, res, path)
+              return res
             },
             ...tamaguiOptions,
           })

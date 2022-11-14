@@ -19,8 +19,7 @@ export const ThemeInverse = ({
   useIsomorphicLayoutEffect(() => {
     if (themeName.startsWith('dark')) {
       setName('light')
-    }
-    if (themeName.startsWith('light')) {
+    } else if (themeName.startsWith('light')) {
       setName('dark')
     }
   }, [defaultTheme, themeName])

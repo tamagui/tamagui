@@ -70,11 +70,10 @@ export class TamaguiPlugin {
       test: this.options.test ?? /\.(jsx?|tsx?)$/,
       exclude: this.options.exclude,
       use: [
-        ...(jsLoader
-          ? [jsLoader]
-          : swcLoader && nextJsRules
-          ? [].concat(swcLoader.use)
-          : [
+        ...(jsLoader ? [jsLoader] : []),
+        ...(swcLoader && nextJsRules ? [].concat(swcLoader.use) : []),
+        ...(!jsLoader && !swcLoader
+          ? [
               {
                 loader: require.resolve('esbuild-loader'),
                 options: {
@@ -90,7 +89,8 @@ export class TamaguiPlugin {
                   },
                 },
               },
-            ]),
+            ]
+          : []),
         {
           loader: require.resolve('tamagui-loader'),
           options: this.options,

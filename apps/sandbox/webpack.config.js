@@ -122,7 +122,6 @@ module.exports = /** @type { import('webpack').Configuration } */ {
     new MiniCSSExtractPlugin({
       filename: 'static/css/[name].[contenthash].css',
       ignoreOrder: true,
-      runtime: false,
     }),
     new ReactRefreshWebpackPlugin(),
     new webpack.DefinePlugin({
