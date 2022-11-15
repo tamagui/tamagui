@@ -215,7 +215,11 @@ export const getSplitStyles: StyleSplitter = (
 
     if (validStyleProps[keyInit] || keyInit.includes('-')) {
       if (valInit && valInit[0] === '_') {
-        classNames[keyInit] = valInit
+        if (shouldDoClasses) {
+          classNames[keyInit] = valInit
+        } else {
+          style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
+        }
         usedKeys[keyInit] = 1
         continue
       }

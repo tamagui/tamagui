@@ -258,18 +258,17 @@ export function createComponent<
 
     // time`setupStateConf`
 
-    const splitStyleState: SplitStyleState = {
-      ...state,
-      noClassNames,
-      dynamicStylesInline: noClassNames,
-      hasTextAncestor,
-      resolveVariablesAs: 'value',
-    }
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
       theme,
-      splitStyleState,
+      {
+        ...state,
+        noClassNames,
+        dynamicStylesInline: noClassNames,
+        hasTextAncestor,
+        resolveVariablesAs: 'value',
+      },
       null,
       languageContext || undefined,
       elementType,
