@@ -213,7 +213,7 @@ export const useListItem = (
           )}
           {themedIconAfter ? (
             <>
-              <Spacer flex size={spaceSize} />
+              <Spacer size={spaceSize} />
               {themedIconAfter}
             </>
           ) : null}
