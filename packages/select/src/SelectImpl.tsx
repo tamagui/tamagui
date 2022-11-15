@@ -15,7 +15,7 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react-dom-interactions'
-import { useIsTouchDevice, useIsomorphicLayoutEffect } from '@tamagui/core'
+import { isWeb, useIsTouchDevice, useIsomorphicLayoutEffect } from '@tamagui/core'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
 
@@ -73,18 +73,20 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   }, [open, setActiveIndex])
 
   // close when mouseup outside select
-  React.useEffect(() => {
-    if (!open) return
-    const mouseUp = (e: MouseEvent) => {
-      if (state.current.isMouseOutside) {
-        setOpen(false)
+  if (isWeb) {
+    React.useEffect(() => {
+      if (!open) return
+      const mouseUp = (e: MouseEvent) => {
+        if (state.current.isMouseOutside) {
+          setOpen(false)
+        }
       }
-    }
-    document.addEventListener('mouseup', mouseUp)
-    return () => {
-      document.removeEventListener('mouseup', mouseUp)
-    }
-  }, [open])
+      document.addEventListener('mouseup', mouseUp)
+      return () => {
+        document.removeEventListener('mouseup', mouseUp)
+      }
+    }, [open])
+  }
 
   const updateFloatingSize = size({
     apply({

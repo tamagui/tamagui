@@ -9,7 +9,7 @@ export declare const getInitialMediaState: () => MediaQueryState;
 export declare const getMediaKeyImportance: (key: string) => number;
 export declare const configureMedia: (config: TamaguiInternalConfig) => void;
 export declare function useMediaListeners(config: TamaguiInternalConfig): void;
-export declare function useMedia(debug?: boolean): {
+export declare function useMedia(): {
     [key in MediaQueryKey]: boolean;
 };
 /**
