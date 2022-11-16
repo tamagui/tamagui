@@ -7,7 +7,7 @@ import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
 import { ControlledSheet, SheetController } from '@tamagui/sheet'
 import { XStack, YStack, YStackProps } from '@tamagui/stacks'
-import { Paragraph } from '@tamagui/text'
+import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
@@ -289,7 +289,7 @@ SelectItem.displayName = ITEM_NAME
 
 const ITEM_TEXT_NAME = 'SelectItemText'
 
-export const SelectItemTextFrame = styled(Paragraph, {
+export const SelectItemTextFrame = styled(SizableText, {
   name: ITEM_TEXT_NAME,
   selectable: false,
 })
