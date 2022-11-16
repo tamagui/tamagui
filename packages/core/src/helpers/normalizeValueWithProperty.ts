@@ -3,6 +3,8 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 
+import { isWeb } from '@tamagui/constants'
+
 import { getAllSelectors } from './insertStyleRule'
 import { normalizeColor } from './normalizeColor'
 
@@ -23,7 +25,7 @@ export function normalizeValueWithProperty(value: any, property?: string): any {
     (property === undefined || (!unitlessNumbers[property] && !stringNumbers[property]))
   ) {
     res = `${value}px`
-  } else if (property !== undefined && stringNumbers[property]) {
+  } else if (isWeb && property !== undefined && stringNumbers[property]) {
     res = `${res}`
   } else if (property && colorProps[property]) {
     res = normalizeColor(value)

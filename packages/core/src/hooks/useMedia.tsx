@@ -140,12 +140,13 @@ export function useMediaListeners(config: TamaguiInternalConfig) {
   }, [])
 }
 
+const nextTick = process.nextTick || setImmediate
 const currentStateListeners = new Set<any>()
 let isUpdating = false
 function updateCurrentState() {
   if (isUpdating) return
   isUpdating = true
-  process.nextTick(() => {
+  nextTick(() => {
     currentStateListeners.forEach((cb) => cb(mediaState))
     isUpdating = false
   })
