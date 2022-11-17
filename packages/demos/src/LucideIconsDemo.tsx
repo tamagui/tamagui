@@ -1,5 +1,4 @@
 import * as LucideIcons from '@tamagui/lucide-icons'
-import React from 'react'
 import { useMemo, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { Grid, Input, Paragraph, Spacer, YStack, useDebounceValue } from 'tamagui'
@@ -18,7 +17,7 @@ export function LucideIconsDemo() {
 
   const iconsMemo = useMemo(() => {
     const icons = lucideIcons.filter((x) => x.key.startsWith(search.toLowerCase()))
-    return icons.map(({ Icon, name }) => {
+    return icons.slice(0, 835).map(({ Icon, name }) => {
       return (
         <YStack h={size} ai="center" jc="center" key={name}>
           <Icon size={size * 0.25} />
