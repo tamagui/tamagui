@@ -1,5 +1,4 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { MutableRefObject, useEffect, useMemo, useState, useSyncExternalStore } from 'react'
+import { useEffect, useMemo, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { createProxy } from '../helpers/createProxy'
@@ -140,16 +139,9 @@ export function useMediaListeners(config: TamaguiInternalConfig) {
   }, [])
 }
 
-const nextTick = process.nextTick || setImmediate
 const currentStateListeners = new Set<any>()
-let isUpdating = false
 function updateCurrentState() {
-  if (isUpdating) return
-  isUpdating = true
-  nextTick(() => {
-    currentStateListeners.forEach((cb) => cb(mediaState))
-    isUpdating = false
-  })
+  currentStateListeners.forEach((cb) => cb(mediaState))
 }
 function subscribe(subscriber: any) {
   currentStateListeners.add(subscriber)
