@@ -196,7 +196,7 @@ export const getSplitStyles: StyleSplitter = (
   const shouldDoClasses =
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
 
-  const style: ViewStyle = {}
+  let style: ViewStyle = {}
   let flatTransforms: Record<string, any> | undefined
 
   const len = propKeys.length
@@ -656,7 +656,6 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (validStyleProps[key]) {
-        usedKeys[key] = 1
         mergeStyle(key, val)
         continue
       }
@@ -724,6 +723,9 @@ export const getSplitStyles: StyleSplitter = (
           const key = atomicStyle.property
           addStyleToInsertRules(rulesToInsert, atomicStyle)
           mergeClassName(transforms, classNames, key, atomicStyle.identifier)
+        }
+        if (!IS_STATIC) {
+          style = {}
         }
       }
     }
