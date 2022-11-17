@@ -238,7 +238,7 @@ export default function Community({ frontmatters }) {
 
         <FlatBubbleCard bw={0}>
           <H2 size="$9" ta="center">
-            Individual Sponsors
+            Sponsors
           </H2>
         </FlatBubbleCard>
 
@@ -247,6 +247,7 @@ export default function Community({ frontmatters }) {
           <IndividualSponsor name="@pontusab" link="https://twitter.com/pontusab" />
           <IndividualSponsor name="@AntelaBrais" link="https://twitter.com/AntelaBrais" />
           <IndividualSponsor name="Hirbod" link="https://twitter.com/nightstomp" />
+          <IndividualSponsor name="Dimension" link="https://twitter.com/joindimension" />
         </XStack>
       </ContainerLarge>
 
