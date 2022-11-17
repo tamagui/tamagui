@@ -1,0 +1,56 @@
+---
+title: Tamagui Release Candidate
+publishedAt: '2022-11-16'
+description: Tamagui reaches API and cross platform stability
+by: nate
+---
+
+<Image title="Layout tools image" src="/social.jpg" size="hero" height={150} width={900} />
+
+<IntroParagraph>
+  Tamagui is the first React style system with an optimizing compiler. It provides a complete style
+  and design system library, with a complete UI kit on top. It uses React Native to support web and
+  mobile platforms.
+</IntroParagraph>
+
+It's been eight months since the Tamagui beta and a bit over a year since alpha. We've spent the last four months with a stable API just focusing on fixing bugs, refactoring the core libraries, adding tests, and working with customers to get everything working for production use across multiple apps that are shipped to the web, iOS and Android app stores.
+
+A brief list of interesting changes since beta:
+
+### Core updates
+
+- React 0.69, React 18, React Native Web 18 support
+- Dependency-free core - no more dependency on `react-native` in the core
+- Bundle size reduction - Removed nearly ~12Kb from core
+- Performance - Removing the dependency on `react-native-web` for styling nearly doubled render performance
+- Upgrades to `styled` - The `styled` factory now supports wrapping any component you give it, so long as that component accepts a `style` prop.
+- &lt;FontLanguage /&gt; - Support for unique fonts per-language.
+- The `fontFaceByWeight` config - React Native makes loading fonts a bit trickier than the web, this option makes it easy to load multiple weights.
+- The `themeShallow` prop - The `theme` prop in Tamagui by default will re-theme all sub-components. Using `themeShallow` _only_ themes that component, not children.
+- Utility `loadTheme` - The `loadTheme` utility function means you can only load the default themes you want to serve, saving on bundle size, and then add in alternative themes later on.
+- Utility `updateTheme` - Using `updateTheme` gives you the ability to dynamically modify themes on the fly.
+- Hook `useMediaPropsActive` - Useful for authoring your own custom components built on Tamagui, easily access the "currently active" set of styles.
+
+### Static updates
+
+- Performance - During the beta we landed many performance improvements to the optimizing compiler. By default now Tamagui avoids even parsing many more files, and it pre-bundles your `components` and `config`.
+- Better analysis - Previously, Static only knew how to optimize components found in your separated design system package. The compiler now analyzes components anywhere in your app, by dynamically loading and reading their configuration.
+- Vite support - Tamagui now fully works with Vite 3, both with the compiler and without.
+- Correctness - Most of the work during beta focused on correctness. We've increased testing to cover many more areas, and landed a number of important correctness fixes alongside the ones in `core`.
+
+### The UI Kit
+
+- [Sheet](/docs/components/sheet)
+- [Select](/docs/components/select)
+- [Dialog](/docs/components/dialog)
+- [AlertDialog](/docs/components/alert-dialog)
+- [Slider](/docs/components/slider)
+- [Label](/docs/components/label)
+- [Card](/docs/components/card)
+- [ListItem](/docs/components/list-item)
+- [Avatar](/docs/components/avatar)
+- [Progress](/docs/components/progress)
+- [Spinner](/docs/components/spinner)
+- [Unspaced](/docs/components/unspaced)
+- [ScrollView](/docs/components/scroll-view)
+- [XGroup and YGroup](/docs/components/group)
