@@ -24,7 +24,6 @@ export function Community() {
             target="_blank"
             rel="noopener noreferrer"
             p="$6"
-            debug="verbose"
           >
             <svg
               width="30"

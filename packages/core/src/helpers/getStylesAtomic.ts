@@ -78,10 +78,8 @@ const generateAtomicStyles = (
   const style = styleIn as Record<string, string | null | undefined>
 
   // transform
-  if (style.transform) {
-    if (Array.isArray(style.transform)) {
-      style.transform = style.transform.map(mapTransform).join(' ')
-    }
+  if (style.transform && Array.isArray(style.transform)) {
+    style.transform = style.transform.map(mapTransform).join(' ')
   }
 
   styleToCSS(style)

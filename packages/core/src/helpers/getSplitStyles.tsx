@@ -537,7 +537,7 @@ export const getSplitStyles: StyleSplitter = (
           conf,
           languageContext,
           true,
-          true
+          state.noClassNames
         )
 
         const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
@@ -613,7 +613,7 @@ export const getSplitStyles: StyleSplitter = (
           languageContext,
           // TODO try true like pseudo
           false,
-          true
+          state.noClassNames
         )
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
