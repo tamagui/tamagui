@@ -23,6 +23,8 @@ import { getCompilationExamples } from '../lib/getCompilationExamples'
 export default function Home({ animationCode, compilationExamples }) {
   const [top, setTop] = useState(0)
 
+  return <Community />
+
   return (
     <>
       <HomeGlow top={top} />

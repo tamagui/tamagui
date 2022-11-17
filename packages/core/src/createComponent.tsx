@@ -212,8 +212,13 @@ export function createComponent<
       }
     }
 
+    const shouldAvoidClasses =
+      !isWeb || !!(props.animation && avoidClassesWhileAnimating) || !staticConfig.acceptsClassName
+    const shouldForcePseudo = !!propsIn.forceStyle
+    const noClassNames = shouldAvoidClasses || shouldForcePseudo
+
     const forceUpdate = useForceUpdate()
-    const theme = useTheme(props.theme, componentName, props, forceUpdate)
+    const theme = useTheme(props.theme, componentName, props, forceUpdate, !noClassNames)
 
     const shouldSetMounted = needsMount && state.unmounted
     const setMounted = shouldSetMounted
@@ -230,12 +235,7 @@ export function createComponent<
         }
       : undefined
 
-    const shouldAvoidClasses =
-      !isWeb || !!(props.animation && avoidClassesWhileAnimating) || !staticConfig.acceptsClassName
-
-    const shouldForcePseudo = !!propsIn.forceStyle
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
-    const noClassNames = shouldAvoidClasses || shouldForcePseudo
     const languageContext = isRSC ? null : useContext(FontLanguageContext)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
 

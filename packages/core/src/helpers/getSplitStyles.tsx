@@ -554,6 +554,7 @@ export const getSplitStyles: StyleSplitter = (
 
         if (shouldDoClasses) {
           const pseudoStyles = getAtomicStyle(pseudoStyleObject, descriptor)
+          if (debug) console.log('pseudoStyles', pseudoStyles)
           for (const psuedoStyle of pseudoStyles) {
             const fullKey = `${psuedoStyle.property}${PROP_SPLIT}${descriptor.name}`
             if (!usedKeys[fullKey]) {

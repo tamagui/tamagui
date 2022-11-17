@@ -37,7 +37,8 @@ export const useTheme = (
   themeName?: string | null,
   componentName?: string,
   props?: ThemeProps,
-  forceUpdate?: any
+  forceUpdate?: any,
+  disableTracking?: boolean
 ): ThemeParsed => {
   // TODO this can use useChangeThemeEffect almost ready
   if (isRSC) {
@@ -99,18 +100,40 @@ export const useTheme = (
   }
 
   return useMemo(() => {
-    return getThemeProxied(theme, name, className, themeManager, state, debugProp)
-  }, [theme, name, className, themeManager, state, debugProp])
+    return getThemeProxied({
+      theme,
+      name,
+      className,
+      themeManager,
+      onStringKeyAccess(key) {
+        if (disableTracking) return
+        if (state) {
+          if (state.current.isRendering && !state.current.keys.has(key)) {
+            state.current.keys.add(key)
+            if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+              // eslint-disable-next-line no-console
+              console.log('  🔸 tracking theme', key)
+            }
+          }
+        }
+      },
+    })
+  }, [theme, name, className, themeManager, debugProp, disableTracking])
 }
 
-function getThemeProxied(
-  theme: any,
-  name: string,
-  className?: string,
-  themeManager?: ThemeManager | null,
-  state?: React.MutableRefObject<UseThemeState>,
-  debugProp?: boolean | 'verbose'
-) {
+function getThemeProxied({
+  theme,
+  name,
+  className,
+  themeManager,
+  onStringKeyAccess,
+}: {
+  theme: any
+  name: string
+  onStringKeyAccess?: (cb: string) => void
+  className?: string
+  themeManager?: ThemeManager | null
+}) {
   return createProxy(theme, {
     has(_, key) {
       if (typeof key === 'string' && key[0] === '$') {
@@ -141,15 +164,7 @@ function getThemeProxied(
       if (!themeManager) {
         return theme[key]
       }
-      if (state) {
-        if (state.current.isRendering && !state.current.keys.has(key)) {
-          state.current.keys.add(key)
-          if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-            // eslint-disable-next-line no-console
-            console.log('  🔸 tracking theme', key)
-          }
-        }
-      }
+      onStringKeyAccess?.(key)
       return themeManager.getValue(key)
     },
   })

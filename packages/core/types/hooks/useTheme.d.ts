@@ -9,7 +9,7 @@ export interface ThemeProps {
     reset?: boolean;
     debug?: boolean | 'verbose';
 }
-export declare const useTheme: (themeName?: string | null, componentName?: string, props?: ThemeProps, forceUpdate?: any) => ThemeParsed;
+export declare const useTheme: (themeName?: string | null, componentName?: string, props?: ThemeProps, forceUpdate?: any, disableTracking?: boolean) => ThemeParsed;
 export declare const getThemeManager: (theme: any) => ThemeManager | undefined;
 export declare function useThemeName(opts?: {
     parent?: true;
