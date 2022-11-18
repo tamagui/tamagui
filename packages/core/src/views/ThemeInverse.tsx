@@ -16,15 +16,18 @@ export const useThemeInverse = (props: ThemeInverseProps = {}) => {
   const themeName = useThemeName()
   const defaultTheme = useDefaultThemeName()
   const [name, setName] = useState<null | string>(null)
+  const curName = themeName || defaultTheme || ''
 
   if (isWeb) {
     // for SSR must be in effect
     useIsomorphicLayoutEffect(() => {
-      setName(toggleTheme(themeName || defaultTheme || ''))
+      setName(toggleTheme(curName))
     }, [defaultTheme, themeName])
+
+    return props.disable ? null : name
   }
 
-  return props.disable ? null : name
+  return props.disable ? null : toggleTheme(curName)
 }
 
 export const ThemeInverse = ({
