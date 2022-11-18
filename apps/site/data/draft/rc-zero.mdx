@@ -5,22 +5,27 @@ description: Tamagui reaches API and cross platform stability
 by: nate
 ---
 
-<Image title="Layout tools image" src="/social.jpg" size="hero" height={150} width={900} />
-
 <IntroParagraph>
-  Tamagui is the first React style system with an optimizing compiler. It provides a complete style
-  and design system library, with a complete UI kit on top. It uses React Native to support web and
-  mobile platforms.
+  Tamagui is the first React style system with an optimizing compiler. It's built around the React
+  Native style API, giving universal styles better performance across both native and web.
 </IntroParagraph>
 
-It's been eight months since the Tamagui beta and a bit over a year since alpha. We've spent the last four months with a stable API just focusing on fixing bugs, refactoring the core libraries, adding tests, and working with customers to get everything working for production use across multiple apps that are shipped to the web, iOS and Android app stores.
+<IntroParagraph>
+  Tamagui comes in three parts you can mix and match: the `@tamagui/core` style library,
+  `@tamagui/static` the optimizing compiler, and `tamagui`, a complete UI kit that adapts nicely to
+  each platform.
+</IntroParagraph>
 
-A brief list of interesting changes since beta:
+It's been eight months since the Tamagui beta and a bit over a year since alpha. We spent the first four months adding components and much needed functionality, and the entire time stabilizing, fixing correctness, adding test, and working with multiple developers shipping significant production apps to the web, iOS and Android app stores.
+
+We're releasing `rc.0` as we've finished the backlog of API changes and all major bugs. We'll aim to have a version 1 before the end of the year.
+
+There's been _so much_ done during the beta:
 
 ### Core updates
 
 - React 0.69, React 18, React Native Web 18 support
-- Dependency-free core - no more dependency on `react-native` in the core
+- 0-dependency `@tamagui/core` - no more dependency on `react-native` in the core, saving bundle size for web-only use cases
 - Bundle size reduction - Removed nearly ~12Kb from core
 - Performance - Removing the dependency on `react-native-web` for styling nearly doubled render performance
 - Upgrades to `styled` - The `styled` factory now supports wrapping any component you give it, so long as that component accepts a `style` prop.
@@ -39,6 +44,8 @@ A brief list of interesting changes since beta:
 - Correctness - Most of the work during beta focused on correctness. We've increased testing to cover many more areas, and landed a number of important correctness fixes alongside the ones in `core`.
 
 ### The UI Kit
+
+A flood of new components joins the party:
 
 - [Sheet](/docs/components/sheet)
 - [Select](/docs/components/select)

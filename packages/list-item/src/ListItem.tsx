@@ -225,7 +225,7 @@ export const useListItem = (
 
 const ListItemComponent = forwardRef<TamaguiElement, ListItemProps>((props, ref) => {
   const { props: listItemProps } = useListItem(props)
-  return <ListItemFrame ref={ref} {...listItemProps} />
+  return <ListItemFrame ref={ref} justifyContent="space-between" {...listItemProps} />
 })
 
 export const listItemStaticConfig = {

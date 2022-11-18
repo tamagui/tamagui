@@ -54,7 +54,14 @@ export default function Blog({ frontmatters }) {
                 }}
               >
                 <YStack space="$3">
-                  <H3 fontFamily="$silkscreen" size="$8" color="$color" cursor="pointer" ls={0}>
+                  <H3
+                    fontFamily="$silkscreen"
+                    size="$8"
+                    lh="$6"
+                    color="$color"
+                    cursor="pointer"
+                    ls={0}
+                  >
                     {frontmatter.title}
                   </H3>
 
@@ -69,7 +76,7 @@ export default function Blog({ frontmatters }) {
                       {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}
                     </XStack>
 
-                    <Paragraph size="$6" cursor="inherit" theme="alt2">
+                    <Paragraph size="$6" cursor="inherit" theme="alt2" o={0.5}>
                       {frontmatter.description}
                     </Paragraph>
                   </YStack>
