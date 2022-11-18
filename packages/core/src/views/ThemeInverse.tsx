@@ -1,32 +1,40 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import React, { useState } from 'react'
 
 import { useDefaultThemeName, useThemeName } from '../hooks/useTheme'
 import { Theme } from './Theme'
 
-export const ThemeInverse = ({
-  children,
-  disable,
-}: {
-  children: React.ReactNode
+export type ThemeInverseProps = {
   disable?: boolean
-}) => {
+}
+
+const toggleTheme = (themeName: string) => {
+  return themeName.startsWith('light') ? 'dark' : 'light'
+}
+
+export const useThemeInverse = (props: ThemeInverseProps = {}) => {
   const themeName = useThemeName()
   const defaultTheme = useDefaultThemeName()
   const [name, setName] = useState<null | string>(null)
 
-  // ssr
-  useIsomorphicLayoutEffect(() => {
-    if (themeName.startsWith('dark')) {
-      setName('light')
-    } else if (themeName.startsWith('light')) {
-      setName('dark')
-    }
-  }, [defaultTheme, themeName])
-
-  if (disable) {
-    return children as JSX.Element
+  if (isWeb) {
+    // for SSR must be in effect
+    useIsomorphicLayoutEffect(() => {
+      setName(toggleTheme(themeName || defaultTheme || ''))
+    }, [defaultTheme, themeName])
   }
 
-  return <Theme name={name}>{children}</Theme>
+  return props.disable ? null : name
+}
+
+export const ThemeInverse = ({
+  children,
+  disable,
+}: ThemeInverseProps & {
+  children: React.ReactNode
+}) => {
+  const inverseTheme = useThemeInverse({
+    disable,
+  })
+  return <Theme name={inverseTheme}>{children}</Theme>
 }

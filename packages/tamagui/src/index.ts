@@ -176,5 +176,6 @@ export {
   useMedia,
   useTheme,
   useThemeName,
+  useThemeInverse,
   useSafeRef,
 } from '@tamagui/core'

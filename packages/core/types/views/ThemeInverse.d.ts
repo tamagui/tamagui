@@ -1,6 +1,9 @@
 import React from 'react';
-export declare const ThemeInverse: ({ children, disable, }: {
+export declare type ThemeInverseProps = {
+    disable?: boolean;
+};
+export declare const useThemeInverse: (props?: ThemeInverseProps) => string | null;
+export declare const ThemeInverse: ({ children, disable, }: ThemeInverseProps & {
     children: React.ReactNode;
-    disable?: boolean | undefined;
 }) => JSX.Element;
 //# sourceMappingURL=ThemeInverse.d.ts.map
