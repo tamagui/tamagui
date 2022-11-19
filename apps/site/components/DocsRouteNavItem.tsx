@@ -43,8 +43,8 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
           size="$4"
           userSelect="none"
           opacity={0.65}
+          theme={active ? null : 'alt1'}
           {...(active && {
-            theme: 'alt2',
             fow: '900',
             opacity: 1,
           })}

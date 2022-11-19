@@ -8,9 +8,7 @@ import {
   LinearGradientProps as ExpoLinearGradientProps,
 } from '../lib/linear-gradient'
 
-// // bugfix esbuild strips react jsx: 'preserve'
-React['createElement']
-
+//
 export type LinearGradientProps = Omit<ExpoLinearGradientProps, 'colors'> &
   Omit<YStackProps, 'children' | keyof ExpoLinearGradientProps> & {
     colors?: (ColorTokens | ThemeTokens | (string & {}))[]

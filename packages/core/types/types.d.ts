@@ -151,6 +151,17 @@ export declare type ThemeName = Exclude<GetAltThemeNames<keyof Themes>, number>;
 export declare type ThemeTokens = `$${ThemeKeys}`;
 export declare type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<infer Config> ? keyof Config : string;
 export declare type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>;
+export interface ThemeProps {
+    className?: string;
+    disableThemeClass?: boolean;
+    name?: Exclude<ThemeName, number> | null;
+    componentName?: string;
+    children?: any;
+    reset?: boolean;
+    debug?: boolean | 'verbose';
+    disableTracking?: boolean;
+    inverse?: boolean;
+}
 declare type ArrayIntersection<A extends any[]> = A[keyof A];
 declare type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
 declare type SpacerPropsBase = {

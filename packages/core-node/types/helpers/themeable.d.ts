@@ -2,6 +2,7 @@ import { ThemeName } from '../types';
 export interface ThemeableProps {
     theme?: ThemeName | null;
     themeInverse?: boolean;
+    componentName?: string;
 }
 export declare function themeable<Component extends (props: any) => any>(component: Component, opts?: {
     componentName?: string;

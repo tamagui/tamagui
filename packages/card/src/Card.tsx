@@ -11,9 +11,6 @@ import { ThemeableStack } from '@tamagui/stacks'
 import React, { cloneElement, forwardRef } from 'react'
 import { View } from 'react-native'
 
-// bugfix esbuild strips react jsx: 'preserve'
-React['createElement']
-
 // const CARD_NAME = 'CARD'
 
 // type CardContextValue = {

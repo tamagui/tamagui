@@ -166,14 +166,10 @@ export const createThemes = <C extends string>({
     // generate alternates (for use in other themes), but keep just alts
     const altThemes: any[] = alternates.map((alt) => [
       `${name}_alt${alt}`,
-      getTheme(alt * 1 + shift, props),
-    ])
-    const altThemes2: any[] = alternates.map((alt) => [
-      `${name}_alt${alt}`,
-      getTheme(alt + shift, props),
+      getTheme(alt + shift - 1, props),
     ])
     const altButtonThemes: any[] = alternates.map((_, i) => {
-      const [bName, bTheme] = [altThemes2[i][0], (altThemes2[i + 1] || altThemes2[i])[1]]
+      const [bName, bTheme] = [altThemes[i][0], (altThemes[i + 1] || altThemes[i])[1]]
       return [`${bName}_Button` as any, bTheme]
     })
     // add these after alts since we rely on positioning
@@ -206,17 +202,17 @@ export const createThemes = <C extends string>({
       // keep just alts
       ...altThemes.slice(0, alts.length),
       ...altButtonThemes.slice(0, alts.length),
-      [`${name}_Button`, altThemes2[1][1]],
-      [`${name}_DrawerFrame`, altThemes2[1][1]],
-      [`${name}_SliderTrack`, altThemes[0][1]],
+      [`${name}_Button`, altThemes[2][1]],
+      [`${name}_DrawerFrame`, altThemes[2][1]],
+      [`${name}_SliderTrack`, altThemes[1][1]],
       [`${name}_SliderTrackActive`, altThemes[2][1]],
       [`${name}_SliderThumb`, inverted[2]],
       [`${name}_Progress`, altThemes[2][1]],
       [`${name}_ProgressIndicator`, inverted[2]],
-      [`${name}_Switch`, altThemes[0][1]],
+      [`${name}_Switch`, altThemes[1][1]],
       [`${name}_SwitchThumb`, inverted[2]],
-      [`${name}_TooltipArrow`, altThemes[1][1]],
-      [`${name}_TooltipContent`, altThemes[1][1]],
+      [`${name}_TooltipArrow`, altThemes[2][1]],
+      [`${name}_TooltipContent`, altThemes[2][1]],
       [`${name}_darker`, darkerTheme],
       [`${name}_active`, activeTheme],
     ]

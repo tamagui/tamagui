@@ -1,7 +1,14 @@
 // import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { DialogDemo, LabelDemo, SelectDemo, SheetDemo, TooltipDemo } from '@tamagui/demos'
+import {
+  ButtonDemo,
+  DialogDemo,
+  LabelDemo,
+  SelectDemo,
+  SheetDemo,
+  TooltipDemo,
+} from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { AnimationsDemo, AnimationsPresenceDemo } from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
@@ -160,11 +167,13 @@ export const Sandbox = () => {
             overflow: 'hidden',
           }}
         >
-          <CustomButtonFrame debug="verbose">
-            <Paragraph>hihi</Paragraph>
-          </CustomButtonFrame>
+          <ButtonDemo />
 
-          <Button>hi</Button>
+          {/* <CustomButtonFrame debug="verbose">
+            <Paragraph>hihi</Paragraph>
+          </CustomButtonFrame> */}
+
+          {/* <Button>hi</Button> */}
 
           {/* <Input /> */}
 

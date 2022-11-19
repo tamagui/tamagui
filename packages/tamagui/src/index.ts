@@ -169,13 +169,11 @@ export {
   // hooks
   useGet,
   useEvent,
-  useDefaultThemeName,
   useDidFinishSSR,
   useIsomorphicLayoutEffect,
   useIsTouchDevice,
   useMedia,
   useTheme,
   useThemeName,
-  useThemeInverse,
   useSafeRef,
 } from '@tamagui/core'

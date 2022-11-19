@@ -10,9 +10,6 @@ import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { ActivityIndicator } from 'react-native'
 
-// bugfix esbuild strips react jsx: 'preserve'
-React['createElement']
-
 export type SpinnerProps = Omit<YStackProps, 'children'> & {
   size?: 'small' | 'large'
   color?: (ColorTokens | ThemeTokens | (string & {})) | null

@@ -1,4 +1,4 @@
-import { isClient, isRSC, isServer } from '@tamagui/constants'
+import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
 import * as React from 'react'
 
 import { ButtonInsideButtonContext } from '../contexts/ButtonInsideButtonContext'
@@ -24,7 +24,7 @@ export function TamaguiProvider({
     )
   }
 
-  if (!isServer) {
+  if (!isWeb || !isServer) {
     useMediaListeners(config)
   }
 

@@ -264,6 +264,18 @@ export type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<
   : string
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>
 
+export interface ThemeProps {
+  className?: string
+  disableThemeClass?: boolean
+  name?: Exclude<ThemeName, number> | null
+  componentName?: string
+  children?: any
+  reset?: boolean
+  debug?: boolean | 'verbose'
+  disableTracking?: boolean
+  inverse?: boolean
+}
+
 type ArrayIntersection<A extends any[]> = A[keyof A]
 
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S

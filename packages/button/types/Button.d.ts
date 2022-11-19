@@ -1,6 +1,6 @@
 import { GetProps, TamaguiElement, ThemeableProps } from '@tamagui/core';
 import { TextParentStyles } from '@tamagui/text';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 declare type ButtonIconProps = {
     color?: string;
     size?: number;
@@ -143,7 +143,7 @@ export declare function useButton(props: ButtonProps, { Text }?: {
     spaceSize: number;
     isInsideButton: boolean;
     props: {
-        children: string | number | boolean | any[] | JSX.Element | React.ReactFragment | null | undefined;
+        children: string | number | boolean | any[] | JSX.Element | import("react").ReactFragment | null | undefined;
         hitSlop?: import("@tamagui/types-react-native").Insets | (import("@tamagui/types-react-native").Insets & number) | undefined;
         onLayout?: ((event: import("@tamagui/types-react-native").LayoutChangeEvent) => void) | undefined;
         pointerEvents?: "box-none" | "none" | "box-only" | "auto" | undefined;
@@ -198,9 +198,6 @@ export declare function useButton(props: ButtonProps, { Text }?: {
             label?: string | undefined;
         }>[] | undefined;
         accessibilityLabel?: string | undefined;
-        /**
-         * add icon after, passes color and size automatically if Component
-         */
         accessibilityRole?: "none" | "button" | "link" | "search" | "image" | "keyboardkey" | "text" | "adjustable" | "imagebutton" | "header" | "summary" | "list" | undefined;
         accessibilityState?: import("@tamagui/types-react-native").AccessibilityState | undefined;
         accessibilityHint?: string | undefined;
@@ -226,19 +223,18 @@ export declare function useButton(props: ButtonProps, { Text }?: {
             rel?: string | undefined;
             download?: boolean | undefined;
         } | undefined;
-        onMouseDown?: (((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) & ((e: MouseEvent) => any)) | undefined;
-        onMouseUp?: ((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined;
-        onMouseEnter?: (((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) & ((e: MouseEvent) => any)) | undefined;
-        onMouseLeave?: (((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) & ((e: MouseEvent) => any)) | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        onMouseDown?: (((event: import("react").MouseEvent<HTMLDivElement, MouseEvent>) => void) & ((e: MouseEvent) => any)) | undefined;
+        onMouseUp?: ((event: import("react").MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined;
+        onMouseEnter?: (((event: import("react").MouseEvent<HTMLDivElement, MouseEvent>) => void) & ((e: MouseEvent) => any)) | undefined;
+        onMouseLeave?: (((event: import("react").MouseEvent<HTMLDivElement, MouseEvent>) => void) & ((e: MouseEvent) => any)) | undefined;
+        onFocus?: ((event: import("react").FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: import("react").UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
         onScrollShouldSetResponder?: unknown;
         onScrollShouldSetResponderCapture?: unknown;
         onSelectionChangeShouldSetResponder?: unknown;
         onSelectionChangeShouldSetResponderCapture?: unknown;
         asChild?: boolean | undefined;
-        spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
-        /**
+        spaceDirection?: import("@tamagui/core").SpaceDirection | undefined; /**
          * default: -1
          */
         dangerouslySetInnerHTML?: {
@@ -247,9 +243,7 @@ export declare function useButton(props: ButtonProps, { Text }?: {
         animation?: import("@tamagui/core").AnimationProp | undefined;
         animateOnly?: string[] | undefined;
         debug?: import("@tamagui/core").DebugProp | undefined;
-        disabled?: boolean | undefined; /**
-         * adjust internal space relative to icon size
-         */
+        disabled?: boolean | undefined;
         className?: string | undefined;
         themeShallow?: boolean | undefined;
         id?: string | undefined;
@@ -574,6 +568,6 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
      * adjust internal space relative to icon size
      */
     scaleSpace?: number | undefined;
-} & React.RefAttributes<TamaguiElement>, "theme" | "themeInverse"> & ThemeableProps) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
+} & import("react").RefAttributes<TamaguiElement>, "theme" | "themeInverse"> & ThemeableProps) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>> | null;
 export {};
 //# sourceMappingURL=Button.d.ts.map

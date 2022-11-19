@@ -1,8 +1,7 @@
 rc.0
 
+- bugs: css animations (enterStyle), native animations
 - pages/test/switch
-- fix pseudo hover card on site
-- enterStyle + animations css
 - rc.0 blog post
 - <Adapt /> instead of sheetBreakpoint
 

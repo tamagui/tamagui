@@ -1,26 +1,22 @@
 import { ThemeManager } from '../helpers/ThemeManager';
-import { ThemeName, ThemeParsed } from '../types';
-export interface ThemeProps {
-    className?: string;
-    disableThemeClass?: boolean;
-    name: Exclude<ThemeName, number> | null;
-    componentName?: string;
-    children?: any;
-    reset?: boolean;
-    debug?: boolean | 'verbose';
-}
-export declare const useTheme: (themeName?: string | null, componentName?: string, props?: ThemeProps, forceUpdate?: any, disableTracking?: boolean) => ThemeParsed;
+import { ThemeName, ThemeParsed, ThemeProps } from '../types';
+declare type UseThemeProps = ThemeProps & {
+    forceUpdate?: any;
+};
+export declare const useTheme: (props?: UseThemeProps) => ThemeParsed;
 export declare const getThemeManager: (theme: any) => ThemeManager | undefined;
+export declare const getThemeDidChange: (theme: any) => ThemeManager | undefined;
 export declare function useThemeName(opts?: {
     parent?: true;
 }): ThemeName;
-export declare const useDefaultThemeName: () => string | undefined;
 export declare const activeThemeManagers: Set<ThemeManager>;
-export declare const useChangeThemeEffect: (name?: string | null, componentName?: string, props?: ThemeProps, forceUpdateProp?: any, uuid?: Object) => {
+export declare const useChangeThemeEffect: (props: UseThemeProps, uuid?: Object) => {
     themes: Record<string, ThemeParsed>;
     themeManager: ThemeManager | null;
     name: string;
-    theme: ThemeParsed | null;
+    didChange?: boolean | undefined;
+    theme?: ThemeParsed | null | undefined;
     className?: string | undefined;
 };
+export {};
 //# sourceMappingURL=useTheme.d.ts.map

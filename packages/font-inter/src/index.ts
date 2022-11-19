@@ -1,5 +1,4 @@
-import { GenericFont, createFont, getVariableValue } from '@tamagui/core'
-import { Platform } from 'react-native'
+import { GenericFont, createFont, getVariableValue, isWeb } from '@tamagui/core'
 
 export const createInterFont = <A extends GenericFont<keyof typeof defaultSizes>>(
   font: {
@@ -21,10 +20,9 @@ export const createInterFont = <A extends GenericFont<keyof typeof defaultSizes>
     }).map(([k, v]) => [k, sizeSize(+v)])
   )
   return createFont({
-    family:
-      Platform.OS == 'web'
-        ? 'Inter, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
-        : 'Inter',
+    family: isWeb
+      ? 'Inter, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
+      : 'Inter',
     lineHeight: Object.fromEntries(
       Object.entries(size).map(([k, v]) => [k, sizeLineHeight(getVariableValue(v))])
     ),

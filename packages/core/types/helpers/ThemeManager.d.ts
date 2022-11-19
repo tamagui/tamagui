@@ -1,45 +1,42 @@
 /// <reference types="react" />
-import { ThemeParsed, Themes } from '../types';
+import { ThemeParsed, ThemeProps } from '../types';
 declare type ThemeListener = (name: string | null, themeManager: ThemeManager) => void;
 export declare type SetActiveThemeProps = {
     className?: string;
     parentManager?: ThemeManager | null;
     name?: string | null;
     theme?: any;
-};
-export declare type GetNextThemeProps = {
-    themes?: Themes;
-    name?: string | null;
-    componentName?: string | null;
     reset?: boolean;
 };
-export declare class ThemeManager {
+declare type ThemeManagerState = {
     name: string;
-    className: string;
-    theme: ThemeParsed | null;
-    parentManager: ThemeManager | null;
-    reset: boolean;
+    theme?: ThemeParsed | null;
+    className?: string;
+};
+export declare class ThemeManager {
+    #private;
+    props?: ThemeProps | undefined;
     keys: Map<any, Set<string>>;
     listeners: Map<any, Function>;
     themeListeners: Set<ThemeListener>;
-    constructor(name?: string, className?: string, theme?: ThemeParsed | null, parentManager?: ThemeManager | null, reset?: boolean);
-    get didChangeTheme(): boolean | null;
+    originalParentManager: ThemeManager | null;
+    parentManager: ThemeManager | null;
+    state: ThemeManagerState;
+    constructor(ogParentManager?: ThemeManager | 'root' | null | undefined, props?: ThemeProps | undefined);
+    updateState(props?: ThemeProps & {
+        forceTheme?: ThemeParsed;
+    }, forceUpdate?: boolean, notify?: boolean): boolean;
+    getState(props?: ThemeProps | undefined): ThemeManagerState | null;
+    getKey(props?: ThemeProps | undefined): string;
+    get allKeys(): Set<string>;
     get parentName(): string | null;
     get fullName(): string;
     getValue(key: string): import("..").Variable<any> | undefined;
     isTracking(uuid: Object): boolean;
-    update({ name, theme, className }?: SetActiveThemeProps, force?: boolean, notify?: boolean): boolean;
-    getNextTheme(props?: GetNextThemeProps, debug?: any): {
-        name: string;
-        theme: ThemeParsed | null;
-        className: string | undefined;
-    };
-    getCN(name: string): string;
     track(uuid: any, keys: Set<string>): void;
     notify(): void;
     onChangeTheme(cb: ThemeListener): () => void;
 }
 export declare const ThemeManagerContext: import("react").Context<ThemeManager | null>;
-export declare const emptyManager: ThemeManager;
 export {};
 //# sourceMappingURL=ThemeManager.d.ts.map

@@ -1,9 +1,11 @@
+import { isWeb } from '@tamagui/constants'
 import { createContext } from 'react'
 
 import { getThemes } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
 import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
-import { ThemeParsed, Themes } from '../types'
+import { ThemeParsed, ThemeProps } from '../types'
+import { inverseTheme } from '../views/ThemeInverse'
 
 type ThemeListener = (name: string | null, themeManager: ThemeManager) => void
 
@@ -12,76 +14,133 @@ export type SetActiveThemeProps = {
   parentManager?: ThemeManager | null
   name?: string | null
   theme?: any
-}
-
-export type GetNextThemeProps = {
-  themes?: Themes
-  name?: string | null
-  componentName?: string | null
   reset?: boolean
 }
+
+type ThemeManagerState = {
+  name: string
+  theme?: ThemeParsed | null
+  className?: string
+}
+
+const emptyState: ThemeManagerState = { name: '-' }
 
 export class ThemeManager {
   keys = new Map<any, Set<string>>()
   listeners = new Map<any, Function>()
   themeListeners = new Set<ThemeListener>()
+  originalParentManager: ThemeManager | null = null
+  parentManager: ThemeManager | null = null
+  state: ThemeManagerState = emptyState
 
   constructor(
-    public name: string = '',
-    public className: string = '',
-    public theme: ThemeParsed | null = null,
-    public parentManager: ThemeManager | null = null,
-    public reset: boolean = false
+    ogParentManager?: ThemeManager | 'root' | null | undefined,
+    public props?: ThemeProps
   ) {
-    // find the nearest different parentManager
-    let parent = parentManager
-    let tries = 0
-    while (true) {
-      tries++
-      if (tries > 10) {
-        throw new Error(`Nested 10 of the same theme in a row, likely error`)
-      }
-      if (!parent) break
-      if (parent.name === name) {
-        // go up if same
-        parent = parent.parentManager
-      } else {
-        this.parentManager = parent
-        break
-      }
+    if (ogParentManager && ogParentManager !== 'root') {
+      this.originalParentManager = ogParentManager
+    }
+    if (ogParentManager === 'root') {
+      this.updateState(props, false, false)
+      return
+    }
+    this.parentManager = ogParentManager || null
+    const didUpdate = this.updateState(props, false, false)
+    if (!didUpdate && ogParentManager) {
+      return ogParentManager
     }
   }
 
-  get didChangeTheme() {
-    return this.parentManager && this.name !== this.parentManager.fullName
+  updateState(
+    props: ThemeProps & { forceTheme?: ThemeParsed } = this.props || {},
+    forceUpdate = false,
+    notify = true
+  ) {
+    let shouldTryUpdate = forceUpdate || !this.parentManager
+    if (!shouldTryUpdate) {
+      const nextKey = this.getKey(props)
+      if (
+        (this.parentManager && nextKey !== this.parentManager.getKey()) ||
+        this.getKey() !== nextKey
+      ) {
+        shouldTryUpdate = true
+      }
+    }
+    if (props.forceTheme) {
+      this.state.theme = props.forceTheme
+      this.state.name = props.name || ''
+      notify && this.notify()
+      return true
+    }
+    if (shouldTryUpdate) {
+      const nextState = this.getState(props)
+      if (nextState) {
+        this.state = nextState
+        notify && this.notify()
+        return true
+      }
+    }
+    return false
+  }
+
+  getState(props: ThemeProps | undefined = this.props): ThemeManagerState | null {
+    if (!props) {
+      return null
+    }
+    const next = getNextThemeState(props, this.parentManager)
+    if (!next || !next.theme) {
+      return null
+    }
+    if (this.parentManager && next && next.theme === this.parentManager.state.theme) {
+      return null
+    }
+    return next
+  }
+
+  #key: string | null = null
+  getKey(props: ThemeProps | undefined = this.props) {
+    if (!props) {
+      if (process.env.NODE_ENV === 'development') {
+        throw new Error(`No props given to ThemeManager.getKey()`)
+      }
+      return ``
+    }
+    if (this.#key) return this.#key
+    const { name, inverse, reset, componentName } = props
+    const key = `${name || 0}${inverse || 0}${reset || 0}${componentName || 0}`
+    this.#key ??= key
+    return key
+  }
+
+  #allKeys: Set<string> | null = null
+  get allKeys() {
+    if (!this.#allKeys) {
+      this.#allKeys = new Set([
+        ...(this.originalParentManager?.allKeys || []),
+        ...Object.keys(this.state.theme || {}),
+      ])
+    }
+    return this.#allKeys
   }
 
   get parentName() {
-    return this.parentManager?.name || null
+    return this.parentManager?.state.name || null
   }
 
   get fullName(): string {
-    return this.getNextTheme().name || this.name || ''
-    // const parentName = this.parentManager?.fullName || ''
-    // const name = this.name || ''
-    // const parts = [...new Set([...`${parentName}_${name}`.split('_')])].filter(Boolean)
-    // return parts.join('_')
+    return this.state?.name || this.props?.name || ''
   }
 
   // gets value going up to parents
   getValue(key: string) {
-    let theme = this.theme
+    let theme = this.state.theme
     let manager = this as ThemeManager | null
-    while (true) {
-      if (!theme) return
+    while (theme && manager) {
       if (key in theme) {
         return theme[key]
       }
-      manager = this.parentManager
-      if (!manager || manager.theme === theme) {
-        return
-      }
-      theme = manager.theme
+      manager = manager.parentManager
+      theme = manager?.state.theme
     }
   }
 
@@ -89,128 +148,21 @@ export class ThemeManager {
     return Boolean(this.keys.get(uuid)?.size)
   }
 
-  update({ name, theme, className }: SetActiveThemeProps = {}, force = false, notify = true) {
-    if (!force) {
-      // className compare on web, avoids light/dark re-renders
-      const nameChanged = name !== this.name
-      if (!nameChanged) {
-        return false
-      }
-    }
-    this.className = className || ''
-    this.name = name || ''
-    this.theme = theme
-    if (notify) {
-      this.notify()
-    }
-    return true
-  }
-
-  getNextTheme(
-    props: GetNextThemeProps = {},
-    debug?: any
-  ): {
-    name: string
-    theme: ThemeParsed | null
-    className: string | undefined
-  } {
-    const { themes = getThemes(), name, componentName } = props
-
-    if (props.reset && name) {
-      return {
-        name: name,
-        theme: themes[name] as ThemeParsed,
-        className: this.getCN(name),
-      }
-    }
-
-    const parentIsReset = this.parentManager?.reset
-
-    if (!name) {
-      if (componentName) {
-        // allow for _Card_Button or just _Button
-        const names = [
-          `${this.name}_${componentName}`,
-          `${withoutComponentName(this.name)}_${componentName}`,
-        ]
-        for (const name of names) {
-          if (name in themes) {
-            const className = this.getCN(name)
-            return { name, theme: themes[name], className }
-          }
-        }
-      }
-      return {
-        name: this.name,
-        theme: this.theme,
-        className: this.className,
-      }
-    }
-
-    let nextName = name || this.name || ''
-    let parentName = parentIsReset ? this.parentName || this.fullName : this.fullName
-
-    while (true) {
-      if (nextName in themes) break
-      nextName = `${parentName}_${name}`
-      if (nextName in themes) break
-      // this is fine - some themes can not have parents
-      if (!parentName.includes(THEME_NAME_SEPARATOR)) break
-      // go up one
-      parentName = parentName.slice(0, parentName.lastIndexOf(THEME_NAME_SEPARATOR))
-    }
-
-    if (componentName) {
-      // allow for _Card_Button or just _Button
-      const names = [
-        `${nextName}_${componentName}`,
-        `${withoutComponentName(nextName)}_${componentName}`,
-      ]
-      for (const name of names) {
-        if (name in themes) {
-          nextName = name
-        }
-      }
-    }
-
-    let theme = themes[nextName]
-    if (!theme) {
-      theme = themes[`light_${nextName}`]
-    }
-
-    if (process.env.NODE_ENV === 'development') {
-      if (debug) {
-        // eslint-disable-next-line no-console
-        console.log('getNextTheme', this.getCN(nextName), { props, nextName, parentName })
-      }
-    }
-
-    return {
-      name: nextName,
-      theme: getThemeUnwrapped(theme),
-      className: this.getCN(nextName),
-    }
-  }
-
-  getCN(name: string) {
-    return `${THEME_CLASSNAME_PREFIX}${name} t_Theme`.replace('light_', '').replace('dark_', '')
-  }
-
   track(uuid: any, keys: Set<string>) {
-    if (!this.name) return
+    if (!this.state.name) return
     this.keys.set(uuid, keys)
   }
 
   notify() {
-    if (!this.name) {
-      this.keys.clear()
-    }
-    for (const [uuid, keys] of this.keys.entries()) {
-      if (keys.size) {
-        this.listeners.get(uuid)?.()
-      }
-    }
-    this.themeListeners.forEach((cb) => cb(this.name, this))
+    if (!this.themeListeners.size || !this.keys.size) return
+    // for (const [uuid, keys] of this.keys.entries()) {
+    //   if (keys.size) {
+    //     this.listeners.get(uuid)?.()
+    //   }
+    // }
+    // debugger
+    console.warn('notify')
+    // this.themeListeners.forEach((cb) => cb(this.state.name, this))
   }
 
   onChangeTheme(cb: ThemeListener) {
@@ -221,7 +173,79 @@ export class ThemeManager {
   }
 }
 
+function getNextThemeClassName(name: string, disableRemoveScheme = false) {
+  const next = `${THEME_CLASSNAME_PREFIX}${name}`
+  if (disableRemoveScheme) return next
+  return next.replace('light_', '').replace('dark_', '')
+}
+
+function getNextThemeState(
+  props: ThemeProps,
+  parentManager?: ThemeManager | null
+): ThemeManagerState | null {
+  const themes = getThemes()
+
+  if (props.reset && props.name) {
+    return {
+      name: props.name,
+      theme: themes[props.name] as ThemeParsed,
+      className: getNextThemeClassName(props.name),
+    }
+  }
+
+  const parentName = parentManager?.state.name || ''
+  let nextName = parentManager?.props?.reset ? parentName || '' : props.name || ''
+
+  const parentParts = parentName.split(THEME_NAME_SEPARATOR)
+  const prefixes = parentParts
+    .map((_, i) => {
+      return parentParts.slice(0, i + 1).join(THEME_NAME_SEPARATOR)
+    })
+    // most specific first
+    .reverse()
+
+  const potentialComponent = props.componentName
+    ? nextName
+      ? `${withoutComponentName(nextName)}_${props.componentName}`
+      : props.componentName
+    : null
+
+  // order important (most specific to least)
+  const newPotentials = prefixes.flatMap((prefix) => {
+    const res: string[] = []
+    if (potentialComponent && nextName) {
+      res.push([prefix, nextName, potentialComponent].join(THEME_NAME_SEPARATOR))
+    }
+    if (nextName) {
+      res.push([prefix, nextName].join(THEME_NAME_SEPARATOR))
+    }
+    if (potentialComponent) {
+      res.push([prefix, potentialComponent].join(THEME_NAME_SEPARATOR))
+    }
+    return res
+  })
+
+  let potentials = [...newPotentials, nextName]
+  if (props.inverse) {
+    potentials = potentials.map(inverseTheme)
+  }
+
+  for (const name of potentials) {
+    if (name && name in themes) {
+      nextName = name
+      break
+    }
+  }
+
+  const theme = themes[nextName]
+
+  return {
+    name: nextName,
+    theme: getThemeUnwrapped(theme),
+    className: getNextThemeClassName(nextName, !!props.inverse),
+  }
+}
+
 export const ThemeManagerContext = createContext<ThemeManager | null>(null)
-export const emptyManager = new ThemeManager()
 
 const withoutComponentName = (name: string) => name.replace(/(_[A-Z][a-zA-Z]+)+$/g, '')

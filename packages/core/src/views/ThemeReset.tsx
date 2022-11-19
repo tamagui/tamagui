@@ -1,11 +1,8 @@
 import { isClient } from '@tamagui/constants'
-import React, { useContext, useLayoutEffect, useState } from 'react'
+import { useContext, useLayoutEffect, useState } from 'react'
 
 import { ThemeManagerContext } from '../helpers/ThemeManager'
 import { Theme } from './Theme'
-
-// bugfix esbuild strips react jsx: 'preserve'
-React['createElement']
 
 // resets the theme to the parent theme
 export const ThemeReset = (props: { children?: any }) => {
@@ -36,7 +33,7 @@ export const ThemeReset = (props: { children?: any }) => {
   }
 
   return (
-    <Theme className="tui-theme-reset" reset name={name}>
+    <Theme className="t_themereset" reset name={name}>
       {props.children}
     </Theme>
   )

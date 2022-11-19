@@ -15,10 +15,7 @@ import { getButtonSized } from '@tamagui/get-button-sized'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack } from '@tamagui/stacks'
 import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
-import React, { FunctionComponent, forwardRef, useContext } from 'react'
-
-// bugfix esbuild strips react jsx: 'preserve'
-React['createElement']
+import { FunctionComponent, forwardRef, useContext } from 'react'
 
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
@@ -51,8 +48,10 @@ export type ButtonProps = Omit<TextParentStyles, 'TextComponent'> &
     scaleSpace?: number
   }
 
+const NAME = 'Button'
+
 export const ButtonFrame = styled(ThemeableStack, {
-  name: 'Button',
+  name: NAME,
   tag: 'button',
   focusable: true,
   hoverTheme: true,
@@ -217,4 +216,7 @@ export const buttonStaticConfig = {
   ]),
 }
 
-export const Button = ButtonFrame.extractable(themeable(ButtonComponent), buttonStaticConfig)
+export const Button = ButtonFrame.extractable(
+  themeable(ButtonComponent, { componentName: NAME }),
+  buttonStaticConfig
+)

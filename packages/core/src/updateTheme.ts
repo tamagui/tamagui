@@ -7,11 +7,11 @@ export function updateTheme({ name, theme }: { name: string; theme: ThemeDefinit
 
   if (process.env.TAMAGUI_TARGET === 'native') {
     activeThemeManagers.forEach((manager) => {
-      if (manager.name === name) {
-        manager.update(
+      if (manager.state.name === name) {
+        manager.updateState(
           {
             name,
-            theme: next.theme,
+            forceTheme: next.theme,
           },
           true
         )

@@ -1,13 +1,9 @@
 import { isClient } from '@tamagui/constants'
-import React, { useLayoutEffect, useMemo } from 'react'
+import { useLayoutEffect } from 'react'
 
-import { getConfig, getHasConfigured } from '../config'
+import { getHasConfigured } from '../config'
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
-import { ThemeContext } from '../contexts/ThemeContext'
 import { Theme } from './Theme'
-
-// bugfix esbuild strips react jsx: 'preserve'
-React['createElement']
 
 export type ThemeProviderProps = {
   className?: string
@@ -40,24 +36,13 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
     }, [props.defaultTheme, props.disableRootThemeClass, props.themeClassNameOnRoot])
   }
 
-  const themeContext = useMemo(() => {
-    return {
-      get themes() {
-        return getConfig().themes
-      },
-      defaultTheme: props.defaultTheme,
-    }
-  }, [props.defaultTheme])
-
   return (
-    <ThemeContext.Provider value={themeContext}>
-      <Theme
-        className={props.className}
-        name={props.defaultTheme}
-        disableThemeClass={props.disableRootThemeClass}
-      >
-        {props.children}
-      </Theme>
-    </ThemeContext.Provider>
+    <Theme
+      className={props.className}
+      name={props.defaultTheme}
+      disableThemeClass={props.disableRootThemeClass}
+    >
+      {props.children}
+    </Theme>
   )
 }

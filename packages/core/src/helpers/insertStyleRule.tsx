@@ -5,7 +5,7 @@
 import type { StyleObject } from '@tamagui/helpers'
 
 const allSelectors: Record<string, string> = {}
-const allRules: Record<string, boolean | string[]> = {}
+const allRules: Record<string, string> = {}
 export const insertedTransforms = {}
 
 export const getAllSelectors = () => allSelectors
@@ -122,7 +122,7 @@ const sheet = isClient ? document.head.appendChild(document.createElement('style
 
 export function updateRules(identifier: string, rules: string[]) {
   if (allRules[identifier]) return false
-  allRules[identifier] = rules
+  allRules[identifier] = rules.join(' ')
   if (identifier.startsWith('_transform')) {
     return addTransform(identifier, rules[0])
   }

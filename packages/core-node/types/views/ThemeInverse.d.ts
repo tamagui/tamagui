@@ -2,7 +2,7 @@ import React from 'react';
 export declare type ThemeInverseProps = {
     disable?: boolean;
 };
-export declare const useThemeInverse: (props?: ThemeInverseProps) => string | null;
+export declare const inverseTheme: (themeName: string) => string;
 export declare const ThemeInverse: ({ children, disable, }: ThemeInverseProps & {
     children: React.ReactNode;
 }) => JSX.Element;

@@ -1,11 +1,10 @@
-import { GenericFont, createFont } from '@tamagui/core'
-import { Platform } from 'react-native'
+import { GenericFont, createFont, isWeb } from '@tamagui/core'
 
 export const createFiraMonoFont = <A extends GenericFont<keyof typeof size>>(
   font: Partial<A> = {}
 ): A => {
   return createFont({
-    family: Platform.OS == 'web' ? 'Fira Code, Monaco, Consolas, Ubuntu Mono, monospace' : 'Fira',
+    family: isWeb ? 'Fira Code, Monaco, Consolas, Ubuntu Mono, monospace' : 'Fira',
     size,
     lineHeight: Object.fromEntries(
       Object.entries(size).map(([k, v]) => [k, v * 1.3])

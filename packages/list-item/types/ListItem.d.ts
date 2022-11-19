@@ -381,9 +381,7 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         accessibilityIgnoresInvertColors?: boolean | undefined;
         dataSet?: any;
         target?: any;
-        rel?: any; /**
-         * add icon after, passes color and size automatically if Component
-         */
+        rel?: any;
         download?: any;
         href?: string | undefined;
         hrefAttrs?: {
@@ -401,7 +399,9 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         onScrollShouldSetResponderCapture?: unknown;
         onSelectionChangeShouldSetResponder?: unknown;
         onSelectionChangeShouldSetResponderCapture?: unknown;
-        asChild?: boolean | undefined;
+        asChild?: boolean | undefined; /**
+         * adjust icon relative to size
+         */
         spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
         separator?: React.ReactNode;
         dangerouslySetInnerHTML?: {
@@ -409,15 +409,13 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         } | undefined;
         animation?: import("@tamagui/core").AnimationProp | undefined;
         animateOnly?: string[] | undefined;
-        debug?: import("@tamagui/core").DebugProp | undefined; /**
-         * adjust internal space relative to icon size
-         */
+        debug?: import("@tamagui/core").DebugProp | undefined;
         disabled?: boolean | undefined;
         className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined; /**
-         * title
+        themeShallow?: boolean | undefined; /**
+         * subtitle
          */
+        id?: string | undefined;
         tag?: string | undefined;
         componentName?: string | undefined;
         forceStyle?: "hover" | "press" | "focus" | undefined;

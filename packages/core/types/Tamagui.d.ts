@@ -18,7 +18,7 @@ declare class TamaguiManager {
             [key: string]: any;
         };
     }, import("./types").GenericFonts>;
-    get insertedRules(): (boolean | string[])[];
+    get insertedRules(): string[];
     get allSelectors(): Record<string, string>;
     get allTransforms(): {};
     get identifierToValue(): Map<string, any>;

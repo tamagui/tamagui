@@ -1,6 +1,6 @@
-import React from 'react';
+/// <reference types="react" />
 import { ThemeManager } from '../helpers/ThemeManager';
-import { ThemeProps } from '../hooks/useTheme';
-export declare const Theme: React.NamedExoticComponent<ThemeProps>;
-export declare function wrapThemeManagerContext(children: any, themeManager?: ThemeManager | null, shouldSetChildrenThemeToParent?: boolean): any;
+import { ThemeProps } from '../types';
+export declare function wrapThemeManagerContext(children: any, themeManager?: ThemeManager | null, shouldReset?: boolean): any;
+export declare const Theme: import("react").NamedExoticComponent<ThemeProps>;
 //# sourceMappingURL=Theme.d.ts.map

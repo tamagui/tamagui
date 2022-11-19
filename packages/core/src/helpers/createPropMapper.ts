@@ -412,7 +412,7 @@ const getToken = (
     : conf.fontsParsed
   let valOrVar: any
   let hasSet = false
-  if (theme[value]) {
+  if (value in theme) {
     valOrVar = theme[value]
     hasSet = true
   } else {
@@ -456,11 +456,12 @@ const getToken = (
   if (process.env.NODE_ENV === 'development') {
     if (value && value[0] === '$') {
       // eslint-disable-next-line no-console
-      console.trace(
-        `⚠️ You've passed the value "${value}" to the style property "${key}", but there's no theme or token with the key "${value}". Using theme "${theme.name}".
+      console.warn(
+        `⚠️ You passed the value "${value}" to the style property "${key}", but there's no theme or token with the key "${value}". Using theme "${theme.name}".
 
 Set the debug prop to true to see more detailed debug information.`
       )
+      debugger
       if (debug) {
         if (isDevTools) {
           // eslint-disable-next-line no-console

@@ -1,6 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isClient, isRSC, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-/* eslint-disable react-hooks/rules-of-hooks */
 import {
   composeEventHandlers,
   stylePropsTransform,
@@ -38,13 +37,12 @@ import { useShallowSetState } from './helpers/useShallowSetState'
 import { getRect, measureLayout, useElementLayout } from './hooks/useElementLayout'
 import { addMediaQueryListener, getInitialMediaState } from './hooks/useMedia'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
-import { getThemeManager, useTheme } from './hooks/useTheme'
+import { getThemeDidChange, getThemeManager, useTheme } from './hooks/useTheme'
 import {
   DebugProp,
   SpaceDirection,
   SpaceTokens,
   SpacerProps,
-  SplitStyleState,
   StaticConfig,
   StaticConfigParsed,
   StylableComponent,
@@ -105,17 +103,6 @@ if (process.env.TAMAGUI_TARGET === 'native') {
   BaseView = native.View || native.default.View
 }
 
-// let t
-// if (process.env.ANALYZE) {
-//   const t = require('@tamagui/timer').timer()
-//   setTimeout(() => {
-//     const out = t.print()
-//     if (isClient) {
-//       alert(out)
-//     }
-//   }, 2000)
-// }
-
 export function createComponent<
   ComponentPropTypes extends Object = {},
   Ref = TamaguiElement,
@@ -174,14 +161,25 @@ export function createComponent<
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
     const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
+
     // conditional but if ever true stays true
-    const hasEverAnimated = useRef(false)
+    // [animated, inversed]
+    const stateRef = useRef(
+      undefined as any as {
+        hasAnimated?: boolean
+        hasThemeInversed?: boolean
+        hasProvidedThemeManager?: boolean
+        themeShouldReset?: boolean
+      }
+    )
+    stateRef.current ??= {}
+
     const isAnimated = (() => {
       const next = !!(useAnimations && props.animation)
-      if (next && !hasEverAnimated.current) {
-        hasEverAnimated.current = true
+      if (next && !stateRef.current.hasAnimated) {
+        stateRef.current.hasAnimated = true
       }
-      return next || hasEverAnimated.current
+      return next || stateRef.current.hasAnimated
     })()
     const isReactNative = Boolean(
       staticConfig.isReactNative || (isAnimated && tamaguiConfig.animations.isReactNative)
@@ -218,7 +216,18 @@ export function createComponent<
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
     const forceUpdate = useForceUpdate()
-    const theme = useTheme(props.theme, componentName, props, forceUpdate, !noClassNames)
+    const theme = useTheme({
+      name: props.theme,
+      componentName,
+      reset: props.reset,
+      forceUpdate,
+      disableTracking: !noClassNames,
+      inverse: props.themeInverse,
+      // disableThemeClass: noClassNames,
+      debug: props.debug,
+    })
+    const themeManager = getThemeManager(theme)
+    const themeDidChange = getThemeDidChange(theme)
 
     const shouldSetMounted = needsMount && state.unmounted
     const setMounted = shouldSetMounted
@@ -625,7 +634,7 @@ export function createComponent<
     const classList = [
       componentName ? componentClassName : '',
       fontFamilyClassName,
-      theme.className,
+      themeDidChange ? theme.className : '',
       classNames ? Object.values(classNames).join(' ') : '',
     ]
     const className = classList.join(' ')
@@ -811,14 +820,17 @@ export function createComponent<
       }
     }
 
-    const themeManager = getThemeManager(theme)
+    const themeShouldReset = Boolean(themeShallow && themeManager && themeDidChange)
 
-    const shouldSetChildrenThemeToParent = Boolean(
-      themeShallow && themeManager && themeManager.didChangeTheme
-    )
+    const shouldProvideThemeManager = themeShouldReset || (themeManager && themeDidChange)
 
-    const shouldProvideThemeManager =
-      shouldSetChildrenThemeToParent || (themeManager && themeManager.didChangeTheme)
+    // memoize to avoid re-parenting
+    if (shouldProvideThemeManager) {
+      stateRef.current.hasProvidedThemeManager = true
+    }
+    if (themeShouldReset) {
+      stateRef.current.themeShouldReset = true
+    }
 
     const childEls =
       !children || asChild
@@ -832,8 +844,8 @@ export function createComponent<
               isZStack,
             }),
             // only set context if changed theme
-            shouldProvideThemeManager ? themeManager : undefined,
-            shouldSetChildrenThemeToParent
+            stateRef.current.hasProvidedThemeManager ? themeManager : undefined,
+            stateRef.current.themeShouldReset
           )
 
     let content: any

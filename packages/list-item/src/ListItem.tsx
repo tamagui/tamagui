@@ -17,9 +17,6 @@ import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
 import React, { FunctionComponent, forwardRef } from 'react'
 
-// bugfix esbuild strips react jsx: 'preserve'
-React['createElement']
-
 type ListItemIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
 
