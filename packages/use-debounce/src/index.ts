@@ -16,8 +16,9 @@ export function debounce<A extends Function>(
 
   function debounced(this: any) {
     isCancelled = false
-    let context = this
-    let args = arguments
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const context = this
+    const args = arguments
     if (leading && !timeout) {
       func.apply(context, args)
     }
@@ -73,7 +74,7 @@ export function useDebounceValue<A>(val: A, amt = 0): A {
   const [state, setState] = useState(val)
 
   useEffect(() => {
-    let tm = setTimeout(() => {
+    const tm = setTimeout(() => {
       setState((prev) => {
         if (prev === val) return prev
         return val

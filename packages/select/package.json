@@ -19,7 +19,7 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "lint": "eslint",
+    "lint": "eslint src",
     "lint:fix": "yarn lint --fix"
   },
   "dependencies": {

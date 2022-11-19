@@ -52,6 +52,7 @@ export function getPropValueFromAttributes(
 
   // TODO how to handle this??
   if (t.isJSXEmptyExpression(propValue)) {
+    // eslint-disable-next-line no-console
     console.error('encountered JSXEmptyExpression')
     return null
   }

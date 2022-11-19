@@ -203,12 +203,12 @@ export async function getStaticBindingsForScope(
     const cacheKey = `${dec.id.name}_${dec.id.start}-${dec.id.end}`
 
     // retrieve value from cache
-    if (bindingCache.hasOwnProperty(cacheKey)) {
+    if (Object.hasOwnProperty.call(bindingCache, cacheKey)) {
       ret[k] = bindingCache[cacheKey]
       continue
     }
     // retrieve value from cache
-    if (bindingCache.hasOwnProperty(cacheKey)) {
+    if (Object.hasOwnProperty.call(bindingCache, cacheKey)) {
       ret[k] = bindingCache[cacheKey]
       continue
     }

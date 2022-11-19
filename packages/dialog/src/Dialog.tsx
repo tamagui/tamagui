@@ -364,7 +364,6 @@ const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentType
         trapFocus={false}
         disableOutsidePointerEvents={false}
         onCloseAutoFocus={(event) => {
-          console.log('on close autofocus')
           props.onCloseAutoFocus?.(event)
 
           if (!event.defaultPrevented) {
@@ -606,21 +605,26 @@ const [DialogWarningProvider, useWarningContext] = createContext(TITLE_WARNING_N
 type TitleWarningProps = { titleId?: string }
 
 const TitleWarning: React.FC<TitleWarningProps> = ({ titleId }) => {
-  const titleWarningContext = useWarningContext(TITLE_WARNING_NAME)
+  if (process.env.NODE_ENV === 'development') {
+    const titleWarningContext = useWarningContext(TITLE_WARNING_NAME)
 
-  const MESSAGE = `\`${titleWarningContext.contentName}\` requires a \`${titleWarningContext.titleName}\` for the component to be accessible for screen reader users.
+    const MESSAGE = `\`${titleWarningContext.contentName}\` requires a \`${titleWarningContext.titleName}\` for the component to be accessible for screen reader users.
 
 If you want to hide the \`${titleWarningContext.titleName}\`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/${titleWarningContext.docsSlug}`
 
-  React.useEffect(() => {
-    if (!isWeb) return
-    if (titleId) {
-      const hasTitle = document.getElementById(titleId)
-      if (!hasTitle) throw new Error(MESSAGE)
-    }
-  }, [MESSAGE, titleId])
+    React.useEffect(() => {
+      if (!isWeb) return
+      if (titleId) {
+        const hasTitle = document.getElementById(titleId)
+        if (!hasTitle) {
+          // eslint-disable-next-line no-console
+          console.warn(MESSAGE)
+        }
+      }
+    }, [MESSAGE, titleId])
+  }
 
   return null
 }
@@ -633,22 +637,27 @@ type DescriptionWarningProps = {
 }
 
 const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef, descriptionId }) => {
-  const descriptionWarningContext = useWarningContext(DESCRIPTION_WARNING_NAME)
-  const MESSAGE = `Warning: Missing \`Description\` or \`aria-describedby={undefined}\` for {${descriptionWarningContext.contentName}}.`
+  if (process.env.NODE_ENV === 'development') {
+    const descriptionWarningContext = useWarningContext(DESCRIPTION_WARNING_NAME)
+    const MESSAGE = `Warning: Missing \`Description\` or \`aria-describedby={undefined}\` for {${descriptionWarningContext.contentName}}.`
 
-  React.useEffect(() => {
-    if (!isWeb) return
-    const contentNode = contentRef.current
-    if (!(contentNode instanceof HTMLElement)) {
-      return
-    }
-    const describedById = contentNode.getAttribute('aria-describedby')
-    // if we have an id and the user hasn't set aria-describedby={undefined}
-    if (descriptionId && describedById) {
-      const hasDescription = document.getElementById(descriptionId)
-      if (!hasDescription) console.warn(MESSAGE)
-    }
-  }, [MESSAGE, contentRef, descriptionId])
+    React.useEffect(() => {
+      if (!isWeb) return
+      const contentNode = contentRef.current
+      if (!(contentNode instanceof HTMLElement)) {
+        return
+      }
+      const describedById = contentNode.getAttribute('aria-describedby')
+      // if we have an id and the user hasn't set aria-describedby={undefined}
+      if (descriptionId && describedById) {
+        const hasDescription = document.getElementById(descriptionId)
+        if (!hasDescription) {
+          // eslint-disable-next-line no-console
+          console.warn(MESSAGE)
+        }
+      }
+    }, [MESSAGE, contentRef, descriptionId])
+  }
 
   return null
 }

@@ -144,7 +144,6 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
           orientation="vertical"
           onLayout={({ nativeEvent: { layout } }) => {
             sliderRef.current?.measure((_x, _y, _width, height, _pageX, pageY) => {
-              console.log('same?', layout, height, pageY)
               setState({
                 size: height,
                 offset: pageY,

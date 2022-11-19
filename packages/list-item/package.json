@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "build": "tamagui-build",
-    "lint": "eslint",
+    "lint": "eslint src",
     "lint:fix": "yarn lint --fix",
     "watch": "tamagui-build --watch"
   },

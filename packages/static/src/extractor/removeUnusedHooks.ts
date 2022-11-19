@@ -11,6 +11,7 @@ export function removeUnusedHooks(compFn: NodePath<any>, shouldPrintDebug: boole
   // check the top level statements
   let bodyStatements = compFn?.get('body')
   if (!bodyStatements) {
+    // eslint-disable-next-line no-console
     console.log('no body statemnts?', compFn)
     return
   }
@@ -68,6 +69,7 @@ export function removeUnusedHooks(compFn: NodePath<any>, shouldPrintDebug: boole
       if (shouldRemove) {
         declarator.remove()
         if (shouldPrintDebug) {
+          // eslint-disable-next-line no-console
           console.log(`  [🪝] removed ${id.node['name'] ?? ''}`)
         }
       }

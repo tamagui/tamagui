@@ -80,10 +80,12 @@ export function getSourceModule(
       }
 
       if (!local || !imported) {
+        // eslint-disable-next-line no-console
         console.error('could not find prop with value `%s`', itemName)
         return null
       }
     } else {
+      // eslint-disable-next-line no-console
       console.error('Unhandled id type: %s', itemNode.id.type)
       return null
     }

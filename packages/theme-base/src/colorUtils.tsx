@@ -11,7 +11,7 @@ export const hexToRGBA = (hex: string, alpha = 1) => {
 }
 
 export const setColorAlpha = (colorIn: string | Variable, alpha = 1) => {
-  let color = `${getVariableValue(colorIn)}`
+  const color = `${getVariableValue(colorIn)}`
   if (color.startsWith('hsl(')) {
     return color.replace('hsl', 'hsla').replace(')', `, ${alpha})`)
   }

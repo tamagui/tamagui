@@ -4,7 +4,7 @@ export const logLines = (str: string, singleLine = false) => {
   if (singleLine) {
     return prefix + str.split(' ').join(`\n${prefix}`)
   }
-  let lines: string[] = ['']
+  const lines: string[] = ['']
   const items = str.split(' ')
   for (const item of items) {
     if (item.length + lines[lines.length - 1].length > 85) {

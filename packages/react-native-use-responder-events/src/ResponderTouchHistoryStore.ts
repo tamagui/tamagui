@@ -116,6 +116,7 @@ function recordTouchMove(touch: Touch, touchHistory): void {
     touchRecord.currentTimeStamp = timestampForTouch(touch)
     touchHistory.mostRecentTimeStamp = timestampForTouch(touch)
   } else {
+    // eslint-disable-next-line no-console
     console.warn(
       'Cannot record touch move without a touch start.\n',
       `Touch Move: ${printTouch(touch)}\n`,
@@ -136,6 +137,7 @@ function recordTouchEnd(touch: Touch, touchHistory): void {
     touchRecord.currentTimeStamp = timestampForTouch(touch)
     touchHistory.mostRecentTimeStamp = timestampForTouch(touch)
   } else {
+    // eslint-disable-next-line no-console
     console.warn(
       'Cannot record touch end without a touch start.\n',
       `Touch End: ${printTouch(touch)}\n`,
@@ -200,6 +202,7 @@ export class ResponderTouchHistoryStore {
           const activeRecord = touchBank[touchHistory.indexOfSingleActiveTouch]
           //  @ts-ignore
           if (!(activeRecord != null && activeRecord.touchActive)) {
+            // eslint-disable-next-line no-console
             console.error('Cannot find single active touch.')
           }
         }
