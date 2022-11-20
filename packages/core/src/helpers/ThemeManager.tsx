@@ -224,4 +224,4 @@ export class ThemeManager {
 export const ThemeManagerContext = createContext<ThemeManager | null>(null)
 export const emptyManager = new ThemeManager()
 
-const withoutComponentName = (name: string) => name.replace(/(\_[A-Z][a-zA-Z]+)+$/g, '')
+const withoutComponentName = (name: string) => name.replace(/(_[A-Z][a-zA-Z]+)+$/g, '')

@@ -54,9 +54,23 @@ Going forward, there's a direct path to make core even better for web-only use c
 
 ### Large performance improvements
 
+We've greatly optimized render performance during the beta in a large variety of ways. It's hard to capture every one in a post, but some of the more interesting ones are:
+
+#### `useTheme`
+
+The `useTheme` hook is used by every Tamagui component, and is smart about re-renders by tracking which keys are accessed by your styles to only re-render when their values change. But it wasn't as smart about memory usage and avoiding work up front, and was also re-parenting the React tree too often.
+
+We saw 8% improvements in Lighthouse scores on the website homepage just by optimizing this.
+
+#### `useMedia`
+
+Supporting SSR often means you need to hydrate using an initial value, and then re-render after hydration with the "real" media query value. We've moved over to use React's [useSyncExternalStore hook](https://beta.reactjs.org/apis/react/useSyncExternalStore), which not only greatly reduced the amount of code, but also can avoid double-rendering on hydration if nothing changes.
+
+#### Avoiding work in generating styles
+
 Previously, Core used `react-native-web` to handle the final steps of taking styles and converting them into CSS. In profiling and reading over the code, we found this to be a large bottleneck to performance as it would iterate over objects many times, and generate many intermediate objects in the process.
 
-There was a many-step process during the beta
+`@tamagui/core` is now entirely dependency-free and generates it's own styles. In total, de-coupling saved us 4-5 loops over the generated style objects per-component.
 
 ### `styled` upgrades
 
@@ -76,7 +90,7 @@ Supporting fonts per-language is now possible with &lt;FontLanguage /&gt;, like 
 
 ```tsx
 const bodyFontEn = createFont({
-  family: '"Helvetica"'
+  family: '"Helvetica"',
   // ... per-font design tokens
 })
 
@@ -89,7 +103,7 @@ export const config = createTamagui({
   fonts: {
     body: bodyFontEn,
     body_mandarin: bodyFontMandarin,
-  }
+  },
 })
 ```
 
@@ -100,9 +114,7 @@ import { FontLanguage, Text } from '@tamagui/core'
 
 export default () => (
   <FontLanguage body="mandarin">
-    <Text fontFamily="$body">
-      {/* TODO hello world in mandarin */}
-    </Text>
+    <Text fontFamily="$body">{/* TODO hello world in mandarin */}</Text>
   </FontLanguage>
 )
 ```
@@ -150,7 +162,7 @@ export default () => (
   <CustomWidget
     backgroundColor="red"
     $large={{
-      backgroundColor: 'green'
+      backgroundColor: 'green',
     }}
   />
 )
