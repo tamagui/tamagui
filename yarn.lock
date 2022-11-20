@@ -2545,10 +2545,17 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.18.9, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4":
 =======
 "@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4":
+=======
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.18.9, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4":
+>>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
   version: 7.19.4
   resolution: "@babel/runtime@npm:7.19.4"
   dependencies:
@@ -3305,6 +3312,10 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
 "@jest/schemas@npm:^29.0.0":
   version: 29.0.0
   resolution: "@jest/schemas@npm:29.0.0"
@@ -3314,8 +3325,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 =======
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+>>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
 "@jest/types@npm:^26.6.2":
   version: 26.6.2
   resolution: "@jest/types@npm:26.6.2"
@@ -5252,6 +5267,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/animations-react-native@npm:1.0.1-beta.198":
   version: 1.0.1-beta.198
   resolution: "@tamagui/animations-react-native@npm:1.0.1-beta.198"
@@ -5270,6 +5286,26 @@ __metadata:
 =======
 "@tamagui/animations-reanimated@^1.0.1-beta.219, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/animations-reanimated@^1.0.1-beta.219, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
+=======
+"@tamagui/animations-react-native@npm:1.0.1-beta.198":
+  version: 1.0.1-beta.198
+  resolution: "@tamagui/animations-react-native@npm:1.0.1-beta.198"
+  dependencies:
+    "@tamagui/core": ^1.0.1-beta.198
+    "@tamagui/use-presence": ^1.0.1-beta.198
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  checksum: a577af673762d9211db56c7137cd50dca98806b5997e46cfe5f520a96a87f50c9bf972ca7b6c75745c7af13a911b59047b94a4a0a3bb2ec8968d72a5f23906e1
+  languageName: node
+  linkType: hard
+
+"@tamagui/animations-reanimated@^1.0.1-beta.220, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:packages/animations-reanimated"
   dependencies:
@@ -5316,10 +5352,17 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/babel-plugin@^1.0.1-beta.220, @tamagui/babel-plugin@workspace:packages/babel-plugin":
 =======
 "@tamagui/babel-plugin@1.0.1-beta.219, @tamagui/babel-plugin@^1.0.1-beta.219, @tamagui/babel-plugin@workspace:packages/babel-plugin":
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
+=======
+"@tamagui/babel-plugin@1.0.1-beta.219, @tamagui/babel-plugin@^1.0.1-beta.219, @tamagui/babel-plugin@workspace:packages/babel-plugin":
+=======
+"@tamagui/babel-plugin@^1.0.1-beta.220, @tamagui/babel-plugin@workspace:packages/babel-plugin":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/babel-plugin@workspace:packages/babel-plugin"
   dependencies:
@@ -5334,6 +5377,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/babel-plugin@npm:1.0.1-beta.220":
   version: 1.0.1-beta.220
@@ -5356,6 +5400,26 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/build@^1.0.1-beta.219, @tamagui/build@workspace:packages/build":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/build@^1.0.1-beta.219, @tamagui/build@workspace:packages/build":
+=======
+"@tamagui/babel-plugin@npm:1.0.1-beta.198":
+  version: 1.0.1-beta.198
+  resolution: "@tamagui/babel-plugin@npm:1.0.1-beta.198"
+  dependencies:
+    "@babel/generator": ^7.19.6
+    "@babel/helper-plugin-utils": ^7.19.0
+    "@babel/template": 7.18.10
+    "@babel/traverse": ^7.19.6
+    "@tamagui/simple-hash": ^1.0.1-beta.198
+    "@tamagui/static": ^1.0.1-beta.198
+  checksum: 9f0fa8b68d4e1ba103c76b8bf6ba5c499a57b6b5524e36d93b115baa25d2c4e0f05a8299975bc67b079fd8a658f9dfb7dfc7437bd733c35d49877d0fabb330c3
+  languageName: node
+  linkType: hard
+
+"@tamagui/build@^1.0.1-beta.198, @tamagui/build@^1.0.1-beta.220, @tamagui/build@workspace:packages/build":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -5372,6 +5436,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/button@^1.0.1-beta.220, @tamagui/button@workspace:packages/button":
@@ -5397,6 +5462,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/button@^1.0.1-beta.219, @tamagui/button@workspace:packages/button":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/button@^1.0.1-beta.220, @tamagui/button@workspace:packages/button":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/button@workspace:packages/button"
   dependencies:
@@ -5484,10 +5552,17 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/colors@^1.0.1-beta.198, @tamagui/colors@^1.0.1-beta.220, @tamagui/colors@workspace:packages/colors":
 =======
 "@tamagui/colors@^1.0.1-beta.219, @tamagui/colors@workspace:packages/colors":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/colors@^1.0.1-beta.219, @tamagui/colors@workspace:packages/colors":
+=======
+"@tamagui/colors@^1.0.1-beta.198, @tamagui/colors@^1.0.1-beta.220, @tamagui/colors@workspace:packages/colors":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/colors@workspace:packages/colors"
   dependencies:
@@ -5495,6 +5570,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/colors@npm:1.0.1-beta.198":
   version: 1.0.1-beta.198
@@ -5507,6 +5583,19 @@ __metadata:
 =======
 "@tamagui/compose-refs@^1.0.1-beta.219, @tamagui/compose-refs@workspace:packages/compose-refs":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/compose-refs@^1.0.1-beta.219, @tamagui/compose-refs@workspace:packages/compose-refs":
+=======
+"@tamagui/colors@npm:1.0.1-beta.198":
+  version: 1.0.1-beta.198
+  resolution: "@tamagui/colors@npm:1.0.1-beta.198"
+  checksum: 790f38a377e70832012a6a59b8556735953ef4ab15b7b27ef4563fc73e01f35b016b4a4bdccd985baba9add2a9b0db9b95a5054610882af2386fdedcbff434fc
+  languageName: node
+  linkType: hard
+
+"@tamagui/compose-refs@^1.0.1-beta.220, @tamagui/compose-refs@workspace:packages/compose-refs":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/compose-refs@workspace:packages/compose-refs"
   dependencies:
@@ -5517,6 +5606,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/config-base@^1.0.1-beta.141, @tamagui/config-base@^1.0.1-beta.220, @tamagui/config-base@workspace:packages/config-base":
@@ -5534,6 +5624,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/config-base@^1.0.1-beta.141, @tamagui/config-base@^1.0.1-beta.219, @tamagui/config-base@workspace:packages/config-base":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/config-base@^1.0.1-beta.141, @tamagui/config-base@^1.0.1-beta.220, @tamagui/config-base@workspace:packages/config-base":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/config-base@workspace:packages/config-base"
   dependencies:
@@ -5561,6 +5654,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/constants@^1.0.1-beta.220, @tamagui/constants@workspace:packages/constants":
 =======
 "@tamagui/config-default-node@npm:^1.0.1-beta.220":
@@ -5577,6 +5671,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/constants@^1.0.1-beta.219, @tamagui/constants@workspace:packages/constants":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/constants@^1.0.1-beta.220, @tamagui/constants@workspace:packages/constants":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/constants@workspace:packages/constants"
   dependencies:
@@ -5590,6 +5687,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/core-node@^1.0.1-beta.141, @tamagui/core-node@^1.0.1-beta.220, @tamagui/core-node@workspace:packages/core-node":
@@ -5608,6 +5706,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/core-node@^1.0.1-beta.141, @tamagui/core-node@^1.0.1-beta.219, @tamagui/core-node@workspace:packages/core-node":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/core-node@^1.0.1-beta.141, @tamagui/core-node@^1.0.1-beta.220, @tamagui/core-node@workspace:packages/core-node":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/core-node@workspace:packages/core-node"
   dependencies:
@@ -5628,6 +5729,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/core@^1.0.1-beta.198, @tamagui/core@^1.0.1-beta.220, @tamagui/core@workspace:packages/core":
 =======
 "@tamagui/core-node@npm:^1.0.1-beta.220":
@@ -5645,10 +5747,17 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/core@^1.0.1-beta.219, @tamagui/core@workspace:packages/core":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/core@^1.0.1-beta.219, @tamagui/core@workspace:packages/core":
+=======
+"@tamagui/core@^1.0.1-beta.198, @tamagui/core@^1.0.1-beta.220, @tamagui/core@workspace:packages/core":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
     "@expo/match-media": ^0.3.0
+<<<<<<< HEAD
 <<<<<<< HEAD
     "@tamagui/build": ^1.0.1-beta.220
     "@tamagui/compose-refs": ^1.0.1-beta.220
@@ -5662,6 +5771,8 @@ __metadata:
     "@tamagui/use-event": ^1.0.1-beta.220
     "@tamagui/use-force-update": ^1.0.1-beta.220
 =======
+=======
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
     "@tamagui/build": ^1.0.1-beta.219
     "@tamagui/compose-refs": ^1.0.1-beta.219
     "@tamagui/constants": ^1.0.1-beta.219
@@ -5672,7 +5783,23 @@ __metadata:
     "@tamagui/types-react-native": ^1.0.1-beta.219
     "@tamagui/use-did-finish-ssr": ^1.0.1-beta.219
     "@tamagui/use-event": ^1.0.1-beta.219
+<<<<<<< HEAD
 >>>>>>> 6685dd87b (fix(site): Fix themes section carousel scroll sync)
+=======
+=======
+    "@tamagui/build": ^1.0.1-beta.220
+    "@tamagui/compose-refs": ^1.0.1-beta.220
+    "@tamagui/constants": ^1.0.1-beta.220
+    "@tamagui/helpers": ^1.0.1-beta.220
+    "@tamagui/normalize-css-color-lite": ^1.0.1-beta.220
+    "@tamagui/react-native-use-pressable": ^1.0.1-beta.220
+    "@tamagui/react-native-use-responder-events": ^1.0.1-beta.220
+    "@tamagui/types-react-native": ^1.0.1-beta.220
+    "@tamagui/use-did-finish-ssr": ^1.0.1-beta.220
+    "@tamagui/use-event": ^1.0.1-beta.220
+    "@tamagui/use-force-update": ^1.0.1-beta.220
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
     "@types/react-native": ^0.69.2
@@ -5688,6 +5815,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/create-context@^1.0.1-beta.220, @tamagui/create-context@workspace:packages/create-context":
@@ -5718,6 +5846,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/create-context@^1.0.1-beta.219, @tamagui/create-context@workspace:packages/create-context":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/create-context@^1.0.1-beta.220, @tamagui/create-context@workspace:packages/create-context":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/create-context@workspace:packages/create-context"
   dependencies:
@@ -5821,6 +5952,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/focus-scope@^1.0.1-beta.220, @tamagui/focus-scope@workspace:packages/focus-scope":
 =======
 "@tamagui/fake-react-native@npm:^1.0.1-beta.220":
@@ -5834,6 +5966,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/focus-scope@^1.0.1-beta.219, @tamagui/focus-scope@workspace:packages/focus-scope":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/focus-scope@^1.0.1-beta.220, @tamagui/focus-scope@workspace:packages/focus-scope":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/focus-scope@workspace:packages/focus-scope"
   dependencies:
@@ -5883,6 +6018,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/font-inter@npm:1.0.1-beta.198":
   version: 1.0.1-beta.198
   resolution: "@tamagui/font-inter@npm:1.0.1-beta.198"
@@ -5896,6 +6032,21 @@ __metadata:
 =======
 "@tamagui/font-silkscreen@^1.0.1-beta.219, @tamagui/font-silkscreen@workspace:packages/font-silkscreen":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/font-silkscreen@^1.0.1-beta.219, @tamagui/font-silkscreen@workspace:packages/font-silkscreen":
+=======
+"@tamagui/font-inter@npm:1.0.1-beta.198":
+  version: 1.0.1-beta.198
+  resolution: "@tamagui/font-inter@npm:1.0.1-beta.198"
+  dependencies:
+    "@tamagui/core": ^1.0.1-beta.198
+  checksum: 52c43d29b6674920a660130edb0e144035fed0b4ef8ee9ce7c2975928ecb2df50b0e16a25a2bbeb8278d5196255633ac410f5f5541e1215e428a46d485fa79ba
+  languageName: node
+  linkType: hard
+
+"@tamagui/font-silkscreen@^1.0.1-beta.220, @tamagui/font-silkscreen@workspace:packages/font-silkscreen":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/font-silkscreen@workspace:packages/font-silkscreen"
   dependencies:
@@ -5951,6 +6102,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/helpers-tamagui@^1.0.1-beta.220, @tamagui/helpers-tamagui@workspace:packages/helpers-tamagui":
 =======
 "@tamagui/helpers-node@npm:^1.0.1-beta.220":
@@ -5964,6 +6116,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/helpers-tamagui@^1.0.1-beta.219, @tamagui/helpers-tamagui@workspace:packages/helpers-tamagui":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/helpers-tamagui@^1.0.1-beta.220, @tamagui/helpers-tamagui@workspace:packages/helpers-tamagui":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers-tamagui@workspace:packages/helpers-tamagui"
   dependencies:
@@ -5990,6 +6145,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/image@^1.0.1-beta.220, @tamagui/image@workspace:packages/image":
 =======
 "@tamagui/helpers@npm:^1.0.1-beta.220":
@@ -6005,6 +6161,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/image@^1.0.1-beta.219, @tamagui/image@workspace:packages/image":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/image@^1.0.1-beta.220, @tamagui/image@workspace:packages/image":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/image@workspace:packages/image"
   dependencies:
@@ -6134,6 +6293,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/lucide-icons@npm:1.0.1-beta.198":
   version: 1.0.1-beta.198
   resolution: "@tamagui/lucide-icons@npm:1.0.1-beta.198"
@@ -6150,6 +6310,24 @@ __metadata:
 =======
 "@tamagui/menu@^1.0.1-beta.219, @tamagui/menu@workspace:packages/menu":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/menu@^1.0.1-beta.219, @tamagui/menu@workspace:packages/menu":
+=======
+"@tamagui/lucide-icons@npm:1.0.1-beta.198":
+  version: 1.0.1-beta.198
+  resolution: "@tamagui/lucide-icons@npm:1.0.1-beta.198"
+  dependencies:
+    "@tamagui/core": ^1.0.1-beta.198
+    react: "*"
+    react-dom: "*"
+    react-native-svg: ^12.4.3
+  checksum: b1cc55ce40f672f669976601ff4e4c88727321ebe97213212f489f93565780ece7f0f2c34f5f462a7da8fb5c2472dc24248b8acbbd5a1c0d95b2c5744f49c98b
+  languageName: node
+  linkType: hard
+
+"@tamagui/menu@^1.0.1-beta.220, @tamagui/menu@workspace:packages/menu":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/menu@workspace:packages/menu"
   dependencies:
@@ -6165,10 +6343,17 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/next-plugin@^1.0.1-beta.220, @tamagui/next-plugin@workspace:packages/next-plugin":
 =======
 "@tamagui/next-plugin@1.0.1-beta.219, @tamagui/next-plugin@^1.0.1-beta.219, @tamagui/next-plugin@workspace:packages/next-plugin":
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
+=======
+"@tamagui/next-plugin@1.0.1-beta.219, @tamagui/next-plugin@^1.0.1-beta.219, @tamagui/next-plugin@workspace:packages/next-plugin":
+=======
+"@tamagui/next-plugin@^1.0.1-beta.220, @tamagui/next-plugin@workspace:packages/next-plugin":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/next-plugin@workspace:packages/next-plugin"
   dependencies:
@@ -6194,6 +6379,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/next-plugin@npm:1.0.1-beta.220":
   version: 1.0.1-beta.220
@@ -6224,6 +6410,39 @@ __metadata:
 =======
 "@tamagui/next-theme@1.0.1-beta.219, @tamagui/next-theme@^1.0.1-beta.219, @tamagui/next-theme@workspace:packages/next-theme":
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
+=======
+"@tamagui/next-theme@1.0.1-beta.219, @tamagui/next-theme@^1.0.1-beta.219, @tamagui/next-theme@workspace:packages/next-theme":
+=======
+"@tamagui/next-plugin@npm:1.0.1-beta.198":
+  version: 1.0.1-beta.198
+  resolution: "@tamagui/next-plugin@npm:1.0.1-beta.198"
+  dependencies:
+    "@babel/preset-react": ^7.18.6
+    "@tamagui/proxy-worm": ^1.0.1-beta.198
+    "@tamagui/react-native-svg": ^1.0.1-beta.198
+    "@tamagui/static": ^1.0.1-beta.198
+    babel-loader: ^8.2.5
+    browserslist: ^4.21.1
+    css-loader: ^5.2.4
+    css-minimizer-webpack-plugin: ^4.0.0
+    esbuild-loader: ^2.19.0
+    esm-resolve: ^1.0.8
+    file-loader: ^6.2.0
+    html-inline-css-webpack-plugin: ^1.11.1
+    html-webpack-plugin: ^5.5.0
+    mini-css-extract-plugin: ^2.6.1
+    tamagui-loader: ^1.0.1-beta.198
+    thread-loader: ^3.0.4
+    url-loader: ^4.1.1
+  peerDependencies:
+    next: ">=12.0.0"
+  checksum: 28d92db118831c2feb1d2763ee8262f83c23ab87cc9750aec522891b2b5dc70360767cd9831e272ec8946363f10033c3bec0af1212294003d8a10d44804b14b7
+  languageName: node
+  linkType: hard
+
+"@tamagui/next-theme@^1.0.1-beta.220, @tamagui/next-theme@workspace:packages/next-theme":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/next-theme@workspace:packages/next-theme"
   dependencies:
@@ -6235,6 +6454,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/next-theme@npm:1.0.1-beta.220":
   version: 1.0.1-beta.220
@@ -6251,6 +6471,23 @@ __metadata:
 =======
 "@tamagui/normalize-css-color-lite@^1.0.1-beta.219, @tamagui/normalize-css-color-lite@workspace:packages/normalize-css-color-lite":
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
+=======
+"@tamagui/normalize-css-color-lite@^1.0.1-beta.219, @tamagui/normalize-css-color-lite@workspace:packages/normalize-css-color-lite":
+=======
+"@tamagui/next-theme@npm:1.0.1-beta.198":
+  version: 1.0.1-beta.198
+  resolution: "@tamagui/next-theme@npm:1.0.1-beta.198"
+  dependencies:
+    "@tamagui/use-event": ^1.0.1-beta.198
+  peerDependencies:
+    react: "*"
+  checksum: c37bcd3f87fa432fe8540ed5e09317e73e627bf3c568bb4d27c05e13bcfef01a0de0d34696482815988c9613a68c784543f4b86bcc180f81ba4a16c88e24c32a
+  languageName: node
+  linkType: hard
+
+"@tamagui/normalize-css-color-lite@^1.0.1-beta.220, @tamagui/normalize-css-color-lite@workspace:packages/normalize-css-color-lite":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/normalize-css-color-lite@workspace:packages/normalize-css-color-lite"
   dependencies:
@@ -6258,6 +6495,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/polyfill-dev@^1.0.1-beta.220, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
@@ -6273,6 +6511,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/polyfill-dev@^1.0.1-beta.219, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/polyfill-dev@^1.0.1-beta.220, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/polyfill-dev@workspace:packages/polyfill-dev"
   languageName: unknown
@@ -6372,10 +6613,17 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/proxy-worm@^1.0.1-beta.198, @tamagui/proxy-worm@^1.0.1-beta.219, @tamagui/proxy-worm@^1.0.1-beta.220, @tamagui/proxy-worm@workspace:packages/proxy-worm":
 =======
 "@tamagui/proxy-worm@^1.0.1-beta.219, @tamagui/proxy-worm@workspace:packages/proxy-worm":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/proxy-worm@^1.0.1-beta.219, @tamagui/proxy-worm@workspace:packages/proxy-worm":
+=======
+"@tamagui/proxy-worm@^1.0.1-beta.198, @tamagui/proxy-worm@^1.0.1-beta.219, @tamagui/proxy-worm@^1.0.1-beta.220, @tamagui/proxy-worm@workspace:packages/proxy-worm":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/proxy-worm@workspace:packages/proxy-worm"
   languageName: unknown
@@ -6391,10 +6639,17 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/react-native-svg@^1.0.1-beta.198, @tamagui/react-native-svg@^1.0.1-beta.220, @tamagui/react-native-svg@workspace:packages/react-native-svg":
 =======
 "@tamagui/react-native-svg@^1.0.1-beta.219, @tamagui/react-native-svg@workspace:packages/react-native-svg":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/react-native-svg@^1.0.1-beta.219, @tamagui/react-native-svg@workspace:packages/react-native-svg":
+=======
+"@tamagui/react-native-svg@^1.0.1-beta.198, @tamagui/react-native-svg@^1.0.1-beta.220, @tamagui/react-native-svg@workspace:packages/react-native-svg":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-svg@workspace:packages/react-native-svg"
   dependencies:
@@ -6402,6 +6657,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/react-native-use-pressable@^1.0.1-beta.220, @tamagui/react-native-use-pressable@workspace:packages/react-native-use-pressable":
@@ -6417,6 +6673,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/react-native-use-pressable@^1.0.1-beta.219, @tamagui/react-native-use-pressable@workspace:packages/react-native-use-pressable":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/react-native-use-pressable@^1.0.1-beta.220, @tamagui/react-native-use-pressable@workspace:packages/react-native-use-pressable":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-use-pressable@workspace:packages/react-native-use-pressable"
   dependencies:
@@ -6426,6 +6685,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/react-native-use-responder-events@^1.0.1-beta.220, @tamagui/react-native-use-responder-events@workspace:packages/react-native-use-responder-events":
@@ -6443,6 +6703,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/react-native-use-responder-events@^1.0.1-beta.219, @tamagui/react-native-use-responder-events@workspace:packages/react-native-use-responder-events":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/react-native-use-responder-events@^1.0.1-beta.220, @tamagui/react-native-use-responder-events@workspace:packages/react-native-use-responder-events":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-use-responder-events@workspace:packages/react-native-use-responder-events"
   dependencies:
@@ -6452,6 +6715,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/remove-scroll@^1.0.1-beta.220, @tamagui/remove-scroll@workspace:packages/remove-scroll":
@@ -6469,6 +6733,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/remove-scroll@^1.0.1-beta.219, @tamagui/remove-scroll@workspace:packages/remove-scroll":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/remove-scroll@^1.0.1-beta.220, @tamagui/remove-scroll@workspace:packages/remove-scroll":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/remove-scroll@workspace:packages/remove-scroll"
   dependencies:
@@ -6646,6 +6913,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/shorthands@npm:^1.0.1-beta.220":
   version: 1.0.1-beta.220
   resolution: "@tamagui/shorthands@npm:1.0.1-beta.220"
@@ -6660,6 +6928,19 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/simple-hash@^1.0.1-beta.219, @tamagui/simple-hash@workspace:packages/simple-hash":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/simple-hash@^1.0.1-beta.219, @tamagui/simple-hash@workspace:packages/simple-hash":
+=======
+"@tamagui/shorthands@npm:1.0.1-beta.198":
+  version: 1.0.1-beta.198
+  resolution: "@tamagui/shorthands@npm:1.0.1-beta.198"
+  checksum: f548759feea4e1b685fc379d073e2362d2f88f4e7f0d7cbe8632c8cb8414c74c2cc4d710c4c7c5aa23228786ff1bc86ba0de47f683c87ae94a442cf2c985a3bf
+  languageName: node
+  linkType: hard
+
+"@tamagui/simple-hash@^1.0.1-beta.198, @tamagui/simple-hash@^1.0.1-beta.220, @tamagui/simple-hash@workspace:packages/simple-hash":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/simple-hash@workspace:packages/simple-hash"
   dependencies:
@@ -6802,10 +7083,17 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/static@^1.0.1-beta.198, @tamagui/static@^1.0.1-beta.219, @tamagui/static@^1.0.1-beta.220, @tamagui/static@workspace:packages/static":
 =======
 "@tamagui/static@^1.0.1-beta.219, @tamagui/static@workspace:packages/static":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/static@^1.0.1-beta.219, @tamagui/static@workspace:packages/static":
+=======
+"@tamagui/static@^1.0.1-beta.198, @tamagui/static@^1.0.1-beta.219, @tamagui/static@^1.0.1-beta.220, @tamagui/static@workspace:packages/static":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/static@workspace:packages/static"
   dependencies:
@@ -6867,6 +7155,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/switch@^1.0.1-beta.220, @tamagui/switch@workspace:packages/switch":
 =======
 "@tamagui/static@npm:^1.0.1-beta.220":
@@ -6910,6 +7199,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/switch@^1.0.1-beta.219, @tamagui/switch@workspace:packages/switch":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/switch@^1.0.1-beta.220, @tamagui/switch@workspace:packages/switch":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/switch@workspace:packages/switch"
   dependencies:
@@ -7146,6 +7438,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/use-direction@^1.0.1-beta.220, @tamagui/use-direction@workspace:packages/use-direction":
 =======
 "@tamagui/use-did-finish-ssr@npm:^1.0.1-beta.220":
@@ -7162,6 +7455,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/use-direction@^1.0.1-beta.219, @tamagui/use-direction@workspace:packages/use-direction":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/use-direction@^1.0.1-beta.220, @tamagui/use-direction@workspace:packages/use-direction":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/use-direction@workspace:packages/use-direction"
   dependencies:
@@ -7173,10 +7469,17 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/use-event@^1.0.1-beta.198, @tamagui/use-event@^1.0.1-beta.220, @tamagui/use-event@workspace:packages/use-event":
 =======
 "@tamagui/use-event@^1.0.1-beta.219, @tamagui/use-event@workspace:packages/use-event":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/use-event@^1.0.1-beta.219, @tamagui/use-event@workspace:packages/use-event":
+=======
+"@tamagui/use-event@^1.0.1-beta.198, @tamagui/use-event@^1.0.1-beta.220, @tamagui/use-event@workspace:packages/use-event":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/use-event@workspace:packages/use-event"
   dependencies:
@@ -7187,6 +7490,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/use-force-update@^1.0.1-beta.220, @tamagui/use-force-update@workspace:packages/use-force-update":
@@ -7204,6 +7508,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/use-force-update@^1.0.1-beta.219, @tamagui/use-force-update@workspace:packages/use-force-update":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/use-force-update@^1.0.1-beta.220, @tamagui/use-force-update@workspace:packages/use-force-update":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/use-force-update@workspace:packages/use-force-update"
   dependencies:
@@ -7214,6 +7521,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/use-presence@^1.0.1-beta.198, @tamagui/use-presence@^1.0.1-beta.220, @tamagui/use-presence@workspace:packages/use-presence":
@@ -7231,6 +7539,12 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/use-presence@^1.0.1-beta.219, @tamagui/use-presence@workspace:packages/use-presence":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"@tamagui/use-presence@^1.0.1-beta.219, @tamagui/use-presence@workspace:packages/use-presence":
+=======
+"@tamagui/use-presence@^1.0.1-beta.198, @tamagui/use-presence@^1.0.1-beta.220, @tamagui/use-presence@workspace:packages/use-presence":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "@tamagui/use-presence@workspace:packages/use-presence"
   dependencies:
@@ -11287,6 +11601,7 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "css-minimizer-webpack-plugin@npm:^4.0.0":
   version: 4.2.2
   resolution: "css-minimizer-webpack-plugin@npm:4.2.2"
@@ -11320,6 +11635,41 @@ __metadata:
 =======
 "css-select@npm:^4.1.3":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"css-select@npm:^4.1.3":
+=======
+"css-minimizer-webpack-plugin@npm:^4.0.0":
+  version: 4.2.2
+  resolution: "css-minimizer-webpack-plugin@npm:4.2.2"
+  dependencies:
+    cssnano: ^5.1.8
+    jest-worker: ^29.1.2
+    postcss: ^8.4.17
+    schema-utils: ^4.0.0
+    serialize-javascript: ^6.0.0
+    source-map: ^0.6.1
+  peerDependencies:
+    webpack: ^5.0.0
+  peerDependenciesMeta:
+    "@parcel/css":
+      optional: true
+    "@swc/css":
+      optional: true
+    clean-css:
+      optional: true
+    csso:
+      optional: true
+    esbuild:
+      optional: true
+    lightningcss:
+      optional: true
+  checksum: 5417e76a445f35832aa96807c835b8e92834a6cd285b1b788dfe3ca0fa90fec7eb2dd6efa9d3649f9d8244b99b7da2d065951603b94918e8f6a366a5049cacdd
+  languageName: node
+  linkType: hard
+
+"css-select@npm:^4.1.3, css-select@npm:^4.2.1":
+>>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
   version: 4.3.0
   resolution: "css-select@npm:4.3.0"
   dependencies:
@@ -11346,10 +11696,17 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "css-tree@npm:^1.0.0-alpha.39, css-tree@npm:^1.1.2, css-tree@npm:^1.1.3":
 =======
 "css-tree@npm:^1.1.3":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"css-tree@npm:^1.1.3":
+=======
+"css-tree@npm:^1.0.0-alpha.39, css-tree@npm:^1.1.2, css-tree@npm:^1.1.3":
+>>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
   version: 1.1.3
   resolution: "css-tree@npm:1.1.3"
   dependencies:
@@ -13027,6 +13384,10 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
 "expo-app@workspace:apps/starter/apps/expo":
   version: 0.0.0-use.local
   resolution: "expo-app@workspace:apps/starter/apps/expo"
@@ -13060,8 +13421,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 =======
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+>>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
 "expo-application@npm:~4.2.2":
   version: 4.2.2
   resolution: "expo-application@npm:4.2.2"
@@ -21020,6 +21385,7 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "react-native-svg@npm:12.3.0":
   version: 12.3.0
   resolution: "react-native-svg@npm:12.3.0"
@@ -21028,6 +21394,16 @@ __metadata:
   version: 12.4.4
   resolution: "react-native-svg@npm:12.4.4"
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"react-native-svg@npm:12.4.4":
+  version: 12.4.4
+  resolution: "react-native-svg@npm:12.4.4"
+=======
+"react-native-svg@npm:12.3.0":
+  version: 12.3.0
+  resolution: "react-native-svg@npm:12.3.0"
+>>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
   dependencies:
     css-select: ^4.2.1
     css-tree: ^1.0.0-alpha.39
@@ -21035,10 +21411,17 @@ __metadata:
     react: "*"
     react-native: ">=0.50.0"
 <<<<<<< HEAD
+<<<<<<< HEAD
   checksum: 9bed890d030819ed650fdc84ae8127f78f72a28d81a160dd574729b81f237c85be6a5ff4a0951b4dd28bd2836189f18afffef1fd6447fb3b6537c7ecd23f08c2
 =======
   checksum: a98d9180dc3434e9993b5028e351c2aa5004fa3b1f5131e5f263fd43a95a43d330f0d435bc7ea498784bdbfcf6ece0e777cdd2bb568cd1337c30623a5aa02fd7
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+  checksum: a98d9180dc3434e9993b5028e351c2aa5004fa3b1f5131e5f263fd43a95a43d330f0d435bc7ea498784bdbfcf6ece0e777cdd2bb568cd1337c30623a5aa02fd7
+=======
+  checksum: 9bed890d030819ed650fdc84ae8127f78f72a28d81a160dd574729b81f237c85be6a5ff4a0951b4dd28bd2836189f18afffef1fd6447fb3b6537c7ecd23f08c2
+>>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
   languageName: node
   linkType: hard
 
@@ -21060,6 +21443,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "react-native-web-lite@^1.0.1-beta.144, react-native-web-lite@^1.0.1-beta.220, react-native-web-lite@workspace:packages/react-native-web-lite":
@@ -21084,6 +21468,9 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "react-native-web-lite@^1.0.1-beta.144, react-native-web-lite@^1.0.1-beta.219, react-native-web-lite@workspace:packages/react-native-web-lite":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"react-native-web-lite@^1.0.1-beta.144, react-native-web-lite@^1.0.1-beta.220, react-native-web-lite@workspace:packages/react-native-web-lite":
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "react-native-web-lite@workspace:packages/react-native-web-lite"
   dependencies:
@@ -23009,6 +23396,10 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
 "stable@npm:^0.1.8":
   version: 0.1.8
   resolution: "stable@npm:0.1.8"
@@ -23016,8 +23407,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 =======
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+>>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
 "stackframe@npm:^1.3.4":
   version: 1.3.4
   resolution: "stackframe@npm:1.3.4"
@@ -23532,10 +23927,17 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "tamagui-loader@^1.0.1-beta.198, tamagui-loader@^1.0.1-beta.220, tamagui-loader@workspace:packages/loader":
 =======
 "tamagui-loader@^1.0.1-beta.219, tamagui-loader@workspace:packages/loader":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"tamagui-loader@^1.0.1-beta.219, tamagui-loader@workspace:packages/loader":
+=======
+"tamagui-loader@^1.0.1-beta.198, tamagui-loader@^1.0.1-beta.220, tamagui-loader@workspace:packages/loader":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "tamagui-loader@workspace:packages/loader"
   dependencies:
@@ -23578,10 +23980,17 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "tamagui@^1.0.1-beta.141, tamagui@^1.0.1-beta.198, tamagui@^1.0.1-beta.220, tamagui@workspace:packages/tamagui":
 =======
 "tamagui@^1.0.1-beta.141, tamagui@^1.0.1-beta.219, tamagui@workspace:packages/tamagui":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+"tamagui@^1.0.1-beta.141, tamagui@^1.0.1-beta.219, tamagui@workspace:packages/tamagui":
+=======
+"tamagui@^1.0.1-beta.141, tamagui@^1.0.1-beta.198, tamagui@^1.0.1-beta.220, tamagui@workspace:packages/tamagui":
+>>>>>>> ef626da01 (v1.0.1-beta.220)
+>>>>>>> c3f162c5c (v1.0.1-beta.220)
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:

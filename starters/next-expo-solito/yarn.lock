@@ -2791,6 +2791,7 @@ __metadata:
     "@my/config": "*"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "@tamagui/build": ^1.0.1-beta.198
     tamagui: ^1.0.1-beta.198
 =======
@@ -2798,12 +2799,20 @@ __metadata:
     tamagui: ^1.0.1-beta.220
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 =======
+=======
+>>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
     "@tamagui/build": ^1.0.1-beta.220
     tamagui: ^1.0.1-beta.220
 =======
     tamagui: ^1.0.1-beta.219
 >>>>>>> 98656ecca (feat(starters): Remove need for build step in ui package)
+<<<<<<< HEAD
 >>>>>>> b930303c9 (feat(starters): Remove need for build step in ui package)
+=======
+=======
+    tamagui: ^1.0.1-beta.220
+>>>>>>> 6af82a3c9 (update-starters-v1.0.1-beta.220)
+>>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
   languageName: unknown
   linkType: soft
 
@@ -4860,6 +4869,9 @@ __metadata:
     "@react-navigation/native": ^6.0.11
     "@react-navigation/native-stack": ^6.7.0
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6af82a3c9 (update-starters-v1.0.1-beta.220)
     "@tamagui/animations-react-native": 1.0.1-beta.220
     "@tamagui/colors": 1.0.1-beta.220
     "@tamagui/font-inter": 1.0.1-beta.220
@@ -4867,9 +4879,12 @@ __metadata:
     "@tamagui/shorthands": 1.0.1-beta.220
     "@tamagui/theme-base": 1.0.1-beta.220
 <<<<<<< HEAD
+<<<<<<< HEAD
     expo-linking: ^3.2.3
     solito: 2.0.0-canary.4
 =======
+=======
+>>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
     expo-linking: ^3.2.2
     solito: ^1.0.12
 <<<<<<< HEAD
@@ -4882,6 +4897,8 @@ __metadata:
     "@tamagui/lucide-icons": 1.0.1-beta.219
     "@tamagui/shorthands": 1.0.1-beta.219
     "@tamagui/theme-base": 1.0.1-beta.219
+=======
+>>>>>>> 6af82a3c9 (update-starters-v1.0.1-beta.220)
     expo-linking: ^3.2.3
     solito: ^1.1.2
 >>>>>>> 0d4440102 (feat(starters): Update to Next 13, update and cleanup dependencies)
@@ -7569,10 +7586,17 @@ __metadata:
     react-native-safe-area-context: ^4.3.1
     react-native-screens: ^3.15.0
 <<<<<<< HEAD
+<<<<<<< HEAD
     react-native-svg: 12.3.0
 =======
     react-native-svg: 12.4.4
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
+=======
+    react-native-svg: 12.4.4
+=======
+    react-native-svg: 12.3.0
+>>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
     react-native-web: ~0.18.7
     typescript: ^4.7.4
   languageName: unknown
@@ -12383,6 +12407,7 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "react-native-svg@npm:12.3.0":
   version: 12.3.0
   resolution: "react-native-svg@npm:12.3.0"
@@ -12391,6 +12416,16 @@ __metadata:
   version: 12.4.4
   resolution: "react-native-svg@npm:12.4.4"
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
+=======
+"react-native-svg@npm:12.4.4":
+  version: 12.4.4
+  resolution: "react-native-svg@npm:12.4.4"
+=======
+"react-native-svg@npm:12.3.0":
+  version: 12.3.0
+  resolution: "react-native-svg@npm:12.3.0"
+>>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
   dependencies:
     css-select: ^4.2.1
     css-tree: ^1.0.0-alpha.39
@@ -12398,8 +12433,11 @@ __metadata:
     react: "*"
     react-native: ">=0.50.0"
 <<<<<<< HEAD
+<<<<<<< HEAD
   checksum: 9bed890d030819ed650fdc84ae8127f78f72a28d81a160dd574729b81f237c85be6a5ff4a0951b4dd28bd2836189f18afffef1fd6447fb3b6537c7ecd23f08c2
 =======
+=======
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
   checksum: a98d9180dc3434e9993b5028e351c2aa5004fa3b1f5131e5f263fd43a95a43d330f0d435bc7ea498784bdbfcf6ece0e777cdd2bb568cd1337c30623a5aa02fd7
   languageName: node
   linkType: hard
@@ -12414,7 +12452,13 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 6d9b43d12c885982e69fe81d0bccc9b417d977782d4f66ef6964eb33d87ebc79c0a7b7b2dcae60be2857a9ce9178efe35e28de1bc9da92a69bc736177d507770
+<<<<<<< HEAD
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
+=======
+=======
+  checksum: 9bed890d030819ed650fdc84ae8127f78f72a28d81a160dd574729b81f237c85be6a5ff4a0951b4dd28bd2836189f18afffef1fd6447fb3b6537c7ecd23f08c2
+>>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
+>>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
   languageName: node
   linkType: hard
 
