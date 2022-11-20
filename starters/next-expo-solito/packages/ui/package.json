@@ -6,9 +6,8 @@
   ],
   "private": true,
   "types": "src",
+  "main": "src/index.tsx",
   "module:jsx": "src",
-  "main": "dist/cjs",
-  "module": "dist/esm",
   "files": [
     "types",
     "dist"

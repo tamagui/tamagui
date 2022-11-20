@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-const withPlugins = require('next-compose-plugins')
 const { withTamagui } = require('@tamagui/next-plugin')
 const withImages = require('next-images')
 const withTM = require('next-transpile-modules')
@@ -7,6 +6,7 @@ const { join } = require('path')
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 process.env.TAMAGUI_TARGET = 'web'
+process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = '1'
 
 const boolVals = {
   true: true,
@@ -23,19 +23,11 @@ Welcome to Tamagui!
 We've set up a few things for you. Note the "excludeReactNativeWebExports" setting
 in next.config.js which omits these from the bundle:
 
-- Switch
-- ProgressBar
-- Picker
-- CheckBox
-- Touchable
+- Switch, ProgressBar, Picker, CheckBox, Touchable
 
 Add these to save more, if you don't need them:
 
-- AnimatedFlatList
-- FlatList
-- SectionList
-- VirtualizedList
-- VirtualizedSectionList
+- AnimatedFlatList, FlatList, SectionList, VirtualizedList, VirtualizedSectionList
 
 Even better, enable "useReactNativeWebLite" to avoid excludeReactNativeWebExports and
 get tree-shaking and concurrent mode support.
@@ -46,7 +38,7 @@ You can remove this log in next.config.js.
 
 `)
 
-const transform = withPlugins([
+const plugins = [
   withImages,
   withTM([
     'solito',
@@ -71,22 +63,28 @@ const transform = withPlugins([
     },
     excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
   }),
-])
+]
 
-module.exports = function (name, { defaultConfig }) {
-  defaultConfig.webpack5 = true
-  defaultConfig.images ??= {}
-  defaultConfig.images.disableStaticImages = true
-  // defaultConfig.experimental.reactRoot = 'concurrent'
-  defaultConfig.typescript.ignoreBuildErrors = true
-  return transform(name, {
-    ...defaultConfig,
-    webpack5: true,
+module.exports = function () {
+  let config = {
+    typescript: {
+      ignoreBuildErrors: true,
+    },
+    images: {
+      disableStaticImages: true,
+    },
     experimental: {
-      plugins: true,
       scrollRestoration: true,
       legacyBrowsers: false,
-      browsersListForSwc: true,
     },
-  })
+  }
+
+  for (const plugin of plugins) {
+    config = {
+      ...config,
+      ...plugin(config),
+    }
+  }
+
+  return config
 }
