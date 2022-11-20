@@ -18,31 +18,31 @@ const disableExtraction =
 
 console.log(`
 
-Hello and welcome to Tamagui! You can remove this console.log from your next.config.js.
+Welcome to Tamagui!
 
-We've set up a few things for you. Note that "excludeReactNativeWebExports" removes
-the following from react-native-web for bundle size savings:
+We've set up a few things for you. Note the "excludeReactNativeWebExports" setting
+in next.config.js which omits these from the bundle:
 
 - Switch
 - ProgressBar
 - Picker
-- Modal
-- VirtualizedList
-- VirtualizedSectionList
-- AnimatedFlatList
-- FlatList
 - CheckBox
 - Touchable
+
+Add these to save more, if you don't need them:
+
+- AnimatedFlatList
+- FlatList
 - SectionList
+- VirtualizedList
+- VirtualizedSectionList
 
-If you use any of these components you'll get an error "Cannot convert object to
-primitive value".
+Even better, enable "useReactNativeWebLite" to avoid excludeReactNativeWebExports and
+get tree-shaking and concurrent mode support.
 
-If you want a simpler setup, you can try the experimental "useReactNativeWebLite"
-flag seen below instead and get big bundle size savings + concurrent mode support.
-Then you can remove excludeReactNativeWebExports.
+🐤
 
-Cheers 🍻
+You can remove this log in next.config.js.
 
 `)
 
@@ -69,19 +69,7 @@ const transform = withPlugins([
         return true
       }
     },
-    excludeReactNativeWebExports: [
-      'Switch',
-      'ProgressBar',
-      'Picker',
-      'Modal',
-      'VirtualizedList',
-      'VirtualizedSectionList',
-      'AnimatedFlatList',
-      'FlatList',
-      'CheckBox',
-      'Touchable',
-      'SectionList',
-    ],
+    excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
   }),
 ])
 

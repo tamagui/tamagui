@@ -40,6 +40,7 @@ content
 
 inbox
 
+- move much logic from withTamgui into TamaguiPlugin
 - TestFontTokensInVariants types not autocompleting in variants... but showing properly on hover/type property
 - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
 - pass Size down context (see Group) is this just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)?

@@ -2740,7 +2740,6 @@ __metadata:
   resolution: "@my/ui@workspace:packages/ui"
   dependencies:
     "@my/config": "*"
-    "@tamagui/build": ^1.0.1-beta.219
     tamagui: ^1.0.1-beta.219
   languageName: unknown
   linkType: soft

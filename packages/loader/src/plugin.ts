@@ -64,15 +64,15 @@ export class TamaguiPlugin {
     )
 
     const startIndex = nextJsRules ? nextJsRules + 1 : 0
-    const swcLoader = nextJsRules ? rules[startIndex] : undefined
+    const existingLoader = nextJsRules ? rules[startIndex] : undefined
 
     rules.splice(startIndex, 0, {
       test: this.options.test ?? /\.(jsx?|tsx?)$/,
       exclude: this.options.exclude,
       use: [
         ...(jsLoader ? [jsLoader] : []),
-        ...(swcLoader && nextJsRules ? [].concat(swcLoader.use) : []),
-        ...(!jsLoader && !swcLoader
+        ...(existingLoader && nextJsRules ? [].concat(existingLoader.use) : []),
+        ...(!jsLoader && !existingLoader
           ? [
               {
                 loader: require.resolve('esbuild-loader'),

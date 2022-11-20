@@ -197,6 +197,9 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           }
         }
 
+        /**
+         * Server react-native compat
+         */
         if (isServer) {
           const externalize = (context: string, request: string) => {
             const fullPath = request[0] === '.' ? path.join(context, request) : request
@@ -293,6 +296,9 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             )
         ).oneOf
 
+        /**
+         * Font Support
+         */
         if (cssRules) {
           if (!tamaguiOptions.disableFontSupport) {
             // fonts support
@@ -313,6 +319,9 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             })
           }
 
+          /**
+           * CSS Support
+           */
           cssRules.unshift({
             test: tamaguiOptions.includeCSSTest ?? /\.css$/,
             sideEffects: true,
