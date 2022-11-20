@@ -43,6 +43,34 @@ describe('ThemeManager', () => {
     expect(child2.state.name).toBe('dark_red_alt2_Button')
   })
 
+  test('Given parent theme "dark", child theme "red" and component "Button" returns "dark_red_Button"', () => {
+    const parent = new ThemeManager(undefined, {
+      name: 'dark',
+    })
+    const child1 = new ThemeManager(parent, {
+      name: 'red',
+    })
+    expect(child1.state.name).toBe('dark_red')
+    const child2 = new ThemeManager(child1, {
+      componentName: 'Button',
+    })
+    expect(child2.state.name).toBe('dark_red_Button')
+  })
+
+  test('Given parent theme "dark", child theme "red" and missing component "Card" returns "dark_red"', () => {
+    const parent = new ThemeManager(undefined, {
+      name: 'dark',
+    })
+    const child1 = new ThemeManager(parent, {
+      name: 'red',
+    })
+    expect(child1.state.name).toBe('dark_red')
+    const child2 = new ThemeManager(child1, {
+      componentName: 'Card',
+    })
+    expect(child2.state.name).toBe('dark_red')
+  })
+
   test('Inverts "light" to "dark"', () => {
     const parent = new ThemeManager(undefined, {
       name: 'light',
@@ -63,5 +91,16 @@ describe('ThemeManager', () => {
       inverse: true,
     })
     expect(child1.state.name).toBe('dark_red')
+  })
+
+  test('Updates state', () => {
+    const parent = new ThemeManager(undefined, {
+      name: 'light',
+    })
+    const didChange = parent.updateState({
+      name: 'dark',
+    })
+    expect(didChange).toBe(true)
+    expect(parent.state.name).toBe('dark')
   })
 })

@@ -43,13 +43,6 @@ const splitToFlat = ([a, b]: number[]) => {
 }
 
 export function HeroExampleThemes() {
-  return (
-    <Theme debug name="purple">
-      <MediaPlayer elevation="$3" alt={2} />
-      {/* <MediaPlayer elevation="$3" /> */}
-    </Theme>
-  )
-
   const themeSetting = useThemeSetting()
 
   const [activeI, setActiveI] = useState([0, 0])

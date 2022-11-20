@@ -60,8 +60,10 @@ export type ListItemProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap
     noTextWrap?: boolean | 'all'
   }
 
+const NAME = 'ListItem'
+
 export const ListItemFrame = styled(ThemeableStack, {
-  name: 'ListItem',
+  name: NAME,
   tag: 'li',
   alignItems: 'center',
   flexWrap: 'nowrap',
@@ -238,7 +240,10 @@ export const listItemStaticConfig = {
 }
 
 export const ListItem = withStaticProperties(
-  ListItemFrame.extractable(themeable(ListItemComponent), listItemStaticConfig),
+  ListItemFrame.extractable(
+    themeable(ListItemComponent, { componentName: NAME }),
+    listItemStaticConfig
+  ),
   {
     Text: ListItemText,
     Subtitle: ListItemSubtitle,

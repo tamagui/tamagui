@@ -7,6 +7,7 @@ export interface ThemeableProps {
   theme?: ThemeName | null
   themeInverse?: boolean
   componentName?: string
+  debug?: boolean | 'verbose'
 }
 
 export function themeable<Component extends (props: any) => any>(
@@ -21,7 +22,7 @@ export function themeable<Component extends (props: any) => any>(
         inverse={themeInverse}
         componentName={componentName || opts?.componentName}
         name={(theme as any) || null}
-        debug
+        debug={props.debug}
       >
         {element}
       </Theme>

@@ -17,7 +17,6 @@ export declare class ThemeManager {
     #private;
     props?: ThemeProps | undefined;
     keys: Map<any, Set<string>>;
-    listeners: Map<any, Function>;
     themeListeners: Set<ThemeListener>;
     originalParentManager: ThemeManager | null;
     parentManager: ThemeManager | null;
@@ -27,7 +26,6 @@ export declare class ThemeManager {
         forceTheme?: ThemeParsed;
     }, forceUpdate?: boolean, notify?: boolean): boolean;
     getState(props?: ThemeProps | undefined): ThemeManagerState | null;
-    getKey(props?: ThemeProps | undefined): string;
     get allKeys(): Set<string>;
     get parentName(): string | null;
     get fullName(): string;

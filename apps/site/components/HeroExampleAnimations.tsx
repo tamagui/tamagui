@@ -3,7 +3,7 @@ import { useOnIntersecting } from '@tamagui/demos'
 import { ArrowDown } from '@tamagui/lucide-icons'
 import NextLink from 'next/link'
 import React, { memo, useRef, useState } from 'react'
-import { Button, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
+import { Button, ListItem, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 
 import { AnimationsDemo } from './AnimationsDemo'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
@@ -203,47 +203,29 @@ export const ExampleAnimations = memo(() => {
       <Separator vertical />
 
       <YStack pos="relative" $sm={{ display: 'none' }} width="40%">
-        <YStack fullscreen zi={-1} theme="alt2" bc="$backgroundPress" />
-        <YStack f={1}>
+        <YStack f={1} theme="alt2" bc="$backgroundPress">
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
             return (
-              <Theme key={item.name} name={isActive ? 'active' : 'alt2'}>
-                <YStack
-                  {...(isActive && {
-                    bc: '$backgroundHover',
-                  })}
-                  px="$4"
-                  py="$2"
-                  cursor="pointer"
-                  hoverStyle={{
-                    bc: '$backgroundHover',
-                  }}
-                  onPress={() => {
-                    setAnimationI(i)
-                    next()
-                  }}
-                >
-                  <Paragraph
-                    mb="$-1"
-                    selectable={false}
-                    cursor="inherit"
-                    size="$3"
-                    fontWeight="800"
-                  >
-                    {item.name}
-                  </Paragraph>
-                  <Paragraph
-                    ellipse
-                    selectable={false}
-                    size="$2"
-                    cursor="inherit"
-                    color="$colorPress"
-                  >
-                    {item.description}
-                  </Paragraph>
-                </YStack>
-              </Theme>
+              <ListItem
+                key={item.name}
+                {...(isActive && {
+                  bc: '$backgroundHover',
+                })}
+                theme={isActive ? 'active' : 'alt2'}
+                px="$4"
+                py="$2"
+                title={item.name}
+                subTitle={item.description}
+                cursor="pointer"
+                hoverStyle={{
+                  bc: '$backgroundHover',
+                }}
+                onPress={() => {
+                  setAnimationI(i)
+                  next()
+                }}
+              />
             )
           })}
         </YStack>

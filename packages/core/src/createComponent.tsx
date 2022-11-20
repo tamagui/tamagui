@@ -58,7 +58,18 @@ import { usePressability } from './vendor/Pressability'
 import { Slot, mergeEvent } from './views/Slot'
 import { wrapThemeManagerContext } from './views/Theme'
 
-React['keep']
+// let t
+// import { timer } from '@tamagui/timer'
+// if (true || process.env.ANALYZE) {
+//   t = require().timer()
+//   setTimeout(() => {
+//     const out = t.print()
+//     if (isClient) {
+//       alert(out)
+//     }
+//   }, 2000)
+// }
+
 // this appears to fix expo / babel not picking this up sometimes? really odd
 process.env.TAMAGUI_TARGET
 

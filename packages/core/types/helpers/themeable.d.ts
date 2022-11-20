@@ -3,6 +3,7 @@ export interface ThemeableProps {
     theme?: ThemeName | null;
     themeInverse?: boolean;
     componentName?: string;
+    debug?: boolean | 'verbose';
 }
 export declare function themeable<Component extends (props: any) => any>(component: Component, opts?: {
     componentName?: string;

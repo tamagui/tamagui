@@ -406,7 +406,7 @@ export declare const CardBackground: import("@tamagui/core").TamaguiComponent<(O
 export declare type CardHeaderProps = GetProps<typeof CardHeader>;
 export declare type CardFooterProps = GetProps<typeof CardFooter>;
 export declare type CardProps = GetProps<typeof CardFrame>;
-export declare const Card: ((props: Omit<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
+export declare const Card: React.ForwardRefExoticComponent<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -462,7 +462,7 @@ export declare const Card: ((props: Omit<Omit<import("@tamagui/types-react-nativ
     readonly size?: SizeTokens | undefined;
 }>> & {
     __scopeCard?: import("@tamagui/create-context").Scope<any>;
-} & React.RefAttributes<HTMLElement | View>, "theme" | "themeInverse"> & import("@tamagui/core").ThemeableProps) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & {
+} & React.RefAttributes<HTMLElement | View>> & {
     Header: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;

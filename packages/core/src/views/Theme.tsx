@@ -30,14 +30,9 @@ export const Theme = memo(function Theme(props: ThemeProps) {
 
   // memo here, changing theme without re-rendering all children is a critical optimization
   // may require some effort of end user to memoize but without this memo they'd have no option
-  let didCalc = false
   let contents = useMemo(() => {
-    didCalc = true
     return missingTheme ? null : wrapThemeManagerContext(props.children, themeManager)
   }, [missingTheme, props.children, themeManager])
-  if (!didCalc) {
-    console.warn('optimize worth it')
-  }
 
   if (missingTheme) {
     if (process.env.NODE_ENV === 'development') {

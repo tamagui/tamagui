@@ -14,8 +14,6 @@ import { LayoutGroupContext } from './LayoutGroupContext'
 import { PresenceChild } from './PresenceChild'
 import { AnimatePresenceProps } from './types'
 
-React['keep']
-
 type ComponentKey = string | number
 
 const getChildKey = (child: ReactElement<any>): ComponentKey => child.key || ''

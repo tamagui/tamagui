@@ -3,9 +3,6 @@ import { SizableText, SizableTextProps } from '@tamagui/text'
 import React, { forwardRef } from 'react'
 import { Linking, View } from 'react-native'
 
-// bugfix esbuild strips react jsx: 'preserve'
-React['keep']
-
 export type AnchorProps = SizableTextProps & {
   href?: string
   target?: string

@@ -9,7 +9,7 @@ export function ButtonDemo(props) {
         Large
       </Button>
       <XGroup size="$3">
-        <Button debug="verbose" w="50%" theme="alt2">
+        <Button w="50%" theme="alt2">
           Alt2
         </Button>
         <Button w="50%" theme="yellow">

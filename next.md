@@ -7,6 +7,7 @@ rc.0
 
 1.0
 
+- I'm seeing an issue where setting multiline=true on Input results in broken colors when switching between light & dark themes (doesn't use specified text color). 
 - https://github.com/tamagui/tamagui/issues/318
 - focus an input in a dialog on mobile or a propover etc. then it disappears
 - https://github.com/tamagui/tamagui/issues/256

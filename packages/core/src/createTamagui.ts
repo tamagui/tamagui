@@ -1,4 +1,4 @@
-import { isRSC, isWeb } from '@tamagui/constants'
+import { isClient, isRSC, isWeb } from '@tamagui/constants'
 
 import { configListeners, setConfig } from './config'
 import { createVariables } from './createVariables'
@@ -53,7 +53,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   const themeConfig = (() => {
     const themes = { ...configIn.themes }
-    let cssRuleSets: string[] = []
+    const cssRuleSets: string[] = []
 
     if (isWeb) {
       const declarations: string[] = []
@@ -140,10 +140,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
 
     // then, generate CSS from de-duped
+    let themeRuleSets: string[] = []
+
     if (isWeb || isRSC) {
       for (const themeName in dedupedThemes) {
-        cssRuleSets = [
-          ...cssRuleSets,
+        themeRuleSets = [
+          ...themeRuleSets,
           ...getThemeCSSRules({
             config: configIn,
             themeName,
@@ -159,14 +161,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
 
     tokensValueToVariable.clear()
-    Object.freeze(cssRuleSets)
-    const css = cssRuleSets.join('\n')
 
     return {
-      // could improve types but we do ensureThemeVariable so its accurate
       themes,
       cssRuleSets,
-      css,
+      themeRuleSets,
     }
   })()
 
@@ -195,12 +194,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     themeConfig,
     tokensParsed,
     parsed: true,
-    getCSS: () => {
+    getCSS: (separator = '\n') => {
       return `
       .is_Text .is_Text {display:inline-flex;}
       ._dsp_contents {display:contents;}
-      ${themeConfig.css}
-      ${getAllRules().join('\n')}`
+      ${themeConfig.cssRuleSets.join(separator)}
+      ${themeConfig.themeRuleSets.join(separator)}
+      ${getAllRules().join(separator)}`
     },
     // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }

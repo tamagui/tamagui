@@ -409,7 +409,7 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         } | undefined;
         animation?: import("@tamagui/core").AnimationProp | undefined;
         animateOnly?: string[] | undefined;
-        debug?: import("@tamagui/core").DebugProp | undefined;
+        debug?: boolean | "verbose" | undefined;
         disabled?: boolean | undefined;
         className?: string | undefined;
         themeShallow?: boolean | undefined; /**

@@ -82,25 +82,23 @@ export type CardProps = GetProps<typeof CardFrame>
 
 export const Card = withStaticProperties(
   CardFrame.extractable(
-    themeable(
-      forwardRef<HTMLElement | View, ScopedProps<CardProps, 'Card'>>(
-        ({ size, __scopeCard, children, ...props }, ref) => {
-          return (
-            // <CardProvider scope={__scopeCard} size={size}>
-            <CardFrame ref={ref} {...props}>
-              {React.Children.map(children, (child) => {
-                if (isTamaguiElement(child) && !child.props.size) {
-                  return cloneElement(child, {
-                    size,
-                  })
-                }
-                return child
-              })}
-            </CardFrame>
-            // </CardProvider>
-          )
-        }
-      )
+    forwardRef<HTMLElement | View, ScopedProps<CardProps, 'Card'>>(
+      ({ size, __scopeCard, children, ...props }, ref) => {
+        return (
+          // <CardProvider scope={__scopeCard} size={size}>
+          <CardFrame ref={ref} {...props}>
+            {React.Children.map(children, (child) => {
+              if (isTamaguiElement(child) && !child.props.size) {
+                return cloneElement(child, {
+                  size,
+                })
+              }
+              return child
+            })}
+          </CardFrame>
+          // </CardProvider>
+        )
+      }
     )
   ),
   {
