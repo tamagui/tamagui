@@ -8,6 +8,5 @@
     "@tamagui/font-inter": "1.0.1-beta.219",
     "@tamagui/shorthands": "1.0.1-beta.219",
     "@tamagui/theme-base": "1.0.1-beta.219"
-  },
-  "sideEffects": false
+  }
 }

@@ -45,7 +45,7 @@ export function HomeScreen() {
         <Button {...linkProps}>Link to user</Button>
       </XStack>
 
-      <MyComponent w={100} h={100} blue />
+      <MyComponent w={50} h={50} blue />
 
       <SheetDemo />
     </YStack>

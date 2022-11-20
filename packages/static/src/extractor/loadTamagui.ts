@@ -442,11 +442,11 @@ Quiet this warning with environment variable:
 }
 
 function getComponentStaticConfigByName(name: string, exported: any) {
-  if (!exported || typeof exported !== 'object' || Array.isArray(exported)) {
-    throw new Error(`Invalid export from package ${name}: ${typeof exported}`)
-  }
   const components: Record<string, { staticConfig: StaticConfigParsed }> = {}
   try {
+    if (!exported || typeof exported !== 'object' || Array.isArray(exported)) {
+      throw new Error(`Invalid export from package ${name}: ${typeof exported}`)
+    }
     for (const key in exported) {
       const found = getTamaguiComponent(key, exported[key])
       if (found) {
@@ -456,10 +456,10 @@ function getComponentStaticConfigByName(name: string, exported: any) {
       }
     }
   } catch (err) {
-    console.error(`Tamagui failed getting components`)
-    if (err instanceof Error) {
-      console.error(err.message, err.stack)
-    } else {
+    if (process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD !== '1') {
+      console.error(
+        `Tamagui failed getting from ${name} (Disable error by setting environment variable TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD=1)`
+      )
       console.error(err)
     }
   }

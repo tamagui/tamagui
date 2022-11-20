@@ -3,6 +3,9 @@
   "name": "app",
   "main": "index.ts",
   "private": true,
+  "sideEffects": [
+    "*.css"
+  ],
   "dependencies": {
     "@my/config": "*",
     "@my/ui": "*",
@@ -14,8 +17,7 @@
     "@tamagui/lucide-icons": "1.0.1-beta.219",
     "@tamagui/shorthands": "1.0.1-beta.219",
     "@tamagui/theme-base": "1.0.1-beta.219",
-    "expo-linking": "^3.2.2",
-    "solito": "^1.0.12"
-  },
-  "sideEffects": false
+    "expo-linking": "^3.2.3",
+    "solito": "^1.1.2"
+  }
 }
