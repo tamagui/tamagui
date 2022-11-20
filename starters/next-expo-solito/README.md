@@ -12,11 +12,11 @@ Many thanks to  [@FernandoTheRojo](https://twitter.com/fernandotherojo) for the 
 
 ## 📦 Included packages
 
-- `tamagui` for cross-platform views, themes and animations
-- `solito` for cross-platform navigation
-- Expo SDK 46
-- Next.js 12
-- React Navigation 6
+- [Tamagui](https://tamagui.dev) 🪄
+- [solito](https://solito.dev) for cross-platform navigation
+- Expo SDK
+- Next.js
+- React Navigation
 
 ## 🗂 Folder layout
 
