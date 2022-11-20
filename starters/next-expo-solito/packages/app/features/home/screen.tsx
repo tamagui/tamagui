@@ -1,4 +1,14 @@
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack } from '@my/ui'
+import {
+  Anchor,
+  Button,
+  H1,
+  MyComponent,
+  Paragraph,
+  Separator,
+  Sheet,
+  XStack,
+  YStack,
+} from '@my/ui'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
 import { useLink } from 'solito/link'
@@ -34,6 +44,8 @@ export function HomeScreen() {
       <XStack>
         <Button {...linkProps}>Link to user</Button>
       </XStack>
+
+      <MyComponent w={100} h={100} blue />
 
       <SheetDemo />
     </YStack>
