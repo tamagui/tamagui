@@ -2790,12 +2790,20 @@ __metadata:
   dependencies:
     "@my/config": "*"
 <<<<<<< HEAD
+<<<<<<< HEAD
     "@tamagui/build": ^1.0.1-beta.198
     tamagui: ^1.0.1-beta.198
 =======
     "@tamagui/build": ^1.0.1-beta.220
     tamagui: ^1.0.1-beta.220
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
+=======
+    "@tamagui/build": ^1.0.1-beta.220
+    tamagui: ^1.0.1-beta.220
+=======
+    tamagui: ^1.0.1-beta.219
+>>>>>>> 98656ecca (feat(starters): Remove need for build step in ui package)
+>>>>>>> b930303c9 (feat(starters): Remove need for build step in ui package)
   languageName: unknown
   linkType: soft
 
