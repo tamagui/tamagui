@@ -4859,6 +4859,7 @@ __metadata:
     "@my/ui": "*"
     "@react-navigation/native": ^6.0.11
     "@react-navigation/native-stack": ^6.7.0
+<<<<<<< HEAD
     "@tamagui/animations-react-native": 1.0.1-beta.220
     "@tamagui/colors": 1.0.1-beta.220
     "@tamagui/font-inter": 1.0.1-beta.220
@@ -4871,7 +4872,20 @@ __metadata:
 =======
     expo-linking: ^3.2.2
     solito: ^1.0.12
+<<<<<<< HEAD
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
+=======
+=======
+    "@tamagui/animations-react-native": 1.0.1-beta.219
+    "@tamagui/colors": 1.0.1-beta.219
+    "@tamagui/font-inter": 1.0.1-beta.219
+    "@tamagui/lucide-icons": 1.0.1-beta.219
+    "@tamagui/shorthands": 1.0.1-beta.219
+    "@tamagui/theme-base": 1.0.1-beta.219
+    expo-linking: ^3.2.3
+    solito: ^1.1.2
+>>>>>>> 0d4440102 (feat(starters): Update to Next 13, update and cleanup dependencies)
+>>>>>>> 33f987e92 (feat(starters): Update to Next 13, update and cleanup dependencies)
   languageName: unknown
   linkType: soft
 
@@ -13512,10 +13526,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "solito@npm:2.0.0-canary.4":
   version: 2.0.0-canary.4
   resolution: "solito@npm:2.0.0-canary.4"
   checksum: e1485e5aed275dede4bcaeab9f8e3d068b751cfcc1e2ddc6222daeaf51a34f7f50355a06bcd168c74484991dbb6762897dba9a0f861b99638719b8e97413e459
+=======
+"solito@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "solito@npm:1.1.2"
+  checksum: ea513f6025cf0fef9d518bf09aba72cf61e1b6e97707950fe917486e257cdb306a529202634bab1a7cc4f0f5706e704766eb77a8d925d2ec2eefc1f40d878922
+>>>>>>> 33f987e92 (feat(starters): Update to Next 13, update and cleanup dependencies)
   languageName: node
   linkType: hard
 
