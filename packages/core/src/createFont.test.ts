@@ -1,10 +1,10 @@
 import { describe, expect, test } from 'vitest'
 
-import { createFont } from '../src'
-import { GenericFont } from '../types'
+import { createFont } from './createFont'
+import { GenericFont } from './types'
 
 const font: GenericFont = {
-  family: 'TestFont',
+  family: 'Inter',
   size: {
     1: 11,
     2: 12,
@@ -47,12 +47,11 @@ const font: GenericFont = {
   face: {
     700: { normal: 'InterBold' },
     800: { normal: 'InterBold' },
-    900: { normal: 'InterBold' },
   },
 }
 
 const expectedProcessedFont: GenericFont = {
-  family: 'TestFont',
+  family: 'Inter',
   size: {
     1: 11,
     2: 12,
@@ -109,12 +108,12 @@ const expectedProcessedFont: GenericFont = {
     15: -4,
   },
   face: {
-    100: { normal: 'InterBold' },
-    200: { normal: 'InterBold' },
-    300: { normal: 'InterBold' },
-    400: { normal: 'InterBold' },
-    500: { normal: 'InterBold' },
-    600: { normal: 'InterBold' },
+    100: { normal: 'Inter' },
+    200: { normal: 'Inter' },
+    300: { normal: 'Inter' },
+    400: { normal: 'Inter' },
+    500: { normal: 'Inter' },
+    600: { normal: 'Inter' },
     700: { normal: 'InterBold' },
     800: { normal: 'InterBold' },
     900: { normal: 'InterBold' },
