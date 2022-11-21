@@ -36,7 +36,7 @@ export * from './helpers/matchMedia'
 export * from './helpers/themeable'
 export * from './helpers/withStaticProperties'
 
-export * from './contexts/ButtonInsideButtonContext'
+export * from './contexts/ButtonNestingContext'
 
 export * from './hooks/useId'
 export * from './hooks/useIsTouchDevice'

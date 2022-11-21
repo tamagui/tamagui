@@ -45,7 +45,7 @@ export function addTheme({
         names: [themeName],
         theme,
       })
-      const id = `tamagui_theme_style_${themeName}`
+      const id = `t_theme_style_${themeName}`
       const existing = document.querySelector(`#${id}`)
       const style = document.createElement('style')
       style.id = id
@@ -60,7 +60,6 @@ export function addTheme({
   updateConfig('themes', { ...config.themes, [themeName]: themeProxied })
 
   // trigger updates in components
-
   return {
     theme: themeProxied,
     cssRules,

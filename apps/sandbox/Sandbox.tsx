@@ -28,6 +28,15 @@ if (typeof require !== 'undefined') {
 
 // AppRegistry.registerComponent('Main', () => Sandbox)
 
+function PerformanceTest() {
+  const [t, setT] = useState('pink' as any)
+  return (
+    <YStack theme={t}>
+      <Square onPress={() => setT('blue')} size={100} bc="$color10" />
+    </YStack>
+  )
+}
+
 const CustomButtonFrame = styled(ButtonFrame, {
   name: 'Button',
   borderRadius: 100_100_100, // <---- This does not apply the default borderRadius
@@ -167,7 +176,9 @@ export const Sandbox = () => {
             overflow: 'hidden',
           }}
         >
-          <ButtonDemo />
+          {/* <ButtonDemo /> */}
+
+          <PerformanceTest />
 
           {/* <CustomButtonFrame debug="verbose">
             <Paragraph>hihi</Paragraph>

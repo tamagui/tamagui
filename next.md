@@ -1,7 +1,12 @@
 rc.0
 
-- bugs: css animations (enterStyle), native animations
-- pages/test/switch
+  - bugs:
+    - prod input style check
+    - font size SSR check
+    - css animations check
+    - native animations check
+    - button performance check
+    - people seem to be having trouble with lucide dep versions
 - rc.0 blog post
 - <Adapt /> instead of sheetBreakpoint
 

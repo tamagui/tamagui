@@ -50,7 +50,7 @@ export const TintSection = ({
       <XStack ref={top} pos="absolute" t="10%" l={0} r={0} h={10} o={0} pe="none" />
       <XStack ref={mid} pos="absolute" t="50%" l={0} r={0} h={10} o={0} pe="none" />
       <XStack ref={bottom} pos="absolute" b="10%" l={0} r={0} h={10} o={0} pe="none" />
-      <HomeSection {...(themed && { theme: tint })} {...props}>
+      <HomeSection theme={themed ? tint : null} {...props}>
         {useMemo(() => children, [children])}
       </HomeSection>
     </YStack>

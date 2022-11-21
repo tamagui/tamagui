@@ -1,7 +1,9 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { getBoundingClientRect } from '@tamagui/react-native-use-responder-events'
 import { useEvent } from '@tamagui/use-event'
 import { RefObject } from 'react'
+
+import { getBoundingClientRect } from '../helpers/getBoundingClientRect'
+import { getRect } from '../helpers/getRect'
 
 const LayoutHandlers = new WeakMap<Element, Function>()
 
@@ -40,13 +42,6 @@ if (typeof window !== 'undefined' && 'ResizeObserver' in window) {
       })
     }
   })
-}
-
-export const getRect = (node: HTMLElement) => {
-  const rect = getBoundingClientRect(node)
-  if (!rect) return
-  const { x, y, top, left } = rect
-  return { x, y, width: node.offsetWidth, height: node.offsetHeight, top, left }
 }
 
 export const measureLayout = (

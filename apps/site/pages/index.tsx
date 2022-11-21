@@ -2,13 +2,14 @@ import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
-import { useState } from 'react'
-import { Spacer, XStack, YStack } from 'tamagui'
+import { useTint } from '@tamagui/site/components/useTint'
+import { useMemo, useState } from 'react'
+import { Spacer, Square, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from '../components/Container'
 import { HeaderFloating } from '../components/HeaderFloating'
 import { HeroBelow } from '../components/HeroBelow'
-import { HeroExampleAnimations } from '../components/HeroExampleAnimations'
+import { ExampleAnimations, HeroExampleAnimations } from '../components/HeroExampleAnimations'
 import { HeroExampleCode } from '../components/HeroExampleCode'
 import { HeroExampleProps } from '../components/HeroExampleProps'
 import { HeroExampleThemes } from '../components/HeroExampleThemes'
@@ -19,6 +20,33 @@ import { HomeGlow } from '../components/HomeGlow'
 import { InstallInput } from '../components/InstallInput'
 import { HomeSection, SectionTinted, TintSection } from '../components/TintSection'
 import { getCompilationExamples } from '../lib/getCompilationExamples'
+
+// test for theme change
+// return (
+//   <>
+//     <HeaderFloating alwaysFloating />
+//     <XStack
+//       f={2}
+//       miw="55%"
+//       als="center"
+//       mr="$-2"
+//       bc="$backgroundHover"
+//       zi={100}
+//       elevation="$4"
+//       br="$4"
+//       theme={useTint().tint}
+//       debug
+//     >
+//       {useMemo(
+//         () => (
+//           <YStack debug="verbose" f={1} theme="alt2" bc="$backgroundPress" w={100} h={100} />
+//         ),
+//         []
+//       )}
+//       {/* <ExampleAnimations /> */}
+//     </XStack>
+//   </>
+// )
 
 export default function Home({ animationCode, compilationExamples }) {
   const [top, setTop] = useState(0)

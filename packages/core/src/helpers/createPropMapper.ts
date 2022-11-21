@@ -449,7 +449,7 @@ const getToken = (
   if (hasSet) {
     if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
       // eslint-disable-next-line no-console
-      console.log(`   ﹒ propMapper getToken`, key, valOrVar)
+      console.log(`   ﹒ propMapper getToken`, key, valOrVar, theme)
     }
     return resolveVariableValue(key, valOrVar, resolveAs)
   }

@@ -35,7 +35,7 @@ export function TokensDemo() {
               key={key}
               size="$3"
               theme={section === key ? 'active' : null}
-              ff="$silkscreen"
+              fontFamily="$silkscreen"
               onPress={() => setSection(key)}
             >
               {name}
@@ -84,6 +84,7 @@ function SizeSection({ section }: { section: Section }) {
                   ]?.val,
                 })}
                 {...(section === 'radius' && {
+                  // @ts-ignore
                   size: allTokens.size[token]?.val,
                   br: tokens[token]?.val,
                 })}

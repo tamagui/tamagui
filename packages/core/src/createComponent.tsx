@@ -28,13 +28,14 @@ import { stackDefaultStyles } from './constants/constants'
 import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { TextAncestorContext } from './contexts/TextAncestorContext'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
+import { getRect } from './helpers/getRect'
 import { getSubStyle, useSplitStyles } from './helpers/getSplitStyles'
 import { getAllSelectors } from './helpers/insertStyleRule'
 import { mergeProps } from './helpers/mergeProps'
 import { mergeTransform } from './helpers/mergeTransform'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { useShallowSetState } from './helpers/useShallowSetState'
-import { getRect, measureLayout, useElementLayout } from './hooks/useElementLayout'
+import { measureLayout, useElementLayout } from './hooks/useElementLayout'
 import { addMediaQueryListener, getInitialMediaState } from './hooks/useMedia'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
 import { getThemeDidChange, getThemeManager, useTheme } from './hooks/useTheme'
@@ -209,14 +210,6 @@ export function createComponent<
         if (!isServer) {
           // eslint-disable-next-line no-console
           console.log(`state`, state)
-          // eslint-disable-next-line no-console
-          console.groupCollapsed('props')
-          // eslint-disable-next-line no-console
-          console.log(props)
-          // eslint-disable-next-line no-console
-          console.log('order', Object.keys(props))
-          // eslint-disable-next-line no-console
-          console.groupEnd()
         }
       }
     }
@@ -232,7 +225,6 @@ export function createComponent<
       componentName,
       reset: props.reset,
       forceUpdate,
-      disableTracking: !noClassNames,
       inverse: props.themeInverse,
       // disableThemeClass: noClassNames,
       debug: props.debug,

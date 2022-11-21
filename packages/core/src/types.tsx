@@ -272,7 +272,6 @@ export interface ThemeProps {
   children?: any
   reset?: boolean
   debug?: boolean | 'verbose'
-  disableTracking?: boolean
   inverse?: boolean
 }
 

@@ -2,7 +2,7 @@
  * Should rename this to Token
  * Moving to objects for React Server Components support
  */
-declare const IS_VAR = "__isVar__";
+declare const IS_VAR = "isVar";
 declare type VariableIn<A = any> = {
     val: A;
     name: string;
@@ -19,7 +19,7 @@ export declare const createVariable: <A extends string | number = any>(props: Va
     name: string;
     key: string;
     isFloating?: boolean | undefined;
-    __isVar__: boolean;
+    isVar: boolean;
 };
 export declare function variableToString(vrble?: any, getValue?: boolean): string;
 export declare function isVariable(v: Variable | any): v is Variable;

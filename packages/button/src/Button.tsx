@@ -1,5 +1,5 @@
 import {
-  ButtonInsideButtonContext,
+  ButtonNestingContext,
   GetProps,
   TamaguiElement,
   ThemeableProps,
@@ -147,7 +147,7 @@ export function useButton(
     ...rest
   } = props
 
-  const isInsideButton = isRSC ? false : useContext(ButtonInsideButtonContext)
+  const isNested = isRSC ? false : useContext(ButtonNestingContext)
   const mediaActiveProps = useMediaPropsActive(props)
   const size = mediaActiveProps.size || '$4'
   const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
@@ -172,7 +172,7 @@ export function useButton(
 
   return {
     spaceSize,
-    isInsideButton,
+    isNested,
     props: {
       ...(props.disabled && {
         // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
@@ -183,16 +183,14 @@ export function useButton(
         },
       }),
       // fixes SSR issue + DOM nesting issue of not allowing button in button
-      ...(isInsideButton && {
+      ...(isNested && {
         tag: 'span',
       }),
       ...rest,
       children: isRSC ? (
         inner
       ) : (
-        <ButtonInsideButtonContext.Provider value={true}>
-          {inner}
-        </ButtonInsideButtonContext.Provider>
+        <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
       ),
     },
   }

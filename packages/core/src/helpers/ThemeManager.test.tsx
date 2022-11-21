@@ -103,4 +103,14 @@ describe('ThemeManager', () => {
     expect(didChange).toBe(true)
     expect(parent.state.name).toBe('dark')
   })
+
+  test('Returns parent on empty', () => {
+    const parent = new ThemeManager(undefined, {
+      name: 'light',
+    })
+    const child = new ThemeManager(parent, {
+      name: null,
+    })
+    expect(child).toBe(parent)
+  })
 })

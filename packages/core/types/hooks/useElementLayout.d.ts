@@ -14,14 +14,6 @@ export declare type LayoutEvent = {
     };
     timeStamp: number;
 };
-export declare const getRect: (node: HTMLElement) => {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    top: number;
-    left: number;
-} | undefined;
 export declare const measureLayout: (node: HTMLElement, relativeTo: HTMLElement | null, callback: Function) => void;
 export declare function useElementLayout(ref: RefObject<Element>, onLayout?: ((e: LayoutEvent) => void) | null): void;
 //# sourceMappingURL=useElementLayout.d.ts.map

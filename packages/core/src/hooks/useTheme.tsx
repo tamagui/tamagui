@@ -1,28 +1,20 @@
 import { isRSC, isServer, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useForceUpdate } from '@tamagui/use-force-update'
-import React, { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
-import { areEqualSets } from '../helpers/areEqualSets'
 import { createProxy } from '../helpers/createProxy'
 import { ThemeManager, ThemeManagerContext } from '../helpers/ThemeManager'
 import { ThemeName, ThemeParsed, ThemeProps } from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
-import { useServerRef } from './useServerHooks'
-
-interface UseThemeState {
-  uuid: Object
-  keys: Set<string>
-  isRendering?: boolean
-  hasEverChanged?: boolean
-}
 
 type UseThemeProps = ThemeProps & {
   forceUpdate?: any
 }
 
-export const useTheme = (props: UseThemeProps = { name: null }): ThemeParsed => {
+const emptyProps = { name: null }
+export const useTheme = (props: UseThemeProps = emptyProps): ThemeParsed => {
   // TODO this can use useChangeThemeEffect almost ready
   if (isRSC) {
     const config = getConfig()
@@ -33,18 +25,7 @@ export const useTheme = (props: UseThemeProps = { name: null }): ThemeParsed => 
     })
   }
 
-  const state = useServerRef() as React.MutableRefObject<UseThemeState>
-  if (!state.current) {
-    state.current = {
-      uuid: {},
-      keys: new Set(),
-    }
-  }
-
-  const { name, theme, themes, themeManager, className, didChange } = useChangeThemeEffect(
-    props,
-    state.current.uuid
-  )
+  const { name, theme, themes, themeManager, className, didChange } = useChangeThemeEffect(props)
 
   if (process.env.NODE_ENV === 'development') {
     // ensure we aren't creating too many ThemeManagers
@@ -52,10 +33,7 @@ export const useTheme = (props: UseThemeProps = { name: null }): ThemeParsed => 
       // eslint-disable-next-line no-console
       console.error(`Should always change, duplicating ThemeMananger bug`, themeManager)
     }
-  }
-
-  if (process.env.NODE_ENV === 'development') {
-    if (props?.debug === 'verbose') {
+    if (props.debug === 'verbose') {
       // eslint-disable-next-line no-console
       console.groupCollapsed('  🔹 useTheme =>', name)
       const logs = { ...props, name, className, ...(isDevTools && { theme }) }
@@ -68,19 +46,6 @@ export const useTheme = (props: UseThemeProps = { name: null }): ThemeParsed => 
     }
   }
 
-  // track usage
-  state.current.isRendering = true
-  useIsomorphicLayoutEffect(() => {
-    const st = state.current
-    st.isRendering = false
-
-    // this seems potentially unnecessary?
-    const cur = themeManager?.keys.get(st.uuid)
-    if (!cur || !areEqualSets(st.keys, cur)) {
-      themeManager?.track(st.uuid, st.keys)
-    }
-  })
-
   if (!theme) {
     if (process.env.NODE_ENV === 'development') {
       // eslint-disable-next-line no-console
@@ -89,8 +54,7 @@ export const useTheme = (props: UseThemeProps = { name: null }): ThemeParsed => 
     return themes[Object.keys(themes)[0]]
   }
 
-  const debug = props?.debug
-  const disableTracking = props?.disableTracking
+  const debug = props.debug
 
   return useMemo(() => {
     return getThemeProxied({
@@ -99,20 +63,8 @@ export const useTheme = (props: UseThemeProps = { name: null }): ThemeParsed => 
       name,
       className,
       themeManager,
-      onStringKeyAccess(key) {
-        if (disableTracking) return
-        if (state) {
-          if (state.current.isRendering && !state.current.keys.has(key)) {
-            state.current.keys.add(key)
-            if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-              // eslint-disable-next-line no-console
-              console.log('  🔸 tracking theme', key)
-            }
-          }
-        }
-      },
     })
-  }, [theme, didChange, name, className, themeManager, debug, disableTracking])
+  }, [theme, didChange, name, className, themeManager, debug])
 }
 
 function getThemeProxied({
@@ -120,12 +72,10 @@ function getThemeProxied({
   name,
   className,
   themeManager,
-  onStringKeyAccess,
   didChange,
 }: {
   theme: any
   name: string
-  onStringKeyAccess?: (cb: string) => void
   className?: string
   themeManager?: ThemeManager | null
   didChange?: boolean
@@ -168,7 +118,6 @@ function getThemeProxied({
       if (!themeManager) {
         return theme[key]
       }
-      onStringKeyAccess?.(key)
       return themeManager.getValue(key)
     },
   })
@@ -201,11 +150,9 @@ export function useThemeName(opts?: { parent?: true }): ThemeName {
 }
 
 export const activeThemeManagers = new Set<ThemeManager>()
-console.log('activeThemeManagers', activeThemeManagers)
 
 export const useChangeThemeEffect = (
-  props: UseThemeProps,
-  uuid?: Object
+  props: UseThemeProps
 ): {
   themes: Record<string, ThemeParsed>
   themeManager: ThemeManager | null
@@ -223,7 +170,7 @@ export const useChangeThemeEffect = (
     }
   }
 
-  const { name, componentName, debug, forceUpdate: forceUpdateProp } = props
+  const { debug, forceUpdate: forceUpdateProp } = props
   const { themes } = config
 
   if (isRSC) {
@@ -237,27 +184,20 @@ export const useChangeThemeEffect = (
   }
 
   const parentManager = useContext(ThemeManagerContext)
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const forceUpdate = forceUpdateProp || useForceUpdate()
 
   // only create once we update it in the effect
   const themeManager = useMemo(() => {
     return new ThemeManager(parentManager, props)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const didCreate = Boolean(themeManager !== parentManager)
   const didUpdate = useMemo(() => {
-    if (!didCreate) {
-      return false
-    }
+    if (!didCreate) return false
     return themeManager.updateState(props, false, false)
   }, [props.name, props.inverse, props.reset, props.componentName])
 
   const didChange = didCreate || didUpdate
-
-  // themeManager.updateState(props, false, false)
 
   if (!isServer) {
     useEffect(() => {
@@ -269,27 +209,23 @@ export const useChangeThemeEffect = (
     }, [didCreate])
 
     useLayoutEffect(() => {
-      if (!didChange) {
-        return
+      if (process.env.NODE_ENV === 'development') {
+        if (props.debug) {
+          // prettier-ignore
+          // eslint-disable-next-line no-console
+          console.log('useChangeTheme effect', { props, didChange, didCreate, didUpdate, themeManager, parentManager, activeThemeManagers })
+        }
       }
 
+      if (!didChange) return
       themeManager.notify()
-      activeThemeManagers.add(themeManager)
-
       if (!parentManager) return
-
-      const disposeParentOnChange = parentManager.onChangeTheme(() => {
-        const didUpdate = themeManager.updateState(props)
-        if (didUpdate) {
+      return parentManager.onChangeTheme(() => {
+        if (themeManager.updateState(props)) {
           forceUpdate()
         }
       })
-
-      return () => {
-        disposeParentOnChange()
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [didChange, themeManager.state, debug])
+    }, [didChange, themeManager.state.className, debug])
   }
 
   return {

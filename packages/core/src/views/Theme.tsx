@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import { memo, useMemo } from 'react'
+import { memo, useId, useMemo } from 'react'
 
 import { variableToString } from '../createVariable'
 import { ThemeManager, ThemeManagerContext } from '../helpers/ThemeManager'
@@ -55,7 +55,7 @@ export const Theme = memo(function Theme(props: ThemeProps) {
         className={classNameFinal}
         style={{
           // in order to provide currentColor, set color by default
-          color: variableToString(themes[name]?.color),
+          color: variableToString(theme?.color),
         }}
       >
         {contents}
