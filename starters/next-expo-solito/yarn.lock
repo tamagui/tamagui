@@ -4900,9 +4900,16 @@ __metadata:
 =======
 >>>>>>> 6af82a3c9 (update-starters-v1.0.1-beta.220)
     expo-linking: ^3.2.3
+<<<<<<< HEAD
     solito: ^1.1.2
 >>>>>>> 0d4440102 (feat(starters): Update to Next 13, update and cleanup dependencies)
+<<<<<<< HEAD
 >>>>>>> 33f987e92 (feat(starters): Update to Next 13, update and cleanup dependencies)
+=======
+=======
+    solito: 2.0.0-canary.4
+>>>>>>> 561fcbcf1 (fix(starters): update solito to fix expo/next13 compat)
+>>>>>>> 6d614a1d8 (fix(starters): update solito to fix expo/next13 compat)
   languageName: unknown
   linkType: soft
 
@@ -13571,16 +13578,22 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6d614a1d8 (fix(starters): update solito to fix expo/next13 compat)
 "solito@npm:2.0.0-canary.4":
   version: 2.0.0-canary.4
   resolution: "solito@npm:2.0.0-canary.4"
   checksum: e1485e5aed275dede4bcaeab9f8e3d068b751cfcc1e2ddc6222daeaf51a34f7f50355a06bcd168c74484991dbb6762897dba9a0f861b99638719b8e97413e459
+<<<<<<< HEAD
 =======
 "solito@npm:^1.1.2":
   version: 1.1.2
   resolution: "solito@npm:1.1.2"
   checksum: ea513f6025cf0fef9d518bf09aba72cf61e1b6e97707950fe917486e257cdb306a529202634bab1a7cc4f0f5706e704766eb77a8d925d2ec2eefc1f40d878922
 >>>>>>> 33f987e92 (feat(starters): Update to Next 13, update and cleanup dependencies)
+=======
+>>>>>>> 6d614a1d8 (fix(starters): update solito to fix expo/next13 compat)
   languageName: node
   linkType: hard
 
