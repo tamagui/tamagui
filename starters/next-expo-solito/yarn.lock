@@ -4848,7 +4848,7 @@ __metadata:
     "@tamagui/shorthands": 1.0.1-beta.220
     "@tamagui/theme-base": 1.0.1-beta.220
     expo-linking: ^3.2.3
-    solito: ^1.1.2
+    solito: 2.0.0-canary.4
   languageName: unknown
   linkType: soft
 
@@ -13462,10 +13462,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solito@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "solito@npm:1.1.2"
-  checksum: ea513f6025cf0fef9d518bf09aba72cf61e1b6e97707950fe917486e257cdb306a529202634bab1a7cc4f0f5706e704766eb77a8d925d2ec2eefc1f40d878922
+"solito@npm:2.0.0-canary.4":
+  version: 2.0.0-canary.4
+  resolution: "solito@npm:2.0.0-canary.4"
+  checksum: e1485e5aed275dede4bcaeab9f8e3d068b751cfcc1e2ddc6222daeaf51a34f7f50355a06bcd168c74484991dbb6762897dba9a0f861b99638719b8e97413e459
   languageName: node
   linkType: hard
 
