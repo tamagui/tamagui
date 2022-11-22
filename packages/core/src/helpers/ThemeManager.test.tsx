@@ -88,7 +88,6 @@ describe('ThemeManager', () => {
     })
     const child1 = new ThemeManager(parent, {
       inverse: true,
-      debug: true,
     })
     expect(child1.state.name).toBe('dark')
   })

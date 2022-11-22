@@ -23,12 +23,9 @@ export type Variable<A = any> = VariableIn<A> & {
 }
 
 export const createVariable = <A extends string | number = any>(props: VariableIn<A>) => {
-  if (isVariable(props)) {
-    return props
-  }
+  if (isVariable(props)) return props
   return {
     [IS_VAR]: true,
-    // @ts-ignore
     ...props,
     variable: isWeb ? createCSSVariable(props.name) : '',
   }

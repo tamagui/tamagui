@@ -4,7 +4,7 @@ import { CreateTokens } from './types'
 
 // tokens.color.dark.red ===> { var: `color-dark-red`, val: '' }
 export function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T> {
-  return createVariables(tokens as any) as any
+  return createVariables(tokens) as any
 }
 
 // verbose but gives us nice types...

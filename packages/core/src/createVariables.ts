@@ -1,3 +1,5 @@
+import { simpleHash } from '@tamagui/helpers'
+
 import { Variable, createVariable, isVariable } from './createVariable'
 
 type DeepTokenObject<Val extends string | number = any> = {
@@ -21,22 +23,20 @@ export const createVariables = <A extends DeepTokenObject>(
   let i = 0
   for (const key in tokens) {
     i++
-    const variableName = isFont ? key.slice(0, 2) : i
     const val = tokens[key]
     if (isVariable(val)) {
       res[key] = val
       continue
     }
-    let name = parentPath ? `${parentPath}-${variableName}` : key
-    if (isFont && name.includes('_')) {
-      name = name.replace(/_[a-z0-9]+/i, '')
-    }
+    const niceKey = simpleHash(key)
+    let name = isFont ? niceKey.slice(0, 2) : i
+    name = parentPath ? `${parentPath}-${name}` : niceKey
     if (val && typeof val === 'object') {
       // recurse
-      res[key] = createVariables(tokens[key] as any, `${name}`)
+      res[key] = createVariables(tokens[key] as any, name)
       continue
     }
-    res[key] = isVariable(val) ? val : createVariable({ val, name, key })
+    res[key] = isVariable(val) ? val : createVariable({ val, name, key: niceKey })
   }
   return res
 }

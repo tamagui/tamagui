@@ -63,13 +63,6 @@ export default function Home({ animationCode, compilationExamples }) {
 
   return (
     <>
-      <AddThemeDemo />
-      <UpdateThemeDemo />
-    </>
-  )
-
-  return (
-    <>
       <HomeGlow top={top} />
       <HeaderFloating alwaysFloating />
       <YStack>
