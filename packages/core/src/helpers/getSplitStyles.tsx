@@ -55,7 +55,6 @@ const skipProps = {
   tag: true,
 }
 
-const emptyObject = {}
 const IS_STATIC = process.env.IS_STATIC === 'is_static'
 
 // native only skips
@@ -202,16 +201,62 @@ export const getSplitStyles: StyleSplitter = (
   const len = propKeys.length
   const rulesToInsert: RulesToInsert = []
   const classNames: ClassNamesObject = {}
+  let className = '' // existing classNames
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
   const transforms: Record<TransformNamespaceKey, [string, string]> = {}
   // fontFamily is our special baby, ensure we grab the latest set one always
   let fontFamily: string | undefined
 
+  if (props.className) {
+    for (const cn of props.className.split(' ')) {
+      if (cn[0] === '_') {
+        // tamagui, merge it expanded on key, eventually this will go away with better compiler
+        const [shorthand, mediaOrPseudo] = cn.slice(1).split('-')
+        const isMedia = mediaOrPseudo[0] === '_'
+        const isPseudo = mediaOrPseudo[0] === '0'
+        const isMediaOrPseudo = isMedia || isPseudo
+        let fullKey = conf.shorthands[shorthand]
+        if (isMedia) {
+          // is media
+          let mediaShortKey = mediaOrPseudo.slice(1)
+          mediaShortKey = mediaShortKey.slice(0, mediaShortKey.indexOf('_'))
+          fullKey += `${PROP_SPLIT}${mediaShortKey}`
+        } else if (isPseudo) {
+          // is pseudo
+          const pseudoShortKey = mediaOrPseudo.slice(1)
+          fullKey += `${PROP_SPLIT}${pseudoShortKey}`
+        }
+        if (process.env.NODE_ENV === 'development') {
+          if (debug) {
+            // eslint-disable-next-line no-console
+            console.log('tamagui classname', fullKey, cn)
+          }
+        }
+        usedKeys[fullKey] = 1
+        mergeClassName(transforms, classNames, fullKey, cn, isMediaOrPseudo)
+      } else {
+        if (cn) {
+          className += ' ' + cn
+        }
+      }
+    }
+  }
+
   // loop backwards so we can skip already-used props
   for (let i = len - 1; i >= 0; i--) {
     let keyInit = propKeys[i]
     const valInit = props[keyInit]
+
+    // normalize shorthands up front
+    const expandedKey = conf.shorthands[keyInit]
+    if (expandedKey) {
+      keyInit = expandedKey
+    }
+
+    if (usedKeys[keyInit]) continue
+    if (skipProps[keyInit]) continue
+    if (!isWeb && keyInit.startsWith('data-')) continue
 
     if (validStyleProps[keyInit] || keyInit.includes('-')) {
       if (valInit && valInit[0] === '_') {
@@ -224,16 +269,6 @@ export const getSplitStyles: StyleSplitter = (
         continue
       }
     }
-
-    // normalize shorthands up front
-    const expandedKey = conf.shorthands[keyInit]
-    if (expandedKey) {
-      keyInit = expandedKey
-    }
-
-    if (usedKeys[keyInit]) continue
-    if (skipProps[keyInit]) continue
-    if (!isWeb && keyInit.startsWith('data-')) continue
 
     if (keyInit === 'style' || keyInit.startsWith('_style')) {
       if (!valInit) continue
@@ -387,36 +422,7 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (keyInit === 'className') {
-        let nonTamaguis = ''
-        if (!valInit) continue
-        for (const cn of valInit.split(' ')) {
-          if (cn[0] === '_') {
-            // tamagui, merge it expanded on key, eventually this will go away with better compiler
-            const [shorthand, mediaOrPseudo] = cn.slice(1).split('-')
-            const isMedia = mediaOrPseudo[0] === '_'
-            const isPseudo = mediaOrPseudo[0] === '0'
-            const isMediaOrPseudo = isMedia || isPseudo
-            let fullKey = conf.shorthands[shorthand]
-            if (isMedia) {
-              // is media
-              let mediaShortKey = mediaOrPseudo.slice(1)
-              mediaShortKey = mediaShortKey.slice(0, mediaShortKey.indexOf('_'))
-              fullKey += `${PROP_SPLIT}${mediaShortKey}`
-            } else if (isPseudo) {
-              // is pseudo
-              const pseudoShortKey = mediaOrPseudo.slice(1)
-              fullKey += `${PROP_SPLIT}${pseudoShortKey}`
-            }
-            usedKeys[fullKey] = 1
-            mergeClassName(transforms, classNames, fullKey, cn, isMediaOrPseudo)
-          } else {
-            nonTamaguis += ' ' + cn
-          }
-        }
-        if (nonTamaguis) {
-          usedKeys[keyInit] = 1
-          mergeClassName(transforms, classNames, keyInit, nonTamaguis)
-        }
+        // handled always first
         continue
       }
 
@@ -431,6 +437,12 @@ export const getSplitStyles: StyleSplitter = (
 
         if (isValidClassName || isMediaOrPseudo) {
           usedKeys[keyInit] = 1
+          if (process.env.NODE_ENV === 'development') {
+            if (debug) {
+              // eslint-disable-next-line no-console
+              console.log('tamagui classname props', keyInit, valInit)
+            }
+          }
           mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
           continue
         }
@@ -700,17 +712,6 @@ export const getSplitStyles: StyleSplitter = (
         style[key] = parentSplitStyles.style[key]
       }
     }
-    if (process.env.NODE_ENV === 'development') {
-      if (debug === 'verbose') {
-        // eslint-disable-next-line no-console
-        console.log(`  add in parent styled()`, {
-          parentSplitStyles,
-          shouldDoClasses,
-          style: { ...style },
-          classNames: { ...classNames },
-        })
-      }
-    }
   }
 
   if (process.env.TAMAGUI_TARGET === 'web') {
@@ -769,6 +770,10 @@ export const getSplitStyles: StyleSplitter = (
       // eslint-disable-next-line no-console
       console.groupEnd()
     }
+  }
+
+  if (className) {
+    classNames.className = className
   }
 
   return {

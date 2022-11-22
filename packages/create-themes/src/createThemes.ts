@@ -166,7 +166,7 @@ export const createThemes = <C extends string>({
     // generate alternates (for use in other themes), but keep just alts
     const altThemes: any[] = alternates.map((alt) => [
       `${name}_alt${alt}`,
-      getTheme(alt + shift - 1, props),
+      getTheme(alt + shift, props),
     ])
     const altButtonThemes: any[] = alternates.map((_, i) => {
       const [bName, bTheme] = [altThemes[i][0], (altThemes[i + 1] || altThemes[i])[1]]
