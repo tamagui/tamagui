@@ -22,11 +22,10 @@ export function UpdateThemeDemo() {
   useIsomorphicLayoutEffect(() => {
     addTheme({
       name: 'custom',
+      insertCSS: true,
       theme: {
         color: 'red',
-      } as any,
-      insertCSS: true,
-      update: true,
+      },
     })
     setTheme('custom')
   }, [])
@@ -46,7 +45,7 @@ export function UpdateThemeDemo() {
             name: 'custom',
             theme: {
               color: randomColor,
-            } as any,
+            },
           })
           update()
         }}

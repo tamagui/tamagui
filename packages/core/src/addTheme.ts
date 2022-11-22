@@ -5,27 +5,25 @@ import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes'
 import { ThemeDefinition, ThemeParsed } from './types'
 
-export function addTheme({
-  name: themeName,
-  theme: themeIn,
-  insertCSS,
-  update,
-}: {
+export function addTheme(props: {
   name: string
-  theme: ThemeDefinition
+  theme: Partial<Record<keyof ThemeDefinition, any>>
   insertCSS?: boolean
   update?: boolean
 }) {
   const config = getConfig()
+
   if (process.env.NODE_ENV === 'development') {
     if (!config) {
-      throw new Error(`Must run createTamagui once before loading theme`)
+      throw new Error(`No config`)
     }
-    if (!update && config.themes[themeName]) {
-      throw new Error(`Already defined theme "${themeName}", use updateTheme to change values`)
+    const theme = config.themes[props.name]
+    if (!props.update && theme) {
+      return { theme }
     }
   }
 
+  const { name: themeName, theme: themeIn, insertCSS } = props
   const theme = { ...themeIn } as ThemeParsed
   for (const key in theme) {
     ensureThemeVariable(theme, key)

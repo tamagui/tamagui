@@ -49,39 +49,42 @@ export class ThemeManager {
     }
   }
 
+  stateKey = ''
+
   updateState(
     props: ThemeProps & { forceTheme?: ThemeParsed } = this.props || {},
     forceUpdate = false,
     notify = true
   ) {
-    let shouldTryUpdate = forceUpdate || !this.parentManager
-    if (!shouldTryUpdate) {
-      const nextKey = this.#getPropsKey(props)
-      if (
-        (this.parentManager && nextKey !== this.parentManager.#getPropsKey()) ||
-        this.#getPropsKey() !== nextKey
-      ) {
-        shouldTryUpdate = true
-      }
-    }
-    if (props.forceTheme) {
-      this.state.theme = props.forceTheme
-      this.state.name = props.name || ''
-      notify && this.notify()
-      return true
-    }
+    const nextKey = this.getStateKey(props)
+    const shouldTryUpdate = forceUpdate || !this.parentManager || this.stateKey !== nextKey
     if (shouldTryUpdate) {
-      const nextState = this.#getStateIfChanged(props)
-      if (nextState) {
-        this.state = nextState
-        notify && this.notify()
+      this.stateKey = nextKey
+    }
+    const shouldFlush = () => {
+      if (props.forceTheme) {
+        this.state.theme = props.forceTheme
+        this.state.name = props.name || ''
         return true
       }
+      if (shouldTryUpdate) {
+        const nextState = this.getStateIfChanged(props)
+        if (nextState) {
+          this.state = nextState
+          return true
+        }
+      }
+    }
+    if (shouldFlush()) {
+      // reset any derived state
+      this.#allKeys = null
+      notify && this.notify()
+      return true
     }
     return false
   }
 
-  #getStateIfChanged(props: ThemeProps | undefined = this.props): ThemeManagerState | null {
+  getStateIfChanged(props: ThemeProps | undefined = this.props): ThemeManagerState | null {
     if (!props) {
       return null
     }
@@ -98,26 +101,18 @@ export class ThemeManager {
     return next
   }
 
-  #getPropsKey(props: ThemeProps | undefined = this.props) {
-    if (!props) {
-      if (process.env.NODE_ENV === 'development') {
-        throw new Error(`No props given to ThemeManager.getPropsKey()`)
-      }
-      return ``
-    }
+  getStateKey(props: ThemeProps | undefined = this.props) {
+    if (!props) throw new Error(`getStateKey no props`)
     const { name, inverse, reset, componentName } = props
-    const key = `${name || 0}${inverse || 0}${reset || 0}${componentName || 0}`
-    return key
+    return `${name || 0}${inverse || 0}${reset || 0}${componentName || 0}`
   }
 
   #allKeys: Set<string> | null = null
   get allKeys() {
-    if (!this.#allKeys) {
-      this.#allKeys = new Set([
-        ...(this.ogParentManager?.allKeys || []),
-        ...Object.keys(this.state.theme || {}),
-      ])
-    }
+    this.#allKeys ??= new Set([
+      ...(this.ogParentManager?.allKeys || []),
+      ...Object.keys(this.state.theme || {}),
+    ])
     return this.#allKeys
   }
 

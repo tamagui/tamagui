@@ -1,4 +1,3 @@
-import React from 'react'
 import { Circle, Square, XStack } from 'tamagui'
 
 export function ShapesDemo() {

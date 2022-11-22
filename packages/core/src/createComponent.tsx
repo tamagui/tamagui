@@ -38,7 +38,7 @@ import { useShallowSetState } from './helpers/useShallowSetState'
 import { measureLayout, useElementLayout } from './hooks/useElementLayout'
 import { addMediaQueryListener, getInitialMediaState } from './hooks/useMedia'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
-import { getThemeDidChange, getThemeManager, useTheme } from './hooks/useTheme'
+import { getThemeIsNewTheme, getThemeManager, useTheme } from './hooks/useTheme'
 import {
   DebugProp,
   SpaceDirection,
@@ -230,7 +230,7 @@ export function createComponent<
       debug: props.debug,
     })
     const themeManager = getThemeManager(theme)
-    const themeDidChange = getThemeDidChange(theme)
+    const themeIsNew = getThemeIsNewTheme(theme)
 
     const shouldSetMounted = needsMount && state.unmounted
     const setMounted = shouldSetMounted
@@ -637,7 +637,7 @@ export function createComponent<
     const classList = [
       componentName ? componentClassName : '',
       fontFamilyClassName,
-      themeDidChange ? theme.className : '',
+      themeIsNew ? theme.className : '',
       classNames ? Object.values(classNames).join(' ') : '',
     ]
     const className = classList.join(' ')
@@ -823,9 +823,9 @@ export function createComponent<
       }
     }
 
-    const themeShouldReset = Boolean(themeShallow && themeManager && themeDidChange)
+    const themeShouldReset = Boolean(themeShallow && themeManager && themeIsNew)
 
-    const shouldProvideThemeManager = themeShouldReset || (themeManager && themeDidChange)
+    const shouldProvideThemeManager = themeShouldReset || (themeManager && themeIsNew)
 
     // memoize to avoid re-parenting
     if (shouldProvideThemeManager) {

@@ -5,7 +5,7 @@ declare type UseThemeProps = ThemeProps & {
 };
 export declare const useTheme: (props?: UseThemeProps) => ThemeParsed;
 export declare const getThemeManager: (theme: any) => ThemeManager | undefined;
-export declare const getThemeDidChange: (theme: any) => ThemeManager | undefined;
+export declare const getThemeIsNewTheme: (theme: any) => ThemeManager | undefined;
 export declare function useThemeName(opts?: {
     parent?: true;
 }): ThemeName;
@@ -14,7 +14,7 @@ export declare const useChangeThemeEffect: (props: UseThemeProps) => {
     themes: Record<string, ThemeParsed>;
     themeManager: ThemeManager | null;
     name: string;
-    didChange?: boolean | undefined;
+    isNewTheme?: boolean | undefined;
     theme?: ThemeParsed | null | undefined;
     className?: string | undefined;
 };

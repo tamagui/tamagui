@@ -23,9 +23,12 @@ export declare class ThemeManager {
     parentManager: ThemeManager | null;
     state: ThemeManagerState;
     constructor(parentManagerIn?: ThemeManager | 'root' | null | undefined, props?: ThemeProps | undefined, ref?: any);
+    stateKey: string;
     updateState(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
     }, forceUpdate?: boolean, notify?: boolean): boolean;
+    getStateIfChanged(props?: ThemeProps | undefined): ThemeManagerState | null;
+    getStateKey(props?: ThemeProps | undefined): string;
     get allKeys(): Set<string>;
     get parentName(): string | null;
     get fullName(): string;

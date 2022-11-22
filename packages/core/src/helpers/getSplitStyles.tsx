@@ -246,6 +246,7 @@ export const getSplitStyles: StyleSplitter = (
   // loop backwards so we can skip already-used props
   for (let i = len - 1; i >= 0; i--) {
     let keyInit = propKeys[i]
+    if (keyInit === 'className') continue // handled above
     const valInit = props[keyInit]
 
     // normalize shorthands up front
@@ -418,11 +419,6 @@ export const getSplitStyles: StyleSplitter = (
 
       if (didUseKeyInit) {
         usedKeys[keyInit] = 1
-        continue
-      }
-
-      if (keyInit === 'className') {
-        // handled always first
         continue
       }
 

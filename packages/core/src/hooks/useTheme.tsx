@@ -1,4 +1,4 @@
-import { isRSC, isServer, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isRSC, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 
@@ -25,11 +25,11 @@ export const useTheme = (props: UseThemeProps = emptyProps): ThemeParsed => {
     })
   }
 
-  const { name, theme, themes, themeManager, className, didChange } = useChangeThemeEffect(props)
+  const { name, theme, themes, themeManager, className, isNewTheme } = useChangeThemeEffect(props)
 
   if (process.env.NODE_ENV === 'development') {
     // ensure we aren't creating too many ThemeManagers
-    if (didChange && className === themeManager?.parentManager?.state.className) {
+    if (isNewTheme && className === themeManager?.parentManager?.state.className) {
       // eslint-disable-next-line no-console
       console.error(`Should always change, duplicating ThemeMananger bug`, themeManager)
     }
@@ -58,13 +58,13 @@ export const useTheme = (props: UseThemeProps = emptyProps): ThemeParsed => {
 
   return useMemo(() => {
     return getThemeProxied({
-      didChange,
+      isNewTheme,
       theme,
       name,
       className,
       themeManager,
     })
-  }, [theme, didChange, name, className, themeManager, debug])
+  }, [theme, isNewTheme, name, className, themeManager, debug])
 }
 
 function getThemeProxied({
@@ -72,49 +72,38 @@ function getThemeProxied({
   name,
   className,
   themeManager,
-  didChange,
+  isNewTheme,
 }: {
   theme: any
   name: string
   className?: string
   themeManager?: ThemeManager | null
-  didChange?: boolean
+  isNewTheme?: boolean
 }) {
   return createProxy(theme, {
     has(_, key) {
       if (typeof key === 'string') {
-        if (key[0] === '$') {
-          key = key.slice(1)
-        }
-        if (themeManager) {
-          return themeManager.allKeys.has(key)
-        }
+        if (key[0] === '$') key = key.slice(1)
+        return themeManager?.allKeys.has(key)
       }
       return Reflect.has(theme, key)
     },
     get(_, key) {
       if (key === GetThemeUnwrapped) {
         return theme
-      }
-      if (key === GetThemeManager) {
+      } else if (key === GetThemeManager) {
         return themeManager
-      }
-      if (key === GetDidChange) {
-        return didChange
-      }
-      if (key === 'name') {
+      } else if (key === GetIsNewTheme) {
+        return isNewTheme
+      } else if (key === 'name') {
         return name
-      }
-      if (key === 'className') {
+      } else if (key === 'className') {
         return className
-      }
-      if (!name || key === '__proto__' || typeof key === 'symbol' || key === '$typeof') {
+      } else if (!name || key === '__proto__' || typeof key === 'symbol' || key === '$typeof') {
         return Reflect.get(_, key)
       }
       // auto convert variables to plain
-      if (key[0] === '$') {
-        key = key.slice(1)
-      }
+      if (key[0] === '$') key = key.slice(1)
       if (!themeManager) {
         return theme[key]
       }
@@ -124,10 +113,10 @@ function getThemeProxied({
 }
 
 const GetThemeManager = Symbol()
-const GetDidChange = Symbol()
+const GetIsNewTheme = Symbol()
 
 export const getThemeManager = (theme: any): ThemeManager | undefined => theme?.[GetThemeManager]
-export const getThemeDidChange = (theme: any): ThemeManager | undefined => theme?.[GetDidChange]
+export const getThemeIsNewTheme = (theme: any): ThemeManager | undefined => theme?.[GetIsNewTheme]
 
 export function useThemeName(opts?: { parent?: true }): ThemeName {
   if (isRSC) {
@@ -157,7 +146,7 @@ export const useChangeThemeEffect = (
   themes: Record<string, ThemeParsed>
   themeManager: ThemeManager | null
   name: string
-  didChange?: boolean
+  isNewTheme?: boolean
   theme?: ThemeParsed | null
   className?: string
 } => {
@@ -185,52 +174,54 @@ export const useChangeThemeEffect = (
 
   const parentManager = useContext(ThemeManagerContext)
   const forceUpdate = forceUpdateProp || useForceUpdate()
+  const [{ isNewTheme, themeManager }, setThemeManager] = useState(() => {
+    const _ = new ThemeManager(parentManager, props)
+    return {
+      // ThemeManager returns parentManager if no change
+      isNewTheme: _ !== parentManager,
+      themeManager: _,
+    }
+  })
 
-  // only create once we update it in the effect
-  const themeManager = useMemo(() => {
-    return new ThemeManager(parentManager, props)
-  }, [])
+  const nextKey = themeManager.getStateKey(props)
+  const willChange = nextKey !== themeManager.stateKey
 
-  const didCreate = Boolean(themeManager !== parentManager)
-  const didUpdate = useMemo(() => {
-    if (!didCreate) return false
-    return themeManager.updateState(props, false, false)
-  }, [props.name, props.inverse, props.reset, props.componentName])
+  // create if not yet created
+  if (!isNewTheme && willChange) {
+    setThemeManager({
+      themeManager: new ThemeManager(parentManager, props),
+      isNewTheme: true,
+    })
+  }
 
-  const didChange = didCreate || didUpdate
+  // update immediately on web it's just className (check deopt w/animations)
+  let shouldNotify = !isWeb
+  if (isWeb) {
+    shouldNotify = themeManager.updateState(props, false, false)
+  }
 
   if (!isServer) {
-    useEffect(() => {
-      if (!didCreate) return
-      activeThemeManagers.add(themeManager)
-      return () => {
-        activeThemeManagers.delete(themeManager)
-      }
-    }, [didCreate])
-
     useLayoutEffect(() => {
-      if (process.env.NODE_ENV === 'development') {
-        if (props.debug) {
-          // prettier-ignore
-          // eslint-disable-next-line no-console
-          console.log('useChangeTheme effect', { props, didChange, didCreate, didUpdate, themeManager, parentManager, activeThemeManagers })
-        }
+      activeThemeManagers.add(themeManager)
+      if (willChange && !isWeb) {
+        themeManager.updateState(props, false, false)
+        themeManager.notify()
       }
-
-      if (!didChange) return
-      themeManager.notify()
-      if (!parentManager) return
-      return parentManager.onChangeTheme(() => {
+      const disposeChangeListener = parentManager?.onChangeTheme(() => {
         if (themeManager.updateState(props)) {
           forceUpdate()
         }
       })
-    }, [didChange, themeManager.state.className, debug])
+      return () => {
+        activeThemeManagers.delete(themeManager)
+        disposeChangeListener?.()
+      }
+    }, [nextKey, debug])
   }
 
   return {
     ...themeManager.state,
-    didChange,
+    isNewTheme,
     themes,
     themeManager,
   }

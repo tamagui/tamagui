@@ -1,5 +1,6 @@
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { AddThemeDemo, UpdateThemeDemo } from '@tamagui/demos'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { useTint } from '@tamagui/site/components/useTint'
@@ -59,6 +60,13 @@ import { getCompilationExamples } from '../lib/getCompilationExamples'
 
 export default function Home({ animationCode, compilationExamples }) {
   const [top, setTop] = useState(0)
+
+  return (
+    <>
+      <AddThemeDemo />
+      <UpdateThemeDemo />
+    </>
+  )
 
   return (
     <>
