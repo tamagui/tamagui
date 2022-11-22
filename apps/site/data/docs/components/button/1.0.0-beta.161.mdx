@@ -59,7 +59,7 @@ Button only supports a limited subset of text props directly, and doesn't accept
 Please note that this pattern is a bit antithetical to the multiple-components APIs that Tamagui generally prefers. In a future release we hope to fix this, but that change should be easy to migrate to.
 
 ```tsx
-import { forwardRef } from 'React'
+import { forwardRef } from 'react'
 import { styled, themeable, ButtonFrame, ButtonText, ButtonProps as TamaguiButtonProps, GetProps, useButton } from 'tamagui'
 
 const CustomButtonFrame = styled(ButtonFrame, {
@@ -78,9 +78,10 @@ export type ButtonProps = TamaguiButtonProps &
   CustomButtonTextProps;
 
 export const Button = themeable(forwardRef<TamaguiElement, ButtonProps>((propsIn, ref) => {
-  const { props } = useButton(propsIn, { Text: CustomButtonText })
-  return <CustomButtonFrame {...props} ref={ref} />
-})
+    const { props } = useButton(propsIn, { Text: CustomButtonText })
+    return <CustomButtonFrame {...props} ref={ref} />
+  })
+)
 ```
 
 ### Button props
