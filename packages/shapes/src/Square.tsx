@@ -7,7 +7,6 @@ export const Square = styled(ThemeableStack, {
   name: 'Square',
   alignItems: 'center',
   justifyContent: 'center',
-  backgrounded: true,
 
   variants: {
     circular: {
