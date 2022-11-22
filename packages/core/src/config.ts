@@ -18,7 +18,16 @@ export const setConfigFont = (name: string, font: any, fontParsed: any) => {
 }
 
 export const getHasConfigured = () => !!conf
-export const getConfig = () => conf!
+export const getConfig = () => {
+  if (!conf) {
+    throw new Error(
+      process.env.NODE_ENV === 'development'
+        ? `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before rendering.`
+        : `Err0`
+    )
+  }
+  return conf
+}
 export const getTokens = (prefixed?: boolean): Tokens =>
   prefixed ? conf!.tokensParsed : conf!.tokens
 

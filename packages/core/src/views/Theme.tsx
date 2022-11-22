@@ -25,7 +25,7 @@ export function wrapThemeManagerContext(
 }
 
 export const Theme = memo(function Theme(props: ThemeProps) {
-  const { name, theme, themeManager, themes, className, didChange } = useChangeThemeEffect(props)
+  const { name, theme, themeManager, themes, className, isNewTheme } = useChangeThemeEffect(props)
   const missingTheme = !themes || !name || !theme
 
   // memo here, changing theme without re-rendering all children is a critical optimization
@@ -46,7 +46,7 @@ export const Theme = memo(function Theme(props: ThemeProps) {
 
   if (isWeb) {
     const classNameFinal =
-      props.disableThemeClass || !didChange
+      props.disableThemeClass || !isNewTheme
         ? '_dsp_contents'
         : [props.className, className, '_dsp_contents'].filter(Boolean).join(' ')
 

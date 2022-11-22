@@ -39,49 +39,35 @@ export class ThemeManager {
       this.ogParentManager = parentManagerIn
     }
     if (parentManagerIn === 'root') {
-      this.updateState(props, false, false)
+      this.updateState(props, false)
       return
     }
     this.parentManager = parentManagerIn || null
-    const didUpdate = this.updateState(props, false, false)
+    const didUpdate = this.updateState(props, false)
     if (!didUpdate && parentManagerIn) {
       return parentManagerIn
     }
   }
 
-  stateKey = ''
-
-  updateState(
-    props: ThemeProps & { forceTheme?: ThemeParsed } = this.props || {},
-    forceUpdate = false,
-    notify = true
-  ) {
-    const nextKey = this.getStateKey(props)
-    const shouldTryUpdate = forceUpdate || !this.parentManager || this.stateKey !== nextKey
-    if (shouldTryUpdate) {
-      this.stateKey = nextKey
-    }
+  updateState(props: ThemeProps & { forceTheme?: ThemeParsed } = this.props || {}, notify = true) {
     const shouldFlush = () => {
       if (props.forceTheme) {
         this.state.theme = props.forceTheme
         this.state.name = props.name || ''
         return true
       }
-      if (shouldTryUpdate) {
-        const nextState = this.getStateIfChanged(props)
-        if (nextState) {
-          this.state = nextState
-          return true
-        }
+      const nextState = this.getStateIfChanged(props)
+      if (nextState) {
+        this.state = nextState
+        return true
       }
     }
     if (shouldFlush()) {
       // reset any derived state
       this.#allKeys = null
       notify && this.notify()
-      return true
+      return this.state
     }
-    return false
   }
 
   getStateIfChanged(props: ThemeProps | undefined = this.props): ThemeManagerState | null {
@@ -99,12 +85,6 @@ export class ThemeManager {
       return null
     }
     return next
-  }
-
-  getStateKey(props: ThemeProps | undefined = this.props) {
-    if (!props) throw new Error(`getStateKey no props`)
-    const { name, inverse, reset, componentName } = props
-    return `${name || 0}${inverse || 0}${reset || 0}${componentName || 0}`
   }
 
   #allKeys: Set<string> | null = null
@@ -135,14 +115,6 @@ export class ThemeManager {
       manager = manager.parentManager
       theme = manager?.state.theme
     }
-  }
-
-  isTracking(uuid: string) {
-    return Boolean(this.keys.get(uuid)?.size)
-  }
-
-  track(uuid: any, keys: Set<string>) {
-    this.keys.set(uuid, keys)
   }
 
   notify() {
@@ -252,5 +224,3 @@ const inverseTheme = (themeName: string) => {
 }
 
 export const ThemeManagerContext = createContext<ThemeManager | null>(null)
-
-const withoutComponentName = (name: string) => name.replace(/(_[A-Z][a-zA-Z]+)+$/g, '')

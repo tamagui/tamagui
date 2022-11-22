@@ -1,8 +1,6 @@
 import { ThemeManager } from '../helpers/ThemeManager';
 import { ThemeName, ThemeParsed, ThemeProps } from '../types';
-declare type UseThemeProps = ThemeProps & {
-    forceUpdate?: any;
-};
+declare type UseThemeProps = ThemeProps;
 export declare const useTheme: (props?: UseThemeProps) => ThemeParsed;
 export declare const getThemeManager: (theme: any) => ThemeManager | undefined;
 export declare const getThemeIsNewTheme: (theme: any) => ThemeManager | undefined;

@@ -9,7 +9,6 @@ import {
 } from '@tamagui/helpers'
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import type { ViewStyle } from '@tamagui/types-react-native'
-import { useForceUpdate } from '@tamagui/use-force-update'
 import React, {
   Children,
   Fragment,
@@ -219,18 +218,17 @@ export function createComponent<
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
-    const forceUpdate = useForceUpdate()
     const theme = useTheme({
       name: props.theme,
       componentName,
       reset: props.reset,
-      forceUpdate,
       inverse: props.themeInverse,
       // disableThemeClass: noClassNames,
       debug: props.debug,
     })
     const themeManager = getThemeManager(theme)
     const themeIsNew = getThemeIsNewTheme(theme)
+    if (debugProp) console.log('themeIsNew', themeIsNew, theme.className)
 
     const shouldSetMounted = needsMount && state.unmounted
     const setMounted = shouldSetMounted

@@ -50,7 +50,7 @@ export function HomeScreen() {
           <Square size={50} bc="red" />
           <Square $sm={{ display: 'none' }} size={50} bc="red" />
           <Square size={50} bc="red" />
-          <Square debug display="none" size={50} bc="red" />
+          <Square display="none" size={50} bc="red" />
           <Square size={50} bc="red" />
         </XStack> */}
 

@@ -23,18 +23,14 @@ export declare class ThemeManager {
     parentManager: ThemeManager | null;
     state: ThemeManagerState;
     constructor(parentManagerIn?: ThemeManager | 'root' | null | undefined, props?: ThemeProps | undefined, ref?: any);
-    stateKey: string;
     updateState(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
-    }, forceUpdate?: boolean, notify?: boolean): boolean;
+    }, notify?: boolean): ThemeManagerState | undefined;
     getStateIfChanged(props?: ThemeProps | undefined): ThemeManagerState | null;
-    getStateKey(props?: ThemeProps | undefined): string;
     get allKeys(): Set<string>;
     get parentName(): string | null;
     get fullName(): string;
     getValue(key: string): import("..").Variable<any> | undefined;
-    isTracking(uuid: string): boolean;
-    track(uuid: any, keys: Set<string>): void;
     notify(): void;
     onChangeTheme(cb: ThemeListener): () => void;
 }

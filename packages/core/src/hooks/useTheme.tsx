@@ -1,6 +1,5 @@
-import { isRSC, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useForceUpdate } from '@tamagui/use-force-update'
-import { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import { isRSC, isServer, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useContext, useLayoutEffect, useMemo, useState } from 'react'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
@@ -9,13 +8,10 @@ import { ThemeManager, ThemeManagerContext } from '../helpers/ThemeManager'
 import { ThemeName, ThemeParsed, ThemeProps } from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
 
-type UseThemeProps = ThemeProps & {
-  forceUpdate?: any
-}
+type UseThemeProps = ThemeProps
 
 const emptyProps = { name: null }
 export const useTheme = (props: UseThemeProps = emptyProps): ThemeParsed => {
-  // TODO this can use useChangeThemeEffect almost ready
   if (isRSC) {
     const config = getConfig()
     const name = Object.keys(config.themes)[0]
@@ -151,76 +147,64 @@ export const useChangeThemeEffect = (
   className?: string
 } => {
   const config = getConfig()
-  if (process.env.NODE_ENV === 'development') {
-    if (!config) {
-      throw new Error(
-        `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before rendering.`
-      )
-    }
-  }
-
-  const { debug, forceUpdate: forceUpdateProp } = props
+  const { debug } = props
   const { themes } = config
 
   if (isRSC) {
     // we need context working for this to work well
-    const next = new ThemeManager(undefined, props)
     return {
-      ...next.state,
+      ...create().state,
       themes,
       themeManager: null,
     }
   }
 
   const parentManager = useContext(ThemeManagerContext)
-  const forceUpdate = forceUpdateProp || useForceUpdate()
-  const [{ isNewTheme, themeManager }, setThemeManager] = useState(() => {
+  const [{ isNewTheme, state, themeManager }, setThemeManager] = useState(create)
+
+  function create() {
     const _ = new ThemeManager(parentManager, props)
+    const isNewTheme = _ !== parentManager
     return {
       // ThemeManager returns parentManager if no change
-      isNewTheme: _ !== parentManager,
+      isNewTheme,
+      state: isNewTheme ? { ..._.state } : _.state,
       themeManager: _,
     }
-  })
-
-  const nextKey = themeManager.getStateKey(props)
-  const willChange = nextKey !== themeManager.stateKey
-
-  // create if not yet created
-  if (!isNewTheme && willChange) {
-    setThemeManager({
-      themeManager: new ThemeManager(parentManager, props),
-      isNewTheme: true,
-    })
   }
 
-  // update immediately on web it's just className (check deopt w/animations)
-  let shouldNotify = !isWeb
-  if (isWeb) {
-    shouldNotify = themeManager.updateState(props, false, false)
+  function update() {
+    const next = themeManager.updateState(props)
+    if (next) {
+      if (isNewTheme) {
+        setThemeManager({
+          themeManager,
+          state: next,
+          isNewTheme: true,
+        })
+      } else {
+        create()
+      }
+    }
   }
+
+  update()
 
   if (!isServer) {
     useLayoutEffect(() => {
+      if (!isNewTheme) return
       activeThemeManagers.add(themeManager)
-      if (willChange && !isWeb) {
-        themeManager.updateState(props, false, false)
-        themeManager.notify()
-      }
-      const disposeChangeListener = parentManager?.onChangeTheme(() => {
-        if (themeManager.updateState(props)) {
-          forceUpdate()
-        }
-      })
+      // themeManager.notify()
+      const disposeChangeListener = parentManager?.onChangeTheme(update)
       return () => {
         activeThemeManagers.delete(themeManager)
         disposeChangeListener?.()
       }
-    }, [nextKey, debug])
+    }, [state, debug])
   }
 
   return {
-    ...themeManager.state,
+    ...state,
     isNewTheme,
     themes,
     themeManager,
