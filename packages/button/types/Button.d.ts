@@ -479,6 +479,7 @@ export declare function useButton(props: ButtonProps, { Text }?: {
             readonly disabled?: boolean | undefined;
         }> | null | undefined;
         themeInverse?: boolean | undefined;
+        reset?: boolean | undefined;
     };
 };
 export declare const buttonStaticConfig: {

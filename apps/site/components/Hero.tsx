@@ -8,18 +8,15 @@ import {
   Spacer,
   Text,
   Theme,
-  TooltipSimple,
   VisuallyHidden,
   XStack,
   YStack,
-  getTokens,
   styled,
 } from 'tamagui'
 
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
 import { GithubIcon } from './GithubIcon'
-import { Header } from './Header'
 import { useHeroHovered } from './heroState'
 import { useTint } from './useTint'
 

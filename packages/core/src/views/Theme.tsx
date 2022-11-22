@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import { memo, useMemo } from 'react'
+import React, { memo, useId, useMemo } from 'react'
 
 import { variableToString } from '../createVariable'
 import { ThemeManager, ThemeManagerContext } from '../helpers/ThemeManager'
@@ -17,42 +17,50 @@ export function wrapThemeManagerContext(
   }
   // be sure to memoize shouldReset to avoid reparenting
   let next = children
+  // TODO likely not necessary if we do reset logic now in useTheme?
   // reset to parent theme
   if (shouldReset && themeManager) {
-    next = <Theme name={themeManager.parentName}>{next}</Theme>
+    next = <Theme name={themeManager.state.parentName}>{next}</Theme>
   }
   return <ThemeManagerContext.Provider value={themeManager}>{next}</ThemeManagerContext.Provider>
 }
 
 export const Theme = memo(function Theme(props: ThemeProps) {
-  const { name, theme, themeManager, themes, className, isNewTheme } = useChangeThemeEffect(props)
+  // its a permanent prop meant for internal views
+  if (props.disable) {
+    return props.children
+  }
+  const { name, theme, themeManager, themes, isNewTheme, className } = useChangeThemeEffect(props)
+
+  const disableThemeClass = props.disableThemeClass
   const missingTheme = !themes || !name || !theme
+  const disablePassingTheme = missingTheme || !isNewTheme
 
   // memo here, changing theme without re-rendering all children is a critical optimization
   // may require some effort of end user to memoize but without this memo they'd have no option
   let contents = useMemo(() => {
-    return missingTheme ? null : wrapThemeManagerContext(props.children, themeManager)
-  }, [missingTheme, props.children, themeManager])
+    const next = props['data-themeable']
+      ? React.cloneElement(props.children, { ['data-themeable']: true })
+      : props.children
 
-  if (missingTheme) {
-    if (process.env.NODE_ENV === 'development') {
-      if (name && !theme) {
-        // eslint-disable-next-line no-console
-        console.warn(`No theme found by name ${name}`)
-      }
-    }
+    return disablePassingTheme ? next : wrapThemeManagerContext(next, themeManager)
+  }, [disablePassingTheme, props.children, themeManager])
+
+  if (process.env.NODE_ENV === 'development' && missingTheme) {
+    // eslint-disable-next-line no-console
+    name && !theme && console.warn(`No theme found by name ${name}`)
     return props.children
   }
 
-  if (isWeb) {
-    const classNameFinal =
-      props.disableThemeClass || !isNewTheme
-        ? '_dsp_contents'
-        : [props.className, className, '_dsp_contents'].filter(Boolean).join(' ')
+  if (disableThemeClass || disablePassingTheme) {
+    return contents
+  }
 
+  if (isWeb) {
+    const cn = [props.className, className, '_dsp_contents'].filter(Boolean).join(' ')
     contents = (
       <span
-        className={classNameFinal}
+        className={cn}
         style={{
           // in order to provide currentColor, set color by default
           color: variableToString(theme?.color),

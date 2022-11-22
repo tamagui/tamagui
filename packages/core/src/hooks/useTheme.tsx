@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 import { isRSC, isServer, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useContext, useLayoutEffect, useMemo, useState } from 'react'
+import { useContext, useId, useLayoutEffect, useMemo, useState } from 'react'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
@@ -8,10 +9,8 @@ import { ThemeManager, ThemeManagerContext } from '../helpers/ThemeManager'
 import { ThemeName, ThemeParsed, ThemeProps } from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
 
-type UseThemeProps = ThemeProps
-
 const emptyProps = { name: null }
-export const useTheme = (props: UseThemeProps = emptyProps): ThemeParsed => {
+export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
   if (isRSC) {
     const config = getConfig()
     const name = Object.keys(config.themes)[0]
@@ -26,25 +25,20 @@ export const useTheme = (props: UseThemeProps = emptyProps): ThemeParsed => {
   if (process.env.NODE_ENV === 'development') {
     // ensure we aren't creating too many ThemeManagers
     if (isNewTheme && className === themeManager?.parentManager?.state.className) {
-      // eslint-disable-next-line no-console
       console.error(`Should always change, duplicating ThemeMananger bug`, themeManager)
     }
     if (props.debug === 'verbose') {
-      // eslint-disable-next-line no-console
       console.groupCollapsed('  🔹 useTheme =>', name)
       const logs = { ...props, name, className, ...(isDevTools && { theme }) }
       for (const key in logs) {
-        // eslint-disable-next-line no-console
         console.log('  ', key, logs[key])
       }
-      // eslint-disable-next-line no-console
       console.groupEnd()
     }
   }
 
   if (!theme) {
     if (process.env.NODE_ENV === 'development') {
-      // eslint-disable-next-line no-console
       console.warn('No theme found', name, props, themeManager)
     }
     return themes[Object.keys(themes)[0]]
@@ -125,7 +119,7 @@ export function useThemeName(opts?: { parent?: true }): ThemeName {
   useIsomorphicLayoutEffect(() => {
     if (!manager) return
     return manager.onChangeTheme((next, manager) => {
-      const name = opts?.parent ? manager.parentName || next : next
+      const name = opts?.parent ? manager.state.parentName || next : next
       if (!name) return
       setName(name)
     })
@@ -136,20 +130,20 @@ export function useThemeName(opts?: { parent?: true }): ThemeName {
 
 export const activeThemeManagers = new Set<ThemeManager>()
 
-export const useChangeThemeEffect = (
-  props: UseThemeProps
-): {
+export type ChangedTheme = {
   themes: Record<string, ThemeParsed>
   themeManager: ThemeManager | null
   name: string
   isNewTheme?: boolean
   theme?: ThemeParsed | null
   className?: string
-} => {
-  const config = getConfig()
-  const { debug } = props
-  const { themes } = config
+}
 
+export const useChangeThemeEffect = (props: ThemeProps): ChangedTheme => {
+  const parentManager = useContext(ThemeManagerContext)
+  const config = getConfig()
+  const { debug, disable } = props
+  const { themes } = config
   if (isRSC) {
     // we need context working for this to work well
     return {
@@ -158,40 +152,21 @@ export const useChangeThemeEffect = (
       themeManager: null,
     }
   }
-
-  const parentManager = useContext(ThemeManagerContext)
-  const [{ isNewTheme, state, themeManager }, setThemeManager] = useState(create)
-
-  function create() {
-    const _ = new ThemeManager(parentManager, props)
-    const isNewTheme = _ !== parentManager
+  if (disable) {
+    if (!parentManager) throw new Error(`Disabling topmost theme`)
     return {
-      // ThemeManager returns parentManager if no change
-      isNewTheme,
-      state: isNewTheme ? { ..._.state } : _.state,
-      themeManager: _,
+      ...parentManager.state,
+      isNewTheme: false,
+      themes,
+      themeManager: parentManager,
     }
   }
 
-  function update() {
-    const next = themeManager.updateState(props)
-    if (next) {
-      if (isNewTheme) {
-        setThemeManager({
-          themeManager,
-          state: next,
-          isNewTheme: true,
-        })
-      } else {
-        create()
-      }
-    }
-  }
-
-  update()
+  const [{ isNewTheme, state, themeManager }, setThemeManager] = useState(create)
 
   if (!isServer) {
     useLayoutEffect(() => {
+      if (disable) return
       if (!isNewTheme) return
       activeThemeManagers.add(themeManager)
       // themeManager.notify()
@@ -200,13 +175,54 @@ export const useChangeThemeEffect = (
         activeThemeManagers.delete(themeManager)
         disposeChangeListener?.()
       }
-    }, [state, debug])
+    }, [disable, state, isNewTheme, debug])
   }
+
+  // prettier-ignore
+  process.env.NODE_ENV === 'development' && debug && console.log('useTheme before update isNewTheme', isNewTheme,'is ==', themeManager === parentManager, themeManager.state.name, parentManager?.state.name)
+
+  update()
 
   return {
     ...state,
     isNewTheme,
     themes,
     themeManager,
+  }
+
+  function create() {
+    const _ = new ThemeManager(parentManager, props)
+    const isNewTheme = _ !== parentManager
+    // prettier-ignore
+    process.env.NODE_ENV === 'development' && debug && [console.groupCollapsed('useTheme create() isNewTheme', isNewTheme), console.log('parent.state', { ...parentManager?.state }, '\n', 'props', props, '\n', 'getState', _.getState(props), '\n', 'state', { ..._.state }), console.groupEnd()]
+    return {
+      // ThemeManager returns parentManager if no change
+      isNewTheme,
+      state: { ..._.state },
+      themeManager: _,
+    }
+  }
+
+  function update() {
+    const newState = themeManager.getStateIfChanged(props, state)
+    if (newState) {
+      if (!isNewTheme) {
+        // prettier-ignore
+        process.env.NODE_ENV === 'development' && debug && console.log('useTheme create()', parentManager?.state?.name, '=>', newState.name)
+        setThemeManager(create)
+      } else {
+        const next = themeManager.updateState(props)
+        if (next) {
+          // prettier-ignore
+          process.env.NODE_ENV === 'development' && debug && console.log('useTheme update()', parentManager?.state?.name, '=>', next.name)
+          setThemeManager({
+            themeManager,
+            // may not need spread
+            state: { ...next },
+            isNewTheme: true,
+          })
+        }
+      }
+    }
   }
 }

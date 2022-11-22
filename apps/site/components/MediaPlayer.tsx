@@ -29,8 +29,9 @@ export const MediaPlayer = memo(
     onHoverSection?: (name: string) => void
     pointerEventsControls?: any
   }) => {
+    const tint = !alt ? null : (`alt${alt}` as ThemeName)
     return (
-      <Theme name={!alt ? null : (`alt${alt}` as ThemeName)}>
+      <Theme name={tint}>
         <Card
           overflow="visible"
           bordered

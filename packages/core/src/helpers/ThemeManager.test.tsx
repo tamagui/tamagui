@@ -107,10 +107,31 @@ describe('ThemeManager', () => {
     const parent = new ThemeManager(undefined, {
       name: 'light',
     })
-    const didChange = parent.updateState({
+    const newState = parent.updateState({
       name: 'dark',
     })
-    expect(didChange).toBe(true)
+    expect(newState).toMatchInlineSnapshot(`
+      {
+        "className": "t_dark",
+        "name": "dark",
+        "theme": {
+          "background": {
+            "isVar": true,
+            "key": "color-2",
+            "name": "background",
+            "val": "#000",
+            "variable": "",
+          },
+          "color": {
+            "isVar": true,
+            "key": "color-1",
+            "name": "color",
+            "val": "#fff",
+            "variable": "",
+          },
+        },
+      }
+    `)
     expect(parent.state.name).toBe('dark')
   })
 
@@ -151,5 +172,29 @@ describe('ThemeManager', () => {
       inverse: true,
     })
     expect(child3.state.name).toBe('dark')
+  })
+
+  test('Updates from null the new theme nested 3 themes', () => {
+    const a = new ThemeManager(undefined, {
+      name: 'dark',
+    })
+    const b = new ThemeManager(a, {
+      name: 'red',
+    })
+    expect(b.state.name).toBe('dark_red')
+    const c = new ThemeManager(b, {
+      name: 'alt2',
+    })
+    expect(c.state.name).toBe('dark_red_alt2')
+  })
+
+  test('Ignored dup themes', () => {
+    const a = new ThemeManager(undefined, {
+      name: 'dark',
+    })
+    const b = new ThemeManager(a, {
+      name: 'dark',
+    })
+    expect(b === a).toBe(true)
   })
 })

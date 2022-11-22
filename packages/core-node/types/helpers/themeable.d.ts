@@ -4,6 +4,7 @@ export interface ThemeableProps {
     themeInverse?: boolean;
     componentName?: string;
     debug?: boolean | 'verbose';
+    reset?: boolean;
 }
 export declare function themeable<Component extends (props: any) => any>(component: Component, opts?: {
     componentName?: string;

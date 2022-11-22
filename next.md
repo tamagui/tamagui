@@ -1,5 +1,9 @@
 rc.0
 
+  - button styles
+  - ssr issues
+  - native
+
   - check:
     - prod input style check
     - font size SSR check
@@ -12,6 +16,7 @@ rc.0
 
 1.0
 
+- `tamagui` cli basic version
 - I'm seeing an issue where setting multiline=true on Input results in broken colors when switching between light & dark themes (doesn't use specified text color). 
 - https://github.com/tamagui/tamagui/issues/318
 - focus an input in a dialog on mobile or a propover etc. then it disappears
@@ -25,14 +30,25 @@ rc.0
 - Sheet drag up small bug native with scrollable content
 - Select id="" + Label focus
 - site: search css / jumpy
-- 1.0 blog post ~50% done
 - canary release channel
 - kitchen-sink in Snack demo
-- remove/tim Slot
 - web: forms dix bubble / label
 - nice to have: visual regression testing:
   - https://formidable.com/open-source/react-native-owl/
   - https://hughmccamphill.com/visual-regression-testing-react-native-apps-with-detox-and-jest
+
+qol:
+
+- git hook to auto-follow on every commit with a type generation
+- site snack + demo embed on all pages floating that scales up on hover on large screen
+- sponsor promo
+- sponsor blog
+- sponsor rewards e2e flow
+- mailing list
+- better gh PR template / sandbox
+- improve sandbox to a mini vite stack
+- runthrough docs a handful of times
+- get an demo for studio ready
 
 content
 
@@ -41,11 +57,14 @@ content
   - document fontFaceByWeight
   - document themeShallow
 
+
 ---
 
 inbox
 
-- move much logic from withTamgui into TamaguiPlugin
+- remove types from dir 
+  - yarn tamagui-build types and commits
+  - 
 - TestFontTokensInVariants types not autocompleting in variants... but showing properly on hover/type property
 - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
 - pass Size down context (see Group) is this just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)?
@@ -80,6 +99,7 @@ inbox
 - animation accept useAnimatedStyle
 - Switch gesture
 - loadFont, loadAnimations
+- <Debug><...><Debug/> turns on debugging for all in tree and shows them nested
 - <Icon />
   - use theme values and size values
   - can swap for other icon packs (use createTamagui({ icons }))

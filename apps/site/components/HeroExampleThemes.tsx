@@ -285,7 +285,6 @@ export function HeroExampleThemes() {
                       <Theme name={color as any}>
                         <MediaPlayer
                           elevation="$3"
-                          // shac="rgba(0,0,0,0.15)"
                           pointerEvents="none"
                           alt={alt ? +alt.replace('alt', '') : null}
                         />
@@ -301,7 +300,6 @@ export function HeroExampleThemes() {
             <Theme name={colorName}>
               <MediaPlayer
                 elevation="$3"
-                // shac="rgba(0,0,0,0.15)"
                 pointerEvents="none"
                 pointerEventsControls="auto"
                 alt={curShadeI}

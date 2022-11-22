@@ -12,25 +12,24 @@ declare type ThemeManagerState = {
     name: string;
     theme?: ThemeParsed | null;
     className?: string;
+    parentName?: string;
 };
 export declare class ThemeManager {
     #private;
-    props?: ThemeProps | undefined;
+    props: ThemeProps;
     ref?: any;
-    keys: Map<string, Set<string> | undefined>;
     themeListeners: Set<ThemeListener>;
     ogParentManager: ThemeManager | null;
     parentManager: ThemeManager | null;
     state: ThemeManagerState;
-    constructor(parentManagerIn?: ThemeManager | 'root' | null | undefined, props?: ThemeProps | undefined, ref?: any);
+    constructor(parentManagerIn?: ThemeManager | 'root' | null | undefined, props?: ThemeProps, ref?: any);
     updateState(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
     }, notify?: boolean): ThemeManagerState | undefined;
-    getStateIfChanged(props?: ThemeProps | undefined): ThemeManagerState | null;
+    getStateIfChanged(props?: ThemeProps, state?: ThemeManagerState): ThemeManagerState | null;
+    getState(props?: ThemeProps, state?: ThemeManagerState): ThemeManagerState | null;
     get allKeys(): Set<string>;
-    get parentName(): string | null;
-    get fullName(): string;
-    getValue(key: string): import("..").Variable<any> | undefined;
+    getValue(key: string, state?: ThemeManagerState): import("..").Variable<any> | undefined;
     notify(): void;
     onChangeTheme(cb: ThemeListener): () => void;
 }

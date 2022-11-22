@@ -224,11 +224,11 @@ export function createComponent<
       reset: props.reset,
       inverse: props.themeInverse,
       // disableThemeClass: noClassNames,
+      disable: props['data-themeable'],
       debug: props.debug,
     })
     const themeManager = getThemeManager(theme)
     const themeIsNew = getThemeIsNewTheme(theme)
-    if (debugProp) console.log('themeIsNew', themeIsNew, theme.className)
 
     const shouldSetMounted = needsMount && state.unmounted
     const setMounted = shouldSetMounted
@@ -378,11 +378,12 @@ export function createComponent<
               : pseudos.exitStyle
             : null
 
-          if (isEntering && enterStyle) {
-            merge(animationStyle, enterStyle)
-          }
-          if (isExiting && exitStyle) {
-            merge(animationStyle, exitStyle)
+          ensureBaseHasDefaults(animationStyle, pseudos)
+
+          if (isEntering) {
+            enterStyle && merge(animationStyle, enterStyle)
+          } else if (isExiting) {
+            exitStyle && merge(animationStyle, exitStyle)
           }
 
           return animationStyle
@@ -1340,4 +1341,46 @@ const dontComposePressabilityKeys = {
 
 function getMediaStateObject(obj: Object) {
   return Object.fromEntries(Object.entries(obj).flatMap(([k, v]) => (v ? [[`$${k}`, v]] : [])))
+}
+
+function ensureBaseHasDefaults(
+  base: ViewStyle,
+  pseudos: Record<string, ViewStyle | null | undefined>
+) {
+  const mergeIfNotExists = (key: string) => {
+    if (!base.transform?.some((x) => key in x)) {
+      mergeTransform(base, key, transformDefaults[key] || 0)
+    }
+  }
+
+  for (const name in pseudos) {
+    const pseudo = pseudos[name]
+    for (const key in pseudo) {
+      const val = pseudo[key]
+      if (key in stylePropsTransform) {
+        mergeIfNotExists(key)
+      } else if (key === 'transform') {
+        if (typeof val === 'string') continue
+        for (const t of val) {
+          mergeIfNotExists(Object.keys(t)[0])
+        }
+      } else {
+        if (key in baseDefaults && !(key in base)) {
+          base[key] = baseDefaults[key]
+        }
+      }
+    }
+  }
+}
+
+const baseDefaults = {
+  opacity: 1,
+}
+
+const transformDefaults = {
+  opacity: 1,
+  scale: 1,
+  rotate: '0deg',
+  rotateY: '0deg',
+  rotateX: '0deg',
 }

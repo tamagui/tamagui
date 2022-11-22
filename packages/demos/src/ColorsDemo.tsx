@@ -86,7 +86,7 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
             <Paragraph
               theme={name as any}
               col="$color10"
-              h="$3"
+              h="$4"
               rotate="-10deg"
               $sm={{
                 h: '$2',
