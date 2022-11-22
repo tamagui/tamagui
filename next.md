@@ -1,6 +1,6 @@
 rc.0
 
-  - bugs:
+  - check:
     - prod input style check
     - font size SSR check
     - css animations check

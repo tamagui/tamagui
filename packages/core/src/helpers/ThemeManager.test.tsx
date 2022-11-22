@@ -71,7 +71,7 @@ describe('ThemeManager', () => {
     expect(child2.state.name).toBe('dark_red')
   })
 
-  test('Inverts "light" to "dark"', () => {
+  test('Changes "light" to "dark"', () => {
     const parent = new ThemeManager(undefined, {
       name: 'light',
     })
@@ -80,6 +80,17 @@ describe('ThemeManager', () => {
     })
     expect(parent.state.name).toBe('light')
     expect(child.state.name).toBe('dark')
+  })
+
+  test('Inverts "light" to "dark"', () => {
+    const parent = new ThemeManager(undefined, {
+      name: 'light',
+    })
+    const child1 = new ThemeManager(parent, {
+      inverse: true,
+      debug: true,
+    })
+    expect(child1.state.name).toBe('dark')
   })
 
   test('Inverts "light_red" to "dark_red"', () => {
@@ -112,5 +123,34 @@ describe('ThemeManager', () => {
       name: null,
     })
     expect(child).toBe(parent)
+  })
+
+  test('Resets theme', () => {
+    const parent = new ThemeManager(undefined, {
+      name: 'light',
+    })
+    const child = new ThemeManager(parent, {
+      name: 'dark',
+    })
+    const child2 = new ThemeManager(child, {
+      reset: true,
+    })
+    expect(child2.state.name).toBe('light')
+  })
+
+  test('Nested invert and reset', () => {
+    const parent = new ThemeManager(undefined, {
+      name: 'light',
+    })
+    const child = new ThemeManager(parent, {
+      name: 'dark',
+    })
+    const child2 = new ThemeManager(child, {
+      reset: true,
+    })
+    const child3 = new ThemeManager(child2, {
+      inverse: true,
+    })
+    expect(child3.state.name).toBe('dark')
   })
 })

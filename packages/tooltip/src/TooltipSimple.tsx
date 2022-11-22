@@ -1,5 +1,5 @@
 import { useDelayGroupContext } from '@floating-ui/react-dom-interactions'
-import { ThemeInverse } from '@tamagui/core'
+import { Theme } from '@tamagui/core'
 import { SizableStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
@@ -29,7 +29,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = ({
   const contents = (
     <Tooltip {...tooltipProps}>
       <Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
-      <ThemeInverse>
+      <Theme inverse>
         <Tooltip.Content
           zIndex={100_000}
           enterStyle={{ x: 0, y: -8, opacity: 0, scale: 0.93 }}
@@ -54,7 +54,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = ({
             {label}
           </Paragraph>
         </Tooltip.Content>
-      </ThemeInverse>
+      </Theme>
     </Tooltip>
   )
 

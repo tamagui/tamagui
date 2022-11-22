@@ -4,23 +4,9 @@ import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { format, parseISO } from 'date-fns'
 import NextLink from 'next/link'
-import React from 'react'
-import {
-  H1,
-  H2,
-  H3,
-  Paragraph,
-  SizableText,
-  Spacer,
-  Square,
-  Text,
-  ThemeInverse,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { H3, Paragraph, YStack } from 'tamagui'
 
-import { Card } from '../../components/Card'
-import { Container, ContainerLarge } from '../../components/Container'
+import { ContainerLarge } from '../../components/Container'
 
 export default function Blog({ frontmatters }) {
   return (

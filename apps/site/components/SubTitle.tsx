@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { H3, ThemeReset } from 'tamagui'
+import { H3 } from 'tamagui'
 
 export const nbspLastWord = (sentence: string) => {
   if (typeof sentence !== 'string') {

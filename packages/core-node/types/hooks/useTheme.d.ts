@@ -10,7 +10,7 @@ export declare function useThemeName(opts?: {
     parent?: true;
 }): ThemeName;
 export declare const activeThemeManagers: Set<ThemeManager>;
-export declare const useChangeThemeEffect: (props: UseThemeProps, uuid?: string) => {
+export declare const useChangeThemeEffect: (props: UseThemeProps) => {
     themes: Record<string, ThemeParsed>;
     themeManager: ThemeManager | null;
     name: string;

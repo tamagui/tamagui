@@ -9,7 +9,7 @@ import { atomic, classic, inline } from '../compiler'
 
 describe('StyleSheet/compile', () => {
   describe('atomic', () => {
-    test.only('converts style to atomic CSS', () => {
+    test('converts style to atomic CSS', () => {
       const result = atomic({
         animationDirection: ['alternate', 'alternate-reverse'],
         animationKeyframes: [

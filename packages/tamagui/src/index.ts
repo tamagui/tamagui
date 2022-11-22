@@ -119,8 +119,6 @@ export {
   Stack,
   Text,
   Theme,
-  ThemeInverse,
-  ThemeReset,
   FontLanguage,
   Unspaced,
   // context,

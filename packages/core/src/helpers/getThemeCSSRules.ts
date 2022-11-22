@@ -86,8 +86,15 @@ export function getThemeCSSRules({
     }
   }
 
-  const rootSep = config.themeClassNameOnRoot ? '' : ' '
-  const css = `${selectors.map((x) => `:root${rootSep}${x}`).join(', ')} {${vars}}`
+  const selectorsString = selectors.map((x) => {
+    // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
+    // this isBaseTheme logic could probably be done more efficiently above
+    const isBaseTheme =
+      x === '.t_dark' || x === '.t_light' || x.startsWith('.t_dark ') || x.startsWith('.t_light ')
+    const rootSep = isBaseTheme && config.themeClassNameOnRoot ? '' : ' '
+    return `:root${rootSep}${x}`
+  })
+  const css = `${selectorsString.join(', ')} {${vars}}`
   cssRuleSets.push(css)
 
   if (config.shouldAddPrefersColorThemes && isDarkOrLightBase) {

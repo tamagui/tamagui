@@ -159,7 +159,6 @@ export interface ThemeProps {
     children?: any;
     reset?: boolean;
     debug?: boolean | 'verbose';
-    disableTracking?: boolean;
     inverse?: boolean;
 }
 declare type ArrayIntersection<A extends any[]> = A[keyof A];

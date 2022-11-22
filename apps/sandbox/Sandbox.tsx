@@ -14,7 +14,16 @@ import { AnimationsDemo, AnimationsPresenceDemo } from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
 // import { AppRegistry, useColorScheme } from 'react-native'
-import { Button, Paragraph, TamaguiProvider, Text, TooltipGroup, getTokens, styled } from 'tamagui'
+import {
+  Button,
+  Paragraph,
+  TamaguiProvider,
+  Text,
+  Theme,
+  TooltipGroup,
+  getTokens,
+  styled,
+} from 'tamagui'
 import { ButtonFrame, Circle, Input, Square, YStack } from 'tamagui'
 
 import config from './tamagui.config'
@@ -27,94 +36,6 @@ if (typeof require !== 'undefined') {
 }
 
 // AppRegistry.registerComponent('Main', () => Sandbox)
-
-function PerformanceTest() {
-  const [t, setT] = useState('pink' as any)
-  return (
-    <YStack theme={t}>
-      <Square onPress={() => setT('blue')} size={100} bc="$color10" />
-    </YStack>
-  )
-}
-
-const CustomButtonFrame = styled(ButtonFrame, {
-  name: 'Button',
-  borderRadius: 100_100_100, // <---- This does not apply the default borderRadius
-  debug: 'verbose',
-  // <---- Haven't been able to get any prop to work here
-
-  pressStyle: {
-    opacity: 0.7, // <---- This applies the opacity correctly but the backgroundColor is replaced with some dark color
-  },
-
-  variants: {
-    rounded: {
-      true: {
-        borderRadius: 100_100_100, // <---- This correctly applies the borderRadius but I don't want to have this as a variant
-      },
-    },
-
-    disabled: {
-      true: {
-        opacity: 0.375,
-        pointerEvents: 'none',
-      },
-    },
-
-    big: {
-      true: {
-        height: 58,
-        paddingHorizontal: 16,
-      },
-    },
-
-    small: {
-      true: {
-        height: 32,
-        paddingHorizontal: 16,
-      },
-    },
-    tiny: {
-      true: {
-        height: 24,
-        paddingHorizontal: 8,
-      },
-    },
-    primary: {
-      true: {
-        backgroundColor: 'red',
-
-        hoverStyle: {
-          backgroundColor: 'yellow',
-        },
-      },
-    },
-    secondary: {
-      true: {
-        backgroundColor: 'yellow',
-      },
-    },
-    destructive: {
-      true: {
-        backgroundColor: 'green',
-      },
-    },
-    outlined: {
-      true: {
-        backgroundColor: 'transparent',
-        borderColor: 'red',
-        color: 'red',
-        borderWidth: 2,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    // <---- none of these are applied as default variants
-    // big: true,
-    // primary: true,
-  },
-})
 
 export const Sandbox = () => {
   // const scheme = useColorScheme()
@@ -178,7 +99,16 @@ export const Sandbox = () => {
         >
           {/* <ButtonDemo /> */}
 
-          <PerformanceTest />
+          {/* Theme reset + invert */}
+          <Theme name="dark">
+            <Theme reset>
+              <Theme inverse>
+                <Square bc="$background" size={100} />
+              </Theme>
+            </Theme>
+          </Theme>
+
+          {/* <PerformanceTest /> */}
 
           {/* <CustomButtonFrame debug="verbose">
             <Paragraph>hihi</Paragraph>
@@ -346,3 +276,91 @@ export const Sandbox = () => {
 //     },
 //   },
 // })
+
+function PerformanceTest() {
+  const [t, setT] = useState('pink' as any)
+  return (
+    <YStack theme={t}>
+      <Square onPress={() => setT('blue')} size={100} bc="$color10" />
+    </YStack>
+  )
+}
+
+const CustomButtonFrame = styled(ButtonFrame, {
+  name: 'Button',
+  borderRadius: 100_100_100, // <---- This does not apply the default borderRadius
+  debug: 'verbose',
+  // <---- Haven't been able to get any prop to work here
+
+  pressStyle: {
+    opacity: 0.7, // <---- This applies the opacity correctly but the backgroundColor is replaced with some dark color
+  },
+
+  variants: {
+    rounded: {
+      true: {
+        borderRadius: 100_100_100, // <---- This correctly applies the borderRadius but I don't want to have this as a variant
+      },
+    },
+
+    disabled: {
+      true: {
+        opacity: 0.375,
+        pointerEvents: 'none',
+      },
+    },
+
+    big: {
+      true: {
+        height: 58,
+        paddingHorizontal: 16,
+      },
+    },
+
+    small: {
+      true: {
+        height: 32,
+        paddingHorizontal: 16,
+      },
+    },
+    tiny: {
+      true: {
+        height: 24,
+        paddingHorizontal: 8,
+      },
+    },
+    primary: {
+      true: {
+        backgroundColor: 'red',
+
+        hoverStyle: {
+          backgroundColor: 'yellow',
+        },
+      },
+    },
+    secondary: {
+      true: {
+        backgroundColor: 'yellow',
+      },
+    },
+    destructive: {
+      true: {
+        backgroundColor: 'green',
+      },
+    },
+    outlined: {
+      true: {
+        backgroundColor: 'transparent',
+        borderColor: 'red',
+        color: 'red',
+        borderWidth: 2,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    // <---- none of these are applied as default variants
+    // big: true,
+    // primary: true,
+  },
+})

@@ -3,7 +3,7 @@ import React from 'react'
 import {
   Button,
   Paragraph,
-  ThemeInverse,
+  Theme,
   Tooltip,
   TooltipGroup,
   TooltipProps,
@@ -41,7 +41,7 @@ export function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
       <Tooltip.Trigger>
         <Button icon={Icon} circular />
       </Tooltip.Trigger>
-      <ThemeInverse>
+      <Theme inverse>
         <Tooltip.Content
           enterStyle={{ x: 0, y: -5, o: 0, scale: 0.9 }}
           exitStyle={{ x: 0, y: -5, o: 0, scale: 0.9 }}
@@ -63,7 +63,7 @@ export function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
             Hello world
           </Paragraph>
         </Tooltip.Content>
-      </ThemeInverse>
+      </Theme>
     </Tooltip>
   )
 }

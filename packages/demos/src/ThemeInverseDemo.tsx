@@ -1,14 +1,12 @@
-import { ThemeInverse } from '@tamagui/core'
-import React from 'react'
 import { Button, Theme, XStack, YStack } from 'tamagui'
 
 export function ThemeInverseDemo() {
   return (
     <XStack space>
       <Buttons />
-      <ThemeInverse>
+      <Theme inverse>
         <Buttons />
-      </ThemeInverse>
+      </Theme>
     </XStack>
   )
 }

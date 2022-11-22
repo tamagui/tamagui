@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import { memo, useId, useMemo } from 'react'
+import { memo, useMemo } from 'react'
 
 import { variableToString } from '../createVariable'
 import { ThemeManager, ThemeManagerContext } from '../helpers/ThemeManager'
@@ -61,17 +61,6 @@ export const Theme = memo(function Theme(props: ThemeProps) {
         {contents}
       </span>
     )
-
-    // web relies on nesting .t_dark > .t_blue to avoid generating as many selectors
-    if (props.inverse) {
-      console.warn('inverse should be handled not in useChangeThemeEffect')
-      // const isDark = name.startsWith('dark_')
-      // contents = (
-      //   <div className={`t_themeinverse _dsp_contents ${isDark ? 't_light' : 't_dark'}`}>
-      //     {contents}
-      //   </div>
-      // )
-    }
   }
 
   return contents

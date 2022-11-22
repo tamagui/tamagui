@@ -4,7 +4,7 @@ import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { useTint } from '@tamagui/site/components/useTint'
 import { useMemo, useState } from 'react'
-import { Spacer, Square, XStack, YStack } from 'tamagui'
+import { Spacer, Square, Theme, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from '../components/Container'
 import { HeaderFloating } from '../components/HeaderFloating'
@@ -46,6 +46,15 @@ import { getCompilationExamples } from '../lib/getCompilationExamples'
 //       {/* <ExampleAnimations /> */}
 //     </XStack>
 //   </>
+// )
+
+// test tricky theme
+// return (
+//   <Theme name="pink">
+//     <Theme invert>
+//       <Square bc="$background" size={100} />
+//     </Theme>
+//   </Theme>
 // )
 
 export default function Home({ animationCode, compilationExamples }) {

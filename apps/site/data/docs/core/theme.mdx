@@ -91,9 +91,9 @@ Notice we just use the name `pink`. Because theres no `pink` theme, the Theme co
 
 ---
 
-## Theme Inverse
+## Inverse
 
-The `ThemeInverse` component is handy for flipping from light to dark without having to do manual logic with context.
+The `inverse` prop will change any dark theme to light, and vice-versa. If it's a sub-theme, it'll check for matching parents, so `dark_red` will inverse to `light_red` if possible:
 
 <HeroContainer>
   <ThemeInverseDemo />
@@ -101,6 +101,21 @@ The `ThemeInverse` component is handy for flipping from light to dark without ha
 
 ```tsx hero template=ThemeInverse
 
+```
+
+## Reset
+
+The `reset` prop will change the theme to the grandparent's value:
+
+```tsx
+<Theme name="dark">
+  <Theme name="pink">
+    <Theme reset>
+      {/* This square and all children will have theme "dark" */}
+      <Square bc="$background" size={10} />
+    </Theme>
+  </Theme>
+</Theme>
 ```
 
 ---
