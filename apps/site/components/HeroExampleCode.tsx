@@ -41,6 +41,7 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
           bc="$color2"
           chromeless
           theme={tint}
+          debug
           maxWidth="100%"
           als="center"
         >

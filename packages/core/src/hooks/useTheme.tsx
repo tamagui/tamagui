@@ -191,7 +191,8 @@ export const useChangeThemeEffect = (props: ThemeProps): ChangedTheme => {
   }
 
   function create() {
-    const _ = new ThemeManager(parentManager, props)
+    console.log('parentManager', parentManager?.state.name)
+    const _ = new ThemeManager(props, parentManager)
     const isNewTheme = _ !== parentManager
     // prettier-ignore
     process.env.NODE_ENV === 'development' && debug && [console.groupCollapsed('useTheme create() isNewTheme', isNewTheme), console.log('parent.state', { ...parentManager?.state }, '\n', 'props', props, '\n', 'getState', _.getState(props), '\n', 'state', { ..._.state }), console.groupEnd()]

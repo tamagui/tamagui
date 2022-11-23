@@ -22,12 +22,12 @@ export declare class ThemeManager {
     ogParentManager: ThemeManager | null;
     parentManager: ThemeManager | null;
     state: ThemeManagerState;
-    constructor(parentManagerIn?: ThemeManager | 'root' | null | undefined, props?: ThemeProps, ref?: any);
+    constructor(props?: ThemeProps, parentManager?: ThemeManager | 'root' | null | undefined, ref?: any);
     updateState(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
     }, notify?: boolean): ThemeManagerState | undefined;
     getStateIfChanged(props?: ThemeProps, state?: ThemeManagerState): ThemeManagerState | null;
-    getState(props?: ThemeProps, state?: ThemeManagerState): ThemeManagerState | null;
+    getState(props?: ThemeProps): ThemeManagerState | null;
     get allKeys(): Set<string>;
     getValue(key: string, state?: ThemeManagerState): import("..").Variable<any> | undefined;
     notify(): void;

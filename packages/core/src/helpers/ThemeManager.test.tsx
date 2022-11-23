@@ -11,100 +11,130 @@ describe('ThemeManager', () => {
   })
 
   test('Changes theme to dark', () => {
-    const manager = new ThemeManager(undefined, {
+    const manager = new ThemeManager({
       name: 'dark',
     })
     expect(manager.state.name).toBe('dark')
   })
 
   test('Given parent theme "dark" and child theme "red" to return theme "dark_red"', () => {
-    const parent = new ThemeManager(undefined, {
+    const parent = new ThemeManager({
       name: 'dark',
     })
-    const child = new ThemeManager(parent, {
-      name: 'red',
-    })
+    const child = new ThemeManager(
+      {
+        name: 'red',
+      },
+      parent
+    )
     expect(parent.state.name).toBe('dark')
     expect(child.state.name).toBe('dark_red')
   })
 
   test('Given parent theme "dark", child theme "red_alt2" and component "Button" returns "dark_red_alt2_Button"', () => {
-    const parent = new ThemeManager(undefined, {
+    const parent = new ThemeManager({
       name: 'dark',
     })
-    const child1 = new ThemeManager(parent, {
-      name: 'red',
-    })
+    const child1 = new ThemeManager(
+      {
+        name: 'red',
+      },
+      parent
+    )
     expect(child1.state.name).toBe('dark_red')
-    const child2 = new ThemeManager(child1, {
-      name: 'alt2',
-      componentName: 'Button',
-    })
+    const child2 = new ThemeManager(
+      {
+        name: 'alt2',
+        componentName: 'Button',
+      },
+      child1
+    )
     expect(child2.state.name).toBe('dark_red_alt2_Button')
   })
 
   test('Given parent theme "dark", child theme "red" and component "Button" returns "dark_red_Button"', () => {
-    const parent = new ThemeManager(undefined, {
+    const parent = new ThemeManager({
       name: 'dark',
     })
-    const child1 = new ThemeManager(parent, {
-      name: 'red',
-    })
+    const child1 = new ThemeManager(
+      {
+        name: 'red',
+      },
+      parent
+    )
     expect(child1.state.name).toBe('dark_red')
-    const child2 = new ThemeManager(child1, {
-      componentName: 'Button',
-    })
+    const child2 = new ThemeManager(
+      {
+        componentName: 'Button',
+      },
+      child1
+    )
     expect(child2.state.name).toBe('dark_red_Button')
   })
 
   test('Given parent theme "dark", child theme "red" and missing component "Card" returns "dark_red"', () => {
-    const parent = new ThemeManager(undefined, {
+    const parent = new ThemeManager({
       name: 'dark',
     })
-    const child1 = new ThemeManager(parent, {
-      name: 'red',
-    })
+    const child1 = new ThemeManager(
+      {
+        name: 'red',
+      },
+      parent
+    )
     expect(child1.state.name).toBe('dark_red')
-    const child2 = new ThemeManager(child1, {
-      componentName: 'Card',
-    })
+    const child2 = new ThemeManager(
+      {
+        componentName: 'Card',
+      },
+      child1
+    )
     expect(child2.state.name).toBe('dark_red')
   })
 
   test('Changes "light" to "dark"', () => {
-    const parent = new ThemeManager(undefined, {
+    const parent = new ThemeManager({
       name: 'light',
     })
-    const child = new ThemeManager(parent, {
-      name: 'dark',
-    })
+    const child = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      parent
+    )
     expect(parent.state.name).toBe('light')
     expect(child.state.name).toBe('dark')
   })
 
   test('Inverts "light" to "dark"', () => {
-    const parent = new ThemeManager(undefined, {
+    const parent = new ThemeManager({
       name: 'light',
     })
-    const child1 = new ThemeManager(parent, {
-      inverse: true,
-    })
+    const child1 = new ThemeManager(
+      {
+        inverse: true,
+      },
+      parent
+    )
     expect(child1.state.name).toBe('dark')
   })
 
   test('Inverts "light_red" to "dark_red"', () => {
-    const parent = new ThemeManager(undefined, {
+    const parent = new ThemeManager({
       name: 'light',
     })
-    const child1 = new ThemeManager(parent, {
-      name: 'red',
-      inverse: true,
-    })
+    const child1 = new ThemeManager(
+      {
+        name: 'red',
+        inverse: true,
+      },
+      parent
+    )
     expect(child1.state.name).toBe('dark_red')
   })
 
   test('Updates state', () => {
-    const parent = new ThemeManager(undefined, {
+    const parent = new ThemeManager({
       name: 'light',
     })
     const newState = parent.updateState({
@@ -136,65 +166,117 @@ describe('ThemeManager', () => {
   })
 
   test('Returns parent on empty', () => {
-    const parent = new ThemeManager(undefined, {
+    const parent = new ThemeManager({
       name: 'light',
     })
-    const child = new ThemeManager(parent, {
-      name: null,
-    })
+    const child = new ThemeManager(
+      {
+        name: null,
+      },
+      parent
+    )
     expect(child).toBe(parent)
   })
 
   test('Resets theme', () => {
-    const parent = new ThemeManager(undefined, {
+    const parent = new ThemeManager({
       name: 'light',
     })
-    const child = new ThemeManager(parent, {
-      name: 'dark',
-    })
-    const child2 = new ThemeManager(child, {
-      reset: true,
-    })
+    const child = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      parent
+    )
+    const child2 = new ThemeManager(
+      {
+        reset: true,
+      },
+      child
+    )
     expect(child2.state.name).toBe('light')
   })
 
   test('Nested invert and reset', () => {
-    const parent = new ThemeManager(undefined, {
+    const parent = new ThemeManager({
       name: 'light',
     })
-    const child = new ThemeManager(parent, {
-      name: 'dark',
-    })
-    const child2 = new ThemeManager(child, {
-      reset: true,
-    })
-    const child3 = new ThemeManager(child2, {
-      inverse: true,
-    })
+    const child = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      parent
+    )
+    const child2 = new ThemeManager(
+      {
+        reset: true,
+      },
+      child
+    )
+    const child3 = new ThemeManager(
+      {
+        inverse: true,
+      },
+      child2
+    )
     expect(child3.state.name).toBe('dark')
   })
 
-  test('Updates from null the new theme nested 3 themes', () => {
-    const a = new ThemeManager(undefined, {
+  test('Nested component themes fallback to grandparents', () => {
+    const parent = new ThemeManager({
       name: 'dark',
     })
-    const b = new ThemeManager(a, {
-      name: 'red',
+    const child = new ThemeManager(
+      {
+        name: 'red_Button',
+      },
+      parent
+    )
+    const child2 = new ThemeManager(
+      {
+        name: 'blue',
+      },
+      child
+    )
+    const child3 = new ThemeManager(
+      {
+        componentName: 'Button',
+      },
+      child2
+    )
+    expect(child3.state.name).toBe('dark_blue_Button')
+  })
+
+  test('Updates from null the new theme nested 3 themes', () => {
+    const a = new ThemeManager({
+      name: 'dark',
     })
+    const b = new ThemeManager(
+      {
+        name: 'red',
+      },
+      a
+    )
     expect(b.state.name).toBe('dark_red')
-    const c = new ThemeManager(b, {
-      name: 'alt2',
-    })
+    const c = new ThemeManager(
+      {
+        name: 'alt2',
+      },
+      b
+    )
     expect(c.state.name).toBe('dark_red_alt2')
   })
 
   test('Ignored dup themes', () => {
-    const a = new ThemeManager(undefined, {
+    const a = new ThemeManager({
       name: 'dark',
     })
-    const b = new ThemeManager(a, {
-      name: 'dark',
-    })
+    const b = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      a
+    )
     expect(b === a).toBe(true)
   })
 })

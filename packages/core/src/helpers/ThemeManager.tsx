@@ -31,24 +31,24 @@ export class ThemeManager {
   state: ThemeManagerState = emptyState
 
   constructor(
-    parentManagerIn?: ThemeManager | 'root' | null | undefined,
     public props: ThemeProps = {},
+    parentManager?: ThemeManager | 'root' | null | undefined,
     public ref?: any
   ) {
-    if (parentManagerIn === 'root') {
+    if (parentManager === 'root') {
       this.updateState(props, false)
       return
     }
-    if (parentManagerIn) {
-      this.ogParentManager = parentManagerIn
-      this.parentManager = parentManagerIn
+    if (parentManager) {
+      this.ogParentManager = parentManager
+      this.parentManager = parentManager
     }
     const updatedState = this.getStateIfChanged(props)
     if (updatedState) {
       this.state = updatedState
       return
     }
-    return parentManagerIn || this
+    return parentManager || this
   }
 
   updateState(props: ThemeProps & { forceTheme?: ThemeParsed } = this.props || {}, notify = true) {
@@ -73,7 +73,7 @@ export class ThemeManager {
   }
 
   getStateIfChanged(props = this.props, state = this.state) {
-    const _ = getState(props, state, this.parentManager)
+    const _ = getState(props, this.parentManager)
     if (
       !_ ||
       !_.theme ||
@@ -85,8 +85,8 @@ export class ThemeManager {
     return _
   }
 
-  getState(props = this.props, state = this.state) {
-    return getState(props, state, this.parentManager)
+  getState(props = this.props) {
+    return getState(props, this.parentManager)
   }
 
   #allKeys: Set<string> | null = null
@@ -133,7 +133,6 @@ function getNextThemeClassName(name: string, isInverting = false) {
 
 function getState(
   props: ThemeProps,
-  state: ThemeManager['state'],
   parentManager?: ThemeManager | null
 ): ThemeManagerState | null {
   const themes = getThemes()
@@ -142,23 +141,18 @@ function getState(
     throw new Error(`Cannot reset and set new name`)
   }
   if (props.reset && !parentManager?.parentManager) {
-    throw new Error(`Cannot reset theme no grandparent theme exists`)
+    throw new Error(`Cannot reset theme, no grandparent exists`)
   }
 
-  const parentName = parentManager?.state.name || ''
-  let nextName = props.reset
-    ? parentManager?.parentManager?.state.name || ''
-    : props.name || parentManager?.state.name || ''
+  const parentName = parentManager?.state?.name || ''
+  let nextName = props.reset ? parentManager?.parentManager?.state?.name || '' : props.name || ''
 
   const parentParts = parentName.split(THEME_NAME_SEPARATOR).filter(Boolean)
-  // const stateParts = state.name.split(THEME_NAME_SEPARATOR).filter(Boolean)
 
   // components look for specific, others fallback upwards
-  // TODO its too much
   const prefixesSet = new Set<string>()
   for (const [i] of parentParts.entries()) {
     const parentsStart = parentParts.slice(0, i + 1)
-    // prefixesSet.add(parentsStart.join(THEME_NAME_SEPARATOR))
     if (!parentName.includes(nextName) && !parentParts.includes(nextName)) {
       prefixesSet.add([...parentsStart, nextName].join(THEME_NAME_SEPARATOR))
     }
@@ -199,7 +193,7 @@ function getState(
 
   // prettier-ignore
   // eslint-disable-next-line no-console
-  process.env.NODE_ENV === 'development' && props.debug && console.log('getState', nextName, { potentials, nextName, props, theme })
+  process.env.NODE_ENV === 'development' && props.debug && console.log('getState', nextName, { potentials, parentParts, nextName, props, theme, parentState: parentManager?.state })
 
   // didn't change
   if (!theme || theme === parentManager?.state.theme) {
