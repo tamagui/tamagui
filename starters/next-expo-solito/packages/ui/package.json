@@ -5,15 +5,23 @@
     "*.css"
   ],
   "private": true,
-  "types": "src",
-  "main": "src/index.tsx",
-  "module:jsx": "src",
+  "types": "./types/index",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
   "files": [
     "types",
     "dist"
   ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
+  },
   "dependencies": {
     "@my/config": "*",
-    "tamagui": "^1.0.1-beta.220"
+    "tamagui": "^1.0.1-beta.198"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.198"
   }
 }

@@ -2792,6 +2792,7 @@ __metadata:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "@tamagui/build": ^1.0.1-beta.198
     tamagui: ^1.0.1-beta.198
 =======
@@ -2801,6 +2802,8 @@ __metadata:
 =======
 =======
 >>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
+=======
+>>>>>>> fbbc8e506 (revert broken starter for native)
     "@tamagui/build": ^1.0.1-beta.220
     tamagui: ^1.0.1-beta.220
 =======
@@ -2812,7 +2815,14 @@ __metadata:
 =======
     tamagui: ^1.0.1-beta.220
 >>>>>>> 6af82a3c9 (update-starters-v1.0.1-beta.220)
+<<<<<<< HEAD
 >>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
+=======
+=======
+    "@tamagui/build": ^1.0.1-beta.198
+    tamagui: ^1.0.1-beta.198
+>>>>>>> 61938bde3 (revert broken starter for native)
+>>>>>>> fbbc8e506 (revert broken starter for native)
   languageName: unknown
   linkType: soft
 
@@ -3492,10 +3502,14 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/build@npm:^1.0.1-beta.198, @tamagui/build@npm:^1.0.1-beta.220":
 =======
 "@tamagui/build@npm:^1.0.1-beta.220":
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
+=======
+"@tamagui/build@npm:^1.0.1-beta.198, @tamagui/build@npm:^1.0.1-beta.220":
+>>>>>>> fbbc8e506 (revert broken starter for native)
   version: 1.0.1-beta.220
   resolution: "@tamagui/build@npm:1.0.1-beta.220"
   dependencies:
@@ -14021,10 +14035,14 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "tamagui@npm:^1.0.1-beta.198":
 =======
 "tamagui@npm:^1.0.1-beta.220":
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
+=======
+"tamagui@npm:^1.0.1-beta.198":
+>>>>>>> fbbc8e506 (revert broken starter for native)
   version: 1.0.1-beta.220
   resolution: "tamagui@npm:1.0.1-beta.220"
   dependencies:
