@@ -2789,7 +2789,8 @@ __metadata:
   resolution: "@my/ui@workspace:packages/ui"
   dependencies:
     "@my/config": "*"
-    tamagui: ^1.0.1-beta.220
+    "@tamagui/build": ^1.0.1-beta.198
+    tamagui: ^1.0.1-beta.198
   languageName: unknown
   linkType: soft
 
@@ -3468,7 +3469,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/build@npm:^1.0.1-beta.220":
+"@tamagui/build@npm:^1.0.1-beta.198, @tamagui/build@npm:^1.0.1-beta.220":
   version: 1.0.1-beta.220
   resolution: "@tamagui/build@npm:1.0.1-beta.220"
   dependencies:
@@ -13892,7 +13893,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tamagui@npm:^1.0.1-beta.220":
+"tamagui@npm:^1.0.1-beta.198":
   version: 1.0.1-beta.220
   resolution: "tamagui@npm:1.0.1-beta.220"
   dependencies:
