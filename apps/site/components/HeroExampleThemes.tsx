@@ -62,15 +62,19 @@ export function HeroExampleThemes() {
   }
 
   const isIntersecting = useIsIntersecting(scrollView, {
-    threshold: 0.2,
+    threshold: 0.5,
   })
 
   const tintIndex = Math.floor(activeIndex / 4)
   useEffect(() => {
     if (isIntersecting) {
       setTintIndexDebounce(tintIndex)
+      setActiveI([3, 0])
+      return () => {
+        setTintIndexDebounce.cancel()
+      }
     }
-  }, [isIntersecting, setTintIndexDebounce, tintIndex])
+  }, [isIntersecting, tintIndex])
 
   const move = (dir = 0) => {
     updateActiveI((prev) => {

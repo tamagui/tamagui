@@ -3,6 +3,7 @@ rc.0
   - button styles
   - ssr issues
   - native
+  - make dynamic eval an experiment
 
   - check:
     - prod input style check
@@ -15,6 +16,13 @@ rc.0
 - <Adapt /> instead of sheetBreakpoint
 
 1.0
+
+- dynamic eval bundle of smallish fixes: 
+  - hash file contents use as hash for tmp file name
+  - avoid work if matching
+  - install into node_modules/.cache (import cacheDir) and symlink next to current file
+  - bundle it, use the existing esbuild.buildSync helper fn
+  - remove babel use esbuild plugin
 
 - `tamagui` cli basic version
 - I'm seeing an issue where setting multiline=true on Input results in broken colors when switching between light & dark themes (doesn't use specified text color). 

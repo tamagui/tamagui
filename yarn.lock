@@ -4874,6 +4874,7 @@ __metadata:
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
     "@expo/match-media": ^0.3.0
+<<<<<<< HEAD
     "@tamagui/build": ^1.0.1-beta.220
     "@tamagui/compose-refs": ^1.0.1-beta.220
     "@tamagui/constants": ^1.0.1-beta.220
@@ -4885,6 +4886,18 @@ __metadata:
     "@tamagui/use-did-finish-ssr": ^1.0.1-beta.220
     "@tamagui/use-event": ^1.0.1-beta.220
     "@tamagui/use-force-update": ^1.0.1-beta.220
+=======
+    "@tamagui/build": ^1.0.1-beta.219
+    "@tamagui/compose-refs": ^1.0.1-beta.219
+    "@tamagui/constants": ^1.0.1-beta.219
+    "@tamagui/helpers": ^1.0.1-beta.219
+    "@tamagui/normalize-css-color-lite": ^1.0.1-beta.219
+    "@tamagui/react-native-use-pressable": ^1.0.1-beta.219
+    "@tamagui/react-native-use-responder-events": ^1.0.1-beta.219
+    "@tamagui/types-react-native": ^1.0.1-beta.219
+    "@tamagui/use-did-finish-ssr": ^1.0.1-beta.219
+    "@tamagui/use-event": ^1.0.1-beta.219
+>>>>>>> 6685dd87b (fix(site): Fix themes section carousel scroll sync)
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
     "@types/react-native": ^0.69.2
