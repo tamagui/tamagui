@@ -1,9 +1,9 @@
-let rn
+const rn = {}
 
 export function getReactNative() {
   return rn
 }
 
 export function setupReactNative(_) {
-  rn = _
+  Object.assign(rn, _)
 }

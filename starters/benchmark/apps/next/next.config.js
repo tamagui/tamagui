@@ -22,7 +22,7 @@ const transform = withPlugins([
   ]),
   withTamagui({
     config: './tamagui.config.ts',
-    components: ['tamagui', '@my/ui'],
+    components: ['tamagui', '@bench/ui'],
     importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,
     useReactNativeWebLite: true,

@@ -396,7 +396,7 @@ describe('ThemeManager', () => {
     expect(child.state.name).toBe('dark_red')
   })
 
-  test.only(`Uses the full className without the light/dark prefix`, () => {
+  test(`Uses the full className without the light/dark prefix`, () => {
     const parent = new ThemeManager(
       {
         name: 'dark',

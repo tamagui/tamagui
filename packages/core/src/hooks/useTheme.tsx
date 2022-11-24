@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { isClient, isRSC, isServer, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isClient, isRSC, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useContext, useLayoutEffect, useMemo, useState } from 'react'
 
 import { getConfig } from '../config'
@@ -118,8 +118,7 @@ export function useThemeName(opts?: { parent?: true }): ThemeName {
   const [name, setName] = useState(manager?.state.name || '')
 
   useIsomorphicLayoutEffect(() => {
-    if (!manager) return
-    return manager.onChangeTheme((next, manager) => {
+    return manager?.onChangeTheme((next, manager) => {
       const name = opts?.parent ? manager.state.parentName || next : next
       if (!name) return
       setName(name)
@@ -168,11 +167,18 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
   if (!isServer) {
     useLayoutEffect(() => {
       if (disable) return
-      if (!isNewTheme) return
       activeThemeManagers.add(themeManager)
-      // !!
-      // themeManager.notify()
-      const disposeChangeListener = parentManager?.onChangeTheme(update)
+      const disposeChangeListener = parentManager?.onChangeTheme(() => {
+        if (!isNewTheme && !isWeb) {
+          setThemeManager({
+            themeManager,
+            state: themeManager.state,
+            isNewTheme: false,
+          })
+        } else {
+          update()
+        }
+      })
       return () => {
         activeThemeManagers.delete(themeManager)
         disposeChangeListener?.()
@@ -207,7 +213,7 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
     const _ = new ThemeManager(props, root ? 'root' : parentManager)
     const isNewTheme = _ !== parentManager
     // prettier-ignore
-    if (process.env.NODE_ENV === 'development' && debug) [console.groupCollapsed('useTheme create() isNewTheme', isNewTheme), console.log('parent.state', { ...parentManager?.state }, '\n', 'props', props, '\n', 'getState',isNewTheme ? _.getState(props) : '', '\n', 'state', { ..._.state }), console.groupEnd()]
+    if (process.env.NODE_ENV === 'development' && debug) [console.groupCollapsed('useTheme create() isNewTheme', isNewTheme), console.log('parent.state', { ...parentManager?.state }, '\n', 'props', props, '\n', parentManager, 'getState', isNewTheme ? _.getState(props) : '', '\n', 'state', { ..._.state }), console.groupEnd()]
     return {
       // ThemeManager returns parentManager if no change
       isNewTheme,

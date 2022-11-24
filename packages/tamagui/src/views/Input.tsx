@@ -1,8 +1,13 @@
 import { GetProps, styled } from '@tamagui/core'
+import { setupReactNative } from '@tamagui/core'
 import { focusableInputHOC } from '@tamagui/focusable'
 import { TextInput } from 'react-native'
 
 import { inputSizeVariant } from '../helpers/inputHelpers'
+
+setupReactNative({
+  TextInput,
+})
 
 export const InputFrame = styled(
   TextInput,

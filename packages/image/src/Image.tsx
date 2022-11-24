@@ -1,8 +1,17 @@
-import { GetProps, StackProps, getExpandedShorthands, isWeb, styled } from '@tamagui/core'
+import {
+  GetProps,
+  StackProps,
+  getExpandedShorthands,
+  isWeb,
+  setupReactNative,
+  styled,
+} from '@tamagui/core'
 import React from 'react'
 import { Image as RNImage } from 'react-native'
 
-React['createElement']
+setupReactNative({
+  Image: RNImage,
+})
 
 const StyledImage = styled(RNImage, {
   name: 'Image',

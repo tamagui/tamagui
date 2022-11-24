@@ -308,7 +308,6 @@ export function HeroExampleThemes() {
                 pointerEvents="none"
                 pointerEventsControls="auto"
                 alt={curShadeI}
-                debug={curShadeI === 2}
               />
             </Theme>
           </YStack>

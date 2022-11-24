@@ -14,7 +14,8 @@ import { createTamagui, setupReactNative } from '@tamagui/core'
 import * as ReactNative from 'react-native'
 import { config } from '@tamagui/config-base'
 
-// if using with `react-native` components
+// if using only @tamagui/core with `react-native` components
+// if using `tamagui` this isn't necessary
 setupReactNative(ReactNative)
 
 const appConfig = createTamagui(config)

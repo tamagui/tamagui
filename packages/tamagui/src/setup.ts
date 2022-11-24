@@ -1,15 +1,12 @@
 import { setupReactNative } from '@tamagui/core'
 import * as React from 'react'
-import { Image, ScrollView, Text, TextInput, View } from 'react-native'
+import { Text, View } from 'react-native'
 
 globalThis.React = React
 
 setupReactNative({
-  Image,
   View,
   Text,
-  TextInput,
-  ScrollView,
 })
 
 // for SSR

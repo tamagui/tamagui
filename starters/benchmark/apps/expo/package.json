@@ -17,7 +17,7 @@
     "react-native-gesture-handler": "^2.5.0",
     "react-native-safe-area-context": "^4.3.1",
     "react-native-screens": "^3.15.0",
-    "react-native-svg": "12.3.0",
+    "react-native-svg": "12.4.4",
     "react-native-web": "0.18.7"
   },
   "devDependencies": {
@@ -39,5 +39,5 @@
   "main": "index.js",
   "version": "1.0.0",
   "private": true,
-  "name": "expo-app"
+  "name": "bench-expo-app"
 }

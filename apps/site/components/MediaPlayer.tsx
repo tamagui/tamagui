@@ -31,7 +31,7 @@ export const MediaPlayer = memo(
   }) => {
     const tint = !alt ? null : (`alt${alt}` as ThemeName)
     return (
-      <Theme debug={!!tint} name={tint}>
+      <Theme name={tint}>
         <Card
           overflow="visible"
           bordered

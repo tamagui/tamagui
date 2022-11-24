@@ -12,6 +12,7 @@ import {
   Paragraph,
   Separator,
   Spacer,
+  Square,
   Switch,
   Theme,
   XStack,

@@ -29,11 +29,13 @@ If using just `core` but passing in React Native components, be sure to run `set
 
 ```tsx
 import { setupReactNative, styled } from '@tamagui/core'
-import * as RN from 'react-native'
+import { Image } from 'react-native'
 
-setupReactNative(RN)
+// this allows tamagui to optimize for react-native components
+// it's not required. `tamagui` automatically sets this up, but core doesn't
+setupReactNative({ Image })
 
-const MyImage = styled(RN.Image, {
+const MyImage = styled(Image, {
   backgroundColor: 'red'
 })
 ```

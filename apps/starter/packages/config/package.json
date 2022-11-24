@@ -1,13 +1,13 @@
 {
   "version": "0.0.0",
-  "name": "@my/config",
+  "name": "@starter/config",
   "main": "tamagui.config.ts",
   "private": true,
   "dependencies": {
-    "@tamagui/animations-react-native": "1.0.1-beta.198",
-    "@tamagui/font-inter": "1.0.1-beta.198",
-    "@tamagui/shorthands": "1.0.1-beta.198",
-    "@tamagui/theme-base": "1.0.1-beta.198"
+    "@tamagui/animations-react-native": "1.0.1-beta.220",
+    "@tamagui/font-inter": "1.0.1-beta.220",
+    "@tamagui/shorthands": "1.0.1-beta.220",
+    "@tamagui/theme-base": "1.0.1-beta.220"
   },
   "sideEffects": false
 }
