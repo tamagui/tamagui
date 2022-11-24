@@ -18,7 +18,7 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@my/config": "*",
+    "@starter/config": "*",
     "tamagui": "^1.0.1-beta.220"
   },
   "devDependencies": {

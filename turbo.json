@@ -1,8 +1,8 @@
 {
-  "baseBranch": "origin/master",
+  "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build:js": {
-      "outputs": ["dist/**"]
+      "cache": false
     },
     "build": {
       "outputs": [".next/**", "dist/**", "types/**"]
