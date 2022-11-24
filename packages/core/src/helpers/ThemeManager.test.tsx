@@ -144,6 +144,7 @@ describe('ThemeManager', () => {
       {
         "className": "t_dark",
         "name": "dark",
+        "parentName": "",
         "theme": {
           "background": {
             "isVar": true,
@@ -188,12 +189,15 @@ describe('ThemeManager', () => {
       },
       parent
     )
+    expect(child.state.name).toBe('dark')
+    expect(child.parentManager).toBe(parent)
     const child2 = new ThemeManager(
       {
         reset: true,
       },
       child
     )
+    expect(child2.parentManager).toBe(child)
     expect(child2.state.name).toBe('light')
   })
 
@@ -220,31 +224,6 @@ describe('ThemeManager', () => {
       child2
     )
     expect(child3.state.name).toBe('dark')
-  })
-
-  test('Nested component themes fallback to grandparents', () => {
-    const parent = new ThemeManager({
-      name: 'dark',
-    })
-    const child = new ThemeManager(
-      {
-        name: 'red_Button',
-      },
-      parent
-    )
-    const child2 = new ThemeManager(
-      {
-        name: 'blue',
-      },
-      child
-    )
-    const child3 = new ThemeManager(
-      {
-        componentName: 'Button',
-      },
-      child2
-    )
-    expect(child3.state.name).toBe('dark_blue_Button')
   })
 
   test('Updates from null the new theme nested 3 themes', () => {
@@ -278,5 +257,52 @@ describe('ThemeManager', () => {
       a
     )
     expect(b === a).toBe(true)
+  })
+
+  test('Nested component themes fallback to grandparents', () => {
+    const parent = new ThemeManager({
+      name: 'dark',
+    })
+    const child = new ThemeManager(
+      {
+        name: 'red',
+        componentName: 'Button',
+      },
+      parent
+    )
+    const child2 = new ThemeManager(
+      {
+        name: 'blue',
+      },
+      child
+    )
+    expect(child2.state.name).toBe('dark_blue')
+    const child3 = new ThemeManager(
+      {
+        componentName: 'Button',
+      },
+      child2
+    )
+    expect(child3.state.name).toBe('dark_blue_Button')
+  })
+
+  test(`Component theme with sub component that doesn't exist keeps same theme`, () => {
+    const parent = new ThemeManager({
+      name: 'dark',
+    })
+    const child = new ThemeManager(
+      {
+        name: 'red',
+        componentName: 'Button',
+      },
+      parent
+    )
+    const child2 = new ThemeManager(
+      {
+        componentName: 'Spacer',
+      },
+      child
+    )
+    expect(child2).toBe(child)
   })
 })

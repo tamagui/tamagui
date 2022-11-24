@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { isRSC, isServer, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useContext, useId, useLayoutEffect, useMemo, useState } from 'react'
+import { useContext, useLayoutEffect, useMemo, useState } from 'react'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
@@ -169,6 +169,7 @@ export const useChangeThemeEffect = (props: ThemeProps): ChangedTheme => {
       if (disable) return
       if (!isNewTheme) return
       activeThemeManagers.add(themeManager)
+      // !!
       // themeManager.notify()
       const disposeChangeListener = parentManager?.onChangeTheme(update)
       return () => {

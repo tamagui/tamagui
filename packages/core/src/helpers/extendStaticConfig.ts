@@ -37,6 +37,7 @@ export function extendStaticConfig(config: Partial<StaticConfig>, parent?: Styla
   return parseStaticConfig({
     ...parentStaticConf,
     ...config,
+    deoptProps: new Set([...(config.deoptProps || []), 'style']),
     variants,
     parentNames,
     isZStack: config.isZStack || parentStaticConf.isZStack,

@@ -19,7 +19,6 @@ export declare class ThemeManager {
     props: ThemeProps;
     ref?: any;
     themeListeners: Set<ThemeListener>;
-    ogParentManager: ThemeManager | null;
     parentManager: ThemeManager | null;
     state: ThemeManagerState;
     constructor(props?: ThemeProps, parentManager?: ThemeManager | 'root' | null | undefined, ref?: any);

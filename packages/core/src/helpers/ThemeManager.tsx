@@ -26,7 +26,6 @@ const emptyState: ThemeManagerState = { name: '' }
 
 export class ThemeManager {
   themeListeners = new Set<ThemeListener>()
-  ogParentManager: ThemeManager | null = null
   parentManager: ThemeManager | null = null
   state: ThemeManagerState = emptyState
 
@@ -40,7 +39,6 @@ export class ThemeManager {
       return
     }
     if (parentManager) {
-      this.ogParentManager = parentManager
       this.parentManager = parentManager
     }
     const updatedState = this.getStateIfChanged(props)
@@ -92,7 +90,7 @@ export class ThemeManager {
   #allKeys: Set<string> | null = null
   get allKeys() {
     this.#allKeys ??= new Set([
-      ...(this.ogParentManager?.allKeys || []),
+      ...(this.parentManager?.allKeys || []),
       ...Object.keys(this.state.theme || {}),
     ])
     return this.#allKeys
@@ -138,78 +136,79 @@ function getState(
   const themes = getThemes()
 
   if (props.name && props.reset) {
-    throw new Error(`Cannot reset and set new name`)
+    throw new Error(`Cannot reset + set new name`)
   }
   if (props.reset && !parentManager?.parentManager) {
-    throw new Error(`Cannot reset theme, no grandparent exists`)
+    console.warn('parentManager', parentManager)
+    throw new Error(`Cannot reset no grandparent exists`)
   }
 
+  const nextName = props.reset ? parentManager?.parentManager?.state?.name || '' : props.name || ''
+  const nextNameParts = nextName.split(THEME_NAME_SEPARATOR).length
+  const { componentName } = props
   const parentName = parentManager?.state?.name || ''
-  let nextName = props.reset ? parentManager?.parentManager?.state?.name || '' : props.name || ''
 
-  const parentParts = parentName.split(THEME_NAME_SEPARATOR).filter(Boolean)
-
-  // components look for specific, others fallback upwards
-  const prefixesSet = new Set<string>()
-  for (const [i] of parentParts.entries()) {
-    const parentsStart = parentParts.slice(0, i + 1)
-    if (!parentName.includes(nextName) && !parentParts.includes(nextName)) {
-      prefixesSet.add([...parentsStart, nextName].join(THEME_NAME_SEPARATOR))
-    }
+  // components look for most specific, fallback upwards
+  const base = parentName.split(THEME_NAME_SEPARATOR)
+  const lastSegment = base[base.length - 1]
+  const isParentAComponentTheme = parentName && lastSegment[0].toUpperCase() === lastSegment[0]
+  if (isParentAComponentTheme) {
+    base.pop() // always remove componentName they can't nest
   }
+  const parentBaseTheme = isParentAComponentTheme
+    ? base.slice(0, base.length).join(THEME_NAME_SEPARATOR)
+    : parentName
+  const max = base.length
+  const min = componentName
+    ? max - 1 // component themes don't search upwards
+    : 0
 
-  const prefixes = [...prefixesSet].reverse()
-  const potentialComponent = props.componentName
+  // console.log('go', props, { parentName, parentBaseTheme, base, min, max })
 
-  // order important (most specific to least)
-  const newPotentials = prefixes.flatMap((prefix) => {
-    const res: string[] = []
-    if (potentialComponent) {
-      res.push([prefix, potentialComponent].join(THEME_NAME_SEPARATOR))
+  for (let i = max; i >= min; i--) {
+    let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
+    if (props.inverse) {
+      prefix = inverseThemeName(prefix)
+    }
+    let potentials: string[] = []
+    if (componentName) {
+      // components only look for component themes
+      potentials = [`${prefix}_${componentName}`]
+      if (nextName) {
+        potentials.unshift(`${prefix}_${nextName}_${componentName}`)
+      }
     } else {
-      res.push(prefix)
+      if (prefix && prefix !== parentBaseTheme) {
+        potentials.push(prefix)
+      }
+      if (nextName) {
+        potentials.unshift(prefix ? `${prefix}_${nextName}` : nextName)
+      }
+      if (i === 1) {
+        const lastSegment = potentials.findIndex((x) => !x.includes('_'))
+        if (lastSegment > 0) {
+          potentials.splice(lastSegment, 0, nextName) // last try prefer our new name to parent
+        }
+      }
     }
-    return res
-  })
 
-  let potentials = nextName ? [...newPotentials, nextName] : newPotentials
-  if (props.inverse) {
-    potentials = potentials.map(inverseTheme)
-  }
-
-  for (const name of potentials) {
-    if (name && name in themes) {
-      nextName = name
-      break
+    const found = potentials.find((t) => t in themes)
+    if (found) {
+      const theme = themes[found]
+      return {
+        // need to put concurrent safe things here
+        name: found,
+        theme: getThemeUnwrapped(theme),
+        className: getNextThemeClassName(nextName, props.inverse),
+        parentName,
+      }
     }
   }
 
-  if (!nextName && (props.name || props.inverse || props.reset)) {
-    // eslint-disable-next-line no-console
-    console.warn(`No theme found for props`, props, 'after', parentManager)
-  }
-
-  const theme = themes[nextName]
-
-  // prettier-ignore
-  // eslint-disable-next-line no-console
-  process.env.NODE_ENV === 'development' && props.debug && console.log('getState', nextName, { potentials, parentParts, nextName, props, theme, parentState: parentManager?.state })
-
-  // didn't change
-  if (!theme || theme === parentManager?.state.theme) {
-    return null
-  }
-
-  return {
-    // need to put concurrent safe things here
-    name: nextName,
-    theme: getThemeUnwrapped(theme),
-    className: getNextThemeClassName(nextName, props.inverse),
-    parentName,
-  }
+  return null
 }
 
-const inverseTheme = (themeName: string) => {
+const inverseThemeName = (themeName: string) => {
   return themeName.startsWith('light')
     ? themeName.replace(/^light/, 'dark')
     : themeName.replace(/^dark/, 'light')

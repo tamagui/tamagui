@@ -117,6 +117,7 @@ export function getDefaultTamaguiConfig() {
       background: tokens.color.black,
       color: tokens.color.white,
     },
+    // most of these used for testing:
     dark_blue: {
       background: 'blue',
       color: 'white',
@@ -140,6 +141,10 @@ export function getDefaultTamaguiConfig() {
     dark_red_alt2_Button: {
       background: 'darkred',
       color: '#444',
+    },
+    red: {
+      background: 'red',
+      color: 'red',
     },
   }
 
