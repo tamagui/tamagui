@@ -42,23 +42,25 @@ const splitToFlat = ([a, b]: number[]) => {
   return a * 4 + b
 }
 
+type Lock = null | 'shouldAnimate' | 'animate' | 'scroll'
+
 export function HeroExampleThemes() {
   const themeSetting = useThemeSetting()
 
-  const [activeI, setActiveI] = useState([0, 0])
+  const [activeI, setActiveI_] = useState([0, 0])
   const activeIndex = splitToFlat(activeI)
 
   const [curColorI, curShadeI] = activeI
   const [theme, setSelTheme] = useState('')
   const colorName = themes[0][curColorI]
   const scrollView = useRef<HTMLElement | null>(null)
-  const [scrollLock, setScrollLock] = useState<null | 'shouldAnimate' | 'animate' | 'scroll'>(null)
+  const [scrollLock, setScrollLock] = useState<Lock>(null)
   const getLock = useGet(scrollLock)
   const setTintIndexDebounce = useDebounce(setTintIndex, 100)
 
-  const updateActiveI = (to: SetStateAction<number[]>) => {
-    setScrollLock('shouldAnimate')
-    setActiveI(to)
+  const updateActiveI = (to: SetStateAction<number[]>, lock: Lock = 'shouldAnimate') => {
+    setScrollLock(lock)
+    setActiveI_(to)
   }
 
   const isIntersecting = useIsIntersecting(scrollView, {
@@ -66,15 +68,26 @@ export function HeroExampleThemes() {
   })
 
   const tintIndex = Math.floor(activeIndex / 4)
+
   useEffect(() => {
-    if (isIntersecting) {
-      setTintIndexDebounce(tintIndex)
-      setActiveI([3, 0])
-      return () => {
-        setTintIndexDebounce.cancel()
-      }
+    if (!isIntersecting) return
+
+    setTintIndexDebounce(tintIndex)
+    updateActiveI([3, 0])
+
+    const onChangeTint = globalThis['onChangeTint']
+    const now = Date.now() // ignore immediate one
+    const disposeOnChange = onChangeTint((index: number) => {
+      if (now > Date.now() - 200) return
+      moveToIndex(index * 3)
+    })
+
+    return () => {
+      disposeOnChange()
+      setTintIndexDebounce.cancel()
     }
-  }, [isIntersecting, tintIndex])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isIntersecting])
 
   const move = (dir = 0) => {
     updateActiveI((prev) => {
@@ -138,17 +151,6 @@ export function HeroExampleThemes() {
     return () => {
       window.removeEventListener('keydown', onKey)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isIntersecting])
-
-  const moveToIndexDbc = useDebounce(moveToIndex, 100)
-
-  useEffect(() => {
-    if (!isIntersecting) return
-    // @ts-ignore
-    return onChangeTint((index: nunber) => {
-      moveToIndexDbc(index * 3)
-    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isIntersecting])
 
@@ -252,8 +254,7 @@ export function HeroExampleThemes() {
               const [n1, n2] = flatToSplit(itemI)
               const [c1, c2] = activeI
               if (n1 !== c1 || n2 !== c2) {
-                setScrollLock('scroll')
-                setActiveI([n1, n2])
+                updateActiveI([n1, n2], 'scroll')
               }
             }}
           >
@@ -307,6 +308,7 @@ export function HeroExampleThemes() {
                 pointerEvents="none"
                 pointerEventsControls="auto"
                 alt={curShadeI}
+                debug={curShadeI === 2}
               />
             </Theme>
           </YStack>

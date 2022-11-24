@@ -2,7 +2,7 @@
 // MIT License Copyright (c) 2020 Mo Gorhom
 // fixing SSR issue
 
-import { useDidFinishSSR } from '@tamagui/core'
+import { useDidFinishSSR, useThemeName } from '@tamagui/core'
 import { ReactNode, startTransition, useMemo, useRef } from 'react'
 import React, { createContext, memo, useCallback, useContext, useEffect, useReducer } from 'react'
 

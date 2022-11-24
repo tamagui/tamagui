@@ -1,5 +1,3 @@
-import { createContext } from 'react'
-
 import { getThemes } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
 import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
@@ -24,6 +22,10 @@ type ThemeManagerState = {
 
 const emptyState: ThemeManagerState = { name: '' }
 
+export function hasNoThemeUpdatingProps(props: ThemeProps) {
+  return !props.name && !props.componentName && !props.inverse && !props.reset
+}
+
 export class ThemeManager {
   themeListeners = new Set<ThemeListener>()
   parentManager: ThemeManager | null = null
@@ -37,6 +39,13 @@ export class ThemeManager {
     if (parentManager === 'root') {
       this.updateState(props, false)
       return
+    }
+    if (!parentManager) {
+      throw new Error(`Must set up root first`)
+    }
+    // no change no props
+    if (hasNoThemeUpdatingProps(props)) {
+      return parentManager
     }
     if (parentManager) {
       this.parentManager = parentManager
@@ -70,13 +79,13 @@ export class ThemeManager {
     }
   }
 
-  getStateIfChanged(props = this.props, state = this.state) {
-    const _ = getState(props, this.parentManager)
+  getStateIfChanged(props = this.props, state = this.state, parentManager = this.parentManager) {
+    const _ = getState(props, parentManager)
     if (
       !_ ||
       !_.theme ||
       _.theme === state.theme ||
-      (this.parentManager && _ && _.theme === this.parentManager.state.theme)
+      (parentManager && _ && _.theme === parentManager.state.theme)
     ) {
       return null
     }
@@ -139,12 +148,10 @@ function getState(
     throw new Error(`Cannot reset + set new name`)
   }
   if (props.reset && !parentManager?.parentManager) {
-    console.warn('parentManager', parentManager)
     throw new Error(`Cannot reset no grandparent exists`)
   }
 
   const nextName = props.reset ? parentManager?.parentManager?.state?.name || '' : props.name || ''
-  const nextNameParts = nextName.split(THEME_NAME_SEPARATOR).length
   const { componentName } = props
   const parentName = parentManager?.state?.name || ''
 
@@ -160,46 +167,51 @@ function getState(
     : parentName
   const max = base.length
   const min = componentName
-    ? max - 1 // component themes don't search upwards
+    ? max // component themes don't search upwards
     : 0
 
-  // console.log('go', props, { parentName, parentBaseTheme, base, min, max })
+  // console.log('go', props, { parentName, parentBaseTheme, base, min, max, isParentAComponentTheme, parentManager })
 
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
     if (props.inverse) {
       prefix = inverseThemeName(prefix)
     }
-    let potentials: string[] = []
+    const potentials: string[] = []
+    if (prefix && prefix !== parentBaseTheme) {
+      potentials.push(prefix)
+    }
+    if (nextName) {
+      potentials.unshift(prefix ? `${prefix}_${nextName}` : nextName)
+    }
+    if (i === 1) {
+      const lastSegment = potentials.findIndex((x) => !x.includes('_'))
+      if (lastSegment > 0) {
+        potentials.splice(lastSegment, 0, nextName) // last try prefer our new name to parent
+      }
+    }
     if (componentName) {
       // components only look for component themes
-      potentials = [`${prefix}_${componentName}`]
+      potentials.unshift(`${prefix}_${componentName}`)
       if (nextName) {
         potentials.unshift(`${prefix}_${nextName}_${componentName}`)
       }
-    } else {
-      if (prefix && prefix !== parentBaseTheme) {
-        potentials.push(prefix)
-      }
-      if (nextName) {
-        potentials.unshift(prefix ? `${prefix}_${nextName}` : nextName)
-      }
-      if (i === 1) {
-        const lastSegment = potentials.findIndex((x) => !x.includes('_'))
-        if (lastSegment > 0) {
-          potentials.splice(lastSegment, 0, nextName) // last try prefer our new name to parent
-        }
-      }
     }
+
+    // console.log('potentials', potentials)
 
     const found = potentials.find((t) => t in themes)
     if (found) {
+      // optimization return null if not changed
+      if (found === parentName) {
+        return null
+      }
       const theme = themes[found]
       return {
         // need to put concurrent safe things here
         name: found,
         theme: getThemeUnwrapped(theme),
-        className: getNextThemeClassName(nextName, props.inverse),
+        className: getNextThemeClassName(found, props.inverse),
         parentName,
       }
     }
@@ -213,5 +225,3 @@ const inverseThemeName = (themeName: string) => {
     ? themeName.replace(/^light/, 'dark')
     : themeName.replace(/^dark/, 'light')
 }
-
-export const ThemeManagerContext = createContext<ThemeManager | null>(null)

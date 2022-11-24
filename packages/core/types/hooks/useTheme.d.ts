@@ -15,5 +15,5 @@ export declare type ChangedTheme = {
     theme?: ThemeParsed | null;
     className?: string;
 };
-export declare const useChangeThemeEffect: (props: ThemeProps) => ChangedTheme;
+export declare const useChangeThemeEffect: (props: ThemeProps, root?: boolean) => ChangedTheme;
 //# sourceMappingURL=useTheme.d.ts.map

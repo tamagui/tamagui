@@ -122,6 +122,10 @@ export function getDefaultTamaguiConfig() {
       background: 'blue',
       color: 'white',
     },
+    dark_Card: {
+      background: 'dark',
+      color: 'card',
+    },
     dark_blue_Button: {
       background: 'blue',
       color: 'white',

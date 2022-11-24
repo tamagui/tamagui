@@ -4,23 +4,30 @@ import { beforeAll, describe, expect, test } from 'vitest'
 import { createTamagui } from '../createTamagui'
 import { ThemeManager } from './ThemeManager'
 
+const conf = getDefaultTamaguiConfig()
+
 describe('ThemeManager', () => {
   beforeAll(() => {
-    const conf = getDefaultTamaguiConfig()
     createTamagui(conf)
   })
 
   test('Changes theme to dark', () => {
-    const manager = new ThemeManager({
-      name: 'dark',
-    })
+    const manager = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      'root'
+    )
     expect(manager.state.name).toBe('dark')
   })
 
   test('Given parent theme "dark" and child theme "red" to return theme "dark_red"', () => {
-    const parent = new ThemeManager({
-      name: 'dark',
-    })
+    const parent = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      'root'
+    )
     const child = new ThemeManager(
       {
         name: 'red',
@@ -32,9 +39,12 @@ describe('ThemeManager', () => {
   })
 
   test('Given parent theme "dark", child theme "red_alt2" and component "Button" returns "dark_red_alt2_Button"', () => {
-    const parent = new ThemeManager({
-      name: 'dark',
-    })
+    const parent = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      'root'
+    )
     const child1 = new ThemeManager(
       {
         name: 'red',
@@ -53,9 +63,12 @@ describe('ThemeManager', () => {
   })
 
   test('Given parent theme "dark", child theme "red" and component "Button" returns "dark_red_Button"', () => {
-    const parent = new ThemeManager({
-      name: 'dark',
-    })
+    const parent = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      'root'
+    )
     const child1 = new ThemeManager(
       {
         name: 'red',
@@ -73,9 +86,12 @@ describe('ThemeManager', () => {
   })
 
   test('Given parent theme "dark", child theme "red" and missing component "Card" returns "dark_red"', () => {
-    const parent = new ThemeManager({
-      name: 'dark',
-    })
+    const parent = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      'root'
+    )
     const child1 = new ThemeManager(
       {
         name: 'red',
@@ -93,9 +109,12 @@ describe('ThemeManager', () => {
   })
 
   test('Changes "light" to "dark"', () => {
-    const parent = new ThemeManager({
-      name: 'light',
-    })
+    const parent = new ThemeManager(
+      {
+        name: 'light',
+      },
+      'root'
+    )
     const child = new ThemeManager(
       {
         name: 'dark',
@@ -107,9 +126,12 @@ describe('ThemeManager', () => {
   })
 
   test('Inverts "light" to "dark"', () => {
-    const parent = new ThemeManager({
-      name: 'light',
-    })
+    const parent = new ThemeManager(
+      {
+        name: 'light',
+      },
+      'root'
+    )
     const child1 = new ThemeManager(
       {
         inverse: true,
@@ -120,9 +142,12 @@ describe('ThemeManager', () => {
   })
 
   test('Inverts "light_red" to "dark_red"', () => {
-    const parent = new ThemeManager({
-      name: 'light',
-    })
+    const parent = new ThemeManager(
+      {
+        name: 'light',
+      },
+      'root'
+    )
     const child1 = new ThemeManager(
       {
         name: 'red',
@@ -134,9 +159,12 @@ describe('ThemeManager', () => {
   })
 
   test('Updates state', () => {
-    const parent = new ThemeManager({
-      name: 'light',
-    })
+    const parent = new ThemeManager(
+      {
+        name: 'light',
+      },
+      'root'
+    )
     const newState = parent.updateState({
       name: 'dark',
     })
@@ -167,9 +195,12 @@ describe('ThemeManager', () => {
   })
 
   test('Returns parent on empty', () => {
-    const parent = new ThemeManager({
-      name: 'light',
-    })
+    const parent = new ThemeManager(
+      {
+        name: 'light',
+      },
+      'root'
+    )
     const child = new ThemeManager(
       {
         name: null,
@@ -180,9 +211,12 @@ describe('ThemeManager', () => {
   })
 
   test('Resets theme', () => {
-    const parent = new ThemeManager({
-      name: 'light',
-    })
+    const parent = new ThemeManager(
+      {
+        name: 'light',
+      },
+      'root'
+    )
     const child = new ThemeManager(
       {
         name: 'dark',
@@ -202,9 +236,12 @@ describe('ThemeManager', () => {
   })
 
   test('Nested invert and reset', () => {
-    const parent = new ThemeManager({
-      name: 'light',
-    })
+    const parent = new ThemeManager(
+      {
+        name: 'light',
+      },
+      'root'
+    )
     const child = new ThemeManager(
       {
         name: 'dark',
@@ -227,9 +264,12 @@ describe('ThemeManager', () => {
   })
 
   test('Updates from null the new theme nested 3 themes', () => {
-    const a = new ThemeManager({
-      name: 'dark',
-    })
+    const a = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      'root'
+    )
     const b = new ThemeManager(
       {
         name: 'red',
@@ -247,9 +287,12 @@ describe('ThemeManager', () => {
   })
 
   test('Ignored dup themes', () => {
-    const a = new ThemeManager({
-      name: 'dark',
-    })
+    const a = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      'root'
+    )
     const b = new ThemeManager(
       {
         name: 'dark',
@@ -260,9 +303,12 @@ describe('ThemeManager', () => {
   })
 
   test('Nested component themes fallback to grandparents', () => {
-    const parent = new ThemeManager({
-      name: 'dark',
-    })
+    const parent = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      'root'
+    )
     const child = new ThemeManager(
       {
         name: 'red',
@@ -287,9 +333,12 @@ describe('ThemeManager', () => {
   })
 
   test(`Component theme with sub component that doesn't exist keeps same theme`, () => {
-    const parent = new ThemeManager({
-      name: 'dark',
-    })
+    const parent = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      'root'
+    )
     const child = new ThemeManager(
       {
         name: 'red',
@@ -304,5 +353,76 @@ describe('ThemeManager', () => {
       child
     )
     expect(child2).toBe(child)
+  })
+
+  test(`Doesn't find invalid parent when only passing component`, () => {
+    expect(!!conf.themes['dark_Card']).toBeTruthy()
+
+    const parent = new ThemeManager(
+      {
+        name: 'dark_red',
+      },
+      'root'
+    )
+
+    const child = new ThemeManager(
+      {
+        componentName: 'Card',
+      },
+      parent
+    )
+
+    // dont find dark_Card because dark_red is highest it should climb
+    expect(child.state.name).toBe(parent.state.name)
+  })
+
+  test(`Finds sub-theme when componentName and name are passed but componentName doesn't exist`, () => {
+    const parent = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      'root'
+    )
+
+    const child = new ThemeManager(
+      {
+        name: 'red',
+        componentName: 'Missing',
+      },
+      parent
+    )
+
+    // dont find dark_Card because dark_red is highest it should climb
+    expect(child.state.name).toBe('dark_red')
+  })
+
+  test.only(`Uses the full className without the light/dark prefix`, () => {
+    const parent = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      'root'
+    )
+    const child = new ThemeManager(
+      {
+        name: 'red_alt2',
+      },
+      parent
+    )
+    expect(child.state.className).toBe('t_red_alt2')
+
+    const child2 = new ThemeManager(
+      {
+        name: 'red',
+      },
+      parent
+    )
+    const child3 = new ThemeManager(
+      {
+        name: 'alt2',
+      },
+      child2
+    )
+    expect(child3.state.className).toBe('t_red_alt2')
   })
 })

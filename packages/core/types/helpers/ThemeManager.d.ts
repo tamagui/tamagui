@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { ThemeParsed, ThemeProps } from '../types';
 declare type ThemeListener = (name: string | null, themeManager: ThemeManager) => void;
 export declare type SetActiveThemeProps = {
@@ -14,6 +13,7 @@ declare type ThemeManagerState = {
     className?: string;
     parentName?: string;
 };
+export declare function hasNoThemeUpdatingProps(props: ThemeProps): boolean;
 export declare class ThemeManager {
     #private;
     props: ThemeProps;
@@ -25,13 +25,12 @@ export declare class ThemeManager {
     updateState(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
     }, notify?: boolean): ThemeManagerState | undefined;
-    getStateIfChanged(props?: ThemeProps, state?: ThemeManagerState): ThemeManagerState | null;
+    getStateIfChanged(props?: ThemeProps, state?: ThemeManagerState, parentManager?: ThemeManager | null): ThemeManagerState | null;
     getState(props?: ThemeProps): ThemeManagerState | null;
     get allKeys(): Set<string>;
     getValue(key: string, state?: ThemeManagerState): import("..").Variable<any> | undefined;
     notify(): void;
     onChangeTheme(cb: ThemeListener): () => void;
 }
-export declare const ThemeManagerContext: import("react").Context<ThemeManager | null>;
 export {};
 //# sourceMappingURL=ThemeManager.d.ts.map

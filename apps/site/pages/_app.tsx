@@ -70,7 +70,7 @@ function ContentInner({ Component, pageProps }: AppProps) {
   return getLayout(
     <>
       <Component {...pageProps} />
-      {/* {!isDocs && !isDemo && !isStudio && <Footer />} */}
+      {!isDocs && !isDemo && !isStudio && <Footer />}
     </>
   )
 }

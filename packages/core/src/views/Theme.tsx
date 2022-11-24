@@ -1,8 +1,9 @@
 import { isWeb } from '@tamagui/constants'
-import React, { memo, useId, useMemo } from 'react'
+import React, { memo, useMemo } from 'react'
 
 import { variableToString } from '../createVariable'
-import { ThemeManager, ThemeManagerContext } from '../helpers/ThemeManager'
+import { ThemeManager } from '../helpers/ThemeManager'
+import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import { useChangeThemeEffect } from '../hooks/useTheme'
 import { ThemeProps } from '../types'
 
@@ -30,7 +31,11 @@ export const Theme = memo(function Theme(props: ThemeProps) {
   if (props.disable) {
     return props.children
   }
-  const { name, theme, themeManager, themes, isNewTheme, className } = useChangeThemeEffect(props)
+  const isRoot = !!props['_isRoot']
+  const { name, theme, themeManager, themes, isNewTheme, className } = useChangeThemeEffect(
+    props,
+    isRoot
+  )
 
   const disableThemeClass = props.disableThemeClass
   const missingTheme = !themes || !name || !theme

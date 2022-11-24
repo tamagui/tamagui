@@ -41,6 +41,8 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
       className={props.className}
       name={props.defaultTheme}
       disableThemeClass={props.disableRootThemeClass}
+      // @ts-expect-error
+      _isRoot
     >
       {props.children}
     </Theme>
