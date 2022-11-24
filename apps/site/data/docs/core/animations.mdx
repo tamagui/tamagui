@@ -165,20 +165,11 @@ Here's an example animating `hoverStyle`:
 
 ### A note on usage
 
-As of beta 150, we're adding a rule for an edge case: anytime you change from animated => not animated, or not animation => animated (eg, you had an `animation="bouncy"` prop and set it to `animation={null}`), you must change the `key` of said component.
+As of beta 150, we're adding a rule for an edge case: any animated component that is _removing or adding_ an animation at any time, keep the `animation` prop defined.
 
-Why? Well, because animation drivers are quite heavy. Besides the CSS driver, the others more than double the number of hooks done by any components. And enter/exit animations further add multiple new renders. Tamagui is designed for performance in the happy path. If every component you render has to load all the animation logic, a lot of the performance of Tamagui would be nullified.
+So, `<Square animation={isActive ? 'bouncy' : null} />` rather than `<Square {...isActive && { animation: 'bouncy' }} />`. If you do absolutely need the latter, you must change the `key` at the same time.
 
-Previously, Tamagui used a pattern that was used in Framer Motion, where we loaded an "empty" sub-component when the `animation` prop was set, and then called back with the results. But React doesn't give hard guarantees on the synchronicity of children render order, and in a concurrent world that will be even less stable. So we've moved the animation hook into the body.
-
-Now, we only load the animation hook when you have an `animation` prop set. This means you must change the key when the `animation` prop goes between set and unset to avoid hook ordering issues.
-
-This is a somewhat temporary restriction, as future versions of React should enable us to work around this.
-
-<Notice>
-  To re-iterate: as of beta 150, we have added a rule: you must change the `key` of an animated view
-  if you are going from having no animation to having an animation, or vice versa.
-</Notice>
+Why? The animation hooks are heavy and would otherwise have to run on every component. Plus enter/exit animations further add renders. Tamagui is designed for performance in the happy path. If every component you render had to run all the animation logic, a lot of the performance of Tamagui would be nullified.
 
 ### enterStyle
 
