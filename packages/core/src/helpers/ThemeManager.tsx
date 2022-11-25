@@ -59,7 +59,7 @@ export class ThemeManager {
   }
 
   updateState(props: ThemeProps & { forceTheme?: ThemeParsed } = this.props || {}, notify = true) {
-    const shouldFlush = () => {
+    const shouldFlush = (() => {
       if (props.forceTheme) {
         this.state.theme = props.forceTheme
         this.state.name = props.name || ''
@@ -70,8 +70,8 @@ export class ThemeManager {
         this.state = nextState
         return true
       }
-    }
-    if (shouldFlush()) {
+    })()
+    if (shouldFlush) {
       // reset any derived state
       this.#allKeys = null
       notify && this.notify()

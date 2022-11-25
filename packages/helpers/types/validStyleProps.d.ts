@@ -13,6 +13,9 @@ export declare const stylePropsTransform: Readonly<{
     rotateX: true;
     rotateZ: true;
 }>;
+export declare const validStylesOnBaseProps: Readonly<{
+    placeholderTextColor: true;
+}>;
 export declare const stylePropsView: Readonly<{
     overflowX?: true | undefined;
     overflowY?: true | undefined;
@@ -35,6 +38,7 @@ export declare const stylePropsView: Readonly<{
     rotateY: true;
     rotateX: true;
     rotateZ: true;
+    placeholderTextColor: true;
     backfaceVisibility: true;
     backgroundColor: true;
     borderBottomColor: true;
@@ -188,6 +192,7 @@ export declare const stylePropsText: Readonly<{
     rotateY: true;
     rotateX: true;
     rotateZ: true;
+    placeholderTextColor: true;
     backfaceVisibility: true;
     backgroundColor: true;
     borderBottomColor: true;
@@ -315,6 +320,7 @@ export declare const stylePropsAll: Readonly<{
     rotateY: true;
     rotateX: true;
     rotateZ: true;
+    placeholderTextColor: true;
     backfaceVisibility: true;
     backgroundColor: true;
     borderBottomColor: true;
@@ -427,6 +433,7 @@ export declare const validStyles: Readonly<{
     rotateY: true;
     rotateX: true;
     rotateZ: true;
+    placeholderTextColor: true;
     backfaceVisibility: true;
     backgroundColor: true;
     borderBottomColor: true;

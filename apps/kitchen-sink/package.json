@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
-    "@expo/metro-config": "^0.3.18",
+    "@expo/metro-config": "^0.3.21",
     "@rnx-kit/metro-config": "^1.2.32",
     "@rnx-kit/metro-resolver-symlinks": "^0.1.20",
     "@tamagui/babel-plugin": "^1.0.1-beta.220",

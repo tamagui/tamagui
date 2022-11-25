@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "@babel/core": "^7.17.9",
+    "@babel/core": "^7.19.6",
     "@babel/runtime": "^7.19.4",
     "@expo/metro-config": "^0.3.21",
-    "@tamagui/babel-plugin": "1.0.1-beta.220",
+    "@tamagui/babel-plugin": "1.0.1-beta.219",
     "@types/react": "^18.0.15",
-    "@types/react-native": "^0.69.5",
+    "@types/react-native": "^0.69.2",
     "app": "*",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "expo": "~46.0.16",
@@ -17,14 +17,14 @@
     "expo-splash-screen": "~0.16.2",
     "expo-status-bar": "^1.4.0",
     "expo-updates": "^0.14.3",
-    "react": "18.0.0",
-    "react-dom": "^18.2.0",
-    "react-native": "0.69.6",
+    "react": ">=18",
+    "react-dom": ">=18",
+    "react-native": "*",
     "react-native-gesture-handler": "^2.5.0",
     "react-native-safe-area-context": "^4.3.1",
     "react-native-screens": "^3.15.0",
     "react-native-svg": ">=12",
-    "react-native-web": "~0.18.7",
+    "react-native-web": "^0.18.3",
     "typescript": "^4.7.4"
   },
   "scripts": {

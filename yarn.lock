@@ -1065,13 +1065,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/compat-data@npm:^7.20.0":
-  version: 7.20.1
-  resolution: "@babel/compat-data@npm:7.20.1"
-  checksum: 989b9b7a6fe43c547bb8329241bd0ba6983488b83d29cc59de35536272ee6bb4cc7487ba6c8a4bceebb3a57f8c5fea1434f80bbbe75202bc79bc1110f955ff25
-  languageName: node
-  linkType: hard
-
 "@babel/core@npm:^7.13.16, @babel/core@npm:^7.14.0, @babel/core@npm:^7.15.5, @babel/core@npm:^7.19.6, @babel/core@npm:^7.2.2":
   version: 7.19.6
   resolution: "@babel/core@npm:7.19.6"
@@ -1095,29 +1088,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.17.9":
-  version: 7.20.2
-  resolution: "@babel/core@npm:7.20.2"
-  dependencies:
-    "@ampproject/remapping": ^2.1.0
-    "@babel/code-frame": ^7.18.6
-    "@babel/generator": ^7.20.2
-    "@babel/helper-compilation-targets": ^7.20.0
-    "@babel/helper-module-transforms": ^7.20.2
-    "@babel/helpers": ^7.20.1
-    "@babel/parser": ^7.20.2
-    "@babel/template": ^7.18.10
-    "@babel/traverse": ^7.20.1
-    "@babel/types": ^7.20.2
-    convert-source-map: ^1.7.0
-    debug: ^4.1.0
-    gensync: ^1.0.0-beta.2
-    json5: ^2.2.1
-    semver: ^6.3.0
-  checksum: 98faaaef26103a276a30a141b951a93bc8418d100d1f668bf7a69d12f3e25df57958e8b6b9100d95663f720db62da85ade736f6629a5ebb1e640251a1b43c0e4
-  languageName: node
-  linkType: hard
-
 "@babel/generator@npm:^7.14.0, @babel/generator@npm:^7.19.6":
   version: 7.19.6
   resolution: "@babel/generator@npm:7.19.6"
@@ -1126,17 +1096,6 @@ __metadata:
     "@jridgewell/gen-mapping": ^0.3.2
     jsesc: ^2.5.1
   checksum: 734fcb1fbef182e7b8967459cb39b81edd2701dd13170c154b368d4e086842f72ef214798c5a37e67e0a695dfb34b13143277bedcd9795b3b1b83da8e1d236c6
-  languageName: node
-  linkType: hard
-
-"@babel/generator@npm:^7.20.1, @babel/generator@npm:^7.20.2":
-  version: 7.20.4
-  resolution: "@babel/generator@npm:7.20.4"
-  dependencies:
-    "@babel/types": ^7.20.2
-    "@jridgewell/gen-mapping": ^0.3.2
-    jsesc: ^2.5.1
-  checksum: 967b59f18e5ce999e5a741825bcecb2be4bbfc1824a92c21b47d0b5694e0eb09314a70f8b9142e9591c149c7fb83d51f73ae8fbd96d30a42666425889e51ceb1
   languageName: node
   linkType: hard
 
@@ -1180,20 +1139,6 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0
   checksum: aafcb4490c98cddb3255fff98bfbdb881b4def85a1935fd9b1f9b1f0f8b502696839f6b387fb508ca991ea72ba82ce6913bab99f21df4ce80bda2b79e91a09f5
-  languageName: node
-  linkType: hard
-
-"@babel/helper-compilation-targets@npm:^7.20.0":
-  version: 7.20.0
-  resolution: "@babel/helper-compilation-targets@npm:7.20.0"
-  dependencies:
-    "@babel/compat-data": ^7.20.0
-    "@babel/helper-validator-option": ^7.18.6
-    browserslist: ^4.21.3
-    semver: ^6.3.0
-  peerDependencies:
-    "@babel/core": ^7.0.0
-  checksum: bc183f2109648849c8fde0b3c5cf08adf2f7ad6dc617b546fd20f34c8ef574ee5ee293c8d1bd0ed0221212e8f5907cdc2c42097870f1dcc769a654107d82c95b
   languageName: node
   linkType: hard
 
@@ -1311,22 +1256,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-module-transforms@npm:^7.20.2":
-  version: 7.20.2
-  resolution: "@babel/helper-module-transforms@npm:7.20.2"
-  dependencies:
-    "@babel/helper-environment-visitor": ^7.18.9
-    "@babel/helper-module-imports": ^7.18.6
-    "@babel/helper-simple-access": ^7.20.2
-    "@babel/helper-split-export-declaration": ^7.18.6
-    "@babel/helper-validator-identifier": ^7.19.1
-    "@babel/template": ^7.18.10
-    "@babel/traverse": ^7.20.1
-    "@babel/types": ^7.20.2
-  checksum: 33a60ca115f6fce2c9d98e2a2e5649498aa7b23e2ae3c18745d7a021487708fc311458c33542f299387a0da168afccba94116e077f2cce49ae9e5ab83399e8a2
-  languageName: node
-  linkType: hard
-
 "@babel/helper-optimise-call-expression@npm:^7.18.6":
   version: 7.18.6
   resolution: "@babel/helper-optimise-call-expression@npm:7.18.6"
@@ -1376,15 +1305,6 @@ __metadata:
   dependencies:
     "@babel/types": ^7.19.4
   checksum: 964cb1ec36b69aabbb02f8d5ee1d680ebbb628611a6740958d9b05107ab16c0492044e430618ae42b1f8ea73e4e1bafe3750e8ebc959d6f3277d9cfbe1a94880
-  languageName: node
-  linkType: hard
-
-"@babel/helper-simple-access@npm:^7.20.2":
-  version: 7.20.2
-  resolution: "@babel/helper-simple-access@npm:7.20.2"
-  dependencies:
-    "@babel/types": ^7.20.2
-  checksum: ad1e96ee2e5f654ffee2369a586e5e8d2722bf2d8b028a121b4c33ebae47253f64d420157b9f0a8927aea3a9e0f18c0103e74fdd531815cf3650a0a4adca11a1
   languageName: node
   linkType: hard
 
@@ -1450,17 +1370,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helpers@npm:^7.20.1":
-  version: 7.20.1
-  resolution: "@babel/helpers@npm:7.20.1"
-  dependencies:
-    "@babel/template": ^7.18.10
-    "@babel/traverse": ^7.20.1
-    "@babel/types": ^7.20.0
-  checksum: be35f78666bdab895775ed94dbeb098f7b4fa08ce4cfb0c3a9e69b7220cce56960dcdc2b14f5df9d3b80388d4bf7df155c97f6cf6768c0138f4e6931d0f44955
-  languageName: node
-  linkType: hard
-
 "@babel/highlight@npm:^7.10.4, @babel/highlight@npm:^7.18.6":
   version: 7.18.6
   resolution: "@babel/highlight@npm:7.18.6"
@@ -1478,15 +1387,6 @@ __metadata:
   bin:
     parser: ./bin/babel-parser.js
   checksum: 9a3dca4ee3acd7e4fc3b58e1e1526a11fa334acbfe437f8ebf91dfaf48e943c147ef64b1733ba0a55af57d1eccafbf4e4a4afc46a15becd921971fe2ddf309bf
-  languageName: node
-  linkType: hard
-
-"@babel/parser@npm:^7.20.1, @babel/parser@npm:^7.20.2":
-  version: 7.20.3
-  resolution: "@babel/parser@npm:7.20.3"
-  bin:
-    parser: ./bin/babel-parser.js
-  checksum: 33bcdb45de65a3cf27ed376cb34f32be3c3485a10e3252f8d0126f6a034efc3145c0d219e57fcd5a8956361552008bc30b9bae4a723823fb3633027071be8a45
   languageName: node
   linkType: hard
 
@@ -2695,24 +2595,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.20.1":
-  version: 7.20.1
-  resolution: "@babel/traverse@npm:7.20.1"
-  dependencies:
-    "@babel/code-frame": ^7.18.6
-    "@babel/generator": ^7.20.1
-    "@babel/helper-environment-visitor": ^7.18.9
-    "@babel/helper-function-name": ^7.19.0
-    "@babel/helper-hoist-variables": ^7.18.6
-    "@babel/helper-split-export-declaration": ^7.18.6
-    "@babel/parser": ^7.20.1
-    "@babel/types": ^7.20.0
-    debug: ^4.1.0
-    globals: ^11.1.0
-  checksum: 6696176d574b7ff93466848010bc7e94b250169379ec2a84f1b10da46a7cc2018ea5e3a520c3078487db51e3a4afab9ecff48f25d1dbad8c1319362f4148fb4b
-  languageName: node
-  linkType: hard
-
 "@babel/types@npm:^7.0.0, @babel/types@npm:^7.0.0-beta.49, @babel/types@npm:^7.0.0-beta.54, @babel/types@npm:^7.1.6, @babel/types@npm:^7.18.10, @babel/types@npm:^7.18.6, @babel/types@npm:^7.18.9, @babel/types@npm:^7.19.0, @babel/types@npm:^7.19.4, @babel/types@npm:^7.3.0, @babel/types@npm:^7.4.4, @babel/types@npm:^7.8.3":
   version: 7.19.4
   resolution: "@babel/types@npm:7.19.4"
@@ -2721,17 +2603,6 @@ __metadata:
     "@babel/helper-validator-identifier": ^7.19.1
     to-fast-properties: ^2.0.0
   checksum: 4032f6407093f80dd4f4764be676f7527d2a5c0381586967cd79683cf8af01cdc16745a381b9cef045f702f0c9b0dffd880d84ee55dad59ba01bd23d5d52a8e0
-  languageName: node
-  linkType: hard
-
-"@babel/types@npm:^7.20.0, @babel/types@npm:^7.20.2":
-  version: 7.20.2
-  resolution: "@babel/types@npm:7.20.2"
-  dependencies:
-    "@babel/helper-string-parser": ^7.19.4
-    "@babel/helper-validator-identifier": ^7.19.1
-    to-fast-properties: ^2.0.0
-  checksum: 57e76e5f21876135f481bfd4010c87f2d38196bb0a2bc60a28d6e55e3afa90cdd9accf164e4cb71bdfb620517fa0a0cb5600cdce36c21d59fdaccfbb899c024c
   languageName: node
   linkType: hard
 
@@ -3117,7 +2988,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/metro-config@npm:^0.3.18, @expo/metro-config@npm:^0.3.21":
+"@expo/metro-config@npm:^0.3.21":
   version: 0.3.22
   resolution: "@expo/metro-config@npm:0.3.22"
   dependencies:
@@ -3844,13 +3715,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/env@npm:12.1.6":
-  version: 12.1.6
-  resolution: "@next/env@npm:12.1.6"
-  checksum: e6a4f189f0d653d13dc7ad510f6c9d2cf690bfd9e07c554bd501b840f8dabc3da5adcab874b0bc01aab86c3647cff4fb84692e3c3b28125af26f0b05cd4c7fcf
-  languageName: node
-  linkType: hard
-
 "@next/env@npm:13.0.2":
   version: 13.0.2
   resolution: "@next/env@npm:13.0.2"
@@ -3867,24 +3731,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/swc-android-arm-eabi@npm:12.1.6":
-  version: 12.1.6
-  resolution: "@next/swc-android-arm-eabi@npm:12.1.6"
-  conditions: os=android & cpu=arm
-  languageName: node
-  linkType: hard
-
 "@next/swc-android-arm-eabi@npm:13.0.2":
   version: 13.0.2
   resolution: "@next/swc-android-arm-eabi@npm:13.0.2"
   conditions: os=android & cpu=arm
-  languageName: node
-  linkType: hard
-
-"@next/swc-android-arm64@npm:12.1.6":
-  version: 12.1.6
-  resolution: "@next/swc-android-arm64@npm:12.1.6"
-  conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -3895,24 +3745,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-arm64@npm:12.1.6":
-  version: 12.1.6
-  resolution: "@next/swc-darwin-arm64@npm:12.1.6"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "@next/swc-darwin-arm64@npm:13.0.2":
   version: 13.0.2
   resolution: "@next/swc-darwin-arm64@npm:13.0.2"
   conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@next/swc-darwin-x64@npm:12.1.6":
-  version: 12.1.6
-  resolution: "@next/swc-darwin-x64@npm:12.1.6"
-  conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
@@ -3930,24 +3766,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm-gnueabihf@npm:12.1.6":
-  version: 12.1.6
-  resolution: "@next/swc-linux-arm-gnueabihf@npm:12.1.6"
-  conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
 "@next/swc-linux-arm-gnueabihf@npm:13.0.2":
   version: 13.0.2
   resolution: "@next/swc-linux-arm-gnueabihf@npm:13.0.2"
   conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
-"@next/swc-linux-arm64-gnu@npm:12.1.6":
-  version: 12.1.6
-  resolution: "@next/swc-linux-arm64-gnu@npm:12.1.6"
-  conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
@@ -3958,24 +3780,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-musl@npm:12.1.6":
-  version: 12.1.6
-  resolution: "@next/swc-linux-arm64-musl@npm:12.1.6"
-  conditions: os=linux & cpu=arm64 & libc=musl
-  languageName: node
-  linkType: hard
-
 "@next/swc-linux-arm64-musl@npm:13.0.2":
   version: 13.0.2
   resolution: "@next/swc-linux-arm64-musl@npm:13.0.2"
   conditions: os=linux & cpu=arm64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@next/swc-linux-x64-gnu@npm:12.1.6":
-  version: 12.1.6
-  resolution: "@next/swc-linux-x64-gnu@npm:12.1.6"
-  conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
@@ -3986,24 +3794,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-musl@npm:12.1.6":
-  version: 12.1.6
-  resolution: "@next/swc-linux-x64-musl@npm:12.1.6"
-  conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
 "@next/swc-linux-x64-musl@npm:13.0.2":
   version: 13.0.2
   resolution: "@next/swc-linux-x64-musl@npm:13.0.2"
   conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@next/swc-win32-arm64-msvc@npm:12.1.6":
-  version: 12.1.6
-  resolution: "@next/swc-win32-arm64-msvc@npm:12.1.6"
-  conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -4014,24 +3808,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/swc-win32-ia32-msvc@npm:12.1.6":
-  version: 12.1.6
-  resolution: "@next/swc-win32-ia32-msvc@npm:12.1.6"
-  conditions: os=win32 & cpu=ia32
-  languageName: node
-  linkType: hard
-
 "@next/swc-win32-ia32-msvc@npm:13.0.2":
   version: 13.0.2
   resolution: "@next/swc-win32-ia32-msvc@npm:13.0.2"
   conditions: os=win32 & cpu=ia32
-  languageName: node
-  linkType: hard
-
-"@next/swc-win32-x64-msvc@npm:12.1.6":
-  version: 12.1.6
-  resolution: "@next/swc-win32-x64-msvc@npm:12.1.6"
-  conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
@@ -5535,7 +5315,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 "@tamagui/babel-plugin@^1.0.1-beta.220, @tamagui/babel-plugin@workspace:packages/babel-plugin":
+=======
+"@tamagui/babel-plugin@1.0.1-beta.219, @tamagui/babel-plugin@^1.0.1-beta.219, @tamagui/babel-plugin@workspace:packages/babel-plugin":
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
   version: 0.0.0-use.local
   resolution: "@tamagui/babel-plugin@workspace:packages/babel-plugin"
   dependencies:
@@ -5550,6 +5334,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 "@tamagui/babel-plugin@npm:1.0.1-beta.220":
   version: 1.0.1-beta.220
   resolution: "@tamagui/babel-plugin@npm:1.0.1-beta.220"
@@ -5567,6 +5352,8 @@ __metadata:
 <<<<<<< HEAD
 "@tamagui/build@^1.0.1-beta.198, @tamagui/build@^1.0.1-beta.220, @tamagui/build@workspace:packages/build":
 =======
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/build@^1.0.1-beta.219, @tamagui/build@workspace:packages/build":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -5585,6 +5372,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/button@^1.0.1-beta.220, @tamagui/button@workspace:packages/button":
 =======
@@ -5605,6 +5393,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/button@^1.0.1-beta.219, @tamagui/button@workspace:packages/button":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -5656,13 +5446,6 @@ __metadata:
   resolution: "@tamagui/cli-color@workspace:packages/cli-color"
   languageName: unknown
   linkType: soft
-
-"@tamagui/cli-color@npm:^1.0.1-beta.220":
-  version: 1.0.1-beta.220
-  resolution: "@tamagui/cli-color@npm:1.0.1-beta.220"
-  checksum: 4a8753f94112ac3006abf59da590ecc6e79ead0a28f2d5be5d4306dda735a73daf8fd01c541d915f6e756e844c0e40e0c7b18fd90ef4b3cc8d2061ef26d6a9a3
-  languageName: node
-  linkType: hard
 
 "@tamagui/code-to-html@^1.0.1-beta.141, @tamagui/code-to-html@workspace:packages/code-to-html":
   version: 0.0.0-use.local
@@ -5735,6 +5518,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/config-base@^1.0.1-beta.141, @tamagui/config-base@^1.0.1-beta.220, @tamagui/config-base@workspace:packages/config-base":
 =======
 "@tamagui/compose-refs@npm:^1.0.1-beta.220":
@@ -5746,6 +5530,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/config-base@^1.0.1-beta.141, @tamagui/config-base@^1.0.1-beta.219, @tamagui/config-base@workspace:packages/config-base":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -5774,6 +5560,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/constants@^1.0.1-beta.220, @tamagui/constants@workspace:packages/constants":
 =======
 "@tamagui/config-default-node@npm:^1.0.1-beta.220":
@@ -5786,6 +5573,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/constants@^1.0.1-beta.219, @tamagui/constants@workspace:packages/constants":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -5802,6 +5591,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/core-node@^1.0.1-beta.141, @tamagui/core-node@^1.0.1-beta.220, @tamagui/core-node@workspace:packages/core-node":
 =======
 "@tamagui/constants@npm:^1.0.1-beta.220":
@@ -5814,6 +5604,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/core-node@^1.0.1-beta.141, @tamagui/core-node@^1.0.1-beta.219, @tamagui/core-node@workspace:packages/core-node":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -5835,6 +5627,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/core@^1.0.1-beta.198, @tamagui/core@^1.0.1-beta.220, @tamagui/core@workspace:packages/core":
 =======
 "@tamagui/core-node@npm:^1.0.1-beta.220":
@@ -5848,6 +5641,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/core@^1.0.1-beta.219, @tamagui/core@workspace:packages/core":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -5894,6 +5689,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/create-context@^1.0.1-beta.220, @tamagui/create-context@workspace:packages/create-context":
 =======
 "@tamagui/core@npm:^1.0.1-beta.220":
@@ -5918,6 +5714,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/create-context@^1.0.1-beta.219, @tamagui/create-context@workspace:packages/create-context":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -6022,6 +5820,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/focus-scope@^1.0.1-beta.220, @tamagui/focus-scope@workspace:packages/focus-scope":
 =======
 "@tamagui/fake-react-native@npm:^1.0.1-beta.220":
@@ -6031,6 +5830,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/focus-scope@^1.0.1-beta.219, @tamagui/focus-scope@workspace:packages/focus-scope":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -6149,6 +5950,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/helpers-tamagui@^1.0.1-beta.220, @tamagui/helpers-tamagui@workspace:packages/helpers-tamagui":
 =======
 "@tamagui/helpers-node@npm:^1.0.1-beta.220":
@@ -6158,6 +5960,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/helpers-tamagui@^1.0.1-beta.219, @tamagui/helpers-tamagui@workspace:packages/helpers-tamagui":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -6185,6 +5989,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/image@^1.0.1-beta.220, @tamagui/image@workspace:packages/image":
 =======
 "@tamagui/helpers@npm:^1.0.1-beta.220":
@@ -6196,6 +6001,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/image@^1.0.1-beta.219, @tamagui/image@workspace:packages/image":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -6216,7 +6023,7 @@ __metadata:
   resolution: "@tamagui/kitchen-sink@workspace:apps/kitchen-sink"
   dependencies:
     "@babel/core": ^7.19.6
-    "@expo/metro-config": ^0.3.18
+    "@expo/metro-config": ^0.3.21
     "@react-navigation/native": ^6.0.10
     "@react-navigation/native-stack": ^6.7.0
     "@rnx-kit/metro-config": ^1.2.32
@@ -6357,7 +6164,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 "@tamagui/next-plugin@^1.0.1-beta.220, @tamagui/next-plugin@workspace:packages/next-plugin":
+=======
+"@tamagui/next-plugin@1.0.1-beta.219, @tamagui/next-plugin@^1.0.1-beta.219, @tamagui/next-plugin@workspace:packages/next-plugin":
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
   version: 0.0.0-use.local
   resolution: "@tamagui/next-plugin@workspace:packages/next-plugin"
   dependencies:
@@ -6383,6 +6194,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 "@tamagui/next-plugin@npm:1.0.1-beta.220":
   version: 1.0.1-beta.220
   resolution: "@tamagui/next-plugin@npm:1.0.1-beta.220"
@@ -6409,6 +6221,9 @@ __metadata:
   linkType: hard
 
 "@tamagui/next-theme@^1.0.1-beta.220, @tamagui/next-theme@workspace:packages/next-theme":
+=======
+"@tamagui/next-theme@1.0.1-beta.219, @tamagui/next-theme@^1.0.1-beta.219, @tamagui/next-theme@workspace:packages/next-theme":
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
   version: 0.0.0-use.local
   resolution: "@tamagui/next-theme@workspace:packages/next-theme"
   dependencies:
@@ -6420,6 +6235,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 "@tamagui/next-theme@npm:1.0.1-beta.220":
   version: 1.0.1-beta.220
   resolution: "@tamagui/next-theme@npm:1.0.1-beta.220"
@@ -6432,6 +6248,9 @@ __metadata:
   linkType: hard
 
 "@tamagui/normalize-css-color-lite@^1.0.1-beta.220, @tamagui/normalize-css-color-lite@workspace:packages/normalize-css-color-lite":
+=======
+"@tamagui/normalize-css-color-lite@^1.0.1-beta.219, @tamagui/normalize-css-color-lite@workspace:packages/normalize-css-color-lite":
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
   version: 0.0.0-use.local
   resolution: "@tamagui/normalize-css-color-lite@workspace:packages/normalize-css-color-lite"
   dependencies:
@@ -6439,6 +6258,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/polyfill-dev@^1.0.1-beta.220, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
 =======
@@ -6449,6 +6269,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/polyfill-dev@^1.0.1-beta.219, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -6559,13 +6381,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/proxy-worm@npm:^1.0.1-beta.220":
-  version: 1.0.1-beta.220
-  resolution: "@tamagui/proxy-worm@npm:1.0.1-beta.220"
-  checksum: 1c4adb4e3364ddd3a646e63441819b35d717302a1b1fb20b8a0f8745d2eb835a4ef7d04f05122f70e367467fc93534dcd13bac475356482946e9c4c25f05d1ba
-  languageName: node
-  linkType: hard
-
 "@tamagui/react-17-patch@workspace:packages/react-17-patch":
   version: 0.0.0-use.local
   resolution: "@tamagui/react-17-patch@workspace:packages/react-17-patch"
@@ -6588,6 +6403,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/react-native-use-pressable@^1.0.1-beta.220, @tamagui/react-native-use-pressable@workspace:packages/react-native-use-pressable":
 =======
 "@tamagui/react-native-svg@npm:^1.0.1-beta.220":
@@ -6597,6 +6413,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/react-native-use-pressable@^1.0.1-beta.219, @tamagui/react-native-use-pressable@workspace:packages/react-native-use-pressable":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -6609,6 +6427,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/react-native-use-responder-events@^1.0.1-beta.220, @tamagui/react-native-use-responder-events@workspace:packages/react-native-use-responder-events":
 =======
 "@tamagui/react-native-use-pressable@npm:^1.0.1-beta.220":
@@ -6620,6 +6439,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/react-native-use-responder-events@^1.0.1-beta.219, @tamagui/react-native-use-responder-events@workspace:packages/react-native-use-responder-events":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -6632,6 +6453,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/remove-scroll@^1.0.1-beta.220, @tamagui/remove-scroll@workspace:packages/remove-scroll":
 =======
 "@tamagui/react-native-use-responder-events@npm:^1.0.1-beta.220":
@@ -6643,6 +6465,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/remove-scroll@^1.0.1-beta.219, @tamagui/remove-scroll@workspace:packages/remove-scroll":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -6821,6 +6645,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 "@tamagui/shorthands@npm:^1.0.1-beta.220":
   version: 1.0.1-beta.220
   resolution: "@tamagui/shorthands@npm:1.0.1-beta.220"
@@ -6831,6 +6656,8 @@ __metadata:
 <<<<<<< HEAD
 "@tamagui/simple-hash@^1.0.1-beta.198, @tamagui/simple-hash@^1.0.1-beta.220, @tamagui/simple-hash@workspace:packages/simple-hash":
 =======
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/simple-hash@^1.0.1-beta.219, @tamagui/simple-hash@workspace:packages/simple-hash":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -6839,13 +6666,6 @@ __metadata:
     "@tamagui/build": ^1.0.1-beta.220
   languageName: unknown
   linkType: soft
-
-"@tamagui/simple-hash@npm:^1.0.1-beta.220":
-  version: 1.0.1-beta.220
-  resolution: "@tamagui/simple-hash@npm:1.0.1-beta.220"
-  checksum: 13be3ccfb8cb65d18ab0b42d643b49d1535cd4ab1d40c5ebc4e103404378d7104f62ecfc231f0edd9764d3dbdbc66d7c0369660ef0ecbfaae253c1f64afa7dea
-  languageName: node
-  linkType: hard
 
 "@tamagui/site-vite@workspace:apps/site-vite":
   version: 0.0.0-use.local
@@ -7046,6 +6866,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/switch@^1.0.1-beta.220, @tamagui/switch@workspace:packages/switch":
 =======
 "@tamagui/static@npm:^1.0.1-beta.220":
@@ -7085,6 +6906,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/switch@^1.0.1-beta.219, @tamagui/switch@workspace:packages/switch":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -7219,6 +7042,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 "@tamagui/types-react-native@npm:^1.0.1-beta.220":
   version: 1.0.1-beta.220
@@ -7230,6 +7054,8 @@ __metadata:
   linkType: hard
 
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/unagi@npm:^1.0.1-beta.141":
   version: 1.0.1-beta.219
   resolution: "@tamagui/unagi@npm:1.0.1-beta.219"
@@ -7319,6 +7145,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/use-direction@^1.0.1-beta.220, @tamagui/use-direction@workspace:packages/use-direction":
 =======
 "@tamagui/use-did-finish-ssr@npm:^1.0.1-beta.220":
@@ -7331,6 +7158,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/use-direction@^1.0.1-beta.219, @tamagui/use-direction@workspace:packages/use-direction":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -7359,6 +7188,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/use-force-update@^1.0.1-beta.220, @tamagui/use-force-update@workspace:packages/use-force-update":
 =======
 "@tamagui/use-event@npm:^1.0.1-beta.220":
@@ -7370,6 +7200,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/use-force-update@^1.0.1-beta.219, @tamagui/use-force-update@workspace:packages/use-force-update":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -7383,6 +7215,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/use-presence@^1.0.1-beta.198, @tamagui/use-presence@^1.0.1-beta.220, @tamagui/use-presence@workspace:packages/use-presence":
 =======
 "@tamagui/use-force-update@npm:^1.0.1-beta.220":
@@ -7394,6 +7227,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/use-presence@^1.0.1-beta.219, @tamagui/use-presence@workspace:packages/use-presence":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -10351,13 +10186,6 @@ __metadata:
   version: 6.3.0
   resolution: "camelcase@npm:6.3.0"
   checksum: 8c96818a9076434998511251dcb2761a94817ea17dbdc37f47ac080bd088fc62c7369429a19e2178b993497132c8cbcf5cc1f44ba963e76782ba469c0474938d
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001332":
-  version: 1.0.30001434
-  resolution: "caniuse-lite@npm:1.0.30001434"
-  checksum: 7c9d2641e8e8f3ddf9af14c4ce47266a9d8fd1fc0243626049ff1b2eca4bf02938ff440813cc3feae3fa8d851ec8d1b9718044340c8d09bb4372d92d4f6b519c
   languageName: node
   linkType: hard
 
@@ -18760,7 +18588,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.1.23, nanoid@npm:^3.1.30, nanoid@npm:^3.3.4":
+"nanoid@npm:^3.1.23, nanoid@npm:^3.3.4":
   version: 3.3.4
   resolution: "nanoid@npm:3.3.4"
   bin:
@@ -18892,70 +18720,6 @@ __metadata:
     enhanced-resolve: ^5.10.0
     escalade: ^3.1.1
   checksum: 8cc46196db3c2d2063fb29fe5b4d03c21065ab08130085b24d61e4ed512d99c12083d28179771cf02f70f8bf5970db0781a228aacf6cc61662dbdcabaddfc472
-  languageName: node
-  linkType: hard
-
-"next@npm:12.1.6":
-  version: 12.1.6
-  resolution: "next@npm:12.1.6"
-  dependencies:
-    "@next/env": 12.1.6
-    "@next/swc-android-arm-eabi": 12.1.6
-    "@next/swc-android-arm64": 12.1.6
-    "@next/swc-darwin-arm64": 12.1.6
-    "@next/swc-darwin-x64": 12.1.6
-    "@next/swc-linux-arm-gnueabihf": 12.1.6
-    "@next/swc-linux-arm64-gnu": 12.1.6
-    "@next/swc-linux-arm64-musl": 12.1.6
-    "@next/swc-linux-x64-gnu": 12.1.6
-    "@next/swc-linux-x64-musl": 12.1.6
-    "@next/swc-win32-arm64-msvc": 12.1.6
-    "@next/swc-win32-ia32-msvc": 12.1.6
-    "@next/swc-win32-x64-msvc": 12.1.6
-    caniuse-lite: ^1.0.30001332
-    postcss: 8.4.5
-    styled-jsx: 5.0.2
-  peerDependencies:
-    fibers: ">= 3.1.0"
-    node-sass: ^6.0.0 || ^7.0.0
-    react: ^17.0.2 || ^18.0.0-0
-    react-dom: ^17.0.2 || ^18.0.0-0
-    sass: ^1.3.0
-  dependenciesMeta:
-    "@next/swc-android-arm-eabi":
-      optional: true
-    "@next/swc-android-arm64":
-      optional: true
-    "@next/swc-darwin-arm64":
-      optional: true
-    "@next/swc-darwin-x64":
-      optional: true
-    "@next/swc-linux-arm-gnueabihf":
-      optional: true
-    "@next/swc-linux-arm64-gnu":
-      optional: true
-    "@next/swc-linux-arm64-musl":
-      optional: true
-    "@next/swc-linux-x64-gnu":
-      optional: true
-    "@next/swc-linux-x64-musl":
-      optional: true
-    "@next/swc-win32-arm64-msvc":
-      optional: true
-    "@next/swc-win32-ia32-msvc":
-      optional: true
-    "@next/swc-win32-x64-msvc":
-      optional: true
-  peerDependenciesMeta:
-    fibers:
-      optional: true
-    node-sass:
-      optional: true
-    sass:
-      optional: true
-  bin:
-    next: dist/bin/next
-  checksum: 670d544fd47670c29681d10824e6da625e9d4a048e564c8d9cb80d37f33c9ff9b5ca0a53e6d84d8d618b1fe7c9bb4e6b45040cb7e57a5c46b232a8f914425dc1
   languageName: node
   linkType: hard
 
@@ -20632,17 +20396,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.4.5":
-  version: 8.4.5
-  resolution: "postcss@npm:8.4.5"
-  dependencies:
-    nanoid: ^3.1.30
-    picocolors: ^1.0.0
-    source-map-js: ^1.0.1
-  checksum: b78abdd89c10f7b48f4bdcd376104a19d6e9c7495ab521729bdb3df315af6c211360e9f06887ad3bc0ab0f61a04b91d68ea11462997c79cced58b9ccd66fac07
-  languageName: node
-  linkType: hard
-
 "postcss@npm:^8.2.15, postcss@npm:^8.4.18, postcss@npm:^8.4.5":
   version: 8.4.18
   resolution: "postcss@npm:8.4.18"
@@ -21308,6 +21061,7 @@ __metadata:
   linkType: soft
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "react-native-web-lite@^1.0.1-beta.144, react-native-web-lite@^1.0.1-beta.220, react-native-web-lite@workspace:packages/react-native-web-lite":
 =======
 "react-native-web-internals@npm:^1.0.1-beta.220":
@@ -21326,6 +21080,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "react-native-web-lite@^1.0.1-beta.144, react-native-web-lite@^1.0.1-beta.219, react-native-web-lite@workspace:packages/react-native-web-lite":
 >>>>>>> f7b0bf114 (feat(core): setReactNative can be called incrementally for better tree-shaking)
   version: 0.0.0-use.local
@@ -21342,20 +21098,6 @@ __metadata:
     react-dom: ">=18"
   languageName: unknown
   linkType: soft
-
-"react-native-web-lite@npm:^1.0.1-beta.220":
-  version: 1.0.1-beta.220
-  resolution: "react-native-web-lite@npm:1.0.1-beta.220"
-  dependencies:
-    "@tamagui/normalize-css-color-lite": ^1.0.1-beta.220
-    react-native-web-internals: ^1.0.1-beta.220
-    styleq: ^0.1.2
-  peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
-  checksum: 395615cb87fda23e448a48d310d863c0692f9decde51571893417f0d6d0d1fd4b3f6787ef1b8e2cab68aa4feb0b6fc28412c62a472bd224d0a40839538cdc6fd
-  languageName: node
-  linkType: hard
 
 "react-native-web@npm:0.18.9":
   version: 0.18.9
@@ -23037,7 +22779,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map-js@npm:^1.0.1, source-map-js@npm:^1.0.2":
+"source-map-js@npm:^1.0.2":
   version: 1.0.2
   resolution: "source-map-js@npm:1.0.2"
   checksum: c049a7fc4deb9a7e9b481ae3d424cc793cb4845daa690bc5a05d428bf41bf231ced49b4cf0c9e77f9d42fdb3d20d6187619fc586605f5eabe995a316da8d377c
@@ -23296,12 +23038,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "starter-expo-app@workspace:apps/starter/apps/expo"
   dependencies:
-    "@babel/core": ^7.17.9
+    "@babel/core": ^7.19.6
     "@babel/runtime": ^7.19.4
     "@expo/metro-config": ^0.3.21
-    "@tamagui/babel-plugin": 1.0.1-beta.220
+    "@tamagui/babel-plugin": 1.0.1-beta.219
     "@types/react": ^18.0.15
-    "@types/react-native": ^0.69.5
+    "@types/react-native": ^0.69.2
     app: "*"
     babel-plugin-transform-inline-environment-variables: ^0.4.4
     expo: ~46.0.16
@@ -23313,14 +23055,14 @@ __metadata:
     expo-splash-screen: ~0.16.2
     expo-status-bar: ^1.4.0
     expo-updates: ^0.14.3
-    react: 18.0.0
-    react-dom: ^18.2.0
-    react-native: 0.69.6
+    react: ">=18"
+    react-dom: ">=18"
+    react-native: "*"
     react-native-gesture-handler: ^2.5.0
     react-native-safe-area-context: ^4.3.1
     react-native-screens: ^3.15.0
     react-native-svg: ">=12"
-    react-native-web: ~0.18.7
+    react-native-web: ^0.18.3
     typescript: ^4.7.4
   languageName: unknown
   linkType: soft
@@ -23329,19 +23071,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "starter-next-app@workspace:apps/starter/apps/next"
   dependencies:
-    "@tamagui/next-plugin": 1.0.1-beta.220
-    "@tamagui/next-theme": 1.0.1-beta.220
-    "@types/node": ^18.6.4
+    "@tamagui/next-plugin": 1.0.1-beta.219
+    "@tamagui/next-theme": 1.0.1-beta.219
+    "@types/node": ^16.11.9
     app: "*"
     eslint-config-next: ^12.2.4
     file-loader: ^6.2.0
     html-webpack-plugin: ^5.5.0
-    next: 12.1.6
+    next: ^13.0.2
     next-compose-plugins: ^2.2.1
     next-transpile-modules: ^9.0.0
     raf: ^3.4.1
-    react-native: 0.69.6
-    react-native-web: ~0.18.7
+    react-native: "*"
+    react-native-web: ^0.18.3
     react-native-web-lite: ^1.0.1-beta.144
     url-loader: ^4.1.1
   languageName: unknown
@@ -23652,20 +23394,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"styled-jsx@npm:5.0.2":
-  version: 5.0.2
-  resolution: "styled-jsx@npm:5.0.2"
-  peerDependencies:
-    react: ">= 16.8.0 || 17.x.x || ^18.0.0-0"
-  peerDependenciesMeta:
-    "@babel/core":
-      optional: true
-    babel-plugin-macros:
-      optional: true
-  checksum: 86d55819ebeabd283a574d2f44f7d3f8fa6b8c28fa41687ece161bf1e910e04965611618921d8f5cd33dc6dae1033b926a70421ae5ea045440a9861edc3e0d87
-  languageName: node
-  linkType: hard
-
 "styled-jsx@npm:5.1.0":
   version: 5.1.0
   resolution: "styled-jsx@npm:5.1.0"
@@ -23818,18 +23546,6 @@ __metadata:
     lodash: ^4.17.21
   languageName: unknown
   linkType: soft
-
-"tamagui-loader@npm:^1.0.1-beta.220":
-  version: 1.0.1-beta.220
-  resolution: "tamagui-loader@npm:1.0.1-beta.220"
-  dependencies:
-    "@tamagui/cli-color": ^1.0.1-beta.220
-    "@tamagui/static": ^1.0.1-beta.220
-    fs-extra: ^10.1.0
-    lodash: ^4.17.21
-  checksum: 9a922b3059f1111053a4b9591fd4cf685e9752c6a5ce0b70dda61975ed953a0fdd66e3147ef3ba8446775a234803ede36007915f7245d838213caa22b0e3fb57
-  languageName: node
-  linkType: hard
 
 "tamagui-monorepo@workspace:.":
   version: 0.0.0-use.local

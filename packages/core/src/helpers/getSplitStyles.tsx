@@ -1,5 +1,11 @@
 import { isClient, isRSC, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { stylePropsText, stylePropsTransform, validPseudoKeys, validStyles } from '@tamagui/helpers'
+import {
+  stylePropsText,
+  stylePropsTransform,
+  validPseudoKeys,
+  validStyles,
+  validStylesOnBaseProps,
+} from '@tamagui/helpers'
 import type { ViewStyle } from '@tamagui/types-react-native'
 import { useInsertionEffect } from 'react'
 
@@ -295,7 +301,12 @@ export const getSplitStyles: StyleSplitter = (
         flatTransforms ||= {}
         flatTransforms[key] = val
       } else {
-        style[key] = normalizeValueWithProperty(val, key)
+        const out = normalizeValueWithProperty(val, key)
+        if (key in validStylesOnBaseProps) {
+          viewProps[key] = out
+        } else {
+          style[key] = out
+        }
       }
     }
 

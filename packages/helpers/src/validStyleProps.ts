@@ -15,6 +15,10 @@ export const stylePropsTransform = Object.freeze({
   rotateZ: true,
 })
 
+export const validStylesOnBaseProps = Object.freeze({
+  placeholderTextColor: true,
+})
+
 export const stylePropsView = Object.freeze({
   backfaceVisibility: true,
   backgroundColor: true,
@@ -98,6 +102,7 @@ export const stylePropsView = Object.freeze({
   shadowOffset: true,
   shadowOpacity: true,
   shadowRadius: true,
+  ...validStylesOnBaseProps,
   ...stylePropsTransform,
 
   // allow a few web only ones

@@ -12,8 +12,8 @@ const transform = withPlugins([
     'expo-linking',
     'expo-constants',
     'expo-modules-core',
-    '@my/config',
-    '@my/app',
+    '@bench/config',
+    '@bench/app',
   ]),
   withNativebase({
     nextConfig: {
