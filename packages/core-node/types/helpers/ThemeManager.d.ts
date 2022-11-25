@@ -7,7 +7,7 @@ export declare type SetActiveThemeProps = {
     theme?: any;
     reset?: boolean;
 };
-declare type ThemeManagerState = {
+export declare type ThemeManagerState = {
     name: string;
     theme?: ThemeParsed | null;
     className?: string;
@@ -17,11 +17,10 @@ export declare function hasNoThemeUpdatingProps(props: ThemeProps): boolean;
 export declare class ThemeManager {
     #private;
     props: ThemeProps;
-    ref?: any;
     themeListeners: Set<ThemeListener>;
     parentManager: ThemeManager | null;
     state: ThemeManagerState;
-    constructor(props?: ThemeProps, parentManager?: ThemeManager | 'root' | null | undefined, ref?: any);
+    constructor(props?: ThemeProps, parentManager?: ThemeManager | 'root' | null | undefined);
     updateState(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
     }, notify?: boolean): ThemeManagerState | undefined;

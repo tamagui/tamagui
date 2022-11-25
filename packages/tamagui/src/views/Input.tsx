@@ -19,7 +19,7 @@ export const InputFrame = styled(
     focusable: true,
     borderColor: '$borderColor',
     backgroundColor: '$background',
-    placeholderTextColor: '$colorFocus',
+    placeholderTextColor: '$color8',
 
     // this fixes a flex bug where it overflows container
     minWidth: 0,

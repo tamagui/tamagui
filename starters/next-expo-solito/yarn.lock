@@ -2793,6 +2793,7 @@ __metadata:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "@tamagui/build": ^1.0.1-beta.198
     tamagui: ^1.0.1-beta.198
 =======
@@ -2804,6 +2805,8 @@ __metadata:
 >>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
 =======
 >>>>>>> fbbc8e506 (revert broken starter for native)
+=======
+>>>>>>> 0767881de (fix(core): Improve and simplify setupReactNative internals)
     "@tamagui/build": ^1.0.1-beta.220
     tamagui: ^1.0.1-beta.220
 =======
@@ -2822,7 +2825,14 @@ __metadata:
     "@tamagui/build": ^1.0.1-beta.198
     tamagui: ^1.0.1-beta.198
 >>>>>>> 61938bde3 (revert broken starter for native)
+<<<<<<< HEAD
 >>>>>>> fbbc8e506 (revert broken starter for native)
+=======
+=======
+    "@tamagui/build": ^1.0.1-beta.198
+    tamagui: ^1.0.1-beta.220
+>>>>>>> 913accf2f (save)
+>>>>>>> 0767881de (fix(core): Improve and simplify setupReactNative internals)
   languageName: unknown
   linkType: soft
 
@@ -4894,11 +4904,14 @@ __metadata:
     "@tamagui/theme-base": 1.0.1-beta.220
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     expo-linking: ^3.2.3
     solito: 2.0.0-canary.4
 =======
 =======
 >>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
+=======
+>>>>>>> 0767881de (fix(core): Improve and simplify setupReactNative internals)
     expo-linking: ^3.2.2
     solito: ^1.0.12
 <<<<<<< HEAD
@@ -4913,6 +4926,8 @@ __metadata:
     "@tamagui/theme-base": 1.0.1-beta.219
 =======
 >>>>>>> 6af82a3c9 (update-starters-v1.0.1-beta.220)
+=======
+>>>>>>> 913accf2f (save)
     expo-linking: ^3.2.3
 <<<<<<< HEAD
     solito: ^1.1.2
@@ -4922,8 +4937,14 @@ __metadata:
 =======
 =======
     solito: 2.0.0-canary.4
+<<<<<<< HEAD
 >>>>>>> 561fcbcf1 (fix(starters): update solito to fix expo/next13 compat)
+<<<<<<< HEAD
 >>>>>>> 6d614a1d8 (fix(starters): update solito to fix expo/next13 compat)
+=======
+=======
+>>>>>>> 913accf2f (save)
+>>>>>>> 0767881de (fix(core): Improve and simplify setupReactNative internals)
   languageName: unknown
   linkType: soft
 
@@ -7608,16 +7629,25 @@ __metadata:
     react-native-screens: ^3.15.0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     react-native-svg: 12.3.0
 =======
     react-native-svg: 12.4.4
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 =======
+=======
+>>>>>>> 0767881de (fix(core): Improve and simplify setupReactNative internals)
     react-native-svg: 12.4.4
+<<<<<<< HEAD
 =======
     react-native-svg: 12.3.0
 >>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
+<<<<<<< HEAD
 >>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
+=======
+=======
+>>>>>>> 913accf2f (save)
+>>>>>>> 0767881de (fix(core): Improve and simplify setupReactNative internals)
     react-native-web: ~0.18.7
     typescript: ^4.7.4
   languageName: unknown
@@ -12429,6 +12459,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "react-native-svg@npm:12.3.0":
   version: 12.3.0
   resolution: "react-native-svg@npm:12.3.0"
@@ -12442,17 +12473,26 @@ __metadata:
   version: 12.4.4
   resolution: "react-native-svg@npm:12.4.4"
 =======
+=======
+>>>>>>> 0767881de (fix(core): Improve and simplify setupReactNative internals)
 "react-native-svg@npm:12.3.0":
   version: 12.3.0
   resolution: "react-native-svg@npm:12.3.0"
+<<<<<<< HEAD
 >>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
+<<<<<<< HEAD
 >>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
+=======
+=======
+>>>>>>> 913accf2f (save)
+>>>>>>> 0767881de (fix(core): Improve and simplify setupReactNative internals)
   dependencies:
     css-select: ^4.2.1
     css-tree: ^1.0.0-alpha.39
   peerDependencies:
     react: "*"
     react-native: ">=0.50.0"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   checksum: 9bed890d030819ed650fdc84ae8127f78f72a28d81a160dd574729b81f237c85be6a5ff4a0951b4dd28bd2836189f18afffef1fd6447fb3b6537c7ecd23f08c2
@@ -12477,9 +12517,17 @@ __metadata:
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 =======
 =======
+=======
+>>>>>>> 0767881de (fix(core): Improve and simplify setupReactNative internals)
   checksum: 9bed890d030819ed650fdc84ae8127f78f72a28d81a160dd574729b81f237c85be6a5ff4a0951b4dd28bd2836189f18afffef1fd6447fb3b6537c7ecd23f08c2
+<<<<<<< HEAD
 >>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
+<<<<<<< HEAD
 >>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
+=======
+=======
+>>>>>>> 913accf2f (save)
+>>>>>>> 0767881de (fix(core): Improve and simplify setupReactNative internals)
   languageName: node
   linkType: hard
 
@@ -14036,6 +14084,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "tamagui@npm:^1.0.1-beta.198":
 =======
 "tamagui@npm:^1.0.1-beta.220":
@@ -14043,6 +14092,12 @@ __metadata:
 =======
 "tamagui@npm:^1.0.1-beta.198":
 >>>>>>> fbbc8e506 (revert broken starter for native)
+=======
+"tamagui@npm:^1.0.1-beta.198":
+=======
+"tamagui@npm:^1.0.1-beta.220":
+>>>>>>> 913accf2f (save)
+>>>>>>> 0767881de (fix(core): Improve and simplify setupReactNative internals)
   version: 1.0.1-beta.220
   resolution: "tamagui@npm:1.0.1-beta.220"
   dependencies:

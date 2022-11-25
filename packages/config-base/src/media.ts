@@ -14,14 +14,4 @@ export const media = {
   gtMd: { minWidth: 1020 + 1 },
   gtLg: { minWidth: 1280 + 1 },
   gtXl: { minWidth: 1650 + 1 },
-
-  // for responsive demo only
-  tiny: { maxWidth: 500 },
-  gtTiny: { minWidth: 500 + 1 },
-  small: { maxWidth: 620 },
-  gtSmall: { minWidth: 620 + 1 },
-  medium: { maxWidth: 780 },
-  gtMedium: { minWidth: 780 + 1 },
-  large: { maxWidth: 900 },
-  gtLarge: { minWidth: 900 + 1 },
 }

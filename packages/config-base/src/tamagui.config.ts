@@ -114,8 +114,7 @@ export const config = {
   },
 }
 
-// messing up types...
-// @ts-ignore
+// @ts-ignore bad types
 config.mediaQueryDefaultActive = {
   xxs: true,
   xs: true,

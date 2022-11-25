@@ -144,7 +144,6 @@ export {
   createVariable,
   getConfig,
   getAnimationDriver,
-  getHasConfigured,
   getMedia,
   getStylesAtomic,
   getThemes,

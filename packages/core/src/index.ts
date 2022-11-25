@@ -16,7 +16,7 @@ export * from './setupReactNative'
 
 // for type portability
 export type { RNWTextProps, RNWViewProps } from './types-rnw'
-export { getHasConfigured, getConfig, getThemes, getTokens, onConfiguredOnce } from './config'
+export { getConfig, getThemes, getTokens, onConfiguredOnce } from './config'
 
 export * from './constants/constants'
 
@@ -53,6 +53,7 @@ export {
   mediaQueryConfig,
 } from './hooks/useMedia'
 export * from './hooks/useTheme'
+export * from './hooks/useThemeName'
 export * from './hooks/useSafeRef'
 
 export * from './views/Slot'

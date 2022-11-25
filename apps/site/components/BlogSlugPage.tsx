@@ -3,8 +3,7 @@ import { components } from '@components/MDXComponents'
 import { authors } from '@data/authors'
 import { ArrowLeft } from '@tamagui/lucide-icons'
 import { format, parseISO } from 'date-fns'
-import NextLink from 'next/link'
-import Link from 'next/link'
+import { default as Link, default as NextLink } from 'next/link'
 import { useRouter } from 'next/router'
 import { Button, H1, H2, H3, H6, Paragraph, Separator, Spacer, XStack, YStack } from 'tamagui'
 
@@ -30,7 +29,7 @@ export function BlogSlugPage({ frontmatter, relatedPosts, Component }: BlogPost)
 
   return (
     <Container>
-      <YStack ai="flex-start">
+      <YStack mt="$2" ai="flex-start">
         <NextLink legacyBehavior href={isDraft ? '/draft' : '/blog'} passHref>
           <Button chromeless icon={ArrowLeft} tag="a" ml="$-2" theme="alt1">
             {isDraft ? 'Drafts' : 'Blog'}
@@ -85,9 +84,9 @@ export function BlogSlugPage({ frontmatter, relatedPosts, Component }: BlogPost)
       <Separator mx="$-5" />
       <Spacer size="$6" />
 
-      {/* <Theme name="blue"> */}
-      <Component components={components as any} />
-      {/* </Theme> */}
+      <YStack px="$2">
+        <Component components={components as any} />
+      </YStack>
 
       <Separator my="$8" mx="auto" />
 

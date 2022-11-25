@@ -425,4 +425,39 @@ describe('ThemeManager', () => {
     )
     expect(child3.state.className).toBe('t_red_alt2')
   })
+
+  test(`Finds component dark_red + Button`, () => {
+    const parent = new ThemeManager(
+      {
+        name: 'dark_red',
+      },
+      'root'
+    )
+    const child = new ThemeManager(
+      {
+        name: 'dark_red',
+        componentName: 'Button',
+      },
+      parent
+    )
+    expect(child.state.className).toBe('t_red_Button')
+    expect(child.state.name).toBe('dark_red_Button')
+  })
+
+  test(`Drops componentName if only regular name found at stronger level`, () => {
+    const parent = new ThemeManager(
+      {
+        name: 'dark_red',
+      },
+      'root'
+    )
+    const child = new ThemeManager(
+      {
+        name: 'alt1',
+        componentName: 'Button',
+      },
+      parent
+    )
+    expect(child.state.name).toBe('dark_red_alt1')
+  })
 })

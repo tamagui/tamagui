@@ -25,8 +25,8 @@ export function themeable<Component extends (props: any) => any>(
         componentName={componentName || opts?.componentName}
         name={(theme as any) || null}
         data-themeable
-        // debug={props.debug}
-        // reset={props.reset}
+        debug={props.debug}
+        reset={props.reset}
       >
         {element}
       </Theme>

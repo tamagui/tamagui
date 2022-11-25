@@ -1,7 +1,6 @@
 import { isClient } from '@tamagui/constants'
 import { useLayoutEffect } from 'react'
 
-import { getHasConfigured } from '../config'
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
 import { Theme } from './Theme'
 
@@ -15,18 +14,10 @@ export type ThemeProviderProps = {
 }
 
 export const ThemeProvider = (props: ThemeProviderProps) => {
-  if (process.env.NODE_ENV === 'development') {
-    if (!getHasConfigured()) {
-      throw new Error(`Missing configureThemes() call, add to your root file`)
-    }
-  }
-
   // ensure theme is attached to root body node as well to work with modals by default
   if (isClient) {
     useLayoutEffect(() => {
-      if (props.disableRootThemeClass) {
-        return
-      }
+      if (props.disableRootThemeClass) return
       const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
       const target = props.themeClassNameOnRoot ? document.documentElement : document.body
       target.classList.add(cn)

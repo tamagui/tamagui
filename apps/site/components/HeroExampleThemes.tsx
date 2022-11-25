@@ -61,18 +61,18 @@ export function HeroExampleThemes() {
   const updateActiveI = (to: SetStateAction<number[]>, lock: Lock = 'shouldAnimate') => {
     setScrollLock(lock)
     setActiveI_(to)
+
+    const val = typeof to === 'function' ? to(activeI) : to
+    const tintIndex = Math.floor(splitToFlat(val) / 4)
+    setTintIndexDebounce(tintIndex)
   }
 
   const isIntersecting = useIsIntersecting(scrollView, {
     threshold: 0.5,
   })
 
-  const tintIndex = Math.floor(activeIndex / 4)
-
   useEffect(() => {
     if (!isIntersecting) return
-
-    setTintIndexDebounce(tintIndex)
     updateActiveI([3, 0])
 
     const onChangeTint = globalThis['onChangeTint']

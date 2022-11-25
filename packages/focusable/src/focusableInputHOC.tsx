@@ -1,7 +1,6 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { TamaguiComponent, isTamaguiComponent, useEvent } from '@tamagui/core'
-import React, { useRef } from 'react'
-import { forwardRef, useCallback, useEffect } from 'react'
+import { forwardRef, useCallback, useEffect, useRef } from 'react'
 
 import { registerFocusable, unregisterFocusable } from './registerFocusable'
 

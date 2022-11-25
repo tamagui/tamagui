@@ -34,16 +34,15 @@ export function extendStaticConfig(config: Partial<StaticConfig>, parent?: Styla
     parentNames.push(parentStaticConf.componentName)
   }
 
+  const deoptProps = config.deoptProps || new Set<string>()
+  // deoptProps.add('style')
+
   return parseStaticConfig({
     ...parentStaticConf,
     ...config,
-    deoptProps: new Set([...(config.deoptProps || []), 'style']),
+    deoptProps,
     variants,
     parentNames,
-    isZStack: config.isZStack || parentStaticConf.isZStack,
-    isText: config.isText || parentStaticConf.isText || false,
-    neverFlatten: config.neverFlatten || parentStaticConf.neverFlatten,
-    ensureOverriddenProp: config.ensureOverriddenProp ?? parentStaticConf.ensureOverriddenProp,
     validStyles: config.validStyles
       ? {
           ...parentStaticConf.validStyles,

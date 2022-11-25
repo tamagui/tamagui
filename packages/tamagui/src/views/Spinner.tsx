@@ -30,6 +30,9 @@ export const Spinner: React.ForwardRefExoticComponent<SpinnerProps & React.RefAt
             <ActivityIndicator size={size} color={color} />
           </YStack>
         )
-      })
+      }),
+      {
+        componentName: 'Spinner',
+      }
     )
   ) as any

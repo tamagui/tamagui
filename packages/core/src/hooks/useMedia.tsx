@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useSyncExternalStore } from 'react'
+import { useDeferredValue, useEffect, useMemo, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { createProxy } from '../helpers/createProxy'
@@ -156,8 +156,7 @@ export function useMedia(): {
   [key in MediaQueryKey]: boolean
 } {
   const keys = useSafeRef<MediaKeysState>({ prev: initState })
-
-  const state = useSyncExternalStore<MediaQueryState>(
+  const stateSync = useSyncExternalStore<MediaQueryState>(
     subscribe,
     () => {
       const { prev, ...curKeys } = keys.current
@@ -171,6 +170,7 @@ export function useMedia(): {
     },
     () => initState
   )
+  const state = useDeferredValue(stateSync)
 
   return useMemo(() => {
     return new Proxy(state, {

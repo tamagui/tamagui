@@ -223,7 +223,7 @@ export function createComponent<
       componentName,
       reset: props.reset,
       inverse: props.themeInverse,
-      // disableThemeClass: noClassNames,
+      // @ts-expect-error internal use only
       disable: props['data-themeable'],
       debug: props.debug,
     })
@@ -816,7 +816,7 @@ export function createComponent<
     // find space by media query
     if (state.mediaState && mediaKeys.length) {
       for (const key in state.mediaState) {
-        if (state.mediaState[key] && props[key] && props[key].space !== undefined) {
+        if (key in state.mediaState && key in props && props[key].space !== undefined) {
           space = props[key].space
         }
       }

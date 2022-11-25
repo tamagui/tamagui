@@ -160,7 +160,6 @@ export interface ThemeProps {
     reset?: boolean;
     debug?: boolean | 'verbose';
     inverse?: boolean;
-    disable?: boolean;
 }
 declare type ArrayIntersection<A extends any[]> = A[keyof A];
 declare type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;

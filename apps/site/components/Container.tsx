@@ -25,7 +25,7 @@ export const Container = styled(YStack, {
   },
 
   $gtLg: {
-    maxWidth: 760,
+    maxWidth: 860,
     pr: '$10',
   },
 

@@ -17,7 +17,6 @@ export const setConfigFont = (name: string, font: any, fontParsed: any) => {
   Object.assign(conf!.fontsParsed, { [`$${name}`]: fontParsed })
 }
 
-export const getHasConfigured = () => !!conf
 export const getConfig = () => {
   if (!conf) {
     throw new Error(

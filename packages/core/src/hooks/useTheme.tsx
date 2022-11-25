@@ -1,14 +1,23 @@
 /* eslint-disable no-console */
-import { isClient, isRSC, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
 import { useContext, useLayoutEffect, useMemo, useState } from 'react'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import { createProxy } from '../helpers/createProxy'
-import { ThemeManager, hasNoThemeUpdatingProps } from '../helpers/ThemeManager'
+import { ThemeManager, ThemeManagerState, hasNoThemeUpdatingProps } from '../helpers/ThemeManager'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
-import { ThemeName, ThemeParsed, ThemeProps } from '../types'
+import { ThemeParsed, ThemeProps } from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
+
+export type ChangedThemeResponse = {
+  themes: Record<string, ThemeParsed>
+  themeManager: ThemeManager | null
+  name: string
+  isNewTheme?: boolean
+  theme?: ThemeParsed | null
+  className?: string
+}
 
 const emptyProps = { name: null }
 export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
@@ -109,45 +118,19 @@ const GetIsNewTheme = Symbol()
 export const getThemeManager = (theme: any): ThemeManager | undefined => theme?.[GetThemeManager]
 export const getThemeIsNewTheme = (theme: any): ThemeManager | undefined => theme?.[GetIsNewTheme]
 
-export function useThemeName(opts?: { parent?: true }): ThemeName {
-  if (isRSC) {
-    const config = getConfig()
-    return config.themes[Object.keys(config.themes)[0]] as any
-  }
-  const manager = useContext(ThemeManagerContext)
-  const [name, setName] = useState(manager?.state.name || '')
-
-  useIsomorphicLayoutEffect(() => {
-    return manager?.onChangeTheme((next, manager) => {
-      const name = opts?.parent ? manager.state.parentName || next : next
-      if (!name) return
-      setName(name)
-    })
-  }, [manager])
-
-  return name
-}
-
 export const activeThemeManagers = new Set<ThemeManager>()
 
-export type ChangedTheme = {
-  themes: Record<string, ThemeParsed>
-  themeManager: ThemeManager | null
-  name: string
-  isNewTheme?: boolean
-  theme?: ThemeParsed | null
-  className?: string
-}
-
-export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTheme => {
+export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedThemeResponse => {
   const parentManager = useContext(ThemeManagerContext)
   const config = getConfig()
-  const { debug, disable } = props
+  const { debug } = props
+  // @ts-expect-error internal use only
+  const disable = props.disable
   const { themes } = config
   if (isRSC) {
     // we need context working for this to work well
     return {
-      ...create().state,
+      ...createState().state,
       themes,
       themeManager: null,
     }
@@ -162,21 +145,36 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
     }
   }
 
-  const [{ isNewTheme, state, themeManager }, setThemeManager] = useState(create)
+  type State = {
+    isNewTheme: boolean
+    state: ThemeManagerState
+    themeManager: ThemeManager
+    mounted?: boolean
+  }
+
+  const [themeState, setThemeState] = useState<State>(createState)
+  const { isNewTheme, state, themeManager, mounted } = themeState
 
   if (!isServer) {
     useLayoutEffect(() => {
       if (disable) return
+      // SSR safe inverse (because server can't know prefers scheme)
+      // could be done through fancy selectors like how we do prefers-media
+      // but may be a bit of explosion of selectors
+      if (props.inverse && !mounted) {
+        setThemeState({ ...themeState, mounted: true })
+        return
+      }
       activeThemeManagers.add(themeManager)
       const disposeChangeListener = parentManager?.onChangeTheme(() => {
         if (!isNewTheme && !isWeb) {
-          setThemeManager({
-            themeManager,
-            state: themeManager.state,
+          setThemeState({
+            ...themeState,
+            state: { ...themeManager.state },
             isNewTheme: false,
           })
         } else {
-          update()
+          updateState()
         }
       })
       return () => {
@@ -187,7 +185,7 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
   }
 
   // prettier-ignore
-  if (process.env.NODE_ENV === 'development' && debug) console.log('useTheme before update isNewTheme', props, isNewTheme, themeManager.state.name, parentManager?.state.name)
+  if (process.env.NODE_ENV === 'development' && debug) console.log('useTheme before update isNewTheme', isNewTheme, props, themeManager.state.name, parentManager?.state.name)
 
   // this seems unnecessary
   if (hasNoThemeUpdatingProps(props)) {
@@ -200,48 +198,57 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
     }
   }
 
-  update()
+  // run inline in render
+  updateState()
+
+  if (!mounted && !parentManager) {
+    throw new Error(`Impossible`)
+  }
 
   return {
     ...state,
     isNewTheme,
     themes,
     themeManager,
+    ...(!mounted &&
+      parentManager && {
+        ...parentManager.state,
+        isNewTheme: false,
+        themeManager: parentManager,
+      }),
   }
 
-  function create() {
+  function createState(prev?: State) {
     const _ = new ThemeManager(props, root ? 'root' : parentManager)
     const isNewTheme = _ !== parentManager
     // prettier-ignore
-    if (process.env.NODE_ENV === 'development' && debug) [console.groupCollapsed('useTheme create() isNewTheme', isNewTheme), console.log('parent.state', { ...parentManager?.state }, '\n', 'props', props, '\n', parentManager, 'getState', isNewTheme ? _.getState(props) : '', '\n', 'state', { ..._.state }), console.groupEnd()]
+    if (process.env.NODE_ENV === 'development' && debug) [console.groupCollapsed('useTheme create() isNewTheme', isNewTheme), console.log('parent.state.name', parentManager?.state.name, '\n', 'props', props, '\n', isClient ? parentManager : '', 'getState', isNewTheme && isClient ? _.getState(props) : '', '\n', 'state', isClient ? { ..._.state } : ''), console.groupEnd()]
+    // only inverse relies on this for ssr
+    const mounted = !props.inverse ? true : root || prev?.mounted || false
     return {
       // ThemeManager returns parentManager if no change
       isNewTheme,
       state: { ..._.state },
       themeManager: _,
+      mounted,
     }
   }
 
-  function update() {
-    const newState = themeManager.getStateIfChanged(props, state, parentManager)
-    if (newState) {
-      if (!isNewTheme) {
-        // prettier-ignore
-        if (process.env.NODE_ENV === 'development' && debug) [console.groupCollapsed('useTheme create() via update()', parentManager?.state?.name, '=>'), console.log({ props, newState, parentManager, themeManager }), console.groupEnd()]
-        setThemeManager(create)
-      } else {
-        const next = themeManager.updateState(props)
-        if (next) {
-          // prettier-ignore
-          if (process.env.NODE_ENV === 'development' && debug) console.log('useTheme update()', parentManager?.state?.name, '=>', next.name)
-          setThemeManager({
-            themeManager,
-            // may not need spread
-            state: { ...next },
-            isNewTheme: true,
-          })
-        }
-      }
+  function updateState() {
+    const next = themeManager.getStateIfChanged(props, state, parentManager)
+    if (!next) return
+    if (!isNewTheme) {
+      // prettier-ignore
+      if (process.env.NODE_ENV === 'development' && debug) [console.groupCollapsed('useTheme create() via update()', parentManager?.state?.name, '=>'), console.log({ props, next, parentManager, themeManager }), console.groupEnd()]
+      setThemeState(createState)
+      return
     }
+    // prettier-ignore
+    if (process.env.NODE_ENV === 'development' && debug) console.log('useTheme update()', parentManager?.state?.name, '=>', next.name)
+    setThemeState((prev) => ({
+      ...prev,
+      state: next,
+      isNewTheme: true,
+    }))
   }
 }

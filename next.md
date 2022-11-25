@@ -1,19 +1,10 @@
 rc.0
 
-  - button styles
-  - ssr issues
-  - native
+  - ssr issues responsive-demo
   - make dynamic eval an experiment
-
-  - check:
-    - prod input style check
-    - font size SSR check
-    - css animations check
-    - native animations check
-    - button performance check
-    - people seem to be having trouble with lucide dep versions
-- rc.0 blog post
-- <Adapt /> instead of sheetBreakpoint
+  - css animations check
+  - rc.0 blog post
+  - <Adapt /> instead of sheetBreakpoint
 
 1.0
 

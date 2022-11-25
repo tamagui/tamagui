@@ -134,6 +134,10 @@ export function getDefaultTamaguiConfig() {
       background: 'darkred',
       color: 'white',
     },
+    dark_red_alt1: {
+      background: 'darkred',
+      color: 'white',
+    },
     dark_red_Button: {
       background: 'darkred',
       color: '#ccc',

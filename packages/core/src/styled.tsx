@@ -1,6 +1,5 @@
-import { getConfig } from './config'
 import { createComponent } from './createComponent'
-import { getReactNative } from './setupReactNative'
+import { ReactNativeStaticConfigs } from './setupReactNative'
 import {
   GetProps,
   GetVariantValues,
@@ -35,8 +34,6 @@ type GetVariantProps<A extends StylableComponent> =
   //   :
   A extends TamaguiComponent<any, any, any, infer V> ? V : {}
 
-let RNComponentConfigs: WeakMap<any, Partial<StaticConfig>> | null = null
-
 export function styled<
   ParentComponent extends StylableComponent,
   Variants extends VariantDefinitions<ParentComponent> | void = VariantDefinitions<ParentComponent> | void
@@ -61,21 +58,6 @@ export function styled<
   //     options = options ? ({ ...props, ...options } as any) : props
   //   }
   // }
-
-  const RN = getReactNative()
-  if (RN && typeof RN === 'object' && !RNComponentConfigs) {
-    RNComponentConfigs = new WeakMap()
-    for (const key in RN) {
-      const val = RN[key]
-      if (!val) continue
-      if (key[0].toLowerCase() === key[0]) continue
-      RNComponentConfigs.set(val, {
-        isReactNative: true,
-        isText: key === 'Text' || key === 'TextInput',
-        inlineProps: key === 'Image' ? new Set(['src', 'width', 'height']) : undefined,
-      })
-    }
-  }
 
   const staticConfigProps = (() => {
     const parentStaticConfig =
@@ -105,16 +87,15 @@ export function styled<
         Object.assign(defaultProps, defaultVariants)
       }
       const isReactNative = Boolean(
-        (RNComponentConfigs &&
-          (RNComponentConfigs.has(Component) ||
-            RNComponentConfigs.has(parentStaticConfig?.Component))) ||
+        ReactNativeStaticConfigs.has(Component) ||
+          ReactNativeStaticConfigs.has(parentStaticConfig?.Component) ||
           parentStaticConfig?.isReactNative ||
           staticExtractionOptions?.isReactNative
       )
       const isTamagui = !isReactNative && !!parentStaticConfig
 
       const Comp = isReactNative ? parentStaticConfig?.Component || Component : (Component as any)
-      const nativeConf = (isReactNative && RNComponentConfigs?.get(Comp)) || null
+      const nativeConf = (isReactNative && ReactNativeStaticConfigs.get(Comp)) || null
 
       const isText = Boolean(staticExtractionOptions?.isText || parentStaticConfig?.isText)
       const acceptsClassName = acceptsClassNameProp ?? (isTamagui || isReactNative)

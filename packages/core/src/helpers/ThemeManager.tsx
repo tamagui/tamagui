@@ -13,7 +13,7 @@ export type SetActiveThemeProps = {
   reset?: boolean
 }
 
-type ThemeManagerState = {
+export type ThemeManagerState = {
   name: string
   theme?: ThemeParsed | null
   className?: string
@@ -33,8 +33,7 @@ export class ThemeManager {
 
   constructor(
     public props: ThemeProps = {},
-    parentManager?: ThemeManager | 'root' | null | undefined,
-    public ref?: any
+    parentManager?: ThemeManager | 'root' | null | undefined
   ) {
     if (parentManager === 'root') {
       this.updateState(props, false)
@@ -170,7 +169,9 @@ function getState(
     ? max // component themes don't search upwards
     : 0
 
-  // console.log('go', props, { parentName, parentBaseTheme, base, min, max, isParentAComponentTheme, parentManager })
+  // prettier-ignore
+  // eslint-disable-next-line no-console
+  if (process.env.NODE_ENV === 'development' && props.debug) console.log('getState', props, { parentName, parentBaseTheme, base, min, max, isParentAComponentTheme, parentManager })
 
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
@@ -192,13 +193,15 @@ function getState(
     }
     if (componentName) {
       // components only look for component themes
-      potentials.unshift(`${prefix}_${componentName}`)
+      potentials.push(`${prefix}_${componentName}`)
       if (nextName) {
         potentials.unshift(`${prefix}_${nextName}_${componentName}`)
       }
     }
 
-    // console.log('potentials', potentials)
+    // prettier-ignore
+    // eslint-disable-next-line no-console
+    if (process.env.NODE_ENV === 'development' && props.debug) console.log('getState potentials', potentials)
 
     const found = potentials.find((t) => t in themes)
     if (found) {

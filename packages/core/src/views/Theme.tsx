@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import React, { memo, useMemo } from 'react'
+import React, { useMemo } from 'react'
 
 import { variableToString } from '../createVariable'
 import { ThemeManager } from '../helpers/ThemeManager'
@@ -7,30 +7,12 @@ import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import { useChangeThemeEffect } from '../hooks/useTheme'
 import { ThemeProps } from '../types'
 
-export function wrapThemeManagerContext(
-  children: any,
-  themeManager?: ThemeManager | null,
-  shouldReset?: boolean
-) {
-  // be sure to memoize themeManager to avoid reparenting
-  if (!themeManager) {
-    return children
-  }
-  // be sure to memoize shouldReset to avoid reparenting
-  let next = children
-  // TODO likely not necessary if we do reset logic now in useTheme?
-  // reset to parent theme
-  if (shouldReset && themeManager) {
-    next = <Theme name={themeManager.state.parentName}>{next}</Theme>
-  }
-  return <ThemeManagerContext.Provider value={themeManager}>{next}</ThemeManagerContext.Provider>
-}
-
-export const Theme = memo(function Theme(props: ThemeProps) {
-  // its a permanent prop meant for internal views
+export function Theme(props: ThemeProps) {
+  // @ts-expect-error its a permanent prop meant for internal views
   if (props.disable) {
     return props.children
   }
+
   const isRoot = !!props['_isRoot']
   const { name, theme, themeManager, themes, isNewTheme, className } = useChangeThemeEffect(
     props,
@@ -77,4 +59,23 @@ export const Theme = memo(function Theme(props: ThemeProps) {
   }
 
   return contents
-})
+}
+
+export function wrapThemeManagerContext(
+  children: any,
+  themeManager?: ThemeManager | null,
+  shouldReset?: boolean
+) {
+  // be sure to memoize themeManager to avoid reparenting
+  if (!themeManager) {
+    return children
+  }
+  // be sure to memoize shouldReset to avoid reparenting
+  let next = children
+  // TODO likely not necessary if we do reset logic now in useTheme?
+  // reset to parent theme
+  if (shouldReset && themeManager) {
+    next = <Theme name={themeManager.state.parentName}>{next}</Theme>
+  }
+  return <ThemeManagerContext.Provider value={themeManager}>{next}</ThemeManagerContext.Provider>
+}

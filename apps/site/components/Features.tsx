@@ -5,10 +5,12 @@ import { CheckCircle } from './CheckCircle'
 
 export const Features = ({ items, size, ...props }: any) => {
   return (
-    <YStack space={size ?? '$4'} {...props}>
+    <YStack mt="$4" mb="$6" {...props} space="$4">
       {items.map((feature, i) => (
         <XStack tag="li" key={i}>
-          <CheckCircle />
+          <YStack mt={-5}>
+            <CheckCircle />
+          </YStack>
           <Paragraph size={size} color="$gray11">
             {feature}
           </Paragraph>

@@ -273,7 +273,6 @@ export interface ThemeProps {
   reset?: boolean
   debug?: boolean | 'verbose'
   inverse?: boolean
-  disable?: boolean
 }
 
 type ArrayIntersection<A extends any[]> = A[keyof A]

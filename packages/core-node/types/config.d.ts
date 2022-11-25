@@ -1,7 +1,6 @@
 import { ConfigListener, TamaguiInternalConfig, Tokens } from './types';
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const setConfigFont: (name: string, font: any, fontParsed: any) => void;
-export declare const getHasConfigured: () => boolean;
 export declare const getConfig: () => TamaguiInternalConfig<import("./types").CreateTokens<import("./types").VariableVal>, {
     [key: string]: Partial<import("./types").TamaguiBaseTheme> & {
         [key: string]: import("./types").VariableVal;

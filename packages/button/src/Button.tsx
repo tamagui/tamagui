@@ -215,6 +215,6 @@ export const buttonStaticConfig = {
 }
 
 export const Button = ButtonFrame.extractable(
-  themeable(ButtonComponent), //, { componentName: NAME }
+  themeable(ButtonComponent, ButtonFrame.staticConfig),
   buttonStaticConfig
 )

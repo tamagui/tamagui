@@ -34,29 +34,5 @@ export declare const media: {
     gtXl: {
         minWidth: number;
     };
-    tiny: {
-        maxWidth: number;
-    };
-    gtTiny: {
-        minWidth: number;
-    };
-    small: {
-        maxWidth: number;
-    };
-    gtSmall: {
-        minWidth: number;
-    };
-    medium: {
-        maxWidth: number;
-    };
-    gtMedium: {
-        minWidth: number;
-    };
-    large: {
-        maxWidth: number;
-    };
-    gtLarge: {
-        minWidth: number;
-    };
 };
 //# sourceMappingURL=media.d.ts.map
