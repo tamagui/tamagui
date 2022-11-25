@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { H3, ThemeReset } from 'tamagui'
 
 export const nbspLastWord = (sentence: string) => {
@@ -10,7 +10,11 @@ export const nbspLastWord = (sentence: string) => {
     return sentence
   }
   return titleWords.map((word, i) => {
-    return i === titleWords.length - 1 ? <>&nbsp;{word}</> : <> {word}</>
+    return i === titleWords.length - 1 ? (
+      <Fragment key={i}>&nbsp;{word}</Fragment>
+    ) : (
+      <Fragment key={i}> {word}</Fragment>
+    )
   })
 }
 
