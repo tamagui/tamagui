@@ -24,6 +24,7 @@ export const pseudoDescriptors: Record<
   },
   exitStyle: {
     name: 'exit',
+    stateKey: 'isExiting',
     priority: 5,
   },
 }

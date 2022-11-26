@@ -68,28 +68,15 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
     useAnimatedNumber,
     useAnimatedNumberReaction,
     useAnimatedNumberStyle,
-    useAnimations: (props, helpers) => {
-      const { pseudos, onDidAnimate, delay, getStyle, state, staticConfig } = helpers
-      const [isPresent, sendExitComplete] = usePresence()
-      const presence = useContext(PresenceContext)
-
-      const exitStyle = presence?.exitVariant
-        ? staticConfig.variantsParsed?.[presence.exitVariant]?.true || pseudos.exitStyle
-        : pseudos.exitStyle
-
+    usePresence,
+    useAnimations: ({ props, style, presence, pseudos, onDidAnimate, delay }) => {
+      const isExiting = presence?.[0] === false
+      const sendExitComplete = presence?.[1]
       const reanimatedOnDidAnimated = useEvent<NonNullable<typeof onDidAnimate>>((...args) => {
         onDidAnimate?.(...args)
       })
 
-      const isExiting = isPresent === false
-      const isEntering = state.unmounted
-
-      const all = getStyle({
-        isExiting,
-        isEntering,
-        exitVariant: presence?.exitVariant,
-        enterVariant: presence?.enterVariant,
-      })
+      const all = style
 
       const [animatedStyles, nonAnimatedStyle] = [{}, {}]
       for (const key of Object.keys(all)) {
@@ -101,20 +88,16 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       }
 
       const animatedString = JSON.stringify(animatedStyles)
-      const key =
-        animatedString +
-        JSON.stringify([
-          state.unmounted,
-          state.hover,
-          state.press,
-          state.pressIn,
-          state.focus,
-          delay,
-          isPresent,
-          onDidAnimate,
-          presence?.exitVariant,
-          presence?.enterVariant,
-        ])
+      const key = animatedString // +
+      // JSON.stringify([
+      //   state.unmounted,
+      //   state.hover,
+      //   state.press,
+      //   state.pressIn,
+      //   state.focus,
+      //   delay,
+      //   isPresent,
+      // ])
 
       const callback = (
         isExiting: boolean,
@@ -151,15 +134,19 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
           transform: [] as any[],
         }
 
-        const isExiting = isPresent === false
-
         const exitingStyleProps: Record<string, boolean> = {}
-        if (exitStyle) {
-          for (const key in exitStyle) {
+
+        // TODO this needs various manual checks, untested
+        // psuedos.exitStyle wont have the exitVariant on it unless we add that
+        if (pseudos.exitStyle) {
+          for (const key in pseudos.exitStyle) {
             if (key === 'transform') {
-              for (const attr of exitStyle[key]) {
-                const tkey = Object.keys(attr)[0]
-                exitingStyleProps[tkey] = true
+              const val = pseudos.exitStyle[key]
+              if (val) {
+                for (const attr of val) {
+                  const tkey = Object.keys(attr)[0]
+                  exitingStyleProps[tkey] = true
+                }
               }
             } else {
               exitingStyleProps[key] = true

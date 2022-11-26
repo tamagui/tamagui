@@ -129,25 +129,11 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
     useAnimatedNumber,
     useAnimatedNumberReaction,
     useAnimatedNumberStyle,
-    useAnimations: (props, helpers) => {
-      const { onDidAnimate, delay, getStyle, state } = helpers
-      const [isPresent, sendExitComplete] = usePresence()
-      const presence = useContext(PresenceContext)
-
-      // const exitStyle = presence?.exitVariant
-      //   ? staticConfig.variantsParsed?.[presence.exitVariant]?.true || pseudos.exitStyle
-      //   : pseudos.exitStyle
-
-      const isExiting = isPresent === false
-      const isEntering = state.unmounted
-
-      const mergedStyles = getStyle({
-        isExiting,
-        isEntering,
-        exitVariant: presence?.exitVariant,
-        enterVariant: presence?.enterVariant,
-      })
-
+    usePresence,
+    useAnimations: ({ props, onDidAnimate, style, state, presence }) => {
+      const isExiting = presence?.[0] === false
+      const sendExitComplete = presence?.[1]
+      const mergedStyles = style
       const animateStyles = useSafeRef<Record<string, Animated.Value>>({})
       const animatedTranforms = useSafeRef<{ [key: string]: Animated.Value }[]>([])
       const animationsState = useSafeRef<
@@ -166,19 +152,8 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       const runners: Function[] = []
       const completions: Promise<void>[] = []
 
-      const args = [
-        JSON.stringify(mergedStyles),
-        state.unmounted,
-        state.hover,
-        state.press,
-        state.pressIn,
-        state.focus,
-        delay,
-        isPresent,
-        onDidAnimate,
-        presence?.exitVariant,
-        presence?.enterVariant,
-      ]
+      // const args = [JSON.stringify(mergedStyles)]
+      const args = [JSON.stringify(mergedStyles), JSON.stringify(state), isExiting, !!onDidAnimate]
 
       const res = useMemo(() => {
         const nonAnimatedStyle = {}

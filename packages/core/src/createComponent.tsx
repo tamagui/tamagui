@@ -171,8 +171,6 @@ export function createComponent<
     const setState = states[1]
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
-    const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
-
     // conditional but if ever true stays true
     // [animated, inversed]
     const stateRef = useRef(
@@ -185,6 +183,7 @@ export function createComponent<
     )
     stateRef.current ??= {}
 
+    const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
     const isAnimated = (() => {
       const next = !!(useAnimations && props.animation)
       if (next && !stateRef.current.hasAnimated) {
@@ -192,6 +191,19 @@ export function createComponent<
       }
       return next || stateRef.current.hasAnimated
     })()
+
+    const usePresence = tamaguiConfig.animations?.usePresence
+    const presence = !isRSC && isAnimated ? usePresence() : null
+
+    // set enter/exit variants onto our new props object
+    if (isAnimated && presence) {
+      const presenceState = presence[2]
+      if (presenceState) {
+        if (presenceState.enterVariant) props[presenceState.enterVariant] = true
+        if (presenceState.exitVariant) props[presenceState.exitVariant] = true
+      }
+    }
+
     const isReactNative = Boolean(
       staticConfig.isReactNative || (isAnimated && tamaguiConfig.animations.isReactNative)
     )
@@ -268,6 +280,7 @@ export function createComponent<
 
     // time`setupStateConf`
 
+    const isExiting = presence?.[0] === false
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
@@ -278,6 +291,7 @@ export function createComponent<
         dynamicStylesInline: noClassNames,
         hasTextAncestor,
         resolveVariablesAs: 'value',
+        isExiting,
       },
       null,
       languageContext || undefined,
@@ -335,62 +349,16 @@ export function createComponent<
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
     if (!isRSC && isAnimated && useAnimations) {
-      const animations = useAnimations(propsWithAnimation, {
+      const animations = useAnimations({
+        props: propsWithAnimation,
+        style: splitStylesStyle,
+        presence,
         state,
         pseudos,
         onDidAnimate: props.onDidAnimate,
         hostRef,
         staticConfig,
-        getStyle({ isExiting, isEntering, exitVariant, enterVariant } = {}) {
-          // TODO this function can mostly be moved entirely inside getSplitStyles
-          // I think theres bugs in merge(), and we can remove that fn entirely then
-          // also i think we need to merge both the exitVariant AND psuedos.exitStyle right now it chooses one
-
-          // we have to merge such that transforms keys all exist
-          const animationStyle = { ...defaultNativeStyle, ...splitStylesStyle }
-
-          // allows for enter/exit variants on styled()
-          const enterStyle = isEntering
-            ? enterVariant && staticConfig.variants?.[enterVariant]['true']
-              ? getSubStyle(
-                  '',
-                  staticConfig.variants?.[enterVariant]['true'],
-                  staticConfig,
-                  theme,
-                  props,
-                  state,
-                  tamaguiConfig
-                )
-              : null
-            : null
-
-          const exitStyle = isExiting
-            ? exitVariant && staticConfig.variants?.[exitVariant]['true']
-              ? getSubStyle(
-                  '',
-                  staticConfig.variants?.[exitVariant]['true'],
-                  staticConfig,
-                  theme,
-                  props,
-                  state,
-                  tamaguiConfig
-                )
-              : pseudos.exitStyle
-            : null
-
-          ensureBaseHasDefaults(animationStyle, pseudos)
-
-          if (isEntering) {
-            enterStyle && merge(animationStyle, enterStyle)
-          } else if (isExiting) {
-            exitStyle && merge(animationStyle, exitStyle)
-          }
-
-          return animationStyle
-        },
-        //, delay
       })
-
       if (animations) {
         animationStyles = animations.style
       }
@@ -1286,21 +1254,6 @@ function mergeConfigDefaultProps(
   return props
 }
 
-// TODO need to delete existing prop because of weirdness in how we do this
-// real solution is to handle all this in getSplitStyle and have animation drviers
-// return a useAnimationIsExiting() so we can pass that as part of state: { exiting: true }
-// then we can remove this function and the getStyle() altogether
-function merge(base: ViewStyle, next: ViewStyle) {
-  for (const key in next) {
-    const val = next[key]
-    if (key in stylePropsTransform) {
-      mergeTransform(base, key, val, true)
-    } else {
-      base[key] = val
-    }
-  }
-}
-
 // react native compat (web only)
 function usePlatformMethods(hostRef: RefObject<Element>) {
   useIsomorphicLayoutEffect(() => {
@@ -1343,35 +1296,35 @@ function getMediaStateObject(obj: Object) {
   return Object.fromEntries(Object.entries(obj).flatMap(([k, v]) => (v ? [[`$${k}`, v]] : [])))
 }
 
-function ensureBaseHasDefaults(
-  base: ViewStyle,
-  pseudos: Record<string, ViewStyle | null | undefined>
-) {
-  const mergeIfNotExists = (key: string) => {
-    if (!base.transform?.some((x) => key in x)) {
-      mergeTransform(base, key, transformDefaults[key] || 0)
-    }
-  }
+// function ensureBaseHasDefaults(
+//   base: ViewStyle,
+//   pseudos: Record<string, ViewStyle | null | undefined>
+// ) {
+//   const mergeIfNotExists = (key: string) => {
+//     if (!base.transform?.some((x) => key in x)) {
+//       mergeTransform(base, key, transformDefaults[key] || 0)
+//     }
+//   }
 
-  for (const name in pseudos) {
-    const pseudo = pseudos[name]
-    for (const key in pseudo) {
-      const val = pseudo[key]
-      if (key in stylePropsTransform) {
-        mergeIfNotExists(key)
-      } else if (key === 'transform') {
-        if (typeof val === 'string') continue
-        for (const t of val) {
-          mergeIfNotExists(Object.keys(t)[0])
-        }
-      } else {
-        if (key in baseDefaults && !(key in base)) {
-          base[key] = baseDefaults[key]
-        }
-      }
-    }
-  }
-}
+//   for (const name in pseudos) {
+//     const pseudo = pseudos[name]
+//     for (const key in pseudo) {
+//       const val = pseudo[key]
+//       if (key in stylePropsTransform) {
+//         mergeIfNotExists(key)
+//       } else if (key === 'transform') {
+//         if (typeof val === 'string') continue
+//         for (const t of val) {
+//           mergeIfNotExists(Object.keys(t)[0])
+//         }
+//       } else {
+//         if (key in baseDefaults && !(key in base)) {
+//           base[key] = baseDefaults[key]
+//         }
+//       }
+//     }
+//   }
+// }
 
 const baseDefaults = {
   opacity: 1,

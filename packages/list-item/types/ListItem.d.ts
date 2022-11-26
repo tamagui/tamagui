@@ -648,6 +648,7 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             readonly disabled?: boolean | undefined;
         }> | null | undefined;
         themeInverse?: boolean | undefined;
+        reset?: boolean | undefined;
         fontFamily: `$${string}` | import("@tamagui/core").ThemeValueFallback | undefined;
     };
 };

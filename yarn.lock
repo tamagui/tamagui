@@ -7549,6 +7549,7 @@ __metadata:
   resolution: "@tamagui/use-presence@workspace:packages/use-presence"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.220
+    "@tamagui/core": ^1.0.1-beta.220
     react: ">=18"
   peerDependencies:
     react: ">=18"

@@ -7,6 +7,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     View: Stack,
     Text: Text,
     animations,
+    usePresence,
 
     useAnimatedNumber(initial) {
       const val = useRef(initial)
@@ -32,9 +33,8 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       return getStyle(val.getValue())
     },
 
-    useAnimations: (props, { getStyle, state, hostRef }) => {
+    useAnimations: ({ props, style, state, hostRef }) => {
       const [isPresent, sendExitComplete] = usePresence()
-      const presence = useContext(PresenceContext)
       const isExiting = isPresent === false
       const isEntering = state.unmounted
       const animationKey = Array.isArray(props.animation) ? props.animation[0] : props.animation
@@ -59,15 +59,8 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         }
       }, [sendExitComplete, isExiting])
 
-      const style = {
-        transition: `${keys} ${animation}`,
-        ...getStyle({
-          isEntering,
-          isExiting,
-          exitVariant: presence?.exitVariant,
-          enterVariant: presence?.enterVariant,
-        }),
-      }
+      // add css transition
+      style.transition = `${keys} ${animation}`
 
       if (process.env.NODE_ENV === 'development' && props['debug']) {
         // eslint-disable-next-line no-console

@@ -581,7 +581,25 @@ export declare type SplitStyleState = TamaguiComponentState & {
     fallbackProps?: Record<string, any>;
     keepVariantsAsProps?: boolean;
     hasTextAncestor?: boolean;
+    isExiting?: boolean;
+    exitVariant?: string;
+    enterVariant?: string;
 };
+export interface PresenceContextProps {
+    id: string;
+    isPresent: boolean;
+    register: (id: string) => () => void;
+    onExitComplete?: (id: string) => void;
+    initial?: false | string | string[];
+    custom?: any;
+    exitVariant?: string | null;
+    enterVariant?: string | null;
+}
+declare type SafeToRemoveCallback = () => void;
+declare type AlwaysPresent = [true, null, null];
+declare type Present = [true, undefined, PresenceContextProps];
+declare type NotPresent = [false, SafeToRemoveCallback, PresenceContextProps];
+export declare type UsePresenceResult = AlwaysPresent | Present | NotPresent;
 declare type AnimationConfig = {
     [key: string]: any;
 };
@@ -608,6 +626,7 @@ export declare type UniversalAnimatedNumber<A> = {
 export declare type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     isReactNative?: boolean;
     useAnimations: UseAnimationHook;
+    usePresence: () => UsePresenceResult;
     useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>;
     useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(val: V, getStyle: (current: any) => any) => any;
     useAnimatedNumberReaction: (val: UniversalAnimatedNumber<any>, onValue: (current: number) => void) => void;
@@ -616,21 +635,17 @@ export declare type AnimationDriver<A extends AnimationConfig = AnimationConfig>
     Text?: any;
 };
 export declare type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>;
-export declare type UseAnimationHelpers = {
+export declare type UseAnimationHook = (props: {
+    style: Record<string, any>;
+    props: Record<string, any>;
+    presence?: UsePresenceResult | null;
     hostRef: RefObject<HTMLElement | View>;
     staticConfig: StaticConfigParsed;
-    getStyle: (props?: {
-        isEntering?: boolean;
-        isExiting?: boolean;
-        exitVariant?: string | null;
-        enterVariant?: string | null;
-    }) => ViewStyle;
     state: SplitStyleState;
     pseudos: PseudoProps<ViewStyle>;
     onDidAnimate?: any;
     delay?: number;
-};
-export declare type UseAnimationHook = (props: UseAnimationProps, helpers: UseAnimationHelpers) => null | {
+}) => null | {
     style?: StackStylePropsBase | StackStylePropsBase[];
 };
 export declare type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;

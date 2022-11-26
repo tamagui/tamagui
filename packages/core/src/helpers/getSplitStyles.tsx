@@ -41,7 +41,7 @@ import {
   updateInserted,
   updateRules,
 } from './insertStyleRule'
-import { mergeTransform } from './mergeTransform'
+import { FlatTransforms, mergeTransform, mergeTransforms } from './mergeTransform'
 import {
   normalizeValueWithProperty,
   reverseMapClassNameToValue,
@@ -202,7 +202,7 @@ export const getSplitStyles: StyleSplitter = (
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
 
   let style: ViewStyle = {}
-  let flatTransforms: Record<string, any> | undefined
+  let flatTransforms: FlatTransforms | undefined
 
   const len = propKeys.length
   const rulesToInsert: RulesToInsert = []
@@ -556,11 +556,15 @@ export const getSplitStyles: StyleSplitter = (
           conf,
           languageContext,
           true,
-          state.noClassNames
+          true
         )
 
         const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
-        if (!descriptor) {
+        if (
+          !descriptor ||
+          (descriptor.name === 'enter' && !state.unmounted) ||
+          (descriptor.name === 'exit' && !state.isExiting)
+        ) {
           continue
         }
 
@@ -603,6 +607,7 @@ export const getSplitStyles: StyleSplitter = (
               mergeStyle(pkey, val)
             }
           }
+          if (debug) console.log('merging', key, pseudoStyleObject)
         }
         continue
       }
@@ -628,8 +633,7 @@ export const getSplitStyles: StyleSplitter = (
           conf,
           languageContext,
           // TODO try true like pseudo
-          false,
-          state.noClassNames
+          false
         )
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -695,9 +699,7 @@ export const getSplitStyles: StyleSplitter = (
   // always do this at the very end to preserve the order strictly (animations, origin)
   // and allow proper merging of all pseudos before applying
   if (flatTransforms) {
-    for (const key in flatTransforms) {
-      mergeTransform(style, key, flatTransforms[key], true)
-    }
+    mergeTransforms(style, flatTransforms, true)
   }
 
   // add in defaults if not set:
@@ -747,15 +749,13 @@ export const getSplitStyles: StyleSplitter = (
         }
         const [hash, val] = transforms[namespace]
         const identifier = `_transform${hash}`
-        if (isClient) {
-          if (!insertedTransforms[identifier]) {
-            const rule = `.${identifier} { transform: ${val}; }`
-            addStyleToInsertRules(rulesToInsert, {
-              identifier,
-              rules: [rule],
-              property: namespace,
-            })
-          }
+        if (isClient && !insertedTransforms[identifier]) {
+          const rule = `.${identifier} { transform: ${val}; }`
+          addStyleToInsertRules(rulesToInsert, {
+            identifier,
+            rules: [rule],
+            property: namespace,
+          })
         }
         classNames[namespace] = identifier
       }
@@ -767,7 +767,8 @@ export const getSplitStyles: StyleSplitter = (
       // prettier-ignore
       // eslint-disable-next-line no-console
       console.groupCollapsed('  🔹 styles =>')
-      const logs = { style, pseudos, medias, classNames, viewProps, state, rulesToInsert }
+      // prettier-ignore
+      const logs = { style, pseudos, medias, classNames, transforms,viewProps, state, rulesToInsert, parentSplitStyles, flatTransforms }
       for (const key in logs) {
         // eslint-disable-next-line no-console
         console.log(key, logs[key])
@@ -855,16 +856,14 @@ const cache = new WeakMap()
 function getSubStyleProps(defaultProps: Object, baseProps: Object, specificProps: Object) {
   const key = specificProps || baseProps
   // can cache based only on specific it's always referentially consistent with base
-  if (cache.has(key)) {
-    return cache.get(key)
+  if (!cache.has(key)) {
+    cache.set(key, {
+      ...defaultProps,
+      ...baseProps,
+      ...specificProps,
+    })
   }
-  const next = {
-    ...defaultProps,
-    ...baseProps,
-    ...specificProps,
-  }
-  cache.set(key, next)
-  return next
+  return cache.get(key)!
 }
 
 export const getSubStyle = (

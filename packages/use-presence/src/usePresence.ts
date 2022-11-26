@@ -1,16 +1,13 @@
+import type { PresenceContextProps, UsePresenceResult } from '@tamagui/core'
 import { useContext, useEffect, useId } from 'react'
 
-import { PresenceContext, PresenceContextProps } from './PresenceContext'
+import { PresenceContext } from './PresenceContext'
 
-export type SafeToRemove = () => void
-type AlwaysPresent = [true, null]
-type Present = [true]
-type NotPresent = [false, SafeToRemove]
-
-export function usePresence(): AlwaysPresent | Present | NotPresent {
+export function usePresence(): UsePresenceResult {
   const context = useContext(PresenceContext)
+
   if (!context) {
-    return [true, null]
+    return [true, null, context]
   }
 
   const { isPresent, onExitComplete, register } = context
@@ -19,7 +16,7 @@ export function usePresence(): AlwaysPresent | Present | NotPresent {
 
   const safeToRemove = () => onExitComplete?.(id)
 
-  return !isPresent && onExitComplete ? [false, safeToRemove] : [true]
+  return !isPresent && onExitComplete ? [false, safeToRemove, context] : [true, undefined, context]
 }
 
 /**

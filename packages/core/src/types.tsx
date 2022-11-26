@@ -1253,7 +1253,32 @@ export type SplitStyleState = TamaguiComponentState & {
   fallbackProps?: Record<string, any>
   keepVariantsAsProps?: boolean
   hasTextAncestor?: boolean
+
+  // for animations
+  isExiting?: boolean
+  exitVariant?: string
+  enterVariant?: string
 }
+
+// Presence
+
+export interface PresenceContextProps {
+  id: string
+  isPresent: boolean
+  register: (id: string) => () => void
+  onExitComplete?: (id: string) => void
+  initial?: false | string | string[]
+  custom?: any
+  exitVariant?: string | null
+  enterVariant?: string | null
+}
+
+type SafeToRemoveCallback = () => void
+type AlwaysPresent = [true, null, null]
+type Present = [true, undefined, PresenceContextProps]
+type NotPresent = [false, SafeToRemoveCallback, PresenceContextProps]
+
+export type UsePresenceResult = AlwaysPresent | Present | NotPresent
 
 // Animations:
 
@@ -1288,6 +1313,7 @@ export type UniversalAnimatedNumber<A> = {
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   isReactNative?: boolean
   useAnimations: UseAnimationHook
+  usePresence: () => UsePresenceResult
   useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>
   useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(
     val: V,
@@ -1304,29 +1330,17 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
 
 export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>
 
-export type UseAnimationHelpers = {
+export type UseAnimationHook = (props: {
+  style: Record<string, any>
+  props: Record<string, any>
+  presence?: UsePresenceResult | null
   hostRef: RefObject<HTMLElement | View>
   staticConfig: StaticConfigParsed
-  getStyle: (props?: {
-    isEntering?: boolean
-    isExiting?: boolean
-    exitVariant?: string | null
-    enterVariant?: string | null
-  }) => ViewStyle
   state: SplitStyleState
   pseudos: PseudoProps<ViewStyle>
-  // style: ViewStyle | null | undefined
-  // isMounted: boolean
-  // exitStyle?: ViewStyle | null
   onDidAnimate?: any
   delay?: number
-  // mergedStyles(props?: { isExiting?: boolean }): ViewStyle
-}
-
-export type UseAnimationHook = (
-  props: UseAnimationProps,
-  helpers: UseAnimationHelpers
-) => null | {
+}) => null | {
   style?: StackStylePropsBase | StackStylePropsBase[]
 }
 
