@@ -6,10 +6,13 @@ export const useGetThemedIcon = (props: { color: ColorProp; size: number }) => {
   const color = useCurrentColor(props.color)
   return (el: any) => {
     if (!el) return el
-    const next = {
-      ...props,
-      color,
+    if (isValidElement(el)) {
+      return cloneElement(el, {
+        ...props,
+        // @ts-expect-error
+        ...el.props,
+      })
     }
-    return isValidElement(el) ? cloneElement(el, next) : createElement(el, next)
+    return createElement(el, props)
   }
 }
