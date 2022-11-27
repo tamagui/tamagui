@@ -8,7 +8,7 @@ export declare const getBoundingClientRect: (node: HTMLElement | null) => void |
 /**
  * Store the responderId on a host node
  */
-export declare function setResponderId(node: any, id: number): void;
+export declare function setResponderId(node: any, id: any): void;
 /**
  * Filter the event path to contain only the nodes attached to the responder system
  */

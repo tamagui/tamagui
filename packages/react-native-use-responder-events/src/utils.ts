@@ -58,7 +58,7 @@ function getResponderId(node: any): number | null {
 /**
  * Store the responderId on a host node
  */
-export function setResponderId(node: any, id: number) {
+export function setResponderId(node: any, id: any) {
   if (node != null) {
     node[keyName] = id
   }

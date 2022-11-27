@@ -109,6 +109,7 @@ export const Tooltip = withStaticProperties(
     })
 
     const useFloatingFn: UseFloatingFn = (props) => {
+      // @ts-ignore
       const floating = useFloating({
         ...props,
         open,

@@ -30,7 +30,8 @@ export async function extractForWeb(source: string, opts?: Partial<ExtractToClas
       },
     })
   } catch (err) {
-    console.log('err', err)
+    // eslint-disable-next-line no-console
+    console.log('extractForWeb error', err)
   } finally {
     await remove(tmpfile)
   }

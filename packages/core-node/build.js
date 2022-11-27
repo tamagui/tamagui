@@ -10,6 +10,7 @@ const path = require('path')
 const { join } = require('path')
 
 async function build() {
+  // eslint-disable-next-line no-console
   console.log('building core-node...')
   try {
     const outPath = path.join(tmpDir, 'core-node')

@@ -71,7 +71,7 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
             __html: selectViewportCSS,
           }}
         />
-        <FloatingFocusManager context={context.floatingContext} preventTabbing>
+        <FloatingFocusManager context={context.floatingContext}>
           <SelectViewportFrame
             size={context.size}
             // @ts-ignore

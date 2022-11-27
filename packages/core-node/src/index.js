@@ -12,5 +12,6 @@ try {
   process.env.IS_STATIC = undefined
   Object.assign(exports, all)
 } catch (err) {
+  // eslint-disable-next-line no-console
   console.log('Error loading @tamagui/core-node', err)
 }
