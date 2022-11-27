@@ -2546,6 +2546,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.18.9, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4":
 =======
 "@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4":
@@ -2556,6 +2557,9 @@ __metadata:
 "@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.18.9, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4":
 >>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
 >>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
+=======
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4":
+>>>>>>> 15a845763 (fix rebase)
   version: 7.19.4
   resolution: "@babel/runtime@npm:7.19.4"
   dependencies:
@@ -3313,6 +3317,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
@@ -3331,6 +3336,8 @@ __metadata:
 =======
 >>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
 >>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
+=======
+>>>>>>> 15a845763 (fix rebase)
 "@jest/types@npm:^26.6.2":
   version: 26.6.2
   resolution: "@jest/types@npm:26.6.2"
@@ -5268,6 +5275,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/animations-react-native@npm:1.0.1-beta.198":
   version: 1.0.1-beta.198
   resolution: "@tamagui/animations-react-native@npm:1.0.1-beta.198"
@@ -5306,6 +5314,9 @@ __metadata:
 "@tamagui/animations-reanimated@^1.0.1-beta.220, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/animations-reanimated@^1.0.1-beta.220, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:packages/animations-reanimated"
   dependencies:
@@ -5353,6 +5364,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/babel-plugin@^1.0.1-beta.220, @tamagui/babel-plugin@workspace:packages/babel-plugin":
 =======
 "@tamagui/babel-plugin@1.0.1-beta.219, @tamagui/babel-plugin@^1.0.1-beta.219, @tamagui/babel-plugin@workspace:packages/babel-plugin":
@@ -5363,6 +5375,9 @@ __metadata:
 "@tamagui/babel-plugin@^1.0.1-beta.220, @tamagui/babel-plugin@workspace:packages/babel-plugin":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/babel-plugin@1.0.1-beta.220, @tamagui/babel-plugin@^1.0.1-beta.220, @tamagui/babel-plugin@workspace:packages/babel-plugin":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/babel-plugin@workspace:packages/babel-plugin"
   dependencies:
@@ -5377,6 +5392,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/babel-plugin@npm:1.0.1-beta.220":
@@ -5420,6 +5436,9 @@ __metadata:
 "@tamagui/build@^1.0.1-beta.198, @tamagui/build@^1.0.1-beta.220, @tamagui/build@workspace:packages/build":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/build@^1.0.1-beta.220, @tamagui/build@workspace:packages/build":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -5515,7 +5534,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/code-to-html@^1.0.1-beta.141, @tamagui/code-to-html@workspace:packages/code-to-html":
+"@tamagui/code-to-html@^1.0.1-beta.220, @tamagui/code-to-html@workspace:packages/code-to-html":
   version: 0.0.0-use.local
   resolution: "@tamagui/code-to-html@workspace:packages/code-to-html"
   dependencies:
@@ -5553,6 +5572,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/colors@^1.0.1-beta.198, @tamagui/colors@^1.0.1-beta.220, @tamagui/colors@workspace:packages/colors":
 =======
 "@tamagui/colors@^1.0.1-beta.219, @tamagui/colors@workspace:packages/colors":
@@ -5563,6 +5583,9 @@ __metadata:
 "@tamagui/colors@^1.0.1-beta.198, @tamagui/colors@^1.0.1-beta.220, @tamagui/colors@workspace:packages/colors":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/colors@^1.0.1-beta.220, @tamagui/colors@workspace:packages/colors":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/colors@workspace:packages/colors"
   dependencies:
@@ -5572,6 +5595,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/colors@npm:1.0.1-beta.198":
   version: 1.0.1-beta.198
   resolution: "@tamagui/colors@npm:1.0.1-beta.198"
@@ -5596,6 +5620,9 @@ __metadata:
 "@tamagui/compose-refs@^1.0.1-beta.220, @tamagui/compose-refs@workspace:packages/compose-refs":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/compose-refs@^1.0.1-beta.220, @tamagui/compose-refs@workspace:packages/compose-refs":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/compose-refs@workspace:packages/compose-refs"
   dependencies:
@@ -5606,6 +5633,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -5627,6 +5655,9 @@ __metadata:
 =======
 "@tamagui/config-base@^1.0.1-beta.141, @tamagui/config-base@^1.0.1-beta.220, @tamagui/config-base@workspace:packages/config-base":
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/config-base@^1.0.1-beta.220, @tamagui/config-base@workspace:packages/config-base":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/config-base@workspace:packages/config-base"
   dependencies:
@@ -5690,6 +5721,7 @@ __metadata:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/core-node@^1.0.1-beta.141, @tamagui/core-node@^1.0.1-beta.220, @tamagui/core-node@workspace:packages/core-node":
 =======
 "@tamagui/constants@npm:^1.0.1-beta.220":
@@ -5709,6 +5741,9 @@ __metadata:
 =======
 "@tamagui/core-node@^1.0.1-beta.141, @tamagui/core-node@^1.0.1-beta.220, @tamagui/core-node@workspace:packages/core-node":
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/core-node@^1.0.1-beta.220, @tamagui/core-node@workspace:packages/core-node":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/core-node@workspace:packages/core-node"
   dependencies:
@@ -5727,6 +5762,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -5753,10 +5789,14 @@ __metadata:
 "@tamagui/core@^1.0.1-beta.198, @tamagui/core@^1.0.1-beta.220, @tamagui/core@workspace:packages/core":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/core@^1.0.1-beta.220, @tamagui/core@workspace:packages/core":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
     "@expo/match-media": ^0.3.0
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     "@tamagui/build": ^1.0.1-beta.220
@@ -5787,6 +5827,8 @@ __metadata:
 >>>>>>> 6685dd87b (fix(site): Fix themes section carousel scroll sync)
 =======
 =======
+=======
+>>>>>>> 15a845763 (fix rebase)
     "@tamagui/build": ^1.0.1-beta.220
     "@tamagui/compose-refs": ^1.0.1-beta.220
     "@tamagui/constants": ^1.0.1-beta.220
@@ -5798,8 +5840,11 @@ __metadata:
     "@tamagui/use-did-finish-ssr": ^1.0.1-beta.220
     "@tamagui/use-event": ^1.0.1-beta.220
     "@tamagui/use-force-update": ^1.0.1-beta.220
+<<<<<<< HEAD
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+>>>>>>> 15a845763 (fix rebase)
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
     "@types/react-native": ^0.69.2
@@ -5868,7 +5913,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/demos@^1.0.1-beta.141, @tamagui/demos@^1.0.1-beta.220, @tamagui/demos@workspace:packages/demos":
+"@tamagui/demos@^1.0.1-beta.220, @tamagui/demos@workspace:packages/demos":
   version: 0.0.0-use.local
   resolution: "@tamagui/demos@workspace:packages/demos"
   dependencies:
@@ -6019,6 +6064,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/font-inter@npm:1.0.1-beta.198":
   version: 1.0.1-beta.198
   resolution: "@tamagui/font-inter@npm:1.0.1-beta.198"
@@ -6047,6 +6093,9 @@ __metadata:
 "@tamagui/font-silkscreen@^1.0.1-beta.220, @tamagui/font-silkscreen@workspace:packages/font-silkscreen":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/font-silkscreen@^1.0.1-beta.220, @tamagui/font-silkscreen@workspace:packages/font-silkscreen":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/font-silkscreen@workspace:packages/font-silkscreen"
   dependencies:
@@ -6195,7 +6244,6 @@ __metadata:
     "@tamagui/demos": ^1.0.1-beta.220
     "@tamagui/font-inter": ^1.0.1-beta.220
     "@tamagui/lucide-icons": ^1.0.1-beta.220
-    "@tamagui/sandbox-ui": ^1.0.1-beta.220
     "@tamagui/shorthands": ^1.0.1-beta.220
     "@tamagui/theme-base": ^1.0.1-beta.220
     "@types/react": ^18.0.15
@@ -6216,7 +6264,7 @@ __metadata:
     react-native-screens: ^3.15.0
     react-native-svg: ">=12"
     react-native-web: ^0.18.3
-    solito: ^1.0.12
+    solito: 2.0.0-canary.4
   languageName: unknown
   linkType: soft
 
@@ -6294,6 +6342,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/lucide-icons@npm:1.0.1-beta.198":
   version: 1.0.1-beta.198
   resolution: "@tamagui/lucide-icons@npm:1.0.1-beta.198"
@@ -6328,6 +6377,9 @@ __metadata:
 "@tamagui/menu@^1.0.1-beta.220, @tamagui/menu@workspace:packages/menu":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/menu@^1.0.1-beta.220, @tamagui/menu@workspace:packages/menu":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/menu@workspace:packages/menu"
   dependencies:
@@ -6344,6 +6396,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/next-plugin@^1.0.1-beta.220, @tamagui/next-plugin@workspace:packages/next-plugin":
 =======
 "@tamagui/next-plugin@1.0.1-beta.219, @tamagui/next-plugin@^1.0.1-beta.219, @tamagui/next-plugin@workspace:packages/next-plugin":
@@ -6354,6 +6407,9 @@ __metadata:
 "@tamagui/next-plugin@^1.0.1-beta.220, @tamagui/next-plugin@workspace:packages/next-plugin":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/next-plugin@1.0.1-beta.220, @tamagui/next-plugin@^1.0.1-beta.220, @tamagui/next-plugin@workspace:packages/next-plugin":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/next-plugin@workspace:packages/next-plugin"
   dependencies:
@@ -6379,6 +6435,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/next-plugin@npm:1.0.1-beta.220":
@@ -6443,6 +6500,9 @@ __metadata:
 "@tamagui/next-theme@^1.0.1-beta.220, @tamagui/next-theme@workspace:packages/next-theme":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/next-theme@1.0.1-beta.220, @tamagui/next-theme@^1.0.1-beta.220, @tamagui/next-theme@workspace:packages/next-theme":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/next-theme@workspace:packages/next-theme"
   dependencies:
@@ -6454,6 +6514,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 "@tamagui/next-theme@npm:1.0.1-beta.220":
@@ -6488,6 +6549,9 @@ __metadata:
 "@tamagui/normalize-css-color-lite@^1.0.1-beta.220, @tamagui/normalize-css-color-lite@workspace:packages/normalize-css-color-lite":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/normalize-css-color-lite@^1.0.1-beta.220, @tamagui/normalize-css-color-lite@workspace:packages/normalize-css-color-lite":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/normalize-css-color-lite@workspace:packages/normalize-css-color-lite"
   dependencies:
@@ -6614,6 +6678,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/proxy-worm@^1.0.1-beta.198, @tamagui/proxy-worm@^1.0.1-beta.219, @tamagui/proxy-worm@^1.0.1-beta.220, @tamagui/proxy-worm@workspace:packages/proxy-worm":
 =======
 "@tamagui/proxy-worm@^1.0.1-beta.219, @tamagui/proxy-worm@workspace:packages/proxy-worm":
@@ -6624,6 +6689,9 @@ __metadata:
 "@tamagui/proxy-worm@^1.0.1-beta.198, @tamagui/proxy-worm@^1.0.1-beta.219, @tamagui/proxy-worm@^1.0.1-beta.220, @tamagui/proxy-worm@workspace:packages/proxy-worm":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/proxy-worm@^1.0.1-beta.219, @tamagui/proxy-worm@^1.0.1-beta.220, @tamagui/proxy-worm@workspace:packages/proxy-worm":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/proxy-worm@workspace:packages/proxy-worm"
   languageName: unknown
@@ -6640,6 +6708,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/react-native-svg@^1.0.1-beta.198, @tamagui/react-native-svg@^1.0.1-beta.220, @tamagui/react-native-svg@workspace:packages/react-native-svg":
 =======
 "@tamagui/react-native-svg@^1.0.1-beta.219, @tamagui/react-native-svg@workspace:packages/react-native-svg":
@@ -6650,6 +6719,9 @@ __metadata:
 "@tamagui/react-native-svg@^1.0.1-beta.198, @tamagui/react-native-svg@^1.0.1-beta.220, @tamagui/react-native-svg@workspace:packages/react-native-svg":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/react-native-svg@^1.0.1-beta.220, @tamagui/react-native-svg@workspace:packages/react-native-svg":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-svg@workspace:packages/react-native-svg"
   dependencies:
@@ -6747,7 +6819,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/sandbox-ui@^1.0.1-beta.220, @tamagui/sandbox-ui@workspace:apps/sandbox-ui":
+"@tamagui/sandbox-ui@workspace:apps/sandbox-ui":
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox-ui@workspace:apps/sandbox-ui"
   dependencies:
@@ -6772,7 +6844,6 @@ __metadata:
     "@tamagui/demos": ^1.0.1-beta.220
     "@tamagui/font-inter": ^1.0.1-beta.220
     "@tamagui/lucide-icons": ^1.0.1-beta.220
-    "@tamagui/sandbox-ui": ^1.0.1-beta.220
     "@tamagui/select": ^1.0.1-beta.220
     "@tamagui/shorthands": ^1.0.1-beta.220
     "@tamagui/slider": ^1.0.1-beta.220
@@ -6914,6 +6985,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/shorthands@npm:^1.0.1-beta.220":
   version: 1.0.1-beta.220
   resolution: "@tamagui/shorthands@npm:1.0.1-beta.220"
@@ -6941,6 +7013,9 @@ __metadata:
 "@tamagui/simple-hash@^1.0.1-beta.198, @tamagui/simple-hash@^1.0.1-beta.220, @tamagui/simple-hash@workspace:packages/simple-hash":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/simple-hash@^1.0.1-beta.220, @tamagui/simple-hash@workspace:packages/simple-hash":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/simple-hash@workspace:packages/simple-hash"
   dependencies:
@@ -6952,12 +7027,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/site-vite@workspace:apps/site-vite"
   dependencies:
-    "@tamagui/code-to-html": ^1.0.1-beta.141
-    "@tamagui/config-base": ^1.0.1-beta.141
-    "@tamagui/core-node": ^1.0.1-beta.141
-    "@tamagui/demos": ^1.0.1-beta.141
-    "@tamagui/unagi": ^1.0.1-beta.141
-    "@tamagui/vite-plugin": ^1.0.1-beta.141
+    "@tamagui/code-to-html": ^1.0.1-beta.220
+    "@tamagui/config-base": ^1.0.1-beta.220
+    "@tamagui/core-node": ^1.0.1-beta.220
+    "@tamagui/demos": ^1.0.1-beta.220
+    "@tamagui/unagi": ^1.0.1-beta.219
+    "@tamagui/vite-plugin": ^1.0.1-beta.220
     autoprefixer: ^10.4.2
     copy-to-clipboard: ^3.3.2
     cross-env: ^7.0.3
@@ -6965,7 +7040,7 @@ __metadata:
     react: ">=18"
     react-dom: ">=18"
     rollup-plugin-visualizer: ^5.7.1
-    tamagui: ^1.0.1-beta.141
+    tamagui: ^1.0.1-beta.220
     vite: ^3.2.2
   languageName: unknown
   linkType: soft
@@ -7084,6 +7159,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/static@^1.0.1-beta.198, @tamagui/static@^1.0.1-beta.219, @tamagui/static@^1.0.1-beta.220, @tamagui/static@workspace:packages/static":
 =======
 "@tamagui/static@^1.0.1-beta.219, @tamagui/static@workspace:packages/static":
@@ -7094,6 +7170,9 @@ __metadata:
 "@tamagui/static@^1.0.1-beta.198, @tamagui/static@^1.0.1-beta.219, @tamagui/static@^1.0.1-beta.220, @tamagui/static@workspace:packages/static":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/static@^1.0.1-beta.219, @tamagui/static@^1.0.1-beta.220, @tamagui/static@workspace:packages/static":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/static@workspace:packages/static"
   dependencies:
@@ -7335,6 +7414,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 "@tamagui/types-react-native@npm:^1.0.1-beta.220":
   version: 1.0.1-beta.220
@@ -7349,6 +7429,9 @@ __metadata:
 =======
 >>>>>>> 9ad2ba8c3 (fix(core): Fix native Input placeholderTextColor)
 "@tamagui/unagi@npm:^1.0.1-beta.141":
+=======
+"@tamagui/unagi@npm:^1.0.1-beta.219":
+>>>>>>> 15a845763 (fix rebase)
   version: 1.0.1-beta.219
   resolution: "@tamagui/unagi@npm:1.0.1-beta.219"
   dependencies:
@@ -7470,6 +7553,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/use-event@^1.0.1-beta.198, @tamagui/use-event@^1.0.1-beta.220, @tamagui/use-event@workspace:packages/use-event":
 =======
 "@tamagui/use-event@^1.0.1-beta.219, @tamagui/use-event@workspace:packages/use-event":
@@ -7480,6 +7564,9 @@ __metadata:
 "@tamagui/use-event@^1.0.1-beta.198, @tamagui/use-event@^1.0.1-beta.220, @tamagui/use-event@workspace:packages/use-event":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/use-event@^1.0.1-beta.220, @tamagui/use-event@workspace:packages/use-event":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/use-event@workspace:packages/use-event"
   dependencies:
@@ -7524,6 +7611,7 @@ __metadata:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@tamagui/use-presence@^1.0.1-beta.198, @tamagui/use-presence@^1.0.1-beta.220, @tamagui/use-presence@workspace:packages/use-presence":
 =======
 "@tamagui/use-force-update@npm:^1.0.1-beta.220":
@@ -7545,6 +7633,9 @@ __metadata:
 "@tamagui/use-presence@^1.0.1-beta.198, @tamagui/use-presence@^1.0.1-beta.220, @tamagui/use-presence@workspace:packages/use-presence":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"@tamagui/use-presence@^1.0.1-beta.220, @tamagui/use-presence@workspace:packages/use-presence":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "@tamagui/use-presence@workspace:packages/use-presence"
   dependencies:
@@ -7612,7 +7703,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/vite-plugin@^1.0.1-beta.141, @tamagui/vite-plugin@^1.0.1-beta.219, @tamagui/vite-plugin@^1.0.1-beta.220, @tamagui/vite-plugin@workspace:packages/vite-plugin":
+"@tamagui/vite-plugin@^1.0.1-beta.219, @tamagui/vite-plugin@^1.0.1-beta.220, @tamagui/vite-plugin@workspace:packages/vite-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin@workspace:packages/vite-plugin"
   dependencies:
@@ -11603,6 +11694,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "css-minimizer-webpack-plugin@npm:^4.0.0":
   version: 4.2.2
   resolution: "css-minimizer-webpack-plugin@npm:4.2.2"
@@ -11671,6 +11763,9 @@ __metadata:
 "css-select@npm:^4.1.3, css-select@npm:^4.2.1":
 >>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
 >>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
+=======
+"css-select@npm:^4.1.3, css-select@npm:^4.2.1":
+>>>>>>> 15a845763 (fix rebase)
   version: 4.3.0
   resolution: "css-select@npm:4.3.0"
   dependencies:
@@ -11698,6 +11793,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "css-tree@npm:^1.0.0-alpha.39, css-tree@npm:^1.1.2, css-tree@npm:^1.1.3":
 =======
 "css-tree@npm:^1.1.3":
@@ -11708,6 +11804,9 @@ __metadata:
 "css-tree@npm:^1.0.0-alpha.39, css-tree@npm:^1.1.2, css-tree@npm:^1.1.3":
 >>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
 >>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
+=======
+"css-tree@npm:^1.0.0-alpha.39":
+>>>>>>> 15a845763 (fix rebase)
   version: 1.1.3
   resolution: "css-tree@npm:1.1.3"
   dependencies:
@@ -13386,6 +13485,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
@@ -13428,6 +13528,8 @@ __metadata:
 =======
 >>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
 >>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
+=======
+>>>>>>> 15a845763 (fix rebase)
 "expo-application@npm:~4.2.2":
   version: 4.2.2
   resolution: "expo-application@npm:4.2.2"
@@ -21387,6 +21489,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "react-native-svg@npm:12.3.0":
   version: 12.3.0
   resolution: "react-native-svg@npm:12.3.0"
@@ -21405,6 +21508,11 @@ __metadata:
   resolution: "react-native-svg@npm:12.3.0"
 >>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
 >>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
+=======
+"react-native-svg@npm:12.4.4":
+  version: 12.4.4
+  resolution: "react-native-svg@npm:12.4.4"
+>>>>>>> 15a845763 (fix rebase)
   dependencies:
     css-select: ^4.2.1
     css-tree: ^1.0.0-alpha.39
@@ -21413,6 +21521,7 @@ __metadata:
     react-native: ">=0.50.0"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   checksum: 9bed890d030819ed650fdc84ae8127f78f72a28d81a160dd574729b81f237c85be6a5ff4a0951b4dd28bd2836189f18afffef1fd6447fb3b6537c7ecd23f08c2
 =======
   checksum: a98d9180dc3434e9993b5028e351c2aa5004fa3b1f5131e5f263fd43a95a43d330f0d435bc7ea498784bdbfcf6ece0e777cdd2bb568cd1337c30623a5aa02fd7
@@ -21423,6 +21532,9 @@ __metadata:
   checksum: 9bed890d030819ed650fdc84ae8127f78f72a28d81a160dd574729b81f237c85be6a5ff4a0951b4dd28bd2836189f18afffef1fd6447fb3b6537c7ecd23f08c2
 >>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
 >>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
+=======
+  checksum: a98d9180dc3434e9993b5028e351c2aa5004fa3b1f5131e5f263fd43a95a43d330f0d435bc7ea498784bdbfcf6ece0e777cdd2bb568cd1337c30623a5aa02fd7
+>>>>>>> 15a845763 (fix rebase)
   languageName: node
   linkType: hard
 
@@ -23135,10 +23247,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solito@npm:^1.0.12":
-  version: 1.0.12
-  resolution: "solito@npm:1.0.12"
-  checksum: 7fa9e4666cd12e21b7e647ac5abbd5e517045936e9ef996c89895d8561b938451940115ea3b38d060ba6fc1251f8593cfe2dcd8668fc59f6a77d7a7c3e11ac23
+"solito@npm:2.0.0-canary.4":
+  version: 2.0.0-canary.4
+  resolution: "solito@npm:2.0.0-canary.4"
+  checksum: e1485e5aed275dede4bcaeab9f8e3d068b751cfcc1e2ddc6222daeaf51a34f7f50355a06bcd168c74484991dbb6762897dba9a0f861b99638719b8e97413e459
   languageName: node
   linkType: hard
 
@@ -23398,6 +23510,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
@@ -23414,6 +23527,8 @@ __metadata:
 =======
 >>>>>>> f1e90010d (fix(starters): Fix starters native deps for new expo)
 >>>>>>> 9cfcd1815 (fix(starters): Fix starters native deps for new expo)
+=======
+>>>>>>> 15a845763 (fix rebase)
 "stackframe@npm:^1.3.4":
   version: 1.3.4
   resolution: "stackframe@npm:1.3.4"
@@ -23437,7 +23552,7 @@ __metadata:
     "@babel/core": ^7.19.6
     "@babel/runtime": ^7.19.4
     "@expo/metro-config": ^0.3.21
-    "@tamagui/babel-plugin": 1.0.1-beta.219
+    "@tamagui/babel-plugin": 1.0.1-beta.220
     "@types/react": ^18.0.15
     "@types/react-native": ^0.69.2
     app: "*"
@@ -23467,8 +23582,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "starter-next-app@workspace:apps/starter/apps/next"
   dependencies:
-    "@tamagui/next-plugin": 1.0.1-beta.219
-    "@tamagui/next-theme": 1.0.1-beta.219
+    "@tamagui/next-plugin": 1.0.1-beta.220
+    "@tamagui/next-theme": 1.0.1-beta.220
     "@types/node": ^16.11.9
     app: "*"
     eslint-config-next: ^12.2.4
@@ -23929,6 +24044,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "tamagui-loader@^1.0.1-beta.198, tamagui-loader@^1.0.1-beta.220, tamagui-loader@workspace:packages/loader":
 =======
 "tamagui-loader@^1.0.1-beta.219, tamagui-loader@workspace:packages/loader":
@@ -23939,6 +24055,9 @@ __metadata:
 "tamagui-loader@^1.0.1-beta.198, tamagui-loader@^1.0.1-beta.220, tamagui-loader@workspace:packages/loader":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"tamagui-loader@^1.0.1-beta.220, tamagui-loader@workspace:packages/loader":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "tamagui-loader@workspace:packages/loader"
   dependencies:
@@ -23982,6 +24101,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "tamagui@^1.0.1-beta.141, tamagui@^1.0.1-beta.198, tamagui@^1.0.1-beta.220, tamagui@workspace:packages/tamagui":
 =======
 "tamagui@^1.0.1-beta.141, tamagui@^1.0.1-beta.219, tamagui@workspace:packages/tamagui":
@@ -23992,6 +24112,9 @@ __metadata:
 "tamagui@^1.0.1-beta.141, tamagui@^1.0.1-beta.198, tamagui@^1.0.1-beta.220, tamagui@workspace:packages/tamagui":
 >>>>>>> ef626da01 (v1.0.1-beta.220)
 >>>>>>> c3f162c5c (v1.0.1-beta.220)
+=======
+"tamagui@^1.0.1-beta.220, tamagui@workspace:packages/tamagui":
+>>>>>>> 15a845763 (fix rebase)
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:

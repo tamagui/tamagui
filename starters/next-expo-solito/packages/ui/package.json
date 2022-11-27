@@ -22,6 +22,6 @@
     "tamagui": "^1.0.1-beta.220"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.198"
+    "@tamagui/build": "^1.0.1-beta.220"
   }
 }

@@ -15,7 +15,7 @@
     "@tamagui/theme-base": "1.0.1-beta.220",
     "expo-linking": "^3.2.2",
     "native-base": "^3.4.19",
-    "solito": "^1.0.12"
+    "solito": "2.0.0-canary.4"
   },
   "sideEffects": false
 }

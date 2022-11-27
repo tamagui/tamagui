@@ -12,16 +12,16 @@
     "serve:worker": "node --trace-warnings --enable-source-maps dist/worker"
   },
   "dependencies": {
-    "@tamagui/code-to-html": "^1.0.1-beta.141",
-    "@tamagui/config-base": "^1.0.1-beta.141",
-    "@tamagui/core-node": "^1.0.1-beta.141",
-    "@tamagui/demos": "^1.0.1-beta.141",
-    "@tamagui/unagi": "^1.0.1-beta.141",
-    "@tamagui/vite-plugin": "^1.0.1-beta.141",
+    "@tamagui/code-to-html": "^1.0.1-beta.220",
+    "@tamagui/config-base": "^1.0.1-beta.220",
+    "@tamagui/core-node": "^1.0.1-beta.220",
+    "@tamagui/demos": "^1.0.1-beta.220",
+    "@tamagui/unagi": "^1.0.1-beta.219",
+    "@tamagui/vite-plugin": "^1.0.1-beta.220",
     "copy-to-clipboard": "^3.3.2",
     "react": ">=18",
     "react-dom": ">=18",
-    "tamagui": "^1.0.1-beta.141"
+    "tamagui": "^1.0.1-beta.220"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.2",

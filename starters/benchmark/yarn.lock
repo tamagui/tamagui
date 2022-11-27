@@ -3387,6 +3387,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
@@ -3437,6 +3438,8 @@ __metadata:
 =======
 >>>>>>> 6af82a3c9 (update-starters-v1.0.1-beta.220)
 >>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
+=======
+>>>>>>> 15a845763 (fix rebase)
 "@native-base/next-adapter@npm:^1.1.9":
   version: 1.1.9
   resolution: "@native-base/next-adapter@npm:1.1.9"
@@ -10504,6 +10507,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
@@ -10546,6 +10550,8 @@ __metadata:
 =======
 >>>>>>> 6af82a3c9 (update-starters-v1.0.1-beta.220)
 >>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
+=======
+>>>>>>> 15a845763 (fix rebase)
 "expo-application@npm:~4.2.2":
   version: 4.2.2
   resolution: "expo-application@npm:4.2.2"
@@ -14885,6 +14891,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
@@ -14916,6 +14923,8 @@ __metadata:
 =======
 >>>>>>> 6af82a3c9 (update-starters-v1.0.1-beta.220)
 >>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
+=======
+>>>>>>> 15a845763 (fix rebase)
 "next-compose-plugins@npm:^2.2.1":
   version: 2.2.1
   resolution: "next-compose-plugins@npm:2.2.1"
@@ -17002,6 +17011,7 @@ __metadata:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "react-native-svg@npm:12.3.0":
   version: 12.3.0
   resolution: "react-native-svg@npm:12.3.0"
@@ -17020,6 +17030,11 @@ __metadata:
   resolution: "react-native-svg@npm:12.3.0"
 >>>>>>> 6af82a3c9 (update-starters-v1.0.1-beta.220)
 >>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
+=======
+"react-native-svg@npm:12.4.4":
+  version: 12.4.4
+  resolution: "react-native-svg@npm:12.4.4"
+>>>>>>> 15a845763 (fix rebase)
   dependencies:
     css-select: ^4.2.1
     css-tree: ^1.0.0-alpha.39
@@ -17028,6 +17043,7 @@ __metadata:
     react-native: ">=0.50.0"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   checksum: 9bed890d030819ed650fdc84ae8127f78f72a28d81a160dd574729b81f237c85be6a5ff4a0951b4dd28bd2836189f18afffef1fd6447fb3b6537c7ecd23f08c2
 =======
   checksum: a98d9180dc3434e9993b5028e351c2aa5004fa3b1f5131e5f263fd43a95a43d330f0d435bc7ea498784bdbfcf6ece0e777cdd2bb568cd1337c30623a5aa02fd7
@@ -17038,6 +17054,9 @@ __metadata:
   checksum: 9bed890d030819ed650fdc84ae8127f78f72a28d81a160dd574729b81f237c85be6a5ff4a0951b4dd28bd2836189f18afffef1fd6447fb3b6537c7ecd23f08c2
 >>>>>>> 6af82a3c9 (update-starters-v1.0.1-beta.220)
 >>>>>>> 73826469d (update-starters-v1.0.1-beta.220)
+=======
+  checksum: a98d9180dc3434e9993b5028e351c2aa5004fa3b1f5131e5f263fd43a95a43d330f0d435bc7ea498784bdbfcf6ece0e777cdd2bb568cd1337c30623a5aa02fd7
+>>>>>>> 15a845763 (fix rebase)
   languageName: node
   linkType: hard
 

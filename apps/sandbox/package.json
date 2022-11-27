@@ -34,7 +34,6 @@
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
-    "@tamagui/sandbox-ui": "^1.0.1-beta.220",
     "@vitejs/plugin-react": "^2.2.0",
     "babel-polyfill": "^6.26.0",
     "css-loader": "^5.2.4",
