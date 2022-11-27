@@ -11,13 +11,13 @@ import { PortalProps } from './PortalProps'
 export const Portal = ({ host = globalThis.document?.body, ...props }: PortalProps) => {
   const contents = (
     <YStack
-      pointerEvents="box-none"
       contain="strict"
       fullscreen
       // @ts-expect-error ok on web
       position={isWeb ? 'fixed' : 'absolute'}
       maxWidth={isWeb ? '100vw' : '100%'}
       maxHeight={isWeb ? '100vh' : '100%'}
+      display="contents"
       {...props}
     />
   )

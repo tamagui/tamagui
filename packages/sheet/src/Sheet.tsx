@@ -158,7 +158,6 @@ export const SheetFrameFrame = styled(YStack, {
   width: '100%',
   maxHeight: '100%',
   overflow: 'hidden',
-  pointerEvents: 'auto',
 })
 
 export const SheetFrame = SheetFrameFrame.extractable(
@@ -524,7 +523,7 @@ const SheetImplementation = themeable(
      * This is a hacky workaround for native:
      */
     const [isShowingInnerSheet, setIsShowingInnerSheet] = useState(false)
-    const shouldHideParentSheet = !isWeb && modal && isShowingInnerSheet
+    const shouldHideParentSheet = !open || (!isWeb && modal && isShowingInnerSheet)
     const parentSheetContext = useContext(SheetInsideSheetContext)
     const onInnerSheet = useCallback((hasChild: boolean) => {
       setIsShowingInnerSheet(hasChild)
@@ -544,6 +543,8 @@ const SheetImplementation = themeable(
       }),
       [zIndex]
     )
+
+    const pointerEvents = !open || shouldHideParentSheet ? 'none' : 'auto'
 
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
@@ -574,15 +575,14 @@ const SheetImplementation = themeable(
                 return next
               })
             }}
-            pointerEvents={open && !shouldHideParentSheet ? 'auto' : 'none'}
-            debug="verbose"
+            pointerEvents={pointerEvents}
             style={[
               {
                 position: 'absolute',
                 zIndex,
                 width: '100%',
                 height: '100%',
-                opacity: shouldHideParentSheet ? 0 : 1,
+                opacity: !open || shouldHideParentSheet ? 0 : 1,
               },
               animatedStyle,
             ]}

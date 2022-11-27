@@ -237,18 +237,6 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
   function updateState() {
     const next = themeManager.getStateIfChanged(props, state, parentManager)
     if (!next) return
-    if (!isNewTheme) {
-      // prettier-ignore
-      if (process.env.NODE_ENV === 'development' && debug) [console.groupCollapsed('useTheme create() via update()', parentManager?.state?.name, '=>'), console.log({ props, next, parentManager, themeManager }), console.groupEnd()]
-      setThemeState(createState)
-      return
-    }
-    // prettier-ignore
-    if (process.env.NODE_ENV === 'development' && debug) console.log('useTheme update()', parentManager?.state?.name, '=>', next.name)
-    setThemeState((prev) => ({
-      ...prev,
-      state: next,
-      isNewTheme: true,
-    }))
+    setThemeState(createState)
   }
 }
