@@ -1,3 +1,5 @@
+import { isWeb } from '@tamagui/constants'
+
 import { getThemes } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
 import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
@@ -79,13 +81,8 @@ export class ThemeManager {
   }
 
   getStateIfChanged(props = this.props, state = this.state, parentManager = this.parentManager) {
-    const _ = getState(props, parentManager)
-    if (
-      !_ ||
-      !_.theme ||
-      _.theme === state.theme ||
-      (parentManager && _ && _.theme === parentManager.state.theme)
-    ) {
+    const _ = getState(props, parentManager) || (isWeb ? undefined : parentManager?.state)
+    if (!_ || !_.theme || _.theme === state.theme) {
       return null
     }
     return _
@@ -171,7 +168,7 @@ function getState(
 
   // prettier-ignore
   // eslint-disable-next-line no-console
-  if (process.env.NODE_ENV === 'development' && props.debug) console.log('getState', props, { parentName, parentBaseTheme, base, min, max, isParentAComponentTheme, parentManager })
+  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose' ) console.log('getState', props, { parentName, parentBaseTheme, base, min, max, isParentAComponentTheme, parentManager })
 
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
@@ -201,7 +198,7 @@ function getState(
 
     // prettier-ignore
     // eslint-disable-next-line no-console
-    if (process.env.NODE_ENV === 'development' && props.debug) console.log('getState potentials', potentials)
+    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log('getState potentials', potentials)
 
     const found = potentials.find((t) => t in themes)
     if (found) {

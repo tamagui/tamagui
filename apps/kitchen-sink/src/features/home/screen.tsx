@@ -86,7 +86,7 @@ const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & 
     <ListItem
       {...linkProps}
       {...props}
-      iconAfter={<ChevronRight color={variableToString(theme.colorPress)} />}
+      iconAfter={<ChevronRight color={variableToString(theme.color11)} />}
     >
       {children}
     </ListItem>

@@ -25,7 +25,7 @@ export function ButtonDemo(props) {
         </Button>
       </XStack>
       <XGroup disablePassSize>
-        <Button w="50%" size="$2" disabled>
+        <Button w="50%" size="$2" disabled o={0.5}>
           disabled
         </Button>
         <Button w="50%" size="$2" chromeless>

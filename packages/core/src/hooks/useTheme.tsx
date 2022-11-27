@@ -34,7 +34,7 @@ export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
 
   if (process.env.NODE_ENV === 'development') {
     // ensure we aren't creating too many ThemeManagers
-    if (isNewTheme && className === themeManager?.parentManager?.state.className) {
+    if (isWeb && isNewTheme && className === themeManager?.parentManager?.state.className) {
       console.error(`Should always change, duplicating ThemeMananger bug`, themeManager)
       // eslint-disable-next-line no-debugger
       debugger
@@ -185,7 +185,7 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
   }
 
   // prettier-ignore
-  if (process.env.NODE_ENV === 'development' && debug) console.log('useTheme before update isNewTheme', isNewTheme, props, themeManager.state.name, parentManager?.state.name)
+  if (process.env.NODE_ENV === 'development' && debug) console.log('useTheme.render isNewTheme', isNewTheme, props, themeManager.state.name, parentManager?.state.name)
 
   // this seems unnecessary
   if (hasNoThemeUpdatingProps(props)) {
@@ -235,8 +235,8 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
   }
 
   function updateState() {
-    const next = themeManager.getStateIfChanged(props, state, parentManager)
-    if (!next) return
-    setThemeState(createState)
+    if (themeManager.getStateIfChanged(props, state, parentManager)) {
+      setThemeState(createState)
+    }
   }
 }

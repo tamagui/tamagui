@@ -2,7 +2,6 @@ rc.0
 
   - ssr issues responsive-demo
   - make dynamic eval an experiment
-  - css animations check
   - rc.0 blog post
   - <Adapt /> instead of sheetBreakpoint
 

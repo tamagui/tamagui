@@ -94,7 +94,6 @@ export const ButtonFrame = styled(ThemeableStack, {
 
     disabled: {
       true: {
-        opacity: 0.375,
         pointerEvents: 'none',
       },
     },
