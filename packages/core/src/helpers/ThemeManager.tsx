@@ -81,7 +81,9 @@ export class ThemeManager {
   }
 
   getStateIfChanged(props = this.props, state = this.state, parentManager = this.parentManager) {
-    const _ = getState(props, parentManager) || (isWeb ? undefined : parentManager?.state)
+    const _ =
+      getState(props, parentManager) ||
+      (process.env.TAMAGUI_TARGET === 'native' ? parentManager?.state : undefined)
     if (!_ || !_.theme || _.theme === state.theme) {
       return null
     }
