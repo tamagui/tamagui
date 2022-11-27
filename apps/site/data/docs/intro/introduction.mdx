@@ -2,9 +2,13 @@
 title: Introduction
 ---
 
+Tamagui is a complete suite of libraries for styling on React and React Native. It unifies the API completely between the two platforms, going further than react-native-web by providing a typed design system, animations, media queries, and pseudo styling that Just Works.
+
 #### Core
 
-A complete base for design systems + styled() factory + set of hooks, at ~15Kb gzipped. It works well alongside react-native (and react-native-web).
+A complete base for design systems, a styled() factory, and set of hooks that work the same across Native and Web, at ~17Kb gzipped.
+
+It features **deterministic, easy to reason about styling** that by outputting to atomic CSS and always merging your styles based on the order it recieves them. This is a key feature of Tamagui, and something that doesn't exist outside of Facebook's internal StyleX library. It does this by expanding all styles as it finds them, and then merging them in-order, even across variants or when passed inline style props.
 
 Using [createTamagui](/docs/configuration) you can generate a fully-typed design system with colors, tokens, spacing, sizing, fonts, themes, shorthands, animations, and more, that work with well-optimized and easy to use hooks like [useMedia](/docs/core/use-media) and [useTheme](/docs/core/use-theme).
 
@@ -40,7 +44,7 @@ export const Circle = styled(Stack, {
 // use <Circle pin="top" size="$sm" />
 ```
 
-The [Stack and Text components](/docs/core/stacks-and-text) exports work alongside `styled()` and provide lot of nice features like hover, press, and focus styles, nice inline style props with typed theme and token values, shorthands, media queries, animations, and more (the animations are powered by drivers which can be swapped out, like CSS transition on web, but react-native-reanimated on iOS).
+The [Stack and Text components](/docs/core/stacks-and-text) work with `styled()` and provide lot of nice features like hover, press, and focus styles, nice inline style props with typed theme and token values, shorthands, media queries, animations, and more (the animations are powered by drivers which can be swapped out, like CSS transition on web, but react-native-reanimated on iOS).
 
 It's a base layer with everything you need for building a full-featured design system.
 
