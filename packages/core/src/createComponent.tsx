@@ -129,7 +129,6 @@ export function createComponent<
   })()
 
   const defaultComponentClassName = `is_${staticConfig.componentName}`
-  const avoidClassesWhileAnimating = true
   let defaultNativeStyle: any
   let tamaguiDefaultProps: any
   let defaultTag: string | undefined
@@ -161,6 +160,9 @@ export function createComponent<
     /**
      * Component state for tracking animations, pseudos
      */
+    const animationsConfig = tamaguiConfig.animations
+    const useAnimations = animationsConfig?.useAnimations as UseAnimationHook | undefined
+    const avoidClassesWhileAnimating = animationsConfig.isReactNative
     const hasEnterStyle = !!props.enterStyle
     const needsMount = Boolean((isWeb ? isClient : true) && (hasEnterStyle || props.animation))
     const states = useServerState<TamaguiComponentState>(
@@ -183,7 +185,6 @@ export function createComponent<
     )
     stateRef.current ??= {}
 
-    const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
     const isAnimated = (() => {
       const next = !!(useAnimations && props.animation)
       if (next && !stateRef.current.hasAnimated) {
@@ -791,7 +792,6 @@ export function createComponent<
     }
 
     const themeShouldReset = Boolean(themeShallow && themeManager && themeIsNew)
-
     const shouldProvideThemeManager = themeShouldReset || (themeManager && themeIsNew)
 
     // memoize to avoid re-parenting

@@ -575,6 +575,7 @@ const SheetImplementation = themeable(
               })
             }}
             pointerEvents={open && !shouldHideParentSheet ? 'auto' : 'none'}
+            debug="verbose"
             style={[
               {
                 position: 'absolute',

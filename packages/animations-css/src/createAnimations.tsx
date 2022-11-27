@@ -1,6 +1,6 @@
 import { AnimationDriver, Stack, Text, useIsomorphicLayoutEffect } from '@tamagui/core'
-import { PresenceContext, usePresence } from '@tamagui/use-presence'
-import { useContext, useMemo, useRef } from 'react'
+import { usePresence } from '@tamagui/use-presence'
+import { useMemo, useRef } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
@@ -33,10 +33,10 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       return getStyle(val.getValue())
     },
 
-    useAnimations: ({ props, style, state, hostRef }) => {
-      const [isPresent, sendExitComplete] = usePresence()
-      const isExiting = isPresent === false
-      const isEntering = state.unmounted
+    useAnimations: ({ props, presence, style, state, hostRef }) => {
+      const isEntering = !!state.unmounted
+      const isExiting = presence?.[0] === false
+      const sendExitComplete = presence?.[1]
       const animationKey = Array.isArray(props.animation) ? props.animation[0] : props.animation
       const animation = animations[animationKey as any]
       if (!animation) {

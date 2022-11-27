@@ -8,8 +8,8 @@ import {
   useIsomorphicLayoutEffect,
   useSafeRef,
 } from '@tamagui/core'
-import { PresenceContext, usePresence } from '@tamagui/use-presence'
-import { useContext, useEffect, useMemo, useRef } from 'react'
+import { usePresence } from '@tamagui/use-presence'
+import { useEffect, useMemo } from 'react'
 import { Animated } from 'react-native'
 
 type AnimationsConfig<A extends Object = any> = {
