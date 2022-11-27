@@ -1,8 +1,7 @@
-import { tmpdir } from 'os'
 import { join } from 'path'
 
 import * as babel from '@babel/core'
-import { readFile, remove, writeFile } from 'fs-extra'
+import { remove, writeFile } from 'fs-extra'
 
 import { ExtractToClassNamesProps, createExtractor, extractToClassNames } from '../../src'
 
@@ -30,6 +29,8 @@ export async function extractForWeb(source: string, opts?: Partial<ExtractToClas
         ...opts?.options,
       },
     })
+  } catch (err) {
+    console.log('err', err)
   } finally {
     await remove(tmpfile)
   }

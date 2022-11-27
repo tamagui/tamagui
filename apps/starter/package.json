@@ -8,7 +8,6 @@
     "web:prod:start": "yarn workspace next-app start",
     "watch": "yarn workspaces foreach -pi run watch",
     "postinstall": "yarn build",
-    "build": "yarn workspaces foreach --exclude next-app -pi run build",
     "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader"
   },
   "resolutions": {
