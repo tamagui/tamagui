@@ -357,7 +357,6 @@ export const getSplitStyles: StyleSplitter = (
 
       if (staticConfig.isReactNative) {
         didUseKeyInit = false
-
         // pass along to react-native-web
         if (accessibilityDirectMap[keyInit] || keyInit.startsWith('accessibility')) {
           viewProps[keyInit] = valInit
@@ -370,7 +369,6 @@ export const getSplitStyles: StyleSplitter = (
           usedKeys[keyInit] = 1
           continue
         }
-
         switch (keyInit) {
           case 'accessibilityRole': {
             if (valInit === 'none') {
@@ -482,6 +480,10 @@ export const getSplitStyles: StyleSplitter = (
       !validStyleProps[keyInit] &&
       !conf.shorthands[keyInit]
     ) {
+      // web-only, exclude all other accessibility props not handled above
+      if (isWeb && keyInit.includes('ccessibility')) {
+        continue
+      }
       usedKeys[keyInit] = 1
       viewProps[keyInit] = valInit
       continue

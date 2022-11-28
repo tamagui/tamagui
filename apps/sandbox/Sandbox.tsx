@@ -293,7 +293,7 @@ function PerformanceTest() {
 const CustomButtonFrame = styled(ButtonFrame, {
   name: 'Button',
   borderRadius: 100_100_100, // <---- This does not apply the default borderRadius
-  debug: 'verbose',
+  // debug: 'verbose',
   // <---- Haven't been able to get any prop to work here
 
   pressStyle: {
@@ -375,7 +375,7 @@ function UseThemeNameTest() {
   return (
     <Theme name={name as any}>
       <Button onPress={() => setname('red')}>Change</Button>
-      <Square bc="$background" />
+      <Square accessibilityElementsHidden bc="$background" />
       <UseThemeNameChildTest />
     </Theme>
   )
