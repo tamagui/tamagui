@@ -4,7 +4,7 @@ import { H3, H4, ListItem, Paragraph, Separator, XStack, YStack, styled } from '
 
 import { Code } from './Code'
 
-type PropDef = {
+export type PropDef = {
   name: string
   required?: boolean
   default?: string | boolean
@@ -13,10 +13,12 @@ type PropDef = {
 }
 
 export function PropsTable({
+  title = 'Props',
   data,
   'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledBy,
 }: {
+  title?: string
   data: PropDef[]
   'aria-label'?: string
   'aria-labelledby'?: string
@@ -38,7 +40,7 @@ export function PropsTable({
       }}
     >
       <XStack ai="center" py="$2" px="$4" backgroundColor="$borderColor">
-        <H3 size="$3">Props</H3>
+        <H3 size="$3">{title}</H3>
       </XStack>
       {data.map(({ name, type, required, default: defaultValue, description }, i) => (
         <ListItem key={`${name}-${i}`} p={0}>
