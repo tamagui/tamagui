@@ -5183,7 +5183,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/babel-plugin@^1.0.1-beta.223, @tamagui/babel-plugin@workspace:packages/babel-plugin":
+"@tamagui/babel-plugin@1.0.1-beta.223, @tamagui/babel-plugin@^1.0.1-beta.223, @tamagui/babel-plugin@workspace:packages/babel-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/babel-plugin@workspace:packages/babel-plugin"
   dependencies:
@@ -5197,20 +5197,6 @@ __metadata:
     "@tamagui/static": ^1.0.1-beta.223
   languageName: unknown
   linkType: soft
-
-"@tamagui/babel-plugin@npm:1.0.1-beta.222":
-  version: 1.0.1-beta.222
-  resolution: "@tamagui/babel-plugin@npm:1.0.1-beta.222"
-  dependencies:
-    "@babel/generator": ^7.19.6
-    "@babel/helper-plugin-utils": ^7.19.0
-    "@babel/template": 7.18.10
-    "@babel/traverse": ^7.19.6
-    "@tamagui/simple-hash": ^1.0.1-beta.222
-    "@tamagui/static": ^1.0.1-beta.222
-  checksum: 736ec214f543d8fb71d7f549fed077e20663eb7a3fef896b83fc6667496267733a9acc129a9be7bd78427234373bad0528c47556afd1dd08b90ac0d1cea45d84
-  languageName: node
-  linkType: hard
 
 "@tamagui/build@^1.0.1-beta.223, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
@@ -5799,7 +5785,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/next-plugin@^1.0.1-beta.223, @tamagui/next-plugin@workspace:packages/next-plugin":
+"@tamagui/next-plugin@1.0.1-beta.223, @tamagui/next-plugin@^1.0.1-beta.223, @tamagui/next-plugin@workspace:packages/next-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/next-plugin@workspace:packages/next-plugin"
   dependencies:
@@ -5825,32 +5811,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/next-plugin@npm:1.0.1-beta.222":
-  version: 1.0.1-beta.222
-  resolution: "@tamagui/next-plugin@npm:1.0.1-beta.222"
-  dependencies:
-    "@babel/preset-react": ^7.18.6
-    "@tamagui/proxy-worm": ^1.0.1-beta.222
-    "@tamagui/react-native-svg": ^1.0.1-beta.222
-    "@tamagui/static": ^1.0.1-beta.222
-    babel-loader: ^8.2.5
-    browserslist: ^4.21.1
-    css-loader: ^5.2.4
-    esbuild-loader: ^2.19.0
-    esm-resolve: ^1.0.8
-    file-loader: ^6.2.0
-    html-inline-css-webpack-plugin: ^1.11.1
-    html-webpack-plugin: ^5.5.0
-    tamagui-loader: ^1.0.1-beta.222
-    thread-loader: ^3.0.4
-    url-loader: ^4.1.1
-  peerDependencies:
-    next: 13.0.2
-  checksum: e30fe5531cee37d4b8a794c8d115fc1a2e5edd125642705feceedd5fd4338869705011c5b1f4d2dbf81010b4dbc41a3e0a066a1659b551ac8ed81fa74c963396
-  languageName: node
-  linkType: hard
-
-"@tamagui/next-theme@^1.0.1-beta.223, @tamagui/next-theme@workspace:packages/next-theme":
+"@tamagui/next-theme@1.0.1-beta.223, @tamagui/next-theme@^1.0.1-beta.223, @tamagui/next-theme@workspace:packages/next-theme":
   version: 0.0.0-use.local
   resolution: "@tamagui/next-theme@workspace:packages/next-theme"
   dependencies:
@@ -5861,17 +5822,6 @@ __metadata:
     react: ">=18"
   languageName: unknown
   linkType: soft
-
-"@tamagui/next-theme@npm:1.0.1-beta.222":
-  version: 1.0.1-beta.222
-  resolution: "@tamagui/next-theme@npm:1.0.1-beta.222"
-  dependencies:
-    "@tamagui/use-event": ^1.0.1-beta.222
-  peerDependencies:
-    react: ">=18"
-  checksum: f0657ea721f2bfc5793ade07cd6c23f2062287ef6125e5fc79a645ef4854b2710fbf82ea7ea0c831114d8d3d361406246900a63d98189296789d076a0d56ca88
-  languageName: node
-  linkType: hard
 
 "@tamagui/normalize-css-color-lite@^1.0.1-beta.223, @tamagui/normalize-css-color-lite@workspace:packages/normalize-css-color-lite":
   version: 0.0.0-use.local
@@ -5980,7 +5930,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/proxy-worm@^1.0.1-beta.222, @tamagui/proxy-worm@^1.0.1-beta.223, @tamagui/proxy-worm@workspace:packages/proxy-worm":
+"@tamagui/proxy-worm@^1.0.1-beta.223, @tamagui/proxy-worm@workspace:packages/proxy-worm":
   version: 0.0.0-use.local
   resolution: "@tamagui/proxy-worm@workspace:packages/proxy-worm"
   languageName: unknown
@@ -5995,7 +5945,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/react-native-svg@^1.0.1-beta.222, @tamagui/react-native-svg@^1.0.1-beta.223, @tamagui/react-native-svg@workspace:packages/react-native-svg":
+"@tamagui/react-native-svg@^1.0.1-beta.223, @tamagui/react-native-svg@workspace:packages/react-native-svg":
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-svg@workspace:packages/react-native-svg"
   dependencies:
@@ -6199,7 +6149,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/simple-hash@^1.0.1-beta.222, @tamagui/simple-hash@^1.0.1-beta.223, @tamagui/simple-hash@workspace:packages/simple-hash":
+"@tamagui/simple-hash@^1.0.1-beta.223, @tamagui/simple-hash@workspace:packages/simple-hash":
   version: 0.0.0-use.local
   resolution: "@tamagui/simple-hash@workspace:packages/simple-hash"
   dependencies:
@@ -6319,7 +6269,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/static@^1.0.1-beta.222, @tamagui/static@^1.0.1-beta.223, @tamagui/static@workspace:packages/static":
+"@tamagui/static@^1.0.1-beta.223, @tamagui/static@workspace:packages/static":
   version: 0.0.0-use.local
   resolution: "@tamagui/static@workspace:packages/static"
   dependencies:
@@ -6572,7 +6522,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-event@^1.0.1-beta.222, @tamagui/use-event@^1.0.1-beta.223, @tamagui/use-event@workspace:packages/use-event":
+"@tamagui/use-event@^1.0.1-beta.223, @tamagui/use-event@workspace:packages/use-event":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-event@workspace:packages/use-event"
   dependencies:
@@ -21857,7 +21807,7 @@ __metadata:
     "@babel/core": ^7.19.6
     "@babel/runtime": ^7.19.4
     "@expo/metro-config": ^0.3.21
-    "@tamagui/babel-plugin": 1.0.1-beta.222
+    "@tamagui/babel-plugin": 1.0.1-beta.223
     "@types/react": ^18.0.15
     "@types/react-native": ^0.69.2
     app: "*"
@@ -21887,8 +21837,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "starter-next-app@workspace:apps/starter/apps/next"
   dependencies:
-    "@tamagui/next-plugin": 1.0.1-beta.222
-    "@tamagui/next-theme": 1.0.1-beta.222
+    "@tamagui/next-plugin": 1.0.1-beta.223
+    "@tamagui/next-theme": 1.0.1-beta.223
     "@types/node": ^16.11.9
     app: "*"
     eslint-config-next: ^12.2.4
@@ -22324,7 +22274,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tamagui-loader@^1.0.1-beta.222, tamagui-loader@^1.0.1-beta.223, tamagui-loader@workspace:packages/loader":
+"tamagui-loader@^1.0.1-beta.223, tamagui-loader@workspace:packages/loader":
   version: 0.0.0-use.local
   resolution: "tamagui-loader@workspace:packages/loader"
   dependencies:
