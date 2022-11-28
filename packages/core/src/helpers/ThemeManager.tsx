@@ -170,7 +170,7 @@ function getState(
 
   // prettier-ignore
   // eslint-disable-next-line no-console
-  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose' ) console.log('getState', props, { parentName, parentBaseTheme, base, min, max, isParentAComponentTheme, parentManager })
+  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log('getState', props, { parentName, parentBaseTheme, base, min, max, isParentAComponentTheme, parentManager })
 
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
@@ -192,6 +192,9 @@ function getState(
     }
     if (componentName) {
       // components only look for component themes
+      if (nextName) {
+        potentials.push(`${prefix.replace(/_.*$/, '')}_${nextName}_${componentName}`)
+      }
       potentials.push(`${prefix}_${componentName}`)
       if (nextName) {
         potentials.unshift(`${prefix}_${nextName}_${componentName}`)

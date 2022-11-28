@@ -123,6 +123,13 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         <EnsureFlexed />
         <YStack
           overflow="hidden"
+          display="none"
+          $gtMd={{
+            display: 'block',
+            pr: '$6',
+            mt: 108,
+            pb: '$18',
+          }}
           // className="custom-scroll"
           $gtSm={{
             position: 'fixed' as any,
@@ -133,15 +140,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           }}
         >
           <ScrollView>
-            <YStack
-              display="none"
-              $gtMd={{
-                display: 'block',
-                pr: '$6',
-                mt: 108,
-                pb: '$18',
-              }}
-            >
+            <YStack>
               <DocsMenuContents />
             </YStack>
           </ScrollView>

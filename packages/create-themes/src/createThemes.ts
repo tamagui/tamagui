@@ -169,7 +169,7 @@ export const createThemes = <C extends string>({
       getTheme(alt + shift, props),
     ])
     const altButtonThemes: any[] = alternates.map((_, i) => {
-      const [bName, bTheme] = [altThemes[i][0], (altThemes[i + 1] || altThemes[i])[1]]
+      const [bName, bTheme] = [altThemes[i][0], (altThemes[i] || altThemes[i])[1]]
       return [`${bName}_Button` as any, bTheme]
     })
     // add these after alts since we rely on positioning

@@ -460,4 +460,21 @@ describe('ThemeManager', () => {
     )
     expect(child.state.name).toBe('dark_red_alt1')
   })
+
+  test(`Component name + theme change when nested already`, () => {
+    const parent = new ThemeManager(
+      {
+        name: 'dark_red',
+      },
+      'root'
+    )
+    const child = new ThemeManager(
+      {
+        name: 'yellow',
+        componentName: 'Button',
+      },
+      parent
+    )
+    expect(child.state.name).toBe('dark_yellow_Button')
+  })
 })
