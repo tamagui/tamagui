@@ -440,9 +440,10 @@ export const Popover = withStaticProperties(
           onOpenChange: setOpen,
         })
         const { getReferenceProps, getFloatingProps } = useInteractions([
-          useFocus(floating.context, {
-            enabled: !breakpointActive,
-          }),
+          // useFocus(floating.context, {
+          //   enabled: !breakpointActive,
+          //   keyboardOnly: true,
+          // }),
           useRole(floating.context, { role: 'dialog' }),
           useDismiss(floating.context, {
             enabled: !breakpointActive,

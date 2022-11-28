@@ -17,7 +17,7 @@ export const Portal = ({ host = globalThis.document?.body, ...props }: PortalPro
       position={isWeb ? 'fixed' : 'absolute'}
       maxWidth={isWeb ? '100vw' : '100%'}
       maxHeight={isWeb ? '100vh' : '100%'}
-      display="contents"
+      pointerEvents="none"
       {...props}
     />
   )
