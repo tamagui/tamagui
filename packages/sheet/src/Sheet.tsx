@@ -128,7 +128,7 @@ export const SheetOverlay = SheetOverlayFrame.extractable(
         closed={!context.open || context.hidden}
         {...props}
         onPress={mergeEvent(
-          props.onPress,
+          props.onPress as any,
           context.dismissOnOverlayPress
             ? () => {
                 context.setOpen(false)

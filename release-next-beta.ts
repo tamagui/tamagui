@@ -121,6 +121,7 @@ async function run() {
         spawnify(`yarn fix`),
       ])
 
+      spawnify(`yarn check`)
       spawnify(`yarn test`)
 
       if (!process.env.SKIP_GIT_CLEAN_CHECK) {

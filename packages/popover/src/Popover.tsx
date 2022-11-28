@@ -133,7 +133,7 @@ export const PopoverTrigger = React.forwardRef<PopoverTriggerElement, PopoverTri
         data-state={getState(context.open)}
         {...triggerProps}
         ref={composedTriggerRef}
-        onPress={composeEventHandlers(props.onPress, context.onOpenToggle)}
+        onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
       />
     )
 
@@ -358,7 +358,7 @@ export const PopoverClose = React.forwardRef<PopoverCloseElement, PopoverClosePr
       <YStack
         {...closeProps}
         ref={forwardedRef}
-        onPress={composeEventHandlers(props.onPress, () => context.onOpenChange(false))}
+        onPress={composeEventHandlers(props.onPress as any, () => context.onOpenChange(false))}
       />
     )
   }

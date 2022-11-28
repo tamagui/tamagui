@@ -225,10 +225,10 @@ export declare function useButton(props: ButtonProps, { Text }?: {
             rel?: string | undefined;
             download?: boolean | undefined;
         } | undefined;
-        onMouseDown?: (((event: import("react").MouseEvent<HTMLDivElement, MouseEvent>) => void) & ((e: MouseEvent) => any)) | undefined;
+        onMouseDown?: (((event: import("react").MouseEvent<HTMLDivElement, MouseEvent>) => void) & import("react").MouseEventHandler<HTMLDivElement>) | undefined;
         onMouseUp?: ((event: import("react").MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined;
-        onMouseEnter?: (((event: import("react").MouseEvent<HTMLDivElement, MouseEvent>) => void) & ((e: MouseEvent) => any)) | undefined;
-        onMouseLeave?: (((event: import("react").MouseEvent<HTMLDivElement, MouseEvent>) => void) & ((e: MouseEvent) => any)) | undefined;
+        onMouseEnter?: (((event: import("react").MouseEvent<HTMLDivElement, MouseEvent>) => void) & import("react").MouseEventHandler<HTMLDivElement>) | undefined;
+        onMouseLeave?: (((event: import("react").MouseEvent<HTMLDivElement, MouseEvent>) => void) & import("react").MouseEventHandler<HTMLDivElement>) | undefined;
         onFocus?: ((event: import("react").FocusEvent<HTMLDivElement, Element>) => void) | undefined;
         onScroll?: ((event: import("react").UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
         onScrollShouldSetResponder?: unknown;
@@ -236,7 +236,9 @@ export declare function useButton(props: ButtonProps, { Text }?: {
         onSelectionChangeShouldSetResponder?: unknown;
         onSelectionChangeShouldSetResponderCapture?: unknown;
         asChild?: boolean | undefined;
-        spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
+        spaceDirection?: import("@tamagui/core").SpaceDirection | undefined; /**
+         * make the spacing elements flex
+         */
         dangerouslySetInnerHTML?: {
             __html: string;
         } | undefined;
@@ -250,11 +252,11 @@ export declare function useButton(props: ButtonProps, { Text }?: {
         tag?: string | undefined;
         componentName?: string | undefined;
         forceStyle?: "hover" | "press" | "focus" | undefined;
-        onHoverIn?: ((e: MouseEvent) => any) | undefined;
-        onHoverOut?: ((e: MouseEvent) => any) | undefined;
-        onPress?: ((e: import("@tamagui/types-react-native").GestureResponderEvent) => any) | undefined;
-        onPressIn?: ((e: import("@tamagui/types-react-native").GestureResponderEvent) => any) | undefined;
-        onPressOut?: ((e: import("@tamagui/types-react-native").GestureResponderEvent) => any) | undefined;
+        onHoverIn?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
+        onHoverOut?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
+        onPress?: ((event: import("@tamagui/types-react-native").GestureResponderEvent) => void) | null | undefined;
+        onPressIn?: ((event: import("@tamagui/types-react-native").GestureResponderEvent) => void) | null | undefined;
+        onPressOut?: ((event: import("@tamagui/types-react-native").GestureResponderEvent) => void) | null | undefined;
         backgroundColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("@tamagui/types-react-native").OpaqueColorValue | undefined;
         borderBottomColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("@tamagui/types-react-native").OpaqueColorValue | undefined;
         borderBottomEndRadius?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | undefined;

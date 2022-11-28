@@ -389,10 +389,10 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             rel?: string | undefined;
             download?: boolean | undefined;
         } | undefined;
-        onMouseDown?: (((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) & ((e: MouseEvent) => any)) | undefined;
+        onMouseDown?: (((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) & React.MouseEventHandler<HTMLDivElement>) | undefined;
         onMouseUp?: ((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined;
-        onMouseEnter?: (((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) & ((e: MouseEvent) => any)) | undefined;
-        onMouseLeave?: (((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) & ((e: MouseEvent) => any)) | undefined;
+        onMouseEnter?: (((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) & React.MouseEventHandler<HTMLDivElement>) | undefined;
+        onMouseLeave?: (((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) & React.MouseEventHandler<HTMLDivElement>) | undefined;
         onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
         onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
         onScrollShouldSetResponder?: unknown;
@@ -400,7 +400,7 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         onSelectionChangeShouldSetResponder?: unknown;
         onSelectionChangeShouldSetResponderCapture?: unknown;
         asChild?: boolean | undefined; /**
-         * adjust icon relative to size
+         * default: -1
          */
         spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
         separator?: React.ReactNode;
@@ -410,20 +410,20 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         animation?: import("@tamagui/core").AnimationProp | undefined;
         animateOnly?: string[] | undefined;
         debug?: boolean | "verbose" | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined; /**
+        disabled?: boolean | undefined; /**
          * subtitle
          */
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
         id?: string | undefined;
         tag?: string | undefined;
         componentName?: string | undefined;
         forceStyle?: "hover" | "press" | "focus" | undefined;
-        onHoverIn?: ((e: MouseEvent) => any) | undefined;
-        onHoverOut?: ((e: MouseEvent) => any) | undefined;
-        onPress?: ((e: import("@tamagui/types-react-native").GestureResponderEvent) => any) | undefined;
-        onPressIn?: ((e: import("@tamagui/types-react-native").GestureResponderEvent) => any) | undefined;
-        onPressOut?: ((e: import("@tamagui/types-react-native").GestureResponderEvent) => any) | undefined;
+        onHoverIn?: React.MouseEventHandler<HTMLDivElement> | undefined;
+        onHoverOut?: React.MouseEventHandler<HTMLDivElement> | undefined;
+        onPress?: ((event: import("@tamagui/types-react-native").GestureResponderEvent) => void) | null | undefined;
+        onPressIn?: ((event: import("@tamagui/types-react-native").GestureResponderEvent) => void) | null | undefined;
+        onPressOut?: ((event: import("@tamagui/types-react-native").GestureResponderEvent) => void) | null | undefined;
         backgroundColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("@tamagui/types-react-native").OpaqueColorValue | undefined;
         borderBottomColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("@tamagui/types-react-native").OpaqueColorValue | undefined;
         borderBottomEndRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
