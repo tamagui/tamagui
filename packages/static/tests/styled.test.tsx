@@ -11,7 +11,7 @@ window['React'] = React
 // todo we can make dynamic inline loading potentially not have to actually require() anything
 
 describe('styled() tests', () => {
-  test('loads dynamic styled() in file and extracts CSS', async () => {
+  test.skip('loads dynamic styled() in file and extracts CSS', async () => {
     const output = await extractForWeb(
       dedent`
       import { MyStack } from '@tamagui/test-design-system'
@@ -46,7 +46,7 @@ describe('styled() tests', () => {
     expect(output.styles).toMatchInlineSnapshot('"._bg-orange{background-color:orange;}"')
   })
 
-  test('extracts to className at call-site', async () => {
+  test.skip('extracts to className at call-site', async () => {
     const output = await extractForWeb(`
       import { MyStack } from '@tamagui/test-design-system'
       
