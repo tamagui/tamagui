@@ -73,7 +73,7 @@ async function run() {
     execSync(`git --version`).toString().replace(`git version `, '').trim()
   )
   if (gitVersionString < 2.27) {
-    console.error(`Git version must be >= 2.27`)
+    console.error(`\n\n ⚠️ Tamagui can't install: Git version must be >= 2.27\n\n`)
     process.exit(1)
   }
 
