@@ -26,7 +26,7 @@
     "clean:build": "turbo run clean:build",
     "clean:ts": "tsc -b --clean tsconfig.build.json",
     "clean": "turbo run clean:build --parallel",
-    "lint": "turbo run lint",
+    "lint": "turbo run lint --filter=!starter-next-app",
     "pretty": "pretty-quick",
     "pretty:all": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "turbo run --concurrency=1 test",

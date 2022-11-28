@@ -461,7 +461,6 @@ const getToken = (
 
 Set the debug prop to true to see more detailed debug information.`
       )
-      debugger
       if (debug) {
         if (isDevTools) {
           // eslint-disable-next-line no-console
