@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-constant",
-  "version": "1.0.1-beta.222",
+  "version": "1.0.1-beta.223",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,7 +18,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.222",
+    "@tamagui/build": "^1.0.1-beta.223",
     "react": ">=18"
   },
   "peerDependencies": {
