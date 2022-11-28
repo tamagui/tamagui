@@ -14,12 +14,14 @@ export function useThemeName(opts?: { parent?: true }): ThemeName {
   const [name, setName] = useState(manager?.state.name || '')
 
   useIsomorphicLayoutEffect(() => {
-    return manager?.onChangeTheme((next, manager) => {
+    if (!manager) return
+    setName(manager.state.name)
+    return manager.onChangeTheme((next, manager) => {
       const name = opts?.parent ? manager.state.parentName || next : next
       if (!name) return
       setName(name)
     })
-  }, [manager])
+  }, [manager?.state.name])
 
   return name
 }
