@@ -32,6 +32,7 @@ import { BenchmarkChart } from './BenchmarkChart'
 import { BenchmarkChartNative } from './BenchmarkChartNative'
 import { BenchmarkChartWeb } from './BenchmarkChartWeb'
 import { Code, CodeInline } from './Code'
+import { DataTable } from './DataTable'
 import * as Demos from './demos'
 import { DocCodeBlock } from './DocsCodeBlock'
 import { ExternalIcon } from './ExternalIcon'
@@ -142,6 +143,7 @@ export const components = {
 
   Highlights,
   PropsTable,
+  DataTable,
   Description: SubTitle,
   UL,
   LI,
@@ -245,8 +247,8 @@ export const components = {
     </LinkHeading>
   ),
 
-  h4: (props) => <H4 pos="relative" width={`fit-content` as any} mt="$6" {...props} />,
-  h5: (props) => <H5 mt="$5" {...props} />,
+  h4: (props) => <H4 pos="relative" width={`fit-content` as any} mt="$4" mb="$3" {...props} />,
+  h5: (props) => <H5 mt="$4" {...props} />,
 
   p: (props) => (
     <Paragraph className="docs-paragraph" display="block" my="$3" size="$5" {...props} />
@@ -282,14 +284,16 @@ export const components = {
 
   ul: ({ children }) => {
     return (
-      <UL>{React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}</UL>
+      <UL mb="$4">
+        {React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}
+      </UL>
     )
   },
 
   ol: (props) => <YStack {...props} tag="ol" mb="$3" />,
 
   li: (props) => {
-    return <LI>{props.children}</LI>
+    return <LI my="$1">{props.children}</LI>
   },
 
   strong: (props) => <Paragraph tag="strong" fontSize="inherit" {...props} fontWeight="700" />,

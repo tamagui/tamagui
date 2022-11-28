@@ -2,17 +2,13 @@
 title: Introduction
 ---
 
-Tamagui is a complete suite of libraries for styling on React and React Native. It unifies the API completely between the two platforms, going further than react-native-web by providing a typed design system, animations, media queries, and pseudo styling that Just Works.
+<IntroParagraph theme="alt1">
+  Tamagui is a complete suite of libraries for styling on React and React Native.
+</IntroParagraph>
 
-#### Core
+## Core
 
-A complete base for design systems, a styled() factory, and set of hooks that work the same across Native and Web, at ~17Kb gzipped.
-
-It features **deterministic, easy to reason about styling** that by outputting to atomic CSS and always merging your styles based on the order it recieves them. This is a key feature of Tamagui, and something that doesn't exist outside of Facebook's internal StyleX library. It does this by expanding all styles as it finds them, and then merging them in-order, even across variants or when passed inline style props.
-
-Using [createTamagui](/docs/configuration) you can generate a fully-typed design system with colors, tokens, spacing, sizing, fonts, themes, shorthands, animations, and more, that work with well-optimized and easy to use hooks like [useMedia](/docs/core/use-media) and [useTheme](/docs/core/use-theme).
-
-It works hand-in-hand with a lightweight yet full-featured [styled factory](/docs/core/styled) for CSS-in-JS with all features from variants and shorthand props to media queries, themes, pseudo styles and more, all nicely typed.
+A complete design system: a typed styled() factory, base components and hooks that work the same across Native and Web, at ~17Kb gzipped. It features **deterministic, easy to reason about styling** that outputs to atomic CSS and always merges styles based on the order received.
 
 ```tsx
 import { Stack, styled } from '@tamagui/core'
@@ -44,19 +40,190 @@ export const Circle = styled(Stack, {
 // use <Circle pin="top" size="$sm" />
 ```
 
+### Features
+
+#### Expressive
+
+- Simplest possible styled() constructor for easy nested base views.
+- Apply styles conditionalls inline or with powerful typed variants.
+- Merge styles from anywhere and across modules
+- Media and Pseudo styles merge deterministically without fighting CSS specificity
+
+#### Predictable
+
+- The last style always wins. Whether you nest styled() functions, or just pass in styles inline to your views, Tamagui always merges them in-order of definition, upwards in inheretence.
+- Expands CSS shorthands at each step to enure merging is always correct.
+- Pseudos always win, and Media queries always win in a predictable manner.
+
+#### Universal
+
+- Works on Native and Web the exact same across the entire API surface area.
+- No dependency core means you can leave React Native out entirely for web-only use cases.
+
+#### Fast
+
+- Generates atomic styles for the minimal amount of code output at build-time
+- Optimizes entire JSX callsites, flattening all styles and entire views down to div/View.
+- CSS generated at compile-time into splittable bundles, no runtime injection
+
+### Core: Design System
+
+Using [createTamagui](/docs/configuration) you can generate a fully-typed design system with colors, tokens, spacing, sizing, fonts, themes, shorthands, animations, and more, that work with well-optimized and easy to use hooks like [useMedia](/docs/core/use-media) and [useTheme](/docs/core/use-theme).
+
+It works hand-in-hand with a lightweight yet full-featured [styled factory](/docs/core/styled) for CSS-in-JS with all features from variants and shorthand props to media queries, themes, pseudo styles and more, all nicely typed.
+
 The [Stack and Text components](/docs/core/stacks-and-text) work with `styled()` and provide lot of nice features like hover, press, and focus styles, nice inline style props with typed theme and token values, shorthands, media queries, animations, and more (the animations are powered by drivers which can be swapped out, like CSS transition on web, but react-native-reanimated on iOS).
 
 It's a base layer with everything you need for building a full-featured design system.
 
-#### Static
+---
+
+## Static
 
 The `@tamagui/static` package is an optimizing compiler for React that does much more than just extracting CSS styles.
 
 [Read in-depth on how it works and how fast it is here](/docs/intro/compiler).
 
-#### Tamagui
+---
+
+## Tamagui
 
 Above that, [the Tamagui UI Kit](/docs/components/stacks) for building full-featured app interfaces right out of the box. Featuring powerful, themable components that scale across every size in your design system. Enjoy Radix-like composable component APIs that always visually adapt properly to each platform.
+
+---
+
+## Comparison with other tools
+
+<DataTable
+  rows={[
+    [
+      'Package',
+      'Native & Web',
+      'Static Extraction',
+      'Atomic Styles',
+      'Object Literals',
+      'Styles Colocation',
+      'Media Queries',
+      'Pseudo Classes',
+      'Conditional Styles',
+      'Style Composition',
+      'Dynamic Styles',
+      'Strongly Typed',
+      'Static optimization',
+      'Design System',
+      'Animations'
+    ],
+    
+    [
+      'Tamagui',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      'CSS, React Native, Reanimated',
+    ],
+
+    [
+      'StyleX',
+      '❌',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      'Soon',
+      '✅',
+      '❌',
+      '❌',
+      'CSS'
+    ],
+
+    [
+      'Emotion',
+      '❌',
+      '✅',
+      '❌',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '❌',
+      '❌',
+      '❌',
+      '❌',
+      '❌',
+      'CSS'
+    ],
+
+    [
+      'Linaria',
+      '❌',
+      '✅',
+      '❌',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      '❌',
+      '✅',
+      '❌',
+      '❌',
+      '❌',
+      'CSS'
+    ],
+
+    [
+      'Vanilla Extract',
+      '❌',
+      '✅',
+      'Opt-in',
+      '✅',
+      '❌',
+      '✅',
+      '✅',
+      '✅',
+      'Opt-in',
+      '✅',
+      '✅',
+      '❌',
+      '❌',
+      'CSS'
+    ],
+
+    [
+      'Stitches',
+      '❌',
+      '✅',
+      '❌',
+      '✅',
+      '✅',
+      '✅',
+      '✅',
+      'With Variants',
+      '❌',
+      '❌',
+      '❌',
+      '❌',
+      '❌',
+      'CSS'
+    ],
+
+]}
+/>
 
 ---
 
