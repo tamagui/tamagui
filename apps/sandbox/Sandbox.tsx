@@ -16,6 +16,7 @@ import { useState } from 'react'
 // import { AppRegistry, useColorScheme } from 'react-native'
 import {
   Button,
+  H1,
   Paragraph,
   TamaguiProvider,
   Text,
@@ -23,6 +24,7 @@ import {
   TooltipGroup,
   getTokens,
   styled,
+  useThemeName,
 } from 'tamagui'
 import { ButtonFrame, Circle, Input, Square, YStack } from 'tamagui'
 
@@ -98,6 +100,8 @@ export const Sandbox = () => {
           }}
         >
           {/* <ButtonDemo /> */}
+
+          <UseThemeNameTest />
 
           {/* Theme reset + invert */}
           <Theme name="dark">
@@ -364,3 +368,21 @@ const CustomButtonFrame = styled(ButtonFrame, {
     // primary: true,
   },
 })
+
+function UseThemeNameTest() {
+  const [name, setname] = useState('blue')
+
+  return (
+    <Theme name={name}>
+      <Button onPress={() => setname('red')}>Change</Button>
+      <Square bc="$background" />
+      <UseThemeNameChildTest />
+    </Theme>
+  )
+}
+
+function UseThemeNameChildTest() {
+  const name = useThemeName()
+
+  return <H1>{name}</H1>
+}

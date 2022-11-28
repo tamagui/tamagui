@@ -1,4 +1,4 @@
-import './wdyr'
+// import './wdyr'
 
 import { config } from '@tamagui/config-base'
 import React from 'react'

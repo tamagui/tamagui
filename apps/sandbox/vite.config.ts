@@ -18,7 +18,7 @@ const tamaguiConfig = {
 }
 
 export default defineConfig({
-  clearScreen: false,
+  clearScreen: true,
   esbuild: {
     jsx: 'automatic',
   },

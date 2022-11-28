@@ -1,6 +1,7 @@
 import {
   Anchor,
   Button,
+  ButtonProps,
   H1,
   MyComponent,
   Paragraph,

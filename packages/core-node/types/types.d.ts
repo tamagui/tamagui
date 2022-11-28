@@ -1,6 +1,6 @@
-import type { GestureResponderEvent, Image, PressableProps, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from '@tamagui/types-react-native';
+import type { Image, PressableProps, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from '@tamagui/types-react-native';
 import type { Properties } from 'csstype';
-import type { Component, ForwardRefExoticComponent, FunctionComponent, ReactNode, RefAttributes, RefObject } from 'react';
+import type { Component, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
 import type { Variable } from './createVariable';
 import type { ResolveVariableTypes } from './helpers/createPropMapper';
 import type { TamaguiReactElement } from './static';
@@ -10,6 +10,7 @@ import type { ThemeProviderProps } from './views/ThemeProvider';
 export declare type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export declare type TamaguiElement = HTMLElement | View;
 export declare type DebugProp = boolean | 'break' | 'verbose';
+declare type DivAttributes = HTMLAttributes<HTMLDivElement>;
 export declare type TamaguiComponentPropsBase = {
     hitSlop?: PressableProps['hitSlop'];
     asChild?: boolean;
@@ -34,14 +35,14 @@ export declare type TamaguiComponentPropsBase = {
      * Forces the pseudo style state to be on
      */
     forceStyle?: 'hover' | 'press' | 'focus';
-    onHoverIn?: (e: MouseEvent) => any;
-    onHoverOut?: (e: MouseEvent) => any;
-    onPress?: (e: GestureResponderEvent) => any;
-    onPressIn?: (e: GestureResponderEvent) => any;
-    onPressOut?: (e: GestureResponderEvent) => any;
-    onMouseEnter?: (e: MouseEvent) => any;
-    onMouseLeave?: (e: MouseEvent) => any;
-    onMouseDown?: (e: MouseEvent) => any;
+    onHoverIn?: DivAttributes['onMouseEnter'];
+    onHoverOut?: DivAttributes['onMouseLeave'];
+    onPress?: PressableProps['onPress'];
+    onPressIn?: PressableProps['onPress'];
+    onPressOut?: PressableProps['onPress'];
+    onMouseEnter?: DivAttributes['onMouseEnter'];
+    onMouseLeave?: DivAttributes['onMouseLeave'];
+    onMouseDown?: DivAttributes['onMouseDown'];
 };
 export declare type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
 export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;

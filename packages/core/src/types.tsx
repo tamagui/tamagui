@@ -1,7 +1,6 @@
 // TODO split this into own package @tamagui/types to share with animations packages
 
 import type {
-  GestureResponderEvent,
   Image,
   PressableProps,
   TextProps as ReactTextProps,
@@ -17,6 +16,7 @@ import type {
   Component,
   ForwardRefExoticComponent,
   FunctionComponent,
+  HTMLAttributes,
   ReactNode,
   RefAttributes,
   RefObject,
@@ -36,6 +36,8 @@ export type TamaguiElement = HTMLElement | View
 export type DebugProp = boolean | 'break' | 'verbose'
 
 // base props that are accepted by createComponent (additional to react-native-web)
+
+type DivAttributes = HTMLAttributes<HTMLDivElement>
 
 export type TamaguiComponentPropsBase = {
   hitSlop?: PressableProps['hitSlop']
@@ -59,15 +61,15 @@ export type TamaguiComponentPropsBase = {
    * Forces the pseudo style state to be on
    */
   forceStyle?: 'hover' | 'press' | 'focus'
-  onHoverIn?: (e: MouseEvent) => any
-  onHoverOut?: (e: MouseEvent) => any
-  onPress?: (e: GestureResponderEvent) => any
-  onPressIn?: (e: GestureResponderEvent) => any
-  onPressOut?: (e: GestureResponderEvent) => any
+  onHoverIn?: DivAttributes['onMouseEnter']
+  onHoverOut?: DivAttributes['onMouseLeave']
+  onPress?: PressableProps['onPress']
+  onPressIn?: PressableProps['onPress']
+  onPressOut?: PressableProps['onPress']
   // WEB ONLY
-  onMouseEnter?: (e: MouseEvent) => any
-  onMouseLeave?: (e: MouseEvent) => any
-  onMouseDown?: (e: MouseEvent) => any
+  onMouseEnter?: DivAttributes['onMouseEnter']
+  onMouseLeave?: DivAttributes['onMouseLeave']
+  onMouseDown?: DivAttributes['onMouseDown']
 }
 
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<
