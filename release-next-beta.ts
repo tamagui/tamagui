@@ -31,12 +31,8 @@ const spawnify = async (cmd: string, opts?: any) => {
     const child = spawn(head, rest, { stdio: ['inherit', 'pipe', 'pipe'], ...opts })
     const outStr = []
     const errStr = []
-    child.stdout.on('data', (data) => {
-      outStr.push(data.toString())
-    })
-    child.stderr.on('data', (data) => {
-      errStr.push(data.toString())
-    })
+    child.stdout.pipe(process.stdout)
+    child.stderr.pipe(process.stderr)
     child.on('error', (err) => {
       rej(err)
     })
@@ -124,6 +120,8 @@ async function run() {
         spawnify(`yarn lint`),
         spawnify(`yarn fix`),
       ])
+
+      spawnify(`yarn test`)
 
       if (!process.env.SKIP_GIT_CLEAN_CHECK) {
         console.log('checking no git changes...')

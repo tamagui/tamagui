@@ -373,7 +373,7 @@ function UseThemeNameTest() {
   const [name, setname] = useState('blue')
 
   return (
-    <Theme name={name}>
+    <Theme name={name as any}>
       <Button onPress={() => setname('red')}>Change</Button>
       <Square bc="$background" />
       <UseThemeNameChildTest />
