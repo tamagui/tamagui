@@ -236,11 +236,11 @@ export declare function useButton(props: ButtonProps, { Text }?: {
         onSelectionChangeShouldSetResponder?: unknown;
         onSelectionChangeShouldSetResponderCapture?: unknown;
         asChild?: boolean | undefined;
-        spaceDirection?: import("@tamagui/core").SpaceDirection | undefined; /**
-         * make the spacing elements flex
-         */
+        spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
         dangerouslySetInnerHTML?: {
-            __html: string;
+            __html: string; /**
+             * adjust internal space relative to icon size
+             */
         } | undefined;
         animation?: import("@tamagui/core").AnimationProp | undefined;
         animateOnly?: string[] | undefined;

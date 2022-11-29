@@ -399,9 +399,7 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         onScrollShouldSetResponderCapture?: unknown;
         onSelectionChangeShouldSetResponder?: unknown;
         onSelectionChangeShouldSetResponderCapture?: unknown;
-        asChild?: boolean | undefined; /**
-         * default: -1
-         */
+        asChild?: boolean | undefined;
         spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
         separator?: React.ReactNode;
         dangerouslySetInnerHTML?: {
@@ -410,9 +408,7 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         animation?: import("@tamagui/core").AnimationProp | undefined;
         animateOnly?: string[] | undefined;
         debug?: boolean | "verbose" | undefined;
-        disabled?: boolean | undefined; /**
-         * subtitle
-         */
+        disabled?: boolean | undefined;
         className?: string | undefined;
         themeShallow?: boolean | undefined;
         id?: string | undefined;

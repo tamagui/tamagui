@@ -5,7 +5,7 @@ export declare const elevate: {
         [x: `$${number}`]: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>) | import("@tamagui/core").Variable<any> | undefined;
         hitSlop?: import("@tamagui/types-react-native").Insets | (import("@tamagui/types-react-native").Insets & number) | import("@tamagui/core").Variable<any> | undefined;
         onLayout?: import("@tamagui/core").Variable<any> | ((event: import("@tamagui/types-react-native").LayoutChangeEvent) => void) | undefined;
-        pointerEvents?: "box-none" | "none" | "box-only" | "auto" | import("@tamagui/core").Variable<any> | undefined;
+        pointerEvents?: "none" | "box-none" | "box-only" | "auto" | import("@tamagui/core").Variable<any> | undefined;
         removeClippedSubviews?: boolean | import("@tamagui/core").Variable<any> | undefined;
         style?: import("@tamagui/core").Variable<any> | import("@tamagui/types-react-native").StyleProp<import("@tamagui/types-react-native").ViewStyle>;
         testID?: string | import("@tamagui/core").Variable<any> | undefined;
