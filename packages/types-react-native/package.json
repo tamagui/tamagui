@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/types-react-native",
-  "version": "1.0.1-beta.224",
+  "version": "1.0.1-beta.225",
   "description": "TypeScript definitions for react-native",
   "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-native",
   "license": "MIT",
