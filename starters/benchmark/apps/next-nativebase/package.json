@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tamagui/next-theme": "1.0.1-beta.223",
+    "@tamagui/next-theme": "1.0.1-beta.226",
     "app": "*",
     "next": "^12.2.4",
     "raf": "^3.4.1",
