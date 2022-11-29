@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "native": "yarn build && cd apps/expo && yarn start",
+    "native": "cd apps/expo && yarn start",
     "watch": "yarn workspaces foreach -pi run watch",
     "web": "yarn build && cd apps/next && yarn next",
     "web:extract": "DISABLE_EXTRACTION=false yarn workspace next-app dev",
