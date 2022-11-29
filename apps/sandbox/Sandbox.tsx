@@ -5,6 +5,7 @@ import {
   ButtonDemo,
   DialogDemo,
   LabelDemo,
+  PopoverDemo,
   SelectDemo,
   SheetDemo,
   TooltipDemo,
@@ -38,6 +39,23 @@ if (typeof require !== 'undefined') {
 }
 
 // AppRegistry.registerComponent('Main', () => Sandbox)
+
+function ThemeInverseReverseTest() {
+  return (
+    <>
+      {/* Theme reset + invert */}
+      <Theme name="dark">
+        <Theme reset>
+          {/* should be light */}
+          <Theme inverse>
+            {/* should be dark */}
+            <Square bc="$background" size={100} />
+          </Theme>
+        </Theme>
+      </Theme>
+    </>
+  )
+}
 
 export const Sandbox = () => {
   // const scheme = useColorScheme()
@@ -99,19 +117,13 @@ export const Sandbox = () => {
             overflow: 'hidden',
           }}
         >
+          {/* <PopoverDemo /> */}
+          <SheetDemo />
+
           {/* <ButtonDemo /> */}
 
-          <UseThemeNameTest />
-
-          {/* Theme reset + invert */}
-          <Theme name="dark">
-            <Theme reset>
-              <Theme inverse>
-                <Square bc="$background" size={100} />
-              </Theme>
-            </Theme>
-          </Theme>
-
+          {/* <UseThemeNameTest /> */}
+          {/* <ThemeInverseReverseTest /> */}
           {/* <PerformanceTest /> */}
 
           {/* <CustomButtonFrame debug="verbose">
