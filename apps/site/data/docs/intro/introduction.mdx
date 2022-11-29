@@ -52,13 +52,13 @@ export const Circle = styled(Stack, {
 #### Predictable
 
 - The last style always wins. Whether you nest styled() functions, or just pass in styles inline to your views, Tamagui always merges them in-order of definition, upwards in inheretence.
-- Expands CSS shorthands at each step to enure merging is always correct.
-- Pseudos always win, and Media queries always win in a predictable manner.
+- Expands CSS shorthands inline to ensure your styles always merge properly.
+- Pseudos styles and Media query styles always win in a predictable manner.
 
 #### Universal
 
 - Works on Native and Web the exact same across the entire API surface area.
-- No dependency core means you can leave React Native out entirely for web-only use cases.
+- No dependency core for web-only use cases.
 
 #### Fast
 
@@ -92,7 +92,7 @@ Above that, [the Tamagui UI Kit](/docs/components/stacks) for building full-feat
 
 ---
 
-## Comparison with other tools
+## Comparison
 
 <DataTable
   rows={[

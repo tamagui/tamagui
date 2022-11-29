@@ -1,12 +1,14 @@
-import { ChevronDown } from '@tamagui/lucide-icons'
+import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { Sheet } from '@tamagui/sheet'
+import { SheetProps } from '@tamagui/sheet/types/types'
 import { useState } from 'react'
-import { Button, Circle, Square, XStack, YStack, isWeb } from 'tamagui'
+import { Button, XStack } from 'tamagui'
 
 export const SheetDemo = () => {
   const [position, setPosition] = useState(0)
   const [open, setOpen] = useState(false)
   const [modal, setModal] = useState(true)
+  const [innerOpen, setInnerOpen] = useState(false)
 
   return (
     <>
@@ -28,19 +30,23 @@ export const SheetDemo = () => {
         <Sheet.Overlay />
         <Sheet.Handle />
         <Sheet.Frame f={1} p="$4" jc="center" ai="center" space="$5">
-          <Button
-            size="$6"
-            circular
-            icon={ChevronDown}
-            onPress={() => {
-              setOpen(false)
-            }}
-          />
-          <Square size="$2" bc="$red9" />
-          <Circle size="$2" bc="$orange9" />
-          <Square size="$2" bc="$yellow9" />
+          <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
+          <Button size="$6" circular icon={ChevronUp} onPress={() => setInnerOpen(true)}></Button>
+          <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
         </Sheet.Frame>
       </Sheet>
     </>
+  )
+}
+
+function InnerSheet(props: SheetProps) {
+  return (
+    <Sheet modal snapPoints={[90]} dismissOnSnapToBottom {...props}>
+      <Sheet.Overlay />
+      <Sheet.Handle />
+      <Sheet.Frame f={1} p="$4" jc="center" ai="center" space="$5">
+        <Button size="$4" circular icon={ChevronDown} onPress={() => props.onOpenChange?.(false)} />
+      </Sheet.Frame>
+    </Sheet>
   )
 }
