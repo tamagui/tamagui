@@ -13,7 +13,7 @@ import type {
 } from '@tamagui/types-react-native'
 import type { Properties } from 'csstype'
 import type {
-  Component,
+  ComponentType,
   ForwardRefExoticComponent,
   FunctionComponent,
   HTMLAttributes,
@@ -843,7 +843,7 @@ export type StylableComponent =
   | TamaguiComponent
   // * excessively deep type instantiation
   // | TamaguiReactElement
-  | Component
+  | ComponentType<any>
   | ForwardRefExoticComponent<any>
   | ReactComponentWithRef<any, any>
   | (new (props: any) => any)
@@ -873,7 +873,7 @@ export type GetProps<A extends StylableComponent> = A extends TamaguiComponent<i
   ? Props
   : A extends TamaguiReactElement<infer Props>
   ? Props
-  : A extends Component<infer Props>
+  : A extends ComponentType<infer Props>
   ? GetGenericComponentTamaguiProps<Props>
   : A extends new (props: infer Props) => any
   ? GetGenericComponentTamaguiProps<Props>
