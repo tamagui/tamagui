@@ -1,6 +1,8 @@
 rc.0
 
-  - ssr issues responsive-demo
+  - next load css on subsequent pages
+  - button focus style on prod
+  - ssr issue responsive-demo
   - make dynamic eval an experiment
   - rc.0 blog post
   - <Adapt /> instead of sheetBreakpoint
