@@ -17,6 +17,7 @@ module.exports = {
     'no-inner-declarations': 'off',
     'react/prop-types': 'off',
     'react/display-name': 'off',
+    'react/jsx-key': ['warn', { checkFragmentShorthand: true, checkKeyMustBeforeSpread: true }],
     'no-empty-pattern': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
