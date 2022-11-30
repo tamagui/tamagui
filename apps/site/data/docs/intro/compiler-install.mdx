@@ -3,9 +3,9 @@ title: Install the Compiler
 description: Adding the compiler to your apps.
 ---
 
-You don't need to setup the compiler to start using Tamagui, we recommend moving to [configuration](/docs/core/configuration) to get a feel for how you like it before investing in setup.
+Tamagui works 100% at runtime, the compiler is optional, it's easier to get started by [skipping setting it up](/docs/core/configuration) so you can try it out in practice before committing.
 
-Install on most platforms is as easy as a library:
+Install on most platforms is as easy as configuring a library:
 
 - [Webpack](#webpack)
 - [Next.js](#nextjs) ([guide](/docs/guides/next-js))
@@ -13,85 +13,11 @@ Install on most platforms is as easy as a library:
 - [Metro](#metro)
 - [Expo](/docs/guides/expo))
 
-### Props
-
-All compiler plugins accept the same options:
-
-<PropsTable
-  data={[
-    {
-      name: 'config',
-      required: true,
-      type: 'string',
-      typeSimple: 'enum',
-      description:
-        'Relative path to your tamagui.config.ts file which should export default the result from createTamagui.',
-    },
-    {
-      name: 'components',
-      required: false,
-      type: 'string[]',
-      typeSimple: 'enum',
-      default: "['tamagui']",
-      description:
-        'Array of npm modules containing Tamagui components which youll be using in your app. For example:  if you are using the base Tamagui components. This directs the compiler to load and optimize.',
-    },
-    {
-      name: 'importsWhitelist',
-      required: false,
-      type: 'string[]',
-      typeSimple: 'enum',
-      description: `Array of whitelisted file paths (always end in .js) which the compiler may try and import and parse at build-time. It is normalized to ".js" ending for all file extensions (js, jsx, tsx, ts). This usually should be set to something like ['constants.js', 'colors.js'] for example, where you have a couple mostly static files of constants that are used as default values for styles.`,
-    },
-    {
-      name: 'logTimings',
-      required: false,
-      type: 'boolean',
-      typeSimple: 'enum',
-      default: 'true',
-      description:
-        'Tamagui outputs information for each file it compiles on how long it took to run, how many components it optimized, and how many it flattened. Set to false to disable these logs.',
-    },
-    {
-      name: 'disable',
-      required: false,
-      type: 'boolean',
-      typeSimple: 'enum',
-      default: 'false',
-      description: 'Disable everything - debug and extraction.',
-    },
-    {
-      name: 'disableExtraction',
-      required: false,
-      type: 'boolean',
-      typeSimple: 'enum',
-      default: 'false',
-      description:
-        'Disable extraction to CSS completely, instead fully relying on runtime. Setting this to true speed up development as generally your app will hot reload the Tamagui configuration itself.',
-    },
-    {
-      name: 'disableDebugAttr',
-      required: false,
-      type: 'boolean',
-      typeSimple: 'enum',
-      default: 'false',
-      description:
-        'If enabled along with disableExtraction, all parsing will turn off. Normally turning off disableExtraction will keep the helpful debug attributes in DOM',
-    },
-    {
-      name: 'disableFlattening',
-      required: false,
-      type: 'boolean',
-      typeSimple: 'enum',
-      default: 'false',
-      description: 'Turns off tree-flattening.',
-    },
-  ]}
-/>
-
-### Note
-
-The compiler will generate built versions of your components and config into the `.tamagui` directory, relative to your app. You'll want to add this to your `.gitignore` if you don't already ignore dotfiles.
+<Notice>
+  The compiler will generate built versions of your components and config into the `.tamagui`
+  directory, relative to your app. You'll want to add this to your `.gitignore` if you don't already
+  ignore dotfiles.
+</Notice>
 
 ### Webpack
 
@@ -121,7 +47,6 @@ module.exports = {
     alias: {
       // Resolve react-native to react-native-web
       'react-native$': require.resolve('react-native-web'),
-      'react-native-web$': require.resolve('react-native-web'),
 
       // Experimentally opt into react-native-web-lite which drops support for all react-native
       // built-in List components, and removes many deprecated APIs and code-reduction, slimming
@@ -149,7 +74,6 @@ module.exports = {
             loader: 'esbuild-loader',
             options: {
               loader: 'tsx',
-              minify: process.env.NODE_ENV === 'production',
             },
           },
 
@@ -296,3 +220,79 @@ Tamagui uses `@expo/match-media` and `expo-linear-gradient`, so you'll want `exp
 ### Web-only apps
 
 If you want autocompleted imports of `react-native` without having to install all the weight of react-native, you can set `react-native` version to `0.0.0`, and add `@types/react-native` at the latest version.
+
+### Props
+
+All compiler plugins accept the same options:
+
+<PropsTable
+  data={[
+    {
+      name: 'config',
+      required: true,
+      type: 'string',
+      typeSimple: 'enum',
+      description:
+        'Relative path to your tamagui.config.ts file which should export default the result from createTamagui.',
+    },
+    {
+      name: 'components',
+      required: false,
+      type: 'string[]',
+      typeSimple: 'enum',
+      default: "['tamagui']",
+      description:
+        'Array of npm modules containing Tamagui components which youll be using in your app. For example:  if you are using the base Tamagui components. This directs the compiler to load and optimize.',
+    },
+    {
+      name: 'importsWhitelist',
+      required: false,
+      type: 'string[]',
+      typeSimple: 'enum',
+      description: `Array of whitelisted file paths (always end in .js) which the compiler may try and import and parse at build-time. It is normalized to ".js" ending for all file extensions (js, jsx, tsx, ts). This usually should be set to something like ['constants.js', 'colors.js'] for example, where you have a couple mostly static files of constants that are used as default values for styles.`,
+    },
+    {
+      name: 'logTimings',
+      required: false,
+      type: 'boolean',
+      typeSimple: 'enum',
+      default: 'true',
+      description:
+        'Tamagui outputs information for each file it compiles on how long it took to run, how many components it optimized, and how many it flattened. Set to false to disable these logs.',
+    },
+    {
+      name: 'disable',
+      required: false,
+      type: 'boolean',
+      typeSimple: 'enum',
+      default: 'false',
+      description: 'Disable everything - debug and extraction.',
+    },
+    {
+      name: 'disableExtraction',
+      required: false,
+      type: 'boolean',
+      typeSimple: 'enum',
+      default: 'false',
+      description:
+        'Disable extraction to CSS completely, instead fully relying on runtime. Setting this to true speed up development as generally your app will hot reload the Tamagui configuration itself.',
+    },
+    {
+      name: 'disableDebugAttr',
+      required: false,
+      type: 'boolean',
+      typeSimple: 'enum',
+      default: 'false',
+      description:
+        'If enabled along with disableExtraction, all parsing will turn off. Normally turning off disableExtraction will keep the helpful debug attributes in DOM',
+    },
+    {
+      name: 'disableFlattening',
+      required: false,
+      type: 'boolean',
+      typeSimple: 'enum',
+      default: 'false',
+      description: 'Turns off tree-flattening.',
+    },
+  ]}
+/>
