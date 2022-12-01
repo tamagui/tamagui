@@ -29,7 +29,7 @@ export const LinearGradient: React.ForwardRefExoticComponent<
             end={end}
             colors={colors}
             locations={locations}
-            style={[StyleSheet.absoluteFill]}
+            style={StyleSheet.absoluteFill}
           >
             {children}
           </ExpoLinearGradient>
