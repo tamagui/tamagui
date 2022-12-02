@@ -51,6 +51,7 @@
     "site:vite:debug-tamagui": "cd apps/site-vite && DEBUG=tamagui yarn dev",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod": "yarn workspace @tamagui/site ci:build && yarn workspace @tamagui/site next:start",
+    "site:prod:no-extract": "yarn workspace @tamagui/site ci:build:no-extract && yarn workspace @tamagui/site next:start",
     "site:prod:analyze": "ANALYZE=true yarn site:prod",
     "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start:clean",
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
