@@ -47,6 +47,7 @@ const plugins = [
     'expo-constants',
     'expo-modules-core',
     '@my/config',
+    '@my/ui'
   ]),
   withTamagui({
     config: './tamagui.config.ts',
