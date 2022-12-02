@@ -11,7 +11,6 @@ import { ThemeParsed, ThemeProps } from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
 
 export type ChangedThemeResponse = {
-  themes: Record<string, ThemeParsed>
   themeManager: ThemeManager | null
   name: string
   isNewTheme?: boolean
@@ -20,17 +19,22 @@ export type ChangedThemeResponse = {
 }
 
 const emptyProps = { name: null }
+
+function getDefaultThemeProxied() {
+  const config = getConfig()
+  const name = Object.keys(config.themes)[0]
+  return getThemeProxied({
+    theme: config.themes[name],
+    name,
+  })
+}
+
 export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
   if (isRSC) {
-    const config = getConfig()
-    const name = Object.keys(config.themes)[0]
-    return getThemeProxied({
-      theme: config.themes[name],
-      name,
-    })
+    return getDefaultThemeProxied()
   }
 
-  const { name, theme, themes, themeManager, className, isNewTheme } = useChangeThemeEffect(props)
+  const { name, theme, themeManager, className, isNewTheme } = useChangeThemeEffect(props)
 
   if (process.env.NODE_ENV === 'development') {
     // ensure we aren't creating too many ThemeManagers
@@ -53,7 +57,7 @@ export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
     if (process.env.NODE_ENV === 'development') {
       console.warn('No theme found', name, props, themeManager)
     }
-    return themes[Object.keys(themes)[0]]
+    return getDefaultThemeProxied()
   }
 
   return useMemo(() => {
@@ -121,26 +125,26 @@ export const getThemeIsNewTheme = (theme: any): ThemeManager | undefined => them
 export const activeThemeManagers = new Set<ThemeManager>()
 
 export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedThemeResponse => {
-  const parentManager = useContext(ThemeManagerContext)
-  const config = getConfig()
-  const { debug } = props
-  // @ts-expect-error internal use only
-  const disable = props.disable
-  const { themes } = config
   if (isRSC) {
     // we need context working for this to work well
     return {
       ...createState().state,
-      themes,
       themeManager: null,
     }
   }
+  const parentManager = useContext(ThemeManagerContext)
+
+  const {
+    debug,
+    // @ts-expect-error internal use only
+    disable,
+  } = props
+
   if (disable) {
     if (!parentManager) throw new Error(`Disable topmost`)
     return {
       ...parentManager.state,
       isNewTheme: false,
-      themes,
       themeManager: parentManager,
     }
   }
@@ -192,7 +196,6 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
     if (!parentManager) throw new Error(`Nada`)
     return {
       ...parentManager.state,
-      themes,
       themeManager: parentManager,
       isNewTheme: false,
     }
@@ -208,7 +211,6 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
   return {
     ...state,
     isNewTheme,
-    themes,
     themeManager,
     ...(!mounted &&
       parentManager && {
