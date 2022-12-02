@@ -1,7 +1,6 @@
 import { ThemeManager } from '../helpers/ThemeManager';
 import { ThemeParsed, ThemeProps } from '../types';
 export declare type ChangedThemeResponse = {
-    themes: Record<string, ThemeParsed>;
     themeManager: ThemeManager | null;
     name: string;
     isNewTheme?: boolean;
