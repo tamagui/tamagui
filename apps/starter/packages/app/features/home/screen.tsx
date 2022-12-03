@@ -2,35 +2,17 @@ import {
   Anchor,
   Button,
   H1,
-  ListItem,
+  MyComponent,
+  MyComponentJSX,
   Paragraph,
   Separator,
   Sheet,
-  ThemeableStack,
   XStack,
-  YGroup,
   YStack,
-  styled,
 } from '@starter/ui'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
 import { useLink } from 'solito/link'
-
-const MyStack = styled(ThemeableStack, {
-  focusable: true,
-
-  pressStyle: {
-    backgroundColor: 'transparent',
-  },
-
-  hoverStyle: {
-    backgroundColor: 'red',
-  },
-
-  focusStyle: {
-    backgroundColor: '$borderColorFocus',
-  },
-})
 
 export function HomeScreen() {
   const linkProps = useLink({
@@ -41,7 +23,10 @@ export function HomeScreen() {
     <YStack f={1} jc="center" ai="center" p="$4" space>
       <YStack space="$4" maw={600}>
         <H1 ta="center">Welcome to Tamagui.</H1>
-        <Paragraph ta="center">Starter</Paragraph>
+        <Paragraph ta="center">
+          Here's a basic starter to show navigating from one screen to another. This screen uses the
+          same code on Next.js and React Native.
+        </Paragraph>
 
         <Separator />
         <Paragraph ta="center">
@@ -60,6 +45,9 @@ export function HomeScreen() {
       <XStack>
         <Button {...linkProps}>Link to user</Button>
       </XStack>
+
+      <MyComponent w={50} h={50} />
+      <MyComponentJSX />
 
       <SheetDemo />
     </YStack>

@@ -13,7 +13,7 @@
     "eject": "EXPO_NO_TELEMETRY=true expo eject"
   },
   "dependencies": {
-    "@react-navigation/native": "^6.0.10",
+    "@react-navigation/native": "^6.0.11",
     "@react-navigation/native-stack": "^6.7.0",
     "@tamagui/animations-reanimated": "^1.0.1-beta.226",
     "@tamagui/colors": "^1.0.1-beta.226",
@@ -27,7 +27,7 @@
     "expo": "~46.0.16",
     "expo-font": "^10.2.0",
     "expo-linear-gradient": "^11.4.0",
-    "expo-linking": "^3.1.0",
+    "expo-linking": "^3.2.2",
     "expo-splash-screen": "~0.16.2",
     "expo-status-bar": "^1.4.0",
     "react": ">=18",
