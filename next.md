@@ -2,7 +2,6 @@ rc.0
 
   - next load css on subsequent pages
   - button focus style on prod
-  - make dynamic eval an experiment
   - rc.0 blog post
   - <Adapt /> instead of sheetBreakpoint
 
