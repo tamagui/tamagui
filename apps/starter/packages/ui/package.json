@@ -6,17 +6,12 @@
   ],
   "private": true,
   "types": "./types/index",
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "module:jsx": "dist/jsx",
+  "main": "src/index.tsx",
+  "module:jsx": "src",
   "files": [
     "types",
     "dist"
   ],
-  "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch"
-  },
   "dependencies": {
     "@starter/config": "*",
     "tamagui": "^1.0.1-beta.226"

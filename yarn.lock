@@ -4612,22 +4612,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/core@npm:^6.4.1":
-  version: 6.4.1
-  resolution: "@react-navigation/core@npm:6.4.1"
-  dependencies:
-    "@react-navigation/routers": ^6.1.3
-    escape-string-regexp: ^4.0.0
-    nanoid: ^3.1.23
-    query-string: ^7.0.0
-    react-is: ^16.13.0
-    use-latest-callback: ^0.1.5
-  peerDependencies:
-    react: "*"
-  checksum: 655c17d30bdcd356be3d3063426c254d74fe23f8c4134e68cca798d31fbcb96f6048923ae315ac13e80dc3d873b768d278f98d5e79530c4a2302666dc4d0d6cf
-  languageName: node
-  linkType: hard
-
 "@react-navigation/core@npm:^6.4.3":
   version: 6.4.3
   resolution: "@react-navigation/core@npm:6.4.3"
@@ -4672,21 +4656,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native@npm:^6.0.10":
-  version: 6.0.14
-  resolution: "@react-navigation/native@npm:6.0.14"
-  dependencies:
-    "@react-navigation/core": ^6.4.1
-    escape-string-regexp: ^4.0.0
-    fast-deep-equal: ^3.1.3
-    nanoid: ^3.1.23
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: ccdc8d32c99fb0dbba57167c12c88db5e100a0b774dee74ecf9a70cf3cbd9378b056cb81c6c873d35a4085338a433c9297b4dce7e020c285ef9898c91d88441b
-  languageName: node
-  linkType: hard
-
 "@react-navigation/native@npm:^6.0.11":
   version: 6.0.16
   resolution: "@react-navigation/native@npm:6.0.16"
@@ -4699,15 +4668,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: e936181a8fbe6aa1bbd5c415276b8cc34bfd6abeb3cec47637f3eca43a610a693a8d6f23c8eb0cfc72856784104dc70f64516d4493a0b879b43a88e9a5ae5117
-  languageName: node
-  linkType: hard
-
-"@react-navigation/routers@npm:^6.1.3":
-  version: 6.1.3
-  resolution: "@react-navigation/routers@npm:6.1.3"
-  dependencies:
-    nanoid: ^3.1.23
-  checksum: edcdc429cd65de42d7ee8684c148e25998c778e3c06844eae02c35a531c2a52c3be3e3664d1a1058346526af7c2a0b4aceb80b8dbdcf9b4d87e331eaac1e7977
   languageName: node
   linkType: hard
 
@@ -5722,7 +5682,7 @@ __metadata:
   dependencies:
     "@babel/core": ^7.19.6
     "@expo/metro-config": ^0.3.21
-    "@react-navigation/native": ^6.0.10
+    "@react-navigation/native": ^6.0.11
     "@react-navigation/native-stack": ^6.7.0
     "@rnx-kit/metro-config": ^1.2.32
     "@rnx-kit/metro-resolver-symlinks": ^0.1.20
@@ -5741,7 +5701,7 @@ __metadata:
     expo: ~46.0.16
     expo-font: ^10.2.0
     expo-linear-gradient: ^11.4.0
-    expo-linking: ^3.1.0
+    expo-linking: ^3.2.2
     expo-splash-screen: ~0.16.2
     expo-status-bar: ^1.4.0
     metro-runtime: ^0.67.0
@@ -12333,7 +12293,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-linking@npm:^3.1.0, expo-linking@npm:^3.2.2":
+"expo-linking@npm:^3.2.2":
   version: 3.2.3
   resolution: "expo-linking@npm:3.2.3"
   dependencies:

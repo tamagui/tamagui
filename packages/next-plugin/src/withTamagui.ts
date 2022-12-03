@@ -46,7 +46,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         const prefix = `${isServer ? ' ssr ' : ' web '} |`
 
-        const safeResolves = (...resolves: [string, string][]) => {
+        const safeResolves = (resolves: [string, string][], multiple = false) => {
           const res: string[][] = []
           for (const [out, mod] of resolves) {
             if (out.endsWith('$')) {
@@ -55,6 +55,9 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             }
             try {
               res.push([out, resolveEsm(mod)])
+              if (multiple) {
+                res.push([out, resolveEsm(mod, true)])
+              }
             } catch (err) {
               if (out.includes(`@gorhom/bottom-sheet`)) {
                 continue
@@ -65,11 +68,13 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               }
             }
           }
-          return Object.fromEntries(res)
+          return res
         }
 
-        const resolveEsm = (relativePath: string) => {
-          if (isServer) return require.resolve(relativePath)
+        const resolveEsm = (relativePath: string, onlyRequire = false) => {
+          if (isServer || onlyRequire) {
+            return require.resolve(relativePath)
+          }
           const esm = resolver(relativePath)
           return esm ? path.join(dir, esm) : require.resolve(relativePath)
         }
@@ -78,26 +83,25 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         // automatically compile our given components
         const componentsFullPaths = safeResolves(
-          ...tamaguiOptions.components.map(
+          tamaguiOptions.components.map(
             (moduleName) => [moduleName, moduleName] as [string, string]
-          )
+          ),
+          true
         )
 
-        const componentsBaseDirs = Object.entries(componentsFullPaths).map(
-          ([_moduleName, fullPath]) => {
-            let rootPath = dirname(fullPath as string)
-            while (rootPath.length > 1) {
-              const pkg = join(rootPath, 'package.json')
-              const hasPkg = existsSync(pkg)
-              if (hasPkg) {
-                return rootPath
-              } else {
-                rootPath = join(rootPath, '..')
-              }
+        const componentsBaseDirs = componentsFullPaths.map(([_, fullPath]) => {
+          let rootPath = dirname(fullPath as string)
+          while (rootPath.length > 1) {
+            const pkg = join(rootPath, 'package.json')
+            const hasPkg = existsSync(pkg)
+            if (hasPkg) {
+              return rootPath
+            } else {
+              rootPath = join(rootPath, '..')
             }
-            throw new Error(`Couldn't find package.json in any path above: ${fullPath}`)
           }
-        )
+          throw new Error(`Couldn't find package.json in any path above: ${fullPath}`)
+        })
 
         function isInComponentModule(fullPath: string) {
           return componentsBaseDirs.some((componentDir) => fullPath.startsWith(componentDir))
@@ -119,28 +123,30 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           ? 'react-native-web-lite'
           : 'react-native-web'
 
-        const tamaguiAliases = safeResolves(
-          ['@tamagui/core/reset.css', '@tamagui/core/reset.css'],
-          ['@tamagui/core', '@tamagui/core'],
-          ['react-native-svg', '@tamagui/react-native-svg'],
-          // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
-          ['react/jsx-runtime.js', 'react/jsx-runtime'],
-          ['react/jsx-runtime', 'react/jsx-runtime'],
-          ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
-          ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
-          ['react-native-reanimated', 'react-native-reanimated'],
-          ['react-native$', rnw],
-          ['react-native-web$', rnw],
-          ['@testing-library/react-native', '@tamagui/proxy-worm'],
-          ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
-          // fix reanimated 3
-          ['react-native/Libraries/Renderer/shims/ReactFabric', '@tamagui/proxy-worm'],
-          ...(tamaguiOptions.aliasReactPackages
-            ? ([
-                ['react', 'react'],
-                ['react-dom', 'react-dom'],
-              ] as any)
-            : [])
+        const tamaguiAliases = Object.fromEntries(
+          safeResolves([
+            ['@tamagui/core/reset.css', '@tamagui/core/reset.css'],
+            ['@tamagui/core', '@tamagui/core'],
+            ['react-native-svg', '@tamagui/react-native-svg'],
+            // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
+            ['react/jsx-runtime.js', 'react/jsx-runtime'],
+            ['react/jsx-runtime', 'react/jsx-runtime'],
+            ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
+            ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
+            ['react-native-reanimated', 'react-native-reanimated'],
+            ['react-native$', rnw],
+            ['react-native-web$', rnw],
+            ['@testing-library/react-native', '@tamagui/proxy-worm'],
+            ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
+            // fix reanimated 3
+            ['react-native/Libraries/Renderer/shims/ReactFabric', '@tamagui/proxy-worm'],
+            ...(tamaguiOptions.aliasReactPackages
+              ? ([
+                  ['react', 'react'],
+                  ['react-dom', 'react-dom'],
+                ] as any)
+              : []),
+          ])
         )
 
         const alias = {
