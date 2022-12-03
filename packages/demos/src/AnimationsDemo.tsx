@@ -19,7 +19,6 @@ export function AnimationsDemo(props) {
     <>
       <Square
         animation={props.animation || 'bouncy'}
-        debug="verbose"
         onPress={onPress}
         size={104}
         boc="$borderColor"
