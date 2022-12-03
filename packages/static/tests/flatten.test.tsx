@@ -64,11 +64,11 @@ describe('flatten-tests', () => {
         },
         \\"2\\": {},
         \\"3\\": {
-          \\"backgroundColor\\": \\"red\\"
+          \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
         },
         \\"4\\": {},
         \\"5\\": {
-          \\"backgroundColor\\": \\"blue\\"
+          \\"backgroundColor\\": \\"rgba(0,0,255,1.00)\\"
         },
         \\"6\\": {}
       });
@@ -122,11 +122,11 @@ describe('flatten-tests', () => {
     })
 
     expect(sheetStyles['3']).toEqual({
-      backgroundColor: 'red',
+      backgroundColor: 'rgba(255,0,0,1.00)',
     })
 
     expect(sheetStyles['5']).toEqual({
-      backgroundColor: 'blue',
+      backgroundColor: 'rgba(0,0,255,1.00)',
     })
   })
 })
