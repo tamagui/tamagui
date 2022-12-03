@@ -27,7 +27,7 @@
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.226",
     "happy-dom": "^6.0.4",
-    "vitest": "^0.24.3",
+    "vitest": "^0.25.3",
     "vitest-mock-process": "^1.0.4"
   }
 }

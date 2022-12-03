@@ -5404,7 +5404,7 @@ __metadata:
     react: ">=18"
     react-dom: ">=18"
     typescript: ^4.7.4
-    vitest: ^0.24.3
+    vitest: ^0.25.3
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
@@ -5625,7 +5625,7 @@ __metadata:
     "@tamagui/helpers": ^1.0.1-beta.226
     react: ">=18"
     react-native: "*"
-    vitest: ^0.24.3
+    vitest: ^0.25.3
   peerDependencies:
     react: ">=18"
     react-native: "*"
@@ -6033,7 +6033,7 @@ __metadata:
     tamagui-loader: ^1.0.1-beta.226
     thread-loader: ^3.0.4
     url-loader: ^4.1.1
-    vite: ^3.2.2
+    vite: ^3.2.4
     vite-plugin-environment: ^1.1.3
     vite-plugin-swc-react-refresh: ^2.2.0
     webpack: ^5.74.0
@@ -6322,7 +6322,7 @@ __metadata:
     react-test-renderer: ^18.2.0
     style-loader: ^3.3.1
     typescript: ^4.7.4
-    vitest: ^0.24.3
+    vitest: ^0.25.3
     webpack: ^5.74.0
   peerDependencies:
     react-native-web: "*"
@@ -6372,7 +6372,7 @@ __metadata:
     "@tamagui/helpers-tamagui": ^1.0.1-beta.226
     react: ">=18"
     react-dom: ">=18"
-    vitest: ^0.24.3
+    vitest: ^0.25.3
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
@@ -6595,7 +6595,7 @@ __metadata:
     "@tamagui/vite-plugin": ^1.0.1-beta.226
     "@vitejs/plugin-react": ^2.2.0
     happy-dom: ^6.0.4
-    vitest: ^0.24.3
+    vitest: ^0.25.3
     vitest-mock-process: ^1.0.4
   languageName: unknown
   linkType: soft
@@ -6607,9 +6607,9 @@ __metadata:
     "@babel/core": ^7.19.6
     "@tamagui/build": ^1.0.1-beta.226
     "@types/babel-core": ^6.25.7
-    vite: ^3.2.2
+    vite: ^3.2.4
   peerDependencies:
-    vite: ^3.2.2
+    vite: ^3.2.4
   languageName: unknown
   linkType: soft
 
@@ -7911,7 +7911,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn-walk@npm:^8.0.0":
+"acorn-walk@npm:^8.0.0, acorn-walk@npm:^8.2.0":
   version: 8.2.0
   resolution: "acorn-walk@npm:8.2.0"
   checksum: 1715e76c01dd7b2d4ca472f9c58968516a4899378a63ad5b6c2d668bba8da21a71976c14ec5f5b75f887b6317c4ae0b897ab141c831d741dc76024d8745f1ad1
@@ -23774,7 +23774,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^3.0.0, vite@npm:^3.2.2":
+"vite@npm:^3.0.0, vite@npm:^3.2.4":
   version: 3.2.4
   resolution: "vite@npm:3.2.4"
   dependencies:
@@ -23823,16 +23823,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:^0.24.3":
-  version: 0.24.5
-  resolution: "vitest@npm:0.24.5"
+"vitest@npm:^0.25.3":
+  version: 0.25.3
+  resolution: "vitest@npm:0.25.3"
   dependencies:
     "@types/chai": ^4.3.3
     "@types/chai-subset": ^1.3.3
     "@types/node": "*"
+    acorn: ^8.8.0
+    acorn-walk: ^8.2.0
     chai: ^4.3.6
     debug: ^4.3.4
     local-pkg: ^0.4.2
+    source-map: ^0.6.1
     strip-literal: ^0.4.2
     tinybench: ^2.3.1
     tinypool: ^0.3.0
@@ -23857,7 +23860,7 @@ __metadata:
       optional: true
   bin:
     vitest: vitest.mjs
-  checksum: 801d153082ec9d237d8720783dc939aa8c8a4cdd71625ddac997f99a98664b055a0e3efbcb3af648d44f0b8b80c014d48150b2c281870023628c1bdffa336d08
+  checksum: cd54de758f41295ef8a5304318b0de37f3182ec9b179d983cb0199dac89d51b80ee30124754703ef77ce4a1b675f3b02094ef96790889d5c9212dbab7490b4d0
   languageName: node
   linkType: hard
 
