@@ -48,6 +48,33 @@ import {
 } from './normalizeValueWithProperty.js'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
+type GetStyleResult = {
+  pseudos: PseudoStyles
+  medias: Record<MediaQueryKey, ViewStyle>
+  style: ViewStyle
+  classNames: ClassNamesObject
+  rulesToInsert: RulesToInsert
+  viewProps: StackProps & Record<string, any>
+  fontFamily: string | undefined
+  mediaKeys: string[]
+}
+
+type GetStyleState = {
+  style: ViewStyle
+  usedKeys: Record<string, number>
+  classNames: ClassNamesObject
+  flatTransforms: FlatTransforms
+  staticConfig: StaticConfigParsed
+  theme: ThemeParsed
+  props: Record<string, any>
+  viewProps: Record<string, any>
+  state: SplitStyleState
+  conf: TamaguiInternalConfig
+  languageContext?: FontLanguageProps
+  avoidDefaultProps?: boolean
+  avoidMergeTransform?: boolean
+}
+
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 export type ClassNamesObject = Record<string, string>
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
@@ -134,28 +161,17 @@ type TransformNamespaceKey = 'transform' | PseudoPropKeys | MediaQueryKey
 
 let conf: TamaguiInternalConfig
 
-type SplitStylesAndProps = {
-  pseudos: PseudoStyles
-  medias: Record<MediaQueryKey, ViewStyle>
-  style: ViewStyle
-  classNames: ClassNamesObject
-  rulesToInsert: RulesToInsert
-  viewProps: StackProps & Record<string, any>
-  fontFamily: string | undefined
-  mediaKeys: string[]
-}
-
 type StyleSplitter = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
   theme: ThemeParsed,
   state: SplitStyleState,
-  parentSplitStyles?: SplitStylesAndProps | null,
+  parentSplitStyles?: GetStyleResult | null,
   languageContext?: LanguageContextType,
   // web-only
   elementType?: string,
   debug?: DebugProp
-) => SplitStylesAndProps
+) => GetStyleResult
 
 export const PROP_SPLIT = '-'
 
@@ -190,7 +206,7 @@ export const getSplitStyles: StyleSplitter = (
   conf = conf || getConfig()
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const mediaKeys: string[] = []
-  const viewProps: SplitStylesAndProps['viewProps'] = {}
+  const viewProps: GetStyleResult['viewProps'] = {}
   const pseudos: PseudoStyles = {}
   let psuedosUsed: Record<string, number> | null = null
   const medias: Record<MediaQueryKey, ViewStyle> = {}
@@ -202,7 +218,7 @@ export const getSplitStyles: StyleSplitter = (
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
 
   let style: ViewStyle = {}
-  let flatTransforms: FlatTransforms | undefined
+  const flatTransforms: FlatTransforms = {}
 
   const len = propKeys.length
   const rulesToInsert: RulesToInsert = []
@@ -213,6 +229,20 @@ export const getSplitStyles: StyleSplitter = (
   const transforms: Record<TransformNamespaceKey, [string, string]> = {}
   // fontFamily is our special baby, ensure we grab the latest set one always
   let fontFamily: string | undefined
+
+  const styleState: GetStyleState = {
+    classNames,
+    conf,
+    flatTransforms,
+    props,
+    state,
+    staticConfig,
+    style,
+    theme,
+    usedKeys,
+    viewProps,
+    languageContext,
+  }
 
   if (props.className) {
     for (const cn of props.className.split(' ')) {
@@ -291,23 +321,6 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
       continue
-    }
-
-    function mergeStyle(key: string, val: any) {
-      usedKeys[key] = usedKeys[key] || 1
-      if (val && val[0] === '_') {
-        classNames[key] = val
-      } else if (key in stylePropsTransform) {
-        flatTransforms ||= {}
-        flatTransforms[key] = val
-      } else {
-        const out = normalizeValueWithProperty(val, key)
-        if (key in validStylesOnBaseProps) {
-          viewProps[key] = out
-        } else {
-          style[key] = out
-        }
-      }
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -548,18 +561,7 @@ export const getSplitStyles: StyleSplitter = (
         if (!val) continue
 
         // TODO can avoid processing this if !shouldDoClasses + state is off
-        const pseudoStyleObject = getSubStyle(
-          key,
-          val,
-          staticConfig,
-          theme,
-          props,
-          state,
-          conf,
-          languageContext,
-          true,
-          true
-        )
+        const pseudoStyleObject = getSubStyle(styleState, key, val, true, state.noClassNames)
 
         const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
         const isEnter = descriptor.name === 'enter'
@@ -603,7 +605,10 @@ export const getSplitStyles: StyleSplitter = (
               psuedosUsed[pkey] = importance
               pseudos[key] ||= {}
               pseudos[key][pkey] = val
-              mergeStyle(pkey, val)
+              // prettier-ignore
+              // eslint-disable-next-line no-console
+              if (process.env.NODE_ENV === 'development' && debug === 'verbose') console.log('merging', pkey, val)
+              mergeStyle(styleState, pkey, val)
             }
           }
         }
@@ -622,14 +627,9 @@ export const getSplitStyles: StyleSplitter = (
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
 
         const mediaStyle = getSubStyle(
+          styleState,
           key,
           val,
-          staticConfig,
-          theme,
-          props,
-          state,
-          conf,
-          languageContext,
           // TODO try true like pseudo
           false
         )
@@ -675,7 +675,7 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (validStyleProps[key]) {
-        mergeStyle(key, val)
+        mergeStyle(styleState, key, val)
         continue
       }
 
@@ -697,6 +697,11 @@ export const getSplitStyles: StyleSplitter = (
   // always do this at the very end to preserve the order strictly (animations, origin)
   // and allow proper merging of all pseudos before applying
   if (flatTransforms) {
+    if (process.env.NODE_ENV === 'development' && debug) {
+      // prettier-ignore
+      // eslint-disable-next-line no-console
+      console.log(`Merging flat transforms, transform before`, [...style.transform || []], flatTransforms)
+    }
     mergeTransforms(style, flatTransforms, true)
   }
 
@@ -864,18 +869,35 @@ function getSubStyleProps(defaultProps: Object, baseProps: Object, specificProps
   return cache.get(key)!
 }
 
+function mergeStyle(
+  { usedKeys, classNames, flatTransforms, viewProps, style }: GetStyleState,
+  key: string,
+  val: any
+) {
+  usedKeys[key] = usedKeys[key] || 1
+  if (val && val[0] === '_') {
+    classNames[key] = val
+  } else if (key in stylePropsTransform) {
+    flatTransforms ||= {}
+    flatTransforms[key] = val
+  } else {
+    const out = normalizeValueWithProperty(val, key)
+    if (key in validStylesOnBaseProps) {
+      viewProps[key] = out
+    } else {
+      style[key] = out
+    }
+  }
+}
+
 export const getSubStyle = (
+  styleState: GetStyleState,
   subKey: string,
   styleIn: Object,
-  staticConfig: StaticConfigParsed,
-  theme: ThemeParsed,
-  props: any,
-  state: SplitStyleState,
-  conf: TamaguiInternalConfig,
-  languageContext?: FontLanguageProps,
   avoidDefaultProps?: boolean,
   avoidMergeTransform?: boolean
 ): ViewStyle => {
+  const { staticConfig, theme, props, state, conf, languageContext } = styleState
   const styleOut: ViewStyle = {}
 
   for (let key in styleIn) {

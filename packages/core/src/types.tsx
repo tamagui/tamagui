@@ -811,11 +811,6 @@ export type StaticConfig = StaticConfigPublic & {
   memo?: boolean
 
   /**
-   * Used internally to handle extractable HoC separate
-   */
-  isHOC?: boolean
-
-  /**
    * Used insternally to attach default props to names
    */
   parentNames?: string[]
