@@ -296,3 +296,26 @@ All compiler plugins accept the same options:
     },
   ]}
 />
+
+### Dynamic Loading
+
+By default the Tamagui compiler only optimizes `styled` expressions found in the modules defined by your `components` config. This means if you do an inline `styled()` inside your actual app directory, it will default to runtime style insertion.
+
+This is typically Good Enough™️. As long as you define most of your common components there, you'll get a very high hit rate of compiled styles being used and runtime generation being skipped, as atomic styles with your design system tokens will be mostly pre-generated.
+
+Tamagui has _experimental_ support for loading any component, even if it occurs somewhere outside your configured components modules. This is called "dynamic loading", for now. You can enable it with the following environment variable:
+
+```
+TAMAGUI_ENABLE_DYNAMIC_LOAD=1
+```
+
+The way it works is, when the compiler detects a styled() expression outside one of the defined component directories, it will run the following:
+
+1. First, read the file and use a custom `babel` transform to _force_ all top-level variables to be exported.
+2. Then, run `esbuild` and bundle the entire file to a temporary file in the same directory, something like `.tamagui-dynamic-eval-ComponentName.js`
+3. Now, read the file in and load all new definitions found.
+4. Finally, continue with optimization, using the newly optimized component.
+
+You may see why this is experimental. It's very convenient as a developer, but has a variety of edge cases that can be confusing or breaking, and we want to avoid installation woes. Though it does continue on error and work generally, it outputs warnings in Webpack currently due to our plugin not properly indicating to Webpack about the new files (a fixable bug), which causes big yellow warning output and a cache de-opt.
+
+We're leaving this feature under the environment variable while it matures. Let us know if you find it useful.

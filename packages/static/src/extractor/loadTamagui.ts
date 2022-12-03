@@ -327,6 +327,18 @@ function transformAddExports(ast: t.File) {
   }).code
 }
 
+const esbuildit = (src: string, target?: 'modern') =>
+  esbuild.transformSync(src, {
+    ...esbuildOptions,
+    ...(target === 'modern' && {
+      target: 'es2022',
+      jsx: 'transform',
+      loader: 'tsx',
+      platform: 'neutral',
+      format: 'esm',
+    }),
+  }).code
+
 function loadComponents(props: Props): null | LoadedComponents[] {
   const componentsModules = props.components
   const key = componentsModules.join('')
@@ -338,29 +350,22 @@ function loadComponents(props: Props): null | LoadedComponents[] {
       const extension = extname(name)
       const isLocal = Boolean(extension)
       // during props.config pass we are passing in pre-bundled stuff
-      const writeTmp = isLocal && !props.config
-      const fileContents = writeTmp ? readFileSync(name, 'utf-8') : ''
-      const loadModule = writeTmp
+      const isDynamic = isLocal && !props.config
+
+      if (isDynamic && !process.env.TAMAGUI_ENABLE_DYNAMIC_LOAD) {
+        return null
+      }
+
+      const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
+      const loadModule = isDynamic
         ? join(dirname(name), `.tamagui-dynamic-eval-${basename(name)}.tsx`)
         : name
       let writtenContents = fileContents
       let didBabel = false
 
-      const esbuildit = (src: string, target?: 'modern') =>
-        esbuild.transformSync(src, {
-          ...esbuildOptions,
-          ...(target === 'modern' && {
-            target: 'es2022',
-            jsx: 'transform',
-            loader: 'tsx',
-            platform: 'neutral',
-            format: 'esm',
-          }),
-        }).code
-
       function attemptLoad({ forceExports = false } = {}) {
         // need to write to tsx to enable reading it properly (:/ esbuild-register)
-        if (writeTmp) {
+        if (isDynamic) {
           writtenContents = forceExports
             ? esbuildit(transformAddExports(babelParse(esbuildit(fileContents, 'modern'))))
             : esbuildit(fileContents)
@@ -377,7 +382,7 @@ function loadComponents(props: Props): null | LoadedComponents[] {
       }
 
       const dispose = () => {
-        writeTmp && removeSync(loadModule)
+        isDynamic && removeSync(loadModule)
       }
 
       try {
@@ -424,8 +429,8 @@ Quiet this warning with environment variable:
             `\ndidBabel: ${didBabel}`,
             `\nIn:`,
             writtenContents,
-            `\nwriteTmp: `,
-            writeTmp
+            `\nisDynamic: `,
+            isDynamic
           )
         }
         return []
