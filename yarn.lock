@@ -4628,6 +4628,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-navigation/core@npm:^6.4.3":
+  version: 6.4.3
+  resolution: "@react-navigation/core@npm:6.4.3"
+  dependencies:
+    "@react-navigation/routers": ^6.1.5
+    escape-string-regexp: ^4.0.0
+    nanoid: ^3.1.23
+    query-string: ^7.0.0
+    react-is: ^16.13.0
+    use-latest-callback: ^0.1.5
+  peerDependencies:
+    react: "*"
+  checksum: f12ed9cc19cd417a2fd28d3c29469df600faf2dfc676e65b1636dca6b4b58c11dde88324774f295a2f84ad096bd9381465b8b925d10344c08601da04467ddc88
+  languageName: node
+  linkType: hard
+
 "@react-navigation/elements@npm:^1.3.7":
   version: 1.3.7
   resolution: "@react-navigation/elements@npm:1.3.7"
@@ -4671,12 +4687,36 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-navigation/native@npm:^6.0.11":
+  version: 6.0.16
+  resolution: "@react-navigation/native@npm:6.0.16"
+  dependencies:
+    "@react-navigation/core": ^6.4.3
+    escape-string-regexp: ^4.0.0
+    fast-deep-equal: ^3.1.3
+    nanoid: ^3.1.23
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: e936181a8fbe6aa1bbd5c415276b8cc34bfd6abeb3cec47637f3eca43a610a693a8d6f23c8eb0cfc72856784104dc70f64516d4493a0b879b43a88e9a5ae5117
+  languageName: node
+  linkType: hard
+
 "@react-navigation/routers@npm:^6.1.3":
   version: 6.1.3
   resolution: "@react-navigation/routers@npm:6.1.3"
   dependencies:
     nanoid: ^3.1.23
   checksum: edcdc429cd65de42d7ee8684c148e25998c778e3c06844eae02c35a531c2a52c3be3e3664d1a1058346526af7c2a0b4aceb80b8dbdcf9b4d87e331eaac1e7977
+  languageName: node
+  linkType: hard
+
+"@react-navigation/routers@npm:^6.1.5":
+  version: 6.1.5
+  resolution: "@react-navigation/routers@npm:6.1.5"
+  dependencies:
+    nanoid: ^3.1.23
+  checksum: 5aaa71cd83ec91c5f1caa1ba94230822181abaf72be52af81ebb0d35a79cde917929d64f38aef407c46781dcaf1e5fa4ee70fce367cc363aa4bc57e881c669e7
   languageName: node
   linkType: hard
 
@@ -4824,6 +4864,27 @@ __metadata:
   checksum: cbae604a29931dd33a0ecb77ef50e7ac6f4b626939aad84e4d4da06ace624902f294bd652268939b94596c725ed1905a73c453a5574b8504010296f5619e44cc
   languageName: node
   linkType: hard
+
+"@starter/config@*, @starter/config@0.0.0, @starter/config@workspace:apps/starter/packages/config":
+  version: 0.0.0-use.local
+  resolution: "@starter/config@workspace:apps/starter/packages/config"
+  dependencies:
+    "@tamagui/animations-react-native": 1.0.1-beta.226
+    "@tamagui/font-inter": 1.0.1-beta.226
+    "@tamagui/shorthands": 1.0.1-beta.226
+    "@tamagui/theme-base": 1.0.1-beta.226
+  languageName: unknown
+  linkType: soft
+
+"@starter/ui@*, @starter/ui@0.0.0, @starter/ui@workspace:apps/starter/packages/ui":
+  version: 0.0.0-use.local
+  resolution: "@starter/ui@workspace:apps/starter/packages/ui"
+  dependencies:
+    "@starter/config": "*"
+    "@tamagui/build": ^1.0.1-beta.226
+    tamagui: ^1.0.1-beta.226
+  languageName: unknown
+  linkType: soft
 
 "@stripe/stripe-js@npm:^1.29.0":
   version: 1.44.1
@@ -5120,7 +5181,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/animations-react-native@^1.0.1-beta.226, @tamagui/animations-react-native@workspace:packages/animations-react-native":
+"@tamagui/animations-react-native@1.0.1-beta.226, @tamagui/animations-react-native@^1.0.1-beta.226, @tamagui/animations-react-native@workspace:packages/animations-react-native":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-react-native@workspace:packages/animations-react-native"
   dependencies:
@@ -5302,7 +5363,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/colors@^1.0.1-beta.226, @tamagui/colors@workspace:packages/colors":
+"@tamagui/colors@1.0.1-beta.226, @tamagui/colors@^1.0.1-beta.226, @tamagui/colors@workspace:packages/colors":
   version: 0.0.0-use.local
   resolution: "@tamagui/colors@workspace:packages/colors"
   dependencies:
@@ -5552,7 +5613,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/font-inter@^1.0.1-beta.226, @tamagui/font-inter@workspace:packages/font-inter":
+"@tamagui/font-inter@1.0.1-beta.226, @tamagui/font-inter@^1.0.1-beta.226, @tamagui/font-inter@workspace:packages/font-inter":
   version: 0.0.0-use.local
   resolution: "@tamagui/font-inter@workspace:packages/font-inter"
   dependencies:
@@ -5673,7 +5734,6 @@ __metadata:
     "@tamagui/demos": ^1.0.1-beta.226
     "@tamagui/font-inter": ^1.0.1-beta.226
     "@tamagui/lucide-icons": ^1.0.1-beta.226
-    "@tamagui/sandbox-ui": ^1.0.1-beta.226
     "@tamagui/shorthands": ^1.0.1-beta.226
     "@tamagui/theme-base": ^1.0.1-beta.226
     "@types/react": ^18.0.15
@@ -5694,6 +5754,7 @@ __metadata:
     react-native-screens: ^3.15.0
     react-native-svg: ">=12"
     react-native-web: ^0.18.3
+    sandbox-ui: ^1.0.1-beta.226
     solito: 2.0.0-canary.4
   languageName: unknown
   linkType: soft
@@ -5750,7 +5811,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/lucide-icons@^1.0.1-beta.226, @tamagui/lucide-icons@workspace:packages/lucide-icons":
+"@tamagui/lucide-icons@1.0.1-beta.226, @tamagui/lucide-icons@^1.0.1-beta.226, @tamagui/lucide-icons@workspace:packages/lucide-icons":
   version: 0.0.0-use.local
   resolution: "@tamagui/lucide-icons@workspace:packages/lucide-icons"
   dependencies:
@@ -5977,16 +6038,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/sandbox-ui@^1.0.1-beta.226, @tamagui/sandbox-ui@workspace:apps/sandbox-ui":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/sandbox-ui@workspace:apps/sandbox-ui"
-  dependencies:
-    "@tamagui/build": ^1.0.1-beta.226
-    "@tamagui/lucide-icons": ^1.0.1-beta.226
-    tamagui: ^1.0.1-beta.226
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/sandbox@workspace:apps/sandbox":
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox@workspace:apps/sandbox"
@@ -6132,7 +6183,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/shorthands@^1.0.1-beta.226, @tamagui/shorthands@workspace:packages/shorthands":
+"@tamagui/shorthands@1.0.1-beta.226, @tamagui/shorthands@^1.0.1-beta.226, @tamagui/shorthands@workspace:packages/shorthands":
   version: 0.0.0-use.local
   resolution: "@tamagui/shorthands@workspace:packages/shorthands"
   dependencies:
@@ -6371,7 +6422,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/theme-base@^1.0.1-beta.226, @tamagui/theme-base@workspace:packages/theme-base":
+"@tamagui/theme-base@1.0.1-beta.226, @tamagui/theme-base@^1.0.1-beta.226, @tamagui/theme-base@workspace:packages/theme-base":
   version: 0.0.0-use.local
   resolution: "@tamagui/theme-base@workspace:packages/theme-base"
   dependencies:
@@ -12282,7 +12333,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-linking@npm:^3.1.0":
+"expo-linking@npm:^3.1.0, expo-linking@npm:^3.2.2":
   version: 3.2.3
   resolution: "expo-linking@npm:3.2.3"
   dependencies:
@@ -17809,13 +17860,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-transpile-modules@npm:^9.0.0":
-  version: 9.1.0
-  resolution: "next-transpile-modules@npm:9.1.0"
+"next-transpile-modules@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "next-transpile-modules@npm:10.0.0"
   dependencies:
     enhanced-resolve: ^5.10.0
-    escalade: ^3.1.1
-  checksum: 8cc46196db3c2d2063fb29fe5b4d03c21065ab08130085b24d61e4ed512d99c12083d28179771cf02f70f8bf5970db0781a228aacf6cc61662dbdcabaddfc472
+  checksum: 3300fc7081f63b2c9487588db7cbe718f209dfd2111adec22d9c8af0e3c8ade2d95fd45f91e045546d78d98cafc78a49431de9a623360d33831b5e694bf007c9
   languageName: node
   linkType: hard
 
@@ -21012,6 +21062,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sandbox-ui@^1.0.1-beta.226, sandbox-ui@workspace:apps/sandbox-ui":
+  version: 0.0.0-use.local
+  resolution: "sandbox-ui@workspace:apps/sandbox-ui"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.226
+    "@tamagui/lucide-icons": ^1.0.1-beta.226
+    tamagui: ^1.0.1-beta.226
+  languageName: unknown
+  linkType: soft
+
 "saslprep@npm:^1.0.3":
   version: 1.0.3
   resolution: "saslprep@npm:1.0.3"
@@ -21792,6 +21852,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"starter-app@workspace:apps/starter/packages/app":
+  version: 0.0.0-use.local
+  resolution: "starter-app@workspace:apps/starter/packages/app"
+  dependencies:
+    "@react-navigation/native": ^6.0.11
+    "@react-navigation/native-stack": ^6.7.0
+    "@starter/config": "*"
+    "@starter/ui": "*"
+    "@tamagui/animations-react-native": 1.0.1-beta.226
+    "@tamagui/colors": 1.0.1-beta.226
+    "@tamagui/font-inter": 1.0.1-beta.226
+    "@tamagui/lucide-icons": 1.0.1-beta.226
+    "@tamagui/shorthands": 1.0.1-beta.226
+    "@tamagui/theme-base": 1.0.1-beta.226
+    expo-linking: ^3.2.2
+    solito: 2.0.0-canary.4
+  languageName: unknown
+  linkType: soft
+
 "starter-expo-app@workspace:apps/starter/apps/expo":
   version: 0.0.0-use.local
   resolution: "starter-expo-app@workspace:apps/starter/apps/expo"
@@ -21829,6 +21908,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "starter-next-app@workspace:apps/starter/apps/next"
   dependencies:
+    "@starter/config": 0.0.0
+    "@starter/ui": 0.0.0
     "@tamagui/next-plugin": 1.0.1-beta.226
     "@tamagui/next-theme": 1.0.1-beta.226
     "@types/node": ^16.11.9
@@ -21838,7 +21919,7 @@ __metadata:
     html-webpack-plugin: ^5.5.0
     next: ^13.0.2
     next-compose-plugins: ^2.2.1
-    next-transpile-modules: ^9.0.0
+    next-transpile-modules: ^10.0.0
     raf: ^3.4.1
     react-native: "*"
     react-native-web: ^0.18.3

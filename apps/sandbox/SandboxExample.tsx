@@ -1,6 +1,6 @@
 // debug
 import { Stack } from '@tamagui/core'
-import { Heading } from '@tamagui/sandbox-ui'
+import { Heading } from 'sandbox-ui'
 
 // for copy/paste easily to site examples
 

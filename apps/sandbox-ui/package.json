@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/sandbox-ui",
+  "name": "sandbox-ui",
   "version": "1.0.1-beta.226",
   "sideEffects": [
     "*.css"

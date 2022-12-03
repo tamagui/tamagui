@@ -20,6 +20,7 @@ const transform = withPlugins([
     'expo-constants',
     'expo-modules-core',
     '@starter/config',
+    'app',
   ]),
   withTamagui({
     config: './tamagui.config.ts',
