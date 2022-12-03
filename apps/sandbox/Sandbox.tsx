@@ -30,6 +30,7 @@ import {
 } from 'tamagui'
 import { ButtonFrame, Circle, Input, Square, YStack } from 'tamagui'
 
+import SandboxExample from './SandboxExample'
 import config from './tamagui.config'
 
 // import '../site/app.css'
@@ -40,23 +41,6 @@ if (typeof require !== 'undefined') {
 }
 
 // AppRegistry.registerComponent('Main', () => Sandbox)
-
-function ThemeInverseReverseTest() {
-  return (
-    <>
-      {/* Theme reset + invert */}
-      <Theme name="dark">
-        <Theme reset>
-          {/* should be light */}
-          <Theme inverse>
-            {/* should be dark */}
-            <Square bc="$background" size={100} />
-          </Theme>
-        </Theme>
-      </Theme>
-    </>
-  )
-}
 
 export const Sandbox = () => {
   // const scheme = useColorScheme()
@@ -119,7 +103,8 @@ export const Sandbox = () => {
           }}
         >
           {/* <AnimationsHoverDemo /> */}
-          <AnimationsPresenceDemo />
+          {/* <AnimationsPresenceDemo /> */}
+          <SandboxExample />
 
           {/* <PopoverDemo /> */}
           {/* <SheetDemo /> */}
@@ -401,4 +386,21 @@ function UseThemeNameChildTest() {
   const name = useThemeName()
 
   return <H1>{name}</H1>
+}
+
+function ThemeInverseReverseTest() {
+  return (
+    <>
+      {/* Theme reset + invert */}
+      <Theme name="dark">
+        <Theme reset>
+          {/* should be light */}
+          <Theme inverse>
+            {/* should be dark */}
+            <Square bc="$background" size={100} />
+          </Theme>
+        </Theme>
+      </Theme>
+    </>
+  )
 }
