@@ -1,12 +1,9 @@
 rc.0
 
   - site examples update with real latest compiler output to show smarter merging
-  - algolia css
   - site card hover transformy
-  - broke hoverStyle animations page demo
   - next load css on subsequent pages
   - button focus style on prod
-  - ssr issue responsive-demo
   - make dynamic eval an experiment
   - rc.0 blog post
   - <Adapt /> instead of sheetBreakpoint
