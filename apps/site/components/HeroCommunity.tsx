@@ -1,11 +1,9 @@
-import React from 'react'
 import { EnsureFlexed, H4, Paragraph, XStack, YStack } from 'tamagui'
 
 import { Card } from './Card'
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
 import { GithubIcon } from './GithubIcon'
-import { HomeH2, HomeH3 } from './HomeH2'
 
 export function Community() {
   return (
@@ -15,6 +13,7 @@ export function Community() {
 
         <XStack space="$4" $sm={{ flexDirection: 'column' }}>
           <Card
+        // debug="verbose"
             width="33.33%"
             jc="center"
             $sm={{ width: 'auto' }}

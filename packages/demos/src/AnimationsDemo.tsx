@@ -18,14 +18,14 @@ export function AnimationsDemo(props) {
   return (
     <>
       <Square
-        focusable={false}
         animation={props.animation || 'bouncy'}
+        debug="verbose"
         onPress={onPress}
         size={104}
-        boc="$backgroundHover"
+        boc="$borderColor"
         bw={1}
         br="$9"
-        bc="$backgroundStrong"
+        bc="$color9"
         hoverStyle={{
           scale: 1.1,
         }}

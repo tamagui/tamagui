@@ -63,18 +63,6 @@ export function styled<
     const parentStaticConfig =
       'staticConfig' in Component ? (Component.staticConfig as StaticConfig) : null
 
-    if (process.env.NODE_ENV === 'development') {
-      if (parentStaticConfig?.isHOC) {
-        // eslint-disable-next-line no-console
-        console.warn(
-          `Warning: Parent component is a functional component, not a Tamagui styled() component. Extending with styled() will break and lead to incorrect styles.`,
-          `Given options:`,
-          options,
-          new Error().stack
-        )
-      }
-    }
-
     if (options) {
       const {
         variants,

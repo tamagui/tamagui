@@ -550,7 +550,7 @@ export function createComponent<
 
     viewProps.ref = useComposedRefs(hostRef as any, forwardedRef, setMounted)
 
-    if (process.env.NODE_ENV === 'development' && !isText && isWeb && !staticConfig.isHOC) {
+    if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
       Children.toArray(props.children).forEach((item) => {
         if (typeof item === 'string') {
           // eslint-disable-next-line no-console
@@ -1037,7 +1037,6 @@ export function createComponent<
         Component,
         ...conf,
         neverFlatten: true,
-        isHOC: true,
         defaultProps: {
           ...Component.defaultProps,
           ...conf?.defaultProps,
@@ -1294,46 +1293,4 @@ const dontComposePressabilityKeys = {
 
 function getMediaStateObject(obj: Object) {
   return Object.fromEntries(Object.entries(obj).flatMap(([k, v]) => (v ? [[`$${k}`, v]] : [])))
-}
-
-// function ensureBaseHasDefaults(
-//   base: ViewStyle,
-//   pseudos: Record<string, ViewStyle | null | undefined>
-// ) {
-//   const mergeIfNotExists = (key: string) => {
-//     if (!base.transform?.some((x) => key in x)) {
-//       mergeTransform(base, key, transformDefaults[key] || 0)
-//     }
-//   }
-
-//   for (const name in pseudos) {
-//     const pseudo = pseudos[name]
-//     for (const key in pseudo) {
-//       const val = pseudo[key]
-//       if (key in stylePropsTransform) {
-//         mergeIfNotExists(key)
-//       } else if (key === 'transform') {
-//         if (typeof val === 'string') continue
-//         for (const t of val) {
-//           mergeIfNotExists(Object.keys(t)[0])
-//         }
-//       } else {
-//         if (key in baseDefaults && !(key in base)) {
-//           base[key] = baseDefaults[key]
-//         }
-//       }
-//     }
-//   }
-// }
-
-const baseDefaults = {
-  opacity: 1,
-}
-
-const transformDefaults = {
-  opacity: 1,
-  scale: 1,
-  rotate: '0deg',
-  rotateY: '0deg',
-  rotateX: '0deg',
 }
