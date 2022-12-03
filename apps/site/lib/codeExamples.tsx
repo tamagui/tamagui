@@ -81,9 +81,7 @@ import { Heading } from './Heading'
 
 const App = (props) => (
   <Stack px="$2" w={550} $gtSm={{ px: '$6' }}>
-    <Heading inverse={props.inverse}>
-      Lorem ipsum dolor.
-    </Text>
+    <Heading size={props.big ? 'large' : 'small'}>Lorem ipsum dolor.</Heading>
   </Stack>
 )`,
         },
@@ -91,22 +89,25 @@ const App = (props) => (
         {
           name: 'heading.tsx',
           language: 'tsx',
-          code: `import { styled, Text } from '@tamagui/core'
+          code: `import { Text, styled } from '@tamagui/core'
 
 export const Heading = styled(Text, {
   tag: 'h1',
-  c: '$color',
-  bc: '$background',
+  color: '$color',
+  backgroundColor: '$background',
 
   variants: {
-    inverse: {
-      true: {
-        bc: '$color',
-        c: '$background',
-      }
-    }
-  }
-})`,
+    size: {
+      large: {
+        fontSize: 22,
+      },
+      small: {
+        fontSize: 16,
+      },
+    },
+  },
+})
+`,
         },
 
         {
@@ -131,30 +132,54 @@ export const Heading = styled(Text, {
       examples: [
         {
           name: 'app.js',
-          code: `const _cn3 = " _color-scmqyp _d-1471scf _ff-187pbxx _fs-7uzi8p"
-const _cn2 = " _color-scmqyp _d-1471scf _ff-187pbxx"
-const _cn = " _d-6koalj _fd-eqz5dr _fs-1q142lx _pl-11jtx42 _pr-4a8ukp _w-11mp6g5 _pl-_gtSm_1hxi05q _pr-_gtSm_poy3ov"
+          code: `import { concatClassName } from "@tamagui/helpers";
+import { Stack } from '@tamagui/core';
+import { Heading } from '@tamagui/sandbox-ui';
 
-const App = (props) => <div className={_cn}>
-  <h1 className={_cn2 + ' ' + props.inverse ? _cn3 : _cn4}>
-    Lorem ipsum dolor.
-  </h1>
-</div>`,
+export default (props) => (
+  <div className={_cn}>
+    <span className={concatClassName(_cn2 + (_cn3 + (props.big ? _cn4 : _cn4)))}>Lorem ipsum dolor.</span>
+  </div>
+);
+
+const _cn4 = " _col-b5vn3b _ff-4yewjq";
+const _cn3 = " _ml-0px _mb-0px _mr-0px _mt-0px _col-b5vn3b _tt-3tb9js _ff-4yewjq _fow-3uqci0 _ls-3w5fg8 _fos-3slq2o _lh-3or5x5 _cur-text _ussel-text _ww-break-word _bxs-border-box _dsp-inline  ";
+const _cn2 = "  is_Heading font_heading";
+const _cn = "  is_Stack _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-box _fb-auto _dsp-flex _fs-0 _ai-stretch _w-550px _pr-1aj148u _pl-1aj148u _pr-_gtSm_1aj14ca _pl-_gtSm_1aj14ca ";
+`,
           language: 'tsx',
         },
         {
           name: 'app.css',
-          code: `._d-6koalj{display:flex;}
-._fd-eqz5dr{flex-direction:column;}
-._fs-1q142lx{flex-shrink:0;}
-._pl-11jtx42{padding-left:var(--space-2);}
-._pr-4a8ukp{padding-right:var(--space-2);}
-._w-11mp6g5{width:550px;}
-@media screen and (min-width: 861px) { :root:root ._pl-_gtSm_1hxi05q{padding-left:var(--space-6);} }
-@media screen and (min-width: 861px) { :root:root ._pr-_gtSm_poy3ov{padding-right:var(--space-6);} }
-._d-1471scf{display:inline;}
-._fontFamily-187pbxx{font-family:-apple-system,Helvetica,Arial,sans-serif;}
-._fontSize-7uzi8p{font-size:var(--fontSize-2);}`,
+          code: ` ._fd-column{flex-direction:column;}
+._miw-0px{min-width:0px;}
+._mih-0px{min-height:0px;}
+._pos-relative{position:relative;}
+._bxs-border-box{box-sizing:border-box;}
+._fb-auto{flex-basis:auto;}
+._dsp-flex{display:flex;}
+._fs-0{flex-shrink:0;}
+._ai-stretch{align-items:stretch;}
+._w-550px{width:550px;}
+._pr-1aj148u{padding-right:var(--space-3);}
+._pl-1aj148u{padding-left:var(--space-3);}
+@media screen and (min-width: 801px) { :root:root ._pr-_gtSm_1aj14ca{padding-right:var(--space-7);} }
+@media screen and (min-width: 801px) { :root:root ._pl-_gtSm_1aj14ca{padding-left:var(--space-7);} }
+._ml-0px{margin-left:0px;}
+._mb-0px{margin-bottom:0px;}
+._mr-0px{margin-right:0px;}
+._mt-0px{margin-top:0px;}
+._col-b5vn3b{color:var(--color);}
+._tt-3tb9js{text-transform:var(--f-tr-8);}
+._ff-4yewjq{font-family:var(--f-fa);}
+._fow-3uqci0{font-weight:var(--f-we-8);}
+._ls-3w5fg8{letter-spacing:var(--f-yw-8);}
+._fos-3slq2o{font-size:var(--f-si-8);}
+._lh-3or5x5{line-height:var(--f-li-8);}
+._cur-text{cursor:text;}
+._ussel-text{user-select:text;-webkit-user-select:text;}
+._ww-break-word{word-wrap:break-word;}
+._dsp-inline{display:inline;}`,
           language: 'css',
         },
       ],

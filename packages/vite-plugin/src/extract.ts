@@ -159,12 +159,12 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
         return
       }
 
-      let ssr: boolean | undefined
-      if (typeof ssrParam === 'boolean') {
-        ssr = ssrParam
-      } else {
-        ssr = ssrParam?.ssr
-      }
+      // let ssr: boolean | undefined
+      // if (typeof ssrParam === 'boolean') {
+      //   ssr = ssrParam
+      // } else {
+      //   ssr = ssrParam?.ssr
+      // }
 
       const firstCommentIndex = code.indexOf('// ')
       const { shouldDisable, shouldPrintDebug } = getPragmaOptions({

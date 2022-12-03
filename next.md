@@ -1,7 +1,5 @@
 rc.0
 
-  - site examples update with real latest compiler output to show smarter merging
-  - site card hover transformy
   - next load css on subsequent pages
   - button focus style on prod
   - make dynamic eval an experiment
