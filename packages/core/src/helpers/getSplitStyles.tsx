@@ -592,15 +592,24 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
         } else {
-          if (!state[descriptor.stateKey || descriptor.name]) {
-            continue
+          const isDisabled = !state[descriptor.stateKey || descriptor.name]
+          if (!isDisabled) {
+            usedKeys[key] ||= 1
           }
           psuedosUsed ||= {}
-          usedKeys[key] ||= 1
+
           const importance = descriptor.priority
           for (const pkey in pseudoStyleObject) {
-            const curImportance = psuedosUsed[importance] || 0
             const val = pseudoStyleObject[pkey]
+            // when disabled ensure the default value is set for future animations to align
+            if (isDisabled) {
+              if (!(pkey in usedKeys) && pkey in animatableDefaults) {
+                const defaultVal = animatableDefaults[pkey]
+                mergeStyle(styleState, pkey, defaultVal, true)
+              }
+              continue
+            }
+            const curImportance = psuedosUsed[importance] || 0
             if (importance >= curImportance) {
               psuedosUsed[pkey] = importance
               pseudos[key] ||= {}
@@ -872,9 +881,12 @@ function getSubStyleProps(defaultProps: Object, baseProps: Object, specificProps
 function mergeStyle(
   { usedKeys, classNames, flatTransforms, viewProps, style }: GetStyleState,
   key: string,
-  val: any
+  val: any,
+  dontSetUsed = false
 ) {
-  usedKeys[key] = usedKeys[key] || 1
+  if (!dontSetUsed) {
+    usedKeys[key] = usedKeys[key] || 1
+  }
   if (val && val[0] === '_') {
     classNames[key] = val
   } else if (key in stylePropsTransform) {
@@ -960,4 +972,12 @@ function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: Partia
 
 function processIDRefList(idRefList: string | Array<string>): string {
   return Array.isArray(idRefList) ? idRefList.join(' ') : idRefList
+}
+
+const animatableDefaults = {
+  opacity: 1,
+  scale: 1,
+  rotate: '0deg',
+  rotateY: '0deg',
+  rotateX: '0deg',
 }

@@ -2,6 +2,7 @@
 import '@tamagui/polyfill-dev'
 
 import {
+  AnimationsHoverDemo,
   ButtonDemo,
   DialogDemo,
   LabelDemo,
@@ -117,7 +118,7 @@ export const Sandbox = () => {
             overflow: 'hidden',
           }}
         >
-          <AnimationsDemo />
+          <AnimationsHoverDemo />
 
           {/* <PopoverDemo /> */}
           {/* <SheetDemo /> */}
