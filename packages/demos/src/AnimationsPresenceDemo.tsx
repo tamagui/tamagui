@@ -10,7 +10,7 @@ import photo2 from '../../public/photo2.jpg'
 // @ts-ignore
 import photo3 from '../../public/photo3.jpg'
 
-export const images = [photo1.src, photo2.src, photo3.src]
+export const images = [photo1, photo2, photo3]
 
 const YStackEnterable = styled(YStack, {
   variants: {

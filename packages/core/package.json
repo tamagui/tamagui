@@ -31,13 +31,13 @@
     "@tamagui/compose-refs": "^1.0.1-beta.226",
     "@tamagui/constants": "^1.0.1-beta.226",
     "@tamagui/helpers": "^1.0.1-beta.226",
-    "@tamagui/normalize-css-color-lite": "^1.0.1-beta.226",
     "@tamagui/react-native-use-pressable": "^1.0.1-beta.226",
     "@tamagui/react-native-use-responder-events": "^1.0.1-beta.226",
     "@tamagui/types-react-native": "^1.0.1-beta.226",
     "@tamagui/use-did-finish-ssr": "^1.0.1-beta.226",
     "@tamagui/use-event": "^1.0.1-beta.226",
-    "@tamagui/use-force-update": "^1.0.1-beta.226"
+    "@tamagui/use-force-update": "^1.0.1-beta.226",
+    "normalize-css-color": "^1.0.2"
   },
   "peerDependencies": {
     "react": ">=18",

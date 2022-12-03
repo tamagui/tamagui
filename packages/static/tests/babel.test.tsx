@@ -22,7 +22,7 @@ test('basic extraction', async () => {
     "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
     const _sheet = ReactNativeStyleSheet.create({
       \\"0\\": {
-        \\"backgroundColor\\": \\"red\\",
+        \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\",
         \\"flexDirection\\": \\"column\\",
         \\"minWidth\\": 0,
         \\"minHeight\\": 0,
@@ -56,7 +56,7 @@ test('theme value extraction should work when no theme variables used', async ()
     "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
     const _sheet = ReactNativeStyleSheet.create({
       \\"0\\": {
-        \\"color\\": \\"red\\",
+        \\"color\\": \\"rgba(255,0,0,1.00)\\",
         \\"fontFamily\\": \\"Inter\\",
         \\"fontWeight\\": \\"500\\",
         \\"letterSpacing\\": 0,
@@ -120,10 +120,10 @@ test('basic conditional extraction', async () => {
         \\"alignItems\\": \\"stretch\\"
       },
       \\"1\\": {
-        \\"backgroundColor\\": \\"red\\"
+        \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
       },
       \\"2\\": {
-        \\"backgroundColor\\": \\"blue\\"
+        \\"backgroundColor\\": \\"rgba(0,0,255,1.00)\\"
       },
       \\"3\\": {
         \\"flexDirection\\": \\"column\\",
@@ -136,7 +136,7 @@ test('basic conditional extraction', async () => {
         \\"alignItems\\": \\"stretch\\"
       },
       \\"4\\": {
-        \\"backgroundColor\\": \\"red\\"
+        \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
       },
       \\"5\\": {}
     });

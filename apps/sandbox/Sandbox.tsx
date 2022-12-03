@@ -118,7 +118,8 @@ export const Sandbox = () => {
             overflow: 'hidden',
           }}
         >
-          <AnimationsHoverDemo />
+          {/* <AnimationsHoverDemo /> */}
+          <AnimationsPresenceDemo />
 
           {/* <PopoverDemo /> */}
           {/* <SheetDemo /> */}
