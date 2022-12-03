@@ -134,7 +134,7 @@ export const Heading = styled(Text, {
           name: 'app.js',
           code: `import { concatClassName } from "@tamagui/helpers";
 import { Stack } from '@tamagui/core';
-import { Heading } from '@tamagui/sandbox-ui';
+import { Heading } from './Heading';
 
 export default (props) => (
   <div className={_cn}>
