@@ -17,7 +17,7 @@ const disableExtraction =
   boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
 const tamaguiOptions = {
   config: './tamagui.config.ts',
-  components: ['@tamagui/sandbox-ui'],
+  components: ['sandbox-ui'],
   importsWhitelist: ['constants.js'],
   disableExtraction,
   // disableExtractFoundComponents: true,

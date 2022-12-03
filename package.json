@@ -8,7 +8,8 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "apps/starter/apps/*"
+    "apps/starter/apps/*",
+    "apps/starter/packages/*"
   ],
   "packageManager": "yarn@3.3.0",
   "scripts": {
@@ -35,9 +36,10 @@
     "release:beta": "node -r esbuild-register ./release-next-beta.ts",
     "release:beta:dirty": "SKIP_GIT_CLEAN_CHECK=1 node -r esbuild-register ./release-next-beta.ts",
     "release:ci": "yarn release:beta:dirty --ci",
-    "upgrade:starters": "npm-run-all --parallel upgrade:starters:next upgrade:starters:bench",
+    "upgrade:starters": "npm-run-all --parallel upgrade:starter upgrade:starters:next upgrade:starters:bench",
+    "upgrade:starter": "cd apps/starter && yarn upgrade:tamagui",
     "upgrade:starters:next": "cd starters/next-expo-solito && yarn upgrade:tamagui",
-    "upgrade:starters:bench": "cd starters/benchmark && yarn upgrade:tamagui",
+    "upgrade:starters:bench": "cd starters/benc hmark && yarn upgrade:tamagui",
     "lighthouse": "npx lighthouse http://localhost:3000 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:prod": "npx lighthouse http://localhost:3333 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:vite:prod": "npx lighthouse http://localhost:8080 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",

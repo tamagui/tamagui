@@ -12,7 +12,7 @@ if (shouldExtract) {
 }
 
 const tamaguiConfig = {
-  components: ['@tamagui/sandbox-ui', 'tamagui'],
+  components: ['sandbox-ui', 'tamagui'],
   config: 'tamagui.config.ts',
   useReactNativeWebLite: true,
 }

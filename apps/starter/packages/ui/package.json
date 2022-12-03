@@ -1,6 +1,6 @@
 {
   "name": "@starter/ui",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "sideEffects": [
     "*.css"
   ],
@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@starter/config": "*",
-    "tamagui": "^1.0.1-beta.220"
+    "tamagui": "^1.0.1-beta.226"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.220"
+    "@tamagui/build": "^1.0.1-beta.226"
   }
 }

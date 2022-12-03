@@ -22,7 +22,6 @@
     "@tamagui/demos": "^1.0.1-beta.226",
     "@tamagui/font-inter": "^1.0.1-beta.226",
     "@tamagui/lucide-icons": "^1.0.1-beta.226",
-    "@tamagui/sandbox-ui": "^1.0.1-beta.226",
     "@tamagui/shorthands": "^1.0.1-beta.226",
     "@tamagui/theme-base": "^1.0.1-beta.226",
     "expo": "~46.0.16",
@@ -40,6 +39,7 @@
     "react-native-screens": "^3.15.0",
     "react-native-svg": ">=12",
     "react-native-web": "^0.18.3",
+    "sandbox-ui": "^1.0.1-beta.226",
     "solito": "2.0.0-canary.4"
   },
   "devDependencies": {

@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@starter/config": "0.0.0",
+    "@starter/ui": "0.0.0",
     "@tamagui/next-theme": "1.0.1-beta.226",
     "app": "*",
     "next": "^13.0.2",
@@ -24,7 +26,7 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "next-compose-plugins": "^2.2.1",
-    "next-transpile-modules": "^9.0.0",
+    "next-transpile-modules": "^10.0.0",
     "url-loader": "^4.1.1"
   }
 }
