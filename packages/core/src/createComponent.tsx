@@ -200,8 +200,12 @@ export function createComponent<
     if (isAnimated && presence) {
       const presenceState = presence[2]
       if (presenceState) {
-        if (presenceState.enterVariant) props[presenceState.enterVariant] = true
-        if (presenceState.exitVariant) props[presenceState.exitVariant] = true
+        if (state.unmounted && presenceState.enterVariant) {
+          props[presenceState.enterVariant] = true
+        }
+        if (!presenceState.isPresent && presenceState.exitVariant) {
+          props[presenceState.exitVariant] = true
+        }
       }
     }
 
