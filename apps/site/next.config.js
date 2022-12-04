@@ -1,13 +1,14 @@
+Error.stackTraceLimit = Infinity
+
+process.env.IGNORE_TS_CONFIG_PATHS = 'true'
+process.env.TAMAGUI_TARGET = 'web'
+process.env.TAMAGUI_ENABLE_DYNAMIC_LOAD = '1'
+
 // const withPreact = require('next-plugin-preact')
 
 /** @type {import('next').NextConfig} */
 const { withTamagui } = require('@tamagui/next-plugin')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
-
-Error.stackTraceLimit = Infinity
-
-process.env.IGNORE_TS_CONFIG_PATHS = 'true'
-process.env.TAMAGUI_TARGET = 'web'
 
 const boolVals = {
   true: true,
@@ -24,6 +25,7 @@ const plugins = [
   }),
   withTamagui({
     useReactNativeWebLite: true,
+    // enableCSSOptimizations: true,
     config: './tamagui.config.ts',
     components: ['tamagui'],
     importsWhitelist: ['constants.js', 'colors.js'],
@@ -43,6 +45,11 @@ const plugins = [
           tslib: '@tamagui/proxy-worm',
         })
         webpackConfig.resolve.mainFields.unshift('module:es2019')
+
+        if (process.env.PROFILE) {
+          webpackConfig.resolve.alias['react-dom'] = require.resolve('react-dom/profiling')
+          webpackConfig.optimization.minimize = false
+        }
 
         if (process.env.ANALYZE === 'true') {
           const { StatsWriterPlugin } = require('webpack-stats-plugin')
@@ -79,12 +86,10 @@ module.exports = function (name, { defaultConfig }) {
     swcMinify: true,
     experimental: {
       // for preact...
-      // esmExternals: false,
+      esmExternals: true,
       forceSwcTransforms: true,
       scrollRestoration: true,
       legacyBrowsers: false,
-      // runtime: 'nodejs',
-      // serverComponents: true,
     },
     eslint: {
       ignoreDuringBuilds: true,
