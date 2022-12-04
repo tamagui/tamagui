@@ -127,7 +127,6 @@ const withPlugins = require('next-compose-plugins')
 const { withTamagui } = require('@tamagui/next-plugin')
 
 export default withPlugins([
-
   withTamagui({
     config: './tamagui.config.ts',
     components: ['tamagui'],
@@ -135,7 +134,7 @@ export default withPlugins([
     // rest are all optional:
 
     // Experimentally opt into react-native-web-lite which drops support for all react-native
-    // built-in List components, and removes many deprecated APIs and code-reduction, slimming
+    // built-in List components and removes many deprecated APIs for code-reduction, slimming
     // bundle sizes down nearly 30-50Kb.
     useReactNativeWebLite: true,
 
@@ -153,6 +152,13 @@ export default withPlugins([
       }
     },
 
+    // Advanced:
+
+    // adds mini-css-extract and css-minimizer-plugin, can fix issues with unique configurations
+    enableCSSOptimizations: false,
+    // disable tamagui config to make fonts easier to import
+    disableFontSupport: false,
+
     // Many packages give difficulty to the nextjs server-side (node) runtime when un-bundled.
     // for example, tamagui configures aliases like `react-native` => `react-native-web`.
     // if you're running into a module that has errors importing react-native, you'll want to
@@ -166,7 +172,7 @@ export default withPlugins([
       if (request === 'some-hard-to-bundle-package') {
         return true
       }
-    }
+    },
   })
 ])
 ```

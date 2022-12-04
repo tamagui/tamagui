@@ -7,6 +7,29 @@ You should run `npm create tamagui-app@latest` which bootstraps a verly nicely c
 
 Also check out the [source for this site](https://github.com/tamagui/tamagui/tree/master/apps/site) to see a good example of a full featured Next.js website as well, especially the `next.config.js` and `tamagui.config.ts`.
 
+### next.config.js
+
+You'll want to add the `@tamagui/next-plugin` and set it up in your next config. See the [compiler install docs](/docs/intro/compiler-install) for more options:
+
+```tsx
+module.exports = function (name, { defaultConfig }) {
+  let config = {
+    ...defaultConfig,
+    // ...your configuration
+  }
+
+  const tamaguiPlugin = withTamagui({
+    config: './tamagui.config.ts',
+    components: ['tamagui'],
+  })
+
+  return {
+    ...config,
+    ...tamaguiPlugin(config),
+  }
+}
+```
+
 ### \_document.tsx
 
 You'll want to set up a `_document.tsx` and gather both the `react-native-web` style object using AppRegistry, as well as Tamagui styles using `Tamagui.getCSS()` into the head element.

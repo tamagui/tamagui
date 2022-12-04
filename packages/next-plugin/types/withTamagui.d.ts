@@ -2,6 +2,7 @@ import type { TamaguiOptions } from '@tamagui/static';
 export declare type WithTamaguiProps = TamaguiOptions & {
     useReactNativeWebLite: boolean;
     disableFontSupport?: boolean;
+    enableCSSOptimizations?: boolean;
     aliasReactPackages?: boolean;
     includeCSSTest?: RegExp | ((path: string) => boolean);
     shouldExtract?: (path: string, projectRoot: string) => boolean | undefined;
