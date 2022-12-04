@@ -538,6 +538,8 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
   ? FontTokens
   : K extends FontSizeKeys
   ? FontSizeTokens
+  : K extends `${`border${string | ''}Radius`}`
+  ? RadiusTokens
   : K extends SpaceKeys
   ? K extends 'shadowOffset'
     ? { width: SpaceTokens; height: SpaceTokens }
