@@ -353,7 +353,7 @@ function loadComponents(props: Props): null | LoadedComponents[] {
       const isDynamic = isLocal && !props.config
 
       if (isDynamic && !process.env.TAMAGUI_ENABLE_DYNAMIC_LOAD) {
-        return null
+        return []
       }
 
       const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
