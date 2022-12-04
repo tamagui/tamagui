@@ -372,6 +372,11 @@ function loadComponents(props: Props): null | LoadedComponents[] {
 
           writeFileSync(loadModule, writtenContents)
         }
+
+        if (process.env.DEBUG === 'tamagui') {
+          console.log(`loadModule`, loadModule, require.resolve(loadModule))
+        }
+
         return {
           moduleName: name,
           nameToInfo: getComponentStaticConfigByName(
