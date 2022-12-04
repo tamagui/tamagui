@@ -39,7 +39,7 @@ export function variableToString(vrble?: any, getValue = false) {
 }
 
 export function isVariable(v: Variable | any): v is Variable {
-  return !!(v && v[IS_VAR])
+  return v && typeof v === 'object' && IS_VAR in v
 }
 
 export function getVariable(nameOrVariable: Variable | string) {

@@ -35,6 +35,8 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
   // temp remove classnames
   const defaultProps = mergeProps(staticConfig.defaultProps || {}, {}, false)[0]
 
+  let conf: TamaguiInternalConfig
+
   const mapper: PropMapper = (
     key,
     value,
@@ -45,10 +47,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
     avoidDefaultProps = false,
     debug
   ) => {
-    const conf = getConfig()
-    if (!conf) {
-      throw new Error(`No tamagui config setup`)
-    }
+    conf ||= getConfig()
 
     const props = state.fallbackProps || propsIn
     const returnVariablesAs = getReturnVariablesAs(props, state)
@@ -85,7 +84,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
     let shouldReturn = value !== undefined && value !== null
 
     // handle shorthands
-    if (conf.shorthands[key]) {
+    if (key in conf.shorthands) {
       shouldReturn = true
       key = conf.shorthands[key]
     }
