@@ -1,3 +1,4 @@
+// debug
 import { throttle } from '@github/mini-throttle'
 import { demoMedia } from '@tamagui/config-base'
 import { useOnIntersecting } from '@tamagui/demos'
@@ -262,7 +263,13 @@ export const HeroResponsive = memo(() => {
 
 const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
-    <YStack className="unselectable" theme={active ? 'pink' : null} pos="absolute" {...props}>
+    <YStack
+      debug={!active ? 'verbose' : null}
+      className="unselectable"
+      theme={active ? 'pink' : null}
+      pos="absolute"
+      {...props}
+    >
       <XStack y={-60} ai="flex-start">
         <YStack w={1} h={70} bc="$colorHover" opacity={active ? 0.2 : 0.05} />
         <Button

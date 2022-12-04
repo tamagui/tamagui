@@ -82,7 +82,6 @@ export declare type GroupProps = GetProps<typeof GroupFrame> & {
     disabled?: boolean;
     vertical?: boolean;
     disablePassBorderRadius?: boolean;
-    disablePassSize?: boolean;
 };
 export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -147,7 +146,6 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     disabled?: boolean | undefined;
     vertical?: boolean | undefined;
     disablePassBorderRadius?: boolean | undefined;
-    disablePassSize?: boolean | undefined;
 } & React.RefAttributes<TamaguiElement>>;
 export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -212,6 +210,5 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     disabled?: boolean | undefined;
     vertical?: boolean | undefined;
     disablePassBorderRadius?: boolean | undefined;
-    disablePassSize?: boolean | undefined;
 } & React.RefAttributes<TamaguiElement>>;
 //# sourceMappingURL=Group.d.ts.map
