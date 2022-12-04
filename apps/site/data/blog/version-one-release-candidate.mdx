@@ -1,65 +1,83 @@
 ---
-title: TamagUI v1 Release Candidate
-publishedAt: '2022-11-16'
-description: TamagUI reaches API and cross platform stability
+title: Tamagui v1 Release Candidate
+publishedAt: '2022-12-04'
+description: Typed design systems for React Native + Web that compile away.
 by: nate
 ---
 
-<IntroParagraph>
-  Tamagui is the first React style system with an optimizing compiler. It's built around the React
-  Native style API, giving universal styles better performance across both native and web.
-</IntroParagraph>
+<Image
+  title="Tamagui v1 Release Candidate"
+  src="/banner-rc0.jpg"
+  size="hero"
+  height={275}
+  width={761}
+  resizeMode="contain"
+  mb="$4"
+/>
 
 <IntroParagraph>
-  Tamagui comes in three parts you can mix and match: the `@tamagui/core` style library,
-  `@tamagui/static` the optimizing compiler, and `tamagui`, a complete UI kit that adapts nicely to
-  each platform.
+  Tamagui is an optimizing compiler and amazing universal style system for React that unifies all
+  APIs across React Native and web.
 </IntroParagraph>
 
-It's been eight months since the Tamagui beta and a bit over a year since alpha. We spent the first four months adding components and much needed functionality, and the entire time stabilizing, fixing correctness, adding test, and working with multiple developers shipping significant production apps to the web, iOS and Android app stores.
+It supports the style APIs of React Native, but outputs hoisted logic, flattened trees, and atomic CSS, leveraging many modern CSS features. This lets you [ship faster, share more across platforms, and net better performance at once](/docs/intro/compiler). Enjoy modern design system library features like typed tokens and inline CSS-in-JS styling, while outputting nearly optimal VDOM and CSS, often beating hand-tuned code. The compiler fully flatten views with logical and VM-based analysis of your code for [amazing performance](/docs/intro/benchmarks).
 
-We're releasing `rc.0` as we've finished the backlog of API changes and all major bugs. We'll aim to have a version 1 before the end of the year.
+> On the homepage of this site, the compiler flattens over 200 views and nets an 18% Lighthouse score increase.
 
-There's been _so much_ done during the beta:
+It's been over a year since the Alpha release, and eight months since Beta. We've landed over a thousand bugfixes during the Beta, added 14 new major components, and iterated on many helpful utilities, features, and hooks.
 
-[on making it easier to setup - compiler optional, webpack TamaguiPlugin, starter improvements, no more @tamagui/build "module:jsx": "src"]
+**The V1 blog post will cover these changes in far more thorough detail**. For the RC, we're simply announcing the arrival of API and general stability. The aim is for V1 to be released before the end of the year.
 
-### Core updates
+Here's a very brief overview of changes since Beta:
 
-- React 0.69, React 18, React Native Web 18 support
-- 0-dependency `@tamagui/core` - no more dependency on `react-native` in the core, saving bundle size for web-only use cases
-- Bundle size reduction - Removed nearly ~12Kb from core
-- Performance - Removing the dependency on `react-native-web` for styling nearly doubled render performance
-- Upgrades to `styled` - The `styled` factory now supports wrapping any component you give it, so long as that component accepts a `style` prop.
-- &lt;FontLanguage /&gt; - Support for unique fonts per-language.
-- The `fontFaceByWeight` config - React Native makes loading fonts a bit trickier than the web, this option makes it easy to load multiple weights.
+### Major `@tamagui/core` Updates
+
+- React 0.69, React 18, React Native Web 18, and Expo 47 support
+- No `react-native` dependency in `@tamagui/core` - 🔥 huge for web-only use cases
+- Bundle size reduction of ~12Kb
+- Performance - Nearly halved render time, even bigger gains in themes and media queries.
+- More useful `styled` - The factory now supports wrapping any component you give it, so long as that component accepts a `style` prop.
+- `<FontLanguage />` - Support for unique fonts per-language.
+- `fontFaceByWeight` - React Native makes loading fonts a bit trickier than the web, this option makes it easy to load multiple weights.
 - The `themeShallow` prop - The `theme` prop in Tamagui by default will re-theme all sub-components. Using `themeShallow` _only_ themes that component, not children.
-- Utility `loadTheme` - The `loadTheme` utility function means you can only load the default themes you want to serve, saving on bundle size, and then add in alternative themes later on.
-- Utility `updateTheme` - Using `updateTheme` gives you the ability to dynamically modify themes on the fly.
-- Hook `useMediaPropsActive` - Useful for authoring your own custom components built on Tamagui, easily access the "currently active" set of styles.
+- `loadTheme()` - The `loadTheme` utility function means you can only load the default themes you want to serve, saving on bundle size, and then add in alternative themes later on.
+- `updateTheme()` - Using `updateTheme` gives you the ability to dynamically modify themes on the fly.
+- `useMediaPropsActive()` - Useful for authoring your own custom components built on Tamagui, easily access the "currently active" set of styles.
 
-### Static updates
+### Major `@tamagui/static` Updates
 
+- Install - The Webpack plugin and Vite plugin are easier to configure and generally handle many more edge cases, with an addition of 20+ dev-time console warnings.
 - Performance - During the beta we landed many performance improvements to the optimizing compiler. By default now Tamagui avoids even parsing many more files, and it pre-bundles your `components` and `config`.
-- Better analysis - Previously, Static only knew how to optimize components found in your separated design system package. The compiler now analyzes components anywhere in your app, by dynamically loading and reading their configuration.
-- Vite support - Tamagui now fully works with Vite 3, both with the compiler and without.
+- Better analysis - Previously, `@tamagui/static` only knew how to optimize components found in your separated design system package. The compiler now analyzes components anywhere in your app, by dynamically loading and reading their configuration. This experimental feature is enabled with the environment variable `TAMAGUI_ENABLE_DYNAMIC_LOAD=1`.
+- Vite support - Tamagui supports Vite 3, both with the compiler and without.
 - Correctness - Most of the work during beta focused on correctness. We've increased testing to cover many more areas, and landed a number of important correctness fixes alongside the ones in `core`.
 
-### The UI Kit
+### Major `tamagui` updates
 
-A flood of new components joins the party:
+The `tamagui` package arguably had the most progress since beta with a flood of new components joining the party. These are incredibly rich components that follow the Radix model of composable components, with the ability to adapt many to completely change their output depending on the media query.
 
-- [Sheet](/docs/components/sheet)
-- [Select](/docs/components/select)
-- [Dialog](/docs/components/dialog)
-- [AlertDialog](/docs/components/alert-dialog)
-- [Slider](/docs/components/slider)
-- [Label](/docs/components/label)
-- [Card](/docs/components/card)
-- [ListItem](/docs/components/list-item)
-- [Avatar](/docs/components/avatar)
-- [Progress](/docs/components/progress)
-- [Spinner](/docs/components/spinner)
-- [Unspaced](/docs/components/unspaced)
-- [ScrollView](/docs/components/scroll-view)
-- [XGroup and YGroup](/docs/components/group)
+The V1 blog post will cover these in more detail, see the accompanying docs for each for more:
+
+[Sheet](/docs/components/sheet), [Select](/docs/components/select), [Dialog](/docs/components/dialog), [AlertDialog](/docs/components/alert-dialog), [Slider](/docs/components/slider), [Label](/docs/components/label), [Card](/docs/components/card), [ListItem](/docs/components/list-item), [Avatar](/docs/components/avatar), [Progress](/docs/components/progress), [Spinner](/docs/components/spinner), [Unspaced](/docs/components/unspaced), [ScrollView](/docs/components/scroll-view), [XGroup and YGroup](/docs/components/group)
+
+### CI, Testing and Release
+
+We've implemented a complete CI/CD pipeline in Github Actions that lints, tests, and type checks everything before release. Our release script has been iterated on many times to ensure releases go out smoothly.
+
+Testing now covers far more of `core` and `static`, as well as the most important tests - a complete integration test that verifies the entire flow of starting a Tamagui app using `npm create tamagui-app`, all the way to using Playwright to ensure the final output is correct and functional.
+
+### Community & Contributors
+
+My favorite part of this post is how many we've welcomed many to the Tamagui community.
+
+The Discord is active and healthy with many posts every day. We've now had 33 contributors to the repo, with many of the most significant contributions coming over the last three months.
+
+And personally, I've met my goal of 10 Github Sponsors for the year, something that is especially cool given I didn't promote it at all beyond [an ongoing Twitter thread](https://twitter.com/natebirdman/status/1563229065104203776).
+
+Be sure to check [the Community page](/community) for more goodies like a Figma design system file, example repos, and to see our wonderful sponsors.
+
+---
+
+### Join the community
+
+<SocialLinksRow />

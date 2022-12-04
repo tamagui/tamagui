@@ -76,7 +76,7 @@ export const compilationCode = [
         {
           name: 'app.tsx',
           language: 'tsx',
-          code: `import { styled, Stack } from '@tamagui/core'
+          code: `import { Stack } from '@tamagui/core'
 import { Heading } from './Heading'
 
 const App = (props) => (

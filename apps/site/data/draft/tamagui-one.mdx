@@ -7,7 +7,14 @@ by: nate
 #   - 'tamagui-alpha'
 ---
 
-<Image title="Layout tools image" src="/social.jpg" size="hero" height={150} width={900} />
+<Image
+  resizeMode="contain"
+  title="Layout tools image"
+  src="/social.jpg"
+  size="hero"
+  height={150}
+  width={900}
+/>
 
 <IntroParagraph>
   Tamagui is a style system and component kit made great by an optimizing compiler. The compiler
@@ -19,6 +26,8 @@ by: nate
 It's been just over six months since the Tamagui beta and almost a year since alpha. While the beta was a huge amount of work, getting to 1.0 has been even more. There's so much to cover.
 
 For this release, I'll be splitting the release post into sections - `core` (the style system), `static` (the optimizing compiler), and `tamagui` (the UI kit).
+
+A note on version 1: Tamagui is a big monorepo with many packages and components. We're cutting version 1 because the API's are stable and all the core and compiler packages have received extensive testing and stability work such that every feature works across all platforms reliably - a huge task we can confidently call complete. **That said, when it comes to the Tamagui components, some are more stable than others**. This is more true on Android, where we've invested less overall time towards bug fixes. We could have delayed v1 to stabilize these components, but the truth is that for the dramatic majority of Tamagui everything is at or better than what you'd expect from a stable release. And releasing every package under the same version has immense benefits both for us as developers, and any user as a consumer.
 
 ## What's new in Core
 
