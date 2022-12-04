@@ -15,13 +15,9 @@ export default function Blog({ frontmatters }) {
       <TitleAndMetaTags title="Blog — Tamagui" description="What's up with Tamagui." />
       <HeaderIndependent />
       <Spacer size="$7" />
-      <Container>
-        <YStack space="$4" ai="center">
-          <H2 size="$8" theme="alt2" fontFamily="$silkscreen">
-            What's new
-          </H2>
-        </YStack>
-      </Container>
+      <H2 als="center" size="$8" theme="alt2" fontFamily="$silkscreen">
+        Blog
+      </H2>
       <ContainerLarge mt="$6" mb="$7" space="$2">
         <XStack flexWrap="wrap" jc="space-between">
           {frontmatters.map((frontmatter) => (
@@ -29,45 +25,42 @@ export default function Blog({ frontmatters }) {
               <Card
                 tag="a"
                 width="33.33%"
-                maxWidth="calc(33.33% - var(--space-6))"
+                maxWidth="calc(33.33% - var(--space-4))"
                 p="$4"
-                mb="$2"
                 mx="$1"
                 my="$4"
+                mb="$2"
+                space="$2"
                 $sm={{ width: 'auto', maxWidth: 'auto', minWidth: '100%' }}
                 $md={{
                   width: '50%',
-                  maxWidth: 'calc(50% - var(--space-6))',
+                  maxWidth: 'calc(50% - var(--space-4))',
                 }}
               >
-                <YStack space="$3">
-                  <H3
-                    fontFamily="$silkscreen"
-                    size="$8"
-                    lh="$6"
-                    color="$color"
-                    cursor="pointer"
-                    ls={0}
-                  >
-                    {frontmatter.title}
-                  </H3>
+                <H3
+                  fontFamily="$silkscreen"
+                  size="$7"
+                  lh="$6"
+                  color="$color"
+                  cursor="pointer"
+                  ls={0}
+                >
+                  {frontmatter.title}
+                </H3>
 
-                  <YStack space="$4">
-                    <XStack>
-                      <Paragraph cursor="inherit" tag="time" size="$3" theme="alt2">
-                        {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')} by
-                      </Paragraph>
-                      <Paragraph cursor="inherit" theme="alt1" size="$3">
-                        &nbsp;{authors[frontmatter.by].name}
-                      </Paragraph>
-                      {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}
-                    </XStack>
+                <XStack o={0.5}>
+                  <Paragraph cursor="inherit" tag="time" size="$3" theme="alt2">
+                    {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')} by
+                  </Paragraph>
+                  <Paragraph cursor="inherit" theme="alt1" size="$3">
+                    &nbsp;{authors[frontmatter.by].name}
+                  </Paragraph>
+                  {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}
+                </XStack>
 
-                    <Paragraph size="$6" cursor="inherit" theme="alt2" o={0.5}>
-                      {frontmatter.description}
-                    </Paragraph>
-                  </YStack>
-                </YStack>
+                <Paragraph size="$6" cursor="inherit" theme="alt2" o={0.7}>
+                  {frontmatter.description}
+                </Paragraph>
               </Card>
             </NextLink>
           ))}

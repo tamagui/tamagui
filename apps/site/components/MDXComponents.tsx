@@ -47,6 +47,7 @@ import { Notice } from './Notice'
 import { OffsetBox } from './OffsetBox'
 import { Preview } from './Preview'
 import { PropsTable } from './PropsTable'
+import { SocialLinksRow } from './SocialLinksRow'
 import { SubTitle } from './SubTitle'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
@@ -71,6 +72,29 @@ const Table = ({ heading, children, ...props }) => {
         {children}
       </XStack>
     </TableFrame>
+  )
+}
+
+const code = (props) => {
+  const { hero, line, scrollable, className, children, id, showLineNumbers, collapsible, ...rest } =
+    props
+  if (!className) {
+    return <CodeInline>{unwrapText(children)}</CodeInline>
+  }
+  return (
+    <YStack mt="$3">
+      <DocCodeBlock
+        isHighlightingLines={line !== undefined}
+        className={className}
+        isHero={hero !== undefined}
+        isCollapsible={hero !== undefined || collapsible !== undefined}
+        isScrollable={scrollable !== undefined}
+        showLineNumbers={showLineNumbers !== undefined}
+        {...rest}
+      >
+        {children}
+      </DocCodeBlock>
+    </YStack>
   )
 }
 
@@ -117,6 +141,11 @@ const TableHighlight = styled(YStack, {
 })
 
 export const components = {
+  SocialLinksRow: () => (
+    <YStack mt="$6" mx="$-4">
+      <SocialLinksRow />
+    </YStack>
+  ),
   Table,
   TableCell,
   TableHighlight,
@@ -200,7 +229,7 @@ export const components = {
 
   IntroParagraph: ({ children, ...props }) => {
     return (
-      <Paragraph tag="span" size="$7" className="paragraph" my="$3" fow="400" {...props}>
+      <Paragraph tag="span" size="$8" className="paragraph" my="$3" fow="400" {...props}>
         {unwrapText(children)}
       </Paragraph>
     )
@@ -284,7 +313,7 @@ export const components = {
 
   ul: ({ children }) => {
     return (
-      <UL mb="$4">
+      <UL my="$4">
         {React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}
       </UL>
     )
@@ -307,37 +336,7 @@ export const components = {
 
   pre: ({ children }) => <>{children}</>,
 
-  code: (props) => {
-    const {
-      hero,
-      line,
-      scrollable,
-      className,
-      children,
-      id,
-      showLineNumbers,
-      collapsible,
-      ...rest
-    } = props
-    if (!className) {
-      return <CodeInline>{unwrapText(children)}</CodeInline>
-    }
-    return (
-      <YStack mt="$3">
-        <DocCodeBlock
-          isHighlightingLines={line !== undefined}
-          className={className}
-          isHero={hero !== undefined}
-          isCollapsible={hero !== undefined || collapsible !== undefined}
-          isScrollable={scrollable !== undefined}
-          showLineNumbers={showLineNumbers !== undefined}
-          {...rest}
-        >
-          {children}
-        </DocCodeBlock>
-      </YStack>
-    )
-  },
+  code,
 
   Image: ({ children, size, ...props }: ImageProps & { size?: 'hero' }) => (
     <OffsetBox size={size} tag="figure" f={1} mx={0} mb="$3" ai="center" jc="center" ov="hidden">
@@ -381,16 +380,24 @@ export const components = {
     return (
       <YStack
         my="$4"
-        pl="$4"
+        px="$6"
         ml="$3"
         borderLeftWidth={1}
         borderColor="$borderColor"
         jc="center"
         {...props}
       >
-        <Paragraph whiteSpace="revert" size="$4" color="$color" opacity={0.65}>
-          {/* @ts-ignore */}
-          {React.Children.toArray(children).map((x) => (x?.props?.children ? x.props.children : x))}
+        <Paragraph
+          fontFamily="$silkscreen"
+          whiteSpace="revert"
+          size="$8"
+          lh="$9"
+          fow="300"
+          ls="$0"
+          color="$color"
+          opacity={0.65}
+        >
+          {unwrapText(children)}
         </Paragraph>
       </YStack>
     )
@@ -498,5 +505,10 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
   </XStack>
 )
 
-const getNonTextChildren = (children) =>
-  React.Children.map(children, (x) => (typeof x !== 'string' ? x : null)).flat()
+const getNonTextChildren = (children) => {
+  return React.Children.map(children, (x) => {
+    if (typeof x === 'string') return null
+    if (x['type'] === code) return null
+    return x
+  }).flat()
+}
