@@ -1597,7 +1597,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             }
           }
 
-          if (shouldDeopt) {
+          if (shouldDeopt || !shouldFlatten) {
             if (shouldPrintDebug) {
               logger.info(`Deopting`)
             }
@@ -1605,39 +1605,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             return
           }
 
-          // insert overrides - this inserts null props for things that are set in classNames
-          // only when not flattening, so the downstream component can skip applying those styles
-          const ensureOverridden = {}
-          if (!shouldFlatten) {
-            for (const cur of attrs) {
-              if (cur.type === 'style') {
-                // TODO need to loop over initial props not just style props
-                for (const key in cur.value) {
-                  const shouldEnsureOverridden = !!staticConfig.ensureOverriddenProp?.[key]
-                  const isSetInAttrsAlready = attrs.some(
-                    (x) =>
-                      x.type === 'attr' &&
-                      x.value.type === 'JSXAttribute' &&
-                      x.value.name.name === key
-                  )
-
-                  if (!isSetInAttrsAlready) {
-                    const isVariant = !!staticConfig.variants?.[cur.name || '']
-                    if (isVariant || shouldEnsureOverridden) {
-                      ensureOverridden[key] = true
-                    }
-                  }
-                }
-              }
-            }
-          }
-
           if (shouldPrintDebug) {
             logger.info(
               ['  - attrs (flattened): \n', logLines(attrs.map(attrStr).join(', '))].join(' ')
-            )
-            logger.info(
-              ['  - ensureOverriden:', Object.keys(ensureOverridden).join(', ')].join(' ')
             )
           }
 
@@ -1853,9 +1823,6 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
               const shouldKeepOriginalAttr =
                 // !isStyleAndAttr[key] &&
                 !shouldFlatten &&
-                // de-opt transform styles so it merges properly if not flattened
-                // we handle this later on
-                // (stylePropsTransform[key] ||
                 // de-opt if non-style
                 !validStyles[key] &&
                 !pseudoDescriptors[key] &&
@@ -1877,15 +1844,6 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                 })
                 acc.push(cur)
                 return acc
-              }
-
-              if (ensureOverridden[key]) {
-                acc.push({
-                  type: 'attr',
-                  value:
-                    cur.attr ||
-                    t.jsxAttribute(t.jsxIdentifier(key), t.jsxExpressionContainer(t.nullLiteral())),
-                })
               }
 
               if (prev?.type === 'style') {
