@@ -141,6 +141,7 @@ export function getValidComponent(
   }
 
   for (const loaded of props.allLoadedComponents) {
+    if (!loaded) continue
     const isInModule = moduleName === '*' || moduleName.startsWith(loaded.moduleName)
     const foundComponent = loaded.nameToInfo[componentName]
     // eslint-disable-next-line no-console
