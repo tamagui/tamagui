@@ -3,7 +3,7 @@
     "@babel/core": "^7.19.6",
     "@babel/runtime": "^7.19.4",
     "@expo/metro-config": "^0.3.21",
-    "@tamagui/babel-plugin": "1.0.1-beta.226",
+    "@tamagui/babel-plugin": "1.0.1-beta.227",
     "@types/react": "^18.0.15",
     "@types/react-native": "^0.69.2",
     "app": "*",

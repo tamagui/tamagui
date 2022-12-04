@@ -11,12 +11,12 @@
     "@my/ui": "*",
     "@react-navigation/native": "^6.0.11",
     "@react-navigation/native-stack": "^6.7.0",
-    "@tamagui/animations-react-native": "1.0.1-beta.226",
-    "@tamagui/colors": "1.0.1-beta.226",
-    "@tamagui/font-inter": "1.0.1-beta.226",
-    "@tamagui/lucide-icons": "1.0.1-beta.226",
-    "@tamagui/shorthands": "1.0.1-beta.226",
-    "@tamagui/theme-base": "1.0.1-beta.226",
+    "@tamagui/animations-react-native": "1.0.1-beta.227",
+    "@tamagui/colors": "1.0.1-beta.227",
+    "@tamagui/font-inter": "1.0.1-beta.227",
+    "@tamagui/lucide-icons": "1.0.1-beta.227",
+    "@tamagui/shorthands": "1.0.1-beta.227",
+    "@tamagui/theme-base": "1.0.1-beta.227",
     "expo-linking": "^3.2.3",
     "solito": "2.0.0-canary.4"
   }
