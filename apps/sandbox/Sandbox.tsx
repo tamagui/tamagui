@@ -115,7 +115,7 @@ export const Sandbox = () => {
           {/* <ThemeInverseReverseTest /> */}
           {/* <PerformanceTest /> */}
 
-          {/* <CustomButtonFrame debug="verbose">
+          {/* <CustomButtonFrame >
             <Paragraph>hihi</Paragraph>
           </CustomButtonFrame> */}
 
@@ -129,7 +129,7 @@ export const Sandbox = () => {
 
           {/* <DialogDemo /> */}
 
-          {/* <StyledInput debug="verbose" /> */}
+          {/* <StyledInput  /> */}
 
           {/* <SheetDemo /> */}
 

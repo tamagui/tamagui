@@ -44,7 +44,6 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
   disabled?: boolean
   vertical?: boolean
   disablePassBorderRadius?: boolean
-  disablePassSize?: boolean
 }
 
 function createGroup(verticalDefault: boolean) {
@@ -61,7 +60,6 @@ function createGroup(verticalDefault: boolean) {
       vertical = verticalDefault,
       disabled: disabledProp,
       disablePassBorderRadius: disablePassBorderRadiusProp,
-      disablePassSize: disablePassSizeProp,
       borderRadius,
       ...restProps
     } = getExpandedShorthands(activeProps)

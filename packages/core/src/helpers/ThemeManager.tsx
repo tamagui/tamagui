@@ -78,18 +78,32 @@ export class ThemeManager {
     }
   }
 
-  getStateIfChanged(props = this.props, state = this.state, parentManager = this.parentManager) {
-    const _ =
-      getState(props, parentManager) ||
-      (process.env.TAMAGUI_TARGET === 'native' ? parentManager?.state : undefined)
-    if (!_ || !_.theme || _.theme === state.theme) {
+  getStateIfChanged(
+    props = this.props,
+    state: ThemeManagerState | null = this.state,
+    parentManager = this.parentManager
+  ) {
+    const _ = this.getState(props, parentManager)
+
+    // is removing
+    if (state && state !== emptyState && !_) {
+      return parentManager?.state
+    }
+
+    if (!_ || !_.theme || _.theme === state?.theme) {
+      // prettier-ignore
+      // eslint-disable-next-line no-console
+      if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log(`getStateIfChanged not changed`, _?.theme === state?.theme, _, state)
       return null
     }
     return _
   }
 
-  getState(props = this.props) {
-    return getState(props, this.parentManager)
+  getState(props = this.props, parentManager = this.parentManager) {
+    return (
+      getState(props, parentManager) ||
+      (process.env.TAMAGUI_TARGET === 'native' ? parentManager?.state : undefined)
+    )
   }
 
   #allKeys: Set<string> | null = null
@@ -168,7 +182,7 @@ function getState(
 
   // prettier-ignore
   // eslint-disable-next-line no-console
-  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log('getState', props, { parentName, parentBaseTheme, base, min, max, isParentAComponentTheme, parentManager })
+  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') [console.groupCollapsed('getState', props, { parentName, parentBaseTheme, base, min, max, isParentAComponentTheme }), console.trace(), console.groupEnd()]
 
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
@@ -191,7 +205,9 @@ function getState(
     if (componentName) {
       // components only look for component themes
       if (nextName) {
-        potentials.push(`${prefix.replace(/_.*$/, '')}_${nextName}_${componentName}`)
+        potentials.push(
+          `${prefix.slice(0, prefix.indexOf(THEME_NAME_SEPARATOR))}_${nextName}_${componentName}`
+        )
       }
       potentials.push(`${prefix}_${componentName}`)
       if (nextName) {

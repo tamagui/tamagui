@@ -1,5 +1,6 @@
 rc.0
 
+  - bump docs versions (have rc2 route to beta routes?)
   - next load css on subsequent pages
   - button focus style on prod
   - rc.0 blog post
@@ -7,6 +8,7 @@ rc.0
 
 1.0
 
+<<<<<<< HEAD
 - dynamic eval bundle of smallish fixes: 
   - hash file contents use as hash for tmp file name
   - avoid work if matching
@@ -14,6 +16,9 @@ rc.0
   - bundle it, use the existing esbuild.buildSync helper fn
   - remove babel use esbuild plugin
 
+=======
+- snapshot test of HeroResponsive output
+>>>>>>> 7fdd19877 (fix(core): Fix removing themes when combined with componentName not removing when set to null)
 - `tamagui` cli basic version
 - I'm seeing an issue where setting multiline=true on Input results in broken colors when switching between light & dark themes (doesn't use specified text color). 
 - https://github.com/tamagui/tamagui/issues/318
@@ -60,6 +65,7 @@ content
 
 inbox
 
+- lighthouse score ci
 - remove types from dir 
   - yarn tamagui-build types and commits
   - 

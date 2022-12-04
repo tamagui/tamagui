@@ -193,7 +193,9 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
 
   // this seems unnecessary
   if (hasNoThemeUpdatingProps(props)) {
-    if (!parentManager) throw new Error(`Nada`)
+    if (!parentManager) throw `impossible`
+    // prettier-ignore
+    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log('useTheme no updating props', parentManager.state)
     return {
       ...parentManager.state,
       themeManager: parentManager,
@@ -205,7 +207,7 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
   updateState()
 
   if (!mounted && !parentManager) {
-    throw new Error(`Impossible`)
+    throw `impossible`
   }
 
   return {
@@ -237,8 +239,11 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
   }
 
   function updateState() {
-    if (themeManager.getStateIfChanged(props, state, parentManager)) {
+    if (themeManager.getStateIfChanged(props, isNewTheme ? state : null, parentManager)) {
       setThemeState(createState)
+    } else {
+      // prettier-ignore
+      if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log(`useTheme updateState didn't change`)
     }
   }
 }
