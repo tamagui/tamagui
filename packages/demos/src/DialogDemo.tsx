@@ -10,7 +10,7 @@ export function DialogDemo() {
         <Button>Edit Profile</Button>
       </Dialog.Trigger>
 
-      <Adapt when="sm">
+      <Adapt when="sm" platform="touch">
         <Sheet zIndex={200_000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4">
             <Adapt.Contents />

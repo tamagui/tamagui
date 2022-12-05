@@ -2,6 +2,7 @@
 import { MediaQueryKey } from '@tamagui/core';
 export declare type AdaptProps = {
     when?: MediaQueryKey;
+    platform?: 'native' | 'web' | 'touch';
     children?: any;
 };
 declare type Component = (props: any) => any;
@@ -18,7 +19,7 @@ export declare const useAdaptParent: ({ Contents }: {
     }) => JSX.Element;
     when: string | number | null;
 };
-export declare const Adapt: (({ when, children }: AdaptProps) => any) & {
+export declare const Adapt: (({ platform, when, children }: AdaptProps) => any) & {
     Contents: () => import("react").FunctionComponentElement<any>;
 };
 export {};

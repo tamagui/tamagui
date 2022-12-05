@@ -1,13 +1,19 @@
-import { MediaQueryKey, useIsomorphicLayoutEffect, withStaticProperties } from '@tamagui/core'
-import { createContext, createElement, useContext, useLayoutEffect, useMemo, useState } from 'react'
+import {
+  MediaQueryKey,
+  isTouchable,
+  isWeb,
+  useIsomorphicLayoutEffect,
+  withStaticProperties,
+} from '@tamagui/core'
+import { createContext, createElement, useContext, useMemo, useState } from 'react'
 
 export type AdaptProps = {
   when?: MediaQueryKey
+  platform?: 'native' | 'web' | 'touch'
   children?: any
 }
 
 type Component = (props: any) => any
-
 type AdaptParentContextI = {
   Contents: Component
   setWhen: (when: MediaQueryKey) => any
@@ -44,12 +50,22 @@ export const useAdaptParent = ({ Contents }: { Contents: AdaptParentContextI['Co
 }
 
 export const Adapt = withStaticProperties(
-  function Adapt({ when, children }: AdaptProps) {
+  function Adapt({ platform, when, children }: AdaptProps) {
     const context = useContext(AdaptParentContext)
 
+    let enabled = !platform
+    if (platform === 'touch') enabled = isTouchable
+    if (platform === 'native') enabled = !isWeb
+    if (platform === 'web') enabled = isWeb
+
     useIsomorphicLayoutEffect(() => {
+      if (!enabled) return
       context?.setWhen(when as MediaQueryKey)
-    }, [when, context])
+    }, [when, context, enabled])
+
+    if (!enabled) {
+      return null
+    }
 
     return children
   },
