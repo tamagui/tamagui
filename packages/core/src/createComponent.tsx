@@ -146,8 +146,6 @@ export function createComponent<
       props = propsIn
     }
 
-    // time`mergeProps`
-
     const debugProp = props['debug'] as DebugProp
     const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
@@ -283,8 +281,6 @@ export function createComponent<
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
 
-    // time`setupStateConf`
-
     const isExiting = presence?.[0] === false
     const splitStyles = useSplitStyles(
       props,
@@ -303,8 +299,6 @@ export function createComponent<
       elementType,
       debugProp
     )
-
-    // time`splitStyles`
 
     const hostRef = useServerRef<TamaguiElement>(null)
 
@@ -369,34 +363,26 @@ export function createComponent<
       }
     }
 
-    // time`animations`
-
     // media queries
     useIsomorphicLayoutEffect(() => {
-      if (!mediaKeys.length) return
-      const disposers: any[] = []
-      for (const key of mediaKeys) {
-        disposers.push(
-          addMediaQueryListener(key, (next: boolean) => {
-            setState((prev) => {
-              if (prev.mediaState![key] !== next) {
-                return {
-                  ...prev,
-                  mediaState: getMediaStateObject({
-                    ...prev.mediaState,
-                    [key]: next,
-                  }),
-                }
+      const disposers = mediaKeys.map((key) => {
+        return addMediaQueryListener(key, (next: boolean) => {
+          setState((prev) => {
+            if (prev.mediaState![key] !== next) {
+              return {
+                ...prev,
+                mediaState: getMediaStateObject({
+                  ...prev.mediaState,
+                  [key]: next,
+                }),
               }
-              return prev
-            })
+            }
+            return prev
           })
-        )
-      }
+        })
+      })
       return () => {
-        for (const disposer of disposers) {
-          disposer()
-        }
+        disposers.forEach((d) => d())
       }
     }, [mediaKeys.join(',')])
 
@@ -562,8 +548,6 @@ export function createComponent<
         }
       })
     }
-
-    // time`webHooks`
 
     const unPress = useCallback(() => {
       setStateShallow({
@@ -782,8 +766,6 @@ export function createComponent<
           }
         : null
 
-    // time`events`
-
     let space = spaceProp
 
     // find space by media query
@@ -905,8 +887,6 @@ export function createComponent<
         console.groupEnd()
       }
     }
-
-    // time`done`
 
     return content
   })
