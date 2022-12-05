@@ -25,7 +25,8 @@ export declare class ThemeManager {
         forceTheme?: ThemeParsed;
     }, notify?: boolean): ThemeManagerState | undefined;
     getStateIfChanged(props?: ThemeProps, state?: ThemeManagerState | null, parentManager?: ThemeManager | null): ThemeManagerState | null | undefined;
-    getState(props?: ThemeProps, parentManager?: ThemeManager | null): ThemeManagerState | undefined;
+    getStateShouldChange(nextState: ThemeManagerState | null, state?: ThemeManagerState | null): ThemeManagerState | null;
+    getState(props?: ThemeProps, parentManager?: ThemeManager | null): ThemeManagerState | null;
     get allKeys(): Set<string>;
     getValue(key: string, state?: ThemeManagerState): import("..").Variable<any> | undefined;
     notify(): void;

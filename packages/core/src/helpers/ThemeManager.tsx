@@ -84,25 +84,29 @@ export class ThemeManager {
     parentManager = this.parentManager
   ) {
     const _ = this.getState(props, parentManager)
-
     // is removing
     if (state && state !== emptyState && !_) {
       return parentManager?.state
     }
+    if (this.getStateShouldChange(_, state)) {
+      return _
+    }
+  }
 
-    if (!_ || !_.theme || _.theme === state?.theme) {
-      // prettier-ignore
-      // eslint-disable-next-line no-console
-      if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log(`getStateIfChanged not changed`, _?.theme === state?.theme, _, state)
+  getStateShouldChange(
+    nextState: ThemeManagerState | null,
+    state: ThemeManagerState | null = this.state
+  ) {
+    if (!nextState || !nextState.theme || nextState.theme === state?.theme) {
       return null
     }
-    return _
+    return nextState
   }
 
   getState(props = this.props, parentManager = this.parentManager) {
     return (
       getState(props, parentManager) ||
-      (process.env.TAMAGUI_TARGET === 'native' ? parentManager?.state : undefined)
+      (process.env.TAMAGUI_TARGET === 'native' ? parentManager?.state || null : null)
     )
   }
 
@@ -216,11 +220,12 @@ function getState(
       }
     }
 
+    const found = potentials.find((t) => t in themes)
+
     // prettier-ignore
     // eslint-disable-next-line no-console
-    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log('getState potentials', potentials)
+    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log('getState found', found, 'from', potentials, 'parentName',parentName)
 
-    const found = potentials.find((t) => t in themes)
     if (found) {
       // optimization return null if not changed
       if (found === parentName) {

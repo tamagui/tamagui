@@ -192,10 +192,10 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
   if (process.env.NODE_ENV === 'development' && debug) console.log('useTheme.render isNewTheme', isNewTheme, props, themeManager.state.name, parentManager?.state.name)
 
   // this seems unnecessary
-  if (hasNoThemeUpdatingProps(props)) {
+  if (hasNoThemeUpdatingProps(props) || (!mounted && parentManager)) {
     if (!parentManager) throw `impossible`
     // prettier-ignore
-    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log('useTheme no updating props', parentManager.state)
+    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log('useTheme hasNoThemeUpdatingProps', parentManager.state)
     return {
       ...parentManager.state,
       themeManager: parentManager,
@@ -206,20 +206,10 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
   // run inline in render
   updateState()
 
-  if (!mounted && !parentManager) {
-    throw `impossible`
-  }
-
   return {
     ...state,
     isNewTheme,
     themeManager,
-    ...(!mounted &&
-      parentManager && {
-        ...parentManager.state,
-        isNewTheme: false,
-        themeManager: parentManager,
-      }),
   }
 
   function createState(prev?: State) {
@@ -239,11 +229,15 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
   }
 
   function updateState() {
-    if (themeManager.getStateIfChanged(props, isNewTheme ? state : null, parentManager)) {
+    const next = themeManager.getState(props, parentManager)
+    const shouldChange = themeManager.getStateShouldChange(next, isNewTheme ? state : null)
+    if (shouldChange) {
       setThemeState(createState)
     } else {
-      // prettier-ignore
-      if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log(`useTheme updateState didn't change`)
+      if (!next && parentManager?.state.name !== state.name) {
+        // were changing back to parent state
+        setThemeState(createState)
+      }
     }
   }
 }
