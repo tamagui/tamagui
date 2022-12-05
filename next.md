@@ -1,6 +1,5 @@
-rc.0
+rc.1
 
-  - bump docs versions (have rc2 route to beta routes?)
   - next load css on subsequent pages
 
 1.0

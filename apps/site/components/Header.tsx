@@ -16,6 +16,7 @@ import {
   useMedia,
 } from 'tamagui'
 
+import { AlphaButton } from './AlphaButton'
 import { DocsMenuContents } from './DocsMenuContents'
 import { GithubIcon } from './GithubIcon'
 import { HeaderFloating } from './HeaderFloating'
@@ -54,20 +55,22 @@ export function Header(props: HeaderProps) {
       py={props.floating ? 0 : '$2'}
       zi={50000}
     >
-      <XStack ai="center" space="$6">
+      <XStack ai="center" space="$4">
         {isHome ? (
-          <YStack my={-20}>
-            <TamaguiLogo onPress={setNextTint} downscale={props.floating ? 2 : 1.5} />
+          <YStack my={-20} onPress={setNextTint} px="$3">
+            <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
           </YStack>
         ) : (
           <NextLink legacyBehavior href="/" passHref>
-            <YStack cur="pointer" tag="a" my={-20}>
+            <YStack px="$3" cur="pointer" tag="a" my={-20}>
               <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
             </YStack>
           </NextLink>
         )}
 
         <ThemeSearchButtonGroup />
+
+        <AlphaButton />
 
         {isInSubApp && (
           <NextLink legacyBehavior href="/">
