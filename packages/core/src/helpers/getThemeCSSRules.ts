@@ -2,6 +2,7 @@ import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
 import { Variable, variableToString } from '../createVariable'
 import { CreateTamaguiProps, ThemeParsed } from '../types'
 import { tokensValueToVariable } from './registerCSSVariable'
+import { simpleHash } from '@tamagui/helpers'
 
 export function getThemeCSSRules({
   config,
@@ -34,7 +35,8 @@ export function getThemeCSSRules({
     } else {
       value = tokensValueToVariable.get(variable.val)!.variable
     }
-    vars += `--${themeKey}:${value};`
+    // Hash themeKey in case it has invalid chars too
+    vars += `--${simpleHash(themeKey, 40)}:${value};`
   }
 
   const isDarkOrLightBase = themeName === 'dark' || themeName === 'light'
