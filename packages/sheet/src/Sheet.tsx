@@ -20,6 +20,7 @@ import { RemoveScroll } from '@tamagui/remove-scroll'
 import { XStack, XStackProps, YStack, YStackProps } from '@tamagui/stacks'
 import { useConstant } from '@tamagui/use-constant'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import { useDebounce } from '@tamagui/use-debounce'
 import React, {
   FunctionComponent,
   RefAttributes,
@@ -545,6 +546,15 @@ const SheetImplementation = themeable(
       [zIndex]
     )
 
+    const handleLayout = useDebounce((e) => {
+      const next = e.nativeEvent.layout.height
+      setFrameSize((prev) => {
+        const isBigChange = Math.abs(prev - next) > 50
+        setIsResizing(isBigChange)
+        return next
+      })
+    }, 100)
+
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider
@@ -566,14 +576,7 @@ const SheetImplementation = themeable(
           <AnimatedView
             ref={ref}
             {...panResponder?.panHandlers}
-            onLayout={(e) => {
-              const next = e.nativeEvent.layout.height
-              setFrameSize((prev) => {
-                const isBigChange = Math.abs(prev - next) > 50
-                setIsResizing(isBigChange)
-                return next
-              })
-            }}
+            onLayout={handleLayout}
             pointerEvents={open && !shouldHideParentSheet ? 'auto' : 'none'}
             style={[
               {

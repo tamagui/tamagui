@@ -102,7 +102,7 @@ export function HeroExampleThemes() {
   }
 
   const width = 110
-  const scale = 0.5
+  const scale = 0.38
 
   const scrollToIndex = useEvent((index: number, force = false) => {
     const node = scrollView.current
@@ -275,7 +275,7 @@ export function HeroExampleThemes() {
                       key={i}
                       width={width}
                       scale={scale}
-                      className="all ease ms100"
+                      className="all ease-in ms100"
                       cursor="pointer"
                       hoverStyle={{
                         scale: scale + 0.025,

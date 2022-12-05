@@ -18,6 +18,7 @@ import {
   TextProps,
   XStack,
   YStack,
+  useDidFinishSSR,
 } from 'tamagui'
 
 import { ContainerLarge } from './Container'
@@ -81,7 +82,7 @@ export const HeroTypography = memo(() => {
             y={5}
             $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }}
           >
-            <YStack ai="flex-end" h={270}>
+            <YStack ai="flex-end" contain="paint layout" h={270}>
               <AnimatePresence exitBeforeEnter>
                 <AnimatedHeading
                   key={`${family}1`}
@@ -217,6 +218,7 @@ const AnimatedHeading = ({
 }
 
 const Delay = ({ children, by }) => {
+  const isMounted = useDidFinishSSR()
   const [done, setDone] = useState(false)
 
   useEffect(() => {
@@ -224,5 +226,5 @@ const Delay = ({ children, by }) => {
     return () => clearTimeout(showTimer)
   })
 
-  return done ? children : null
+  return !isMounted || done ? children : null
 }

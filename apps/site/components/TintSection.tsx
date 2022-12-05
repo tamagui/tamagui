@@ -7,12 +7,9 @@ import { setTintIndex, useTint } from './useTint'
 
 const numIntersectingAtSection: number[] = tints.map((_) => 0)
 
-export const TintSection = ({
-  children,
-  index,
-  themed,
-  ...props
-}: SectionProps & { themed?: boolean; index: number }) => {
+type Props = SectionProps & { themed?: boolean; index: number }
+
+export const TintSection = ({ children, index, themed, ...props }: Props) => {
   const top = useRef<HTMLElement>(null)
   const bottom = useRef<HTMLElement>(null)
   const mid = useRef<HTMLElement>(null)

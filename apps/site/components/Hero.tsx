@@ -35,9 +35,8 @@ const HeroTop = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
 
   return (
-    <ContainerLarge pos="relative">
+    <ContainerLarge contain="layout" pos="relative">
       <YStack
-        contain="strict"
         className="bg-grid mask-gradient-up"
         fullscreen
         top="auto"

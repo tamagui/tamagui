@@ -40,7 +40,6 @@ export default function Home({ animationCode, compilationExamples }) {
       <TintSection btw={1} bbw={1} boc="$borderColor" index={1} p={0}>
         <HeroBelow onChangeTop={setTop} />
       </TintSection>
-      {/* <Glow /> inside HeroBelow anchors to it */}
       <TintSection index={2} contain="paint layout" zi={1000}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleCode examples={compilationExamples} />

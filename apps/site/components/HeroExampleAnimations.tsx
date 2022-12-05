@@ -1,9 +1,9 @@
 import { animations } from '@tamagui/config-base'
-import { useOnIntersecting } from '@tamagui/demos'
+import { useIsIntersecting, useOnIntersecting } from '@tamagui/demos'
 import { ArrowDown } from '@tamagui/lucide-icons'
 import NextLink from 'next/link'
-import React, { memo, useRef, useState } from 'react'
-import { Button, ListItem, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
+import React, { memo, useEffect, useRef, useState } from 'react'
+import { Button, ListItem, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
 
 import { AnimationsDemo } from './AnimationsDemo'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
@@ -136,44 +136,38 @@ export const ExampleAnimations = memo(() => {
   const animation = animationDescriptions[animationI]
   const container = useRef(null)
   const [positionI, setPositionI] = useState(2)
+  const isIntersecting = useIsIntersecting(container)
   const next = (to = 1) => {
     setPositionI((x) => (x + to) % 3)
   }
+
+  useEffect(() => {
+    if (!isIntersecting) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') {
+        next()
+      }
+      if (e.key === 'ArrowLeft') {
+        next(-1)
+      }
+    }
+    if (!hasScrolledOnce) {
+      hasScrolledOnce = true
+      setTimeout(() => {
+        // setting a long timeout extends the total render time a lot.., just slow down animation
+        next()
+      }, 250)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [isIntersecting])
 
   const settings =
     typeof animation.settings === 'string'
       ? [['transition', animation.settings]]
       : Object.entries(animation.settings)
-
-  useOnIntersecting(
-    container,
-    ([entry]) => {
-      if (entry?.isIntersecting) {
-        const onKey = (e: KeyboardEvent) => {
-          if (e.key === 'ArrowRight') {
-            next()
-          }
-          if (e.key === 'ArrowLeft') {
-            next(-1)
-          }
-        }
-        if (!hasScrolledOnce) {
-          hasScrolledOnce = true
-          setTimeout(() => {
-            // setting a long timeout extends the total render time a lot.., just slow down animation
-            next()
-          }, 250)
-        }
-        window.addEventListener('keydown', onKey)
-        return () => {
-          window.removeEventListener('keydown', onKey)
-        }
-      }
-    },
-    {
-      threshold: 0.5,
-    }
-  )
 
   return (
     <XStack
@@ -197,7 +191,9 @@ export const ExampleAnimations = memo(() => {
         width="60%"
         $sm={{ width: '100%' }}
       >
-        <AnimationsDemo position={positionI} animation={animation.animation} />
+        {isIntersecting ? (
+          <AnimationsDemo position={positionI} animation={animation.animation} />
+        ) : null}
       </YStack>
 
       <Separator vertical />
