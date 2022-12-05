@@ -176,9 +176,10 @@ function getState(
     ? base.slice(0, base.length).join(THEME_NAME_SEPARATOR)
     : parentName
   const max = base.length
-  const min = componentName
-    ? max // component themes don't search upwards
-    : 0
+  const min =
+    componentName && !nextName
+      ? max // component name only don't search upwards
+      : 0
 
   // prettier-ignore
   // eslint-disable-next-line no-console

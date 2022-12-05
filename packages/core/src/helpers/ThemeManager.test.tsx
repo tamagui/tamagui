@@ -477,4 +477,21 @@ describe('ThemeManager', () => {
     )
     expect(child.state.name).toBe('dark_yellow_Button')
   })
+
+  test(`Component name + name finds one up when component name missing`, () => {
+    const parent = new ThemeManager(
+      {
+        name: 'dark_red_alt1',
+      },
+      'root'
+    )
+    const child = new ThemeManager(
+      {
+        name: 'alt2',
+        componentName: 'Missing',
+      },
+      parent
+    )
+    expect(child.state.name).toBe('dark_red_alt2')
+  })
 })
