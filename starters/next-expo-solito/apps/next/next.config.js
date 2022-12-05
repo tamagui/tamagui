@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const { withTamagui } = require('@tamagui/next-plugin')
 const withImages = require('next-images')
-const withTM = require('next-transpile-modules')
 const { join } = require('path')
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
@@ -40,14 +39,6 @@ You can remove this log in next.config.js.
 
 const plugins = [
   withImages,
-  withTM([
-    'solito',
-    'react-native-web',
-    'expo-linking',
-    'expo-constants',
-    'expo-modules-core',
-    '@my/config',
-  ]),
   withTamagui({
     config: './tamagui.config.ts',
     components: ['tamagui', '@my/ui'],
@@ -76,6 +67,14 @@ module.exports = function () {
     experimental: {
       scrollRestoration: true,
       legacyBrowsers: false,
+      transpilePackages: [
+        'solito',
+        'react-native-web',
+        'expo-linking',
+        'expo-constants',
+        'expo-modules-core',
+        '@my/config',
+      ],
     },
   }
 
