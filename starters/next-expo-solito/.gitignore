@@ -13,6 +13,9 @@
 **/.next/*
 /out/
 
+# tamagui
+**/.tamagui/*
+
 # production
 /build
 
