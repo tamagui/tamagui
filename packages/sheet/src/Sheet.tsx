@@ -6,6 +6,7 @@ import {
   Theme,
   getAnimationDriver,
   isClient,
+  isTouchable,
   isWeb,
   mergeEvent,
   styled,
@@ -20,7 +21,6 @@ import { RemoveScroll } from '@tamagui/remove-scroll'
 import { XStack, XStackProps, YStack, YStackProps } from '@tamagui/stacks'
 import { useConstant } from '@tamagui/use-constant'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import { useDebounce } from '@tamagui/use-debounce'
 import React, {
   FunctionComponent,
   RefAttributes,
@@ -524,8 +524,9 @@ const SheetImplementation = themeable(
     })
 
     const animatedStyle = driver.useAnimatedNumberStyle(animatedNumber, (val) => {
+      const translateY = frameSize === 0 ? HIDDEN_SIZE : val
       return {
-        transform: [{ translateY: frameSize === 0 ? HIDDEN_SIZE : val }],
+        transform: [{ translateY }],
       }
     })
 
@@ -548,10 +549,14 @@ const SheetImplementation = themeable(
     )
 
     const handleLayout = useCallback((e) => {
-      const next = e.nativeEvent?.layout.height
+      let next = e.nativeEvent?.layout.height
+      if (isWeb && isTouchable && !open) {
+        // temp fix ios bug where it doesn't go below dynamic bottom...
+        next += 100
+      }
       if (!next) return
       setFrameSize((prev) => {
-        const isBigChange = Math.abs(prev - next) > 50
+        const isBigChange = Math.abs(prev - next) > 20
         setIsResizing(isBigChange)
         return next
       })
@@ -576,6 +581,7 @@ const SheetImplementation = themeable(
           {isResizing || shouldHideParentSheet ? null : overlayComponent}
 
           <AnimatedView
+            debug="verbose"
             ref={ref}
             {...panResponder?.panHandlers}
             onLayout={handleLayout}
