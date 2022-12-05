@@ -5,6 +5,7 @@ rc.0
 
 1.0
 
+- vite compiler bug
 - not de-duping css much
 - snapshot test of HeroResponsive output
 - `tamagui` cli basic version
@@ -12,17 +13,14 @@ rc.0
 - https://github.com/tamagui/tamagui/issues/318
 - focus an input in a dialog on mobile or a propover etc. then it disappears
 - https://github.com/tamagui/tamagui/issues/256
-- kitchen sink placeholder input color dark
 - VisuallyHidden + mediaquery + space
-- test sprint
+- test
   - native integration tests
   - useMedia
   - reanimated
 - Sheet drag up small bug native with scrollable content
 - Select id="" + Label focus
-- site: search css / jumpy
 - canary release channel
-- kitchen-sink in Snack demo
 - web: forms dix bubble / label
 - nice to have: visual regression testing:
   - https://formidable.com/open-source/react-native-owl/
@@ -47,6 +45,7 @@ qol:
 - improve sandbox to a mini vite stack
 - runthrough docs a handful of times
 - get an demo for studio ready
+- kitchen-sink in Snack demo
 
 content
 

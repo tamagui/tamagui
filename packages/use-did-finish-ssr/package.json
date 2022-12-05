@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-did-finish-ssr",
-  "version": "1.0.1-beta.227",
+  "version": "1.0.1-beta.228",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,7 +18,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.227",
+    "@tamagui/build": "^1.0.1-beta.228",
     "@types/react": "^18.0.15",
     "react": ">=18",
     "react-native": "*"
