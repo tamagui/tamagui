@@ -80,7 +80,7 @@ export function updateInserted() {
         continue
       }
       const [identifier, cssRule] = response
-      if (!allSelectors[identifier]) {
+      if (!allSelectors[identifier] || allSelectors[identifier] === ' ') {
         const isTransform = identifier.startsWith('_transform')
         const shouldInsert = isTransform ? addTransform(identifier, cssRule.cssText, cssRule) : true
         if (shouldInsert) {
@@ -143,7 +143,7 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
   }
   for (const { identifier, rules } of rulesToInsert) {
     if (allSelectors[identifier]) continue
-    allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rules.join('\n') : ''
+    allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rules.join('\n') : ' '
     updateRules(identifier, rules)
     if (sheet) {
       for (const rule of rules) {

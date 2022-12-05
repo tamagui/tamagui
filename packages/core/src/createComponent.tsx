@@ -2,13 +2,11 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isClient, isRSC, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   composeEventHandlers,
-  stylePropsTransform,
   stylePropsView,
   validPseudoKeys,
   validStyles,
 } from '@tamagui/helpers'
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
-import type { ViewStyle } from '@tamagui/types-react-native'
 import React, {
   Children,
   Fragment,
@@ -28,10 +26,9 @@ import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { TextAncestorContext } from './contexts/TextAncestorContext'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import { getRect } from './helpers/getRect'
-import { getSubStyle, useSplitStyles } from './helpers/getSplitStyles'
+import { useSplitStyles } from './helpers/getSplitStyles'
 import { getAllSelectors } from './helpers/insertStyleRule'
 import { mergeProps } from './helpers/mergeProps'
-import { mergeTransform } from './helpers/mergeTransform'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { useShallowSetState } from './helpers/useShallowSetState'
 import { measureLayout, useElementLayout } from './hooks/useElementLayout'
