@@ -379,10 +379,21 @@ const SheetImplementation = themeable(
       animateTo(position)
     }, [isHidden, frameSize, position, animateTo])
 
+    /**
+     * This is a hacky workaround for native:
+     */
+    const [isShowingInnerSheet, setIsShowingInnerSheet] = useState(false)
+    const shouldHideParentSheet = !isWeb && modal && isShowingInnerSheet
+    const parentSheetContext = useContext(SheetInsideSheetContext)
+    const onInnerSheet = useCallback((hasChild: boolean) => {
+      setIsShowingInnerSheet(hasChild)
+    }, [])
+
     const panResponder = useMemo(
       () => {
         if (disableDrag) return
         if (!frameSize) return
+        if (isShowingInnerSheet) return
 
         const minY = positions[0]
         scrollBridge.paneMinY = minY
@@ -484,7 +495,7 @@ const SheetImplementation = themeable(
         })
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [disableDrag, animateTo, frameSize, positions, setPosition]
+      [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition]
     )
 
     let handleComponent: React.ReactElement | null = null
@@ -521,16 +532,6 @@ const SheetImplementation = themeable(
     // temp until reanimated useAnimatedNumber fix
     const AnimatedView = driver['NumberView'] ?? driver.View
 
-    /**
-     * This is a hacky workaround for native:
-     */
-    const [isShowingInnerSheet, setIsShowingInnerSheet] = useState(false)
-    const shouldHideParentSheet = !isWeb && modal && isShowingInnerSheet
-    const parentSheetContext = useContext(SheetInsideSheetContext)
-    const onInnerSheet = useCallback((hasChild: boolean) => {
-      setIsShowingInnerSheet(hasChild)
-    }, [])
-
     useIsomorphicLayoutEffect(() => {
       if (!parentSheetContext || !open) return
       parentSheetContext(true)
@@ -546,14 +547,15 @@ const SheetImplementation = themeable(
       [zIndex]
     )
 
-    const handleLayout = useDebounce((e) => {
-      const next = e.nativeEvent.layout.height
+    const handleLayout = useCallback((e) => {
+      const next = e.nativeEvent?.layout.height
+      if (!next) return
       setFrameSize((prev) => {
         const isBigChange = Math.abs(prev - next) > 50
         setIsResizing(isBigChange)
         return next
       })
-    }, 100)
+    }, [])
 
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
