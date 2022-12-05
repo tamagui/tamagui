@@ -88,6 +88,12 @@ const interFont = createFont({
     4: 0,
     8: -1,
   },
+  // (native only) swap out fonts by face/style
+  face: {
+    200: { normal: 'InterLight', italic: 'InterItalic' },
+    400: { normal: 'Inter' },
+    800: { normal: 'InterBold' },
+  },
   // you may also set `transform` as textTransform values
   // and `style` as fontStyle values
 })
