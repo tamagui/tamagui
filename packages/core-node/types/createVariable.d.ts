@@ -14,12 +14,12 @@ export declare type Variable<A = any> = VariableIn<A> & {
     variable?: string;
 };
 export declare const createVariable: <A extends string | number = any>(props: VariableIn<A>) => VariableIn<A> | {
-    variable: string;
-    val: A;
-    name: string;
-    key: string;
-    isFloating?: boolean | undefined;
     isVar: boolean;
+    key: string;
+    name: string;
+    isFloating: boolean | undefined;
+    val: A;
+    variable: string;
 };
 export declare function variableToString(vrble?: any, getValue?: boolean): string;
 export declare function isVariable(v: Variable | any): v is Variable;

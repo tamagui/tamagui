@@ -28,9 +28,9 @@ export const docsRoutes = [
   {
     pages: [
       { title: 'Configuration', route: '/docs/core/configuration' },
+      { title: 'Stack + Text', route: '/docs/core/stack-and-text' },
       { title: 'styled', route: '/docs/core/styled' },
       { title: 'Variants', route: '/docs/core/variants' },
-      { title: '<Stack /> + <Text />', route: '/docs/core/stack-and-text' },
       { title: 'Props', route: '/docs/intro/props' },
       { title: 'Themes', route: '/docs/intro/themes' },
       { title: 'Animations', route: '/docs/core/animations' },

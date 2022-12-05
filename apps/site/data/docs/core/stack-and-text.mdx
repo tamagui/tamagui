@@ -21,7 +21,7 @@ export default () => (
 )
 ```
 
-or use them [with styled](/docs/core/styled) to create your own base level design system:
+Or use them [with styled](/docs/core/styled) to create your own base level design system:
 
 ```tsx
 import { Stack, styled } from '@tamagui/core'
@@ -55,3 +55,5 @@ export const Circle = styled(Stack, {
   } as const,
 })
 ```
+
+Inline styles and `styled()` both are optimized by the compiler, so you can author styles using them both depending on the use case.

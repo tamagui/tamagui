@@ -24,10 +24,14 @@ export type Variable<A = any> = VariableIn<A> & {
 
 export const createVariable = <A extends string | number = any>(props: VariableIn<A>) => {
   if (isVariable(props)) return props
+  const { key, name, val, isFloating } = props
   return {
     [IS_VAR]: true,
-    ...props,
-    variable: isWeb ? createCSSVariable(props.name) : '',
+    key,
+    name: simpleHash(name, 40),
+    isFloating,
+    val,
+    variable: isWeb ? createCSSVariable(name) : '',
   }
 }
 
