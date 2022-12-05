@@ -1,4 +1,4 @@
-import { MediaQueryKey, withStaticProperties } from '@tamagui/core'
+import { MediaQueryKey, useIsomorphicLayoutEffect, withStaticProperties } from '@tamagui/core'
 import { createContext, createElement, useContext, useLayoutEffect, useMemo, useState } from 'react'
 
 export type AdaptProps = {
@@ -47,7 +47,7 @@ export const Adapt = withStaticProperties(
   function Adapt({ when, children }: AdaptProps) {
     const context = useContext(AdaptParentContext)
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       context?.setWhen(when as MediaQueryKey)
     }, [when, context])
 

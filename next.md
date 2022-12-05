@@ -18,13 +18,11 @@ rc.0
   - native integration tests
   - useMedia
   - reanimated
+  - integation on native - theme change, render time
 - Sheet drag up small bug native with scrollable content
 - Select id="" + Label focus
 - canary release channel
-- web: forms dix bubble / label
-- nice to have: visual regression testing:
-  - https://formidable.com/open-source/react-native-owl/
-  - https://hughmccamphill.com/visual-regression-testing-react-native-apps-with-detox-and-jest
+- web forms events bubble
 
 - dynamic eval bundle of smallish fixes: 
   - hash file contents use as hash for tmp file name
@@ -49,11 +47,10 @@ qol:
 
 content
 
-  - blog lighthouse score diff between compiler on / off
+  - blog
+    - lighthouse score diff between compiler on / off
+    - compiler in/out
   - docs: expo guide
-  - document fontFaceByWeight
-  - document themeShallow
-
 
 ---
 
