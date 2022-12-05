@@ -80,7 +80,7 @@ export function updateInserted() {
         continue
       }
       const [identifier, cssRule] = response
-      if (!allSelectors[identifier] || allSelectors[identifier] === ' ') {
+      if (!(identifier in allSelectors)) {
         const isTransform = identifier.startsWith('_transform')
         const shouldInsert = isTransform ? addTransform(identifier, cssRule.cssText, cssRule) : true
         if (shouldInsert) {
@@ -95,7 +95,8 @@ export function updateInserted() {
 function getTamaguiSelector(rule: CSSRule | null): readonly [string, CSSStyleRule] | null {
   if (rule instanceof CSSStyleRule) {
     const text = rule.selectorText
-    if (text.startsWith('._')) {
+    // .startsWith('._')
+    if (text[0] === '.' && text[1] === '_') {
       return [text.slice(1), rule]
     }
     if (text.startsWith(':root') && text.includes('._')) {
@@ -134,15 +135,13 @@ export type PartialStyleObject = Pick<StyleObject, 'identifier' | 'property' | '
 export type RulesToInsert = PartialStyleObject[]
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
+  if (!rulesToInsert.length) return
   if (isClient && !sheet) {
-    if (process.env.NODE_ENV === 'development') {
-      // eslint-disable-next-line no-console
-      console.warn(`Missing sheet`)
-    }
+    if (process.env.NODE_ENV === 'development') throw `impossible`
     return
   }
   for (const { identifier, rules } of rulesToInsert) {
-    if (allSelectors[identifier]) continue
+    if (identifier in allSelectors) continue
     allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rules.join('\n') : ' '
     updateRules(identifier, rules)
     if (sheet) {
@@ -159,5 +158,5 @@ export function shouldInsertStyleRules(styleObject: PartialStyleObject) {
   if (IS_STATIC) {
     return true
   }
-  return !allSelectors[styleObject.identifier]
+  return !(styleObject.identifier in allSelectors)
 }
