@@ -2,18 +2,10 @@ rc.0
 
   - bump docs versions (have rc2 route to beta routes?)
   - next load css on subsequent pages
-  - rc.0 blog post
-  - <Adapt /> instead of sheetBreakpoint
 
 1.0
 
-- dynamic eval bundle of smallish fixes: 
-  - hash file contents use as hash for tmp file name
-  - avoid work if matching
-  - install into node_modules/.cache (import cacheDir) and symlink next to current file
-  - bundle it, use the existing esbuild.buildSync helper fn
-  - remove babel use esbuild plugin
-
+- not de-duping css much
 - snapshot test of HeroResponsive output
 - `tamagui` cli basic version
 - I'm seeing an issue where setting multiline=true on Input results in broken colors when switching between light & dark themes (doesn't use specified text color). 
@@ -24,7 +16,7 @@ rc.0
 - VisuallyHidden + mediaquery + space
 - test sprint
   - native integration tests
-  - useMedia, useTheme
+  - useMedia
   - reanimated
 - Sheet drag up small bug native with scrollable content
 - Select id="" + Label focus
@@ -69,12 +61,8 @@ content
 inbox
 
 - lighthouse score ci
-- remove types from dir 
-  - yarn tamagui-build types and commits
-  - 
 - move much logic from withTamgui into TamaguiPlugin
 - TestFontTokensInVariants types not autocompleting in variants... but showing properly on hover/type property
-- if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
 - pass Size down context (see Group) is this just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)?
 - kitchen sink snack on site
 - move to object style extraction to remove concatClassName
@@ -135,8 +123,6 @@ inbox
     - can use Switch or check or custom
 - <Accordion />
 - <Carousel />
-- load theme hook via feature if possible
-- styleq / react-native-web 18 exploration
 - <Video />, <Spinner />
 - <SizableFrame />, <EnsureFlexed />
 - document/release <ThemeReverse />

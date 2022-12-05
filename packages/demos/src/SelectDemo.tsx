@@ -1,23 +1,25 @@
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
-import React, { useState } from 'react'
-import { LinearGradient, Select, YStack } from 'tamagui'
+import { useState } from 'react'
+import { Adapt, LinearGradient, Select, Sheet, YStack } from 'tamagui'
 
 export function SelectDemo() {
   const [val, setVal] = useState('apple')
   return (
-    <Select id="food" sheetBreakpoint="sm" value={val} onValueChange={setVal}>
+    <Select id="food" value={val} onValueChange={setVal}>
       <Select.Trigger w={180} iconAfter={ChevronDown}>
         <Select.Value placeholder="Something" />
       </Select.Trigger>
 
-      <Select.Sheet modal dismissOnSnapToBottom>
-        <Select.Sheet.Frame>
-          <Select.Sheet.ScrollView>
-            <Select.SheetContents />
-          </Select.Sheet.ScrollView>
-        </Select.Sheet.Frame>
-        <Select.Sheet.Overlay />
-      </Select.Sheet>
+      <Adapt when="sm">
+        <Sheet modal dismissOnSnapToBottom>
+          <Sheet.Frame>
+            <Sheet.ScrollView>
+              <Adapt.Contents />
+            </Sheet.ScrollView>
+          </Sheet.Frame>
+          <Sheet.Overlay />
+        </Sheet>
+      </Adapt>
 
       <Select.Content zIndex={200_000}>
         <Select.ScrollUpButton ai="center" jc="center" pos="relative" w="100%" h="$3">

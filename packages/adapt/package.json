@@ -1,0 +1,29 @@
+{
+  "name": "@tamagui/adapt",
+  "version": "1.0.1-beta.227",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "eslint src",
+    "lint:fix": "yarn lint --fix",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/core": "^1.0.1-beta.227"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.227"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

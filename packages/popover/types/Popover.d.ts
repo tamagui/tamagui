@@ -1,5 +1,5 @@
 import '@tamagui/polyfill-dev';
-import { MediaQueryKey, SizeTokens } from '@tamagui/core';
+import { SizeTokens } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import { DismissableProps } from '@tamagui/dismissable';
 import { FocusScopeProps } from '@tamagui/focus-scope';
@@ -11,12 +11,10 @@ import { ScrollView, ScrollViewProps, View } from 'react-native';
 declare type ScopedProps<P> = P & {
     __scopePopover?: Scope;
 };
-declare type NonNull<A> = Exclude<A, void | null>;
 export declare type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
-    sheetBreakpoint?: MediaQueryKey | false;
 };
 declare type PopoverContextValue = {
     triggerRef: React.RefObject<HTMLButtonElement>;
@@ -28,7 +26,7 @@ declare type PopoverContextValue = {
     onCustomAnchorAdd(): void;
     onCustomAnchorRemove(): void;
     size?: SizeTokens;
-    sheetBreakpoint: NonNull<PopoverProps['sheetBreakpoint']>;
+    sheetBreakpoint: any;
     scopeKey: string;
 };
 export declare const usePopoverScope: (scope: Scope<any>) => {
@@ -168,9 +166,8 @@ export declare const Popover: React.FC<PopoverProps> & {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     }>> & React.RefAttributes<PopoverCloseElement>>;
-    SheetContents: {
-        ({ __scopePopover }: ScopedProps<{}>): JSX.Element;
-        displayName: string;
+    Adapt: (({ when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
+        Contents: () => React.FunctionComponentElement<any>;
     };
     ScrollView: React.ForwardRefExoticComponent<ScrollViewProps & React.RefAttributes<ScrollView>>;
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet/types/types").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<View>> & {

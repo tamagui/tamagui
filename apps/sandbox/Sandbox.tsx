@@ -104,7 +104,10 @@ export const Sandbox = () => {
         >
           {/* <AnimationsHoverDemo /> */}
           {/* <AnimationsPresenceDemo /> */}
-          <SandboxExample />
+          {/* <SandboxExample /> */}
+          {/* <SelectDemo /> */}
+          {/* <PopoverDemo /> */}
+          <DialogDemo />
 
           {/* <PopoverDemo /> */}
           {/* <SheetDemo /> */}

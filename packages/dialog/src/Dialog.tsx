@@ -1,3 +1,4 @@
+import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
@@ -36,7 +37,6 @@ const [createDialogContext, createDialogScope] = createContextScope(DIALOG_NAME)
 type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
 
 interface DialogProps {
-  sheetBreakpoint?: MediaQueryKey | false
   children?: React.ReactNode
   open?: boolean
   defaultOpen?: boolean
@@ -62,7 +62,7 @@ type DialogContextValue = {
   onOpenChange: NonNull<DialogProps['onOpenChange']>
   modal: NonNull<DialogProps['modal']>
   allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>
-  sheetBreakpoint: NonNull<DialogProps['sheetBreakpoint']>
+  sheetBreakpoint: any
   scopeKey: string
 }
 
@@ -94,7 +94,7 @@ const DialogTrigger = React.forwardRef<TamaguiElement, DialogTriggerProps>(
         data-state={getState(context.open)}
         {...triggerProps}
         ref={composedTriggerRef}
-        onPress={composeEventHandlers(props.onPress, context.onOpenToggle)}
+        onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
       />
     )
   }
@@ -580,7 +580,7 @@ const DialogClose = React.forwardRef<TamaguiElement, DialogCloseProps>(
         tag="button"
         {...closeProps}
         ref={forwardedRef}
-        onPress={composeEventHandlers(props.onPress, () => context.onOpenChange(false))}
+        onPress={composeEventHandlers(props.onPress as any, () => context.onOpenChange(false))}
       />
     )
   }
@@ -678,8 +678,13 @@ const DialogInner = React.forwardRef<{ open: (val: boolean) => void }, DialogPro
     onOpenChange,
     modal = true,
     allowPinchZoom = false,
-    sheetBreakpoint = false,
   } = props
+
+  const { when, AdaptProvider } = useAdaptParent({
+    Contents: DialogSheetContents,
+  })
+  const sheetBreakpoint = when || false
+
   const triggerRef = React.useRef<HTMLButtonElement>(null)
   const contentRef = React.useRef<TamaguiElement>(null)
   const [open, setOpen] = useControllableState({
@@ -700,25 +705,27 @@ const DialogInner = React.forwardRef<{ open: (val: boolean) => void }, DialogPro
   const scopeKey = __scopeDialog ? Object.keys(__scopeDialog)[0] : scopeId
 
   return (
-    <DialogProvider
-      scope={__scopeDialog}
-      scopeKey={scopeKey}
-      triggerRef={triggerRef}
-      contentRef={contentRef}
-      contentId={useId() || ''}
-      titleId={useId() || ''}
-      descriptionId={useId() || ''}
-      open={open}
-      onOpenChange={setOpen}
-      onOpenToggle={React.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen])}
-      modal={modal}
-      allowPinchZoom={allowPinchZoom}
-      sheetBreakpoint={sheetBreakpoint}
-    >
-      <DialogSheetController onOpenChange={setOpen} __scopeDialog={__scopeDialog}>
-        {children}
-      </DialogSheetController>
-    </DialogProvider>
+    <AdaptProvider>
+      <DialogProvider
+        scope={__scopeDialog}
+        scopeKey={scopeKey}
+        triggerRef={triggerRef}
+        contentRef={contentRef}
+        contentId={useId() || ''}
+        titleId={useId() || ''}
+        descriptionId={useId() || ''}
+        open={open}
+        onOpenChange={setOpen}
+        onOpenToggle={React.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen])}
+        modal={modal}
+        allowPinchZoom={allowPinchZoom}
+        sheetBreakpoint={sheetBreakpoint}
+      >
+        <DialogSheetController onOpenChange={setOpen} __scopeDialog={__scopeDialog}>
+          {children}
+        </DialogSheetController>
+      </DialogProvider>
+    </AdaptProvider>
   )
 })
 
@@ -730,8 +737,8 @@ const Dialog = withStaticProperties(DialogInner, {
   Title: DialogTitle,
   Description: DialogDescription,
   Close: DialogClose,
-  SheetContents: DialogSheetContents,
   Sheet: ControlledSheet,
+  Adapt,
 })
 
 const DialogSheetController = (

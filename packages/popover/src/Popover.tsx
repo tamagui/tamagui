@@ -2,6 +2,7 @@
 
 import '@tamagui/polyfill-dev'
 
+import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
@@ -47,13 +48,11 @@ import { useDismiss, useFloating, useFocus, useInteractions, useRole } from './f
 const POPOVER_NAME = 'Popover'
 
 type ScopedProps<P> = P & { __scopePopover?: Scope }
-type NonNull<A> = Exclude<A, void | null>
 
 export type PopoverProps = PopperProps & {
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
-  sheetBreakpoint?: MediaQueryKey | false
 }
 
 type PopoverContextValue = {
@@ -66,7 +65,7 @@ type PopoverContextValue = {
   onCustomAnchorAdd(): void
   onCustomAnchorRemove(): void
   size?: SizeTokens
-  sheetBreakpoint: NonNull<PopoverProps['sheetBreakpoint']>
+  sheetBreakpoint: any
   scopeKey: string
 }
 
@@ -418,9 +417,13 @@ export const Popover = withStaticProperties(
       open: openProp,
       defaultOpen,
       onOpenChange,
-      sheetBreakpoint = false,
       ...restProps
     } = props
+    const { when, AdaptProvider } = useAdaptParent({
+      Contents: PopoverSheetContents,
+    })
+    const sheetBreakpoint = when || false
+
     const popperScope = usePopoverScope(__scopePopover)
     const triggerRef = React.useRef<HTMLButtonElement>(null)
     const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
@@ -459,32 +462,34 @@ export const Popover = withStaticProperties(
     )
 
     return (
-      <FloatingOverrideContext.Provider value={useFloatingContext as any}>
-        <Popper {...popperScope} stayInFrame {...restProps}>
-          <PopoverProviderInternal
-            scope={__scopePopover}
-            scopeKey={__scopePopover ? Object.keys(__scopePopover)[0] : ''}
-            sheetBreakpoint={sheetBreakpoint}
-            contentId={useId()}
-            triggerRef={triggerRef}
-            open={open}
-            onOpenChange={setOpen}
-            onOpenToggle={useEvent(() => {
-              if (open && breakpointActive) {
-                return
-              }
-              setOpen(!open)
-            })}
-            hasCustomAnchor={hasCustomAnchor}
-            onCustomAnchorAdd={React.useCallback(() => setHasCustomAnchor(true), [])}
-            onCustomAnchorRemove={React.useCallback(() => setHasCustomAnchor(false), [])}
-          >
-            <PopoverSheetController onOpenChange={setOpen} __scopePopover={__scopePopover}>
-              {children}
-            </PopoverSheetController>
-          </PopoverProviderInternal>
-        </Popper>
-      </FloatingOverrideContext.Provider>
+      <AdaptProvider>
+        <FloatingOverrideContext.Provider value={useFloatingContext as any}>
+          <Popper {...popperScope} stayInFrame {...restProps}>
+            <PopoverProviderInternal
+              scope={__scopePopover}
+              scopeKey={__scopePopover ? Object.keys(__scopePopover)[0] : ''}
+              sheetBreakpoint={sheetBreakpoint}
+              contentId={useId()}
+              triggerRef={triggerRef}
+              open={open}
+              onOpenChange={setOpen}
+              onOpenToggle={useEvent(() => {
+                if (open && breakpointActive) {
+                  return
+                }
+                setOpen(!open)
+              })}
+              hasCustomAnchor={hasCustomAnchor}
+              onCustomAnchorAdd={React.useCallback(() => setHasCustomAnchor(true), [])}
+              onCustomAnchorRemove={React.useCallback(() => setHasCustomAnchor(false), [])}
+            >
+              <PopoverSheetController onOpenChange={setOpen} __scopePopover={__scopePopover}>
+                {children}
+              </PopoverSheetController>
+            </PopoverProviderInternal>
+          </Popper>
+        </FloatingOverrideContext.Provider>
+      </AdaptProvider>
     )
   }) as React.FC<PopoverProps>,
   {
@@ -493,7 +498,7 @@ export const Popover = withStaticProperties(
     Trigger: PopoverTrigger,
     Content: PopoverContent,
     Close: PopoverClose,
-    SheetContents: PopoverSheetContents,
+    Adapt,
     ScrollView: PopoverScrollView,
     Sheet: ControlledSheet,
   }

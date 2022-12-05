@@ -36,17 +36,8 @@ package: popover
 import { Popover } from '@tamagui/popover'
 
 export default () => (
-  <Popover sheetBreakpoint="sm">
+  <Popover>
     <Popover.Trigger />
-
-    <Popover.Sheet>
-      <Popover.Sheet.Overlay />
-      <Popover.Sheet.Frame>
-        <Popover.Sheet.ScrollView>
-          <Popover.SheetContents />
-        </Popover.Sheet.ScrollView>
-      </Popover.Sheet.Frame>
-    </Popover.Sheet>
 
     <Popover.Content>
       <Popover.Arrow />
@@ -55,6 +46,18 @@ export default () => (
       <Popover.ScrollView>{/* ... */}</Popover.ScrollView>
       {/* ... */}
     </Popover.Content>
+
+    {/* optionally change to sheet when small screen */}
+    <Popover.Adapt when="sm">
+      <Popover.Sheet>
+        <Popover.Sheet.Overlay />
+        <Popover.Sheet.Frame>
+          <Popover.Sheet.ScrollView>
+            <Popover.Adapt.Contents />
+          </Popover.Sheet.ScrollView>
+        </Popover.Sheet.Frame>
+      </Popover.Sheet>
+    </Popover.Adapt>
   </Popover>
 )
 ```
@@ -145,11 +148,11 @@ When you want the Trigger to be in another location from where the Popover attac
 
 #### &lt;Sheet /&gt;
 
-When used alongside `sheetBreakpoint`, Popover will render as a sheet when that breakpoint is active.
+When used with `Adapt`, Popover will render as a sheet when that breakpoint is active.
 
 See [Sheet](/docs/components/sheet) for more props.
 
-Must use `Popover.SheetContents` inside the `Popover.Sheet.Frame` to insert the contents given to `Popover.Content`
+Must use `Adapt.Contents` inside the `Popover.Sheet.Frame` to insert the contents given to `Popover.Content`
 
 #### &lt;ScrollView /&gt;
 

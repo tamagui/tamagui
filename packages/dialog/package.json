@@ -30,6 +30,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/adapt": "^1.0.1-beta.227",
     "@tamagui/animate-presence": "^1.0.1-beta.227",
     "@tamagui/aria-hidden": "^1.0.1-beta.227",
     "@tamagui/compose-refs": "^1.0.1-beta.227",

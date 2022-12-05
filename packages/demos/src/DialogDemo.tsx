@@ -1,21 +1,23 @@
 import { X } from '@tamagui/lucide-icons'
-import { Button, Dialog, Fieldset, Input, Label, Unspaced, YStack } from 'tamagui'
+import { Adapt, Button, Dialog, Fieldset, Input, Label, Sheet, Unspaced, YStack } from 'tamagui'
 
 import { SelectDemo } from './SelectDemo'
 
 export function DialogDemo() {
   return (
-    <Dialog sheetBreakpoint="sm" modal>
+    <Dialog modal>
       <Dialog.Trigger asChild>
         <Button>Edit Profile</Button>
       </Dialog.Trigger>
 
-      <Dialog.Sheet zIndex={200_000} modal dismissOnSnapToBottom>
-        <Dialog.Sheet.Frame padding="$4">
-          <Dialog.SheetContents />
-        </Dialog.Sheet.Frame>
-        <Dialog.Sheet.Overlay />
-      </Dialog.Sheet>
+      <Adapt when="sm">
+        <Sheet zIndex={200_000} modal dismissOnSnapToBottom>
+          <Sheet.Frame padding="$4">
+            <Adapt.Contents />
+          </Sheet.Frame>
+          <Sheet.Overlay />
+        </Sheet>
+      </Adapt>
 
       <Dialog.Portal>
         <Dialog.Overlay

@@ -5110,6 +5110,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/adapt@^1.0.1-beta.227, @tamagui/adapt@workspace:packages/adapt":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/adapt@workspace:packages/adapt"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.227
+    "@tamagui/core": ^1.0.1-beta.227
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/alert-dialog@^1.0.1-beta.227, @tamagui/alert-dialog@workspace:packages/alert-dialog":
   version: 0.0.0-use.local
   resolution: "@tamagui/alert-dialog@workspace:packages/alert-dialog"
@@ -5513,6 +5522,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/dialog@workspace:packages/dialog"
   dependencies:
+    "@tamagui/adapt": ^1.0.1-beta.227
     "@tamagui/animate-presence": ^1.0.1-beta.227
     "@tamagui/aria-hidden": ^1.0.1-beta.227
     "@tamagui/build": ^1.0.1-beta.227
@@ -5887,6 +5897,7 @@ __metadata:
   resolution: "@tamagui/popover@workspace:packages/popover"
   dependencies:
     "@floating-ui/react-dom-interactions": ^0.10.3
+    "@tamagui/adapt": ^1.0.1-beta.227
     "@tamagui/animate-presence": ^1.0.1-beta.227
     "@tamagui/aria-hidden": ^1.0.1-beta.227
     "@tamagui/build": ^1.0.1-beta.227
@@ -6057,7 +6068,7 @@ __metadata:
     esbuild-loader: ^2.19.0
     file-loader: ^6.2.0
     html-webpack-plugin: ^5.5.0
-    mini-css-extract-plugin: ^2.6.1
+    mini-css-extract-plugin: ^2.7.1
     react: ">=18"
     react-dom: ">=18"
     react-native-reanimated: ^2.12.0
@@ -6100,6 +6111,7 @@ __metadata:
     "@floating-ui/react-dom-interactions": ^0.10.3
     "@floating-ui/react-native": ^0.8.0
     "@radix-ui/react-use-previous": ^0.1.1
+    "@tamagui/adapt": ^1.0.1-beta.227
     "@tamagui/build": ^1.0.1-beta.227
     "@tamagui/compose-refs": ^1.0.1-beta.227
     "@tamagui/core": ^1.0.1-beta.227
@@ -17531,17 +17543,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mini-css-extract-plugin@npm:^2.6.1":
-  version: 2.7.0
-  resolution: "mini-css-extract-plugin@npm:2.7.0"
-  dependencies:
-    schema-utils: ^4.0.0
-  peerDependencies:
-    webpack: ^5.0.0
-  checksum: e6b111d4289132bd496286eec42801c74c83af7eac71af630a5babae48ca65377f47d8b39e1f0653b449e68e67b57dbd0d36917242f08fc3e7770e70c0cb56cd
-  languageName: node
-  linkType: hard
-
 "mini-css-extract-plugin@npm:^2.7.1":
   version: 2.7.1
   resolution: "mini-css-extract-plugin@npm:2.7.1"
@@ -22934,6 +22935,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
+    "@tamagui/adapt": ^1.0.1-beta.227
     "@tamagui/alert-dialog": ^1.0.1-beta.227
     "@tamagui/animate-presence": ^1.0.1-beta.227
     "@tamagui/avatar": ^1.0.1-beta.227

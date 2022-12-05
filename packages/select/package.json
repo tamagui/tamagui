@@ -27,6 +27,7 @@
     "@floating-ui/react-dom-interactions": "^0.10.3",
     "@floating-ui/react-native": "^0.8.0",
     "@radix-ui/react-use-previous": "^0.1.1",
+    "@tamagui/adapt": "^1.0.1-beta.227",
     "@tamagui/compose-refs": "^1.0.1-beta.227",
     "@tamagui/core": "^1.0.1-beta.227",
     "@tamagui/create-context": "^1.0.1-beta.227",

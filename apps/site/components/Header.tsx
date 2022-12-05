@@ -212,13 +212,7 @@ const SmallMenu = React.memo(() => {
   }
 
   return (
-    <Popover
-      open={open}
-      onOpenChange={setOpen}
-      sheetBreakpoint="sm"
-      size="$5"
-      stayInFrame={{ padding: 20 }}
-    >
+    <Popover open={open} onOpenChange={setOpen} size="$5" stayInFrame={{ padding: 20 }}>
       <Popover.Trigger asChild>
         <YStack
           $gtMd={{
@@ -237,14 +231,16 @@ const SmallMenu = React.memo(() => {
         </YStack>
       </Popover.Trigger>
 
-      <Popover.Sheet zIndex={100000000} modal dismissOnSnapToBottom>
-        <Popover.Sheet.Frame>
-          <Popover.Sheet.ScrollView>
-            <Popover.SheetContents />
-          </Popover.Sheet.ScrollView>
-        </Popover.Sheet.Frame>
-        <Popover.Sheet.Overlay zIndex={100} />
-      </Popover.Sheet>
+      <Popover.Adapt when="sm">
+        <Popover.Sheet zIndex={100000000} modal dismissOnSnapToBottom>
+          <Popover.Sheet.Frame>
+            <Popover.Sheet.ScrollView>
+              <Popover.Adapt.Contents />
+            </Popover.Sheet.ScrollView>
+          </Popover.Sheet.Frame>
+          <Popover.Sheet.Overlay zIndex={100} />
+        </Popover.Sheet>
+      </Popover.Adapt>
 
       <Popover.Content
         bw={1}

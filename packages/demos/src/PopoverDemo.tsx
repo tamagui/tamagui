@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from '@tamagui/lucide-icons'
-import { Button, Input, Label, Popover, PopoverProps, XStack } from 'tamagui'
+import { Adapt, Button, Input, Label, Popover, PopoverProps, XStack } from 'tamagui'
 
 export function PopoverDemo() {
   return (
@@ -14,17 +14,19 @@ export function PopoverDemo() {
 
 export function Demo({ Icon, ...props }: PopoverProps & { Icon?: any }) {
   return (
-    <Popover sheetBreakpoint="sm" size="$5" {...props}>
+    <Popover size="$5" {...props}>
       <Popover.Trigger asChild>
         <Button icon={Icon} />
       </Popover.Trigger>
 
-      <Popover.Sheet modal dismissOnSnapToBottom>
-        <Popover.Sheet.Frame padding="$4">
-          <Popover.SheetContents />
-        </Popover.Sheet.Frame>
-        <Popover.Sheet.Overlay />
-      </Popover.Sheet>
+      <Adapt when="sm">
+        <Popover.Sheet modal dismissOnSnapToBottom>
+          <Popover.Sheet.Frame padding="$4">
+            <Adapt.Contents />
+          </Popover.Sheet.Frame>
+          <Popover.Sheet.Overlay />
+        </Popover.Sheet>
+      </Adapt>
 
       <Popover.Content
         bw={1}

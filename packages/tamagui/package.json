@@ -26,6 +26,7 @@
     "check-circular-deps": "npx madge --circular ./src/index.ts"
   },
   "dependencies": {
+    "@tamagui/adapt": "^1.0.1-beta.227",
     "@tamagui/alert-dialog": "^1.0.1-beta.227",
     "@tamagui/animate-presence": "^1.0.1-beta.227",
     "@tamagui/avatar": "^1.0.1-beta.227",

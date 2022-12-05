@@ -1,5 +1,5 @@
 import type { ContextData, FloatingContext, ReferenceType } from '@floating-ui/react-dom-interactions';
-import type { MediaQueryKey, SizeTokens } from '@tamagui/core';
+import type { SizeTokens } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import type { ThemeableStackProps, YStackProps } from '@tamagui/stacks';
 import type { DispatchWithoutAction, HTMLProps, MutableRefObject, ReactNode } from 'react';
@@ -20,13 +20,11 @@ export interface SelectProps {
     name?: string;
     autoComplete?: string;
     size?: SizeTokens;
-    sheetBreakpoint?: MediaQueryKey | false;
 }
-declare type NonNull<A> = Exclude<A, void | null>;
 export interface SelectContextValue {
     dir?: Direction;
     scopeKey: string;
-    sheetBreakpoint: NonNull<SelectProps['sheetBreakpoint']>;
+    sheetBreakpoint: any;
     size?: SizeTokens;
     value: any;
     selectedItem: ReactNode;
@@ -80,5 +78,4 @@ export interface SelectScrollButtonImplProps extends YStackProps {
 }
 export interface SelectScrollButtonProps extends Omit<SelectScrollButtonImplProps, 'dir' | 'componentName'> {
 }
-export {};
 //# sourceMappingURL=types.d.ts.map

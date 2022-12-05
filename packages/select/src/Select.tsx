@@ -1,3 +1,4 @@
+import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { GetProps, TamaguiElement, isClient, isWeb } from '@tamagui/core'
 import { styled, useGet, useIsomorphicLayoutEffect, withStaticProperties } from '@tamagui/core'
@@ -10,7 +11,6 @@ import { XStack, YStack, YStackProps } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 
 import { SELECT_NAME } from './constants'
 import { SelectProvider, createSelectContext, useSelectContext } from './context'
@@ -509,10 +509,13 @@ export const Select = withStaticProperties(
       defaultValue,
       onValueChange,
       size: sizeProp = '$4',
-      sheetBreakpoint = false,
       dir,
     } = props
 
+    const { when, AdaptProvider } = useAdaptParent({
+      Contents: SelectSheetContents,
+    })
+    const sheetBreakpoint = when || false
     const isSheet = useSelectBreakpointActive(sheetBreakpoint)
     const SelectImpl = isSheet ? SelectSheetImpl : SelectInlineImpl
     const forceUpdate = React.useReducer(() => ({}), {})[1]
@@ -554,49 +557,52 @@ export const Select = withStaticProperties(
     const scopeKey = __scopeSelect ? Object.keys(__scopeSelect)[0] ?? id : id
 
     return (
-      <SelectProvider
-        dir={dir}
-        blockSelection={false}
-        size={sizeProp}
-        fallback={false}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
-        forceUpdate={forceUpdate}
-        valueNode={valueNode}
-        onValueNodeChange={setValueNode}
-        onValueNodeHasChildrenChange={setValueNodeHasChildren}
-        valueNodeHasChildren={valueNodeHasChildren}
-        scopeKey={scopeKey}
-        sheetBreakpoint={sheetBreakpoint}
-        scope={__scopeSelect}
-        setValueAtIndex={(index, value) => {
-          listContentRef.current[index] = value
-        }}
-        activeIndex={activeIndex}
-        onChange={setValue}
-        selectedIndex={selectedIndex}
-        setActiveIndex={setActiveIndex}
-        setOpen={setOpen}
-        setSelectedIndex={setSelectedIndex}
-        value={value}
-        open={open}
-      >
-        <SelectSheetController onOpenChange={setOpen} __scopeSelect={__scopeSelect}>
-          <SelectImpl
-            activeIndexRef={activeIndexRef}
-            listContentRef={listContentRef}
-            selectedIndexRef={selectedIndexRef}
-            {...props}
-            open={open}
-            value={value}
-          >
-            {children}
-          </SelectImpl>
-        </SelectSheetController>
-      </SelectProvider>
+      <AdaptProvider>
+        <SelectProvider
+          dir={dir}
+          blockSelection={false}
+          size={sizeProp}
+          fallback={false}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
+          forceUpdate={forceUpdate}
+          valueNode={valueNode}
+          onValueNodeChange={setValueNode}
+          onValueNodeHasChildrenChange={setValueNodeHasChildren}
+          valueNodeHasChildren={valueNodeHasChildren}
+          scopeKey={scopeKey}
+          sheetBreakpoint={sheetBreakpoint}
+          scope={__scopeSelect}
+          setValueAtIndex={(index, value) => {
+            listContentRef.current[index] = value
+          }}
+          activeIndex={activeIndex}
+          onChange={setValue}
+          selectedIndex={selectedIndex}
+          setActiveIndex={setActiveIndex}
+          setOpen={setOpen}
+          setSelectedIndex={setSelectedIndex}
+          value={value}
+          open={open}
+        >
+          <SelectSheetController onOpenChange={setOpen} __scopeSelect={__scopeSelect}>
+            <SelectImpl
+              activeIndexRef={activeIndexRef}
+              listContentRef={listContentRef}
+              selectedIndexRef={selectedIndexRef}
+              {...props}
+              open={open}
+              value={value}
+            >
+              {children}
+            </SelectImpl>
+          </SelectSheetController>
+        </SelectProvider>
+      </AdaptProvider>
     )
   },
   {
+    Adapt,
     Content: SelectContent,
     Group: SelectGroup,
     Icon: SelectIcon,

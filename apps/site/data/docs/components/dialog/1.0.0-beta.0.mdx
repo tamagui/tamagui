@@ -165,25 +165,18 @@ Just [Tamagui Props](/docs/intro/props).
 
 #### &lt;Sheet /&gt;
 
-When used alongside `sheetBreakpoint`, Dialog will render as a sheet when that breakpoint is active.
+When used with `Adapt`, Dialog will render as a sheet when that breakpoint is active.
 
 See [Sheet](/docs/components/sheet) for more props.
 
-Must use `Dialog.SheetContents` inside the `Dialog.Sheet.Frame` to insert the contents given to `Dialog.Content`
+Must use `Adapt.Contents` inside the `Dialog.Sheet.Frame` to insert the contents given to `Dialog.Content`
 
 ```tsx
 import { Dialog } from '@tamagui/dialog' // or from 'tamagui'
 
 export default () => (
-  <Dialog sheetBreakpoint="sm">
+  <Dialog>
     <Dialog.Trigger />
-
-    <Dialog.Sheet>
-      <Dialog.Sheet.Frame>
-        <Dialog.SheetContents />
-      </Dialog.Sheet.Frame>
-      <Dialog.Sheet.Overlay />
-    </Dialog.Sheet>
 
     <Dialog.Portal>
       <Dialog.Overlay />
@@ -194,6 +187,16 @@ export default () => (
         {/* ... */}
       </Dialog.Content>
     </Dialog.Portal>
+
+    {/* optionally change to sheet when small screen */}
+    <Dialog.Adapt when="sm">
+      <Dialog.Sheet>
+        <Dialog.Sheet.Frame>
+          <Dialog.Adapt.Contents />
+        </Dialog.Sheet.Frame>
+        <Dialog.Sheet.Overlay />
+      </Dialog.Sheet>
+    </Dialog.Adapt>
   </Dialog>
 )
 ```
