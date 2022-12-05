@@ -209,7 +209,7 @@ export declare const SelectSheetContents: {
     displayName: string;
 };
 export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) & {
-    Adapt: (({ when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
+    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
         Contents: () => React.FunctionComponentElement<any>;
     };
     Content: ({ children, __scopeSelect, zIndex, ...focusScopeProps }: {

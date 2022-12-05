@@ -3,6 +3,7 @@ title: Tamagui v1 Release Candidate
 publishedAt: '2022-12-04'
 description: Typed design systems for React Native + Web that compile away.
 by: nate
+poster: banner-rc0.jpg
 ---
 
 <Image
@@ -32,6 +33,7 @@ Here's a very brief overview of changes since Beta:
 
 ### Major `@tamagui/core` Updates
 
+- Easier install - no need to configure bundler at all to start, compiler optional too
 - React 0.69, React 18, React Native Web 18, and Expo 47 support
 - No `react-native` dependency in `@tamagui/core` - 🔥 huge for web-only use cases
 - Bundle size reduction of ~12Kb
@@ -54,27 +56,34 @@ Here's a very brief overview of changes since Beta:
 
 ### Major `tamagui` updates
 
-The `tamagui` package arguably had the most progress since beta with a flood of new components joining the party. These are incredibly rich components that follow the Radix model of composable components, with the ability to adapt many to completely change their output depending on the media query.
+Tamagui welcomed a flood of new components to the party. These are incredibly rich components that follow the Radix model of composable component APIs. They have the ability to adapt their appearance completely using `<Adapt />` to target media queries and platforms.
 
-The V1 blog post will cover these in more detail, see the accompanying docs for each for more:
+The V1 blog post will cover these in more detail. You can see the accompanying docs for each for now:
 
 [Sheet](/docs/components/sheet), [Select](/docs/components/select), [Dialog](/docs/components/dialog), [AlertDialog](/docs/components/alert-dialog), [Slider](/docs/components/slider), [Label](/docs/components/label), [Card](/docs/components/card), [ListItem](/docs/components/list-item), [Avatar](/docs/components/avatar), [Progress](/docs/components/progress), [Spinner](/docs/components/spinner), [Unspaced](/docs/components/unspaced), [ScrollView](/docs/components/scroll-view), [XGroup and YGroup](/docs/components/group)
 
 ### CI, Testing and Release
 
-We've implemented a complete CI/CD pipeline in Github Actions that lints, tests, and type checks everything before release. Our release script has been iterated on many times to ensure releases go out smoothly.
+A complete CI/CD pipeline in Github Actions lints, tests, and type checks everything before release. Our release script has added many checks and features for making sure things go out smoothly.
 
-Testing now covers far more of `core` and `static`, as well as the most important tests - a complete integration test that verifies the entire flow of starting a Tamagui app using `npm create tamagui-app`, all the way to using Playwright to ensure the final output is correct and functional.
+Testing now covers far more of `core` and `static`, as well as a complete integration test that verifies the entire flow of starting a Tamagui app with `npm create tamagui-app` all the way to Playwright ensuring the final output is correct and functional.
 
 ### Community & Contributors
 
-My favorite part of this post is how many we've welcomed many to the Tamagui community.
+The best part of this post is how active the community has become.
 
-The Discord is active and healthy with many posts every day. We've now had 33 contributors to the repo, with many of the most significant contributions coming over the last three months.
+The Discord has many posts every day. We've had 33 new contributors to the repo, with many of the most significant contributions coming over the last three months.
 
-And personally, I've met my goal of 10 Github Sponsors for the year, something that is especially cool given I didn't promote it at all beyond [an ongoing Twitter thread](https://twitter.com/natebirdman/status/1563229065104203776).
+And I've personally met my goal of 10 Github Sponsors for the year, something especially cool given it wasn't promoted beyond [a Twitter thread](https://twitter.com/natebirdman/status/1563229065104203776).
 
-Be sure to check [the Community page](/community) for more goodies like a Figma design system file, example repos, and to see our wonderful sponsors.
+Be sure to check [the Community page](/community) for more goodies like a Figma design system file, example repos, sponsors, and other helpful links.
+
+### Outstanding issues for next RCs
+
+- Windows support for `npm create tamagui-app` can break, requires powershell
+- Sheets on native can have interaction issues with inner scrollable content
+- Android has some bugs with some types of content inside Sheets.
+- Some versions of Next.js dont properly load CSS on subsequent pages
 
 ---
 

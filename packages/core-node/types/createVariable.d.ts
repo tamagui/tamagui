@@ -7,7 +7,6 @@ declare type VariableIn<A = any> = {
     val: A;
     name: string;
     key: string;
-    isFloating?: boolean;
 };
 export declare type Variable<A = any> = VariableIn<A> & {
     [IS_VAR]?: true;
@@ -17,7 +16,6 @@ export declare const createVariable: <A extends string | number = any>(props: Va
     isVar: boolean;
     key: string;
     name: string;
-    isFloating: boolean | undefined;
     val: A;
     variable: string;
 };

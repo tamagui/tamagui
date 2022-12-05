@@ -6177,6 +6177,7 @@ __metadata:
     "@tamagui/stacks": ^1.0.1-beta.228
     "@tamagui/use-constant": ^1.0.1-beta.228
     "@tamagui/use-controllable-state": ^1.0.1-beta.228
+    "@tamagui/use-debounce": ^1.0.1-beta.228
     react: ">=18"
     react-dom: ">=18"
     react-native: "*"

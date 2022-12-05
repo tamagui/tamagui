@@ -14,7 +14,6 @@ type VariableIn<A = any> = {
   val: A
   name: string
   key: string
-  isFloating?: boolean
 }
 
 export type Variable<A = any> = VariableIn<A> & {
@@ -24,12 +23,11 @@ export type Variable<A = any> = VariableIn<A> & {
 
 export const createVariable = <A extends string | number = any>(props: VariableIn<A>) => {
   if (isVariable(props)) return props
-  const { key, name, val, isFloating } = props
+  const { key, name, val } = props
   return {
     [IS_VAR]: true,
     key,
     name: simpleHash(name, 40),
-    isFloating,
     val,
     variable: isWeb ? createCSSVariable(name) : '',
   }

@@ -29,7 +29,7 @@ export function getThemeCSSRules({
     // if (varToValMap) {
     //   varToValMap[variable.variable] = variable.val
     // }
-    if (variable.isFloating || !tokensValueToVariable.has(variable.val)) {
+    if (!tokensValueToVariable.has(variable.val)) {
       value = variable.val
     } else {
       value = tokensValueToVariable.get(variable.val)!.variable

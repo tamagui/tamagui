@@ -22,6 +22,7 @@ export default function Community({ frontmatters }) {
       <TitleAndMetaTags
         title="Community — Tamagui"
         description="Tamagui latest news and discussion."
+        pathname="/community"
       />
 
       <HeaderIndependent />

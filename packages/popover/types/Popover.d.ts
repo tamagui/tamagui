@@ -166,7 +166,7 @@ export declare const Popover: React.FC<PopoverProps> & {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     }>> & React.RefAttributes<PopoverCloseElement>>;
-    Adapt: (({ when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
+    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
         Contents: () => React.FunctionComponentElement<any>;
     };
     ScrollView: React.ForwardRefExoticComponent<ScrollViewProps & React.RefAttributes<ScrollView>>;

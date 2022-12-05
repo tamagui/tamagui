@@ -14,7 +14,12 @@ const exec = promisify(proc.exec)
 const spawn = proc.spawn
 
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
-const nextVersion = `1.0.1-beta.${+curVersion.split('.')[3] + 1}`
+const curPatch = +curVersion.split('.')[3]
+// beta is >200 so resetting it to 0 for first rc
+const curRC = curPatch > 200 ? 0 : curPatch + 1
+const nextVersion = `1.0.1-rc.${curRC}`
+
+console.log('nextVersion', nextVersion)
 
 const skipVersion = process.argv.includes('--skip-version')
 const skipPublish = process.argv.includes('--skip-publish')

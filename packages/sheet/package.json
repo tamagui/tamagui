@@ -30,8 +30,8 @@
     "@tamagui/scroll-view": "^1.0.1-beta.228",
     "@tamagui/stacks": "^1.0.1-beta.228",
     "@tamagui/use-constant": "^1.0.1-beta.228",
-    "@tamagui/use-debounce": "^1.0.1-beta.228",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.228"
+    "@tamagui/use-controllable-state": "^1.0.1-beta.228",
+    "@tamagui/use-debounce": "^1.0.1-beta.228"
   },
   "peerDependencies": {
     "react": ">=18",

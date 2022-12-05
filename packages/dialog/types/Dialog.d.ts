@@ -2602,7 +2602,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             [x: string]: undefined;
         }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
     };
-    Adapt: (({ when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
+    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
         Contents: () => React.FunctionComponentElement<any>;
     };
 };
