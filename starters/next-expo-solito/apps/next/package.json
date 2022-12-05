@@ -24,7 +24,6 @@
     "@tamagui/next-plugin": "1.0.1-rc.0",
     "@types/node": "^18.6.4",
     "eslint-config-next": "^12.2.4",
-    "next-images": "^1.8.4",
-    "next-transpile-modules": "^10.0.0"
+    "next-images": "^1.8.4"
   }
 }
