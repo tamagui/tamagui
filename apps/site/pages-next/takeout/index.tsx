@@ -3,7 +3,7 @@
 
 // import '@takeout/font-noto-emoji/css/300.css'
 
-import { HeaderIndependent } from '@components/Header'
+import { HeaderIndependent } from '@components/HeaderIndependent'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { createNotoFont } from '@takeout/font-noto-emoji'
 import { SwitchDemo } from '@tamagui/demos'

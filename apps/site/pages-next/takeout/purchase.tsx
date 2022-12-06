@@ -2,7 +2,7 @@
 // import '@tamagui/font-inter/css/200.css'
 // import '@tamagui/font-inter/css/900.css'
 
-import { HeaderIndependent } from '@components/Header'
+import { HeaderIndependent } from '@components/HeaderIndependent'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { CheckCircle, XCircle } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'

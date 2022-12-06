@@ -19,25 +19,11 @@ import {
 import { AlphaButton } from './AlphaButton'
 import { DocsMenuContents } from './DocsMenuContents'
 import { GithubIcon } from './GithubIcon'
-import { HeaderFloating } from './HeaderFloating'
 import { HeaderProps } from './HeaderProps'
 import { SearchButton } from './SearchButton'
 import { ThemeSearchButtonGroup } from './ThemeSearchButtonGroup'
 import { useDocsMenu } from './useDocsMenu'
 import { useTint } from './useTint'
-
-export const HeaderIndependent = ({
-  alwaysFloating = true,
-  ...props
-}: Omit<HeaderProps, 'floating'> & {
-  alwaysFloating?: boolean
-}) => {
-  return (
-    <>
-      <HeaderFloating alwaysFloating={alwaysFloating} {...props} />
-    </>
-  )
-}
 
 export function Header(props: HeaderProps) {
   const router = useRouter()

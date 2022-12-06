@@ -6,7 +6,7 @@ import { EnsureFlexed, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
 
 import { Container } from './Container'
 import { DocsMenuContents } from './DocsMenuContents'
-import { HeaderIndependent } from './Header'
+import { HeaderIndependent } from './HeaderIndependent'
 import { Link } from './Link'
 import { useDocsMenu } from './useDocsMenu'
 import { useTint } from './useTint'
