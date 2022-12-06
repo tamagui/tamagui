@@ -14,10 +14,9 @@ const exec = promisify(proc.exec)
 const spawn = proc.spawn
 
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
-const curPatch = +curVersion.split('.')[3]
-// beta is >200 so resetting it to 0 for first rc
-const curRC = curPatch > 200 ? 0 : curPatch + 1
-const nextVersion = `1.0.1-rc.${curRC}`
+const curRC = `rc.0`
+const curPatch = (+curVersion.split('.')[4] || 0) + 1
+const nextVersion = `1.0.1-${curRC}.${curPatch}`
 
 console.log('nextVersion', nextVersion)
 
