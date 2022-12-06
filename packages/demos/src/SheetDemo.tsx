@@ -2,7 +2,7 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { Sheet } from '@tamagui/sheet'
 import { SheetProps } from '@tamagui/sheet/types/types'
 import { useState } from 'react'
-import { Button, XStack } from 'tamagui'
+import { Button, H1, H2, Paragraph, Square, XStack } from 'tamagui'
 
 export const SheetDemo = () => {
   const [position, setPosition] = useState(0)
@@ -45,7 +45,24 @@ function InnerSheet(props: SheetProps) {
       <Sheet.Overlay />
       <Sheet.Handle />
       <Sheet.Frame f={1} p="$4" jc="center" ai="center" space="$5">
-        <Button size="$4" circular icon={ChevronDown} onPress={() => props.onOpenChange?.(false)} />
+        <Sheet.ScrollView space>
+          <Button
+            size="$8"
+            circular
+            als="center"
+            icon={ChevronDown}
+            onPress={() => props.onOpenChange?.(false)}
+          />
+          <H1>Hello world</H1>
+          <H2>You can scroll me</H2>
+          <Paragraph>
+            Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad pariatur. Dolor
+            excepteur esse deserunt voluptate labore ea. Exercitation ipsum deserunt occaecat
+            cupidatat consequat est adipisicing velit cupidatat ullamco veniam aliquip reprehenderit
+            officia. Officia labore culpa ullamco velit. In sit occaecat velit ipsum fugiat esse
+            aliqua dolor sint.
+          </Paragraph>
+        </Sheet.ScrollView>
       </Sheet.Frame>
     </Sheet>
   )
