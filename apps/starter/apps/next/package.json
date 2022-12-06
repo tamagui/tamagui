@@ -11,7 +11,7 @@
   "dependencies": {
     "@starter/config": "0.0.0",
     "@starter/ui": "0.0.0",
-    "@tamagui/next-theme": "1.0.1-rc.0",
+    "@tamagui/next-theme": "1.0.1-rc.0.1",
     "app": "*",
     "next": "^13.0.2",
     "raf": "^3.4.1",
@@ -20,7 +20,7 @@
     "react-native-web-lite": "^1.0.1-beta.144"
   },
   "devDependencies": {
-    "@tamagui/next-plugin": "1.0.1-rc.0",
+    "@tamagui/next-plugin": "1.0.1-rc.0.1",
     "@types/node": "^16.11.9",
     "eslint-config-next": "^12.2.4",
     "file-loader": "^6.2.0",
