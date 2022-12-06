@@ -18,7 +18,7 @@ export const isRSC = process.env.ENABLE_RSC
 const idFn = () => {}
 export const useIsomorphicLayoutEffect = isRSC ? idFn : isServer ? useEffect : useLayoutEffect
 export const isChrome = typeof navigator !== 'undefined' && /Chrome/.test(navigator.userAgent || '')
-export const isWebTouchable = isClient && 'ontouchstart' in window
+export const isWebTouchable = isClient && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
 export const isTouchable = !isWeb || isWebTouchable
 
 if (process.env.NODE_ENV === 'development') {
