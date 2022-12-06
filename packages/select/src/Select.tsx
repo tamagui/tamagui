@@ -15,10 +15,10 @@ import * as React from 'react'
 import { SELECT_NAME } from './constants'
 import { SelectProvider, createSelectContext, useSelectContext } from './context'
 import { SelectContent } from './SelectContent'
-import { SelectImplProps, SelectInlineImpl } from './SelectImpl'
+import { SelectInlineImpl } from './SelectImpl'
 import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
 import { SelectViewport } from './SelectViewport'
-import { ScopedProps, SelectProps } from './types'
+import { ScopedProps, SelectImplProps, SelectProps } from './types'
 import { useSelectBreakpointActive, useShowSelectSheet } from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------

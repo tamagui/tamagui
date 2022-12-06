@@ -7,6 +7,11 @@ export declare type Direction = 'ltr' | 'rtl';
 export declare type ScopedProps<P> = P & {
     __scopeSelect?: Scope;
 };
+export declare type SelectImplProps = ScopedProps<SelectProps> & {
+    activeIndexRef: any;
+    selectedIndexRef: any;
+    listContentRef: any;
+};
 export interface SelectProps {
     id?: string;
     children?: ReactNode;

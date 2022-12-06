@@ -21,13 +21,7 @@ import { flushSync } from 'react-dom'
 
 import { SCROLL_ARROW_THRESHOLD, WINDOW_PADDING } from './constants'
 import { SelectProvider, useSelectContext } from './context'
-import { ScopedProps, SelectProps } from './types'
-
-export type SelectImplProps = ScopedProps<SelectProps> & {
-  activeIndexRef: any
-  selectedIndexRef: any
-  listContentRef: any
-}
+import { SelectImplProps } from './types'
 
 // TODO use id for focusing from label
 export const SelectInlineImpl = (props: SelectImplProps) => {
