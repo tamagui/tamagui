@@ -44,8 +44,8 @@ function InnerSheet(props: SheetProps) {
     <Sheet modal snapPoints={[90]} dismissOnSnapToBottom {...props}>
       <Sheet.Overlay />
       <Sheet.Handle />
-      <Sheet.Frame f={1} p="$4" jc="center" ai="center" space="$5">
-        <Sheet.ScrollView space>
+      <Sheet.Frame f={1} jc="center" ai="center" space="$5">
+        <Sheet.ScrollView p="$4" space>
           <Button
             size="$8"
             circular
@@ -55,6 +55,20 @@ function InnerSheet(props: SheetProps) {
           />
           <H1>Hello world</H1>
           <H2>You can scroll me</H2>
+          <Paragraph>
+            Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad pariatur. Dolor
+            excepteur esse deserunt voluptate labore ea. Exercitation ipsum deserunt occaecat
+            cupidatat consequat est adipisicing velit cupidatat ullamco veniam aliquip reprehenderit
+            officia. Officia labore culpa ullamco velit. In sit occaecat velit ipsum fugiat esse
+            aliqua dolor sint.
+          </Paragraph>
+          <Paragraph>
+            Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad pariatur. Dolor
+            excepteur esse deserunt voluptate labore ea. Exercitation ipsum deserunt occaecat
+            cupidatat consequat est adipisicing velit cupidatat ullamco veniam aliquip reprehenderit
+            officia. Officia labore culpa ullamco velit. In sit occaecat velit ipsum fugiat esse
+            aliqua dolor sint.
+          </Paragraph>
           <Paragraph>
             Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad pariatur. Dolor
             excepteur esse deserunt voluptate labore ea. Exercitation ipsum deserunt occaecat

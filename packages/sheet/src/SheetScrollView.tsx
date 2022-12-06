@@ -70,39 +70,40 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
           return true
         }}
         onMoveShouldSetResponder={() => true}
-        onResponderMove={(e) => {
-          const { pageY } = e.nativeEvent
+        // somehow disabling works better, regression, no more nice drag continue scroll
+        // onResponderMove={(e) => {
+        //   const { pageY } = e.nativeEvent
 
-          if (state.current.isScrolling) {
-            return
-          }
+        //   if (state.current.isScrolling) {
+        //     return
+        //   }
 
-          if (scrollBridge.scrollStartY === -1) {
-            scrollBridge.scrollStartY = pageY
-            state.current.lastPageY = pageY
-          }
+        //   if (scrollBridge.scrollStartY === -1) {
+        //     scrollBridge.scrollStartY = pageY
+        //     state.current.lastPageY = pageY
+        //   }
 
-          const dragAt = pageY - scrollBridge.scrollStartY
-          const dy = pageY - state.current.lastPageY
-          state.current.lastPageY = pageY // after dy
-          const isDraggingUp = dy < 0
-          const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
+        //   const dragAt = pageY - scrollBridge.scrollStartY
+        //   const dy = pageY - state.current.lastPageY
+        //   state.current.lastPageY = pageY // after dy
+        //   const isDraggingUp = dy < 0
+        //   const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
 
-          if ((dy === 0 || isDraggingUp) && isPaneAtTop) {
-            state.current.isScrolling = true
-            setScrollEnabled(true)
-            return
-          }
+        //   if ((dy === 0 || isDraggingUp) && isPaneAtTop) {
+        //     state.current.isScrolling = true
+        //     setScrollEnabled(true)
+        //     return
+        //   }
 
-          setScrollEnabled(false)
-          scrollBridge.drag(dragAt)
-          state.current.dragAt = dragAt
-          state.current.dys.push(dy)
-          // only do every so often, cut down to 10 again
-          if (state.current.dys.length > 100) {
-            state.current.dys = state.current.dys.slice(-10)
-          }
-        }}
+        //   setScrollEnabled(false)
+        //   scrollBridge.drag(dragAt)
+        //   state.current.dragAt = dragAt
+        //   state.current.dys.push(dy)
+        //   // only do every so often, cut down to 10 again
+        //   if (state.current.dys.length > 100) {
+        //     state.current.dys = state.current.dys.slice(-10)
+        //   }
+        // }}
         onResponderRelease={release}
         {...props}
       >
