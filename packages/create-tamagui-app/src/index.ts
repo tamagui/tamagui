@@ -185,7 +185,7 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
             ? `file://${repoRoot}`
             : `https://github.com/tamagui/tamagui.git`
 
-        await $`git clone --branch ${branch} --depth 1 --filter=blob:none --sparse ${sourceGitRepo} ${targetGitDir}`
+        execSync(`git clone --branch ${branch} --depth 1 --filter=blob:none --sparse ${sourceGitRepo} ${targetGitDir}`);
       } else {
         if (!(await pathExists(join(targetGitDir, '.git')))) {
           console.error(`Corrupt Tamagui directory, please delete ${targetGitDir} and re-run`)
@@ -194,10 +194,9 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
       }
 
       console.log(`Updating tamagui starters repo`)
-      cd(targetGitDir)
-      await $`git sparse-checkout set starters`
+      execSync(`git sparse-checkout set starters`, { cwd: targetGitDir });
       try {
-        await $`git pull --rebase --allow-unrelated-histories --depth 1 origin ${branch}`
+        execSync(`git pull --rebase --allow-unrelated-histories --depth 1 origin ${branch}`, { cwd: targetGitDir });
       } catch (err: any) {
         console.log(
           `Error updating: ${err.message} ${
