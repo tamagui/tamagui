@@ -157,7 +157,7 @@ export const AnimatePresence: React.FunctionComponent<
         {childrenToRender.map((child) => (
           <PresenceChild
             key={getChildKey(child)}
-            isPresent
+            isPresent={isMounted.current}
             exitVariant={exitVariant}
             enterVariant={enterVariant}
             initial={initial ? undefined : false}

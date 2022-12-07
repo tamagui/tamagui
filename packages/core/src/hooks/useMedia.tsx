@@ -13,7 +13,7 @@ import {
 import { useSafeRef } from './useSafeRef'
 
 export const mediaState: MediaQueryState =
-  // development time safeguard
+  // development only safeguard
   process.env.NODE_ENV === 'development'
     ? createProxy(
         {},

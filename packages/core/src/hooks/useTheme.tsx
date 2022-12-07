@@ -189,20 +189,18 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
   }
 
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
-  const parentState = parentManager
-    ? {
-        ...parentManager.state,
-        className: isInversingOnMount ? '' : parentManager.state.className,
-        themeManager: parentManager,
-        isNewTheme: false,
-      }
-    : null
+  const shouldReturnParentState = hasNoThemeUpdatingProps(props) || isInversingOnMount
 
-  if (parentState && (hasNoThemeUpdatingProps(props) || isInversingOnMount)) {
+  if (shouldReturnParentState) {
     if (!parentManager) throw `impossible`
     // prettier-ignore
     if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log('useTheme hasNoThemeUpdatingProps', parentManager.state.name, 'isInversingOnMount', isInversingOnMount)
-    return parentState
+    return {
+      ...parentManager.state,
+      className: isInversingOnMount ? '' : parentManager.state.className,
+      themeManager: parentManager,
+      isNewTheme: false,
+    }
   }
 
   // run inline in render
