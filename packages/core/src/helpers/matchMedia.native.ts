@@ -1,6 +1,25 @@
-import MediaQueryList from '@expo/match-media/build/MediaQueryList.js'
+import { MatchMedia, MediaQueryList } from "../types"
 
-export const matchMedia = (media: string) => new MediaQueryList(media)
+export let matchMedia: MatchMedia;
 
-// @ts-ignore
-globalThis['matchMedia'] = matchMedia
+setupMatchMedia(matchMediaFallback);
+
+function matchMediaFallback(query: string): MediaQueryList {
+  if (
+    process.env.NODE_ENV === 'development'
+  ) {
+    // eslint-disable-next-line no-console
+    console.warn('warning: matchMedia implementation is not provided.')
+  }
+  return {
+    addListener() {},
+    removeListener() {},
+    matches: false,
+  }
+}
+
+export function setupMatchMedia(nativeMatchMedia: (media: string) => MediaQueryList) {
+  matchMedia = nativeMatchMedia;
+  // @ts-ignore
+  globalThis['matchMedia'] = matchMedia
+}

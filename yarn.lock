@@ -5444,7 +5444,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
-    "@expo/match-media": ^0.3.0
     "@tamagui/build": ^1.0.1-rc.0.3
     "@tamagui/compose-refs": ^1.0.1-rc.0.3
     "@tamagui/constants": ^1.0.1-rc.0.3
@@ -5998,6 +5997,19 @@ __metadata:
   dependencies:
     "@reach/auto-id": ^0.18.0
     use-sync-external-store: ^1.2.0
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/react-native-media-driver@^1.0.1-rc.0.3, @tamagui/react-native-media-driver@workspace:packages/react-native-media-driver":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/react-native-media-driver@workspace:packages/react-native-media-driver"
+  dependencies:
+    "@tamagui/build": ^1.0.1-rc.0.3
+    "@tamagui/core": ^1.0.1-rc.0.3
+    css-mediaquery: ^0.1.2
+    react-native: "*"
+  peerDependencies:
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -22973,6 +22985,7 @@ __metadata:
     "@tamagui/popper": ^1.0.1-rc.0.3
     "@tamagui/portal": ^1.0.1-rc.0.3
     "@tamagui/progress": ^1.0.1-rc.0.3
+    "@tamagui/react-native-media-driver": ^1.0.1-rc.0.3
     "@tamagui/scroll-view": ^1.0.1-rc.0.3
     "@tamagui/select": ^1.0.1-rc.0.3
     "@tamagui/separator": ^1.0.1-rc.0.3

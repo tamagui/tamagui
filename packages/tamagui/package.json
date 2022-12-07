@@ -49,6 +49,7 @@
     "@tamagui/popper": "^1.0.1-rc.0.3",
     "@tamagui/portal": "^1.0.1-rc.0.3",
     "@tamagui/progress": "^1.0.1-rc.0.3",
+    "@tamagui/react-native-media-driver": "^1.0.1-rc.0.3",
     "@tamagui/scroll-view": "^1.0.1-rc.0.3",
     "@tamagui/select": "^1.0.1-rc.0.3",
     "@tamagui/separator": "^1.0.1-rc.0.3",
