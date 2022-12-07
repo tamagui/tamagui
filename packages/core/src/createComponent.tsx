@@ -14,6 +14,7 @@ import React, {
   createElement,
   forwardRef,
   memo,
+  startTransition,
   useCallback,
   useContext,
   useEffect,
@@ -245,15 +246,11 @@ export function createComponent<
     const shouldSetMounted = needsMount && state.unmounted
     const setMounted = shouldSetMounted
       ? () => {
-          // for some reason without some small delay it doesn't animate css
-          setTimeout(
-            () => {
-              setStateShallow({
-                unmounted: false,
-              })
-            },
-            isWeb ? 10 : 0
-          )
+          startTransition(() => {
+            setStateShallow({
+              unmounted: false,
+            })
+          })
         }
       : undefined
 

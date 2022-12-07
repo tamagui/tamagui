@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
-import { useContext, useLayoutEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
@@ -160,7 +160,7 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
   const { isNewTheme, state, themeManager, mounted } = themeState
 
   if (!isServer) {
-    useLayoutEffect(() => {
+    useEffect(() => {
       if (disable) return
       // SSR safe inverse (because server can't know prefers scheme)
       // could be done through fancy selectors like how we do prefers-media
@@ -188,19 +188,21 @@ export const useChangeThemeEffect = (props: ThemeProps, root = false): ChangedTh
     }, [disable, state, isNewTheme, debug])
   }
 
-  // prettier-ignore
-  if (process.env.NODE_ENV === 'development' && debug) console.log('useTheme.render isNewTheme', isNewTheme, props, themeManager.state.name, parentManager?.state.name)
+  const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
+  const parentState = parentManager
+    ? {
+        ...parentManager.state,
+        className: isInversingOnMount ? '' : parentManager.state.className,
+        themeManager: parentManager,
+        isNewTheme: false,
+      }
+    : null
 
-  // this seems unnecessary
-  if (hasNoThemeUpdatingProps(props) || (!mounted && parentManager)) {
+  if (parentState && (hasNoThemeUpdatingProps(props) || isInversingOnMount)) {
     if (!parentManager) throw `impossible`
     // prettier-ignore
-    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log('useTheme hasNoThemeUpdatingProps', parentManager.state)
-    return {
-      ...parentManager.state,
-      themeManager: parentManager,
-      isNewTheme: false,
-    }
+    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log('useTheme hasNoThemeUpdatingProps', parentManager.state.name, 'isInversingOnMount', isInversingOnMount)
+    return parentState
   }
 
   // run inline in render

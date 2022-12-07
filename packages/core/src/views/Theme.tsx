@@ -8,7 +8,7 @@ import { useChangeThemeEffect } from '../hooks/useTheme'
 import { ThemeProps } from '../types'
 
 export function Theme(props: ThemeProps) {
-  // @ts-expect-error its a permanent prop meant for internal views
+  // @ts-expect-error only for internal views
   if (props.disable) {
     return props.children
   }
