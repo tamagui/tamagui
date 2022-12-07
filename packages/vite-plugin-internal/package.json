@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin-internal",
-  "version": "1.0.1-rc.0.1",
+  "version": "1.0.1-rc.0.2",
   "private": true,
   "type": "module",
   "main": "./dist/cjs/vite.config.js",
@@ -20,12 +20,12 @@
   },
   "dependencies": {
     "@originjs/vite-plugin-commonjs": "^1.0.3",
-    "@tamagui/config-default-node": "^1.0.1-rc.0.1",
-    "@tamagui/vite-plugin": "^1.0.1-rc.0.1",
+    "@tamagui/config-default-node": "^1.0.1-rc.0.2",
+    "@tamagui/vite-plugin": "^1.0.1-rc.0.2",
     "@vitejs/plugin-react": "^2.2.0"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-rc.0.1",
+    "@tamagui/build": "^1.0.1-rc.0.2",
     "happy-dom": "^6.0.4",
     "vitest": "^0.25.3",
     "vitest-mock-process": "^1.0.4"
