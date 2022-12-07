@@ -9,7 +9,7 @@ const numIntersectingAtSection: number[] = tints.map((_) => 0)
 
 type Props = SectionProps & { themed?: boolean; index: number }
 
-export const TintSection = ({ children, index, themed, ...props }: Props) => {
+export const TintSection = ({ children, index, themed, zIndex, ...props }: Props) => {
   const top = useRef<HTMLElement>(null)
   const bottom = useRef<HTMLElement>(null)
   const mid = useRef<HTMLElement>(null)
@@ -43,7 +43,7 @@ export const TintSection = ({ children, index, themed, ...props }: Props) => {
   )
 
   return (
-    <YStack contain="layout paint" pos="relative">
+    <YStack zIndex={zIndex} contain="layout paint" pos="relative">
       <XStack ref={top} pos="absolute" t="10%" l={0} r={0} h={10} o={0} pe="none" />
       <XStack ref={mid} pos="absolute" t="50%" l={0} r={0} h={10} o={0} pe="none" />
       <XStack ref={bottom} pos="absolute" b="10%" l={0} r={0} h={10} o={0} pe="none" />

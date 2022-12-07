@@ -7,7 +7,7 @@ import { Footer } from '@components/Footer'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Suspense, useMemo } from 'react'
 import { TamaguiProvider } from 'tamagui'
 
@@ -29,7 +29,13 @@ if (typeof navigator !== 'undefined') {
 }
 
 export default function App(props: AppProps) {
-  const [theme, setTheme] = useRootTheme()
+  const [theme_, setTheme] = useRootTheme()
+  const [mounted, setmounted] = useState(false)
+  const theme = mounted ? theme_ : 'light'
+
+  useEffect(() => {
+    setmounted(true)
+  }, [])
 
   // memo to avoid re-render on dark/light change
   const contents = useMemo(() => {

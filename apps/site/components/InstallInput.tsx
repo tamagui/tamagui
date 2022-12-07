@@ -1,20 +1,12 @@
 import { Check, Copy } from '@tamagui/lucide-icons'
-import copy from 'copy-to-clipboard'
-import React, { memo, useEffect } from 'react'
-import { Button, Paragraph, Spacer, Tooltip, TooltipSimple, XStack } from 'tamagui'
+import { memo } from 'react'
+import { Button, Paragraph, Spacer, TooltipSimple, XStack } from 'tamagui'
+
+import { useClipboard } from '../lib/useClipboard'
 
 export const InstallInput = memo(() => {
-  const [hasCopied, setHasCopied] = React.useState(false)
   const installScript = `npm create tamagui-app@latest`
-
-  useEffect(() => {
-    if (hasCopied) {
-      const tm = setTimeout(() => {
-        setHasCopied(false)
-      }, 2000)
-      return () => clearTimeout(tm)
-    }
-  }, [hasCopied])
+  const { onCopy, hasCopied } = useClipboard(installScript)
 
   return (
     <XStack
@@ -51,10 +43,7 @@ export const InstallInput = memo(() => {
             )
           }
           aria-label="Copy the install snippet to Clipboard"
-          onPress={() => {
-            copy(installScript)
-            setHasCopied(true)
-          }}
+          onPress={onCopy}
         />
       </TooltipSimple>
     </XStack>

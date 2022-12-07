@@ -226,5 +226,7 @@ const Delay = ({ children, by }) => {
     return () => clearTimeout(showTimer)
   })
 
+  return !isMounted || !done ? null : children
+
   return !isMounted || done ? children : null
 }

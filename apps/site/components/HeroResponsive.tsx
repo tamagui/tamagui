@@ -215,27 +215,29 @@ export const HeroResponsive = memo(() => {
             </XStack>
           </Container>
 
-          <YStack
-            jc="center"
-            cursor="ew-resize"
-            onPressIn={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              setIsDragging(true)
-            }}
-            $sm={{
-              display: 'none',
-            }}
-          >
+          {!isSafari && (
             <YStack
-              bc="$color"
-              opacity={0.35}
-              hoverStyle={{ opacity: 0.4 }}
-              br="$8"
-              w={8}
-              height={134}
-            />
-          </YStack>
+              jc="center"
+              cursor="ew-resize"
+              onPressIn={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setIsDragging(true)
+              }}
+              $sm={{
+                display: 'none',
+              }}
+            >
+              <YStack
+                bc="$color"
+                opacity={0.35}
+                hoverStyle={{ opacity: 0.4 }}
+                br="$8"
+                w={8}
+                height={134}
+              />
+            </YStack>
+          )}
         </XStack>
 
         <YStack

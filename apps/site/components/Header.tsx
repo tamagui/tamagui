@@ -286,6 +286,8 @@ const HeadAnchor = React.forwardRef((props: ParagraphProps, ref) => (
     tag="a"
     // @ts-ignore
     tabIndex={-1}
+    w="100%"
+    // jc="flex-end"
     {...props}
   />
 ))

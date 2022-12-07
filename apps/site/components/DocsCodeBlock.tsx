@@ -1,10 +1,9 @@
 import { CheckCircle, Clipboard } from '@tamagui/lucide-icons'
-import copy from 'copy-to-clipboard'
-import React from 'react'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { Button, TooltipSimple, YStack } from 'tamagui'
 
+import { useClipboard } from '../lib/useClipboard'
 import { Code } from './Code'
 import { Pre } from './Pre'
 
@@ -19,9 +18,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     isHighlightingLines,
   } = props
   const [isCollapsed, setIsCollapsed] = useState(isHero || isCollapsible)
-  const [hasCopied, setHasCopied] = useState(false)
   const [code, setCode] = useState(undefined)
   const preRef = useRef<any>(null)
+  const { hasCopied, onCopy, value } = useClipboard(code)
   // const frontmatter = useContext(FrontmatterContext)
 
   useEffect(() => {
@@ -36,14 +35,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
       }
     }
   }, [preRef])
-
-  useEffect(() => {
-    if (hasCopied && code) copy(code)
-    const tm = setTimeout(() => setHasCopied(false), 1500)
-    return () => {
-      clearTimeout(tm)
-    }
-  }, [hasCopied])
 
   return (
     <YStack
@@ -105,7 +96,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           </Pre>
           <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
             <Button
-              className="copy-code"
               aria-label="Copy code to clipboard"
               position="absolute"
               size="$2"
@@ -113,8 +103,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               right="$3"
               display="inline-flex"
               icon={hasCopied ? CheckCircle : Clipboard}
-              onPress={() => setHasCopied(true)}
-              $sm={{
+              onPress={onCopy}
+              $xs={{
                 display: 'none',
               }}
             />

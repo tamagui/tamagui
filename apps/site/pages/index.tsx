@@ -48,7 +48,7 @@ export default function Home({ animationCode, compilationExamples }) {
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleThemes />
       </TintSection>
-      <TintSection index={4} mb={-120} zIndex={1000}>
+      <TintSection index={4} mb={-120} zIndex={10000}>
         <HeroResponsive />
       </TintSection>
       <TintSection index={5} p={0} zIndex={0}>

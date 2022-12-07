@@ -1,29 +1,22 @@
-import { useState, useCallback, useEffect } from 'react';
-import copy from 'copy-to-clipboard';
+import copy from 'copy-to-clipboard'
+import { useEffect, useState } from 'react'
+import { useEvent } from 'tamagui'
 
-/**
- * React hook to copy content to clipboard
- *
- * @param text the text or value to copy
- * @param timeout delay (in ms) to switch back to initial state once copied.
- */
-export function useClipboard(text: string, timeout = 1500) {
-  const [hasCopied, setHasCopied] = useState(false);
+export function useClipboard(text = '', timeout = 1500) {
+  const [hasCopied, setHasCopied] = useState(false)
 
-  const onCopy = useCallback(() => {
-    const didCopy = copy(text);
-    setHasCopied(didCopy);
-  }, [text]);
+  const onCopy = useEvent(() => {
+    const didCopy = copy(text)
+    setHasCopied(didCopy)
+  })
 
   useEffect(() => {
-    if (hasCopied) {
-      const id = setTimeout(() => {
-        setHasCopied(false);
-      }, timeout);
+    if (!hasCopied) return
+    const id = setTimeout(() => {
+      setHasCopied(false)
+    }, timeout)
+    return () => clearTimeout(id)
+  }, [timeout, hasCopied])
 
-      return () => clearTimeout(id);
-    }
-  }, [timeout, hasCopied]);
-
-  return { value: text, onCopy, hasCopied };
+  return { value: text, onCopy, hasCopied }
 }
