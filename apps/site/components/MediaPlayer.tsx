@@ -57,12 +57,12 @@ export const MediaPlayer = memo(
               </Square>
 
               <YStack miw={165} mt={-10} jc="center">
-                <Paragraph fontWeight="700">Spaceship</Paragraph>
+                <Paragraph fontWeight="700">Money</Paragraph>
                 <Paragraph color="$colorHover" size="$3">
-                  Kanye West
+                  Pink Floyd
                 </Paragraph>
                 <Paragraph color="$colorHover" size="$3">
-                  College Dropout
+                  The Dark Side of the Moon
                 </Paragraph>
               </YStack>
             </XStack>
