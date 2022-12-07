@@ -2,6 +2,14 @@ rc.1
 
   - fix getMedia().sm
   - next load css on subsequent pages
+  - tested on FF
+    - Select component bugs: https://tamagui.dev/docs/components/select/1.0.0-rc
+      - scroll bug: animation stutters. try giving it a fast swipe with scroll pad on macOS
+      - closes immediately: click to open,  don't select but click outside to close, try to click to open again, then it will auto close immediately before being able to make a selection
+    - Card component minor glitch: border flickers on animation end
+    - docs site: After clicking "Show code", then the "Copy to clipboard" button in that shown code preview don't actually copy anything to the clipboard, even though it says "Copied". Clipboard is same as before. However, in the non-show/hide code previews, the button works
+  - Stack is producing inline styles for media where YStack produces classname
+
 
 1.0
 
