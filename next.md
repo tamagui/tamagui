@@ -1,5 +1,6 @@
 rc.1
 
+  - fix getMedia().sm
   - next load css on subsequent pages
 
 1.0
@@ -32,6 +33,8 @@ rc.1
 
 qol:
 
+- grid on homepage linking to various nice components maybe replace features grid or augment
+  - VisuallyHidden, Adapt, FontLanguage, etc
 - git hook to auto-follow on every commit with a type generation
 - site snack + demo embed on all pages floating that scales up on hover on large screen
 - sponsor promo

@@ -566,10 +566,6 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       },
 
       JSXElement(traversePath) {
-        if (shouldDisableExtraction) {
-          return
-        }
-
         tm.mark('jsx-element', !!shouldPrintDebug)
 
         const node = traversePath.node.openingElement
@@ -668,17 +664,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           )
         }
 
-        // disable as it gets messy
-        // const shouldLog = !hasLogged
-        // if (shouldLog) {
-        //   logger.info(`  1️⃣  Inline optimized  2️⃣  Inline flattened  3️⃣  styled() extracted`)
-        //   const prefix = '      |'
-        //   // prettier-ignore
-        //   logger.info([prefixLogs || prefix, '                         total ·  1️⃣  ·  2️⃣  ·  3️⃣'].join(' '))
-        //   hasLogged = true
-        // }
-
-        if (disableExtraction) {
+        if (shouldDisableExtraction) {
           return
         }
 
