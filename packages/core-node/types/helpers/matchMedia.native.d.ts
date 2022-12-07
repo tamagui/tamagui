@@ -1,3 +1,4 @@
-import MediaQueryList from '@expo/match-media/build/MediaQueryList.js';
-export declare const matchMedia: (media: string) => MediaQueryList;
+import { MatchMedia, MediaQueryList } from "../types";
+export declare let matchMedia: MatchMedia;
+export declare function setupMatchMedia(nativeMatchMedia: (media: string) => MediaQueryList): void;
 //# sourceMappingURL=matchMedia.native.d.ts.map

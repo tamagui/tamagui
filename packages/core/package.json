@@ -27,7 +27,6 @@
     "reset.css"
   ],
   "dependencies": {
-    "@expo/match-media": "^0.3.0",
     "@tamagui/compose-refs": "^1.0.1-rc.0.2",
     "@tamagui/constants": "^1.0.1-rc.0.2",
     "@tamagui/helpers": "^1.0.1-rc.0.2",

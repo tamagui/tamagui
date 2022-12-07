@@ -413,6 +413,14 @@ export type MediaQueries = {
   [key in MediaQueryKey]: MediaQueryObject
 }
 
+export interface MediaQueryList {
+  addListener(listener?: any): void;
+  removeListener(listener?: any): void;
+  matches: boolean;
+}
+
+export type MatchMedia = (query: string) => MediaQueryList;
+
 export type TransformStyleProps = {
   x?: number
   y?: number

@@ -270,6 +270,12 @@ export declare type MediaProps<A> = {
 export declare type MediaQueries = {
     [key in MediaQueryKey]: MediaQueryObject;
 };
+export interface MediaQueryList {
+    addListener(listener?: any): void;
+    removeListener(listener?: any): void;
+    matches: boolean;
+}
+export declare type MatchMedia = (query: string) => MediaQueryList;
 export declare type TransformStyleProps = {
     x?: number;
     y?: number;

@@ -1,3 +1,5 @@
+import { MatchMedia, MediaQueryList } from "../types"
+
 export const matchMedia = (typeof window !== 'undefined' && window.matchMedia) || matchMediaFallback
 
 function matchMediaFallback(query: string): MediaQueryList {
@@ -13,5 +15,10 @@ function matchMediaFallback(query: string): MediaQueryList {
     addListener() {},
     removeListener() {},
     matches: false,
-  } as any
+  }
+}
+
+export function setupMatchMedia(nativeMatchMedia: MatchMedia) {
+  // eslint-disable-next-line no-console
+  console.warn('no-op web')
 }
