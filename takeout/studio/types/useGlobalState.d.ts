@@ -1,6 +1,6 @@
 import './polyfill';
 import { TamaguiInternalConfig, ThemeName } from 'tamagui';
-import { Components, DeepReadonly, DialogTypes, Palette, StudioDialogProps, Tab, ThemeCategory, ThemeVal } from './types';
+import { Components, DeepReadonly, DialogTypes, Palette, StudioDialogProps, Tab, ThemeCategory, ThemeParsed, ThemeVal } from './types';
 export declare type State = ReturnType<typeof getDefaultInitialState>;
 export declare const GlobalState: {
     theme: ThemeName;
@@ -30,12 +30,12 @@ export declare const GlobalState: {
         row: number;
         isPinned: boolean;
         focusedKey: string;
-        themes: Record<string, any>;
+        themes: Record<string, ThemeParsed>;
         themeVals: ThemeVal[];
-        theme(): any;
-        themesList(): any[];
+        theme(): ThemeParsed;
+        themesList(): ThemeParsed[];
         uniqueThemeIDsByCategory(): Record<ThemeCategory, Set<string>>;
-        themeCombos(prefix?: string): any[];
+        themeCombos(prefix?: string): ThemeParsed[];
         pseudo(): string;
         focusedVal(): ThemeVal | undefined;
         pseudoThemeVals(): ThemeVal[];
@@ -86,12 +86,12 @@ declare function getDefaultInitialState(): {
         row: number;
         isPinned: boolean;
         focusedKey: string;
-        themes: Record<string, any>;
+        themes: Record<string, ThemeParsed>;
         themeVals: ThemeVal[];
-        theme(): any;
-        themesList(): any[];
+        theme(): ThemeParsed;
+        themesList(): ThemeParsed[];
         uniqueThemeIDsByCategory(): Record<ThemeCategory, Set<string>>;
-        themeCombos(prefix?: string): any[];
+        themeCombos(prefix?: string): ThemeParsed[];
         pseudo(): string;
         focusedVal(): ThemeVal | undefined;
         pseudoThemeVals(): ThemeVal[];

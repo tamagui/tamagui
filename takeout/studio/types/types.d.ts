@@ -1,4 +1,4 @@
-import { StaticConfig, ThemeObject } from 'tamagui';
+import { StaticConfig } from 'tamagui';
 export declare type Tab = 'colors' | 'themes' | 'icons' | 'fonts' | 'components' | 'screens';
 export declare type Components = {
     [key: string]: {
@@ -36,7 +36,7 @@ export declare type Theme = {
     category: ThemeCategory;
     values: Record<ThemeKey, ColorId>;
 };
-export declare type ThemeParsed = ThemeObject & {
+export declare type ThemeParsed = Theme & {
     id: string;
     category: ThemeCategory;
     categoryID: string;
