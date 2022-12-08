@@ -1,7 +1,12 @@
-import { setupMatchMedia } from '@tamagui/core'
+import { MediaQueryObject, setupMatchMedia } from '@tamagui/core'
+
 import { matchMedia } from './matchMedia'
 
-export function createMedia<A extends Object>(media: A): A{
+export function createMedia<
+  A extends {
+    [key: string]: MediaQueryObject
+  }
+>(media: A): A {
   setupMatchMedia(matchMedia)
   return media
 }

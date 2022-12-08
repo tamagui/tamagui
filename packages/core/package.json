@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-rc.0.4",
+    "@testing-library/react": "^13.4.0",
     "@types/node": "^16.11.9",
     "@types/react": "^18.0.15",
     "@types/react-native": "^0.69.2",

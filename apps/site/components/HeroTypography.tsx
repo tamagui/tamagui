@@ -179,43 +179,45 @@ const OverlayCard = () => {
   )
 }
 
-const AnimatedHeading = ({
-  Component,
-  children,
-  family,
-  index,
-  ...rest
-}: {
-  family: string
-  Component: typeof Heading
-  children: any
-  index: number
-} & TextProps) => {
-  return (
-    <Delay by={index * 180}>
-      <Component
-        animation="lazy"
-        enterStyle={{ o: 0, y: -10 }}
-        exitStyle={{ o: 0, y: 10 }}
-        o={1}
-        y={0}
-        pr="$1"
-        my="$1"
-        $sm={{
-          pr: 0,
-        }}
-        fontFamily={`$${family}`}
-        textShadowColor="$shadowColorFocus"
-        textShadowRadius={3}
-        textShadowOffset={{ width: 0, height: 3 }}
-        ellipse
-        {...rest}
-      >
-        {children}
-      </Component>
-    </Delay>
-  )
-}
+const AnimatedHeading = memo(
+  ({
+    Component,
+    children,
+    family,
+    index,
+    ...rest
+  }: {
+    family: string
+    Component: typeof Heading
+    children: any
+    index: number
+  } & TextProps) => {
+    return (
+      <Delay by={index * 180}>
+        <Component
+          animation="lazy"
+          enterStyle={{ o: 0, y: -10 }}
+          exitStyle={{ o: 0, y: 10 }}
+          o={1}
+          y={0}
+          pr="$1"
+          my="$1"
+          $sm={{
+            pr: 0,
+          }}
+          fontFamily={`$${family}`}
+          textShadowColor="$shadowColorFocus"
+          textShadowRadius={3}
+          textShadowOffset={{ width: 0, height: 3 }}
+          ellipse
+          {...rest}
+        >
+          {children}
+        </Component>
+      </Delay>
+    )
+  }
+)
 
 const Delay = ({ children, by }) => {
   const isMounted = useDidFinishSSR()
@@ -227,6 +229,4 @@ const Delay = ({ children, by }) => {
   })
 
   return !isMounted || !done ? null : children
-
-  return !isMounted || done ? children : null
 }

@@ -1,5 +1,7 @@
 /// <reference types="vitest" />
 
+import { join } from 'path'
+
 // import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react'
@@ -25,6 +27,8 @@ export default defineConfig({
   // },
   // @ts-ignore
   test: {
+    setupFiles: [join(__dirname, 'setup.ts')],
+    environment: 'happy-dom',
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     deps: {
       inline: ['react-native-web', /tamagui/],

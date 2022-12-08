@@ -35,7 +35,11 @@ export const createVariable = <A extends string | number = any>(props: VariableI
 
 export function variableToString(vrble?: any, getValue = false) {
   if (isVariable(vrble)) {
-    return getValue ? `${vrble.val}` : `${isWeb ? vrble.variable : vrble.val}`
+    if (!getValue && isWeb && vrble.variable) {
+      return vrble.variable
+    }
+    setDidGetVariableValue(true)
+    return `${vrble.val}`
   }
   return `${vrble || ''}`
 }
@@ -52,8 +56,15 @@ export function getVariable(nameOrVariable: Variable | string) {
   return variableToString(tokens[nameOrVariable] ?? nameOrVariable)
 }
 
+let accessed = false
+export const setDidGetVariableValue = (val: boolean) => (accessed = val)
+export const didGetVariableValue = () => accessed
+
 export function getVariableValue(v: Variable | any) {
-  if (isVariable(v)) return v.val
+  if (isVariable(v)) {
+    setDidGetVariableValue(true)
+    return v.val
+  }
   return v
 }
 

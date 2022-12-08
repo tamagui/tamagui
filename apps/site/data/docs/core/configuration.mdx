@@ -10,9 +10,9 @@ Create a `tamagui.config.ts` in the root of your app to set up your design syste
 You can use `@tamagui/config-base` a totally complete config out of the box, the same one this site uses.
 
 ```tsx
+import { config } from '@tamagui/config-base'
 import { createTamagui, setupReactNative } from '@tamagui/core'
 import * as ReactNative from 'react-native'
-import { config } from '@tamagui/config-base'
 
 // if using only @tamagui/core with `react-native` components
 // if using `tamagui` this isn't necessary
@@ -65,6 +65,7 @@ Let's start with a full yet slimmed down `tamagui.config.ts`:
 
 ```tsx
 import { createFont, createTamagui, createTokens } from '@tamagui/core'
+import { createMedia } from '@tamagui/react-native-match-media'
 
 const interFont = createFont({
   family: 'Inter, Helvetica, Arial, sans-serif',
@@ -133,13 +134,22 @@ const config = createTamagui({
       color: tokens.color.white,
     },
   },
-  media: {
+
+  // `@tamagui/core` doesn't provide media query capabilities out of the box
+  // for native as it is de-coupled from react-native.
+
+  // For web-only, media queries work out of the box and you can avoid the
+  // `createMedia` call here by passing the media object directly.
+
+  // If targeting React Native, add this driver and `createMedia` call.
+  // `tamagui` and `config-base` do this for you automatically.
+  media: createMedia({
     sm: { maxWidth: 860 },
     gtSm: { minWidth: 860 + 1 },
     short: { maxHeight: 820 },
     hoverNone: { hover: 'none' },
     pointerCoarse: { pointer: 'coarse' },
-  },
+  }),
 
   // optional:
 

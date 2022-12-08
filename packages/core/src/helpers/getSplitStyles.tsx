@@ -87,6 +87,9 @@ const skipProps = {
   role: true,
   tag: true,
 }
+if (process.env.NODE_ENV === 'test') {
+  skipProps['data-test-renders'] = true
+}
 
 const IS_STATIC = process.env.IS_STATIC === 'is_static'
 

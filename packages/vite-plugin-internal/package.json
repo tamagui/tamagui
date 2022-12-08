@@ -18,16 +18,14 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "dependencies": {
+  "devDependencies": {
     "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "@tamagui/build": "^1.0.1-rc.0.4",
     "@tamagui/config-default-node": "^1.0.1-rc.0.4",
     "@tamagui/vite-plugin": "^1.0.1-rc.0.4",
-    "@vitejs/plugin-react": "^2.2.0"
-  },
-  "devDependencies": {
-    "@tamagui/build": "^1.0.1-rc.0.4",
-    "happy-dom": "^6.0.4",
-    "vitest": "^0.25.3",
+    "@vitejs/plugin-react": "^2.2.0",
+    "happy-dom": "^8.1.0",
+    "vitest": "^0.25.5",
     "vitest-mock-process": "^1.0.4"
   }
 }

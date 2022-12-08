@@ -25,6 +25,7 @@ import { onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { TextAncestorContext } from './contexts/TextAncestorContext'
+import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import { getRect } from './helpers/getRect'
 import { useSplitStyles } from './helpers/getSplitStyles'
@@ -133,6 +134,11 @@ export function createComponent<
 
   // see onConfiguredOnce below which attaches a name then to this component
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
+    // render count testing
+    if (process.env.NODE_ENV === 'test' && propsIn['data-test-renders']) {
+      propsIn['data-test-renders']['current'] ??= 0
+      propsIn['data-test-renders']['current'] += 1
+    }
     // const time = t.start({ quiet: true })
 
     // React inserts default props after your props for some reason...
@@ -276,6 +282,10 @@ export function createComponent<
     const isStringElement = typeof elementType === 'string'
 
     const isExiting = presence?.[0] === false
+
+    // track if we access variable values
+    setDidGetVariableValue(false)
+
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
@@ -294,6 +304,7 @@ export function createComponent<
       debugProp
     )
 
+    const didAccessThemeValue = didGetVariableValue()
     const hostRef = useServerRef<TamaguiElement>(null)
 
     // animation setup
@@ -359,10 +370,13 @@ export function createComponent<
 
     // media queries
     useIsomorphicLayoutEffect(() => {
+      // if using CSS only and didn't access raw theme value we can de-opt all media query changes
+      // we've generated css entirely
+      if (!noClassNames && !didAccessThemeValue) return
       const disposers = mediaKeys.map((key) => {
         return addMediaQueryListener(key, (next: boolean) => {
           setState((prev) => {
-            if (prev.mediaState![key] !== next) {
+            if (!prev.mediaState || prev.mediaState[key] !== next) {
               return {
                 ...prev,
                 mediaState: getMediaStateObject({
