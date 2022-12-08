@@ -119,4 +119,5 @@ config.mediaQueryDefaultActive = {
   xxs: true,
   xs: true,
   sm: true,
+  gtXs: true,
 }

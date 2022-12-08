@@ -19,9 +19,8 @@ const extendedConf = {
 
 // @ts-ignore bad types
 extendedConf.mediaQueryDefaultActive = {
-  xxs: true,
-  xs: true,
-  sm: true,
+  ...config['mediaQueryDefaultActive'],
+  // add responsive demo sizes
   tiny: true,
   gtTiny: true,
   small: true,

@@ -1,4 +1,4 @@
-import { isClient, isRSC, isWeb } from '@tamagui/constants'
+import { isRSC, isWeb } from '@tamagui/constants'
 
 import { configListeners, setConfig } from './config'
 import { createVariables } from './createVariables'

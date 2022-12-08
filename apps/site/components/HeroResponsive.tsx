@@ -20,6 +20,7 @@ import {
   YStackProps,
   isTouchable,
   useDebounce,
+  useDidFinishSSR,
   useGet,
   useIsomorphicLayoutEffect,
   useMedia,
@@ -38,8 +39,13 @@ const breakpoints = [
 ]
 const browserHeight = 485
 
-const isSafari =
+const IS_SAFARI =
   typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+
+const useIsSafari = () => {
+  const ssrDone = useDidFinishSSR()
+  return ssrDone ? IS_SAFARI : false
+}
 
 export const HeroResponsive = memo(() => {
   const [bounding, setBounding] = useState<DOMRect | null>(null)
@@ -58,11 +64,13 @@ export const HeroResponsive = memo(() => {
     setBounding(rect)
   }, 350)
 
-  if (isSafari) {
-    useEffect(() => {
+  const isSafari = useIsSafari()
+
+  useEffect(() => {
+    if (isSafari) {
       setHasInteracted(true)
-    }, [])
-  }
+    }
+  }, [isSafari])
 
   useIsomorphicLayoutEffect(() => {
     if (!bounding) {
