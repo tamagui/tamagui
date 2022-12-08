@@ -43,7 +43,7 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
   )
 
   return (
-    <YStack zIndex={zIndex} contain="layout paint" pos="relative">
+    <YStack zIndex={zIndex} pos="relative">
       <XStack ref={top} pos="absolute" t="10%" l={0} r={0} h={10} o={0} pe="none" />
       <XStack ref={mid} pos="absolute" t="50%" l={0} r={0} h={10} o={0} pe="none" />
       <XStack ref={bottom} pos="absolute" b="10%" l={0} r={0} h={10} o={0} pe="none" />
