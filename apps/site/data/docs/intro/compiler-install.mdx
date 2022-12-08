@@ -217,7 +217,7 @@ We've noticed some issues with `@types/react-native` version `0.65.5`, you'll wa
 
 Ensure unimodules support using [the old method](https://docs.expo.dev/bare/installing-unimodules/), or the [expo package](https://docs.expo.dev/bare/installing-expo-modules/).
 
-Tamagui uses `@expo/match-media` and `expo-linear-gradient`, so you'll want `expo` installed to support their modules. Add `expo-linear-gradient` and `expo-screen-orientation` sub-dependencies to your package.json.
+Tamagui uses `expo-linear-gradient` for `<LinearGradient />`, so you'll need to ensure `expo-linear-gradient` is in your parent apps' package.json if you use it.
 
 #### Expo
 

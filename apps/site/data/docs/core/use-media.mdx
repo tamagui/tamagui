@@ -4,6 +4,7 @@ description: Designing for different size screens.
 ---
 
 `@tamagui/core` doesn't provide media capabilities out of the box to native apps. To enable media queries, you need to provide matchMedia implementation by calling `setupMatchMedia` in your configuration file:
+
 ```tsx
 import { createMedia } from '@tamagui/react-native-match-media'
 
@@ -11,7 +12,7 @@ export default createTamagui({
   media: createMedia({
     xs: { maxWidth: 660 },
     // ...
-  })
+  }),
 })
 ```
 
@@ -40,7 +41,7 @@ export default createTamagui({
 
 The order here important: items defined further down will override items before. In this example, `xs` is the weakest, `gtXs` will override it, and so on.
 
-Behind the scenes, we convert this object syntax into media query syntax with a simple loop over your object, turning camelCase into hyphen-case, and adding `@media()` around it. On native, we use the excellent `@expo/match-media`.
+Behind the scenes, we convert this object syntax into media query syntax with a simple loop over your object, turning camelCase into hyphen-case, and adding `@media()` around it.
 
 ### Usage
 
