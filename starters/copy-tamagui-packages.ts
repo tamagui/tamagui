@@ -18,5 +18,8 @@ export async function copyTamaguiPackages(dir: string) {
   await fs.copy(modulesDir, tamaguiModulesDir, {
     errorOnExist: false,
     overwrite: true,
+    // filter: (file) => {
+    //   return file.includes('/starters/')
+    // }
   })
 }

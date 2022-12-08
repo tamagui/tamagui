@@ -45,6 +45,7 @@
     "lighthouse:prod": "npx lighthouse http://localhost:3333 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:vite:prod": "npx lighthouse http://localhost:8080 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:live": "npx lighthouse https://tamagui.dev --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
+    "starters:sync": "node ./starters/sync-next-expo-solito.js",
     "starter": "yarn workspace @tamagui/starter web",
     "starter:prod": "yarn workspace @tamagui/starter web:prod && yarn workspace @tamagui/starter web:prod:start",
     "site": "cd apps/site && ./scripts/dev.sh",

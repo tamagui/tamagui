@@ -46,7 +46,11 @@ export function HomeScreen() {
         <Button {...linkProps}>Link to user</Button>
       </XStack>
 
-      <MyComponent w={50} h={50} blue />
+      <XStack $sm={{ fd: 'column' }} space>
+        <MyComponent w={50} h={50} blue />
+        <MyComponent w={50} h={50} blue />
+        <MyComponent w={50} h={50} blue />
+      </XStack>
 
       <SheetDemo />
     </YStack>
