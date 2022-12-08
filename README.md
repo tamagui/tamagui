@@ -14,11 +14,11 @@ See [tamagui.dev](https://tamagui.dev) for documentation.
 
 Tamagui lets you **share more code between web and native apps while improving, rather than sacrificing, DX, performance, and code maintainability**.
 
-It does this with an optimizing compiler that flattens your React trees and outputs platform-specific optimizations like generating atomic CSS and media queries on the web.
+It does this with an optimizing compiler that outputs platform-specific optimizations and understands a rich "CSS-in-JS" style system with support for turning even inline styles with logic into flattened nodes.
 
-The compiler enables a **win-win-win**: more performance, easier to write, works on every platform. Typically you'd have to choose two of: performant, cross-platform, concise. With Tamagui, you don't!
+The compiler generates atomic CSS and partially evaluated code that gains significant runtime performance. It evaluates across module boundaries, flattening a large % of styled components in your app (with easy to follow rules and debug tools to know when its working and not)
 
-The compiler actually partially evaluates code including imports, logic, spreads, and nested ternaries. Any fully analyzable JSX usage will be flattened entirely (to a `div` on web, or `View` on native, rather than your custom defined component), leading to large reductions in tree-size.
+Within the ~500x² responsive browser section on [the homepage](https://tamagui.dev), 49 inline styled components are flattened to their defined tags like `div`. The front page the site gains nearly 10-20% in Lighthouse scores depending on the weather.
 
 [Learn more on the website](https://tamagui.dev/docs/intro/introduction).
 
