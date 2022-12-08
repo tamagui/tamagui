@@ -18,9 +18,9 @@
   },
   "dependencies": {
     "@my/config": "*",
-    "tamagui": "^1.0.1-rc.0.3"
+    "tamagui": "^1.0.1-rc.0.4"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-rc.0.3"
+    "@tamagui/build": "^1.0.1-rc.0.4"
   }
 }
