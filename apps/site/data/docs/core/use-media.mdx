@@ -6,7 +6,7 @@ description: Designing for different size screens.
 `@tamagui/core` doesn't provide media capabilities out of the box to native apps. To enable media queries, you need to provide matchMedia implementation by calling `setupMatchMedia` in your configuration file:
 
 ```tsx
-import { createMedia } from '@tamagui/react-native-match-media'
+import { createMedia } from '@tamagui/react-native-media-driver'
 
 export default createTamagui({
   media: createMedia({
