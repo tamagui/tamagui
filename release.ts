@@ -12,30 +12,36 @@ import prompts from 'prompts'
 
 const exec = promisify(proc.exec)
 const spawn = proc.spawn
-
-const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
-const curRC = `rc.${(+curVersion.split('.')[3] || 0) + 1}`
-const nextVersion = `1.0.1-${curRC}`
-
-console.log('nextVersion', nextVersion)
-
 const skipVersion = process.argv.includes('--skip-version')
 const skipPublish = process.argv.includes('--skip-publish')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = process.argv.includes('--ci')
 
+const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
+const curRC = `rc.${(+curVersion.split('.')[3] || 0) + (skipVersion ? 0 : 1)}`
+const nextVersion = `1.0.1-${curRC}`
+
+console.log('Publishing version:', nextVersion, '\n')
+
 // could add only if changed checks: git diff --quiet HEAD HEAD~3 -- ./packages/core
 // but at that point would be nicer to get a whole setup for this.. lerna or whatever
 
-const spawnify = async (cmd: string, opts?: any) => {
+const spawnify = async (cmd: string, opts?: any): Promise<string> => {
   console.log('>', cmd)
   const [head, ...rest] = cmd.split(' ')
   return new Promise((res, rej) => {
-    const child = spawn(head, rest, { stdio: ['inherit', 'pipe', 'pipe'], ...opts })
+    const avoidLog = opts?.avoidLog
+    const child = spawn(
+      head,
+      rest,
+      avoidLog ? opts : { stdio: ['inherit', 'pipe', 'pipe'], ...opts }
+    )
     const outStr = []
     const errStr = []
-    child.stdout.pipe(process.stdout)
-    child.stderr.pipe(process.stderr)
+    if (!avoidLog) {
+      child.stdout.pipe(process.stdout)
+      child.stderr.pipe(process.stderr)
+    }
     child.stdout.on('data', (out) => {
       // @ts-ignore
       outStr.push(`${out}`)
@@ -63,6 +69,7 @@ async function run() {
     name: string
     location: string
   }[]
+
   const packageJsons = (
     await Promise.all(
       packagePaths
@@ -76,9 +83,19 @@ async function run() {
           }
         })
     )
-  ).filter((x) => {
-    return !x.json.private
-  })
+  )
+    .filter((x) => {
+      return !x.json.private
+    })
+    // slow things last
+    .sort((a, b) => {
+      if (a.name.includes('font-') || a.name.includes('-icons')) {
+        return 1
+      }
+      return -1
+    })
+
+  console.log(`Publishing in order:\n\n${packageJsons.map((x) => x.name).join('\n')}`)
 
   async function checkDistDirs() {
     await Promise.all(
@@ -162,27 +179,56 @@ async function run() {
       }
     }
 
+    const erroredPackages: { name: string }[] = []
+
     if (!skipPublish) {
       // publish with tag
-      for (const chunk of _.chunk(packageJsons, 6)) {
+      for (const chunk of _.chunk(packageJsons, 4)) {
         await Promise.all(
-          chunk.map(async ({ cwd, name }) => {
+          chunk.map(async (pkg) => {
+            const { cwd, name } = pkg
             console.log(`Publish ${name}`)
+
+            // check if already published first as its way faster for re-runs
+            const out = await spawnify(`npm view ${name} versions --json`, {
+              avoidLog: true,
+            })
+            const allVersions = JSON.parse(out.trim())
+            const latest = allVersions[allVersions.length - 1]
+
+            console.log('latest', latest)
+            if (latest === nextVersion) {
+              console.log(`Already published, skipping`)
+              return
+            }
+
             try {
               await spawnify(`npm publish --tag prepub`, {
                 cwd,
+                avoidLog: true,
               })
-            } catch (err) {
+              console.log(` 📢 pre-published ${name}`)
+            } catch (err: any) {
               // @ts-ignore
               if (err.includes(`403`)) {
                 console.log('Already published, skipping')
                 return
               }
-              throw err
+              console.log(`Error publishing!`, `${err.message}`)
+              erroredPackages.push(pkg)
             }
           })
         )
       }
+
+      if (erroredPackages.length) {
+        console.warn(
+          `❌ Error pre-publishing packages:\n`,
+          erroredPackages.map((x) => x.name).join('\n')
+        )
+        return
+      }
+
       console.log(`✅ Published under dist-tag "prepub"\n`)
 
       // if all successful, re-tag as latest
@@ -204,6 +250,7 @@ async function run() {
           })
         )
       }
+
       console.log(`✅ Published\n`)
 
       // then git tag, commit, push
