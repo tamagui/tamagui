@@ -152,10 +152,17 @@ function getNextThemeClassName(name: string, isInverting = false) {
   return next.replace('light_', '').replace('dark_', '')
 }
 
+const cache = new WeakMap<ThemeProps, [ThemeManager, ThemeManagerState | null]>()
+
 function getState(
   props: ThemeProps,
   parentManager?: ThemeManager | null
 ): ThemeManagerState | null {
+  const cached = cache.get(props)
+  if (cached && cached[0] === parentManager) {
+    return cached[1]
+  }
+
   const themes = getThemes()
 
   if (props.name && props.reset) {
@@ -164,6 +171,8 @@ function getState(
   if (props.reset && !parentManager?.parentManager) {
     throw new Error(`Cannot reset no grandparent exists`)
   }
+
+  let result: ThemeManagerState | null = null
 
   const nextName = props.reset ? parentManager?.parentManager?.state?.name || '' : props.name || ''
   const { componentName } = props
@@ -187,7 +196,7 @@ function getState(
 
   // prettier-ignore
   // eslint-disable-next-line no-console
-  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') [console.groupCollapsed('getState', props, { parentName, parentBaseTheme, base, min, max, isParentAComponentTheme }), console.trace(), console.groupEnd()]
+  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') [console.groupCollapsed('ThemeManager.getState()', props, { parentName, parentBaseTheme, base, min, max, isParentAComponentTheme }), console.trace(), console.groupEnd()]
 
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
@@ -229,20 +238,23 @@ function getState(
     if (found) {
       // optimization return null if not changed
       if (found === parentName) {
-        return null
+        break
       }
-      const theme = themes[found]
-      return {
-        // need to put concurrent safe things here
+      result = {
         name: found,
-        theme: getThemeUnwrapped(theme),
+        theme: getThemeUnwrapped(themes[found]),
         className: getNextThemeClassName(found, props.inverse),
         parentName,
       }
+      break
     }
   }
 
-  return null
+  if (parentManager) {
+    cache.set(props, [parentManager, result])
+  }
+
+  return result
 }
 
 const inverseThemeName = (themeName: string) => {
