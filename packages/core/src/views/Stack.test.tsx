@@ -7,7 +7,7 @@ import { describe, expect, test } from 'vitest'
 import { createTamagui } from '../createTamagui'
 import { Stack } from './Stack'
 import { TamaguiProvider } from './TamaguiProvider'
-import { StackProps } from '..'
+import { StackProps, configureMedia } from '..'
 
 const conf = createTamagui(getDefaultTamaguiConfig())
 
@@ -29,19 +29,46 @@ describe('Stack', () => {
     expect(renderCount.current).toBe(1)
   })
 
-  test(`doesn't re-render on media query change if CSS`, async () => {
-    const renderCount = { current: 0 }
+  // test(`doesn't re-render on media query change if CSS`, async () => {
+  //   const renderCount = { current: 0 }
 
-    render(
-      <TestStackRenders
-        renderCount={renderCount}
-        backgroundColor="blue"
-        $sm={{ backgroundColor: 'red' }}
-      />
-    )
+  //   render(
+  //     <TestStackRenders
+  //       renderCount={renderCount}
+  //       backgroundColor="blue"
+  //       $sm={{ backgroundColor: 'red' }}
+  //     />
+  //   )
 
-    // TODO
+  //   expect(renderCount.current).toBe(1)
 
-    expect(renderCount.current).toBe(1)
-  })
+  //   // re-configuring re-runs the media queries...
+  //   configureMedia(conf)
+
+  //   expect(renderCount.current).toBe(1)
+  // })
+
+  // test(`does re-render on media query change if not CSS`, async () => {
+  //   const renderCount = { current: 0 }
+
+  //   render(
+  //     <TestStackRenders
+  //       renderCount={renderCount}
+  //       backgroundColor="blue"
+  //       // @ts-ignore
+  //       $sm={{ space: '$2' }}
+  //     />
+  //   )
+
+  //   expect(renderCount.current).toBe(1)
+
+  //   // re-configuring re-runs the media queries...
+  //   // configureMedia({
+  //   //   ...conf,
+  //   //   media: {
+  //   //     def
+  //   //   },
+  //   // })
+  //   // expect(renderCount.current).toBe(2)
+  // })
 })

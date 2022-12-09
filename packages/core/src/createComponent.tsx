@@ -134,6 +134,13 @@ export function createComponent<
 
   // see onConfiguredOnce below which attaches a name then to this component
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
+    // test only
+    if (process.env.NODE_ENV === 'test') {
+      if (propsIn['data-test-renders']) {
+        propsIn['data-test-renders']['current'] ??= 0
+        propsIn['data-test-renders']['current'] += 1
+      }
+    }
     // const time = t.start({ quiet: true })
 
     // React inserts default props after your props for some reason...

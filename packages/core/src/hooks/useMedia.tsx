@@ -1,4 +1,4 @@
-import { useDeferredValue, useEffect, useMemo, useSyncExternalStore } from 'react'
+import { useEffect, useMemo, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { createProxy } from '../helpers/createProxy'
@@ -103,18 +103,10 @@ function setupMediaListeners() {
       const next = !!getMatch().matches
       if (next === mediaState[key]) return
       mediaState[key] = next
-      if (!willUpdate) {
-        willUpdate = true
-        setTimeout(() => {
-          willUpdate = false
-          updateCurrentState()
-        }, 0)
-      }
+      updateCurrentState()
     }
   }
 }
-
-let willUpdate = false
 
 export function useMediaListeners(config: TamaguiInternalConfig) {
   if (config.disableSSR) return
@@ -158,8 +150,7 @@ export function useMedia(): UseMediaState {
   }
 
   const keys = useSafeRef<UseMediaInternalState>(initialUseState)
-
-  const stateSync = useSyncExternalStore<MediaQueryState>(
+  const state = useSyncExternalStore<MediaQueryState>(
     subscribe,
     () => {
       const curState = keys.current
@@ -192,8 +183,6 @@ export function useMedia(): UseMediaState {
     },
     () => initState
   )
-
-  const state = useDeferredValue(stateSync)
 
   return useMemo(() => {
     return new Proxy(state === empty ? initState : state, {

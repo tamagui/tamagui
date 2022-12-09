@@ -431,6 +431,32 @@ export const InteractiveFrame = styled(XStack, {
 
 For more full docs on media queries, see the [useMedia docs page](/docs/core/use-media).
 
+### Animations
+
+Choose one of `@tamagui/animations-css`, `@tamagui/animations-react-native` or `@tamagui/animations-reanimated`. Note that `reanimated` support is not as well supported.
+
+Append a new key `animations` to your `createTamagui` call:
+
+```tsx
+import { createAnimations } from '@tamagui/animations-react-native'
+
+// pass this exported `animations` to your `createTamagui` call:
+export const animations = createAnimations({
+    bouncy: {
+      damping: 9,
+      mass: 0.9,
+      stiffness: 150,
+    },
+    lazy: {
+      damping: 18,
+      stiffness: 50,
+    },
+  }),
+})
+```
+
+If you want to have different drivers for each platform, like a CSS driver for the web and react-native for native, simply use the React Native convention of having platform-specific files: add a `animations.ts` and `animations.native.ts`. Set them up just like above, with matching keys, but importing from their respective driver.
+
 ### Shorthands
 
 Shorthands are defined directly on your `createTamagui` call, rather than being attached to each component, to de-couple shorthands from components. This forces component kits to standardize on the basic react-native style syntax and ensures there's only one set of abbreviations defined ever.
