@@ -27,7 +27,7 @@ function useIsResizing() {
   return isResizing
 }
 
-export const HomeGlow = memo(({ top }: { top: number }) => {
+export const HomeGlow = memo(() => {
   const { tint } = useTint()
   const isHeroBelowColor = tint === 'blue' || tint === 'green' || tint === 'purple'
   const [index, setIndex] = useState(0)
@@ -75,8 +75,8 @@ export const HomeGlow = memo(({ top }: { top: number }) => {
     <YStack
       pos="absolute"
       t={0}
-      contain="layout"
       l={0}
+      contain="layout"
       pe="none"
       animation="lazy"
       key={0}
@@ -86,7 +86,7 @@ export const HomeGlow = memo(({ top }: { top: number }) => {
       {...(isOnHeroBelow && {
         animation: 'quick',
         x: tint === 'green' ? -xs : tint === 'purple' ? xs : 0,
-        y: top,
+        y: 300,
       })}
       display={isResizing ? 'none' : 'flex'}
     >

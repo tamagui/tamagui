@@ -14,9 +14,8 @@ const exec = promisify(proc.exec)
 const spawn = proc.spawn
 
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
-const curRC = `rc.0`
-const curPatch = (+curVersion.split('.')[4] || 0) + 1
-const nextVersion = `1.0.1-${curRC}.${curPatch}`
+const curRC = `rc.${(+curVersion.split('.')[3] || 0) + 1}`
+const nextVersion = `1.0.1-${curRC}`
 
 console.log('nextVersion', nextVersion)
 

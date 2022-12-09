@@ -16,7 +16,7 @@ export const AlphaButton = () => {
         size="$2"
         $sm={{ dsp: 'none' }}
       >
-        RC.0
+        RC
       </Button>
     </NextLink>
   )

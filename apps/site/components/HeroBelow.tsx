@@ -1,7 +1,7 @@
 import { ChevronRight, Code, Cpu, Layers } from '@tamagui/lucide-icons'
 import NextLink from 'next/link'
-import { memo } from 'react'
-import { H3, Paragraph, XStack, YStack, YStackProps } from 'tamagui'
+import { memo, useEffect, useRef } from 'react'
+import { H3, Paragraph, XStack, YStack, YStackProps, debounce } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'
@@ -32,20 +32,12 @@ const TitleLink = ({ href, children, ...props }: any) => {
   )
 }
 
-export const HeroBelow = memo((props: any) => {
+export const HeroBelow = memo(() => {
   return (
     <>
       <YStack pos="relative" zi={1000} elevation="$1" py="$9" pb="$10">
         <ThemeTint>
-          <YStack
-            onLayout={(event) => {
-              props.onChangeTop(event.nativeEvent.layout.y - event.nativeEvent.layout.height)
-            }}
-            fullscreen
-            bc="$color3"
-            zi={-1}
-            o={0.33}
-          />
+          <YStack fullscreen bc="$color3" zi={-1} o={0.33} />
           <HeroBelowContent />
         </ThemeTint>
       </YStack>

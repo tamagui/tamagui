@@ -22,13 +22,9 @@ import { HomeSection, SectionTinted, TintSection } from '../components/TintSecti
 import { getCompilationExamples } from '../lib/getCompilationExamples'
 
 export default function Home({ animationCode, compilationExamples }) {
-  const [top, setTop] = useState(0)
-
-  // return <HeroResponsive />
-
   return (
     <>
-      <HomeGlow top={top} />
+      <HomeGlow />
       <HeaderFloating alwaysFloating />
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <TintSection index={0} p={0}>
@@ -40,7 +36,7 @@ export default function Home({ animationCode, compilationExamples }) {
         </XStack>
       </ContainerLarge>
       <TintSection btw={1} bbw={1} boc="$borderColor" index={1} p={0}>
-        <HeroBelow onChangeTop={setTop} />
+        <HeroBelow />
       </TintSection>
       <TintSection index={2} contain="paint layout" zi={1000}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
