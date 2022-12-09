@@ -2,7 +2,7 @@ Error.stackTraceLimit = Infinity
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 process.env.TAMAGUI_TARGET = 'web'
-process.env.TAMAGUI_ENABLE_DYNAMIC_LOAD = '1'
+// process.env.TAMAGUI_ENABLE_DYNAMIC_LOAD = '1'
 
 // const withPreact = require('next-plugin-preact')
 
@@ -84,8 +84,9 @@ module.exports = function (name, { defaultConfig }) {
   let config = {
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     swcMinify: true,
+    reactStrictMode: true,
     experimental: {
-      // for preact...
+      reactMode: 'concurrent',
       esmExternals: true,
       forceSwcTransforms: true,
       scrollRestoration: true,
