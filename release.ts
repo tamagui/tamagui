@@ -13,13 +13,19 @@ import prompts from 'prompts'
 const exec = promisify(proc.exec)
 const spawn = proc.spawn
 const skipVersion = process.argv.includes('--skip-version')
+const patch = process.argv.includes('--patch')
+const dirty = process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
+const skipTest = process.argv.includes('--skip-test')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = process.argv.includes('--ci')
 
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
-const curRC = `rc.${(+curVersion.split('.')[3] || 0) + (skipVersion ? 0 : 1)}`
-const nextVersion = `1.0.1-${curRC}`
+const plusVersion = skipVersion ? 0 : 1
+const patchVersion = patch ? `.${plusVersion}` : ''
+const rcVersion = (+curVersion.split('.')[3] || 0) + (!patch ? plusVersion : 0)
+const nextVersionPostfix = `rc.${rcVersion}${patchVersion}`
+const nextVersion = `1.0.1-${nextVersionPostfix}`
 
 console.log('Publishing version:', nextVersion, '\n')
 
@@ -143,17 +149,17 @@ async function run() {
 
       console.log('run checks')
 
-      await Promise.all([
-        //
-        spawnify(`yarn lint`),
-        spawnify(`yarn fix`),
-      ])
+      if (!skipTest) {
+        await Promise.all([
+          //
+          spawnify(`yarn lint`),
+          spawnify(`yarn fix`),
+        ])
+        await spawnify(`yarn check`)
+        await spawnify(`yarn test`)
+      }
 
-      await spawnify(`yarn check`)
-      await spawnify(`yarn test`)
-
-      if (!process.env.SKIP_GIT_CLEAN_CHECK) {
-        console.log('checking no git changes...')
+      if (!dirty) {
         const out = await exec(`git status --porcelain`)
         if (out.stdout) {
           throw new Error(`Has unsaved git changes: ${out.stdout}`)

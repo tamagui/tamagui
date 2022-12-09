@@ -35,7 +35,6 @@
     "test:demos": "yarn workspace @tamagui/demos test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "release": "node -r esbuild-register ./release.ts",
-    "release:dirty": "SKIP_GIT_CLEAN_CHECK=1 node -r esbuild-register ./release.ts",
     "release:ci": "yarn release:dirty --ci",
     "upgrade:starters": "npm-run-all --parallel upgrade:starter upgrade:starters:next upgrade:starters:bench",
     "upgrade:starter": "cd apps/starter && yarn upgrade:tamagui",
