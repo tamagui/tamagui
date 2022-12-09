@@ -21,8 +21,8 @@ export declare function useMedia(): UseMediaState;
 export declare function useMediaPropsActive<A extends Object>(props: A): {
     [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key];
 };
-export declare const getMediaImportanceIfMoreImportant: (key: string, importancesUsed: Record<string, number>) => number | null;
-export declare function mergeMediaByImportance(onto: Record<string, any>, key: string, value: any, importancesUsed: Record<string, number>): boolean;
+export declare const getMediaImportanceIfMoreImportant: (mediaKey: string, key: string, importancesUsed: Record<string, number>) => number | null;
+export declare function mergeMediaByImportance(onto: Record<string, any>, mediaKey: string, key: string, value: any, importancesUsed: Record<string, number>): boolean;
 export declare function mediaObjectToString(query: string | MediaQueryObject): string;
 export {};
 //# sourceMappingURL=useMedia.d.ts.map

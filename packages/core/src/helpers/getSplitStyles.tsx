@@ -230,7 +230,7 @@ export const getSplitStyles: StyleSplitter = (
   const usedKeys: Record<string, number> = {}
   const propKeys = Object.keys(props)
   let space: SpaceTokens | null = props.space
-  let hasMedia: boolean | 'space' = false
+  let hasMedia: boolean | 'space' = space ? 'space' : false
 
   const shouldDoClasses =
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
@@ -651,22 +651,26 @@ export const getSplitStyles: StyleSplitter = (
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
           // eslint-disable-next-line no-console
-          console.log(`  📺 ${key}`, mediaState[key.slice(1)], { key, mediaStyle, props, shouldDoClasses, mediaState: { ...mediaState } })
+          console.log(`  📺 ${key}`, mediaState[mediaKeyShort], { key, mediaStyle, props, shouldDoClasses, mediaState: { ...mediaState } })
+        }
+
+        if ('space' in mediaStyle) {
+          hasMedia = 'space'
         }
 
         if (shouldDoClasses) {
+          if ('space' in mediaStyle) {
+            const val = valInit.space
+            delete mediaStyle['space']
+            if (
+              mediaState[mediaKeyShort] &&
+              getMediaImportanceIfMoreImportant(mediaKeyShort, 'space', usedKeys)
+            ) {
+              space = val
+            }
+          }
           const mediaStyles = getStylesAtomic(mediaStyle)
           for (const style of mediaStyles) {
-            if (style.property === 'space') {
-              if (
-                mergeMediaByImportance(style, key, mediaStyle[key], usedKeys) &&
-                mediaState[mediaKeyShort]
-              ) {
-                hasMedia = 'space'
-                space = valInit.space
-              }
-              continue
-            }
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
             if (!usedKeys[fullKey]) {
@@ -676,15 +680,14 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
         } else if (mediaState[mediaKeyShort]) {
-          for (const key in mediaStyle) {
-            const importance = getMediaImportanceIfMoreImportant(key, usedKeys)
+          for (const subKey in mediaStyle) {
+            const importance = getMediaImportanceIfMoreImportant(mediaKeyShort, subKey, usedKeys)
             if (importance === null) continue
             if (key === 'space') {
-              hasMedia = 'space'
               space = valInit.space
               continue
             }
-            mergeMediaByImportance(style, key, mediaStyle[key], usedKeys)
+            mergeMediaByImportance(style, mediaKeyShort, subKey, mediaStyle[key], usedKeys)
             if (key === 'fontFamily') {
               fontFamily = mediaStyle[key]
             }
@@ -794,27 +797,7 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    if (isDevTools) {
-      // prettier-ignore
-      // eslint-disable-next-line no-console
-      console.groupCollapsed('  🔹 styles =>')
-      // prettier-ignore
-      const logs = { style, pseudos, medias, classNames, transforms,viewProps, state, rulesToInsert, parentSplitStyles, flatTransforms }
-      for (const key in logs) {
-        // eslint-disable-next-line no-console
-        console.log(key, logs[key])
-      }
-      // eslint-disable-next-line no-console
-      console.groupEnd()
-    }
-  }
-
-  if (className) {
-    classNames.className = className
-  }
-
-  return {
+  const result = {
     space,
     hasMedia,
     fontFamily,
@@ -825,6 +808,28 @@ export const getSplitStyles: StyleSplitter = (
     classNames,
     rulesToInsert,
   }
+
+  if (className) {
+    classNames.className = className
+  }
+
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    if (isDevTools) {
+      // prettier-ignore
+      // eslint-disable-next-line no-console
+      console.groupCollapsed('  🔹 styles =>')
+      // prettier-ignore
+      const logs = { transforms, viewProps, state, rulesToInsert, parentSplitStyles, flatTransforms }
+      for (const key in { ...result, ...logs }) {
+        // eslint-disable-next-line no-console
+        console.log(key, logs[key])
+      }
+      // eslint-disable-next-line no-console
+      console.groupEnd()
+    }
+  }
+
+  return result
 }
 
 function mergeClassName(

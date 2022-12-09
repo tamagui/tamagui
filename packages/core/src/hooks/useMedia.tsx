@@ -43,9 +43,13 @@ export const getInitialMediaState = () => {
 }
 
 let mediaKeysOrdered: string[]
-export const getMediaKeyImportance = (key: string) =>
+export const getMediaKeyImportance = (key: string) => {
+  if (process.env.NODE_ENV === 'development' && key[0] === '$') {
+    throw new Error(`use short key`)
+  }
   // + 2 because we set base usedKeys=1 in getSplitStyles and all media go above 1
-  mediaKeysOrdered.indexOf(key[0] === '$' ? key.slice(1) : key) + 2
+  return mediaKeysOrdered.indexOf(key) + 2
+}
 
 const dispose = new Set<Function>()
 
@@ -59,6 +63,7 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   initState = { ...mediaState }
   updateCurrentState()
   mediaKeysOrdered = Object.keys(media)
+  console.log('config', config.disableSSR)
   if (config.disableSSR) {
     setupMediaListeners()
   }
@@ -78,9 +83,7 @@ let configuredKey = ''
 function setupMediaListeners() {
   // avoid setting up more than once per config
   const nextKey = JSON.stringify(mediaQueryConfig)
-  if (nextKey === configuredKey) {
-    return
-  }
+  if (nextKey === configuredKey) return
   configuredKey = nextKey
 
   // hmr, undo existing before re-binding
@@ -221,18 +224,17 @@ export function useMediaPropsActive<A extends Object>(
       const key = propNames[i]
       const val = props[key]
       if (key[0] === '$') {
-        if (!media[key.slice(1)]) {
-          continue
-        }
+        const mediaKey = key.slice(1)
+        if (!media[mediaKey]) continue
         if (val && typeof val === 'object') {
           const subKeys = Object.keys(val)
           for (let j = subKeys.length; j--; j >= 0) {
             const subKey = subKeys[j]
-            mergeMediaByImportance(next, subKey, val[subKey], importancesUsed)
+            mergeMediaByImportance(next, mediaKey, subKey, val[subKey], importancesUsed)
           }
         }
       } else {
-        mergeMediaByImportance(next, key, val, importancesUsed)
+        mergeMediaByImportance(next, '', key, val, importancesUsed)
       }
     }
 
@@ -241,20 +243,22 @@ export function useMediaPropsActive<A extends Object>(
 }
 
 export const getMediaImportanceIfMoreImportant = (
+  mediaKey: string,
   key: string,
   importancesUsed: Record<string, number>
 ) => {
-  const importance = getMediaKeyImportance(key)
+  const importance = getMediaKeyImportance(mediaKey)
   return !importancesUsed[key] || importance > importancesUsed[key] ? importance : null
 }
 
 export function mergeMediaByImportance(
   onto: Record<string, any>,
+  mediaKey: string,
   key: string,
   value: any,
   importancesUsed: Record<string, number>
 ) {
-  const importance = getMediaImportanceIfMoreImportant(key, importancesUsed)
+  const importance = getMediaImportanceIfMoreImportant(mediaKey, key, importancesUsed)
   if (importance === null) {
     return false
   }

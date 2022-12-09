@@ -138,7 +138,7 @@ export const Sandbox = () => {
           {/* <SheetDemo /> */}
 
           {/* space */}
-          <YStack space="$2" $gtSm={{ space: '$10' }}>
+          <YStack debug="verbose" space="$2" $gtSm={{ space: '$10' }}>
             <Circle bc="red" size="$10" />
             <Circle bc="red" size="$10" />
             <Circle bc="red" size="$10" />

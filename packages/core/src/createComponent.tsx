@@ -341,6 +341,8 @@ export function createComponent<
         // eslint-disable-next-line no-console
         console.log('splitStyles', splitStyles)
         // eslint-disable-next-line no-console
+        console.log('shouldListenForMediaChanges', shouldListenForMediaChanges)
+        // eslint-disable-next-line no-console
         console.log('className', Object.values(splitStyles.classNames))
         if (isClient) {
           // eslint-disable-next-line no-console
