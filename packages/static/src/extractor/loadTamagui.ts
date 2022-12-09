@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
 /* eslint-disable no-console */
-import { basename, dirname, extname, join, relative, sep } from 'path'
+import { basename, dirname, extname, join, relative, sep, resolve } from 'path'
 
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
@@ -179,7 +179,8 @@ Tamagui built config and components:`
 }
 
 export function resolveWebOrNativeSpecificEntry(entry: string) {
-  const resolved = require.resolve(entry)
+  const workspaceRoot = resolve()
+  const resolved = require.resolve(entry, {paths: [workspaceRoot]})
   const ext = extname(resolved)
   const fileName = basename(resolved).replace(ext, '')
   const specificExt = process.env.TAMAGUI_TARGET === 'web' ? 'web' : 'native'
