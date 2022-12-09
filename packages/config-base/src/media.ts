@@ -17,3 +17,15 @@ export const media = createMedia({
   gtLg: { minWidth: 1280 + 1 },
   gtXl: { minWidth: 1650 + 1 },
 })
+
+// note all the non "gt" ones should be true to start to match mobile-first
+// were aiming for "xs" to be the default to "gtXs" true too
+export const mediaQueryDefaultActive = {
+  xl: true,
+  lg: true,
+  md: true,
+  sm: true,
+  xs: true,
+  // false
+  xxs: false,
+}

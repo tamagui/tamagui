@@ -1,25 +1,23 @@
-import { MatchMedia, MediaQueryList } from "../types"
+import { MatchMedia, MediaQueryList } from '../types'
 
-export let matchMedia: MatchMedia;
+let matchMediaImpl: MatchMedia = matchMediaFallback
 
-setupMatchMedia(matchMediaFallback);
+export const matchMedia: MatchMedia = (...args) => matchMediaImpl(...args)
 
 function matchMediaFallback(query: string): MediaQueryList {
-  if (
-    process.env.NODE_ENV === 'development'
-  ) {
+  if (process.env.NODE_ENV === 'development') {
     // eslint-disable-next-line no-console
     console.warn('warning: matchMedia implementation is not provided.')
   }
   return {
-    addListener() {},
-    removeListener() {},
+    addListener: () => {},
+    removeListener: () => {},
     matches: false,
   }
 }
 
-export function setupMatchMedia(nativeMatchMedia: (media: string) => MediaQueryList) {
-  matchMedia = nativeMatchMedia;
+export function setupMatchMedia(_: MatchMedia) {
+  matchMediaImpl = _
   // @ts-ignore
-  globalThis['matchMedia'] = matchMedia
+  globalThis['matchMedia'] = _
 }

@@ -3,7 +3,6 @@ import {
   Button,
   H1,
   MyComponent,
-  MyComponentJSX,
   Paragraph,
   Separator,
   Sheet,
@@ -46,8 +45,11 @@ export function HomeScreen() {
         <Button {...linkProps}>Link to user</Button>
       </XStack>
 
-      <MyComponent w={50} h={50} />
-      <MyComponentJSX />
+      <XStack debug="verbose" $xs={{ fd: 'column' }} space>
+        <MyComponent w={50} h={50} />
+        <MyComponent w={50} h={50} />
+        <MyComponent w={50} h={50} />
+      </XStack>
 
       <SheetDemo />
     </YStack>

@@ -1,5 +1,4 @@
-// web-only use platform:
-
 import { MatchMedia } from '@tamagui/core'
+import { NativeMediaQueryList } from './mediaQueryList'
 
-export const matchMedia: MatchMedia = globalThis['matchMedia']
+export const matchMedia: MatchMedia = (query) => new NativeMediaQueryList(query)

@@ -132,9 +132,6 @@ export {
   isTouchable,
   isWeb,
   isWebTouchable,
-  // helpers
-  addMediaQueryListener,
-  removeMediaQueryListener,
   mediaQueryConfig,
   createComponent,
   createFont,

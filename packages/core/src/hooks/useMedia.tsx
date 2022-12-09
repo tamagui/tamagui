@@ -33,26 +33,7 @@ export const mediaState: MediaQueryState =
       )
     : ({} as any)
 
-type MediaListener = (next: boolean) => void
-
-const listeners: { [key: string]: Set<MediaListener> } = {}
-
-export function addMediaQueryListener(key: MediaQueryKey, cb: MediaListener) {
-  if (process.env.NODE_ENV === 'development' && key[0] === '$') {
-    // eslint-disable-next-line no-console
-    console.warn(`Warning, listening to media queries shouldn't use the "$" prefix`)
-  }
-  listeners[key] = listeners[key] || new Set()
-  listeners[key].add(cb)
-  return () => removeMediaQueryListener(key, cb)
-}
-
-export function removeMediaQueryListener(key: MediaQueryKey, cb: MediaListener) {
-  listeners[key]?.delete(cb)
-}
-
 export const mediaQueryConfig: MediaQueries = {}
-
 export const getMedia = () => mediaState
 
 // for SSR capture it at time of startup
@@ -122,14 +103,18 @@ function setupMediaListeners() {
       const next = !!getMatch().matches
       if (next === mediaState[key]) return
       mediaState[key] = next
-      updateCurrentState()
-      const cur = listeners[key]
-      if (cur?.size) {
-        cur.forEach((cb) => cb(next))
+      if (!willUpdate) {
+        willUpdate = true
+        setTimeout(() => {
+          willUpdate = false
+          updateCurrentState()
+        }, 0)
       }
     }
   }
 }
+
+let willUpdate = false
 
 export function useMediaListeners(config: TamaguiInternalConfig) {
   if (config.disableSSR) return
@@ -152,31 +137,70 @@ type MediaKeysState = {
   [key: string]: any
 }
 
-export function useMedia(): {
+type UseMediaState = {
   [key in MediaQueryKey]: boolean
-} {
-  const keys = useSafeRef<MediaKeysState>({ prev: initState })
+}
+
+const shouldUpdate = new WeakMap<any, boolean>()
+export function setMediaShouldUpdate(ref: any, val: boolean) {
+  return shouldUpdate.set(ref, val)
+}
+
+type UseMediaInternalState = { prev: MediaKeysState; next: MediaKeysState }
+const empty = {}
+let initialUseState: UseMediaInternalState
+
+export function useMedia(): UseMediaState {
+  // setup once
+  initialUseState ||= {
+    prev: initState,
+    next: empty,
+  }
+
+  const keys = useSafeRef<UseMediaInternalState>(initialUseState)
+
   const stateSync = useSyncExternalStore<MediaQueryState>(
     subscribe,
     () => {
-      const { prev, ...curKeys } = keys.current
-      const shouldUpdate = !prev || Object.keys(curKeys).some((k) => mediaState[k] !== prev[k])
-      if (shouldUpdate) {
-        const next = { ...mediaState }
-        keys.current.prev = next
-        return next
+      const curState = keys.current
+      const preventUpdate = arguments[0] && shouldUpdate.get(arguments[0]) !== true
+      if (preventUpdate) {
+        return curState.prev
       }
-      return prev
+
+      let didUpdate = false
+
+      // ensure we keep the minimal object of only used keys
+      const next = {}
+
+      for (const key in curState.next) {
+        const val = mediaState[key]
+        if (curState.prev[key] != val) {
+          didUpdate = true
+        }
+        next[key] = val
+      }
+
+      // console.log('go', { didUpdate, next, mediaState, curState })
+
+      if (!didUpdate) {
+        return curState.prev
+      }
+
+      keys.current = { next, prev: next }
+      return next
     },
     () => initState
   )
+
   const state = useDeferredValue(stateSync)
 
   return useMemo(() => {
-    return new Proxy(state, {
+    return new Proxy(state === empty ? initState : state, {
       get(_, key: string) {
-        if (!keys.current[key]) {
-          keys.current[key] = true
+        if (!(key in keys.current.next)) {
+          keys.current.next[key] = true
+          keys.current = { ...keys.current }
         }
         return Reflect.get(state, key)
       },
@@ -227,14 +251,22 @@ export function useMediaPropsActive<A extends Object>(
   }, [media, props])
 }
 
+export const getMediaImportanceIfMoreImportant = (
+  key: string,
+  importancesUsed: Record<string, number>
+) => {
+  const importance = getMediaKeyImportance(key)
+  return !importancesUsed[key] || importance > importancesUsed[key] ? importance : null
+}
+
 export function mergeMediaByImportance(
   onto: Record<string, any>,
   key: string,
   value: any,
   importancesUsed: Record<string, number>
 ) {
-  const importance = getMediaKeyImportance(key)
-  if (importancesUsed[key] > importance) {
+  const importance = getMediaImportanceIfMoreImportant(key, importancesUsed)
+  if (importance === null) {
     return false
   }
   importancesUsed[key] = importance

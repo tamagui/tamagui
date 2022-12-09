@@ -11,7 +11,8 @@ declare type GetStyleResult = {
     rulesToInsert: RulesToInsert;
     viewProps: StackProps & Record<string, any>;
     fontFamily: string | undefined;
-    mediaKeys: string[];
+    space?: any;
+    hasMedia: boolean | 'space';
 };
 declare type GetStyleState = {
     style: ViewStyle;

@@ -39,7 +39,7 @@ export function HomeScreen() {
           <Input placeholder="Search..." />
         </Theme> */}
 
-        {/* <XStack space="$5" $xs={{ fd: 'column', space: '$2' }}>
+        {/* <XStack debug="verbose" space="$5" $sm={{ fd: 'column', space: '$2' }}>
           <Circle bc="red" size="$5" />
           <Circle bc="red" size="$5" />
           <Circle bc="red" size="$5" />

@@ -61,7 +61,7 @@
     "@babel/types": "^7.19.4",
     "@dish/babel-preset": "^0.0.6",
     "@tamagui/test-design-system": "^1.0.1-rc.0.4",
-    "@testing-library/react": "^13.3.0",
+    "@testing-library/react": "^13.4.0",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",
     "@types/find-root": "^1.1.2",

@@ -12,6 +12,7 @@ import { useInsertionEffect } from 'react'
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import {
+  getMediaImportanceIfMoreImportant,
   mediaState as globalMediaState,
   mediaQueryConfig,
   mergeMediaByImportance,
@@ -21,6 +22,7 @@ import type {
   MediaQueryKey,
   PseudoPropKeys,
   PseudoStyles,
+  SpaceTokens,
   SplitStyleState,
   StackProps,
   StaticConfigParsed,
@@ -56,7 +58,8 @@ type GetStyleResult = {
   rulesToInsert: RulesToInsert
   viewProps: StackProps & Record<string, any>
   fontFamily: string | undefined
-  mediaKeys: string[]
+  space?: any // SpaceTokens?
+  hasMedia: boolean | 'space'
 }
 
 type GetStyleState = {
@@ -81,6 +84,7 @@ export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
 const skipProps = {
   animation: true,
+  space: true,
   animateOnly: true,
   debug: true,
   componentName: true,
@@ -218,7 +222,6 @@ export const getSplitStyles: StyleSplitter = (
     inlineWhenUnflattened,
   } = staticConfig
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
-  const mediaKeys: string[] = []
   const viewProps: GetStyleResult['viewProps'] = {}
   const pseudos: PseudoStyles = {}
   let psuedosUsed: Record<string, number> | null = null
@@ -226,6 +229,8 @@ export const getSplitStyles: StyleSplitter = (
   const mediaState = state.mediaState || globalMediaState
   const usedKeys: Record<string, number> = {}
   const propKeys = Object.keys(props)
+  let space: SpaceTokens | null = props.space
+  let hasMedia: boolean | 'space' = false
 
   const shouldDoClasses =
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
@@ -551,7 +556,7 @@ export const getSplitStyles: StyleSplitter = (
         continue
       }
 
-      if (deoptProps?.has(key) || inlineProps?.has(key) || inlineWhenUnflattened?.has(key)) {
+      if (inlineProps?.has(key) || inlineWhenUnflattened?.has(key)) {
         usedKeys[key] = 1
         viewProps[key] = props[key] ?? val
       }
@@ -628,9 +633,7 @@ export const getSplitStyles: StyleSplitter = (
       if (isMedia) {
         if (!val) continue
 
-        const mediaKey = key
-        const mediaKeyShort = mediaKey.slice(1)
-        mediaKeys.push(mediaKeyShort)
+        hasMedia ||= true
 
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
@@ -643,15 +646,27 @@ export const getSplitStyles: StyleSplitter = (
           false
         )
 
+        const mediaKeyShort = key.slice(1)
+
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
           // eslint-disable-next-line no-console
-          console.log(`  📺 ${mediaKey}`, mediaState[mediaKeyShort], { mediaKey, mediaStyle, props, shouldDoClasses, mediaState: { ...mediaState } })
+          console.log(`  📺 ${key}`, mediaState[key.slice(1)], { key, mediaStyle, props, shouldDoClasses, mediaState: { ...mediaState } })
         }
 
         if (shouldDoClasses) {
           const mediaStyles = getStylesAtomic(mediaStyle)
           for (const style of mediaStyles) {
+            if (style.property === 'space') {
+              if (
+                mergeMediaByImportance(style, key, mediaStyle[key], usedKeys) &&
+                mediaState[mediaKeyShort]
+              ) {
+                hasMedia = 'space'
+                space = valInit.space
+              }
+              continue
+            }
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
             if (!usedKeys[fullKey]) {
@@ -660,13 +675,18 @@ export const getSplitStyles: StyleSplitter = (
               mergeClassName(transforms, classNames, fullKey, out.identifier, true)
             }
           }
-        } else if (mediaState[mediaKey]) {
+        } else if (mediaState[mediaKeyShort]) {
           for (const key in mediaStyle) {
-            const didMerge = mergeMediaByImportance(style, key, mediaStyle[key], usedKeys)
-            if (didMerge) {
-              if (key === 'fontFamily') {
-                fontFamily = mediaStyle[key]
-              }
+            const importance = getMediaImportanceIfMoreImportant(key, usedKeys)
+            if (importance === null) continue
+            if (key === 'space') {
+              hasMedia = 'space'
+              space = valInit.space
+              continue
+            }
+            mergeMediaByImportance(style, key, mediaStyle[key], usedKeys)
+            if (key === 'fontFamily') {
+              fontFamily = mediaStyle[key]
             }
           }
         }
@@ -795,11 +815,12 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   return {
+    space,
+    hasMedia,
     fontFamily,
     viewProps,
     style,
     medias,
-    mediaKeys,
     pseudos,
     classNames,
     rulesToInsert,

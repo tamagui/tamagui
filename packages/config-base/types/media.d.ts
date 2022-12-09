@@ -35,4 +35,12 @@ export declare const media: {
         minWidth: number;
     };
 };
+export declare const mediaQueryDefaultActive: {
+    xl: boolean;
+    lg: boolean;
+    md: boolean;
+    sm: boolean;
+    xs: boolean;
+    xxs: boolean;
+};
 //# sourceMappingURL=media.d.ts.map

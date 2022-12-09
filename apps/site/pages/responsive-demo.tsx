@@ -1,3 +1,5 @@
+// @ts-nocheck responsive props
+
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 // @ts-ignore
 import img1 from '@tamagui/demos/photo/photo1'

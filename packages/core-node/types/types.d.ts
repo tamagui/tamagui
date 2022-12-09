@@ -571,13 +571,13 @@ export declare type TamaguiComponentState = {
     pressIn: boolean;
     focus: boolean;
     unmounted: boolean;
-    mediaState?: null | Record<string, boolean>;
     animation?: null | {
         style?: any;
         avoidClasses?: boolean;
     };
 };
 export declare type SplitStyleState = TamaguiComponentState & {
+    mediaState?: Record<string, boolean>;
     noClassNames?: boolean;
     dynamicStylesInline?: boolean;
     resolveVariablesAs?: ResolveVariableTypes;

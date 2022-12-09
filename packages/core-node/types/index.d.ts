@@ -34,7 +34,7 @@ export * from './helpers/withStaticProperties';
 export * from './contexts/ButtonNestingContext';
 export * from './hooks/useId';
 export * from './hooks/useIsTouchDevice';
-export { configureMedia, getMedia, mediaState, useMedia, useMediaPropsActive, mediaObjectToString, addMediaQueryListener, removeMediaQueryListener, mediaQueryConfig, } from './hooks/useMedia';
+export { configureMedia, getMedia, mediaState, useMedia, useMediaPropsActive, mediaObjectToString, mediaQueryConfig, } from './hooks/useMedia';
 export * from './hooks/useTheme';
 export * from './hooks/useThemeName';
 export * from './hooks/useSafeRef';

@@ -5,7 +5,7 @@ import { themes, tokens } from '@tamagui/theme-base'
 
 import { animations } from './animations'
 import { createGenericFont } from './createGenericFont'
-import { media } from './media'
+import { media, mediaQueryDefaultActive } from './media'
 
 export * from './animations'
 
@@ -115,9 +115,4 @@ export const config = {
 }
 
 // @ts-ignore bad types
-config.mediaQueryDefaultActive = {
-  xxs: true,
-  xs: true,
-  sm: true,
-  gtXs: true,
-}
+config.mediaQueryDefaultActive = mediaQueryDefaultActive

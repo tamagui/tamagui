@@ -1,20 +1,21 @@
 rc.1
 
-  - fix getMedia().sm
-  - next load css on subsequent pages
-  - tested on FF
-    - Select component bugs: https://tamagui.dev/docs/components/select/1.0.0-rc
-      - scroll bug: animation stutters. try giving it a fast swipe with scroll pad on macOS
-      - closes immediately: click to open,  don't select but click outside to close, try to click to open again, then it will auto close immediately before being able to make a selection
-    - Card component minor glitch: border flickers on animation end
-    - docs site: After clicking "Show code", then the "Copy to clipboard" button in that shown code preview don't actually copy anything to the clipboard, even though it says "Copied". Clipboard is same as before. However, in the non-show/hide code previews, the button works
-  - Stack is producing inline styles for media where YStack produces classname
-
+- fix getMedia().sm type
+- next load css on subsequent pages
+- tested on FF
+  - Select component bugs: https://tamagui.dev/docs/components/select/1.0.0-rc
+    - scroll bug: animation stutters. try giving it a fast swipe with scroll pad on macOS
+    - closes immediately: click to open,  don't select but click outside to close, try to click to open again, then it will auto close immediately before being able to make a selection
+  - Card component minor glitch: border flickers on animation end
+  - docs site: After clicking "Show code", then the "Copy to clipboard" button in that shown code preview don't actually copy anything to the clipboard, even though it says "Copied". Clipboard is same as before. However, in the non-show/hide code previews, the button works
+- Stack is producing inline styles for media where YStack produces classname
 
 1.0
 
+- CI auto master merge tests passing releases
 - vite compiler bug
 - not de-duping css much
+- native + re-render tests
 - snapshot test of HeroResponsive output
 - `tamagui` cli basic version
 - I'm seeing an issue where setting multiline=true on Input results in broken colors when switching between light & dark themes (doesn't use specified text color). 
@@ -32,14 +33,7 @@ rc.1
 - canary release channel
 - web forms events bubble
 
-- dynamic eval bundle of smallish fixes: 
-  - hash file contents use as hash for tmp file name
-  - avoid work if matching
-  - install into node_modules/.cache (import cacheDir) and symlink next to current file
-  - bundle it, use the existing esbuild.buildSync helper fn
-  - remove babel use esbuild plugin
-
-qol:
+1.0 launch:
 
 - grid on homepage linking to various nice components maybe replace features grid or augment
   - VisuallyHidden, Adapt, FontLanguage, etc
@@ -54,13 +48,22 @@ qol:
 - runthrough docs a handful of times
 - get an demo for studio ready
 - kitchen-sink in Snack demo
-
-content
-
+- content
   - blog
     - lighthouse score diff between compiler on / off
     - compiler in/out
   - docs: expo guide
+
+---
+
+1.1
+
+- dynamic eval bundle of smallish fixes: 
+  - hash file contents use as hash for tmp file name
+  - avoid work if matching
+  - install into node_modules/.cache (import cacheDir) and symlink next to current file
+  - bundle it, use the existing esbuild.buildSync helper fn
+  - remove babel use esbuild plugin
 
 ---
 

@@ -14,10 +14,8 @@ type Raw<T> = {
 
 export const useSafeRef = <T>(initialValue: T) => {
   const rawRef = useRef<Raw<T>>()
-
-  const raw: Raw<T> =
-    rawRef.current ??
-    (rawRef.current = {
+  if (!rawRef.current) {
+    rawRef.current = {
       hold: true,
       next: initialValue,
       cur: initialValue,
@@ -32,15 +30,14 @@ export const useSafeRef = <T>(initialValue: T) => {
           raw.cur = v
         },
       },
-    })
+    }
+  }
 
+  const raw: Raw<T> = rawRef.current
   raw.hold = true
-  Promise.resolve().then(() => {
-    raw.hold = false
-  })
   raw.cur = raw.next
-
   useIsomorphicLayoutEffect(() => {
+    raw.hold = false
     raw.next = raw.cur
   })
 

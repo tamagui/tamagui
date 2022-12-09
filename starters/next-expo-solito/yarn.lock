@@ -2290,10 +2290,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@my/config@workspace:packages/config"
   dependencies:
-    "@tamagui/animations-react-native": 1.0.1-rc.0.4
-    "@tamagui/font-inter": 1.0.1-rc.0.4
-    "@tamagui/shorthands": 1.0.1-rc.0.4
-    "@tamagui/theme-base": 1.0.1-rc.0.4
+    "@tamagui/animations-react-native": ^1.0.1-rc.0.4
+    "@tamagui/font-inter": ^1.0.1-rc.0.4
+    "@tamagui/react-native-media-driver": ^1.0.1-rc.0.4
+    "@tamagui/shorthands": ^1.0.1-rc.0.4
+    "@tamagui/theme-base": ^1.0.1-rc.0.4
   languageName: unknown
   linkType: soft
 
@@ -2927,7 +2928,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/animations-react-native@npm:1.0.1-rc.0.4, @tamagui/animations-react-native@npm:^1.0.1-rc.0.4":
+"@tamagui/animations-react-native@npm:^1.0.1-rc.0.4":
   version: 1.0.1-rc.0.4
   resolution: "@tamagui/animations-react-native@npm:1.0.1-rc.0.4"
   dependencies:
@@ -3037,7 +3038,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/colors@npm:1.0.1-rc.0.4, @tamagui/colors@npm:^1.0.1-rc.0.4":
+"@tamagui/colors@npm:^1.0.1-rc.0.4":
   version: 1.0.1-rc.0.4
   resolution: "@tamagui/colors@npm:1.0.1-rc.0.4"
   checksum: 59d6270e8239bc33767621f55bbd0e7d9551c2a78ea753eff67088dc8bb0673671b9e40aba1944471dbc197d14fadd418c9ff2fef76632ffd4019d12f6da14f4
@@ -3199,7 +3200,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/font-inter@npm:1.0.1-rc.0.4":
+"@tamagui/font-inter@npm:^1.0.1-rc.0.4":
   version: 1.0.1-rc.0.4
   resolution: "@tamagui/font-inter@npm:1.0.1-rc.0.4"
   dependencies:
@@ -3314,7 +3315,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/lucide-icons@npm:1.0.1-rc.0.4":
+"@tamagui/lucide-icons@npm:^1.0.1-rc.0.4":
   version: 1.0.1-rc.0.4
   resolution: "@tamagui/lucide-icons@npm:1.0.1-rc.0.4"
   dependencies:
@@ -3614,7 +3615,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/shorthands@npm:1.0.1-rc.0.4, @tamagui/shorthands@npm:^1.0.1-rc.0.4":
+"@tamagui/shorthands@npm:^1.0.1-rc.0.4":
   version: 1.0.1-rc.0.4
   resolution: "@tamagui/shorthands@npm:1.0.1-rc.0.4"
   checksum: 8610e31504814c55dd2a0e436e158efe560826974fc50745a6a42dd095384b400e12a6321d4a05dfe9cb323313ae4be25be42d0cf5e9e30709ad019389488eb5
@@ -3736,7 +3737,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/theme-base@npm:1.0.1-rc.0.4":
+"@tamagui/theme-base@npm:^1.0.1-rc.0.4":
   version: 1.0.1-rc.0.4
   resolution: "@tamagui/theme-base@npm:1.0.1-rc.0.4"
   dependencies:
@@ -4405,12 +4406,12 @@ __metadata:
     "@my/ui": "*"
     "@react-navigation/native": ^6.0.11
     "@react-navigation/native-stack": ^6.7.0
-    "@tamagui/animations-react-native": 1.0.1-rc.0.4
-    "@tamagui/colors": 1.0.1-rc.0.4
-    "@tamagui/font-inter": 1.0.1-rc.0.4
-    "@tamagui/lucide-icons": 1.0.1-rc.0.4
-    "@tamagui/shorthands": 1.0.1-rc.0.4
-    "@tamagui/theme-base": 1.0.1-rc.0.4
+    "@tamagui/animations-react-native": ^1.0.1-rc.0.4
+    "@tamagui/colors": ^1.0.1-rc.0.4
+    "@tamagui/font-inter": ^1.0.1-rc.0.4
+    "@tamagui/lucide-icons": ^1.0.1-rc.0.4
+    "@tamagui/shorthands": ^1.0.1-rc.0.4
+    "@tamagui/theme-base": ^1.0.1-rc.0.4
     expo-linking: ^3.2.3
     solito: 2.0.0-canary.4
   languageName: unknown

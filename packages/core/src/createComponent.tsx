@@ -34,7 +34,7 @@ import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { useShallowSetState } from './helpers/useShallowSetState'
 import { measureLayout, useElementLayout } from './hooks/useElementLayout'
-import { addMediaQueryListener, getInitialMediaState } from './hooks/useMedia'
+import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
 import { getThemeIsNewTheme, getThemeManager, useTheme } from './hooks/useTheme'
 import {
@@ -134,11 +134,6 @@ export function createComponent<
 
   // see onConfiguredOnce below which attaches a name then to this component
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
-    // render count testing
-    if (process.env.NODE_ENV === 'test' && propsIn['data-test-renders']) {
-      propsIn['data-test-renders']['current'] ??= 0
-      propsIn['data-test-renders']['current'] += 1
-    }
     // const time = t.start({ quiet: true })
 
     // React inserts default props after your props for some reason...
@@ -283,7 +278,12 @@ export function createComponent<
 
     const isExiting = presence?.[0] === false
 
-    // track if we access variable values
+    const mediaState = useMedia(
+      // @ts-ignore, we just pass a stable object so we can get it later with
+      // should match to the one used in `setMediaShouldUpdate` below
+      stateRef
+    )
+
     setDidGetVariableValue(false)
 
     const splitStyles = useSplitStyles(
@@ -292,6 +292,7 @@ export function createComponent<
       theme,
       {
         ...state,
+        mediaState,
         noClassNames,
         dynamicStylesInline: noClassNames,
         hasTextAncestor,
@@ -304,7 +305,16 @@ export function createComponent<
       debugProp
     )
 
-    const didAccessThemeValue = didGetVariableValue()
+    // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
+    const shouldListenForMediaChanges =
+      didGetVariableValue() ||
+      splitStyles.hasMedia === 'space' ||
+      (noClassNames === true && splitStyles.hasMedia)
+
+    if (shouldListenForMediaChanges) {
+      setMediaShouldUpdate(stateRef, shouldListenForMediaChanges)
+    }
+
     const hostRef = useServerRef<TamaguiElement>(null)
 
     // animation setup
@@ -344,7 +354,7 @@ export function createComponent<
       medias,
       style: splitStylesStyle,
       classNames,
-      mediaKeys,
+      space,
     } = splitStyles
 
     const propsWithAnimation = props as UseAnimationProps
@@ -368,32 +378,6 @@ export function createComponent<
       }
     }
 
-    // media queries
-    useIsomorphicLayoutEffect(() => {
-      // if using CSS only and didn't access raw theme value we can de-opt all media query changes
-      // we've generated css entirely
-      if (!noClassNames && !didAccessThemeValue) return
-      const disposers = mediaKeys.map((key) => {
-        return addMediaQueryListener(key, (next: boolean) => {
-          setState((prev) => {
-            if (!prev.mediaState || prev.mediaState[key] !== next) {
-              return {
-                ...prev,
-                mediaState: getMediaStateObject({
-                  ...prev.mediaState,
-                  [key]: next,
-                }),
-              }
-            }
-            return prev
-          })
-        })
-      })
-      return () => {
-        disposers.forEach((d) => d())
-      }
-    }, [mediaKeys.join(',')])
-
     const {
       hitSlop,
       asChild,
@@ -404,7 +388,6 @@ export function createComponent<
       onHoverIn,
       onHoverOut,
       themeShallow,
-      space: spaceProp,
       spaceDirection: _spaceDirection,
       disabled: disabledProp,
       onMouseUp,
@@ -774,17 +757,6 @@ export function createComponent<
           }
         : null
 
-    let space = spaceProp
-
-    // find space by media query
-    if (state.mediaState && mediaKeys.length) {
-      for (const key in state.mediaState) {
-        if (key in state.mediaState && key in props && props[key].space !== undefined) {
-          space = props[key].space
-        }
-      }
-    }
-
     const themeShouldReset = Boolean(themeShallow && themeManager && themeIsNew)
     const shouldProvideThemeManager = themeShouldReset || (themeManager && themeIsNew)
 
@@ -915,7 +887,6 @@ export function createComponent<
           pressIn: false,
           focus: false,
           unmounted: true,
-          mediaState: getMediaStateObject(getInitialMediaState()),
         }
         defaultComponentStateMounted = {
           ...defaultComponentState,
@@ -1052,6 +1023,7 @@ Unspaced['isUnspaced'] = true
 // keep inline to avoid circular deps
 
 export const Spacer = createComponent<SpacerProps>({
+  acceptsClassName: true,
   memo: true,
   componentName: 'Spacer',
   validStyles,
@@ -1281,8 +1253,4 @@ const AbsoluteFill: any = createComponent({
 
 const dontComposePressabilityKeys = {
   onClick: true,
-}
-
-function getMediaStateObject(obj: Object) {
-  return Object.fromEntries(Object.entries(obj).flatMap(([k, v]) => (v ? [[`$${k}`, v]] : [])))
 }

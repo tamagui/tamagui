@@ -2,15 +2,7 @@ import { MatchMedia, MediaQueryList } from '../types'
 
 export const matchMedia = (typeof window !== 'undefined' && window.matchMedia) || matchMediaFallback
 
-function matchMediaFallback(query: string): MediaQueryList {
-  if (
-    process.env.NODE_ENV === 'development' &&
-    !process.env.IS_STATIC &&
-    process.env.TAMAGUI_TARGET !== 'web'
-  ) {
-    // eslint-disable-next-line no-console
-    console.log('warning: matchMedia not loading! Native not picking up .native.js files?')
-  }
+function matchMediaFallback(_: string): MediaQueryList {
   return {
     addListener() {},
     removeListener() {},
@@ -18,6 +10,6 @@ function matchMediaFallback(query: string): MediaQueryList {
   }
 }
 
-export function setupMatchMedia(nativeMatchMedia: MatchMedia) {
+export function setupMatchMedia(_: MatchMedia) {
   // no-op web
 }

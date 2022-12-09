@@ -183,6 +183,7 @@ export const HeroResponsive = memo(() => {
           zi={1}
           f={1}
           space="$1"
+          // mostly keeping this to make sure we get a good ACID test of useMedia().sm
           {...(media.sm && {
             scale,
             x: 150 - width / 2 - (smIndex ? (0.68 - scale) * 920 : 0),
@@ -428,7 +429,6 @@ export const Safari = memo(
                   <YStack f={1} />
                   <XStack>
                     <YStack f={1}>
-                      <Spacer $gtSmall={{ display: 'none' }} flex />
                       <H3>Enchanting Garden</H3>
                       <XStack ai="center" space>
                         <MapPin size={12} color="var(--color)" />
@@ -436,7 +436,6 @@ export const Safari = memo(
                       </XStack>
                     </YStack>
                     <YStack ai="flex-end">
-                      <Spacer flex $gtSmall={{ display: 'none' }} />
                       <H4>$45</H4>
                       <Paragraph>/night</Paragraph>
                     </YStack>

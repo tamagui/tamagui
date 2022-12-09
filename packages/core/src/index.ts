@@ -48,8 +48,6 @@ export {
   useMedia,
   useMediaPropsActive,
   mediaObjectToString,
-  addMediaQueryListener,
-  removeMediaQueryListener,
   mediaQueryConfig,
 } from './hooks/useMedia'
 export * from './hooks/useTheme'

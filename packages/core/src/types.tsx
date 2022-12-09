@@ -414,12 +414,12 @@ export type MediaQueries = {
 }
 
 export interface MediaQueryList {
-  addListener(listener?: any): void;
-  removeListener(listener?: any): void;
-  matches: boolean;
+  addListener(listener?: any): void
+  removeListener(listener?: any): void
+  matches: boolean
 }
 
-export type MatchMedia = (query: string) => MediaQueryList;
+export type MatchMedia = (query: string) => MediaQueryList
 
 export type TransformStyleProps = {
   x?: number
@@ -1246,7 +1246,6 @@ export type TamaguiComponentState = {
   pressIn: boolean
   focus: boolean
   unmounted: boolean
-  mediaState?: null | Record<string, boolean>
   animation?: null | {
     style?: any
     avoidClasses?: boolean
@@ -1254,6 +1253,7 @@ export type TamaguiComponentState = {
 }
 
 export type SplitStyleState = TamaguiComponentState & {
+  mediaState?: Record<string, boolean>
   noClassNames?: boolean
   dynamicStylesInline?: boolean
   resolveVariablesAs?: ResolveVariableTypes
