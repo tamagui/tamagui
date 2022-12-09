@@ -29,13 +29,7 @@ if (typeof navigator !== 'undefined') {
 }
 
 export default function App(props: AppProps) {
-  const [theme_, setTheme] = useRootTheme()
-  const [mounted, setmounted] = useState(false)
-  const theme = mounted ? theme_ : 'light'
-
-  useEffect(() => {
-    setmounted(true)
-  }, [])
+  const [theme, setTheme] = useRootTheme()
 
   // memo to avoid re-render on dark/light change
   const contents = useMemo(() => {
