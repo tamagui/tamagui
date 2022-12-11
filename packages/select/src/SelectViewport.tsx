@@ -21,6 +21,7 @@ export const SelectViewportFrame = styled(ThemeableStack, {
   bordered: true,
   overflow: 'scroll',
   userSelect: 'none',
+  outlineWidth: 0,
 
   variants: {
     size: {

@@ -123,7 +123,7 @@ const presetHashes = {
   none: true,
 }
 
-const n = (val: any) => normalizeValueWithProperty(val)
+const n = normalizeValueWithProperty
 
 export function styleToCSS(style: Record<string, any>) {
   // box-shadow

@@ -131,6 +131,7 @@ export const Sandbox = () => {
           }}
         >
           {/* <AnimationsHoverDemo /> */}
+          <SelectDemo />
 
           {/* <>make sure enterStyle works without scale set on defaults</>
           <Square

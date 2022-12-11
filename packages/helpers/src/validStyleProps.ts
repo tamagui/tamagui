@@ -115,6 +115,10 @@ export const stylePropsView = Object.freeze({
     pointerEvents: true,
     boxSizing: true,
     boxShadow: true,
+    outlineColor: true,
+    outlineStyle: true,
+    outlineOffset: true,
+    outlineWidth: true,
   }),
 })
 

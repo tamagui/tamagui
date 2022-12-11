@@ -25,6 +25,10 @@ export declare const stylePropsView: Readonly<{
     pointerEvents?: true | undefined;
     boxSizing?: true | undefined;
     boxShadow?: true | undefined;
+    outlineColor?: true | undefined;
+    outlineStyle?: true | undefined;
+    outlineOffset?: true | undefined;
+    outlineWidth?: true | undefined;
     x: true;
     y: true;
     scale: true;
@@ -179,6 +183,10 @@ export declare const stylePropsText: Readonly<{
     pointerEvents?: true | undefined;
     boxSizing?: true | undefined;
     boxShadow?: true | undefined;
+    outlineColor?: true | undefined;
+    outlineStyle?: true | undefined;
+    outlineOffset?: true | undefined;
+    outlineWidth?: true | undefined;
     x: true;
     y: true;
     scale: true;
@@ -307,6 +315,10 @@ export declare const stylePropsAll: Readonly<{
     pointerEvents?: true | undefined;
     boxSizing?: true | undefined;
     boxShadow?: true | undefined;
+    outlineColor?: true | undefined;
+    outlineStyle?: true | undefined;
+    outlineOffset?: true | undefined;
+    outlineWidth?: true | undefined;
     x: true;
     y: true;
     scale: true;
@@ -420,6 +432,10 @@ export declare const validStyles: Readonly<{
     pointerEvents?: true | undefined;
     boxSizing?: true | undefined;
     boxShadow?: true | undefined;
+    outlineColor?: true | undefined;
+    outlineStyle?: true | undefined;
+    outlineOffset?: true | undefined;
+    outlineWidth?: true | undefined;
     x: true;
     y: true;
     scale: true;

@@ -7,7 +7,7 @@ import { Footer } from '@components/Footer'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import { Suspense, useMemo } from 'react'
+import { Suspense, startTransition, useMemo } from 'react'
 import { TamaguiProvider } from 'tamagui'
 
 import { SearchProvider } from '../components/Search'
@@ -41,7 +41,13 @@ export default function App(props: AppProps) {
 
   return (
     <>
-      <NextThemeProvider onChangeTheme={setTheme as any}>
+      <NextThemeProvider
+        onChangeTheme={(next) => {
+          startTransition(() => {
+            setTheme(next)
+          })
+        }}
+      >
         <TamaguiProvider
           config={config}
           disableInjectCSS

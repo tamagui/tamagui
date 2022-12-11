@@ -264,6 +264,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
           pressTheme
           cursor=""
           focusTheme
+          outlineWidth={0}
           componentName={ITEM_NAME}
           ref={composedRefs}
           aria-labelledby={textId}

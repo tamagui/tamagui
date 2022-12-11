@@ -123,7 +123,9 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
     React.startTransition(() => {
       setResolvedTheme(systemTheme)
     })
-    if (theme === 'system' && !forcedTheme) handleChangeTheme(systemTheme, false)
+    if (theme === 'system' && !forcedTheme) {
+      handleChangeTheme(systemTheme, false)
+    }
   })
 
   // Ref hack to avoid adding handleMediaQuery as a dep

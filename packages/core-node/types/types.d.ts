@@ -367,6 +367,10 @@ declare type StylePropsWebOnly = {
     contain?: Properties['contain'];
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
     userSelect?: Properties['userSelect'];
+    outlineColor?: Properties['outlineColor'];
+    outlineStyle?: Properties['outlineStyle'];
+    outlineOffset?: Properties['outlineOffset'];
+    outlineWidth?: Properties['outlineWidth'];
 };
 export declare type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & StylePropsWebOnly;
 export declare type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & StylePropsWebOnly & {
