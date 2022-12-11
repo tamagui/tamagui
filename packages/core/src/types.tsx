@@ -621,16 +621,15 @@ type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShort
  */
 
 type StylePropsWebOnly = {
-  // we make this a style prop as it is on web
   pointerEvents?: ViewProps['pointerEvents']
-  // WEB ONLY
   cursor?: Properties['cursor']
-  // WEB ONLY
   contain?: Properties['contain']
-  // WEB ONLY values: inherit, inline, block, content
   display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
-  // WEB ONLY
   userSelect?: Properties['userSelect']
+  outlineColor?: Properties['outlineColor']
+  outlineStyle?: Properties['outlineStyle']
+  outlineOffset?: Properties['outlineOffset']
+  outlineWidth?: Properties['outlineWidth']
 }
 
 export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> &

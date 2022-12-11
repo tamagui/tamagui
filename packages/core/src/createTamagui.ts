@@ -195,12 +195,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     tokensParsed,
     parsed: true,
     getCSS: (separator = '\n') => {
-      return `
-      .is_Text .is_Text {display:inline-flex;}
-      ._dsp_contents {display:contents;}
-      ${themeConfig.cssRuleSets.join(separator)}
-      ${themeConfig.themeRuleSets.join(separator)}
-      ${getAllRules().join(separator)}`
+      return `.is_Text .is_Text {display:inline-flex;}
+._dsp_contents {display:contents;}
+${themeConfig.cssRuleSets.join(separator)}
+${themeConfig.themeRuleSets.join(separator)}
+${getAllRules().join(separator)}`
     },
     // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
