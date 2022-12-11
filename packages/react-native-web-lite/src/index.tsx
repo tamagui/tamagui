@@ -16,7 +16,13 @@ export { default as render } from './render/index.js'
 export { unmountComponentAtNode } from 'react-dom'
 export { default as NativeModules } from './NativeModules/index.js'
 export { findNodeHandle } from './findNodeHandle.js'
-export { default as Easing } from './vendor/react-native/Animated/Easing.js'
+
+// animated
+export { default as Easing } from './vendor/react-native/AnimatedConcurrent/Easing.js'
+export { default as Animated } from './vendor/react-native/AnimatedConcurrent/Animated.js'
+
+// react-native
+export { default as NativeEventEmitter } from './vendor/react-native/NativeEventEmitter/index.js'
 
 // APIs
 export { default as AccessibilityInfo } from './AccessibilityInfo/index.js'
@@ -50,9 +56,6 @@ export { default as SectionList } from './UnimplementedView.js'
 
 export { default as TouchableOpacity } from './TouchableOpacity.js'
 export { default as TouchableWithoutFeedback } from './TouchableWithoutFeedback.js'
-
-export { default as NativeEventEmitter } from './vendor/react-native/NativeEventEmitter/index.js'
-export { default as Animated } from './vendor/react-native/Animated/Animated.js'
 
 // components
 export { default as ActivityIndicator } from './ActivityIndicator/index.js'

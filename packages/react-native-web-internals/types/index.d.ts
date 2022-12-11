@@ -22,6 +22,7 @@ export { default as normalizeColor } from './modules/normalizeColor/index.js';
 export { default as pick } from './modules/pick/index.js';
 export { default as Platform } from './modules/Platform/index.js';
 export * from './StyleSheet/preprocess.js';
+export { flatten as flattenStyle } from './StyleSheet/index.js';
 export { createSheet } from './StyleSheet/dom/index.js';
 export { default as requestIdleCallback } from './modules/requestIdleCallback/index.js';
 export { default as setValueForStyles } from './modules/setValueForStyles/index.js';

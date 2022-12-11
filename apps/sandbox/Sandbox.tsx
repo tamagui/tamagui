@@ -103,6 +103,7 @@ export const Sandbox = () => {
           }}
         >
           {/* <AnimationsHoverDemo /> */}
+          {/* <Square size={100} bc="red" animation="bouncy" /> */}
           <AnimationsPresenceDemo />
           {/* <SandboxExample /> */}
           {/* <SelectDemo /> */}

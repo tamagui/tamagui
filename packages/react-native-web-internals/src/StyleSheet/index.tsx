@@ -117,7 +117,7 @@ function compose(style1: any, style2: any): any {
 /**
  * flatten
  */
-function flatten(...styles: any): { [key: string]: any } {
+export function flatten(...styles: any): { [key: string]: any } {
   const flatArray = styles.flat(Infinity)
   const result = {}
   for (let i = 0; i < flatArray.length; i++) {

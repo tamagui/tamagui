@@ -27,6 +27,7 @@
     "./dist/*": "./dist/cjs/*/index.js"
   },
   "dependencies": {
+    "invariant": "^2.2.4",
     "normalize-css-color": "^1.0.2",
     "react-native-web-internals": "^1.0.1-rc.1.2",
     "styleq": "^0.1.2"

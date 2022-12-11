@@ -50,7 +50,7 @@ export function tamaguiPlugin(
         },
         optimizeDeps: {
           // disabled: false,
-          include: ['styleq', 'copy-to-clipboard', 'react-native-reanimated'],
+          include: ['styleq', 'react-native-reanimated'],
           esbuildOptions: {
             jsx: 'transform',
             // plugins: [

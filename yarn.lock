@@ -20800,6 +20800,7 @@ __metadata:
   resolution: "react-native-web-lite@workspace:packages/react-native-web-lite"
   dependencies:
     "@tamagui/build": ^1.0.1-rc.1.2
+    invariant: ^2.2.4
     normalize-css-color: ^1.0.2
     react: ">=18"
     react-dom: ">=18"

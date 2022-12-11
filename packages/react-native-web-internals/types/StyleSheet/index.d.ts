@@ -17,7 +17,7 @@ declare function compose(style1: any, style2: any): any;
 /**
  * flatten
  */
-declare function flatten(...styles: any): {
+export declare function flatten(...styles: any): {
     [key: string]: any;
 };
 /**
@@ -48,9 +48,7 @@ declare namespace StyleSheet {
     };
     var create: (styles: any) => any;
     var compose: (style1: any, style2: any) => any;
-    var flatten: (...styles: any) => {
-        [key: string]: any;
-    };
+    var flatten: typeof import("./index.js").flatten;
     var getSheet: () => {
         id: string;
         textContent: string;
