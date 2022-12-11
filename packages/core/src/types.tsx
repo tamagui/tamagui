@@ -405,7 +405,7 @@ export type GenericFont<Key extends number | string = number | string> = {
 export type MediaQueryObject = { [key: string]: string | number | string }
 export type MediaQueryKey = keyof Media
 export type MediaPropKeys = `$${MediaQueryKey}`
-export type MediaQueryState = { [key in MediaPropKeys]: boolean }
+export type MediaQueryState = { [key in MediaQueryKey]: boolean }
 export type MediaProps<A> = {
   [key in MediaPropKeys]?: A
 }

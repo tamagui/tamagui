@@ -18,18 +18,22 @@ import { useState } from 'react'
 // import { AppRegistry, useColorScheme } from 'react-native'
 import {
   Button,
+  ColorTokens,
   H1,
   Paragraph,
   TamaguiProvider,
   Text,
   Theme,
+  ThemeValueFallback,
   TooltipGroup,
+  getMedia,
   getTokens,
   styled,
   useThemeName,
 } from 'tamagui'
 import { ButtonFrame, Circle, Input, Square, YStack } from 'tamagui'
 
+import { OpaqueColorValue } from '../../packages/types-react-native'
 import SandboxExample from './SandboxExample'
 import config from './tamagui.config'
 
@@ -39,6 +43,30 @@ import config from './tamagui.config'
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
+
+type X = ColorTokens | ThemeValueFallback | OpaqueColorValue | undefined
+
+const y: X = ''
+
+// eslint-disable-next-line no-console
+console.log(getMedia().sm)
+
+const CustomButtonFrame = styled(ButtonFrame, {
+  variants: {
+    backgrounded: {
+      true: {
+        // not intellisensing...
+        backgroundColor: '',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    // <---- none of these are applied as default variants
+    // big: true,
+    // primary: true,
+  },
+})
 
 // AppRegistry.registerComponent('Main', () => Sandbox)
 
@@ -295,85 +323,6 @@ function PerformanceTest() {
     </YStack>
   )
 }
-
-const CustomButtonFrame = styled(ButtonFrame, {
-  name: 'Button',
-  borderRadius: 100_100_100, // <---- This does not apply the default borderRadius
-  // debug: 'verbose',
-  // <---- Haven't been able to get any prop to work here
-
-  pressStyle: {
-    opacity: 0.7, // <---- This applies the opacity correctly but the backgroundColor is replaced with some dark color
-  },
-
-  variants: {
-    rounded: {
-      true: {
-        borderRadius: 100_100_100, // <---- This correctly applies the borderRadius but I don't want to have this as a variant
-      },
-    },
-
-    disabled: {
-      true: {
-        opacity: 0.375,
-        pointerEvents: 'none',
-      },
-    },
-
-    big: {
-      true: {
-        height: 58,
-        paddingHorizontal: 16,
-      },
-    },
-
-    small: {
-      true: {
-        height: 32,
-        paddingHorizontal: 16,
-      },
-    },
-    tiny: {
-      true: {
-        height: 24,
-        paddingHorizontal: 8,
-      },
-    },
-    primary: {
-      true: {
-        backgroundColor: 'red',
-
-        hoverStyle: {
-          backgroundColor: 'yellow',
-        },
-      },
-    },
-    secondary: {
-      true: {
-        backgroundColor: 'yellow',
-      },
-    },
-    destructive: {
-      true: {
-        backgroundColor: 'green',
-      },
-    },
-    outlined: {
-      true: {
-        backgroundColor: 'transparent',
-        borderColor: 'red',
-        color: 'red',
-        borderWidth: 2,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    // <---- none of these are applied as default variants
-    // big: true,
-    // primary: true,
-  },
-})
 
 function UseThemeNameTest() {
   const [name, setname] = useState('blue')

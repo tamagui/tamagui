@@ -1,7 +1,6 @@
 rc.1
 
 - variants intellisense autocomplete not suggesting, but types are right
-- fix getMedia().sm type
 - next load css on subsequent pages
 - tested on FF
   - Select component bugs: https://tamagui.dev/docs/components/select/1.0.0-rc
