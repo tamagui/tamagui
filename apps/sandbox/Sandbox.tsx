@@ -131,8 +131,19 @@ export const Sandbox = () => {
           }}
         >
           {/* <AnimationsHoverDemo /> */}
-          {/* <Square size={100} bc="red" animation="bouncy" /> */}
-          <AnimationsPresenceDemo />
+
+          {/* <>make sure enterStyle works without scale set on defaults</>
+          <Square
+            size={100}
+            bc="red"
+            animation="bouncy"
+            debug="verbose"
+            // scale={1}
+            enterStyle={{
+              scale: 2,
+            }}
+          /> */}
+          {/* <AnimationsPresenceDemo /> */}
           {/* <SandboxExample /> */}
           {/* <SelectDemo /> */}
           {/* <PopoverDemo /> */}

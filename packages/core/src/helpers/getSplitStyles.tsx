@@ -571,7 +571,9 @@ export const getSplitStyles: StyleSplitter = (
         const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
         const isEnter = descriptor.name === 'enter'
         const isExit = descriptor.name === 'exit'
-        if (!descriptor || (isEnter && !state.unmounted) || (isExit && !state.isExiting)) {
+
+        // don't continue here on isEnter && !state.unmounted because we need to merge defaults
+        if (!descriptor || (isExit && !state.isExiting)) {
           continue
         }
 

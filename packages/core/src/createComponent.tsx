@@ -185,6 +185,7 @@ export function createComponent<
         hasThemeInversed?: boolean
         hasProvidedThemeManager?: boolean
         themeShouldReset?: boolean
+        isMounting?: boolean
       }
     )
     stateRef.current ??= {}
@@ -254,6 +255,10 @@ export function createComponent<
     const shouldSetMounted = needsMount && state.unmounted
     const setMounted = shouldSetMounted
       ? () => {
+          // isMounting avoids double-render on mount, not sure why some concurrent react
+          // thing probably but the setState is guaranteed call so no need to call again
+          if (stateRef.current.isMounting) return
+          stateRef.current.isMounting = true
           startTransition(() => {
             setStateShallow({
               unmounted: false,
