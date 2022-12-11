@@ -11,6 +11,6 @@
     <key>EXUpdatesSDKVersion</key>
     <string>45.0.0</string>
     <key>EXUpdatesURL</key>
-    <string>https://exp.host/@natew/my-app</string>
+    <string>https://exp.host/@natew/kitchen-sink</string>
   </dict>
 </plist>

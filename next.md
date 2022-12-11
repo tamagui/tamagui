@@ -9,6 +9,8 @@ rc.1
   - Card component minor glitch: border flickers on animation end
   - docs site: After clicking "Show code", then the "Copy to clipboard" button in that shown code preview don't actually copy anything to the clipboard, even though it says "Copied". Clipboard is same as before. However, in the non-show/hide code previews, the button works
 - Stack is producing inline styles for media where YStack produces classname
+- Has anyone been successful with enterStyle? I think it has something to do with keys since when I change the key attribute of the letters the animation happens, but after a refresh it does not happen
+- #quest-portal - scroll view seems to extend beyond the bottom of the screen making it impossible to access the items at the bottom
 
 1.0
 

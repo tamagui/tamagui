@@ -103,7 +103,7 @@ export const Sandbox = () => {
           }}
         >
           {/* <AnimationsHoverDemo /> */}
-          {/* <AnimationsPresenceDemo /> */}
+          <AnimationsPresenceDemo />
           {/* <SandboxExample /> */}
           {/* <SelectDemo /> */}
           {/* <PopoverDemo /> */}
@@ -138,11 +138,11 @@ export const Sandbox = () => {
           {/* <SheetDemo /> */}
 
           {/* space */}
-          <YStack debug="verbose" space="$2" $gtSm={{ space: '$10' }}>
+          {/* <YStack debug="verbose" space="$2" $gtSm={{ space: '$10' }}>
             <Circle bc="red" size="$10" />
             <Circle bc="red" size="$10" />
             <Circle bc="red" size="$10" />
-          </YStack>
+          </YStack> */}
 
           {/* <LabelDemo /> */}
           {/* <SelectDemo /> */}
