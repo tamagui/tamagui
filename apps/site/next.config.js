@@ -86,7 +86,6 @@ module.exports = function (name, { defaultConfig }) {
     swcMinify: true,
     reactStrictMode: true,
     experimental: {
-      reactMode: 'concurrent',
       esmExternals: true,
       forceSwcTransforms: true,
       scrollRestoration: true,

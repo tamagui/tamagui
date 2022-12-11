@@ -39,11 +39,11 @@ export function HomeScreen() {
           <Input placeholder="Search..." />
         </Theme> */}
 
-        {/* <XStack debug="verbose" space="$5" $lg={{ fd: 'column', space: '$2' }}>
+        <XStack debug="verbose" space="$5" $sm={{ fd: 'column', bc: 'green', space: '$1' }}>
           <Circle bc="red" size="$5" />
           <Circle bc="red" size="$5" />
           <Circle bc="red" size="$5" />
-        </XStack> */}
+        </XStack>
 
         {/* fix media + space */}
         {/*

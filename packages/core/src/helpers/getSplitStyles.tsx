@@ -683,11 +683,11 @@ export const getSplitStyles: StyleSplitter = (
           for (const subKey in mediaStyle) {
             const importance = getMediaImportanceIfMoreImportant(mediaKeyShort, subKey, usedKeys)
             if (importance === null) continue
-            if (key === 'space') {
+            if (subKey === 'space') {
               space = valInit.space
               continue
             }
-            mergeMediaByImportance(style, mediaKeyShort, subKey, mediaStyle[key], usedKeys)
+            mergeMediaByImportance(style, mediaKeyShort, subKey, mediaStyle[subKey], usedKeys)
             if (key === 'fontFamily') {
               fontFamily = mediaStyle[key]
             }
