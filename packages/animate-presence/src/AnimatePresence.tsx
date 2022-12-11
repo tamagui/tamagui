@@ -1,4 +1,4 @@
-import { useForceUpdate, useIsomorphicLayoutEffect } from '@tamagui/core'
+import { useDidFinishSSR, useForceUpdate, useIsomorphicLayoutEffect } from '@tamagui/core'
 import React, {
   Children,
   ReactElement,
@@ -112,6 +112,7 @@ export const AnimatePresence: React.FunctionComponent<
   // We want to force a re-render once all exiting animations have finished. We
   // either use a local forceRender function, or one from a parent context if it exists.
   let forceRender = useForceUpdate()
+  const isClientMounted = useDidFinishSSR()
   const forceRenderLayoutGroup = useContext(LayoutGroupContext).forceRender
   if (forceRenderLayoutGroup) forceRender = forceRenderLayoutGroup
 
@@ -157,7 +158,7 @@ export const AnimatePresence: React.FunctionComponent<
         {childrenToRender.map((child) => (
           <PresenceChild
             key={getChildKey(child)}
-            isPresent={isMounted.current}
+            isPresent={Boolean(isClientMounted ? true : isMounted.current)}
             exitVariant={exitVariant}
             enterVariant={enterVariant}
             initial={initial ? undefined : false}

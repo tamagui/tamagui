@@ -1,2 +1,2 @@
-export declare function useDidFinishSSR(): boolean | undefined;
+export declare function useDidFinishSSR(): boolean;
 //# sourceMappingURL=index.d.ts.map

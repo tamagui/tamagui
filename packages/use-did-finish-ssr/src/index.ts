@@ -7,7 +7,7 @@ export function useDidFinishSSR() {
     return false
   }
 
-  const [did, setDid] = useState<boolean | undefined>()
+  const [did, setDid] = useState<boolean>(false)
 
   useIsomorphicLayoutEffect(() => {
     startTransition(() => {
