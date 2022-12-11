@@ -79,12 +79,22 @@ interface ValueObject {
   [themeName: string]: string
 }
 
+// note this only works for light being default for now...
 export const useRootTheme = () => {
-  const isClient = typeof document !== 'undefined'
-  // @ts-ignore
-  const classes = isClient ? [...document.documentElement.classList] : []
-  const isDark = classes.includes('t_dark')
-  return useState(isDark ? 'dark' : 'light')
+  const [val, setVal] = useState('light')
+
+  if (typeof document !== 'undefined') {
+    useLayoutEffect(() => {
+      // @ts-ignore
+      const classes = [...document.documentElement.classList]
+      const isDark = classes.includes('t_dark')
+      React.startTransition(() => {
+        setVal(isDark ? 'dark' : 'light')
+      })
+    }, [])
+  }
+
+  return [val, setVal] as const
 }
 
 export const NextThemeProvider: React.FC<ThemeProviderProps> = ({

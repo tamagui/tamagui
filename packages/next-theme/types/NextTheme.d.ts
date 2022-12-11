@@ -47,7 +47,7 @@ export declare const useThemeSetting: () => UseThemeProps;
 interface ValueObject {
     [themeName: string]: string;
 }
-export declare const useRootTheme: () => [string, React.Dispatch<React.SetStateAction<string>>];
+export declare const useRootTheme: () => readonly [string, React.Dispatch<React.SetStateAction<string>>];
 export declare const NextThemeProvider: React.FC<ThemeProviderProps>;
 export {};
 //# sourceMappingURL=NextTheme.d.ts.map
