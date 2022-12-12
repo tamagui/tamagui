@@ -57,6 +57,7 @@ const plugins = [
 ]
 
 module.exports = function () {
+  /** @type {import('next').NextConfig} */
   let config = {
     typescript: {
       ignoreBuildErrors: true,
@@ -65,6 +66,7 @@ module.exports = function () {
       disableStaticImages: true,
     },
     experimental: {
+      optimizeCss: true,
       scrollRestoration: true,
       legacyBrowsers: false,
       transpilePackages: [
