@@ -1,5 +1,6 @@
 rc.1
 
+- maybe regression in closing popover
 - style={{ filter: '' }} broken
   - instead of validStyleProps use validNONStyleProps
     - that way for web all style props pass through automatically
@@ -16,7 +17,10 @@ rc.1
 
 - CI auto master merge tests passing releases
 - vite compiler bug
-- not de-duping css much
+- prebuild option
+  - not de-duping css much
+  - fixes next next load css
+  - simplifies initial setup and need for plugins
 - native + re-render tests
 - snapshot test of HeroResponsive output
 - `tamagui` cli basic version
@@ -60,6 +64,8 @@ rc.1
 
 1.1
 
+- Is there some way to get color-scheme to update to dark here when we toggle to the dark theme @Nate ?
+  - <html class="t_dark" style="color-scheme: light;">
 - dynamic eval bundle of smallish fixes: 
   - hash file contents use as hash for tmp file name
   - avoid work if matching

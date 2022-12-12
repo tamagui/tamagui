@@ -386,72 +386,80 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           return
         }
 
-        const name =
+        const variableName =
           t.isVariableDeclarator(path.parent) && t.isIdentifier(path.parent.id)
             ? path.parent.id.name
             : 'unknown'
 
+        const parentNode = path.node.arguments[0]
+        if (!t.isIdentifier(parentNode)) {
+          return
+        }
+        const parentName = parentNode.name
         const definition = path.node.arguments[1]
 
-        if (!name || !definition || !t.isObjectExpression(definition)) {
+        if (!parentName || !definition || !t.isObjectExpression(definition)) {
           return
         }
 
-        let Component = getValidImportedComponent(name)
+        console.log('???', parentName, variableName)
+        const Component = getValidImportedComponent(parentName)
 
-        if (!Component) {
-          if (disableExtractFoundComponents === true) {
-            return
-          }
-          if (
-            Array.isArray(disableExtractFoundComponents) &&
-            disableExtractFoundComponents.includes(name)
-          ) {
-            return
-          }
+        // if (!Component) {
+        //   if (disableExtractFoundComponents === true) {
+        //     return
+        //   }
+        //   if (
+        //     Array.isArray(disableExtractFoundComponents) &&
+        //     disableExtractFoundComponents.includes(parentName)
+        //   ) {
+        //     return
+        //   }
 
-          try {
-            if (shouldPrintDebug) {
-              logger.info(`Unknown component ${name}, attempting dynamic load: ${sourcePath}`)
-            }
+        //   try {
+        //     if (shouldPrintDebug) {
+        //       logger.info(
+        //         `Unknown component ${parentName}, attempting dynamic load: ${sourcePath}`
+        //       )
+        //     }
 
-            const out = loadTamaguiSync({
-              forceExports: true,
-              components: [sourcePath],
-            })
+        //     const out = loadTamaguiSync({
+        //       forceExports: true,
+        //       components: [sourcePath],
+        //     })
 
-            if (!out?.components) {
-              if (shouldPrintDebug) {
-                logger.info(`Couldn't load, got ${out}`)
-              }
-              return
-            }
+        //     if (!out?.components) {
+        //       if (shouldPrintDebug) {
+        //         logger.info(`Couldn't load, got ${out}`)
+        //       }
+        //       return
+        //     }
 
-            propsWithFileInfo.allLoadedComponents = [
-              ...propsWithFileInfo.allLoadedComponents,
-              ...out.components,
-            ]
+        //     propsWithFileInfo.allLoadedComponents = [
+        //       ...propsWithFileInfo.allLoadedComponents,
+        //       ...out.components,
+        //     ]
 
-            Component = out.components.flatMap((x) => x.nameToInfo[name] ?? [])[0]
+        //     Component = out.components.flatMap((x) => x.nameToInfo[variableName] ?? [])[0]
 
-            if (shouldPrintDebug === 'verbose') {
-              logger.info([`Tamagui Loaded`, JSON.stringify(out.components), !!Component].join(' '))
-            }
-          } catch (err: any) {
-            if (shouldPrintDebug) {
-              logger.info(
-                `${getPrefixLogs(
-                  options
-                )} skip optimize styled(${name}), unable to pre-process (DEBUG=tamagui for more)`
-              )
-            }
-            if (process.env.DEBUG === 'tamagui') {
-              logger.info(
-                ` Disable this with "disableExtractFoundComponents" in your build-time configuration. \n\n ${err.message} ${err.stack}`
-              )
-            }
-          }
-        }
+        //     if (shouldPrintDebug === 'verbose') {
+        //       logger.info([`Tamagui Loaded`, JSON.stringify(out.components), !!Component].join(' '))
+        //     }
+        //   } catch (err: any) {
+        //     if (shouldPrintDebug) {
+        //       logger.info(
+        //         `${getPrefixLogs(
+        //           options
+        //         )} skip optimize styled(${variableName}), unable to pre-process (DEBUG=tamagui for more)`
+        //       )
+        //     }
+        //     if (process.env.DEBUG === 'tamagui') {
+        //       logger.info(
+        //         ` Disable this with "disableExtractFoundComponents" in your build-time configuration. \n\n ${err.message} ${err.stack}`
+        //       )
+        //     }
+        //   }
+        // }
 
         if (!Component) {
           return
@@ -513,15 +521,24 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           }
         }
 
-        const out = getSplitStyles(styles, Component.staticConfig, defaultTheme, {
-          focus: false,
-          hover: false,
-          unmounted: true,
-          press: false,
-          pressIn: false,
-          resolveVariablesAs: 'variable',
-          noClassNames: false,
-        })
+        const out = getSplitStyles(
+          styles,
+          Component.staticConfig,
+          defaultTheme,
+          {
+            focus: false,
+            hover: false,
+            unmounted: true,
+            press: false,
+            pressIn: false,
+            resolveVariablesAs: 'variable',
+            noClassNames: false,
+          },
+          undefined,
+          undefined,
+          undefined,
+          shouldPrintDebug
+        )
 
         const classNames = {
           ...out.classNames,
@@ -537,11 +554,13 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
         if (shouldPrintDebug) {
           // prettier-ignore
-          logger.info([`Extracted styled(${name})\n`, JSON.stringify(styles, null, 2), '\n  rulesToInsert:', out.rulesToInsert.flatMap((rule) => rule.rules).join('\n')].join(' '))
+          logger.info([`Extracted styled(${variableName})\n`, JSON.stringify(styles, null, 2), '\n  rulesToInsert:', out.rulesToInsert.flatMap((rule) => rule.rules).join('\n')].join(' '))
         }
 
         // leave only un-parsed props...
         definition.properties = skipped
+
+        console.log('out', out)
 
         // ... + key: className
         for (const cn in classNames) {
@@ -561,7 +580,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         res.styled++
 
         if (shouldPrintDebug) {
-          logger.info(`Extracted styled(${name})`)
+          logger.info(`Extracted styled(${variableName})`)
         }
       },
 

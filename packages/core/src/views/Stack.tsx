@@ -6,6 +6,7 @@ import { StackProps, StackPropsBase } from '../types'
 
 export const Stack = createComponent<StackProps, View, StackPropsBase>({
   componentName: 'Stack',
+  acceptsClassName: true,
   defaultProps: {
     ...stackDefaultStyles,
     flexDirection: 'column',

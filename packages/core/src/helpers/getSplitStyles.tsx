@@ -262,6 +262,15 @@ export const getSplitStyles: StyleSplitter = (
     languageContext,
   }
 
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    // eslint-disable-next-line no-console
+    console.groupCollapsed(`getSplitStyles`)
+    // eslint-disable-next-line no-console
+    console.log(staticConfig, { shouldDoClasses, state, IS_STATIC })
+    // eslint-disable-next-line no-console
+    console.groupEnd()
+  }
+
   if (props.className) {
     for (const cn of props.className.split(' ')) {
       if (cn[0] === '_') {

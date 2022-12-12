@@ -14,6 +14,7 @@ const ellipseStyle = {
 
 export const Text = createComponent<TextProps, TextView, TextPropsBase>({
   componentName: 'Text',
+  acceptsClassName: true,
   isText: true,
 
   defaultProps: {
