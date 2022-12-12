@@ -152,6 +152,8 @@ export const AnimatePresence: React.FunctionComponent<
     presentChildren.current = childrenToRender
   })
 
+  const hasWarned = process.env.NODE_ENV === 'development' ? useRef(false) : null
+
   if (isInitialRender.current) {
     return (
       <>
@@ -259,11 +261,15 @@ export const AnimatePresence: React.FunctionComponent<
     )
   })
 
-  if (process.env.NODE_ENV !== 'production' && exitBeforeEnter && childrenToRender.length > 1) {
-    // eslint-disable-next-line no-console
-    console.log(
-      `You're attempting to animate multiple children within AnimatePresence, but its exitBeforeEnter prop is set to true. This can lead to odd visual behaviour.`
-    )
+  if (process.env.NODE_ENV === 'development') {
+    const shouldWarn = exitBeforeEnter && childrenToRender.length > 1
+    if (shouldWarn && hasWarned && !hasWarned.current) {
+      hasWarned.current = true
+      // eslint-disable-next-line no-console
+      console.log(
+        `You're attempting to animate multiple children within AnimatePresence, but its exitBeforeEnter prop is set to true. This can lead to odd visual behaviour.`
+      )
+    }
   }
 
   return (
