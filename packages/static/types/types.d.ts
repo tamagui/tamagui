@@ -7,7 +7,7 @@ import type { ViewStyle } from 'react-native';
 import { LoadedComponents } from './index';
 export type { TamaguiOptions } from '@tamagui/helpers-node';
 export type { StyleObject } from '@tamagui/helpers';
-export declare type ClassNameObject = t.StringLiteral | t.Expression;
+export type ClassNameObject = t.StringLiteral | t.Expression;
 export interface CacheObject {
     [key: string]: any;
 }
@@ -21,24 +21,24 @@ export interface Logger {
     warn(msg: string, options?: LogOptions): void;
     error(msg: string, options?: LogOptions): void;
 }
-export declare type ExtractorOptions = {
+export type ExtractorOptions = {
     logger?: Logger;
 };
-export declare type ExtractedAttrAttr = {
+export type ExtractedAttrAttr = {
     type: 'attr';
     value: t.JSXAttribute | t.JSXSpreadAttribute;
 };
-export declare type ExtractedAttrStyle = {
+export type ExtractedAttrStyle = {
     type: 'style';
     value: ViewStyle & PseudoStyles;
     attr?: t.JSXAttribute | t.JSXSpreadAttribute;
     name?: string;
 };
-export declare type ExtractedAttr = ExtractedAttrAttr | {
+export type ExtractedAttr = ExtractedAttrAttr | {
     type: 'ternary';
     value: Ternary;
 } | ExtractedAttrStyle;
-export declare type ExtractTagProps = {
+export type ExtractTagProps = {
     parserProps: TamaguiOptionsWithFileInfo;
     attrs: ExtractedAttr[];
     node: t.JSXOpeningElement;
@@ -52,11 +52,11 @@ export declare type ExtractTagProps = {
     completeProps: Record<string, any>;
     staticConfig: StaticConfig;
 };
-export declare type TamaguiOptionsWithFileInfo = TamaguiOptions & {
+export type TamaguiOptionsWithFileInfo = TamaguiOptions & {
     sourcePath: string;
     allLoadedComponents: LoadedComponents[];
 };
-export declare type ExtractorParseProps = Omit<TamaguiOptionsWithFileInfo, 'allLoadedComponents'> & {
+export type ExtractorParseProps = Omit<TamaguiOptionsWithFileInfo, 'allLoadedComponents'> & {
     target: 'native' | 'html';
     shouldPrintDebug?: boolean | 'verbose';
     onExtractTag: (props: ExtractTagProps) => void;
@@ -74,7 +74,7 @@ export interface Ternary {
     consequent: Object | null;
     alternate: Object | null;
 }
-export declare type ClassNameToStyleObj = {
+export type ClassNameToStyleObj = {
     [key: string]: StyleObject;
 };
 export interface PluginContext {

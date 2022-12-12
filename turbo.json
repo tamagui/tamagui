@@ -6,6 +6,7 @@
     },
     "build": {
       "dependsOn": ["^build"],
+      "inputs": ["tsconfig.json"],
       "outputs": [".next/**", "dist/**", "types/**"]
     },
     "start": {

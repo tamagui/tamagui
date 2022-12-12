@@ -4,14 +4,14 @@ import type { FontLineHeightTokens, FontSizeTokens, SizeTokens, SpaceTokens } fr
  *   on web: outputs a calc() string
  *   on native: outputs a plain number
  */
-export declare type CalcVal = string | number | SizeTokens | SpaceTokens | FontSizeTokens | FontLineHeightTokens;
+export type CalcVal = string | number | SizeTokens | SpaceTokens | FontSizeTokens | FontLineHeightTokens;
 declare const operators: {
     '+': (a: number, b: number) => number;
     '-': (a: number, b: number) => number;
     '/': (a: number, b: number) => number;
     '*': (a: number, b: number) => number;
 };
-declare type Operator = keyof typeof operators;
+type Operator = keyof typeof operators;
 export declare const calc: (...valuesAndOperators: (CalcVal | Operator)[]) => string | number;
 export {};
 //# sourceMappingURL=index.d.ts.map

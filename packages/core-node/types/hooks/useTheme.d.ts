@@ -1,6 +1,6 @@
 import { ThemeManager } from '../helpers/ThemeManager';
 import { ThemeParsed, ThemeProps } from '../types';
-export declare type ChangedThemeResponse = {
+export type ChangedThemeResponse = {
     themeManager: ThemeManager | null;
     name: string;
     isNewTheme?: boolean;

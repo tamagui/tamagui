@@ -3,11 +3,11 @@ import type { SizeTokens } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import type { ThemeableStackProps, YStackProps } from '@tamagui/stacks';
 import type { DispatchWithoutAction, HTMLProps, MutableRefObject, ReactNode } from 'react';
-export declare type Direction = 'ltr' | 'rtl';
-export declare type ScopedProps<P> = P & {
+export type Direction = 'ltr' | 'rtl';
+export type ScopedProps<P> = P & {
     __scopeSelect?: Scope;
 };
-export declare type SelectImplProps = ScopedProps<SelectProps> & {
+export type SelectImplProps = ScopedProps<SelectProps> & {
     activeIndexRef: any;
     selectedIndexRef: any;
     listContentRef: any;
@@ -70,10 +70,10 @@ export interface SelectContextValue {
         getItemProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any;
     };
 }
-export declare type SelectViewportProps = ThemeableStackProps & {
+export type SelectViewportProps = ThemeableStackProps & {
     size?: SizeTokens;
 };
-export declare type SelectContentProps = ScopedProps<{
+export type SelectContentProps = ScopedProps<{
     children?: React.ReactNode;
     zIndex?: number;
 }>;

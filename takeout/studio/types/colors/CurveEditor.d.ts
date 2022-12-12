@@ -1,5 +1,5 @@
 import React from 'react';
-declare type CurveEditorProps = {
+type CurveEditorProps = {
     values: readonly number[];
     min: number;
     max: number;

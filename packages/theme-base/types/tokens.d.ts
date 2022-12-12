@@ -30,8 +30,8 @@ export declare const size: {
     19: number;
     20: number;
 };
-declare type Sizes = typeof size;
-declare type SizeKeys = `${keyof Sizes}`;
+type Sizes = typeof size;
+type SizeKeys = `${keyof Sizes}`;
 export declare const space: {
     [Key in `-${SizeKeys}` | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number;
 };

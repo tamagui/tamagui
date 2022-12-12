@@ -3,8 +3,8 @@ import * as t from '@babel/types';
 import type { ExtractorOptions, ExtractorParseProps, TamaguiOptions } from '../types.js';
 import { cleanupBeforeExit } from './getStaticBindingsForScope.js';
 import { TamaguiProjectInfo } from './loadTamagui.js';
-export declare type Extractor = ReturnType<typeof createExtractor>;
-declare type FileOrPath = NodePath<t.Program> | t.File;
+export type Extractor = ReturnType<typeof createExtractor>;
+type FileOrPath = NodePath<t.Program> | t.File;
 export declare function createExtractor({ logger }?: ExtractorOptions): {
     options: {
         logger: import("../types.js").Logger;

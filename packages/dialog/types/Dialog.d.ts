@@ -6,11 +6,11 @@ import { PortalItemProps } from '@tamagui/portal';
 import { RemoveScroll } from '@tamagui/remove-scroll';
 import { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
-declare type ScopedProps<P> = P & {
+type ScopedProps<P> = P & {
     __scopeDialog?: Scope;
 };
 declare const createDialogScope: import("@tamagui/create-context").CreateScope;
-declare type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;
+type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;
 interface DialogProps {
     children?: React.ReactNode;
     open?: boolean;
@@ -22,8 +22,8 @@ interface DialogProps {
      */
     allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
 }
-declare type NonNull<A> = Exclude<A, void | null>;
-declare type DialogContextValue = {
+type NonNull<A> = Exclude<A, void | null>;
+type DialogContextValue = {
     triggerRef: React.RefObject<TamaguiElement>;
     contentRef: React.RefObject<TamaguiElement>;
     contentId: string;
@@ -40,7 +40,7 @@ declare type DialogContextValue = {
 interface DialogTriggerProps extends YStackProps {
 }
 declare const DialogTrigger: React.ForwardRefExoticComponent<DialogTriggerProps & React.RefAttributes<TamaguiElement>>;
-declare type DialogPortalProps = Omit<PortalItemProps, 'asChild'> & YStackProps & {
+type DialogPortalProps = Omit<PortalItemProps, 'asChild'> & YStackProps & {
     /**
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
@@ -162,7 +162,7 @@ declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<Omit<
 } & {
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }>;
-declare type DialogContentFrameProps = GetProps<typeof DialogContentFrame>;
+type DialogContentFrameProps = GetProps<typeof DialogContentFrame>;
 interface DialogContentProps extends DialogContentFrameProps, Omit<DialogContentTypeProps, 'context'> {
     /**
      * Used to force mounting when more control is needed. Useful when
@@ -174,7 +174,7 @@ declare const DialogContent: React.ForwardRefExoticComponent<DialogContentProps 
 interface DialogContentTypeProps extends Omit<DialogContentImplProps, 'trapFocus' | 'disableOutsidePointerEvents'> {
     context: DialogContextValue;
 }
-declare type DialogContentImplProps = DialogContentFrameProps & Omit<DismissableProps, 'onDismiss'> & {
+type DialogContentImplProps = DialogContentFrameProps & Omit<DismissableProps, 'onDismiss'> & {
     /**
      * When `true`, focus cannot escape the `Content` via keyboard,
      * pointer, or a programmatic focus.
@@ -922,7 +922,7 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
 } | {
     [x: string]: undefined;
 })>;
-declare type DialogTitleProps = GetProps<typeof DialogTitleFrame>;
+type DialogTitleProps = GetProps<typeof DialogTitleFrame>;
 declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("@tamagui/types-react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("@tamagui/types-react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
@@ -1691,7 +1691,7 @@ declare const DialogDescriptionFrame: import("@tamagui/core").TamaguiComponent<(
 } | {
     [x: string]: undefined;
 })>;
-declare type DialogDescriptionProps = GetProps<typeof DialogDescriptionFrame>;
+type DialogDescriptionProps = GetProps<typeof DialogDescriptionFrame>;
 declare const DialogDescription: React.ForwardRefExoticComponent<((Omit<import("@tamagui/types-react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("@tamagui/types-react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
@@ -1759,7 +1759,7 @@ declare const DialogDescription: React.ForwardRefExoticComponent<((Omit<import("
 }), string | number> & {
     [x: string]: undefined;
 }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
-declare type DialogCloseProps = YStackProps;
+type DialogCloseProps = YStackProps;
 declare const DialogClose: React.ForwardRefExoticComponent<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;

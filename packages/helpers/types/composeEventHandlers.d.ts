@@ -1,5 +1,5 @@
-declare type Events = any;
-export declare type EventHandler<E extends Events> = (event: E) => void;
+type Events = any;
+export type EventHandler<E extends Events> = (event: E) => void;
 export declare function composeEventHandlers<E extends Events>(og?: EventHandler<E>, next?: EventHandler<E>, { checkDefaultPrevented }?: {
     checkDefaultPrevented?: boolean | undefined;
 }): (event: E) => void;

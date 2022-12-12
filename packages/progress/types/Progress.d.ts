@@ -127,7 +127,7 @@ export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComp
     [x: string]: undefined;
 })>;
 declare const ProgressIndicator: React.ForwardRefExoticComponent<ProgressIndicatorProps & React.RefAttributes<TamaguiElement>>;
-declare type TamaguiElement = HTMLElement | View;
+type TamaguiElement = HTMLElement | View;
 export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -201,7 +201,7 @@ export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<Omi
 } & {
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }>;
-declare type ProgressProps = GetProps<typeof ProgressFrame> & {
+type ProgressProps = GetProps<typeof ProgressFrame> & {
     value?: number | null | undefined;
     max?: number;
     getValueLabel?(value: number, max: number): string;

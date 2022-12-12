@@ -1,7 +1,7 @@
 import { MutableRefObject } from 'react';
-declare type DisposeFn = () => void;
-declare type IntersectCallback = (props: (IntersectionObserverEntry | null)[], didResize?: boolean) => DisposeFn | void | null;
-declare type HTMLRef = MutableRefObject<HTMLElement | null>;
+type DisposeFn = () => void;
+type IntersectCallback = (props: (IntersectionObserverEntry | null)[], didResize?: boolean) => DisposeFn | void | null;
+type HTMLRef = MutableRefObject<HTMLElement | null>;
 export declare function useIsIntersecting<Ref extends HTMLRef | HTMLRef[]>(refs: Ref, { once, ...opts }?: IntersectionObserverInit & {
     once?: boolean;
 }): Ref extends any[] ? boolean[] : boolean;

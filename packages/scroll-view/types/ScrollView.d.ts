@@ -8,5 +8,5 @@ export declare const ScrollView: import("@tamagui/core").TamaguiComponent<(impor
 }>>), import("@tamagui/core").TamaguiElement, import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps>, {} | {
     [x: string]: undefined;
 }>;
-export declare type ScrollViewProps = GetProps<typeof ScrollView>;
+export type ScrollViewProps = GetProps<typeof ScrollView>;
 //# sourceMappingURL=ScrollView.d.ts.map

@@ -6,7 +6,7 @@
  *
  * @flow
  */
-declare type AddListener = (target: EventTarget, listener: null | ((arg0: any) => void)) => () => void;
+type AddListener = (target: EventTarget, listener: null | ((arg0: any) => void)) => () => void;
 /**
  * This can be used with any event type include custom events.
  *

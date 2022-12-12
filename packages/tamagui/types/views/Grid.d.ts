@@ -1,5 +1,5 @@
 /// <reference types="react" />
-export declare type GridProps = {
+export type GridProps = {
     children?: any;
     itemMinWidth?: number;
     gap?: any;

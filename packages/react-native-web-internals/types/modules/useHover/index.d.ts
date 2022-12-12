@@ -9,7 +9,7 @@
 /**
  * Types
  */
-export declare type HoverEventsConfig = {
+export type HoverEventsConfig = {
     contain?: boolean | null;
     disabled?: boolean | null;
     onHoverStart?: ((e: any) => void) | null;

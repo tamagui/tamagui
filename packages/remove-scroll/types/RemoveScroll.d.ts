@@ -1,6 +1,6 @@
 import React from 'react';
 import { RemoveScroll as RS } from 'react-remove-scroll';
-export declare type RemoveScrollProps = React.ComponentProps<typeof RS>;
+export type RemoveScrollProps = React.ComponentProps<typeof RS>;
 export declare const RemoveScroll: {
     (props: RemoveScrollProps): JSX.Element | null;
     classNames: {

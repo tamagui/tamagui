@@ -141,5 +141,5 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
 } & ({} | {
     [x: string]: undefined;
 })>;
-export declare type CircleProps = GetProps<typeof Circle>;
+export type CircleProps = GetProps<typeof Circle>;
 //# sourceMappingURL=Circle.d.ts.map

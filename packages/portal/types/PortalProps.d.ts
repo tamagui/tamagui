@@ -1,5 +1,5 @@
 import { YStackProps } from '@tamagui/stacks';
-export declare type PortalProps = YStackProps & {
+export type PortalProps = YStackProps & {
     host?: any;
     inactive?: boolean;
 };

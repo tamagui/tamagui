@@ -2,7 +2,7 @@ import { AnimatedNumberStrategy } from '@tamagui/core';
 import { ScopedProps } from '@tamagui/create-context';
 import { RemoveScroll } from '@tamagui/remove-scroll';
 import React, { ReactNode } from 'react';
-export declare type SheetProps = ScopedProps<{
+export type SheetProps = ScopedProps<{
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: OpenChangeHandler;
@@ -19,11 +19,11 @@ export declare type SheetProps = ScopedProps<{
     modal?: boolean;
     zIndex?: number;
 }, 'Sheet'>;
-export declare type PositionChangeHandler = (position: number) => void;
-declare type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>;
-export declare type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;
-export declare type SheetScopedProps<A> = ScopedProps<A, 'Sheet'>;
-export declare type ScrollBridge = {
+export type PositionChangeHandler = (position: number) => void;
+type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>;
+export type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;
+export type SheetScopedProps<A> = ScopedProps<A, 'Sheet'>;
+export type ScrollBridge = {
     enabled: boolean;
     y: number;
     paneY: number;

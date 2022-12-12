@@ -1,4 +1,4 @@
-declare type DebounceSettings = {
+type DebounceSettings = {
     leading?: boolean;
 };
 export declare function debounce<A extends Function>(func: A, wait?: number, leading?: boolean): A & {

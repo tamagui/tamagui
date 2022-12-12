@@ -1,4 +1,4 @@
-export declare type Focusable = {
+export type Focusable = {
     focus: Function;
     focusAndSelect?: Function;
 };

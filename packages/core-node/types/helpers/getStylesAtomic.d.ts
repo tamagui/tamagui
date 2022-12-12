@@ -5,8 +5,8 @@
 import { StyleObject } from '@tamagui/helpers';
 import type { TextStyle, ViewStyle } from '@tamagui/types-react-native';
 import { PseudoDescriptor } from './pseudoDescriptors';
-declare type ViewOrTextStyle = ViewStyle | TextStyle;
-export declare type ViewStyleWithPseudos = ViewOrTextStyle & {
+type ViewOrTextStyle = ViewStyle | TextStyle;
+export type ViewStyleWithPseudos = ViewOrTextStyle & {
     hoverStyle?: ViewOrTextStyle;
     pressStyle?: ViewOrTextStyle;
     focusStyle?: ViewOrTextStyle;

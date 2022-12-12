@@ -17,7 +17,7 @@ export declare const LabelFrame: import("@tamagui/core").TamaguiComponent<Omit<i
 } & {
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }>;
-export declare type LabelProps = GetProps<typeof LabelFrame> & {
+export type LabelProps = GetProps<typeof LabelFrame> & {
     htmlFor?: string;
 };
 export declare const Label: ReactComponentWithRef<LabelProps, HTMLButtonElement | View>;

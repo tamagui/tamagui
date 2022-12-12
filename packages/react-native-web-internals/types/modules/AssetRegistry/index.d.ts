@@ -6,7 +6,7 @@
  *
  * @flow
  */
-export declare type PackagerAsset = {
+export type PackagerAsset = {
     __packager_asset: boolean;
     fileSystemLocation: string;
     httpServerLocation: string;

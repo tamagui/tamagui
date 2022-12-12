@@ -6,7 +6,7 @@
  *
  * @flow
  */
-declare type Style = {
+type Style = {
     [K in string]: any;
 };
 export declare const createTransformValue: (style: Style) => string;

@@ -1,7 +1,7 @@
 import './polyfill';
 import { TamaguiInternalConfig, ThemeName } from 'tamagui';
 import { Components, DeepReadonly, DialogTypes, Palette, StudioDialogProps, Tab, ThemeCategory, ThemeParsed, ThemeVal } from './types';
-export declare type State = ReturnType<typeof getDefaultInitialState>;
+export type State = ReturnType<typeof getDefaultInitialState>;
 export declare const GlobalState: {
     theme: ThemeName;
     tab: Tab;
@@ -56,7 +56,7 @@ export declare const GlobalState: {
         focusedHex(): string | undefined;
     };
 };
-export declare type GlobalStateI = DeepReadonly<typeof GlobalState>;
+export type GlobalStateI = DeepReadonly<typeof GlobalState>;
 export declare const useGlobalState: () => GlobalStateI;
 declare function getDefaultInitialState(): {
     theme: ThemeName;
@@ -112,7 +112,7 @@ declare function getDefaultInitialState(): {
         focusedHex(): string | undefined;
     };
 };
-export declare type GlobalStateType = typeof GlobalState;
+export type GlobalStateType = typeof GlobalState;
 export declare function setGlobalState(cb: (next: GlobalStateType) => void): void;
 export {};
 //# sourceMappingURL=useGlobalState.d.ts.map

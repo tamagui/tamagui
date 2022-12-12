@@ -1,7 +1,7 @@
 import { TamaguiElement } from '@tamagui/core';
 import React from 'react';
 import { PositionChangeHandler, ScrollBridge, SheetProps } from './types';
-declare type SheetContextValue = Required<Pick<SheetProps, 'open' | 'position' | 'snapPoints' | 'dismissOnOverlayPress'>> & {
+type SheetContextValue = Required<Pick<SheetProps, 'open' | 'position' | 'snapPoints' | 'dismissOnOverlayPress'>> & {
     hidden: boolean;
     setPosition: PositionChangeHandler;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;

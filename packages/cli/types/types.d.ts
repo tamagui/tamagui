@@ -1,12 +1,12 @@
 import { TamaguiOptions } from '@tamagui/static';
-export declare type UserOptions = {
+export type UserOptions = {
     root?: string;
     host?: string;
     tsconfigPath?: string;
     tamaguiOptions: Partial<TamaguiOptions>;
     debug?: boolean | 'verbose';
 };
-export declare type ResolvedOptions = {
+export type ResolvedOptions = {
     root: string;
     host?: string;
     mode: 'development' | 'production';

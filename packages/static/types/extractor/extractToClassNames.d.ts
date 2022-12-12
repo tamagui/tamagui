@@ -2,14 +2,14 @@
 import * as t from '@babel/types';
 import type { TamaguiOptions } from '../types.js';
 import { Extractor } from './createExtractor.js';
-export declare type ExtractedResponse = {
+export type ExtractedResponse = {
     js: string | Buffer;
     styles: string;
     stylesPath?: string;
     ast: t.File;
     map: any;
 };
-export declare type ExtractToClassNamesProps = {
+export type ExtractToClassNamesProps = {
     extractor: Extractor;
     source: string | Buffer;
     sourcePath: string;

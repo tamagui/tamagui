@@ -1,12 +1,12 @@
 import { GetProps, TamaguiElement, ThemeableProps } from '@tamagui/core';
 import { TextParentStyles } from '@tamagui/text';
 import { FunctionComponent } from 'react';
-declare type ButtonIconProps = {
+type ButtonIconProps = {
     color?: string;
     size?: number;
 };
-declare type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null;
-export declare type ButtonProps = Omit<TextParentStyles, 'TextComponent'> & GetProps<typeof ButtonFrame> & ThemeableProps & {
+type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null;
+export type ButtonProps = Omit<TextParentStyles, 'TextComponent'> & GetProps<typeof ButtonFrame> & ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component
      */
@@ -200,7 +200,9 @@ export declare function useButton(props: ButtonProps, { Text }?: {
             label?: string | undefined;
         }>[] | undefined;
         accessibilityLabel?: string | undefined;
-        accessibilityRole?: "none" | "button" | "link" | "search" | "image" | "keyboardkey" | "text" | "adjustable" | "imagebutton" | "header" | "summary" | "list" | undefined;
+        accessibilityRole?: "none" | "button" | "link" | "search" | "image" | "keyboardkey" | "text" | "adjustable" | "imagebutton" | "header" | "summary" | "list" | undefined; /**
+         * adjust icon relative to size
+         */
         accessibilityState?: import("@tamagui/types-react-native").AccessibilityState | undefined;
         accessibilityHint?: string | undefined;
         accessibilityValue?: import("@tamagui/types-react-native").AccessibilityValue | undefined;
@@ -219,9 +221,14 @@ export declare function useButton(props: ButtonProps, { Text }?: {
         target?: any;
         rel?: any;
         download?: any;
+        /**
+         * default: -1
+         */
         href?: string | undefined;
         hrefAttrs?: {
-            target?: "top" | "_blank" | "_self" | "_top" | "blank" | "self" | undefined;
+            target?: "top" | "_blank" | "_self" | "_top" | "blank" | "self" | undefined; /**
+             * make the spacing elements flex
+             */
             rel?: string | undefined;
             download?: boolean | undefined;
         } | undefined;
@@ -238,11 +245,11 @@ export declare function useButton(props: ButtonProps, { Text }?: {
         asChild?: boolean | undefined;
         spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
         dangerouslySetInnerHTML?: {
-            __html: string; /**
-             * adjust internal space relative to icon size
-             */
+            __html: string;
         } | undefined;
-        animation?: import("@tamagui/core").AnimationProp | undefined;
+        animation?: import("@tamagui/core").AnimationProp | undefined; /**
+         * adjust internal space relative to icon size
+         */
         animateOnly?: string[] | undefined;
         debug?: boolean | "verbose" | undefined;
         disabled?: boolean | undefined;

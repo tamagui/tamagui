@@ -3,7 +3,7 @@ import type { DebugProp, MediaQueryKey, PseudoStyles, SplitStyleState, StackProp
 import { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types';
 import { RulesToInsert } from './insertStyleRule';
 import { FlatTransforms } from './mergeTransform';
-declare type GetStyleResult = {
+type GetStyleResult = {
     pseudos: PseudoStyles;
     medias: Record<MediaQueryKey, ViewStyle>;
     style: ViewStyle;
@@ -14,7 +14,7 @@ declare type GetStyleResult = {
     space?: any;
     hasMedia: boolean | 'space';
 };
-declare type GetStyleState = {
+type GetStyleState = {
     style: ViewStyle;
     usedKeys: Record<string, number>;
     classNames: ClassNamesObject;
@@ -29,10 +29,10 @@ declare type GetStyleState = {
     avoidDefaultProps?: boolean;
     avoidMergeTransform?: boolean;
 };
-export declare type SplitStyles = ReturnType<typeof getSplitStyles>;
-export declare type ClassNamesObject = Record<string, string>;
-export declare type SplitStyleResult = ReturnType<typeof getSplitStyles>;
-declare type StyleSplitter = (props: {
+export type SplitStyles = ReturnType<typeof getSplitStyles>;
+export type ClassNamesObject = Record<string, string>;
+export type SplitStyleResult = ReturnType<typeof getSplitStyles>;
+type StyleSplitter = (props: {
     [key: string]: any;
 }, staticConfig: StaticConfigParsed, theme: ThemeParsed, state: SplitStyleState, parentSplitStyles?: GetStyleResult | null, languageContext?: LanguageContextType, elementType?: string, debug?: DebugProp) => GetStyleResult;
 export declare const PROP_SPLIT = "-";

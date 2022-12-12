@@ -1,9 +1,9 @@
 import { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/core';
 import { Animated } from 'react-native';
-declare type AnimationsConfig<A extends Object = any> = {
+type AnimationsConfig<A extends Object = any> = {
     [Key in keyof A]: AnimationConfig;
 };
-declare type AnimationConfig = Partial<Pick<Animated.SpringAnimationConfig, 'delay' | 'bounciness' | 'damping' | 'friction' | 'mass' | 'overshootClamping' | 'speed' | 'stiffness' | 'tension' | 'velocity'>>;
+type AnimationConfig = Partial<Pick<Animated.SpringAnimationConfig, 'delay' | 'bounciness' | 'damping' | 'friction' | 'mass' | 'overshootClamping' | 'speed' | 'stiffness' | 'tension' | 'velocity'>>;
 export declare const AnimatedView: Animated.AnimatedComponent<typeof import("react-native").View>;
 export declare const AnimatedText: Animated.AnimatedComponent<typeof import("react-native").Text>;
 export declare function useAnimatedNumber(initial: number): UniversalAnimatedNumber<Animated.Value>;

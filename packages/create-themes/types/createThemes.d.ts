@@ -1,10 +1,10 @@
 import { Variable } from '@tamagui/core';
-declare type ColorsByName = {
+type ColorsByName = {
     [key: string]: Record<string, string>;
 };
-declare type ColorsList = string[];
-declare type AltKeys = 1 | 2;
-declare type GeneratedTheme = {
+type ColorsList = string[];
+type AltKeys = 1 | 2;
+type GeneratedTheme = {
     backgroundStrong: Variable<string>;
     background: Variable<string>;
     backgroundSoft: Variable<string>;
@@ -39,7 +39,7 @@ declare type GeneratedTheme = {
     color11: Variable<string>;
     color12: Variable<string>;
 };
-declare type GetSubThemes<Name extends string> = `${Name}` | `${Name}_alt${AltKeys}` | `${Name}_darker` | `${Name}_active` | `${Name}_Card` | `${Name}_SliderTrack` | `${Name}_SliderTrackActive` | `${Name}_Switch` | `${Name}_SwitchThumb` | `${Name}_DrawerFrame` | `${Name}_Button` | `${Name}_SliderThumb` | `${Name}_Progress` | `${Name}_ProgressIndicator` | `${Name}_TooltipArrow` | `${Name}_TooltipContent`;
+type GetSubThemes<Name extends string> = `${Name}` | `${Name}_alt${AltKeys}` | `${Name}_darker` | `${Name}_active` | `${Name}_Card` | `${Name}_SliderTrack` | `${Name}_SliderTrackActive` | `${Name}_Switch` | `${Name}_SwitchThumb` | `${Name}_DrawerFrame` | `${Name}_Button` | `${Name}_SliderThumb` | `${Name}_Progress` | `${Name}_ProgressIndicator` | `${Name}_TooltipArrow` | `${Name}_TooltipContent`;
 export declare const createThemes: <C extends string>({ activeColor, light, dark, colorsLight, colorsDark, }: {
     activeColor: string;
     light: ColorsList;

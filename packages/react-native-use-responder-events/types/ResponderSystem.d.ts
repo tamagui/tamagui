@@ -4,8 +4,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 import type { ResponderEvent } from './createResponderEvent';
-declare type ResponderId = string;
-export declare type ResponderConfig = {
+type ResponderId = string;
+export type ResponderConfig = {
     onResponderEnd?: ((e: ResponderEvent) => void) | null;
     onResponderGrant?: ((e: ResponderEvent) => void | boolean) | null;
     onResponderMove?: ((e: ResponderEvent) => void) | null;

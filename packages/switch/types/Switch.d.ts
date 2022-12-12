@@ -75,7 +75,7 @@ export declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<
 } & {
     readonly size?: SizeTokens | undefined;
 }>;
-export declare type SwitchThumbProps = GetProps<typeof SwitchThumbFrame>;
+export type SwitchThumbProps = GetProps<typeof SwitchThumbFrame>;
 export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -152,8 +152,8 @@ export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<Omit<
 } & {
     readonly size?: SizeTokens | undefined;
 }>;
-declare type SwitchButtonProps = GetProps<typeof SwitchFrame>;
-export declare type SwitchProps = SwitchButtonProps & {
+type SwitchButtonProps = GetProps<typeof SwitchFrame>;
+export type SwitchProps = SwitchButtonProps & {
     labeledBy?: string;
     name?: string;
     value?: string;

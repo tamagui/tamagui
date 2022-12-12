@@ -3,12 +3,12 @@
  * Moving to objects for React Server Components support
  */
 declare const IS_VAR = "isVar";
-declare type VariableIn<A = any> = {
+type VariableIn<A = any> = {
     val: A;
     name: string;
     key: string;
 };
-export declare type Variable<A = any> = VariableIn<A> & {
+export type Variable<A = any> = VariableIn<A> & {
     [IS_VAR]?: true;
     variable?: string;
 };

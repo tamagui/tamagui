@@ -1,5 +1,5 @@
 import { RefObject } from 'react';
-export declare type LayoutValue = {
+export type LayoutValue = {
     x: number;
     y: number;
     width: number;
@@ -7,7 +7,7 @@ export declare type LayoutValue = {
     left: number;
     top: number;
 };
-export declare type LayoutEvent = {
+export type LayoutEvent = {
     nativeEvent: {
         layout: LayoutValue;
         target: any;

@@ -2,7 +2,7 @@ import esbuild from 'esbuild';
 /**
  * For internal loading of new files
  */
-declare type Props = Omit<Partial<esbuild.BuildOptions>, 'entryPoints'> & {
+type Props = Omit<Partial<esbuild.BuildOptions>, 'entryPoints'> & {
     outfile: string;
     entryPoints: string[];
     resolvePlatformSpecificEntries?: boolean;

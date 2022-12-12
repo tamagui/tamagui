@@ -1,5 +1,5 @@
 import { FontSizeTokens, FontTokens } from '@tamagui/core';
-declare type GetFontSizeOpts = {
+type GetFontSizeOpts = {
     relativeSize?: number;
     font?: FontTokens;
 };

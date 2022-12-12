@@ -7,16 +7,16 @@
  * @flow
  */
 import { ColorValue, DimensionValue } from './types.js';
-declare type NumberOrString = number | string;
+type NumberOrString = number | string;
 /**
  * Animations and transitions
  */
-declare type AnimationDirection = 'alternate' | 'alternate-reverse' | 'normal' | 'reverse';
-declare type AnimationFillMode = 'none' | 'forwards' | 'backwards' | 'both';
-declare type AnimationIterationCount = number | 'infinite';
-declare type AnimationKeyframes = string | Object;
-declare type AnimationPlayState = 'paused' | 'running';
-export declare type AnimationStyles = {
+type AnimationDirection = 'alternate' | 'alternate-reverse' | 'normal' | 'reverse';
+type AnimationFillMode = 'none' | 'forwards' | 'backwards' | 'both';
+type AnimationIterationCount = number | 'infinite';
+type AnimationKeyframes = string | Object;
+type AnimationPlayState = 'paused' | 'running';
+export type AnimationStyles = {
     animationDelay?: string | Array<string> | null;
     animationDirection?: AnimationDirection | Array<AnimationDirection> | null;
     animationDuration?: string | Array<string> | null;
@@ -33,9 +33,9 @@ export declare type AnimationStyles = {
 /**
  * Border
  */
-declare type BorderRadiusValue = number | string;
-declare type BorderStyleValue = 'solid' | 'dotted' | 'dashed';
-export declare type BorderStyles = {
+type BorderRadiusValue = number | string;
+type BorderStyleValue = 'solid' | 'dotted' | 'dashed';
+export type BorderStyles = {
     borderColor?: ColorValue | null;
     borderBottomColor?: ColorValue | null;
     borderEndColor?: ColorValue | null;
@@ -63,10 +63,10 @@ export declare type BorderStyles = {
 /**
  * Interactions
  */
-declare type CursorValue = 'alias' | 'all-scroll' | 'auto' | 'cell' | 'context-menu' | 'copy' | 'crosshair' | 'default' | 'grab' | 'grabbing' | 'help' | 'pointer' | 'progress' | 'wait' | 'text' | 'vertical-text' | 'move' | 'none' | 'no-drop' | 'not-allowed' | 'zoom-in' | 'zoom-out' | 'col-resize' | 'e-resize' | 'ew-resize' | 'n-resize' | 'ne-resize' | 'ns-resize' | 'nw-resize' | 'row-resize' | 's-resize' | 'se-resize' | 'sw-resize' | 'w-resize' | 'nesw-resize' | 'nwse-resize';
-declare type TouchActionValue = 'auto' | 'inherit' | 'manipulation' | 'none' | 'pan-down' | 'pan-left' | 'pan-right' | 'pan-up' | 'pan-x' | 'pan-y' | 'pinch-zoom';
-declare type UserSelect = 'all' | 'auto' | 'contain' | 'none' | 'text';
-export declare type InteractionStyles = {
+type CursorValue = 'alias' | 'all-scroll' | 'auto' | 'cell' | 'context-menu' | 'copy' | 'crosshair' | 'default' | 'grab' | 'grabbing' | 'help' | 'pointer' | 'progress' | 'wait' | 'text' | 'vertical-text' | 'move' | 'none' | 'no-drop' | 'not-allowed' | 'zoom-in' | 'zoom-out' | 'col-resize' | 'e-resize' | 'ew-resize' | 'n-resize' | 'ne-resize' | 'ns-resize' | 'nw-resize' | 'row-resize' | 's-resize' | 'se-resize' | 'sw-resize' | 'w-resize' | 'nesw-resize' | 'nwse-resize';
+type TouchActionValue = 'auto' | 'inherit' | 'manipulation' | 'none' | 'pan-down' | 'pan-left' | 'pan-right' | 'pan-up' | 'pan-x' | 'pan-y' | 'pinch-zoom';
+type UserSelect = 'all' | 'auto' | 'contain' | 'none' | 'text';
+export type InteractionStyles = {
     cursor?: CursorValue | null;
     touchAction?: TouchActionValue | null;
     userSelect?: UserSelect | null;
@@ -75,9 +75,9 @@ export declare type InteractionStyles = {
 /**
  * Layout
  */
-declare type OverflowValue = 'auto' | 'hidden' | 'scroll' | 'visible';
-declare type VisiblilityValue = 'hidden' | 'visible';
-export declare type LayoutStyles = {
+type OverflowValue = 'auto' | 'hidden' | 'scroll' | 'visible';
+type VisiblilityValue = 'hidden' | 'visible';
+export type LayoutStyles = {
     alignContent?: 'center' | 'flex-end' | 'flex-start' | 'space-around' | 'space-between' | 'stretch';
     alignItems?: 'baseline' | 'center' | 'flex-end' | 'flex-start' | 'stretch' | null;
     alignSelf?: 'auto' | 'baseline' | 'center' | 'flex-end' | 'flex-start' | 'stretch' | null;
@@ -156,7 +156,7 @@ export declare type LayoutStyles = {
 /**
  * Shadows
  */
-export declare type ShadowStyles = {
+export type ShadowStyles = {
     shadowColor?: ColorValue | null;
     shadowOffset?: {
         width?: DimensionValue;
@@ -168,7 +168,7 @@ export declare type ShadowStyles = {
 /**
  * Transforms
  */
-export declare type TransformStyles = {
+export type TransformStyles = {
     perspective?: NumberOrString | null;
     perspectiveOrigin?: string | null;
     transform?: Array<{

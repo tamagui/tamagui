@@ -1,5 +1,5 @@
 import { SizableTextProps } from './SizableText';
-export declare type TextParentStyles = {
+export type TextParentStyles = {
     color?: SizableTextProps['color'];
     fontWeight?: SizableTextProps['fontWeight'];
     fontSize?: SizableTextProps['fontSize'];

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-export declare type SlotProps = {
+export type SlotProps = {
     children?: ReactNode;
 };
 export declare const Slot: import("react").ForwardRefExoticComponent<SlotProps & import("react").RefAttributes<HTMLElement>>;

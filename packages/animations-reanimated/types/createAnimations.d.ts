@@ -1,9 +1,9 @@
 import { AnimationDriver } from '@tamagui/core';
 import { WithDecayConfig, WithSpringConfig, WithTimingConfig } from 'react-native-reanimated';
-declare type AnimationsConfig<A extends Object = any> = {
+type AnimationsConfig<A extends Object = any> = {
     [Key in keyof A]: AnimationConfig;
 };
-declare type AnimationConfig = ({
+type AnimationConfig = ({
     type: 'timing';
     loop?: number;
     repeat?: number;

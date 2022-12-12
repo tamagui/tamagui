@@ -1,5 +1,5 @@
 /// <reference types="react" />
-export declare type ThemeProviderProps = {
+export type ThemeProviderProps = {
     className?: string;
     defaultTheme: string;
     disableRootThemeClass?: boolean;
