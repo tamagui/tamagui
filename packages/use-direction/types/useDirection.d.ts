@@ -1,5 +1,5 @@
 import * as React from 'react';
-declare type Direction = 'ltr' | 'rtl';
+type Direction = 'ltr' | 'rtl';
 interface DirectionProviderProps {
     children?: React.ReactNode;
     dir: Direction;

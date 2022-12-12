@@ -6,17 +6,17 @@
  *
  * @flow strict-local
  */
-declare type Value = Object | Array<any> | string | number;
-declare type Style = {
+type Value = Object | Array<any> | string | number;
+type Style = {
     [K in string]: Value;
 };
-declare type Rule = string;
-declare type Rules = Array<Rule>;
-declare type RulesData = [Rules, number];
-declare type CompiledStyle = {
+type Rule = string;
+type Rules = Array<Rule>;
+type RulesData = [Rules, number];
+type CompiledStyle = {
     [K in string]: string | Array<string>;
 };
-declare type CompilerOutput = [CompiledStyle, Array<RulesData>];
+type CompilerOutput = [CompiledStyle, Array<RulesData>];
 export declare function atomic(style: Style): CompilerOutput;
 /**
  * Compile simple style object to classic CSS rules.

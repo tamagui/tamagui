@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import type { TouchEvent } from './types';
-declare type TouchRecord = {
+type TouchRecord = {
     currentPageX: number;
     currentPageY: number;
     currentTimeStamp: number;
@@ -17,7 +17,7 @@ declare type TouchRecord = {
     startTimeStamp: number;
     touchActive: boolean;
 };
-export declare type TouchHistory = {
+export type TouchHistory = {
     indexOfSingleActiveTouch: number;
     mostRecentTimeStamp: number;
     numberActiveTouches: number;

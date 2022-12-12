@@ -6,7 +6,7 @@
  *
  * @flow strict-local
  */
-export declare type OrderedCSSStyleSheet = {
+export type OrderedCSSStyleSheet = {
     getTextContent: () => string;
     insert: (cssText: string, groupValue: number) => void;
 };

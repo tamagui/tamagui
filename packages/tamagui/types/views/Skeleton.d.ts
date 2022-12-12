@@ -34,7 +34,7 @@ export declare const SkeletonFrame: import("@tamagui/core").TamaguiComponent<(Om
 } & {
     [x: string]: undefined;
 })>;
-export declare type SkeletonProps = GetProps<typeof SkeletonFrame>;
+export type SkeletonProps = GetProps<typeof SkeletonFrame>;
 export declare const Skeleton: import("react").ForwardRefExoticComponent<import("react").RefAttributes<TamaguiElement>>;
 export declare const SkeletonShine: (props: LinearGradientProps) => JSX.Element;
 //# sourceMappingURL=Skeleton.d.ts.map

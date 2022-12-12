@@ -731,7 +731,7 @@ export declare const SidebarRight: React.MemoExoticComponent<(props: {
 export declare const SidebarLeft: React.MemoExoticComponent<(props: {
     children: React.ReactNode;
 }) => JSX.Element>;
-export declare type SidebarPanelProps = YStackProps & {
+export type SidebarPanelProps = YStackProps & {
     title: string;
     controls?: React.ReactNode;
     scrollable?: boolean;

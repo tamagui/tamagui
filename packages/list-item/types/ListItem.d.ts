@@ -1,12 +1,12 @@
 import { FontSizeTokens, GetProps, TamaguiElement, ThemeableProps } from '@tamagui/core';
 import { TextParentStyles } from '@tamagui/text';
 import React, { FunctionComponent } from 'react';
-declare type ListItemIconProps = {
+type ListItemIconProps = {
     color?: string;
     size?: number;
 };
-declare type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null;
-export declare type ListItemProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> & GetProps<typeof ListItemFrame> & ThemeableProps & {
+type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null;
+export type ListItemProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> & GetProps<typeof ListItemFrame> & ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component
      */
@@ -401,13 +401,18 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         onSelectionChangeShouldSetResponderCapture?: unknown;
         asChild?: boolean | undefined;
         spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
-        separator?: React.ReactNode;
+        separator?: React.ReactNode; /**
+         * make the spacing elements flex
+         */
         dangerouslySetInnerHTML?: {
             __html: string;
         } | undefined;
         animation?: import("@tamagui/core").AnimationProp | undefined;
         animateOnly?: string[] | undefined;
         debug?: boolean | "verbose" | undefined;
+        /**
+         * title
+         */
         disabled?: boolean | undefined;
         className?: string | undefined;
         themeShallow?: boolean | undefined;

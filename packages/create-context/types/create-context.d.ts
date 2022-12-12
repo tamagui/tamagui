@@ -1,5 +1,5 @@
 import * as React from 'react';
-export declare type ScopedProps<P, K extends string> = P & {
+export type ScopedProps<P, K extends string> = P & {
     [Key in `__scope${K}`]?: Scope;
 };
 export declare function createContext<ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType): readonly [{
@@ -8,10 +8,10 @@ export declare function createContext<ContextValueType extends object | null>(ro
     }): JSX.Element;
     displayName: string;
 }, (consumerName: string) => ContextValueType];
-declare type ScopeHook = (scope: Scope) => {
+type ScopeHook = (scope: Scope) => {
     [__scopeProp: string]: Scope;
 };
-export declare type Scope<C = any> = {
+export type Scope<C = any> = {
     [scopeName: string]: React.Context<C>[];
 } | undefined;
 export interface CreateScope {

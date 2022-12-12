@@ -7,7 +7,7 @@
  * @flow strict-local
  */
 import { OrderedCSSStyleSheet } from './createOrderedCSSStyleSheet.js';
-declare type Sheet = {
+type Sheet = {
     id: string;
 } & OrderedCSSStyleSheet;
 export declare function createSheet(root?: HTMLElement, id?: string): Sheet;

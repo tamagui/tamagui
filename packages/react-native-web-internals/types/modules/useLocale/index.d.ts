@@ -6,13 +6,13 @@
  *
  * @flow strict
  */
-declare type Locale = string;
-declare type WritingDirection = 'ltr' | 'rtl';
-declare type LocaleValue = {
+type Locale = string;
+type WritingDirection = 'ltr' | 'rtl';
+type LocaleValue = {
     direction: WritingDirection;
     locale: Locale | null;
 };
-declare type ProviderProps = {
+type ProviderProps = {
     children: any;
 } & LocaleValue;
 export declare function getLocaleDirection(locale: Locale): WritingDirection;

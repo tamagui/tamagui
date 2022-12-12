@@ -11,7 +11,7 @@
  *   - classNames can be extracted out separately
  *   - shorthands can be expanded before merging
  */
-declare type AnyRecord = Record<string, any>;
+type AnyRecord = Record<string, any>;
 export declare const mergeProps: (a: Object, b: Object, leaveOutClassNames?: boolean, inverseShorthands?: AnyRecord) => readonly [AnyRecord, AnyRecord];
 export {};
 //# sourceMappingURL=mergeProps.d.ts.map

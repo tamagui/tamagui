@@ -27,7 +27,7 @@ export interface UnregisterHostAction {
     type: ACTIONS;
     hostName: string;
 }
-export declare type ActionTypes = AddUpdatePortalAction | RemovePortalAction | RegisterHostAction | UnregisterHostAction;
+export type ActionTypes = AddUpdatePortalAction | RemovePortalAction | RegisterHostAction | UnregisterHostAction;
 export declare const usePortal: (hostName?: string) => {
     registerHost: () => void;
     deregisterHost: () => void;
@@ -102,5 +102,5 @@ export interface PortalItemProps {
      */
     children?: ReactNode | ReactNode[];
 }
-export declare const PortalItem: React.MemoExoticComponent<({ name, hostName, handleOnMount, handleOnUnmount, handleOnUpdate, children, }: PortalItemProps) => null>;
+export declare const PortalItem: React.MemoExoticComponent<({ name: _providedName, hostName, handleOnMount: _providedHandleOnMount, handleOnUnmount: _providedHandleOnUnmount, handleOnUpdate: _providedHandleOnUpdate, children, }: PortalItemProps) => null>;
 //# sourceMappingURL=GorhomPortal.d.ts.map

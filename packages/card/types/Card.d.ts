@@ -403,9 +403,9 @@ export declare const CardBackground: import("@tamagui/core").TamaguiComponent<(O
 } & ({} | {
     [x: string]: undefined;
 })>;
-export declare type CardHeaderProps = GetProps<typeof CardHeader>;
-export declare type CardFooterProps = GetProps<typeof CardFooter>;
-export declare type CardProps = GetProps<typeof CardFrame>;
+export type CardHeaderProps = GetProps<typeof CardHeader>;
+export type CardFooterProps = GetProps<typeof CardFooter>;
+export type CardProps = GetProps<typeof CardFrame>;
 export declare const Card: React.ForwardRefExoticComponent<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;

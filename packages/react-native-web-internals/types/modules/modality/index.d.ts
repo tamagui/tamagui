@@ -6,7 +6,7 @@
  *
  * @flow
  */
-export declare type Modality = 'keyboard' | 'mouse' | 'touch' | 'pen';
+export type Modality = 'keyboard' | 'mouse' | 'touch' | 'pen';
 export declare function getActiveModality(): Modality;
 export declare function getModality(): Modality;
 export declare function addModalityListener(listener: (arg0: {

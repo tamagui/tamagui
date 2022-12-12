@@ -3,7 +3,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-export declare type Touch = {
+export type Touch = {
     force: number;
     identifier: number;
     locationX: any;
@@ -13,7 +13,7 @@ export declare type Touch = {
     target: any;
     timestamp: number;
 };
-export declare type TouchEvent = {
+export type TouchEvent = {
     altKey: boolean;
     ctrlKey: boolean;
     metaKey: boolean;

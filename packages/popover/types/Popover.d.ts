@@ -8,15 +8,15 @@ import { RemoveScrollProps } from '@tamagui/remove-scroll';
 import { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import { ScrollView, ScrollViewProps, View } from 'react-native';
-declare type ScopedProps<P> = P & {
+type ScopedProps<P> = P & {
     __scopePopover?: Scope;
 };
-export declare type PopoverProps = PopperProps & {
+export type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
 };
-declare type PopoverContextValue = {
+type PopoverContextValue = {
     triggerRef: React.RefObject<HTMLButtonElement>;
     contentId?: string;
     open: boolean;
@@ -40,8 +40,8 @@ export declare const __PopoverProviderInternal: {
     }): JSX.Element;
     displayName: string;
 };
-declare type PopoverAnchorElement = HTMLElement | View;
-export declare type PopoverAnchorProps = YStackProps;
+type PopoverAnchorElement = HTMLElement | View;
+export type PopoverAnchorProps = YStackProps;
 export declare const PopoverAnchor: React.ForwardRefExoticComponent<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -52,8 +52,8 @@ export declare const PopoverAnchor: React.ForwardRefExoticComponent<Omit<import(
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }>> & React.RefAttributes<PopoverAnchorElement>>;
-declare type PopoverTriggerElement = HTMLElement | View;
-export declare type PopoverTriggerProps = YStackProps;
+type PopoverTriggerElement = HTMLElement | View;
+export type PopoverTriggerProps = YStackProps;
 export declare const PopoverTrigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -64,7 +64,7 @@ export declare const PopoverTrigger: React.ForwardRefExoticComponent<Omit<import
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }>> & React.RefAttributes<PopoverTriggerElement>>;
-export declare type PopoverContentProps = PopoverContentTypeProps;
+export type PopoverContentProps = PopoverContentTypeProps;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
     /**
      * @see https://github.com/theKashey/react-remove-scroll#usage
@@ -90,8 +90,8 @@ export interface PopoverContentImplProps extends PopperContentProps, Omit<Dismis
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'];
     disableRemoveScroll?: boolean;
 }
-declare type PopoverCloseElement = HTMLElement | View;
-export declare type PopoverCloseProps = YStackProps;
+type PopoverCloseElement = HTMLElement | View;
+export type PopoverCloseProps = YStackProps;
 export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -102,8 +102,8 @@ export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<import("
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }>> & React.RefAttributes<PopoverCloseElement>>;
-declare type PopoverArrowElement = HTMLElement | View;
-export declare type PopoverArrowProps = PopperArrowProps;
+type PopoverArrowElement = HTMLElement | View;
+export type PopoverArrowProps = PopperArrowProps;
 export declare const PopoverArrow: React.ForwardRefExoticComponent<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;

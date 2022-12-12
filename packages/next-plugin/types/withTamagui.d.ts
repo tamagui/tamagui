@@ -1,5 +1,5 @@
 import type { TamaguiOptions } from '@tamagui/static';
-export declare type WithTamaguiProps = TamaguiOptions & {
+export type WithTamaguiProps = TamaguiOptions & {
     useReactNativeWebLite: boolean;
     disableFontSupport?: boolean;
     enableCSSOptimizations?: boolean;

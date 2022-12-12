@@ -1,13 +1,13 @@
 import { ThemeParsed, ThemeProps } from '../types';
-declare type ThemeListener = (name: string | null, themeManager: ThemeManager) => void;
-export declare type SetActiveThemeProps = {
+type ThemeListener = (name: string | null, themeManager: ThemeManager) => void;
+export type SetActiveThemeProps = {
     className?: string;
     parentManager?: ThemeManager | null;
     name?: string | null;
     theme?: any;
     reset?: boolean;
 };
-export declare type ThemeManagerState = {
+export type ThemeManagerState = {
     name: string;
     theme?: ThemeParsed | null;
     className?: string;

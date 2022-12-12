@@ -1,5 +1,5 @@
 import type { TamaguiOptions } from '@tamagui/static';
-export declare type ServeProps = {
+export type ServeProps = {
     options: TamaguiOptions;
 };
 export declare const serve: (props: ServeProps) => Promise<void>;

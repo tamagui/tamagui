@@ -20,5 +20,5 @@ export declare const Fieldset: import("@tamagui/core").TamaguiComponent<Omit<imp
 } & {
     readonly horizontal?: boolean | undefined;
 }>;
-export declare type FieldsetProps = GetProps<typeof Fieldset>;
+export type FieldsetProps = GetProps<typeof Fieldset>;
 //# sourceMappingURL=Fieldset.d.ts.map

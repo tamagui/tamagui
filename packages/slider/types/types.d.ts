@@ -2,11 +2,11 @@
 import type { GestureReponderEvent, SizeTokens } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import type { SizableStackProps } from '@tamagui/stacks';
-export declare type ScopedProps<P> = P & {
+export type ScopedProps<P> = P & {
     __scopeSlider?: Scope;
 };
-export declare type Direction = 'ltr' | 'rtl';
-declare type SliderImplPrivateProps = {
+export type Direction = 'ltr' | 'rtl';
+type SliderImplPrivateProps = {
     onSlideStart(event: GestureReponderEvent, target: 'thumb' | 'track'): void;
     onSlideMove(event: GestureReponderEvent): void;
     onSlideEnd(event: GestureReponderEvent): void;
@@ -20,7 +20,7 @@ export interface SliderImplProps extends SliderTrackProps, SliderImplPrivateProp
     dir?: Direction;
     orientation: 'horizontal' | 'vertical';
 }
-declare type SliderOrientationPrivateProps = {
+type SliderOrientationPrivateProps = {
     min: number;
     max: number;
     onSlideStart?(value: number, target: 'thumb' | 'track'): void;
@@ -54,7 +54,7 @@ export interface SliderProps extends Omit<SliderHorizontalProps | SliderVertical
     defaultValue?: number[];
     onValueChange?(value: number[]): void;
 }
-export declare type SliderContextValue = {
+export type SliderContextValue = {
     size?: SizeTokens | number | null;
     disabled?: boolean;
     min: number;

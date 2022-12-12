@@ -64,5 +64,5 @@ export declare const ThemeableStack: import("@tamagui/core").TamaguiComponent<Om
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }>;
-export declare type ThemeableStackProps = GetProps<typeof ThemeableStack>;
+export type ThemeableStackProps = GetProps<typeof ThemeableStack>;
 //# sourceMappingURL=ThemeableStack.d.ts.map

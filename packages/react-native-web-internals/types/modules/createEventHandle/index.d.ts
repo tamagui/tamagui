@@ -6,9 +6,9 @@
  *
  * @flow
  */
-declare type Listener = (e: any) => void;
-declare type EventHandle = (target: EventTarget, callback: Listener | null) => () => void;
-export declare type EventOptions = {
+type Listener = (e: any) => void;
+type EventHandle = (target: EventTarget, callback: Listener | null) => () => void;
+export type EventOptions = {
     capture?: boolean;
     passive?: boolean;
 };

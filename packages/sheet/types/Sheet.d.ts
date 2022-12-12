@@ -47,7 +47,7 @@ export declare const SheetOverlayFrame: import("@tamagui/core").TamaguiComponent
 } & {
     readonly closed?: boolean | undefined;
 }>;
-export declare type SheetOverlayProps = GetProps<typeof SheetOverlayFrame>;
+export type SheetOverlayProps = GetProps<typeof SheetOverlayFrame>;
 export declare const SheetOverlay: ({ __scopeSheet, ...props }: SheetScopedProps<SheetOverlayProps>) => JSX.Element;
 export declare const SheetFrameFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("@tamagui/types-react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
@@ -158,13 +158,13 @@ export declare const ControlledSheet: React.FunctionComponent<Omit<SheetProps, "
         [x: string]: undefined;
     }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
 };
-declare type SheetControllerContextValue = {
+type SheetControllerContextValue = {
     disableDrag?: boolean;
     open?: boolean;
     hidden?: boolean;
     onOpenChange?: React.Dispatch<React.SetStateAction<boolean>> | ((val: boolean) => void);
 };
-export declare const SheetController: ({ children, onOpenChange, ...value }: Partial<SheetControllerContextValue> & {
+export declare const SheetController: ({ children, onOpenChange: onOpenChangeProp, ...value }: Partial<SheetControllerContextValue> & {
     children?: React.ReactNode;
 }) => JSX.Element;
 //# sourceMappingURL=Sheet.d.ts.map

@@ -24,5 +24,5 @@ export declare const Paragraph: import("@tamagui/core").TamaguiComponent<(Omit<i
 } & {
     [x: string]: undefined;
 })>;
-export declare type ParagraphProps = PropTypes<typeof Paragraph>;
+export type ParagraphProps = PropTypes<typeof Paragraph>;
 //# sourceMappingURL=Paragraph.d.ts.map

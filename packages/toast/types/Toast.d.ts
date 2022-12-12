@@ -1,6 +1,6 @@
 import { TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
-declare type SwipeDirection = 'up' | 'down' | 'left' | 'right';
+type SwipeDirection = 'up' | 'down' | 'left' | 'right';
 interface ToastProviderProps {
     children?: React.ReactNode;
     /**
@@ -26,7 +26,7 @@ interface ToastProviderProps {
     swipeThreshold?: number;
 }
 declare const ToastProvider: React.FC<ToastProviderProps>;
-declare type PrimitiveOrderedListProps = any;
+type PrimitiveOrderedListProps = any;
 interface ToastViewportProps extends PrimitiveOrderedListProps {
     /**
      * The keys to use as the keyboard shortcut that will move focus to the toast viewport.
@@ -41,7 +41,7 @@ interface ToastViewportProps extends PrimitiveOrderedListProps {
     label?: string;
 }
 declare const ToastViewport: React.ForwardRefExoticComponent<Pick<ToastViewportProps, keyof ToastViewportProps> & React.RefAttributes<TamaguiElement>>;
-declare type ToastElement = ToastImplElement;
+type ToastElement = ToastImplElement;
 interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
     open?: boolean;
     defaultOpen?: boolean;
@@ -53,7 +53,7 @@ interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
     forceMount?: true;
 }
 declare const Toast: React.ForwardRefExoticComponent<Pick<ToastProps, keyof ToastProps> & React.RefAttributes<TamaguiElement>>;
-declare type SwipeEvent = {
+type SwipeEvent = {
     currentTarget: EventTarget & ToastElement;
 } & Omit<CustomEvent<{
     originalEvent: React.PointerEvent;
@@ -62,13 +62,13 @@ declare type SwipeEvent = {
         y: number;
     };
 }>, 'currentTarget'>;
-declare type ToastImplElement = TamaguiElement;
-declare type DismissableLayerProps = any;
-declare type ToastImplPrivateProps = {
+type ToastImplElement = TamaguiElement;
+type DismissableLayerProps = any;
+type ToastImplPrivateProps = {
     open: boolean;
     onClose(): void;
 };
-declare type PrimitiveListItemProps = any;
+type PrimitiveListItemProps = any;
 interface ToastImplProps extends ToastImplPrivateProps, PrimitiveListItemProps {
     type?: 'foreground' | 'background';
     /**
@@ -82,7 +82,7 @@ interface ToastImplProps extends ToastImplPrivateProps, PrimitiveListItemProps {
     onSwipeCancel?(event: SwipeEvent): void;
     onSwipeEnd?(event: SwipeEvent): void;
 }
-declare type PrimitiveDivProps = any;
+type PrimitiveDivProps = any;
 interface ToastTitleProps extends PrimitiveDivProps {
 }
 declare const ToastTitle: React.ForwardRefExoticComponent<Pick<ToastTitleProps, string | number> & React.RefAttributes<TamaguiElement>>;
@@ -99,7 +99,7 @@ interface ToastActionProps extends ToastCloseProps {
     altText: string;
 }
 declare const ToastAction: React.ForwardRefExoticComponent<Pick<ToastActionProps, keyof ToastActionProps> & React.RefAttributes<TamaguiElement>>;
-declare type PrimitiveButtonProps = any;
+type PrimitiveButtonProps = any;
 interface ToastCloseProps extends PrimitiveButtonProps {
 }
 declare const ToastClose: React.ForwardRefExoticComponent<Pick<ToastCloseProps, string | number> & React.RefAttributes<TamaguiElement>>;

@@ -48,5 +48,5 @@ export declare const SizableStack: import("@tamagui/core").TamaguiComponent<Omit
     readonly bordered?: number | boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }>;
-export declare type SizableStackProps = GetProps<typeof SizableStack>;
+export type SizableStackProps = GetProps<typeof SizableStack>;
 //# sourceMappingURL=SizableStack.d.ts.map

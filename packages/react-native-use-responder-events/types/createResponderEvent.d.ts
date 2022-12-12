@@ -4,7 +4,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { ResponderTouchHistoryStore, TouchHistory } from './ResponderTouchHistoryStore';
-export declare type ResponderEvent = {
+export type ResponderEvent = {
     bubbles: boolean;
     cancelable: boolean;
     currentTarget: any;

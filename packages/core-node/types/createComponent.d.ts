@@ -9,7 +9,7 @@ export declare const Unspaced: {
     isUnspaced: boolean;
 };
 export declare const Spacer: TamaguiComponent<SpacerProps, TamaguiElement, never, {}>;
-export declare type SpacedChildrenProps = {
+export type SpacedChildrenProps = {
     isZStack?: boolean;
     children?: React.ReactNode;
     space?: SpaceTokens | number | null;

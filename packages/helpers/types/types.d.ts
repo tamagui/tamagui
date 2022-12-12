@@ -1,4 +1,4 @@
-export declare type StyleObject = {
+export type StyleObject = {
     property: string;
     pseudo?: 'hover' | 'focus' | 'active';
     value: string;

@@ -1,12 +1,12 @@
 /// <reference types="react" />
 import { MediaQueryKey } from '@tamagui/core';
-export declare type AdaptProps = {
+export type AdaptProps = {
     when?: MediaQueryKey;
     platform?: 'native' | 'web' | 'touch';
     children?: any;
 };
-declare type Component = (props: any) => any;
-declare type AdaptParentContextI = {
+type Component = (props: any) => any;
+type AdaptParentContextI = {
     Contents: Component;
     setWhen: (when: MediaQueryKey) => any;
 };

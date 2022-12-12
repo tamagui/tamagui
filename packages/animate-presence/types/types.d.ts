@@ -6,7 +6,7 @@ export interface Box {
     x: Axis;
     y: Axis;
 }
-export declare type VariantLabels = string | string[];
+export type VariantLabels = string | string[];
 /**
  * @public
  */

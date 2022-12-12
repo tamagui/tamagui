@@ -1,5 +1,5 @@
 import { TextStyle, ViewStyle } from 'react-native';
-export declare type ShorthandViewStyleProps = {
+export type ShorthandViewStyleProps = {
     w?: ViewStyle['width'];
     h?: ViewStyle['height'];
     p?: ViewStyle['padding'];
@@ -35,7 +35,7 @@ export declare type ShorthandViewStyleProps = {
     pe?: 'box-none' | 'none' | 'box-only' | 'auto';
     zi?: ViewStyle['zIndex'];
 };
-export declare type ShorthandTextStyleProps = ShorthandViewStyleProps & {
+export type ShorthandTextStyleProps = ShorthandViewStyleProps & {
     ta?: TextStyle['textAlign'];
     fs?: TextStyle['fontSize'];
     lh?: TextStyle['lineHeight'];

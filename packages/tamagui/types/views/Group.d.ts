@@ -73,7 +73,7 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<i
 } & {
     readonly size?: any;
 }>;
-export declare type GroupProps = GetProps<typeof GroupFrame> & {
+export type GroupProps = GetProps<typeof GroupFrame> & {
     scrollable?: boolean;
     /**
      * @default false

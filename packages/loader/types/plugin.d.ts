@@ -1,6 +1,6 @@
 import type { TamaguiOptions } from '@tamagui/static';
 import type { Compiler, RuleSetRule } from 'webpack';
-declare type PluginOptions = TamaguiOptions & {
+type PluginOptions = TamaguiOptions & {
     commonjs?: boolean;
     exclude?: RuleSetRule['exclude'];
     test?: RuleSetRule['test'];

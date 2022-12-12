@@ -2,8 +2,8 @@ import { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core';
 import { ImageProps } from '@tamagui/image';
 import * as React from 'react';
 declare const createAvatarScope: import("@tamagui/create-context").CreateScope;
-declare type ImageLoadingStatus = 'idle' | 'loading' | 'loaded' | 'error';
-declare type AvatarImageProps = Partial<ImageProps> & {
+type ImageLoadingStatus = 'idle' | 'loading' | 'loaded' | 'error';
+type AvatarImageProps = Partial<ImageProps> & {
     onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
 };
 declare const AvatarImage: React.ForwardRefExoticComponent<Partial<ImageProps> & {
@@ -42,7 +42,7 @@ export declare const AvatarFallbackFrame: import("@tamagui/core").TamaguiCompone
 } & {
     [x: string]: undefined;
 })>;
-declare type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & {
+type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & {
     delayMs?: number;
 };
 declare const AvatarFallback: React.ForwardRefExoticComponent<((Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
@@ -216,7 +216,7 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
 } & ({} | {
     [x: string]: undefined;
 })>;
-declare type AvatarProps = GetProps<typeof AvatarFrame>;
+type AvatarProps = GetProps<typeof AvatarFrame>;
 declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;

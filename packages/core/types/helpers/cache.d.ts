@@ -1,5 +1,5 @@
-declare type Value = Object | Array<any> | string | number;
-export declare type Style = {
+type Value = Object | Array<any> | string | number;
+export type Style = {
     [key: string]: Value;
 };
 declare class Cache {

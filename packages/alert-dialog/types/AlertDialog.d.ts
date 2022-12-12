@@ -2,7 +2,7 @@ import { TamaguiElement } from '@tamagui/core';
 import { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogOverlayProps, DialogPortalProps, DialogProps, DialogTitleProps, DialogTriggerProps } from '@tamagui/dialog';
 import * as React from 'react';
 declare const createAlertDialogScope: import("@tamagui/create-context").CreateScope;
-declare type AlertDialogProps = DialogProps & {
+type AlertDialogProps = DialogProps & {
     native?: boolean;
 };
 interface AlertDialogTriggerProps extends DialogTriggerProps {
@@ -17,7 +17,7 @@ declare const AlertDialogOverlay: React.ForwardRefExoticComponent<AlertDialogOve
 interface AlertDialogContentProps extends Omit<DialogContentProps, 'onPointerDownOutside' | 'onInteractOutside'> {
 }
 declare const AlertDialogContent: React.ForwardRefExoticComponent<AlertDialogContentProps & React.RefAttributes<TamaguiElement>>;
-declare type AlertDialogTitleProps = DialogTitleProps;
+type AlertDialogTitleProps = DialogTitleProps;
 declare const AlertDialogTitle: React.ForwardRefExoticComponent<((Omit<import("@tamagui/types-react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("@tamagui/types-react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
@@ -709,7 +709,7 @@ declare const AlertDialogTitle: React.ForwardRefExoticComponent<((Omit<import("@
 }), string | number> & {
     [x: string]: undefined;
 }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
-declare type AlertDialogDescriptionProps = DialogDescriptionProps;
+type AlertDialogDescriptionProps = DialogDescriptionProps;
 declare const AlertDialogDescription: React.ForwardRefExoticComponent<((Omit<import("@tamagui/types-react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("@tamagui/types-react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
@@ -777,7 +777,7 @@ declare const AlertDialogDescription: React.ForwardRefExoticComponent<((Omit<imp
 }), string | number> & {
     [x: string]: undefined;
 }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
-declare type AlertDialogActionProps = DialogCloseProps;
+type AlertDialogActionProps = DialogCloseProps;
 declare const AlertDialogAction: React.ForwardRefExoticComponent<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;

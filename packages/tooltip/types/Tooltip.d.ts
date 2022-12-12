@@ -1,7 +1,7 @@
 import '@tamagui/polyfill-dev';
 import { PopperProps } from '@tamagui/popper';
 import * as React from 'react';
-export declare type TooltipProps = PopperProps & {
+export type TooltipProps = PopperProps & {
     children?: React.ReactNode;
     onOpenChange?: (open: boolean) => void;
     groupId?: string;
@@ -11,7 +11,7 @@ export declare type TooltipProps = PopperProps & {
         close?: number;
     };
 };
-declare type Delay = number | Partial<{
+type Delay = number | Partial<{
     open: number;
     close: number;
 }>;

@@ -8,5 +8,5 @@ export declare const SizableText: import("@tamagui/core").TamaguiComponent<Omit<
 }>>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").TextPropsBase, {
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }>;
-export declare type SizableTextProps = GetProps<typeof SizableText>;
+export type SizableTextProps = GetProps<typeof SizableText>;
 //# sourceMappingURL=SizableText.d.ts.map

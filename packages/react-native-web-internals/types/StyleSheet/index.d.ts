@@ -30,10 +30,10 @@ declare function getSheet(): {
 /**
  * resolve
  */
-declare type StyleProps = [string, {
+type StyleProps = [string, {
     [key: string]: any;
 } | null];
-declare type Options = {
+type Options = {
     writingDirection: 'ltr' | 'rtl';
 };
 declare function StyleSheet(styles: any, options?: Options): StyleProps;
@@ -56,7 +56,7 @@ declare namespace StyleSheet {
     var hairlineWidth: number;
 }
 export default StyleSheet;
-export declare type IStyleSheet = {
+export type IStyleSheet = {
     (styles: any, options?: Options): StyleProps;
     absoluteFill: Object;
     absoluteFillObject: Object;

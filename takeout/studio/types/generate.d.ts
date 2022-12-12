@@ -1,5 +1,5 @@
 import type { TamaguiOptions } from '@tamagui/static';
-export declare type GenerateProps = {
+export type GenerateProps = {
     config: TamaguiOptions;
 };
 export declare const generate: (props: GenerateProps) => void;

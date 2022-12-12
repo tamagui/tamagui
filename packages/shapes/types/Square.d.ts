@@ -76,5 +76,5 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }>;
-export declare type SquareProps = GetProps<typeof Square>;
+export type SquareProps = GetProps<typeof Square>;
 //# sourceMappingURL=Square.d.ts.map

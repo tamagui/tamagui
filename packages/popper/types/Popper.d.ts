@@ -5,10 +5,10 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { Coords, Placement, Strategy, flip, shift } from './floating';
 import { UseFloatingReturn } from './useFloating';
-declare type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
-declare type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
+type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
+type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export declare const createPopperScope: import("@tamagui/create-context").CreateScope;
-declare type PopperContextValue = UseFloatingReturn & {
+type PopperContextValue = UseFloatingReturn & {
     isMounted: boolean;
     anchorRef: any;
     size?: SizeTokens;
@@ -20,7 +20,7 @@ declare type PopperContextValue = UseFloatingReturn & {
     };
 };
 declare const usePopperContext: (consumerName: string, scope: Scope<PopperContextValue | undefined>) => PopperContextValue;
-export declare type PopperProps = {
+export type PopperProps = {
     size?: SizeTokens;
     children?: React.ReactNode;
     placement?: Placement;
@@ -29,8 +29,8 @@ export declare type PopperProps = {
     strategy?: Strategy;
 };
 export declare const Popper: React.FC<PopperProps>;
-declare type PopperAnchorRef = HTMLElement | View;
-export declare type PopperAnchorProps = YStackProps & {
+type PopperAnchorRef = HTMLElement | View;
+export type PopperAnchorProps = YStackProps & {
     virtualRef?: React.RefObject<any>;
 };
 export declare const PopperAnchor: React.ForwardRefExoticComponent<Omit<import("@tamagui/types-react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
@@ -45,8 +45,8 @@ export declare const PopperAnchor: React.ForwardRefExoticComponent<Omit<import("
 }>> & {
     virtualRef?: React.RefObject<any> | undefined;
 } & React.RefAttributes<PopperAnchorRef>>;
-declare type PopperContentElement = HTMLElement | View;
-export declare type PopperContentProps = SizableStackProps;
+type PopperContentElement = HTMLElement | View;
+export type PopperContentProps = SizableStackProps;
 export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import("@tamagui/types-react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -84,8 +84,8 @@ export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import(
     readonly bordered?: number | boolean | undefined;
     readonly size?: SizeTokens | undefined;
 }>> & React.RefAttributes<PopperContentElement>>;
-declare type PopperArrowElement = HTMLElement | View;
-export declare type PopperArrowProps = YStackProps & {
+type PopperArrowElement = HTMLElement | View;
+export type PopperArrowProps = YStackProps & {
     offset?: number;
     size?: SizeTokens;
 };
