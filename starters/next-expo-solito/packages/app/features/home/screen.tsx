@@ -5,6 +5,7 @@ import {
   H1,
   MyComponent,
   Paragraph,
+  SizableText,
   Separator,
   Sheet,
   XStack,
@@ -42,9 +43,14 @@ export function HomeScreen() {
         </Paragraph>
       </YStack>
 
-      <XStack>
-        <Button {...linkProps}>Link to user</Button>
-      </XStack>
+      <YStack>
+        <SizableText onPress={() => {}} pressStyle={{ bg: 'red' }}>
+          Press me and see what happens
+        </SizableText>
+        <SizableText onPress={() => {}} pressStyle={{ bg: 'transparent' }}>
+          Press me and see what happens
+        </SizableText>
+      </YStack>
 
       <XStack $sm={{ fd: 'column' }} space>
         <MyComponent w={50} h={50} blue />
