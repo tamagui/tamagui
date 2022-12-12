@@ -3,7 +3,13 @@ import type { TextStyle } from 'react-native'
 
 export const useCurrentColor = (colorProp: ColorProp) => {
   const theme = useTheme()
-  return variableToString(theme[colorProp as any] || colorProp || theme.color)
+  const tokens = getTokens(true)
+  return variableToString(
+    theme[colorProp as any] || 
+    tokens.color[colorProp as any] || 
+    colorProp || 
+    theme.color
+  )
 }
 
 export type ColorProp = ThemeValueFallback | ColorTokens | TextStyle['color'] | undefined
