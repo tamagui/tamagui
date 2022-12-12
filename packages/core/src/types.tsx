@@ -1,16 +1,5 @@
 // TODO split this into own package @tamagui/types to share with animations packages
 
-import type {
-  Image,
-  PressableProps,
-  TextProps as ReactTextProps,
-  Text,
-  TextInput,
-  TextStyle,
-  View,
-  ViewProps,
-  ViewStyle,
-} from '@tamagui/types-react-native'
 import type { Properties } from 'csstype'
 import type {
   ComponentType,
@@ -21,6 +10,17 @@ import type {
   RefAttributes,
   RefObject,
 } from 'react'
+import type {
+  Image,
+  PressableProps,
+  TextProps as ReactTextProps,
+  Text,
+  TextInput,
+  TextStyle,
+  View,
+  ViewProps,
+  ViewStyle,
+} from 'react-native'
 
 import type { Variable } from './createVariable'
 import type { ResolveVariableTypes } from './helpers/createPropMapper'

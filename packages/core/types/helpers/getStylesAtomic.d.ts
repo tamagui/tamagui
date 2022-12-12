@@ -3,7 +3,7 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 import { StyleObject } from '@tamagui/helpers';
-import type { TextStyle, ViewStyle } from '@tamagui/types-react-native';
+import type { TextStyle, ViewStyle } from 'react-native';
 import { PseudoDescriptor } from './pseudoDescriptors';
 type ViewOrTextStyle = ViewStyle | TextStyle;
 export type ViewStyleWithPseudos = ViewOrTextStyle & {

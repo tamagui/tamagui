@@ -15,6 +15,7 @@ import {
 import { AnimationsDemo, AnimationsPresenceDemo } from '@tamagui/demos'
 // import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
+import { OpaqueColorValue } from 'react-native'
 // import { AppRegistry, useColorScheme } from 'react-native'
 import {
   Button,
@@ -33,7 +34,6 @@ import {
 } from 'tamagui'
 import { ButtonFrame, Circle, Input, Square, YStack } from 'tamagui'
 
-import { OpaqueColorValue } from '../../packages/types-react-native'
 import SandboxExample from './SandboxExample'
 import config from './tamagui.config'
 

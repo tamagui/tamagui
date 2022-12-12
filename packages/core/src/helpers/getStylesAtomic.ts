@@ -4,7 +4,7 @@
  */
 
 import { StyleObject, simpleHash } from '@tamagui/helpers'
-import type { TextStyle, ViewStyle } from '@tamagui/types-react-native'
+import type { TextStyle, ViewStyle } from 'react-native'
 
 import { getConfig } from '../config'
 import { TamaguiInternalConfig } from '../types'
