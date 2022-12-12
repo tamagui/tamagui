@@ -33,20 +33,18 @@ export const SearchButton = memo((props: ButtonProps) => {
         ref={ref as any}
         onPress={onOpen}
         icon={SearchIcon}
+        // dont hide this on touchables to avoid layout shifts...
         iconAfter={
-          isTouch ? null : (
-            // TODO shouldn't need tag="span" if buttoninbutton context works - test + in prod
-            <Button
-              size="$2"
-              $sm={{ display: 'none', size: '$4' }}
-              chromeless
-              borderWidth={0}
-              pe="none"
-              o={0.35}
-            >
-              /
-            </Button>
-          )
+          <Button
+            size="$2"
+            $sm={{ display: 'none', size: '$4' }}
+            chromeless
+            borderWidth={0}
+            pe="none"
+            o={0.35}
+          >
+            /
+          </Button>
         }
         {...props}
       />

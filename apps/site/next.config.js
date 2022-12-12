@@ -85,6 +85,7 @@ module.exports = function (name, { defaultConfig }) {
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     swcMinify: true,
     reactStrictMode: true,
+    optimizeFonts: true,
     experimental: {
       optimizeCss: true,
       esmExternals: true,

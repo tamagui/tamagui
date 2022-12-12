@@ -169,6 +169,7 @@ const HeroTop = memo(() => {
             ai="center"
             jc="center"
             space="$2"
+            contain="paint layout"
             $xxs={{
               // words web-only
               // @ts-ignore
@@ -178,6 +179,9 @@ const HeroTop = memo(() => {
           >
             <NextLink legacyBehavior prefetch={false} href="/docs/intro/compiler" passHref>
               <Button
+                // layout shifts...
+                w={121}
+                h={52}
                 accessibilityLabel="Get started (docs)"
                 fontFamily="$silkscreen"
                 tag="a"
@@ -202,6 +206,9 @@ const HeroTop = memo(() => {
 
             <NextLink legacyBehavior prefetch={false} href="/docs/intro/introduction" passHref>
               <Button
+                // layout shifts...
+                w={118}
+                h={52}
                 accessibilityLabel="Get started (docs)"
                 fontFamily="$silkscreen"
                 tag="a"

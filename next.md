@@ -1,16 +1,16 @@
 rc.1
 
+- site animate mount seems slow
+- forms demo textarea top padding + shifts on focus
 - maybe regression in closing popover
 - style={{ filter: '' }} broken
   - instead of validStyleProps use validNONStyleProps
     - that way for web all style props pass through automatically
     - also likely smaller bundle size (smart detect `onX`)
 - variants intellisense autocomplete not suggesting, but types are right
-- next load css on subsequent pages
+- next load css on subsequent pages (partially fixed)
 - tested on FF
   - Card component minor glitch: border flickers on animation end
-- Stack is producing inline styles for media where YStack produces classname
-- Has anyone been successful with enterStyle? I think it has something to do with keys since when I change the key attribute of the letters the animation happens, but after a refresh it does not happen
 - #quest-portal - scroll view seems to extend beyond the bottom of the screen making it impossible to access the items at the bottom
 
 1.0

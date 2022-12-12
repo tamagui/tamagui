@@ -1,4 +1,4 @@
-import type { ViewStyle } from '@tamagui/types-react-native'
+import type { ViewStyle } from 'react-native'
 
 export type FlatTransforms = Record<string, any>
 
