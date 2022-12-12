@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": { 
+    "composite": true
+  },
+  "references": [
+    { "path": "../../packages/static" }
+  ]
+}
