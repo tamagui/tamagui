@@ -29,7 +29,9 @@ const rcVersion = curRC + (!patch ? plusVersion : 0)
 const nextVersionPostfix = `rc.${rcVersion}${patchVersion}`
 const nextVersion = `1.0.1-${nextVersionPostfix}`
 
-console.log('Publishing version:', nextVersion, '\n')
+if (!skipVersion) {
+  console.log('Publishing version:', nextVersion, '\n')
+}
 
 // could add only if changed checks: git diff --quiet HEAD HEAD~3 -- ./packages/core
 // but at that point would be nicer to get a whole setup for this.. lerna or whatever
@@ -198,15 +200,23 @@ async function run() {
             console.log(`Publish ${name}`)
 
             // check if already published first as its way faster for re-runs
-            const out = await spawnify(`npm view ${name} versions --json`, {
-              avoidLog: true,
-            })
-            const allVersions = JSON.parse(out.trim())
-            const latest = allVersions[allVersions.length - 1]
+            try {
+              const out = await spawnify(`npm view ${name} versions --json`, {
+                avoidLog: true,
+              })
+              const allVersions = JSON.parse(out.trim())
+              const latest = allVersions[allVersions.length - 1]
 
-            if (latest === nextVersion) {
-              console.log(`Already published, skipping`)
-              return
+              if (latest === nextVersion) {
+                console.log(`Already published, skipping`)
+                return
+              }
+            } catch (err) {
+              if (`${err}`.includes(`404`)) {
+                // fails if never published before, ok
+              } else {
+                throw err
+              }
             }
 
             try {
