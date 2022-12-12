@@ -204,7 +204,6 @@ async function run() {
             const allVersions = JSON.parse(out.trim())
             const latest = allVersions[allVersions.length - 1]
 
-            console.log('latest', latest)
             if (latest === nextVersion) {
               console.log(`Already published, skipping`)
               return

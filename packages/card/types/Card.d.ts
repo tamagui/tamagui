@@ -285,7 +285,7 @@ export declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<
 export declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-}, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
+}, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "transparent" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
     readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -301,7 +301,7 @@ export declare const CardBackground: import("@tamagui/core").TamaguiComponent<(O
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-}, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
+}, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "transparent" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
     readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -317,7 +317,7 @@ export declare const CardBackground: import("@tamagui/core").TamaguiComponent<(O
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-}, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
+}, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "transparent" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
     readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -674,7 +674,7 @@ export declare const Card: React.ForwardRefExoticComponent<Omit<import("@tamagui
     Background: import("@tamagui/core").TamaguiComponent<(Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
-    }, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
+    }, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "transparent" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         readonly fontFamily?: unknown;
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
@@ -690,7 +690,7 @@ export declare const Card: React.ForwardRefExoticComponent<Omit<import("@tamagui
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
-    }, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
+    }, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "transparent" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         readonly fontFamily?: unknown;
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
@@ -706,7 +706,7 @@ export declare const Card: React.ForwardRefExoticComponent<Omit<import("@tamagui
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("@tamagui/types-react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
-    }, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
+    }, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "transparent" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         readonly fontFamily?: unknown;
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;

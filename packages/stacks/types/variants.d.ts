@@ -219,6 +219,10 @@ export declare const elevate: {
         contain?: import("@tamagui/core").Variable<any> | import("csstype").Property.Contain | undefined;
         display?: "flex" | "none" | import("@tamagui/core").Variable<any> | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
         userSelect?: import("@tamagui/core").Variable<any> | import("csstype").Property.UserSelect | undefined;
+        outlineColor?: import("@tamagui/core").Variable<any> | import("csstype").Property.OutlineColor | undefined;
+        outlineStyle?: import("@tamagui/core").Variable<any> | import("csstype").Property.OutlineStyle | undefined;
+        outlineOffset?: import("@tamagui/core").Variable<any> | import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
+        outlineWidth?: import("@tamagui/core").Variable<any> | import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
         hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>) | import("@tamagui/core").Variable<any> | null | undefined;
         pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>) | import("@tamagui/core").Variable<any> | null | undefined;
         focusStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>) | import("@tamagui/core").Variable<any> | null | undefined;
