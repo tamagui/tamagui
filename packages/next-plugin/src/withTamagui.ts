@@ -362,7 +362,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             []
           )
 
-          const cssTest = tamaguiOptions.includeCSSTest ?? /\.css$/
+          const cssTest = tamaguiOptions.includeCSSTest ?? /\.tamagui\.css$/
 
           if (!dev && tamaguiOptions.enableCSSOptimizations) {
             const postCSSLoader = cssLoader[cssLoader.length - 1]

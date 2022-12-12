@@ -402,7 +402,6 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           return
         }
 
-        console.log('???', parentName, variableName)
         const Component = getValidImportedComponent(parentName)
 
         // if (!Component) {
@@ -559,8 +558,6 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
         // leave only un-parsed props...
         definition.properties = skipped
-
-        console.log('out', out)
 
         // ... + key: className
         for (const cn in classNames) {

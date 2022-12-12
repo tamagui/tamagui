@@ -67,6 +67,7 @@
     "@next/bundle-analyzer": "^12.2.0",
     "@tamagui/next-plugin": "^1.0.1-rc.1.3",
     "@types/react-native": "^0.69.2",
+    "critters": "^0.0.16",
     "next-plugin-preact": "^3.0.7",
     "next-remote-watch": "^1.0.0",
     "tamagui-loader": "^1.0.1-rc.1.3",

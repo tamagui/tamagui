@@ -86,6 +86,7 @@ module.exports = function (name, { defaultConfig }) {
     swcMinify: true,
     reactStrictMode: true,
     experimental: {
+      optimizeCss: true,
       esmExternals: true,
       forceSwcTransforms: true,
       scrollRestoration: true,
