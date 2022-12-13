@@ -272,6 +272,7 @@ async function run() {
 
       // then git tag, commit, push
       await spawnify(`yarn install`)
+      await spawnify(`yarn fix`)
       await spawnify(`git add -A`)
       await spawnify(`git commit -m v${version}`)
       await spawnify(`git tag v${version}`)

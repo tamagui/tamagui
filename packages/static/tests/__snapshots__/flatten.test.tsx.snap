@@ -1,0 +1,49 @@
+// Vitest Snapshot v1
+
+exports[`flatten-tests > flattened media queries 1`] = `
+"import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+const _sheet = ReactNativeStyleSheet.create({
+  \\"0\\": {
+    \\"flexDirection\\": \\"column\\",
+    \\"minWidth\\": 0,
+    \\"minHeight\\": 0,
+    \\"position\\": \\"relative\\",
+    \\"flexBasis\\": \\"auto\\",
+    \\"display\\": \\"flex\\",
+    \\"flexShrink\\": 0,
+    \\"alignItems\\": \\"stretch\\",
+    \\"transform\\": [{
+      \\"translateY\\": 10
+    }, {
+      \\"translateX\\": 20
+    }, {
+      \\"rotate\\": \\"10deg\\"
+    }]
+  },
+  \\"1\\": {
+    \\"borderTopLeftRadius\\": 10,
+    \\"borderTopRightRadius\\": 10,
+    \\"borderBottomRightRadius\\": 10,
+    \\"borderBottomLeftRadius\\": 10,
+    \\"transform\\": [{
+      \\"scale\\": 2
+    }]
+  },
+  \\"2\\": {},
+  \\"3\\": {
+    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
+  },
+  \\"4\\": {},
+  \\"5\\": {
+    \\"backgroundColor\\": \\"rgba(0,0,255,1.00)\\"
+  },
+  \\"6\\": {}
+});
+import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+import { YStack } from 'tamagui/src/YStack';
+import { useMedia } from 'tamagui';
+export function Test(isLoading) {
+  const media = useMedia();
+  return <__ReactNativeView style={[_sheet[\\"0\\"], media.sm ? _sheet[\\"1\\"] : _sheet[\\"2\\"], media.sm && isLoading ? _sheet[\\"3\\"] : _sheet[\\"4\\"], media.sm && !isLoading ? _sheet[\\"5\\"] : _sheet[\\"6\\"]]} />;
+}"
+`;
