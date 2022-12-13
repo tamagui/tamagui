@@ -1,7 +1,9 @@
 import * as babel from '@babel/core'
 
+import { extractForNative } from './tests/lib/extract'
+
 async function run() {
-  const output = await extractBabel(`
+  const output = await extractForNative(`
       import { Text, styled } from 'tamagui'
       
       const XStack = styled(Text, {
@@ -29,7 +31,7 @@ async function run() {
 
 run()
 
-async function extractBabel(code: string) {
+async function extractForNative(code: string) {
   return await babel.transformAsync(code, {
     configFile: './babel-config-test.js',
     filename: 'test.tsx',

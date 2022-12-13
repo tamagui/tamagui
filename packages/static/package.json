@@ -18,7 +18,7 @@
     "lint": "eslint src",
     "lint:fix": "yarn lint --fix",
     "pretest": "node -r esbuild-register ./tests/lib/preTest.js",
-    "test": "yarn pretest && vitest --config ../vite-plugin-internal/src/vite.config.ts --run --dom"
+    "test": "vitest --config ../vite-plugin-internal/src/vite.config.ts --run --dom"
   },
   "tests": {
     "parallel": true
@@ -79,7 +79,7 @@
     "react-test-renderer": "^18.2.0",
     "style-loader": "^3.3.1",
     "typescript": "^4.7.4",
-    "vitest": "^0.25.3",
+    "vitest": "^0.25.7",
     "webpack": "^5.74.0"
   },
   "peerDependencies": {

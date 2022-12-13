@@ -12,7 +12,7 @@ export type ExtractedResponse = {
 export type ExtractToClassNamesProps = {
     extractor: Extractor;
     source: string | Buffer;
-    sourcePath: string;
+    sourcePath?: string;
     options: TamaguiOptions;
     shouldPrintDebug: boolean | 'verbose';
 };

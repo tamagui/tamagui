@@ -132,13 +132,12 @@ export const Heading = styled(Text, {
       examples: [
         {
           name: 'app.js',
-          code: `import { concatClassName } from "@tamagui/helpers";
-import { Stack } from '@tamagui/core';
+          code: `import { Stack } from '@tamagui/core';
 import { Heading } from './Heading';
 
 export default (props) => (
   <div className={_cn}>
-    <span className={concatClassName(_cn2 + (_cn3 + (props.big ? _cn4 : _cn4)))}>Lorem ipsum dolor.</span>
+    <span className={_cn2 + (_cn3 + (props.big ? _cn4 : _cn4))}>Lorem ipsum dolor.</span>
   </div>
 );
 
@@ -223,10 +222,9 @@ const _cn4 = "  _bc-1542mo4"
 const _cn3 = " _pb-12bic3x _pl-7ztw5e _pr-g6vdx7 _pt-1vq430g"
 const _cn2 = " _pb-z3qxl0 _pl-14km6ah _pr-1qpq1qc _pt-1medp4i"
 const _cn = " _d-6koalj _fd-eqz5dr _fs-1q142lx "
-import { concatClassName } from "@tamagui/helpers"
 import { Paragraph, YStack } from 'tamagui'
 
-const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _cn3) + (" " + (props.colorful ? _cn4 : " ")))}>
+const App = props => <div className={_cn + (props.big ? _cn2 : _cn3 + (" " + (props.colorful ? _cn4 : " ")))}>
     <span className={_cn5}>
       Lorem ipsum dolor.
     </span>

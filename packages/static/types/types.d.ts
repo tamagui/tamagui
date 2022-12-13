@@ -53,7 +53,7 @@ export type ExtractTagProps = {
     staticConfig: StaticConfig;
 };
 export type TamaguiOptionsWithFileInfo = TamaguiOptions & {
-    sourcePath: string;
+    sourcePath?: string;
     allLoadedComponents: LoadedComponents[];
 };
 export type ExtractorParseProps = Omit<TamaguiOptionsWithFileInfo, 'allLoadedComponents'> & {

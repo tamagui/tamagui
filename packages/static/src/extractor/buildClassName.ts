@@ -1,5 +1,4 @@
 import * as t from '@babel/types'
-import { concatClassName } from '@tamagui/helpers'
 
 import type { ClassNameObject } from '../types.js'
 
@@ -12,7 +11,7 @@ export const buildClassName: Builder = (objectsIn, extras = '') => {
   let objects = buildClassNameLogic(objectsIn)
   if (!objects) return null
   if (t.isStringLiteral(objects)) {
-    objects.value = concatClassName(objects.value)
+    // objects.value = objects.value
     objects.value = `${extras} ${objects.value}`
   } else {
     objects = t.binaryExpression('+', t.stringLiteral(extras), objects)
