@@ -20,7 +20,7 @@ export function createEvaluator({
 }: {
   props: TamaguiOptionsWithFileInfo
   staticNamespace: Record<string, any>
-  sourcePath: string
+  sourcePath?: string
   traversePath?: NodePath<t.JSXElement>
   shouldPrintDebug: boolean | 'verbose'
 }) {

@@ -8,7 +8,6 @@ import {
   StaticConfigParsed,
   expandStyles,
   getSplitStyles,
-  getStylesAtomic,
   mediaQueryConfig,
   proxyThemeVariables,
   pseudoDescriptors,
@@ -39,7 +38,6 @@ import {
   objToStr,
 } from './extractHelpers.js'
 import { findTopmostFunction } from './findTopmostFunction.js'
-import { getPrefixLogs } from './getPrefixLogs.js'
 import { cleanupBeforeExit, getStaticBindingsForScope } from './getStaticBindingsForScope.js'
 import { literalToAst } from './literalToAst.js'
 import { TamaguiProjectInfo, loadTamagui, loadTamaguiSync } from './loadTamagui.js'
@@ -165,13 +163,14 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     if (disable === true || (Array.isArray(disable) && disable.includes(sourcePath))) {
       return null
     }
-    if (sourcePath === '') {
-      throw new Error(`Must provide a source file name`)
-    }
     if (!components) {
       throw new Error(`Must provide components`)
     }
-    if (includeExtensions && !includeExtensions.some((ext) => sourcePath.endsWith(ext))) {
+    if (
+      sourcePath &&
+      includeExtensions &&
+      !includeExtensions.some((ext) => sourcePath.endsWith(ext))
+    ) {
       if (shouldPrintDebug) {
         logger.info(
           `Ignoring file due to includeExtensions: ${sourcePath}, includeExtensions: ${includeExtensions.join(
@@ -1098,7 +1097,8 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
               let didInline = false
               const attributes = keys.map((key) => {
                 const val = out[key]
-                if (isValidStyleKey(key, staticConfig)) {
+                const isStyle = isValidStyleKey(key, staticConfig)
+                if (isStyle) {
                   return {
                     type: 'style',
                     value: { [key]: styleValue },

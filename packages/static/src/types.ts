@@ -66,7 +66,7 @@ export type ExtractTagProps = {
 }
 
 export type TamaguiOptionsWithFileInfo = TamaguiOptions & {
-  sourcePath: string
+  sourcePath?: string
   allLoadedComponents: LoadedComponents[]
 }
 

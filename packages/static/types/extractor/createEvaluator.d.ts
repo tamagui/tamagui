@@ -4,7 +4,7 @@ import { TamaguiOptionsWithFileInfo } from '../types.js';
 export declare function createEvaluator({ props, staticNamespace, sourcePath, traversePath, shouldPrintDebug, }: {
     props: TamaguiOptionsWithFileInfo;
     staticNamespace: Record<string, any>;
-    sourcePath: string;
+    sourcePath?: string;
     traversePath?: NodePath<t.JSXElement>;
     shouldPrintDebug: boolean | 'verbose';
 }): (n: t.Node) => any;

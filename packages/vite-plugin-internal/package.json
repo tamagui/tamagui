@@ -25,7 +25,7 @@
     "@tamagui/vite-plugin": "^1.0.1-rc.1.4",
     "@vitejs/plugin-react": "^2.2.0",
     "happy-dom": "^8.1.0",
-    "vitest": "^0.25.3",
+    "vitest": "^0.25.7",
     "vitest-mock-process": "^1.0.4"
   }
 }

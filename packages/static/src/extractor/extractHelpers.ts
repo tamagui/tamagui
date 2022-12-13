@@ -98,7 +98,7 @@ export function isValidThemeHook(
   props: TamaguiOptionsWithFileInfo,
   jsxPath: NodePath<t.JSXElement>,
   n: t.MemberExpression,
-  sourcePath: string
+  sourcePath?: string
 ) {
   if (!t.isIdentifier(n.object) || !t.isIdentifier(n.property)) return false
   const bindings = jsxPath.scope.getAllBindings()
@@ -112,7 +112,7 @@ export function isValidThemeHook(
   if (init.callee.name !== 'useTheme') return false
   const importNode = binding.scope.getBinding('useTheme')?.path.parent
   if (!t.isImportDeclaration(importNode)) return false
-  if (!isValidImport(props, sourcePath)) {
+  if (sourcePath && !isValidImport(props, sourcePath)) {
     return false
   }
   return true
