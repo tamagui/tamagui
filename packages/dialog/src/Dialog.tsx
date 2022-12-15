@@ -4,8 +4,6 @@ import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
-  MediaQueryKey,
-  Slot,
   TamaguiElement,
   Theme,
   composeEventHandlers,
@@ -129,6 +127,7 @@ export const DialogPortalFrame = styled(YStack, {
   zIndex: 100,
   ...(isWeb && {
     maxHeight: '100vh',
+    position: 'fixed' as any,
   }),
 })
 
@@ -323,9 +322,6 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
         {...props}
         context={context}
         ref={composedRefs}
-        // we make sure focus isn't trapped once `DialogContent` has been closed
-        // (closed !== unmounted when animating out)
-        trapFocus={context.open}
         disableOutsidePointerEvents
         onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
           event.preventDefault()
