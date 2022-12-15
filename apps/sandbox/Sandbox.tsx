@@ -49,7 +49,7 @@ type X = ColorTokens | ThemeValueFallback | OpaqueColorValue | undefined
 const y: X = ''
 
 // eslint-disable-next-line no-console
-console.log(getMedia().sm)
+console.log('[Sandbox] getMedia().sm', getMedia().sm)
 
 const CustomButtonFrame = styled(ButtonFrame, {
   variants: {
@@ -131,7 +131,9 @@ export const Sandbox = () => {
           }}
         >
           {/* <AnimationsHoverDemo /> */}
-          <SelectDemo />
+          {/* <SelectDemo /> */}
+
+          <DialogDemo />
 
           {/* <>make sure enterStyle works without scale set on defaults</>
           <Square
@@ -146,7 +148,7 @@ export const Sandbox = () => {
           /> */}
           {/* <AnimationsPresenceDemo /> */}
           {/* <Square size={100} bc="red" animation="bouncy" /> */}
-          <AnimationsPresenceDemo />
+          {/* <AnimationsPresenceDemo /> */}
           {/* <SandboxExample /> */}
           {/* <SelectDemo /> */}
           {/* <PopoverDemo /> */}

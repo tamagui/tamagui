@@ -1101,11 +1101,10 @@ export function spacedChildren({
   const len = childrenList.length
   if (len <= 1 && !isZStack) {
     if (len === 1) {
-      // forward space! only when one component
-      // doesn't make sense to forward space to all children
+      // forward space! only when one component doesn't make sense to forward space to all children
       const [onlyChild] = childrenList
       if (React.isValidElement(onlyChild) && onlyChild.type?.['shouldForwardSpace']) {
-        return React.cloneElement(onlyChild, { space } as any)
+        return React.cloneElement(onlyChild, { space, direction, spaceFlex, separator } as any)
       }
     }
     return childrenList

@@ -501,9 +501,13 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
 
 const SHEET_CONTENTS_NAME = 'DialogSheetContents'
 
-export const DialogSheetContents = ({ __scopeDialog }: ScopedProps<{}>) => {
+export const DialogSheetContents = ({
+  __scopeDialog,
+  name,
+  ...props
+}: ScopedProps<{ name: string }>) => {
   const context = useDialogContext(SHEET_CONTENTS_NAME, __scopeDialog)
-  return <PortalHost name={`${context.scopeKey}SheetContents`}></PortalHost>
+  return <PortalHost forwardProps={props} name={`${context.scopeKey}SheetContents`} />
 }
 
 DialogSheetContents.displayName = SHEET_CONTENTS_NAME

@@ -25,6 +25,7 @@
     "watch": "npm-run-all --parallel watch:ts watch:build",
     "watch:ts": "tsc -b -w --preserveWatchOutput tsconfig.build.json",
     "watch:build": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 200 watch",
+    "watch:js": "SKIP_TYPES=1 yarn watch:build",
     "clean:build": "turbo run clean:build",
     "clean:ts": "tsc -b --clean tsconfig.build.json",
     "clean": "turbo run clean:build --parallel",

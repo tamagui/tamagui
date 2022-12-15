@@ -12,7 +12,7 @@ export function DialogDemo() {
 
       <Adapt when="sm" platform="touch">
         <Sheet zIndex={200_000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4">
+          <Sheet.Frame padding="$4" space>
             <Adapt.Contents />
           </Sheet.Frame>
           <Sheet.Overlay />
@@ -45,39 +45,38 @@ export function DialogDemo() {
           scale={1}
           opacity={1}
           y={0}
+          space
         >
-          <YStack space>
-            <Dialog.Title>Edit profile</Dialog.Title>
-            <Dialog.Description>
-              Make changes to your profile here. Click save when you're done.
-            </Dialog.Description>
-            <Fieldset space="$4" horizontal>
-              <Label w={160} justifyContent="flex-end" htmlFor="name">
-                Name
-              </Label>
-              <Input f={1} id="name" defaultValue="Nate Wienert" />
-            </Fieldset>
-            <Fieldset space="$4" horizontal>
-              <Label w={160} justifyContent="flex-end" htmlFor="username">
-                Food
-              </Label>
-              <SelectDemo />
-            </Fieldset>
+          <Dialog.Title>Edit profile</Dialog.Title>
+          <Dialog.Description>
+            Make changes to your profile here. Click save when you're done.
+          </Dialog.Description>
+          <Fieldset space="$4" horizontal>
+            <Label w={160} justifyContent="flex-end" htmlFor="name">
+              Name
+            </Label>
+            <Input f={1} id="name" defaultValue="Nate Wienert" />
+          </Fieldset>
+          <Fieldset space="$4" horizontal>
+            <Label w={160} justifyContent="flex-end" htmlFor="username">
+              Food
+            </Label>
+            <SelectDemo />
+          </Fieldset>
 
-            <YStack ai="flex-end" mt="$2">
-              <Dialog.Close asChild>
-                <Button theme="alt1" aria-label="Close">
-                  Save changes
-                </Button>
-              </Dialog.Close>
-            </YStack>
-
-            <Unspaced>
-              <Dialog.Close asChild>
-                <Button pos="absolute" t="$-2" r="$-2" size="$3" circular icon={X} />
-              </Dialog.Close>
-            </Unspaced>
+          <YStack ai="flex-end" mt="$2">
+            <Dialog.Close asChild>
+              <Button theme="alt1" aria-label="Close">
+                Save changes
+              </Button>
+            </Dialog.Close>
           </YStack>
+
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button pos="absolute" t="$2" r="$2" size="$3" circular icon={X} />
+            </Dialog.Close>
+          </Unspaced>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
