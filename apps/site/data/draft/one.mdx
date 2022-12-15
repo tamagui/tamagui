@@ -1,27 +1,45 @@
 ---
-title: Tamagui 1
+title: Tamagui 1.0
 publishedAt: '2021-12-22'
-description: Cross-platform frontend apps 2x faster, with ½ the code.
+description: Ship cross-platform React apps in ½ time with 2x performance.
 by: nate
 # relatedIds:
 #   - 'tamagui-alpha'
 ---
 
-<IntroParagraph>
-  Tamagui is style system for React Native + web, taken to the next level thanks to an optimizing
-  compiler. It outputs beautifully platform-targeted code through advanced code analysis and
-  transformation. The end result is that you can [ship faster, share more code, and get better
-  performance](/docs/intro/compiler) all at once.
+<IntroParagraph large>
+  React Native allows for incredibly native feelings apps, but when you adapt them to the web, they
+  feel [clunky](/docs/intro/compiler).
 </IntroParagraph>
 
+<IntroParagraph>
+  You miss out on using web primitives that *really matter* for performance like media queries,
+  pseudo styles, CSS variables. Plus, you end up with a lot of heavy to parse and run JS, when you
+  could be using CSS.
+</IntroParagraph>
+
+Tamagui is a novel optimizing compiler for React that makes universal styles feel amazing on every platform. It optimizes both to the web and native, often making write-once code perform better than separately written apps with hand-tuned CSS.
+
+**What does that mean in practice?**
+
 <Image
-  resizeMode="contain"
-  title="Layout tools image"
-  src="/social.jpg"
+  title="The compiler improves the Lighthouse score of the homepage of https://tamagui.dev from 85 to 96"
+  src="/banner-lighthouse.jpg"
   size="hero"
-  height={150}
-  width={900}
+  height={275}
+  width={761}
+  resizeMode="contain"
+  mt="$2"
+  mb="$4"
 />
+
+Get a rich yet lightweight CSS-in-JS design system with `@tamagui/core`, fully typed, that optimizes everything - styles, inline styles, inline styles with logic, and more, even flattening entire components into a simple `div` or `View` on native when it can. The difference in performance is huge:
+
+<Spacer />
+<BenchmarkChartWeb />
+<Spacer />
+
+On top of that, we've built `tamagui`, a complete suite of components and hooks designed to adapt to feel native on every platform, yet still be completely customizable thanks to a uniquely powerful [theme system](/docs/intro/themes), sizing props, and Radix-inspired composable component API surfaces.
 
 Tamagui supports the full APIs of React Native. The optimizing compiler nets huge gains in Lightouse cores - 15-20% on complex pages - without changing a line of code. It turns janky JS-based responsive and pseudo styles into clean CSS that is 10x faster on the web.
 

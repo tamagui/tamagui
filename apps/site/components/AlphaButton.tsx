@@ -7,13 +7,14 @@ export const AlphaButton = () => {
     <NextLink legacyBehavior href="/blog/version-one-release-candidate" passHref>
       <Button
         accessibilityLabel="Tamagui v1 Release Candidate blog post"
-        rotate="-2deg"
-        theme="pink_alt2"
+        rotate="-4deg"
+        theme="alt1"
         cursor="pointer"
         opacity={0.9}
         hoverStyle={{ opacity: 1 }}
         tag="a"
         size="$2"
+        scale={0.9}
         $sm={{ dsp: 'none' }}
       >
         RC

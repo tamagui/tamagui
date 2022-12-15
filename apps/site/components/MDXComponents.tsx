@@ -227,9 +227,16 @@ export const components = {
     </Button>
   ),
 
-  IntroParagraph: ({ children, ...props }) => {
+  IntroParagraph: ({ children, large, ...props }) => {
     return (
-      <Paragraph tag="span" size="$8" className="paragraph" my="$3" fow="400" {...props}>
+      <Paragraph
+        tag="span"
+        size={large ? '$9' : '$8'}
+        className="paragraph"
+        my="$3"
+        fow="400"
+        {...props}
+      >
         {unwrapText(children)}
       </Paragraph>
     )
@@ -338,8 +345,27 @@ export const components = {
 
   code,
 
-  Image: ({ children, size, ...props }: ImageProps & { size?: 'hero' }) => (
-    <OffsetBox size={size} tag="figure" f={1} mx={0} mb="$3" ai="center" jc="center" ov="hidden">
+  Image: ({
+    children,
+    size,
+    overlap,
+    ...props
+  }: ImageProps & { size?: 'hero'; overlap?: boolean }) => (
+    <OffsetBox
+      size={size}
+      tag="figure"
+      f={1}
+      mx={0}
+      mb="$3"
+      ai="center"
+      jc="center"
+      ov="hidden"
+      {...(overlap && {
+        mt: '$-8',
+        elevation: '$2',
+        ov: 'hidden',
+      })}
+    >
       <Image maxWidth="100%" {...props} />
       <Text tag="figcaption" lineHeight={23} color="$colorPress" mt="$2">
         {children}

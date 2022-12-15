@@ -12,7 +12,6 @@ export default function BlogSlug(props: BlogPost) {
   return (
     <>
       <TitleAndMetaTags {...props.frontmatter} title={`${props.frontmatter.title} — Tamagui`} />
-      <HeaderIndependent alwaysFloating disableNew />
       <BlogSlugPage Component={Component} {...props} />
     </>
   )
