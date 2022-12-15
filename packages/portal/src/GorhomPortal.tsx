@@ -2,9 +2,22 @@
 // MIT License Copyright (c) 2020 Mo Gorhom
 // fixing SSR issue
 
-import { useDidFinishSSR, useThemeName } from '@tamagui/core'
-import { ReactNode, startTransition, useMemo, useRef } from 'react'
-import React, { createContext, memo, useCallback, useContext, useEffect, useReducer } from 'react'
+import { spacedChildren, useDidFinishSSR, useIsomorphicLayoutEffect } from '@tamagui/core'
+import React, {
+  ReactNode,
+  cloneElement,
+  createContext,
+  isValidElement,
+  memo,
+  startTransition,
+  useCallback,
+  useContext,
+  useEffect,
+  useId,
+  useMemo,
+  useReducer,
+  useRef,
+} from 'react'
 
 interface PortalType {
   name: string
@@ -248,9 +261,11 @@ export interface PortalHostProps {
    * @type string
    */
   name: string
+
+  forwardProps?: Record<string, any>
 }
 
-const PortalHostComponent = ({ name }: PortalHostProps) => {
+const PortalHostComponent = ({ name, forwardProps }: PortalHostProps) => {
   //#region hooks
   const isServer = !useDidFinishSSR()
   const state = usePortalState(name)
@@ -268,6 +283,33 @@ const PortalHostComponent = ({ name }: PortalHostProps) => {
   }, [isServer])
   //#endregion
 
+  if (forwardProps) {
+    return (
+      <>
+        {state.map((item) => {
+          let next = item.node
+          const { space, separator, spaceDirection, ...rest } = forwardProps
+
+          if (Array.isArray(next)) {
+            // add any extra props
+            if (Object.keys(rest).length) {
+              next = next.map((item) => (isValidElement(item) ? cloneElement(item, rest) : item))
+            }
+            if (space || separator) {
+              next = spacedChildren({
+                separator: forwardProps.separator,
+                children: next as any,
+                space: forwardProps.space,
+                direction: forwardProps.spaceDirection || 'both',
+              })
+            }
+          }
+          return next
+        })}
+      </>
+    )
+  }
+
   //#region render
   return <>{state.map((item) => item.node)}</>
   //#endregion
@@ -280,7 +322,7 @@ export interface PortalItemProps {
   /**
    * Portal's key or name to be used as an identifier.
    * @type string
-   * @default nanoid generated unique key.
+   * @default generated unique key.
    */
   name?: string
   /**
@@ -329,15 +371,10 @@ const PortalComponent = ({
   //#region hooks
   const { addPortal: addUpdatePortal, removePortal } = usePortal(hostName)
   //#endregion
-
-  let id = 0
-  const nanoid = () => {
-    id = (id + 1) % Number.MAX_SAFE_INTEGER
-    return `${id}`
-  }
+  const id = useId()
 
   //#region variables
-  const name = useMemo(() => _providedName || nanoid(), [_providedName])
+  const name = useMemo(() => _providedName || id, [_providedName])
   //#endregion
 
   //#region refs
@@ -379,7 +416,7 @@ const PortalComponent = ({
   //#endregion
 
   //#region effects
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     handleOnMountRef.current?.()
     return () => {
       handleOnUnmountRef.current?.()
@@ -390,6 +427,7 @@ const PortalComponent = ({
       handleOnUpdateRef.current = undefined
     }
   }, [])
+
   useEffect(() => {
     handleOnUpdateRef.current?.()
   }, [children])
