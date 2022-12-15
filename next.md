@@ -1,5 +1,9 @@
-rc.1
+rc.2
 
+- chrome can't select text in dialog
+- #beatgig - popover not closing
+- Adapt.Contents doesn't forward props, if you set `space` above it on `Dialog.Content`
+- chrome dialog - scroll down, then open dialog, then tap trigger causes the entire dialog/backdrop to shift up above window
 - one full on integration native test unlocks:
   - no more manual checks every release
   - auto release on merge to master
@@ -16,7 +20,6 @@ rc.1
     - that way for web all style props pass through automatically
     - also likely smaller bundle size (smart detect `onX`)
 - variants intellisense autocomplete not suggesting, but types are right
-- next load css on subsequent pages (partially fixed)
 - tested on FF
   - Card component minor glitch: border flickers on animation end
 - #quest-portal - scroll view seems to extend beyond the bottom of the screen making it impossible to access the items at the bottom
@@ -72,6 +75,12 @@ rc.1
 
 1.1
 
+- next load css on subsequent pages (partially fixed)
+  - https://github.com/vanilla-extract-css/vanilla-extract/blob/master/packages/next-plugin/src/index.js
+  - https://github.com/vanilla-extract-css/vanilla-extract/blob/master/packages/webpack-plugin/src/loader.ts
+- site web fonts (can also be a feature of font bundles)
+  - https://www.lydiahallie.io/blog/optimizing-webfonts-in-nextjs-13
+  - https://simonhearne.com/2021/layout-shifts-webfonts/#reduce-layout-shift-with-f-mods
 - Is there some way to get color-scheme to update to dark here when we toggle to the dark theme @Nate ?
   - <html class="t_dark" style="color-scheme: light;">
 - dynamic eval bundle of smallish fixes: 

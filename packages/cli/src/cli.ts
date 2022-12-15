@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import arg from 'arg'
+import arg, { flag } from 'arg'
 import chalk from 'chalk'
 
 import { getOptions } from './utils.js'
@@ -20,6 +20,16 @@ const commandMap = {
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
       await build(options)
+    },
+  },
+
+  update: {
+    shorthands: [],
+    description: `Update all tamagui packages within a monorepo`,
+    flags: {},
+    async run() {
+      const { update } = await import('./update.js')
+      await update()
     },
   },
 }
@@ -86,8 +96,26 @@ async function main() {
     process.exit(0)
   }
 
+  const { _, ...cmdFlags } = arg(definition.flags)
+
+  // help for any command
+  if (cmdFlags['--help']) {
+    console.log(`$ tamagui ${_}
+
+    Flags: ${JSON.stringify(cmdFlags, null, 2)}
+
+`)
+    process.exit(0)
+  }
+
   await definition.run()
   process.exit(0)
+}
+
+function showHelp(definition: CommandDefinition, flags: { '--help'?: boolean }) {
+  if (flags['--help']) {
+    console.log(`$ ${definition}`)
+  }
 }
 
 // async function main() {
