@@ -1098,7 +1098,16 @@ export function spacedChildren({
     return children
   }
   const childrenList = Children.toArray(children)
-  if (childrenList.length <= 1 && !isZStack) {
+  const len = childrenList.length
+  if (len <= 1 && !isZStack) {
+    if (len === 1) {
+      // forward space! only when one component
+      // doesn't make sense to forward space to all children
+      const [onlyChild] = childrenList
+      if (React.isValidElement(onlyChild) && onlyChild.type?.['shouldForwardSpace']) {
+        return React.cloneElement(onlyChild, { space } as any)
+      }
+    }
     return childrenList
   }
   const final: React.ReactNode[] = []
