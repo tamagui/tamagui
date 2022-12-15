@@ -185,7 +185,6 @@ export function createComponent<
         hasThemeInversed?: boolean
         hasProvidedThemeManager?: boolean
         themeShouldReset?: boolean
-        isMounting?: boolean
       }
     )
     stateRef.current ??= {}
@@ -251,21 +250,6 @@ export function createComponent<
     })
     const themeManager = getThemeManager(theme)
     const themeIsNew = getThemeIsNewTheme(theme)
-
-    const shouldSetMounted = needsMount && state.unmounted
-    const setMounted = shouldSetMounted
-      ? () => {
-          // isMounting avoids double-render on mount, not sure why some concurrent react
-          // thing probably but the setState is guaranteed call so no need to call again
-          if (stateRef.current.isMounting) return
-          stateRef.current.isMounting = true
-          startTransition(() => {
-            setStateShallow({
-              unmounted: false,
-            })
-          })
-        }
-      : undefined
 
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
     const languageContext = isRSC ? null : useContext(FontLanguageContext)
@@ -543,7 +527,7 @@ export function createComponent<
       viewProps = nonTamaguiProps
     }
 
-    viewProps.ref = useComposedRefs(hostRef as any, forwardedRef, setMounted)
+    viewProps.ref = useComposedRefs(hostRef as any, forwardedRef)
 
     if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
       Children.toArray(props.children).forEach((item) => {
@@ -561,13 +545,21 @@ export function createComponent<
       })
     }, [setStateShallow])
 
-    if (!isRSC) {
+    if (isWeb) {
       useEffect(() => {
         return () => {
           mouseUps.delete(unPress)
         }
-      }, [unPress])
+      }, [])
     }
+
+    const shouldSetMounted = needsMount && state.unmounted
+    useEffect(() => {
+      if (!shouldSetMounted) return
+      setStateShallow({
+        unmounted: false,
+      })
+    }, [shouldSetMounted])
 
     let styles: Record<string, any>[]
 
