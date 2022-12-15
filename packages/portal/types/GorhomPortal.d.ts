@@ -1,5 +1,4 @@
-import { ReactNode } from 'react';
-import React from 'react';
+import React, { ReactNode } from 'react';
 declare enum ACTIONS {
     REGISTER_HOST = 0,
     DEREGISTER_HOST = 1,
@@ -59,13 +58,14 @@ export interface PortalHostProps {
      * @type string
      */
     name: string;
+    forwardProps?: Record<string, any>;
 }
-export declare const PortalHost: React.MemoExoticComponent<({ name }: PortalHostProps) => JSX.Element>;
+export declare const PortalHost: React.MemoExoticComponent<({ name, forwardProps }: PortalHostProps) => JSX.Element>;
 export interface PortalItemProps {
     /**
      * Portal's key or name to be used as an identifier.
      * @type string
-     * @default nanoid generated unique key.
+     * @default generated unique key.
      */
     name?: string;
     /**

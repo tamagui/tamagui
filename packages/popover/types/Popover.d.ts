@@ -167,7 +167,10 @@ export declare const Popover: React.FC<PopoverProps> & {
         readonly elevation?: SizeTokens | undefined;
     }>> & React.RefAttributes<PopoverCloseElement>>;
     Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
-        Contents: () => React.FunctionComponentElement<any>;
+        Contents: {
+            (props: any): React.FunctionComponentElement<any>;
+            shouldForwardSpace: boolean;
+        };
     };
     ScrollView: React.ForwardRefExoticComponent<ScrollViewProps & React.RefAttributes<ScrollView>>;
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet/types/types").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<View>> & {

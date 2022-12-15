@@ -194,7 +194,9 @@ type DialogContentImplProps = DialogContentFrameProps & Omit<DismissableProps, '
     context: DialogContextValue;
 };
 export declare const DialogSheetContents: {
-    ({ __scopeDialog }: ScopedProps<{}>): JSX.Element;
+    ({ __scopeDialog, name, ...props }: ScopedProps<{
+        name: string;
+    }>): JSX.Element;
     displayName: string;
 };
 declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
@@ -2603,7 +2605,10 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
     };
     Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
-        Contents: () => React.FunctionComponentElement<any>;
+        Contents: {
+            (props: any): React.FunctionComponentElement<any>;
+            shouldForwardSpace: boolean;
+        };
     };
 };
 export { createDialogScope, Dialog, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogDescription, DialogClose, DialogWarningProvider, };
