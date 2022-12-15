@@ -17,7 +17,7 @@ export const AlphaButton = () => {
         scale={0.9}
         $sm={{ dsp: 'none' }}
       >
-        v1.0
+        RC
       </Button>
     </NextLink>
   )
