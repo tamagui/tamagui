@@ -64,6 +64,9 @@ export const HeroBelowContent = memo(() => {
         mb={-8}
         py="$2"
         $sm={{ flexDirection: 'column' }}
+        $gtSm={{
+          px: '$6',
+        }}
       >
         <Section theme={greenTheme} onHoverIn={() => setHovered(0)}>
           <IconStack>

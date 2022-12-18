@@ -1,9 +1,7 @@
 rc.2
 
-- chrome can't select text in dialog
 - #beatgig - popover not closing
 - Adapt.Contents doesn't forward props, if you set `space` above it on `Dialog.Content`
-- chrome dialog - scroll down, then open dialog, then tap trigger causes the entire dialog/backdrop to shift up above window
 - one full on integration native test unlocks:
   - no more manual checks every release
   - auto release on merge to master

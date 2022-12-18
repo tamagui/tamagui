@@ -14,7 +14,7 @@ import {
   YStack,
 } from 'tamagui'
 
-import image from '../public/kanye.jpg'
+import image from '../public/mj.jpg'
 
 export const MediaPlayer = memo(
   ({
@@ -36,7 +36,7 @@ export const MediaPlayer = memo(
           display: 'flex',
           alignItems: 'stretch',
           contain: 'strict',
-          minWidth: 325,
+          minWidth: 330,
           minHeight: 200,
         }}
       >
@@ -52,17 +52,17 @@ export const MediaPlayer = memo(
             {...cardProps}
           >
             <XStack ai="center" p="$4" space="$5">
-              <Square pos="relative" ov="hidden" br="$6" size={90}>
+              <Square pos="relative" ov="hidden" br="$6" size="$8">
                 <Image width={90} height={90} src={image.src} />
               </Square>
 
-              <YStack miw={165} mt={-10} jc="center">
-                <Paragraph fontWeight="700">Spaceship</Paragraph>
+              <YStack als="center" y={-3} miw={165} jc="center">
+                <Paragraph fontWeight="700">P.Y.T. (Pretty Young Thing)</Paragraph>
                 <Paragraph color="$colorHover" size="$3">
-                  Kanye West
+                  Michael Jackson
                 </Paragraph>
                 <Paragraph color="$colorHover" size="$3">
-                  College Dropout
+                  Thriller
                 </Paragraph>
               </YStack>
             </XStack>
