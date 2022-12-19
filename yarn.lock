@@ -4880,8 +4880,8 @@ __metadata:
   resolution: "@starter/ui@workspace:apps/starter/packages/ui"
   dependencies:
     "@starter/config": "*"
-    "@tamagui/build": ^1.0.1-rc.2
-    tamagui: ^1.0.1-rc.2
+    "@tamagui/build": ^1.0.1-rc.3
+    tamagui: ^1.0.1-rc.3
   languageName: unknown
   linkType: soft
 
@@ -5322,7 +5322,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@^1.0.1-rc.2, @tamagui/build@^1.0.1-rc.3, @tamagui/build@workspace:packages/build":
+"@tamagui/build@^1.0.1-rc.3, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -23254,7 +23254,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"tamagui@^1.0.1-rc.2, tamagui@^1.0.1-rc.3, tamagui@workspace:packages/tamagui":
+"tamagui@^1.0.1-rc.3, tamagui@workspace:packages/tamagui":
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:

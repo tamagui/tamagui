@@ -4,10 +4,10 @@
   "main": "tamagui.config.ts",
   "private": true,
   "dependencies": {
-    "@tamagui/animations-react-native": "^1.0.1-rc.2",
-    "@tamagui/font-inter": "^1.0.1-rc.2",
-    "@tamagui/react-native-media-driver": "^1.0.1-rc.2",
-    "@tamagui/shorthands": "^1.0.1-rc.2",
-    "@tamagui/theme-base": "^1.0.1-rc.2"
+    "@tamagui/animations-react-native": "^1.0.1-rc.3",
+    "@tamagui/font-inter": "^1.0.1-rc.3",
+    "@tamagui/react-native-media-driver": "^1.0.1-rc.3",
+    "@tamagui/shorthands": "^1.0.1-rc.3",
+    "@tamagui/theme-base": "^1.0.1-rc.3"
   }
 }

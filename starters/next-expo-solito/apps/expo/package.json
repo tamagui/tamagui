@@ -24,7 +24,7 @@
   "devDependencies": {
     "@babel/core": "^7.17.9",
     "@expo/metro-config": "^0.3.21",
-    "@tamagui/babel-plugin": "1.0.1-rc.2",
+    "@tamagui/babel-plugin": "1.0.1-rc.3",
     "@types/react": "^18.0.15",
     "@types/react-native": "^0.69.5",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
