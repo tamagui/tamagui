@@ -26,6 +26,7 @@ type GeneratedTheme = {
     borderColorHover: Variable<string>;
     borderColorPress: Variable<string>;
     borderColorFocus: Variable<string>;
+    placeholderColor: Variable<string>;
     color1: Variable<string>;
     color2: Variable<string>;
     color3: Variable<string>;

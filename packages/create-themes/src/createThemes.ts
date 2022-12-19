@@ -34,6 +34,7 @@ type GeneratedTheme = {
   borderColorHover: Variable<string>
   borderColorPress: Variable<string>
   borderColorFocus: Variable<string>
+  placeholderColor: Variable<string>
   color1: Variable<string>
   color2: Variable<string>
   color3: Variable<string>
@@ -46,6 +47,10 @@ type GeneratedTheme = {
   color10: Variable<string>
   color11: Variable<string>
   color12: Variable<string>
+}
+
+type SubTheme = {
+  [key in keyof GeneratedTheme]?: Variable<string> | string
 }
 
 type GetSubThemes<Name extends string> =
@@ -115,42 +120,6 @@ export const createThemes = <C extends string>({
   const alternates = [1, 2, 3] as const
   const alts = [1, 2] as const
   type ThemeCreator<A = any> = (str: number, props: ThemeCreatorProps) => A
-
-  interface SubTheme {
-    background: Variable<any> | string
-    backgroundStrong: Variable<any> | string
-    backgroundSoft: Variable<any> | string
-    backgroundHover: Variable<any> | string
-    backgroundPress: Variable<any> | string
-    backgroundFocus: Variable<any> | string
-    backgroundTransparent: Variable<any> | string
-    color: Variable<any> | string
-    colorHover: Variable<any> | string
-    colorPress: Variable<any> | string
-    colorFocus: Variable<any> | string
-    colorTranslucent: Variable<any> | string
-    colorMid: Variable<any> | string
-    shadowColor: Variable<any> | string
-    shadowColorHover: Variable<any> | string
-    shadowColorPress: Variable<any> | string
-    shadowColorFocus: Variable<any> | string
-    borderColor: Variable<any> | string
-    borderColorHover: Variable<any> | string
-    borderColorPress: Variable<any> | string
-    borderColorFocus: Variable<any> | string
-    color1: Variable<any> | string
-    color2: Variable<any> | string
-    color3: Variable<any> | string
-    color4: Variable<any> | string
-    color5: Variable<any> | string
-    color6: Variable<any> | string
-    color7: Variable<any> | string
-    color8: Variable<any> | string
-    color9: Variable<any> | string
-    color10: Variable<any> | string
-    color11: Variable<any> | string
-    color12: Variable<any> | string
-  }
 
   function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = ThemeCreator>(
     name: Name,
@@ -282,6 +251,7 @@ export const createThemes = <C extends string>({
       color10: backgrounds[9],
       color11: backgrounds[10],
       color12: backgrounds[11],
+      placeholderColor: backgrounds[7],
     }
 
     if (isBase) {
