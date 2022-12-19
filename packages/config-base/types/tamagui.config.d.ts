@@ -161,6 +161,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -196,6 +197,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -231,6 +233,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -266,6 +269,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -301,6 +305,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -336,6 +341,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -371,6 +377,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -406,6 +413,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -441,6 +449,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -476,6 +485,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -511,6 +521,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -546,6 +557,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -581,6 +593,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -616,6 +629,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -651,6 +665,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -686,6 +701,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -721,6 +737,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -756,6 +773,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -791,6 +809,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -826,6 +845,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -861,6 +881,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -896,6 +917,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -931,6 +953,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -966,6 +989,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1001,6 +1025,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1036,6 +1061,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1071,6 +1097,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1106,6 +1133,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1141,6 +1169,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1176,6 +1205,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1211,6 +1241,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1246,6 +1277,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1281,6 +1313,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1316,6 +1349,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1351,6 +1385,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1386,6 +1421,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1421,6 +1457,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1456,6 +1493,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1491,6 +1529,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1526,6 +1565,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1561,6 +1601,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1596,6 +1637,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1631,6 +1673,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1666,6 +1709,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1701,6 +1745,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1736,6 +1781,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1771,6 +1817,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1806,6 +1853,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1841,6 +1889,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1876,6 +1925,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1911,6 +1961,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1946,6 +1997,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -1981,6 +2033,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2016,6 +2069,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2051,6 +2105,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2086,6 +2141,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2121,6 +2177,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2156,6 +2213,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2191,6 +2249,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2226,6 +2285,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2261,6 +2321,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2296,6 +2357,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2331,6 +2393,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2366,6 +2429,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2401,6 +2465,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2436,6 +2501,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2471,6 +2537,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2506,6 +2573,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2541,6 +2609,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2576,6 +2645,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2611,6 +2681,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2646,6 +2717,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2681,6 +2753,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2716,6 +2789,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2751,6 +2825,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2786,6 +2861,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2821,6 +2897,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2856,6 +2933,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2891,6 +2969,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2926,6 +3005,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2961,6 +3041,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -2996,6 +3077,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3031,6 +3113,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3066,6 +3149,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3101,6 +3185,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3136,6 +3221,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3171,6 +3257,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3206,6 +3293,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3241,6 +3329,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3276,6 +3365,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3311,6 +3401,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3346,6 +3437,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3381,6 +3473,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3416,6 +3509,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3451,6 +3545,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3486,6 +3581,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3521,6 +3617,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3556,6 +3653,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3591,6 +3689,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3626,6 +3725,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3661,6 +3761,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3696,6 +3797,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3731,6 +3833,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3766,6 +3869,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3801,6 +3905,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3836,6 +3941,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3871,6 +3977,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3906,6 +4013,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3941,6 +4049,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -3976,6 +4085,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4011,6 +4121,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4046,6 +4157,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4081,6 +4193,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4116,6 +4229,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4151,6 +4265,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4186,6 +4301,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4221,6 +4337,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4256,6 +4373,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4291,6 +4409,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4326,6 +4445,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4361,6 +4481,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4396,6 +4517,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4431,6 +4553,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4466,6 +4589,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4501,6 +4625,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4536,6 +4661,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4571,6 +4697,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4606,6 +4733,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4641,6 +4769,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4676,6 +4805,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4711,6 +4841,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4746,6 +4877,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4781,6 +4913,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4816,6 +4949,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4851,6 +4985,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4886,6 +5021,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4921,6 +5057,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4956,6 +5093,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -4991,6 +5129,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5026,6 +5165,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5061,6 +5201,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5096,6 +5237,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5131,6 +5273,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5166,6 +5309,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5201,6 +5345,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5236,6 +5381,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5271,6 +5417,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5306,6 +5453,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5341,6 +5489,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5376,6 +5525,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5411,6 +5561,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5446,6 +5597,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5481,6 +5633,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5516,6 +5669,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5551,6 +5705,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5586,6 +5741,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5621,6 +5777,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5656,6 +5813,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5691,6 +5849,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5726,6 +5885,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5761,6 +5921,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5796,6 +5957,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5831,6 +5993,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5866,6 +6029,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5901,6 +6065,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5936,6 +6101,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -5971,6 +6137,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -6006,6 +6173,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -6041,6 +6209,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
@@ -6076,6 +6245,7 @@ export declare const config: {
             borderColorHover: import("@tamagui/core").Variable<string>;
             borderColorPress: import("@tamagui/core").Variable<string>;
             borderColorFocus: import("@tamagui/core").Variable<string>;
+            placeholderColor: import("@tamagui/core").Variable<string>;
             color1: import("@tamagui/core").Variable<string>;
             color2: import("@tamagui/core").Variable<string>;
             color3: import("@tamagui/core").Variable<string>;
