@@ -30,26 +30,24 @@ export function HomeScreen() {
 
         <Separator />
         <Paragraph ta="center">
-          Tamagui is made by{' '}
-          <Anchor href="https://twitter.com/natebirdman" target="_blank">
-            Nate Wienert
+          Made by{' '}
+          <Anchor color="$color12" href="https://twitter.com/natebirdman" target="_blank">
+            @natebirdman
           </Anchor>
-          , give it a star{' '}
-          <Anchor href="https://github.com/tamagui/tamagui" target="_blank" rel="noreferrer">
-            on Github
+          ,{' '}
+          <Anchor
+            color="$color12"
+            href="https://github.com/tamagui/tamagui"
+            target="_blank"
+            rel="noreferrer"
+          >
+            give it a ⭐️
           </Anchor>
-          .
         </Paragraph>
       </YStack>
 
       <XStack>
         <Button {...linkProps}>Link to user</Button>
-      </XStack>
-
-      <XStack $sm={{ fd: 'column' }} space>
-        <MyComponent w={50} h={50} blue />
-        <MyComponent w={50} h={50} blue />
-        <MyComponent w={50} h={50} blue />
       </XStack>
 
       <SheetDemo />
