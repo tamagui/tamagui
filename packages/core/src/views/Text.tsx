@@ -19,14 +19,19 @@ export const Text = createComponent<TextProps, TextView, TextPropsBase>({
   isText: true,
 
   defaultProps: {
+    // @ts-ignore
     display: 'flex',
     fontFamily: 'System',
-    ...(isWeb && {
-      display: 'inline',
-      boxSizing: 'border-box',
-      wordWrap: 'break-word',
-      margin: 0,
-    }),
+    ...(isWeb
+      ? {
+          display: 'inline',
+          boxSizing: 'border-box',
+          wordWrap: 'break-word',
+          margin: 0,
+        }
+      : {
+          suppressHighlighting: true,
+        }),
   },
 
   inlineWhenUnflattened: new Set(['fontFamily']),
