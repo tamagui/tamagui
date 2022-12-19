@@ -57,7 +57,7 @@ export const MediaPlayer = memo(
               </Square>
 
               <YStack als="center" y={-3} miw={165} jc="center">
-                <Paragraph fontWeight="700">P.Y.T. (Pretty Young Thing)</Paragraph>
+                <Paragraph fontWeight="700">Billie Jean</Paragraph>
                 <Paragraph color="$colorHover" size="$3">
                   Michael Jackson
                 </Paragraph>
