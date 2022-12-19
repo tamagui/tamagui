@@ -445,6 +445,7 @@ const getToken = (
       }
     }
   }
+
   if (hasSet) {
     if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
       // eslint-disable-next-line no-console
@@ -452,6 +453,7 @@ const getToken = (
     }
     return resolveVariableValue(key, valOrVar, resolveAs)
   }
+
   if (process.env.NODE_ENV === 'development') {
     if (value && value[0] === '$') {
       // eslint-disable-next-line no-console

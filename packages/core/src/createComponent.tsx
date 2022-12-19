@@ -292,7 +292,7 @@ export function createComponent<
         noClassNames,
         dynamicStylesInline: noClassNames,
         hasTextAncestor,
-        resolveVariablesAs: 'value',
+        resolveVariablesAs: 'auto',
         isExiting,
       },
       null,
