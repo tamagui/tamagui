@@ -393,14 +393,14 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         dangerouslySetInnerHTML?: {
             __html: string;
         } | undefined;
-        animation?: import("@tamagui/core").AnimationProp | undefined;
+        animation?: import("@tamagui/core").AnimationProp | null | undefined; /**
+         * adjust internal space relative to icon size
+         */
         animateOnly?: string[] | undefined;
         debug?: boolean | "verbose" | undefined;
         disabled?: boolean | undefined;
         className?: string | undefined;
-        themeShallow?: boolean | undefined; /**
-         * subtitle
-         */
+        themeShallow?: boolean | undefined;
         id?: string | undefined;
         tag?: string | undefined;
         componentName?: string | undefined;

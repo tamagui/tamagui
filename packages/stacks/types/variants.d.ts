@@ -85,7 +85,7 @@ export declare const elevate: {
         dangerouslySetInnerHTML?: import("@tamagui/core").Variable<any> | {
             __html: string;
         } | undefined;
-        animation?: import("@tamagui/core").Variable<any> | import("@tamagui/core").AnimationProp | undefined;
+        animation?: import("@tamagui/core").Variable<any> | import("@tamagui/core").AnimationProp | null | undefined;
         animateOnly?: import("@tamagui/core").Variable<any> | string[] | undefined;
         children?: any;
         debug?: import("@tamagui/core").Variable<any> | import("@tamagui/core").DebugProp | undefined;

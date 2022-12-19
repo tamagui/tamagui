@@ -46,7 +46,7 @@ export type TamaguiComponentPropsBase = {
   spaceDirection?: SpaceDirection
   separator?: ReactNode
   dangerouslySetInnerHTML?: { __html: string }
-  animation?: AnimationProp
+  animation?: AnimationProp | null
   animateOnly?: string[]
   children?: any | any[]
   debug?: DebugProp

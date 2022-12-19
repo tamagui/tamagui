@@ -20,7 +20,7 @@ export type TamaguiComponentPropsBase = {
     dangerouslySetInnerHTML?: {
         __html: string;
     };
-    animation?: AnimationProp;
+    animation?: AnimationProp | null;
     animateOnly?: string[];
     children?: any | any[];
     debug?: DebugProp;
