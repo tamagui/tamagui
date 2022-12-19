@@ -39,11 +39,31 @@ export function HomeScreen() {
           <Input placeholder="Search..." />
         </Theme> */}
 
-        <XStack debug="verbose" space="$5" $sm={{ fd: 'column', bc: 'green', space: '$1' }}>
+        {/* <Square
+          size={100}
+          bc="transparent"
+          pressStyle={{
+            backgroundColor: 'blue',
+          }}
+        >
+        </Square> */}
+
+        <Paragraph
+          w={100}
+          h={100}
+          bc="green"
+          pressStyle={{
+            bc: 'transparent',
+          }}
+        >
+          Hi
+        </Paragraph>
+
+        {/* <XStack debug="verbose" space="$5" $sm={{ fd: 'column', bc: 'green', space: '$1' }}>
           <Circle bc="red" size="$5" />
           <Circle bc="red" size="$5" />
           <Circle bc="red" size="$5" />
-        </XStack>
+        </XStack> */}
 
         {/* fix media + space */}
         {/*

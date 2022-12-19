@@ -1,4 +1,4 @@
-rc.2
+rc.3
 
 - #beatgig - popover not closing
 - Adapt.Contents doesn't forward props, if you set `space` above it on `Dialog.Content`
@@ -179,3 +179,11 @@ inbox
     - Zeego uses 
     - @react-native-menu/menu
     - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-android-menu/index.android.tsx
+
+
+---
+
+quotes
+
+#stream Kezlar — Today at 3:09 PM
+yeah tamagui was definitely a rabbit hole, but once it clicked, it's incredible to use. Took me ~2weeks to migrate from native base but was 500% worth it
