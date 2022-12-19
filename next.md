@@ -1,5 +1,6 @@
 rc.3
 
+- animation not changing (between two values or on off?) have to change `key`
 - #beatgig - popover not closing
 - Adapt.Contents doesn't forward props, if you set `space` above it on `Dialog.Content`
 - one full on integration native test unlocks:
