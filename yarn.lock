@@ -4867,11 +4867,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@starter/config@workspace:apps/starter/packages/config"
   dependencies:
-    "@tamagui/animations-react-native": 1.0.1-rc.3.1
-    "@tamagui/font-inter": 1.0.1-rc.3.1
-    "@tamagui/react-native-media-driver": 1.0.1-rc.3.1
-    "@tamagui/shorthands": 1.0.1-rc.3.1
-    "@tamagui/theme-base": 1.0.1-rc.3.1
+    "@tamagui/animations-react-native": 1.0.1-rc.4
+    "@tamagui/font-inter": 1.0.1-rc.4
+    "@tamagui/react-native-media-driver": 1.0.1-rc.4
+    "@tamagui/shorthands": 1.0.1-rc.4
+    "@tamagui/theme-base": 1.0.1-rc.4
   languageName: unknown
   linkType: soft
 
@@ -5244,7 +5244,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/animations-react-native@^1.0.1-rc.4, @tamagui/animations-react-native@workspace:packages/animations-react-native":
+"@tamagui/animations-react-native@1.0.1-rc.4, @tamagui/animations-react-native@^1.0.1-rc.4, @tamagui/animations-react-native@workspace:packages/animations-react-native":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-react-native@workspace:packages/animations-react-native"
   dependencies:
@@ -5260,20 +5260,6 @@ __metadata:
     react-native: "*"
   languageName: unknown
   linkType: soft
-
-"@tamagui/animations-react-native@npm:1.0.1-rc.3.1":
-  version: 1.0.1-rc.3.1
-  resolution: "@tamagui/animations-react-native@npm:1.0.1-rc.3.1"
-  dependencies:
-    "@tamagui/core": ^1.0.1-rc.3.1
-    "@tamagui/use-presence": ^1.0.1-rc.3.1
-  peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
-    react-native: "*"
-  checksum: 88d7c5a8fa6a0ff2c4880677533c5f1e233f9027168b117e51490a679b95ffbdfdb07806491f017b59da341969382c89c828b5439a38bc4de256786adc8c282c
-  languageName: node
-  linkType: hard
 
 "@tamagui/animations-reanimated@^1.0.1-rc.4, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
   version: 0.0.0-use.local
@@ -5321,7 +5307,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/babel-plugin@^1.0.1-rc.4, @tamagui/babel-plugin@workspace:packages/babel-plugin":
+"@tamagui/babel-plugin@1.0.1-rc.4, @tamagui/babel-plugin@^1.0.1-rc.4, @tamagui/babel-plugin@workspace:packages/babel-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/babel-plugin@workspace:packages/babel-plugin"
   dependencies:
@@ -5335,20 +5321,6 @@ __metadata:
     "@tamagui/static": ^1.0.1-rc.4
   languageName: unknown
   linkType: soft
-
-"@tamagui/babel-plugin@npm:1.0.1-rc.3.1":
-  version: 1.0.1-rc.3.1
-  resolution: "@tamagui/babel-plugin@npm:1.0.1-rc.3.1"
-  dependencies:
-    "@babel/generator": ^7.19.6
-    "@babel/helper-plugin-utils": ^7.19.0
-    "@babel/template": 7.18.10
-    "@babel/traverse": ^7.19.6
-    "@tamagui/simple-hash": ^1.0.1-rc.3.1
-    "@tamagui/static": ^1.0.1-rc.3.1
-  checksum: 801a72d5b00d25bce5459526e4789ae2daa123bf641e86859be8bd5715d2cfc424b1c8473d5f00f5bccad4981462d5ef8f589b7f2b62973452fa32d3ebfa1b11
-  languageName: node
-  linkType: hard
 
 "@tamagui/build@^1.0.1-rc.3.1, @tamagui/build@^1.0.1-rc.4, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
@@ -5489,20 +5461,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/colors@^1.0.1-rc.3.1, @tamagui/colors@^1.0.1-rc.4, @tamagui/colors@workspace:packages/colors":
+"@tamagui/colors@1.0.1-rc.4, @tamagui/colors@^1.0.1-rc.4, @tamagui/colors@workspace:packages/colors":
   version: 0.0.0-use.local
   resolution: "@tamagui/colors@workspace:packages/colors"
   dependencies:
     "@tamagui/build": ^1.0.1-rc.4
   languageName: unknown
   linkType: soft
-
-"@tamagui/colors@npm:1.0.1-rc.3.1":
-  version: 1.0.1-rc.3.1
-  resolution: "@tamagui/colors@npm:1.0.1-rc.3.1"
-  checksum: cb35aa8321242fb498e0d443fef6ee21ff82bdea0a965a24c1ecf6a60faa8e2240042ca9c44fa39aee16d58b6fe8fa9f05c73a2b1e1142b1910c0823a8bb8f91
-  languageName: node
-  linkType: hard
 
 "@tamagui/compose-refs@^1.0.1-rc.4, @tamagui/compose-refs@workspace:packages/compose-refs":
   version: 0.0.0-use.local
@@ -5574,7 +5539,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core@^1.0.1-rc.3.1, @tamagui/core@^1.0.1-rc.4, @tamagui/core@workspace:packages/core":
+"@tamagui/core@^1.0.1-rc.4, @tamagui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
@@ -5615,7 +5580,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/create-themes@^1.0.1-rc.3.1, @tamagui/create-themes@^1.0.1-rc.4, @tamagui/create-themes@workspace:packages/create-themes":
+"@tamagui/create-themes@^1.0.1-rc.4, @tamagui/create-themes@workspace:packages/create-themes":
   version: 0.0.0-use.local
   resolution: "@tamagui/create-themes@workspace:packages/create-themes"
   dependencies:
@@ -5746,7 +5711,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/font-inter@^1.0.1-rc.4, @tamagui/font-inter@workspace:packages/font-inter":
+"@tamagui/font-inter@1.0.1-rc.4, @tamagui/font-inter@^1.0.1-rc.4, @tamagui/font-inter@workspace:packages/font-inter":
   version: 0.0.0-use.local
   resolution: "@tamagui/font-inter@workspace:packages/font-inter"
   dependencies:
@@ -5755,15 +5720,6 @@ __metadata:
     subset-font: ^1.6.1
   languageName: unknown
   linkType: soft
-
-"@tamagui/font-inter@npm:1.0.1-rc.3.1":
-  version: 1.0.1-rc.3.1
-  resolution: "@tamagui/font-inter@npm:1.0.1-rc.3.1"
-  dependencies:
-    "@tamagui/core": ^1.0.1-rc.3.1
-  checksum: f42b8b4d5bdfa18ad9cd3107c8c84301df153d74ead4e281299a4f3ed0728eb7a83815e683047f0fe4154edef6db770bc93ef8417f5c187451740bc26fa9ac7d
-  languageName: node
-  linkType: hard
 
 "@tamagui/font-silkscreen@^1.0.1-rc.4, @tamagui/font-silkscreen@workspace:packages/font-silkscreen":
   version: 0.0.0-use.local
@@ -5955,7 +5911,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/lucide-icons@^1.0.1-rc.4, @tamagui/lucide-icons@workspace:packages/lucide-icons":
+"@tamagui/lucide-icons@1.0.1-rc.4, @tamagui/lucide-icons@^1.0.1-rc.4, @tamagui/lucide-icons@workspace:packages/lucide-icons":
   version: 0.0.0-use.local
   resolution: "@tamagui/lucide-icons@workspace:packages/lucide-icons"
   dependencies:
@@ -5979,18 +5935,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/lucide-icons@npm:1.0.1-rc.3.1":
-  version: 1.0.1-rc.3.1
-  resolution: "@tamagui/lucide-icons@npm:1.0.1-rc.3.1"
-  dependencies:
-    "@tamagui/core": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
-    react-native-svg: ">=12"
-  checksum: b2a98521ab36a4462a1bc1721a1f6a6473389acacb598e70a8a392d1e11262fc71a34517f24ee99f21712c8b04455514b35fc52a233991a5179f72f9773ee27b
-  languageName: node
-  linkType: hard
-
 "@tamagui/menu@^1.0.1-rc.4, @tamagui/menu@workspace:packages/menu":
   version: 0.0.0-use.local
   resolution: "@tamagui/menu@workspace:packages/menu"
@@ -6006,7 +5950,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/next-plugin@^1.0.1-rc.4, @tamagui/next-plugin@workspace:packages/next-plugin":
+"@tamagui/next-plugin@1.0.1-rc.4, @tamagui/next-plugin@^1.0.1-rc.4, @tamagui/next-plugin@workspace:packages/next-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/next-plugin@workspace:packages/next-plugin"
   dependencies:
@@ -6034,34 +5978,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/next-plugin@npm:1.0.1-rc.3.1":
-  version: 1.0.1-rc.3.1
-  resolution: "@tamagui/next-plugin@npm:1.0.1-rc.3.1"
-  dependencies:
-    "@babel/preset-react": ^7.18.6
-    "@tamagui/proxy-worm": ^1.0.1-rc.3.1
-    "@tamagui/react-native-svg": ^1.0.1-rc.3.1
-    "@tamagui/static": ^1.0.1-rc.3.1
-    babel-loader: ^8.2.5
-    browserslist: ^4.21.1
-    css-loader: ^5.2.4
-    css-minimizer-webpack-plugin: ^4.2.2
-    esbuild-loader: ^2.19.0
-    esm-resolve: ^1.0.8
-    file-loader: ^6.2.0
-    html-inline-css-webpack-plugin: ^1.11.1
-    html-webpack-plugin: ^5.5.0
-    mini-css-extract-plugin: ^2.7.1
-    tamagui-loader: ^1.0.1-rc.3.1
-    thread-loader: ^3.0.4
-    url-loader: ^4.1.1
-  peerDependencies:
-    next: 13.0.6
-  checksum: 9a25112544048b948f20fe97f07c35b24202fa24403b90169e6073e25688e7fa366d53df0fa739ec48df4e5dfe2a3484ca3679b3c28439301ba64b3d86b46ab9
-  languageName: node
-  linkType: hard
-
-"@tamagui/next-theme@^1.0.1-rc.4, @tamagui/next-theme@workspace:packages/next-theme":
+"@tamagui/next-theme@1.0.1-rc.4, @tamagui/next-theme@^1.0.1-rc.4, @tamagui/next-theme@workspace:packages/next-theme":
   version: 0.0.0-use.local
   resolution: "@tamagui/next-theme@workspace:packages/next-theme"
   dependencies:
@@ -6072,17 +5989,6 @@ __metadata:
     react: ^18.2.0
   languageName: unknown
   linkType: soft
-
-"@tamagui/next-theme@npm:1.0.1-rc.3.1":
-  version: 1.0.1-rc.3.1
-  resolution: "@tamagui/next-theme@npm:1.0.1-rc.3.1"
-  dependencies:
-    "@tamagui/use-event": ^1.0.1-rc.3.1
-  peerDependencies:
-    react: ">=18"
-  checksum: 68a228838e63bed0af71807192d0e340cbb903a9b59fd0e926cb9565f5093c047c955a162fd8eb635d502b6768620675b9fb62bde6920c99c907cc5a55aa5fb1
-  languageName: node
-  linkType: hard
 
 "@tamagui/polyfill-dev@^1.0.1-rc.4, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
   version: 0.0.0-use.local
@@ -6184,7 +6090,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/proxy-worm@^1.0.1-rc.3.1, @tamagui/proxy-worm@^1.0.1-rc.4, @tamagui/proxy-worm@workspace:packages/proxy-worm":
+"@tamagui/proxy-worm@^1.0.1-rc.4, @tamagui/proxy-worm@workspace:packages/proxy-worm":
   version: 0.0.0-use.local
   resolution: "@tamagui/proxy-worm@workspace:packages/proxy-worm"
   languageName: unknown
@@ -6199,7 +6105,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/react-native-media-driver@^1.0.1-rc.4, @tamagui/react-native-media-driver@workspace:packages/react-native-media-driver":
+"@tamagui/react-native-media-driver@1.0.1-rc.4, @tamagui/react-native-media-driver@^1.0.1-rc.4, @tamagui/react-native-media-driver@workspace:packages/react-native-media-driver":
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-media-driver@workspace:packages/react-native-media-driver"
   dependencies:
@@ -6212,19 +6118,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/react-native-media-driver@npm:1.0.1-rc.3.1":
-  version: 1.0.1-rc.3.1
-  resolution: "@tamagui/react-native-media-driver@npm:1.0.1-rc.3.1"
-  dependencies:
-    "@tamagui/core": ^1.0.1-rc.3.1
-    css-mediaquery: ^0.1.2
-  peerDependencies:
-    react-native: "*"
-  checksum: 7a5e73d666d445ad8d24586bb669c64e4ba2664cca853e81ea9e1664ec35fe7dc4a76d7dbf67bc9d6f1225f9a0fbcbd783556778692f9223b654631f6401678d
-  languageName: node
-  linkType: hard
-
-"@tamagui/react-native-svg@^1.0.1-rc.3.1, @tamagui/react-native-svg@^1.0.1-rc.4, @tamagui/react-native-svg@workspace:packages/react-native-svg":
+"@tamagui/react-native-svg@^1.0.1-rc.4, @tamagui/react-native-svg@workspace:packages/react-native-svg":
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-svg@workspace:packages/react-native-svg"
   dependencies:
@@ -6410,7 +6304,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/shorthands@^1.0.1-rc.4, @tamagui/shorthands@workspace:packages/shorthands":
+"@tamagui/shorthands@1.0.1-rc.4, @tamagui/shorthands@^1.0.1-rc.4, @tamagui/shorthands@workspace:packages/shorthands":
   version: 0.0.0-use.local
   resolution: "@tamagui/shorthands@workspace:packages/shorthands"
   dependencies:
@@ -6419,14 +6313,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/shorthands@npm:1.0.1-rc.3.1":
-  version: 1.0.1-rc.3.1
-  resolution: "@tamagui/shorthands@npm:1.0.1-rc.3.1"
-  checksum: db9c72c9582dcb7d248fd42885cabfff08079bc472c7ecf411a48ca4eef768b9e8950247bf486f2d1cad04ba2f7f33640d7a4cc26c760c70840faeac911246c2
-  languageName: node
-  linkType: hard
-
-"@tamagui/simple-hash@^1.0.1-rc.3.1, @tamagui/simple-hash@^1.0.1-rc.4, @tamagui/simple-hash@workspace:packages/simple-hash":
+"@tamagui/simple-hash@^1.0.1-rc.4, @tamagui/simple-hash@workspace:packages/simple-hash":
   version: 0.0.0-use.local
   resolution: "@tamagui/simple-hash@workspace:packages/simple-hash"
   dependencies:
@@ -6546,7 +6433,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/static@^1.0.1-rc.3.1, @tamagui/static@^1.0.1-rc.4, @tamagui/static@workspace:packages/static":
+"@tamagui/static@^1.0.1-rc.4, @tamagui/static@workspace:packages/static":
   version: 0.0.0-use.local
   resolution: "@tamagui/static@workspace:packages/static"
   dependencies:
@@ -6656,7 +6543,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/theme-base@^1.0.1-rc.4, @tamagui/theme-base@workspace:packages/theme-base":
+"@tamagui/theme-base@1.0.1-rc.4, @tamagui/theme-base@^1.0.1-rc.4, @tamagui/theme-base@workspace:packages/theme-base":
   version: 0.0.0-use.local
   resolution: "@tamagui/theme-base@workspace:packages/theme-base"
   dependencies:
@@ -6666,17 +6553,6 @@ __metadata:
     "@tamagui/create-themes": ^1.0.1-rc.4
   languageName: unknown
   linkType: soft
-
-"@tamagui/theme-base@npm:1.0.1-rc.3.1":
-  version: 1.0.1-rc.3.1
-  resolution: "@tamagui/theme-base@npm:1.0.1-rc.3.1"
-  dependencies:
-    "@tamagui/colors": ^1.0.1-rc.3.1
-    "@tamagui/core": ^1.0.1-rc.3.1
-    "@tamagui/create-themes": ^1.0.1-rc.3.1
-  checksum: 30a498883092d84768a2b10c4807d8775edba60c06382a64c07a715a706db77b77aa40ec98c63d87e6fa15f3c18e0e9f2afe01a1429d72a0d07b60e993c77424
-  languageName: node
-  linkType: hard
 
 "@tamagui/timer@workspace:packages/timer":
   version: 0.0.0-use.local
@@ -6802,7 +6678,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-event@^1.0.1-rc.3.1, @tamagui/use-event@^1.0.1-rc.4, @tamagui/use-event@workspace:packages/use-event":
+"@tamagui/use-event@^1.0.1-rc.4, @tamagui/use-event@workspace:packages/use-event":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-event@workspace:packages/use-event"
   dependencies:
@@ -6824,7 +6700,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-presence@^1.0.1-rc.3.1, @tamagui/use-presence@^1.0.1-rc.4, @tamagui/use-presence@workspace:packages/use-presence":
+"@tamagui/use-presence@^1.0.1-rc.4, @tamagui/use-presence@workspace:packages/use-presence":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-presence@workspace:packages/use-presence"
   dependencies:
@@ -22894,12 +22770,12 @@ __metadata:
     "@react-navigation/native-stack": ^6.7.0
     "@starter/config": "*"
     "@starter/ui": "*"
-    "@tamagui/animations-react-native": 1.0.1-rc.3.1
-    "@tamagui/colors": 1.0.1-rc.3.1
-    "@tamagui/font-inter": 1.0.1-rc.3.1
-    "@tamagui/lucide-icons": 1.0.1-rc.3.1
-    "@tamagui/shorthands": 1.0.1-rc.3.1
-    "@tamagui/theme-base": 1.0.1-rc.3.1
+    "@tamagui/animations-react-native": 1.0.1-rc.4
+    "@tamagui/colors": 1.0.1-rc.4
+    "@tamagui/font-inter": 1.0.1-rc.4
+    "@tamagui/lucide-icons": 1.0.1-rc.4
+    "@tamagui/shorthands": 1.0.1-rc.4
+    "@tamagui/theme-base": 1.0.1-rc.4
     expo-linking: ^3.2.2
     solito: 2.0.0-canary.4
   languageName: unknown
@@ -22912,7 +22788,7 @@ __metadata:
     "@babel/core": ^7.19.6
     "@babel/runtime": ^7.19.4
     "@expo/metro-config": ^0.3.21
-    "@tamagui/babel-plugin": 1.0.1-rc.3.1
+    "@tamagui/babel-plugin": 1.0.1-rc.4
     "@types/react": ^18.0.15
     "@types/react-native": ^0.69.2
     app: "*"
@@ -22944,8 +22820,8 @@ __metadata:
   dependencies:
     "@starter/config": 0.0.0
     "@starter/ui": 0.0.0
-    "@tamagui/next-plugin": 1.0.1-rc.3.1
-    "@tamagui/next-theme": 1.0.1-rc.3.1
+    "@tamagui/next-plugin": 1.0.1-rc.4
+    "@tamagui/next-theme": 1.0.1-rc.4
     "@types/node": ^16.11.9
     app: "*"
     eslint-config-next: ^12.2.4
@@ -23397,7 +23273,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tamagui-loader@^1.0.1-rc.3.1, tamagui-loader@^1.0.1-rc.4, tamagui-loader@workspace:packages/loader":
+"tamagui-loader@^1.0.1-rc.4, tamagui-loader@workspace:packages/loader":
   version: 0.0.0-use.local
   resolution: "tamagui-loader@workspace:packages/loader"
   dependencies:
