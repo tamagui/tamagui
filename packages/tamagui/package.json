@@ -68,8 +68,8 @@
     "@tamagui/visually-hidden": "^1.0.1-rc.3.1",
     "expo-linear-gradient": "^11.4.0",
     "expo-screen-orientation": "^4.3.0",
-    "react": ">=18",
-    "react-dom": ">=18"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "peerDependencies": {
     "react-native-web": "*"

@@ -130,7 +130,10 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           safeResolves([
             ['@tamagui/core/reset.css', '@tamagui/core/reset.css'],
             ['@tamagui/core', '@tamagui/core'],
-            ['react-native-svg', '@tamagui/react-native-svg'],
+            // web specific light react-native-svg, optional
+            ...(tamaguiOptions.useReactNativeWebLite
+              ? ([['react-native-svg', '@tamagui/react-native-svg']] as any)
+              : []),
             // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
             ['react/jsx-runtime.js', 'react/jsx-runtime'],
             ['react/jsx-runtime', 'react/jsx-runtime'],

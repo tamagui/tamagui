@@ -5166,11 +5166,11 @@ __metadata:
     "@tamagui/polyfill-dev": ^1.0.1-rc.3.1
     "@tamagui/stacks": ^1.0.1-rc.3.1
     "@tamagui/use-controllable-state": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5205,12 +5205,12 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-rc.3.1
     "@types/react-dom": ^18.0.3
     "@types/react-native": ^0.69.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5251,12 +5251,12 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
     "@tamagui/use-presence": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5279,9 +5279,9 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
     aria-hidden: ^1.1.3
-    react: ">=18"
+    react: ^18.2.0
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5297,12 +5297,12 @@ __metadata:
     "@tamagui/use-event": ^1.0.1-rc.3.1
     "@types/react-dom": ^18.0.3
     "@types/react-native": ^0.69.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5348,11 +5348,11 @@ __metadata:
     "@tamagui/font-size": ^1.0.1-rc.3.1
     "@tamagui/get-button-sized": ^1.0.1-rc.3.1
     "@tamagui/helpers-tamagui": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5374,12 +5374,12 @@ __metadata:
     "@tamagui/create-context": ^1.0.1-rc.3.1
     "@tamagui/stacks": ^1.0.1-rc.3.1
     "@types/react-native": ^0.69.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5453,11 +5453,11 @@ __metadata:
     "@tamagui/polyfill-dev": ^1.0.1-rc.3.1
     "@tamagui/stacks": ^1.0.1-rc.3.1
     "@tamagui/use-controllable-state": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5474,9 +5474,9 @@ __metadata:
   resolution: "@tamagui/compose-refs@workspace:packages/compose-refs"
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
-    react: ">=18"
+    react: ^18.2.0
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5512,10 +5512,10 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@types/react": ^18.0.15
-    react: ">=18"
+    react: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5559,13 +5559,13 @@ __metadata:
     csstype: ^3.0.10
     esbuild: ^0.15.11
     normalize-css-color: ^1.0.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     typescript: ^4.7.4
     vitest: ^0.25.7
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5574,9 +5574,9 @@ __metadata:
   resolution: "@tamagui/create-context@workspace:packages/create-context"
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
-    react: ">=18"
+    react: ^18.2.0
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5607,12 +5607,12 @@ __metadata:
     "@tamagui/sheet": ^1.0.1-rc.3.1
     "@tamagui/slider": ^1.0.1-rc.3.1
     "@tamagui/stacks": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     tamagui: ^1.0.1-rc.3.1
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5639,12 +5639,12 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-rc.3.1
     "@types/react-dom": ^18.0.3
     "@types/react-native": ^0.69.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5658,11 +5658,11 @@ __metadata:
     "@tamagui/compose-refs": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
     "@tamagui/use-event": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5679,11 +5679,11 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/compose-refs": ^1.0.1-rc.3.1
     "@tamagui/use-event": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5694,11 +5694,11 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/compose-refs": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5736,11 +5736,11 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5751,7 +5751,9 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
     "@types/react": ^18.0.15
-    react: ">=18"
+    react: ^18.2.0
+  peerDependencies:
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5762,7 +5764,7 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
     "@types/react": ^18.0.15
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5782,11 +5784,11 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
     "@tamagui/helpers": ^1.0.1-rc.3.1
-    react: ">=18"
+    react: ^18.2.0
     react-native: "*"
     vitest: ^0.25.7
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5806,10 +5808,10 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
-    react: ">=18"
+    react: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5843,14 +5845,14 @@ __metadata:
     expo-splash-screen: ~0.16.2
     expo-status-bar: ^1.4.0
     metro-runtime: ^0.67.0
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
     react-native-gesture-handler: ^2.5.0
     react-native-reanimated: ^2.12.0
     react-native-safe-area-context: ^4.3.1
     react-native-screens: ^3.15.0
-    react-native-svg: ">=12"
+    react-native-svg: ^12.1.0
     react-native-web: ^0.18.3
     sandbox-ui: ^1.0.1-rc.3.1
     solito: 2.0.0-canary.4
@@ -5870,12 +5872,12 @@ __metadata:
     "@tamagui/get-font-sized": ^1.0.1-rc.3.1
     "@tamagui/text": ^1.0.1-rc.3.1
     "@types/react-native": ^0.69.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5888,11 +5890,11 @@ __metadata:
     "@tamagui/core": ^1.0.1-rc.3.1
     "@tamagui/font-size": ^1.0.1-rc.3.1
     "@tamagui/helpers-tamagui": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5901,11 +5903,11 @@ __metadata:
   resolution: "@tamagui/logo@workspace:packages/logo"
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5922,10 +5924,14 @@ __metadata:
     prettier: ^2.6.1
     prettier-plugin-import-sort: ^0.0.7
     prop-types: ^15.7.2
-    react: ">=18"
-    react-dom: ">=18"
-    react-native-svg: ">=12"
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-native-svg: ^12.1.0
     uppercamelcase: ^3.0.0
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-native-svg: ^12.1.0
   languageName: unknown
   linkType: soft
 
@@ -5936,11 +5942,11 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
     "@tamagui/popover": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -5978,9 +5984,9 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/use-event": ^1.0.1-rc.3.1
-    react: ">=18"
+    react: ^18.2.0
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6013,12 +6019,12 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-rc.3.1
     "@types/react-dom": ^18.0.3
     "@types/react-native": ^0.69.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -6036,12 +6042,12 @@ __metadata:
     "@tamagui/stacks": ^1.0.1-rc.3.1
     "@tamagui/use-controllable-state": ^1.0.1-rc.3.1
     "@types/react-native": ^0.69.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -6054,12 +6060,12 @@ __metadata:
     "@tamagui/core": ^1.0.1-rc.3.1
     "@tamagui/stacks": ^1.0.1-rc.3.1
     "@types/react-native": ^0.69.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -6074,12 +6080,12 @@ __metadata:
     "@tamagui/create-context": ^1.0.1-rc.3.1
     "@tamagui/stacks": ^1.0.1-rc.3.1
     "@types/react-native": ^0.69.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -6126,7 +6132,7 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@types/react": ^18.0.15
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6136,7 +6142,7 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@types/react": ^18.0.15
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6145,10 +6151,10 @@ __metadata:
   resolution: "@tamagui/remove-scroll@workspace:packages/remove-scroll"
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
-    react: ">=18"
+    react: ^18.2.0
     react-remove-scroll: ^2.5.5
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6180,8 +6186,8 @@ __metadata:
     file-loader: ^6.2.0
     html-webpack-plugin: ^5.5.0
     mini-css-extract-plugin: ^2.7.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native-reanimated: ^2.12.0
     react-native-web: ^0.18.3
     react-refresh: ^0.14.0
@@ -6206,11 +6212,11 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6237,12 +6243,12 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-rc.3.1
     "@tamagui/use-event": ^1.0.1-rc.3.1
     "@types/react-native": ^0.69.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -6253,11 +6259,11 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6268,9 +6274,9 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
     "@tamagui/stacks": ^1.0.1-rc.3.1
-    react: ">=18"
+    react: ^18.2.0
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6288,12 +6294,12 @@ __metadata:
     "@tamagui/stacks": ^1.0.1-rc.3.1
     "@tamagui/use-constant": ^1.0.1-rc.3.1
     "@tamagui/use-controllable-state": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -6355,8 +6361,8 @@ __metadata:
     parse-numeric-range: ^1.3.0
     preact: ^10.11.0
     preact-render-to-string: ^5.2.4
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
     react-native-web-lite: ^1.0.1-rc.3.1
     reading-time: 1.3.0
@@ -6387,12 +6393,12 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-rc.3.1
     "@tamagui/use-direction": ^1.0.1-rc.3.1
     "@types/react-native": ^0.69.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -6404,11 +6410,11 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
     "@tamagui/get-button-sized": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6472,8 +6478,8 @@ __metadata:
     invariant: ^2.2.4
     lodash: ^4.17.21
     null-loader: ^4.0.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native-web: ^0.18.3
     react-native-web-internals: ^1.0.1-rc.3.1
     react-native-web-lite: ^1.0.1-rc.3.1
@@ -6501,12 +6507,12 @@ __metadata:
     "@tamagui/stacks": ^1.0.1-rc.3.1
     "@tamagui/use-controllable-state": ^1.0.1-rc.3.1
     "@types/react-native": ^0.69.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -6528,12 +6534,12 @@ __metadata:
     "@tamagui/core": ^1.0.1-rc.3.1
     "@tamagui/get-font-sized": ^1.0.1-rc.3.1
     "@tamagui/helpers-tamagui": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     vitest: ^0.25.7
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6574,12 +6580,12 @@ __metadata:
     "@tamagui/visually-hidden": ^1.0.1-rc.3.1
     "@types/react-dom": ^18.0.3
     "@types/react-native": ^0.69.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -6601,12 +6607,12 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-rc.3.1
     "@types/react-dom": ^18.0.3
     "@types/react-native": ^0.69.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -6616,9 +6622,9 @@ __metadata:
   resolution: "@tamagui/use-constant@workspace:packages/use-constant"
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
-    react: ">=18"
+    react: ^18.2.0
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6628,11 +6634,11 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/use-event": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6641,9 +6647,9 @@ __metadata:
   resolution: "@tamagui/use-debounce@workspace:packages/use-debounce"
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
-    react: ">=18"
+    react: ^18.2.0
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6653,10 +6659,10 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@types/react": ^18.0.15
-    react: ">=18"
+    react: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -6666,9 +6672,9 @@ __metadata:
   resolution: "@tamagui/use-direction@workspace:packages/use-direction"
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
-    react: ">=18"
+    react: ^18.2.0
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6677,9 +6683,9 @@ __metadata:
   resolution: "@tamagui/use-event@workspace:packages/use-event"
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
-    react: ">=18"
+    react: ^18.2.0
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6688,9 +6694,9 @@ __metadata:
   resolution: "@tamagui/use-force-update@workspace:packages/use-force-update"
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
-    react: ">=18"
+    react: ^18.2.0
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6700,9 +6706,9 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
-    react: ">=18"
+    react: ^18.2.0
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -6713,10 +6719,10 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/constants": ^1.0.1-rc.3.1
     "@types/react": ^18.0.15
-    react: ">=18"
+    react: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ">=18"
+    react: ^18.2.0
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -6727,11 +6733,11 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-rc.3.1
     "@tamagui/core": ^1.0.1-rc.3.1
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -9140,7 +9146,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"boolbase@npm:^1.0.0":
+"boolbase@npm:^1.0.0, boolbase@npm:~1.0.0":
   version: 1.0.0
   resolution: "boolbase@npm:1.0.0"
   checksum: 3e25c80ef626c3a3487c73dbfc70ac322ec830666c9ad915d11b701142fab25ec1e63eff2c450c74347acfd2de854ccde865cd79ef4db1683f7c7b046ea43bb0
@@ -10721,6 +10727,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"css-select@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "css-select@npm:2.1.0"
+  dependencies:
+    boolbase: ^1.0.0
+    css-what: ^3.2.1
+    domutils: ^1.7.0
+    nth-check: ^1.0.2
+  checksum: 0c4099910f2411e2a9103cf92ea6a4ad738b57da75bcf73d39ef2c14a00ef36e5f16cb863211c901320618b24ace74da6333442d82995cafd5040077307de462
+  languageName: node
+  linkType: hard
+
 "css-select@npm:^4.1.3, css-select@npm:^4.2.0":
   version: 4.3.0
   resolution: "css-select@npm:4.3.0"
@@ -10747,13 +10765,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-tree@npm:^1.1.2, css-tree@npm:^1.1.3":
+"css-tree@npm:^1.0.0-alpha.39, css-tree@npm:^1.1.2, css-tree@npm:^1.1.3":
   version: 1.1.3
   resolution: "css-tree@npm:1.1.3"
   dependencies:
     mdn-data: 2.0.14
     source-map: ^0.6.1
   checksum: 79f9b81803991b6977b7fcb1588799270438274d89066ce08f117f5cdb5e20019b446d766c61506dd772c839df84caa16042d6076f20c97187f5abe3b50e7d1f
+  languageName: node
+  linkType: hard
+
+"css-what@npm:^3.2.1":
+  version: 3.4.2
+  resolution: "css-what@npm:3.4.2"
+  checksum: 26bb5ec3ae718393d418016365c849fa14bd0de408c735dea3ddf58146b6cc54f3b336fb4afd31d95c06ca79583acbcdfec7ee93d31ff5c1a697df135b38dfeb
   languageName: node
   linkType: hard
 
@@ -11405,6 +11430,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dom-serializer@npm:0":
+  version: 0.2.2
+  resolution: "dom-serializer@npm:0.2.2"
+  dependencies:
+    domelementtype: ^2.0.1
+    entities: ^2.0.0
+  checksum: 376344893e4feccab649a14ca1a46473e9961f40fe62479ea692d4fee4d9df1c00ca8654811a79c1ca7b020096987e1ca4fb4d7f8bae32c1db800a680a0e5d5e
+  languageName: node
+  linkType: hard
+
 "dom-serializer@npm:^1.0.1":
   version: 1.4.1
   resolution: "dom-serializer@npm:1.4.1"
@@ -11424,6 +11459,13 @@ __metadata:
     domhandler: ^5.0.2
     entities: ^4.2.0
   checksum: cd1810544fd8cdfbd51fa2c0c1128ec3a13ba92f14e61b7650b5de421b88205fd2e3f0cc6ace82f13334114addb90ed1c2f23074a51770a8e9c1273acbc7f3e6
+  languageName: node
+  linkType: hard
+
+"domelementtype@npm:1":
+  version: 1.3.1
+  resolution: "domelementtype@npm:1.3.1"
+  checksum: 7893da40218ae2106ec6ffc146b17f203487a52f5228b032ea7aa470e41dfe03e1bd762d0ee0139e792195efda765434b04b43cddcf63207b098f6ae44b36ad6
   languageName: node
   linkType: hard
 
@@ -11449,6 +11491,16 @@ __metadata:
   dependencies:
     domelementtype: ^2.3.0
   checksum: 0f58f4a6af63e6f3a4320aa446d28b5790a009018707bce2859dcb1d21144c7876482b5188395a188dfa974238c019e0a1e610d2fc269a12b2c192ea2b0b131c
+  languageName: node
+  linkType: hard
+
+"domutils@npm:^1.7.0":
+  version: 1.7.0
+  resolution: "domutils@npm:1.7.0"
+  dependencies:
+    dom-serializer: 0
+    domelementtype: 1
+  checksum: f60a725b1f73c1ae82f4894b691601ecc6ecb68320d87923ac3633137627c7865725af813ae5d188ad3954283853bcf46779eb50304ec5d5354044569fcefd2b
   languageName: node
   linkType: hard
 
@@ -18810,6 +18862,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nth-check@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "nth-check@npm:1.0.2"
+  dependencies:
+    boolbase: ~1.0.0
+  checksum: 59e115fdd75b971d0030f42ada3aac23898d4c03aa13371fa8b3339d23461d1badf3fde5aad251fb956aaa75c0a3b9bfcd07c08a34a83b4f9dadfdce1d19337c
+  languageName: node
+  linkType: hard
+
 "nth-check@npm:^2.0.1":
   version: 2.1.1
   resolution: "nth-check@npm:2.1.1"
@@ -20802,16 +20863,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-svg@npm:12.4.4":
-  version: 12.4.4
-  resolution: "react-native-svg@npm:12.4.4"
+"react-native-svg@npm:12.1.0":
+  version: 12.1.0
+  resolution: "react-native-svg@npm:12.1.0"
   dependencies:
-    css-select: ^5.1.0
-    css-tree: ^1.1.3
+    css-select: ^2.1.0
+    css-tree: ^1.0.0-alpha.39
   peerDependencies:
     react: "*"
     react-native: ">=0.50.0"
-  checksum: a98d9180dc3434e9993b5028e351c2aa5004fa3b1f5131e5f263fd43a95a43d330f0d435bc7ea498784bdbfcf6ece0e777cdd2bb568cd1337c30623a5aa02fd7
+  checksum: 79fc368b7263a5ff64410c20aca61b99c4a03226d57757e86b7fc6d22c9db09051daacd9032203d439e803d2123fc28e2ac2428173247174b14dd612c311b1e4
   languageName: node
   linkType: hard
 
@@ -20824,12 +20885,12 @@ __metadata:
     "@tamagui/react-native-use-responder-events": ^1.0.1-rc.3.1
     "@tamagui/simple-hash": ^1.0.1-rc.3.1
     normalize-css-color: ^1.0.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     styleq: ^0.1.2
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -20840,13 +20901,13 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.3.1
     invariant: ^2.2.4
     normalize-css-color: ^1.0.2
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native-web-internals: ^1.0.1-rc.3.1
     styleq: ^0.1.2
   peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -22741,13 +22802,13 @@ __metadata:
     expo-splash-screen: ~0.16.2
     expo-status-bar: ^1.4.0
     expo-updates: ^0.14.3
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
     react-native-gesture-handler: ^2.5.0
     react-native-safe-area-context: ^4.3.1
     react-native-screens: ^3.15.0
-    react-native-svg: ">=12"
+    react-native-svg: ^12.1.0
     react-native-web: ^0.18.3
     typescript: ^4.7.4
   languageName: unknown
@@ -23303,8 +23364,8 @@ __metadata:
     "@types/react": ^18.0.15
     expo-linear-gradient: ^11.4.0
     expo-screen-orientation: ^4.3.0
-    react: ">=18"
-    react-dom: ">=18"
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-native-web: ^0.18.3
   peerDependencies:
     react-native-web: "*"

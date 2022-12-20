@@ -68,7 +68,7 @@
     "fix": "yarn manypkg fix"
   },
   "resolutions": {
-    "react-native-svg": "12.4.4",
+    "react-native-svg": "12.1.0",
     "body-parser": "1.20.0",
     "react-native-reanimated": "2.12.0",
     "react-native-gesture-handler": "2.5.0",
