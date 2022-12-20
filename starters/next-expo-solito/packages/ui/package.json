@@ -17,7 +17,11 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@my/config": "*",
+    "@tamagui/animations-react-native": "^1.0.1-rc.3.1",
+    "@tamagui/font-inter": "^1.0.1-rc.3.1",
+    "@tamagui/react-native-media-driver": "^1.0.1-rc.3.1",
+    "@tamagui/shorthands": "^1.0.1-rc.3.1",
+    "@tamagui/theme-base": "^1.0.1-rc.3.1",
     "tamagui": "^1.0.1-rc.3.1"
   },
   "devDependencies": {

@@ -19,21 +19,22 @@ console.log(`
 
 Welcome to Tamagui!
 
-We've set up a few things for you. Note the "excludeReactNativeWebExports" setting
-in next.config.js which omits these from the bundle:
+We've set up a few things for you. We set the "excludeReactNativeWebExports"
+setting in next.config.js, which omits these from the bundle:
 
 - Switch, ProgressBar, Picker, CheckBox, Touchable
 
-Add these to save more, if you don't need them:
+To save more, you can add more that you may not need, like:
 
 - AnimatedFlatList, FlatList, SectionList, VirtualizedList, VirtualizedSectionList
 
-Even better, enable "useReactNativeWebLite" to avoid excludeReactNativeWebExports and
-get tree-shaking and concurrent mode support.
+Even better, enable "useReactNativeWebLite" to you can remove the
+excludeReactNativeWebExports setting altogether, and get tree-shaking and
+concurrent mode support.
 
-🐤
+🐣
 
-You can remove this log in next.config.js.
+Remove this log in next.config.js.
 
 `)
 
@@ -75,7 +76,6 @@ module.exports = function () {
         'expo-linking',
         'expo-constants',
         'expo-modules-core',
-        '@my/config',
       ],
     },
   }

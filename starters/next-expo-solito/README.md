@@ -1,7 +1,7 @@
 # Tamagui + Solito + Next + Expo Monorepo
 
 ```sh
-npx create-tamagui-app@latest myapp
+npm create tamagui-app@latest
 ```
 
 ## 🔦 About
@@ -38,12 +38,14 @@ You can add other folders inside of `packages/` if you know what you're doing an
 
 - Install dependencies: `yarn`
 
-- Run watch in a separate terminal: `yarn watch`
-
 - Next.js local dev: `yarn web`
-  - Runs `yarn next`
+
+To run with optimizer on in dev mode (just for testing, it's faster to leave it off): `yarn web:extract`. To build for production `yarn:prod`.
+
+To see debug output to verify the compiler, add `// debug` as a comment to the top of any file.
+
 - Expo local dev: `yarn native`
-  - Runs `expo start`
+
 
 ## Developing
 
@@ -91,6 +93,5 @@ withTM([
   'expo-constants',
   'expo-modules-core',
   'expo-crypto', // <-- add this or any other native module
-  '@my/config',
 ])
 ```
