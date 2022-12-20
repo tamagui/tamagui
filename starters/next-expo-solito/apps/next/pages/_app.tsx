@@ -9,14 +9,7 @@ import React, { useMemo } from 'react'
 import type { SolitoAppProps } from 'solito'
 import 'raf/polyfill'
 
-function MyApp({ Component, pageProps }: SolitoAppProps) {
-  const [theme, setTheme] = useRootTheme()
-
-  const contents = useMemo(() => {
-    // @ts-ignore
-    return <Component {...pageProps} />
-  }, [Component, pageProps])
-
+function MyApp({ Component, pageProps }: SolitoAppProps) 
   return (
     <>
       <Head>
@@ -24,12 +17,22 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
         <meta name="description" content="Tamagui, Solito, Expo & Next.js" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NextThemeProvider onChangeTheme={setTheme}>
-        <Provider disableRootThemeClass defaultTheme={theme}>
-          {contents}
-        </Provider>
-      </NextThemeProvider>
+      <ThemeProvider>
+        <Component {...pageProps} />
+      </ThemeProvider>
     </>
+  )
+}
+
+function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setTheme] = useRootTheme()
+
+  return (
+    <NextThemeProvider onChangeTheme={setTheme}>
+      <Provider disableRootThemeClass defaultTheme={theme}>
+        {children}
+      </Provider>
+    </NextThemeProvider>
   )
 }
 
