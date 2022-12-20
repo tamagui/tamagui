@@ -5957,6 +5957,7 @@ __metadata:
     "@babel/preset-react": ^7.18.6
     "@tamagui/build": ^1.0.1-rc.4
     "@tamagui/proxy-worm": ^1.0.1-rc.4
+    "@tamagui/react-native-svg": ^1.0.1-rc.4
     "@tamagui/static": ^1.0.1-rc.4
     babel-loader: ^8.2.5
     browserslist: ^4.21.1
@@ -5969,7 +5970,6 @@ __metadata:
     html-webpack-plugin: ^5.5.0
     mini-css-extract-plugin: ^2.7.1
     next: ^13.0.6
-    svgs: ^4.2.0
     tamagui-loader: ^1.0.1-rc.4
     thread-loader: ^3.0.4
     url-loader: ^4.1.1
@@ -21869,13 +21869,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rip-out@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "rip-out@npm:1.0.0"
-  checksum: 664bf97ce38e65700198da2ca04ff9a5eef9bbf7c3b35d66f29b84be7c9ae246acdbec0a1a3ffb5ec3e1542a40ff372d7b06adfdd4f106f08a583a7db701cb83
-  languageName: node
-  linkType: hard
-
 "rollup@npm:^3.7.0":
   version: 3.7.4
   resolution: "rollup@npm:3.7.4"
@@ -23270,22 +23263,6 @@ __metadata:
   bin:
     svgo: bin/svgo
   checksum: b92f71a8541468ffd0b81b8cdb36b1e242eea320bf3c1a9b2c8809945853e9d8c80c19744267eb91cabf06ae9d5fff3592d677df85a31be4ed59ff78534fa420
-  languageName: node
-  linkType: hard
-
-"svgs@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "svgs@npm:4.2.0"
-  dependencies:
-    prop-types: ^15.7.2
-    rip-out: ^1.0.0
-  peerDependencies:
-    react: "*"
-    react-native-svg: "*"
-  peerDependenciesMeta:
-    react-native-svg:
-      optional: true
-  checksum: c17ebb53ca072afcf9b4a5a7cbd6a82cd26b28043c229d6e74f67247eaeca2e20b89dc50d5de251d6f4bb0cc279ca81a41be31a944ccb950547bc5b5d74bc447
   languageName: node
   linkType: hard
 
