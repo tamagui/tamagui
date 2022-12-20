@@ -16,7 +16,7 @@ type AnimationsConfig<A extends Object = any> = {
   [Key in keyof A]: AnimationConfig
 }
 
-type AnimationConfig = Partial<
+type SpringConfig = { type?: 'spring' } & Partial<
   Pick<
     Animated.SpringAnimationConfig,
     | 'delay'
@@ -31,6 +31,10 @@ type AnimationConfig = Partial<
     | 'velocity'
   >
 >
+
+type TimingConfig = { type: 'timing' } & Partial<Animated.TimingAnimationConfig>
+
+type AnimationConfig = SpringConfig | TimingConfig
 
 const animatedStyleKey = {
   transform: true,
