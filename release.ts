@@ -130,8 +130,8 @@ async function run() {
 
     let version = curVersion
 
-    if (!skipVersion) {
-      const answer = isCI
+    const answer =
+      isCI || skipVersion
         ? { version: nextVersion }
         : await prompts({
             type: 'text',
@@ -140,36 +140,37 @@ async function run() {
             initial: nextVersion,
           })
 
-      version = answer.version
+    version = answer.version
 
-      console.log('install and build')
+    console.log('install and build')
 
+    await Promise.all([
+      //
+      spawnify(`yarn install`),
+      checkDistDirs(),
+      spawnify(`yarn build`),
+    ])
+
+    console.log('run checks')
+
+    if (!skipTest) {
       await Promise.all([
         //
-        spawnify(`yarn install`),
-        checkDistDirs(),
-        spawnify(`yarn build`),
+        spawnify(`yarn lint`),
+        spawnify(`yarn fix`),
       ])
+      await spawnify(`yarn check`)
+      await spawnify(`yarn test`)
+    }
 
-      console.log('run checks')
-
-      if (!skipTest) {
-        await Promise.all([
-          //
-          spawnify(`yarn lint`),
-          spawnify(`yarn fix`),
-        ])
-        await spawnify(`yarn check`)
-        await spawnify(`yarn test`)
+    if (!dirty) {
+      const out = await exec(`git status --porcelain`)
+      if (out.stdout) {
+        throw new Error(`Has unsaved git changes: ${out.stdout}`)
       }
+    }
 
-      if (!dirty) {
-        const out = await exec(`git status --porcelain`)
-        if (out.stdout) {
-          throw new Error(`Has unsaved git changes: ${out.stdout}`)
-        }
-      }
-
+    if (!skipVersion) {
       await spawnify(
         `yarn lerna version ${version} --ignore-changes --ignore-scripts --yes --no-push --no-git-tag-version`
       )
