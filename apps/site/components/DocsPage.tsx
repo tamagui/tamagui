@@ -2,11 +2,10 @@ import { allDocsRoutes } from '@lib/docsRoutes'
 import NextLink from 'next/link'
 import * as React from 'react'
 import { ScrollView } from 'react-native'
-import { EnsureFlexed, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
+import { EnsureFlexed, Paragraph, Theme, XStack, YStack } from 'tamagui'
 
 import { Container } from './Container'
 import { DocsMenuContents } from './DocsMenuContents'
-import { HeaderIndependent } from './HeaderIndependent'
 import { Link } from './Link'
 import { useDocsMenu } from './useDocsMenu'
 import { useTint } from './useTint'
@@ -108,8 +107,6 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
 
   return (
     <Theme name={tint}>
-      <HeaderIndependent alwaysFloating />
-
       <YStack
         overflow="hidden"
         mx="auto"

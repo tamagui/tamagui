@@ -174,7 +174,7 @@ export const HeroResponsive = memo(() => {
   return (
     <YStack ref={ref} y={0} mt={-80} pos="relative">
       <ContainerLarge pos="relative">
-        <Header />
+        <ResponsiveHeader />
         <Spacer size="$6" $sm={{ size: '$0' }} />
         <YStack h={browserHeight + 80} />
         <XStack
@@ -299,7 +299,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
   )
 })
 
-const Header = memo(() => {
+const ResponsiveHeader = memo(() => {
   return (
     <YStack f={1} space="$3">
       <XStack>

@@ -13,10 +13,12 @@ import {
   VisuallyHidden,
   XStack,
   YStack,
+  isClient,
   useMedia,
 } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
+import { ContainerLarge } from './Container'
 import { DocsMenuContents } from './DocsMenuContents'
 import { GithubIcon } from './GithubIcon'
 import { HeaderProps } from './HeaderProps'
@@ -25,7 +27,52 @@ import { ThemeSearchButtonGroup } from './ThemeSearchButtonGroup'
 import { useDocsMenu } from './useDocsMenu'
 import { useTint } from './useTint'
 
-export function Header(props: HeaderProps) {
+export function Header() {
+  const [isScrolled, setIsScrolled] = React.useState(false)
+
+  if (isClient) {
+    React.useEffect(() => {
+      const onScroll = () => {
+        setIsScrolled(window.scrollY > 30)
+      }
+      window.addEventListener('scroll', onScroll, { passive: true })
+      return () => {
+        window.removeEventListener('scroll', onScroll)
+      }
+    }, [])
+  }
+
+  return (
+    <>
+      <XStack
+        className={`ease-out all ms200 blur-light ${isScrolled ? 'hover-highlights' : ''}`}
+        bbc="$borderColor"
+        zi={50000}
+        // @ts-ignore
+        pos="fixed"
+        top={0}
+        my={isScrolled ? -2 : 0}
+        left={0}
+        right={0}
+        elevation={isScrolled ? 0 : '$4'}
+        py={isScrolled ? '$0' : '$2'}
+      >
+        <YStack
+          className="all ease-in ms200"
+          o={isScrolled ? 0.9 : 0}
+          fullscreen
+          bc="$background"
+        />
+        <ContainerLarge>
+          <HeaderContents floating />
+        </ContainerLarge>
+      </XStack>
+      <YStack height={54} w="100%" />
+    </>
+  )
+}
+
+export function HeaderContents(props: HeaderProps) {
   const router = useRouter()
   const isHome = router.pathname === '/'
   const isInSubApp = router.pathname.startsWith('/takeout') || router.pathname.startsWith('/studio')

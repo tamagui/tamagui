@@ -1,4 +1,3 @@
-import { HeaderIndependent } from '@components/HeaderIndependent'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
@@ -24,8 +23,6 @@ export default function Community({ frontmatters }) {
         description="Tamagui latest news and discussion."
         pathname="/community"
       />
-
-      <HeaderIndependent />
 
       <Spacer size="$4" />
 

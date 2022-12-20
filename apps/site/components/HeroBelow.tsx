@@ -12,7 +12,7 @@ import { ThemeTint } from './useTint'
 const TitleLink = ({ href, children, ...props }: any) => {
   return (
     <NextLink legacyBehavior passHref href={href}>
-      <H3 cursor="pointer" tag="a" color="$color" size="$6" my="$3">
+      <H3 cursor="pointer" tag="a" color="$color" my="$2">
         <CodeInline
           cursor="pointer"
           fontFamily="$silkscreen"
@@ -21,7 +21,7 @@ const TitleLink = ({ href, children, ...props }: any) => {
             backgroundColor: '$color3',
           }}
           size="$9"
-          fontSize="$7"
+          fontSize="$8"
           ls={0}
           {...props}
         >
@@ -35,11 +35,9 @@ const TitleLink = ({ href, children, ...props }: any) => {
 export const HeroBelow = memo(() => {
   return (
     <>
-      <YStack pos="relative" zi={1000} elevation="$1" py="$9" pb="$10">
-        <ThemeTint>
-          <YStack fullscreen bc="$color3" zi={-1} o={0.33} />
-          <HeroBelowContent />
-        </ThemeTint>
+      <YStack pos="relative" zi={1000} elevation="$1" py="$4" pt="$6" pb="$10">
+        <YStack fullscreen bc="$color3" zi={-1} o={0.33} />
+        <HeroBelowContent />
       </YStack>
     </>
   )
@@ -70,34 +68,34 @@ export const HeroBelowContent = memo(() => {
       >
         <Section theme={greenTheme} onHoverIn={() => setHovered(0)}>
           <IconStack>
-            <Code size={20} color="var(--colorHover)" />
+            <Code size={16} color="var(--color9)" />
           </IconStack>
           <TitleLink href="/docs/core/configuration">Core</TitleLink>
-          <Paragraph size="$4">
-            A lightweight style + design system library for React Native & Web. Themes, responsive
-            styles, <CodeInline>styled()</CodeInline> with variants and a host of features.
+          <Paragraph o={0.65} fow="300" size="$4">
+            A lightweight style + design system library that works across React Native + Web.
+            Themes, responsive/pseudo styles, styled function, variants and more.
           </Paragraph>
         </Section>
 
         <Section theme={purpleTheme} onHoverIn={() => setHovered(1)}>
           <IconStack>
-            <Cpu size={20} color="var(--colorHover)" />
+            <Cpu size={16} color="var(--color9)" />
           </IconStack>
           <TitleLink href="/docs/intro/compiler">Static</TitleLink>
-          <Paragraph size="$4">
-            An <CodeInline>optimizing compiler</CodeInline> for styles both static and inline.
-            Partial evaluation, tree flattening & more. Plugins for Next, Webpack, Vite, Metro.
+          <Paragraph o={0.65} fow="300" size="$4">
+            A compiler that flattens your component tree with partial evaluation, outputs CSS, and
+            other optimizations with plugins for Next, Webpack, Vite, Babel and Metro.
           </Paragraph>
         </Section>
 
         <Section theme={blueTheme} onHoverIn={() => setHovered(2)}>
           <IconStack>
-            <Layers size={20} color="var(--colorHover)" />
+            <Layers size={16} color="var(--color9)" />
           </IconStack>
           <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
-          <Paragraph size="$4">
-            A complete <CodeInline>suite of UI components</CodeInline> built using Core. Composable
-            component APIs, size variance, incredible themes, platform optimized.
+          <Paragraph o={0.65} fow="300" size="$4">
+            UI components built using Core. Multi-component API surface,
+            re-stylable/sizable/themable, adapting to each platform.
           </Paragraph>
         </Section>
       </XStack>

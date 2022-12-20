@@ -21,7 +21,6 @@ import {
 } from 'tamagui'
 
 import { Frontmatter } from '../frontmatter'
-import { HeaderIndependent } from './HeaderIndependent'
 import { useTint } from './useTint'
 
 export type BlogPost = {
@@ -112,8 +111,6 @@ export function BlogSlugPage(props: BlogPost) {
 
   return (
     <>
-      <HeaderIndependent disableNew />
-
       <BlogArticleHeader {...props} />
 
       <Container>

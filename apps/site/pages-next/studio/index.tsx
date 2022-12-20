@@ -1,10 +1,8 @@
 import { useThemeSetting } from '@tamagui/next-theme'
 import Head from 'next/head'
-import React from 'react'
 import { H1, Spacer, YStack, useComposedRefs } from 'tamagui'
 
 import { ContainerXL } from '../../components/Container'
-import { HeaderIndependent } from '../../components/HeaderIndependent'
 import { useHoverGlow } from '../../components/HoverGlow'
 import { TitleAndMetaTags } from '../../components/TitleAndMetaTags'
 
@@ -12,8 +10,6 @@ export default function StudioPage() {
   return (
     <>
       <TitleAndMetaTags title="Tamagui Studio" description="Color and theme studio." />
-
-      <HeaderIndependent showExtra />
 
       <Head>
         <link href="/fonts/inter-takeout.css" rel="stylesheet" />

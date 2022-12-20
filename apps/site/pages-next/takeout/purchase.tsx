@@ -2,14 +2,13 @@
 // import '@tamagui/font-inter/css/200.css'
 // import '@tamagui/font-inter/css/900.css'
 
-import { HeaderIndependent } from '@components/HeaderIndependent'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { CheckCircle, XCircle } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { GetStaticPropsResult } from 'next'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   Button,
   H1,
@@ -81,7 +80,6 @@ export default function TakeoutPurchasePage({ products }: Props) {
       <TitleAndMetaTags title="Tamagui TAKEOUT" description="What's up with Tamagui." />
 
       <YStack bc="$backgroundStrong">
-        <HeaderIndependent />
         <Spacer size="$7" />
 
         <H1

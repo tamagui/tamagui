@@ -1,19 +1,17 @@
-import { HeaderIndependent } from '@components/HeaderIndependent'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { format, parseISO } from 'date-fns'
 import NextLink from 'next/link'
-import { H2, H3, Paragraph, Spacer, XStack, YStack } from 'tamagui'
+import { H2, H3, Paragraph, Spacer, XStack } from 'tamagui'
 
 import { Card } from '../../components/Card'
-import { Container, ContainerLarge } from '../../components/Container'
+import { ContainerLarge } from '../../components/Container'
 
 export default function Blog({ frontmatters }) {
   return (
     <>
       <TitleAndMetaTags title="Blog — Tamagui" description="What's up with Tamagui." />
-      <HeaderIndependent />
       <Spacer size="$7" />
       <H2 als="center" size="$8" theme="alt2" fontFamily="$silkscreen">
         Blog

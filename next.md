@@ -1,5 +1,6 @@
 rc.3
 
+- fix alt themes to be more subtle and go less strong to more strong
 - animation not changing (between two values or on off?) have to change `key`
 - #beatgig - popover not closing
 - Adapt.Contents doesn't forward props, if you set `space` above it on `Dialog.Content`

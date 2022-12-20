@@ -5,7 +5,6 @@ import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from '../components/Container'
-import { HeaderFloating } from '../components/HeaderFloating'
 import { HeroBelow } from '../components/HeroBelow'
 import { HeroExampleAnimations } from '../components/HeroExampleAnimations'
 import { HeroExampleCode } from '../components/HeroExampleCode'
@@ -23,7 +22,6 @@ export default function Home({ animationCode, compilationExamples }) {
   return (
     <>
       <HomeGlow />
-      <HeaderFloating alwaysFloating />
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <TintSection index={0} p={0}>
         <Hero />

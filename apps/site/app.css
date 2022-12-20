@@ -284,6 +284,19 @@ iframe {
   backdrop-filter: blur(400px);
 }
 
+.blur-light {
+  backdrop-filter: blur(2px);
+}
+
+.hover-highlights > * {
+  opacity: 0.95;
+  transition: all ease-in 150ms;
+}
+
+.hover-highlights:hover > * {
+  opacity: 1;
+}
+
 .bg-dot-grid {
   contain: paint;
   background-position: center center;

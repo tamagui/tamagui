@@ -3,7 +3,6 @@
 
 // import '@takeout/font-noto-emoji/css/300.css'
 
-import { HeaderIndependent } from '@components/HeaderIndependent'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { createNotoFont } from '@takeout/font-noto-emoji'
 import { SwitchDemo } from '@tamagui/demos'
@@ -66,8 +65,6 @@ export default function TakeoutPage() {
       </Head>
 
       <YStack>
-        <HeaderIndependent />
-
         <YStack
           o={0.45}
           pos="absolute"

@@ -1,4 +1,3 @@
-import { HeaderIndependent } from '@components/HeaderIndependent'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
@@ -12,7 +11,6 @@ export default function Blog({ frontmatters }) {
   return (
     <>
       <TitleAndMetaTags title="Blog — Tamagui" description="What's up with Tamagui." />
-      <HeaderIndependent />
       <ContainerLarge mt="$6" mb="$7" space="$2">
         <YStack space="$8">
           {frontmatters.map((frontmatter) => (

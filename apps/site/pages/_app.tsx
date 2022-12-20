@@ -10,6 +10,7 @@ import { useRouter } from 'next/router'
 import { Suspense, startTransition, useMemo } from 'react'
 import { TamaguiProvider } from 'tamagui'
 
+import { Header } from '../components/Header'
 import { SearchProvider } from '../components/Search'
 import config from '../tamagui.config'
 
@@ -30,15 +31,7 @@ if (typeof navigator !== 'undefined') {
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
 
-  // memo to avoid re-render on dark/light change
-  const contents = useMemo(() => {
-    return (
-      <SearchProvider>
-        <ContentInner {...props} />
-      </SearchProvider>
-    )
-  }, [props])
-
+  // useMemo below to avoid re-render on dark/light change
   return (
     <>
       <NextThemeProvider
@@ -54,7 +47,14 @@ export default function App(props: AppProps) {
           disableRootThemeClass
           defaultTheme={theme}
         >
-          <Suspense fallback={null}>{contents}</Suspense>
+          <SearchProvider>
+            <Header />
+            <Suspense fallback={null}>
+              {useMemo(() => {
+                return <ContentInner {...props} />
+              }, [props])}
+            </Suspense>
+          </SearchProvider>
         </TamaguiProvider>
       </NextThemeProvider>
     </>
