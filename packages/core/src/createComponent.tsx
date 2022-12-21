@@ -128,7 +128,6 @@ export function createComponent<
   })()
 
   const defaultComponentClassName = `is_${staticConfig.componentName}`
-  let defaultNativeStyle: any
   let tamaguiDefaultProps: any
   let defaultTag: string | undefined
 
@@ -565,12 +564,11 @@ export function createComponent<
 
     if (isStringElement && shouldAvoidClasses && !shouldForcePseudo) {
       styles = {
-        ...defaultNativeStyle,
         ...(animationStyles ?? splitStylesStyle),
         ...medias,
       }
     } else {
-      styles = [isWeb ? null : defaultNativeStyle, animationStyles ?? splitStylesStyle, medias]
+      styles = [animationStyles ?? splitStylesStyle, medias]
 
       // ugly but for now...
       if (shouldForcePseudo) {
@@ -867,7 +865,7 @@ export function createComponent<
         if (typeof window !== 'undefined') {
           // prettier-ignore
           // eslint-disable-next-line no-console
-          console.log({ state, shouldProvideThemeManager, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, defaultNativeStyle, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
+          console.log({ state, shouldProvideThemeManager, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
         }
         // eslint-disable-next-line no-console
         console.groupEnd()
@@ -958,20 +956,12 @@ export function createComponent<
       ...restProps,
     })
 
-    defaultNativeStyle = {}
-
-    const validStyles = staticConfig.validStyles || stylePropsView
-
     // split - keep variables on props to be processed using theme values at runtime (native)
     if (!isWeb) {
       for (const key in staticConfig.defaultProps) {
         const val = staticConfig.defaultProps[key]
         if (validPseudoKeys[key]) continue
-        if ((typeof val === 'string' && val[0] === '$') || !validStyles[key]) {
-          defaults[key] = val
-        } else {
-          defaultNativeStyle[key] = val
-        }
+        defaults[key] = val
       }
     }
 
@@ -983,7 +973,7 @@ export function createComponent<
       if (process.env.IS_STATIC !== 'is_static') {
         // prettier-ignore
         // eslint-disable-next-line no-console
-        console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, { staticConfig, tamaguiDefaultProps, defaultNativeStyle, defaults, defaultPropsIn, defaultPropsKeyOrder: Object.keys(staticConfig.defaultProps), defaultPropsInKeyOrder: Object.keys(defaultPropsIn).map((k) => [k, defaultPropsIn[k]]), ourProps, ourClassNames, defaultsClassnames, defaultTag, noClassNames, })
+        console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, { staticConfig, tamaguiDefaultProps, defaults, defaultPropsIn, defaultPropsKeyOrder: Object.keys(staticConfig.defaultProps), defaultPropsInKeyOrder: Object.keys(defaultPropsIn).map((k) => [k, defaultPropsIn[k]]), ourProps, ourClassNames, defaultsClassnames, defaultTag, noClassNames, })
       }
     }
   })
