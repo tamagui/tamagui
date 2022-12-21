@@ -66,8 +66,8 @@
     "@tamagui/use-force-update": "^1.0.1-rc.4.1",
     "@tamagui/use-window-dimensions": "^1.0.1-rc.4.1",
     "@tamagui/visually-hidden": "^1.0.1-rc.4.1",
-    "expo-linear-gradient": "^11.4.0",
-    "expo-screen-orientation": "^4.3.0",
+    "expo-linear-gradient": "^12.0.1",
+    "expo-screen-orientation": "^5.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

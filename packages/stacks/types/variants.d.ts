@@ -39,6 +39,18 @@ export declare const elevate: {
         onTouchEnd?: import("@tamagui/core").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onTouchCancel?: import("@tamagui/core").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onTouchEndCapture?: import("@tamagui/core").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onPointerEnter?: import("@tamagui/core").Variable<any> | ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerEnterCapture?: import("@tamagui/core").Variable<any> | ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerLeave?: import("@tamagui/core").Variable<any> | ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerLeaveCapture?: import("@tamagui/core").Variable<any> | ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerMove?: import("@tamagui/core").Variable<any> | ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerMoveCapture?: import("@tamagui/core").Variable<any> | ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerCancel?: import("@tamagui/core").Variable<any> | ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerCancelCapture?: import("@tamagui/core").Variable<any> | ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerDown?: import("@tamagui/core").Variable<any> | ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerDownCapture?: import("@tamagui/core").Variable<any> | ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerUp?: import("@tamagui/core").Variable<any> | ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerUpCapture?: import("@tamagui/core").Variable<any> | ((event: import("react-native").PointerEvent) => void) | undefined;
         accessible?: boolean | import("@tamagui/core").Variable<any> | undefined;
         accessibilityActions?: import("@tamagui/core").Variable<any> | readonly Readonly<{
             name: string;
@@ -50,9 +62,11 @@ export declare const elevate: {
         accessibilityHint?: string | import("@tamagui/core").Variable<any> | undefined;
         accessibilityValue?: import("@tamagui/core").Variable<any> | import("react-native").AccessibilityValue | undefined;
         onAccessibilityAction?: import("@tamagui/core").Variable<any> | ((event: import("react-native").AccessibilityActionEvent) => void) | undefined;
+        accessibilityLabelledBy?: string | import("@tamagui/core").Variable<any> | string[] | undefined;
         accessibilityLiveRegion?: "none" | import("@tamagui/core").Variable<any> | "polite" | "assertive" | undefined;
         importantForAccessibility?: "auto" | import("@tamagui/core").Variable<any> | "yes" | "no" | "no-hide-descendants" | undefined;
         accessibilityElementsHidden?: boolean | import("@tamagui/core").Variable<any> | undefined;
+        accessibilityLanguage?: string | import("@tamagui/core").Variable<any> | undefined;
         accessibilityViewIsModal?: boolean | import("@tamagui/core").Variable<any> | undefined;
         onAccessibilityEscape?: import("@tamagui/core").Variable<any> | (() => void) | undefined;
         onAccessibilityTap?: import("@tamagui/core").Variable<any> | (() => void) | undefined;

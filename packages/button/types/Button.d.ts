@@ -137,7 +137,7 @@ export declare const ButtonText: import("@tamagui/core").TamaguiComponent<(Omit<
 } & {
     [x: string]: undefined;
 })>;
-export declare function useButton(props: ButtonProps, { Text }?: {
+export declare function useButton(propsIn: ButtonProps, { Text }?: {
     Text: any;
 }): {
     spaceSize: number;
@@ -180,6 +180,18 @@ export declare function useButton(props: ButtonProps, { Text }?: {
         onTouchEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onTouchCancel?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
         onTouchEndCapture?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onPointerEnter?: ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerEnterCapture?: ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerLeave?: ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerLeaveCapture?: ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerMove?: ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerMoveCapture?: ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerCancel?: ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerCancelCapture?: ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerDown?: ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerDownCapture?: ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerUp?: ((event: import("react-native").PointerEvent) => void) | undefined;
+        onPointerUpCapture?: ((event: import("react-native").PointerEvent) => void) | undefined;
         accessible?: boolean | undefined;
         accessibilityActions?: readonly Readonly<{
             name: string;
@@ -193,9 +205,11 @@ export declare function useButton(props: ButtonProps, { Text }?: {
         accessibilityHint?: string | undefined;
         accessibilityValue?: import("react-native").AccessibilityValue | undefined;
         onAccessibilityAction?: ((event: import("react-native").AccessibilityActionEvent) => void) | undefined;
+        accessibilityLabelledBy?: string | string[] | undefined;
         accessibilityLiveRegion?: "none" | "polite" | "assertive" | undefined;
         importantForAccessibility?: "auto" | "yes" | "no" | "no-hide-descendants" | undefined;
         accessibilityElementsHidden?: boolean | undefined;
+        accessibilityLanguage?: string | undefined;
         accessibilityViewIsModal?: boolean | undefined;
         onAccessibilityEscape?: (() => void) | undefined;
         onAccessibilityTap?: (() => void) | undefined;
@@ -240,7 +254,7 @@ export declare function useButton(props: ButtonProps, { Text }?: {
         id?: string | undefined;
         tag?: string | undefined;
         componentName?: string | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
+        forceStyle?: "focus" | "hover" | "press" | undefined;
         onHoverIn?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onHoverOut?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onPress?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;

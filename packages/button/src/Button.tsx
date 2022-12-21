@@ -119,7 +119,7 @@ export const ButtonText = styled(SizableText, {
 })
 
 export function useButton(
-  props: ButtonProps,
+  propsIn: ButtonProps,
   { Text = ButtonText }: { Text: any } = { Text: ButtonText }
 ) {
   // careful not to desctructure and re-order props, order is important
@@ -144,16 +144,16 @@ export function useButton(
     textAlign,
     textProps,
     ...rest
-  } = props
+  } = propsIn
 
   const isNested = isRSC ? false : useContext(ButtonNestingContext)
-  const mediaActiveProps = useMediaPropsActive(props)
-  const size = mediaActiveProps.size || '$4'
+  const propsActive = useMediaPropsActive(propsIn)
+  const size = propsActive.size || '$4'
   const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = getVariableValue(iconSize) * scaleSpace
-  const contents = wrapChildrenInText(Text, mediaActiveProps)
+  const contents = wrapChildrenInText(Text, propsActive)
   const inner =
     themedIcon || themedIconAfter
       ? spacedChildren({
@@ -162,38 +162,38 @@ export function useButton(
           spaceFlex,
           separator,
           direction:
-            props.flexDirection === 'column' || props.flexDirection === 'column-reverse'
+            propsActive.flexDirection === 'column' || propsActive.flexDirection === 'column-reverse'
               ? 'vertical'
               : 'horizontal',
           children: [themedIcon, contents, themedIconAfter],
         })
       : contents
 
+  const props = {
+    ...(propsActive.disabled && {
+      // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
+      focusable: undefined,
+      // even with tabIndex unset, it will keep focusStyle on web so disable it here
+      focusStyle: {
+        borderColor: '$background',
+      },
+    }),
+    // fixes SSR issue + DOM nesting issue of not allowing button in button
+    ...(!isNested && {
+      tag: 'span',
+    }),
+    ...rest,
+    children: isRSC ? (
+      inner
+    ) : (
+      <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
+    ),
+  }
+
   return {
     spaceSize,
     isNested,
-    props: {
-      ...(props.disabled && {
-        // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
-        focusable: undefined,
-        // even with tabIndex unset, it will keep focusStyle on web so disable it here
-        focusStyle: {
-          borderColor: '$background',
-        },
-      }),
-      // fixes SSR issue + DOM nesting issue of not allowing button in button
-      ...(isNested
-        ? {
-            tag: 'span',
-          }
-        : {}),
-      ...rest,
-      children: isRSC ? (
-        inner
-      ) : (
-        <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
-      ),
-    },
+    props,
   }
 }
 

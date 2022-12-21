@@ -35,45 +35,22 @@ export function HomeScreen() {
           <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
         </YStack>
 
-        {/* <Theme name="blue">
-          <Input placeholder="Search..." />
-        </Theme> */}
-
-        {/* <Square
-          size={100}
-          bc="transparent"
-          pressStyle={{
-            backgroundColor: 'blue',
-          }}
-        >
-        </Square> */}
+        <Button debug="verbose" borderColor="red" borderWidth={10}>
+          hi
+        </Button>
 
         <Paragraph
           w={100}
           h={100}
           bc="green"
+          borderWidth={10}
+          borderColor="red"
           pressStyle={{
             bc: 'transparent',
           }}
         >
           Hi
         </Paragraph>
-
-        {/* <XStack debug="verbose" space="$5" $sm={{ fd: 'column', bc: 'green', space: '$1' }}>
-          <Circle bc="red" size="$5" />
-          <Circle bc="red" size="$5" />
-          <Circle bc="red" size="$5" />
-        </XStack> */}
-
-        {/* fix media + space */}
-        {/*
-        <XStack space>
-          <Square size={50} bc="red" />
-          <Square $sm={{ display: 'none' }} size={50} bc="red" />
-          <Square size={50} bc="red" />
-          <Square display="none" size={50} bc="red" />
-          <Square size={50} bc="red" />
-        </XStack> */}
 
         <YGroup size="$4">
           <ColorSchemeListItem />
