@@ -152,21 +152,25 @@ export function styled<
   return component as StyledComponent
 }
 
+// sanity check types
 // import { Stack } from './views/Stack'
 // const X = styled(Stack, {
 //   variants: {
 //     size: {
 //       '...size': (val) => {
-//         return {}
+//         return {
+//           pointerEvents: 'auto'
+//         }
 //       }
 //     },
 //     disabled: {
 //       true: {
+//         alignContent: 'center',
 //         opacity: 0.5,
 //         pointerEvents: 'none',
 //       },
 //     },
 //   } as const
 // })
-// type variants = GetStyledVariants<typeof X>
+// // type variants = GetStyledVariants<typeof X>
 // const y = <X disabled size="$10" />

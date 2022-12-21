@@ -25,8 +25,7 @@ if (process.env.NODE_ENV === 'test') {
 
 test.beforeAll(async () => {
   $.env.NODE_ENV = 'test'
-
-  test.setTimeout(15 * 60 * 1_000)
+  test.slow()
 
   const dir = join(tmpdir(), `cta-test-${Date.now()}`)
   const tamaguiBin = join(PACKAGE_ROOT, `dist`, `index.js`)
@@ -39,7 +38,7 @@ test.beforeAll(async () => {
 
   cd(`test-app`)
 
-  server = $`yarn web`
+  server = $`yarn web:extract`
 
   await waitPort({
     port: 3000,
@@ -49,13 +48,17 @@ test.beforeAll(async () => {
   // pre-warm
   await fetch(`http://localhost:3000`)
   await sleep(2000)
+  console.log('done')
 })
 
 test.afterAll(async () => {
   await server?.kill()
 })
 
+// TODO run these tests in prod and dev
+
 test(`Loads home screen that opens drawer`, async ({ page }) => {
+  test.slow()
   await page.goto('http://localhost:3000/')
   await expect(page.locator('text=Welcome to Tamagui.')).toBeVisible()
 
@@ -68,6 +71,7 @@ test(`Loads home screen that opens drawer`, async ({ page }) => {
 })
 
 test(`Navigates to user page`, async ({ page }) => {
+  test.slow()
   await page.goto('http://localhost:3000/')
   await expect(page.locator('button[role="link"]:has-text("Link to user")')).toBeVisible()
   await page.locator('button[role="link"]:has-text("Link to user")').click()

@@ -135,7 +135,9 @@ export const Sandbox = () => {
 
           {/* <DialogDemo /> */}
 
-          <Input debug="verbose" placeholder="hello" />
+          <Button>hi</Button>
+
+          {/* <Input debug="verbose" placeholder="hello" /> */}
 
           {/* <>make sure enterStyle works without scale set on defaults</>
           <Square

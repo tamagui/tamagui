@@ -4235,15 +4235,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.25.1":
-  version: 1.28.1
-  resolution: "@playwright/test@npm:1.28.1"
+"@playwright/test@npm:^1.29.0":
+  version: 1.29.0
+  resolution: "@playwright/test@npm:1.29.0"
   dependencies:
     "@types/node": "*"
-    playwright-core: 1.28.1
+    playwright-core: 1.29.0
   bin:
     playwright: cli.js
-  checksum: dc39dfdf848171a6c65fc32a9dbc95162684a4a1e3401dd157d7d6822a065d8dcb96b2484fc3b223baea4da774450fddaeaa6d4d21546d17d45f01884fa8d7c5
+  checksum: ff7bd88c805348b80d28cd4d39ed31a3f2d645c5b87e791e49bf8ca60ec6d3e1db646ed351536d0f8c05902cca940c86f23dc5d37c1acaab994369a2ce2707f6
   languageName: node
   linkType: hard
 
@@ -10515,7 +10515,7 @@ __metadata:
   resolution: "create-tamagui-app@workspace:packages/create-tamagui-app"
   dependencies:
     "@expo/package-manager": ^0.0.50
-    "@playwright/test": ^1.25.1
+    "@playwright/test": ^1.29.0
     "@tamagui/build": ^1.0.1-rc.5
     "@types/async-retry": 1.4.2
     "@types/cross-spawn": ^6.0.2
@@ -10532,7 +10532,7 @@ __metadata:
     esbuild-register: ^3.3.3
     fs-extra: ^10.1.0
     got: 10.7.0
-    playwright: ^1.25.1
+    playwright: ^1.29.0
     prompts: 2.1.0
     rimraf: 3.0.0
     tar: 4.4.10
@@ -19699,23 +19699,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.28.1":
-  version: 1.28.1
-  resolution: "playwright-core@npm:1.28.1"
+"playwright-core@npm:1.29.0":
+  version: 1.29.0
+  resolution: "playwright-core@npm:1.29.0"
   bin:
     playwright: cli.js
-  checksum: 8899e0d65de43ee10fadc171e0d48cd514bb574f3505478700094afa8a6e0dcd888a5c87af22acf31ebad455ada1327028909c42e20b8e25908b6255dc143bf0
+  checksum: 5e4b690b0b449ed27ab7f7d7c9bf778db53e6c6b37a8e7258fb070fe6e96f147ad5d66221a3953c9e4d0b2044b701c493d7a0708d7bdb6486e38a3518f62fdce
   languageName: node
   linkType: hard
 
-"playwright@npm:^1.25.1":
-  version: 1.28.1
-  resolution: "playwright@npm:1.28.1"
+"playwright@npm:^1.29.0":
+  version: 1.29.0
+  resolution: "playwright@npm:1.29.0"
   dependencies:
-    playwright-core: 1.28.1
+    playwright-core: 1.29.0
   bin:
     playwright: cli.js
-  checksum: 97c6fff2835878da856bf1f587ec4cdcbcc9aa61c0efcf592633f6df37eabbb9e59d7a2ef994ec9283338e43ef80e278d6d52fed5f7c29abd0408fac0f69b3ca
+  checksum: e3b7dcefde55e53d62fab26d8c069bf76c93e7a2572272ea4d19e4fb6aa7451d386541faedf1140ba45e3f69f3e37b510492f5433cfbe084d4020d61722e103e
   languageName: node
   linkType: hard
 

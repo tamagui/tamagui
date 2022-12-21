@@ -252,7 +252,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         className?: string | undefined;
         themeShallow?: boolean | undefined;
         id?: string | undefined;
-        tag?: string | undefined;
+        tag: string | undefined;
         componentName?: string | undefined;
         forceStyle?: "focus" | "hover" | "press" | undefined;
         onHoverIn?: import("react").MouseEventHandler<HTMLDivElement> | undefined;

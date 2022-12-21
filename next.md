@@ -11,6 +11,8 @@ rc.3
   - https://discord.com/channels/909986013848412191/1051705315890044958/1052019600197439598
   - https://github.com/ebg1223/t3-tamagui
 - add new sponsors
+  - auto put sponsors in readme:
+    - https://github.com/JamesIves/github-sponsors-readme-action
 - site animate mount seems slow
 - forms demo textarea top padding + shifts on focus
 - play button on mediaplayer in animationsdemo off on mount

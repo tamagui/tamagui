@@ -179,9 +179,7 @@ export function useButton(
       },
     }),
     // fixes SSR issue + DOM nesting issue of not allowing button in button
-    ...(!isNested && {
-      tag: 'span',
-    }),
+    tag: isNested ? 'span' : undefined,
     ...rest,
     children: isRSC ? (
       inner
