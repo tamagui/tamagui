@@ -7,7 +7,8 @@ const { join } = require('path')
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 process.env.TAMAGUI_TARGET = 'web'
 
-const disableExtraction = process.env.NODE_ENV === 'development'
+const disableExtraction =
+  process.env.NODE_ENV === 'development' && process.env.FORCE_EXTRACT !== '1'
 if (disableExtraction) {
   console.log('Disabling static extraction in development mode for better HMR')
 }

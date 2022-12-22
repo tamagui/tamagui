@@ -2,8 +2,11 @@
   "name": "@tamagui/starter",
   "private": true,
   "scripts": {
+    "test": "node -r esbuild-register ../../node_modules/.bin/playwright test integration.test.ts",
+    "test:debug": "yarn test --debug",
     "native": "cd apps/expo && yarn start",
     "web": "cd apps/next && yarn next",
+    "web:extract": "cd apps/next && yarn next",
     "web:prod": "yarn workspace next-app build",
     "web:prod:start": "yarn workspace next-app start",
     "watch": "yarn workspaces foreach -pi run watch",
