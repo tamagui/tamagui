@@ -1,4 +1,5 @@
 import { AddressInfo } from 'net'
+import { join } from 'path'
 
 import chalk from 'chalk'
 import express from 'express'
@@ -12,13 +13,15 @@ import { ResolvedOptions } from './types.js'
 import { closeEvent } from './utils.js'
 
 export const dev = async (options: ResolvedOptions) => {
-  const { default: getPort } = await import('get-port')
   const { root, mode, paths } = options
+
+  process.chdir(process.cwd())
+
   const server = await createServer({
     root,
     server: {
-      open: true,
-      host: options.host,
+      port: options.port,
+      host: options.host || 'localhost',
     },
   })
 
@@ -31,11 +34,6 @@ export const dev = async (options: ResolvedOptions) => {
   ])
 
   const info = server.httpServer?.address() as AddressInfo
-
-  const port = await getPort({
-    port: info.port + 1,
-  })
-
   const app = express()
 
   app.disable('x-powered-by')
@@ -51,8 +49,11 @@ export const dev = async (options: ResolvedOptions) => {
 
   app.use('/', proxy(`${info.address}:${info.port}`))
 
+  // react native port
+  const port = 8081
   app.listen(port)
 
+  // eslint-disable-next-line no-console
   console.log(`Listening on`, chalk.green(`http://localhost:${port}`))
   server.printUrls()
 

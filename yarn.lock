@@ -5387,7 +5387,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/cli@workspace:packages/cli":
+"@tamagui/cli@^1.0.1-rc.5, @tamagui/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@tamagui/cli@workspace:packages/cli"
   dependencies:
@@ -5821,6 +5821,7 @@ __metadata:
     "@rnx-kit/metro-resolver-symlinks": ^0.1.20
     "@tamagui/animations-reanimated": ^1.0.1-rc.5
     "@tamagui/babel-plugin": ^1.0.1-rc.5
+    "@tamagui/cli": ^1.0.1-rc.5
     "@tamagui/colors": ^1.0.1-rc.5
     "@tamagui/config-base": ^1.0.1-rc.5
     "@tamagui/core": ^1.0.1-rc.5

@@ -32,6 +32,38 @@ const commandMap = {
       await update()
     },
   },
+
+  dev: {
+    shorthands: ['d'],
+    description: `Run tamagui vite`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const { dev } = await import('./dev.js')
+      const options = await getOptions({
+        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+      })
+      await dev(options)
+    },
+  },
+
+  studio: {
+    shorthands: ['s'],
+    description: `Studio`,
+    flags: {},
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const { studio } = await import('./studio.js')
+      const options = await getOptions({
+        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+      })
+      await studio(options)
+    },
+  },
 }
 
 type CommandDefinitions = typeof commandMap
@@ -153,13 +185,6 @@ function showHelp(definition: CommandDefinition, flags: { '--help'?: boolean }) 
 //         generateTypes(options),
 //         generateTamgauiConfig(options),
 //       ])
-//       break
-//     }
-
-//     // studio
-//     case 'studio': {
-//       const { studio } = await import('./studio.js')
-//       await studio(options)
 //       break
 //     }
 

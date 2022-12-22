@@ -8,6 +8,7 @@ export type UserOptions = {
 };
 export type ResolvedOptions = {
     root: string;
+    port?: number;
     host?: string;
     mode: 'development' | 'production';
     debug?: UserOptions['debug'];
