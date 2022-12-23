@@ -4,6 +4,7 @@ import { tmpdir } from 'os'
 import { join } from 'path'
 
 import { expect, test } from '@playwright/test'
+import { remove } from 'fs-extra'
 import waitPort from 'wait-port'
 import { $, ProcessPromise, cd, fetch, fs, sleep } from 'zx'
 
@@ -23,11 +24,12 @@ if (process.env.NODE_ENV === 'test') {
   }
 }
 
+const dir = join(tmpdir(), `cta-test-${Date.now()}`)
+
 test.beforeAll(async () => {
   $.env.NODE_ENV = 'test'
   test.slow()
 
-  const dir = join(tmpdir(), `cta-test-${Date.now()}`)
   const tamaguiBin = join(PACKAGE_ROOT, `dist`, `index.js`)
 
   console.log(`Making test app in`, dir)
@@ -53,6 +55,7 @@ test.beforeAll(async () => {
 
 test.afterAll(async () => {
   await server?.kill()
+  await remove(dir)
 })
 
 // TODO run these tests in prod and dev

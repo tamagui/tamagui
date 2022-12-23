@@ -3,9 +3,7 @@ import path, { dirname, join } from 'path'
 
 import type { TamaguiOptions } from '@tamagui/static'
 import browserslist from 'browserslist'
-import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import buildResolver from 'esm-resolve'
-import MiniCSSExtractPlugin from 'mini-css-extract-plugin'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
 import { TamaguiPlugin, shouldExclude as shouldExcludeDefault } from 'tamagui-loader'
@@ -14,7 +12,6 @@ import webpack from 'webpack'
 export type WithTamaguiProps = TamaguiOptions & {
   useReactNativeWebLite: boolean
   disableFontSupport?: boolean
-  enableCSSOptimizations?: boolean
   aliasReactPackages?: boolean
   includeCSSTest?: RegExp | ((path: string) => boolean)
   shouldExtract?: (path: string, projectRoot: string) => boolean | undefined
@@ -87,9 +84,9 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         // automatically compile our given components
         const componentsFullPaths = safeResolves(
           tamaguiOptions.components.map(
-            (moduleName) => [moduleName, moduleName] as [string, string],
+            (moduleName) => [moduleName, moduleName] as [string, string]
           ),
-          true,
+          true
         )
 
         const componentsBaseDirs = componentsFullPaths.map(([_, fullPath]) => {
@@ -103,14 +100,12 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               rootPath = join(rootPath, '..')
             }
           }
-          throw new Error(
-            `Couldn't find package.json in any path above: ${fullPath}`,
-          )
+          throw new Error(`Couldn't find package.json in any path above: ${fullPath}`)
         })
 
         function isInComponentModule(fullPath: string) {
           return componentsBaseDirs.some((componentDir) =>
-            fullPath.startsWith(componentDir),
+            fullPath.startsWith(componentDir)
           )
         }
 
@@ -147,17 +142,14 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             ['@testing-library/react-native', '@tamagui/proxy-worm'],
             ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
             // fix reanimated 3
-            [
-              'react-native/Libraries/Renderer/shims/ReactFabric',
-              '@tamagui/proxy-worm',
-            ],
+            ['react-native/Libraries/Renderer/shims/ReactFabric', '@tamagui/proxy-worm'],
             ...(tamaguiOptions.aliasReactPackages
               ? ([
                   ['react', 'react'],
                   ['react-dom', 'react-dom'],
                 ] as any)
               : []),
-          ]),
+          ])
         )
 
         const alias = {
@@ -183,29 +175,29 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             'process.env.IS_STATIC': '""',
             'process.env.TAMAGUI_TARGET': '"web"',
             __DEV__: JSON.stringify(dev),
-          }),
+          })
         )
 
         const excludeExports = tamaguiOptions.excludeReactNativeWebExports
         if (Array.isArray(excludeExports)) {
           try {
             const regexStr = `react-native-web(-lite)?/.*(${excludeExports.join(
-              '|',
+              '|'
             )}).*js`
             const regex = new RegExp(regexStr)
             // console.log(prefix, 'exclude', regexStr)
             webpackConfig.plugins.push(
               new webpack.NormalModuleReplacementPlugin(
                 regex,
-                resolveEsm('@tamagui/proxy-worm'),
-              ),
+                resolveEsm('@tamagui/proxy-worm')
+              )
             )
           } catch (err) {
             // eslint-disable-next-line no-console
             console.warn(
               `Invalid names provided to excludeReactNativeWebExports: ${excludeExports.join(
-                ', ',
-              )}`,
+                ', '
+              )}`
             )
           }
         }
@@ -221,24 +213,12 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           }
         }
 
-        if (!dev && tamaguiOptions.enableCSSOptimizations) {
-          const cssMin = webpackConfig.optimization.minimizer.find((x) =>
-            x.toString().includes('css-minimizer-plugin'),
-          )
-          if (cssMin) {
-            webpackConfig.optimization.minimizer =
-              webpackConfig.optimization.minimizer.slice(cssMin.index, 1)
-          }
-          webpackConfig.optimization.minimizer.push(new CssMinimizerPlugin())
-        }
-
         /**
          * Server react-native compat
          */
         if (isServer) {
           const externalize = (context: string, request: string) => {
-            const fullPath =
-              request[0] === '.' ? path.join(context, request) : request
+            const fullPath = request[0] === '.' ? path.join(context, request) : request
 
             if (tamaguiOptions.shouldExcludeFromServer) {
               const userRes = tamaguiOptions.shouldExcludeFromServer({
@@ -324,104 +304,86 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           ]
         }
 
-        const cssRules = webpackConfig.module.rules.find(
-          (rule) =>
-            Array.isArray(rule.oneOf) &&
-            rule.oneOf.some(
-              ({ test }) =>
-                typeof test === 'object' &&
-                typeof test.test === 'function' &&
-                test.test('filename.css'),
-            ),
-        ).oneOf
-
         /**
-         * Font Support
+         * Non-server support
          */
-        if (cssRules) {
-          if (!tamaguiOptions.disableFontSupport) {
-            // fonts support
-            cssRules.unshift({
-              test: /\.(woff(2)?|eot|ttf|otf)(\?v=\d+\.\d+\.\d+)?$/,
-              use: [
-                {
-                  loader: require.resolve('url-loader'),
-                  options: {
-                    limit: nextConfig.inlineFontLimit || 1024,
-                    fallback: require.resolve('file-loader'),
-                    publicPath: `${
-                      nextConfig.assetPrefix || ''
-                    }/_next/static/chunks/fonts/`,
-                    outputPath: `${isServer ? '../' : ''}static/chunks/fonts/`,
-                    name: '[name].[ext]',
-                  },
-                },
-              ],
-            })
-          }
+        if (!isServer) {
+          const cssRules = webpackConfig.module.rules.find(
+            (rule) =>
+              Array.isArray(rule.oneOf) &&
+              rule.oneOf.some(
+                ({ test }) =>
+                  typeof test === 'object' &&
+                  typeof test.test === 'function' &&
+                  test.test('filename.css')
+              )
+          ).oneOf
 
           /**
-           * CSS Support
+           * Font Support
            */
-          const cssLoader = getGlobalCssLoader(
-            // @ts-ignore
-            {
-              assetPrefix: options.config.assetPrefix || config.assetPrefix,
-              future: nextConfig.future,
-              experimental: nextConfig.experimental || {},
-              isEdgeRuntime: true,
-              isProduction: !dev,
-              targetWeb: true,
-              isClient: !isServer,
-              isServer,
-              isDevelopment: dev,
-            },
-            // @ts-ignore
-            () => lazyPostCSS(dir, getSupportedBrowsers(dir, dev)),
-            [],
-          )
+          if (cssRules) {
+            if (!tamaguiOptions.disableFontSupport) {
+              // fonts support
+              cssRules.unshift({
+                test: /\.(woff(2)?|eot|ttf|otf)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [
+                  {
+                    loader: require.resolve('url-loader'),
+                    options: {
+                      limit: nextConfig.inlineFontLimit || 1024,
+                      fallback: require.resolve('file-loader'),
+                      publicPath: `${
+                        nextConfig.assetPrefix || ''
+                      }/_next/static/chunks/fonts/`,
+                      outputPath: `${isServer ? '../' : ''}static/chunks/fonts/`,
+                      name: '[name].[ext]',
+                    },
+                  },
+                ],
+              })
+            }
 
-          const cssTest = tamaguiOptions.includeCSSTest ?? /\.tamagui\.css$/
-
-          if (!dev && tamaguiOptions.enableCSSOptimizations) {
-            const postCSSLoader = cssLoader[cssLoader.length - 1]
-            // replace nextjs picky style rules with simple minicssextract
-            cssRules.unshift({
-              test: cssTest,
-              use: [MiniCSSExtractPlugin.loader, 'css-loader', postCSSLoader],
-              sideEffects: true,
-            })
-            webpackConfig.plugins.push(
-              new MiniCSSExtractPlugin({
-                filename: 'static/css/[contenthash].css',
-                ignoreOrder: true,
-              }),
+            /**
+             * CSS Support
+             */
+            const cssLoader = getGlobalCssLoader(
+              // @ts-ignore
+              {
+                assetPrefix: options.config.assetPrefix || config.assetPrefix,
+                future: nextConfig.future,
+                experimental: nextConfig.experimental || {},
+                isEdgeRuntime: true,
+                isProduction: !dev,
+                targetWeb: true,
+                isClient: !isServer,
+                isServer,
+                isDevelopment: dev,
+              },
+              // @ts-ignore
+              () => lazyPostCSS(dir, getSupportedBrowsers(dir, dev)),
+              []
             )
-          } else {
+
             cssRules.unshift({
-              test: cssTest,
+              test: tamaguiOptions.includeCSSTest ?? /\.tamagui\.css$/,
               sideEffects: true,
               use: cssLoader,
             })
           }
-          cssRules.unshift({
-            test: cssTest,
-            sideEffects: true,
-            use: cssLoader,
-          })
-        }
 
-        webpackConfig.plugins.push(
-          new TamaguiPlugin({
-            commonjs: isServer,
-            exclude: (path: string) => {
-              const res = shouldExclude(path, options.dir)
-              // console.log(`shouldExclude`, res, path)
-              return res
-            },
-            ...tamaguiOptions,
-          }),
-        )
+          webpackConfig.plugins.push(
+            new TamaguiPlugin({
+              commonjs: isServer,
+              exclude: (path: string) => {
+                const res = shouldExclude(path, options.dir)
+                // console.log(`shouldExclude`, res, path)
+                return res
+              },
+              ...tamaguiOptions,
+            })
+          )
+        }
 
         if (typeof nextConfig.webpack === 'function') {
           return nextConfig.webpack(webpackConfig, options)
