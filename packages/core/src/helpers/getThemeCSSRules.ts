@@ -1,8 +1,9 @@
+import { simpleHash } from '@tamagui/helpers'
+
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
 import { Variable, variableToString } from '../createVariable'
 import { CreateTamaguiProps, ThemeParsed } from '../types'
 import { tokensValueToVariable } from './registerCSSVariable'
-import { simpleHash } from '@tamagui/helpers'
 
 export function getThemeCSSRules({
   config,
@@ -51,7 +52,7 @@ export function getThemeCSSRules({
       const isDark = isDarkOrLightBase || subName.startsWith('dark_')
       const max = config.maxDarkLightNesting ?? 3
 
-      if (!isDark && !subName.startsWith('light_')) {
+      if (!(isDark || subName.startsWith('light_'))) {
         // neither light nor dark subtheme, just generate one selector with :root:root which
         // will override all :root light/dark selectors generated below
         selectors.push(`:root:root ${CNP}${subName}`)
@@ -92,7 +93,10 @@ export function getThemeCSSRules({
     // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
     // this isBaseTheme logic could probably be done more efficiently above
     const isBaseTheme =
-      x === '.t_dark' || x === '.t_light' || x.startsWith('.t_dark ') || x.startsWith('.t_light ')
+      x === '.t_dark' ||
+      x === '.t_light' ||
+      x.startsWith('.t_dark ') ||
+      x.startsWith('.t_light ')
     const rootSep = isBaseTheme && config.themeClassNameOnRoot ? '' : ' '
     return `:root${rootSep}${x}`
   })
@@ -104,7 +108,9 @@ export function getThemeCSSRules({
     const isDark = themeName.startsWith('dark')
     cssRuleSets.push(
       `@media(prefers-color-scheme: ${isDark ? 'dark' : 'light'}) {
-body { background:${variableToString(theme.background)}; color: ${variableToString(theme.color)} }
+body { background:${variableToString(theme.background)}; color: ${variableToString(
+        theme.color
+      )} }
 :root {${vars} } 
 }`
     )

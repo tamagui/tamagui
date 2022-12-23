@@ -26,5 +26,5 @@ export default function loader(this: LoaderContext<any>) {
     // use original JS sourcemap
     return this.callback(null, out || '')
   }
-  this.callback({ message: `No CSS found`, name: 'missing_css' })
+  this.callback({ message: 'No CSS found', name: 'missing_css' })
 }

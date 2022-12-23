@@ -16,7 +16,10 @@ export async function getOptions({
   debug,
 }: Partial<UserOptions> = {}): Promise<ResolvedOptions> {
   const tsConfigFilePath = join(root, tsconfigPath)
-  ensure(await fs.pathExists(tsConfigFilePath), `No tsconfig found: ${tsConfigFilePath}`)
+  ensure(
+    await fs.pathExists(tsConfigFilePath),
+    `No tsconfig found: ${tsConfigFilePath}`,
+  )
   const dotDir = join(root, '.tamagui')
   const pkgJson = await readJSON(join(root, 'package.json'))
 
@@ -51,7 +54,9 @@ const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')]
 let cachedPath = ''
 async function getDefaultTamaguiConfigPath() {
   if (cachedPath) return cachedPath
-  const existingPaths = await Promise.all(defaultPaths.map((path) => pathExists(path)))
+  const existingPaths = await Promise.all(
+    defaultPaths.map((path) => pathExists(path)),
+  )
   const existing = existingPaths.findIndex((x) => !!x)
   const found = defaultPaths[existing]
   if (!found) {
@@ -62,7 +67,9 @@ async function getDefaultTamaguiConfigPath() {
 }
 
 let cached: TamaguiProjectInfo | null = null
-export const loadTamagui = async (opts: Partial<TamaguiOptions>): Promise<TamaguiProjectInfo> => {
+export const loadTamagui = async (
+  opts: Partial<TamaguiOptions>,
+): Promise<TamaguiProjectInfo> => {
   return (cached ??= await loadTamaguiStatic({
     config: await getDefaultTamaguiConfigPath(),
     components: ['tamagui'],

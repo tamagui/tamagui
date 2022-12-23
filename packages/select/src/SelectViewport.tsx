@@ -87,7 +87,7 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
         </FloatingFocusManager>
       </>
     )
-  }
+  },
 )
 
 SelectViewport.displayName = VIEWPORT_NAME

@@ -72,23 +72,25 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/core/configuration">Core</TitleLink>
           <Paragraph o={0.65} fow="300" size="$4">
-            A lightweight style + design system library that works across React Native + Web.
-            Themes, responsive/pseudo styles, styled function, variants and more.
+            A lightweight style + design system library that works across React
+            Native + Web. Themes, responsive/pseudo styles, styled function,
+            variants and more.
           </Paragraph>
         </Section>
 
-        <Section theme={purpleTheme} onHoverIn={() => setHovered(1)}>
+        <Section theme={blueTheme} onHoverIn={() => setHovered(1)}>
           <IconStack>
             <Cpu size={16} color="var(--color9)" />
           </IconStack>
           <TitleLink href="/docs/intro/compiler">Static</TitleLink>
           <Paragraph o={0.65} fow="300" size="$4">
-            A compiler that flattens your component tree with partial evaluation, outputs CSS, and
-            other optimizations with plugins for Next, Webpack, Vite, Babel and Metro.
+            A compiler that flattens your component tree with partial
+            evaluation, outputs CSS, and other optimizations with plugins for
+            Next, Webpack, Vite, Babel and Metro.
           </Paragraph>
         </Section>
 
-        <Section theme={blueTheme} onHoverIn={() => setHovered(2)}>
+        <Section theme={purpleTheme} onHoverIn={() => setHovered(2)}>
           <IconStack>
             <Layers size={16} color="var(--color9)" />
           </IconStack>

@@ -35,7 +35,9 @@ async function build() {
         plugins: [
           alias({
             'react-native': require.resolve('@tamagui/fake-react-native'),
-            'react-native-safe-area-context': require.resolve('@tamagui/fake-react-native'),
+            'react-native-safe-area-context': require.resolve(
+              '@tamagui/fake-react-native'
+            ),
             'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
           }),
         ],
@@ -54,7 +56,9 @@ async function build() {
         plugins: [
           alias({
             'react-native': require.resolve('@tamagui/fake-react-native'),
-            'react-native-safe-area-context': require.resolve('@tamagui/fake-react-native'),
+            'react-native-safe-area-context': require.resolve(
+              '@tamagui/fake-react-native'
+            ),
             'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
           }),
         ],

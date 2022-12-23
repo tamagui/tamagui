@@ -30,7 +30,7 @@ const extractor = createExtractor()
 
 export default declare(function snackBabelPlugin(
   api,
-  options: TamaguiOptions
+  options: TamaguiOptions,
 ): {
   name: string
   visitor: Visitor
@@ -54,7 +54,8 @@ export default declare(function snackBabelPlugin(
           let hasImportedView = false
           const sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
-          const firstComment = root.node.body[0]?.leadingComments?.[0]?.value?.trim() ?? ''
+          const firstComment =
+            root.node.body[0]?.leadingComments?.[0]?.value?.trim() ?? ''
           const { shouldPrintDebug, shouldDisable } = getPragmaOptions({
             disableCommentCheck: true,
             source: firstComment,
@@ -71,7 +72,9 @@ export default declare(function snackBabelPlugin(
             if (process.env.NODE_ENV === 'development') {
               const lineNumbers = node.loc
                 ? node.loc.start.line +
-                  (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
+                  (node.loc.start.line !== node.loc.end.line
+                    ? `-${node.loc.end.line}`
+                    : '')
                 : ''
               key += `:${basename(sourcePath)}:${lineNumbers}`
             }
@@ -91,8 +94,13 @@ export default declare(function snackBabelPlugin(
               target: 'native',
               shouldPrintDebug,
               importsWhitelist: ['constants.js', 'colors.js'],
-              deoptProps: new Set(['focusStyle', 'hoverStyle', 'pressStyle', 'pointerEvents']),
-              extractStyledDefinitions: options.forceExtractStyleDefinitions || false,
+              deoptProps: new Set([
+                'focusStyle',
+                'hoverStyle',
+                'pressStyle',
+                'pointerEvents',
+              ]),
+              extractStyledDefinitions: options.forceExtractStyleDefinitions,
               excludeProps: new Set([
                 'className',
                 'userSelect',
@@ -140,8 +148,8 @@ export default declare(function snackBabelPlugin(
                     finalAttrs.push(
                       t.jsxAttribute(
                         t.jsxIdentifier(`_style${key}`),
-                        t.jsxExpressionContainer(expr)
-                      )
+                        t.jsxExpressionContainer(expr),
+                      ),
                     )
                   }
                 }
@@ -153,7 +161,10 @@ export default declare(function snackBabelPlugin(
                       const { themed, plain } = splitThemeStyles(attr.value)
                       for (const key in themed) {
                         finalAttrs.push(
-                          t.jsxAttribute(t.jsxIdentifier(key), t.stringLiteral(themed[key]))
+                          t.jsxAttribute(
+                            t.jsxIdentifier(key),
+                            t.stringLiteral(themed[key]),
+                          ),
                         )
                       }
                       const ident = addSheetStyle(plain, props.node)
@@ -165,15 +176,25 @@ export default declare(function snackBabelPlugin(
                       const { consequent, alternate } = attr.value
                       const cons = addSheetStyle(consequent, props.node)
                       const alt = addSheetStyle(alternate, props.node)
-                      const styleExpr = t.conditionalExpression(attr.value.test, cons, alt)
-                      addStyle(styleExpr, simpleHash(JSON.stringify({ consequent, alternate })))
+                      const styleExpr = t.conditionalExpression(
+                        attr.value.test,
+                        cons,
+                        alt,
+                      )
+                      addStyle(
+                        styleExpr,
+                        simpleHash(JSON.stringify({ consequent, alternate })),
+                      )
                       break
                     }
                     case 'attr': {
                       if (t.isJSXSpreadAttribute(attr.value)) {
                         if (isSimpleSpread(attr.value)) {
                           stylesExpr.elements.push(
-                            t.memberExpression(attr.value.argument, t.identifier('style'))
+                            t.memberExpression(
+                              attr.value.argument,
+                              t.identifier('style'),
+                            ),
                           )
                         }
                       }
@@ -186,7 +207,10 @@ export default declare(function snackBabelPlugin(
                 props.node.attributes = finalAttrs
                 if (props.isFlattened) {
                   props.node.attributes.push(
-                    t.jsxAttribute(t.jsxIdentifier('style'), t.jsxExpressionContainer(stylesExpr))
+                    t.jsxAttribute(
+                      t.jsxIdentifier('style'),
+                      t.jsxExpressionContainer(stylesExpr),
+                    ),
                   )
                 }
               },
@@ -195,8 +219,8 @@ export default declare(function snackBabelPlugin(
             if (err instanceof Error) {
               // metro doesn't show stack so we can
               let message = `${shouldPrintDebug === 'verbose' ? err : err.message}`
-              if (message.includes(`Unexpected return value from visitor method`)) {
-                message = `Unexpected return value from visitor method`
+              if (message.includes('Unexpected return value from visitor method')) {
+                message = 'Unexpected return value from visitor method'
               }
               // eslint-disable-next-line no-console
               console.warn('Error in Tamagui parse, skipping', message, err.stack)
@@ -213,7 +237,9 @@ export default declare(function snackBabelPlugin(
           }
 
           const sheetObject = literalToAst(sheetStyles)
-          const sheetOuter = template(`const SHEET = ReactNativeStyleSheet.create(null)`)({
+          const sheetOuter = template(
+            'const SHEET = ReactNativeStyleSheet.create(null)',
+          )({
             SHEET: sheetIdentifier.name,
           }) as any
 
@@ -231,7 +257,7 @@ export default declare(function snackBabelPlugin(
               generator(root.parent)
                 .code.split('\n')
                 .filter((x) => !x.startsWith('//'))
-                .join('\n')
+                .join('\n'),
             )
           }
         },
@@ -241,12 +267,14 @@ export default declare(function snackBabelPlugin(
 })
 
 function assertValidTag(node: t.JSXOpeningElement) {
-  if (node.attributes.find((x) => x.type === 'JSXAttribute' && x.name.name === 'style')) {
+  if (
+    node.attributes.find((x) => x.type === 'JSXAttribute' && x.name.name === 'style')
+  ) {
     // we can just deopt here instead and log warning
     // need to make onExtractTag have a special catch error or similar
     if (process.env.DEBUG?.startsWith('tamagui')) {
       // eslint-disable-next-line no-console
-      console.warn(`⚠️ Cannot pass style attribute to extracted style`)
+      console.warn('⚠️ Cannot pass style attribute to extracted style')
     }
   }
 }

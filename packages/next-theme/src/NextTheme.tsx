@@ -15,7 +15,8 @@ import {
   useState,
 } from 'react'
 
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
+const useIsomorphicLayoutEffect =
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 export interface UseThemeProps {
   /** List of all available theme names */
@@ -132,34 +133,36 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   const mediaListener = useRef(handleMediaQuery)
   mediaListener.current = handleMediaQuery
 
-  const handleChangeTheme = useEvent((theme, updateStorage = true, updateDOM = true) => {
-    let name = value?.[theme] || theme
+  const handleChangeTheme = useEvent(
+    (theme, updateStorage = true, updateDOM = true) => {
+      let name = value?.[theme] || theme
 
-    if (updateStorage) {
-      try {
-        localStorage.setItem(storageKey, theme)
-      } catch (e) {
-        // Unsupported
+      if (updateStorage) {
+        try {
+          localStorage.setItem(storageKey, theme)
+        } catch (e) {
+          // Unsupported
+        }
       }
-    }
 
-    if (theme === 'system' && enableSystem) {
-      const resolved = getSystemTheme()
-      name = value?.[resolved] || resolved
-    }
-
-    onChangeTheme?.(name.replace('t_', ''))
-
-    if (updateDOM) {
-      const d = document.documentElement
-      if (attribute === 'class') {
-        d.classList.remove(...attrs)
-        d.classList.add(name)
-      } else {
-        d.setAttribute(attribute, name)
+      if (theme === 'system' && enableSystem) {
+        const resolved = getSystemTheme()
+        name = value?.[resolved] || resolved
       }
-    }
-  })
+
+      onChangeTheme?.(name.replace('t_', ''))
+
+      if (updateDOM) {
+        const d = document.documentElement
+        if (attribute === 'class') {
+          d.classList.remove(...attrs)
+          d.classList.add(name)
+        } else {
+          d.setAttribute(attribute, name)
+        }
+      }
+    },
+  )
 
   useIsomorphicLayoutEffect(() => {
     const handler = (...args: any) => mediaListener.current(...args)
@@ -233,13 +236,18 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
 
   const toggle = useEvent(() => {
     const order =
-      resolvedTheme === 'dark' ? ['system', 'light', 'dark'] : ['system', 'dark', 'light']
+      resolvedTheme === 'dark'
+        ? ['system', 'light', 'dark']
+        : ['system', 'dark', 'light']
     const next = order[(order.indexOf(theme) + 1) % order.length]
     set(next)
   })
 
   const contextResolvedTheme = theme === 'system' ? resolvedTheme : theme
-  const systemTheme = (enableSystem ? resolvedTheme : undefined) as 'light' | 'dark' | undefined
+  const systemTheme = (enableSystem ? resolvedTheme : undefined) as
+    | 'light'
+    | 'dark'
+    | undefined
   const contextValue = useMemo(() => {
     const value: UseThemeProps = {
       theme,
@@ -252,7 +260,16 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
       systemTheme,
     } as const
     return value
-  }, [theme, set, toggle, forcedTheme, contextResolvedTheme, enableSystem, themes, systemTheme])
+  }, [
+    theme,
+    set,
+    toggle,
+    forcedTheme,
+    contextResolvedTheme,
+    enableSystem,
+    themes,
+    systemTheme,
+  ])
 
   return (
     <ThemeSettingContext.Provider value={contextValue}>
@@ -322,7 +339,6 @@ const ThemeScript = memo(
             key="next-themes-script"
             dangerouslySetInnerHTML={{
               // These are minified via Terser and then updated by hand, don't recommend
-              // prettier-ignore
               __html: `!function(){${optimization}${updateDOM(forcedTheme)}}()`,
             }}
           />
@@ -330,16 +346,24 @@ const ThemeScript = memo(
           <script
             key="next-themes-script"
             dangerouslySetInnerHTML={{
-              // prettier-ignore
-              __html: `!function(){try {${optimization}var e=localStorage.getItem('${storageKey}');${!defaultSystem ? updateDOM(defaultTheme) + ';' : ''}if("system"===e||(!e&&${defaultSystem})){var t="${MEDIA}",m=window.matchMedia(t);m.media!==t||m.matches?${updateDOM('dark')}:${updateDOM('light')}}else if(e) ${value ? `var x=${JSON.stringify(value)};` : ''}${updateDOM(value ? 'x[e]' : 'e', true)}}catch(e){}}()`,
+              __html: `!function(){try {${optimization}var e=localStorage.getItem('${storageKey}');${
+                !defaultSystem ? updateDOM(defaultTheme) + ';' : ''
+              }if("system"===e||(!e&&${defaultSystem})){var t="${MEDIA}",m=window.matchMedia(t);m.media!==t||m.matches?${updateDOM(
+                'dark',
+              )}:${updateDOM('light')}}else if(e) ${
+                value ? `var x=${JSON.stringify(value)};` : ''
+              }${updateDOM(value ? 'x[e]' : 'e', true)}}catch(e){}}()`,
             }}
           />
         ) : (
           <script
             key="next-themes-script"
             dangerouslySetInnerHTML={{
-              // prettier-ignore
-              __html: `!function(){try{${optimization}var e=localStorage.getItem("${storageKey}");if(e){${value ? `var x=${JSON.stringify(value)};` : ''}${updateDOM(value ? 'x[e]' : 'e', true)}}else{${updateDOM(defaultTheme)};}}catch(t){}}();`,
+              __html: `!function(){try{${optimization}var e=localStorage.getItem("${storageKey}");if(e){${
+                value ? `var x=${JSON.stringify(value)};` : ''
+              }${updateDOM(value ? 'x[e]' : 'e', true)}}else{${updateDOM(
+                defaultTheme,
+              )};}}catch(t){}}();`,
             }}
           />
         )}
@@ -351,7 +375,7 @@ const ThemeScript = memo(
     // the rest of the props should be completely stable
     if (prevProps.forcedTheme !== nextProps.forcedTheme) return false
     return true
-  }
+  },
 )
 
 // Helpers

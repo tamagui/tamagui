@@ -4,7 +4,9 @@ import * as Floating from './floating'
 
 export type UseFloatingFn = typeof Floating.useFloating
 
-type UseFloatingProps = UseFloatingFn extends (props: infer Props) => any ? Props : never
+type UseFloatingProps = UseFloatingFn extends (props: infer Props) => any
+  ? Props
+  : never
 
 export type UseFloatingReturn = Floating.UseFloatingReturn & {
   context?: any

@@ -9,7 +9,11 @@
  */
 
 import * as React from 'react'
-import { StyleSheet, TextAncestorContext, createBoxShadowValue } from 'react-native-web-internals'
+import {
+  StyleSheet,
+  TextAncestorContext,
+  createBoxShadowValue,
+} from 'react-native-web-internals'
 import { ImageLoader, getAssetByID } from 'react-native-web-internals'
 
 import createElement from '../createElement/index.js'
@@ -96,7 +100,11 @@ function resolveAssetDimensions(source) {
   if (typeof source === 'number') {
     const { height, width } = getAssetByID(source)
     return { height, width }
-  } else if (source != null && !Array.isArray(source) && typeof source === 'object') {
+  } else if (
+    source != null &&
+    !Array.isArray(source) &&
+    typeof source === 'object'
+  ) {
     const { height, width } = source
     return { height, width }
   }
@@ -112,11 +120,15 @@ function resolveAssetUri(source): string | null {
       const preferredScale = PixelRatio.get()
       // Get the scale which is closest to the preferred scale
       scale = asset.scales.reduce((prev, curr) =>
-        Math.abs(curr - preferredScale) < Math.abs(prev - preferredScale) ? curr : prev
+        Math.abs(curr - preferredScale) < Math.abs(prev - preferredScale)
+          ? curr
+          : prev,
       )
     }
     const scaleSuffix = scale !== 1 ? `@${scale}x` : ''
-    uri = asset ? `${asset.httpServerLocation}/${asset.name}${scaleSuffix}.${asset.type}` : ''
+    uri = asset
+      ? `${asset.httpServerLocation}/${asset.name}${scaleSuffix}.${asset.type}`
+      : ''
   } else if (typeof source === 'string') {
     uri = source
   } else if (source && typeof source.uri === 'string') {
@@ -140,7 +152,7 @@ interface ImageStatics {
   getSize: (
     uri: string,
     success: (width: number, height: number) => void,
-    failure: () => void
+    failure: () => void,
   ) => void
   prefetch: (uri: string) => Promise<void>
   queryCache: (uris: Array<string>) => Promise<{ [uri: string]: 'disk/memory' }>
@@ -166,7 +178,7 @@ const Image = React.forwardRef<typeof View, ImageProps>((props, ref) => {
   if (process.env.NODE_ENV !== 'production') {
     if (props.children) {
       throw new Error(
-        'The <Image> component cannot contain children. If you want to render content on top of the image, consider using the <ImageBackground> component or absolute positioning.'
+        'The <Image> component cannot contain children. If you want to render content on top of the image, consider using the <ImageBackground> component or absolute positioning.',
       )
     }
   }
@@ -187,11 +199,12 @@ const Image = React.forwardRef<typeof View, ImageProps>((props, ref) => {
   const hiddenImageRef = React.useRef(null)
   const filterRef = React.useRef(_filterId++)
   const requestRef = React.useRef(null)
-  const shouldDisplaySource = state === LOADED || (state === LOADING && defaultSource == null)
+  const shouldDisplaySource =
+    state === LOADED || (state === LOADING && defaultSource == null)
   const [flatStyle, _resizeMode, filter, tintColor] = getFlatStyle(
     style,
     blurRadius,
-    filterRef.current
+    filterRef.current,
   )
   const resizeMode = props.resizeMode || _resizeMode || 'cover'
   const selectedSource = shouldDisplaySource ? source : defaultSource
@@ -212,7 +225,10 @@ const Image = React.forwardRef<typeof View, ImageProps>((props, ref) => {
     : null
 
   function getBackgroundSize(): string | undefined {
-    if (hiddenImageRef.current != null && (resizeMode === 'center' || resizeMode === 'repeat')) {
+    if (
+      hiddenImageRef.current != null &&
+      (resizeMode === 'center' || resizeMode === 'repeat')
+    ) {
       const { naturalHeight, naturalWidth } = hiddenImageRef.current
       const { height, width } = layout as any
       if (naturalHeight && naturalWidth && height && width) {
@@ -270,7 +286,7 @@ const Image = React.forwardRef<typeof View, ImageProps>((props, ref) => {
             // @ts-ignore
             onLoadEnd()
           }
-        }
+        },
       )
     }
 
@@ -291,7 +307,12 @@ const Image = React.forwardRef<typeof View, ImageProps>((props, ref) => {
       onLayout={handleLayout}
       pointerEvents={pointerEvents}
       ref={ref as any}
-      style={[styles.root, hasTextAncestor && styles.inline, imageSizeStyle, flatStyle]}
+      style={[
+        styles.root,
+        hasTextAncestor && styles.inline,
+        imageSizeStyle,
+        flatStyle,
+      ]}
     >
       <View
         style={[

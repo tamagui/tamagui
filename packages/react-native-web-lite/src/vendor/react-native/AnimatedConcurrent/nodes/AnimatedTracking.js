@@ -27,7 +27,8 @@ export default class AnimatedTracking extends AnimatedNode {
     this._parent = parent
     this._animationClass = animationClass
     this._animationConfig = animationConfig
-    this._useNativeDriver = NativeAnimatedHelper.shouldUseNativeDriver(animationConfig)
+    this._useNativeDriver =
+      NativeAnimatedHelper.shouldUseNativeDriver(animationConfig)
     this._callback = callback
     this.__attach()
   }
@@ -67,7 +68,7 @@ export default class AnimatedTracking extends AnimatedNode {
         ...this._animationConfig,
         toValue: this._animationConfig.toValue.__getValue(),
       }),
-      this._callback
+      this._callback,
     )
   }
 

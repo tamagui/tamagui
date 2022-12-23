@@ -2,9 +2,16 @@ import type { ViewStyle } from 'react-native'
 
 export type FlatTransforms = Record<string, any>
 
-export const mergeTransform = (obj: ViewStyle, key: string, val: any, backwards = false) => {
+export const mergeTransform = (
+  obj: ViewStyle,
+  key: string,
+  val: any,
+  backwards = false
+) => {
   obj.transform ||= []
-  obj.transform[backwards ? 'unshift' : 'push']({ [mapTransformKeys[key] || key]: val } as any)
+  obj.transform[backwards ? 'unshift' : 'push']({
+    [mapTransformKeys[key] || key]: val,
+  } as any)
 }
 
 export const mergeTransforms = (

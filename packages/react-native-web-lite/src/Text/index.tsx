@@ -9,7 +9,11 @@
  */
 
 import * as React from 'react'
-import { StyleSheet, TextAncestorContext, getLocaleDirection } from 'react-native-web-internals'
+import {
+  StyleSheet,
+  TextAncestorContext,
+  getLocaleDirection,
+} from 'react-native-web-internals'
 import {
   forwardPropsListText,
   pick,
@@ -26,128 +30,133 @@ import type { TextProps } from './types.js'
 
 const pickProps = (props) => pick(props, forwardPropsListText)
 
-const Text = React.forwardRef<HTMLElement & PlatformMethods, TextProps>((props, forwardedRef) => {
-  const {
-    hrefAttrs,
-    numberOfLines,
-    onClick,
-    onLayout,
-    onPress,
-    onMoveShouldSetResponder,
-    onMoveShouldSetResponderCapture,
-    onResponderEnd,
-    onResponderGrant,
-    onResponderMove,
-    onResponderReject,
-    onResponderRelease,
-    onResponderStart,
-    onResponderTerminate,
-    onResponderTerminationRequest,
-    onScrollShouldSetResponder,
-    onScrollShouldSetResponderCapture,
-    onSelectionChangeShouldSetResponder,
-    onSelectionChangeShouldSetResponderCapture,
-    onStartShouldSetResponder,
-    onStartShouldSetResponderCapture,
-    selectable,
-    ...rest
-  } = props
+const Text = React.forwardRef<HTMLElement & PlatformMethods, TextProps>(
+  (props, forwardedRef) => {
+    const {
+      hrefAttrs,
+      numberOfLines,
+      onClick,
+      onLayout,
+      onPress,
+      onMoveShouldSetResponder,
+      onMoveShouldSetResponderCapture,
+      onResponderEnd,
+      onResponderGrant,
+      onResponderMove,
+      onResponderReject,
+      onResponderRelease,
+      onResponderStart,
+      onResponderTerminate,
+      onResponderTerminationRequest,
+      onScrollShouldSetResponder,
+      onScrollShouldSetResponderCapture,
+      onSelectionChangeShouldSetResponder,
+      onSelectionChangeShouldSetResponderCapture,
+      onStartShouldSetResponder,
+      onStartShouldSetResponderCapture,
+      selectable,
+      ...rest
+    } = props
 
-  const hasTextAncestor = React.useContext(TextAncestorContext)
-  const hostRef = React.useRef(null)
-  const { direction: contextDirection } = useLocaleContext()
+    const hasTextAncestor = React.useContext(TextAncestorContext)
+    const hostRef = React.useRef(null)
+    const { direction: contextDirection } = useLocaleContext()
 
-  useElementLayout(hostRef, onLayout)
-  useResponderEvents(hostRef, {
-    onMoveShouldSetResponder,
-    onMoveShouldSetResponderCapture,
-    onResponderEnd,
-    onResponderGrant,
-    onResponderMove,
-    onResponderReject,
-    onResponderRelease,
-    onResponderStart,
-    onResponderTerminate,
-    onResponderTerminationRequest,
-    onScrollShouldSetResponder,
-    onScrollShouldSetResponderCapture,
-    onSelectionChangeShouldSetResponder,
-    onSelectionChangeShouldSetResponderCapture,
-    onStartShouldSetResponder,
-    onStartShouldSetResponderCapture,
-  })
+    useElementLayout(hostRef, onLayout)
+    useResponderEvents(hostRef, {
+      onMoveShouldSetResponder,
+      onMoveShouldSetResponderCapture,
+      onResponderEnd,
+      onResponderGrant,
+      onResponderMove,
+      onResponderReject,
+      onResponderRelease,
+      onResponderStart,
+      onResponderTerminate,
+      onResponderTerminationRequest,
+      onScrollShouldSetResponder,
+      onScrollShouldSetResponderCapture,
+      onSelectionChangeShouldSetResponder,
+      onSelectionChangeShouldSetResponderCapture,
+      onStartShouldSetResponder,
+      onStartShouldSetResponderCapture,
+    })
 
-  const handleClick = React.useCallback(
-    (e) => {
-      if (onClick != null) {
-        onClick(e)
-      } else if (onPress != null) {
-        e.stopPropagation()
-        onPress(e)
-      }
-    },
-    [onClick, onPress]
-  )
+    const handleClick = React.useCallback(
+      (e) => {
+        if (onClick != null) {
+          onClick(e)
+        } else if (onPress != null) {
+          e.stopPropagation()
+          onPress(e)
+        }
+      },
+      [onClick, onPress],
+    )
 
-  let component = hasTextAncestor ? 'span' : 'div'
+    let component = hasTextAncestor ? 'span' : 'div'
 
-  const langDirection = props.lang != null ? getLocaleDirection(props.lang) : null
-  const componentDirection = props.dir || langDirection
-  const writingDirection = componentDirection || contextDirection
+    const langDirection = props.lang != null ? getLocaleDirection(props.lang) : null
+    const componentDirection = props.dir || langDirection
+    const writingDirection = componentDirection || contextDirection
 
-  const supportedProps = pickProps(rest) as any
-  supportedProps.dir = componentDirection
-  // 'auto' by default allows browsers to infer writing direction (root elements only)
-  if (!hasTextAncestor) {
-    supportedProps.dir = componentDirection != null ? componentDirection : 'auto'
-  }
+    const supportedProps = pickProps(rest) as any
+    supportedProps.dir = componentDirection
+    // 'auto' by default allows browsers to infer writing direction (root elements only)
+    if (!hasTextAncestor) {
+      supportedProps.dir = componentDirection != null ? componentDirection : 'auto'
+    }
 
-  if (onClick || onPress) {
-    supportedProps.onClick = handleClick
-  }
+    if (onClick || onPress) {
+      supportedProps.onClick = handleClick
+    }
 
-  supportedProps.style = [
-    numberOfLines != null && numberOfLines > 1 && { WebkitLineClamp: numberOfLines },
-    hasTextAncestor === true ? styles.textHasAncestor$raw : styles.text$raw,
-    numberOfLines === 1 && styles.textOneLine,
-    numberOfLines != null && numberOfLines > 1 && styles.textMultiLine,
-    props.style,
-    selectable === true && styles.selectable,
-    selectable === false && styles.notSelectable,
-    onPress && styles.pressable,
-  ]
+    supportedProps.style = [
+      numberOfLines != null &&
+        numberOfLines > 1 && { WebkitLineClamp: numberOfLines },
+      hasTextAncestor === true ? styles.textHasAncestor$raw : styles.text$raw,
+      numberOfLines === 1 && styles.textOneLine,
+      numberOfLines != null && numberOfLines > 1 && styles.textMultiLine,
+      props.style,
+      selectable === true && styles.selectable,
+      selectable === false && styles.notSelectable,
+      onPress && styles.pressable,
+    ]
 
-  if (props.href != null) {
-    component = 'a'
-    if (hrefAttrs != null) {
-      const { download, rel, target } = hrefAttrs
-      if (download != null) {
-        supportedProps.download = download
-      }
-      if (rel != null) {
-        supportedProps.rel = rel
-      }
-      if (typeof target === 'string') {
-        supportedProps.target = target.charAt(0) !== '_' ? '_' + target : target
+    if (props.href != null) {
+      component = 'a'
+      if (hrefAttrs != null) {
+        const { download, rel, target } = hrefAttrs
+        if (download != null) {
+          supportedProps.download = download
+        }
+        if (rel != null) {
+          supportedProps.rel = rel
+        }
+        if (typeof target === 'string') {
+          supportedProps.target = target.charAt(0) !== '_' ? '_' + target : target
+        }
       }
     }
-  }
 
-  const platformMethodsRef = usePlatformMethods(supportedProps)
-  const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
+    const platformMethodsRef = usePlatformMethods(supportedProps)
+    const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
 
-  supportedProps.ref = setRef
+    supportedProps.ref = setRef
 
-  const element = createElement(component, supportedProps, {
-    writingDirection,
-  })
+    const element = createElement(component, supportedProps, {
+      writingDirection,
+    })
 
-  return hasTextAncestor ? (
-    element
-  ) : (
-    <TextAncestorContext.Provider value={true}>{element}</TextAncestorContext.Provider>
-  )
-})
+    return hasTextAncestor ? (
+      element
+    ) : (
+      <TextAncestorContext.Provider value={true}>
+        {element}
+      </TextAncestorContext.Provider>
+    )
+  },
+)
 
 Text.displayName = 'Text'
 

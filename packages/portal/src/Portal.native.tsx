@@ -32,7 +32,7 @@ export const Portal = (props: PortalProps) => {
   if (process.env.NODE_ENV === 'development') {
     // eslint-disable-next-line no-console
     console.warn(
-      `Missing rootTag, this is a bug - you may need a different React Native version, or to avoid using "modal" on native.`
+      `Missing rootTag, this is a bug - you may need a different React Native version, or to avoid using "modal" on native.`,
     )
   }
 

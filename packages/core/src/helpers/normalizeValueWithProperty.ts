@@ -22,7 +22,7 @@ export function normalizeValueWithProperty(value: any, property?: string): any {
   if (
     process.env.TAMAGUI_TARGET === 'web' &&
     typeof value === 'number' &&
-    (property === undefined || (!unitlessNumbers[property] && !stringNumbers[property]))
+    (property === undefined || !(unitlessNumbers[property] || stringNumbers[property]))
   ) {
     res = `${value}px`
   } else if (isWeb && property !== undefined && stringNumbers[property]) {
@@ -116,7 +116,13 @@ export function reverseMapClassNameToValue(key: string, className: string) {
     // ensure we are parsing properly
     if (typeof res === 'number' && isNaN(res)) {
       // eslint-disable-next-line no-console
-      console.log(`Tamagui invalid parsed value, NaN:`, { res, cssVal, cssRule, key, className })
+      console.log('Tamagui invalid parsed value, NaN:', {
+        res,
+        cssVal,
+        cssRule,
+        key,
+        className,
+      })
     }
   }
   return res

@@ -1,16 +1,4 @@
 {
-  "eslint.workingDirectories": [
-    "packages/*/src"
-  ],
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "workbench.colorCustomizations": {
-    "[Nüshu]": {
-      "statusBar.background": "#cf95ba",
-      "statusBar.foreground": "#fff",
-    },
-    "[ktrz-monokai]": {
-      "statusBar.background": "#6d2552",
-      "statusBar.foreground": "#fff"
-    }
-  }
+  "eslint.enable": false,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

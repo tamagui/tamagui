@@ -134,7 +134,9 @@ describe('compiler/createReactDOMStyle', () => {
 
   describe('fontFamily', () => {
     test('general case', () => {
-      expect(createReactDOMStyle({ fontFamily: 'Georgia, Times, serif' })).toMatchInlineSnapshot(`
+      expect(
+        createReactDOMStyle({ fontFamily: 'Georgia, Times, serif' }),
+      ).toMatchInlineSnapshot(`
         {
           "fontFamily": "Georgia, Times, serif",
         }
@@ -142,7 +144,9 @@ describe('compiler/createReactDOMStyle', () => {
     })
 
     test('"monospace"', () => {
-      expect(createReactDOMStyle({ fontFamily: 'monospace' })).toMatchInlineSnapshot(`
+      expect(
+        createReactDOMStyle({ fontFamily: 'monospace' }),
+      ).toMatchInlineSnapshot(`
         {
           "fontFamily": "monospace,monospace",
         }
@@ -163,12 +167,16 @@ describe('compiler/createReactDOMStyle', () => {
     })
 
     test('"Noto, System"', () => {
-      expect(createReactDOMStyle({ fontFamily: 'Noto, System' })).toMatchInlineSnapshot(`
+      expect(
+        createReactDOMStyle({ fontFamily: 'Noto, System' }),
+      ).toMatchInlineSnapshot(`
         {
           "fontFamily": "Noto,-apple-system,BlinkMacSystemFont,\\"Segoe UI\\",Roboto,Helvetica,Arial,sans-serif",
         }
       `)
-      expect(createReactDOMStyle({ font: '14px Noto, System' })).toMatchInlineSnapshot(`
+      expect(
+        createReactDOMStyle({ font: '14px Noto, System' }),
+      ).toMatchInlineSnapshot(`
         {
           "font": "14px Noto, -apple-system,BlinkMacSystemFont,\\"Segoe UI\\",Roboto,Helvetica,Arial,sans-serif",
         }
@@ -176,8 +184,9 @@ describe('compiler/createReactDOMStyle', () => {
     })
 
     test('"Noto, BlinkMacSystemFont"', () => {
-      expect(createReactDOMStyle({ fontFamily: 'Noto, BlinkMacSystemFont' }))
-        .toMatchInlineSnapshot(`
+      expect(
+        createReactDOMStyle({ fontFamily: 'Noto, BlinkMacSystemFont' }),
+      ).toMatchInlineSnapshot(`
         {
           "fontFamily": "Noto,BlinkMacSystemFont",
         }
@@ -186,7 +195,9 @@ describe('compiler/createReactDOMStyle', () => {
   })
 
   test('fontVariant', () => {
-    expect(createReactDOMStyle({ fontVariant: ['common-ligatures', 'small-caps'] })).toEqual({
+    expect(
+      createReactDOMStyle({ fontVariant: ['common-ligatures', 'small-caps'] }),
+    ).toEqual({
       fontVariant: 'common-ligatures small-caps',
     })
   })
@@ -195,7 +206,7 @@ describe('compiler/createReactDOMStyle', () => {
     expect(
       createReactDOMStyle({
         textAlignVertical: 'center',
-      })
+      }),
     ).toEqual({
       verticalAlign: 'middle',
     })

@@ -98,14 +98,14 @@ export const Card = withStaticProperties(
           </CardFrame>
           // </CardProvider>
         )
-      }
-    )
+      },
+    ),
   ),
   {
     Header: CardHeader,
     Footer: CardFooter,
     Background: CardBackground,
-  }
+  },
 )
 
 // export { createCardScope, useCardContext }

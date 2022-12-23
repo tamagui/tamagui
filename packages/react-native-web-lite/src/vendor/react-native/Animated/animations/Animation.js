@@ -48,7 +48,7 @@ class Animation {
         this.__nativeId,
         animatedValue.__getNativeTag(),
         this.__getNativeAnimationConfig(),
-        this.__debouncedOnEnd.bind(this)
+        this.__debouncedOnEnd.bind(this),
       )
     } catch (e) {
       throw e

@@ -1,4 +1,11 @@
-import { ColorTokens, ThemeTokens, getVariable, styled, themeable, useTheme } from '@tamagui/core'
+import {
+  ColorTokens,
+  ThemeTokens,
+  getVariable,
+  styled,
+  themeable,
+  useTheme,
+} from '@tamagui/core'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -19,7 +26,14 @@ export const LinearGradient: React.ForwardRefExoticComponent<
 > = YStack.extractable(
   themeable(
     React.forwardRef((props: LinearGradientProps, ref) => {
-      const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
+      const {
+        start,
+        end,
+        colors: colorsProp,
+        locations,
+        children,
+        ...stackProps
+      } = props
       const colors = useThemeColors(colorsProp || [])
       return (
         // @ts-ignore
@@ -35,8 +49,8 @@ export const LinearGradient: React.ForwardRefExoticComponent<
           </ExpoLinearGradient>
         </LinearGradientFrame>
       )
-    })
-  )
+    }),
+  ),
 ) as any
 
 const LinearGradientFrame = styled(YStack, {

@@ -33,7 +33,10 @@ import {
 import * as React from 'react'
 
 const TooltipContent = React.forwardRef(
-  ({ __scopePopover, ...props }: ScopedProps<PopoverContentProps, 'Popover'>, ref: any) => {
+  (
+    { __scopePopover, ...props }: ScopedProps<PopoverContentProps, 'Popover'>,
+    ref: any,
+  ) => {
     const popperScope = usePopoverScope(__scopePopover)
     const popper = usePopperContext('PopperContent', popperScope['__scopePopper'])
     return (
@@ -47,7 +50,7 @@ const TooltipContent = React.forwardRef(
         {...props}
       />
     )
-  }
+  },
 )
 
 const TooltipArrow = React.forwardRef((props: PopoverArrowProps, ref: any) => {
@@ -74,7 +77,10 @@ type Delay =
       close: number
     }>
 
-export const TooltipGroup = ({ children, delay }: { children?: any; delay: Delay }) => {
+export const TooltipGroup = ({
+  children,
+  delay,
+}: { children?: any; delay: Delay }) => {
   return (
     <FloatingDelayGroup delay={React.useMemo(() => delay, [JSON.stringify(delay)])}>
       {children}
@@ -131,7 +137,10 @@ export const Tooltip = withStaticProperties(
 
     const useFloatingContext = React.useCallback(useFloatingFn, [id, delay, open])
     const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
-    const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
+    const onCustomAnchorRemove = React.useCallback(
+      () => setHasCustomAnchor(false),
+      [],
+    )
     const contentId = useId()
 
     return (
@@ -162,7 +171,7 @@ export const Tooltip = withStaticProperties(
     Arrow: TooltipArrow,
     Content: TooltipContent,
     Trigger: PopoverTrigger,
-  }
+  },
 )
 
 Tooltip.displayName = 'Tooltip'

@@ -15,8 +15,8 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "eslint src",
-    "lint:fix": "yarn lint --fix"
+    "lint": "../../node_modules/.bin/rome check src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "peerDependencies": {
     "react": "^18.2.0"

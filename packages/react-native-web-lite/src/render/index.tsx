@@ -12,7 +12,10 @@ import {
   render as domLegacyRender,
   unmountComponentAtNode,
 } from 'react-dom'
-import { createRoot as domCreateRoot, hydrateRoot as domHydrateRoot } from 'react-dom/client'
+import {
+  createRoot as domCreateRoot,
+  hydrateRoot as domHydrateRoot,
+} from 'react-dom/client'
 import { createSheet } from 'react-native-web-internals'
 
 export function hydrate(element, root) {

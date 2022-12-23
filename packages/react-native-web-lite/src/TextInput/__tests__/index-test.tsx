@@ -54,7 +54,7 @@ function createKeyboardEvent(
     metaKey = false,
     preventDefault = () => {},
     shiftKey = false,
-  } = {}
+  } = {},
 ) {
   return createEvent(type, {
     altKey,
@@ -118,7 +118,9 @@ describe('components/TextInput', () => {
     })
 
     testIfDocumentIsFocused('value "true"', () => {
-      const { container } = render(<TextInput clearTextOnFocus defaultValue={defaultValue} />)
+      const { container } = render(
+        <TextInput clearTextOnFocus defaultValue={defaultValue} />,
+      )
       const input = findInput(container)
       input.focus()
       expect(input.node.value).toEqual('')
@@ -208,7 +210,6 @@ describe('components/TextInput', () => {
     let { container } = render(<TextInput />)
     let input = findInput(container)
     expect(input.getAttribute('maxLength')).toEqual(null)
-
     ;({ container } = render(<TextInput maxLength={10} />))
     input = findInput(container)
     expect(input.getAttribute('maxLength')).toEqual('10')
@@ -314,7 +315,7 @@ describe('components/TextInput', () => {
             shiftKey: false,
             target: expect.anything(),
           }),
-        })
+        }),
       )
     })
 
@@ -336,7 +337,7 @@ describe('components/TextInput', () => {
             shiftKey: false,
             target: expect.anything(),
           }),
-        })
+        }),
       )
     })
 
@@ -358,7 +359,7 @@ describe('components/TextInput', () => {
             shiftKey: false,
             target: expect.anything(),
           }),
-        })
+        }),
       )
     })
 
@@ -380,7 +381,7 @@ describe('components/TextInput', () => {
             shiftKey: false,
             target: expect.anything(),
           }),
-        })
+        }),
       )
     })
 
@@ -402,7 +403,7 @@ describe('components/TextInput', () => {
             shiftKey: false,
             target: expect.anything(),
           }),
-        })
+        }),
       )
     })
 
@@ -424,7 +425,7 @@ describe('components/TextInput', () => {
             shiftKey: false,
             target: expect.anything(),
           }),
-        })
+        }),
       )
     })
 
@@ -446,7 +447,7 @@ describe('components/TextInput', () => {
             shiftKey: false,
             target: expect.anything(),
           }),
-        })
+        }),
       )
     })
 
@@ -463,7 +464,7 @@ describe('components/TextInput', () => {
           metaKey: true,
           shiftKey: true,
           key: ' ',
-        })
+        }),
       )
       expect(onKeyPress).toHaveBeenCalledTimes(1)
       expect(onKeyPress).toBeCalledWith(
@@ -476,7 +477,7 @@ describe('components/TextInput', () => {
             shiftKey: true,
             target: expect.anything(),
           }),
-        })
+        }),
       )
     })
 
@@ -490,7 +491,7 @@ describe('components/TextInput', () => {
         keydown({
           metaKey: true,
           key: 'Enter',
-        })
+        }),
       )
       expect(onKeyPress).toHaveBeenCalledTimes(1)
     })
@@ -499,7 +500,7 @@ describe('components/TextInput', () => {
   describe('prop "onSelectionChange"', () => {
     test('is called on select', () => {
       const { container } = render(
-        <TextInput defaultValue="12345" onSelectionChange={onSelectionChange} />
+        <TextInput defaultValue="12345" onSelectionChange={onSelectionChange} />,
       )
       const input = findInput(container)
       input.selectionStart = 0
@@ -513,7 +514,9 @@ describe('components/TextInput', () => {
 
     test.skip('is called on change', () => {
       const onSelectionChange = jest.fn()
-      const { container } = render(<TextInput onSelectionChange={onSelectionChange} />)
+      const { container } = render(
+        <TextInput onSelectionChange={onSelectionChange} />,
+      )
       const input = findInput(container)
       // This doesn't cause ReactDOM to trigger 'change' event... ¯\_(ツ)_/¯
       input.dispatchEvent(new window.Event('input', { bubbles: true }))
@@ -524,7 +527,7 @@ describe('components/TextInput', () => {
   describe('prop "onSubmitEditing"', () => {
     test('single-line input', (done) => {
       const { container } = render(
-        <TextInput defaultValue="12345" onSubmitEditing={onSubmitEditing} />
+        <TextInput defaultValue="12345" onSubmitEditing={onSubmitEditing} />,
       )
       const input = findInput(container)
       input.dispatchEvent(keydown({ key: 'Enter' }))
@@ -538,18 +541,24 @@ describe('components/TextInput', () => {
     test('single-line input while composing', () => {
       const onSubmitEditing = jest.fn()
       const { container } = render(
-        <TextInput defaultValue="12345" onSubmitEditing={onSubmitEditing} />
+        <TextInput defaultValue="12345" onSubmitEditing={onSubmitEditing} />,
       )
       const input = findInput(container)
       input.dispatchEvent(keydown({ key: 'Enter', isComposing: true, keyCode: 13 }))
-      input.dispatchEvent(keydown({ key: 'Enter', isComposing: false, keyCode: 229 }))
+      input.dispatchEvent(
+        keydown({ key: 'Enter', isComposing: false, keyCode: 229 }),
+      )
       expect(onSubmitEditing).not.toHaveBeenCalled()
     })
 
     test('multi-line input', () => {
       const onSubmitEditing = jest.fn()
       const { container } = render(
-        <TextInput defaultValue="12345" multiline onSubmitEditing={onSubmitEditing} />
+        <TextInput
+          defaultValue="12345"
+          multiline
+          onSubmitEditing={onSubmitEditing}
+        />,
       )
       const textarea = findTextArea(container)
       textarea.dispatchEvent(keydown({ key: 'Enter' }))
@@ -561,12 +570,21 @@ describe('components/TextInput', () => {
       const preventDefault = jest.fn()
 
       const { container } = render(
-        <TextInput blurOnSubmit defaultValue="12345" multiline onSubmitEditing={onSubmitEditing} />
+        <TextInput
+          blurOnSubmit
+          defaultValue="12345"
+          multiline
+          onSubmitEditing={onSubmitEditing}
+        />,
       )
       const textarea = findTextArea(container)
-      textarea.dispatchEvent(keydown({ key: 'Enter', preventDefault, shiftKey: true }))
+      textarea.dispatchEvent(
+        keydown({ key: 'Enter', preventDefault, shiftKey: true }),
+      )
       // shift+enter should enter newline, not submit
-      expect(onSubmitEditing).not.toHaveBeenCalledWith(expect.objectContaining({ shiftKey: true }))
+      expect(onSubmitEditing).not.toHaveBeenCalledWith(
+        expect.objectContaining({ shiftKey: true }),
+      )
       expect(preventDefault).not.toHaveBeenCalled()
 
       textarea.dispatchEvent(keydown({ key: 'Enter', preventDefault }))
@@ -612,14 +630,16 @@ describe('components/TextInput', () => {
   describe('prop "selection"', () => {
     test('set cursor location', () => {
       const cursorLocation = { start: 3, end: 3 }
-      const { container: defaultContainer } = render(<TextInput defaultValue="12345" />)
+      const { container: defaultContainer } = render(
+        <TextInput defaultValue="12345" />,
+      )
       const inputDefaultSelection = findInput(defaultContainer)
       // default selection is at the end
       expect(inputDefaultSelection.selectionStart).toEqual(5)
       expect(inputDefaultSelection.selectionEnd).toEqual(5)
 
       const { container: customContainer } = render(
-        <TextInput defaultValue="12345" selection={cursorLocation} />
+        <TextInput defaultValue="12345" selection={cursorLocation} />,
       )
       const inputCustomSelection = findInput(customContainer)
       // custom selection sets cursor at custom position

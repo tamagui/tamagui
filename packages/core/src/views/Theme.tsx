@@ -14,10 +14,13 @@ export function Theme(props: ThemeProps) {
   }
 
   const isRoot = !!props['_isRoot']
-  const { name, theme, themeManager, isNewTheme, className } = useChangeThemeEffect(props, isRoot)
+  const { name, theme, themeManager, isNewTheme, className } = useChangeThemeEffect(
+    props,
+    isRoot
+  )
 
   const disableThemeClass = props.disableThemeClass
-  const missingTheme = !name || !theme
+  const missingTheme = !(name && theme)
 
   // memo here, changing theme without re-rendering all children is a critical optimization
   // may require some effort of end user to memoize but without this memo they'd have no option
@@ -73,5 +76,9 @@ export function wrapThemeManagerContext(
   if (shouldReset && themeManager) {
     next = <Theme name={themeManager.state.parentName}>{next}</Theme>
   }
-  return <ThemeManagerContext.Provider value={themeManager}>{next}</ThemeManagerContext.Provider>
+  return (
+    <ThemeManagerContext.Provider value={themeManager}>
+      {next}
+    </ThemeManagerContext.Provider>
+  )
 }

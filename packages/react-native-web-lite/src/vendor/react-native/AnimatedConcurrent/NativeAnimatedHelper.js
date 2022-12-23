@@ -99,7 +99,10 @@ const API = {
   setWaitingForIdentifier: function (id) {
     waitingForQueuedOperations.add(id)
     queueOperations = true
-    if (ReactNativeFeatureFlags.animatedShouldDebounceQueueFlush() && flushQueueTimeout) {
+    if (
+      ReactNativeFeatureFlags.animatedShouldDebounceQueueFlush() &&
+      flushQueueTimeout
+    ) {
       clearTimeout(flushQueueTimeout)
     }
   },
@@ -126,7 +129,7 @@ const API = {
     // TODO: (T136971132)
     invariant(
       NativeAnimatedModule || process.env.NODE_ENV === 'test',
-      'Native animated module is not available'
+      'Native animated module is not available',
     )
     flushQueueTimeout = null
 
@@ -140,7 +143,10 @@ const API = {
 
     if (useSingleOpBatching) {
       // Set up event listener for callbacks if it's not set up
-      if (!globalEventEmitterGetValueListener || !globalEventEmitterAnimationFinishedListener) {
+      if (
+        !globalEventEmitterGetValueListener ||
+        !globalEventEmitterAnimationFinishedListener
+      ) {
         setupGlobalEventEmitterListeners()
       }
       // Single op batching doesn't use callback functions, instead we
@@ -214,10 +220,16 @@ const API = {
         nativeOps.startAnimatingNode,
         animationId,
         nodeTag,
-        config
+        config,
       )
     } else {
-      API.queueOperation(nativeOps.startAnimatingNode, animationId, nodeTag, config, endCallback)
+      API.queueOperation(
+        nativeOps.startAnimatingNode,
+        animationId,
+        nodeTag,
+        config,
+        endCallback,
+      )
     }
   },
   stopAnimation: function (animationId) {
@@ -261,11 +273,21 @@ const API = {
   },
   addAnimatedEventToView: function (viewTag, eventName, eventMapping) {
     invariant(nativeOps, 'Native animated module is not available')
-    API.queueOperation(nativeOps.addAnimatedEventToView, viewTag, eventName, eventMapping)
+    API.queueOperation(
+      nativeOps.addAnimatedEventToView,
+      viewTag,
+      eventName,
+      eventMapping,
+    )
   },
   removeAnimatedEventFromView(viewTag, eventName, animatedNodeTag) {
     invariant(nativeOps, 'Native animated module is not available')
-    API.queueOperation(nativeOps.removeAnimatedEventFromView, viewTag, eventName, animatedNodeTag)
+    API.queueOperation(
+      nativeOps.removeAnimatedEventFromView,
+      viewTag,
+      eventName,
+      animatedNodeTag,
+    )
   },
 }
 
@@ -280,7 +302,7 @@ function setupGlobalEventEmitterListeners() {
       }
       callback(params.value)
       delete eventListenerGetValueCallbacks[tag]
-    }
+    },
   )
   globalEventEmitterAnimationFinishedListener = RCTDeviceEventEmitter.addListener(
     'onNativeAnimatedModuleAnimationFinished',
@@ -292,7 +314,7 @@ function setupGlobalEventEmitterListeners() {
       }
       callback(params)
       delete eventListenerAnimationFinishedCallbacks[animationId]
-    }
+    },
   )
 }
 
@@ -395,7 +417,9 @@ function isSupportedInterpolationParam(param) {
 function validateTransform(configs) {
   configs.forEach((config) => {
     if (!isSupportedTransformProp(config.property)) {
-      throw new Error(`Property '${config.property}' is not supported by native animated module`)
+      throw new Error(
+        `Property '${config.property}' is not supported by native animated module`,
+      )
     }
   })
 }
@@ -403,7 +427,9 @@ function validateTransform(configs) {
 function validateStyles(styles) {
   for (const key in styles) {
     if (!isSupportedStyleProp(key)) {
-      throw new Error(`Style property '${key}' is not supported by native animated module`)
+      throw new Error(
+        `Style property '${key}' is not supported by native animated module`,
+      )
     }
   }
 }
@@ -411,7 +437,9 @@ function validateStyles(styles) {
 function validateInterpolation(config) {
   for (const key in config) {
     if (!isSupportedInterpolationParam(key)) {
-      throw new Error(`Interpolation property '${key}' is not supported by native animated module`)
+      throw new Error(
+        `Interpolation property '${key}' is not supported by native animated module`,
+      )
     }
   }
 }
@@ -434,7 +462,7 @@ function shouldUseNativeDriver(config) {
   if (config.useNativeDriver == null) {
     console.warn(
       'Animated: `useNativeDriver` was not specified. This is a required ' +
-        'option and must be explicitly set to `true` or `false`'
+        'option and must be explicitly set to `true` or `false`',
     )
   }
 
@@ -446,7 +474,7 @@ function shouldUseNativeDriver(config) {
             'animated module is missing. Falling back to JS-based animation. To ' +
             'resolve this, add `RCTAnimation` module to this app, or remove ' +
             '`useNativeDriver`. ' +
-            'Make sure to run `bundle exec pod install` first. Read more about autolinking: https://github.com/react-native-community/cli/blob/master/docs/autolinking.md'
+            'Make sure to run `bundle exec pod install` first. Read more about autolinking: https://github.com/react-native-community/cli/blob/master/docs/autolinking.md',
         )
         _warnedMissingNativeAnimated = true
       }
@@ -496,7 +524,7 @@ export default {
       nativeEventEmitter = new NativeEventEmitter(
         // T88715063: NativeEventEmitter only used this parameter on iOS. Now it uses it on all platforms, so this code was modified automatically to preserve its behavior
         // If you want to use the native module on other platforms, please remove this condition and test its behavior
-        Platform.OS !== 'ios' ? null : NativeAnimatedModule
+        Platform.OS !== 'ios' ? null : NativeAnimatedModule,
       )
     }
     return nativeEventEmitter

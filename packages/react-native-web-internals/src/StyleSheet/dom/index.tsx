@@ -30,7 +30,7 @@ const initialRules = [
   'input::-webkit-search-cancel-button,input::-webkit-search-decoration,input::-webkit-search-results-button,input::-webkit-search-results-decoration{display:none;}',
 ]
 
-export function createSheet(root?: HTMLElement, id?: string = defaultId): Sheet {
+export function createSheet(root?: HTMLElement, id = defaultId): Sheet {
   let sheet
 
   if (canUseDOM) {
@@ -50,7 +50,9 @@ export function createSheet(root?: HTMLElement, id?: string = defaultId): Sheet 
         // If we're creating a new sheet, populate it with existing styles
         const textContent = initialSheet != null ? initialSheet.getTextContent() : ''
         // Cast rootNode to 'any' because Flow types for getRootNode are wrong
-        sheet = createOrderedCSSStyleSheet(createCSSStyleSheet(id, rootNode as any, textContent))
+        sheet = createOrderedCSSStyleSheet(
+          createCSSStyleSheet(id, rootNode as any, textContent),
+        )
         roots.set(rootNode, sheets.length)
         sheets.push(sheet)
       } else {

@@ -12,7 +12,9 @@ interface DirectionProviderProps {
 
 export const DirectionProvider: React.FC<DirectionProviderProps> = (props) => {
   const { dir, children } = props
-  return <DirectionContext.Provider value={dir}>{children}</DirectionContext.Provider>
+  return (
+    <DirectionContext.Provider value={dir}>{children}</DirectionContext.Provider>
+  )
 }
 
 export function useDirection(localDir?: Direction) {

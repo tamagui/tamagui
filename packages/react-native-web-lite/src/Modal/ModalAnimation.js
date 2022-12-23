@@ -59,7 +59,7 @@ function ModalAnimation(props) {
         }
       }
     },
-    [onDismiss, onShow, visible]
+    [onDismiss, onShow, visible],
   )
   React.useEffect(() => {
     if (visible) {
@@ -75,7 +75,9 @@ function ModalAnimation(props) {
   }, [isAnimated, visible, animationEndCallback])
   return isRendering || visible
     ? createElement('div', {
-        style: isRendering ? getAnimationStyle(animationType, visible) : styles.hidden,
+        style: isRendering
+          ? getAnimationStyle(animationType, visible)
+          : styles.hidden,
         onAnimationEnd: animationEndCallback,
         children,
       })

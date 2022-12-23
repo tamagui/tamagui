@@ -14,9 +14,10 @@ export function focusableInputHOC<A extends TamaguiComponent>(Component: A): A {
           value?: string
           defaultValue?: string
         },
-        ref
+        ref,
       ) => {
-        const isInput = isTamaguiComponent(Component) && Component.staticConfig.isInput
+        const isInput =
+          isTamaguiComponent(Component) && Component.staticConfig.isInput
         const inputValue = useRef(props.value || props.defaultValue || '')
 
         const inputRef = useCallback(
@@ -37,7 +38,7 @@ export function focusableInputHOC<A extends TamaguiComponent>(Component: A): A {
               }),
             })
           },
-          [isInput, props.id]
+          [isInput, props.id],
         )
 
         const combinedRefs = composeRefs(ref, inputRef)
@@ -63,8 +64,8 @@ export function focusableInputHOC<A extends TamaguiComponent>(Component: A): A {
 
         // @ts-expect-error
         return <Component ref={combinedRefs} {...finalProps} />
-      }
-    )
+      },
+    ),
   ) as any
 
   return component

@@ -1,4 +1,9 @@
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from '@tamagui/lucide-icons'
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+} from '@tamagui/lucide-icons'
 import { Adapt, Button, Input, Label, Popover, PopoverProps, XStack } from 'tamagui'
 
 export function PopoverDemo() {

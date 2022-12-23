@@ -1,6 +1,9 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useState } from 'react'
-import { ScaledSize, useWindowDimensions as useWindowDimensionsRN } from 'react-native'
+import {
+  ScaledSize,
+  useWindowDimensions as useWindowDimensionsRN,
+} from 'react-native'
 
 /**
  * SSR safe useWindowDimensions

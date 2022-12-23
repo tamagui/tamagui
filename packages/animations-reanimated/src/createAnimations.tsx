@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'development') {
   if (FlatList?.['_isProxyWorm']) {
     // eslint-disable-next-line no-console
     console.warn(
-      `Using reanimated with excludeReactNativeWebExports including FlatList, adjust your next.config.js, reanimated currently doesn't support tree-shaking and needs *List components around.`
+      `Using reanimated with excludeReactNativeWebExports including FlatList, adjust your next.config.js, reanimated currently doesn't support tree-shaking and needs *List components around.`,
     )
   }
 }
@@ -37,9 +37,24 @@ type AnimationsConfig<A extends Object = any> = {
 }
 
 type AnimationConfig =
-  | ({ type: 'timing'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithTimingConfig)
-  | ({ type: 'spring'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithSpringConfig)
-  | ({ type: 'decay'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithDecayConfig)
+  | ({
+      type: 'timing'
+      loop?: number
+      repeat?: number
+      repeatReverse?: boolean
+    } & WithTimingConfig)
+  | ({
+      type: 'spring'
+      loop?: number
+      repeat?: number
+      repeatReverse?: boolean
+    } & WithSpringConfig)
+  | ({
+      type: 'decay'
+      loop?: number
+      repeat?: number
+      repeatReverse?: boolean
+    } & WithDecayConfig)
 
 const animatedStyleKey = {
   transform: true,
@@ -48,7 +63,9 @@ const animatedStyleKey = {
   // color: true,
 }
 
-export function createAnimations<A extends AnimationsConfig>(animations: A): AnimationDriver<A> {
+export function createAnimations<A extends AnimationsConfig>(
+  animations: A,
+): AnimationDriver<A> {
   const AnimatedView = Animated.View
   const AnimatedText = Animated.Text
 
@@ -72,9 +89,11 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
     useAnimations: ({ props, style, presence, pseudos, onDidAnimate, delay }) => {
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
-      const reanimatedOnDidAnimated = useEvent<NonNullable<typeof onDidAnimate>>((...args) => {
-        onDidAnimate?.(...args)
-      })
+      const reanimatedOnDidAnimated = useEvent<NonNullable<typeof onDidAnimate>>(
+        (...args) => {
+          onDidAnimate?.(...args)
+        },
+      )
 
       const all = style
 
@@ -103,7 +122,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         isExiting: boolean,
         exitingStyleProps: Record<string, boolean>,
         key: string,
-        value: any
+        value: any,
       ) => {
         'worklet'
         return (completed: boolean | undefined, current: any) => {
@@ -156,12 +175,13 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
 
         for (const key in style) {
           const value = style[key]
-          const animationConfig = getAnimationConfig(key, animations, props.animation)
-          const { animation, config, shouldRepeat, repeatCount, repeatReverse } = getAnimation(
+          const animationConfig = getAnimationConfig(
             key,
-            animationConfig,
-            props.animateOnly
+            animations,
+            props.animation,
           )
+          const { animation, config, shouldRepeat, repeatCount, repeatReverse } =
+            getAnimation(key, animationConfig, props.animateOnly)
 
           const { delayMs = null } = animationDelay(key, animationConfig, delay)
 
@@ -189,7 +209,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
               let finalValue = animation(
                 transformValue,
                 config as any,
-                callback(isExiting, exitingStyleProps, key, value)
+                callback(isExiting, exitingStyleProps, key, value),
               )
               if (shouldRepeat) {
                 finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
@@ -208,7 +228,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
               let finalValue = animation(
                 value,
                 config as any,
-                callback(isExiting, exitingStyleProps, key, value)
+                callback(isExiting, exitingStyleProps, key, value),
               )
               if (shouldRepeat) {
                 finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
@@ -225,7 +245,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
           let finalValue = animation(
             value,
             config as any,
-            callback(isExiting, exitingStyleProps, key, value)
+            callback(isExiting, exitingStyleProps, key, value),
           )
           if (shouldRepeat) {
             finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
@@ -252,7 +272,11 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
   }
 }
 
-function getAnimationConfig(key: string, animations: AnimationsConfig, animation?: AnimationProp) {
+function getAnimationConfig(
+  key: string,
+  animations: AnimationsConfig,
+  animation?: AnimationProp,
+) {
   'worklet'
   if (typeof animation === 'string') {
     return animations[animation]
@@ -289,7 +313,7 @@ function getAnimationConfig(key: string, animations: AnimationsConfig, animation
 function animationDelay(
   key: string,
   animation: AnimationConfig | undefined,
-  defaultDelay?: number
+  defaultDelay?: number,
 ) {
   'worklet'
   if (
@@ -366,7 +390,7 @@ const isColor = (styleKey: string) => {
 function getAnimation(
   key: string,
   animationConfig: AnimationConfig | undefined,
-  animateOnly?: string[]
+  animateOnly?: string[],
 ) {
   'worklet'
   if (!animationConfig || (animateOnly && !animateOnly.includes(key))) {
@@ -375,7 +399,8 @@ function getAnimation(
 
   let repeatCount = 0
   const repeatReverse = animationConfig.repeatReverse || false
-  let animationType: Required<TransitionConfig>['type'] = animationConfig?.type || 'spring'
+  let animationType: Required<TransitionConfig>['type'] =
+    animationConfig?.type || 'spring'
 
   if (isColor(key) || key === 'opacity') {
     animationType = 'timing'

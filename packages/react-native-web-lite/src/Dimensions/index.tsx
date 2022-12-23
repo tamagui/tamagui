@@ -97,7 +97,7 @@ export default class Dimensions {
 
   static addEventListener(
     type: DimensionEventListenerType,
-    handler: (dimensionsValue: DimensionsValue) => void
+    handler: (dimensionsValue: DimensionsValue) => void,
   ) {
     listeners[type] = listeners[type] || []
     listeners[type].push(handler)
@@ -111,7 +111,7 @@ export default class Dimensions {
 
   static removeEventListener(
     type: DimensionEventListenerType,
-    handler: (dimensionsValue: DimensionsValue) => void
+    handler: (dimensionsValue: DimensionsValue) => void,
   ): void {
     if (Array.isArray(listeners[type])) {
       listeners[type] = listeners[type].filter((_handler) => _handler !== handler)

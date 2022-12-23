@@ -23,7 +23,7 @@ export type ThemeManagerState = {
 const emptyState: ThemeManagerState = { name: '' }
 
 export function hasNoThemeUpdatingProps(props: ThemeProps) {
-  return !props.name && !props.componentName && !props.inverse && !props.reset
+  return !(props.name || props.componentName || props.inverse || props.reset)
 }
 
 export class ThemeManager {
@@ -40,7 +40,7 @@ export class ThemeManager {
       return
     }
     if (!parentManager) {
-      throw new Error(`Must set up root first`)
+      throw new Error('Must set up root first')
     }
     // no change no props
     if (hasNoThemeUpdatingProps(props)) {
@@ -57,7 +57,10 @@ export class ThemeManager {
     return parentManager || this
   }
 
-  updateState(props: ThemeProps & { forceTheme?: ThemeParsed } = this.props || {}, notify = true) {
+  updateState(
+    props: ThemeProps & { forceTheme?: ThemeParsed } = this.props || {},
+    notify = true
+  ) {
     const shouldFlush = (() => {
       if (props.forceTheme) {
         this.state.theme = props.forceTheme
@@ -97,7 +100,7 @@ export class ThemeManager {
     nextState: ThemeManagerState | null,
     state: ThemeManagerState | null = this.state
   ) {
-    if (!nextState || !nextState.theme || nextState.theme === state?.theme) {
+    if (!nextState?.theme || nextState.theme === state?.theme) {
       return null
     }
     return nextState
@@ -166,22 +169,25 @@ function getState(
   const themes = getThemes()
 
   if (props.name && props.reset) {
-    throw new Error(`Cannot reset + set new name`)
+    throw new Error('Cannot reset + set new name')
   }
   if (props.reset && !parentManager?.parentManager) {
-    throw new Error(`Cannot reset no grandparent exists`)
+    throw new Error('Cannot reset no grandparent exists')
   }
 
   let result: ThemeManagerState | null = null
 
-  const nextName = props.reset ? parentManager?.parentManager?.state?.name || '' : props.name || ''
+  const nextName = props.reset
+    ? parentManager?.parentManager?.state?.name || ''
+    : props.name || ''
   const { componentName } = props
   const parentName = parentManager?.state?.name || ''
 
   // components look for most specific, fallback upwards
   const base = parentName.split(THEME_NAME_SEPARATOR)
   const lastSegment = base[base.length - 1]
-  const isParentAComponentTheme = parentName && lastSegment[0].toUpperCase() === lastSegment[0]
+  const isParentAComponentTheme =
+    parentName && lastSegment[0].toUpperCase() === lastSegment[0]
   if (isParentAComponentTheme) {
     base.pop() // always remove componentName they can't nest
   }
@@ -194,9 +200,22 @@ function getState(
       ? max // component name only don't search upwards
       : 0
 
-  // prettier-ignore
-  // eslint-disable-next-line no-console
-  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') [console.groupCollapsed('ThemeManager.getState()', props, { parentName, parentBaseTheme, base, min, max, isParentAComponentTheme }), console.trace(), console.groupEnd()]
+  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose')
+    [
+      // eslint-disable-next-line no-console
+      console.groupCollapsed('ThemeManager.getState()', props, {
+        parentName,
+        parentBaseTheme,
+        base,
+        min,
+        max,
+        isParentAComponentTheme,
+      }),
+      // eslint-disable-next-line no-console
+      console.trace(),
+      // eslint-disable-next-line no-console
+      console.groupEnd(),
+    ]
 
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
@@ -220,7 +239,10 @@ function getState(
       // components only look for component themes
       if (nextName) {
         potentials.push(
-          `${prefix.slice(0, prefix.indexOf(THEME_NAME_SEPARATOR))}_${nextName}_${componentName}`
+          `${prefix.slice(
+            0,
+            prefix.indexOf(THEME_NAME_SEPARATOR)
+          )}_${nextName}_${componentName}`
         )
       }
       potentials.push(`${prefix}_${componentName}`)
@@ -231,9 +253,9 @@ function getState(
 
     const found = potentials.find((t) => t in themes)
 
-    // prettier-ignore
     // eslint-disable-next-line no-console
-    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log('getState found', found, 'from', potentials, 'parentName',parentName)
+    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose')
+      console.log('getState found', found, 'from', potentials, 'parentName', parentName)
 
     if (found) {
       // optimization return null if not changed

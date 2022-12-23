@@ -59,7 +59,7 @@ describe('apis/UIManager', () => {
       const props = { style: { marginTop: 0, marginBottom: 0, opacity: 0 } }
       UIManager.updateView(node, props, componentStub)
       expect(node.getAttribute('style')).toEqual(
-        'color: red; margin-top: 0px; margin-bottom: 0px; opacity: 0;'
+        'color: red; margin-top: 0px; margin-bottom: 0px; opacity: 0;',
       )
     })
 

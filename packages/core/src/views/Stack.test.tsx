@@ -23,7 +23,7 @@ const TestStackRenders = ({
 }
 
 describe('Stack', () => {
-  test(`renders once`, async () => {
+  test('renders once', async () => {
     const renderCount = { current: 0 }
     render(<TestStackRenders renderCount={renderCount} />)
     expect(renderCount.current).toBe(1)

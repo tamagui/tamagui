@@ -16,12 +16,12 @@ export async function getDefaultTamaguiConfigPath({
     return cachedPath
   }
 
-  const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')].map((p) =>
-    join(cwd, p)
+  const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')].map(
+    (p) => join(cwd, p),
   )
-  const existing = (await Promise.all(defaultPaths.map((path) => pathExists(path)))).findIndex(
-    (x) => !!x
-  )
+  const existing = (
+    await Promise.all(defaultPaths.map((path) => pathExists(path)))
+  ).findIndex((x) => !!x)
   const found = defaultPaths[existing]
   if (!found) {
     throw new Error(`No found tamagui.config.ts`)

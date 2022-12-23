@@ -9,25 +9,23 @@ on:
       - master
 
 jobs:
-  check:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: Install
         uses: ./.github/actions/install
       - name: Check
         run: yarn check
+      - name: Lint
+        run: yarn lint
 
-  test:
+  tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Install
         uses: ./.github/actions/install
@@ -40,15 +38,3 @@ jobs:
           timeout_minutes: 15
           max_attempts: 3
           command: 'yarn test'
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Install
-        uses: ./.github/actions/install
-      - name: Lint
-        run: yarn lint

@@ -33,14 +33,28 @@ export type AccessibilityProps = {
   accessibilityColumnIndex?: number | null
   accessibilityColumnSpan?: number | null
   accessibilityControls?: idRefList | null
-  accessibilityCurrent?: boolean | 'page' | 'step' | 'location' | 'date' | 'time' | null
+  accessibilityCurrent?:
+    | boolean
+    | 'page'
+    | 'step'
+    | 'location'
+    | 'date'
+    | 'time'
+    | null
   accessibilityDescribedBy?: idRefList | null
   accessibilityDetails?: idRef | null
   accessibilityDisabled?: boolean | null
   accessibilityErrorMessage?: idRef | null
   accessibilityExpanded?: boolean | null
   accessibilityFlowTo?: idRefList | null
-  accessibilityHasPopup?: 'dialog' | 'grid' | 'listbox' | 'menu' | 'tree' | false | null
+  accessibilityHasPopup?:
+    | 'dialog'
+    | 'grid'
+    | 'listbox'
+    | 'menu'
+    | 'tree'
+    | false
+    | null
   accessibilityHidden?: boolean | null
   accessibilityInvalid?: boolean | null
   accessibilityKeyShortcuts?: Array<string> | null

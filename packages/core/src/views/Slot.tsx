@@ -2,7 +2,14 @@
 
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import { Children, ReactElement, ReactNode, cloneElement, forwardRef, isValidElement } from 'react'
+import {
+  Children,
+  ReactElement,
+  ReactNode,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+} from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * Slot
@@ -26,7 +33,9 @@ export const Slot = forwardRef<HTMLElement, SlotProps>((props, forwardedRef) => 
         // because the new element will be the one rendered, we are only interested
         // in grabbing its children (`newElement.props.children`)
         if (Children.count(newElement) > 1) return Children.only(null)
-        return isValidElement(newElement) ? (newElement.props.children as ReactNode) : null
+        return isValidElement(newElement)
+          ? (newElement.props.children as ReactNode)
+          : null
       } else {
         return child
       }
@@ -34,7 +43,9 @@ export const Slot = forwardRef<HTMLElement, SlotProps>((props, forwardedRef) => 
 
     return (
       <SlotClone {...slotProps} ref={forwardedRef}>
-        {isValidElement(newElement) ? cloneElement(newElement, undefined, newChildren) : null}
+        {isValidElement(newElement)
+          ? cloneElement(newElement, undefined, newChildren)
+          : null}
       </SlotClone>
     )
   }

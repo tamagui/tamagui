@@ -108,7 +108,10 @@ export default class AnimatedNode {
   }
 
   _startListeningToNativeValueUpdates() {
-    if (this.__nativeAnimatedValueListener && !this.__shouldUpdateListenersForNewNativeTag) {
+    if (
+      this.__nativeAnimatedValueListener &&
+      !this.__shouldUpdateListenersForNewNativeTag
+    ) {
       return
     }
 
@@ -118,15 +121,16 @@ export default class AnimatedNode {
     }
 
     NativeAnimatedAPI.startListeningToAnimatedNodeValue(this.__getNativeTag())
-    this.__nativeAnimatedValueListener = NativeAnimatedHelper.nativeEventEmitter.addListener(
-      'onAnimatedValueUpdate',
-      (data) => {
-        if (data.tag !== this.__getNativeTag()) {
-          return
-        }
-        this.__onAnimatedValueUpdateReceived(data.value)
-      }
-    )
+    this.__nativeAnimatedValueListener =
+      NativeAnimatedHelper.nativeEventEmitter.addListener(
+        'onAnimatedValueUpdate',
+        (data) => {
+          if (data.tag !== this.__getNativeTag()) {
+            return
+          }
+          this.__onAnimatedValueUpdateReceived(data.value)
+        },
+      )
   }
 
   __onAnimatedValueUpdateReceived(value) {
@@ -151,7 +155,10 @@ export default class AnimatedNode {
 
   __getNativeTag() {
     NativeAnimatedHelper.assertNativeAnimatedModule()
-    invariant(this.__isNative, 'Attempt to get native tag from node not marked as "native"')
+    invariant(
+      this.__isNative,
+      'Attempt to get native tag from node not marked as "native"',
+    )
 
     const nativeTag = this.__nativeTag ?? NativeAnimatedHelper.generateNewNodeTag()
 
@@ -168,7 +175,9 @@ export default class AnimatedNode {
     return nativeTag
   }
   __getNativeConfig() {
-    throw new Error('This JS animated node type cannot be used as native animated node')
+    throw new Error(
+      'This JS animated node type cannot be used as native animated node',
+    )
   }
 
   toJSON() {

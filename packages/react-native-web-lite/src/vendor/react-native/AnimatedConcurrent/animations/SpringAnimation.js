@@ -4,117 +4,54 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *      
+ *
  * @format
  */
 
-'use strict';
+'use strict'
 
-                                                              
-                                                                        
-                                                        
-                                                            
-                                                              
-
-import NativeAnimatedHelper from '../NativeAnimatedHelper.js';
-import * as SpringConfig from '../SpringConfig.js';
-import Animation from './Animation.js';
-import invariant from 'invariant';
-
-                                     
-                     
-          
-            
-                   
-       
-                  
-                  
-           
-       
-                     
-       
-                  
-                  
-                  
-                  
-           
-       
-                   
-                                    
-                              
-                                     
-                              
-            
-            
-       
-                  
-                  
-           
-        
-                      
-                 
-                   
-                    
-                     
-                   
-                
-                 
-  
-
-                                           
-                     
-                  
-                              
-                                     
-                              
-                    
-                      
-                 
-                   
-                    
-                     
-                   
-                
-                 
-  
+import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
+import * as SpringConfig from '../SpringConfig.js'
+import Animation from './Animation.js'
+import invariant from 'invariant'
 
 export default class SpringAnimation extends Animation {
-  _overshootClamping         ;
-  _restDisplacementThreshold        ;
-  _restSpeedThreshold        ;
-  _lastVelocity        ;
-  _startPosition        ;
-  _lastPosition        ;
-  _fromValue        ;
-  _toValue        ;
-  _stiffness        ;
-  _damping        ;
-  _mass        ;
-  _initialVelocity        ;
-  _delay        ;
-  _timeout     ;
-  _startTime        ;
-  _lastTime        ;
-  _frameTime        ;
-  _onUpdate                         ;
-  _animationFrame     ;
-  _useNativeDriver         ;
-  _platformConfig                 ;
+  _overshootClamping
+  _restDisplacementThreshold
+  _restSpeedThreshold
+  _lastVelocity
+  _startPosition
+  _lastPosition
+  _fromValue
+  _toValue
+  _stiffness
+  _damping
+  _mass
+  _initialVelocity
+  _delay
+  _timeout
+  _startTime
+  _lastTime
+  _frameTime
+  _onUpdate
+  _animationFrame
+  _useNativeDriver
+  _platformConfig
 
-  constructor(config                             ) {
-    super();
+  constructor(config) {
+    super()
 
-    this._overshootClamping = config.overshootClamping ?? false;
-    this._restDisplacementThreshold = config.restDisplacementThreshold ?? 0.001;
-    this._restSpeedThreshold = config.restSpeedThreshold ?? 0.001;
-    this._initialVelocity = config.velocity ?? 0;
-    this._lastVelocity = config.velocity ?? 0;
-    this._toValue = config.toValue;
-    this._delay = config.delay ?? 0;
-    this._useNativeDriver = NativeAnimatedHelper.shouldUseNativeDriver(config);
-    this._platformConfig = config.platformConfig;
-    this.__isInteraction = config.isInteraction ?? !this._useNativeDriver;
-    this.__iterations = config.iterations ?? 1;
+    this._overshootClamping = config.overshootClamping ?? false
+    this._restDisplacementThreshold = config.restDisplacementThreshold ?? 0.001
+    this._restSpeedThreshold = config.restSpeedThreshold ?? 0.001
+    this._initialVelocity = config.velocity ?? 0
+    this._lastVelocity = config.velocity ?? 0
+    this._toValue = config.toValue
+    this._delay = config.delay ?? 0
+    this._useNativeDriver = NativeAnimatedHelper.shouldUseNativeDriver(config)
+    this._platformConfig = config.platformConfig
+    this.__isInteraction = config.isInteraction ?? !this._useNativeDriver
+    this.__iterations = config.iterations ?? 1
 
     if (
       config.stiffness !== undefined ||
@@ -127,10 +64,10 @@ export default class SpringAnimation extends Animation {
           config.tension === undefined &&
           config.friction === undefined,
         'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one',
-      );
-      this._stiffness = config.stiffness ?? 100;
-      this._damping = config.damping ?? 10;
-      this._mass = config.mass ?? 1;
+      )
+      this._stiffness = config.stiffness ?? 100
+      this._damping = config.damping ?? 10
+      this._mass = config.mass ?? 1
     } else if (config.bounciness !== undefined || config.speed !== undefined) {
       // Convert the origami bounciness/speed values to stiffness/damping
       // We assume mass is 1.
@@ -141,44 +78,32 @@ export default class SpringAnimation extends Animation {
           config.damping === undefined &&
           config.mass === undefined,
         'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one',
-      );
+      )
       const springConfig = SpringConfig.fromBouncinessAndSpeed(
         config.bounciness ?? 8,
         config.speed ?? 12,
-      );
-      this._stiffness = springConfig.stiffness;
-      this._damping = springConfig.damping;
-      this._mass = 1;
+      )
+      this._stiffness = springConfig.stiffness
+      this._damping = springConfig.damping
+      this._mass = 1
     } else {
       // Convert the origami tension/friction values to stiffness/damping
       // We assume mass is 1.
       const springConfig = SpringConfig.fromOrigamiTensionAndFriction(
         config.tension ?? 40,
         config.friction ?? 7,
-      );
-      this._stiffness = springConfig.stiffness;
-      this._damping = springConfig.damping;
-      this._mass = 1;
+      )
+      this._stiffness = springConfig.stiffness
+      this._damping = springConfig.damping
+      this._mass = 1
     }
 
-    invariant(this._stiffness > 0, 'Stiffness value must be greater than 0');
-    invariant(this._damping > 0, 'Damping value must be greater than 0');
-    invariant(this._mass > 0, 'Mass value must be greater than 0');
+    invariant(this._stiffness > 0, 'Stiffness value must be greater than 0')
+    invariant(this._damping > 0, 'Damping value must be greater than 0')
+    invariant(this._mass > 0, 'Mass value must be greater than 0')
   }
 
-  __getNativeAnimationConfig()    
-                    
-                            
-                       
-                 
-                                    
-                               
-                                      
-                               
-                      
-                 
-                                      
-     {
+  __getNativeAnimationConfig() {
     return {
       type: 'spring',
       overshootClamping: this._overshootClamping,
@@ -191,56 +116,50 @@ export default class SpringAnimation extends Animation {
       toValue: this._toValue,
       iterations: this.__iterations,
       platformConfig: this._platformConfig,
-    };
+    }
   }
 
-  start(
-    fromValue        ,
-    onUpdate                         ,
-    onEnd              ,
-    previousAnimation            ,
-    animatedValue               ,
-  )       {
-    this.__active = true;
-    this._startPosition = fromValue;
-    this._lastPosition = this._startPosition;
+  start(fromValue, onUpdate, onEnd, previousAnimation, animatedValue) {
+    this.__active = true
+    this._startPosition = fromValue
+    this._lastPosition = this._startPosition
 
-    this._onUpdate = onUpdate;
-    this.__onEnd = onEnd;
-    this._lastTime = Date.now();
-    this._frameTime = 0.0;
+    this._onUpdate = onUpdate
+    this.__onEnd = onEnd
+    this._lastTime = Date.now()
+    this._frameTime = 0.0
 
     if (previousAnimation instanceof SpringAnimation) {
-      const internalState = previousAnimation.getInternalState();
-      this._lastPosition = internalState.lastPosition;
-      this._lastVelocity = internalState.lastVelocity;
+      const internalState = previousAnimation.getInternalState()
+      this._lastPosition = internalState.lastPosition
+      this._lastVelocity = internalState.lastVelocity
       // Set the initial velocity to the last velocity
-      this._initialVelocity = this._lastVelocity;
-      this._lastTime = internalState.lastTime;
+      this._initialVelocity = this._lastVelocity
+      this._lastTime = internalState.lastTime
     }
 
     const start = () => {
       if (this._useNativeDriver) {
-        this.__startNativeAnimation(animatedValue);
+        this.__startNativeAnimation(animatedValue)
       } else {
-        this.onUpdate();
+        this.onUpdate()
       }
-    };
+    }
 
     //  If this._delay is more than 0, we start after the timeout.
     if (this._delay) {
-      this._timeout = setTimeout(start, this._delay);
+      this._timeout = setTimeout(start, this._delay)
     } else {
-      start();
+      start()
     }
   }
 
-  getInternalState()         {
+  getInternalState() {
     return {
       lastPosition: this._lastPosition,
       lastVelocity: this._lastVelocity,
       lastTime: this._lastTime,
-    };
+    }
   }
 
   /**
@@ -264,41 +183,41 @@ export default class SpringAnimation extends Animation {
    * This algorithm happens to match the algorithm used by CASpringAnimation,
    * a QuartzCore (iOS) API that creates spring animations.
    */
-  onUpdate()       {
+  onUpdate() {
     // If for some reason we lost a lot of frames (e.g. process large payload or
     // stopped in the debugger), we only advance by 4 frames worth of
     // computation and will continue on the next frame. It's better to have it
     // running at faster speed than jumping to the end.
-    const MAX_STEPS = 64;
-    let now = Date.now();
+    const MAX_STEPS = 64
+    let now = Date.now()
     if (now > this._lastTime + MAX_STEPS) {
-      now = this._lastTime + MAX_STEPS;
+      now = this._lastTime + MAX_STEPS
     }
 
-    const deltaTime = (now - this._lastTime) / 1000;
-    this._frameTime += deltaTime;
+    const deltaTime = (now - this._lastTime) / 1000
+    this._frameTime += deltaTime
 
-    const c         = this._damping;
-    const m         = this._mass;
-    const k         = this._stiffness;
-    const v0         = -this._initialVelocity;
+    const c = this._damping
+    const m = this._mass
+    const k = this._stiffness
+    const v0 = -this._initialVelocity
 
-    const zeta = c / (2 * Math.sqrt(k * m)); // damping ratio
-    const omega0 = Math.sqrt(k / m); // undamped angular frequency of the oscillator (rad/ms)
-    const omega1 = omega0 * Math.sqrt(1.0 - zeta * zeta); // exponential decay
-    const x0 = this._toValue - this._startPosition; // calculate the oscillation from x0 = 1 to x = 0
+    const zeta = c / (2 * Math.sqrt(k * m)) // damping ratio
+    const omega0 = Math.sqrt(k / m) // undamped angular frequency of the oscillator (rad/ms)
+    const omega1 = omega0 * Math.sqrt(1.0 - zeta * zeta) // exponential decay
+    const x0 = this._toValue - this._startPosition // calculate the oscillation from x0 = 1 to x = 0
 
-    let position = 0.0;
-    let velocity = 0.0;
-    const t = this._frameTime;
+    let position = 0.0
+    let velocity = 0.0
+    const t = this._frameTime
     if (zeta < 1) {
       // Under damped
-      const envelope = Math.exp(-zeta * omega0 * t);
+      const envelope = Math.exp(-zeta * omega0 * t)
       position =
         this._toValue -
         envelope *
           (((v0 + zeta * omega0 * x0) / omega1) * Math.sin(omega1 * t) +
-            x0 * Math.cos(omega1 * t));
+            x0 * Math.cos(omega1 * t))
       // This looks crazy -- it's actually just the derivative of the
       // oscillation function
       velocity =
@@ -309,61 +228,60 @@ export default class SpringAnimation extends Animation {
             x0 * Math.cos(omega1 * t)) -
         envelope *
           (Math.cos(omega1 * t) * (v0 + zeta * omega0 * x0) -
-            omega1 * x0 * Math.sin(omega1 * t));
+            omega1 * x0 * Math.sin(omega1 * t))
     } else {
       // Critically damped
-      const envelope = Math.exp(-omega0 * t);
-      position = this._toValue - envelope * (x0 + (v0 + omega0 * x0) * t);
-      velocity =
-        envelope * (v0 * (t * omega0 - 1) + t * x0 * (omega0 * omega0));
+      const envelope = Math.exp(-omega0 * t)
+      position = this._toValue - envelope * (x0 + (v0 + omega0 * x0) * t)
+      velocity = envelope * (v0 * (t * omega0 - 1) + t * x0 * (omega0 * omega0))
     }
 
-    this._lastTime = now;
-    this._lastPosition = position;
-    this._lastVelocity = velocity;
+    this._lastTime = now
+    this._lastPosition = position
+    this._lastVelocity = velocity
 
-    this._onUpdate(position);
+    this._onUpdate(position)
     if (!this.__active) {
       // a listener might have stopped us in _onUpdate
-      return;
+      return
     }
 
     // Conditions for stopping the spring animation
-    let isOvershooting = false;
+    let isOvershooting = false
     if (this._overshootClamping && this._stiffness !== 0) {
       if (this._startPosition < this._toValue) {
-        isOvershooting = position > this._toValue;
+        isOvershooting = position > this._toValue
       } else {
-        isOvershooting = position < this._toValue;
+        isOvershooting = position < this._toValue
       }
     }
-    const isVelocity = Math.abs(velocity) <= this._restSpeedThreshold;
-    let isDisplacement = true;
+    const isVelocity = Math.abs(velocity) <= this._restSpeedThreshold
+    let isDisplacement = true
     if (this._stiffness !== 0) {
       isDisplacement =
-        Math.abs(this._toValue - position) <= this._restDisplacementThreshold;
+        Math.abs(this._toValue - position) <= this._restDisplacementThreshold
     }
 
     if (isOvershooting || (isVelocity && isDisplacement)) {
       if (this._stiffness !== 0) {
         // Ensure that we end up with a round value
-        this._lastPosition = this._toValue;
-        this._lastVelocity = 0;
-        this._onUpdate(this._toValue);
+        this._lastPosition = this._toValue
+        this._lastVelocity = 0
+        this._onUpdate(this._toValue)
       }
 
-      this.__debouncedOnEnd({finished: true});
-      return;
+      this.__debouncedOnEnd({ finished: true })
+      return
     }
     // $FlowFixMe[method-unbinding] added when improving typing for this parameters
-    this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this));
+    this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this))
   }
 
-  stop()       {
-    super.stop();
-    this.__active = false;
-    clearTimeout(this._timeout);
-    global.cancelAnimationFrame(this._animationFrame);
-    this.__debouncedOnEnd({finished: false});
+  stop() {
+    super.stop()
+    this.__active = false
+    clearTimeout(this._timeout)
+    global.cancelAnimationFrame(this._animationFrame)
+    this.__debouncedOnEnd({ finished: false })
   }
 }

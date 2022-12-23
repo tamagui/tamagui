@@ -219,7 +219,8 @@ export function classic(style: Style, name: string): CompilerOutput {
   const selector = `.${identifier}`
   let animationName
   if (animationKeyframes != null) {
-    const [animationNames, keyframesRules] = processKeyframesValue(animationKeyframes)
+    const [animationNames, keyframesRules] =
+      processKeyframesValue(animationKeyframes)
     animationName = animationNames.join(',')
     compiledRules.push(...keyframesRules)
   }
@@ -236,7 +237,7 @@ export function classic(style: Style, name: string): CompilerOutput {
  */
 export function inline(
   originalStyle: Style,
-  isRTL?: boolean
+  isRTL?: boolean,
 ): {
   [K in string]: unknown
 } {
@@ -249,7 +250,10 @@ export function inline(
     let prop = originalProp
     let value = originalValue
 
-    if (!Object.prototype.hasOwnProperty.call(style, originalProp) || originalValue == null) {
+    if (
+      !Object.prototype.hasOwnProperty.call(style, originalProp) ||
+      originalValue == null
+    ) {
       continue
     }
 
@@ -269,12 +273,16 @@ export function inline(
     // BiDi flip transitionProperty value
     if (originalProp === 'transitionProperty') {
       // @ts-ignore
-      const originalValues = Array.isArray(originalValue) ? originalValue : [originalValue]
+      const originalValues = Array.isArray(originalValue)
+        ? originalValue
+        : [originalValue]
       originalValues.forEach((val, i) => {
         if (typeof val === 'string') {
           const valuePolyfill = PROPERTIES_I18N[val]
           if (valuePolyfill != null) {
-            originalValues[i] = isRTL ? PROPERTIES_FLIP[valuePolyfill] : valuePolyfill
+            originalValues[i] = isRTL
+              ? PROPERTIES_FLIP[valuePolyfill]
+              : valuePolyfill
           }
         }
       })
@@ -297,7 +305,10 @@ export function inline(
  * Create a value string that normalizes different input values with a common
  * output.
  */
-export function stringifyValueWithProperty(value: Value, property: string | null): string {
+export function stringifyValueWithProperty(
+  value: Value,
+  property: string | null,
+): string {
   // e.g., 0 => '0px', 'black' => 'rgba(0,0,0,1)'
   const normalizedValue = normalizeValueWithProperty(value, property)
   return typeof normalizedValue !== 'string'
@@ -332,7 +343,7 @@ function createAtomicRules(identifier: string, property, value): Rules {
         `${selector}::-webkit-input-placeholder${block}`,
         `${selector}::-moz-placeholder${block}`,
         `${selector}:-ms-input-placeholder${block}`,
-        `${selector}::placeholder${block}`
+        `${selector}::placeholder${block}`,
       )
       break
     }

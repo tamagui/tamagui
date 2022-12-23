@@ -10,7 +10,10 @@ type ColorsList = string[]
 
 // can make configurable
 type AltKeys = 1 | 2
-type AltName<Name extends string, Keys extends string | number> = `${Name}_alt${Keys}`
+type AltName<
+  Name extends string,
+  Keys extends string | number,
+> = `${Name}_alt${Keys}`
 
 type GeneratedTheme = {
   backgroundStrong: Variable<string>
@@ -84,7 +87,8 @@ export const createThemes = <C extends string>({
   colorsLight: ColorsByName
   colorsDark: ColorsByName
 }): {
-  [key in GetSubThemes<C> | GetSubThemes<`light`> | GetSubThemes<`dark`>]: GeneratedTheme
+  [key in
+    GetSubThemes<C> | GetSubThemes<`light`> | GetSubThemes<`dark`>]: GeneratedTheme
 } => {
   function flatten(obj: ColorsByName) {
     const next = {}
@@ -121,12 +125,17 @@ export const createThemes = <C extends string>({
   const alts = [1, 2] as const
   type ThemeCreator<A = any> = (str: number, props: ThemeCreatorProps) => A
 
-  function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = ThemeCreator>(
+  function createThemesFrom<
+    Name extends string,
+    GetTheme extends ThemeCreator = ThemeCreator,
+  >(
     name: Name,
     getTheme: GetTheme,
-    props: ThemeCreatorProps
+    props: ThemeCreatorProps,
   ): {
-    [key in GetSubThemes<Name>]: GetTheme extends ThemeCreator<infer Theme> ? Theme : never
+    [key in GetSubThemes<Name>]: GetTheme extends ThemeCreator<infer Theme>
+      ? Theme
+      : never
   } {
     const { shift = 0 } = props
     const theme = getTheme(0 + shift, props)
@@ -142,7 +151,10 @@ export const createThemes = <C extends string>({
       return [`${bName}_Button` as any, bTheme]
     })
     // add these after alts since we rely on positioning
-    const darkerTheme = getTheme(Math.max(0, shift + (props.isLight ? 1 : -1)), props)
+    const darkerTheme = getTheme(
+      Math.max(0, shift + (props.isLight ? 1 : -1)),
+      props,
+    )
     const activeTheme = props.activeTheme || {
       ...theme,
       borderColor: props.backgrounds[7],
@@ -199,10 +211,11 @@ export const createThemes = <C extends string>({
       borderColors = isLight ? colors : backgrounds,
       backgroundStrong,
       offsets: offsetsProp,
-    }: ThemeCreatorProps
+    }: ThemeCreatorProps,
   ) => {
     const offsets = {
-      borderColor: offsetsProp?.borderColor ?? offsetsProp?.background ?? [0, 0, 0, 0],
+      borderColor: offsetsProp?.borderColor ??
+        offsetsProp?.background ?? [0, 0, 0, 0],
       background: offsetsProp?.background ?? [0, 0, 0, 0],
       color: offsetsProp?.color ?? [0, 0, 0, 0],
     }
@@ -212,10 +225,15 @@ export const createThemes = <C extends string>({
     const strongerDir = isLight ? darkerDir : lighterDir
     const softerDir = -strongerDir
     const get = (arr: any[], index: number, name = 'background') => {
-      return arr[Math.max(0, Math.min(index + (offsets[name][str] || 0), arr.length - 1))]
+      return arr[
+        Math.max(0, Math.min(index + (offsets[name][str] || 0), arr.length - 1))
+      ]
     }
 
-    const colorTranslucent = setColorAlpha(getVariableValue(get(colors, 0 + str, 'color')), 0.5)
+    const colorTranslucent = setColorAlpha(
+      getVariableValue(get(colors, 0 + str, 'color')),
+      0.5,
+    )
 
     const theme: SubTheme = {
       background: get(backgrounds, str),
@@ -352,7 +370,7 @@ export const createThemes = <C extends string>({
   const lightEntries = Object.entries(lightTheme)
   function findColors(prefix: string, dark = false): BaseTheme {
     return Object.fromEntries(
-      (dark ? darkEntries : lightEntries).filter(([k]) => k.startsWith(prefix))
+      (dark ? darkEntries : lightEntries).filter(([k]) => k.startsWith(prefix)),
     ) as any
   }
 

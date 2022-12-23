@@ -26,7 +26,10 @@ class AnimatedWithChildren extends AnimatedNode {
       this.__isNative = true
       for (const child of this._children) {
         child.__makeNative()
-        NativeAnimatedHelper.API.connectAnimatedNodes(this.__getNativeTag(), child.__getNativeTag())
+        NativeAnimatedHelper.API.connectAnimatedNodes(
+          this.__getNativeTag(),
+          child.__getNativeTag(),
+        )
       }
     }
     super.__makeNative()
@@ -40,7 +43,10 @@ class AnimatedWithChildren extends AnimatedNode {
     if (this.__isNative) {
       // Only accept "native" animated nodes as children
       child.__makeNative()
-      NativeAnimatedHelper.API.connectAnimatedNodes(this.__getNativeTag(), child.__getNativeTag())
+      NativeAnimatedHelper.API.connectAnimatedNodes(
+        this.__getNativeTag(),
+        child.__getNativeTag(),
+      )
     }
   }
 
@@ -54,7 +60,7 @@ class AnimatedWithChildren extends AnimatedNode {
     if (this.__isNative && child.__isNative) {
       NativeAnimatedHelper.API.disconnectAnimatedNodes(
         this.__getNativeTag(),
-        child.__getNativeTag()
+        child.__getNativeTag(),
       )
     }
     this._children.splice(index, 1)

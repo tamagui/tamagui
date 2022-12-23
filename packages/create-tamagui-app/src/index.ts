@@ -36,7 +36,7 @@ const program = new Commander.Command(packageJson.name)
   .option(
     `--template <template>, -t <template>`,
     'Currently, the only option is `next-expo-solito`, which is set by default.',
-    'next-expo-solito'
+    'next-expo-solito',
   )
   .allowUnknownOption()
   .usage(
@@ -44,7 +44,7 @@ const program = new Commander.Command(packageJson.name)
   
 Example usage:
 
-${chalk.blueBright(`npx ${packageJson.name} next-expo`)}`
+${chalk.blueBright(`npx ${packageJson.name} next-expo`)}`,
   )
   .parse(process.argv)
 
@@ -56,13 +56,16 @@ if (process.argv.includes('--version')) {
 const packageManager = program.useNpm ? 'npm' : program.usePnpm ? 'pnpm' : 'yarn'
 const DOWNLOAD_URL = 'https://codeload.github.com/tamagui/starters/tar.gz/main'
 
-export function downloadAndExtractExample(root: string, name: string): Promise<void | unknown> {
+export function downloadAndExtractExample(
+  root: string,
+  name: string,
+): Promise<void | unknown> {
   if (name === '__internal-testing-retry') {
     throw new Error('This is an internal example for testing the CLI.')
   }
   return pipeline(
     got.stream(DOWNLOAD_URL),
-    tar.extract({ cwd: root, strip: 2 }, [`starters-main/${name}`])
+    tar.extract({ cwd: root, strip: 2 }, [`starters-main/${name}`]),
   )
 }
 
@@ -70,7 +73,7 @@ async function run() {
   console.log(chalk.bold('Creating tamagui app...'))
 
   const gitVersionString = parseFloat(
-    execSync(`git --version`).toString().replace(`git version `, '').trim()
+    execSync(`git --version`).toString().replace(`git version `, '').trim(),
   )
   if (gitVersionString < 2.27) {
     console.error(`\n\n ⚠️ Tamagui can't install: Git version must be >= 2.27\n\n`)
@@ -103,7 +106,9 @@ async function run() {
   if (!projectPath) {
     console.log()
     console.log('Please specify the project directory:')
-    console.log(`  ${chalk.cyan(program.name())} ${chalk.green('<project-directory>')}`)
+    console.log(
+      `  ${chalk.cyan(program.name())} ${chalk.green('<project-directory>')}`,
+    )
     console.log()
     console.log('For example:')
     console.log(`  ${chalk.cyan(program.name())} ${chalk.green('my-tamagui-app')}`)
@@ -119,8 +124,8 @@ async function run() {
   if (!valid) {
     console.error(
       `Could not create a project called ${chalk.red(
-        `"${projectName}"`
-      )} because of npm naming restrictions:`
+        `"${projectName}"`,
+      )} because of npm naming restrictions:`,
     )
 
     problems!.forEach((p) => console.error(`    ${chalk.red.bold('*')} ${p}`))
@@ -131,17 +136,22 @@ async function run() {
     console.log()
     console.log(
       chalk.red('🚨 [tamagui] error'),
-      // prettier-ignore
-      `You tried to make a project called ${chalk.underline(chalk.blueBright(projectName))}, but a folder with that name already exists: ${chalk.blueBright(resolvedProjectPath)}
+      `You tried to make a project called ${chalk.underline(
+        chalk.blueBright(projectName),
+      )}, but a folder with that name already exists: ${chalk.blueBright(
+        resolvedProjectPath,
+      )}
 
-${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
+${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`,
     )
     console.log()
     console.log()
     process.exit(1)
   }
   console.log()
-  console.log(`Creating a new tamagui app ${chalk.blueBright(resolvedProjectPath)}...`)
+  console.log(
+    `Creating a new tamagui app ${chalk.blueBright(resolvedProjectPath)}...`,
+  )
   fs.mkdirSync(resolvedProjectPath)
   console.log(chalk.green(`${projectName} folder created.`))
 
@@ -185,27 +195,36 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
             ? `file://${repoRoot}`
             : `https://github.com/tamagui/tamagui.git`
 
-        execSync(`git clone --branch ${branch} --depth 1 --filter=blob:none --sparse ${sourceGitRepo} ${targetGitDir}`);
+        execSync(
+          `git clone --branch ${branch} --depth 1 --filter=blob:none --sparse ${sourceGitRepo} ${targetGitDir}`,
+        )
       } else {
         if (!(await pathExists(join(targetGitDir, '.git')))) {
-          console.error(`Corrupt Tamagui directory, please delete ${targetGitDir} and re-run`)
+          console.error(
+            `Corrupt Tamagui directory, please delete ${targetGitDir} and re-run`,
+          )
           process.exit(1)
         }
       }
 
       console.log(`Updating tamagui starters repo`)
-      execSync(`git sparse-checkout set starters`, { cwd: targetGitDir });
+      execSync(`git sparse-checkout set starters`, { cwd: targetGitDir })
       try {
-        execSync(`git pull --rebase --allow-unrelated-histories --depth 1 origin ${branch}`, { cwd: targetGitDir });
+        execSync(
+          `git pull --rebase --allow-unrelated-histories --depth 1 origin ${branch}`,
+          {
+            cwd: targetGitDir,
+          },
+        )
       } catch (err: any) {
         console.log(
           `Error updating: ${err.message} ${
             isRetry ? `failing.\n${err.stack}` : 'trying from fresh.'
-          }`
+          }`,
         )
         if (isRetry) {
           console.log(
-            `Please file an issue: https://github.com/tamagui/tamagui/issues/new?assignees=&labels=&template=bug_report.md&title=`
+            `Please file an issue: https://github.com/tamagui/tamagui/issues/new?assignees=&labels=&template=bug_report.md&title=`,
           )
           process.exit(1)
         }
@@ -222,7 +241,9 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
       process.exit(1)
     }
 
-    console.log(`Copying starter from ${starterDir} into ${chalk.blueBright(projectName)}...`)
+    console.log(
+      `Copying starter from ${starterDir} into ${chalk.blueBright(projectName)}...`,
+    )
     await copy(starterDir, resolvedProjectPath)
 
     console.log(chalk.green(`${projectName} created!`))
@@ -230,7 +251,10 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     cd(resolvedProjectPath)
     await $`git init`
   } catch (e) {
-    console.error(`[tamagui] Failed to copy example into ${resolvedProjectPath}\n\n`, e)
+    console.error(
+      `[tamagui] Failed to copy example into ${resolvedProjectPath}\n\n`,
+      e,
+    )
     process.exit(1)
   }
 
@@ -240,7 +264,10 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
   try {
     await installDependenciesAsync(resolvedProjectPath, packageManager)
   } catch (e: any) {
-    console.error('[tamagui] error installing with ' + packageManager + '\n', e?.message)
+    console.error(
+      '[tamagui] error installing with ' + packageManager + '\n',
+      e?.message,
+    )
     process.exit(1)
   }
 
@@ -277,7 +304,7 @@ function validateNpmName(name: string): {
 
 export async function installDependenciesAsync(
   projectRoot: string,
-  packageManager: 'yarn' | 'npm' | 'pnpm'
+  packageManager: 'yarn' | 'npm' | 'pnpm',
 ) {
   const options = { cwd: projectRoot }
   if (packageManager === 'yarn') {

@@ -36,6 +36,6 @@ export default function useRefEffect(effect) {
         cleanupRef.current = effect(instance)
       }
     },
-    [effect]
+    [effect],
   )
 }

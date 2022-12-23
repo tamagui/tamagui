@@ -55,14 +55,18 @@ class SpringAnimation extends Animation {
         : 0
     this._toValue = config.toValue
     this._delay =
-      (_config$delay = config.delay) !== null && _config$delay !== void 0 ? _config$delay : 0
+      (_config$delay = config.delay) !== null && _config$delay !== void 0
+        ? _config$delay
+        : 0
     this._useNativeDriver = shouldUseNativeDriver(config)
     this.__isInteraction =
-      (_config$isInteraction = config.isInteraction) !== null && _config$isInteraction !== void 0
+      (_config$isInteraction = config.isInteraction) !== null &&
+      _config$isInteraction !== void 0
         ? _config$isInteraction
         : !this._useNativeDriver
     this.__iterations =
-      (_config$iterations = config.iterations) !== null && _config$iterations !== void 0
+      (_config$iterations = config.iterations) !== null &&
+      _config$iterations !== void 0
         ? _config$iterations
         : 1
 
@@ -78,10 +82,11 @@ class SpringAnimation extends Animation {
           config.speed === undefined &&
           config.tension === undefined &&
           config.friction === undefined,
-        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one'
+        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one',
       )
       this._stiffness =
-        (_config$stiffness = config.stiffness) !== null && _config$stiffness !== void 0
+        (_config$stiffness = config.stiffness) !== null &&
+        _config$stiffness !== void 0
           ? _config$stiffness
           : 100
       this._damping =
@@ -89,7 +94,9 @@ class SpringAnimation extends Animation {
           ? _config$damping
           : 10
       this._mass =
-        (_config$mass = config.mass) !== null && _config$mass !== void 0 ? _config$mass : 1
+        (_config$mass = config.mass) !== null && _config$mass !== void 0
+          ? _config$mass
+          : 1
     } else if (config.bounciness !== undefined || config.speed !== undefined) {
       var _config$bounciness, _config$speed
 
@@ -101,13 +108,16 @@ class SpringAnimation extends Animation {
           config.stiffness === undefined &&
           config.damping === undefined &&
           config.mass === undefined,
-        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one'
+        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one',
       )
       var springConfig = SpringConfig.fromBouncinessAndSpeed(
-        (_config$bounciness = config.bounciness) !== null && _config$bounciness !== void 0
+        (_config$bounciness = config.bounciness) !== null &&
+        _config$bounciness !== void 0
           ? _config$bounciness
           : 8,
-        (_config$speed = config.speed) !== null && _config$speed !== void 0 ? _config$speed : 12
+        (_config$speed = config.speed) !== null && _config$speed !== void 0
+          ? _config$speed
+          : 12,
       )
       this._stiffness = springConfig.stiffness
       this._damping = springConfig.damping
@@ -123,7 +133,7 @@ class SpringAnimation extends Animation {
           : 40,
         (_config$friction = config.friction) !== null && _config$friction !== void 0
           ? _config$friction
-          : 7
+          : 7,
       )
 
       this._stiffness = _springConfig.stiffness
@@ -148,7 +158,8 @@ class SpringAnimation extends Animation {
       damping: this._damping,
       mass: this._mass,
       initialVelocity:
-        (_this$_initialVelocit = this._initialVelocity) !== null && _this$_initialVelocit !== void 0
+        (_this$_initialVelocit = this._initialVelocity) !== null &&
+        _this$_initialVelocit !== void 0
           ? _this$_initialVelocit
           : this._lastVelocity,
       toValue: this._toValue,
@@ -254,7 +265,8 @@ class SpringAnimation extends Animation {
       position =
         this._toValue -
         envelope *
-          (((v0 + zeta * omega0 * x0) / omega1) * Math.sin(omega1 * t) + x0 * Math.cos(omega1 * t)) // This looks crazy -- it's actually just the derivative of the
+          (((v0 + zeta * omega0 * x0) / omega1) * Math.sin(omega1 * t) +
+            x0 * Math.cos(omega1 * t)) // This looks crazy -- it's actually just the derivative of the
       // oscillation function
 
       velocity =
@@ -264,7 +276,8 @@ class SpringAnimation extends Animation {
           ((Math.sin(omega1 * t) * (v0 + zeta * omega0 * x0)) / omega1 +
             x0 * Math.cos(omega1 * t)) -
         envelope *
-          (Math.cos(omega1 * t) * (v0 + zeta * omega0 * x0) - omega1 * x0 * Math.sin(omega1 * t))
+          (Math.cos(omega1 * t) * (v0 + zeta * omega0 * x0) -
+            omega1 * x0 * Math.sin(omega1 * t))
     } else {
       // Critically damped
       var _envelope = Math.exp(-omega0 * t)
@@ -299,7 +312,8 @@ class SpringAnimation extends Animation {
     var isDisplacement = true
 
     if (this._stiffness !== 0) {
-      isDisplacement = Math.abs(this._toValue - position) <= this._restDisplacementThreshold
+      isDisplacement =
+        Math.abs(this._toValue - position) <= this._restDisplacementThreshold
     }
 
     if (isOvershooting || (isVelocity && isDisplacement)) {

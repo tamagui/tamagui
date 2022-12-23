@@ -14,7 +14,10 @@ export type YStackProps = GetProps<typeof YStack>
 export type XStackProps = YStackProps
 export type ZStackProps = YStackProps
 
-export const getElevation: SizeVariantSpreadFunction<StackProps> = (size, extras) => {
+export const getElevation: SizeVariantSpreadFunction<StackProps> = (
+  size,
+  extras,
+) => {
   if (!size) return
   const { tokens } = extras
   const token = tokens.size[size]
@@ -60,12 +63,12 @@ export const ZStack = styled(
   {
     neverFlatten: true,
     isZStack: true,
-  }
+  },
 )
 
 export const getSizedElevation = (
   val: SizeTokens | number | boolean,
-  { theme, tokens }: VariantSpreadExtras<any>
+  { theme, tokens }: VariantSpreadExtras<any>,
 ) => {
   let num = 0
   if (val === true) {

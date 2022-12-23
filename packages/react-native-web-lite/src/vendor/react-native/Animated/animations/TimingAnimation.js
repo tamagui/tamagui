@@ -28,7 +28,11 @@ function easeInOut() {
 
 class TimingAnimation extends Animation {
   constructor(config) {
-    var _config$easing, _config$duration, _config$delay, _config$iterations, _config$isInteraction
+    var _config$easing,
+      _config$duration,
+      _config$delay,
+      _config$iterations,
+      _config$isInteraction
 
     super()
     this._toValue = config.toValue
@@ -41,14 +45,18 @@ class TimingAnimation extends Animation {
         ? _config$duration
         : 500
     this._delay =
-      (_config$delay = config.delay) !== null && _config$delay !== void 0 ? _config$delay : 0
+      (_config$delay = config.delay) !== null && _config$delay !== void 0
+        ? _config$delay
+        : 0
     this.__iterations =
-      (_config$iterations = config.iterations) !== null && _config$iterations !== void 0
+      (_config$iterations = config.iterations) !== null &&
+      _config$iterations !== void 0
         ? _config$iterations
         : 1
     this._useNativeDriver = shouldUseNativeDriver(config)
     this.__isInteraction =
-      (_config$isInteraction = config.isInteraction) !== null && _config$isInteraction !== void 0
+      (_config$isInteraction = config.isInteraction) !== null &&
+      _config$isInteraction !== void 0
         ? _config$isInteraction
         : !this._useNativeDriver
   }
@@ -112,7 +120,9 @@ class TimingAnimation extends Animation {
       if (this._duration === 0) {
         this._onUpdate(this._toValue)
       } else {
-        this._onUpdate(this._fromValue + this._easing(1) * (this._toValue - this._fromValue))
+        this._onUpdate(
+          this._fromValue + this._easing(1) * (this._toValue - this._fromValue),
+        )
       }
 
       this.__debouncedOnEnd({
@@ -124,7 +134,8 @@ class TimingAnimation extends Animation {
 
     this._onUpdate(
       this._fromValue +
-        this._easing((now - this._startTime) / this._duration) * (this._toValue - this._fromValue)
+        this._easing((now - this._startTime) / this._duration) *
+          (this._toValue - this._fromValue),
     )
 
     if (this.__active) {

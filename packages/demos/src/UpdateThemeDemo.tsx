@@ -39,7 +39,7 @@ export function UpdateThemeDemo() {
       <Button
         onPress={() => {
           const randomColor = getVariableValue(
-            colors[colorKeys[Math.floor(Math.random() * colorKeys.length)]]
+            colors[colorKeys[Math.floor(Math.random() * colorKeys.length)]],
           )
           updateTheme({
             name: 'custom',

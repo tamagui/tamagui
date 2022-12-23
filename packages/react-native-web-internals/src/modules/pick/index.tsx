@@ -11,7 +11,7 @@ export default function pick(
   obj: Object,
   list: {
     [K in string]: boolean
-  }
+  },
 ): Object {
   const nextObj = {}
   for (const key in obj) {

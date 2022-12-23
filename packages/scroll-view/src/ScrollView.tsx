@@ -13,7 +13,7 @@ export const ScrollView = styled(
   },
   {
     isReactNative: true,
-  }
+  },
 )
 
 export type ScrollViewProps = GetProps<typeof ScrollView>

@@ -7,7 +7,6 @@ import { swcReactRefresh } from 'vite-plugin-swc-react-refresh'
 const shouldExtract = process.env.EXTRACT === '1'
 
 if (shouldExtract) {
-  // eslint-disable-next-line no-console
   console.log(`Compiler enabled`)
 }
 

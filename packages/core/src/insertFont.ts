@@ -8,7 +8,10 @@ import { GenericFont } from './types'
 /**
  * Runtime dynamic insert font
  */
-export function insertFont<A extends GenericFont>(name: string, fontIn: A): DeepVariableObject<A> {
+export function insertFont<A extends GenericFont>(
+  name: string,
+  fontIn: A
+): DeepVariableObject<A> {
   const font = createFont(fontIn)
   const tokened = createVariables(font, name) as GenericFont
   const parsed = parseFont(tokened) as DeepVariableObject<A>

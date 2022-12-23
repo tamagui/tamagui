@@ -2,7 +2,12 @@
 // MIT License Copyright (c) 2020 Mo Gorhom
 // fixing SSR issue
 
-import { spacedChildren, useDidFinishSSR, useEvent, useIsomorphicLayoutEffect } from '@tamagui/core'
+import {
+  spacedChildren,
+  useDidFinishSSR,
+  useEvent,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/core'
 import React, {
   ReactNode,
   cloneElement,
@@ -64,14 +69,20 @@ export type ActionTypes =
   | RegisterHostAction
   | UnregisterHostAction
 
-const registerHost = (state: Record<string, Array<PortalType>>, hostName: string) => {
+const registerHost = (
+  state: Record<string, Array<PortalType>>,
+  hostName: string,
+) => {
   if (!(hostName in state)) {
     state[hostName] = []
   }
   return state
 }
 
-const deregisterHost = (state: Record<string, Array<PortalType>>, hostName: string) => {
+const deregisterHost = (
+  state: Record<string, Array<PortalType>>,
+  hostName: string,
+) => {
   delete state[hostName]
   return state
 }
@@ -80,7 +91,7 @@ const addUpdatePortal = (
   state: Record<string, Array<PortalType>>,
   hostName: string,
   portalName: string,
-  node: any
+  node: any,
 ) => {
   if (!(hostName in state)) {
     state = registerHost(state, hostName)
@@ -104,11 +115,13 @@ const addUpdatePortal = (
 const removePortal = (
   state: Record<string, Array<PortalType>>,
   hostName: string,
-  portalName: string
+  portalName: string,
 ) => {
   if (!(hostName in state)) {
     // eslint-disable-next-line no-console
-    console.log(`Failed to remove portal '${portalName}', '${hostName}' was not registered!`)
+    console.log(
+      `Failed to remove portal '${portalName}', '${hostName}' was not registered!`,
+    )
     return state
   }
 
@@ -129,16 +142,22 @@ const reducer = (state: Record<string, Array<PortalType>>, action: ActionTypes) 
         { ...state },
         action.hostName,
         (action as AddUpdatePortalAction).portalName,
-        (action as AddUpdatePortalAction).node
+        (action as AddUpdatePortalAction).node,
       )
     case ACTIONS.REMOVE_PORTAL:
-      return removePortal({ ...state }, action.hostName, (action as RemovePortalAction).portalName)
+      return removePortal(
+        { ...state },
+        action.hostName,
+        (action as RemovePortalAction).portalName,
+      )
     default:
       return state
   }
 }
 
-const PortalStateContext = createContext<Record<string, Array<PortalType>> | null>(null)
+const PortalStateContext = createContext<Record<string, Array<PortalType>> | null>(
+  null,
+)
 const PortalDispatchContext = createContext<React.Dispatch<ActionTypes> | null>(null)
 
 const usePortalState = (hostName: string) => {
@@ -146,7 +165,7 @@ const usePortalState = (hostName: string) => {
 
   if (state === null) {
     throw new Error(
-      "'PortalStateContext' cannot be null, please add 'PortalProvider' to the root component."
+      "'PortalStateContext' cannot be null, please add 'PortalProvider' to the root component.",
     )
   }
 
@@ -158,7 +177,7 @@ export const usePortal = (hostName = 'root') => {
 
   if (dispatch === null) {
     throw new Error(
-      "'PortalDispatchContext' cannot be null, please add 'PortalProvider' to the root component."
+      "'PortalDispatchContext' cannot be null, please add 'PortalProvider' to the root component.",
     )
   }
 
@@ -292,7 +311,9 @@ const PortalHostComponent = (props: PortalHostProps) => {
           if (Array.isArray(next)) {
             // add any extra props
             if (Object.keys(rest).length) {
-              next = next.map((item) => (isValidElement(item) ? cloneElement(item, rest) : item))
+              next = next.map((item) =>
+                isValidElement(item) ? cloneElement(item, rest) : item,
+              )
             }
             if (space || separator) {
               next = spacedChildren({

@@ -14,7 +14,7 @@ export declare const AdaptContents: {
     (props: any): import("react").FunctionComponentElement<any>;
     shouldForwardSpace: boolean;
 };
-export declare const useAdaptParent: ({ Contents }: {
+export declare const useAdaptParent: ({ Contents, }: {
     Contents: AdaptParentContextI['Contents'];
 }) => {
     AdaptProvider: (props: {

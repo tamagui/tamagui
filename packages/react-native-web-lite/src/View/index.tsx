@@ -27,94 +27,102 @@ import type { ViewProps } from './types.js'
 
 const pickProps = (props) => pick(props, forwardPropsListView)
 
-const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>((props, forwardedRef) => {
-  const {
-    hrefAttrs,
-    onLayout,
-    onMoveShouldSetResponder,
-    onMoveShouldSetResponderCapture,
-    onResponderEnd,
-    onResponderGrant,
-    onResponderMove,
-    onResponderReject,
-    onResponderRelease,
-    onResponderStart,
-    onResponderTerminate,
-    onResponderTerminationRequest,
-    onScrollShouldSetResponder,
-    onScrollShouldSetResponderCapture,
-    onSelectionChangeShouldSetResponder,
-    onSelectionChangeShouldSetResponderCapture,
-    onStartShouldSetResponder,
-    onStartShouldSetResponderCapture,
-    ...rest
-  } = props
+const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
+  (props, forwardedRef) => {
+    const {
+      hrefAttrs,
+      onLayout,
+      onMoveShouldSetResponder,
+      onMoveShouldSetResponderCapture,
+      onResponderEnd,
+      onResponderGrant,
+      onResponderMove,
+      onResponderReject,
+      onResponderRelease,
+      onResponderStart,
+      onResponderTerminate,
+      onResponderTerminationRequest,
+      onScrollShouldSetResponder,
+      onScrollShouldSetResponderCapture,
+      onSelectionChangeShouldSetResponder,
+      onSelectionChangeShouldSetResponderCapture,
+      onStartShouldSetResponder,
+      onStartShouldSetResponderCapture,
+      ...rest
+    } = props
 
-  if (process.env.NODE_ENV !== 'production') {
-    React.Children.toArray(props.children).forEach((item) => {
-      if (typeof item === 'string') {
-        // eslint-disable-next-line no-console
-        console.error(`Unexpected text node: ${item}. A text node cannot be a child of a <View>.`)
-      }
+    if (process.env.NODE_ENV !== 'production') {
+      React.Children.toArray(props.children).forEach((item) => {
+        if (typeof item === 'string') {
+          // eslint-disable-next-line no-console
+          console.error(
+            `Unexpected text node: ${item}. A text node cannot be a child of a <View>.`,
+          )
+        }
+      })
+    }
+
+    const hasTextAncestor = React.useContext(TextAncestorContext)
+    const hostRef = React.useRef(null)
+    const { direction: contextDirection } = useLocaleContext()
+
+    useElementLayout(hostRef, onLayout)
+    useResponderEvents(hostRef, {
+      onMoveShouldSetResponder,
+      onMoveShouldSetResponderCapture,
+      onResponderEnd,
+      onResponderGrant,
+      onResponderMove,
+      onResponderReject,
+      onResponderRelease,
+      onResponderStart,
+      onResponderTerminate,
+      onResponderTerminationRequest,
+      onScrollShouldSetResponder,
+      onScrollShouldSetResponderCapture,
+      onSelectionChangeShouldSetResponder,
+      onSelectionChangeShouldSetResponderCapture,
+      onStartShouldSetResponder,
+      onStartShouldSetResponderCapture,
     })
-  }
 
-  const hasTextAncestor = React.useContext(TextAncestorContext)
-  const hostRef = React.useRef(null)
-  const { direction: contextDirection } = useLocaleContext()
+    let component = 'div'
 
-  useElementLayout(hostRef, onLayout)
-  useResponderEvents(hostRef, {
-    onMoveShouldSetResponder,
-    onMoveShouldSetResponderCapture,
-    onResponderEnd,
-    onResponderGrant,
-    onResponderMove,
-    onResponderReject,
-    onResponderRelease,
-    onResponderStart,
-    onResponderTerminate,
-    onResponderTerminationRequest,
-    onScrollShouldSetResponder,
-    onScrollShouldSetResponderCapture,
-    onSelectionChangeShouldSetResponder,
-    onSelectionChangeShouldSetResponderCapture,
-    onStartShouldSetResponder,
-    onStartShouldSetResponderCapture,
-  })
+    const langDirection = props.lang != null ? getLocaleDirection(props.lang) : null
+    const componentDirection = props.dir || langDirection
+    const writingDirection = componentDirection || contextDirection
 
-  let component = 'div'
-
-  const langDirection = props.lang != null ? getLocaleDirection(props.lang) : null
-  const componentDirection = props.dir || langDirection
-  const writingDirection = componentDirection || contextDirection
-
-  const supportedProps = pickProps(rest) as any
-  supportedProps.dir = componentDirection
-  supportedProps.style = [styles.view$raw, hasTextAncestor && styles.inline, props.style]
-  if (props.href != null) {
-    component = 'a'
-    if (hrefAttrs != null) {
-      const { download, rel, target } = hrefAttrs
-      if (download != null) {
-        supportedProps.download = download
-      }
-      if (rel != null) {
-        supportedProps.rel = rel
-      }
-      if (typeof target === 'string') {
-        supportedProps.target = target.charAt(0) !== '_' ? '_' + target : target
+    const supportedProps = pickProps(rest) as any
+    supportedProps.dir = componentDirection
+    supportedProps.style = [
+      styles.view$raw,
+      hasTextAncestor && styles.inline,
+      props.style,
+    ]
+    if (props.href != null) {
+      component = 'a'
+      if (hrefAttrs != null) {
+        const { download, rel, target } = hrefAttrs
+        if (download != null) {
+          supportedProps.download = download
+        }
+        if (rel != null) {
+          supportedProps.rel = rel
+        }
+        if (typeof target === 'string') {
+          supportedProps.target = target.charAt(0) !== '_' ? '_' + target : target
+        }
       }
     }
-  }
 
-  const platformMethodsRef = usePlatformMethods(supportedProps)
-  const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
+    const platformMethodsRef = usePlatformMethods(supportedProps)
+    const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
 
-  supportedProps.ref = setRef
+    supportedProps.ref = setRef
 
-  return createElement(component, supportedProps, { writingDirection })
-})
+    return createElement(component, supportedProps, { writingDirection })
+  },
+)
 
 View.displayName = 'View'
 

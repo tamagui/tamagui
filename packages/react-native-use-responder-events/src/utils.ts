@@ -173,7 +173,11 @@ export function isPrimaryPointerDown(domEvent: any): boolean {
   const isPrimaryMouseMove = type === 'mousemove' && buttons === 1
   const noModifiers = altKey === false && ctrlKey === false
 
-  if (isTouch || (isPrimaryMouseDown && noModifiers) || (isPrimaryMouseMove && noModifiers)) {
+  if (
+    isTouch ||
+    (isPrimaryMouseDown && noModifiers) ||
+    (isPrimaryMouseMove && noModifiers)
+  ) {
     return true
   }
   return false

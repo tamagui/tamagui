@@ -81,26 +81,46 @@ var API = {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.createAnimatedNode(tag, config))
   },
-  startListeningToAnimatedNodeValue: function startListeningToAnimatedNodeValue(tag) {
+  startListeningToAnimatedNodeValue: function startListeningToAnimatedNodeValue(
+    tag,
+  ) {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
-    API.queueOperation(() => NativeAnimatedModule.startListeningToAnimatedNodeValue(tag))
+    API.queueOperation(() =>
+      NativeAnimatedModule.startListeningToAnimatedNodeValue(tag),
+    )
   },
   stopListeningToAnimatedNodeValue: function stopListeningToAnimatedNodeValue(tag) {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
-    API.queueOperation(() => NativeAnimatedModule.stopListeningToAnimatedNodeValue(tag))
+    API.queueOperation(() =>
+      NativeAnimatedModule.stopListeningToAnimatedNodeValue(tag),
+    )
   },
   connectAnimatedNodes: function connectAnimatedNodes(parentTag, childTag) {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
-    API.queueOperation(() => NativeAnimatedModule.connectAnimatedNodes(parentTag, childTag))
+    API.queueOperation(() =>
+      NativeAnimatedModule.connectAnimatedNodes(parentTag, childTag),
+    )
   },
   disconnectAnimatedNodes: function disconnectAnimatedNodes(parentTag, childTag) {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
-    API.queueOperation(() => NativeAnimatedModule.disconnectAnimatedNodes(parentTag, childTag))
+    API.queueOperation(() =>
+      NativeAnimatedModule.disconnectAnimatedNodes(parentTag, childTag),
+    )
   },
-  startAnimatingNode: function startAnimatingNode(animationId, nodeTag, config, endCallback) {
+  startAnimatingNode: function startAnimatingNode(
+    animationId,
+    nodeTag,
+    config,
+    endCallback,
+  ) {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() =>
-      NativeAnimatedModule.startAnimatingNode(animationId, nodeTag, config, endCallback)
+      NativeAnimatedModule.startAnimatingNode(
+        animationId,
+        nodeTag,
+        config,
+        endCallback,
+      ),
     )
   },
   stopAnimation: function stopAnimation(animationId) {
@@ -109,11 +129,15 @@ var API = {
   },
   setAnimatedNodeValue: function setAnimatedNodeValue(nodeTag, value) {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
-    API.queueOperation(() => NativeAnimatedModule.setAnimatedNodeValue(nodeTag, value))
+    API.queueOperation(() =>
+      NativeAnimatedModule.setAnimatedNodeValue(nodeTag, value),
+    )
   },
   setAnimatedNodeOffset: function setAnimatedNodeOffset(nodeTag, offset) {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
-    API.queueOperation(() => NativeAnimatedModule.setAnimatedNodeOffset(nodeTag, offset))
+    API.queueOperation(() =>
+      NativeAnimatedModule.setAnimatedNodeOffset(nodeTag, offset),
+    )
   },
   flattenAnimatedNodeOffset: function flattenAnimatedNodeOffset(nodeTag) {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
@@ -125,11 +149,18 @@ var API = {
   },
   connectAnimatedNodeToView: function connectAnimatedNodeToView(nodeTag, viewTag) {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
-    API.queueOperation(() => NativeAnimatedModule.connectAnimatedNodeToView(nodeTag, viewTag))
+    API.queueOperation(() =>
+      NativeAnimatedModule.connectAnimatedNodeToView(nodeTag, viewTag),
+    )
   },
-  disconnectAnimatedNodeFromView: function disconnectAnimatedNodeFromView(nodeTag, viewTag) {
+  disconnectAnimatedNodeFromView: function disconnectAnimatedNodeFromView(
+    nodeTag,
+    viewTag,
+  ) {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
-    API.queueOperation(() => NativeAnimatedModule.disconnectAnimatedNodeFromView(nodeTag, viewTag))
+    API.queueOperation(() =>
+      NativeAnimatedModule.disconnectAnimatedNodeFromView(nodeTag, viewTag),
+    )
   },
   restoreDefaultValues: function restoreDefaultValues(nodeTag) {
     invariant(NativeAnimatedModule, 'Native animated module is not available') // Backwards compat with older native runtimes, can be removed later.
@@ -142,17 +173,25 @@ var API = {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() => NativeAnimatedModule.dropAnimatedNode(tag))
   },
-  addAnimatedEventToView: function addAnimatedEventToView(viewTag, eventName, eventMapping) {
+  addAnimatedEventToView: function addAnimatedEventToView(
+    viewTag,
+    eventName,
+    eventMapping,
+  ) {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() =>
-      NativeAnimatedModule.addAnimatedEventToView(viewTag, eventName, eventMapping)
+      NativeAnimatedModule.addAnimatedEventToView(viewTag, eventName, eventMapping),
     )
   },
 
   removeAnimatedEventFromView(viewTag, eventName, animatedNodeTag) {
     invariant(NativeAnimatedModule, 'Native animated module is not available')
     API.queueOperation(() =>
-      NativeAnimatedModule.removeAnimatedEventFromView(viewTag, eventName, animatedNodeTag)
+      NativeAnimatedModule.removeAnimatedEventFromView(
+        viewTag,
+        eventName,
+        animatedNodeTag,
+      ),
     )
   },
 }
@@ -224,7 +263,9 @@ function validateTransform(configs) {
   configs.forEach((config) => {
     if (!SUPPORTED_TRANSFORMS.hasOwnProperty(config.property)) {
       throw new Error(
-        "Property '" + config.property + "' is not supported by native animated module"
+        "Property '" +
+          config.property +
+          "' is not supported by native animated module",
       )
     }
   })
@@ -233,7 +274,9 @@ function validateTransform(configs) {
 function validateStyles(styles) {
   for (var _key in styles) {
     if (!SUPPORTED_STYLES.hasOwnProperty(_key)) {
-      throw new Error("Style property '" + _key + "' is not supported by native animated module")
+      throw new Error(
+        "Style property '" + _key + "' is not supported by native animated module",
+      )
     }
   }
 }
@@ -242,7 +285,9 @@ function validateInterpolation(config) {
   for (var _key2 in config) {
     if (!SUPPORTED_INTERPOLATION_PARAMS.hasOwnProperty(_key2)) {
       throw new Error(
-        "Interpolation property '" + _key2 + "' is not supported by native animated module"
+        "Interpolation property '" +
+          _key2 +
+          "' is not supported by native animated module",
       )
     }
   }
@@ -265,7 +310,7 @@ export function shouldUseNativeDriver(config) {
   if (config.useNativeDriver == null) {
     console.warn(
       'Animated: `useNativeDriver` was not specified. This is a required ' +
-        'option and must be explicitly set to `true` or `false`'
+        'option and must be explicitly set to `true` or `false`',
     )
   }
 
@@ -276,7 +321,7 @@ export function shouldUseNativeDriver(config) {
           'animated module is missing. Falling back to JS-based animation. To ' +
           'resolve this, add `RCTAnimation` module to this app, or remove ' +
           '`useNativeDriver`. ' +
-          'Make sure to run `pod install` first. Read more about autolinking: https://github.com/react-native-community/cli/blob/master/docs/autolinking.md'
+          'Make sure to run `pod install` first. Read more about autolinking: https://github.com/react-native-community/cli/blob/master/docs/autolinking.md',
       )
       _warnedMissingNativeAnimated = true
     }

@@ -40,7 +40,7 @@ describe('StyleSheet/preprocess', () => {
           shadowOffset: { width: 1, height: 2 },
           shadowOpacity: 0.5,
           shadowRadius: 3,
-        })
+        }),
       ).toEqual({
         boxShadow: '1px 2px 3px rgba(50,60,70,0.25)',
       })
@@ -65,13 +65,13 @@ describe('StyleSheet/preprocess', () => {
         preprocess({
           textShadowColor: 'red',
           textShadowOffset: { width: 0, height: 0 },
-        })
+        }),
       ).toEqual({})
       expect(
         preprocess({
           textShadowColor: 'red',
           textShadowOffset: { width: -1, height: 0 },
-        })
+        }),
       ).toEqual({
         textShadow: '-1px 0px 0px rgba(255,0,0,1.00)',
       })
@@ -79,7 +79,7 @@ describe('StyleSheet/preprocess', () => {
         preprocess({
           textShadowColor: 'red',
           textShadowOffset: { width: 1, height: 2 },
-        })
+        }),
       ).toEqual({
         textShadow: '1px 2px 0px rgba(255,0,0,1.00)',
       })
@@ -98,7 +98,7 @@ describe('StyleSheet/preprocess', () => {
           textShadowColor: 'rgba(50,60,70,0.50)',
           textShadowOffset: { width: 5, height: 10 },
           textShadowRadius: 15,
-        })
+        }),
       ).toEqual({
         textShadow: '5px 10px 15px rgba(50,60,70,0.50)',
       })

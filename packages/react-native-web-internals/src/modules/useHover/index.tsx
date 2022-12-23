@@ -32,7 +32,8 @@ const emptyObject = {} as any
 const opts = { passive: true }
 const lockEventType = 'react-gui:hover:lock'
 const unlockEventType = 'react-gui:hover:unlock'
-const supportsPointerEvent = () => !!(typeof window !== 'undefined' && window.PointerEvent != null)
+const supportsPointerEvent = () =>
+  !!(typeof window !== 'undefined' && window.PointerEvent != null)
 
 function dispatchCustomEvent(
   target: EventTarget,
@@ -43,7 +44,7 @@ function dispatchCustomEvent(
     detail?: {
       [K in string]: unknown
     }
-  }
+  },
 ) {
   const event = document.createEvent('CustomEvent')
   const { bubbles = true, cancelable = true, detail } = payload || emptyObject
@@ -58,7 +59,14 @@ function getPointerType(event) {
 }
 
 export default function useHover(targetRef: any, config: HoverEventsConfig): void {
-  const { contain, disabled, onHoverStart, onHoverChange, onHoverUpdate, onHoverEnd } = config
+  const {
+    contain,
+    disabled,
+    onHoverStart,
+    onHoverChange,
+    onHoverUpdate,
+    onHoverEnd,
+  } = config
 
   const canUsePE = supportsPointerEvent()
 

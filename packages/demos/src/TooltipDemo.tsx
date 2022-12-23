@@ -1,4 +1,10 @@
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Circle } from '@tamagui/lucide-icons'
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  Circle,
+} from '@tamagui/lucide-icons'
 import React from 'react'
 import {
   Button,

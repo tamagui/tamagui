@@ -175,7 +175,9 @@ export type CreateTamaguiConfig<
   F extends GenericFonts = GenericFonts
 > = {
   fonts: RemoveLanguagePostfixes<F>
-  fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[]
+  fontLanguages: GetLanguagePostfixes<F> extends never
+    ? string[]
+    : GetLanguagePostfixes<F>[]
   tokens: A
   // parsed
   themes: {
@@ -261,7 +263,9 @@ export type Media = TamaguiConfig['media']
 export type Themes = TamaguiConfig['themes']
 export type ThemeName = Exclude<GetAltThemeNames<keyof Themes>, number>
 export type ThemeTokens = `$${ThemeKeys}`
-export type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<infer Config>
+export type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<
+  infer Config
+>
   ? keyof Config
   : string
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>
@@ -279,7 +283,9 @@ export interface ThemeProps {
 
 type ArrayIntersection<A extends any[]> = A[keyof A]
 
-type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S
+type GetAltThemeNames<S> =
+  | (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S)
+  | S
 
 type SpacerPropsBase = {
   size?: number | SpaceTokens | null
@@ -384,7 +390,9 @@ export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animatio
 // prevents const intersections from being clobbered into string, keeping the consts
 export type UnionableString = string & {}
 export type UnionableNumber = number & {}
-export type PropTypes<A extends TamaguiComponent> = A extends FunctionComponent<infer Props>
+export type PropTypes<A extends TamaguiComponent> = A extends FunctionComponent<
+  infer Props
+>
   ? Props
   : unknown
 
@@ -398,7 +406,9 @@ export type GenericFont<Key extends number | string = number | string> = {
   transform?: Partial<{ [key in Key]: TextStyle['textTransform'] | Variable }>
   color?: Partial<{ [key in Key]: string | Variable }>
   // for native use only, lets you map to alternative fonts
-  face?: Partial<{ [key in FontWeightSteps]: { normal?: string; italic?: string } }>
+  face?: Partial<{
+    [key in FontWeightSteps]: { normal?: string; italic?: string }
+  }>
 }
 
 // media
@@ -613,8 +623,8 @@ type WithThemeShorthandsAndPseudos<A extends object> =
 //
 // ... media queries and animations
 //
-type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> &
-  MediaProps<WithThemeShorthandsAndPseudos<A>>
+type WithThemeShorthandsPseudosMediaAnimation<A extends object> =
+  WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>
 
 /**
  * Base style-only props (no media, pseudo):
@@ -632,7 +642,10 @@ type StylePropsWebOnly = {
   outlineWidth?: Properties['outlineWidth']
 }
 
-export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> &
+export type StackStylePropsBase = Omit<
+  ViewStyle,
+  'display' | 'backfaceVisibility' | 'elevation'
+> &
   TransformStyleProps &
   StylePropsWebOnly
 
@@ -655,8 +668,10 @@ export type StackNonStyleProps = Omit<ViewProps, 'display' | 'children'> &
   RNWViewProps &
   TamaguiComponentPropsBase
 
-export type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>
-export type StackPropsBase = StackNonStyleProps & WithThemeAndShorthands<StackStylePropsBase>
+export type StackStyleProps =
+  WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>
+export type StackPropsBase = StackNonStyleProps &
+  WithThemeAndShorthands<StackStylePropsBase>
 export type StackProps = StackNonStyleProps & StackStyleProps
 
 //
@@ -873,7 +888,9 @@ export type GetBaseProps<A extends StylableComponent> = A extends TamaguiCompone
   ? BaseProps
   : never
 
-export type GetProps<A extends StylableComponent> = A extends TamaguiComponent<infer Props>
+export type GetProps<A extends StylableComponent> = A extends TamaguiComponent<
+  infer Props
+>
   ? Props
   : A extends TamaguiReactElement<infer Props>
   ? Props
@@ -995,28 +1012,40 @@ export type FontSizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFun
   A,
   FontSizeTokens
 >
-export type SizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SizeTokens>
-export type SpaceVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SpaceTokens>
-export type ColorVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ColorTokens>
-export type FontLineHeightVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
+export type SizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
   A,
-  FontLineHeightTokens
+  SizeTokens
 >
-export type FontLetterSpacingVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
+export type SpaceVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
   A,
-  FontLetterSpacingTokens
+  SpaceTokens
 >
+export type ColorVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
+  A,
+  ColorTokens
+>
+export type FontLineHeightVariantSpreadFunction<A extends PropLike> =
+  VariantSpreadFunction<A, FontLineHeightTokens>
+export type FontLetterSpacingVariantSpreadFunction<A extends PropLike> =
+  VariantSpreadFunction<A, FontLetterSpacingTokens>
 export type FontStyleVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
   A,
   FontStyleTokens
 >
-export type FontTransformVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
+export type FontTransformVariantSpreadFunction<A extends PropLike> =
+  VariantSpreadFunction<A, FontTransformTokens>
+export type ZIndexVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
   A,
-  FontTransformTokens
+  ZIndexTokens
 >
-export type ZIndexVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ZIndexTokens>
-export type RadiusVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, RadiusTokens>
-export type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ThemeTokens>
+export type RadiusVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
+  A,
+  RadiusTokens
+>
+export type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
+  A,
+  ThemeTokens
+>
 
 /**
  * --------------------------------------------
@@ -1350,8 +1379,9 @@ export type UseAnimationHook = (props: {
   style?: StackStylePropsBase | StackStylePropsBase[]
 }
 
-export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (
-  event: infer Event
-) => void
+export type GestureReponderEvent = Exclude<
+  View['props']['onResponderMove'],
+  void
+> extends (event: infer Event) => void
   ? Event
   : never

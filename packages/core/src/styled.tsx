@@ -14,11 +14,12 @@ import {
 } from './types'
 
 // TODO may be able to use this in the options?: arg below directly
-export type StyledOptions<ParentComponent extends StylableComponent> = GetProps<ParentComponent> & {
-  name?: string
-  variants?: VariantDefinitions<ParentComponent> | undefined
-  defaultVariants?: { [key: string]: any }
-}
+export type StyledOptions<ParentComponent extends StylableComponent> =
+  GetProps<ParentComponent> & {
+    name?: string
+    variants?: VariantDefinitions<ParentComponent> | undefined
+    defaultVariants?: { [key: string]: any }
+  }
 
 // can't infer from styled(<YStack />) which would be nice
 // * excessively deep type instantiation
@@ -82,10 +83,14 @@ export function styled<
       )
       const isTamagui = !isReactNative && !!parentStaticConfig
 
-      const Comp = isReactNative ? parentStaticConfig?.Component || Component : (Component as any)
+      const Comp = isReactNative
+        ? parentStaticConfig?.Component || Component
+        : (Component as any)
       const nativeConf = (isReactNative && ReactNativeStaticConfigs.get(Comp)) || null
 
-      const isText = Boolean(staticExtractionOptions?.isText || parentStaticConfig?.isText)
+      const isText = Boolean(
+        staticExtractionOptions?.isText || parentStaticConfig?.isText
+      )
       const acceptsClassName = acceptsClassNameProp ?? (isTamagui || isReactNative)
 
       const conf: Partial<StaticConfig> = {
@@ -125,7 +130,10 @@ export function styled<
   type OurVariants = Variants extends void
     ? {}
     : {
-        [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<any, infer Val>
+        [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<
+          any,
+          infer Val
+        >
           ? Val
           : GetVariantValues<keyof Variants[Key]>
       }

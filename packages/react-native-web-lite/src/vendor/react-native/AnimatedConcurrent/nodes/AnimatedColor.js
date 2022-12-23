@@ -10,7 +10,10 @@
 
 'use strict'
 
-import { normalizeColor, processColor as processColorObject } from 'react-native-web-internals'
+import {
+  normalizeColor,
+  processColor as processColorObject,
+} from 'react-native-web-internals'
 
 import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
 import AnimatedValue, { flushValue } from './AnimatedValue.js'
@@ -33,7 +36,7 @@ function processColor(color) {
 
   let normalizedColor = normalizeColor(
     // $FlowIgnore[incompatible-cast] - Type is verified above
-    color
+    color,
   )
   if (normalizedColor === undefined || normalizedColor === null) {
     return null
@@ -157,7 +160,10 @@ export default class AnimatedColor extends AnimatedWithChildren {
     if (this.__isNative) {
       const nativeTag = this.__getNativeTag()
       if (shouldUpdateNodeConfig) {
-        NativeAnimatedAPI.updateAnimatedNodeConfig(nativeTag, this.__getNativeConfig())
+        NativeAnimatedAPI.updateAnimatedNodeConfig(
+          nativeTag,
+          this.__getNativeConfig(),
+        )
       }
       NativeAnimatedAPI.unsetWaitingForIdentifier(nativeTag.toString())
     } else {

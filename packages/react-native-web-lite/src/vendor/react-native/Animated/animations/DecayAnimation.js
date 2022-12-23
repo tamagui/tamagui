@@ -18,17 +18,20 @@ class DecayAnimation extends Animation {
 
     super()
     this._deceleration =
-      (_config$deceleration = config.deceleration) !== null && _config$deceleration !== void 0
+      (_config$deceleration = config.deceleration) !== null &&
+      _config$deceleration !== void 0
         ? _config$deceleration
         : 0.998
     this._velocity = config.velocity
     this._useNativeDriver = shouldUseNativeDriver(config)
     this.__isInteraction =
-      (_config$isInteraction = config.isInteraction) !== null && _config$isInteraction !== void 0
+      (_config$isInteraction = config.isInteraction) !== null &&
+      _config$isInteraction !== void 0
         ? _config$isInteraction
         : !this._useNativeDriver
     this.__iterations =
-      (_config$iterations = config.iterations) !== null && _config$iterations !== void 0
+      (_config$iterations = config.iterations) !== null &&
+      _config$iterations !== void 0
         ? _config$iterations
         : 1
   }

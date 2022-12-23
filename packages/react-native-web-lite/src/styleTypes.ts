@@ -27,7 +27,10 @@ export type AnimationStyles = {
   animationDirection?: AnimationDirection | Array<AnimationDirection> | null
   animationDuration?: string | Array<string> | null
   animationFillMode?: AnimationFillMode | Array<AnimationFillMode> | null
-  animationIterationCount?: AnimationIterationCount | Array<AnimationIterationCount> | null
+  animationIterationCount?:
+    | AnimationIterationCount
+    | Array<AnimationIterationCount>
+    | null
   animationKeyframes?: AnimationKeyframes | Array<AnimationKeyframes> | null
   animationPlayState?: AnimationPlayState | Array<AnimationPlayState> | null
   animationTimingFunction?: string | Array<string> | null
@@ -146,9 +149,22 @@ type OverflowValue = 'auto' | 'hidden' | 'scroll' | 'visible'
 type VisiblilityValue = 'hidden' | 'visible'
 
 export type LayoutStyles = {
-  alignContent?: 'center' | 'flex-end' | 'flex-start' | 'space-around' | 'space-between' | 'stretch'
+  alignContent?:
+    | 'center'
+    | 'flex-end'
+    | 'flex-start'
+    | 'space-around'
+    | 'space-between'
+    | 'stretch'
   alignItems?: 'baseline' | 'center' | 'flex-end' | 'flex-start' | 'stretch' | null
-  alignSelf?: 'auto' | 'baseline' | 'center' | 'flex-end' | 'flex-start' | 'stretch' | null
+  alignSelf?:
+    | 'auto'
+    | 'baseline'
+    | 'center'
+    | 'flex-end'
+    | 'flex-start'
+    | 'stretch'
+    | null
   aspectRatio?: number | null
   backfaceVisibility?: VisiblilityValue | null
   borderWidth?: DimensionValue | null

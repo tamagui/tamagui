@@ -72,7 +72,9 @@ interface ToastProviderProps {
   swipeThreshold?: number
 }
 
-const ToastProvider: React.FC<ToastProviderProps> = (props: ScopedProps<ToastProviderProps>) => {
+const ToastProvider: React.FC<ToastProviderProps> = (
+  props: ScopedProps<ToastProviderProps>,
+) => {
   const {
     __scopeToast,
     label = 'Notification',
@@ -96,8 +98,14 @@ const ToastProvider: React.FC<ToastProviderProps> = (props: ScopedProps<ToastPro
       toastCount={toastCount}
       viewport={viewport}
       onViewportChange={setViewport}
-      onToastAdd={React.useCallback(() => setToastCount((prevCount) => prevCount + 1), [])}
-      onToastRemove={React.useCallback(() => setToastCount((prevCount) => prevCount - 1), [])}
+      onToastAdd={React.useCallback(
+        () => setToastCount((prevCount) => prevCount + 1),
+        [],
+      )}
+      onToastRemove={React.useCallback(
+        () => setToastCount((prevCount) => prevCount - 1),
+        [],
+      )}
       isFocusedToastEscapeKeyDownRef={isFocusedToastEscapeKeyDownRef}
       isClosePausedRef={isClosePausedRef}
     >
@@ -166,7 +174,9 @@ const ToastViewport = React.forwardRef<ToastViewportElement, ToastViewportProps>
       const handleKeyDown = (event: KeyboardEvent) => {
         // we use `event.code` as it is consistent regardless of meta keys that were pressed.
         // for example, `event.key` for `Control+Alt+t` is `†` and `t !== †`
-        const isHotkeyPressed = hotkey.every((key) => (event as any)[key] || event.code === key)
+        const isHotkeyPressed = hotkey.every(
+          (key) => (event as any)[key] || event.code === key,
+        )
         if (isHotkeyPressed) ref.current?.focus()
       }
       document.addEventListener('keydown', handleKeyDown)
@@ -272,7 +282,7 @@ const ToastViewport = React.forwardRef<ToastViewportElement, ToastViewportProps>
       },
       [
         // getItems, getSortedTabbableCandidates
-      ]
+      ],
     )
 
     return null
@@ -318,7 +328,7 @@ const ToastViewport = React.forwardRef<ToastViewportElement, ToastViewportProps>
     //     )}
     //   </DismissableLayer.Branch>
     // )
-  }
+  },
 )
 
 ToastViewport.displayName = VIEWPORT_NAME
@@ -349,12 +359,13 @@ const FocusProxy = React.forwardRef<FocusProxyElement, ScopedProps<FocusProxyPro
         position={isWeb ? ('fixed' as any) : 'absolute'}
         onFocus={(event) => {
           const prevFocusedElement = event.relatedTarget as HTMLElement | null
-          const isFocusFromOutsideViewport = !context.viewport?.contains(prevFocusedElement)
+          const isFocusFromOutsideViewport =
+            !context.viewport?.contains(prevFocusedElement)
           if (isFocusFromOutsideViewport) onFocusFromOutsideViewport()
         }}
       />
     )
-  }
+  },
 )
 
 FocusProxy.displayName = FOCUS_PROXY_NAME
@@ -383,10 +394,16 @@ interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
 
 const Toast = React.forwardRef<ToastElement, ToastProps>(
   (props: ScopedProps<ToastProps>, forwardedRef) => {
-    const { forceMount, open: openProp, defaultOpen, onOpenChange, ...toastProps } = props
+    const {
+      forceMount,
+      open: openProp,
+      defaultOpen,
+      onOpenChange,
+      ...toastProps
+    } = props
     const [open, setOpen] = useControllableState({
       prop: openProp,
-      defaultProp: defaultOpen || true,
+      defaultProp: true,
       onChange: onOpenChange,
       transition: true,
     })
@@ -425,7 +442,7 @@ const Toast = React.forwardRef<ToastElement, ToastProps>(
       />
       // </Presence>
     )
-  }
+  },
 )
 
 Toast.displayName = TOAST_NAME
@@ -433,7 +450,10 @@ Toast.displayName = TOAST_NAME
 /* -----------------------------------------------------------------------------------------------*/
 
 type SwipeEvent = { currentTarget: EventTarget & ToastElement } & Omit<
-  CustomEvent<{ originalEvent: React.PointerEvent; delta: { x: number; y: number } }>,
+  CustomEvent<{
+    originalEvent: React.PointerEvent
+    delta: { x: number; y: number }
+  }>,
   'currentTarget'
 >
 
@@ -462,7 +482,10 @@ interface ToastImplProps extends ToastImplPrivateProps, PrimitiveListItemProps {
 }
 
 const ToastImpl = React.forwardRef<ToastImplElement, ToastImplProps>(
-  (props: ScopedProps<ToastImplProps> & { children?: React.ReactNode }, forwardedRef) => {
+  (
+    props: ScopedProps<ToastImplProps> & { children?: React.ReactNode },
+    forwardedRef,
+  ) => {
     const {
       __scopeToast,
       type = 'foreground',
@@ -502,7 +525,7 @@ const ToastImpl = React.forwardRef<ToastImplElement, ToastImplProps>(
         closeTimerStartTimeRef.current = new Date().getTime()
         closeTimerRef.current = window.setTimeout(handleClose, duration)
       },
-      [handleClose]
+      [handleClose],
     )
 
     React.useEffect(() => {
@@ -513,7 +536,8 @@ const ToastImpl = React.forwardRef<ToastImplElement, ToastImplProps>(
         }
         const handlePause = () => {
           const elapsedTime = new Date().getTime() - closeTimerStartTimeRef.current
-          closeTimerRemainingTimeRef.current = closeTimerRemainingTimeRef.current - elapsedTime
+          closeTimerRemainingTimeRef.current =
+            closeTimerRemainingTimeRef.current - elapsedTime
           window.clearTimeout(closeTimerRef.current)
         }
         viewport.addEventListener(VIEWPORT_PAUSE, handlePause)
@@ -551,7 +575,11 @@ const ToastImpl = React.forwardRef<ToastImplElement, ToastImplProps>(
           {props.children}
         </ToastAnnounce>
 
-        <ToastInteractiveProvider scope={__scopeToast} isInteractive onClose={handleClose}>
+        <ToastInteractiveProvider
+          scope={__scopeToast}
+          isInteractive
+          onClose={handleClose}
+        >
           {ReactDOM.createPortal(
             <div />,
             // <Collection.ItemSlot scope={__scopeToast}>
@@ -643,12 +671,12 @@ const ToastImpl = React.forwardRef<ToastImplElement, ToastImplProps>(
             // />
             // </DismissableLayer.Root>,
             // </Collection.ItemSlot>,
-            context.viewport
+            context.viewport,
           )}
         </ToastInteractiveProvider>
       </>
     )
-  }
+  },
 )
 
 ToastImpl.propTypes = {
@@ -667,13 +695,16 @@ type ToastAnnounceProps = any
 // extends React.ComponentPropsWithoutRef<'div'>,
 //   ScopedProps<{ children?: ToastImplProps['children'] }> {}
 
-const ToastAnnounce: React.FC<ToastAnnounceProps> = (props: ScopedProps<ToastAnnounceProps>) => {
+const ToastAnnounce: React.FC<ToastAnnounceProps> = (
+  props: ScopedProps<ToastAnnounceProps>,
+) => {
   const { __scopeToast, children, ...announceProps } = props
   const context = useToastProviderContext(TOAST_NAME, __scopeToast)
   const [renderAnnounceText, setRenderAnnounceText] = React.useState(false)
   const [isAnnounced, setIsAnnounced] = React.useState(false)
   const [fragment, setFragment] = React.useState<DocumentFragment>()
-  const [rootFragmentNode, setRootFragmentNode] = React.useState<HTMLDivElement | null>(null)
+  const [rootFragmentNode, setRootFragmentNode] =
+    React.useState<HTMLDivElement | null>(null)
 
   // We portal children into a document fragment so that we can extract the bare text nodes
   // before rendering to the DOM. This avoids issues with duplicate `children`
@@ -726,7 +757,7 @@ const ToastTitle = React.forwardRef<ToastTitleElement, ToastTitleProps>(
   (props: ScopedProps<ToastTitleProps>, forwardedRef) => {
     const { __scopeToast, ...titleProps } = props
     return <YStack {...titleProps} ref={forwardedRef} />
-  }
+  },
 )
 
 ToastTitle.displayName = TITLE_NAME
@@ -740,12 +771,13 @@ const DESCRIPTION_NAME = 'ToastDescription'
 type ToastDescriptionElement = React.ElementRef<typeof YStack>
 interface ToastDescriptionProps extends PrimitiveDivProps {}
 
-const ToastDescription = React.forwardRef<ToastDescriptionElement, ToastDescriptionProps>(
-  (props: ScopedProps<ToastDescriptionProps>, forwardedRef) => {
-    const { __scopeToast, ...descriptionProps } = props
-    return <YStack {...descriptionProps} ref={forwardedRef} />
-  }
-)
+const ToastDescription = React.forwardRef<
+  ToastDescriptionElement,
+  ToastDescriptionProps
+>((props: ScopedProps<ToastDescriptionProps>, forwardedRef) => {
+  const { __scopeToast, ...descriptionProps } = props
+  return <YStack {...descriptionProps} ref={forwardedRef} />
+})
 
 ToastDescription.displayName = DESCRIPTION_NAME
 
@@ -776,7 +808,7 @@ const ToastAction = React.forwardRef<ToastActionElement, ToastActionProps>(
     ) : (
       <span>{altText}</span>
     )
-  }
+  },
 )
 
 ToastAction.propTypes = {
@@ -812,7 +844,7 @@ const ToastClose = React.forwardRef<ToastCloseElement, ToastCloseProps>(
         onPress={composeEventHandlers(props.onPress, interactiveContext.onClose)}
       />
     ) : null
-  }
+  },
 )
 
 ToastClose.displayName = CLOSE_NAME
@@ -821,16 +853,19 @@ ToastClose.displayName = CLOSE_NAME
 
 function handleAndDispatchCustomEvent<
   E extends CustomEvent,
-  ReactEvent extends React.SyntheticEvent
+  ReactEvent extends React.SyntheticEvent,
 >(
   name: string,
   handler: ((event: E) => void) | undefined,
-  detail: { originalEvent: ReactEvent } & (E extends CustomEvent<infer D> ? D : never),
-  { discrete }: { discrete: boolean }
+  detail: { originalEvent: ReactEvent } & (E extends CustomEvent<infer D>
+    ? D
+    : never),
+  { discrete }: { discrete: boolean },
 ) {
   const currentTarget = detail.originalEvent.currentTarget as HTMLElement
   const event = new CustomEvent(name, { bubbles: true, cancelable: true, detail })
-  if (handler) currentTarget.addEventListener(name, handler as EventListener, { once: true })
+  if (handler)
+    currentTarget.addEventListener(name, handler as EventListener, { once: true })
 
   if (discrete) {
     // dispatchDiscreteCustomEvent(currentTarget, event)
@@ -842,7 +877,7 @@ function handleAndDispatchCustomEvent<
 const isDeltaInDirection = (
   delta: { x: number; y: number },
   direction: SwipeDirection,
-  threshold = 0
+  threshold = 0,
 ) => {
   const deltaX = Math.abs(delta.x)
   const deltaY = Math.abs(delta.y)
@@ -860,7 +895,9 @@ function useNextFrame(callback = () => {}) {
   useIsomorphicLayoutEffect(() => {
     let raf1 = 0
     let raf2 = 0
-    raf1 = window.requestAnimationFrame(() => (raf2 = window.requestAnimationFrame(fn)))
+    raf1 = window.requestAnimationFrame(
+      () => (raf2 = window.requestAnimationFrame(fn)),
+    )
     return () => {
       window.cancelAnimationFrame(raf1)
       window.cancelAnimationFrame(raf2)
@@ -873,9 +910,11 @@ function getAnnounceTextContent(container: HTMLElement) {
   const childNodes = Array.from(container.childNodes)
 
   childNodes.forEach((node) => {
-    if (node.nodeType === node.TEXT_NODE && node.textContent) textContent.push(node.textContent)
+    if (node.nodeType === node.TEXT_NODE && node.textContent)
+      textContent.push(node.textContent)
     if (isHTMLElement(node)) {
-      const isHidden = node.ariaHidden || node.hidden || node.style.display === 'none'
+      const isHidden =
+        node.ariaHidden || node.hidden || node.style.display === 'none'
       if (!isHidden) textContent.push(...getAnnounceTextContent(node))
     }
   })
@@ -904,7 +943,8 @@ function getTabbableCandidates(container: HTMLElement) {
   const walker = document.createTreeWalker(container, NodeFilter.SHOW_ELEMENT, {
     acceptNode: (node: any) => {
       const isHiddenInput = node.tagName === 'INPUT' && node.type === 'hidden'
-      if (node.disabled || node.hidden || isHiddenInput) return NodeFilter.FILTER_SKIP
+      if (node.disabled || node.hidden || isHiddenInput)
+        return NodeFilter.FILTER_SKIP
       // `.tabIndex` is not the same as the `tabindex` attribute. It works on the
       // runtime's understanding of tabbability, so this automatically accounts
       // for any kind of element that could be tabbed to.

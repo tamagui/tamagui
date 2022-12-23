@@ -110,7 +110,8 @@ function getColors(colors: Record<string, Variable>, dark = false) {
     return Object.keys(colors)
       .filter(
         (color) =>
-          color.startsWith(group) && (dark ? color.endsWith('Dark') : !color.endsWith('Dark'))
+          color.startsWith(group) &&
+          (dark ? color.endsWith('Dark') : !color.endsWith('Dark')),
       )
       .map((key) => colors[key])
   })

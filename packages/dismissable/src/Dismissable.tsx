@@ -10,7 +10,10 @@ import * as ReactDOM from 'react-dom'
 
 import { DismissableBranchProps, DismissableProps } from './DismissableProps'
 
-function dispatchDiscreteCustomEvent<E extends CustomEvent>(target: E['target'], event: E) {
+function dispatchDiscreteCustomEvent<E extends CustomEvent>(
+  target: E['target'],
+  event: E
+) {
   if (target) ReactDOM.flushSync(() => target.dispatchEvent(event))
 }
 
@@ -31,135 +34,149 @@ const DismissableContext = React.createContext({
   branches: new Set<HTMLDivElement>(),
 })
 
-const Dismissable = React.forwardRef<HTMLDivElement, DismissableProps>((props, forwardedRef) => {
-  const {
-    disableOutsidePointerEvents = false,
-    forceUnmount,
-    onEscapeKeyDown,
-    onPointerDownOutside,
-    onFocusOutside,
-    onInteractOutside,
-    onDismiss,
-    ...layerProps
-  } = props
-  const context = React.useContext(DismissableContext)
-  const [node, setNode] = React.useState<HTMLDivElement | null>(null)
-  const [, force] = React.useState({})
-  const composedRefs = useComposedRefs(forwardedRef, (node) => setNode(node))
-  const layers = Array.from(context.layers)
-  const [highestLayerWithOutsidePointerEventsDisabled] = [...context.layersWithOutsidePointerEventsDisabled].slice(-1); // prettier-ignore
-  const highestLayerWithOutsidePointerEventsDisabledIndex = layers.indexOf(highestLayerWithOutsidePointerEventsDisabled); // prettier-ignore
-  const index = node ? layers.indexOf(node) : -1
-  const isBodyPointerEventsDisabled = context.layersWithOutsidePointerEventsDisabled.size > 0
-  const isPointerEventsEnabled = index >= highestLayerWithOutsidePointerEventsDisabledIndex
+const Dismissable = React.forwardRef<HTMLDivElement, DismissableProps>(
+  (props, forwardedRef) => {
+    const {
+      disableOutsidePointerEvents = false,
+      forceUnmount,
+      onEscapeKeyDown,
+      onPointerDownOutside,
+      onFocusOutside,
+      onInteractOutside,
+      onDismiss,
+      ...layerProps
+    } = props
+    const context = React.useContext(DismissableContext)
+    const [node, setNode] = React.useState<HTMLDivElement | null>(null)
+    const [, force] = React.useState({})
+    const composedRefs = useComposedRefs(forwardedRef, (node) => setNode(node))
+    const layers = Array.from(context.layers)
 
-  const pointerDownOutside = usePointerDownOutside((event) => {
-    const target = event.target as HTMLDivElement
-    const isPointerDownOnBranch = [...context.branches].some((branch) => branch.contains(target))
-    if (!isPointerEventsEnabled || isPointerDownOnBranch) return
-    onPointerDownOutside?.(event)
-    onInteractOutside?.(event)
-    if (!event.defaultPrevented) onDismiss?.()
-  })
+    const [highestLayerWithOutsidePointerEventsDisabled] = [
+      ...context.layersWithOutsidePointerEventsDisabled,
+    ].slice(-1)
+    const highestLayerWithOutsidePointerEventsDisabledIndex = layers.indexOf(
+      highestLayerWithOutsidePointerEventsDisabled
+    )
 
-  const focusOutside = useFocusOutside((event) => {
-    const target = event.target as HTMLDivElement
-    const isFocusInBranch = [...context.branches].some((branch) => branch.contains(target))
-    if (isFocusInBranch) return
-    onFocusOutside?.(event)
-    onInteractOutside?.(event)
-    if (!event.defaultPrevented) onDismiss?.()
-  })
+    const index = node ? layers.indexOf(node) : -1
+    const isBodyPointerEventsDisabled =
+      context.layersWithOutsidePointerEventsDisabled.size > 0
+    const isPointerEventsEnabled =
+      index >= highestLayerWithOutsidePointerEventsDisabledIndex
 
-  useEscapeKeydown((event) => {
-    const isHighestLayer = index === context.layers.size - 1
-    if (!isHighestLayer) return
-    onEscapeKeyDown?.(event)
-    if (!event.defaultPrevented && onDismiss) {
-      event.preventDefault()
-      onDismiss()
-    }
-  })
+    const pointerDownOutside = usePointerDownOutside((event) => {
+      const target = event.target as HTMLDivElement
+      const isPointerDownOnBranch = [...context.branches].some((branch) =>
+        branch.contains(target)
+      )
+      if (!isPointerEventsEnabled || isPointerDownOnBranch) return
+      onPointerDownOutside?.(event)
+      onInteractOutside?.(event)
+      if (!event.defaultPrevented) onDismiss?.()
+    })
 
-  React.useEffect(() => {
-    if (!node) return
-    if (disableOutsidePointerEvents) {
-      if (context.layersWithOutsidePointerEventsDisabled.size === 0) {
-        originalBodyPointerEvents = document.body.style.pointerEvents
-        document.body.style.pointerEvents = 'none'
+    const focusOutside = useFocusOutside((event) => {
+      const target = event.target as HTMLDivElement
+      const isFocusInBranch = [...context.branches].some((branch) =>
+        branch.contains(target)
+      )
+      if (isFocusInBranch) return
+      onFocusOutside?.(event)
+      onInteractOutside?.(event)
+      if (!event.defaultPrevented) onDismiss?.()
+    })
+
+    useEscapeKeydown((event) => {
+      const isHighestLayer = index === context.layers.size - 1
+      if (!isHighestLayer) return
+      onEscapeKeyDown?.(event)
+      if (!event.defaultPrevented && onDismiss) {
+        event.preventDefault()
+        onDismiss()
       }
-      context.layersWithOutsidePointerEventsDisabled.add(node)
-    }
-    context.layers.add(node)
-    dispatchUpdate()
-    return () => {
-      if (
-        disableOutsidePointerEvents &&
-        context.layersWithOutsidePointerEventsDisabled.size === 1
-      ) {
-        document.body.style.pointerEvents = originalBodyPointerEvents
-      }
-    }
-  }, [node, disableOutsidePointerEvents, context])
+    })
 
-  /**
-   * We purposefully prevent combining this effect with the `disableOutsidePointerEvents` effect
-   * because a change to `disableOutsidePointerEvents` would remove this layer from the stack
-   * and add it to the end again so the layering order wouldn't be _creation order_.
-   * We only want them to be removed from context stacks when unmounted.
-   */
-  React.useEffect(() => {
-    if (forceUnmount) return
-    return () => {
+    React.useEffect(() => {
       if (!node) return
-      context.layers.delete(node)
-      context.layersWithOutsidePointerEventsDisabled.delete(node)
+      if (disableOutsidePointerEvents) {
+        if (context.layersWithOutsidePointerEventsDisabled.size === 0) {
+          originalBodyPointerEvents = document.body.style.pointerEvents
+          document.body.style.pointerEvents = 'none'
+        }
+        context.layersWithOutsidePointerEventsDisabled.add(node)
+      }
+      context.layers.add(node)
       dispatchUpdate()
-    }
-  }, [node, context, forceUnmount])
+      return () => {
+        if (
+          disableOutsidePointerEvents &&
+          context.layersWithOutsidePointerEventsDisabled.size === 1
+        ) {
+          document.body.style.pointerEvents = originalBodyPointerEvents
+        }
+      }
+    }, [node, disableOutsidePointerEvents, context])
 
-  React.useEffect(() => {
-    const handleUpdate = () => {
-      force({})
-    }
-    document.addEventListener(CONTEXT_UPDATE, handleUpdate)
-    return () => document.removeEventListener(CONTEXT_UPDATE, handleUpdate)
-  }, [])
+    /**
+     * We purposefully prevent combining this effect with the `disableOutsidePointerEvents` effect
+     * because a change to `disableOutsidePointerEvents` would remove this layer from the stack
+     * and add it to the end again so the layering order wouldn't be _creation order_.
+     * We only want them to be removed from context stacks when unmounted.
+     */
+    React.useEffect(() => {
+      if (forceUnmount) return
+      return () => {
+        if (!node) return
+        context.layers.delete(node)
+        context.layersWithOutsidePointerEventsDisabled.delete(node)
+        dispatchUpdate()
+      }
+    }, [node, context, forceUnmount])
 
-  return (
-    <div
-      {...layerProps}
-      // @ts-ignore
-      ref={composedRefs}
-      style={{
-        display: 'contents',
-        pointerEvents: isBodyPointerEventsDisabled
-          ? isPointerEventsEnabled
-            ? 'auto'
-            : 'none'
-          : undefined,
+    React.useEffect(() => {
+      const handleUpdate = () => {
+        force({})
+      }
+      document.addEventListener(CONTEXT_UPDATE, handleUpdate)
+      return () => document.removeEventListener(CONTEXT_UPDATE, handleUpdate)
+    }, [])
+
+    return (
+      <div
+        {...layerProps}
         // @ts-ignore
-        ...props.style,
-      }}
-      onFocusCapture={composeEventHandlers(
+        ref={composedRefs}
+        style={{
+          display: 'contents',
+          pointerEvents: isBodyPointerEventsDisabled
+            ? isPointerEventsEnabled
+              ? 'auto'
+              : 'none'
+            : undefined,
+          // @ts-ignore
+          ...props.style,
+        }}
+        onFocusCapture={composeEventHandlers(
+          // @ts-ignore
+          props.onFocusCapture,
+          focusOutside.onFocusCapture
+        )}
+        onBlurCapture={composeEventHandlers(
+          // @ts-ignore
+          props.onBlurCapture,
+          focusOutside.onBlurCapture
+        )}
         // @ts-ignore
-        props.onFocusCapture,
-        focusOutside.onFocusCapture
-      )}
-      onBlurCapture={composeEventHandlers(
-        // @ts-ignore
-        props.onBlurCapture,
-        focusOutside.onBlurCapture
-      )}
-      // @ts-ignore
-      onPointerDownCapture={composeEventHandlers(
-        // @ts-ignore
-        props.onPointerDownCapture,
-        pointerDownOutside.onPointerDownCapture
-      )}
-    />
-  )
-})
+        onPointerDownCapture={composeEventHandlers(
+          // @ts-ignore
+          props.onPointerDownCapture,
+          pointerDownOutside.onPointerDownCapture
+        )}
+      />
+    )
+  }
+)
 
 Dismissable.displayName = DISMISSABLE_LAYER_NAME
 
@@ -201,7 +218,9 @@ export type FocusOutsideEvent = CustomEvent<{ originalEvent: FocusEvent }>
  * to mimic layer dismissing behaviour present in OS.
  * Returns props to pass to the node we want to check for outside events.
  */
-function usePointerDownOutside(onPointerDownOutside?: (event: PointerDownOutsideEvent) => void) {
+function usePointerDownOutside(
+  onPointerDownOutside?: (event: PointerDownOutsideEvent) => void
+) {
   const handlePointerDownOutside = useEvent(onPointerDownOutside) as EventListener
   const isPointerInsideReactTreeRef = React.useRef(false)
   const handleClickRef = React.useRef(() => {})

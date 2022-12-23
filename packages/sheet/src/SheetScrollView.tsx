@@ -110,5 +110,5 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
         {useMemo(() => children, [children])}
       </ScrollView>
     )
-  }
+  },
 )

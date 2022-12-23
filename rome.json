@@ -1,0 +1,39 @@
+{
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "correctness": {
+        "noUnnecessaryContinue": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "off",
+        "noDoubleEquals": "off"
+      },
+      "style": {
+        "noArguments": "off",
+        "noUnusedTemplateLiteral": "off",
+        "useTemplate": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off",
+        "noDangerouslySetInnerHtmlWithChildren": "off"
+      },
+      "performance": {
+        "noDelete": "off"
+      },
+      "complexity": {
+        "useSimplifiedLogicExpression": "off",
+        "useOptionalChain": "off"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentSize": 2,
+    "lineWidth": 100,
+    "ignore": []
+  }
+}

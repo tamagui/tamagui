@@ -74,12 +74,14 @@ describe('components/Pressable', () => {
     act(() => {
       ;({ container } = render(
         <Pressable
-          children={({ focused }) => (focused ? <div data-testid="focus-content" /> : null)}
+          children={({ focused }) =>
+            focused ? <div data-testid="focus-content" /> : null
+          }
           onBlur={onBlur}
           onFocus={onFocus}
           ref={ref}
           style={({ focused }) => [focused && { outline: 'focus-ring' }]}
-        />
+        />,
       ))
     })
     const target = createEventTarget(ref.current)
@@ -102,7 +104,9 @@ describe('components/Pressable', () => {
     const onFocus = jest.fn()
     const ref = React.createRef()
     act(() => {
-      render(<Pressable disabled={true} onBlur={onBlur} onFocus={onFocus} ref={ref} />)
+      render(
+        <Pressable disabled={true} onBlur={onBlur} onFocus={onFocus} ref={ref} />,
+      )
     })
     const target = createEventTarget(ref.current)
     const body = createEventTarget(document.body)
@@ -124,12 +128,14 @@ describe('components/Pressable', () => {
     act(() => {
       ;({ container } = render(
         <Pressable
-          children={({ hovered }) => (hovered ? <div data-testid="hover-content" /> : null)}
+          children={({ hovered }) =>
+            hovered ? <div data-testid="hover-content" /> : null
+          }
           onHoverIn={onHoverIn}
           onHoverOut={onHoverOut}
           ref={ref}
           style={({ hovered }) => [hovered && { outline: 'hover-ring' }]}
-        />
+        />,
       ))
     })
     const target = createEventTarget(ref.current)
@@ -156,14 +162,16 @@ describe('components/Pressable', () => {
     act(() => {
       ;({ container } = render(
         <Pressable
-          children={({ pressed }) => (pressed ? <div data-testid="press-content" /> : null)}
+          children={({ pressed }) =>
+            pressed ? <div data-testid="press-content" /> : null
+          }
           onContextMenu={onContextMenu}
           onPress={onPress}
           onPressIn={onPressIn}
           onPressOut={onPressOut}
           ref={ref}
           style={({ pressed }) => [pressed && { outline: 'press-ring' }]}
-        />
+        />,
       ))
     })
     const target = createEventTarget(ref.current)
@@ -198,7 +206,9 @@ describe('components/Pressable', () => {
       const [shown, setShown] = React.useState(true)
       return shown ? (
         <Pressable
-          children={({ pressed }) => (pressed ? <div data-testid="press-content" /> : null)}
+          children={({ pressed }) =>
+            pressed ? <div data-testid="press-content" /> : null
+          }
           onPress={(e) => {
             onPress(e)
             setShown(false)

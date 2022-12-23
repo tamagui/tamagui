@@ -8,7 +8,9 @@ import { ScopedProps, SelectViewportProps } from './types'
 export const SelectViewport = (props: ScopedProps<SelectViewportProps>) => {
   const { __scopeSelect, children } = props
   const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
-  return <PortalItem hostName={`${context.scopeKey}SheetContents`}>{children}</PortalItem>
+  return (
+    <PortalItem hostName={`${context.scopeKey}SheetContents`}>{children}</PortalItem>
+  )
 }
 
 SelectViewport.displayName = VIEWPORT_NAME

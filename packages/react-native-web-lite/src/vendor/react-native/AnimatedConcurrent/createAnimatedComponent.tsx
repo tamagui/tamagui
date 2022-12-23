@@ -17,7 +17,7 @@ export default function createAnimatedComponent(Component) {
   return React.forwardRef((props, forwardedRef) => {
     const [reducedProps, callbackRef] = useAnimatedProps(
       // $FlowFixMe[incompatible-call]
-      props
+      props,
     )
     const ref = useMergeRefs(callbackRef, forwardedRef)
 
@@ -31,6 +31,13 @@ export default function createAnimatedComponent(Component) {
       passthroughAnimatedPropExplicitValues ?? {}
     const mergedStyle = { ...style, ...passthroughStyle }
 
-    return <Component {...reducedProps} {...passthroughProps} style={mergedStyle} ref={ref} />
+    return (
+      <Component
+        {...reducedProps}
+        {...passthroughProps}
+        style={mergedStyle}
+        ref={ref}
+      />
+    )
   })
 }

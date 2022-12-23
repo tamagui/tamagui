@@ -26,6 +26,9 @@
     "lint": {
       "outputs": []
     },
+    "lint:fix": {
+      "outputs": ["src/**"]
+    },
     "dev": {
       "cache": false
     }

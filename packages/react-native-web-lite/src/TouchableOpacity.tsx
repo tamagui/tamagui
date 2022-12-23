@@ -48,21 +48,21 @@ function TouchableOpacity(props, forwardedRef) {
       setOpacityOverride(value)
       setDuration(duration ? `${duration / 1000}s` : '0s')
     },
-    [setOpacityOverride, setDuration]
+    [setOpacityOverride, setDuration],
   )
 
   const setOpacityActive = useCallback(
     (duration: number) => {
       setOpacityTo(activeOpacity ?? 0.2, duration)
     },
-    [activeOpacity, setOpacityTo]
+    [activeOpacity, setOpacityTo],
   )
 
   const setOpacityInactive = useCallback(
     (duration: number) => {
       setOpacityTo(null, duration)
     },
-    [setOpacityTo]
+    [setOpacityTo],
   )
 
   const pressConfig = useMemo(
@@ -103,7 +103,7 @@ function TouchableOpacity(props, forwardedRef) {
       rejectResponderTermination,
       setOpacityActive,
       setOpacityInactive,
-    ]
+    ],
   )
 
   const pressEventHandlers = usePressEvents(hostRef, pressConfig)

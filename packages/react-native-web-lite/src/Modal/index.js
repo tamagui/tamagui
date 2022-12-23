@@ -114,10 +114,10 @@ var Modal = /*#__PURE__*/ React.forwardRef((props, forwardedRef) => {
             ref: forwardedRef,
             transparent: transparent,
           },
-          children
-        )
-      )
-    )
+          children,
+        ),
+      ),
+    ),
   )
 })
 export default Modal

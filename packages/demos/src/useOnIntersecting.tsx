@@ -12,14 +12,14 @@ type DisposeFn = () => void
 
 type IntersectCallback = (
   props: (IntersectionObserverEntry | null)[],
-  didResize?: boolean
+  didResize?: boolean,
 ) => DisposeFn | void | null
 
 type HTMLRef = MutableRefObject<HTMLElement | null>
 
 export function useIsIntersecting<Ref extends HTMLRef | HTMLRef[]>(
   refs: Ref,
-  { once, ...opts }: IntersectionObserverInit & { once?: boolean } = {}
+  { once, ...opts }: IntersectionObserverInit & { once?: boolean } = {},
 ): Ref extends any[] ? boolean[] : boolean {
   const [values, setValues] = useState<boolean[]>([])
 
@@ -37,7 +37,7 @@ export function useIsIntersecting<Ref extends HTMLRef | HTMLRef[]>(
           return next
         })
       },
-      opts
+      opts,
     )
   }
 
@@ -48,7 +48,7 @@ export function useOnIntersecting<Ref extends HTMLRef | HTMLRef[]>(
   refsIn: Ref,
   incomingCbRaw: IntersectCallback,
   { threshold = 0, root, rootMargin }: IntersectionObserverInit = {},
-  mountArgs: any[] = []
+  mountArgs: any[] = [],
 ) {
   const onIntersectEvent = useEvent(incomingCbRaw)
   const windowDimensions = useDebounceValue(useWindowDimensions())
@@ -66,7 +66,11 @@ export function useOnIntersecting<Ref extends HTMLRef | HTMLRef[]>(
     }
     const io = new IntersectionObserver((entries) => {
       currentEntries = refs.map((ref, index) => {
-        return entries.find((x) => x.target === ref.current) ?? currentEntries[index] ?? null
+        return (
+          entries.find((x) => x.target === ref.current) ??
+          currentEntries[index] ??
+          null
+        )
       })
       dispose?.()
       dispose = onIntersectEvent(currentEntries) || null

@@ -38,7 +38,13 @@ export function Grid({ children, columns, itemMinWidth = 200, gap }: GridProps) 
 
         // index key bad
         return (
-          <XStack key={i} flex={1} minWidth={itemMinWidth} marginRight={gap} marginBottom={gap}>
+          <XStack
+            key={i}
+            flex={1}
+            minWidth={itemMinWidth}
+            marginRight={gap}
+            marginBottom={gap}
+          >
             {child}
           </XStack>
         )

@@ -26,9 +26,13 @@ const _cancelIdleCallback = function (id) {
 
 const isSupported = canUseDOM && typeof window.requestIdleCallback !== 'undefined'
 
-const requestIdleCallback = isSupported ? window.requestIdleCallback : _requestIdleCallback
+const requestIdleCallback = isSupported
+  ? window.requestIdleCallback
+  : _requestIdleCallback
 
-const cancelIdleCallback = isSupported ? window.cancelIdleCallback : _cancelIdleCallback
+const cancelIdleCallback = isSupported
+  ? window.cancelIdleCallback
+  : _cancelIdleCallback
 
 export default requestIdleCallback
 export { cancelIdleCallback }

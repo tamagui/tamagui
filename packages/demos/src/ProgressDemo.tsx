@@ -1,6 +1,14 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { Button, Paragraph, Progress, SizeTokens, Slider, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Paragraph,
+  Progress,
+  SizeTokens,
+  Slider,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 export function ProgressDemo() {
   const [size, setSize] = useState(4)

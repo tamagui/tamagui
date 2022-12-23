@@ -42,7 +42,7 @@ const slice = Array.prototype.slice
  * https://gist.github.com/necolas/aa0c37846ad6bd3b05b727b959e82674
  */
 export default function createOrderedCSSStyleSheet(
-  sheet: CSSStyleSheet | null
+  sheet: CSSStyleSheet | null,
 ): OrderedCSSStyleSheet {
   const groups: Groups = {}
   const selectors: Selectors = {}
@@ -168,9 +168,11 @@ function decodeGroupRule(cssRule) {
   return Number(cssRule.selectorText.split(groupPattern)[1])
 }
 
-function getOrderedGroups(obj: {
-  [K in number]: any
-}) {
+function getOrderedGroups(
+  obj: {
+    [K in number]: any
+  },
+) {
   return Object.keys(obj)
     .map(Number)
     .sort((a, b) => (a > b ? 1 : -1))

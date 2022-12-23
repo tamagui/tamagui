@@ -1,1 +1,1 @@
-export declare function getDefaultTamaguiConfig(): TamaguiInternalConfig;
+export declare function getDefaultTamaguiConfig(): TamaguiInternalConfig

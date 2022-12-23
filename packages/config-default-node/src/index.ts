@@ -1,4 +1,9 @@
-import { TamaguiInternalConfig, createFont, createTamagui, createTokens } from '@tamagui/core-node'
+import {
+  TamaguiInternalConfig,
+  createFont,
+  createTamagui,
+  createTokens,
+} from '@tamagui/core-node'
 import { shorthands } from '@tamagui/shorthands'
 
 // basic fallback theme just to have compiler load in decent tate

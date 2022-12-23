@@ -10,7 +10,10 @@
 import isWebColor from '../isWebColor/index.js'
 import { processColor } from '../processColor/index.js'
 
-const normalizeColor = (color: number | string | null | undefined, opacity = 1): void | string => {
+const normalizeColor = (
+  color: number | string | null | undefined,
+  opacity = 1,
+): void | string => {
   if (color == null) return
 
   if (typeof color === 'string' && isWebColor(color)) {

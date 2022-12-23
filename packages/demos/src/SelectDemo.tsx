@@ -22,7 +22,13 @@ export function SelectDemo() {
       </Adapt>
 
       <Select.Content zIndex={200_000}>
-        <Select.ScrollUpButton ai="center" jc="center" pos="relative" w="100%" h="$3">
+        <Select.ScrollUpButton
+          ai="center"
+          jc="center"
+          pos="relative"
+          w="100%"
+          h="$3"
+        >
           <YStack zi={10}>
             <ChevronUp size={20} />
           </YStack>
@@ -40,7 +46,11 @@ export function SelectDemo() {
             <Select.Label>Fruits</Select.Label>
             {items.map((item, i) => {
               return (
-                <Select.Item index={i} key={item.name} value={item.name.toLowerCase()}>
+                <Select.Item
+                  index={i}
+                  key={item.name}
+                  value={item.name.toLowerCase()}
+                >
                   <Select.ItemText>{item.name}</Select.ItemText>
                   <Select.ItemIndicator ml="auto">
                     <Check size={16} />
@@ -51,7 +61,13 @@ export function SelectDemo() {
           </Select.Group>
         </Select.Viewport>
 
-        <Select.ScrollDownButton ai="center" jc="center" pos="relative" w="100%" h="$3">
+        <Select.ScrollDownButton
+          ai="center"
+          jc="center"
+          pos="relative"
+          w="100%"
+          h="$3"
+        >
           <YStack zi={10}>
             <ChevronDown size={20} />
           </YStack>

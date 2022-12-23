@@ -15,7 +15,8 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "eslint src",
+    "lint": "../../node_modules/.bin/rome check src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "test": "vitest --run --config ../vite-plugin-internal/src/vite.config.ts"

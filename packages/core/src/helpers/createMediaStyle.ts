@@ -17,7 +17,7 @@ export const createMediaStyle = (
   mediaQueries: MediaQueries,
   negate?: boolean
 ): PartialStyleObject => {
-  if (!prefixes || !selectors) {
+  if (!(prefixes && selectors)) {
     // TODO move this into useMedia calc once there and unify w getMediaImportance
     const mediaKeys = Object.keys(mediaQueries)
     prefixes = Object.fromEntries(
@@ -37,7 +37,9 @@ export const createMediaStyle = (
   )}`
   const screenStr = negate ? 'not all and' : ''
   const mediaQuery = `${screenStr} ${mediaSelector}`
-  const styleInner = rules.map((rule) => rule.replace(identifier, nextIdentifier)).join(';')
+  const styleInner = rules
+    .map((rule) => rule.replace(identifier, nextIdentifier))
+    .join(';')
   // combines media queries if they already exist
   let styleRule = ''
   if (styleInner.includes('@media')) {

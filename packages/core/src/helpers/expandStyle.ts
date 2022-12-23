@@ -57,14 +57,24 @@ export function expandStyle(key: string, value: any) {
 }
 
 const STYLE_SHORT_FORM_EXPANSIONS: Record<string, string[]> = {
-  borderColor: ['borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor'],
+  borderColor: [
+    'borderTopColor',
+    'borderRightColor',
+    'borderBottomColor',
+    'borderLeftColor',
+  ],
   borderRadius: [
     'borderTopLeftRadius',
     'borderTopRightRadius',
     'borderBottomRightRadius',
     'borderBottomLeftRadius',
   ],
-  borderWidth: ['borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth'],
+  borderWidth: [
+    'borderTopWidth',
+    'borderRightWidth',
+    'borderBottomWidth',
+    'borderLeftWidth',
+  ],
   margin: ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'],
   marginHorizontal: ['marginRight', 'marginLeft'],
   marginVertical: ['marginTop', 'marginBottom'],
@@ -74,7 +84,12 @@ const STYLE_SHORT_FORM_EXPANSIONS: Record<string, string[]> = {
   paddingVertical: ['paddingTop', 'paddingBottom'],
   ...(isWeb && {
     // react-native only supports borderStyle
-    borderStyle: ['borderTopStyle', 'borderRightStyle', 'borderBottomStyle', 'borderLeftStyle'],
+    borderStyle: [
+      'borderTopStyle',
+      'borderRightStyle',
+      'borderBottomStyle',
+      'borderLeftStyle',
+    ],
     // react-native doesn't support X / Y
     overflow: ['overflowX', 'overflowY'],
   }),

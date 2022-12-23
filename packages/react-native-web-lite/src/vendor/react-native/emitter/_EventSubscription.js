@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * 
+ *
  */
-'use strict';
+'use strict'
 
 /**
  * EventSubscription represents a subscription to a particular event. It can
@@ -19,17 +19,15 @@ class _EventSubscription {
    *   this subscription.
    */
   constructor(subscriber) {
-    this.subscriber = subscriber;
+    this.subscriber = subscriber
   }
   /**
    * Removes this subscription from the subscriber that controls it.
    */
 
-
   remove() {
-    this.subscriber.removeSubscription(this);
+    this.subscriber.removeSubscription(this)
   }
-
 }
 
-export default _EventSubscription;
+export default _EventSubscription

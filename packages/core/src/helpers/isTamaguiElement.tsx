@@ -7,6 +7,9 @@ export type TamaguiReactElement<P = any> = React.ReactElement<P> & {
   type: TamaguiComponent
 }
 
-export const isTamaguiElement = (child: any, name?: string): child is TamaguiReactElement => {
+export const isTamaguiElement = (
+  child: any,
+  name?: string
+): child is TamaguiReactElement => {
   return isValidElement(child) && isTamaguiComponent(child.type, name)
 }

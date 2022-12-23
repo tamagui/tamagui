@@ -1,7 +1,12 @@
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { GetProps, TamaguiElement, isClient, isWeb } from '@tamagui/core'
-import { styled, useGet, useIsomorphicLayoutEffect, withStaticProperties } from '@tamagui/core'
+import {
+  styled,
+  useGet,
+  useIsomorphicLayoutEffect,
+  withStaticProperties,
+} from '@tamagui/core'
 import { useId } from '@tamagui/core'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import { PortalHost } from '@tamagui/portal'
@@ -19,7 +24,10 @@ import { SelectInlineImpl } from './SelectImpl'
 import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
 import { SelectViewport } from './SelectViewport'
 import { ScopedProps, SelectImplProps, SelectProps } from './types'
-import { useSelectBreakpointActive, useShowSelectSheet } from './useSelectBreakpointActive'
+import {
+  useSelectBreakpointActive,
+  useShowSelectSheet,
+} from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectTrigger
@@ -96,7 +104,11 @@ type SelectValueProps = GetProps<typeof SelectValueFrame> & {
 const SelectValue = SelectValueFrame.extractable(
   React.forwardRef<TamaguiElement, SelectValueProps>(
     (
-      { __scopeSelect, children: childrenProp, placeholder }: ScopedProps<SelectValueProps>,
+      {
+        __scopeSelect,
+        children: childrenProp,
+        placeholder,
+      }: ScopedProps<SelectValueProps>,
       forwardedRef
     ) => {
       // We ignore `className` and `style` as this part shouldn't be styled.
@@ -218,7 +230,10 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
             allowMouseUpRef!.current = false
           },
           onKeyDown(event) {
-            if (event.key === 'Enter' || (event.key === ' ' && !dataRef?.current.typing)) {
+            if (
+              event.key === 'Enter' ||
+              (event.key === ' ' && !dataRef?.current.typing)
+            ) {
               event.preventDefault()
               handleSelect()
             } else {
@@ -516,7 +531,7 @@ export const Select = withStaticProperties(
     const { when, AdaptProvider } = useAdaptParent({
       Contents: SelectSheetContents,
     })
-    const sheetBreakpoint = when || false
+    const sheetBreakpoint = when
     const isSheet = useSelectBreakpointActive(sheetBreakpoint)
     const SelectImpl = isSheet ? SelectSheetImpl : SelectInlineImpl
     const forceUpdate = React.useReducer(() => ({}), {})[1]

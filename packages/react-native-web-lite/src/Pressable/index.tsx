@@ -123,12 +123,13 @@ function Pressable(props: Props, forwardedRef): React.ReactNode {
       onPressMove,
       onPressOut,
       setPressed,
-    ]
+    ],
   )
 
   const pressEventHandlers = usePressEvents(hostRef, pressConfig)
 
-  const { onContextMenu: onContextMenuPress, onKeyDown: onKeyDownPress } = pressEventHandlers
+  const { onContextMenu: onContextMenuPress, onKeyDown: onKeyDownPress } =
+    pressEventHandlers
 
   useHover(hostRef, {
     contain: true,
@@ -152,7 +153,7 @@ function Pressable(props: Props, forwardedRef): React.ReactNode {
         }
       }
     },
-    [disabled, hostRef, setFocused, onBlur]
+    [disabled, hostRef, setFocused, onBlur],
   )
 
   const focusHandler = React.useCallback(
@@ -167,7 +168,7 @@ function Pressable(props: Props, forwardedRef): React.ReactNode {
         }
       }
     },
-    [disabled, hostRef, setFocused, onFocus]
+    [disabled, hostRef, setFocused, onFocus],
   )
 
   const contextMenuHandler = React.useCallback(
@@ -179,7 +180,7 @@ function Pressable(props: Props, forwardedRef): React.ReactNode {
         onContextMenu(e)
       }
     },
-    [onContextMenu, onContextMenuPress]
+    [onContextMenu, onContextMenuPress],
   )
 
   const keyDownHandler = React.useCallback(
@@ -191,7 +192,7 @@ function Pressable(props: Props, forwardedRef): React.ReactNode {
         onKeyDown(e)
       }
     },
-    [onKeyDown, onKeyDownPress]
+    [onKeyDown, onKeyDownPress],
   )
 
   return (

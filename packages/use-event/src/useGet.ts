@@ -9,7 +9,7 @@ const useIsomorphicLayoutEffect = !isWeb || isClient ? useLayoutEffect : useEffe
 export function useGet<A>(
   currentValue: A,
   initialValue?: any,
-  forwardToFunction?: boolean
+  forwardToFunction?: boolean,
 ): () => A {
   const curRef = useRef<any>(initialValue ?? currentValue)
   useIsomorphicLayoutEffect(() => {
@@ -17,7 +17,9 @@ export function useGet<A>(
   })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   return useCallback(
-    forwardToFunction ? (...args) => curRef.current?.apply(null, args) : () => curRef.current,
-    []
+    forwardToFunction
+      ? (...args) => curRef.current?.apply(null, args)
+      : () => curRef.current,
+    [],
   )
 }

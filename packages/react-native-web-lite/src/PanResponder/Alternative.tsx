@@ -167,7 +167,10 @@ const PanResponder = {
    * currently responder (otherwise, it only represents the drag distance below
    * the threshold).
    */
-  _updateGestureStateOnMove(gestureState: GestureState, touchHistory: PressEvent['touchHistory']) {
+  _updateGestureStateOnMove(
+    gestureState: GestureState,
+    touchHistory: PressEvent['touchHistory'],
+  ) {
     const movedAfter = gestureState._accountsForMovesUpTo
     const prevX = previousCentroidXOfTouchesChangedAfter(touchHistory, movedAfter)
     const prevY = previousCentroidYOfTouchesChangedAfter(touchHistory, movedAfter)
@@ -317,7 +320,9 @@ const PanResponder = {
         const touchHistory = event.touchHistory
         // Guard against the dispatch of two touch moves when there are two
         // simultaneously changed touches.
-        if (gestureState._accountsForMovesUpTo === touchHistory.mostRecentTimeStamp) {
+        if (
+          gestureState._accountsForMovesUpTo === touchHistory.mostRecentTimeStamp
+        ) {
           return
         }
         // Filter out any touch moves past the first one - we would have
@@ -348,7 +353,9 @@ const PanResponder = {
       },
 
       onResponderTerminationRequest(event: PressEvent): boolean {
-        return onPanTerminationRequest != null ? onPanTerminationRequest(event, gestureState) : true
+        return onPanTerminationRequest != null
+          ? onPanTerminationRequest(event, gestureState)
+          : true
       },
     }
     return {
@@ -366,7 +373,7 @@ function clearInteractionHandle(
   },
   callback: ActiveCallback | PassiveCallback | null,
   event: PressEvent,
-  gestureState: GestureState
+  gestureState: GestureState,
 ) {
   if (interactionState.handle) {
     InteractionManager.clearInteractionHandle(interactionState.handle)

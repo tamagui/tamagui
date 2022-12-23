@@ -22,7 +22,7 @@ export const getConfig = () => {
     throw new Error(
       process.env.NODE_ENV === 'development'
         ? `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before rendering.`
-        : `Err0`
+        : 'Err0'
     )
   }
   return conf

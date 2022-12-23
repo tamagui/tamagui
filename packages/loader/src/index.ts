@@ -11,7 +11,10 @@ export default require('./loader').loader
 // helper for webpack exclude specific to tamagui
 
 export const shouldExclude = (filePath: string, projectRoot: string) => {
-  if ((filePath.includes(projectRoot) && filePath.endsWith('sx')) || isTamaguiDistJSX(filePath)) {
+  if (
+    (filePath.includes(projectRoot) && filePath.endsWith('sx')) ||
+    isTamaguiDistJSX(filePath)
+  ) {
     return false
   }
   return true

@@ -13,7 +13,12 @@ import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
-import { CreateTamaguiProps, InferTamaguiConfig, TamaguiInternalConfig, ThemeParsed } from './types'
+import {
+  CreateTamaguiProps,
+  InferTamaguiConfig,
+  TamaguiInternalConfig,
+  ThemeParsed,
+} from './types'
 
 // config is re-run by the @tamagui/static, dont double validate
 const createdConfigs = new WeakMap<any, boolean>()
@@ -27,13 +32,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   if (process.env.NODE_ENV === 'development') {
     if (!configIn.tokens) {
-      throw new Error(`Must define tokens`)
+      throw new Error('Must define tokens')
     }
     if (!configIn.themes) {
-      throw new Error(`Must define themes`)
+      throw new Error('Must define themes')
     }
     if (!configIn.fonts) {
-      throw new Error(`Must define fonts`)
+      throw new Error('Must define fonts')
     }
   }
 
@@ -74,10 +79,15 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         const fontParsed = fontsParsed[key]
         const [name, language] = key.includes('_') ? key.split('_') : [key]
         const fontVars = registerFontVariables(fontParsed)
-        fontDeclarations[key] = { name: name.slice(1), declarations: fontVars, language }
+        fontDeclarations[key] = {
+          name: name.slice(1),
+          declarations: fontVars,
+          language,
+        }
       }
 
-      const sep = process.env.NODE_ENV === 'development' ? configIn.cssStyleSeparator || ' ' : ''
+      const sep =
+        process.env.NODE_ENV === 'development' ? configIn.cssStyleSeparator || ' ' : ''
 
       function declarationsToRuleSet(decs: string[], selector = '') {
         return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}${sep}}`

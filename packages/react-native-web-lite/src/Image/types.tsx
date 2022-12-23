@@ -78,7 +78,13 @@ type SourceObject = {
   width?: number
 }
 
-export type ResizeMode = 'center' | 'contain' | 'cover' | 'none' | 'repeat' | 'stretch'
+export type ResizeMode =
+  | 'center'
+  | 'contain'
+  | 'cover'
+  | 'none'
+  | 'repeat'
+  | 'stretch'
 
 export type Source = number | string | SourceObject | Array<SourceObject>
 

@@ -1,7 +1,7 @@
 import { isWeb } from '@tamagui/constants'
 
 export const THEME_NAME_SEPARATOR = '_'
-export const THEME_CLASSNAME_PREFIX = `t_`
+export const THEME_CLASSNAME_PREFIX = 't_'
 
 export const webOnlyDefaultStyles = {
   display: 'flex',

@@ -79,7 +79,7 @@ const forwardPropsList = Object.assign(
     spellCheck: true,
     value: true,
     type: true,
-  }
+  },
 )
 
 const pickProps = (props) => pick(props, forwardPropsList)
@@ -183,7 +183,10 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
         if (multiline && onContentSizeChange && hostNode != null) {
           const newHeight = hostNode.scrollHeight
           const newWidth = hostNode.scrollWidth
-          if (newHeight !== dimensions.current.height || newWidth !== dimensions.current.width) {
+          if (
+            newHeight !== dimensions.current.height ||
+            newWidth !== dimensions.current.width
+          ) {
             dimensions.current.height = newHeight
             dimensions.current.width = newWidth
             onContentSizeChange({
@@ -197,7 +200,7 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
           }
         }
       },
-      [multiline, onContentSizeChange]
+      [multiline, onContentSizeChange],
     )
 
     const imperativeRef = React.useMemo(
@@ -212,12 +215,14 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
             }
           }
           hostNode.isFocused = function () {
-            return hostNode != null && TextInputState.currentlyFocusedField() === hostNode
+            return (
+              hostNode != null && TextInputState.currentlyFocusedField() === hostNode
+            )
           }
           handleContentSizeChange(hostNode)
         }
       },
-      [handleContentSizeChange]
+      [handleContentSizeChange],
     )
 
     function handleBlur(e) {
@@ -273,7 +278,8 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
       e.stopPropagation()
 
       const blurOnSubmitDefault = !multiline
-      const shouldBlurOnSubmit = blurOnSubmit == null ? blurOnSubmitDefault : blurOnSubmit
+      const shouldBlurOnSubmit =
+        blurOnSubmit == null ? blurOnSubmitDefault : blurOnSubmit
 
       const nativeEvent = e.nativeEvent
       const isComposing = isEventComposing(nativeEvent)
@@ -378,7 +384,12 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
 
     const platformMethodsRef = usePlatformMethods(supportedProps)
 
-    const setRef = useMergeRefs(hostRef, platformMethodsRef, imperativeRef, forwardedRef)
+    const setRef = useMergeRefs(
+      hostRef,
+      platformMethodsRef,
+      imperativeRef,
+      forwardedRef,
+    )
 
     supportedProps.ref = setRef
 
@@ -391,7 +402,7 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
     })
 
     return element
-  }
+  },
 )
 
 TextInput.displayName = 'TextInput'

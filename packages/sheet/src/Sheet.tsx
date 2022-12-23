@@ -34,7 +34,12 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { GestureResponderEvent, PanResponder, PanResponderGestureState, View } from 'react-native'
+import {
+  GestureResponderEvent,
+  PanResponder,
+  PanResponderGestureState,
+  View,
+} from 'react-native'
 
 import { SHEET_HANDLE_NAME, SHEET_NAME } from './SHEET_HANDLE_NAME'
 import { SheetProvider, useSheetContext } from './SheetContext'
@@ -163,11 +168,13 @@ export const SheetFrameFrame = styled(YStack, {
 })
 
 export const SheetFrame = SheetFrameFrame.extractable(
-  forwardRef(({ __scopeSheet, ...props }: SheetScopedProps<YStackProps>, forwardedRef) => {
-    const context = useSheetContext(SHEET_NAME, __scopeSheet)
-    const composedContentRef = useComposedRefs(forwardedRef, context.contentRef)
-    return <SheetFrameFrame ref={composedContentRef} {...props} />
-  })
+  forwardRef(
+    ({ __scopeSheet, ...props }: SheetScopedProps<YStackProps>, forwardedRef) => {
+      const context = useSheetContext(SHEET_NAME, __scopeSheet)
+      const composedContentRef = useComposedRefs(forwardedRef, context.contentRef)
+      return <SheetFrameFrame ref={composedContentRef} {...props} />
+    }
+  )
 )
 
 // set all the way off screen
@@ -186,7 +193,7 @@ const ParentSheetContext = createContext({
 
 const useSheetContoller = () => {
   const controller = useContext(SheetControllerContext)
-  const isHidden = controller?.hidden || false
+  const isHidden = controller?.hidden
   const isShowingNonSheet = isHidden && controller?.open
   return {
     controller,
@@ -238,14 +245,14 @@ const SheetImplementation = themeable(
       if (snapPointsProp.some((p) => p < 0 || p > 100)) {
         // eslint-disable-next-line no-console
         console.warn(
-          `⚠️ Invalid snapPoint given, snapPoints must be between 0 and 100, equal to percent height of frame`
+          '⚠️ Invalid snapPoint given, snapPoints must be between 0 and 100, equal to percent height of frame'
         )
       }
     }
 
     const driver = getAnimationDriver()
     if (!driver) {
-      throw new Error(`Must set animations in tamagui.config.ts`)
+      throw new Error('Must set animations in tamagui.config.ts')
     }
 
     const disableDrag = disableDragProp ?? controller?.disableDrag
@@ -269,7 +276,7 @@ const SheetImplementation = themeable(
 
     const [open, setOpen] = useControllableState({
       prop: controller?.open ?? openProp,
-      defaultProp: defaultOpen || true,
+      defaultProp: true,
       onChange: onOpenChangeInternal,
       strategy: 'most-recent-wins',
       transition: true,
@@ -404,9 +411,10 @@ const SheetImplementation = themeable(
         function makeUnselectable(val: boolean) {
           if (!selectionStyleSheet) return
           if (!val) {
-            selectionStyleSheet.innerText = ``
+            selectionStyleSheet.innerText = ''
           } else {
-            selectionStyleSheet.innerText = `:root * { user-select: none !important; -webkit-user-select: none !important; }`
+            selectionStyleSheet.innerText =
+              ':root * { user-select: none !important; -webkit-user-select: none !important; }'
           }
         }
 
@@ -442,7 +450,10 @@ const SheetImplementation = themeable(
 
         let previouslyScrolling = false
 
-        const onMoveShouldSet = (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
+        const onMoveShouldSet = (
+          _e: GestureResponderEvent,
+          { dy }: PanResponderGestureState
+        ) => {
           const isScrolled = scrollBridge.y !== 0
           const isDraggingUp = dy < 0
           const isAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
@@ -536,7 +547,7 @@ const SheetImplementation = themeable(
     const AnimatedView = driver['NumberView'] ?? driver.View
 
     useIsomorphicLayoutEffect(() => {
-      if (!parentSheetContext || !open) return
+      if (!(parentSheetContext && open)) return
       parentSheetContext(true)
       return () => {
         parentSheetContext(false)
@@ -572,7 +583,7 @@ const SheetImplementation = themeable(
           dismissOnOverlayPress={dismissOnOverlayPress}
           dismissOnSnapToBottom={dismissOnSnapToBottom}
           open={open}
-          hidden={isHidden}
+          hidden={!!isHidden}
           scope={__scopeSheet}
           position={position}
           snapPoints={snapPoints}
@@ -652,7 +663,7 @@ function getPercentSize(point?: number, frameSize?: number) {
   if (!frameSize) return 0
   if (point === undefined) {
     // eslint-disable-next-line no-console
-    console.warn(`No snapPoint`)
+    console.warn('No snapPoint')
     return 0
   }
   const pct = point / 100
@@ -699,6 +710,8 @@ export const SheetController = ({
   )
 
   return (
-    <SheetControllerContext.Provider value={memoValue}>{children}</SheetControllerContext.Provider>
+    <SheetControllerContext.Provider value={memoValue}>
+      {children}
+    </SheetControllerContext.Provider>
   )
 }

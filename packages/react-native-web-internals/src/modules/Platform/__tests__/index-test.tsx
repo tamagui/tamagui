@@ -20,7 +20,7 @@ describe('apis/Platform', () => {
           ios: 'ios',
           web: 'web',
           default: 'default',
-        })
+        }),
       ).toEqual('web')
     })
   })

@@ -12,7 +12,8 @@ export const stepTokenUpOrDown = (
   bounds = [0]
 ) => {
   const sizeNames = Object.keys(tokens)
-  const currentKeyNum = (typeof current === 'string' ? current.replace('$', '') : current) || '4'
+  const currentKeyNum =
+    (typeof current === 'string' ? current.replace('$', '') : current) || '4'
   const nextKeyName = `$${+currentKeyNum + shift}`
   const min = bounds[0] ?? 0
   const max = bounds[1] ?? sizeNames.length - 1
