@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/babel-plugin",
-  "version": "1.0.1-rc.5.1",
+  "version": "1.0.1-rc.6",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -27,12 +27,12 @@
     "@babel/helper-plugin-utils": "^7.19.0",
     "@babel/template": "7.18.10",
     "@babel/traverse": "^7.19.6",
-    "@tamagui/simple-hash": "^1.0.1-rc.5.1",
-    "@tamagui/static": "^1.0.1-rc.5.1"
+    "@tamagui/simple-hash": "^1.0.1-rc.6",
+    "@tamagui/static": "^1.0.1-rc.6"
   },
   "devDependencies": {
     "@babel/types": "^7.19.4",
-    "@tamagui/build": "^1.0.1-rc.5.1"
+    "@tamagui/build": "^1.0.1-rc.6"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }
