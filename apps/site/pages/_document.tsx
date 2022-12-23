@@ -23,20 +23,6 @@ export default class Document extends NextDocument {
         <Head>
           <meta name="docsearch:language" content="en" />
           <meta name="docsearch:version" content="1.0.0,latest" />
-          {/* <link
-            rel="preload"
-            href="/fonts/slkscr.woff2"
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          />
-          <link
-            rel="preload"
-            href="/fonts/subset-Inter-ExtraBold.woff2"
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          /> */}
         </Head>
         <body>
           <Main />

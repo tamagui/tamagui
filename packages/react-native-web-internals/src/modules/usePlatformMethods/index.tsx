@@ -21,7 +21,7 @@ function setNativeProps(node, nativeProps, pointerEvents, style, previousStyleRe
   if (process.env.NODE_ENV === 'development') {
     if (!didWarn) {
       // eslint-disable-next-line no-console
-      console.warn('setNativeProps is deprecated. Please update props using React state instead.')
+      console.log('setNativeProps is deprecated. Please update props using React state instead.')
       didWarn = true
     }
   }

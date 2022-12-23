@@ -9,6 +9,7 @@ import {
   ParagraphProps,
   Popover,
   Separator,
+  Square,
   Text,
   VisuallyHidden,
   XStack,

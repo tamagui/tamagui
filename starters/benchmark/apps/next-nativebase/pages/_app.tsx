@@ -11,7 +11,6 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
       <Head>
         <title>Tamagui Example App</title>
         <meta name="description" content="Tamagui, Solito, Expo & Next.js" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <NativeBaseProvider>
         <Component {...pageProps} />
