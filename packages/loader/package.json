@@ -4,7 +4,6 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
@@ -22,10 +21,12 @@
     "@tamagui/cli-color": "^1.0.1-rc.6",
     "@tamagui/static": "^1.0.1-rc.6",
     "fs-extra": "^10.1.0",
+    "loader-utils": "^3.2.1",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-rc.6"
+    "@tamagui/build": "^1.0.1-rc.6",
+    "webpack": "^5.74.0"
   },
   "publishConfig": {
     "access": "public"

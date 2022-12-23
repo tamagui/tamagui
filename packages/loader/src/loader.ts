@@ -5,6 +5,7 @@ import {
   extractToClassNames,
   getPragmaOptions,
 } from '@tamagui/static'
+import type { LoaderContext } from 'webpack'
 
 import { extractedInfoByFile, stylePathToFilePath } from './css'
 
@@ -20,7 +21,10 @@ let index = 0
 
 process.env.TAMAGUI_TARGET = 'web'
 
-export const loader = async function loader(this, sourceIn: Buffer | string) {
+export const loader = async function loader(
+  this: LoaderContext<TamaguiOptions>,
+  sourceIn: Buffer | string
+) {
   this.cacheable(true)
   const callback = this.async()
   const source = sourceIn.toString()
@@ -60,6 +64,8 @@ export const loader = async function loader(this, sourceIn: Buffer | string) {
 
     // add import to css
     if (extracted.styles) {
+      this.addDependency(cssPath)
+
       const cssQuery = threaded
         ? `cssData=${Buffer.from(extracted.styles).toString('base64')}`
         : `cssPath=${cssPath}`
@@ -78,8 +84,7 @@ export const loader = async function loader(this, sourceIn: Buffer | string) {
 
     callback(null, extracted.js, extracted.map)
   } catch (err) {
-    const message =
-      err instanceof Error ? `${err.message}\n${err.stack}` : String(err)
+    const message = err instanceof Error ? `${err.message}\n${err.stack}` : String(err)
 
     // eslint-disable-next-line no-console
     console.error('Tamagui Webpack Loader Error:\n', `  ${message}\n`)
@@ -87,7 +92,7 @@ export const loader = async function loader(this, sourceIn: Buffer | string) {
     if (message.includes('Cannot create proxy')) {
       // eslint-disable-next-line no-console
       console.log(
-        'This is usually due to components not loading at build-time. Check for logs just below the line above:',
+        'This is usually due to components not loading at build-time. Check for logs just below the line above:'
       )
       colorLog(Color.FgYellow, `"Tamagui built config and components"`)
     }

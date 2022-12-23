@@ -103,7 +103,9 @@ export class TamaguiPlugin {
           : []),
         {
           loader: require.resolve('tamagui-loader'),
-          options: this.options,
+          options: {
+            ...this.options,
+          },
         },
       ],
     })

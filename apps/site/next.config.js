@@ -47,7 +47,8 @@ const plugins = [
         webpackConfig.resolve.mainFields.unshift('module:es2019')
 
         if (process.env.PROFILE) {
-          webpackConfig.resolve.alias['react-dom'] = require.resolve('react-dom/profiling')
+          webpackConfig.resolve.alias['react-dom'] =
+            require.resolve('react-dom/profiling')
           webpackConfig.optimization.minimize = false
         }
 

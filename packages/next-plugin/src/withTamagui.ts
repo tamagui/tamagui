@@ -307,83 +307,81 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         /**
          * Non-server support
          */
-        if (!isServer) {
-          const cssRules = webpackConfig.module.rules.find(
-            (rule) =>
-              Array.isArray(rule.oneOf) &&
-              rule.oneOf.some(
-                ({ test }) =>
-                  typeof test === 'object' &&
-                  typeof test.test === 'function' &&
-                  test.test('filename.css')
-              )
-          ).oneOf
-
-          /**
-           * Font Support
-           */
-          if (cssRules) {
-            if (!tamaguiOptions.disableFontSupport) {
-              // fonts support
-              cssRules.unshift({
-                test: /\.(woff(2)?|eot|ttf|otf)(\?v=\d+\.\d+\.\d+)?$/,
-                use: [
-                  {
-                    loader: require.resolve('url-loader'),
-                    options: {
-                      limit: nextConfig.inlineFontLimit || 1024,
-                      fallback: require.resolve('file-loader'),
-                      publicPath: `${
-                        nextConfig.assetPrefix || ''
-                      }/_next/static/chunks/fonts/`,
-                      outputPath: `${isServer ? '../' : ''}static/chunks/fonts/`,
-                      name: '[name].[ext]',
-                    },
-                  },
-                ],
-              })
-            }
-
-            /**
-             * CSS Support
-             */
-            const cssLoader = getGlobalCssLoader(
-              // @ts-ignore
-              {
-                assetPrefix: options.config.assetPrefix || config.assetPrefix,
-                future: nextConfig.future,
-                experimental: nextConfig.experimental || {},
-                isEdgeRuntime: true,
-                isProduction: !dev,
-                targetWeb: true,
-                isClient: !isServer,
-                isServer,
-                isDevelopment: dev,
-              },
-              // @ts-ignore
-              () => lazyPostCSS(dir, getSupportedBrowsers(dir, dev)),
-              []
+        const cssRules = webpackConfig.module.rules.find(
+          (rule) =>
+            Array.isArray(rule.oneOf) &&
+            rule.oneOf.some(
+              ({ test }) =>
+                typeof test === 'object' &&
+                typeof test.test === 'function' &&
+                test.test('filename.css')
             )
+        ).oneOf
 
+        /**
+         * Font Support
+         */
+        if (cssRules) {
+          if (!tamaguiOptions.disableFontSupport) {
+            // fonts support
             cssRules.unshift({
-              test: tamaguiOptions.includeCSSTest ?? /\.tamagui\.css$/,
-              sideEffects: true,
-              use: cssLoader,
+              test: /\.(woff(2)?|eot|ttf|otf)(\?v=\d+\.\d+\.\d+)?$/,
+              use: [
+                {
+                  loader: require.resolve('url-loader'),
+                  options: {
+                    limit: nextConfig.inlineFontLimit || 1024,
+                    fallback: require.resolve('file-loader'),
+                    publicPath: `${
+                      nextConfig.assetPrefix || ''
+                    }/_next/static/chunks/fonts/`,
+                    outputPath: `${isServer ? '../' : ''}static/chunks/fonts/`,
+                    name: '[name].[ext]',
+                  },
+                },
+              ],
             })
           }
 
-          webpackConfig.plugins.push(
-            new TamaguiPlugin({
-              commonjs: isServer,
-              exclude: (path: string) => {
-                const res = shouldExclude(path, options.dir)
-                // console.log(`shouldExclude`, res, path)
-                return res
-              },
-              ...tamaguiOptions,
-            })
+          /**
+           * CSS Support
+           */
+          const cssLoader = getGlobalCssLoader(
+            // @ts-ignore
+            {
+              assetPrefix: options.config.assetPrefix || config.assetPrefix,
+              future: nextConfig.future,
+              experimental: nextConfig.experimental || {},
+              isEdgeRuntime: true,
+              isProduction: !dev,
+              targetWeb: true,
+              isClient: !isServer,
+              isServer,
+              isDevelopment: dev,
+            },
+            // @ts-ignore
+            () => lazyPostCSS(dir, getSupportedBrowsers(dir, dev)),
+            []
           )
+
+          cssRules.unshift({
+            test: tamaguiOptions.includeCSSTest ?? /\.tamagui\.css$/,
+            sideEffects: true,
+            use: cssLoader,
+          })
         }
+
+        webpackConfig.plugins.push(
+          new TamaguiPlugin({
+            commonjs: isServer,
+            exclude: (path: string) => {
+              const res = shouldExclude(path, options.dir)
+              // console.log(`shouldExclude`, res, path)
+              return res
+            },
+            ...tamaguiOptions,
+          })
+        )
 
         if (typeof nextConfig.webpack === 'function') {
           return nextConfig.webpack(webpackConfig, options)

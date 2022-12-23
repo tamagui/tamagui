@@ -70,14 +70,30 @@ export default function Community({ frontmatters }) {
             <Spacer />
             <YStack w="100%" space>
               {frontmatters.map((frontmatter) => (
-                <NextLink legacyBehavior key={frontmatter.title} href={frontmatter.slug} passHref>
+                <NextLink
+                  legacyBehavior
+                  key={frontmatter.title}
+                  href={frontmatter.slug}
+                  passHref
+                >
                   <Card bc="transparent" tag="a" p="$4" f={1}>
                     <YStack space="$2">
-                      <H3 fontFamily="$silkscreen" size="$6" color="$color" cursor="pointer">
+                      <H3
+                        fontFamily="$silkscreen"
+                        size="$6"
+                        color="$color"
+                        cursor="pointer"
+                      >
                         {frontmatter.title}
                       </H3>
                       <XStack ai="center" space="$2">
-                        <Paragraph cursor="inherit" tag="time" size="$5" theme="alt2" fow="300">
+                        <Paragraph
+                          cursor="inherit"
+                          tag="time"
+                          size="$5"
+                          theme="alt2"
+                          fow="300"
+                        >
                           {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')}
                         </Paragraph>
                         <Paragraph cursor="inherit" theme="alt2" size="$4" fow="300">
@@ -248,7 +264,10 @@ export default function Community({ frontmatters }) {
         </FlatBubbleCard>
 
         <XStack space flexWrap="wrap">
-          <IndividualSponsor name="@barelyreaper" link="https://twitter.com/barelyreaper" />
+          <IndividualSponsor
+            name="@barelyreaper"
+            link="https://twitter.com/barelyreaper"
+          />
           <IndividualSponsor name="@pontusab" link="https://twitter.com/pontusab" />
           <IndividualSponsor name="@AntelaBrais" link="https://twitter.com/AntelaBrais" />
           <IndividualSponsor name="Hirbod" link="https://twitter.com/nightstomp" />
@@ -299,7 +318,7 @@ function GoldSponsor(props: {
 
 function IndividualSponsor(props: { name: string; link: string }) {
   return (
-    <FlatBubbleCard flat mb="$4" debug="verbose">
+    <FlatBubbleCard flat mb="$4">
       <YStack maxWidth="100%" fs={0} als="center">
         <XStack space="$4" $sm={{ flexDirection: 'column' }}>
           <NextLink legacyBehavior passHref href={props.link}>
@@ -332,7 +351,8 @@ function CommunityLayout({ children }: { children: any }) {
 export function getStaticProps() {
   const frontmatters = getAllFrontmatter('blog')
   const sortedFrontmatters = frontmatters.sort(
-    (a, b) => Number(new Date(b.publishedAt || '')) - Number(new Date(a.publishedAt || ''))
+    (a, b) =>
+      Number(new Date(b.publishedAt || '')) - Number(new Date(a.publishedAt || ''))
   )
   return { props: { frontmatters: sortedFrontmatters.slice(0, 3) } }
 }

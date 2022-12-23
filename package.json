@@ -64,7 +64,7 @@
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink web",
     "studio": "cd apps/site && ../../node_modules/.bin/tama studio",
-    "sandbox:webpack": "yarn workspace @tamagui/sandbox dev:webpack",
+    "sandbox:webpack": "yarn workspace @tamagui/sandbox dev:webpack:extract",
     "sandbox": "yarn workspace @tamagui/sandbox dev",
     "sandbox:extract": "yarn workspace @tamagui/sandbox dev:extract",
     "fix": "yarn manypkg fix"
