@@ -4205,7 +4205,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pmmmwh/react-refresh-webpack-plugin@npm:^0.5.7":
+"@pmmmwh/react-refresh-webpack-plugin@npm:^0.5.10":
   version: 0.5.10
   resolution: "@pmmmwh/react-refresh-webpack-plugin@npm:0.5.10"
   dependencies:
@@ -5117,7 +5117,6 @@ __metadata:
   dependencies:
     "@babel/preset-react": ^7.18.6
     "@babel/preset-typescript": ^7.18.6
-    "@pmmmwh/react-refresh-webpack-plugin": ^0.5.7
     "@tamagui/animations-reanimated": ^1.0.1-rc.6
     "@tamagui/build": ^1.0.1-rc.6
     "@tamagui/colors": ^1.0.1-rc.6
@@ -5132,28 +5131,17 @@ __metadata:
     "@types/uuid": ^8.3.4
     babel-polyfill: ^6.26.0
     color2k: ^1.2.4
-    css-loader: ^5.2.4
     d3-scale: ^3.3.0
     esbuild-loader: ^2.19.0
-    file-loader: ^6.2.0
     hsluv: ^0.1.0
-    html-webpack-plugin: ^5.5.0
     lodash-es: ^4.17.21
-    mini-css-extract-plugin: ^2.7.1
     react-draggable: ^4.4.5
     react-hotkeys-hook: ^3.4.6
     react-native: "*"
     react-refresh: ^0.14.0
-    style-loader: ^3.3.1
     tamagui: ^1.0.1-rc.6
-    tamagui-loader: ^1.0.1-rc.6
-    thread-loader: ^3.0.4
     ts-morph: ^15.1.0
-    url-loader: ^4.1.1
     valtio: ^1.6.1
-    webpack: ^5.74.0
-    webpack-cli: ^4.9.2
-    webpack-dev-server: ^4.8.1
   languageName: unknown
   linkType: soft
 
@@ -6155,7 +6143,7 @@ __metadata:
   dependencies:
     "@babel/preset-react": ^7.18.6
     "@babel/preset-typescript": ^7.18.6
-    "@pmmmwh/react-refresh-webpack-plugin": ^0.5.7
+    "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
     "@tamagui/animations-css": ^1.0.1-rc.6
     "@tamagui/animations-motion": ^1.0.1-rc.6
     "@tamagui/animations-reanimated": ^1.0.1-rc.6
@@ -6172,6 +6160,7 @@ __metadata:
     "@tamagui/vite-plugin-reanimated": ^1.0.1-rc.6
     "@vitejs/plugin-react": ^2.2.0
     babel-polyfill: ^6.26.0
+    core-js-pure: 3.26.1
     css-loader: ^5.2.4
     esbuild-loader: ^2.19.0
     file-loader: ^6.2.0
@@ -10316,7 +10305,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js-pure@npm:^3.23.3, core-js-pure@npm:^3.25.1":
+"core-js-pure@npm:3.26.1, core-js-pure@npm:^3.23.3, core-js-pure@npm:^3.25.1":
   version: 3.26.1
   resolution: "core-js-pure@npm:3.26.1"
   checksum: d88c40e5e29e413c11d1ef991a8d5b6a63f00bd94707af0f649d3fc18b3524108b202f4ae75ce77620a1557d1ba340bc3362b4f25d590eccc37cf80fc75f7cd4

@@ -6,7 +6,7 @@
     "dev": "NODE_ENV=development TAMAGUI_TARGET=web vite --host --clearScreen false",
     "dev:extract": "EXTRACT=1 yarn dev",
     "dev:webpack": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
-    "dev:webpack:extract": "NODE_ENV=development webpack serve",
+    "dev:webpack:extract": "DISABLE_EXTRACTION=false NODE_ENV=development webpack serve",
     "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json"
   },
   "dependencies": {
@@ -33,7 +33,7 @@
   "devDependencies": {
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@vitejs/plugin-react": "^2.2.0",
     "babel-polyfill": "^6.26.0",
     "css-loader": "^5.2.4",

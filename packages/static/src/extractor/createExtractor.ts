@@ -38,7 +38,10 @@ import {
   objToStr,
 } from './extractHelpers.js'
 import { findTopmostFunction } from './findTopmostFunction.js'
-import { cleanupBeforeExit, getStaticBindingsForScope } from './getStaticBindingsForScope.js'
+import {
+  cleanupBeforeExit,
+  getStaticBindingsForScope,
+} from './getStaticBindingsForScope.js'
 import { literalToAst } from './literalToAst.js'
 import { TamaguiProjectInfo, loadTamagui, loadTamaguiSync } from './loadTamagui.js'
 import { logLines } from './logLines.js'
@@ -79,7 +82,9 @@ type FileOrPath = NodePath<t.Program> | t.File
 
 let hasLoggedBaseInfo = false
 
-export function createExtractor({ logger = console }: ExtractorOptions = { logger: console }) {
+export function createExtractor(
+  { logger = console }: ExtractorOptions = { logger: console }
+) {
   if (!process.env.TAMAGUI_TARGET) {
     console.log('⚠️ Please set process.env.TAMAGUI_TARGET to either "web" or "native"')
     process.exit(1)
@@ -90,7 +95,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     !process.env.npm_package_dependencies_next &&
     process.env.TAMAGUI_TARGET !== 'native' &&
     process.env.IDENTIFY_TAGS !== 'false' &&
-    (process.env.NODE_ENV === 'development' || process.env.DEBUG || process.env.IDENTIFY_TAGS)
+    (process.env.NODE_ENV === 'development' ||
+      process.env.DEBUG ||
+      process.env.IDENTIFY_TAGS)
 
   let projectInfo: TamaguiProjectInfo | null = null
 
@@ -260,10 +267,13 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     })
 
     // @ts-ignore
-    const body = fileOrPath.type === 'Program' ? fileOrPath.get('body') : fileOrPath.program.body
+    const body =
+      fileOrPath.type === 'Program' ? fileOrPath.get('body') : fileOrPath.program.body
 
     if (Object.keys(components).length === 0) {
-      console.warn(`Warning: Tamagui didn't find any valid components (DEBUG=tamagui for more)`)
+      console.warn(
+        `Warning: Tamagui didn't find any valid components (DEBUG=tamagui for more)`
+      )
       if (process.env.DEBUG === 'tamagui') {
         console.log(`components`, Object.keys(components), components)
       }
@@ -310,7 +320,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         )
         if (shouldPrintDebug === 'verbose') {
           logger.info(
-            `import ${names.join(', ')} from ${moduleName} isValidComponent ${isValidComponent}`
+            `import ${names.join(
+              ', '
+            )} from ${moduleName} isValidComponent ${isValidComponent}`
           )
         }
         if (isValidComponent) {
@@ -321,7 +333,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     }
 
     if (shouldPrintDebug) {
-      logger.info(`file: ${sourcePath} ${JSON.stringify({ doesUseValidImport, hasImportedTheme })}`)
+      logger.info(
+        `file: ${sourcePath} ${JSON.stringify({ doesUseValidImport, hasImportedTheme })}`
+      )
     }
 
     if (!doesUseValidImport) {
@@ -335,7 +349,11 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
       if (!importDeclaration) {
         return null
       }
-      return getValidImport(propsWithFileInfo, importDeclaration.source.value, componentName)
+      return getValidImport(
+        propsWithFileInfo,
+        importDeclaration.source.value,
+        componentName
+      )
     }
 
     tm.mark('import-check', !!shouldPrintDebug)
@@ -564,7 +582,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             continue
           }
           const val = classNames[cn]
-          definition.properties.push(t.objectProperty(t.stringLiteral(cn), t.stringLiteral(val)))
+          definition.properties.push(
+            t.objectProperty(t.stringLiteral(cn), t.stringLiteral(val))
+          )
         }
 
         if (out.rulesToInsert) {
@@ -589,7 +609,10 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         const closingElement = traversePath.node.closingElement
 
         // skip non-identifier opening elements (member expressions, etc.)
-        if (t.isJSXMemberExpression(closingElement?.name) || !t.isJSXIdentifier(node.name)) {
+        if (
+          t.isJSXMemberExpression(closingElement?.name) ||
+          !t.isJSXIdentifier(node.name)
+        ) {
           return
         }
 
@@ -607,7 +630,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           modulePath = binding.path.parent.source.value
           if (!isValidImport(propsWithFileInfo, modulePath, binding.identifier.name)) {
             if (shouldPrintDebug) {
-              logger.info(` - Binding not internal import or from components ${modulePath}`)
+              logger.info(
+                ` - Binding not internal import or from components ${modulePath}`
+              )
             }
             return
           }
@@ -637,7 +662,8 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         // debug just one
         const debugPropValue = node.attributes
           .filter(
-            (n) => t.isJSXAttribute(n) && t.isJSXIdentifier(n.name) && n.name.name === 'debug'
+            (n) =>
+              t.isJSXAttribute(n) && t.isJSXIdentifier(n.name) && n.name.name === 'debug'
           )
           // @ts-ignore
           .map((n: t.JSXAttribute) => {
@@ -653,7 +679,8 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
         if (shouldPrintDebug) {
           logger.info('\n')
           logger.info(
-            `\x1b[33m%s\x1b[0m ` + `${componentName} | ${codePosition} -------------------`
+            `\x1b[33m%s\x1b[0m ` +
+              `${componentName} | ${codePosition} -------------------`
           )
           // prettier-ignore
           logger.info(['\x1b[1m', '\x1b[32m', `<${originalNodeName} />`, disableDebugAttr ? '' : '🐛'].join(' '))
@@ -717,7 +744,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             ...(staticConfig.deoptProps || []),
           ])
 
-          const inlineWhenUnflattened = new Set([...(staticConfig.inlineWhenUnflattened || [])])
+          const inlineWhenUnflattened = new Set([
+            ...(staticConfig.inlineWhenUnflattened || []),
+          ])
 
           // Generate scope object at this level
           const staticNamespace = getStaticBindingsForScope(
@@ -907,7 +936,10 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                 return [
                   ...(createTernariesFromObjectProperties(test, alt) || []),
                   ...((cons &&
-                    createTernariesFromObjectProperties(t.unaryExpression('!', test), cons)) ||
+                    createTernariesFromObjectProperties(
+                      t.unaryExpression('!', test),
+                      cons
+                    )) ||
                     []),
                 ].map((ternary) => ({
                   type: 'ternary',
@@ -1013,7 +1045,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             })()
 
             const remove = () => {
-              Array.isArray(valuePath) ? valuePath.map((p) => p.remove()) : valuePath.remove()
+              Array.isArray(valuePath)
+                ? valuePath.map((p) => p.remove())
+                : valuePath.remove()
             }
 
             if (name === 'ref') {
@@ -1037,7 +1071,10 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                 if (value.type === 'StringLiteral' && value.value[0] === '$') {
                   if (shouldPrintDebug) {
                     logger.info(
-                      [`  ! inlining, native disable extract: ${name} =`, value.value].join(' ')
+                      [
+                        `  ! inlining, native disable extract: ${name} =`,
+                        value.value,
+                      ].join(' ')
                     )
                   }
                   inlined.set(name, true)
@@ -1183,7 +1220,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
               const lVal = attemptEvalSafe(left)
               const rVal = attemptEvalSafe(right)
               if (shouldPrintDebug) {
-                logger.info(`  evalBinaryExpression lVal ${String(lVal)}, rVal ${String(rVal)}`)
+                logger.info(
+                  `  evalBinaryExpression lVal ${String(lVal)}, rVal ${String(rVal)}`
+                )
               }
               if (lVal !== FAILED_EVAL && t.isConditionalExpression(right)) {
                 const ternary = addBinaryConditional(operator, left, right)
@@ -1234,8 +1273,12 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
               cond: t.ConditionalExpression
             ): ExtractedAttr | null {
               if (getStaticConditional(cond)) {
-                const alt = attemptEval(t.binaryExpression(operator, staticExpr, cond.alternate))
-                const cons = attemptEval(t.binaryExpression(operator, staticExpr, cond.consequent))
+                const alt = attemptEval(
+                  t.binaryExpression(operator, staticExpr, cond.alternate)
+                )
+                const cons = attemptEval(
+                  t.binaryExpression(operator, staticExpr, cond.consequent)
+                )
                 if (shouldPrintDebug) {
                   logger.info(['  binaryConditional', cond.test, cons, alt].join(' '))
                 }
@@ -1378,8 +1421,12 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
               if (t.isConditionalExpression(property.value)) {
                 // merge up into the parent conditional, split into two
                 const [truthy, falsy] = [
-                  t.objectExpression([t.objectProperty(property.key, property.value.consequent)]),
-                  t.objectExpression([t.objectProperty(property.key, property.value.alternate)]),
+                  t.objectExpression([
+                    t.objectProperty(property.key, property.value.consequent),
+                  ]),
+                  t.objectExpression([
+                    t.objectProperty(property.key, property.value.alternate),
+                  ]),
                 ].map((x) => attemptEval(x))
                 return [
                   createTernary({
@@ -1402,7 +1449,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                   }),
                 ]
               }
-              const obj = t.objectExpression([t.objectProperty(property.key, property.value)])
+              const obj = t.objectExpression([
+                t.objectProperty(property.key, property.value),
+              ])
               const consequent = attemptEval(obj)
               return createTernary({
                 remove() {},
@@ -1416,7 +1465,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
           if (couldntParse || shouldDeopt) {
             if (shouldPrintDebug) {
-              logger.info([`  avoid optimizing:`, { couldntParse, shouldDeopt }].join(' '))
+              logger.info(
+                [`  avoid optimizing:`, { couldntParse, shouldDeopt }].join(' ')
+              )
             }
             node.attributes = ogAttributes
             return
@@ -1490,7 +1541,8 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           }
 
           for (const [key] of [...inlined]) {
-            const isStaticObjectVariant = staticConfig.variants?.[key] && variantValues.has(key)
+            const isStaticObjectVariant =
+              staticConfig.variants?.[key] && variantValues.has(key)
             if (INLINE_EXTRACTABLE[key] || isStaticObjectVariant) {
               inlined.delete(key)
             }
@@ -1545,7 +1597,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
               // remove theme attribute from flattened node
               attrs = attrs.filter((x) =>
-                x.type === 'attr' && t.isJSXAttribute(x.value) && x.value.name.name === 'theme'
+                x.type === 'attr' &&
+                t.isJSXAttribute(x.value) &&
+                x.value.name.name === 'theme'
                   ? false
                   : true
               )
@@ -1555,7 +1609,12 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                 hasImportedTheme = true
                 programPath.node.body.push(
                   t.importDeclaration(
-                    [t.importSpecifier(t.identifier('_TamaguiTheme'), t.identifier('Theme'))],
+                    [
+                      t.importSpecifier(
+                        t.identifier('_TamaguiTheme'),
+                        t.identifier('Theme')
+                      ),
+                    ],
                     t.stringLiteral('@tamagui/core')
                   )
                 )
@@ -1575,24 +1634,28 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
           // only if we flatten, ensure the default styles are there
           if (shouldFlatten) {
-            const defaultStyleAttrs = Object.keys(staticConfig.defaultProps).flatMap((key) => {
-              if (!isValidStyleKey(key, staticConfig)) {
-                return []
+            const defaultStyleAttrs = Object.keys(staticConfig.defaultProps).flatMap(
+              (key) => {
+                if (!isValidStyleKey(key, staticConfig)) {
+                  return []
+                }
+                const value = staticConfig.defaultProps[key]
+                const name = tamaguiConfig.shorthands[key] || key
+                if (value === undefined) {
+                  logger.warn(
+                    `⚠️ Error evaluating default style for component, prop ${key} ${value}`
+                  )
+                  shouldDeopt = true
+                  return
+                }
+                const attr: ExtractedAttrStyle = {
+                  type: 'style',
+                  name,
+                  value: { [name]: value },
+                }
+                return attr
               }
-              const value = staticConfig.defaultProps[key]
-              const name = tamaguiConfig.shorthands[key] || key
-              if (value === undefined) {
-                logger.warn(`⚠️ Error evaluating default style for component, prop ${key} ${value}`)
-                shouldDeopt = true
-                return
-              }
-              const attr: ExtractedAttrStyle = {
-                type: 'style',
-                name,
-                value: { [name]: value },
-              }
-              return attr
-            }) as ExtractedAttr[]
+            ) as ExtractedAttr[]
 
             if (defaultStyleAttrs.length) {
               attrs = [...defaultStyleAttrs, ...attrs]
@@ -1601,7 +1664,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
           if (shouldDeopt || !shouldFlatten) {
             if (shouldPrintDebug) {
-              logger.info(`Deopting`)
+              logger.info(`Deopting ${shouldDeopt} ${shouldFlatten}`)
             }
             node.attributes = ogAttributes
             return
@@ -1609,7 +1672,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
           if (shouldPrintDebug) {
             logger.info(
-              ['  - attrs (flattened): \n', logLines(attrs.map(attrStr).join(', '))].join(' ')
+              ['  - attrs (flattened): \n', logLines(attrs.map(attrStr).join(', '))].join(
+                ' '
+              )
             )
           }
 
@@ -1746,7 +1811,10 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             // finally we have all styles + expansions, lets see if we need to skip
             // any and keep them as attrs
             if (disableExtractVariables) {
-              if (value[0] === '$' && (usedThemeKeys.has(key) || usedThemeKeys.has(fullKey))) {
+              if (
+                value[0] === '$' &&
+                (usedThemeKeys.has(key) || usedThemeKeys.has(fullKey))
+              ) {
                 if (shouldPrintDebug) {
                   logger.info([`   keeping variable inline: ${key} =`, value].join(' '))
                 }
@@ -1768,7 +1836,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           tm.mark('jsx-element-expanded', !!shouldPrintDebug)
           if (shouldPrintDebug) {
             logger.info(
-              ['  - attrs (expanded): \n', logLines(attrs.map(attrStr).join(', '))].join(' ')
+              ['  - attrs (expanded): \n', logLines(attrs.map(attrStr).join(', '))].join(
+                ' '
+              )
             )
           }
 
@@ -1799,7 +1869,10 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
             }
           }
 
-          function mergeStyles(prev: ViewStyle & PseudoStyles, nextIn: ViewStyle & PseudoStyles) {
+          function mergeStyles(
+            prev: ViewStyle & PseudoStyles,
+            nextIn: ViewStyle & PseudoStyles
+          ) {
             const next = expandStylesWithoutVariants(nextIn)
             for (const key in next) {
               // merge pseudos
@@ -1840,7 +1913,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                   value: t.jsxAttribute(
                     t.jsxIdentifier(key),
                     t.jsxExpressionContainer(
-                      typeof value === 'string' ? t.stringLiteral(value) : literalToAst(value)
+                      typeof value === 'string'
+                        ? t.stringLiteral(value)
+                        : literalToAst(value)
                     )
                   ),
                 })
@@ -1861,14 +1936,22 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
           if (shouldPrintDebug) {
             logger.info(
-              ['  - attrs (combined 🔀): \n', logLines(attrs.map(attrStr).join(', '))].join(' ')
+              [
+                '  - attrs (combined 🔀): \n',
+                logLines(attrs.map(attrStr).join(', ')),
+              ].join(' ')
             )
             logger.info(
-              ['  - defaultProps: \n', logLines(objToStr(staticConfig.defaultProps))].join(' ')
+              [
+                '  - defaultProps: \n',
+                logLines(objToStr(staticConfig.defaultProps)),
+              ].join(' ')
             )
             // prettier-ignore
             logger.info(['  - foundStaticProps: \n', logLines(objToStr(foundStaticProps))].join(' '))
-            logger.info(['  - completeProps: \n', logLines(objToStr(completeProps))].join(' '))
+            logger.info(
+              ['  - completeProps: \n', logLines(objToStr(completeProps))].join(' ')
+            )
           }
 
           // post process
@@ -1947,7 +2030,8 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                   const c = getStyles(attr.value.consequent, 'ternary.consequent')
                   if (a) attr.value.alternate = a
                   if (c) attr.value.consequent = c
-                  if (shouldPrintDebug) logger.info(['     => tern ', attrStr(attr)].join(' '))
+                  if (shouldPrintDebug)
+                    logger.info(['     => tern ', attrStr(attr)].join(' '))
                   continue
                 }
                 case 'style': {

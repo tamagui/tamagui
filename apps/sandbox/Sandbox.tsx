@@ -1,55 +1,35 @@
 // import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import {
-  AnimationsHoverDemo,
-  ButtonDemo,
-  DialogDemo,
-  LabelDemo,
-  PopoverDemo,
-  SelectDemo,
-  SheetDemo,
-  TooltipDemo,
-} from '@tamagui/demos'
-// import { SliderDemo, SwitchDemo } from '@tamagui/demos'
-import { AnimationsDemo, AnimationsPresenceDemo } from '@tamagui/demos'
-// import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { OpaqueColorValue } from 'react-native'
-// import { AppRegistry, useColorScheme } from 'react-native'
 import {
   Button,
+  ButtonFrame,
   ColorTokens,
   H1,
-  Paragraph,
+  Square,
   TamaguiProvider,
-  Text,
   Theme,
   ThemeValueFallback,
-  TooltipGroup,
+  YStack,
   getMedia,
-  getTokens,
   styled,
   useThemeName,
 } from 'tamagui'
-import { ButtonFrame, Circle, Input, Square, YStack } from 'tamagui'
 
-import SandboxExample from './SandboxExample'
 import config from './tamagui.config'
-
-// import '../site/app.css'
 
 // webpack fix..
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
 
-type X = ColorTokens | ThemeValueFallback | OpaqueColorValue | undefined
-
-const y: X = ''
-
 // eslint-disable-next-line no-console
 console.log('[Sandbox] getMedia().sm', getMedia().sm)
+
+type X = ColorTokens | ThemeValueFallback | OpaqueColorValue | undefined
+const y: X = ''
 
 const CustomButtonFrame = styled(ButtonFrame, {
   variants: {
@@ -68,29 +48,10 @@ const CustomButtonFrame = styled(ButtonFrame, {
   },
 })
 
-// AppRegistry.registerComponent('Main', () => Sandbox)
-
 export const Sandbox = () => {
   // const scheme = useColorScheme()
   const [theme, setTheme] = useState('light')
 
-  // @ts-ignore
-  // const { getStyleElement } = AppRegistry.getApplication('Main')
-
-  // const val = useSharedValue(0)
-  // const style = useAnimatedStyle(() => ({
-  //   width: 100,
-  //   height: 100,
-  //   backgroundColor: 'red',
-  //   transform: [{ translateX: val.value }],
-  // }))
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     console.log('run2')
-  //     val.value = withSpring(100)
-  //   }, 1000)
-  // }, [])
   const [x, setX] = useState(0)
 
   return (
@@ -135,7 +96,14 @@ export const Sandbox = () => {
 
           {/* <DialogDemo /> */}
 
-          <Button>hi</Button>
+          <Button
+            onPress={async () => {
+              await import('./SandboxSecondPage')
+              console.log(`loaded (not navigating)`)
+            }}
+          >
+            Load Second Page
+          </Button>
 
           {/* <Input debug="verbose" placeholder="hello" /> */}
 
