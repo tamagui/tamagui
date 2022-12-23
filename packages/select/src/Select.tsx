@@ -527,6 +527,7 @@ export const Select = withStaticProperties(
       defaultProp: defaultOpen || false,
       onChange: onOpenChange,
       strategy: 'most-recent-wins',
+      transition: true,
     })
 
     const [value, setValue] = useControllableState({
@@ -534,6 +535,7 @@ export const Select = withStaticProperties(
       defaultProp: defaultValue || '',
       onChange: onValueChange,
       strategy: 'most-recent-wins',
+      transition: true,
     })
 
     const [activeIndex, setActiveIndex] = React.useState<number | null>(null)

@@ -163,6 +163,7 @@ export const Switch = withStaticProperties(
           prop: checkedProp,
           defaultProp: defaultChecked || false,
           onChange: onCheckedChange,
+          transition: true,
         })
 
         if (!isWeb) {

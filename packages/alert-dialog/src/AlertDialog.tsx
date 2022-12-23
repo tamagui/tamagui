@@ -302,6 +302,7 @@ const AlertDialogInner: React.FC<AlertDialogProps> = (props: ScopedProps<AlertDi
       prop: props.open,
       defaultProp: props.defaultOpen || false,
       onChange: props.onOpenChange,
+      transition: true,
     })
 
     let triggerElement: any = null

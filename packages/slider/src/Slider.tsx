@@ -429,6 +429,7 @@ const Slider = withStaticProperties(
     const [values = [], setValues] = useControllableState({
       prop: value,
       defaultProp: defaultValue,
+      transition: true,
       onChange: (value) => {
         if (isWeb) {
           const thumbs = [...thumbRefs.current]

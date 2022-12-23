@@ -1,10 +1,12 @@
 import { useEvent } from '@tamagui/use-event'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { startTransition, useCallback, useEffect, useRef, useState } from 'react'
 
 // can configure to allow most-recent-wins or prop-wins
 // defaults to prop-wins
 
 type ChangeCb<T> = ((next: T) => void) | React.Dispatch<React.SetStateAction<T>>
+
+const emptyCallbackFn = (_) => _()
 
 export function useControllableState<T>({
   prop,
@@ -12,12 +14,14 @@ export function useControllableState<T>({
   onChange,
   strategy = 'prop-wins',
   preventUpdate,
+  transition,
 }: {
   prop?: T | undefined
   defaultProp: T
   onChange?: ChangeCb<T>
   strategy?: 'prop-wins' | 'most-recent-wins'
   preventUpdate?: boolean
+  transition?: boolean
 }): [T, React.Dispatch<React.SetStateAction<T>>] {
   const [state, setState] = useState(prop ?? defaultProp)
   const previous = useRef<any>(state)
@@ -25,10 +29,14 @@ export function useControllableState<T>({
   const value = propWins ? prop : state
   const onChangeCb = useEvent(onChange || idFn)
 
+  const transitionFn = transition ? startTransition : emptyCallbackFn
+
   useEffect(() => {
     if (prop === undefined) return
     previous.current = prop
-    setState(prop)
+    transitionFn(() => {
+      setState(prop)
+    })
   }, [prop])
 
   useEffect(() => {
@@ -45,7 +53,9 @@ export function useControllableState<T>({
       const nextValue = typeof next === 'function' ? next(previous.current) : next
       onChangeCb(nextValue)
     } else {
-      setState(next)
+      transitionFn(() => {
+        setState(next)
+      })
     }
   })
 

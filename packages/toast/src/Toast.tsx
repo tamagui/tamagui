@@ -388,6 +388,7 @@ const Toast = React.forwardRef<ToastElement, ToastProps>(
       prop: openProp,
       defaultProp: defaultOpen || true,
       onChange: onOpenChange,
+      transition: true,
     })
     return (
       // <Presence present={forceMount || open}>

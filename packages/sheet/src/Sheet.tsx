@@ -272,6 +272,7 @@ const SheetImplementation = themeable(
       defaultProp: defaultOpen || true,
       onChange: onOpenChangeInternal,
       strategy: 'most-recent-wins',
+      transition: true,
     })
 
     const [frameSize, setFrameSize] = useState<number>(0)
@@ -288,6 +289,7 @@ const SheetImplementation = themeable(
       defaultProp: defaultPosition || (open ? 0 : -1),
       onChange: onPositionChange,
       strategy: 'most-recent-wins',
+      transition: true,
     })
     const position = open === false ? -1 : position_
 
