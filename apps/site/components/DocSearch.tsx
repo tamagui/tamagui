@@ -58,6 +58,7 @@ const docSearchCSS = `
   --docsearch-footer-background: transparent;
   --docsearch-footer-shadow: none;
   --docsearch-modal-shadow: inset 0 0 1px 1px var(--borderColor), 0 5px 20px 0 var(--shadowColor);
+  z-index: 10000000;
 }
 
 .DocSearch-Hit a {
@@ -91,6 +92,9 @@ const docSearchCSS = `
 }
 
 .DocSearch-Cancel {
+  font-size: 12px;
+  padding: 20px;
+  opacity: 0.5;
   margin-right: var(--space-2)
 }
 

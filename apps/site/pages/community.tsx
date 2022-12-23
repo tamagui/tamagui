@@ -6,7 +6,20 @@ import { format, parseISO } from 'date-fns'
 import NextLink from 'next/link'
 import { useMemo } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, H1, H2, H3, H4, H5, Image, Paragraph, Spacer, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  EnsureFlexed,
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  Image,
+  Paragraph,
+  Spacer,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { Card } from '../components/Card'
 import { ContainerLarge } from '../components/Container'
@@ -113,7 +126,7 @@ export default function Community({ frontmatters }) {
                     o={0.5}
                     width={1466 * 0.25}
                     height={776 * 0.25}
-                    src={'/sponsors/design-kit.png'}
+                    src={'/sponsors/design-kit.jpg'}
                   />
                 </YStack>
               </NextLink>
@@ -195,7 +208,7 @@ export default function Community({ frontmatters }) {
           </H2>
         </FlatBubbleCard>
 
-        <XStack space flexWrap="wrap">
+        <XStack space spaceDirection="both" flexWrap="wrap">
           <GoldSponsor
             name="CodingScape"
             link="https://codingscape.com"
@@ -216,6 +229,13 @@ export default function Community({ frontmatters }) {
             image="/sponsors/beatgig.jpg"
             imageWidth={400 * 0.5}
             imageHeight={84 * 0.5}
+          />
+          <GoldSponsor
+            name="Pineapples.dev"
+            link="http://pineapples.dev"
+            image="/sponsors/pineapple.jpg"
+            imageWidth={520 * 0.5}
+            imageHeight={186 * 0.5}
           />
         </XStack>
 
@@ -249,7 +269,7 @@ function GoldSponsor(props: {
   imageHeight: number
 }) {
   return (
-    <FlatBubbleCard flat p={0}>
+    <FlatBubbleCard mb="$4" flat p={0}>
       <NextLink legacyBehavior href={props.link} target="_blank">
         <YStack
           ai="center"
@@ -279,7 +299,7 @@ function GoldSponsor(props: {
 
 function IndividualSponsor(props: { name: string; link: string }) {
   return (
-    <FlatBubbleCard flat>
+    <FlatBubbleCard flat mb="$4" debug="verbose">
       <YStack maxWidth="100%" fs={0} als="center">
         <XStack space="$4" $sm={{ flexDirection: 'column' }}>
           <NextLink legacyBehavior passHref href={props.link}>

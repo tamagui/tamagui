@@ -1,4 +1,4 @@
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack } from '@my/ui'
+import { Anchor, Button, H1, Input, Paragraph, Separator, Sheet, XStack, YStack } from '@my/ui'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
 import { useLink } from 'solito/link'
@@ -16,6 +16,8 @@ export function HomeScreen() {
           Here's a basic starter to show navigating from one screen to another. This screen uses the
           same code on Next.js and React Native.
         </Paragraph>
+
+        <Input px="$5" placeholder="hi" />
 
         <Separator />
         <Paragraph ta="center">

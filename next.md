@@ -10,9 +10,6 @@ rc.3
 - delay enterStyle
   - https://discord.com/channels/909986013848412191/1051705315890044958/1052019600197439598
   - https://github.com/ebg1223/t3-tamagui
-- add new sponsors
-  - auto put sponsors in readme:
-    - https://github.com/JamesIves/github-sponsors-readme-action
 - site animate mount seems slow
 - forms demo textarea top padding + shifts on focus
 - play button on mediaplayer in animationsdemo off on mount
@@ -27,6 +24,10 @@ rc.3
 - #quest-portal - scroll view seems to extend beyond the bottom of the screen making it impossible to access the items at the bottom
 
 1.0
+
+- write less, runs faster
+- write once, runs (well) everywhere
+- ½ the code, 2x the performance, 3x the platforms
 
 - CI auto master merge tests passing releases
 - vite compiler bug
@@ -77,6 +78,8 @@ rc.3
 
 1.1
 
+- add new sponsors
+    - https://github.com/JamesIves/github-sponsors-readme-action
 - next load css on subsequent pages (partially fixed)
   - https://github.com/vanilla-extract-css/vanilla-extract/blob/master/packages/next-plugin/src/index.js
   - https://github.com/vanilla-extract-css/vanilla-extract/blob/master/packages/webpack-plugin/src/loader.ts
