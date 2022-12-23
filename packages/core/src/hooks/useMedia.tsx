@@ -97,7 +97,9 @@ function setupMediaListeners() {
     }
     // react native needs these deprecated apis for now
     match.addListener(update)
-    dispose.add(() => match.removeListener(update))
+    dispose.add(() => {
+      match.removeListener(update)
+    })
 
     update()
 
@@ -114,7 +116,6 @@ export function useMediaListeners(config: TamaguiInternalConfig) {
   if (config.disableSSR) return
   useEffect(() => {
     setupMediaListeners()
-    return unlisten
   }, [])
 }
 
@@ -173,8 +174,6 @@ export function useMedia(): UseMediaState {
         }
         next[key] = val
       }
-
-      // console.log('go', { didUpdate, next, mediaState, curState })
 
       if (!didUpdate) {
         return curState.prev
