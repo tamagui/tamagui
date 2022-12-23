@@ -4,7 +4,7 @@ import {
   ChevronRight,
   ChevronUp,
 } from '@tamagui/lucide-icons'
-import { Adapt, Button, Input, Label, Popover, PopoverProps, XStack } from 'tamagui'
+import { Adapt, Button, Input, Label, Popover, PopoverProps, XStack, YGroup } from 'tamagui'
 
 export function PopoverDemo() {
   return (
@@ -53,12 +53,21 @@ export function Demo({ Icon, ...props }: PopoverProps & { Icon?: any }) {
       >
         <Popover.Arrow bw={1} boc="$borderColor" />
 
-        <XStack space="$3">
-          <Label size="$3" htmlFor="name">
-            Name
-          </Label>
-          <Input size="$3" id="name" />
-        </XStack>
+        <YGroup space="$3">
+          <XStack space="$3">
+            <Label size="$3" htmlFor="name">
+              Name
+            </Label>
+            <Input size="$3" id="name" />
+          </XStack>
+          <Popover.Trigger>
+            <Button size="$3" onPress={() => { 
+                /* Custom code goes here, does not interfere with popover closure */
+            }}>
+              Submit
+            </Button>
+          </Popover.Trigger>
+        </YGroup>
       </Popover.Content>
     </Popover>
   )
