@@ -16,7 +16,8 @@ const styleUpdateEvent = (fileId: string) => `tamagui-style-update:${fileId}`
 const GLOBAL_CSS_VIRTUAL_PATH = '__tamagui_global_css__.css'
 
 export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
-  const disableStatic = options.disable || (options.disableDebugAttr && options.disableExtraction)
+  const disableStatic =
+    options.disable || (options.disableDebugAttr && options.disableExtraction)
 
   if (disableStatic) {
     return {
@@ -94,7 +95,9 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
 
       // Absolute paths seem to occur often in monorepos, where files are
       // imported from outside the config root.
-      const absoluteId = source.startsWith(config.root) ? source : getAbsoluteVirtualFileId(validId)
+      const absoluteId = source.startsWith(config.root)
+        ? source
+        : getAbsoluteVirtualFileId(validId)
 
       // There should always be an entry in the `cssMap` here.
       // The only valid scenario for a missing one is if someone had written
@@ -194,7 +197,11 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
       let source = extracted.js
 
       if (extracted.styles) {
-        if (server && cssMap.has(absoluteId) && cssMap.get(absoluteId) !== extracted.styles) {
+        if (
+          server &&
+          cssMap.has(absoluteId) &&
+          cssMap.get(absoluteId) !== extracted.styles
+        ) {
           const { moduleGraph } = server
           const [module] = Array.from(moduleGraph.getModulesByFile(absoluteId) || [])
 
@@ -202,7 +209,8 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
             moduleGraph.invalidateModule(module)
 
             // Vite uses this timestamp to add `?t=` query string automatically for HMR.
-            module.lastHMRTimestamp = (module as any).lastInvalidationTimestamp || Date.now()
+            module.lastHMRTimestamp =
+              (module as any).lastInvalidationTimestamp || Date.now()
           }
 
           server.ws.send({

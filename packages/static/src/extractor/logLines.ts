@@ -10,7 +10,9 @@ export const logLines = (str: string, singleLine = false) => {
     if (item.length + lines[lines.length - 1].length > 85) {
       lines.push('')
     }
-    lines[lines.length - 1] += item + ' '
+    lines[lines.length - 1] += `${item} `
   }
-  return lines.map((line, i) => prefix + (i == 0 ? '' : ' ') + line.trim()).join('\n')
+  return lines
+    .map((line, i) => prefix + (i === 0 ? '' : ' ') + line.trim())
+    .join('\n')
 }

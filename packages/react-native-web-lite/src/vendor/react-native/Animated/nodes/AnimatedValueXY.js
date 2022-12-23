@@ -35,7 +35,8 @@ class AnimatedValueXY extends AnimatedWithChildren {
     } else {
       invariant(
         value.x instanceof AnimatedValue && value.y instanceof AnimatedValue,
-        'AnimatedValueXY must be initialized with an object of numbers or ' + 'AnimatedValues.'
+        'AnimatedValueXY must be initialized with an object of numbers or ' +
+          'AnimatedValues.',
       )
       this.x = value.x
       this.y = value.y

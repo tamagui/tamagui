@@ -1,7 +1,13 @@
 // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/progress/src/Progress.tsx
 
-import { GetProps, getSize, getVariableValue, styled, withStaticProperties } from '@tamagui/core'
+import {
+  GetProps,
+  getSize,
+  getVariableValue,
+  styled,
+  withStaticProperties,
+} from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { ThemeableStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
@@ -9,7 +15,8 @@ import { View } from 'react-native'
 
 const PROGRESS_NAME = 'Progress'
 
-const [createProgressContext, createProgressScope] = createContextScope(PROGRESS_NAME)
+const [createProgressContext, createProgressScope] =
+  createContextScope(PROGRESS_NAME)
 type ProgressContextValue = { value: number | null; max: number; width: number }
 const [ProgressProvider, useProgressContext] =
   createProgressContext<ProgressContextValue>(PROGRESS_NAME)
@@ -48,8 +55,8 @@ const ProgressIndicator = ProgressIndicatorFrame.extractable(
           ref={forwardedRef}
         />
       )
-    }
-  )
+    },
+  ),
 )
 
 ProgressIndicator.displayName = INDICATOR_NAME
@@ -60,8 +67,15 @@ function defaultGetValueLabel(value: number, max: number) {
   return `${Math.round((value / max) * 100)}%`
 }
 
-function getProgressState(value: number | undefined | null, maxValue: number): ProgressState {
-  return value == null ? 'indeterminate' : value === maxValue ? 'complete' : 'loading'
+function getProgressState(
+  value: number | undefined | null,
+  maxValue: number,
+): ProgressState {
+  return value == null
+    ? 'indeterminate'
+    : value === maxValue
+    ? 'complete'
+    : 'loading'
 }
 
 function isNumber(value: any): value is number {
@@ -69,22 +83,11 @@ function isNumber(value: any): value is number {
 }
 
 function isValidMaxNumber(max: any): max is number {
-  // prettier-ignore
-  return (
-    isNumber(max) &&
-    !isNaN(max) &&
-    max > 0
-  );
+  return isNumber(max) && !isNaN(max) && max > 0
 }
 
 function isValidValueNumber(value: any, max: number): value is number {
-  // prettier-ignore
-  return (
-    isNumber(value) &&
-    !isNaN(value) &&
-    value <= max &&
-    value >= 0
-  );
+  return isNumber(value) && !isNaN(value) && value <= max && value >= 0
 }
 
 // Split this out for clearer readability of the error message.
@@ -160,7 +163,12 @@ const Progress = withStaticProperties(
         const [width, setWidth] = React.useState(0)
 
         return (
-          <ProgressProvider scope={__scopeProgress} value={value} max={max} width={width}>
+          <ProgressProvider
+            scope={__scopeProgress}
+            value={value}
+            max={max}
+            width={width}
+          >
             <ProgressFrame
               size={size}
               aria-valuemax={max}
@@ -181,12 +189,12 @@ const Progress = withStaticProperties(
             />
           </ProgressProvider>
         )
-      }
-    )
+      },
+    ),
   ),
   {
     Indicator: ProgressIndicator,
-  }
+  },
 )
 
 Progress.displayName = PROGRESS_NAME

@@ -18,8 +18,8 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "eslint src",
-    "lint:fix": "yarn lint --fix"
+    "lint": "../../node_modules/.bin/rome check src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "dependencies": {
     "@tamagui/animations-react-native": "^1.0.1-rc.5.1",

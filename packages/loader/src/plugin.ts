@@ -14,7 +14,7 @@ export class TamaguiPlugin {
   constructor(
     public options: PluginOptions = {
       components: ['@tamagui/core'],
-    }
+    },
   ) {}
 
   apply(compiler: Compiler) {
@@ -23,11 +23,14 @@ export class TamaguiPlugin {
       nmf.hooks.createModule.tap(
         this.pluginName,
         // @ts-expect-error CreateData is typed as 'object'...
-        (createData: { matchResource?: string; settings: { sideEffects?: boolean } }) => {
-          if (createData.matchResource && createData.matchResource.endsWith('.tamagui.css')) {
+        (createData: {
+          matchResource?: string
+          settings: { sideEffects?: boolean }
+        }) => {
+          if (createData.matchResource?.endsWith('.tamagui.css')) {
             createData.settings.sideEffects = true
           }
-        }
+        },
       )
     })
 
@@ -43,7 +46,9 @@ export class TamaguiPlugin {
     // look for compiled js with jsx intact as specified by module:jsx
     const mainFields = compiler.options.resolve.mainFields
     if (mainFields) {
-      compiler.options.resolve.mainFields = Array.isArray(mainFields) ? mainFields : [mainFields]
+      compiler.options.resolve.mainFields = Array.isArray(mainFields)
+        ? mainFields
+        : [mainFields]
       mainFields.unshift('module:jsx')
     }
 
@@ -56,11 +61,11 @@ export class TamaguiPlugin {
     const existing = compiler.options.module.rules as any[]
 
     const rules =
-      (existing.find((x) => (typeof x === 'object' && 'oneOf' in x ? x : null))?.oneOf as any[]) ??
-      existing
+      (existing.find((x) => (typeof x === 'object' && 'oneOf' in x ? x : null))
+        ?.oneOf as any[]) ?? existing
 
     const nextJsRules = rules.findIndex(
-      (x) => x && x.use && x.use.loader === 'next-swc-loader' && x.issuerLayer !== 'api'
+      (x) => x?.use && x.use.loader === 'next-swc-loader' && x.issuerLayer !== 'api',
     )
 
     const startIndex = nextJsRules ? nextJsRules + 1 : 0
@@ -72,14 +77,19 @@ export class TamaguiPlugin {
       use: [
         ...(jsLoader ? [jsLoader] : []),
         ...(existingLoader && nextJsRules ? [].concat(existingLoader.use) : []),
-        ...(!jsLoader && !existingLoader
+        ...(!(jsLoader || existingLoader)
           ? [
               {
                 loader: require.resolve('esbuild-loader'),
                 options: {
                   target: 'es2021',
                   keepNames: true,
-                  loader: { '.tsx': 'tsx', '.png': 'copy', '.jpg': 'copy', '.gif': 'copy' },
+                  loader: {
+                    '.tsx': 'tsx',
+                    '.png': 'copy',
+                    '.jpg': 'copy',
+                    '.gif': 'copy',
+                  },
 
                   tsconfigRaw: {
                     module: this.options.commonjs ? 'commonjs' : 'esnext',

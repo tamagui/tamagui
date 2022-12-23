@@ -26,16 +26,19 @@ class Share {
   static share(content: Content, options: Object = {}): Promise<void> {
     invariant(
       typeof content === 'object' && content !== null,
-      'Content to share must be a valid object'
+      'Content to share must be a valid object',
     )
     invariant(
       typeof content.url === 'string' || typeof content.message === 'string',
-      'At least one of URL and message is required'
+      'At least one of URL and message is required',
     )
-    invariant(typeof options === 'object' && options !== null, 'Options must be a valid object')
+    invariant(
+      typeof options === 'object' && options !== null,
+      'Options must be a valid object',
+    )
     invariant(
       !content.title || typeof content.title === 'string',
-      'Invalid title: title should be a string.'
+      'Invalid title: title should be a string.',
     )
 
     if (window.navigator.share !== undefined) {

@@ -34,9 +34,9 @@ export const createTamagui: typeof createTamaguiCore =
           const tokenSet = tamaguiConfig.tokensParsed[name]
           if (!tokenSet) {
             throw new Error(
-              `Expected tokens for "${name}" in ${Object.keys(tamaguiConfig.tokensParsed).join(
-                ', '
-              )}`
+              `Expected tokens for "${name}" in ${Object.keys(
+                tamaguiConfig.tokensParsed,
+              ).join(', ')}`,
             )
           }
           if (!hasKeys(sizeTokenKeys, tokenSet)) {

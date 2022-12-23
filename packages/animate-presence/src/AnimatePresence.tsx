@@ -1,4 +1,8 @@
-import { useDidFinishSSR, useForceUpdate, useIsomorphicLayoutEffect } from '@tamagui/core'
+import {
+  useDidFinishSSR,
+  useForceUpdate,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/core'
 import React, {
   Children,
   ReactElement,
@@ -22,7 +26,7 @@ const isDev = process.env.NODE_ENV !== 'production'
 
 function updateChildLookup(
   children: ReactElement<any>[],
-  allChildren: Map<ComponentKey, ReactElement<any>>
+  allChildren: Map<ComponentKey, ReactElement<any>>,
 ) {
   const seenChildren = isDev ? new Set<ComponentKey>() : null
 
@@ -31,7 +35,9 @@ function updateChildLookup(
 
     if (isDev && seenChildren && seenChildren.has(key)) {
       // eslint-disable-next-line no-console
-      console.warn(`Children of AnimatePresence require unique keys. "${key}" is a duplicate.`)
+      console.warn(
+        `Children of AnimatePresence require unique keys. "${key}" is a duplicate.`,
+      )
 
       seenChildren.add(key)
     }
@@ -49,12 +55,14 @@ function onlyElements(children: ReactNode): ReactElement<any>[] {
       if (!child.key) {
         if (process.env.NODE_ENV === 'development') {
           // eslint-disable-next-line no-console
-          console.warn(`No key given to AnimatePresence child, assigning index as key`)
+          console.warn(
+            'No key given to AnimatePresence child, assigning index as key',
+          )
         }
         filtered.push(
           React.cloneElement(child, {
             key: index,
-          })
+          }),
         )
       } else {
         filtered.push(child)
@@ -219,7 +227,7 @@ export const AnimatePresence: React.FunctionComponent<
 
           // Remove this child from the present children
           const removeIndex = presentChildren.current.findIndex(
-            (presentChild) => presentChild.key === key
+            (presentChild) => presentChild.key === key,
           )
           presentChildren.current.splice(removeIndex, 1)
 
@@ -238,7 +246,7 @@ export const AnimatePresence: React.FunctionComponent<
         presenceAffectsLayout={presenceAffectsLayout}
       >
         {child}
-      </PresenceChild>
+      </PresenceChild>,
     )
   })
 
@@ -267,13 +275,17 @@ export const AnimatePresence: React.FunctionComponent<
       hasWarned.current = true
       // eslint-disable-next-line no-console
       console.log(
-        `You're attempting to animate multiple children within AnimatePresence, but its exitBeforeEnter prop is set to true. This can lead to odd visual behaviour.`
+        `You're attempting to animate multiple children within AnimatePresence, but its exitBeforeEnter prop is set to true. This can lead to odd visual behaviour.`,
       )
     }
   }
 
   return (
-    <>{exiting.size ? childrenToRender : childrenToRender.map((child) => cloneElement(child))}</>
+    <>
+      {exiting.size
+        ? childrenToRender
+        : childrenToRender.map((child) => cloneElement(child))}
+    </>
   )
 }
 

@@ -8,10 +8,12 @@ import fs from 'fs-extra'
 import _ from 'lodash'
 import prompts from 'prompts'
 
+import { spawnify } from './spawnify'
+
 // --resume would be cool here where it stores the last failed step somewhere and tries resuming
 
 const exec = promisify(proc.exec)
-const spawn = proc.spawn
+export const spawn = proc.spawn
 const skipVersion = process.argv.includes('--skip-version')
 const patch = process.argv.includes('--patch')
 const dirty = process.argv.includes('--dirty')
@@ -33,46 +35,6 @@ if (!skipVersion) {
   console.log('Publishing version:', nextVersion, '\n')
 }
 
-// could add only if changed checks: git diff --quiet HEAD HEAD~3 -- ./packages/core
-// but at that point would be nicer to get a whole setup for this.. lerna or whatever
-
-const spawnify = async (cmd: string, opts?: any): Promise<string> => {
-  console.log('>', cmd)
-  const [head, ...rest] = cmd.split(' ')
-  return new Promise((res, rej) => {
-    const avoidLog = opts?.avoidLog
-    const child = spawn(
-      head,
-      rest,
-      avoidLog ? opts : { stdio: ['inherit', 'pipe', 'pipe'], ...opts }
-    )
-    const outStr = []
-    const errStr = []
-    if (!avoidLog) {
-      child.stdout.pipe(process.stdout)
-      child.stderr.pipe(process.stderr)
-    }
-    child.stdout.on('data', (out) => {
-      // @ts-ignore
-      outStr.push(`${out}`)
-    })
-    child.stderr.on('data', (out) => {
-      // @ts-ignore
-      errStr.push(`${out}`)
-    })
-    child.on('error', (err) => {
-      rej(err)
-    })
-    child.on('close', (code) => {
-      if (code === 0) {
-        res(outStr.join('\n'))
-      } else {
-        rej(errStr.join('\n'))
-      }
-    })
-  })
-}
-
 async function run() {
   const workspaces = (await exec(`yarn workspaces list --json`)).stdout.trim().split('\n')
   const packagePaths = workspaces.map((p) => JSON.parse(p)) as {
@@ -85,7 +47,7 @@ async function run() {
       packagePaths
         .filter((i) => i.location !== '.' && !i.name.startsWith('@takeout'))
         .map(async ({ name, location }) => {
-          const cwd = path.join(__dirname, location)
+          const cwd = path.join(process.cwd(), location)
           return {
             name,
             cwd,

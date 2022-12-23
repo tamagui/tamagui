@@ -1,6 +1,6 @@
 export const simpleHash = (str: string, hashMin = 10) => {
   let hash = 0
-  let valids = ``
+  let valids = ''
   const len = str.length
   for (let i = 0; i < len; i++) {
     const char = str.charCodeAt(i)
@@ -22,7 +22,7 @@ export function isValidCSSCharCode(code: number) {
     // a-z
     (code >= 97 && code <= 122) ||
     // _
-    code == 95 ||
+    code === 95 ||
     // -
     code === 45 ||
     // 0-9

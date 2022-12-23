@@ -32,7 +32,7 @@ const pseudosOrdered = [
 
 export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
   // performance optimization
-  if (!stylesIn.hoverStyle && !stylesIn.pressStyle && !stylesIn.focusStyle) {
+  if (!(stylesIn.hoverStyle || stylesIn.pressStyle || stylesIn.focusStyle)) {
     return getAtomicStyle(stylesIn)
   }
 
@@ -48,7 +48,10 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
   return res
 }
 
-export function getAtomicStyle(style: ViewOrTextStyle, pseudo?: PseudoDescriptor): StyleObject[] {
+export function getAtomicStyle(
+  style: ViewOrTextStyle,
+  pseudo?: PseudoDescriptor
+): StyleObject[] {
   if (process.env.NODE_ENV === 'development') {
     if (!style || typeof style !== 'object') {
       throw new Error(`Wrong style type: "${typeof style}": ${style}`)
@@ -57,7 +60,7 @@ export function getAtomicStyle(style: ViewOrTextStyle, pseudo?: PseudoDescriptor
     if (!style) {
       if (process.env.NODE_ENV === 'development') {
         // eslint-disable-next-line no-console
-        console.warn(`Invalid style`)
+        console.warn('Invalid style')
       }
       return []
     }
@@ -87,10 +90,10 @@ const generateAtomicStyles = (
   const out: StyleObject[] = []
   for (const key in style) {
     const value = style[key]
-    if (value != null && value != undefined) {
+    if (value != null && value !== undefined) {
       const uid = key + (pseudo?.name || '')
       const cachedResult = cache.get(uid, value)
-      if (cachedResult != undefined) {
+      if (cachedResult !== undefined) {
         out.push(cachedResult)
       } else {
         const hash = presetHashes[value]
@@ -130,11 +133,13 @@ export function styleToCSS(style: Record<string, any>) {
   const { shadowOffset, shadowRadius, shadowColor } = style
   if (style.shadowRadius !== undefined) {
     const offset = shadowOffset || defaultOffset
-    const shadow = `${n(offset.width)} ${n(offset.height)} ${n(shadowRadius)} ${shadowColor}`
+    const shadow = `${n(offset.width)} ${n(offset.height)} ${n(
+      shadowRadius
+    )} ${shadowColor}`
     style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow
-    delete style.shadowOffset
-    delete style.shadowRadius
-    delete style.shadowColor
+    style.shadowOffset = undefined
+    style.shadowRadius = undefined
+    style.shadowColor = undefined
   }
 
   // text-shadow
@@ -149,9 +154,9 @@ export function styleToCSS(style: Record<string, any>) {
       const offsetY = normalizeValueWithProperty(height)
       style.textShadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
     }
-    delete style.textShadowColor
-    delete style.textShadowOffset
-    delete style.textShadowRadius
+    style.textShadowColor = undefined
+    style.textShadowOffset = undefined
+    style.textShadowRadius = undefined
   }
 }
 
@@ -174,7 +179,7 @@ function createDeclarationBlock(style: Style, important = false) {
   for (const key in style) {
     const prop = hyphenateStyleName(key)
     const value = style[key]
-    next += `${prop}:${value}${important ? ` !important` : ''};`
+    next += `${prop}:${value}${important ? ' !important' : ''};`
   }
   return `{${next}}`
 }
@@ -192,7 +197,7 @@ const pseudoSelectorPrefixes = (() => {
   const res: Record<string, string> = {}
   for (const key in pseudoDescriptors) {
     const pseudo = pseudoDescriptors[key]
-    res[pseudo.name] = [...Array(pseudo.priority)].map(() => ':root').join('') + ' '
+    res[pseudo.name] = `${[...Array(pseudo.priority)].map(() => ':root').join('')} `
   }
   return res
 })()

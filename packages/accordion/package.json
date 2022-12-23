@@ -16,9 +16,7 @@
   ],
   "scripts": {
     "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
-    "lint": "eslint src",
-    "lint:fix": "yarn lint --fix src"
+    "watch": "tamagui-build --watch"
   },
   "dependencies": {
     "@tamagui/compose-refs": "^1.0.1-rc.5.1",

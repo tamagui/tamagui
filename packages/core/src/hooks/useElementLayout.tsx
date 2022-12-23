@@ -73,7 +73,7 @@ export function useElementLayout(
   // Observing is done in a separate effect to avoid this effect running
   // when 'onLayout' changes.
   useIsomorphicLayoutEffect(() => {
-    if (!resizeObserver || !hasLayoutEvent) return
+    if (!(resizeObserver && hasLayoutEvent)) return
     const node = ref.current
     if (!node) return
     LayoutHandlers.set(node, onLayoutEvent)

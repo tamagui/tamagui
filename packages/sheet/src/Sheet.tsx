@@ -34,7 +34,12 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { GestureResponderEvent, PanResponder, PanResponderGestureState, View } from 'react-native'
+import {
+  GestureResponderEvent,
+  PanResponder,
+  PanResponderGestureState,
+  View,
+} from 'react-native'
 
 import { SHEET_HANDLE_NAME, SHEET_NAME } from './SHEET_HANDLE_NAME'
 import { SheetProvider, useSheetContext } from './SheetContext'
@@ -81,7 +86,8 @@ export const SheetHandle = SheetHandleFrame.extractable(
       <SheetHandleFrame
         onPress={() => {
           // don't toggle to the bottom snap position when dismissOnSnapToBottom set
-          const max = context.snapPoints.length + (context.dismissOnSnapToBottom ? -1 : 0)
+          const max =
+            context.snapPoints.length + (context.dismissOnSnapToBottom ? -1 : 0)
           const nextPos = (context.position + 1) % max
           context.setPosition(nextPos)
         }}
@@ -89,7 +95,7 @@ export const SheetHandle = SheetHandleFrame.extractable(
         {...props}
       />
     )
-  }
+  },
 )
 
 /* -------------------------------------------------------------------------------------------------
@@ -134,11 +140,11 @@ export const SheetOverlay = SheetOverlayFrame.extractable(
             ? () => {
                 context.setOpen(false)
               }
-            : undefined
+            : undefined,
         )}
       />
     )
-  }
+  },
 )
 
 /* -------------------------------------------------------------------------------------------------
@@ -163,11 +169,13 @@ export const SheetFrameFrame = styled(YStack, {
 })
 
 export const SheetFrame = SheetFrameFrame.extractable(
-  forwardRef(({ __scopeSheet, ...props }: SheetScopedProps<YStackProps>, forwardedRef) => {
-    const context = useSheetContext(SHEET_NAME, __scopeSheet)
-    const composedContentRef = useComposedRefs(forwardedRef, context.contentRef)
-    return <SheetFrameFrame ref={composedContentRef} {...props} />
-  })
+  forwardRef(
+    ({ __scopeSheet, ...props }: SheetScopedProps<YStackProps>, forwardedRef) => {
+      const context = useSheetContext(SHEET_NAME, __scopeSheet)
+      const composedContentRef = useComposedRefs(forwardedRef, context.contentRef)
+      return <SheetFrameFrame ref={composedContentRef} {...props} />
+    },
+  ),
 )
 
 // set all the way off screen
@@ -186,7 +194,7 @@ const ParentSheetContext = createContext({
 
 const useSheetContoller = () => {
   const controller = useContext(SheetControllerContext)
-  const isHidden = controller?.hidden || false
+  const isHidden = controller?.hidden
   const isShowingNonSheet = isHidden && controller?.open
   return {
     controller,
@@ -207,7 +215,7 @@ export const Sheet = withStaticProperties(
     }
     return <SheetImplementation ref={ref} {...props} />
   }),
-  sheetComponents
+  sheetComponents,
 )
 
 const SheetImplementation = themeable(
@@ -238,14 +246,14 @@ const SheetImplementation = themeable(
       if (snapPointsProp.some((p) => p < 0 || p > 100)) {
         // eslint-disable-next-line no-console
         console.warn(
-          `⚠️ Invalid snapPoint given, snapPoints must be between 0 and 100, equal to percent height of frame`
+          '⚠️ Invalid snapPoint given, snapPoints must be between 0 and 100, equal to percent height of frame',
         )
       }
     }
 
     const driver = getAnimationDriver()
     if (!driver) {
-      throw new Error(`Must set animations in tamagui.config.ts`)
+      throw new Error('Must set animations in tamagui.config.ts')
     }
 
     const disableDrag = disableDragProp ?? controller?.disableDrag
@@ -269,7 +277,7 @@ const SheetImplementation = themeable(
 
     const [open, setOpen] = useControllableState({
       prop: controller?.open ?? openProp,
-      defaultProp: defaultOpen || true,
+      defaultProp: true,
       onChange: onOpenChangeInternal,
       strategy: 'most-recent-wins',
       transition: true,
@@ -280,7 +288,7 @@ const SheetImplementation = themeable(
     const snapPoints = useMemo(
       () => (dismissOnSnapToBottom ? [...snapPointsProp, 0] : snapPointsProp),
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [JSON.stringify(snapPointsProp), dismissOnSnapToBottom]
+      [JSON.stringify(snapPointsProp), dismissOnSnapToBottom],
     )
 
     // lets set -1 to be always the "open = false" position
@@ -307,7 +315,7 @@ const SheetImplementation = themeable(
           setPosition_(next)
         }
       },
-      [dismissOnSnapToBottom, snapPoints.length, setPosition_, setOpen]
+      [dismissOnSnapToBottom, snapPoints.length, setPosition_, setOpen],
     )
 
     const animatedNumber = driver.useAnimatedNumber(HIDDEN_SIZE)
@@ -345,7 +353,7 @@ const SheetImplementation = themeable(
 
     const positions = useMemo(
       () => snapPoints.map((point) => getPercentSize(point, frameSize)),
-      [frameSize, snapPoints]
+      [frameSize, snapPoints],
     )
 
     const animateTo = useEvent((position: number) => {
@@ -404,9 +412,10 @@ const SheetImplementation = themeable(
         function makeUnselectable(val: boolean) {
           if (!selectionStyleSheet) return
           if (!val) {
-            selectionStyleSheet.innerText = ``
+            selectionStyleSheet.innerText = ''
           } else {
-            selectionStyleSheet.innerText = `:root * { user-select: none !important; -webkit-user-select: none !important; }`
+            selectionStyleSheet.innerText =
+              ':root * { user-select: none !important; -webkit-user-select: none !important; }'
           }
         }
 
@@ -433,7 +442,10 @@ const SheetImplementation = themeable(
           animateTo(closestPoint)
         }
 
-        const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
+        const finish = (
+          _e: GestureResponderEvent,
+          state: PanResponderGestureState,
+        ) => {
           release({
             vy: state.vy,
             dragAt: state.dy,
@@ -442,7 +454,10 @@ const SheetImplementation = themeable(
 
         let previouslyScrolling = false
 
-        const onMoveShouldSet = (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
+        const onMoveShouldSet = (
+          _e: GestureResponderEvent,
+          { dy }: PanResponderGestureState,
+        ) => {
           const isScrolled = scrollBridge.y !== 0
           const isDraggingUp = dy < 0
           const isAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
@@ -497,7 +512,14 @@ const SheetImplementation = themeable(
         })
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition]
+      [
+        disableDrag,
+        isShowingInnerSheet,
+        animateTo,
+        frameSize,
+        positions,
+        setPosition,
+      ],
     )
 
     let handleComponent: React.ReactElement | null = null
@@ -536,7 +558,7 @@ const SheetImplementation = themeable(
     const AnimatedView = driver['NumberView'] ?? driver.View
 
     useIsomorphicLayoutEffect(() => {
-      if (!parentSheetContext || !open) return
+      if (!(parentSheetContext && open)) return
       parentSheetContext(true)
       return () => {
         parentSheetContext(false)
@@ -547,7 +569,7 @@ const SheetImplementation = themeable(
       () => ({
         zIndex,
       }),
-      [zIndex]
+      [zIndex],
     )
 
     const handleLayout = useCallback((e) => {
@@ -636,10 +658,12 @@ const SheetImplementation = themeable(
 
     return contents
   }),
-  { componentName: 'Sheet' }
+  { componentName: 'Sheet' },
 )
 
-const SheetInsideSheetContext = createContext<((hasChild: boolean) => void) | null>(null)
+const SheetInsideSheetContext = createContext<((hasChild: boolean) => void) | null>(
+  null,
+)
 
 export const ControlledSheet = Sheet as FunctionComponent<
   Omit<SheetProps, 'open' | 'onOpenChange'> & RefAttributes<View>
@@ -652,7 +676,7 @@ function getPercentSize(point?: number, frameSize?: number) {
   if (!frameSize) return 0
   if (point === undefined) {
     // eslint-disable-next-line no-console
-    console.warn(`No snapPoint`)
+    console.warn('No snapPoint')
     return 0
   }
   const pct = point / 100
@@ -676,10 +700,14 @@ type SheetControllerContextValue = {
   open?: boolean
   // hide without "closing" to prevent re-animation when shown again
   hidden?: boolean
-  onOpenChange?: React.Dispatch<React.SetStateAction<boolean>> | ((val: boolean) => void)
+  onOpenChange?:
+    | React.Dispatch<React.SetStateAction<boolean>>
+    | ((val: boolean) => void)
 }
 
-const SheetControllerContext = createContext<SheetControllerContextValue | null>(null)
+const SheetControllerContext = createContext<SheetControllerContextValue | null>(
+  null,
+)
 
 export const SheetController = ({
   children,
@@ -695,10 +723,12 @@ export const SheetController = ({
       disableDrag: value.disableDrag,
       onOpenChange,
     }),
-    [onOpenChange, value.open, value.hidden, value.disableDrag]
+    [onOpenChange, value.open, value.hidden, value.disableDrag],
   )
 
   return (
-    <SheetControllerContext.Provider value={memoValue}>{children}</SheetControllerContext.Provider>
+    <SheetControllerContext.Provider value={memoValue}>
+      {children}
+    </SheetControllerContext.Provider>
   )
 }

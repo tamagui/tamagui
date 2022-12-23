@@ -10,7 +10,9 @@ import type { ExtractedAttr, TamaguiOptionsWithFileInfo, Ternary } from '../type
 
 // import { astToLiteral } from './literalToAst'
 
-export function isPresent<T extends Object>(input: null | void | undefined | T): input is T {
+export function isPresent<T extends Object>(
+  input: null | void | undefined | T,
+): input is T {
   return input != null
 }
 
@@ -41,7 +43,7 @@ export const objToStr = (obj: any, spacer = ', ') => {
             : v && typeof v === 'object'
             ? `${objToStr(v, ',')}`
             : JSON.stringify(v)
-        }`
+        }`,
     )
     .join(spacer)}}`
 }
@@ -98,7 +100,7 @@ export function isValidThemeHook(
   props: TamaguiOptionsWithFileInfo,
   jsxPath: NodePath<t.JSXElement>,
   n: t.MemberExpression,
-  sourcePath?: string
+  sourcePath?: string,
 ) {
   if (!t.isIdentifier(n.object) || !t.isIdentifier(n.property)) return false
   const bindings = jsxPath.scope.getAllBindings()
@@ -118,13 +120,19 @@ export function isValidThemeHook(
   return true
 }
 
-export const isInsideComponentPackage = (props: TamaguiOptionsWithFileInfo, moduleName: string) => {
+export const isInsideComponentPackage = (
+  props: TamaguiOptionsWithFileInfo,
+  moduleName: string,
+) => {
   return getValidComponentsPaths(props).some((path) => {
     return moduleName.startsWith(path)
   })
 }
 
-export const isComponentPackage = (props: TamaguiOptionsWithFileInfo, srcName: string) => {
+export const isComponentPackage = (
+  props: TamaguiOptionsWithFileInfo,
+  srcName: string,
+) => {
   return getValidComponentsPaths(props).some((path) => {
     return srcName.startsWith(path)
   })
@@ -133,7 +141,7 @@ export const isComponentPackage = (props: TamaguiOptionsWithFileInfo, srcName: s
 export function getValidComponent(
   props: TamaguiOptionsWithFileInfo,
   moduleName: string,
-  componentName: string
+  componentName: string,
 ) {
   // must be uppercase of course
   if (componentName[0].toUpperCase() !== componentName[0]) {
@@ -153,7 +161,10 @@ export function getValidComponent(
   return null
 }
 
-export const isValidModule = (props: TamaguiOptionsWithFileInfo, moduleName: string) => {
+export const isValidModule = (
+  props: TamaguiOptionsWithFileInfo,
+  moduleName: string,
+) => {
   if (typeof moduleName !== 'string') {
     throw new Error(`No module name`)
   }
@@ -169,7 +180,7 @@ export const isValidModule = (props: TamaguiOptionsWithFileInfo, moduleName: str
 export const getValidImport = (
   props: TamaguiOptionsWithFileInfo,
   moduleName: string,
-  componentName?: string
+  componentName?: string,
 ) => {
   const { isValid, isLocal } = isValidModule(props, moduleName)
   if (!isValid || !componentName) {
@@ -181,7 +192,7 @@ export const getValidImport = (
 export const isValidImport = (
   props: TamaguiOptionsWithFileInfo,
   moduleName: string,
-  componentName?: string
+  componentName?: string,
 ) => {
   if (!componentName) {
     return isValidModule(props, moduleName).isValid

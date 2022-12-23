@@ -15,14 +15,18 @@ import ActivityIndicator from '..'
 describe('components/ActivityIndicator', () => {
   describe('prop "accessibilityLabel"', () => {
     test('value is set', () => {
-      const { container } = render(<ActivityIndicator accessibilityLabel="accessibility label" />)
+      const { container } = render(
+        <ActivityIndicator accessibilityLabel="accessibility label" />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
   })
 
   describe('prop "accessibilityLiveRegion"', () => {
     test('value is set', () => {
-      const { container } = render(<ActivityIndicator accessibilityLiveRegion="polite" />)
+      const { container } = render(
+        <ActivityIndicator accessibilityLiveRegion="polite" />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
   })
@@ -47,19 +51,25 @@ describe('components/ActivityIndicator', () => {
 
   describe('prop "dataSet"', () => {
     test('value is set', () => {
-      const { container } = render(<ActivityIndicator dataSet={{ one: 'one', two: 'two' }} />)
+      const { container } = render(
+        <ActivityIndicator dataSet={{ one: 'one', two: 'two' }} />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
   })
 
   describe('prop "hidesWhenStopped"', () => {
     test('is "true"', () => {
-      const { container } = render(<ActivityIndicator animating={false} hidesWhenStopped={true} />)
+      const { container } = render(
+        <ActivityIndicator animating={false} hidesWhenStopped={true} />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
 
     test('is "false"', () => {
-      const { container } = render(<ActivityIndicator animating={false} hidesWhenStopped={false} />)
+      const { container } = render(
+        <ActivityIndicator animating={false} hidesWhenStopped={false} />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
   })

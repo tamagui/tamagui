@@ -31,7 +31,7 @@ export default class AnimatedValueXY extends AnimatedWithChildren {
   constructor(
     valueIn,
 
-    config
+    config,
   ) {
     super()
     const value = valueIn || { x: 0, y: 0 } // @flowfixme: shouldn't need `: any`
@@ -41,7 +41,8 @@ export default class AnimatedValueXY extends AnimatedWithChildren {
     } else {
       invariant(
         value.x instanceof AnimatedValue && value.y instanceof AnimatedValue,
-        'AnimatedValueXY must be initialized with an object of numbers or ' + 'AnimatedValues.'
+        'AnimatedValueXY must be initialized with an object of numbers or ' +
+          'AnimatedValues.',
       )
       this.x = value.x
       this.y = value.y

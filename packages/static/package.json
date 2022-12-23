@@ -15,8 +15,9 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "lint": "eslint src",
-    "lint:fix": "yarn lint --fix",
+    "format": "../../node_modules/.bin/rome format --write src --semicolons as-needed --quote-style single",
+    "lint": "../../node_modules/.bin/rome check src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
     "pretest": "node -r esbuild-register ./tests/lib/preTest.js",
     "test": "vitest --config ../vite-plugin-internal/src/vite.config.ts --run --dom"
   },

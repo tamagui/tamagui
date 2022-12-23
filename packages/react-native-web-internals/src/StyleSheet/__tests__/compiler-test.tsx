@@ -193,7 +193,7 @@ describe('StyleSheet/compile', () => {
             },
           ],
         },
-        'text'
+        'text',
       )
       expect(result).toMatchInlineSnapshot(`
         [
@@ -417,7 +417,7 @@ describe('StyleSheet/compile', () => {
             left: '10px',
           }
           expect(inline(isRTL ? initialRTL : initialLTR, isRTL)).toEqual(
-            isRTL ? expectedRTL : expectedLTR
+            isRTL ? expectedRTL : expectedLTR,
           )
         })
       })

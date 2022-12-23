@@ -24,7 +24,7 @@ function createAnimatedComponent(Component, options) {
     typeof Component !== 'function' ||
       (Component.prototype && Component.prototype.isReactComponent),
     '`createAnimatedComponent` does not support stateless functional components; ' +
-      'use a class component instead.'
+      'use a class component instead.',
   )
 
   class AnimatedComponent extends React.Component {
@@ -53,7 +53,8 @@ function createAnimatedComponent(Component, options) {
 
         return (
           // eslint-disable-next-line dot-notation
-          ((_this$_component$_int = this._component['_internalInstanceHandle']) == null
+          ((_this$_component$_int = this._component['_internalInstanceHandle']) ==
+          null
             ? void 0
             : (_this$_component$_int2 = _this$_component$_int.stateNode) == null
             ? void 0
@@ -68,7 +69,8 @@ function createAnimatedComponent(Component, options) {
           (this._component.getNativeScrollRef != null &&
             this._component.getNativeScrollRef() != null && // eslint-disable-next-line dot-notation
             ((_this$_component$getN =
-              this._component.getNativeScrollRef()['_internalInstanceHandle']) == null
+              this._component.getNativeScrollRef()['_internalInstanceHandle']) ==
+            null
               ? void 0
               : (_this$_component$getN2 = _this$_component$getN.stateNode) == null
               ? void 0
@@ -77,9 +79,9 @@ function createAnimatedComponent(Component, options) {
             this._component.getScrollResponder() != null &&
             this._component.getScrollResponder().getNativeScrollRef != null &&
             this._component.getScrollResponder().getNativeScrollRef() != null &&
-            ((_this$_component$getS = this._component.getScrollResponder().getNativeScrollRef()[ // eslint-disable-next-line dot-notation
-              '_internalInstanceHandle'
-            ]) == null
+            ((_this$_component$getS = this._component
+              .getScrollResponder()
+              .getNativeScrollRef()['_internalInstanceHandle']) == null // eslint-disable-next-line dot-notation
               ? void 0
               : (_this$_component$getS2 = _this$_component$getS.stateNode) == null
               ? void 0
@@ -95,7 +97,9 @@ function createAnimatedComponent(Component, options) {
 
       this._markUpdateComplete = () => {
         if (this._isFabric()) {
-          NativeAnimatedHelper.API.unsetWaitingForIdentifier(this._animatedComponentId)
+          NativeAnimatedHelper.API.unsetWaitingForIdentifier(
+            this._animatedComponentId,
+          )
         }
       }
 
@@ -119,7 +123,7 @@ function createAnimatedComponent(Component, options) {
           throw new Error(
             'Attempting to run JS driven animation on animated ' +
               'node that has been moved to "native" earlier by starting an ' +
-              'animation with `useNativeDriver: true`'
+              'animation with `useNativeDriver: true`',
           )
         }
       }
@@ -139,9 +143,9 @@ function createAnimatedComponent(Component, options) {
                   'is no longer necessary. You can now directly use the ref ' +
                   'instead. This method will be removed in a future release.',
                 (_ref$constructor$name = ref.constructor.name) !== null &&
-                  _ref$constructor$name !== void 0
+                _ref$constructor$name !== void 0
                   ? _ref$constructor$name
-                  : '<<anonymous>>'
+                  : '<<anonymous>>',
               )
               return ref
             }
@@ -157,7 +161,8 @@ function createAnimatedComponent(Component, options) {
       // Make sure to get the scrollable node for components that implement
       // `ScrollResponder.Mixin`.
       const scrollableNode =
-        (_this$_component = this._component) != null && _this$_component.getScrollableNode
+        (_this$_component = this._component) != null &&
+        _this$_component.getScrollableNode
           ? this._component.getScrollableNode()
           : this._component
 
@@ -212,7 +217,12 @@ function createAnimatedComponent(Component, options) {
       const mergedStyle = { ...style, ...passthruStyle }
 
       return (
-        <Component {...props} {...passthruProps} style={mergedStyle} ref={this._setComponentRef} />
+        <Component
+          {...props}
+          {...passthruProps}
+          style={mergedStyle}
+          ref={this._setComponentRef}
+        />
       )
     }
 
@@ -269,7 +279,12 @@ function createAnimatedComponent(Component, options) {
   }
 
   return React.forwardRef(function AnimatedComponentWrapper(props, ref) {
-    return <AnimatedComponent {...props} {...(ref == null ? null : { forwardedRef: ref })} />
+    return (
+      <AnimatedComponent
+        {...props}
+        {...(ref == null ? null : { forwardedRef: ref })}
+      />
+    )
   })
 }
 

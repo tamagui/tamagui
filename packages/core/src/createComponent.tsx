@@ -1,5 +1,11 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isClient, isRSC, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import {
+  isClient,
+  isRSC,
+  isServer,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
 import {
   composeEventHandlers,
   stylePropsView,
@@ -94,7 +100,10 @@ if (typeof document !== 'undefined') {
 }
 
 // mutates
-function mergeShorthands({ defaultProps }: StaticConfigParsed, { shorthands }: TamaguiConfig) {
+function mergeShorthands(
+  { defaultProps }: StaticConfigParsed,
+  { shorthands }: TamaguiConfig
+) {
   // they are defined in correct order already { ...parent, ...child }
   for (const key of Object.keys(defaultProps)) {
     defaultProps[shorthands[key] || key] = defaultProps[key]
@@ -117,7 +126,10 @@ export function createComponent<
   ComponentPropTypes extends Object = {},
   Ref = TamaguiElement,
   BaseProps = never
->(configIn: Partial<StaticConfig> | StaticConfigParsed, ParentComponent?: StylableComponent) {
+>(
+  configIn: Partial<StaticConfig> | StaticConfigParsed,
+  ParentComponent?: StylableComponent
+) {
   const staticConfig = (() => {
     const next = extendStaticConfig(configIn, ParentComponent)
     if ('parsed' in next) {
@@ -167,12 +179,16 @@ export function createComponent<
     const useAnimations = animationsConfig?.useAnimations as UseAnimationHook | undefined
     const avoidClassesWhileAnimating = animationsConfig.isReactNative
     const hasEnterStyle = !!props.enterStyle
-    const needsMount = Boolean((isWeb ? isClient : true) && (hasEnterStyle || props.animation))
+    const needsMount = Boolean(
+      (isWeb ? isClient : true) && (hasEnterStyle || props.animation)
+    )
     const states = useServerState<TamaguiComponentState>(
       needsMount ? defaultComponentState! : defaultComponentStateMounted!
     )
 
-    const state = propsIn.forceStyle ? { ...states[0], [propsIn.forceStyle]: true } : states[0]
+    const state = propsIn.forceStyle
+      ? { ...states[0], [propsIn.forceStyle]: true }
+      : states[0]
     const setState = states[1]
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
@@ -219,7 +235,10 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (debugProp) {
         const name = `${
-          componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
+          componentName ||
+          Component?.displayName ||
+          Component?.name ||
+          '[Unnamed Component]'
         }`
         const type = isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
@@ -228,13 +247,15 @@ export function createComponent<
         console.group(`%c ${banner}`, 'background: yellow;')
         if (!isServer) {
           // eslint-disable-next-line no-console
-          console.log(`state`, state)
+          console.log('state', state)
         }
       }
     }
 
     const shouldAvoidClasses =
-      !isWeb || !!(props.animation && avoidClassesWhileAnimating) || !staticConfig.acceptsClassName
+      !isWeb ||
+      !!(props.animation && avoidClassesWhileAnimating) ||
+      !staticConfig.acceptsClassName
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
@@ -318,14 +339,23 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (!process.env.TAMAGUI_TARGET) {
         // eslint-disable-next-line no-console
-        console.error(`No process.env.TAMAGUI_TARGET set, please set it to "native" or "web".`)
+        console.error(
+          `No process.env.TAMAGUI_TARGET set, please set it to "native" or "web".`
+        )
       }
 
       if (debugProp) {
         // eslint-disable-next-line no-console
         console.groupCollapsed('props')
         // eslint-disable-next-line no-console
-        console.log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
+        console.log(
+          'props in',
+          propsIn,
+          'mapped to',
+          props,
+          'in order',
+          Object.keys(props)
+        )
         // eslint-disable-next-line no-console
         console.log('splitStyles', splitStyles)
         // eslint-disable-next-line no-console
@@ -339,8 +369,6 @@ export function createComponent<
         // eslint-disable-next-line no-console
         console.groupEnd()
         if (debugProp === 'break') {
-          // eslint-disable-next-line no-debugger
-          debugger
         }
       }
     }
@@ -474,7 +502,7 @@ export function createComponent<
         } as any)
       }
 
-      if (props.href != undefined && hrefAttrs != undefined) {
+      if (props.href !== undefined && hrefAttrs !== undefined) {
         const { download, rel, target } = hrefAttrs
         if (download != null) {
           viewProps.download = download
@@ -483,13 +511,13 @@ export function createComponent<
           viewProps.rel = rel
         }
         if (typeof target === 'string') {
-          viewProps.target = target.charAt(0) !== '_' ? '_' + target : target
+          viewProps.target = target.charAt(0) !== '_' ? `_${target}` : target
         }
       }
 
       // FOCUS
       // "focusable" indicates that an element may be a keyboard tab-stop.
-      const _focusable = focusable != undefined ? focusable : accessible
+      const _focusable = focusable !== undefined ? focusable : accessible
       const role = viewProps.role
       if (_focusable === false) {
         viewProps.tabIndex = '-1'
@@ -532,7 +560,9 @@ export function createComponent<
       Children.toArray(props.children).forEach((item) => {
         if (typeof item === 'string') {
           // eslint-disable-next-line no-console
-          console.error(`Unexpected text node: ${item}. A text node cannot be a child of a <View>.`)
+          console.error(
+            `Unexpected text node: ${item}. A text node cannot be a child of a <View>.`
+          )
         }
       })
     }
@@ -579,7 +609,9 @@ export function createComponent<
       }
     }
 
-    let fontFamily = isText ? splitStyles.fontFamily || staticConfig.defaultProps.fontFamily : null
+    let fontFamily = isText
+      ? splitStyles.fontFamily || staticConfig.defaultProps.fontFamily
+      : null
     if (fontFamily && fontFamily[0] === '$') {
       fontFamily = fontFamily.slice(1)
     }
@@ -639,8 +671,8 @@ export function createComponent<
             for (const style of styles) {
               if (style?.fontFamily) {
                 style.fontFamily = overrideFace
-                delete style.fontWeight
-                delete style.fontStyle
+                style.fontWeight = undefined
+                style.fontStyle = undefined
               }
             }
           }
@@ -652,12 +684,19 @@ export function createComponent<
     }
 
     const runtimePressStyle = !disabled && noClassNames && pseudos?.pressStyle
-    const attachPress = !!(runtimePressStyle || onPress || onPressOut || onPressIn || onClick)
+    const attachPress = !!(
+      runtimePressStyle ||
+      onPress ||
+      onPressOut ||
+      onPressIn ||
+      onClick
+    )
     const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
     const isHoverable =
-      isWeb && !!(runtimeHoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
+      isWeb &&
+      !!(runtimeHoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
 
-    const handlesPressEvents = !isWeb && !asChild
+    const handlesPressEvents = !(isWeb || asChild)
 
     // check presence rather than value to prevent reparenting bugs
     // allows for onPress={x ? function : undefined} without re-ordering dom
@@ -832,7 +871,7 @@ export function createComponent<
       if (events || isAnimatedReactNativeWeb) {
         content = (
           <span
-            className={(isAnimatedReactNativeWeb ? className : '') + `  _dsp_contents`}
+            className={`${isAnimatedReactNativeWeb ? className : ''}  _dsp_contents`}
             {...(events && {
               onMouseEnter: events.onMouseEnter,
               onMouseLeave: events.onMouseLeave,
@@ -863,9 +902,45 @@ export function createComponent<
         // eslint-disable-next-line no-console
         console.groupEnd()
         if (typeof window !== 'undefined') {
-          // prettier-ignore
           // eslint-disable-next-line no-console
-          console.log({ state, shouldProvideThemeManager, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
+          console.log({
+            state,
+            shouldProvideThemeManager,
+            isAnimated,
+            isAnimatedReactNativeWeb,
+            tamaguiDefaultProps,
+            viewProps,
+            splitStyles,
+            animationStyles,
+            handlesPressEvents,
+            isStringElement,
+            classNamesIn: props.className?.split(' '),
+            classNamesOut: viewProps.className?.split(' '),
+            events,
+            shouldAttach,
+            styles,
+            pseudos,
+            content,
+            childEls,
+            shouldAvoidClasses,
+            avoidClasses: avoidClassesWhileAnimating,
+            animation: props.animation,
+            style: splitStylesStyle,
+            ...(typeof window !== 'undefined'
+              ? {
+                  theme,
+                  themeClassName: theme.className,
+                  staticConfig,
+                  tamaguiConfig,
+                  events,
+                  shouldAvoidClasses,
+                  shouldForcePseudo,
+                  classNames: Object.fromEntries(
+                    Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])
+                  ),
+                }
+              : null),
+          })
         }
         // eslint-disable-next-line no-console
         console.groupEnd()
@@ -883,7 +958,6 @@ export function createComponent<
     // one time only setup
     if (!tamaguiConfig) {
       tamaguiConfig = conf
-
       if (!defaultComponentState) {
         defaultComponentState = {
           hover: false,
@@ -909,7 +983,7 @@ export function createComponent<
         if (process.env.NODE_ENV === 'development') {
           if (!initialTheme) {
             // eslint-disable-next-line no-console
-            console.log(`Warning: Missing theme`)
+            console.log('Warning: Missing theme')
           }
         }
       }
@@ -971,9 +1045,23 @@ export function createComponent<
     // add debug logs
     if (process.env.NODE_ENV === 'development' && debug) {
       if (process.env.IS_STATIC !== 'is_static') {
-        // prettier-ignore
         // eslint-disable-next-line no-console
-        console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, { staticConfig, tamaguiDefaultProps, defaults, defaultPropsIn, defaultPropsKeyOrder: Object.keys(staticConfig.defaultProps), defaultPropsInKeyOrder: Object.keys(defaultPropsIn).map((k) => [k, defaultPropsIn[k]]), ourProps, ourClassNames, defaultsClassnames, defaultTag, noClassNames, })
+        console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
+          staticConfig,
+          tamaguiDefaultProps,
+          defaults,
+          defaultPropsIn,
+          defaultPropsKeyOrder: Object.keys(staticConfig.defaultProps),
+          defaultPropsInKeyOrder: Object.keys(defaultPropsIn).map((k) => [
+            k,
+            defaultPropsIn[k],
+          ]),
+          ourProps,
+          ourClassNames,
+          defaultsClassnames,
+          defaultTag,
+          noClassNames,
+        })
       }
     }
   })
@@ -1034,7 +1122,7 @@ export const Spacer = createComponent<SpacerProps>({
   variants: {
     size: {
       '...size': (size, { tokens }) => {
-        size = size == true ? '$true' : size
+        size = size === true ? '$true' : size
         const sizePx = tokens.space[size] ?? size
         return {
           width: sizePx,
@@ -1084,7 +1172,7 @@ export function spacedChildren({
 }: SpacedChildrenProps) {
   const hasSpace = !!(space || spaceFlex)
   const hasSeparator = !(separator === undefined || separator === null)
-  if (!hasSpace && !hasSeparator && !isZStack) {
+  if (!(hasSpace || hasSeparator || isZStack)) {
     return children
   }
   const childrenList = Children.toArray(children)
@@ -1094,7 +1182,12 @@ export function spacedChildren({
       // forward space! only when one component doesn't make sense to forward space to all children
       const [onlyChild] = childrenList
       if (React.isValidElement(onlyChild) && onlyChild.type?.['shouldForwardSpace']) {
-        return React.cloneElement(onlyChild, { space, direction, spaceFlex, separator } as any)
+        return React.cloneElement(onlyChild, {
+          space,
+          direction,
+          spaceFlex,
+          separator,
+        } as any)
       }
     }
     return childrenList
@@ -1102,13 +1195,17 @@ export function spacedChildren({
   const final: React.ReactNode[] = []
   for (const [index, child] of childrenList.entries()) {
     const isEmpty =
-      child === null || child === undefined || (Array.isArray(child) && child.length === 0)
+      child === null ||
+      child === undefined ||
+      (Array.isArray(child) && child.length === 0)
     // push them all, but wrap some in Fragment
     if (isEmpty || !child || (child['key'] && !isZStack)) {
       final.push(child)
     } else {
       final.push(
-        <Fragment key={index}>{isZStack ? <AbsoluteFill>{child}</AbsoluteFill> : child}</Fragment>
+        <Fragment key={index}>
+          {isZStack ? <AbsoluteFill>{child}</AbsoluteFill> : child}
+        </Fragment>
       )
     }
 
@@ -1229,7 +1326,8 @@ function usePlatformMethods(hostRef: RefObject<Element>) {
     // @ts-ignore
     node.measure = (callback) => measureLayout(node, null, callback)
     // @ts-ignore
-    node.measureLayout = (relativeToNode, success) => measureLayout(node, relativeToNode, success)
+    node.measureLayout = (relativeToNode, success) =>
+      measureLayout(node as HTMLElement, relativeToNode, success)
     // @ts-ignore
     node.measureInWindow = (callback) => {
       if (!node) return

@@ -75,7 +75,7 @@ function normalizeEvent(event: any) {
  */
 export default function createEventHandle(
   type: string,
-  options?: EventOptions | null
+  options?: EventOptions | null,
 ): EventHandle {
   const opts = getOptions(options)
 

@@ -46,7 +46,7 @@ describe('components/View', () => {
           <View />
           hello
           <View />
-        </View>
+        </View>,
       )
       expect(console.error).toBeCalled()
     })
@@ -109,7 +109,9 @@ describe('components/View', () => {
     })
 
     test('href with accessibilityRole', () => {
-      const { container } = render(<View accessibilityRole="none" href="https://example.com" />)
+      const { container } = render(
+        <View accessibilityRole="none" href="https://example.com" />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
   })
@@ -126,7 +128,9 @@ describe('components/View', () => {
         rel: 'nofollow',
         target: '_blank',
       }
-      const { container } = render(<View href="https://example.com" hrefAttrs={hrefAttrs} />)
+      const { container } = render(
+        <View href="https://example.com" hrefAttrs={hrefAttrs} />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -134,7 +138,9 @@ describe('components/View', () => {
       const hrefAttrs = {
         target: 'blank',
       }
-      const { container } = render(<View href="https://example.com" hrefAttrs={hrefAttrs} />)
+      const { container } = render(
+        <View href="https://example.com" hrefAttrs={hrefAttrs} />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -144,7 +150,9 @@ describe('components/View', () => {
         rel: null,
         target: null,
       }
-      const { container } = render(<View href="https://example.com" hrefAttrs={hrefAttrs} />)
+      const { container } = render(
+        <View href="https://example.com" hrefAttrs={hrefAttrs} />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
   })
@@ -222,7 +230,9 @@ describe('components/View', () => {
       const ref = jest.fn()
       let rerender
       act(() => {
-        ;({ rerender } = render(<View nativeID="123" ref={ref} style={{ borderWidth: 5 }} />))
+        ;({ rerender } = render(
+          <View nativeID="123" ref={ref} style={{ borderWidth: 5 }} />,
+        ))
       })
       expect(ref).toHaveBeenCalledTimes(1)
       act(() => {
@@ -266,7 +276,7 @@ describe('components/View', () => {
         const styles = StyleSheet.create({ root: { color: 'red' } })
         // initial render
         const { container, rerender } = render(
-          <View ref={ref} style={[styles.root, { width: 10 }]} />
+          <View ref={ref} style={[styles.root, { width: 10 }]} />,
         )
         const node = ref.current
         expect(container.firstChild).toMatchSnapshot()

@@ -6,7 +6,12 @@ import type {
 import type { SizeTokens } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import type { ThemeableStackProps, YStackProps } from '@tamagui/stacks'
-import type { DispatchWithoutAction, HTMLProps, MutableRefObject, ReactNode } from 'react'
+import type {
+  DispatchWithoutAction,
+  HTMLProps,
+  MutableRefObject,
+  ReactNode,
+} from 'react'
 
 export type Direction = 'ltr' | 'rtl'
 
@@ -86,7 +91,10 @@ export type SelectViewportProps = ThemeableStackProps & {
   size?: SizeTokens
 }
 
-export type SelectContentProps = ScopedProps<{ children?: React.ReactNode; zIndex?: number }>
+export type SelectContentProps = ScopedProps<{
+  children?: React.ReactNode
+  zIndex?: number
+}>
 
 export interface SelectScrollButtonImplProps extends YStackProps {
   dir: 'up' | 'down'

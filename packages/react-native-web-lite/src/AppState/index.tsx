@@ -13,11 +13,17 @@ import { canUseDOM, invariant } from 'react-native-web-internals'
 // Android 4.4 browser
 const isPrefixed =
   // eslint-disable-next-line no-prototype-builtins
-  canUseDOM && !document.hasOwnProperty('hidden') && document.hasOwnProperty('webkitHidden')
+  canUseDOM &&
+  !document.hasOwnProperty('hidden') &&
+  document.hasOwnProperty('webkitHidden')
 
 const EVENT_TYPES = ['change', 'memoryWarning']
-const VISIBILITY_CHANGE_EVENT = isPrefixed ? 'webkitvisibilitychange' : 'visibilitychange'
-const VISIBILITY_STATE_PROPERTY = isPrefixed ? 'webkitVisibilityState' : 'visibilityState'
+const VISIBILITY_CHANGE_EVENT = isPrefixed
+  ? 'webkitvisibilitychange'
+  : 'visibilitychange'
+const VISIBILITY_STATE_PROPERTY = isPrefixed
+  ? 'webkitVisibilityState'
+  : 'visibilityState'
 
 const AppStates = {
   BACKGROUND: 'background',
@@ -68,7 +74,7 @@ export default class AppState {
       invariant(
         EVENT_TYPES.indexOf(type) !== -1,
         'Trying to subscribe to unknown event: "%s"',
-        type
+        type,
       )
       if (type === 'change') {
         if (!hasBoundVisibilityChangeEvent) {
@@ -80,7 +86,7 @@ export default class AppState {
                 changeEmitter.emit('change', AppState.currentState)
               }
             },
-            false
+            false,
           )
         }
         return changeEmitter.addListener(type, handler)
@@ -94,12 +100,12 @@ export default class AppState {
       console.error(
         `AppState.removeListener('${type}', ...): Method has been ` +
           'deprecated. Please instead use `remove()` on the subscription ' +
-          'returned by `AppState.addEventListener`.'
+          'returned by `AppState.addEventListener`.',
       )
       invariant(
         EVENT_TYPES.indexOf(type) !== -1,
         'Trying to remove listener for unknown event: "%s"',
-        type
+        type,
       )
       if (type === 'change' && changeEmitter) {
         changeEmitter.removeListener(type, handler)

@@ -51,7 +51,9 @@ export function fromBouncinessAndSpeed(bounciness, speed) {
   }
 
   function b3Friction3(x) {
-    return 0.00000045 * Math.pow(x, 3) - 0.000332 * Math.pow(x, 2) + 0.1078 * x + 5.84
+    return (
+      0.00000045 * Math.pow(x, 3) - 0.000332 * Math.pow(x, 2) + 0.1078 * x + 5.84
+    )
   }
 
   function b3Nobounce(tension) {
@@ -68,7 +70,11 @@ export function fromBouncinessAndSpeed(bounciness, speed) {
   b = projectNormal(b, 0, 0.8)
   const s = normalize(speed / 1.7, 0, 20)
   const bouncyTension = projectNormal(s, 0.5, 200)
-  const bouncyFriction = quadraticOutInterpolation(b, b3Nobounce(bouncyTension), 0.01)
+  const bouncyFriction = quadraticOutInterpolation(
+    b,
+    b3Nobounce(bouncyTension),
+    0.01,
+  )
 
   return {
     stiffness: stiffnessFromOrigamiValue(bouncyTension),

@@ -29,17 +29,22 @@ export const loader = async function loader(this, sourceIn: Buffer | string) {
     const threaded = this.emitFile === undefined
     const options: TamaguiOptions = { ...this.getOptions() }
     const sourcePath = `${this.resourcePath}`
-    const { shouldDisable, shouldPrintDebug } = getPragmaOptions({ source, path: sourcePath })
+    const { shouldDisable, shouldPrintDebug } = getPragmaOptions({
+      source,
+      path: sourcePath,
+    })
 
     if (shouldDisable) {
       if (shouldPrintDebug) {
         // eslint-disable-next-line no-console
-        console.log(`Disabling on file via pragma`)
+        console.log('Disabling on file via pragma')
       }
       return callback(null, source)
     }
 
-    const cssPath = threaded ? `${sourcePath}.tamagui.css` : `${sourcePath}.${index++}.tamagui.css`
+    const cssPath = threaded
+      ? `${sourcePath}.tamagui.css`
+      : `${sourcePath}.${index++}.tamagui.css`
 
     const extracted = await extractToClassNames({
       extractor,
@@ -73,15 +78,16 @@ export const loader = async function loader(this, sourceIn: Buffer | string) {
 
     callback(null, extracted.js, extracted.map)
   } catch (err) {
-    const message = err instanceof Error ? `${err.message}\n${err.stack}` : String(err)
+    const message =
+      err instanceof Error ? `${err.message}\n${err.stack}` : String(err)
 
     // eslint-disable-next-line no-console
     console.error('Tamagui Webpack Loader Error:\n', `  ${message}\n`)
 
-    if (message.includes(`Cannot create proxy`)) {
+    if (message.includes('Cannot create proxy')) {
       // eslint-disable-next-line no-console
       console.log(
-        `This is usually due to components not loading at build-time. Check for logs just below the line above:`
+        'This is usually due to components not loading at build-time. Check for logs just below the line above:',
       )
       colorLog(Color.FgYellow, `"Tamagui built config and components"`)
     }

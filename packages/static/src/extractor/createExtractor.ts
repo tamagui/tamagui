@@ -321,7 +321,12 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
     }
 
     if (shouldPrintDebug) {
-      logger.info(`file: ${sourcePath} ${JSON.stringify({ doesUseValidImport, hasImportedTheme })}`)
+      logger.info(
+        `file: ${sourcePath} ${JSON.stringify({
+          doesUseValidImport,
+          hasImportedTheme,
+        })}`
+      )
     }
 
     if (!doesUseValidImport) {
@@ -552,7 +557,14 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
         if (shouldPrintDebug) {
           // prettier-ignore
-          logger.info([`Extracted styled(${variableName})\n`, JSON.stringify(styles, null, 2), '\n  rulesToInsert:', out.rulesToInsert.flatMap((rule) => rule.rules).join('\n')].join(' '))
+          logger.info(
+            [
+              `Extracted styled(${variableName})\n`,
+              JSON.stringify(styles, null, 2),
+              "\n  rulesToInsert:",
+              out.rulesToInsert.flatMap((rule) => rule.rules).join("\n"),
+            ].join(" "),
+          );
         }
 
         // leave only un-parsed props...
@@ -652,11 +664,13 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
         if (shouldPrintDebug) {
           logger.info('\n')
-          logger.info(
-            `\x1b[33m%s\x1b[0m ` + `${componentName} | ${codePosition} -------------------`
-          )
+          logger.info(`\x1b[33m%s\x1b[0m ${componentName} | ${codePosition} -------------------`)
           // prettier-ignore
-          logger.info(['\x1b[1m', '\x1b[32m', `<${originalNodeName} />`, disableDebugAttr ? '' : '🐛'].join(' '))
+          logger.info(
+            ["\x1b[1m", "\x1b[32m", `<${originalNodeName} />`, disableDebugAttr ? "" : "🐛"].join(
+              " ",
+            ),
+          );
         }
 
         // add data-* debug attributes
@@ -1117,7 +1131,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                   return attr
                 }
                 if (shouldPrintDebug) {
-                  logger.info('  ! inlining, non-static ' + key)
+                  logger.info(`  ! inlining, non-static ${key}`)
                 }
                 didInline = true
                 inlined.set(key, val)
@@ -1478,9 +1492,7 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
           const hasOnlyStringChildren =
             !hasSpread &&
-            (node.selfClosing ||
-              (traversePath.node.children &&
-                traversePath.node.children.every((x) => x.type === 'JSXText')))
+            (node.selfClosing || traversePath.node.children?.every((x) => x.type === 'JSXText'))
 
           const themeVal = inlined.get('theme')
 
@@ -1524,7 +1536,21 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
           if (shouldPrintDebug) {
             try {
               // prettier-ignore
-              logger.info([' flatten?', objToStr({ hasSpread, shouldDeopt, shouldFlatten, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', [...inlined]].join(' '))
+              logger.info(
+                [
+                  " flatten?",
+                  objToStr({
+                    hasSpread,
+                    shouldDeopt,
+                    shouldFlatten,
+                    canFlattenProps,
+                    shouldWrapTheme,
+                    hasOnlyStringChildren,
+                  }),
+                  "inlined",
+                  [...inlined],
+                ].join(" "),
+              );
             } catch {
               // ok
             }
@@ -1867,7 +1893,9 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
               ['  - defaultProps: \n', logLines(objToStr(staticConfig.defaultProps))].join(' ')
             )
             // prettier-ignore
-            logger.info(['  - foundStaticProps: \n', logLines(objToStr(foundStaticProps))].join(' '))
+            logger.info(
+              ["  - foundStaticProps: \n", logLines(objToStr(foundStaticProps))].join(" "),
+            );
             logger.info(['  - completeProps: \n', logLines(objToStr(completeProps))].join(' '))
           }
 
@@ -1948,7 +1976,6 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                   if (a) attr.value.alternate = a
                   if (c) attr.value.consequent = c
                   if (shouldPrintDebug) logger.info(['     => tern ', attrStr(attr)].join(' '))
-                  continue
                 }
                 case 'style': {
                   // expand variants and such
@@ -1957,10 +1984,11 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
                     attr.value = styles
                   }
                   // prettier-ignore
-                  if (shouldPrintDebug) logger.info(['  * styles (in)', logLines(objToStr(attr.value))].join(' '))
+                  if (shouldPrintDebug)
+                    logger.info(["  * styles (in)", logLines(objToStr(attr.value))].join(" "));
                   // prettier-ignore
-                  if (shouldPrintDebug) logger.info(['  * styles (out)', logLines(objToStr(styles))].join(' '))
-                  continue
+                  if (shouldPrintDebug)
+                    logger.info(["  * styles (out)", logLines(objToStr(styles))].join(" "));
                 }
               }
             } catch (err) {
@@ -1971,7 +1999,11 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            logger.info(['  - attrs (ternaries/combined):\n', logLines(attrs.map(attrStr).join(', '))].join(' '))
+            logger.info(
+              ["  - attrs (ternaries/combined):\n", logLines(attrs.map(attrStr).join(", "))].join(
+                " ",
+              ),
+            );
           }
 
           tm.mark('jsx-element-styles', !!shouldPrintDebug)
@@ -2061,7 +2093,14 @@ export function createExtractor({ logger = console }: ExtractorOptions = { logge
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            logger.info([` ❊❊ inline props (${inlined.size}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : ''].join(' '))
+            logger.info(
+              [
+                ` ❊❊ inline props (${inlined.size}):`,
+                shouldDeopt ? " deopted" : "",
+                hasSpread ? " has spread" : "",
+                staticConfig.neverFlatten ? "neverFlatten" : "",
+              ].join(" "),
+            );
             logger.info(`  - attrs (end):\n ${logLines(attrs.map(attrStr).join(', '))}`)
           }
 

@@ -17,6 +17,6 @@ export function useMergeRefs(
   return React.useMemo(
     () => mergeRefs(...args),
     // eslint-disable-next-line
-    [...args]
+    [...args],
   )
 }

@@ -17,7 +17,7 @@ type Props = Omit<Partial<esbuild.BuildOptions>, 'entryPoints'> & {
 
 function getESBuildConfig(
   { entryPoints, resolvePlatformSpecificEntries, ...options }: Props,
-  aliases?: Record<string, string>
+  aliases?: Record<string, string>,
 ) {
   const alias = require('@tamagui/core-node').aliasPlugin
   if (process.env.DEBUG?.startsWith('tamagui')) {
@@ -56,12 +56,15 @@ function getESBuildConfig(
             }
           })
 
-          build.onResolve({ filter: /^(react-native|react-native\/.*)$/ }, (args) => {
-            return {
-              path: 'react-native-web-lite',
-              external: true,
-            }
-          })
+          build.onResolve(
+            { filter: /^(react-native|react-native\/.*)$/ },
+            (args) => {
+              return {
+                path: 'react-native-web-lite',
+                external: true,
+              }
+            },
+          )
         },
       },
       alias({

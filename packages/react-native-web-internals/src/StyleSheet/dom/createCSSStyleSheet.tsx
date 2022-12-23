@@ -13,7 +13,7 @@ import canUseDOM from '../../modules/canUseDOM'
 export default function createCSSStyleSheet(
   id: string,
   rootNode?: Document | ShadowRoot,
-  textContent?: string
+  textContent?: string,
 ): CSSStyleSheet | null {
   if (canUseDOM) {
     const root = rootNode != null ? rootNode : document

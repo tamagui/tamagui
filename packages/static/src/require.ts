@@ -75,7 +75,7 @@ export function registerRequire() {
        * We can't fix every problem, so just swap them out with proxyWorm which is a sort of generic object that can be read.
        */
 
-      if (process.env.DEBUG?.startsWith('tamagui')) {
+      if (process.env.DISABLE_LOAD_ERROR !== '1') {
         // eslint-disable-next-line no-console
         console.error(
           `Tamagui failed loading the pre-built tamagui.config.ts
@@ -86,6 +86,8 @@ export function registerRequire() {
     You can see if it loads in the node repl:
   
     require("./${relative(process.cwd(), path)}").default
+
+    Disable this message with environment variable DISABLE_LOAD_ERROR=1
   
   `
         )

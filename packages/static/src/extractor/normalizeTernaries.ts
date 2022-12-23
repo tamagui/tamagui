@@ -7,7 +7,7 @@ import { Ternary } from '../types.js'
 export function normalizeTernaries(ternaries: Ternary[]) {
   invariant(
     Array.isArray(ternaries),
-    'extractStaticTernaries expects param 1 to be an array of ternaries'
+    'extractStaticTernaries expects param 1 to be an array of ternaries',
   )
 
   if (ternaries.length === 0) {

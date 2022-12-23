@@ -91,12 +91,12 @@ class ScrollView extends React.Component<any> {
   scrollTo = (
     y?: number | { x?: number; y?: number; animated?: boolean },
     x?: number,
-    animated?: boolean
+    animated?: boolean,
   ) => {
     if (typeof y === 'number') {
       // eslint-disable-next-line no-console
       console.warn(
-        '`scrollTo(y, x, animated)` is deprecated. Use `scrollTo({x: 5, y: 5, animated: true})` instead.'
+        '`scrollTo(y, x, animated)` is deprecated. Use `scrollTo({x: 5, y: 5, animated: true})` instead.',
       )
     } else {
       // eslint-disable-next-line @typescript-eslint/no-extra-semi
@@ -149,12 +149,12 @@ class ScrollView extends React.Component<any> {
     if (process.env.NODE_ENV !== 'production' && this.props.style) {
       const style = StyleSheet.flatten(this.props.style)
       const childLayoutProps = ['alignItems', 'justifyContent'].filter(
-        (prop) => style && style[prop] !== undefined
+        (prop) => style && style[prop] !== undefined,
       )
       invariant(
         childLayoutProps.length === 0,
         `ScrollView child layout (${JSON.stringify(childLayoutProps)}) ` +
-          'must be applied through the contentContainerStyle prop.'
+          'must be applied through the contentContainerStyle prop.',
       )
     }
 
@@ -169,13 +169,14 @@ class ScrollView extends React.Component<any> {
     const children =
       hasStickyHeaderIndices || pagingEnabled
         ? React.Children.map(this.props.children, (child, i) => {
-            const isSticky = hasStickyHeaderIndices && stickyHeaderIndices.indexOf(i) > -1
+            const isSticky =
+              hasStickyHeaderIndices && stickyHeaderIndices.indexOf(i) > -1
             if (child != null && (isSticky || pagingEnabled)) {
               return (
                 <View
                   style={StyleSheet.compose(
                     isSticky && styles.stickyHeader,
-                    pagingEnabled && styles.pagingEnabledChild
+                    pagingEnabled && styles.pagingEnabledChild,
                   )}
                 >
                   {child}
@@ -216,15 +217,19 @@ class ScrollView extends React.Component<any> {
       onTouchEnd: this.scrollResponderHandleTouchEnd.bind(this),
       onScrollBeginDrag: this.scrollResponderHandleScrollBeginDrag.bind(this),
       onScrollEndDrag: this.scrollResponderHandleScrollEndDrag.bind(this),
-      onMomentumScrollBegin: this.scrollResponderHandleMomentumScrollBegin.bind(this),
+      onMomentumScrollBegin:
+        this.scrollResponderHandleMomentumScrollBegin.bind(this),
       onMomentumScrollEnd: this.scrollResponderHandleMomentumScrollEnd.bind(this),
-      onStartShouldSetResponder: this.scrollResponderHandleStartShouldSetResponder.bind(this),
+      onStartShouldSetResponder:
+        this.scrollResponderHandleStartShouldSetResponder.bind(this),
       onStartShouldSetResponderCapture:
         this.scrollResponderHandleStartShouldSetResponderCapture.bind(this),
-      onScrollShouldSetResponder: this.scrollResponderHandleScrollShouldSetResponder.bind(this),
+      onScrollShouldSetResponder:
+        this.scrollResponderHandleScrollShouldSetResponder.bind(this),
       onScroll: this._handleScroll,
       onResponderGrant: this.scrollResponderHandleResponderGrant.bind(this),
-      onResponderTerminationRequest: this.scrollResponderHandleTerminationRequest.bind(this),
+      onResponderTerminationRequest:
+        this.scrollResponderHandleTerminationRequest.bind(this),
       onResponderRelease: this.scrollResponderHandleResponderRelease.bind(this),
       onResponderReject: this.scrollResponderHandleResponderReject.bind(this),
     }
@@ -260,7 +265,7 @@ class ScrollView extends React.Component<any> {
             '`scrollEventThrottle`. You will only receive one event. ' +
             'Using `16` you get all the events but be aware that it may ' +
             "cause frame drops, use a bigger number if you don't need as " +
-            'much precision.'
+            'much precision.',
         )
       }
     }
@@ -535,12 +540,12 @@ class ScrollView extends React.Component<any> {
           animated?: boolean
         },
     y?: number,
-    animated?: boolean
+    animated?: boolean,
   ) {
     if (typeof x === 'number') {
       // eslint-disable-next-line no-console
       console.warn(
-        '`scrollResponderScrollTo(x, y, animated)` is deprecated. Use `scrollResponderScrollTo({x: 5, y: 5, animated: true})` instead.'
+        '`scrollResponderScrollTo(x, y, animated)` is deprecated. Use `scrollResponderScrollTo({x: 5, y: 5, animated: true})` instead.',
       )
     } else {
       ;({ x, y, animated } = x || emptyObject)
@@ -570,7 +575,7 @@ class ScrollView extends React.Component<any> {
       height: number
       animated?: boolean
     },
-    animated?: boolean // deprecated, put this inside the rect argument instead
+    animated?: boolean, // deprecated, put this inside the rect argument instead
   ) {
     if (Platform.OS !== 'ios') {
       invariant('zoomToRect is not implemented')
@@ -595,7 +600,7 @@ class ScrollView extends React.Component<any> {
   scrollResponderScrollNativeHandleToKeyboard = (
     nodeHandle: any,
     additionalOffset?: number,
-    preventNegativeScrollOffset?: boolean
+    preventNegativeScrollOffset?: boolean,
   ) => {
     this.additionalScrollOffset = additionalOffset || 0
     this.preventNegativeScrollOffset = !!preventNegativeScrollOffset
@@ -603,7 +608,7 @@ class ScrollView extends React.Component<any> {
       nodeHandle,
       this.options.getInnerViewNode(),
       this.scrollResponderTextInputFocusError,
-      this.scrollResponderInputMeasureAndScrollToKeyboard
+      this.scrollResponderInputMeasureAndScrollToKeyboard,
     )
   }
 
@@ -621,7 +626,7 @@ class ScrollView extends React.Component<any> {
     left: number,
     top: number,
     width: number,
-    height: number
+    height: number,
   ) => {
     let keyboardScreenY = Dimensions.get('window').height
     if (this.keyboardWillOpenTo) {

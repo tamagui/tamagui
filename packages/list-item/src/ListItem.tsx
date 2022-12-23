@@ -139,7 +139,7 @@ export const useListItem = (
     Title?: any
     Subtitle?: any
     Text?: any
-  } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle }
+  } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle },
 ) => {
   // careful not to desctructure and re-order props, order is important
   const {
@@ -190,7 +190,7 @@ export const useListItem = (
             </>
           ) : null}
           {/* helper for common title/subtitle pttern */}
-          {Boolean(title || subTitle) ? (
+          {title || subTitle ? (
             <YStack flex={1}>
               {noTextWrap === 'all' ? title : <Title size={size}>{title}</Title>}
               {subTitle ? (
@@ -224,7 +224,9 @@ export const useListItem = (
 
 const ListItemComponent = forwardRef<TamaguiElement, ListItemProps>((props, ref) => {
   const { props: listItemProps } = useListItem(props)
-  return <ListItemFrame ref={ref} justifyContent="space-between" {...listItemProps} />
+  return (
+    <ListItemFrame ref={ref} justifyContent="space-between" {...listItemProps} />
+  )
 })
 
 export const listItemStaticConfig = {
@@ -242,10 +244,10 @@ export const listItemStaticConfig = {
 export const ListItem = withStaticProperties(
   ListItemFrame.extractable(
     themeable(ListItemComponent, { componentName: NAME }),
-    listItemStaticConfig
+    listItemStaticConfig,
   ),
   {
     Text: ListItemText,
     Subtitle: ListItemSubtitle,
-  }
+  },
 )

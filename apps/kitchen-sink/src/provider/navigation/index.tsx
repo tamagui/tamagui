@@ -46,7 +46,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
         },
       } as const,
     }),
-    []
+    [],
   )
 
   if (!isReady) {

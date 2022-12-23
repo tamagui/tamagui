@@ -105,7 +105,10 @@ class AnimatedNode {
   }
 
   _startListeningToNativeValueUpdates() {
-    if (this.__nativeAnimatedValueListener && !this.__shouldUpdateListenersForNewNativeTag) {
+    if (
+      this.__nativeAnimatedValueListener &&
+      !this.__shouldUpdateListenersForNewNativeTag
+    ) {
       return
     }
 
@@ -116,16 +119,17 @@ class AnimatedNode {
     }
 
     NativeAnimatedAPI.startListeningToAnimatedNodeValue(this.__getNativeTag())
-    this.__nativeAnimatedValueListener = NativeAnimatedHelper.nativeEventEmitter.addListener(
-      'onAnimatedValueUpdate',
-      (data) => {
-        if (data.tag !== this.__getNativeTag()) {
-          return
-        }
+    this.__nativeAnimatedValueListener =
+      NativeAnimatedHelper.nativeEventEmitter.addListener(
+        'onAnimatedValueUpdate',
+        (data) => {
+          if (data.tag !== this.__getNativeTag()) {
+            return
+          }
 
-        this._onAnimatedValueUpdateReceived(data.value)
-      }
-    )
+          this._onAnimatedValueUpdateReceived(data.value)
+        },
+      )
   }
 
   _onAnimatedValueUpdateReceived(value) {
@@ -155,7 +159,10 @@ class AnimatedNode {
     var _this$__nativeTag
 
     NativeAnimatedHelper.assertNativeAnimatedModule()
-    invariant(this.__isNative, 'Attempt to get native tag from node not marked as "native"')
+    invariant(
+      this.__isNative,
+      'Attempt to get native tag from node not marked as "native"',
+    )
     var nativeTag =
       (_this$__nativeTag = this.__nativeTag) !== null && _this$__nativeTag !== void 0
         ? _this$__nativeTag
@@ -163,7 +170,10 @@ class AnimatedNode {
 
     if (this.__nativeTag == null) {
       this.__nativeTag = nativeTag
-      NativeAnimatedHelper.API.createAnimatedNode(nativeTag, this.__getNativeConfig())
+      NativeAnimatedHelper.API.createAnimatedNode(
+        nativeTag,
+        this.__getNativeConfig(),
+      )
       this.__shouldUpdateListenersForNewNativeTag = true
     }
 
@@ -171,7 +181,9 @@ class AnimatedNode {
   }
 
   __getNativeConfig() {
-    throw new Error('This JS animated node type cannot be used as native animated node')
+    throw new Error(
+      'This JS animated node type cannot be used as native animated node',
+    )
   }
 
   toJSON() {

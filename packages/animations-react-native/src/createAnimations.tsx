@@ -40,13 +40,15 @@ const animatedStyleKey = {
 export const AnimatedView = Animated.View
 export const AnimatedText = Animated.Text
 
-export function useAnimatedNumber(initial: number): UniversalAnimatedNumber<Animated.Value> {
+export function useAnimatedNumber(
+  initial: number,
+): UniversalAnimatedNumber<Animated.Value> {
   const state = useSafeRef(
     null as any as {
       val: Animated.Value
       composite: Animated.CompositeAnimation | null
       strategy: AnimatedNumberStrategy
-    }
+    },
   )
   if (!state.current) {
     state.current = {
@@ -96,7 +98,7 @@ export function useAnimatedNumber(initial: number): UniversalAnimatedNumber<Anim
 
 export function useAnimatedNumberReaction(
   value: UniversalAnimatedNumber<Animated.Value>,
-  cb: (current: number) => void
+  cb: (current: number) => void,
 ) {
   const onChange = useEvent((current) => {
     cb(current.value)
@@ -110,14 +112,15 @@ export function useAnimatedNumberReaction(
   }, [value, onChange])
 }
 
-export function useAnimatedNumberStyle<V extends UniversalAnimatedNumber<Animated.Value>>(
-  value: V,
-  getStyle: (value: any) => any
-) {
+export function useAnimatedNumberStyle<
+  V extends UniversalAnimatedNumber<Animated.Value>,
+>(value: V, getStyle: (value: any) => any) {
   return getStyle(value.getInstance())
 }
 
-export function createAnimations<A extends AnimationsConfig>(animations: A): AnimationDriver<A> {
+export function createAnimations<A extends AnimationsConfig>(
+  animations: A,
+): AnimationDriver<A> {
   AnimatedView['displayName'] = 'AnimatedView'
   AnimatedText['displayName'] = 'AnimatedText'
 
@@ -153,7 +156,12 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       const completions: Promise<void>[] = []
 
       // const args = [JSON.stringify(mergedStyles)]
-      const args = [JSON.stringify(mergedStyles), JSON.stringify(state), isExiting, !!onDidAnimate]
+      const args = [
+        JSON.stringify(mergedStyles),
+        JSON.stringify(state),
+        isExiting,
+        !!onDidAnimate,
+      ]
 
       const res = useMemo(() => {
         const nonAnimatedStyle = {}
@@ -185,11 +193,15 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
           ...Object.fromEntries(
             Object.entries({
               ...animateStyles.current,
-            }).map(([k, v]) => [k, animationsState.current!.get(v)?.interopolation || v])
+            }).map(([k, v]) => [
+              k,
+              animationsState.current!.get(v)?.interopolation || v,
+            ]),
           ),
           transform: animatedTranforms.current.map((r) => {
             const key = Object.keys(r)[0]
-            const val = animationsState.current!.get(r[key])?.interopolation || r[key]
+            const val =
+              animationsState.current!.get(r[key])?.interopolation || r[key]
             return { [key]: val }
           }),
         }
@@ -198,7 +210,11 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
           style: [nonAnimatedStyle, animatedStyle],
         }
 
-        function update(key: string, animated: Animated.Value | undefined, valIn: string | number) {
+        function update(
+          key: string,
+          animated: Animated.Value | undefined,
+          valIn: string | number,
+        ) {
           const [val, type] = getValue(valIn)
           const value = animated || new Animated.Value(val)
           let interpolateArgs: any
@@ -207,7 +223,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             interpolateArgs = getInterpolated(
               curInterpolation?.current ?? value['_value'],
               val,
-              type
+              type,
             )
             animationsState.current!.set(value, {
               interopolation: value.interpolate(interpolateArgs),
@@ -215,7 +231,11 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             })
           }
           if (value) {
-            const animationConfig = getAnimationConfig(key, animations, props.animation)
+            const animationConfig = getAnimationConfig(
+              key,
+              animations,
+              props.animation,
+            )
 
             let resolve
             const promise = new Promise<void>((res) => {
@@ -238,9 +258,18 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
           }
           if (process.env.NODE_ENV === 'development') {
             if (props['debug']) {
-              // prettier-ignore
               // eslint-disable-next-line no-console
-              console.log(' 💠 animate', key, `from ${value['_value']} to`, valIn, `(${val})`, 'type', type, 'interpolate', interpolateArgs)
+              console.log(
+                ' 💠 animate',
+                key,
+                `from ${value['_value']} to`,
+                valIn,
+                `(${val})`,
+                'type',
+                type,
+                'interpolate',
+                interpolateArgs,
+              )
             }
           }
           return value
@@ -291,7 +320,11 @@ function getInterpolated(current: number, next: number, postfix = 'deg') {
   }
 }
 
-function getAnimationConfig(key: string, animations: AnimationsConfig, animation?: AnimationProp) {
+function getAnimationConfig(
+  key: string,
+  animations: AnimationsConfig,
+  animation?: AnimationProp,
+) {
   if (typeof animation === 'string') {
     return animations[animation]
   }

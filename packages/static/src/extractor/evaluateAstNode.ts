@@ -3,7 +3,7 @@ import * as t from '@babel/types'
 export function evaluateAstNode(
   exprNode: t.Node | undefined | null,
   evalFn?: (node: t.Node) => any,
-  shouldPrintDebug?: boolean | 'verbose'
+  shouldPrintDebug?: boolean | 'verbose',
 ): any {
   if (exprNode === undefined) {
     return undefined
@@ -32,7 +32,7 @@ export function evaluateAstNode(
       if (value.computed) {
         if (typeof evalFn !== 'function') {
           throw new Error(
-            'evaluateAstNode does not support computed keys unless an eval function is provided'
+            'evaluateAstNode does not support computed keys unless an eval function is provided',
           )
         }
         key = evaluateAstNode(value.key, evalFn)
@@ -41,7 +41,7 @@ export function evaluateAstNode(
       } else if (t.isStringLiteral(value.key) || t.isNumericLiteral(value.key)) {
         key = value.key.value
       } else {
-        throw new Error('Unsupported key type: ' + value.key.type)
+        throw new Error(`Unsupported key type: ${value.key.type}`)
       }
 
       if (typeof key !== 'string' && typeof key !== 'number') {
@@ -70,7 +70,7 @@ export function evaluateAstNode(
   if (t.isTemplateLiteral(exprNode)) {
     if (typeof evalFn !== 'function') {
       throw new Error(
-        'evaluateAstNode does not support template literals unless an eval function is provided'
+        'evaluateAstNode does not support template literals unless an eval function is provided',
       )
     }
 
@@ -92,7 +92,11 @@ export function evaluateAstNode(
     return null
   }
 
-  if (t.isNumericLiteral(exprNode) || t.isStringLiteral(exprNode) || t.isBooleanLiteral(exprNode)) {
+  if (
+    t.isNumericLiteral(exprNode) ||
+    t.isStringLiteral(exprNode) ||
+    t.isBooleanLiteral(exprNode)
+  ) {
     // In the interest of representing the "evaluated" prop
     // as the user intended, we support negative null. Why not.
     return exprNode.value
@@ -100,20 +104,32 @@ export function evaluateAstNode(
 
   if (t.isBinaryExpression(exprNode)) {
     if (exprNode.operator === '+') {
-      return evaluateAstNode(exprNode.left, evalFn) + evaluateAstNode(exprNode.right, evalFn)
+      return (
+        evaluateAstNode(exprNode.left, evalFn) +
+        evaluateAstNode(exprNode.right, evalFn)
+      )
     } else if (exprNode.operator === '-') {
-      return evaluateAstNode(exprNode.left, evalFn) - evaluateAstNode(exprNode.right, evalFn)
+      return (
+        evaluateAstNode(exprNode.left, evalFn) -
+        evaluateAstNode(exprNode.right, evalFn)
+      )
     } else if (exprNode.operator === '*') {
-      return evaluateAstNode(exprNode.left, evalFn) * evaluateAstNode(exprNode.right, evalFn)
+      return (
+        evaluateAstNode(exprNode.left, evalFn) *
+        evaluateAstNode(exprNode.right, evalFn)
+      )
     } else if (exprNode.operator === '/') {
-      return evaluateAstNode(exprNode.left, evalFn) / evaluateAstNode(exprNode.right, evalFn)
+      return (
+        evaluateAstNode(exprNode.left, evalFn) /
+        evaluateAstNode(exprNode.right, evalFn)
+      )
     }
   }
 
   // if we've made it this far, the value has to be evaluated
   if (typeof evalFn !== 'function') {
     throw new Error(
-      'evaluateAstNode does not support non-literal values unless an eval function is provided'
+      'evaluateAstNode does not support non-literal values unless an eval function is provided',
     )
   }
 

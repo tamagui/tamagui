@@ -18,7 +18,9 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
   if (s === -1) {
     if (process.env.NODE_ENV === 'development') {
       // eslint-disable-next-line no-console
-      console.groupCollapsed(`❌ Invalid transform, likely used deg/% improperly ${identifier}`)
+      console.groupCollapsed(
+        `❌ Invalid transform, likely used deg/% improperly ${identifier}`
+      )
       // eslint-disable-next-line no-console
       console.log('rule:', rule)
       // eslint-disable-next-line no-console
@@ -82,7 +84,9 @@ export function updateInserted() {
       const [identifier, cssRule] = response
       if (!(identifier in allSelectors)) {
         const isTransform = identifier.startsWith('_transform')
-        const shouldInsert = isTransform ? addTransform(identifier, cssRule.cssText, cssRule) : true
+        const shouldInsert = isTransform
+          ? addTransform(identifier, cssRule.cssText, cssRule)
+          : true
         if (shouldInsert) {
           allSelectors[identifier] = cssRule.cssText
         }
@@ -92,7 +96,9 @@ export function updateInserted() {
   }
 }
 
-function getTamaguiSelector(rule: CSSRule | null): readonly [string, CSSStyleRule] | null {
+function getTamaguiSelector(
+  rule: CSSRule | null
+): readonly [string, CSSStyleRule] | null {
   if (rule instanceof CSSStyleRule) {
     const text = rule.selectorText
     // .startsWith('._')
@@ -119,7 +125,9 @@ const getIdentifierFromTamaguiSelector = (selector: string) =>
 // move this to probably inside createTamagui
 updateInserted()
 
-const sheet = isClient ? document.head.appendChild(document.createElement('style')).sheet : null
+const sheet = isClient
+  ? document.head.appendChild(document.createElement('style')).sheet
+  : null
 
 export function updateRules(identifier: string, rules: string[]) {
   if (allRules[identifier]) return false
@@ -137,12 +145,13 @@ export type RulesToInsert = PartialStyleObject[]
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
   if (!rulesToInsert.length) return
   if (isClient && !sheet) {
-    if (process.env.NODE_ENV === 'development') throw `impossible`
+    if (process.env.NODE_ENV === 'development') throw 'impossible'
     return
   }
   for (const { identifier, rules } of rulesToInsert) {
     if (identifier in allSelectors) continue
-    allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rules.join('\n') : ' '
+    allSelectors[identifier] =
+      process.env.NODE_ENV === 'development' ? rules.join('\n') : ' '
     updateRules(identifier, rules)
     if (sheet) {
       for (const rule of rules) {

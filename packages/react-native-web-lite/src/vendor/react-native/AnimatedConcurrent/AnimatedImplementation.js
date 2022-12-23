@@ -117,8 +117,8 @@ const spring = function (value, config) {
           configuration.toValue,
           SpringAnimation,
           singleConfig,
-          callback
-        )
+          callback,
+        ),
       )
     } else {
       singleValue.animate(new SpringAnimation(singleConfig), callback)
@@ -163,8 +163,8 @@ const timing = function (value, config) {
           configuration.toValue,
           TimingAnimation,
           singleConfig,
-          callback
-        )
+          callback,
+        ),
       )
     } else {
       singleValue.animate(new TimingAnimation(singleConfig), callback)
@@ -276,7 +276,7 @@ const sequence = function (animations) {
 
     _startNativeLoop: function () {
       throw new Error(
-        'Loops run using the native driver cannot contain Animated.sequence animations'
+        'Loops run using the native driver cannot contain Animated.sequence animations',
       )
     },
 
@@ -339,7 +339,7 @@ const parallel = function (animations, config) {
 
     _startNativeLoop: function () {
       throw new Error(
-        'Loops run using the native driver cannot contain Animated.parallel animations'
+        'Loops run using the native driver cannot contain Animated.parallel animations',
       )
     },
 
@@ -365,21 +365,25 @@ const stagger = function (time, animations) {
   return parallel(
     animations.map((animation, i) => {
       return sequence([delay(time * i), animation])
-    })
+    }),
   )
 }
 
 const loop = function (
   animation,
   // $FlowFixMe[prop-missing]
-  { iterations = -1, resetBeforeIteration = true } = {}
+  { iterations = -1, resetBeforeIteration = true } = {},
 ) {
   let isFinished = false
   let iterationsSoFar = 0
   return {
     start: function (callback) {
       const restart = function (result = { finished: true }) {
-        if (isFinished || iterationsSoFar === iterations || result.finished === false) {
+        if (
+          isFinished ||
+          iterationsSoFar === iterations ||
+          result.finished === false
+        ) {
           callback && callback(result)
         } else {
           iterationsSoFar++
@@ -410,7 +414,9 @@ const loop = function (
     },
 
     _startNativeLoop: function () {
-      throw new Error('Loops run using the native driver cannot contain Animated.loop animations')
+      throw new Error(
+        'Loops run using the native driver cannot contain Animated.loop animations',
+      )
     },
 
     _isUsingNativeDriver: function () {

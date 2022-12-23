@@ -16,7 +16,9 @@ export function usePresence(): UsePresenceResult {
 
   const safeToRemove = () => onExitComplete?.(id)
 
-  return !isPresent && onExitComplete ? [false, safeToRemove, context] : [true, undefined, context]
+  return !isPresent && onExitComplete
+    ? [false, safeToRemove, context]
+    : [true, undefined, context]
 }
 
 /**

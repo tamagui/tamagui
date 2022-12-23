@@ -26,7 +26,7 @@ export function literalToAst(literal: any): t.Expression {
           })
           .map((k) => {
             return t.objectProperty(t.stringLiteral(k), literalToAst(literal[k]))
-          })
+          }),
       )
   }
 }
@@ -58,7 +58,7 @@ export function astToLiteral(node: any) {
           ? astToLiteral(element.argument)
           : [astToLiteral(element)]),
       ],
-      []
+      [],
     )
   }
 }

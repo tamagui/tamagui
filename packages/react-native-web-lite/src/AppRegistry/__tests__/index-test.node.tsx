@@ -106,7 +106,8 @@ describe('AppRegistry', () => {
       const styles = StyleSheet.create({
         root: { borderWidth: 1234, backgroundColor: 'purple' },
       })
-      const AlternativeComponent = () => React.createElement(View, { style: styles.root })
+      const AlternativeComponent = () =>
+        React.createElement(View, { style: styles.root })
       AppRegistry.registerComponent('AlternativeApp', () => AlternativeComponent)
       const second = getApplicationStyles('AlternativeApp')
       expect(second).toMatchInlineSnapshot(`

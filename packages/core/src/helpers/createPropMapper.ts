@@ -19,7 +19,12 @@ import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { mergeProps } from './mergeProps'
 
-export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both' | 'non-color-value'
+export type ResolveVariableTypes =
+  | 'auto'
+  | 'value'
+  | 'variable'
+  | 'both'
+  | 'non-color-value'
 
 export const getReturnVariablesAs = (props: any, state: Partial<SplitStyleState>) => {
   return !!props.animation || state.resolveVariablesAs === 'value'
@@ -147,7 +152,7 @@ const resolveVariants: StyleResolver = (
   avoidDefaultProps = false,
   debug
 ) => {
-  const variant = variants && variants[key]
+  const variant = variants?.[key]
   if (!variant || value === undefined) {
     return
   }
@@ -314,7 +319,16 @@ const resolveTokensAndVariants: StyleResolver = (
     } else if (typeof val === 'string') {
       const fVal =
         val[0] === '$'
-          ? getToken(fKey, val, conf, theme, fontFamily, languageContext, returnVariablesAs, debug)
+          ? getToken(
+              fKey,
+              val,
+              conf,
+              theme,
+              fontFamily,
+              languageContext,
+              returnVariablesAs,
+              debug
+            )
           : val
       res[fKey] = fVal
     } else {
@@ -355,7 +369,12 @@ const resolveTokensAndVariants: StyleResolver = (
 }
 
 // goes through specificity finding best matching variant function
-function getVariantDefinition(variant: any, key: string, value: any, conf: TamaguiInternalConfig) {
+function getVariantDefinition(
+  variant: any,
+  key: string,
+  value: any,
+  conf: TamaguiInternalConfig
+) {
   if (typeof variant === 'function') {
     return variant
   }
@@ -449,7 +468,7 @@ const getToken = (
   if (hasSet) {
     if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
       // eslint-disable-next-line no-console
-      console.log(`   ﹒ propMapper getToken`, key, valOrVar, theme)
+      console.log('   ﹒ propMapper getToken', key, valOrVar, theme)
     }
     return resolveVariableValue(key, valOrVar, resolveAs)
   }

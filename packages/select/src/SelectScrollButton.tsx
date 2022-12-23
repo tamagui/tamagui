@@ -6,7 +6,11 @@ import * as React from 'react'
 import { flushSync } from 'react-dom'
 
 import { useSelectContext } from './context'
-import { ScopedProps, SelectScrollButtonImplProps, SelectScrollButtonProps } from './types'
+import {
+  ScopedProps,
+  SelectScrollButtonImplProps,
+  SelectScrollButtonProps,
+} from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectScrollUpButton
@@ -14,18 +18,19 @@ import { ScopedProps, SelectScrollButtonImplProps, SelectScrollButtonProps } fro
 
 const SCROLL_UP_BUTTON_NAME = 'SelectScrollUpButton'
 
-export const SelectScrollUpButton = React.forwardRef<TamaguiElement, SelectScrollButtonProps>(
-  (props: ScopedProps<SelectScrollButtonProps>, forwardedRef) => {
-    return (
-      <SelectScrollButtonImpl
-        componentName={SCROLL_UP_BUTTON_NAME}
-        {...props}
-        dir="up"
-        ref={forwardedRef}
-      />
-    )
-  }
-)
+export const SelectScrollUpButton = React.forwardRef<
+  TamaguiElement,
+  SelectScrollButtonProps
+>((props: ScopedProps<SelectScrollButtonProps>, forwardedRef) => {
+  return (
+    <SelectScrollButtonImpl
+      componentName={SCROLL_UP_BUTTON_NAME}
+      {...props}
+      dir="up"
+      ref={forwardedRef}
+    />
+  )
+})
 
 SelectScrollUpButton.displayName = SCROLL_UP_BUTTON_NAME
 
@@ -35,18 +40,19 @@ SelectScrollUpButton.displayName = SCROLL_UP_BUTTON_NAME
 
 const SCROLL_DOWN_BUTTON_NAME = 'SelectScrollDownButton'
 
-export const SelectScrollDownButton = React.forwardRef<TamaguiElement, SelectScrollButtonProps>(
-  (props: ScopedProps<SelectScrollButtonProps>, forwardedRef) => {
-    return (
-      <SelectScrollButtonImpl
-        componentName={SCROLL_DOWN_BUTTON_NAME}
-        {...props}
-        dir="down"
-        ref={forwardedRef}
-      />
-    )
-  }
-)
+export const SelectScrollDownButton = React.forwardRef<
+  TamaguiElement,
+  SelectScrollButtonProps
+>((props: ScopedProps<SelectScrollButtonProps>, forwardedRef) => {
+  return (
+    <SelectScrollButtonImpl
+      componentName={SCROLL_DOWN_BUTTON_NAME}
+      {...props}
+      dir="down"
+      ref={forwardedRef}
+    />
+  )
+})
 
 SelectScrollDownButton.displayName = SCROLL_DOWN_BUTTON_NAME
 
@@ -56,8 +62,15 @@ const SelectScrollButtonImpl = React.memo(
   React.forwardRef<SelectScrollButtonImplElement, SelectScrollButtonImplProps>(
     (props: ScopedProps<SelectScrollButtonImplProps>, forwardedRef) => {
       const { __scopeSelect, dir, componentName, ...scrollIndicatorProps } = props
-      const { floatingRef, forceUpdate, open, fallback, setScrollTop, setInnerOffset, ...context } =
-        useSelectContext(componentName, __scopeSelect)
+      const {
+        floatingRef,
+        forceUpdate,
+        open,
+        fallback,
+        setScrollTop,
+        setInnerOffset,
+        ...context
+      } = useSelectContext(componentName, __scopeSelect)
 
       const [element, setElement] = React.useState<HTMLElement | null>(null)
       const statusRef = React.useRef<'idle' | 'active'>('idle')
@@ -68,7 +81,8 @@ const SelectScrollButtonImpl = React.memo(
         strategy: 'fixed',
         placement: dir === 'up' ? 'top' : 'bottom',
         middleware: [offset(({ rects }) => -rects.floating.height)],
-        whileElementsMounted: (...args) => autoUpdate(...args, { animationFrame: true }),
+        whileElementsMounted: (...args) =>
+          autoUpdate(...args, { animationFrame: true }),
       })
 
       const composedRef = useComposedRefs(forwardedRef, floating)
@@ -92,7 +106,7 @@ const SelectScrollButtonImpl = React.memo(
         }
       }, [])
 
-      if (!isVisible || !floatingRef) {
+      if (!(isVisible && floatingRef)) {
         return null
       }
 
@@ -145,7 +159,7 @@ const SelectScrollButtonImpl = React.memo(
                 onScroll(
                   dir === 'up'
                     ? Math.min(pixelsToScroll, remainingPixels)
-                    : Math.max(-pixelsToScroll, -remainingPixels)
+                    : Math.max(-pixelsToScroll, -remainingPixels),
                 )
 
                 if (scrollRemaining) {
@@ -163,6 +177,6 @@ const SelectScrollButtonImpl = React.memo(
           }}
         />
       )
-    }
-  )
+    },
+  ),
 )

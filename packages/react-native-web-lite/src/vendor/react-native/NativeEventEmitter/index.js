@@ -27,7 +27,10 @@ import RCTDeviceEventEmitter from './RCTDeviceEventEmitter.js'
 export default class NativeEventEmitter {
   constructor(nativeModule) {
     if (Platform.OS === 'ios') {
-      invariant(nativeModule != null, '`new NativeEventEmitter()` requires a non-null argument.')
+      invariant(
+        nativeModule != null,
+        '`new NativeEventEmitter()` requires a non-null argument.',
+      )
       this._nativeModule = nativeModule
     }
   }
@@ -37,7 +40,11 @@ export default class NativeEventEmitter {
     ;(_this$_nativeModule = this._nativeModule) == null
       ? void 0
       : _this$_nativeModule.addListener(eventType)
-    var subscription = RCTDeviceEventEmitter.addListener(eventType, listener, context)
+    var subscription = RCTDeviceEventEmitter.addListener(
+      eventType,
+      listener,
+      context,
+    )
     return {
       remove: () => {
         if (subscription != null) {
@@ -68,7 +75,9 @@ export default class NativeEventEmitter {
 
   emit(eventType) {
     for (
-      var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1;
+      var _len = arguments.length,
+        args = new Array(_len > 1 ? _len - 1 : 0),
+        _key = 1;
       _key < _len;
       _key++
     ) {
@@ -85,7 +94,7 @@ export default class NativeEventEmitter {
 
     invariant(
       eventType != null,
-      '`NativeEventEmitter.removeAllListener()` requires a non-null argument.'
+      '`NativeEventEmitter.removeAllListener()` requires a non-null argument.',
     )
     ;(_this$_nativeModule4 = this._nativeModule) == null
       ? void 0

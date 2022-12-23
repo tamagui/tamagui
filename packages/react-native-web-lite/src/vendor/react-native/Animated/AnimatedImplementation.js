@@ -105,8 +105,8 @@ var spring = function spring(value, config) {
           configuration.toValue,
           SpringAnimation,
           singleConfig,
-          callback
-        )
+          callback,
+        ),
       )
     } else {
       singleValue.animate(new SpringAnimation(singleConfig), callback)
@@ -149,8 +149,8 @@ var timing = function timing(value, config) {
           configuration.toValue,
           TimingAnimation,
           singleConfig,
-          callback
-        )
+          callback,
+        ),
       )
     } else {
       singleValue.animate(new TimingAnimation(singleConfig), callback)
@@ -256,7 +256,7 @@ var sequence = function sequence(animations) {
     },
     _startNativeLoop: function _startNativeLoop() {
       throw new Error(
-        'Loops run using the native driver cannot contain Animated.sequence animations'
+        'Loops run using the native driver cannot contain Animated.sequence animations',
       )
     },
     _isUsingNativeDriver: function _isUsingNativeDriver() {
@@ -320,7 +320,7 @@ var parallel = function parallel(animations, config) {
     },
     _startNativeLoop: function _startNativeLoop() {
       throw new Error(
-        'Loops run using the native driver cannot contain Animated.parallel animations'
+        'Loops run using the native driver cannot contain Animated.parallel animations',
       )
     },
     _isUsingNativeDriver: function _isUsingNativeDriver() {
@@ -344,7 +344,7 @@ var stagger = function stagger(time, animations) {
   return parallel(
     animations.map((animation, i) => {
       return sequence([delay(time * i), animation])
-    })
+    }),
   )
 }
 
@@ -353,7 +353,8 @@ var loop = function loop(animation, _temp) {
     _ref$iterations = _ref.iterations,
     iterations = _ref$iterations === void 0 ? -1 : _ref$iterations,
     _ref$resetBeforeItera = _ref.resetBeforeIteration,
-    resetBeforeIteration = _ref$resetBeforeItera === void 0 ? true : _ref$resetBeforeItera
+    resetBeforeIteration =
+      _ref$resetBeforeItera === void 0 ? true : _ref$resetBeforeItera
 
   var isFinished = false
   var iterationsSoFar = 0
@@ -366,7 +367,11 @@ var loop = function loop(animation, _temp) {
           }
         }
 
-        if (isFinished || iterationsSoFar === iterations || result.finished === false) {
+        if (
+          isFinished ||
+          iterationsSoFar === iterations ||
+          result.finished === false
+        ) {
           callback && callback(result)
         } else {
           iterationsSoFar++
@@ -398,7 +403,9 @@ var loop = function loop(animation, _temp) {
       animation.reset()
     },
     _startNativeLoop: function _startNativeLoop() {
-      throw new Error('Loops run using the native driver cannot contain Animated.loop animations')
+      throw new Error(
+        'Loops run using the native driver cannot contain Animated.loop animations',
+      )
     },
     _isUsingNativeDriver: function _isUsingNativeDriver() {
       return animation._isUsingNativeDriver()

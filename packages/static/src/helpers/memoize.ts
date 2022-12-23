@@ -1,6 +1,9 @@
 // @ts-nocheck
 export function memoize(func?: Function, resolver?: any) {
-  if (typeof func !== 'function' || (resolver != null && typeof resolver !== 'function')) {
+  if (
+    typeof func !== 'function' ||
+    (resolver != null && typeof resolver !== 'function')
+  ) {
     throw new TypeError('Expected a function')
   }
   const memoized = function (...args) {

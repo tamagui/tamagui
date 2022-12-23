@@ -14,7 +14,7 @@ const emptyObject = {}
 
 export function useResponderEvents(
   hostRef: any,
-  config: ResponderSystem.ResponderConfig = emptyObject
+  config: ResponderSystem.ResponderConfig = emptyObject,
 ) {
   const id = React.useId()
   const isAttachedRef = React.useRef(false)

@@ -24,7 +24,7 @@ export function TamaguiProvider({
     )
   }
 
-  if (!isWeb || !isServer) {
+  if (!(isWeb && isServer)) {
     useMediaListeners(config)
   }
 

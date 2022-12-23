@@ -111,7 +111,7 @@ class AnimatedValue extends AnimatedWithChildren {
 
     this._updateValue(
       value,
-      !this.__isNative
+      !this.__isNative,
       /* don't perform a flush for natively driven values */
     )
 
@@ -192,7 +192,7 @@ class AnimatedValue extends AnimatedWithChildren {
   _onAnimatedValueUpdateReceived(value) {
     this._updateValue(
       value,
-      false
+      false,
       /*flush*/
     )
   }
@@ -228,7 +228,7 @@ class AnimatedValue extends AnimatedWithChildren {
         // pass flush = true to allow the updated value to propagate to native with setNativeProps
         this._updateValue(
           value,
-          true
+          true,
           /* flush */
         )
       },
@@ -242,7 +242,7 @@ class AnimatedValue extends AnimatedWithChildren {
         callback && callback(result)
       },
       previousAnimation,
-      this
+      this,
     )
   }
   /**

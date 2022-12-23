@@ -1,6 +1,14 @@
-import { SizeTokens, VariantSpreadExtras, getSize, stepTokenUpOrDown } from '@tamagui/core'
+import {
+  SizeTokens,
+  VariantSpreadExtras,
+  getSize,
+  stepTokenUpOrDown,
+} from '@tamagui/core'
 
-export const getButtonSized = (val: SizeTokens | number, { tokens }: VariantSpreadExtras<any>) => {
+export const getButtonSized = (
+  val: SizeTokens | number,
+  { tokens }: VariantSpreadExtras<any>,
+) => {
   if (typeof val === 'number') {
     return {
       paddingHorizontal: val * 0.25,

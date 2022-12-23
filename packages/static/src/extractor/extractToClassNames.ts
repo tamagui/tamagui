@@ -8,7 +8,12 @@ import { getStylesAtomic } from '@tamagui/core-node'
 import invariant from 'invariant'
 import type { ViewStyle } from 'react-native'
 
-import type { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../types.js'
+import type {
+  ClassNameObject,
+  StyleObject,
+  TamaguiOptions,
+  Ternary,
+} from '../types.js'
 import { babelParse } from './babelParse.js'
 import { buildClassName } from './buildClassName.js'
 import { Extractor } from './createExtractor.js'
@@ -178,22 +183,30 @@ export async function extractToClassNames({
 
               for (const style of styles) {
                 //  leave them  as attributes
-                const prop = style.pseudo ? `${style.property}-${style.pseudo}` : style.property
+                const prop = style.pseudo
+                  ? `${style.property}-${style.pseudo}`
+                  : style.property
                 finalAttrs.push(
-                  t.jsxAttribute(t.jsxIdentifier(prop), t.stringLiteral(style.identifier))
+                  t.jsxAttribute(
+                    t.jsxIdentifier(prop),
+                    t.stringLiteral(style.identifier),
+                  ),
                 )
               }
             } else {
               const styles = addStyles(attr.value)
               const newClassNames = styles.map((x) => x.identifier).join(' ')
               const existing = finalClassNames.find(
-                (x) => x.type == 'StringLiteral'
+                (x) => x.type === 'StringLiteral',
               ) as t.StringLiteral | null
 
               if (existing) {
                 existing.value = `${existing.value} ${newClassNames}`
               } else {
-                finalClassNames = [...finalClassNames, t.stringLiteral(newClassNames)]
+                finalClassNames = [
+                  ...finalClassNames,
+                  t.stringLiteral(newClassNames),
+                ]
               }
             }
 
@@ -207,8 +220,8 @@ export async function extractToClassNames({
                   t.logicalExpression(
                     '&&',
                     val.argument,
-                    t.memberExpression(val.argument, t.identifier('className'))
-                  )
+                    t.memberExpression(val.argument, t.identifier('className')),
+                  ),
                 )
               }
             } else if (val.name.name === 'className') {
@@ -234,7 +247,7 @@ export async function extractToClassNames({
               extractor.getTamagui()!,
               sourcePath || '',
               lastMediaImportance,
-              shouldPrintDebug
+              shouldPrintDebug,
             )
             if (shouldPrintDebug) {
               if (mediaExtraction) {
@@ -242,7 +255,7 @@ export async function extractToClassNames({
                 console.log(
                   'ternary (mediaStyles)',
                   mediaExtraction.ternaryWithoutMedia?.inlineMediaQuery ?? '',
-                  mediaExtraction.mediaStyles.map((x) => x.identifier).join('.')
+                  mediaExtraction.mediaStyles.map((x) => x.identifier).join('.'),
                 )
               }
             }
@@ -250,7 +263,7 @@ export async function extractToClassNames({
               addTernaryStyle(
                 attr.value,
                 addStyles(attr.value.consequent),
-                addStyles(attr.value.alternate)
+                addStyles(attr.value.alternate),
               )
               continue
             }
@@ -259,11 +272,17 @@ export async function extractToClassNames({
               finalStyles = [...finalStyles, ...mediaExtraction.mediaStyles]
             }
             if (mediaExtraction.ternaryWithoutMedia) {
-              addTernaryStyle(mediaExtraction.ternaryWithoutMedia, mediaExtraction.mediaStyles, [])
+              addTernaryStyle(
+                mediaExtraction.ternaryWithoutMedia,
+                mediaExtraction.mediaStyles,
+                [],
+              )
             } else {
               finalClassNames = [
                 ...finalClassNames,
-                ...mediaExtraction.mediaStyles.map((x) => t.stringLiteral(x.identifier)),
+                ...mediaExtraction.mediaStyles.map((x) =>
+                  t.stringLiteral(x.identifier),
+                ),
               ]
             }
             break
@@ -276,15 +295,19 @@ export async function extractToClassNames({
         const aCN = b.map((x) => x.identifier).join(' ')
         if (a.length && b.length) {
           finalClassNames.push(
-            t.conditionalExpression(ternary.test, t.stringLiteral(cCN), t.stringLiteral(aCN))
+            t.conditionalExpression(
+              ternary.test,
+              t.stringLiteral(cCN),
+              t.stringLiteral(aCN),
+            ),
           )
         } else {
           finalClassNames.push(
             t.conditionalExpression(
               ternary.test,
-              t.stringLiteral(' ' + cCN),
-              t.stringLiteral(' ' + aCN)
-            )
+              t.stringLiteral(` ${cCN}`),
+              t.stringLiteral(` ${aCN}`),
+            ),
           )
         }
       }
@@ -293,7 +316,7 @@ export async function extractToClassNames({
         // eslint-disable-next-line no-console
         console.log(
           '  finalClassNames\n',
-          logLines(finalClassNames.map((x) => x['value']).join(' '))
+          logLines(finalClassNames.map((x) => x['value']).join(' ')),
         )
       }
 
@@ -330,15 +353,25 @@ export async function extractToClassNames({
         // inserts the _cn variable and uses it for className
         const names = buildClassName(finalClassNames, extraClassNames)
 
-        const nameExpr = names ? hoistClassNames(jsxPath, existingHoists, names) : null
+        const nameExpr = names
+          ? hoistClassNames(jsxPath, existingHoists, names)
+          : null
         const expr = nameExpr
 
         node.attributes.push(
-          t.jsxAttribute(t.jsxIdentifier('className'), t.jsxExpressionContainer(expr))
+          t.jsxAttribute(
+            t.jsxIdentifier('className'),
+            t.jsxExpressionContainer(expr),
+          ),
         )
       }
 
-      const comment = util.format('/* %s:%s (%s) */', filePath, lineNumbers, originalNodeName)
+      const comment = util.format(
+        '/* %s:%s (%s) */',
+        filePath,
+        lineNumbers,
+        originalNodeName,
+      )
 
       for (const { identifier, rules } of finalStyles) {
         const className = `.${identifier}`
@@ -381,7 +414,7 @@ export async function extractToClassNames({
       sourceFileName: sourcePath,
       sourceMaps: true,
     },
-    source
+    source,
   )
 
   if (shouldPrintDebug) {
@@ -391,7 +424,7 @@ export async function extractToClassNames({
       result.code
         .split('\n')
         .filter((x) => !x.startsWith('//'))
-        .join('\n')
+        .join('\n'),
     )
     // eslint-disable-next-line no-console
     console.log('\n -------- output style -------- \n\n', styles)
@@ -399,7 +432,9 @@ export async function extractToClassNames({
 
   if (shouldLogTiming) {
     const memUsed = mem
-      ? Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
+      ? Math.round(
+          ((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10,
+        ) / 10
       : 0
     const path = basename(sourcePath || '')
       .replace(/\.[jt]sx?$/, '')
@@ -418,7 +453,7 @@ export async function extractToClassNames({
     const memStr = memory ? `(${memory})` : ''
     // eslint-disable-next-line no-console
     console.log(
-      `${pre} ${path}  ${numFound} · ${numOptimized} · ${numFlattened} · ${numStyled}  ${timingStr} ${memStr}`
+      `${pre} ${path}  ${numFound} · ${numOptimized} · ${numFlattened} · ${numStyled}  ${timingStr} ${memStr}`,
     )
   }
 

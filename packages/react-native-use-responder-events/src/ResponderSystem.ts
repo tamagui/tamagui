@@ -7,7 +7,14 @@
 import type { ResponderEvent } from './createResponderEvent'
 import createResponderEvent from './createResponderEvent'
 import { ResponderTouchHistoryStore } from './ResponderTouchHistoryStore'
-import { isCancelish, isEndish, isMoveish, isScroll, isSelectionChange, isStartish } from './types'
+import {
+  isCancelish,
+  isEndish,
+  isMoveish,
+  isScroll,
+  isSelectionChange,
+  isStartish,
+} from './types'
 import { canUseDOM } from './utils'
 import {
   getLowestCommonAncestor,
@@ -57,7 +64,9 @@ export type ResponderConfig = {
   onScrollShouldSetResponderCapture?: ((e: ResponderEvent) => boolean) | null
   // On text selection change, should this element become the responder?
   onSelectionChangeShouldSetResponder?: ((e: ResponderEvent) => boolean) | null
-  onSelectionChangeShouldSetResponderCapture?: ((e: ResponderEvent) => boolean) | null
+  onSelectionChangeShouldSetResponderCapture?:
+    | ((e: ResponderEvent) => boolean)
+    | null
 }
 
 const emptyObject = {}
@@ -176,7 +185,10 @@ function eventListener(domEvent: any) {
         trackedTouchCount = 0
       }
     }
-    responderTouchHistoryStore.recordTouchTrack(eventType, responderEvent.nativeEvent as any)
+    responderTouchHistoryStore.recordTouchTrack(
+      eventType,
+      responderEvent.nativeEvent as any,
+    )
   }
 
   /**
@@ -195,12 +207,16 @@ function eventListener(domEvent: any) {
     const eventIdPath = eventPaths.idPath
 
     if (currentResponderIdPath != null && eventIdPath != null) {
-      const lowestCommonAncestor = getLowestCommonAncestor(currentResponderIdPath, eventIdPath)
+      const lowestCommonAncestor = getLowestCommonAncestor(
+        currentResponderIdPath,
+        eventIdPath,
+      )
       if (lowestCommonAncestor != null) {
         const indexOfLowestCommonAncestor = eventIdPath.indexOf(lowestCommonAncestor)
         // Skip the current responder so it doesn't receive unexpected "shouldSet" events.
         const index =
-          indexOfLowestCommonAncestor + (lowestCommonAncestor === currentResponder.id ? 1 : 0)
+          indexOfLowestCommonAncestor +
+          (lowestCommonAncestor === currentResponder.id ? 1 : 0)
         eventPaths = {
           idPath: eventIdPath.slice(index),
           nodePath: eventPaths.nodePath.slice(index),
@@ -258,7 +274,9 @@ function eventListener(domEvent: any) {
         // window blur
         (eventType === 'blur' && eventTarget === window) ||
         // responder (or ancestors) blur
-        (eventType === 'blur' && eventTarget.contains(node) && domEvent.relatedTarget !== node) ||
+        (eventType === 'blur' &&
+          eventTarget.contains(node) &&
+          domEvent.relatedTarget !== node) ||
         // native scroll without using a pointer
         (isScrollEvent && trackedTouchCount === 0) ||
         // native scroll on node that is parent of the responder (allow siblings to scroll)
@@ -298,7 +316,8 @@ function eventListener(domEvent: any) {
           if (wasNegotiated) {
             shouldTerminate = false
           } else if (onResponderTerminationRequest != null) {
-            responderEvent.dispatchConfig.registrationName = 'onResponderTerminationRequest'
+            responderEvent.dispatchConfig.registrationName =
+              'onResponderTerminationRequest'
             if (onResponderTerminationRequest(responderEvent) === false) {
               shouldTerminate = false
             }
@@ -387,7 +406,10 @@ function findWantsResponder(eventPaths, domEvent, responderEvent) {
 /**
  * Attempt to transfer the responder.
  */
-function attemptTransfer(responderEvent: ResponderEvent, wantsResponder: ActiveResponderInstance) {
+function attemptTransfer(
+  responderEvent: ResponderEvent,
+  wantsResponder: ActiveResponderInstance,
+) {
   const { id: currentId, node: currentNode } = currentResponder
   const { id, node } = wantsResponder
 
@@ -408,12 +430,14 @@ function attemptTransfer(responderEvent: ResponderEvent, wantsResponder: ActiveR
   }
   // Negotiate with current responder
   else {
-    const { onResponderTerminate, onResponderTerminationRequest } = getResponderConfig(currentId)
+    const { onResponderTerminate, onResponderTerminationRequest } =
+      getResponderConfig(currentId)
 
     let allowTransfer = true
     if (onResponderTerminationRequest != null) {
       responderEvent.currentTarget = currentNode
-      responderEvent.dispatchConfig.registrationName = 'onResponderTerminationRequest'
+      responderEvent.dispatchConfig.registrationName =
+        'onResponderTerminationRequest'
       if (onResponderTerminationRequest(responderEvent) === false) {
         allowTransfer = false
       }

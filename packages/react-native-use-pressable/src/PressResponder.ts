@@ -58,7 +58,8 @@ const Transitions = Object.freeze({
 })
 
 const isActiveSignal = (signal) =>
-  signal === RESPONDER_ACTIVE_PRESS_START || signal === RESPONDER_ACTIVE_LONG_PRESS_START
+  signal === RESPONDER_ACTIVE_PRESS_START ||
+  signal === RESPONDER_ACTIVE_LONG_PRESS_START
 
 const isButtonRole = (element) => element.getAttribute('role') === 'button'
 
@@ -67,11 +68,12 @@ const isPressStartSignal = (signal) =>
   signal === RESPONDER_ACTIVE_PRESS_START ||
   signal === RESPONDER_ACTIVE_LONG_PRESS_START
 
-const isTerminalSignal = (signal) => signal === RESPONDER_TERMINATED || signal === RESPONDER_RELEASE
+const isTerminalSignal = (signal) =>
+  signal === RESPONDER_TERMINATED || signal === RESPONDER_RELEASE
 
 const isValidKeyPress = (event) => {
-  const key = event.key,
-    target = event.target
+  const key = event.key
+  const target = event.target
   const role = target.getAttribute('role')
   const isSpacebar = key === ' ' || key === 'Spacebar'
   return key === 'Enter' || (isSpacebar && role === 'button')
@@ -213,7 +215,7 @@ export default class PressResponder {
       const delayPressStart = normalizeDelay(
         this._config.delayPressStart,
         0,
-        DEFAULT_PRESS_DELAY_MS
+        DEFAULT_PRESS_DELAY_MS,
       )
 
       if (shouldDelay !== false && delayPressStart > 0) {
@@ -227,7 +229,7 @@ export default class PressResponder {
       const delayLongPress = normalizeDelay(
         this._config.delayLongPress,
         10,
-        DEFAULT_LONG_PRESS_DELAY_MS
+        DEFAULT_LONG_PRESS_DELAY_MS,
       )
       this._longPressDelayTimeout = setTimeout(() => {
         this._handleLongPress(event)
@@ -277,8 +279,8 @@ export default class PressResponder {
       },
       onKeyDown: (event) => {
         const disabled = this._config.disabled
-        const key = event.key,
-          target = event.target
+        const key = event.key
+        const target = event.target
 
         if (!disabled && isValidKeyPress(event)) {
           if (this._touchState === NOT_RESPONDER) {
@@ -327,10 +329,10 @@ export default class PressResponder {
         this._receiveSignal(RESPONDER_TERMINATED, event)
       },
       onResponderTerminationRequest: (event) => {
-        const _this$_config = this._config,
-          cancelable = _this$_config.cancelable,
-          disabled = _this$_config.disabled,
-          onLongPress = _this$_config.onLongPress // If `onLongPress` is provided, don't terminate on `contextmenu` as default
+        const _this$_config = this._config
+        const cancelable = _this$_config.cancelable
+        const disabled = _this$_config.disabled
+        const onLongPress = _this$_config.onLongPress // If `onLongPress` is provided, don't terminate on `contextmenu` as default
         // behavior will be prevented for non-mouse pointers.
 
         if (
@@ -357,9 +359,9 @@ export default class PressResponder {
       //   `click` target that is using the PressResponder.
       // * The event's `nativeEvent` is a `MouseEvent` not a `TouchEvent`.
       onClick: (event) => {
-        const _this$_config2 = this._config,
-          disabled = _this$_config2.disabled,
-          onPress = _this$_config2.onPress
+        const _this$_config2 = this._config
+        const disabled = _this$_config2.disabled
+        const onPress = _this$_config2.onPress
 
         if (!disabled) {
           // If long press dispatched, cancel default click behavior.
@@ -381,12 +383,16 @@ export default class PressResponder {
       // If `onLongPress` is provided and a touch pointer is being used, prevent the
       // default context menu from opening.
       onContextMenu: (event) => {
-        const _this$_config3 = this._config,
-          disabled = _this$_config3.disabled,
-          onLongPress = _this$_config3.onLongPress
+        const _this$_config3 = this._config
+        const disabled = _this$_config3.disabled
+        const onLongPress = _this$_config3.onLongPress
 
         if (!disabled) {
-          if (onLongPress != null && this._isPointerTouch && !event.defaultPrevented) {
+          if (
+            onLongPress != null &&
+            this._isPointerTouch &&
+            !event.defaultPrevented
+          ) {
             event.preventDefault()
             event.stopPropagation()
           }
@@ -418,7 +424,7 @@ export default class PressResponder {
     if (nextState == null || nextState === ERROR) {
       // eslint-disable-next-line no-console
       console.error(
-        'PressResponder: Invalid signal ' + signal + ' for state ' + prevState + ' on responder'
+        `PressResponder: Invalid signal ${signal} for state ${prevState} on responder`,
       )
     } else if (prevState !== nextState) {
       this._performTransitionSideEffects(prevState, nextState, signal, event)
@@ -464,9 +470,9 @@ export default class PressResponder {
     }
 
     if (isPressStartSignal(prevState) && signal === RESPONDER_RELEASE) {
-      const _this$_config4 = this._config,
-        _onLongPress = _this$_config4.onLongPress,
-        onPress = _this$_config4.onPress
+      const _this$_config4 = this._config
+      const _onLongPress = _this$_config4.onLongPress
+      const onPress = _this$_config4.onPress
 
       if (onPress != null) {
         const isPressCanceledByLongPress =
@@ -474,7 +480,7 @@ export default class PressResponder {
 
         if (!isPressCanceledByLongPress) {
           // If we never activated (due to delays), activate and deactivate now.
-          if (!isNextActive && !isPrevActive) {
+          if (!(isNextActive || isPrevActive)) {
             this._activate(event)
 
             this._deactivate(event)
@@ -487,9 +493,9 @@ export default class PressResponder {
   }
 
   _activate(event) {
-    const _this$_config5 = this._config,
-      onPressChange = _this$_config5.onPressChange,
-      onPressStart = _this$_config5.onPressStart
+    const _this$_config5 = this._config
+    const onPressChange = _this$_config5.onPressChange
+    const onPressStart = _this$_config5.onPressStart
     const touch = getTouchFromResponderEvent(event)
     this._touchActivatePosition = {
       pageX: touch.pageX,
@@ -506,9 +512,9 @@ export default class PressResponder {
   }
 
   _deactivate(event) {
-    const _this$_config6 = this._config,
-      onPressChange = _this$_config6.onPressChange,
-      onPressEnd = _this$_config6.onPressEnd
+    const _this$_config6 = this._config
+    const onPressChange = _this$_config6.onPressChange
+    const onPressEnd = _this$_config6.onPressEnd
 
     function end() {
       if (onPressEnd != null) {
@@ -575,9 +581,9 @@ function normalizeDelay(delay, min?: number, fallback?: any) {
 }
 
 function getTouchFromResponderEvent(event) {
-  const _event$nativeEvent = event.nativeEvent,
-    changedTouches = _event$nativeEvent.changedTouches,
-    touches = _event$nativeEvent.touches
+  const _event$nativeEvent = event.nativeEvent
+  const changedTouches = _event$nativeEvent.changedTouches
+  const touches = _event$nativeEvent.touches
 
   if (touches != null && touches.length > 0) {
     return touches[0]

@@ -70,14 +70,23 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
       `${componentModule
         .split(sep)
         .join('-')
-        .replace(/[^a-z0-9]+/gi, '')}-components.config.js`
-    )
+        .replace(/[^a-z0-9]+/gi, '')}-components.config.js`,
+    ),
   )
 
-  const external = ['@tamagui/core', '@tamagui/core-node', 'react', 'react-dom', 'react-native-svg']
+  const external = [
+    '@tamagui/core',
+    '@tamagui/core-node',
+    'react',
+    'react-dom',
+    'react-native-svg',
+  ]
   const configEntry = props.config ? join(process.cwd(), props.config) : ''
 
-  if (process.env.NODE_ENV === 'development' && process.env.DEBUG?.startsWith('tamagui')) {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    process.env.DEBUG?.startsWith('tamagui')
+  ) {
     console.log(`Building config entry`, configEntry)
   }
 
@@ -91,7 +100,7 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   colorLog(
     Color.FgYellow,
     `
-Tamagui built config and components:`
+Tamagui built config and components:`,
   )
   colorLog(
     Color.Dim,
@@ -100,7 +109,7 @@ Tamagui built config and components:`
   Components ${componentOutPaths
     .map((p) => `.${sep}${relative(process.cwd(), p)}`)
     .join('\n             ')}
-`
+`,
   )
 
   await Promise.all([
@@ -141,7 +150,8 @@ Tamagui built config and components:`
 
     // map from built back to original module names
     for (const component of components) {
-      component.moduleName = baseComponents[componentOutPaths.indexOf(component.moduleName)]
+      component.moduleName =
+        baseComponents[componentOutPaths.indexOf(component.moduleName)]
       if (!component.moduleName) {
         throw new Error(`Tamagui internal err`)
       }
@@ -157,7 +167,10 @@ Tamagui built config and components:`
       components = [...components, ...coreComponents]
     }
 
-    if (process.env.NODE_ENV === 'development' && process.env.DEBUG?.startsWith('tamagui')) {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      process.env.DEBUG?.startsWith('tamagui')
+    ) {
       console.log('Loaded components', components)
     }
 
@@ -180,11 +193,11 @@ Tamagui built config and components:`
 
 export function resolveWebOrNativeSpecificEntry(entry: string) {
   const workspaceRoot = resolve()
-  const resolved = require.resolve(entry, {paths: [workspaceRoot]})
+  const resolved = require.resolve(entry, { paths: [workspaceRoot] })
   const ext = extname(resolved)
   const fileName = basename(resolved).replace(ext, '')
   const specificExt = process.env.TAMAGUI_TARGET === 'web' ? 'web' : 'native'
-  const specificFile = join(dirname(resolved), fileName + '.' + specificExt + ext)
+  const specificFile = join(dirname(resolved), `${fileName}.${specificExt}${ext}`)
   if (existsSync(specificFile)) {
     return specificFile
   }
@@ -206,7 +219,9 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
     return cache[key]
   }
 
-  const { unregister } = require('esbuild-register/dist/node').register(esbuildOptions)
+  const { unregister } = require('esbuild-register/dist/node').register(
+    esbuildOptions,
+  )
 
   try {
     registerRequire()
@@ -258,7 +273,7 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
     } catch (err) {
       if (err instanceof Error) {
         console.warn(
-          `Error loading tamagui.config.ts (set DEBUG=tamagui to see full stack), running tamagui without custom config`
+          `Error loading tamagui.config.ts (set DEBUG=tamagui to see full stack), running tamagui without custom config`,
         )
         console.log(`\n\n    ${err.message}\n\n`)
         if (SHOULD_DEBUG) {
@@ -295,7 +310,9 @@ function transformAddExports(ast: t.File) {
     ExportNamedDeclaration(nodePath) {
       if (nodePath.node.specifiers) {
         for (const spec of nodePath.node.specifiers) {
-          usedNames.add(t.isIdentifier(spec.exported) ? spec.exported.name : spec.exported.value)
+          usedNames.add(
+            t.isIdentifier(spec.exported) ? spec.exported.name : spec.exported.value,
+          )
         }
       }
     },
@@ -315,7 +332,7 @@ function transformAddExports(ast: t.File) {
       nodePath.replaceWith(
         t.exportNamedDeclaration(t.variableDeclaration('let', [dec]), [
           t.exportSpecifier(t.identifier(dec.id.name), t.identifier(dec.id.name)),
-        ])
+        ]),
       )
     },
   })
@@ -368,7 +385,9 @@ function loadComponents(props: Props): null | LoadedComponents[] {
         // need to write to tsx to enable reading it properly (:/ esbuild-register)
         if (isDynamic) {
           writtenContents = forceExports
-            ? esbuildit(transformAddExports(babelParse(esbuildit(fileContents, 'modern'))))
+            ? esbuildit(
+                transformAddExports(babelParse(esbuildit(fileContents, 'modern'))),
+              )
             : esbuildit(fileContents)
 
           writeFileSync(loadModule, writtenContents)
@@ -382,7 +401,7 @@ function loadComponents(props: Props): null | LoadedComponents[] {
           moduleName: name,
           nameToInfo: getComponentStaticConfigByName(
             name,
-            interopDefaultExport(require(loadModule))
+            interopDefaultExport(require(loadModule)),
           ),
         }
       }
@@ -436,7 +455,7 @@ Quiet this warning with environment variable:
             `\nIn:`,
             writtenContents,
             `\nisDynamic: `,
-            isDynamic
+            isDynamic,
           )
         }
         return []
@@ -469,7 +488,7 @@ function getComponentStaticConfigByName(name: string, exported: any) {
   } catch (err) {
     if (process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD !== '1') {
       console.error(
-        `Tamagui failed getting from ${name} (Disable error by setting environment variable TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD=1)`
+        `Tamagui failed getting from ${name} (Disable error by setting environment variable TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD=1)`,
       )
       console.error(err)
     }
@@ -479,7 +498,7 @@ function getComponentStaticConfigByName(name: string, exported: any) {
 
 function getTamaguiComponent(
   name: string,
-  Component: any
+  Component: any,
 ): undefined | { staticConfig: StaticConfigParsed } {
   if (name[0].toUpperCase() !== name[0]) {
     return

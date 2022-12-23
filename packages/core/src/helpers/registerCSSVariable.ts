@@ -5,7 +5,9 @@ export const registerCSSVariable = (v: Variable) => {
 }
 
 export const variableToCSS = (v: Variable) => {
-  return `--${createCSSVariable(v.name, false)}:${typeof v.val === 'number' ? `${v.val}px` : v.val}`
+  return `--${createCSSVariable(v.name, false)}:${
+    typeof v.val === 'number' ? `${v.val}px` : v.val
+  }`
 }
 
 export const tokensValueToVariable = new Map<any, any>()

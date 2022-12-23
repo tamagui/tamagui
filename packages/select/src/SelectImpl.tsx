@@ -25,11 +25,23 @@ import { SelectImplProps } from './types'
 
 // TODO use id for focusing from label
 export const SelectInlineImpl = (props: SelectImplProps) => {
-  const { __scopeSelect, children, open = false, selectedIndexRef, listContentRef } = props
+  const {
+    __scopeSelect,
+    children,
+    open = false,
+    selectedIndexRef,
+    listContentRef,
+  } = props
 
   const selectContext = useSelectContext('SelectSheetImpl', __scopeSelect)
-  const { setActiveIndex, setOpen, setSelectedIndex, selectedIndex, activeIndex, forceUpdate } =
-    selectContext
+  const {
+    setActiveIndex,
+    setOpen,
+    setSelectedIndex,
+    selectedIndex,
+    activeIndex,
+    forceUpdate,
+  } = selectContext
   const [scrollTop, setScrollTop] = React.useState(0)
   const touch = useIsTouchDevice()
 
@@ -83,12 +95,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   }
 
   const updateFloatingSize = size({
-    apply({
-      availableHeight,
-      rects: {
-        reference: { width },
-      },
-    }) {
+    apply({ availableHeight, rects: { reference: { width } } }) {
       floatingStyle.current = {
         width: width,
         maxHeight: availableHeight,
@@ -134,7 +141,9 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     open &&
     floatingRef.current &&
     scrollTop <
-      floatingRef.current.scrollHeight - floatingRef.current.clientHeight - SCROLL_ARROW_THRESHOLD
+      floatingRef.current.scrollHeight -
+        floatingRef.current.clientHeight -
+        SCROLL_ARROW_THRESHOLD
 
   const interactions = useInteractions([
     useClick(context, { event: 'mousedown' }),
@@ -166,7 +175,10 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         ref: reference,
         className: 'SelectTrigger',
         onKeyDown(event) {
-          if (event.key === 'Enter' || (event.key === ' ' && !context.dataRef.current.typing)) {
+          if (
+            event.key === 'Enter' ||
+            (event.key === ' ' && !context.dataRef.current.typing)
+          ) {
             event.preventDefault()
             setOpen(true)
           }
@@ -240,9 +252,11 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     function onPointerDown(e: PointerEvent) {
       const target = e.target as Node
       if (
-        !refs.floating.current?.contains(target) &&
-        !upArrowRef.current?.contains(target) &&
-        !downArrowRef.current?.contains(target)
+        !(
+          refs.floating.current?.contains(target) ||
+          upArrowRef.current?.contains(target) ||
+          downArrowRef.current?.contains(target)
+        )
       ) {
         setOpen(false)
         setControlledScrolling(false)

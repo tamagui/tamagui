@@ -3,14 +3,18 @@ import type { FontSizeTokens, TextProps, VariantSpreadFunction } from '@tamagui/
 
 export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   val = '$4',
-  { fonts, theme, props }
+  { fonts, theme, props },
 ) => {
   const family = getVariableValue(props.fontFamily) || '$body'
   const font = fonts[family] || fonts['$body']
   if (!font) {
     if (process.env.NODE_ENV === 'development') {
       // eslint-disable-next-line no-console
-      console.warn('⚠️ no font found', { family, fontTokens: Object.keys(fonts), val })
+      console.warn('⚠️ no font found', {
+        family,
+        fontTokens: Object.keys(fonts),
+        val,
+      })
     }
     return {} as any
   }

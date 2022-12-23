@@ -12,7 +12,10 @@ import useLayoutEffect from '../useLayoutEffect/index.js'
 import useStable from '../useStable/index.js'
 
 type Callback = null | ((arg0: any) => void)
-type AddListener = (target: EventTarget, listener: null | ((arg0: any) => void)) => () => void
+type AddListener = (
+  target: EventTarget,
+  listener: null | ((arg0: any) => void),
+) => () => void
 
 /**
  * This can be used with any event type include custom events.
@@ -28,7 +31,7 @@ export default function useEvent(
   options?: {
     capture?: boolean
     passive?: boolean
-  } | null
+  } | null,
 ): AddListener {
   const targetListeners = useStable(() => new Map())
 

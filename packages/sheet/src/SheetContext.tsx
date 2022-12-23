@@ -19,7 +19,5 @@ type SheetContextValue = Required<
 
 export const [createSheetContext, createSheetScope] = createContextScope(SHEET_NAME)
 
-export const [SheetProvider, useSheetContext] = createSheetContext<SheetContextValue>(
-  SHEET_NAME,
-  {} as any
-)
+export const [SheetProvider, useSheetContext] =
+  createSheetContext<SheetContextValue>(SHEET_NAME, {} as any)

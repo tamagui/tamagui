@@ -26,7 +26,9 @@ export type SheetProps = ScopedProps<
 
 export type PositionChangeHandler = (position: number) => void
 
-type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>
+type OpenChangeHandler =
+  | ((open: boolean) => void)
+  | React.Dispatch<React.SetStateAction<boolean>>
 
 export type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
 

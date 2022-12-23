@@ -14,7 +14,8 @@ import { watchTamaguiConfig } from './tamaguiConfigUtils.js'
 import { ResolvedOptions } from './types.js'
 import { closeEvent } from './utils.js'
 
-const resolve = 'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
+const resolve =
+  'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
 
 export const studio = async (options: ResolvedOptions) => {
   const { default: getPort } = await import('get-port')

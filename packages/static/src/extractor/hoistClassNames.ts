@@ -4,7 +4,7 @@ import * as t from '@babel/types'
 export function hoistClassNames(
   path: NodePath<t.JSXElement>,
   existing: { [key: string]: t.Identifier },
-  expr: t.Expression
+  expr: t.Expression,
 ) {
   const hoist = hoistClassNames.bind(null, path, existing)
   if (t.isStringLiteral(expr)) {
@@ -25,7 +25,11 @@ export function hoistClassNames(
     return t.logicalExpression(expr.operator, hoist(expr.left), hoist(expr.right))
   }
   if (t.isConditionalExpression(expr)) {
-    return t.conditionalExpression(expr.test, hoist(expr.consequent), hoist(expr.alternate))
+    return t.conditionalExpression(
+      expr.test,
+      hoist(expr.consequent),
+      hoist(expr.alternate),
+    )
   }
   return expr
 

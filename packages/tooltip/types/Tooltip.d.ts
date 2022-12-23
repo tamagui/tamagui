@@ -15,7 +15,7 @@ type Delay = number | Partial<{
     open: number;
     close: number;
 }>;
-export declare const TooltipGroup: ({ children, delay }: {
+export declare const TooltipGroup: ({ children, delay, }: {
     children?: any;
     delay: Delay;
 }) => JSX.Element;

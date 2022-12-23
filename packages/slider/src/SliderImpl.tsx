@@ -2,7 +2,13 @@
  * SliderImpl
  * -----------------------------------------------------------------------------------------------*/
 
-import { composeEventHandlers, getSize, getVariableValue, isWeb, styled } from '@tamagui/core'
+import {
+  composeEventHandlers,
+  getSize,
+  getVariableValue,
+  isWeb,
+  styled,
+} from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { View } from 'react-native'
@@ -107,11 +113,14 @@ export const SliderImpl = React.forwardRef<View, SliderImplProps>(
           // const target = event.target as HTMLElement
           onSlideMove(event)
         })}
-        onResponderRelease={composeEventHandlers(props.onResponderRelease, (event) => {
-          // const target = event.target as HTMLElement
-          onSlideEnd(event)
-        })}
+        onResponderRelease={composeEventHandlers(
+          props.onResponderRelease,
+          (event) => {
+            // const target = event.target as HTMLElement
+            onSlideEnd(event)
+          },
+        )}
       />
     )
-  }
+  },
 )

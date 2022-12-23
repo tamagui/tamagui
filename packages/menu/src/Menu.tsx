@@ -20,7 +20,7 @@ export const Menu = withStaticProperties(
     const media = useMedia()
     const [open, setOpen] = useControllableState({
       prop: openProp,
-      defaultProp: defaultOpen || false,
+      defaultProp: defaultOpen,
       onChange(next) {
         onOpenChange?.(next)
       },
@@ -64,5 +64,5 @@ export const Menu = withStaticProperties(
   {
     Item: MenuItem,
     // Provider: DrawerProvider,
-  }
+  },
 )

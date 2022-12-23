@@ -78,6 +78,18 @@ rc.3
 
 1.1
 
+- tama sync
+  - make it easy to have a template repo that people sync to
+  - includes the git sync stuff from cli now
+  - copies/diffs/merges every file there just based on heuristics
+  - somehow choose "merge/overwrite/diff"
+  - smart defaults
+    - package.json etc
+    - binary assets overwrite (if not changed, else prompt)
+
+- setup script can power `tama sync` to sync the repo to its parent repo
+
+  
 - add new sponsors
     - https://github.com/JamesIves/github-sponsors-readme-action
 - next load css on subsequent pages (partially fixed)

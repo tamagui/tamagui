@@ -25,8 +25,8 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "lint": "eslint src",
-    "lint:fix": "yarn lint --fix src"
+    "lint": "../../node_modules/.bin/rome check src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "publishConfig": {
     "access": "public"

@@ -24,15 +24,17 @@ const AdaptParentContext = createContext<AdaptParentContextI | null>(null)
 // forward props
 export const AdaptContents = (props: any) => {
   const context = useContext(AdaptParentContext)
-  if (!context || !context.Contents) {
-    throw new Error(`Adapt not supported by this component`)
+  if (!context?.Contents) {
+    throw new Error('Adapt not supported by this component')
   }
   return createElement(context.Contents, props)
 }
 
 AdaptContents['shouldForwardSpace'] = true
 
-export const useAdaptParent = ({ Contents }: { Contents: AdaptParentContextI['Contents'] }) => {
+export const useAdaptParent = ({
+  Contents,
+}: { Contents: AdaptParentContextI['Contents'] }) => {
   const [when, setWhen] = useState<MediaQueryKey | null>(null)
 
   const AdaptProvider = useMemo(() => {
@@ -43,7 +45,9 @@ export const useAdaptParent = ({ Contents }: { Contents: AdaptParentContextI['Co
 
     return (props: { children?: any }) => {
       return (
-        <AdaptParentContext.Provider value={context}>{props.children}</AdaptParentContext.Provider>
+        <AdaptParentContext.Provider value={context}>
+          {props.children}
+        </AdaptParentContext.Provider>
       )
     }
   }, [Contents])
@@ -76,5 +80,5 @@ export const Adapt = withStaticProperties(
   },
   {
     Contents: AdaptContents,
-  }
+  },
 )

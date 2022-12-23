@@ -22,7 +22,7 @@ export const Skeleton = SkeletonFrame.extractable(
         <VisuallyHidden preserveDimensions>{children}</VisuallyHidden>
       </SkeletonFrame>
     )
-  })
+  }),
 )
 
 export const SkeletonShine = (props: LinearGradientProps) => {

@@ -1,5 +1,15 @@
 import { X } from '@tamagui/lucide-icons'
-import { Adapt, Button, Dialog, Fieldset, Input, Label, Sheet, Unspaced, YStack } from 'tamagui'
+import {
+  Adapt,
+  Button,
+  Dialog,
+  Fieldset,
+  Input,
+  Label,
+  Sheet,
+  Unspaced,
+  YStack,
+} from 'tamagui'
 
 import { SelectDemo } from './SelectDemo'
 

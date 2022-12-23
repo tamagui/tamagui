@@ -1,13 +1,13 @@
 import { GenericFont, createFont, isWeb } from '@tamagui/core'
 
 export const createFiraMonoFont = <A extends GenericFont<keyof typeof size>>(
-  font: Partial<A> = {}
+  font: Partial<A> = {},
 ): A => {
   return createFont({
     family: isWeb ? 'Fira Code, Monaco, Consolas, Ubuntu Mono, monospace' : 'Fira',
     size,
     lineHeight: Object.fromEntries(
-      Object.entries(size).map(([k, v]) => [k, v * 1.3])
+      Object.entries(size).map(([k, v]) => [k, v * 1.3]),
     ) as typeof size,
     weight: {
       4: '300',

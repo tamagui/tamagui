@@ -9,12 +9,16 @@ import ScrollView from '..'
 describe('components/ScrollView', () => {
   describe('prop "centerContent"', () => {
     test('without', () => {
-      const { container } = render(<ScrollView style={{ backgroundColor: 'blue' }} />)
+      const { container } = render(
+        <ScrollView style={{ backgroundColor: 'blue' }} />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
 
     test('with', () => {
-      const { container } = render(<ScrollView centerContent style={{ backgroundColor: 'blue' }} />)
+      const { container } = render(
+        <ScrollView centerContent style={{ backgroundColor: 'blue' }} />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
   })
@@ -41,7 +45,7 @@ describe('components/ScrollView', () => {
         render(
           <ScrollView onScroll={onScroll} scrollEventThrottle={16}>
             <div ref={ref} />
-          </ScrollView>
+          </ScrollView>,
         )
       })
       const target = createEventTarget(ref.current)
@@ -63,7 +67,9 @@ describe('components/ScrollView', () => {
       const ref = jest.fn()
       let rerender
       act(() => {
-        ;({ rerender } = render(<ScrollView nativeID="123" ref={ref} style={{ borderWidth: 5 }} />))
+        ;({ rerender } = render(
+          <ScrollView nativeID="123" ref={ref} style={{ borderWidth: 5 }} />,
+        ))
       })
       expect(ref).toHaveBeenCalledTimes(1)
       act(() => {
@@ -96,7 +102,9 @@ describe('components/ScrollView', () => {
       expect(typeof node.scrollToEnd === 'function').toBe(true)
       expect(typeof node.flashScrollIndicators === 'function').toBe(true)
       expect(typeof node.scrollResponderZoomTo === 'function').toBe(true)
-      expect(typeof node.scrollResponderScrollNativeHandleToKeyboard === 'function').toBe(true)
+      expect(
+        typeof node.scrollResponderScrollNativeHandleToKeyboard === 'function',
+      ).toBe(true)
     })
   })
 
@@ -111,7 +119,7 @@ describe('components/ScrollView', () => {
         <ScrollView
           refreshControl={<div id="refresh-control" />}
           style={{ backgroundColor: 'red' }}
-        />
+        />,
       )
       expect(container.firstChild).toMatchSnapshot()
     })

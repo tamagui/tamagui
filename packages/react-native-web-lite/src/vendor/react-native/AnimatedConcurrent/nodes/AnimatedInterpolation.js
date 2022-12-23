@@ -44,7 +44,10 @@ function createNumericInterpolation(config) {
   }
 
   return (input) => {
-    invariant(typeof input === 'number', 'Cannot interpolation an input which is not a number')
+    invariant(
+      typeof input === 'number',
+      'Cannot interpolation an input which is not a number',
+    )
 
     const range = findRange(input, inputRange)
     return interpolate(
@@ -55,7 +58,7 @@ function createNumericInterpolation(config) {
       outputRange[range + 1],
       easing,
       extrapolateLeft,
-      extrapolateRight
+      extrapolateRight,
     )
   }
 }
@@ -68,7 +71,7 @@ function interpolate(
   outputMax,
   easing,
   extrapolateLeft,
-  extrapolateRight
+  extrapolateRight,
 ) {
   let result = input
 
@@ -135,7 +138,7 @@ function mapStringToNumericComponents(input) {
   let normalizedColor = normalizeColor(input)
   invariant(
     normalizedColor == null || typeof normalizedColor !== 'object',
-    'PlatformColors are not supported'
+    'PlatformColors are not supported',
   )
 
   if (typeof normalizedColor === 'number') {
@@ -157,7 +160,7 @@ function mapStringToNumericComponents(input) {
     }
     invariant(
       components.length > 0,
-      'outputRange must contain color or value with numeric component'
+      'outputRange must contain color or value with numeric component',
     )
     if (lastMatchEnd < input.length) {
       components.push(input.substring(lastMatchEnd, input.length))
@@ -182,22 +185,22 @@ function createStringInterpolation(config) {
   if (__DEV__) {
     invariant(
       outputRange.every((output) => output.isColor === isColor),
-      'All elements of output range should either be a color or a string with numeric components'
+      'All elements of output range should either be a color or a string with numeric components',
     )
     const firstOutput = outputRange[0].components
     invariant(
       outputRange.every((output) => output.components.length === firstOutput.length),
-      'All elements of output range should have the same number of components'
+      'All elements of output range should have the same number of components',
     )
     invariant(
       outputRange.every((output) =>
         output.components.every(
           (component, i) =>
             // $FlowIgnoreMe[invalid-compare]
-            typeof component === 'number' || component === firstOutput[i]
-        )
+            typeof component === 'number' || component === firstOutput[i],
+        ),
       ),
-      'All elements of output range should have the same non-numeric components'
+      'All elements of output range should have the same non-numeric components',
     )
   }
 
@@ -206,13 +209,13 @@ function createStringInterpolation(config) {
       ? // $FlowIgnoreMe[incompatible-call]
         output.components
       : // $FlowIgnoreMe[incompatible-call]
-        output.components.filter((c) => typeof c === 'number')
+        output.components.filter((c) => typeof c === 'number'),
   )
   const interpolations = numericComponents[0].map((_, i) =>
     createNumericInterpolation({
       ...config,
       outputRange: numericComponents.map((components) => components[i]),
-    })
+    }),
   )
   if (!isColor) {
     return (input) => {
@@ -256,7 +259,7 @@ function checkValidRanges(inputRange, outputRange) {
       inputRange.length +
       ') and outputRange (' +
       outputRange.length +
-      ') must have the same length'
+      ') must have the same length',
   )
 }
 
@@ -277,7 +280,7 @@ function checkInfiniteRange(name, arr) {
      * doesn't cleanly convert to a string, like undefined, null, and object,
      * etc. If you really mean this implicit string conversion, you can do
      * something like String(myThing) */
-    name + 'cannot be ]-infinity;+infinity[ ' + arr
+    name + 'cannot be ]-infinity;+infinity[ ' + arr,
   )
 }
 
@@ -319,7 +322,10 @@ export default class AnimatedInterpolation extends AnimatedWithChildren {
 
   __getValue() {
     const parentValue = this._parent.__getValue()
-    invariant(typeof parentValue === 'number', 'Cannot interpolate an input which is not a number.')
+    invariant(
+      typeof parentValue === 'number',
+      'Cannot interpolate an input which is not a number.',
+    )
     return this._getInterpolation()(parentValue)
   }
 
@@ -361,8 +367,10 @@ export default class AnimatedInterpolation extends AnimatedWithChildren {
       inputRange: this._config.inputRange,
       outputRange,
       outputType,
-      extrapolateLeft: this._config.extrapolateLeft || this._config.extrapolate || 'extend',
-      extrapolateRight: this._config.extrapolateRight || this._config.extrapolate || 'extend',
+      extrapolateLeft:
+        this._config.extrapolateLeft || this._config.extrapolate || 'extend',
+      extrapolateRight:
+        this._config.extrapolateRight || this._config.extrapolate || 'extend',
       type: 'interpolation',
     }
   }

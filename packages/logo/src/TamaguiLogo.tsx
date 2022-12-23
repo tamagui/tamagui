@@ -1,7 +1,15 @@
 import { forwardRef, useEffect, useState } from 'react'
 import { Circle, ThemeName, XStack, XStackProps, YStack } from 'tamagui'
 
-export const tints: ThemeName[] = ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red']
+export const tints: ThemeName[] = [
+  'orange',
+  'yellow',
+  'green',
+  'blue',
+  'purple',
+  'pink',
+  'red',
+]
 
 export const logoColors = tints.map((t) => `var(--${t}9)`)
 
@@ -16,8 +24,16 @@ type LogoProps = {
 
 export const TamaguiLogo = forwardRef<any, LogoProps>(
   (
-    { showWords, color, downscale, onHoverLetter, pathPrefix, animated, ...props }: LogoProps,
-    ref
+    {
+      showWords,
+      color,
+      downscale,
+      onHoverLetter,
+      pathPrefix,
+      animated,
+      ...props
+    }: LogoProps,
+    ref,
   ) => {
     return (
       <XStack
@@ -45,7 +61,7 @@ export const TamaguiLogo = forwardRef<any, LogoProps>(
         )}
       </XStack>
     )
-  }
+  },
 )
 
 export const LogoWords = ({
@@ -98,7 +114,11 @@ export const LogoWords = ({
     return logoColors[i]
   }
 
-  const x = index * 18.5 + (18 / 2) * (index / logoColors.length) + 3 + (index === 6 ? -3 : 0)
+  const x =
+    index * 18.5 +
+    (18 / 2) * (index / logoColors.length) +
+    3 +
+    (index === 6 ? -3 : 0)
 
   return (
     <XStack

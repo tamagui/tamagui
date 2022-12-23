@@ -23,7 +23,8 @@ import { View } from 'react-native'
 const SWITCH_NAME = 'Switch'
 
 // TODO make customizable
-const getSwitchHeight = (val: SizeTokens) => Math.round(getVariableValue(getSize(val)) * 0.65)
+const getSwitchHeight = (val: SizeTokens) =>
+  Math.round(getVariableValue(getSize(val)) * 0.65)
 const getSwitchWidth = (val: SizeTokens) => getSwitchHeight(val) * 2
 
 const scopeContexts = createContextScope(SWITCH_NAME)
@@ -76,14 +77,15 @@ export const SwitchThumb = SwitchThumbFrame.extractable(
           {...thumbProps}
           x={
             checked
-              ? getVariableValue(getSwitchWidth(size)) - getVariableValue(getSwitchHeight(size))
+              ? getVariableValue(getSwitchWidth(size)) -
+                getVariableValue(getSwitchHeight(size))
               : 0
           }
           ref={forwardedRef}
         />
       )
-    }
-  )
+    },
+  ),
 )
 
 SwitchThumb.displayName = THUMB_NAME
@@ -153,15 +155,21 @@ export const Switch = withStaticProperties(
           ...switchProps
         } = props
         const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
-        const composedRefs = useComposedRefs(forwardedRef, (node) => setButton(node as any))
+        const composedRefs = useComposedRefs(forwardedRef, (node) =>
+          setButton(node as any),
+        )
         const labelId = useLabelContext(button)
         const labelledBy = ariaLabelledby || labelId
         const hasConsumerStoppedPropagationRef = React.useRef(false)
         // We set this to true by default so that events bubble to forms without JS (SSR)
-        const isFormControl = isWeb ? (button ? Boolean(button.closest('form')) : true) : false
+        const isFormControl = isWeb
+          ? button
+            ? Boolean(button.closest('form'))
+            : true
+          : false
         const [checked = false, setChecked] = useControllableState({
           prop: checkedProp,
-          defaultProp: defaultChecked || false,
+          defaultProp: defaultChecked,
           onChange: onCheckedChange,
           transition: true,
         })
@@ -179,7 +187,12 @@ export const Switch = withStaticProperties(
         }
 
         return (
-          <SwitchProvider scope={__scopeSwitch} checked={checked} disabled={disabled} size={size}>
+          <SwitchProvider
+            scope={__scopeSwitch}
+            checked={checked}
+            disabled={disabled}
+            size={size}
+          >
             <SwitchFrame
               size={size}
               // @ts-ignore
@@ -202,11 +215,13 @@ export const Switch = withStaticProperties(
                 props.onPress?.(event)
                 setChecked((prevChecked) => !prevChecked)
                 if (isWeb && isFormControl) {
-                  hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
+                  hasConsumerStoppedPropagationRef.current =
+                    event.isPropagationStopped()
                   // if switch is in a form, stop propagation from the button so that we only propagate
                   // one click event (from the input). We propagate changes from an input so that native
                   // form validation works and form events reflect switch updates.
-                  if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
+                  if (!hasConsumerStoppedPropagationRef.current)
+                    event.stopPropagation()
                 }
               }}
             />
@@ -227,12 +242,12 @@ export const Switch = withStaticProperties(
             )}
           </SwitchProvider>
         )
-      }
-    )
+      },
+    ),
   ),
   {
     Thumb: SwitchThumb,
-  }
+  },
 )
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -255,7 +270,10 @@ const BubbleInput = (props: BubbleInputProps) => {
   React.useEffect(() => {
     const input = ref.current!
     const inputProto = window.HTMLInputElement.prototype
-    const descriptor = Object.getOwnPropertyDescriptor(inputProto, 'checked') as PropertyDescriptor
+    const descriptor = Object.getOwnPropertyDescriptor(
+      inputProto,
+      'checked',
+    ) as PropertyDescriptor
     const setChecked = descriptor.set
     if (prevChecked !== checked && setChecked) {
       const event = new Event('click', { bubbles })

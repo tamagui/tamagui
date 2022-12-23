@@ -10,4 +10,5 @@ export const cacheDir = findCacheDir({ name: 'tamagui', create: true })
 
 export const FAILED_EVAL = Symbol('failed_style_eval')
 
-export const SHOULD_DEBUG = process.env.DEBUG === '*' || process.env.DEBUG?.startsWith('tamagui')
+export const SHOULD_DEBUG =
+  process.env.DEBUG === '*' || process.env.DEBUG?.startsWith('tamagui')

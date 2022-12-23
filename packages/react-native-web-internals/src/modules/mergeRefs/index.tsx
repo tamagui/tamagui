@@ -28,8 +28,8 @@ export function mergeRefs(
       }
       console.error(
         `mergeRefs cannot handle Refs of type boolean, number or string, received ref ${String(
-          ref
-        )}`
+          ref,
+        )}`,
       )
     })
   }

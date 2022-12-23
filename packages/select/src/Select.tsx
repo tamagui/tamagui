@@ -1,7 +1,12 @@
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { GetProps, TamaguiElement, isClient, isWeb } from '@tamagui/core'
-import { styled, useGet, useIsomorphicLayoutEffect, withStaticProperties } from '@tamagui/core'
+import {
+  styled,
+  useGet,
+  useIsomorphicLayoutEffect,
+  withStaticProperties,
+} from '@tamagui/core'
 import { useId } from '@tamagui/core'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import { PortalHost } from '@tamagui/portal'
@@ -19,7 +24,10 @@ import { SelectInlineImpl } from './SelectImpl'
 import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
 import { SelectViewport } from './SelectViewport'
 import { ScopedProps, SelectImplProps, SelectProps } from './types'
-import { useSelectBreakpointActive, useShowSelectSheet } from './useSelectBreakpointActive'
+import {
+  useSelectBreakpointActive,
+  useShowSelectSheet,
+} from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectTrigger
@@ -73,7 +81,7 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
             })}
       />
     )
-  }
+  },
 )
 
 SelectTrigger.displayName = TRIGGER_NAME
@@ -96,8 +104,12 @@ type SelectValueProps = GetProps<typeof SelectValueFrame> & {
 const SelectValue = SelectValueFrame.extractable(
   React.forwardRef<TamaguiElement, SelectValueProps>(
     (
-      { __scopeSelect, children: childrenProp, placeholder }: ScopedProps<SelectValueProps>,
-      forwardedRef
+      {
+        __scopeSelect,
+        children: childrenProp,
+        placeholder,
+      }: ScopedProps<SelectValueProps>,
+      forwardedRef,
     ) => {
       // We ignore `className` and `style` as this part shouldn't be styled.
       const context = useSelectContext(VALUE_NAME, __scopeSelect)
@@ -107,7 +119,9 @@ const SelectValue = SelectValueFrame.extractable(
       const children = childrenProp ?? context.selectedItem
       const hasChildren = !!children
       const selectValueChildren =
-        context.value === undefined && placeholder !== undefined ? placeholder : children
+        context.value === undefined && placeholder !== undefined
+          ? placeholder
+          : children
 
       useIsomorphicLayoutEffect(() => {
         onValueNodeHasChildrenChange(hasChildren)
@@ -124,8 +138,8 @@ const SelectValue = SelectValueFrame.extractable(
           {selectValueChildren}
         </SelectValueFrame>
       )
-    }
-  )
+    },
+  ),
 )
 
 SelectValue.displayName = VALUE_NAME
@@ -218,7 +232,10 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
             allowMouseUpRef!.current = false
           },
           onKeyDown(event) {
-            if (event.key === 'Enter' || (event.key === ' ' && !dataRef?.current.typing)) {
+            if (
+              event.key === 'Enter' ||
+              (event.key === ' ' && !dataRef?.current.typing)
+            ) {
               event.preventDefault()
               handleSelect()
             } else {
@@ -279,7 +296,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
         />
       </SelectItemContextProvider>
     )
-  }
+  },
 )
 
 SelectItem.displayName = ITEM_NAME
@@ -317,7 +334,7 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
         />
       ),
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [props, context.size, className, itemContext.textId]
+      [props, context.size, className, itemContext.textId],
     )
 
     // until portals work in sub-trees on RN, use this just for native:
@@ -348,7 +365,7 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
           : null} */}
       </>
     )
-  }
+  },
 )
 
 SelectItemText.displayName = ITEM_TEXT_NAME
@@ -365,15 +382,20 @@ const SelectItemIndicatorFrame = styled(XStack, {
 
 type SelectItemIndicatorProps = GetProps<typeof SelectItemIndicatorFrame>
 
-const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicatorProps>(
-  (props: ScopedProps<SelectItemIndicatorProps>, forwardedRef) => {
-    const { __scopeSelect, ...itemIndicatorProps } = props
-    const itemContext = useSelectItemContext(ITEM_INDICATOR_NAME, __scopeSelect)
-    return itemContext.isSelected ? (
-      <SelectItemIndicatorFrame aria-hidden {...itemIndicatorProps} ref={forwardedRef} />
-    ) : null
-  }
-)
+const SelectItemIndicator = React.forwardRef<
+  TamaguiElement,
+  SelectItemIndicatorProps
+>((props: ScopedProps<SelectItemIndicatorProps>, forwardedRef) => {
+  const { __scopeSelect, ...itemIndicatorProps } = props
+  const itemContext = useSelectItemContext(ITEM_INDICATOR_NAME, __scopeSelect)
+  return itemContext.isSelected ? (
+    <SelectItemIndicatorFrame
+      aria-hidden
+      {...itemIndicatorProps}
+      ref={forwardedRef}
+    />
+  ) : null
+})
 
 SelectItemIndicator.displayName = ITEM_INDICATOR_NAME
 
@@ -410,7 +432,7 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
         />
       </SelectGroupContextProvider>
     )
-  }
+  },
 )
 
 SelectGroup.displayName = GROUP_NAME
@@ -438,7 +460,7 @@ const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
         ref={forwardedRef}
       />
     )
-  }
+  },
 )
 
 SelectLabel.displayName = LABEL_NAME
@@ -455,7 +477,7 @@ const SelectSheetController = (
   props: ScopedProps<{}> & {
     children: React.ReactNode
     onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
-  }
+  },
 ) => {
   const context = useSelectContext('SelectSheetController', props.__scopeSelect)
   const showSheet = useShowSelectSheet(context)
@@ -516,7 +538,7 @@ export const Select = withStaticProperties(
     const { when, AdaptProvider } = useAdaptParent({
       Contents: SelectSheetContents,
     })
-    const sheetBreakpoint = when || false
+    const sheetBreakpoint = when
     const isSheet = useSelectBreakpointActive(sheetBreakpoint)
     const SelectImpl = isSheet ? SelectSheetImpl : SelectInlineImpl
     const forceUpdate = React.useReducer(() => ({}), {})[1]
@@ -524,7 +546,7 @@ export const Select = withStaticProperties(
 
     const [open, setOpen] = useControllableState({
       prop: openProp,
-      defaultProp: defaultOpen || false,
+      defaultProp: defaultOpen,
       onChange: onOpenChange,
       strategy: 'most-recent-wins',
       transition: true,
@@ -545,7 +567,7 @@ export const Select = withStaticProperties(
     const listContentRef = React.useRef<string[]>([])
 
     const [selectedIndex, setSelectedIndex] = React.useState(
-      Math.max(0, listContentRef.current.indexOf(value))
+      Math.max(0, listContentRef.current.indexOf(value)),
     )
 
     const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
@@ -588,7 +610,10 @@ export const Select = withStaticProperties(
           value={value}
           open={open}
         >
-          <SelectSheetController onOpenChange={setOpen} __scopeSelect={__scopeSelect}>
+          <SelectSheetController
+            onOpenChange={setOpen}
+            __scopeSelect={__scopeSelect}
+          >
             <SelectImpl
               activeIndexRef={activeIndexRef}
               listContentRef={listContentRef}
@@ -620,7 +645,7 @@ export const Select = withStaticProperties(
     Viewport: SelectViewport,
     SheetContents: SelectSheetContents,
     Sheet: ControlledSheet,
-  }
+  },
 )
 
 // @ts-ignore

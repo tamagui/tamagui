@@ -11,7 +11,9 @@ export const build = async (options: ResolvedOptions) => {
 
   const entry = options.pkgJson.source
   if (!entry) {
-    throw new Error(`Must add "source" to package.json pointing to your source directory`)
+    throw new Error(
+      `Must add "source" to package.json pointing to your source directory`,
+    )
   }
   const sourceDir = dirname(entry)
   const promises: Promise<void>[] = []
@@ -49,9 +51,9 @@ export const build = async (options: ResolvedOptions) => {
                 })
 
                 console.log('gotem', out?.js)
-              })
+              }),
             )
-          })()
+          })(),
         )
       })
       .on('ready', () => {

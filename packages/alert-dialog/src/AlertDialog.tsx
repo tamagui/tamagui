@@ -44,9 +44,10 @@ import { Alert } from 'react-native'
 const ROOT_NAME = 'AlertDialog'
 
 type ScopedProps<P> = P & { __scopeAlertDialog?: Scope }
-const [createAlertDialogContext, createAlertDialogScope] = createContextScope(ROOT_NAME, [
-  createDialogScope,
-])
+const [createAlertDialogContext, createAlertDialogScope] = createContextScope(
+  ROOT_NAME,
+  [createDialogScope],
+)
 
 const useDialogScope = createDialogScope()
 
@@ -81,7 +82,7 @@ const AlertDialogTrigger = React.forwardRef<TamaguiElement, AlertDialogTriggerPr
     const { __scopeAlertDialog, ...triggerProps } = props
     const dialogScope = useDialogScope(__scopeAlertDialog)
     return <DialogTrigger {...dialogScope} {...triggerProps} ref={forwardedRef} />
-  }
+  },
 )
 
 AlertDialogTrigger.displayName = TRIGGER_NAME
@@ -95,7 +96,7 @@ const PORTAL_NAME = 'AlertDialogPortal'
 interface AlertDialogPortalProps extends DialogPortalProps {}
 
 const AlertDialogPortal: React.FC<AlertDialogPortalProps> = (
-  props: ScopedProps<AlertDialogPortalProps>
+  props: ScopedProps<AlertDialogPortalProps>,
 ) => {
   const { __scopeAlertDialog, ...portalProps } = props
   const dialogScope = useDialogScope(__scopeAlertDialog)
@@ -117,7 +118,7 @@ const AlertDialogOverlay = React.forwardRef<TamaguiElement, AlertDialogOverlayPr
     const { __scopeAlertDialog, ...overlayProps } = props
     const dialogScope = useDialogScope(__scopeAlertDialog)
     return <DialogOverlay {...dialogScope} {...overlayProps} ref={forwardedRef} />
-  }
+  },
 )
 
 AlertDialogOverlay.displayName = OVERLAY_NAME
@@ -159,13 +160,16 @@ const AlertDialogContent = React.forwardRef<TamaguiElement, AlertDialogContentPr
             {...dialogScope}
             {...contentProps}
             ref={composedRefs}
-            onOpenAutoFocus={composeEventHandlers(contentProps.onOpenAutoFocus, (event) => {
-              event.preventDefault()
-              if (isWeb) {
-                // @ts-ignore
-                cancelRef.current?.focus({ preventScroll: true })
-              }
-            })}
+            onOpenAutoFocus={composeEventHandlers(
+              contentProps.onOpenAutoFocus,
+              (event) => {
+                event.preventDefault()
+                if (isWeb) {
+                  // @ts-ignore
+                  cancelRef.current?.focus({ preventScroll: true })
+                }
+              },
+            )}
             onPointerDownOutside={(event) => event.preventDefault()}
             onInteractOutside={(event) => event.preventDefault()}
           >
@@ -183,7 +187,7 @@ const AlertDialogContent = React.forwardRef<TamaguiElement, AlertDialogContentPr
         </AlertDialogContentProvider>
       </DialogWarningProvider>
     )
-  }
+  },
 )
 
 AlertDialogContent.displayName = CONTENT_NAME
@@ -201,7 +205,7 @@ const AlertDialogTitle = React.forwardRef<TamaguiElement, AlertDialogTitleProps>
     const { __scopeAlertDialog, ...titleProps } = props
     const dialogScope = useDialogScope(__scopeAlertDialog)
     return <DialogTitle {...dialogScope} {...titleProps} ref={forwardedRef} />
-  }
+  },
 )
 
 AlertDialogTitle.displayName = TITLE_NAME
@@ -214,13 +218,16 @@ const DESCRIPTION_NAME = 'AlertDialogDescription'
 
 type AlertDialogDescriptionProps = DialogDescriptionProps
 
-const AlertDialogDescription = React.forwardRef<TamaguiElement, AlertDialogDescriptionProps>(
-  (props: ScopedProps<AlertDialogDescriptionProps>, forwardedRef) => {
-    const { __scopeAlertDialog, ...descriptionProps } = props
-    const dialogScope = useDialogScope(__scopeAlertDialog)
-    return <DialogDescription {...dialogScope} {...descriptionProps} ref={forwardedRef} />
-  }
-)
+const AlertDialogDescription = React.forwardRef<
+  TamaguiElement,
+  AlertDialogDescriptionProps
+>((props: ScopedProps<AlertDialogDescriptionProps>, forwardedRef) => {
+  const { __scopeAlertDialog, ...descriptionProps } = props
+  const dialogScope = useDialogScope(__scopeAlertDialog)
+  return (
+    <DialogDescription {...dialogScope} {...descriptionProps} ref={forwardedRef} />
+  )
+})
 
 AlertDialogDescription.displayName = DESCRIPTION_NAME
 
@@ -237,7 +244,7 @@ const AlertDialogAction = React.forwardRef<TamaguiElement, AlertDialogActionProp
     const { __scopeAlertDialog, ...actionProps } = props
     const dialogScope = useDialogScope(__scopeAlertDialog)
     return <DialogClose {...dialogScope} {...actionProps} ref={forwardedRef} />
-  }
+  },
 )
 
 AlertDialogAction.displayName = ACTION_NAME
@@ -253,11 +260,14 @@ interface AlertDialogCancelProps extends DialogCloseProps {}
 const AlertDialogCancel = React.forwardRef<TamaguiElement, AlertDialogCancelProps>(
   (props: ScopedProps<AlertDialogCancelProps>, forwardedRef) => {
     const { __scopeAlertDialog, ...cancelProps } = props
-    const { cancelRef } = useAlertDialogContentContext(CANCEL_NAME, __scopeAlertDialog)
+    const { cancelRef } = useAlertDialogContentContext(
+      CANCEL_NAME,
+      __scopeAlertDialog,
+    )
     const dialogScope = useDialogScope(__scopeAlertDialog)
     const ref = useComposedRefs(forwardedRef, cancelRef)
     return <DialogClose {...dialogScope} {...cancelProps} ref={ref} />
-  }
+  },
 )
 
 AlertDialogCancel.displayName = CANCEL_NAME
@@ -275,7 +285,7 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef }) =
       const hasDescription = document.getElementById(
         // @ts-ignore
         // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-        contentRef.current?.getAttribute('aria-describedby')!
+        contentRef.current?.getAttribute('aria-describedby')!,
       )
       if (!hasDescription) {
         // eslint-disable-next-line no-console
@@ -293,7 +303,9 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef }) =
   return null
 }
 
-const AlertDialogInner: React.FC<AlertDialogProps> = (props: ScopedProps<AlertDialogProps>) => {
+const AlertDialogInner: React.FC<AlertDialogProps> = (
+  props: ScopedProps<AlertDialogProps>,
+) => {
   const { __scopeAlertDialog, native, ...alertDialogProps } = props
   const dialogScope = useDialogScope(__scopeAlertDialog)
 
@@ -379,7 +391,7 @@ const AlertDialogInner: React.FC<AlertDialogProps> = (props: ScopedProps<AlertDi
 
 function forEachChildDeep(
   children: React.ReactNode[],
-  onChild: (el: React.ReactElement) => boolean
+  onChild: (el: React.ReactElement) => boolean,
 ) {
   for (const child of children) {
     if (!React.isValidElement(child)) continue

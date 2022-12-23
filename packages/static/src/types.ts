@@ -54,7 +54,10 @@ export type ExtractTagProps = {
   parserProps: TamaguiOptionsWithFileInfo
   attrs: ExtractedAttr[]
   node: t.JSXOpeningElement
-  attemptEval: (exprNode: t.Node, evalFn?: ((node: t.Node) => any) | undefined) => any
+  attemptEval: (
+    exprNode: t.Node,
+    evalFn?: ((node: t.Node) => any) | undefined,
+  ) => any
   jsxPath: NodePath<t.JSXElement>
   programPath: NodePath<t.Program>
   originalNodeName: string
@@ -70,7 +73,10 @@ export type TamaguiOptionsWithFileInfo = TamaguiOptions & {
   allLoadedComponents: LoadedComponents[]
 }
 
-export type ExtractorParseProps = Omit<TamaguiOptionsWithFileInfo, 'allLoadedComponents'> & {
+export type ExtractorParseProps = Omit<
+  TamaguiOptionsWithFileInfo,
+  'allLoadedComponents'
+> & {
   target: 'native' | 'html'
   shouldPrintDebug?: boolean | 'verbose'
   onExtractTag: (props: ExtractTagProps) => void

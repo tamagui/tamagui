@@ -37,5 +37,5 @@ export const Anchor: ReactComponentWithRef<AnchorProps, HTMLAnchorElement | View
           ref={ref as any}
         />
       )
-    })
+    }),
   )

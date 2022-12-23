@@ -10,14 +10,22 @@
 
 'use strict'
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from 'react'
 
 import useRefEffect from '../useRefEffect.js'
 import { AnimatedEvent } from './AnimatedEvent.js'
 // import NativeAnimatedHelper from './NativeAnimatedHelper.js'
 import AnimatedProps from './nodes/AnimatedProps.js'
 
-const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
+const useIsomorphicLayoutEffect =
+  typeof window === 'undefined' ? useEffect : useLayoutEffect
 
 export default function useAnimatedProps(props) {
   const [, scheduleUpdate] = useReducer((count) => count + 1, 0)
@@ -27,7 +35,10 @@ export default function useAnimatedProps(props) {
   // previous implementation, we permitted `style` to override props with the
   // same name property name as styles, so we can probably continue doing that.
   // The ordering of other props *should* not matter.
-  const node = useMemo(() => new AnimatedProps(props, () => onUpdateRef.current?.()), [props])
+  const node = useMemo(
+    () => new AnimatedProps(props, () => onUpdateRef.current?.()),
+    [props],
+  )
   useAnimatedPropsLifecycle(node)
 
   // TODO: This "effect" does three things:
@@ -69,7 +80,7 @@ export default function useAnimatedProps(props) {
           throw new Error(
             'Attempting to run JS driven animation on animated node ' +
               'that has been moved to "native" earlier by starting an ' +
-              'animation with `useNativeDriver: true`'
+              'animation with `useNativeDriver: true`',
           )
         }
       }
@@ -93,7 +104,7 @@ export default function useAnimatedProps(props) {
         }
       }
     },
-    [props, node]
+    [props, node],
   )
   const callbackRef = useRefEffect(refEffect)
 
@@ -155,7 +166,8 @@ function useAnimatedPropsLifecycle(node) {
 }
 
 function getEventTarget(instance) {
-  return typeof instance === 'object' && typeof instance?.getScrollableNode === 'function'
+  return typeof instance === 'object' &&
+    typeof instance?.getScrollableNode === 'function'
     ? // $FlowFixMe[incompatible-use] - Legacy instance assumptions.
       instance.getScrollableNode()
     : instance

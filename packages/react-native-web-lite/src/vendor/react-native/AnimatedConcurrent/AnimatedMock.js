@@ -36,7 +36,9 @@ function mockAnimationStart(start) {
         ? callback
         : (...args) => {
             if (inAnimationCallback) {
-              console.warn('Ignoring recursive animation callback when running mock animations')
+              console.warn(
+                'Ignoring recursive animation callback when running mock animations',
+              )
               return
             }
             inAnimationCallback = true
@@ -113,7 +115,7 @@ const stagger = function (time, animations) {
 const loop = function (
   animation,
   // $FlowFixMe[prop-missing]
-  { iterations = -1 } = {}
+  { iterations = -1 } = {},
 ) {
   return emptyAnimation
 }

@@ -29,7 +29,7 @@ class EventSubscriptionVendor {
   addSubscription(eventType, subscription) {
     invariant(
       subscription.subscriber === this,
-      'The subscriber of the subscription is incorrectly set.'
+      'The subscriber of the subscription is incorrectly set.',
     )
 
     if (!this._subscriptionsForType[eventType]) {

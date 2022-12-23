@@ -15,24 +15,25 @@ export type SpinnerProps = Omit<YStackProps, 'children'> & {
   color?: (ColorTokens | ThemeTokens | (string & {})) | null
 }
 
-export const Spinner: React.ForwardRefExoticComponent<SpinnerProps & React.RefAttributes<any>> =
-  YStack.extractable(
-    themeable(
-      React.forwardRef<TamaguiElement>((props: SpinnerProps, ref) => {
-        const { size, color: colorProp, ...stackProps } = props
-        const theme = useTheme()
-        let color = colorProp as string
-        if (color && color[0] === '$') {
-          color = variableToString(theme[color])
-        }
-        return (
-          <YStack ref={ref} {...stackProps}>
-            <ActivityIndicator size={size} color={color} />
-          </YStack>
-        )
-      }),
-      {
-        componentName: 'Spinner',
+export const Spinner: React.ForwardRefExoticComponent<
+  SpinnerProps & React.RefAttributes<any>
+> = YStack.extractable(
+  themeable(
+    React.forwardRef<TamaguiElement>((props: SpinnerProps, ref) => {
+      const { size, color: colorProp, ...stackProps } = props
+      const theme = useTheme()
+      let color = colorProp as string
+      if (color && color[0] === '$') {
+        color = variableToString(theme[color])
       }
-    )
-  ) as any
+      return (
+        <YStack ref={ref} {...stackProps}>
+          <ActivityIndicator size={size} color={color} />
+        </YStack>
+      )
+    }),
+    {
+      componentName: 'Spinner',
+    },
+  ),
+) as any

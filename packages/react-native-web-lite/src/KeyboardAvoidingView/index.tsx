@@ -28,7 +28,8 @@ class KeyboardAvoidingView extends React.Component<KeyboardAvoidingViewProps> {
     if (!frame || !keyboardFrame) {
       return 0
     }
-    const keyboardY = keyboardFrame.screenY - (this.props.keyboardVerticalOffset || 0)
+    const keyboardY =
+      keyboardFrame.screenY - (this.props.keyboardVerticalOffset || 0)
     return Math.max(frame.y + frame.height - keyboardY, 0)
   }
 

@@ -19,7 +19,6 @@
   "devDependencies": {
     "@native-base/next-adapter": "^1.1.9",
     "@types/node": "^18.6.4",
-    "eslint-config-next": "^12.2.4",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "next-compose-plugins": "^2.2.1",

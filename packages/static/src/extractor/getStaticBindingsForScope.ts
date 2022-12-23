@@ -82,14 +82,12 @@ export async function getStaticBindingsForScope(
   whitelist: string[] = [],
   sourcePath: string,
   bindingCache: Record<string, string | null>,
-  shouldPrintDebug: boolean | 'verbose'
+  shouldPrintDebug: boolean | 'verbose',
 ): Promise<Record<string, any>> {
   const bindings: Record<string, Binding> = scope.getAllBindings() as any
   const ret: Record<string, any> = {}
 
-  if (
-    shouldPrintDebug
-  ) {
+  if (shouldPrintDebug) {
     // prettier-ignore
     // console.log('  ', Object.keys(bindings).length, 'variables in scope')
     // .map(x => bindings[x].identifier?.name).join(', ')
@@ -123,7 +121,7 @@ export async function getStaticBindingsForScope(
         if (shouldPrintDebug) {
           // eslint-disable-next-line no-console
           console.warn(
-            `    | Skipping partial evaluation of constant file: ${moduleName} (DEBUG=tamagui for more)`
+            `    | Skipping partial evaluation of constant file: ${moduleName} (DEBUG=tamagui for more)`,
           )
         } else if (process.env.DEBUG?.startsWith('tamagui')) {
           // eslint-disable-next-line no-console
@@ -157,7 +155,7 @@ export async function getStaticBindingsForScope(
         if (!src) {
           // eslint-disable-next-line no-console
           console.log(
-            `    | ⚠️ Missing file ${moduleName} via ${sourcePath} import ${sourceModule.sourceModule}?`
+            `    | ⚠️ Missing file ${moduleName} via ${sourcePath} import ${sourceModule.sourceModule}?`,
           )
           return {}
         }
@@ -179,7 +177,9 @@ export async function getStaticBindingsForScope(
     }
 
     // pick out the right variable declarator
-    const dec = parent.declarations.find((d) => t.isIdentifier(d.id) && d.id.name === k)
+    const dec = parent.declarations.find(
+      (d) => t.isIdentifier(d.id) && d.id.name === k,
+    )
 
     // if init is not set, there's nothing to evaluate
     // TODO: handle spread syntax
@@ -217,7 +217,6 @@ export async function getStaticBindingsForScope(
     try {
       ret[k] = evaluateAstNode(dec.init, undefined, shouldPrintDebug)
       bindingCache[cacheKey] = ret[k]
-      continue
     } catch {
       // skip
     }

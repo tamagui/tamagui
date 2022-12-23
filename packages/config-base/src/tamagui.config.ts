@@ -51,7 +51,7 @@ const headingFont = createInterFont(
       900: { normal: 'InterBold' },
     },
   },
-  { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 5)) }
+  { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 5)) },
 )
 const bodyFont = createInterFont(
   {
@@ -64,7 +64,7 @@ const bodyFont = createInterFont(
   {
     sizeSize: (size) => Math.round(size),
     sizeLineHeight: (size) => Math.round(size * 1.1 + (size >= 12 ? 8 : 4)),
-  }
+  },
 )
 
 const monoFont = createGenericFont(
@@ -94,7 +94,7 @@ const monoFont = createGenericFont(
   },
   {
     sizeLineHeight: (x) => x * 1.5,
-  }
+  },
 )
 
 export const config = {

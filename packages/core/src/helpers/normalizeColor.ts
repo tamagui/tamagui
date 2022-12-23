@@ -1,7 +1,7 @@
 import normalizeCSSColor from 'normalize-css-color'
 
 export const normalizeColor = (color?: number | string | null, opacity?: number) => {
-  if (color == null || color == undefined) {
+  if (color == null || color === undefined) {
     return
   }
   if (

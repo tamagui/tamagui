@@ -48,8 +48,8 @@ var ModalContent = /*#__PURE__*/ React.forwardRef((props, forwardedRef) => {
       {
         style: styles.container,
       },
-      children
-    )
+      children,
+    ),
   )
 })
 var styles = StyleSheet.create({

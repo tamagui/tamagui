@@ -13,8 +13,10 @@ import TouchHistoryMath from '../TouchHistoryMath'
 
 type PressEvent = any
 
-const currentCentroidXOfTouchesChangedAfter = TouchHistoryMath.currentCentroidXOfTouchesChangedAfter
-const currentCentroidYOfTouchesChangedAfter = TouchHistoryMath.currentCentroidYOfTouchesChangedAfter
+const currentCentroidXOfTouchesChangedAfter =
+  TouchHistoryMath.currentCentroidXOfTouchesChangedAfter
+const currentCentroidYOfTouchesChangedAfter =
+  TouchHistoryMath.currentCentroidYOfTouchesChangedAfter
 const previousCentroidXOfTouchesChangedAfter =
   TouchHistoryMath.previousCentroidXOfTouchesChangedAfter
 const previousCentroidYOfTouchesChangedAfter =
@@ -181,7 +183,11 @@ export type GestureState = {
 
 type ActiveCallback = (event: PressEvent, gestureState: GestureState) => boolean
 
-type InteractionState = { handle: number | null; shouldCancelClick: boolean; timeout: any }
+type InteractionState = {
+  handle: number | null
+  shouldCancelClick: boolean
+  timeout: any
+}
 
 type PassiveCallback = (event: PressEvent, gestureState: GestureState) => any
 
@@ -312,11 +318,11 @@ const PanResponder = {
     gestureState.numberActiveTouches = touchHistory.numberActiveTouches
     gestureState.moveX = currentCentroidXOfTouchesChangedAfter(
       touchHistory,
-      gestureState._accountsForMovesUpTo
+      gestureState._accountsForMovesUpTo,
     )
     gestureState.moveY = currentCentroidYOfTouchesChangedAfter(
       touchHistory,
-      gestureState._accountsForMovesUpTo
+      gestureState._accountsForMovesUpTo,
     )
     const movedAfter = gestureState._accountsForMovesUpTo
     const prevX = previousCentroidXOfTouchesChangedAfter(touchHistory, movedAfter)
@@ -438,7 +444,9 @@ const PanResponder = {
         // Responder system incorrectly dispatches should* to current responder
         // Filter out any touch moves past the first one - we would have
         // already processed multi-touch geometry during the first event.
-        if (gestureState._accountsForMovesUpTo === touchHistory.mostRecentTimeStamp) {
+        if (
+          gestureState._accountsForMovesUpTo === touchHistory.mostRecentTimeStamp
+        ) {
           return false
         }
         PanResponder._updateGestureStateOnMove(gestureState, touchHistory)
@@ -474,13 +482,18 @@ const PanResponder = {
           // @ts-ignore
           config.onPanResponderReject,
           event,
-          gestureState
+          gestureState,
         )
       },
 
       onResponderRelease(event: PressEvent): void {
         // @ts-ignore
-        clearInteractionHandle(interactionState, config.onPanResponderRelease, event, gestureState)
+        clearInteractionHandle(
+          interactionState,
+          config.onPanResponderRelease,
+          event,
+          gestureState,
+        )
         setInteractionTimeout(interactionState)
         PanResponder._initializeGestureState(gestureState)
       },
@@ -497,7 +510,9 @@ const PanResponder = {
         const touchHistory = event.touchHistory
         // Guard against the dispatch of two touch moves when there are two
         // simultaneously changed touches.
-        if (gestureState._accountsForMovesUpTo === touchHistory.mostRecentTimeStamp) {
+        if (
+          gestureState._accountsForMovesUpTo === touchHistory.mostRecentTimeStamp
+        ) {
           return
         }
         // Filter out any touch moves past the first one - we would have
@@ -512,7 +527,12 @@ const PanResponder = {
         const touchHistory = event.touchHistory
         gestureState.numberActiveTouches = touchHistory.numberActiveTouches
         // @ts-ignore
-        clearInteractionHandle(interactionState, config.onPanResponderEnd, event, gestureState)
+        clearInteractionHandle(
+          interactionState,
+          config.onPanResponderEnd,
+          event,
+          gestureState,
+        )
       },
 
       onResponderTerminate(event: PressEvent): void {
@@ -521,7 +541,7 @@ const PanResponder = {
           // @ts-ignore
           config.onPanResponderTerminate,
           event,
-          gestureState
+          gestureState,
         )
         setInteractionTimeout(interactionState)
         PanResponder._initializeGestureState(gestureState)
@@ -558,7 +578,7 @@ function clearInteractionHandle(
   interactionState: InteractionState,
   callback: any,
   event: PressEvent,
-  gestureState: GestureState
+  gestureState: GestureState,
 ) {
   if (interactionState.handle) {
     InteractionManager.clearInteractionHandle(interactionState.handle)

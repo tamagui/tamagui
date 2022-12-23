@@ -82,7 +82,11 @@ var ModalFocusTrap = (_ref) => {
         // - The modal hasn't fully initialized with an HTMLElement ref
         // - Focus is already in the process of being trapped (e.g., we're refocusing)
         // - isTrapActive prop being falsey tells us to do nothing
-        if (trapElementRef.current == null || focusRef.current.trapFocusInProgress || !active) {
+        if (
+          trapElementRef.current == null ||
+          focusRef.current.trapFocusInProgress ||
+          !active
+        ) {
           return
         }
 
@@ -105,7 +109,11 @@ var ModalFocusTrap = (_ref) => {
               hasFocused = focusLastDescendant(trapElementRef.current)
             } // If we couldn't focus a new element then we need to focus onto the trap target
 
-            if (!hasFocused && trapElementRef.current != null && document.activeElement) {
+            if (
+              !hasFocused &&
+              trapElementRef.current != null &&
+              document.activeElement
+            ) {
               UIManager.focus(trapElementRef.current)
             }
           }
@@ -127,7 +135,10 @@ var ModalFocusTrap = (_ref) => {
     if (canUseDOM) {
       var lastFocusedElementOutsideTrap = document.activeElement
       return function () {
-        if (lastFocusedElementOutsideTrap && document.contains(lastFocusedElementOutsideTrap)) {
+        if (
+          lastFocusedElementOutsideTrap &&
+          document.contains(lastFocusedElementOutsideTrap)
+        ) {
           UIManager.focus(lastFocusedElementOutsideTrap)
         }
       }
@@ -142,9 +153,9 @@ var ModalFocusTrap = (_ref) => {
       {
         ref: trapElementRef,
       },
-      children
+      children,
     ),
-    /*#__PURE__*/ React.createElement(FocusBracket, null)
+    /*#__PURE__*/ React.createElement(FocusBracket, null),
   )
 }
 

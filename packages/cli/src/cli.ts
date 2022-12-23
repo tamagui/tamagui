@@ -78,7 +78,10 @@ const commandEntries = Object.keys(commandMap).flatMap((command) => {
   return entries
 })
 
-const commands = Object.fromEntries(commandEntries) as any as Record<CommandKey, CommandDefinition>
+const commands = Object.fromEntries(commandEntries) as any as Record<
+  CommandKey,
+  CommandDefinition
+>
 
 const {
   _: [command],
@@ -90,7 +93,7 @@ const {
   },
   {
     permissive: true,
-  }
+  },
 )
 
 if (flags['--version']) {
@@ -124,7 +127,11 @@ main()
 async function main() {
   if (flags['--help']) {
     console.log(`\n$ tamagui ${command}: ${definition.description}\n`)
-    console.log(`Flags: ${Object.entries(definition.flags).map(([k, v]) => `${k} (${v.name})`)}`)
+    console.log(
+      `Flags: ${Object.entries(definition.flags).map(
+        ([k, v]) => `${k} (${v.name})`,
+      )}`,
+    )
     process.exit(0)
   }
 

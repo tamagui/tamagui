@@ -6,7 +6,7 @@ export function invariant(condition: any, log: string, ...logVars: string[]) {
             .split('%s')
             .flatMap((chunk, i) => [chunk, logVars[i]])
             .join('')
-        : log
+        : log,
     )
   }
 }

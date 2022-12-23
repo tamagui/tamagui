@@ -21,7 +21,7 @@ describe('components/ImageBackground', () => {
       const { getByText } = render(
         <ImageBackground>
           <Text>Hello World!</Text>
-        </ImageBackground>
+        </ImageBackground>,
       )
       expect(getByText('Hello World!')).toBeDefined()
     })
@@ -32,7 +32,9 @@ describe('components/ImageBackground', () => {
       const imageStyle = { width: 40, height: 60 }
       const { container } = render(<ImageBackground imageStyle={imageStyle} />)
       expect(
-        findImage(container).getAttribute('style').includes('width: 40px; height: 60px;')
+        findImage(container)
+          .getAttribute('style')
+          .includes('width: 40px; height: 60px;'),
       ).toBe(true)
     })
   })
@@ -41,7 +43,9 @@ describe('components/ImageBackground', () => {
     test('sets the style of the container View', () => {
       const style = { margin: 40 }
       const { container } = render(<ImageBackground style={style} />)
-      expect(container.firstChild.getAttribute('style')).toEqual('margin: 40px 40px 40px 40px;')
+      expect(container.firstChild.getAttribute('style')).toEqual(
+        'margin: 40px 40px 40px 40px;',
+      )
     })
   })
 })

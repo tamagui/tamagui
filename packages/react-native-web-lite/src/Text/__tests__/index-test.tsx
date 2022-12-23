@@ -82,7 +82,9 @@ describe('components/Text', () => {
     })
 
     test('href with accessibilityRole', () => {
-      const { container } = render(<Text accessibilityRole="none" href="https://example.com" />)
+      const { container } = render(
+        <Text accessibilityRole="none" href="https://example.com" />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
   })
@@ -99,7 +101,9 @@ describe('components/Text', () => {
         rel: 'nofollow',
         target: '_blank',
       }
-      const { container } = render(<Text href="https://example.com" hrefAttrs={hrefAttrs} />)
+      const { container } = render(
+        <Text href="https://example.com" hrefAttrs={hrefAttrs} />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -107,7 +111,9 @@ describe('components/Text', () => {
       const hrefAttrs = {
         target: 'blank',
       }
-      const { container } = render(<Text href="https://example.com" hrefAttrs={hrefAttrs} />)
+      const { container } = render(
+        <Text href="https://example.com" hrefAttrs={hrefAttrs} />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -117,7 +123,9 @@ describe('components/Text', () => {
         rel: null,
         target: null,
       }
-      const { container } = render(<Text href="https://example.com" hrefAttrs={hrefAttrs} />)
+      const { container } = render(
+        <Text href="https://example.com" hrefAttrs={hrefAttrs} />,
+      )
       expect(container.firstChild).toMatchSnapshot()
     })
   })
@@ -262,7 +270,9 @@ describe('components/Text', () => {
       const ref = jest.fn()
       let rerender
       act(() => {
-        ;({ rerender } = render(<Text nativeID="123" ref={ref} style={{ borderWidth: 5 }} />))
+        ;({ rerender } = render(
+          <Text nativeID="123" ref={ref} style={{ borderWidth: 5 }} />,
+        ))
       })
       expect(ref).toHaveBeenCalledTimes(1)
       act(() => {

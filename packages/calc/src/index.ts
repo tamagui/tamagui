@@ -1,5 +1,10 @@
 import { getVariableVariable, isWeb } from '@tamagui/core'
-import type { FontLineHeightTokens, FontSizeTokens, SizeTokens, SpaceTokens } from '@tamagui/core'
+import type {
+  FontLineHeightTokens,
+  FontSizeTokens,
+  SizeTokens,
+  SpaceTokens,
+} from '@tamagui/core'
 
 // unused code - not exported could be used for cross compat calc() functions
 
@@ -32,12 +37,12 @@ export const calc = (...valuesAndOperators: (CalcVal | Operator)[]) => {
     for (const cur of valuesAndOperators) {
       if (operators[cur as any]) {
         // spaces are significant
-        res += ' ' + cur + ' '
+        res += ` ${cur} `
       } else {
         res += convertToVariableOrNumber(cur)
       }
     }
-    return res + ')'
+    return `${res})`
   }
 
   let res = 0

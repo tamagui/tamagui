@@ -57,9 +57,9 @@ export const createTextShadowValue = (style: Object): void | string => {
 export const preprocess = <
   T extends {
     [K in string]: any
-  }
+  },
 >(
-  originalStyle: T
+  originalStyle: T,
 ): T => {
   const style = originalStyle || emptyObject
   const nextStyle = {}
@@ -69,7 +69,10 @@ export const preprocess = <
     let prop = originalProp
     let value = originalValue
 
-    if (!Object.prototype.hasOwnProperty.call(style, originalProp) || originalValue == null) {
+    if (
+      !Object.prototype.hasOwnProperty.call(style, originalProp) ||
+      originalValue == null
+    ) {
       continue
     }
 
@@ -91,7 +94,11 @@ export const preprocess = <
     }
 
     // Convert text shadow styles
-    if (prop === 'textShadowColor' || prop === 'textShadowOffset' || prop === 'textShadowRadius') {
+    if (
+      prop === 'textShadowColor' ||
+      prop === 'textShadowOffset' ||
+      prop === 'textShadowRadius'
+    ) {
       const textShadowValue = createTextShadowValue(style)
       if (textShadowValue != null && nextStyle.textShadow == null) {
         const { textShadow } = style

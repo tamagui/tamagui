@@ -82,7 +82,11 @@ const ImageLoader = {
       delete requests[`${requestId}`]
     }
   },
-  getSize(uri: string, success: (width: number, height: number) => void, failure: () => void) {
+  getSize(
+    uri: string,
+    success: (width: number, height: number) => void,
+    failure: () => void,
+  ) {
     let complete = false
     const interval = setInterval(callback, 16)
     const requestId = ImageLoader.load(uri, callback, errorCallback)
@@ -145,7 +149,7 @@ const ImageLoader = {
           ImageUriCache.remove(uri)
           resolve()
         },
-        reject
+        reject,
       )
     })
   },

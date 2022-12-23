@@ -8,7 +8,7 @@ import { SelectImplProps } from './types'
 export const SelectInlineImpl = (props: SelectImplProps) => {
   if (process.env.NODE_ENV === 'development') {
     // eslint-disable-next-line no-console
-    console.warn(`Sheet not implemented inline on native`)
+    console.warn('Sheet not implemented inline on native')
   }
   return <>{props.children}</>
 }

@@ -6,7 +6,10 @@ const hooks = {
   useTheme: true,
 }
 
-export function removeUnusedHooks(compFn: NodePath<any>, shouldPrintDebug: boolean | 'verbose') {
+export function removeUnusedHooks(
+  compFn: NodePath<any>,
+  shouldPrintDebug: boolean | 'verbose',
+) {
   compFn.scope.crawl()
   // check the top level statements
   let bodyStatements = compFn?.get('body')
@@ -45,7 +48,9 @@ export function removeUnusedHooks(compFn: NodePath<any>, shouldPrintDebug: boole
       }
       const shouldRemove = (() => {
         const isHook =
-          t.isCallExpression(init) && t.isIdentifier(init.callee) && hooks[init.callee.name]
+          t.isCallExpression(init) &&
+          t.isIdentifier(init.callee) &&
+          hooks[init.callee.name]
         if (!isHook) {
           return false
         }

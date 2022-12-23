@@ -122,15 +122,27 @@ export default class AnimatedProps extends AnimatedNode {
   __connectAnimatedView() {
     invariant(this.__isNative, 'Expected node to be marked as "native"')
     const nativeViewTag = findNodeHandle(this._animatedView)
-    invariant(nativeViewTag != null, 'Unable to locate attached view in the native tree')
-    NativeAnimatedHelper.API.connectAnimatedNodeToView(this.__getNativeTag(), nativeViewTag)
+    invariant(
+      nativeViewTag != null,
+      'Unable to locate attached view in the native tree',
+    )
+    NativeAnimatedHelper.API.connectAnimatedNodeToView(
+      this.__getNativeTag(),
+      nativeViewTag,
+    )
   }
 
   __disconnectAnimatedView() {
     invariant(this.__isNative, 'Expected node to be marked as "native"')
     const nativeViewTag = findNodeHandle(this._animatedView)
-    invariant(nativeViewTag != null, 'Unable to locate attached view in the native tree')
-    NativeAnimatedHelper.API.disconnectAnimatedNodeFromView(this.__getNativeTag(), nativeViewTag)
+    invariant(
+      nativeViewTag != null,
+      'Unable to locate attached view in the native tree',
+    )
+    NativeAnimatedHelper.API.disconnectAnimatedNodeFromView(
+      this.__getNativeTag(),
+      nativeViewTag,
+    )
   }
 
   __restoreDefaultValues() {

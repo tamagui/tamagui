@@ -42,7 +42,7 @@ function createInterpolation(config) {
       inputRange.length +
       ') and outputRange (' +
       outputRange.length +
-      ') must have the same length'
+      ') must have the same length',
   )
   var easing = config.easing || linear
   var extrapolateLeft = 'extend'
@@ -62,7 +62,10 @@ function createInterpolation(config) {
   }
 
   return (input) => {
-    invariant(typeof input === 'number', 'Cannot interpolation an input which is not a number')
+    invariant(
+      typeof input === 'number',
+      'Cannot interpolation an input which is not a number',
+    )
     var range = findRange(input, inputRange)
     return interpolate(
       input,
@@ -72,7 +75,7 @@ function createInterpolation(config) {
       outputRange[range + 1],
       easing,
       extrapolateLeft,
-      extrapolateRight
+      extrapolateRight,
     )
   }
 }
@@ -85,7 +88,7 @@ function interpolate(
   outputMax,
   easing,
   extrapolateLeft,
-  extrapolateRight
+  extrapolateRight,
 ) {
   var result = input // Extrapolate
 
@@ -230,7 +233,7 @@ function checkPattern(arr) {
   for (var i = 1; i < arr.length; ++i) {
     invariant(
       pattern === arr[i].replace(stringShapeRegex, ''),
-      'invalid pattern ' + arr[0] + ' and ' + arr[i]
+      'invalid pattern ' + arr[0] + ' and ' + arr[i],
     )
   }
 }
@@ -259,7 +262,7 @@ function checkValidInputRange(arr) {
        * mean this implicit string conversion, you can do something like
        * String(myThing)
        */
-      'inputRange must be monotonically non-decreasing ' + arr
+      'inputRange must be monotonically non-decreasing ' + arr,
     )
   }
 }
@@ -274,7 +277,7 @@ function checkInfiniteRange(name, arr) {
      * this implicit string conversion, you can do something like
      * String(myThing)
      */
-    name + 'cannot be ]-infinity;+infinity[ ' + arr
+    name + 'cannot be ]-infinity;+infinity[ ' + arr,
   )
 }
 
@@ -296,7 +299,10 @@ class AnimatedInterpolation extends AnimatedWithChildren {
   __getValue() {
     var parentValue = this._parent.__getValue()
 
-    invariant(typeof parentValue === 'number', 'Cannot interpolate an input which is not a number.')
+    invariant(
+      typeof parentValue === 'number',
+      'Cannot interpolate an input which is not a number.',
+    )
     return this._interpolation(parentValue)
   }
 
@@ -330,8 +336,10 @@ class AnimatedInterpolation extends AnimatedWithChildren {
       /* $FlowFixMe(>=0.38.0) - Flow error detected during the deployment of
        * v0.38.0. To see the error, remove this comment and run flow */
       outputRange: this.__transformDataType(this._config.outputRange),
-      extrapolateLeft: this._config.extrapolateLeft || this._config.extrapolate || 'extend',
-      extrapolateRight: this._config.extrapolateRight || this._config.extrapolate || 'extend',
+      extrapolateLeft:
+        this._config.extrapolateLeft || this._config.extrapolate || 'extend',
+      extrapolateRight:
+        this._config.extrapolateRight || this._config.extrapolate || 'extend',
       type: 'interpolation',
     }
   }

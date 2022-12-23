@@ -21,7 +21,7 @@ import { accessSafe } from './accessSafe.js'
  */
 export function getPropValueFromAttributes(
   propName: string,
-  attrs: (t.JSXAttribute | t.JSXSpreadAttribute)[]
+  attrs: (t.JSXAttribute | t.JSXSpreadAttribute)[],
 ): t.Expression | null {
   let propIndex = -1
   let jsxAttr: t.JSXAttribute | null = null
@@ -71,11 +71,13 @@ export function getPropValueFromAttributes(
             return false
           }
           throw new Error(
-            `unsupported spread of type "${attr.argument.type}": ${generate(attr as any).code}`
+            `unsupported spread of type "${attr.argument.type}": ${
+              generate(attr as any).code
+            }`,
           )
         }
         return false
-      }
+      },
     )
     .map((attr) => attr.argument)
 
@@ -85,7 +87,7 @@ export function getPropValueFromAttributes(
   if (applicableSpreads.length > 0) {
     propValue = applicableSpreads.reduce<t.Expression>(
       (acc, val) => t.logicalExpression('||', accessSafe(val, propName), acc),
-      propValue
+      propValue,
     )
   }
 

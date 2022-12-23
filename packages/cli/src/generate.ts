@@ -19,7 +19,7 @@ export async function getTypes(options: ResolvedOptions) {
   const uniqueViewExportingPaths = new Set(
     Object.keys(tamagui.nameToPaths).map((name) => {
       return `${[...tamagui.nameToPaths[name]][0]}.ts*`
-    })
+    }),
   )
 
   const project = new Project({
@@ -44,11 +44,14 @@ export async function getTypes(options: ResolvedOptions) {
             .getApparentType()
             .getProperties()
             .map((prop) => {
-              return [prop.getEscapedName(), prop.getValueDeclaration()?.getType().getText()]
+              return [
+                prop.getEscapedName(),
+                prop.getValueDeclaration()?.getType().getText(),
+              ]
             }),
         ]
       })
-    })
+    }),
   )
 
   // console.log(

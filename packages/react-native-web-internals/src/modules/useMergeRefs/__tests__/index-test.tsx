@@ -33,7 +33,11 @@ describe('modules/useMergeRefs/index.js', () => {
     const nullRef = null
 
     act(() => {
-      render(<TestComponent refs={[callbackRef1, callbackRef2, objectRef1, objectRef2, nullRef]} />)
+      render(
+        <TestComponent
+          refs={[callbackRef1, callbackRef2, objectRef1, objectRef2, nullRef]}
+        />,
+      )
     })
 
     expect(callbackRef1).toHaveBeenCalledTimes(1)

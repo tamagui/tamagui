@@ -9,7 +9,10 @@
  */
 'use strict'
 
-import { generateNewAnimationId, shouldUseNativeDriver } from '../NativeAnimatedHelper'
+import {
+  generateNewAnimationId,
+  shouldUseNativeDriver,
+} from '../NativeAnimatedHelper'
 import AnimatedNode from './AnimatedNode'
 import AnimatedValue from './AnimatedValue'
 
@@ -65,7 +68,7 @@ class AnimatedTracking extends AnimatedNode {
         ...this._animationConfig,
         toValue: this._animationConfig.toValue.__getValue(),
       }),
-      this._callback
+      this._callback,
     )
   }
 

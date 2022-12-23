@@ -97,7 +97,7 @@ describe('create-event-handle', () => {
           const removeClickListener = addClickListener(targetRef.current, listener)
           const removeClickCaptureListener = addClickCaptureListener(
             targetRef.current,
-            listenerCapture
+            listenerCapture,
           )
           return () => {
             removeClickListener()
@@ -145,7 +145,7 @@ describe('create-event-handle', () => {
           const removeClickListener = addClickListener(targetRef.current, listener)
           const removeClickCaptureListener = addClickCaptureListener(
             targetRef.current,
-            listenerCapture
+            listenerCapture,
           )
           return () => {
             removeClickListener()

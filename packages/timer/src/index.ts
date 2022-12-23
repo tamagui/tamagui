@@ -24,7 +24,7 @@ export function timer() {
           strings.forEach((str, i) => {
             result += `${str}${i === strings.length - 1 ? '' : vars[i]}`
           })
-          console.log(`${elapsed}ms`.slice(0, 6).padStart(7) + ' |', result)
+          console.log(`${`${elapsed}ms`.slice(0, 6).padStart(7)} |`, result)
         }
       }
     },
@@ -43,7 +43,7 @@ export function timer() {
       const out = [
         `Ran ${typeRuns} per-type, ${runs} total`,
         ...[...typesOfRuns].map((name) => {
-          const avg = `avg ` + `${timings[name] / typeRuns}`.slice(0, 9).padEnd(9) + 'ms'
+          const avg = `avg ${`${timings[name] / typeRuns}`.slice(0, 9).padEnd(9)}ms`
           const total = timings[name]
           totalTime += total
           return `${name.slice(0, 14).padStart(15)} | ${avg} | total ${total}ms`

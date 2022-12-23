@@ -1,6 +1,7 @@
 import { MatchMedia, MediaQueryList } from '../types'
 
-export const matchMedia = (typeof window !== 'undefined' && window.matchMedia) || matchMediaFallback
+export const matchMedia =
+  (typeof window !== 'undefined' && window.matchMedia) || matchMediaFallback
 
 function matchMediaFallback(_: string): MediaQueryList {
   return {

@@ -1,4 +1,10 @@
-import { isClient, isRSC, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import {
+  isClient,
+  isRSC,
+  isServer,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
 import {
   stylePropsText,
   stylePropsTransform,
@@ -198,7 +204,8 @@ const accessibilityRoleToWebRole = {
 //     const styles = {}
 //     const classNames = {}
 
-const isMediaKey = (key: string) => Boolean(key[0] === '$' && mediaQueryConfig[key.slice(1)])
+const isMediaKey = (key: string) =>
+  Boolean(key[0] === '$' && mediaQueryConfig[key.slice(1)])
 
 export const getSplitStyles: StyleSplitter = (
   props,
@@ -264,7 +271,7 @@ export const getSplitStyles: StyleSplitter = (
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     // eslint-disable-next-line no-console
-    console.groupCollapsed(`getSplitStyles`)
+    console.groupCollapsed('getSplitStyles')
     // eslint-disable-next-line no-console
     console.log(staticConfig, { shouldDoClasses, state, IS_STATIC })
     // eslint-disable-next-line no-console
@@ -300,7 +307,7 @@ export const getSplitStyles: StyleSplitter = (
         mergeClassName(transforms, classNames, fullKey, cn, isMediaOrPseudo)
       } else {
         if (cn) {
-          className += ' ' + cn
+          className += ` ${cn}`
         }
       }
     }
@@ -447,7 +454,11 @@ export const getSplitStyles: StyleSplitter = (
           case 'accessibilityReadOnly': {
             viewProps['aria-readonly'] = valInit
             // Enhance with native semantics
-            if (elementType === 'input' || elementType === 'select' || elementType === 'textarea') {
+            if (
+              elementType === 'input' ||
+              elementType === 'select' ||
+              elementType === 'textarea'
+            ) {
               viewProps.readOnly = true
             }
             break
@@ -455,7 +466,11 @@ export const getSplitStyles: StyleSplitter = (
           case 'accessibilityRequired': {
             viewProps['aria-required'] = valInit
             // Enhance with native semantics
-            if (elementType === 'input' || elementType === 'select' || elementType === 'textarea') {
+            if (
+              elementType === 'input' ||
+              elementType === 'select' ||
+              elementType === 'textarea'
+            ) {
               viewProps.required = true
             }
             break
@@ -514,11 +529,13 @@ export const getSplitStyles: StyleSplitter = (
     let isPseudo = validPseudoKeys[keyInit]
 
     if (
-      !isMedia &&
-      !isPseudo &&
-      !variants?.[keyInit] &&
-      !validStyleProps[keyInit] &&
-      !shorthands[keyInit]
+      !(
+        isMedia ||
+        isPseudo ||
+        variants?.[keyInit] ||
+        validStyleProps[keyInit] ||
+        shorthands[keyInit]
+      )
     ) {
       // web-only, exclude all other accessibility props not handled above
       if (isWeb && keyInit.includes('ccessibility')) {
@@ -537,7 +554,16 @@ export const getSplitStyles: StyleSplitter = (
     const expanded =
       isMedia || isPseudo
         ? [[keyInit, valInit]]
-        : propMapper(keyInit, valInit, theme, props, state, languageContext, undefined, debug)
+        : propMapper(
+            keyInit,
+            valInit,
+            theme,
+            props,
+            state,
+            languageContext,
+            undefined,
+            debug
+          )
 
     if (!fontFamily) {
       fontFamily = getPropMappedFontFamily(expanded)
@@ -546,7 +572,9 @@ export const getSplitStyles: StyleSplitter = (
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       if (!isServer && isWeb) {
         // eslint-disable-next-line no-console
-        console.log('expanded', expanded, '\nusedKeys', usedKeys, '\ncurrent', { ...style })
+        console.log('expanded', expanded, '\nusedKeys', usedKeys, '\ncurrent', {
+          ...style,
+        })
       }
       // eslint-disable-next-line no-console
       console.groupEnd()
@@ -575,7 +603,13 @@ export const getSplitStyles: StyleSplitter = (
         if (!val) continue
 
         // TODO can avoid processing this if !shouldDoClasses + state is off
-        const pseudoStyleObject = getSubStyle(styleState, key, val, true, state.noClassNames)
+        const pseudoStyleObject = getSubStyle(
+          styleState,
+          key,
+          val,
+          true,
+          state.noClassNames
+        )
 
         const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
         const isEnter = descriptor.name === 'enter'
@@ -630,9 +664,9 @@ export const getSplitStyles: StyleSplitter = (
               psuedosUsed[pkey] = importance
               pseudos[key] ||= {}
               pseudos[key][pkey] = val
-              // prettier-ignore
               // eslint-disable-next-line no-console
-              if (process.env.NODE_ENV === 'development' && debug === 'verbose') console.log('merging', pkey, val)
+              if (process.env.NODE_ENV === 'development' && debug === 'verbose')
+                console.log('merging', pkey, val)
               mergeStyle(styleState, pkey, val)
             }
           }
@@ -660,9 +694,14 @@ export const getSplitStyles: StyleSplitter = (
         const mediaKeyShort = key.slice(1)
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          // prettier-ignore
           // eslint-disable-next-line no-console
-          console.log(`  📺 ${key}`, mediaState[mediaKeyShort], { key, mediaStyle, props, shouldDoClasses, mediaState: { ...mediaState } })
+          console.log(`  📺 ${key}`, mediaState[mediaKeyShort], {
+            key,
+            mediaStyle,
+            props,
+            shouldDoClasses,
+            mediaState: { ...mediaState },
+          })
         }
 
         if ('space' in mediaStyle) {
@@ -692,13 +731,23 @@ export const getSplitStyles: StyleSplitter = (
           }
         } else if (mediaState[mediaKeyShort]) {
           for (const subKey in mediaStyle) {
-            const importance = getMediaImportanceIfMoreImportant(mediaKeyShort, subKey, usedKeys)
+            const importance = getMediaImportanceIfMoreImportant(
+              mediaKeyShort,
+              subKey,
+              usedKeys
+            )
             if (importance === null) continue
             if (subKey === 'space') {
               space = valInit.space
               continue
             }
-            mergeMediaByImportance(style, mediaKeyShort, subKey, mediaStyle[subKey], usedKeys)
+            mergeMediaByImportance(
+              style,
+              mediaKeyShort,
+              subKey,
+              mediaStyle[subKey],
+              usedKeys
+            )
             if (key === 'fontFamily') {
               fontFamily = mediaStyle[key]
             }
@@ -723,7 +772,7 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       // pass to view props
-      if (!variants || !(key in variants)) {
+      if (!(variants && key in variants)) {
         if (!skipProps[key]) {
           viewProps[key] = val
           usedKeys[key] = 1
@@ -741,9 +790,12 @@ export const getSplitStyles: StyleSplitter = (
   // and allow proper merging of all pseudos before applying
   if (flatTransforms) {
     if (process.env.NODE_ENV === 'development' && debug) {
-      // prettier-ignore
       // eslint-disable-next-line no-console
-      console.log(`Merging flat transforms, transform before`, [...style.transform || []], flatTransforms)
+      console.log(
+        'Merging flat transforms, transform before',
+        [...(style.transform || [])],
+        flatTransforms
+      )
     }
     mergeTransforms(style, flatTransforms, true)
   }
@@ -826,11 +878,16 @@ export const getSplitStyles: StyleSplitter = (
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (isDevTools) {
-      // prettier-ignore
       // eslint-disable-next-line no-console
       console.groupCollapsed('  🔹 styles =>')
-      // prettier-ignore
-      const logs = { transforms, viewProps, state, rulesToInsert, parentSplitStyles, flatTransforms }
+      const logs = {
+        transforms,
+        viewProps,
+        state,
+        rulesToInsert,
+        parentSplitStyles,
+        flatTransforms,
+      }
       for (const key in { ...result, ...logs }) {
         // eslint-disable-next-line no-console
         console.log(key, logs[key])
@@ -902,7 +959,11 @@ function mergeClassName(
  * and to avoid re-creating it over and over, use a WeakMap
  */
 const cache = new WeakMap()
-function getSubStyleProps(defaultProps: Object, baseProps: Object, specificProps: Object) {
+function getSubStyleProps(
+  defaultProps: Object,
+  baseProps: Object,
+  specificProps: Object
+) {
   const key = specificProps || baseProps
   // can cache based only on specific it's always referentially consistent with base
   if (!cache.has(key)) {
@@ -983,7 +1044,9 @@ export const insertSplitStyles: StyleSplitter = (...args) => {
 }
 
 // on native no need to insert any css
-const useInsertEffectCompat = isWeb ? useInsertionEffect || useIsomorphicLayoutEffect : () => {}
+const useInsertEffectCompat = isWeb
+  ? useInsertionEffect || useIsomorphicLayoutEffect
+  : () => {}
 
 export const useSplitStyles: StyleSplitter = (...args) => {
   const res = getSplitStyles(...args)
@@ -997,7 +1060,10 @@ export const useSplitStyles: StyleSplitter = (...args) => {
   return res
 }
 
-function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: PartialStyleObject) {
+function addStyleToInsertRules(
+  rulesToInsert: RulesToInsert,
+  styleObject: PartialStyleObject
+) {
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (!shouldInsertStyleRules(styleObject)) {
       return

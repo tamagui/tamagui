@@ -27,7 +27,7 @@ type Runnable = {
 
 export type ComponentProvider = () => ComponentType<any>
 export type ComponentProviderInstrumentationHook = (
-  component: ComponentProvider
+  component: ComponentProvider,
 ) => ComponentType<any>
 export type WrapperComponentProvider = (arg0: any) => ComponentType<unknown>
 
@@ -44,7 +44,7 @@ const runnables: {
 } = {}
 
 let componentProviderInstrumentationHook: ComponentProviderInstrumentationHook = (
-  component: ComponentProvider
+  component: ComponentProvider,
 ) => component()
 let wrapperComponentProvider: WrapperComponentProvider | null
 
@@ -58,7 +58,7 @@ export default class AppRegistry {
 
   static getApplication(
     appKey: string,
-    appParameters?: AppParams
+    appParameters?: AppParams,
   ): {
     element: ReactNode
     getStyleElement: (arg0: any) => ReactNode
@@ -66,20 +66,23 @@ export default class AppRegistry {
     invariant(
       runnables[appKey] && runnables[appKey].getApplication,
       `Application ${appKey} has not been registered. ` +
-        'This is either due to an import error during initialization or failure to call AppRegistry.registerComponent.'
+        'This is either due to an import error during initialization or failure to call AppRegistry.registerComponent.',
     )
 
     // @ts-ignore
     return runnables[appKey]?.getApplication?.(appParameters)
   }
 
-  static registerComponent(appKey: string, componentProvider: ComponentProvider): string {
+  static registerComponent(
+    appKey: string,
+    componentProvider: ComponentProvider,
+  ): string {
     runnables[appKey] = {
       getApplication: (appParameters: any) =>
         getApplication(
           componentProviderInstrumentationHook(componentProvider),
           appParameters ? appParameters.initialProps : emptyObject,
-          wrapperComponentProvider && wrapperComponentProvider(appParameters)
+          wrapperComponentProvider && wrapperComponentProvider(appParameters),
         ),
       run: (appParameters: any) =>
         renderApplication(
@@ -91,7 +94,7 @@ export default class AppRegistry {
             initialProps: appParameters.initialProps || emptyObject,
             mode: appParameters.mode || 'legacy',
             rootTag: appParameters.rootTag,
-          }
+          },
         ),
     }
     return appKey
@@ -117,7 +120,8 @@ export default class AppRegistry {
   }
 
   static runApplication(appKey: string, appParameters: Record<string, any>): void {
-    const isDevelopment = process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test'
+    const isDevelopment =
+      process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test'
     if (isDevelopment) {
       const params = { ...appParameters }
       params.rootTag = `#${params.rootTag.id}`
@@ -127,20 +131,22 @@ export default class AppRegistry {
         `Running application "${appKey}" with appParams:\n`,
         params,
         `\nDevelopment-level warnings: ${isDevelopment ? 'ON' : 'OFF'}.` +
-          `\nPerformance optimizations: ${isDevelopment ? 'OFF' : 'ON'}.`
+          `\nPerformance optimizations: ${isDevelopment ? 'OFF' : 'ON'}.`,
       )
     }
 
     invariant(
       runnables[appKey] && runnables[appKey].run,
       `Application "${appKey}" has not been registered. ` +
-        'This is either due to an import error during initialization or failure to call AppRegistry.registerComponent.'
+        'This is either due to an import error during initialization or failure to call AppRegistry.registerComponent.',
     )
 
     return runnables[appKey].run(appParameters)
   }
 
-  static setComponentProviderInstrumentationHook(hook: ComponentProviderInstrumentationHook) {
+  static setComponentProviderInstrumentationHook(
+    hook: ComponentProviderInstrumentationHook,
+  ) {
     componentProviderInstrumentationHook = hook
   }
 

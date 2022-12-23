@@ -13,7 +13,7 @@ export function getSourceModule(
   itemBinding: {
     constant?: boolean
     path: { node: t.Node; parent: any }
-  }
+  },
 ): SourceModule | null {
   // TODO: deal with reassignment
   if (!itemBinding.constant) {

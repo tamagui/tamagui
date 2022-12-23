@@ -8,14 +8,16 @@ export function themed<A extends React.FC>(Component: A) {
       (props.color in theme ? theme[props.color] : undefined) ||
         props.color ||
         (!props.disableTheme ? theme.color : null) ||
-        '#000'
+        '#000',
     )
     return (
       <Component
         {...props}
         color={color}
         size={
-          typeof props.size === 'string' ? getVariable(theme[props.size] || props.size) : props.size
+          typeof props.size === 'string'
+            ? getVariable(theme[props.size] || props.size)
+            : props.size
         }
       />
     )

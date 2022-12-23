@@ -42,7 +42,7 @@ export function attachNativeEvent(viewRef, eventName, argMapping, platformConfig
 
   invariant(
     argMapping[0] && argMapping[0].nativeEvent,
-    'Native driven events only support animated values contained inside `nativeEvent`.'
+    'Native driven events only support animated values contained inside `nativeEvent`.',
   )
 
   // Assume that the event containing `nativeEvent` is always the first argument.
@@ -63,7 +63,7 @@ export function attachNativeEvent(viewRef, eventName, argMapping, platformConfig
             viewTag,
             eventName,
             // $FlowFixMe[incompatible-call]
-            mapping.animatedValueTag
+            mapping.animatedValueTag,
           )
         })
       }
@@ -76,14 +76,17 @@ function validateMapping(argMapping, args) {
     if (recMapping instanceof AnimatedValue) {
       invariant(
         typeof recEvt === 'number',
-        'Bad mapping of event key ' + key + ', should be number but got ' + typeof recEvt
+        'Bad mapping of event key ' +
+          key +
+          ', should be number but got ' +
+          typeof recEvt,
       )
       return
     }
     if (recMapping instanceof AnimatedValueXY) {
       invariant(
         typeof recEvt.x === 'number' && typeof recEvt.y === 'number',
-        'Bad mapping of event key ' + key + ', should be XY but got ' + recEvt
+        'Bad mapping of event key ' + key + ', should be XY but got ' + recEvt,
       )
       return
     }
@@ -94,21 +97,27 @@ function validateMapping(argMapping, args) {
           typeof recMapping +
           ' for key ' +
           key +
-          ', event value must map to AnimatedValue'
+          ', event value must map to AnimatedValue',
       )
       return
     }
     invariant(
       typeof recMapping === 'object',
-      'Bad mapping of type ' + typeof recMapping + ' for key ' + key
+      'Bad mapping of type ' + typeof recMapping + ' for key ' + key,
     )
-    invariant(typeof recEvt === 'object', 'Bad event of type ' + typeof recEvt + ' for key ' + key)
+    invariant(
+      typeof recEvt === 'object',
+      'Bad event of type ' + typeof recEvt + ' for key ' + key,
+    )
     for (const mappingKey in recMapping) {
       validate(recMapping[mappingKey], recEvt[mappingKey], mappingKey)
     }
   }
 
-  invariant(args.length >= argMapping.length, 'Event has less arguments than mapping')
+  invariant(
+    args.length >= argMapping.length,
+    'Event has less arguments than mapping',
+  )
   argMapping.forEach((mapping, idx) => {
     validate(mapping, args[idx], 'arg' + idx)
   })
@@ -152,7 +161,7 @@ export class AnimatedEvent {
       viewRef,
       eventName,
       this._argMapping,
-      this.__platformConfig
+      this.__platformConfig,
     )
   }
 

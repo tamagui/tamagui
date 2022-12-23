@@ -12,7 +12,8 @@ import createEventHandle from '../createEventHandle/index.js'
 
 export type Modality = 'keyboard' | 'mouse' | 'touch' | 'pen'
 
-const supportsPointerEvent = () => !!(typeof window !== 'undefined' && window.PointerEvent != null)
+const supportsPointerEvent = () =>
+  !!(typeof window !== 'undefined' && window.PointerEvent != null)
 
 let activeModality = 'keyboard'
 let modality = 'keyboard'
@@ -49,7 +50,10 @@ const addBlurListener = createEventHandle(BLUR, bubbleOptions)
 const addFocusListener = createEventHandle(FOCUS, bubbleOptions)
 // Must be capture phase because 'stopPropagation' might prevent these
 // events bubbling to the document.
-const addVisibilityChangeListener = createEventHandle(VISIBILITYCHANGE, captureOptions)
+const addVisibilityChangeListener = createEventHandle(
+  VISIBILITYCHANGE,
+  captureOptions,
+)
 const addKeyDownListener = createEventHandle(KEYDOWN, captureOptions)
 const addPointerDownListener = createEventHandle(POINTERDOWN, captureOptions)
 const addPointerMoveListener = createEventHandle(POINTERMOVE, captureOptions)
@@ -212,7 +216,7 @@ export function getModality() {
 }
 
 export function addModalityListener(
-  listener: (arg0: { activeModality: Modality; modality: Modality }) => void
+  listener: (arg0: { activeModality: Modality; modality: Modality }) => void,
 ): () => void {
   listeners.add(listener)
   return () => {

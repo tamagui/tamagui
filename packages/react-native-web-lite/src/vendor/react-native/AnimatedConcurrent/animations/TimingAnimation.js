@@ -84,7 +84,7 @@ export default class TimingAnimation extends Animation {
         } else {
           this._animationFrame = requestAnimationFrame(
             // $FlowFixMe[method-unbinding] added when improving typing for this parameters
-            this.onUpdate.bind(this)
+            this.onUpdate.bind(this),
           )
         }
       }
@@ -102,7 +102,9 @@ export default class TimingAnimation extends Animation {
       if (this._duration === 0) {
         this._onUpdate(this._toValue)
       } else {
-        this._onUpdate(this._fromValue + this._easing(1) * (this._toValue - this._fromValue))
+        this._onUpdate(
+          this._fromValue + this._easing(1) * (this._toValue - this._fromValue),
+        )
       }
       this.__debouncedOnEnd({ finished: true })
       return
@@ -110,7 +112,8 @@ export default class TimingAnimation extends Animation {
 
     this._onUpdate(
       this._fromValue +
-        this._easing((now - this._startTime) / this._duration) * (this._toValue - this._fromValue)
+        this._easing((now - this._startTime) / this._duration) *
+          (this._toValue - this._fromValue),
     )
     if (this.__active) {
       // $FlowFixMe[method-unbinding] added when improving typing for this parameters

@@ -4,8 +4,11 @@ import { StaticConfig, StaticConfigParsed, StylableComponent } from '../types'
 import { createPropMapper } from './createPropMapper'
 import { mergeProps } from './mergeProps'
 
-export function extendStaticConfig(config: Partial<StaticConfig>, parent?: StylableComponent) {
-  if (!parent || !('staticConfig' in parent)) {
+export function extendStaticConfig(
+  config: Partial<StaticConfig>,
+  parent?: StylableComponent
+) {
+  if (!(parent && 'staticConfig' in parent)) {
     return parseStaticConfig(config)
   }
 

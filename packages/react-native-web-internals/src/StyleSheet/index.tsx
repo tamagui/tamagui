@@ -101,8 +101,8 @@ function compose(style1: any, style2: any): any {
       const readableStyles = [...arguments].map((a) => flatten(a))
       throw new Error(
         `StyleSheet.compose() only accepts 2 arguments, received ${len}: ${JSON.stringify(
-          readableStyles
-        )}`
+          readableStyles,
+        )}`,
       )
     }
     /* eslint-enable prefer-rest-params */

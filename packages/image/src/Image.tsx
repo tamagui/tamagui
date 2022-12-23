@@ -22,7 +22,10 @@ const StyledImage = styled(RNImage, {
 
 type StyledImageProps = GetProps<typeof StyledImage>
 
-type BaseProps = Omit<StyledImageProps, 'source' | 'width' | 'height' | 'style' | 'onLayout'> & {
+type BaseProps = Omit<
+  StyledImageProps,
+  'source' | 'width' | 'height' | 'style' | 'onLayout'
+> & {
   width: number | string
   height: number | string
   src: string | StyledImageProps['source']

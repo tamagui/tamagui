@@ -396,7 +396,7 @@ describe('ThemeManager', () => {
     expect(child.state.name).toBe('dark_red')
   })
 
-  test(`Uses the full className without the light/dark prefix`, () => {
+  test('Uses the full className without the light/dark prefix', () => {
     const parent = new ThemeManager(
       {
         name: 'dark',
@@ -426,7 +426,7 @@ describe('ThemeManager', () => {
     expect(child3.state.className).toBe('t_red_alt2')
   })
 
-  test(`Finds component dark_red + Button`, () => {
+  test('Finds component dark_red + Button', () => {
     const parent = new ThemeManager(
       {
         name: 'dark_red',
@@ -444,7 +444,7 @@ describe('ThemeManager', () => {
     expect(child.state.name).toBe('dark_red_Button')
   })
 
-  test(`Drops componentName if only regular name found at stronger level`, () => {
+  test('Drops componentName if only regular name found at stronger level', () => {
     const parent = new ThemeManager(
       {
         name: 'dark_red',
@@ -461,7 +461,7 @@ describe('ThemeManager', () => {
     expect(child.state.name).toBe('dark_red_alt1')
   })
 
-  test(`Component name + theme change when nested already`, () => {
+  test('Component name + theme change when nested already', () => {
     const parent = new ThemeManager(
       {
         name: 'dark_red',
@@ -478,7 +478,7 @@ describe('ThemeManager', () => {
     expect(child.state.name).toBe('dark_yellow_Button')
   })
 
-  test(`Component name + name finds one up when component name missing`, () => {
+  test('Component name + name finds one up when component name missing', () => {
     const parent = new ThemeManager(
       {
         name: 'dark_red_alt1',

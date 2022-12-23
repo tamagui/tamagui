@@ -8,7 +8,11 @@
  */
 
 import React from 'react'
-import { AccessibilityUtil, LocaleProvider, createDOMProps } from 'react-native-web-internals'
+import {
+  AccessibilityUtil,
+  LocaleProvider,
+  createDOMProps,
+} from 'react-native-web-internals'
 
 const createElement = (component, props, options?) => {
   // Use equivalent platform elements where possible.

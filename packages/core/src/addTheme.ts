@@ -15,7 +15,7 @@ export function addTheme(props: {
 
   if (process.env.NODE_ENV === 'development') {
     if (!config) {
-      throw new Error(`No config`)
+      throw new Error('No config')
     }
     const theme = config.themes[props.name]
     if (!props.update && theme) {

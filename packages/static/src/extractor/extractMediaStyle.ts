@@ -1,6 +1,10 @@
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
-import { TamaguiInternalConfig, getStylesAtomic, mediaObjectToString } from '@tamagui/core-node'
+import {
+  TamaguiInternalConfig,
+  getStylesAtomic,
+  mediaObjectToString,
+} from '@tamagui/core-node'
 import type { ViewStyle } from 'react-native'
 
 import { MEDIA_SEP } from '../constants.js'
@@ -14,7 +18,7 @@ export function extractMediaStyle(
   tamaguiConfig: TamaguiInternalConfig,
   sourcePath: string,
   importance = 0,
-  shouldPrintDebug: boolean | 'verbose' = false
+  shouldPrintDebug: boolean | 'verbose' = false,
 ) {
   const mt = getMediaQueryTernary(props, ternary, jsxPath, sourcePath)
   if (!mt) {
@@ -24,7 +28,9 @@ export function extractMediaStyle(
   const mq = tamaguiConfig.media[key]
   if (!mq) {
     // eslint-disable-next-line no-console
-    console.error(`Media query "${key}" not found: ${Object.keys(tamaguiConfig.media)}`)
+    console.error(
+      `Media query "${key}" not found: ${Object.keys(tamaguiConfig.media)}`,
+    )
     return null
   }
   const getStyleObj = (styleObj: ViewStyle | null, negate = false) => {
@@ -56,7 +62,7 @@ export function extractMediaStyle(
       // to: "_f-_sm0_[hash]" or "_f-_sm_[hash]"
       const identifier = `${style.identifier.replace(
         ogPrefix,
-        `${ogPrefix}${MEDIA_SEP}${key}${negKey}${MEDIA_SEP}`
+        `${ogPrefix}${MEDIA_SEP}${key}${negKey}${MEDIA_SEP}`,
       )}`
       const className = `.${identifier}`
       const mediaSelector = mediaObjectToString(tamaguiConfig.media[key])
@@ -84,7 +90,12 @@ export function extractMediaStyle(
     if (shouldPrintDebug === 'verbose') {
       // prettier-ignore
       // eslint-disable-next-line no-console
-      console.log('  media styles:', importance, styleObj, singleMediaStyles.map(x => x.identifier).join(', '))
+      console.log(
+        '  media styles:',
+        importance,
+        styleObj,
+        singleMediaStyles.map((x) => x.identifier).join(', '),
+      )
     }
     // add to output
     mediaStyles = [...mediaStyles, ...singleMediaStyles]
@@ -98,7 +109,7 @@ function getMediaQueryTernary(
   props: TamaguiOptionsWithFileInfo,
   ternary: Ternary,
   jsxPath: NodePath<t.JSXElement>,
-  sourcePath: string
+  sourcePath: string,
 ): null | {
   key: string
   bindingName: string
@@ -113,7 +124,7 @@ function getMediaQueryTernary(
       ternary.test.left,
       jsxPath,
       sourcePath,
-      ternary.inlineMediaQuery
+      ternary.inlineMediaQuery,
     )
     if (mediaLeft) {
       return {
@@ -132,7 +143,7 @@ function getMediaQueryTernary(
     ternary.test,
     jsxPath,
     sourcePath,
-    ternary.inlineMediaQuery
+    ternary.inlineMediaQuery,
   )
   if (result) {
     return {
@@ -148,7 +159,7 @@ function getMediaInfoFromExpression(
   test: t.Expression,
   jsxPath: NodePath<t.JSXElement>,
   sourcePath: string,
-  inlineMediaQuery?: string
+  inlineMediaQuery?: string,
 ) {
   if (inlineMediaQuery) {
     return {
@@ -156,7 +167,11 @@ function getMediaInfoFromExpression(
       bindingName: inlineMediaQuery,
     }
   }
-  if (t.isMemberExpression(test) && t.isIdentifier(test.object) && t.isIdentifier(test.property)) {
+  if (
+    t.isMemberExpression(test) &&
+    t.isIdentifier(test.object) &&
+    t.isIdentifier(test.property)
+  ) {
     const name = test.object['name']
     const key = test.property['name']
     const bindings = jsxPath.scope.getAllBindings()
@@ -171,7 +186,8 @@ function getMediaInfoFromExpression(
     const key = test.name
     const node = jsxPath.scope.getBinding(test.name)?.path?.node
     if (!t.isVariableDeclarator(node)) return false
-    if (!node.init || !isValidMediaCall(props, jsxPath, node.init, sourcePath)) return false
+    if (!node.init || !isValidMediaCall(props, jsxPath, node.init, sourcePath))
+      return false
     return { key, bindingName: key }
   }
   return null
@@ -181,7 +197,7 @@ export function isValidMediaCall(
   props: TamaguiOptionsWithFileInfo,
   jsxPath: NodePath<t.JSXElement>,
   init: t.Expression,
-  sourcePath: string
+  sourcePath: string,
 ) {
   if (!t.isCallExpression(init)) return false
   if (!t.isIdentifier(init.callee)) return false

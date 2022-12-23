@@ -20,64 +20,64 @@ describe('modules/createDOMProps', () => {
 
       test('default case', () => {
         expect(createProps({ accessibilityRole })).toEqual(
-          expect.not.objectContaining({ tabIndex: '-1' })
+          expect.not.objectContaining({ tabIndex: '-1' }),
         )
       })
 
       test('when "focusable" is true', () => {
         expect(createProps({ accessibilityRole, focusable: true })).toEqual(
-          expect.not.objectContaining({ tabIndex: '-1' })
+          expect.not.objectContaining({ tabIndex: '-1' }),
         )
       })
 
       test('when "focusable" is false', () => {
         expect(createProps({ accessibilityRole, focusable: false })).toEqual(
-          expect.objectContaining({ tabIndex: '-1' })
+          expect.objectContaining({ tabIndex: '-1' }),
         )
       })
 
       test('when "accessibilityDisabled" is true', () => {
-        expect(createProps({ accessibilityRole, accessibilityDisabled: true })).toEqual(
-          expect.objectContaining({ 'aria-disabled': true })
-        )
+        expect(
+          createProps({ accessibilityRole, accessibilityDisabled: true }),
+        ).toEqual(expect.objectContaining({ 'aria-disabled': true }))
       })
 
       test('when "disabled" is false', () => {
-        expect(createProps({ accessibilityRole, accessibilityDisabled: false })).toEqual(
-          expect.not.objectContaining({ tabIndex: '-1' })
-        )
+        expect(
+          createProps({ accessibilityRole, accessibilityDisabled: false }),
+        ).toEqual(expect.not.objectContaining({ tabIndex: '-1' }))
       })
     })
 
     const testFocusableRole = (accessibilityRole) => {
       test('default case', () => {
         expect(createProps({ accessibilityRole })).toEqual(
-          expect.objectContaining({ tabIndex: '0' })
+          expect.objectContaining({ tabIndex: '0' }),
         )
       })
 
       test('when "focusable" is true', () => {
         expect(createProps({ accessibilityRole, focusable: true })).toEqual(
-          expect.objectContaining({ tabIndex: '0' })
+          expect.objectContaining({ tabIndex: '0' }),
         )
       })
 
       test('when "focusable" is false', () => {
         expect(createProps({ accessibilityRole, focusable: false })).toEqual(
-          expect.objectContaining({ tabIndex: '-1' })
+          expect.objectContaining({ tabIndex: '-1' }),
         )
       })
 
       test('when "accessibilityDisabled" is true', () => {
-        expect(createProps({ accessibilityRole, accessibilityDisabled: true })).toEqual(
-          expect.objectContaining({ 'aria-disabled': true })
-        )
+        expect(
+          createProps({ accessibilityRole, accessibilityDisabled: true }),
+        ).toEqual(expect.objectContaining({ 'aria-disabled': true }))
       })
 
       test('when "accessibilityDisabled" is false', () => {
-        expect(createProps({ accessibilityRole, accessibilityDisabled: false })).toEqual(
-          expect.objectContaining({ tabIndex: '0' })
-        )
+        expect(
+          createProps({ accessibilityRole, accessibilityDisabled: false }),
+        ).toEqual(expect.objectContaining({ tabIndex: '0' }))
       })
     }
 
@@ -87,12 +87,14 @@ describe('modules/createDOMProps', () => {
 
     describe('with unfocusable accessibilityRole', () => {
       test('when "focusable" is true', () => {
-        expect(createProps({ focusable: true })).toEqual(expect.objectContaining({ tabIndex: '0' }))
+        expect(createProps({ focusable: true })).toEqual(
+          expect.objectContaining({ tabIndex: '0' }),
+        )
       })
 
       test('when "focusable" is false', () => {
         expect(createProps({ focusable: false })).toEqual(
-          expect.objectContaining({ tabIndex: '-1' })
+          expect.objectContaining({ tabIndex: '-1' }),
         )
       })
     })

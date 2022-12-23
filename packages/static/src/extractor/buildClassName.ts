@@ -4,7 +4,7 @@ import type { ClassNameObject } from '../types.js'
 
 type Builder = (
   objects: ClassNameObject[],
-  extras?: string
+  extras?: string,
 ) => t.Expression | t.StringLiteral | null
 
 export const buildClassName: Builder = (objectsIn, extras = '') => {
@@ -53,21 +53,21 @@ export const buildClassNameLogic: Builder = (objects) => {
       inner = t.conditionalExpression(
         val,
         t.binaryExpression('+', t.stringLiteral(' '), val),
-        t.stringLiteral('')
+        t.stringLiteral(''),
       )
     } else {
       if (t.isStringLiteral(acc)) {
         return t.binaryExpression(
           '+',
           t.stringLiteral(`${acc.value} `),
-          t.logicalExpression('||', val, t.stringLiteral(''))
+          t.logicalExpression('||', val, t.stringLiteral('')),
         )
       }
       // use a logical expression for more complex prop values
       inner = t.binaryExpression(
         '+',
         t.stringLiteral(' '),
-        t.logicalExpression('||', val, t.stringLiteral(''))
+        t.logicalExpression('||', val, t.stringLiteral('')),
       )
     }
 

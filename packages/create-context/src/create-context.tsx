@@ -7,7 +7,7 @@ export type ScopedProps<P, K extends string> = P & { [Key in `__scope${K}`]?: Sc
 
 export function createContext<ContextValueType extends object | null>(
   rootComponentName: string,
-  defaultContext?: ContextValueType
+  defaultContext?: ContextValueType,
 ) {
   const Context = React.createContext<ContextValueType | undefined>(defaultContext)
 
@@ -15,7 +15,10 @@ export function createContext<ContextValueType extends object | null>(
     const { children, ...context } = props
     // Only re-memoize when prop values change
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const value = React.useMemo(() => context, Object.values(context)) as ContextValueType
+    const value = React.useMemo(
+      () => context,
+      Object.values(context),
+    ) as ContextValueType
     return <Context.Provider value={value}>{children}</Context.Provider>
   }
 
@@ -24,10 +27,12 @@ export function createContext<ContextValueType extends object | null>(
     if (context) return context
     if (defaultContext !== undefined) return defaultContext
     // if a defaultContext wasn't specified, it's a required context.
-    throw new Error(`\`${consumerName}\` must be used within \`${rootComponentName}\``)
+    throw new Error(
+      `\`${consumerName}\` must be used within \`${rootComponentName}\``,
+    )
   }
 
-  Provider.displayName = rootComponentName + 'Provider'
+  Provider.displayName = `${rootComponentName}Provider`
   return [Provider, useContext] as const
 }
 
@@ -44,7 +49,10 @@ export interface CreateScope {
   (): ScopeHook
 }
 
-export function createContextScope(scopeName: string, createContextScopeDeps: CreateScope[] = []) {
+export function createContextScope(
+  scopeName: string,
+  createContextScopeDeps: CreateScope[] = [],
+) {
   let defaultContexts: any[] = []
 
   /* -----------------------------------------------------------------------------------------------
@@ -53,33 +61,46 @@ export function createContextScope(scopeName: string, createContextScopeDeps: Cr
 
   function createContext<ContextValueType extends object | null>(
     rootComponentName: string,
-    defaultContext?: ContextValueType
+    defaultContext?: ContextValueType,
   ) {
-    const BaseContext = React.createContext<ContextValueType | undefined>(defaultContext)
+    const BaseContext = React.createContext<ContextValueType | undefined>(
+      defaultContext,
+    )
     const index = defaultContexts.length
     defaultContexts = [...defaultContexts, defaultContext]
 
     function Provider(
-      props: ContextValueType & { scope: Scope<ContextValueType>; children: React.ReactNode }
+      props: ContextValueType & {
+        scope: Scope<ContextValueType>
+        children: React.ReactNode
+      },
     ) {
       const { scope, children, ...context } = props
       const Context = scope?.[scopeName][index] || BaseContext
       // Only re-memoize when prop values change
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      const value = React.useMemo(() => context, Object.values(context)) as ContextValueType
+      const value = React.useMemo(
+        () => context,
+        Object.values(context),
+      ) as ContextValueType
       return <Context.Provider value={value}>{children}</Context.Provider>
     }
 
-    function useContext(consumerName: string, scope: Scope<ContextValueType | undefined>) {
+    function useContext(
+      consumerName: string,
+      scope: Scope<ContextValueType | undefined>,
+    ) {
       const Context = scope?.[scopeName][index] || BaseContext
       const context = React.useContext(Context)
       if (context) return context
       if (defaultContext !== undefined) return defaultContext
       // if a defaultContext wasn't specified, it's a required context.
-      throw new Error(`\`${consumerName}\` must be used within \`${rootComponentName}\``)
+      throw new Error(
+        `\`${consumerName}\` must be used within \`${rootComponentName}\``,
+      )
     }
 
-    Provider.displayName = rootComponentName + 'Provider'
+    Provider.displayName = `${rootComponentName}Provider`
     return [Provider, useContext] as const
   }
 
@@ -95,13 +116,16 @@ export function createContextScope(scopeName: string, createContextScopeDeps: Cr
       const contexts = scope?.[scopeName] || scopeContexts
       return React.useMemo(
         () => ({ [`__scope${scopeName}`]: { ...scope, [scopeName]: contexts } }),
-        [scope, contexts]
+        [scope, contexts],
       )
     }
   }
 
   createScope.scopeName = scopeName
-  return [createContext, composeContextScopes(createScope, ...createContextScopeDeps)] as const
+  return [
+    createContext,
+    composeContextScopes(createScope, ...createContextScopeDeps),
+  ] as const
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -128,7 +152,10 @@ function composeContextScopes(...scopes: CreateScope[]) {
         return { ...nextScopes, ...currentScope }
       }, {})
 
-      return React.useMemo(() => ({ [`__scope${baseScope.scopeName}`]: nextScopes }), [nextScopes])
+      return React.useMemo(
+        () => ({ [`__scope${baseScope.scopeName}`]: nextScopes }),
+        [nextScopes],
+      )
     }
   }
 

@@ -18,7 +18,13 @@ export type EdgeInsetsValue = {
   bottom: number
 }
 
-export type GenericStyleProp<T> = null | void | T | false | '' | ReadonlyArray<GenericStyleProp<T>>
+export type GenericStyleProp<T> =
+  | null
+  | void
+  | T
+  | false
+  | ''
+  | ReadonlyArray<GenericStyleProp<T>>
 
 export type LayoutValue = {
   x: number
@@ -46,10 +52,15 @@ type LayoutCallback = (
   width: number,
   height: number,
   left: number,
-  top: number
+  top: number,
 ) => void
 
-type MeasureInWindowCallback = (left: number, top: number, width: number, height: number) => void
+type MeasureInWindowCallback = (
+  left: number,
+  top: number,
+  width: number,
+  height: number,
+) => void
 
 // Mixin to HTMLElement that represents additions from the `usePlatformMethods` hook
 export interface PlatformMethods {
@@ -57,6 +68,10 @@ export interface PlatformMethods {
   focus: () => void
   measure: (callback: LayoutCallback) => void
   measureInWindow: (callback: MeasureInWindowCallback) => void
-  measureLayout: (relativeToNativeNode: {}, onSuccess: LayoutCallback, onFail: () => void) => void
+  measureLayout: (
+    relativeToNativeNode: {},
+    onSuccess: LayoutCallback,
+    onFail: () => void,
+  ) => void
   setNativeProps: (nativeProps: {}) => void
 }
