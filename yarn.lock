@@ -5917,7 +5917,7 @@ __metadata:
     cheerio: ^1.0.0-rc.5
     glob: ^7.1.6
     lucide-static: ^0.91.0
-    prettier: ^2.6.1
+    prettier: ^2.8.1
     prettier-plugin-import-sort: ^0.0.7
     prop-types: ^15.7.2
     react: ^18.2.0
@@ -19880,7 +19880,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.6.1":
+"prettier@npm:^2.8.1":
   version: 2.8.1
   resolution: "prettier@npm:2.8.1"
   bin:
@@ -22883,6 +22883,7 @@ __metadata:
     "@types/react": ^18.0.15
     import-sort-style-module: ^6.0.0
     npm-run-all: ^4.1.5
+    prettier: ^2.8.1
     pretty-quick: ^3.1.2
     prompts: 2.1.0
     rome: ^11.0.0
