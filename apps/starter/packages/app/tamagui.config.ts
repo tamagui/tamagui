@@ -1,9 +1,3 @@
-import { config } from '@starter/config'
-
-export type Conf = typeof config
-
-declare module '@starter/ui' {
-  interface TamaguiCustomConfig extends Conf {}
-}
+import { config } from '@my/ui'
 
 export default config
