@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "@tamagui/core": "^1.0.1-rc.5.1",
-    "@tamagui/stacks": "^1.0.1-rc.5.1"
+    "@tamagui/stacks": "^1.0.1-rc.5.1",
+    "@tamagui/use-event": "^1.0.1-rc.5.1"
   },
   "peerDependencies": {
     "react": "^18.2.0",

@@ -60,7 +60,7 @@ export interface PortalHostProps {
     name: string;
     forwardProps?: Record<string, any>;
 }
-export declare const PortalHost: React.MemoExoticComponent<({ name, forwardProps }: PortalHostProps) => JSX.Element>;
+export declare const PortalHost: React.MemoExoticComponent<(props: PortalHostProps) => JSX.Element>;
 export interface PortalItemProps {
     /**
      * Portal's key or name to be used as an identifier.
@@ -102,5 +102,5 @@ export interface PortalItemProps {
      */
     children?: ReactNode | ReactNode[];
 }
-export declare const PortalItem: React.MemoExoticComponent<({ name: _providedName, hostName, handleOnMount: _providedHandleOnMount, handleOnUnmount: _providedHandleOnUnmount, handleOnUpdate: _providedHandleOnUpdate, children, }: PortalItemProps) => null>;
+export declare const PortalItem: React.MemoExoticComponent<(props: PortalItemProps) => null>;
 //# sourceMappingURL=GorhomPortal.d.ts.map

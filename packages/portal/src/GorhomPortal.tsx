@@ -2,7 +2,7 @@
 // MIT License Copyright (c) 2020 Mo Gorhom
 // fixing SSR issue
 
-import { spacedChildren, useDidFinishSSR, useIsomorphicLayoutEffect } from '@tamagui/core'
+import { spacedChildren, useDidFinishSSR, useEvent, useIsomorphicLayoutEffect } from '@tamagui/core'
 import React, {
   ReactNode,
   cloneElement,
@@ -265,12 +265,11 @@ export interface PortalHostProps {
   forwardProps?: Record<string, any>
 }
 
-const PortalHostComponent = ({ name, forwardProps }: PortalHostProps) => {
-  //#region hooks
+const PortalHostComponent = (props: PortalHostProps) => {
+  const { name, forwardProps } = props
   const isServer = !useDidFinishSSR()
   const state = usePortalState(name)
-  const { registerHost, deregisterHost } = usePortal(name)
-  //#endregion
+  const { registerHost, deregisterHost } = usePortal(props.name)
 
   //#region effects
   useEffect(() => {
@@ -360,78 +359,53 @@ export interface PortalItemProps {
   children?: ReactNode | ReactNode[]
 }
 
-const PortalComponent = ({
-  name: _providedName,
-  hostName,
-  handleOnMount: _providedHandleOnMount,
-  handleOnUnmount: _providedHandleOnUnmount,
-  handleOnUpdate: _providedHandleOnUpdate,
-  children,
-}: PortalItemProps) => {
-  //#region hooks
+const PortalComponent = (props: PortalItemProps) => {
+  const {
+    name: _providedName,
+    hostName,
+    handleOnMount: _providedHandleOnMount,
+    handleOnUnmount: _providedHandleOnUnmount,
+    handleOnUpdate: _providedHandleOnUpdate,
+    children,
+  } = props
   const { addPortal: addUpdatePortal, removePortal } = usePortal(hostName)
-  //#endregion
   const id = useId()
+  const name = _providedName || id
 
-  //#region variables
-  const name = useMemo(() => _providedName || id, [_providedName])
-  //#endregion
-
-  //#region refs
-  const handleOnMountRef = useRef<Function>()
-  const handleOnUnmountRef = useRef<Function>()
-  const handleOnUpdateRef = useRef<Function>()
-  //#endregion
-
-  //#region callbacks
-  const handleOnMount = useCallback(() => {
+  const handleOnMount = useEvent(() => {
     if (_providedHandleOnMount) {
       _providedHandleOnMount(() => addUpdatePortal(name, children))
     } else {
       addUpdatePortal(name, children)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [_providedHandleOnMount, addUpdatePortal])
-  handleOnMountRef.current = handleOnMount
+  })
 
-  const handleOnUnmount = useCallback(() => {
+  const handleOnUnmount = useEvent(() => {
     if (_providedHandleOnUnmount) {
       _providedHandleOnUnmount(() => removePortal(name))
     } else {
       removePortal(name)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [_providedHandleOnUnmount, removePortal])
-  handleOnUnmountRef.current = handleOnUnmount
+  })
 
-  const handleOnUpdate = useCallback(() => {
+  const handleOnUpdate = useEvent(() => {
     if (_providedHandleOnUpdate) {
       _providedHandleOnUpdate(() => addUpdatePortal(name, children))
     } else {
       addUpdatePortal(name, children)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [_providedHandleOnUpdate, addUpdatePortal, children])
-  handleOnUpdateRef.current = handleOnUpdate
-  //#endregion
+  })
 
-  //#region effects
   useIsomorphicLayoutEffect(() => {
-    handleOnMountRef.current?.()
+    handleOnMount()
     return () => {
-      handleOnUnmountRef.current?.()
-
-      // remove callbacks refs
-      handleOnMountRef.current = undefined
-      handleOnUnmountRef.current = undefined
-      handleOnUpdateRef.current = undefined
+      handleOnUnmount()
     }
   }, [])
 
   useEffect(() => {
-    handleOnUpdateRef.current?.()
+    handleOnUpdate()
   }, [children])
-  //#endregion
 
   return null
 }

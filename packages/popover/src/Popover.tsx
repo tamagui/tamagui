@@ -462,13 +462,16 @@ export const Popover = withStaticProperties(
       [breakpointActive, open, setOpen]
     )
 
+    const internalId = useId()
+    const id = __scopePopover ? Object.keys(__scopePopover)[0] : internalId
+
     return (
       <AdaptProvider>
         <FloatingOverrideContext.Provider value={useFloatingContext as any}>
           <Popper {...popperScope} stayInFrame {...restProps}>
             <PopoverProviderInternal
               scope={__scopePopover}
-              scopeKey={__scopePopover ? Object.keys(__scopePopover)[0] : ''}
+              scopeKey={id}
               sheetBreakpoint={sheetBreakpoint}
               contentId={useId()}
               triggerRef={triggerRef}
