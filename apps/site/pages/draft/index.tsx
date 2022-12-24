@@ -1,8 +1,8 @@
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
+import { NextLink } from 'components/NextLink'
 import { format, parseISO } from 'date-fns'
-import NextLink from 'next/link'
 import { H3, Paragraph, YStack } from 'tamagui'
 
 import { ContainerLarge } from '../../components/Container'
@@ -14,7 +14,12 @@ export default function Blog({ frontmatters }) {
       <ContainerLarge mt="$6" mb="$7" space="$2">
         <YStack space="$8">
           {frontmatters.map((frontmatter) => (
-            <NextLink legacyBehavior key={frontmatter.title} href={frontmatter.slug} passHref>
+            <NextLink
+              legacyBehavior
+              key={frontmatter.title}
+              href={frontmatter.slug}
+              passHref
+            >
               <YStack space="$2">
                 <H3 fontFamily="$silkscreen" size="$9" color="$color" cursor="pointer">
                   {frontmatter.title}
@@ -45,7 +50,8 @@ export default function Blog({ frontmatters }) {
 export function getStaticProps() {
   const frontmatters = getAllFrontmatter('draft')
   const sortedFrontmatters = frontmatters.sort(
-    (a, b) => Number(new Date(b.publishedAt || '')) - Number(new Date(a.publishedAt || ''))
+    (a, b) =>
+      Number(new Date(b.publishedAt || '')) - Number(new Date(a.publishedAt || ''))
   )
   return { props: { frontmatters: sortedFrontmatters } }
 }

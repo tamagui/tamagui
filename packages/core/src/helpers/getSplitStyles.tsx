@@ -892,6 +892,7 @@ export const getSplitStyles: StyleSplitter = (
         rulesToInsert,
         parentSplitStyles,
         flatTransforms,
+        result,
       }
       for (const key in { ...result, ...logs }) {
         // eslint-disable-next-line no-console

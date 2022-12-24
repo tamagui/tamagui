@@ -1,5 +1,5 @@
 import { allDocsRoutes } from '@lib/docsRoutes'
-import NextLink from 'next/link'
+import { NextLink } from 'components/NextLink'
 import * as React from 'react'
 import { ScrollView } from 'react-native'
 import { EnsureFlexed, Paragraph, Theme, XStack, YStack } from 'tamagui'
@@ -23,14 +23,14 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   const pageContents = React.useMemo(() => {
     return (
       <>
-        <YStack>
+        <YStack tag="article">
           <Container pos="relative">{children}</Container>
 
           <Container>
             {(previous || next) && (
               <XStack aria-label="Pagination navigation" my="$9" jc="space-between" space>
                 {previous && (
-                  <NextLink legacyBehavior href={previous.route} passHref>
+                  <NextLink href={previous.route}>
                     <YStack
                       hoverStyle={{
                         borderColor: '$borderColorHover',
@@ -44,7 +44,6 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       pressStyle={{
                         backgroundColor: '$backgroundPress',
                       }}
-                      tag="a"
                       aria-label={`Previous page: ${previous.title}`}
                       ai="flex-start"
                     >

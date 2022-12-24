@@ -1,5 +1,5 @@
 import { Link } from '@tamagui/lucide-icons'
-import NextLink from 'next/link'
+import { NextLink } from 'components/NextLink'
 import NextRouter from 'next/router'
 import rangeParser from 'parse-numeric-range'
 import React from 'react'
@@ -52,6 +52,7 @@ import { SubTitle } from './SubTitle'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
+import { ThemeTint } from './useTint'
 
 const TableFrame = styled(ThemeableStack, {
   bordered: true,
@@ -169,6 +170,7 @@ export const components = {
   OffsetBox,
   YStack,
   XStack,
+  Theme,
   BenchmarkChart,
   Separator,
   Code,
@@ -180,6 +182,7 @@ export const components = {
   ...Demos,
 
   Highlights,
+  ThemeTint,
   PropsTable,
   DataTable,
   Description: SubTitle,
@@ -383,7 +386,7 @@ export const components = {
       jc="center"
       ov="hidden"
       {...(overlap && {
-        mt: '$-6',
+        mt: '$-5',
         elevation: '$4',
       })}
     >

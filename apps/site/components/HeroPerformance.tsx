@@ -1,5 +1,5 @@
 import { useOnIntersecting } from '@tamagui/demos'
-import NextLink from 'next/link'
+import { NextLink } from 'components/NextLink'
 import { useRef, useState } from 'react'
 import { Button, Paragraph, XStack, YStack } from 'tamagui'
 
@@ -28,7 +28,8 @@ export function HeroPerformance() {
             Automatically fast
           </HomeH2>
           <HomeH3>
-            Partial evaluation, tree flattening, hoisting and dead-code&nbsp;elimination&nbsp;✅
+            Partial evaluation, tree flattening, hoisting and
+            dead-code&nbsp;elimination&nbsp;✅
           </HomeH3>
         </YStack>
 

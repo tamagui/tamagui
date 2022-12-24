@@ -1,6 +1,6 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useIsIntersecting } from '@tamagui/demos'
-import NextLink from 'next/link'
+import { NextLink } from 'components/NextLink'
 import React, { memo } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import {
@@ -153,14 +153,20 @@ const OverlayCard = () => {
   // {/* TODO elevation not overriding? */}
   return (
     <Card bw={1} boc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
-      <YStack jc="center" p="$6" space="$5" maw="calc(min(90vw, 400px))" $sm={{ p: '$5' }}>
+      <YStack
+        jc="center"
+        p="$6"
+        space="$5"
+        maw="calc(min(90vw, 400px))"
+        $sm={{ p: '$5' }}
+      >
         <Paragraph ta="left" size="$8" fow="400" ls={-1}>
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>
 
         <Paragraph ta="left" size="$6" theme="alt2" fow="400">
-          Typed, sizable fonts with control over every facet - weight, spacing, line-height,
-          letter-spacing, color and more.
+          Typed, sizable fonts with control over every facet - weight, spacing,
+          line-height, letter-spacing, color and more.
         </Paragraph>
 
         <NextLink legacyBehavior href="/docs/core/configuration" passHref>

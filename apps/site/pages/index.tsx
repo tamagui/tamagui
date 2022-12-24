@@ -1,5 +1,6 @@
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { SliderDemo } from '@tamagui/demos'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { XStack, YStack } from 'tamagui'
@@ -27,11 +28,11 @@ export default function Home({ animationCode, compilationExamples }) {
       <TintSection index={0} p={0}>
         <Hero />
       </TintSection>
-      {/* <ContainerLarge contain="layout" fd="column" pos="relative" zi={2000}>
+      <ContainerLarge contain="layout" fd="column" pos="relative" zi={2000}>
         <XStack als="center" pos="absolute" y={-28} jc="center" ai="center">
           <MailingListSignup />
         </XStack>
-      </ContainerLarge> */}
+      </ContainerLarge>
       <TintSection btw={1} bbw={1} boc="$borderColor" index={1} p={0}>
         <HeroBelow />
       </TintSection>

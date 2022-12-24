@@ -1,6 +1,8 @@
 import React from 'react'
 import { Theme, XStack, YStack, styled } from 'tamagui'
 
+import { ThemeTint } from './useTint'
+
 export function HeroContainer({
   children,
   demoMultiple,
@@ -8,6 +10,7 @@ export function HeroContainer({
   noPad,
   noScroll,
   alignItems,
+  tinted,
 }: {
   demoMultiple?: boolean
   children?: React.ReactNode
@@ -15,10 +18,11 @@ export function HeroContainer({
   noPad?: boolean
   noScroll?: boolean
   alignItems?: any
+  tinted?: boolean
 }) {
-  return (
+  const contents = (
     <YStack
-      className={'hero-gradient' + (noScroll ? '' : 'hero-scroll')}
+      className={'hero-gradient' + (noScroll ? '' : ' hero-scroll')}
       boc="$borderColor"
       bw={0.5}
       mt="$4"
@@ -73,6 +77,12 @@ export function HeroContainer({
       )}
     </YStack>
   )
+
+  if (tinted) {
+    return <ThemeTint>{contents}</ThemeTint>
+  }
+
+  return contents
 }
 
 const Card = styled(YStack, {

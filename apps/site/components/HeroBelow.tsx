@@ -1,5 +1,5 @@
 import { ChevronRight, Code, Cpu, Layers } from '@tamagui/lucide-icons'
-import NextLink from 'next/link'
+import { NextLink } from 'components/NextLink'
 import { memo, useEffect, useRef } from 'react'
 import { H3, Paragraph, XStack, YStack, YStackProps, debounce } from 'tamagui'
 
