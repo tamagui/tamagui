@@ -26,11 +26,13 @@ if (process.env.NODE_ENV === 'test') {
 
 const dir = join(tmpdir(), `cta-test-${Date.now()}`)
 
+const oneMinute = 1000 * 60
+
 test.beforeAll(async () => {
   $.env.NODE_ENV = 'test'
 
   // 15 m
-  test.setTimeout(1000 * 60 * 15)
+  test.setTimeout(oneMinute * 15)
 
   const tamaguiBin = join(PACKAGE_ROOT, `dist`, `index.js`)
 
@@ -55,6 +57,9 @@ test.beforeAll(async () => {
 })
 
 test.afterAll(async () => {
+  test.setTimeout(oneMinute * 5)
+
+  console.log(`Killing server...`)
   await server?.kill()
 
   // next complains if we delete too soon i think
@@ -89,6 +94,4 @@ test(`Navigates to user page`, async ({ page }) => {
   await page.locator('button[role="link"]:has-text("Link to user")').click()
   await expect(page.locator('text=User ID: nate')).toBeVisible()
   await expect(page).toHaveURL('http://localhost:3000/user/nate')
-
-  console.log(`DONE2`)
 })
