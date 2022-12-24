@@ -71,10 +71,9 @@ export const HeroBelowContent = memo(() => {
             <Code size={16} color="var(--color9)" />
           </IconStack>
           <TitleLink href="/docs/core/configuration">Core</TitleLink>
-          <Paragraph o={0.65} fow="300" size="$4">
-            A lightweight style + design system library that works across React
-            Native + Web. Themes, responsive/pseudo styles, styled function,
-            variants and more.
+          <Paragraph o={0.7} size="$4">
+            Light design-system and style library for React Native + Web with themes,
+            animations, responsive and pseudo styles, and much more.
           </Paragraph>
         </Section>
 
@@ -83,10 +82,9 @@ export const HeroBelowContent = memo(() => {
             <Cpu size={16} color="var(--color9)" />
           </IconStack>
           <TitleLink href="/docs/intro/compiler">Static</TitleLink>
-          <Paragraph o={0.65} fow="300" size="$4">
-            A compiler that flattens your component tree with partial
-            evaluation, outputs CSS, and other optimizations with plugins for
-            Next, Webpack, Vite, Babel and Metro.
+          <Paragraph o={0.7} size="$4">
+            Flatten your component tree with partial evaluation, outputs minimal CSS. Easy
+            install with Next, Webpack, Vite, Babel and Metro.
           </Paragraph>
         </Section>
 
@@ -95,9 +93,9 @@ export const HeroBelowContent = memo(() => {
             <Layers size={16} color="var(--color9)" />
           </IconStack>
           <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
-          <Paragraph o={0.65} fow="300" size="$4">
-            UI components built using Core. Multi-component API surface,
-            re-stylable/sizable/themable, adapting to each platform.
+          <Paragraph o={0.7} size="$4">
+            A total UI kit for Native and Web. Composable components, themeable, sizable,
+            adapts to each platform properly.
           </Paragraph>
         </Section>
       </XStack>

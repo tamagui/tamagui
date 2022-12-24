@@ -32,7 +32,7 @@ export const themes = createThemes<keyof typeof colorTokens.light>({
     '#494949',
     '#545454',
     '#626262',
-    '#777777',
+    '#a5a5a5',
   ],
   colorsLight: colorTokens.light,
   colorsDark: colorTokens.dark,
