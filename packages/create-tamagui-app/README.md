@@ -1,7 +1,7 @@
 # `create-tamagui-app`
 
 ```sh
-npm create tamagui-app@latest
+npm init tamagui-app
 ```
 
 A script that creates a [tamagui monorepo](https://github.com/tamagui/tamagui/tree/master/example-monorepos/blank) for you in seconds.
