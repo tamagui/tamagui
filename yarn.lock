@@ -5090,7 +5090,6 @@ __metadata:
     esbuild-loader: ^2.19.0
     esm-resolve: ^1.0.8
     file-loader: ^6.2.0
-    html-inline-css-webpack-plugin: ^1.11.1
     html-webpack-plugin: ^5.5.0
     next: ^13.0.6
     tamagui-loader: ^1.0.1-rc.6
@@ -13229,18 +13228,6 @@ __metadata:
   version: 2.3.3
   resolution: "html-entities@npm:2.3.3"
   checksum: 92521501da8aa5f66fee27f0f022d6e9ceae62667dae93aa6a2f636afa71ad530b7fb24a18d4d6c124c9885970cac5f8a52dbf1731741161002816ae43f98196
-  languageName: node
-  linkType: hard
-
-"html-inline-css-webpack-plugin@npm:^1.11.1":
-  version: 1.11.1
-  resolution: "html-inline-css-webpack-plugin@npm:1.11.1"
-  dependencies:
-    lodash: ^4.17.15
-    tslib: ^1.9.3
-  peerDependencies:
-    html-webpack-plugin: ^3.0.0 || ^4.0.0 || ^5.0.0
-  checksum: a234f455bab6886136ba04c532481b57303edd2ebd70eaf30d902882420f8acd3f5726a1885e31ac50c802182daac0c67051b76fd5fa939e6481b4de36e6f7a9
   languageName: node
   linkType: hard
 
@@ -21771,7 +21758,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^1.8.1, tslib@npm:^1.9.3":
+"tslib@npm:^1.8.1":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: dbe628ef87f66691d5d2959b3e41b9ca0045c3ee3c7c7b906cc1e328b39f199bb1ad9e671c39025bd56122ac57dfbf7385a94843b1cc07c60a4db74795829acd
