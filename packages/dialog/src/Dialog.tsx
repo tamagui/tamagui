@@ -487,11 +487,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
     )
 
     if (showSheet) {
-      return (
-        <DialogPortalItem hostName={`${context.scopeKey}SheetContents`}>
-          {contentProps.children}
-        </DialogPortalItem>
-      )
+      return <DialogPortalItem>{contentProps.children}</DialogPortalItem>
     }
 
     if (!isWeb) {

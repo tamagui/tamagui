@@ -19,7 +19,44 @@ type PopperContextValue = UseFloatingReturn & {
         centerOffset: number;
     };
 };
-declare const usePopperContext: (consumerName: string, scope: Scope<PopperContextValue | undefined>) => PopperContextValue;
+export declare const PopperProvider: {
+    (props: Omit<import("@floating-ui/core/src/types").ComputePositionReturn, "x" | "y"> & {
+        x: number | null;
+        y: number | null;
+    } & {
+        update: () => void;
+        reference: (node: import("@floating-ui/react-dom/src/types").ReferenceType | null) => void;
+        floating: (node: HTMLElement | null) => void;
+        refs: {
+            reference: React.MutableRefObject<import("@floating-ui/react-dom/src/types").ReferenceType | null>;
+            floating: React.MutableRefObject<HTMLElement | null>;
+        };
+    } & {
+        context?: any;
+        getFloatingProps?: ((props: {
+            [key: string]: any;
+            ref: any;
+        }) => any) | undefined;
+        getReferenceProps?: ((props: {
+            [key: string]: any;
+            ref: any;
+        }) => any) | undefined;
+    } & {
+        isMounted: boolean;
+        anchorRef: any;
+        size?: SizeTokens | undefined;
+        placement?: Placement | undefined;
+        arrowRef: any;
+        onArrowSize?: ((val: number) => void) | undefined;
+        arrowStyle?: (Partial<Coords> & {
+            centerOffset: number;
+        }) | undefined;
+    } & {
+        scope: Scope<PopperContextValue>;
+        children: React.ReactNode;
+    }): JSX.Element;
+    displayName: string;
+}, usePopperContext: (consumerName: string, scope: Scope<PopperContextValue | undefined>) => PopperContextValue;
 export type PopperProps = {
     size?: SizeTokens;
     children?: React.ReactNode;
@@ -102,5 +139,5 @@ export declare const PopperArrow: React.ForwardRefExoticComponent<Omit<import("r
     offset?: number | undefined;
     size?: SizeTokens | undefined;
 } & React.RefAttributes<PopperArrowElement>>;
-export { usePopperContext };
+export {};
 //# sourceMappingURL=Popper.d.ts.map

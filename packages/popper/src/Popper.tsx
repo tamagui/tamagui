@@ -11,12 +11,7 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
-import {
-  SizableStackProps,
-  ThemeableStack,
-  YStack,
-  YStackProps,
-} from '@tamagui/stacks'
+import { SizableStackProps, ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { View } from 'react-native'
 
@@ -57,7 +52,7 @@ type PopperContextValue = UseFloatingReturn & {
     centerOffset: number
   }
 }
-const [PopperProvider, usePopperContext] =
+export const [PopperProvider, usePopperContext] =
   createPopperContext<PopperContextValue>(POPPER_NAME)
 
 export type PopperProps = {
@@ -97,9 +92,7 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
       stayInFrame
         ? shift(typeof stayInFrame === 'boolean' ? {} : stayInFrame)
         : (null as any),
-      allowFlip
-        ? flip(typeof allowFlip === 'boolean' ? {} : allowFlip)
-        : (null as any),
+      allowFlip ? flip(typeof allowFlip === 'boolean' ? {} : allowFlip) : (null as any),
       arrowEl ? arrow({ element: arrowEl }) : (null as any),
       arrowSize ? offset(arrowSize) : (null as any),
     ].filter(Boolean),
@@ -154,10 +147,7 @@ export type PopperAnchorProps = YStackProps & {
 export const PopperAnchor = React.forwardRef<PopperAnchorRef, PopperAnchorProps>(
   (props: ScopedProps<PopperAnchorProps>, forwardedRef) => {
     const { __scopePopper, virtualRef, ...anchorProps } = props
-    const { anchorRef, getReferenceProps } = usePopperContext(
-      ANCHOR_NAME,
-      __scopePopper,
-    )
+    const { anchorRef, getReferenceProps } = usePopperContext(ANCHOR_NAME, __scopePopper)
     const ref = React.useRef<PopperAnchorRef>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref, anchorRef)
     if (virtualRef) {
@@ -168,11 +158,9 @@ export const PopperAnchor = React.forwardRef<PopperAnchorRef, PopperAnchorProps>
       ...anchorProps,
     }
     return (
-      <YStack
-        {...(getReferenceProps ? getReferenceProps(stackProps) : stackProps)}
-      />
+      <YStack {...(getReferenceProps ? getReferenceProps(stackProps) : stackProps)} />
     )
-  },
+  }
 )
 
 PopperAnchor.displayName = ANCHOR_NAME
@@ -213,16 +201,8 @@ export const PopperContent = PopperContentFrame.extractable(
   React.forwardRef<PopperContentElement, PopperContentProps>(
     (props: ScopedProps<PopperContentProps>, forwardedRef) => {
       const { __scopePopper, ...contentProps } = props
-      const {
-        strategy,
-        placement,
-        floating,
-        x,
-        y,
-        getFloatingProps,
-        size,
-        isMounted,
-      } = usePopperContext(CONTENT_NAME, __scopePopper)
+      const { strategy, placement, floating, x, y, getFloatingProps, size, isMounted } =
+        usePopperContext(CONTENT_NAME, __scopePopper)
       const contentRefs = useComposedRefs<any>(floating, forwardedRef)
 
       const contents = React.useMemo(() => {
@@ -255,8 +235,8 @@ export const PopperContent = PopperContentFrame.extractable(
           {contents}
         </YStack>
       )
-    },
-  ),
+    }
+  )
 )
 
 PopperContent.displayName = CONTENT_NAME
@@ -303,7 +283,7 @@ type Sides = keyof typeof opposites
 export const PopperArrow = PopperArrowFrame.extractable(
   React.forwardRef<PopperArrowElement, PopperArrowProps>(function PopperArrow(
     props: ScopedProps<PopperArrowProps>,
-    forwardedRef,
+    forwardedRef
   ) {
     const {
       __scopePopper,
@@ -316,7 +296,7 @@ export const PopperArrow = PopperArrowFrame.extractable(
     const tokens = getTokens()
     const sizeVal = sizeProp ?? context.size
     const sizeValResolved = getVariableValue(
-      stepTokenUpOrDown(tokens.space, sizeVal, -2, [2]),
+      stepTokenUpOrDown(tokens.space, sizeVal, -2, [2])
     )
     const size = +sizeValResolved
     const { placement } = context
@@ -378,11 +358,9 @@ export const PopperArrow = PopperArrowFrame.extractable(
         />
       </PopperArrowOuterFrame>
     )
-  }),
+  })
 )
 
 PopperArrow.displayName = ARROW_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
-
-export { usePopperContext }

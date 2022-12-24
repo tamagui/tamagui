@@ -8,9 +8,6 @@ import { RemoveScrollProps } from '@tamagui/remove-scroll';
 import { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import { ScrollView, ScrollViewProps, View } from 'react-native';
-type ScopedProps<P> = P & {
-    __scopePopover?: Scope;
-};
 export type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
@@ -28,6 +25,7 @@ type PopoverContextValue = {
     size?: SizeTokens;
     sheetBreakpoint: any;
     scopeKey: string;
+    popperScope: any;
 };
 export declare const usePopoverScope: (scope: Scope<any>) => {
     [__scopeProp: string]: Scope<any>;
@@ -117,10 +115,6 @@ export declare const PopoverArrow: React.ForwardRefExoticComponent<Omit<import("
     offset?: number | undefined;
     size?: SizeTokens | undefined;
 } & React.RefAttributes<PopoverArrowElement>>;
-export declare const PopoverSheetContents: {
-    ({ __scopePopover }: ScopedProps<{}>): JSX.Element;
-    displayName: string;
-};
 export declare const Popover: React.FC<PopoverProps> & {
     Anchor: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;
