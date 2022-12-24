@@ -71,7 +71,7 @@ export function DialogDemo() {
             <Label w={160} justifyContent="flex-end" htmlFor="username">
               Food
             </Label>
-            {/* <SelectDemo /> */}
+            <SelectDemo />
           </Fieldset>
 
           <YStack ai="flex-end" mt="$2">

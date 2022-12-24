@@ -204,10 +204,6 @@ export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<(
 } & {
     [x: string]: undefined;
 })>;
-export declare const SelectSheetContents: {
-    ({ __scopeSelect }: ScopedProps<{}>): JSX.Element;
-    displayName: string;
-};
 export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) & {
     Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
         Contents: {
@@ -604,10 +600,6 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
     }>> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
     } & React.RefAttributes<TamaguiElement>>;
-    SheetContents: {
-        ({ __scopeSelect }: ScopedProps<{}>): JSX.Element;
-        displayName: string;
-    };
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet/types/types").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native").View>> & {
         Handle: ({ __scopeSheet, ...props }: import("@tamagui/sheet/types/types").SheetScopedProps<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
