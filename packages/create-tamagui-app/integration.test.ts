@@ -55,7 +55,9 @@ test.beforeAll(async () => {
 
 test.afterAll(async () => {
   await server?.kill()
-  await remove(dir)
+  if (process.env.DONT_DELETE_TMP_TEST_PROJECT !== '1') {
+    await remove(dir)
+  }
 })
 
 // TODO run these tests in prod and dev

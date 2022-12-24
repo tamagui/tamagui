@@ -66,17 +66,17 @@ module.exports = function () {
     images: {
       disableStaticImages: true,
     },
+    transpilePackages: [
+      'solito',
+      'react-native-web',
+      'expo-linking',
+      'expo-constants',
+      'expo-modules-core',
+    ],
     experimental: {
       optimizeCss: true,
       scrollRestoration: true,
       legacyBrowsers: false,
-      transpilePackages: [
-        'solito',
-        'react-native-web',
-        'expo-linking',
-        'expo-constants',
-        'expo-modules-core',
-      ],
     },
   }
 

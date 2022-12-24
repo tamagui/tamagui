@@ -2,52 +2,28 @@
 
 - slider drag is slow
 - select desktop selecting item glitches upwards for a frame
-
 - fix alt themes to be more subtle and go less strong to more strong
 - animation not changing (between two values or on off?) have to change `key`
 - #beatgig - popover not closing
 - site animate mount seems slow
 - forms demo textarea top padding + shifts on focus
 - play button on mediaplayer in animationsdemo off on mount
-- maybe regression in closing popover
 - style={{ filter: '' }} broken
 - variants intellisense autocomplete not suggesting, but types are right
 - next load css on subsequent pages (partially fixed)
   - https://github.com/vanilla-extract-css/vanilla-extract/blob/master/packages/webpack-plugin/src/loader.ts
-- run over site on:
-  - mobile web
-  - desktop
-
-1.0 potentially:
-
-- `tamagui` cli basic version
-- #quest-portal - scroll view seems to extend beyond the bottom of the screen making it impossible to access the items at the bottom
-- prebuild option
-  - not de-duping css much
-  - fixes next next load css
-  - simplifies initial setup and need for plugins
+- run over site on mobile web, desktop
 
 1.0 launch:
 
-- titles
-  - write less, runs faster
-  - write once, runs (well) everywhere
-  - ½ the code, 2x the performance
-- grid on homepage linking to various nice components maybe replace features grid or augment
-  - VisuallyHidden, Adapt, FontLanguage, etc
-- git hook to auto-follow on every commit with a type generation
-- site snack + demo embed on all pages floating that scales up on hover on large screen
+- catchy blog title
 - sponsor promo
-- sponsor blog
 - mailing list
 - runthrough docs a handful of times
 - get an demo for studio ready
-- kitchen-sink in Snack demo
+- kitchen-sink in Snack demo link
 - content
-  - blog
-    - lighthouse score diff between compiler on / off
-    - compiler in/out
-  - docs: expo guide
+- blog compiler in/out
 
 1.0 post launch:
 
@@ -59,6 +35,11 @@
   - no more manual checks every release
   - auto release on merge to master
   - do some snapshot tests of site files like HeroResponsive
+
+1.0 potentially:
+
+- `tamagui` cli basic version
+- #quest-portal - scroll view seems to extend beyond the bottom of the screen making it impossible to access the items at the bottom
 
 ---
 
@@ -102,6 +83,15 @@
 
 inbox
 
+- prebuild option
+  - de-dupes css
+  - fixes next.js next load css
+  - simplifies initial setup and need for plugins
+- site snack + demo embed on all pages floating that scales up on hover on large screen
+- maybe regression in closing popover
+- export popover and others internal handles for imperative use
+- grid on homepage linking to various nice components maybe replace features grid or augment
+  - VisuallyHidden, Adapt, FontLanguage, etc
 - Card component minor glitch: border flickers on animation end
 - I'm seeing an issue where setting multiline=true on Input results in broken colors when switching between light & dark themes (doesn't use specified text color). 
 - instead of validStyleProps use validNONStyleProps
