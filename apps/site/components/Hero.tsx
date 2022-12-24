@@ -18,6 +18,7 @@ import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
 import { GithubIcon } from './GithubIcon'
 import { useHeroHovered } from './heroState'
+import { InstallInput } from './InstallInput'
 import { useTint } from './useTint'
 
 export function Hero() {
@@ -25,7 +26,16 @@ export function Hero() {
 
   return (
     <Theme name={tint}>
-      <YStack o={0.5} zi={-1} pos="absolute" t={0} l={0} r={0} h={2000} className="hero-blur" />
+      <YStack
+        o={0.5}
+        zi={-1}
+        pos="absolute"
+        t={0}
+        l={0}
+        r={0}
+        h={2000}
+        className="hero-blur"
+      />
       <HeroTop />
     </Theme>
   )
@@ -49,10 +59,10 @@ const HeroTop = memo(() => {
       <YStack
         f={1}
         ov="hidden"
-        space="$6"
+        space="$3"
         position="relative"
         pt="$13"
-        mb="$8"
+        mb="$4"
         $sm={{
           maxWidth: '100%',
           mx: 'auto',
@@ -146,6 +156,10 @@ const HeroTop = memo(() => {
               that&nbsp;unify&nbsp;React Native + Web
             </Subtitle>
           </YStack>
+
+          <Spacer size="$5" />
+
+          <InstallInput />
         </YStack>
 
         <XStack ai="center" jc="center" $xxs={{ ai: 'center', fw: 'wrap' }}>
@@ -177,7 +191,12 @@ const HeroTop = memo(() => {
               mx: '50%',
             }}
           >
-            <NextLink legacyBehavior prefetch={false} href="/docs/intro/compiler" passHref>
+            <NextLink
+              legacyBehavior
+              prefetch={false}
+              href="/docs/intro/compiler"
+              passHref
+            >
               <Button
                 // layout shifts...
                 w={121}
@@ -204,7 +223,12 @@ const HeroTop = memo(() => {
               </Button>
             </NextLink>
 
-            <NextLink legacyBehavior prefetch={false} href="/docs/intro/introduction" passHref>
+            <NextLink
+              legacyBehavior
+              prefetch={false}
+              href="/docs/intro/introduction"
+              passHref
+            >
               <Button
                 // layout shifts...
                 w={118}

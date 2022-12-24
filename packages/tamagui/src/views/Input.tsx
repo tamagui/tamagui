@@ -46,7 +46,7 @@ export const InputFrame = styled(
   },
   {
     isInput: true,
-  },
+  }
 )
 
 export type InputProps = GetProps<typeof InputFrame>

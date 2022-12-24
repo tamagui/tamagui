@@ -19,20 +19,23 @@ export const InstallInput = memo(() => {
       als="center"
       elevation="$2"
       br="$10"
-      bc="$background"
-      hoverStyle={{
-        bc: '$background',
-      }}
     >
-      <Paragraph ta="center" size="$4" fontWeight="500" fontFamily="$mono" $sm={{ size: '$3' }}>
+      <Paragraph
+        ta="center"
+        size="$4"
+        fontWeight="500"
+        fontFamily="$mono"
+        $sm={{ size: '$3' }}
+      >
         {installScript}
       </Paragraph>
       <Spacer size="$6" />
       <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
         <Button
           accessibilityLabel={installScript}
+          size="$3"
           borderRadius="$8"
-          mr="$-7"
+          mr="$-6"
           x={-1}
           // TODO broken in latest
           icon={

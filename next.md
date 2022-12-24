@@ -1,13 +1,5 @@
 1.0
 
-- select desktop selecting item glitches upwards for a frame
-- fix alt themes to be more subtle and go less strong to more strong
-- animation not changing (between two values or on off?) have to change `key`
-- #beatgig - popover not closing
-- site animate mount seems slow
-- forms demo textarea top padding + shifts on focus
-- play button on mediaplayer in animationsdemo off on mount
-- style={{ filter: '' }} broken
 - variants intellisense autocomplete not suggesting, but types are right
 - next load css on subsequent pages (partially fixed)
   - https://github.com/vanilla-extract-css/vanilla-extract/blob/master/packages/webpack-plugin/src/loader.ts
@@ -19,9 +11,6 @@
 - sponsor promo
 - mailing list
 - runthrough docs a handful of times
-- get an demo for studio ready
-- kitchen-sink in Snack demo link
-- content
 - blog compiler in/out
 
 1.0 post launch:
@@ -37,12 +26,16 @@
 
 1.0 potentially:
 
+- kitchen-sink in Snack demo link
+- get an demo for studio ready
 - `tamagui` cli basic version
 
 ---
 
 1.1
 
+- #beatgig - popover not closing
+- fix alt themes to be more subtle and go less strong to more strong
 - revisit animations, timing animations, loops, document better
 - Select id="" + Label focus
 - web forms events bubble
@@ -67,6 +60,8 @@
 ---
 
 inbox
+
+- textarea shifts on focus
 
 - dynamic eval bundle of smallish fixes: 
   - hash file contents cache

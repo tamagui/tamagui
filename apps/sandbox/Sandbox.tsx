@@ -1,7 +1,7 @@
 // import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { SelectDemo, SheetDemo, SliderDemo } from '@tamagui/demos'
+import { FormsDemo, SelectDemo, SheetDemo, SliderDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { OpaqueColorValue } from 'react-native'
 import {
@@ -49,6 +49,18 @@ const CustomButtonFrame = styled(ButtonFrame, {
   },
 })
 
+function AnimationChangeTest() {
+  const [animation, setanimation] = useState('lazy' as any)
+  return (
+    <>
+      <Square animation={animation} size={100} bc="red" hoverStyle={{ scale: 2 }} />
+      <Button onPress={() => setanimation(animation === 'lazy' ? 'quick' : 'lazy')}>
+        {animation}
+      </Button>
+    </>
+  )
+}
+
 export const Sandbox = () => {
   // const scheme = useColorScheme()
   const [theme, setTheme] = useState('light')
@@ -93,7 +105,12 @@ export const Sandbox = () => {
           }}
         >
           {/* <AnimationsHoverDemo /> */}
-          <SelectDemo />
+
+          {/* <AnimationChangeTest /> */}
+
+          {/* <Square bc="red" size={100} style={{ filter: 'blur(10px)' }} /> */}
+
+          {/* <FormsDemo /> */}
 
           {/* <DialogDemo /> */}
 

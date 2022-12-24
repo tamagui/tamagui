@@ -64,8 +64,6 @@ export const loader = async function loader(
 
     // add import to css
     if (extracted.styles) {
-      this.addDependency(cssPath)
-
       const cssQuery = threaded
         ? `cssData=${Buffer.from(extracted.styles).toString('base64')}`
         : `cssPath=${cssPath}`
