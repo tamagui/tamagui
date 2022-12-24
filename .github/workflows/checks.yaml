@@ -37,4 +37,4 @@ jobs:
         with:
           timeout_minutes: 15
           max_attempts: 2
-          command: 'yarn test'
+          command: 'yarn test:ci'

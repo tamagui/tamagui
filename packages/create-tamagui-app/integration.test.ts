@@ -28,7 +28,9 @@ const dir = join(tmpdir(), `cta-test-${Date.now()}`)
 
 test.beforeAll(async () => {
   $.env.NODE_ENV = 'test'
-  test.slow()
+
+  // 15 m
+  test.setTimeout(1000 * 60 * 15)
 
   const tamaguiBin = join(PACKAGE_ROOT, `dist`, `index.js`)
 
@@ -50,20 +52,25 @@ test.beforeAll(async () => {
   // pre-warm
   await fetch(`http://localhost:3000`)
   await sleep(2000)
-  console.log('done')
 })
 
 test.afterAll(async () => {
   await server?.kill()
+
+  // next complains if we delete too soon i think
+  await sleep(2000)
+
   if (process.env.DONT_DELETE_TMP_TEST_PROJECT !== '1') {
-    await remove(dir)
+    await Promise.race([
+      sleep(15_000),
+      Promise.all([remove(join(dir, '.yarn')), remove(join(dir, 'node_modules'))]),
+    ])
   }
 })
 
 // TODO run these tests in prod and dev
 
 test(`Loads home screen that opens drawer`, async ({ page }) => {
-  test.slow()
   await page.goto('http://localhost:3000/')
   await expect(page.locator('text=Welcome to Tamagui.')).toBeVisible()
 
@@ -76,10 +83,11 @@ test(`Loads home screen that opens drawer`, async ({ page }) => {
 })
 
 test(`Navigates to user page`, async ({ page }) => {
-  test.slow()
   await page.goto('http://localhost:3000/')
   await expect(page.locator('button[role="link"]:has-text("Link to user")')).toBeVisible()
   await page.locator('button[role="link"]:has-text("Link to user")').click()
   await expect(page.locator('text=User ID: nate')).toBeVisible()
   await expect(page).toHaveURL('http://localhost:3000/user/nate')
+
+  console.log(`DONE2`)
 })

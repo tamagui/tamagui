@@ -34,6 +34,7 @@
     "format": "node -r esbuild-register ./scripts/format.ts",
     "pretty": "pretty-quick",
     "test": "turbo run --concurrency=1 test",
+    "test:ci": "DONT_DELETE_TMP_TEST_PROJECT=1 yarn test",
     "test:demos": "yarn workspace @tamagui/demos test",
     "release": "node -r esbuild-register ./scripts/release.ts",
     "release:ci": "yarn release:dirty --ci",
