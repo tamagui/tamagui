@@ -581,6 +581,7 @@ const SheetImplementation = themeable(
         <SheetProvider
           modal={modal}
           contentRef={contentRef}
+          frameSize={frameSize}
           dismissOnOverlayPress={dismissOnOverlayPress}
           dismissOnSnapToBottom={dismissOnSnapToBottom}
           open={open}

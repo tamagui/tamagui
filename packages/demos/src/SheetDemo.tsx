@@ -63,7 +63,7 @@ function InnerSheet(props: SheetProps) {
           <H1>Hello world</H1>
           <H2>You can scroll me</H2>
           {[1, 2, 3].map((i) => (
-            <Paragraph key={i} size="$8">
+            <Paragraph key={i} size="$10">
               Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad
               pariatur. Dolor excepteur esse deserunt voluptate labore ea. Exercitation
               ipsum deserunt occaecat cupidatat consequat est adipisicing velit cupidatat

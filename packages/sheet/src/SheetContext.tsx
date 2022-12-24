@@ -14,6 +14,7 @@ type SheetContextValue = Required<
   contentRef: React.RefObject<TamaguiElement>
   dismissOnSnapToBottom: boolean
   scrollBridge: ScrollBridge
+  frameSize: number
   modal: boolean
 }
 

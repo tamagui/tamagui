@@ -39,7 +39,6 @@
 1.0 potentially:
 
 - `tamagui` cli basic version
-- #quest-portal - scroll view seems to extend beyond the bottom of the screen making it impossible to access the items at the bottom
 
 ---
 
@@ -83,6 +82,7 @@
 
 inbox
 
+- sheets can be way faster, they listen for layout/windowdimensions and re-render constnatly, but whe closed that could be ignored, just needs one level more of wrapping and react memo stuff
 - prebuild option
   - de-dupes css
   - fixes next.js next load css

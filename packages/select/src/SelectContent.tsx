@@ -26,7 +26,10 @@ export const SelectContent = ({
   const touch = useIsTouchDevice()
 
   if (showSheet) {
-    return context.open ? contents : null
+    if (!context.open) {
+      return null
+    }
+    return <>{contents}</>
   }
 
   return (

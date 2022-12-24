@@ -1,5 +1,5 @@
 import { AdaptParentContext } from '@tamagui/adapt'
-import { Theme, useThemeName } from '@tamagui/core'
+import { Stack, Theme, useThemeName } from '@tamagui/core'
 import { PortalItem } from '@tamagui/portal'
 import * as React from 'react'
 

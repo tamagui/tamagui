@@ -8,6 +8,7 @@ type SheetContextValue = Required<Pick<SheetProps, 'open' | 'position' | 'snapPo
     contentRef: React.RefObject<TamaguiElement>;
     dismissOnSnapToBottom: boolean;
     scrollBridge: ScrollBridge;
+    frameSize: number;
     modal: boolean;
 };
 export declare const createSheetContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType | undefined) => readonly [{
@@ -25,6 +26,7 @@ export declare const SheetProvider: {
         contentRef: React.RefObject<TamaguiElement>;
         dismissOnSnapToBottom: boolean;
         scrollBridge: ScrollBridge;
+        frameSize: number;
         modal: boolean;
     } & {
         scope: import("@tamagui/create-context").Scope<SheetContextValue>;
