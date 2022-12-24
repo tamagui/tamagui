@@ -81,8 +81,7 @@ const SelectScrollButtonImpl = React.memo(
         strategy: 'fixed',
         placement: dir === 'up' ? 'top' : 'bottom',
         middleware: [offset(({ rects }) => -rects.floating.height)],
-        whileElementsMounted: (...args) =>
-          autoUpdate(...args, { animationFrame: true }),
+        whileElementsMounted: (...args) => autoUpdate(...args, { animationFrame: true }),
       })
 
       const composedRef = useComposedRefs(forwardedRef, floating)
@@ -159,7 +158,7 @@ const SelectScrollButtonImpl = React.memo(
                 onScroll(
                   dir === 'up'
                     ? Math.min(pixelsToScroll, remainingPixels)
-                    : Math.max(-pixelsToScroll, -remainingPixels),
+                    : Math.max(-pixelsToScroll, -remainingPixels)
                 )
 
                 if (scrollRemaining) {
@@ -177,6 +176,6 @@ const SelectScrollButtonImpl = React.memo(
           }}
         />
       )
-    },
-  ),
+    }
+  )
 )

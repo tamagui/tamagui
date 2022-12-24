@@ -74,25 +74,22 @@ a {
   footer a
 ) {
   text-decoration-style: solid;
+  text-decoration-thickness: 3px !important;
   text-decoration: underline;
   color: var(--pink10);
   text-decoration-color: var(--pink6);
-  padding-left: 3px;
-  padding-right: 3px;
-  padding-top: 1px;
-  padding-bottom: 4px;
-  margin: -2px;
-  text-underline-offset: 4px;
+  text-underline-offset: 3px;
 }
 
 :is(
   p a
 ):hover {
   text-decoration-style: solid;
+  text-decoration-thickness: 5px !important;
   text-decoration-color: var(--pink12);
 }
 
-p {
+p, li.font_body {
   color: var(--gray11) !important;
 }
 

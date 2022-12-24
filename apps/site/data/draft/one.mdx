@@ -8,8 +8,8 @@ by: nate
 ---
 
 <IntroParagraph large>
-  React Native is a great platform for building fluid, native feeling apps. But sharing
-  that code to the web means [either accepting slow apps, or writing them
+  React Native is a great platform for building fluid, native feeling apps but when you
+  share UI with the web you [either accept a slow app, or write it
   twice](/docs/intro/compiler).
 </IntroParagraph>
 
@@ -19,40 +19,43 @@ by: nate
   performance.
 </IntroParagraph>
 
-It can make inline and modern typed style syntax into more efficient code than hand-tuned CSS, or any other style library due to flattening.
+It turns natural typed inline styles, even with logic, into CSS that beats bests even hand-written styling, thanks to tree shaking and view flattening. Tamagui supports the full set of React Native APIs in a 0-dependency core library.
 
 <Spacer />
 <BenchmarkChartWeb />
 <Spacer />
 
-> The tamagui.dev home page scores 13% higher lighthouse scores with the compiler on.
+On the web, psuedo and responsive styles are over 10x faster, while Lighthouse scores go up anywhere from 10-20% just by toggling the compiler on.
 
 <Image
   title="The compiler improves the Lighthouse score of the homepage of https://tamagui.dev from 85 to 96"
   src="/banner-lighthouse.jpg"
   size="hero"
-  height={275}
+  height={325}
   width={761}
   resizeMode="contain"
   mt="$2"
   mb="$4"
 />
 
-Tamagui has three parts:
+Tamagui comes in three parts:
 
-- The [core style library](/docs).
-- An [optimizing compiler]().
-- Tamagui, [a full-featured cross-platform UI kit built on top]().
+- The [core style library](#overview-of-tamaguicore).
+- An [optimizing compiler](#overview-of-static).
+- Tamagui, [a full-featured cross-platform UI kit built on top](#overview-of-tamagui).
 
 #### How Tamagui transforms code
 
 Tamagui can evaluate a wide variety of code to flatten your component trees down:
 
+<Spacer />
 <TamaguiExamplesCode />
 
-Tamagui supports the full APIs of React Native. The optimizing compiler nets huge gains in Lightouse cores - 15-20% on complex pages - without changing a line of code. It turns janky JS-based responsive and pseudo styles into clean CSS that is 10x faster on the web.
+The key to Tamagui's performance gains lie in **view flattening**: the compiler analyzes code, even across module boundaries, and evaluates even logical code via AST transformation and node VM-powered code evaluation.
 
-And it doesn't just support extracting CSS. The key to Tamagui's performance gains lie in **view flattening**. The compiler analyzes code across module boundaries, and evaluates all types of logic using both logical and VM-based analysis. So long as you aren't spreading properties or using logic it can't interpret, it will fully flatten your custom styled components like `<Circle />` into plain old `<div />` (or `<View />`, on native).
+It will fully flatten your custom styled components like `<Circle />` into plain old `<div />` (or `<View />`, on native) and it does so often thanks to its smart evaluator.
+
+---
 
 ## Overview of `@tamagui/core`
 
@@ -66,8 +69,9 @@ And it doesn't just support extracting CSS. The key to Tamagui's performance gai
 - Powerful typed variants, including functional variants.
 - Prop-order based styling means no more CSS specificity fights!
 - Inline styles with tokens, media and pseudo styles - all optimize away.
-- Shorthands for quick authoring
-- Merges styles down the three without worry! Typed, just destructure props.
+- Typed shorthands for efficient authoring.
+- Pluggable animation drivers, swap spring animations to pure CSS on the web.
+- Merges styles down the three without worry! Fully typed, destructurable and overridable.
 
 Everything works on Native and Web the same, with no dependencies at ~12Kb gzipped.
 
@@ -107,7 +111,7 @@ export const Circle = styled(Stack, {
 })
 ```
 
-For more, see [configuring](), [styled()], and [variants]() docs.
+For more, see the [configuration](/docs/core/configuration), [styling](/docs/core/styled), and [variants](/docs/core/variants) docs.
 
 ### Your design system
 
@@ -121,7 +125,7 @@ It's a base layer with everything you need for building a full-featured design s
 
 ### What's new in Core
 
-It's all about maturity. Core has had over 500 bugs fixed, landed large performance and memory improvements, and brings compatibility with the latest and greatest in React and React Native.
+Core has had over 500 bugs fixed with large performance and memory improvements, a ton of new tests, and compatibility with the latest and greatest in React and React Native.
 
 ### React 0.69, React 18, React Native Web 18
 
@@ -269,19 +273,17 @@ export default () => (
 
 ---
 
-## Static
+## Whats new in `@tamagui/static`
 
-[Static](#whats-is-static) is the optimizing compiler. It supports web and native through a plugin interface that has adapters for Webpack, Vite, Next, React Native, and Expo. Over a dozen major improvements to the compiler have made their way in since beta. Some of the highlights are:
+[Static](/docs/intro/compiler) is the optimizing compiler. It supports web and native through a plugin interface that has adapters for Webpack, Vite, Next, React Native, and Expo. Over a dozen major improvements to the compiler have made their way in since beta. Some of the highlights are:
 
 ### Performance
 
-The compiler uses `babel` to parse and optimize components, which it can get away for performance with largely because it only needs to parse a subset of your files, and it only needs to look for a few areas - namely JSX elements and `styled()` functions. We find that it adds about 10ms of time for each file that it runs on, end-to-end. In exchange, you get massive runtime performance gains and bundle-size reductions.
+The compiler uses `babel` to parse and optimize components, which it can get away for performance with largely because it only needs to parse a subset of your files, and it only needs to look for a few areas - namely JSX elements and `styled()` functions.
 
-During the beta we landed many performance improvements. By default now Tamagui avoids even parsing many more files, by only looking for `tsx` or `jsx` extensions by default (configurable with the [`includeExtensions`](/TODO) option).
+During the beta we landed many performance improvements bringing average parse time down to below 6ms for a longer file on a modern laptop. By default now Tamagui avoids parsing many more files through quick heuristics. It's now also fully thread-safe, uses more caching, and has been fine-tuned for memory usage.
 
-Tamagui Static now fully bundles your `components` and `config` that you provide it before it begins compilation, writing them out into the `./.tamagui` directory beside your app. This greatly improves debugging and introspection and has led to large improvements in compatibility with many libraries.
-
-### Optimizing more
+### Analyzing skill
 
 Previously, Tamagui Static only knew how to optimize components found in your separated design system package. But it's both common and desirable to have one-off `styled()` definitions that are just used for small areas of your app that live alongside those areas, outside your design system.
 
@@ -289,7 +291,7 @@ The compiler now supports analyzing components outside of just your design syste
 
 ### Vite plugin
 
-Tamagui now fully works with Vite 3, both with the compiler and without. A simple `vite.config.js` would look like this:
+Tamagui now fully works with Vite 3 and 4, both with the compiler and without. A simple `vite.config.js` would look like this:
 
 ```tsx
 import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
@@ -483,7 +485,7 @@ Tamagui [now exports ScrollView](/docs/components/scroll-view), the exact same a
 
 #### XGroup and YGroup
 
-The `Group` component has been split into [XGroup and YGroup](/docs/components/group) to match Stacks. It's been upgraded across the board with the ability to be scrollable and to better handle passing children radius and size styles.
+The `Group` component has been split into [XGroup and YGroup](/docs/components/group) to match Stacks. It's been upgraded across the board with the ability to be scrollable and to better handle passing children styles.
 
 ---
 

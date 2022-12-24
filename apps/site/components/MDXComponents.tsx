@@ -276,6 +276,7 @@ export const components = {
       pos="relative"
       width={`fit-content` as any}
       mt="$5"
+      mb="$4"
       size="$9"
       data-heading
       {...props}

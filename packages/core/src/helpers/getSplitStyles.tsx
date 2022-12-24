@@ -20,7 +20,9 @@ import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
   mediaState as globalMediaState,
+  mediaKeysWithAndWithout$,
   mediaQueryConfig,
+  mediaState,
   mergeMediaByImportance,
 } from '../hooks/useMedia'
 import type {
@@ -205,7 +207,7 @@ const accessibilityRoleToWebRole = {
 //     const classNames = {}
 
 const isMediaKey = (key: string) =>
-  Boolean(key[0] === '$' && mediaQueryConfig[key.slice(1)])
+  Boolean(key[0] === '$' && mediaKeysWithAndWithout$.has(key))
 
 export const getSplitStyles: StyleSplitter = (
   props,
@@ -217,6 +219,10 @@ export const getSplitStyles: StyleSplitter = (
   elementType,
   debug
 ) => {
+  if (cache.has(props)) {
+    return cache.get(props)
+  }
+
   conf = conf || getConfig()
   const { shorthands } = conf
   const {
@@ -320,8 +326,7 @@ export const getSplitStyles: StyleSplitter = (
     const valInit = props[keyInit]
 
     // normalize shorthands up front
-    const expandedKey = keyInit in shorthands
-    if (expandedKey) {
+    if (keyInit in shorthands) {
       keyInit = shorthands[keyInit]
     }
 
@@ -329,8 +334,8 @@ export const getSplitStyles: StyleSplitter = (
     if (keyInit in skipProps) continue
     if (!isWeb && keyInit.startsWith('data-')) continue
 
-    if (validStyleProps[keyInit] || keyInit.includes('-')) {
-      if (valInit && valInit[0] === '_') {
+    if (typeof valInit === 'string' && valInit[0] === '_') {
+      if (keyInit in validStyleProps || keyInit.includes('-')) {
         if (shouldDoClasses) {
           classNames[keyInit] = valInit
         } else {
@@ -538,7 +543,7 @@ export const getSplitStyles: StyleSplitter = (
       )
     ) {
       // web-only, exclude all other accessibility props not handled above
-      if (isWeb && keyInit.includes('ccessibility')) {
+      if (isWeb && keyInit.indexOf('ccessibility') > 0) {
         continue
       }
       usedKeys[keyInit] = 1
@@ -766,7 +771,7 @@ export const getSplitStyles: StyleSplitter = (
         fontFamily = valInit[0] === '$' ? valInit : val
       }
 
-      if (validStyleProps[key]) {
+      if (key in validStyleProps) {
         mergeStyle(styleState, key, val)
         continue
       }
@@ -896,6 +901,8 @@ export const getSplitStyles: StyleSplitter = (
       console.groupEnd()
     }
   }
+
+  cache.set(props, result)
 
   return result
 }

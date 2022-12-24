@@ -11,12 +11,12 @@ import { normalizeColor } from './normalizeColor'
 const cache = {}
 
 export function normalizeValueWithProperty(value: any, property?: string): any {
-  if (property && unitlessNumbers[property]) {
-    return value
-  }
   const cached = cache[value]
   if (cached !== undefined) {
     return cached
+  }
+  if (property && property in unitlessNumbers) {
+    return value
   }
   let res = value
   if (

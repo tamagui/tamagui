@@ -2,6 +2,7 @@ import { MediaQueries, MediaQueryKey, MediaQueryObject, MediaQueryState, Tamagui
 export declare const mediaState: MediaQueryState;
 export declare const mediaQueryConfig: MediaQueries;
 export declare const getMedia: () => MediaQueryState;
+export declare const mediaKeysWithAndWithout$: Set<string>;
 export declare const getInitialMediaState: () => MediaQueryState;
 export declare const getMediaKeyImportance: (key: string) => number;
 export declare const configureMedia: (config: TamaguiInternalConfig) => void;

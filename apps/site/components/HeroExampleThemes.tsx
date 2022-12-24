@@ -1,7 +1,15 @@
 import { useIsIntersecting } from '@tamagui/demos'
 import { tints } from '@tamagui/logo'
 import { useThemeSetting } from '@tamagui/next-theme'
-import { SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import {
+  SetStateAction,
+  memo,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import {
   Theme,
   ThemeName,
@@ -44,7 +52,7 @@ const splitToFlat = ([a, b]: number[]) => {
 
 type Lock = null | 'shouldAnimate' | 'animate' | 'scroll'
 
-export function HeroExampleThemes() {
+export const HeroExampleThemes = memo(function HeroExampleThemes() {
   const themeSetting = useThemeSetting()
 
   const [activeI, setActiveI_] = useState([0, 0])
@@ -172,8 +180,8 @@ export function HeroExampleThemes() {
               A <span className="rainbow clip-text">colorful</span> revolution
             </HomeH2>
             <HomeH3>
-              Fully typed themes with nested sub-themes and component themes, all compiled to CSS
-              that avoids rendering.
+              Fully typed themes with nested sub-themes and component themes, all compiled
+              to CSS that avoids rendering.
             </HomeH3>
           </ContainerLarge>
         )
@@ -250,7 +258,10 @@ export function HeroExampleThemes() {
                 return
               }
               const scrollX = Math.max(0, e.target.scrollLeft)
-              const itemI = Math.min(Math.floor(scrollX / (width + 30)), themeCombos.length - 1)
+              const itemI = Math.min(
+                Math.floor(scrollX / (width + 30)),
+                themeCombos.length - 1
+              )
               const [n1, n2] = flatToSplit(itemI)
               const [c1, c2] = activeI
               if (n1 !== c1 || n2 !== c2) {
@@ -315,4 +326,4 @@ export function HeroExampleThemes() {
       </YStack>
     </YStack>
   )
-}
+})

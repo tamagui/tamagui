@@ -1,5 +1,6 @@
 import { tints } from '@tamagui/logo'
 import { memo, useEffect, useMemo, useState } from 'react'
+import { Dimensions } from 'react-native'
 import { YStack, debounce, isClient, useDebounce, useWindowDimensions } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
@@ -35,7 +36,7 @@ export const HomeGlow = memo(() => {
   const isOnHeroBelow = isAtTop && isHeroBelowColor
   const [scrollTop, setScrollTopRaw] = useState(0)
   const setScrollTop = useDebounce(setScrollTopRaw, 200)
-  const windowWidth = useWindowDimensions().width
+  const windowWidth = Dimensions.get('window').width
   const xs = Math.min(400, windowWidth * 0.25)
   const scale = isOnHeroBelow ? 0.5 : 1
   const isResizing = useIsResizing()
@@ -88,7 +89,7 @@ export const HomeGlow = memo(() => {
         x: tint === 'green' ? -xs : tint === 'purple' ? xs : 0,
         y: 300,
       })}
-      display={isResizing ? 'none' : 'flex'}
+      // display={isResizing ? 'none' : 'flex'}
     >
       {glows}
     </YStack>
