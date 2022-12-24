@@ -44,7 +44,7 @@
 
 1.1
 
-- drag on switch
+- revisit animations, timing animations, loops, document better
 - Select id="" + Label focus
 - web forms events bubble
 - improve sandbox to a mini vite stack
@@ -65,23 +65,20 @@
     - binary assets overwrite (if not changed, else prompt)
 - setup script can power `tama sync` to sync the repo to its parent repo
 
-
-- site web fonts (can also be a feature of font bundles)
-  - https://www.lydiahallie.io/blog/optimizing-webfonts-in-nextjs-13
-  - https://simonhearne.com/2021/layout-shifts-webfonts/#reduce-layout-shift-with-f-mods
-- Is there some way to get color-scheme to update to dark here when we toggle to the dark theme @Nate ?
-  - <html class="t_dark" style="color-scheme: light;">
-- dynamic eval bundle of smallish fixes: 
-  - hash file contents use as hash for tmp file name
-  - avoid work if matching
-  - install into node_modules/.cache (import cacheDir) and symlink next to current file
-  - bundle it, use the existing esbuild.buildSync helper fn
-  - remove babel use esbuild plugin
-
 ---
 
 inbox
 
+- dynamic eval bundle of smallish fixes: 
+  - hash file contents cache
+  - dont write it as a file, use node vm
+  - just use a few find and replace type things for forcing exports, fail if not possible
+
+- site web fonts (can also be a feature of font bundles)
+  - https://www.lydiahallie.io/blog/optimizing-webfonts-in-nextjs-13
+  - https://simonhearne.com/2021/layout-shifts-webfonts/#reduce-layout-shift-with-f-mods
+
+- drag on switch
 - sheets can be way faster, they listen for layout/windowdimensions and re-render constnatly, but whe closed that could be ignored, just needs one level more of wrapping and react memo stuff
 - prebuild option
   - de-dupes css

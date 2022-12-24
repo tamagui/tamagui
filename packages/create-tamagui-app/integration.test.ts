@@ -40,6 +40,10 @@ test.beforeAll(async () => {
 
   cd(`test-app`)
 
+  // debug why missing package is there
+  await $`cat ./node_modules/@tamagui/next-plugin/package.json`
+  await $`ls -la ./node_modules`
+
   server = $`yarn web:extract`
 
   await waitPort({
