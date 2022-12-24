@@ -1,51 +1,31 @@
-rc.3
+1.0
+
+- slider drag is slow
+- select desktop selecting item glitches upwards for a frame
 
 - fix alt themes to be more subtle and go less strong to more strong
 - animation not changing (between two values or on off?) have to change `key`
 - #beatgig - popover not closing
-- Adapt.Contents doesn't forward props, if you set `space` above it on `Dialog.Content`
-- one full on integration native test unlocks:
-  - no more manual checks every release
-  - auto release on merge to master
-- delay enterStyle
-  - https://discord.com/channels/909986013848412191/1051705315890044958/1052019600197439598
-  - https://github.com/ebg1223/t3-tamagui
 - site animate mount seems slow
 - forms demo textarea top padding + shifts on focus
 - play button on mediaplayer in animationsdemo off on mount
 - maybe regression in closing popover
 - style={{ filter: '' }} broken
-  - instead of validStyleProps use validNONStyleProps
-    - that way for web all style props pass through automatically
-    - also likely smaller bundle size (smart detect `onX`)
 - variants intellisense autocomplete not suggesting, but types are right
-- tested on FF
-  - Card component minor glitch: border flickers on animation end
+- next load css on subsequent pages (partially fixed)
+  - https://github.com/vanilla-extract-css/vanilla-extract/blob/master/packages/webpack-plugin/src/loader.ts
+- run over site on:
+  - mobile web
+  - desktop
+
+1.0 potentially:
+
+- `tamagui` cli basic version
 - #quest-portal - scroll view seems to extend beyond the bottom of the screen making it impossible to access the items at the bottom
-
-1.0
-
-- CI auto master merge tests passing releases
 - prebuild option
   - not de-duping css much
   - fixes next next load css
   - simplifies initial setup and need for plugins
-- native + re-render tests
-- snapshot test of HeroResponsive output
-- `tamagui` cli basic version
-- I'm seeing an issue where setting multiline=true on Input results in broken colors when switching between light & dark themes (doesn't use specified text color). 
-- focus an input in a dialog on mobile or a propover etc. then it disappears
-- https://github.com/tamagui/tamagui/issues/256
-- VisuallyHidden + mediaquery + space
-- test
-  - native integration tests
-  - useMedia
-  - reanimated
-  - integation on native - theme change, render time
-- Sheet drag up small bug native with scrollable content
-- Select id="" + Label focus
-- canary release channel
-- web forms events bubble
 
 1.0 launch:
 
@@ -59,10 +39,7 @@ rc.3
 - site snack + demo embed on all pages floating that scales up on hover on large screen
 - sponsor promo
 - sponsor blog
-- sponsor rewards e2e flow
 - mailing list
-- better gh PR template / sandbox
-- improve sandbox to a mini vite stack
 - runthrough docs a handful of times
 - get an demo for studio ready
 - kitchen-sink in Snack demo
@@ -72,10 +49,32 @@ rc.3
     - compiler in/out
   - docs: expo guide
 
+1.0 post launch:
+
+- canary release channel
+- sponsor rewards e2e flow
+- add new sponsors script
+    - https://github.com/JamesIves/github-sponsors-readme-action
+- one full on integration native test unlocks:
+  - no more manual checks every release
+  - auto release on merge to master
+  - do some snapshot tests of site files like HeroResponsive
+
 ---
 
 1.1
 
+- drag on switch
+- Select id="" + Label focus
+- web forms events bubble
+- improve sandbox to a mini vite stack
+- VisuallyHidden + mediaquery + space
+- test
+  - native integration tests
+  - useMedia
+  - reanimated
+  - integation on native - theme change, render time
+- CI auto master merge tests passing releases
 - tama sync
   - make it easy to have a template repo that people sync to
   - includes the git sync stuff from cli now
@@ -84,15 +83,9 @@ rc.3
   - smart defaults
     - package.json etc
     - binary assets overwrite (if not changed, else prompt)
-
 - setup script can power `tama sync` to sync the repo to its parent repo
 
-  
-- add new sponsors
-    - https://github.com/JamesIves/github-sponsors-readme-action
-- next load css on subsequent pages (partially fixed)
-  - https://github.com/vanilla-extract-css/vanilla-extract/blob/master/packages/next-plugin/src/index.js
-  - https://github.com/vanilla-extract-css/vanilla-extract/blob/master/packages/webpack-plugin/src/loader.ts
+
 - site web fonts (can also be a feature of font bundles)
   - https://www.lydiahallie.io/blog/optimizing-webfonts-in-nextjs-13
   - https://simonhearne.com/2021/layout-shifts-webfonts/#reduce-layout-shift-with-f-mods
@@ -109,6 +102,11 @@ rc.3
 
 inbox
 
+- Card component minor glitch: border flickers on animation end
+- I'm seeing an issue where setting multiline=true on Input results in broken colors when switching between light & dark themes (doesn't use specified text color). 
+- instead of validStyleProps use validNONStyleProps
+    - that way for web all style props pass through automatically
+    - also likely smaller bundle size (smart detect `onX`)
 - lighthouse score ci
 - move much logic from withTamgui into TamaguiPlugin
 - TestFontTokensInVariants types not autocompleting in variants... but showing properly on hover/type property

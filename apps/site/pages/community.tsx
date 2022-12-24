@@ -212,6 +212,25 @@ export default function Community({ frontmatters }) {
                   by dohomi
                 </Paragraph>
               </Card>
+
+              <Card
+                f={1}
+                maw={250}
+                jc="center"
+                space="$2"
+                tag="a"
+                href="https://github.com/ebg1223/t3-tamagui"
+                target="_blank"
+                p="$5"
+              >
+                <GithubIcon />
+                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
+                  Tamagui t3
+                </H4>
+                <Paragraph cursor="pointer" theme="alt2">
+                  by Kezlar
+                </Paragraph>
+              </Card>
             </XStack>
           </ScrollView>
         </FlatBubbleCard>

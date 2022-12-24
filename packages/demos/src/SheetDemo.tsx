@@ -62,27 +62,15 @@ function InnerSheet(props: SheetProps) {
           />
           <H1>Hello world</H1>
           <H2>You can scroll me</H2>
-          <Paragraph>
-            Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad
-            pariatur. Dolor excepteur esse deserunt voluptate labore ea. Exercitation
-            ipsum deserunt occaecat cupidatat consequat est adipisicing velit cupidatat
-            ullamco veniam aliquip reprehenderit officia. Officia labore culpa ullamco
-            velit. In sit occaecat velit ipsum fugiat esse aliqua dolor sint.
-          </Paragraph>
-          <Paragraph>
-            Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad
-            pariatur. Dolor excepteur esse deserunt voluptate labore ea. Exercitation
-            ipsum deserunt occaecat cupidatat consequat est adipisicing velit cupidatat
-            ullamco veniam aliquip reprehenderit officia. Officia labore culpa ullamco
-            velit. In sit occaecat velit ipsum fugiat esse aliqua dolor sint.
-          </Paragraph>
-          <Paragraph>
-            Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad
-            pariatur. Dolor excepteur esse deserunt voluptate labore ea. Exercitation
-            ipsum deserunt occaecat cupidatat consequat est adipisicing velit cupidatat
-            ullamco veniam aliquip reprehenderit officia. Officia labore culpa ullamco
-            velit. In sit occaecat velit ipsum fugiat esse aliqua dolor sint.
-          </Paragraph>
+          {[1, 2, 3].map((i) => (
+            <Paragraph key={i} size="$8">
+              Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad
+              pariatur. Dolor excepteur esse deserunt voluptate labore ea. Exercitation
+              ipsum deserunt occaecat cupidatat consequat est adipisicing velit cupidatat
+              ullamco veniam aliquip reprehenderit officia. Officia labore culpa ullamco
+              velit. In sit occaecat velit ipsum fugiat esse aliqua dolor sint.
+            </Paragraph>
+          ))}
         </Sheet.ScrollView>
       </Sheet.Frame>
     </Sheet>
