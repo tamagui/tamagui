@@ -23,7 +23,7 @@ If it's a bug in the starter use `apps/starter` to reproduce. For native-only bu
 **To Reproduce**
 
 ```
-npm create tamagui-app@latest
+npm init tamagui-app
 ```
 
 Make your changes and then push and link it here. 🙏🙏🙏🙏🙏

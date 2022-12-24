@@ -5,7 +5,7 @@ import { Button, Paragraph, Spacer, TooltipSimple, XStack } from 'tamagui'
 import { useClipboard } from '../lib/useClipboard'
 
 export const InstallInput = memo(() => {
-  const installScript = `npm create tamagui-app@latest`
+  const installScript = `npm init tamagui-app`
   const { onCopy, hasCopied } = useClipboard(installScript)
 
   return (
