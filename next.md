@@ -1,6 +1,5 @@
 1.0
 
-- sheet on website closes every scroll after close/open
 - variants intellisense autocomplete not suggesting, but types are right
 - next load css on subsequent pages (partially fixed)
   - https://github.com/vanilla-extract-css/vanilla-extract/blob/master/packages/webpack-plugin/src/loader.ts

@@ -43,9 +43,14 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
       dragAt: 0,
       dys: [] as number[], // store a few recent dys to get velocity on release
       isScrolling: false,
+      isDragging: false,
     })
 
     const release = () => {
+      if (!state.current.isDragging) {
+        return
+      }
+      state.current.isDragging = false
       scrollBridge.scrollStartY = -1
       state.current.isScrolling = false
       setScrollEnabled(true)
@@ -78,6 +83,7 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
         }}
         onStartShouldSetResponder={() => {
           scrollBridge.scrollStartY = -1
+          state.current.isDragging = true
           return true
         }}
         onMoveShouldSetResponder={() => true}
