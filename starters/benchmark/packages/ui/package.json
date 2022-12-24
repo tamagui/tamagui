@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@bench/config": "*",
-    "tamagui": "^1.0.1-rc.6"
+    "tamagui": "^1.0.1-rc.7"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-rc.6"
+    "@tamagui/build": "^1.0.1-rc.7"
   }
 }
