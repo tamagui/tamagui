@@ -1,6 +1,5 @@
 1.0
 
-- slider drag is slow
 - select desktop selecting item glitches upwards for a frame
 - fix alt themes to be more subtle and go less strong to more strong
 - animation not changing (between two values or on off?) have to change `key`

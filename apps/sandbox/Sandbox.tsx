@@ -1,7 +1,7 @@
 // import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { SheetDemo } from '@tamagui/demos'
+import { SelectDemo, SheetDemo, SliderDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { OpaqueColorValue } from 'react-native'
 import {
@@ -93,11 +93,11 @@ export const Sandbox = () => {
           }}
         >
           {/* <AnimationsHoverDemo /> */}
-          {/* <SelectDemo /> */}
+          <SelectDemo />
 
           {/* <DialogDemo /> */}
 
-          <SheetDemo />
+          {/* <SheetDemo /> */}
 
           <Button
             onPress={async () => {

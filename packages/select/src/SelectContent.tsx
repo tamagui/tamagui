@@ -37,7 +37,7 @@ export const SelectContent = ({
       {context.open ? (
         <FloatingOverlay style={{ zIndex }} lockScroll={!touch}>
           <FocusScope loop trapped {...focusScopeProps}>
-            <Dismissable disableOutsidePointerEvents>{contents}</Dismissable>
+            <Dismissable>{contents}</Dismissable>
           </FocusScope>
         </FloatingOverlay>
       ) : (
