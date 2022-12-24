@@ -171,7 +171,7 @@ const DialogPortal: React.FC<DialogPortalProps> = DialogPortalFrame.extractable(
 
     if (context.modal) {
       return (
-        <DialogPortalItem>
+        <DialogPortalItem __scopeDialog={__scopeDialog}>
           <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
             <DialogPortalFrame
               pointerEvents={isShowing ? 'auto' : 'none'}
@@ -472,6 +472,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       context,
       ...contentProps
     } = props
+
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
     const showSheet = useShowDialogSheet(context)

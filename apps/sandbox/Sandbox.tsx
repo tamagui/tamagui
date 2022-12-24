@@ -1,7 +1,13 @@
 // import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { FormsDemo, SelectDemo, SheetDemo, SliderDemo } from '@tamagui/demos'
+import {
+  AlertDialogDemo,
+  FormsDemo,
+  SelectDemo,
+  SheetDemo,
+  SliderDemo,
+} from '@tamagui/demos'
 import { useState } from 'react'
 import { OpaqueColorValue } from 'react-native'
 import {
@@ -109,6 +115,8 @@ export const Sandbox = () => {
           {/* <AnimationChangeTest /> */}
 
           {/* <Square bc="red" size={100} style={{ filter: 'blur(10px)' }} /> */}
+
+          <AlertDialogDemo />
 
           {/* <FormsDemo /> */}
 
