@@ -1,3 +1,5 @@
+import { stylePropsAll, validStyles } from '@tamagui/helpers'
+
 import { createComponent } from './createComponent'
 import { ReactNativeStaticConfigs } from './setupReactNative'
 import {
@@ -59,6 +61,19 @@ export function styled<
   //     options = options ? ({ ...props, ...options } as any) : props
   //   }
   // }
+
+  // validate not using a variant over an existing valid style
+  if (process.env.NODE_ENV === 'development') {
+    if (options?.variants) {
+      for (const key in options.variants) {
+        if (key in stylePropsAll) {
+          console.error(
+            `Invalid variant key overlaps with style key: ${key}. Tamagui prevents defining variants that use valid style keys to reduce implementation complexity.`
+          )
+        }
+      }
+    }
+  }
 
   const staticConfigProps = (() => {
     const parentStaticConfig =

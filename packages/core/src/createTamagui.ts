@@ -3,7 +3,11 @@ import { isRSC, isWeb } from '@tamagui/constants'
 import { configListeners, setConfig } from './config'
 import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
-import { getAllRules } from './helpers/insertStyleRule'
+import {
+  getAllRules,
+  listenForSheetChanges,
+  scanAllSheets,
+} from './helpers/insertStyleRule'
 import {
   registerCSSVariable,
   tokensValueToVariable,
@@ -41,6 +45,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       throw new Error('Must define fonts')
     }
   }
+
+  scanAllSheets()
+  listenForSheetChanges()
 
   const fontTokens = Object.fromEntries(
     Object.entries(configIn.fonts!).map(([k, v]) => {

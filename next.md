@@ -1,18 +1,13 @@
-1.0
-
-- variants intellisense autocomplete not suggesting, but types are right
-- next load css on subsequent pages (partially fixed)
-  - https://github.com/vanilla-extract-css/vanilla-extract/blob/master/packages/webpack-plugin/src/loader.ts
-- run over site on mobile web, desktop
-
 1.0 launch:
 
+- run over site on mobile web, desktop
 - sponsor promo
 - mailing list
 - runthrough docs a handful of times
 
 1.0 post launch:
 
+- variants intellisense autocomplete not suggesting, but types are right
 - canary release channel
 - sponsor rewards e2e flow
 - add new sponsors script
