@@ -112,28 +112,28 @@ const ColorSchemeListItem = () => {
 }
 
 const demos = [
-  {
-    pages: [
-      { title: 'Stacks', route: '/demo/stacks' },
-      { title: 'Headings', route: '/demo/headings' },
-      { title: 'Paragraph', route: '/demo/text' },
-      { title: 'Animations', route: '/demo/animations' },
-      { title: 'Themes', route: '/demo/themes' },
-    ],
-  },
+  // {
+  //   pages: [
+  //     { title: 'Stacks', route: '/demo/stacks' },
+  //     { title: 'Headings', route: '/demo/headings' },
+  //     { title: 'Paragraph', route: '/demo/text' },
+  //     { title: 'Animations', route: '/demo/animations' },
+  //     { title: 'Themes', route: '/demo/themes' },
+  //   ],
+  // },
 
-  {
-    label: 'Forms',
-    pages: [
-      { title: 'Button', route: '/demo/button' },
-      { title: 'Input + Textarea', route: '/demo/inputs' },
-      { title: 'Label', route: '/demo/label' },
-      { title: 'Progress', route: '/demo/progress' },
-      { title: 'Select', route: '/demo/select' },
-      { title: 'Slider', route: '/demo/slider' },
-      { title: 'Switch', route: '/demo/switch' },
-    ],
-  },
+  // {
+  //   label: 'Forms',
+  //   pages: [
+  //     { title: 'Button', route: '/demo/button' },
+  //     { title: 'Input + Textarea', route: '/demo/inputs' },
+  //     { title: 'Label', route: '/demo/label' },
+  //     { title: 'Progress', route: '/demo/progress' },
+  //     { title: 'Select', route: '/demo/select' },
+  //     { title: 'Slider', route: '/demo/slider' },
+  //     { title: 'Switch', route: '/demo/switch' },
+  //   ],
+  // },
 
   {
     label: 'Panels',

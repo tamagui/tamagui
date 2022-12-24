@@ -43,7 +43,6 @@ type DialogPortalProps = Omit<PortalItemProps, 'asChild'> & YStackProps & {
      * controlling animation with React animation libraries.
      */
     forceMount?: true;
-    isSheetPortal?: boolean;
 };
 export declare const DialogPortalFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
@@ -192,7 +191,7 @@ type DialogContentImplProps = DialogContentFrameProps & Omit<DismissableProps, '
     context: DialogContextValue;
 };
 export declare const DialogSheetContents: {
-    ({ name, context, ...props }: {
+    ({ name, ...props }: {
         name: string;
         context: Omit<DialogContextValue, 'sheetBreakpoint'>;
     }): JSX.Element;
