@@ -1,5 +1,5 @@
 import { tints } from '@tamagui/logo'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Theme, ThemeName, useEvent } from 'tamagui'
 
 // TODO useSyncExternalStore

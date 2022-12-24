@@ -353,5 +353,5 @@ declare const Range: React.ForwardRefExoticComponent<((Omit<import("react-native
 }>>, string | number>) & React.RefAttributes<View>>;
 declare const Thumb: React.ForwardRefExoticComponent<SliderThumbProps & React.RefAttributes<View>>;
 export { Slider, SliderTrack, SliderTrackActive, SliderThumb, Track, Range, Thumb, };
-export type { SliderProps, SliderTrackProps, SliderTrackActiveProps, SliderThumbProps, };
+export type { SliderProps, SliderTrackProps, SliderTrackActiveProps, SliderThumbProps };
 //# sourceMappingURL=Slider.d.ts.map

@@ -9525,6 +9525,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"create-tamagui@workspace:packages/create-tamagui":
+  version: 0.0.0-use.local
+  resolution: "create-tamagui@workspace:packages/create-tamagui"
+  languageName: unknown
+  linkType: soft
+
 "critters@npm:^0.0.16":
   version: 0.0.16
   resolution: "critters@npm:0.0.16"

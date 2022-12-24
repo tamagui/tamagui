@@ -1,4 +1,4 @@
-import NextLink from 'next/link'
+import { NextLink } from 'components/NextLink'
 import { memo } from 'react'
 import {
   Button,
@@ -19,6 +19,7 @@ import { DiscordIcon } from './DiscordIcon'
 import { GithubIcon } from './GithubIcon'
 import { useHeroHovered } from './heroState'
 import { InstallInput } from './InstallInput'
+import { TwitterIcon } from './TwitterIcon'
 import { useTint } from './useTint'
 
 export function Hero() {
@@ -142,9 +143,8 @@ const HeroTop = memo(() => {
                 </Tag>
               </NextLink>{' '}
               &{' '}
-              <NextLink legacyBehavior href="/docs/components/stacks" passHref>
+              <NextLink href="/docs/components/stacks">
                 <Tag
-                  tag="a"
                   theme="purple_alt2"
                   bc="$color3"
                   onHoverIn={() => setHovered(2)}
@@ -163,19 +163,12 @@ const HeroTop = memo(() => {
         </YStack>
 
         <XStack ai="center" jc="center" $xxs={{ ai: 'center', fw: 'wrap' }}>
-          <NextLink legacyBehavior href="https://github.com/tamagui/tamagui" passHref>
-            <YStack
-              p="$6"
-              $sm={{ p: '$3' }}
-              opacity={0.65}
-              hoverStyle={{ opacity: 1 }}
-              tag="a"
-              target="_blank"
-            >
+          <NextLink target="_blank" href="https://twitter.com/tamagui_js">
+            <YStack p="$6" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
               <VisuallyHidden>
-                <Text>Github</Text>
+                <Text>Twitter</Text>
               </VisuallyHidden>
-              <GithubIcon width={23} />
+              <TwitterIcon width={23} />
             </YStack>
           </NextLink>
 
@@ -191,19 +184,13 @@ const HeroTop = memo(() => {
               mx: '50%',
             }}
           >
-            <NextLink
-              legacyBehavior
-              prefetch={false}
-              href="/docs/intro/compiler"
-              passHref
-            >
+            <NextLink prefetch={false} href="/docs/intro/compiler">
               <Button
                 // layout shifts...
                 w={121}
                 h={52}
                 accessibilityLabel="Get started (docs)"
                 fontFamily="$silkscreen"
-                tag="a"
                 size="$5"
                 borderRadius={1000}
                 fontWeight="800"
@@ -223,19 +210,13 @@ const HeroTop = memo(() => {
               </Button>
             </NextLink>
 
-            <NextLink
-              legacyBehavior
-              prefetch={false}
-              href="/docs/intro/introduction"
-              passHref
-            >
+            <NextLink prefetch={false} href="/docs/intro/introduction">
               <Button
                 // layout shifts...
                 w={118}
                 h={52}
                 accessibilityLabel="Get started (docs)"
                 fontFamily="$silkscreen"
-                tag="a"
                 size="$5"
                 borderRadius={1000}
                 fontWeight="800"
@@ -256,15 +237,13 @@ const HeroTop = memo(() => {
             </NextLink>
           </XStack>
 
-          <NextLink legacyBehavior href="https://discord.gg/4qh6tdcVDa" passHref>
+          <NextLink target="_blank" href="https://discord.gg/4qh6tdcVDa">
             <YStack
               p="$6"
               $sm={{ p: '$3' }}
               ml="$-2"
               opacity={0.65}
               hoverStyle={{ opacity: 1 }}
-              tag="a"
-              target="_blank"
             >
               <VisuallyHidden>
                 <Text>Discord</Text>

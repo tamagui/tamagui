@@ -30,6 +30,8 @@ if (typeof navigator !== 'undefined') {
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
+  const router = useRouter()
+  const isResponsiveDemo = router.pathname.startsWith('/responsive-demo')
 
   // useMemo below to avoid re-render on dark/light change
   return (
@@ -48,7 +50,7 @@ export default function App(props: AppProps) {
           defaultTheme={theme}
         >
           <SearchProvider>
-            <Header />
+            {!isResponsiveDemo && <Header />}
             <Suspense fallback={null}>
               {useMemo(() => {
                 return <ContentInner {...props} />

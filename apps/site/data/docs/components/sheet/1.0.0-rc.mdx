@@ -6,7 +6,7 @@ component: Sheet
 package: sheet
 ---
 
-# Sheet <Beta />
+# Sheet
 
 <Description>A bottom sheet that slides up.</Description>
 
@@ -52,7 +52,11 @@ Contains every component for the sheet.
 <PropsTable
   data={[
     { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
-    { name: 'defaultOpen', type: 'boolean', description: `Uncontrolled open state on mount.` },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      description: `Uncontrolled open state on mount.`,
+    },
     {
       name: 'onOpenChange',
       type: '(open: boolean) => void',

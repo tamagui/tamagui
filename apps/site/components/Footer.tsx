@@ -1,5 +1,5 @@
 import { TamaguiLogo } from '@tamagui/logo'
-import NextLink from 'next/link'
+import { NextLink } from 'components/NextLink'
 import React from 'react'
 import { H4, Paragraph, Spacer, Text, XStack, YStack } from 'tamagui'
 
@@ -49,7 +49,14 @@ export const Footer = () => {
             <Paragraph size="$3">built with Tamagui</Paragraph>
           </YStack>
 
-          <YStack ai="flex-start" $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space="$3">
+          <YStack
+            ai="flex-start"
+            $sm={{ ai: 'center' }}
+            px="$4"
+            py="$5"
+            flex={1.5}
+            space="$3"
+          >
             <H4 mb="$3" size="$4" fontFamily="$silkscreen">
               Overview
             </H4>
@@ -60,7 +67,14 @@ export const Footer = () => {
           <ParagraphLink href="/docs/frequently-asked-questions">FAQ</ParagraphLink> */}
           </YStack>
 
-          <YStack ai="flex-start" $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space="$3">
+          <YStack
+            ai="flex-start"
+            $sm={{ ai: 'center' }}
+            px="$4"
+            py="$5"
+            flex={1.5}
+            space="$3"
+          >
             <H4 mb="$3" size="$4" fontFamily="$silkscreen">
               Docs
             </H4>
@@ -69,7 +83,14 @@ export const Footer = () => {
             <ParagraphLink href="/docs/core/styled">Variants</ParagraphLink>
           </YStack>
 
-          <YStack ai="flex-start" $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space="$3">
+          <YStack
+            ai="flex-start"
+            $sm={{ ai: 'center' }}
+            px="$4"
+            py="$5"
+            flex={1.5}
+            space="$3"
+          >
             <H4 mb="$3" size="$4" fontFamily="$silkscreen">
               Community
             </H4>

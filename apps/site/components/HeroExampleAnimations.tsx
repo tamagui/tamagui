@@ -1,9 +1,18 @@
 import { animations } from '@tamagui/config-base'
 import { useIsIntersecting, useOnIntersecting } from '@tamagui/demos'
 import { ArrowDown } from '@tamagui/lucide-icons'
-import NextLink from 'next/link'
+import { NextLink } from 'components/NextLink'
 import React, { memo, useEffect, useRef, useState } from 'react'
-import { Button, ListItem, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  ListItem,
+  Paragraph,
+  Separator,
+  Square,
+  Theme,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { AnimationsDemo } from './AnimationsDemo'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
@@ -46,8 +55,8 @@ export function HeroExampleAnimations({ animationCode }) {
             Universal <span className="rainbow clip-text">Animations</span>
           </HomeH2>
           <HomeH3>
-            Better platform targeting with animation drivers that can be changed without changing
-            code.
+            Better platform targeting with animation drivers that can be changed without
+            changing code.
           </HomeH3>
         </YStack>
 
@@ -111,7 +120,12 @@ export function HeroExampleAnimations({ animationCode }) {
 
         <XStack als="center" space="$3">
           <NextLink legacyBehavior href="/docs/core/animations#css" passHref>
-            <Button accessibilityLabel="CSS docs" fontFamily="$silkscreen" theme={tint} tag="a">
+            <Button
+              accessibilityLabel="CSS docs"
+              fontFamily="$silkscreen"
+              theme={tint}
+              tag="a"
+            >
               CSS &raquo;
             </Button>
           </NextLink>
