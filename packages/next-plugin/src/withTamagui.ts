@@ -1,4 +1,4 @@
-import { existsSync, fstat } from 'fs'
+import { existsSync } from 'fs'
 import path, { dirname, join } from 'path'
 
 import type { TamaguiOptions } from '@tamagui/static'

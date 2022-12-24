@@ -40,7 +40,7 @@
     "esbuild-loader": "^2.19.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
-    "mini-css-extract-plugin": "^2.7.1",
+    "mini-css-extract-plugin": "^2.7.2",
     "react-refresh": "^0.14.0",
     "style-loader": "^3.3.1",
     "tamagui-loader": "^1.0.1-rc.8",

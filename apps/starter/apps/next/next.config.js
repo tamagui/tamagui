@@ -57,6 +57,7 @@ module.exports = function () {
       'expo-modules-core',
     ],
     experimental: {
+      // optimizeCss: true,
       scrollRestoration: true,
       legacyBrowsers: false,
     },

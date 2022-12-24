@@ -1,7 +1,3 @@
-// this needs to check if its inserted already? 99% of the time it is
-// this should avoid re-inserts, but need to test the perf trade-offs
-// i tested with the site itself and the initial insert was trivial
-
 import type { StyleObject } from '@tamagui/helpers'
 
 const allSelectors: Record<string, string> = {}
@@ -17,18 +13,7 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
   const s = css.indexOf('transform:')
   if (s === -1) {
     if (process.env.NODE_ENV === 'development') {
-      // eslint-disable-next-line no-console
-      console.groupCollapsed(
-        `❌ Invalid transform, likely used deg/% improperly ${identifier}`
-      )
-      // eslint-disable-next-line no-console
-      console.log('rule:', rule)
-      // eslint-disable-next-line no-console
-      console.trace()
-      // eslint-disable-next-line no-console
-      console.groupEnd()
-    } else {
-      // missing transform
+      console.error(`❌ Invalid transform, likely used deg/% improperly ${identifier}`)
     }
     return false
   }
@@ -50,9 +35,33 @@ const isClient = typeof document !== 'undefined'
 //   1. debugging at dev time
 //   2. avoid duplicate insert styles at runtime
 //   3. used now for merging transforms atomically
-const scannedNum = new WeakMap<CSSStyleSheet, number>()
 
-export function updateInserted() {
+// multiple sheets could have the same ids so we have to count
+
+const scannedNum = new WeakMap<CSSStyleSheet, number>()
+const totalSheetSelectors = new Map<string, number>()
+const referencesInSheet = new WeakMap<CSSStyleSheet>()
+
+export function listenForSheetChanges() {
+  if (!isClient) return
+  function handleNode(node: Node, remove = false) {
+    if (node instanceof HTMLStyleElement && node.sheet) {
+      console.warn('update', node.sheet)
+      updateSheetStyles(node.sheet, remove)
+    }
+  }
+  const mo = new MutationObserver((entries) => {
+    for (const entry of entries) {
+      entry.addedNodes.forEach((node) => handleNode(node))
+      entry.removedNodes.forEach((node) => handleNode(node, true))
+    }
+  })
+  mo.observe(document.head, {
+    childList: true,
+  })
+}
+
+export function scanAllSheets() {
   if (process.env.NODE_ENV === 'test') return
   if (!isClient) return
   const sheets = document.styleSheets
@@ -60,28 +69,53 @@ export function updateInserted() {
   for (let i = 0; i < sheets.length; i++) {
     const sheet = sheets[i]
     if (!sheet) continue
+    updateSheetStyles(sheet)
+  }
+}
 
-    // avoid errors on cross origin sheets
-    // https://stackoverflow.com/questions/49993633/uncaught-domexception-failed-to-read-the-cssrules-property
-    let rules: CSSRuleList
-    try {
-      rules = sheet.cssRules
-    } catch {
-      continue
-    }
+function track(id: string, remove = false) {
+  const next = (totalSheetSelectors.get(id) || 0) + (remove ? -1 : 1)
+  totalSheetSelectors.set(id, next)
+  return next
+}
 
-    const len = rules.length
-    const lastScanned = scannedNum.get(sheet) ?? 0
+function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
+  // avoid errors on cross origin sheets
+  // https://stackoverflow.com/questions/49993633/uncaught-domexception-failed-to-read-the-cssrules-property
+  let rules: CSSRuleList
+  try {
+    rules = sheet.cssRules
+  } catch {
+    return
+  }
+
+  const len = rules.length
+  const lastScanned = scannedNum.get(sheet) || 0
+
+  if (!remove) {
+    // avoid work dumb but works
     if (lastScanned === len) {
-      continue
+      return
     }
-    for (let i = lastScanned; i < len; i++) {
-      const rule = rules[i]
-      const response = getTamaguiSelector(rule)
-      if (!response) {
-        continue
+  }
+
+  for (let i = lastScanned; i < len; i++) {
+    const rule = rules[i]
+    const response = getTamaguiSelector(rule)
+    if (!response) {
+      return
+    }
+
+    const [identifier, cssRule] = response
+
+    // track references
+    const total = track(identifier, remove)
+
+    if (remove) {
+      if (total === 0) {
+        delete allSelectors[identifier]
       }
-      const [identifier, cssRule] = response
+    } else {
       if (!(identifier in allSelectors)) {
         const isTransform = identifier.startsWith('_transform')
         const shouldInsert = isTransform
@@ -92,8 +126,9 @@ export function updateInserted() {
         }
       }
     }
-    scannedNum.set(sheet, i)
   }
+
+  scannedNum.set(sheet, len)
 }
 
 function getTamaguiSelector(
@@ -121,9 +156,6 @@ const getIdentifierFromTamaguiSelector = (selector: string) =>
     .replace(/(:root)+\s+/, '')
     .replace(/:[a-z]+$/, '')
     .slice(1)
-
-// move this to probably inside createTamagui
-updateInserted()
 
 const sheet = isClient
   ? document.head.appendChild(document.createElement('style')).sheet

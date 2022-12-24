@@ -37,6 +37,8 @@ const plugins = [
     return {
       ...config,
       webpack(webpackConfig, options) {
+        // webpackConfig.optimization.minimize = false
+
         webpackConfig.resolve.alias ??= {}
 
         // https://github.com/theKashey/react-remove-scroll/pull/78
@@ -88,6 +90,7 @@ module.exports = function (name, { defaultConfig }) {
     reactStrictMode: true,
     optimizeFonts: true,
     experimental: {
+      // optimizeCss: true,
       esmExternals: true,
       forceSwcTransforms: true,
       scrollRestoration: true,

@@ -478,6 +478,9 @@ export function createExtractor(
         // }
 
         if (!Component) {
+          /**
+           * We could/should still extract CSS just limited to validStyleProps
+           */
           return
         }
 
