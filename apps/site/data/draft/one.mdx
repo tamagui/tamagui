@@ -1,7 +1,7 @@
 ---
 title: Tamagui 1.0
 publishedAt: '2022-12-24'
-description: Ship cross-platform React apps in ½ time with 2x performance.
+description: Cross-platform React apps in ½ time with 2x performance.
 by: nate
 # relatedIds:
 #   - 'tamagui-alpha'
@@ -25,7 +25,7 @@ It can make inline and modern typed style syntax into more efficient code than h
 <BenchmarkChartWeb />
 <Spacer />
 
-We've built a lightweight [core library for styling](/docs), [static is the optimizing compiler](), and [tamagui is a full-featured UI kit built on top]().
+> The tamagui.dev home page scores 13% higher lighthouse scores with the compiler on.
 
 <Image
   title="The compiler improves the Lighthouse score of the homepage of https://tamagui.dev from 85 to 96"
@@ -38,9 +38,17 @@ We've built a lightweight [core library for styling](/docs), [static is the opti
   mb="$4"
 />
 
-> The tamagui.dev home page scores 13% higher lighthouse scores with the compiler on.
+Tamagui has three parts:
 
-We've built `tamagui` on top of the core style library, a complete suite of components and hooks designed to adapt to feel native on every platform, yet still be completely customizable thanks to a uniquely powerful [theme system](/docs/intro/themes), sizing props, and Radix-inspired composable component API surfaces.
+- The [core style library](/docs).
+- An [optimizing compiler]().
+- Tamagui, [a full-featured cross-platform UI kit built on top]().
+
+#### How Tamagui transforms code
+
+Tamagui can evaluate a wide variety of code to flatten your component trees down:
+
+<TamaguiExamplesCode />
 
 Tamagui supports the full APIs of React Native. The optimizing compiler nets huge gains in Lightouse cores - 15-20% on complex pages - without changing a line of code. It turns janky JS-based responsive and pseudo styles into clean CSS that is 10x faster on the web.
 
