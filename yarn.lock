@@ -9490,9 +9490,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"create-tamagui-app@workspace:packages/create-tamagui-app":
+"create-tamagui@workspace:packages/create-tamagui":
   version: 0.0.0-use.local
-  resolution: "create-tamagui-app@workspace:packages/create-tamagui-app"
+  resolution: "create-tamagui@workspace:packages/create-tamagui"
   dependencies:
     "@expo/package-manager": ^0.0.50
     "@playwright/test": ^1.29.0
@@ -9521,13 +9521,7 @@ __metadata:
     wait-port: ^0.3.0
     zx: ^7.1.1
   bin:
-    create-tamagui-app: ./run.js
-  languageName: unknown
-  linkType: soft
-
-"create-tamagui@workspace:packages/create-tamagui":
-  version: 0.0.0-use.local
-  resolution: "create-tamagui@workspace:packages/create-tamagui"
+    create-tamagui: ./run.js
   languageName: unknown
   linkType: soft
 

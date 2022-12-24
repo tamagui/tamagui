@@ -1,7 +1,7 @@
 # Tamagui + Solito + Next + Expo Monorepo
 
 ```sh
-npm init tamagui-app
+npm create tamagui
 ```
 
 ## 🔦 About

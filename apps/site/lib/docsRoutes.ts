@@ -151,7 +151,7 @@ export const docsRoutes = [
       { title: 'Next.js', route: '/docs/guides/next-js' },
       { title: 'Expo', route: '/docs/guides/expo' },
       { title: 'Vite', route: '/docs/guides/vite' },
-      { title: 'create-tamagui-app', route: '/docs/guides/create-tamagui-app' },
+      { title: 'create-tamagui', route: '/docs/guides/create-tamagui' },
     ],
   },
 
