@@ -7,7 +7,6 @@
 
 1.0 launch:
 
-- catchy blog title
 - sponsor promo
 - mailing list
 - runthrough docs a handful of times
