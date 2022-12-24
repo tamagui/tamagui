@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/select",
-  "version": "1.0.1-rc.7",
+  "version": "1.0.1-rc.8",
   "sideEffects": [
     "*.css"
   ],
@@ -27,19 +27,19 @@
     "@floating-ui/react-dom-interactions": "^0.13.3",
     "@floating-ui/react-native": "^0.8.2",
     "@radix-ui/react-use-previous": "^0.1.1",
-    "@tamagui/adapt": "^1.0.1-rc.7",
-    "@tamagui/compose-refs": "^1.0.1-rc.7",
-    "@tamagui/core": "^1.0.1-rc.7",
-    "@tamagui/create-context": "^1.0.1-rc.7",
-    "@tamagui/dismissable": "^1.0.1-rc.7",
-    "@tamagui/focus-scope": "^1.0.1-rc.7",
-    "@tamagui/list-item": "^1.0.1-rc.7",
-    "@tamagui/portal": "^1.0.1-rc.7",
-    "@tamagui/separator": "^1.0.1-rc.7",
-    "@tamagui/stacks": "^1.0.1-rc.7",
-    "@tamagui/text": "^1.0.1-rc.7",
-    "@tamagui/use-controllable-state": "^1.0.1-rc.7",
-    "@tamagui/use-event": "^1.0.1-rc.7"
+    "@tamagui/adapt": "^1.0.1-rc.8",
+    "@tamagui/compose-refs": "^1.0.1-rc.8",
+    "@tamagui/core": "^1.0.1-rc.8",
+    "@tamagui/create-context": "^1.0.1-rc.8",
+    "@tamagui/dismissable": "^1.0.1-rc.8",
+    "@tamagui/focus-scope": "^1.0.1-rc.8",
+    "@tamagui/list-item": "^1.0.1-rc.8",
+    "@tamagui/portal": "^1.0.1-rc.8",
+    "@tamagui/separator": "^1.0.1-rc.8",
+    "@tamagui/stacks": "^1.0.1-rc.8",
+    "@tamagui/text": "^1.0.1-rc.8",
+    "@tamagui/use-controllable-state": "^1.0.1-rc.8",
+    "@tamagui/use-event": "^1.0.1-rc.8"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -47,7 +47,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-rc.7",
+    "@tamagui/build": "^1.0.1-rc.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "*"
