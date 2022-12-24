@@ -228,7 +228,7 @@ export default function Community({ frontmatters }) {
                   Tamagui t3
                 </H4>
                 <Paragraph cursor="pointer" theme="alt2">
-                  by Kezlar
+                  by ebg1223
                 </Paragraph>
               </Card>
             </XStack>
