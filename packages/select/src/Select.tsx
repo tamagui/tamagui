@@ -533,7 +533,7 @@ export const Select = withStaticProperties(
     })
     const sheetBreakpoint = when
     const isSheet = useSelectBreakpointActive(sheetBreakpoint)
-    const SelectImpl = isSheet ? SelectSheetImpl : SelectInlineImpl
+    const SelectImpl = isSheet || !isWeb ? SelectSheetImpl : SelectInlineImpl
     const forceUpdate = React.useReducer(() => ({}), {})[1]
     const [selectedItem, setSelectedItem] = React.useState<React.ReactNode>(null)
 

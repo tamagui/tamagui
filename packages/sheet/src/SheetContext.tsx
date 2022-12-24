@@ -2,7 +2,7 @@ import { TamaguiElement } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import React from 'react'
 
-import { SHEET_NAME } from './SHEET_HANDLE_NAME'
+import { SHEET_NAME } from './constants'
 import { PositionChangeHandler, ScrollBridge, SheetProps } from './types'
 
 type SheetContextValue = Required<
@@ -19,5 +19,7 @@ type SheetContextValue = Required<
 
 export const [createSheetContext, createSheetScope] = createContextScope(SHEET_NAME)
 
-export const [SheetProvider, useSheetContext] =
-  createSheetContext<SheetContextValue>(SHEET_NAME, {} as any)
+export const [SheetProvider, useSheetContext] = createSheetContext<SheetContextValue>(
+  SHEET_NAME,
+  {} as any
+)

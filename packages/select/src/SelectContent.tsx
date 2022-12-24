@@ -25,8 +25,8 @@ export const SelectContent = ({
   const contents = <Theme name={themeName}>{children}</Theme>
   const touch = useIsTouchDevice()
 
-  if (showSheet && context.open) {
-    return contents
+  if (showSheet) {
+    return context.open ? contents : null
   }
 
   return (

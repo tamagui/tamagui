@@ -2,7 +2,7 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { Sheet } from '@tamagui/sheet'
 import { SheetProps } from '@tamagui/sheet/types/types'
 import { useState } from 'react'
-import { Button, H1, H2, Paragraph, Square, XStack } from 'tamagui'
+import { Button, H1, H2, Paragraph, PortalItem, Square, XStack } from 'tamagui'
 
 export const SheetDemo = () => {
   const [position, setPosition] = useState(0)
@@ -15,7 +15,7 @@ export const SheetDemo = () => {
       <XStack space>
         <Button onPress={() => setOpen(true)}>Open</Button>
         <Button onPress={() => setModal((x) => !x)}>
-          {modal ? 'Modal' : 'Inline'}
+          {modal ? 'Type: Modal' : 'Type: Inline'}
         </Button>
       </XStack>
 
@@ -32,12 +32,7 @@ export const SheetDemo = () => {
         <Sheet.Overlay />
         <Sheet.Handle />
         <Sheet.Frame f={1} p="$4" jc="center" ai="center" space="$5">
-          <Button
-            size="$6"
-            circular
-            icon={ChevronDown}
-            onPress={() => setOpen(false)}
-          />
+          <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
           <Button
             size="$6"
             circular
@@ -70,26 +65,23 @@ function InnerSheet(props: SheetProps) {
           <Paragraph>
             Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad
             pariatur. Dolor excepteur esse deserunt voluptate labore ea. Exercitation
-            ipsum deserunt occaecat cupidatat consequat est adipisicing velit
-            cupidatat ullamco veniam aliquip reprehenderit officia. Officia labore
-            culpa ullamco velit. In sit occaecat velit ipsum fugiat esse aliqua dolor
-            sint.
+            ipsum deserunt occaecat cupidatat consequat est adipisicing velit cupidatat
+            ullamco veniam aliquip reprehenderit officia. Officia labore culpa ullamco
+            velit. In sit occaecat velit ipsum fugiat esse aliqua dolor sint.
           </Paragraph>
           <Paragraph>
             Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad
             pariatur. Dolor excepteur esse deserunt voluptate labore ea. Exercitation
-            ipsum deserunt occaecat cupidatat consequat est adipisicing velit
-            cupidatat ullamco veniam aliquip reprehenderit officia. Officia labore
-            culpa ullamco velit. In sit occaecat velit ipsum fugiat esse aliqua dolor
-            sint.
+            ipsum deserunt occaecat cupidatat consequat est adipisicing velit cupidatat
+            ullamco veniam aliquip reprehenderit officia. Officia labore culpa ullamco
+            velit. In sit occaecat velit ipsum fugiat esse aliqua dolor sint.
           </Paragraph>
           <Paragraph>
             Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad
             pariatur. Dolor excepteur esse deserunt voluptate labore ea. Exercitation
-            ipsum deserunt occaecat cupidatat consequat est adipisicing velit
-            cupidatat ullamco veniam aliquip reprehenderit officia. Officia labore
-            culpa ullamco velit. In sit occaecat velit ipsum fugiat esse aliqua dolor
-            sint.
+            ipsum deserunt occaecat cupidatat consequat est adipisicing velit cupidatat
+            ullamco veniam aliquip reprehenderit officia. Officia labore culpa ullamco
+            velit. In sit occaecat velit ipsum fugiat esse aliqua dolor sint.
           </Paragraph>
         </Sheet.ScrollView>
       </Sheet.Frame>

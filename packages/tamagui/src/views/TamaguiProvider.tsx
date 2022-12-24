@@ -7,7 +7,7 @@ export const TamaguiProvider = isRSC
   : ({ children, ...props }: TamaguiProviderProps) => {
       return (
         <OGProvider {...props}>
-          <PortalProvider>{children}</PortalProvider>
+          <PortalProvider shouldAddRootHost>{children}</PortalProvider>
         </OGProvider>
       )
     }

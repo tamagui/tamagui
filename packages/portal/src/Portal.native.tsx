@@ -22,7 +22,7 @@ export const Portal = (props: PortalProps) => {
   )
 
   if (Platform.OS === 'android') {
-    return <PortalItem name="_tamagui_root_portal">{contents}</PortalItem>
+    return <PortalItem hostName="root">{contents}</PortalItem>
   }
 
   if (rootTag) {
@@ -32,7 +32,7 @@ export const Portal = (props: PortalProps) => {
   if (process.env.NODE_ENV === 'development') {
     // eslint-disable-next-line no-console
     console.warn(
-      `Missing rootTag, this is a bug - you may need a different React Native version, or to avoid using "modal" on native.`,
+      `Missing rootTag, this is a bug - you may need a different React Native version, or to avoid using "modal" on native.`
     )
   }
 

@@ -96,7 +96,7 @@ const DialogTrigger = React.forwardRef<TamaguiElement, DialogTriggerProps>(
         onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
       />
     )
-  },
+  }
 )
 
 DialogTrigger.displayName = TRIGGER_NAME
@@ -112,7 +112,7 @@ const [PortalProvider, usePortalContext] = createDialogContext<PortalContextValu
   PORTAL_NAME,
   {
     forceMount: undefined,
-  },
+  }
 )
 
 type DialogPortalProps = Omit<PortalItemProps, 'asChild'> &
@@ -122,6 +122,8 @@ type DialogPortalProps = Omit<PortalItemProps, 'asChild'> &
      * controlling animation with React animation libraries.
      */
     forceMount?: true
+
+    isSheetPortal?: boolean
   }
 
 export const DialogPortalFrame = styled(YStack, {
@@ -137,13 +139,17 @@ export const DialogPortalFrame = styled(YStack, {
 
 const DialogPortal: React.FC<DialogPortalProps> = DialogPortalFrame.extractable(
   (props: ScopedProps<DialogPortalProps>) => {
-    const { __scopeDialog, forceMount, children, ...frameProps } = props
+    const { __scopeDialog, forceMount, children, isSheetPortal, ...frameProps } = props
     const themeName = useThemeName()
     const context = useDialogContext(PORTAL_NAME, __scopeDialog)
     const isShowing = forceMount || context.open
-    const contents = <AnimatePresence>{isShowing ? children : null}</AnimatePresence>
+    const contents = isSheetPortal ? (
+      children
+    ) : (
+      <AnimatePresence>{isShowing ? children : null}</AnimatePresence>
+    )
     const isSheet = useShowDialogSheet(context)
-    if (!context.modal || isSheet) {
+    if (!isSheetPortal && (!context.modal || isSheet)) {
       return contents
     }
     return (
@@ -164,7 +170,7 @@ const DialogPortal: React.FC<DialogPortalProps> = DialogPortalFrame.extractable(
         </DialogProvider>
       </PortalItem>
     )
-  },
+  }
 )
 
 DialogPortal.displayName = PORTAL_NAME
@@ -202,10 +208,8 @@ const DialogOverlay = React.forwardRef<TamaguiElement, DialogOverlayProps>(
       }
     }
 
-    return (
-      <DialogOverlayImpl context={context} {...overlayProps} ref={forwardedRef} />
-    )
-  },
+    return <DialogOverlayImpl context={context} {...overlayProps} ref={forwardedRef} />
+  }
 )
 
 DialogOverlay.displayName = OVERLAY_NAME
@@ -229,7 +233,7 @@ const DialogOverlayImpl = React.forwardRef<TamaguiElement, DialogOverlayImplProp
         ref={forwardedRef}
       />
     )
-  },
+  }
 )
 
 /* -------------------------------------------------------------------------------------------------
@@ -282,11 +286,7 @@ const DialogContent = DialogContentFrame.extractable(
       const contents = context.modal ? (
         <DialogContentModal context={context} {...contentProps} ref={forwardedRef} />
       ) : (
-        <DialogContentNonModal
-          context={context}
-          {...contentProps}
-          ref={forwardedRef}
-        />
+        <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
       )
 
       if (!isWeb) {
@@ -305,8 +305,8 @@ const DialogContent = DialogContentFrame.extractable(
           <div className="_dsp_contents">{contents}</div>
         </RemoveScroll>
       )
-    },
-  ),
+    }
+  )
 )
 
 DialogContent.displayName = CONTENT_NAME
@@ -321,14 +321,10 @@ interface DialogContentTypeProps
 const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
   (
     { children, context, ...props }: ScopedProps<DialogContentTypeProps>,
-    forwardedRef,
+    forwardedRef
   ) => {
     const contentRef = React.useRef<HTMLDivElement>(null)
-    const composedRefs = useComposedRefs(
-      forwardedRef,
-      context.contentRef,
-      contentRef,
-    )
+    const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
 
     // aria-hide everything except the content (better supported equivalent to setting aria-modal)
     React.useEffect(() => {
@@ -357,67 +353,66 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
             // If the event is a right-click, we shouldn't close because
             // it is effectively as if we right-clicked the `Overlay`.
             if (isRightClick) event.preventDefault()
-          },
+          }
         )}
         // When focus is trapped, a `focusout` event may still happen.
         // We make sure we don't trigger our `onDismiss` in such case.
         onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) =>
-          event.preventDefault(),
+          event.preventDefault()
         )}
       >
         {children}
       </DialogContentImpl>
     )
-  },
+  }
 )
 
 /* -----------------------------------------------------------------------------------------------*/
 
-const DialogContentNonModal = React.forwardRef<
-  TamaguiElement,
-  DialogContentTypeProps
->((props: ScopedProps<DialogContentTypeProps>, forwardedRef) => {
-  const hasInteractedOutsideRef = React.useRef(false)
+const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
+  (props: ScopedProps<DialogContentTypeProps>, forwardedRef) => {
+    const hasInteractedOutsideRef = React.useRef(false)
 
-  return (
-    <DialogContentImpl
-      {...props}
-      ref={forwardedRef}
-      trapFocus={false}
-      disableOutsidePointerEvents={false}
-      onCloseAutoFocus={(event) => {
-        props.onCloseAutoFocus?.(event)
+    return (
+      <DialogContentImpl
+        {...props}
+        ref={forwardedRef}
+        trapFocus={false}
+        disableOutsidePointerEvents={false}
+        onCloseAutoFocus={(event) => {
+          props.onCloseAutoFocus?.(event)
 
-        if (!event.defaultPrevented) {
-          if (!hasInteractedOutsideRef.current) {
-            props.context.triggerRef.current?.focus()
+          if (!event.defaultPrevented) {
+            if (!hasInteractedOutsideRef.current) {
+              props.context.triggerRef.current?.focus()
+            }
+            // Always prevent auto focus because we either focus manually or want user agent focus
+            event.preventDefault()
           }
-          // Always prevent auto focus because we either focus manually or want user agent focus
-          event.preventDefault()
-        }
 
-        hasInteractedOutsideRef.current = false
-      }}
-      onInteractOutside={(event) => {
-        props.onInteractOutside?.(event)
+          hasInteractedOutsideRef.current = false
+        }}
+        onInteractOutside={(event) => {
+          props.onInteractOutside?.(event)
 
-        if (!event.defaultPrevented) hasInteractedOutsideRef.current = true
+          if (!event.defaultPrevented) hasInteractedOutsideRef.current = true
 
-        // Prevent dismissing when clicking the trigger.
-        // As the trigger is already setup to close, without doing so would
-        // cause it to close and immediately open.
-        //
-        // We use `onInteractOutside` as some browsers also
-        // focus on pointer down, creating the same issue.
-        const target = event.target as HTMLElement
-        const trigger = props.context.triggerRef.current
-        if (!(trigger instanceof HTMLElement)) return
-        const targetIsTrigger = trigger.contains(target)
-        if (targetIsTrigger) event.preventDefault()
-      }}
-    />
-  )
-})
+          // Prevent dismissing when clicking the trigger.
+          // As the trigger is already setup to close, without doing so would
+          // cause it to close and immediately open.
+          //
+          // We use `onInteractOutside` as some browsers also
+          // focus on pointer down, creating the same issue.
+          const target = event.target as HTMLElement
+          const trigger = props.context.triggerRef.current
+          if (!(trigger instanceof HTMLElement)) return
+          const targetIsTrigger = trigger.contains(target)
+          if (targetIsTrigger) event.preventDefault()
+        }}
+      />
+    )
+  }
+)
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -475,11 +470,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
     )
 
     if (showSheet) {
-      return (
-        <PortalItem hostName={`${context.scopeKey}SheetContents`}>
-          {contentProps.children}
-        </PortalItem>
-      )
+      return <DialogPortal isSheetPortal>{contentProps.children}</DialogPortal>
     }
 
     if (!isWeb) {
@@ -520,7 +511,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
         )}
       </>
     )
-  },
+  }
 )
 
 /* -------------------------------------------------------------------------------------------------
@@ -530,14 +521,14 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
 const SHEET_CONTENTS_NAME = 'DialogSheetContents'
 
 export const DialogSheetContents = ({
-  __scopeDialog,
   name,
+  context,
   ...props
-}: ScopedProps<{ name: string }>) => {
-  const context = useDialogContext(SHEET_CONTENTS_NAME, __scopeDialog)
-  return (
-    <PortalHost forwardProps={props} name={`${context.scopeKey}SheetContents`} />
-  )
+}: {
+  name: string
+  context: Omit<DialogContextValue, 'sheetBreakpoint'>
+}) => {
+  return <PortalHost forwardProps={props} name={name} />
 }
 
 DialogSheetContents.displayName = SHEET_CONTENTS_NAME
@@ -557,10 +548,8 @@ const DialogTitle = React.forwardRef<TamaguiElement, DialogTitleProps>(
   (props: ScopedProps<DialogTitleProps>, forwardedRef) => {
     const { __scopeDialog, ...titleProps } = props
     const context = useDialogContext(TITLE_NAME, __scopeDialog)
-    return (
-      <DialogTitleFrame id={context.titleId} {...titleProps} ref={forwardedRef} />
-    )
-  },
+    return <DialogTitleFrame id={context.titleId} {...titleProps} ref={forwardedRef} />
+  }
 )
 
 DialogTitle.displayName = TITLE_NAME
@@ -588,7 +577,7 @@ const DialogDescription = React.forwardRef<TamaguiElement, DialogDescriptionProp
         ref={forwardedRef}
       />
     )
-  },
+  }
 )
 
 DialogDescription.displayName = DESCRIPTION_NAME
@@ -617,11 +606,11 @@ const DialogClose = React.forwardRef<TamaguiElement, DialogCloseProps>(
         {...closeProps}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress as any, () =>
-          context.onOpenChange(false),
+          context.onOpenChange(false)
         )}
       />
     )
-  },
+  }
 )
 
 DialogClose.displayName = CLOSE_NAME
@@ -634,14 +623,11 @@ function getState(open: boolean) {
 
 const TITLE_WARNING_NAME = 'DialogTitleWarning'
 
-const [DialogWarningProvider, useWarningContext] = createContext(
-  TITLE_WARNING_NAME,
-  {
-    contentName: CONTENT_NAME,
-    titleName: TITLE_NAME,
-    docsSlug: 'dialog',
-  },
-)
+const [DialogWarningProvider, useWarningContext] = createContext(TITLE_WARNING_NAME, {
+  contentName: CONTENT_NAME,
+  titleName: TITLE_NAME,
+  docsSlug: 'dialog',
+})
 
 type TitleWarningProps = { titleId?: string }
 
@@ -710,8 +696,11 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({
  * Dialog
  * -----------------------------------------------------------------------------------------------*/
 
-const DialogInner = React.forwardRef<{ open: (val: boolean) => void }, DialogProps>(
-  function Dialog(props: ScopedProps<DialogProps>, ref) {
+const Dialog = withStaticProperties(
+  React.forwardRef<{ open: (val: boolean) => void }, DialogProps>(function Dialog(
+    props: ScopedProps<DialogProps>,
+    ref
+  ) {
     const {
       __scopeDialog,
       children,
@@ -722,10 +711,8 @@ const DialogInner = React.forwardRef<{ open: (val: boolean) => void }, DialogPro
       allowPinchZoom = false,
     } = props
 
-    const { when, AdaptProvider } = useAdaptParent({
-      Contents: DialogSheetContents,
-    })
-    const sheetBreakpoint = when
+    const scopeId = useId()
+    const scopeKey = __scopeDialog ? Object.keys(__scopeDialog)[0] : scopeId
 
     const triggerRef = React.useRef<HTMLButtonElement>(null)
     const contentRef = React.useRef<TamaguiElement>(null)
@@ -735,66 +722,80 @@ const DialogInner = React.forwardRef<{ open: (val: boolean) => void }, DialogPro
       onChange: onOpenChange,
     })
 
+    const onOpenToggle = React.useCallback(
+      () => setOpen((prevOpen) => !prevOpen),
+      [setOpen]
+    )
+
+    const contentId = useId()
+    const titleId = useId()
+    const descriptionId = useId()
+
+    const context = {
+      scope: __scopeDialog,
+      scopeKey,
+      triggerRef,
+      contentRef,
+      contentId,
+      titleId,
+      descriptionId,
+      open,
+      onOpenChange: setOpen,
+      onOpenToggle,
+      modal,
+      allowPinchZoom,
+    }
+
+    const sheetContentsName = `${scopeKey}SheetContents`
+    const Contents = React.useCallback(
+      (props) => {
+        return (
+          <DialogSheetContents {...props} context={context} name={sheetContentsName} />
+        )
+      },
+      [sheetContentsName]
+    )
+
+    const { when, AdaptProvider } = useAdaptParent({
+      Contents,
+    })
+
     React.useImperativeHandle(
       ref,
       () => ({
         open: setOpen,
       }),
-      [setOpen],
+      [setOpen]
     )
-
-    const scopeId = useId()
-    const scopeKey = __scopeDialog ? Object.keys(__scopeDialog)[0] : scopeId
 
     return (
       <AdaptProvider>
-        <DialogProvider
-          scope={__scopeDialog}
-          scopeKey={scopeKey}
-          triggerRef={triggerRef}
-          contentRef={contentRef}
-          contentId={useId() || ''}
-          titleId={useId() || ''}
-          descriptionId={useId() || ''}
-          open={open}
-          onOpenChange={setOpen}
-          onOpenToggle={React.useCallback(
-            () => setOpen((prevOpen) => !prevOpen),
-            [setOpen],
-          )}
-          modal={modal}
-          allowPinchZoom={allowPinchZoom}
-          sheetBreakpoint={sheetBreakpoint}
-        >
-          <DialogSheetController
-            onOpenChange={setOpen}
-            __scopeDialog={__scopeDialog}
-          >
+        <DialogProvider {...context} sheetBreakpoint={when}>
+          <DialogSheetController onOpenChange={setOpen} __scopeDialog={__scopeDialog}>
             {children}
           </DialogSheetController>
         </DialogProvider>
       </AdaptProvider>
     )
-  },
+  }),
+  {
+    Trigger: DialogTrigger,
+    Portal: DialogPortal,
+    Overlay: DialogOverlay,
+    Content: DialogContent,
+    Title: DialogTitle,
+    Description: DialogDescription,
+    Close: DialogClose,
+    Sheet: ControlledSheet,
+    Adapt,
+  }
 )
-
-const Dialog = withStaticProperties(DialogInner, {
-  Trigger: DialogTrigger,
-  Portal: DialogPortal,
-  Overlay: DialogOverlay,
-  Content: DialogContent,
-  Title: DialogTitle,
-  Description: DialogDescription,
-  Close: DialogClose,
-  Sheet: ControlledSheet,
-  Adapt,
-})
 
 const DialogSheetController = (
   props: ScopedProps<{
     children: React.ReactNode
     onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
-  }>,
+  }>
 ) => {
   const context = useDialogContext('DialogSheetController', props.__scopeDialog)
   const showSheet = useShowDialogSheet(context)

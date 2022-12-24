@@ -25,12 +25,7 @@ rc.3
 
 1.0
 
-- write less, runs faster
-- write once, runs (well) everywhere
-- ½ the code, 2x the performance, 3x the platforms
-
 - CI auto master merge tests passing releases
-- vite compiler bug
 - prebuild option
   - not de-duping css much
   - fixes next next load css
@@ -39,7 +34,6 @@ rc.3
 - snapshot test of HeroResponsive output
 - `tamagui` cli basic version
 - I'm seeing an issue where setting multiline=true on Input results in broken colors when switching between light & dark themes (doesn't use specified text color). 
-- https://github.com/tamagui/tamagui/issues/318
 - focus an input in a dialog on mobile or a propover etc. then it disappears
 - https://github.com/tamagui/tamagui/issues/256
 - VisuallyHidden + mediaquery + space
@@ -55,6 +49,10 @@ rc.3
 
 1.0 launch:
 
+- titles
+  - write less, runs faster
+  - write once, runs (well) everywhere
+  - ½ the code, 2x the performance
 - grid on homepage linking to various nice components maybe replace features grid or augment
   - VisuallyHidden, Adapt, FontLanguage, etc
 - git hook to auto-follow on every commit with a type generation
