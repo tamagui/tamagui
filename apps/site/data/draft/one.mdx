@@ -3,14 +3,23 @@ title: Tamagui 1.0
 publishedAt: '2022-12-24'
 description: Cross-platform React apps in ½ time with 2x performance.
 by: nate
-# relatedIds:
-#   - 'tamagui-alpha'
+poster: banner-rc0.jpg
 ---
 
+<Image
+  title="Tamagui v1"
+  src="/banner-one.jpg"
+  size="hero"
+  overlap
+  height={275}
+  width={761}
+  resizeMode="contain"
+  mb="$4"
+/>
+
 <IntroParagraph large>
-  React Native is a great platform for building fluid, native feeling apps but when you
-  share UI with the web you [either accept a slow app, or write it
-  twice](/docs/intro/compiler).
+  React Native is a great platform for building mobile apps, but have a choice when it
+  comes to sharing UI: either [accept a slow app, or rewrite it](/docs/intro/compiler).
 </IntroParagraph>
 
 <IntroParagraph>
@@ -19,13 +28,13 @@ by: nate
   performance.
 </IntroParagraph>
 
-It turns natural typed inline styles, even with logic, into CSS that beats bests even hand-written styling, thanks to tree shaking and view flattening. Tamagui supports the full set of React Native APIs in a 0-dependency core library.
+It turns natural typed inline styles, even with logic, into CSS that beats bests even hand-written styling thanks to CSS extraction and view flattening. Tamagui supports the full set of React Native APIs in a 0-dependency core library.
 
 <Spacer />
 <BenchmarkChartWeb />
 <Spacer />
 
-On the web, psuedo and responsive styles are over 10x faster, while Lighthouse scores go up anywhere from 10-20% just by toggling the compiler on.
+On the web, render performance is faster, but psuedo and responsive styles really shine with over 10x the speed, and Lighthouse scores gain anywhere from 10-25%.
 
 <Image
   title="The compiler improves the Lighthouse score of the homepage of https://tamagui.dev from 85 to 96"
@@ -51,9 +60,7 @@ Tamagui can evaluate a wide variety of code to flatten your component trees down
 <Spacer />
 <TamaguiExamplesCode />
 
-The key to Tamagui's performance gains lie in **view flattening**: the compiler analyzes code, even across module boundaries, and evaluates even logical code via AST transformation and node VM-powered code evaluation.
-
-It will fully flatten your custom styled components like `<Circle />` into plain old `<div />` (or `<View />`, on native) and it does so often thanks to its smart evaluator.
+The key to Tamagui's performance gains lie in **view flattening**: the compiler analyzes code, even across module boundaries, and evaluates even logical code via AST transformation and node VM-powered code evaluation. It will fully flatten your custom styled components (like `<Circle />`) into plain old `<div />` (or `<View />` on native), and it does so often thanks to its smart evaluator.
 
 ---
 
