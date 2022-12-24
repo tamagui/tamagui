@@ -18,8 +18,8 @@ poster: banner-rc0.jpg
 />
 
 <IntroParagraph>
-  Tamagui is an optimizing compiler meets universal style system for React that enables highly
-  performant styles for React Native and web.
+  Tamagui is an optimizing compiler meets universal style system for React that enables
+  highly performant styles for React Native and web.
 </IntroParagraph>
 
 It supports the full APIs of React Native alongside helpful inline style props, variants, and a typed design system while optimizing everything by hoisting logic, flattening trees, and generating atomic CSS and other CSS features. This lets you [ship faster, share more code across platforms, and net better performance](/docs/intro/compiler) all at once.
@@ -67,7 +67,7 @@ The V1 blog post will cover these in more detail. You can see the accompanying d
 
 A complete CI/CD pipeline in Github Actions lints, tests, and type checks everything before release. Our release script has added many checks and features for making sure things go out smoothly.
 
-Testing now covers far more of `core` and `static`, as well as a complete integration test that verifies the entire flow of starting a Tamagui app with `npm create tamagui-app` all the way to Playwright ensuring the final output is correct and functional.
+Testing now covers far more of `core` and `static`, as well as a complete integration test that verifies the entire flow of starting a Tamagui app with `npm create tamagui` all the way to Playwright ensuring the final output is correct and functional.
 
 ### Community & Contributors
 
@@ -81,7 +81,7 @@ Be sure to check [the Community page](/community) for more goodies like a Figma 
 
 ### Outstanding issues for next RCs
 
-- Windows support for `npm create tamagui-app` can break, requires WSL
+- Windows support for `npm create tamagui` can break, requires WSL
 - Sheets on native can have interaction issues with inner scrollable content
 - Android has some bugs with some types of content inside Sheets.
 - Some versions of Next.js dont properly load CSS on subsequent pages

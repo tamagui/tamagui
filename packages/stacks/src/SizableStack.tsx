@@ -18,9 +18,6 @@ export const SizableStack = styled(YStack, {
   flexShrink: 1,
 
   variants: {
-    // allows the type to come in for use in size
-    fontFamily: () => ({}),
-
     hoverTheme,
     pressTheme,
     focusTheme,

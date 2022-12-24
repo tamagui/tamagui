@@ -37,7 +37,6 @@
     "test:ci": "yarn test",
     "test:demos": "yarn workspace @tamagui/demos test",
     "release": "node -r esbuild-register ./scripts/release.ts",
-    "release:ci": "yarn release:dirty --ci",
     "setup": "node -r esbuild-register ./scripts/setup.ts",
     "upgrade:starters": "npm-run-all --parallel upgrade:starter upgrade:starters:next upgrade:starters:bench",
     "upgrade:starter": "cd apps/starter && yarn upgrade:tamagui",

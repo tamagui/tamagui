@@ -22,9 +22,6 @@ export const ThemeableStack = styled(YStack, {
   name: 'SizableStack',
 
   variants: {
-    // allows the type to come in for use in size
-    fontFamily: () => ({}),
-
     backgrounded: {
       true: {
         backgroundColor: '$background',
