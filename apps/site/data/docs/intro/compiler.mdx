@@ -1,20 +1,21 @@
 ---
-title: An optimizing compiler for React Native & Web
-description: How the Tamagui compiler enables less duplicate code, better performance and more platform-specific output.
+title: React, twice as fast
+description: The Tamagui compiler reduces duplicate code while improving performance and platform-specific output.
 ---
 
 <IntroParagraph>
-  If you're developing a cross-platform app, you've made an implicit decision. This decision can be
-  thought of as a **frontend development trilemma**, illustrated as a choose-two-of-three:
+  If you're developing a cross-platform app, you've made an implicit decision. This
+  decision can be thought of as a **frontend development trilemma**, illustrated as a
+  choose-two-of-three:
 </IntroParagraph>
 
-<YStack w="100%" mih={500} my="$-10" als="center" $gtMd={{ my: '$4' }}>
+<YStack w="100%" mih={500} als="center" $gtMd={{ my: '$4' }}>
   <Image
     title="The Frontend Trilemma: Choose two of DX, UX, and multi-platform"
     src="/trilemma.svg"
     size="hero"
     height={270 * 2}
-    width={270 * 2}
+    width={320 * 2}
     resizeMode="contain"
   />
 </YStack>
@@ -139,7 +140,7 @@ Compilers can dramatically improve code sharing without the typical sacrifice of
 
 It gives us a new choice, "Universal + Compiler" that lets us ship fast while still feeling native:
 
-<Table my="$8">
+<Table my="$6">
   <TableCol>
     <TableCell head></TableCell>
     <TableCell>4</TableCell>
@@ -166,4 +167,8 @@ It gives us a new choice, "Universal + Compiler" that lets us ship fast while st
   </TableCol>
 </Table>
 
-Give Tamagui a try with `npm create tamagui-app`.
+So what about this whole "React, twice as fast" title? Well, while the Tamagui compiler does net nearly 2x performance in some areas, on average you're looking at more like a 50% gain in the average render time of a complex screen. But, **by letting you not worry about performance while at the same significantly reducing total frontend LOC**, you probably save more than another 50% on development time.
+
+And that's the point: faster to input, faster output. Thank you Tamagui 🙏.
+
+Give Tamagui a try with `npm create tamagui@latest`.

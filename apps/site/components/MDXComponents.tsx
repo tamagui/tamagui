@@ -242,10 +242,9 @@ export const components = {
   IntroParagraph: ({ children, large, ...props }) => {
     return (
       <Paragraph
-        tag="span"
+        tag="p"
         size={large ? '$9' : '$8'}
-        className="paragraph"
-        ls={0.25}
+        className={'intro-paragraph' + (large ? ' large' : '')}
         my="$3"
         fow={large ? '200' : '300'}
         {...props}
@@ -310,7 +309,14 @@ export const components = {
   h5: (props) => <H5 mt="$4" {...props} />,
 
   p: (props) => (
-    <Paragraph className="docs-paragraph" display="block" my="$3" size="$5" {...props} />
+    <Paragraph
+      className="docs-paragraph"
+      display="block"
+      my="$3"
+      size="$5"
+      lh="$6"
+      {...props}
+    />
   ),
 
   a: ({ href = '', children, ...props }) => {

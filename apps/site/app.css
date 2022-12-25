@@ -91,7 +91,17 @@ a {
 }
 
 p, li.font_body {
-  color: var(--gray11) !important;
+  color: var(--gray12) !important;
+  opacity: 0.75 !important;
+}
+
+p.intro-paragraph.large {
+  color: var(--gray12) !important;
+  opacity: 1 !important;
+}
+
+.intro-paragraph a {
+  font-weight: inherit;
 }
 
 /* display block > display inline-flex bug */

@@ -1,7 +1,7 @@
 ---
-title: Tamagui 1.0
+title: Tamagui 1.0 🎉
 publishedAt: '2022-12-24'
-description: Cross-platform React apps in ½ time with 2x performance.
+description: Ship cross-platform React apps in ½ the time with 2x performance.
 by: nate
 poster: banner-rc0.jpg
 ---
@@ -18,25 +18,29 @@ poster: banner-rc0.jpg
 />
 
 <IntroParagraph large>
-  React Native is a great platform for building mobile apps, but when you target the web
-  as well, you have to either [accept a slow app, or forego sharing
-  code](/docs/intro/compiler).
+  React Native is amazing for building mobile apps, full stop. But sharing code with your
+  web app? You're forced to choose between [a slower, clunkier app, or a total
+  re-write](/docs/intro/compiler).
 </IntroParagraph>
 
 <IntroParagraph>
-  Tamagui uses a novel optimizing compiler that enables more code sharing and incredible
-  performance. It turns JS into CSS, evaluates away inline styles, generates
-  platform-targeted code, and flattens component trees, resulting in simpler code and a
-  faster runtime.
+  Tamagui's novel optimizing compiler enables more code sharing while gaining, rather than
+  sacrificing performance as you'd expect. It does this by turning JS into CSS, evaluating
+  inline styles, generating platform-specific code, and flattening component trees.
 </IntroParagraph>
 
-Tamagui core supports every React Native API in a 0-dependency library that smooths over the gap between web and native with helpful web-inspired styling support. It turns natural typed inline styles, even with logic, into CSS that bests even hand-written code thanks to tree-shaking and component flattening. When it optimizes, your whole app gets a lot faster:
+Where it optimizes your app, things get a lot faster:
 
 <Spacer />
 <BenchmarkChartWeb />
+<Paragraph tag="span" als="center" fow="200" fontSize={12}>
+  Rendering two variants (Tamagui flattens)
+</Paragraph>
 <Spacer />
 
-On the web, render performance is much improved especially with interactive and responsive styles net 10x or more speed thanks targeting The Platform™️ and avoiding all JS. It improves Lighthouse scores 10-25%.
+Tamagui supports every React Native API in a 0-dependency library with all the [nice features](/docs/core/variants) of modern style libraries. It includes a compiler that turns natural typed inline styles - even with logic - into pure CSS, removing components as it goes. It often bests even finely-tuned, hand-written CSS because of this, while allowing for all the benefits of typed CSS-in-JS styling.
+
+On the web, render performance is much improved, especially for interactive (pseudo) and responsive (media query) styles. It improves Lighthouse scores 10-25%.
 
 <Image
   title="The compiler improves the Lighthouse score of the homepage of https://tamagui.dev from 85 to 96"
