@@ -151,7 +151,7 @@ export function HeaderContents(props: HeaderProps) {
       <XStack
         h={40}
         jc="flex-end"
-        miw={204}
+        miw={160}
         $xxs={{ miw: 150 }}
         pointerEvents="auto"
         tag="nav"
