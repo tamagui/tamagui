@@ -19,6 +19,7 @@ const patch = process.argv.includes('--patch')
 const dirty = process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
 const skipTest = process.argv.includes('--skip-test')
+const skipBuild = process.argv.includes('--skip-build')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = process.argv.includes('--ci')
 
@@ -106,12 +107,11 @@ async function run() {
 
     console.log('install and build')
 
-    await Promise.all([
-      //
-      spawnify(`yarn install`),
-      checkDistDirs(),
-      spawnify(`yarn build`),
-    ])
+    await spawnify(`yarn install`)
+
+    if (!skipBuild) {
+      await Promise.all([checkDistDirs(), spawnify(`yarn build`)])
+    }
 
     console.log('run checks')
 

@@ -14,7 +14,7 @@ export class TamaguiPlugin {
   constructor(
     public options: PluginOptions = {
       components: ['@tamagui/core'],
-    },
+    }
   ) {}
 
   apply(compiler: Compiler) {
@@ -23,14 +23,11 @@ export class TamaguiPlugin {
       nmf.hooks.createModule.tap(
         this.pluginName,
         // @ts-expect-error CreateData is typed as 'object'...
-        (createData: {
-          matchResource?: string
-          settings: { sideEffects?: boolean }
-        }) => {
+        (createData: { matchResource?: string; settings: { sideEffects?: boolean } }) => {
           if (createData.matchResource?.endsWith('.tamagui.css')) {
             createData.settings.sideEffects = true
           }
-        },
+        }
       )
     })
 
@@ -39,6 +36,9 @@ export class TamaguiPlugin {
         '.web.tsx',
         '.web.ts',
         '.web.js',
+        '.ts',
+        '.tsx',
+        '.js',
         ...(compiler.options.resolve.extensions || []),
       ]),
     ]
@@ -65,7 +65,7 @@ export class TamaguiPlugin {
         ?.oneOf as any[]) ?? existing
 
     const nextJsRules = rules.findIndex(
-      (x) => x?.use && x.use.loader === 'next-swc-loader' && x.issuerLayer !== 'api',
+      (x) => x?.use && x.use.loader === 'next-swc-loader' && x.issuerLayer !== 'api'
     )
 
     const startIndex = nextJsRules ? nextJsRules + 1 : 0
@@ -103,7 +103,9 @@ export class TamaguiPlugin {
           : []),
         {
           loader: require.resolve('tamagui-loader'),
-          options: this.options,
+          options: {
+            ...this.options,
+          },
         },
       ],
     })

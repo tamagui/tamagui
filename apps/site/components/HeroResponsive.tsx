@@ -1,7 +1,14 @@
 import { throttle } from '@github/mini-throttle'
 import { demoMedia } from '@tamagui/config-base'
 import { useOnIntersecting } from '@tamagui/demos'
-import { ChevronLeft, ChevronRight, Lock, MapPin, Monitor, Star } from '@tamagui/lucide-icons'
+import {
+  ChevronLeft,
+  ChevronRight,
+  Lock,
+  MapPin,
+  Monitor,
+  Star,
+} from '@tamagui/lucide-icons'
 import React, { useMemo } from 'react'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import {
@@ -40,7 +47,8 @@ const breakpoints = [
 const browserHeight = 485
 
 const IS_SAFARI =
-  typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+  typeof navigator !== 'undefined' &&
+  /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
 
 const useIsSafari = () => {
   const ssrDone = useDidFinishSSR()
@@ -273,7 +281,12 @@ export const HeroResponsive = memo(() => {
 
 const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
-    <YStack className="unselectable" theme={active ? 'pink' : null} pos="absolute" {...props}>
+    <YStack
+      className="unselectable"
+      theme={active ? 'pink' : null}
+      pos="absolute"
+      {...props}
+    >
       <XStack y={-60} ai="flex-start">
         <YStack w={1} h={70} bc="$colorHover" opacity={active ? 0.2 : 0.05} />
         <Button
@@ -462,10 +475,10 @@ export const Safari = memo(
                 <Spacer />
 
                 <Paragraph theme="alt1" size="$4">
-                  A lovely, private and very clean cottage with all amenities for a comfortable and
-                  peaceful stay. We are a 20 minute walk from the Hawaii Tropical Botanical Garden
-                  and well situated for touring to Akaka Falls, Volcano National Park, and many
-                  other destinations.
+                  A lovely, private and very clean cottage with all amenities for a
+                  comfortable and peaceful stay. We are a 20 minute walk from the Hawaii
+                  Tropical Botanical Garden and well situated for touring to Akaka Falls,
+                  Volcano National Park, and many other destinations.
                 </Paragraph>
               </YStack>
             </YStack>

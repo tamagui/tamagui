@@ -1,35 +1,30 @@
 /** @type {import('next').NextConfig} */
-const withPlugins = require('next-compose-plugins')
 const { withTamagui } = require('@tamagui/next-plugin')
-const withTM = require('next-transpile-modules')
+const withImages = require('next-images')
 const { join } = require('path')
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 process.env.TAMAGUI_TARGET = 'web'
+process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = '1'
 
-const disableExtraction =
-  process.env.NODE_ENV === 'development' && process.env.FORCE_EXTRACT !== '1'
-if (disableExtraction) {
-  console.log('Disabling static extraction in development mode for better HMR')
+const boolVals = {
+  true: true,
+  false: false,
 }
 
-const transform = withPlugins([
-  withTM([
-    'solito',
-    'react-native-web',
-    'expo-linking',
-    'expo-constants',
-    'expo-modules-core',
-    '@starter/config',
-  ]),
+const disableExtraction =
+  boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
+
+const plugins = [
+  withImages,
   withTamagui({
     config: './tamagui.config.ts',
-    components: ['tamagui', '@starter/ui'],
+    components: ['tamagui', '@my/ui'],
     importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,
     disableExtraction,
     // experiment - reduced bundle size react-native-web
-    useReactNativeWebLite: false,
+    useReactNativeWebLite: true,
     shouldExtract: (path) => {
       if (path.includes(join('packages', 'app'))) {
         return true
@@ -39,30 +34,41 @@ const transform = withPlugins([
       'Switch',
       'ProgressBar',
       'Picker',
-      'Modal',
-      'VirtualizedList',
-      'VirtualizedSectionList',
-      'AnimatedFlatList',
-      'FlatList',
       'CheckBox',
       'Touchable',
-      'SectionList',
     ],
   }),
-])
+]
 
-module.exports = function (name, { defaultConfig }) {
-  defaultConfig.webpack5 = true
-  // defaultConfig.experimental.reactRoot = 'concurrent'
-  defaultConfig.typescript.ignoreBuildErrors = true
-  return transform(name, {
-    ...defaultConfig,
-    webpack5: true,
+module.exports = function () {
+  /** @type {import('next').NextConfig} */
+  let config = {
+    typescript: {
+      ignoreBuildErrors: true,
+    },
+    images: {
+      disableStaticImages: true,
+    },
+    transpilePackages: [
+      'solito',
+      'react-native-web',
+      'expo-linking',
+      'expo-constants',
+      'expo-modules-core',
+    ],
     experimental: {
-      plugins: true,
+      optimizeCss: true,
       scrollRestoration: true,
       legacyBrowsers: false,
-      browsersListForSwc: true,
     },
-  })
+  }
+
+  for (const plugin of plugins) {
+    config = {
+      ...config,
+      ...plugin(config),
+    }
+  }
+
+  return config
 }

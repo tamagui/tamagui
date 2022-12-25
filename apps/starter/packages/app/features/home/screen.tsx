@@ -1,14 +1,4 @@
-import {
-  Anchor,
-  Button,
-  H1,
-  MyComponent,
-  Paragraph,
-  Separator,
-  Sheet,
-  XStack,
-  YStack,
-} from '@starter/ui'
+import { Anchor, Button, H1, Input, Paragraph, Separator, Sheet, XStack, YStack } from '@my/ui'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
 import { useLink } from 'solito/link'
@@ -27,28 +17,28 @@ export function HomeScreen() {
           same code on Next.js and React Native.
         </Paragraph>
 
+        <Input px="$5" placeholder="hi" />
+
         <Separator />
         <Paragraph ta="center">
-          Tamagui is made by{' '}
-          <Anchor href="https://twitter.com/natebirdman" target="_blank">
-            Nate Wienert
+          Made by{' '}
+          <Anchor color="$color12" href="https://twitter.com/natebirdman" target="_blank">
+            @natebirdman
           </Anchor>
-          , give it a star{' '}
-          <Anchor href="https://github.com/tamagui/tamagui" target="_blank" rel="noreferrer">
-            on Github
+          ,{' '}
+          <Anchor
+            color="$color12"
+            href="https://github.com/tamagui/tamagui"
+            target="_blank"
+            rel="noreferrer"
+          >
+            give it a ⭐️
           </Anchor>
-          .
         </Paragraph>
       </YStack>
 
       <XStack>
         <Button {...linkProps}>Link to user</Button>
-      </XStack>
-
-      <XStack debug="verbose" $xs={{ fd: 'column' }} space>
-        <MyComponent w={50} h={50} />
-        <MyComponent w={50} h={50} />
-        <MyComponent w={50} h={50} />
       </XStack>
 
       <SheetDemo />

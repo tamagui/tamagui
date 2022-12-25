@@ -1,4 +1,4 @@
-import { TamaguiElement, composeRefs } from '@tamagui/core'
+import { Stack, TamaguiElement, composeRefs } from '@tamagui/core'
 import { ScrollView, ScrollViewProps } from '@tamagui/scroll-view'
 import { forwardRef, useMemo, useRef, useState } from 'react'
 import { ScrollView as RNScrollView } from 'react-native'
@@ -16,9 +16,20 @@ const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
 export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
   ({ __scopeSheet, children, ...props }: SheetScopedProps<ScrollViewProps>, ref) => {
-    const { scrollBridge } = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
+    const { scrollBridge, position, snapPoints, frameSize, open } = useSheetContext(
+      SHEET_SCROLL_VIEW_NAME,
+      __scopeSheet
+    )
     const [scrollEnabled, setScrollEnabled_] = useState(true)
     const scrollRef = useRef<RNScrollView | null>(null)
+
+    const percentOpened = snapPoints[position] ?? 0
+    const [percentToPadBottom, setPercentToPadBottom] = useState(0)
+
+    const next = 100 - percentOpened
+    if (open && next !== percentToPadBottom) {
+      setPercentToPadBottom(next)
+    }
 
     const setScrollEnabled = (next: boolean) => {
       scrollRef.current?.setNativeProps?.({
@@ -32,9 +43,14 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
       dragAt: 0,
       dys: [] as number[], // store a few recent dys to get velocity on release
       isScrolling: false,
+      isDragging: false,
     })
 
     const release = () => {
+      if (!state.current.isDragging) {
+        return
+      }
+      state.current.isDragging = false
       scrollBridge.scrollStartY = -1
       state.current.isScrolling = false
       setScrollEnabled(true)
@@ -67,6 +83,7 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
         }}
         onStartShouldSetResponder={() => {
           scrollBridge.scrollStartY = -1
+          state.current.isDragging = true
           return true
         }}
         onMoveShouldSetResponder={() => true}
@@ -108,7 +125,8 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
         {...props}
       >
         {useMemo(() => children, [children])}
+        <Stack height={(percentToPadBottom / 100) * frameSize} width={0} />
       </ScrollView>
     )
-  },
+  }
 )

@@ -1184,7 +1184,6 @@ export function spacedChildren({
       if (React.isValidElement(onlyChild) && onlyChild.type?.['shouldForwardSpace']) {
         return React.cloneElement(onlyChild, {
           space,
-          direction,
           spaceFlex,
           separator,
         } as any)

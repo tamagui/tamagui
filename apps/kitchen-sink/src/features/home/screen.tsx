@@ -35,23 +35,6 @@ export function HomeScreen() {
           <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
         </YStack>
 
-        <Button debug="verbose" borderColor="red" borderWidth={10}>
-          hi
-        </Button>
-
-        <Paragraph
-          w={100}
-          h={100}
-          bc="green"
-          borderWidth={10}
-          borderColor="red"
-          pressStyle={{
-            bc: 'transparent',
-          }}
-        >
-          Hi
-        </Paragraph>
-
         <YGroup size="$4">
           <ColorSchemeListItem />
         </YGroup>
@@ -76,7 +59,13 @@ export function HomeScreen() {
   )
 }
 
-const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & ListItemProps) => {
+const LinkListItem = ({
+  children,
+  href,
+  as,
+  shallow,
+  ...props
+}: UseLinkProps & ListItemProps) => {
   const linkProps = useLink({ href, as, shallow })
   const theme = useTheme()
   return (

@@ -46,7 +46,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
         },
       } as const,
     }),
-    [],
+    []
   )
 
   if (!isReady) {
@@ -56,7 +56,9 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
   return (
     <NavigationContainer
       initialState={initialState}
-      onStateChange={(state) => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))}
+      onStateChange={(state) =>
+        AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
+      }
       linking={linking}
     >
       {children}

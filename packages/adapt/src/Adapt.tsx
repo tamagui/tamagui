@@ -19,7 +19,7 @@ type AdaptParentContextI = {
   setWhen: (when: MediaQueryKey) => any
 }
 
-const AdaptParentContext = createContext<AdaptParentContextI | null>(null)
+export const AdaptParentContext = createContext<AdaptParentContextI | null>(null)
 
 // forward props
 export const AdaptContents = (props: any) => {
@@ -34,7 +34,9 @@ AdaptContents['shouldForwardSpace'] = true
 
 export const useAdaptParent = ({
   Contents,
-}: { Contents: AdaptParentContextI['Contents'] }) => {
+}: {
+  Contents: AdaptParentContextI['Contents']
+}) => {
   const [when, setWhen] = useState<MediaQueryKey | null>(null)
 
   const AdaptProvider = useMemo(() => {
@@ -80,5 +82,5 @@ export const Adapt = withStaticProperties(
   },
   {
     Contents: AdaptContents,
-  },
+  }
 )

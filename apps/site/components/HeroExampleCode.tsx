@@ -8,7 +8,13 @@ import { HomeH2, HomeH3 } from './HomeH2'
 import { IconStack } from './IconStack'
 import { useTint } from './useTint'
 
-export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDemo?: boolean }) {
+export function HeroExampleCode({
+  examples,
+  onlyDemo,
+}: {
+  examples: any
+  onlyDemo?: boolean
+}) {
   const { tint } = useTint()
   const [activeIndex, setActiveIndex] = useState(0)
   const activeExample = examples[activeIndex]
@@ -43,6 +49,9 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
           theme={tint}
           maxWidth="100%"
           als="center"
+          {...(onlyDemo && {
+            mt: '$-6',
+          })}
         >
           {examples.map((example, i) => {
             return (
@@ -53,7 +62,7 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
                 o={i === activeIndex ? 1 : 0.5}
                 key={i}
                 borderRadius={0}
-                size="$4"
+                size="$3"
                 fontFamily="$silkscreen"
                 chromeless
               >
@@ -80,11 +89,20 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
             px="$2"
             space="$2"
           >
-            <H5 als="center">Input</H5>
-            <Paragraph mb="$4" maw={480} als="center" size="$5" minHeight={50} ta="center" px="$6">
-              <span style={{ opacity: 0.65 }}>{activeExample.input.description}</span>
-            </Paragraph>
-            <CodeExamples {...activeExample.input} />
+            {!onlyDemo && (
+              <Paragraph
+                mb="$4"
+                maw={480}
+                als="center"
+                size="$5"
+                minHeight={50}
+                ta="center"
+                px="$6"
+              >
+                <span style={{ opacity: 0.65 }}>{activeExample.input.description}</span>
+              </Paragraph>
+            )}
+            <CodeExamples title="Input" {...activeExample.input} />
           </YStack>
 
           <YStack
@@ -113,11 +131,20 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
             px="$2"
             space="$2"
           >
-            <H5 als="center">Output</H5>
-            <Paragraph mb="$4" maw={480} als="center" size="$5" minHeight={50} ta="center" px="$6">
-              <span style={{ opacity: 0.65 }}>{activeExample.output.description}</span>
-            </Paragraph>
-            <CodeExamples {...activeExample.output} />
+            {!onlyDemo && (
+              <Paragraph
+                mb="$4"
+                maw={480}
+                als="center"
+                size="$5"
+                minHeight={50}
+                ta="center"
+                px="$6"
+              >
+                <span style={{ opacity: 0.65 }}>{activeExample.output.description}</span>
+              </Paragraph>
+            )}
+            <CodeExamples title="Output" {...activeExample.output} />
           </YStack>
         </XStack>
       </YStack>
@@ -125,7 +152,7 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
   )
 }
 
-const CodeExamples = memo(({ examples }: any) => {
+const CodeExamples = memo(({ examples, title }: any) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const example = examples[activeIndex]
   const { tint } = useTint()
@@ -133,20 +160,27 @@ const CodeExamples = memo(({ examples }: any) => {
   return (
     <YStack overflow="hidden" flex={1}>
       <>
-        <XGroup size="$2" theme={tint} bordered zi={10} mb="$-3" als="center">
-          {examples.map((example, i) => (
-            <Button
-              accessibilityLabel="See example"
-              onPress={() => setActiveIndex(i)}
-              theme={i === activeIndex ? 'active' : 'alt1'}
-              size="$2"
-              key={i}
-              borderRadius="$0"
-            >
-              {example.name}
+        <XStack zi={10} als="center" ai="center" space jc="center" mb="$-2">
+          <XGroup size="$2" bordered>
+            <Button disabled size="$2" fontSize="$4" px="$4">
+              {title}
             </Button>
-          ))}
-        </XGroup>
+          </XGroup>
+          <XGroup size="$2" bordered>
+            {examples.map((example, i) => (
+              <Button
+                accessibilityLabel="See example"
+                onPress={() => setActiveIndex(i)}
+                theme={i === activeIndex ? tint : 'alt1'}
+                size="$2"
+                key={i}
+                borderRadius="$0"
+              >
+                {example.name}
+              </Button>
+            ))}
+          </XGroup>
+        </XStack>
       </>
       <XStack maxWidth="100%" f={1}>
         <YStack f={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>

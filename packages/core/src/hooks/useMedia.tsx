@@ -35,6 +35,7 @@ export const mediaState: MediaQueryState =
 
 export const mediaQueryConfig: MediaQueries = {}
 export const getMedia = () => mediaState
+export const mediaKeysWithAndWithout$ = new Set<string>()
 
 // for SSR capture it at time of startup
 let initState: MediaQueryState
@@ -58,6 +59,8 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   if (!media) return
   for (const key in media) {
     mediaState[key] = mediaQueryDefaultActive?.[key] || false
+    mediaKeysWithAndWithout$.add(key)
+    mediaKeysWithAndWithout$.add(`$${key}`)
   }
   Object.assign(mediaQueryConfig, media)
   initState = { ...mediaState }

@@ -51,7 +51,9 @@ export const useTint = () => {
 }
 
 export const ThemeTint = (props: { children: any }) => {
-  return <Theme name={useTint().tint}>{useMemo(() => props.children, [props.children])}</Theme>
+  return (
+    <Theme name={useTint().tint}>{useMemo(() => props.children, [props.children])}</Theme>
+  )
 }
 
 export const setTintIndex = (index: number) => {

@@ -32,7 +32,9 @@ import {
   PopperContent,
   PopperContentProps,
   PopperProps,
+  PopperProvider,
   createPopperScope,
+  usePopperContext,
 } from '@tamagui/popper'
 import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
 import { RemoveScroll, RemoveScrollProps } from '@tamagui/remove-scroll'
@@ -40,16 +42,10 @@ import { ControlledSheet, SheetController } from '@tamagui/sheet'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import { ScrollView, ScrollViewProps, View } from 'react-native'
+import { Platform, ScrollView, ScrollViewProps, View } from 'react-native'
 
 import type { UseFloatingProps } from './floating'
-import {
-  useDismiss,
-  useFloating,
-  useFocus,
-  useInteractions,
-  useRole,
-} from './floating'
+import { useDismiss, useFloating, useFocus, useInteractions, useRole } from './floating'
 
 const POPOVER_NAME = 'Popover'
 
@@ -73,11 +69,12 @@ type PopoverContextValue = {
   size?: SizeTokens
   sheetBreakpoint: any
   scopeKey: string
+  popperScope: any
 }
 
 const [createPopoverContext, createPopoverScopeInternal] = createContextScope(
   POPOVER_NAME,
-  [createPopperScope],
+  [createPopperScope]
 )
 export const usePopoverScope = createPopperScope()
 export const createPopoverScope = createPopoverScopeInternal
@@ -96,22 +93,21 @@ const ANCHOR_NAME = 'PopoverAnchor'
 type PopoverAnchorElement = HTMLElement | View
 export type PopoverAnchorProps = YStackProps
 
-export const PopoverAnchor = React.forwardRef<
-  PopoverAnchorElement,
-  PopoverAnchorProps
->((props: ScopedProps<PopoverAnchorProps>, forwardedRef) => {
-  const { __scopePopover, ...anchorProps } = props
-  const context = usePopoverInternalContext(ANCHOR_NAME, __scopePopover)
-  const popperScope = usePopoverScope(__scopePopover)
-  const { onCustomAnchorAdd, onCustomAnchorRemove } = context
+export const PopoverAnchor = React.forwardRef<PopoverAnchorElement, PopoverAnchorProps>(
+  (props: ScopedProps<PopoverAnchorProps>, forwardedRef) => {
+    const { __scopePopover, ...anchorProps } = props
+    const context = usePopoverInternalContext(ANCHOR_NAME, __scopePopover)
+    const popperScope = usePopoverScope(__scopePopover)
+    const { onCustomAnchorAdd, onCustomAnchorRemove } = context
 
-  React.useEffect(() => {
-    onCustomAnchorAdd()
-    return () => onCustomAnchorRemove()
-  }, [onCustomAnchorAdd, onCustomAnchorRemove])
+    React.useEffect(() => {
+      onCustomAnchorAdd()
+      return () => onCustomAnchorRemove()
+    }, [onCustomAnchorAdd, onCustomAnchorRemove])
 
-  return <PopperAnchor {...popperScope} {...anchorProps} ref={forwardedRef} />
-})
+    return <PopperAnchor {...popperScope} {...anchorProps} ref={forwardedRef} />
+  }
+)
 
 PopoverAnchor.displayName = ANCHOR_NAME
 
@@ -189,7 +185,6 @@ export const PopoverContent = React.forwardRef<
   const contentRef = React.useRef<HTMLDivElement>(null)
   const composedRefs = useComposedRefs(forwardedRef, contentRef)
   const isRightClickOutsideRef = React.useRef(false)
-  const themeName = useThemeName()
 
   // aria-hide everything except the content (better supported equivalent to setting aria-modal)
   React.useEffect(() => {
@@ -199,43 +194,69 @@ export const PopoverContent = React.forwardRef<
   }, [context.open])
 
   return (
-    <Portal zIndex={props.zIndex ?? 1000}>
-      <Theme name={themeName}>
-        <PopoverContentImpl
-          {...contentModalProps}
-          disableRemoveScroll={disableRemoveScroll}
-          ref={composedRefs}
-          // we make sure we're not trapping once it's been closed
-          // (closed !== unmounted when animating out)
-          trapFocus={trapFocus ?? context.open}
-          disableOutsidePointerEvents
-          onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-            event.preventDefault()
-            if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
-          })}
-          onPointerDownOutside={composeEventHandlers(
-            props.onPointerDownOutside,
-            (event) => {
-              const originalEvent = event.detail.originalEvent
-              const ctrlLeftClick =
-                originalEvent.button === 0 && originalEvent.ctrlKey === true
-              const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-              isRightClickOutsideRef.current = isRightClick
-            },
-            { checkDefaultPrevented: false },
-          )}
-          // When focus is trapped, a `focusout` event may still happen.
-          // We make sure we don't trigger our `onDismiss` in such case.
-          onFocusOutside={composeEventHandlers(
-            props.onFocusOutside,
-            (event) => event.preventDefault(),
-            { checkDefaultPrevented: false },
-          )}
-        />
-      </Theme>
-    </Portal>
+    <PopoverContentPortal>
+      <PopoverContentImpl
+        {...contentModalProps}
+        disableRemoveScroll={disableRemoveScroll}
+        ref={composedRefs}
+        // we make sure we're not trapping once it's been closed
+        // (closed !== unmounted when animating out)
+        trapFocus={trapFocus ?? context.open}
+        disableOutsidePointerEvents
+        onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+          event.preventDefault()
+          if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
+        })}
+        onPointerDownOutside={composeEventHandlers(
+          props.onPointerDownOutside,
+          (event) => {
+            const originalEvent = event.detail.originalEvent
+            const ctrlLeftClick =
+              originalEvent.button === 0 && originalEvent.ctrlKey === true
+            const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+            isRightClickOutsideRef.current = isRightClick
+          },
+          { checkDefaultPrevented: false }
+        )}
+        // When focus is trapped, a `focusout` event may still happen.
+        // We make sure we don't trigger our `onDismiss` in such case.
+        onFocusOutside={composeEventHandlers(
+          props.onFocusOutside,
+          (event) => event.preventDefault(),
+          { checkDefaultPrevented: false }
+        )}
+      />
+    </PopoverContentPortal>
   )
 })
+
+function PopoverContentPortal(props: ScopedProps<PopoverContentTypeProps>) {
+  const themeName = useThemeName()
+
+  // on android we have to re-pass context
+  let contents = props.children
+
+  if (Platform.OS === 'android') {
+    // ok conditional hooks by platform
+    const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
+    const popperContext = usePopperContext(CONTENT_NAME, context.popperScope)
+
+    contents = (
+      <PopperProvider {...popperContext} scope={context.popperScope}>
+        <PopoverProviderInternal scope={props.__scopePopover} {...context}>
+          {/* does this need to be props.__scopePopper? */}
+          {props.children}
+        </PopoverProviderInternal>
+      </PopperProvider>
+    )
+  }
+
+  return (
+    <Portal zIndex={props.zIndex ?? 1000}>
+      <Theme name={themeName}>{contents}</Theme>
+    </Portal>
+  )
+}
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -286,20 +307,17 @@ const PopoverContentImpl = React.forwardRef<
   const popperScope = usePopoverScope(__scopePopover)
   const context = usePopoverInternalContext(CONTENT_NAME, popperScope.__scopePopover)
   const showSheet = useShowPopoverSheet(context)
-  // const popperContext = usePopperContext(CONTENT_NAME, popperScope.__scopePopper)
 
   if (showSheet) {
     // unwrap the PopoverScrollView if used, as it will use the SheetScrollView if that exists
-    const childrenWithoutScrollView = React.Children.toArray(children).map(
-      (child) => {
-        if (React.isValidElement(child)) {
-          if (child.type === PopoverScrollView) {
-            return child.props.children
-          }
+    const childrenWithoutScrollView = React.Children.toArray(children).map((child) => {
+      if (React.isValidElement(child)) {
+        if (child.type === PopoverScrollView) {
+          return child.props.children
         }
-        return child
-      },
-    )
+      }
+      return child
+    })
 
     // doesn't show as popover yet on native, must use as sheet
     return (
@@ -377,11 +395,11 @@ export const PopoverClose = React.forwardRef<PopoverCloseElement, PopoverClosePr
         {...closeProps}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress as any, () =>
-          context.onOpenChange(false),
+          context.onOpenChange(false)
         )}
       />
     )
-  },
+  }
 )
 
 PopoverClose.displayName = CLOSE_NAME
@@ -397,36 +415,26 @@ export type PopoverArrowProps = PopperArrowProps
 
 export const PopoverArrow = React.forwardRef<PopoverArrowElement, PopoverArrowProps>(
   (props: ScopedProps<PopoverArrowProps>, forwardedRef) => {
+    // we dont show on native and i'm getting an err
+    if (!isWeb) {
+      return null
+    }
+
     const { __scopePopover, ...arrowProps } = props
     const popperScope = usePopoverScope(__scopePopover)
     return <PopperArrow {...popperScope} {...arrowProps} ref={forwardedRef} />
-  },
+  }
 )
 
 PopoverArrow.displayName = ARROW_NAME
 
 /* -------------------------------------------------------------------------------------------------
- * PopoverSheetContents
- * -----------------------------------------------------------------------------------------------*/
-
-const SHEET_CONTENTS_NAME = 'PopoverSheetContents'
-
-export const PopoverSheetContents = ({ __scopePopover }: ScopedProps<{}>) => {
-  const context = usePopoverInternalContext(SHEET_CONTENTS_NAME, __scopePopover)
-  return <PortalHost name={`${context.scopeKey}SheetContents`} />
-}
-
-PopoverSheetContents.displayName = SHEET_CONTENTS_NAME
-
-/* -------------------------------------------------------------------------------------------------
  * PopoverScrollView
  * -----------------------------------------------------------------------------------------------*/
 
-const PopoverScrollView = React.forwardRef<ScrollView, ScrollViewProps>(
-  (props, ref) => {
-    return <ScrollView ref={ref} {...props} />
-  },
-)
+const PopoverScrollView = React.forwardRef<ScrollView, ScrollViewProps>((props, ref) => {
+  return <ScrollView ref={ref} {...props} />
+})
 
 /* -------------------------------------------------------------------------------------------------
  * Popover
@@ -442,11 +450,17 @@ export const Popover = withStaticProperties(
       onOpenChange,
       ...restProps
     } = props
-    const { when, AdaptProvider } = useAdaptParent({
-      Contents: PopoverSheetContents,
-    })
-    const sheetBreakpoint = when
 
+    const internalId = useId()
+    const id = __scopePopover ? Object.keys(__scopePopover)[0] : internalId
+
+    const { when, AdaptProvider } = useAdaptParent({
+      Contents: React.useCallback(() => {
+        return <PortalHost name={`${id}SheetContents`} />
+      }, []),
+    })
+
+    const sheetBreakpoint = when
     const popperScope = usePopoverScope(__scopePopover)
     const triggerRef = React.useRef<HTMLButtonElement>(null)
     const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
@@ -482,40 +496,41 @@ export const Popover = withStaticProperties(
           getFloatingProps,
         }
       },
-      [breakpointActive, open, setOpen],
+      [breakpointActive, open, setOpen]
     )
 
-    const internalId = useId()
-    const id = __scopePopover ? Object.keys(__scopePopover)[0] : internalId
+    const popoverContext = {
+      scope: __scopePopover,
+      scopeKey: id,
+      popperScope: popperScope.__scopePopper,
+      sheetBreakpoint,
+      contentId: useId(),
+      triggerRef,
+      open,
+      onOpenChange: setOpen,
+      onOpenToggle: useEvent(() => {
+        if (open && breakpointActive) {
+          return
+        }
+        setOpen(!open)
+      }),
+      hasCustomAnchor,
+      onCustomAnchorAdd: React.useCallback(() => setHasCustomAnchor(true), []),
+      onCustomAnchorRemove: React.useCallback(() => setHasCustomAnchor(false), []),
+    }
+
+    // debug if changing too often
+    // if (process.env.NODE_ENV === 'development') {
+    //   Object.keys(popoverContext).forEach((key) => {
+    //     React.useEffect(() => console.log(`changed`, key), [popoverContext[key]])
+    //   })
+    // }
 
     return (
       <AdaptProvider>
         <FloatingOverrideContext.Provider value={useFloatingContext as any}>
           <Popper {...popperScope} stayInFrame {...restProps}>
-            <PopoverProviderInternal
-              scope={__scopePopover}
-              scopeKey={id}
-              sheetBreakpoint={sheetBreakpoint}
-              contentId={useId()}
-              triggerRef={triggerRef}
-              open={open}
-              onOpenChange={setOpen}
-              onOpenToggle={useEvent(() => {
-                if (open && breakpointActive) {
-                  return
-                }
-                setOpen(!open)
-              })}
-              hasCustomAnchor={hasCustomAnchor}
-              onCustomAnchorAdd={React.useCallback(
-                () => setHasCustomAnchor(true),
-                [],
-              )}
-              onCustomAnchorRemove={React.useCallback(
-                () => setHasCustomAnchor(false),
-                [],
-              )}
-            >
+            <PopoverProviderInternal {...popoverContext}>
               <PopoverSheetController
                 onOpenChange={setOpen}
                 __scopePopover={__scopePopover}
@@ -537,7 +552,7 @@ export const Popover = withStaticProperties(
     Adapt,
     ScrollView: PopoverScrollView,
     Sheet: ControlledSheet,
-  },
+  }
 )
 
 Popover.displayName = POPOVER_NAME
@@ -552,11 +567,11 @@ const PopoverSheetController = (
   props: ScopedProps<{
     children: React.ReactNode
     onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
-  }>,
+  }>
 ) => {
   const context = usePopoverInternalContext(
     'PopoverSheetController',
-    props.__scopePopover,
+    props.__scopePopover
   )
   const showSheet = useShowPopoverSheet(context)
   const breakpointActive = useSheetBreakpointActive(context.sheetBreakpoint)

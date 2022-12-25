@@ -25,8 +25,11 @@ export const SelectContent = ({
   const contents = <Theme name={themeName}>{children}</Theme>
   const touch = useIsTouchDevice()
 
-  if (showSheet && context.open) {
-    return contents
+  if (showSheet) {
+    if (!context.open) {
+      return null
+    }
+    return <>{contents}</>
   }
 
   return (
@@ -34,7 +37,7 @@ export const SelectContent = ({
       {context.open ? (
         <FloatingOverlay style={{ zIndex }} lockScroll={!touch}>
           <FocusScope loop trapped {...focusScopeProps}>
-            <Dismissable disableOutsidePointerEvents>{contents}</Dismissable>
+            <Dismissable>{contents}</Dismissable>
           </FocusScope>
         </FloatingOverlay>
       ) : (

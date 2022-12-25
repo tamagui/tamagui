@@ -95,7 +95,12 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   }
 
   const updateFloatingSize = size({
-    apply({ availableHeight, rects: { reference: { width } } }) {
+    apply({
+      availableHeight,
+      rects: {
+        reference: { width },
+      },
+    }) {
       floatingStyle.current = {
         width: width,
         maxHeight: availableHeight,

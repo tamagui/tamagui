@@ -8,10 +8,7 @@ import { createPortal } from 'react-dom'
 
 import { PortalProps } from './PortalProps'
 
-export const Portal = ({
-  host = globalThis.document?.body,
-  ...props
-}: PortalProps) => {
+export const Portal = ({ host = globalThis.document?.body, ...props }: PortalProps) => {
   const contents = (
     <YStack
       contain="strict"

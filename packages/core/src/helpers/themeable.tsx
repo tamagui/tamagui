@@ -6,9 +6,9 @@ import { Theme } from '../views/Theme'
 export interface ThemeableProps {
   theme?: ThemeName | null
   themeInverse?: boolean
+  themeReset?: boolean
   componentName?: string
   debug?: boolean | 'verbose'
-  reset?: boolean
 }
 
 export function themeable<Component extends (props: any) => any>(
@@ -16,7 +16,7 @@ export function themeable<Component extends (props: any) => any>(
   opts?: { componentName?: string }
 ) {
   const withThemeComponent = forwardRef(function WithTheme(props: ThemeableProps, ref) {
-    const { themeInverse, theme, componentName, reset, ...rest } = props
+    const { themeInverse, theme, componentName, themeReset, ...rest } = props
     const element = React.createElement(component, { ...rest, ref } as any)
 
     return (
@@ -26,7 +26,7 @@ export function themeable<Component extends (props: any) => any>(
         name={(theme as any) || null}
         data-themeable
         debug={props.debug}
-        reset={props.reset}
+        reset={props.themeReset}
       >
         {element}
       </Theme>

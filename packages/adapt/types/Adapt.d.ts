@@ -10,6 +10,7 @@ type AdaptParentContextI = {
     Contents: Component;
     setWhen: (when: MediaQueryKey) => any;
 };
+export declare const AdaptParentContext: import("react").Context<AdaptParentContextI | null>;
 export declare const AdaptContents: {
     (props: any): import("react").FunctionComponentElement<any>;
     shouldForwardSpace: boolean;

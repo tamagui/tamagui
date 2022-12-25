@@ -1,3 +1,4 @@
+import { AdaptParentContext } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
@@ -41,7 +42,7 @@ import {
   View,
 } from 'react-native'
 
-import { SHEET_HANDLE_NAME, SHEET_NAME } from './SHEET_HANDLE_NAME'
+import { SHEET_HANDLE_NAME, SHEET_NAME } from './constants'
 import { SheetProvider, useSheetContext } from './SheetContext'
 import { SheetScrollView } from './SheetScrollView'
 import { ScrollBridge, SheetProps, SheetScopedProps } from './types'
@@ -580,6 +581,7 @@ const SheetImplementation = themeable(
         <SheetProvider
           modal={modal}
           contentRef={contentRef}
+          frameSize={frameSize}
           dismissOnOverlayPress={dismissOnOverlayPress}
           dismissOnSnapToBottom={dismissOnSnapToBottom}
           open={open}
@@ -626,10 +628,16 @@ const SheetImplementation = themeable(
       </ParentSheetContext.Provider>
     )
 
+    const adaptContext = useContext(AdaptParentContext)
+
     if (modal) {
       const modalContents = (
         <Portal zIndex={zIndex}>
-          <Theme name={themeName}>{contents}</Theme>
+          <Theme name={themeName}>
+            <AdaptParentContext.Provider value={adaptContext}>
+              {contents}
+            </AdaptParentContext.Provider>
+          </Theme>
         </Portal>
       )
 

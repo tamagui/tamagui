@@ -492,19 +492,6 @@ const SelectSheetController = (
   )
 }
 
-/* -------------------------------------------------------------------------------------------------
- * SelectSheetContents
- * -----------------------------------------------------------------------------------------------*/
-
-const SHEET_CONTENTS_NAME = 'SelectSheetContents'
-
-export const SelectSheetContents = ({ __scopeSelect }: ScopedProps<{}>) => {
-  const context = useSelectContext(SHEET_CONTENTS_NAME, __scopeSelect)
-  return <PortalHost name={`${context.scopeKey}SheetContents`} />
-}
-
-SelectSheetContents.displayName = SHEET_CONTENTS_NAME
-
 const SelectSheetImpl = (props: SelectImplProps) => {
   return <>{props.children}</>
 }
@@ -528,12 +515,18 @@ export const Select = withStaticProperties(
       dir,
     } = props
 
+    const id = useId()
+    const scopeKey = __scopeSelect ? Object.keys(__scopeSelect)[0] ?? id : id
+
     const { when, AdaptProvider } = useAdaptParent({
-      Contents: SelectSheetContents,
+      Contents: React.useCallback(
+        () => <PortalHost name={`${scopeKey}SheetContents`} />,
+        [scopeKey]
+      ),
     })
     const sheetBreakpoint = when
     const isSheet = useSelectBreakpointActive(sheetBreakpoint)
-    const SelectImpl = isSheet ? SelectSheetImpl : SelectInlineImpl
+    const SelectImpl = isSheet || !isWeb ? SelectSheetImpl : SelectInlineImpl
     const forceUpdate = React.useReducer(() => ({}), {})[1]
     const [selectedItem, setSelectedItem] = React.useState<React.ReactNode>(null)
 
@@ -542,7 +535,6 @@ export const Select = withStaticProperties(
       defaultProp: defaultOpen || false,
       onChange: onOpenChange,
       strategy: 'most-recent-wins',
-      transition: true,
     })
 
     const [value, setValue] = useControllableState({
@@ -570,9 +562,6 @@ export const Select = withStaticProperties(
       selectedIndexRef.current = selectedIndex
       activeIndexRef.current = activeIndex
     })
-
-    const id = useId()
-    const scopeKey = __scopeSelect ? Object.keys(__scopeSelect)[0] ?? id : id
 
     return (
       <AdaptProvider>
@@ -633,7 +622,6 @@ export const Select = withStaticProperties(
     Trigger: SelectTrigger,
     Value: SelectValue,
     Viewport: SelectViewport,
-    SheetContents: SelectSheetContents,
     Sheet: ControlledSheet,
   }
 )

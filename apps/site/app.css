@@ -56,13 +56,13 @@ a {
   text-decoration: underline;
   text-underline-offset: 5px;
   text-decoration-thickness: 2px;
-  text-decoration-color: var(--colorMid);
+  text-decoration-color: var(--color4);
 }
 
 .link:hover {
   text-decoration: underline;
   cursor: pointer;
-  text-decoration-color: var(--color);
+  text-decoration-color: var(--color6);
 }
 
 .is_Paragraph:has(> ul) {
@@ -73,16 +73,11 @@ a {
   p a,
   footer a
 ) {
+  text-decoration-style: solid;
+  text-decoration-thickness: 3px !important;
   text-decoration: underline;
-  background-color: var(--pink2);
   color: var(--pink10);
   text-decoration-color: var(--pink6);
-  padding-left: 3px;
-  padding-right: 3px;
-  padding-top: 1px;
-  padding-bottom: 4px;
-  margin: -2px;
-  border-radius: 4px;
   text-underline-offset: 3px;
 }
 
@@ -90,9 +85,12 @@ a {
   p a
 ):hover {
   text-decoration-style: solid;
-  background-color: var(--pink1);
-  color: var(--pink11) !important;
-  text-decoration-color: var(--pink6);
+  text-decoration-thickness: 5px !important;
+  text-decoration-color: var(--pink12);
+}
+
+p, li.font_body {
+  color: var(--gray11) !important;
 }
 
 /* display block > display inline-flex bug */

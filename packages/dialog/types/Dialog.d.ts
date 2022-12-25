@@ -6,9 +6,6 @@ import { PortalItemProps } from '@tamagui/portal';
 import { RemoveScroll } from '@tamagui/remove-scroll';
 import { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
-type ScopedProps<P> = P & {
-    __scopeDialog?: Scope;
-};
 declare const createDialogScope: import("@tamagui/create-context").CreateScope;
 type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;
 interface DialogProps {
@@ -194,9 +191,10 @@ type DialogContentImplProps = DialogContentFrameProps & Omit<DismissableProps, '
     context: DialogContextValue;
 };
 export declare const DialogSheetContents: {
-    ({ __scopeDialog, name, ...props }: ScopedProps<{
+    ({ name, ...props }: {
         name: string;
-    }>): JSX.Element;
+        context: Omit<DialogContextValue, 'sheetBreakpoint'>;
+    }): JSX.Element;
     displayName: string;
 };
 declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {

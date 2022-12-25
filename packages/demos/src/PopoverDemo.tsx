@@ -1,10 +1,14 @@
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from '@tamagui/lucide-icons'
 import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ChevronUp,
-} from '@tamagui/lucide-icons'
-import { Adapt, Button, Input, Label, Popover, PopoverProps, XStack, YGroup } from 'tamagui'
+  Adapt,
+  Button,
+  Input,
+  Label,
+  Popover,
+  PopoverProps,
+  XStack,
+  YGroup,
+} from 'tamagui'
 
 export function PopoverDemo() {
   return (
@@ -61,9 +65,12 @@ export function Demo({ Icon, ...props }: PopoverProps & { Icon?: any }) {
             <Input size="$3" id="name" />
           </XStack>
           <Popover.Trigger>
-            <Button size="$3" onPress={() => { 
+            <Button
+              size="$3"
+              onPress={() => {
                 /* Custom code goes here, does not interfere with popover closure */
-            }}>
+              }}
+            >
               Submit
             </Button>
           </Popover.Trigger>

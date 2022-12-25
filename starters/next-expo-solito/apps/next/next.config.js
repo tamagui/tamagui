@@ -28,7 +28,7 @@ To save more, you can add more that you may not need, like:
 
 - AnimatedFlatList, FlatList, SectionList, VirtualizedList, VirtualizedSectionList
 
-Even better, enable "useReactNativeWebLite" to you can remove the
+Even better, enable "useReactNativeWebLite" and you can remove the
 excludeReactNativeWebExports setting altogether, and get tree-shaking and
 concurrent mode support.
 
@@ -66,17 +66,17 @@ module.exports = function () {
     images: {
       disableStaticImages: true,
     },
+    transpilePackages: [
+      'solito',
+      'react-native-web',
+      'expo-linking',
+      'expo-constants',
+      'expo-modules-core',
+    ],
     experimental: {
       optimizeCss: true,
       scrollRestoration: true,
       legacyBrowsers: false,
-      transpilePackages: [
-        'solito',
-        'react-native-web',
-        'expo-linking',
-        'expo-constants',
-        'expo-modules-core',
-      ],
     },
   }
 

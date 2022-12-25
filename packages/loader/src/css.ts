@@ -1,12 +1,12 @@
 import { ExtractedResponse, TamaguiOptions } from '@tamagui/static'
-import { LoaderContext } from 'webpack'
+import type { LoaderContext } from 'webpack'
 
 export const extractedInfoByFile = new Map<string, ExtractedResponse>()
 export const stylePathToFilePath = new Map<string, string>()
 
-export default function loader(this: LoaderContext<any>) {
+export default function loader(this: LoaderContext<TamaguiOptions>) {
   this.async()
-  const options: TamaguiOptions = { ...this.getOptions() }
+  const options = { ...this.getOptions() }
   const sourcePath = `${this.resourcePath}`
   let out = ''
   if (options.cssPath) {
@@ -22,9 +22,11 @@ export default function loader(this: LoaderContext<any>) {
     // get output CSS
     out = Buffer.from(options.cssData, 'base64').toString('utf-8')
   }
+
   if (out) {
     // use original JS sourcemap
     return this.callback(null, out || '')
   }
+
   this.callback({ message: 'No CSS found', name: 'missing_css' })
 }

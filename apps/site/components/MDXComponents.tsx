@@ -76,8 +76,17 @@ const Table = ({ heading, children, ...props }) => {
 }
 
 const code = (props) => {
-  const { hero, line, scrollable, className, children, id, showLineNumbers, collapsible, ...rest } =
-    props
+  const {
+    hero,
+    line,
+    scrollable,
+    className,
+    children,
+    id,
+    showLineNumbers,
+    collapsible,
+    ...rest
+  } = props
   if (!className) {
     return <CodeInline>{unwrapText(children)}</CodeInline>
   }
@@ -233,8 +242,9 @@ export const components = {
         tag="span"
         size={large ? '$9' : '$8'}
         className="paragraph"
+        ls={0.25}
         my="$3"
-        fow="400"
+        fow={large ? '200' : '300'}
         {...props}
       >
         {unwrapText(children)}
@@ -262,7 +272,15 @@ export const components = {
   h1: (props) => <H1 width="max-content" pos="relative" mb="$2" {...props} />,
 
   h2: ({ children, ...props }) => (
-    <H2 pos="relative" width={`fit-content` as any} mt="$5" size="$9" data-heading {...props}>
+    <H2
+      pos="relative"
+      width={`fit-content` as any}
+      mt="$5"
+      mb="$4"
+      size="$9"
+      data-heading
+      {...props}
+    >
       {children}
     </H2>
   ),
@@ -283,7 +301,9 @@ export const components = {
     </LinkHeading>
   ),
 
-  h4: (props) => <H4 pos="relative" width={`fit-content` as any} mt="$4" mb="$3" {...props} />,
+  h4: (props) => (
+    <H4 pos="relative" width={`fit-content` as any} mt="$4" mb="$3" {...props} />
+  ),
   h5: (props) => <H5 mt="$4" {...props} />,
 
   p: (props) => (
@@ -332,7 +352,9 @@ export const components = {
     return <LI my="$1">{props.children}</LI>
   },
 
-  strong: (props) => <Paragraph tag="strong" fontSize="inherit" {...props} fontWeight="700" />,
+  strong: (props) => (
+    <Paragraph tag="strong" fontSize="inherit" {...props} fontWeight="700" />
+  ),
 
   img: ({ ...props }) => (
     <YStack tag="span" my="$6">
@@ -361,15 +383,16 @@ export const components = {
       jc="center"
       ov="hidden"
       {...(overlap && {
-        mt: '$-8',
-        elevation: '$2',
-        ov: 'hidden',
+        mt: '$-6',
+        elevation: '$4',
       })}
     >
       <Image maxWidth="100%" {...props} />
-      <Text tag="figcaption" lineHeight={23} color="$colorPress" mt="$2">
-        {children}
-      </Text>
+      {!!children && (
+        <Text tag="figcaption" lineHeight={23} color="$colorPress" mt="$2">
+          {children}
+        </Text>
+      )}
     </OffsetBox>
   ),
 
@@ -446,7 +469,8 @@ export const components = {
 
       const addClass = () => target.classList.add('on')
       const removeClass = () => target.classList.remove('on')
-      const addClick = () => (isExternal ? window.location.replace(href) : NextRouter.push(href))
+      const addClick = () =>
+        isExternal ? window.location.replace(href) : NextRouter.push(href)
 
       target.addEventListener('mouseenter', addClass)
       target.addEventListener('mouseleave', removeClass)
@@ -476,7 +500,8 @@ export const components = {
       // exit if the `index` passed is bigger than the total number of highlighted words
       if (Math.max(...targetIndex) >= allHighlightWords.length) return
 
-      const addClass = () => targetIndex.forEach((i) => allHighlightWords[i].classList.add('on'))
+      const addClass = () =>
+        targetIndex.forEach((i) => allHighlightWords[i].classList.add('on'))
       const removeClass = () =>
         targetIndex.forEach((i) => allHighlightWords[i].classList.remove('on'))
 
