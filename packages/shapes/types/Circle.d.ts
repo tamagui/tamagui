@@ -3,7 +3,6 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -22,7 +21,6 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -41,7 +39,6 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -60,7 +57,6 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -81,7 +77,6 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -102,7 +97,6 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -123,7 +117,6 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<(Omit<impo
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
