@@ -7,7 +7,6 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
-  EnsureFlexed,
   H1,
   H2,
   H3,
@@ -53,7 +52,6 @@ import { SubTitle } from './SubTitle'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
-import { ThemeTint } from './useTint'
 
 const TableFrame = styled(ThemeableStack, {
   bordered: true,
