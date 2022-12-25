@@ -106,7 +106,7 @@ export function HeaderContents(props: HeaderProps) {
 
         <ThemeSearchButtonGroup />
 
-        {!props.disableNew && <AlphaButton />}
+        {/* {!props.disableNew && <AlphaButton />} */}
 
         {isInSubApp && (
           <NextLink href="/">
