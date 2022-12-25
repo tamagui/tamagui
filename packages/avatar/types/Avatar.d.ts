@@ -78,7 +78,6 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -97,7 +96,6 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -116,7 +114,6 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -135,7 +132,6 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -156,7 +152,6 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -177,7 +172,6 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -198,7 +192,6 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -221,7 +214,6 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -240,7 +232,6 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -259,7 +250,6 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -278,7 +268,6 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -299,7 +288,6 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -320,7 +308,6 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;

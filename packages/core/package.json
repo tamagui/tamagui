@@ -46,7 +46,6 @@
     "@tamagui/build": "^1.0.1-rc.8",
     "@testing-library/react": "^13.4.0",
     "csstype": "^3.0.10",
-    "esbuild": "^0.15.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^4.7.4",

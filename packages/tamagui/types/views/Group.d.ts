@@ -4,7 +4,6 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<i
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -22,7 +21,6 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<i
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -40,7 +38,6 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<i
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -58,7 +55,6 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<i
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -87,7 +83,6 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("react-
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -105,7 +100,6 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("react-
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -123,7 +117,6 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("react-
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -151,7 +144,6 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -169,7 +161,6 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -187,7 +178,6 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
