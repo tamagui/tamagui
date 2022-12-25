@@ -35,7 +35,6 @@ export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -55,7 +54,6 @@ export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -75,7 +73,6 @@ export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -95,7 +92,6 @@ export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -386,7 +382,6 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            readonly fontFamily?: unknown;
             readonly backgrounded?: boolean | undefined;
             readonly radiused?: boolean | undefined;
             readonly hoverTheme?: boolean | undefined;
@@ -407,7 +402,6 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            readonly fontFamily?: unknown;
             readonly backgrounded?: boolean | undefined;
             readonly radiused?: boolean | undefined;
             readonly hoverTheme?: boolean | undefined;
@@ -428,7 +422,6 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            readonly fontFamily?: unknown;
             readonly backgrounded?: boolean | undefined;
             readonly radiused?: boolean | undefined;
             readonly hoverTheme?: boolean | undefined;
@@ -449,7 +442,6 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            readonly fontFamily?: unknown;
             readonly backgrounded?: boolean | undefined;
             readonly radiused?: boolean | undefined;
             readonly hoverTheme?: boolean | undefined;
@@ -470,7 +462,6 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            readonly fontFamily?: unknown;
             readonly backgrounded?: boolean | undefined;
             readonly radiused?: boolean | undefined;
             readonly hoverTheme?: boolean | undefined;
@@ -488,7 +479,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly disabled?: boolean | undefined;
         }> | null | undefined;
         themeInverse?: boolean | undefined;
-        reset?: boolean | undefined;
+        themeReset?: boolean | undefined;
     };
 };
 export declare const buttonStaticConfig: {
@@ -498,7 +489,6 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -518,7 +508,6 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -538,7 +527,6 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;

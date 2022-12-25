@@ -4657,7 +4657,6 @@ __metadata:
     "@types/react": ^18.0.15
     chokidar: ^3.5.2
     esbuild: ^0.15.11
-    esbuild-plugin-path-alias: ^1.0.6
     execa: ^5.0.0
     fast-glob: ^3.2.11
     fs-extra: ^10.1.0
@@ -4680,7 +4679,6 @@ __metadata:
     "@tamagui/use-force-update": ^1.0.1-rc.8
     "@testing-library/react": ^13.4.0
     csstype: ^3.0.10
-    esbuild: ^0.15.11
     normalize-css-color: ^1.0.2
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -5583,7 +5581,7 @@ __metadata:
     dedent: ^0.7.0
     esbuild: ^0.15.11
     esbuild-loader: ^2.19.0
-    esbuild-register: ^3.3.3
+    esbuild-register: ^3.4.2
     find-cache-dir: ^3.3.2
     find-root: ^1.1.0
     fs-extra: ^10.1.0
@@ -9509,7 +9507,7 @@ __metadata:
     commander: 2.20.0
     cpy: 7.3.0
     cross-spawn: 6.0.5
-    esbuild-register: ^3.3.3
+    esbuild-register: ^3.4.2
     fs-extra: ^10.1.0
     got: 10.7.0
     playwright: ^1.29.0
@@ -10777,23 +10775,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-plugin-path-alias@npm:^1.0.6":
-  version: 1.0.7
-  resolution: "esbuild-plugin-path-alias@npm:1.0.7"
-  peerDependencies:
-    esbuild: "*"
-  checksum: e5672958c6506a8c0f362c45f9a2ffa745f8125842ef0ca3790ef9720083b9fbe204c175a4b80a617a9b1deed36d0d4eb6f157a2531f0da79bd5c03bc41462cd
-  languageName: node
-  linkType: hard
-
-"esbuild-register@npm:^3.3.3":
-  version: 3.4.1
-  resolution: "esbuild-register@npm:3.4.1"
+"esbuild-register@npm:^3.4.2":
+  version: 3.4.2
+  resolution: "esbuild-register@npm:3.4.2"
   dependencies:
     debug: ^4.3.4
   peerDependencies:
     esbuild: ">=0.12 <1"
-  checksum: 02750477b7215101bd2ffa3eae5064026586afd9a5267e94f5b81722c85c8063794c06328e618b5a93d7b0db4138a092417cfc024471b8a3616d212d09e3d868
+  checksum: f65d1ccb58b1ccbba376efb1fc023abe22731d9b79eead1b0120e57d4413318f063696257a5af637b527fa1d3f009095aa6edb1bf6ff69d637a9ab281fb727b3
   languageName: node
   linkType: hard
 
