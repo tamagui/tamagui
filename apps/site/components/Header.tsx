@@ -1,6 +1,5 @@
 import { LogoWords, TamaguiLogo, tints } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
-import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import {
@@ -9,7 +8,6 @@ import {
   ParagraphProps,
   Popover,
   Separator,
-  Square,
   Text,
   VisuallyHidden,
   XStack,
@@ -23,10 +21,11 @@ import { ContainerLarge } from './Container'
 import { DocsMenuContents } from './DocsMenuContents'
 import { GithubIcon } from './GithubIcon'
 import { HeaderProps } from './HeaderProps'
+import { NextLink } from './NextLink'
 import { SearchButton } from './SearchButton'
 import { ThemeSearchButtonGroup } from './ThemeSearchButtonGroup'
 import { useDocsMenu } from './useDocsMenu'
-import { useTint } from './useTint'
+import { ThemeTint, useTint } from './useTint'
 
 export function Header() {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -44,9 +43,11 @@ export function Header() {
   }
 
   return (
-    <>
+    <ThemeTint>
       <XStack
-        className={`ease-out all ms200 blur-light ${isScrolled ? 'hover-highlights' : ''}`}
+        className={`ease-out all ms200 blur-light ${
+          isScrolled ? 'hover-highlights' : ''
+        }`}
         bbc="$borderColor"
         zi={50000}
         // @ts-ignore
@@ -69,14 +70,15 @@ export function Header() {
         </ContainerLarge>
       </XStack>
       <YStack height={54} w="100%" />
-    </>
+    </ThemeTint>
   )
 }
 
 export function HeaderContents(props: HeaderProps) {
   const router = useRouter()
   const isHome = router.pathname === '/'
-  const isInSubApp = router.pathname.startsWith('/takeout') || router.pathname.startsWith('/studio')
+  const isInSubApp =
+    router.pathname.startsWith('/takeout') || router.pathname.startsWith('/studio')
   const { setNextTint, setTint } = useTint()
 
   return (
@@ -95,8 +97,8 @@ export function HeaderContents(props: HeaderProps) {
             <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
           </YStack>
         ) : (
-          <NextLink legacyBehavior href="/" passHref>
-            <YStack px="$3" cur="pointer" tag="a" my={-20}>
+          <NextLink href="/">
+            <YStack px="$3" cur="pointer" my={-20}>
               <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
             </YStack>
           </NextLink>
@@ -104,10 +106,10 @@ export function HeaderContents(props: HeaderProps) {
 
         <ThemeSearchButtonGroup />
 
-        {!props.disableNew && <AlphaButton />}
+        {/* {!props.disableNew && <AlphaButton />} */}
 
         {isInSubApp && (
-          <NextLink legacyBehavior href="/">
+          <NextLink href="/">
             <Button size="$2">Back to Tamagui</Button>
           </NextLink>
         )}
@@ -126,8 +128,12 @@ export function HeaderContents(props: HeaderProps) {
         pointerEvents="none"
         ai="center"
       >
-        <NextLink legacyBehavior href="/" passHref>
-          <XStack cursor={isHome ? 'default' : 'pointer'} pointerEvents="auto" tag="a" als="center">
+        <NextLink href="/">
+          <XStack
+            cursor={isHome ? 'default' : 'pointer'}
+            pointerEvents="auto"
+            als="center"
+          >
             <LogoWords
               animated
               onHoverLetter={(i) => {
@@ -141,10 +147,17 @@ export function HeaderContents(props: HeaderProps) {
       </XStack>
 
       {/*  prevent layout shift */}
-      <XStack h={40} jc="flex-end" miw={204} $xxs={{ miw: 150 }} pointerEvents="auto" tag="nav">
+      <XStack
+        h={40}
+        jc="flex-end"
+        miw={204}
+        $xxs={{ miw: 150 }}
+        pointerEvents="auto"
+        tag="nav"
+      >
         {isInSubApp ? (
           <XStack ai="center" space="$2">
-            <NextLink legacyBehavior href="/signin" passHref>
+            <NextLink href="/signin">
               <Paragraph
                 fontFamily="$silkscreen"
                 px="$3"
@@ -153,7 +166,6 @@ export function HeaderContents(props: HeaderProps) {
                 size="$3"
                 o={0.7}
                 hoverStyle={{ opacity: 1 }}
-                tag="a"
                 $xxs={{
                   display: 'none',
                 }}
@@ -162,8 +174,8 @@ export function HeaderContents(props: HeaderProps) {
               </Paragraph>
             </NextLink>
 
-            <NextLink legacyBehavior href="/takeout/purchase" passHref>
-              <Button fontFamily="$silkscreen" size="$3" tag="a">
+            <NextLink href="/takeout/purchase">
+              <Button fontFamily="$silkscreen" size="$3">
                 Purchase
               </Button>
             </NextLink>
@@ -174,8 +186,8 @@ export function HeaderContents(props: HeaderProps) {
 
             <SearchButton size="$2" br="$10" elevation="$4" />
 
-            <NextLink legacyBehavior href="https://github.com/tamagui/tamagui" passHref>
-              <YStack p="$2" opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
+            <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
+              <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
                   <Text>Github</Text>
                 </VisuallyHidden>
@@ -194,7 +206,7 @@ export function HeaderContents(props: HeaderProps) {
 const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
   return (
     <>
-      <NextLink legacyBehavior prefetch={false} href="/docs/intro/installation" passHref>
+      <NextLink prefetch={false} href="/docs/intro/installation">
         <HeadAnchor
           $sm={{
             display: forceShowAllLinks ? 'flex' : 'none',
@@ -204,7 +216,7 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      <NextLink legacyBehavior prefetch={false} href="/blog" passHref>
+      <NextLink prefetch={false} href="/blog">
         <HeadAnchor
           $md={{
             display: forceShowAllLinks ? 'flex' : 'none',
@@ -214,7 +226,7 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      <NextLink legacyBehavior prefetch={false} href="/community" passHref>
+      <NextLink prefetch={false} href="/community">
         <HeadAnchor
           $md={{
             display: forceShowAllLinks ? 'flex' : 'none',
@@ -225,13 +237,13 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
       </NextLink>
 
       {showExtra && (
-        <NextLink legacyBehavior prefetch={false} href="/studio" passHref>
+        <NextLink prefetch={false} href="/studio">
           <HeadAnchor>Studio</HeadAnchor>
         </NextLink>
       )}
 
       {showExtra && (
-        <NextLink legacyBehavior prefetch={false} href="/takeout" passHref>
+        <NextLink prefetch={false} href="/takeout">
           <HeadAnchor>Takeout</HeadAnchor>
         </NextLink>
       )}
@@ -328,10 +340,9 @@ const HeadAnchor = React.forwardRef((props: ParagraphProps, ref) => (
     py="$2"
     cursor="pointer"
     size="$3"
-    opacity={0.65}
-    hoverStyle={{ opacity: 1 }}
+    color="$color10"
+    hoverStyle={{ opacity: 1, color: '$color' }}
     pressStyle={{ opacity: 0.25 }}
-    tag="a"
     // @ts-ignore
     tabIndex={-1}
     w="100%"

@@ -1,10 +1,9 @@
-import { Check, Copy, Mail } from '@tamagui/lucide-icons'
+import { Mail } from '@tamagui/lucide-icons'
 import { memo } from 'react'
-import { Button, Input, Paragraph, Spacer, TooltipSimple, XStack } from 'tamagui'
-
-import { useClipboard } from '../lib/useClipboard'
+import { Button, Input, Spacer, TooltipSimple, XStack } from 'tamagui'
 
 export const MailingListSignup = memo(() => {
+  return null
   return (
     <XStack
       borderWidth={1}

@@ -47,7 +47,6 @@ export declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -67,7 +66,6 @@ export declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -87,7 +85,6 @@ export declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -107,7 +104,6 @@ export declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -550,7 +546,6 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            readonly fontFamily?: unknown;
             readonly backgrounded?: boolean | undefined;
             readonly radiused?: boolean | undefined;
             readonly hoverTheme?: boolean | undefined;
@@ -571,7 +566,6 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            readonly fontFamily?: unknown;
             readonly backgrounded?: boolean | undefined;
             readonly radiused?: boolean | undefined;
             readonly hoverTheme?: boolean | undefined;
@@ -592,7 +586,6 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            readonly fontFamily?: unknown;
             readonly backgrounded?: boolean | undefined;
             readonly radiused?: boolean | undefined;
             readonly hoverTheme?: boolean | undefined;
@@ -613,7 +606,6 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            readonly fontFamily?: unknown;
             readonly backgrounded?: boolean | undefined;
             readonly radiused?: boolean | undefined;
             readonly hoverTheme?: boolean | undefined;
@@ -634,7 +626,6 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            readonly fontFamily?: unknown;
             readonly backgrounded?: boolean | undefined;
             readonly radiused?: boolean | undefined;
             readonly hoverTheme?: boolean | undefined;
@@ -652,7 +643,7 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             readonly disabled?: boolean | undefined;
         }> | null | undefined;
         themeInverse?: boolean | undefined;
-        reset?: boolean | undefined;
+        themeReset?: boolean | undefined;
         fontFamily: `$${string}` | import("@tamagui/core").ThemeValueFallback | undefined;
     };
 };
@@ -663,7 +654,6 @@ export declare const ListItem: ((props: Omit<Omit<TextParentStyles, "TextCompone
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -683,7 +673,6 @@ export declare const ListItem: ((props: Omit<Omit<TextParentStyles, "TextCompone
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -703,7 +692,6 @@ export declare const ListItem: ((props: Omit<Omit<TextParentStyles, "TextCompone
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;

@@ -5,8 +5,8 @@
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { CheckCircle, XCircle } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
+import { NextLink } from 'components/NextLink'
 import { GetStaticPropsResult } from 'next'
-import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
 import {
@@ -106,8 +106,8 @@ export default function TakeoutPurchasePage({ products }: Props) {
             </H2>
 
             <Paragraph mx="$6" fow="500" ta="center" size="$5" theme="alt2">
-              One license per-seat. Lifetime, unlimited use on unlimited projects. Access&nbsp;to
-              updates and Tamagui Studio for 1 year.
+              One license per-seat. Lifetime, unlimited use on unlimited projects.
+              Access&nbsp;to updates and Tamagui Studio for 1 year.
             </Paragraph>
           </YStack>
 

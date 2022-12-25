@@ -1,7 +1,7 @@
 ---
-title: Tamagui 1.0
+title: Tamagui 1.0 🎉
 publishedAt: '2022-12-24'
-description: Cross-platform React apps in ½ time with 2x performance.
+description: Ship cross-platform React apps in ½ the time with 2x performance.
 by: nate
 poster: banner-rc0.jpg
 ---
@@ -18,23 +18,29 @@ poster: banner-rc0.jpg
 />
 
 <IntroParagraph large>
-  React Native is a great platform for building mobile apps, but have a choice when it
-  comes to sharing UI: either [accept a slow app, or rewrite it](/docs/intro/compiler).
+  React Native is amazing for building mobile apps, full stop. But sharing code with your
+  web app? You're forced to choose between [a slower, clunkier app, or a total
+  re-write](/docs/intro/compiler).
 </IntroParagraph>
 
 <IntroParagraph>
-  Tamagui solves this with a novel optimizing compiler that turns JS into CSS, evaluates
-  away inline styles, and flattens component trees - greatly increasing render
-  performance.
+  Tamagui's novel optimizing compiler enables more code sharing while gaining, rather than
+  sacrificing performance as you'd expect. It does this by turning JS into CSS, evaluating
+  inline styles, generating platform-specific code, and flattening component trees.
 </IntroParagraph>
 
-It turns natural typed inline styles, even with logic, into CSS that beats bests even hand-written styling thanks to CSS extraction and view flattening. Tamagui supports the full set of React Native APIs in a 0-dependency core library.
+Where it optimizes your app, things get a lot faster:
 
 <Spacer />
 <BenchmarkChartWeb />
+<Paragraph tag="span" als="center" fow="200" fontSize={12}>
+  Rendering two variants (Tamagui flattens)
+</Paragraph>
 <Spacer />
 
-On the web, render performance is faster, but psuedo and responsive styles really shine with over 10x the speed, and Lighthouse scores gain anywhere from 10-25%.
+Tamagui supports every React Native API in a 0-dependency library with all the [nice features](/docs/core/variants) of modern style libraries. It includes a compiler that turns natural typed inline styles - even with logic - into pure CSS, removing components as it goes. It often bests even finely-tuned, hand-written CSS because of this, while allowing for all the benefits of typed CSS-in-JS styling.
+
+On the web, render performance is much improved, especially for interactive (pseudo) and responsive (media query) styles. It improves Lighthouse scores 10-25%.
 
 <Image
   title="The compiler improves the Lighthouse score of the homepage of https://tamagui.dev from 85 to 96"
@@ -53,9 +59,11 @@ Tamagui comes in three parts:
 - An [optimizing compiler](#overview-of-static).
 - Tamagui, [a full-featured cross-platform UI kit built on top](#overview-of-tamagui).
 
-#### How Tamagui transforms code
+---
 
-Tamagui can evaluate a wide variety of code to flatten your component trees down:
+### Code Demo
+
+Tamagui has all the features of modern CSS-in-JS libraries, but optimizes away:
 
 <Spacer />
 <TamaguiExamplesCode />
@@ -120,13 +128,13 @@ export const Circle = styled(Stack, {
 
 For more, see the [configuration](/docs/core/configuration), [styling](/docs/core/styled), and [variants](/docs/core/variants) docs.
 
-### Your design system
+### Design system
 
-Using [createTamagui](/docs/configuration) you can generate a fully-typed design system with colors, tokens, spacing, sizing, fonts, themes, shorthands, animations, and more, that work with well-optimized and easy to use hooks like [useMedia](/docs/core/use-media) and [useTheme](/docs/core/use-theme).
+Using [createTamagui](/docs/core/configuration) you generate a fully-typed design system with colors, tokens, spacing, sizing, fonts, themes, shorthands, animations, and more, that works with well-optimized and easy to use hooks like [useMedia](/docs/core/use-media) and [useTheme](/docs/core/use-theme).
 
-It works hand-in-hand with a lightweight yet full-featured [styled factory](/docs/core/styled) for CSS-in-JS with all features from variants and shorthand props to media queries, themes, pseudo styles and more, all nicely typed.
+The full-featured [styled() factory](/docs/core/styled) gives you CSS-in-JS with all features - from variants and shorthand props, to media queries, themes, pseudo styles and more, designed to lead naturally to well-typed, performant base views.
 
-The [Stack and Text components](/docs/core/stacks-and-text) work with `styled()` and provide lot of nice features like hover, press, and focus styles, nice inline style props with typed theme and token values, shorthands, media queries, animations, and more (the animations are powered by drivers which can be swapped out, like CSS transition on web, but react-native-reanimated on iOS).
+Finally, the [Stack and Text components](/docs/core/stacks-and-text) work with `styled()` and provide lot of nice features like hover, press, and focus styles, nice inline style props with typed theme and token values, shorthands, media queries, animations, and more (the animations are powered by drivers which can be swapped out, like CSS transition on web, but react-native-reanimated on iOS).
 
 It's a base layer with everything you need for building a full-featured design system.
 
@@ -344,6 +352,10 @@ The new components are:
 
 #### Sheet
 
+<HeroContainer tinted>
+  <SheetDemo />
+</HeroContainer>
+
 A decent bottom sheet is essential for any UI kit, but it represents one of the hardest components to build due to the need for complex interactive behavior at high performance, alongside delicate interplay of touch events between the outer sheet and any inner scrollable content.
 
 This is made especially tricky because Tamagui allows for pluggable animation drivers, letting you choose between using Reanimated, React Native Animated, or simply CSS animations (plus any other animation drivers in the future that the community builds).
@@ -354,7 +366,7 @@ Internally, we've come up with some helpers for each animation driver to support
 
 #### Select
 
-<HeroContainer>
+<HeroContainer tinted>
   <SelectDemo />
 </HeroContainer>
 
@@ -366,7 +378,7 @@ Luckily, Tamagui stands on the shoulders of giants to make this possible: React 
 
 [Show content in a Dialog](/docs/components/dialog) that can adapt to another component depending on the screen size.
 
-<HeroContainer>
+<HeroContainer tinted>
   <DialogDemo />
 </HeroContainer>
 
@@ -378,7 +390,7 @@ Luckily, Tamagui stands on the shoulders of giants to make this possible: React 
 
 Show a Dialog specialized for confirming or denying an action [with AlertDialog](/docs/components/alert-dialog).
 
-<HeroContainer>
+<HeroContainer tinted>
   <AlertDialogDemo />
 </HeroContainer>
 
@@ -392,7 +404,7 @@ AlertDialog is the first of our components to include the `native` prop, which w
 
 A [draggable Slider](/docs/components/slider) allows users to input values within a range.
 
-<HeroContainer>
+<HeroContainer tinted>
   <SliderDemo />
 </HeroContainer>
 
@@ -404,7 +416,7 @@ A [draggable Slider](/docs/components/slider) allows users to input values withi
 
 Label has been updated to work with all the new form inputs.
 
-<HeroContainer>
+<HeroContainer tinted>
   <LabelDemo />
 </HeroContainer>
 
@@ -416,7 +428,7 @@ Label has been updated to work with all the new form inputs.
 
 Display content with a header, footer, background image, title, subtitle and description [using Card](/docs/components/card).
 
-<HeroContainer>
+<HeroContainer tinted>
   <CardDemo />
 </HeroContainer>
 
@@ -428,7 +440,7 @@ Display content with a header, footer, background image, title, subtitle and des
 
 [ListItem](/docs/components/list-item) allows you to display consistent with title, subtitle, before and after images or icons, and more.
 
-<HeroContainer>
+<HeroContainer tinted>
   <ListItemDemo />
 </HeroContainer>
 
@@ -438,7 +450,7 @@ Display content with a header, footer, background image, title, subtitle and des
 
 #### Avatar
 
-<HeroContainer>
+<HeroContainer tinted>
   <AvatarDemo />
 </HeroContainer>
 
@@ -448,7 +460,7 @@ Display content with a header, footer, background image, title, subtitle and des
 
 #### Spinner
 
-<HeroContainer>
+<HeroContainer tinted>
   <SpinnerDemo />
 </HeroContainer>
 
@@ -458,7 +470,7 @@ Display content with a header, footer, background image, title, subtitle and des
 
 #### Progress
 
-<HeroContainer>
+<HeroContainer tinted>
   <ProgressDemo />
 </HeroContainer>
 
@@ -572,7 +584,7 @@ It also now includes theme values for `color1` => `color12` as part of each them
 
 ### Starter repos
 
-`create-tamagui-app` underwent some big improvements that will set it up to be much more useful going forward. We moved official starters to be part of the actual Tamagui monorepo itself, which lets us much more rapidly iterate on them, and more importantly, to have them integrated into CI and tested before each release.
+`create-tamagui` underwent some big improvements that will set it up to be much more useful going forward. We moved official starters to be part of the actual Tamagui monorepo itself, which lets us much more rapidly iterate on them, and more importantly, to have them integrated into CI and tested before each release.
 
 It also now leverages a custom home directory `~/.tamagui` directory that will keep track of the last version you used in each app. In the future we can use this to give you automatic upgrade help, and diffs of changes you'll want to make.
 

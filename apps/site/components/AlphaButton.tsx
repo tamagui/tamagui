@@ -1,23 +1,21 @@
-import { Tag } from '@tamagui/lucide-icons'
-import NextLink from 'next/link'
+import { NextLink } from 'components/NextLink'
 import { Button } from 'tamagui'
 
 export const AlphaButton = () => {
   return (
-    <NextLink legacyBehavior href="/blog/version-one-release-candidate" passHref>
+    <NextLink href="/blog/version-one">
       <Button
-        accessibilityLabel="Tamagui v1 Release Candidate blog post"
+        accessibilityLabel="Tamagui v blog post"
         rotate="-4deg"
         theme="alt1"
         cursor="pointer"
         opacity={0.9}
         hoverStyle={{ opacity: 1 }}
-        tag="a"
         size="$2"
         scale={0.9}
         $sm={{ dsp: 'none' }}
       >
-        RC
+        1.0 🎉
       </Button>
     </NextLink>
   )

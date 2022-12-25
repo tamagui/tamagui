@@ -1,5 +1,5 @@
 import { RemoveScroll } from '@tamagui/remove-scroll'
-import NextLink from 'next/link'
+import { NextLink } from 'components/NextLink'
 import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { Circle, H4, Paragraph, Separator, XStack, YStack } from 'tamagui'

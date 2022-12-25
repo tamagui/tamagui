@@ -36,12 +36,12 @@ function BlogArticleHeader({ frontmatter }: BlogPost) {
   const { tint } = useTint()
   return (
     <Theme name={tint}>
-      <YStack mt="$-10" pt="$10" mb="$4" pos="relative">
+      <YStack tag="article" mt="$-10" pt="$10" mb="$4" pos="relative">
         <LinearGradient fullscreen colors={['$background', 'transparent']} />
         <Container>
           <YStack mt="$2" ai="flex-start">
-            <NextLink legacyBehavior href={isDraft ? '/draft' : '/blog'} passHref>
-              <Button size="$3" chromeless icon={ArrowLeft} tag="a" ml="$-2" theme="alt1">
+            <NextLink href={isDraft ? '/draft' : '/blog'}>
+              <Button size="$3" chromeless icon={ArrowLeft} ml="$-2" theme="alt1">
                 {isDraft ? 'Drafts' : 'Blog'}
               </Button>
             </NextLink>
@@ -105,9 +105,9 @@ export function BlogSlugPage(props: BlogPost) {
   const authorTwitter = authors[frontmatter.by || ''].twitter
   const tweetText = `${frontmatter.title} by @${authorTwitter} on the @tamagui_js blog.`
   const tweetUrl = `https://tamagui.dev/blog/${frontmatter.slug}`
-  const twitterShare = `https://twitter.com/intent/tweet?text="${enc(tweetText)}"&url=${enc(
-    tweetUrl
-  )}`
+  const twitterShare = `https://twitter.com/intent/tweet?text="${enc(
+    tweetText
+  )}"&url=${enc(tweetUrl)}`
 
   return (
     <>
@@ -145,7 +145,11 @@ export function BlogSlugPage(props: BlogPost) {
             <YStack my="$4" space="$4">
               {relatedPosts.map((frontmatter) => {
                 return (
-                  <Paragraph tag="a" key={frontmatter.slug} href={`/blog/${frontmatter.slug}`}>
+                  <Paragraph
+                    tag="a"
+                    key={frontmatter.slug}
+                    href={`/blog/${frontmatter.slug}`}
+                  >
                     <YStack space="$2">
                       <H6>{frontmatter.title}</H6>
                       <Paragraph>{frontmatter.description}</Paragraph>

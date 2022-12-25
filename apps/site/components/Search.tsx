@@ -1,5 +1,5 @@
+import { NextLink } from 'components/NextLink'
 import dynamic from 'next/dynamic'
-import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'

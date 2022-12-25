@@ -22,7 +22,6 @@ import {
   mediaState as globalMediaState,
   mediaKeysWithAndWithout$,
   mediaQueryConfig,
-  mediaState,
   mergeMediaByImportance,
 } from '../hooks/useMedia'
 import type {
@@ -47,8 +46,8 @@ import {
   RulesToInsert,
   insertStyleRules,
   insertedTransforms,
+  scanAllSheets,
   shouldInsertStyleRules,
-  updateInserted,
   updateRules,
 } from './insertStyleRule'
 import { FlatTransforms, mergeTransform, mergeTransforms } from './mergeTransform'
@@ -892,6 +891,7 @@ export const getSplitStyles: StyleSplitter = (
         rulesToInsert,
         parentSplitStyles,
         flatTransforms,
+        result,
       }
       for (const key in { ...result, ...logs }) {
         // eslint-disable-next-line no-console
@@ -923,7 +923,8 @@ function mergeClassName(
       if (isClient) {
         if (!transform) {
           // HMR or loaded a new chunk
-          updateInserted()
+          console.warn(`got a new ting`)
+          scanAllSheets()
           transform = insertedTransforms[val]
           if (process.env.NODE_ENV === 'development') {
             if (!transform) {

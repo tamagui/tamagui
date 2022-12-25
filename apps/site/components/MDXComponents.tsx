@@ -1,5 +1,5 @@
 import { Link } from '@tamagui/lucide-icons'
-import NextLink from 'next/link'
+import { NextLink } from 'components/NextLink'
 import NextRouter from 'next/router'
 import rangeParser from 'parse-numeric-range'
 import React from 'react'
@@ -52,6 +52,7 @@ import { SubTitle } from './SubTitle'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
+import { ThemeTint } from './useTint'
 
 const TableFrame = styled(ThemeableStack, {
   bordered: true,
@@ -169,6 +170,7 @@ export const components = {
   OffsetBox,
   YStack,
   XStack,
+  Theme,
   BenchmarkChart,
   Separator,
   Code,
@@ -180,6 +182,7 @@ export const components = {
   ...Demos,
 
   Highlights,
+  ThemeTint,
   PropsTable,
   DataTable,
   Description: SubTitle,
@@ -239,10 +242,9 @@ export const components = {
   IntroParagraph: ({ children, large, ...props }) => {
     return (
       <Paragraph
-        tag="span"
+        tag="p"
         size={large ? '$9' : '$8'}
-        className="paragraph"
-        ls={0.25}
+        className={'intro-paragraph' + (large ? ' large' : '')}
         my="$3"
         fow={large ? '200' : '300'}
         {...props}
@@ -307,7 +309,14 @@ export const components = {
   h5: (props) => <H5 mt="$4" {...props} />,
 
   p: (props) => (
-    <Paragraph className="docs-paragraph" display="block" my="$3" size="$5" {...props} />
+    <Paragraph
+      className="docs-paragraph"
+      display="block"
+      my="$3"
+      size="$5"
+      lh="$6"
+      {...props}
+    />
   ),
 
   a: ({ href = '', children, ...props }) => {
@@ -383,7 +392,7 @@ export const components = {
       jc="center"
       ov="hidden"
       {...(overlap && {
-        mt: '$-6',
+        mt: '$-5',
         elevation: '$4',
       })}
     >

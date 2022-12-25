@@ -1,4 +1,4 @@
-# `create-tamagui-app`
+# `create-tamagui`
 
 ```sh
 npm create tamagui
@@ -9,6 +9,6 @@ A script that creates a [tamagui monorepo](https://github.com/tamagui/tamagui/tr
 ## Contributing
 
 - Clone the root repo.
-- `cd packages/create-tamagui-app`
+- `cd packages/create-tamagui`
 - `yarn`
 - `yarn test` to build your local app into a gitignored `create-test-app` folder

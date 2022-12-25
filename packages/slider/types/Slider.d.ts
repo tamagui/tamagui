@@ -175,7 +175,6 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -193,7 +192,6 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -211,7 +209,6 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -229,7 +226,6 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
-    readonly fontFamily?: unknown;
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
@@ -353,5 +349,5 @@ declare const Range: React.ForwardRefExoticComponent<((Omit<import("react-native
 }>>, string | number>) & React.RefAttributes<View>>;
 declare const Thumb: React.ForwardRefExoticComponent<SliderThumbProps & React.RefAttributes<View>>;
 export { Slider, SliderTrack, SliderTrackActive, SliderThumb, Track, Range, Thumb, };
-export type { SliderProps, SliderTrackProps, SliderTrackActiveProps, SliderThumbProps, };
+export type { SliderProps, SliderTrackProps, SliderTrackActiveProps, SliderThumbProps };
 //# sourceMappingURL=Slider.d.ts.map

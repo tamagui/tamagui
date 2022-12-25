@@ -22,6 +22,7 @@ body {
 
 * {
   box-sizing: border-box;
+  outline: 0;
 }
 
 #__next {
@@ -70,7 +71,7 @@ a {
 }
 
 :is(
-  p a,
+  article p a,
   footer a
 ) {
   text-decoration-style: solid;
@@ -82,7 +83,7 @@ a {
 }
 
 :is(
-  p a
+  article p a
 ):hover {
   text-decoration-style: solid;
   text-decoration-thickness: 5px !important;
@@ -90,7 +91,17 @@ a {
 }
 
 p, li.font_body {
-  color: var(--gray11) !important;
+  color: var(--gray12) !important;
+  opacity: 0.75 !important;
+}
+
+p.intro-paragraph.large {
+  color: var(--gray12) !important;
+  opacity: 1 !important;
+}
+
+.intro-paragraph a {
+  font-weight: inherit;
 }
 
 /* display block > display inline-flex bug */
@@ -115,35 +126,12 @@ span._display-1adg3ll > span._display-xoduu5 {
 }
 
 .hero-gradient {
-  position: relative;
-}
-
-.hero-gradient::before {
-  display: flex;
-  pointer-events: none;
-  content: ' ';
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0.5;
-  border-radius: 5px;
   background: linear-gradient(
     330deg,
     var(--background) 0%,
     transparent 30%,
     transparent 70%,
     var(--background) 100%
-  );
-}
-
-.hero-gradient-2 {
-  background: linear-gradient(
-    180deg,
-    transparent,
-    var(--backgroundStrong) 0%
   );
 }
 
@@ -564,4 +552,8 @@ input, textarea {
 
 .transition-bg-color {
   transform: background-color ease-in 1000ms;
+}
+
+.next-link {
+  display: contents;
 }

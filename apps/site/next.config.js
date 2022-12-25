@@ -37,6 +37,8 @@ const plugins = [
     return {
       ...config,
       webpack(webpackConfig, options) {
+        // webpackConfig.optimization.minimize = false
+
         webpackConfig.resolve.alias ??= {}
 
         // https://github.com/theKashey/react-remove-scroll/pull/78

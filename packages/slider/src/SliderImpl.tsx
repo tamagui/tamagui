@@ -113,14 +113,11 @@ export const SliderImpl = React.forwardRef<View, SliderImplProps>(
           // const target = event.target as HTMLElement
           onSlideMove(event)
         })}
-        onResponderRelease={composeEventHandlers(
-          props.onResponderRelease,
-          (event) => {
-            // const target = event.target as HTMLElement
-            onSlideEnd(event)
-          },
-        )}
+        onResponderRelease={composeEventHandlers(props.onResponderRelease, (event) => {
+          // const target = event.target as HTMLElement
+          onSlideEnd(event)
+        })}
       />
     )
-  },
+  }
 )
