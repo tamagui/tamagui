@@ -2836,13 +2836,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@my/ui@workspace:apps/starter/packages/ui"
   dependencies:
-    "@tamagui/animations-react-native": ^1.0.1-rc.9
-    "@tamagui/build": ^1.0.1-rc.9
-    "@tamagui/font-inter": ^1.0.1-rc.9
-    "@tamagui/react-native-media-driver": ^1.0.1-rc.9
-    "@tamagui/shorthands": ^1.0.1-rc.9
-    "@tamagui/theme-base": ^1.0.1-rc.9
-    tamagui: ^1.0.1-rc.9
+    "@tamagui/animations-react-native": ^1.0.1-rc.10
+    "@tamagui/build": ^1.0.1-rc.10
+    "@tamagui/font-inter": ^1.0.1-rc.10
+    "@tamagui/react-native-media-driver": ^1.0.1-rc.10
+    "@tamagui/shorthands": ^1.0.1-rc.10
+    "@tamagui/theme-base": ^1.0.1-rc.10
+    tamagui: ^1.0.1-rc.10
   languageName: unknown
   linkType: soft
 
@@ -4373,7 +4373,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/animations-react-native@^1.0.1-rc.10, @tamagui/animations-react-native@^1.0.1-rc.9, @tamagui/animations-react-native@workspace:packages/animations-react-native":
+"@tamagui/animations-react-native@^1.0.1-rc.10, @tamagui/animations-react-native@workspace:packages/animations-react-native":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-react-native@workspace:packages/animations-react-native"
   dependencies:
@@ -4449,7 +4449,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@^1.0.1-rc.10, @tamagui/build@^1.0.1-rc.9, @tamagui/build@workspace:packages/build":
+"@tamagui/build@^1.0.1-rc.10, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -4587,7 +4587,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/colors@^1.0.1-rc.10, @tamagui/colors@^1.0.1-rc.9, @tamagui/colors@workspace:packages/colors":
+"@tamagui/colors@^1.0.1-rc.10, @tamagui/colors@workspace:packages/colors":
   version: 0.0.0-use.local
   resolution: "@tamagui/colors@workspace:packages/colors"
   dependencies:
@@ -4831,7 +4831,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/font-inter@^1.0.1-rc.10, @tamagui/font-inter@^1.0.1-rc.9, @tamagui/font-inter@workspace:packages/font-inter":
+"@tamagui/font-inter@^1.0.1-rc.10, @tamagui/font-inter@workspace:packages/font-inter":
   version: 0.0.0-use.local
   resolution: "@tamagui/font-inter@workspace:packages/font-inter"
   dependencies:
@@ -5034,7 +5034,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/lucide-icons@^1.0.1-rc.10, @tamagui/lucide-icons@^1.0.1-rc.9, @tamagui/lucide-icons@workspace:packages/lucide-icons":
+"@tamagui/lucide-icons@^1.0.1-rc.10, @tamagui/lucide-icons@workspace:packages/lucide-icons":
   version: 0.0.0-use.local
   resolution: "@tamagui/lucide-icons@workspace:packages/lucide-icons"
   dependencies:
@@ -5222,7 +5222,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/react-native-media-driver@^1.0.1-rc.10, @tamagui/react-native-media-driver@^1.0.1-rc.9, @tamagui/react-native-media-driver@workspace:packages/react-native-media-driver":
+"@tamagui/react-native-media-driver@^1.0.1-rc.10, @tamagui/react-native-media-driver@workspace:packages/react-native-media-driver":
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-media-driver@workspace:packages/react-native-media-driver"
   dependencies:
@@ -5420,7 +5420,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/shorthands@^1.0.1-rc.10, @tamagui/shorthands@^1.0.1-rc.9, @tamagui/shorthands@workspace:packages/shorthands":
+"@tamagui/shorthands@^1.0.1-rc.10, @tamagui/shorthands@workspace:packages/shorthands":
   version: 0.0.0-use.local
   resolution: "@tamagui/shorthands@workspace:packages/shorthands"
   dependencies:
@@ -5652,7 +5652,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/theme-base@^1.0.1-rc.10, @tamagui/theme-base@^1.0.1-rc.9, @tamagui/theme-base@workspace:packages/theme-base":
+"@tamagui/theme-base@^1.0.1-rc.10, @tamagui/theme-base@workspace:packages/theme-base":
   version: 0.0.0-use.local
   resolution: "@tamagui/theme-base@workspace:packages/theme-base"
   dependencies:
@@ -7394,12 +7394,12 @@ __metadata:
     "@my/ui": "*"
     "@react-navigation/native": ^6.0.11
     "@react-navigation/native-stack": ^6.7.0
-    "@tamagui/animations-react-native": ^1.0.1-rc.9
-    "@tamagui/colors": ^1.0.1-rc.9
-    "@tamagui/font-inter": ^1.0.1-rc.9
-    "@tamagui/lucide-icons": ^1.0.1-rc.9
-    "@tamagui/shorthands": ^1.0.1-rc.9
-    "@tamagui/theme-base": ^1.0.1-rc.9
+    "@tamagui/animations-react-native": ^1.0.1-rc.10
+    "@tamagui/colors": ^1.0.1-rc.10
+    "@tamagui/font-inter": ^1.0.1-rc.10
+    "@tamagui/lucide-icons": ^1.0.1-rc.10
+    "@tamagui/shorthands": ^1.0.1-rc.10
+    "@tamagui/theme-base": ^1.0.1-rc.10
     expo-linking: ^3.2.3
     solito: 2.0.0-canary.4
   languageName: unknown
@@ -21257,7 +21257,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"tamagui@^1.0.1-rc.10, tamagui@^1.0.1-rc.9, tamagui@workspace:packages/tamagui":
+"tamagui@^1.0.1-rc.10, tamagui@workspace:packages/tamagui":
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
