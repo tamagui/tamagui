@@ -78,7 +78,7 @@ export function HeroContainer({
   )
 
   if (tinted) {
-    // return <ThemeTint>{contents}</ThemeTint>
+    return <ThemeTint>{contents}</ThemeTint>
   }
 
   return contents
