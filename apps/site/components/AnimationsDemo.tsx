@@ -1,7 +1,6 @@
 import { AnimationsDemo as AnimationsDemoBase } from '@tamagui/demos'
+import { useTint } from '@tamagui/logo'
 import React from 'react'
-
-import { useTint } from './useTint'
 
 export const AnimationsDemo = (props) => {
   const { tint } = useTint()

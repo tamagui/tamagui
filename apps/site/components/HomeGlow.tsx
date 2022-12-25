@@ -1,10 +1,17 @@
-import { tints } from '@tamagui/logo'
+import { useTints } from '@tamagui/logo'
+import { useTint } from '@tamagui/logo'
 import { memo, useEffect, useMemo, useState } from 'react'
 import { Dimensions } from 'react-native'
-import { YStack, debounce, isClient, useDebounce, useWindowDimensions } from 'tamagui'
+import {
+  ThemeName,
+  YStack,
+  debounce,
+  isClient,
+  useDebounce,
+  useWindowDimensions,
+} from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
-import { useTint } from './useTint'
 
 function useIsResizing() {
   const [isResizing, setIsResizing] = useState(false)
@@ -29,7 +36,7 @@ function useIsResizing() {
 }
 
 export const HomeGlow = memo(() => {
-  const { tint } = useTint()
+  const { tints, tint, name, tintIndex } = useTint()
   const isHeroBelowColor = tint === 'blue' || tint === 'green' || tint === 'purple'
   const [index, setIndex] = useState(0)
   const isAtTop = index <= 1
@@ -39,7 +46,6 @@ export const HomeGlow = memo(() => {
   const windowWidth = Dimensions.get('window').width
   const xs = Math.min(400, windowWidth * 0.25)
   const scale = isOnHeroBelow ? 0.5 : 1
-  const isResizing = useIsResizing()
 
   if (isClient) {
     useTintSectionIndex((index) => {
@@ -52,25 +58,29 @@ export const HomeGlow = memo(() => {
   const glows = useMemo(() => {
     return (
       <>
-        {tints.map((cur) => {
+        {tints.map((cur, i) => {
+          const isDouble = name === 'xmas'
+          const active = isDouble ? i == 0 || i == 1 : cur === tint
+          const isOpposite = isDouble && cur === 'green' && tint !== cur
           return (
             <YStack
-              key={cur}
+              key={`${cur}${i}`}
               overflow="hidden"
               h="100vh"
               w={1000}
-              theme={cur}
-              o={cur === tint ? 0.5 : 0}
+              theme={cur as ThemeName}
+              o={active ? 0.5 : 0}
               fullscreen
-              left="calc(50vw - 500px)"
+              left={`calc(50vw - 500px)`}
+              x={isOnHeroBelow ? 0 : isDouble ? (isOpposite ? -500 : 500) : 0}
               scale={scale}
-              className="hero-blur all linear s2"
+              className="hero-blur"
             />
           )
         })}
       </>
     )
-  }, [scale, tint])
+  }, [scale, tint, tints])
 
   return (
     <YStack
@@ -79,14 +89,14 @@ export const HomeGlow = memo(() => {
       l={0}
       contain="layout"
       pe="none"
-      animation="lazy"
+      animation="quick"
       key={0}
       zi={-1}
       x={0}
       y={scrollTop}
       {...(isOnHeroBelow && {
         animation: 'quick',
-        x: tint === 'green' ? -xs : tint === 'purple' ? xs : 0,
+        x: tintIndex === 2 ? -xs : tintIndex === 4 ? xs : 0,
         y: 300,
       })}
       // display={isResizing ? 'none' : 'flex'}

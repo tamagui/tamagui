@@ -19,14 +19,8 @@ export default function Blog({ frontmatters }) {
       <ContainerLarge mt="$6" mb="$7" space="$2">
         <XStack flexWrap="wrap" jc="space-between">
           {frontmatters.map((frontmatter) => (
-            <NextLink
-              legacyBehavior
-              key={frontmatter.title}
-              href={frontmatter.slug}
-              passHref
-            >
+            <NextLink key={frontmatter.title} href={frontmatter.slug} passHref>
               <Card
-                tag="a"
                 width="33.33%"
                 maxWidth="calc(33.33% - var(--space-4))"
                 p="$4"

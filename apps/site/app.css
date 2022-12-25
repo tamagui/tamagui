@@ -138,7 +138,7 @@ span._display-1adg3ll > span._display-xoduu5 {
 .t_dark .hero-blur {
   background: radial-gradient(
     var(--backgroundStrong) 0%,
-    transparent 75%
+    transparent 72%
   );
 }
 
@@ -229,7 +229,7 @@ pre {
 }
 
 .rainbow {
-  background: -webkit-linear-gradient(
+  background-image: -webkit-linear-gradient(
     0deg,
     var(--orange10),
     var(--yellow10),
@@ -237,6 +237,18 @@ pre {
     var(--blue10) 56.1%,
     var(--pink10),
     var(--red10)
+  );
+}
+
+.xmas-season .rainbow {
+  background-image: -webkit-linear-gradient(
+    -220deg,
+    #009135,
+    #009135,
+    var(--color9) 50%,
+    var(--color9) 50%,
+    #ff0024,
+    #ff0024
   );
 }
 

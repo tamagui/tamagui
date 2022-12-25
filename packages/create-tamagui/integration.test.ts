@@ -57,7 +57,7 @@ test.beforeAll(async () => {
 })
 
 test.afterAll(async () => {
-  test.setTimeout(oneMinute * 5)
+  test.setTimeout(oneMinute * 10)
 
   console.log(`Killing server...`)
   await server?.kill()

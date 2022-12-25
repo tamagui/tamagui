@@ -154,14 +154,13 @@ export default function TakeoutPurchasePage({ products }: Props) {
                   <Spacer />
                   <Separator />
                   <Spacer />
-                  <NextLink legacyBehavior href="/signin" passHref>
+                  <NextLink href="/signin">
                     <Button
                       theme={level.highlight ? 'blue' : null}
                       br="$10"
                       bw={2}
                       fontFamily="$silkscreen"
                       size="$6"
-                      tag="a"
                       textAlign="center"
                     >
                       Purchase

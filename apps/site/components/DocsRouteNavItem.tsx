@@ -14,12 +14,11 @@ export function DocsRouteNavItem({
 }: NavItemProps) {
   const isExternal = href.startsWith('http')
   return (
-    <NextLink legacyBehavior href={href} passHref>
+    <NextLink href={href}>
       <XStack
         className="docs-nav-item all ease-in ms150"
         {...props}
         {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-        tag="a"
         ai="center"
         jc="flex-end"
         py="$0.5"

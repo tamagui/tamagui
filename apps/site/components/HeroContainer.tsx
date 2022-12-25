@@ -1,7 +1,6 @@
+import { ThemeTint } from '@tamagui/logo'
 import React from 'react'
 import { Theme, XStack, YStack, styled } from 'tamagui'
-
-import { ThemeTint } from './useTint'
 
 export function HeroContainer({
   children,
@@ -79,7 +78,7 @@ export function HeroContainer({
   )
 
   if (tinted) {
-    return <ThemeTint>{contents}</ThemeTint>
+    // return <ThemeTint>{contents}</ThemeTint>
   }
 
   return contents

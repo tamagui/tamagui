@@ -1,5 +1,6 @@
 import { animations } from '@tamagui/config-base'
 import { useIsIntersecting, useOnIntersecting } from '@tamagui/demos'
+import { useTint } from '@tamagui/logo'
 import { ArrowDown } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import React, { memo, useEffect, useRef, useState } from 'react'
@@ -18,7 +19,6 @@ import { AnimationsDemo } from './AnimationsDemo'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
-import { useTint } from './useTint'
 
 const animationDescriptions = [
   {
@@ -70,7 +70,7 @@ export function HeroExampleAnimations({ animationCode }) {
             zi={100}
             elevation="$4"
             br="$4"
-            theme={tint}
+            theme={tint as any}
           >
             <ExampleAnimations />
           </YStack>
@@ -119,23 +119,22 @@ export function HeroExampleAnimations({ animationCode }) {
         </XStack>
 
         <XStack als="center" space="$3">
-          <NextLink legacyBehavior href="/docs/core/animations#css" passHref>
+          <NextLink href="/docs/core/animations#css">
             <Button
               accessibilityLabel="CSS docs"
               fontFamily="$silkscreen"
-              theme={tint}
-              tag="a"
+              theme={tint as any}
             >
               CSS &raquo;
             </Button>
           </NextLink>
-          <NextLink legacyBehavior href="/docs/core/animations#reanimated" passHref>
-            <Button accessibilityLabel="Reanimated docs" fontFamily="$silkscreen" tag="a">
+          <NextLink href="/docs/core/animations#reanimated">
+            <Button accessibilityLabel="Reanimated docs" fontFamily="$silkscreen">
               Reanimated &raquo;
             </Button>
           </NextLink>
-          <NextLink legacyBehavior href="/docs/core/animations" passHref>
-            <Button accessibilityLabel="Animation docs" fontFamily="$silkscreen" tag="a">
+          <NextLink href="/docs/core/animations">
+            <Button accessibilityLabel="Animation docs" fontFamily="$silkscreen">
               Docs &raquo;
             </Button>
           </NextLink>

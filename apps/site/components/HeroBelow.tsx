@@ -1,3 +1,4 @@
+import { ThemeTint } from '@tamagui/logo'
 import { ChevronRight, Code, Cpu, Layers } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import { memo, useEffect, useRef } from 'react'
@@ -7,12 +8,11 @@ import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'
 import { useHeroHovered } from './heroState'
 import { IconStack } from './IconStack'
-import { ThemeTint } from './useTint'
 
 const TitleLink = ({ href, children, ...props }: any) => {
   return (
-    <NextLink legacyBehavior passHref href={href}>
-      <H3 cursor="pointer" tag="a" color="$color" my="$2">
+    <NextLink href={href}>
+      <H3 cursor="pointer" color="$color" my="$2">
         <CodeInline
           cursor="pointer"
           fontFamily="$silkscreen"

@@ -26,7 +26,6 @@ import {
   YStack,
   insertFont,
   useComposedRefs,
-  useIsomorphicLayoutEffect,
 } from 'tamagui'
 
 import { ContainerXL } from '../../components/Container'
@@ -36,7 +35,6 @@ import { useHoverGlow } from '../../components/HoverGlow'
 import { MediaPlayer } from '../../components/MediaPlayer'
 import { NotoIcon } from '../../components/NotoIcon'
 import { TamaCard } from '../../components/TamaCard'
-import { useTint } from '../../components/useTint'
 import { getUserLayout } from '../../lib/getUserLayout'
 
 // lazy load this on page load
@@ -44,17 +42,17 @@ insertFont('noto', createNotoFont())
 
 export default function TakeoutPage() {
   const { resolvedTheme: themeName } = useThemeSetting()
-  const { tint, setTint } = useTint()
+  // const { tint, setTintIndex } = useTint()
 
   // if logged in already go to dashboard
   // useForwardToDashboard()
 
-  useIsomorphicLayoutEffect(() => {
-    setTint('pink')
-    return () => {
-      setTint(tint)
-    }
-  }, [])
+  // useIsomorphicLayoutEffect(() => {
+  //   setTintIndex('pink')
+  //   return () => {
+  //     setTintIndex(tint)
+  //   }
+  // }, [])
 
   return (
     <Theme name={themeName as any}>
@@ -285,8 +283,8 @@ const Hero = () => {
               </Button>
             </YStack>
             <H2 als="center" fontFamily="$body" size="$9" fow="200" theme="alt2">
-              Hundreds of meticulously designed components and screens that take you from 0 to 100,
-              real quick.
+              Hundreds of meticulously designed components and screens that take you from
+              0 to 100, real quick.
             </H2>
           </XStack>
 
@@ -310,10 +308,12 @@ const Hero = () => {
             2 new color schemes - Contrast and Pastel - that tree-shake.
           </TamaCard>
           <TamaCard icon="🖼" title="Themes">
-            4 new themes that completely change the look and feel of your app, easy to fork.
+            4 new themes that completely change the look and feel of your app, easy to
+            fork.
           </TamaCard>
           <TamaCard icon="📱" title="Screens">
-            20 pre-built screens covering common use cases from e-commerce and social, to forms.
+            20 pre-built screens covering common use cases from e-commerce and social, to
+            forms.
           </TamaCard>
           <TamaCard icon="📦" title="Components">
             Autocomplete. Menu. More on the way, with upgrades within your yearly period.
@@ -329,7 +329,13 @@ const Hero = () => {
 
 const Ribbon = ({ id, color }: { id: string; color: string }) => {
   return (
-    <svg width="100%" height="400px" fill="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="100%"
+      height="400px"
+      fill="none"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <linearGradient id={id} x1="0%" y1="24%" x2="0%" y2="0%">
         <stop offset="0%" stopColor="transparent" />
         <stop offset="50%" stopColor={color} />

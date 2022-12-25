@@ -1,5 +1,6 @@
 import { useIsIntersecting } from '@tamagui/demos'
-import { tints } from '@tamagui/logo'
+import { useTints } from '@tamagui/logo'
+import { onTintChange, setTintIndex } from '@tamagui/logo'
 import { useThemeSetting } from '@tamagui/next-theme'
 import {
   SetStateAction,
@@ -26,33 +27,33 @@ import { ActiveCircle } from './ActiveCircle'
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
 import { MediaPlayer } from './MediaPlayer'
-import { setTintIndex } from './useTint'
-
-const themes: (ThemeName | null)[][] = [tints, [null, 'alt1', 'alt2']]
-
-const themeCombos: string[] = []
-for (let i = 0; i < themes[0].length; i++) {
-  for (let j = 0; j < themes[1].length; j++) {
-    const parts = [themes[0][i], themes[1][j]].filter(Boolean)
-    themeCombos.push(parts.join('_'))
-  }
-}
-
-const max = themes[1].length
-
-const flatToSplit = (i: number) => {
-  const colorI = Math.floor(i / max)
-  const shadeI = i % max
-  return [colorI, shadeI]
-}
-
-const splitToFlat = ([a, b]: number[]) => {
-  return a * 4 + b
-}
 
 type Lock = null | 'shouldAnimate' | 'animate' | 'scroll'
 
 export const HeroExampleThemes = memo(function HeroExampleThemes() {
+  const tints = useTints().tints as ThemeName[]
+  const themes: (ThemeName | null)[][] = [tints, [null, 'alt1', 'alt2']]
+
+  const themeCombos: string[] = []
+  for (let i = 0; i < themes[0].length; i++) {
+    for (let j = 0; j < themes[1].length; j++) {
+      const parts = [themes[0][i], themes[1][j]].filter(Boolean)
+      themeCombos.push(parts.join('_'))
+    }
+  }
+
+  const max = themes[1].length
+
+  const flatToSplit = (i: number) => {
+    const colorI = Math.floor(i / max)
+    const shadeI = i % max
+    return [colorI, shadeI]
+  }
+
+  const splitToFlat = ([a, b]: number[]) => {
+    return a * 4 + b
+  }
+
   const themeSetting = useThemeSetting()
 
   const [activeI, setActiveI_] = useState([0, 0])
@@ -83,9 +84,8 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
     if (!isIntersecting) return
     updateActiveI([3, 0])
 
-    const onChangeTint = globalThis['onChangeTint']
     const now = Date.now() // ignore immediate one
-    const disposeOnChange = onChangeTint((index: number) => {
+    const disposeOnChange = onTintChange((index: number) => {
       if (now > Date.now() - 200) return
       moveToIndex(index * 3)
     })
@@ -195,7 +195,7 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
                 const isActive = theme === name
                 return (
                   <ActiveCircle
-                    key={name}
+                    key={name + i}
                     backgroundColor={name === 'dark' ? '#000' : '#fff'}
                     onPress={() => themeSetting.set(name)}
                     isActive={isActive}
@@ -208,7 +208,7 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
               {themes[0].map((color, i) => {
                 const isActive = curColorI === i
                 return (
-                  <Theme key={color} name={color}>
+                  <Theme key={`${color}${i}`} name={color}>
                     <ActiveCircle
                       onPress={() => updateActiveI([i, curShadeI])}
                       isActive={isActive}
@@ -227,7 +227,7 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
                     return (
                       <ActiveCircle
                         onPress={() => updateActiveI([curColorI, i])}
-                        key={i}
+                        key={`${name}${i}`}
                         isActive={isActive}
                         opacity={1.2 - (4 - i) / 4}
                         backgroundColor="$colorHover"
@@ -249,7 +249,7 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
           pointerEvents={scrollLock === 'animate' ? 'none' : 'auto'}
           maxWidth={1400}
         >
-          <YStack fullscreen pe="none" zIndex={1000000000} className="themes-fader" />
+          <YStack fullscreen pe="none" zIndex={1000000000} />
           <XStack
             className="scroll-horizontal no-scrollbar"
             ref={scrollView}

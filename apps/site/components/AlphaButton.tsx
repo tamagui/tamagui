@@ -5,7 +5,7 @@ export const AlphaButton = () => {
   return (
     <NextLink href="/blog/version-one">
       <Button
-        accessibilityLabel="Tamagui v blog post"
+        accessibilityLabel="Tamagui v1 blog post"
         rotate="-4deg"
         theme="alt1"
         cursor="pointer"
@@ -29,7 +29,7 @@ export const AlphaButton = () => {
 
 //   return (
 //     <>
-//       <NextLink legacyBehavior href={isTakeoutPurchase ? '/takeout' : isTakeout ? '/' : '/takeout'} passHref>
+//       <NextLink href={isTakeoutPurchase ? '/takeout' : isTakeout ? '/' : '/takeout'} passHref>
 //         <Button
 //           rotate="1.25deg"
 //           // @ts-ignore

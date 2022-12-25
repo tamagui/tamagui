@@ -1,3 +1,4 @@
+import { ThemeTint } from '@tamagui/logo'
 import { Link } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import NextRouter from 'next/router'
@@ -52,7 +53,6 @@ import { SubTitle } from './SubTitle'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
-import { ThemeTint } from './useTint'
 
 const TableFrame = styled(ThemeableStack, {
   bordered: true,
@@ -321,7 +321,7 @@ export const components = {
 
   a: ({ href = '', children, ...props }) => {
     return (
-      <NextLink legacyBehavior href={href} passHref>
+      <NextLink href={href}>
         {/* @ts-ignore */}
         <Paragraph
           className="link"

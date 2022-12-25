@@ -1,4 +1,5 @@
 import { allDocsRoutes } from '@lib/docsRoutes'
+import { useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import * as React from 'react'
 import { ScrollView } from 'react-native'
@@ -8,7 +9,6 @@ import { Container } from './Container'
 import { DocsMenuContents } from './DocsMenuContents'
 import { Link } from './Link'
 import { useDocsMenu } from './useDocsMenu'
-import { useTint } from './useTint'
 
 export const allNotPending = allDocsRoutes.filter((x) => !x['pending'])
 
@@ -57,7 +57,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                   </NextLink>
                 )}
                 {next && (
-                  <NextLink legacyBehavior href={next.route} passHref>
+                  <NextLink href={next.route} passHref>
                     <YStack
                       hoverStyle={{
                         borderColor: '$borderColorHover',
@@ -71,7 +71,6 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       pressStyle={{
                         backgroundColor: '$backgroundPress',
                       }}
-                      tag="a"
                       aria-label={`Previous page: ${next.title}`}
                       ai="flex-end"
                     >
@@ -105,7 +104,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   }, [children, previous, next, editUrl])
 
   return (
-    <Theme name={tint}>
+    <Theme name={tint as any}>
       <YStack
         overflow="hidden"
         mx="auto"

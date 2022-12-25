@@ -101,8 +101,8 @@ export const SearchProvider = memo(({ children }: any) => {
 
 const ResultItem = ({ hit, children }) => {
   return (
-    <NextLink legacyBehavior href={hit.url}>
-      <Paragraph tag="a">{children}</Paragraph>
+    <NextLink href={hit.url}>
+      <Paragraph tag="span">{children}</Paragraph>
     </NextLink>
   )
 }

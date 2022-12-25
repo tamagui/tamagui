@@ -1,24 +1,29 @@
 import { useOnIntersecting } from '@tamagui/demos'
-import { tints } from '@tamagui/logo'
+import { getTints } from '@tamagui/logo'
+import { useTint } from '@tamagui/logo'
 import { useEffect, useMemo, useRef } from 'react'
 import { GetProps, XStack, YStack, styled } from 'tamagui'
 
-import { setTintIndex, useTint } from './useTint'
-
-const numIntersectingAtSection: number[] = tints.map((_) => 0)
-
 type Props = SectionProps & { themed?: boolean; index: number }
+
+// not use its fixed size
+const numIntersectingAtSection: number[] = getTints().tints.map((_) => 0)
 
 export const TintSection = ({ children, index, themed, zIndex, ...props }: Props) => {
   const top = useRef<HTMLElement>(null)
   const bottom = useRef<HTMLElement>(null)
   const mid = useRef<HTMLElement>(null)
-  const { tint } = useTint()
+  const { tint, tints, setTintIndex } = useTint()
 
   useOnIntersecting(
     useMemo(() => [top, mid, bottom], []),
     (entries) => {
       const count = entries.reduce((a, b) => a + (b?.isIntersecting ? 1 : 0), 0)
+
+      if (count < 2) {
+        return
+      }
+
       numIntersectingAtSection[index] = count
 
       let topIndex = -1
@@ -62,7 +67,7 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
           </>
         )
       }, [top, mid, bottom])}
-      <HomeSection theme={themed ? tint : null} {...props}>
+      <HomeSection theme={(themed ? tint : null) as any} {...props}>
         {useMemo(() => children, [children])}
       </HomeSection>
     </YStack>

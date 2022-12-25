@@ -596,7 +596,6 @@ const SheetImplementation = themeable(
           {isResizing || shouldHideParentSheet ? null : overlayComponent}
 
           <AnimatedView
-            debug="verbose"
             ref={ref}
             {...panResponder?.panHandlers}
             onLayout={handleLayout}

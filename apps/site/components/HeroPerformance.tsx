@@ -1,4 +1,5 @@
 import { useOnIntersecting } from '@tamagui/demos'
+import { useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import { useRef, useState } from 'react'
 import { Button, Paragraph, XStack, YStack } from 'tamagui'
@@ -6,7 +7,6 @@ import { Button, Paragraph, XStack, YStack } from 'tamagui'
 import { ContainerLarge } from '../components/Container'
 import { HomeH2, HomeH3 } from '../components/HomeH2'
 import { BenchmarkChartWeb } from './BenchmarkChartWeb'
-import { useTint } from './useTint'
 
 export function HeroPerformance() {
   const ref = useRef<HTMLElement>(null)
@@ -70,12 +70,11 @@ export function HeroPerformance() {
 const BenchmarksLink = () => {
   const { tint } = useTint()
   return (
-    <NextLink legacyBehavior href="/docs/intro/benchmarks" passHref>
+    <NextLink href="/docs/intro/benchmarks">
       <Button
         accessibilityLabel="Performance benchmarks"
         fontFamily="$silkscreen"
-        theme={tint}
-        tag="a"
+        theme={tint as any}
       >
         Benchmarks &raquo;
       </Button>
@@ -86,8 +85,8 @@ const BenchmarksLink = () => {
 const CompilerLink = () => {
   const { tint } = useTint()
   return (
-    <NextLink legacyBehavior href="/docs/intro/compiler" passHref>
-      <Button accessibilityLabel="Compiler" fontFamily="$silkscreen" theme={tint} tag="a">
+    <NextLink href="/docs/intro/compiler">
+      <Button accessibilityLabel="Compiler" fontFamily="$silkscreen" theme={tint as any}>
         About &raquo;
       </Button>
     </NextLink>

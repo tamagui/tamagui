@@ -1,6 +1,7 @@
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
+import { useTint } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import { format, parseISO } from 'date-fns'
@@ -26,7 +27,6 @@ import { ContainerLarge } from '../components/Container'
 import { FlatBubbleCard } from '../components/FlatBubbleCard'
 import { GithubIcon } from '../components/GithubIcon'
 import { SocialLinksRow } from '../components/SocialLinksRow'
-import { useTint } from '../components/useTint'
 
 export default function Community({ frontmatters }) {
   return (
@@ -52,21 +52,21 @@ export default function Community({ frontmatters }) {
 
         <XStack $sm={{ flexDirection: 'column' }}>
           <FlatBubbleCard w="50%" $sm={{ w: 'auto' }} ai="center" bw={0}>
-            <Button
-              bc="transparent"
-              boc="$borderColor"
-              bw={1}
-              mt="$-3"
-              tag="a"
-              href="/blog"
-              size="$6"
-              iconAfter={ChevronRight}
-              br="$10"
-            >
-              <H2 cur="pointer" size="$9" ta="center">
-                The Blog
-              </H2>
-            </Button>
+            <NextLink href="/blog">
+              <Button
+                bc="transparent"
+                boc="$borderColor"
+                bw={1}
+                mt="$-3"
+                size="$6"
+                iconAfter={ChevronRight}
+                br="$10"
+              >
+                <H2 cur="pointer" size="$9" ta="center">
+                  The Blog
+                </H2>
+              </Button>
+            </NextLink>
             <Spacer />
             <YStack w="100%" space>
               {frontmatters.map((frontmatter) => (
@@ -308,14 +308,13 @@ function GoldSponsor(props: {
 }) {
   return (
     <FlatBubbleCard mb="$4" flat p={0}>
-      <NextLink legacyBehavior href={props.link} target="_blank">
+      <NextLink href={props.link} target="_blank">
         <YStack
           ai="center"
           jc="center"
           f={1}
           cursor="pointer"
           target="_blank"
-          tag="a"
           p="$8"
           br="$4"
           space
@@ -340,11 +339,9 @@ function IndividualSponsor(props: { name: string; link: string }) {
     <FlatBubbleCard flat mb="$4">
       <YStack maxWidth="100%" fs={0} als="center">
         <XStack space="$4" $sm={{ flexDirection: 'column' }}>
-          <NextLink legacyBehavior passHref href={props.link}>
+          <NextLink href={props.link} target="_blank">
             <YStack
               cursor="pointer"
-              target="_blank"
-              tag="a"
               p="$4"
               br="$4"
               hoverStyle={{ bc: 'rgba(0,0,0,0.1)' }}
@@ -364,7 +361,7 @@ function IndividualSponsor(props: { name: string; link: string }) {
 
 function CommunityLayout({ children }: { children: any }) {
   const { tint } = useTint()
-  return <YStack theme={tint}>{useMemo(() => children, [children])}</YStack>
+  return <YStack theme={tint as any}>{useMemo(() => children, [children])}</YStack>
 }
 
 export function getStaticProps() {

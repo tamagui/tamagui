@@ -153,9 +153,6 @@ export function createAnimations<A extends AnimationsConfig>(
         animationsState.current = new WeakMap()
       }
 
-      const runners: Function[] = []
-      const completions: Promise<void>[] = []
-
       // const args = [JSON.stringify(mergedStyles)]
       const args = [
         JSON.stringify(mergedStyles),
@@ -165,6 +162,9 @@ export function createAnimations<A extends AnimationsConfig>(
       ]
 
       const res = useMemo(() => {
+        const runners: Function[] = []
+        const completions: Promise<void>[] = []
+
         const nonAnimatedStyle = {}
         for (const key in mergedStyles) {
           const val = mergedStyles[key]
@@ -179,6 +179,7 @@ export function createAnimations<A extends AnimationsConfig>(
           // key: 'transform'
           // for now just support one transform key
           if (!val) continue
+
           for (const [index, transform] of val.entries()) {
             if (!transform) continue
             const tkey = Object.keys(transform)[0]
@@ -204,6 +205,8 @@ export function createAnimations<A extends AnimationsConfig>(
         }
 
         return {
+          runners,
+          completions,
           style: [nonAnimatedStyle, animatedStyle],
         }
 
@@ -214,6 +217,12 @@ export function createAnimations<A extends AnimationsConfig>(
         ) {
           const [val, type] = getValue(valIn)
           const value = animated || new Animated.Value(val)
+
+          if (animated && val === animated['_value']) {
+            // avoid running again for same value
+            return value
+          }
+
           let interpolateArgs: any
           if (type) {
             const curInterpolation = animationsState.current.get(value)
@@ -227,6 +236,7 @@ export function createAnimations<A extends AnimationsConfig>(
               current: val,
             })
           }
+
           if (value) {
             const animationConfig = getAnimationConfig(key, animations, props.animation)
 
@@ -249,20 +259,12 @@ export function createAnimations<A extends AnimationsConfig>(
               })
             })
           }
+
           if (process.env.NODE_ENV === 'development') {
             if (props['debug']) {
               // eslint-disable-next-line no-console
-              console.log(
-                ' 💠 animate',
-                key,
-                `from ${value['_value']} to`,
-                valIn,
-                `(${val})`,
-                'type',
-                type,
-                'interpolate',
-                interpolateArgs
-              )
+              // prettier-ignore
+              console.log(' 💠 animate',key,`from ${value['_value']} to`,valIn,`(${val})`,'type',type,'interpolate',interpolateArgs)
             }
           }
           return value
@@ -271,9 +273,9 @@ export function createAnimations<A extends AnimationsConfig>(
       }, args)
 
       useIsomorphicLayoutEffect(() => {
-        runners.forEach((r) => r())
+        res.runners.forEach((r) => r())
         let cancel = false
-        Promise.all(completions).then(() => {
+        Promise.all(res.completions).then(() => {
           if (cancel) return
           onDidAnimate?.()
           if (isExiting) {

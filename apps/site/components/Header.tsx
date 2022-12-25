@@ -1,7 +1,10 @@
-import { LogoWords, TamaguiLogo, tints } from '@tamagui/logo'
+import { ThemeToggle } from '@components/ThemeToggle'
+import { LogoWords, TamaguiLogo, getTints } from '@tamagui/logo'
+import { ThemeTint, useTint } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
 import { useRouter } from 'next/router'
 import * as React from 'react'
+import { TooltipGroup, XGroup } from 'tamagui'
 import {
   Button,
   Paragraph,
@@ -16,16 +19,15 @@ import {
   useMedia,
 } from 'tamagui'
 
-import { AlphaButton } from './AlphaButton'
+import { ColorToggleButton } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { DocsMenuContents } from './DocsMenuContents'
 import { GithubIcon } from './GithubIcon'
 import { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
 import { SearchButton } from './SearchButton'
-import { ThemeSearchButtonGroup } from './ThemeSearchButtonGroup'
+import { SeasonToggleButton } from './SeasonToggleButton'
 import { useDocsMenu } from './useDocsMenu'
-import { ThemeTint, useTint } from './useTint'
 
 export function Header() {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -79,7 +81,7 @@ export function HeaderContents(props: HeaderProps) {
   const isHome = router.pathname === '/'
   const isInSubApp =
     router.pathname.startsWith('/takeout') || router.pathname.startsWith('/studio')
-  const { setNextTint, setTint } = useTint()
+  const { setNextTint } = useTint()
 
   return (
     <XStack
@@ -104,7 +106,13 @@ export function HeaderContents(props: HeaderProps) {
           </NextLink>
         )}
 
-        <ThemeSearchButtonGroup />
+        <TooltipGroup delay={{ open: 3000, close: 100 }}>
+          <XGroup boc="$color2" bw={1} mah={32} bc="transparent" ai="center" size="$3">
+            <ThemeToggle borderWidth={0} chromeless />
+            <ColorToggleButton borderWidth={0} chromeless />
+            <SeasonToggleButton borderWidth={0} chromeless />
+          </XGroup>
+        </TooltipGroup>
 
         {/* {!props.disableNew && <AlphaButton />} */}
 
@@ -134,14 +142,7 @@ export function HeaderContents(props: HeaderProps) {
             pointerEvents="auto"
             als="center"
           >
-            <LogoWords
-              animated
-              onHoverLetter={(i) => {
-                React.startTransition(() => {
-                  setTint(tints[i])
-                })
-              }}
-            />
+            <LogoWords animated />
           </XStack>
         </NextLink>
       </XStack>

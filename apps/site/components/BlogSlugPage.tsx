@@ -1,9 +1,9 @@
 import { Container } from '@components/Container'
 import { components } from '@components/MDXComponents'
 import { authors } from '@data/authors'
+import { useTint } from '@tamagui/logo'
 import { ArrowLeft } from '@tamagui/lucide-icons'
 import { format, parseISO } from 'date-fns'
-import { default as Link, default as NextLink } from 'next/link'
 import { useRouter } from 'next/router'
 import {
   Button,
@@ -21,7 +21,7 @@ import {
 } from 'tamagui'
 
 import { Frontmatter } from '../frontmatter'
-import { useTint } from './useTint'
+import { NextLink } from './NextLink'
 
 export type BlogPost = {
   frontmatter: Frontmatter
@@ -35,7 +35,7 @@ function BlogArticleHeader({ frontmatter }: BlogPost) {
   const isDraft = router.pathname.startsWith('/draft')
   const { tint } = useTint()
   return (
-    <Theme name={tint}>
+    <Theme name={tint as any}>
       <YStack tag="article" mt="$-10" pt="$10" mb="$4" pos="relative">
         <LinearGradient fullscreen colors={['$background', 'transparent']} />
         <Container>
@@ -59,13 +59,13 @@ function BlogArticleHeader({ frontmatter }: BlogPost) {
             {/* <Avatar src={authors[data.by].avatar} mr={2} /> */}
 
             <Paragraph size="$3" theme="alt2" whiteSpace="nowrap">
-              <Link
+              <NextLink
                 href={`https://twitter.com/${authors[frontmatter.by || ''].twitter}`}
                 rel="noopener noreferrer"
-                // variant="subtle"
+                target="_blank"
               >
                 {authors[frontmatter.by || ''].name}
-              </Link>
+              </NextLink>
             </Paragraph>
 
             <Separator vertical mx="$2" />
@@ -123,14 +123,14 @@ export function BlogSlugPage(props: BlogPost) {
         <YStack mb="$8" ai="center">
           <Paragraph>
             Share this post on{' '}
-            <Link
+            <NextLink
               href={twitterShare}
               target="_blank"
               rel="noopener noreferrer"
               title="Share this post on Twitter"
             >
               Twitter
-            </Link>
+            </NextLink>
             .
           </Paragraph>
         </YStack>

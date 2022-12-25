@@ -344,20 +344,16 @@ function transformAddExports(ast: t.File) {
 }
 
 const esbuildit = (src: string, target?: 'modern') => {
-  try {
-    esbuild.transformSync(src, {
-      ...esbuildOptions,
-      ...(target === 'modern' && {
-        target: 'es2022',
-        jsx: 'transform',
-        loader: 'tsx',
-        platform: 'neutral',
-        format: 'esm',
-      }),
-    }).code
-  } catch (err) {
-    console.log(`error building`, err)
-  }
+  return esbuild.transformSync(src, {
+    ...esbuildOptions,
+    ...(target === 'modern' && {
+      target: 'es2022',
+      jsx: 'transform',
+      loader: 'tsx',
+      platform: 'neutral',
+      format: 'esm',
+    }),
+  }).code
 }
 
 function loadComponents(props: Props): null | LoadedComponents[] {

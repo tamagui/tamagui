@@ -1,3 +1,4 @@
+import { useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import { memo } from 'react'
 import {
@@ -16,17 +17,15 @@ import {
 
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
-import { GithubIcon } from './GithubIcon'
 import { useHeroHovered } from './heroState'
 import { InstallInput } from './InstallInput'
 import { TwitterIcon } from './TwitterIcon'
-import { useTint } from './useTint'
 
 export function Hero() {
-  const { tint } = useTint()
+  const { tint, name } = useTint()
 
   return (
-    <Theme name={tint}>
+    <Theme className={`${name}-season`} name={tint as any}>
       <YStack
         o={0.5}
         zi={-1}
@@ -96,7 +95,7 @@ const HeroTop = memo(() => {
               h: 290,
             }}
           >
-            <span className="rainbow clip-text">Write less,</span>
+            <span className="all ease-in ms250 rainbow clip-text">Write less,</span>
             <br />
             runs&nbsp;faster.
           </H1>
@@ -119,9 +118,8 @@ const HeroTop = memo(() => {
             }}
           >
             <Subtitle>
-              <NextLink legacyBehavior href="/docs/core/configuration" passHref>
+              <NextLink href="/docs/core/configuration">
                 <Tag
-                  tag="a"
                   theme="green_alt2"
                   bc="$color3"
                   onHoverIn={() => setHovered(0)}
@@ -131,9 +129,8 @@ const HeroTop = memo(() => {
                 </Tag>
               </NextLink>
               ,{' '}
-              <NextLink legacyBehavior href="/docs/intro/compiler" passHref>
+              <NextLink href="/docs/intro/compiler">
                 <Tag
-                  tag="a"
                   theme="blue_alt2"
                   bc="$color3"
                   onHoverIn={() => setHovered(1)}
@@ -156,11 +153,11 @@ const HeroTop = memo(() => {
               that&nbsp;unify&nbsp;React Native + Web
             </Subtitle>
           </YStack>
-
-          <Spacer size="$5" />
-
-          <InstallInput />
         </YStack>
+
+        <Spacer size="$5" />
+        <InstallInput />
+        <Spacer size="$2" />
 
         <XStack ai="center" jc="center" $xxs={{ ai: 'center', fw: 'wrap' }}>
           <NextLink target="_blank" href="https://twitter.com/tamagui_js">

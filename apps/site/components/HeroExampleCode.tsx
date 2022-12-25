@@ -1,3 +1,4 @@
+import { useTint } from '@tamagui/logo'
 import { FastForward } from '@tamagui/lucide-icons'
 import { memo, useState } from 'react'
 import { Button, H5, Paragraph, XGroup, XStack, YStack } from 'tamagui'
@@ -6,7 +7,6 @@ import { CodeDemoPreParsed } from './CodeDemoPreParsed'
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
 import { IconStack } from './IconStack'
-import { useTint } from './useTint'
 
 export function HeroExampleCode({
   examples,
@@ -31,13 +31,11 @@ export function HeroExampleCode({
         {!onlyDemo && (
           <YStack ai="center" space="$3">
             <HomeH2>A better style system</HomeH2>
-            {/* <Link passHref href="/blog/how-tamagui-optimizes"> */}
-            <HomeH3 tag="a" ai="center" jc="center">
+            <HomeH3 ai="center" jc="center">
               A multi-faceted optimizing compiler enables
               <br />
               <strong>{subtitles[activeIndex]}</strong>.
             </HomeH3>
-            {/* </Link> */}
           </YStack>
         )}
 
@@ -46,7 +44,7 @@ export function HeroExampleCode({
           bordered
           bc="$color2"
           chromeless
-          theme={tint}
+          theme={tint as any}
           maxWidth="100%"
           als="center"
           {...(onlyDemo && {
@@ -171,7 +169,7 @@ const CodeExamples = memo(({ examples, title }: any) => {
               <Button
                 accessibilityLabel="See example"
                 onPress={() => setActiveIndex(i)}
-                theme={i === activeIndex ? tint : 'alt1'}
+                theme={i === activeIndex ? (tint as any) : 'alt1'}
                 size="$2"
                 key={i}
                 borderRadius="$0"

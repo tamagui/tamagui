@@ -1,5 +1,6 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useIsIntersecting } from '@tamagui/demos'
+import { useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import React, { memo } from 'react'
 import { useEffect, useRef, useState } from 'react'
@@ -23,7 +24,6 @@ import {
 
 import { ContainerLarge } from './Container'
 import { HomeH2 } from './HomeH2'
-import { useTint } from './useTint'
 
 const families = ['silkscreen', 'mono', 'heading']
 
@@ -169,13 +169,12 @@ const OverlayCard = () => {
           line-height, letter-spacing, color and more.
         </Paragraph>
 
-        <NextLink legacyBehavior href="/docs/core/configuration" passHref>
+        <NextLink href="/docs/core/configuration">
           <Button
             accessibilityLabel="Fonts docs"
             fontFamily="$silkscreen"
-            tag="a"
             als="flex-end"
-            theme={tint}
+            theme={tint as any}
           >
             Fonts &raquo;
           </Button>

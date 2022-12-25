@@ -33,9 +33,7 @@ export const Footer = () => {
             >
               homepage
             </Text>
-            <NextLink legacyBehavior href="/" passHref>
-              <TamaguiLogo showWords downscale={1} />
-            </NextLink>
+            <NextLink href="/">{/* <TamaguiLogo showWords downscale={1} /> */}</NextLink>
             <Paragraph mt="$2" size="$3">
               by{' '}
               <ParagraphLink

@@ -1,6 +1,7 @@
 import { throttle } from '@github/mini-throttle'
 import { demoMedia } from '@tamagui/config-base'
 import { useOnIntersecting } from '@tamagui/demos'
+import { useTint } from '@tamagui/logo'
 import {
   ChevronLeft,
   ChevronRight,
@@ -36,7 +37,6 @@ import {
 import favicon from '../public/favicon.svg'
 import { Container, ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
-import { useTint } from './useTint'
 
 const breakpoints = [
   { name: 'xs', at: demoMedia[0] },
@@ -332,7 +332,7 @@ const SafariFrame = ({ children, ...props }: YStackProps) => {
   const { tint } = useTint()
   return (
     <YStack
-      theme={tint}
+      theme={tint as any}
       className="unselectable"
       contain="paint layout"
       elevation="$6"
