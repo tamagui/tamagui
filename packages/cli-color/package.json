@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli-color",
-  "version": "1.0.1-rc.9",
+  "version": "1.0.1-rc.10",
   "main": "./index.js",
   "scripts": {
     "build": "true",
