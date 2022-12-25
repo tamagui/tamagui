@@ -60,10 +60,11 @@ test.afterAll(async () => {
   // next complains if we delete too soon i think
   await sleep(2000)
 
-  if (process.env.DONT_DELETE_TMP_TEST_PROJECT !== '1') {
-    await Promise.race([
-      sleep(15_000),
-      Promise.all([remove(join(dir, '.yarn')), remove(join(dir, 'node_modules'))]),
+  if (process.env.CLEANUP) {
+    const tasks = Promise.all([
+      // remove big directories for local dev
+      remove(join(dir, '.yarn')),
+      remove(join(dir, 'node_modules')),
     ])
   }
 })
