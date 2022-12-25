@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
 /* eslint-disable no-console */
-import { basename, dirname, extname, join, relative, sep, resolve } from 'path'
+import { basename, dirname, extname, join, relative, resolve, sep } from 'path'
 
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
@@ -74,10 +74,19 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
     )
   )
 
-  const external = ['@tamagui/core', '@tamagui/core-node', 'react', 'react-dom', 'react-native-svg']
+  const external = [
+    '@tamagui/core',
+    '@tamagui/core-node',
+    'react',
+    'react-dom',
+    'react-native-svg',
+  ]
   const configEntry = props.config ? join(process.cwd(), props.config) : ''
 
-  if (process.env.NODE_ENV === 'development' && process.env.DEBUG?.startsWith('tamagui')) {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    process.env.DEBUG?.startsWith('tamagui')
+  ) {
     console.log(`Building config entry`, configEntry)
   }
 
@@ -141,7 +150,8 @@ Tamagui built config and components:`
 
     // map from built back to original module names
     for (const component of components) {
-      component.moduleName = baseComponents[componentOutPaths.indexOf(component.moduleName)]
+      component.moduleName =
+        baseComponents[componentOutPaths.indexOf(component.moduleName)]
       if (!component.moduleName) {
         throw new Error(`Tamagui internal err`)
       }
@@ -157,7 +167,10 @@ Tamagui built config and components:`
       components = [...components, ...coreComponents]
     }
 
-    if (process.env.NODE_ENV === 'development' && process.env.DEBUG?.startsWith('tamagui')) {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      process.env.DEBUG?.startsWith('tamagui')
+    ) {
       console.log('Loaded components', components)
     }
 
@@ -180,7 +193,7 @@ Tamagui built config and components:`
 
 export function resolveWebOrNativeSpecificEntry(entry: string) {
   const workspaceRoot = resolve()
-  const resolved = require.resolve(entry, {paths: [workspaceRoot]})
+  const resolved = require.resolve(entry, { paths: [workspaceRoot] })
   const ext = extname(resolved)
   const fileName = basename(resolved).replace(ext, '')
   const specificExt = process.env.TAMAGUI_TARGET === 'web' ? 'web' : 'native'
@@ -295,7 +308,9 @@ function transformAddExports(ast: t.File) {
     ExportNamedDeclaration(nodePath) {
       if (nodePath.node.specifiers) {
         for (const spec of nodePath.node.specifiers) {
-          usedNames.add(t.isIdentifier(spec.exported) ? spec.exported.name : spec.exported.value)
+          usedNames.add(
+            t.isIdentifier(spec.exported) ? spec.exported.name : spec.exported.value
+          )
         }
       }
     },
@@ -328,17 +343,22 @@ function transformAddExports(ast: t.File) {
   }).code
 }
 
-const esbuildit = (src: string, target?: 'modern') =>
-  esbuild.transformSync(src, {
-    ...esbuildOptions,
-    ...(target === 'modern' && {
-      target: 'es2022',
-      jsx: 'transform',
-      loader: 'tsx',
-      platform: 'neutral',
-      format: 'esm',
-    }),
-  }).code
+const esbuildit = (src: string, target?: 'modern') => {
+  try {
+    esbuild.transformSync(src, {
+      ...esbuildOptions,
+      ...(target === 'modern' && {
+        target: 'es2022',
+        jsx: 'transform',
+        loader: 'tsx',
+        platform: 'neutral',
+        format: 'esm',
+      }),
+    }).code
+  } catch (err) {
+    console.log(`error building`, err)
+  }
+}
 
 function loadComponents(props: Props): null | LoadedComponents[] {
   const componentsModules = props.components
@@ -368,7 +388,9 @@ function loadComponents(props: Props): null | LoadedComponents[] {
         // need to write to tsx to enable reading it properly (:/ esbuild-register)
         if (isDynamic) {
           writtenContents = forceExports
-            ? esbuildit(transformAddExports(babelParse(esbuildit(fileContents, 'modern'))))
+            ? esbuildit(
+                transformAddExports(babelParse(esbuildit(fileContents, 'modern')))
+              )
             : esbuildit(fileContents)
 
           writeFileSync(loadModule, writtenContents)

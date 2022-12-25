@@ -33,7 +33,7 @@ const loadCmd = `${join(__dirname, 'loadFile.js')}`
 let exited = false
 const child = fork(loadCmd, [], {
   execArgv: ['-r', 'esbuild-register'],
-  detached: true,
+  detached: false,
   stdio: 'ignore',
 })
 
