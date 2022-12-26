@@ -1,5 +1,5 @@
 ---
-title: React, twice as fast
+title: Making React twice as fast
 description: The Tamagui compiler reduces duplicate code while improving performance and platform-specific output.
 ---
 
@@ -167,8 +167,10 @@ It gives us a new choice, "Universal + Compiler" that lets us ship fast while st
   </TableCol>
 </Table>
 
-So what about this whole "React, twice as fast" title? Well, while the Tamagui compiler does net nearly 2x performance in some areas, on average you're looking at more like a 50% gain in the average render time of a complex screen. But, **by letting you not worry about performance while at the same significantly reducing total frontend LOC**, you probably save more than another 50% on development time.
+So what about this whole "Making React twice as" title? While the Tamagui compiler does net ~2x performance in many areas, on average you're looking at more like a 50% gain in render time. In other areas on the web, like responsive styling or interactive styles you're actually far higher than 2x.
 
-And that's the point: faster to input, faster output. Thank you Tamagui 🙏.
+But, Tamagui makes _making_ React significantly faster, too. **It lets you not worry about performance while significantly reducing total frontend LOC** (and increasing type safety and feedback loops in dev mode). From that along you're probably saving more than 50% on frontend development time.
+
+Now you can make React faster (at runtime), and make React apps faster (at dev time).
 
 Give Tamagui a try with `npm create tamagui@latest`.

@@ -85,7 +85,7 @@ const BenchmarksLink = () => {
 const CompilerLink = () => {
   const { tint } = useTint()
   return (
-    <NextLink href="/docs/intro/compiler">
+    <NextLink href="/docs/intro/why-a-compiler">
       <Button accessibilityLabel="Compiler" fontFamily="$silkscreen" theme={tint as any}>
         About &raquo;
       </Button>

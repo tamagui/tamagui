@@ -81,7 +81,7 @@ export const HeroBelowContent = memo(() => {
           <IconStack>
             <Cpu size={16} color="var(--color9)" />
           </IconStack>
-          <TitleLink href="/docs/intro/compiler">Static</TitleLink>
+          <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
           <Paragraph o={0.7} size="$4">
             Flatten your component tree with partial evaluation, outputs minimal CSS. Easy
             install with Next, Webpack, Vite, Babel and Metro.

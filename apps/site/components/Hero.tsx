@@ -129,7 +129,7 @@ const HeroTop = memo(() => {
                 </Tag>
               </NextLink>
               ,{' '}
-              <NextLink href="/docs/intro/compiler">
+              <NextLink href="/docs/intro/why-a-compiler">
                 <Tag
                   theme="blue_alt2"
                   bc="$color3"
@@ -181,7 +181,7 @@ const HeroTop = memo(() => {
               mx: '50%',
             }}
           >
-            <NextLink prefetch={false} href="/docs/intro/compiler">
+            <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
               <Button
                 // layout shifts...
                 w={121}
