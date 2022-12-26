@@ -1,9 +1,10 @@
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { SliderDemo } from '@tamagui/demos'
+import { setTintFamily } from '@tamagui/logo'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
-import { XStack, YStack } from 'tamagui'
+import { XStack, YStack, isClient } from 'tamagui'
 
 import { ContainerLarge } from '../components/Container'
 import { HeroBelow } from '../components/HeroBelow'
@@ -18,6 +19,24 @@ import { HomeGlow } from '../components/HomeGlow'
 import { MailingListSignup } from '../components/MailingListSignup'
 import { HomeSection, SectionTinted, TintSection } from '../components/TintSection'
 import { getCompilationExamples } from '../lib/getCompilationExamples'
+
+// santa mode
+if (isClient) {
+  const goXmas = setTimeout(() => {
+    setTintFamily('xmas')
+    window.removeEventListener('scroll', onScroll)
+  }, 2500)
+
+  // dont activate santa mode if they scroll down, a bit confusing right?
+  const onScroll = (e: Event) => {
+    if ((document.scrollingElement?.scrollTop || 0) > 100) {
+      clearTimeout(goXmas)
+      window.removeEventListener('scroll', onScroll)
+    }
+  }
+
+  window.addEventListener('scroll', onScroll)
+}
 
 export default function Home({ animationCode, compilationExamples }) {
   return (
