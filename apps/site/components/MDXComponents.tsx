@@ -320,25 +320,17 @@ export const components = {
 
   a: ({ href = '', children, ...props }) => {
     return (
-      <NextLink href={href}>
+      <NextLink className="link" href={href}>
         {/* @ts-ignore */}
-        <Paragraph
-          className="link"
-          fontSize="inherit"
-          display="inline"
-          cursor="pointer"
-          {...props}
-        >
-          {children}
-          {href.startsWith('http') ? (
-            <>
-              &nbsp;
-              <Text fontSize="inherit" display="inline-flex" y={2} ml={-1}>
-                <ExternalIcon />
-              </Text>
-            </>
-          ) : null}
-        </Paragraph>
+        {children}
+        {href.startsWith('http') ? (
+          <>
+            &nbsp;
+            <Text fontSize="inherit" display="inline-flex" y={2} ml={-1}>
+              <ExternalIcon />
+            </Text>
+          </>
+        ) : null}
       </NextLink>
     )
   },

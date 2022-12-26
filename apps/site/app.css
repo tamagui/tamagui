@@ -53,17 +53,28 @@ a {
   font-weight: 300;
 }
 
+.next-link {
+  display: contents;
+}
+
+.next-link.link {
+  display: inline;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: inherit;
+}
+
 .link {
   text-decoration: underline;
   text-underline-offset: 5px;
   text-decoration-thickness: 2px;
-  text-decoration-color: var(--color4);
+  text-decoration-color: var(--pink6);
 }
 
 .link:hover {
   text-decoration: underline;
   cursor: pointer;
-  text-decoration-color: var(--color6);
+  text-decoration-color: var(--pink8);
 }
 
 .is_Paragraph:has(> ul) {
@@ -564,8 +575,4 @@ input, textarea {
 
 .transition-bg-color {
   transform: background-color ease-in 1000ms;
-}
-
-.next-link {
-  display: contents;
 }
