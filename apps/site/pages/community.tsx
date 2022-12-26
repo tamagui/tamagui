@@ -70,13 +70,8 @@ export default function Community({ frontmatters }) {
             <Spacer />
             <YStack w="100%" space>
               {frontmatters.map((frontmatter) => (
-                <NextLink
-                  legacyBehavior
-                  key={frontmatter.title}
-                  href={frontmatter.slug}
-                  passHref
-                >
-                  <Card bc="transparent" tag="a" p="$4" f={1}>
+                <NextLink key={frontmatter.title} href={frontmatter.slug}>
+                  <Card bc="transparent" p="$4" f={1}>
                     <YStack space="$2">
                       <H3
                         fontFamily="$silkscreen"
@@ -116,15 +111,10 @@ export default function Community({ frontmatters }) {
             <Spacer size="$2" />
             <YStack ai="center" space>
               <H4 size="$5">Figma Design Kit</H4>
-              <NextLink
-                legacyBehavior
-                href="https://www.figma.com/community/file/1125992524818379922"
-                passHref
-              >
+              <NextLink href="https://www.figma.com/community/file/1125992524818379922">
                 <YStack
                   target="_blank"
                   rel="noopener noreferrer"
-                  tag="a"
                   br="$5"
                   overflow="hidden"
                   bw={0.5}

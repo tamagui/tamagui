@@ -4,17 +4,36 @@ import '../app.css'
 import '../public/fonts/fonts.css'
 
 import { Footer } from '@components/Footer'
+import { setTintFamily } from '@tamagui/logo'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { Suspense, startTransition, useMemo } from 'react'
-import { TamaguiProvider } from 'tamagui'
+import { TamaguiProvider, isClient } from 'tamagui'
 
 import { Header } from '../components/Header'
 import { SearchProvider } from '../components/Search'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
+
+// santa mode
+if (isClient) {
+  const goXmas = setTimeout(() => {
+    setTintFamily('xmas')
+    window.removeEventListener('scroll', onScroll)
+  }, 2500)
+
+  // dont activate santa mode if they scroll down, a bit confusing right?
+  const onScroll = (e: Event) => {
+    if ((document.scrollingElement?.scrollTop || 0) > 100) {
+      clearTimeout(goXmas)
+      window.removeEventListener('scroll', onScroll)
+    }
+  }
+
+  window.addEventListener('scroll', onScroll)
+}
 
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {

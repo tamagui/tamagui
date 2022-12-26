@@ -325,7 +325,6 @@ export const components = {
         <Paragraph
           className="link"
           fontSize="inherit"
-          tag="a"
           display="inline"
           cursor="pointer"
           {...props}

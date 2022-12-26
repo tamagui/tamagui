@@ -7,6 +7,7 @@
 
 1.0 post launch:
 
+- keyboard search select bug
 - variants intellisense autocomplete not suggesting, but types are right
 - canary release channel
 - sponsor rewards e2e flow

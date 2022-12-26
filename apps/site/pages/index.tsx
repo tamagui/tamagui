@@ -20,24 +20,6 @@ import { MailingListSignup } from '../components/MailingListSignup'
 import { HomeSection, SectionTinted, TintSection } from '../components/TintSection'
 import { getCompilationExamples } from '../lib/getCompilationExamples'
 
-// santa mode
-if (isClient) {
-  const goXmas = setTimeout(() => {
-    setTintFamily('xmas')
-    window.removeEventListener('scroll', onScroll)
-  }, 2500)
-
-  // dont activate santa mode if they scroll down, a bit confusing right?
-  const onScroll = (e: Event) => {
-    if ((document.scrollingElement?.scrollTop || 0) > 100) {
-      clearTimeout(goXmas)
-      window.removeEventListener('scroll', onScroll)
-    }
-  }
-
-  window.addEventListener('scroll', onScroll)
-}
-
 export default function Home({ animationCode, compilationExamples }) {
   return (
     <>
