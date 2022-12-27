@@ -179,6 +179,7 @@ export const PopoverContent = React.forwardRef<
     allowPinchZoom,
     trapFocus,
     disableRemoveScroll = true,
+    zIndex,
     ...contentModalProps
   } = props
   const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
@@ -194,7 +195,7 @@ export const PopoverContent = React.forwardRef<
   }, [context.open])
 
   return (
-    <PopoverContentPortal>
+    <PopoverContentPortal zIndex={zIndex}>
       <PopoverContentImpl
         {...contentModalProps}
         disableRemoveScroll={disableRemoveScroll}

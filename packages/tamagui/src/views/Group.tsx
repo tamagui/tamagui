@@ -19,7 +19,6 @@ export const GroupFrame = styled(ThemeableStack, {
   name: 'GroupFrame',
   backgroundColor: '$background',
   y: 0,
-  overflow: 'hidden',
 
   variants: {
     size: (val, { tokens }) => {
@@ -131,7 +130,7 @@ function createGroup(verticalDefault: boolean) {
             separator,
             space,
             children,
-          }),
+          })
         )}
       </GroupFrame>
     )
@@ -143,7 +142,7 @@ export const XGroup = createGroup(false)
 
 const wrapScroll = (
   { scrollable, vertical, showScrollIndicator = false }: GroupProps,
-  children: any,
+  children: any
 ) => {
   if (scrollable)
     return (
