@@ -106,10 +106,9 @@ const SHEET_OVERLAY_NAME = 'SheetOverlay'
 
 export const SheetOverlayFrame = styled(YStack, {
   name: SHEET_OVERLAY_NAME,
-  // TODO this should be $background without opacity and just customized by theme
-  backgroundColor: '$color',
+  backgroundColor: '$background',
   fullscreen: true,
-  opacity: 0.2,
+  opacity: 0.5,
   zIndex: 0,
 
   variants: {
@@ -355,6 +354,24 @@ const SheetImplementation = themeable(
       () => snapPoints.map((point) => getPercentSize(point, frameSize)),
       [frameSize, snapPoints]
     )
+
+    // we need to set this *after* fully closed to 0, to avoid it overlapping
+    // the page when resizing quickly on web for example
+    const [opacity, setOpacity] = useState(open ? 1 : 0)
+    if (open && opacity === 0) {
+      setOpacity(1)
+    }
+    useEffect(() => {
+      if (!open) {
+        // need to wait for animation complete, for now lets just do it naively
+        const tm = setTimeout(() => {
+          setOpacity(0)
+        }, 400)
+        return () => {
+          clearTimeout(tm)
+        }
+      }
+    }, [open])
 
     const animateTo = useEvent((position: number) => {
       const current = animatedNumber.getValue()
@@ -606,6 +623,7 @@ const SheetImplementation = themeable(
                 zIndex,
                 width: '100%',
                 height: '100%',
+                opacity,
               },
               animatedStyle,
             ]}
