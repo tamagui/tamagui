@@ -223,6 +223,8 @@ export const components = {
     )
   },
 
+  Button,
+
   Beta: () => (
     <Button
       accessibilityLabel="Beta blog post"

@@ -60,11 +60,11 @@ function BlogArticleHeader({ frontmatter }: BlogPost) {
 
             <Paragraph size="$3" theme="alt2" whiteSpace="nowrap">
               <NextLink
-                href={`https://twitter.com/${authors[frontmatter.by || ''].twitter}`}
+                href={`https://twitter.com/${authors?.[frontmatter.by || '']?.twitter}`}
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                {authors[frontmatter.by || ''].name}
+                {authors?.[frontmatter.by || '']?.name}
               </NextLink>
             </Paragraph>
 
@@ -102,7 +102,7 @@ function BlogArticleHeader({ frontmatter }: BlogPost) {
 export function BlogSlugPage(props: BlogPost) {
   const { frontmatter, relatedPosts, Component } = props
   const enc = encodeURIComponent
-  const authorTwitter = authors[frontmatter.by || ''].twitter
+  const authorTwitter = authors?.[frontmatter.by || '']?.twitter
   const tweetText = `${frontmatter.title} by @${authorTwitter} on the @tamagui_js blog.`
   const tweetUrl = `https://tamagui.dev/blog/${frontmatter.slug}`
   const twitterShare = `https://twitter.com/intent/tweet?text="${enc(

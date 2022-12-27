@@ -9,8 +9,10 @@ export function HeroContainer({
   noPad,
   noScroll,
   alignItems,
+  minimal,
   tinted,
 }: {
+  minimal?: boolean
   demoMultiple?: boolean
   children?: React.ReactNode
   smaller?: boolean
@@ -21,7 +23,7 @@ export function HeroContainer({
 }) {
   const contents = (
     <YStack
-      className={'hero-gradient' + (noScroll ? '' : ' hero-scroll')}
+      className={(minimal ? '' : 'hero-gradient') + (noScroll ? '' : ' hero-scroll')}
       boc="$borderColor"
       bw={0.5}
       mt="$4"

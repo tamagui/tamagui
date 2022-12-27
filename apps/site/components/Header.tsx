@@ -58,7 +58,7 @@ export function Header() {
         my={isScrolled ? -2 : 0}
         left={0}
         right={0}
-        elevation={isScrolled ? 0 : '$4'}
+        elevation={isScrolled ? 0 : '$1'}
         py={isScrolled ? '$0' : '$2'}
       >
         <YStack
