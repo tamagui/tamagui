@@ -2,12 +2,12 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { Sheet } from '@tamagui/sheet'
 import { SheetProps } from '@tamagui/sheet/types/types'
 import { useState } from 'react'
-import { Button, H1, H2, Paragraph, PortalItem, Square, XStack } from 'tamagui'
+import { Button, H1, H2, Paragraph, XStack } from 'tamagui'
 
 export const SheetDemo = () => {
   const [position, setPosition] = useState(0)
   const [open, setOpen] = useState(false)
-  const [modal, setModal] = useState(true)
+  const [modal, setModal] = useState(false)
   const [innerOpen, setInnerOpen] = useState(false)
 
   return (

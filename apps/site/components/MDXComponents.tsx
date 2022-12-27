@@ -270,6 +270,17 @@ export const components = {
     />
   ),
 
+  Aside: (props) => (
+    <Paragraph
+      color="$color11"
+      tag="span"
+      als="center"
+      fow="200"
+      fontSize="$2"
+      {...props}
+    />
+  ),
+
   Notice,
 
   h1: (props) => <H1 width="max-content" pos="relative" mb="$2" {...props} />,
@@ -278,9 +289,9 @@ export const components = {
     <H2
       pos="relative"
       width={`fit-content` as any}
-      mt="$5"
-      mb="$4"
-      size="$9"
+      pt="$8"
+      mt="$-4"
+      mb="$2"
       data-heading
       {...props}
     >
@@ -289,12 +300,11 @@ export const components = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading mt="$5" mb="$1" id={id}>
+    <LinkHeading pt="$8" mb="$1" id={id}>
       <H3
         pos="relative"
         width={`fit-content` as any}
         nativeID={id}
-        size="$8"
         data-heading
         {...props}
       >
@@ -307,17 +317,11 @@ export const components = {
   h4: (props) => (
     <H4 pos="relative" width={`fit-content` as any} mt="$4" mb="$3" {...props} />
   ),
+
   h5: (props) => <H5 mt="$4" {...props} />,
 
   p: (props) => (
-    <Paragraph
-      className="docs-paragraph"
-      display="block"
-      my="$3"
-      size="$5"
-      lh="$6"
-      {...props}
-    />
+    <Paragraph className="docs-paragraph" display="block" my="$3" size="$5" {...props} />
   ),
 
   a: ({ href = '', children, ...props }) => {
@@ -384,8 +388,7 @@ export const components = {
       jc="center"
       ov="hidden"
       {...(overlap && {
-        mt: '$-5',
-        elevation: '$4',
+        mt: '$-6',
       })}
     >
       <Image maxWidth="100%" {...props} />
@@ -455,67 +458,6 @@ export const components = {
 
   Preview: (props) => {
     return <Preview {...props} mt="$5" />
-  },
-
-  RegisterLink: ({ id, index, href }) => {
-    const isExternal = href.startsWith('http')
-
-    React.useEffect(() => {
-      const codeBlock = document.getElementById(id)
-      if (!codeBlock) return
-
-      const allHighlightWords = codeBlock.querySelectorAll('.highlight-word')
-      const target = allHighlightWords[index - 1]
-      if (!target) return
-
-      const addClass = () => target.classList.add('on')
-      const removeClass = () => target.classList.remove('on')
-      const addClick = () =>
-        isExternal ? window.location.replace(href) : NextRouter.push(href)
-
-      target.addEventListener('mouseenter', addClass)
-      target.addEventListener('mouseleave', removeClass)
-      target.addEventListener('click', addClick)
-
-      return () => {
-        target.removeEventListener('mouseenter', addClass)
-        target.removeEventListener('mouseleave', removeClass)
-        target.removeEventListener('click', addClick)
-      }
-    }, [])
-
-    return null
-  },
-
-  H: ({ id, index, ...props }) => {
-    const triggerRef = React.useRef<HTMLElement>(null)
-
-    React.useEffect(() => {
-      const trigger = triggerRef.current
-
-      const codeBlock = document.getElementById(id)
-      if (!codeBlock) return
-
-      const allHighlightWords = codeBlock.querySelectorAll('.highlight-word')
-      const targetIndex = rangeParser(index).map((i) => i - 1)
-      // exit if the `index` passed is bigger than the total number of highlighted words
-      if (Math.max(...targetIndex) >= allHighlightWords.length) return
-
-      const addClass = () =>
-        targetIndex.forEach((i) => allHighlightWords[i].classList.add('on'))
-      const removeClass = () =>
-        targetIndex.forEach((i) => allHighlightWords[i].classList.remove('on'))
-
-      trigger?.addEventListener('mouseenter', addClass)
-      trigger?.addEventListener('mouseleave', removeClass)
-
-      return () => {
-        trigger?.removeEventListener('mouseenter', addClass)
-        trigger?.removeEventListener('mouseleave', removeClass)
-      }
-    }, [])
-
-    return <Paragraph fontFamily="$mono" cursor="default" ref={triggerRef} {...props} />
   },
 
   MediaPlayerDemo: ({ theme, ...props }) => {

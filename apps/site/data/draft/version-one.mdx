@@ -6,106 +6,94 @@ by: nate
 poster: banner-rc0.jpg
 ---
 
-<Image
-  title="Tamagui v1"
-  src="/banner-one.jpg"
-  size="hero"
-  overlap
-  height={275}
-  width={761}
-  resizeMode="contain"
-  mb="$4"
-/>
-
 <IntroParagraph large>
-  React Native is amazing for building mobile apps, full stop. But sharing code with your
-  web app? You're forced to choose between [a slower, clunkier app, or a total
-  re-write](/docs/intro/why-a-compiler).
+  React Native is amazing for building mobile apps, but not for sharing components between
+  native and web. When you do that, you [lose performance, productivity and
+  UX](/docs/intro/why-a-compiler).
 </IntroParagraph>
 
 <IntroParagraph>
-  Tamagui's novel optimizing compiler enables more code sharing while gaining, rather than
-  sacrificing performance as you'd expect. It does this by turning JS into CSS, evaluating
-  inline styles, generating platform-specific code, and flattening component trees.
+  Tamagui fixes that. It's a React style library with an optimizing compiler that lets you
+  write less code, get better platform-output, and actually *gain, rather than sacrifice*
+  performance all at once.
 </IntroParagraph>
 
-Where it optimizes your app, things get a lot faster:
+Tamagui does advanced optimization through partial evaluation, CSS extraction, and ultimately tree-flattening. Where it optimizes, things get a lot faster:
 
+<Spacer />
 <Spacer />
 <BenchmarkChartWeb />
-<Paragraph tag="span" als="center" fow="200" fontSize={12}>
-  Rendering two variants (Tamagui flattens)
-</Paragraph>
+<Aside>Rendering between groups of styles conditionally</Aside>
+<Spacer />
 <Spacer />
 
-Tamagui supports every React Native API in a 0-dependency library with all the [nice features](/docs/core/variants) of modern style libraries. It includes a compiler that turns natural typed inline styles - even with logic - into pure CSS, removing components as it goes. It often bests even finely-tuned, hand-written CSS because of this, while allowing for all the benefits of typed CSS-in-JS styling.
+**Tamagui Core** (`@tamagui/core`) is a style library for React Native and web that supports 100% of the React Native API surface in a 0-dependency library. It adds all the [goodies of modern style libraries](#overview) into a cohesive package.
 
-On the web, render performance is much improved, especially for interactive (pseudo) and responsive (media query) styles. It improves Lighthouse scores 10-25%.
+**Tamagui Static** (`@tamagui/static`) is a compiler that turns core syntax including even inline styles sprinkled with logic into a flat `div` with atomic CSS. It bests even hand-optimized CSS typically.
 
-<Image
-  title="The compiler improves the Lighthouse score of the homepage of https://tamagui.dev from 85 to 96"
-  src="/banner-lighthouse.jpg"
-  size="hero"
-  height={325}
-  width={761}
-  resizeMode="contain"
-  mt="$2"
-  mb="$4"
-/>
+Finally, **Tamagui UI** (`tamagui`) is a component kit built on top of the incredibly powerful theme primitives of `core`. That, alongside composable-component APIs and complete size control enables a new level of control not seen before in a UI kit.
 
-Tamagui comes in three parts:
+This blog post will give an overview of each part, and then what's new since the beta was launched just over a year ago:
 
-- The [core style library](#overview-of-tamaguicore).
-- An [optimizing compiler](#overview-of-static).
-- Tamagui, [a full-featured cross-platform UI kit built on top](#overview-of-tamagui).
+- **Core**: [overview](#overview-of-tamaguicore) and [what's new](#whatsnew-in-tamaguicore).
+- **Static**: [overview](#overview-of-tamaguistatic) and [what's new](#whatsnew-in-tamaguistatic).
+- **Tamagui**: [overview](#overview-of-tamagui) and [what's new](#whatsnew-in-tamagui).
 
 ---
 
-### Code Demo
+## Overview
 
-Tamagui has all the features of modern CSS-in-JS libraries, but optimizes away:
+Lets get familiar with both `@tamagui/core` (the styling library) and `@tamagui/static` (the compiler), and how the latter optimizes the former.
 
 <Spacer />
 <TamaguiExamplesCode />
 
-The key to Tamagui's performance gains lie in **view flattening**: the compiler analyzes code, even across module boundaries, and evaluates even logical code via AST transformation and node VM-powered code evaluation. It will fully flatten your custom styled components (like `<Circle />`) into plain old `<div />` (or `<View />` on native), and it does so often thanks to its smart evaluator.
+The key to Tamagui's performance gains lie in **view flattening** or tree-flattening: the compiler analyzes code (even across module boundaries) and evaluates styled components away using both the AST and Node VM code evaluation. It will fully flatten custom styled components (like `<Circle />`) into plain old `<div />` (or `<View />` on native).
 
 ---
 
 ## Overview of `@tamagui/core`
 
-[Core](#overview-of-tamagui-core) is a fully independent style library, with no external dependencies supporting complete typed design systems for React Native and web:
+**Core is a complete cross-platform style library**. It allows creating typed design systems that work with a `styled` factory on both React Native and web:
 
-- Works 100% the same across Native and Web.
-- Works completely at runtime, no compiler step necessary.
-- No dependencies, full typed React Native APIs without bloat on the web.
+##### Highlights
+
+- Works **100% the same across Native and Web**.
+- **Works completely at runtime**, no compiler necessary.
+- **&lt;17kb, 0-dependency**. Every React Native API, typed, without bloat on the web.
 - SSR and React Server Component support for 100% of the features.
-- Beautiful typed design systems.
+- Custom fully typed design systems.
 - Powerful typed variants, including functional variants.
 - Prop-order based styling means no more CSS specificity fights!
-- Inline styles with tokens, media and pseudo styles - all optimize away.
-- Typed shorthands for efficient authoring.
-- Pluggable animation drivers, swap spring animations to pure CSS on the web.
-- Merges styles down the three without worry! Fully typed, destructurable and overridable.
+- Inline styles with tokens, media and pseudo styles that all optimize away.
+- Typed shorthands.
+- Pluggable animation drivers, allows swapping JS-based animations to pure CSS on the web.
 
-Everything works on Native and Web the same, with no dependencies at ~12Kb gzipped.
+One novel feature is **deterministic, easy to reason about style merging**. Core will _alway merges styles based on the order received rather than arcane CSS definition-order + specificity rules_, whether defined through `styled` or via inline props. This resolves major limitations of both CSS and CSS-in-JS systems as they largely exist today.
 
-It features **deterministic, easy to reason about styling** that outputs to atomic CSS, always merging styles based on the order received, whether using `styled`, nesting them, or using them with inline props.
+### styled()
+
+Here's an example of the `styled` function with a few variants:
 
 ```tsx
-import { config } from '@tamagui/config-base'
-import { Stack, createTamagui, styled } from '@tamagui/core'
+import { Stack, styled } from '@tamagui/core'
 
-// define your typed design system
-export const config = createTamagui(config)
-
-// use your tokens and themes easily
 export const Circle = styled(Stack, {
+  // access your tokens and theme values easily with $ props
   backgroundColor: '$background',
   color: '$color2',
   borderRadius: '$4',
 
+  // media and pseudo styles - this would take ~15 lines of JS in vanilla RN
+  $gtSm: {
+    pressStyle: {
+      borderRadius: '$6',
+    },
+  },
+
   variants: {
+    // define variants <Circle pin="top" />
+    // these will flatten, even when nesting multiple styled() calls
     pin: {
       top: {
         position: 'absolute',
@@ -130,47 +118,113 @@ For more, see the [configuration](/docs/core/configuration), [styling](/docs/cor
 
 ### Design system
 
-Using [createTamagui](/docs/core/configuration) you generate a fully-typed design system with colors, tokens, spacing, sizing, fonts, themes, shorthands, animations, and more, that works with well-optimized and easy to use hooks like [useMedia](/docs/core/use-media) and [useTheme](/docs/core/use-theme).
+Using [createTamagui](/docs/core/configuration) you generate a fully-typed design system with colors, tokens, spacing, sizing, fonts, themes, shorthands, animations, and more.
 
-The full-featured [styled() factory](/docs/core/styled) gives you CSS-in-JS with all features - from variants and shorthand props, to media queries, themes, pseudo styles and more, designed to lead naturally to well-typed, performant base views.
+It works with well-optimized and easy to use hooks like [useMedia](/docs/core/use-media) and [useTheme](/docs/core/use-theme) that save a ton of time over rolling these yourself.
 
-Finally, the [Stack and Text components](/docs/core/stacks-and-text) work with `styled()` and provide lot of nice features like hover, press, and focus styles, nice inline style props with typed theme and token values, shorthands, media queries, animations, and more (the animations are powered by drivers which can be swapped out, like CSS transition on web, but react-native-reanimated on iOS).
+Here's a stripped down configuration:
 
-It's a base layer with everything you need for building a full-featured design system.
+```tsx
+import { createFont, createTamagui, createTokens } from '@tamagui/core'
 
-### What's new in Core
+const interFont = createFont({
+  family: 'Inter, Helvetica, Arial, sans-serif',
+  size: {
+    1: 12,
+    2: 14,
+    // ...
+  },
+  // ... lineHeight, weight, letterSpacing, transform, style, color, face
+})
 
-Core has had over 500 bugs fixed with large performance and memory improvements, a ton of new tests, and compatibility with the latest and greatest in React and React Native.
+const size = {
+  0: 0,
+  1: 5,
+  2: 10,
+  // ....
+}
 
-### React 0.69, React 18, React Native Web 18
+const tokens = createTokens({
+  size,
+  space: { ...size, '-1': -5, '-2': -10 },
+  radius: { 0: 0, 1: 3 },
+  zIndex: { 0: 0, 1: 100, 2: 200 },
+  color: {
+    white: '#fff',
+    black: '#000',
+  },
+})
+
+export default createTamagui({
+  fonts: {
+    heading: interFont,
+    body: interFont,
+  },
+  tokens,
+  themes: {
+    light: {
+      bg: '#f2f2f2',
+      color: tokens.color.black,
+    },
+    dark: {
+      bg: '#111',
+      color: tokens.color.white,
+    },
+  },
+  media: {
+    sm: { maxWidth: 860 },
+    gtSm: { minWidth: 860 + 1 },
+  },
+  shorthands: {
+    px: 'paddingHorizontal',
+    f: 'flex',
+    w: 'width',
+  },
+})
+```
+
+### Stack and Text
+
+<HeroContainer tinted>
+  <StacksDemo />
+</HeroContainer>
+
+Finally, the [Stack and Text components](/docs/core/stack-and-text) work with `styled()` and provide lot of nice features like hover, press, and focus styles, typed inline style props with theme and token values, shorthands, media queries, animations, and more.
+
+---
+
+## What's new in `@tamagui/core`
+
+Over a thousand bugfixes since beta with large performance and memory improvements, much higher test coverage, and compatibility with the latest and greatest in React and React Native.
+
+### Compatible with the latest
 
 Across all of Tamagui, we've bumped support to the latest versions. Due to improvements in react-native-web 18, we were also able to dramatically simplify setup, no longer having to patch the library to support classnames.
 
-### Making web-only use cases shine
+Tamagui supports React Native 0.70, React 18, React Native Web 18. It's the only Native UI library that fully supports concurrent mode on the web as well.
 
-Core is an incredibly powerful CSS-in-JS library for React, and the only one that has an optimizing compiler that makes your apps faster. But for web-only use cases, it had a big downside of requiring you to bundle all of `react-native-web` in your app.
+### Big gains for web-only use cases
 
-For 1.0, we've made `@tamagui/core` have no dependency at all on `react-native-web` when targeting the web, while still maintaining 100% compatibility with the React Native APIs.
+Early in the beta for web-only use cases, Core had the downside of requiring you to bundle all of `react-native-web` in your app, not to mention the always tricky problem of configuring your bundler to alias `react-native` to `react-native-web`.
 
-This unlocks a few use cases:
+For 1.0, we've made the difficult steps to get `@tamagui/core` to have no dependency at all on `react-native` (and therefore no need to setup anything in your bundler), while still maintaining 100% compatibility with the React Native APIs.
 
-- You want all the amazing features of `core` and the optimizing compiler, but you're not targeting native at all, saving ~30Kb of bundle size by avoiding `react-native-web`.
-- You're doing the above, but planning to build a Native app in the future.
-- You're using Tamagui to target Native and Web, but want to build one-off pages that are web-only while still sharing your typed design system and various Tamagui components.
+This unlocks a few things:
 
-Now you can get all the benefits of the optimizing compiler and full-featured design system primitives on the web, without the extra bloat if you don't need to bring along the rest of React Native.
+- Much easier setup: no need to touch your bundler.
+- Save ~30Kb of bundle size by avoiding `react-native-web` entirely for web-only use cases.
+
+You can get all the benefits of unified APIs across native and web plus an optimizing compiler and full-featured design system, yet actually save bundle size vs React Native Web.
 
 ### Bundle size reduction
 
-De-coupling core from `react-native` is a big win for web-only use cases. Even beyond that, we've shaved nearly ~12Kb from core through many optimizations all over.
+De-coupling core from `react-native` is a big win for web-only use cases. Even beyond that, we've shaved nearly ~12Kb by iteratively focusing on bundle size.
 
-But we've also set up core to go much futher in size savings.
+As of today, core is about 18Kb, gzipped. Going forward, we've made it possible to further reduce this by 5Kb, and alongside future React Native versions go even futher.
 
-As of today, core is about 18Kb with GZIP. This gives you a whole lot of features, from powerful hooks for themes and media queries, a complete typed design system (tokens, colors, fonts, and more), the truly powerful `styled()` utility function with variants that lets you build type-safe style components that are fast, output atomic CSS, and a all the helpers and hooks that you need to go alongside that.
+Beyond that, we have landed refactors now that allow releasing a web-specific core which will drop a few Native-specific APIs and bring the total runtime size cost down to below 8Kb.
 
-Going forward, there's a direct path to make core even better for web-only use cases. Directly, we can likely get another 5Kb saved through hand-optimization. And after that, we can split core in half with `@tamagui/web`, which will drop all the unified event and layout APIs from React Native and simply give you back typed web props, bringing the runtime down to below 5Kb.
-
-### Large performance improvements
+### Performance improvements
 
 We've greatly optimized render performance during the beta in a large variety of ways. It's hard to capture every one in a post, but some of the more interesting ones are:
 
@@ -182,9 +236,9 @@ We saw 8% improvements in Lighthouse scores on the website homepage just by opti
 
 #### `useMedia`
 
-Supporting SSR often means you need to hydrate using an initial value, and then re-render after hydration with the "real" media query value. We've moved over to use React's [useSyncExternalStore hook](https://beta.reactjs.org/apis/react/useSyncExternalStore), which not only greatly reduced the amount of code, but also can avoid double-rendering on hydration if nothing changes.
+Supporting SSR often means you need to hydrate using an initial value, and then re-render after hydration with the "real" media query value. We've moved over to use React's [useSyncExternalStore hook](https://beta.reactjs.org/apis/react/useSyncExternalStore), which greatly reduced code and helps avoid re-renders and hooks used per-component. It also clears us to remove the double-render that SSR based apps typically do on hydration.
 
-#### Avoiding work in generating styles
+#### Avoiding work generating styles
 
 Previously, Core used `react-native-web` to handle the final steps of taking styles and converting them into CSS. In profiling and reading over the code, we found this to be a large bottleneck to performance as it would iterate over objects many times, and generate many intermediate objects in the process.
 
@@ -202,7 +256,7 @@ We now recommend using `as const` after your `variants` object definition to fix
 
 One theme in the betas for `core` was upgrading how fonts worked. Two big helpers landed:
 
-#### &lt;FontLanguage /&gt;
+##### &lt;FontLanguage /&gt;
 
 Supporting fonts per-language is now possible with &lt;FontLanguage /&gt;, like so. First, you can specify language-specific fonts with a suffix in your configuration, much like a sub-theme:
 
@@ -249,7 +303,7 @@ The `theme` prop in Tamagui by default will re-theme all sub-component. As of be
 
 ### Helpers
 
-### The `loadTheme` and `updateTheme` helpers
+#### The `loadTheme` and `updateTheme` helpers
 
 Themes load in a large variety of tokens for spacing, sizing, radius, colors, and more. They are incredibly powerful, but they also have some cost in bundle size.
 
@@ -257,7 +311,7 @@ The `loadTheme` utility function means you can only load the default themes you 
 
 Meanwhile `updateTheme` gives you the ability to dynamically modify themes on the fly, changing any of their values. On the web, themes work through CSS variables, meaning `updateTheme` is incredibly fast as it avoids all React re-rendering if no theme values are currently being relied on for dynamic styles.
 
-### The `useMediaPropsActive` hook
+#### The `useMediaPropsActive` hook
 
 This hook is useful for authoring your own custom components built on Tamagui. The Tamagui UI kit makes use of this hook extensively.
 
@@ -288,9 +342,28 @@ export default () => (
 
 ---
 
-## Whats new in `@tamagui/static`
+## Overview of `@tamagui/static`
 
-[Static](/docs/intro/why-a-compiler) is the optimizing compiler. It supports web and native through a plugin interface that has adapters for Webpack, Vite, Next, React Native, and Expo. Over a dozen major improvements to the compiler have made their way in since beta. Some of the highlights are:
+[Static](/docs/intro/why-a-compiler) is a babel and node-based optimizing compiler, specifically for frontend React code. It supports web and native through a plugin interface that has adapters for Webpack, Vite, Next, React Native, and Expo. Over a dozen major improvements to the compiler have made their way in since beta. Some of the highlights are:
+
+On the web, render performance is much improved, especially for interactive (pseudo) and responsive (media query) styles. It improves Lighthouse scores 10-25%.
+
+<Image
+  title="The compiler improves the Lighthouse score of the homepage of https://tamagui.dev from 85 to 96"
+  src="/banner-lighthouse.jpg"
+  size="hero"
+  height={325}
+  width={761}
+  resizeMode="contain"
+  mt="$2"
+  mb="$4"
+/>
+
+For more information on how it works and why it's important, read our [introduction to the compiler article](/docs/intro/why-a-compiler).
+
+---
+
+## What's new in `@tamagui/static`
 
 ### Performance
 
@@ -304,9 +377,9 @@ Previously, Tamagui Static only knew how to optimize components found in your se
 
 The compiler now supports analyzing components outside of just your design system, allowing for even less friction when writing apps. It means you can put your `styled()` definitions _anywhere_ without worrying, and Tamagui Static will load and optimize those components as it discovers theme.
 
-### Vite plugin
+### Vite support
 
-Tamagui now fully works with Vite 3 and 4, both with the compiler and without. A simple `vite.config.js` would look like this:
+Tamagui now fully works [with Vite 3 and 4](/docs/guides/vite), both with the compiler and without. A simple `vite.config.js` would look like this:
 
 ```tsx
 import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
@@ -338,13 +411,26 @@ Most of the work during beta focused on correctness. We've increased testing to 
 
 ---
 
-## Tamagui
+## Overview of Tamagui
+
+Tamagui UI is a suite of components that work across Native and Web beautifully.
+
+- Every component works on Native and Web and adapts properly to each platform.
+- Lightweight default styles included but completely customizable.
+- **Complete theme control** - totally transform the look and feel down to individual components without fuss, even avoiding re-renders on theme changes (web).
+- **Complete size control** - every component can be scaled up/down based on your custom design system tokens.
+- **Composable Component APIs** - enabling much more control over styling.
+- A novel **Adapt** component allows for completely changing UI based on platform and media query.
+
+---
+
+## What's new in Tamagui
 
 ### A whole lot of new components 🎁
 
 With the beta release, we had mostly finalized the core feature set we wanted in Tamagui, especially in `@tamagui/core`, the base style system that works underlies the compiler and UI kit. It was time to cut our teeth building out a suite of components to really test it out.
 
-Between then and 1.0, we've released seven new large components that cover some of the most complex use cases you find in any apps. Each comes with a Radix-like composable component API surface that allows for nearly total control over customization - in fact many components were built by taking Radix components APIs, and simply re-building the internal logic to use Tamagui primitives.
+Between then and 1.0, we've released seven new large components that cover some of the most complex use cases you find in any apps. Each comes with composable component API surface that allows for nearly total control over customization. We owe thanks to both [Radix](https://www.radix-ui.com) and [Floating UI](https://floating-ui.com) for making these much easier to build.
 
 Like all existing components in Tamagui, every new component is completely sizable, themable, and able to responsively style using your entire design system.
 
@@ -504,6 +590,10 @@ Tamagui [now exports ScrollView](/docs/components/scroll-view), the exact same a
 
 #### XGroup and YGroup
 
+<HeroContainer tinted>
+  <GroupDemo />
+</HeroContainer>
+
 The `Group` component has been split into [XGroup and YGroup](/docs/components/group) to match Stacks. It's been upgraded across the board with the ability to be scrollable and to better handle passing children styles.
 
 ---
@@ -625,6 +715,16 @@ We now have a custom `release.ts` script that controls our release process as we
 We now have multiple users deploying larger scale apps with Tamagui in production.
 
 ---
+
+<Image
+  title="Tamagui v1"
+  src="/banner-one.jpg"
+  size="hero"
+  height={276}
+  width={632}
+  resizeMode="contain"
+  mb="$4"
+/>
 
 ### Acknowledgements
 

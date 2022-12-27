@@ -1,7 +1,7 @@
 import { useTint } from '@tamagui/logo'
 import { FastForward } from '@tamagui/lucide-icons'
 import { memo, useState } from 'react'
-import { Button, H5, Paragraph, XGroup, XStack, YStack } from 'tamagui'
+import { Button, H5, Paragraph, ScrollView, XGroup, XStack, YStack } from 'tamagui'
 
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
 import { ContainerLarge } from './Container'
@@ -27,7 +27,7 @@ export function HeroExampleCode({
 
   return (
     <ContainerLarge position="relative">
-      <YStack zi={1} space="$6">
+      <YStack zi={1} space="$6" mb="$4">
         {!onlyDemo && (
           <YStack ai="center" space="$3">
             <HomeH2>A better style system</HomeH2>
@@ -85,21 +85,18 @@ export function HeroExampleCode({
             {...(onlyDemo && { maxWidth: '100%' })}
             $sm={{ maxWidth: '100%' }}
             px="$2"
-            space="$2"
+            space
           >
-            {!onlyDemo && (
-              <Paragraph
-                mb="$4"
-                maw={480}
-                als="center"
-                size="$5"
-                minHeight={50}
-                ta="center"
-                px="$6"
-              >
-                <span style={{ opacity: 0.65 }}>{activeExample.input.description}</span>
-              </Paragraph>
-            )}
+            <Paragraph
+              maw={480}
+              als="center"
+              size="$5"
+              minHeight={50}
+              ta="center"
+              px="$6"
+            >
+              <span style={{ opacity: 0.65 }}>{activeExample.input.description}</span>
+            </Paragraph>
             <CodeExamples title="Input" {...activeExample.input} />
           </YStack>
 
@@ -127,22 +124,19 @@ export function HeroExampleCode({
             {...(onlyDemo && { maxWidth: '100%', mt: '$6' })}
             $sm={{ maxWidth: '100%', mt: '$6' }}
             px="$2"
-            space="$2"
+            space
           >
-            {!onlyDemo && (
-              <Paragraph
-                mb="$4"
-                maw={480}
-                als="center"
-                size="$5"
-                minHeight={50}
-                ta="center"
-                px="$6"
-              >
-                <span style={{ opacity: 0.65 }}>{activeExample.output.description}</span>
-              </Paragraph>
-            )}
             <CodeExamples title="Output" {...activeExample.output} />
+            <Paragraph
+              maw={480}
+              als="center"
+              size="$5"
+              minHeight={50}
+              ta="center"
+              px="$6"
+            >
+              <span style={{ opacity: 0.65 }}>{activeExample.output.description}</span>
+            </Paragraph>
           </YStack>
         </XStack>
       </YStack>
@@ -158,27 +152,37 @@ const CodeExamples = memo(({ examples, title }: any) => {
   return (
     <YStack overflow="hidden" flex={1}>
       <>
-        <XStack zi={10} als="center" ai="center" space jc="center" mb="$-2">
-          <XGroup size="$2" bordered>
-            <Button disabled size="$2" fontSize="$4" px="$4">
-              {title}
-            </Button>
-          </XGroup>
-          <XGroup size="$2" bordered>
-            {examples.map((example, i) => (
-              <Button
-                accessibilityLabel="See example"
-                onPress={() => setActiveIndex(i)}
-                theme={i === activeIndex ? (tint as any) : 'alt1'}
-                size="$2"
-                key={i}
-                borderRadius="$0"
-              >
-                {example.name}
+        <ScrollView
+          als="center"
+          ai="center"
+          zi={10}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          mb="$-2"
+          maw="100%"
+        >
+          <XStack px="$4" fs={0} space>
+            <XGroup size="$2" bordered>
+              <Button disabled size="$2" fontSize="$4" px="$4">
+                {title}
               </Button>
-            ))}
-          </XGroup>
-        </XStack>
+            </XGroup>
+            <XGroup size="$2" bordered>
+              {examples.map((example, i) => (
+                <Button
+                  accessibilityLabel="See example"
+                  onPress={() => setActiveIndex(i)}
+                  theme={i === activeIndex ? (tint as any) : 'alt1'}
+                  size="$2"
+                  key={i}
+                  borderRadius="$0"
+                >
+                  {example.name}
+                </Button>
+              ))}
+            </XGroup>
+          </XStack>
+        </ScrollView>
       </>
       <XStack maxWidth="100%" f={1}>
         <YStack f={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>

@@ -114,7 +114,7 @@ export function BlogSlugPage(props: BlogPost) {
       <BlogArticleHeader {...props} />
 
       <Container>
-        <YStack px="$2">
+        <YStack tag="article" px="$2">
           <Component components={components as any} />
         </YStack>
 

@@ -90,7 +90,7 @@ a {
   text-decoration: underline;
   color: var(--pink10);
   text-decoration-color: var(--pink6);
-  text-underline-offset: 3px;
+  text-underline-offset: 2px;
 }
 
 :is(
@@ -109,6 +109,14 @@ p, li.font_body {
 p.intro-paragraph.large {
   color: var(--gray12) !important;
   opacity: 1 !important;
+}
+
+article li strong {
+  opacity: 1;
+}
+
+.t_dark article li strong {
+  color: #fff !important;
 }
 
 .intro-paragraph a {
