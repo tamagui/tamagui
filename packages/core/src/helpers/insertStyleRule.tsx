@@ -46,7 +46,6 @@ export function listenForSheetChanges() {
   if (!isClient) return
   function handleNode(node: Node, remove = false) {
     if (node instanceof HTMLStyleElement && node.sheet) {
-      console.warn('update', node.sheet)
       updateSheetStyles(node.sheet, remove)
     }
   }

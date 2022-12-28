@@ -29,7 +29,12 @@ const getBarColor = (name: string) => {
   }
 }
 
-export function BenchmarkChart({ data, large, skipOthers = false, animateEnter = false }) {
+export function BenchmarkChart({
+  data,
+  large,
+  skipOthers = false,
+  animateEnter = false,
+}) {
   const maxValue = Math.max(...data.map((r) => r.value))
 
   return (
@@ -60,15 +65,21 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
                 position="relative"
                 jc="center"
                 scaleX={1}
-                animation="lazy"
                 {...(animateEnter && {
+                  animation: 'lazy',
                   enterStyle: {
                     opacity: 0,
                     scaleX: 0,
                   },
                 })}
               >
-                <Paragraph size="$1" whiteSpace="nowrap" position="absolute" right="$-2" x="100%">
+                <Paragraph
+                  size="$1"
+                  whiteSpace="nowrap"
+                  position="absolute"
+                  right="$-2"
+                  x="100%"
+                >
                   {result.value}ms
                 </Paragraph>
               </YStack>

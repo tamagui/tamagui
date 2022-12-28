@@ -3,12 +3,12 @@
 </div>
 
 <h1 align="center">
-  A style system, UI kit and optimizing compiler for React Native & Web
+  Unify React Native and Web styling with an optimizing compiler
 </h1>
 
-- `@tamagui/core` - Independent minimal style system on top of React Native/Web.
-- `tamagui` - Complete universal UI kit built on top of `@tamagui/core`.
+- `@tamagui/core` - Universal style system on top of React Native + Web.
 - `@tamagui/static` - Optimizing compiler that works with `core` and `tamagui`.
+- `tamagui` - Complete universal UI kit built on top of `@tamagui/core`.
 
 See [tamagui.dev](https://tamagui.dev) for documentation.
 

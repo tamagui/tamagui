@@ -7,7 +7,9 @@ import { Footer } from '@components/Footer'
 import { setTintFamily } from '@tamagui/logo'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
+import NextHead from 'next/head'
 import { useRouter } from 'next/router'
+import Script from 'next/script'
 import { Suspense, startTransition, useMemo } from 'react'
 import { TamaguiProvider, isClient } from 'tamagui'
 
@@ -55,6 +57,21 @@ export default function App(props: AppProps) {
   // useMemo below to avoid re-render on dark/light change
   return (
     <>
+      <NextHead>
+        <script
+          key="tamagui-animations-mount"
+          dangerouslySetInnerHTML={{
+            // avoid flash of animated things on enter
+            __html: `!function() {
+  const _ = document.createElement('style')
+  _.innerText = ".t_will-mount { opacity: 0; visibility: hidden; }"
+  document.head.appendChild(_)
+}()
+`,
+          }}
+        />
+      </NextHead>
+
       <NextThemeProvider
         onChangeTheme={(next) => {
           startTransition(() => {
