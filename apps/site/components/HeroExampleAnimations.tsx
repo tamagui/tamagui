@@ -112,6 +112,7 @@ export function HeroExampleAnimations({ animationCode }) {
               height={500}
               maxWidth={530}
               minWidth={530}
+              borderRadius="$8"
               language="tsx"
               source={animationCode}
             />

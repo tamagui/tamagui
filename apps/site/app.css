@@ -101,13 +101,17 @@ a {
   text-decoration-color: var(--pink12);
 }
 
-p, li.font_body {
+article p, article li.font_body {
   color: var(--gray12) !important;
   opacity: 0.75 !important;
 }
 
 p.intro-paragraph.large {
   color: var(--gray12) !important;
+  opacity: 1 !important;
+}
+
+.no-opacity-fade p {
   opacity: 1 !important;
 }
 
@@ -264,9 +268,8 @@ pre {
     -220deg,
     #009135,
     #009135,
-    var(--color9) 50%,
-    var(--color9) 50%,
-    #ff0024,
+    #59af2f,
+    #ff0024 60%,
     #ff0024
   );
 }

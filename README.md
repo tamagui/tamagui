@@ -3,7 +3,7 @@
 </div>
 
 <h1 align="center">
-  Unify React Native and Web styling with an optimizing compiler
+  Style React Native and Web with an optimizing compiler
 </h1>
 
 - `@tamagui/core` - Universal style system on top of React Native + Web.

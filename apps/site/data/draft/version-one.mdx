@@ -3,7 +3,7 @@ title: Tamagui 1.0 🎉
 publishedAt: '2022-12-24'
 description: Ship cross-platform React apps in ½ the time with 2x performance.
 by: nate
-poster: banner-rc0.jpg
+poster: banner-one.jpg
 ---
 
 <IntroParagraph large>
@@ -14,8 +14,7 @@ poster: banner-rc0.jpg
 <IntroParagraph>
   Tamagui fixes these three downsides with a React style library that works with a novel
   optimizing compiler. The compiler output often bests hand-crafted CSS while still
-  letting you ship fast with convenient typed inline styles and a powerful style
-  interface.
+  letting you ship fast with typed inline styles and a powerful style interface.
 </IntroParagraph>
 
 Tamagui does advanced optimization through partial evaluation, CSS extraction, and ultimately tree-flattening. Where it optimizes, things get a lot faster:
@@ -34,6 +33,11 @@ Tamagui comes in three parts:
 [**Tamagui Static**](#overview-of-tamaguistatic) (`@tamagui/static`) is an optimizing compiler on top of Core, turning even inline styles sprinkled with logic into atomic CSS and minimal JS, flattening your view tree for maximum performance. [Skip to what's new](#whatsnew-in-tamaguistatic).
 
 [**Tamagui UI**](#overview-of-tamagui) (`tamagui`) is a component kit built on top of the incredibly powerful theme primitives of `core`. That, alongside composable-component APIs and complete size control enables a new level of control not seen before in a UI kit. [Skip to what's new](#whatsnew-in-tamagui).
+
+The next section gives a high level code overview of how Tamagui works.
+
+<Spacer />
+<SponsorNotice />
 
 ---
 
@@ -58,7 +62,7 @@ The key to Tamagui's performance gains lie in **view flattening** or tree-flatte
 - **Works completely at runtime**, no compiler necessary.
 - **&lt;17kb, 0-dependency**. Every React Native API, typed, without bloat on the web.
 - SSR, React Server Component, Concurrent mode support for 100% of the features.
-- Custom fully typed design systems.
+- Custom typed design systems.
 - Powerful typed variants, including functional variants.
 - Prop-order based styling means no more CSS specificity fights!
 - Inline styles with tokens, media and pseudo styles that all optimize away.
@@ -275,7 +279,7 @@ export const config = createTamagui({
 })
 ```
 
-Then you can change the family to Mandarin at any point in your React tree, fully typed:
+Then you can change the family to Mandarin at any point in your React tree, with types working as expected:
 
 ```tsx
 import { FontLanguage, Text } from '@tamagui/core'
@@ -309,11 +313,9 @@ Meanwhile `updateTheme` gives you the ability to dynamically modify themes on th
 
 #### The `useMediaPropsActive` hook
 
-This hook is useful for authoring your own custom components built on Tamagui. The Tamagui UI kit makes use of this hook extensively.
+This hook is useful for authoring your own custom components built on Tamagui. The Tamagui UI kit makes use of this hook extensively. Tamagui has a philosophy that everything Just Works™️ at runtime as well as compile-time. The compile-time side just makes it all a lot faster. By working fully at runtime, it means you have more flexiblity (no need to use any plugins at all), but also lots of power. For example, if Tamagui didn't work fully runtime, you couldn't support animations with your design system at all.
 
-Tamagui has a philosophy that everything should work at runtime as well as compile-time. The compile-time side just makes it all a lot faster. But working fully runtime, means you have more flexiblity (no need to run any plugins at all), but also lots of power. For example, if Tamagui didn't work fully runtime, you couldn't do dynamic animations at all, let along bringing along [the Reanimated driver]() for beautiful spring or layout animations.
-
-Anyway, the `useMediaPropsActive` hook makes it easy to properly access the "currently active" set of styles given the current screen size, properly typed. Here's an example:
+The `useMediaPropsActive` is an important part of that functionality, making it easy to properly access the "currently active" set of styles given the current screen size. Here's an example:
 
 ```tsx
 import { Stack, StackProps, useMediaPropsActive } from '@tamagui/core'
@@ -321,7 +323,7 @@ import { Stack, StackProps, useMediaPropsActive } from '@tamagui/core'
 const CustomWidget = (props: StackProps) => {
   const activeProps = useMediaPropsActive(props)
 
-  console.log(`The current color is`, activeProps.backgroundColor)
+  console.log(`The current color for this screen size is`, activeProps.backgroundColor)
 
   return <Stack {...modifyProps(activeProps)} />
 }
@@ -409,7 +411,7 @@ Most of the work during beta focused on correctness. We've increased testing to 
 
 ## Overview of Tamagui
 
-Tamagui UI is a suite of components that work across Native and Web beautifully.
+Tamagui UI is a suite of React components and hooks that adapt nicely to both Native and Web.
 
 - Every component works on Native and Web and adapts properly to each platform.
 - Lightweight default styles included but completely customizable.
@@ -424,11 +426,11 @@ Tamagui UI is a suite of components that work across Native and Web beautifully.
 
 ### A whole lot of new components 🎁
 
-With the beta release, we had mostly finalized the core feature set we wanted in Tamagui, especially in `@tamagui/core`, the base style system that works underlies the compiler and UI kit. It was time to cut our teeth building out a suite of components to really test it out.
+We've seen the addition of seven new components. Each comes with composable component API for much more complete control over each piece of the components visuals and behavior.
 
-Between then and 1.0, we've released seven new large components that cover some of the most complex use cases you find in any apps. Each comes with composable component API surface that allows for nearly total control over customization. We owe thanks to both [Radix](https://www.radix-ui.com) and [Floating UI](https://floating-ui.com) for making these much easier to build.
+We owe thanks to both [Radix](https://www.radix-ui.com) and [Floating UI](https://floating-ui.com) for making these much easier to build.
 
-Like all existing components in Tamagui, every new component is completely sizable, themable, and able to responsively style using your entire design system.
+Like the existing components in Tamagui, every new component is sizable, themable, and able automatically styled using your design system.
 
 The new components are:
 
@@ -437,10 +439,6 @@ The new components are:
 <HeroContainer tinted>
   <SheetDemo />
 </HeroContainer>
-
-A decent bottom sheet is essential for any UI kit, but it represents one of the hardest components to build due to the need for complex interactive behavior at high performance, alongside delicate interplay of touch events between the outer sheet and any inner scrollable content.
-
-This is made especially tricky because Tamagui allows for pluggable animation drivers, letting you choose between using Reanimated, React Native Animated, or simply CSS animations (plus any other animation drivers in the future that the community builds).
 
 This was an excellent test of the unified animation drivers on Tamagui, and unfied interaction primitives of React Native, and we're happy with how it's turned out.
 
@@ -451,10 +449,6 @@ Internally, we've come up with some helpers for each animation driver to support
 <HeroContainer tinted>
   <SelectDemo />
 </HeroContainer>
-
-Select components are deceptively hard to build. They involve some of the most complex interactions you'll find in any frontend app, as they must support complex keyboard and mouse based behaviors, a lot of accesibility logic, and a UI that adjusts to the window and contents in very dynamic ways.
-
-Luckily, Tamagui stands on the shoulders of giants to make this possible: React Native's unified layout and gesture handling, [Radix](/TODO-link-to-radix-select) which inspired and served as the base structure for the components and their API surface, [Floating UI]() which handles all of the _incredibly complex and finnicky_ logic around interactions and the floating elements.
 
 #### Dialog
 
@@ -480,7 +474,7 @@ Show a Dialog specialized for confirming or denying an action [with AlertDialog]
 
 ```
 
-AlertDialog is the first of our components to include the `native` prop, which we are excited about. When set to true, it attempts to adapt the element to use platform-primitives when possible For AlertDialog, this means that on iOS, you'll see a native Alert instead the custom Tamagui one.
+AlertDialog is the first of our components to include the `native` prop. When set to true, it adapts the element to use platform native visual containers when possible. For AlertDialog, this means that on iOS and Android, you'll see a native Alert dialog prompt.
 
 #### Slider
 
@@ -560,30 +554,6 @@ Display content with a header, footer, background image, title, subtitle and des
 
 ```
 
-#### Unspaced
-
-When using the `space` prop, you sometimes want just one area to not add space. This was impossible before, but [with Unspaced now you can](/docs/components/unspaced).
-
-```tsx
-<YStack space="$10">
-  {/* The components in Unspaced will not be separated */}
-  <Unspaced>
-    <H1>Title</H1>
-    <Paragraph>Sub-title</Paragraph>
-    <Paragraph>Author: ...</Paragraph>
-    {/* Now you can control the space independently */}
-    <Spacer size="$2" />
-  </Unspaced>
-  <Paragraph>Lorem...</Paragraph>
-  <Paragraph>Ipsum...</Paragraph>
-  <Paragraph>Dolor...</Paragraph>
-</YStack>
-```
-
-#### ScrollView
-
-Tamagui [now exports ScrollView](/docs/components/scroll-view), the exact same as React Native ScrollView but with all the Tamagui style props added.
-
 #### XGroup and YGroup
 
 <HeroContainer tinted>
@@ -592,71 +562,41 @@ Tamagui [now exports ScrollView](/docs/components/scroll-view), the exact same a
 
 The `Group` component has been split into [XGroup and YGroup](/docs/components/group) to match Stacks. It's been upgraded across the board with the ability to be scrollable and to better handle passing children styles.
 
+#### ScrollView
+
+Tamagui [now exports ScrollView](/docs/components/scroll-view), the exact same as React Native ScrollView but with all Tamagui props supported.
+
 ---
+
+## What else is new
 
 ### The Kitchen Sink
 
-The monorepo now includes `apps/kitchen-sink` which is an Expo app that loads every demo you see for every component in the [Docs](/docs/TODO).
-
----
+The monorepo now includes `apps/kitchen-sink`, a native app that demos every component that comes in Tamagui. This has helped us quickly iterate and improve components and their correctness across Android and iOS. Android especially received a wide variety of fixes during the betas.
 
 ### React Native Animation Driver
 
----
+We added a new animation driver, `@tamagui/animations-react-native` that works with the built-in Animation API of React Native. This is in addition to the existing `@tamagui/animations-css` and `@tamagui/animations-reanimated` drivers. The advantages of this driver are that you pay no extra cost for spring animations on the web when you're already using `react-native-web`, and a simpler setup compared to Reanimated.
 
-### Performance
+### SSR and React Server Components
 
-Focus on performance has been a big overarching theme of the beta releases. We've sped up the compiler by about 2x, and the runtime likewise has had an ongoing series of patches that in local tests speed up common use cases likewise by 2-3x.
-
-This is a result of many small changes. For example, on the frontend we changed our style strategy which took extensive refactoring in three stages:
-
-We started with entirely relying on React Native Web's internal style engine, but found it was a big bottleneck both to our correctness, and speed. We instead forked their style system internally, and then step by step went about merging it into our own.
-
-Today the style loop now does 3^N less loops over styles than vanilla React Native.
-
-Animations got a big performance boost by avoiding double-rendering each time they change. This was necessary before because we didn't want to pay the cost of loading all the extra hooks that animations need for every single component, so we had to load a sub-component that would callback when animations were present, leading to a signficant cost only for animated components. Instead, we've landed on a compromise (that will likely be able to be removed in a future release): if a component is going to be animated, always keep the `animation` prop on that component (just set to null, undefined, or false when animations should be off).
-
----
-
-### Community
-
-- Sponsors
-- Community page
-- Figma
-- Discord
-- Starter repos
-
----
-
-### SSR
-
-Tamagui is the only UI kit that works on both React Native and React Native Web today that supports SSR across every feature and components, right out of the box. During the beta we landed a wide variety of correctness fixes for this functionality.
-
----
+During the beta we landed a wide variety of correctness fixes, tests and runtime safeguards for SSR and landed early support for React Server Components. We've tested them in early versions of Hydrogen and Next.js and they should generally work when the environment variable `ENABLE_RSC` is set.
 
 ### Vite Plugin + Vite Compiler
 
----
-
-### React Server Components
-
----
+We've landed Vite support. Check out [the Vite guide](/docs/guides/vite) for how to install Tamagui with Vite.
 
 ### react-native-web-lite
 
----
+As a temporary measure, we released a modernized version of `react-native-web`. It improves tree shaking, lands complete concurrent support for React 18, and strips out a few deprecated areas.
 
 ### Concurrent Mode Support
 
-(ties into react-native-web-lite)
-
-We've updated Tamagui's base React version to be 18, and landed a large amount of fixes relating to concurrent mode.
-
----
+We've updated Tamagui's base React version to be 18, and landed a large amount of fixes relating to concurrent mode. Every feature in Tamagui now fully supports concurrent mode, and with `react-native-web-lite`, so does every feature in the React Native API surface for web.
 
 ### `@tamagui/next-theme`
 
----
+See the [Next.js guide](/docs/guides/next-js) for more on how to use this helpful library that automatically handles light/dark/system color scheme preferences.
 
 ### `@tamagui/theme-base` upgrades
 
@@ -664,35 +604,33 @@ The default theme package now includes `_active` sub-themes, paving the way for 
 
 It also now includes theme values for `color1` => `color12` as part of each theme. This gives you granular access outside of the more specific color values like `background`, or `borderColor`.
 
----
-
----
-
 ### Starter repos
 
-`create-tamagui` underwent some big improvements that will set it up to be much more useful going forward. We moved official starters to be part of the actual Tamagui monorepo itself, which lets us much more rapidly iterate on them, and more importantly, to have them integrated into CI and tested before each release.
+`create-tamagui` underwent some big improvements that will set it up to be much more useful going forward. We moved official starters to be part of the actual Tamagui monorepo itself, which lets us much more rapidly iterate on them, and more importantly, to have them integrated into CI to be tested end-to-end before each release.
 
 It also now leverages a custom home directory `~/.tamagui` directory that will keep track of the last version you used in each app. In the future we can use this to give you automatic upgrade help, and diffs of changes you'll want to make.
 
-The `next-expo-solito` starter repo has had extensive polish as well, with fixes for using Expo EAS out of the box.
+The `next-expo-solito` starter repo has had extensive polish as well, simplifying the setup, removing the need for watch commands, and properly building to production across all features for web, iOS and Android.
 
 ---
+
+## Etc
+
+### Usage in production
+
+Tamagui now has several apps in production in both app stores. One larger one built by a household name company is currently under NDA, but we can announce soon. We're proud of how active the Discord has become with users building high quality apps!
 
 ### Correctness
 
-More than any other section in this release, the biggest amount of effort for 1.0 went into correctness. Nearly every day, Tamagui has steadily landed fixes across every feature and component.
+More than any other section in this release, the biggest amount of effort for 1.0 went into correctness. Tamagui has steadily landed fixes across every feature and component since Beta, and the difference between early this year and now is astounding, with a whole ton of edge cases handled automatically now.
 
-Speaking personally, I'm most proud of the gains made here. The components introduced before the beta were ambitious, and they continued at a rapid pace during beta.
+### Community
 
----
+We've been building a great community [especially on Discord](https://discord.gg/4qh6tdcVDa). Check out [the Community page](/community) for more information including starter kits and Figma files.
 
 ### Documentation
 
-The docs have undergone continuous improvements. Some highlights are:
-
-- The [compiler now has an extensive article breaking down the whys and hows of how it works](/docs/intro/why-a-compiler).
-
----
+The docs have undergone continuous improvements. The compiler now has [an extensive article breaking down the whys and hows of how it works](/docs/intro/why-a-compiler). And all the guides have been iterated on and tested from scratch to verify they work.
 
 ### Testing
 
@@ -700,17 +638,13 @@ We've expanded our testing signficantly, with CI now passing on every merge into
 
 We now have a custom `release.ts` script that controls our release process as well, ensuring releases are tightly coordinated and that starters are integration tested as part of CI.
 
----
+### Acknowledgements
 
-### Benchmarks
+This release once again uses inspiration and OSS code from a variety of other libraries and developers. We've had 38 new contributors, which is amazing, and some significant correctness improvements have landed from outside contributions in the last month.
 
----
+A special thanks to [Codingscape](https://codingscape.com), [BeatGig](https://beatgig.com), and [QuestPortal](https://www.questportal.com) for their early large sponsorships ❤️. And a big thank you to all the individual sponsors!
 
-### Apps in production
-
-We now have multiple users deploying larger scale apps with Tamagui in production.
-
----
+A huge thanks to [Radix](https://www.radix-ui.com/), [Floating UI](https://floating-ui.com/), [Moti](https://moti.fyi), and [Framer Motion](https://github.com/framer/motion) for their inspiration and snippets of code that helped bring Tamagui across the line.
 
 <Image
   title="Tamagui v1"
@@ -722,10 +656,6 @@ We now have multiple users deploying larger scale apps with Tamagui in productio
   mb="$4"
 />
 
-### Acknowledgements
+### Join the community
 
-This release once again is inspired by or forks code from a variety of other libraries and developers.
-
-I'd like to thank:
-
-A note on version 1: Tamagui is a big monorepo with many packages and components. We're cutting version 1 because the API's are stable and all the core and compiler packages have received extensive testing and stability work such that every feature works across all platforms reliably - a huge task we can confidently call complete. **That said, when it comes to the Tamagui components, some are more stable than others**. This is more true on Android, where we've invested less overall time towards bug fixes. We could have delayed v1 to stabilize these components, but the truth is that for the dramatic majority of Tamagui everything is at or better than what you'd expect from a stable release. And releasing every package under the same version has immense benefits both for us as developers, and any user as a consumer.
+<SocialLinksRow />

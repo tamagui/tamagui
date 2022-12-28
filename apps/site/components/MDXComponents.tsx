@@ -1,5 +1,5 @@
 import { ThemeTint } from '@tamagui/logo'
-import { Link } from '@tamagui/lucide-icons'
+import { Heart, Link } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import NextRouter from 'next/router'
 import rangeParser from 'parse-numeric-range'
@@ -43,11 +43,12 @@ import { Highlights } from './Highlights'
 import { HR } from './HR'
 import { LI } from './LI'
 import { MediaPlayer } from './MediaPlayer'
-import { Notice } from './Notice'
+import { Notice, NoticeFrame } from './Notice'
 import { OffsetBox } from './OffsetBox'
 import { Preview } from './Preview'
 import { PropsTable } from './PropsTable'
 import { SocialLinksRow } from './SocialLinksRow'
+import { SponsorButton } from './SponsorButton'
 import { SubTitle } from './SubTitle'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
@@ -479,6 +480,38 @@ export const components = {
   },
 
   DemoButton: () => <Button>Hello world</Button>,
+
+  SponsorButton,
+
+  SponsorNotice: () => {
+    return (
+      <NoticeFrame theme="red">
+        <YStack maw="100%" space>
+          <H4 color="$color10" fontFamily="$silkscreen">
+            Support Tamagui 👋
+          </H4>
+          <YStack ov="hidden" f={1} o={0.85} space>
+            <Paragraph>
+              Tamagui is fully OSS, self-funded and built by{' '}
+              <a href="https://twitter.com/natebirdman" target="_blank">
+                me
+              </a>
+              .
+            </Paragraph>
+            <Paragraph>
+              Commercial add-ons to support ongoing development are in development, but
+              until then, please do support me by sponsoring me on Github if you enjoy
+              Tamagui.
+            </Paragraph>
+            <Paragraph>
+              You'll get early access to some very exciting new stuff!
+            </Paragraph>
+            <SponsorButton />
+          </YStack>
+        </YStack>
+      </NoticeFrame>
+    )
+  },
 }
 
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
