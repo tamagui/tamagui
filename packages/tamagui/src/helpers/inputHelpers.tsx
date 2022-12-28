@@ -32,7 +32,9 @@ export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
   const { props } = extras
   const buttonStyles = getButtonSized(val, extras)
   const fontStyle = getFontSized(val, extras)!
-  const minHeight = (props.numberOfLines || 1) * getVariableValue(fontStyle.lineHeight)
+  const height = props.numberOfLines
+    ? (props.numberOfLines || 1) * getVariableValue(fontStyle.lineHeight)
+    : 'auto'
   const paddingVertical = stepTokenUpOrDown(extras.tokens.space, val, -2, [2])
   const paddingHorizontal = stepTokenUpOrDown(extras.tokens.space, val, -1, [2])
   return {
@@ -40,6 +42,6 @@ export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
     ...fontStyle,
     paddingVertical,
     paddingHorizontal,
-    minHeight,
+    height,
   }
 }
