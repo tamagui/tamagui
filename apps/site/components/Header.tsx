@@ -202,7 +202,7 @@ export function HeaderContents(props: HeaderProps) {
 
             <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
               <YStack
-                $xxs={{ maw: 0, mah: 0, ov: 'hidden', mr: '$-4' }}
+                $xs={{ maw: 0, mah: 0, ov: 'hidden', mr: '$-6' }}
                 p="$2"
                 opacity={0.7}
                 hoverStyle={{ opacity: 1 }}
