@@ -12,6 +12,7 @@ import {
   mergeEvent,
   styled,
   themeable,
+  useDidFinishSSR,
   useEvent,
   useIsomorphicLayoutEffect,
   useThemeName,
@@ -204,14 +205,16 @@ const useSheetContoller = () => {
 
 export const Sheet = withStaticProperties(
   forwardRef<View, SheetProps>(function Sheet(props, ref) {
+    const hydrated = useDidFinishSSR()
     const { isShowingNonSheet } = useSheetContoller()
 
     /**
      * Performance is sensitive here so avoid all the hooks below with this
      */
-    if (isShowingNonSheet) {
+    if (isShowingNonSheet && hydrated !== false) {
       return null
     }
+
     return <SheetImplementation ref={ref} {...props} />
   }),
   sheetComponents

@@ -14,22 +14,19 @@ export function Theme(props: ThemeProps) {
   }
 
   const isRoot = !!props['_isRoot']
-  const { name, theme, themeManager, isNewTheme, className } = useChangeThemeEffect(
-    props,
-    isRoot
-  )
-
+  const { name, theme, themeManager, className } = useChangeThemeEffect(props, isRoot)
   const disableThemeClass = props.disableThemeClass
   const missingTheme = !(name && theme)
 
   // memo here, changing theme without re-rendering all children is a critical optimization
   // may require some effort of end user to memoize but without this memo they'd have no option
   let contents = useMemo(() => {
-    const next = props['data-themeable']
-      ? React.cloneElement(props.children, { ['data-themeable']: true })
-      : props.children
-
-    return missingTheme ? next : wrapThemeManagerContext(next, themeManager)
+    return wrapThemeManagerContext(
+      props['data-themeable']
+        ? React.cloneElement(props.children, { ['data-themeable']: true })
+        : props.children,
+      themeManager
+    )
   }, [missingTheme, props.children, themeManager])
 
   if (process.env.NODE_ENV === 'development' && missingTheme) {
@@ -66,9 +63,7 @@ export function wrapThemeManagerContext(
   shouldReset?: boolean
 ) {
   // be sure to memoize themeManager to avoid reparenting
-  if (!themeManager) {
-    return children
-  }
+  if (!themeManager) return children
   // be sure to memoize shouldReset to avoid reparenting
   let next = children
   // TODO likely not necessary if we do reset logic now in useTheme?

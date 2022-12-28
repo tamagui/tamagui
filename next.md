@@ -1,12 +1,12 @@
 1.0 launch:
 
-- algolia not indexing lucide icons / new stuff
+- fix small bugs on mobile blog post
 - sponsor promo
 - mailing list
-- runthrough docs a handful of times
 
 1.0 post launch:
 
+- algolia not indexing lucide icons / new stuff
 - keyboard search select bug
 - variants intellisense autocomplete not suggesting, but types are right
 - canary release channel
@@ -28,6 +28,7 @@
 
 1.1
 
+- all: unset or way to unstyle things (unstyle: true)
 - https://github.com/mwood23/nx-tamagui-next-repro
 - #beatgig - popover not closing
 - fix alt themes to be more subtle and go less strong to more strong
@@ -56,8 +57,6 @@
 
 inbox
 
-- textarea shifts on focus
-
 - dynamic eval bundle of smallish fixes: 
   - hash file contents cache
   - dont write it as a file, use node vm
@@ -68,7 +67,6 @@ inbox
   - https://simonhearne.com/2021/layout-shifts-webfonts/#reduce-layout-shift-with-f-mods
 
 - drag on switch
-- sheets can be way faster, they listen for layout/windowdimensions and re-render constnatly, but whe closed that could be ignored, just needs one level more of wrapping and react memo stuff
 - prebuild option
   - de-dupes css
   - fixes next.js next load css
@@ -88,9 +86,7 @@ inbox
 - TestFontTokensInVariants types not autocompleting in variants... but showing properly on hover/type property
 - pass Size down context (see Group) is this just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)?
 - kitchen sink snack on site
-- move to object style extraction to remove concatClassName
 - what works for compilation / examples
-- prop ordering
 - @tamagui/sx
 - @tamagui/tailwind
 - pass Size down context (see Group) but really this is just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)

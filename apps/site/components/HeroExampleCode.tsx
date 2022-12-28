@@ -1,4 +1,4 @@
-import { useTint } from '@tamagui/logo'
+import { ThemeTint, useTint } from '@tamagui/logo'
 import { FastForward } from '@tamagui/lucide-icons'
 import { memo, useState } from 'react'
 import { Button, H5, Paragraph, ScrollView, XGroup, XStack, YStack } from 'tamagui'
@@ -15,7 +15,6 @@ export function HeroExampleCode({
   examples: any
   onlyDemo?: boolean
 }) {
-  const { tint } = useTint()
   const [activeIndex, setActiveIndex] = useState(0)
   const activeExample = examples[activeIndex]
   const subtitles = [
@@ -39,36 +38,37 @@ export function HeroExampleCode({
           </YStack>
         )}
 
-        <XGroup
-          scrollable
-          bordered
-          bc="$color2"
-          chromeless
-          theme={tint as any}
-          maxWidth="100%"
-          als="center"
-          {...(onlyDemo && {
-            mt: '$-6',
-          })}
-        >
-          {examples.map((example, i) => {
-            return (
-              <Button
-                accessibilityLabel="See example"
-                onPress={() => setActiveIndex(i)}
-                theme={i === activeIndex ? 'active' : null}
-                o={i === activeIndex ? 1 : 0.5}
-                key={i}
-                borderRadius={0}
-                size="$3"
-                fontFamily="$silkscreen"
-                chromeless
-              >
-                {example.name}
-              </Button>
-            )
-          })}
-        </XGroup>
+        <ThemeTint>
+          <XGroup
+            scrollable
+            bordered
+            bc="$color2"
+            chromeless
+            maxWidth="100%"
+            als="center"
+            {...(onlyDemo && {
+              mt: '$-6',
+            })}
+          >
+            {examples.map((example, i) => {
+              return (
+                <Button
+                  accessibilityLabel="See example"
+                  onPress={() => setActiveIndex(i)}
+                  theme={i === activeIndex ? 'active' : null}
+                  o={i === activeIndex ? 1 : 0.5}
+                  key={i}
+                  borderRadius={0}
+                  size="$3"
+                  fontFamily="$silkscreen"
+                  chromeless
+                >
+                  {example.name}
+                </Button>
+              )
+            })}
+          </XGroup>
+        </ThemeTint>
 
         <XStack
           pos="relative"

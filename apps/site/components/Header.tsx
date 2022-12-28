@@ -19,6 +19,7 @@ import {
   useMedia,
 } from 'tamagui'
 
+import { AlphaButton } from './AlphaButton'
 import { ColorToggleButton } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { DocsMenuContents } from './DocsMenuContents'
@@ -127,7 +128,7 @@ export function HeaderContents(props: HeaderProps) {
           <SponsorButton tiny />
         </YStack>
 
-        {/* {!props.disableNew && <AlphaButton />} */}
+        {!props.disableNew && <AlphaButton />}
 
         {isInSubApp && (
           <NextLink href="/">
@@ -343,7 +344,6 @@ const SmallMenu = React.memo(() => {
             <HeaderLinks forceShowAllLinks />
             <Separator my="$4" w="100%" />
             <DocsMenuContents />
-            <YStack h={400} />
           </YStack>
         </Popover.ScrollView>
       </Popover.Content>

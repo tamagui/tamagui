@@ -1,7 +1,13 @@
 import { NextLink } from 'components/NextLink'
-import { Button } from 'tamagui'
+import { Button, useMedia } from 'tamagui'
 
 export const AlphaButton = () => {
+  const media = useMedia()
+
+  if (media.md) {
+    return null
+  }
+
   return (
     <NextLink href="/blog/version-one">
       <Button

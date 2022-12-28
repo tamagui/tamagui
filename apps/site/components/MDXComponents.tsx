@@ -50,6 +50,7 @@ import { PropsTable } from './PropsTable'
 import { SocialLinksRow } from './SocialLinksRow'
 import { SponsorButton } from './SponsorButton'
 import { SubTitle } from './SubTitle'
+import { TamaguiCard } from './TamaguiCard'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
@@ -156,6 +157,9 @@ export const components = {
       <SocialLinksRow />
     </YStack>
   ),
+
+  Wide: (props) => <YStack mx="$-8">{props.children}</YStack>,
+
   Table,
   TableCell,
   TableHighlight,
@@ -245,7 +249,7 @@ export const components = {
     return (
       <Paragraph
         tag="p"
-        size={large ? '$9' : '$8'}
+        size={large ? '$9' : '$7'}
         className={'intro-paragraph' + (large ? ' large' : '')}
         my="$3"
         fow={large ? '200' : '300'}
@@ -255,6 +259,9 @@ export const components = {
       </Paragraph>
     )
   },
+
+  Grid: (props) => <XStack flexWrap="wrap" jc="space-between" {...props} />,
+  Card: TamaguiCard,
 
   Note: (props) => (
     <YStack
@@ -276,7 +283,7 @@ export const components = {
       color="$color11"
       tag="span"
       als="center"
-      fow="200"
+      fow="600"
       fontSize="$2"
       {...props}
     />

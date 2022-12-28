@@ -12,12 +12,12 @@ poster: banner-one.jpg
 </IntroParagraph>
 
 <IntroParagraph>
-  Tamagui fixes these three downsides with a React style library that works with a novel
-  optimizing compiler. The compiler output often bests hand-crafted CSS while still
-  letting you ship fast with typed inline styles and a powerful style interface.
+  Tamagui introduces a novel optimizing compiler for React that evaluates your code at
+  build-time, turning heavy JS into flatter trees and much faster CSS. The result is more
+  code share %, less dev time, and lighter, faster apps.
 </IntroParagraph>
 
-Tamagui does advanced optimization through partial evaluation, CSS extraction, and ultimately tree-flattening. Where it optimizes, things get a lot faster:
+Tamagui's optimizing compiler makes advanced optimizations using partial evaluation, CSS extraction, and ultimately tree-flattening. Where it optimizes, things get a lot faster:
 
 <Spacer />
 <Spacer />
@@ -34,11 +34,6 @@ Tamagui comes in three parts:
 
 [**Tamagui UI**](#overview-of-tamagui) (`tamagui`) is a component kit built on top of the incredibly powerful theme primitives of `core`. That, alongside composable-component APIs and complete size control enables a new level of control not seen before in a UI kit. [Skip to what's new](#whatsnew-in-tamagui).
 
-The next section gives a high level code overview of how Tamagui works.
-
-<Spacer />
-<SponsorNotice />
-
 ---
 
 ## Overview
@@ -46,9 +41,14 @@ The next section gives a high level code overview of how Tamagui works.
 Lets get familiar with both `@tamagui/core` (the styling library) and `@tamagui/static` (the compiler), and how the latter optimizes the former.
 
 <Spacer />
-<TamaguiExamplesCode />
+<Wide>
+  <TamaguiExamplesCode />
+</Wide>
 
 The key to Tamagui's performance gains lie in **view flattening** or tree-flattening: the compiler analyzes code (even across module boundaries) and evaluates styled components away using both the AST and Node VM code evaluation. It will fully flatten custom styled components (like `<Circle />`) into plain old `<div />` (or `<View />` on native).
+
+<Spacer />
+<SponsorNotice />
 
 ---
 
@@ -197,7 +197,7 @@ Finally, the [Stack and Text components](/docs/core/stack-and-text) work with `s
 
 Over a thousand bugfixes since beta with large performance and memory improvements, much higher test coverage, and compatibility with the latest and greatest in React and React Native.
 
-### Compatible with the latest
+### Compatibility
 
 Across all of Tamagui, we've bumped support to the latest versions. Due to improvements in react-native-web 18, we were also able to dramatically simplify setup, no longer having to patch the library to support classnames.
 
@@ -369,7 +369,7 @@ The compiler uses `babel` to parse and optimize components, which it can get awa
 
 During the beta we landed many performance improvements bringing average parse time down to below 6ms for a longer file on a modern laptop. By default now Tamagui avoids parsing many more files through quick heuristics. It's now also fully thread-safe, uses more caching, and has been fine-tuned for memory usage.
 
-### Analyzing skill
+### Coverage
 
 Previously, Tamagui Static only knew how to optimize components found in your separated design system package. But it's both common and desirable to have one-off `styled()` definitions that are just used for small areas of your app that live alongside those areas, outside your design system.
 
@@ -612,10 +612,6 @@ It also now leverages a custom home directory `~/.tamagui` directory that will k
 
 The `next-expo-solito` starter repo has had extensive polish as well, simplifying the setup, removing the need for watch commands, and properly building to production across all features for web, iOS and Android.
 
----
-
-## The rest
-
 ### Usage in production
 
 Tamagui now has several apps in production in both app stores. One larger one built by a household name company is currently under NDA, but we can announce soon. We're proud of how active the Discord has become with users building high quality apps!
@@ -626,7 +622,7 @@ More than any other section in this release, the biggest amount of effort for 1.
 
 ### Community
 
-We've been building a great community [especially on Discord](https://discord.gg/4qh6tdcVDa). Check out [the Community page](/community) for more information including starter kits and Figma files.
+We've been building a great community, [especially on Discord](https://discord.gg/4qh6tdcVDa). Check out [the Community page](/community) for more information including diverse community-maintained starter kits and Figma files.
 
 ### Documentation
 
@@ -634,41 +630,59 @@ The docs have undergone continuous improvements. The compiler now has [an extens
 
 ### Testing
 
-We've expanded our testing signficantly, automated releases, added stricter linting and fuller integration tests across more platforms. The `release.ts` script is much imrpoved and dependencies checked for a variety of errors in publishing.
+We've expanded our testing signficantly: more tests, automated releases, stricter linting and fuller integration tests. The internal `release.ts` script checks many more common pitfalls.
 
 ---
 
 ## Going forward
 
-Tamagui is stable and free of all blocking bugs across every feature, but there's a ton to go to make every part of it simpler, easier, faster, type-correct and generally correct.
+Tamagui is stable and free of all blocking bugs across every feature, but there's a so much more to go to make every part of it simpler, lighter, faster, and more correct both in types and behavior.
 
-Writing about what comes after 1.0 is a blog post to itself, and we're planning on a public Roadmap. For now, [next.md](https://github.com/tamagui/tamagui/blob/master/next.md) is a living document of upcoming features and fixes.
+Writing about what comes after 1.0 is a blog post to itself. For now, [next.md](https://github.com/tamagui/tamagui/blob/master/next.md) is a living document of upcoming features and fixes.
 
-I'd like to make this project work financially long-term, so there are plans for a few very interesting add-ons that provide powerful functionality when working on a team, and dealing with advanced theme customization.
+The next few minor releases will focus on improving types, accessibility, animations, test coverage, and solidifying the newer components.
 
-One way I'm experimenting with that is granting early access to new components, features, and the upcoming Studio and Docs apps at a discounted rate.
+There are many exciting features on the table as well, including:
 
-<SponsorNotice />
+- Improving dynamic inline evaluation
+- Container queries
+- Descendent styling
+- `tamagui build` - build to plain css and JS for compatibility with any bundler
+- Adding the `native` prop for platform-specific output on Select, Dialog, Popover, Sheet and more.
+- A new `<Variant />`
+
+---
+
+## Sponsorship
+
+I love working on Tamagui and would like to make this project work financially long-term. I'm hesitant to take VC money when I think there's a clear path to profitability by growing it slowly.
+
+The plan is to build out a few things, all three of which I've made significant progress towards:
+
+- 🥡 Takeout. Well-made components, screens, color palettes and themes, plus well packages icons and fonts.
+- 📚 Docs. Give your design system and UI kit a beautiful docs site just like tamagui.dev, without setup.
+- 🖼️ Studio - A frontend realtime editor for colors, themes, tokens, default styles and more. Hooks into your app at runtime and exports to git-friendly JSON. Import and export to Figma.
+
+The plan is to keep these projects OSS, with a delayed open source model and optional cloud hosting. I think this is a fair model, so I'm giving it a shot.
+
+Basically, **sponsors get early access to all of this**. There will also be early-releases of in-development components too, and high level sponsors get chat support and priority bugfixes.
+
+Please do consider sponsoring Tamagui development!
+
+<Spacer />
+<SponsorButton />
 
 ---
 
 ## Acknowledgements
 
-This release once again uses inspiration and OSS code from a variety of other libraries and developers. We've had 38 new contributors, which is amazing, and some significant correctness improvements have landed from outside contributions in the last month.
+We've had 38 new contributors since early this year, exponentially increasing! Thanks to all of them, and also to the many QA testers that join in our Discord chat every day :).
 
-A special thanks to [Vercel](https://vercel.com), [Codingscape](https://codingscape.com), [QuestPortal](https://www.questportal.com) [BeatGig](https://beatgig.com) and all the individuals who helped with incredibly significant early sponsorships ❤️.
+Early sponsors have made a huge difference: I owe a large thank you to [Vercel](https://vercel.com), [Codingscape](https://codingscape.com), [QuestPortal](https://www.questportal.com) and [BeatGig](https://beatgig.com), the first corporate sponsors ❤️.
 
-A huge thanks to [Radix](https://www.radix-ui.com/), [Floating UI](https://floating-ui.com/), [Moti](https://moti.fyi), and [Framer Motion](https://github.com/framer/motion) which are used or inspired parts of Tamagui.
+Tamagui draws inspiration and small areas of code from some incredible other libraries: [Radix](https://www.radix-ui.com/) provided much of the composable component APIs, [Floating UI](https://floating-ui.com/) handles all of the floating elements positioning, [Moti](https://moti.fyi) which served as a start point for the animation drivers, and [Framer Motion](https://github.com/framer/motion) for the nifty AnimatePresence functionality.
 
-<Image
-  title="Tamagui v1"
-  src="/banner-one.jpg"
-  size="hero"
-  height={276}
-  width={632}
-  resizeMode="contain"
-  mb="$4"
-/>
+---
 
 ### Join the community
 

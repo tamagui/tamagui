@@ -51,8 +51,6 @@ if (typeof navigator !== 'undefined') {
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
-  const router = useRouter()
-  const isResponsiveDemo = router.pathname.startsWith('/responsive-demo')
 
   // useMemo below to avoid re-render on dark/light change
   return (
@@ -81,7 +79,6 @@ export default function App(props: AppProps) {
           defaultTheme={theme}
         >
           <SearchProvider>
-            {!isResponsiveDemo && <Header />}
             <Suspense fallback={null}>
               {useMemo(() => {
                 return <ContentInner {...props} />
@@ -96,15 +93,18 @@ export default function App(props: AppProps) {
 
 function ContentInner({ Component, pageProps }: AppProps) {
   const router = useRouter()
+  const isResponsiveDemo = router.pathname.startsWith('/responsive-demo')
   const isDocs = router.pathname.startsWith('/docs')
   const isStudio = router.pathname.startsWith('/studio')
   const isDemo = router.pathname.startsWith('/responsive-demo')
+  const isTest = router.pathname.startsWith('/test')
   // @ts-ignore
   const getLayout = Component.getLayout || ((page) => page)
   return getLayout(
     <>
+      {!isTest && !isResponsiveDemo && <Header />}
       <Component {...pageProps} />
-      {!isDocs && !isDemo && !isStudio && <Footer />}
+      {!isTest && !isDocs && !isDemo && !isStudio && <Footer />}
     </>
   )
 }

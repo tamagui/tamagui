@@ -1,6 +1,6 @@
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
-import { SliderDemo } from '@tamagui/demos'
+import { SelectDemo, SliderDemo } from '@tamagui/demos'
 import { setTintFamily } from '@tamagui/logo'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'

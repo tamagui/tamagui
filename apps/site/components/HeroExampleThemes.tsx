@@ -176,12 +176,10 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
       {useMemo(() => {
         return (
           <ContainerLarge position="relative" space="$3">
-            <HomeH2>
-              A <span className="rainbow clip-text">colorful</span> revolution
-            </HomeH2>
+            <HomeH2>Smart themes and sub-themes down to the component.</HomeH2>
             <HomeH3>
-              Fully typed themes with nested sub-themes and component themes, all compiled
-              to CSS that avoids rendering.
+              Themes that act like CSS variables, overriding as they descend and compiled
+              to CSS to avoid re-renders.
             </HomeH3>
           </ContainerLarge>
         )

@@ -126,3 +126,7 @@ Contains the content. Extends [YStack](/docs/components/stacks).
 Shows a handle above the frame by default, on tap it will cycle between `snapPoints` but this can be overriden with `onPress`.
 
 Extends [XStack](/docs/components/stacks).
+
+### Notes
+
+For Android you need to manually re-propagate any context when using `modal`. This is because React Native doesn't support portals yet.

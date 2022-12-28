@@ -38,6 +38,7 @@
     "test:demos": "yarn workspace @tamagui/demos test",
     "release": "node -r esbuild-register ./scripts/release.ts",
     "setup": "node -r esbuild-register ./scripts/setup.ts",
+    "docs-bump-version": "node -r esbuild-register ./scripts/docs-bump-version.ts",
     "upgrade:starters": "npm-run-all upgrade:starter upgrade:starters:next upgrade:starters:bench",
     "upgrade:starter": "cd apps/starter && yarn upgrade:tamagui",
     "upgrade:starters:next": "cd starters/next-expo-solito && yarn upgrade:tamagui",
