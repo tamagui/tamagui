@@ -28,6 +28,7 @@
 
 1.1
 
+- https://github.com/mwood23/nx-tamagui-next-repro
 - #beatgig - popover not closing
 - fix alt themes to be more subtle and go less strong to more strong
 - revisit animations, timing animations, loops, document better

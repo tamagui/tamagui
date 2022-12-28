@@ -7,21 +7,33 @@ Tamagui is a full-featured UI kit built on top of `@tamagui/core`.
 
 The instructions here are for `tamagui`, the complete set of components designed to build universal apps. It's fully tree-shakeable, so your bundler should only add components you import.
 
-If you'd rather build your own design system on top of core, [see the Design Systems guide](/docs/guides/design-systems).
+If you'd rather build your own design system on top of core you'd just swap out `tamagui` for `@tamagui/core`. [See the Design Systems guide](/docs/guides/design-systems) for more on how to configure Core.
 
 ### Quick Start
 
-Try out [create-tamagui](/docs/guides/create-tamagui) for a helpful starter template which comes with `@tamagui/shorthands` and `@tamagui/theme-base` for easy default shorthands, themes and tokens.
-
-### Install
+Try out [create-tamagui](/docs/guides/create-tamagui) for a helpful starter template which comes with `@tamagui/shorthands` and `@tamagui/theme-base` for easy default configuration:
 
 ```bash
-npm install tamagui
+npm create tamagui@latest
 ```
 
-### Environment variables
+This gives you everything pre-configured for full-stack apps with shared code.
 
-Be sure to set the environment variable `TAMAGUI_TARGET` to the string `web` or `native`, respectively.
+## Install
+
+```bash
+yarn add tamagui
+```
+
+Be sure to set the environment variable `TAMAGUI_TARGET` to the string `web` or `native`, respectively. You can usually just do this in your package.json script, swapping out the command for whichever bundler you use:
+
+```json
+{
+  "scripts": {
+    "dev": "TAMAGUI_TARGET=web webpack"
+  }
+}
+```
 
 ### Config file
 
@@ -30,9 +42,9 @@ Create a `tamagui.config.ts` file at the root of your project.
 From there you'll export default the result of `createTamagui`, like so:
 
 ```tsx
-import { createTamagui } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/theme-base'
+import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   themes,
