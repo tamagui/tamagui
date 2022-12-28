@@ -27,6 +27,7 @@ import { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
 import { SearchButton } from './SearchButton'
 import { SeasonToggleButton } from './SeasonToggleButton'
+import { SponsorButton } from './SponsorButton'
 import { useDocsMenu } from './useDocsMenu'
 
 export function Header() {
@@ -122,6 +123,10 @@ export function HeaderContents(props: HeaderProps) {
           </XGroup>
         </TooltipGroup>
 
+        <YStack $xxs={{ dsp: 'none' }}>
+          <SponsorButton tiny />
+        </YStack>
+
         {/* {!props.disableNew && <AlphaButton />} */}
 
         {isInSubApp && (
@@ -160,7 +165,7 @@ export function HeaderContents(props: HeaderProps) {
         h={40}
         jc="flex-end"
         miw={160}
-        $xxs={{ miw: 150 }}
+        $xs={{ miw: 130 }}
         pointerEvents="auto"
         tag="nav"
       >
@@ -196,7 +201,12 @@ export function HeaderContents(props: HeaderProps) {
             <SearchButton size="$2" br="$10" elevation="$4" />
 
             <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
-              <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
+              <YStack
+                $xxs={{ maw: 0, mah: 0, ov: 'hidden', mr: '$-4' }}
+                p="$2"
+                opacity={0.7}
+                hoverStyle={{ opacity: 1 }}
+              >
                 <VisuallyHidden>
                   <Text>Github</Text>
                 </VisuallyHidden>
