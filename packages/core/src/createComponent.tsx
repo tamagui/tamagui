@@ -20,7 +20,6 @@ import React, {
   createElement,
   forwardRef,
   memo,
-  startTransition,
   useCallback,
   useContext,
   useEffect,

@@ -11,5 +11,5 @@ export declare const useTheme: (props?: ThemeProps) => ThemeParsed;
 export declare const getThemeManager: (theme: any) => ThemeManager | undefined;
 export declare const getThemeIsNewTheme: (theme: any) => ThemeManager | undefined;
 export declare const activeThemeManagers: Set<ThemeManager>;
-export declare const useChangeThemeEffect: (props: ThemeProps, root?: boolean) => ChangedThemeResponse;
+export declare const useChangeThemeEffect: (props: ThemeProps, root?: boolean, shouldUpdate?: () => boolean) => ChangedThemeResponse;
 //# sourceMappingURL=useTheme.d.ts.map

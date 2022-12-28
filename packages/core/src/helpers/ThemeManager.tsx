@@ -101,9 +101,9 @@ export class ThemeManager {
     state: ThemeManagerState | null = this.state
   ) {
     if (!nextState?.theme || nextState.theme === state?.theme) {
-      return null
+      return false
     }
-    return nextState
+    return true
   }
 
   getState(props = this.props, parentManager = this.parentManager) {

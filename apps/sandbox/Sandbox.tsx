@@ -1,5 +1,7 @@
-// import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
+
+// import '@tamagui/core/reset.css'
+import './wdyr'
 
 import {
   AlertDialogDemo,
@@ -8,7 +10,7 @@ import {
   SheetDemo,
   SliderDemo,
 } from '@tamagui/demos'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { OpaqueColorValue } from 'react-native'
 import {
   Button,
@@ -34,6 +36,24 @@ if (typeof require !== 'undefined') {
 
 // eslint-disable-next-line no-console
 console.log('[Sandbox] getMedia().sm', getMedia().sm)
+
+function ThemeChangeRenderTest() {
+  const [theme, setTheme] = useState('blue')
+
+  const memoized = useMemo(() => <Square debug size={100} bc="$background" />, [])
+
+  return (
+    <Theme name={theme as any}>
+      <YStack>
+        <Button onPress={() => setTheme(theme === 'blue' ? 'red' : 'blue')}>
+          Change
+        </Button>
+
+        {memoized}
+      </YStack>
+    </Theme>
+  )
+}
 
 type X = ColorTokens | ThemeValueFallback | OpaqueColorValue | undefined
 const y: X = ''
@@ -125,6 +145,8 @@ export const Sandbox = () => {
           {/* <DialogDemo /> */}
 
           {/* <SheetDemo /> */}
+
+          <ThemeChangeRenderTest />
 
           <Button
             onPress={async () => {
