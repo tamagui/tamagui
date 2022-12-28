@@ -42,7 +42,6 @@ function getDefaultThemeProxied() {
 
 interface UseThemeState {
   keys: Set<string>
-  isRendering: boolean
 }
 
 export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
@@ -54,22 +53,13 @@ export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
   if (isClient && !state.current) {
     state.current = {
       keys: new Set(),
-      isRendering: true,
     }
-  }
-
-  // track key usage
-  if (isClient) {
-    state.current.isRendering = true
-    useIsomorphicLayoutEffect(() => {
-      state.current.isRendering = false
-    })
   }
 
   const { name, theme, themeManager, className, isNewTheme } = useChangeThemeEffect(
     props,
     false,
-    isClient ? () => state.current.isRendering || state.current.keys.size > 0 : undefined
+    isClient ? () => state.current.keys.size === 0 : undefined
   )
 
   if (process.env.NODE_ENV === 'development') {
@@ -158,12 +148,12 @@ function getThemeProxied({
         return theme[key]
       }
       const val = themeManager.getValue(key)
-      if (val) {
+      if (val && state) {
         if (isClient) {
           return new Proxy(val as any, {
             get(_, subkey) {
-              if (subkey === 'val' && state?.current?.isRendering) {
-                state.current.keys.add(key as any)
+              if (subkey === 'val') {
+                state.current!.keys.add(key as any)
               }
               return Reflect.get(val, subkey)
             },
@@ -188,7 +178,7 @@ export const activeThemeManagers = new Set<ThemeManager>()
 export const useChangeThemeEffect = (
   props: ThemeProps,
   root = false,
-  shouldUpdate?: () => boolean
+  disableUpdate?: () => boolean
 ): ChangedThemeResponse => {
   if (isRSC) {
     // we need context working for this to work well
@@ -280,7 +270,6 @@ export const useChangeThemeEffect = (
   function createState(prev?: State) {
     // returns previous theme manager if no change
     const _ = new ThemeManager(props, root ? 'root' : parentManager)
-
     const isNewTheme = _ !== parentManager
     // prettier-ignore
     if (process.env.NODE_ENV === 'development' && debug) [console.groupCollapsed('useTheme create() isNewTheme', isNewTheme),console.log('parent.state.name', parentManager?.state.name, '\n', 'props', props, '\n', isClient ? parentManager : '', 'getState', isNewTheme && isClient ? _.getState(props) : '', '\n', 'state', isClient ? { ..._.state } : ''),console.groupEnd()]
@@ -296,10 +285,9 @@ export const useChangeThemeEffect = (
   }
 
   function updateState() {
-    if (shouldUpdate?.() === false) {
+    if (disableUpdate?.()) {
       return
     }
-
     const next = themeManager.getState(props, parentManager)
     const shouldChange = themeManager.getStateShouldChange(
       next,

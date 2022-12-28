@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react'
-import { Paragraph, XStack, YStack } from 'tamagui'
+import { Paragraph, XStack, YStack, useDidFinishSSR } from 'tamagui'
 
 const getBarColor = (name: string) => {
   switch (name) {
