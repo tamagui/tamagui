@@ -51,17 +51,25 @@ export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
   }
 
   const state = useServerRef() as React.MutableRefObject<UseThemeState>
-  if (!state.current) {
+  if (isClient && !state.current) {
     state.current = {
       keys: new Set(),
       isRendering: true,
     }
   }
 
+  // track key usage
+  if (isClient) {
+    state.current.isRendering = true
+    useIsomorphicLayoutEffect(() => {
+      state.current.isRendering = false
+    })
+  }
+
   const { name, theme, themeManager, className, isNewTheme } = useChangeThemeEffect(
     props,
     false,
-    () => !state.current.isRendering && state.current.keys.size > 0
+    isClient ? () => state.current.isRendering || state.current.keys.size > 0 : undefined
   )
 
   if (process.env.NODE_ENV === 'development') {
@@ -82,12 +90,6 @@ export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
       console.groupEnd()
     }
   }
-
-  // track key usage
-  state.current.isRendering = true
-  useIsomorphicLayoutEffect(() => {
-    state.current.isRendering = false
-  })
 
   if (!theme) {
     if (process.env.NODE_ENV === 'development') {
@@ -157,14 +159,16 @@ function getThemeProxied({
       }
       const val = themeManager.getValue(key)
       if (val) {
-        return new Proxy(val as any, {
-          get(_, subkey) {
-            if (subkey === 'val' && state?.current?.isRendering) {
-              state.current.keys.add(key as any)
-            }
-            return Reflect.get(val, subkey)
-          },
-        })
+        if (isClient) {
+          return new Proxy(val as any, {
+            get(_, subkey) {
+              if (subkey === 'val' && state?.current?.isRendering) {
+                state.current.keys.add(key as any)
+              }
+              return Reflect.get(val, subkey)
+            },
+          })
+        }
       }
       return val
     },
