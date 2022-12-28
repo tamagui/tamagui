@@ -13,12 +13,11 @@ let server: ProcessPromise | null = null
 const PACKAGE_ROOT = __dirname
 const PACKAGES_ROOT = join(PACKAGE_ROOT, '..')
 
-if (process.env.NODE_ENV === 'test') {
-  if (execSync(`git status --porcelain`).toString().trim()) {
-    console.error(`\n⚠️  -- Must commit changes to git repo before running test --\n`)
-    process.exit(1)
-  }
-}
+// if (process.env.NODE_ENV === 'test') {
+//   if (execSync(`git status --porcelain`).toString().trim()) {
+//     throw new Error(`-- ⚠️ Must commit changes to git repo before running test --`)
+//   }
+// }
 
 process.env.NODE_ENV = 'test'
 
