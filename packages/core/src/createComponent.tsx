@@ -618,7 +618,9 @@ export function createComponent<
     const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
 
     const classList = [
-      hasEnterStyle && state.unmounted && (needsMount || !isClient) ? 't_will-mount' : '',
+      hasEnterStyle && ((state.unmounted && needsMount) || !isClient)
+        ? 't_will-mount'
+        : '',
       componentName ? componentClassName : '',
       fontFamilyClassName,
       themeIsNew ? theme.className : '',

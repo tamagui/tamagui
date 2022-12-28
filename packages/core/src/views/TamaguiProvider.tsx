@@ -32,6 +32,12 @@ export function TamaguiProvider({
     // inject CSS if asked to (not SSR compliant)
     // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useLayoutEffect(() => {
+      // for easier support of hidden-until-js mount animations
+      // user must set t_unmounted on documentElement from SSR
+      if (document.documentElement.classList.contains('t_unmounted')) {
+        document.documentElement.classList.remove('t_unmounted')
+      }
+
       if (disableInjectCSS) return
       const style = document.createElement('style')
       style.appendChild(document.createTextNode(config.getCSS()))

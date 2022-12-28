@@ -212,7 +212,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     tokensParsed,
     parsed: true,
     getCSS: (separator = '\n') => {
-      return `.is_Text .is_Text {display:inline-flex;}
+      return `.t_unmounted .t_will-mount {opacity:0;visibility:hidden;}
+.is_Text .is_Text {display:inline-flex;}
 ._dsp_contents {display:contents;}
 ${themeConfig.cssRuleSets.join(separator)}
 ${themeConfig.themeRuleSets.join(separator)}

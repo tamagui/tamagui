@@ -62,12 +62,7 @@ export default function App(props: AppProps) {
           key="tamagui-animations-mount"
           dangerouslySetInnerHTML={{
             // avoid flash of animated things on enter
-            __html: `!function() {
-  const _ = document.createElement('style')
-  _.innerText = ".t_will-mount { opacity: 0; visibility: hidden; }"
-  document.head.appendChild(_)
-}()
-`,
+            __html: `document.documentElement.classList.add('t_unmounted')`,
           }}
         />
       </NextHead>

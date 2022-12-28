@@ -124,3 +124,21 @@ export default () => {
   return <Button>Change theme (currently: {theme})</Button>
 }
 ```
+
+### Mount animations
+
+Animations that run through JS drivers and have `enterStyle` set will want to add the following script that allows for hiding those animations before the JS runs. This is the "right way" to handle things, as it allows for disabling JS entirely and not accidently hiding all unmounted things. Meanwhile, it still properly avoids a flash of mounted style for SSR pages.
+
+Add this to your `_app.tsx` render output:
+
+```
+<NextHead>
+  <script
+    key="tamagui-animations-mount"
+    dangerouslySetInnerHTML={{
+      // avoid flash of animated things on enter
+      __html: `document.documentElement.classList.add('t_unmounted')`,
+    }}
+  />
+</NextHead>
+```
