@@ -51,7 +51,9 @@ export async function extractToClassNames({
 }: ExtractToClassNamesProps): Promise<ExtractedResponse | null> {
   const tm = timer()
 
-  console.log(`Parsing \n\n --- ${sourcePath} --- \n\n`)
+  if (shouldPrintDebug) {
+    console.log(`Parsing \n\n --- ${sourcePath} --- \n\n`)
+  }
 
   if (typeof source !== 'string') {
     throw new Error('`source` must be a string of javascript')

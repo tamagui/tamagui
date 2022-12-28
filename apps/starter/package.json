@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/starter-app",
+  "name": "@tamagui/starter",
   "private": true,
   "scripts": {
     "native": "cd apps/expo && yarn start",

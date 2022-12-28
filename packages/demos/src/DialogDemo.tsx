@@ -4,6 +4,7 @@ import {
   Button,
   Dialog,
   Fieldset,
+  H2,
   Input,
   Label,
   Sheet,
@@ -51,10 +52,6 @@ export function DialogDemo() {
           ]}
           enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
-          x={0}
-          scale={1}
-          opacity={1}
-          y={0}
           space
         >
           <Dialog.Title>Edit profile</Dialog.Title>

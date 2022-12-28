@@ -110,6 +110,12 @@ Contains every component for the sheet.
       type: 'boolean',
       description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
     },
+    {
+      name: 'forceRemoveScrollEnabled',
+      type: 'boolean',
+      default: 'false',
+      description: `By default. Tamagui uses react-remove-scoll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
+    },
   ]}
 />
 

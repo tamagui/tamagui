@@ -238,6 +238,7 @@ const SheetImplementation = themeable(
       dismissOnOverlayPress = true,
       animationConfig,
       dismissOnSnapToBottom = false,
+      forceRemoveScrollEnabled = false,
       disableDrag: disableDragProp,
       modal = false,
       handleDisableScroll = true,
@@ -596,6 +597,9 @@ const SheetImplementation = themeable(
       })
     }, [])
 
+    const removeScrollEnabled =
+      forceRemoveScrollEnabled ?? (open && modal && handleDisableScroll)
+
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider
@@ -634,7 +638,7 @@ const SheetImplementation = themeable(
             {handleComponent}
 
             <RemoveScroll
-              enabled={open && modal && handleDisableScroll}
+              enabled={removeScrollEnabled}
               as={Slot}
               allowPinchZoom
               shards={[contentRef]}

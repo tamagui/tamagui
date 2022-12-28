@@ -20,6 +20,7 @@ export const SheetDemo = () => {
       </XStack>
 
       <Sheet
+        forceRemoveScrollEnabled={open}
         modal={modal}
         open={open}
         onOpenChange={setOpen}

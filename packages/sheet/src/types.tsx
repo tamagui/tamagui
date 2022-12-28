@@ -15,6 +15,7 @@ export type SheetProps = ScopedProps<
     children?: ReactNode
     dismissOnOverlayPress?: boolean
     dismissOnSnapToBottom?: boolean
+    forceRemoveScrollEnabled?: boolean
     animationConfig?: AnimatedNumberStrategy
     handleDisableScroll?: boolean
     disableDrag?: boolean
