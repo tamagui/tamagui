@@ -128,7 +128,7 @@ export function HeaderContents(props: HeaderProps) {
           <SponsorButton tiny />
         </YStack>
 
-        {!props.disableNew && <AlphaButton />}
+        {/* {!props.disableNew && <AlphaButton />} */}
 
         {isInSubApp && (
           <NextLink href="/">
