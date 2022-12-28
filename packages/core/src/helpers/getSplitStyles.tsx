@@ -429,20 +429,12 @@ export const getSplitStyles: StyleSplitter = (
             }
             break
           }
-          case 'accessibilityControls': {
-            viewProps['aria-controls'] = processIDRefList(valInit)
-            break
-          }
+          case 'accessibilityLabelledBy':
+          case 'accessibilityFlowTo':
+          case 'accessibilityControls':
           case 'accessibilityDescribedBy': {
-            viewProps['aria-describedby'] = processIDRefList(valInit)
-            break
-          }
-          case 'accessibilityFlowTo': {
-            viewProps['aria-flowto'] = processIDRefList(valInit)
-            break
-          }
-          case 'accessibilityLabelledBy': {
-            viewProps['aria-labelledby'] = processIDRefList(valInit)
+            viewProps[`aria-${keyInit.replace('accessibility', '').toLowerCase()}`] =
+              processIDRefList(valInit)
             break
           }
           case 'accessibilityKeyShortcuts': {

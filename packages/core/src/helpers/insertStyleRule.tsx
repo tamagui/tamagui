@@ -40,7 +40,6 @@ const isClient = typeof document !== 'undefined'
 
 const scannedNum = new WeakMap<CSSStyleSheet, number>()
 const totalSheetSelectors = new Map<string, number>()
-const referencesInSheet = new WeakMap<CSSStyleSheet>()
 
 export function listenForSheetChanges() {
   if (!isClient) return

@@ -1,12 +1,6 @@
 /* eslint-disable no-console */
-import {
-  isClient,
-  isRSC,
-  isServer,
-  isWeb,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/constants'
-import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
+import { useContext, useEffect, useMemo, useState } from 'react'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'

@@ -82,7 +82,21 @@ const generateAtomicStyles = (
 
   // transform
   if (style.transform && Array.isArray(style.transform)) {
-    style.transform = style.transform.map(mapTransform).join(' ')
+    style.transform = style.transform
+      .map(
+        // { scale: 2 } => 'scale(2)'
+        // { translateX: 20 } => 'translateX(20px)'
+        // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
+        (transform) => {
+          const type = Object.keys(transform)[0]
+          const value = transform[type]
+          if (type === 'matrix' || type === 'matrix3d') {
+            return `${type}(${value.join(',')})`
+          }
+          return `${type}(${normalizeValueWithProperty(value, type)})`
+        }
+      )
+      .join(' ')
   }
 
   styleToCSS(style)
@@ -157,20 +171,6 @@ export function styleToCSS(style: Record<string, any>) {
     style.textShadowColor = undefined
     style.textShadowOffset = undefined
     style.textShadowRadius = undefined
-  }
-}
-
-// { scale: 2 } => 'scale(2)'
-// { translateX: 20 } => 'translateX(20px)'
-// { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
-const mapTransform = (transform) => {
-  const type = Object.keys(transform)[0]
-  const value = transform[type]
-  if (type === 'matrix' || type === 'matrix3d') {
-    return `${type}(${value.join(',')})`
-  } else {
-    const normalizedValue = normalizeValueWithProperty(value, type)
-    return `${type}(${normalizedValue})`
   }
 }
 

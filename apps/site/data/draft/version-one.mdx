@@ -218,9 +218,7 @@ You can get all the benefits of unified APIs across native and web plus an optim
 
 ### Bundle size reduction
 
-De-coupling core from `react-native` is a big win for web-only use cases. Even beyond that, we've shaved nearly ~12Kb by iteratively focusing on bundle size.
-
-As of today, core is about 18Kb, gzipped. Going forward, we've made it possible to further reduce this by 5Kb, and alongside future React Native versions go even futher.
+De-coupling core from `react-native` is a big win web bundle size, allowing you to leave out 35Kb of size if just using `core`. We've shaved nearly ~12Kb beyond that during the betas by iteratively improving code and reducing dependencies. Today core is ~20Kb, gzipped, but can get down to ~10Kb fairly straightforwardly.
 
 Beyond that, we have landed refactors now that allow releasing a web-specific core which will drop a few Native-specific APIs and bring the total runtime size cost down to below 8Kb.
 
@@ -655,17 +653,13 @@ There are many exciting features on the table as well, including:
 
 ## Sponsorship
 
-I love working on Tamagui and would like to make this project work financially long-term. I'm hesitant to take VC money when I think there's a clear path to profitability by growing it slowly.
+I love working on Tamagui, and there's a wealth of super useful, practical work that's clearly aheead. The plan is to grow things slowly and to stay nearly completely OSS.
 
-The plan is to build out a few things, all three of which I've made significant progress towards:
+Subscribers will get early access to the source and packages of in-development features, and early access to some exciting apps that are in development:
 
 - 🥡 Takeout. Well-made components, screens, color palettes and themes, plus well packages icons and fonts.
 - 📚 Docs. Give your design system and UI kit a beautiful docs site just like tamagui.dev, without setup.
-- 🖼️ Studio - A frontend realtime editor for colors, themes, tokens, default styles and more. Hooks into your app at runtime and exports to git-friendly JSON. Import and export to Figma.
-
-The plan is to keep these projects OSS, with a delayed open source model and optional cloud hosting. I think this is a fair model, so I'm giving it a shot.
-
-Basically, **sponsors get early access to all of this**. There will also be early-releases of in-development components too, and high level sponsors get chat support and priority bugfixes.
+- 🖼️ Studio. A frontend realtime editor for colors, themes, tokens, default styles and more. Hooks into your app at runtime and exports to git-friendly JSON. Import and export to Figma.
 
 Please do consider sponsoring Tamagui development!
 
