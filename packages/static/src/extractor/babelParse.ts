@@ -27,6 +27,6 @@ export function babelParse(code: string | Buffer): t.File {
   try {
     return parser(code.toString(), parserOptions) as any
   } catch (err) {
-    console.log(`Error parsing babel: ${err} in code`)
+    throw new Error(`Error parsing babel: ${err} in code`)
   }
 }

@@ -211,7 +211,7 @@ export const Sheet = withStaticProperties(
     /**
      * Performance is sensitive here so avoid all the hooks below with this
      */
-    if (isShowingNonSheet && hydrated !== false) {
+    if (isShowingNonSheet || !hydrated) {
       return null
     }
 
@@ -638,14 +638,14 @@ const SheetImplementation = themeable(
             {handleComponent}
 
             <RemoveScroll
+              forwardProps
               enabled={removeScrollEnabled}
-              as={Slot}
               allowPinchZoom
               shards={[contentRef]}
               // causes lots of bugs on touch web on site
               removeScrollBar={false}
             >
-              {isResizing ? null : frameComponent}
+              {isResizing ? <></> : frameComponent}
             </RemoveScroll>
           </AnimatedView>
         </SheetProvider>

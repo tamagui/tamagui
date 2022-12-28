@@ -24,7 +24,6 @@ export const AdaptParentContext = createContext<AdaptParentContextI | null>(null
 // forward props
 export const AdaptContents = (props: any) => {
   const context = useContext(AdaptParentContext)
-  console.log('got', context)
   if (!context?.Contents) {
     throw new Error('Adapt not supported by this component')
   }

@@ -638,7 +638,24 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
         } else {
-          const isDisabled = !state[descriptor.stateKey || descriptor.name]
+          let isDisabled = !state[descriptor.stateKey || descriptor.name]
+
+          // we never animate in on server side just show the full thing
+          // on client side we use CSS to hide the fully in SSR items, then
+          // un-hide and replay with original animation.
+          if (!isClient && isEnter) {
+            isDisabled = false
+          }
+
+          // console.log(
+          //   'isDisabled',
+          //   state,
+          //   descriptor.stateKey,
+          //   state[descriptor.stateKey || descriptor.name],
+          //   isDisabled,
+          //   descriptor
+          // )
+
           if (!isDisabled) {
             usedKeys[key] ||= 1
           }

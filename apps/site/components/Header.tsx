@@ -4,7 +4,7 @@ import { ThemeTint, useTint } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
 import { useRouter } from 'next/router'
 import * as React from 'react'
-import { TooltipGroup, XGroup } from 'tamagui'
+import { Adapt, TooltipGroup, XGroup } from 'tamagui'
 import {
   Button,
   Paragraph,
@@ -300,16 +300,16 @@ const SmallMenu = React.memo(() => {
         </YStack>
       </Popover.Trigger>
 
-      <Popover.Adapt when="sm">
+      <Adapt platform="touch" when="sm">
         <Popover.Sheet zIndex={100000000} modal dismissOnSnapToBottom>
           <Popover.Sheet.Frame>
             <Popover.Sheet.ScrollView>
-              <Popover.Adapt.Contents />
+              <Adapt.Contents />
             </Popover.Sheet.ScrollView>
           </Popover.Sheet.Frame>
           <Popover.Sheet.Overlay zIndex={100} />
         </Popover.Sheet>
-      </Popover.Adapt>
+      </Adapt>
 
       <Popover.Content
         bw={1}

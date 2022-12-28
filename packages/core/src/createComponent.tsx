@@ -585,10 +585,17 @@ export function createComponent<
     const shouldSetMounted = needsMount && state.unmounted
     useEffect(() => {
       if (!shouldSetMounted) return
+      if (state.unmounted === true && needsMount) {
+        setStateShallow({
+          unmounted: false,
+        })
+        return
+      }
+
       setStateShallow({
         unmounted: false,
       })
-    }, [shouldSetMounted])
+    }, [shouldSetMounted, state.unmounted])
 
     let styles: Record<string, any>[]
 
