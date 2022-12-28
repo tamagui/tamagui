@@ -34,8 +34,8 @@
     "@tamagui/helpers-tamagui": "^1.0.1-rc.14"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-rc.14",

@@ -26,7 +26,7 @@
     "@tamagui/core": "^1.0.1-rc.14"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
+    "react": "*",
     "react-native": "*"
   },
   "devDependencies": {

@@ -4300,8 +4300,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -4338,8 +4338,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -4384,8 +4384,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -4410,7 +4410,7 @@ __metadata:
     aria-hidden: ^1.1.3
     react: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -4428,8 +4428,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -4478,8 +4478,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -4504,8 +4504,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -4582,8 +4582,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -4602,7 +4602,7 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.14
     react: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -4637,11 +4637,10 @@ __metadata:
   resolution: "@tamagui/constants@workspace:packages/constants"
   dependencies:
     "@tamagui/build": ^1.0.1-rc.14
-    "@types/react": ^18.0.15
     react: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -4685,8 +4684,8 @@ __metadata:
     typescript: ^4.7.4
     vitest: ^0.26.2
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -4697,7 +4696,7 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.14
     react: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -4732,8 +4731,8 @@ __metadata:
     react-dom: ^18.2.0
     tamagui: ^1.0.1-rc.14
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -4763,8 +4762,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -4781,8 +4780,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -4802,8 +4801,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -4817,8 +4816,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -4859,8 +4858,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -4873,7 +4872,7 @@ __metadata:
     "@types/react": ^18.0.15
     react: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -4908,7 +4907,7 @@ __metadata:
     react-native: "*"
     vitest: ^0.26.2
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -4931,7 +4930,7 @@ __metadata:
     react: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -4999,8 +4998,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5016,8 +5015,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -5029,8 +5028,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -5052,8 +5051,8 @@ __metadata:
     react-native-svg: 12.1.0
     uppercamelcase: ^3.0.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native-svg: ^12.1.0
   languageName: unknown
   linkType: soft
@@ -5068,8 +5067,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -5106,7 +5105,7 @@ __metadata:
     "@tamagui/use-event": ^1.0.1-rc.14
     react: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -5142,8 +5141,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5164,8 +5163,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5182,8 +5181,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5201,8 +5200,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5271,7 +5270,7 @@ __metadata:
     react: ^18.2.0
     react-remove-scroll: ^2.5.5
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -5332,8 +5331,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -5363,8 +5362,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5378,8 +5377,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -5392,7 +5391,7 @@ __metadata:
     "@tamagui/stacks": ^1.0.1-rc.14
     react: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -5414,8 +5413,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5511,8 +5510,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5527,8 +5526,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -5625,8 +5624,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5652,8 +5651,8 @@ __metadata:
     react-dom: ^18.2.0
     vitest: ^0.26.2
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -5696,8 +5695,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5721,8 +5720,8 @@ __metadata:
     react-dom: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5734,7 +5733,7 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.14
     react: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -5747,8 +5746,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -5759,7 +5758,7 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.14
     react: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -5772,7 +5771,7 @@ __metadata:
     react: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5784,7 +5783,7 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.14
     react: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -5795,7 +5794,7 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.14
     react: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -5806,7 +5805,7 @@ __metadata:
     "@tamagui/build": ^1.0.1-rc.14
     react: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -5818,7 +5817,7 @@ __metadata:
     "@tamagui/core": ^1.0.1-rc.14
     react: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -5832,7 +5831,7 @@ __metadata:
     react: ^18.2.0
     react-native: "*"
   peerDependencies:
-    react: ^18.2.0
+    react: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -5846,8 +5845,8 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -18999,8 +18998,8 @@ __metadata:
     react-dom: ^18.2.0
     styleq: ^0.1.2
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -19016,8 +19015,8 @@ __metadata:
     react-native-web-internals: ^1.0.1-rc.14
     styleq: ^0.1.2
   peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 

@@ -19,7 +19,7 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": "*"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-rc.14",

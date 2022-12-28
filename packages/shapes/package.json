@@ -27,7 +27,7 @@
     "@tamagui/stacks": "^1.0.1-rc.14"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": "*"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-rc.14",
