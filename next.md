@@ -1,6 +1,6 @@
 1.0 launch:
 
-- run over site on mobile web, desktop
+- algolia not indexing lucide icons / new stuff
 - sponsor promo
 - mailing list
 - runthrough docs a handful of times

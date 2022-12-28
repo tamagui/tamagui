@@ -7,15 +7,15 @@ poster: banner-rc0.jpg
 ---
 
 <IntroParagraph large>
-  React Native is amazing for building mobile apps, but not for sharing components between
-  native and web. When you do that, you [lose performance, productivity and
-  UX](/docs/intro/why-a-compiler).
+  React Native is amazing for building mobile apps, but sharing components between web and
+  native [sacrifices performance, productivity and UX](/docs/intro/why-a-compiler).
 </IntroParagraph>
 
 <IntroParagraph>
-  Tamagui fixes that. It's a React style library with an optimizing compiler that lets you
-  write less code, get better platform-output, and actually *gain, rather than sacrifice*
-  performance all at once.
+  Tamagui fixes these three downsides with a React style library that works with a novel
+  optimizing compiler. The compiler output often bests hand-crafted CSS while still
+  letting you ship fast with convenient typed inline styles and a powerful style
+  interface.
 </IntroParagraph>
 
 Tamagui does advanced optimization through partial evaluation, CSS extraction, and ultimately tree-flattening. Where it optimizes, things get a lot faster:
@@ -27,17 +27,13 @@ Tamagui does advanced optimization through partial evaluation, CSS extraction, a
 <Spacer />
 <Spacer />
 
-**Tamagui Core** (`@tamagui/core`) is a style library for React Native and web that supports 100% of the React Native API surface in a 0-dependency library. It adds all the [goodies of modern style libraries](#overview) into a cohesive package.
+Tamagui comes in three parts:
 
-**Tamagui Static** (`@tamagui/static`) is a compiler that turns core syntax including even inline styles sprinkled with logic into a flat `div` with atomic CSS. It bests even hand-optimized CSS typically.
+[**Tamagui Core**](#overview-of-tamaguicore) (`@tamagui/core`) is a style library for React Native and web that supports 100% of the React Native API surface in a 0-dependency library. It adds all the [goodies of modern style libraries](#overview) into a cohesive package. [Skip to what's new](#whatsnew-in-tamaguicore).
 
-Finally, **Tamagui UI** (`tamagui`) is a component kit built on top of the incredibly powerful theme primitives of `core`. That, alongside composable-component APIs and complete size control enables a new level of control not seen before in a UI kit.
+[**Tamagui Static**](#overview-of-tamaguistatic) (`@tamagui/static`) is an optimizing compiler on top of Core, turning even inline styles sprinkled with logic into atomic CSS and minimal JS, flattening your view tree for maximum performance. [Skip to what's new](#whatsnew-in-tamaguistatic).
 
-This blog post will give an overview of each part, and then what's new since the beta was launched just over a year ago:
-
-- **Core**: [overview](#overview-of-tamaguicore) and [what's new](#whatsnew-in-tamaguicore).
-- **Static**: [overview](#overview-of-tamaguistatic) and [what's new](#whatsnew-in-tamaguistatic).
-- **Tamagui**: [overview](#overview-of-tamagui) and [what's new](#whatsnew-in-tamagui).
+[**Tamagui UI**](#overview-of-tamagui) (`tamagui`) is a component kit built on top of the incredibly powerful theme primitives of `core`. That, alongside composable-component APIs and complete size control enables a new level of control not seen before in a UI kit. [Skip to what's new](#whatsnew-in-tamagui).
 
 ---
 
@@ -61,7 +57,7 @@ The key to Tamagui's performance gains lie in **view flattening** or tree-flatte
 - Works **100% the same across Native and Web**.
 - **Works completely at runtime**, no compiler necessary.
 - **&lt;17kb, 0-dependency**. Every React Native API, typed, without bloat on the web.
-- SSR and React Server Component support for 100% of the features.
+- SSR, React Server Component, Concurrent mode support for 100% of the features.
 - Custom fully typed design systems.
 - Powerful typed variants, including functional variants.
 - Prop-order based styling means no more CSS specificity fights!
@@ -69,7 +65,7 @@ The key to Tamagui's performance gains lie in **view flattening** or tree-flatte
 - Typed shorthands.
 - Pluggable animation drivers, allows swapping JS-based animations to pure CSS on the web.
 
-One novel feature is **deterministic, easy to reason about style merging**. Core will _alway merges styles based on the order received rather than arcane CSS definition-order + specificity rules_, whether defined through `styled` or via inline props. This resolves major limitations of both CSS and CSS-in-JS systems as they largely exist today.
+One novel feature is **deterministic, easy to reason about style merging**. Core will _alway merges styles based on the order received rather than arcane CSS definition-order + specificity rules_, no matter if those styles come through nested `styled` calls, or via inline props. This resolves limitations in both CSS and CSS-in-JS systems as they largely exist today.
 
 ### styled()
 

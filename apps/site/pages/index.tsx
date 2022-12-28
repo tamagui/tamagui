@@ -28,8 +28,8 @@ export default function Home({ animationCode, compilationExamples }) {
       <TintSection index={0} p={0}>
         <Hero />
       </TintSection>
-      <ContainerLarge contain="layout" fd="column" pos="relative" zi={2000}>
-        <XStack als="center" pos="absolute" y={-28} jc="center" ai="center">
+      <ContainerLarge fd="column" pos="relative" zi={2000}>
+        <XStack als="center" pos="absolute" y={-26} jc="center" ai="center">
           <MailingListSignup />
         </XStack>
       </ContainerLarge>

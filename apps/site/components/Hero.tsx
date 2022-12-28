@@ -61,11 +61,12 @@ const HeroTop = memo(() => {
         ov="hidden"
         space="$3"
         position="relative"
-        pt="$13"
+        pt="$12"
         mb="$4"
         $sm={{
           maxWidth: '100%',
           mx: 'auto',
+          pb: '$4',
         }}
       >
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$2">
@@ -121,7 +122,7 @@ const HeroTop = memo(() => {
               <NextLink href="/docs/core/configuration">
                 <Tag
                   theme="green_alt2"
-                  bc="$color3"
+                  bc="$color2"
                   onHoverIn={() => setHovered(0)}
                   active={hovered === 0}
                 >
@@ -132,7 +133,7 @@ const HeroTop = memo(() => {
               <NextLink href="/docs/intro/why-a-compiler">
                 <Tag
                   theme="blue_alt2"
-                  bc="$color3"
+                  bc="$color2"
                   onHoverIn={() => setHovered(1)}
                   active={hovered === 1}
                 >
@@ -143,7 +144,7 @@ const HeroTop = memo(() => {
               <NextLink href="/docs/components/stacks">
                 <Tag
                   theme="purple_alt2"
-                  bc="$color3"
+                  bc="$color2"
                   onHoverIn={() => setHovered(2)}
                   active={hovered === 2}
                 >
@@ -155,9 +156,9 @@ const HeroTop = memo(() => {
           </YStack>
         </YStack>
 
-        <Spacer size="$5" />
+        <Spacer size="$4" />
         <InstallInput />
-        <Spacer size="$2" />
+        <Spacer size="$1" />
 
         <XStack ai="center" jc="center" $xxs={{ ai: 'center', fw: 'wrap' }}>
           <NextLink target="_blank" href="https://twitter.com/tamagui_js">
@@ -190,7 +191,6 @@ const HeroTop = memo(() => {
                 fontFamily="$silkscreen"
                 size="$5"
                 borderRadius={1000}
-                fontWeight="800"
                 bordered
                 bw={2}
                 mx="$2"
@@ -216,7 +216,6 @@ const HeroTop = memo(() => {
                 fontFamily="$silkscreen"
                 size="$5"
                 borderRadius={1000}
-                fontWeight="800"
                 bordered
                 bw={2}
                 mx="$2"
@@ -287,7 +286,7 @@ const Tag = styled(Text, {
   px: '$1',
   mx: '$-1',
   cursor: 'pointer',
-  color: '$color10',
+  color: '$color11',
   backgroundColor: '$color5',
 
   hoverStyle: {
