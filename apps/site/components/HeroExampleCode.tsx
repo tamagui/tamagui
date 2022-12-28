@@ -126,7 +126,6 @@ export function HeroExampleCode({
             px="$2"
             space
           >
-            <CodeExamples title="Output" {...activeExample.output} />
             <Paragraph
               maw={480}
               als="center"
@@ -137,6 +136,7 @@ export function HeroExampleCode({
             >
               <span style={{ opacity: 0.65 }}>{activeExample.output.description}</span>
             </Paragraph>
+            <CodeExamples title="Output" {...activeExample.output} />
           </YStack>
         </XStack>
       </YStack>

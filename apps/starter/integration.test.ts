@@ -4,6 +4,7 @@ import { tmpdir } from 'os'
 import { join } from 'path'
 
 import { expect, test } from '@playwright/test'
+import { remove } from 'fs-extra'
 import waitPort from 'wait-port'
 import { $, ProcessPromise, cd, fetch, fs, sleep } from 'zx'
 
@@ -12,12 +13,36 @@ process.env.NODE_ENV = 'test'
 let server: ProcessPromise | null = null
 
 const PACKAGE_ROOT = __dirname
+const PACKAGES_ROOT = join(PACKAGE_ROOT, '..')
+
+if (process.env.NODE_ENV === 'test') {
+  try {
+    execSync(`git status --porcelain`)
+  } catch (err) {
+    console.error(`\n⚠️  -- Must commit changes to git repo before running test --\n`)
+    process.exit(1)
+  }
+}
+
+const dir = join(tmpdir(), `cta-test-${Date.now()}`)
+
+const oneMinute = 1000 * 60
 
 test.beforeAll(async () => {
   $.env.NODE_ENV = 'test'
-  $.env.FORCE_EXTRACT = '1'
 
-  test.slow()
+  // 15 m
+  test.setTimeout(oneMinute * 15)
+
+  const tamaguiBin = join(PACKAGE_ROOT, `dist`, `index.js`)
+
+  console.log(`Making test app in`, dir)
+  await fs.ensureDir(dir)
+  cd(dir)
+
+  await $`node ${tamaguiBin} test-app`
+
+  cd(`test-app`)
 
   server = $`yarn web:extract`
 
@@ -26,26 +51,48 @@ test.beforeAll(async () => {
     host: 'localhost',
   })
 
-  // pre-warm by hitting the endpoint
+  // pre-warm
   await fetch(`http://localhost:3000`)
-  await sleep(1000)
+  await sleep(2000)
 })
 
 test.afterAll(async () => {
-  await server?.kill()
+  test.setTimeout(oneMinute * 10)
+
+  console.log(`Killing server...`)
+
+  await Promise.race([
+    //
+    server?.kill(),
+    sleep(5_000),
+  ])
+
+  // next complains if we delete too soon i think
+  await sleep(2000)
+
+  if (process.env.CLEANUP) {
+    await $`rm -rf ${dir}`
+  }
 })
 
 // TODO run these tests in prod and dev
 
-test(`Loads web`, async ({ page }) => {
-  test.slow()
+test(`Loads home screen that opens drawer`, async ({ page }) => {
   await page.goto('http://localhost:3000/')
+  await expect(page.locator('text=Welcome to Tamagui.')).toBeVisible()
 
-  console.log('done')
+  // open drawer (TODO make attr for better selector)
+  await page.locator('button').nth(1).click()
+  await expect(page.locator('.is_Sheet')).toBeVisible()
 
-  // await expect(page.locator('text=Welcome to Tamagui.')).toBeVisible()
+  // TODO add label to inner close button
+  // TODO add visual test for sheet opening
+})
 
-  // // open drawer (TODO make attr for better selector)
-  // await page.locator('button').nth(1).click()
-  // await expect(page.locator('.is_Sheet')).toBeVisible()
+test(`Navigates to user page`, async ({ page }) => {
+  await page.goto('http://localhost:3000/')
+  await expect(page.locator('button[role="link"]:has-text("Link to user")')).toBeVisible()
+  await page.locator('button[role="link"]:has-text("Link to user")').click()
+  await expect(page.locator('text=User ID: nate')).toBeVisible()
+  await expect(page).toHaveURL('http://localhost:3000/user/nate')
 })
