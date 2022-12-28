@@ -14,10 +14,14 @@ Install on most platforms is as easy as configuring a library:
 - [Expo](/docs/guides/expo))
 
 <Notice>
-  The compiler will generate built versions of your components and config into the `.tamagui`
-  directory, relative to your app. You'll want to add this to your `.gitignore` if you don't already
-  ignore dotfiles.
+  The compiler will generate built versions of your components and config into the
+  `.tamagui` directory, relative to your app. You'll want to add this to your `.gitignore`
+  if you don't already ignore dotfiles.
 </Notice>
+
+### Setup
+
+Be sure to set `TAMAGUI_TARGET` to `"native"` when targeting native platforms`, set it to `web` for web apps. For babel-based apps you'll then want to use
 
 ### Webpack
 
@@ -181,10 +185,10 @@ Note: If running into issues, the environment variable `IGNORE_TS_CONFIG_PATHS` 
 
 See the [Next.js Guide](/docs/guides/next-js) for more details on setting up your app.
 
-#### Metro
+#### Babel / Metro
 
 ```bash
-yarn add @tamagui/babel-plugin
+yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
 ```
 
 Add `@tamagui/babel-plugin` to your `babel.config.js` plugins:
