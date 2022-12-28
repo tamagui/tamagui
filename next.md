@@ -146,8 +146,6 @@ inbox
 - <Carousel />
 - <Video />, <Spinner />
 - <SizableFrame />, <EnsureFlexed />
-- document/release <ThemeReverse />
-- Text selectColor
 - focusWithinStyle
 - accessibility upgrades (focus rings etc)
 - skeleton just using Theme / variables

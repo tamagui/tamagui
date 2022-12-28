@@ -245,7 +245,7 @@ export const components = {
     </Button>
   ),
 
-  IntroParagraph: ({ children, large, ...props }) => {
+  IntroParagraph: ({ children, large, disableUnwrapText, ...props }) => {
     return (
       <Paragraph
         tag="p"
@@ -255,7 +255,7 @@ export const components = {
         fow={large ? '200' : '300'}
         {...props}
       >
-        {unwrapText(children)}
+        {disableUnwrapText ? children : unwrapText(children)}
       </Paragraph>
     )
   },
@@ -329,7 +329,13 @@ export const components = {
   h5: (props) => <H5 mt="$4" {...props} />,
 
   p: (props) => (
-    <Paragraph className="docs-paragraph" display="block" my="$3" size="$5" {...props} />
+    <Paragraph
+      className="docs-paragraph"
+      display="block"
+      my="$2.5"
+      size="$5"
+      {...props}
+    />
   ),
 
   a: ({ href = '', children, ...props }) => {
@@ -516,7 +522,7 @@ export const components = {
       <NoticeFrame theme="red">
         <YStack maw="100%" space>
           <H4 color="$color10" fontFamily="$silkscreen">
-            Support Tamagui 👋
+            👋 Hey! Listen!
           </H4>
           <YStack ov="hidden" f={1} o={0.85} space>
             <Paragraph>
@@ -527,9 +533,9 @@ export const components = {
               .
             </Paragraph>
             <Paragraph>
-              Commercial add-ons to support ongoing development are in development, but
-              until then, please do support me by sponsoring me on Github if you enjoy
-              Tamagui.
+              My goal is to support Tamagui development through Sponsors - they'll get
+              early access to <a href="#sponsors">exciting upcoming features</a> alongside
+              prioritized support.
             </Paragraph>
             <Paragraph>
               You'll get early access to some very exciting new stuff!
