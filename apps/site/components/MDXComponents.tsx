@@ -308,7 +308,7 @@ export const components = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading pt="$8" mb="$1" id={id}>
+    <LinkHeading pt="$8" mt="$-4" mb="$1" id={id}>
       <H3
         pos="relative"
         width={`fit-content` as any}
@@ -392,29 +392,42 @@ export const components = {
     children,
     size,
     overlap,
+    linked,
     ...props
-  }: ImageProps & { size?: 'hero'; overlap?: boolean }) => (
-    <OffsetBox
-      size={size}
-      tag="figure"
-      f={1}
-      mx={0}
-      mb="$3"
-      ai="center"
-      jc="center"
-      ov="hidden"
-      {...(overlap && {
-        mt: '$-6',
-      })}
-    >
-      <Image maxWidth="100%" {...props} />
-      {!!children && (
-        <Text tag="figcaption" lineHeight={23} color="$colorPress" mt="$2">
-          {children}
-        </Text>
-      )}
-    </OffsetBox>
-  ),
+  }: ImageProps & { size?: 'hero'; overlap?: boolean; linked?: boolean }) => {
+    const content = (
+      <OffsetBox
+        size={size}
+        tag="figure"
+        f={1}
+        mx={0}
+        mb="$3"
+        ai="center"
+        jc="center"
+        ov="hidden"
+        {...(overlap && {
+          mt: '$-6',
+        })}
+      >
+        <Image maxWidth="100%" {...props} />
+        {!!children && (
+          <Text tag="figcaption" lineHeight={23} color="$colorPress" mt="$2">
+            {children}
+          </Text>
+        )}
+      </OffsetBox>
+    )
+
+    if (linked) {
+      return (
+        <NextLink target="_blank" href={props.src as string}>
+          {content}
+        </NextLink>
+      )
+    }
+
+    return content
+  },
 
   Video: ({
     small,

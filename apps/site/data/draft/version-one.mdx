@@ -651,15 +651,30 @@ There are many exciting features on the table as well, including:
 
 ---
 
-## Sponsorship
+## Sponsors
 
-I love working on Tamagui, and there's a wealth of super useful, practical work that's clearly aheead. The plan is to grow things slowly and to stay nearly completely OSS.
+I love working on Tamagui, and there's a wealth of concrete ways for it to mature. I'd like to take things slowly, and for Tamagui to stay OSS (and I think those two are related).
 
-Subscribers will get early access to the source and packages of in-development features, and early access to some exciting apps that are in development:
+So for now it's fully funded by Github Sponsors. I'm setting it up like this:
 
-- 🥡 Takeout. Well-made components, screens, color palettes and themes, plus well packages icons and fonts.
-- 📚 Docs. Give your design system and UI kit a beautiful docs site just like tamagui.dev, without setup.
-- 🖼️ Studio. A frontend realtime editor for colors, themes, tokens, default styles and more. Hooks into your app at runtime and exports to git-friendly JSON. Import and export to Figma.
+Sponsors get early access to new features, nightlies, a private chat room, and to beta test some incredible upcoming dev-tools:
+
+- 📚 **Docs** - Give your design system and UI kit a beautiful docs site just like tamagui.dev, without setup.
+- 🖼️ **Studio** - A frontend realtime editor for colors, themes, tokens, default styles and more. Hooks into your app at runtime and exports to git-friendly JSON. Import/export to Figma:
+
+<XStack space my="$-4">
+  <Image linked resizeMode="contain" width={420} height={350} src="/screen-studio.webp" />
+  <Image
+    linked
+    resizeMode="contain"
+    width={420}
+    height={350}
+    src="/screen-studio-colors.webp"
+  />
+</XStack>
+
+- An in-development new starter that goes further than Solito at unifying web and native.
+- `tamagui build` to output pre-process your entire app and output js and css, so you can avoid any plugin and get compat with many more bundlers.
 
 Please do consider sponsoring Tamagui development!
 
@@ -680,4 +695,6 @@ Tamagui draws inspiration and small areas of code from some incredible other lib
 
 ### Join the community
 
-<SocialLinksRow />
+<Wide>
+  <SocialLinksRow />
+</Wide>

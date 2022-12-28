@@ -6,6 +6,8 @@
 
 1.0 post launch:
 
+- home page sponsors with sizing and better logos
+  - automate sponsors
 - algolia not indexing lucide icons / new stuff
 - keyboard search select bug
 - variants intellisense autocomplete not suggesting, but types are right
