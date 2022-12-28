@@ -2,6 +2,7 @@
   "name": "@tamagui/site",
   "version": "1.0.1-rc.15",
   "private": true,
+  "source": "src",
   "scripts": {
     "dev": "./scripts/dev.sh",
     "clean:build": "./scripts/clean.sh",

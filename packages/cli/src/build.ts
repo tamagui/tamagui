@@ -1,3 +1,4 @@
+import { writeFile } from 'fs'
 import { basename, dirname, join, resolve } from 'path'
 
 import { createExtractor, extractToClassNames, loadTamagui } from '@tamagui/static'
@@ -11,13 +12,13 @@ export const build = async (options: ResolvedOptions) => {
 
   const entry = options.pkgJson.source
   if (!entry) {
-    throw new Error(
-      `Must add "source" to package.json pointing to your source directory`,
-    )
+    throw new Error(`Must add "source" to package.json pointing to your source directory`)
   }
   const sourceDir = dirname(entry)
   const promises: Promise<void>[] = []
   const targets = ['web']
+
+  console.log('sourceDir', sourceDir, targets)
 
   await new Promise<void>((res) => {
     chokidar
@@ -28,9 +29,6 @@ export const build = async (options: ResolvedOptions) => {
       .on('add', (relativePath) => {
         const sourcePath = resolve(process.cwd(), relativePath)
 
-        // testing..
-        if (!sourcePath.endsWith('Layouts.tsx')) return
-
         promises.push(
           (async () => {
             await Promise.all(
@@ -39,7 +37,6 @@ export const build = async (options: ResolvedOptions) => {
                 if (options.debug) {
                   process.env.NODE_ENV ||= 'development'
                 }
-                console.log('go', sourcePath)
                 const source = await readFile(sourcePath, 'utf-8')
                 const extractor = createExtractor()
                 const out = await extractToClassNames({
@@ -50,10 +47,10 @@ export const build = async (options: ResolvedOptions) => {
                   shouldPrintDebug: options.debug || false,
                 })
 
-                console.log('gotem', out?.js)
-              }),
+                await writeFile()
+              })
             )
-          })(),
+          })()
         )
       })
       .on('ready', () => {

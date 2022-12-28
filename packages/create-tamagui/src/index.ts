@@ -85,6 +85,7 @@ async function run() {
   if (typeof projectPath === 'string') {
     projectPath = projectPath.trim()
   }
+
   if (!projectPath) {
     const res = await prompts({
       type: 'text',

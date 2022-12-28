@@ -51,11 +51,16 @@ export async function extractToClassNames({
 }: ExtractToClassNamesProps): Promise<ExtractedResponse | null> {
   const tm = timer()
 
+  console.log(`Parsing \n\n --- ${sourcePath} --- \n\n`)
+
   if (typeof source !== 'string') {
     throw new Error('`source` must be a string of javascript')
   }
   if (sourcePath && !path.isAbsolute(sourcePath)) {
     throw new Error('`sourcePath` must be an absolute path to a .js file')
+  }
+  if (!/.[tj]sx?$/i.test(sourcePath || '')) {
+    console.log(`${sourcePath?.slice(0, 100)} - bad filename.`)
   }
 
   // dont include loading in timing of parsing (one time cost)
@@ -72,7 +77,7 @@ export async function extractToClassNames({
     ast = babelParse(source)
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.error('babel parse error:', sourcePath)
+    console.error('babel parse error:', sourcePath?.slice(0, 100))
     throw err
   }
 
@@ -178,7 +183,9 @@ export async function extractToClassNames({
 
               for (const style of styles) {
                 //  leave them  as attributes
-                const prop = style.pseudo ? `${style.property}-${style.pseudo}` : style.property
+                const prop = style.pseudo
+                  ? `${style.property}-${style.pseudo}`
+                  : style.property
                 finalAttrs.push(
                   t.jsxAttribute(t.jsxIdentifier(prop), t.stringLiteral(style.identifier))
                 )
@@ -259,7 +266,11 @@ export async function extractToClassNames({
               finalStyles = [...finalStyles, ...mediaExtraction.mediaStyles]
             }
             if (mediaExtraction.ternaryWithoutMedia) {
-              addTernaryStyle(mediaExtraction.ternaryWithoutMedia, mediaExtraction.mediaStyles, [])
+              addTernaryStyle(
+                mediaExtraction.ternaryWithoutMedia,
+                mediaExtraction.mediaStyles,
+                []
+              )
             } else {
               finalClassNames = [
                 ...finalClassNames,
@@ -276,7 +287,11 @@ export async function extractToClassNames({
         const aCN = b.map((x) => x.identifier).join(' ')
         if (a.length && b.length) {
           finalClassNames.push(
-            t.conditionalExpression(ternary.test, t.stringLiteral(cCN), t.stringLiteral(aCN))
+            t.conditionalExpression(
+              ternary.test,
+              t.stringLiteral(cCN),
+              t.stringLiteral(aCN)
+            )
           )
         } else {
           finalClassNames.push(
@@ -338,7 +353,12 @@ export async function extractToClassNames({
         )
       }
 
-      const comment = util.format('/* %s:%s (%s) */', filePath, lineNumbers, originalNodeName)
+      const comment = util.format(
+        '/* %s:%s (%s) */',
+        filePath,
+        lineNumbers,
+        originalNodeName
+      )
 
       for (const { identifier, rules } of finalStyles) {
         const className = `.${identifier}`
@@ -399,7 +419,8 @@ export async function extractToClassNames({
 
   if (shouldLogTiming) {
     const memUsed = mem
-      ? Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
+      ? Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) /
+        10
       : 0
     const path = basename(sourcePath || '')
       .replace(/\.[jt]sx?$/, '')

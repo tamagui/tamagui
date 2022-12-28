@@ -24,5 +24,9 @@ export const parserOptions: babelParser.ParserOptions = Object.freeze({
 const parser = babelParser.parse.bind(babelParser)
 
 export function babelParse(code: string | Buffer): t.File {
-  return parser(code.toString(), parserOptions) as any
+  try {
+    return parser(code.toString(), parserOptions) as any
+  } catch (err) {
+    console.log(`Error parsing babel: ${err} in code`)
+  }
 }
