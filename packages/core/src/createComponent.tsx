@@ -558,7 +558,8 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
       Children.toArray(props.children).forEach((item) => {
-        if (typeof item === 'string') {
+        // allow newlines because why not its annoying with mdx
+        if (typeof item === 'string' && item !== '\n') {
           // eslint-disable-next-line no-console
           console.error(
             `Unexpected text node: ${item}. A text node cannot be a child of a <View>.`
