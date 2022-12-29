@@ -1,8 +1,5 @@
 import '@tamagui/polyfill-dev'
 
-// import '@tamagui/core/reset.css'
-import './wdyr'
-
 import {
   AlertDialogDemo,
   FormsDemo,
@@ -29,6 +26,9 @@ import {
 
 import config from './tamagui.config'
 
+// import '@tamagui/core/reset.css'
+// import './wdyr'
+
 // webpack fix..
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
@@ -39,14 +39,22 @@ console.log('[Sandbox] getMedia().sm', getMedia().sm)
 
 function ThemeChangeRenderTest() {
   const [theme, setTheme] = useState('blue')
+  console.log('theme', theme)
 
   const memoized = useMemo(() => <Square debug size={100} bc="$background" />, [])
 
   return (
     <Theme name={theme as any}>
       <YStack>
-        <Button onPress={() => setTheme(theme === 'blue' ? 'red' : 'blue')}>
-          Change
+        <Button
+          onPress={() => {
+            setTheme((prev) => {
+              console.log('hi', prev)
+              return prev === 'blue' ? 'red' : 'blue'
+            })
+          }}
+        >
+          Change ({theme})
         </Button>
 
         {memoized}

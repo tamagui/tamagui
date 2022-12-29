@@ -1173,41 +1173,38 @@ export type SpacedChildrenProps = {
   separator?: React.ReactNode
 }
 
-export function spacedChildren({
-  isZStack,
-  children,
-  space,
-  direction,
-  spaceFlex,
-  separator,
-}: SpacedChildrenProps) {
+export function spacedChildren(props: SpacedChildrenProps) {
+  const { isZStack, children, space, direction, spaceFlex, separator } = props
   const hasSpace = !!(space || spaceFlex)
   const hasSeparator = !(separator === undefined || separator === null)
   if (!(hasSpace || hasSeparator || isZStack)) {
     return children
   }
+
   const childrenList = Children.toArray(children)
+
   const len = childrenList.length
-  if (len <= 1 && !isZStack) {
-    if (len === 1) {
-      // forward space! only when one component doesn't make sense to forward space to all children
-      const [onlyChild] = childrenList
-      if (React.isValidElement(onlyChild) && onlyChild.type?.['shouldForwardSpace']) {
-        return React.cloneElement(onlyChild, {
-          space,
-          spaceFlex,
-          separator,
-        } as any)
-      }
-    }
+  if (len <= 1 && !isZStack && !childrenList[0]?.['type']?.['shouldForwardSpace']) {
     return childrenList
   }
+
   const final: React.ReactNode[] = []
-  for (const [index, child] of childrenList.entries()) {
+  for (let [index, child] of childrenList.entries()) {
     const isEmpty =
       child === null ||
       child === undefined ||
       (Array.isArray(child) && child.length === 0)
+
+    // forward space
+    if (!isEmpty && React.isValidElement(child) && child.type?.['shouldForwardSpace']) {
+      child = React.cloneElement(child, {
+        space,
+        spaceFlex,
+        separator,
+        key: child.key,
+      } as any)
+    }
+
     // push them all, but wrap some in Fragment
     if (isEmpty || !child || (child['key'] && !isZStack)) {
       final.push(child)

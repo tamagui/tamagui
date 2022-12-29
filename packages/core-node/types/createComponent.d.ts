@@ -17,5 +17,5 @@ export type SpacedChildrenProps = {
     direction?: SpaceDirection;
     separator?: React.ReactNode;
 };
-export declare function spacedChildren({ isZStack, children, space, direction, spaceFlex, separator, }: SpacedChildrenProps): React.ReactNode;
+export declare function spacedChildren(props: SpacedChildrenProps): React.ReactNode;
 //# sourceMappingURL=createComponent.d.ts.map

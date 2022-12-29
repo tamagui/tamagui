@@ -135,11 +135,8 @@ export const DialogPortalFrame = styled(YStack, {
   }),
 })
 
-const DialogPortalItem = ({
-  __scopeDialog,
-  hostName,
-  children,
-}: ScopedProps<DialogPortalProps>) => {
+const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
+  const { __scopeDialog, children } = props
   const themeName = useThemeName()
   const context = useDialogContext(PORTAL_NAME, __scopeDialog)
   const name = `${context.scopeKey}SheetContents`
@@ -148,7 +145,10 @@ const DialogPortalItem = ({
   // have to re-propogate context, sketch
 
   return (
-    <PortalItem hostName={hostName} name={name}>
+    <PortalItem
+      hostName={getSheetContentsName(context.scopeKey, context.contentId)}
+      name={name}
+    >
       <DialogProvider scope={__scopeDialog} {...context}>
         <Theme name={themeName}>{children}</Theme>
       </DialogProvider>
@@ -533,24 +533,6 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
 )
 
 /* -------------------------------------------------------------------------------------------------
- * DialogSheetContents
- * -----------------------------------------------------------------------------------------------*/
-
-const SHEET_CONTENTS_NAME = 'DialogSheetContents'
-
-export const DialogSheetContents = ({
-  name,
-  ...props
-}: {
-  name: string
-  context: Omit<DialogContextValue, 'sheetBreakpoint'>
-}) => {
-  return <PortalHost forwardProps={props} name={name} />
-}
-
-DialogSheetContents.displayName = SHEET_CONTENTS_NAME
-
-/* -------------------------------------------------------------------------------------------------
  * DialogTitle
  * -----------------------------------------------------------------------------------------------*/
 
@@ -729,10 +711,14 @@ const Dialog = withStaticProperties(
     } = props
 
     const scopeId = useId()
+    const contentId = useId()
+    const titleId = useId()
+    const descriptionId = useId()
     const scopeKey = __scopeDialog ? Object.keys(__scopeDialog)[0] : scopeId
-
+    const sheetContentsName = getSheetContentsName(scopeKey, contentId)
     const triggerRef = React.useRef<HTMLButtonElement>(null)
     const contentRef = React.useRef<TamaguiElement>(null)
+
     const [open, setOpen] = useControllableState({
       prop: openProp,
       defaultProp: defaultOpen,
@@ -743,10 +729,6 @@ const Dialog = withStaticProperties(
       () => setOpen((prevOpen) => !prevOpen),
       [setOpen]
     )
-
-    const contentId = useId()
-    const titleId = useId()
-    const descriptionId = useId()
 
     const context = {
       scope: __scopeDialog,
@@ -763,12 +745,10 @@ const Dialog = withStaticProperties(
       allowPinchZoom,
     }
 
-    const sheetContentsName = `${scopeKey}SheetContents`
-
     const { when, AdaptProvider } = useAdaptParent({
       Contents: React.useCallback(
         (props) => {
-          return <DialogSheetContents {...props} name={sheetContentsName} />
+          return <PortalHost forwardProps={props} name={sheetContentsName} />
         },
         [sheetContentsName]
       ),
@@ -804,6 +784,9 @@ const Dialog = withStaticProperties(
     Adapt,
   }
 )
+
+const getSheetContentsName = (scopeKey: string, contentId: string) =>
+  `${scopeKey || contentId}SheetContents`
 
 const DialogSheetController = (
   props: ScopedProps<{

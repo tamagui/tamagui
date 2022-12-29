@@ -45,13 +45,15 @@ export const useAdaptParent = ({
       setWhen,
     }
 
-    return (props: { children?: any }) => {
+    function AdaptProviderView(props: { children?: any }) {
       return (
         <AdaptParentContext.Provider value={context}>
           {props.children}
         </AdaptParentContext.Provider>
       )
     }
+
+    return AdaptProviderView
   }, [Contents])
 
   return {

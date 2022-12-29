@@ -186,13 +186,6 @@ type DialogContentImplProps = DialogContentFrameProps & Omit<DismissableProps, '
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'];
     context: DialogContextValue;
 };
-export declare const DialogSheetContents: {
-    ({ name, ...props }: {
-        name: string;
-        context: Omit<DialogContextValue, 'sheetBreakpoint'>;
-    }): JSX.Element;
-    displayName: string;
-};
 declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
