@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import React, { useMemo } from 'react'
+import React, { Children, cloneElement, useMemo } from 'react'
 
 import { variableToString } from '../createVariable'
 import { ThemeManager } from '../helpers/ThemeManager'
@@ -22,7 +22,9 @@ export function Theme(props: ThemeProps) {
   // may require some effort of end user to memoize but without this memo they'd have no option
   let contents = useThemeManagerContext(
     props['data-themeable']
-      ? React.cloneElement(props.children, { ['data-themeable']: true })
+      ? Children.map(props.children, (child) =>
+          cloneElement(child, { ['data-themeable']: true })
+        )
       : props.children,
     themeManager
   )
