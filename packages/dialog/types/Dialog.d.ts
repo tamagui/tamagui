@@ -2598,6 +2598,13 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         };
     };
 };
+export declare const DialogSheetContents: {
+    ({ name, ...props }: {
+        name: string;
+        context: Omit<DialogContextValue, 'sheetBreakpoint'>;
+    }): JSX.Element;
+    displayName: string;
+};
 export { createDialogScope, Dialog, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogDescription, DialogClose, DialogWarningProvider, };
 export type { DialogProps, DialogTriggerProps, DialogPortalProps, DialogOverlayProps, DialogContentProps, DialogTitleProps, DialogDescriptionProps, DialogCloseProps, };
 //# sourceMappingURL=Dialog.d.ts.map

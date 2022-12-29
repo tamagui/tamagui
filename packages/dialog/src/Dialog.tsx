@@ -136,19 +136,15 @@ export const DialogPortalFrame = styled(YStack, {
 })
 
 const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
-  const { __scopeDialog, children } = props
+  const { __scopeDialog, children, hostName } = props
   const themeName = useThemeName()
   const context = useDialogContext(PORTAL_NAME, __scopeDialog)
-  const name = `${context.scopeKey}SheetContents`
 
   // until we can use react-native portals natively
   // have to re-propogate context, sketch
 
   return (
-    <PortalItem
-      hostName={getSheetContentsName(context.scopeKey, context.contentId)}
-      name={name}
-    >
+    <PortalItem hostName={hostName}>
       <DialogProvider scope={__scopeDialog} {...context}>
         <Theme name={themeName}>{children}</Theme>
       </DialogProvider>
@@ -488,7 +484,11 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
     )
 
     if (showSheet) {
-      return <DialogPortalItem>{contentProps.children}</DialogPortalItem>
+      return (
+        <DialogPortalItem hostName={getSheetContentsName(context)}>
+          {contentProps.children}
+        </DialogPortalItem>
+      )
     }
 
     if (!isWeb) {
@@ -715,7 +715,7 @@ const Dialog = withStaticProperties(
     const titleId = useId()
     const descriptionId = useId()
     const scopeKey = __scopeDialog ? Object.keys(__scopeDialog)[0] : scopeId
-    const sheetContentsName = getSheetContentsName(scopeKey, contentId)
+    const sheetContentsName = getSheetContentsName({ scopeKey, contentId })
     const triggerRef = React.useRef<HTMLButtonElement>(null)
     const contentRef = React.useRef<TamaguiElement>(null)
 
@@ -785,7 +785,28 @@ const Dialog = withStaticProperties(
   }
 )
 
-const getSheetContentsName = (scopeKey: string, contentId: string) =>
+/* -------------------------------------------------------------------------------------------------
+ * DialogSheetContents
+ * -----------------------------------------------------------------------------------------------*/
+
+const SHEET_CONTENTS_NAME = 'DialogSheetContents'
+
+export const DialogSheetContents = ({
+  name,
+  ...props
+}: {
+  name: string
+  context: Omit<DialogContextValue, 'sheetBreakpoint'>
+}) => {
+  return <PortalHost forwardProps={props} name={name} />
+}
+
+DialogSheetContents.displayName = SHEET_CONTENTS_NAME
+
+const getSheetContentsName = ({
+  scopeKey,
+  contentId,
+}: Pick<DialogContextValue, 'scopeKey' | 'contentId'>) =>
   `${scopeKey || contentId}SheetContents`
 
 const DialogSheetController = (
