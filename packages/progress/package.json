@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/progress",
-  "version": "1.0.1-rc.16",
+  "version": "1.0.1-rc.17",
   "sideEffects": [
     "*.css"
   ],
@@ -23,10 +23,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/compose-refs": "^1.0.1-rc.16",
-    "@tamagui/core": "^1.0.1-rc.16",
-    "@tamagui/create-context": "^1.0.1-rc.16",
-    "@tamagui/stacks": "^1.0.1-rc.16"
+    "@tamagui/compose-refs": "^1.0.1-rc.17",
+    "@tamagui/core": "^1.0.1-rc.17",
+    "@tamagui/create-context": "^1.0.1-rc.17",
+    "@tamagui/stacks": "^1.0.1-rc.17"
   },
   "peerDependencies": {
     "react": "*",
@@ -34,7 +34,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-rc.16",
+    "@tamagui/build": "^1.0.1-rc.17",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "*"
