@@ -2,7 +2,7 @@ import { composeRefs } from '@tamagui/compose-refs'
 import { TamaguiComponent, isTamaguiComponent, useEvent } from '@tamagui/core'
 import { forwardRef, useCallback, useEffect, useRef } from 'react'
 
-import { registerFocusable, unregisterFocusable } from './registerFocusable'
+import { registerFocusable } from './registerFocusable'
 
 export function focusableInputHOC<A extends TamaguiComponent>(Component: A): A {
   const component = Component.extractable(
@@ -14,17 +14,18 @@ export function focusableInputHOC<A extends TamaguiComponent>(Component: A): A {
           value?: string
           defaultValue?: string
         },
-        ref,
+        ref
       ) => {
-        const isInput =
-          isTamaguiComponent(Component) && Component.staticConfig.isInput
+        const isInput = isTamaguiComponent(Component) && Component.staticConfig.isInput
         const inputValue = useRef(props.value || props.defaultValue || '')
+        const unregisterFocusable = useRef<() => void | undefined>()
 
         const inputRef = useCallback(
           (input) => {
             if (!props.id) return
             if (!input) return
-            registerFocusable(props.id, {
+            unregisterFocusable.current?.()
+            unregisterFocusable.current = registerFocusable(props.id, {
               focus: input.focus,
 
               ...(isInput && {
@@ -38,17 +39,16 @@ export function focusableInputHOC<A extends TamaguiComponent>(Component: A): A {
               }),
             })
           },
-          [isInput, props.id],
+          [isInput, props.id]
         )
 
         const combinedRefs = composeRefs(ref, inputRef)
 
         useEffect(() => {
-          if (!props.id) return
           return () => {
-            unregisterFocusable(props.id!)
+            unregisterFocusable.current?.()
           }
-        }, [props.id])
+        }, [])
 
         const onChangeText = useEvent((value) => {
           inputValue.current = value
@@ -64,8 +64,8 @@ export function focusableInputHOC<A extends TamaguiComponent>(Component: A): A {
 
         // @ts-expect-error
         return <Component ref={combinedRefs} {...finalProps} />
-      },
-    ),
+      }
+    )
   ) as any
 
   return component
