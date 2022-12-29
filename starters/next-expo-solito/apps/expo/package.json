@@ -36,7 +36,7 @@
   "devDependencies": {
     "@babel/core": "^7.17.9",
     "@expo/metro-config": "^0.3.21",
-    "@tamagui/babel-plugin": "1.0.1-rc.15",
+    "@tamagui/babel-plugin": "1.0.1-rc.16",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "typescript": "^4.7.4"
   }
