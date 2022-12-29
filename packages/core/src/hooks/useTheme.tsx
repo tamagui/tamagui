@@ -49,7 +49,7 @@ export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
       keys: new Set(),
     }
   }
-  state.current!.keys.clear()
+  state.current?.keys.clear()
 
   const { name, theme, themeManager, className, isNewTheme } = useChangeThemeEffect(
     props,

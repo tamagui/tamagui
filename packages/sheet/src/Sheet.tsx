@@ -238,10 +238,9 @@ const SheetImplementation = themeable(
       dismissOnOverlayPress = true,
       animationConfig,
       dismissOnSnapToBottom = false,
-      forceRemoveScrollEnabled = false,
+      forceRemoveScrollEnabled = null,
       disableDrag: disableDragProp,
       modal = false,
-      handleDisableScroll = true,
       zIndex = parentSheet.zIndex + 1,
     } = props
 
@@ -597,8 +596,7 @@ const SheetImplementation = themeable(
       })
     }, [])
 
-    const removeScrollEnabled =
-      forceRemoveScrollEnabled ?? (open && modal && handleDisableScroll)
+    const removeScrollEnabled = forceRemoveScrollEnabled ?? (open && modal)
 
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
@@ -637,6 +635,7 @@ const SheetImplementation = themeable(
           >
             {handleComponent}
 
+            {/* @ts-ignore */}
             <RemoveScroll
               forwardProps
               enabled={removeScrollEnabled}
