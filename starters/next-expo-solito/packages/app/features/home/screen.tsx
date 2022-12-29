@@ -17,8 +17,6 @@ export function HomeScreen() {
           same code on Next.js and React Native.
         </Paragraph>
 
-        <Input px="$5" placeholder="hi" />
-
         <Separator />
         <Paragraph ta="center">
           Made by{' '}
