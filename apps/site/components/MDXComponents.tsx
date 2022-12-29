@@ -533,12 +533,8 @@ export const components = {
               .
             </Paragraph>
             <Paragraph>
-              My goal is to support Tamagui development through Sponsors - they'll get
-              early access to <a href="#sponsors">exciting upcoming features</a> alongside
-              prioritized support.
-            </Paragraph>
-            <Paragraph>
-              You'll get early access to some very exciting new stuff!
+              My goal is to support Tamagui development with sponsorships that get early
+              access to <a href="#sponsors">some really interesting</a> new features.
             </Paragraph>
             <SponsorButton />
           </YStack>

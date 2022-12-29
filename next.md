@@ -1,35 +1,22 @@
-1.0 launch:
-
-- fix small bugs on mobile blog post
-- sponsor promo
-- mailing list
-
 1.0 post launch:
 
+- test: useMedia, reanimated, re-renders (mount, on hover, etc), render time ms
+- CD on github
 - home page sponsors with sizing and better logos
-  - automate sponsors
-- algolia not indexing lucide icons / new stuff
+  - https://github.com/JamesIves/github-sponsors-readme-action
+- algolia not indexing some new content
 - keyboard search select bug
 - variants intellisense autocomplete not suggesting, but types are right
 - canary release channel
-- sponsor rewards e2e flow
-- add new sponsors script
-    - https://github.com/JamesIves/github-sponsors-readme-action
-- one full on integration native test unlocks:
-  - no more manual checks every release
-  - auto release on merge to master
-  - do some snapshot tests of site files like HeroResponsive
-
-1.0 potentially:
-
+- improve native integration test
 - kitchen-sink in Snack demo link
-- get an demo for studio ready
 - `tamagui` cli basic version
 
 ---
 
 1.1
 
+- some big theme speedups possible to avoid re-renders
 - all: unset or way to unstyle things (unstyle: true)
 - https://github.com/mwood23/nx-tamagui-next-repro
 - #beatgig - popover not closing
@@ -37,14 +24,14 @@
 - revisit animations, timing animations, loops, document better
 - Select id="" + Label focus
 - web forms events bubble
-- improve sandbox to a mini vite stack
+- accessibility keyboard navigation (Menu component potentially)
+- improve sandbox as mini vite stack
 - VisuallyHidden + mediaquery + space
-- test
-  - native integration tests
-  - useMedia
-  - reanimated
-  - integation on native - theme change, render time
-- CI auto master merge tests passing releases
+
+---
+
+inbox
+
 - tama sync
   - make it easy to have a template repo that people sync to
   - includes the git sync stuff from cli now
@@ -54,10 +41,6 @@
     - package.json etc
     - binary assets overwrite (if not changed, else prompt)
 - setup script can power `tama sync` to sync the repo to its parent repo
-
----
-
-inbox
 
 - dynamic eval bundle of smallish fixes: 
   - hash file contents cache
