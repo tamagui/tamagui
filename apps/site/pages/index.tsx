@@ -4,7 +4,7 @@ import { SelectDemo, SliderDemo } from '@tamagui/demos'
 import { setTintFamily } from '@tamagui/logo'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
-import { XStack, YStack, isClient } from 'tamagui'
+import { Button, XStack, YStack, isClient } from 'tamagui'
 
 import { ContainerLarge } from '../components/Container'
 import { HeroBelow } from '../components/HeroBelow'
@@ -17,6 +17,7 @@ import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { HomeGlow } from '../components/HomeGlow'
 import { MailingListSignup } from '../components/MailingListSignup'
+import { NextLink } from '../components/NextLink'
 import { HomeSection, SectionTinted, TintSection } from '../components/TintSection'
 import { getCompilationExamples } from '../lib/getCompilationExamples'
 
@@ -29,8 +30,23 @@ export default function Home({ animationCode, compilationExamples }) {
         <Hero />
       </TintSection>
       <ContainerLarge fd="column" pos="relative" zi={2000}>
-        <XStack als="center" pos="absolute" y={-26} jc="center" ai="center">
+        <XStack als="center" pos="absolute" y={-26} jc="center" ai="center" space>
           <MailingListSignup />
+          <NextLink href="/blog/version-one">
+            <Button
+              theme="red"
+              als="center"
+              elevation="$4"
+              borderWidth={1}
+              borderColor="$color5"
+              size="$5"
+              fontFamily="$silkscreen"
+              bc="$color1"
+              br="$10"
+            >
+              1.0 🎉
+            </Button>
+          </NextLink>
         </XStack>
       </ContainerLarge>
       <TintSection btw={1} bbw={1} boc="$borderColor" index={1} p={0}>
