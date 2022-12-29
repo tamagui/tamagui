@@ -69,7 +69,7 @@ The key to Tamagui's performance gains lie in **view flattening** or tree-flatte
 - Typed shorthands.
 - Pluggable animation drivers, allows swapping JS-based animations to pure CSS on the web.
 
-One novel feature is **deterministic, easy to reason about style merging**. Core will _alway merges styles based on the order received rather than arcane CSS definition-order + specificity rules_, no matter if those styles come through nested `styled` calls, or via inline props. This resolves limitations in both CSS and CSS-in-JS systems as they largely exist today.
+One novel feature is **deterministic, easy to reason about style merging**. Core will _always merge styles based on the order received rather than arcane CSS definition-order + specificity rules_, no matter if those styles come through nested `styled` calls, or via inline props. This resolves limitations in both CSS and CSS-in-JS systems as they largely exist today.
 
 ### styled()
 
@@ -349,7 +349,7 @@ During the beta we landed many performance improvements bringing average parse t
 
 Previously, Tamagui Static only knew how to optimize components found in your separated design system package. But it's both common and desirable to have one-off `styled()` definitions that are just used for small areas of your app that live alongside those areas, outside your design system.
 
-The compiler now supports analyzing components outside of just your design system, allowing for even less friction when writing apps. It means you can put your `styled()` definitions _anywhere_ without worrying, and Tamagui Static will load and optimize those components as it discovers theme.
+The compiler now supports analyzing components outside of just your design system, allowing for even less friction when writing apps. It means you can put your `styled()` definitions _anywhere_ without worrying, and Tamagui Static will load and optimize those components as it discovers them.
 
 ### Vite support
 
