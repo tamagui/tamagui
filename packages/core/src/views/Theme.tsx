@@ -20,14 +20,12 @@ export function Theme(props: ThemeProps) {
 
   // memo here, changing theme without re-rendering all children is a critical optimization
   // may require some effort of end user to memoize but without this memo they'd have no option
-  let contents = useMemo(() => {
-    return wrapThemeManagerContext(
-      props['data-themeable']
-        ? React.cloneElement(props.children, { ['data-themeable']: true })
-        : props.children,
-      themeManager
-    )
-  }, [missingTheme, props.children, themeManager])
+  let contents = useThemeManagerContext(
+    props['data-themeable']
+      ? React.cloneElement(props.children, { ['data-themeable']: true })
+      : props.children,
+    themeManager
+  )
 
   if (process.env.NODE_ENV === 'development' && missingTheme) {
     // eslint-disable-next-line no-console
@@ -57,13 +55,15 @@ export function Theme(props: ThemeProps) {
   return contents
 }
 
-export function wrapThemeManagerContext(
+export function useThemeManagerContext(
   children: any,
   themeManager?: ThemeManager | null,
   shouldReset?: boolean
 ) {
+  // disabled super memoize it - listener first strategy
+  const value = themeManager // useMemo(() => themeManager, [!!themeManager])
   // be sure to memoize themeManager to avoid reparenting
-  if (!themeManager) return children
+  if (!value) return children
   // be sure to memoize shouldReset to avoid reparenting
   let next = children
   // TODO likely not necessary if we do reset logic now in useTheme?
@@ -71,9 +71,5 @@ export function wrapThemeManagerContext(
   if (shouldReset && themeManager) {
     next = <Theme name={themeManager.state.parentName}>{next}</Theme>
   }
-  return (
-    <ThemeManagerContext.Provider value={themeManager}>
-      {next}
-    </ThemeManagerContext.Provider>
-  )
+  return <ThemeManagerContext.Provider value={value}>{next}</ThemeManagerContext.Provider>
 }

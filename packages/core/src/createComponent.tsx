@@ -60,7 +60,7 @@ import {
 } from './types'
 import { usePressability } from './vendor/Pressability'
 import { Slot, mergeEvent } from './views/Slot'
-import { wrapThemeManagerContext } from './views/Theme'
+import { useThemeManagerContext } from './views/Theme'
 
 // let t
 // import { timer } from '@tamagui/timer'
@@ -822,23 +822,20 @@ export function createComponent<
       stateRef.current.themeShouldReset = true
     }
 
-    const childEls =
-      !children || asChild
-        ? children
-        : wrapThemeManagerContext(
-            spacedChildren({
-              separator,
-              children,
-              space,
-              direction: props.spaceDirection || 'both',
-              isZStack,
-            }),
-            // only set context if changed theme
-            stateRef.current.hasProvidedThemeManager ? themeManager : undefined,
-            stateRef.current.themeShouldReset
-          )
+    const innerContent = useThemeManagerContext(
+      spacedChildren({
+        separator,
+        children,
+        space,
+        direction: props.spaceDirection || 'both',
+        isZStack,
+      }),
+      // only set context if changed theme
+      stateRef.current.hasProvidedThemeManager ? themeManager : undefined,
+      stateRef.current.themeShouldReset
+    )
 
-    let content: any
+    let content = !children || asChild ? children : innerContent
 
     if (asChild) {
       elementType = Slot
@@ -876,7 +873,7 @@ export function createComponent<
       }
     }
 
-    content = createElement(elementType, viewProps, childEls)
+    content = createElement(elementType, viewProps, content)
 
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (events || isAnimatedReactNativeWeb) {
@@ -932,7 +929,6 @@ export function createComponent<
             styles,
             pseudos,
             content,
-            childEls,
             shouldAvoidClasses,
             avoidClasses: avoidClassesWhileAnimating,
             animation: props.animation,

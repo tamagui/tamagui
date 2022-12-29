@@ -42,6 +42,10 @@ export class ThemeManager {
     if (!parentManager) {
       throw new Error('Must set up root first')
     }
+
+    // copy over listeners
+    this.themeListeners = parentManager.themeListeners
+
     // no change no props
     if (hasNoThemeUpdatingProps(props)) {
       return parentManager
@@ -136,6 +140,7 @@ export class ThemeManager {
   }
 
   notify() {
+    console.log('notify', this.themeListeners.size, this.themeListeners)
     this.themeListeners.forEach((cb) => cb(this.state.name, this))
   }
 
