@@ -72,7 +72,7 @@ The key to Tamagui's performance gains lie in **view flattening** or tree-flatte
 - Typed shorthands.
 - Pluggable animation drivers, allows swapping JS-based animations to pure CSS on the web.
 
-One novel feature is **deterministic, easy to reason about style merging**. Core will _always merge styles based on the order received rather than arcane CSS definition-order + specificity rules_, no matter if those styles come through nested `styled` calls, or via inline props. This resolves limitations in both CSS and CSS-in-JS systems as they largely exist today.
+One novel feature is **deterministic, easy to reason about style merging**. Core _always merges styles based on the order received rather than arcane CSS definition-order + specificity rules_, no matter if those styles come through nested `styled` calls, or via inline props. This resolves limitations in both CSS and CSS-in-JS systems as they largely exist today.
 
 ### styled()
 
@@ -201,7 +201,7 @@ You can get all the benefits of unified APIs across native and web plus an optim
 
 ### Bundle size reduction
 
-De-coupling core from `react-native` is a big win web bundle size, allowing you to leave out 35Kb of size if just using `core`. We've shaved nearly ~12Kb beyond that during the betas by iteratively improving code and reducing dependencies. Today core is ~20Kb, gzipped, but can get down to ~10Kb fairly straightforwardly.
+De-coupling core from `react-native` is a big win for web bundle size, allowing you to leave out 35Kb of size if just using `core`. We've shaved nearly ~12Kb beyond that during the betas by iteratively improving code and reducing dependencies. Today core is ~20Kb, gzipped, but can get down to ~10Kb fairly straightforwardly.
 
 Beyond that, we have landed refactors now that allow releasing a web-specific core which will drop a few Native-specific APIs and bring the total runtime size cost down to below 8Kb.
 
@@ -344,7 +344,7 @@ For more information on how it works and why it's important, read our [introduct
 
 ### Performance
 
-The compiler uses `babel` to parse and optimize components, which it can get away for performance with largely because it only needs to parse a subset of your files, and it only needs to look for a few areas - namely JSX elements and `styled()` functions.
+The compiler uses `babel` to parse and optimize components, which it can get away with for performance largely because it only needs to parse a subset of your files, and it only needs to look for a few areas - namely JSX elements and `styled()` functions.
 
 During the beta we landed many performance improvements bringing average parse time down to below 6ms for a longer file on a modern laptop. By default now Tamagui avoids parsing many more files through quick heuristics. It's now also fully thread-safe, uses more caching, and has been fine-tuned for memory usage.
 
@@ -352,7 +352,7 @@ During the beta we landed many performance improvements bringing average parse t
 
 Previously, Tamagui Static only knew how to optimize components found in your separated design system package. But it's both common and desirable to have one-off `styled()` definitions that are just used for small areas of your app that live alongside those areas, outside your design system.
 
-The compiler now supports analyzing components outside of just your design system, allowing for even less friction when writing apps. It means you can put your `styled()` definitions _anywhere_ without worrying, and Tamagui Static will load and optimize those components as it discovers theme.
+The compiler now supports analyzing components outside of just your design system, allowing for even less friction when writing apps. It means you can put your `styled()` definitions _anywhere_ without worrying, and Tamagui Static will load and optimize those components as it discovers them.
 
 ### Vite support
 
@@ -409,7 +409,7 @@ We've seen the addition of seven new components. Each comes with composable comp
 
 We owe thanks to both [Radix](https://www.radix-ui.com) and [Floating UI](https://floating-ui.com) for making these much easier to build.
 
-Like the existing components in Tamagui, every new component is sizable, themable, and able automatically styled using your design system.
+Like the existing components in Tamagui, every new component is sizable, themable, and able to be automatically styled using your design system.
 
 The new components are:
 
@@ -419,7 +419,7 @@ The new components are:
   <SheetDemo />
 </HeroContainer>
 
-This was an excellent test of the unified animation drivers on Tamagui, and unfied interaction primitives of React Native, and we're happy with how it's turned out.
+This was an excellent test of the unified animation drivers on Tamagui, and unified interaction primitives of React Native, and we're happy with how it's turned out.
 
 Internally, we've come up with some helpers for each animation driver to support a consistent API for taking a number value and interpolating it with some style properties. Each driver handles this quite differently on the surface, but the Tamagui drivers now give a consistent interface across them all.
 
@@ -493,7 +493,7 @@ Display content with a header, footer, background image, title, subtitle and des
 
 #### ListItem
 
-[ListItem](/docs/components/list-item) allows you to display consistent with title, subtitle, before and after images or icons, and more.
+[ListItem](/docs/components/list-item) allows you to display content with a title, subtitle, before and after images or icons, and more.
 
 <HeroContainer tinted>
   <ListItemDemo />
@@ -557,7 +557,7 @@ The monorepo now includes `apps/kitchen-sink`, a native app that demos every com
 
 #### Starter repos
 
-`create-tamagui` underwent some big improvements that will set it up to be much more useful going forward. We moved starters into the monorepo, which was tricky but lets us much more rapidly iterate on them and test them e2e for each release. We're using a custom home directory `~/.tamagui` directory and git clone that gives us a much smoother upgrade experience, especially in future versions. The `next-expo-solito` starter repo has had extensive polish as well, simplifying the setup, removing the need for watch commands, and properly building to production across all features for web, iOS and Android.
+`create-tamagui` underwent some big improvements that will set it up to be much more useful going forward. We moved starters into the monorepo, which was tricky but lets us iterate much more rapidly on them and test them e2e for each release. We're using a custom `~/.tamagui` home directory and git clone that gives us a much smoother upgrade experience, especially in future versions. The `next-expo-solito` starter repo has had extensive polish as well, simplifying the setup, removing the need for watch commands, and properly building to production across all features for web, iOS and Android.
 
 ### Features
 
@@ -599,7 +599,7 @@ Tamagui now has several apps in production in both app stores. One larger one bu
 
 #### Correctness
 
-More than any other section in this release, the biggest amount of effort for 1.0 went into correctness. Tamagui has steadily landed fixes across every feature and component since Beta, and the difference between early this year and now is astounding, with a whole ton of edge cases handled automatically now.
+More than any other section in this release, the biggest amount of effort for 1.0 went into correctness. Tamagui has steadily landed fixes across every feature and component since Beta, and the difference between early this year and now is astounding, with a ton of edge cases handled automatically now.
 
 #### Community
 
@@ -621,7 +621,7 @@ Tamagui is stable and free of all blocking bugs across every feature, but there'
 
 Writing about what comes after 1.0 is a blog post to itself. For now, [next.md](https://github.com/tamagui/tamagui/blob/master/next.md) is a living document of upcoming features and fixes.
 
-The next few minor releases will focus on improving types, accessibility, animations, test coverage, and solidifying the newer components. We'll be setting up stricted release processes, and improving contributor experience.
+The next few minor releases will focus on improving types, accessibility, animations, test coverage, and solidifying the newer components. We'll be setting up stricter release processes, and improving contributor experience.
 
 There are many exciting features on the table as well, including:
 
@@ -631,8 +631,8 @@ There are many exciting features on the table as well, including:
 - `tamagui build` - build to plain css and JS for compatibility with any bundler.
 - Adding the `native` prop for platform-specific output on Select, Dialog, Popover, Sheet and more.
 - `<Theme />` custom tokens.
-- `<Debug />` to with nice visualizations of what's happening inside an entire tree of components.
-- `<Skeleton />` to automatically render a skeleton variants for every component in a tree.
+- `<Debug />` to show nice visualizations of what's happening inside an entire tree of components.
+- `<Skeleton />` to automatically render skeleton variants for every component in a tree.
 - `<Menu />`, `<Radio />` or `<Toggle />` equivalent, `<Tabs />`, `<Accordion />`, `<Autocomplete />` and more.
 - Adding pseudo `focusWithinStyle`.
 - Breakpoints as token values allowing `height="$lg"`.
