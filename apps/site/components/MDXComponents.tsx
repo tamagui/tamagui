@@ -158,7 +158,11 @@ export const components = {
     </YStack>
   ),
 
-  Wide: (props) => <YStack mx="$-8">{props.children}</YStack>,
+  Wide: (props) => (
+    <YStack mx="$-8" $sm={{ mx: '$-2' }}>
+      {props.children}
+    </YStack>
+  ),
 
   Table,
   TableCell,
