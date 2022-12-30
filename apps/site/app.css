@@ -263,6 +263,11 @@ pre {
   );
 }
 
+/* intro paragraph links */
+._fow-200 .link span, ._fow-200 .link {
+  font-weight: inherit !important;
+}
+
 .xmas-season .rainbow {
   background-image: -webkit-linear-gradient(
     -220deg,
