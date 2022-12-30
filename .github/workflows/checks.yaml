@@ -1,6 +1,7 @@
 name: Checks
 
 on:
+  pull_request:
   push:
     paths-ignore:
       - 'assets/**'
