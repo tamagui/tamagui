@@ -5,6 +5,7 @@ import { Button, TooltipSimple, YStack } from 'tamagui'
 
 import { useClipboard } from '../lib/useClipboard'
 import { Code } from './Code'
+import { ErrorBoundary } from './ErrorBoundary'
 import { Pre } from './Pre'
 
 export const DocCodeBlock = forwardRef((props: any, ref) => {
@@ -24,15 +25,19 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   // const frontmatter = useContext(FrontmatterContext)
 
   useEffect(() => {
-    if (preRef.current) {
-      const codeElement = preRef.current.querySelector('code')
-      if (codeElement) {
-        // remove double line breaks
-        const code = codeElement.innerText.replace(/\n{3,}/g, '\n')
-        setCode(code)
-      } else {
-        // not collapsible
+    try {
+      if (preRef.current) {
+        const codeElement = preRef.current.querySelector('code')
+        if (codeElement) {
+          // remove double line breaks
+          const code = codeElement.innerText.replace(/\n{3,}/g, '\n')
+          setCode(code)
+        } else {
+          // not collapsible
+        }
       }
+    } catch {
+      // ok
     }
   }, [preRef])
 
@@ -49,68 +54,70 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
         },
       })}
     >
-      {isCollapsible && (
-        <YStack
-          position="absolute"
-          display="inline-flex"
-          alignItems="center"
-          justifyContent="flex-end"
-          top={-70}
-          r="$6"
-          $gtMd={{
-            r: '$7',
-          }}
-        >
-          <Button
-            accessibilityLabel="Show or hide code"
-            size="$2"
-            onPress={() => setIsCollapsed((x) => !x)}
+      <ErrorBoundary>
+        {isCollapsible && (
+          <YStack
+            position="absolute"
+            display="inline-flex"
+            alignItems="center"
+            justifyContent="flex-end"
+            top={-70}
+            r="$6"
+            $gtMd={{
+              r: '$7',
+            }}
           >
-            {isCollapsed ? 'Show code' : 'Hide code'}
-          </Button>
-        </YStack>
-      )}
-
-      {(!isCollapsed || !isCollapsible) && (
-        <YStack position="relative">
-          <Pre
-            ref={preRef}
-            data-invert-line-highlight={isHighlightingLines}
-            data-line-numbers={showLineNumbers}
-            className={className}
-            p={0}
-            mb={0}
-            // @ts-ignore
-            id={id}
-          >
-            <ScrollView
-              style={{ width: '100%' }}
-              contentContainerStyle={{ minWidth: '100%' }}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-            >
-              <Code p="$4" backgroundColor="transparent" f={1} className={className}>
-                {children}
-              </Code>
-            </ScrollView>
-          </Pre>
-          <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
             <Button
-              aria-label="Copy code to clipboard"
-              position="absolute"
+              accessibilityLabel="Show or hide code"
               size="$2"
-              top="$3"
-              right="$3"
-              display="inline-flex"
-              icon={hasCopied ? CheckCircle : Clipboard}
-              onPress={onCopy}
-              $xs={{
-                display: 'none',
-              }}
-            />
-          </TooltipSimple>
-        </YStack>
-      )}
+              onPress={() => setIsCollapsed((x) => !x)}
+            >
+              {isCollapsed ? 'Show code' : 'Hide code'}
+            </Button>
+          </YStack>
+        )}
+
+        {(!isCollapsed || !isCollapsible) && (
+          <YStack position="relative">
+            <Pre
+              ref={preRef}
+              data-invert-line-highlight={isHighlightingLines}
+              data-line-numbers={showLineNumbers}
+              className={className}
+              p={0}
+              mb={0}
+              // @ts-ignore
+              id={id}
+            >
+              <ScrollView
+                style={{ width: '100%' }}
+                contentContainerStyle={{ minWidth: '100%' }}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+              >
+                <Code p="$4" backgroundColor="transparent" f={1} className={className}>
+                  {children}
+                </Code>
+              </ScrollView>
+            </Pre>
+            <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
+              <Button
+                aria-label="Copy code to clipboard"
+                position="absolute"
+                size="$2"
+                top="$3"
+                right="$3"
+                display="inline-flex"
+                icon={hasCopied ? CheckCircle : Clipboard}
+                onPress={onCopy}
+                $xs={{
+                  display: 'none',
+                }}
+              />
+            </TooltipSimple>
+          </YStack>
+        )}
+      </ErrorBoundary>
     </YStack>
   )
 })

@@ -2,6 +2,8 @@ import { ThemeTint } from '@tamagui/logo'
 import React from 'react'
 import { Theme, XStack, YStack, styled } from 'tamagui'
 
+import { ErrorBoundary } from './ErrorBoundary'
+
 export function HeroContainer({
   children,
   demoMultiple,
@@ -44,38 +46,40 @@ export function HeroContainer({
         mx: smaller ? 0 : '$-4',
       }}
     >
-      {demoMultiple ? (
-        <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
-          <XStack space="$3" px="$8">
-            {/* <Theme name="dark">
+      <ErrorBoundary>
+        {demoMultiple ? (
+          <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
+            <XStack space="$3" px="$8">
+              {/* <Theme name="dark">
               <Card>{children}</Card>
             </Theme>
             <Theme name="light">
               <Card>{children}</Card>
             </Theme> */}
-            <Theme name="blue">
-              <Card>{children}</Card>
-            </Theme>
-            <Theme name="red">
-              <Card>{children}</Card>
-            </Theme>
-            <Theme name="pink">
-              <Card>{children}</Card>
-            </Theme>
-            <Theme name="orange">
-              <Card>{children}</Card>
-            </Theme>
-            <Theme name="green">
-              <Card>{children}</Card>
-            </Theme>
-            <Theme name="yellow">
-              <Card>{children}</Card>
-            </Theme>
+              <Theme name="blue">
+                <Card>{children}</Card>
+              </Theme>
+              <Theme name="red">
+                <Card>{children}</Card>
+              </Theme>
+              <Theme name="pink">
+                <Card>{children}</Card>
+              </Theme>
+              <Theme name="orange">
+                <Card>{children}</Card>
+              </Theme>
+              <Theme name="green">
+                <Card>{children}</Card>
+              </Theme>
+              <Theme name="yellow">
+                <Card>{children}</Card>
+              </Theme>
+            </XStack>
           </XStack>
-        </XStack>
-      ) : (
-        children
-      )}
+        ) : (
+          children
+        )}
+      </ErrorBoundary>
     </YStack>
   )
 
