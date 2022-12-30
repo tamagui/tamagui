@@ -38,18 +38,34 @@ Be sure to set the environment variable `TAMAGUI_TARGET` to the string `web` or 
 ### Config file
 
 Create a `tamagui.config.ts` file at the root of your project.
+You can import `createTamagui` from either `tamagui` or `@tamagui/core` depending on which you decide to use.
 
-From there you'll export default the result of `createTamagui`, like so:
+From there you'll export default the result of `createTamagui` like so:
 
 ```tsx
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/theme-base'
-import { createTamagui } from 'tamagui'
+import { createFont, createTamagui } from 'tamagui'
 
 export default createTamagui({
   themes,
   tokens,
   shorthands,
+  fonts: {
+    body: createFont({
+      family: 'Arial',
+      size: {
+        // You'll want to fill these values in so you can use them
+        // for now, fontSize="$4" will be 14px.
+        // You can define different keys, but `tamagui`
+        // standardizes on 1-15.
+        4: 14,
+      },
+      lineHeight: {
+        4: 16,
+      },
+    }),
+  },
 })
 ```
 
@@ -59,9 +75,7 @@ You'll need to install these packages:
 yarn add @tamagui/shorthands @tamagui/theme-base
 ```
 
-You can import `createTamagui` from either `tamagui` or `@tamagui/core` depending on which you decide to use.
-
-The next page, [Configuration](/docs/core/configuration) explains this file in detail.
+For an even quicker start, you can get a full design system with `@tamagui/config-base`, which we show on the[Configuration](/docs/core/configuration) page. That page also goes into more detail on everything `createTamagui` accepts.
 
 ### Root export
 
