@@ -56,16 +56,8 @@ export function getAtomicStyle(
     if (!style || typeof style !== 'object') {
       throw new Error(`Wrong style type: "${typeof style}": ${style}`)
     }
-  } else {
-    if (!style) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.warn('Invalid style')
-      }
-      return []
-    }
   }
-
+  if (!style) return []
   return generateAtomicStyles(style, pseudo)
 }
 

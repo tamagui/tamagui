@@ -39,10 +39,7 @@ export class ThemeManager {
       this.updateState(props, false)
       return
     }
-    if (!parentManager) {
-      throw new Error('Must set up root first')
-    }
-
+    if (!parentManager) throw `❌`
     // copy over listeners
     this.themeListeners = parentManager.themeListeners
 
@@ -205,22 +202,9 @@ function getState(
       ? max // component name only don't search upwards
       : 0
 
-  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose')
-    [
-      // eslint-disable-next-line no-console
-      console.groupCollapsed('ThemeManager.getState()', props, {
-        parentName,
-        parentBaseTheme,
-        base,
-        min,
-        max,
-        isParentAComponentTheme,
-      }),
-      // eslint-disable-next-line no-console
-      console.trace(),
-      // eslint-disable-next-line no-console
-      console.groupEnd(),
-    ]
+  // prettier-ignore
+  // eslint-disable-next-line no-console
+  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') [ console.groupCollapsed('ThemeManager.getState()', props, { parentName,   parentBaseTheme,   base,   min,   max,   isParentAComponentTheme }), console.trace(), console.groupEnd() ]
 
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
