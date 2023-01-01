@@ -34,7 +34,6 @@ const processSection = <T>(
 
 export const createFont = <A extends GenericFont>(font: A): A => {
   const sizeKeys = Object.keys(font.size)
-
   const processedFont = Object.fromEntries(
     Object.entries(font).map(([key, section]) => {
       return [
@@ -47,6 +46,5 @@ export const createFont = <A extends GenericFont>(font: A): A => {
       ]
     })
   )
-
   return Object.freeze(processedFont) as A
 }

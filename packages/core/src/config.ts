@@ -1,20 +1,18 @@
-import { ConfigListener, TamaguiInternalConfig, ThemeParsed, Tokens } from './types'
+import { ConfigListener, TamaguiInternalConfig, Tokens } from './types'
 
 let conf: TamaguiInternalConfig | null
 
 export const setConfig = (next: TamaguiInternalConfig) => {
   conf = next
-  if (configListeners.size) {
-    configListeners.forEach((cb) => cb(next))
-  }
+  configListeners.forEach((cb) => cb(next))
 }
 
 export const setConfigFont = (name: string, font: any, fontParsed: any) => {
   if (process.env.NODE_ENV === 'development') {
     if (!conf) throw new Error(`Haven't called createTamagui yet`)
   }
-  Object.assign(conf!.fonts, { [name]: font })
-  Object.assign(conf!.fontsParsed, { [`$${name}`]: fontParsed })
+  conf!.fonts[name] = font
+  conf!.fontsParsed[`$${name}`] = fontParsed
 }
 
 export const getConfig = () => {

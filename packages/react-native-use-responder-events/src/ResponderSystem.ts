@@ -64,9 +64,7 @@ export type ResponderConfig = {
   onScrollShouldSetResponderCapture?: ((e: ResponderEvent) => boolean) | null
   // On text selection change, should this element become the responder?
   onSelectionChangeShouldSetResponder?: ((e: ResponderEvent) => boolean) | null
-  onSelectionChangeShouldSetResponderCapture?:
-    | ((e: ResponderEvent) => boolean)
-    | null
+  onSelectionChangeShouldSetResponderCapture?: ((e: ResponderEvent) => boolean) | null
 }
 
 const emptyObject = {}
@@ -187,7 +185,7 @@ function eventListener(domEvent: any) {
     }
     responderTouchHistoryStore.recordTouchTrack(
       eventType,
-      responderEvent.nativeEvent as any,
+      responderEvent.nativeEvent as any
     )
   }
 
@@ -209,7 +207,7 @@ function eventListener(domEvent: any) {
     if (currentResponderIdPath != null && eventIdPath != null) {
       const lowestCommonAncestor = getLowestCommonAncestor(
         currentResponderIdPath,
-        eventIdPath,
+        eventIdPath
       )
       if (lowestCommonAncestor != null) {
         const indexOfLowestCommonAncestor = eventIdPath.indexOf(lowestCommonAncestor)
@@ -408,7 +406,7 @@ function findWantsResponder(eventPaths, domEvent, responderEvent) {
  */
 function attemptTransfer(
   responderEvent: ResponderEvent,
-  wantsResponder: ActiveResponderInstance,
+  wantsResponder: ActiveResponderInstance
 ) {
   const { id: currentId, node: currentNode } = currentResponder
   const { id, node } = wantsResponder
@@ -436,8 +434,7 @@ function attemptTransfer(
     let allowTransfer = true
     if (onResponderTerminationRequest != null) {
       responderEvent.currentTarget = currentNode
-      responderEvent.dispatchConfig.registrationName =
-        'onResponderTerminationRequest'
+      responderEvent.dispatchConfig.registrationName = 'onResponderTerminationRequest'
       if (onResponderTerminationRequest(responderEvent) === false) {
         allowTransfer = false
       }
@@ -493,8 +490,11 @@ const documentEventsBubblePhase = [
   'select',
   'selectionchange',
 ]
+
+const isTamaguiResponderActive = Symbol()
+
 export function attachListeners() {
-  if (canUseDOM && !window['__tamaguiReactResponderSystemActive']) {
+  if (canUseDOM && !window[isTamaguiResponderActive]) {
     window.addEventListener('blur', eventListener)
     documentEventsBubblePhase.forEach((eventType) => {
       document.addEventListener(eventType, eventListener)
@@ -502,7 +502,7 @@ export function attachListeners() {
     documentEventsCapturePhase.forEach((eventType) => {
       document.addEventListener(eventType, eventListener, true)
     })
-    window['__tamaguiReactResponderSystemActive'] = true
+    window[isTamaguiResponderActive] = true
   }
 }
 

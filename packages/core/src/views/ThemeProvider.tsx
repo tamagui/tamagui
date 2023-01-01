@@ -32,15 +32,15 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
     }, [props.defaultTheme, props.disableRootThemeClass, props.themeClassNameOnRoot])
   }
 
-  const value = useMemo(() => {
-    return {
-      defaultTheme: props.defaultTheme,
-    }
-    // NOTE DON'T CHANGE THIS ITS ONLY USED BY useThemeName for SSR safety for now...
-  }, [])
-
   return (
-    <ThemeProviderRootContext.Provider value={value}>
+    <ThemeProviderRootContext.Provider
+      value={useMemo(() => {
+        return {
+          defaultTheme: props.defaultTheme,
+        }
+        // NOTE DON'T CHANGE THIS ITS ONLY USED BY useThemeName for SSR safety for now...
+      }, [])}
+    >
       <Theme
         className={props.className}
         name={props.defaultTheme}

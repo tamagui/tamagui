@@ -6,10 +6,6 @@ export function isTamaguiComponent<A>(
 ): comp is A & {
   staticConfig: StaticConfig
 } {
-  const config = comp && (comp['staticConfig'] as StaticConfigParsed | undefined)
-  if (!config?.parsed) return false
-  if (name) {
-    return name === config.componentName
-  }
-  return true
+  const config = comp?.['staticConfig'] as StaticConfigParsed | undefined
+  return (config?.parsed && (name ? name === config.componentName : true)) || false
 }

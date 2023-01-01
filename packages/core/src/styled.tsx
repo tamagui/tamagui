@@ -1,4 +1,4 @@
-import { stylePropsAll, validStyles } from '@tamagui/helpers'
+import { stylePropsAll } from '@tamagui/helpers'
 
 import { createComponent } from './createComponent'
 import { ReactNativeStaticConfigs } from './setupReactNative'

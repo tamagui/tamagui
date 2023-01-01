@@ -41,7 +41,7 @@ function mergeProp(
   inverseShorthands?: AnyRecord
 ) {
   const val = a[key]
-  const shorthand = inverseShorthands ? inverseShorthands[key] : null
+  const shorthand = inverseShorthands?.[key] || null
   if (b && (key in b || (shorthand && shorthand in b))) {
     return
   }

@@ -23,8 +23,10 @@ export const useIsomorphicLayoutEffect = isRSC
   : useLayoutEffect
 export const isChrome =
   typeof navigator !== 'undefined' && /Chrome/.test(navigator.userAgent || '')
+
 export const isWebTouchable =
   isClient && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+
 export const isTouchable = !isWeb || isWebTouchable
 
 if (process.env.NODE_ENV === 'development') {
@@ -38,7 +40,7 @@ if (process.env.NODE_ENV === 'development') {
   ) {
     // eslint-disable-next-line no-console
     console.warn(
-      `Must set TAMAGUI_TARGET to "web" for web apps - if you have window defined outside of the browser, set TAMAGUI_IGNORE_TARGET=1 to hide this`,
+      `Must set TAMAGUI_TARGET to "web" for web apps - if you have window defined outside of the browser, set TAMAGUI_IGNORE_TARGET=1 to hide this`
     )
   }
 }

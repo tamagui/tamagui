@@ -16,9 +16,8 @@ type PossibleRef<T> =
 function setRef<T>(ref: PossibleRef<T>, value: T) {
   if (typeof ref === 'function') {
     ref(value)
-  } else if (ref !== null && ref !== undefined) {
-    const next = ref as React.MutableRefObject<T>
-    next.current = value
+  } else if (ref) {
+    ;(ref as React.MutableRefObject<T>).current = value
   }
 }
 

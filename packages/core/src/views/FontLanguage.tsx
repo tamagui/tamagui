@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FontLanguageProps } from './FontLanguage.types'
 
 export const FontLanguage = ({ children, ...props }: FontLanguageProps) => {

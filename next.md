@@ -1,5 +1,24 @@
 1.0 post launch:
 
+- bundle size:
+  - expandStyle remove some
+  - check if isWeb is actually being removed or needs to be inlined to TAMAGUI_TARGET
+  - move to PROP whitelist rather than style whitelist maybe avoid validStyleProps altogether
+  - getStylesAtomic "all webkit prefixed rules, pointer-events"
+  - Slot
+  - color names hardcoded potentially
+  - // ??
+  - styled(), extendStaticConfig can just merge options rather than de-structure re-structure
+  - remove mergeConfigDefaultProps
+  - ThemeManager move to functional not class, cleanup getThemeProxied
+  - IS_VAR symbol
+  - move addTheme/updateTheme out of core
+  - may be able to remove proxyThemeVariables
+  - getVariantExtras looks easy to slim
+  - reverseMapClassNameToValue / unitlessNumbers
+  - normalizeColor etc
+  - createPropMapper
+
 - test: useMedia, reanimated, re-renders (mount, on hover, etc), render time ms
 - CD on github
 - home page sponsors with sizing and better logos
