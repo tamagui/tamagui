@@ -47,7 +47,7 @@ export const build = async (options: ResolvedOptions) => {
                   shouldPrintDebug: options.debug || false,
                 })
 
-                await writeFile()
+                // await writeFile()
               })
             )
           })()
