@@ -31,9 +31,9 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/build": "^1.0.2",
-    "@tamagui/static": "^1.0.2",
-    "@tamagui/vite-plugin": "^1.0.2",
+    "@tamagui/build": "^1.0.1",
+    "@tamagui/static": "^1.0.1",
+    "@tamagui/vite-plugin": "^1.0.1",
     "@types/compression": "^1.7.2",
     "@types/morgan": "^1.9.3",
     "arg": "^5.0.2",

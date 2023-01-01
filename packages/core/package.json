@@ -28,14 +28,14 @@
     "reset.css"
   ],
   "dependencies": {
-    "@tamagui/compose-refs": "^1.0.2",
-    "@tamagui/constants": "^1.0.2",
-    "@tamagui/helpers": "^1.0.2",
-    "@tamagui/react-native-use-pressable": "^1.0.2",
-    "@tamagui/react-native-use-responder-events": "^1.0.2",
-    "@tamagui/use-did-finish-ssr": "^1.0.2",
-    "@tamagui/use-event": "^1.0.2",
-    "@tamagui/use-force-update": "^1.0.2",
+    "@tamagui/compose-refs": "^1.0.1",
+    "@tamagui/constants": "^1.0.1",
+    "@tamagui/helpers": "^1.0.1",
+    "@tamagui/react-native-use-pressable": "^1.0.1",
+    "@tamagui/react-native-use-responder-events": "^1.0.1",
+    "@tamagui/use-did-finish-ssr": "^1.0.1",
+    "@tamagui/use-event": "^1.0.1",
+    "@tamagui/use-force-update": "^1.0.1",
     "normalize-css-color": "^1.0.2"
   },
   "peerDependencies": {
@@ -43,7 +43,7 @@
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.2",
+    "@tamagui/build": "^1.0.1",
     "@testing-library/react": "^13.4.0",
     "csstype": "^3.0.10",
     "react": "^18.2.0",

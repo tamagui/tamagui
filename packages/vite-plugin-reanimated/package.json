@@ -27,7 +27,7 @@
     "@babel/core": "^7.19.6"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.2",
+    "@tamagui/build": "^1.0.1",
     "@types/babel-core": "^6.25.7",
     "vite": "^4.0.3"
   },

@@ -19,19 +19,19 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/compose-refs": "^1.0.2",
-    "@tamagui/core": "^1.0.2",
-    "@tamagui/create-context": "^1.0.2",
-    "@tamagui/polyfill-dev": "^1.0.2",
-    "@tamagui/stacks": "^1.0.2",
-    "@tamagui/use-controllable-state": "^1.0.2"
+    "@tamagui/compose-refs": "^1.0.1",
+    "@tamagui/core": "^1.0.1",
+    "@tamagui/create-context": "^1.0.1",
+    "@tamagui/polyfill-dev": "^1.0.1",
+    "@tamagui/stacks": "^1.0.1",
+    "@tamagui/use-controllable-state": "^1.0.1"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.2",
+    "@tamagui/build": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

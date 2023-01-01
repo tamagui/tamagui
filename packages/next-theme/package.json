@@ -16,13 +16,13 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/use-event": "^1.0.2"
+    "@tamagui/use-event": "^1.0.1"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.2",
+    "@tamagui/build": "^1.0.1",
     "react": "^18.2.0"
   },
   "publishConfig": {
