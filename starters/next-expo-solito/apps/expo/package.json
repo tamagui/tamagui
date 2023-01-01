@@ -30,7 +30,7 @@
     "react-native-gesture-handler": "^2.8.0",
     "react-native-safe-area-context": "^4.4.1",
     "react-native-screens": "^3.18.2",
-    "react-native-svg": "12.1.0",
+    "react-native-svg": "^13.4.0",
     "react-native-web": "~0.18.7"
   },
   "devDependencies": {
