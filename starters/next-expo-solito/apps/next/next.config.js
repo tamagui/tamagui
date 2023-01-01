@@ -19,6 +19,10 @@ console.log(`
 
 Welcome to Tamagui!
 
+You can update this monorepo to the latest Tamagui release just by running:
+
+yarn upgrade:tamagui
+
 We've set up a few things for you. We set the "excludeReactNativeWebExports"
 setting in next.config.js, which omits these from the bundle:
 
