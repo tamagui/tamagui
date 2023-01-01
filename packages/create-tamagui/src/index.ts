@@ -167,7 +167,10 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
 
       cd(repoRoot)
 
-      const branch = (await $`git rev-parse --abbrev-ref HEAD`).stdout.trim()
+      const branch = IS_TEST
+        ? // use current branch
+          (await $`git rev-parse --abbrev-ref HEAD`).stdout.trim()
+        : `master`
 
       // setup tests for CI
       if (IS_TEST) {
