@@ -643,7 +643,7 @@ export const getSplitStyles: StyleSplitter = (
           // we never animate in on server side just show the full thing
           // on client side we use CSS to hide the fully in SSR items, then
           // un-hide and replay with original animation.
-          if (!isClient && isEnter) {
+          if (isWeb && !isClient && isEnter) {
             isDisabled = false
           }
 
