@@ -23,16 +23,16 @@ You can update this monorepo to the latest Tamagui release just by running:
 
 yarn upgrade:tamagui
 
-We've set up a few things for you. See the "excludeReactNativeWebExports"
-setting in next.config.js, which omits these from the bundle: Switch, ProgressBar
-Picker, CheckBox, Touchable.
+We've set up a few things for you.
 
-To save more, you can add ones you don't need like: AnimatedFlatList, FlatList,
-SectionList, VirtualizedList, VirtualizedSectionList.
+See the "excludeReactNativeWebExports" setting in next.config.js, which omits these
+from the bundle: Switch, ProgressBar Picker, CheckBox, Touchable. To save more,
+you can add ones you don't need like: AnimatedFlatList, FlatList, SectionList,
+VirtualizedList, VirtualizedSectionList.
 
 Even better, enable "useReactNativeWebLite" and you can remove the
-excludeReactNativeWebExports setting altogether, and get tree-shaking and
-concurrent mode support.
+excludeReactNativeWebExports setting altogether and get tree-shaking and
+concurrent mode support as well.
 
 🐣
 
