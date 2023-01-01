@@ -23,15 +23,10 @@ export default function Blog({ frontmatters }) {
               <TamaguiCard
                 title={frontmatter.title}
                 subTitle={
-                  <XStack o={0.5}>
-                    <Paragraph cursor="inherit" tag="time" size="$3" theme="alt2">
-                      {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')} by
-                    </Paragraph>
-                    <Paragraph cursor="inherit" theme="alt1" size="$3">
-                      &nbsp;{authors[frontmatter.by].name}
-                    </Paragraph>
-                    {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}
-                  </XStack>
+                  <Paragraph o={0.5} cursor="inherit" theme="alt1" size="$3">
+                    {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')} by &nbsp;
+                    {authors[frontmatter.by].name}
+                  </Paragraph>
                 }
               >
                 {frontmatter.description}

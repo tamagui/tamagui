@@ -5,18 +5,18 @@ import { Card } from './Card'
 export function TamaguiCard({ children, title, subTitle, ...props }) {
   return (
     <Card
-      width="33.33%"
-      maxWidth="calc(33.33% - var(--space-4))"
+      // width="33.33%"
+      // maxWidth="calc(33.33% - var(--space-4))"
       p="$4"
       mx="$1"
       my="$2"
       mb="$2"
       space="$2"
-      $sm={{ width: 'auto', maxWidth: 'auto' }}
-      $md={{
+      $gtSm={{
         width: '50%',
         maxWidth: 'calc(50% - var(--space-4))',
       }}
+      $sm={{ width: 'auto', maxWidth: 'auto' }}
     >
       <H3
         tag="span"
