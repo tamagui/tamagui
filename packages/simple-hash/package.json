@@ -17,7 +17,7 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1"
+    "@tamagui/build": "^1.0.2"
   },
   "publishConfig": {
     "access": "public"

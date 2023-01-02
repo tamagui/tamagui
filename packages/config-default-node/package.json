@@ -15,11 +15,11 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/core-node": "^1.0.1",
-    "@tamagui/shorthands": "^1.0.1"
+    "@tamagui/core-node": "^1.0.2",
+    "@tamagui/shorthands": "^1.0.2"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1"
+    "@tamagui/build": "^1.0.2"
   },
   "publishConfig": {
     "access": "public"
