@@ -3,7 +3,7 @@ title: Next.js Guide
 description: How to set up Tamagui with Next.js
 ---
 
-You should run `npm create tamagui` which bootstraps a verly nicely configured Next.js app where you can take or leave whatever you want.
+You should run `npm create tamagui` which bootstraps a very nicely configured Next.js app where you can take or leave whatever you want.
 
 Also check out the [source for this site](https://github.com/tamagui/tamagui/tree/master/apps/site) to see a good example of a full featured Next.js website as well, especially the `next.config.js` and `tamagui.config.ts`.
 
@@ -127,7 +127,7 @@ export default () => {
 
 ### Mount animations
 
-Animations that run through JS drivers and have `enterStyle` set will want to add the following script that allows for hiding those animations before the JS runs. This is the "right way" to handle things, as it allows for disabling JS entirely and not accidently hiding all unmounted things. Meanwhile, it still properly avoids a flash of mounted style for SSR pages.
+Animations that run through JS drivers and have `enterStyle` set will want to add the following script that allows for hiding those animations before the JS runs. This is the "right way" to handle things, as it allows for disabling JS entirely and not accidentally hiding all unmounted things. Meanwhile, it still properly avoids a flash of mounted style for SSR pages.
 
 Add this to your `_app.tsx` render output:
 
