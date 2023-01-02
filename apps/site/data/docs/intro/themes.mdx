@@ -163,17 +163,12 @@ To get started quickly, you can use the themes we've developed alongside this si
 To install, just add import it and add it to your `tamagui.config.ts`:
 
 ```tsx
-import { createInterFont } from '@tamagui/font-inter'
 import { color, radius, size, space, themes, zIndex } from '@tamagui/theme-base'
 import { createTamagui, createTokens } from 'tamagui'
 
 const inter = createInterFont()
 
 const tokens = createTokens({
-  font: {
-    heading: inter,
-    body: inter,
-  },
   size,
   space,
   zIndex,
@@ -184,6 +179,7 @@ const tokens = createTokens({
 const config = createTamagui({
   themes,
   tokens,
+  // ... see Configuration
 })
 
 export type Conf = typeof config
