@@ -98,7 +98,7 @@ module.exports = {
 ```
 
 - _importsWhitelist_: Tamagui takes a conservative approach to partial evaluation, this field whitelists (matching against both .ts and .js) files to allow files that import them to read and use their values during compilation. Typically colors and constants files.
-- _disableExtaction_: Useful for faster developer iteration as themes hot reload more reliably.
+- _disableExtraction_: Useful for faster developer iteration as themes hot reload more reliably.
 
 ### Vite
 
@@ -251,8 +251,7 @@ All compiler plugins accept the same options:
       type: 'string[]',
       typeSimple: 'enum',
       default: "['tamagui']",
-      description:
-        'Array of npm modules containing Tamagui components which youll be using in your app. For example:  if you are using the base Tamagui components. This directs the compiler to load and optimize.',
+      description: `Array of npm modules containing Tamagui components which you'll be using in your app. For example:  if you are using the base Tamagui components. This directs the compiler to load and optimize.`,
     },
     {
       name: 'importsWhitelist',

@@ -63,7 +63,7 @@ If Tamagui didn't respect the order of the props on the JSX element of `CalHeade
 
 CSS does a "last defined style wins", which is a huge pain because it means you have to carefully manage the order your CSS is actually loaded into the document. Tamagui could do something similar, with a "inline props always win, defined props go in order of definition", but this would be dramatically less flexible.
 
-Especially when it comes to spreading props downwards. Because Tamagui supports prop order, you have complete control over which styles you want to always win, vs which can be overriden by a user:
+Especially when it comes to spreading props downwards. Because Tamagui supports prop order, you have complete control over which styles you want to always win, vs which can be overridden by a user:
 
 ```tsx
 export const MyCalendarHeader = (props: CalHeaderProps) => {

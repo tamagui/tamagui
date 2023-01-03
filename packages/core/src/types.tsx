@@ -241,7 +241,7 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   ? TamaguiInternalConfig<A, B, C, D, E, F>
   : unknown
 
-// for use in creation functions so it doesnt get overwrtitten
+// for use in creation functions so it doesnt get overwritten
 export type GenericTamaguiConfig = CreateTamaguiConfig<
   GenericTokens,
   GenericThemes,

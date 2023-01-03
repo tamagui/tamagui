@@ -205,7 +205,7 @@ export function useMedia(): UseMediaState {
  * Useful for more complex components that need access to the currently active props,
  * accounting for the currently active media queries.
  *
- * Use sparingly, is will loop props and trigger re-render on all media queries.
+ * Use sparingly, it will loop props and trigger re-render on all media queries.
  *
  * */
 export function useMediaPropsActive<A extends Object>(

@@ -443,7 +443,7 @@ export const createThemes = <C extends string>({
     colorFocus: darkColors[`${activeColor}12`],
   }
 
-  // light active uses light foregound, ios style
+  // light active uses light foreground, ios style
   baseThemes.light_active = baseThemes.dark_active
 
   const allThemes = {

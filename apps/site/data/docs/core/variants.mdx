@@ -41,8 +41,9 @@ export const Circle = styled(Stack, {
 ```
 
 <Notice>
-  Please use `as const` for the variants definition until Typescript gains the ability to infer
-  generics as const . It's not necessary, but without it types can break in weird ways.
+  Please use `as const` for the variants definition until Typescript gains the ability to
+  infer generics as const . It's not necessary, but without it types can break in weird
+  ways.
 </Notice>
 
 We can use these like so:
@@ -82,7 +83,7 @@ The special keys `true` and `false` will map to a boolean. So the `centered` pro
 You can use a pseudo Typescript syntax for other variants:
 
 - `:string` - Accepts a `string`
-- `:boolean` - Accepts a `boolean` (less precendence than `true` or `false`)
+- `:boolean` - Accepts a `boolean` (less precedence than `true` or `false`)
 - `:number` - Accepts a `number`
 
 Example:
