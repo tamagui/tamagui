@@ -21303,6 +21303,10 @@ __metadata:
     react-dom: ^18.2.0
     react-native-web: ^0.18.3
   peerDependencies:
+    expo-linear-gradient: "*"
+    expo-screen-orientation: "*"
+    react: "*"
+    react-dom: "*"
     react-native-web: "*"
   languageName: unknown
   linkType: soft
