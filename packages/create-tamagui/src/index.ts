@@ -253,10 +253,10 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
       message: 'Do you want to initialize GIT for the project?',
       initial: true,
     })
-	
-	  if (res2.gitInit) {
+
+    if (res2.gitInit) {
+      console.log('Initializing GIT for the project...')
       await $`git init`
-	    console.log('Initializing GIT for the project...')
     }
     
   } catch (e) {
