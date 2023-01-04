@@ -39,6 +39,7 @@
 
 1.1
 
+- for some reason, the vertical slider is buggy in the blog post: https://tamagui.dev/blog/version-one but not on the docs page. Try clicking and fiddling with it on a desktop computer, and you'll see what I mean.
 - some big theme speedups possible to avoid re-renders
 - all: unset or way to unstyle things (unstyle: true)
 - https://github.com/mwood23/nx-tamagui-next-repro
