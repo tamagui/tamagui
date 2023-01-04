@@ -136,7 +136,10 @@ export const docsRoutes = [
   },
 
   {
-    pages: [{ title: 'Lucide Icons', route: '/docs/components/lucide-icons' }],
+    pages: [
+      { title: 'Lucide Icons', route: '/docs/components/lucide-icons' },
+      { title: 'Phosphor Icons', route: '/docs/components/phosphor-icons' },
+    ],
   },
 
   {

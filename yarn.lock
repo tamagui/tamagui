@@ -5109,6 +5109,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/phosphor-icons@^1.0.2, @tamagui/phosphor-icons@workspace:packages/phosphor-icons":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/phosphor-icons@workspace:packages/phosphor-icons"
+  dependencies:
+    "@tamagui/build": ^1.0.2
+    "@tamagui/core": ^1.0.2
+    camelcase: ^6.0.0
+    cheerio: ^1.0.0-rc.5
+    glob: ^7.1.6
+    prettier: ^2.8.1
+    prettier-plugin-import-sort: ^0.0.7
+    prop-types: ^15.7.2
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-native-svg: 13.4.0
+    uppercamelcase: ^3.0.0
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native-svg: ">=12"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/polyfill-dev@^1.0.2, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
   version: 0.0.0-use.local
   resolution: "@tamagui/polyfill-dev@workspace:packages/polyfill-dev"
@@ -5457,6 +5480,7 @@ __metadata:
     "@tamagui/menu": ^1.0.2
     "@tamagui/next-plugin": ^1.0.2
     "@tamagui/next-theme": ^1.0.2
+    "@tamagui/phosphor-icons": ^1.0.2
     "@tamagui/remove-scroll": ^1.0.2
     "@tamagui/shorthands": ^1.0.2
     "@tamagui/theme-base": ^1.0.2
