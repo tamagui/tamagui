@@ -1,4 +1,4 @@
-import { fork } from 'child_process'
+import { ChildProcess, fork } from 'child_process'
 import { dirname, extname, join, resolve } from 'path'
 
 import { Binding, NodePath } from '@babel/traverse'
@@ -31,14 +31,20 @@ setInterval(() => {
 const loadCmd = `${join(__dirname, 'loadFile.js')}`
 
 let exited = false
-const child = fork(loadCmd, [], {
-  execArgv: ['-r', 'esbuild-register'],
-  detached: false,
-  stdio: 'ignore',
-})
+
+let child: ChildProcess | null = null
+
+function forkChild() {
+  child = fork(loadCmd, [], {
+    execArgv: ['-r', 'esbuild-register'],
+    detached: false,
+    stdio: 'ignore',
+  })
+}
 
 export function cleanupBeforeExit() {
   if (exited) return
+  if (!child) return
   child.removeAllListeners()
   child.unref()
   child.disconnect()
@@ -51,14 +57,19 @@ process.once('SIGINT', cleanupBeforeExit)
 process.once('beforeExit', cleanupBeforeExit)
 
 function importModule(path: string) {
+  if (!child) {
+    forkChild()
+  }
   if (pending.has(path)) {
     return pending.get(path)
   }
   const promise = new Promise((res, rej) => {
+    if (!child) return
     if (cache.has(path)) {
       return cache.get(path)
     }
     const listener = (msg: any) => {
+      if (!child) return
       if (!msg) return
       if (typeof msg !== 'string') return
       if (msg[0] === '-') {
