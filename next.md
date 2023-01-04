@@ -1,5 +1,9 @@
 1.0 post launch:
 
+- docs search build inline
+  - add shorthands to docs
+  - make search a nice demo
+
 - bundle size:
   - expandStyle remove some
   - check if isWeb is actually being removed or needs to be inlined to TAMAGUI_TARGET
