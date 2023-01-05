@@ -3,7 +3,15 @@ title: Tamagui Props
 description: All the properties supported on base Tamagui components.
 ---
 
-Tamagui uses a superset of the style properties that are supported in React Native and React Native Web, and flattens them onto the direct properties of Stack and Text ([see why below](#why-inline-style-props)).
+Tamagui uses a superset of the style properties that are supported in React Native and React Native Web, and flattens them onto the direct properties of Stack and Text ([see why below](#why-inline-style-props)). So you can write:
+
+```tsx
+import { Stack } from '@tamagui/core'
+
+export default () => (
+  <Stack padding={10} backgroundColor="red" />
+)
+```
 
 For the full list of style and non-style props, see:
 
@@ -18,13 +26,11 @@ You may also want to reference the [react-native-web docs](https://necolas.githu
 
 Tamagui adds a few extra props, [read those below](#tamagui-props).
 
-### Style prop ordering
+### Order is important
 
-Tamagui props are sensitive to their order. This is actually a huge feature, that without would leave you with impossible styling challenges. Let's first explain how it works, and then why it's necessary.
+Tamagui props are sensitive to their order - a very nice feature, that without which would leave you with impossible styling challenges. Let's first explain how it works, and then why it's necessary.
 
-#### How it works
-
-You define a new styled component:
+Define a new styled component:
 
 ```tsx
 const CalHeader = styled(Text, {
@@ -360,6 +366,33 @@ Then you can use it like:
 ```tsx
 <Text color="red" $sm={{ color: 'blue' }} />
 ```
+
+### Press Events
+
+Press events come along for easy single-touch events:
+
+<PropsTable
+  data={[
+    {
+      name: 'onPress',
+      required: false,
+      type: '(e: PressEvent) => void',
+    },
+    {
+      name: 'onPressIn',
+      required: false,
+      type: '(e: PressEvent) => void',
+    },
+    {
+      name: 'onPressOut',
+      required: false,
+      type: '(e: PressEvent) => void',
+    },
+
+]}
+/>
+
+Note: Internally Tamagui Stack and Text implement press events through [React Native Pressable](https://reactnative.dev/docs/pressable) - which includes some important details on how it works.
 
 ### Hover Events
 
