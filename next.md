@@ -1,5 +1,6 @@
 1.0 post launch:
 
+- useTheme() fallback to tokens so it matches resolve/css
 - docs search build inline
   - add shorthands to docs
   - make search a nice demo
