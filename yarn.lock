@@ -4617,6 +4617,7 @@ __metadata:
     "@tamagui/core": ^1.0.3
     "@tamagui/font-inter": ^1.0.3
     "@tamagui/font-silkscreen": ^1.0.3
+    "@tamagui/react-native-media-driver": ^1.0.3
     "@tamagui/shorthands": ^1.0.3
     "@tamagui/theme-base": ^1.0.3
   languageName: unknown
