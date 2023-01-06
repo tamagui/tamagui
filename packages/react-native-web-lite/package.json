@@ -50,5 +50,13 @@
     "react-component",
     "react-native",
     "web"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "packages/react-native-web-lite"
+  },
+  "bugs": {
+    "url": "https://github.com/tamagui/tamagui/issues"
+  }
 }
