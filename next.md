@@ -1,9 +1,8 @@
 1.0 post launch:
 
+- Button default color looks greyed out
 - useTheme() fallback to tokens so it matches resolve/css
-- docs search build inline
-  - add shorthands to docs
-  - make search a nice demo
+- 0.75 size is bigger than 1 size (see sizes docs on site)
 
 - bundle size:
   - expandStyle remove some
@@ -40,6 +39,8 @@
 
 1.1
 
+- createTamagui({ webOnly: true }) - avoids console warning on Text
+  - goes hand in hand with `@tamagui/style` separate from core
 - for some reason, the vertical slider is buggy in the blog post: https://tamagui.dev/blog/version-one but not on the docs page. Try clicking and fiddling with it on a desktop computer, and you'll see what I mean.
 - some big theme speedups possible to avoid re-renders
 - all: unset or way to unstyle things (unstyle: true)
@@ -56,6 +57,10 @@
 ---
 
 inbox
+
+- docs search build inline
+  - add shorthands to docs
+  - make search a nice demo
 
 - tama sync
   - make it easy to have a template repo that people sync to
