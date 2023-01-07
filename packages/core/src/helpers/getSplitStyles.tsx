@@ -707,14 +707,9 @@ export const getSplitStyles: StyleSplitter = (
         const mediaKeyShort = key.slice(1)
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+          // prettier-ignore
           // eslint-disable-next-line no-console
-          console.log(`  📺 ${key}`, mediaState[mediaKeyShort], {
-            key,
-            mediaStyle,
-            props,
-            shouldDoClasses,
-            mediaState: { ...mediaState },
-          })
+          console.log(`  📺 ${key}`, { key, mediaStyle, props, shouldDoClasses })
         }
 
         if ('space' in mediaStyle) {
@@ -723,13 +718,23 @@ export const getSplitStyles: StyleSplitter = (
 
         if (shouldDoClasses) {
           if ('space' in mediaStyle) {
-            const val = valInit.space
             delete mediaStyle['space']
-            if (
-              mediaState[mediaKeyShort] &&
-              getMediaImportanceIfMoreImportant(mediaKeyShort, 'space', usedKeys)
-            ) {
-              space = val
+            if (mediaState[mediaKeyShort]) {
+              const val = valInit.space
+              const importance = getMediaImportanceIfMoreImportant(
+                mediaKeyShort,
+                'space',
+                usedKeys
+              )
+              if (importance) {
+                space = val
+                usedKeys['space'] = importance
+                if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+                  console.log(
+                    `Found more important space for current media ${mediaKeyShort}: ${val} (importance: ${importance})`
+                  )
+                }
+              }
             }
           }
           const mediaStyles = getStylesAtomic(mediaStyle)

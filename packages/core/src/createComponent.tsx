@@ -346,15 +346,9 @@ export function createComponent<
       if (debugProp) {
         // eslint-disable-next-line no-console
         console.groupCollapsed('props')
+        // prettier-ignore
         // eslint-disable-next-line no-console
-        console.log(
-          'props in',
-          propsIn,
-          'mapped to',
-          props,
-          'in order',
-          Object.keys(props)
-        )
+        console.log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
         // eslint-disable-next-line no-console
         console.log('splitStyles', splitStyles)
         // eslint-disable-next-line no-console
@@ -368,6 +362,7 @@ export function createComponent<
         // eslint-disable-next-line no-console
         console.groupEnd()
         if (debugProp === 'break') {
+          debugger
         }
       }
     }

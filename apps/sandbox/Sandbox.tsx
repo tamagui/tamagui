@@ -1,5 +1,8 @@
 import '@tamagui/polyfill-dev'
 
+// import '@tamagui/core/reset.css'
+import './wdyr'
+
 import {
   AlertDialogDemo,
   FormsDemo,
@@ -18,6 +21,7 @@ import {
   TamaguiProvider,
   Theme,
   ThemeValueFallback,
+  XStack,
   YStack,
   getMedia,
   styled,
@@ -25,9 +29,6 @@ import {
 } from 'tamagui'
 
 import config from './tamagui.config'
-
-// import '@tamagui/core/reset.css'
-// import './wdyr'
 
 // webpack fix..
 if (typeof require !== 'undefined') {
@@ -101,6 +102,8 @@ export const Sandbox = () => {
 
   const [x, setX] = useState(0)
 
+  console.warn(`render`)
+
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
       <link href="/fonts/inter.css" rel="stylesheet" />
@@ -140,6 +143,20 @@ export const Sandbox = () => {
         >
           {/* <SelectDemo /> */}
 
+          <XStack
+            debug="verbose"
+            $gtSm={{
+              space: 50,
+            }}
+            $gtLg={{
+              space: 200,
+            }}
+          >
+            <Square size={100} bc="red" />
+            <Square size={100} bc="red" />
+            <Square size={100} bc="red" />
+          </XStack>
+
           {/* <AnimationsHoverDemo /> */}
 
           {/* <AnimationChangeTest /> */}
@@ -154,7 +171,7 @@ export const Sandbox = () => {
 
           {/* <SheetDemo /> */}
 
-          <ThemeChangeRenderTest />
+          {/* <ThemeChangeRenderTest /> */}
 
           <Button
             onPress={async () => {
