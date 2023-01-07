@@ -179,17 +179,8 @@ export function useMedia(): UseMediaState {
         return prev
       }
       if ([...accessed].every((key) => mediaState[key] === prev[key])) {
-        console.warn('non accessed optimization')
         return prev
       }
-
-      console.warn(
-        'update',
-        { ...internal.current },
-        { ...prev },
-        uid,
-        shouldUpdate.get(uid)
-      )
 
       internal.current.prev = mediaState
       return mediaState
