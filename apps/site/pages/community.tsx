@@ -152,6 +152,24 @@ export default function Community({ frontmatters }) {
                 jc="center"
                 space="$2"
                 tag="a"
+                href="https://github.com/chen-rn/create-universal-app"
+                target="_blank"
+                p="$5"
+              >
+                <GithubIcon />
+                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
+                  create-universal-app
+                </H4>
+                <Paragraph cursor="pointer" theme="alt2">
+                  by Chen
+                </Paragraph>
+              </Card>
+              <Card
+                f={1}
+                maw={250}
+                jc="center"
+                space="$2"
+                tag="a"
                 href="https://github.com/tamagui/tamagui/tree/master/apps/site"
                 target="_blank"
                 p="$5"
@@ -164,7 +182,6 @@ export default function Community({ frontmatters }) {
                   by nate
                 </Paragraph>
               </Card>
-
               <Card
                 f={1}
                 maw={250}
@@ -183,7 +200,6 @@ export default function Community({ frontmatters }) {
                   by Ivo
                 </Paragraph>
               </Card>
-
               <Card
                 f={1}
                 maw={250}
@@ -202,7 +218,6 @@ export default function Community({ frontmatters }) {
                   by dohomi
                 </Paragraph>
               </Card>
-
               <Card
                 f={1}
                 maw={250}
@@ -230,6 +245,42 @@ export default function Community({ frontmatters }) {
         <FlatBubbleCard bw={0}>
           <H2 size="$9" color="#fff" ta="center" className="rainbow clip-text">
             Gold Sponsors
+          </H2>
+        </FlatBubbleCard>
+
+        <XStack space spaceDirection="both" flexWrap="wrap">
+          <GoldSponsor
+            name="Manifold Finance"
+            link="https://www.manifoldfinance.com"
+            image="/sponsors/manifold.png"
+            imageWidth={100}
+            imageHeight={100}
+          />
+        </XStack>
+
+        <Spacer />
+
+        <FlatBubbleCard bw={0}>
+          <H2 size="$9" color="#fff" ta="center">
+            Bronze Sponsors
+          </H2>
+        </FlatBubbleCard>
+
+        <XStack space spaceDirection="both" flexWrap="wrap">
+          <GoldSponsor
+            name="Bounty"
+            link="https://bounty.co"
+            image="/sponsors/bounty.png"
+            imageWidth={100}
+            imageHeight={100}
+          />
+        </XStack>
+
+        <Spacer />
+
+        <FlatBubbleCard bw={0}>
+          <H2 size="$9" color="#fff" ta="center">
+            Indie Sponsors
           </H2>
         </FlatBubbleCard>
 
@@ -268,7 +319,7 @@ export default function Community({ frontmatters }) {
 
         <FlatBubbleCard bw={0}>
           <H2 size="$9" ta="center">
-            Sponsors
+            Early Sponsors
           </H2>
         </FlatBubbleCard>
 
