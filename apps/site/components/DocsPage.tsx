@@ -103,7 +103,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   }, [children, previous, next, editUrl])
 
   return (
-    <ThemeTint>
+    <>
       <YStack
         overflow="hidden"
         mx="auto"
@@ -130,17 +130,19 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           }}
         >
           <ScrollView>
-            <YStack
-              display="none"
-              $gtMd={{
-                display: 'block',
-                pr: '$6',
-                mt: 108,
-                pb: '$18',
-              }}
-            >
-              <DocsMenuContents />
-            </YStack>
+            <ThemeTint>
+              <YStack
+                display="none"
+                $gtMd={{
+                  display: 'block',
+                  pr: '$6',
+                  mt: 108,
+                  pb: '$18',
+                }}
+              >
+                <DocsMenuContents />
+              </YStack>
+            </ThemeTint>
           </ScrollView>
         </YStack>
       </YStack>
@@ -157,7 +159,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
       >
         {pageContents}
       </YStack>
-    </ThemeTint>
+    </>
   )
 }
 

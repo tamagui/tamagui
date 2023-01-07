@@ -19,23 +19,24 @@ import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
 
-// santa mode
-if (isClient) {
-  const goXmas = setTimeout(() => {
-    setTintFamily('xmas')
-    window.removeEventListener('scroll', onScroll)
-  }, 2500)
+// for auto mode
+// // santa mode
+// if (isClient) {
+//   const goXmas = setTimeout(() => {
+//     setTintFamily('xmas')
+//     window.removeEventListener('scroll', onScroll)
+//   }, 2500)
 
-  // dont activate santa mode if they scroll down, a bit confusing right?
-  const onScroll = (e: Event) => {
-    if ((document.scrollingElement?.scrollTop || 0) > 100) {
-      clearTimeout(goXmas)
-      window.removeEventListener('scroll', onScroll)
-    }
-  }
+//   // dont activate santa mode if they scroll down, a bit confusing right?
+//   const onScroll = (e: Event) => {
+//     if ((document.scrollingElement?.scrollTop || 0) > 100) {
+//       clearTimeout(goXmas)
+//       window.removeEventListener('scroll', onScroll)
+//     }
+//   }
 
-  window.addEventListener('scroll', onScroll)
-}
+//   window.addEventListener('scroll', onScroll)
+// }
 
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {

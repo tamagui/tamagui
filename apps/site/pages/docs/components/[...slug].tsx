@@ -3,6 +3,7 @@ import { MDXProvider } from '@components/MDXProvider'
 import { QuickNav } from '@components/QuickNav'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { getAllFrontmatter, getAllVersionsFromPath, getMdxBySlug } from '@lib/mdx'
+import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
@@ -41,7 +42,9 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
         />
       )} */}
       <MDXProvider frontmatter={frontmatter}>
-        <Component components={components} />
+        <ThemeTint>
+          <Component components={components} />
+        </ThemeTint>
       </MDXProvider>
       <QuickNav key={frontmatter.slug} />
     </>
@@ -72,7 +75,10 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  const { frontmatter, code } = await getMdxBySlug('docs/components', context.params.slug.join('/'))
+  const { frontmatter, code } = await getMdxBySlug(
+    'docs/components',
+    context.params.slug.join('/')
+  )
   const [componentName, componentVersion] = context.params.slug
   // const { gzip } = await getPackageData(frontmatter.name, componentVersion)
   const versions = getAllVersionsFromPath(`docs/components/${componentName}`)
