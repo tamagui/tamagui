@@ -12,7 +12,7 @@ import {
 } from '../types'
 import { useSafeRef } from './useSafeRef'
 
-export const mediaState: MediaQueryState =
+export let mediaState: MediaQueryState =
   // development only safeguard
   process.env.NODE_ENV === 'development'
     ? createProxy(
@@ -109,7 +109,7 @@ function setupMediaListeners() {
     function update() {
       const next = !!getMatch().matches
       if (next === mediaState[key]) return
-      mediaState[key] = next
+      mediaState = { ...mediaState, [key]: next }
       updateCurrentState()
     }
   }
@@ -123,8 +123,15 @@ export function useMediaListeners(config: TamaguiInternalConfig) {
 }
 
 const currentStateListeners = new Set<any>()
+let isFlushing = false
+
 function updateCurrentState() {
-  currentStateListeners.forEach((cb) => cb(mediaState))
+  if (isFlushing) return
+  isFlushing = true
+  setTimeout(() => {
+    currentStateListeners.forEach((cb) => cb(mediaState))
+    isFlushing = false
+  }, 0)
 }
 function subscribe(subscriber: any) {
   currentStateListeners.add(subscriber)
@@ -144,56 +151,58 @@ export function setMediaShouldUpdate(ref: any, val: boolean) {
   return shouldUpdate.set(ref, val)
 }
 
-type UseMediaInternalState = { prev: MediaKeysState; next: MediaKeysState }
-const empty = {}
+type UseMediaInternalState = {
+  prev: MediaKeysState
+  accessed?: Set<string>
+}
+
 let initialUseState: UseMediaInternalState
 
 export function useMedia(): UseMediaState {
   // setup once
   initialUseState ||= {
     prev: initState,
-    next: empty,
   }
 
-  const keys = useSafeRef<UseMediaInternalState>(initialUseState)
+  const internal = useSafeRef<UseMediaInternalState>(initialUseState)
+  const uid = arguments[0]
   const state = useSyncExternalStore<MediaQueryState>(
     subscribe,
     () => {
-      const curState = keys.current
-      const preventUpdate = arguments[0] && shouldUpdate.get(arguments[0]) !== true
-      if (preventUpdate) {
-        return curState.prev
+      const { accessed, prev } = internal.current
+      const shouldUpdateVal = uid ? shouldUpdate.get(uid) : undefined
+
+      if (shouldUpdateVal === true) {
+        return mediaState
+      }
+      if (shouldUpdateVal === false || !accessed || !accessed.size) {
+        return prev
+      }
+      if ([...accessed].every((key) => mediaState[key] === prev[key])) {
+        console.warn('non accessed optimization')
+        return prev
       }
 
-      let didUpdate = false
+      console.warn(
+        'update',
+        { ...internal.current },
+        { ...prev },
+        uid,
+        shouldUpdate.get(uid)
+      )
 
-      // ensure we keep the minimal object of only used keys
-      const next = {}
-
-      for (const key in curState.next) {
-        const val = mediaState[key]
-        if (curState.prev[key] !== val) {
-          didUpdate = true
-        }
-        next[key] = val
-      }
-
-      if (!didUpdate) {
-        return curState.prev
-      }
-
-      keys.current = { next, prev: next }
-      return next
+      internal.current.prev = mediaState
+      return mediaState
     },
     () => initState
   )
 
   return useMemo(() => {
-    return new Proxy(state === empty ? initState : state, {
-      get(_, key: string) {
-        if (!(key in keys.current.next)) {
-          keys.current.next[key] = true
-          keys.current = { ...keys.current }
+    return new Proxy(initState || state, {
+      get(_, key) {
+        if (typeof key === 'string') {
+          internal.current.accessed ||= new Set()
+          internal.current.accessed.add(key)
         }
         return Reflect.get(state, key)
       },

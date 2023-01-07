@@ -1,5 +1,5 @@
 import { MediaQueries, MediaQueryKey, MediaQueryObject, MediaQueryState, TamaguiInternalConfig } from '../types';
-export declare const mediaState: MediaQueryState;
+export declare let mediaState: MediaQueryState;
 export declare const mediaQueryConfig: MediaQueries;
 export declare const getMedia: () => MediaQueryState;
 export declare const mediaKeysWithAndWithout$: Set<string>;

@@ -39,6 +39,7 @@
 
 1.1
 
+- createTamagui({ defaultSize }) and make it so tamagui tokens $4 etc aren't required can use any tokens
 - createTamagui({ webOnly: true }) - avoids console warning on Text
   - goes hand in hand with `@tamagui/style` separate from core
 - for some reason, the vertical slider is buggy in the blog post: https://tamagui.dev/blog/version-one but not on the docs page. Try clicking and fiddling with it on a desktop computer, and you'll see what I mean.

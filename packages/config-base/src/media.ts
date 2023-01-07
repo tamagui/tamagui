@@ -3,6 +3,9 @@ import { createMedia } from '@tamagui/react-native-media-driver'
 export const demoMedia = [500, 620, 780, 900]
 export const widths = [660, 800, 1020, 1280]
 
+// note order is important!
+// earlier defined = less important
+
 export const media = createMedia({
   // for site
   xl: { maxWidth: 1650 },
