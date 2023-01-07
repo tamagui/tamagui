@@ -2,6 +2,7 @@ import { components } from '@components/MDXComponents'
 import { QuickNav } from '@components/QuickNav'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
+import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
 import { H1, Spacer } from 'tamagui'
@@ -30,7 +31,9 @@ export default function DocIntroPage({ frontmatter, code, examples }: Doc) {
       <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
       <Spacer size="$1" />
       <SubTitle>{frontmatter.description}</SubTitle>
-      <Component components={components as any} />
+      <ThemeTint>
+        <Component components={components as any} />
+      </ThemeTint>
       <QuickNav key={frontmatter.slug} />
     </TamaguiExamples.Provider>
   )

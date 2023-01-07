@@ -47,7 +47,7 @@ export function Header() {
   }
 
   return (
-    <ThemeTint>
+    <>
       <XStack
         className={`ease-out all ms200 blur-light ${
           isScrolled ? 'hover-highlights' : ''
@@ -60,21 +60,18 @@ export function Header() {
         my={isScrolled ? -2 : 0}
         left={0}
         right={0}
-        elevation={isScrolled ? 0 : '$1'}
+        elevation={isScrolled ? '$1' : 0}
         py={isScrolled ? '$0' : '$2'}
       >
-        <YStack
-          className="all ease-in ms200"
-          o={isScrolled ? 0.9 : 0}
-          fullscreen
-          bc="$background"
-        />
+        <YStack o={isScrolled ? 0.9 : 0.8} fullscreen bc="$background" />
         <ContainerLarge>
-          <HeaderContents floating />
+          <ThemeTint>
+            <HeaderContents floating />
+          </ThemeTint>
         </ContainerLarge>
       </XStack>
       <YStack height={54} w="100%" />
-    </ThemeTint>
+    </>
   )
 }
 
