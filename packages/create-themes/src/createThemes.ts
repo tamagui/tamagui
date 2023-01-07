@@ -177,7 +177,7 @@ export const createThemes = <C extends string>({
       // keep just alts
       ...altThemes.slice(0, alts.length),
       ...altButtonThemes.slice(0, alts.length),
-      [`${name}_Button`, altThemes[2][1]],
+      [`${name}_Button`, altThemes[1][1]],
       [`${name}_DrawerFrame`, altThemes[2][1]],
       [`${name}_SliderTrack`, altThemes[1][1]],
       [`${name}_SliderTrackActive`, altThemes[2][1]],
@@ -195,6 +195,8 @@ export const createThemes = <C extends string>({
     return themes as any
   }
 
+  const blanks = [0, 0, 0, 0]
+
   const themeCreator = (
     str = 1,
     {
@@ -208,9 +210,9 @@ export const createThemes = <C extends string>({
     }: ThemeCreatorProps
   ) => {
     const offsets = {
-      borderColor: offsetsProp?.borderColor ?? offsetsProp?.background ?? [0, 0, 0, 0],
-      background: offsetsProp?.background ?? [0, 0, 0, 0],
-      color: offsetsProp?.color ?? [0, 0, 0, 0],
+      borderColor: offsetsProp?.borderColor ?? offsetsProp?.background ?? blanks,
+      background: offsetsProp?.background ?? blanks,
+      color: offsetsProp?.color ?? blanks,
     }
     const darkColors = isLight ? colors : backgrounds
     const lighterDir = isLight ? -1 : 1
