@@ -171,7 +171,6 @@ export function useMedia(): UseMediaState {
     () => {
       const { accessed, prev } = internal.current
       const shouldUpdateVal = uid ? shouldUpdate.get(uid) : undefined
-
       if (shouldUpdateVal === true) {
         return mediaState
       }
@@ -181,7 +180,6 @@ export function useMedia(): UseMediaState {
       if ([...accessed].every((key) => mediaState[key] === prev[key])) {
         return prev
       }
-
       internal.current.prev = mediaState
       return mediaState
     },

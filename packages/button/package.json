@@ -18,7 +18,8 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
+    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "test": "vitest --environment happy-dom --run -- ../vite-plugin-internal/src/vite.config.ts"
   },
   "exports": {
     "./package.json": "./package.json",

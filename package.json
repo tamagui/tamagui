@@ -50,6 +50,7 @@
     "starters:sync": "node ./starters/sync-next-expo-solito.js",
     "starter": "yarn workspace @tamagui/starter web",
     "starter:prod": "yarn workspace @tamagui/starter web:prod && yarn workspace @tamagui/starter web:prod:start",
+    "starter:native": "yarn workspace @tamagui/starter native",
     "site": "cd apps/site && ./scripts/dev.sh",
     "site:vite": "cd apps/site-vite && VITE_INSPECT=1 yarn dev",
     "site:vite:prod": "cd apps/site-vite && VITE_INSPECT=1 yarn build:prod && yarn serve",

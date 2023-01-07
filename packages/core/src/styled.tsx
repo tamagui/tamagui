@@ -63,7 +63,10 @@ export function styled<
   // }
 
   // validate not using a variant over an existing valid style
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV !== 'production') {
+    if (!Component) {
+      throw new Error(`No component given to styled()`)
+    }
     if (options?.variants) {
       for (const key in options.variants) {
         if (key in stylePropsAll) {

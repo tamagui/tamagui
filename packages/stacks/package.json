@@ -20,6 +20,13 @@
     "lint": "../../node_modules/.bin/rome check src",
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "dependencies": {
     "@tamagui/core": "^1.0.3"
   },

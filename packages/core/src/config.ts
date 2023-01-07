@@ -18,7 +18,7 @@ export const setConfigFont = (name: string, font: any, fontParsed: any) => {
 export const getConfig = () => {
   if (!conf) {
     throw new Error(
-      process.env.NODE_ENV === 'development'
+      process.env.NODE_ENV !== 'production'
         ? `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before rendering.`
         : 'Err0'
     )

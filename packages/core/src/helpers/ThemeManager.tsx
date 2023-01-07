@@ -39,7 +39,13 @@ export class ThemeManager {
       this.updateState(props, false)
       return
     }
-    if (!parentManager) throw `❌`
+    if (!parentManager) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.trace()
+        throw new Error(`No parent manager given`)
+      }
+      throw `❌`
+    }
     // copy over listeners
     this.themeListeners = parentManager.themeListeners
 
@@ -137,7 +143,6 @@ export class ThemeManager {
   }
 
   notify() {
-    console.log('notify', this.themeListeners.size, this.themeListeners)
     this.themeListeners.forEach((cb) => cb(this.state.name, this))
   }
 
