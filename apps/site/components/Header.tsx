@@ -63,7 +63,7 @@ export function Header() {
         elevation={isScrolled ? '$1' : 0}
         py={isScrolled ? '$0' : '$2'}
       >
-        <YStack o={isScrolled ? 0.9 : 0.8} fullscreen bc="$background" />
+        <YStack o={isScrolled ? 0.9 : 0.5} fullscreen bc="$background" />
         <ContainerLarge>
           <ThemeTint>
             <HeaderContents floating />
