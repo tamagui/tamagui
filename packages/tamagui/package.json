@@ -23,7 +23,15 @@
     "lint": "../../node_modules/.bin/rome check src",
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
     "check": "yarn check-circular-deps",
-    "check-circular-deps": "npx madge --circular ./src/index.ts"
+    "check-circular-deps": "npx madge --circular ./src/index.ts",
+    "test": "vitest --environment happy-dom --run -- ../vite-plugin-internal/src/vite.config.ts"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
   },
   "dependencies": {
     "@tamagui/adapt": "^1.0.3",

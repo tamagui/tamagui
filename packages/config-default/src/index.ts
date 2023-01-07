@@ -1,11 +1,11 @@
-// SEE config-default
+// SEE config-default-node
 
 import {
   TamaguiInternalConfig,
   createFont,
   createTamagui,
   createTokens,
-} from '@tamagui/core-node'
+} from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
 
 // basic fallback theme just to have compiler load in decent tate

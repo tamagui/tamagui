@@ -55,6 +55,14 @@
 - improve sandbox as mini vite stack
 - VisuallyHidden + mediaquery + space
 
+
+---
+
+1.2
+
+- app dir support experimental
+- styled('div')
+
 ---
 
 inbox
