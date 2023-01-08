@@ -23,6 +23,10 @@ li, select, input, button, [role="slider"], [role="listbox"] {
   outline: none;
 }
 
+.is_Fieldset {
+  all: unset;
+}
+
 p, input, textarea, button, ul, ol, li, pre, dialog {
   all: unset;
   box-sizing: border-box;
