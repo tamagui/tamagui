@@ -11,15 +11,15 @@ export type ChangedThemeResponse = {
 interface UseThemeState {
     keys: Set<string>;
 }
-export declare const useTheme: (props: ThemeProps) => ThemeParsed;
-export declare const useThemeWithState: (props?: ThemeProps) => {
+export declare const useTheme: (props?: ThemeProps) => ThemeParsed;
+export declare const useThemeWithState: (props: ThemeProps) => {
     theme: ThemeParsed;
     themeManager: ThemeManager | null;
     name: string;
     isNewTheme?: boolean | undefined;
     className?: string | undefined;
 } | null;
-export declare function getThemeProxied({ theme, name, className, themeManager, state, }: Partial<ChangedThemeResponse> & {
+export declare function getThemeProxied({ theme, themeManager, state, }: Partial<ChangedThemeResponse> & {
     theme: ThemeParsed;
     state?: React.RefObject<UseThemeState>;
 }): ThemeParsed;

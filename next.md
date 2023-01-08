@@ -1,9 +1,8 @@
-1.0 post launch:
+1.0.X
 
-- useTheme() fallback to tokens so it matches resolve/css
-- 0.75 size is bigger than 1 size (see sizes docs on site)
+- $0.75  is bigger val than $1
 
-- bundle size:
+- bundle size reductions:
   - expandStyle remove some
   - check if isWeb is actually being removed or needs to be inlined to TAMAGUI_TARGET
   - move to PROP whitelist rather than style whitelist maybe avoid validStyleProps altogether
@@ -22,22 +21,11 @@
   - normalizeColor etc
   - createPropMapper
 
-- test: useMedia, reanimated, re-renders (mount, on hover, etc), render time ms
-- CD on github
-- home page sponsors with sizing and better logos
-  - https://github.com/JamesIves/github-sponsors-readme-action
-- algolia not indexing some new content
-- keyboard search select bug
-- variants intellisense autocomplete not suggesting, but types are right
-- canary release channel
-- improve native integration test
-- kitchen-sink in Snack demo link
-- `tamagui` cli basic version
-
 ---
 
 1.1
 
+- default to $true not $4 in tamagui to avoid requiring a certain token scale
 - createTamagui({ defaultSize }) and make it so tamagui tokens $4 etc aren't required can use any tokens
 - createTamagui({ webOnly: true }) - avoids console warning on Text
   - goes hand in hand with `@tamagui/style` separate from core
@@ -61,6 +49,22 @@
 
 - app dir support experimental
 - styled('div')
+
+---
+
+1.3
+
+- test: useMedia, reanimated, re-renders (mount, on hover, etc), render time ms
+- CD on github
+- home page sponsors with sizing and better logos
+  - https://github.com/JamesIves/github-sponsors-readme-action
+- algolia not indexing some new content
+- keyboard search select bug
+- variants intellisense autocomplete not suggesting, but types are right
+- canary release channel
+- improve native integration test
+- kitchen-sink in Snack demo link
+- `tamagui` cli basic version
 
 ---
 
