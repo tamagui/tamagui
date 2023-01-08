@@ -669,6 +669,7 @@ export declare const radius: {
     2: number;
     3: number;
     4: number;
+    true: number;
     5: number;
     6: number;
     7: number;
@@ -942,6 +943,7 @@ export declare const tokens: {
         2: Variable<number>;
         3: Variable<number>;
         4: Variable<number>;
+        true: Variable<number>;
         5: Variable<number>;
         6: Variable<number>;
         7: Variable<number>;

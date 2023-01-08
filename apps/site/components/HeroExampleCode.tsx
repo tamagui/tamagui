@@ -46,6 +46,7 @@ export function HeroExampleCode({
             chromeless
             maxWidth="100%"
             als="center"
+            ov="hidden"
             {...(onlyDemo && {
               mt: '$-6',
             })}
