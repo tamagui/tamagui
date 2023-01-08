@@ -1,4 +1,4 @@
-import { SizeTokens, VariantSpreadExtras } from '@tamagui/core';
+import type { SizeTokens, VariantSpreadExtras } from '@tamagui/core';
 export declare const getButtonSized: (val: SizeTokens | number, { tokens }: VariantSpreadExtras<any>) => {
     paddingHorizontal: any;
     height: any;

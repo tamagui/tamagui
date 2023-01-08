@@ -4,12 +4,12 @@ import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
   SizeTokens,
-  getSize,
   getVariableValue,
   isWeb,
   styled,
   withStaticProperties,
 } from '@tamagui/core'
+import { getSize } from '@tamagui/get-size'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
 import { SizableStackProps, ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'

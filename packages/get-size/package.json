@@ -1,14 +1,9 @@
 {
-  "name": "@tamagui/list-item",
+  "name": "@tamagui/get-size",
   "version": "1.0.3",
-  "sideEffects": [
-    "*.css"
-  ],
-  "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "module:jsx": "dist/jsx",
+  "main": "dist/cjs/index",
+  "module": "dist/esm/index",
   "files": [
     "src",
     "types",
@@ -16,24 +11,20 @@
   ],
   "scripts": {
     "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
-    "watch": "tamagui-build --watch"
-  },
-  "dependencies": {
-    "@tamagui/core": "^1.0.3",
-    "@tamagui/font-size": "^1.0.3",
-    "@tamagui/get-size": "^1.0.3",
-    "@tamagui/helpers-tamagui": "^1.0.3"
-  },
-  "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-native": "*"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
   },
   "publishConfig": {
     "access": "public"

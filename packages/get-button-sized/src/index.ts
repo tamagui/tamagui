@@ -1,13 +1,9 @@
-import {
-  SizeTokens,
-  VariantSpreadExtras,
-  getSize,
-  stepTokenUpOrDown,
-} from '@tamagui/core'
+import type { SizeTokens, VariantSpreadExtras } from '@tamagui/core'
+import { getSize, stepTokenUpOrDown } from '@tamagui/get-size'
 
 export const getButtonSized = (
   val: SizeTokens | number,
-  { tokens }: VariantSpreadExtras<any>,
+  { tokens }: VariantSpreadExtras<any>
 ) => {
   if (typeof val === 'number') {
     return {

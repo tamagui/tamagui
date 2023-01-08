@@ -28,6 +28,7 @@
     "@tamagui/core": "^1.0.3",
     "@tamagui/create-context": "^1.0.3",
     "@tamagui/focusable": "^1.0.3",
+    "@tamagui/get-size": "^1.0.3",
     "@tamagui/label": "^1.0.3",
     "@tamagui/stacks": "^1.0.3",
     "@tamagui/use-controllable-state": "^1.0.3"
