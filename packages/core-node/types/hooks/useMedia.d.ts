@@ -11,7 +11,7 @@ type UseMediaState = {
     [key in MediaQueryKey]: boolean;
 };
 export declare function setMediaShouldUpdate(ref: any, val: boolean): WeakMap<any, boolean>;
-export declare function useMedia(): UseMediaState;
+export declare function useMedia(uid?: any, debug?: any): UseMediaState;
 /**
  * Useful for more complex components that need access to the currently active props,
  * accounting for the currently active media queries.

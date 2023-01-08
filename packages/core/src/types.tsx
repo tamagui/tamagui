@@ -279,6 +279,8 @@ export interface ThemeProps {
   reset?: boolean
   debug?: boolean | 'verbose'
   inverse?: boolean
+  // allows for disabling the auto-update behavior
+  shouldUpdate?: () => boolean
 }
 
 type ArrayIntersection<A extends any[]> = A[keyof A]

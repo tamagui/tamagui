@@ -158,28 +158,28 @@ type UseMediaInternalState = {
 
 let initialUseState: UseMediaInternalState
 
-export function useMedia(): UseMediaState {
+export function useMedia(uid?: any, debug?: any): UseMediaState {
   // setup once
   initialUseState ||= {
     prev: initState,
   }
 
   const internal = useSafeRef<UseMediaInternalState>(initialUseState)
-  const uid = arguments[0]
   const state = useSyncExternalStore<MediaQueryState>(
     subscribe,
     () => {
       const { accessed, prev } = internal.current
       const shouldUpdateVal = uid ? shouldUpdate.get(uid) : undefined
-      if (shouldUpdateVal === true) {
-        return mediaState
+
+      if (shouldUpdateVal !== true) {
+        if (shouldUpdateVal === false || !accessed?.size) {
+          return prev
+        }
+        if ([...accessed].every((key) => mediaState[key] === prev[key])) {
+          return prev
+        }
       }
-      if (shouldUpdateVal === false || !accessed || !accessed.size) {
-        return prev
-      }
-      if ([...accessed].every((key) => mediaState[key] === prev[key])) {
-        return prev
-      }
+
       internal.current.prev = mediaState
       return mediaState
     },

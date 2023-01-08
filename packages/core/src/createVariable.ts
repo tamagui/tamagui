@@ -38,7 +38,6 @@ export function variableToString(vrble?: any, getValue = false) {
     if (!getValue && isWeb && vrble.variable) {
       return vrble.variable
     }
-    setDidGetVariableValue(true)
     return `${vrble.val}`
   }
   return `${vrble || ''}`
@@ -49,6 +48,7 @@ export function isVariable(v: Variable | any): v is Variable {
 }
 
 export function getVariable(nameOrVariable: Variable | string) {
+  setDidGetVariableValue(true)
   if (isVariable(nameOrVariable)) {
     return variableToString(nameOrVariable)
   }
