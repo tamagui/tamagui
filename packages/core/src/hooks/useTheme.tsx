@@ -52,23 +52,26 @@ export const useThemeWithState = (props: ThemeProps) => {
       keys: new Set(),
     }
   }
+
+  // clear at start of every render to track usages
   state.current?.keys.clear()
 
   const changedTheme = useChangeThemeEffect(
     props,
     false,
-    isClient ? () => state.current.keys.size === 0 : undefined
+    isClient
+      ? () => {
+          return props.shouldUpdate?.() ?? state.current.keys.size === 0
+        }
+      : undefined
   )
 
   const { themeManager, isNewTheme, theme, name, className } = changedTheme
 
   if (process.env.NODE_ENV === 'development') {
     // ensure we aren't creating too many ThemeManagers
-    if (
-      isWeb &&
-      isNewTheme &&
-      className === themeManager?.parentManager?.state.className
-    ) {
+    // prettier-ignore
+    if (isWeb && isNewTheme && className === themeManager?.parentManager?.state.className) {
       console.error('Should always change, duplicating ThemeMananger bug', themeManager)
     }
     if (props.debug === 'verbose') {
@@ -142,8 +145,8 @@ export function getThemeProxied({
         }
       }
       // fallback to tokens
-      if (key in tokens) {
-        return tokens[key] ?? val
+      if (key in tokens.color) {
+        return tokens.color[key]
       }
       return val
     },
