@@ -42,7 +42,10 @@ export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
   if (isRSC) {
     return getDefaultThemeProxied()
   }
+  return useThemeWithState(props)?.theme || getDefaultThemeProxied()
+}
 
+export const useThemeWithState = (props: ThemeProps) => {
   const state = useServerRef() as React.MutableRefObject<UseThemeState>
   if (isClient && !state.current) {
     state.current = {
@@ -51,11 +54,13 @@ export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
   }
   state.current?.keys.clear()
 
-  const { name, theme, themeManager, className, isNewTheme } = useChangeThemeEffect(
+  const changedTheme = useChangeThemeEffect(
     props,
     false,
     isClient ? () => state.current.keys.size === 0 : undefined
   )
+
+  const { themeManager, isNewTheme, theme, name, className } = changedTheme
 
   if (process.env.NODE_ENV === 'development') {
     // ensure we aren't creating too many ThemeManagers
@@ -76,38 +81,31 @@ export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
     }
   }
 
-  if (!theme) {
+  if (!changedTheme.theme) {
     if (process.env.NODE_ENV === 'development') {
       console.warn('No theme found', name, props, themeManager)
     }
-    return getDefaultThemeProxied()
+    return null
   }
 
-  return useMemo(() => {
-    return getThemeProxied({
-      isNewTheme,
-      theme,
-      name,
-      className,
-      themeManager,
-      state,
-    })
+  const proxiedTheme = useMemo(() => {
+    return getThemeProxied(changedTheme as any)
   }, [theme, isNewTheme, name, className, themeManager])
+
+  return {
+    ...changedTheme,
+    theme: proxiedTheme,
+  }
 }
 
-function getThemeProxied({
+export function getThemeProxied({
   theme,
   name,
   className,
   themeManager,
-  isNewTheme,
   state,
-}: {
-  theme: any
-  name: string
-  className?: string
-  themeManager?: ThemeManager | null
-  isNewTheme?: boolean
+}: Partial<ChangedThemeResponse> & {
+  theme: ThemeParsed
   state?: React.RefObject<UseThemeState>
 }) {
   return createProxy(theme, {
@@ -121,15 +119,8 @@ function getThemeProxied({
     get(_, key) {
       if (key === GetThemeUnwrapped) {
         return theme
-      } else if (key === GetThemeManager) {
-        return themeManager
-      } else if (key === GetIsNewTheme) {
-        return isNewTheme
-      } else if (key === 'name') {
-        return name
-      } else if (key === 'className') {
-        return className
       } else if (
+        !themeManager ||
         !name ||
         key === '__proto__' ||
         typeof key === 'symbol' ||
@@ -139,9 +130,6 @@ function getThemeProxied({
       }
       // auto convert variables to plain
       if (key[0] === '$') key = key.slice(1)
-      if (!themeManager) {
-        return theme[key]
-      }
       const val = themeManager.getValue(key)
       if (val && state) {
         if (isClient) {
@@ -159,14 +147,6 @@ function getThemeProxied({
     },
   })
 }
-
-const GetThemeManager = Symbol()
-const GetIsNewTheme = Symbol()
-
-export const getThemeManager = (theme: any): ThemeManager | undefined =>
-  theme?.[GetThemeManager]
-export const getThemeIsNewTheme = (theme: any): ThemeManager | undefined =>
-  theme?.[GetIsNewTheme]
 
 export const activeThemeManagers = new Set<ThemeManager>()
 

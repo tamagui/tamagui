@@ -23,6 +23,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
 } from 'react'
 
@@ -41,7 +42,7 @@ import { useShallowSetState } from './helpers/useShallowSetState'
 import { measureLayout, useElementLayout } from './hooks/useElementLayout'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
-import { getThemeIsNewTheme, getThemeManager, useTheme } from './hooks/useTheme'
+import { useChangeThemeEffect, useThemeWithState } from './hooks/useTheme'
 import {
   DebugProp,
   SpaceDirection,
@@ -256,7 +257,12 @@ export function createComponent<
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
-    const theme = useTheme({
+    const {
+      themeManager,
+      isNewTheme,
+      className: themeClassName,
+      theme,
+    } = useThemeWithState({
       name: props.theme,
       componentName,
       reset: props.reset,
@@ -264,9 +270,7 @@ export function createComponent<
       // @ts-expect-error internal use only
       disable: props['data-themeable'],
       debug: props.debug,
-    })
-    const themeManager = getThemeManager(theme)
-    const themeIsNew = getThemeIsNewTheme(theme)
+    })!
 
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
     const languageContext = isRSC ? null : useContext(FontLanguageContext)
@@ -615,7 +619,7 @@ export function createComponent<
         : '',
       componentName ? componentClassName : '',
       fontFamilyClassName,
-      themeIsNew ? theme.className : '',
+      isNewTheme ? theme.className : '',
       classNames ? Object.values(classNames).join(' ') : '',
     ]
 
@@ -796,8 +800,8 @@ export function createComponent<
           }
         : null
 
-    const themeShouldReset = Boolean(themeShallow && themeManager && themeIsNew)
-    const shouldProvideThemeManager = themeShouldReset || (themeManager && themeIsNew)
+    const themeShouldReset = Boolean(themeShallow && themeManager && isNewTheme)
+    const shouldProvideThemeManager = themeShouldReset || (themeManager && isNewTheme)
 
     // memoize to avoid re-parenting
     if (shouldProvideThemeManager) {
@@ -891,43 +895,8 @@ export function createComponent<
         console.log('children', content)
         console.groupEnd()
         if (typeof window !== 'undefined') {
-          console.log({
-            state,
-            shouldProvideThemeManager,
-            isAnimated,
-            isAnimatedReactNativeWeb,
-            tamaguiDefaultProps,
-            viewProps,
-            splitStyles,
-            animationStyles,
-            handlesPressEvents,
-            isStringElement,
-            classNamesIn: props.className?.split(' '),
-            classNamesOut: viewProps.className?.split(' '),
-            events,
-            shouldAttach,
-            styles,
-            pseudos,
-            content,
-            shouldAvoidClasses,
-            avoidClasses: avoidClassesWhileAnimating,
-            animation: props.animation,
-            style: splitStylesStyle,
-            ...(typeof window !== 'undefined'
-              ? {
-                  theme,
-                  themeClassName: theme.className,
-                  staticConfig,
-                  tamaguiConfig,
-                  events,
-                  shouldAvoidClasses,
-                  shouldForcePseudo,
-                  classNames: Object.fromEntries(
-                    Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])
-                  ),
-                }
-              : null),
-          })
+          // prettier-ignore
+          console.log({ state, shouldProvideThemeManager, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, theme, themeClassName, staticConfig, tamaguiConfig, shouldForcePseudo, classNamesFull: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
         }
         console.groupEnd()
       }
