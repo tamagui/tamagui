@@ -1,6 +1,5 @@
 1.0 post launch:
 
-- Button default color looks greyed out
 - useTheme() fallback to tokens so it matches resolve/css
 - 0.75 size is bigger than 1 size (see sizes docs on site)
 
