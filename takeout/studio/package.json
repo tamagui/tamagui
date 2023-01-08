@@ -46,7 +46,7 @@
     "@tamagui/build": "^1.0.3",
     "@tamagui/static": "^1.0.3",
     "babel-polyfill": "^6.26.0",
-    "esbuild-loader": "^2.19.0",
+    "esbuild-loader": "^2.20.0",
     "react-refresh": "^0.14.0"
   }
 }
