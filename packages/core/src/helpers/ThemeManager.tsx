@@ -1,4 +1,4 @@
-import { getThemes } from '../config'
+import { getThemes, getTokens } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
 import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
 import { ThemeParsed, ThemeProps } from '../types'
@@ -131,6 +131,8 @@ export class ThemeManager {
 
   // gets value going up to parents
   getValue(key: string, state?: ThemeManagerState) {
+    if (!key) return
+    if (key === 'undefined') debugger
     let theme = (state || this.state).theme
     let manager = this as ThemeManager | null
     while (theme && manager) {
@@ -139,6 +141,10 @@ export class ThemeManager {
       }
       manager = manager.parentManager
       theme = manager?.state.theme
+    }
+    const tokens = getTokens()
+    if (key in tokens.color) {
+      return tokens.color[key]
     }
   }
 
