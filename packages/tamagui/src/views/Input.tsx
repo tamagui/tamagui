@@ -41,7 +41,7 @@ export const InputFrame = styled(
     } as const,
 
     defaultVariants: {
-      size: '$4',
+      size: '$true',
     },
   },
   {

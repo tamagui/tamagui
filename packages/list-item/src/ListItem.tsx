@@ -102,7 +102,7 @@ export const ListItemFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: '$4',
+    size: '$true',
   },
 })
 
@@ -139,7 +139,7 @@ export const useListItem = (
     Title?: any
     Subtitle?: any
     Text?: any
-  } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle },
+  } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle }
 ) => {
   // careful not to desctructure and re-order props, order is important
   const {
@@ -224,9 +224,7 @@ export const useListItem = (
 
 const ListItemComponent = forwardRef<TamaguiElement, ListItemProps>((props, ref) => {
   const { props: listItemProps } = useListItem(props)
-  return (
-    <ListItemFrame ref={ref} justifyContent="space-between" {...listItemProps} />
-  )
+  return <ListItemFrame ref={ref} justifyContent="space-between" {...listItemProps} />
 })
 
 export const listItemStaticConfig = {
@@ -244,10 +242,10 @@ export const listItemStaticConfig = {
 export const ListItem = withStaticProperties(
   ListItemFrame.extractable(
     themeable(ListItemComponent, { componentName: NAME }),
-    listItemStaticConfig,
+    listItemStaticConfig
   ),
   {
     Text: ListItemText,
     Subtitle: ListItemSubtitle,
-  },
+  }
 )

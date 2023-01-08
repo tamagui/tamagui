@@ -49,12 +49,6 @@ export function useThemedChildren(
   // be sure to memoize shouldReset to avoid reparenting
   let next = children
 
-  // TODO likely not necessary if we do reset logic now in useTheme?
-  // reset to parent theme
-  // if (shouldReset && themeManager) {
-  //   next = <Theme name={themeManager.state.parentName}>{next}</Theme>
-  // }
-
   next = (
     <ThemeManagerContext.Provider value={themeManager}>
       {next}

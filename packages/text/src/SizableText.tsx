@@ -10,7 +10,7 @@ export const SizableText = styled(Text, {
   } as const,
 
   defaultVariants: {
-    size: '$4',
+    size: '$true',
   },
 })
 

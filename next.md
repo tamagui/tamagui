@@ -2,10 +2,8 @@
 
 - $0.75  is bigger val than $1
 
-- // TODO likely not necessary if we do reset logic now in useTheme?
 - bundle size reductions:
   - expandStyle remove some
-  - check if isWeb is actually being removed or needs to be inlined to TAMAGUI_TARGET
   - move to PROP whitelist rather than style whitelist maybe avoid validStyleProps altogether
   - getStylesAtomic "all webkit prefixed rules, pointer-events"
   - Slot
