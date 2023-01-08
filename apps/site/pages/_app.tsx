@@ -4,7 +4,7 @@ import '../app.css'
 import '../public/fonts/fonts.css'
 
 import { Footer } from '@components/Footer'
-import { setTintFamily } from '@tamagui/logo'
+import { ThemeTint, setTintFamily } from '@tamagui/logo'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import NextHead from 'next/head'

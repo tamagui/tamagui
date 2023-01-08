@@ -176,7 +176,7 @@ export const useChangeThemeEffect = (
   } = props
 
   if (disable) {
-    if (!parentManager) throw new Error('Disable topmost')
+    if (!parentManager) throw `❌`
     return {
       ...parentManager.state,
       isNewTheme: false,

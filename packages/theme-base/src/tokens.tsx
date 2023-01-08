@@ -66,8 +66,16 @@ type Sizes = typeof size
 type SizeKeys = `${keyof Sizes}`
 
 const spaces = Object.entries(size).map(([k, v]) => {
-  return [k, v === 0 ? 0 : v * Math.log(v) * 0.12]
+  return [k, sizeToSpace(v)]
 })
+
+// a bit odd but keeping backward compat for values >8 while fixing below
+function sizeToSpace(v: number) {
+  if (v === 0) return 0
+  if (v <= 8) return v * Math.log(v) * 0.12
+  if (v <= 16) return Math.round(v * 0.333)
+  return Math.floor(v * 0.7 - 12)
+}
 
 const spacesNegative = spaces.map(([k, v]) => [`-${k}`, -v])
 

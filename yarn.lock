@@ -5309,7 +5309,7 @@ __metadata:
     "@vitejs/plugin-react": ^2.2.0
     babel-polyfill: ^6.26.0
     css-loader: ^5.2.4
-    esbuild-loader: ^2.19.0
+    esbuild-loader: ^2.20.0
     file-loader: ^6.2.0
     html-webpack-plugin: ^5.5.0
     mini-css-extract-plugin: ^2.7.2
@@ -10714,7 +10714,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-loader@npm:^2.19.0, esbuild-loader@npm:^2.20.0":
+"esbuild-loader@npm:^2.20.0":
   version: 2.20.0
   resolution: "esbuild-loader@npm:2.20.0"
   dependencies:
