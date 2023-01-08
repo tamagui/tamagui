@@ -2,7 +2,7 @@
 import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
 import { useContext, useEffect, useMemo, useState } from 'react'
 
-import { getConfig } from '../config'
+import { getConfig, getTokens } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import { createProxy } from '../helpers/createProxy'
 import {
@@ -100,14 +100,13 @@ export const useThemeWithState = (props: ThemeProps) => {
 
 export function getThemeProxied({
   theme,
-  name,
-  className,
   themeManager,
   state,
 }: Partial<ChangedThemeResponse> & {
   theme: ThemeParsed
   state?: React.RefObject<UseThemeState>
 }) {
+  const tokens = getTokens()
   return createProxy(theme, {
     has(_, key) {
       if (typeof key === 'string') {
@@ -121,7 +120,6 @@ export function getThemeProxied({
         return theme
       } else if (
         !themeManager ||
-        !name ||
         key === '__proto__' ||
         typeof key === 'symbol' ||
         key === '$typeof'
@@ -142,6 +140,10 @@ export function getThemeProxied({
             },
           })
         }
+      }
+      // fallback to tokens
+      if (key in tokens) {
+        return tokens[key] ?? val
       }
       return val
     },

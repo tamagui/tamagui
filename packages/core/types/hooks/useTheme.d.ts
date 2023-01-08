@@ -19,7 +19,7 @@ export declare const useThemeWithState: (props: ThemeProps) => {
     isNewTheme?: boolean | undefined;
     className?: string | undefined;
 } | null;
-export declare function getThemeProxied({ theme, name, className, themeManager, state, }: Partial<ChangedThemeResponse> & {
+export declare function getThemeProxied({ theme, themeManager, state, }: Partial<ChangedThemeResponse> & {
     theme: ThemeParsed;
     state?: React.RefObject<UseThemeState>;
 }): ThemeParsed;
