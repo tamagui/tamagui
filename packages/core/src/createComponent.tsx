@@ -242,10 +242,8 @@ export function createComponent<
         const type = isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type}`
-        // eslint-disable-next-line no-console
         console.group(`%c ${banner}`, 'background: yellow;')
         if (!isServer) {
-          // eslint-disable-next-line no-console
           console.log('state', state)
         }
       }
@@ -337,31 +335,24 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development') {
       if (!process.env.TAMAGUI_TARGET) {
-        // eslint-disable-next-line no-console
         console.error(
           `No process.env.TAMAGUI_TARGET set, please set it to "native" or "web".`
         )
       }
 
       if (debugProp) {
-        // eslint-disable-next-line no-console
         console.groupCollapsed('props')
         // prettier-ignore
-        // eslint-disable-next-line no-console
         console.log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
-        // eslint-disable-next-line no-console
         console.log('splitStyles', splitStyles)
-        // eslint-disable-next-line no-console
         console.log('shouldListenForMediaChanges', shouldListenForMediaChanges)
-        // eslint-disable-next-line no-console
         console.log('className', Object.values(splitStyles.classNames))
         if (isClient) {
-          // eslint-disable-next-line no-console
           console.log('ref', hostRef, '(click to view)')
         }
-        // eslint-disable-next-line no-console
         console.groupEnd()
         if (debugProp === 'break') {
+          // rome-ignore lint/suspicious/noDebugger: ok
           debugger
         }
       }
@@ -554,7 +545,6 @@ export function createComponent<
       Children.toArray(props.children).forEach((item) => {
         // allow newlines because why not its annoying with mdx
         if (typeof item === 'string' && item !== '\n') {
-          // eslint-disable-next-line no-console
           console.error(
             `Unexpected text node: ${item}. A text node cannot be a child of a <View>.`
           )
@@ -894,18 +884,13 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && process.env.DEBUG !== 'tamagui') {
       if (debugProp) {
         const element = typeof elementType === 'string' ? elementType : 'Component'
-        // eslint-disable-next-line no-console
         console.groupCollapsed(`render <${element} /> with props`, viewProps)
         for (const key in viewProps) {
-          // eslint-disable-next-line no-console
           console.log(key, viewProps[key])
         }
-        // eslint-disable-next-line no-console
         console.log('children', content)
-        // eslint-disable-next-line no-console
         console.groupEnd()
         if (typeof window !== 'undefined') {
-          // eslint-disable-next-line no-console
           console.log({
             state,
             shouldProvideThemeManager,
@@ -944,7 +929,6 @@ export function createComponent<
               : null),
           })
         }
-        // eslint-disable-next-line no-console
         console.groupEnd()
       }
     }
@@ -984,7 +968,6 @@ export function createComponent<
         initialTheme = proxyThemeVariables(next)
         if (process.env.NODE_ENV === 'development') {
           if (!initialTheme) {
-            // eslint-disable-next-line no-console
             console.log('Warning: Missing theme')
           }
         }
@@ -1047,7 +1030,6 @@ export function createComponent<
     // add debug logs
     if (process.env.NODE_ENV === 'development' && debug) {
       if (process.env.IS_STATIC !== 'is_static') {
-        // eslint-disable-next-line no-console
         console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
           staticConfig,
           tamaguiDefaultProps,
