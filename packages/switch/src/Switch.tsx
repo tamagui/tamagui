@@ -6,7 +6,6 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
   SizeTokens,
-  getSize,
   getVariableValue,
   isWeb,
   styled,
@@ -14,6 +13,7 @@ import {
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
+import { getSize } from '@tamagui/get-size'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack, XStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'

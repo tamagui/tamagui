@@ -1,3 +1,4 @@
+import { isWeb } from '@tamagui/constants'
 import normalizeCSSColor from 'normalize-css-color'
 
 export const normalizeColor = (color?: number | string | null, opacity?: number) => {
@@ -6,7 +7,7 @@ export const normalizeColor = (color?: number | string | null, opacity?: number)
   }
   if (
     color[0] === '$' ||
-    (process.env.TAMAGUI_TARGET === 'web' &&
+    (isWeb &&
       typeof color === 'string' &&
       (webColors[color] || color[0] === '_' || color.startsWith('var(')))
   ) {
@@ -30,12 +31,12 @@ const webColors = {
 }
 
 export function colorToRGBA(color: string | number) {
-  const colorInt = processColor(color)
-  if (colorInt != null) {
-    const r = (colorInt >> 16) & 255
-    const g = (colorInt >> 8) & 255
-    const b = colorInt & 255
-    const a = ((colorInt >> 24) & 255) / 255
+  const ci = processColor(color)
+  if (ci != null) {
+    const r = (ci >> 16) & 255
+    const g = (ci >> 8) & 255
+    const b = ci & 255
+    const a = ((ci >> 24) & 255) / 255
     return [r, g, b, a] as const
   }
   return null

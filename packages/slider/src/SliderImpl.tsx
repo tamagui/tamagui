@@ -2,13 +2,8 @@
  * SliderImpl
  * -----------------------------------------------------------------------------------------------*/
 
-import {
-  composeEventHandlers,
-  getSize,
-  getVariableValue,
-  isWeb,
-  styled,
-} from '@tamagui/core'
+import { composeEventHandlers, getVariableValue, isWeb, styled } from '@tamagui/core'
+import { getSize } from '@tamagui/get-size'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { View } from 'react-native'

@@ -26,6 +26,7 @@
     "@tamagui/compose-refs": "^1.0.3",
     "@tamagui/core": "^1.0.3",
     "@tamagui/create-context": "^1.0.3",
+    "@tamagui/get-size": "^1.0.3",
     "@tamagui/stacks": "^1.0.3",
     "@tamagui/use-controllable-state": "^1.0.3",
     "@tamagui/use-direction": "^1.0.3"

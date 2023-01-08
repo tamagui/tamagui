@@ -4880,6 +4880,7 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.3
     "@tamagui/core": ^1.0.3
+    "@tamagui/get-size": ^1.0.3
     "@types/react": ^18.0.15
     react: ^18.2.0
   peerDependencies:
@@ -4895,6 +4896,19 @@ __metadata:
     "@tamagui/core": ^1.0.3
     "@types/react": ^18.0.15
     react: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/get-size@^1.0.3, @tamagui/get-size@workspace:packages/get-size":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/get-size@workspace:packages/get-size"
+  dependencies:
+    "@tamagui/build": ^1.0.3
+    react: ^18.2.0
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -5022,6 +5036,7 @@ __metadata:
     "@tamagui/build": ^1.0.3
     "@tamagui/core": ^1.0.3
     "@tamagui/font-size": ^1.0.3
+    "@tamagui/get-size": ^1.0.3
     "@tamagui/helpers-tamagui": ^1.0.3
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -5514,6 +5529,7 @@ __metadata:
     "@tamagui/compose-refs": ^1.0.3
     "@tamagui/core": ^1.0.3
     "@tamagui/create-context": ^1.0.3
+    "@tamagui/get-size": ^1.0.3
     "@tamagui/stacks": ^1.0.3
     "@tamagui/use-controllable-state": ^1.0.3
     "@tamagui/use-direction": ^1.0.3
@@ -5628,6 +5644,7 @@ __metadata:
     "@tamagui/core": ^1.0.3
     "@tamagui/create-context": ^1.0.3
     "@tamagui/focusable": ^1.0.3
+    "@tamagui/get-size": ^1.0.3
     "@tamagui/label": ^1.0.3
     "@tamagui/stacks": ^1.0.3
     "@tamagui/use-controllable-state": ^1.0.3

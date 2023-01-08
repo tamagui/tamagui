@@ -4,7 +4,6 @@ import {
   Spacer,
   TamaguiElement,
   ThemeableProps,
-  getSize,
   getVariableValue,
   styled,
   themeable,
@@ -12,6 +11,7 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
+import { getSize } from '@tamagui/get-size'
 import { getSpace, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
