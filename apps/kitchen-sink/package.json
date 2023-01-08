@@ -25,7 +25,7 @@
     "@tamagui/lucide-icons": "^1.0.3",
     "@tamagui/shorthands": "^1.0.3",
     "@tamagui/theme-base": "^1.0.3",
-    "expo": "^47.0.8",
+    "expo": "~47.0.12",
     "expo-dev-client": "^2.0.1",
     "expo-font": "^11.0.1",
     "expo-linear-gradient": "^12.0.1",
