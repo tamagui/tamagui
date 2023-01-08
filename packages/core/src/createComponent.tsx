@@ -200,6 +200,7 @@ export function createComponent<
         hasThemeInversed?: boolean
         hasProvidedThemeManager?: boolean
         themeShouldReset?: boolean
+        didAccessThemeVariableValue?: boolean
       }
     )
     stateRef.current ??= {}
@@ -234,12 +235,8 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development') {
       if (debugProp) {
-        const name = `${
-          componentName ||
-          Component?.displayName ||
-          Component?.name ||
-          '[Unnamed Component]'
-        }`
+        // prettier-ignore
+        const name = `${componentName || Component?.displayName || Component?.name || '[Unnamed Component]'}`
         const type = isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type}`
@@ -267,9 +264,10 @@ export function createComponent<
       componentName,
       reset: props.reset,
       inverse: props.themeInverse,
-      // @ts-expect-error internal use only
+      // @ts-expect-error
       disable: props['data-themeable'],
       debug: props.debug,
+      shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
     })!
 
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
@@ -295,10 +293,12 @@ export function createComponent<
 
     const isExiting = presence?.[0] === false
 
+    const p = { props }
     const mediaState = useMedia(
       // @ts-ignore, we just pass a stable object so we can get it later with
       // should match to the one used in `setMediaShouldUpdate` below
-      stateRef
+      stateRef,
+      p
     )
 
     setDidGetVariableValue(false)
@@ -322,15 +322,19 @@ export function createComponent<
       debugProp
     )
 
-    // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
-    const shouldListenForMediaChanges =
-      didGetVariableValue() ||
-      splitStyles.hasMedia === 'space' ||
-      (noClassNames === true && splitStyles.hasMedia)
+    p.splitStyles = splitStyles
 
-    if (shouldListenForMediaChanges) {
-      setMediaShouldUpdate(stateRef, shouldListenForMediaChanges)
+    stateRef.current.didAccessThemeVariableValue = didGetVariableValue()
+
+    if (splitStyles.hasMedia === 'space') {
+      debugger
     }
+
+    // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
+    setMediaShouldUpdate(
+      stateRef,
+      splitStyles.hasMedia === 'space' || (noClassNames === true && splitStyles.hasMedia)
+    )
 
     const hostRef = useServerRef<TamaguiElement>(null)
 
@@ -349,7 +353,6 @@ export function createComponent<
         // prettier-ignore
         console.log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
         console.log('splitStyles', splitStyles)
-        console.log('shouldListenForMediaChanges', shouldListenForMediaChanges)
         console.log('className', Object.values(splitStyles.classNames))
         if (isClient) {
           console.log('ref', hostRef, '(click to view)')

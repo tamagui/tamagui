@@ -242,7 +242,7 @@ export const getSplitStyles: StyleSplitter = (
   const usedKeys: Record<string, number> = {}
   const propKeys = Object.keys(props)
   let space: SpaceTokens | null = props.space
-  let hasMedia: boolean | 'space' = space ? 'space' : false
+  let hasMedia: boolean | 'space' = false
 
   const shouldDoClasses =
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
@@ -898,15 +898,8 @@ export const getSplitStyles: StyleSplitter = (
     if (isDevTools) {
       // eslint-disable-next-line no-console
       console.groupCollapsed('  🔹 styles =>')
-      const logs = {
-        transforms,
-        viewProps,
-        state,
-        rulesToInsert,
-        parentSplitStyles,
-        flatTransforms,
-        result,
-      }
+      // prettier-ignore
+      const logs = { transforms, viewProps, state, rulesToInsert, parentSplitStyles, flatTransforms, result }
       for (const key in { ...result, ...logs }) {
         // eslint-disable-next-line no-console
         console.log(key, logs[key])
@@ -942,7 +935,6 @@ function mergeClassName(
           transform = insertedTransforms[val]
           if (process.env.NODE_ENV === 'development') {
             if (!transform) {
-              // eslint-disable-next-line no-console
               console.warn('no transform found', { insertedTransforms, val })
             }
           }
