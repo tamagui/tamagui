@@ -7,7 +7,10 @@ import {
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
 
-export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = '$4', extras) => {
+export const inputSizeVariant: SizeVariantSpreadFunction<any> = (
+  val = '$true',
+  extras
+) => {
   if (extras.props.multiline || extras.props.numberOfLines > 1) {
     return textAreaSizeVariant(val, extras)
   }
@@ -26,7 +29,7 @@ export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = '$4', ext
 }
 
 export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
-  val = '$4',
+  val = '$true',
   extras
 ) => {
   const { props } = extras

@@ -191,9 +191,9 @@ The `createTamagui` function receives a configuration object:
 Note, for `tamagui`, it expects certain things on tokens. Space and size should both have 1-10 defined, as well as a value for `true` that maps to `4`.
 
 <Notice>
-  The compiler will parse your tamagui.config.ts file at build-time. For this reason, we comment
-  keeping it relatively simple. Don't import heavy dependencies, and prefer to import
-  `createTamagui` and other helpers directly from @tamagui/core.
+  The compiler will parse your tamagui.config.ts file at build-time. For this reason, we
+  comment keeping it relatively simple. Don't import heavy dependencies, and prefer to
+  import `createTamagui` and other helpers directly from @tamagui/core.
 </Notice>
 
 ### Add Provider
@@ -307,8 +307,8 @@ const interFont = createFont({
 ```
 
 <Notice>
-  Note, you don't need to use numbered keys, you can use `sm` or `tiny` or whatever you'd like. But
-  you do want keep those keys consistent.
+  Note, you don't need to use numbered keys, you can use `sm` or `tiny` or whatever you'd
+  like. But you do want keep those keys consistent.
 </Notice>
 
 This gives you a lot of power over customizing every aspect of your design based on each font family. In other styling libraries that follow the Theme UI spec, you generally don't group your size/lineHeight/weight/etc tokens by the family, which means you are forced to choose a single vertical rhythm no matter the font.

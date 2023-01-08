@@ -132,7 +132,6 @@ export class ThemeManager {
   // gets value going up to parents
   getValue(key: string, state?: ThemeManagerState) {
     if (!key) return
-    if (key === 'undefined') debugger
     let theme = (state || this.state).theme
     let manager = this as ThemeManager | null
     while (theme && manager) {

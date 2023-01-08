@@ -21,9 +21,14 @@ export const createVariables = <A extends DeepTokenObject>(
 ): DeepVariableObject<A> => {
   const res: any = {}
   let i = 0
-  for (const key in tokens) {
+  for (let key in tokens) {
     i++
     const val = tokens[key]
+    // always remove $ prefix
+    if (key[0] === '$') {
+      // @ts-ignore
+      key = key.slice(1)
+    }
     if (isVariable(val)) {
       res[key] = val
       continue

@@ -12,7 +12,6 @@
   - styled(), extendStaticConfig can just merge options rather than de-structure re-structure
   - remove mergeConfigDefaultProps
   - ThemeManager move to functional not class, cleanup getThemeProxied
-  - IS_VAR symbol
   - move addTheme/updateTheme out of core
   - may be able to remove proxyThemeVariables
   - getVariantExtras looks easy to slim
