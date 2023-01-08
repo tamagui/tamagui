@@ -2,7 +2,7 @@
 import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
 import { useContext, useEffect, useMemo, useState } from 'react'
 
-import { getConfig, getTokens } from '../config'
+import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import { createProxy } from '../helpers/createProxy'
 import {
@@ -109,7 +109,6 @@ export function getThemeProxied({
   theme: ThemeParsed
   state?: React.RefObject<UseThemeState>
 }) {
-  const tokens = getTokens()
   return createProxy(theme, {
     has(_, key) {
       if (typeof key === 'string') {
@@ -121,16 +120,20 @@ export function getThemeProxied({
     get(_, key) {
       if (key === GetThemeUnwrapped) {
         return theme
-      } else if (
-        !themeManager ||
+      }
+      if (
+        key === 'undefined' ||
         key === '__proto__' ||
-        typeof key === 'symbol' ||
-        key === '$typeof'
+        key === '$typeof' ||
+        typeof key !== 'string' ||
+        !themeManager
       ) {
         return Reflect.get(_, key)
       }
       // auto convert variables to plain
-      if (key[0] === '$') key = key.slice(1)
+      if (key[0] === '$') {
+        key = key.slice(1)
+      }
       const val = themeManager.getValue(key)
       if (val && state) {
         if (isClient) {
@@ -139,14 +142,10 @@ export function getThemeProxied({
               if (subkey === 'val') {
                 state.current!.keys.add(key as any)
               }
-              return Reflect.get(val, subkey)
+              return Reflect.get(val as any, subkey)
             },
           })
         }
-      }
-      // fallback to tokens
-      if (key in tokens.color) {
-        return tokens.color[key]
       }
       return val
     },
