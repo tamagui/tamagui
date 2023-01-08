@@ -61,7 +61,7 @@ import {
 } from './types'
 import { usePressability } from './vendor/Pressability'
 import { Slot, mergeEvent } from './views/Slot'
-import { useThemeManagerContext } from './views/Theme'
+import { useThemedChildren } from './views/Theme'
 
 // let t
 // import { timer } from '@tamagui/timer'
@@ -198,8 +198,6 @@ export function createComponent<
       undefined as any as {
         hasAnimated?: boolean
         hasThemeInversed?: boolean
-        hasProvidedThemeManager?: boolean
-        themeShouldReset?: boolean
         didAccessThemeVariableValue?: boolean
       }
     )
@@ -254,12 +252,7 @@ export function createComponent<
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
-    const {
-      themeManager,
-      isNewTheme,
-      className: themeClassName,
-      theme,
-    } = useThemeWithState({
+    const themeState = useThemeWithState({
       name: props.theme,
       componentName,
       reset: props.reset,
@@ -293,12 +286,10 @@ export function createComponent<
 
     const isExiting = presence?.[0] === false
 
-    const p = { props }
     const mediaState = useMedia(
       // @ts-ignore, we just pass a stable object so we can get it later with
       // should match to the one used in `setMediaShouldUpdate` below
-      stateRef,
-      p
+      stateRef
     )
 
     setDidGetVariableValue(false)
@@ -306,7 +297,7 @@ export function createComponent<
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
-      theme,
+      themeState.theme,
       {
         ...state,
         mediaState,
@@ -322,13 +313,7 @@ export function createComponent<
       debugProp
     )
 
-    p.splitStyles = splitStyles
-
     stateRef.current.didAccessThemeVariableValue = didGetVariableValue()
-
-    if (splitStyles.hasMedia === 'space') {
-      debugger
-    }
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
     setMediaShouldUpdate(
@@ -622,7 +607,6 @@ export function createComponent<
         : '',
       componentName ? componentClassName : '',
       fontFamilyClassName,
-      isNewTheme ? theme.className : '',
       classNames ? Object.values(classNames).join(' ') : '',
     ]
 
@@ -803,31 +787,18 @@ export function createComponent<
           }
         : null
 
-    const themeShouldReset = Boolean(themeShallow && themeManager && isNewTheme)
-    const shouldProvideThemeManager = themeShouldReset || (themeManager && isNewTheme)
+    // const shouldReset = !!(themeShallow && themeManager && isNewTheme)
 
-    // memoize to avoid re-parenting
-    if (shouldProvideThemeManager) {
-      stateRef.current.hasProvidedThemeManager = true
-    }
-    if (themeShouldReset) {
-      stateRef.current.themeShouldReset = true
-    }
-
-    const innerContent = useThemeManagerContext(
-      spacedChildren({
-        separator,
-        children,
-        space,
-        direction: props.spaceDirection || 'both',
-        isZStack,
-      }),
-      // only set context if changed theme
-      stateRef.current.hasProvidedThemeManager ? themeManager : undefined,
-      stateRef.current.themeShouldReset
-    )
-
-    let content = !children || asChild ? children : innerContent
+    let content =
+      !children || asChild
+        ? children
+        : spacedChildren({
+            separator,
+            children,
+            space,
+            direction: props.spaceDirection || 'both',
+            isZStack,
+          })
 
     if (asChild) {
       elementType = Slot
@@ -867,6 +838,10 @@ export function createComponent<
 
     content = createElement(elementType, viewProps, content)
 
+    content = useThemedChildren(themeState, {
+      children: content,
+    })
+
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (events || isAnimatedReactNativeWeb) {
         content = (
@@ -899,7 +874,7 @@ export function createComponent<
         console.groupEnd()
         if (typeof window !== 'undefined') {
           // prettier-ignore
-          console.log({ state, shouldProvideThemeManager, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, theme, themeClassName, staticConfig, tamaguiConfig, shouldForcePseudo, classNamesFull: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
+          console.log({ state, themeState, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, staticConfig, tamaguiConfig, shouldForcePseudo, classNamesFull: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
         }
         console.groupEnd()
       }

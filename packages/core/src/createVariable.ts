@@ -33,6 +33,7 @@ export const createVariable = <A extends string | number = any>(props: VariableI
   }
 }
 
+// could do weakmap cache
 export function variableToString(vrble?: any, getValue = false) {
   if (isVariable(vrble)) {
     if (!getValue && isWeb && vrble.variable) {

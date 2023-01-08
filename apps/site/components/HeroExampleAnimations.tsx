@@ -1,19 +1,10 @@
 import { animations } from '@tamagui/config-base'
-import { useIsIntersecting, useOnIntersecting } from '@tamagui/demos'
+import { useIsIntersecting } from '@tamagui/demos'
 import { useTint } from '@tamagui/logo'
 import { ArrowDown } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import React, { memo, useEffect, useRef, useState } from 'react'
-import {
-  Button,
-  ListItem,
-  Paragraph,
-  Separator,
-  Square,
-  Theme,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, ListItem, Paragraph, Separator, XStack, YStack } from 'tamagui'
 
 import { AnimationsDemo } from './AnimationsDemo'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'

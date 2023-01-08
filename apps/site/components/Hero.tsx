@@ -36,12 +36,12 @@ export function Hero() {
         h={2000}
         className="hero-blur"
       />
-      <HeroTop />
+      <HeroContents />
     </Theme>
   )
 }
 
-const HeroTop = memo(() => {
+const HeroContents = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
 
   return (
@@ -201,7 +201,7 @@ const HeroTop = memo(() => {
                   elevation: '$0',
                 }}
               >
-                <ButtonText fontFamily="$silkscreen" size="$7" letterSpacing="$-1">
+                <ButtonText fontFamily="$silkscreen" size="$7" letterSpacing={1}>
                   How?
                 </ButtonText>
               </Button>
@@ -227,7 +227,7 @@ const HeroTop = memo(() => {
                   elevation: '$0',
                 }}
               >
-                <ButtonText fontFamily="$silkscreen" size="$7" letterSpacing="$-1">
+                <ButtonText fontFamily="$silkscreen" size="$7" letterSpacing={1}>
                   Docs
                 </ButtonText>
               </Button>
