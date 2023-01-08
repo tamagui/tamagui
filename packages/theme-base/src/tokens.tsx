@@ -65,10 +65,9 @@ export const size = {
 type Sizes = typeof size
 type SizeKeys = `${keyof Sizes}`
 
-const spaces = Object.entries(size).map(([k, v]) => [
-  k,
-  Math.max(0, v <= 16 ? Math.round(v * 0.333) : Math.floor(v * 0.7 - 12)),
-])
+const spaces = Object.entries(size).map(([k, v]) => {
+  return [k, v === 0 ? 0 : v * Math.log(v) * 0.12]
+})
 
 const spacesNegative = spaces.map(([k, v]) => [`-${k}`, -v])
 
@@ -140,17 +139,15 @@ export const color = {
 
 function postfixObjKeys<
   A extends { [key: string]: Variable<string> | string },
-  B extends string,
+  B extends string
 >(
   obj: A,
-  postfix: B,
+  postfix: B
 ): {
-  [Key in `${keyof A extends string ? keyof A : never}${B}`]:
-    | Variable<string>
-    | string
+  [Key in `${keyof A extends string ? keyof A : never}${B}`]: Variable<string> | string
 } {
   return Object.fromEntries(
-    Object.entries(obj).map(([k, v]) => [`${k}${postfix}`, v]),
+    Object.entries(obj).map(([k, v]) => [`${k}${postfix}`, v])
   ) as any
 }
 

@@ -185,7 +185,18 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
     updateRules(identifier, rules)
     if (sheet) {
       for (const rule of rules) {
-        sheet.insertRule(rule, sheet.cssRules.length)
+        try {
+          sheet.insertRule(rule, sheet.cssRules.length)
+        } catch (err) {
+          if (process.env.NODE_ENV !== 'production') {
+            console.groupCollapsed(
+              `Error inserting rule into CSSStyleSheet: ${String(err)}`
+            )
+            console.log({ rule, rulesToInsert })
+            console.trace()
+            console.groupEnd()
+          }
+        }
       }
     }
   }
