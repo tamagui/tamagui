@@ -27,7 +27,7 @@ export default defineConfig({
   // },
   // @ts-ignore
   test: {
-    setupFiles: [join(__dirname, 'setup.ts')],
+    // setupFiles: [join(__dirname, 'setup.ts')],
     environment: 'happy-dom',
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     deps: {

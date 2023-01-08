@@ -68,6 +68,14 @@
 
 ---
 
+1.4
+
+- re-render tests:
+  - useMedia, component w/ media + style, media + css-style, media + space
+  - useTheme, component with theme used in style
+
+---
+
 inbox
 
 - docs search build inline

@@ -4405,7 +4405,7 @@ __metadata:
     babel-polyfill: ^6.26.0
     color2k: ^1.2.4
     d3-scale: ^3.3.0
-    esbuild-loader: ^2.19.0
+    esbuild-loader: ^2.20.0
     hsluv: ^0.1.0
     lodash-es: ^4.17.21
     react-draggable: ^4.4.5
@@ -4587,7 +4587,7 @@ __metadata:
   dependencies:
     "@types/fs-extra": ^9.0.13
     chokidar: ^3.5.2
-    esbuild: ^0.15.11
+    esbuild: ^0.16.15
     execa: ^5.0.0
     fast-glob: ^3.2.11
     fs-extra: ^10.1.0
@@ -4662,7 +4662,7 @@ __metadata:
     chalk: ^4.1.2
     chokidar: ^3.5.2
     compression: ^1.7.4
-    esbuild: ^0.15.11
+    esbuild: ^0.16.15
     execa: ^5.0.0
     express: ^4.18.1
     express-http-proxy: ^1.6.3
@@ -4798,7 +4798,7 @@ __metadata:
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
     chokidar: ^3.5.2
-    esbuild: ^0.15.11
+    esbuild: ^0.16.15
     execa: ^5.0.0
     fast-glob: ^3.2.11
     fs-extra: ^10.1.0
@@ -5227,7 +5227,7 @@ __metadata:
     babel-loader: ^8.2.5
     browserslist: ^4.21.1
     css-loader: ^5.2.4
-    esbuild-loader: ^2.19.0
+    esbuild-loader: ^2.20.0
     esm-resolve: ^1.0.8
     file-loader: ^6.2.0
     html-webpack-plugin: ^5.5.0
@@ -5441,7 +5441,7 @@ __metadata:
     "@vitejs/plugin-react": ^3.0.1
     babel-polyfill: ^6.26.0
     css-loader: ^5.2.4
-    esbuild-loader: ^2.19.0
+    esbuild-loader: ^2.20.0
     file-loader: ^6.2.0
     html-webpack-plugin: ^5.5.0
     mini-css-extract-plugin: ^2.7.2
@@ -5726,8 +5726,8 @@ __metadata:
     babel-loader: ^8.2.5
     css-loader: ^5.2.4
     dedent: ^0.7.0
-    esbuild: ^0.15.11
-    esbuild-loader: ^2.19.0
+    esbuild: ^0.16.15
+    esbuild-loader: ^2.20.0
     esbuild-register: ^3.4.2
     find-cache-dir: ^3.3.2
     find-root: ^1.1.0
@@ -10844,7 +10844,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-loader@npm:^2.19.0":
+"esbuild-loader@npm:^2.20.0":
   version: 2.20.0
   resolution: "esbuild-loader@npm:2.20.0"
   dependencies:
