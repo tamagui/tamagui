@@ -94,7 +94,7 @@ const ColorSchemeListItem = () => {
       <ListItem.Text>Theme</ListItem.Text>
       <Spacer flex />
       <Button chromeless disabled w={20} icon={Moon} />
-      <Switch checked={checked} themeShallow>
+      <Switch checked={checked}>
         <Switch.Thumb
           animation={[
             'quick',

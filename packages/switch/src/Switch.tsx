@@ -46,14 +46,18 @@ const THUMB_NAME = 'SwitchThumb'
 export const SwitchThumbFrame = styled(ThemeableStack, {
   name: 'SwitchThumb',
   backgroundColor: '$background',
+  debug: 'verbose',
   borderRadius: 1000,
 
   variants: {
     size: {
-      '...size': (val) => ({
-        height: getSwitchHeight(val),
-        width: getSwitchHeight(val),
-      }),
+      '...size': (val) => {
+        const size = getSwitchHeight(val)
+        return {
+          height: size,
+          width: size,
+        }
+      },
     },
   } as const,
 
@@ -151,7 +155,7 @@ export const Switch = withStaticProperties(
           disabled,
           value = 'on',
           onCheckedChange,
-          size = '$4',
+          size = '$true',
           ...switchProps
         } = props
         const [button, setButton] = React.useState<HTMLButtonElement | null>(null)

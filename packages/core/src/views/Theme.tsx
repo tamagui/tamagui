@@ -34,7 +34,11 @@ export function Theme(props: ThemeProps) {
 
 export function useThemedChildren(
   { themeManager, isNewTheme, className, theme }: ChangedThemeResponse,
-  { children, disableThemeClass }: { children: any; disableThemeClass?: boolean }
+  {
+    children,
+    disableThemeClass,
+    shallow,
+  }: { children: any; disableThemeClass?: boolean; shallow?: boolean }
 ) {
   const hasEverThemed = useServerRef(false)
   if (isNewTheme) {
@@ -48,6 +52,10 @@ export function useThemedChildren(
 
   // be sure to memoize shouldReset to avoid reparenting
   let next = children
+
+  if (shallow && themeManager) {
+    next = <Theme name={themeManager.state.parentName}>{next}</Theme>
+  }
 
   next = (
     <ThemeManagerContext.Provider value={themeManager}>

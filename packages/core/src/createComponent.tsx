@@ -196,7 +196,7 @@ export function createComponent<
     const stateRef = useRef(
       undefined as any as {
         hasAnimated?: boolean
-        hasThemeInversed?: boolean
+        themeShallow?: boolean
         didAccessThemeVariableValue?: boolean
       }
     )
@@ -796,6 +796,11 @@ export function createComponent<
       }
     }
 
+    const shouldReset = !!(themeShallow && themeState.isNewTheme)
+    if (shouldReset) {
+      stateRef.current.themeShallow = true
+    }
+
     let content =
       !children || asChild
         ? children
@@ -821,6 +826,7 @@ export function createComponent<
 
     content = useThemedChildren(themeState, {
       children: content,
+      shallow: stateRef.current.themeShallow,
     })
 
     if (process.env.TAMAGUI_TARGET === 'web') {
