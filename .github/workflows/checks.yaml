@@ -6,7 +6,7 @@ on:
     paths-ignore:
       - 'assets/**'
       - '.vscode/**'
-    branches-ignore:
+    ignore:
       - master
 
 jobs:
