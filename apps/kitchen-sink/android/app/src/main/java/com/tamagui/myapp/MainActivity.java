@@ -1,4 +1,4 @@
-package com.myapp;
+package com.tamagui.myapp;
 
 import android.os.Build;
 import android.os.Bundle;

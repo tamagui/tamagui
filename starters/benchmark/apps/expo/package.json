@@ -2,7 +2,7 @@
   "dependencies": {
     "@babel/runtime": "^7.18.9",
     "app": "*",
-    "expo": "^47.0.8",
+    "expo": "^47.0.12",
     "expo-constants": "^13.2.3",
     "expo-dev-client": "^2.0.1",
     "expo-font": "^11.0.1",

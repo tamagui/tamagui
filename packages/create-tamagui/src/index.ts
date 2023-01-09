@@ -27,7 +27,7 @@ let projectPath = ''
 
 const IS_TEST = process.env.NODE_ENV === 'test'
 if (IS_TEST) {
-  console.log(`Running create-tamagui in test mode`)
+  console.log(`🧐 Running create-tamagui in test mode 🧐`)
 }
 
 const program = new Commander.Command(packageJson.name)
@@ -169,6 +169,14 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
       console.log(`Setting up ${chalk.blueBright(tamaguiDir)}...`)
 
       cd(repoRoot)
+
+      if (process.env.GITHUB_HEAD_REF) {
+        try {
+          await $`git switch -c ${process.env.GITHUB_HEAD_REF}`
+        } catch {
+          // re-tries branch already exists
+        }
+      }
 
       const branch = IS_TEST
         ? // use current branch

@@ -63,25 +63,22 @@ test.beforeAll(async () => {
 })
 
 test.afterAll(async () => {
-  await sleep(10_000)
-  console.log(`Killing server...`)
-
   test.setTimeout(oneMinute * 3)
+  console.log(`Killing server...`)
 
   await Promise.race([
     server?.kill(),
     sleep(oneMinute).then(() => console.log(`timed out server kill`)),
   ])
 
-  // next complains if we delete too soon i think
-  // await sleep(2000)
-
-  // if (isLocalDev) {
-  //   await Promise.all([
-  //     $`rm -rf ${dir}`,
-  //     sleep(oneMinute).then(() => console.log(`timed out cleanup`)),
-  //   ])
-  // }
+  if (isLocalDev) {
+    // next complains if we delete too soon i think
+    await sleep(1000)
+    await Promise.race([
+      $`rm -rf ${dir}`,
+      sleep(oneMinute).then(() => console.log(`timed out cleanup`)),
+    ])
+  }
 })
 
 // TODO run these tests in prod and dev
