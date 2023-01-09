@@ -180,7 +180,7 @@ const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"color\\": \\"rgba(255,0,0,1.00)\\",
     \\"fontFamily\\": \\"Inter\\",
-    \\"fontWeight\\": \\"500\\",
+    \\"fontWeight\\": \\"600\\",
     \\"letterSpacing\\": 0,
     \\"fontSize\\": 14,
     \\"lineHeight\\": 23,

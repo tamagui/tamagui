@@ -79,6 +79,8 @@
 
 inbox
 
+- @twaiter Has anyone used a dialog component on mobile? I havent been able to get Dialog.Closed to work (using a button). Seems like the example on the website doesnt work for mobile either (button not there)
+
 - docs search build inline
   - add shorthands to docs
   - make search a nice demo
