@@ -26,6 +26,9 @@ const pipeline = promisify(Stream.pipeline)
 let projectPath = ''
 
 const IS_TEST = process.env.NODE_ENV === 'test'
+if (IS_TEST) {
+  console.log(`Running create-tamagui in test mode`)
+}
 
 const program = new Commander.Command(packageJson.name)
   .version(packageJson.version)
@@ -260,7 +263,6 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
         message: 'Do you want to use git?',
         initial: true,
       })
-
       if (res2.gitInit) {
         await gitInit()
       }

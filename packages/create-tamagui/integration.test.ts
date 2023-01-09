@@ -20,6 +20,7 @@ const PACKAGES_ROOT = join(PACKAGE_ROOT, '..')
 // }
 
 process.env.NODE_ENV = 'test'
+$.env.NODE_ENV = 'test'
 
 const isLocalDev = platform() === 'darwin'
 const dir = isLocalDev ? `/tmp/test` : join(tmpdir(), `cta-test-${Date.now()}`)
@@ -27,8 +28,6 @@ const dir = isLocalDev ? `/tmp/test` : join(tmpdir(), `cta-test-${Date.now()}`)
 const oneMinute = 1000 * 60
 
 test.beforeAll(async () => {
-  $.env.NODE_ENV = 'test'
-
   // 15 m
   test.setTimeout(oneMinute * 15)
 
