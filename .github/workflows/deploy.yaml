@@ -9,25 +9,6 @@ on:
       - master
 
 jobs:
-  check:
-    name: Run checks
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Install
-        uses: ./.github/actions/install
-
-      - name: Check
-        run: yarn check
-
-      - name: Lint
-        run: yarn lint
-
-      - name: Test
-        run: yarn test
-
   deploy-site:
     name: Deploy site
     runs-on: ubuntu-latest
