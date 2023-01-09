@@ -1,17 +1,15 @@
 1.0.X
 
-- $0.75  is bigger val than $1
-
 - bundle size reductions:
   - expandStyle remove some
+  - merge mergeSlotProps and mergeProps
   - move to PROP whitelist rather than style whitelist maybe avoid validStyleProps altogether
   - getStylesAtomic "all webkit prefixed rules, pointer-events"
-  - Slot
   - color names hardcoded potentially
   - // ??
   - styled(), extendStaticConfig can just merge options rather than de-structure re-structure
   - remove mergeConfigDefaultProps
-  - ThemeManager move to functional not class, cleanup getThemeProxied
+  - ThemeManager move to functional not class
   - move addTheme/updateTheme out of core
   - may be able to remove proxyThemeVariables
   - getVariantExtras looks easy to slim
@@ -23,8 +21,11 @@
 
 1.1
 
-- default to $true not $4 in tamagui to avoid requiring a certain token scale
-- createTamagui({ defaultSize }) and make it so tamagui tokens $4 etc aren't required can use any tokens
+- switch active bg regressed
+- theme shouldn't change context ever on web, redo notify()
+  - instead of passing ThemeManager in context just pass a UID
+    - useChangeTheme can then do listen(UID)
+    
 - createTamagui({ webOnly: true }) - avoids console warning on Text
   - goes hand in hand with `@tamagui/style` separate from core
 - for some reason, the vertical slider is buggy in the blog post: https://tamagui.dev/blog/version-one but not on the docs page. Try clicking and fiddling with it on a desktop computer, and you'll see what I mean.

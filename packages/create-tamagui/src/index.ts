@@ -246,19 +246,25 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     console.log(chalk.green(`${projectName} created!`))
 
     cd(resolvedProjectPath)
-    
-    const res2 = await prompts({
-      type: 'confirm',
-      name: 'gitInit',
-      message: 'Do you want to initialize GIT for the project?',
-      initial: true,
-    })
 
-    if (res2.gitInit) {
-      console.log('Initializing GIT for the project...')
-      await $`git init`
+    function gitInit() {
+      return $`git init`
     }
-    
+
+    if (IS_TEST) {
+      await gitInit()
+    } else {
+      const res2 = await prompts({
+        type: 'confirm',
+        name: 'gitInit',
+        message: 'Do you want to use git?',
+        initial: true,
+      })
+
+      if (res2.gitInit) {
+        await gitInit()
+      }
+    }
   } catch (e) {
     console.error(`[tamagui] Failed to copy example into ${resolvedProjectPath}\n\n`, e)
     process.exit(1)

@@ -81,8 +81,6 @@ export type {
   RNWTextProps,
   RNWViewProps,
   Shorthands,
-  Slot,
-  Slottable,
   SizeTokens,
   SpaceTokens,
   SpacerProps,
