@@ -21,6 +21,7 @@
 
 1.1
 
+- dialog sheet space regression
 - switch active bg regressed
 - theme shouldn't change context ever on web, redo notify()
   - instead of passing ThemeManager in context just pass a UID
