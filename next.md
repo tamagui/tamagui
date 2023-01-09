@@ -21,7 +21,11 @@
 
 1.1
 
-- default to $true not $4 in tamagui to avoid requiring a certain token scale
+- theme shouldn't change context ever on web, redo notify()
+  - instead of passing ThemeManager in context just pass a UID
+    - useChangeTheme can then do listen(UID)
+    
+    
 - createTamagui({ defaultSize }) and make it so tamagui tokens $4 etc aren't required can use any tokens
 - createTamagui({ webOnly: true }) - avoids console warning on Text
   - goes hand in hand with `@tamagui/style` separate from core
