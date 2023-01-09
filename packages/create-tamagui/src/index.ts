@@ -170,10 +170,12 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
 
       cd(repoRoot)
 
-      const branch = IS_TEST
-        ? // use current branch
-          (await $`git rev-parse --abbrev-ref HEAD`).stdout.trim()
-        : `master`
+      const branch =
+        process.env.GITHUB_BASE_REF ??
+        (IS_TEST
+          ? // use current branch
+            (await $`git rev-parse --abbrev-ref HEAD`).stdout.trim()
+          : `master`)
 
       // setup tests for CI
       if (IS_TEST) {
@@ -250,7 +252,23 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
 
     cd(resolvedProjectPath)
 
-    await $`git init`
+    function gitInit() {
+      return $`git init`
+    }
+
+    if (IS_TEST) {
+      await gitInit()
+    } else {
+      const res2 = await prompts({
+        type: 'confirm',
+        name: 'gitInit',
+        message: 'Do you want to use git?',
+        initial: true,
+      })
+      if (res2.gitInit) {
+        await gitInit()
+      }
+    }
   } catch (e) {
     console.error(`[tamagui] Failed to copy example into ${resolvedProjectPath}\n\n`, e)
     process.exit(1)
