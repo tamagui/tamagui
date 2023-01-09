@@ -26,9 +26,8 @@ const pipeline = promisify(Stream.pipeline)
 let projectPath = ''
 
 const IS_TEST = process.env.NODE_ENV === 'test'
-console.log('wtf', process.env.NODE_ENV)
 if (IS_TEST) {
-  console.log(`Running create-tamagui in test mode`)
+  console.log(`🧐 Running create-tamagui in test mode 🧐`)
 }
 
 const program = new Commander.Command(packageJson.name)
@@ -251,23 +250,7 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
 
     cd(resolvedProjectPath)
 
-    function gitInit() {
-      return $`git init`
-    }
-
-    if (IS_TEST) {
-      await gitInit()
-    } else {
-      const res2 = await prompts({
-        type: 'confirm',
-        name: 'gitInit',
-        message: 'Do you want to use git?',
-        initial: true,
-      })
-      if (res2.gitInit) {
-        await gitInit()
-      }
-    }
+    await $`git init`
   } catch (e) {
     console.error(`[tamagui] Failed to copy example into ${resolvedProjectPath}\n\n`, e)
     process.exit(1)
