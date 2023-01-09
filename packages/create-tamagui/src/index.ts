@@ -26,6 +26,7 @@ const pipeline = promisify(Stream.pipeline)
 let projectPath = ''
 
 const IS_TEST = process.env.NODE_ENV === 'test'
+console.log('wtf', process.env.NODE_ENV)
 if (IS_TEST) {
   console.log(`Running create-tamagui in test mode`)
 }
