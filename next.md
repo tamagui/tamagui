@@ -1,17 +1,15 @@
 1.0.X
 
-- $0.75  is bigger val than $1
-
 - bundle size reductions:
   - expandStyle remove some
+  - merge mergeSlotProps and mergeProps
   - move to PROP whitelist rather than style whitelist maybe avoid validStyleProps altogether
   - getStylesAtomic "all webkit prefixed rules, pointer-events"
-  - Slot
   - color names hardcoded potentially
   - // ??
   - styled(), extendStaticConfig can just merge options rather than de-structure re-structure
   - remove mergeConfigDefaultProps
-  - ThemeManager move to functional not class, cleanup getThemeProxied
+  - ThemeManager move to functional not class
   - move addTheme/updateTheme out of core
   - may be able to remove proxyThemeVariables
   - getVariantExtras looks easy to slim

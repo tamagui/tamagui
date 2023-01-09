@@ -23,7 +23,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
 } from 'react'
 
@@ -42,7 +41,7 @@ import { useShallowSetState } from './helpers/useShallowSetState'
 import { measureLayout, useElementLayout } from './hooks/useElementLayout'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
-import { useChangeThemeEffect, useThemeWithState } from './hooks/useTheme'
+import { useThemeWithState } from './hooks/useTheme'
 import {
   DebugProp,
   SpaceDirection,
@@ -353,7 +352,6 @@ export function createComponent<
     const {
       viewProps: viewPropsIn,
       pseudos,
-      medias,
       style: splitStylesStyle,
       classNames,
       space,
@@ -370,7 +368,7 @@ export function createComponent<
         style: splitStylesStyle,
         presence,
         state,
-        pseudos,
+        pseudos: pseudos || null,
         onDidAnimate: props.onDidAnimate,
         hostRef,
         staticConfig,
@@ -579,10 +577,9 @@ export function createComponent<
     if (isStringElement && shouldAvoidClasses && !shouldForcePseudo) {
       styles = {
         ...(animationStyles ?? splitStylesStyle),
-        ...medias,
       }
     } else {
-      styles = [animationStyles ?? splitStylesStyle, medias]
+      styles = [animationStyles ?? splitStylesStyle]
 
       // ugly but for now...
       if (shouldForcePseudo) {
@@ -671,12 +668,8 @@ export function createComponent<
     }
 
     const runtimePressStyle = !disabled && noClassNames && pseudos?.pressStyle
-    const attachPress = !!(
-      runtimePressStyle ||
-      onPress ||
-      onPressOut ||
-      onPressIn ||
-      onClick
+    const attachPress = Boolean(
+      runtimePressStyle || onPress || onPressOut || onPressIn || onClick
     )
     const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
     const isHoverable =
@@ -687,25 +680,15 @@ export function createComponent<
 
     // check presence rather than value to prevent reparenting bugs
     // allows for onPress={x ? function : undefined} without re-ordering dom
-    const shouldAttach = asChild
-      ? false
-      : Boolean(
-          attachPress ||
-            isHoverable ||
-            'pressStyle' in props ||
-            'onPress' in props ||
-            'onPressIn' in props ||
-            'onPressOut' in props ||
-            (isWeb &&
-              ('hoverStyle' in props ||
-                'onHoverIn' in props ||
-                'onHoverOut' in props ||
-                'onMouseEnter' in props ||
-                'onMouseLeave' in props))
-        )
+    const shouldAttach = Boolean(
+      attachPress ||
+        isHoverable ||
+        (noClassNames && 'pressStyle' in props) ||
+        (isWeb && noClassNames && 'hoverStyle' in props)
+    )
 
     const events =
-      shouldAttach && !isRSC && !isDisabled
+      shouldAttach && !isRSC && !isDisabled && !asChild
         ? {
             onPressOut: attachPress
               ? (e) => {
@@ -787,33 +770,10 @@ export function createComponent<
           }
         : null
 
-    // const shouldReset = !!(themeShallow && themeManager && isNewTheme)
-
-    let content =
-      !children || asChild
-        ? children
-        : spacedChildren({
-            separator,
-            children,
-            space,
-            direction: props.spaceDirection || 'both',
-            isZStack,
-          })
-
-    if (asChild) {
-      elementType = Slot
-      viewProps = {
-        ...viewProps,
-        onPress,
-        onPressIn,
-        onPressOut,
-      }
-    }
-
     // EVENTS native
     if (process.env.TAMAGUI_TARGET === 'native') {
       // add focus events
-      const attachFocus = !!pseudos.focusStyle
+      const attachFocus = !!pseudos?.focusStyle
       if (attachFocus) {
         viewProps.onFocus = mergeEvent(viewProps.onFocus, () => {
           setStateShallow({ focus: true })
@@ -833,6 +793,27 @@ export function createComponent<
           viewProps[key] =
             og && !dontComposePressabilityKeys[key] ? composeEventHandlers(og, val) : val
         }
+      }
+    }
+
+    let content =
+      !children || asChild
+        ? children
+        : spacedChildren({
+            separator,
+            children,
+            space,
+            direction: props.spaceDirection || 'both',
+            isZStack,
+          })
+
+    if (asChild) {
+      elementType = Slot
+      viewProps = {
+        ...viewProps,
+        onPress,
+        onPressIn,
+        onPressOut,
       }
     }
 

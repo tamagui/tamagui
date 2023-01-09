@@ -58,8 +58,7 @@ import {
 import { pseudoDescriptors } from './pseudoDescriptors'
 
 type GetStyleResult = {
-  pseudos: PseudoStyles
-  medias: Record<MediaQueryKey, ViewStyle>
+  pseudos?: PseudoStyles
   style: ViewStyle
   classNames: ClassNamesObject
   rulesToInsert: RulesToInsert
@@ -235,9 +234,8 @@ export const getSplitStyles: StyleSplitter = (
   } = staticConfig
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: GetStyleResult['viewProps'] = {}
-  const pseudos: PseudoStyles = {}
+  let pseudos: PseudoStyles | null = null
   let psuedosUsed: Record<string, number> | null = null
-  const medias: Record<MediaQueryKey, ViewStyle> = {}
   const mediaState = state.mediaState || globalMediaState
   const usedKeys: Record<string, number> = {}
   const propKeys = Object.keys(props)
@@ -617,6 +615,7 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if (!shouldDoClasses || IS_STATIC) {
+          pseudos ||= {}
           pseudos[key] ||= {}
           Object.assign(pseudos[key], pseudoStyleObject)
         }
@@ -675,6 +674,7 @@ export const getSplitStyles: StyleSplitter = (
             const curImportance = psuedosUsed[importance] || 0
             if (importance >= curImportance) {
               psuedosUsed[pkey] = importance
+              pseudos ||= {}
               pseudos[key] ||= {}
               pseudos[key][pkey] = val
               // eslint-disable-next-line no-console
@@ -884,7 +884,6 @@ export const getSplitStyles: StyleSplitter = (
     fontFamily,
     viewProps,
     style,
-    medias,
     pseudos,
     classNames,
     rulesToInsert,

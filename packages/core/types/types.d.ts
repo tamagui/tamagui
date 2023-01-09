@@ -650,7 +650,7 @@ export type UseAnimationHook = (props: {
     hostRef: RefObject<HTMLElement | View>;
     staticConfig: StaticConfigParsed;
     state: SplitStyleState;
-    pseudos: PseudoProps<ViewStyle>;
+    pseudos: PseudoProps<ViewStyle> | null;
     onDidAnimate?: any;
     delay?: number;
 }) => null | {

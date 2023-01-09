@@ -1,11 +1,10 @@
 import type { ViewStyle } from 'react-native';
-import type { DebugProp, MediaQueryKey, PseudoStyles, SplitStyleState, StackProps, StaticConfigParsed, TamaguiInternalConfig, ThemeParsed } from '../types';
+import type { DebugProp, PseudoStyles, SplitStyleState, StackProps, StaticConfigParsed, TamaguiInternalConfig, ThemeParsed } from '../types';
 import { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types';
 import { RulesToInsert } from './insertStyleRule';
 import { FlatTransforms } from './mergeTransform';
 type GetStyleResult = {
-    pseudos: PseudoStyles;
-    medias: Record<MediaQueryKey, ViewStyle>;
+    pseudos?: PseudoStyles;
     style: ViewStyle;
     classNames: ClassNamesObject;
     rulesToInsert: RulesToInsert;
