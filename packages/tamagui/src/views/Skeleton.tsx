@@ -1,8 +1,8 @@
 import { GetProps, TamaguiElement, styled } from '@tamagui/core'
+import { LinearGradient, LinearGradientProps } from '@tamagui/linear-gradient'
 import { YStack } from '@tamagui/stacks'
 import { forwardRef } from 'react'
 
-import { LinearGradient, LinearGradientProps } from './LinearGradient'
 import { VisuallyHidden } from './VisuallyHidden'
 
 export const SkeletonFrame = styled(YStack, {
@@ -22,7 +22,7 @@ export const Skeleton = SkeletonFrame.extractable(
         <VisuallyHidden preserveDimensions>{children}</VisuallyHidden>
       </SkeletonFrame>
     )
-  }),
+  })
 )
 
 export const SkeletonShine = (props: LinearGradientProps) => {

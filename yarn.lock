@@ -5029,6 +5029,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/linear-gradient@^1.0.3, @tamagui/linear-gradient@workspace:packages/linear-gradient":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/linear-gradient@workspace:packages/linear-gradient"
+  dependencies:
+    "@tamagui/build": ^1.0.3
+    "@tamagui/core": ^1.0.3
+    "@tamagui/stacks": ^1.0.3
+    expo-linear-gradient: ^12.0.1
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  peerDependencies:
+    expo-linear-gradient: "*"
+    react: "*"
+    react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/list-item@^1.0.3, @tamagui/list-item@workspace:packages/list-item":
   version: 0.0.0-use.local
   resolution: "@tamagui/list-item@workspace:packages/list-item"
@@ -21301,6 +21318,7 @@ __metadata:
     "@tamagui/helpers-tamagui": ^1.0.3
     "@tamagui/image": ^1.0.3
     "@tamagui/label": ^1.0.3
+    "@tamagui/linear-gradient": ^1.0.3
     "@tamagui/list-item": ^1.0.3
     "@tamagui/popover": ^1.0.3
     "@tamagui/popper": ^1.0.3
@@ -21325,13 +21343,11 @@ __metadata:
     "@tamagui/visually-hidden": ^1.0.3
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
-    expo-linear-gradient: ^12.0.1
     expo-screen-orientation: ^5.0.1
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native-web: ^0.18.3
   peerDependencies:
-    expo-linear-gradient: "*"
     expo-screen-orientation: "*"
     react: "*"
     react-dom: "*"

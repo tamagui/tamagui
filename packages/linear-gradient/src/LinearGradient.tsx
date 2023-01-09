@@ -13,7 +13,7 @@ import { StyleSheet, View } from 'react-native'
 import {
   LinearGradient as ExpoLinearGradient,
   LinearGradientProps as ExpoLinearGradientProps,
-} from '../lib/linear-gradient'
+} from './linear-gradient'
 
 //
 export type LinearGradientProps = Omit<ExpoLinearGradientProps, 'colors'> &
@@ -26,14 +26,7 @@ export const LinearGradient: React.ForwardRefExoticComponent<
 > = YStack.extractable(
   themeable(
     React.forwardRef((props: LinearGradientProps, ref) => {
-      const {
-        start,
-        end,
-        colors: colorsProp,
-        locations,
-        children,
-        ...stackProps
-      } = props
+      const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
       const colors = useThemeColors(colorsProp || [])
       return (
         // @ts-ignore
@@ -49,8 +42,8 @@ export const LinearGradient: React.ForwardRefExoticComponent<
           </ExpoLinearGradient>
         </LinearGradientFrame>
       )
-    }),
-  ),
+    })
+  )
 ) as any
 
 const LinearGradientFrame = styled(YStack, {
