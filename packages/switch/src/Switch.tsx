@@ -46,7 +46,6 @@ const THUMB_NAME = 'SwitchThumb'
 export const SwitchThumbFrame = styled(ThemeableStack, {
   name: 'SwitchThumb',
   backgroundColor: '$background',
-  debug: 'verbose',
   borderRadius: 1000,
 
   variants: {

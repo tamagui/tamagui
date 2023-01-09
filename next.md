@@ -21,6 +21,7 @@
 
 1.1
 
+- sync with react-native-web
 - dialog sheet space regression
 - switch active bg regressed
 - theme shouldn't change context ever on web, redo notify()
