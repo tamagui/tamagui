@@ -4,11 +4,6 @@ import type { SizeTokens, SpaceTokens } from '@tamagui/core'
 type GenericTokens = Record<string, Variable<any>>
 
 export const getSize = (size?: SizeTokens | undefined, shift = 0, bounds = [0]) => {
-  console.log(
-    'getting size',
-    size,
-    stepTokenUpOrDown(getTokens(true).size, size, shift, bounds)
-  )
   return stepTokenUpOrDown(getTokens(true).size as GenericTokens, size, shift, bounds)
 }
 
