@@ -9,15 +9,9 @@ import { ThemeProps } from '../types'
 
 export function Theme(props: ThemeProps) {
   // @ts-expect-error only for internal views
-  if (props.disable) {
-    return props.children
-  }
-
+  if (props.disable) return props.children
   const isRoot = !!props['_isRoot']
   const themeState = useChangeThemeEffect(props, isRoot)
-
-  // memo here, changing theme without re-rendering all children is a critical optimization
-  // may require some effort of end user to memoize but without this memo they'd have no option
   const children = props['data-themeable']
     ? Children.map(props.children, (child) =>
         cloneElement(child, { ['data-themeable']: true })
@@ -28,17 +22,21 @@ export function Theme(props: ThemeProps) {
 }
 
 export function useThemedChildren(
-  { themeManager, isNewTheme, className, theme }: ChangedThemeResponse,
+  themeState: ChangedThemeResponse,
   children: any,
-  { shallow, forceClassName }: { forceClassName?: boolean; shallow?: boolean }
+  options: { forceClassName?: boolean; shallow?: boolean }
 ) {
+  const { themeManager, isNewTheme, className, theme } = themeState
+  const { shallow, forceClassName } = options
+
   const hasEverThemed = useServerRef(false)
   if (isNewTheme) {
     hasEverThemed.current = true
   }
 
   // once a theme is set it always passes the context to avoid reparenting
-  if (!isNewTheme && !hasEverThemed.current) {
+  // until then no context to avoid lots of context
+  if (!isNewTheme && !hasEverThemed.current && !forceClassName) {
     return children
   }
 
