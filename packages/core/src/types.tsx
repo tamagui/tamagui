@@ -272,13 +272,14 @@ export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>
 
 export interface ThemeProps {
   className?: string
-  disableThemeClass?: boolean
   name?: Exclude<ThemeName, number> | null
   componentName?: string
   children?: any
   reset?: boolean
   debug?: boolean | 'verbose'
   inverse?: boolean
+  // on the web, for portals we need to re-insert className
+  forceClassName?: boolean
   // allows for disabling the auto-update behavior
   shouldUpdate?: () => boolean
 }
@@ -497,6 +498,7 @@ type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
 // base tokens
 export type SizeTokens = GetTokenString<keyof Tokens['size']> | number
 export type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean
+
 export type ColorTokens =
   | GetTokenString<keyof Tokens['color']>
   | GetTokenString<keyof ThemeParsed>

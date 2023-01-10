@@ -1,14 +1,12 @@
 import '@tamagui/polyfill-dev'
 
-// import '@tamagui/core/reset.css'
-import './wdyr'
-
 import {
   AlertDialogDemo,
   FormsDemo,
   SelectDemo,
   SheetDemo,
   SliderDemo,
+  TooltipDemo,
 } from '@tamagui/demos'
 import { useMemo, useState } from 'react'
 import { OpaqueColorValue } from 'react-native'
@@ -29,6 +27,9 @@ import {
 } from 'tamagui'
 
 import config from './tamagui.config'
+
+// import '@tamagui/core/reset.css'
+// import './wdyr'
 
 // webpack fix..
 if (typeof require !== 'undefined') {
@@ -143,8 +144,9 @@ export const Sandbox = () => {
         >
           {/* <SelectDemo /> */}
 
+          <TooltipDemo />
+
           <XStack
-            debug="verbose"
             $gtSm={{
               space: 50,
             }}
@@ -182,14 +184,14 @@ export const Sandbox = () => {
             Load Second Page
           </Button>
 
-          {/* <Input debug="verbose" placeholder="hello" /> */}
+          {/* <Input  placeholder="hello" /> */}
 
           {/* <>make sure enterStyle works without scale set on defaults</>
           <Square
             size={100}
             bc="red"
             animation="bouncy"
-            debug="verbose"
+            
             // scale={1}
             enterStyle={{
               scale: 2,
@@ -232,7 +234,7 @@ export const Sandbox = () => {
           {/* <SheetDemo /> */}
 
           {/* space */}
-          {/* <YStack debug="verbose" space="$2" $gtSm={{ space: '$10' }}>
+          {/* <YStack  space="$2" $gtSm={{ space: '$10' }}>
             <Circle bc="red" size="$10" />
             <Circle bc="red" size="$10" />
             <Circle bc="red" size="$10" />

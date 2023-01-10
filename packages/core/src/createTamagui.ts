@@ -1,7 +1,8 @@
 import { isRSC, isWeb } from '@tamagui/constants'
 
 import { configListeners, setConfig } from './config'
-import { createVariables } from './createVariables'
+import { createVariables, tokensKeysOrdered } from './createVariables'
+import { startClearStyleCacheInterval } from './helpers/getStylesAtomic'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
   getAllRules,
@@ -48,6 +49,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   scanAllSheets()
   listenForSheetChanges()
+  startClearStyleCacheInterval()
 
   const fontTokens = Object.fromEntries(
     Object.entries(configIn.fonts!).map(([k, v]) => {
@@ -188,10 +190,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   // faster $lookups
   const tokensParsed: any = Object.fromEntries(
-    Object.entries(configIn.tokens).map(([k, v]) => [
-      k,
-      Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v])),
-    ])
+    Object.entries(configIn.tokens).map(([k, v]) => {
+      const val = Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v]))
+      tokensKeysOrdered.set(val, tokensKeysOrdered.get(v))
+      return [k, val]
+    })
   )
 
   const shorthands = configIn.shorthands || {}

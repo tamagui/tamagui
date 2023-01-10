@@ -1,11 +1,7 @@
-import {
-  SizeVariantSpreadFunction,
-  getVariableValue,
-  isWeb,
-  stepTokenUpOrDown,
-} from '@tamagui/core'
+import { SizeVariantSpreadFunction, getVariableValue, isWeb } from '@tamagui/core'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
+import { stepTokenUpOrDown } from '@tamagui/get-size'
 
 export const inputSizeVariant: SizeVariantSpreadFunction<any> = (
   val = '$true',
@@ -15,7 +11,7 @@ export const inputSizeVariant: SizeVariantSpreadFunction<any> = (
     return textAreaSizeVariant(val, extras)
   }
   const buttonStyles = getButtonSized(val, extras)
-  const paddingHorizontal = stepTokenUpOrDown(extras.tokens.space, val, -1, [2])
+  const paddingHorizontal = stepTokenUpOrDown('space', val, -1, [2])
   const fontStyle = getFontSized(val, extras)
   // lineHeight messes up input on native
   if (!isWeb && fontStyle) {
@@ -38,8 +34,8 @@ export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
   const height = props.numberOfLines
     ? (props.numberOfLines || 1) * getVariableValue(fontStyle.lineHeight)
     : 'auto'
-  const paddingVertical = stepTokenUpOrDown(extras.tokens.space, val, -2, [2])
-  const paddingHorizontal = stepTokenUpOrDown(extras.tokens.space, val, -1, [2])
+  const paddingVertical = stepTokenUpOrDown('space', val, -2, [2])
+  const paddingHorizontal = stepTokenUpOrDown('space', val, -1, [2])
   return {
     ...buttonStyles,
     ...fontStyle,

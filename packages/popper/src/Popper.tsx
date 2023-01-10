@@ -4,13 +4,12 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   SizeTokens,
   StackProps,
-  getTokens,
   getVariableValue,
-  stepTokenUpOrDown,
   styled,
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
+import { stepTokenUpOrDown } from '@tamagui/get-size'
 import { SizableStackProps, ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { View } from 'react-native'
@@ -293,11 +292,8 @@ export const PopperArrow = PopperArrowFrame.extractable(
       ...arrowProps
     } = props
     const context = usePopperContext(ARROW_NAME, __scopePopper)
-    const tokens = getTokens()
     const sizeVal = sizeProp ?? context.size
-    const sizeValResolved = getVariableValue(
-      stepTokenUpOrDown(tokens.space, sizeVal, -2, [2])
-    )
+    const sizeValResolved = getVariableValue(stepTokenUpOrDown('space', sizeVal, -2, [2]))
     const size = +sizeValResolved
     const { placement } = context
     const { x, y } = context.arrowStyle || { x: 0, y: 0 }

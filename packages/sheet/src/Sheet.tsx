@@ -656,7 +656,7 @@ const SheetImplementation = themeable(
     if (modal) {
       const modalContents = (
         <Portal zIndex={zIndex}>
-          <Theme name={themeName}>
+          <Theme forceClassName name={themeName}>
             <AdaptParentContext.Provider value={adaptContext}>
               {contents}
             </AdaptParentContext.Provider>

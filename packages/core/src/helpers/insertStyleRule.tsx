@@ -134,7 +134,6 @@ function getTamaguiSelector(
 ): readonly [string, CSSStyleRule] | null {
   if (rule instanceof CSSStyleRule) {
     const text = rule.selectorText
-    // .startsWith('._')
     if (text[0] === '.' && text[1] === '_') {
       return [text.slice(1), rule]
     }

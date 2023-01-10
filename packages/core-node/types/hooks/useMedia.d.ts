@@ -10,7 +10,11 @@ export declare function useMediaListeners(config: TamaguiInternalConfig): void;
 type UseMediaState = {
     [key in MediaQueryKey]: boolean;
 };
-export declare function setMediaShouldUpdate(ref: any, val: boolean): WeakMap<any, boolean>;
+type UpdateState = {
+    enabled: boolean;
+    keys: MediaQueryKey[];
+};
+export declare function setMediaShouldUpdate(ref: any, props: UpdateState): WeakMap<any, UpdateState>;
 export declare function useMedia(uid?: any, debug?: any): UseMediaState;
 /**
  * Useful for more complex components that need access to the currently active props,

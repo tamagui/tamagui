@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useSyncExternalStore } from 'react'
+import { startTransition, useEffect, useMemo, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { createProxy } from '../helpers/createProxy'
@@ -129,13 +129,11 @@ function updateCurrentState() {
   if (isFlushing) return
   isFlushing = true
   setTimeout(() => {
-    currentStateListeners.forEach((cb) => cb(mediaState))
+    startTransition(() => {
+      currentStateListeners.forEach((cb) => cb(mediaState))
+    })
     isFlushing = false
   }, 0)
-}
-function subscribe(subscriber: any) {
-  currentStateListeners.add(subscriber)
-  return () => currentStateListeners.delete(subscriber)
 }
 
 type MediaKeysState = {
@@ -146,38 +144,46 @@ type UseMediaState = {
   [key in MediaQueryKey]: boolean
 }
 
-const shouldUpdate = new WeakMap<any, boolean>()
-export function setMediaShouldUpdate(ref: any, val: boolean) {
-  return shouldUpdate.set(ref, val)
+type UpdateState = {
+  enabled: boolean
+  keys: MediaQueryKey[]
+}
+
+const shouldUpdate = new WeakMap<any, UpdateState>()
+
+export function setMediaShouldUpdate(ref: any, props: UpdateState) {
+  return shouldUpdate.set(ref, props)
 }
 
 type UseMediaInternalState = {
   prev: MediaKeysState
-  accessed?: Set<string>
+  touched?: Set<string>
 }
 
-let initialUseState: UseMediaInternalState
+function subscribe(subscriber: any) {
+  currentStateListeners.add(subscriber)
+  return () => currentStateListeners.delete(subscriber)
+}
 
 export function useMedia(uid?: any, debug?: any): UseMediaState {
-  // setup once
-  initialUseState ||= {
-    prev: initState,
+  const internal = useSafeRef<UseMediaInternalState>(undefined as any)
+  if (!internal.current) {
+    internal.current = {
+      prev: initState,
+    }
   }
-
-  const internal = useSafeRef<UseMediaInternalState>(initialUseState)
   const state = useSyncExternalStore<MediaQueryState>(
     subscribe,
     () => {
-      const { accessed, prev } = internal.current
-      const shouldUpdateVal = uid ? shouldUpdate.get(uid) : undefined
-
-      if (shouldUpdateVal !== true) {
-        if (shouldUpdateVal === false || !accessed?.size) {
-          return prev
-        }
-        if ([...accessed].every((key) => mediaState[key] === prev[key])) {
-          return prev
-        }
+      const { touched, prev } = internal.current
+      const componentState = uid ? shouldUpdate.get(uid) : undefined
+      if (componentState?.enabled === false) {
+        return prev
+      }
+      const testKeys =
+        componentState?.keys ?? (componentState?.enabled && touched ? [...touched] : [])
+      if (testKeys.every((key) => mediaState[key] === prev[key])) {
+        return prev
       }
 
       internal.current.prev = mediaState
@@ -187,11 +193,11 @@ export function useMedia(uid?: any, debug?: any): UseMediaState {
   )
 
   return useMemo(() => {
-    return new Proxy(initState || state, {
+    return new Proxy(state, {
       get(_, key) {
         if (typeof key === 'string') {
-          internal.current.accessed ||= new Set()
-          internal.current.accessed.add(key)
+          internal.current.touched ||= new Set()
+          internal.current.touched.add(key)
         }
         return Reflect.get(state, key)
       },

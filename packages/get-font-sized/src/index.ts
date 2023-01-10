@@ -2,8 +2,8 @@ import { getVariableValue } from '@tamagui/core'
 import type { FontSizeTokens, TextProps, VariantSpreadFunction } from '@tamagui/core'
 
 export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
-  val = '$4',
-  { fonts, theme, props },
+  val = '$true',
+  { fonts, theme, props }
 ) => {
   const family = getVariableValue(props.fontFamily) || '$body'
   const font = fonts[family] || fonts['$body']

@@ -11,8 +11,9 @@ import {
   useInteractions,
   useRole,
 } from '@floating-ui/react-dom-interactions'
-import { useEvent, useId, withStaticProperties } from '@tamagui/core'
+import { getTokens, useEvent, useId, withStaticProperties } from '@tamagui/core'
 import { ScopedProps } from '@tamagui/create-context'
+import { stepTokenUpOrDown } from '@tamagui/get-size'
 import {
   PopoverAnchor,
   PopoverArrow,
@@ -136,11 +137,12 @@ export const Tooltip = withStaticProperties(
     const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
     const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
     const contentId = useId()
+    const size = `$${(stepTokenUpOrDown('size', '$true', -2) as any).key}` as any
 
     return (
       <FloatingOverrideContext.Provider value={useFloatingContext}>
         {/* default tooltip to a smaller size */}
-        <Popper size="$2" {...popperScope} {...restProps}>
+        <Popper size={size} {...popperScope} {...restProps}>
           <__PopoverProviderInternal
             scope={__scopePopover}
             popperScope={popperScope.__scopePopper}

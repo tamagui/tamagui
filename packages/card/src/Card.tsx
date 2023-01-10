@@ -37,7 +37,7 @@ export const CardFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: '$4',
+    size: '$true',
   },
 })
 
@@ -98,14 +98,14 @@ export const Card = withStaticProperties(
           </CardFrame>
           // </CardProvider>
         )
-      },
-    ),
+      }
+    )
   ),
   {
     Header: CardHeader,
     Footer: CardFooter,
     Background: CardBackground,
-  },
+  }
 )
 
 // export { createCardScope, useCardContext }

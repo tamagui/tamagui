@@ -1,7 +1,4 @@
-import { Variable } from '@tamagui/core';
 import type { SizeTokens, SpaceTokens } from '@tamagui/core';
-type GenericTokens = Record<string, Variable<any>>;
-export declare const getSize: (size?: SizeTokens | undefined, shift?: number, bounds?: number[]) => Variable<any>;
-export declare const stepTokenUpOrDown: (tokens: GenericTokens, current?: SizeTokens | SpaceTokens | string, shift?: number, bounds?: number[]) => Variable<any>;
-export {};
+export declare const getSize: (size?: SizeTokens | undefined, shift?: number, bounds?: number[]) => import("@tamagui/core").VariableVal;
+export declare const stepTokenUpOrDown: (type: 'size' | 'space', name?: SizeTokens | SpaceTokens | string, shift?: number, bounds?: number[]) => import("@tamagui/core").VariableVal;
 //# sourceMappingURL=index.d.ts.map

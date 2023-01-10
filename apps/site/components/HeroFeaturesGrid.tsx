@@ -14,8 +14,8 @@ export function FeaturesGrid() {
               </H4>
               <Paragraph theme="alt2">
                 <EnsureFlexed />
-                Typed inline styles, themes, tokens, shorthands, media queries, animations, and
-                hooks that optimize.
+                Typed inline styles, themes, tokens, shorthands, media queries,
+                animations, and hooks that optimize.
               </Paragraph>
             </YStack>
 
@@ -24,8 +24,8 @@ export function FeaturesGrid() {
                 SSR
               </H4>
               <Paragraph theme="alt2">
-                Server-side rendering works by default, including responsive styles, themes and
-                variants.
+                Server-side rendering works by default, including responsive styles,
+                themes and variants.
               </Paragraph>
             </YStack>
 
@@ -34,8 +34,7 @@ export function FeaturesGrid() {
                 Server Components
               </H4>
               <Paragraph theme="alt2">
-                Beta support for React Server Components for dramatically less up-front bundle size
-                and parsing.
+                Beta support for React Server Components for bundle size reduction.
               </Paragraph>
             </YStack>
 
@@ -55,8 +54,8 @@ export function FeaturesGrid() {
                 Compatibility
               </H4>
               <Paragraph theme="alt2">
-                Runs entirely without plugins, with optional optimizing plugins for Metro, Vite, and
-                Webpack.
+                Runs entirely without plugins, with optional optimizing plugins for Metro,
+                Vite, and Webpack.
               </Paragraph>
             </YStack>
 
@@ -65,8 +64,8 @@ export function FeaturesGrid() {
                 Full Featured
               </H4>
               <Paragraph theme="alt2">
-                A styled factory, variants, tokens, fonts, themes, media queries, shorthands and
-                more.
+                A styled factory, variants, tokens, fonts, themes, media queries,
+                shorthands and more.
               </Paragraph>
             </YStack>
           </Grid>

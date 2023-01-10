@@ -100,7 +100,7 @@ export const ButtonFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: '$4',
+    size: '$true',
   },
 })
 
@@ -120,7 +120,7 @@ export const ButtonText = styled(SizableText, {
 
 export function useButton(
   propsIn: ButtonProps,
-  { Text = ButtonText }: { Text: any } = { Text: ButtonText },
+  { Text = ButtonText }: { Text: any } = { Text: ButtonText }
 ) {
   // careful not to desctructure and re-order props, order is important
   const {
@@ -149,8 +149,7 @@ export function useButton(
   const isNested = isRSC ? false : useContext(ButtonNestingContext)
   const propsActive = useMediaPropsActive(propsIn)
   const size = propsActive.size || '$4'
-  const iconSize =
-    (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
+  const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = getVariableValue(iconSize) * scaleSpace
@@ -186,9 +185,7 @@ export function useButton(
     children: isRSC ? (
       inner
     ) : (
-      <ButtonNestingContext.Provider value={true}>
-        {inner}
-      </ButtonNestingContext.Provider>
+      <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
   }
 
@@ -201,7 +198,7 @@ export function useButton(
 
 const ButtonComponent = forwardRef<TamaguiElement, ButtonProps>(function Button(
   props,
-  ref,
+  ref
 ) {
   const { props: buttonProps } = useButton(props)
   return <ButtonFrame {...buttonProps} ref={ref} />
@@ -222,5 +219,5 @@ export const buttonStaticConfig = {
 
 export const Button = ButtonFrame.extractable(
   themeable(ButtonComponent, ButtonFrame.staticConfig),
-  buttonStaticConfig,
+  buttonStaticConfig
 )

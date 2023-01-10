@@ -1,29 +1,27 @@
-import { Variable, getTokens } from '@tamagui/core'
 import type { SizeTokens, SpaceTokens } from '@tamagui/core'
+import { Variable, getTokens, tokensKeysOrdered } from '@tamagui/core'
 
 type GenericTokens = Record<string, Variable<any>>
 
 export const getSize = (size?: SizeTokens | undefined, shift = 0, bounds = [0]) => {
-  return stepTokenUpOrDown(getTokens(true).size as GenericTokens, size, shift, bounds)
+  return stepTokenUpOrDown('size', size, shift, bounds)
 }
 
-const cache = new WeakMap()
-
 export const stepTokenUpOrDown = (
-  tokens: GenericTokens,
-  current?: SizeTokens | SpaceTokens | string,
+  type: 'size' | 'space',
+  name: SizeTokens | SpaceTokens | string = '$true',
   shift = 0,
   bounds = [0]
 ) => {
-  if (!cache.has(tokens)) {
-    cache.set(tokens, Object.keys(tokens))
-  }
-  const sizeNames = cache.get(tokens)!
-  const currentKey = current || '$true'
+  const tokens = getTokens(true)[type]
+  const keysOrdered = tokensKeysOrdered.get(tokens) || Object.keys(tokens)
   const min = bounds[0] ?? 0
-  const max = bounds[1] ?? sizeNames.length - 1
-  const currentIndex = sizeNames.indexOf(currentKey)
+  const max = bounds[1] ?? keysOrdered.length - 1
+  const currentIndex = keysOrdered.indexOf(name)
+  if (name === '$true') {
+    shift += shift === 0 ? 0 : shift > 0 ? 1 : -1
+  }
   const index = Math.min(max, Math.max(min, currentIndex + shift))
-  const key = sizeNames[index]
+  const key = keysOrdered[index]
   return tokens[key] || tokens['$true']
 }

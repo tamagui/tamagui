@@ -5,7 +5,7 @@ import { TamaguiProvider, createTamagui } from '@tamagui/core'
 import { render } from '@testing-library/react'
 import { describe, expect, test } from 'vitest'
 
-import { Button } from './src'
+import { Button } from '.'
 
 const conf = createTamagui(getDefaultTamaguiConfig())
 

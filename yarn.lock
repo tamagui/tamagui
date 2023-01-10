@@ -4477,6 +4477,7 @@ __metadata:
     "@tamagui/helpers-tamagui": ^1.0.3
     react: ^18.2.0
     react-dom: ^18.2.0
+    vitest: ^0.26.3
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -5200,6 +5201,7 @@ __metadata:
     "@tamagui/compose-refs": ^1.0.3
     "@tamagui/core": ^1.0.3
     "@tamagui/create-context": ^1.0.3
+    "@tamagui/get-size": ^1.0.3
     "@tamagui/stacks": ^1.0.3
     "@tamagui/use-controllable-state": ^1.0.3
     react: ^18.2.0
@@ -5238,6 +5240,7 @@ __metadata:
     "@tamagui/compose-refs": ^1.0.3
     "@tamagui/core": ^1.0.3
     "@tamagui/create-context": ^1.0.3
+    "@tamagui/get-size": ^1.0.3
     "@tamagui/stacks": ^1.0.3
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -5755,6 +5758,7 @@ __metadata:
     "@tamagui/compose-refs": ^1.0.3
     "@tamagui/core": ^1.0.3
     "@tamagui/create-context": ^1.0.3
+    "@tamagui/get-size": ^1.0.3
     "@tamagui/polyfill-dev": ^1.0.3
     "@tamagui/popover": ^1.0.3
     "@tamagui/popper": ^1.0.3
@@ -21314,6 +21318,7 @@ __metadata:
     "@tamagui/font-size": ^1.0.3
     "@tamagui/get-button-sized": ^1.0.3
     "@tamagui/get-font-sized": ^1.0.3
+    "@tamagui/get-size": ^1.0.3
     "@tamagui/helpers": ^1.0.3
     "@tamagui/helpers-tamagui": ^1.0.3
     "@tamagui/image": ^1.0.3

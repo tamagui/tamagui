@@ -288,7 +288,8 @@ export function createComponent<
     const mediaState = useMedia(
       // @ts-ignore, we just pass a stable object so we can get it later with
       // should match to the one used in `setMediaShouldUpdate` below
-      stateRef
+      stateRef,
+      debugProp ? { props, staticConfig } : null
     )
 
     setDidGetVariableValue(false)
@@ -312,13 +313,20 @@ export function createComponent<
       debugProp
     )
 
-    stateRef.current.didAccessThemeVariableValue = didGetVariableValue()
-
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
-    setMediaShouldUpdate(
-      stateRef,
-      splitStyles.hasMedia === 'space' || (noClassNames === true && splitStyles.hasMedia)
-    )
+    // array = space media breakpoints
+    const isMediaSpaced = Array.isArray(splitStyles.hasMedia)
+    const shouldListenForMedia =
+      didGetVariableValue() ||
+      isMediaSpaced ||
+      (noClassNames && splitStyles.hasMedia === true)
+
+    if (shouldListenForMedia) {
+      setMediaShouldUpdate(stateRef, {
+        enabled: shouldListenForMedia,
+        keys: noClassNames && isMediaSpaced ? (splitStyles.hasMedia as any) : null,
+      })
+    }
 
     const hostRef = useServerRef<TamaguiElement>(null)
 
@@ -337,6 +345,9 @@ export function createComponent<
         // prettier-ignore
         console.log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
         console.log('splitStyles', splitStyles)
+        // eslint-disable-next-line no-console
+        console.log('shouldListenForMedia', shouldListenForMedia)
+        // eslint-disable-next-line no-console
         console.log('className', Object.values(splitStyles.classNames))
         if (isClient) {
           console.log('ref', hostRef, '(click to view)')

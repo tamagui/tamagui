@@ -39,10 +39,7 @@ interface UseThemeState {
 }
 
 export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
-  if (isRSC) {
-    return getDefaultThemeProxied()
-  }
-  return useThemeWithState(props)?.theme || getDefaultThemeProxied()
+  return (isRSC ? null : useThemeWithState(props)?.theme) || getDefaultThemeProxied()
 }
 
 export const useThemeWithState = (props: ThemeProps) => {

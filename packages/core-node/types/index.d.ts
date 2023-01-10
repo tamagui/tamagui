@@ -20,7 +20,6 @@ export * from './helpers/useShallowSetState';
 export * from './helpers/getVariantExtras';
 export * from './helpers/getAnimationDriver';
 export * from './helpers/getExpandedShorthands';
-export * from './helpers/getSize';
 export * from './helpers/getSplitStyles';
 export * from './helpers/getStylesAtomic';
 export * from './helpers/pseudoDescriptors';

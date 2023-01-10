@@ -10,21 +10,21 @@ export const createInterFont = <A extends GenericFont<keyof typeof defaultSizes>
   }: {
     sizeLineHeight?: (fontSize: number) => number
     sizeSize?: (size: number) => number
-  } = {},
+  } = {}
 ): GenericFont<keyof typeof defaultSizes> => {
   // merge to allow individual overrides
   const size = Object.fromEntries(
     Object.entries({
       ...defaultSizes,
       ...font.size,
-    }).map(([k, v]) => [k, sizeSize(+v)]),
+    }).map(([k, v]) => [k, sizeSize(+v)])
   )
   return createFont({
     family: isWeb
       ? 'Inter, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
       : 'Inter',
     lineHeight: Object.fromEntries(
-      Object.entries(size).map(([k, v]) => [k, sizeLineHeight(getVariableValue(v))]),
+      Object.entries(size).map(([k, v]) => [k, sizeLineHeight(getVariableValue(v))])
     ),
     weight: {
       4: '300',
@@ -42,6 +42,7 @@ const defaultSizes = {
   2: 12,
   3: 13,
   4: 14,
+  true: 14,
   5: 16,
   6: 18,
   7: 20,

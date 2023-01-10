@@ -1,12 +1,11 @@
 import { isWeb } from '@tamagui/constants'
-import React, { Children, cloneElement, useMemo } from 'react'
+import { Children, cloneElement } from 'react'
 
 import { variableToString } from '../createVariable'
-import { ThemeManager } from '../helpers/ThemeManager'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import { useServerRef } from '../hooks/useServerHooks'
 import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme'
-import { ThemeParsed, ThemeProps } from '../types'
+import { ThemeProps } from '../types'
 
 export function Theme(props: ThemeProps) {
   // @ts-expect-error only for internal views
@@ -16,7 +15,6 @@ export function Theme(props: ThemeProps) {
 
   const isRoot = !!props['_isRoot']
   const themeState = useChangeThemeEffect(props, isRoot)
-  const disableThemeClass = props.disableThemeClass
 
   // memo here, changing theme without re-rendering all children is a critical optimization
   // may require some effort of end user to memoize but without this memo they'd have no option
@@ -26,19 +24,13 @@ export function Theme(props: ThemeProps) {
       )
     : props.children
 
-  return useThemedChildren(themeState, {
-    children,
-    disableThemeClass,
-  })
+  return useThemedChildren(themeState, children, props)
 }
 
 export function useThemedChildren(
   { themeManager, isNewTheme, className, theme }: ChangedThemeResponse,
-  {
-    children,
-    disableThemeClass,
-    shallow,
-  }: { children: any; disableThemeClass?: boolean; shallow?: boolean }
+  children: any,
+  { shallow, forceClassName }: { forceClassName?: boolean; shallow?: boolean }
 ) {
   const hasEverThemed = useServerRef(false)
   if (isNewTheme) {
@@ -64,22 +56,23 @@ export function useThemedChildren(
   )
 
   if (isWeb) {
-    if (theme && isNewTheme && !disableThemeClass) {
-      return (
-        <span
-          className={`${className} _dsp_contents`}
-          style={{
-            // in order to provide currentColor, set color by default
-            color: variableToString(theme.color),
-          }}
-        >
-          {next}
-        </span>
-      )
-    } else {
-      // avoid re-parenting
-      return <span className="_dsp_contents">{next}</span>
-    }
+    const enableClassName =
+      forceClassName === true || (forceClassName !== false && isNewTheme)
+    return (
+      <span
+        className="_dsp_contents"
+        {...(theme &&
+          enableClassName && {
+            className: `${className} _dsp_contents`,
+            style: {
+              // in order to provide currentColor, set color by default
+              color: variableToString(theme.color),
+            },
+          })}
+      >
+        {next}
+      </span>
+    )
   }
 
   return next

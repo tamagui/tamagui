@@ -221,6 +221,10 @@ export const getSplitStyles: StyleSplitter = (
     return cache.get(props)
   }
 
+  if (props.debug) {
+    console.log('props', props)
+  }
+
   conf = conf || getConfig()
   const { shorthands } = conf
   const {
@@ -240,7 +244,7 @@ export const getSplitStyles: StyleSplitter = (
   const usedKeys: Record<string, number> = {}
   const propKeys = Object.keys(props)
   let space: SpaceTokens | null = props.space
-  let hasMedia: boolean | 'space' = false
+  let hasMedia: boolean | string[] = false
 
   const shouldDoClasses =
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
@@ -713,7 +717,10 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if ('space' in mediaStyle) {
-          hasMedia = 'space'
+          if (!Array.isArray(hasMedia)) {
+            hasMedia = []
+          }
+          hasMedia.push(mediaKeyShort)
         }
 
         if (shouldDoClasses) {
@@ -923,34 +930,21 @@ function mergeClassName(
   if (process.env.TAMAGUI_TARGET === 'web') {
     // empty classnames passed by compiler sometimes
     if (!val) return
-    if (val.startsWith('_transform-')) {
-      const namespace: TransformNamespaceKey = isMediaOrPseudo ? key : 'transform'
+    if (val[0] === '_' && val.startsWith('_transform-')) {
+      const ns: TransformNamespaceKey = isMediaOrPseudo ? key : 'transform'
       let transform = insertedTransforms[val]
-      if (isClient) {
-        if (!transform) {
-          // HMR or loaded a new chunk
-          console.warn(`got a new ting`)
-          scanAllSheets()
-          transform = insertedTransforms[val]
-          if (process.env.NODE_ENV === 'development') {
-            if (!transform) {
-              console.warn('no transform found', { insertedTransforms, val })
-            }
-          }
-        }
-        if (!transform) {
-          if (isWeb && val[0] !== '_') {
-            // runtime insert
-            transform = val
-          }
+      if (isClient && !transform) {
+        scanAllSheets() // HMR or loaded a new chunk
+        transform = insertedTransforms[val]
+        if (!transform && isWeb && val[0] !== '_') {
+          transform = val // runtime insert
         }
       }
-      transforms[namespace] = transforms[namespace] || ['', '']
-      const identifier = val.replace('_transform', '')
-      transforms[namespace][0] += identifier
+      transforms[ns] ||= ['', '']
+      transforms[ns][0] += val.replace('_transform', '')
       // ssr doesn't need to do anything just make the right classname
       if (transform) {
-        transforms[namespace][1] += transform
+        transforms[ns][1] += transform
       }
     } else {
       classNames[key] = val

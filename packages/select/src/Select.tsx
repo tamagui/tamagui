@@ -511,7 +511,7 @@ export const Select = withStaticProperties(
       value: valueProp,
       defaultValue,
       onValueChange,
-      size: sizeProp = '$4',
+      size: sizeProp = '$true',
       dir,
     } = props
 

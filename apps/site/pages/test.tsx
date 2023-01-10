@@ -11,7 +11,6 @@ function ThemeChangeRenderTest() {
   console.log('theme', theme)
 
   const memoized = useMemo(() => {
-    console.log('re-run square')
     return <Square debug size={100} bc="$background" />
   }, [])
 
