@@ -120,6 +120,7 @@ In `tamagui`, all components will look for the following keys:
 - `color`
 - `borderColor`
 - `shadowColor`
+- `placeholderColor` (no psuedo variants)
 
 ...plus all the pseudo variants for each, eg, `backgroundHover`, `backgroundPress`, and `backgroundFocus`.
 
@@ -131,12 +132,12 @@ If you are building a component with more than one sub-components, you can follo
 import { Text, Stack, styled, GetProps } from '@tamagui/core'
 
 const ButtonFrame = styled(Stack, {
-  name: 'Button'
+  name: 'Button',
   backgroundColor: '$background'
 })
 
 const ButtonText = styled(Text, {
-  name: 'ButtonText'
+  name: 'ButtonText',
   color: '$color'
 })
 
