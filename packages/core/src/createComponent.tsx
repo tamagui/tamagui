@@ -1043,6 +1043,7 @@ export const Spacer = createComponent<SpacerProps>({
     // avoid nesting issues
     tag: 'span',
     size: true,
+    pointerEvents: 'none',
   },
 
   variants: {
