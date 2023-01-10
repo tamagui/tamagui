@@ -36,7 +36,7 @@ export function useThemedChildren(
 
   // once a theme is set it always passes the context to avoid reparenting
   // until then no context to avoid lots of context
-  if (!isNewTheme && !hasEverThemed.current && !forceClassName) {
+  if (!isNewTheme && !hasEverThemed.current && !forceClassName && !shallow) {
     return children
   }
 
@@ -44,7 +44,13 @@ export function useThemedChildren(
   let next = children
 
   if (shallow && themeManager) {
-    next = <Theme name={themeManager.state.parentName}>{next}</Theme>
+    next = Children.map(next, (child) => {
+      return cloneElement(
+        child,
+        undefined,
+        <Theme name={themeManager.state.parentName}>{child.props.children}</Theme>
+      )
+    })
   }
 
   next = (
@@ -61,7 +67,7 @@ export function useThemedChildren(
         className="_dsp_contents"
         {...(theme &&
           enableClassName && {
-            className: `${className} _dsp_contents`,
+            className: `${className} ${forceClassName ? 'forced1' : ''} _dsp_contents`,
             style: {
               // in order to provide currentColor, set color by default
               color: variableToString(theme.color),
