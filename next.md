@@ -21,6 +21,7 @@
 
 1.1
 
+- vertical slider native can be janky
 - sync with react-native-web
 - dialog sheet space regression
 - switch active bg regressed

@@ -23,8 +23,7 @@
     "lint": "../../node_modules/.bin/rome check src",
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
     "check": "yarn check-circular-deps",
-    "check-circular-deps": "npx madge --circular ./src/index.ts",
-    "test": "vitest --environment happy-dom --run -- ../vite-plugin-internal/src/vite.config.ts"
+    "check-circular-deps": "npx madge --circular ./src/index.ts"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -90,8 +89,7 @@
     "expo-screen-orientation": "^5.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native-web": "^0.18.3",
-    "vitest": "^0.26.3"
+    "react-native-web": "^0.18.3"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }
