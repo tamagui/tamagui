@@ -321,12 +321,10 @@ export function createComponent<
       isMediaSpaced ||
       (noClassNames && splitStyles.hasMedia === true)
 
-    if (shouldListenForMedia) {
-      setMediaShouldUpdate(stateRef, {
-        enabled: shouldListenForMedia,
-        keys: noClassNames && isMediaSpaced ? (splitStyles.hasMedia as any) : null,
-      })
-    }
+    setMediaShouldUpdate(stateRef, {
+      enabled: shouldListenForMedia,
+      keys: noClassNames && isMediaSpaced ? (splitStyles.hasMedia as any) : null,
+    })
 
     const hostRef = useServerRef<TamaguiElement>(null)
 

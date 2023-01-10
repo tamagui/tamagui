@@ -181,8 +181,9 @@ export function useMedia(uid?: any, debug?: any): UseMediaState {
         return prev
       }
       const testKeys =
-        componentState?.keys ?? (componentState?.enabled && touched ? [...touched] : [])
-      if (testKeys.every((key) => mediaState[key] === prev[key])) {
+        componentState?.keys ?? (componentState?.enabled && touched ? [...touched] : null)
+
+      if (testKeys?.every((key) => mediaState[key] === prev[key])) {
         return prev
       }
 
