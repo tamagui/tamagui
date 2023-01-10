@@ -52,6 +52,10 @@ test.beforeAll(async () => {
 
   server = $`yarn web:extract`
 
+  server.catch((err) => {
+    console.warn(`server err ${err}`)
+  })
+
   await waitPort({
     port: 3000,
     host: 'localhost',

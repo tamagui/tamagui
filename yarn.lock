@@ -21352,7 +21352,6 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native-web: ^0.18.3
-    vitest: ^0.26.3
   peerDependencies:
     expo-screen-orientation: "*"
     react: "*"

@@ -29,7 +29,7 @@ const isCI = process.argv.includes('--ci')
 
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
 const plusVersion = skipVersion ? 0 : 1
-const curPatch = 1 //+curVersion.split('.')[3] || 0
+const curPatch = +curVersion.split('.')[2] || 0
 const patchVersion = curPatch + (patch ? plusVersion : 0)
 const nextVersion = `1.0.${patchVersion}`
 
