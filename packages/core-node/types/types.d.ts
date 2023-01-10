@@ -154,13 +154,13 @@ export type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>;
 export interface ThemeProps {
     className?: string;
-    disableThemeClass?: boolean;
     name?: Exclude<ThemeName, number> | null;
     componentName?: string;
     children?: any;
     reset?: boolean;
     debug?: boolean | 'verbose';
     inverse?: boolean;
+    forceClassName?: boolean;
     shouldUpdate?: () => boolean;
 }
 type ArrayIntersection<A extends any[]> = A[keyof A];

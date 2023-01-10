@@ -835,8 +835,7 @@ export function createComponent<
 
     content = createElement(elementType, viewProps, content)
 
-    content = useThemedChildren(themeState, {
-      children: content,
+    content = useThemedChildren(themeState, content, {
       shallow: stateRef.current.themeShallow,
     })
 
