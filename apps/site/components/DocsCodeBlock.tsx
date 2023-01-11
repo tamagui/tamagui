@@ -1,8 +1,9 @@
-import { CheckCircle, Clipboard } from '@tamagui/lucide-icons'
+import { CheckCircle, Clipboard, Paintbrush } from '@tamagui/lucide-icons'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, TooltipSimple, YStack } from 'tamagui'
+import { Button, TooltipSimple, XStack, YStack } from 'tamagui'
 
+import { setTinted, toggleTinted } from '../hooks/setTinted'
 import { useClipboard } from '../lib/useClipboard'
 import { Code } from './Code'
 import { ErrorBoundary } from './ErrorBoundary'
@@ -56,7 +57,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     >
       <ErrorBoundary>
         {isCollapsible && (
-          <YStack
+          <XStack
+            space="$2"
             position="absolute"
             display="inline-flex"
             alignItems="center"
@@ -74,7 +76,16 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             >
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>
-          </YStack>
+
+            <TooltipSimple label="Toggle tint on/off">
+              <Button
+                accessibilityLabel="Toggle tint on/off"
+                size="$2"
+                onPress={toggleTinted}
+                icon={Paintbrush}
+              />
+            </TooltipSimple>
+          </XStack>
         )}
 
         {(!isCollapsed || !isCollapsible) && (

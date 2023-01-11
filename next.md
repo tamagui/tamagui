@@ -64,6 +64,7 @@
 
 - app dir support experimental
 - styled('div')
+- tooltip auto pass down accessibilityLabel
 
 ---
 

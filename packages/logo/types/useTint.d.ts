@@ -17,5 +17,6 @@ export declare const useTint: () => {
 };
 export declare const ThemeTint: (props: {
     children: any;
+    disable?: boolean;
 }) => JSX.Element;
 //# sourceMappingURL=useTint.d.ts.map

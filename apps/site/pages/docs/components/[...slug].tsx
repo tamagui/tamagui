@@ -6,10 +6,11 @@ import { getAllFrontmatter, getAllVersionsFromPath, getMdxBySlug } from '@lib/md
 import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { DocsPage } from '../../../components/DocsPage'
 import type { Frontmatter } from '../../../frontmatter'
+import { listeners } from '../../../hooks/setTinted'
 
 type Doc = {
   frontmatter: Frontmatter
@@ -18,7 +19,18 @@ type Doc = {
 
 export default function DocComponentsPage({ frontmatter, code }: Doc) {
   const Component = React.useMemo(() => getMDXComponent(code), [code])
+  const [isTinted, setIsTinted] = useState(true)
   const router = useRouter()
+
+  useEffect(() => {
+    const fn = () => {
+      setIsTinted((x) => !x)
+    }
+    listeners.add(fn)
+    return () => {
+      listeners.delete(fn)
+    }
+  }, [])
 
   useEffect(() => {
     let pathWithVersion = `${router.pathname}/${frontmatter.version}`
@@ -42,7 +54,7 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
         />
       )} */}
       <MDXProvider frontmatter={frontmatter}>
-        <ThemeTint>
+        <ThemeTint disable={!isTinted}>
           <Component components={components} />
         </ThemeTint>
       </MDXProvider>
