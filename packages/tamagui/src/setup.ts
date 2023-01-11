@@ -14,8 +14,10 @@ if (typeof requestAnimationFrame === 'undefined') {
   globalThis['requestAnimationFrame'] = setImmediate
 }
 
+const cancelAnimationFrame = globalThis.cancelAnimationFrame
+
 // for vite / Animated.spring()
-global.cancelAnimationFrame = (x) => {
+global.cancelAnimationFrame = (x: number) => {
   try {
     cancelAnimationFrame(x)
   } catch {
