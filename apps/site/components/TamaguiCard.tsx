@@ -5,8 +5,6 @@ import { Card } from './Card'
 export function TamaguiCard({ children, title, subTitle, ...props }) {
   return (
     <Card
-      // width="33.33%"
-      // maxWidth="calc(33.33% - var(--space-4))"
       p="$4"
       mx="$1"
       my="$2"
@@ -14,9 +12,10 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
       space="$2"
       $gtSm={{
         width: '50%',
-        maxWidth: 'calc(50% - var(--space-4))',
+        maxWidth: 'calc(50% - var(--space-8))',
       }}
-      $sm={{ width: 'auto', maxWidth: 'auto' }}
+      $sm={{ width: 'auto', maxWidth: 'auto', f: 1 }}
+      debug="verbose"
     >
       <H3
         tag="span"

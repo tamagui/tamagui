@@ -16,7 +16,7 @@ export default function Blog({ frontmatters }) {
       <H2 als="center" size="$8" theme="alt2" fontFamily="$silkscreen">
         Blog
       </H2>
-      <ContainerLarge mt="$6" mb="$7" space="$2">
+      <ContainerLarge mt="$6" mb="$7">
         <XStack flexWrap="wrap" jc="space-between">
           {frontmatters.map((frontmatter) => (
             <NextLink key={frontmatter.title} href={frontmatter.slug} passHref>

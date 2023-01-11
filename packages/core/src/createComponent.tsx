@@ -819,6 +819,7 @@ export function createComponent<
             space,
             direction: props.spaceDirection || 'both',
             isZStack,
+            debug: debugProp,
           })
 
     if (asChild) {
@@ -1087,6 +1088,7 @@ export type SpacedChildrenProps = {
   spaceFlex?: boolean | number
   direction?: SpaceDirection
   separator?: React.ReactNode
+  debug?: DebugProp
 }
 
 export function spacedChildren(props: SpacedChildrenProps) {
@@ -1176,6 +1178,12 @@ export function spacedChildren(props: SpacedChildrenProps) {
           })
         )
       }
+    }
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    if (props.debug) {
+      console.log(`  Spaced children`, final, props)
     }
   }
 
