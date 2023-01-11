@@ -1,6 +1,5 @@
 1.0.X
 
-- fix media query regression in 1.0.4
 - looks like maybe memory issue with portal related things dialog or something
   - was issue on ios 14 devices
   - test low memory
