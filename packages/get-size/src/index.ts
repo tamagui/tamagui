@@ -1,7 +1,5 @@
 import type { SizeTokens, SpaceTokens } from '@tamagui/core'
-import { Variable, getTokens, tokensKeysOrdered } from '@tamagui/core'
-
-type GenericTokens = Record<string, Variable<any>>
+import { getTokens, tokensKeysOrdered } from '@tamagui/core'
 
 export const getSize = (size?: SizeTokens | undefined, shift = 0, bounds = [0]) => {
   return stepTokenUpOrDown('size', size, shift, bounds)

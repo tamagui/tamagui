@@ -1,5 +1,6 @@
 1.0.X
 
+- ci not failing anymore with bad types
 - looks like maybe memory issue with portal related things dialog or something
   - was issue on ios 14 devices
   - test low memory

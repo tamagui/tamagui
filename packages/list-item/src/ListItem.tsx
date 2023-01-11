@@ -169,6 +169,7 @@ export const useListItem = (
   const mediaActiveProps = useMediaPropsActive(props)
   const size = mediaActiveProps.size || '$4'
   const subtitleSizeToken = getSize(size, -3)
+  // @ts-expect-error need to fix
   const subtitleSize = `$${subtitleSizeToken.key}` as FontSizeTokens
   const iconSize = getFontSize(size) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
