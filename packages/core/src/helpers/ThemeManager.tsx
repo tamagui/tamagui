@@ -82,7 +82,7 @@ export class ThemeManager {
     })()
     if (shouldFlush) {
       // reset any derived state
-      this.#allKeys = null
+      this._allKeys = null
       notify && this.notify()
       return this.state
     }
@@ -120,13 +120,13 @@ export class ThemeManager {
     )
   }
 
-  #allKeys: Set<string> | null = null
+  _allKeys: Set<string> | null = null
   get allKeys() {
-    this.#allKeys ??= new Set([
+    this._allKeys ||= new Set([
       ...(this.parentManager?.allKeys || []),
       ...Object.keys(this.state.theme || {}),
     ])
-    return this.#allKeys
+    return this._allKeys
   }
 
   // gets value going up to parents
