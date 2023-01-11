@@ -78,6 +78,7 @@ const SelectScrollButtonImpl = React.memo(
       const frameRef = React.useRef<any>()
 
       const { x, y, reference, floating, strategy, update, refs } = useFloating({
+        open: open && isVisible,
         strategy: 'fixed',
         placement: dir === 'up' ? 'top' : 'bottom',
         middleware: [offset(({ rects }) => -rects.floating.height)],
