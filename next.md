@@ -1,6 +1,9 @@
 1.0.X
 
 - fix media query regression in 1.0.4
+- looks like maybe memory issue with portal related things dialog or something
+  - was issue on ios 14 devices
+  - test low memory
 - So it looks like any import of tamagui (not @tamagui/core) breaks the build on the web. I've created a repro here https://stackblitz.com/edit/vitejs-vite-3sbtgb?file=src/App.tsx.
 - https://github.com/tamagui/tamagui/issues/519
 - https://github.com/tamagui/tamagui/issues/520

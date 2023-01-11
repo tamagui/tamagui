@@ -11543,15 +11543,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-screen-orientation@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "expo-screen-orientation@npm:5.0.1"
-  peerDependencies:
-    expo: "*"
-  checksum: 7ede30533a8c492f82b58c3b8be110b6373ffcc2cbe273299d9f15d9aa943d678d8aaffb3d2565780b45d1d5a2a1ddea54d813fc84c06e30e3cfd59abbd8e30e
-  languageName: node
-  linkType: hard
-
 "expo-splash-screen@npm:^0.17.5":
   version: 0.17.5
   resolution: "expo-splash-screen@npm:0.17.5"
@@ -21348,12 +21339,10 @@ __metadata:
     "@tamagui/visually-hidden": ^1.0.4
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
-    expo-screen-orientation: ^5.0.1
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native-web: ^0.18.3
   peerDependencies:
-    expo-screen-orientation: "*"
     react: "*"
     react-dom: "*"
     react-native-web: "*"
