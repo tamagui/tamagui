@@ -7,6 +7,7 @@ import {
   H1,
   Paragraph,
   Spacer,
+  Square,
   Text,
   Theme,
   VisuallyHidden,

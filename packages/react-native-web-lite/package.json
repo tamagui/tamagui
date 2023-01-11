@@ -27,8 +27,8 @@
     "./dist/*": "./dist/cjs/*/index.js"
   },
   "dependencies": {
+    "@tamagui/normalize-css-color": "^1.0.2",
     "invariant": "^2.2.4",
-    "normalize-css-color": "^1.0.2",
     "react-native-web-internals": "^1.0.7",
     "styleq": "^0.1.2"
   },

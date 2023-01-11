@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/label",
+  "name": "@tamagui/normalize-css-color",
   "version": "1.0.7",
   "sideEffects": [
     "*.css"
@@ -8,7 +8,6 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
@@ -28,26 +27,6 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     }
-  },
-  "dependencies": {
-    "@tamagui/compose-refs": "^1.0.7",
-    "@tamagui/core": "^1.0.7",
-    "@tamagui/create-context": "^1.0.7",
-    "@tamagui/focusable": "^1.0.7",
-    "@tamagui/get-button-sized": "^1.0.7",
-    "@tamagui/get-font-sized": "^1.0.7",
-    "@tamagui/text": "^1.0.7"
-  },
-  "peerDependencies": {
-    "react": "*",
-    "react-dom": "*",
-    "react-native": "*"
-  },
-  "devDependencies": {
-    "@tamagui/build": "^1.0.7",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-native": "*"
   },
   "publishConfig": {
     "access": "public"

@@ -4683,6 +4683,7 @@ __metadata:
     "@tamagui/compose-refs": ^1.0.7
     "@tamagui/constants": ^1.0.7
     "@tamagui/helpers": ^1.0.7
+    "@tamagui/normalize-css-color": ^1.0.2
     "@tamagui/react-native-use-pressable": ^1.0.7
     "@tamagui/react-native-use-responder-events": ^1.0.7
     "@tamagui/use-did-finish-ssr": ^1.0.7
@@ -4690,7 +4691,6 @@ __metadata:
     "@tamagui/use-force-update": ^1.0.7
     "@testing-library/react": ^13.4.0
     csstype: ^3.0.10
-    normalize-css-color: ^1.0.2
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^4.7.4
@@ -5150,6 +5150,12 @@ __metadata:
     react: ^18.2.0
   peerDependencies:
     react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/normalize-css-color@^1.0.2, @tamagui/normalize-css-color@workspace:packages/normalize-css-color":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/normalize-css-color@workspace:packages/normalize-css-color"
   languageName: unknown
   linkType: soft
 
@@ -18975,10 +18981,10 @@ __metadata:
   resolution: "react-native-web-internals@workspace:packages/react-native-web-internals"
   dependencies:
     "@tamagui/build": ^1.0.7
+    "@tamagui/normalize-css-color": ^1.0.2
     "@tamagui/react-native-use-pressable": ^1.0.7
     "@tamagui/react-native-use-responder-events": ^1.0.7
     "@tamagui/simple-hash": ^1.0.7
-    normalize-css-color: ^1.0.2
     react: ^18.2.0
     react-dom: ^18.2.0
     styleq: ^0.1.2
@@ -18993,8 +18999,8 @@ __metadata:
   resolution: "react-native-web-lite@workspace:packages/react-native-web-lite"
   dependencies:
     "@tamagui/build": ^1.0.7
+    "@tamagui/normalize-css-color": ^1.0.2
     invariant: ^2.2.4
-    normalize-css-color: ^1.0.2
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native-web-internals: ^1.0.7
