@@ -11,7 +11,7 @@ import {
   useInteractions,
   useRole,
 } from '@floating-ui/react-dom-interactions'
-import { getTokens, useEvent, useId, withStaticProperties } from '@tamagui/core'
+import { useEvent, useId, withStaticProperties } from '@tamagui/core'
 import { ScopedProps } from '@tamagui/create-context'
 import { stepTokenUpOrDown } from '@tamagui/get-size'
 import {

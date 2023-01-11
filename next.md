@@ -91,6 +91,13 @@
 
 ---
 
+2.0
+
+- app dir support (discussions/409)
+- contrastColor (accent color) in themes (discussions/449)
+
+---
+
 inbox
 
 - @twaiter Has anyone used a dialog component on mobile? I havent been able to get Dialog.Closed to work (using a button). Seems like the example on the website doesnt work for mobile either (button not there)
