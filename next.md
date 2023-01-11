@@ -4,8 +4,6 @@
   - was issue on ios 14 devices
   - test low memory
 - So it looks like any import of tamagui (not @tamagui/core) breaks the build on the web. I've created a repro here https://stackblitz.com/edit/vitejs-vite-3sbtgb?file=src/App.tsx.
-- https://github.com/tamagui/tamagui/issues/519
-- https://github.com/tamagui/tamagui/issues/520
 - warn not to styled(Button) or fix:
   - https://github.com/tamagui/tamagui/issues/521
 - https://github.com/tamagui/tamagui/issues/505
