@@ -12,6 +12,7 @@
   "dependencies": {
     "@tamagui/next-theme": "1.0.5",
     "app": "*",
+    "expo-linear-gradient": "^12.0.1",
     "next": "^13.0.6",
     "raf": "^3.4.1",
     "react": "^18.2.0",
