@@ -1,5 +1,17 @@
 1.0.X
 
+- fix media query regression in 1.0.4
+- So it looks like any import of tamagui (not @tamagui/core) breaks the build on the web. I've created a repro here https://stackblitz.com/edit/vitejs-vite-3sbtgb?file=src/App.tsx.
+- https://github.com/tamagui/tamagui/issues/519
+- https://github.com/tamagui/tamagui/issues/520
+- warn not to styled(Button) or fix:
+  - https://github.com/tamagui/tamagui/issues/521
+- https://github.com/tamagui/tamagui/issues/505
+- https://github.com/tamagui/tamagui/issues/512
+- https://github.com/tamagui/tamagui/issues/513
+- https://github.com/tamagui/tamagui/issues/514
+- vite fails https://github.com/tamagui/tamagui/issues/479
+
 - bundle size reductions:
   - expandStyle remove some
   - merge mergeSlotProps and mergeProps
