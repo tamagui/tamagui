@@ -1,6 +1,6 @@
 {
   "name": "@takeout/studio",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "source": "src/index.ts",
   "private": true,
   "types": "./types/index.d.ts",
@@ -19,13 +19,13 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/animations-reanimated": "^1.0.5",
-    "@tamagui/colors": "^1.0.5",
-    "@tamagui/config-base": "^1.0.5",
-    "@tamagui/core": "^1.0.5",
-    "@tamagui/lucide-icons": "^1.0.5",
-    "@tamagui/polyfill-dev": "^1.0.5",
-    "@tamagui/theme-base": "^1.0.5",
+    "@tamagui/animations-reanimated": "^1.0.6",
+    "@tamagui/colors": "^1.0.6",
+    "@tamagui/config-base": "^1.0.6",
+    "@tamagui/core": "^1.0.6",
+    "@tamagui/lucide-icons": "^1.0.6",
+    "@tamagui/polyfill-dev": "^1.0.6",
+    "@tamagui/theme-base": "^1.0.6",
     "@types/d3-scale": "^4.0.2",
     "@types/lodash-es": "^4.17.6",
     "@types/uuid": "^8.3.4",
@@ -36,15 +36,15 @@
     "react-draggable": "^4.4.5",
     "react-hotkeys-hook": "^3.4.6",
     "react-native": "*",
-    "tamagui": "^1.0.5",
+    "tamagui": "^1.0.6",
     "ts-morph": "^15.1.0",
     "valtio": "^1.6.1"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
-    "@tamagui/build": "^1.0.5",
-    "@tamagui/static": "^1.0.5",
+    "@tamagui/build": "^1.0.6",
+    "@tamagui/static": "^1.0.6",
     "babel-polyfill": "^6.26.0",
     "esbuild-loader": "^2.20.0",
     "react-refresh": "^0.14.0"

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-size",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -19,14 +19,14 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.5"
+    "@tamagui/core": "^1.0.6"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.5",
+    "@tamagui/build": "^1.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
