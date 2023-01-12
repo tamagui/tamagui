@@ -5041,7 +5041,6 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
-    expo-linear-gradient: "*"
     react: "*"
     react-dom: "*"
   languageName: unknown

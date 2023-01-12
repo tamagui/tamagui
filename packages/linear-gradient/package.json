@@ -27,7 +27,6 @@
     "@tamagui/stacks": "^1.0.7"
   },
   "peerDependencies": {
-    "expo-linear-gradient": "*",
     "react": "*",
     "react-dom": "*"
   },
