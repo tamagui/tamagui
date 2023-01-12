@@ -6,9 +6,6 @@
   - test low memory
 - So it looks like any import of tamagui (not @tamagui/core) breaks the build on the web. I've created a repro here https://stackblitz.com/edit/vitejs-vite-3sbtgb?file=src/App.tsx.
 - warn not to styled(Button)
-- https://github.com/tamagui/tamagui/issues/512
-- https://github.com/tamagui/tamagui/issues/513
-- https://github.com/tamagui/tamagui/issues/514
 - vite fails https://github.com/tamagui/tamagui/issues/479
 
 - bundle size reductions:
@@ -99,6 +96,7 @@
 
 inbox
 
+- https://github.com/tamagui/tamagui/issues/513
 - @twaiter Has anyone used a dialog component on mobile? I havent been able to get Dialog.Closed to work (using a button). Seems like the example on the website doesnt work for mobile either (button not there)
 
 - docs search build inline

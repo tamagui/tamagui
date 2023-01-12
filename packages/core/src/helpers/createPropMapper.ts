@@ -368,9 +368,9 @@ const resolveTokensAndVariants: StyleResolver = (
   return res
 }
 
-const tokenCats = ['size', 'color', 'radius', 'space', 'zIndex'].map(name => ({
+const tokenCats = ['size', 'color', 'radius', 'space', 'zIndex'].map((name) => ({
   name,
-  spreadName: `...${k}`
+  spreadName: `...${name}`,
 }))
 
 // goes through specificity finding best matching variant function
@@ -402,9 +402,8 @@ function getVariantDefinition(
     fn = variant[':boolean']
   }
   // fallback to catch all or size
-  return fn || defaultVariants
+  return fn || variant['...'] || variant['...size']
 }
-
 
 const fontShorthand = {
   fontSize: 'size',
