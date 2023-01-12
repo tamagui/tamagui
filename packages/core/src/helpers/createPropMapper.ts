@@ -368,6 +368,11 @@ const resolveTokensAndVariants: StyleResolver = (
   return res
 }
 
+const tokenCats = ['size', 'color', 'radius', 'space', 'zIndex'].map(name => ({
+  name,
+  spreadName: `...${k}`
+}))
+
 // goes through specificity finding best matching variant function
 function getVariantDefinition(
   variant: any,
@@ -382,32 +387,24 @@ function getVariantDefinition(
     return variant[value]
   }
   const { tokensParsed } = conf
-  if (variant['...size'] && value in tokensParsed.size) {
-    return variant['...size']
-  }
-  if (variant['...color'] && value in tokensParsed.color) {
-    return variant['...color']
-  }
-  if (variant['...radius'] && value in tokensParsed.radius) {
-    return variant['...radius']
-  }
-  if (variant['...space'] && value in tokensParsed.space) {
-    return variant['...space']
-  }
-  if (variant['...zIndex'] && value in tokensParsed.zIndex) {
-    return variant['...zIndex']
+  for (const { name, spreadName } of tokenCats) {
+    if (variant[spreadName] && value in tokensParsed[name]) {
+      return variant[spreadName]
+    }
   }
   let fn: any
-  if (typeof value === 'number') {
+  const type = typeof value
+  if (type === 'number') {
     fn = variant[':number']
-  } else if (typeof value === 'string') {
+  } else if (type === 'string') {
     fn = variant[':string']
   } else if (value === true || value === false) {
     fn = variant[':boolean']
   }
   // fallback to catch all or size
-  return fn || variant['...'] || variant['...size']
+  return fn || defaultVariants
 }
+
 
 const fontShorthand = {
   fontSize: 'size',
