@@ -183,7 +183,7 @@ export function useButton(
     tag: isNested
       ? 'span'
       : // defaults to <a /> when accessibilityRole = link
-      // see https://github.com/tamagui/issues/505
+      // see https://github.com/tamagui/tamagui/issues/505
       propsIn.accessibilityRole === 'link'
       ? 'a'
       : undefined,
