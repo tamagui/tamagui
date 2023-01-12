@@ -171,6 +171,9 @@ export function useButton(
       : contents
 
   const props = {
+    // defaults to <a /> when accessibilityRole = link
+    // see https://github.com/tamagui/issues/505
+    tag: propsIn.accessibilityRole === 'link' ? 'a' : undefined,
     ...(propsActive.disabled && {
       // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
       focusable: undefined,
