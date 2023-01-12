@@ -5155,6 +5155,8 @@ __metadata:
 "@tamagui/normalize-css-color@^1.0.2, @tamagui/normalize-css-color@workspace:packages/normalize-css-color":
   version: 0.0.0-use.local
   resolution: "@tamagui/normalize-css-color@workspace:packages/normalize-css-color"
+  dependencies:
+    "@tamagui/build": ^1.0.7
   languageName: unknown
   linkType: soft
 

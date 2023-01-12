@@ -21,6 +21,9 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.7"
+  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
