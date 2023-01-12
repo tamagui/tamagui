@@ -23,5 +23,8 @@
     "@tamagui/shorthands": "^1.0.8",
     "@tamagui/theme-base": "^1.0.8",
     "tamagui": "^1.0.8"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.8"
   }
 }
