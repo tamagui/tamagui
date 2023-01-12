@@ -27,7 +27,7 @@ export function normalizeValueWithProperty(value: any, property?: string): any {
     res = `${value}px`
   } else if (isWeb && property !== undefined && stringNumbers[property]) {
     res = `${res}`
-  } else if (property && colorProps[property]) {
+  } else if (property && property in colorProps) {
     res = normalizeColor(value)
     cache[value] = res
   }

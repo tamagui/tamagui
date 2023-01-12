@@ -1,5 +1,6 @@
 1.0.X
 
+- SimpleTooltip no sub theme looks bad on dark mode
 - ci not failing anymore with bad types
 - looks like maybe memory issue with portal related things dialog or something
   - was issue on ios 14 devices
