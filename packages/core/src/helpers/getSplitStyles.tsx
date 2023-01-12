@@ -347,6 +347,13 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
+    if (keyInit === 'dataSet') {
+      for (const key in valInit) {
+        viewProps[`data-${hyphenate(key)}`] = valInit[key]
+      }
+      continue
+    }
+
     if (keyInit === 'style' || keyInit.startsWith('_style')) {
       if (!valInit) continue
       const styles = Array.isArray(valInit) ? valInit : [valInit]
@@ -1091,3 +1098,6 @@ const animatableDefaults = {
   rotateY: '0deg',
   rotateX: '0deg',
 }
+
+const lowercaseHyphenate = (match: string) => `-${match.toLowerCase()}`
+const hyphenate = (str: string) => str.replace(/[A-Z]/g, lowercaseHyphenate)

@@ -629,6 +629,7 @@ export function createComponent<
           rnwStyle[name] = name
         }
         viewProps.style = [rnwStyle, ...(Array.isArray(style) ? style : [style])]
+
         if (process.env.NODE_ENV === 'development') {
           // turn debug data- props into dataSet in dev mode
           Object.keys(viewProps).forEach((key) => {
