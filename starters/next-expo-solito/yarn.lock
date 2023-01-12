@@ -2284,6 +2284,7 @@ __metadata:
   resolution: "@my/ui@workspace:packages/ui"
   dependencies:
     "@tamagui/animations-react-native": ^1.0.8
+    "@tamagui/build": ^1.0.8
     "@tamagui/font-inter": ^1.0.8
     "@tamagui/react-native-media-driver": ^1.0.8
     "@tamagui/shorthands": ^1.0.8
