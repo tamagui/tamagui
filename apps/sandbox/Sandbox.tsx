@@ -144,7 +144,9 @@ export const Sandbox = () => {
         >
           {/* <SelectDemo /> */}
 
-          <TooltipDemo />
+          <Button accessibilityRole="link">hi</Button>
+
+          {/* <TooltipDemo /> */}
 
           <XStack
             $gtSm={{

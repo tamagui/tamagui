@@ -170,6 +170,15 @@ export function useButton(
         })
       : contents
 
+  // fixes SSR issue + DOM nesting issue of not allowing button in button
+  const tag = isNested
+    ? 'span'
+    : // defaults to <a /> when accessibilityRole = link
+    // see https://github.com/tamagui/tamagui/issues/505
+    propsIn.accessibilityRole === 'link'
+    ? 'a'
+    : undefined
+
   const props = {
     ...(propsActive.disabled && {
       // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
@@ -179,14 +188,7 @@ export function useButton(
         borderColor: '$background',
       },
     }),
-    // fixes SSR issue + DOM nesting issue of not allowing button in button
-    tag: isNested
-      ? 'span'
-      : // defaults to <a /> when accessibilityRole = link
-      // see https://github.com/tamagui/tamagui/issues/505
-      propsIn.accessibilityRole === 'link'
-      ? 'a'
-      : undefined,
+    tag,
     ...rest,
     children: isRSC ? (
       inner

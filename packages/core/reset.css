@@ -32,6 +32,6 @@ p, input, textarea, button, ul, ol, li, pre, dialog {
   box-sizing: border-box;
 }
 
-.is_Anchor:has(.is_Button) {
+a.is_Button, .is_Anchor:has(.is_Button) {
   text-decoration: none;
 }

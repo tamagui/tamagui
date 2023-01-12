@@ -101,8 +101,8 @@ test(`Loads home screen that opens drawer`, async ({ page }) => {
 
 test(`Navigates to user page`, async ({ page }) => {
   await page.goto('http://localhost:3000/')
-  await expect(page.locator('button[role="link"]:has-text("Link to user")')).toBeVisible()
-  await page.locator('button[role="link"]:has-text("Link to user")').click()
+  await expect(page.locator('a[role="link"]:has-text("Link to user")')).toBeVisible()
+  await page.locator('a[role="link"]:has-text("Link to user")').click()
   await expect(page.locator('text=User ID: nate')).toBeVisible()
   await expect(page).toHaveURL('http://localhost:3000/user/nate')
 })
