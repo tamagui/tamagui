@@ -35,6 +35,8 @@ Be sure to set the environment variable `TAMAGUI_TARGET` to the string `web` or 
 }
 ```
 
+If you're targeting a native app and installing `tamagui` (not core), you'll need to [set up `expo-linear-gradient` first](https://github.com/expo/expo/tree/sdk-47/packages/expo-linear-gradient) as Metro will try and find it even if you don't import it.
+
 ### Config file
 
 Create a `tamagui.config.ts` file at the root of your project.
