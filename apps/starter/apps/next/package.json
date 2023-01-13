@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tamagui/next-theme": "1.0.8",
+    "@tamagui/next-theme": "1.0.9",
     "app": "*",
     "next": "^13.0.6",
     "raf": "^3.4.1",
@@ -21,7 +21,7 @@
     "react-native-web-lite": "^1.0.1-beta.144"
   },
   "devDependencies": {
-    "@tamagui/next-plugin": "1.0.8",
+    "@tamagui/next-plugin": "1.0.9",
     "@types/node": "^16.11.9",
     "critters": "^0.0.16",
     "eslint-config-next": "^13.0.4",
