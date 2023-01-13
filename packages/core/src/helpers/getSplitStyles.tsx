@@ -13,9 +13,9 @@ import {
   validStylesOnBaseProps,
 } from '@tamagui/helpers'
 import { useInsertionEffect } from 'react'
-import type { ViewStyle } from 'react-native'
+import type { TextStyle, ViewStyle } from 'react-native'
 
-import { getConfig } from '../config'
+import { getConfig, getFont } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
@@ -249,7 +249,7 @@ export const getSplitStyles: StyleSplitter = (
   const shouldDoClasses =
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
 
-  let style: ViewStyle = {}
+  let style: ViewStyle | TextStyle = {}
   const flatTransforms: FlatTransforms = {}
 
   const len = propKeys.length
@@ -816,6 +816,28 @@ export const getSplitStyles: StyleSplitter = (
   fixStyles(style)
   if (isWeb) {
     styleToCSS(style)
+  }
+
+  // native: swap out the right family based on weight/style
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    if ('fontFamily' in style && style.fontFamily) {
+      const faceInfo = getFont(style.fontFamily)?.face
+      if (faceInfo) {
+        const overrideFace =
+          faceInfo[style.fontWeight!]?.[style.fontStyle || 'normal']?.val
+        if (overrideFace) {
+          style.fontFamily = overrideFace
+          fontFamily = overrideFace
+          delete style.fontWeight
+          delete style.fontStyle
+        }
+      }
+      if (process.env.NODE_ENV === 'development') {
+        if (debug) {
+          console.log(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
+        }
+      }
+    }
   }
 
   // always do this at the very end to preserve the order strictly (animations, origin)

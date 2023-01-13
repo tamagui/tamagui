@@ -48,3 +48,14 @@ export const onConfiguredOnce = (cb: ConfigListener) => {
 export const updateConfig = (key: string, value: any) => {
   Object.assign(key, value)
 }
+
+// searches by value name or token name
+export const getFont = (name: string) => {
+  const conf = getConfig()
+  return (
+    conf.fontsParsed[name] ??
+    Object.entries(conf.fontsParsed).find(
+      ([k]) => conf.fontsParsed[k]?.family?.['val'] === name
+    )?.[1]
+  )
+}

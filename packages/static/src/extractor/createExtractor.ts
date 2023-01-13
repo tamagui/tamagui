@@ -1579,7 +1579,7 @@ export function createExtractor(
           if (shouldPrintDebug) {
             try {
               // prettier-ignore
-              logger.info([' flatten?', objToStr({ hasSpread, shouldDeopt, shouldFlatten, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', [...inlined]].join(' '))
+              logger.info([' flatten?', shouldFlatten, objToStr({ hasSpread, shouldDeopt, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', inlined.size, [...inlined]].join(' '))
             } catch {
               // ok
             }
@@ -1990,15 +1990,14 @@ export function createExtractor(
                 ...out.style,
                 ...out.pseudos,
               }
-              // omitInvalidStyles(outStyle)
-              // if (shouldPrintDebug) {
-              //   // prettier-ignore
-              //   logger.info(`       getStyles ${debugName} (props):\n`, logLines(objToStr(props)))
-              //   // prettier-ignore
-              //   logger.info(`       getStyles ${debugName} (out.viewProps):\n`, logLines(objToStr(out.viewProps)))
-              //   // prettier-ignore
-              //   logger.info(`       getStyles ${debugName} (out.style):\n`, logLines(objToStr(outStyle || {}), true))
-              // }
+
+              if (shouldPrintDebug === 'verbose') {
+                // prettier-ignore
+                logger.info(`       getStyles ${debugName} (props in): ${Object.keys(props)}`)
+                // prettier-ignore
+                logger.info(`       getStyles ${debugName} (outStyle): ${Object.keys(outStyle)}`)
+              }
+
               return outStyle
             } catch (err: any) {
               logger.info(['error', err.message, err.stack].join(' '))
