@@ -12,14 +12,13 @@
   "dependencies": {
     "@tamagui/next-theme": "1.0.8",
     "app": "*",
-    "expo-linear-gradient": "^12.0.1",
     "next": "^13.0.6",
     "raf": "^3.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "0.0.0",
     "react-native-web": "^0.18.6",
-    "react-native-web-lite": "^1.0.1-beta.144"
+    "react-native-web-lite": "^1.0.8"
   },
   "devDependencies": {
     "@tamagui/next-plugin": "1.0.8",

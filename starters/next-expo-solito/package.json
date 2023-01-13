@@ -14,7 +14,7 @@
     "web:prod:serve": "yarn workspace next-app serve",
     "postinstall": "yarn build",
     "build": "yarn workspaces foreach --exclude next-app -pi run build",
-    "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader"
+    "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader && manypkg upgrade react-native-web-lite"
   },
   "resolutions": {
     "esbuild": "0.15.6",

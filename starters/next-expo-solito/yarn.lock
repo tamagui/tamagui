@@ -3404,13 +3404,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/normalize-css-color-lite@npm:^1.0.1-beta.225":
-  version: 1.0.1-beta.225
-  resolution: "@tamagui/normalize-css-color-lite@npm:1.0.1-beta.225"
-  checksum: fae081213dd498cdce473811e2d067aea396c20c78fdf896d77b4994b4131f2b4e88c77d58495dc57557dffd06d08bca35361244de1d795e73e22fa5ad791a8d
-  languageName: node
-  linkType: hard
-
 "@tamagui/normalize-css-color@npm:^1.0.8":
   version: 1.0.8
   resolution: "@tamagui/normalize-css-color@npm:1.0.8"
@@ -3531,30 +3524,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/react-native-use-pressable@npm:^1.0.1-beta.225":
-  version: 1.0.1-beta.225
-  resolution: "@tamagui/react-native-use-pressable@npm:1.0.1-beta.225"
-  dependencies:
-    react: ">=18"
-  checksum: d13371236a84526e689a349665c4bee85f80a733f49c8f9bf8b043e85db093043acea2126cbabf869b03105910ba039e1aee24ba6e7509497ae8cbede36dad2e
-  languageName: node
-  linkType: hard
-
 "@tamagui/react-native-use-pressable@npm:^1.0.8":
   version: 1.0.8
   resolution: "@tamagui/react-native-use-pressable@npm:1.0.8"
   dependencies:
     react: ^18.2.0
   checksum: 0f051c52c6e9c96b60b05a328487586bd2635052295683f3dd49b64c138822984e7cefaf3e1e3f98c1e04b86fbd64bcdf311f5150d944423b862d6fa2abadb78
-  languageName: node
-  linkType: hard
-
-"@tamagui/react-native-use-responder-events@npm:^1.0.1-beta.225":
-  version: 1.0.1-beta.225
-  resolution: "@tamagui/react-native-use-responder-events@npm:1.0.1-beta.225"
-  dependencies:
-    react: ">=18"
-  checksum: 78cb2446906cffdc0a4eb05d9c1b2383d391c6ce28b65be8416fefde2fea4d65f230dc37a37e725874d6c65cec67874e1b55c37cb2019b0ff326c5691b6611d8
   languageName: node
   linkType: hard
 
@@ -3668,13 +3643,6 @@ __metadata:
   version: 1.0.8
   resolution: "@tamagui/shorthands@npm:1.0.8"
   checksum: 8f2227a5e28fbac3f49cca0df1378bcacffdcbd11cd8d8391eb022188416b574bd9f675065d1d8b1db167a4287cf199ffd15ff1392db849a8bf31a7e7f639376
-  languageName: node
-  linkType: hard
-
-"@tamagui/simple-hash@npm:^1.0.1-beta.225":
-  version: 1.0.1-beta.225
-  resolution: "@tamagui/simple-hash@npm:1.0.1-beta.225"
-  checksum: 78c581c957060915e13df025197d4d6bf1ff742ad9571fd2ec7db6b4ad7e53c9edd62f849648d762af6bccd01fcd6c82047bfaed3a48097dec40e729e5aebbb9
   languageName: node
   linkType: hard
 
@@ -10404,7 +10372,6 @@ __metadata:
     app: "*"
     critters: ^0.0.16
     eslint-config-next: ^13.0.4
-    expo-linear-gradient: ^12.0.1
     next: ^13.0.6
     next-images: ^1.8.4
     raf: ^3.4.1
@@ -10412,7 +10379,7 @@ __metadata:
     react-dom: ^18.2.0
     react-native: 0.0.0
     react-native-web: ^0.18.6
-    react-native-web-lite: ^1.0.1-beta.144
+    react-native-web-lite: ^1.0.8
   languageName: unknown
   linkType: soft
 
@@ -11716,22 +11683,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-web-internals@npm:^1.0.1-beta.225":
-  version: 1.0.1-beta.225
-  resolution: "react-native-web-internals@npm:1.0.1-beta.225"
-  dependencies:
-    "@tamagui/normalize-css-color-lite": ^1.0.1-beta.225
-    "@tamagui/react-native-use-pressable": ^1.0.1-beta.225
-    "@tamagui/react-native-use-responder-events": ^1.0.1-beta.225
-    "@tamagui/simple-hash": ^1.0.1-beta.225
-    styleq: ^0.1.2
-  peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
-  checksum: db00e08541ead80d02abeb038c10ac4f441ba800e52d465a22d3e5470d990766bde57aeee8e52d76abe0f0487d895a2a8d1400b3c997ae81b259f9f0e48b54ca
-  languageName: node
-  linkType: hard
-
 "react-native-web-internals@npm:^1.0.8":
   version: 1.0.8
   resolution: "react-native-web-internals@npm:1.0.8"
@@ -11745,20 +11696,6 @@ __metadata:
     react: "*"
     react-dom: "*"
   checksum: 888e5b929055570ef155171b0ade9fd642b4d2ac17c24d80ff318d4be1bb2e031df6bd4a842624bfe33c3052e319197d03a7c430f00dfe59589609f5154eda15
-  languageName: node
-  linkType: hard
-
-"react-native-web-lite@npm:^1.0.1-beta.144":
-  version: 1.0.1-beta.225
-  resolution: "react-native-web-lite@npm:1.0.1-beta.225"
-  dependencies:
-    "@tamagui/normalize-css-color-lite": ^1.0.1-beta.225
-    react-native-web-internals: ^1.0.1-beta.225
-    styleq: ^0.1.2
-  peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
-  checksum: 7e764a35881cda3de6f7633321519900dc264a2666c3a6c5fe4ab4b1eca5926ea7e0f1a640c69186614822307b7748a4d13490e5aaa72286daa7e9c917a5ce29
   languageName: node
   linkType: hard
 
