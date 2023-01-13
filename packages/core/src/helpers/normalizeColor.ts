@@ -21,6 +21,8 @@ export const normalizeColor = (color?: string | null, opacity?: number) => {
     const { r, g, b, a } = rgba(colorProcessed)
     return `rgba(${r},${g},${b},${a.toFixed(2)})`
   }
+
+  return color
 }
 
 const webColors = {

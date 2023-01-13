@@ -1,6 +1,5 @@
 1.0.X
 
-- fontweight https://github.com/tamagui/tamagui/issues/532
 - the CodeExample on site is broken not showing vertically in blog post 1.0
 - SimpleTooltip no sub theme looks bad on dark mode
 - ci not failing anymore with bad types
@@ -60,6 +59,7 @@
 
 1.2
 
+- testing native - https://maestro.mobile.dev
 - app dir support experimental
 - styled('div')
 - tooltip auto pass down accessibilityLabel

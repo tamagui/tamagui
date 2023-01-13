@@ -286,6 +286,10 @@ const resolveTokensAndVariants: StyleResolver = (
     const fKey = conf.shorthands[rKey] || rKey
     const val = value[rKey]
 
+    if (debug) {
+      console.log('wtf', key, value, rKey, val)
+    }
+
     if (isVariable(val)) {
       res[fKey] = !isWeb || returnVariablesAs === 'value' ? val.val : val.variable
     } else if (variants[fKey]) {
@@ -461,11 +465,12 @@ const getToken = (
     }
   }
 
+  if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
+    // eslint-disable-next-line no-console
+    console.log('   ﹒ propMapper getToken', { key, valOrVar, theme, hasSet })
+  }
+
   if (hasSet) {
-    if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
-      // eslint-disable-next-line no-console
-      console.log('   ﹒ propMapper getToken', key, valOrVar, theme)
-    }
     return resolveVariableValue(key, valOrVar, resolveAs)
   }
 

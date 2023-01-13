@@ -1,13 +1,5 @@
 import '@tamagui/polyfill-dev'
 
-import {
-  AlertDialogDemo,
-  FormsDemo,
-  SelectDemo,
-  SheetDemo,
-  SliderDemo,
-  TooltipDemo,
-} from '@tamagui/demos'
 import { useMemo, useState } from 'react'
 import { OpaqueColorValue } from 'react-native'
 import {
@@ -25,6 +17,7 @@ import {
   styled,
   useThemeName,
 } from 'tamagui'
+import { SizableText } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -97,6 +90,17 @@ function AnimationChangeTest() {
   )
 }
 
+export const StyledSizableText = styled(SizableText, {
+  name: 'TextSizableText',
+  variants: {
+    muted: {
+      true: {
+        color: 'red',
+      },
+    },
+  } as const,
+})
+
 export const Sandbox = () => {
   // const scheme = useColorScheme()
   const [theme, setTheme] = useState('light')
@@ -143,6 +147,12 @@ export const Sandbox = () => {
           }}
         >
           {/* <SelectDemo /> */}
+
+          <StyledSizableText>ok</StyledSizableText>
+          <StyledSizableText debug="verbose" muted>
+            ok
+          </StyledSizableText>
+          <StyledSizableText color="orange">ok</StyledSizableText>
 
           <Button accessibilityRole="link">hi</Button>
 
