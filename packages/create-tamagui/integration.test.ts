@@ -92,7 +92,7 @@ test(`Loads home screen that opens drawer`, async ({ page }) => {
   await expect(page.locator('text=Welcome to Tamagui.')).toBeVisible()
 
   // open drawer (TODO make attr for better selector)
-  await page.locator('button').nth(1).click()
+  await page.locator('.is_Button').nth(1).click()
   await expect(page.locator('.is_Sheet')).toBeVisible()
 
   // TODO add label to inner close button
