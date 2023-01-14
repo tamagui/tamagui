@@ -22,7 +22,13 @@ export const normalizeColor = (color?: string | null, opacity?: number) => {
     return `rgba(${r},${g},${b},${a.toFixed(2)})`
   }
 
-  return color
+  if (isWeb) {
+    return color
+  } else {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(`Unknown color value: ${color}`)
+    }
+  }
 }
 
 const webColors = {
