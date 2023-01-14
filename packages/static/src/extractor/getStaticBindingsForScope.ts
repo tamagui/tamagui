@@ -22,11 +22,6 @@ function resolveImportPath(sourcePath: string, path: string) {
 
 const cache = new Map()
 const pending = new Map<string, Promise<any>>()
-setInterval(() => {
-  if (cache.size) {
-    cache.clear()
-  }
-}, 10)
 
 const loadCmd = `${join(__dirname, 'loadFile.js')}`
 
@@ -65,6 +60,9 @@ function importModule(path: string) {
   }
   const promise = new Promise((res, rej) => {
     if (!child) return
+    if (cache.size > 2000) {
+      cache.clear()
+    }
     if (cache.has(path)) {
       return cache.get(path)
     }
