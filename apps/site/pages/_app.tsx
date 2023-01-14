@@ -57,15 +57,14 @@ export default function App(props: AppProps) {
   // useMemo below to avoid re-render on dark/light change
   return (
     <>
-      <NextHead>
-        <script
-          key="tamagui-animations-mount"
-          dangerouslySetInnerHTML={{
-            // avoid flash of animated things on enter
-            __html: `document.documentElement.classList.add('t_unmounted')`,
-          }}
-        />
-      </NextHead>
+      <script
+        key="tamagui-animations-mount"
+        type="text/javascript"
+        dangerouslySetInnerHTML={{
+          // avoid flash of animated things on enter
+          __html: `document.documentElement.classList.add('t_unmounted')`,
+        }}
+      />
 
       <NextThemeProvider
         onChangeTheme={(next) => {

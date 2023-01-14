@@ -1,5 +1,6 @@
 1.0.X
 
+- site _app has t_unmounted helper, move that into tamagui proper
 - the CodeExample on site is broken not showing vertically in blog post 1.0
 - SimpleTooltip no sub theme looks bad on dark mode
 - ci not failing anymore with bad types
