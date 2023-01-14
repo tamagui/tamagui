@@ -26,6 +26,12 @@ const normalizeColor = (color?: number | string, opacity = 1): void | string => 
     const alpha = (a * opacity).toFixed(2)
     return `rgba(${r},${g},${b},${alpha})`
   }
+
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    if (typeof color === 'string') {
+      return color
+    }
+  }
 }
 
 export default normalizeColor
