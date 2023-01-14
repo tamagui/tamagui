@@ -87,7 +87,7 @@ You can [skip to the technical details without the backstory](#how-tamagui-helps
 
 Universal apps (those you "write once" that "run everywhere") make sense today for many cases: side-projecting, SEO-insensitive or enterprise-only apps, people who want to ship fast, experiment more, are pre-product-market fit, or generally have apps with simpler UI. Twitter and Tinder are two larger examples of this.
 
-But today, at best, we use hooks for media queries and themes, which basically touch every component. This causes whole-tree re-renders and more expensive main-thread time in critical areas on the web. Combine that with the CSS-in-JS approach of React Native Web greatly increasing bundle size, and even medium-complexity pages will drop from 100% Lighthouse to half or worse (our homepage, a good complex example due to showing off many features that are well-optimized, goes from ~80% down to ~20% with the compiler off).
+But today, at best, we use hooks for media queries and themes, which basically touch every component. This causes whole-tree re-renders and more expensive main-thread time in critical areas on the web. Combine that with the CSS-in-JS approach of React Native Web greatly increasing bundle size, and even medium-complexity pages will drop from 100% Lighthouse to half or worse (our homepage, a good complex example due to showing off many features that are well-optimized, goes from 95 or so down to 80ish with the compiler off).
 
 With all your media queries, interactive styles, themes, animations, and dynamic styles in JS, it's hard to make ambitious apps that don't feel janky.
 
