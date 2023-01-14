@@ -36,9 +36,7 @@ export function HomeScreen() {
       </YStack>
 
       <XStack>
-        <Button debug {...linkProps}>
-          Link to user
-        </Button>
+        <Button {...linkProps}>Link to user</Button>
       </XStack>
 
       <SheetDemo />
