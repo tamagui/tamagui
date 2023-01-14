@@ -1,5 +1,12 @@
 1.0.X
 
+- space on last item
+- TextArea numberOfLines height (native)
+- ellipse + numberOfLines chrome
+- createThemes accepts array not object
+- horizontal padding input size $2
+- adding a werid type {SizeKeys}
+- <Theme name="dark_orange" /> type 
 - site _app has t_unmounted helper, move that into tamagui proper
 - the CodeExample on site is broken not showing vertically in blog post 1.0
 - SimpleTooltip no sub theme looks bad on dark mode
