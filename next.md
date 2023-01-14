@@ -1,6 +1,5 @@
 1.0.X
 
-- space on last item
 - TextArea numberOfLines height (native)
 - ellipse + numberOfLines chrome
 - createThemes accepts array not object

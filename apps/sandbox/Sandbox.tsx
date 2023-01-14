@@ -3,7 +3,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { useState } from 'react'
-import { Input, Square, TamaguiProvider, XStack } from 'tamagui'
+import { Button, Input, Square, TamaguiProvider, XStack, YStack } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -36,6 +36,12 @@ export const Sandbox = () => {
           __html: `html, body { overflow: hidden; height: 100vh; width: 100vw; }`,
         }}
       />
+
+      <YStack space="$2">
+        <Square size={100} bc="red" />
+        <Square size={100} bc="red" />
+        <Square size={100} bc="red" />
+      </YStack>
 
       <Input size="$2" placeholder="hi" />
     </TamaguiProvider>
