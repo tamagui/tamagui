@@ -41,7 +41,7 @@ import { getUserLayout } from '../../lib/getUserLayout'
 insertFont('noto', createNotoFont())
 
 export default function TakeoutPage() {
-  const { resolvedTheme: themeName } = useThemeSetting()
+  const { resolvedTheme: themeName } = useThemeSetting()!
   // const { tint, setTintIndex } = useTint()
 
   // if logged in already go to dashboard
@@ -199,7 +199,7 @@ export default function TakeoutPage() {
 TakeoutPage.getLayout = getUserLayout
 
 const Hero = () => {
-  const { resolvedTheme: themeName } = useThemeSetting()
+  const { resolvedTheme: themeName } = useThemeSetting()!
 
   const glow = useHoverGlow({
     resist: 40,

@@ -54,7 +54,7 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
     return a * 4 + b
   }
 
-  const themeSetting = useThemeSetting()
+  const themeSetting = useThemeSetting()!
 
   const [activeI, setActiveI_] = useState([0, 0])
   const activeIndex = splitToFlat(activeI)

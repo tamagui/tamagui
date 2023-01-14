@@ -5,6 +5,7 @@ import * as util from 'util'
 import generate from '@babel/generator'
 import * as t from '@babel/types'
 import { getStylesAtomic } from '@tamagui/core-node'
+import { concatClassName } from '@tamagui/helpers'
 import invariant from 'invariant'
 import type { ViewStyle } from 'react-native'
 
@@ -12,6 +13,7 @@ import type { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../t
 import { babelParse } from './babelParse.js'
 import { buildClassName } from './buildClassName.js'
 import { Extractor } from './createExtractor.js'
+import { ensureImportingConcat } from './ensureImportingConcat.js'
 import { isSimpleSpread } from './extractHelpers.js'
 import { extractMediaStyle } from './extractMediaStyle.js'
 import { getPrefixLogs } from './getPrefixLogs.js'
@@ -194,7 +196,9 @@ export async function extractToClassNames({
               }
             } else {
               const styles = addStyles(attr.value)
-              const newClassNames = styles.map((x) => x.identifier).join(' ')
+              const newClassNames = concatClassName(
+                styles.map((x) => x.identifier).join(' ')
+              )
               const existing = finalClassNames.find(
                 (x) => x.type == 'StringLiteral'
               ) as t.StringLiteral | null
@@ -287,6 +291,7 @@ export async function extractToClassNames({
       function addTernaryStyle(ternary: Ternary, a: any, b: any) {
         const cCN = a.map((x) => x.identifier).join(' ')
         const aCN = b.map((x) => x.identifier).join(' ')
+
         if (a.length && b.length) {
           finalClassNames.push(
             t.conditionalExpression(
@@ -348,7 +353,23 @@ export async function extractToClassNames({
         const names = buildClassName(finalClassNames, extraClassNames)
 
         const nameExpr = names ? hoistClassNames(jsxPath, existingHoists, names) : null
-        const expr = nameExpr
+        let expr = nameExpr
+
+        // if has some spreads, use concat helper
+        if (nameExpr && !t.isIdentifier(nameExpr)) {
+          if (!didFlattenThisTag) {
+            // not flat
+          } else {
+            ensureImportingConcat(programPath)
+            const simpleSpreads = attrs.filter(
+              (x) => t.isJSXSpreadAttribute(x.value) && isSimpleSpread(x.value)
+            )
+            expr = t.callExpression(t.identifier('concatClassName'), [
+              expr,
+              ...simpleSpreads.map((val) => val.value['argument']),
+            ])
+          }
+        }
 
         node.attributes.push(
           t.jsxAttribute(t.jsxIdentifier('className'), t.jsxExpressionContainer(expr))

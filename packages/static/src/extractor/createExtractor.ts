@@ -781,70 +781,11 @@ export function createExtractor(
           //  SPREADS SETUP
           //
 
-          // TODO restore
-          // const hasDeopt = (obj: Object) => {
-          //   return Object.keys(obj).some(isDeoptedProp)
-          // }
-
-          // flatten any easily evaluatable spreads
-          const flattenedAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
-          traversePath
-            .get('openingElement')
-            .get('attributes')
-            .forEach((path) => {
-              const attr = path.node
-              if (!t.isJSXSpreadAttribute(attr)) {
-                flattenedAttrs.push(attr)
-                return
-              }
-              let arg: any
-              try {
-                arg = attemptEval(attr.argument)
-              } catch (e: any) {
-                if (shouldPrintDebug) {
-                  logger.info(['  couldnt parse spread', e.message].join(' '))
-                }
-                flattenedAttrs.push(attr)
-                return
-              }
-              if (arg !== undefined) {
-                try {
-                  if (typeof arg !== 'object' || arg == null) {
-                    if (shouldPrintDebug) {
-                      logger.info(['  non object or null arg', arg].join(' '))
-                    }
-                    flattenedAttrs.push(attr)
-                  } else {
-                    for (const k in arg) {
-                      const value = arg[k]
-                      // this is a null prop:
-                      if (!value && typeof value === 'object') {
-                        logger.error(['Unhandled null prop', k, value, arg].join(' '))
-                        continue
-                      }
-                      flattenedAttrs.push(
-                        t.jsxAttribute(
-                          t.jsxIdentifier(k),
-                          t.jsxExpressionContainer(literalToAst(value))
-                        )
-                      )
-                    }
-                  }
-                } catch (err) {
-                  logger.warn(`cant parse spread, caught err ${err}`)
-                  couldntParse = true
-                }
-              }
-            })
-
           if (couldntParse) {
             return
           }
 
           tm.mark('jsx-element-flattened', !!shouldPrintDebug)
-
-          // set flattened
-          node.attributes = flattenedAttrs
 
           let attrs: ExtractedAttr[] = []
           let shouldDeopt = false

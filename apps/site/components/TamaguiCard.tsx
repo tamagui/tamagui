@@ -15,7 +15,6 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
         maxWidth: 'calc(50% - var(--space-8))',
       }}
       $sm={{ width: 'auto', maxWidth: 'auto', f: 1 }}
-      debug="verbose"
     >
       <H3
         tag="span"

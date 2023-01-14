@@ -11,7 +11,7 @@ const icons = {
 }
 
 export const ThemeToggle = (props: ButtonProps) => {
-  const themeSetting = useThemeSetting()
+  const themeSetting = useThemeSetting()!
   const [clientTheme, setClientTheme] = useState<string>('light')
 
   useIsomorphicLayoutEffect(() => {
@@ -21,7 +21,10 @@ export const ThemeToggle = (props: ButtonProps) => {
   const Icon = icons[clientTheme]
 
   return (
-    <TooltipSimple groupId="header-actions-theme" label={`Switch theme (${themeSetting.current})`}>
+    <TooltipSimple
+      groupId="header-actions-theme"
+      label={`Switch theme (${themeSetting.current})`}
+    >
       <Button
         size="$3"
         onPress={themeSetting.toggle}
