@@ -736,6 +736,8 @@ export function createExtractor(
           const flatNode = getFlattenedNode?.({ isTextView, tag: tagName })
 
           const inlineProps = new Set([
+            // adding some always inline props
+            'dataSet',
             ...(restProps.inlineProps || []),
             ...(staticConfig.inlineProps || []),
           ])

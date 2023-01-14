@@ -1,3 +1,4 @@
+// debug
 import '@tamagui/polyfill-dev'
 
 import { useMemo, useState } from 'react'
@@ -6,7 +7,9 @@ import {
   Button,
   ButtonFrame,
   ColorTokens,
+  Footer,
   H1,
+  Header,
   Square,
   TamaguiProvider,
   Theme,
@@ -148,17 +151,21 @@ export const Sandbox = () => {
         >
           {/* <SelectDemo /> */}
 
-          <StyledSizableText>ok</StyledSizableText>
+          <Header dataSet={{ hello: 'world' }}>
+            <StyledSizableText>ok</StyledSizableText>
+          </Header>
+
+          {/* <StyledSizableText>ok</StyledSizableText>
           <StyledSizableText debug="verbose" muted>
             ok
           </StyledSizableText>
-          <StyledSizableText color="orange">ok</StyledSizableText>
+          <StyledSizableText color="orange">ok</StyledSizableText> */}
 
-          <Button accessibilityRole="link">hi</Button>
+          {/* <Button accessibilityRole="link">hi</Button> */}
 
           {/* <TooltipDemo /> */}
 
-          <XStack
+          {/* <XStack
             $gtSm={{
               space: 50,
             }}
@@ -169,7 +176,7 @@ export const Sandbox = () => {
             <Square size={100} bc="red" />
             <Square size={100} bc="red" />
             <Square size={100} bc="red" />
-          </XStack>
+          </XStack> */}
 
           {/* <AnimationsHoverDemo /> */}
 
