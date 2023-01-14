@@ -1,4 +1,4 @@
-import { useMemo, useSyncExternalStore } from 'react'
+import { startTransition, useMemo, useSyncExternalStore } from 'react'
 import { Theme, ThemeName } from 'tamagui'
 
 import { getTints, setNextTintFamily, useTints } from './tints'
@@ -27,7 +27,9 @@ export const setTintIndex = (next: number) => {
   const val = next % numTints
   if (val === current) return
   current = val
-  listeners.forEach((x) => x(val))
+  startTransition(() => {
+    listeners.forEach((x) => x(val))
+  })
 }
 
 export const useTint = () => {

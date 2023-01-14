@@ -82,7 +82,7 @@ export const LogoWords = memo(
             // the last i is less wide
             x={x}
             size={4}
-            backgroundColor={tint}
+            backgroundColor="$color9"
           />
         )}
         <svg
