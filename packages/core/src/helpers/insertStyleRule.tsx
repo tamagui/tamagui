@@ -38,7 +38,8 @@ const isClient = typeof document !== 'undefined'
 
 // multiple sheets could have the same ids so we have to count
 
-const scannedNum = new WeakMap<CSSStyleSheet, number>()
+// only cache tamagui styles
+const scannedCache = new WeakMap<CSSStyleSheet, string>()
 const totalSheetSelectors = new Map<string, number>()
 
 export function listenForSheetChanges() {
@@ -87,17 +88,25 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
     return
   }
 
-  const len = rules.length
-  const lastScanned = scannedNum.get(sheet) || 0
+  // not tamagui stylesheet
+  const firstSelector = getTamaguiSelector(rules[0])?.[0]
+  if (!firstSelector) {
+    return
+  }
 
+  const lastSelector = getTamaguiSelector(rules[rules.length - 1])?.[0]
+
+  const cacheKey = `${rules.length}${firstSelector}${lastSelector}`
+  const lastScanned = scannedCache.get(sheet)
   if (!remove) {
-    // avoid work dumb but works
-    if (lastScanned === len) {
+    // avoid re-scanning
+    if (lastScanned === cacheKey) {
       return
     }
   }
 
-  for (let i = lastScanned; i < len; i++) {
+  const len = rules.length
+  for (let i = 0; i < len; i++) {
     const rule = rules[i]
     const response = getTamaguiSelector(rule)
     if (!response) {
@@ -126,7 +135,7 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
     }
   }
 
-  scannedNum.set(sheet, len)
+  scannedCache.set(sheet, cacheKey)
 }
 
 function getTamaguiSelector(
