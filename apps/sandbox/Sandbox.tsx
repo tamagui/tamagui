@@ -3,7 +3,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { useState } from 'react'
-import { Square, TamaguiProvider, XStack } from 'tamagui'
+import { Input, Square, TamaguiProvider, XStack } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -37,16 +37,7 @@ export const Sandbox = () => {
         }}
       />
 
-      <XStack
-        flexDirection={theme === 'dark' ? 'column-reverse' : undefined}
-        {...(theme === 'light' && {
-          fd: 'column',
-        })}
-      >
-        <Square size={10} bc="red" />
-        <Square size={10} bc="red" />
-        <Square size={10} bc="red" />
-      </XStack>
+      <Input size="$2" placeholder="hi" />
     </TamaguiProvider>
   )
 }
