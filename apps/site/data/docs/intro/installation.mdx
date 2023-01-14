@@ -71,7 +71,7 @@ export default createTamagui({
 })
 ```
 
-You'll need to install these packages:
+You'll need to install these packages if you want the Tamagui pre-configured design system:
 
 ```sh
 yarn add @tamagui/shorthands @tamagui/theme-base
@@ -84,6 +84,9 @@ For an even quicker start, you can get a full design system with `@tamagui/confi
 Import and use the `TamaguiProvider` component as the top component in your app.
 
 ```tsx line=8-14
+// this provides some helpful reset styles to ensure a more consistent look
+import '@tamagui/core/reset.css'
+
 import React, { Suspense } from 'react'
 import { TamaguiProvider } from 'tamagui'
 
