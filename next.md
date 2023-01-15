@@ -1,7 +1,7 @@
 1.0.X
 
+- useCurrentColor can likely avoid the getTokens fallback since themes fallback automatically now
 - createThemes accepts array not object
-- horizontal padding input size $2
 - <Theme name="dark_orange" /> type 
 - site _app has t_unmounted helper, move that into tamagui proper
 - SimpleTooltip no sub theme looks bad on dark mode
