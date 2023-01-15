@@ -18,7 +18,7 @@
     "install:ci": "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 yarn install",
     "postinstall": "manypkg check",
     "check": "manypkg check",
-    "build": "turbo run build --filter=!next-app",
+    "build": "turbo run build --continue=false --filter=!next-app",
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "./scripts/build-js.sh",
     "build:types": "SKIP_JS=1 yarn build",
