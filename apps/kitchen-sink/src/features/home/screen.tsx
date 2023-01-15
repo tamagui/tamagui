@@ -12,6 +12,7 @@ import {
   Separator,
   Spacer,
   Switch,
+  TextArea,
   YGroup,
   YStack,
   useTheme,

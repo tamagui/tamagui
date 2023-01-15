@@ -15,6 +15,10 @@ export const TextAreaFrame = styled(InputFrame, {
       '...size': textAreaSizeVariant,
     },
   } as const,
+
+  defaultVariants: {
+    size: '$true',
+  },
 })
 
 export type TextAreaProps = GetProps<typeof TextArea>

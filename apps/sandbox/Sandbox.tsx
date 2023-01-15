@@ -3,7 +3,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { useState } from 'react'
-import { Button, Input, Square, TamaguiProvider, XStack, YStack } from 'tamagui'
+import { Button, Input, Square, TamaguiProvider, TextArea, XStack, YStack } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -23,12 +23,12 @@ export const Sandbox = () => {
       <button
         style={{
           position: 'absolute',
-          top: 30,
+          bottom: 30,
           left: 20,
         }}
         onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
       >
-        Switch theme
+        🌗
       </button>
       <style
         type="text/css"
@@ -37,13 +37,7 @@ export const Sandbox = () => {
         }}
       />
 
-      <Button
-        pressStyle={{
-          bc: 'green',
-        }}
-      ></Button>
-
-      <Input size="$2" placeholder="hi" />
+      {/*  */}
     </TamaguiProvider>
   )
 }
