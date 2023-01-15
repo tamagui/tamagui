@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/constants",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "types": "./types/constants.d.ts",
   "main": "dist/cjs/constants",
   "module": "dist/esm/constants",
@@ -18,7 +18,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.12",
+    "@tamagui/build": "^1.0.13",
     "react": "^18.2.0",
     "react-native": "*"
   },
