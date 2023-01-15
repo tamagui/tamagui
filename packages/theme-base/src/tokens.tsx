@@ -85,7 +85,9 @@ function sizeToSpace(v: number) {
 const spacesNegative = spaces.map(([k, v]) => [`$-${(k as string).slice(1)}`, -v])
 
 export const space: {
-  [Key in `$-${SizeKeys}` | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number
+  [Key in
+    | `$-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}`
+    | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number
 } = {
   ...Object.fromEntries(spaces),
   ...Object.fromEntries(spacesNegative),

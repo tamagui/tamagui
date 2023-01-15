@@ -1,5 +1,6 @@
 1.0.X
 
+- pressStyle on Button not overriding
 - TextArea numberOfLines height (native)
 - ellipse + numberOfLines chrome
 - createThemes accepts array not object

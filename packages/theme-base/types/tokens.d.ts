@@ -36,7 +36,7 @@ type Sizes = {
 };
 type SizeKeys = `${keyof Sizes extends `${infer K}` ? K : never}`;
 export declare const space: {
-    [Key in `$-${SizeKeys}` | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number;
+    [Key in `$-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}` | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number;
 };
 export declare const zIndex: {
     0: number;
