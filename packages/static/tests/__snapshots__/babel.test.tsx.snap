@@ -69,13 +69,14 @@ export function Test() {
 exports[`className + conditional styles get full base styles merged onto + shorthand 1`] = `
 "const _cn4 = \\" _bg-opktnq\\";
 const _cn3 = \\" _bg-12svx2e\\";
-const _cn2 = \\" _w-10 _fd-column _miw-0 _mih-0 _pos-relative _fb-auto _dsp-flex _fs-0 _ai-stretch \\";
+const _cn2 = \\" _w-10 _fd-column _miw-0 _mih-0 _pos-relative _fb-auto _dsp-flex _fs-0 _ai-stretch  \\";
 const _cn = \\"  is_Stack\\";
 // debug
 import { Stack } from '@tamagui/core';
 export function Test(props) {
-  return <div className={_cn + (_cn2 + (props.green ? _cn3 : _cn4) + (props.className ? \\" \\" + props.className : \\"\\"))} />;
-}"
+  return <div className={concatClassName(_cn + (_cn2 + (props.green ? _cn3 : _cn4) + (props.className ? \\" \\" + props.className : \\"\\")))} />;
+}
+import { concatClassName } from \\"@tamagui/helpers\\";"
 `;
 
 exports[`className + conditional styles get full base styles merged onto + shorthand 2`] = `
@@ -95,13 +96,14 @@ exports[`className + conditional styles get full base styles merged onto + short
 exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
 "const _cn4 = \\" _bg-opktnq\\";
 const _cn3 = \\" _bg-12svx2e\\";
-const _cn2 = \\" _w-10 _fd-column _miw-0 _mih-0 _pos-relative _fb-auto _dsp-flex _fs-0 _ai-stretch \\";
+const _cn2 = \\" _w-10 _fd-column _miw-0 _mih-0 _pos-relative _fb-auto _dsp-flex _fs-0 _ai-stretch  \\";
 const _cn = \\"  is_Stack\\";
 // debug 
 import { Stack } from '@tamagui/core';
 export function Test(props) {
-  return <div className={_cn + (_cn2 + (props.green ? _cn3 : _cn4))} />;
-}"
+  return <div className={concatClassName(_cn + (_cn2 + (props.green ? _cn3 : _cn4)))} />;
+}
+import { concatClassName } from \\"@tamagui/helpers\\";"
 `;
 
 exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
