@@ -1,16 +1,16 @@
 ---
-title: Faster Apps, Shipped Faster
-description: Reduce code and gain performance with an optimizing compiler for React.
+title: The Frontend Trilemma
+description: H.
 ---
 
 <IntroParagraph>
   If you're developing a cross-platform app, you've committed to a path along the
-  **frontend development trilemma**, which can be illustrated as choose-2-of-3:
+  **frontend development trilemma** by choosing two of three:
 </IntroParagraph>
 
 <YStack w="100%" mih={500} als="center" $gtMd={{ my: '$4' }}>
   <Image
-    title="The Frontend Trilemma: Choose two of DX, UX, and multi-platform"
+    title="The Frontend Trilemma: Choose two of: Write less code, Ship a native-feeling app, and share code between platforms"
     src="/trilemma.svg"
     size="hero"
     height={270 * 2}
@@ -19,17 +19,17 @@ description: Reduce code and gain performance with an optimizing compiler for Re
   />
 </YStack>
 
-React Native recommends writing things twice generally for the best UX - as is made very clear in the `<title>` of the homepage itself: "[learn once, write anywhere](https://reactnative.dev/)" as opposed to "write once, runs everywhere". This pays off today with native-feeling and performing apps while saving quite a bit of dev time.
+React Native recommends writing things twice generally for the best UX as is made clear in the `<title>` of the homepage: "[learn once, write anywhere](https://reactnative.dev/)". This is opposed to the sort of holy grail mantra of "write once, runs everywhere". Doing this results in native-feeling and performing apps, while still saving quite a bit of development time thanks to sharing everything besides your views: utils, state and data management, hooks, etc.
 
-The center of the Venn diagram is a platonic ideal - <strong>"write once, runs _well_ everywhere"</strong>, and we're pretty far from it. We could imagine a few ways to get closer:
+The center of this above Venn diagram would be a sort of platonic ideal: <strong>"write once, runs _well_ everywhere"</strong>. We're pretty far from it as of now, but it's not _technically_ impossible. We can imagine a few ways to get closer:
 
-- A sort-of Rails-for-React with simple routing, patterns, code gen, "all the batteries".
-- An all-encompassing UI kit that targeted each platform's primitives confidently with flexible APIs.
-- A compiler that let you write comfy natural styles, even with logic, that optimize to each platform - ideally outputting just `div` and CSS on the web, or View on native.
+- A sort of Rails-for-React - unified routing, patterns, code gen, "all the batteries".
+- A UI kit that adapts to each platform's primitives confidently with flexible APIs.
+- A way to author styles that output to platform primitives without overhead: eg, CSS with media queries, pseudos, and variables on the web.
 
-This document goes over the last one. The first one just sounds hard, and the second one [Tamagui UI](/docs/components/stacks) is working towards, slowly.
+This document goes over how we can achieve the last one. The first one is doable (and Expo is [working on as much](https://expo.github.io/router/docs/)), and the second one [Tamagui UI](/docs/components/stacks) is working towards slowly.
 
-**The hope is to make another "bump" like the one React Native Web made here:**
+**The idea is to make another "bump" towards properly native-experience apps with shared code, much like how React Native Web made one:**
 
 <YStack w="100%" mih={220} my="$4" als="center" $gtMd={{ scale: 1.5, my: 100 }}>
   <Image
