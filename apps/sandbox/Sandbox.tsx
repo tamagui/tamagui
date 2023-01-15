@@ -37,11 +37,14 @@ export const Sandbox = () => {
         }}
       />
 
-      <YStack space="$2">
-        <Square size={100} bc="red" />
-        <Square size={100} bc="red" />
-        <Square size={100} bc="red" />
-      </YStack>
+      <Square
+        debug="verbose"
+        shadowColor="#000"
+        shadowRadius={100}
+        shadowOpacity={0.25}
+        size={100}
+        bc="red"
+      />
 
       <Input size="$2" placeholder="hi" />
     </TamaguiProvider>

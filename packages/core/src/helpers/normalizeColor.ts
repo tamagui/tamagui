@@ -19,7 +19,7 @@ export const normalizeColor = (color?: string | null, opacity?: number) => {
   const colorProcessed = normalizeCSSColor(color)
   if (colorProcessed !== null) {
     const { r, g, b, a } = rgba(colorProcessed)
-    return `rgba(${r},${g},${b},${a.toFixed(2)})`
+    return `rgba(${r},${g},${b},${(opacity ?? a).toFixed(2)})`
   }
 
   if (isWeb) {
