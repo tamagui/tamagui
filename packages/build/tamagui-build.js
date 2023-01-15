@@ -132,7 +132,9 @@ async function buildTsc() {
     await exec('npx', cmd.split(' '))
   } catch (err) {
     console.log(err.message)
-    process.exit(1)
+    if (!shouldWatch) {
+      process.exit(1)
+    }
   } finally {
     await fs.remove('tsconfig.tsbuildinfo')
   }

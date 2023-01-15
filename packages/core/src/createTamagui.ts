@@ -2,7 +2,6 @@ import { isRSC, isWeb } from '@tamagui/constants'
 
 import { configListeners, setConfig } from './config'
 import { createVariables, tokensKeysOrdered } from './createVariables'
-import { startClearStyleCacheInterval } from './helpers/getStylesAtomic'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
   getAllRules,
@@ -49,7 +48,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   scanAllSheets()
   listenForSheetChanges()
-  startClearStyleCacheInterval()
 
   const fontTokens = Object.fromEntries(
     Object.entries(configIn.fonts!).map(([k, v]) => {

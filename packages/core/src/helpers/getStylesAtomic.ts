@@ -49,12 +49,6 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
 
 const cache = new Map()
 
-export const startClearStyleCacheInterval = () => {
-  setInterval(() => {
-    cache.clear()
-  }, 10_000)
-}
-
 export function getAtomicStyle(
   style: ViewOrTextStyle,
   pseudo?: PseudoDescriptor
@@ -63,6 +57,9 @@ export function getAtomicStyle(
   const key = JSON.stringify(style) + (pseudo ? JSON.stringify(pseudo) : '')
   if (cache.has(key)) {
     return cache.get(key)
+  }
+  if (cache.size > 800) {
+    cache.clear()
   }
   if (process.env.NODE_ENV === 'development') {
     if (!style || typeof style !== 'object') {
