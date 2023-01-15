@@ -278,9 +278,9 @@ export const getSplitStyles: StyleSplitter = (
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     // eslint-disable-next-line no-console
-    console.groupCollapsed('getSplitStyles')
+    console.groupCollapsed('getSplitStyles (looping backwards)')
     // eslint-disable-next-line no-console
-    console.log(staticConfig, { shouldDoClasses, state, IS_STATIC })
+    console.log({ staticConfig, shouldDoClasses, state, IS_STATIC, propKeys })
     // eslint-disable-next-line no-console
     console.groupEnd()
   }
@@ -304,18 +304,10 @@ export const getSplitStyles: StyleSplitter = (
           const pseudoShortKey = mediaOrPseudo.slice(1)
           fullKey += `${PROP_SPLIT}${pseudoShortKey}`
         }
-        if (process.env.NODE_ENV === 'development') {
-          if (debug) {
-            // eslint-disable-next-line no-console
-            console.log('tamagui classname', fullKey, cn)
-          }
-        }
         usedKeys[fullKey] = 1
         mergeClassName(transforms, classNames, fullKey, cn, isMediaOrPseudo)
-      } else {
-        if (cn) {
-          className += ` ${cn}`
-        }
+      } else if (cn) {
+        className += ` ${cn}`
       }
     }
   }
@@ -575,7 +567,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      if (!isServer && isWeb) {
+      if (!isServer && isDevTools) {
         // eslint-disable-next-line no-console
         console.log('expanded', expanded, '\nusedKeys', usedKeys, '\ncurrent', {
           ...style,
@@ -595,6 +587,9 @@ export const getSplitStyles: StyleSplitter = (
       const isMediaOrPseudo = isMedia || isPseudo
 
       if (!isMediaOrPseudo && usedKeys[key]) {
+        if (process.env.NODE_ENV === 'developmnet' && debug === 'verbose') {
+          console.log(`Used media/pseudo ${key}`)
+        }
         continue
       }
 
@@ -648,6 +643,10 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
         } else {
+          if (usedKeys[key]) {
+            continue
+          }
+
           let isDisabled = !state[descriptor.stateKey || descriptor.name]
 
           // we never animate in on server side just show the full thing
@@ -657,18 +656,19 @@ export const getSplitStyles: StyleSplitter = (
             isDisabled = false
           }
 
-          // console.log(
-          //   'isDisabled',
-          //   state,
-          //   descriptor.stateKey,
-          //   state[descriptor.stateKey || descriptor.name],
-          //   isDisabled,
-          //   descriptor
-          // )
-
           if (!isDisabled) {
-            usedKeys[key] ||= 1
+            if (valInit === staticConfig.defaultProps[keyInit]) {
+              // ignore:
+              // if it's a default property given by styled(), we don't mark it as used, so
+              // that props given inline can override:
+            } else {
+              usedKeys[key] ||= 1
+              if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+                console.log(`Setting used ${key}`)
+              }
+            }
           }
+
           psuedosUsed ||= {}
 
           const importance = descriptor.priority
@@ -683,14 +683,14 @@ export const getSplitStyles: StyleSplitter = (
               continue
             }
             const curImportance = psuedosUsed[importance] || 0
+            if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+              console.log('Merge pseudo?', { importance, curImportance, pkey, val })
+            }
             if (importance >= curImportance) {
               psuedosUsed[pkey] = importance
               pseudos ||= {}
               pseudos[key] ||= {}
               pseudos[key][pkey] = val
-              // eslint-disable-next-line no-console
-              if (process.env.NODE_ENV === 'development' && debug === 'verbose')
-                console.log('merging', pkey, val)
               mergeStyle(styleState, pkey, val)
             }
           }

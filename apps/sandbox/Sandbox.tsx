@@ -37,14 +37,11 @@ export const Sandbox = () => {
         }}
       />
 
-      <Square
-        debug="verbose"
-        shadowColor="#000"
-        shadowRadius={100}
-        shadowOpacity={0.25}
-        size={100}
-        bc="red"
-      />
+      <Button
+        pressStyle={{
+          bc: 'green',
+        }}
+      ></Button>
 
       <Input size="$2" placeholder="hi" />
     </TamaguiProvider>
