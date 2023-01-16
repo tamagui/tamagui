@@ -37,6 +37,7 @@ import React, {
   useState,
 } from 'react'
 import {
+  Animated,
   GestureResponderEvent,
   PanResponder,
   PanResponderGestureState,
@@ -242,6 +243,7 @@ const SheetImplementation = themeable(
       disableDrag: disableDragProp,
       modal = false,
       zIndex = parentSheet.zIndex + 1,
+      portalProps,
     } = props
 
     if (process.env.NODE_ENV === 'development') {
@@ -320,11 +322,15 @@ const SheetImplementation = themeable(
       [dismissOnSnapToBottom, snapPoints.length, setPosition_, setOpen]
     )
 
-    const animatedNumber = driver.useAnimatedNumber(HIDDEN_SIZE)
+    const { useAnimatedNumber, useAnimatedNumberReaction, useAnimatedNumberStyle } =
+      driver
+
+    const animatedNumber = useAnimatedNumber(HIDDEN_SIZE)
 
     // native only fix
     const at = useRef(0)
-    driver.useAnimatedNumberReaction(animatedNumber, (value) => {
+
+    useAnimatedNumberReaction(animatedNumber, (value) => {
       at.current = value
       scrollBridge.paneY = value
     })
@@ -557,7 +563,7 @@ const SheetImplementation = themeable(
       }
     })
 
-    const animatedStyle = driver.useAnimatedNumberStyle(animatedNumber, (val) => {
+    const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
       const translateY = frameSize === 0 ? HIDDEN_SIZE : val
       return {
         transform: [{ translateY }],
@@ -565,7 +571,7 @@ const SheetImplementation = themeable(
     })
 
     // temp until reanimated useAnimatedNumber fix
-    const AnimatedView = driver['NumberView'] ?? driver.View
+    const AnimatedView = (driver['NumberView'] ?? driver.View) as typeof Animated.View
 
     useIsomorphicLayoutEffect(() => {
       if (!(parentSheetContext && open)) return
@@ -655,7 +661,7 @@ const SheetImplementation = themeable(
 
     if (modal) {
       const modalContents = (
-        <Portal zIndex={zIndex}>
+        <Portal zIndex={zIndex} {...portalProps}>
           <Theme forceClassName name={themeName}>
             <AdaptParentContext.Provider value={adaptContext}>
               {contents}
