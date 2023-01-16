@@ -19,7 +19,9 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "test": "vitest --run --config ../vite-plugin-internal/src/vite.config.ts"
+    "test:web": "TAMAGUI_TARGET=web vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.web.test.tsx",
+    "test:native": "TAMAGUI_TARGET=native vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.native.test.tsx",
+    "test": "yarn test:web && test:native"
   },
   "files": [
     "types",

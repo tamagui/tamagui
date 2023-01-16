@@ -1,6 +1,7 @@
 1.0.X
 
-- useCurrentColor can likely avoid the getTokens fallback since themes fallback automatically now
+- optimizing packages/app in starter
+- react native pressable in pressable
 - createThemes accepts array not object
 - <Theme name="dark_orange" /> type 
 - site _app has t_unmounted helper, move that into tamagui proper

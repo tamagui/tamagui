@@ -428,7 +428,7 @@ export const getSplitStyles: StyleSplitter = (
             } else {
               viewProps.role = accessibilityRoleToWebRole[valInit] || valInit
             }
-            break
+            continue
           }
           case 'accessibilityLabelledBy':
           case 'accessibilityFlowTo':
@@ -436,17 +436,17 @@ export const getSplitStyles: StyleSplitter = (
           case 'accessibilityDescribedBy': {
             viewProps[`aria-${keyInit.replace('accessibility', '').toLowerCase()}`] =
               processIDRefList(valInit)
-            break
+            continue
           }
           case 'accessibilityKeyShortcuts': {
             if (Array.isArray(valInit)) {
               viewProps['aria-keyshortcuts'] = valInit.join(' ')
             }
-            break
+            continue
           }
           case 'accessibilityLiveRegion': {
             viewProps['aria-live'] = valInit === 'none' ? 'off' : valInit
-            break
+            continue
           }
           case 'accessibilityReadOnly': {
             viewProps['aria-readonly'] = valInit
@@ -458,7 +458,7 @@ export const getSplitStyles: StyleSplitter = (
             ) {
               viewProps.readOnly = true
             }
-            break
+            continue
           }
           case 'accessibilityRequired': {
             viewProps['aria-required'] = valInit
@@ -468,9 +468,9 @@ export const getSplitStyles: StyleSplitter = (
               elementType === 'select' ||
               elementType === 'textarea'
             ) {
-              viewProps.required = true
+              viewProps.required = valInit
             }
-            break
+            continue
           }
           default: {
             didUseKeyInit = false

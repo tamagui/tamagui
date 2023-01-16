@@ -77,11 +77,22 @@ import { useThemedChildren } from './views/Theme'
 // this appears to fix expo / babel not picking this up sometimes? really odd
 process.env.TAMAGUI_TARGET
 
+export const defaultComponentState: TamaguiComponentState = {
+  hover: false,
+  press: false,
+  pressIn: false,
+  focus: false,
+  unmounted: true,
+}
+
+const defaultComponentStateMounted: TamaguiComponentState = {
+  ...defaultComponentState,
+  unmounted: false,
+}
+
 /**
  * All things that need one-time setup after createTamagui is called
  */
-let defaultComponentState: TamaguiComponentState | null = null
-let defaultComponentStateMounted: TamaguiComponentState | null = null
 let tamaguiConfig: TamaguiInternalConfig
 let AnimatedText: any
 let AnimatedView: any
@@ -888,19 +899,6 @@ export function createComponent<
     // one time only setup
     if (!tamaguiConfig) {
       tamaguiConfig = conf
-      if (!defaultComponentState) {
-        defaultComponentState = {
-          hover: false,
-          press: false,
-          pressIn: false,
-          focus: false,
-          unmounted: true,
-        }
-        defaultComponentStateMounted = {
-          ...defaultComponentState,
-          unmounted: false,
-        }
-      }
 
       if (tamaguiConfig.animations) {
         AnimatedText = tamaguiConfig.animations.Text

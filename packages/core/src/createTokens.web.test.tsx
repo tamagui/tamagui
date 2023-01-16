@@ -22,7 +22,7 @@ test('color name no dot', () => {
         key: 'yellow101a',
         name: 'color-1',
         val: 'yellow',
-        variable: '',
+        variable: 'var(--color-1)',
       },
     },
   })
