@@ -36,6 +36,7 @@
 
 - vertical slider native can be janky
 - sync with react-native-web
+  - https://github.com/necolas/react-native-web/pull/2377
 - dialog sheet space regression
 - switch active bg regressed
 - theme shouldn't change context ever on web, redo notify()

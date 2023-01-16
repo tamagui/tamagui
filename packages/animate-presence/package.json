@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animate-presence",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "source": "src/index.ts",
   "sideEffects": false,
   "license": "MIT",
@@ -14,11 +14,11 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/core": "^1.0.14",
-    "@tamagui/use-presence": "^1.0.14"
+    "@tamagui/core": "^1.0.15",
+    "@tamagui/use-presence": "^1.0.15"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.14"
+    "@tamagui/build": "^1.0.15"
   },
   "scripts": {
     "build": "tamagui-build",
