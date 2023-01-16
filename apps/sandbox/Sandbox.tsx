@@ -2,8 +2,18 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
+import { DialogDemo, PopoverDemo, TooltipDemo } from '@tamagui/demos'
 import { useState } from 'react'
-import { Button, Input, Square, TamaguiProvider, TextArea, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Input,
+  Popover,
+  Square,
+  TamaguiProvider,
+  TextArea,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -36,6 +46,8 @@ export const Sandbox = () => {
           __html: `html, body { overflow: hidden; height: 100vh; width: 100vw; }`,
         }}
       />
+
+      <DialogDemo />
 
       {/*  */}
     </TamaguiProvider>

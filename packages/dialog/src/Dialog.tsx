@@ -152,37 +152,52 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
   )
 }
 
-const DialogPortal: React.FC<DialogPortalProps> = DialogPortalFrame.extractable(
-  (props: ScopedProps<DialogPortalProps>) => {
-    const { __scopeDialog, forceMount, children, ...frameProps } = props
+const DialogPortal: React.FC<DialogPortalProps> = (
+  props: ScopedProps<DialogPortalProps>
+) => {
+  const { __scopeDialog, forceMount, children, ...frameProps } = props
 
-    const context = useDialogContext(PORTAL_NAME, __scopeDialog)
-    const isShowing = forceMount || context.open
-    const contents = <AnimatePresence>{isShowing ? children : null}</AnimatePresence>
-    const isSheet = useShowDialogSheet(context)
+  const context = useDialogContext(PORTAL_NAME, __scopeDialog)
+  const isShowing = forceMount || context.open
+  const [isFullyHidden, setIsFullyHidden] = React.useState(!isShowing)
 
-    if (isSheet) {
-      return children
-    }
-
-    if (context.modal) {
-      return (
-        <DialogPortalItem __scopeDialog={__scopeDialog}>
-          <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
-            <DialogPortalFrame
-              pointerEvents={isShowing ? 'auto' : 'none'}
-              {...frameProps}
-            >
-              {contents}
-            </DialogPortalFrame>
-          </PortalProvider>
-        </DialogPortalItem>
-      )
-    }
-
-    return contents
+  if (isShowing && isFullyHidden) {
+    setIsFullyHidden(false)
   }
-)
+
+  const contents = (
+    <AnimatePresence
+      onExitComplete={() => {
+        setIsFullyHidden(true)
+      }}
+    >
+      {isShowing ? children : null}
+    </AnimatePresence>
+  )
+  const isSheet = useShowDialogSheet(context)
+
+  if (isSheet) {
+    return children
+  }
+
+  if (context.modal) {
+    if (isFullyHidden) {
+      return null
+    }
+
+    return (
+      <DialogPortalItem __scopeDialog={__scopeDialog}>
+        <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
+          <DialogPortalFrame pointerEvents={isShowing ? 'auto' : 'none'} {...frameProps}>
+            {contents}
+          </DialogPortalFrame>
+        </PortalProvider>
+      </DialogPortalItem>
+    )
+  }
+
+  return contents
+}
 
 DialogPortal.displayName = PORTAL_NAME
 
