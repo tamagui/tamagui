@@ -129,6 +129,14 @@ Defaults to Paragraph, see [Paragraph](/docs/components/text).
 
 #### &lt;Close /&gt;
 
-Closes the AlertDialog. Recommended to use with your own component and `asChild`.
+Closes the AlertDialog, accepts all YStack props. Recommended to use with your own component and `asChild`.
 
-Just [Tamagui Props](/docs/intro/props).
+<PropsTable
+  data={[
+    {
+      name: 'displayWhenAdapted',
+      type: 'boolean',
+      description: `By default Close elements hide when Adapt is active. If set to true, they will show when adapted.`,
+    },
+  ]}
+/>

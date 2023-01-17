@@ -38,6 +38,7 @@ export function DialogDemo() {
           enterStyle={{ o: 0 }}
           exitStyle={{ o: 0 }}
         />
+
         <Dialog.Content
           bordered
           elevate
@@ -72,7 +73,7 @@ export function DialogDemo() {
           </Fieldset>
 
           <YStack ai="flex-end" mt="$2">
-            <Dialog.Close asChild>
+            <Dialog.Close displayWhenAdapted asChild>
               <Button theme="alt1" aria-label="Close">
                 Save changes
               </Button>

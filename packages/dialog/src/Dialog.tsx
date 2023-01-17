@@ -602,15 +602,17 @@ DialogDescription.displayName = DESCRIPTION_NAME
 
 const CLOSE_NAME = 'DialogClose'
 
-type DialogCloseProps = YStackProps
+type DialogCloseProps = YStackProps & {
+  displayWhenAdapted?: boolean
+}
 
 const DialogClose = React.forwardRef<TamaguiElement, DialogCloseProps>(
   (props: ScopedProps<DialogCloseProps>, forwardedRef) => {
-    const { __scopeDialog, ...closeProps } = props
+    const { __scopeDialog, displayWhenAdapted, ...closeProps } = props
     const context = useDialogContext(CLOSE_NAME, __scopeDialog)
     const isSheet = useShowDialogSheet(context)
 
-    if (isSheet) {
+    if (isSheet && !displayWhenAdapted) {
       return null
     }
 

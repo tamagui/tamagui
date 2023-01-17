@@ -153,7 +153,17 @@ Defaults to Paragraph, see [Paragraph](/docs/components/text).
 
 #### &lt;Close /&gt;
 
-Closes the Dialog. Recommended to use with your own component and `asChild`.
+Closes the Dialog, accepts the same props as YStack. Recommended to use with your own component and `asChild`.
+
+<PropsTable
+  data={[
+    {
+      name: 'displayWhenAdapted',
+      type: 'boolean',
+      description: `By default Close elements hide when Adapt is active. If set to true, they will show when adapted.`,
+    },
+  ]}
+/>
 
 Just [Tamagui Props](/docs/intro/props).
 
