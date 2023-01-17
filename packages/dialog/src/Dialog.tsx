@@ -8,6 +8,7 @@ import {
   Theme,
   composeEventHandlers,
   isWeb,
+  spacedChildren,
   styled,
   useGet,
   useId,
@@ -136,19 +137,50 @@ export const DialogPortalFrame = styled(YStack, {
 })
 
 const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
-  const { __scopeDialog, children, hostName } = props
   const themeName = useThemeName()
-  const context = useDialogContext(PORTAL_NAME, __scopeDialog)
+  const context = useDialogContext(PORTAL_NAME, props.__scopeDialog)
+
+  return (
+    <PortalItem hostName={props.hostName}>
+      <DialogPortalItemContent {...props} themeName={themeName} context={context} />
+    </PortalItem>
+  )
+}
+
+function DialogPortalItemContent(
+  props: ScopedProps<DialogPortalProps> & {
+    themeName: string
+    context: DialogContextValue
+  }
+) {
+  const {
+    __scopeDialog,
+    children,
+    context,
+    themeName,
+    space,
+    spaceDirection,
+    separator,
+  } = props
+
+  let childrenSpaced = children
+
+  if (space || separator) {
+    childrenSpaced = spacedChildren({
+      children,
+      separator,
+      space,
+      direction: spaceDirection,
+    })
+  }
 
   // until we can use react-native portals natively
   // have to re-propogate context, sketch
 
   return (
-    <PortalItem hostName={hostName}>
-      <DialogProvider scope={__scopeDialog} {...context}>
-        <Theme name={themeName}>{children}</Theme>
-      </DialogProvider>
-    </PortalItem>
+    <DialogProvider scope={__scopeDialog} {...context}>
+      <Theme name={themeName}>{childrenSpaced}</Theme>
+    </DialogProvider>
   )
 }
 

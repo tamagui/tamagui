@@ -1,6 +1,5 @@
 1.0.X
 
-- I think there's an issue with https://tamagui.dev/docs/components/dialog/1.0.0 - When using sheet (e.g. browse with mobile) you can't see the "Save Changes". Probably related to the fact that its under Dialog.Close?
 - optimizing packages/app in starter
 - react native pressable in pressable
 - createThemes accepts array not object

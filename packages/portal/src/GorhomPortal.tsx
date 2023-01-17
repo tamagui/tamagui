@@ -301,27 +301,11 @@ const PortalHostComponent = (props: PortalHostProps) => {
           let next = item.node
 
           if (forwardProps) {
-            const { space, separator, spaceDirection, ...rest } = forwardProps
-            if (Array.isArray(next)) {
-              // add any extra props
-              if (Object.keys(rest).length) {
-                next = next.map((item) =>
-                  isValidElement(item) ? cloneElement(item, rest) : item
-                )
-              }
-              if (space || separator) {
-                next = spacedChildren({
-                  separator: forwardProps.separator,
-                  children: next as any,
-                  space: forwardProps.space,
-                  direction: forwardProps.spaceDirection,
-                })
-              }
-            } else {
-              next = React.isValidElement(next)
-                ? React.cloneElement(next, { key: next.key, ...forwardProps })
-                : next
-            }
+            return React.Children.map(next, (child) => {
+              return React.isValidElement(child)
+                ? React.cloneElement(child, { key: child.key, ...forwardProps })
+                : child
+            })
           }
 
           return next
