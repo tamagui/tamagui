@@ -4,7 +4,7 @@ import chalk from 'chalk'
 
 import { getOptions } from './utils.js'
 
-const commandMap = {
+const COMMAND_MAP = {
   build: {
     shorthands: ['b'],
     description: `Use to pre-build a Tamagui component directory`,
@@ -66,12 +66,12 @@ const commandMap = {
   },
 }
 
-type CommandDefinitions = typeof commandMap
-type CommandKey = keyof typeof commandMap
+type CommandDefinitions = typeof COMMAND_MAP
+type CommandKey = keyof typeof COMMAND_MAP
 type CommandDefinition = CommandDefinitions[CommandKey]
 
-const commandEntries = Object.keys(commandMap).flatMap((command) => {
-  const definition = commandMap[command as CommandKey]
+const commandEntries = Object.keys(COMMAND_MAP).flatMap((command) => {
+  const definition = COMMAND_MAP[command as CommandKey]
   const entries = [command, ...definition.shorthands].map((cmd) => {
     return [cmd, definition] as const
   })
@@ -93,7 +93,7 @@ const {
   },
   {
     permissive: true,
-  },
+  }
 )
 
 if (flags['--version']) {
@@ -106,7 +106,7 @@ if (!command && flags['--help']) {
 
 commands:
 
-${Object.keys(commandMap)
+${Object.keys(COMMAND_MAP)
   .map((key) => {
     return `  ${key}`
   })
@@ -128,9 +128,7 @@ async function main() {
   if (flags['--help']) {
     console.log(`\n$ tamagui ${command}: ${definition.description}\n`)
     console.log(
-      `Flags: ${Object.entries(definition.flags).map(
-        ([k, v]) => `${k} (${v.name})`,
-      )}`,
+      `Flags: ${Object.entries(definition.flags).map(([k, v]) => `${k} (${v.name})`)}`
     )
     process.exit(0)
   }

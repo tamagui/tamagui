@@ -13,6 +13,8 @@
     "dist"
   ],
   "scripts": {
+    "dev": "cd ../.. && yarn studio",
+    "tauri": "tauri",
     "build:takeout": "tamagui-build",
     "watch:takeout": "tamagui-build --watch",
     "clean": "tamagui-build clean",
@@ -26,6 +28,7 @@
     "@tamagui/lucide-icons": "^1.0.16",
     "@tamagui/polyfill-dev": "^1.0.16",
     "@tamagui/theme-base": "^1.0.16",
+    "@tauri-apps/api": "^1.2.0",
     "@types/d3-scale": "^4.0.2",
     "@types/lodash-es": "^4.17.6",
     "@types/uuid": "^8.3.4",
@@ -45,8 +48,10 @@
     "@babel/preset-typescript": "^7.18.6",
     "@tamagui/build": "^1.0.16",
     "@tamagui/static": "^1.0.16",
+    "@tauri-apps/cli": "^1.2.2",
     "babel-polyfill": "^6.26.0",
     "esbuild-loader": "^2.20.0",
-    "react-refresh": "^0.14.0"
+    "react-refresh": "^0.14.0",
+    "vite": "^4.0.4"
   }
 }

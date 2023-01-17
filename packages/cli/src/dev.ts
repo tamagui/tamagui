@@ -1,6 +1,7 @@
 import { AddressInfo } from 'net'
 import { join } from 'path'
 
+import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import chalk from 'chalk'
 import express from 'express'
 import proxy from 'express-http-proxy'
@@ -23,6 +24,11 @@ export const dev = async (options: ResolvedOptions) => {
       port: options.port,
       host: options.host || 'localhost',
     },
+    plugins: [
+      tamaguiPlugin({
+        components: ['tamagui'],
+      }),
+    ],
   })
 
   // these can be lazy loaded (eventually should put in own process)

@@ -26,6 +26,7 @@ export const studio = async (options: ResolvedOptions) => {
     server: {
       // open: true,
       host: options.host,
+      port: 1420,
     },
     plugins: [
       tamaguiPlugin({
