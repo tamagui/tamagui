@@ -14,6 +14,7 @@
 - vite fails https://github.com/tamagui/tamagui/issues/479
 
 - bundle size reductions:
+  - remove setColorAlpha in favor of internal core rgba util
   - expandStyle remove some
   - merge mergeSlotProps and mergeProps
   - move to PROP whitelist rather than style whitelist maybe avoid validStyleProps altogether
@@ -229,6 +230,73 @@ inbox
     - @react-native-menu/menu
     - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-android-menu/index.android.tsx
 
+---
+
+Make Themes Better
+
+```tsx
+const theme = generateTheme([...colors], createSubtleTheme)
+const theme_alt1 = extendTheme(theme, ...)
+
+export const themes = createThemes({
+  theme,
+  theme_alt1,
+})
+```
+
+<Button size="large" />
+
+---
+
+<ThemeOverride />
+<ThemeMutate />
+<Theme values={parent => ({ backgroundColor: parent.backgroundColorHover })} />
+
+```tsx
+export default () => (
+  <Theme name="orange">
+    <ThemeOverride backgroundColor={-3}>
+      <MySquare />
+      <MyCircle />
+      <MyButton />
+    </ThemeOverride>
+
+    <ThemeMutate
+      getNextTheme={theme => {
+        theme.background = ''
+        return theme
+      }}>
+        <MySquare />
+        <MyCircle />
+        <MyButton />
+    </ThemeMutate>
+  </Theme>
+)
+```
+
+---
+
+<Variants />
+
+```tsx
+export default () => (
+  <SquareVariant skeleton>
+    <MySquare />
+  </SquareVariant>
+)
+
+const MySquare = styled(Square, {
+  variants: {
+    skeleton: {
+      true: {
+        backgroundColor: 'grey',
+      }
+    }
+  }
+})
+
+const SquareVariant = createVariantProvider(MySquare)
+```
 
 ---
 
