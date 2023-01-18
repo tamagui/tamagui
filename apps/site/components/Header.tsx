@@ -31,7 +31,7 @@ import { SeasonToggleButton } from './SeasonToggleButton'
 import { SponsorButton } from './SponsorButton'
 import { useDocsMenu } from './useDocsMenu'
 
-export function Header() {
+export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
 
   if (isClient) {
@@ -66,7 +66,7 @@ export function Header() {
         <YStack o={isScrolled ? 0.9 : 0.5} fullscreen bc="$background" />
         <ContainerLarge>
           <ThemeTint>
-            <HeaderContents floating />
+            <HeaderContents floating {...props} />
           </ThemeTint>
         </ContainerLarge>
       </XStack>

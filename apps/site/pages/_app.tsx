@@ -95,15 +95,20 @@ export default function App(props: AppProps) {
 function ContentInner({ Component, pageProps }: AppProps) {
   const router = useRouter()
   const isResponsiveDemo = router.pathname.startsWith('/responsive-demo')
+  const isHome = router.pathname === '/'
   const isDocs = router.pathname.startsWith('/docs')
+  const isBlog = router.pathname.startsWith('/blog')
   const isStudio = router.pathname.startsWith('/studio')
   const isDemo = router.pathname.startsWith('/responsive-demo')
   const isTest = router.pathname.startsWith('/test')
   // @ts-ignore
   const getLayout = Component.getLayout || ((page) => page)
+
+  const disableNew = isHome || isBlog
+
   return getLayout(
     <>
-      {!isTest && !isResponsiveDemo && <Header />}
+      {!isTest && !isResponsiveDemo && <Header disableNew={isHome || isBlog} />}
       <Component {...pageProps} />
       {!isTest && !isDocs && !isDemo && !isStudio && <Footer />}
     </>

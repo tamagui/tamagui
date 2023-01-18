@@ -37,9 +37,8 @@ export default function Home({ animationCode, compilationExamples }) {
               theme="red"
               als="center"
               elevation="$4"
-              borderWidth={1}
               borderColor="$color5"
-              size="$5"
+              size="$4"
               fontFamily="$silkscreen"
               bc="$color1"
               br="$10"

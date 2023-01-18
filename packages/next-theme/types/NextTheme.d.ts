@@ -38,18 +38,17 @@ export interface ThemeProviderProps {
     /** Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value */
     value?: ValueObject;
     onChangeTheme?: (name: string) => void;
-    nonce?: string;
+    skipNextHead?: boolean;
 }
 /**
  * @deprecated renamed to `useThemeSetting` to avoid confusion with core `useTheme` hook
  */
-export declare const useTheme: () => UseThemeProps | null;
-export declare const useThemeSetting: () => UseThemeProps | null;
+export declare const useTheme: () => UseThemeProps;
+export declare const useThemeSetting: () => UseThemeProps;
 interface ValueObject {
     [themeName: string]: string;
 }
 export declare const useRootTheme: () => readonly [string, React.Dispatch<React.SetStateAction<string>>];
 export declare const NextThemeProvider: React.FC<ThemeProviderProps>;
-export declare const Theme: React.FC<ThemeProviderProps>;
 export {};
 //# sourceMappingURL=NextTheme.d.ts.map

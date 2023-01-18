@@ -13,9 +13,7 @@ export const SeasonToggleButton = (props: ButtonProps) => {
         {...props}
         aria-label="Toggle theme"
       >
-        <Text rotate="-35deg" als="center" scale={2} x={4} y={7}>
-          {['🐥', '🎅🏻'][name === 'tamagui' ? 0 : 1]}
-        </Text>
+        <Text>{['🐥', '🎅🏻'][name === 'tamagui' ? 0 : 1]}</Text>
       </Button>
     </TooltipSimple>
   )

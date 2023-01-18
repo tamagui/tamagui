@@ -2,6 +2,7 @@
 // forked temporarily due to buggy theme change
 
 import { useEvent } from '@tamagui/use-event'
+import NextHead from 'next/head'
 import * as React from 'react'
 import {
   createContext,
@@ -57,17 +58,24 @@ export interface ThemeProviderProps {
   /** Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value */
   value?: ValueObject
   onChangeTheme?: (name: string) => void
-  nonce?: string
+
+  // avoids warning
+
+  skipNextHead?: boolean
 }
 
-const ThemeContext = createContext<UseThemeProps | null>(null)
+const ThemeSettingContext = createContext<UseThemeProps>({
+  toggle: () => {},
+  set: (_) => {},
+  themes: [],
+})
 
 /**
  * @deprecated renamed to `useThemeSetting` to avoid confusion with core `useTheme` hook
  */
-export const useTheme = () => useContext(ThemeContext)
+export const useTheme = () => useContext(ThemeSettingContext)
 
-export const useThemeSetting = () => useContext(ThemeContext)
+export const useThemeSetting = () => useContext(ThemeSettingContext)
 
 const colorSchemes = ['light', 'dark']
 const MEDIA = '(prefers-color-scheme: dark)'
@@ -94,17 +102,7 @@ export const useRootTheme = () => {
   return [val, setVal] as const
 }
 
-export const NextThemeProvider: React.FC<ThemeProviderProps> = (props) => {
-  const context = useContext(ThemeContext)
-  // Ignore nested context providers, just passthrough children
-  if (context) {
-    return <>{props.children}</>
-  }
-  return <Theme {...props} />
-}
-
-export const Theme: React.FC<ThemeProviderProps> = ({
-  nonce,
+export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   forcedTheme,
   disableTransitionOnChange = true,
   enableSystem = true,
@@ -113,6 +111,7 @@ export const Theme: React.FC<ThemeProviderProps> = ({
   themes = colorSchemes,
   defaultTheme = enableSystem ? 'system' : 'light',
   attribute = 'class',
+  skipNextHead,
   onChangeTheme,
   value = {
     dark: 't_dark',
@@ -274,26 +273,23 @@ export const Theme: React.FC<ThemeProviderProps> = ({
   ])
 
   return (
-    <ThemeContext.Provider value={contextValue}>
+    <ThemeSettingContext.Provider value={contextValue}>
       <ThemeScript
         {...{
           forcedTheme,
-          disableTransitionOnChange,
           storageKey,
           systemTheme: resolvedTheme,
           attribute,
-          enableColorScheme,
           value,
-          themes,
           enableSystem,
           defaultTheme,
           attrs,
-          nonce,
+          skipNextHead,
         }}
       />
       {/* because on SSR we re-run and can avoid whole tree re-render */}
       {useMemo(() => children, [children])}
-    </ThemeContext.Provider>
+    </ThemeSettingContext.Provider>
   )
 }
 
@@ -303,99 +299,91 @@ const ThemeScript = memo(
     storageKey,
     attribute,
     enableSystem,
-    enableColorScheme,
     defaultTheme,
     value,
     attrs,
-    nonce,
-  }: ThemeProviderProps & { attrs: string[]; defaultTheme: string }) => {
-    const defaultSystem = defaultTheme === 'system'
-
+    skipNextHead,
+  }: {
+    forcedTheme?: string
+    storageKey: string
+    attribute?: string
+    enableSystem?: boolean
+    defaultTheme: string
+    value?: ValueObject
+    attrs: any
+    skipNextHead
+  }) => {
     // Code-golfing the amount of characters in the script
     const optimization = (() => {
       if (attribute === 'class') {
-        const removeClasses = `c.remove(${attrs.map((t: string) => `'${t}'`).join(',')})`
-
-        return `var d=document.documentElement,c=d.classList;${removeClasses};`
+        const removeClasses = attrs.map((t: string) => `d.remove('${t}')`).join(';')
+        return `var d=document.documentElement.classList;${removeClasses};`
       } else {
-        return `var d=document.documentElement,n='${attribute}',s='setAttribute';`
+        return `var d=document.documentElement;`
       }
     })()
 
-    const fallbackColorScheme = (() => {
-      if (!enableColorScheme) {
-        return ''
-      }
-
-      const fallback = colorSchemes.includes(defaultTheme) ? defaultTheme : null
-
-      if (fallback) {
-        return `if(e==='light'||e==='dark'||!e)d.style.colorScheme=e||'${defaultTheme}'`
-      } else {
-        return `if(e==='light'||e==='dark')d.style.colorScheme=e`
-      }
-    })()
-
-    const updateDOM = (name: string, literal: boolean = false, setColorScheme = true) => {
-      const resolvedName = value ? value[name] : name
-      const val = literal ? name + `|| ''` : `'${resolvedName}'`
-      let text = ''
-
-      // MUCH faster to set colorScheme alongside HTML attribute/class
-      // as it only incurs 1 style recalculation rather than 2
-      // This can save over 250ms of work for pages with big DOM
-      if (
-        enableColorScheme &&
-        setColorScheme &&
-        !literal &&
-        colorSchemes.includes(name)
-      ) {
-        text += `d.style.colorScheme = '${name}';`
-      }
+    const updateDOM = (name: string, literal?: boolean) => {
+      name = value?.[name] || name
+      const val = literal ? name : `'${name}'`
 
       if (attribute === 'class') {
-        if (literal || resolvedName) {
-          text += `c.add(${val})`
-        } else {
-          text += `null`
-        }
-      } else {
-        if (resolvedName) {
-          text += `d[s](n,${val})`
-        }
+        return `d.add(${val})`
       }
 
-      return text
+      return `d.setAttribute('${attribute}', ${val})`
     }
 
-    const scriptSrc = (() => {
-      if (forcedTheme) {
-        return `!function(){${optimization}${updateDOM(forcedTheme)}}()`
-      }
+    const defaultSystem = defaultTheme === 'system'
 
-      if (enableSystem) {
-        return `!function(){try{${optimization}var e=localStorage.getItem('${storageKey}');if('system'===e||(!e&&${defaultSystem})){var t='${MEDIA}',m=window.matchMedia(t);if(m.media!==t||m.matches){${updateDOM(
-          'dark'
-        )}}else{${updateDOM('light')}}}else if(e){${
-          value ? `var x=${JSON.stringify(value)};` : ''
-        }${updateDOM(value ? `x[e]` : 'e', true)}}${
-          !defaultSystem ? `else{` + updateDOM(defaultTheme, false, false) + '}' : ''
-        }${fallbackColorScheme}}catch(e){}}()`
-      }
+    const contents = (
+      <>
+        {forcedTheme ? (
+          <script
+            key="next-themes-script"
+            dangerouslySetInnerHTML={{
+              // These are minified via Terser and then updated by hand, don't recommend
+              __html: `!function(){${optimization}${updateDOM(forcedTheme)}}()`,
+            }}
+          />
+        ) : enableSystem ? (
+          <script
+            key="next-themes-script"
+            dangerouslySetInnerHTML={{
+              __html: `!function(){try {${optimization}var e=localStorage.getItem('${storageKey}');${
+                !defaultSystem ? updateDOM(defaultTheme) + ';' : ''
+              }if("system"===e||(!e&&${defaultSystem})){var t="${MEDIA}",m=window.matchMedia(t);m.media!==t||m.matches?${updateDOM(
+                'dark'
+              )}:${updateDOM('light')}}else if(e) ${
+                value ? `var x=${JSON.stringify(value)};` : ''
+              }${updateDOM(value ? 'x[e]' : 'e', true)}}catch(e){}}()`,
+            }}
+          />
+        ) : (
+          <script
+            key="next-themes-script"
+            dangerouslySetInnerHTML={{
+              __html: `!function(){try{${optimization}var e=localStorage.getItem("${storageKey}");if(e){${
+                value ? `var x=${JSON.stringify(value)};` : ''
+              }${updateDOM(value ? 'x[e]' : 'e', true)}}else{${updateDOM(
+                defaultTheme
+              )};}}catch(t){}}();`,
+            }}
+          />
+        )}
+      </>
+    )
 
-      return `!function(){try{${optimization}var e=localStorage.getItem('${storageKey}');if(e){${
-        value ? `var x=${JSON.stringify(value)};` : ''
-      }${updateDOM(value ? `x[e]` : 'e', true)}}else{${updateDOM(
-        defaultTheme,
-        false,
-        false
-      )};}${fallbackColorScheme}}catch(t){}}();`
-    })()
+    if (skipNextHead) return contents
 
-    return <script nonce={nonce} dangerouslySetInnerHTML={{ __html: scriptSrc }} />
+    return <NextHead>{contents}</NextHead>
   },
-  // Never re-render this component
-  () => true
+  (prevProps, nextProps) => {
+    // Only re-render when forcedTheme changes
+    // the rest of the props should be completely stable
+    if (prevProps.forcedTheme !== nextProps.forcedTheme) return false
+    return true
+  }
 )
 
 // Helpers
