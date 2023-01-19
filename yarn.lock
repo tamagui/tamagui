@@ -5947,7 +5947,9 @@ __metadata:
     "@tamagui/static": ^1.0.17
     fs-extra: ^10.1.0
     lodash: ^4.17.21
+    micromatch: ">=4.0.0"
     outdent: ^0.8.0
+    rollup: ">=3.7.0"
     vite-plugin-environment: ^1.1.3
   languageName: unknown
   linkType: soft
@@ -16367,6 +16369,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"micromatch@npm:>=4.0.0, micromatch@npm:^4.0.2, micromatch@npm:^4.0.4":
+  version: 4.0.5
+  resolution: "micromatch@npm:4.0.5"
+  dependencies:
+    braces: ^3.0.2
+    picomatch: ^2.3.1
+  checksum: 02a17b671c06e8fefeeb6ef996119c1e597c942e632a21ef589154f23898c9c6a9858526246abb14f8bca6e77734aa9dcf65476fca47cedfb80d9577d52843fc
+  languageName: node
+  linkType: hard
+
 "micromatch@npm:^3.1.10":
   version: 3.1.10
   resolution: "micromatch@npm:3.1.10"
@@ -16385,16 +16397,6 @@ __metadata:
     snapdragon: ^0.8.1
     to-regex: ^3.0.2
   checksum: ad226cba4daa95b4eaf47b2ca331c8d2e038d7b41ae7ed0697cde27f3f1d6142881ab03d4da51b65d9d315eceb5e4cdddb3fbb55f5f72cfa19cf3ea469d054dc
-  languageName: node
-  linkType: hard
-
-"micromatch@npm:^4.0.2, micromatch@npm:^4.0.4":
-  version: 4.0.5
-  resolution: "micromatch@npm:4.0.5"
-  dependencies:
-    braces: ^3.0.2
-    picomatch: ^2.3.1
-  checksum: 02a17b671c06e8fefeeb6ef996119c1e597c942e632a21ef589154f23898c9c6a9858526246abb14f8bca6e77734aa9dcf65476fca47cedfb80d9577d52843fc
   languageName: node
   linkType: hard
 
@@ -20070,6 +20072,20 @@ __metadata:
   bin:
     rimraf: ./bin.js
   checksum: 3ea587b981a19016297edb96d1ffe48af7e6af69660e3b371dbfc73722a73a0b0e9be5c88089fbeeb866c389c1098e07f64929c7414290504b855f54f901ab10
+  languageName: node
+  linkType: hard
+
+"rollup@npm:>=3.7.0":
+  version: 3.10.0
+  resolution: "rollup@npm:3.10.0"
+  dependencies:
+    fsevents: ~2.3.2
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    rollup: dist/bin/rollup
+  checksum: 31a882689c58d084ac36362aeaf2422dc4b80d671bd88c856693c37d63a26ddac9b9819dfba7f79c2d50d5207868b0e3d75f728fe551bbc347cf5dedf8ece18e
   languageName: node
   linkType: hard
 

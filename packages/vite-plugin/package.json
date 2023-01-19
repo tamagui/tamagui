@@ -31,7 +31,9 @@
     "@tamagui/static": "^1.0.17",
     "fs-extra": "^10.1.0",
     "lodash": "^4.17.21",
-    "outdent": "^0.8.0"
+    "micromatch": ">=4.0.0",
+    "outdent": "^0.8.0",
+    "rollup": ">=3.7.0"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.17",

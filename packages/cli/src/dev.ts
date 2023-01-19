@@ -1,7 +1,7 @@
 import { AddressInfo } from 'net'
 import { join } from 'path'
 
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { nativePlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
 import chalk from 'chalk'
 import express from 'express'
 import proxy from 'express-http-proxy'
@@ -28,6 +28,7 @@ export const dev = async (options: ResolvedOptions) => {
       tamaguiPlugin({
         components: ['tamagui'],
       }),
+      nativePlugin(),
     ],
   })
 
