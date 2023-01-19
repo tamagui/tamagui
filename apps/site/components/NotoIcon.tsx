@@ -12,9 +12,13 @@ export const NotoIcon = ({
   className?: string
 }) => {
   const conf = getConfig()
-  const size = getVariableValue(
-    typeof sizeProp === 'number' ? sizeProp : conf.fonts.noto.size[sizeProp.slice(1)]
-  )
+  const sizeNum =
+    typeof sizeProp === 'number'
+      ? sizeProp
+      : conf.fonts.noto?.size[sizeProp.slice(1)] || 44
+  console.log('sizeNum', sizeNum)
+  const size = getVariableValue(sizeNum)
+  console.log('size', size)
   return (
     <Text
       userSelect="none"

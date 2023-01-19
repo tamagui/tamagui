@@ -1,3 +1,4 @@
+- sync with rnw 19
 - check into shadow/elevation not showing
 - survey https://tripetto.app or gforms
 
