@@ -13,6 +13,7 @@ import {
   TextArea,
   XStack,
   YStack,
+  styled,
 } from 'tamagui'
 
 import config from './tamagui.config'
@@ -23,6 +24,10 @@ import config from './tamagui.config'
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
+
+// const UnSquare = styled(Square, {
+//   unset: 'all',
+// })
 
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light')
@@ -47,7 +52,14 @@ export const Sandbox = () => {
         }}
       />
 
-      <DialogDemo />
+      {/* <DialogDemo /> */}
+      {/* <Button size="$10">hi</Button> */}
+
+      <TextArea
+        focusStyle={{
+          backgroundColor: 'red',
+        }}
+      />
 
       {/*  */}
     </TamaguiProvider>
