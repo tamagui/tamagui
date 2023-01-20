@@ -1,0 +1,43 @@
+{
+  "name": "@tamagui/next-test",
+  "version": "1.0.17",
+  "private": true,
+  "source": "src",
+  "scripts": {
+    "dev": "next dev",
+    "ci:build": "yarn next:build && yarn next:export",
+    "ci:build:no-extract": "DISABLE_EXTRACTION=true yarn ci:build",
+    "ci:build:debug": "DEBUG=tamagui yarn ci:build",
+    "dev:analyze": "ANALYZE=true yarn dev",
+    "dev:inspect": "PORT=${PORT:-5005} NODE_OPTIONS='--no-deprecation' NODE_ENV=development node --inspect-brk ../../node_modules/next/dist/bin/next dev",
+    "dev:extract": "DISABLE_EXTRACTION=false yarn dev",
+    "next:build": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build",
+    "next:export": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next export",
+    "next:start": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start --port 3333"
+  },
+  "dependencies": {
+    "@tamagui/animate-presence": "^1.0.17",
+    "@tamagui/colors": "^1.0.17",
+    "@tamagui/config-base": "^1.0.17",
+    "@tamagui/demos": "^1.0.17",
+    "@tamagui/font-fira-mono": "^1.0.17",
+    "@tamagui/font-inter": "^1.0.17",
+    "@tamagui/font-silkscreen": "^1.0.17",
+    "@tamagui/logo": "^1.0.17",
+    "@tamagui/lucide-icons": "^1.0.17",
+    "@tamagui/menu": "^1.0.17",
+    "@tamagui/next-theme": "^1.0.17",
+    "@tamagui/remove-scroll": "^1.0.17",
+    "@tamagui/shorthands": "^1.0.17",
+    "@tamagui/theme-base": "^1.0.17",
+    "next": "^13.0.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native": "*",
+    "react-native-web-lite": "^1.0.17",
+    "tamagui": "^1.0.17"
+  },
+  "devDependencies": {
+    "tamagui-loader": "^1.0.17"
+  }
+}
