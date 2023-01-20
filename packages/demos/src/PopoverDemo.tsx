@@ -10,6 +10,7 @@ import {
   YGroup,
 } from 'tamagui'
 
+// This is broken on Native Screens larger than $sm. Tested in IOS Simulator iPad
 export function PopoverDemo() {
   return (
     <XStack space="$2">
