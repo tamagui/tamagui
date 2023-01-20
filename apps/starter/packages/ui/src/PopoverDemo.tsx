@@ -28,7 +28,7 @@ export function Demo({ Icon, ...props }: PopoverProps & { Icon?: any }) {
         <Button icon={Icon} />
       </Popover.Trigger>
 
-      <Adapt when="sm">
+      <Adapt when="sm" platform="touch">
         <Popover.Sheet modal dismissOnSnapToBottom>
           <Popover.Sheet.Frame padding="$4">
             <Adapt.Contents />
@@ -46,7 +46,7 @@ export function Demo({ Icon, ...props }: PopoverProps & { Icon?: any }) {
         y={0}
         o={1}
         animation={[
-          'quick',
+          'bouncy',
           {
             opacity: {
               overshootClamping: true,
