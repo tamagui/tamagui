@@ -3,6 +3,8 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
 import { useLink } from 'solito/link'
 
+import { PopoverDemo } from '@my/ui/'
+
 export function HomeScreen() {
   const linkProps = useLink({
     href: '/user/nate',
@@ -42,6 +44,8 @@ export function HomeScreen() {
       </XStack>
 
       <SheetDemo />
+
+      <PopoverDemo />
     </YStack>
   )
 }

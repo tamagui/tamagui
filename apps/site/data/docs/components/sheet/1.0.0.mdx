@@ -145,3 +145,5 @@ Allows scrolling within Sheet. Extends [Scrollview](/docs/components/scroll-view
 ### Notes
 
 For Android you need to manually re-propagate any context when using `modal`. This is because React Native doesn't support portals yet.
+
+This is only compatible with animation drivers that support `Animated.spring()`. You cannot use this component with `tamagui/animations-css` on web.

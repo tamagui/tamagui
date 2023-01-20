@@ -150,6 +150,10 @@ When you want the Trigger to be in another location from where the Popover attac
 
 When used with `Adapt`, Popover will render as a sheet when that breakpoint is active.
 
+<Notice>
+This is only compatible with animation drivers that support `Animated.spring()`. You cannot use this component with `tamagui/animations-css` on web.
+</Notice>
+
 See [Sheet](/docs/components/sheet) for more props.
 
 Must use `Adapt.Contents` inside the `Popover.Sheet.Frame` to insert the contents given to `Popover.Content`
