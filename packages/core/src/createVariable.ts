@@ -16,10 +16,12 @@ type VariableIn<A = any> = {
   key: string
 }
 
-export type Variable<A = any> = VariableIn<A> & {
-  [IS_VAR]?: true
-  variable?: string
-}
+export type Variable<A = any> = A extends { [IS_VAR]?: boolean }
+  ? A
+  : VariableIn<A> & {
+      [IS_VAR]?: true
+      variable?: string
+    }
 
 export const createVariable = <A extends string | number = any>(props: VariableIn<A>) => {
   if (isVariable(props)) return props

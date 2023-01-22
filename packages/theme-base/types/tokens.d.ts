@@ -1,4 +1,3 @@
-import { Variable } from '@tamagui/core';
 export declare const size: {
     $0: number;
     '$0.25': number;
@@ -35,8 +34,9 @@ type Sizes = {
     [Key in SizeKeysIn extends `$${infer Key}` ? Key : SizeKeysIn]: number;
 };
 type SizeKeys = `${keyof Sizes extends `${infer K}` ? K : never}`;
+type SizeKeysWithNegatives = `$-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}` | SizeKeys;
 export declare const space: {
-    [Key in `$-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}` | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number;
+    [Key in SizeKeysWithNegatives]: Key extends keyof Sizes ? Sizes[Key] : number;
 };
 export declare const zIndex: {
     0: number;
@@ -473,198 +473,1542 @@ export declare const lightColors: {
     blue12: string;
 };
 export declare const color: {
-    yellow1Dark: string | Variable<string>;
-    yellow2Dark: string | Variable<string>;
-    yellow3Dark: string | Variable<string>;
-    yellow4Dark: string | Variable<string>;
-    yellow5Dark: string | Variable<string>;
-    yellow6Dark: string | Variable<string>;
-    yellow7Dark: string | Variable<string>;
-    yellow8Dark: string | Variable<string>;
-    yellow9Dark: string | Variable<string>;
-    yellow10Dark: string | Variable<string>;
-    yellow11Dark: string | Variable<string>;
-    yellow12Dark: string | Variable<string>;
-    red1Dark: string | Variable<string>;
-    red2Dark: string | Variable<string>;
-    red3Dark: string | Variable<string>;
-    red4Dark: string | Variable<string>;
-    red5Dark: string | Variable<string>;
-    red6Dark: string | Variable<string>;
-    red7Dark: string | Variable<string>;
-    red8Dark: string | Variable<string>;
-    red9Dark: string | Variable<string>;
-    red10Dark: string | Variable<string>;
-    red11Dark: string | Variable<string>;
-    red12Dark: string | Variable<string>;
-    purple1Dark: string | Variable<string>;
-    purple2Dark: string | Variable<string>;
-    purple3Dark: string | Variable<string>;
-    purple4Dark: string | Variable<string>;
-    purple5Dark: string | Variable<string>;
-    purple6Dark: string | Variable<string>;
-    purple7Dark: string | Variable<string>;
-    purple8Dark: string | Variable<string>;
-    purple9Dark: string | Variable<string>;
-    purple10Dark: string | Variable<string>;
-    purple11Dark: string | Variable<string>;
-    purple12Dark: string | Variable<string>;
-    pink1Dark: string | Variable<string>;
-    pink2Dark: string | Variable<string>;
-    pink3Dark: string | Variable<string>;
-    pink4Dark: string | Variable<string>;
-    pink5Dark: string | Variable<string>;
-    pink6Dark: string | Variable<string>;
-    pink7Dark: string | Variable<string>;
-    pink8Dark: string | Variable<string>;
-    pink9Dark: string | Variable<string>;
-    pink10Dark: string | Variable<string>;
-    pink11Dark: string | Variable<string>;
-    pink12Dark: string | Variable<string>;
-    orange1Dark: string | Variable<string>;
-    orange2Dark: string | Variable<string>;
-    orange3Dark: string | Variable<string>;
-    orange4Dark: string | Variable<string>;
-    orange5Dark: string | Variable<string>;
-    orange6Dark: string | Variable<string>;
-    orange7Dark: string | Variable<string>;
-    orange8Dark: string | Variable<string>;
-    orange9Dark: string | Variable<string>;
-    orange10Dark: string | Variable<string>;
-    orange11Dark: string | Variable<string>;
-    orange12Dark: string | Variable<string>;
-    green1Dark: string | Variable<string>;
-    green2Dark: string | Variable<string>;
-    green3Dark: string | Variable<string>;
-    green4Dark: string | Variable<string>;
-    green5Dark: string | Variable<string>;
-    green6Dark: string | Variable<string>;
-    green7Dark: string | Variable<string>;
-    green8Dark: string | Variable<string>;
-    green9Dark: string | Variable<string>;
-    green10Dark: string | Variable<string>;
-    green11Dark: string | Variable<string>;
-    green12Dark: string | Variable<string>;
-    gray1Dark: string | Variable<string>;
-    gray2Dark: string | Variable<string>;
-    gray3Dark: string | Variable<string>;
-    gray4Dark: string | Variable<string>;
-    gray5Dark: string | Variable<string>;
-    gray6Dark: string | Variable<string>;
-    gray7Dark: string | Variable<string>;
-    gray8Dark: string | Variable<string>;
-    gray9Dark: string | Variable<string>;
-    gray10Dark: string | Variable<string>;
-    gray11Dark: string | Variable<string>;
-    gray12Dark: string | Variable<string>;
-    blue1Dark: string | Variable<string>;
-    blue2Dark: string | Variable<string>;
-    blue3Dark: string | Variable<string>;
-    blue4Dark: string | Variable<string>;
-    blue5Dark: string | Variable<string>;
-    blue6Dark: string | Variable<string>;
-    blue7Dark: string | Variable<string>;
-    blue8Dark: string | Variable<string>;
-    blue9Dark: string | Variable<string>;
-    blue10Dark: string | Variable<string>;
-    blue11Dark: string | Variable<string>;
-    blue12Dark: string | Variable<string>;
-    yellow1Light: string | Variable<string>;
-    yellow2Light: string | Variable<string>;
-    yellow3Light: string | Variable<string>;
-    yellow4Light: string | Variable<string>;
-    yellow5Light: string | Variable<string>;
-    yellow6Light: string | Variable<string>;
-    yellow7Light: string | Variable<string>;
-    yellow8Light: string | Variable<string>;
-    yellow9Light: string | Variable<string>;
-    yellow10Light: string | Variable<string>;
-    yellow11Light: string | Variable<string>;
-    yellow12Light: string | Variable<string>;
-    red1Light: string | Variable<string>;
-    red2Light: string | Variable<string>;
-    red3Light: string | Variable<string>;
-    red4Light: string | Variable<string>;
-    red5Light: string | Variable<string>;
-    red6Light: string | Variable<string>;
-    red7Light: string | Variable<string>;
-    red8Light: string | Variable<string>;
-    red9Light: string | Variable<string>;
-    red10Light: string | Variable<string>;
-    red11Light: string | Variable<string>;
-    red12Light: string | Variable<string>;
-    purple1Light: string | Variable<string>;
-    purple2Light: string | Variable<string>;
-    purple3Light: string | Variable<string>;
-    purple4Light: string | Variable<string>;
-    purple5Light: string | Variable<string>;
-    purple6Light: string | Variable<string>;
-    purple7Light: string | Variable<string>;
-    purple8Light: string | Variable<string>;
-    purple9Light: string | Variable<string>;
-    purple10Light: string | Variable<string>;
-    purple11Light: string | Variable<string>;
-    purple12Light: string | Variable<string>;
-    pink1Light: string | Variable<string>;
-    pink2Light: string | Variable<string>;
-    pink3Light: string | Variable<string>;
-    pink4Light: string | Variable<string>;
-    pink5Light: string | Variable<string>;
-    pink6Light: string | Variable<string>;
-    pink7Light: string | Variable<string>;
-    pink8Light: string | Variable<string>;
-    pink9Light: string | Variable<string>;
-    pink10Light: string | Variable<string>;
-    pink11Light: string | Variable<string>;
-    pink12Light: string | Variable<string>;
-    orange1Light: string | Variable<string>;
-    orange2Light: string | Variable<string>;
-    orange3Light: string | Variable<string>;
-    orange4Light: string | Variable<string>;
-    orange5Light: string | Variable<string>;
-    orange6Light: string | Variable<string>;
-    orange7Light: string | Variable<string>;
-    orange8Light: string | Variable<string>;
-    orange9Light: string | Variable<string>;
-    orange10Light: string | Variable<string>;
-    orange11Light: string | Variable<string>;
-    orange12Light: string | Variable<string>;
-    green1Light: string | Variable<string>;
-    green2Light: string | Variable<string>;
-    green3Light: string | Variable<string>;
-    green4Light: string | Variable<string>;
-    green5Light: string | Variable<string>;
-    green6Light: string | Variable<string>;
-    green7Light: string | Variable<string>;
-    green8Light: string | Variable<string>;
-    green9Light: string | Variable<string>;
-    green10Light: string | Variable<string>;
-    green11Light: string | Variable<string>;
-    green12Light: string | Variable<string>;
-    gray1Light: string | Variable<string>;
-    gray2Light: string | Variable<string>;
-    gray3Light: string | Variable<string>;
-    gray4Light: string | Variable<string>;
-    gray5Light: string | Variable<string>;
-    gray6Light: string | Variable<string>;
-    gray7Light: string | Variable<string>;
-    gray8Light: string | Variable<string>;
-    gray9Light: string | Variable<string>;
-    gray10Light: string | Variable<string>;
-    gray11Light: string | Variable<string>;
-    gray12Light: string | Variable<string>;
-    blue1Light: string | Variable<string>;
-    blue2Light: string | Variable<string>;
-    blue3Light: string | Variable<string>;
-    blue4Light: string | Variable<string>;
-    blue5Light: string | Variable<string>;
-    blue6Light: string | Variable<string>;
-    blue7Light: string | Variable<string>;
-    blue8Light: string | Variable<string>;
-    blue9Light: string | Variable<string>;
-    blue10Light: string | Variable<string>;
-    blue11Light: string | Variable<string>;
-    blue12Light: string | Variable<string>;
+    yellow1Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow2Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow3Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow4Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow5Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow6Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow7Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow8Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow9Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow10Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow11Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow12Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red1Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red2Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red3Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red4Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red5Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red6Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red7Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red8Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red9Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red10Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red11Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red12Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple1Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple2Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple3Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple4Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple5Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple6Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple7Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple8Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple9Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple10Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple11Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple12Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink1Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink2Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink3Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink4Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink5Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink6Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink7Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink8Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink9Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink10Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink11Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink12Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange1Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange2Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange3Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange4Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange5Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange6Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange7Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange8Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange9Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange10Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange11Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange12Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green1Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green2Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green3Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green4Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green5Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green6Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green7Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green8Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green9Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green10Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green11Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green12Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray1Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray2Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray3Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray4Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray5Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray6Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray7Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray8Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray9Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray10Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray11Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray12Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue1Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue2Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue3Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue4Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue5Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue6Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue7Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue8Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue9Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue10Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue11Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue12Dark: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow1Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow2Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow3Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow4Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow5Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow6Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow7Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow8Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow9Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow10Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow11Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    yellow12Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red1Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red2Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red3Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red4Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red5Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red6Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red7Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red8Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red9Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red10Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red11Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    red12Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple1Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple2Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple3Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple4Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple5Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple6Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple7Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple8Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple9Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple10Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple11Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    purple12Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink1Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink2Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink3Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink4Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink5Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink6Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink7Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink8Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink9Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink10Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink11Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    pink12Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange1Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange2Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange3Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange4Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange5Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange6Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange7Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange8Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange9Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange10Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange11Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    orange12Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green1Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green2Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green3Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green4Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green5Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green6Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green7Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green8Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green9Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green10Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green11Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    green12Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray1Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray2Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray3Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray4Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray5Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray6Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray7Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray8Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray9Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray10Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray11Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    gray12Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue1Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue2Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue3Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue4Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue5Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue6Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue7Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue8Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue9Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue10Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue11Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
+    blue12Light: string | ({
+        val: string;
+        name: string;
+        key: string;
+    } & {
+        variable?: string | undefined;
+        isVar?: true | undefined;
+    });
 };
 export declare const radius: {
     0: number;
@@ -684,313 +2028,2406 @@ export declare const radius: {
 };
 export declare const tokens: {
     color: {
-        yellow1Dark: Variable<string | Variable<string>>;
-        yellow2Dark: Variable<string | Variable<string>>;
-        yellow3Dark: Variable<string | Variable<string>>;
-        yellow4Dark: Variable<string | Variable<string>>;
-        yellow5Dark: Variable<string | Variable<string>>;
-        yellow6Dark: Variable<string | Variable<string>>;
-        yellow7Dark: Variable<string | Variable<string>>;
-        yellow8Dark: Variable<string | Variable<string>>;
-        yellow9Dark: Variable<string | Variable<string>>;
-        yellow10Dark: Variable<string | Variable<string>>;
-        yellow11Dark: Variable<string | Variable<string>>;
-        yellow12Dark: Variable<string | Variable<string>>;
-        red1Dark: Variable<string | Variable<string>>;
-        red2Dark: Variable<string | Variable<string>>;
-        red3Dark: Variable<string | Variable<string>>;
-        red4Dark: Variable<string | Variable<string>>;
-        red5Dark: Variable<string | Variable<string>>;
-        red6Dark: Variable<string | Variable<string>>;
-        red7Dark: Variable<string | Variable<string>>;
-        red8Dark: Variable<string | Variable<string>>;
-        red9Dark: Variable<string | Variable<string>>;
-        red10Dark: Variable<string | Variable<string>>;
-        red11Dark: Variable<string | Variable<string>>;
-        red12Dark: Variable<string | Variable<string>>;
-        purple1Dark: Variable<string | Variable<string>>;
-        purple2Dark: Variable<string | Variable<string>>;
-        purple3Dark: Variable<string | Variable<string>>;
-        purple4Dark: Variable<string | Variable<string>>;
-        purple5Dark: Variable<string | Variable<string>>;
-        purple6Dark: Variable<string | Variable<string>>;
-        purple7Dark: Variable<string | Variable<string>>;
-        purple8Dark: Variable<string | Variable<string>>;
-        purple9Dark: Variable<string | Variable<string>>;
-        purple10Dark: Variable<string | Variable<string>>;
-        purple11Dark: Variable<string | Variable<string>>;
-        purple12Dark: Variable<string | Variable<string>>;
-        pink1Dark: Variable<string | Variable<string>>;
-        pink2Dark: Variable<string | Variable<string>>;
-        pink3Dark: Variable<string | Variable<string>>;
-        pink4Dark: Variable<string | Variable<string>>;
-        pink5Dark: Variable<string | Variable<string>>;
-        pink6Dark: Variable<string | Variable<string>>;
-        pink7Dark: Variable<string | Variable<string>>;
-        pink8Dark: Variable<string | Variable<string>>;
-        pink9Dark: Variable<string | Variable<string>>;
-        pink10Dark: Variable<string | Variable<string>>;
-        pink11Dark: Variable<string | Variable<string>>;
-        pink12Dark: Variable<string | Variable<string>>;
-        orange1Dark: Variable<string | Variable<string>>;
-        orange2Dark: Variable<string | Variable<string>>;
-        orange3Dark: Variable<string | Variable<string>>;
-        orange4Dark: Variable<string | Variable<string>>;
-        orange5Dark: Variable<string | Variable<string>>;
-        orange6Dark: Variable<string | Variable<string>>;
-        orange7Dark: Variable<string | Variable<string>>;
-        orange8Dark: Variable<string | Variable<string>>;
-        orange9Dark: Variable<string | Variable<string>>;
-        orange10Dark: Variable<string | Variable<string>>;
-        orange11Dark: Variable<string | Variable<string>>;
-        orange12Dark: Variable<string | Variable<string>>;
-        green1Dark: Variable<string | Variable<string>>;
-        green2Dark: Variable<string | Variable<string>>;
-        green3Dark: Variable<string | Variable<string>>;
-        green4Dark: Variable<string | Variable<string>>;
-        green5Dark: Variable<string | Variable<string>>;
-        green6Dark: Variable<string | Variable<string>>;
-        green7Dark: Variable<string | Variable<string>>;
-        green8Dark: Variable<string | Variable<string>>;
-        green9Dark: Variable<string | Variable<string>>;
-        green10Dark: Variable<string | Variable<string>>;
-        green11Dark: Variable<string | Variable<string>>;
-        green12Dark: Variable<string | Variable<string>>;
-        gray1Dark: Variable<string | Variable<string>>;
-        gray2Dark: Variable<string | Variable<string>>;
-        gray3Dark: Variable<string | Variable<string>>;
-        gray4Dark: Variable<string | Variable<string>>;
-        gray5Dark: Variable<string | Variable<string>>;
-        gray6Dark: Variable<string | Variable<string>>;
-        gray7Dark: Variable<string | Variable<string>>;
-        gray8Dark: Variable<string | Variable<string>>;
-        gray9Dark: Variable<string | Variable<string>>;
-        gray10Dark: Variable<string | Variable<string>>;
-        gray11Dark: Variable<string | Variable<string>>;
-        gray12Dark: Variable<string | Variable<string>>;
-        blue1Dark: Variable<string | Variable<string>>;
-        blue2Dark: Variable<string | Variable<string>>;
-        blue3Dark: Variable<string | Variable<string>>;
-        blue4Dark: Variable<string | Variable<string>>;
-        blue5Dark: Variable<string | Variable<string>>;
-        blue6Dark: Variable<string | Variable<string>>;
-        blue7Dark: Variable<string | Variable<string>>;
-        blue8Dark: Variable<string | Variable<string>>;
-        blue9Dark: Variable<string | Variable<string>>;
-        blue10Dark: Variable<string | Variable<string>>;
-        blue11Dark: Variable<string | Variable<string>>;
-        blue12Dark: Variable<string | Variable<string>>;
-        yellow1Light: Variable<string | Variable<string>>;
-        yellow2Light: Variable<string | Variable<string>>;
-        yellow3Light: Variable<string | Variable<string>>;
-        yellow4Light: Variable<string | Variable<string>>;
-        yellow5Light: Variable<string | Variable<string>>;
-        yellow6Light: Variable<string | Variable<string>>;
-        yellow7Light: Variable<string | Variable<string>>;
-        yellow8Light: Variable<string | Variable<string>>;
-        yellow9Light: Variable<string | Variable<string>>;
-        yellow10Light: Variable<string | Variable<string>>;
-        yellow11Light: Variable<string | Variable<string>>;
-        yellow12Light: Variable<string | Variable<string>>;
-        red1Light: Variable<string | Variable<string>>;
-        red2Light: Variable<string | Variable<string>>;
-        red3Light: Variable<string | Variable<string>>;
-        red4Light: Variable<string | Variable<string>>;
-        red5Light: Variable<string | Variable<string>>;
-        red6Light: Variable<string | Variable<string>>;
-        red7Light: Variable<string | Variable<string>>;
-        red8Light: Variable<string | Variable<string>>;
-        red9Light: Variable<string | Variable<string>>;
-        red10Light: Variable<string | Variable<string>>;
-        red11Light: Variable<string | Variable<string>>;
-        red12Light: Variable<string | Variable<string>>;
-        purple1Light: Variable<string | Variable<string>>;
-        purple2Light: Variable<string | Variable<string>>;
-        purple3Light: Variable<string | Variable<string>>;
-        purple4Light: Variable<string | Variable<string>>;
-        purple5Light: Variable<string | Variable<string>>;
-        purple6Light: Variable<string | Variable<string>>;
-        purple7Light: Variable<string | Variable<string>>;
-        purple8Light: Variable<string | Variable<string>>;
-        purple9Light: Variable<string | Variable<string>>;
-        purple10Light: Variable<string | Variable<string>>;
-        purple11Light: Variable<string | Variable<string>>;
-        purple12Light: Variable<string | Variable<string>>;
-        pink1Light: Variable<string | Variable<string>>;
-        pink2Light: Variable<string | Variable<string>>;
-        pink3Light: Variable<string | Variable<string>>;
-        pink4Light: Variable<string | Variable<string>>;
-        pink5Light: Variable<string | Variable<string>>;
-        pink6Light: Variable<string | Variable<string>>;
-        pink7Light: Variable<string | Variable<string>>;
-        pink8Light: Variable<string | Variable<string>>;
-        pink9Light: Variable<string | Variable<string>>;
-        pink10Light: Variable<string | Variable<string>>;
-        pink11Light: Variable<string | Variable<string>>;
-        pink12Light: Variable<string | Variable<string>>;
-        orange1Light: Variable<string | Variable<string>>;
-        orange2Light: Variable<string | Variable<string>>;
-        orange3Light: Variable<string | Variable<string>>;
-        orange4Light: Variable<string | Variable<string>>;
-        orange5Light: Variable<string | Variable<string>>;
-        orange6Light: Variable<string | Variable<string>>;
-        orange7Light: Variable<string | Variable<string>>;
-        orange8Light: Variable<string | Variable<string>>;
-        orange9Light: Variable<string | Variable<string>>;
-        orange10Light: Variable<string | Variable<string>>;
-        orange11Light: Variable<string | Variable<string>>;
-        orange12Light: Variable<string | Variable<string>>;
-        green1Light: Variable<string | Variable<string>>;
-        green2Light: Variable<string | Variable<string>>;
-        green3Light: Variable<string | Variable<string>>;
-        green4Light: Variable<string | Variable<string>>;
-        green5Light: Variable<string | Variable<string>>;
-        green6Light: Variable<string | Variable<string>>;
-        green7Light: Variable<string | Variable<string>>;
-        green8Light: Variable<string | Variable<string>>;
-        green9Light: Variable<string | Variable<string>>;
-        green10Light: Variable<string | Variable<string>>;
-        green11Light: Variable<string | Variable<string>>;
-        green12Light: Variable<string | Variable<string>>;
-        gray1Light: Variable<string | Variable<string>>;
-        gray2Light: Variable<string | Variable<string>>;
-        gray3Light: Variable<string | Variable<string>>;
-        gray4Light: Variable<string | Variable<string>>;
-        gray5Light: Variable<string | Variable<string>>;
-        gray6Light: Variable<string | Variable<string>>;
-        gray7Light: Variable<string | Variable<string>>;
-        gray8Light: Variable<string | Variable<string>>;
-        gray9Light: Variable<string | Variable<string>>;
-        gray10Light: Variable<string | Variable<string>>;
-        gray11Light: Variable<string | Variable<string>>;
-        gray12Light: Variable<string | Variable<string>>;
-        blue1Light: Variable<string | Variable<string>>;
-        blue2Light: Variable<string | Variable<string>>;
-        blue3Light: Variable<string | Variable<string>>;
-        blue4Light: Variable<string | Variable<string>>;
-        blue5Light: Variable<string | Variable<string>>;
-        blue6Light: Variable<string | Variable<string>>;
-        blue7Light: Variable<string | Variable<string>>;
-        blue8Light: Variable<string | Variable<string>>;
-        blue9Light: Variable<string | Variable<string>>;
-        blue10Light: Variable<string | Variable<string>>;
-        blue11Light: Variable<string | Variable<string>>;
-        blue12Light: Variable<string | Variable<string>>;
+        yellow1Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow2Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow3Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow4Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow5Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow6Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow7Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow8Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow9Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow10Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow11Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow12Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red1Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red2Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red3Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red4Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red5Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red6Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red7Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red8Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red9Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red10Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red11Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red12Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple1Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple2Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple3Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple4Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple5Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple6Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple7Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple8Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple9Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple10Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple11Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple12Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink1Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink2Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink3Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink4Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink5Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink6Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink7Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink8Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink9Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink10Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink11Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink12Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange1Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange2Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange3Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange4Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange5Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange6Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange7Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange8Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange9Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange10Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange11Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange12Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green1Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green2Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green3Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green4Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green5Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green6Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green7Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green8Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green9Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green10Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green11Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green12Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray1Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray2Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray3Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray4Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray5Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray6Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray7Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray8Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray9Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray10Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray11Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray12Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue1Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue2Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue3Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue4Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue5Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue6Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue7Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue8Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue9Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue10Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue11Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue12Light: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow1Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow2Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow3Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow4Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow5Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow6Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow7Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow8Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow9Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow10Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow11Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        yellow12Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red1Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red2Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red3Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red4Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red5Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red6Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red7Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red8Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red9Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red10Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red11Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        red12Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple1Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple2Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple3Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple4Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple5Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple6Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple7Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple8Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple9Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple10Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple11Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        purple12Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink1Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink2Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink3Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink4Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink5Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink6Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink7Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink8Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink9Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink10Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink11Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        pink12Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange1Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange2Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange3Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange4Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange5Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange6Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange7Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange8Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange9Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange10Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange11Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        orange12Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green1Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green2Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green3Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green4Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green5Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green6Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green7Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green8Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green9Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green10Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green11Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        green12Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray1Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray2Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray3Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray4Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray5Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray6Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray7Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray8Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray9Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray10Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray11Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        gray12Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue1Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue2Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue3Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue4Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue5Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue6Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue7Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue8Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue9Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue10Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue11Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        blue12Dark: {
+            val: string;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
     };
     space: {
-        0: Variable<number>;
-        0.25: Variable<number>;
-        0.5: Variable<number>;
-        0.75: Variable<number>;
-        1: Variable<number>;
-        1.5: Variable<number>;
-        2: Variable<number>;
-        2.5: Variable<number>;
-        3: Variable<number>;
-        3.5: Variable<number>;
-        4: Variable<number>;
-        true: Variable<number>;
-        4.5: Variable<number>;
-        5: Variable<number>;
-        6: Variable<number>;
-        7: Variable<number>;
-        8: Variable<number>;
-        9: Variable<number>;
-        10: Variable<number>;
-        11: Variable<number>;
-        12: Variable<number>;
-        13: Variable<number>;
-        14: Variable<number>;
-        15: Variable<number>;
-        16: Variable<number>;
-        17: Variable<number>;
-        18: Variable<number>;
-        19: Variable<number>;
-        20: Variable<number>;
-        "$-0": Variable<number>;
-        "$-0.25": Variable<number>;
-        "$-0.5": Variable<number>;
-        "$-0.75": Variable<number>;
-        "$-1": Variable<number>;
-        "$-1.5": Variable<number>;
-        "$-2": Variable<number>;
-        "$-2.5": Variable<number>;
-        "$-3": Variable<number>;
-        "$-3.5": Variable<number>;
-        "$-4": Variable<number>;
-        "$-true": Variable<number>;
-        "$-4.5": Variable<number>;
-        "$-5": Variable<number>;
-        "$-6": Variable<number>;
-        "$-7": Variable<number>;
-        "$-8": Variable<number>;
-        "$-9": Variable<number>;
-        "$-10": Variable<number>;
-        "$-11": Variable<number>;
-        "$-12": Variable<number>;
-        "$-13": Variable<number>;
-        "$-14": Variable<number>;
-        "$-15": Variable<number>;
-        "$-16": Variable<number>;
-        "$-17": Variable<number>;
-        "$-18": Variable<number>;
-        "$-19": Variable<number>;
-        "$-20": Variable<number>;
+        0: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        0.25: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        0.5: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        0.75: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        1: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        1.5: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        2: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        2.5: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        3: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        3.5: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        4: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        true: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        4.5: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        5: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        6: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        7: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        8: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        9: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        10: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        11: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        12: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        13: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        14: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        15: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        16: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        17: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        18: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        19: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        20: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-0": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-0.25": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-0.5": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-0.75": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-1": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-1.5": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-2": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-2.5": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-3": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-3.5": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-4": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-true": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-4.5": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-5": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-6": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-7": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-8": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-9": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-10": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-11": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-12": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-13": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-14": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-15": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-16": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-17": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-18": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-19": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        "$-20": {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
     };
     size: {
-        0: Variable<number>;
-        0.25: Variable<number>;
-        0.5: Variable<number>;
-        0.75: Variable<number>;
-        1: Variable<number>;
-        1.5: Variable<number>;
-        2: Variable<number>;
-        2.5: Variable<number>;
-        3: Variable<number>;
-        3.5: Variable<number>;
-        4: Variable<number>;
-        true: Variable<number>;
-        4.5: Variable<number>;
-        5: Variable<number>;
-        6: Variable<number>;
-        7: Variable<number>;
-        8: Variable<number>;
-        9: Variable<number>;
-        10: Variable<number>;
-        11: Variable<number>;
-        12: Variable<number>;
-        13: Variable<number>;
-        14: Variable<number>;
-        15: Variable<number>;
-        16: Variable<number>;
-        17: Variable<number>;
-        18: Variable<number>;
-        19: Variable<number>;
-        20: Variable<number>;
+        0: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        0.25: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        0.5: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        0.75: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        1: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        1.5: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        2: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        2.5: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        3: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        3.5: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        4: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        true: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        4.5: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        5: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        6: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        7: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        8: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        9: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        10: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        11: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        12: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        13: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        14: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        15: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        16: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        17: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        18: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        19: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        20: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
     };
     radius: {
-        0: Variable<number>;
-        1: Variable<number>;
-        2: Variable<number>;
-        3: Variable<number>;
-        4: Variable<number>;
-        true: Variable<number>;
-        5: Variable<number>;
-        6: Variable<number>;
-        7: Variable<number>;
-        8: Variable<number>;
-        9: Variable<number>;
-        10: Variable<number>;
-        11: Variable<number>;
-        12: Variable<number>;
+        0: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        1: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        4: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        2: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        3: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        8: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        true: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        12: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        5: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        7: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        9: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        10: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        6: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        11: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
     };
     zIndex: {
-        0: Variable<number>;
-        1: Variable<number>;
-        2: Variable<number>;
-        3: Variable<number>;
-        4: Variable<number>;
-        5: Variable<number>;
+        0: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        1: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        4: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        2: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        3: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
+        5: {
+            val: number;
+            name: string;
+            key: string;
+        } & {
+            variable?: string | undefined;
+            isVar?: true | undefined;
+        };
     };
 };
 export {};

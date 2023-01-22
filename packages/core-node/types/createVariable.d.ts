@@ -8,20 +8,22 @@ type VariableIn<A = any> = {
     name: string;
     key: string;
 };
-export type Variable<A = any> = VariableIn<A> & {
+export type Variable<A = any> = A extends {
+    [IS_VAR]?: boolean;
+} ? A : VariableIn<A> & {
     [IS_VAR]?: true;
     variable?: string;
 };
 export declare const createVariable: <A extends string | number = any>(props: VariableIn<A>) => VariableIn<A> | {
     isVar: boolean;
-    key: string;
+    key: never;
     name: string;
-    val: A;
+    val: never;
     variable: string;
 };
-export declare function variableToString(vrble?: any, getValue?: boolean): string;
+export declare function variableToString(vrble?: any, getValue?: boolean): any;
 export declare function isVariable(v: Variable | any): v is Variable;
-export declare function getVariable(nameOrVariable: Variable | string): string;
+export declare function getVariable(nameOrVariable: Variable | string): any;
 export declare const setDidGetVariableValue: (val: boolean) => boolean;
 export declare const didGetVariableValue: () => boolean;
 export declare function getVariableValue(v: Variable | any): any;
