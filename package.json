@@ -62,6 +62,7 @@
     "site:prod:profile": "PROFILE=1 yarn site:prod",
     "site:prod:analyze": "ANALYZE=true yarn site:prod",
     "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start",
+    "kitchen-sink:extract": "yarn workspace @tamagui/kitchen-sink start:extract",
     "kitchen-sink:clean": "yarn workspace @tamagui/kitchen-sink start:clean",
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink web",

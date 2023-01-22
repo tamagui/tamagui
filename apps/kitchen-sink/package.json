@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "EXPO_NO_TELEMETRY=true expo start --dev-client --offline",
+    "start:extract": "TAMAGUI_ENABLE_DYNAMIC_LOAD=1 yarn start",
     "dev": "tama dev",
     "start:android": "yarn start --android",
     "start:clean": "watchman watch-del-all & rm -r $TMPDIR/metro-cache & yarn start -c",
