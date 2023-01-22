@@ -108,7 +108,7 @@ const SHEET_OVERLAY_NAME = 'SheetOverlay'
 
 export const SheetOverlayFrame = styled(YStack, {
   name: SHEET_OVERLAY_NAME,
-  backgroundColor: '$background',
+  backgroundColor: '$color10',
   fullscreen: true,
   opacity: 0.5,
   zIndex: 0,
@@ -483,17 +483,14 @@ const SheetImplementation = themeable(
         ) => {
           const isScrolled = scrollBridge.y !== 0
           const isDraggingUp = dy < 0
-          const isAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
+          // we can treat near top instead of exactly to avoid trouble with springs
+          const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
           if (isScrolled) {
             previouslyScrolling = true
             return false
           }
-          if (previouslyScrolling) {
-            previouslyScrolling = false
-            return true
-          }
           // prevent drag once at top and pulling up
-          if (isAtTop) {
+          if (isNearTop) {
             if (!isScrolled && isDraggingUp) {
               return false
             }

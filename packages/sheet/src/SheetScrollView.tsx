@@ -53,7 +53,7 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
       state.current.isDragging = false
       scrollBridge.scrollStartY = -1
       state.current.isScrolling = false
-      setScrollEnabled(true)
+      // setScrollEnabled(true)
       let vy = 0
       if (state.current.dys.length) {
         const recentDys = state.current.dys.slice(-10)

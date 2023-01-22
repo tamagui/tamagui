@@ -69,6 +69,7 @@
 
 1.2
 
+- react native action sheet hooks/logic adapt
 - testing native - https://maestro.mobile.dev
 - app dir support experimental
 - styled('div')
