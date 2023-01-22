@@ -7429,6 +7429,7 @@ __metadata:
     expo-splash-screen: ^0.17.5
     expo-status-bar: ^1.4.2
     expo-updates: ^0.15.6
+    metro-minify-terser: ^0.74.1
     react: 18.0.0
     react-dom: ^18.2.0
     react-native: 0.70.5
@@ -10257,6 +10258,15 @@ __metadata:
   bin:
     metro-inspector-proxy: src/cli.js
   checksum: 0fef6c59c35e874f209ee40f93850dd0c2b9644e90883542296b5d11f68b7b8ed960e6435d0c90bd1e5e6e9dcdfa2e27a771a436f4840ec48f2d7e62a259af2a
+  languageName: node
+  linkType: hard
+
+"metro-minify-terser@npm:^0.74.1":
+  version: 0.74.1
+  resolution: "metro-minify-terser@npm:0.74.1"
+  dependencies:
+    terser: ^5.15.0
+  checksum: 4be8cc0531bdf34d163e6b10cbb79a4448a8ebfed0e48008f51d4705e022d3fad1751c40bf80ffb3460865444524c25f17b2d2f19e61e44a196415879a2590bb
   languageName: node
   linkType: hard
 
@@ -13877,6 +13887,20 @@ __metadata:
   bin:
     terser: bin/terser
   checksum: d035672bd28bd40ff80d83bea6bc6c85bddf41c18060e49c8b36a3aa45a0a6b4a59c6a56bdf52f9d3350587684d664f8ca26656c6084abeb951b85edf34e47ae
+  languageName: node
+  linkType: hard
+
+"terser@npm:^5.15.0":
+  version: 5.16.1
+  resolution: "terser@npm:5.16.1"
+  dependencies:
+    "@jridgewell/source-map": ^0.3.2
+    acorn: ^8.5.0
+    commander: ^2.20.0
+    source-map-support: ~0.5.20
+  bin:
+    terser: bin/terser
+  checksum: cb524123504a2f0d9140c1e1a8628c83bba9cacc404c6aca79e2493a38dfdf21275617ba75b91006b3f1ff586e401ab31121160cd253699f334c6340ea2756f5
   languageName: node
   linkType: hard
 
