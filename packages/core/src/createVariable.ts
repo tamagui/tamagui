@@ -10,27 +10,27 @@ import { getConfig } from './config'
 
 const IS_VAR = 'isVar'
 
-type VariableIn<A = any> = {
+export interface Variable<A = any> {
+  [IS_VAR]?: true
+  variable?: string
   val: A
   name: string
   key: string
 }
 
-export type Variable<A = any> = A extends { [IS_VAR]?: boolean }
-  ? A
-  : VariableIn<A> & {
-      [IS_VAR]?: true
-      variable?: string
-    }
+export type MakeVariable<A = any> = A extends string | number ? Variable<A> : A
 
-export const createVariable = <A extends string | number = any>(props: VariableIn<A>) => {
+type VariableIn<A = any> = Pick<Variable<A>, 'key' | 'name' | 'val'>
+export const createVariable = <A extends string | number = any>(
+  props: VariableIn<A>
+): Variable<A> => {
   if (isVariable(props)) return props
   const { key, name, val } = props
   return {
     [IS_VAR]: true,
-    key,
+    key: key!,
     name: simpleHash(name, 40),
-    val,
+    val: val as any,
     variable: isWeb ? createCSSVariable(name) : '',
   }
 }

@@ -9,9 +9,9 @@ export declare const defaultOffset: {
  *   2. Normalizes various inconsistent styles to be more consistent
  *   3. Expands react-native shorthands, ie paddingHorizontal => paddingLeft, paddingRight
  */
-export declare function expandStyles(style: Record<string, any>, config?: import("..").TamaguiInternalConfig<import("..").CreateTokens<any>, {
+export declare function expandStyles(style: Record<string, any>, config?: import("..").TamaguiInternalConfig<import("..").CreateTokens<import("..").VariableVal>, {
     [key: string]: Partial<import("..").TamaguiBaseTheme> & {
-        [key: string]: any;
+        [key: string]: import("..").VariableVal;
     };
 }, import("..").GenericShorthands, {
     [key: string]: {

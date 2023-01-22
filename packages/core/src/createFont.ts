@@ -39,7 +39,7 @@ export const createFont = <A extends GenericFont>(font: A): A => {
       return [
         key,
         processSection(
-          section,
+          section as any,
           key === 'face' ? fontWeights : sizeKeys,
           key === 'face' ? { normal: font.family } : undefined
         ),

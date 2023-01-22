@@ -19,19 +19,28 @@ type MakeTokens<T> = T extends {
       color: {
         // removes $ prefix allowing for defining either as $1: or 1:,
         // which is important because Chrome re-orders numerical-seeming keys :/
-        [Key in keyof E extends `$${infer X}` ? X : keyof E]: Variable<E[keyof E]>
+        [Key in keyof E extends `$${infer X}` ? X : keyof E]: Variable<string>
       }
       space: {
-        [Key in keyof F extends `$${infer X}` ? X : keyof F]: Variable<F[keyof F]>
+        [Key in keyof F extends `$${infer X}` ? X : keyof F]: Variable<number>
       }
       size: {
-        [Key in keyof G extends `$${infer X}` ? X : keyof G]: Variable<G[keyof G]>
+        [Key in keyof G extends `$${infer X}` ? X : keyof G]: Variable<number>
       }
       radius: {
-        [Key in keyof H extends `$${infer X}` ? X : keyof H]: Variable<H[keyof H]>
+        [Key in keyof H extends `$${infer X}` ? X : keyof H]: Variable<number>
       }
       zIndex: {
-        [Key in keyof J extends `$${infer X}` ? X : keyof J]: Variable<J[keyof J]>
+        [Key in keyof J extends `$${infer X}` ? X : keyof J]: Variable<number>
       }
     }
   : never
+
+// test
+const tokens = createTokens({
+  size: { 0: 1 },
+  space: { 0: 1 },
+  radius: { 0: 1 },
+  zIndex: { 0: 1 },
+  color: { 0: 'hi' },
+})

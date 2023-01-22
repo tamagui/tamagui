@@ -192,3 +192,5 @@ export const tokens = createTokens({
   space,
   size,
 })
+
+console.log('tokens', tokens, Object.keys(tokens.size))
