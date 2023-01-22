@@ -213,6 +213,15 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           }
         }
 
+        // better shaking for icons:
+        if (!isServer) {
+          nextConfig.modularizeImports ??= {}
+          nextConfig.modularizeImports['@tamagui/lucide-icons'] = {
+            transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
+            skipDefaultConversion: true,
+          }
+        }
+
         /**
          * Server react-native compat
          */
