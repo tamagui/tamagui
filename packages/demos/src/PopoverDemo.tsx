@@ -28,7 +28,7 @@ export function Demo({ Icon, ...props }: PopoverProps & { Icon?: any }) {
         <Button icon={Icon} />
       </Popover.Trigger>
 
-      <Adapt when="sm" platform="touch">
+      <Adapt when="sm">
         <Popover.Sheet modal dismissOnSnapToBottom>
           <Popover.Sheet.Frame padding="$4">
             <Adapt.Contents />

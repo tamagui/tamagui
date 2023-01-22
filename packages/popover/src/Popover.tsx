@@ -44,8 +44,8 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { Platform, ScrollView, ScrollViewProps, View } from 'react-native'
 
-import type { UseFloatingProps } from './floating'
-import { useDismiss, useFocus, useInteractions, useRole, useFloating } from './floating'
+import type { UseFloatingProps } from '@floating-ui/react-dom-interactions'
+import { useDismiss, useInteractions, useRole, useFloating } from '@floating-ui/react-dom-interactions'
 
 const POPOVER_NAME = 'Popover'
 
@@ -357,9 +357,9 @@ const PopoverContentImpl = React.forwardRef<
             allowPinchZoom
             // causes lots of bugs on touch web on site
             removeScrollBar={false}
-            // style={{
-            //   display: 'contents',
-            // }}
+            style={{
+              display: 'contents',
+            }}
           >
             {trapFocus === false ? (
               children
@@ -370,8 +370,8 @@ const PopoverContentImpl = React.forwardRef<
                 onMountAutoFocus={onOpenAutoFocus}
                 onUnmountAutoFocus={onCloseAutoFocus}
               >
-                {/* <div style={{ display: 'contents' }}>{children}</div> */}
-                { children }
+                {isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children}
+              
               </FocusScope>
             )}
           </RemoveScroll>
@@ -477,6 +477,8 @@ export const Popover = withStaticProperties(
 
     const breakpointActive = useSheetBreakpointActive(sheetBreakpoint)
 
+
+    // Custom floating context to override the Popper on web
     const useFloatingContext = React.useCallback(
       (props: UseFloatingProps) => {
         const floating = useFloating({
@@ -530,20 +532,32 @@ export const Popover = withStaticProperties(
     //   })
     // }
 
+    const PopperStack = () => {
+      return (
+        <Popper {...popperScope} stayInFrame {...restProps}>
+          <PopoverProviderInternal {...popoverContext}>
+            <PopoverSheetController
+              onOpenChange={setOpen}
+              __scopePopover={__scopePopover}
+            >
+              {children}
+            </PopoverSheetController>
+          </PopoverProviderInternal>
+        </Popper>
+      )
+    }
+
+    const PopperWithFloatingOverride = () => {
+      return (
+        <FloatingOverrideContext.Provider value={useFloatingContext as any}>
+          <PopperStack /> 
+        </FloatingOverrideContext.Provider>
+      )
+    }
+
     return (
       <AdaptProvider>
-        <FloatingOverrideContext.Provider value={useFloatingContext as any}>
-          <Popper {...popperScope} stayInFrame {...restProps}>
-            <PopoverProviderInternal {...popoverContext}>
-              <PopoverSheetController
-                onOpenChange={setOpen}
-                __scopePopover={__scopePopover}
-              >
-                {children}
-              </PopoverSheetController>
-            </PopoverProviderInternal>
-          </Popper>
-        </FloatingOverrideContext.Provider>
+        {isWeb ? <PopperWithFloatingOverride /> : <PopperStack />}
       </AdaptProvider>
     )
   }) as React.FC<PopoverProps>,
@@ -601,8 +615,6 @@ const useSheetBreakpointActive = (breakpoint?: MediaQueryKey | null | false) => 
 }
 
 const useShowPopoverSheet = (context: PopoverContextValue) => {
-  // for now always show as sheet on native
-  // if (!isWeb) return true
   const breakpointActive = useSheetBreakpointActive(context.sheetBreakpoint)
   return context.open === false ? false : breakpointActive
 }

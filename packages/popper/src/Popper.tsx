@@ -89,7 +89,7 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
   const floating = useFloating({
     strategy,
     placement,
-    sameScrollView: false,
+    sameScrollView: false, // this only takes effect on native
     middleware: [
       stayInFrame
         ? shift(typeof stayInFrame === 'boolean' ? {} : stayInFrame)

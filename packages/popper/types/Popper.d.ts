@@ -22,7 +22,6 @@ export declare const PopperProvider: {
     (props: Omit<import("@tamagui/floating").ComputePositionReturn, "x" | "y"> & {
         x: number | null;
         y: number | null;
-        isPositioned: boolean;
     } & {
         update: () => void;
         reference: (node: import("@tamagui/floating").ReferenceType | null) => void;
@@ -30,12 +29,6 @@ export declare const PopperProvider: {
         refs: {
             reference: React.MutableRefObject<import("@tamagui/floating").ReferenceType | null>;
             floating: React.MutableRefObject<HTMLElement | null>;
-            setReference: (node: import("@tamagui/floating").ReferenceType | null) => void;
-            setFloating: (node: HTMLElement | null) => void;
-        };
-        elements: {
-            reference: import("@tamagui/floating").ReferenceType | null;
-            floating: HTMLElement | null;
         };
     } & {
         context?: any;

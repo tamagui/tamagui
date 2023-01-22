@@ -1,11 +1,12 @@
 /// <reference types="react" />
-import * as Floating from './Floating';
+import * as Floating from './floating';
 export type UseFloatingFn = typeof Floating.useFloating;
 type InferFloatingProps = UseFloatingFn extends (props: infer Props) => any ? Props : never;
 export type UseFloatingProps = InferFloatingProps & {
     sameScrollView?: boolean;
 };
-export type UseFloatingReturn = Floating.UseFloatingReturn & {
+type InferUseFloatingReturn = ReturnType<UseFloatingFn>;
+export type UseFloatingReturn = InferUseFloatingReturn & {
     context?: any;
     getFloatingProps?: (props: {
         ref: any;
