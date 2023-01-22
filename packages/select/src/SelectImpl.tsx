@@ -15,7 +15,12 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react-dom-interactions'
-import { isWeb, useIsTouchDevice, useIsomorphicLayoutEffect } from '@tamagui/core'
+import {
+  isClient,
+  isWeb,
+  useIsTouchDevice,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/core'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
 
@@ -79,7 +84,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   }, [open, setActiveIndex])
 
   // close when mouseup outside select
-  if (isWeb) {
+  if (isWeb && isClient) {
     React.useEffect(() => {
       if (!open) return
       const mouseUp = (e: MouseEvent) => {
@@ -151,8 +156,8 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         SCROLL_ARROW_THRESHOLD
 
   const interactions = useInteractions([
-    useClick(context, { event: 'mousedown' }),
-    useDismiss(context, { outsidePress: false }),
+    useClick(context, { pointerDown: true }),
+    useDismiss(context, { outsidePointerDown: true }),
     useRole(context, { role: 'listbox' }),
     useInnerOffset(context, {
       enabled: !fallback,
@@ -173,63 +178,64 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }),
   ])
 
-  const interactionsContext = {
-    ...interactions,
-    getReferenceProps() {
-      return interactions.getReferenceProps({
-        ref: reference,
-        className: 'SelectTrigger',
-        onKeyDown(event) {
-          if (
-            event.key === 'Enter' ||
-            (event.key === ' ' && !context.dataRef.current.typing)
-          ) {
-            event.preventDefault()
-            setOpen(true)
-          }
-        },
-      })
-    },
-    getFloatingProps(props) {
-      return interactions.getFloatingProps({
-        ref: floating,
-        className: 'Select',
-        ...props,
-        style: {
-          position: strategy,
-          top: y ?? '',
-          left: x ?? '',
-          outline: 0,
-          listStyleType: 'none',
-          scrollbarWidth: 'none',
-          ...floatingStyle.current,
-          ...props?.style,
-        },
-        onPointerEnter() {
-          setControlledScrolling(false)
-          state.current.isMouseOutside = false
-        },
-        onPointerLeave() {
-          state.current.isMouseOutside = true
-        },
-        onPointerMove() {
-          state.current.isMouseOutside = false
-          setControlledScrolling(false)
-        },
-        onKeyDown() {
-          setControlledScrolling(true)
-        },
-        onContextMenu(e) {
-          e.preventDefault()
-        },
-        onScroll(event) {
-          // In React 18, the ScrollArrows need to synchronously know this value to prevent
-          // painting at the wrong time.
-          flushSync(() => setScrollTop(event.currentTarget.scrollTop))
-        },
-      })
-    },
-  }
+  const interactionsContext = React.useMemo(() => {
+    return {
+      ...interactions,
+      getReferenceProps() {
+        return interactions.getReferenceProps({
+          ref: reference,
+          className: 'SelectTrigger',
+          onKeyDown(event) {
+            if (
+              event.key === 'Enter' ||
+              (event.key === ' ' && !context.dataRef.current.typing)
+            ) {
+              event.preventDefault()
+              setOpen(true)
+            }
+          },
+        })
+      },
+      getFloatingProps(props) {
+        return interactions.getFloatingProps({
+          ref: floating,
+          className: 'Select',
+          ...props,
+          style: {
+            position: strategy,
+            top: y ?? '',
+            left: x ?? '',
+            outline: 0,
+            scrollbarWidth: 'none',
+            ...floatingStyle.current,
+            ...props?.style,
+          },
+          onPointerEnter() {
+            setControlledScrolling(false)
+            state.current.isMouseOutside = false
+          },
+          onPointerLeave() {
+            state.current.isMouseOutside = true
+          },
+          onPointerMove() {
+            state.current.isMouseOutside = false
+            setControlledScrolling(false)
+          },
+          onKeyDown() {
+            setControlledScrolling(true)
+          },
+          onContextMenu(e) {
+            e.preventDefault()
+          },
+          onScroll(event) {
+            // In React 18, the ScrollArrows need to synchronously know this value to prevent
+            // painting at the wrong time.
+            flushSync(() => setScrollTop(event.currentTarget.scrollTop))
+          },
+        })
+      },
+    }
+  }, [floating, y, x, interactions])
 
   // effects
 
@@ -326,7 +332,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       activeIndex={activeIndex}
       canScrollDown={!!showDownArrow}
       canScrollUp={!!showUpArrow}
-      controlledScrolling
+      controlledScrolling={controlledScrolling}
       dataRef={context.dataRef}
       listRef={listItemsRef}
       blockSelection={blockSelection}

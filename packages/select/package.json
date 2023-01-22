@@ -23,9 +23,9 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "dependencies": {
-    "@floating-ui/react-dom": "^1.0.1",
-    "@floating-ui/react-dom-interactions": "^0.13.3",
-    "@floating-ui/react-native": "^0.8.2",
+    "@floating-ui/react-dom": "1.0.0",
+    "@floating-ui/react-dom-interactions": "0.8.1",
+    "@floating-ui/react-native": "0.8.0",
     "@radix-ui/react-use-previous": "^0.1.1",
     "@tamagui/adapt": "^1.0.20",
     "@tamagui/compose-refs": "^1.0.20",

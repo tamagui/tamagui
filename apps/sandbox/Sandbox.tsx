@@ -54,7 +54,9 @@ export const Sandbox = () => {
         }}
       />
 
-      <AnimationsTimingDemo />
+      <YStack fullscreen ai="center" jc="center">
+        <SelectDemo />
+      </YStack>
 
       {/*  */}
     </TamaguiProvider>
