@@ -157,7 +157,7 @@ export function createExtractor(
       disableExtractVariables,
       disableDebugAttr,
       disableExtractFoundComponents,
-      includeExtensions = ['.tsx', '.jsx', '.js'],
+      includeExtensions = ['.ts', '.tsx', '.jsx'],
       extractStyledDefinitions = false,
       prefixLogs,
       excludeProps,
