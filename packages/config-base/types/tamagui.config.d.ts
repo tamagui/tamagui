@@ -3,6 +3,10 @@ export declare const config: {
     shouldAddPrefersColorThemes: boolean;
     themeClassNameOnRoot: boolean;
     animations: import("@tamagui/core").AnimationDriver<{
+        '100ms': {
+            type: "timing";
+            duration: number;
+        };
         bouncy: {
             damping: number;
             mass: number;

@@ -2,7 +2,13 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { DialogDemo, PopoverDemo, SelectDemo, TooltipDemo } from '@tamagui/demos'
+import {
+  AnimationsTimingDemo,
+  DialogDemo,
+  PopoverDemo,
+  SelectDemo,
+  TooltipDemo,
+} from '@tamagui/demos'
 import { useState } from 'react'
 import {
   Button,
@@ -24,10 +30,6 @@ import config from './tamagui.config'
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
-
-// const UnSquare = styled(Square, {
-//   unset: 'all',
-// })
 
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light')
@@ -52,7 +54,7 @@ export const Sandbox = () => {
         }}
       />
 
-      <SelectDemo />
+      <AnimationsTimingDemo />
 
       {/*  */}
     </TamaguiProvider>

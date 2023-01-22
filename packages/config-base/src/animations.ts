@@ -1,6 +1,10 @@
 import { createAnimations } from '@tamagui/animations-react-native'
 
 export const animations = createAnimations({
+  '100ms': {
+    type: 'timing',
+    duration: 100,
+  },
   bouncy: {
     damping: 9,
     mass: 0.9,

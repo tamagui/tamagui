@@ -144,6 +144,7 @@ export function createAnimations<A extends AnimationsConfig>(
       const mergedStyles = style
       const animateStyles = useSafeRef<Record<string, Animated.Value>>({})
       const animatedTranforms = useSafeRef<{ [key: string]: Animated.Value }[]>([])
+
       const animationsState = useSafeRef<
         WeakMap<
           Animated.Value,
@@ -255,7 +256,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
             runners.push(() => {
               value.stopAnimation()
-              Animated.spring(value, {
+              Animated[animationConfig.type || 'spring'](value, {
                 toValue: val,
                 useNativeDriver: !isWeb,
                 ...animationConfig,
@@ -326,7 +327,7 @@ function getAnimationConfig(
   key: string,
   animations: AnimationsConfig,
   animation?: AnimationProp
-) {
+): AnimationConfig {
   if (typeof animation === 'string') {
     return animations[animation]
   }
