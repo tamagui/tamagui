@@ -17,19 +17,21 @@ type MakeTokens<T> = T extends {
 }
   ? {
       color: {
-        [Key in keyof E]: E[Key] extends Variable ? E[Key] : Variable<E[Key]>
+        // removes $ prefix allowing for defining either as $1: or 1:,
+        // which is important because Chrome re-orders numerical-seeming keys :/
+        [Key in keyof E extends `$${infer X}` ? X : keyof E]: Variable<E[keyof E]>
       }
       space: {
-        [Key in keyof F]: F[Key] extends Variable ? F[Key] : Variable<F[Key]>
+        [Key in keyof F extends `$${infer X}` ? X : keyof F]: Variable<F[keyof F]>
       }
       size: {
-        [Key in keyof G]: G[Key] extends Variable ? G[Key] : Variable<G[Key]>
+        [Key in keyof G extends `$${infer X}` ? X : keyof G]: Variable<G[keyof G]>
       }
       radius: {
-        [Key in keyof H]: H[Key] extends Variable ? H[Key] : Variable<H[Key]>
+        [Key in keyof H extends `$${infer X}` ? X : keyof H]: Variable<H[keyof H]>
       }
       zIndex: {
-        [Key in keyof J]: J[Key] extends Variable ? J[Key] : Variable<J[Key]>
+        [Key in keyof J extends `$${infer X}` ? X : keyof J]: Variable<J[keyof J]>
       }
     }
   : never

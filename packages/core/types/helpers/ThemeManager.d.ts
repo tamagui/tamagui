@@ -28,7 +28,7 @@ export declare class ThemeManager {
     getState(props?: ThemeProps, parentManager?: ThemeManager | null): ThemeManagerState | null;
     _allKeys: Set<string> | null;
     get allKeys(): Set<string>;
-    getValue(key: string, state?: ThemeManagerState): import("../types").VariableVal | undefined;
+    getValue(key: string, state?: ThemeManagerState): any;
     notify(): void;
     onChangeTheme(cb: ThemeListener): () => void;
 }

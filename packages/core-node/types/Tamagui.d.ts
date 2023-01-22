@@ -5,9 +5,9 @@ declare class TamaguiManager {
         [x: string]: boolean;
         [x: number]: boolean;
     };
-    get config(): import("./types").TamaguiInternalConfig<import("./types").CreateTokens<import("./types").VariableVal>, {
+    get config(): import("./types").TamaguiInternalConfig<import("./types").CreateTokens<any>, {
         [key: string]: Partial<import("./types").TamaguiBaseTheme> & {
-            [key: string]: import("./types").VariableVal;
+            [key: string]: any;
         };
     }, import("./types").GenericShorthands, {
         [key: string]: {
