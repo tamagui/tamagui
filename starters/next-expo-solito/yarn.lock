@@ -4107,6 +4107,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-native@npm:^0.71.0":
+  version: 0.71.0
+  resolution: "@types/react-native@npm:0.71.0"
+  dependencies:
+    "@types/react": "*"
+  checksum: 58332a3ab0bd239fa4211fd39d5143c8a6ae9c9b6217ebea1a8821eccfcc3b3805d9b69dd18eaf4917e9f656b9b59e2517591501b512ee7bd8cb12efa111a255
+  languageName: node
+  linkType: hard
+
 "@types/react-native@npm:~0.70.6":
   version: 0.70.8
   resolution: "@types/react-native@npm:0.70.8"
@@ -4124,6 +4133,17 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: b62f0ea3cdfa68e106391728325057ad36f1bde7ba2dfae029472c47e01e482bc77c6ba4f1dad59f3f04ee81cb597618ff7c30a33c157c0a20462b6dd6aa2d4d
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^18.0.27":
+  version: 18.0.27
+  resolution: "@types/react@npm:18.0.27"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: 600fdbc39a92ea4a77047db3e12f05f67776a710f5918248c0189a59ac2a38900c9db5a5d2e433a16df528a3ecab1aa114b322cacea573bb1ca2fc0b094c52d1
   languageName: node
   linkType: hard
 
@@ -4646,8 +4666,10 @@ __metadata:
     "@tamagui/lucide-icons": ^1.0.17
     "@tamagui/shorthands": ^1.0.17
     "@tamagui/theme-base": ^1.0.17
+    "@types/react": ^18.0.27
+    "@types/react-native": ^0.71.0
     expo-linking: ^3.2.3
-    solito: 2.0.0-canary.4
+    solito: ^2.1.3
   languageName: unknown
   linkType: soft
 
@@ -13257,10 +13279,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solito@npm:2.0.0-canary.4":
-  version: 2.0.0-canary.4
-  resolution: "solito@npm:2.0.0-canary.4"
-  checksum: e1485e5aed275dede4bcaeab9f8e3d068b751cfcc1e2ddc6222daeaf51a34f7f50355a06bcd168c74484991dbb6762897dba9a0f861b99638719b8e97413e459
+"solito@npm:^2.1.3":
+  version: 2.1.3
+  resolution: "solito@npm:2.1.3"
+  checksum: 254d363d0d2af584b0f65dac6986f4abc507524ad8033464be36dfab6ab70a87909137481e93da4c40eabf4b8a7dd924772409e5ab2d496bfec3b47baffcfe6d
   languageName: node
   linkType: hard
 
