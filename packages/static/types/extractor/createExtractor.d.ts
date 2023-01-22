@@ -12,9 +12,9 @@ export declare function createExtractor({ logger }?: ExtractorOptions): {
     cleanupBeforeExit: typeof cleanupBeforeExit;
     loadTamagui: (props: TamaguiOptions) => Promise<TamaguiProjectInfo>;
     loadTamaguiSync: (props: TamaguiOptions) => TamaguiProjectInfo;
-    getTamagui(): import("@tamagui/core-node").TamaguiInternalConfig<import("@tamagui/core-node").CreateTokens<any>, {
+    getTamagui(): import("@tamagui/core-node").TamaguiInternalConfig<import("@tamagui/core-node").CreateTokens<import("@tamagui/core-node").VariableVal>, {
         [key: string]: Partial<import("@tamagui/core-node").TamaguiBaseTheme> & {
-            [key: string]: any;
+            [key: string]: import("@tamagui/core-node").VariableVal;
         };
     }, import("@tamagui/core-node").GenericShorthands, {
         [key: string]: {
