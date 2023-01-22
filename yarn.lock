@@ -1963,13 +1963,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo-google-fonts/montserrat@npm:^0.2.2":
-  version: 0.2.2
-  resolution: "@expo-google-fonts/montserrat@npm:0.2.2"
-  checksum: 7d7bbe8691042f40eccfd3327c17cd3f32f5edc4c2d20a80944deb7c8aa1c7afc1edec3e2a968af7d5778538815ebeb7542741d00bbdec169febe5c9d79e2319
-  languageName: node
-  linkType: hard
-
 "@expo/bunyan@npm:4.0.0, @expo/bunyan@npm:^4.0.0":
   version: 4.0.0
   resolution: "@expo/bunyan@npm:4.0.0"
@@ -4532,7 +4525,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/animations-reanimated@^1.0.18, @tamagui/animations-reanimated@^1.0.3, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
+"@tamagui/animations-reanimated@^1.0.18, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:packages/animations-reanimated"
   dependencies:
@@ -4576,7 +4569,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/babel-plugin@1.0.18, @tamagui/babel-plugin@^1.0.18, @tamagui/babel-plugin@^1.0.3, @tamagui/babel-plugin@workspace:packages/babel-plugin":
+"@tamagui/babel-plugin@1.0.18, @tamagui/babel-plugin@^1.0.18, @tamagui/babel-plugin@workspace:packages/babel-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/babel-plugin@workspace:packages/babel-plugin"
   dependencies:
@@ -4817,7 +4810,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core@^1.0.18, @tamagui/core@^1.0.3, @tamagui/core@workspace:packages/core":
+"@tamagui/core@^1.0.18, @tamagui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
@@ -5172,7 +5165,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/linear-gradient@^1.0.17, @tamagui/linear-gradient@^1.0.18, @tamagui/linear-gradient@workspace:packages/linear-gradient":
+"@tamagui/linear-gradient@^1.0.18, @tamagui/linear-gradient@workspace:packages/linear-gradient":
   version: 0.0.0-use.local
   resolution: "@tamagui/linear-gradient@workspace:packages/linear-gradient"
   dependencies:
@@ -5218,7 +5211,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/lucide-icons@^1.0.18, @tamagui/lucide-icons@^1.0.3, @tamagui/lucide-icons@workspace:packages/lucide-icons":
+"@tamagui/lucide-icons@^1.0.18, @tamagui/lucide-icons@workspace:packages/lucide-icons":
   version: 0.0.0-use.local
   resolution: "@tamagui/lucide-icons@workspace:packages/lucide-icons"
   dependencies:
@@ -5642,7 +5635,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/shorthands@^1.0.18, @tamagui/shorthands@^1.0.3, @tamagui/shorthands@workspace:packages/shorthands":
+"@tamagui/shorthands@^1.0.18, @tamagui/shorthands@workspace:packages/shorthands":
   version: 0.0.0-use.local
   resolution: "@tamagui/shorthands@workspace:packages/shorthands"
   dependencies:
@@ -23374,36 +23367,6 @@ __metadata:
   checksum: 814e9d1ddcc9798f7377ffa448a5a3892232b9275ebb30a41b529607691c0491de47cba426e917a4d08ded3ee7e9ba2f3fe32e62ee3cd9c7d3bafb7754bd553c
   languageName: node
   linkType: hard
-
-"weather-tamagui-demo@workspace:apps/expo":
-  version: 0.0.0-use.local
-  resolution: "weather-tamagui-demo@workspace:apps/expo"
-  dependencies:
-    "@babel/core": ^7.19.6
-    "@expo-google-fonts/montserrat": ^0.2.2
-    "@tamagui/animations-reanimated": ^1.0.3
-    "@tamagui/babel-plugin": ^1.0.3
-    "@tamagui/core": ^1.0.3
-    "@tamagui/linear-gradient": ^1.0.17
-    "@tamagui/lucide-icons": ^1.0.3
-    "@tamagui/shorthands": ^1.0.3
-    "@types/react": ^18.0.15
-    "@types/react-native": ^0.70.8
-    babel-plugin-transform-inline-environment-variables: ^0.4.4
-    expo: ~47.0.12
-    expo-font: ^11.0.1
-    expo-linear-gradient: ^12.0.1
-    expo-status-bar: ^1.4.2
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    react-native: "*"
-    react-native-reanimated: ^2.12.0
-    react-native-safe-area-context: ^4.4.1
-    react-native-svg: 13.4.0
-    react-native-web: ^0.18.3
-    typescript: ^4.7.4
-  languageName: unknown
-  linkType: soft
 
 "web-namespaces@npm:^2.0.0":
   version: 2.0.1

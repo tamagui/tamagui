@@ -202,6 +202,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     animations: {} as any,
     media: {},
     ...configIn,
+    // already processed by createTokens()
+    tokens: configIn.tokens as any,
     // vite made this into a function if it wasn't set
     shorthands: { ...shorthands },
     inverseShorthands: shorthands

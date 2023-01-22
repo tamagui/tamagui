@@ -1,4 +1,4 @@
-import type { SizeTokens, SpaceTokens } from '@tamagui/core'
+import type { SizeTokens, SpaceTokens, Variable } from '@tamagui/core'
 import { getTokens, tokensKeysOrdered } from '@tamagui/core'
 
 export const getSize = (size?: SizeTokens | undefined, shift = 0, bounds = [0]) => {
@@ -10,7 +10,7 @@ export const stepTokenUpOrDown = (
   name: SizeTokens | SpaceTokens | string = '$true',
   shift = 0,
   bounds = [0]
-) => {
+): Variable<number> => {
   const tokens = getTokens(true)[type]
   const keysOrdered = tokensKeysOrdered.get(tokens) || Object.keys(tokens)
   const min = bounds[0] ?? 0
@@ -21,5 +21,8 @@ export const stepTokenUpOrDown = (
   }
   const index = Math.min(max, Math.max(min, currentIndex + shift))
   const key = keysOrdered[index]
+  // console.log('keysOrdered', name, keysOrdered, currentIndex, shift, index, key)
+  // TODO
+  // @ts-ignore
   return tokens[key] || tokens['$true']
 }
