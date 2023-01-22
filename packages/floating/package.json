@@ -1,0 +1,34 @@
+{
+  "name": "@tamagui/floating",
+  "version": "1.0.20",
+  "sideEffects": true,
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "../../node_modules/.bin/rome check src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@floating-ui/react-dom": "^1.2.1",
+    "@floating-ui/react-native": "^0.9.0"
+  }
+}
