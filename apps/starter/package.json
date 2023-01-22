@@ -34,5 +34,6 @@
     "wait-port": "^0.3.0",
     "zx": "^7.1.1"
   },
-  "packageManager": "yarn@3.2.3"
+  "packageManager": "yarn@3.2.3",
+  "version": "1.0.18"
 }

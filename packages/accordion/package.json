@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/accordion",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "sideEffects": [
     "*.css"
   ],
@@ -19,19 +19,19 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/compose-refs": "^1.0.17",
-    "@tamagui/core": "^1.0.17",
-    "@tamagui/create-context": "^1.0.17",
-    "@tamagui/polyfill-dev": "^1.0.17",
-    "@tamagui/stacks": "^1.0.17",
-    "@tamagui/use-controllable-state": "^1.0.17"
+    "@tamagui/compose-refs": "^1.0.18",
+    "@tamagui/core": "^1.0.18",
+    "@tamagui/create-context": "^1.0.18",
+    "@tamagui/polyfill-dev": "^1.0.18",
+    "@tamagui/stacks": "^1.0.18",
+    "@tamagui/use-controllable-state": "^1.0.18"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.17",
+    "@tamagui/build": "^1.0.18",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
