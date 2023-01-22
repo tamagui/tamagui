@@ -24,7 +24,6 @@ import { createContextScope } from '@tamagui/create-context'
 import { DismissableProps } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
 import {
-  FloatingOverrideContext,
   Popper,
   PopperAnchor,
   PopperArrow,
@@ -36,6 +35,7 @@ import {
   createPopperScope,
   usePopperContext,
 } from '@tamagui/popper'
+import { FloatingOverrideContext } from '@tamagui/floating'
 import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
 import { RemoveScroll, RemoveScrollProps } from '@tamagui/remove-scroll'
 import { ControlledSheet, SheetController } from '@tamagui/sheet'
@@ -45,7 +45,7 @@ import * as React from 'react'
 import { Platform, ScrollView, ScrollViewProps, View } from 'react-native'
 
 import type { UseFloatingProps } from './floating'
-import { useDismiss, useFloating, useFocus, useInteractions, useRole } from './floating'
+import { useDismiss, useFocus, useInteractions, useRole, useFloating } from './floating'
 
 const POPOVER_NAME = 'Popover'
 
@@ -357,9 +357,9 @@ const PopoverContentImpl = React.forwardRef<
             allowPinchZoom
             // causes lots of bugs on touch web on site
             removeScrollBar={false}
-            style={{
-              display: 'contents',
-            }}
+            // style={{
+            //   display: 'contents',
+            // }}
           >
             {trapFocus === false ? (
               children
@@ -370,7 +370,8 @@ const PopoverContentImpl = React.forwardRef<
                 onMountAutoFocus={onOpenAutoFocus}
                 onUnmountAutoFocus={onCloseAutoFocus}
               >
-                <div style={{ display: 'contents' }}>{children}</div>
+                {/* <div style={{ display: 'contents' }}>{children}</div> */}
+                { children }
               </FocusScope>
             )}
           </RemoveScroll>
@@ -419,9 +420,9 @@ export type PopoverArrowProps = PopperArrowProps
 export const PopoverArrow = React.forwardRef<PopoverArrowElement, PopoverArrowProps>(
   (props: ScopedProps<PopoverArrowProps>, forwardedRef) => {
     // we dont show on native and i'm getting an err
-    if (!isWeb) {
-      return null
-    }
+    // if (!isWeb) {
+    //   return null
+    // }
 
     const { __scopePopover, ...arrowProps } = props
     const popperScope = usePopoverScope(__scopePopover)
@@ -465,7 +466,7 @@ export const Popover = withStaticProperties(
 
     const sheetBreakpoint = when
     const popperScope = usePopoverScope(__scopePopover)
-    const triggerRef = React.useRef<HTMLButtonElement>(null)
+    const triggerRef = React.useRef<any>(null)
     const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
     const [open, setOpen] = useControllableState({
       prop: openProp,
@@ -601,7 +602,7 @@ const useSheetBreakpointActive = (breakpoint?: MediaQueryKey | null | false) => 
 
 const useShowPopoverSheet = (context: PopoverContextValue) => {
   // for now always show as sheet on native
-  if (!isWeb) return true
+  // if (!isWeb) return true
   const breakpointActive = useSheetBreakpointActive(context.sheetBreakpoint)
   return context.open === false ? false : breakpointActive
 }

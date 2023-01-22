@@ -16,7 +16,7 @@ export type UseFloatingReturn = Floating.UseFloatingReturn & {
         [key: string]: any;
     }) => any;
 };
-export declare const FloatingOverrideContext: import("react").Context<typeof Floating.useFloating | null>;
+export declare const FloatingOverrideContext: import("react").Context<any>;
 export declare const useFloating: (props: UseFloatingProps) => UseFloatingReturn;
 export {};
 //# sourceMappingURL=useFloating.d.ts.map

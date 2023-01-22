@@ -12,7 +12,7 @@ import {
 
 export function PopoverDemo() {
   return (
-    <XStack space="$2">
+    <XStack space="$2" f={1} jc="center" ai="center">
       <Demo placement="left" Icon={ChevronLeft} />
       <Demo placement="bottom" Icon={ChevronDown} />
       <Demo placement="top" Icon={ChevronUp} />

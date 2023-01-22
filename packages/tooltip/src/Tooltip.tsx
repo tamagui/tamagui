@@ -25,12 +25,14 @@ import {
   usePopoverScope,
 } from '@tamagui/popover'
 import {
-  FloatingOverrideContext,
   Popper,
   PopperProps,
-  UseFloatingFn,
   usePopperContext,
 } from '@tamagui/popper'
+import {
+  FloatingOverrideContext,
+  UseFloatingFn
+} from '@tamagui/floating'
 import * as React from 'react'
 
 const TooltipContent = React.forwardRef(
