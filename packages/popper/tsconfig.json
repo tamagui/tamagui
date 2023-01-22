@@ -3,6 +3,7 @@
   "compilerOptions": { "composite": true},
   "references": [
     { "path": "../core" },
+    { "path": "../floating" },
     { "path": "../create-context" },
     { "path": "../compose-refs" },
     { "path": "../use-controllable-state" },

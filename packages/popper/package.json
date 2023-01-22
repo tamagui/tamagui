@@ -25,6 +25,7 @@
   "dependencies": {
     "@floating-ui/react-dom": "^1.0.1",
     "@floating-ui/react-native": "^0.8.2",
+    "@tamagui/floating": "^1.0.20",
     "@tamagui/compose-refs": "^1.0.20",
     "@tamagui/core": "^1.0.20",
     "@tamagui/create-context": "^1.0.20",

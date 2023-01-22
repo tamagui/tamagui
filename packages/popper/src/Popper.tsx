@@ -5,6 +5,7 @@ import {
   SizeTokens,
   StackProps,
   getVariableValue,
+  isWeb,
   styled,
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
@@ -12,9 +13,10 @@ import { Scope, createContextScope } from '@tamagui/create-context'
 import { stepTokenUpOrDown } from '@tamagui/get-size'
 import { SizableStackProps, ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
-import { View } from 'react-native'
+import { View, useWindowDimensions } from 'react-native'
 
-import {
+import { 
+  useFloating,
   Coords,
   Placement,
   Strategy,
@@ -23,8 +25,8 @@ import {
   flip,
   offset,
   shift,
-} from './floating'
-import { UseFloatingReturn, useFloating } from './useFloating'
+  UseFloatingReturn,
+} from '@tamagui/floating';
 
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never
@@ -80,13 +82,14 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
   }, [])
 
   const anchorRef = React.useRef<any>()
-  const [arrowEl, setArrow] = React.useState<HTMLSpanElement | null>(null)
+  const [arrowEl, setArrow] = React.useState<any>(null)
   const [arrowSize, setArrowSize] = React.useState(0)
   const arrowRef = React.useRef()
 
   const floating = useFloating({
     strategy,
     placement,
+    sameScrollView: false,
     middleware: [
       stayInFrame
         ? shift(typeof stayInFrame === 'boolean' ? {} : stayInFrame)
@@ -105,13 +108,27 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
     floating.reference(anchorRef.current)
   }, [anchorRef])
 
-  React.useEffect(() => {
-    if (!(refs.reference.current && refs.floating.current)) {
-      return
-    }
-    // Only call this when the floating element is rendered
-    return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
-  }, [floating.update, refs.floating, refs.reference])
+  if (isWeb) {
+    React.useEffect(() => {
+      if (!(refs.reference.current && refs.floating.current)) {
+        return
+      }
+      // Only call this when the floating element is rendered
+      return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
+    }, [floating.update, refs.floating, refs.reference])
+  } else {
+    // On Native there's no autoupdate so we call update() when necessary
+    const dimensions = useWindowDimensions();
+    const dimensionRef = React.useRef(dimensions);
+    React.useEffect(() => {
+      if (dimensions != dimensionRef.current) {
+        floating.update();
+      }      
+    }, [dimensions])
+  }
+
+
+  
 
   return (
     <PopperProvider
