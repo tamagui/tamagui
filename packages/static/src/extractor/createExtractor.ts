@@ -401,7 +401,7 @@ export function createExtractor(
         }
         if (!t.isIdentifier(path.node.callee) || path.node.callee.name !== 'styled') {
           shouldPrintDebug &&
-            logger.info(`skip 1 ${path.node.callee.type} ${path.node.callee.name}`)
+            logger.info(`skip 1 ${path.node.callee.type} ${path.node.callee?.['name']}`)
           return
         }
 
@@ -426,15 +426,25 @@ export function createExtractor(
          * Find inline components along the way:
          */
 
-        let Component = getValidImportedComponent(parentName)
+        const ParentComponent = getValidImportedComponent(parentName)
+
+        if (!ParentComponent) {
+          return
+        }
+
+        let Component
+
+        if (shouldPrintDebug) {
+          logger.info(
+            `variableName ${variableName} ParentComponent ${!!ParentComponent} ${variableName} = ${parentName} (disableExtractFoundComponents ${disableExtractFoundComponents})`
+          )
+        }
 
         if (!Component) {
-          if (disableExtractFoundComponents === true) {
-            return
-          }
           if (
-            Array.isArray(disableExtractFoundComponents) &&
-            disableExtractFoundComponents.includes(parentName)
+            disableExtractFoundComponents === true ||
+            (Array.isArray(disableExtractFoundComponents) &&
+              disableExtractFoundComponents.includes(parentName))
           ) {
             return
           }
@@ -442,7 +452,7 @@ export function createExtractor(
           try {
             if (shouldPrintDebug) {
               logger.info(
-                `Unknown component ${parentName}, attempting dynamic load: ${sourcePath}`
+                `Unknown component ${variableName}, attempting dynamic load: ${sourcePath}`
               )
             }
 
@@ -450,6 +460,10 @@ export function createExtractor(
               forceExports: true,
               components: [sourcePath],
             })
+
+            if (shouldPrintDebug === 'verbose') {
+              logger.info(`out: ${JSON.stringify(out, null, 2)}`)
+            }
 
             if (!out?.components) {
               if (shouldPrintDebug) {
@@ -611,12 +625,21 @@ export function createExtractor(
       },
 
       JSXElement(traversePath) {
+        const node = traversePath.node.openingElement
+        const closingElement = traversePath.node.closingElement
+
+        // skip non-identifier opening elements (member expressions, etc.)
+        if (
+          t.isJSXMemberExpression(closingElement?.name) ||
+          !t.isJSXIdentifier(node.name)
+        ) {
+          return
+        }
+
         tm.mark('jsx-element', !!shouldPrintDebug)
 
-        const node = traversePath.node.openingElement
         const ogAttributes = node.attributes.map((attr) => ({ ...attr }))
         const componentName = findComponentName(traversePath.scope)
-        const closingElement = traversePath.node.closingElement
         const originalNodeName = node.name.name
 
         const filePath = `./${relative(process.cwd(), sourcePath)}`
@@ -654,28 +677,24 @@ export function createExtractor(
           logger.info(['\x1b[1m', '\x1b[32m', `<${originalNodeName} />`, disableDebugAttr ? '' : '🐛'].join(' '))
         }
 
-        // skip non-identifier opening elements (member expressions, etc.)
-        if (
-          t.isJSXMemberExpression(closingElement?.name) ||
-          !t.isJSXIdentifier(node.name)
-        ) {
-          return
-        }
-
         // validate its a proper import from tamagui (or internally inside tamagui)
         const binding = traversePath.scope.getBinding(node.name.name)
         let modulePath = ''
 
         if (binding) {
-          if (!t.isImportDeclaration(binding.path.parent)) {
+          if (t.isVariableDeclaration(binding.path.parent)) {
+            // could be local
+            modulePath = sourcePath
+          } else if (!t.isImportDeclaration(binding.path.parent)) {
             if (shouldPrintDebug) {
               logger.info(
-                ` - Binding (${binding}) not import declaration, skip ${binding.path.parent.type}`
+                ` - Import binding from ${node.name.name} (${binding.path.parent.type}) not import declaration, skip ${binding.path.parent.type}`
               )
             }
             return
+          } else {
+            modulePath = binding.path.parent.source.value
           }
-          modulePath = binding.path.parent.source.value
           if (!isValidImport(propsWithFileInfo, modulePath, binding.identifier.name)) {
             if (shouldPrintDebug) {
               logger.info(

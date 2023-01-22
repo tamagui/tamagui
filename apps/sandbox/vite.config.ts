@@ -4,6 +4,8 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { swcReactRefresh } from 'vite-plugin-swc-react-refresh'
 
+process.env.TAMAGUI_ENABLE_DYNAMIC_LOAD = '1'
+
 const shouldExtract = process.env.EXTRACT === '1'
 
 if (shouldExtract) {

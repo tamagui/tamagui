@@ -3,7 +3,6 @@ import { useTheme } from '@tamagui/core'
 import { SafeAreaView, ScrollView } from 'react-native'
 
 import Box from './components/Box'
-import Button from './components/Button'
 import Heading from './components/Heading'
 
 export const TestDynamicEval = () => {
@@ -16,9 +15,7 @@ export const TestDynamicEval = () => {
           <Heading size="h1">Weather app</Heading>
         </Box>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Box space="$3" px="$0">
-            <Button title="Hello" type="primary" centered />
-          </Box>
+          <Box space="$3" px="$0"></Box>
         </ScrollView>
       </Box>
     </SafeAreaView>

@@ -6,7 +6,7 @@
     "dev": "NODE_ENV=development TAMAGUI_TARGET=web vite --host --clearScreen false",
     "dev:extract": "EXTRACT=1 yarn dev",
     "dev:webpack": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
-    "dev:webpack:extract": "DISABLE_EXTRACTION=false NODE_ENV=development webpack serve",
+    "dev:webpack:extract": "TAMAGUI_ENABLE_DYNAMIC_LOAD=1 DISABLE_EXTRACTION=false NODE_ENV=development webpack serve",
     "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json"
   },
   "dependencies": {

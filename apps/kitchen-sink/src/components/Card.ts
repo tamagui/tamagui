@@ -6,10 +6,9 @@ const Card = styled(Box, {
   name: 'Card',
 
   backgroundColor: '$background',
-  borderRadius: '$md',
-  shadow: 'md',
-  px: '$md',
-  py: '$md',
+  borderRadius: '$5',
+  px: '$5',
+  py: '$5',
 })
 
 export default Card

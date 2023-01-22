@@ -8,15 +8,15 @@ const Heading = styled(Text, {
   variants: {
     size: {
       h1: {
-        fontSize: '$xxl',
+        fontSize: '$5',
         fontWeight: '$bold',
       },
       h2: {
-        fontSize: '$xl',
+        fontSize: '$5',
         fontWeight: '$bold',
       },
       h3: {
-        fontSize: '$lg',
+        fontSize: '$5',
         fontWeight: '$medium',
       },
     },

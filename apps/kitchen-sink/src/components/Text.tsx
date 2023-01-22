@@ -8,13 +8,13 @@ const Text = styled(TamaguiText, {
   variants: {
     size: {
       sm: {
-        fontSize: '$sm',
+        fontSize: '$5',
       },
       md: {
-        fontSize: '$md',
+        fontSize: '$4',
       },
       xl: {
-        fontSize: '$xl',
+        fontSize: '$4',
       },
     },
     underlined: {
