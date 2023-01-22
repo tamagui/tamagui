@@ -165,6 +165,9 @@ const demos = [
 
   {
     label: 'Etc',
-    pages: [{ title: 'Spinner', route: '/demo/spinner' }],
+    pages: [
+      { title: 'Spinner', route: '/demo/spinner' },
+      { title: 'Popper', route: '/demo/popper' },
+    ],
   },
 ]

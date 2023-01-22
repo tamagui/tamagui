@@ -2,7 +2,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { DialogDemo, PopoverDemo, SelectDemo, TooltipDemo } from '@tamagui/demos'
+import { DialogDemo, PopoverDemo, SelectDemo, TooltipDemo, PopperDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import {
   Button,
@@ -52,7 +52,9 @@ export const Sandbox = () => {
         }}
       />
 
-      <SelectDemo />
+        <PopperDemo />
+        {/* <PopoverDemo /> */}
+
 
       {/*  */}
     </TamaguiProvider>

@@ -34,5 +34,6 @@ export { ThemeInverseDemo } from './ThemeInverseDemo';
 export { TooltipDemo } from './TooltipDemo';
 export { ColorsDemo } from './ColorsDemo';
 export { TokensDemo } from './TokensDemo';
+export { PopperDemo } from './PopperDemo';
 export * from './useOnIntersecting';
 //# sourceMappingURL=index.d.ts.map
