@@ -254,7 +254,9 @@ function PopoverContentPortal(props: ScopedProps<PopoverContentTypeProps>) {
 
   return (
     <Portal zIndex={props.zIndex ?? 1000}>
-      <Theme name={themeName}>{contents}</Theme>
+      <Theme forceClassName name={themeName}>
+        {contents}
+      </Theme>
     </Portal>
   )
 }

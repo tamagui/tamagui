@@ -299,24 +299,15 @@ const PortalHostComponent = (props: PortalHostProps) => {
       <>
         {state.map((item) => {
           let next = item.node
-          const { space, separator, spaceDirection, ...rest } = forwardProps
 
-          if (Array.isArray(next)) {
-            // add any extra props
-            if (Object.keys(rest).length) {
-              next = next.map((item) =>
-                isValidElement(item) ? cloneElement(item, rest) : item
-              )
-            }
-            if (space || separator) {
-              next = spacedChildren({
-                separator: forwardProps.separator,
-                children: next as any,
-                space: forwardProps.space,
-                direction: forwardProps.spaceDirection,
-              })
-            }
+          if (forwardProps) {
+            return React.Children.map(next, (child) => {
+              return React.isValidElement(child)
+                ? React.cloneElement(child, { key: child.key, ...forwardProps })
+                : child
+            })
           }
+
           return next
         })}
       </>

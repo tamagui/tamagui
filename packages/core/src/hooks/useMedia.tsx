@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useSyncExternalStore } from 'react'
+import { startTransition, useEffect, useMemo, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { createProxy } from '../helpers/createProxy'
@@ -12,7 +12,7 @@ import {
 } from '../types'
 import { useSafeRef } from './useSafeRef'
 
-export const mediaState: MediaQueryState =
+export let mediaState: MediaQueryState =
   // development only safeguard
   process.env.NODE_ENV === 'development'
     ? createProxy(
@@ -109,7 +109,7 @@ function setupMediaListeners() {
     function update() {
       const next = !!getMatch().matches
       if (next === mediaState[key]) return
-      mediaState[key] = next
+      mediaState = { ...mediaState, [key]: next }
       updateCurrentState()
     }
   }
@@ -123,12 +123,17 @@ export function useMediaListeners(config: TamaguiInternalConfig) {
 }
 
 const currentStateListeners = new Set<any>()
+let isFlushing = false
+
 function updateCurrentState() {
-  currentStateListeners.forEach((cb) => cb(mediaState))
-}
-function subscribe(subscriber: any) {
-  currentStateListeners.add(subscriber)
-  return () => currentStateListeners.delete(subscriber)
+  if (isFlushing) return
+  isFlushing = true
+  setTimeout(() => {
+    startTransition(() => {
+      currentStateListeners.forEach((cb) => cb(mediaState))
+    })
+    isFlushing = false
+  }, 0)
 }
 
 type MediaKeysState = {
@@ -139,61 +144,61 @@ type UseMediaState = {
   [key in MediaQueryKey]: boolean
 }
 
-const shouldUpdate = new WeakMap<any, boolean>()
-export function setMediaShouldUpdate(ref: any, val: boolean) {
-  return shouldUpdate.set(ref, val)
+type UpdateState = {
+  enabled: boolean
+  keys: MediaQueryKey[]
 }
 
-type UseMediaInternalState = { prev: MediaKeysState; next: MediaKeysState }
-const empty = {}
-let initialUseState: UseMediaInternalState
+const shouldUpdate = new WeakMap<any, UpdateState>()
 
-export function useMedia(): UseMediaState {
-  // setup once
-  initialUseState ||= {
-    prev: initState,
-    next: empty,
+export function setMediaShouldUpdate(ref: any, props: UpdateState) {
+  return shouldUpdate.set(ref, props)
+}
+
+type UseMediaInternalState = {
+  prev: MediaKeysState
+  touched?: Set<string>
+}
+
+function subscribe(subscriber: any) {
+  currentStateListeners.add(subscriber)
+  return () => currentStateListeners.delete(subscriber)
+}
+
+export function useMedia(uid?: any, debug?: any): UseMediaState {
+  const internal = useSafeRef<UseMediaInternalState>(undefined as any)
+  if (!internal.current) {
+    internal.current = {
+      prev: initState,
+    }
   }
-
-  const keys = useSafeRef<UseMediaInternalState>(initialUseState)
   const state = useSyncExternalStore<MediaQueryState>(
     subscribe,
     () => {
-      const curState = keys.current
-      const preventUpdate = arguments[0] && shouldUpdate.get(arguments[0]) !== true
-      if (preventUpdate) {
-        return curState.prev
+      const { touched, prev } = internal.current
+      const componentState = uid ? shouldUpdate.get(uid) : undefined
+      if (componentState?.enabled === false) {
+        return prev
+      }
+      const testKeys =
+        componentState?.keys ?? (componentState?.enabled && touched ? [...touched] : null)
+
+      if (testKeys?.every((key) => mediaState[key] === prev[key])) {
+        return prev
       }
 
-      let didUpdate = false
-
-      // ensure we keep the minimal object of only used keys
-      const next = {}
-
-      for (const key in curState.next) {
-        const val = mediaState[key]
-        if (curState.prev[key] !== val) {
-          didUpdate = true
-        }
-        next[key] = val
-      }
-
-      if (!didUpdate) {
-        return curState.prev
-      }
-
-      keys.current = { next, prev: next }
-      return next
+      internal.current.prev = mediaState
+      return mediaState
     },
     () => initState
   )
 
   return useMemo(() => {
-    return new Proxy(state === empty ? initState : state, {
-      get(_, key: string) {
-        if (!(key in keys.current.next)) {
-          keys.current.next[key] = true
-          keys.current = { ...keys.current }
+    return new Proxy(state, {
+      get(_, key) {
+        if (typeof key === 'string') {
+          internal.current.touched ||= new Set()
+          internal.current.touched.add(key)
         }
         return Reflect.get(state, key)
       },
@@ -205,7 +210,7 @@ export function useMedia(): UseMediaState {
  * Useful for more complex components that need access to the currently active props,
  * accounting for the currently active media queries.
  *
- * Use sparingly, is will loop props and trigger re-render on all media queries.
+ * Use sparingly, it will loop props and trigger re-render on all media queries.
  *
  * */
 export function useMediaPropsActive<A extends Object>(

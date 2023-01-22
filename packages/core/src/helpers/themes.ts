@@ -42,7 +42,7 @@ export function proxyThemeToParents(
       return cur.join('_')
     })
 
-  const hasParents = parents.length
+  const len = parents.length
 
   // proxy fallback values to parent theme values
   return new Proxy(theme, {
@@ -50,15 +50,13 @@ export function proxyThemeToParents(
       if (key === GetThemeUnwrapped) {
         return theme
       }
-      if (!hasParents || Reflect.has(target, key)) {
+      if (!len || Reflect.has(target, key)) {
         return Reflect.get(target, key)
       }
       // check parents
-      for (let i = parents.length - 1; i >= 0; i--) {
+      for (let i = len - 1; i >= 0; i--) {
         const parent = themes[parents[i]]
-        if (!parent) {
-          continue
-        }
+        if (!parent) continue
         if (Reflect.has(parent, key)) {
           return Reflect.get(parent, key)
         }

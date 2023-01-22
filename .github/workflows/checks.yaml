@@ -1,11 +1,12 @@
 name: Checks
 
 on:
+  pull_request:
   push:
     paths-ignore:
       - 'assets/**'
       - '.vscode/**'
-    branches-ignore:
+    branches:
       - master
 
 jobs:

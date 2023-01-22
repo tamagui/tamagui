@@ -1,46 +1,123 @@
-1.0 launch:
+- test keyboardavoidingview > scrollView - collapsing tamagui
+- sync with rnw 19
+- check into shadow/elevation not showing
+- survey https://tripetto.app or gforms
 
-- algolia not indexing lucide icons / new stuff
-- sponsor promo
-- mailing list
-- runthrough docs a handful of times
+1.0.X
 
-1.0 post launch:
+- optimizing packages/app in starter
+- react native pressable in pressable
+- createThemes accepts array not object
+- <Theme name="dark_orange" /> type 
+- site _app has t_unmounted helper, move that into tamagui proper
+- SimpleTooltip no sub theme looks bad on dark mode
+- looks like maybe memory issue with portal related things dialog or something
+  - was issue on ios 14 devices
+  - test low memory
+- So it looks like any import of tamagui (not @tamagui/core) breaks the build on the web. I've created a repro here https://stackblitz.com/edit/vitejs-vite-3sbtgb?file=src/App.tsx.
+- warn not to styled(Button)
+- vite fails https://github.com/tamagui/tamagui/issues/479
 
-- keyboard search select bug
-- variants intellisense autocomplete not suggesting, but types are right
-- canary release channel
-- sponsor rewards e2e flow
-- add new sponsors script
-    - https://github.com/JamesIves/github-sponsors-readme-action
-- one full on integration native test unlocks:
-  - no more manual checks every release
-  - auto release on merge to master
-  - do some snapshot tests of site files like HeroResponsive
-
-1.0 potentially:
-
-- kitchen-sink in Snack demo link
-- get an demo for studio ready
-- `tamagui` cli basic version
+- bundle size reductions:
+  - remove setColorAlpha in favor of internal core rgba util
+  - expandStyle remove some
+  - merge mergeSlotProps and mergeProps
+  - move to PROP whitelist rather than style whitelist maybe avoid validStyleProps altogether
+  - getStylesAtomic "all webkit prefixed rules, pointer-events"
+  - color names hardcoded potentially
+  - // ??
+  - styled(), extendStaticConfig can just merge options rather than de-structure re-structure
+  - remove mergeConfigDefaultProps
+  - ThemeManager move to functional not class
+  - move addTheme/updateTheme out of core
+  - may be able to remove proxyThemeVariables
+  - getVariantExtras looks easy to slim
+  - reverseMapClassNameToValue / unitlessNumbers
+  - normalizeColor etc
+  - createPropMapper
 
 ---
 
 1.1
 
+- vertical slider native can be janky
+- sync with react-native-web
+  - https://github.com/necolas/react-native-web/pull/2377
+- dialog sheet space regression
+- switch active bg regressed
+- theme shouldn't change context ever on web, redo notify()
+  - instead of passing ThemeManager in context just pass a UID
+    - useChangeTheme can then do listen(UID)
+    
+- createTamagui({ webOnly: true }) - avoids console warning on Text
+  - goes hand in hand with `@tamagui/style` separate from core
+- for some reason, the vertical slider is buggy in the blog post: https://tamagui.dev/blog/version-one but not on the docs page. Try clicking and fiddling with it on a desktop computer, and you'll see what I mean.
+- some big theme speedups possible to avoid re-renders
+- all: unset or way to unstyle things (unstyle: true)
+- https://github.com/mwood23/nx-tamagui-next-repro
 - #beatgig - popover not closing
 - fix alt themes to be more subtle and go less strong to more strong
 - revisit animations, timing animations, loops, document better
 - Select id="" + Label focus
 - web forms events bubble
-- improve sandbox to a mini vite stack
+- accessibility keyboard navigation (Menu component potentially)
+- improve sandbox as mini vite stack
 - VisuallyHidden + mediaquery + space
-- test
-  - native integration tests
-  - useMedia
-  - reanimated
-  - integation on native - theme change, render time
-- CI auto master merge tests passing releases
+
+
+---
+
+1.2
+
+- react native action sheet hooks/logic adapt
+- testing native - https://maestro.mobile.dev
+- app dir support experimental
+- styled('div')
+- tooltip auto pass down accessibilityLabel
+
+---
+
+1.3
+
+- test: useMedia, reanimated, re-renders (mount, on hover, etc), render time ms
+- CD on github
+- home page sponsors with sizing and better logos
+  - https://github.com/JamesIves/github-sponsors-readme-action
+- algolia not indexing some new content
+- keyboard search select bug
+- variants intellisense autocomplete not suggesting, but types are right
+- canary release channel
+- improve native integration test
+- kitchen-sink in Snack demo link
+- `tamagui` cli basic version
+
+---
+
+1.4
+
+- re-render tests:
+  - useMedia, component w/ media + style, media + css-style, media + space
+  - useTheme, component with theme used in style
+
+---
+
+2.0
+
+- app dir support (discussions/409)
+- contrastColor (accent color) in themes (discussions/449)
+
+---
+
+inbox
+
+- config-base => design-system
+- https://github.com/tamagui/tamagui/issues/513
+- @twaiter Has anyone used a dialog component on mobile? I havent been able to get Dialog.Closed to work (using a button). Seems like the example on the website doesnt work for mobile either (button not there)
+
+- docs search build inline
+  - add shorthands to docs
+  - make search a nice demo
+
 - tama sync
   - make it easy to have a template repo that people sync to
   - includes the git sync stuff from cli now
@@ -50,12 +127,6 @@
     - package.json etc
     - binary assets overwrite (if not changed, else prompt)
 - setup script can power `tama sync` to sync the repo to its parent repo
-
----
-
-inbox
-
-- textarea shifts on focus
 
 - dynamic eval bundle of smallish fixes: 
   - hash file contents cache
@@ -67,7 +138,6 @@ inbox
   - https://simonhearne.com/2021/layout-shifts-webfonts/#reduce-layout-shift-with-f-mods
 
 - drag on switch
-- sheets can be way faster, they listen for layout/windowdimensions and re-render constnatly, but whe closed that could be ignored, just needs one level more of wrapping and react memo stuff
 - prebuild option
   - de-dupes css
   - fixes next.js next load css
@@ -87,9 +157,7 @@ inbox
 - TestFontTokensInVariants types not autocompleting in variants... but showing properly on hover/type property
 - pass Size down context (see Group) is this just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)?
 - kitchen sink snack on site
-- move to object style extraction to remove concatClassName
 - what works for compilation / examples
-- prop ordering
 - @tamagui/sx
 - @tamagui/tailwind
 - pass Size down context (see Group) but really this is just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)
@@ -147,8 +215,6 @@ inbox
 - <Carousel />
 - <Video />, <Spinner />
 - <SizableFrame />, <EnsureFlexed />
-- document/release <ThemeReverse />
-- Text selectColor
 - focusWithinStyle
 - accessibility upgrades (focus rings etc)
 - skeleton just using Theme / variables
@@ -170,6 +236,73 @@ inbox
     - @react-native-menu/menu
     - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-android-menu/index.android.tsx
 
+---
+
+Make Themes Better
+
+```tsx
+const theme = generateTheme([...colors], createSubtleTheme)
+const theme_alt1 = extendTheme(theme, ...)
+
+export const themes = createThemes({
+  theme,
+  theme_alt1,
+})
+```
+
+<Button size="large" />
+
+---
+
+<ThemeOverride />
+<ThemeMutate />
+<Theme values={parent => ({ backgroundColor: parent.backgroundColorHover })} />
+
+```tsx
+export default () => (
+  <Theme name="orange">
+    <ThemeOverride backgroundColor={-3}>
+      <MySquare />
+      <MyCircle />
+      <MyButton />
+    </ThemeOverride>
+
+    <ThemeMutate
+      getNextTheme={theme => {
+        theme.background = ''
+        return theme
+      }}>
+        <MySquare />
+        <MyCircle />
+        <MyButton />
+    </ThemeMutate>
+  </Theme>
+)
+```
+
+---
+
+<Variants />
+
+```tsx
+export default () => (
+  <SquareVariant skeleton>
+    <MySquare />
+  </SquareVariant>
+)
+
+const MySquare = styled(Square, {
+  variants: {
+    skeleton: {
+      true: {
+        backgroundColor: 'grey',
+      }
+    }
+  }
+})
+
+const SquareVariant = createVariantProvider(MySquare)
+```
 
 ---
 

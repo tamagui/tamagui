@@ -1,13 +1,13 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/font-inter/css/400.css'
 import '@tamagui/font-inter/css/700.css'
+import 'raf/polyfill'
 
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { Provider } from 'app/provider'
 import Head from 'next/head'
-import React, { useMemo } from 'react'
+import React, { startTransition } from 'react'
 import type { SolitoAppProps } from 'solito'
-import 'raf/polyfill'
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
   return (
@@ -28,7 +28,13 @@ function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useRootTheme()
 
   return (
-    <NextThemeProvider onChangeTheme={setTheme}>
+    <NextThemeProvider
+      onChangeTheme={(next) => {
+        startTransition(() => {
+          setTheme(next)
+        })
+      }}
+    >
       <Provider disableRootThemeClass defaultTheme={theme}>
         {children}
       </Provider>

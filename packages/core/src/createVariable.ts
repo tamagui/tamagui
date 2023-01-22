@@ -10,35 +10,37 @@ import { getConfig } from './config'
 
 const IS_VAR = 'isVar'
 
-type VariableIn<A = any> = {
+export interface Variable<A = any> {
+  [IS_VAR]?: true
+  variable?: string
   val: A
   name: string
   key: string
 }
 
-export type Variable<A = any> = VariableIn<A> & {
-  [IS_VAR]?: true
-  variable?: string
-}
+export type MakeVariable<A = any> = A extends string | number ? Variable<A> : A
 
-export const createVariable = <A extends string | number = any>(props: VariableIn<A>) => {
+type VariableIn<A = any> = Pick<Variable<A>, 'key' | 'name' | 'val'>
+export const createVariable = <A extends string | number = any>(
+  props: VariableIn<A>
+): Variable<A> => {
   if (isVariable(props)) return props
   const { key, name, val } = props
   return {
     [IS_VAR]: true,
-    key,
+    key: key!,
     name: simpleHash(name, 40),
-    val,
+    val: val as any,
     variable: isWeb ? createCSSVariable(name) : '',
   }
 }
 
+// could do weakmap cache
 export function variableToString(vrble?: any, getValue = false) {
   if (isVariable(vrble)) {
     if (!getValue && isWeb && vrble.variable) {
       return vrble.variable
     }
-    setDidGetVariableValue(true)
     return `${vrble.val}`
   }
   return `${vrble || ''}`
@@ -49,6 +51,7 @@ export function isVariable(v: Variable | any): v is Variable {
 }
 
 export function getVariable(nameOrVariable: Variable | string) {
+  setDidGetVariableValue(true)
   if (isVariable(nameOrVariable)) {
     return variableToString(nameOrVariable)
   }

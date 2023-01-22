@@ -9,19 +9,19 @@ type MakeTokens<T> = T extends {
     zIndex: infer J;
 } ? {
     color: {
-        [Key in keyof E]: E[Key] extends Variable ? E[Key] : Variable<E[Key]>;
+        [Key in keyof E extends `$${infer X}` ? X : keyof E]: Variable<string>;
     };
     space: {
-        [Key in keyof F]: F[Key] extends Variable ? F[Key] : Variable<F[Key]>;
+        [Key in keyof F extends `$${infer X}` ? X : keyof F]: Variable<number>;
     };
     size: {
-        [Key in keyof G]: G[Key] extends Variable ? G[Key] : Variable<G[Key]>;
+        [Key in keyof G extends `$${infer X}` ? X : keyof G]: Variable<number>;
     };
     radius: {
-        [Key in keyof H]: H[Key] extends Variable ? H[Key] : Variable<H[Key]>;
+        [Key in keyof H extends `$${infer X}` ? X : keyof H]: Variable<number>;
     };
     zIndex: {
-        [Key in keyof J]: J[Key] extends Variable ? J[Key] : Variable<J[Key]>;
+        [Key in keyof J extends `$${infer X}` ? X : keyof J]: Variable<number>;
     };
 } : never;
 export {};

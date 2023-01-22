@@ -27,7 +27,7 @@ export default function StudioPage() {
 }
 
 const Hero = () => {
-  const { resolvedTheme: themeName } = useThemeSetting()
+  const { resolvedTheme: themeName } = useThemeSetting()!
 
   const glow = useHoverGlow({
     resist: 60,

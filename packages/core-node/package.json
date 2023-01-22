@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-node",
-  "version": "1.0.1-rc.10",
+  "version": "1.0.20",
   "main": "./src/index.js",
   "types": "./types/static.d.ts",
   "files": [
@@ -19,14 +19,14 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.19.4",
-    "@tamagui/core": "^1.0.1-rc.10",
-    "@tamagui/helpers": "^1.0.1-rc.10"
+    "@tamagui/core": "^1.0.20",
+    "@tamagui/helpers": "^1.0.20"
   },
   "devDependencies": {
     "@types/node": "^16.11.9",
     "@types/react": "^18.0.15",
     "chokidar": "^3.5.2",
-    "esbuild": "^0.15.11",
+    "esbuild": "^0.16.15",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
     "fs-extra": "^10.1.0",

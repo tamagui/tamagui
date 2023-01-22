@@ -6,7 +6,6 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
   SizeTokens,
-  getSize,
   getVariableValue,
   isWeb,
   styled,
@@ -14,6 +13,7 @@ import {
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
+import { getSize } from '@tamagui/get-size'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack, XStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -50,15 +50,18 @@ export const SwitchThumbFrame = styled(ThemeableStack, {
 
   variants: {
     size: {
-      '...size': (val) => ({
-        height: getSwitchHeight(val),
-        width: getSwitchHeight(val),
-      }),
+      '...size': (val) => {
+        const size = getSwitchHeight(val)
+        return {
+          height: size,
+          width: size,
+        }
+      },
     },
   } as const,
 
   defaultVariants: {
-    size: '$4',
+    size: '$true',
   },
 })
 
@@ -121,7 +124,7 @@ export const SwitchFrame = styled(XStack, {
   } as const,
 
   defaultVariants: {
-    size: '$4',
+    size: '$true',
   },
 })
 
@@ -151,7 +154,7 @@ export const Switch = withStaticProperties(
           disabled,
           value = 'on',
           onCheckedChange,
-          size = '$4',
+          size = '$true',
           ...switchProps
         } = props
         const [button, setButton] = React.useState<HTMLButtonElement | null>(null)

@@ -43,17 +43,12 @@ type AvatarImageProps = Partial<ImageProps> & {
 
 const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
   (props: ScopedProps<AvatarImageProps>, forwardedRef) => {
-    const {
-      __scopeAvatar,
-      src,
-      onLoadingStatusChange = () => {},
-      ...imageProps
-    } = props
+    const { __scopeAvatar, src, onLoadingStatusChange = () => {}, ...imageProps } = props
     const context = useAvatarContext(IMAGE_NAME, __scopeAvatar)
     const [status, setStatus] = React.useState<ImageLoadingStatus>('idle')
     const extras = getVariantExtras(props)
     const shapeSize = getVariableValue(
-      getShapeSize(context.size, extras)?.width,
+      getShapeSize(context.size, extras)?.width
     ) as number
 
     React.useEffect(() => {
@@ -91,7 +86,7 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
         />
       </YStack>
     )
-  },
+  }
 )
 
 AvatarImage.displayName = IMAGE_NAME
@@ -130,8 +125,8 @@ const AvatarFallback = AvatarFallbackFrame.extractable(
       return canRender && context.imageLoadingStatus !== 'loaded' ? (
         <AvatarFallbackFrame {...fallbackProps} ref={forwardedRef} />
       ) : null
-    },
-  ),
+    }
+  )
 )
 
 AvatarFallback.displayName = FALLBACK_NAME
@@ -151,7 +146,7 @@ type AvatarProps = GetProps<typeof AvatarFrame>
 const Avatar = withStaticProperties(
   React.forwardRef<TamaguiElement, AvatarProps>(
     (props: ScopedProps<AvatarProps>, forwardedRef) => {
-      const { __scopeAvatar, size = '$4', ...avatarProps } = props
+      const { __scopeAvatar, size = '$true', ...avatarProps } = props
       const [imageLoadingStatus, setImageLoadingStatus] =
         React.useState<ImageLoadingStatus>('idle')
       return (
@@ -164,12 +159,12 @@ const Avatar = withStaticProperties(
           <AvatarFrame size={size} {...avatarProps} ref={forwardedRef} />
         </AvatarProvider>
       )
-    },
+    }
   ),
   {
     Image: AvatarImage,
     Fallback: AvatarFallback,
-  },
+  }
 )
 
 Avatar.displayName = AVATAR_NAME

@@ -7,7 +7,9 @@ component: Paragraph
 
 # Text
 
-<Description>Text, Sized Text and Paragraph show one way to build a design system.</Description>
+<Description>
+  Text, Sized Text and Paragraph show one way to build a design system.
+</Description>
 
 <HeroContainer>
   <TextDemo />
@@ -53,8 +55,8 @@ export default () => (
 ```
 
 <Notice>
-  SizableText and Paragraph default to the "body" fontFamily defined in your config. Headings all
-  default to "heading".
+  SizableText and Paragraph default to the "body" fontFamily defined in your config.
+  Headings all default to "heading".
 </Notice>
 
 ## SizableText
@@ -78,6 +80,7 @@ Finally Paragraph extends `SizableText` and simply sets some default values from
 export const Paragraph = styled(SizableText, {
   fontFamily: '$body',
   color: '$color',
-  size: '$4',
+  // note tamagui uses a generic "true" token that your sizes should set to be the same as the default on your scale
+  size: '$true',
 })
 ```

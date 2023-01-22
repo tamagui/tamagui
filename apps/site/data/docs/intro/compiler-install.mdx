@@ -10,14 +10,18 @@ Install on most platforms is as easy as configuring a library:
 - [Webpack](#webpack)
 - [Next.js](#nextjs) ([guide](/docs/guides/next-js))
 - [Vite](#vite) ([guide](/docs/guides/vite))
-- [Metro](#metro)
+- [Metro](#babel--metro)
 - [Expo](/docs/guides/expo))
 
 <Notice>
-  The compiler will generate built versions of your components and config into the `.tamagui`
-  directory, relative to your app. You'll want to add this to your `.gitignore` if you don't already
-  ignore dotfiles.
+  The compiler will generate built versions of your components and config into the
+  `.tamagui` directory, relative to your app. You'll want to add this to your `.gitignore`
+  if you don't already ignore dotfiles.
 </Notice>
+
+### Setup
+
+Be sure to set `TAMAGUI_TARGET` to `"native"` when targeting native platforms, and set it to `"web"` for web apps.
 
 ### Webpack
 
@@ -94,7 +98,7 @@ module.exports = {
 ```
 
 - _importsWhitelist_: Tamagui takes a conservative approach to partial evaluation, this field whitelists (matching against both .ts and .js) files to allow files that import them to read and use their values during compilation. Typically colors and constants files.
-- _disableExtaction_: Useful for faster developer iteration as themes hot reload more reliably.
+- _disableExtraction_: Useful for faster developer iteration as themes hot reload more reliably.
 
 ### Vite
 
@@ -181,10 +185,10 @@ Note: If running into issues, the environment variable `IGNORE_TS_CONFIG_PATHS` 
 
 See the [Next.js Guide](/docs/guides/next-js) for more details on setting up your app.
 
-#### Metro
+#### Babel / Metro
 
 ```bash
-yarn add @tamagui/babel-plugin
+yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
 ```
 
 Add `@tamagui/babel-plugin` to your `babel.config.js` plugins:
@@ -215,10 +219,6 @@ module.exports = {
 
 We've noticed some issues with `@types/react-native` version `0.65.5`, you'll want to upgrade to at least `0.66.6`.
 
-Ensure unimodules support using [the old method](https://docs.expo.dev/bare/installing-unimodules/), or the [expo package](https://docs.expo.dev/bare/installing-expo-modules/).
-
-Tamagui uses `expo-linear-gradient` for `<LinearGradient />`, so you'll need to ensure `expo-linear-gradient` is in your parent apps' package.json if you use it.
-
 #### Expo
 
 [Check out the Expo guide](/docs/guides/expo) for more information on setting up Expo.
@@ -247,8 +247,7 @@ All compiler plugins accept the same options:
       type: 'string[]',
       typeSimple: 'enum',
       default: "['tamagui']",
-      description:
-        'Array of npm modules containing Tamagui components which youll be using in your app. For example:  if you are using the base Tamagui components. This directs the compiler to load and optimize.',
+      description: `Array of npm modules containing Tamagui components which you'll be using in your app. For example:  if you are using the base Tamagui components. This directs the compiler to load and optimize.`,
     },
     {
       name: 'importsWhitelist',

@@ -53,7 +53,7 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
       state.current.isDragging = false
       scrollBridge.scrollStartY = -1
       state.current.isScrolling = false
-      setScrollEnabled(true)
+      // setScrollEnabled(true)
       let vy = 0
       if (state.current.dys.length) {
         const recentDys = state.current.dys.slice(-10)
@@ -86,7 +86,8 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
           state.current.isDragging = true
           return true
         }}
-        onMoveShouldSetResponder={() => true}
+        // setting to false while onResponderMove is disabled
+        onMoveShouldSetResponder={() => false}
         // somehow disabling works better, regression, no more nice drag continue scroll
         // onResponderMove={(e) => {
         //   const { pageY } = e.nativeEvent

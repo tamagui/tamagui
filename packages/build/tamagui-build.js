@@ -11,7 +11,9 @@ const { dirname } = require('path')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
-const shouldSkipTypes = !!(process.argv.includes('--skip-types') || process.env.SKIP_TYPES)
+const shouldSkipTypes = !!(
+  process.argv.includes('--skip-types') || process.env.SKIP_TYPES
+)
 const shouldBundle = !!process.argv.includes('--bundle')
 const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
@@ -116,33 +118,26 @@ async function buildTsc() {
     return
   }
 
-  async function buildThenCopy() {
-    if (!(await fs.pathExists(`tsconfig.json`))) {
-      throw new Error(`No tsconfig.json found`)
-    }
-    const targetDir = 'types'
-    try {
-      // typescripts build cache messes up when doing declarationOnly
-      await fs.remove('tsconfig.tsbuildinfo')
-      await fs.ensureDir(targetDir)
-      const cmd = `tsc --baseUrl . --outDir ${targetDir} --rootDir src --emitDeclarationOnly --declarationMap`
-      // console.log('\x1b[2m$', `npx ${cmd}`)
-      await exec('npx', cmd.split(' '))
-    } finally {
-      await fs.remove('tsconfig.tsbuildinfo')
-    }
+  if (!(await fs.pathExists(`tsconfig.json`))) {
+    throw new Error(`No tsconfig.json found`)
   }
 
-  // NOTE:
-  // for Intellisense to work in monorepo you need baseUrl: "../.."
-  // but to build things nicely we need here to reset a few things:
-  //  baseUrl: ., outDir: types, rootDir: src
-  // for best of both worlds
-
-  // there's a bug with typescript where outputting within the same dir just doesn't output for whatever reason
-  // i have a hunch it's some cache thing, because if i give a new outDir it works
-  // so fixing by always giving a random tmp outdir, and then copying
-  await buildThenCopy()
+  const targetDir = 'types'
+  try {
+    // typescripts build cache messes up when doing declarationOnly
+    await fs.remove('tsconfig.tsbuildinfo')
+    await fs.ensureDir(targetDir)
+    const cmd = `tsc --baseUrl . --outDir ${targetDir} --rootDir src --emitDeclarationOnly --declarationMap`
+    // console.log('\x1b[2m$', `npx ${cmd}`)
+    await exec('npx', cmd.split(' '))
+  } catch (err) {
+    console.log(err.message)
+    if (!shouldWatch) {
+      process.exit(1)
+    }
+  } finally {
+    await fs.remove('tsconfig.tsbuildinfo')
+  }
 }
 
 async function buildJs() {

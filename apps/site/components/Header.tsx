@@ -4,7 +4,7 @@ import { ThemeTint, useTint } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
 import { useRouter } from 'next/router'
 import * as React from 'react'
-import { TooltipGroup, XGroup } from 'tamagui'
+import { Adapt, TooltipGroup, XGroup } from 'tamagui'
 import {
   Button,
   Paragraph,
@@ -19,6 +19,7 @@ import {
   useMedia,
 } from 'tamagui'
 
+import { AlphaButton } from './AlphaButton'
 import { ColorToggleButton } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { DocsMenuContents } from './DocsMenuContents'
@@ -27,9 +28,10 @@ import { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
 import { SearchButton } from './SearchButton'
 import { SeasonToggleButton } from './SeasonToggleButton'
+import { SponsorButton } from './SponsorButton'
 import { useDocsMenu } from './useDocsMenu'
 
-export function Header() {
+export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
 
   if (isClient) {
@@ -45,7 +47,7 @@ export function Header() {
   }
 
   return (
-    <ThemeTint>
+    <>
       <XStack
         className={`ease-out all ms200 blur-light ${
           isScrolled ? 'hover-highlights' : ''
@@ -58,21 +60,18 @@ export function Header() {
         my={isScrolled ? -2 : 0}
         left={0}
         right={0}
-        elevation={isScrolled ? 0 : '$1'}
+        elevation={isScrolled ? '$1' : 0}
         py={isScrolled ? '$0' : '$2'}
       >
-        <YStack
-          className="all ease-in ms200"
-          o={isScrolled ? 0.9 : 0}
-          fullscreen
-          bc="$background"
-        />
+        <YStack o={isScrolled ? 0.9 : 0.5} fullscreen bc="$background" />
         <ContainerLarge>
-          <HeaderContents floating />
+          <ThemeTint>
+            <HeaderContents floating {...props} />
+          </ThemeTint>
         </ContainerLarge>
       </XStack>
       <YStack height={54} w="100%" />
-    </ThemeTint>
+    </>
   )
 }
 
@@ -122,7 +121,11 @@ export function HeaderContents(props: HeaderProps) {
           </XGroup>
         </TooltipGroup>
 
-        {/* {!props.disableNew && <AlphaButton />} */}
+        <YStack $xxs={{ dsp: 'none' }}>
+          <SponsorButton tiny />
+        </YStack>
+
+        {!props.disableNew && <AlphaButton />}
 
         {isInSubApp && (
           <NextLink href="/">
@@ -160,7 +163,7 @@ export function HeaderContents(props: HeaderProps) {
         h={40}
         jc="flex-end"
         miw={160}
-        $xxs={{ miw: 150 }}
+        $xs={{ miw: 130 }}
         pointerEvents="auto"
         tag="nav"
       >
@@ -196,7 +199,12 @@ export function HeaderContents(props: HeaderProps) {
             <SearchButton size="$2" br="$10" elevation="$4" />
 
             <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
-              <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
+              <YStack
+                $xs={{ maw: 0, mah: 0, ov: 'hidden', mr: '$-6' }}
+                p="$2"
+                opacity={0.7}
+                hoverStyle={{ opacity: 1 }}
+              >
                 <VisuallyHidden>
                   <Text>Github</Text>
                 </VisuallyHidden>
@@ -289,16 +297,16 @@ const SmallMenu = React.memo(() => {
         </YStack>
       </Popover.Trigger>
 
-      <Popover.Adapt when="sm">
+      <Adapt platform="touch" when="sm">
         <Popover.Sheet zIndex={100000000} modal dismissOnSnapToBottom>
           <Popover.Sheet.Frame>
             <Popover.Sheet.ScrollView>
-              <Popover.Adapt.Contents />
+              <Adapt.Contents />
             </Popover.Sheet.ScrollView>
           </Popover.Sheet.Frame>
           <Popover.Sheet.Overlay zIndex={100} />
         </Popover.Sheet>
-      </Popover.Adapt>
+      </Adapt>
 
       <Popover.Content
         bw={1}
@@ -333,7 +341,6 @@ const SmallMenu = React.memo(() => {
             <HeaderLinks forceShowAllLinks />
             <Separator my="$4" w="100%" />
             <DocsMenuContents />
-            <YStack h={400} />
           </YStack>
         </Popover.ScrollView>
       </Popover.Content>

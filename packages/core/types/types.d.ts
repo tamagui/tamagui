@@ -66,6 +66,16 @@ export interface CreateTokens<Val extends VariableVal = VariableVal> {
         [key: GenericKey]: Val;
     };
 }
+type Tokenify<A extends GenericTokens> = {
+    color: TokenifyRecord<A['color']>;
+    space: TokenifyRecord<A['space']>;
+    size: TokenifyRecord<A['size']>;
+    radius: TokenifyRecord<A['radius']>;
+    zIndex: TokenifyRecord<A['zIndex']>;
+};
+type TokenifyRecord<A extends CreateTokens[keyof CreateTokens]> = {
+    [Key in keyof A]: Variable<A[Key]>;
+};
 export type TamaguiBaseTheme = {
     background: VariableColorVal;
     backgroundHover: VariableColorVal;
@@ -154,13 +164,14 @@ export type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>;
 export interface ThemeProps {
     className?: string;
-    disableThemeClass?: boolean;
     name?: Exclude<ThemeName, number> | null;
     componentName?: string;
     children?: any;
     reset?: boolean;
     debug?: boolean | 'verbose';
     inverse?: boolean;
+    forceClassName?: boolean;
+    shouldUpdate?: () => boolean;
 }
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
@@ -213,8 +224,9 @@ export type CreateTamaguiProps = {
     shouldAddPrefersColorThemes?: boolean;
     themeClassNameOnRoot?: boolean;
 };
-export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & CreateTamaguiConfig<A, B, C, D, E, F> & {
-    tokensParsed: CreateTokens<Variable>;
+export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F>, 'tokens'> & {
+    tokens: Tokenify<A>;
+    tokensParsed: Tokenify<A>;
     themeConfig: any;
     fontsParsed: GenericFonts;
     getCSS: () => string;
@@ -649,7 +661,7 @@ export type UseAnimationHook = (props: {
     hostRef: RefObject<HTMLElement | View>;
     staticConfig: StaticConfigParsed;
     state: SplitStyleState;
-    pseudos: PseudoProps<ViewStyle>;
+    pseudos: PseudoProps<ViewStyle> | null;
     onDidAnimate?: any;
     delay?: number;
 }) => null | {

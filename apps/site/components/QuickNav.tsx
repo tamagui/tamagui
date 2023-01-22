@@ -59,7 +59,7 @@ export function QuickNav() {
         // @ts-ignore
         position: 'absolute',
         right: -200,
-        marginTop: 20,
+        marginTop: 60,
       }}
     >
       <ScrollView>

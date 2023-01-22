@@ -1,7 +1,5 @@
 export const getThemeUnwrapped = (theme: any) => {
-  if (!theme) return null
-  const first = theme[GetThemeUnwrapped]
-  return first || theme
+  return theme?.[GetThemeUnwrapped] || theme
 }
 
 export const GetThemeUnwrapped = Symbol()

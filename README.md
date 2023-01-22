@@ -3,7 +3,7 @@
 </div>
 
 <h1 align="center">
-  Unify React Native and Web styling with an optimizing compiler
+  Style React Native and Web with an optimizing compiler
 </h1>
 
 - `@tamagui/core` - Universal style system on top of React Native + Web.
@@ -57,7 +57,7 @@ Before submitting a PR, check everything works across every combination of envir
 To do so, run the site, first in development to test if it works entirely at runtime:
 
 ```
-# Make sure you have run `yarn watch` before you excute this command.
+# Make sure you have run `yarn watch` before you execute this command.
 
 yarn site
 ```

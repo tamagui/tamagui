@@ -1,22 +1,16 @@
 // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/progress/src/Progress.tsx
 
-import {
-  GetProps,
-  getSize,
-  getVariableValue,
-  styled,
-  withStaticProperties,
-} from '@tamagui/core'
+import { GetProps, getVariableValue, styled, withStaticProperties } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
+import { getSize } from '@tamagui/get-size'
 import { ThemeableStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { View } from 'react-native'
 
 const PROGRESS_NAME = 'Progress'
 
-const [createProgressContext, createProgressScope] =
-  createContextScope(PROGRESS_NAME)
+const [createProgressContext, createProgressScope] = createContextScope(PROGRESS_NAME)
 type ProgressContextValue = { value: number | null; max: number; width: number }
 const [ProgressProvider, useProgressContext] =
   createProgressContext<ProgressContextValue>(PROGRESS_NAME)
@@ -55,8 +49,8 @@ const ProgressIndicator = ProgressIndicatorFrame.extractable(
           ref={forwardedRef}
         />
       )
-    },
-  ),
+    }
+  )
 )
 
 ProgressIndicator.displayName = INDICATOR_NAME
@@ -69,13 +63,9 @@ function defaultGetValueLabel(value: number, max: number) {
 
 function getProgressState(
   value: number | undefined | null,
-  maxValue: number,
+  maxValue: number
 ): ProgressState {
-  return value == null
-    ? 'indeterminate'
-    : value === maxValue
-    ? 'complete'
-    : 'loading'
+  return value == null ? 'indeterminate' : value === maxValue ? 'complete' : 'loading'
 }
 
 function isNumber(value: any): value is number {
@@ -153,7 +143,7 @@ const Progress = withStaticProperties(
           value: valueProp,
           max: maxProp,
           getValueLabel = defaultGetValueLabel,
-          size = '$4',
+          size = '$true',
           ...progressProps
         } = props
 
@@ -163,12 +153,7 @@ const Progress = withStaticProperties(
         const [width, setWidth] = React.useState(0)
 
         return (
-          <ProgressProvider
-            scope={__scopeProgress}
-            value={value}
-            max={max}
-            width={width}
-          >
+          <ProgressProvider scope={__scopeProgress} value={value} max={max} width={width}>
             <ProgressFrame
               size={size}
               aria-valuemax={max}
@@ -189,12 +174,12 @@ const Progress = withStaticProperties(
             />
           </ProgressProvider>
         )
-      },
-    ),
+      }
+    )
   ),
   {
     Indicator: ProgressIndicator,
-  },
+  }
 )
 
 Progress.displayName = PROGRESS_NAME

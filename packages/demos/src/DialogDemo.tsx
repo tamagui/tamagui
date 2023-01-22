@@ -4,6 +4,7 @@ import {
   Button,
   Dialog,
   Fieldset,
+  H2,
   Input,
   Label,
   Sheet,
@@ -37,6 +38,7 @@ export function DialogDemo() {
           enterStyle={{ o: 0 }}
           exitStyle={{ o: 0 }}
         />
+
         <Dialog.Content
           bordered
           elevate
@@ -51,10 +53,6 @@ export function DialogDemo() {
           ]}
           enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
-          x={0}
-          scale={1}
-          opacity={1}
-          y={0}
           space
         >
           <Dialog.Title>Edit profile</Dialog.Title>
@@ -75,7 +73,7 @@ export function DialogDemo() {
           </Fieldset>
 
           <YStack ai="flex-end" mt="$2">
-            <Dialog.Close asChild>
+            <Dialog.Close displayWhenAdapted asChild>
               <Button theme="alt1" aria-label="Close">
                 Save changes
               </Button>

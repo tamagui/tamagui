@@ -5,6 +5,7 @@ import * as util from 'util'
 import generate from '@babel/generator'
 import * as t from '@babel/types'
 import { getStylesAtomic } from '@tamagui/core-node'
+import { concatClassName } from '@tamagui/helpers'
 import invariant from 'invariant'
 import type { ViewStyle } from 'react-native'
 
@@ -12,6 +13,7 @@ import type { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../t
 import { babelParse } from './babelParse.js'
 import { buildClassName } from './buildClassName.js'
 import { Extractor } from './createExtractor.js'
+import { ensureImportingConcat } from './ensureImportingConcat.js'
 import { isSimpleSpread } from './extractHelpers.js'
 import { extractMediaStyle } from './extractMediaStyle.js'
 import { getPrefixLogs } from './getPrefixLogs.js'
@@ -51,11 +53,18 @@ export async function extractToClassNames({
 }: ExtractToClassNamesProps): Promise<ExtractedResponse | null> {
   const tm = timer()
 
+  if (shouldPrintDebug) {
+    console.log(`Parsing \n\n --- ${sourcePath} --- \n\n`)
+  }
+
   if (typeof source !== 'string') {
     throw new Error('`source` must be a string of javascript')
   }
   if (sourcePath && !path.isAbsolute(sourcePath)) {
     throw new Error('`sourcePath` must be an absolute path to a .js file')
+  }
+  if (!/.[tj]sx?$/i.test(sourcePath || '')) {
+    console.log(`${sourcePath?.slice(0, 100)} - bad filename.`)
   }
 
   // dont include loading in timing of parsing (one time cost)
@@ -72,7 +81,7 @@ export async function extractToClassNames({
     ast = babelParse(source)
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.error('babel parse error:', sourcePath)
+    console.error('babel parse error:', sourcePath?.slice(0, 100))
     throw err
   }
 
@@ -178,14 +187,18 @@ export async function extractToClassNames({
 
               for (const style of styles) {
                 //  leave them  as attributes
-                const prop = style.pseudo ? `${style.property}-${style.pseudo}` : style.property
+                const prop = style.pseudo
+                  ? `${style.property}-${style.pseudo}`
+                  : style.property
                 finalAttrs.push(
                   t.jsxAttribute(t.jsxIdentifier(prop), t.stringLiteral(style.identifier))
                 )
               }
             } else {
               const styles = addStyles(attr.value)
-              const newClassNames = styles.map((x) => x.identifier).join(' ')
+              const newClassNames = concatClassName(
+                styles.map((x) => x.identifier).join(' ')
+              )
               const existing = finalClassNames.find(
                 (x) => x.type == 'StringLiteral'
               ) as t.StringLiteral | null
@@ -259,7 +272,11 @@ export async function extractToClassNames({
               finalStyles = [...finalStyles, ...mediaExtraction.mediaStyles]
             }
             if (mediaExtraction.ternaryWithoutMedia) {
-              addTernaryStyle(mediaExtraction.ternaryWithoutMedia, mediaExtraction.mediaStyles, [])
+              addTernaryStyle(
+                mediaExtraction.ternaryWithoutMedia,
+                mediaExtraction.mediaStyles,
+                []
+              )
             } else {
               finalClassNames = [
                 ...finalClassNames,
@@ -274,9 +291,14 @@ export async function extractToClassNames({
       function addTernaryStyle(ternary: Ternary, a: any, b: any) {
         const cCN = a.map((x) => x.identifier).join(' ')
         const aCN = b.map((x) => x.identifier).join(' ')
+
         if (a.length && b.length) {
           finalClassNames.push(
-            t.conditionalExpression(ternary.test, t.stringLiteral(cCN), t.stringLiteral(aCN))
+            t.conditionalExpression(
+              ternary.test,
+              t.stringLiteral(cCN),
+              t.stringLiteral(aCN)
+            )
           )
         } else {
           finalClassNames.push(
@@ -331,14 +353,35 @@ export async function extractToClassNames({
         const names = buildClassName(finalClassNames, extraClassNames)
 
         const nameExpr = names ? hoistClassNames(jsxPath, existingHoists, names) : null
-        const expr = nameExpr
+        let expr = nameExpr
+
+        // if has some spreads, use concat helper
+        if (nameExpr && !t.isIdentifier(nameExpr)) {
+          if (!didFlattenThisTag) {
+            // not flat
+          } else {
+            ensureImportingConcat(programPath)
+            const simpleSpreads = attrs.filter(
+              (x) => t.isJSXSpreadAttribute(x.value) && isSimpleSpread(x.value)
+            )
+            expr = t.callExpression(t.identifier('concatClassName'), [
+              expr,
+              ...simpleSpreads.map((val) => val.value['argument']),
+            ])
+          }
+        }
 
         node.attributes.push(
           t.jsxAttribute(t.jsxIdentifier('className'), t.jsxExpressionContainer(expr))
         )
       }
 
-      const comment = util.format('/* %s:%s (%s) */', filePath, lineNumbers, originalNodeName)
+      const comment = util.format(
+        '/* %s:%s (%s) */',
+        filePath,
+        lineNumbers,
+        originalNodeName
+      )
 
       for (const { identifier, rules } of finalStyles) {
         const className = `.${identifier}`
@@ -399,7 +442,8 @@ export async function extractToClassNames({
 
   if (shouldLogTiming) {
     const memUsed = mem
-      ? Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
+      ? Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) /
+        10
       : 0
     const path = basename(sourcePath || '')
       .replace(/\.[jt]sx?$/, '')

@@ -1,5 +1,5 @@
 import { ThemeTint } from '@tamagui/logo'
-import { Link } from '@tamagui/lucide-icons'
+import { Heart, Link } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import NextRouter from 'next/router'
 import rangeParser from 'parse-numeric-range'
@@ -43,12 +43,14 @@ import { Highlights } from './Highlights'
 import { HR } from './HR'
 import { LI } from './LI'
 import { MediaPlayer } from './MediaPlayer'
-import { Notice } from './Notice'
+import { Notice, NoticeFrame } from './Notice'
 import { OffsetBox } from './OffsetBox'
 import { Preview } from './Preview'
 import { PropsTable } from './PropsTable'
 import { SocialLinksRow } from './SocialLinksRow'
+import { SponsorButton } from './SponsorButton'
 import { SubTitle } from './SubTitle'
+import { TamaguiCard } from './TamaguiCard'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
@@ -155,6 +157,13 @@ export const components = {
       <SocialLinksRow />
     </YStack>
   ),
+
+  Wide: (props) => (
+    <YStack mx="$-8" $sm={{ mx: '$-2' }}>
+      {props.children}
+    </YStack>
+  ),
+
   Table,
   TableCell,
   TableHighlight,
@@ -240,20 +249,23 @@ export const components = {
     </Button>
   ),
 
-  IntroParagraph: ({ children, large, ...props }) => {
+  IntroParagraph: ({ children, large, disableUnwrapText, ...props }) => {
     return (
       <Paragraph
         tag="p"
-        size={large ? '$9' : '$8'}
+        size={large ? '$9' : '$7'}
         className={'intro-paragraph' + (large ? ' large' : '')}
         my="$3"
         fow={large ? '200' : '300'}
         {...props}
       >
-        {unwrapText(children)}
+        {disableUnwrapText ? children : unwrapText(children)}
       </Paragraph>
     )
   },
+
+  Grid: (props) => <XStack flexWrap="wrap" jc="space-between" {...props} />,
+  Card: TamaguiCard,
 
   Note: (props) => (
     <YStack
@@ -275,7 +287,7 @@ export const components = {
       color="$color11"
       tag="span"
       als="center"
-      fow="200"
+      fow="600"
       fontSize="$2"
       {...props}
     />
@@ -300,7 +312,7 @@ export const components = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading pt="$8" mb="$1" id={id}>
+    <LinkHeading pt="$8" mt="$-4" mb="$1" id={id}>
       <H3
         pos="relative"
         width={`fit-content` as any}
@@ -321,22 +333,36 @@ export const components = {
   h5: (props) => <H5 mt="$4" {...props} />,
 
   p: (props) => (
-    <Paragraph className="docs-paragraph" display="block" my="$3" size="$5" {...props} />
+    <Paragraph
+      className="docs-paragraph"
+      display="block"
+      my="$2.5"
+      size="$5"
+      {...props}
+    />
   ),
 
   a: ({ href = '', children, ...props }) => {
     return (
       <NextLink className="link" href={href}>
         {/* @ts-ignore */}
-        {children}
-        {href.startsWith('http') ? (
-          <>
-            &nbsp;
-            <Text fontSize="inherit" display="inline-flex" y={2} ml={-1}>
-              <ExternalIcon />
-            </Text>
-          </>
-        ) : null}
+        <Paragraph
+          tag="span"
+          fontSize="inherit"
+          display="inline"
+          cursor="pointer"
+          {...props}
+        >
+          {children}
+          {href.startsWith('http') ? (
+            <>
+              &nbsp;
+              <Text fontSize="inherit" display="inline-flex" y={2} ml={-1}>
+                <ExternalIcon />
+              </Text>
+            </>
+          ) : null}
+        </Paragraph>
       </NextLink>
     )
   },
@@ -376,29 +402,42 @@ export const components = {
     children,
     size,
     overlap,
+    linked,
     ...props
-  }: ImageProps & { size?: 'hero'; overlap?: boolean }) => (
-    <OffsetBox
-      size={size}
-      tag="figure"
-      f={1}
-      mx={0}
-      mb="$3"
-      ai="center"
-      jc="center"
-      ov="hidden"
-      {...(overlap && {
-        mt: '$-6',
-      })}
-    >
-      <Image maxWidth="100%" {...props} />
-      {!!children && (
-        <Text tag="figcaption" lineHeight={23} color="$colorPress" mt="$2">
-          {children}
-        </Text>
-      )}
-    </OffsetBox>
-  ),
+  }: ImageProps & { size?: 'hero'; overlap?: boolean; linked?: boolean }) => {
+    const content = (
+      <OffsetBox
+        size={size}
+        tag="figure"
+        f={1}
+        mx={0}
+        mb="$3"
+        ai="center"
+        jc="center"
+        ov="hidden"
+        {...(overlap && {
+          mt: '$-6',
+        })}
+      >
+        <Image maxWidth="100%" {...props} />
+        {!!children && (
+          <Text tag="figcaption" lineHeight={23} color="$colorPress" mt="$2">
+            {children}
+          </Text>
+        )}
+      </OffsetBox>
+    )
+
+    if (linked) {
+      return (
+        <NextLink target="_blank" href={props.src as string}>
+          {content}
+        </NextLink>
+      )
+    }
+
+    return content
+  },
 
   Video: ({
     small,
@@ -479,6 +518,34 @@ export const components = {
   },
 
   DemoButton: () => <Button>Hello world</Button>,
+
+  SponsorButton,
+
+  SponsorNotice: () => {
+    return (
+      <NoticeFrame theme="red">
+        <YStack maw="100%" space>
+          <H4 color="$color10" fontFamily="$silkscreen">
+            👋 Hey! Listen!
+          </H4>
+          <YStack ov="hidden" f={1} o={0.85} space>
+            <Paragraph>
+              Tamagui is fully OSS, self-funded and built by{' '}
+              <a href="https://twitter.com/natebirdman" target="_blank">
+                me
+              </a>
+              .
+            </Paragraph>
+            <Paragraph>
+              My goal is to support Tamagui development with sponsorships that get early
+              access to <a href="#sponsors">some really interesting</a> new features.
+            </Paragraph>
+            <SponsorButton />
+          </YStack>
+        </YStack>
+      </NoticeFrame>
+    )
+  },
 }
 
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (

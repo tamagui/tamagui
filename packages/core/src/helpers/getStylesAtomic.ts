@@ -8,7 +8,6 @@ import type { TextStyle, ViewStyle } from 'react-native'
 
 import { getConfig } from '../config'
 import { TamaguiInternalConfig } from '../types'
-import { Style, cache } from './cache'
 import { defaultOffset } from './expandStyles'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
@@ -48,25 +47,28 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
   return res
 }
 
+const cache = new Map()
+
 export function getAtomicStyle(
   style: ViewOrTextStyle,
   pseudo?: PseudoDescriptor
 ): StyleObject[] {
+  if (!style) return []
+  const key = JSON.stringify(style) + (pseudo ? JSON.stringify(pseudo) : '')
+  if (cache.has(key)) {
+    return cache.get(key)
+  }
+  if (cache.size > 800) {
+    cache.clear()
+  }
   if (process.env.NODE_ENV === 'development') {
     if (!style || typeof style !== 'object') {
       throw new Error(`Wrong style type: "${typeof style}": ${style}`)
     }
-  } else {
-    if (!style) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.warn('Invalid style')
-      }
-      return []
-    }
   }
-
-  return generateAtomicStyles(style, pseudo)
+  const out = generateAtomicStyles(style, pseudo)
+  cache.set(key, out)
+  return out
 }
 
 let conf: TamaguiInternalConfig
@@ -82,7 +84,21 @@ const generateAtomicStyles = (
 
   // transform
   if (style.transform && Array.isArray(style.transform)) {
-    style.transform = style.transform.map(mapTransform).join(' ')
+    style.transform = style.transform
+      .map(
+        // { scale: 2 } => 'scale(2)'
+        // { translateX: 20 } => 'translateX(20px)'
+        // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
+        (transform) => {
+          const type = Object.keys(transform)[0]
+          const value = transform[type]
+          if (type === 'matrix' || type === 'matrix3d') {
+            return `${type}(${value.join(',')})`
+          }
+          return `${type}(${normalizeValueWithProperty(value, type)})`
+        }
+      )
+      .join(' ')
   }
 
   styleToCSS(style)
@@ -90,35 +106,27 @@ const generateAtomicStyles = (
   const out: StyleObject[] = []
   for (const key in style) {
     const value = style[key]
-    if (value != null && value !== undefined) {
-      const uid = key + (pseudo?.name || '')
-      const cachedResult = cache.get(uid, value)
-      if (cachedResult !== undefined) {
-        out.push(cachedResult)
-      } else {
-        const hash = presetHashes[value]
-          ? value
-          : typeof value === 'string'
-          ? simpleHash(value)
-          : `${value}`.replace('.', 'dot')
+    if (value == null || value == undefined) continue
+    const hash = presetHashes[value]
+      ? value
+      : typeof value === 'string'
+      ? simpleHash(value)
+      : `${value}`.replace('.', 'dot')
 
-        const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
-        const shortProp = conf.inverseShorthands[key] || key
-        const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
-        const rules = createAtomicRules(identifier, key, value, pseudo)
-        const styleObject: StyleObject = {
-          property: key,
-          pseudo: pseudo?.name as any,
-          value,
-          identifier,
-          rules,
-        }
-
-        cache.set(uid, value, styleObject)
-        out.push(styleObject)
-      }
+    const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
+    const shortProp = conf.inverseShorthands[key] || key
+    const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
+    const rules = createAtomicRules(identifier, key, value, pseudo)
+    const styleObject: StyleObject = {
+      property: key,
+      pseudo: pseudo?.name as any,
+      value,
+      identifier,
+      rules,
     }
+    out.push(styleObject)
   }
+
   return out
 }
 
@@ -160,21 +168,7 @@ export function styleToCSS(style: Record<string, any>) {
   }
 }
 
-// { scale: 2 } => 'scale(2)'
-// { translateX: 20 } => 'translateX(20px)'
-// { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
-const mapTransform = (transform) => {
-  const type = Object.keys(transform)[0]
-  const value = transform[type]
-  if (type === 'matrix' || type === 'matrix3d') {
-    return `${type}(${value.join(',')})`
-  } else {
-    const normalizedValue = normalizeValueWithProperty(value, type)
-    return `${type}(${normalizedValue})`
-  }
-}
-
-function createDeclarationBlock(style: Style, important = false) {
+function createDeclarationBlock(style: Record<string, any>, important = false) {
   let next = ''
   for (const key in style) {
     const prop = hyphenateStyleName(key)

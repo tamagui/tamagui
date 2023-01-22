@@ -30,25 +30,16 @@ export function expandStyle(key: string, value: any) {
 
     // web only
     switch (key) {
-      case 'aspectRatio': {
-        return [[key, value.toString()]]
-      }
-
       case 'textAlignVertical': {
         return [['verticalAlign', value === 'center' ? 'middle' : value]]
       }
-
-      case 'textDecorationLine': {
-        return [['textDecorationLine', value]]
-      }
-
       case 'writingDirection': {
         return [['direction', value]]
       }
     }
   }
 
-  const longKey = STYLE_SHORT_FORM_EXPANSIONS[key]
+  const longKey = EXPANSIONS[key]
   if (longKey) {
     return longKey.map((key) => {
       return [key, value]
@@ -56,41 +47,36 @@ export function expandStyle(key: string, value: any) {
   }
 }
 
-const STYLE_SHORT_FORM_EXPANSIONS: Record<string, string[]> = {
-  borderColor: [
-    'borderTopColor',
-    'borderRightColor',
-    'borderBottomColor',
-    'borderLeftColor',
-  ],
+const all = ['Top', 'Right', 'Bottom', 'Left']
+const horiz = ['Right', 'Left']
+const vert = ['Top', 'Bottom']
+const xy = ['X', 'Y']
+
+const EXPANSIONS: Record<string, string[]> = {
+  borderColor: ['TopColor', 'RightColor', 'BottomColor', 'LeftColor'],
   borderRadius: [
-    'borderTopLeftRadius',
-    'borderTopRightRadius',
-    'borderBottomRightRadius',
-    'borderBottomLeftRadius',
+    'TopLeftRadius',
+    'TopRightRadius',
+    'BottomRightRadius',
+    'BottomLeftRadius',
   ],
-  borderWidth: [
-    'borderTopWidth',
-    'borderRightWidth',
-    'borderBottomWidth',
-    'borderLeftWidth',
-  ],
-  margin: ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'],
-  marginHorizontal: ['marginRight', 'marginLeft'],
-  marginVertical: ['marginTop', 'marginBottom'],
-  overscrollBehavior: ['overscrollBehaviorX', 'overscrollBehaviorY'],
-  padding: ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'],
-  paddingHorizontal: ['paddingRight', 'paddingLeft'],
-  paddingVertical: ['paddingTop', 'paddingBottom'],
+  borderWidth: ['TopWidth', 'RightWidth', 'BottomWidth', 'LeftWidth'],
+  margin: all,
+  marginHorizontal: horiz,
+  marginVertical: vert,
+  overscrollBehavior: xy,
+  padding: all,
+  paddingHorizontal: horiz,
+  paddingVertical: vert,
   ...(isWeb && {
     // react-native only supports borderStyle
-    borderStyle: [
-      'borderTopStyle',
-      'borderRightStyle',
-      'borderBottomStyle',
-      'borderLeftStyle',
-    ],
+    borderStyle: ['TopStyle', 'RightStyle', 'BottomStyle', 'LeftStyle'],
     // react-native doesn't support X / Y
-    overflow: ['overflowX', 'overflowY'],
+    overflow: xy,
   }),
+}
+
+for (const parent in EXPANSIONS) {
+  const prefix = parent.slice(0, /[A-Z]/.exec(parent)?.index ?? parent.length)
+  EXPANSIONS[parent] = EXPANSIONS[parent].map((k) => `${prefix}${k}`)
 }

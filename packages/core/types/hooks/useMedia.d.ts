@@ -1,5 +1,5 @@
 import { MediaQueries, MediaQueryKey, MediaQueryObject, MediaQueryState, TamaguiInternalConfig } from '../types';
-export declare const mediaState: MediaQueryState;
+export declare let mediaState: MediaQueryState;
 export declare const mediaQueryConfig: MediaQueries;
 export declare const getMedia: () => MediaQueryState;
 export declare const mediaKeysWithAndWithout$: Set<string>;
@@ -10,13 +10,17 @@ export declare function useMediaListeners(config: TamaguiInternalConfig): void;
 type UseMediaState = {
     [key in MediaQueryKey]: boolean;
 };
-export declare function setMediaShouldUpdate(ref: any, val: boolean): WeakMap<any, boolean>;
-export declare function useMedia(): UseMediaState;
+type UpdateState = {
+    enabled: boolean;
+    keys: MediaQueryKey[];
+};
+export declare function setMediaShouldUpdate(ref: any, props: UpdateState): WeakMap<any, UpdateState>;
+export declare function useMedia(uid?: any, debug?: any): UseMediaState;
 /**
  * Useful for more complex components that need access to the currently active props,
  * accounting for the currently active media queries.
  *
- * Use sparingly, is will loop props and trigger re-render on all media queries.
+ * Use sparingly, it will loop props and trigger re-render on all media queries.
  *
  * */
 export declare function useMediaPropsActive<A extends Object>(props: A): {

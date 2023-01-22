@@ -1,0 +1,37 @@
+{
+  "name": "@tamagui/normalize-css-color",
+  "version": "1.0.20",
+  "sideEffects": [
+    "*.css"
+  ],
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "../../node_modules/.bin/rome check src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.20"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

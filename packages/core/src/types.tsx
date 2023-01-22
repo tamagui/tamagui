@@ -94,6 +94,18 @@ export interface CreateTokens<Val extends VariableVal = VariableVal> {
   zIndex: { [key: GenericKey]: Val }
 }
 
+type Tokenify<A extends GenericTokens> = {
+  color: TokenifyRecord<A['color']>
+  space: TokenifyRecord<A['space']>
+  size: TokenifyRecord<A['size']>
+  radius: TokenifyRecord<A['radius']>
+  zIndex: TokenifyRecord<A['zIndex']>
+}
+
+type TokenifyRecord<A extends CreateTokens[keyof CreateTokens]> = {
+  [Key in keyof A]: Variable<A[Key]>
+}
+
 export type TamaguiBaseTheme = {
   // defined for our tamagui kit , we could do this inside `tamagui`
   // but maybe helpful to have some sort of universally shared things +
@@ -241,7 +253,7 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   ? TamaguiInternalConfig<A, B, C, D, E, F>
   : unknown
 
-// for use in creation functions so it doesnt get overwrtitten
+// for use in creation functions so it doesnt get overwritten
 export type GenericTamaguiConfig = CreateTamaguiConfig<
   GenericTokens,
   GenericThemes,
@@ -272,13 +284,16 @@ export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>
 
 export interface ThemeProps {
   className?: string
-  disableThemeClass?: boolean
   name?: Exclude<ThemeName, number> | null
   componentName?: string
   children?: any
   reset?: boolean
   debug?: boolean | 'verbose'
   inverse?: boolean
+  // on the web, for portals we need to re-insert className
+  forceClassName?: boolean
+  // allows for disabling the auto-update behavior
+  shouldUpdate?: () => boolean
 }
 
 type ArrayIntersection<A extends any[]> = A[keyof A]
@@ -372,11 +387,12 @@ export type TamaguiInternalConfig<
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
-  CreateTamaguiConfig<A, B, C, D, E, F> & {
+  Omit<CreateTamaguiConfig<A, B, C, D, E, F>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit
     // animations: E //AnimationDriver<E>
     // with $ prefixes for fast lookups (one time cost at startup vs every render)
-    tokensParsed: CreateTokens<Variable>
+    tokens: Tokenify<A>
+    tokensParsed: Tokenify<A>
     themeConfig: any
     fontsParsed: GenericFonts
     getCSS: () => string
@@ -495,6 +511,7 @@ type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
 // base tokens
 export type SizeTokens = GetTokenString<keyof Tokens['size']> | number
 export type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean
+
 export type ColorTokens =
   | GetTokenString<keyof Tokens['color']>
   | GetTokenString<keyof ThemeParsed>
@@ -1372,7 +1389,7 @@ export type UseAnimationHook = (props: {
   hostRef: RefObject<HTMLElement | View>
   staticConfig: StaticConfigParsed
   state: SplitStyleState
-  pseudos: PseudoProps<ViewStyle>
+  pseudos: PseudoProps<ViewStyle> | null
   onDidAnimate?: any
   delay?: number
 }) => null | {

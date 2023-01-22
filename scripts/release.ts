@@ -14,7 +14,11 @@ import { spawnify } from './spawnify'
 
 const exec = promisify(proc.exec)
 export const spawn = proc.spawn
-const skipVersion = process.argv.includes('--skip-version')
+
+// for failed publishes that need to re-run
+const rePublish = process.argv.includes('--republish')
+
+const skipVersion = rePublish || process.argv.includes('--skip-version')
 const patch = process.argv.includes('--patch')
 const dirty = process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
@@ -25,12 +29,9 @@ const isCI = process.argv.includes('--ci')
 
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
 const plusVersion = skipVersion ? 0 : 1
-const curPatch = +curVersion.split('.')[4] || 0
-const patchVersion = patch ? `.${curPatch + plusVersion}` : ''
-const curRC = +curVersion.split('.')[3] || 0
-const rcVersion = curRC + (!patch ? plusVersion : 0)
-const nextVersionPostfix = `rc.${rcVersion}${patchVersion}`
-const nextVersion = `1.0.1-${nextVersionPostfix}`
+const curPatch = +curVersion.split('.')[2] || 0
+const patchVersion = curPatch + (patch ? plusVersion : 0)
+const nextVersion = `1.0.${patchVersion}`
 
 if (!skipVersion) {
   console.log('Publishing version:', nextVersion, '\n')
@@ -149,9 +150,8 @@ async function run() {
       }
     }
 
-    const erroredPackages: { name: string }[] = []
-
-    if (!skipPublish) {
+    if (!skipPublish && !rePublish) {
+      const erroredPackages: { name: string }[] = []
       // publish with tag
       for (const chunk of _.chunk(packageJsons, 4)) {
         await Promise.all(
@@ -196,18 +196,37 @@ async function run() {
             }
           })
         )
-      }
 
-      if (erroredPackages.length) {
-        console.warn(
-          `❌ Error pre-publishing packages:\n`,
-          erroredPackages.map((x) => x.name).join('\n')
+        if (erroredPackages.length) {
+          console.warn(
+            `❌ Error pre-publishing packages:\n`,
+            erroredPackages.map((x) => x.name).join('\n')
+          )
+          return
+        }
+
+        console.log(`✅ Published under dist-tag "prepub"\n`)
+      }
+    }
+
+    if (rePublish) {
+      // if all successful, re-tag as latest
+      for (const chunk of _.chunk(packageJsons, 20)) {
+        await Promise.all(
+          chunk.map(async ({ name, cwd }) => {
+            console.log(`Release ${name}`)
+            try {
+              await spawnify(`npm publish`, {
+                cwd,
+              })
+            } catch (err) {
+              // @ts-ignore
+              console.error(`Publish fail ${name}:`, err.message, err.stack)
+            }
+          })
         )
-        return
       }
-
-      console.log(`✅ Published under dist-tag "prepub"\n`)
-
+    } else {
       // if all successful, re-tag as latest
       for (const chunk of _.chunk(packageJsons, 20)) {
         await Promise.all(
@@ -222,36 +241,37 @@ async function run() {
               })
             } catch (err) {
               // @ts-ignore
-              console.error(`Package ${name} failed with error:`, err.message, err.stack)
+              console.error(`Publish fail ${name}:`, err.message, err.stack)
             }
           })
         )
       }
+    }
 
-      console.log(`✅ Published\n`)
+    console.log(`✅ Published\n`)
 
-      // then git tag, commit, push
-      await spawnify(`yarn install`)
-      await spawnify(`yarn fix`)
+    // then git tag, commit, push
+    await spawnify(`yarn install`)
+    await spawnify(`yarn fix`)
+
+    if (!rePublish) {
       await spawnify(`git add -A`)
       await spawnify(`git commit -m v${version}`)
       await spawnify(`git tag v${version}`)
       await spawnify(`git push origin head`)
       await spawnify(`git push origin v${version}`)
       console.log(`✅ Pushed and versioned\n`)
-
-      const seconds = 5
-      console.log(
-        `Update starters to v${version} in (${seconds}) seconds (give time to propogate)...`
-      )
-      await new Promise((res) => setTimeout(res, 5 * 1000))
-      await spawnify(`yarn upgrade:starters`)
-      await spawnify(`yarn fix`)
-      await spawnify(`git commit -am update-starters-v${version}`)
-      await spawnify(`git push origin head`)
-    } else {
-      console.log(`Skipped publish`)
     }
+
+    const seconds = 5
+    console.log(
+      `Update starters to v${version} in (${seconds}) seconds (give time to propogate)...`
+    )
+    await new Promise((res) => setTimeout(res, 5 * 1000))
+    await spawnify(`yarn upgrade:starters`)
+    await spawnify(`yarn fix`)
+    await spawnify(`git commit -am update-starters-v${version}`)
+    await spawnify(`git push origin head`)
   } catch (err) {
     console.log('\nError:\n', err)
     process.exit(1)

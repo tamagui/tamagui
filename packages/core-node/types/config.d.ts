@@ -43,4 +43,5 @@ export declare const getThemes: () => {
 export declare const configListeners: Set<ConfigListener>;
 export declare const onConfiguredOnce: (cb: ConfigListener) => void;
 export declare const updateConfig: (key: string, value: any) => void;
+export declare const getFont: (name: string) => import("./types").GenericFont<string | number>;
 //# sourceMappingURL=config.d.ts.map

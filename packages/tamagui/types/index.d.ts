@@ -12,6 +12,7 @@ export * from '@tamagui/font-size';
 export * from '@tamagui/helpers-tamagui';
 export * from '@tamagui/image';
 export * from '@tamagui/label';
+export * from '@tamagui/linear-gradient';
 export * from '@tamagui/list-item';
 export * from '@tamagui/popover';
 export * from '@tamagui/popper';
@@ -43,9 +44,8 @@ export * from './views/Grid';
 export * from './views/Input';
 export * from './views/Group';
 export * from './views/Layouts';
-export * from './views/LinearGradient';
 export * from './views/Spinner';
 export * from './views/TextArea';
-export type { AnimationKeys, ColorTokens, CreateTamaguiConfig, CreateTamaguiProps, FontColorTokens, FontLetterSpacingTokens, FontLineHeightTokens, FontSizeTokens, FontStyleTokens, FontTokens, FontTransformTokens, FontWeightTokens, GenericFont, GenericTamaguiConfig, GetAnimationKeys, GetProps, GetVariantProps, GenericTextVariants, GenericStackVariants, Media, MediaPropKeys, MediaQueries, MediaQueryState, RNWTextProps, RNWViewProps, Shorthands, Slot, Slottable, SizeTokens, SpaceTokens, SpacerProps, StackPropsBase, TamaguiElement, StackNonStyleProps, StaticConfig, StaticConfigParsed, TamaguiBaseTheme, TamaguiComponent, TamaguiComponentPropsBase, TamaguiConfig, FontLanguages, TamaguiCustomConfig, TamaguiInternalConfig, TamaguiProviderProps, TextProps, TextPropsBase, TextNonStyleProps, ThemeKeys, ThemeName, ThemeParsed, ThemeProps, Themes, ThemeValueFallback, Tokens, TransformStyleProps, VariantSpreadExtras, VariantSpreadFunction, ZIndexTokens, } from '@tamagui/core';
+export type { AnimationKeys, ColorTokens, CreateTamaguiConfig, CreateTamaguiProps, FontColorTokens, FontLetterSpacingTokens, FontLineHeightTokens, FontSizeTokens, FontStyleTokens, FontTokens, FontTransformTokens, FontWeightTokens, GenericFont, GenericTamaguiConfig, GetAnimationKeys, GetProps, GetVariantProps, GenericTextVariants, GenericStackVariants, Media, MediaPropKeys, MediaQueries, MediaQueryState, RNWTextProps, RNWViewProps, Shorthands, SizeTokens, SpaceTokens, SpacerProps, StackPropsBase, TamaguiElement, StackNonStyleProps, StaticConfig, StaticConfigParsed, TamaguiBaseTheme, TamaguiComponent, TamaguiComponentPropsBase, TamaguiConfig, FontLanguages, TamaguiCustomConfig, TamaguiInternalConfig, TamaguiProviderProps, TextProps, TextPropsBase, TextNonStyleProps, ThemeKeys, ThemeName, ThemeParsed, ThemeProps, Themes, ThemeValueFallback, Tokens, TransformStyleProps, VariantSpreadExtras, VariantSpreadFunction, ZIndexTokens, } from '@tamagui/core';
 export { Spacer, Stack, Text, Theme, FontLanguage, Unspaced, TextAncestorContext, isChrome, isClient, isServer, isTouchable, isWeb, isWebTouchable, mediaQueryConfig, createComponent, createFont, createShorthands, createTheme, addTheme, updateTheme, createTokens, createVariable, getConfig, getAnimationDriver, getMedia, getStylesAtomic, getThemes, getTokens, getVariable, variableToString, getVariableValue, getVariableName, insertFont, isTamaguiElement, isTamaguiComponent, isVariable, matchMedia, mediaObjectToString, mediaState, spacedChildren, styled, themeable, withStaticProperties, useGet, useEvent, useDidFinishSSR, useIsomorphicLayoutEffect, useIsTouchDevice, useMedia, useTheme, useThemeName, useSafeRef, } from '@tamagui/core';
 //# sourceMappingURL=index.d.ts.map

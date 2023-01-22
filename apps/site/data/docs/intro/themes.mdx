@@ -120,6 +120,7 @@ In `tamagui`, all components will look for the following keys:
 - `color`
 - `borderColor`
 - `shadowColor`
+- `placeholderColor` (no psuedo variants)
 
 ...plus all the pseudo variants for each, eg, `backgroundHover`, `backgroundPress`, and `backgroundFocus`.
 
@@ -131,12 +132,12 @@ If you are building a component with more than one sub-components, you can follo
 import { Text, Stack, styled, GetProps } from '@tamagui/core'
 
 const ButtonFrame = styled(Stack, {
-  name: 'Button'
+  name: 'Button',
   backgroundColor: '$background'
 })
 
 const ButtonText = styled(Text, {
-  name: 'ButtonText'
+  name: 'ButtonText',
   color: '$color'
 })
 
@@ -158,22 +159,17 @@ And now you can add two themes: `dark_Button` and `dark_ButtonText`, and overrid
 
 ## Quick start
 
-To get started quickly, you can use the themes we've developed alongside this site and with other apps, `@tamagui/theme-base`. It's even easier to see how it all comes together by using [create-tamagui to bootstrap](/docs/guides/create-tamagui).
+To get started quickly, you can use the themes we've developed alongside this site and with other apps, `@tamagui/theme-base`. It's even easier to see how it all comes together by using [create-tamagui to bootstrap](/docs/guides/create-tamagui-app).
 
 To install, just add import it and add it to your `tamagui.config.ts`:
 
 ```tsx
-import { createInterFont } from '@tamagui/font-inter'
 import { color, radius, size, space, themes, zIndex } from '@tamagui/theme-base'
 import { createTamagui, createTokens } from 'tamagui'
 
 const inter = createInterFont()
 
 const tokens = createTokens({
-  font: {
-    heading: inter,
-    body: inter,
-  },
   size,
   space,
   zIndex,
@@ -184,6 +180,7 @@ const tokens = createTokens({
 const config = createTamagui({
   themes,
   tokens,
+  // ... see Configuration
 })
 
 export type Conf = typeof config

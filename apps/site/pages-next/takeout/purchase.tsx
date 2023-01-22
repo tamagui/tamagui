@@ -40,7 +40,7 @@ interface Props {
 }
 
 export default function TakeoutPurchasePage({ products }: Props) {
-  const { resolvedTheme } = useThemeSetting()
+  const { resolvedTheme } = useThemeSetting()!
   const [themeName, setThemeName] = useState<ThemeName>(resolvedTheme as any)
   const containerRef = useRef(null)
   const router = useRouter()

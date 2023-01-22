@@ -4,18 +4,15 @@ import { ChevronRight, Moon, Sun } from 'sandbox-ui'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
-  Circle,
   H1,
-  Input,
+  H2,
   ListItem,
   ListItemProps,
   Paragraph,
   Separator,
   Spacer,
-  Square,
   Switch,
-  Theme,
-  XStack,
+  TextArea,
   YGroup,
   YStack,
   useTheme,
@@ -94,7 +91,7 @@ const ColorSchemeListItem = () => {
       <ListItem.Text>Theme</ListItem.Text>
       <Spacer flex />
       <Button chromeless disabled w={20} icon={Moon} />
-      <Switch checked={checked} themeShallow>
+      <Switch checked={checked}>
         <Switch.Thumb
           animation={[
             'quick',

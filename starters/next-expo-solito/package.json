@@ -8,22 +8,22 @@
   "scripts": {
     "native": "cd apps/expo && yarn start",
     "watch": "yarn workspaces foreach -pi run watch",
+    "vercel:install": "yarn set version stable && yarn install",
     "web": "yarn build && cd apps/next && yarn next",
     "web:extract": "DISABLE_EXTRACTION=false yarn workspace next-app dev",
     "web:prod": "yarn workspace next-app build",
     "web:prod:serve": "yarn workspace next-app serve",
     "postinstall": "yarn build",
     "build": "yarn workspaces foreach --exclude next-app -pi run build",
-    "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader"
+    "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader && manypkg upgrade react-native-web-lite"
   },
   "resolutions": {
     "esbuild": "0.15.6",
-    "@types/react": "17.0.21",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-refresh": "^0.14.0",
-    "react-native-svg": "12.1.0",
-    "react-native-web": "0.18.6"
+    "react-native-svg": "13.4.0",
+    "react-native-web": "0.18.9"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9"

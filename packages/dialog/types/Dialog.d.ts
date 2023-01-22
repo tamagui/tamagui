@@ -186,13 +186,6 @@ type DialogContentImplProps = DialogContentFrameProps & Omit<DismissableProps, '
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'];
     context: DialogContextValue;
 };
-export declare const DialogSheetContents: {
-    ({ name, ...props }: {
-        name: string;
-        context: Omit<DialogContextValue, 'sheetBreakpoint'>;
-    }): JSX.Element;
-    displayName: string;
-};
 declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
@@ -1755,7 +1748,9 @@ declare const DialogDescription: React.ForwardRefExoticComponent<((Omit<import("
 }), string | number> & {
     [x: string]: undefined;
 }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
-type DialogCloseProps = YStackProps;
+type DialogCloseProps = YStackProps & {
+    displayWhenAdapted?: boolean;
+};
 declare const DialogClose: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -1765,7 +1760,9 @@ declare const DialogClose: React.ForwardRefExoticComponent<Omit<import("react-na
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-}>> & React.RefAttributes<TamaguiElement>>;
+}>> & {
+    displayWhenAdapted?: boolean | undefined;
+} & React.RefAttributes<TamaguiElement>>;
 declare const DialogWarningProvider: {
     (props: {
         contentName: string;
@@ -2550,7 +2547,9 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-    }>> & React.RefAttributes<TamaguiElement>>;
+    }>> & {
+        displayWhenAdapted?: boolean | undefined;
+    } & React.RefAttributes<TamaguiElement>>;
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet/types/types").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native").View>> & {
         Handle: ({ __scopeSheet, ...props }: import("@tamagui/sheet/types/types").SheetScopedProps<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
@@ -2604,6 +2603,13 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             shouldForwardSpace: boolean;
         };
     };
+};
+export declare const DialogSheetContents: {
+    ({ name, ...props }: {
+        name: string;
+        context: Omit<DialogContextValue, 'sheetBreakpoint'>;
+    }): JSX.Element;
+    displayName: string;
 };
 export { createDialogScope, Dialog, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogDescription, DialogClose, DialogWarningProvider, };
 export type { DialogProps, DialogTriggerProps, DialogPortalProps, DialogOverlayProps, DialogContentProps, DialogTitleProps, DialogDescriptionProps, DialogCloseProps, };

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.0.1-rc.10",
+  "version": "1.0.20",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -19,7 +19,9 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "test": "vitest --run --config ../vite-plugin-internal/src/vite.config.ts"
+    "test:web": "TAMAGUI_TARGET=web vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.web.test.tsx",
+    "test:native": "TAMAGUI_TARGET=native vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.native.test.tsx",
+    "test": "yarn test:web"
   },
   "files": [
     "types",
@@ -28,28 +30,28 @@
     "reset.css"
   ],
   "dependencies": {
-    "@tamagui/compose-refs": "^1.0.1-rc.10",
-    "@tamagui/constants": "^1.0.1-rc.10",
-    "@tamagui/helpers": "^1.0.1-rc.10",
-    "@tamagui/react-native-use-pressable": "^1.0.1-rc.10",
-    "@tamagui/react-native-use-responder-events": "^1.0.1-rc.10",
-    "@tamagui/use-did-finish-ssr": "^1.0.1-rc.10",
-    "@tamagui/use-event": "^1.0.1-rc.10",
-    "@tamagui/use-force-update": "^1.0.1-rc.10",
-    "normalize-css-color": "^1.0.2"
+    "@tamagui/compose-refs": "^1.0.20",
+    "@tamagui/constants": "^1.0.20",
+    "@tamagui/helpers": "^1.0.20",
+    "@tamagui/normalize-css-color": "^1.0.20",
+    "@tamagui/react-native-use-pressable": "^1.0.20",
+    "@tamagui/react-native-use-responder-events": "^1.0.20",
+    "@tamagui/use-did-finish-ssr": "^1.0.20",
+    "@tamagui/use-event": "^1.0.20",
+    "@tamagui/use-force-update": "^1.0.20"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-rc.10",
+    "@tamagui/build": "^1.0.20",
     "@testing-library/react": "^13.4.0",
     "csstype": "^3.0.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^4.7.4",
-    "vitest": "^0.25.7"
+    "vitest": "^0.26.3"
   },
   "exports": {
     "./package.json": "./package.json",

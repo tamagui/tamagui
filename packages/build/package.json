@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "1.0.1-rc.10",
+  "version": "1.0.20",
   "bin": {
     "tamagui-build": "tamagui-build.js"
   },
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "chokidar": "^3.5.2",
-    "esbuild": "^0.15.11",
+    "esbuild": "^0.16.15",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
     "fs-extra": "^10.1.0",

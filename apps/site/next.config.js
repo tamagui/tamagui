@@ -85,10 +85,17 @@ const plugins = [
 module.exports = function (name, { defaultConfig }) {
   /** @type {import('next').NextConfig} */
   let config = {
+    // runtime: 'experimental-edge',
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     swcMinify: true,
     reactStrictMode: true,
     optimizeFonts: true,
+    modularizeImports: {
+      '@tamagui/lucide-icons': {
+        transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
+        skipDefaultConversion: true,
+      },
+    },
     experimental: {
       // optimizeCss: true,
       esmExternals: true,

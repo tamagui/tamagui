@@ -38,9 +38,9 @@ const isClient = typeof document !== 'undefined'
 
 // multiple sheets could have the same ids so we have to count
 
-const scannedNum = new WeakMap<CSSStyleSheet, number>()
+// only cache tamagui styles
+const scannedCache = new WeakMap<CSSStyleSheet, string>()
 const totalSheetSelectors = new Map<string, number>()
-const referencesInSheet = new WeakMap<CSSStyleSheet>()
 
 export function listenForSheetChanges() {
   if (!isClient) return
@@ -88,17 +88,25 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
     return
   }
 
-  const len = rules.length
-  const lastScanned = scannedNum.get(sheet) || 0
+  // not tamagui stylesheet
+  const firstSelector = getTamaguiSelector(rules[0])?.[0]
+  if (!firstSelector) {
+    return
+  }
 
+  const lastSelector = getTamaguiSelector(rules[rules.length - 1])?.[0]
+
+  const cacheKey = `${rules.length}${firstSelector}${lastSelector}`
+  const lastScanned = scannedCache.get(sheet)
   if (!remove) {
-    // avoid work dumb but works
-    if (lastScanned === len) {
+    // avoid re-scanning
+    if (lastScanned === cacheKey) {
       return
     }
   }
 
-  for (let i = lastScanned; i < len; i++) {
+  const len = rules.length
+  for (let i = 0; i < len; i++) {
     const rule = rules[i]
     const response = getTamaguiSelector(rule)
     if (!response) {
@@ -127,7 +135,7 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
     }
   }
 
-  scannedNum.set(sheet, len)
+  scannedCache.set(sheet, cacheKey)
 }
 
 function getTamaguiSelector(
@@ -135,7 +143,6 @@ function getTamaguiSelector(
 ): readonly [string, CSSStyleRule] | null {
   if (rule instanceof CSSStyleRule) {
     const text = rule.selectorText
-    // .startsWith('._')
     if (text[0] === '.' && text[1] === '_') {
       return [text.slice(1), rule]
     }
@@ -186,7 +193,18 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
     updateRules(identifier, rules)
     if (sheet) {
       for (const rule of rules) {
-        sheet.insertRule(rule, sheet.cssRules.length)
+        try {
+          sheet.insertRule(rule, sheet.cssRules.length)
+        } catch (err) {
+          if (process.env.NODE_ENV !== 'production') {
+            console.groupCollapsed(
+              `Error inserting rule into CSSStyleSheet: ${String(err)}`
+            )
+            console.log({ rule, rulesToInsert })
+            console.trace()
+            console.groupEnd()
+          }
+        }
       }
     }
   }

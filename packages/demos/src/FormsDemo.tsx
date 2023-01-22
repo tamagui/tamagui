@@ -6,7 +6,7 @@ export function FormsDemo() {
       <FormDemo size="$2" />
       <FormDemo size="$3" />
       <FormDemo size="$4" />
-      <TextArea placeholder="Enter your details..." numberOfLines={4} />
+      <TextArea mih={140} placeholder="Enter your details..." numberOfLines={4} />
     </YStack>
   )
 }

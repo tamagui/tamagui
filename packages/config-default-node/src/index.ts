@@ -1,3 +1,5 @@
+// SEE config-default
+
 import {
   TamaguiInternalConfig,
   createFont,
@@ -27,55 +29,64 @@ export function getDefaultTamaguiConfig() {
       1: 0,
     },
   })
-
   const size = {
-    0: 0,
-    0.25: 2,
-    0.5: 4,
-    0.75: 8,
-    1: 20,
-    1.5: 24,
-    2: 28,
-    2.5: 32,
-    3: 36,
-    3.5: 40,
-    4: 44,
-    true: 44,
-    4.5: 48,
-    5: 52,
-    5.5: 59,
-    6: 64,
-    6.5: 69,
-    7: 74,
-    7.6: 79,
-    8: 84,
-    8.5: 89,
-    9: 94,
-    9.5: 99,
-    10: 104,
-    11: 124,
-    12: 144,
-    13: 164,
-    14: 184,
-    15: 204,
-    16: 224,
-    17: 224,
-    18: 244,
-    19: 264,
-    20: 284,
+    $0: 0,
+    '$0.25': 2,
+    '$0.5': 4,
+    '$0.75': 8,
+    $1: 20,
+    '$1.5': 24,
+    $2: 28,
+    '$2.5': 32,
+    $3: 36,
+    '$3.5': 40,
+    $4: 44,
+    $true: 44,
+    '$4.5': 48,
+    $5: 52,
+    $6: 64,
+    $7: 74,
+    $8: 84,
+    $9: 94,
+    $10: 104,
+    $11: 124,
+    $12: 144,
+    $13: 164,
+    $14: 184,
+    $15: 204,
+    $16: 224,
+    $17: 224,
+    $18: 244,
+    $19: 264,
+    $20: 284,
   }
 
-  const spaces = Object.entries(size).map(([k, v]) => [
-    k,
-    Math.max(0, v <= 16 ? Math.round(v * 0.333) : Math.floor(v * 0.7 - 12)),
-  ])
+  type SizeKeysIn = keyof typeof size
+  type Sizes = {
+    [Key in SizeKeysIn extends `$${infer Key}` ? Key : SizeKeysIn]: number
+  }
+  type SizeKeys = `${keyof Sizes extends `${infer K}` ? K : never}`
 
-  const spacesNegative = spaces.map(([k, v]) => [`-${k}`, -v])
+  const spaces = Object.entries(size).map(([k, v]) => {
+    return [k, sizeToSpace(v)]
+  })
 
-  const space = {
+  const spacesNegative = spaces.map(([k, v]) => [`$-${(k as string).slice(1)}`, -v])
+
+  const space: {
+    [Key in `$-{SizeKeys}` | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number
+  } = {
     ...Object.fromEntries(spaces),
     ...Object.fromEntries(spacesNegative),
   } as any
+
+  // a bit odd but keeping backward compat for values >8 while fixing below
+  function sizeToSpace(v: number) {
+    if (v === 0) return 0
+    if (v <= 8) return v * Math.log(v) * 0.12
+    if (v <= 16) return Math.round(v * 0.333)
+    return Math.floor(v * 0.7 - 12)
+  }
 
   const zIndex = {
     0: 0,

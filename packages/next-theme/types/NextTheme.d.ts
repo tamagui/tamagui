@@ -38,6 +38,7 @@ export interface ThemeProviderProps {
     /** Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value */
     value?: ValueObject;
     onChangeTheme?: (name: string) => void;
+    skipNextHead?: boolean;
 }
 /**
  * @deprecated renamed to `useThemeSetting` to avoid confusion with core `useTheme` hook

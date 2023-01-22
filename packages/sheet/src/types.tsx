@@ -1,5 +1,6 @@
 import { AnimatedNumberStrategy } from '@tamagui/core'
-import { ScopedProps } from '@tamagui/create-context'
+import type { ScopedProps } from '@tamagui/create-context'
+import type { PortalProps } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import React, { ReactNode } from 'react'
 
@@ -15,11 +16,13 @@ export type SheetProps = ScopedProps<
     children?: ReactNode
     dismissOnOverlayPress?: boolean
     dismissOnSnapToBottom?: boolean
+    forceRemoveScrollEnabled?: boolean
     animationConfig?: AnimatedNumberStrategy
     handleDisableScroll?: boolean
     disableDrag?: boolean
     modal?: boolean
     zIndex?: number
+    portalProps?: PortalProps
   },
   'Sheet'
 >

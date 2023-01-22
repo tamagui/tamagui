@@ -12,6 +12,7 @@ import {
   mergeEvent,
   styled,
   themeable,
+  useDidFinishSSR,
   useEvent,
   useIsomorphicLayoutEffect,
   useThemeName,
@@ -36,6 +37,7 @@ import React, {
   useState,
 } from 'react'
 import {
+  Animated,
   GestureResponderEvent,
   PanResponder,
   PanResponderGestureState,
@@ -106,7 +108,7 @@ const SHEET_OVERLAY_NAME = 'SheetOverlay'
 
 export const SheetOverlayFrame = styled(YStack, {
   name: SHEET_OVERLAY_NAME,
-  backgroundColor: '$background',
+  backgroundColor: '$color10',
   fullscreen: true,
   opacity: 0.5,
   zIndex: 0,
@@ -204,14 +206,16 @@ const useSheetContoller = () => {
 
 export const Sheet = withStaticProperties(
   forwardRef<View, SheetProps>(function Sheet(props, ref) {
+    const hydrated = useDidFinishSSR()
     const { isShowingNonSheet } = useSheetContoller()
 
     /**
      * Performance is sensitive here so avoid all the hooks below with this
      */
-    if (isShowingNonSheet) {
+    if (isShowingNonSheet || !hydrated) {
       return null
     }
+
     return <SheetImplementation ref={ref} {...props} />
   }),
   sheetComponents
@@ -235,10 +239,11 @@ const SheetImplementation = themeable(
       dismissOnOverlayPress = true,
       animationConfig,
       dismissOnSnapToBottom = false,
+      forceRemoveScrollEnabled = null,
       disableDrag: disableDragProp,
       modal = false,
-      handleDisableScroll = true,
       zIndex = parentSheet.zIndex + 1,
+      portalProps,
     } = props
 
     if (process.env.NODE_ENV === 'development') {
@@ -317,11 +322,15 @@ const SheetImplementation = themeable(
       [dismissOnSnapToBottom, snapPoints.length, setPosition_, setOpen]
     )
 
-    const animatedNumber = driver.useAnimatedNumber(HIDDEN_SIZE)
+    const { useAnimatedNumber, useAnimatedNumberReaction, useAnimatedNumberStyle } =
+      driver
+
+    const animatedNumber = useAnimatedNumber(HIDDEN_SIZE)
 
     // native only fix
     const at = useRef(0)
-    driver.useAnimatedNumberReaction(animatedNumber, (value) => {
+
+    useAnimatedNumberReaction(animatedNumber, (value) => {
       at.current = value
       scrollBridge.paneY = value
     })
@@ -474,17 +483,14 @@ const SheetImplementation = themeable(
         ) => {
           const isScrolled = scrollBridge.y !== 0
           const isDraggingUp = dy < 0
-          const isAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
+          // we can treat near top instead of exactly to avoid trouble with springs
+          const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
           if (isScrolled) {
             previouslyScrolling = true
             return false
           }
-          if (previouslyScrolling) {
-            previouslyScrolling = false
-            return true
-          }
           // prevent drag once at top and pulling up
-          if (isAtTop) {
+          if (isNearTop) {
             if (!isScrolled && isDraggingUp) {
               return false
             }
@@ -554,7 +560,7 @@ const SheetImplementation = themeable(
       }
     })
 
-    const animatedStyle = driver.useAnimatedNumberStyle(animatedNumber, (val) => {
+    const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
       const translateY = frameSize === 0 ? HIDDEN_SIZE : val
       return {
         transform: [{ translateY }],
@@ -562,7 +568,7 @@ const SheetImplementation = themeable(
     })
 
     // temp until reanimated useAnimatedNumber fix
-    const AnimatedView = driver['NumberView'] ?? driver.View
+    const AnimatedView = (driver['NumberView'] ?? driver.View) as typeof Animated.View
 
     useIsomorphicLayoutEffect(() => {
       if (!(parentSheetContext && open)) return
@@ -592,6 +598,8 @@ const SheetImplementation = themeable(
         return next
       })
     }, [])
+
+    const removeScrollEnabled = forceRemoveScrollEnabled ?? (open && modal)
 
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
@@ -630,15 +638,16 @@ const SheetImplementation = themeable(
           >
             {handleComponent}
 
+            {/* @ts-ignore */}
             <RemoveScroll
-              enabled={open && modal && handleDisableScroll}
-              as={Slot}
+              forwardProps
+              enabled={removeScrollEnabled}
               allowPinchZoom
               shards={[contentRef]}
               // causes lots of bugs on touch web on site
               removeScrollBar={false}
             >
-              {isResizing ? null : frameComponent}
+              {isResizing ? <></> : frameComponent}
             </RemoveScroll>
           </AnimatedView>
         </SheetProvider>
@@ -649,8 +658,8 @@ const SheetImplementation = themeable(
 
     if (modal) {
       const modalContents = (
-        <Portal zIndex={zIndex}>
-          <Theme name={themeName}>
+        <Portal zIndex={zIndex} {...portalProps}>
+          <Theme forceClassName name={themeName}>
             <AdaptParentContext.Provider value={adaptContext}>
               {contents}
             </AdaptParentContext.Provider>

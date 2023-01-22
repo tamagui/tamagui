@@ -21,7 +21,7 @@ const TitleLink = ({ href, children, ...props }: any) => {
             backgroundColor: '$color3',
           }}
           size="$9"
-          fontSize="$8"
+          fontSize="$7"
           ls={0}
           {...props}
         >
@@ -47,8 +47,8 @@ export const HeroBelowContent = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
 
   const greenTheme = hovered === 0 ? 'green_alt2' : 'green'
-  const purpleTheme = hovered === 1 ? 'purple_alt2' : 'purple'
-  const blueTheme = hovered === 2 ? 'blue_alt2' : 'blue'
+  const blueTheme = hovered === 1 ? 'blue_alt2' : 'blue'
+  const purpleTheme = hovered === 2 ? 'purple_alt2' : 'purple'
 
   return (
     <ContainerLarge>
@@ -60,7 +60,7 @@ export const HeroBelowContent = memo(() => {
         flexWrap="nowrap"
         px="$2"
         mb={-8}
-        py="$2"
+        py="$4"
         $sm={{ flexDirection: 'column' }}
         $gtSm={{
           px: '$6',

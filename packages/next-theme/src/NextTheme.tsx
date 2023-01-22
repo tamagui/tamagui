@@ -58,6 +58,10 @@ export interface ThemeProviderProps {
   /** Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value */
   value?: ValueObject
   onChangeTheme?: (name: string) => void
+
+  // avoids warning
+
+  skipNextHead?: boolean
 }
 
 const ThemeSettingContext = createContext<UseThemeProps>({
@@ -107,6 +111,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   themes = colorSchemes,
   defaultTheme = enableSystem ? 'system' : 'light',
   attribute = 'class',
+  skipNextHead,
   onChangeTheme,
   value = {
     dark: 't_dark',
@@ -133,36 +138,34 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   const mediaListener = useRef(handleMediaQuery)
   mediaListener.current = handleMediaQuery
 
-  const handleChangeTheme = useEvent(
-    (theme, updateStorage = true, updateDOM = true) => {
-      let name = value?.[theme] || theme
+  const handleChangeTheme = useEvent((theme, updateStorage = true, updateDOM = true) => {
+    let name = value?.[theme] || theme
 
-      if (updateStorage) {
-        try {
-          localStorage.setItem(storageKey, theme)
-        } catch (e) {
-          // Unsupported
-        }
+    if (updateStorage) {
+      try {
+        localStorage.setItem(storageKey, theme)
+      } catch (e) {
+        // Unsupported
       }
+    }
 
-      if (theme === 'system' && enableSystem) {
-        const resolved = getSystemTheme()
-        name = value?.[resolved] || resolved
+    if (theme === 'system' && enableSystem) {
+      const resolved = getSystemTheme()
+      name = value?.[resolved] || resolved
+    }
+
+    onChangeTheme?.(name.replace('t_', ''))
+
+    if (updateDOM) {
+      const d = document.documentElement
+      if (attribute === 'class') {
+        d.classList.remove(...attrs)
+        d.classList.add(name)
+      } else {
+        d.setAttribute(attribute, name)
       }
-
-      onChangeTheme?.(name.replace('t_', ''))
-
-      if (updateDOM) {
-        const d = document.documentElement
-        if (attribute === 'class') {
-          d.classList.remove(...attrs)
-          d.classList.add(name)
-        } else {
-          d.setAttribute(attribute, name)
-        }
-      }
-    },
-  )
+    }
+  })
 
   useIsomorphicLayoutEffect(() => {
     const handler = (...args: any) => mediaListener.current(...args)
@@ -236,9 +239,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
 
   const toggle = useEvent(() => {
     const order =
-      resolvedTheme === 'dark'
-        ? ['system', 'light', 'dark']
-        : ['system', 'dark', 'light']
+      resolvedTheme === 'dark' ? ['system', 'light', 'dark'] : ['system', 'dark', 'light']
     const next = order[(order.indexOf(theme) + 1) % order.length]
     set(next)
   })
@@ -283,6 +284,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
           enableSystem,
           defaultTheme,
           attrs,
+          skipNextHead,
         }}
       />
       {/* because on SSR we re-run and can avoid whole tree re-render */}
@@ -300,6 +302,7 @@ const ThemeScript = memo(
     defaultTheme,
     value,
     attrs,
+    skipNextHead,
   }: {
     forcedTheme?: string
     storageKey: string
@@ -308,6 +311,7 @@ const ThemeScript = memo(
     defaultTheme: string
     value?: ValueObject
     attrs: any
+    skipNextHead
   }) => {
     // Code-golfing the amount of characters in the script
     const optimization = (() => {
@@ -332,8 +336,8 @@ const ThemeScript = memo(
 
     const defaultSystem = defaultTheme === 'system'
 
-    return (
-      <NextHead>
+    const contents = (
+      <>
         {forcedTheme ? (
           <script
             key="next-themes-script"
@@ -349,7 +353,7 @@ const ThemeScript = memo(
               __html: `!function(){try {${optimization}var e=localStorage.getItem('${storageKey}');${
                 !defaultSystem ? updateDOM(defaultTheme) + ';' : ''
               }if("system"===e||(!e&&${defaultSystem})){var t="${MEDIA}",m=window.matchMedia(t);m.media!==t||m.matches?${updateDOM(
-                'dark',
+                'dark'
               )}:${updateDOM('light')}}else if(e) ${
                 value ? `var x=${JSON.stringify(value)};` : ''
               }${updateDOM(value ? 'x[e]' : 'e', true)}}catch(e){}}()`,
@@ -362,20 +366,24 @@ const ThemeScript = memo(
               __html: `!function(){try{${optimization}var e=localStorage.getItem("${storageKey}");if(e){${
                 value ? `var x=${JSON.stringify(value)};` : ''
               }${updateDOM(value ? 'x[e]' : 'e', true)}}else{${updateDOM(
-                defaultTheme,
+                defaultTheme
               )};}}catch(t){}}();`,
             }}
           />
         )}
-      </NextHead>
+      </>
     )
+
+    if (skipNextHead) return contents
+
+    return <NextHead>{contents}</NextHead>
   },
   (prevProps, nextProps) => {
     // Only re-render when forcedTheme changes
     // the rest of the props should be completely stable
     if (prevProps.forcedTheme !== nextProps.forcedTheme) return false
     return true
-  },
+  }
 )
 
 // Helpers

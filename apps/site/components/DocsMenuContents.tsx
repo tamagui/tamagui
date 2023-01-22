@@ -17,7 +17,13 @@ export const DocsMenuContents = React.memo(() => {
             return (
               <YStack key={`sep${i}`} mx="$4">
                 {!!section.title ? (
-                  <XStack ai="center" space="$6" spaceDirection="horizontal" mb="$2" mt="$3">
+                  <XStack
+                    ai="center"
+                    space="$6"
+                    spaceDirection="horizontal"
+                    mb="$2"
+                    mt="$3"
+                  >
                     <Separator />
                     <Paragraph size="$4">{section.title}</Paragraph>
                   </XStack>

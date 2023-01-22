@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/text",
-  "version": "1.0.1-rc.10",
+  "version": "1.0.20",
   "sideEffects": [
     "*.css"
   ],
@@ -23,20 +23,27 @@
     "clean:build": "tamagui-build clean:build",
     "test": "vitest --config ../vite-plugin-internal/src/vite.config.ts --run"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-rc.10",
-    "@tamagui/get-font-sized": "^1.0.1-rc.10",
-    "@tamagui/helpers-tamagui": "^1.0.1-rc.10"
+    "@tamagui/core": "^1.0.20",
+    "@tamagui/get-font-sized": "^1.0.20",
+    "@tamagui/helpers-tamagui": "^1.0.20"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-rc.10",
+    "@tamagui/build": "^1.0.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "vitest": "^0.25.7"
+    "vitest": "^0.26.3"
   },
   "publishConfig": {
     "access": "public"

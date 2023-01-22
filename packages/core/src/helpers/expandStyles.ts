@@ -1,8 +1,9 @@
 import { isWeb } from '@tamagui/constants'
+import normalizeCSSColor from '@tamagui/normalize-css-color'
 
 import { getConfig } from '../config'
 import { expandStyle } from './expandStyle'
-import { colorToRGBA, normalizeColor } from './normalizeColor'
+import { normalizeColor, rgba } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
@@ -85,8 +86,8 @@ function normalizeShadow({
     ...(process.env.TAMAGUI_TARGET === 'native' &&
       (() => {
         // on native fix bug - shadows behave better if turned into non-alpha rgb() + shadowOpacity
-        const rgba = colorToRGBA(colorStr)
-        if (!rgba) {
+        const val = normalizeCSSColor(colorStr)
+        if (!val) {
           if (process.env.NODE_ENV === 'development') {
             // eslint-disable-next-line no-console
             console.warn('No rgba form', colorStr)
@@ -96,7 +97,7 @@ function normalizeShadow({
             shadowOpacity,
           }
         }
-        const [r, g, b, a] = rgba
+        const { r, g, b, a } = rgba(val)
         return {
           shadowColor: `rgb(${r},${g},${b})`,
           shadowOpacity: shadowOpacity ?? a,

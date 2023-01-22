@@ -69,12 +69,6 @@ export const Text = createComponent<TextProps, TextView, TextPropsBase>({
       },
     },
 
-    pressable: {
-      true: {
-        cursor: 'pointer',
-      },
-    },
-
     ellipse: {
       true: isWeb
         ? ellipseStyle

@@ -97,14 +97,14 @@ export default createTamagui({
 [Reanimated](https://docs.swmansion.com/react-native-reanimated/) is an animation library that targets React Native and React Native Web. It runs off-thread animations, and provides nicer syntax and hooks. It weighs over 100Kb minified though, which makes it not always useful for the web.
 
 <Notice>
-  If using the starter, it configures `excludeReactNativeWebExports` to omit FlatList and other
-  views reanimated expects, change that config to fix errors.
+  If using the starter, it configures `excludeReactNativeWebExports` to omit FlatList and
+  other views reanimated expects, change that config to fix errors.
 </Notice>
 
 To install it add to your package.json:
 
 ```bash
-yarn add @tamagui/animations-reanimated
+yarn add @tamagui/animations-reanimated react-native-reanimated
 ```
 
 Then add it to your [config](/docs/core/configuration):
@@ -144,9 +144,9 @@ At runtime, this plugin parses animatable style properties and hands them over t
 Note the keys match between CSS and reanimated, so you can swap them out.
 
 <Notice>
-  **Save bundle size** by removing `Animated` and `AnimatedFlatList` from react-native-web. On
-  Next.js, use the [excludeReactNativeWebExports` option](/docs/intro/installation#next.js) config
-  option.
+  **Save bundle size** by removing `Animated` and `AnimatedFlatList` from
+  react-native-web. On Next.js, use the [excludeReactNativeWebExports`
+  option](/docs/intro/installation#next.js) config option.
 </Notice>
 
 ### Usage
@@ -264,8 +264,8 @@ export const MyComponent = ({ isVisible }) => (
 Wrap one or more tamagui components with AnimatePresence. This enables the use the exitStyle prop, which accepts all style properties and variants, which will be animated to using the `animation` defined before the component is unmounted.
 
 <Notice>
-  Animated child components must each have a unique key prop so AnimatePresence can track their
-  presence in the tree.
+  Animated child components must each have a unique key prop so AnimatePresence can track
+  their presence in the tree.
 </Notice>
 
 <HeroContainer noPad>

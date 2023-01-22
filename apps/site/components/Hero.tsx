@@ -7,6 +7,7 @@ import {
   H1,
   Paragraph,
   Spacer,
+  Square,
   Text,
   Theme,
   VisuallyHidden,
@@ -36,12 +37,12 @@ export function Hero() {
         h={2000}
         className="hero-blur"
       />
-      <HeroTop />
+      <HeroContents />
     </Theme>
   )
 }
 
-const HeroTop = memo(() => {
+const HeroContents = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
 
   return (
@@ -201,7 +202,7 @@ const HeroTop = memo(() => {
                   elevation: '$0',
                 }}
               >
-                <ButtonText fontFamily="$silkscreen" size="$7">
+                <ButtonText fontFamily="$silkscreen" size="$7" letterSpacing={1}>
                   How?
                 </ButtonText>
               </Button>
@@ -222,11 +223,12 @@ const HeroTop = memo(() => {
                 // @ts-ignore
                 tabIndex={0}
                 elevation="$2"
+                letterSpacing={-2}
                 pressStyle={{
                   elevation: '$0',
                 }}
               >
-                <ButtonText fontFamily="$silkscreen" size="$7">
+                <ButtonText fontFamily="$silkscreen" size="$7" letterSpacing={1}>
                   Docs
                 </ButtonText>
               </Button>

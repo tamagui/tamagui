@@ -1,5 +1,5 @@
 import { allDocsRoutes } from '@lib/docsRoutes'
-import { useTint } from '@tamagui/logo'
+import { ThemeTint, useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import * as React from 'react'
 import { ScrollView } from 'react-native'
@@ -13,7 +13,6 @@ import { useDocsMenu } from './useDocsMenu'
 export const allNotPending = allDocsRoutes.filter((x) => !x['pending'])
 
 export function DocsPage({ children }: { children: React.ReactNode }) {
-  const { tint } = useTint()
   const { currentPath, next, previous, documentVersionPath } = useDocsMenu()
 
   const GITHUB_URL = 'https://github.com'
@@ -104,7 +103,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   }, [children, previous, next, editUrl])
 
   return (
-    <Theme name={tint as any}>
+    <>
       <YStack
         overflow="hidden"
         mx="auto"
@@ -131,17 +130,19 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           }}
         >
           <ScrollView>
-            <YStack
-              display="none"
-              $gtMd={{
-                display: 'block',
-                pr: '$6',
-                mt: 108,
-                pb: '$18',
-              }}
-            >
-              <DocsMenuContents />
-            </YStack>
+            <ThemeTint>
+              <YStack
+                display="none"
+                $gtMd={{
+                  display: 'block',
+                  pr: '$6',
+                  mt: 108,
+                  pb: '$18',
+                }}
+              >
+                <DocsMenuContents />
+              </YStack>
+            </ThemeTint>
           </ScrollView>
         </YStack>
       </YStack>
@@ -158,7 +159,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
       >
         {pageContents}
       </YStack>
-    </Theme>
+    </>
   )
 }
 

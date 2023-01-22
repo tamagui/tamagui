@@ -3,7 +3,7 @@ import { ThemeName } from 'tamagui'
 
 const families = Object.freeze({
   tamagui: ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red'],
-  xmas: ['green', 'red', 'green', 'red', 'green', 'red', 'green'],
+  xmas: ['red', 'green', 'red', 'green', 'red', 'green', 'red'],
 }) as {
   [key in 'tamagui' | 'xmas']: ThemeName[]
 }

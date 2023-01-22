@@ -26,6 +26,9 @@ const pipeline = promisify(Stream.pipeline)
 let projectPath = ''
 
 const IS_TEST = process.env.NODE_ENV === 'test'
+if (IS_TEST) {
+  console.log(`🧐 Running create-tamagui in test mode 🧐`)
+}
 
 const program = new Commander.Command(packageJson.name)
   .version(packageJson.version)
@@ -85,6 +88,7 @@ async function run() {
   if (typeof projectPath === 'string') {
     projectPath = projectPath.trim()
   }
+
   if (!projectPath) {
     const res = await prompts({
       type: 'text',
@@ -166,6 +170,14 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
 
       cd(repoRoot)
 
+      if (process.env.GITHUB_HEAD_REF) {
+        try {
+          await $`git switch -c ${process.env.GITHUB_HEAD_REF}`
+        } catch {
+          // re-tries branch already exists
+        }
+      }
+
       const branch = IS_TEST
         ? // use current branch
           (await $`git rev-parse --abbrev-ref HEAD`).stdout.trim()
@@ -245,7 +257,24 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     console.log(chalk.green(`${projectName} created!`))
 
     cd(resolvedProjectPath)
-    await $`git init`
+
+    function gitInit() {
+      return $`git init`
+    }
+
+    if (IS_TEST) {
+      await gitInit()
+    } else {
+      const res2 = await prompts({
+        type: 'confirm',
+        name: 'gitInit',
+        message: 'Do you want to use git?',
+        initial: true,
+      })
+      if (res2.gitInit) {
+        await gitInit()
+      }
+    }
   } catch (e) {
     console.error(`[tamagui] Failed to copy example into ${resolvedProjectPath}\n\n`, e)
     process.exit(1)

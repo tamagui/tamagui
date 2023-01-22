@@ -1,4 +1,4 @@
-import { getThemes } from '../config'
+import { getThemes, getTokens } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
 import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
 import { ThemeParsed, ThemeProps } from '../types'
@@ -40,8 +40,15 @@ export class ThemeManager {
       return
     }
     if (!parentManager) {
-      throw new Error('Must set up root first')
+      if (process.env.NODE_ENV !== 'production') {
+        console.trace()
+        throw new Error(`No parent manager given`)
+      }
+      throw `❌`
     }
+    // copy over listeners
+    this.themeListeners = parentManager.themeListeners
+
     // no change no props
     if (hasNoThemeUpdatingProps(props)) {
       return parentManager
@@ -75,7 +82,7 @@ export class ThemeManager {
     })()
     if (shouldFlush) {
       // reset any derived state
-      this.#allKeys = null
+      this._allKeys = null
       notify && this.notify()
       return this.state
     }
@@ -101,9 +108,9 @@ export class ThemeManager {
     state: ThemeManagerState | null = this.state
   ) {
     if (!nextState?.theme || nextState.theme === state?.theme) {
-      return null
+      return false
     }
-    return nextState
+    return true
   }
 
   getState(props = this.props, parentManager = this.parentManager) {
@@ -113,17 +120,18 @@ export class ThemeManager {
     )
   }
 
-  #allKeys: Set<string> | null = null
+  _allKeys: Set<string> | null = null
   get allKeys() {
-    this.#allKeys ??= new Set([
+    this._allKeys ||= new Set([
       ...(this.parentManager?.allKeys || []),
       ...Object.keys(this.state.theme || {}),
     ])
-    return this.#allKeys
+    return this._allKeys
   }
 
   // gets value going up to parents
   getValue(key: string, state?: ThemeManagerState) {
+    if (!key) return
     let theme = (state || this.state).theme
     let manager = this as ThemeManager | null
     while (theme && manager) {
@@ -132,6 +140,10 @@ export class ThemeManager {
       }
       manager = manager.parentManager
       theme = manager?.state.theme
+    }
+    const tokens = getTokens()
+    if (key in tokens.color) {
+      return tokens.color[key]
     }
   }
 
@@ -200,22 +212,9 @@ function getState(
       ? max // component name only don't search upwards
       : 0
 
-  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose')
-    [
-      // eslint-disable-next-line no-console
-      console.groupCollapsed('ThemeManager.getState()', props, {
-        parentName,
-        parentBaseTheme,
-        base,
-        min,
-        max,
-        isParentAComponentTheme,
-      }),
-      // eslint-disable-next-line no-console
-      console.trace(),
-      // eslint-disable-next-line no-console
-      console.groupEnd(),
-    ]
+  // prettier-ignore
+  // eslint-disable-next-line no-console
+  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') [ console.groupCollapsed('ThemeManager.getState()', props, { parentName,   parentBaseTheme,   base,   min,   max,   isParentAComponentTheme }), console.trace(), console.groupEnd() ]
 
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)

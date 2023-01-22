@@ -4,7 +4,7 @@
 // import '@takeout/font-noto-emoji/css/300.css'
 
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
-import { createNotoFont } from '@takeout/font-noto-emoji'
+// import { createNotoFont } from '@takeout/font-noto-emoji'
 import { SwitchDemo } from '@tamagui/demos'
 import { useThemeSetting } from '@tamagui/next-theme'
 import Head from 'next/head'
@@ -38,10 +38,10 @@ import { TamaCard } from '../../components/TamaCard'
 import { getUserLayout } from '../../lib/getUserLayout'
 
 // lazy load this on page load
-insertFont('noto', createNotoFont())
+// insertFont('noto', createNotoFont())
 
 export default function TakeoutPage() {
-  const { resolvedTheme: themeName } = useThemeSetting()
+  const { resolvedTheme: themeName } = useThemeSetting()!
   // const { tint, setTintIndex } = useTint()
 
   // if logged in already go to dashboard
@@ -199,7 +199,7 @@ export default function TakeoutPage() {
 TakeoutPage.getLayout = getUserLayout
 
 const Hero = () => {
-  const { resolvedTheme: themeName } = useThemeSetting()
+  const { resolvedTheme: themeName } = useThemeSetting()!
 
   const glow = useHoverGlow({
     resist: 40,
@@ -526,7 +526,6 @@ const demoIcons = [
   '🔄',
   '⏸',
   '▶',
-  '⏩',
   '⏩',
   '📶',
   '➕',

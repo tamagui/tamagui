@@ -1,4 +1,4 @@
-import { Label, Separator, SizeTokens, Switch, XStack, YStack } from 'tamagui'
+import { Label, Separator, SizeTokens, Switch, XStack, YStack, styled } from 'tamagui'
 
 export function SwitchDemo() {
   return (

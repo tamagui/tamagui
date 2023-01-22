@@ -1,4 +1,4 @@
-import { useMemo, useSyncExternalStore } from 'react'
+import { startTransition, useMemo, useSyncExternalStore } from 'react'
 import { Theme, ThemeName } from 'tamagui'
 
 import { getTints, setNextTintFamily, useTints } from './tints'
@@ -27,7 +27,9 @@ export const setTintIndex = (next: number) => {
   const val = next % numTints
   if (val === current) return
   current = val
-  listeners.forEach((x) => x(val))
+  startTransition(() => {
+    listeners.forEach((x) => x(val))
+  })
 }
 
 export const useTint = () => {
@@ -52,9 +54,10 @@ export const useTint = () => {
   } as const
 }
 
-export const ThemeTint = (props: { children: any }) => {
+export const ThemeTint = (props: { children: any; disable?: boolean }) => {
+  const curTint = useTint().tint
   return (
-    <Theme name={useTint().tint}>
+    <Theme name={props.disable ? null : curTint}>
       {/*  */}
       {useMemo(() => props.children, [props.children])}
     </Theme>

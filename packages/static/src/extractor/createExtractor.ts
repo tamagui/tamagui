@@ -736,6 +736,8 @@ export function createExtractor(
           const flatNode = getFlattenedNode?.({ isTextView, tag: tagName })
 
           const inlineProps = new Set([
+            // adding some always inline props
+            'dataSet',
             ...(restProps.inlineProps || []),
             ...(staticConfig.inlineProps || []),
           ])
@@ -779,70 +781,11 @@ export function createExtractor(
           //  SPREADS SETUP
           //
 
-          // TODO restore
-          // const hasDeopt = (obj: Object) => {
-          //   return Object.keys(obj).some(isDeoptedProp)
-          // }
-
-          // flatten any easily evaluatable spreads
-          const flattenedAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
-          traversePath
-            .get('openingElement')
-            .get('attributes')
-            .forEach((path) => {
-              const attr = path.node
-              if (!t.isJSXSpreadAttribute(attr)) {
-                flattenedAttrs.push(attr)
-                return
-              }
-              let arg: any
-              try {
-                arg = attemptEval(attr.argument)
-              } catch (e: any) {
-                if (shouldPrintDebug) {
-                  logger.info(['  couldnt parse spread', e.message].join(' '))
-                }
-                flattenedAttrs.push(attr)
-                return
-              }
-              if (arg !== undefined) {
-                try {
-                  if (typeof arg !== 'object' || arg == null) {
-                    if (shouldPrintDebug) {
-                      logger.info(['  non object or null arg', arg].join(' '))
-                    }
-                    flattenedAttrs.push(attr)
-                  } else {
-                    for (const k in arg) {
-                      const value = arg[k]
-                      // this is a null prop:
-                      if (!value && typeof value === 'object') {
-                        logger.error(['Unhandled null prop', k, value, arg].join(' '))
-                        continue
-                      }
-                      flattenedAttrs.push(
-                        t.jsxAttribute(
-                          t.jsxIdentifier(k),
-                          t.jsxExpressionContainer(literalToAst(value))
-                        )
-                      )
-                    }
-                  }
-                } catch (err) {
-                  logger.warn(`cant parse spread, caught err ${err}`)
-                  couldntParse = true
-                }
-              }
-            })
-
           if (couldntParse) {
             return
           }
 
           tm.mark('jsx-element-flattened', !!shouldPrintDebug)
-
-          // set flattened
-          node.attributes = flattenedAttrs
 
           let attrs: ExtractedAttr[] = []
           let shouldDeopt = false
@@ -1579,7 +1522,7 @@ export function createExtractor(
           if (shouldPrintDebug) {
             try {
               // prettier-ignore
-              logger.info([' flatten?', objToStr({ hasSpread, shouldDeopt, shouldFlatten, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', [...inlined]].join(' '))
+              logger.info([' flatten?', shouldFlatten, objToStr({ hasSpread, shouldDeopt, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', inlined.size, [...inlined]].join(' '))
             } catch {
               // ok
             }
@@ -1990,15 +1933,14 @@ export function createExtractor(
                 ...out.style,
                 ...out.pseudos,
               }
-              // omitInvalidStyles(outStyle)
-              // if (shouldPrintDebug) {
-              //   // prettier-ignore
-              //   logger.info(`       getStyles ${debugName} (props):\n`, logLines(objToStr(props)))
-              //   // prettier-ignore
-              //   logger.info(`       getStyles ${debugName} (out.viewProps):\n`, logLines(objToStr(out.viewProps)))
-              //   // prettier-ignore
-              //   logger.info(`       getStyles ${debugName} (out.style):\n`, logLines(objToStr(outStyle || {}), true))
-              // }
+
+              if (shouldPrintDebug === 'verbose') {
+                // prettier-ignore
+                logger.info(`       getStyles ${debugName} (props in): ${Object.keys(props)}`)
+                // prettier-ignore
+                logger.info(`       getStyles ${debugName} (outStyle): ${Object.keys(outStyle)}`)
+              }
+
               return outStyle
             } catch (err: any) {
               logger.info(['error', err.message, err.stack].join(' '))

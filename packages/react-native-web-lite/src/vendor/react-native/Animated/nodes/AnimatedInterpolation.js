@@ -11,8 +11,8 @@
 /* eslint no-bitwise: 0 */
 'use strict'
 
+import normalizeColor from '@tamagui/normalize-css-color'
 import invariant from 'fbjs/lib/invariant'
-import normalizeColor from 'normalize-css-color'
 
 import NativeAnimatedHelper from '../NativeAnimatedHelper'
 import AnimatedNode from './AnimatedNode'
@@ -42,7 +42,7 @@ function createInterpolation(config) {
       inputRange.length +
       ') and outputRange (' +
       outputRange.length +
-      ') must have the same length',
+      ') must have the same length'
   )
   var easing = config.easing || linear
   var extrapolateLeft = 'extend'
@@ -64,7 +64,7 @@ function createInterpolation(config) {
   return (input) => {
     invariant(
       typeof input === 'number',
-      'Cannot interpolation an input which is not a number',
+      'Cannot interpolation an input which is not a number'
     )
     var range = findRange(input, inputRange)
     return interpolate(
@@ -75,7 +75,7 @@ function createInterpolation(config) {
       outputRange[range + 1],
       easing,
       extrapolateLeft,
-      extrapolateRight,
+      extrapolateRight
     )
   }
 }
@@ -88,7 +88,7 @@ function interpolate(
   outputMax,
   easing,
   extrapolateLeft,
-  extrapolateRight,
+  extrapolateRight
 ) {
   var result = input // Extrapolate
 
@@ -233,7 +233,7 @@ function checkPattern(arr) {
   for (var i = 1; i < arr.length; ++i) {
     invariant(
       pattern === arr[i].replace(stringShapeRegex, ''),
-      'invalid pattern ' + arr[0] + ' and ' + arr[i],
+      'invalid pattern ' + arr[0] + ' and ' + arr[i]
     )
   }
 }
@@ -262,7 +262,7 @@ function checkValidInputRange(arr) {
        * mean this implicit string conversion, you can do something like
        * String(myThing)
        */
-      'inputRange must be monotonically non-decreasing ' + arr,
+      'inputRange must be monotonically non-decreasing ' + arr
     )
   }
 }
@@ -277,7 +277,7 @@ function checkInfiniteRange(name, arr) {
      * this implicit string conversion, you can do something like
      * String(myThing)
      */
-    name + 'cannot be ]-infinity;+infinity[ ' + arr,
+    name + 'cannot be ]-infinity;+infinity[ ' + arr
   )
 }
 
@@ -301,7 +301,7 @@ class AnimatedInterpolation extends AnimatedWithChildren {
 
     invariant(
       typeof parentValue === 'number',
-      'Cannot interpolate an input which is not a number.',
+      'Cannot interpolate an input which is not a number.'
     )
     return this._interpolation(parentValue)
   }

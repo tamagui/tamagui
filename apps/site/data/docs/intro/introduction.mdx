@@ -10,7 +10,7 @@ description: Universal styles for React Native and Web
 
 ## Core
 
-A complete design system: a typed styled() factory, base components and hooks that work the same across Native and Web, at ~17Kb gzipped. It features **deterministic, easy to reason about styling** that outputs to atomic CSS and always merges styles based on the order received.
+A complete design system: a typed styled() factory, base components and hooks that work the same across Native and Web. It features **deterministic, easy to reason about styling** that outputs to atomic CSS and always merges styles based on the order received.
 
 ```tsx
 import { Stack, styled } from '@tamagui/core'
@@ -53,7 +53,7 @@ export const Circle = styled(Stack, {
 
 #### Predictable
 
-- The last style always wins. Whether you nest styled() functions, or just pass in styles inline to your views, Tamagui always merges them in-order of definition, upwards in inheretence.
+- The last style always wins. Whether you nest styled() functions, or just pass in styles inline to your views, Tamagui always merges them in-order of definition, upwards in inheritance.
 - Expands CSS shorthands inline to ensure your styles always merge properly.
 - Pseudos styles and Media query styles always win in a predictable manner.
 
@@ -90,7 +90,7 @@ The `@tamagui/static` package is an optimizing compiler for React that does much
 
 ## Tamagui
 
-Above that, [the Tamagui UI Kit](/docs/components/stacks) for building full-featured app interfaces right out of the box. Featuring powerful, themable components that scale across every size in your design system. Enjoy Radix-like composable component APIs that always visually adapt properly to each platform.
+Above that, [the Tamagui UI Kit](/docs/components/stacks) for building full-featured app interfaces right out of the box. Featuring powerful, themeable components that scale across every size in your design system. Enjoy Radix-like composable component APIs that always visually adapt properly to each platform.
 
 ---
 

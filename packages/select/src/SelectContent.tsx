@@ -22,7 +22,11 @@ export const SelectContent = ({
   const context = useSelectContext(CONTENT_NAME, __scopeSelect)
   const themeName = useThemeName()
   const showSheet = useShowSelectSheet(context)
-  const contents = <Theme name={themeName}>{children}</Theme>
+  const contents = (
+    <Theme forceClassName name={themeName}>
+      {children}
+    </Theme>
+  )
   const touch = useIsTouchDevice()
 
   if (showSheet) {

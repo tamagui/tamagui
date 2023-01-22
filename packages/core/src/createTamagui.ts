@@ -1,7 +1,7 @@
 import { isRSC, isWeb } from '@tamagui/constants'
 
 import { configListeners, setConfig } from './config'
-import { createVariables } from './createVariables'
+import { createVariables, tokensKeysOrdered } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
   getAllRules,
@@ -188,10 +188,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   // faster $lookups
   const tokensParsed: any = Object.fromEntries(
-    Object.entries(configIn.tokens).map(([k, v]) => [
-      k,
-      Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v])),
-    ])
+    Object.entries(configIn.tokens).map(([k, v]) => {
+      const val = Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v]))
+      tokensKeysOrdered.set(val, tokensKeysOrdered.get(v))
+      return [k, val]
+    })
   )
 
   const shorthands = configIn.shorthands || {}
@@ -201,6 +202,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     animations: {} as any,
     media: {},
     ...configIn,
+    // already processed by createTokens()
+    tokens: configIn.tokens as any,
     // vite made this into a function if it wasn't set
     shorthands: { ...shorthands },
     inverseShorthands: shorthands

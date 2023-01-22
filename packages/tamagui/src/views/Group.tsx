@@ -22,7 +22,7 @@ export const GroupFrame = styled(ThemeableStack, {
 
   variants: {
     size: (val, { tokens }) => {
-      const borderRadius = tokens.radius[val] ?? val ?? tokens.radius['$4']
+      const borderRadius = tokens.radius[val] ?? val ?? tokens.radius['$true']
       return {
         borderRadius,
       }
@@ -30,7 +30,7 @@ export const GroupFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: '$4',
+    size: '$true',
   },
 })
 
@@ -52,7 +52,7 @@ function createGroup(verticalDefault: boolean) {
     const {
       children: childrenProp,
       space,
-      size = '$4',
+      size = '$true',
       spaceDirection,
       separator,
       scrollable,
@@ -66,6 +66,7 @@ function createGroup(verticalDefault: boolean) {
     const radius =
       borderRadius ??
       (size ? getVariableValue(getTokens(true).radius[size]) - 1 : undefined)
+
     const hasRadius = radius !== undefined
     const disablePassBorderRadius = disablePassBorderRadiusProp ?? !hasRadius
     const childrens = Children.toArray(childrenProp)

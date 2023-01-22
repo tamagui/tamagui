@@ -1,17 +1,16 @@
 ---
-title: Making React twice as fast
-description: The Tamagui compiler reduces duplicate code while improving performance and platform-specific output.
+title: The Frontend Trilemma
 ---
 
 <IntroParagraph>
-  If you're developing a cross-platform app, you've made an implicit decision. This
-  decision can be thought of as a **frontend development trilemma**, illustrated as a
-  choose-two-of-three:
+  If you're developing a cross-platform app, you've committed to a path along the
+  **frontend development trilemma**, a choose two-of-three that is nicely shown as a
+  diagram:
 </IntroParagraph>
 
 <YStack w="100%" mih={500} als="center" $gtMd={{ my: '$4' }}>
   <Image
-    title="The Frontend Trilemma: Choose two of DX, UX, and multi-platform"
+    title="The Frontend Trilemma: Choose two of: A native-feeling app, Deploying to native and web, and share code between the two apps."
     src="/trilemma.svg"
     size="hero"
     height={270 * 2}
@@ -20,17 +19,17 @@ description: The Tamagui compiler reduces duplicate code while improving perform
   />
 </YStack>
 
-React Native recommends writing things twice generally for the best UX - as is made very clear in the `<title>` of the homepage itself: "[learn once, write anywhere](https://reactnative.dev/)" as opposed to "write once, runs everywhere". This pays off today with native-feeling and performing apps while saving quite a bit of dev time.
+React Native recommends writing things twice generally for the best UX as is made clear in the `<title>` of the homepage: "[learn once, write anywhere](https://reactnative.dev/)". This is opposed to the sort of holy grail mantra of "write once, runs everywhere". Doing this results in native-feeling and performing apps, while still saving quite a bit of development time thanks to sharing everything besides your views: utils, state and data management, hooks, etc.
 
-The center of the Venn diagram is a platonic ideal - <strong>"write once, runs _well_ everywhere"</strong>, and we're pretty far from it. We could imagine a few ways to get closer:
+The center of this above Venn diagram would be a sort of platonic ideal: <strong>"write once, runs _well_ everywhere"</strong>. We're pretty far from it as of now, but it's not _technically_ impossible. We can imagine a few ways to get closer:
 
-- A sort-of Rails-for-React with simple routing, patterns, code gen, "all the batteries".
-- An all-encompassing UI kit that targeted each platform's primitives confidently with flexible APIs.
-- A compiler that let you write comfy natural styles, even with logic, that optimize to each platform - perfect CSS on web, for example. Plus, it should flatten nested style views into `div` or `View`.
+- A sort of Rails-for-React - unified routing, patterns, code gen, "all the batteries".
+- A UI kit that adapts to each platform's primitives confidently with flexible APIs.
+- A way to author styles that output to platform primitives without overhead: eg, CSS with media queries, pseudos, and variables on the web.
 
-This document goes over the last one. The first one just sounds hard, and the second one [Tamagui UI](/docs/components/stacks) is working towards, slowly.
+This document goes over how we can achieve the last one. The first one is doable (and Expo is [working on as much](https://expo.github.io/router/docs/)), and the second one [Tamagui UI](/docs/components/stacks) is working towards slowly.
 
-**The hope is to make another "bump" like the one React Native Web made here:**
+**The idea is to make another "bump" towards properly native-experience apps with shared code, much like how React Native Web made one:**
 
 <YStack w="100%" mih={220} my="$4" als="center" $gtMd={{ scale: 1.5, my: 100 }}>
   <Image
@@ -88,7 +87,7 @@ You can [skip to the technical details without the backstory](#how-tamagui-helps
 
 Universal apps (those you "write once" that "run everywhere") make sense today for many cases: side-projecting, SEO-insensitive or enterprise-only apps, people who want to ship fast, experiment more, are pre-product-market fit, or generally have apps with simpler UI. Twitter and Tinder are two larger examples of this.
 
-But today, at best, we use hooks for media queries and themes, which basically touch every component. This causes whole-tree re-renders and more expensive main-thread time in critical areas on the web. Combine that with the CSS-in-JS approach of React Native Web greatly increasing bundle size, and even medium-complexity pages will drop from 100% Lighthouse to half or worse (our homepage, a good complex example due to showing off many features that are well-optimized, goes from ~80% down to ~20% with the compiler off).
+But today, at best, we use hooks for media queries and themes, which basically touch every component. This causes whole-tree re-renders and more expensive main-thread time in critical areas on the web. Combine that with the CSS-in-JS approach of React Native Web greatly increasing bundle size, and even medium-complexity pages will drop from 100% Lighthouse to half or worse (our homepage, a good complex example due to showing off many features that are well-optimized, goes from 95 or so down to 80ish with the compiler off).
 
 With all your media queries, interactive styles, themes, animations, and dynamic styles in JS, it's hard to make ambitious apps that don't feel janky.
 
@@ -167,10 +166,6 @@ It gives us a new choice, "Universal + Compiler" that lets us ship fast while st
   </TableCol>
 </Table>
 
-So what about this whole "Making React twice as" title? While the Tamagui compiler does net ~2x performance in many areas, on average you're looking at more like a 50% gain in render time. In other areas on the web, like responsive styling or interactive styles you're actually far higher than 2x.
-
-But, Tamagui makes _making_ React significantly faster, too. **It lets you not worry about performance while significantly reducing total frontend LOC** (and increasing type safety and feedback loops in dev mode). From that along you're probably saving more than 50% on frontend development time.
-
-Now you can make React faster (at runtime), and make React apps faster (at dev time).
+Tamagui makes React faster, but mostly makes _making_ React faster.
 
 Give Tamagui a try with `npm create tamagui@latest`.

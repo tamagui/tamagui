@@ -1,10 +1,11 @@
 import '@tamagui/core/reset.css'
 
+// import '../lib/wdyr'
 import '../app.css'
 import '../public/fonts/fonts.css'
 
 import { Footer } from '@components/Footer'
-import { setTintFamily } from '@tamagui/logo'
+import { ThemeTint, setTintFamily } from '@tamagui/logo'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import NextHead from 'next/head'
@@ -19,23 +20,24 @@ import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
 
-// santa mode
-if (isClient) {
-  const goXmas = setTimeout(() => {
-    setTintFamily('xmas')
-    window.removeEventListener('scroll', onScroll)
-  }, 2500)
+// for auto mode
+// // santa mode
+// if (isClient) {
+//   const goXmas = setTimeout(() => {
+//     setTintFamily('xmas')
+//     window.removeEventListener('scroll', onScroll)
+//   }, 2500)
 
-  // dont activate santa mode if they scroll down, a bit confusing right?
-  const onScroll = (e: Event) => {
-    if ((document.scrollingElement?.scrollTop || 0) > 100) {
-      clearTimeout(goXmas)
-      window.removeEventListener('scroll', onScroll)
-    }
-  }
+//   // dont activate santa mode if they scroll down, a bit confusing right?
+//   const onScroll = (e: Event) => {
+//     if ((document.scrollingElement?.scrollTop || 0) > 100) {
+//       clearTimeout(goXmas)
+//       window.removeEventListener('scroll', onScroll)
+//     }
+//   }
 
-  window.addEventListener('scroll', onScroll)
-}
+//   window.addEventListener('scroll', onScroll)
+// }
 
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {
@@ -51,21 +53,18 @@ if (typeof navigator !== 'undefined') {
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
-  const router = useRouter()
-  const isResponsiveDemo = router.pathname.startsWith('/responsive-demo')
 
   // useMemo below to avoid re-render on dark/light change
   return (
     <>
-      <NextHead>
-        <script
-          key="tamagui-animations-mount"
-          dangerouslySetInnerHTML={{
-            // avoid flash of animated things on enter
-            __html: `document.documentElement.classList.add('t_unmounted')`,
-          }}
-        />
-      </NextHead>
+      <script
+        key="tamagui-animations-mount"
+        type="text/javascript"
+        dangerouslySetInnerHTML={{
+          // avoid flash of animated things on enter
+          __html: `document.documentElement.classList.add('t_unmounted')`,
+        }}
+      />
 
       <NextThemeProvider
         onChangeTheme={(next) => {
@@ -81,7 +80,6 @@ export default function App(props: AppProps) {
           defaultTheme={theme}
         >
           <SearchProvider>
-            {!isResponsiveDemo && <Header />}
             <Suspense fallback={null}>
               {useMemo(() => {
                 return <ContentInner {...props} />
@@ -96,15 +94,23 @@ export default function App(props: AppProps) {
 
 function ContentInner({ Component, pageProps }: AppProps) {
   const router = useRouter()
+  const isResponsiveDemo = router.pathname.startsWith('/responsive-demo')
+  const isHome = router.pathname === '/'
   const isDocs = router.pathname.startsWith('/docs')
+  const isBlog = router.pathname.startsWith('/blog')
   const isStudio = router.pathname.startsWith('/studio')
   const isDemo = router.pathname.startsWith('/responsive-demo')
+  const isTest = router.pathname.startsWith('/test')
   // @ts-ignore
   const getLayout = Component.getLayout || ((page) => page)
+
+  const disableNew = isHome || isBlog
+
   return getLayout(
     <>
+      {!isTest && !isResponsiveDemo && <Header disableNew={isHome || isBlog} />}
       <Component {...pageProps} />
-      {!isDocs && !isDemo && !isStudio && <Footer />}
+      {!isTest && !isDocs && !isDemo && !isStudio && <Footer />}
     </>
   )
 }

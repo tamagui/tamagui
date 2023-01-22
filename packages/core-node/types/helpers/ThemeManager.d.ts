@@ -15,7 +15,6 @@ export type ThemeManagerState = {
 };
 export declare function hasNoThemeUpdatingProps(props: ThemeProps): boolean;
 export declare class ThemeManager {
-    #private;
     props: ThemeProps;
     themeListeners: Set<ThemeListener>;
     parentManager: ThemeManager | null;
@@ -25,10 +24,11 @@ export declare class ThemeManager {
         forceTheme?: ThemeParsed;
     }, notify?: boolean): ThemeManagerState | undefined;
     getStateIfChanged(props?: ThemeProps, state?: ThemeManagerState | null, parentManager?: ThemeManager | null): ThemeManagerState | null | undefined;
-    getStateShouldChange(nextState: ThemeManagerState | null, state?: ThemeManagerState | null): ThemeManagerState | null;
+    getStateShouldChange(nextState: ThemeManagerState | null, state?: ThemeManagerState | null): boolean;
     getState(props?: ThemeProps, parentManager?: ThemeManager | null): ThemeManagerState | null;
+    _allKeys: Set<string> | null;
     get allKeys(): Set<string>;
-    getValue(key: string, state?: ThemeManagerState): import("..").Variable<any> | undefined;
+    getValue(key: string, state?: ThemeManagerState): string | number | import("..").Variable<any> | undefined;
     notify(): void;
     onChangeTheme(cb: ThemeListener): () => void;
 }

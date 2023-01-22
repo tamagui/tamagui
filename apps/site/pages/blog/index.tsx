@@ -3,10 +3,10 @@ import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { NextLink } from 'components/NextLink'
 import { format, parseISO } from 'date-fns'
-import { H2, H3, Paragraph, Spacer, XStack } from 'tamagui'
+import { H2, Paragraph, Spacer, XStack } from 'tamagui'
 
-import { Card } from '../../components/Card'
 import { ContainerLarge } from '../../components/Container'
+import { TamaguiCard } from '../../components/TamaguiCard'
 
 export default function Blog({ frontmatters }) {
   return (
@@ -16,49 +16,21 @@ export default function Blog({ frontmatters }) {
       <H2 als="center" size="$8" theme="alt2" fontFamily="$silkscreen">
         Blog
       </H2>
-      <ContainerLarge mt="$6" mb="$7" space="$2">
+      <ContainerLarge mt="$6" mb="$7">
         <XStack flexWrap="wrap" jc="space-between">
           {frontmatters.map((frontmatter) => (
             <NextLink key={frontmatter.title} href={frontmatter.slug} passHref>
-              <Card
-                width="33.33%"
-                maxWidth="calc(33.33% - var(--space-4))"
-                p="$4"
-                mx="$1"
-                my="$4"
-                mb="$2"
-                space="$2"
-                $sm={{ width: 'auto', maxWidth: 'auto', minWidth: '100%' }}
-                $md={{
-                  width: '50%',
-                  maxWidth: 'calc(50% - var(--space-4))',
-                }}
+              <TamaguiCard
+                title={frontmatter.title}
+                subTitle={
+                  <Paragraph o={0.5} cursor="inherit" theme="alt1" size="$3">
+                    {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')} by &nbsp;
+                    {authors[frontmatter.by].name}
+                  </Paragraph>
+                }
               >
-                <H3
-                  fontFamily="$silkscreen"
-                  size="$7"
-                  lh="$6"
-                  color="$color"
-                  cursor="pointer"
-                  ls={0}
-                >
-                  {frontmatter.title}
-                </H3>
-
-                <XStack o={0.5}>
-                  <Paragraph cursor="inherit" tag="time" size="$3" theme="alt2">
-                    {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')} by
-                  </Paragraph>
-                  <Paragraph cursor="inherit" theme="alt1" size="$3">
-                    &nbsp;{authors[frontmatter.by].name}
-                  </Paragraph>
-                  {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}
-                </XStack>
-
-                <Paragraph size="$6" cursor="inherit" theme="alt2" o={0.7}>
-                  {frontmatter.description}
-                </Paragraph>
-              </Card>
+                {frontmatter.description}
+              </TamaguiCard>
             </NextLink>
           ))}
         </XStack>

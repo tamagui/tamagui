@@ -14,6 +14,8 @@ export type DeepVariableObject<A extends DeepTokenObject> = {
     : never
 }
 
+export const tokensKeysOrdered = new WeakMap()
+
 export const createVariables = <A extends DeepTokenObject>(
   tokens: A,
   parentPath = '',
@@ -21,9 +23,14 @@ export const createVariables = <A extends DeepTokenObject>(
 ): DeepVariableObject<A> => {
   const res: any = {}
   let i = 0
-  for (const key in tokens) {
+  for (let key in tokens) {
     i++
     const val = tokens[key]
+    // always remove $ prefix
+    if (key[0] === '$') {
+      // @ts-ignore
+      key = key.slice(1)
+    }
     if (isVariable(val)) {
       res[key] = val
       continue
@@ -38,5 +45,11 @@ export const createVariables = <A extends DeepTokenObject>(
     }
     res[key] = isVariable(val) ? val : createVariable({ val, name, key: niceKey })
   }
+
+  // ordering for relative sizing for now just size/space
+  if (parentPath === 'size' || parentPath === 'space') {
+    tokensKeysOrdered.set(res, Object.keys(tokens))
+  }
+
   return res
 }

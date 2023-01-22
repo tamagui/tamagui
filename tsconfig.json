@@ -26,6 +26,7 @@
     "downlevelIteration": true,
     "strict": true,
     "esModuleInterop": true,
+    "inlineSourceMap": true,
     "preserveSymlinks": true,
     "jsx": "react-jsx",
     "module": "system",

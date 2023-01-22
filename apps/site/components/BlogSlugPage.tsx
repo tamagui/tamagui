@@ -36,7 +36,7 @@ function BlogArticleHeader({ frontmatter }: BlogPost) {
   const { tint } = useTint()
   return (
     <Theme name={tint as any}>
-      <YStack tag="article" mt="$-10" pt="$10" mb="$4" pos="relative">
+      <YStack mt="$-10" pt="$10" mb="$4" pos="relative">
         <LinearGradient fullscreen colors={['$background', 'transparent']} />
         <Container>
           <YStack mt="$2" ai="flex-start">

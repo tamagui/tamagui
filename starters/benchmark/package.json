@@ -14,7 +14,7 @@
     "web:prod": "yarn workspace next-app build",
     "watch": "yarn workspaces foreach -pi run watch",
     "build": "yarn workspaces foreach --exclude next-app -pi run build",
-    "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader"
+    "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader && manypkg upgrade react-native-web-lite"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9"

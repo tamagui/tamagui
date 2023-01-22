@@ -4,24 +4,24 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "cd .. && yarn build && cd next && next build",
+    "build": "cd ../.. && yarn build && cd next && next build",
     "start": "next start",
     "serve": "NODE_ENV=production next start --port 8151",
     "lint": "next lint"
   },
   "dependencies": {
-    "@tamagui/next-theme": "1.0.1-rc.10",
+    "@tamagui/next-theme": "1.0.20",
     "app": "*",
-    "next": "^13.0.6",
+    "next": "^13.1.4",
     "raf": "^3.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "*",
     "react-native-web": "^0.18.3",
-    "react-native-web-lite": "^1.0.1-beta.144"
+    "react-native-web-lite": "^1.0.20"
   },
   "devDependencies": {
-    "@tamagui/next-plugin": "1.0.1-rc.10",
+    "@tamagui/next-plugin": "1.0.20",
     "@types/node": "^16.11.9",
     "critters": "^0.0.16",
     "eslint-config-next": "^13.0.4",

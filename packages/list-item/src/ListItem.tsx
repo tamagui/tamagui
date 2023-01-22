@@ -4,7 +4,6 @@ import {
   Spacer,
   TamaguiElement,
   ThemeableProps,
-  getSize,
   getVariableValue,
   styled,
   themeable,
@@ -12,6 +11,7 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
+import { getSize } from '@tamagui/get-size'
 import { getSpace, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
@@ -102,7 +102,7 @@ export const ListItemFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: '$4',
+    size: '$true',
   },
 })
 
@@ -139,7 +139,7 @@ export const useListItem = (
     Title?: any
     Subtitle?: any
     Text?: any
-  } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle },
+  } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle }
 ) => {
   // careful not to desctructure and re-order props, order is important
   const {
@@ -168,8 +168,7 @@ export const useListItem = (
 
   const mediaActiveProps = useMediaPropsActive(props)
   const size = mediaActiveProps.size || '$4'
-  const subtitleSizeToken = getSize(size, -3)
-  const subtitleSize = `$${subtitleSizeToken.key}` as FontSizeTokens
+  const subtitleSize = `$${+String(size).replace('$', '') - 1}` as FontSizeTokens
   const iconSize = getFontSize(size) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
@@ -224,9 +223,7 @@ export const useListItem = (
 
 const ListItemComponent = forwardRef<TamaguiElement, ListItemProps>((props, ref) => {
   const { props: listItemProps } = useListItem(props)
-  return (
-    <ListItemFrame ref={ref} justifyContent="space-between" {...listItemProps} />
-  )
+  return <ListItemFrame ref={ref} justifyContent="space-between" {...listItemProps} />
 })
 
 export const listItemStaticConfig = {
@@ -244,10 +241,10 @@ export const listItemStaticConfig = {
 export const ListItem = withStaticProperties(
   ListItemFrame.extractable(
     themeable(ListItemComponent, { componentName: NAME }),
-    listItemStaticConfig,
+    listItemStaticConfig
   ),
   {
     Text: ListItemText,
     Subtitle: ListItemSubtitle,
-  },
+  }
 )

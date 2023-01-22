@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-controllable-state",
-  "version": "1.0.1-rc.10",
+  "version": "1.0.20",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -19,15 +19,22 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "dependencies": {
-    "@tamagui/use-event": "^1.0.1-rc.10"
+    "@tamagui/use-event": "^1.0.20"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-rc.10",
+    "@tamagui/build": "^1.0.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

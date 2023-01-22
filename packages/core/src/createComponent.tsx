@@ -20,7 +20,6 @@ import React, {
   createElement,
   forwardRef,
   memo,
-  startTransition,
   useCallback,
   useContext,
   useEffect,
@@ -42,7 +41,7 @@ import { useShallowSetState } from './helpers/useShallowSetState'
 import { measureLayout, useElementLayout } from './hooks/useElementLayout'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
-import { getThemeIsNewTheme, getThemeManager, useTheme } from './hooks/useTheme'
+import { useThemeWithState } from './hooks/useTheme'
 import {
   DebugProp,
   SpaceDirection,
@@ -61,7 +60,7 @@ import {
 } from './types'
 import { usePressability } from './vendor/Pressability'
 import { Slot, mergeEvent } from './views/Slot'
-import { wrapThemeManagerContext } from './views/Theme'
+import { useThemedChildren } from './views/Theme'
 
 // let t
 // import { timer } from '@tamagui/timer'
@@ -78,11 +77,22 @@ import { wrapThemeManagerContext } from './views/Theme'
 // this appears to fix expo / babel not picking this up sometimes? really odd
 process.env.TAMAGUI_TARGET
 
+export const defaultComponentState: TamaguiComponentState = {
+  hover: false,
+  press: false,
+  pressIn: false,
+  focus: false,
+  unmounted: true,
+}
+
+const defaultComponentStateMounted: TamaguiComponentState = {
+  ...defaultComponentState,
+  unmounted: false,
+}
+
 /**
  * All things that need one-time setup after createTamagui is called
  */
-let defaultComponentState: TamaguiComponentState | null = null
-let defaultComponentStateMounted: TamaguiComponentState | null = null
 let tamaguiConfig: TamaguiInternalConfig
 let AnimatedText: any
 let AnimatedView: any
@@ -190,16 +200,15 @@ export function createComponent<
       ? { ...states[0], [propsIn.forceStyle]: true }
       : states[0]
     const setState = states[1]
-    const setStateShallow = useShallowSetState(setState, debugProp, componentName)
+    const setStateShallow = useShallowSetState(setState, true, debugProp, componentName)
 
     // conditional but if ever true stays true
     // [animated, inversed]
     const stateRef = useRef(
       undefined as any as {
         hasAnimated?: boolean
-        hasThemeInversed?: boolean
-        hasProvidedThemeManager?: boolean
-        themeShouldReset?: boolean
+        themeShallow?: boolean
+        didAccessThemeVariableValue?: boolean
       }
     )
     stateRef.current ??= {}
@@ -234,19 +243,13 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development') {
       if (debugProp) {
-        const name = `${
-          componentName ||
-          Component?.displayName ||
-          Component?.name ||
-          '[Unnamed Component]'
-        }`
+        // prettier-ignore
+        const name = `${componentName || Component?.displayName || Component?.name || '[Unnamed Component]'}`
         const type = isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type}`
-        // eslint-disable-next-line no-console
         console.group(`%c ${banner}`, 'background: yellow;')
         if (!isServer) {
-          // eslint-disable-next-line no-console
           console.log('state', state)
         }
       }
@@ -259,17 +262,16 @@ export function createComponent<
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
-    const theme = useTheme({
+    const themeState = useThemeWithState({
       name: props.theme,
       componentName,
       reset: props.reset,
       inverse: props.themeInverse,
-      // @ts-expect-error internal use only
+      // @ts-expect-error
       disable: props['data-themeable'],
       debug: props.debug,
-    })
-    const themeManager = getThemeManager(theme)
-    const themeIsNew = getThemeIsNewTheme(theme)
+      shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
+    })!
 
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
     const languageContext = isRSC ? null : useContext(FontLanguageContext)
@@ -297,7 +299,8 @@ export function createComponent<
     const mediaState = useMedia(
       // @ts-ignore, we just pass a stable object so we can get it later with
       // should match to the one used in `setMediaShouldUpdate` below
-      stateRef
+      stateRef,
+      debugProp ? { props, staticConfig } : null
     )
 
     setDidGetVariableValue(false)
@@ -305,7 +308,7 @@ export function createComponent<
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
-      theme,
+      themeState.theme,
       {
         ...state,
         mediaState,
@@ -322,14 +325,17 @@ export function createComponent<
     )
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
-    const shouldListenForMediaChanges =
+    // array = space media breakpoints
+    const isMediaSpaced = Array.isArray(splitStyles.hasMedia)
+    const shouldListenForMedia =
       didGetVariableValue() ||
-      splitStyles.hasMedia === 'space' ||
-      (noClassNames === true && splitStyles.hasMedia)
+      isMediaSpaced ||
+      (noClassNames && splitStyles.hasMedia === true)
 
-    if (shouldListenForMediaChanges) {
-      setMediaShouldUpdate(stateRef, shouldListenForMediaChanges)
-    }
+    setMediaShouldUpdate(stateRef, {
+      enabled: shouldListenForMedia,
+      keys: noClassNames && isMediaSpaced ? (splitStyles.hasMedia as any) : null,
+    })
 
     const hostRef = useServerRef<TamaguiElement>(null)
 
@@ -338,37 +344,27 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development') {
       if (!process.env.TAMAGUI_TARGET) {
-        // eslint-disable-next-line no-console
         console.error(
           `No process.env.TAMAGUI_TARGET set, please set it to "native" or "web".`
         )
       }
 
       if (debugProp) {
-        // eslint-disable-next-line no-console
         console.groupCollapsed('props')
-        // eslint-disable-next-line no-console
-        console.log(
-          'props in',
-          propsIn,
-          'mapped to',
-          props,
-          'in order',
-          Object.keys(props)
-        )
-        // eslint-disable-next-line no-console
+        // prettier-ignore
+        console.log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
         console.log('splitStyles', splitStyles)
         // eslint-disable-next-line no-console
-        console.log('shouldListenForMediaChanges', shouldListenForMediaChanges)
+        console.log('shouldListenForMedia', shouldListenForMedia)
         // eslint-disable-next-line no-console
         console.log('className', Object.values(splitStyles.classNames))
         if (isClient) {
-          // eslint-disable-next-line no-console
           console.log('ref', hostRef, '(click to view)')
         }
-        // eslint-disable-next-line no-console
         console.groupEnd()
         if (debugProp === 'break') {
+          // rome-ignore lint/suspicious/noDebugger: ok
+          debugger
         }
       }
     }
@@ -376,7 +372,6 @@ export function createComponent<
     const {
       viewProps: viewPropsIn,
       pseudos,
-      medias,
       style: splitStylesStyle,
       classNames,
       space,
@@ -393,7 +388,7 @@ export function createComponent<
         style: splitStylesStyle,
         presence,
         state,
-        pseudos,
+        pseudos: pseudos || null,
         onDidAnimate: props.onDidAnimate,
         hostRef,
         staticConfig,
@@ -558,8 +553,8 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
       Children.toArray(props.children).forEach((item) => {
-        if (typeof item === 'string') {
-          // eslint-disable-next-line no-console
+        // allow newlines because why not its annoying with mdx
+        if (typeof item === 'string' && item !== '\n') {
           console.error(
             `Unexpected text node: ${item}. A text node cannot be a child of a <View>.`
           )
@@ -585,20 +580,26 @@ export function createComponent<
     const shouldSetMounted = needsMount && state.unmounted
     useEffect(() => {
       if (!shouldSetMounted) return
+      if (state.unmounted === true && needsMount) {
+        setStateShallow({
+          unmounted: false,
+        })
+        return
+      }
+
       setStateShallow({
         unmounted: false,
       })
-    }, [shouldSetMounted])
+    }, [shouldSetMounted, state.unmounted])
 
     let styles: Record<string, any>[]
 
     if (isStringElement && shouldAvoidClasses && !shouldForcePseudo) {
       styles = {
         ...(animationStyles ?? splitStylesStyle),
-        ...medias,
       }
     } else {
-      styles = [animationStyles ?? splitStylesStyle, medias]
+      styles = [animationStyles ?? splitStylesStyle]
 
       // ugly but for now...
       if (shouldForcePseudo) {
@@ -623,7 +624,6 @@ export function createComponent<
         : '',
       componentName ? componentClassName : '',
       fontFamilyClassName,
-      themeIsNew ? theme.className : '',
       classNames ? Object.values(classNames).join(' ') : '',
     ]
 
@@ -640,6 +640,7 @@ export function createComponent<
           rnwStyle[name] = name
         }
         viewProps.style = [rnwStyle, ...(Array.isArray(style) ? style : [style])]
+
         if (process.env.NODE_ENV === 'development') {
           // turn debug data- props into dataSet in dev mode
           Object.keys(viewProps).forEach((key) => {
@@ -688,12 +689,8 @@ export function createComponent<
     }
 
     const runtimePressStyle = !disabled && noClassNames && pseudos?.pressStyle
-    const attachPress = !!(
-      runtimePressStyle ||
-      onPress ||
-      onPressOut ||
-      onPressIn ||
-      onClick
+    const attachPress = Boolean(
+      runtimePressStyle || onPress || onPressOut || onPressIn || onClick
     )
     const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
     const isHoverable =
@@ -704,25 +701,15 @@ export function createComponent<
 
     // check presence rather than value to prevent reparenting bugs
     // allows for onPress={x ? function : undefined} without re-ordering dom
-    const shouldAttach = asChild
-      ? false
-      : Boolean(
-          attachPress ||
-            isHoverable ||
-            'pressStyle' in props ||
-            'onPress' in props ||
-            'onPressIn' in props ||
-            'onPressOut' in props ||
-            (isWeb &&
-              ('hoverStyle' in props ||
-                'onHoverIn' in props ||
-                'onHoverOut' in props ||
-                'onMouseEnter' in props ||
-                'onMouseLeave' in props))
-        )
+    const shouldAttach = Boolean(
+      attachPress ||
+        isHoverable ||
+        (noClassNames && 'pressStyle' in props) ||
+        (isWeb && noClassNames && 'hoverStyle' in props)
+    )
 
     const events =
-      shouldAttach && !isRSC && !isDisabled
+      shouldAttach && !isRSC && !isDisabled && !asChild
         ? {
             onPressOut: attachPress
               ? (e) => {
@@ -804,49 +791,10 @@ export function createComponent<
           }
         : null
 
-    const themeShouldReset = Boolean(themeShallow && themeManager && themeIsNew)
-    const shouldProvideThemeManager = themeShouldReset || (themeManager && themeIsNew)
-
-    // memoize to avoid re-parenting
-    if (shouldProvideThemeManager) {
-      stateRef.current.hasProvidedThemeManager = true
-    }
-    if (themeShouldReset) {
-      stateRef.current.themeShouldReset = true
-    }
-
-    const childEls =
-      !children || asChild
-        ? children
-        : wrapThemeManagerContext(
-            spacedChildren({
-              separator,
-              children,
-              space,
-              direction: props.spaceDirection || 'both',
-              isZStack,
-            }),
-            // only set context if changed theme
-            stateRef.current.hasProvidedThemeManager ? themeManager : undefined,
-            stateRef.current.themeShouldReset
-          )
-
-    let content: any
-
-    if (asChild) {
-      elementType = Slot
-      viewProps = {
-        ...viewProps,
-        onPress,
-        onPressIn,
-        onPressOut,
-      }
-    }
-
     // EVENTS native
     if (process.env.TAMAGUI_TARGET === 'native') {
       // add focus events
-      const attachFocus = !!pseudos.focusStyle
+      const attachFocus = !!pseudos?.focusStyle
       if (attachFocus) {
         viewProps.onFocus = mergeEvent(viewProps.onFocus, () => {
           setStateShallow({ focus: true })
@@ -869,7 +817,38 @@ export function createComponent<
       }
     }
 
-    content = createElement(elementType, viewProps, childEls)
+    const shouldReset = !!(themeShallow && themeState.isNewTheme)
+    if (shouldReset) {
+      stateRef.current.themeShallow = true
+    }
+
+    let content =
+      !children || asChild
+        ? children
+        : spacedChildren({
+            separator,
+            children,
+            space,
+            direction: props.spaceDirection || 'both',
+            isZStack,
+            debug: debugProp,
+          })
+
+    if (asChild) {
+      elementType = Slot
+      viewProps = {
+        ...viewProps,
+        onPress,
+        onPressIn,
+        onPressOut,
+      }
+    }
+
+    content = createElement(elementType, viewProps, content)
+
+    content = useThemedChildren(themeState, content, {
+      shallow: stateRef.current.themeShallow,
+    })
 
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (events || isAnimatedReactNativeWeb) {
@@ -895,58 +874,16 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && process.env.DEBUG !== 'tamagui') {
       if (debugProp) {
         const element = typeof elementType === 'string' ? elementType : 'Component'
-        // eslint-disable-next-line no-console
         console.groupCollapsed(`render <${element} /> with props`, viewProps)
         for (const key in viewProps) {
-          // eslint-disable-next-line no-console
           console.log(key, viewProps[key])
         }
-        // eslint-disable-next-line no-console
         console.log('children', content)
-        // eslint-disable-next-line no-console
         console.groupEnd()
         if (typeof window !== 'undefined') {
-          // eslint-disable-next-line no-console
-          console.log({
-            state,
-            shouldProvideThemeManager,
-            isAnimated,
-            isAnimatedReactNativeWeb,
-            tamaguiDefaultProps,
-            viewProps,
-            splitStyles,
-            animationStyles,
-            handlesPressEvents,
-            isStringElement,
-            classNamesIn: props.className?.split(' '),
-            classNamesOut: viewProps.className?.split(' '),
-            events,
-            shouldAttach,
-            styles,
-            pseudos,
-            content,
-            childEls,
-            shouldAvoidClasses,
-            avoidClasses: avoidClassesWhileAnimating,
-            animation: props.animation,
-            style: splitStylesStyle,
-            ...(typeof window !== 'undefined'
-              ? {
-                  theme,
-                  themeClassName: theme.className,
-                  staticConfig,
-                  tamaguiConfig,
-                  events,
-                  shouldAvoidClasses,
-                  shouldForcePseudo,
-                  classNames: Object.fromEntries(
-                    Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])
-                  ),
-                }
-              : null),
-          })
+          // prettier-ignore
+          console.log({ state, themeState, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, staticConfig, tamaguiConfig, shouldForcePseudo, classNamesFull: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
         }
-        // eslint-disable-next-line no-console
         console.groupEnd()
       }
     }
@@ -962,19 +899,6 @@ export function createComponent<
     // one time only setup
     if (!tamaguiConfig) {
       tamaguiConfig = conf
-      if (!defaultComponentState) {
-        defaultComponentState = {
-          hover: false,
-          press: false,
-          pressIn: false,
-          focus: false,
-          unmounted: true,
-        }
-        defaultComponentStateMounted = {
-          ...defaultComponentState,
-          unmounted: false,
-        }
-      }
 
       if (tamaguiConfig.animations) {
         AnimatedText = tamaguiConfig.animations.Text
@@ -986,7 +910,6 @@ export function createComponent<
         initialTheme = proxyThemeVariables(next)
         if (process.env.NODE_ENV === 'development') {
           if (!initialTheme) {
-            // eslint-disable-next-line no-console
             console.log('Warning: Missing theme')
           }
         }
@@ -1049,7 +972,6 @@ export function createComponent<
     // add debug logs
     if (process.env.NODE_ENV === 'development' && debug) {
       if (process.env.IS_STATIC !== 'is_static') {
-        // eslint-disable-next-line no-console
         console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
           staticConfig,
           tamaguiDefaultProps,
@@ -1121,6 +1043,7 @@ export const Spacer = createComponent<SpacerProps>({
     // avoid nesting issues
     tag: 'span',
     size: true,
+    pointerEvents: 'none',
   },
 
   variants: {
@@ -1164,43 +1087,41 @@ export type SpacedChildrenProps = {
   spaceFlex?: boolean | number
   direction?: SpaceDirection
   separator?: React.ReactNode
+  debug?: DebugProp
 }
 
-export function spacedChildren({
-  isZStack,
-  children,
-  space,
-  direction,
-  spaceFlex,
-  separator,
-}: SpacedChildrenProps) {
+export function spacedChildren(props: SpacedChildrenProps) {
+  const { isZStack, children, space, direction, spaceFlex, separator } = props
   const hasSpace = !!(space || spaceFlex)
   const hasSeparator = !(separator === undefined || separator === null)
   if (!(hasSpace || hasSeparator || isZStack)) {
     return children
   }
+
   const childrenList = Children.toArray(children)
+
   const len = childrenList.length
-  if (len <= 1 && !isZStack) {
-    if (len === 1) {
-      // forward space! only when one component doesn't make sense to forward space to all children
-      const [onlyChild] = childrenList
-      if (React.isValidElement(onlyChild) && onlyChild.type?.['shouldForwardSpace']) {
-        return React.cloneElement(onlyChild, {
-          space,
-          spaceFlex,
-          separator,
-        } as any)
-      }
-    }
+  if (len <= 1 && !isZStack && !childrenList[0]?.['type']?.['shouldForwardSpace']) {
     return childrenList
   }
+
   const final: React.ReactNode[] = []
-  for (const [index, child] of childrenList.entries()) {
+  for (let [index, child] of childrenList.entries()) {
     const isEmpty =
       child === null ||
       child === undefined ||
       (Array.isArray(child) && child.length === 0)
+
+    // forward space
+    if (!isEmpty && React.isValidElement(child) && child.type?.['shouldForwardSpace']) {
+      child = React.cloneElement(child, {
+        space,
+        spaceFlex,
+        separator,
+        key: child.key,
+      } as any)
+    }
+
     // push them all, but wrap some in Fragment
     if (isEmpty || !child || (child['key'] && !isZStack)) {
       final.push(child)
@@ -1256,6 +1177,12 @@ export function spacedChildren({
           })
         )
       }
+    }
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    if (props.debug) {
+      console.log(`  Spaced children`, final, props)
     }
   }
 

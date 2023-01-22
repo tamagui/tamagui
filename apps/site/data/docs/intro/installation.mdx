@@ -7,55 +7,86 @@ Tamagui is a full-featured UI kit built on top of `@tamagui/core`.
 
 The instructions here are for `tamagui`, the complete set of components designed to build universal apps. It's fully tree-shakeable, so your bundler should only add components you import.
 
-If you'd rather build your own design system on top of core, [see the Design Systems guide](/docs/guides/design-systems).
+If you'd rather build your own design system on top of core you'd just swap out `tamagui` for `@tamagui/core`. [See the Design Systems guide](/docs/guides/design-systems) for more on how to configure Core.
 
 ### Quick Start
 
-Try out [create-tamagui](/docs/guides/create-tamagui) for a helpful starter template which comes with `@tamagui/shorthands` and `@tamagui/theme-base` for easy default shorthands, themes and tokens.
-
-### Install
+Try out [create-tamagui](/docs/guides/create-tamagui-app) for a helpful starter template which comes with `@tamagui/shorthands` and `@tamagui/theme-base` for easy default configuration:
 
 ```bash
-npm install tamagui
+npm create tamagui@latest
 ```
 
-### Environment variables
+This gives you everything pre-configured for full-stack apps with shared code.
 
-Be sure to set the environment variable `TAMAGUI_TARGET` to the string `web` or `native`, respectively.
+## Install
+
+```bash
+yarn add tamagui
+```
+
+Be sure to set the environment variable `TAMAGUI_TARGET` to the string `web` or `native`, respectively. You can usually just do this in your package.json script, swapping out the command for whichever bundler you use:
+
+```json
+{
+  "scripts": {
+    "dev": "TAMAGUI_TARGET=web webpack"
+  }
+}
+```
+
+If you're targeting a native app and installing `tamagui` (not core), you'll need to [set up `expo-linear-gradient` first](https://github.com/expo/expo/tree/sdk-47/packages/expo-linear-gradient) as Metro will try and find it even if you don't import it.
 
 ### Config file
 
 Create a `tamagui.config.ts` file at the root of your project.
+You can import `createTamagui` from either `tamagui` or `@tamagui/core` depending on which you decide to use.
 
-From there you'll export default the result of `createTamagui`, like so:
+From there you'll export default the result of `createTamagui` like so:
 
 ```tsx
-import { createTamagui } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/theme-base'
+import { createFont, createTamagui } from 'tamagui'
 
 export default createTamagui({
   themes,
   tokens,
   shorthands,
+  fonts: {
+    body: createFont({
+      family: 'Arial',
+      size: {
+        // You'll want to fill these values in so you can use them
+        // for now, fontSize="$4" will be 14px.
+        // You can define different keys, but `tamagui`
+        // standardizes on 1-15.
+        4: 14,
+      },
+      lineHeight: {
+        4: 16,
+      },
+    }),
+  },
 })
 ```
 
-You'll need to install these packages:
+You'll need to install these packages if you want the Tamagui pre-configured design system:
 
 ```sh
 yarn add @tamagui/shorthands @tamagui/theme-base
 ```
 
-You can import `createTamagui` from either `tamagui` or `@tamagui/core` depending on which you decide to use.
-
-The next page, [Configuration](/docs/core/configuration) explains this file in detail.
+For an even quicker start, you can get a full design system with `@tamagui/config-base`, which we show on the [Configuration](/docs/core/configuration) page. That page also goes into more detail on everything `createTamagui` accepts.
 
 ### Root export
 
 Import and use the `TamaguiProvider` component as the top component in your app.
 
 ```tsx line=8-14
+// this provides some helpful reset styles to ensure a more consistent look
+import '@tamagui/core/reset.css'
+
 import React, { Suspense } from 'react'
 import { TamaguiProvider } from 'tamagui'
 

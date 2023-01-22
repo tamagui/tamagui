@@ -20,6 +20,7 @@ export const SheetDemo = () => {
       </XStack>
 
       <Sheet
+        forceRemoveScrollEnabled={open}
         modal={modal}
         open={open}
         onOpenChange={setOpen}
@@ -33,13 +34,18 @@ export const SheetDemo = () => {
         <Sheet.Handle />
         <Sheet.Frame f={1} p="$4" jc="center" ai="center" space="$5">
           <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
-          <Button
-            size="$6"
-            circular
-            icon={ChevronUp}
-            onPress={() => setInnerOpen(true)}
-          ></Button>
-          <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
+
+          {modal && (
+            <>
+              <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
+              <Button
+                size="$6"
+                circular
+                icon={ChevronUp}
+                onPress={() => setInnerOpen(true)}
+              ></Button>
+            </>
+          )}
         </Sheet.Frame>
       </Sheet>
     </>

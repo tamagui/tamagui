@@ -1,3 +1,3 @@
-export declare const normalizeColor: (color?: number | string | null, opacity?: number) => string | number | undefined;
-export declare function colorToRGBA(color: string | number): readonly [number, number, number, number] | null;
+export { rgba } from '@tamagui/normalize-css-color';
+export declare const normalizeColor: (color?: string | null, opacity?: number) => string | undefined;
 //# sourceMappingURL=normalizeColor.d.ts.map

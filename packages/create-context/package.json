@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-context",
-  "version": "1.0.1-rc.10",
+  "version": "1.0.20",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -19,10 +19,10 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-rc.10",
+    "@tamagui/build": "^1.0.20",
     "react": "^18.2.0"
   },
   "publishConfig": {
