@@ -1,5 +1,4 @@
 import { LogoIcon } from '@tamagui/logo'
-import React from 'react'
 import { useRef, useState } from 'react'
 import { Button, Square, YStack } from 'tamagui'
 

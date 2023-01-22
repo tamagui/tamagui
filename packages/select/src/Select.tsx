@@ -275,6 +275,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
         isSelected={isSelected}
       >
         <ListItem
+          tag="div"
           backgrounded
           pressTheme
           cursor=""
@@ -336,7 +337,7 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
     )
 
     // until portals work in sub-trees on RN, use this just for native:
-    React.useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (isSelected) {
         context.setSelectedItem(contents)
       }
@@ -445,6 +446,7 @@ const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
     const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect)
     return (
       <ListItem
+        tag="div"
         componentName={LABEL_NAME}
         fontWeight="800"
         id={groupContext.id}
@@ -545,16 +547,11 @@ export const Select = withStaticProperties(
       transition: true,
     })
 
-    const [activeIndex, setActiveIndex] = React.useState<number | null>(null)
+    const [activeIndex, setActiveIndex] = React.useState<number | null>(0)
     const selectedIndexRef = React.useRef<number | null>(null)
     const activeIndexRef = React.useRef<number | null>(null)
-
     const listContentRef = React.useRef<string[]>([])
-
-    const [selectedIndex, setSelectedIndex] = React.useState(
-      Math.max(0, listContentRef.current.indexOf(value))
-    )
-
+    const [selectedIndex, setSelectedIndex] = React.useState(0)
     const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
     const [valueNodeHasChildren, setValueNodeHasChildren] = React.useState(false)
 

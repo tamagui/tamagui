@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popper",
-  "version": "1.0.20",
+  "version": "1.0.22",
   "sideEffects": [
     "*.css"
   ],
@@ -39,7 +39,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.20",
+    "@tamagui/build": "^1.0.22",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "*"

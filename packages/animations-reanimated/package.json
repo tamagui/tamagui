@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-reanimated",
-  "version": "1.0.20",
+  "version": "1.0.22",
   "source": "src/index.ts",
   "sideEffects": true,
   "license": "MIT",
@@ -13,12 +13,12 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/animations-react-native": "^1.0.20",
-    "@tamagui/core": "^1.0.20",
-    "@tamagui/use-presence": "^1.0.20"
+    "@tamagui/animations-react-native": "^1.0.22",
+    "@tamagui/core": "^1.0.22",
+    "@tamagui/use-presence": "^1.0.22"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.20",
+    "@tamagui/build": "^1.0.22",
     "react-native-reanimated": "^2.12.0"
   },
   "scripts": {

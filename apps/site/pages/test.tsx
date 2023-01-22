@@ -8,7 +8,6 @@ export default function test() {
 
 function ThemeChangeRenderTest() {
   const [theme, setTheme] = useState('blue')
-  console.log('theme', theme)
 
   const memoized = useMemo(() => {
     return <Square debug size={100} bc="$background" />

@@ -73,6 +73,9 @@
     "fix": "yarn manypkg fix"
   },
   "resolutions": {
+    "@floating-ui/react-dom": "1.0.0",
+    "@floating-ui/react-dom-interactions": "0.8.1",
+    "@floating-ui/react-native": "0.8.0",
     "react-native-svg": "13.4.0",
     "body-parser": "1.20.0",
     "react-native-reanimated": "2.12.0",

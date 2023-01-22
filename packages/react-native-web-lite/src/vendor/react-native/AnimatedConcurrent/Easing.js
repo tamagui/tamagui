@@ -10,6 +10,8 @@
 
 'use strict'
 
+import bezier from './bezier'
+
 let ease
 
 /**
@@ -209,8 +211,7 @@ const Easing = {
    * http://cubic-bezier.com/
    */
   bezier(x1, y1, x2, y2) {
-    const _bezier = require('./bezier').default
-    return _bezier(x1, y1, x2, y2)
+    return bezier(x1, y1, x2, y2)
   },
 
   /**
