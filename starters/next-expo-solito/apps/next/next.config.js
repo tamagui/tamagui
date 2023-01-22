@@ -68,6 +68,12 @@ module.exports = function () {
     images: {
       disableStaticImages: true,
     },
+    modularizeImports: {
+      '@tamagui/lucide-icons': {
+        transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
+        skipDefaultConversion: true,
+      },
+    },
     transpilePackages: [
       'solito',
       'react-native-web',

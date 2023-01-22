@@ -37,10 +37,10 @@
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.17",
-    "next": "^13.0.6"
+    "next": "^13.1.4"
   },
   "peerDependencies": {
-    "next": "13.0.6"
+    "next": "13.1.4"
   },
   "publishConfig": {
     "access": "public"

@@ -2,7 +2,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { DialogDemo, PopoverDemo, TooltipDemo } from '@tamagui/demos'
+import { DialogDemo, PopoverDemo, SelectDemo, TooltipDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import {
   Button,
@@ -52,14 +52,7 @@ export const Sandbox = () => {
         }}
       />
 
-      {/* <DialogDemo /> */}
-      {/* <Button size="$10">hi</Button> */}
-
-      <TextArea
-        focusStyle={{
-          backgroundColor: 'red',
-        }}
-      />
+      <SelectDemo />
 
       {/*  */}
     </TamaguiProvider>

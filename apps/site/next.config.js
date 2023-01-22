@@ -90,6 +90,12 @@ module.exports = function (name, { defaultConfig }) {
     swcMinify: true,
     reactStrictMode: true,
     optimizeFonts: true,
+    modularizeImports: {
+      '@tamagui/lucide-icons': {
+        transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
+        skipDefaultConversion: true,
+      },
+    },
     experimental: {
       // optimizeCss: true,
       esmExternals: true,
