@@ -157,7 +157,7 @@ export function createExtractor(
       disableExtractVariables,
       disableDebugAttr,
       disableExtractFoundComponents,
-      includeExtensions = ['.tsx', '.jsx', '.js'],
+      includeExtensions = ['.ts', '.tsx', '.jsx'],
       extractStyledDefinitions = false,
       prefixLogs,
       excludeProps,
@@ -396,10 +396,12 @@ export function createExtractor(
       // styled() calls
       CallExpression(path) {
         if (disable || shouldDisableExtraction || extractStyledDefinitions === false) {
+          shouldPrintDebug && logger.info(`skip 0`)
           return
         }
-
         if (!t.isIdentifier(path.node.callee) || path.node.callee.name !== 'styled') {
+          shouldPrintDebug &&
+            logger.info(`skip 1 ${path.node.callee.type} ${path.node.callee.name}`)
           return
         }
 
@@ -416,66 +418,71 @@ export function createExtractor(
         const definition = path.node.arguments[1]
 
         if (!parentName || !definition || !t.isObjectExpression(definition)) {
+          shouldPrintDebug && logger.info(`skip 2`)
           return
         }
 
-        const Component = getValidImportedComponent(parentName)
+        /**
+         * Find inline components along the way:
+         */
 
-        // if (!Component) {
-        //   if (disableExtractFoundComponents === true) {
-        //     return
-        //   }
-        //   if (
-        //     Array.isArray(disableExtractFoundComponents) &&
-        //     disableExtractFoundComponents.includes(parentName)
-        //   ) {
-        //     return
-        //   }
+        let Component = getValidImportedComponent(parentName)
 
-        //   try {
-        //     if (shouldPrintDebug) {
-        //       logger.info(
-        //         `Unknown component ${parentName}, attempting dynamic load: ${sourcePath}`
-        //       )
-        //     }
+        if (!Component) {
+          if (disableExtractFoundComponents === true) {
+            return
+          }
+          if (
+            Array.isArray(disableExtractFoundComponents) &&
+            disableExtractFoundComponents.includes(parentName)
+          ) {
+            return
+          }
 
-        //     const out = loadTamaguiSync({
-        //       forceExports: true,
-        //       components: [sourcePath],
-        //     })
+          try {
+            if (shouldPrintDebug) {
+              logger.info(
+                `Unknown component ${parentName}, attempting dynamic load: ${sourcePath}`
+              )
+            }
 
-        //     if (!out?.components) {
-        //       if (shouldPrintDebug) {
-        //         logger.info(`Couldn't load, got ${out}`)
-        //       }
-        //       return
-        //     }
+            const out = loadTamaguiSync({
+              forceExports: true,
+              components: [sourcePath],
+            })
 
-        //     propsWithFileInfo.allLoadedComponents = [
-        //       ...propsWithFileInfo.allLoadedComponents,
-        //       ...out.components,
-        //     ]
+            if (!out?.components) {
+              if (shouldPrintDebug) {
+                logger.info(`Couldn't load, got ${out}`)
+              }
+              return
+            }
 
-        //     Component = out.components.flatMap((x) => x.nameToInfo[variableName] ?? [])[0]
+            propsWithFileInfo.allLoadedComponents = [
+              ...propsWithFileInfo.allLoadedComponents,
+              ...out.components,
+            ]
 
-        //     if (shouldPrintDebug === 'verbose') {
-        //       logger.info([`Tamagui Loaded`, JSON.stringify(out.components), !!Component].join(' '))
-        //     }
-        //   } catch (err: any) {
-        //     if (shouldPrintDebug) {
-        //       logger.info(
-        //         `${getPrefixLogs(
-        //           options
-        //         )} skip optimize styled(${variableName}), unable to pre-process (DEBUG=tamagui for more)`
-        //       )
-        //     }
-        //     if (process.env.DEBUG === 'tamagui') {
-        //       logger.info(
-        //         ` Disable this with "disableExtractFoundComponents" in your build-time configuration. \n\n ${err.message} ${err.stack}`
-        //       )
-        //     }
-        //   }
-        // }
+            Component = out.components.flatMap((x) => x.nameToInfo[variableName] ?? [])[0]
+
+            if (shouldPrintDebug === 'verbose') {
+              logger.info(
+                [`Tamagui Loaded`, JSON.stringify(out.components), !!Component].join(' ')
+              )
+            }
+          } catch (err: any) {
+            if (shouldPrintDebug) {
+              logger.info(
+                `skip optimize styled(${variableName}), unable to pre-process (DEBUG=tamagui for more)`
+              )
+            }
+            if (process.env.DEBUG === 'tamagui') {
+              logger.info(
+                ` Disable this with "disableExtractFoundComponents" in your build-time configuration. \n\n ${err.message} ${err.stack}`
+              )
+            }
+          }
+        }
 
         if (!Component) {
           /**
@@ -610,49 +617,7 @@ export function createExtractor(
         const ogAttributes = node.attributes.map((attr) => ({ ...attr }))
         const componentName = findComponentName(traversePath.scope)
         const closingElement = traversePath.node.closingElement
-
-        // skip non-identifier opening elements (member expressions, etc.)
-        if (
-          t.isJSXMemberExpression(closingElement?.name) ||
-          !t.isJSXIdentifier(node.name)
-        ) {
-          return
-        }
-
-        // validate its a proper import from tamagui (or internally inside tamagui)
-        const binding = traversePath.scope.getBinding(node.name.name)
-        let modulePath = ''
-
-        if (binding) {
-          if (!t.isImportDeclaration(binding.path.parent)) {
-            if (shouldPrintDebug) {
-              logger.info(` - Binding not import declaration, skip`)
-            }
-            return
-          }
-          modulePath = binding.path.parent.source.value
-          if (!isValidImport(propsWithFileInfo, modulePath, binding.identifier.name)) {
-            if (shouldPrintDebug) {
-              logger.info(
-                ` - Binding not internal import or from components ${modulePath}`
-              )
-            }
-            return
-          }
-        }
-
-        const component = getValidComponent(propsWithFileInfo, modulePath, node.name.name)
-        if (!component || !component.staticConfig) {
-          if (shouldPrintDebug) {
-            logger.info(` - No Tamagui conf on this: ${node.name.name}`)
-          }
-          return
-        }
-
         const originalNodeName = node.name.name
-
-        // found a valid tag
-        res.found++
 
         const filePath = `./${relative(process.cwd(), sourcePath)}`
         const lineNumbers = node.loc
@@ -688,6 +653,49 @@ export function createExtractor(
           // prettier-ignore
           logger.info(['\x1b[1m', '\x1b[32m', `<${originalNodeName} />`, disableDebugAttr ? '' : '🐛'].join(' '))
         }
+
+        // skip non-identifier opening elements (member expressions, etc.)
+        if (
+          t.isJSXMemberExpression(closingElement?.name) ||
+          !t.isJSXIdentifier(node.name)
+        ) {
+          return
+        }
+
+        // validate its a proper import from tamagui (or internally inside tamagui)
+        const binding = traversePath.scope.getBinding(node.name.name)
+        let modulePath = ''
+
+        if (binding) {
+          if (!t.isImportDeclaration(binding.path.parent)) {
+            if (shouldPrintDebug) {
+              logger.info(
+                ` - Binding (${binding}) not import declaration, skip ${binding.path.parent.type}`
+              )
+            }
+            return
+          }
+          modulePath = binding.path.parent.source.value
+          if (!isValidImport(propsWithFileInfo, modulePath, binding.identifier.name)) {
+            if (shouldPrintDebug) {
+              logger.info(
+                ` - Binding not internal import or from components ${modulePath}`
+              )
+            }
+            return
+          }
+        }
+
+        const component = getValidComponent(propsWithFileInfo, modulePath, node.name.name)
+        if (!component || !component.staticConfig) {
+          if (shouldPrintDebug) {
+            logger.info(` - No Tamagui conf on this: ${node.name.name}`)
+          }
+          return
+        }
+
+        // found a valid tag
+        res.found++
 
         // add data-* debug attributes
         if (shouldAddDebugProp && !disableDebugAttr) {

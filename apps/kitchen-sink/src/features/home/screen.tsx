@@ -1,3 +1,4 @@
+// debug
 import { variableToString } from '@tamagui/core'
 import { ScrollView } from 'react-native'
 import { ChevronRight, Moon, Sun } from 'sandbox-ui'
@@ -5,19 +6,18 @@ import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
   H1,
-  H2,
   ListItem,
   ListItemProps,
   Paragraph,
   Separator,
   Spacer,
   Switch,
-  TextArea,
   YGroup,
   YStack,
   useTheme,
 } from 'tamagui'
 
+import { TestDynamicEval } from '../../TestDynamicEval'
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
 export function HomeScreen() {
@@ -27,6 +27,8 @@ export function HomeScreen() {
         <H1 fontFamily="$heading" size="$9">
           Demos
         </H1>
+
+        <TestDynamicEval />
 
         <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
           <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>

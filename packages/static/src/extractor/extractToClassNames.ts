@@ -54,7 +54,7 @@ export async function extractToClassNames({
   const tm = timer()
 
   if (shouldPrintDebug) {
-    console.log(`Parsing \n\n --- ${sourcePath} --- \n\n`)
+    console.log(`Parsing ${sourcePath} --- \n\n`)
   }
 
   if (typeof source !== 'string') {

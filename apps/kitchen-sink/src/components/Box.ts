@@ -1,3 +1,4 @@
+// debug 123 1223 123 123 123 123123cxw 13
 import { Stack, styled } from '@tamagui/core'
 import { StyleSheet } from 'react-native'
 

@@ -16,6 +16,7 @@ import {
   styled,
 } from 'tamagui'
 
+import { SandboxDynamicEval } from './SandboxDynamicEval'
 import config from './tamagui.config'
 
 // import './wdyr'
@@ -52,9 +53,7 @@ export const Sandbox = () => {
         }}
       />
 
-      <SelectDemo />
-
-      {/*  */}
+      <SandboxDynamicEval />
     </TamaguiProvider>
   )
 }
