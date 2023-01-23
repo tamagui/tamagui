@@ -57,14 +57,17 @@
     "./package.json": "./package.json",
     "./reset.css": "./reset.css",
     ".": {
+      "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
     "./inject-styles": {
+      "types": "./types/inject-styles.d.ts",
       "import": "./dist/esm/inject-styles.js",
       "require": "./dist/cjs/inject-styles.js"
     },
     "./react-native": {
+      "types": "./types/react-native.d.ts",
       "import": "./dist/esm/react-native.js",
       "require": "./dist/cjs/react-native.js"
     }
