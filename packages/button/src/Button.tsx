@@ -99,6 +99,7 @@ export const ButtonFrame = styled(ThemeableStack, {
     },
       
     unstyled: {
+      // reset all styles
       true: {
         focusable: false,
         hoverTheme: false,
