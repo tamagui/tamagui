@@ -8,20 +8,23 @@ import {
   PopoverProps,
   XStack,
   YGroup,
+  useIsomorphicLayoutEffect,
 } from 'tamagui'
 
 export function PopoverDemo() {
+
   return (
     <XStack space="$2" f={1} jc="center" ai="center">
-      <Demo placement="left" Icon={ChevronLeft} />
-      <Demo placement="bottom" Icon={ChevronDown} />
-      <Demo placement="top" Icon={ChevronUp} />
-      <Demo placement="right" Icon={ChevronRight} />
+      <Demo placement="left" Icon={ChevronLeft} Name='left-popover' />
+      <Demo placement="bottom" Icon={ChevronDown } Name='bottom-popover' />
+      <Demo placement="top" Icon={ChevronUp} Name='top-popover' />
+      <Demo placement="right" Icon={ChevronRight} Name='right-popover' />
     </XStack>
   )
 }
 
-export function Demo({ Icon, ...props }: PopoverProps & { Icon?: any }) {
+export function Demo({ Icon, Name, ...props }: PopoverProps & { Icon?: any, Name?: string }) {
+  
   return (
     <Popover size="$5" {...props}>
       <Popover.Trigger asChild>
@@ -59,10 +62,10 @@ export function Demo({ Icon, ...props }: PopoverProps & { Icon?: any }) {
 
         <YGroup space="$3">
           <XStack space="$3">
-            <Label size="$3" htmlFor="name">
+            <Label size="$3" htmlFor={Name}>
               Name
             </Label>
-            <Input size="$3" id="name" />
+            <Input size="$3" id={Name} />
           </XStack>
           <Popover.Trigger>
             <Button

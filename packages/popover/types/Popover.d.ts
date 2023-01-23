@@ -14,7 +14,7 @@ export type PopoverProps = PopperProps & {
     onOpenChange?: (open: boolean) => void;
 };
 type PopoverContextValue = {
-    triggerRef: React.RefObject<HTMLButtonElement>;
+    triggerRef: React.RefObject<any>;
     contentId?: string;
     open: boolean;
     onOpenChange(open: boolean): void;

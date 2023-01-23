@@ -58,7 +58,7 @@ export type PopoverProps = PopperProps & {
 }
 
 type PopoverContextValue = {
-  triggerRef: React.RefObject<HTMLButtonElement>
+  triggerRef: React.RefObject<any>
   contentId?: string
   open: boolean
   onOpenChange(open: boolean): void
@@ -183,7 +183,7 @@ export const PopoverContent = React.forwardRef<
     ...contentModalProps
   } = props
   const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
-  const contentRef = React.useRef<HTMLDivElement>(null)
+  const contentRef = React.useRef<any>(null)
   const composedRefs = useComposedRefs(forwardedRef, contentRef)
   const isRightClickOutsideRef = React.useRef(false)
 
@@ -344,7 +344,7 @@ const PopoverContentImpl = React.forwardRef<
     <AnimatePresence>
       {!!context.open && (
         <PopperContent
-          key="popper-content"
+          key={context.contentId}
           data-state={getState(context.open)}
           id={context.contentId}
           pointerEvents="auto"
@@ -610,7 +610,13 @@ const PopoverSheetController = (
 }
 
 const useSheetBreakpointActive = (breakpoint?: MediaQueryKey | null | false) => {
-  const media = useMedia()
+  // THIS IS CAUSING A CRASH ON NATIVE DURING ORIENTATION CHANGE
+  // It is because useMedia hook causes a whole re-render of the component consuming the hook (in this case Popover)
+  // then floating-ui tries to change the x,y position of PopperContent which is a child of Popover
+  if (!isWeb) {
+    return false;
+  }
+  const media = useMedia();
   return breakpoint ? media[breakpoint] : false
 }
 
