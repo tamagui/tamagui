@@ -22,7 +22,7 @@ export function DialogDemo() {
       </Dialog.Trigger>
 
       <Adapt when="sm" platform="touch">
-        <Sheet zIndex={200_000} modal dismissOnSnapToBottom>
+        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" space>
             <Adapt.Contents />
           </Sheet.Frame>
