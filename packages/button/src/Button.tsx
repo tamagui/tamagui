@@ -97,6 +97,22 @@ export const ButtonFrame = styled(ThemeableStack, {
         pointerEvents: 'none',
       },
     },
+      
+    unstyled: {
+      focusable: false,
+      hoverTheme: false,
+      pressTheme: false,
+      backgrounded: false,
+      borderWidth: 0,
+      borderColor: 'transparent',
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start',
+      flexWrap: 'nowrap',
+      flexDirection: 'column',
+      pressStyle: {},
+      focusStyle: {},
+      hoverStyle: {}
+    }
   } as const,
 
   defaultVariants: {
