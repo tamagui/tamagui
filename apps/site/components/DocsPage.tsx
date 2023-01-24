@@ -46,10 +46,10 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       aria-label={`Previous page: ${previous.title}`}
                       ai="flex-start"
                     >
-                      <Paragraph selectable={false} theme="alt1" size="$5">
+                      <Paragraph userSelect="none" theme="alt1" size="$5">
                         Previous
                       </Paragraph>
-                      <Paragraph selectable={false} size="$3" color="$gray10">
+                      <Paragraph userSelect="none" size="$3" color="$gray10">
                         {previous.title}
                       </Paragraph>
                     </YStack>
@@ -73,10 +73,10 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       aria-label={`Previous page: ${next.title}`}
                       ai="flex-end"
                     >
-                      <Paragraph selectable={false} theme="alt1" size="$5">
+                      <Paragraph userSelect="none" theme="alt1" size="$5">
                         Next
                       </Paragraph>
-                      <Paragraph selectable={false} size="$3" color="$gray10">
+                      <Paragraph userSelect="none" size="$3" color="$gray10">
                         {next.title}
                       </Paragraph>
                     </YStack>

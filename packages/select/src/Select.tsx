@@ -94,7 +94,7 @@ const VALUE_NAME = 'SelectValue'
 
 const SelectValueFrame = styled(Paragraph, {
   name: VALUE_NAME,
-  selectable: false,
+  userSelect: 'none',
 })
 
 type SelectValueProps = GetProps<typeof SelectValueFrame> & {
@@ -308,7 +308,7 @@ const ITEM_TEXT_NAME = 'SelectItemText'
 
 export const SelectItemTextFrame = styled(SizableText, {
   name: ITEM_TEXT_NAME,
-  selectable: false,
+  userSelect: 'none',
 })
 
 type SelectItemTextProps = GetProps<typeof SelectItemTextFrame>

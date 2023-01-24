@@ -111,8 +111,6 @@ if (process.env.TAMAGUI_TARGET === 'native') {
     wordWrap: true,
     textOverflow: true,
     textDecorationDistance: true,
-    userSelect: true,
-    selectable: true,
     cursor: true,
     contain: true,
     boxSizing: true,
@@ -323,16 +321,25 @@ export const getSplitStyles: StyleSplitter = (
   for (let i = len - 1; i >= 0; i--) {
     let keyInit = propKeys[i]
     if (keyInit === 'className') continue // handled above
-    const valInit = props[keyInit]
+    let valInit = props[keyInit]
 
     // normalize shorthands up front
     if (keyInit in shorthands) {
       keyInit = shorthands[keyInit]
     }
 
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      // map userSelect to native prop
+      if (keyInit === 'userSelect') {
+        keyInit = 'selectable'
+        valInit = valInit === 'none' ? false : true
+      } else if (keyInit.startsWith('data-') || keyInit.startsWith('aria-')) {
+        continue
+      }
+    }
+
     if (keyInit in usedKeys) continue
     if (keyInit in skipProps) continue
-    if (!isWeb && keyInit.startsWith('data-')) continue
 
     if (typeof valInit === 'string' && valInit[0] === '_') {
       if (keyInit in validStyleProps || keyInit.includes('-')) {

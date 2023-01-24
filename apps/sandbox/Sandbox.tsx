@@ -59,9 +59,9 @@ export const Sandbox = () => {
       />
 
       <YStack fullscreen ai="center" jc="center">
-        {/* <SelectDemo /> */}
+        <SelectDemo />
         {/* <SliderDemo /> */}
-        <Square data-test aria-something size={100} bc="$blue10" />
+        {/* <Square data-test aria-something size={100} bc="$blue10" /> */}
       </YStack>
 
       {/*  */}

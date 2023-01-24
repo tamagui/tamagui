@@ -387,7 +387,6 @@ type StylePropsWebOnly = {
 export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & StylePropsWebOnly;
 export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & StylePropsWebOnly & {
     ellipse?: boolean;
-    selectable?: boolean;
     textDecorationDistance?: number;
     textOverflow?: Properties['textOverflow'];
     whiteSpace?: Properties['whiteSpace'];
