@@ -7,6 +7,7 @@ import {
   DialogDemo,
   PopoverDemo,
   SelectDemo,
+  SliderDemo,
   TooltipDemo,
 } from '@tamagui/demos'
 import { useState } from 'react'
@@ -55,7 +56,8 @@ export const Sandbox = () => {
       />
 
       <YStack fullscreen ai="center" jc="center">
-        <SelectDemo />
+        {/* <SelectDemo /> */}
+        <SliderDemo />
       </YStack>
 
       {/*  */}

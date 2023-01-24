@@ -354,6 +354,7 @@ const SliderThumb = React.forwardRef<View, SliderThumbProps>(
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
         tabIndex={context.disabled ? undefined : 0}
+        animateOnly={['transform', 'left', 'right', 'top', 'bottom']}
         {...thumbProps}
         {...(context.orientation === 'horizontal'
           ? {
@@ -374,12 +375,12 @@ const SliderThumb = React.forwardRef<View, SliderThumbProps>(
                 right: 'auto',
               }),
             })}
+        {...{
+          [orientation.startEdge]: `${percent}%`,
+        }}
         size={sizeIn}
         onLayout={(e) => {
           setSize(e.nativeEvent.layout[orientation.sizeProp])
-        }}
-        {...{
-          [orientation.startEdge]: `${percent}%`,
         }}
         /**
          * There will be no value on initial render while we work out the index so we hide thumbs
