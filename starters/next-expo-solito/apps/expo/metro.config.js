@@ -16,4 +16,7 @@ config.resolver.nodeModulesPaths = [
   path.resolve(workspaceRoot, 'node_modules'),
 ]
 
+config.transformer = config.transformer || {}
+config.transformer.minifierPath = require.resolve('metro-minify-terser')
+
 module.exports = config

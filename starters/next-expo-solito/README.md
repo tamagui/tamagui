@@ -95,3 +95,10 @@ withTM([
   'expo-crypto', // <-- add this or any other native module
 ])
 ```
+
+### Deploying to Vercel
+
+- Root: `./apps/next`
+- Install command to be `yarn set version berry && yarn install`
+- Build command: leave default setting
+- Output dir: leave default setting

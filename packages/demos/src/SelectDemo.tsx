@@ -21,7 +21,7 @@ export function SelectDemo() {
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200_000}>
+      <Select.Content zIndex={200000}>
         <Select.ScrollUpButton ai="center" jc="center" pos="relative" w="100%" h="$3">
           <YStack zi={10}>
             <ChevronUp size={20} />
