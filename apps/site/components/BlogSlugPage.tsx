@@ -11,7 +11,6 @@ import {
   H2,
   H3,
   H6,
-  LinearGradient,
   Paragraph,
   Separator,
   Spacer,
@@ -19,6 +18,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { Frontmatter } from '../frontmatter'
 import { NextLink } from './NextLink'
