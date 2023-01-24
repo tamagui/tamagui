@@ -85,7 +85,7 @@ function sizeToSpace(v: number) {
 const spacesNegative = spaces.map(([k, v]) => [`-${(k as string).slice(1)}`, -v])
 
 type SizeKeysWithNegatives =
-  | `$-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}`
+  | `-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}`
   | SizeKeys
 
 export const space: {

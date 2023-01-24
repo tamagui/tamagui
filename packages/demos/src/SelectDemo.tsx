@@ -36,7 +36,7 @@ export function SelectDemo() {
         </Select.ScrollUpButton>
 
         <Select.Viewport minWidth={200}>
-          <Select.Group space={'$-0'}>
+          <Select.Group space="$-0">
             <Select.Label>Fruits</Select.Label>
             {items.map((item, i) => {
               return (
