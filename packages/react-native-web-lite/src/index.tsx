@@ -18,8 +18,8 @@ export { default as NativeModules } from './NativeModules/index.js'
 export { findNodeHandle } from './findNodeHandle.js'
 
 // animated
-export { default as Easing } from './vendor/react-native/AnimatedConcurrent/Easing.js'
-export { default as Animated } from './vendor/react-native/AnimatedConcurrent/Animated.js'
+export { default as Easing } from './vendor/react-native/Animated/Easing.js'
+export { default as Animated } from './vendor/react-native/Animated/Animated.js'
 
 // react-native
 export { default as NativeEventEmitter } from './vendor/react-native/NativeEventEmitter/index.js'
