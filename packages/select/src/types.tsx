@@ -6,12 +6,7 @@ import type {
 import type { SizeTokens } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import type { ThemeableStackProps, YStackProps } from '@tamagui/stacks'
-import type {
-  DispatchWithoutAction,
-  HTMLProps,
-  MutableRefObject,
-  ReactNode,
-} from 'react'
+import type { DispatchWithoutAction, HTMLProps, MutableRefObject, ReactNode } from 'react'
 
 export type Direction = 'ltr' | 'rtl'
 
@@ -41,7 +36,7 @@ export interface SelectProps {
 export interface SelectContextValue {
   dir?: Direction
   scopeKey: string
-  sheetBreakpoint: any
+  sheetBreakpoint: string | boolean | null
   size?: SizeTokens
   value: any
   selectedItem: ReactNode

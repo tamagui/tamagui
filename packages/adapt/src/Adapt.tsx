@@ -7,16 +7,20 @@ import {
 } from '@tamagui/core'
 import { createContext, createElement, useContext, useMemo, useState } from 'react'
 
+type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
+
 export type AdaptProps = {
-  when?: MediaQueryKey
+  when?: MediaQueryKeyString
   platform?: 'native' | 'web' | 'touch'
   children?: any
 }
 
+type When = MediaQueryKeyString | boolean | null
+
 type Component = (props: any) => any
 type AdaptParentContextI = {
   Contents: Component
-  setWhen: (when: MediaQueryKey) => any
+  setWhen: (when: When) => any
 }
 
 export const AdaptParentContext = createContext<AdaptParentContextI | null>(null)
@@ -37,7 +41,7 @@ export const useAdaptParent = ({
 }: {
   Contents: AdaptParentContextI['Contents']
 }) => {
-  const [when, setWhen] = useState<MediaQueryKey | null>(null)
+  const [when, setWhen] = useState<When>(null)
 
   const AdaptProvider = useMemo(() => {
     const context: AdaptParentContextI = {
@@ -73,7 +77,7 @@ export const Adapt = withStaticProperties(
 
     useIsomorphicLayoutEffect(() => {
       if (!enabled) return
-      context?.setWhen(when as MediaQueryKey)
+      context?.setWhen((when || enabled) as When)
     }, [when, context, enabled])
 
     if (!enabled) {

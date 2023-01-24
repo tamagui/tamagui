@@ -885,7 +885,9 @@ const DialogSheetController = (
 
 const useSheetBreakpointActive = (context: DialogContextValue) => {
   const media = useMedia()
-  return context.sheetBreakpoint ? media[context.sheetBreakpoint] : false
+  if (!context.sheetBreakpoint) return false
+  if (context.sheetBreakpoint === true) return true
+  return media[context.sheetBreakpoint]
 }
 
 const useShowDialogSheet = (context: DialogContextValue) => {

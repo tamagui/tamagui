@@ -1,14 +1,16 @@
 /// <reference types="react" />
 import { MediaQueryKey } from '@tamagui/core';
+type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never;
 export type AdaptProps = {
-    when?: MediaQueryKey;
+    when?: MediaQueryKeyString;
     platform?: 'native' | 'web' | 'touch';
     children?: any;
 };
+type When = MediaQueryKeyString | boolean | null;
 type Component = (props: any) => any;
 type AdaptParentContextI = {
     Contents: Component;
-    setWhen: (when: MediaQueryKey) => any;
+    setWhen: (when: When) => any;
 };
 export declare const AdaptParentContext: import("react").Context<AdaptParentContextI | null>;
 export declare const AdaptContents: {
@@ -21,7 +23,7 @@ export declare const useAdaptParent: ({ Contents, }: {
     AdaptProvider: (props: {
         children?: any;
     }) => JSX.Element;
-    when: string | number | null;
+    when: When;
 };
 export declare const Adapt: (({ platform, when, children }: AdaptProps) => any) & {
     Contents: {

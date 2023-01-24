@@ -33,8 +33,6 @@ if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
 
-console.log(getTokens().color.blue10Dark.val)
-
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light')
 

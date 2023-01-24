@@ -629,15 +629,11 @@ const PopoverSheetController = (
   )
 }
 
-const useSheetBreakpointActive = (breakpoint?: MediaQueryKey | null | false) => {
-  // THIS IS CAUSING A CRASH ON NATIVE DURING ORIENTATION CHANGE
-  // It is because useMedia hook causes a whole re-render of the component consuming the hook (in this case Popover)
-  // then floating-ui tries to change the x,y position of PopperContent which is a child of Popover
-  // if (!isWeb) {
-  //   return false;
-  // }
-  const media = useMedia();
-  return breakpoint ? media[breakpoint] : false
+const useSheetBreakpointActive = (breakpoint?: MediaQueryKey | null | boolean) => {
+  const media = useMedia()
+  if (!breakpoint) return false
+  if (breakpoint === true) return true
+  return media[breakpoint]
 }
 
 const useShowPopoverSheet = (context: PopoverContextValue) => {
