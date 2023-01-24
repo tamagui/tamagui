@@ -383,6 +383,7 @@ type StylePropsWebOnly = {
     outlineStyle?: Properties['outlineStyle'];
     outlineOffset?: Properties['outlineOffset'];
     outlineWidth?: Properties['outlineWidth'];
+    tabIndex?: string | number;
 };
 export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & StylePropsWebOnly;
 export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & StylePropsWebOnly & {

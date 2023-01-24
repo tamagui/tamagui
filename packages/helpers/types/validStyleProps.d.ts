@@ -17,8 +17,6 @@ export declare const validStylesOnBaseProps: Readonly<{
     placeholderTextColor: true;
 }>;
 export declare const stylePropsView: Readonly<{
-    tabIndex?: true | undefined;
-    role?: true | undefined;
     overflowX?: true | undefined;
     overflowY?: true | undefined;
     userSelect?: true | undefined;
@@ -179,8 +177,6 @@ export declare const stylePropsText: Readonly<{
     textShadowOffset: true;
     textShadowRadius: true;
     textTransform: true;
-    tabIndex?: true | undefined;
-    role?: true | undefined;
     overflowX?: true | undefined;
     overflowY?: true | undefined;
     contain?: true | undefined;
@@ -313,8 +309,6 @@ export declare const stylePropsAll: Readonly<{
     textShadowOffset: true;
     textShadowRadius: true;
     textTransform: true;
-    tabIndex?: true | undefined;
-    role?: true | undefined;
     overflowX?: true | undefined;
     overflowY?: true | undefined;
     contain?: true | undefined;
@@ -430,8 +424,6 @@ export declare const validPseudoKeys: Readonly<{
     focusStyle: true;
 }>;
 export declare const validStyles: Readonly<{
-    tabIndex?: true | undefined;
-    role?: true | undefined;
     overflowX?: true | undefined;
     overflowY?: true | undefined;
     userSelect?: true | undefined;

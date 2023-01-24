@@ -9,7 +9,6 @@ export function RegionTable(props: YStackProps) {
       tag="table"
       // @ts-ignore
       display="table"
-      // @ts-ignore
       role="region"
       tabIndex={0}
       position="relative"
