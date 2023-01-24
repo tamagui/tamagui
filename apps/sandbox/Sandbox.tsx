@@ -48,6 +48,9 @@ export const Sandbox = () => {
       >
         🌗
       </button>
+
+      <XStack />
+
       <style
         type="text/css"
         dangerouslySetInnerHTML={{

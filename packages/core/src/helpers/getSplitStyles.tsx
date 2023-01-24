@@ -56,6 +56,7 @@ import {
   reverseMapClassNameToValue,
 } from './normalizeValueWithProperty.js'
 import { pseudoDescriptors } from './pseudoDescriptors'
+import { warnOnce } from './warnOnce'
 
 type GetStyleResult = {
   pseudos?: PseudoStyles
@@ -274,6 +275,12 @@ export const getSplitStyles: StyleSplitter = (
     usedKeys,
     viewProps,
     languageContext,
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    if (props.selectable) {
+      warnOnce('props.selectable', 'selectable props deprecated, use userSelect')
+    }
   }
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -1024,7 +1031,7 @@ function mergeStyle(
   dontSetUsed = false
 ) {
   if (!dontSetUsed) {
-    usedKeys[key] = usedKeys[key] || 1
+    usedKeys[key] ||= 1
   }
   if (val && val[0] === '_') {
     classNames[key] = val
