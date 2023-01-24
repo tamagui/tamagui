@@ -220,8 +220,13 @@ export function Test9() {
 export function Test10({ textStyle }) {
   return (
     <Text fontSize={10}>
-      <Text selectable>
-        <Text color={nonStaticInt ? '#000' : '#fff'} fontSize={15} fontWeight="600" {...textStyle}>
+      <Text userSelect="auto">
+        <Text
+          color={nonStaticInt ? '#000' : '#fff'}
+          fontSize={15}
+          fontWeight="600"
+          {...textStyle}
+        >
           hello
         </Text>
       </Text>

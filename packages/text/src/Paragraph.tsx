@@ -5,7 +5,7 @@ import { SizableText } from './SizableText'
 export const Paragraph = styled(SizableText, {
   name: 'Paragraph',
   tag: 'p',
-  selectable: true,
+  userSelect: 'auto',
 })
 
 export type ParagraphProps = PropTypes<typeof Paragraph>

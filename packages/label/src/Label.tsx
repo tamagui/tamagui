@@ -35,7 +35,7 @@ export const LabelFrame = styled(SizableText, {
   backgroundColor: 'transparent',
   display: 'flex',
   alignItems: 'center',
-  selectable: false,
+  userSelect: 'none',
   cursor: 'default',
   pressStyle: {
     color: '$colorPress',

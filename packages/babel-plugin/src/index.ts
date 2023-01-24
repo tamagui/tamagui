@@ -30,7 +30,7 @@ const extractor = createExtractor()
 
 export default declare(function snackBabelPlugin(
   api,
-  options: TamaguiOptions,
+  options: TamaguiOptions
 ): {
   name: string
   visitor: Visitor
@@ -104,7 +104,6 @@ export default declare(function snackBabelPlugin(
               excludeProps: new Set([
                 'className',
                 'userSelect',
-                'selectable',
                 'whiteSpace',
                 'textOverflow',
                 'cursor',
@@ -148,8 +147,8 @@ export default declare(function snackBabelPlugin(
                     finalAttrs.push(
                       t.jsxAttribute(
                         t.jsxIdentifier(`_style${key}`),
-                        t.jsxExpressionContainer(expr),
-                      ),
+                        t.jsxExpressionContainer(expr)
+                      )
                     )
                   }
                 }
@@ -163,8 +162,8 @@ export default declare(function snackBabelPlugin(
                         finalAttrs.push(
                           t.jsxAttribute(
                             t.jsxIdentifier(key),
-                            t.stringLiteral(themed[key]),
-                          ),
+                            t.stringLiteral(themed[key])
+                          )
                         )
                       }
                       const ident = addSheetStyle(plain, props.node)
@@ -179,11 +178,11 @@ export default declare(function snackBabelPlugin(
                       const styleExpr = t.conditionalExpression(
                         attr.value.test,
                         cons,
-                        alt,
+                        alt
                       )
                       addStyle(
                         styleExpr,
-                        simpleHash(JSON.stringify({ consequent, alternate })),
+                        simpleHash(JSON.stringify({ consequent, alternate }))
                       )
                       break
                     }
@@ -191,10 +190,7 @@ export default declare(function snackBabelPlugin(
                       if (t.isJSXSpreadAttribute(attr.value)) {
                         if (isSimpleSpread(attr.value)) {
                           stylesExpr.elements.push(
-                            t.memberExpression(
-                              attr.value.argument,
-                              t.identifier('style'),
-                            ),
+                            t.memberExpression(attr.value.argument, t.identifier('style'))
                           )
                         }
                       }
@@ -209,8 +205,8 @@ export default declare(function snackBabelPlugin(
                   props.node.attributes.push(
                     t.jsxAttribute(
                       t.jsxIdentifier('style'),
-                      t.jsxExpressionContainer(stylesExpr),
-                    ),
+                      t.jsxExpressionContainer(stylesExpr)
+                    )
                   )
                 }
               },
@@ -237,11 +233,11 @@ export default declare(function snackBabelPlugin(
           }
 
           const sheetObject = literalToAst(sheetStyles)
-          const sheetOuter = template(
-            'const SHEET = ReactNativeStyleSheet.create(null)',
-          )({
-            SHEET: sheetIdentifier.name,
-          }) as any
+          const sheetOuter = template('const SHEET = ReactNativeStyleSheet.create(null)')(
+            {
+              SHEET: sheetIdentifier.name,
+            }
+          ) as any
 
           // replace the null with our object
           sheetOuter.declarations[0].init.arguments[0] = sheetObject
@@ -257,7 +253,7 @@ export default declare(function snackBabelPlugin(
               generator(root.parent)
                 .code.split('\n')
                 .filter((x) => !x.startsWith('//'))
-                .join('\n'),
+                .join('\n')
             )
           }
         },
@@ -267,9 +263,7 @@ export default declare(function snackBabelPlugin(
 })
 
 function assertValidTag(node: t.JSXOpeningElement) {
-  if (
-    node.attributes.find((x) => x.type === 'JSXAttribute' && x.name.name === 'style')
-  ) {
+  if (node.attributes.find((x) => x.type === 'JSXAttribute' && x.name.name === 'style')) {
     // we can just deopt here instead and log warning
     // need to make onExtractTag have a special catch error or similar
     if (process.env.DEBUG?.startsWith('tamagui')) {
