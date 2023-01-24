@@ -16,7 +16,7 @@ import {
   yellow,
   yellowDark,
 } from '@tamagui/colors'
-import { Variable, createTokens } from '@tamagui/core'
+import { Variable, createTokens, createVariable } from '@tamagui/core'
 
 // should roughly map to button/input etc height at each level
 // fonts should match that height/lineHeight at each stop
@@ -153,6 +153,9 @@ export const color = {
   ...postfixObjKeys(lightColors, 'Light'),
   ...postfixObjKeys(darkColors, 'Dark'),
 }
+
+console.log('wtf', color.blue10Dark)
+color.blue10Dark = createVariable(color.blue10Dark)
 
 function postfixObjKeys<
   A extends { [key: string]: Variable<string> | string },

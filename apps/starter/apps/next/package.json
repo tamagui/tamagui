@@ -18,7 +18,7 @@
     "react-dom": "^18.2.0",
     "react-native": "*",
     "react-native-web": "^0.18.3",
-    "react-native-web-lite": "^1.1.0"
+    "react-native-web-lite": "^1.1.1"
   },
   "devDependencies": {
     "@tamagui/next-plugin": "1.1.1",
