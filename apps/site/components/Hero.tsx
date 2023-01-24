@@ -195,8 +195,7 @@ const HeroContents = memo(() => {
                 bordered
                 bw={2}
                 mx="$2"
-                // @ts-ignore
-                tabIndex={0}
+                tabIndex="0"
                 elevation="$2"
                 pressStyle={{
                   elevation: '$0',
@@ -220,8 +219,7 @@ const HeroContents = memo(() => {
                 bordered
                 bw={2}
                 mx="$2"
-                // @ts-ignore
-                tabIndex={0}
+                tabIndex="0"
                 elevation="$2"
                 letterSpacing={-2}
                 pressStyle={{

@@ -373,7 +373,7 @@ type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShort
 /**
  * Base style-only props (no media, pseudo):
  */
-type StylePropsWebOnly = {
+type PropsWebOnly = {
     pointerEvents?: ViewProps['pointerEvents'];
     cursor?: Properties['cursor'];
     contain?: Properties['contain'];
@@ -383,9 +383,11 @@ type StylePropsWebOnly = {
     outlineStyle?: Properties['outlineStyle'];
     outlineOffset?: Properties['outlineOffset'];
     outlineWidth?: Properties['outlineWidth'];
+    tabIndex?: string | number;
+    role?: string;
 };
-export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & StylePropsWebOnly;
-export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & StylePropsWebOnly & {
+export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & PropsWebOnly;
+export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & PropsWebOnly & {
     ellipse?: boolean;
     textDecorationDistance?: number;
     textOverflow?: Properties['textOverflow'];
