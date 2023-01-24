@@ -1,10 +1,13 @@
 import { Variable } from '@tamagui/core';
-type ColorsByName = {
-    [key: string]: Record<string, string>;
-};
-type ColorsList = string[];
 type AltKeys = 1 | 2;
-type GeneratedTheme = {
+type Colors = {
+    [key: string]: {
+        [key: string]: string;
+    };
+};
+type GeneratedTheme<ExtraKeys extends string = string> = {
+    [Key in ExtraKeys]: Variable<string>;
+} & {
     backgroundStrong: Variable<string>;
     background: Variable<string>;
     backgroundSoft: Variable<string>;
@@ -41,12 +44,15 @@ type GeneratedTheme = {
     color12: Variable<string>;
 };
 type GetSubThemes<Name extends string> = `${Name}` | `${Name}_alt${AltKeys}` | `${Name}_darker` | `${Name}_active` | `${Name}_Card` | `${Name}_SliderTrack` | `${Name}_SliderTrackActive` | `${Name}_Switch` | `${Name}_SwitchThumb` | `${Name}_DrawerFrame` | `${Name}_Button` | `${Name}_SliderThumb` | `${Name}_Progress` | `${Name}_ProgressIndicator` | `${Name}_TooltipArrow` | `${Name}_TooltipContent`;
-export declare const createThemes: <C extends string>({ activeColor, light, dark, colorsLight, colorsDark, }: {
+export type GeneratedThemes<ColorsList extends string, BaseColorList extends string> = {
+    [key in GetSubThemes<ColorsList extends string ? ColorsList : never> | GetSubThemes<`light`> | GetSubThemes<`dark`>]: GeneratedTheme<BaseColorList>;
+};
+export declare const createThemes: <ColorsList extends string, BaseColorList extends string>({ activeColor, light, dark, colorsLight, colorsDark, }: {
     activeColor: string;
-    light: ColorsList;
-    dark: ColorsList;
-    colorsLight: ColorsByName;
-    colorsDark: ColorsByName;
-}) => { [key in GetSubThemes<C> | GetSubThemes<"light"> | GetSubThemes<"dark">]: GeneratedTheme; };
+    light: string[];
+    dark: string[];
+    colorsLight: Colors;
+    colorsDark: Colors;
+}) => GeneratedThemes<ColorsList, BaseColorList>;
 export {};
 //# sourceMappingURL=createThemes.d.ts.map

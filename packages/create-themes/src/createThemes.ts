@@ -2,17 +2,19 @@ import { Variable, createTheme, getVariableValue, isWeb } from '@tamagui/core'
 
 import { setColorAlpha } from './colorUtils'
 
-type ColorsByName = {
-  [key: string]: Record<string, string>
-}
-
-type ColorsList = string[]
-
 // can make configurable
 type AltKeys = 1 | 2
 type AltName<Name extends string, Keys extends string | number> = `${Name}_alt${Keys}`
 
-type GeneratedTheme = {
+type Colors = {
+  [key: string]: {
+    [key: string]: string
+  }
+}
+
+type GeneratedTheme<ExtraKeys extends string = string> = {
+  [Key in ExtraKeys]: Variable<string>
+} & {
   backgroundStrong: Variable<string>
   background: Variable<string>
   backgroundSoft: Variable<string>
@@ -71,7 +73,14 @@ type GetSubThemes<Name extends string> =
   | `${Name}_TooltipArrow`
   | `${Name}_TooltipContent`
 
-export const createThemes = <C extends string>({
+export type GeneratedThemes<ColorsList extends string, BaseColorList extends string> = {
+  [key in
+    | GetSubThemes<ColorsList extends string ? ColorsList : never>
+    | GetSubThemes<`light`>
+    | GetSubThemes<`dark`>]: GeneratedTheme<BaseColorList>
+}
+
+export const createThemes = <ColorsList extends string, BaseColorList extends string>({
   activeColor,
   light,
   dark,
@@ -79,14 +88,12 @@ export const createThemes = <C extends string>({
   colorsDark,
 }: {
   activeColor: string
-  light: ColorsList
-  dark: ColorsList
-  colorsLight: ColorsByName
-  colorsDark: ColorsByName
-}): {
-  [key in GetSubThemes<C> | GetSubThemes<`light`> | GetSubThemes<`dark`>]: GeneratedTheme
-} => {
-  function flatten(obj: ColorsByName) {
+  light: string[]
+  dark: string[]
+  colorsLight: Colors
+  colorsDark: Colors
+}): GeneratedThemes<ColorsList, BaseColorList> => {
+  function flatten(obj: Colors) {
     const next = {}
     for (const key in obj) {
       Object.assign(next, obj[key])
@@ -318,8 +325,10 @@ export const createThemes = <C extends string>({
   darkThemes.dark_darker.background = '#030303'
   darkThemes.dark_darker.backgroundStrong = '#000'
 
+  type LightColorKeys = keyof typeof lightColors
+
   type BaseTheme = {
-    [key in keyof typeof lightColors | keyof SubTheme]: Variable<string>
+    [key in LightColorKeys | keyof SubTheme]: Variable<string>
   }
 
   const lightTheme = createTheme({
@@ -377,12 +386,10 @@ export const createThemes = <C extends string>({
     })
   }
 
-  type ColorNames = typeof colorSchemes[number]['name']
-
   type ColorThemeNames =
-    | ColorNames
-    | AltName<`light_${ColorNames}`, AltKeys>
-    | AltName<`dark_${ColorNames}`, AltKeys>
+    | ColorsList
+    | AltName<`light_${ColorsList extends string ? ColorsList : never}`, AltKeys>
+    | AltName<`dark_${ColorsList extends string ? ColorsList : never}`, AltKeys>
 
   const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) => {
     const [altLightThemes, altDarkThemes] = [
