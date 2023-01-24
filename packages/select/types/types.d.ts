@@ -29,7 +29,7 @@ export interface SelectProps {
 export interface SelectContextValue {
     dir?: Direction;
     scopeKey: string;
-    sheetBreakpoint: any;
+    sheetBreakpoint: string | boolean | null;
     size?: SizeTokens;
     value: any;
     selectedItem: ReactNode;

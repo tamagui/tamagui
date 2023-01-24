@@ -11,7 +11,7 @@ export function SelectDemo() {
         <Select.Value placeholder="Something" />
       </Select.Trigger>
 
-      <Adapt when="sm" platform="touch">
+      <Adapt platform="touch">
         <Sheet modal dismissOnSnapToBottom>
           <Sheet.Frame>
             <Sheet.ScrollView>

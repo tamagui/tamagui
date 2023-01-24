@@ -3,9 +3,11 @@ import { useMedia } from '@tamagui/core'
 import { SelectContextValue } from './types'
 
 export const useSelectBreakpointActive = (
-  sheetBreakpoint: SelectContextValue['sheetBreakpoint'],
+  sheetBreakpoint: SelectContextValue['sheetBreakpoint']
 ) => {
   const media = useMedia()
+  if (!sheetBreakpoint) return false
+  if (sheetBreakpoint === true) return true
   return sheetBreakpoint ? media[sheetBreakpoint] : false
 }
 

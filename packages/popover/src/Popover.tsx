@@ -594,9 +594,11 @@ const PopoverSheetController = (
   )
 }
 
-const useSheetBreakpointActive = (breakpoint?: MediaQueryKey | null | false) => {
+const useSheetBreakpointActive = (breakpoint?: MediaQueryKey | null | boolean) => {
   const media = useMedia()
-  return breakpoint ? media[breakpoint] : false
+  if (!breakpoint) return false
+  if (breakpoint === true) return true
+  return media[breakpoint]
 }
 
 const useShowPopoverSheet = (context: PopoverContextValue) => {
