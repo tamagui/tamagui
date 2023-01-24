@@ -13,6 +13,7 @@ export function composeEventHandlers<E extends Events>(
   return function composedEventHandler(event: E) {
     og?.(event)
     if (
+      !event ||
       !(checkDefaultPrevented && 'defaultPrevented' in event) ||
       // @ts-ignore
       ('defaultPrevented' in event && !event.defaultPrevented)
