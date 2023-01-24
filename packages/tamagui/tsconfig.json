@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": { "composite": true },
-  "exclude": ["tamagui.config.ts", "**/test", "**/dist", "**/types"],
+  "exclude": ["tamagui.config.ts", "**/test", "**/dist", "**/types", "./linear-gradient"],
   "references": [
     { "path": "../card" },
     { "path": "../compose-refs" },

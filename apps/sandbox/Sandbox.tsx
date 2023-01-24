@@ -20,6 +20,7 @@ import {
   TextArea,
   XStack,
   YStack,
+  getTokens,
   styled,
 } from 'tamagui'
 
@@ -31,6 +32,8 @@ import config from './tamagui.config'
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
+
+console.log(getTokens().color.blue10Dark.val)
 
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light')
@@ -62,6 +65,7 @@ export const Sandbox = () => {
         <SelectDemo />
         {/* <SliderDemo /> */}
         {/* <Square tabIndex="0" size={100} bc="$blue10" /> */}
+        <Button size="$8"></Button>
       </YStack>
 
       {/*  */}
