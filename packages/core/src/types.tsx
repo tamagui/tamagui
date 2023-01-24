@@ -647,7 +647,7 @@ type WithThemeShorthandsPseudosMediaAnimation<A extends object> =
  * Base style-only props (no media, pseudo):
  */
 
-type StylePropsWebOnly = {
+type PropsWebOnly = {
   pointerEvents?: ViewProps['pointerEvents']
   cursor?: Properties['cursor']
   contain?: Properties['contain']
@@ -657,6 +657,8 @@ type StylePropsWebOnly = {
   outlineStyle?: Properties['outlineStyle']
   outlineOffset?: Properties['outlineOffset']
   outlineWidth?: Properties['outlineWidth']
+  tabIndex?: string | number
+  role?: string
 }
 
 export type StackStylePropsBase = Omit<
@@ -664,13 +666,12 @@ export type StackStylePropsBase = Omit<
   'display' | 'backfaceVisibility' | 'elevation'
 > &
   TransformStyleProps &
-  StylePropsWebOnly
+  PropsWebOnly
 
 export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> &
   TransformStyleProps &
-  StylePropsWebOnly & {
+  PropsWebOnly & {
     ellipse?: boolean
-    selectable?: boolean
     textDecorationDistance?: number
     textOverflow?: Properties['textOverflow']
     whiteSpace?: Properties['whiteSpace']

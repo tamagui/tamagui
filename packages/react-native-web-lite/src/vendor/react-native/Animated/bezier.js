@@ -59,10 +59,7 @@ function binarySubdivide(aX, _aA, _aB, mX1, mX2) {
     } else {
       aA = currentT
     }
-  } while (
-    Math.abs(currentX) > SUBDIVISION_PRECISION &&
-    ++i < SUBDIVISION_MAX_ITERATIONS
-  )
+  } while (Math.abs(currentX) > SUBDIVISION_PRECISION && ++i < SUBDIVISION_MAX_ITERATIONS)
 
   return currentT
 }
@@ -125,13 +122,7 @@ export default function bezier(mX1, mY1, mX2, mY2) {
     } else if (initialSlope === 0.0) {
       return guessForT
     } else {
-      return binarySubdivide(
-        aX,
-        intervalStart,
-        intervalStart + kSampleStepSize,
-        mX1,
-        mX2,
-      )
+      return binarySubdivide(aX, intervalStart, intervalStart + kSampleStepSize, mX1, mX2)
     }
   }
 

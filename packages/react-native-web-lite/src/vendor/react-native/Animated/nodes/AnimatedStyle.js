@@ -11,23 +11,37 @@
 
 import { StyleSheet } from 'react-native-web-internals'
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
-import AnimatedNode from './AnimatedNode'
-import AnimatedTransform from './AnimatedTransform'
-import AnimatedWithChildren from './AnimatedWithChildren'
+import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
+import AnimatedNode from './AnimatedNode.js'
+import AnimatedTransform from './AnimatedTransform.js'
+import AnimatedWithChildren from './AnimatedWithChildren.js'
 
 var flattenStyle = StyleSheet.flatten
+
+function createAnimatedStyle(inputStyle) {
+  var style = flattenStyle(inputStyle)
+  var animatedStyles = {}
+
+  for (var key in style) {
+    var value = style[key]
+
+    if (key === 'transform') {
+      animatedStyles[key] = new AnimatedTransform(value)
+    } else if (value instanceof AnimatedNode) {
+      animatedStyles[key] = value
+    } else if (value && !Array.isArray(value) && typeof value === 'object') {
+      animatedStyles[key] = createAnimatedStyle(value)
+    }
+  }
+
+  return animatedStyles
+}
 
 class AnimatedStyle extends AnimatedWithChildren {
   constructor(style) {
     super()
-    style = flattenStyle(style) || {}
-
-    if (style.transform) {
-      style = { ...style, transform: new AnimatedTransform(style.transform) }
-    }
-
-    this._style = style
+    this._inputStyle = style
+    this._style = createAnimatedStyle(style)
   } // Recursively get values for nested styles (like iOS's shadowOffset)
 
   _walkStyleAndGetValues(style) {
@@ -54,7 +68,7 @@ class AnimatedStyle extends AnimatedWithChildren {
   }
 
   __getValue() {
-    return this._walkStyleAndGetValues(this._style)
+    return [this._inputStyle, this._walkStyleAndGetValues(this._style)]
   } // Recursively get animated values for nested styles (like iOS's shadowOffset)
 
   _walkStyleAndGetAnimatedValues(style) {
@@ -122,8 +136,7 @@ class AnimatedStyle extends AnimatedWithChildren {
         style.__makeNative()
 
         styleConfig[styleKey] = style.__getNativeTag()
-      } // Non-animated styles are set using `setNativeProps`, no need
-      // to pass those as a part of the node config
+      }
     }
 
     NativeAnimatedHelper.validateStyles(styleConfig)

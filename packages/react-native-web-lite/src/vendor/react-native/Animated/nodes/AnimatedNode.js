@@ -9,9 +9,9 @@
  */
 'use strict'
 
-import invariant from 'fbjs/lib/invariant'
+import { invariant } from 'react-native-web-internals'
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
 var NativeAnimatedAPI = NativeAnimatedHelper.API
 var _uniqueId = 1 // Note(vjeux): this would be better as an interface but flow doesn't
 // support them yet
@@ -45,10 +45,12 @@ class AnimatedNode {
     this._listeners = {}
   }
 
-  __makeNative() {
+  __makeNative(platformConfig) {
     if (!this.__isNative) {
       throw new Error('This node cannot be made a "native" animated node')
     }
+
+    this._platformConfig = platformConfig
 
     if (this.hasListeners()) {
       this._startListeningToNativeValueUpdates()
@@ -59,7 +61,7 @@ class AnimatedNode {
    * animations.  This is useful because there is no way to
    * synchronously read the value because it might be driven natively.
    *
-   * See https://reactnative.dev/docs/animatedvalue.html#addlistener
+   * See https://reactnative.dev/docs/animatedvalue#addlistener
    */
 
   addListener(callback) {
@@ -76,7 +78,7 @@ class AnimatedNode {
    * Unregister a listener. The `id` param shall match the identifier
    * previously returned by `addListener()`.
    *
-   * See https://reactnative.dev/docs/animatedvalue.html#removelistener
+   * See https://reactnative.dev/docs/animatedvalue#removelistener
    */
 
   removeListener(id) {
@@ -89,7 +91,7 @@ class AnimatedNode {
   /**
    * Remove all registered listeners.
    *
-   * See https://reactnative.dev/docs/animatedvalue.html#removealllisteners
+   * See https://reactnative.dev/docs/animatedvalue#removealllisteners
    */
 
   removeAllListeners() {
@@ -127,12 +129,12 @@ class AnimatedNode {
             return
           }
 
-          this._onAnimatedValueUpdateReceived(data.value)
-        },
+          this.__onAnimatedValueUpdateReceived(data.value)
+        }
       )
   }
 
-  _onAnimatedValueUpdateReceived(value) {
+  __onAnimatedValueUpdateReceived(value) {
     this.__callListeners(value)
   }
 
@@ -161,7 +163,7 @@ class AnimatedNode {
     NativeAnimatedHelper.assertNativeAnimatedModule()
     invariant(
       this.__isNative,
-      'Attempt to get native tag from node not marked as "native"',
+      'Attempt to get native tag from node not marked as "native"'
     )
     var nativeTag =
       (_this$__nativeTag = this.__nativeTag) !== null && _this$__nativeTag !== void 0
@@ -170,10 +172,14 @@ class AnimatedNode {
 
     if (this.__nativeTag == null) {
       this.__nativeTag = nativeTag
-      NativeAnimatedHelper.API.createAnimatedNode(
-        nativeTag,
-        this.__getNativeConfig(),
-      )
+
+      var config = this.__getNativeConfig()
+
+      if (this._platformConfig) {
+        config.platformConfig = this._platformConfig
+      }
+
+      NativeAnimatedHelper.API.createAnimatedNode(nativeTag, config)
       this.__shouldUpdateListenersForNewNativeTag = true
     }
 
@@ -181,13 +187,19 @@ class AnimatedNode {
   }
 
   __getNativeConfig() {
-    throw new Error(
-      'This JS animated node type cannot be used as native animated node',
-    )
+    throw new Error('This JS animated node type cannot be used as native animated node')
   }
 
   toJSON() {
     return this.__getValue()
+  }
+
+  __getPlatformConfig() {
+    return this._platformConfig
+  }
+
+  __setPlatformConfig(platformConfig) {
+    this._platformConfig = platformConfig
   }
 }
 

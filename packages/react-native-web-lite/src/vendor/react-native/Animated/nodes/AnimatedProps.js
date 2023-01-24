@@ -9,23 +9,19 @@
  */
 'use strict'
 
-import invariant from 'fbjs/lib/invariant'
+import { invariant } from 'react-native-web-internals'
 
-import { findNodeHandle } from '../../../../findNodeHandle'
-import { AnimatedEvent } from '../AnimatedEvent'
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
-import AnimatedNode from './AnimatedNode'
-import AnimatedStyle from './AnimatedStyle'
+import { AnimatedEvent } from '../AnimatedEvent.js'
+import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
+import AnimatedNode from './AnimatedNode.js'
+import AnimatedStyle from './AnimatedStyle.js'
 
 class AnimatedProps extends AnimatedNode {
   constructor(props, callback) {
     super()
 
     if (props.style) {
-      props = {
-        ...props,
-        style: new AnimatedStyle(props.style),
-      }
+      props = { ...props, style: new AnimatedStyle(props.style) }
     }
 
     this._props = props
@@ -132,27 +128,21 @@ class AnimatedProps extends AnimatedNode {
 
   __connectAnimatedView() {
     invariant(this.__isNative, 'Expected node to be marked as "native"')
-    var nativeViewTag = findNodeHandle(this._animatedView)
-    invariant(
-      nativeViewTag != null,
-      'Unable to locate attached view in the native tree',
-    )
+    var nativeViewTag = this._animatedView
+    invariant(nativeViewTag != null, 'Unable to locate attached view in the native tree')
     NativeAnimatedHelper.API.connectAnimatedNodeToView(
       this.__getNativeTag(),
-      nativeViewTag,
+      nativeViewTag
     )
   }
 
   __disconnectAnimatedView() {
     invariant(this.__isNative, 'Expected node to be marked as "native"')
-    var nativeViewTag = findNodeHandle(this._animatedView)
-    invariant(
-      nativeViewTag != null,
-      'Unable to locate attached view in the native tree',
-    )
+    var nativeViewTag = this._animatedView
+    invariant(nativeViewTag != null, 'Unable to locate attached view in the native tree')
     NativeAnimatedHelper.API.disconnectAnimatedNodeFromView(
       this.__getNativeTag(),
-      nativeViewTag,
+      nativeViewTag
     )
   }
 

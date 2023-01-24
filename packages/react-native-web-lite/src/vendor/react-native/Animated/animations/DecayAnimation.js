@@ -9,8 +9,8 @@
  */
 'use strict'
 
-import { shouldUseNativeDriver } from '../NativeAnimatedHelper'
-import Animation from './Animation'
+import { shouldUseNativeDriver } from '../NativeAnimatedHelper.js'
+import Animation from './Animation.js'
 
 class DecayAnimation extends Animation {
   constructor(config) {
@@ -30,8 +30,7 @@ class DecayAnimation extends Animation {
         ? _config$isInteraction
         : !this._useNativeDriver
     this.__iterations =
-      (_config$iterations = config.iterations) !== null &&
-      _config$iterations !== void 0
+      (_config$iterations = config.iterations) !== null && _config$iterations !== void 0
         ? _config$iterations
         : 1
   }

@@ -9,12 +9,9 @@
  */
 'use strict'
 
-import Easing from '../Easing'
-import { shouldUseNativeDriver } from '../NativeAnimatedHelper'
-import AnimatedInterpolation from '../nodes/AnimatedInterpolation'
-import AnimatedValue from '../nodes/AnimatedValue'
-import AnimatedValueXY from '../nodes/AnimatedValueXY'
-import Animation from './Animation'
+import Easing from '../Easing.js'
+import { shouldUseNativeDriver } from '../NativeAnimatedHelper.js'
+import Animation from './Animation.js'
 
 var _easeInOut
 
@@ -49,11 +46,11 @@ class TimingAnimation extends Animation {
         ? _config$delay
         : 0
     this.__iterations =
-      (_config$iterations = config.iterations) !== null &&
-      _config$iterations !== void 0
+      (_config$iterations = config.iterations) !== null && _config$iterations !== void 0
         ? _config$iterations
         : 1
     this._useNativeDriver = shouldUseNativeDriver(config)
+    this._platformConfig = config.platformConfig
     this.__isInteraction =
       (_config$isInteraction = config.isInteraction) !== null &&
       _config$isInteraction !== void 0
@@ -76,6 +73,7 @@ class TimingAnimation extends Animation {
       frames,
       toValue: this._toValue,
       iterations: this.__iterations,
+      platformConfig: this._platformConfig,
     }
   }
 
@@ -101,7 +99,10 @@ class TimingAnimation extends Animation {
         if (this._useNativeDriver) {
           this.__startNativeAnimation(animatedValue)
         } else {
-          this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this))
+          this._animationFrame = requestAnimationFrame(
+            // $FlowFixMe[method-unbinding] added when improving typing for this parameters
+            this.onUpdate.bind(this)
+          )
         }
       }
     }
@@ -121,7 +122,7 @@ class TimingAnimation extends Animation {
         this._onUpdate(this._toValue)
       } else {
         this._onUpdate(
-          this._fromValue + this._easing(1) * (this._toValue - this._fromValue),
+          this._fromValue + this._easing(1) * (this._toValue - this._fromValue)
         )
       }
 
@@ -135,10 +136,11 @@ class TimingAnimation extends Animation {
     this._onUpdate(
       this._fromValue +
         this._easing((now - this._startTime) / this._duration) *
-          (this._toValue - this._fromValue),
+          (this._toValue - this._fromValue)
     )
 
     if (this.__active) {
+      // $FlowFixMe[method-unbinding] added when improving typing for this parameters
       this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this))
     }
   }

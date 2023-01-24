@@ -11,9 +11,9 @@
 
 import { InteractionManager } from 'react-native-web-internals'
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
-import AnimatedInterpolation from './AnimatedInterpolation'
-import AnimatedWithChildren from './AnimatedWithChildren'
+import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
+import AnimatedInterpolation from './AnimatedInterpolation.js'
+import AnimatedWithChildren from './AnimatedWithChildren.js'
 
 var NativeAnimatedAPI = NativeAnimatedHelper.API
 /**
@@ -43,9 +43,9 @@ function _flush(rootNode) {
   var animatedStyles = new Set()
 
   function findAnimatedStyles(node) {
-    /* $FlowFixMe(>=0.68.0 site=react_native_fb) This comment suppresses an
-     * error found when Flow v0.68 was deployed. To see the error delete this
-     * comment and run Flow. */
+    /* $FlowFixMe[prop-missing] (>=0.68.0 site=react_native_fb) This comment
+     * suppresses an error found when Flow v0.68 was deployed. To see the error
+     * delete this comment and run Flow. */
     if (typeof node.update === 'function') {
       animatedStyles.add(node)
     } else {
@@ -53,10 +53,20 @@ function _flush(rootNode) {
     }
   }
 
-  findAnimatedStyles(rootNode)
-  /* $FlowFixMe */
+  findAnimatedStyles(rootNode) // $FlowFixMe[prop-missing]
 
   animatedStyles.forEach((animatedStyle) => animatedStyle.update())
+}
+/**
+ * Some operations are executed only on batch end, which is _mostly_ scheduled when
+ * Animated component props change. For some of the changes which require immediate execution
+ * (e.g. setValue), we create a separate batch in case none is scheduled.
+ */
+
+function _executeAsAnimatedBatch(id, operation) {
+  NativeAnimatedAPI.setWaitingForIdentifier(id)
+  operation()
+  NativeAnimatedAPI.unsetWaitingForIdentifier(id)
 }
 /**
  * Standard value for driving animations.  One `Animated.Value` can drive
@@ -64,11 +74,11 @@ function _flush(rootNode) {
  * mechanism at a time.  Using a new mechanism (e.g. starting a new animation,
  * or calling `setValue`) will stop any previous ones.
  *
- * See https://reactnative.dev/docs/animatedvalue.html
+ * See https://reactnative.dev/docs/animatedvalue
  */
 
 class AnimatedValue extends AnimatedWithChildren {
-  constructor(value) {
+  constructor(value, config) {
     super()
 
     if (typeof value !== 'number') {
@@ -78,12 +88,16 @@ class AnimatedValue extends AnimatedWithChildren {
     this._startingValue = this._value = value
     this._offset = 0
     this._animation = null
+
+    if (config && config.useNativeDriver) {
+      this.__makeNative()
+    }
   }
 
   __detach() {
     if (this.__isNative) {
       NativeAnimatedAPI.getValue(this.__getNativeTag(), (value) => {
-        this._value = value
+        this._value = value - this._offset
       })
     }
 
@@ -99,7 +113,7 @@ class AnimatedValue extends AnimatedWithChildren {
    * Directly set the value.  This will stop any animations running on the value
    * and update all the bound properties.
    *
-   * See https://reactnative.dev/docs/animatedvalue.html#setvalue
+   * See https://reactnative.dev/docs/animatedvalue#setvalue
    */
 
   setValue(value) {
@@ -111,12 +125,14 @@ class AnimatedValue extends AnimatedWithChildren {
 
     this._updateValue(
       value,
-      !this.__isNative,
+      !this.__isNative
       /* don't perform a flush for natively driven values */
     )
 
     if (this.__isNative) {
-      NativeAnimatedAPI.setAnimatedNodeValue(this.__getNativeTag(), value)
+      _executeAsAnimatedBatch(this.__getNativeTag().toString(), () =>
+        NativeAnimatedAPI.setAnimatedNodeValue(this.__getNativeTag(), value)
+      )
     }
   }
   /**
@@ -124,7 +140,7 @@ class AnimatedValue extends AnimatedWithChildren {
    * `setValue`, an animation, or `Animated.event`.  Useful for compensating
    * things like the start of a pan gesture.
    *
-   * See https://reactnative.dev/docs/animatedvalue.html#setoffset
+   * See https://reactnative.dev/docs/animatedvalue#setoffset
    */
 
   setOffset(offset) {
@@ -138,7 +154,7 @@ class AnimatedValue extends AnimatedWithChildren {
    * Merges the offset value into the base value and resets the offset to zero.
    * The final output of the value is unchanged.
    *
-   * See https://reactnative.dev/docs/animatedvalue.html#flattenoffset
+   * See https://reactnative.dev/docs/animatedvalue#flattenoffset
    */
 
   flattenOffset() {
@@ -153,7 +169,7 @@ class AnimatedValue extends AnimatedWithChildren {
    * Sets the offset value to the base value, and resets the base value to zero.
    * The final output of the value is unchanged.
    *
-   * See https://reactnative.dev/docs/animatedvalue.html#extractoffset
+   * See https://reactnative.dev/docs/animatedvalue#extractoffset
    */
 
   extractOffset() {
@@ -169,30 +185,41 @@ class AnimatedValue extends AnimatedWithChildren {
    * final value after stopping the animation, which is useful for updating
    * state to match the animation position with layout.
    *
-   * See https://reactnative.dev/docs/animatedvalue.html#stopanimation
+   * See https://reactnative.dev/docs/animatedvalue#stopanimation
    */
 
   stopAnimation(callback) {
     this.stopTracking()
     this._animation && this._animation.stop()
     this._animation = null
-    callback && callback(this.__getValue())
+
+    if (callback) {
+      if (this.__isNative) {
+        NativeAnimatedAPI.getValue(this.__getNativeTag(), callback)
+      } else {
+        callback(this.__getValue())
+      }
+    }
   }
   /**
    * Stops any animation and resets the value to its original.
    *
-   * See https://reactnative.dev/docs/animatedvalue.html#resetanimation
+   * See https://reactnative.dev/docs/animatedvalue#resetanimation
    */
 
   resetAnimation(callback) {
     this.stopAnimation(callback)
     this._value = this._startingValue
+
+    if (this.__isNative) {
+      NativeAnimatedAPI.setAnimatedNodeValue(this.__getNativeTag(), this._startingValue)
+    }
   }
 
-  _onAnimatedValueUpdateReceived(value) {
+  __onAnimatedValueUpdateReceived(value) {
     this._updateValue(
       value,
-      false,
+      false
       /*flush*/
     )
   }
@@ -208,7 +235,7 @@ class AnimatedValue extends AnimatedWithChildren {
    * Typically only used internally, but could be used by a custom Animation
    * class.
    *
-   * See https://reactnative.dev/docs/animatedvalue.html#animate
+   * See https://reactnative.dev/docs/animatedvalue#animate
    */
 
   animate(animation, callback) {
@@ -224,11 +251,10 @@ class AnimatedValue extends AnimatedWithChildren {
     animation.start(
       this._value,
       (value) => {
-        // Natively driven animations will never call into that callback, therefore we can always
-        // pass flush = true to allow the updated value to propagate to native with setNativeProps
+        // Natively driven animations will never call into that callback
         this._updateValue(
           value,
-          true,
+          true
           /* flush */
         )
       },
@@ -242,7 +268,7 @@ class AnimatedValue extends AnimatedWithChildren {
         callback && callback(result)
       },
       previousAnimation,
-      this,
+      this
     )
   }
   /**
@@ -259,7 +285,9 @@ class AnimatedValue extends AnimatedWithChildren {
 
   track(tracking) {
     this.stopTracking()
-    this._tracking = tracking
+    this._tracking = tracking // Make sure that the tracking animation starts executing
+
+    this._tracking && this._tracking.update()
   }
 
   _updateValue(value, flush) {

@@ -9,23 +9,23 @@
  */
 'use strict'
 
-import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent'
-import DecayAnimation from './animations/DecayAnimation'
-import SpringAnimation from './animations/SpringAnimation'
-import TimingAnimation from './animations/TimingAnimation'
-import createAnimatedComponent from './createAnimatedComponent'
-import AnimatedAddition from './nodes/AnimatedAddition'
-import AnimatedDiffClamp from './nodes/AnimatedDiffClamp'
-import AnimatedDivision from './nodes/AnimatedDivision'
-import AnimatedInterpolation from './nodes/AnimatedInterpolation'
-import AnimatedModulo from './nodes/AnimatedModulo'
-import AnimatedMultiplication from './nodes/AnimatedMultiplication'
-import AnimatedNode from './nodes/AnimatedNode'
-import AnimatedProps from './nodes/AnimatedProps'
-import AnimatedSubtraction from './nodes/AnimatedSubtraction'
-import AnimatedTracking from './nodes/AnimatedTracking'
-import AnimatedValue from './nodes/AnimatedValue'
-import AnimatedValueXY from './nodes/AnimatedValueXY'
+import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent.js'
+import DecayAnimation from './animations/DecayAnimation.js'
+import SpringAnimation from './animations/SpringAnimation.js'
+import TimingAnimation from './animations/TimingAnimation.js'
+import createAnimatedComponent from './createAnimatedComponent.js'
+import AnimatedAddition from './nodes/AnimatedAddition.js'
+import AnimatedColor from './nodes/AnimatedColor.js'
+import AnimatedDiffClamp from './nodes/AnimatedDiffClamp.js'
+import AnimatedDivision from './nodes/AnimatedDivision.js'
+import AnimatedInterpolation from './nodes/AnimatedInterpolation.js'
+import AnimatedModulo from './nodes/AnimatedModulo.js'
+import AnimatedMultiplication from './nodes/AnimatedMultiplication.js'
+import AnimatedNode from './nodes/AnimatedNode.js'
+import AnimatedSubtraction from './nodes/AnimatedSubtraction.js'
+import AnimatedTracking from './nodes/AnimatedTracking.js'
+import AnimatedValue from './nodes/AnimatedValue.js'
+import AnimatedValueXY from './nodes/AnimatedValueXY.js'
 
 var add = function add(a, b) {
   return new AnimatedAddition(a, b)
@@ -86,6 +86,39 @@ var maybeVectorAnim = function maybeVectorAnim(value, config, anim) {
     return parallel([aX, aY], {
       stopTogether: false,
     })
+  } else if (value instanceof AnimatedColor) {
+    var configR = { ...config }
+
+    var configG = { ...config }
+
+    var configB = { ...config }
+
+    var configA = { ...config }
+
+    for (var _key in config) {
+      var _config$_key = config[_key],
+        r = _config$_key.r,
+        g = _config$_key.g,
+        b = _config$_key.b,
+        a = _config$_key.a
+
+      if (r !== undefined && g !== undefined && b !== undefined && a !== undefined) {
+        configR[_key] = r
+        configG[_key] = g
+        configB[_key] = b
+        configA[_key] = a
+      }
+    }
+
+    var aR = anim(value.r, configR)
+    var aG = anim(value.g, configG)
+    var aB = anim(value.b, configB)
+    var aA = anim(value.a, configA) // We use `stopTogether: false` here because otherwise tracking will break
+    // because the second animation will get stopped before it can update.
+
+    return parallel([aR, aG, aB, aA], {
+      stopTogether: false,
+    })
   }
 
   return null
@@ -105,8 +138,8 @@ var spring = function spring(value, config) {
           configuration.toValue,
           SpringAnimation,
           singleConfig,
-          callback,
-        ),
+          callback
+        )
       )
     } else {
       singleValue.animate(new SpringAnimation(singleConfig), callback)
@@ -125,7 +158,11 @@ var spring = function spring(value, config) {
         value.resetAnimation()
       },
       _startNativeLoop: function _startNativeLoop(iterations) {
-        var singleConfig = { ...config, iterations }
+        var singleConfig = {
+          ...config,
+          iterations,
+        }
+
         _start(value, singleConfig)
       },
       _isUsingNativeDriver: function _isUsingNativeDriver() {
@@ -149,8 +186,8 @@ var timing = function timing(value, config) {
           configuration.toValue,
           TimingAnimation,
           singleConfig,
-          callback,
-        ),
+          callback
+        )
       )
     } else {
       singleValue.animate(new TimingAnimation(singleConfig), callback)
@@ -169,7 +206,10 @@ var timing = function timing(value, config) {
         value.resetAnimation()
       },
       _startNativeLoop: function _startNativeLoop(iterations) {
-        var singleConfig = { ...config, iterations }
+        var singleConfig = {
+          ...config,
+          iterations,
+        }
 
         _start2(value, singleConfig)
       },
@@ -201,7 +241,10 @@ var decay = function decay(value, config) {
         value.resetAnimation()
       },
       _startNativeLoop: function _startNativeLoop(iterations) {
-        var singleConfig = { ...config, iterations }
+        var singleConfig = {
+          ...config,
+          iterations,
+        }
 
         _start3(value, singleConfig)
       },
@@ -256,7 +299,7 @@ var sequence = function sequence(animations) {
     },
     _startNativeLoop: function _startNativeLoop() {
       throw new Error(
-        'Loops run using the native driver cannot contain Animated.sequence animations',
+        'Loops run using the native driver cannot contain Animated.sequence animations'
       )
     },
     _isUsingNativeDriver: function _isUsingNativeDriver() {
@@ -320,7 +363,7 @@ var parallel = function parallel(animations, config) {
     },
     _startNativeLoop: function _startNativeLoop() {
       throw new Error(
-        'Loops run using the native driver cannot contain Animated.parallel animations',
+        'Loops run using the native driver cannot contain Animated.parallel animations'
       )
     },
     _isUsingNativeDriver: function _isUsingNativeDriver() {
@@ -344,17 +387,19 @@ var stagger = function stagger(time, animations) {
   return parallel(
     animations.map((animation, i) => {
       return sequence([delay(time * i), animation])
-    }),
+    })
   )
 }
 
-var loop = function loop(animation, _temp) {
+var loop = function loop(
+  animation, // $FlowFixMe[prop-missing]
+  _temp
+) {
   var _ref = _temp === void 0 ? {} : _temp,
     _ref$iterations = _ref.iterations,
     iterations = _ref$iterations === void 0 ? -1 : _ref$iterations,
     _ref$resetBeforeItera = _ref.resetBeforeIteration,
-    resetBeforeIteration =
-      _ref$resetBeforeItera === void 0 ? true : _ref$resetBeforeItera
+    resetBeforeIteration = _ref$resetBeforeItera === void 0 ? true : _ref$resetBeforeItera
 
   var isFinished = false
   var iterationsSoFar = 0
@@ -367,11 +412,7 @@ var loop = function loop(animation, _temp) {
           }
         }
 
-        if (
-          isFinished ||
-          iterationsSoFar === iterations ||
-          result.finished === false
-        ) {
+        if (isFinished || iterationsSoFar === iterations || result.finished === false) {
           callback && callback(result)
         } else {
           iterationsSoFar++
@@ -404,7 +445,7 @@ var loop = function loop(animation, _temp) {
     },
     _startNativeLoop: function _startNativeLoop() {
       throw new Error(
-        'Loops run using the native driver cannot contain Animated.loop animations',
+        'Loops run using the native driver cannot contain Animated.loop animations'
       )
     },
     _isUsingNativeDriver: function _isUsingNativeDriver() {
@@ -442,7 +483,8 @@ var event = function event(argMapping, config) {
   } else {
     return animatedEvent.__getHandler()
   }
-}
+} // All types of animated nodes that represent scalar numbers and can be interpolated (etc)
+
 /**
  * The `Animated` library is designed to make animations fluid, powerful, and
  * easy to build and maintain. `Animated` focuses on declarative relationships
@@ -451,29 +493,33 @@ var event = function event(argMapping, config) {
  * If additional transforms are added, be sure to include them in
  * AnimatedMock.js as well.
  *
- * See https://reactnative.dev/docs/animated.html
+ * See https://reactnative.dev/docs/animated
  */
-
 export default {
   /**
    * Standard value class for driving animations.  Typically initialized with
    * `new Animated.Value(0);`
    *
-   * See https://reactnative.dev/docs/animated.html#value
+   * See https://reactnative.dev/docs/animated#value
    */
   Value: AnimatedValue,
 
   /**
    * 2D value class for driving 2D animations, such as pan gestures.
    *
-   * See https://reactnative.dev/docs/animatedvaluexy.html
+   * See https://reactnative.dev/docs/animatedvaluexy
    */
   ValueXY: AnimatedValueXY,
 
   /**
+   * Value class for driving color animations.
+   */
+  Color: AnimatedColor,
+
+  /**
    * Exported to use the Interpolation type in flow.
    *
-   * See https://reactnative.dev/docs/animated.html#interpolation
+   * See https://reactnative.dev/docs/animated#interpolation
    */
   Interpolation: AnimatedInterpolation,
 
@@ -481,7 +527,7 @@ export default {
    * Exported for ease of type checking. All animated values derive from this
    * class.
    *
-   * See https://reactnative.dev/docs/animated.html#node
+   * See https://reactnative.dev/docs/animated#node
    */
   Node: AnimatedNode,
 
@@ -489,7 +535,7 @@ export default {
    * Animates a value from an initial velocity to zero based on a decay
    * coefficient.
    *
-   * See https://reactnative.dev/docs/animated.html#decay
+   * See https://reactnative.dev/docs/animated#decay
    */
   decay,
 
@@ -497,7 +543,7 @@ export default {
    * Animates a value along a timed easing curve. The Easing module has tons of
    * predefined curves, or you can use your own function.
    *
-   * See https://reactnative.dev/docs/animated.html#timing
+   * See https://reactnative.dev/docs/animated#timing
    */
   timing,
 
@@ -505,7 +551,7 @@ export default {
    * Animates a value according to an analytical spring model based on
    * damped harmonic oscillation.
    *
-   * See https://reactnative.dev/docs/animated.html#spring
+   * See https://reactnative.dev/docs/animated#spring
    */
   spring,
 
@@ -513,7 +559,7 @@ export default {
    * Creates a new Animated value composed from two Animated values added
    * together.
    *
-   * See https://reactnative.dev/docs/animated.html#add
+   * See https://reactnative.dev/docs/animated#add
    */
   add,
 
@@ -521,7 +567,7 @@ export default {
    * Creates a new Animated value composed by subtracting the second Animated
    * value from the first Animated value.
    *
-   * See https://reactnative.dev/docs/animated.html#subtract
+   * See https://reactnative.dev/docs/animated#subtract
    */
   subtract,
 
@@ -529,7 +575,7 @@ export default {
    * Creates a new Animated value composed by dividing the first Animated value
    * by the second Animated value.
    *
-   * See https://reactnative.dev/docs/animated.html#divide
+   * See https://reactnative.dev/docs/animated#divide
    */
   divide,
 
@@ -537,7 +583,7 @@ export default {
    * Creates a new Animated value composed from two Animated values multiplied
    * together.
    *
-   * See https://reactnative.dev/docs/animated.html#multiply
+   * See https://reactnative.dev/docs/animated#multiply
    */
   multiply,
 
@@ -545,7 +591,7 @@ export default {
    * Creates a new Animated value that is the (non-negative) modulo of the
    * provided Animated value.
    *
-   * See https://reactnative.dev/docs/animated.html#modulo
+   * See https://reactnative.dev/docs/animated#modulo
    */
   modulo,
 
@@ -554,14 +600,14 @@ export default {
    * difference between the last value so even if the value is far from the
    * bounds it will start changing when the value starts getting closer again.
    *
-   * See https://reactnative.dev/docs/animated.html#diffclamp
+   * See https://reactnative.dev/docs/animated#diffclamp
    */
   diffClamp,
 
   /**
    * Starts an animation after the given delay.
    *
-   * See https://reactnative.dev/docs/animated.html#delay
+   * See https://reactnative.dev/docs/animated#delay
    */
   delay,
 
@@ -570,7 +616,7 @@ export default {
    * before starting the next. If the current running animation is stopped, no
    * following animations will be started.
    *
-   * See https://reactnative.dev/docs/animated.html#sequence
+   * See https://reactnative.dev/docs/animated#sequence
    */
   sequence,
 
@@ -579,7 +625,7 @@ export default {
    * of the animations is stopped, they will all be stopped. You can override
    * this with the `stopTogether` flag.
    *
-   * See https://reactnative.dev/docs/animated.html#parallel
+   * See https://reactnative.dev/docs/animated#parallel
    */
   parallel,
 
@@ -587,7 +633,7 @@ export default {
    * Array of animations may run in parallel (overlap), but are started in
    * sequence with successive delays.  Nice for doing trailing effects.
    *
-   * See https://reactnative.dev/docs/animated.html#stagger
+   * See https://reactnative.dev/docs/animated#stagger
    */
   stagger,
 
@@ -595,7 +641,7 @@ export default {
    * Loops a given animation continuously, so that each time it reaches the
    * end, it resets and begins again from the start.
    *
-   * See https://reactnative.dev/docs/animated.html#loop
+   * See https://reactnative.dev/docs/animated#loop
    */
   loop,
 
@@ -603,14 +649,14 @@ export default {
    * Takes an array of mappings and extracts values from each arg accordingly,
    * then calls `setValue` on the mapped outputs.
    *
-   * See https://reactnative.dev/docs/animated.html#event
+   * See https://reactnative.dev/docs/animated#event
    */
   event,
 
   /**
    * Make any React component Animatable.  Used to create `Animated.View`, etc.
    *
-   * See https://reactnative.dev/docs/animated.html#createanimatedcomponent
+   * See https://reactnative.dev/docs/animated#createanimatedcomponent
    */
   createAnimatedComponent,
 
@@ -618,7 +664,7 @@ export default {
    * Imperative API to attach an animated value to an event on a view. Prefer
    * using `Animated.event` with `useNativeDrive: true` if possible.
    *
-   * See https://reactnative.dev/docs/animated.html#attachnativeevent
+   * See https://reactnative.dev/docs/animated#attachnativeevent
    */
   attachNativeEvent,
 
@@ -626,7 +672,7 @@ export default {
    * Advanced imperative API for snooping on animated events that are passed in
    * through props. Use values directly where possible.
    *
-   * See https://reactnative.dev/docs/animated.html#forkevent
+   * See https://reactnative.dev/docs/animated#forkevent
    */
   forkEvent,
   unforkEvent,
@@ -635,5 +681,4 @@ export default {
    * Expose Event class, so it can be used as a type for type checkers.
    */
   Event: AnimatedEvent,
-  __PropsOnlyForTests: AnimatedProps,
 }

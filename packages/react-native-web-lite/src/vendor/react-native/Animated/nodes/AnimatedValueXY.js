@@ -9,10 +9,10 @@
  */
 'use strict'
 
-import invariant from 'fbjs/lib/invariant'
+import { invariant } from 'react-native-web-internals'
 
-import AnimatedValue from './AnimatedValue'
-import AnimatedWithChildren from './AnimatedWithChildren'
+import AnimatedValue from './AnimatedValue.js'
+import AnimatedWithChildren from './AnimatedWithChildren.js'
 var _uniqueId = 1
 /**
  * 2D Value for driving 2D animations, such as pan gestures. Almost identical
@@ -36,7 +36,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
       invariant(
         value.x instanceof AnimatedValue && value.y instanceof AnimatedValue,
         'AnimatedValueXY must be initialized with an object of numbers or ' +
-          'AnimatedValues.',
+          'AnimatedValues.'
       )
       this.x = value.x
       this.y = value.y

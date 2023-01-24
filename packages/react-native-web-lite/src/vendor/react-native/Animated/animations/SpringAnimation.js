@@ -9,14 +9,11 @@
  */
 'use strict'
 
-import invariant from 'fbjs/lib/invariant'
+import { invariant } from 'react-native-web-internals'
 
-import { shouldUseNativeDriver } from '../NativeAnimatedHelper'
-import AnimatedInterpolation from '../nodes/AnimatedInterpolation'
-import AnimatedValue from '../nodes/AnimatedValue'
-import AnimatedValueXY from '../nodes/AnimatedValueXY'
-import SpringConfig from '../SpringConfig'
-import Animation from './Animation'
+import { shouldUseNativeDriver } from '../NativeAnimatedHelper.js'
+import SpringConfig from '../SpringConfig.js'
+import Animation from './Animation.js'
 
 class SpringAnimation extends Animation {
   constructor(config) {
@@ -59,14 +56,14 @@ class SpringAnimation extends Animation {
         ? _config$delay
         : 0
     this._useNativeDriver = shouldUseNativeDriver(config)
+    this._platformConfig = config.platformConfig
     this.__isInteraction =
       (_config$isInteraction = config.isInteraction) !== null &&
       _config$isInteraction !== void 0
         ? _config$isInteraction
         : !this._useNativeDriver
     this.__iterations =
-      (_config$iterations = config.iterations) !== null &&
-      _config$iterations !== void 0
+      (_config$iterations = config.iterations) !== null && _config$iterations !== void 0
         ? _config$iterations
         : 1
 
@@ -82,11 +79,10 @@ class SpringAnimation extends Animation {
           config.speed === undefined &&
           config.tension === undefined &&
           config.friction === undefined,
-        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one',
+        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one'
       )
       this._stiffness =
-        (_config$stiffness = config.stiffness) !== null &&
-        _config$stiffness !== void 0
+        (_config$stiffness = config.stiffness) !== null && _config$stiffness !== void 0
           ? _config$stiffness
           : 100
       this._damping =
@@ -108,16 +104,15 @@ class SpringAnimation extends Animation {
           config.stiffness === undefined &&
           config.damping === undefined &&
           config.mass === undefined,
-        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one',
+        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one'
       )
       var springConfig = SpringConfig.fromBouncinessAndSpeed(
-        (_config$bounciness = config.bounciness) !== null &&
-        _config$bounciness !== void 0
+        (_config$bounciness = config.bounciness) !== null && _config$bounciness !== void 0
           ? _config$bounciness
           : 8,
         (_config$speed = config.speed) !== null && _config$speed !== void 0
           ? _config$speed
-          : 12,
+          : 12
       )
       this._stiffness = springConfig.stiffness
       this._damping = springConfig.damping
@@ -133,7 +128,7 @@ class SpringAnimation extends Animation {
           : 40,
         (_config$friction = config.friction) !== null && _config$friction !== void 0
           ? _config$friction
-          : 7,
+          : 7
       )
 
       this._stiffness = _springConfig.stiffness
@@ -164,6 +159,7 @@ class SpringAnimation extends Animation {
           : this._lastVelocity,
       toValue: this._toValue,
       iterations: this.__iterations,
+      platformConfig: this._platformConfig,
     }
   }
 
@@ -330,7 +326,7 @@ class SpringAnimation extends Animation {
       })
 
       return
-    }
+    } // $FlowFixMe[method-unbinding] added when improving typing for this parameters
 
     this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this))
   }

@@ -1,6 +1,7 @@
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { useState } from 'react'
-import { Adapt, LinearGradient, Select, Sheet, YStack } from 'tamagui'
+import { Adapt, Select, Sheet, YStack } from 'tamagui'
+import { LinearGradient } from 'tamagui/linear-gradient'
 
 export function SelectDemo() {
   const [val, setVal] = useState('apple')
@@ -36,7 +37,7 @@ export function SelectDemo() {
         </Select.ScrollUpButton>
 
         <Select.Viewport minWidth={200}>
-          <Select.Group>
+          <Select.Group space="$-0">
             <Select.Label>Fruits</Select.Label>
             {items.map((item, i) => {
               return (

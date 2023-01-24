@@ -9,9 +9,8 @@
  */
 'use strict'
 
-import AnimatedInterpolation from './AnimatedInterpolation'
-import AnimatedNode from './AnimatedNode'
-import AnimatedWithChildren from './AnimatedWithChildren'
+import AnimatedInterpolation from './AnimatedInterpolation.js'
+import AnimatedWithChildren from './AnimatedWithChildren.js'
 
 class AnimatedDiffClamp extends AnimatedWithChildren {
   constructor(a, min, max) {
@@ -22,10 +21,10 @@ class AnimatedDiffClamp extends AnimatedWithChildren {
     this._value = this._lastValue = this._a.__getValue()
   }
 
-  __makeNative() {
-    this._a.__makeNative()
+  __makeNative(platformConfig) {
+    this._a.__makeNative(platformConfig)
 
-    super.__makeNative()
+    super.__makeNative(platformConfig)
   }
 
   interpolate(config) {

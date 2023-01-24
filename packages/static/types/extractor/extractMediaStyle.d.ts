@@ -1,7 +1,7 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { TamaguiInternalConfig } from '@tamagui/core-node';
-import type { TamaguiOptionsWithFileInfo, Ternary } from '../types.js';
+import type { StyleObject, TamaguiOptionsWithFileInfo, Ternary } from '../types.js';
 export declare function extractMediaStyle(props: TamaguiOptionsWithFileInfo, ternary: Ternary, jsxPath: NodePath<t.JSXElement>, tamaguiConfig: TamaguiInternalConfig, sourcePath: string, importance?: number, shouldPrintDebug?: boolean | 'verbose'): {
     mediaStyles: StyleObject[];
     ternaryWithoutMedia: Ternary | null;

@@ -13,7 +13,6 @@ export * from '@tamagui/font-size'
 export * from '@tamagui/helpers-tamagui'
 export * from '@tamagui/image'
 export * from '@tamagui/label'
-export * from '@tamagui/linear-gradient'
 export * from '@tamagui/list-item'
 export * from '@tamagui/popover'
 export * from '@tamagui/popper'
@@ -171,3 +170,10 @@ export {
   useThemeName,
   useSafeRef,
 } from '@tamagui/core'
+
+export function LinearGradient(props: never) {
+  if (process.env.NODE_ENV === 'development') {
+    console.warn(`LinearGradient has been moved to tamagui/linear-gradient as of 1.1`)
+  }
+  return null
+}

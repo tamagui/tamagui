@@ -223,6 +223,8 @@ export declare const elevate: {
         outlineStyle?: import("@tamagui/core").Variable<any> | import("csstype").Property.OutlineStyle | undefined;
         outlineOffset?: import("@tamagui/core").Variable<any> | import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
         outlineWidth?: import("@tamagui/core").Variable<any> | import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
+        tabIndex?: string | number | import("@tamagui/core").Variable<any> | undefined;
+        role?: string | import("@tamagui/core").Variable<any> | undefined;
         hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>) | import("@tamagui/core").Variable<any> | null | undefined;
         pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>) | import("@tamagui/core").Variable<any> | null | undefined;
         focusStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>) | import("@tamagui/core").Variable<any> | null | undefined;

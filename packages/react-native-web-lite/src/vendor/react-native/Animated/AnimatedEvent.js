@@ -9,12 +9,11 @@
  */
 'use strict'
 
-import invariant from 'fbjs/lib/invariant'
+import { invariant } from 'react-native-web-internals'
 
-import { findNodeHandle } from '../../../findNodeHandle'
-import NativeAnimatedHelper from './NativeAnimatedHelper'
-import { shouldUseNativeDriver } from './NativeAnimatedHelper'
-import AnimatedValue from './nodes/AnimatedValue'
+import NativeAnimatedHelper from './NativeAnimatedHelper.js'
+import { shouldUseNativeDriver } from './NativeAnimatedHelper.js'
+import AnimatedValue from './nodes/AnimatedValue.js'
 
 var __DEV__ = process.env.NODE_ENV !== 'production'
 
@@ -40,26 +39,25 @@ export function attachNativeEvent(viewRef, eventName, argMapping) {
 
   invariant(
     argMapping[0] && argMapping[0].nativeEvent,
-    'Native driven events only support animated values contained inside `nativeEvent`.',
+    'Native driven events only support animated values contained inside `nativeEvent`.'
   ) // Assume that the event containing `nativeEvent` is always the first argument.
 
   traverse(argMapping[0].nativeEvent, [])
-  var viewTag = findNodeHandle(viewRef)
 
-  if (viewTag != null) {
+  if (viewRef != null) {
     eventMappings.forEach((mapping) => {
-      NativeAnimatedHelper.API.addAnimatedEventToView(viewTag, eventName, mapping)
+      NativeAnimatedHelper.API.addAnimatedEventToView(viewRef, eventName, mapping)
     })
   }
 
   return {
     detach() {
-      if (viewTag != null) {
+      if (viewRef != null) {
         eventMappings.forEach((mapping) => {
           NativeAnimatedHelper.API.removeAnimatedEventFromView(
-            viewTag,
+            viewRef,
             eventName, // $FlowFixMe[incompatible-call]
-            mapping.animatedValueTag,
+            mapping.animatedValueTag
           )
         })
       }
@@ -72,10 +70,7 @@ function validateMapping(argMapping, args) {
     if (recMapping instanceof AnimatedValue) {
       invariant(
         typeof recEvt === 'number',
-        'Bad mapping of event key ' +
-          key +
-          ', should be number but got ' +
-          typeof recEvt,
+        'Bad mapping of event key ' + key + ', should be number but got ' + typeof recEvt
       )
       return
     }
@@ -87,18 +82,18 @@ function validateMapping(argMapping, args) {
           typeof recMapping +
           ' for key ' +
           key +
-          ', event value must map to AnimatedValue',
+          ', event value must map to AnimatedValue'
       )
       return
     }
 
     invariant(
       typeof recMapping === 'object',
-      'Bad mapping of type ' + typeof recMapping + ' for key ' + key,
+      'Bad mapping of type ' + typeof recMapping + ' for key ' + key
     )
     invariant(
       typeof recEvt === 'object',
-      'Bad event of type ' + typeof recEvt + ' for key ' + key,
+      'Bad event of type ' + typeof recEvt + ' for key ' + key
     )
 
     for (var mappingKey in recMapping) {
@@ -106,10 +101,7 @@ function validateMapping(argMapping, args) {
     }
   }
 
-  invariant(
-    args.length >= argMapping.length,
-    'Event has less arguments than mapping',
-  )
+  invariant(args.length >= argMapping.length, 'Event has less arguments than mapping')
   argMapping.forEach((mapping, idx) => {
     validate(mapping, args[idx], 'arg' + idx)
   })

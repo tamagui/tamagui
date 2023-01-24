@@ -12,11 +12,10 @@
 'use strict'
 
 import normalizeColor from '@tamagui/normalize-css-color'
-import invariant from 'fbjs/lib/invariant'
+import { invariant } from 'react-native-web-internals'
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
-import AnimatedNode from './AnimatedNode'
-import AnimatedWithChildren from './AnimatedWithChildren'
+import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
+import AnimatedWithChildren from './AnimatedWithChildren.js'
 
 var __DEV__ = process.env.NODE_ENV !== 'production'
 
@@ -32,18 +31,22 @@ function createInterpolation(config) {
   }
 
   var outputRange = config.outputRange
-  checkInfiniteRange('outputRange', outputRange)
   var inputRange = config.inputRange
-  checkInfiniteRange('inputRange', inputRange)
-  checkValidInputRange(inputRange)
-  invariant(
-    inputRange.length === outputRange.length,
-    'inputRange (' +
-      inputRange.length +
-      ') and outputRange (' +
-      outputRange.length +
-      ') must have the same length'
-  )
+
+  if (__DEV__) {
+    checkInfiniteRange('outputRange', outputRange)
+    checkInfiniteRange('inputRange', inputRange)
+    checkValidInputRange(inputRange)
+    invariant(
+      inputRange.length === outputRange.length,
+      'inputRange (' +
+        inputRange.length +
+        ') and outputRange (' +
+        outputRange.length +
+        ') must have the same length'
+    )
+  }
+
   var easing = config.easing || linear
   var extrapolateLeft = 'extend'
 
@@ -183,25 +186,29 @@ function createInterpolationFromStringOutputRange(config) {
   //   [0, 0.5],
   // ]
 
-  /* $FlowFixMe(>=0.18.0): `outputRange[0].match()` can return `null`. Need to
-   * guard against this possibility.
-   */
+  /* $FlowFixMe[incompatible-use] (>=0.18.0): `outputRange[0].match()` can
+   * return `null`. Need to guard against this possibility. */
 
   var outputRanges = outputRange[0].match(stringShapeRegex).map(() => [])
   outputRange.forEach((value) => {
-    /* $FlowFixMe(>=0.18.0): `value.match()` can return `null`. Need to guard
-     * against this possibility.
-     */
+    /* $FlowFixMe[incompatible-use] (>=0.18.0): `value.match()` can return
+     * `null`. Need to guard against this possibility. */
     value.match(stringShapeRegex).forEach((number, i) => {
       outputRanges[i].push(+number)
     })
   })
   var interpolations = outputRange[0]
     .match(stringShapeRegex)
-    /* $FlowFixMe(>=0.18.0): `outputRange[0].match()` can return `null`. Need
-     * to guard against this possibility. */
+    /* $FlowFixMe[incompatible-use] (>=0.18.0): `outputRange[0].match()` can
+     * return `null`. Need to guard against this possibility. */
+
+    /* $FlowFixMe[incompatible-call] (>=0.18.0): `outputRange[0].match()` can
+     * return `null`. Need to guard against this possibility. */
     .map((value, i) => {
-      return createInterpolation({ ...config, outputRange: outputRanges[i] })
+      return createInterpolation({
+        ...config,
+        outputRange: outputRanges[i],
+      })
     }) // rgba requires that the r,g,b are integers.... so we want to round them, but we *dont* want to
   // round the opacity (4th column).
 
@@ -252,18 +259,10 @@ function findRange(input, inputRange) {
 
 function checkValidInputRange(arr) {
   invariant(arr.length >= 2, 'inputRange must have at least 2 elements')
+  var message = 'inputRange must be monotonically non-decreasing ' + String(arr)
 
   for (var i = 1; i < arr.length; ++i) {
-    invariant(
-      arr[i] >= arr[i - 1],
-      /* $FlowFixMe(>=0.13.0) - In the addition expression below this comment,
-       * one or both of the operands may be something that doesn't cleanly
-       * convert to a string, like undefined, null, and object, etc. If you really
-       * mean this implicit string conversion, you can do something like
-       * String(myThing)
-       */
-      'inputRange must be monotonically non-decreasing ' + arr
-    )
+    invariant(arr[i] >= arr[i - 1], message)
   }
 }
 
@@ -271,12 +270,11 @@ function checkInfiniteRange(name, arr) {
   invariant(arr.length >= 2, name + ' must have at least 2 elements')
   invariant(
     arr.length !== 2 || arr[0] !== -Infinity || arr[1] !== Infinity,
-    /* $FlowFixMe(>=0.13.0) - In the addition expression below this comment,
-     * one or both of the operands may be something that doesn't cleanly convert
-     * to a string, like undefined, null, and object, etc. If you really mean
-     * this implicit string conversion, you can do something like
-     * String(myThing)
-     */
+    /* $FlowFixMe[incompatible-type] (>=0.13.0) - In the addition expression
+     * below this comment, one or both of the operands may be something that
+     * doesn't cleanly convert to a string, like undefined, null, and object,
+     * etc. If you really mean this implicit string conversion, you can do
+     * something like String(myThing) */
     name + 'cannot be ]-infinity;+infinity[ ' + arr
   )
 }
@@ -290,10 +288,10 @@ class AnimatedInterpolation extends AnimatedWithChildren {
     this._interpolation = createInterpolation(config)
   }
 
-  __makeNative() {
-    this._parent.__makeNative()
+  __makeNative(platformConfig) {
+    this._parent.__makeNative(platformConfig)
 
-    super.__makeNative()
+    super.__makeNative(platformConfig)
   }
 
   __getValue() {
@@ -332,9 +330,6 @@ class AnimatedInterpolation extends AnimatedWithChildren {
     return {
       inputRange: this._config.inputRange,
       // Only the `outputRange` can contain strings so we don't need to transform `inputRange` here
-
-      /* $FlowFixMe(>=0.38.0) - Flow error detected during the deployment of
-       * v0.38.0. To see the error, remove this comment and run flow */
       outputRange: this.__transformDataType(this._config.outputRange),
       extrapolateLeft:
         this._config.extrapolateLeft || this._config.extrapolate || 'extend',

@@ -9,7 +9,7 @@
     "expo-linear-gradient": "^12.0.1",
     "expo-splash-screen": "^0.17.5",
     "expo-status-bar": "^1.4.0",
-    "expo-updates": "^0.14.3",
+    "expo-updates": "^0.15.6",
     "react": "18.0.0",
     "react-dom": "^18.2.0",
     "react-native": "0.70.5",
@@ -22,7 +22,7 @@
   "devDependencies": {
     "@babel/core": "^7.17.9",
     "@expo/metro-config": "^0.3.21",
-    "@tamagui/babel-plugin": "1.0.22",
+    "@tamagui/babel-plugin": "1.1.1",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "typescript": "^4.7.4"
   },

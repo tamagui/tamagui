@@ -20,7 +20,7 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
       SHEET_SCROLL_VIEW_NAME,
       __scopeSheet
     )
-    const [scrollEnabled, setScrollEnabled_] = useState(true)
+    // const [scrollEnabled, setScrollEnabled_] = useState(true)
     const scrollRef = useRef<RNScrollView | null>(null)
 
     const percentOpened = snapPoints[position] ?? 0
@@ -31,12 +31,12 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
       setPercentToPadBottom(next)
     }
 
-    const setScrollEnabled = (next: boolean) => {
-      scrollRef.current?.setNativeProps?.({
-        scrollEnabled: next,
-      })
-      setScrollEnabled_(next)
-    }
+    // const setScrollEnabled = (next: boolean) => {
+    //   scrollRef.current?.setNativeProps?.({
+    //     scrollEnabled: next,
+    //   })
+    //   setScrollEnabled_(next)
+    // }
 
     const state = useRef({
       lastPageY: 0,
@@ -73,7 +73,7 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
         ref={composeRefs(scrollRef as any, ref)}
         flex={1}
         scrollEventThrottle={8}
-        scrollEnabled={scrollEnabled}
+        // scrollEnabled={scrollEnabled}
         onScroll={(e) => {
           const { y } = e.nativeEvent.contentOffset
           scrollBridge.y = y

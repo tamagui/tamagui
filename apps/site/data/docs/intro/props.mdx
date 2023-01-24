@@ -8,9 +8,7 @@ Tamagui uses a superset of the style properties that are supported in React Nati
 ```tsx
 import { Stack } from '@tamagui/core'
 
-export default () => (
-  <Stack padding={10} backgroundColor="red" />
-)
+export default () => <Stack padding={10} backgroundColor="red" />
 ```
 
 For the full list of style and non-style props, see:
@@ -216,18 +214,7 @@ Outside of flat style properties, Tamagui adds the following props:
 
 ### Text props
 
-For Text and all parents of Text components, you add the following props (beyond react-native-web):
-
-<PropsTable
-  data={[
-    {
-      name: 'selectable',
-      required: false,
-      type: 'boolean',
-      description: <span>Sets cursor to text, and userSelect to text.</span>,
-    },
-  ]}
-/>
+Text adds the additional Text-specific props from [React Native Web](https://reactnative.dev/docs/text-style-props).
 
 ### Flat transform properties
 

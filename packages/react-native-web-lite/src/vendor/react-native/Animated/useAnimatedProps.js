@@ -4,12 +4,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *       strict-local
+ *
  * @format
  */
-
 'use strict'
 
+import _createForOfIteratorHelperLoose from '@babel/runtime/helpers/createForOfIteratorHelperLoose'
 import {
   useCallback,
   useEffect,
@@ -21,27 +21,26 @@ import {
 
 import useRefEffect from '../useRefEffect.js'
 import { AnimatedEvent } from './AnimatedEvent.js'
-// import NativeAnimatedHelper from './NativeAnimatedHelper.js'
+import NativeAnimatedHelper from './NativeAnimatedHelper.js'
 import AnimatedProps from './nodes/AnimatedProps.js'
 
-const useIsomorphicLayoutEffect =
-  typeof window === 'undefined' ? useEffect : useLayoutEffect
-
 export default function useAnimatedProps(props) {
-  const [, scheduleUpdate] = useReducer((count) => count + 1, 0)
-  const onUpdateRef = useRef(null)
+  var _useReducer = useReducer((count) => count + 1, 0),
+    scheduleUpdate = _useReducer[1]
 
-  // TODO: Only invalidate `node` if animated props or `style` change. In the
+  var onUpdateRef = useRef(null) // TODO: Only invalidate `node` if animated props or `style` change. In the
   // previous implementation, we permitted `style` to override props with the
   // same name property name as styles, so we can probably continue doing that.
   // The ordering of other props *should* not matter.
-  const node = useMemo(
-    () => new AnimatedProps(props, () => onUpdateRef.current?.()),
-    [props],
-  )
-  useAnimatedPropsLifecycle(node)
 
-  // TODO: This "effect" does three things:
+  var node = useMemo(
+    () =>
+      new AnimatedProps(props, () =>
+        onUpdateRef.current == null ? void 0 : onUpdateRef.current()
+      ),
+    [props]
+  )
+  useAnimatedPropsLifecycle(node) // TODO: This "effect" does three things:
   //
   //   1) Call `setNativeView`.
   //   2) Update `onUpdateRef`.
@@ -54,44 +53,29 @@ export default function useAnimatedProps(props) {
   //
   // But there is no way to transparently compose three separate callback refs,
   // so we just combine them all into one for now.
-  const refEffect = useCallback(
+
+  var refEffect = useCallback(
     (instance) => {
       // NOTE: This may be called more often than necessary (e.g. when `props`
       // changes), but `setNativeView` already optimizes for that.
-      node.setNativeView(instance)
+      node.setNativeView(instance) // NOTE: This callback is only used by the JavaScript animation driver.
 
-      // NOTE: This callback is only used by the JavaScript animation driver.
       onUpdateRef.current = () => {
-        if (
-          process.env.NODE_ENV === 'test' ||
-          typeof instance !== 'object' ||
-          typeof instance?.setNativeProps !== 'function' ||
-          isFabricInstance(instance)
-        ) {
-          // Schedule an update for this component to update `reducedProps`,
-          // but do not compute it immediately. If a parent also updated, we
-          // need to merge those new props in before updating.
-          scheduleUpdate()
-        } else if (!node.__isNative) {
-          // $FlowIgnore[not-a-function] - Assume it's still a function.
-          // $FlowFixMe[incompatible-use]
-          instance.setNativeProps(node.__getAnimatedValue())
-        } else {
-          throw new Error(
-            'Attempting to run JS driven animation on animated node ' +
-              'that has been moved to "native" earlier by starting an ' +
-              'animation with `useNativeDriver: true`',
-          )
-        }
+        // Schedule an update for this component to update `reducedProps`,
+        // but do not compute it immediately. If a parent also updated, we
+        // need to merge those new props in before updating.
+        scheduleUpdate()
       }
 
-      const target = getEventTarget(instance)
-      const events = []
+      var target = getEventTarget(instance)
+      var events = []
 
-      for (const propName in props) {
-        const propValue = props[propName]
+      for (var propName in props) {
+        var propValue = props[propName]
+
         if (propValue instanceof AnimatedEvent && propValue.__isNative) {
           propValue.__attach(target, propName)
+
           events.push([propName, propValue])
         }
       }
@@ -99,15 +83,22 @@ export default function useAnimatedProps(props) {
       return () => {
         onUpdateRef.current = null
 
-        for (const [propName, propValue] of events) {
-          propValue.__detach(target, propName)
+        for (
+          var _iterator = _createForOfIteratorHelperLoose(events), _step;
+          !(_step = _iterator()).done;
+
+        ) {
+          var _step$value = _step.value,
+            _propName = _step$value[0],
+            _propValue = _step$value[1]
+
+          _propValue.__detach(target, _propName)
         }
       }
     },
-    [props, node],
+    [props, node]
   )
-  const callbackRef = useRefEffect(refEffect)
-
+  var callbackRef = useRefEffect(refEffect)
   return [reduceAnimatedProps(node), callbackRef]
 }
 
@@ -119,7 +110,6 @@ function reduceAnimatedProps(node) {
     collapsable: false,
   }
 }
-
 /**
  * Manages the lifecycle of the supplied `AnimatedProps` by invoking `__attach`
  * and `__detach`. However, this is more complicated because `AnimatedProps`
@@ -127,33 +117,35 @@ function reduceAnimatedProps(node) {
  * nodes. So in order to optimize this, we avoid detaching until the next attach
  * unless we are unmounting.
  */
+
 function useAnimatedPropsLifecycle(node) {
-  const prevNodeRef = useRef(null)
-  const isUnmountingRef = useRef(false)
-
-  // useEffect(() => {
-  //   // It is ok for multiple components to call `flushQueue` because it noops
-  //   // if the queue is empty. When multiple animated components are mounted at
-  //   // the same time. Only first component flushes the queue and the others will noop.
-  //   NativeAnimatedHelper.API.flushQueue()
-  // })
-
-  useIsomorphicLayoutEffect(() => {
+  var prevNodeRef = useRef(null)
+  var isUnmountingRef = useRef(false)
+  useEffect(() => {
+    // It is ok for multiple components to call `flushQueue` because it noops
+    // if the queue is empty. When multiple animated components are mounted at
+    // the same time. Only first component flushes the queue and the others will noop.
+    NativeAnimatedHelper.API.flushQueue()
+  })
+  useLayoutEffect(() => {
     isUnmountingRef.current = false
     return () => {
       isUnmountingRef.current = true
     }
   }, [])
-
-  useIsomorphicLayoutEffect(() => {
+  useLayoutEffect(() => {
     node.__attach()
+
     if (prevNodeRef.current != null) {
-      const prevNode = prevNodeRef.current
-      // TODO: Stop restoring default values (unless `reset` is called).
+      var prevNode = prevNodeRef.current // TODO: Stop restoring default values (unless `reset` is called).
+
       prevNode.__restoreDefaultValues()
+
       prevNode.__detach()
+
       prevNodeRef.current = null
     }
+
     return () => {
       if (isUnmountingRef.current) {
         // NOTE: Do not restore default values on unmount, see D18197735.
@@ -167,17 +159,16 @@ function useAnimatedPropsLifecycle(node) {
 
 function getEventTarget(instance) {
   return typeof instance === 'object' &&
-    typeof instance?.getScrollableNode === 'function'
-    ? // $FlowFixMe[incompatible-use] - Legacy instance assumptions.
-      instance.getScrollableNode()
+    typeof (instance == null ? void 0 : instance.getScrollableNode) === 'function' // $FlowFixMe[incompatible-use] - Legacy instance assumptions.
+    ? instance.getScrollableNode()
     : instance
-}
+} // $FlowFixMe[unclear-type] - Legacy instance assumptions.
 
-// $FlowFixMe[unclear-type] - Legacy instance assumptions.
 function isFabricInstance(instance) {
+  var _instance$getScrollRe
+
   return (
-    hasFabricHandle(instance) ||
-    // Some components have a setNativeProps function but aren't a host component
+    hasFabricHandle(instance) || // Some components have a setNativeProps function but aren't a host component
     // such as lists like FlatList and SectionList. These should also use
     // forceUpdate in Fabric since setNativeProps doesn't exist on the underlying
     // host component. This crazy hack is essentially special casing those lists and
@@ -185,13 +176,38 @@ function isFabricInstance(instance) {
     // If these components end up using forwardRef then these hacks can go away
     // as instance would actually be the underlying host component and the above check
     // would be sufficient.
-    hasFabricHandle(instance?.getNativeScrollRef?.()) ||
-    hasFabricHandle(instance?.getScrollResponder?.()?.getNativeScrollRef?.())
+    hasFabricHandle(
+      instance == null
+        ? void 0
+        : instance.getNativeScrollRef == null
+        ? void 0
+        : instance.getNativeScrollRef()
+    ) ||
+    hasFabricHandle(
+      instance == null
+        ? void 0
+        : instance.getScrollResponder == null
+        ? void 0
+        : (_instance$getScrollRe = instance.getScrollResponder()) == null
+        ? void 0
+        : _instance$getScrollRe.getNativeScrollRef == null
+        ? void 0
+        : _instance$getScrollRe.getNativeScrollRef()
+    )
   )
-}
+} // $FlowFixMe[unclear-type] - Legacy instance assumptions.
 
-// $FlowFixMe[unclear-type] - Legacy instance assumptions.
 function hasFabricHandle(instance) {
+  var _instance$_internalIn, _instance$_internalIn2
+
   // eslint-disable-next-line dot-notation
-  return instance?.['_internalInstanceHandle']?.stateNode?.canonical != null
+  return (
+    (instance == null
+      ? void 0
+      : (_instance$_internalIn = instance['_internalInstanceHandle']) == null
+      ? void 0
+      : (_instance$_internalIn2 = _instance$_internalIn.stateNode) == null
+      ? void 0
+      : _instance$_internalIn2.canonical) != null
+  )
 }

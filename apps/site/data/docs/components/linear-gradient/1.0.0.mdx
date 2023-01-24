@@ -27,9 +27,16 @@ component: LinearGradient
 
 ### Installation
 
-You'll need to add `expo-linear-gradient` to your app. This works [with vanilla React Native](https://github.com/expo/expo/tree/sdk-47/packages/expo-linear-gradient) or Expo.
+To use this package you'll need to add `expo-linear-gradient` to your app. This works [with vanilla React Native](https://github.com/expo/expo/tree/sdk-47/packages/expo-linear-gradient) or Expo.
 
 ### Usage
+
+Because LinearGradient requires a more complex to install native package, we've left it out of the `tamagui` export until Metro supports async import. Import it either separately or using the path `/linear-gradient`:
+
+```tsx
+import { LinearGradient } from '@tamagui/linear-gradient'
+import { LinearGradient } from 'tamagui/linear-gradient'
+```
 
 LinearGradient is a YStack that accepts all Tamagui style props as well as theme colors, that places `expo-linear-gradient` inside it set to absoluteFill.
 

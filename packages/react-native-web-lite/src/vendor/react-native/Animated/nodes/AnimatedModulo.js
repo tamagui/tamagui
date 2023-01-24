@@ -9,9 +9,8 @@
  */
 'use strict'
 
-import AnimatedInterpolation from './AnimatedInterpolation'
-import AnimatedNode from './AnimatedNode'
-import AnimatedWithChildren from './AnimatedWithChildren'
+import AnimatedInterpolation from './AnimatedInterpolation.js'
+import AnimatedWithChildren from './AnimatedWithChildren.js'
 
 class AnimatedModulo extends AnimatedWithChildren {
   constructor(a, modulus) {
@@ -20,10 +19,10 @@ class AnimatedModulo extends AnimatedWithChildren {
     this._modulus = modulus
   }
 
-  __makeNative() {
-    this._a.__makeNative()
+  __makeNative(platformConfig) {
+    this._a.__makeNative(platformConfig)
 
-    super.__makeNative()
+    super.__makeNative(platformConfig)
   }
 
   __getValue() {

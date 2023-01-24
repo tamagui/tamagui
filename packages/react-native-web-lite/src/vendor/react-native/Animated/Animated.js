@@ -1,3 +1,13 @@
+import _objectSpread from '@babel/runtime/helpers/objectSpread2'
+import { Platform } from 'react-native-web-internals'
+
+import * as AnimatedImplementation from './AnimatedImplementation.js'
+import * as AnimatedMock from './AnimatedMock.js'
+import Image from './components/AnimatedImage.js'
+import ScrollView from './components/AnimatedScrollView.js'
+import Text from './components/AnimatedText.js'
+import View from './components/AnimatedView.js'
+
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -7,14 +17,6 @@
  *
  * @format
  */
-import { Platform } from 'react-native-web-internals'
-
-import AnimatedImplementation from './AnimatedImplementation'
-import AnimatedMock from './AnimatedMock'
-import Image from './components/AnimatedImage'
-import ScrollView from './components/AnimatedScrollView'
-import Text from './components/AnimatedText'
-import View from './components/AnimatedView'
 
 var Animated = Platform.isTesting ? AnimatedMock : AnimatedImplementation
 export default {
@@ -22,5 +24,5 @@ export default {
   ScrollView,
   Text,
   View,
-  ...Animated,
+  ...Animated.default,
 }

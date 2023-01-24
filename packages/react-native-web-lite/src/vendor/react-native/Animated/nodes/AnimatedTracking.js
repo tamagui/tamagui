@@ -9,12 +9,8 @@
  */
 'use strict'
 
-import {
-  generateNewAnimationId,
-  shouldUseNativeDriver,
-} from '../NativeAnimatedHelper'
-import AnimatedNode from './AnimatedNode'
-import AnimatedValue from './AnimatedValue'
+import { generateNewAnimationId, shouldUseNativeDriver } from '../NativeAnimatedHelper.js'
+import AnimatedNode from './AnimatedNode.js'
 
 class AnimatedTracking extends AnimatedNode {
   constructor(value, parent, animationClass, animationConfig, callback) {
@@ -68,16 +64,21 @@ class AnimatedTracking extends AnimatedNode {
         ...this._animationConfig,
         toValue: this._animationConfig.toValue.__getValue(),
       }),
-      this._callback,
+      this._callback
     )
   }
 
   __getNativeConfig() {
-    var animation = new this._animationClass({
-      ...this._animationConfig,
-      // remove toValue from the config as it's a ref to Animated.Value
-      toValue: undefined,
-    })
+    var animation = new this._animationClass(
+      _objectSpread(
+        _objectSpread({}, this._animationConfig),
+        {},
+        {
+          // remove toValue from the config as it's a ref to Animated.Value
+          toValue: undefined,
+        }
+      )
+    )
 
     var animationConfig = animation.__getNativeAnimationConfig()
 

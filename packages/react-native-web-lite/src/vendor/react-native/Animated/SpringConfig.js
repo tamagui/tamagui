@@ -50,9 +50,7 @@ function fromBouncinessAndSpeed(bounciness, speed) {
   }
 
   function b3Friction3(x) {
-    return (
-      0.00000045 * Math.pow(x, 3) - 0.000332 * Math.pow(x, 2) + 0.1078 * x + 5.84
-    )
+    return 0.00000045 * Math.pow(x, 3) - 0.000332 * Math.pow(x, 2) + 0.1078 * x + 5.84
   }
 
   function b3Nobounce(tension) {

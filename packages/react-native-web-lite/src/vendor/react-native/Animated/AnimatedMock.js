@@ -9,14 +9,50 @@
  */
 'use strict'
 
-import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent'
-import AnimatedImplementation from './AnimatedImplementation'
-import createAnimatedComponent from './createAnimatedComponent'
-import AnimatedInterpolation from './nodes/AnimatedInterpolation'
-import AnimatedNode from './nodes/AnimatedNode'
-import AnimatedProps from './nodes/AnimatedProps'
-import AnimatedValue from './nodes/AnimatedValue'
-import AnimatedValueXY from './nodes/AnimatedValueXY'
+import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent.js'
+import AnimatedImplementation from './AnimatedImplementation.js'
+import createAnimatedComponent from './createAnimatedComponent.js'
+import AnimatedColor from './nodes/AnimatedColor.js'
+import AnimatedInterpolation from './nodes/AnimatedInterpolation.js'
+import AnimatedNode from './nodes/AnimatedNode.js'
+import AnimatedValue from './nodes/AnimatedValue.js'
+import AnimatedValueXY from './nodes/AnimatedValueXY.js'
+/**
+ * Animations are a source of flakiness in snapshot testing. This mock replaces
+ * animation functions from AnimatedImplementation with empty animations for
+ * predictability in tests. When possible the animation will run immediately
+ * to the final state.
+ */
+// Prevent any callback invocation from recursively triggering another
+// callback, which may trigger another animation
+
+var inAnimationCallback = false
+
+function mockAnimationStart(start) {
+  return (callback) => {
+    var guardedCallback =
+      callback == null
+        ? callback
+        : function () {
+            if (inAnimationCallback) {
+              console.warn(
+                'Ignoring recursive animation callback when running mock animations'
+              )
+              return
+            }
+
+            inAnimationCallback = true
+
+            try {
+              callback(...arguments)
+            } finally {
+              inAnimationCallback = false
+            }
+          }
+    start(guardedCallback)
+  }
+}
+
 var emptyAnimation = {
   start: () => {},
   stop: () => {},
@@ -27,17 +63,30 @@ var emptyAnimation = {
   },
 }
 
+var mockCompositeAnimation = (animations) => ({
+  ...emptyAnimation,
+  start: mockAnimationStart((callback) => {
+    animations.forEach((animation) => animation.start())
+    callback == null
+      ? void 0
+      : callback({
+          finished: true,
+        })
+  }),
+})
+
 var spring = function spring(value, config) {
   var anyValue = value
   return {
     ...emptyAnimation,
-    start: (callback) => {
+    start: mockAnimationStart((callback) => {
       anyValue.setValue(config.toValue)
-      callback &&
-        callback({
-          finished: true,
-        })
-    },
+      callback == null
+        ? void 0
+        : callback({
+            finished: true,
+          })
+    }),
   }
 }
 
@@ -45,13 +94,14 @@ var timing = function timing(value, config) {
   var anyValue = value
   return {
     ...emptyAnimation,
-    start: (callback) => {
+    start: mockAnimationStart((callback) => {
       anyValue.setValue(config.toValue)
-      callback &&
-        callback({
-          finished: true,
-        })
-    },
+      callback == null
+        ? void 0
+        : callback({
+            finished: true,
+          })
+    }),
   }
 }
 
@@ -60,11 +110,11 @@ var decay = function decay(value, config) {
 }
 
 var sequence = function sequence(animations) {
-  return emptyAnimation
+  return mockCompositeAnimation(animations)
 }
 
 var parallel = function parallel(animations, config) {
-  return emptyAnimation
+  return mockCompositeAnimation(animations)
 }
 
 var delay = function delay(time) {
@@ -72,10 +122,13 @@ var delay = function delay(time) {
 }
 
 var stagger = function stagger(time, animations) {
-  return emptyAnimation
+  return mockCompositeAnimation(animations)
 }
 
-var loop = function loop(animation, _temp) {
+var loop = function loop(
+  animation, // $FlowFixMe[prop-missing]
+  _temp
+) {
   var _ref = _temp === void 0 ? {} : _temp,
     _ref$iterations = _ref.iterations,
     iterations = _ref$iterations === void 0 ? -1 : _ref$iterations
@@ -83,13 +136,10 @@ var loop = function loop(animation, _temp) {
   return emptyAnimation
 }
 
-var event = function event(argMapping, config) {
-  return null
-}
-
 export default {
   Value: AnimatedValue,
   ValueXY: AnimatedValueXY,
+  Color: AnimatedColor,
   Interpolation: AnimatedInterpolation,
   Node: AnimatedNode,
   decay,
@@ -106,11 +156,10 @@ export default {
   parallel,
   stagger,
   loop,
-  event,
+  event: AnimatedImplementation.event,
   createAnimatedComponent,
   attachNativeEvent,
   forkEvent: AnimatedImplementation.forkEvent,
   unforkEvent: AnimatedImplementation.unforkEvent,
   Event: AnimatedEvent,
-  __PropsOnlyForTests: AnimatedProps,
 }

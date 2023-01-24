@@ -9,7 +9,7 @@
  */
 'use strict'
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
 var startNativeAnimationNextId = 1 // Important note: start() and stop() will only be called at most once.
 // Once an animation has been stopped or finished its course, it will
 // not be reused.
@@ -41,14 +41,16 @@ class Animation {
     NativeAnimatedHelper.API.setWaitingForIdentifier(startNativeAnimationWaitId)
 
     try {
-      animatedValue.__makeNative()
+      var config = this.__getNativeAnimationConfig()
+
+      animatedValue.__makeNative(config.platformConfig)
 
       this.__nativeId = NativeAnimatedHelper.generateNewAnimationId()
       NativeAnimatedHelper.API.startAnimatingNode(
         this.__nativeId,
         animatedValue.__getNativeTag(),
-        this.__getNativeAnimationConfig(),
-        this.__debouncedOnEnd.bind(this),
+        config, // $FlowFixMe[method-unbinding] added when improving typing for this parameters
+        this.__debouncedOnEnd.bind(this)
       )
     } catch (e) {
       throw e
