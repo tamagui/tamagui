@@ -1,8 +1,13 @@
-import { createThemes } from '@tamagui/create-themes'
+import { GeneratedThemes, createThemes } from '@tamagui/create-themes'
 
 import { colorTokens } from './tokens'
 
-export const themes = createThemes<keyof typeof colorTokens.light>({
+type LightColorSets = typeof colorTokens.light
+
+type ColorNames = keyof LightColorSets
+type ColorShades = keyof UnionToIntersection<LightColorSets[keyof LightColorSets]>
+
+export const themes: GeneratedThemes<ColorNames, ColorShades> = createThemes({
   activeColor: 'blue',
   light: [
     '#fff',
@@ -37,3 +42,9 @@ export const themes = createThemes<keyof typeof colorTokens.light>({
   colorsLight: colorTokens.light,
   colorsDark: colorTokens.dark,
 })
+
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never
