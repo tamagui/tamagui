@@ -18,7 +18,6 @@ import AnimatedTransform from './AnimatedTransform.js'
 import AnimatedWithChildren from './AnimatedWithChildren.js'
 
 function createAnimatedStyle(inputStyle) {
-  // $FlowFixMe[underconstrained-implicit-instantiation]
   const style = flattenStyle(inputStyle)
   const animatedStyles = {}
   for (const key in style) {
@@ -35,15 +34,8 @@ function createAnimatedStyle(inputStyle) {
 }
 
 function createStyleWithAnimatedTransform(inputStyle) {
-  // $FlowFixMe[underconstrained-implicit-instantiation]
-  let style = flattenStyle(inputStyle) || {}
-
-  if (style.transform) {
-    style = {
-      ...style,
-      transform: new AnimatedTransform(style.transform),
-    }
-  }
+  this._inputStyle = style
+  this._style = createAnimatedStyle(style)
   return style
 }
 
@@ -53,12 +45,7 @@ export default class AnimatedStyle extends AnimatedWithChildren {
 
   constructor(style) {
     super()
-    // if (Platform.OS === 'web') {
-    //   this._inputStyle = style
-    //   this._style = createAnimatedStyle(style)
-    // } else {
     this._style = createStyleWithAnimatedTransform(style)
-    // }
   }
 
   // Recursively get values for nested styles (like iOS's shadowOffset)
@@ -79,11 +66,7 @@ export default class AnimatedStyle extends AnimatedWithChildren {
   }
 
   __getValue() {
-    // if (Platform.OS === 'web') {
-    //   return [this._inputStyle, this._walkStyleAndGetValues(this._style)]
-    // }
-
-    return this._walkStyleAndGetValues(this._style)
+    return [this._inputStyle, this._walkStyleAndGetValues(this._style)]
   }
 
   // Recursively get animated values for nested styles (like iOS's shadowOffset)
@@ -142,8 +125,6 @@ export default class AnimatedStyle extends AnimatedWithChildren {
         style.__makeNative(this.__getPlatformConfig())
         styleConfig[styleKey] = style.__getNativeTag()
       }
-      // Non-animated styles are set using `setNativeProps`, no need
-      // to pass those as a part of the node config
     }
     NativeAnimatedHelper.validateStyles(styleConfig)
     return {

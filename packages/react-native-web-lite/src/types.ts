@@ -52,14 +52,14 @@ type LayoutCallback = (
   width: number,
   height: number,
   left: number,
-  top: number,
+  top: number
 ) => void
 
 type MeasureInWindowCallback = (
   left: number,
   top: number,
   width: number,
-  height: number,
+  height: number
 ) => void
 
 // Mixin to HTMLElement that represents additions from the `usePlatformMethods` hook
@@ -71,7 +71,7 @@ export interface PlatformMethods {
   measureLayout: (
     relativeToNativeNode: {},
     onSuccess: LayoutCallback,
-    onFail: () => void,
+    onFail: () => void
   ) => void
   setNativeProps: (nativeProps: {}) => void
 }
