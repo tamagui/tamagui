@@ -875,17 +875,22 @@ export const getSplitStyles: StyleSplitter = (
 
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (shouldDoClasses) {
+      const retainedStyles = {}
       if (style['$$css']) {
         // avoid re-processing for rnw
       } else {
         const atomic = getStylesAtomic(style)
         for (const atomicStyle of atomic) {
           const key = atomicStyle.property
-          addStyleToInsertRules(rulesToInsert, atomicStyle)
-          mergeClassName(transforms, classNames, key, atomicStyle.identifier)
+          if (props.animateOnly && props.animateOnly.includes(key)) {
+            retainedStyles[key] = style[key]
+          } else {
+            addStyleToInsertRules(rulesToInsert, atomicStyle)
+            mergeClassName(transforms, classNames, key, atomicStyle.identifier)
+          }
         }
         if (!IS_STATIC) {
-          style = {}
+          style = retainedStyles
         }
       }
     }
