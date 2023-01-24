@@ -103,7 +103,7 @@ type Tokenify<A extends GenericTokens> = {
 }
 
 type TokenifyRecord<A extends CreateTokens[keyof CreateTokens]> = {
-  [Key in keyof A]: Variable<A[Key]>
+  [Key in keyof A]: A[Key] extends Variable ? A[Key] : Variable<A[Key]>
 }
 
 export type TamaguiBaseTheme = {
