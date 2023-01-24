@@ -7,6 +7,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
+  GestureReponderEvent,
   MediaQueryKey,
   SizeTokens,
   Theme,
@@ -39,13 +40,14 @@ import { FloatingOverrideContext } from '@tamagui/floating'
 import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
 import { RemoveScroll, RemoveScrollProps } from '@tamagui/remove-scroll'
 import { ControlledSheet, SheetController } from '@tamagui/sheet'
-import { YStack, YStackProps } from '@tamagui/stacks'
+import { SizableStack, XStack, YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import { Platform, ScrollView, ScrollViewProps, View } from 'react-native'
+import { GestureResponderEvent, Platform, ScrollView, ScrollViewProps, View } from 'react-native'
 
 import type { UseFloatingProps } from '@floating-ui/react-dom-interactions'
 import { useDismiss, useInteractions, useRole, useFloating } from '@floating-ui/react-dom-interactions'
+import { useEffect } from 'react'
 
 const POPOVER_NAME = 'Popover'
 
@@ -330,7 +332,9 @@ const PopoverContentImpl = React.forwardRef<
     )
   }
 
-  // const handleDismiss = React.useCallback(() => context.onOpenChange(false), [])
+  const handleDismiss = React.useCallback((event: GestureResponderEvent) =>{
+    context.onOpenChange(false);
+  }, [])
   // <Dismissable
   //     disableOutsidePointerEvents={disableOutsidePointerEvents}
   //     // onInteractOutside={onInteractOutside}
@@ -340,45 +344,61 @@ const PopoverContentImpl = React.forwardRef<
   //     onDismiss={handleDismiss}
   //   >
 
+  const PopperStack = () => {
+    return (
+      <PopperContent
+        key={context.contentId}
+        data-state={getState(context.open)}
+        id={context.contentId}
+        pointerEvents="auto"
+        {...popperScope}
+        {...contentProps}
+        ref={forwardedRef}
+        zIndex={1000}
+      >
+        <RemoveScroll
+          enabled={disableRemoveScroll ? false : context.open}
+          allowPinchZoom
+          // causes lots of bugs on touch web on site
+          removeScrollBar={false}
+          style={{
+            display: 'contents',
+          }}
+        >
+          {trapFocus === false ? (
+            children
+          ) : (
+            <FocusScope
+              loop
+              trapped={trapFocus ?? context.open}
+              onMountAutoFocus={onOpenAutoFocus}
+              onUnmountAutoFocus={onCloseAutoFocus}
+            >
+              {isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children}
+            
+            </FocusScope>
+          )}
+        </RemoveScroll>
+      </PopperContent>
+    )
+  }
+
+  // We portal a fullscreen transparent view (essentially an overlay)
+  // to handle dismiss
+  // TODO: Let the touch event bubble up somehow
   return (
     <AnimatePresence>
       {!!context.open && (
-        <PopperContent
-          key={context.contentId}
-          data-state={getState(context.open)}
-          id={context.contentId}
-          pointerEvents="auto"
-          {...popperScope}
-          {...contentProps}
-          ref={forwardedRef}
-        >
-          <RemoveScroll
-            enabled={disableRemoveScroll ? false : context.open}
-            allowPinchZoom
-            // causes lots of bugs on touch web on site
-            removeScrollBar={false}
-            style={{
-              display: 'contents',
-            }}
-          >
-            {trapFocus === false ? (
-              children
-            ) : (
-              <FocusScope
-                loop
-                trapped={trapFocus ?? context.open}
-                onMountAutoFocus={onOpenAutoFocus}
-                onUnmountAutoFocus={onCloseAutoFocus}
-              >
-                {isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children}
-              
-              </FocusScope>
-            )}
-          </RemoveScroll>
-        </PopperContent>
+        <View key={context.contentId}>
+          <Portal zIndex={999}>
+            <YStack fullscreen onTouchStart={handleDismiss} />
+          </Portal>
+          <PopperStack />
+        </View>
       )}
     </AnimatePresence>
-  )
+  ) 
+  
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -613,9 +633,9 @@ const useSheetBreakpointActive = (breakpoint?: MediaQueryKey | null | false) => 
   // THIS IS CAUSING A CRASH ON NATIVE DURING ORIENTATION CHANGE
   // It is because useMedia hook causes a whole re-render of the component consuming the hook (in this case Popover)
   // then floating-ui tries to change the x,y position of PopperContent which is a child of Popover
-  if (!isWeb) {
-    return false;
-  }
+  // if (!isWeb) {
+  //   return false;
+  // }
   const media = useMedia();
   return breakpoint ? media[breakpoint] : false
 }

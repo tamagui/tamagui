@@ -23,7 +23,7 @@ export function PopoverDemo() {
   )
 }
 
-export function Demo({ Icon, Name, ...props }: PopoverProps & { Icon?: any, Name?: string }) {
+  export function Demo({ Icon, Name, ...props }: PopoverProps & { Icon?: any, Name?: string }) {
   
   return (
     <Popover size="$5" {...props}>
@@ -67,7 +67,7 @@ export function Demo({ Icon, Name, ...props }: PopoverProps & { Icon?: any, Name
             </Label>
             <Input size="$3" id={Name} />
           </XStack>
-          <Popover.Trigger>
+          <Popover.Close asChild>
             <Button
               size="$3"
               onPress={() => {
@@ -76,7 +76,7 @@ export function Demo({ Icon, Name, ...props }: PopoverProps & { Icon?: any, Name
             >
               Submit
             </Button>
-          </Popover.Trigger>
+          </Popover.Close>
         </YGroup>
       </Popover.Content>
     </Popover>
