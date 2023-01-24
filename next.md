@@ -39,44 +39,17 @@
 
 ---
 
-1.1
+1.2
 
-- some rnw 19 deps:
-  - deprecate accessibility props
-  - transform array (string instead)
-  - marginStart
-- 
-
-
-- vertical slider native can be janky
-- sync with react-native-web
-  - https://github.com/necolas/react-native-web/pull/2377
-- dialog sheet space regression
-- switch active bg regressed
+- Select id="" + Label focus
+- web forms events bubble
+- revisit animations loops
+- all: unset or way to unstyle things (unstyle: true)
 - theme shouldn't change context ever on web, redo notify()
   - instead of passing ThemeManager in context just pass a UID
     - useChangeTheme can then do listen(UID)
-    
-- createTamagui({ webOnly: true }) - avoids console warning on Text
-  - goes hand in hand with `@tamagui/style` separate from core
-- for some reason, the vertical slider is buggy in the blog post: https://tamagui.dev/blog/version-one but not on the docs page. Try clicking and fiddling with it on a desktop computer, and you'll see what I mean.
-- some big theme speedups possible to avoid re-renders
-- all: unset or way to unstyle things (unstyle: true)
-- https://github.com/mwood23/nx-tamagui-next-repro
-- #beatgig - popover not closing
-- fix alt themes to be more subtle and go less strong to more strong
-- revisit animations, timing animations, loops, document better
-- Select id="" + Label focus
-- web forms events bubble
-- accessibility keyboard navigation (Menu component potentially)
-- improve sandbox as mini vite stack
-- VisuallyHidden + mediaquery + space
 
-
----
-
-1.2
-
+- vertical slider native can be janky
 - react native action sheet hooks/logic adapt
 - testing native - https://maestro.mobile.dev
 - app dir support experimental
@@ -87,6 +60,9 @@
 
 1.3
 
+- accessibility keyboard navigation (Menu component potentially)
+- createTamagui({ webOnly: true }) - avoids console warning on Text
+  - goes hand in hand with `@tamagui/style` separate from core
 - test: useMedia, reanimated, re-renders (mount, on hover, etc), render time ms
 - CD on github
 - home page sponsors with sizing and better logos
@@ -103,6 +79,7 @@
 
 1.4
 
+- VisuallyHidden + mediaquery + space
 - re-render tests:
   - useMedia, component w/ media + style, media + css-style, media + space
   - useTheme, component with theme used in style
@@ -118,6 +95,8 @@
 
 inbox
 
+- https://github.com/mwood23/nx-tamagui-next-repro
+- https://github.com/necolas/react-native-web/pull/2195/files
 - config-base => design-system
 - https://github.com/tamagui/tamagui/issues/513
 - @twaiter Has anyone used a dialog component on mobile? I havent been able to get Dialog.Closed to work (using a button). Seems like the example on the website doesnt work for mobile either (button not there)
