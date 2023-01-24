@@ -120,11 +120,11 @@ export default class AnimatedValue extends AnimatedWithChildren {
     }
     this._updateValue(
       value,
-      !this.__isNative /* don't perform a flush for natively driven values */,
+      !this.__isNative /* don't perform a flush for natively driven values */
     )
     if (this.__isNative) {
       _executeAsAnimatedBatch(this.__getNativeTag().toString(), () =>
-        NativeAnimatedAPI.setAnimatedNodeValue(this.__getNativeTag(), value),
+        NativeAnimatedAPI.setAnimatedNodeValue(this.__getNativeTag(), value)
       )
     }
   }
@@ -200,10 +200,7 @@ export default class AnimatedValue extends AnimatedWithChildren {
     this.stopAnimation(callback)
     this._value = this._startingValue
     if (this.__isNative) {
-      NativeAnimatedAPI.setAnimatedNodeValue(
-        this.__getNativeTag(),
-        this._startingValue,
-      )
+      NativeAnimatedAPI.setAnimatedNodeValue(this.__getNativeTag(), this._startingValue)
     }
   }
 
@@ -236,8 +233,7 @@ export default class AnimatedValue extends AnimatedWithChildren {
     animation.start(
       this._value,
       (value) => {
-        // Natively driven animations will never call into that callback, therefore we can always
-        // pass flush = true to allow the updated value to propagate to native with setNativeProps
+        // Natively driven animations will never call into that callback
         this._updateValue(value, true /* flush */)
       },
       (result) => {
@@ -248,7 +244,7 @@ export default class AnimatedValue extends AnimatedWithChildren {
         callback && callback(result)
       },
       previousAnimation,
-      this,
+      this
     )
   }
 
