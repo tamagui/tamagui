@@ -30,8 +30,10 @@ const isCI = process.argv.includes('--ci')
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
 const plusVersion = skipVersion ? 0 : 1
 const curPatch = +curVersion.split('.')[2] || 0
-const patchVersion = curPatch + (patch ? plusVersion : 0)
-const nextVersion = `1.0.${patchVersion}`
+const patchVersion = patch ? curPatch + plusVersion : 0
+const curMinor = +curVersion.split('.')[1] || 0
+const minorVersion = curMinor + (!patch ? plusVersion : 0)
+const nextVersion = `1.${minorVersion}.${patchVersion}`
 
 if (!skipVersion) {
   console.log('Publishing version:', nextVersion, '\n')

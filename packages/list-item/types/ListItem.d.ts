@@ -540,6 +540,8 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
         outlineOffset?: import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
         outlineWidth?: import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
+        tabIndex?: string | number | undefined;
+        role?: string | undefined;
         elevation?: import("@tamagui/core").SizeTokens | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
