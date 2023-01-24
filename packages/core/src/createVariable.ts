@@ -21,7 +21,7 @@ export interface Variable<A = any> {
 export type MakeVariable<A = any> = A extends string | number ? Variable<A> : A
 
 type VariableIn<A = any> = Pick<Variable<A>, 'key' | 'name' | 'val'>
-export const createVariable = <A extends string | number = any>(
+export const createVariable = <A extends string | number | Variable = any>(
   props: VariableIn<A>
 ): Variable<A> => {
   if (isVariable(props)) return props

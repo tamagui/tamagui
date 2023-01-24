@@ -154,9 +154,6 @@ export const color = {
   ...postfixObjKeys(darkColors, 'Dark'),
 }
 
-console.log('wtf', color.blue10Dark)
-color.blue10Dark = createVariable(color.blue10Dark)
-
 function postfixObjKeys<
   A extends { [key: string]: Variable<string> | string },
   B extends string
