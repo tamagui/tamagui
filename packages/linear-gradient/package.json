@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/linear-gradient",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "sideEffects": [
     "*.css"
   ],
@@ -23,15 +23,15 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "dependencies": {
-    "@tamagui/core": "^1.1.1",
-    "@tamagui/stacks": "^1.1.1"
+    "@tamagui/core": "^1.1.2",
+    "@tamagui/stacks": "^1.1.2"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.1.1",
+    "@tamagui/build": "^1.1.2",
     "expo-linear-gradient": "^12.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
