@@ -9,7 +9,7 @@
     "expo-linear-gradient": "^12.0.1",
     "expo-splash-screen": "^0.17.5",
     "expo-status-bar": "^1.4.0",
-    "expo-updates": "^0.14.3",
+    "expo-updates": "^0.15.6",
     "react": "18.0.0",
     "react-dom": "^18.2.0",
     "react-native": "0.70.5",
