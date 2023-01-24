@@ -1,5 +1,5 @@
-import React from 'react'
-import { LinearGradient, XStack, YStack } from 'tamagui'
+import { XStack } from 'tamagui'
+import { LinearGradient } from 'tamagui/linear-gradient'
 
 export function LinearGradientDemo() {
   return (

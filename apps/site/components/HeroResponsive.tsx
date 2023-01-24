@@ -19,7 +19,6 @@ import {
   H4,
   H5,
   Image,
-  LinearGradient,
   Paragraph,
   Spacer,
   Theme,
@@ -33,6 +32,7 @@ import {
   useIsomorphicLayoutEffect,
   useMedia,
 } from 'tamagui'
+import { LinearGradient } from 'tamagui/linear-gradient'
 
 import favicon from '../public/favicon.svg'
 import { Container, ContainerLarge } from './Container'
