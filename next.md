@@ -1,3 +1,4 @@
+- // maybe style shouldn't used usedKeys?
 - test keyboardavoidingview > scrollView - collapsing tamagui
 - sync with rnw 19
 - check into shadow/elevation not showing
@@ -39,6 +40,13 @@
 ---
 
 1.1
+
+- some rnw 19 deps:
+  - deprecate accessibility props
+  - transform array (string instead)
+  - marginStart
+- 
+
 
 - vertical slider native can be janky
 - sync with react-native-web
