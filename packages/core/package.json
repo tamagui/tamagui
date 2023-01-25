@@ -51,7 +51,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^4.7.4",
-    "vitest": "^0.26.3"
+    "vitest": "^0.28.1"
   },
   "exports": {
     "./package.json": "./package.json",

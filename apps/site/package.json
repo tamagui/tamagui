@@ -65,12 +65,12 @@
     "unist-util-visit": "^2.0.3"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^12.2.0",
+    "@next/bundle-analyzer": "^12.3.4",
     "@tamagui/next-plugin": "^1.1.5",
     "critters": "^0.0.16",
     "next-plugin-preact": "^3.0.7",
     "next-remote-watch": "^1.0.0",
     "tamagui-loader": "^1.1.5",
-    "webpack-stats-plugin": "^1.1.0"
+    "webpack-stats-plugin": "^1.1.1"
   }
 }

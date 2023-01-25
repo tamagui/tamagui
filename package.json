@@ -99,9 +99,9 @@
     }
   },
   "dependencies": {
-    "@lerna-lite/cli": "^1.6.0",
-    "@manypkg/cli": "^0.19.1",
-    "@monorepo-utils/workspaces-to-typescript-project-references": "^2.7.4",
+    "@lerna-lite/cli": "^1.14.2",
+    "@manypkg/cli": "^0.20.0",
+    "@monorepo-utils/workspaces-to-typescript-project-references": "^2.9.0",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^16.11.9",
     "@types/react": "^18.0.15",

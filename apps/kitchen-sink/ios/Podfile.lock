@@ -6,7 +6,7 @@ PODS:
     - ExpoModulesCore
   - EXApplication (5.0.1):
     - ExpoModulesCore
-  - EXConstants (14.0.2):
+  - EXConstants (14.1.0):
     - ExpoModulesCore
   - EXFileSystem (15.1.1):
     - ExpoModulesCore
@@ -15,7 +15,7 @@ PODS:
   - EXJSONUtils (0.4.0)
   - EXManifests (0.4.0):
     - EXJSONUtils
-  - Expo (47.0.12):
+  - Expo (47.0.13):
     - ExpoModulesCore
   - expo-dev-client (2.0.1):
     - EXManifests
@@ -328,7 +328,7 @@ PODS:
   - React-jsinspector (0.70.5)
   - React-logger (0.70.5):
     - glog
-  - react-native-safe-area-context (4.4.1):
+  - react-native-safe-area-context (4.5.0):
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
@@ -402,34 +402,7 @@ PODS:
     - React-perflogger (= 0.70.5)
   - RNGestureHandler (2.5.0):
     - React-Core
-  - RNReanimated (2.12.0):
-    - DoubleConversion
-    - FBLazyVector
-    - FBReactNativeSpec
-    - glog
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
-    - React-callinvoker
-    - React-Core
-    - React-Core/DevSupport
-    - React-Core/RCTWebSocket
-    - React-CoreModules
-    - React-cxxreact
-    - React-jsi
-    - React-jsiexecutor
-    - React-jsinspector
-    - React-RCTActionSheet
-    - React-RCTAnimation
-    - React-RCTBlob
-    - React-RCTImage
-    - React-RCTLinking
-    - React-RCTNetwork
-    - React-RCTSettings
-    - React-RCTText
-    - ReactCommon/turbomodule/core
-    - Yoga
-  - RNScreens (3.18.2):
+  - RNScreens (3.19.0):
     - React-Core
     - React-RCTImage
   - RNSVG (13.4.0):
@@ -490,7 +463,6 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../../../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../../../node_modules/react-native/ReactCommon`)
   - RNGestureHandler (from `../../../node_modules/react-native-gesture-handler`)
-  - RNReanimated (from `../../../node_modules/react-native-reanimated`)
   - RNScreens (from `../../../node_modules/react-native-screens`)
   - RNSVG (from `../../../node_modules/react-native-svg`)
   - Yoga (from `../../../node_modules/react-native/ReactCommon/yoga`)
@@ -605,8 +577,6 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native/ReactCommon"
   RNGestureHandler:
     :path: "../../../node_modules/react-native-gesture-handler"
-  RNReanimated:
-    :path: "../../../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../../../node_modules/react-native-screens"
   RNSVG:
@@ -620,12 +590,12 @@ SPEC CHECKSUMS:
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EASClient: 19efe9e8ef9b3917c5f3dcb3ed82319de4d8c0bd
   EXApplication: 034b1c40a8e9fe1bff76a1e511ee90dff64ad834
-  EXConstants: 3c86653c422dd77e40d10cbbabb3025003977415
+  EXConstants: 44f7d347d0432a66f469d0ce1dc4e3a0ca1b8b2d
   EXFileSystem: 60602b6eefa6873f97172c684b7537c9760b50d6
   EXFont: 319606bfe48c33b5b5063fb0994afdc496befe80
   EXJSONUtils: 09aef2c1fba1a116ca8c73a2c8299aac00d96b43
   EXManifests: 347f49430b63444579aa013f0ad057d16b8d1cc8
-  Expo: f48d305fda3e4e501d686e6bad7d8c8373828279
+  Expo: b9fa98bf260992312ee3c424400819fb9beadafe
   expo-dev-client: d723d52ccfbe2eb47ee24d1ac0cf5b39001589c2
   expo-dev-launcher: 953f564f7d006f1af50b119cacb48cafcad40c73
   expo-dev-menu: fa9e67b193032700e2908b4737d9d199c0b43c30
@@ -655,7 +625,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 31564fa6912459921568e8b0e49024285a4d584b
   React-jsinspector: badd81696361249893a80477983e697aab3c1a34
   React-logger: fdda34dd285bdb0232e059b19d9606fa0ec3bb9c
-  react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
+  react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
   React-perflogger: e68d3795cf5d247a0379735cbac7309adf2fb931
   React-RCTActionSheet: 05452c3b281edb27850253db13ecd4c5a65bc247
   React-RCTAnimation: 578eebac706428e68466118e84aeacf3a282b4da
@@ -669,8 +639,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 7401c4a40f8728fd89df4a56104541b760876117
   ReactCommon: c9246996e73bf75a2c6c3ff15f1e16707cdc2da9
   RNGestureHandler: bad495418bcbd3ab47017a38d93d290ebd406f50
-  RNReanimated: 95fde05503235f14cd4a0cf526ffbad3d54af688
-  RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
+  RNScreens: ea4cd3a853063cda19a4e3c28d2e52180c80f4eb
   RNSVG: 07dbd870b0dcdecc99b3a202fa37c8ca163caec2
   Yoga: eca980a5771bf114c41a754098cd85e6e0d90ed7
 
