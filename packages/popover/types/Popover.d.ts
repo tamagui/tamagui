@@ -1,5 +1,5 @@
 import '@tamagui/polyfill-dev';
-import { SizeTokens } from '@tamagui/core';
+import { SizeTokens, TamaguiElement } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import { DismissableProps } from '@tamagui/dismissable';
 import { FocusScopeProps } from '@tamagui/focus-scope';
@@ -213,7 +213,7 @@ export declare const Popover: React.FC<PopoverProps> & {
             [x: string]: undefined;
         }>> & import("@tamagui/core").PseudoProps<Partial<ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof ScrollViewProps> & Omit<{}, string | number> & {
             [x: string]: undefined;
-        }>>, string | number>) & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
+        }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
     };
 };
 export {};

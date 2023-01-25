@@ -10,6 +10,7 @@ import {
   GestureReponderEvent,
   MediaQueryKey,
   SizeTokens,
+  TamaguiElement,
   Theme,
   composeEventHandlers,
   isWeb,
@@ -481,7 +482,7 @@ export const Popover = withStaticProperties(
 
     const sheetBreakpoint = when
     const popperScope = usePopoverScope(__scopePopover)
-    const triggerRef = React.useRef<any>(null)
+    const triggerRef = React.useRef<TamaguiElement>(null)
     const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
     const [open, setOpen] = useControllableState({
       prop: openProp,
