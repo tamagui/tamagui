@@ -1,10 +1,8 @@
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
-import { SelectDemo, SliderDemo } from '@tamagui/demos'
-import { setTintFamily } from '@tamagui/logo'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
-import { Button, XStack, YStack, isClient } from 'tamagui'
+import { Button, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from '../components/Container'
 import { HeroBelow } from '../components/HeroBelow'
@@ -43,7 +41,7 @@ export default function Home({ animationCode, compilationExamples }) {
               bc="$color1"
               br="$10"
             >
-              1.0 🎉
+              1.0
             </Button>
           </NextLink>
         </XStack>

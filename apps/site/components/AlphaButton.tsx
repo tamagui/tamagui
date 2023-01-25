@@ -1,5 +1,5 @@
 import { NextLink } from 'components/NextLink'
-import { Button, useMedia } from 'tamagui'
+import { Button, ButtonText, Spacer, Text, XStack, useMedia } from 'tamagui'
 
 export const AlphaButton = () => {
   const media = useMedia()
@@ -11,17 +11,23 @@ export const AlphaButton = () => {
   return (
     <NextLink href="/blog/version-one">
       <Button
-        accessibilityLabel="Tamagui v1 blog post"
-        rotate="-4deg"
+        accessibilityLabel="Tamagui v1 introduction"
+        rotate="-3deg"
         theme="alt1"
         cursor="pointer"
         opacity={0.9}
         hoverStyle={{ opacity: 1 }}
         size="$2"
-        scale={0.9}
+        px="$2"
+        br="$10"
+        scale={0.85}
         $sm={{ dsp: 'none' }}
+        space="$2"
       >
-        1.0 🎉
+        <Button hoverTheme={false} size="$1" themeInverse br="$8" px="$1.5">
+          new
+        </Button>
+        <ButtonText size="$2">1.0</ButtonText>
       </Button>
     </NextLink>
   )

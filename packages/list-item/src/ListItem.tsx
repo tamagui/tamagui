@@ -4,6 +4,7 @@ import {
   Spacer,
   TamaguiElement,
   ThemeableProps,
+  getTokens,
   getVariableValue,
   styled,
   themeable,
@@ -172,7 +173,9 @@ export const useListItem = (
   const iconSize = getFontSize(size) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
-  const spaceSize = mediaActiveProps.space ?? getVariableValue(iconSize) * scaleSpace
+  const spaceSize =
+    getVariableValue(getTokens(true).space[mediaActiveProps.space as any] ?? iconSize) *
+    scaleSpace
   // @ts-ignore noTextWrap = all is ok
   const contents = wrapChildrenInText(Text, mediaActiveProps)
 

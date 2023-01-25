@@ -23,7 +23,7 @@ export function wrapChildrenInText(TextComponent: any, propsIn: Props) {
   } = propsIn
 
   if (noTextWrap || !children) {
-    return children
+    return [children]
   }
 
   // in the case of using variables, like so:

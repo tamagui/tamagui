@@ -5,6 +5,6 @@ type Props = TextParentStyles & {
     children?: React.ReactNode;
     size?: SizeTokens;
 };
-export declare function wrapChildrenInText(TextComponent: any, propsIn: Props): string | number | boolean | any[] | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined;
+export declare function wrapChildrenInText(TextComponent: any, propsIn: Props): any[];
 export {};
 //# sourceMappingURL=wrapChildrenInText.d.ts.map
