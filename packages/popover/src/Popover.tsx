@@ -235,13 +235,14 @@ export const PopoverContent = React.forwardRef<
 
 function PopoverContentPortal(props: ScopedProps<PopoverContentTypeProps>) {
   const themeName = useThemeName()
+  const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
+  const showSheet = useShowPopoverSheet(context)
 
   // on android we have to re-pass context
   let contents = props.children
 
   if (Platform.OS === 'android') {
     // ok conditional hooks by platform
-    const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
     const popperContext = usePopperContext(CONTENT_NAME, context.popperScope)
 
     contents = (
@@ -254,9 +255,19 @@ function PopoverContentPortal(props: ScopedProps<PopoverContentTypeProps>) {
     )
   }
 
+  const zIndex = props.zIndex ?? 1000
+
+  // Portal the contents and add a transparent bg overlay to handle dismiss on native
   return (
-    <Portal zIndex={props.zIndex ?? 1000}>
+    <Portal zIndex={zIndex}>
       <Theme forceClassName name={themeName}>
+        {!!context.open && !showSheet &&
+          <YStack
+            fullscreen
+            zIndex={zIndex as number-1}
+            onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
+          />
+        }
         {contents}
       </Theme>
     </Portal>
@@ -332,9 +343,9 @@ const PopoverContentImpl = React.forwardRef<
     )
   }
 
-  const handleDismiss = React.useCallback((event: GestureResponderEvent) =>{
-    context.onOpenChange(false);
-  }, [])
+  // const handleDismiss = React.useCallback((event: GestureResponderEvent) =>{
+  //   context.onOpenChange(false);
+  // }, [])
   // <Dismissable
   //     disableOutsidePointerEvents={disableOutsidePointerEvents}
   //     // onInteractOutside={onInteractOutside}
@@ -344,17 +355,15 @@ const PopoverContentImpl = React.forwardRef<
   //     onDismiss={handleDismiss}
   //   >
 
-  const zIndex = contentProps.zIndex || 10000;
-
-  const PopperStack = () => {
-    return (
-      <PopperContent
+  return (
+    <AnimatePresence>
+      {!!context.open && (
+        <PopperContent
         key={context.contentId}
         data-state={getState(context.open)}
         id={context.contentId}
         pointerEvents="auto"
         ref={forwardedRef}
-        zIndex={zIndex}
         {...popperScope}
         {...contentProps}
       >
@@ -382,25 +391,6 @@ const PopoverContentImpl = React.forwardRef<
           )}
         </RemoveScroll>
       </PopperContent>
-    )
-  }
-
-  // We portal a fullscreen transparent view (essentially an overlay)
-  // to handle dismiss
-  // TODO: Let the touch event bubble up somehow
-  return (
-    <AnimatePresence>
-      {!!context.open && (
-        <XStack key={context.contentId}>
-          <Portal zIndex={zIndex as number-1}>
-            <YStack
-              fullscreen
-              onPress={composeEventHandlers(props.onPress as any, () =>
-                context.onOpenChange(false)
-              )} />
-          </Portal>
-          <PopperStack />
-        </XStack>
       )}
     </AnimatePresence>
   ) 
