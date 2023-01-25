@@ -890,7 +890,7 @@ export const getSplitStyles: StyleSplitter = (
         for (const atomicStyle of atomic) {
           const key = atomicStyle.property
           if (props.animateOnly && props.animateOnly.includes(key)) {
-            retainedStyles[key] = style[key]
+            retainedStyles[key] = atomicStyle.value
           } else {
             addStyleToInsertRules(rulesToInsert, atomicStyle)
             mergeClassName(transforms, classNames, key, atomicStyle.identifier)

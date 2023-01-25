@@ -102,9 +102,7 @@ export const SliderImpl = React.forwardRef<View, SliderImplProps>(
           onSlideStart(event, isStartingOnThumb ? 'thumb' : 'track')
         })}
         onResponderMove={composeEventHandlers(props.onResponderMove, (event) => {
-          event.preventDefault()
           event.stopPropagation()
-
           // const target = event.target as HTMLElement
           onSlideMove(event)
         })}
