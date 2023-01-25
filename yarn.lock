@@ -4944,6 +4944,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/floating@workspace:packages/floating":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/floating@workspace:packages/floating"
+  dependencies:
+    "@floating-ui/react": ^0.18.0
+    "@floating-ui/react-dom": ^1.2.1
+    "@floating-ui/react-native": ^0.9.0
+    "@tamagui/build": ^1.1.5
+    "@types/react-dom": ^18.0.3
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/focus-scope@^1.1.5, @tamagui/focus-scope@workspace:packages/focus-scope":
   version: 0.0.0-use.local
   resolution: "@tamagui/focus-scope@workspace:packages/focus-scope"
@@ -21618,6 +21636,13 @@ __metadata:
     "@pkgr/utils": ^2.3.1
     tslib: ^2.4.0
   checksum: 83e054fe4494dab42114fc4ed36a11b85e18742d304ade3f40d3afb4ba4145d76183adba1f29e2c36e9a0a453b93a83e2387505f96a0efd901f562927a968c44
+  languageName: node
+  linkType: hard
+
+"tabbable@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "tabbable@npm:6.0.1"
+  checksum: 65e378ad69a97416f2fdce34ade11b8ff68b33d9b2d978920a9d285c77e1bb88cb35113a8f00af8c4f0163d788d451a48840a216fa918d6a3f0c554951deb984
   languageName: node
   linkType: hard
 
