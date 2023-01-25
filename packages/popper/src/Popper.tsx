@@ -310,9 +310,13 @@ export const PopperArrow = PopperArrowFrame.extractable(
     const sizeValResolved = getVariableValue(stepTokenUpOrDown('space', sizeVal, -2, [2]))
     const size = +sizeValResolved
     const { placement } = context
-    const { x, y } = context.arrowStyle || { x: 0, y: 0 }
     const refs = useComposedRefs(context.arrowRef, forwardedRef)
 
+    // Sometimes floating-ui can return NaN during orientation or screen size changes on native
+    // so we explictly force the x,y position types as a number
+    const x = context.arrowStyle?.x as number || 0
+    const y = context.arrowStyle?.y as number || 0
+    
     const primaryPlacement = (placement ? placement.split('-')[0] : 'top') as Sides
 
     const arrowStyle: StackProps = { x, y, width: size, height: size }
