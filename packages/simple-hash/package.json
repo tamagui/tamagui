@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/simple-hash",
-  "version": "1.1.2",
+  "version": "1.1.5",
   "sideEffects": false,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -17,7 +17,7 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.1.2"
+    "@tamagui/build": "^1.1.5"
   },
   "publishConfig": {
     "access": "public"

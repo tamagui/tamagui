@@ -148,6 +148,7 @@ export const LogoIcon = ({ downscale = 2 }: any) => {
       marginVertical={-10}
       pressStyle={{
         opacity: 0.7,
+        scaleX: -1,
       }}
     >
       <img

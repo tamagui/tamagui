@@ -200,7 +200,7 @@ export function createComponent<
       ? { ...states[0], [propsIn.forceStyle]: true }
       : states[0]
     const setState = states[1]
-    const setStateShallow = useShallowSetState(setState, true, debugProp, componentName)
+    const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
     // conditional but if ever true stays true
     // [animated, inversed]

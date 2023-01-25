@@ -82,6 +82,8 @@ test.afterAll(async () => {
       $`rm -rf ${dir}`,
       sleep(oneMinute).then(() => console.log(`timed out cleanup`)),
     ])
+
+    console.log(`Done cleaning`)
   }
 })
 

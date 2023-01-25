@@ -1,3 +1,11 @@
+
+- default light mode theme + not changing
+- deprecate ThemeProvider defaultTheme in favor of theme={}
+
+- unset
+- hoverTheme={false} works, make hoverStyle={false} to unset
+
+
 - // maybe style shouldn't used usedKeys?
 - test keyboardavoidingview > scrollView - collapsing tamagui
 - sync with rnw 19

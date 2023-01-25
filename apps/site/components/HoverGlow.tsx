@@ -1,7 +1,7 @@
 import { throttle as throttleFn } from '@github/mini-throttle'
-import React from 'react'
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { CSSProperties, DetailedHTMLProps, HTMLAttributes } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useIsomorphicLayoutEffect } from 'tamagui'
 
 import { getBoundingClientRectAsync } from '../lib/getBoundingClientRectAsync'
 
@@ -71,7 +71,8 @@ export function useHoverGlow(props: HoverGlowProps) {
               border: '1px solid red',
             })
           }
-          const consoleNode = elementRef.current?.parentNode?.querySelector('.hoverglow-debug')
+          const consoleNode =
+            elementRef.current?.parentNode?.querySelector('.hoverglow-debug')
           if (consoleNode) {
             const parentBounds = getBounds()
             if (!parentBounds) return
@@ -104,7 +105,7 @@ height: ${parentBounds.height}`
   }
 
   // be sure to update style when restingStyle updates
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     recalculate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(restingStyle)])
@@ -313,7 +314,9 @@ export const useRelativePositionedItem = (
             x: position.x,
             y: position.y,
             position: [position.x, position.y].map((val) => Math.round(val)).join(', '),
-            bounds: [bounds.width, bounds.height].map((val) => Math.round(val)).join(', '),
+            bounds: [bounds.width, bounds.height]
+              .map((val) => Math.round(val))
+              .join(', '),
             glowDimensions: [width, height].join(', '),
           },
           resisted: {
@@ -325,7 +328,10 @@ export const useRelativePositionedItem = (
             y: doInverse(bounds.height, doResist(bounds.width, position.y)),
           },
           inversed: {
-            x: doInverse(bounds.width, doInverse(bounds.width, doResist(bounds.width, position.x))),
+            x: doInverse(
+              bounds.width,
+              doInverse(bounds.width, doResist(bounds.width, position.x))
+            ),
             y: doInverse(
               bounds.height,
               doInverse(bounds.height, doResist(bounds.width, position.y))
@@ -375,11 +381,11 @@ export const useRelativePositionedItem = (
     })
   }, [getParentBounds, callback, offX, offY])
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setInitialPosition()
   }, [setInitialPosition])
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!parentNode) return
 
     const disposers = new Set<() => void>()
@@ -480,7 +486,7 @@ const useGetBounds = (
 ) => {
   const state = useRef<DOMRect>()
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!node) {
       return
     }

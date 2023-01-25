@@ -10,10 +10,11 @@ export const ScrollView = styled(
   ScrollViewNative,
   {
     name: 'ScrollView',
+    scrollEnabled: true,
   },
   {
     isReactNative: true,
-  },
+  }
 )
 
 export type ScrollViewProps = GetProps<typeof ScrollView>
