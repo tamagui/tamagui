@@ -152,23 +152,20 @@ export function useButton(
   const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
-  const spaceSize = getVariableValue(iconSize) * scaleSpace
+  const spaceSize = propsActive.space ?? getVariableValue(iconSize) * scaleSpace
   const contents = wrapChildrenInText(Text, propsActive)
-  const inner =
-    themedIcon || themedIconAfter
-      ? spacedChildren({
-          // a bit arbitrary but scaling to font size is necessary so long as button does
-          space: spaceSize,
-          spaceFlex,
-          separator,
-          direction:
-            propsActive.flexDirection === 'column' ||
-            propsActive.flexDirection === 'column-reverse'
-              ? 'vertical'
-              : 'horizontal',
-          children: [themedIcon, contents, themedIconAfter],
-        })
-      : contents
+  const inner = spacedChildren({
+    // a bit arbitrary but scaling to font size is necessary so long as button does
+    space: spaceSize,
+    spaceFlex,
+    separator,
+    direction:
+      propsActive.flexDirection === 'column' ||
+      propsActive.flexDirection === 'column-reverse'
+        ? 'vertical'
+        : 'horizontal',
+    children: [themedIcon, ...contents, themedIconAfter],
+  })
 
   // fixes SSR issue + DOM nesting issue of not allowing button in button
   const tag = isNested

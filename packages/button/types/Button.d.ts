@@ -136,10 +136,10 @@ export declare const ButtonText: import("@tamagui/core").TamaguiComponent<(Omit<
 export declare function useButton(propsIn: ButtonProps, { Text }?: {
     Text: any;
 }): {
-    spaceSize: number;
+    spaceSize: import("@tamagui/core").SpaceTokens;
     isNested: boolean;
     props: {
-        children: string | number | boolean | any[] | JSX.Element | import("react").ReactFragment | null | undefined;
+        children: string | number | boolean | JSX.Element | import("react").ReactFragment | null | undefined;
         hitSlop?: import("react-native").Insets | (import("react-native").Insets & number) | undefined;
         onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
         pointerEvents?: "box-none" | "none" | "box-only" | "auto" | undefined;
