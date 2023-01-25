@@ -215,7 +215,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     tokensParsed,
     parsed: true,
     getCSS: (separator = '\n') => {
-      return `.t_unmounted .t_will-mount {opacity:0;visibility:hidden;}
+      return `
+._ovs-contain {overscroll-behavior:contain;}
+.t_unmounted .t_will-mount {opacity:0;visibility:hidden;}
 .is_Text .is_Text {display:inline-flex;}
 ._dsp_contents {display:contents;}
 ${themeConfig.cssRuleSets.join(separator)}

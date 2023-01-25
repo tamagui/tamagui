@@ -123,6 +123,7 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
         //   }
         // }}
         onResponderRelease={release}
+        className="_ovs-contain"
         {...props}
       >
         {useMemo(() => children, [children])}
