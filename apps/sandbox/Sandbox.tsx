@@ -60,10 +60,11 @@ export const Sandbox = () => {
       />
 
       <YStack fullscreen ai="center" jc="center">
-        <SelectDemo />
+        {/* <SelectDemo /> */}
         {/* <SliderDemo /> */}
         {/* <Square tabIndex="0" size={100} bc="$blue10" /> */}
-        <Button size="$8"></Button>
+        {/* <Button size="$8"></Button> */}
+        <SliderDemo />
       </YStack>
 
       {/*  */}
