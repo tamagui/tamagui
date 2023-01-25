@@ -344,6 +344,8 @@ const PopoverContentImpl = React.forwardRef<
   //     onDismiss={handleDismiss}
   //   >
 
+  const zIndex = contentProps.zIndex || 10000;
+
   const PopperStack = () => {
     return (
       <PopperContent
@@ -351,10 +353,10 @@ const PopoverContentImpl = React.forwardRef<
         data-state={getState(context.open)}
         id={context.contentId}
         pointerEvents="auto"
+        ref={forwardedRef}
+        zIndex={zIndex}
         {...popperScope}
         {...contentProps}
-        ref={forwardedRef}
-        zIndex={1000}
       >
         <RemoveScroll
           enabled={disableRemoveScroll ? false : context.open}
@@ -389,12 +391,16 @@ const PopoverContentImpl = React.forwardRef<
   return (
     <AnimatePresence>
       {!!context.open && (
-        <View key={context.contentId}>
-          <Portal zIndex={999}>
-            <YStack fullscreen onTouchStart={handleDismiss} />
+        <XStack key={context.contentId}>
+          <Portal zIndex={zIndex as number-1}>
+            <YStack
+              fullscreen
+              onPress={composeEventHandlers(props.onPress as any, () =>
+                context.onOpenChange(false)
+              )} />
           </Portal>
           <PopperStack />
-        </View>
+        </XStack>
       )}
     </AnimatePresence>
   ) 
