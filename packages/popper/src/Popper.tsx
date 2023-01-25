@@ -119,7 +119,7 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
   } else {
     // On Native there's no autoupdate so we call update() when necessary
     const dimensions = useWindowDimensions();
-    React.useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       floating.update();   
     }, [dimensions])
   }
