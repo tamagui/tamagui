@@ -11,9 +11,9 @@
 
 import _createForOfIteratorHelperLoose from '@babel/runtime/helpers/createForOfIteratorHelperLoose'
 import {
+  useLayoutEffect as _,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useReducer,
   useRef,
@@ -23,6 +23,8 @@ import useRefEffect from '../useRefEffect.js'
 import { AnimatedEvent } from './AnimatedEvent.js'
 import NativeAnimatedHelper from './NativeAnimatedHelper.js'
 import AnimatedProps from './nodes/AnimatedProps.js'
+
+const useLayoutEffect = typeof window === 'undefined' ? useEffect : _
 
 export default function useAnimatedProps(props) {
   var _useReducer = useReducer((count) => count + 1, 0),
