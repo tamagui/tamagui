@@ -5300,7 +5300,7 @@ __metadata:
   resolution: "@tamagui/next-theme@workspace:packages/next-theme"
   dependencies:
     "@tamagui/build": ^1.1.3
-    "@tamagui/use-event": ^1.1.3
+    next-themes: ^0.2.1
     react: ^18.2.0
   peerDependencies:
     react: "*"
@@ -17163,6 +17163,17 @@ __metadata:
   bin:
     next-remote-watch: bin/next-remote-watch
   checksum: a67b15c2556e380c7dfbe8651d8a89fe34f42f439fa910ece5585e988a7c23116f3e432eef93984bb3bba9683798f2f757642652883288550bf613357cc67ea3
+  languageName: node
+  linkType: hard
+
+"next-themes@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "next-themes@npm:0.2.1"
+  peerDependencies:
+    next: "*"
+    react: "*"
+    react-dom: "*"
+  checksum: ebc248b956138e73436c4ed0a0f0a877a0a48a33156db577029b8b8469e48b5c777d61abf2baeb75953378febea74e067a4869ff90b4a3e94fce123289b862ba
   languageName: node
   linkType: hard
 

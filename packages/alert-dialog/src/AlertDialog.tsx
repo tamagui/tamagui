@@ -9,6 +9,7 @@ import {
   isTamaguiElement,
   isWeb,
   styled,
+  useIsomorphicLayoutEffect,
   withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
@@ -363,7 +364,7 @@ const AlertDialogInner: React.FC<AlertDialogProps> = (
       }
     })
 
-    React.useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (!open || !native) return
       if (title || description) {
         Alert.alert(title, description, buttons)
