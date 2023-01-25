@@ -72,6 +72,7 @@ type PopoverContextValue = {
   sheetBreakpoint: any
   scopeKey: string
   popperScope: any
+  breakpointActive: boolean
 }
 
 const [createPopoverContext, createPopoverScopeInternal] = createContextScope(
@@ -236,7 +237,6 @@ export const PopoverContent = React.forwardRef<
 function PopoverContentPortal(props: ScopedProps<PopoverContentTypeProps>) {
   const themeName = useThemeName()
   const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
-  const showSheet = useShowPopoverSheet(context)
 
   // on android we have to re-pass context
   let contents = props.children
@@ -261,7 +261,7 @@ function PopoverContentPortal(props: ScopedProps<PopoverContentTypeProps>) {
   return (
     <Portal zIndex={zIndex}>
       <Theme forceClassName name={themeName}>
-        {!!context.open && !showSheet &&
+        {!!context.open && !context.breakpointActive &&
           <YStack
             fullscreen
             zIndex={zIndex as number-1}
@@ -322,9 +322,8 @@ const PopoverContentImpl = React.forwardRef<
   } = props
   const popperScope = usePopoverScope(__scopePopover)
   const context = usePopoverInternalContext(CONTENT_NAME, popperScope.__scopePopover)
-  const showSheet = useShowPopoverSheet(context)
 
-  if (showSheet) {
+  if (context.breakpointActive) {
     // unwrap the PopoverScrollView if used, as it will use the SheetScrollView if that exists
     const childrenWithoutScrollView = React.Children.toArray(children).map((child) => {
       if (React.isValidElement(child)) {
@@ -529,6 +528,7 @@ export const Popover = withStaticProperties(
       contentId: useId(),
       triggerRef,
       open,
+      breakpointActive,
       onOpenChange: setOpen,
       onOpenToggle: useEvent(() => {
         if (open && breakpointActive) {
@@ -608,7 +608,7 @@ const PopoverSheetController = (
     props.__scopePopover
   )
   const showSheet = useShowPopoverSheet(context)
-  const breakpointActive = useSheetBreakpointActive(context.sheetBreakpoint)
+  const breakpointActive = context.breakpointActive
   const getShowSheet = useGet(showSheet)
   return (
     <SheetController
