@@ -8,8 +8,6 @@
   ],
   "dependencies": {
     "@my/ui": "*",
-    "@react-navigation/native": "^6.1.2",
-    "@react-navigation/native-stack": "^6.9.8",
     "@tamagui/animations-react-native": "^1.1.5",
     "@tamagui/colors": "^1.1.5",
     "@tamagui/font-inter": "^1.1.5",
