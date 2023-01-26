@@ -1,4 +1,5 @@
 
+- https://github.com/tamagui/tamagui/issues/478
 - default light mode theme + not changing
 - deprecate ThemeProvider defaultTheme in favor of theme={}
 
