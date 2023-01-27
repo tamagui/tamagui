@@ -168,7 +168,7 @@ type SelectItemContextValue = {
 const [SelectItemContextProvider, useSelectItemContext] =
   createSelectContext<SelectItemContextValue>(ITEM_NAME)
 
-export interface SelectItemProps extends YStackProps {
+export interface SelectItemProps extends ListItemProps {
   value: string
   index: number
   disabled?: boolean
