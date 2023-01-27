@@ -74,7 +74,7 @@ type PopoverContextValue = {
   sheetBreakpoint: any
   scopeKey: string
   popperScope: any
-  breakpointActive: boolean
+  breakpointActive?: boolean
 }
 
 const [createPopoverContext, createPopoverScopeInternal] = createContextScope(

@@ -26,7 +26,7 @@ type PopoverContextValue = {
     sheetBreakpoint: any;
     scopeKey: string;
     popperScope: any;
-    breakpointActive: boolean;
+    breakpointActive?: boolean;
 };
 export declare const usePopoverScope: (scope: Scope<any>) => {
     [__scopeProp: string]: Scope<any>;
