@@ -270,7 +270,7 @@ function PopoverContentPortal(props: ScopedProps<PopoverContentTypeProps>) {
             onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
           />
         }
-        <Stack zIndex={zIndex+1}>{contents}</Stack>
+        <Stack zIndex={zIndex as number+1}>{contents}</Stack>
       </Theme>
     </Portal>
   )
