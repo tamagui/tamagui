@@ -13,6 +13,7 @@ import {
 import { useState } from 'react'
 import {
   Button,
+  H1,
   Input,
   Popover,
   Square,
@@ -22,6 +23,7 @@ import {
   YStack,
   getTokens,
   styled,
+  useMedia,
 } from 'tamagui'
 
 import config from './tamagui.config'
@@ -31,6 +33,14 @@ import config from './tamagui.config'
 // webpack fix..
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
+}
+
+function TestUseMediaRenders() {
+  const media = useMedia()
+
+  console.warn('render')
+
+  return <H1>{media.sm ? 'sm' : 'not sm'}</H1>
 }
 
 export const Sandbox = () => {
@@ -64,7 +74,8 @@ export const Sandbox = () => {
         {/* <SliderDemo /> */}
         {/* <Square tabIndex="0" size={100} bc="$blue10" /> */}
         {/* <Button size="$8"></Button> */}
-        <SliderDemo />
+        <TestUseMediaRenders />
+        {/* <SliderDemo /> */}
       </YStack>
 
       {/*  */}
