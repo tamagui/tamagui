@@ -10,6 +10,7 @@ import {
   GestureReponderEvent,
   MediaQueryKey,
   SizeTokens,
+  Stack,
   TamaguiElement,
   Theme,
   composeEventHandlers,
@@ -41,7 +42,7 @@ import { FloatingOverrideContext } from '@tamagui/floating'
 import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
 import { RemoveScroll, RemoveScrollProps } from '@tamagui/remove-scroll'
 import { ControlledSheet, SheetController } from '@tamagui/sheet'
-import { SizableStack, XStack, YStack, YStackProps } from '@tamagui/stacks'
+import { SizableStack, XStack, YStack, YStackProps, ZStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { GestureResponderEvent, Platform, ScrollView, ScrollViewProps, View } from 'react-native'
@@ -199,7 +200,7 @@ export const PopoverContent = React.forwardRef<
   }, [context.open])
 
   return (
-    <PopoverContentPortal zIndex={zIndex}>
+    <PopoverContentPortal zIndex={zIndex ?? 10000}>
       <PopoverContentImpl
         {...contentModalProps}
         disableRemoveScroll={disableRemoveScroll}
@@ -256,20 +257,20 @@ function PopoverContentPortal(props: ScopedProps<PopoverContentTypeProps>) {
     )
   }
 
-  const zIndex = props.zIndex ?? 1000
+  const { zIndex } = props;
 
   // Portal the contents and add a transparent bg overlay to handle dismiss on native
   return (
-    <Portal zIndex={zIndex}>
+    <Portal>
       <Theme forceClassName name={themeName}>
         {!!context.open && !context.breakpointActive &&
           <YStack
+            zIndex={zIndex}
             fullscreen
-            zIndex={zIndex as number-1}
             onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
           />
         }
-        {contents}
+        <Stack zIndex={zIndex+1}>{contents}</Stack>
       </Theme>
     </Portal>
   )
