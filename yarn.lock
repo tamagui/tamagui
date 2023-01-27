@@ -4829,8 +4829,8 @@ __metadata:
   resolution: "@tamagui/floating@workspace:packages/floating"
   dependencies:
     "@floating-ui/react": ^0.18.0
-    "@floating-ui/react-dom": ^1.2.1
-    "@floating-ui/react-native": ^0.9.0
+    "@floating-ui/react-dom": 1.0.0
+    "@floating-ui/react-native": 0.8.0
     "@tamagui/build": ^1.1.6
     "@types/react-dom": ^18.0.3
     react: ^18.2.0
@@ -21485,7 +21485,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
 "tabbable@npm:^6.0.1":
   version: 6.0.1
   resolution: "tabbable@npm:6.0.1"
@@ -21493,10 +21492,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tamagui-loader@^1.1.5, tamagui-loader@workspace:packages/loader":
-=======
 "tamagui-loader@^1.1.6, tamagui-loader@workspace:packages/loader":
->>>>>>> master
   version: 0.0.0-use.local
   resolution: "tamagui-loader@workspace:packages/loader"
   dependencies:
