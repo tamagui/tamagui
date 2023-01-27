@@ -13,7 +13,7 @@ import { Scope, createContextScope } from '@tamagui/create-context'
 import { stepTokenUpOrDown } from '@tamagui/get-size'
 import { SizableStackProps, ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
-import { View, useWindowDimensions } from 'react-native'
+import { Keyboard, View, useWindowDimensions } from 'react-native'
 
 import { 
   useFloating,
@@ -108,6 +108,7 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
     floating.reference(anchorRef.current)
   }, [anchorRef])
 
+
   if (isWeb) {
     React.useEffect(() => {
       if (!(refs.reference.current && refs.floating.current)) {
@@ -118,10 +119,29 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
     }, [floating.update, refs.floating, refs.reference])
   } else {
     // On Native there's no autoupdate so we call update() when necessary
+
+    // Subscribe to window dimensions (orientation, scale, etc...)
     const dimensions = useWindowDimensions();
+
+    // Subscribe to keyboard state
+    const [keyboardOpen, setKeyboardOpen] = React.useState(false);
+    React.useEffect(() => {
+      const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+        setKeyboardOpen(true);
+      });
+      const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+        setKeyboardOpen(false);
+      });
+
+      return () => {
+        showSubscription.remove();
+        hideSubscription.remove();
+      };
+    }, []);
+
     useIsomorphicLayoutEffect(() => {
       floating.update();   
-    }, [dimensions])
+    }, [dimensions, keyboardOpen])
   }
 
 
