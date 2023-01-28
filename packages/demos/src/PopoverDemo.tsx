@@ -32,7 +32,7 @@ export function Demo({
         <Button icon={Icon} />
       </Popover.Trigger>
 
-      <Adapt when="sm" platform="touch">
+      <Adapt when="sm" platform="web">
         <Popover.Sheet modal dismissOnSnapToBottom>
           <Popover.Sheet.Frame padding="$4">
             <Adapt.Contents />

@@ -148,7 +148,7 @@ export function useButton(
 
   const isNested = isRSC ? false : useContext(ButtonNestingContext)
   const propsActive = useMediaPropsActive(propsIn)
-  const size = propsActive.size || '$4'
+  const size = propsActive.size || '$true'
   const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)

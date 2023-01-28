@@ -35,7 +35,7 @@ export const getFontSizeToken = (
   if (typeof inSize === 'number') {
     return null
   }
-  const size = inSize || '$4'
+  const size = inSize || '$true'
   const relativeSize = opts?.relativeSize || 0
   const conf = getConfig()
   const fontSize = conf.fontsParsed[opts?.font || '$body'].size

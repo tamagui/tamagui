@@ -14,7 +14,7 @@ export const getButtonSized = (
   }
   const ySize = getSize(val, 0)
   const xSize = stepTokenUpOrDown('space', val)
-  const radiusToken = tokens.radius[val] ?? tokens.radius['$4']
+  const radiusToken = tokens.radius[val] ?? tokens.radius['$true']
   return {
     paddingHorizontal: xSize,
     height: ySize,
