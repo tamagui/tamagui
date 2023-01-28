@@ -10,23 +10,22 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
-import { stepTokenUpOrDown } from '@tamagui/get-size'
-import { SizableStackProps, ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
-import * as React from 'react'
-import { Keyboard, View, useWindowDimensions } from 'react-native'
-
-import { 
-  useFloating,
+import {
   Coords,
   Placement,
   Strategy,
+  UseFloatingReturn,
   arrow,
   autoUpdate,
   flip,
   offset,
   shift,
-  UseFloatingReturn,
-} from '@tamagui/floating';
+  useFloating,
+} from '@tamagui/floating'
+import { stepTokenUpOrDown } from '@tamagui/get-size'
+import { SizableStackProps, ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
+import * as React from 'react'
+import { Keyboard, View, useWindowDimensions } from 'react-native'
 
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never
@@ -108,7 +107,6 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
     floating.reference(anchorRef.current)
   }, [anchorRef])
 
-
   if (isWeb) {
     React.useEffect(() => {
       if (!(refs.reference.current && refs.floating.current)) {
@@ -121,31 +119,28 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
     // On Native there's no autoupdate so we call update() when necessary
 
     // Subscribe to window dimensions (orientation, scale, etc...)
-    const dimensions = useWindowDimensions();
+    const dimensions = useWindowDimensions()
 
     // Subscribe to keyboard state
-    const [keyboardOpen, setKeyboardOpen] = React.useState(false);
+    const [keyboardOpen, setKeyboardOpen] = React.useState(false)
     React.useEffect(() => {
       const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-        setKeyboardOpen(true);
-      });
+        setKeyboardOpen(true)
+      })
       const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-        setKeyboardOpen(false);
-      });
+        setKeyboardOpen(false)
+      })
 
       return () => {
-        showSubscription.remove();
-        hideSubscription.remove();
-      };
-    }, []);
+        showSubscription.remove()
+        hideSubscription.remove()
+      }
+    }, [])
 
     useIsomorphicLayoutEffect(() => {
-      floating.update();   
+      floating.update()
     }, [dimensions, keyboardOpen])
   }
-
-
-  
 
   return (
     <PopperProvider
@@ -264,7 +259,10 @@ export const PopperContent = PopperContentFrame.extractable(
 
       // outer frame because we explicitly dont want animation to apply to this
       return (
-        <YStack {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}>
+        <YStack
+          animateOnly={['transform']}
+          {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}
+        >
           {contents}
         </YStack>
       )
@@ -334,9 +332,9 @@ export const PopperArrow = PopperArrowFrame.extractable(
 
     // Sometimes floating-ui can return NaN during orientation or screen size changes on native
     // so we explictly force the x,y position types as a number
-    const x = context.arrowStyle?.x as number || 0
-    const y = context.arrowStyle?.y as number || 0
-    
+    const x = (context.arrowStyle?.x as number) || 0
+    const y = (context.arrowStyle?.y as number) || 0
+
     const primaryPlacement = (placement ? placement.split('-')[0] : 'top') as Sides
 
     const arrowStyle: StackProps = { x, y, width: size, height: size }

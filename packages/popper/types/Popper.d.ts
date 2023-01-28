@@ -1,9 +1,9 @@
 import { SizeTokens } from '@tamagui/core';
 import { Scope } from '@tamagui/create-context';
+import { Coords, Placement, Strategy, UseFloatingReturn, flip, shift } from '@tamagui/floating';
 import { SizableStackProps, YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import { View } from 'react-native';
-import { Coords, Placement, Strategy, flip, shift, UseFloatingReturn } from '@tamagui/floating';
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export declare const createPopperScope: import("@tamagui/create-context").CreateScope;

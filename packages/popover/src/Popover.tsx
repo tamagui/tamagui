@@ -2,6 +2,13 @@
 
 import '@tamagui/polyfill-dev'
 
+import type { UseFloatingProps } from '@floating-ui/react-dom-interactions'
+import {
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useRole,
+} from '@floating-ui/react-dom-interactions'
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
@@ -25,6 +32,7 @@ import {
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { DismissableProps } from '@tamagui/dismissable'
+import { FloatingOverrideContext } from '@tamagui/floating'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
 import {
   Popper,
@@ -38,18 +46,20 @@ import {
   createPopperScope,
   usePopperContext,
 } from '@tamagui/popper'
-import { FloatingOverrideContext } from '@tamagui/floating'
 import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
 import { RemoveScroll, RemoveScrollProps } from '@tamagui/remove-scroll'
 import { ControlledSheet, SheetController } from '@tamagui/sheet'
 import { SizableStack, XStack, YStack, YStackProps, ZStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import { GestureResponderEvent, Platform, ScrollView, ScrollViewProps, View } from 'react-native'
-
-import type { UseFloatingProps } from '@floating-ui/react-dom-interactions'
-import { useDismiss, useInteractions, useRole, useFloating } from '@floating-ui/react-dom-interactions'
 import { useEffect } from 'react'
+import {
+  GestureResponderEvent,
+  Platform,
+  ScrollView,
+  ScrollViewProps,
+  View,
+} from 'react-native'
 
 const POPOVER_NAME = 'Popover'
 
@@ -263,13 +273,13 @@ function PopoverContentPortal(props: ScopedProps<PopoverContentTypeProps>) {
   return (
     <Portal zIndex={zIndex}>
       <Theme forceClassName name={themeName}>
-        {!!context.open && !context.breakpointActive &&
+        {!!context.open && !context.breakpointActive && (
           <YStack
             fullscreen
             onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
           />
-        }
-        <Stack zIndex={zIndex as number+1}>{contents}</Stack>
+        )}
+        <Stack zIndex={(zIndex as number) + 1}>{contents}</Stack>
       </Theme>
     </Portal>
   )
@@ -359,42 +369,40 @@ const PopoverContentImpl = React.forwardRef<
     <AnimatePresence>
       {!!context.open && (
         <PopperContent
-        key={context.contentId}
-        data-state={getState(context.open)}
-        id={context.contentId}
-        pointerEvents="auto"
-        ref={forwardedRef}
-        {...popperScope}
-        {...contentProps}
-      >
-        <RemoveScroll
-          enabled={disableRemoveScroll ? false : context.open}
-          allowPinchZoom
-          // causes lots of bugs on touch web on site
-          removeScrollBar={false}
-          style={{
-            display: 'contents',
-          }}
+          key={context.contentId}
+          data-state={getState(context.open)}
+          id={context.contentId}
+          pointerEvents="auto"
+          ref={forwardedRef}
+          {...popperScope}
+          {...contentProps}
         >
-          {trapFocus === false ? (
-            children
-          ) : (
-            <FocusScope
-              loop
-              trapped={trapFocus ?? context.open}
-              onMountAutoFocus={onOpenAutoFocus}
-              onUnmountAutoFocus={onCloseAutoFocus}
-            >
-              {isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children}
-            
-            </FocusScope>
-          )}
-        </RemoveScroll>
-      </PopperContent>
+          <RemoveScroll
+            enabled={disableRemoveScroll ? false : context.open}
+            allowPinchZoom
+            // causes lots of bugs on touch web on site
+            removeScrollBar={false}
+            style={{
+              display: 'contents',
+            }}
+          >
+            {trapFocus === false ? (
+              children
+            ) : (
+              <FocusScope
+                loop
+                trapped={trapFocus ?? context.open}
+                onMountAutoFocus={onOpenAutoFocus}
+                onUnmountAutoFocus={onCloseAutoFocus}
+              >
+                {isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children}
+              </FocusScope>
+            )}
+          </RemoveScroll>
+        </PopperContent>
       )}
     </AnimatePresence>
-  ) 
-  
+  )
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -435,11 +443,6 @@ export type PopoverArrowProps = PopperArrowProps
 
 export const PopoverArrow = React.forwardRef<PopoverArrowElement, PopoverArrowProps>(
   (props: ScopedProps<PopoverArrowProps>, forwardedRef) => {
-    // we dont show on native and i'm getting an err
-    // if (!isWeb) {
-    //   return null
-    // }
-
     const { __scopePopover, ...arrowProps } = props
     const popperScope = usePopoverScope(__scopePopover)
     return <PopperArrow {...popperScope} {...arrowProps} ref={forwardedRef} />
@@ -492,7 +495,6 @@ export const Popover = withStaticProperties(
     })
 
     const breakpointActive = useSheetBreakpointActive(sheetBreakpoint)
-
 
     // Custom floating context to override the Popper on web
     const useFloatingContext = React.useCallback(
@@ -549,32 +551,25 @@ export const Popover = withStaticProperties(
     //   })
     // }
 
-    const PopperStack = () => {
-      return (
-        <Popper {...popperScope} stayInFrame {...restProps}>
-          <PopoverProviderInternal {...popoverContext}>
-            <PopoverSheetController
-              onOpenChange={setOpen}
-              __scopePopover={__scopePopover}
-            >
-              {children}
-            </PopoverSheetController>
-          </PopoverProviderInternal>
-        </Popper>
-      )
-    }
-
-    const PopperWithFloatingOverride = () => {
-      return (
-        <FloatingOverrideContext.Provider value={useFloatingContext as any}>
-          <PopperStack /> 
-        </FloatingOverrideContext.Provider>
-      )
-    }
+    const contents = (
+      <Popper {...popperScope} stayInFrame {...restProps}>
+        <PopoverProviderInternal {...popoverContext}>
+          <PopoverSheetController onOpenChange={setOpen} __scopePopover={__scopePopover}>
+            {children}
+          </PopoverSheetController>
+        </PopoverProviderInternal>
+      </Popper>
+    )
 
     return (
       <AdaptProvider>
-        {isWeb ? <PopperWithFloatingOverride /> : <PopperStack />}
+        {isWeb ? (
+          <FloatingOverrideContext.Provider value={useFloatingContext as any}>
+            {contents}
+          </FloatingOverrideContext.Provider>
+        ) : (
+          contents
+        )}
       </AdaptProvider>
     )
   }) as React.FC<PopoverProps>,
