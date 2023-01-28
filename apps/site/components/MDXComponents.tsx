@@ -333,13 +333,7 @@ export const components = {
   h5: (props) => <H5 mt="$4" {...props} />,
 
   p: (props) => (
-    <Paragraph
-      className="docs-paragraph"
-      display="block"
-      my="$2.5"
-      size="$5"
-      {...props}
-    />
+    <Paragraph className="docs-paragraph" display="block" my="$2.5" {...props} />
   ),
 
   a: ({ href = '', children, ...props }) => {

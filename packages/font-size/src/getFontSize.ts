@@ -1,10 +1,4 @@
-import {
-  FontSizeTokens,
-  FontTokens,
-  getConfig,
-  getTokens,
-  isVariable,
-} from '@tamagui/core'
+import { FontSizeTokens, FontTokens, getConfig, isVariable } from '@tamagui/core'
 
 type GetFontSizeOpts = {
   relativeSize?: number
@@ -13,7 +7,7 @@ type GetFontSizeOpts = {
 
 export const getFontSize = (
   inSize: FontSizeTokens | null | undefined,
-  opts?: GetFontSizeOpts,
+  opts?: GetFontSizeOpts
 ): number => {
   const res = getFontSizeVariable(inSize, opts)
   if (isVariable(res)) {
@@ -24,7 +18,7 @@ export const getFontSize = (
 
 export const getFontSizeVariable = (
   inSize: FontSizeTokens | null | undefined,
-  opts?: GetFontSizeOpts,
+  opts?: GetFontSizeOpts
 ) => {
   const token = getFontSizeToken(inSize, opts)
   if (!token) {
@@ -36,7 +30,7 @@ export const getFontSizeVariable = (
 
 export const getFontSizeToken = (
   inSize: FontSizeTokens | null | undefined,
-  opts?: GetFontSizeOpts,
+  opts?: GetFontSizeOpts
 ): FontSizeTokens | null => {
   if (typeof inSize === 'number') {
     return null
@@ -60,7 +54,7 @@ export const getFontSizeToken = (
   }
   const tokenIndex = Math.min(
     Math.max(0, foundIndex + relativeSize),
-    sizeTokens.length - 1,
+    sizeTokens.length - 1
   )
   return (sizeTokens[tokenIndex] ?? size) as FontSizeTokens
 }
