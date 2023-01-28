@@ -5,26 +5,27 @@ import {
   SizeTokens,
   StackProps,
   getVariableValue,
+  isWeb,
   styled,
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
-import { stepTokenUpOrDown } from '@tamagui/get-size'
-import { SizableStackProps, ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
-import * as React from 'react'
-import { View } from 'react-native'
-
 import {
   Coords,
   Placement,
   Strategy,
+  UseFloatingReturn,
   arrow,
   autoUpdate,
   flip,
   offset,
   shift,
-} from './floating'
-import { UseFloatingReturn, useFloating } from './useFloating'
+  useFloating,
+} from '@tamagui/floating'
+import { stepTokenUpOrDown } from '@tamagui/get-size'
+import { SizableStackProps, ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
+import * as React from 'react'
+import { Keyboard, View, useWindowDimensions } from 'react-native'
 
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never
@@ -80,13 +81,14 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
   }, [])
 
   const anchorRef = React.useRef<any>()
-  const [arrowEl, setArrow] = React.useState<HTMLSpanElement | null>(null)
+  const [arrowEl, setArrow] = React.useState<any>(null)
   const [arrowSize, setArrowSize] = React.useState(0)
   const arrowRef = React.useRef()
 
   const floating = useFloating({
     strategy,
     placement,
+    sameScrollView: false, // this only takes effect on native
     middleware: [
       stayInFrame
         ? shift(typeof stayInFrame === 'boolean' ? {} : stayInFrame)
@@ -105,13 +107,40 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
     floating.reference(anchorRef.current)
   }, [anchorRef])
 
-  React.useEffect(() => {
-    if (!(refs.reference.current && refs.floating.current)) {
-      return
-    }
-    // Only call this when the floating element is rendered
-    return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
-  }, [floating.update, refs.floating, refs.reference])
+  if (isWeb) {
+    React.useEffect(() => {
+      if (!(refs.reference.current && refs.floating.current)) {
+        return
+      }
+      // Only call this when the floating element is rendered
+      return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
+    }, [floating.update, refs.floating, refs.reference])
+  } else {
+    // On Native there's no autoupdate so we call update() when necessary
+
+    // Subscribe to window dimensions (orientation, scale, etc...)
+    const dimensions = useWindowDimensions()
+
+    // Subscribe to keyboard state
+    const [keyboardOpen, setKeyboardOpen] = React.useState(false)
+    React.useEffect(() => {
+      const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+        setKeyboardOpen(true)
+      })
+      const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+        setKeyboardOpen(false)
+      })
+
+      return () => {
+        showSubscription.remove()
+        hideSubscription.remove()
+      }
+    }, [])
+
+    useIsomorphicLayoutEffect(() => {
+      floating.update()
+    }, [dimensions, keyboardOpen])
+  }
 
   return (
     <PopperProvider
@@ -230,7 +259,10 @@ export const PopperContent = PopperContentFrame.extractable(
 
       // outer frame because we explicitly dont want animation to apply to this
       return (
-        <YStack {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}>
+        <YStack
+          animateOnly={['transform']}
+          {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}
+        >
           {contents}
         </YStack>
       )
@@ -296,8 +328,12 @@ export const PopperArrow = PopperArrowFrame.extractable(
     const sizeValResolved = getVariableValue(stepTokenUpOrDown('space', sizeVal, -2, [2]))
     const size = +sizeValResolved
     const { placement } = context
-    const { x, y } = context.arrowStyle || { x: 0, y: 0 }
     const refs = useComposedRefs(context.arrowRef, forwardedRef)
+
+    // Sometimes floating-ui can return NaN during orientation or screen size changes on native
+    // so we explictly force the x,y position types as a number
+    const x = (context.arrowStyle?.x as number) || 0
+    const y = (context.arrowStyle?.y as number) || 0
 
     const primaryPlacement = (placement ? placement.split('-')[0] : 'top') as Sides
 

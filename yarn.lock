@@ -4811,6 +4811,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/floating@^1.1.7, @tamagui/floating@workspace:packages/floating":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/floating@workspace:packages/floating"
+  dependencies:
+    "@floating-ui/react-dom": 1.0.0
+    "@floating-ui/react-native": 0.8.0
+    "@tamagui/build": ^1.1.7
+    "@types/react-dom": ^18.0.3
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/focus-scope@^1.1.7, @tamagui/focus-scope@workspace:packages/focus-scope":
   version: 0.0.0-use.local
   resolution: "@tamagui/focus-scope@workspace:packages/focus-scope"
@@ -5244,6 +5261,7 @@ __metadata:
     "@tamagui/compose-refs": ^1.1.7
     "@tamagui/core": ^1.1.7
     "@tamagui/create-context": ^1.1.7
+    "@tamagui/floating": ^1.1.7
     "@tamagui/get-size": ^1.1.7
     "@tamagui/stacks": ^1.1.7
     "@tamagui/use-controllable-state": ^1.1.7

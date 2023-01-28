@@ -4,5 +4,5 @@ export {
   FloatingOverrideContext,
   type UseFloatingProps,
   type UseFloatingReturn,
-  type UseFloatingFn
+  type UseFloatingFn,
 } from './useFloating'

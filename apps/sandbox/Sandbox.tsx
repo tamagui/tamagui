@@ -2,30 +2,8 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import {
-  AnimationsTimingDemo,
-  DialogDemo,
-  PopoverDemo,
-  SelectDemo,
-  SliderDemo,
-  TooltipDemo,
-} from '@tamagui/demos'
 import { useState } from 'react'
-import {
-  Button,
-  H1,
-  Input,
-  Popover,
-  Square,
-  TamaguiProvider,
-  TextArea,
-  XStack,
-  YStack,
-  getTokens,
-  styled,
-  useMedia,
-  useTheme,
-} from 'tamagui'
+import { H1, TamaguiProvider, XStack, YStack, useMedia, useTheme } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -83,7 +61,6 @@ export const Sandbox = () => {
         {/* <Button size="$8"></Button> */}
         {/* <TestUseMediaRenders /> */}
         {/* <SliderDemo /> */}
-        <TestUseTheme />
       </YStack>
 
       {/*  */}
