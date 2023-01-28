@@ -36,7 +36,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@floating-ui/react": "^0.18.0",
     "@floating-ui/react-dom": "1.0.0",
     "@floating-ui/react-native": "0.8.0"
   },
