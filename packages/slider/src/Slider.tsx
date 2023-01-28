@@ -320,7 +320,7 @@ const SliderThumb = React.forwardRef<View, SliderThumbProps>(
     const percent =
       value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max)
     const label = getLabel(index, context.values.length)
-    const sizeIn = sizeProp ?? context.size ?? '$4'
+    const sizeIn = sizeProp ?? context.size ?? '$true'
     const [size, setSize] = React.useState(() => {
       // for SSR
       const estimatedSize = getVariableValue(getThumbSize(sizeIn).width)

@@ -82,6 +82,6 @@ function getDefaultSizeToken(font: GenericFont) {
     return Object.keys(font.size)[3]
   }
 
-  cache.set(font, sizeDefaultSpecific)
+  cache.set(font, sizeDefaultSpecific as FontSizeTokens)
   return sizeDefaultSpecific
 }

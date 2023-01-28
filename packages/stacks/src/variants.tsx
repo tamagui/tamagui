@@ -36,7 +36,7 @@ export const padded = {
   true: (_, extras) => {
     const { tokens, props } = extras
     return {
-      padding: tokens.space[props.size] || tokens.space['$4'],
+      padding: tokens.space[props.size] || tokens.space['$true'],
     }
   },
 }
@@ -45,7 +45,7 @@ export const radiused = {
   true: (_, extras) => {
     const { tokens, props } = extras
     return {
-      borderRadius: tokens.radius[props.size] || tokens.radius['$4'],
+      borderRadius: tokens.radius[props.size] || tokens.radius['$true'],
     }
   },
 }

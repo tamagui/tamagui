@@ -168,7 +168,7 @@ export const useListItem = (
   } = props
 
   const mediaActiveProps = useMediaPropsActive(props)
-  const size = mediaActiveProps.size || '$4'
+  const size = mediaActiveProps.size || '$true'
   const subtitleSize = `$${+String(size).replace('$', '') - 1}` as FontSizeTokens
   const iconSize = getFontSize(size) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
