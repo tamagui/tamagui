@@ -2,9 +2,8 @@
   "name": "@tamagui/vite-plugin",
   "version": "1.1.8",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
   "type": "module",
+  "module": "./dist/esm/index.js",
   "license": "MIT",
   "files": [
     "src",
@@ -21,12 +20,10 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "import": "./dist/index.js"
     }
   },
   "dependencies": {
-    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@tamagui/fake-react-native": "^1.1.8",
     "@tamagui/proxy-worm": "^1.1.8",
     "@tamagui/react-native-svg": "^1.1.8",

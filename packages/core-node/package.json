@@ -23,10 +23,11 @@
     "@tamagui/helpers": "^1.1.8"
   },
   "devDependencies": {
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@types/node": "^16.11.9",
     "@types/react": "^18.0.15",
     "chokidar": "^3.5.2",
-    "esbuild": "^0.16.15",
+    "esbuild": "^0.17.5",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
     "fs-extra": "^10.1.0",

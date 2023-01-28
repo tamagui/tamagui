@@ -62,7 +62,7 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   })
 
   const tmpDir = join(process.cwd(), '.tamagui')
-  const configOutPath = join(tmpDir, `tamagui.config.js`)
+  const configOutPath = join(tmpDir, `tamagui.config.cjs`)
   const baseComponents = props.components.filter((x) => x !== '@tamagui/core')
   const componentOutPaths = baseComponents.map((componentModule) =>
     join(
@@ -70,7 +70,7 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
       `${componentModule
         .split(sep)
         .join('-')
-        .replace(/[^a-z0-9]+/gi, '')}-components.config.js`
+        .replace(/[^a-z0-9]+/gi, '')}-components.config.cjs`
     )
   )
 

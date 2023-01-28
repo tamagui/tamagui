@@ -19,7 +19,6 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@tamagui/build": "^1.1.8",
     "@tamagui/config-default-node": "^1.1.8",
     "@tamagui/vite-plugin": "^1.1.8",

@@ -1,9 +1,9 @@
 import { join } from 'path'
 
+import type { TamaguiOptions } from '@tamagui/types'
 import { pathExists, readJSON } from 'fs-extra'
 
 import { getDefaultTamaguiOptions } from './getDefaultTamaguiOptions'
-import type { TamaguiOptions } from './types'
 
 export async function readTamaguiOptions({ cwd = '.' }: { cwd: string }) {
   const filePath = join(cwd, 'tamagui.json')

@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import normalizeCSSColor from '@tamagui/normalize-css-color'
+import { normalizeCSSColor } from '@tamagui/normalize-css-color'
 
 import { getConfig } from '../config'
 import { expandStyle } from './expandStyle'

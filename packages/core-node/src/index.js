@@ -1,9 +1,11 @@
 // see core/static
 
-if (process.env.TAMAGUI_COMPILE_PROCESS !== 1) {
-  process.env.TAMAGUI_COMPILE_PROCESS = 1
+if (process.env.TAMAGUI_COMPILE_PROCESS !== '1') {
+  process.env.TAMAGUI_COMPILE_PROCESS = '1'
 }
+
 process.env.IS_STATIC = 'is_static'
+
 try {
   const all = {
     ...require('../dist/static'),

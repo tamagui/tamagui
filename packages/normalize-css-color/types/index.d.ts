@@ -1,8 +1,9 @@
-export default function normalizeColor(color: string): number | null;
+export declare function normalizeCSSColor(color: string): number | null;
 export declare function rgba(colorInt: number): {
     r: number;
     g: number;
     b: number;
     a: number;
 };
+export default normalizeCSSColor;
 //# sourceMappingURL=index.d.ts.map

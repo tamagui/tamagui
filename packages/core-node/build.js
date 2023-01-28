@@ -8,6 +8,7 @@ const _ = require('lodash')
 const tmpDir = require('os').tmpdir()
 const path = require('path')
 const { join } = require('path')
+// const { viteCommonjs } = require('@originjs/vite-plugin-commonjs')
 
 async function build() {
   // eslint-disable-next-line no-console

@@ -1,26 +1,31 @@
 {
-  "name": "@tamagui/helpers-node",
+  "name": "@tamagui/types",
   "version": "1.1.8",
-  "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "./dist",
+  "type": "module",
+  "main": "./dist/cjs",
+  "module": "./dist/esm",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "dependencies": {
-    "@tamagui/types": "^1.1.8"
-  },
   "devDependencies": {
-    "@tamagui/build": "^1.1.8",
-    "fs-extra": "^10.1.0"
+    "@tamagui/build": "^1.1.8"
   },
   "publishConfig": {
     "access": "public"

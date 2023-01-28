@@ -10,7 +10,7 @@
 
 import { names } from './names'
 
-export default function normalizeColor(color: string): number | null {
+export function normalizeCSSColor(color: string): number | null {
   let match: RegExpExecArray | null = null
 
   if (typeof color === 'number') {
@@ -214,3 +214,5 @@ export function rgba(colorInt: number) {
     a,
   }
 }
+
+export default normalizeCSSColor

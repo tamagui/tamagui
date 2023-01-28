@@ -2,10 +2,10 @@ import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import type { PseudoStyles, StaticConfig } from '@tamagui/core-node';
 import type { StyleObject } from '@tamagui/helpers';
-import type { TamaguiOptions } from '@tamagui/helpers-node';
+import type { TamaguiOptions } from '@tamagui/types';
 import type { ViewStyle } from 'react-native';
 import { LoadedComponents } from './index';
-export type { TamaguiOptions } from '@tamagui/helpers-node';
+export type { TamaguiOptions } from '@tamagui/types';
 export type { StyleObject } from '@tamagui/helpers';
 export type ClassNameObject = t.StringLiteral | t.Expression;
 export interface CacheObject {

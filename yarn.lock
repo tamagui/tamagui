@@ -4109,90 +4109,90 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-arm64@npm:1.3.20":
-  version: 1.3.20
-  resolution: "@swc/core-darwin-arm64@npm:1.3.20"
+"@swc/core-darwin-arm64@npm:1.3.30":
+  version: 1.3.30
+  resolution: "@swc/core-darwin-arm64@npm:1.3.30"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-x64@npm:1.3.20":
-  version: 1.3.20
-  resolution: "@swc/core-darwin-x64@npm:1.3.20"
+"@swc/core-darwin-x64@npm:1.3.30":
+  version: 1.3.30
+  resolution: "@swc/core-darwin-x64@npm:1.3.30"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm-gnueabihf@npm:1.3.20":
-  version: 1.3.20
-  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.3.20"
+"@swc/core-linux-arm-gnueabihf@npm:1.3.30":
+  version: 1.3.30
+  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.3.30"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-gnu@npm:1.3.20":
-  version: 1.3.20
-  resolution: "@swc/core-linux-arm64-gnu@npm:1.3.20"
+"@swc/core-linux-arm64-gnu@npm:1.3.30":
+  version: 1.3.30
+  resolution: "@swc/core-linux-arm64-gnu@npm:1.3.30"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-musl@npm:1.3.20":
-  version: 1.3.20
-  resolution: "@swc/core-linux-arm64-musl@npm:1.3.20"
+"@swc/core-linux-arm64-musl@npm:1.3.30":
+  version: 1.3.30
+  resolution: "@swc/core-linux-arm64-musl@npm:1.3.30"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-gnu@npm:1.3.20":
-  version: 1.3.20
-  resolution: "@swc/core-linux-x64-gnu@npm:1.3.20"
+"@swc/core-linux-x64-gnu@npm:1.3.30":
+  version: 1.3.30
+  resolution: "@swc/core-linux-x64-gnu@npm:1.3.30"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-musl@npm:1.3.20":
-  version: 1.3.20
-  resolution: "@swc/core-linux-x64-musl@npm:1.3.20"
+"@swc/core-linux-x64-musl@npm:1.3.30":
+  version: 1.3.30
+  resolution: "@swc/core-linux-x64-musl@npm:1.3.30"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@swc/core-win32-arm64-msvc@npm:1.3.20":
-  version: 1.3.20
-  resolution: "@swc/core-win32-arm64-msvc@npm:1.3.20"
+"@swc/core-win32-arm64-msvc@npm:1.3.30":
+  version: 1.3.30
+  resolution: "@swc/core-win32-arm64-msvc@npm:1.3.30"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@swc/core-win32-ia32-msvc@npm:1.3.20":
-  version: 1.3.20
-  resolution: "@swc/core-win32-ia32-msvc@npm:1.3.20"
+"@swc/core-win32-ia32-msvc@npm:1.3.30":
+  version: 1.3.30
+  resolution: "@swc/core-win32-ia32-msvc@npm:1.3.30"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@swc/core-win32-x64-msvc@npm:1.3.20":
-  version: 1.3.20
-  resolution: "@swc/core-win32-x64-msvc@npm:1.3.20"
+"@swc/core-win32-x64-msvc@npm:1.3.30":
+  version: 1.3.30
+  resolution: "@swc/core-win32-x64-msvc@npm:1.3.30"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@swc/core@npm:^1.3.10":
-  version: 1.3.20
-  resolution: "@swc/core@npm:1.3.20"
+"@swc/core@npm:^1.3.22":
+  version: 1.3.30
+  resolution: "@swc/core@npm:1.3.30"
   dependencies:
-    "@swc/core-darwin-arm64": 1.3.20
-    "@swc/core-darwin-x64": 1.3.20
-    "@swc/core-linux-arm-gnueabihf": 1.3.20
-    "@swc/core-linux-arm64-gnu": 1.3.20
-    "@swc/core-linux-arm64-musl": 1.3.20
-    "@swc/core-linux-x64-gnu": 1.3.20
-    "@swc/core-linux-x64-musl": 1.3.20
-    "@swc/core-win32-arm64-msvc": 1.3.20
-    "@swc/core-win32-ia32-msvc": 1.3.20
-    "@swc/core-win32-x64-msvc": 1.3.20
+    "@swc/core-darwin-arm64": 1.3.30
+    "@swc/core-darwin-x64": 1.3.30
+    "@swc/core-linux-arm-gnueabihf": 1.3.30
+    "@swc/core-linux-arm64-gnu": 1.3.30
+    "@swc/core-linux-arm64-musl": 1.3.30
+    "@swc/core-linux-x64-gnu": 1.3.30
+    "@swc/core-linux-x64-musl": 1.3.30
+    "@swc/core-win32-arm64-msvc": 1.3.30
+    "@swc/core-win32-ia32-msvc": 1.3.30
+    "@swc/core-win32-x64-msvc": 1.3.30
   dependenciesMeta:
     "@swc/core-darwin-arm64":
       optional: true
@@ -4214,9 +4214,7 @@ __metadata:
       optional: true
     "@swc/core-win32-x64-msvc":
       optional: true
-  bin:
-    swcx: run_swcx.js
-  checksum: 646c37e3521f04cd08061ab67a4388959e4b234c38eba2eb9fe0fd615dedb6ff9412264789e58af7c2d24b3e5a7ea456efd060e3760d7a91509234b5b5983ad7
+  checksum: 157a8ae43ebc73fa28d53e913fd7fc879289d5479ba5ea0c5e9abad0b379ca7e292d45f4f07bfd3ec0ff1998b55f300737724dfe463f1f7b361661e083db950c
   languageName: node
   linkType: hard
 
@@ -4462,7 +4460,7 @@ __metadata:
   dependencies:
     "@types/fs-extra": ^9.0.13
     chokidar: ^3.5.2
-    esbuild: ^0.16.15
+    esbuild: ^0.17.5
     execa: ^5.0.0
     fast-glob: ^3.2.11
     fs-extra: ^10.1.0
@@ -4538,7 +4536,7 @@ __metadata:
     chalk: ^4.1.2
     chokidar: ^3.5.2
     compression: ^1.7.4
-    esbuild: ^0.16.15
+    esbuild: ^0.17.5
     execa: ^5.0.0
     express: ^4.18.1
     express-http-proxy: ^1.6.3
@@ -4670,12 +4668,13 @@ __metadata:
   resolution: "@tamagui/core-node@workspace:packages/core-node"
   dependencies:
     "@babel/runtime": ^7.19.4
+    "@originjs/vite-plugin-commonjs": ^1.0.3
     "@tamagui/core": ^1.1.8
     "@tamagui/helpers": ^1.1.8
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
     chokidar: ^3.5.2
-    esbuild: ^0.16.15
+    esbuild: ^0.17.5
     execa: ^5.0.0
     fast-glob: ^3.2.11
     fs-extra: ^10.1.0
@@ -4943,6 +4942,7 @@ __metadata:
   resolution: "@tamagui/helpers-node@workspace:packages/helpers-node"
   dependencies:
     "@tamagui/build": ^1.1.8
+    "@tamagui/types": ^1.1.8
     fs-extra: ^10.1.0
   languageName: unknown
   linkType: soft
@@ -5403,6 +5403,7 @@ __metadata:
     "@tamagui/vite-plugin": ^1.1.8
     "@tamagui/vite-plugin-reanimated": ^1.1.8
     "@vitejs/plugin-react": ^2.2.0
+    "@vitejs/plugin-react-swc": ^3.0.1
     babel-polyfill: ^6.26.0
     css-loader: ^5.2.4
     esbuild-loader: ^2.20.0
@@ -5421,7 +5422,6 @@ __metadata:
     url-loader: ^4.1.1
     vite: ^4.0.4
     vite-plugin-environment: ^1.1.3
-    vite-plugin-swc-react-refresh: ^2.2.0
     webpack: ^5.74.0
     webpack-bundle-analyzer: ^4.5.0
     webpack-cli: ^4.9.2
@@ -5681,6 +5681,7 @@ __metadata:
     "@tamagui/proxy-worm": ^1.1.8
     "@tamagui/shorthands": ^1.1.8
     "@tamagui/test-design-system": ^1.1.8
+    "@tamagui/types": ^1.1.8
     "@testing-library/react": ^13.4.0
     "@types/babel__generator": ^7.6.4
     "@types/babel__traverse": ^7.18.2
@@ -5691,7 +5692,7 @@ __metadata:
     babel-loader: ^8.2.5
     css-loader: ^5.2.4
     dedent: ^0.7.0
-    esbuild: ^0.16.15
+    esbuild: ^0.17.5
     esbuild-loader: ^2.20.0
     esbuild-register: ^3.4.2
     find-cache-dir: ^3.3.2
@@ -5837,6 +5838,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/types@^1.1.8, @tamagui/types@workspace:packages/types":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/types@workspace:packages/types"
+  dependencies:
+    "@tamagui/build": ^1.1.8
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/use-constant@^1.1.8, @tamagui/use-constant@workspace:packages/use-constant":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-constant@workspace:packages/use-constant"
@@ -5965,7 +5974,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin-internal@workspace:packages/vite-plugin-internal"
   dependencies:
-    "@originjs/vite-plugin-commonjs": ^1.0.3
     "@tamagui/build": ^1.1.8
     "@tamagui/config-default-node": ^1.1.8
     "@tamagui/vite-plugin": ^1.1.8
@@ -5991,7 +5999,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin@workspace:packages/vite-plugin"
   dependencies:
-    "@originjs/vite-plugin-commonjs": ^1.0.3
     "@tamagui/build": ^1.1.8
     "@tamagui/fake-react-native": ^1.1.8
     "@tamagui/proxy-worm": ^1.1.8
@@ -7065,6 +7072,17 @@ __metadata:
   peerDependencies:
     graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
   checksum: 7638518e809da750f89bc59343b3a1f7fea2927110a2aab39701ae36c7c1bc5953f5a536a47402d4febbfc227fd0c729844b58d72efb283ed8aa73c20c26ef25
+  languageName: node
+  linkType: hard
+
+"@vitejs/plugin-react-swc@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@vitejs/plugin-react-swc@npm:3.0.1"
+  dependencies:
+    "@swc/core": ^1.3.22
+  peerDependencies:
+    vite: ^4
+  checksum: 4023b8a582d8f30d0969dd485b2de1ffed8b5110ee732e8129c427cb9ce6c4238343afe4c5bf451cfebf2822df67ff989915231f93e0c94ac74a1aca42fb2f00
   languageName: node
   linkType: hard
 
@@ -23019,17 +23037,6 @@ __metadata:
   peerDependencies:
     vite: ">= 2.7"
   checksum: 1f3a7ed516dfed7c44804f1bf0ced1d55c2dbc4e2dc6e61f79cd30f9f2e19b7b02937d063130d5b8c9707c730f98ea587cc1586ee487954d7a25ff3af4f8875a
-  languageName: node
-  linkType: hard
-
-"vite-plugin-swc-react-refresh@npm:^2.2.0":
-  version: 2.2.1
-  resolution: "vite-plugin-swc-react-refresh@npm:2.2.1"
-  dependencies:
-    "@swc/core": ^1.3.10
-  peerDependencies:
-    vite: ^2 || ^3
-  checksum: 92092453c37414a0069854366017134e3fdd627f29597d86b6b6b2561f3d9d2048ab92b3f4326eb71ab8134ac77c9425b5cfeeb2a8765d11818451c9209cfe7d
   languageName: node
   linkType: hard
 

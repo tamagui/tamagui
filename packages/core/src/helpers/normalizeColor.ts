@@ -1,7 +1,9 @@
 import { isWeb } from '@tamagui/constants'
-import normalizeCSSColor, { rgba } from '@tamagui/normalize-css-color'
+import * as NCC from '@tamagui/normalize-css-color'
 
-export { rgba } from '@tamagui/normalize-css-color'
+export const rgba = NCC.rgba
+
+// export { rgba } from '@tamagui/normalize-css-color'
 
 export const normalizeColor = (color?: string | null, opacity?: number) => {
   if (color === null || color === undefined) {
@@ -16,7 +18,7 @@ export const normalizeColor = (color?: string | null, opacity?: number) => {
   ) {
     return color
   }
-  const colorProcessed = normalizeCSSColor(color)
+  const colorProcessed = NCC.normalizeCSSColor(color)
   if (colorProcessed !== null) {
     const { r, g, b, a } = rgba(colorProcessed)
     return `rgba(${r},${g},${b},${(opacity ?? a).toFixed(2)})`

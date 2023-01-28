@@ -3,7 +3,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { useState } from 'react'
-import { H1, TamaguiProvider, XStack, YStack, useMedia, useTheme } from 'tamagui'
+import { H1, Square, TamaguiProvider, XStack, YStack, useMedia, useTheme } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -55,6 +55,7 @@ export const Sandbox = () => {
       />
 
       <YStack fullscreen ai="center" jc="center">
+        <Square size={100} bc="red" />
         {/* <SelectDemo /> */}
         {/* <SliderDemo /> */}
         {/* <Square tabIndex="0" size={100} bc="$blue10" /> */}
