@@ -5930,7 +5930,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/text@^1.1.8, @tamagui/text@workspace:packages/text":
+"@tamagui/text-test@workspace:packages/text-test":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/text-test@workspace:packages/text-test"
+  dependencies:
+    "@tamagui/text": "*"
+    vitest: ^0.26.3
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/text@*, @tamagui/text@^1.1.8, @tamagui/text@workspace:packages/text":
   version: 0.0.0-use.local
   resolution: "@tamagui/text@workspace:packages/text"
   dependencies:
@@ -5940,7 +5949,6 @@ __metadata:
     "@tamagui/helpers-tamagui": ^1.1.8
     react: ^18.2.0
     react-dom: ^18.2.0
-    vitest: ^0.26.3
   peerDependencies:
     react: "*"
     react-dom: "*"
