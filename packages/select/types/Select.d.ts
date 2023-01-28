@@ -1,6 +1,5 @@
 import { TamaguiElement } from '@tamagui/core';
 import { ListItemProps } from '@tamagui/list-item';
-import { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import { ScopedProps, SelectProps } from './types';
 export type SelectTriggerProps = ListItemProps;
@@ -110,7 +109,7 @@ export declare const SelectIcon: import("@tamagui/core").TamaguiComponent<(Omit<
 } & {
     [x: string]: undefined;
 })>;
-export interface SelectItemProps extends YStackProps {
+export interface SelectItemProps extends ListItemProps {
     value: string;
     index: number;
     disabled?: boolean;

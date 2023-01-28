@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -30,22 +30,22 @@
     "reset.css"
   ],
   "dependencies": {
-    "@tamagui/compose-refs": "^1.1.6",
-    "@tamagui/constants": "^1.1.6",
-    "@tamagui/helpers": "^1.1.6",
-    "@tamagui/normalize-css-color": "^1.1.6",
-    "@tamagui/react-native-use-pressable": "^1.1.6",
-    "@tamagui/react-native-use-responder-events": "^1.1.6",
-    "@tamagui/use-did-finish-ssr": "^1.1.6",
-    "@tamagui/use-event": "^1.1.6",
-    "@tamagui/use-force-update": "^1.1.6"
+    "@tamagui/compose-refs": "^1.1.7",
+    "@tamagui/constants": "^1.1.7",
+    "@tamagui/helpers": "^1.1.7",
+    "@tamagui/normalize-css-color": "^1.1.7",
+    "@tamagui/react-native-use-pressable": "^1.1.7",
+    "@tamagui/react-native-use-responder-events": "^1.1.7",
+    "@tamagui/use-did-finish-ssr": "^1.1.7",
+    "@tamagui/use-event": "^1.1.7",
+    "@tamagui/use-force-update": "^1.1.7"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.1.6",
+    "@tamagui/build": "^1.1.7",
     "@testing-library/react": "^13.4.0",
     "csstype": "^3.0.10",
     "react": "^18.2.0",
