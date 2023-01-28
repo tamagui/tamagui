@@ -128,12 +128,12 @@ let isFlushing = false
 function updateCurrentState() {
   if (isFlushing) return
   isFlushing = true
-  setTimeout(() => {
+  Promise.resolve().then(() => {
+    isFlushing = false
     startTransition(() => {
       currentStateListeners.forEach((cb) => cb(mediaState))
     })
-    isFlushing = false
-  }, 0)
+  })
 }
 
 type MediaKeysState = {
