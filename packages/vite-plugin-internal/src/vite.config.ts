@@ -1,7 +1,5 @@
 /// <reference types="vitest" />
 
-import { join } from 'path'
-
 // import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react'

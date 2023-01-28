@@ -38,6 +38,7 @@ export function normalizeTernaries(ternaries: Ternary[]) {
       }
     }
 
+    // @ts-ignore
     const key = generate(ternaryTest as any).code
 
     if (!ternariesByKey[key]) {

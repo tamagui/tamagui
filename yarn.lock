@@ -5805,6 +5805,38 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/static-tests@workspace:packages/static-tests":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/static-tests@workspace:packages/static-tests"
+  dependencies:
+    "@babel/plugin-syntax-typescript": ^7.18.6
+    "@babel/types": ^7.19.4
+    "@dish/babel-preset": ^0.0.6
+    "@tamagui/test-design-system": ^1.1.8
+    "@testing-library/react": ^13.4.0
+    "@types/babel__generator": ^7.6.4
+    "@types/babel__traverse": ^7.18.2
+    "@types/find-root": ^1.1.2
+    "@types/node": ^16.11.9
+    "@types/webpack": ^4.41.26
+    babel-loader: ^8.2.5
+    css-loader: ^5.2.4
+    dedent: ^0.7.0
+    esbuild-loader: ^2.20.0
+    null-loader: ^4.0.1
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-native-web: ^0.18.3
+    react-test-renderer: ^18.2.0
+    style-loader: ^3.3.1
+    typescript: ^4.7.4
+    vitest: ^0.26.3
+    webpack: ^5.74.0
+  peerDependencies:
+    react-native-web: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/static@^1.1.8, @tamagui/static@workspace:packages/static":
   version: 0.0.0-use.local
   resolution: "@tamagui/static@workspace:packages/static"

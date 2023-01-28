@@ -14,8 +14,8 @@ import { ensureDir, existsSync, removeSync, writeFileSync } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants.js'
 import { getNameToPaths, registerRequire, unregisterRequire } from '../require.js'
-import { babelParse } from './babelParse'
-import { bundle } from './bundle'
+import { babelParse } from './babelParse.js'
+import { bundle } from './bundle.js'
 
 type NameToPaths = {
   [key: string]: Set<string>
@@ -64,6 +64,7 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
   const tmpDir = join(process.cwd(), '.tamagui')
   const configOutPath = join(tmpDir, `tamagui.config.cjs`)
   const baseComponents = props.components.filter((x) => x !== '@tamagui/core')
+
   const componentOutPaths = baseComponents.map((componentModule) =>
     join(
       tmpDir,
@@ -106,9 +107,10 @@ Tamagui built config and components:`
     Color.Dim,
     `
   Config     .${sep}${relative(process.cwd(), configOutPath)}
-  Components ${componentOutPaths
-    .map((p) => `.${sep}${relative(process.cwd(), p)}`)
-    .join('\n             ')}
+  Components ${[
+    ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
+    '@tamagui/core',
+  ].join('\n             ')}
 `
   )
 
@@ -304,6 +306,7 @@ function transformAddExports(ast: t.File) {
   const usedNames = new Set<string>()
 
   // avoid clobbering
+  // @ts-ignore
   traverse(ast, {
     ExportNamedDeclaration(nodePath) {
       if (nodePath.node.specifiers) {
@@ -316,6 +319,7 @@ function transformAddExports(ast: t.File) {
     },
   })
 
+  // @ts-ignore
   traverse(ast, {
     VariableDeclaration(nodePath) {
       // top level only
@@ -335,6 +339,7 @@ function transformAddExports(ast: t.File) {
     },
   })
 
+  // @ts-ignore
   return generate(ast as any, {
     concise: false,
     filename: 'test.tsx',

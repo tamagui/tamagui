@@ -365,6 +365,7 @@ export function createExtractor(
     const bindingCache: Record<string, string | null> = {}
 
     const callTraverse = (a: TraverseOptions<any>) => {
+      // @ts-ignore
       return fileOrPath.type === 'File' ? traverse(fileOrPath, a) : fileOrPath.traverse(a)
     }
 

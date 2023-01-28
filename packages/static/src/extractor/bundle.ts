@@ -3,7 +3,7 @@ import { basename, dirname, join } from 'path'
 import esbuild from 'esbuild'
 import { pathExists, stat, writeFile } from 'fs-extra'
 
-import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
+import { resolveWebOrNativeSpecificEntry } from './loadTamagui.js'
 
 /**
  * For internal loading of new files
@@ -24,7 +24,7 @@ function getESBuildConfig(
     // eslint-disable-next-line no-console
     console.log(`Building`, entryPoints)
   }
-  const tsconfig = join(__dirname, '..', '..', 'tamagui.tsconfig.json')
+  const tsconfig = join(__dirname, '..', '..', '..', 'tamagui.tsconfig.json')
 
   const resolvedEntryPoints = !resolvePlatformSpecificEntries
     ? entryPoints

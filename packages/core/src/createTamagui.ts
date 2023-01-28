@@ -153,6 +153,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         names: [themeName],
         theme,
       }
+
       existing.set(rawTheme, dedupedThemes[themeName])
     }
 

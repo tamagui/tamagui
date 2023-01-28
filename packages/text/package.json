@@ -9,6 +9,7 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
+  "type": "module",
   "files": [
     "src",
     "types",

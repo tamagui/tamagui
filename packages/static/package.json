@@ -3,7 +3,8 @@
   "version": "1.1.8",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "files": [
     "tamagui.tsconfig.json",
     "src",
@@ -16,9 +17,7 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
-    "pretest": "node -r esbuild-register ./tests/lib/preTest.js",
-    "test": "INCLUDE_CSS_COLOR_NAMES=1 vitest --config ../vite-plugin-internal/src/vite.config.ts --run --dom"
+    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "tests": {
     "parallel": true

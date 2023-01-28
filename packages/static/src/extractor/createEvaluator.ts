@@ -45,6 +45,7 @@ export function createEvaluator({
       return staticNamespace[n.name]
     }
     const evalContext = vm.createContext(staticNamespace)
+    // @ts-ignore
     const codeWithTypescriptAnnotations = `(${generate(n as any).code})`
     const code = esbuild
       .transformSync(codeWithTypescriptAnnotations, { loader: 'tsx' })

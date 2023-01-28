@@ -59,7 +59,7 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
 const cache = new WeakMap<any, FontSizeTokens>()
 
 function getDefaultSizeToken(font: GenericFont) {
-  if (cache.has(font)) {
+  if (typeof font === 'object' && cache.has(font)) {
     return cache.get(font)!
   }
 

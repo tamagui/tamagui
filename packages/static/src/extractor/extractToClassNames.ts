@@ -6,7 +6,6 @@ import generate from '@babel/generator'
 import * as t from '@babel/types'
 import { getStylesAtomic } from '@tamagui/core-node'
 import { concatClassName } from '@tamagui/helpers'
-import invariant from 'invariant'
 import type { ViewStyle } from 'react-native'
 
 import type { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../types.js'
@@ -54,7 +53,7 @@ export async function extractToClassNames({
   const tm = timer()
 
   if (shouldPrintDebug) {
-    console.log(`Parsing \n\n --- ${sourcePath} --- \n\n`)
+    console.log(`--- ${sourcePath} --- \n\n`)
   }
 
   if (typeof source !== 'string') {
@@ -414,6 +413,7 @@ export async function extractToClassNames({
     .join('\n')
     .trim()
 
+  // @ts-ignore
   const result = generate(
     ast as any,
     {

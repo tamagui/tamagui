@@ -5,7 +5,7 @@ import type { StyleObject } from '@tamagui/helpers'
 import type { TamaguiOptions } from '@tamagui/types'
 import type { ViewStyle } from 'react-native'
 
-import { LoadedComponents } from './index'
+import { LoadedComponents } from './index.js'
 
 export type { TamaguiOptions } from '@tamagui/types'
 

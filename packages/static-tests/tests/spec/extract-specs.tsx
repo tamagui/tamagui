@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Spacer, Text, XStack, YStack, useMedia } from 'tamagui'
 
-import Tamagui from '../lib/tamagui.config'
+import Tamagui from '../lib/tamagui.config.cjs'
 import { testColor } from './constants'
 import { baseStyle, nestedStyle } from './extract-spec-constants'
 

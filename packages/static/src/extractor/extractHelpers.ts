@@ -1,4 +1,4 @@
-import { basename, relative } from 'path'
+import { basename } from 'path'
 
 import generate from '@babel/generator'
 import type { NodePath } from '@babel/traverse'
@@ -10,7 +10,9 @@ import type { ExtractedAttr, TamaguiOptionsWithFileInfo, Ternary } from '../type
 
 // import { astToLiteral } from './literalToAst'
 
-export function isPresent<T extends Object>(input: null | void | undefined | T): input is T {
+export function isPresent<T extends Object>(
+  input: null | void | undefined | T
+): input is T {
   return input != null
 }
 
@@ -58,7 +60,8 @@ export const ternaryStr = (x: Ternary) => {
     ? x.test.name
     : t.isMemberExpression(x.test)
     ? [x.test.object['name'], x.test.property['name']]
-    : generate(x.test as any).code
+    : // @ts-ignore
+      generate(x.test as any).code
   return [
     'ternary(',
     conditional,
@@ -118,13 +121,19 @@ export function isValidThemeHook(
   return true
 }
 
-export const isInsideComponentPackage = (props: TamaguiOptionsWithFileInfo, moduleName: string) => {
+export const isInsideComponentPackage = (
+  props: TamaguiOptionsWithFileInfo,
+  moduleName: string
+) => {
   return getValidComponentsPaths(props).some((path) => {
     return moduleName.startsWith(path)
   })
 }
 
-export const isComponentPackage = (props: TamaguiOptionsWithFileInfo, srcName: string) => {
+export const isComponentPackage = (
+  props: TamaguiOptionsWithFileInfo,
+  srcName: string
+) => {
   return getValidComponentsPaths(props).some((path) => {
     return srcName.startsWith(path)
   })
