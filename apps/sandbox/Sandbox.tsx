@@ -6,6 +6,7 @@ import {
   AnimationsTimingDemo,
   DialogDemo,
   PopoverDemo,
+  PopperDemo,
   SelectDemo,
   SliderDemo,
   TooltipDemo,
@@ -74,8 +75,10 @@ export const Sandbox = () => {
         {/* <SliderDemo /> */}
         {/* <Square tabIndex="0" size={100} bc="$blue10" /> */}
         {/* <Button size="$8"></Button> */}
-        <TestUseMediaRenders />
+        {/* <TestUseMediaRenders /> */}
         {/* <SliderDemo /> */}
+
+        <PopperDemo />
       </YStack>
 
       {/*  */}

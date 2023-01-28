@@ -3,59 +3,14 @@ import { Scope } from '@tamagui/create-context';
 import { SizableStackProps, YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import { View } from 'react-native';
-import { Coords, Placement, Strategy, flip, shift, UseFloatingReturn } from '@tamagui/floating';
+import { Placement, Strategy, flip, shift } from '@tamagui/floating';
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export declare const createPopperScope: import("@tamagui/create-context").CreateScope;
-type PopperContextValue = UseFloatingReturn & {
-    isMounted: boolean;
-    anchorRef: any;
-    size?: SizeTokens;
-    placement?: Placement;
-    arrowRef: any;
-    onArrowSize?: (val: number) => void;
-    arrowStyle?: Partial<Coords> & {
-        centerOffset: number;
-    };
-};
 export declare const PopperProvider: {
-    (props: Omit<import("@tamagui/floating").ComputePositionReturn, "x" | "y"> & {
-        x: number | null;
-        y: number | null;
-    } & {
-        update: () => void;
-        reference: (node: import("@tamagui/floating").ReferenceType | null) => void;
-        floating: (node: HTMLElement | null) => void;
-        refs: {
-            reference: React.MutableRefObject<import("@tamagui/floating").ReferenceType | null>;
-            floating: React.MutableRefObject<HTMLElement | null>;
-        };
-    } & {
-        context?: any;
-        getFloatingProps?: ((props: {
-            [key: string]: any;
-            ref: any;
-        }) => any) | undefined;
-        getReferenceProps?: ((props: {
-            [key: string]: any;
-            ref: any;
-        }) => any) | undefined;
-    } & {
-        isMounted: boolean;
-        anchorRef: any;
-        size?: SizeTokens | undefined;
-        placement?: Placement | undefined;
-        arrowRef: any;
-        onArrowSize?: ((val: number) => void) | undefined;
-        arrowStyle?: (Partial<Coords> & {
-            centerOffset: number;
-        }) | undefined;
-    } & {
-        scope: Scope<PopperContextValue>;
-        children: React.ReactNode;
-    }): JSX.Element;
+    (props: any): JSX.Element;
     displayName: string;
-}, usePopperContext: (consumerName: string, scope: Scope<PopperContextValue | undefined>) => PopperContextValue;
+}, usePopperContext: (consumerName: string, scope: Scope<any>) => any;
 export type PopperProps = {
     size?: SizeTokens;
     children?: React.ReactNode;
