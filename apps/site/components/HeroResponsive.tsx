@@ -10,7 +10,7 @@ import {
   Monitor,
   Star,
 } from '@tamagui/lucide-icons'
-import React, { useMemo } from 'react'
+import React, { startTransition, useMemo } from 'react'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import {
   Button,
@@ -69,7 +69,9 @@ export const HeroResponsive = memo(() => {
   const [hasInteracted, setHasInteracted] = useState(false)
   const updateBoundings = useDebounce(() => {
     const rect = safariRef.current?.getBoundingClientRect() ?? null
-    setBounding(rect)
+    startTransition(() => {
+      setBounding(rect)
+    })
   }, 350)
 
   const isSafari = useIsSafari()
