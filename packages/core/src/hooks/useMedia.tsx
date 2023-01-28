@@ -127,10 +127,12 @@ let flushing = false
 function updateCurrentState() {
   if (flushing) return
   flushing = true
-  setTimeout(() => {
-    listeners.forEach((cb) => cb(mediaState))
+  Promise.resolve().then(() => {
     flushing = false
-  }, 0)
+    startTransition(() => {
+      listeners.forEach((cb) => cb(mediaState))
+    })
+  })
 }
 
 type MediaKeysState = {
