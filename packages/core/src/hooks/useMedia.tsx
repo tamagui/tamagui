@@ -122,17 +122,14 @@ export function useMediaListeners(config: TamaguiInternalConfig) {
   }, [])
 }
 
-const currentStateListeners = new Set<any>()
-let isFlushing = false
-
+const listeners = new Set<any>()
+let flushing = false
 function updateCurrentState() {
-  if (isFlushing) return
-  isFlushing = true
+  if (flushing) return
+  flushing = true
   setTimeout(() => {
-    startTransition(() => {
-      currentStateListeners.forEach((cb) => cb(mediaState))
-    })
-    isFlushing = false
+    listeners.forEach((cb) => cb(mediaState))
+    flushing = false
   }, 0)
 }
 
@@ -161,8 +158,8 @@ type UseMediaInternalState = {
 }
 
 function subscribe(subscriber: any) {
-  currentStateListeners.add(subscriber)
-  return () => currentStateListeners.delete(subscriber)
+  listeners.add(subscriber)
+  return () => listeners.delete(subscriber)
 }
 
 export function useMedia(uid?: any, debug?: any): UseMediaState {

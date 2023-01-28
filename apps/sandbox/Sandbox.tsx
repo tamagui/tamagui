@@ -24,6 +24,7 @@ import {
   getTokens,
   styled,
   useMedia,
+  useTheme,
 } from 'tamagui'
 
 import config from './tamagui.config'
@@ -41,6 +42,12 @@ function TestUseMediaRenders() {
   console.warn('render')
 
   return <H1>{media.sm ? 'sm' : 'not sm'}</H1>
+}
+
+function TestUseTheme() {
+  const u = useTheme()
+  console.log(u.color)
+  return null
 }
 
 export const Sandbox = () => {
@@ -74,8 +81,9 @@ export const Sandbox = () => {
         {/* <SliderDemo /> */}
         {/* <Square tabIndex="0" size={100} bc="$blue10" /> */}
         {/* <Button size="$8"></Button> */}
-        <TestUseMediaRenders />
+        {/* <TestUseMediaRenders /> */}
         {/* <SliderDemo /> */}
+        <TestUseTheme />
       </YStack>
 
       {/*  */}

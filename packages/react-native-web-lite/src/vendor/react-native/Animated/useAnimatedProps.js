@@ -12,6 +12,7 @@
 import _createForOfIteratorHelperLoose from '@babel/runtime/helpers/createForOfIteratorHelperLoose'
 import {
   useLayoutEffect as _,
+  startTransition,
   useCallback,
   useEffect,
   useMemo,
@@ -66,7 +67,9 @@ export default function useAnimatedProps(props) {
         // Schedule an update for this component to update `reducedProps`,
         // but do not compute it immediately. If a parent also updated, we
         // need to merge those new props in before updating.
-        scheduleUpdate()
+        startTransition(() => {
+          scheduleUpdate()
+        })
       }
 
       var target = getEventTarget(instance)

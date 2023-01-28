@@ -49,6 +49,7 @@
     "fs-extra": "^10.1.0",
     "get-port": "^6.1.2",
     "graphology": "^0.24.1",
+    "kill-port": "^2.0.1",
     "lodash.debounce": "^4.0.8",
     "morgan": "^1.10.0",
     "ts-morph": "^15.1.0",

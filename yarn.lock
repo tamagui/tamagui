@@ -4546,6 +4546,7 @@ __metadata:
     fs-extra: ^10.1.0
     get-port: ^6.1.2
     graphology: ^0.24.1
+    kill-port: ^2.0.1
     lodash.debounce: ^4.0.8
     morgan: ^1.10.0
     ts-morph: ^15.1.0
@@ -12609,6 +12610,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"get-them-args@npm:1.3.2":
+  version: 1.3.2
+  resolution: "get-them-args@npm:1.3.2"
+  checksum: 5544dcec7faf0bc91656eb517a80d235f5bb42579bb50a119d0eafd9c6b6f3cc4a2c1291695caec941d6bdabee7962221206d0e31f6147374edbc0d95bf368ed
+  languageName: node
+  linkType: hard
+
 "get-tsconfig@npm:^4.2.0":
   version: 4.2.0
   resolution: "get-tsconfig@npm:4.2.0"
@@ -14919,6 +14927,18 @@ __metadata:
   dependencies:
     json-buffer: 3.0.1
   checksum: 13ad58303acd2261c0d4831b4658451603fd159e61daea2121fcb15feb623e75ee328cded0572da9ca76b7b3ceaf8e614f1806c6b3af5db73c9c35a345259651
+  languageName: node
+  linkType: hard
+
+"kill-port@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "kill-port@npm:2.0.1"
+  dependencies:
+    get-them-args: 1.3.2
+    shell-exec: 1.0.2
+  bin:
+    kill-port: cli.js
+  checksum: 407b8f3ef90758aed0f311de07460b77d85b7e1b2826237108ca2a7f7060235fa4d11912917c2859f698103c61b6b1c36b55429ed9f53117e78490fa15ded6b6
   languageName: node
   linkType: hard
 
@@ -20595,6 +20615,13 @@ __metadata:
   version: 3.0.0
   resolution: "shebang-regex@npm:3.0.0"
   checksum: 1a2bcae50de99034fcd92ad4212d8e01eedf52c7ec7830eedcf886622804fe36884278f2be8be0ea5fde3fd1c23911643a4e0f726c8685b61871c8908af01222
+  languageName: node
+  linkType: hard
+
+"shell-exec@npm:1.0.2":
+  version: 1.0.2
+  resolution: "shell-exec@npm:1.0.2"
+  checksum: 0cae6f151165a96f2d3a5a5daf7c55888979ccfa379ada460269f618e95d7501018073cc3d53e6f942cbf7b36e92497d23dae281f3a2633b34ec489d8399ab11
   languageName: node
   linkType: hard
 
