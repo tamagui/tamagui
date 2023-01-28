@@ -3,12 +3,21 @@
   "version": "1.1.8",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
+  "type": "module",
   "main": "./dist",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

@@ -1,8 +1,6 @@
 import { ThemeTint } from '@tamagui/logo'
-import { Heart, Link } from '@tamagui/lucide-icons'
+import { Link } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
-import NextRouter from 'next/router'
-import rangeParser from 'parse-numeric-range'
 import React from 'react'
 import { ScrollView } from 'react-native'
 import {

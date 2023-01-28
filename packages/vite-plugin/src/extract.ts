@@ -2,12 +2,8 @@
 
 import path from 'path'
 
-import {
-  TamaguiOptions,
-  createExtractor,
-  extractToClassNames,
-  getPragmaOptions,
-} from '@tamagui/static'
+import { TamaguiOptions } from '@tamagui/static'
+import { createExtractor, extractToClassNames, getPragmaOptions } from '@tamagui/static'
 import outdent from 'outdent'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath } from 'vite'
