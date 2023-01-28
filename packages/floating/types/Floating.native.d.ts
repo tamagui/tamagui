@@ -1,6 +1,6 @@
-import { ComputePositionReturn } from "@floating-ui/react-native";
-import { RefObject } from "react";
-export * from "@floating-ui/react-native";
+import { ComputePositionReturn } from '@floating-ui/react-native';
+import { RefObject } from 'react';
+export * from '@floating-ui/react-native';
 export declare type UseFloatingReturn = Data & {
     update: () => void;
     offsetParent: (node: any) => void;
