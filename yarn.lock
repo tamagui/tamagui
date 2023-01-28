@@ -5819,6 +5819,7 @@ __metadata:
     "@tamagui/compose-refs": ^1.1.7
     "@tamagui/core": ^1.1.7
     "@tamagui/create-context": ^1.1.7
+    "@tamagui/floating": ^1.1.7
     "@tamagui/get-size": ^1.1.7
     "@tamagui/polyfill-dev": ^1.1.7
     "@tamagui/popover": ^1.1.7
