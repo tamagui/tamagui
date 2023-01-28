@@ -1,4 +1,4 @@
 export declare function getTamaguiOptions({ cwd }: {
     cwd?: string;
-}): Promise<import("./types").TamaguiOptions>;
+}): Promise<TamaguiOptions>;
 //# sourceMappingURL=getTamaguiOptions.d.ts.map

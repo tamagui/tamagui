@@ -24,7 +24,8 @@
     "@tamagui/core": "^1.1.8",
     "@tamagui/font-size": "^1.1.8",
     "@tamagui/get-size": "^1.1.8",
-    "@tamagui/helpers-tamagui": "^1.1.8"
+    "@tamagui/helpers-tamagui": "^1.1.8",
+    "@tamagui/text": "^1.1.8"
   },
   "peerDependencies": {
     "react": "*",
