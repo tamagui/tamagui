@@ -2,7 +2,14 @@
 import arg, { flag } from 'arg'
 import chalk from 'chalk'
 
-import { getOptions } from './utils.js'
+import { disposeAll, getOptions } from './utils.js'
+
+;['exit', 'SIGINT'].forEach((_) => {
+  process.on(_, () => {
+    process.stdout.write(`bye\n`)
+    disposeAll()
+  })
+})
 
 const COMMAND_MAP = {
   build: {
@@ -146,6 +153,7 @@ async function main() {
   }
 
   await definition.run()
+  console.log(`done`)
   process.exit(0)
 }
 

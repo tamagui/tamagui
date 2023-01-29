@@ -1,23 +1,27 @@
+import { readFile } from 'fs/promises'
 import { AddressInfo } from 'net'
 import { join } from 'path'
 
-import { nativePlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
 import chalk from 'chalk'
-import express from 'express'
-import proxy from 'express-http-proxy'
 import fs from 'fs-extra'
-import killPort from 'kill-port'
-import morgan from 'morgan'
 import { build, createServer } from 'vite'
 
+import { createDevServer } from './dev/createDevServer.js'
 import { watchTamaguiConfig } from './tamaguiConfigUtils.js'
 import { ResolvedOptions } from './types.js'
-import { closeEvent } from './utils.js'
+import { registerDispose } from './utils.js'
 
 export const dev = async (options: ResolvedOptions) => {
   const { root, mode, paths } = options
 
   process.chdir(process.cwd())
+
+  const { tamaguiPlugin, nativePlugin, nativePrebuild } = await import(
+    '@tamagui/vite-plugin'
+  )
+
+  // build react-native
+  await nativePrebuild()
 
   const plugins = [
     tamaguiPlugin({
@@ -26,74 +30,89 @@ export const dev = async (options: ResolvedOptions) => {
     nativePlugin(),
   ]
 
-  const buildOutput = await build({
-    plugins,
-    root,
-  })
-  const outputJsFile = 'output' in buildOutput ? buildOutput.output[0]?.fileName : null
-  if (!outputJsFile) {
-    throw new Error(`No js?`)
+  async function getBundle() {
+    const outputJsPath = join(process.cwd(), '.tamagui', 'bundle.js')
+    const outputCode = await getBundleCode()
+    // debug out each time
+    fs.writeFile(outputJsPath, outputCode)
+    return outputCode
   }
-  const outputJsPath = join(process.cwd(), 'dist', outputJsFile)
+
+  async function getBundleCode() {
+    // build app
+    const buildOutput = await build({
+      plugins,
+      appType: 'custom',
+      root: join(root, 'src/index.ts'),
+      build: {
+        ssr: true,
+      },
+      ssr: {
+        format: 'cjs',
+        target: 'node',
+      },
+      mode: 'development',
+      define: {
+        __DEV__: 'true',
+        'process.env.NODE_ENV': `"development"`,
+      },
+    })
+
+    const appCode = 'output' in buildOutput ? buildOutput.output[0].code : null
+
+    if (!appCode) {
+      throw `❌`
+    }
+
+    const [react, reactJsxRuntime, reactNative] = await Promise.all([
+      readFile(join(process.cwd(), 'react.js'), 'utf-8'),
+      readFile(join(process.cwd(), 'react-jsx-runtime.js'), 'utf-8'),
+      readFile(join(process.cwd(), 'react-native.js'), 'utf-8'),
+    ])
+
+    const reactCode = react.replace(
+      `module.exports = require_react_development();`,
+      `return require_react_development()`
+    )
+
+    const reactJSXRuntimeCode = reactJsxRuntime.replace(
+      `module.exports = require_react_jsx_runtime_production_min();`,
+      `return require_react_jsx_runtime_production_min()`
+    )
+
+    const reactNativeCode = reactNative.replace(
+      `module.exports = require_react_native();`,
+      `return require_react_native()`
+    )
+    // .replace(
+    //   `/* @__PURE__ */ react(RootComponentWithMeaningfulName, null, renderable);`,
+    //   `null`
+    // )
+
+    return (await readFile('template.js', 'utf-8'))
+      .replace(`// -- react --`, reactCode)
+      .replace(`// -- react-native --`, reactNativeCode)
+      .replace(`// -- react/jsx-runtime --`, reactJSXRuntimeCode)
+      .replace(`// -- app --`, appCode)
+  }
 
   const server = await createServer({
-    root,
+    root: root,
+    mode: 'development',
+    plugins,
     server: {
       port: options.port,
       host: options.host || 'localhost',
     },
-    plugins,
   })
 
-  // these can be lazy loaded (eventually should put in own process)
-  await Promise.all([
-    server.listen(),
-    //
-    watchTamaguiConfig(options),
-    // generateTypes(options),
-  ])
+  await server.listen()
+  await watchTamaguiConfig(options)
 
   const info = server.httpServer?.address() as AddressInfo
-  const app = express()
-
-  const cleanup = async () => {
-    console.log('cleaning up')
-    await server.close()
-  }
-
-  process.on(`uncaughtException`, (e) => {
-    console.log('wtdf', e)
-  })
-  ;[`exit`, `SIGINT`, `SIGUSR1`, `SIGUSR2`, `SIGTERM`].forEach((eventType) => {
-    process.on(eventType, cleanup)
-  })
 
   // react native port (it scans 19000 +5)
-  const port = 19000
-
-  app.disable('x-powered-by')
-  app.use(express.static(paths.dotDir, { maxAge: '2h' }))
-  app.use(morgan('tiny'))
-
-  // studio specific - move out eventually to studioPlugin
-
-  app.get('/status', (req, res) => {
-    res.status(200).send()
-  })
-
-  app.get('/conf', async (req, res) => {
-    const conf = await fs.readJSON(paths.conf)
-    res.status(200).json(conf)
-  })
-
-  // /index.bundle?platform=ios&dev=true&minify=false&modulesOnly=false&runModule=true&app=dish.motion:2811:36)
-  app.get('/index.bundle', async (req, res) => {
-    const output = (await fs.readFile(outputJsPath)).toString()
-
-    res.status(200)
-    res.header('Content-Type', 'text/javascript')
-    res.send(output)
-  })
+  const port = 8081
 
   const defaultResponse = {
     name: 'myapp',
@@ -144,18 +163,22 @@ export const dev = async (options: ResolvedOptions) => {
     id: '@anonymous/myapp-473c4543-3c36-4786-9db1-c66a62ac9b78',
   }
 
-  app.get('/', (req, res) => {
-    res.status(200).json(defaultResponse)
+  // new server
+  const dispose = await createDevServer(options, {
+    getIndexBundle: getBundle,
+    indexJson: defaultResponse,
   })
 
-  // app.use('/', proxy(`${info.address}:${info.port}`))
-
-  await killPort(port)
-  app.listen(port)
-
   // eslint-disable-next-line no-console
-  console.log(`Listening on`, chalk.green(`http://localhost:${port}`))
+  console.log(`Listening on:`, chalk.green(`http://localhost:${port}`))
   server.printUrls()
 
-  await closeEvent(server)
+  registerDispose(() => {
+    dispose()
+    server.close()
+  })
+
+  await new Promise((res) => server.httpServer?.on('close', res))
+
+  console.log('closed')
 }

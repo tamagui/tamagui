@@ -30,7 +30,7 @@
     "esbuild": "^0.17.5",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
-    "fs-extra": "^10.1.0",
+    "fs-extra": "^11.1.0",
     "lodash": "^4.17.21"
   },
   "publishConfig": {

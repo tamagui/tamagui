@@ -50,7 +50,7 @@
     "esbuild-register": "^3.4.2",
     "find-cache-dir": "^3.3.2",
     "find-root": "^1.1.0",
-    "fs-extra": "^10.1.0",
+    "fs-extra": "^11.1.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.21",
     "react-native-web-internals": "^1.1.12",
