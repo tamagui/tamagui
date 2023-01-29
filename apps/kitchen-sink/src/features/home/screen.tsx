@@ -5,17 +5,15 @@ import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
   H1,
-  H2,
   ListItem,
   ListItemProps,
   Paragraph,
   Separator,
   Spacer,
   Switch,
-  TextArea,
   YGroup,
   YStack,
-  useTheme,
+  useTheme
 } from 'tamagui'
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
@@ -129,6 +127,7 @@ const demos = [
       { title: 'Select', route: '/demo/select' },
       { title: 'Slider', route: '/demo/slider' },
       { title: 'Switch', route: '/demo/switch' },
+      { title: 'Checkbox', route: '/demo/checkbox' },
     ],
   },
 

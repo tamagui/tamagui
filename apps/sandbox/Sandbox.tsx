@@ -2,10 +2,9 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { Checkbox } from '@tamagui/checkbox'
-import { Check as CheckIcon } from '@tamagui/lucide-icons'
+import { CheckboxDemo } from '@tamagui/demos'
 import { useState } from 'react'
-import { H1, Label, TamaguiProvider, XStack, YStack, useMedia, useTheme } from 'tamagui'
+import { H1, TamaguiProvider, XStack, YStack, useMedia, useTheme } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -64,32 +63,8 @@ export const Sandbox = () => {
         {/* <Button size="$8"></Button> */}
         {/* <TestUseMediaRenders /> */}
         {/* <SliderDemo /> */}
-        <TestCheckbox />
+        <CheckboxDemo />
       </YStack>
-
-      {/*  */}
     </TamaguiProvider>
-  )
-}
-
-const TestCheckbox = () => {
-  return (
-    <XStack space ai="center">
-      <Checkbox
-        id="what"
-        width="$2"
-        height="$2"
-        ai="center"
-        jc="center"
-        backgroundColor="$green5"
-        borderRadius="$2"
-      >
-        <Checkbox.Indicator>
-          <CheckIcon />
-        </Checkbox.Indicator>
-      </Checkbox>
-
-      <Label htmlFor="what">Accept terms and conditions</Label>
-    </XStack>
   )
 }
