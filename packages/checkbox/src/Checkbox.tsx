@@ -3,17 +3,14 @@
 
 import { usePrevious } from '@radix-ui/react-use-previous'
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { Button } from '@tamagui/button'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { Stack, composeEventHandlers, withStaticProperties } from '@tamagui/core'
+import { TamaguiElement, composeEventHandlers, withStaticProperties } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
+import { ThemeableStack, ThemeableStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 // import { useSize } from '@tamagui/use-size'
 import * as React from 'react'
-
-// import { Primitive } from '@tamagui/react-primitive'
-// import type * as Radix from '@radix-ui/react-primitive';
 
 type InputProps = any // Radix.ComponentPropsWithoutRef<'input'>
 interface BubbleInputProps extends Omit<InputProps, 'checked'> {
@@ -79,10 +76,7 @@ function getState(checked: CheckedState) {
  * -----------------------------------------------------------------------------------------------*/
 
 const INDICATOR_NAME = 'CheckboxIndicator'
-
-type CheckboxIndicatorElement = any // React.ElementRef<typeof Primitive.span>
-type PrimitiveSpanProps = any // Radix.ComponentPropsWithoutRef<typeof Primitive.span>
-export interface CheckboxIndicatorProps extends PrimitiveSpanProps {
+export interface CheckboxIndicatorProps extends ThemeableStackProps {
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
@@ -90,27 +84,25 @@ export interface CheckboxIndicatorProps extends PrimitiveSpanProps {
   forceMount?: true
 }
 
-const CheckboxIndicator = React.forwardRef<
-  CheckboxIndicatorElement,
-  CheckboxIndicatorProps
->((props: ScopedProps<CheckboxIndicatorProps>, forwardedRef) => {
-  const { __scopeCheckbox, forceMount, ...indicatorProps } = props
-  const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox)
-  return (
-    <AnimatePresence>
-      {forceMount || isIndeterminate(context.state) || context.state === true ? (
-        //  TODO: The stack might need modifications
-        <Stack
-          data-state={getState(context.state)}
-          data-disabled={context.disabled ? '' : undefined}
-          {...indicatorProps}
-          ref={forwardedRef}
-          style={{ pointerEvents: 'none', ...props.style }}
-        />
-      ) : null}
-    </AnimatePresence>
-  )
-})
+const CheckboxIndicator = React.forwardRef<TamaguiElement, CheckboxIndicatorProps>(
+  (props: ScopedProps<CheckboxIndicatorProps>, forwardedRef) => {
+    const { __scopeCheckbox, forceMount, ...indicatorProps } = props
+    const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox)
+    return (
+      <AnimatePresence>
+        {forceMount || isIndeterminate(context.state) || context.state === true ? (
+          <ThemeableStack
+            data-state={getState(context.state)}
+            data-disabled={context.disabled ? '' : undefined}
+            pointerEvents="none"
+            {...indicatorProps}
+            ref={forwardedRef}
+          />
+        ) : null}
+      </AnimatePresence>
+    )
+  }
+)
 
 CheckboxIndicator.displayName = INDICATOR_NAME
 
@@ -134,13 +126,15 @@ const [CheckboxProvider, useCheckboxContext] =
   createCheckboxContext<CheckboxContextValue>(CHECKBOX_NAME)
 
 type CheckboxElement = any // React.ElementRef<typeof Primitive.button>
-type PrimitiveButtonProps = any // Radix.ComponentPropsWithoutRef<typeof Primitive.button>
 export interface CheckboxProps
-  extends Omit<PrimitiveButtonProps, 'checked' | 'defaultChecked'> {
+  extends Omit<ThemeableStackProps, 'checked' | 'defaultChecked'> {
   checked?: CheckedState
   defaultChecked?: CheckedState
   required?: boolean
   onCheckedChange?(checked: CheckedState): void
+
+  name?: string
+  value?: string
 }
 // TODO: implement the `native` prop
 
@@ -169,10 +163,10 @@ export const Checkbox = withStaticProperties(
         onChange: onCheckedChange,
       })
 
-      // TODO: probably should use something else instead of <Button /> here
       return (
         <CheckboxProvider scope={__scopeCheckbox} state={checked} disabled={disabled}>
-          <Button
+          <ThemeableStack
+            tag="button"
             //   type="button"
             role="checkbox"
             aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
@@ -187,7 +181,7 @@ export const Checkbox = withStaticProperties(
             //     // According to WAI ARIA, Checkboxes don't activate on enter keypress
             //     if (event.key === 'Enter') event.preventDefault()
             //   })}
-            onPress={composeEventHandlers(props.onClick, (event) => {
+            onPress={composeEventHandlers(props.onPress as any, (event) => {
               setChecked((prevChecked) =>
                 isIndeterminate(prevChecked) ? true : !prevChecked
               )
