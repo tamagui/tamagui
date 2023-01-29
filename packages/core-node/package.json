@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-node",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "main": "./src/index.js",
   "types": "./types/static.d.ts",
   "files": [
@@ -19,8 +19,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.19.4",
-    "@tamagui/core": "^1.1.10",
-    "@tamagui/helpers": "^1.1.10"
+    "@tamagui/core": "^1.1.11",
+    "@tamagui/helpers": "^1.1.11"
   },
   "devDependencies": {
     "@originjs/vite-plugin-commonjs": "^1.0.3",
