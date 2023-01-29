@@ -1,5 +1,6 @@
 import {
   GetProps,
+  RadiusTokens,
   StackProps,
   getExpandedShorthands,
   isWeb,
@@ -20,7 +21,9 @@ const StyledImage = styled(RNImage, {
   zIndex: 1,
 })
 
-type StyledImageProps = GetProps<typeof StyledImage>
+type StyledImageProps = Omit<GetProps<typeof StyledImage>, 'borderRadius'> & {
+  borderRadius?: RadiusTokens
+}
 
 type BaseProps = Omit<
   StyledImageProps,
