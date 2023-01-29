@@ -1,6 +1,6 @@
 import { SelectDemo } from '@tamagui/demos'
 import { useMemo, useState } from 'react'
-import { Button, Square, Theme, YStack } from 'tamagui'
+import { Button, SpaceTokens, Square, Theme, ThemeValueFallback, YStack } from 'tamagui'
 
 export default function test() {
   return <ThemeChangeRenderTest />
@@ -16,6 +16,7 @@ function ThemeChangeRenderTest() {
   return (
     <Theme name={theme as any}>
       <YStack>
+        <Button p={10} />
         <Button
           onPress={() => {
             setTheme((prev) => {

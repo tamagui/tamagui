@@ -2,25 +2,20 @@
 import '@tamagui/polyfill-dev'
 
 import { useMemo, useState } from 'react'
-import { OpaqueColorValue } from 'react-native'
 import {
   Button,
   ButtonFrame,
-  ColorTokens,
-  Footer,
   H1,
   Header,
+  SizableText,
   Square,
   TamaguiProvider,
   Theme,
-  ThemeValueFallback,
-  XStack,
   YStack,
   getMedia,
   styled,
   useThemeName,
 } from 'tamagui'
-import { SizableText } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -60,9 +55,6 @@ function ThemeChangeRenderTest() {
     </Theme>
   )
 }
-
-type X = ColorTokens | ThemeValueFallback | OpaqueColorValue | undefined
-const y: X = ''
 
 const CustomButtonFrame = styled(ButtonFrame, {
   variants: {

@@ -1,6 +1,7 @@
 import {
   ColorTokens,
-  ThemeValueFallback,
+  UnionableString,
+  Variable,
   useTheme,
   variableToString,
 } from '@tamagui/core'
@@ -11,4 +12,9 @@ export const useCurrentColor = (colorProp: ColorProp) => {
   return variableToString(theme[colorProp as any] || colorProp || theme.color)
 }
 
-export type ColorProp = ThemeValueFallback | ColorTokens | TextStyle['color'] | undefined
+export type ColorProp =
+  | UnionableString
+  | Variable
+  | ColorTokens
+  | TextStyle['color']
+  | undefined

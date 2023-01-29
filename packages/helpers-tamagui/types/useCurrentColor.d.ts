@@ -1,5 +1,5 @@
-import { ColorTokens, ThemeValueFallback } from '@tamagui/core';
+import { ColorTokens, UnionableString, Variable } from '@tamagui/core';
 import type { TextStyle } from 'react-native';
 export declare const useCurrentColor: (colorProp: ColorProp) => string;
-export type ColorProp = ThemeValueFallback | ColorTokens | TextStyle['color'] | undefined;
+export type ColorProp = UnionableString | Variable | ColorTokens | TextStyle['color'] | undefined;
 //# sourceMappingURL=useCurrentColor.d.ts.map

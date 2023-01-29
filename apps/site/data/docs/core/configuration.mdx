@@ -364,19 +364,16 @@ One final note: using tokens with themes. Tokens are considered a "fallback" to 
 
 ### Strict tokens
 
-If you'd like to enforce _only_ allowing token values from your theme, you can override the `ThemeValueFallback` type in tamagui in your `tamagui.config.ts`, like so:
+If you'd like to enforce _only_ allowing token values from your theme, you can override the `ThemeValueFallback` type in tamagui in your existing `tamagui.config.ts` like so:
 
 ```tsx
-const config = createTamagui({
-  ...yourConfig,
-})
-
-type AppConfig = typeof config
-
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends AppConfig {}
-  // add this line:
-  type ThemeFallbackValue = {}
+
+  // add this:
+  interface ThemeValueFallback {
+    value: never
+  }
 }
 ```
 
