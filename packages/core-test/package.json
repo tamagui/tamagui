@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-test",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "module": "dist/esm",
   "private": true,
   "type": "module",
