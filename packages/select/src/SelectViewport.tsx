@@ -40,7 +40,7 @@ export const SelectViewportFrame = styled(ThemeableStack, {
 
 export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportProps>(
   (props: ScopedProps<SelectViewportProps>, forwardedRef) => {
-    const { __scopeSelect, children, ...viewportProps } = props
+    const { __scopeSelect, children, disableScroll, ...viewportProps } = props
     const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
     const breakpointActive = useSelectBreakpointActive(context.sheetBreakpoint)
 
@@ -61,17 +61,19 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
     }
 
     const {
-      style: { scrollbarWidth, listStyleType, ...restStyle },
+      style: { scrollbarWidth, listStyleType, overflow, ...restStyle },
       ...floatingProps
     } = context.interactions!.getFloatingProps()
 
     return (
       <>
-        <style
-          dangerouslySetInnerHTML={{
-            __html: selectViewportCSS,
-          }}
-        />
+        {!disableScroll && (
+          <style
+            dangerouslySetInnerHTML={{
+              __html: selectViewportCSS,
+            }}
+          />
+        )}
         <FloatingFocusManager context={context.floatingContext}>
           <SelectViewportFrame
             size={context.size}
@@ -81,6 +83,7 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
             ref={forwardedRef}
             {...floatingProps}
             {...restStyle}
+            overflow={disableScroll ? undefined : overflow}
           >
             {children}
           </SelectViewportFrame>

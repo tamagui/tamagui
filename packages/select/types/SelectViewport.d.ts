@@ -116,5 +116,6 @@ export declare const SelectViewport: React.ForwardRefExoticComponent<Omit<import
     readonly chromeless?: boolean | "all" | undefined;
 }>> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
+    disableScroll?: boolean | undefined;
 } & React.RefAttributes<TamaguiElement>>;
 //# sourceMappingURL=SelectViewport.d.ts.map

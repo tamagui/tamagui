@@ -72,6 +72,7 @@ export interface SelectContextValue {
 }
 export type SelectViewportProps = ThemeableStackProps & {
     size?: SizeTokens;
+    disableScroll?: boolean;
 };
 export type SelectContentProps = ScopedProps<{
     children?: React.ReactNode;
