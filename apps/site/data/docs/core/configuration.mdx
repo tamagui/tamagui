@@ -61,7 +61,19 @@ Depending on if you're using just `@tamagui/core`, `tamagui`, or your own custom
 
 ## Overview
 
-Let's start with an example of a complete `tamagui.config.ts`:
+Let's start with an example of a complete `tamagui.config.ts` which is in the code block below. Note that keys used here can be customized to your liking, but using them in combination with [shorthands](#shorthands) give you a nice syntax like this:
+
+```tsx
+<XStack bg="$red" w="$2" h="$1" />
+```
+
+And if you want even shorter, like this:
+
+```tsx
+<Box bg-red w-2 h-1 />
+```
+
+You can achieve that by writing variants (see [an example at bottom of page](#example-of-shorthands-an-variants)).
 
 ```tsx
 import { createFont, createTamagui, createTokens } from '@tamagui/core'
@@ -69,36 +81,37 @@ import { createMedia } from '@tamagui/react-native-media-driver'
 
 const interFont = createFont({
   family: 'Inter, Helvetica, Arial, sans-serif',
+  // keys used for the objects you pass to `size`, `lineHeight`, `weight`
+  // and `letterSpacing` should be consistent. The `createFont` function
+  // will fill-in any missing valus if `lineHeight`, `weight` or `letterSpacing`
+  // are subsets of `size`
   size: {
     1: 12,
     2: 14,
     3: 15,
-    // ...
   },
   lineHeight: {
-    1: 17,
+    // 1 will be 22
     2: 22,
-    3: 25,
-    // ...
   },
   weight: {
-    4: '300',
-    6: '600',
+    1: '300',
+    // 2 will be 300
+    3: '600',
   },
   letterSpacing: {
-    4: 0,
-    8: -1,
+    1: 0,
+    2: -1,
+    // 3 will be -1
   },
-  // (native only) swap out fonts by face/style
+  // (native) swap out fonts by face/style
   face: {
-    200: { normal: 'InterLight', italic: 'InterItalic' },
-    400: { normal: 'Inter' },
-    800: { normal: 'InterBold' },
+    300: { normal: 'InterLight', italic: 'InterItalic' },
+    600: { normal: 'InterBold' },
   },
-  // you may also set `transform` as textTransform values
-  // and `style` as fontStyle values
 })
 
+// these keys can be different, but again we highly recommend consistency
 const size = {
   0: 0,
   1: 5,
