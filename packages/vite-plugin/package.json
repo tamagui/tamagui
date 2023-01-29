@@ -3,6 +3,7 @@
   "version": "1.1.12",
   "types": "./types/index.d.ts",
   "type": "module",
+  "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "license": "MIT",
   "files": [
@@ -20,15 +21,22 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/index.js"
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js"
     }
   },
   "dependencies": {
+    "@bunchtogether/vite-plugin-flow": "^1.0.2",
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
     "@tamagui/fake-react-native": "^1.1.12",
     "@tamagui/proxy-worm": "^1.1.12",
     "@tamagui/react-native-svg": "^1.1.12",
     "@tamagui/static": "^1.1.12",
-    "fs-extra": "^10.1.0",
+    "esbuild": "^0.17.5",
+    "fs-extra": "^11.1.0",
     "lodash": "^4.17.21",
     "micromatch": ">=4.0.0",
     "outdent": "^0.8.0",

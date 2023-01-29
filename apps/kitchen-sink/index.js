@@ -1,8 +1,14 @@
 import { registerRootComponent } from 'expo'
-import React from 'react'
+import { Text, View } from 'react-native'
 
-import App from './src/App'
+// import App from './src/App'
 
-globalThis['React'] = React
+registerRootComponent(Root)
 
-registerRootComponent(App)
+function Root() {
+  return (
+    <View style={{ backgroundColor: 'red', width: 500, height: 500, margin: 30 }}>
+      <Text>{View.render.toString()}</Text>
+    </View>
+  )
+}

@@ -1,3 +1,3 @@
 export declare function getStylesAtomic(): void;
-export declare const startClearStyleCacheInterval: () => void;
+export declare const getAtomicStyle: () => void;
 //# sourceMappingURL=getStylesAtomic.native.d.ts.map
