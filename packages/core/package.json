@@ -5,7 +5,6 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
-  "type": "module",
   "license": "MIT",
   "author": {
     "name": "Nate Wienert"

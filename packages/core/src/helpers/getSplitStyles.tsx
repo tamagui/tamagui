@@ -220,10 +220,6 @@ export const getSplitStyles: StyleSplitter = (
     return cache.get(props)
   }
 
-  if (props.debug) {
-    console.log('props', props)
-  }
-
   conf = conf || getConfig()
   const { shorthands } = conf
   const {
