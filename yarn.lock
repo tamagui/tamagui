@@ -4663,6 +4663,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/checkbox@*, @tamagui/checkbox@^1.1.11, @tamagui/checkbox@workspace:packages/checkbox":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/checkbox@workspace:packages/checkbox"
+  dependencies:
+    "@radix-ui/react-use-previous": ^0.1.1
+    "@tamagui/animate-presence": ^1.1.11
+    "@tamagui/build": ^1.1.11
+    "@tamagui/compose-refs": ^1.1.11
+    "@tamagui/core": ^1.1.11
+    "@tamagui/create-context": ^1.1.11
+    "@tamagui/polyfill-dev": ^1.1.11
+    "@tamagui/stacks": ^1.1.11
+    "@tamagui/use-controllable-state": ^1.1.11
+    "@tamagui/use-size": "*"
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/cli-color@^1.1.11, @tamagui/cli-color@workspace:packages/cli-color":
   version: 0.0.0-use.local
   resolution: "@tamagui/cli-color@workspace:packages/cli-color"
@@ -5553,6 +5575,7 @@ __metadata:
     "@tamagui/animations-css": ^1.1.11
     "@tamagui/animations-motion": ^1.1.11
     "@tamagui/animations-reanimated": ^1.1.11
+    "@tamagui/checkbox": "*"
     "@tamagui/colors": ^1.1.11
     "@tamagui/core": ^1.1.11
     "@tamagui/demos": ^1.1.11
@@ -6140,6 +6163,20 @@ __metadata:
     react: ^18.2.0
   peerDependencies:
     react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/use-size@*, @tamagui/use-size@workspace:packages/use-size":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-size@workspace:packages/use-size"
+  dependencies:
+    "@tamagui/build": ^1.1.11
+    "@types/react": ^18.0.15
+    react: ^18.2.0
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -21628,6 +21665,7 @@ __metadata:
     "@tamagui/build": ^1.1.11
     "@tamagui/button": ^1.1.11
     "@tamagui/card": ^1.1.11
+    "@tamagui/checkbox": ^1.1.11
     "@tamagui/compose-refs": ^1.1.11
     "@tamagui/core": ^1.1.11
     "@tamagui/create-context": ^1.1.11

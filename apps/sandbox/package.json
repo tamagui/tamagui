@@ -14,6 +14,7 @@
     "@tamagui/animations-css": "^1.1.11",
     "@tamagui/animations-motion": "^1.1.11",
     "@tamagui/animations-reanimated": "^1.1.11",
+    "@tamagui/checkbox": "*",
     "@tamagui/colors": "^1.1.11",
     "@tamagui/core": "^1.1.11",
     "@tamagui/demos": "^1.1.11",
