@@ -1,3 +1,6 @@
+// fork of radix
+// https://github.com/radix-ui/primitives/tree/main/packages/react/checkbox/src/Checkbox.tsx
+
 import { usePrevious } from '@radix-ui/react-use-previous'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { Button } from '@tamagui/button'
@@ -9,7 +12,7 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 // import { useSize } from '@tamagui/use-size'
 import * as React from 'react'
 
-// import { Primitive } from '@tamagui/react-primitive' // remaining
+// import { Primitive } from '@tamagui/react-primitive'
 // import type * as Radix from '@radix-ui/react-primitive';
 
 type InputProps = any // Radix.ComponentPropsWithoutRef<'input'>
