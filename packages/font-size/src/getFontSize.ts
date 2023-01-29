@@ -49,7 +49,7 @@ export const getFontSizeToken = (
   if (process.env.NODE_ENV === 'development') {
     if (foundIndex === -1) {
       // eslint-disable-next-line no-console
-      console.warn('No font size found', inSize, opts, 'in size tokens', sizeTokens)
+      console.warn('No font size found', size, opts, 'in size tokens', sizeTokens)
     }
   }
   const tokenIndex = Math.min(

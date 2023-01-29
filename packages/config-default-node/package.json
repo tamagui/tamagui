@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-default-node",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "source": "src/index.ts",
   "main": "dist",
   "types": "./types/index.d.ts",
@@ -15,10 +15,10 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/shorthands": "^1.1.8"
+    "@tamagui/shorthands": "^1.1.9"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.1.8"
+    "@tamagui/build": "^1.1.9"
   },
   "publishConfig": {
     "access": "public"
