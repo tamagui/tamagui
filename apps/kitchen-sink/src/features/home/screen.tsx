@@ -5,14 +5,13 @@ import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
   H1,
-  H2,
   ListItem,
   ListItemProps,
   Paragraph,
   Separator,
   Spacer,
   Switch,
-  TextArea,
+  XStack,
   YGroup,
   YStack,
   useTheme,
@@ -27,6 +26,8 @@ export function HomeScreen() {
         <H1 fontFamily="$heading" size="$9">
           Demos
         </H1>
+
+        <XStack w={100} h={100} bc="red" />
 
         <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
           <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
