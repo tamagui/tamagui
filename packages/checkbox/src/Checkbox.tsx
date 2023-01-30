@@ -2,10 +2,8 @@
 // https://github.com/radix-ui/primitives/tree/main/packages/react/checkbox/src/Checkbox.tsx
 
 import { usePrevious } from '@radix-ui/react-use-previous'
+import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
 import {
-  GetProps,
-  SizeTokens,
-  TamaguiElement,
   composeEventHandlers,
   getVariableValue,
   isWeb,
@@ -35,7 +33,7 @@ export function getState(checked: CheckedState) {
   return isIndeterminate(checked) ? 'indeterminate' : checked ? 'checked' : 'unchecked'
 }
 
-type InputProps = any // Radix.ComponentPropsWithoutRef<'input'>
+type InputProps = any //Radix.ComponentPropsWithoutRef<'input'>
 interface BubbleInputProps extends Omit<InputProps, 'checked'> {
   checked: CheckedState
   control: HTMLElement | null
@@ -186,7 +184,6 @@ type CheckboxContextValue = {
 const [CheckboxProvider, useCheckboxContext] =
   createCheckboxContext<CheckboxContextValue>(CHECKBOX_NAME)
 
-type CheckboxElement = any // React.ElementRef<typeof Primitive.button>
 type CheckboxFrameProps = GetProps<typeof CheckboxFrame>
 export interface CheckboxProps
   extends Omit<CheckboxFrameProps, 'checked' | 'defaultChecked'> {
@@ -203,7 +200,7 @@ export interface CheckboxProps
 
 export const Checkbox = withStaticProperties(
   CheckboxFrame.extractable(
-    React.forwardRef<CheckboxElement, CheckboxProps>(
+    React.forwardRef<HTMLButtonElement, CheckboxProps>(
       (props: ScopedProps<CheckboxProps>, forwardedRef) => {
         const {
           __scopeCheckbox,

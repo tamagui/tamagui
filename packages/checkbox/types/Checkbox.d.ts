@@ -1,4 +1,4 @@
-import { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core';
+import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
 export type CheckedState = boolean | 'indeterminate';
 export declare function isIndeterminate(checked?: CheckedState): checked is 'indeterminate';
@@ -213,7 +213,7 @@ export interface CheckboxProps extends Omit<CheckboxFrameProps, 'checked' | 'def
     value?: string;
     native?: boolean;
 }
-export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & React.RefAttributes<any>> & {
+export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & React.RefAttributes<HTMLButtonElement>> & {
     Indicator: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
