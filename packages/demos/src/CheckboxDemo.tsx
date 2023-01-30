@@ -18,7 +18,7 @@ function CheckboxWithLabel(props: { size: SizeTokens }) {
     <XStack w={300} ai="center" space="$4">
       <Checkbox id={id} size={props.size}>
         <Checkbox.Indicator>
-          <CheckIcon />
+          <CheckIcon size="$1" />
         </Checkbox.Indicator>
       </Checkbox>
 

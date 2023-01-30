@@ -1,9 +1,19 @@
-import { GetProps, TamaguiElement } from '@tamagui/core';
+import { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
-import { CheckedState } from './helpers';
+export type CheckedState = boolean | 'indeterminate';
+export declare function isIndeterminate(checked?: CheckedState): checked is 'indeterminate';
+export declare function getState(checked: CheckedState): "indeterminate" | "checked" | "unchecked";
+type InputProps = any;
+interface BubbleInputProps extends Omit<InputProps, 'checked'> {
+    checked: CheckedState;
+    control: HTMLElement | null;
+    bubbles: boolean;
+    isHidden?: boolean;
+}
+export declare const BubbleInput: (props: BubbleInputProps) => JSX.Element;
 declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined;
 }, "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "transparent" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -18,7 +28,7 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     readonly chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined;
 }, "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "transparent" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -33,7 +43,7 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     readonly chromeless?: boolean | "all" | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined;
 }, "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "transparent" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -48,7 +58,7 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     readonly chromeless?: boolean | "all" | undefined;
 }>>) | (Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -65,7 +75,7 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -82,7 +92,7 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -99,7 +109,7 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     [x: string]: undefined;
 }>>), TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -125,7 +135,7 @@ export type CheckboxIndicatorProps = CheckboxIndicatorFrameProps & {
 };
 export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -139,10 +149,10 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -156,10 +166,10 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -173,10 +183,10 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>>, TamaguiElement, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -190,7 +200,7 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 } & {
-    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: SizeTokens | undefined;
 }>;
 declare const createCheckboxScope: import("@tamagui/create-context").CreateScope;
 type CheckboxFrameProps = GetProps<typeof CheckboxFrame>;
@@ -201,11 +211,12 @@ export interface CheckboxProps extends Omit<CheckboxFrameProps, 'checked' | 'def
     onCheckedChange?(checked: CheckedState): void;
     name?: string;
     value?: string;
+    native?: boolean;
 }
 export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & React.RefAttributes<any>> & {
     Indicator: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
-        readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        readonly elevation?: SizeTokens | undefined;
     }, "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "transparent" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
@@ -220,7 +231,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
         readonly chromeless?: boolean | "all" | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
-        readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        readonly elevation?: SizeTokens | undefined;
     }, "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "transparent" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
@@ -235,7 +246,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
         readonly chromeless?: boolean | "all" | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
-        readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        readonly elevation?: SizeTokens | undefined;
     }, "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "transparent" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
@@ -256,7 +267,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
         forceMount?: true | undefined;
     }) | Pick<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
-        readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
@@ -273,7 +284,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
-        readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
@@ -290,7 +301,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
-        readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
