@@ -2,7 +2,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { CheckboxDemo } from '@tamagui/demos'
+import { CheckboxDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { H1, TamaguiProvider, XStack, YStack, useMedia, useTheme } from 'tamagui'
 
@@ -63,6 +63,7 @@ export const Sandbox = () => {
         {/* <Button size="$8"></Button> */}
         {/* <TestUseMediaRenders /> */}
         {/* <SliderDemo /> */}
+        <SwitchDemo />
         <CheckboxDemo />
       </YStack>
     </TamaguiProvider>
