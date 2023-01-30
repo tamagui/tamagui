@@ -1,4 +1,5 @@
 export const Accordion = {}
+// TODO: mimic the following API
 
 // import { useComposedRefs } from '@tamagui/compose-refs'
 // import { Stack, StackProps, TamaguiElement, composeEventHandlers } from '@tamagui/core'
