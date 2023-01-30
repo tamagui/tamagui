@@ -1634,6 +1634,30 @@ export function createExtractor(
             pressIn: false,
           }
 
+          function splitVariants(style: any) {
+            const variants = {}
+            const styles = {}
+            for (const key in style) {
+              if (staticConfig.variants?.[key]) {
+                variants[key] = style[key]
+              } else {
+                styles[key] = style[key]
+              }
+            }
+            return {
+              variants,
+              styles,
+            }
+          }
+
+          function expandStylesWithoutVariants(style: any) {
+            const { variants, styles } = splitVariants(style)
+            return {
+              ...expandStyles(styles),
+              ...variants,
+            }
+          }
+
           // evaluates all static attributes into a simple object
           let foundStaticProps = {}
           for (const key in attrs) {
@@ -1792,44 +1816,14 @@ export function createExtractor(
           // merge styles, leave undefined values
           let prev: ExtractedAttr | null = null
 
-          function splitVariants(style: any) {
-            const variants = {}
-            const styles = {}
-            for (const key in style) {
-              if (staticConfig.variants?.[key]) {
-                variants[key] = style[key]
-              } else {
-                styles[key] = style[key]
-              }
-            }
-            return {
-              variants,
-              styles,
-            }
-          }
-
-          function expandStylesWithoutVariants(style: any) {
-            const { variants, styles } = splitVariants(style)
-            return {
-              ...expandStyles(styles),
-              ...variants,
-            }
-          }
-
           function mergeStyles(
             prev: ViewStyle & PseudoStyles,
-            nextIn: ViewStyle & PseudoStyles
+            next: ViewStyle & PseudoStyles
           ) {
-            const next = expandStylesWithoutVariants(nextIn)
             for (const key in next) {
               // merge pseudos
               if (pseudoDescriptors[key]) {
                 prev[key] = prev[key] || {}
-                if (shouldPrintDebug) {
-                  if (!next[key] || !prev[key]) {
-                    logger.info(['warn: missing', key, prev, next].join(' '))
-                  }
-                }
                 Object.assign(prev[key], next[key])
               } else {
                 prev[key] = next[key]
@@ -1848,7 +1842,7 @@ export function createExtractor(
                 // de-opt if non-style
                 !validStyles[key] &&
                 !pseudoDescriptors[key] &&
-                !key.startsWith('data-')
+                !(key.startsWith('data-') || key.startsWith('aria-'))
 
               if (shouldKeepOriginalAttr) {
                 if (shouldPrintDebug) {
