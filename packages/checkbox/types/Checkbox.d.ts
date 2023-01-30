@@ -209,6 +209,7 @@ export interface CheckboxProps extends Omit<CheckboxFrameProps, 'checked' | 'def
     defaultChecked?: CheckedState;
     required?: boolean;
     onCheckedChange?(checked: CheckedState): void;
+    labelledBy?: string;
     name?: string;
     value?: string;
     native?: boolean;

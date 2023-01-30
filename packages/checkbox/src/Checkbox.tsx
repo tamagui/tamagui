@@ -15,11 +15,11 @@ import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
 import { getSize } from '@tamagui/get-size'
+import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 
-// TODO: make customizable
 const getCheckboxHeight = (val: SizeTokens) =>
   Math.round(getVariableValue(getSize(val)) * 0.65)
 
@@ -191,10 +191,9 @@ export interface CheckboxProps
   defaultChecked?: CheckedState
   required?: boolean
   onCheckedChange?(checked: CheckedState): void
-
+  labelledBy?: string
   name?: string
   value?: string
-
   native?: boolean
 }
 
@@ -204,6 +203,7 @@ export const Checkbox = withStaticProperties(
       (props: ScopedProps<CheckboxProps>, forwardedRef) => {
         const {
           __scopeCheckbox,
+          labelledBy: ariaLabelledby,
           name,
           checked: checkedProp,
           defaultChecked,
@@ -228,6 +228,9 @@ export const Checkbox = withStaticProperties(
           defaultProp: defaultChecked!,
           onChange: onCheckedChange,
         })
+
+        const labelId = useLabelContext(button)
+        const labelledBy = ariaLabelledby || labelId
 
         if (!isWeb) {
           // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -260,17 +263,18 @@ export const Checkbox = withStaticProperties(
                 <CheckboxFrame
                   theme={checked ? 'active' : null}
                   tag="button"
-                  //   type="button"
                   role="checkbox"
+                  aria-labelledby={labelledBy}
                   aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
                   aria-required={required}
                   data-state={getState(checked)}
                   data-disabled={disabled ? '' : undefined}
                   disabled={disabled}
-                  //   value={value}
                   {...checkboxProps}
                   ref={composedRefs}
                   {...(isWeb && {
+                    type: 'button',
+                    value: value,
                     onKeyDown: composeEventHandlers(
                       (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
                       (event) => {
