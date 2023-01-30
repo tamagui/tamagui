@@ -3,7 +3,7 @@ import { Checkbox, Label, SizeTokens, XStack, YStack } from 'tamagui'
 
 export function CheckboxDemo() {
   return (
-    <YStack w={200} ai="center" space="$3">
+    <YStack w={300} ai="center" space="$3">
       <CheckboxWithLabel size="$2" />
       <CheckboxWithLabel size="$3" />
       <CheckboxWithLabel size="$4" />
