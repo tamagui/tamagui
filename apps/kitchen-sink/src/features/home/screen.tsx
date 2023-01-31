@@ -28,8 +28,6 @@ export function HomeScreen() {
           Demos
         </H1>
 
-        <XStack w={100} h={100} bc="red" />
-
         <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
           <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
         </YStack>
