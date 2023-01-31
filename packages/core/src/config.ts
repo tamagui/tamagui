@@ -25,13 +25,14 @@ export const getConfig = () => {
   }
   return conf
 }
-export const getTokens = (prefixed?: boolean): Tokens =>
+
+export const getTokens = ({ prefixed = true }: { prefixed?: boolean } = {}): Tokens =>
   prefixed ? conf!.tokensParsed : conf!.tokens
 
 /**
  * Note: this is the same as `getTokens`
  */
-export const useTokens = getTokens
+export const useTokens = () => getTokens()
 
 export const getThemes = () => conf!.themes
 
