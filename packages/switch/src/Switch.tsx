@@ -3,6 +3,7 @@
 
 import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { Platform } from 'react-native-web-internals'
 import {
   GetProps,
   SizeTokens,
@@ -192,7 +193,7 @@ export const Switch = withStaticProperties(
           }, [props.id, setChecked])
         }
 
-        if(native) {
+        if(native && (Platform.OS === 'ios' || Platform.OS === 'android')) {
           return <NativeSwitch {...props} ></NativeSwitch>
         }
 
