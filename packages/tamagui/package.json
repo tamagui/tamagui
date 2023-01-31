@@ -13,7 +13,8 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "linear-gradient"
   ],
   "scripts": {
     "build": "tamagui-build",
