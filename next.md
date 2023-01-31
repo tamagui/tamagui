@@ -1,34 +1,73 @@
 - sheet background animation regression
-
 - https://github.com/tamagui/tamagui/issues/478
 - default light mode theme + not changing
 - deprecate ThemeProvider defaultTheme in favor of theme={}
-
-- unset
 - hoverTheme={false} works, make hoverStyle={false} to unset
-
-
-- // maybe style shouldn't used usedKeys?
 - test keyboardavoidingview > scrollView - collapsing tamagui
-- sync with rnw 19
 - check into shadow/elevation not showing
 - survey https://tripetto.app or gforms
 
-1.0.X
+---
 
-- optimizing packages/app in starter
-- react native pressable in pressable
+1.2
+
+- unstyled
+- animation timing
+- native popover
+
+---
+
+1.X
+
+- Select id="" + Label focus
+- web forms events bubble
+- theme shouldn't change context ever on web, redo notify()
+  - instead of passing ThemeManager in context just pass a UID
+    - useChangeTheme can then do listen(UID)
+- vertical slider native can be janky
+- react native action sheet hooks/logic adapt
+- testing native - https://maestro.mobile.dev
+- app dir support experimental
+- styled('div')
+- tooltip auto pass down accessibilityLabel
+- accessibility keyboard navigation (Menu component potentially)
+- createTamagui({ webOnly: true }) - avoids console warning on Text
+  - goes hand in hand with `@tamagui/style` separate from core
+- test: useMedia, reanimated, re-renders (mount, on hover, etc), render time ms
+- CD on github
+- home page sponsors with sizing and better logos
+  - https://github.com/JamesIves/github-sponsors-readme-action
+- algolia not indexing some new content
+- keyboard search select bug
+- variants intellisense autocomplete not suggesting, but types are right
+- canary release channel
+- improve native integration test
+- kitchen-sink in Snack demo link
+- `tamagui` cli basic version
+- VisuallyHidden + mediaquery + space
+- re-render tests:
+  - useMedia, component w/ media + style, media + css-style, media + space
+  - useTheme, component with theme used in style
+
 - createThemes accepts array not object
 - <Theme name="dark_orange" /> type 
 - site _app has t_unmounted helper, move that into tamagui proper
 - SimpleTooltip no sub theme looks bad on dark mode
-- looks like maybe memory issue with portal related things dialog or something
-  - was issue on ios 14 devices
-  - test low memory
-- So it looks like any import of tamagui (not @tamagui/core) breaks the build on the web. I've created a repro here https://stackblitz.com/edit/vitejs-vite-3sbtgb?file=src/App.tsx.
-- warn not to styled(Button)
-- vite fails https://github.com/tamagui/tamagui/issues/479
 
+---
+
+2.0
+
+- much better non-monorepo non-expo general setup experience
+- app dir support (discussions/409)
+- contrastColor (accent color) in themes (discussions/449)
+- all: unset
+
+---
+
+inbox
+
+- So it looks like any import of tamagui (not @tamagui/core) breaks the build on the web. I've created a repro here https://stackblitz.com/edit/vitejs-vite-3sbtgb?file=src/App.tsx.
 - bundle size reductions:
   - remove setColorAlpha in favor of internal core rgba util
   - expandStyle remove some
@@ -47,64 +86,7 @@
   - normalizeColor etc
   - createPropMapper
 
----
-
-1.2
-
-- Select id="" + Label focus
-- web forms events bubble
-- revisit animations loops
-- all: unset or way to unstyle things (unstyle: true)
-- theme shouldn't change context ever on web, redo notify()
-  - instead of passing ThemeManager in context just pass a UID
-    - useChangeTheme can then do listen(UID)
-
-- vertical slider native can be janky
-- react native action sheet hooks/logic adapt
-- testing native - https://maestro.mobile.dev
-- app dir support experimental
-- styled('div')
-- tooltip auto pass down accessibilityLabel
-
----
-
-1.3
-
-- accessibility keyboard navigation (Menu component potentially)
-- createTamagui({ webOnly: true }) - avoids console warning on Text
-  - goes hand in hand with `@tamagui/style` separate from core
-- test: useMedia, reanimated, re-renders (mount, on hover, etc), render time ms
-- CD on github
-- home page sponsors with sizing and better logos
-  - https://github.com/JamesIves/github-sponsors-readme-action
-- algolia not indexing some new content
-- keyboard search select bug
-- variants intellisense autocomplete not suggesting, but types are right
-- canary release channel
-- improve native integration test
-- kitchen-sink in Snack demo link
-- `tamagui` cli basic version
-
----
-
-1.4
-
-- VisuallyHidden + mediaquery + space
-- re-render tests:
-  - useMedia, component w/ media + style, media + css-style, media + space
-  - useTheme, component with theme used in style
-
----
-
-2.0
-
-- app dir support (discussions/409)
-- contrastColor (accent color) in themes (discussions/449)
-
----
-
-inbox
-
+- react native pressable in pressable
 - https://github.com/mwood23/nx-tamagui-next-repro
 - https://github.com/necolas/react-native-web/pull/2195/files
 - config-base => design-system
