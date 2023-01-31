@@ -80,14 +80,15 @@ export const dev = async (options: ResolvedOptions) => {
       `return require_react_jsx_runtime_production_min()`
     )
 
-    const reactNativeCode = reactNative.replace(
-      `module.exports = require_react_native();`,
-      `return require_react_native()`
-    )
-    // .replace(
-    //   `/* @__PURE__ */ react(RootComponentWithMeaningfulName, null, renderable);`,
-    //   `null`
-    // )
+    const reactNativeCode = reactNative
+      .replace(
+        `module.exports = require_react_native();`,
+        `return require_react_native()`
+      )
+      .replace(
+        `renderable = /* @__PURE__ */ react(RootComponentWithMeaningfulName, null, renderable);`,
+        ``
+      )
 
     return (await readFile('template.js', 'utf-8'))
       .replace(`// -- react --`, reactCode)

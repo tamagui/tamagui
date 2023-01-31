@@ -34,31 +34,19 @@ function getDefaultThemeProxied() {
   })
 }
 
-interface UseThemeState {
-  keys: Set<string>
-}
-
 export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
   return (isRSC ? null : useThemeWithState(props)?.theme) || getDefaultThemeProxied()
 }
 
 export const useThemeWithState = (props: ThemeProps) => {
-  const state = useServerRef() as React.MutableRefObject<UseThemeState>
-  if (isClient && !state.current) {
-    state.current = {
-      keys: new Set(),
-    }
-  }
-
-  // clear at start of every render to track usages
-  state.current?.keys.clear()
+  const keys = useServerRef([])
 
   const changedTheme = useChangeThemeEffect(
     props,
     false,
     isClient
       ? () => {
-          return props.shouldUpdate?.() ?? state.current.keys.size === 0
+          return props.shouldUpdate?.() ?? keys.current.length === 0
         }
       : undefined
   )
@@ -101,10 +89,10 @@ export const useThemeWithState = (props: ThemeProps) => {
 export function getThemeProxied({
   theme,
   themeManager,
-  state,
+  keys,
 }: Partial<ChangedThemeResponse> & {
   theme: ThemeParsed
-  state?: React.RefObject<UseThemeState>
+  keys?: React.RefObject<string[]>
 }) {
   return createProxy(theme, {
     has(_, key) {
@@ -127,22 +115,24 @@ export function getThemeProxied({
       ) {
         return Reflect.get(_, key)
       }
+      const keyString = key
       // auto convert variables to plain
       if (key[0] === '$') {
         key = key.slice(1)
       }
       const val = themeManager.getValue(key)
-      if (val && state) {
-        if (isClient) {
-          return new Proxy(val as any, {
-            get(_, subkey) {
-              if (subkey === 'val') {
-                state.current!.keys.add(key as any)
-              }
-              return Reflect.get(val as any, subkey)
-            },
-          })
-        }
+      const currentKeys = keys?.current
+      if (val && currentKeys) {
+        return new Proxy(val as any, {
+          // when they touch the actual value we only track it
+          // if its a variable (web), its ignored!
+          get(_, subkey) {
+            if (subkey === 'val' && !currentKeys.includes(keyString)) {
+              currentKeys.push(keyString)
+            }
+            return Reflect.get(val as any, subkey)
+          },
+        })
       }
       return val
     },

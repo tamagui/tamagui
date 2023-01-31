@@ -1,6 +1,6 @@
 import { useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
-import { memo } from 'react'
+import { memo, useEffect, useRef } from 'react'
 import {
   Button,
   ButtonText,
@@ -22,11 +22,29 @@ import { useHeroHovered } from './heroState'
 import { InstallInput } from './InstallInput'
 import { TwitterIcon } from './TwitterIcon'
 
+// function useAlwaysConcurrent() {
+//   const inputRef = useRef<HTMLInputElement>(null)
+
+//   useEffect(() => {
+//     const input = inputRef.current
+//     if (!input) return
+//     setInterval(() => {
+//       console.log('writing in the input')
+//       input.value = `${Math.random()}`
+//     }, 16)
+//   }, [inputRef])
+
+//   return <input ref={inputRef} />
+// }
+
 export function Hero() {
   const { tint, name } = useTint()
 
+  // const element = useAlwaysConcurrent()
+
   return (
     <Theme className={`${name}-season`} name={tint as any}>
+      {/* {element} */}
       <YStack
         o={0.5}
         zi={-1}
@@ -259,7 +277,6 @@ const Subtitle = styled(Paragraph, {
   color: '$gray10',
   size: '$6',
   fontFamily: '$silkscreen',
-  className: 'font-smooth',
   ta: 'left',
   ls: -1,
 

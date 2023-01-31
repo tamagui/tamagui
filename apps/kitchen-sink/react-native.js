@@ -47810,6 +47810,7 @@ var require_ReactNativeRenderer_dev = __commonJS({
     if (true) {
       (function() {
         "use strict";
+        
         if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === "function") {
           __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
         }
@@ -81465,7 +81466,6 @@ var require_renderApplication = __commonJS({
     var invariant8 = require_invariant();
     require_BackHandler_ios();
     function renderApplication(RootComponent, initialProps, rootTag, WrapperComponent, fabric, showArchitectureIndicator, scopedPerformanceLogger, isLogBox, debugName, displayMode, useConcurrentRoot) {
-      alert(`rendering ${RootComponent}`)
       
       invariant8(rootTag, "Expect to have a valid rootTag, instead got ", rootTag);
       const performanceLogger = scopedPerformanceLogger ?? import_GlobalPerformanceLogger2.default;
@@ -81481,12 +81481,12 @@ var require_renderApplication = __commonJS({
         },
         /* @__PURE__ */ react(RootComponent, { ...initialProps, rootTag })
       ));
-      if (debugName) {
-        const RootComponentWithMeaningfulName = getCachedComponentWithDisplayName(
-          `${debugName}(RootComponent)`
-        );
-        renderable = /* @__PURE__ */ react(RootComponentWithMeaningfulName, null, renderable);
-      }
+      // if (debugName) {
+      //   const RootComponentWithMeaningfulName = getCachedComponentWithDisplayName(
+      //     `${debugName}(RootComponent)`
+      //   );
+      //   renderable = /* @__PURE__ */ react(RootComponentWithMeaningfulName, null, renderable);
+      // }
       performanceLogger.startTimespan("renderApplication_React_render");
       performanceLogger.setExtra(
         "usedReactConcurrentRoot",
