@@ -11,6 +11,7 @@ import {
   Separator,
   Spacer,
   Switch,
+  TextArea,
   XStack,
   YGroup,
   YStack,
