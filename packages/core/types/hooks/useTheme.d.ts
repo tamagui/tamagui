@@ -8,9 +8,6 @@ export type ChangedThemeResponse = {
     theme?: ThemeParsed | null;
     className?: string;
 };
-interface UseThemeState {
-    keys: Set<string>;
-}
 export declare const useTheme: (props?: ThemeProps) => ThemeParsed;
 export declare const useThemeWithState: (props: ThemeProps) => {
     theme: ThemeParsed;
@@ -19,11 +16,10 @@ export declare const useThemeWithState: (props: ThemeProps) => {
     isNewTheme?: boolean | undefined;
     className?: string | undefined;
 } | null;
-export declare function getThemeProxied({ theme, themeManager, state, }: Partial<ChangedThemeResponse> & {
+export declare function getThemeProxied({ theme, themeManager, keys, }: Partial<ChangedThemeResponse> & {
     theme: ThemeParsed;
-    state?: React.RefObject<UseThemeState>;
+    keys?: React.RefObject<string[]>;
 }): ThemeParsed;
 export declare const activeThemeManagers: Set<ThemeManager>;
 export declare const useChangeThemeEffect: (props: ThemeProps, root?: boolean, disableUpdate?: () => boolean) => ChangedThemeResponse;
-export {};
 //# sourceMappingURL=useTheme.d.ts.map
