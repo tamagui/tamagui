@@ -174,7 +174,7 @@ export const useListItem = (
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize =
-    getVariableValue(getTokens(true).space[mediaActiveProps.space as any] ?? iconSize) *
+    getVariableValue(getTokens().space[mediaActiveProps.space as any] ?? iconSize) *
     scaleSpace
   // @ts-ignore noTextWrap = all is ok
   const contents = wrapChildrenInText(Text, mediaActiveProps)

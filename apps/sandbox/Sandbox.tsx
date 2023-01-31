@@ -2,6 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { useStyle } from '@tamagui/core'
+import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import { H1, Square, TamaguiProvider, XStack, YStack, useMedia, useTheme } from 'tamagui'
 
