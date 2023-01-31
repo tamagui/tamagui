@@ -13,7 +13,7 @@ import {
 const colorGroups = ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red']
 
 export function ColorsDemo() {
-  const colors = getTokens().color
+  const colors = getTokens({ prefixed: false }).color
   const [colorsLight, colorsDark] = [getColors(colors), getColors(colors, true)]
 
   return (
@@ -111,7 +111,7 @@ function getColors(colors: Record<string, Variable>, dark = false) {
       .filter(
         (color) =>
           color.startsWith(group) &&
-          (dark ? color.endsWith('Dark') : !color.endsWith('Dark')),
+          (dark ? color.endsWith('Dark') : !color.endsWith('Dark'))
       )
       .map((key) => colors[key])
   })
