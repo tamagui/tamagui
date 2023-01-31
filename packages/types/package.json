@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/types",
-  "version": "1.1.12",
+  "version": "1.1.13",
   "types": "./types/index.d.ts",
   "type": "module",
   "main": "./dist/cjs",
@@ -25,7 +25,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.1.12"
+    "@tamagui/build": "^1.1.13"
   },
   "publishConfig": {
     "access": "public"
