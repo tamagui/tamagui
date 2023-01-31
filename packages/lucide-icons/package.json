@@ -21,7 +21,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@tamagui/core": "^1.1.13"
+    "@tamagui/core": "^1.1.13",
+    "@tamagui/get-size": "^1.1.13"
   },
   "peerDependencies": {
     "react": "*",

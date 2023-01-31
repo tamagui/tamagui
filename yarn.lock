@@ -5428,6 +5428,7 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.1.13
     "@tamagui/core": ^1.1.13
+    "@tamagui/get-size": ^1.1.13
     camelcase: ^6.0.0
     cheerio: ^1.0.0-rc.5
     glob: ^7.1.6
