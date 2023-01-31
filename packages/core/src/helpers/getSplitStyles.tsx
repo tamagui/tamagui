@@ -356,7 +356,8 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    if (keyInit === 'style' || keyInit.startsWith('_style')) {
+    const isMainStyle = keyInit === 'style'
+    if (isMainStyle || keyInit.startsWith('_style')) {
       if (!valInit) continue
       const styles = Array.isArray(valInit) ? valInit : [valInit]
       const styleLen = styles.length
@@ -364,8 +365,9 @@ export const getSplitStyles: StyleSplitter = (
         const cur = styles[j]
         if (!cur) continue
         for (const key in cur) {
-          // maybe style shouldn't used usedKeys?
-          if (usedKeys[key]) continue
+          if (!isMainStyle && usedKeys[key]) {
+            continue
+          }
           usedKeys[key] = 1
           style[key] = cur[key]
         }
