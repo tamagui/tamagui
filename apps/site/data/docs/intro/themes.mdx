@@ -275,17 +275,18 @@ import { tokens } from './tokens'
 
 const light = createTheme({
   background: '#fff',
-  backgroundHover: tokens.color.gray3,
-  backgroundPress: tokens.color.gray4,
-  backgroundFocus: tokens.color.gray5,
-  borderColor: tokens.color.gray4,
-  borderColorHover: tokens.color.gray6,
-  color: tokens.color.gray12,
-  colorHover: tokens.color.gray11,
-  colorPress: tokens.color.gray10,
-  colorFocus: tokens.color.gray6,
-  shadowColor: tokens.color.grayA5,
-  shadowColorHover: tokens.color.grayA6,
+  backgroundHover: tokens.color.gray3Light,
+  backgroundPress: tokens.color.gray4Light,
+  backgroundFocus: tokens.color.gray5Light,
+  borderColor: tokens.color.gray4Light,
+  borderColorHover: tokens.color.gray6Light,
+  color: tokens.color.gray12Light,
+  colorHover: tokens.color.gray11Light,
+  colorPress: tokens.color.gray10Light,
+  colorFocus: tokens.color.gray6Light,
+  // A5, A6 doesn't exist
+  // shadowColor: tokens.color.grayA5,
+  // shadowColorHover: tokens.color.grayA6,
 })
 
 // note: we set up a single consistent base type to validate the rest:
@@ -303,8 +304,9 @@ const dark: BaseTheme = {
   colorHover: tokens.color.gray11Dark,
   colorPress: tokens.color.gray10Dark,
   colorFocus: tokens.color.gray6Dark,
-  shadowColor: tokens.color.grayA6,
-  shadowColorHover: tokens.color.grayA7,
+  // A6, A7 doesn't exist
+  // shadowColor: tokens.color.grayA6,
+  // shadowColorHover: tokens.color.grayA7,
 }
 
 // if you need to add non-token values, use createTheme
