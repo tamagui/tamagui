@@ -19,6 +19,7 @@ import { ThemeableStack, XStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { View } from 'react-native'
+import { NativeSwitch } from './Switch.native'
 
 const SWITCH_NAME = 'Switch'
 
@@ -137,6 +138,7 @@ export type SwitchProps = SwitchButtonProps & {
   checked?: boolean
   defaultChecked?: boolean
   required?: boolean
+  native?: boolean
   onCheckedChange?(checked: boolean): void
 }
 
@@ -152,6 +154,7 @@ export const Switch = withStaticProperties(
           defaultChecked,
           required,
           disabled,
+          native,
           value = 'on',
           onCheckedChange,
           size = '$true',
@@ -187,6 +190,10 @@ export const Switch = withStaticProperties(
               },
             })
           }, [props.id, setChecked])
+        }
+
+        if(native) {
+          return <NativeSwitch {...props} ></NativeSwitch>
         }
 
         return (
