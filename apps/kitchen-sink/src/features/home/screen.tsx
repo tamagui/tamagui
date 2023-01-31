@@ -11,6 +11,7 @@ import {
   Separator,
   Spacer,
   Switch,
+  XStack,
   YGroup,
   YStack,
   useTheme
@@ -25,6 +26,8 @@ export function HomeScreen() {
         <H1 fontFamily="$heading" size="$9">
           Demos
         </H1>
+
+        <XStack w={100} h={100} bc="red" />
 
         <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
           <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>

@@ -3,8 +3,6 @@ import * as NCC from '@tamagui/normalize-css-color'
 
 export const rgba = NCC.rgba
 
-// export { rgba } from '@tamagui/normalize-css-color'
-
 export const normalizeColor = (color?: string | null, opacity?: number) => {
   if (color === null || color === undefined) {
     return
