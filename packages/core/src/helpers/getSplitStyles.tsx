@@ -793,10 +793,12 @@ export const getSplitStyles: StyleSplitter = (
         continue
       }
 
-      if (!isWeb && key === 'pointerEvents') {
-        usedKeys[key] = 1
-        viewProps[key] = val
-        continue
+      if (process.env.TAMAGUI_TARGET === 'native') {
+        if (key === 'pointerEvents') {
+          usedKeys[key] = 1
+          viewProps[key] = val
+          continue
+        }
       }
 
       if (key === 'fontFamily' && !fontFamily && valInit && val) {

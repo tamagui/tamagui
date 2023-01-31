@@ -405,7 +405,7 @@ export type TextProps = TextNonStyleProps & TextStyleProps;
 export type ViewOrTextProps = WithThemeShorthandsPseudosMediaAnimation<Omit<TextStylePropsBase, keyof StackStylePropsBase> & StackStylePropsBase>;
 export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject;
 type StaticComponentObject = {
-    staticConfig: StaticConfig;
+    staticConfig: StaticConfigParsed;
     extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X;
 };
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {

@@ -13,6 +13,7 @@ import {
 } from '@floating-ui/react-dom-interactions'
 import { useEvent, useId, withStaticProperties } from '@tamagui/core'
 import { ScopedProps } from '@tamagui/create-context'
+import { FloatingOverrideContext, UseFloatingFn } from '@tamagui/floating'
 import { stepTokenUpOrDown } from '@tamagui/get-size'
 import {
   PopoverAnchor,
@@ -24,15 +25,7 @@ import {
   __PopoverProviderInternal,
   usePopoverScope,
 } from '@tamagui/popover'
-import {
-  Popper,
-  PopperProps,
-  usePopperContext,
-} from '@tamagui/popper'
-import {
-  FloatingOverrideContext,
-  UseFloatingFn
-} from '@tamagui/floating'
+import { Popper, PopperProps, usePopperContext } from '@tamagui/popper'
 import * as React from 'react'
 
 const TooltipContent = React.forwardRef(
