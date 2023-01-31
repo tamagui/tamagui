@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-plugin",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",
@@ -21,9 +21,9 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.18.6",
-    "@tamagui/proxy-worm": "^1.2.0",
-    "@tamagui/react-native-svg": "^1.2.0",
-    "@tamagui/static": "^1.2.0",
+    "@tamagui/proxy-worm": "^1.2.1",
+    "@tamagui/react-native-svg": "^1.2.1",
+    "@tamagui/static": "^1.2.1",
     "babel-loader": "^8.2.5",
     "browserslist": "^4.21.1",
     "css-loader": "^5.2.4",
@@ -31,12 +31,12 @@
     "esm-resolve": "^1.0.8",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
-    "tamagui-loader": "^1.2.0",
+    "tamagui-loader": "^1.2.1",
     "thread-loader": "^3.0.4",
     "url-loader": "^4.1.1"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.2.0",
+    "@tamagui/build": "^1.2.1",
     "next": "^13.1.4"
   },
   "peerDependencies": {
