@@ -158,6 +158,7 @@ export {
   spacedChildren,
   styled,
   themeable,
+  useStyle,
   withStaticProperties,
   // hooks
   useGet,
