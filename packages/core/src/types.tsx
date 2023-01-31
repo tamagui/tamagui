@@ -721,7 +721,7 @@ export type TamaguiComponent<
 > = ReactComponentWithRef<Props, Ref> & StaticComponentObject
 
 type StaticComponentObject = {
-  staticConfig: StaticConfig
+  staticConfig: StaticConfigParsed
   /*
    * Only needed for more complex components
    * If you create a styled frame component this is a HoC to extract

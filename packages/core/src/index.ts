@@ -52,6 +52,7 @@ export {
 export * from './hooks/useTheme'
 export * from './hooks/useThemeName'
 export * from './hooks/useSafeRef'
+export * from './hooks/useStyle'
 
 export * from './views/Slot'
 export * from './views/Stack'

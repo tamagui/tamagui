@@ -23,19 +23,22 @@ export type StyledOptions<ParentComponent extends StylableComponent> =
     defaultVariants?: { [key: string]: any }
   }
 
-// can't infer from styled(<YStack />) which would be nice
-// * excessively deep type instantiation
+type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<
+  any,
+  any,
+  infer P
+>
+  ? P
+  : GetProps<A>
 
-type GetBaseProps<A extends StylableComponent> =
-  // A extends TamaguiReactElement
-  //   ? GetBaseProps<A['type']> :
-  A extends TamaguiComponent<any, any, infer P> ? P : GetProps<A>
-
-type GetVariantProps<A extends StylableComponent> =
-  // A extends TamaguiReactElement
-  //   ? GetVariantProps<A['type']>
-  //   :
-  A extends TamaguiComponent<any, any, any, infer V> ? V : {}
+type GetVariantProps<A extends StylableComponent> = A extends TamaguiComponent<
+  any,
+  any,
+  any,
+  infer V
+>
+  ? V
+  : {}
 
 export function styled<
   ParentComponent extends StylableComponent,
@@ -52,16 +55,6 @@ export function styled<
   },
   staticExtractionOptions?: Partial<StaticConfig>
 ) {
-  // allows passing styled(<H1 bc="red" />)
-  // but to get types right would be tricky
-  // if (isValidElement(Component) && isTamaguiComponent(Component.type)) {
-  //   const props = Component.props
-  //   if (props && typeof props === 'object') {
-  //     Component = Component.type as any
-  //     options = options ? ({ ...props, ...options } as any) : props
-  //   }
-  // }
-
   // validate not using a variant over an existing valid style
   if (process.env.NODE_ENV !== 'production') {
     if (!Component) {
