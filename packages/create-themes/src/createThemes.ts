@@ -72,6 +72,8 @@ type GetSubThemes<Name extends string> =
   | `${Name}_ProgressIndicator`
   | `${Name}_TooltipArrow`
   | `${Name}_TooltipContent`
+  | `${Name}_RadioGroupItem`
+  | `${Name}_Radio`
 
 export type GeneratedThemes<ColorsList extends string, BaseColorList extends string> = {
   [key in
@@ -193,6 +195,8 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
       [`${name}_ProgressIndicator`, inverted[2]],
       [`${name}_Switch`, altThemes[1][1]],
       [`${name}_SwitchThumb`, inverted[2]],
+      [`${name}_RadioGroupItem`, altThemes[1][1]],
+      [`${name}_Radio`, inverted[2]],
       [`${name}_TooltipArrow`, altThemes[2][1]],
       [`${name}_TooltipContent`, altThemes[2][1]],
       [`${name}_darker`, darkerTheme],
@@ -353,6 +357,8 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
     light_Switch: lightThemes.light_alt2,
     light_SwitchThumb: lightThemes.light,
     light_DrawerFrame: lightThemes.light_alt1,
+    light_RadioGroupItem: lightThemes.light_alt2,
+    light_Radio: lightThemes.light,
 
     // dark
     ...darkThemes,
@@ -366,6 +372,8 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
     dark_Switch: darkThemes.dark_alt2,
     dark_SwitchThumb: darkThemes.dark_darker,
     dark_Button: darkThemes.dark_alt1,
+    dark_Radio: darkThemes.dark_alt2,
+    dark_RadioGroupItem: darkThemes.dark_darker,
   }
 
   const darkEntries = Object.entries(darkTheme)
