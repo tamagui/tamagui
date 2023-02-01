@@ -67,6 +67,7 @@
     "@tamagui/popper": "^1.3.0",
     "@tamagui/portal": "^1.3.0",
     "@tamagui/progress": "^1.3.0",
+    "@tamagui/radio-group": "^1.3.0",
     "@tamagui/react-native-media-driver": "^1.3.0",
     "@tamagui/scroll-view": "^1.3.0",
     "@tamagui/select": "^1.3.0",
