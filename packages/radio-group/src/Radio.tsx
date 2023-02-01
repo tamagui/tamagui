@@ -1,11 +1,9 @@
-import { createContextScope } from '@tamagui/create-context'
-import {
-    composeEventHandlers,
-    useComposedRefs,
-  } from '@tamagui/core'
 import { Presence } from '@radix-ui/react-presence'
 import { usePrevious } from '@radix-ui/react-use-previous'
+import { composeEventHandlers, styled, useComposedRefs } from '@tamagui/core'
+import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
+import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
 /* -------------------------------------------------------------------------------------------------
  * Radio
@@ -107,15 +105,48 @@ export interface RadioIndicatorProps extends PrimitiveSpanProps {
   forceMount?: true
 }
 
+const Span = styled(ThemeableStack, {
+  tag: 'span',
+  backgroundColor: '$background',
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderWidth: 2,
+  borderColor: 'transparent',
+  focusStyle: {
+    borderColor: 'black',
+  },
+  variants: {
+    check: {
+      checked: {
+        display: 'block',
+        borderRadius: '50%',
+        backgroundColor: 'purple',
+        width: '50%',
+        height: '50%',
+        margin: 'auto',
+      },
+      unChecked: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        height: '100%',
+        position: 'relative',
+      },
+    },
+  } as const,
+})
+
 const RadioIndicator = React.forwardRef<RadioIndicatorElement, RadioIndicatorProps>(
   (props: ScopedProps<RadioIndicatorProps>, forwardedRef) => {
     const { __scopeRadio, forceMount, ...indicatorProps } = props
     const context = useRadioContext(INDICATOR_NAME, __scopeRadio)
     return (
       <Presence present={forceMount || context.checked}>
-        <span
+        <Span
           data-state={getState(context.checked)}
           data-disabled={context.disabled ? '' : undefined}
+          check={context.checked ? 'checked' : 'unChecked'}
           {...indicatorProps}
           ref={forwardedRef}
         />
