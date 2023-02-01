@@ -1,0 +1,54 @@
+{
+  "name": "@tamagui/radio-group",
+  "version": "1.2.2",
+  "sideEffects": [
+    "*.css"
+  ],
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "../../node_modules/.bin/rome check src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "dependencies": {
+    "@radix-ui/react-presence": "^1.0.0",
+    "@radix-ui/react-roving-focus": "^1.0.2",
+    "@radix-ui/react-use-previous": "^0.1.1",
+    "@tamagui/core": "^1.2.2",
+    "@tamagui/font-size": "^1.2.2",
+    "@tamagui/get-button-sized": "^1.2.2",
+    "@tamagui/helpers-tamagui": "^1.2.2"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.2.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "vitest": "^0.26.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+}
