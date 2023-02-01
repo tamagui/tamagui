@@ -11,7 +11,7 @@ import {
 } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
-import { ThemeableStack } from '@tamagui/stacks/types'
+import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { AnimatePresence } from 'tamagui'
