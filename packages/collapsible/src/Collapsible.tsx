@@ -140,10 +140,11 @@ interface CollapsibleContentProps extends AnimatePresenceProps, ThemeableStackPr
 const CONTENT_NAME = 'CollapsibleContent'
 
 const CollapsibleContentFrame = styled(ThemeableStack, {
-  justifyContent: 'center',
+  justifyContent: 'flex-start',
   alignItems: 'center',
   flexDirection: 'column',
   backgrounded: true,
+  name: CONTENT_NAME,
 })
 
 const CollapsibleContent = React.forwardRef<
