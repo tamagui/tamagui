@@ -2,6 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { useStyle } from '@tamagui/core'
+import { RadioGroupDemo, SelectDemo } from '@tamagui/demos'
 import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import { H1, Square, TamaguiProvider, XStack, YStack, useMedia, useTheme } from 'tamagui'
@@ -58,8 +59,9 @@ export const Sandbox = () => {
       <TestUseStyle />
 
       <YStack fullscreen ai="center" jc="center">
-        <Square size={100} bc="red" />
-        {/* <SelectDemo /> */}
+        {/* Tested the RadioGroup  */}
+        <RadioGroupDemo />
+        <SelectDemo />
         {/* <SliderDemo /> */}
         {/* <Square tabIndex="0" size={100} bc="$blue10" /> */}
         {/* <Button size="$8"></Button> */}
