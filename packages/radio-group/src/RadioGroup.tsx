@@ -1,16 +1,35 @@
-import { useDirection } from '@tamagui/use-direction'
 import * as RovingFocusGroup from '@radix-ui/react-roving-focus'
 import { createRovingFocusGroupScope } from '@radix-ui/react-roving-focus'
-import { useControllableState } from '@tamagui/use-controllable-state'
-import { composeEventHandlers, useComposedRefs } from '@tamagui/core'
+import { composeEventHandlers, styled, useComposedRefs } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
+import { useControllableState } from '@tamagui/use-controllable-state'
+import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
 
 import { Radio, RadioIndicator, createRadioScope } from './Radio'
 
 const ARROW_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
 
+export const StyledRadio = styled(Radio, {
+  variants: {
+    size: {
+      '...size': (size, { tokens }) => {
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+      color: {
+        ':string': (color) => {
+          return {
+            backgroundColor: color,
+          }
+        },
+      },
+    },
+  } as const,
+})
 /* -------------------------------------------------------------------------------------------------
  * RadioGroup
  * -----------------------------------------------------------------------------------------------*/
@@ -151,6 +170,13 @@ const RadioGroupItem = React.forwardRef<RadioGroupItemElement, RadioGroupItemPro
         {...rovingFocusGroupScope}
         focusable={!isDisabled}
         active={checked}
+        style={{
+          backgroundColor: 'white',
+          width: '25px',
+          height: '25px',
+          borderRadius: '100%',
+          boxShadow: '0 2px 10px black',
+        }}
       >
         <Radio
           disabled={isDisabled}
@@ -204,9 +230,6 @@ RadioGroupIndicator.displayName = INDICATOR_NAME
 
 /* ---------------------------------------------------------------------------------------------- */
 
-const Root = RadioGroup
-const Item = RadioGroupItem
-const Indicator = RadioGroupIndicator
 
 export {
   createRadioGroupScope,
@@ -214,9 +237,5 @@ export {
   RadioGroup,
   RadioGroupItem,
   RadioGroupIndicator,
-  //
-  Root,
-  Item,
-  Indicator,
 }
 export type { RadioGroupProps, RadioGroupItemProps, RadioGroupIndicatorProps }
