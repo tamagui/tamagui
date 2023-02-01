@@ -1,5 +1,6 @@
 import { AnimatePresenceProps } from '@tamagui/animate-presence/types/types';
 import { StackProps, TamaguiElement } from '@tamagui/core';
+import { ThemeableStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 declare const createCollapsibleScope: import("tamagui").CreateScope;
 interface CollapsibleProps extends StackProps {
@@ -11,7 +12,7 @@ interface CollapsibleProps extends StackProps {
 interface CollapsibleTriggerProps extends StackProps {
 }
 declare const CollapsibleTrigger: React.ForwardRefExoticComponent<CollapsibleTriggerProps & React.RefAttributes<TamaguiElement>>;
-interface CollapsibleContentProps extends React.PropsWithChildren<AnimatePresenceProps> {
+interface CollapsibleContentProps extends AnimatePresenceProps, ThemeableStackProps {
     /**
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.

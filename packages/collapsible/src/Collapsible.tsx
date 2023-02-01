@@ -11,7 +11,7 @@ import {
 } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
-import { ThemeableStack } from '@tamagui/stacks'
+import { ThemeableStack, ThemeableStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { AnimatePresence } from 'tamagui'
@@ -129,7 +129,7 @@ CollapsibleTrigger.displayName = TRIGGER_NAME
 
 // TODO: there might be something wrong with these two types
 type CollapsibleContentElement = TamaguiElement
-interface CollapsibleContentProps extends React.PropsWithChildren<AnimatePresenceProps> {
+interface CollapsibleContentProps extends AnimatePresenceProps, ThemeableStackProps {
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
@@ -138,6 +138,13 @@ interface CollapsibleContentProps extends React.PropsWithChildren<AnimatePresenc
 }
 
 const CONTENT_NAME = 'CollapsibleContent'
+
+const CollapsibleContentFrame = styled(ThemeableStack, {
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'column',
+  backgrounded: true,
+})
 
 const CollapsibleContent = React.forwardRef<
   CollapsibleContentElement,
@@ -148,7 +155,9 @@ const CollapsibleContent = React.forwardRef<
 
   return (
     <AnimatePresence {...contentProps}>
-      {forceMount || context.open ? children : null}
+      {forceMount || context.open ? (
+        <CollapsibleContentFrame {...contentProps}>{children}</CollapsibleContentFrame>
+      ) : null}
     </AnimatePresence>
   )
 })
