@@ -1,10 +1,18 @@
 import { Presence } from '@radix-ui/react-presence'
 import { usePrevious } from '@radix-ui/react-use-previous'
-import { composeEventHandlers, styled, useComposedRefs } from '@tamagui/core'
+import {
+  SizeTokens,
+  composeEventHandlers,
+  getVariableValue,
+  styled,
+  useComposedRefs,
+} from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
+import { getSize } from '@tamagui/get-size'
 import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
+
 /* -------------------------------------------------------------------------------------------------
  * Radio
  * -----------------------------------------------------------------------------------------------*/
@@ -24,6 +32,9 @@ interface RadioProps extends PrimitiveButtonProps {
   required?: boolean
   onCheck?(): void
 }
+
+const getCheckboxHeight = (val: SizeTokens) =>
+  Math.round(getVariableValue(getSize(val)) * 0.65)
 
 const Radio = React.forwardRef<RadioElement, RadioProps>(
   (props: ScopedProps<RadioProps>, forwardedRef) => {
@@ -105,22 +116,21 @@ export interface RadioIndicatorProps extends PrimitiveSpanProps {
   forceMount?: true
 }
 
-const Span = styled(ThemeableStack, {
-  tag: 'span',
-  backgroundColor: '$background',
+export const Span = styled(ThemeableStack, {
+  name: 'Radio',
   alignItems: 'center',
   justifyContent: 'center',
+  backgroundColor: '$background',
   borderWidth: 2,
   borderColor: 'transparent',
   focusStyle: {
-    borderColor: 'black',
+    borderColor: '$borderColorFocus',
   },
   variants: {
     check: {
       checked: {
         display: 'block',
         borderRadius: '50%',
-        backgroundColor: 'purple',
         width: '50%',
         height: '50%',
         margin: 'auto',
@@ -134,7 +144,20 @@ const Span = styled(ThemeableStack, {
         position: 'relative',
       },
     },
+    size: {
+      '...size': (val) => {
+        const height = getCheckboxHeight(val)
+        return {
+          width: height,
+          height: height,
+          borderRadius: height,
+        }
+      },
+    },
   } as const,
+  defaultVariants: {
+    size: '$true',
+  },
 })
 
 const RadioIndicator = React.forwardRef<RadioIndicatorElement, RadioIndicatorProps>(

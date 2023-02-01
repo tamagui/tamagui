@@ -1,8 +1,16 @@
 import * as RovingFocusGroup from '@radix-ui/react-roving-focus'
 import { createRovingFocusGroupScope } from '@radix-ui/react-roving-focus'
-import { composeEventHandlers, styled, useComposedRefs } from '@tamagui/core'
+import {
+  SizeTokens,
+  composeEventHandlers,
+  getVariableValue,
+  styled,
+  useComposedRefs,
+} from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
+import { getSize } from '@tamagui/get-size'
+import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
@@ -11,25 +19,10 @@ import { Radio, RadioIndicator, createRadioScope } from './Radio'
 
 const ARROW_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
 
-export const StyledRadio = styled(Radio, {
-  variants: {
-    size: {
-      '...size': (size, { tokens }) => {
-        return {
-          width: tokens.size[size] ?? size,
-          height: tokens.size[size] ?? size,
-        }
-      },
-      color: {
-        ':string': (color) => {
-          return {
-            backgroundColor: color,
-          }
-        },
-      },
-    },
-  } as const,
-})
+const getCheckboxHeight = (val: SizeTokens) =>
+  Math.round(getVariableValue(getSize(val)) * 0.65)
+
+
 /* -------------------------------------------------------------------------------------------------
  * RadioGroup
  * -----------------------------------------------------------------------------------------------*/
@@ -137,6 +130,34 @@ interface RadioGroupItemProps extends Omit<RadioProps, 'onCheck' | 'name'> {
   value: string
 }
 
+export const RadioContainer = styled(ThemeableStack, {
+  name: ITEM_NAME,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '$background',
+  borderWidth: 2,
+  borderColor: 'transparent',
+  focusStyle: {
+    borderColor: '$borderColorFocus',
+  },
+  variants: {
+    size: {
+      '...size': (val) => {
+        const height = getCheckboxHeight(val)
+        return {
+          width: height,
+          height: height,
+          borderRadius: height,
+        }
+      },
+    },
+  } as const,
+  defaultVariants: {
+    size: '$true',
+  },
+})
+
+
 const RadioGroupItem = React.forwardRef<RadioGroupItemElement, RadioGroupItemProps>(
   (props: ScopedProps<RadioGroupItemProps>, forwardedRef) => {
     const { __scopeRadioGroup, disabled, ...itemProps } = props
@@ -170,36 +191,31 @@ const RadioGroupItem = React.forwardRef<RadioGroupItemElement, RadioGroupItemPro
         {...rovingFocusGroupScope}
         focusable={!isDisabled}
         active={checked}
-        style={{
-          backgroundColor: 'white',
-          width: '25px',
-          height: '25px',
-          borderRadius: '100%',
-          boxShadow: '0 2px 10px black',
-        }}
       >
-        <Radio
-          disabled={isDisabled}
-          required={context.required}
-          checked={checked}
-          {...radioScope}
-          {...itemProps}
-          name={context.name}
-          ref={composedRefs}
-          onCheck={() => context.onValueChange(itemProps.value)}
-          onKeyDown={composeEventHandlers((event) => {
-            // According to WAI ARIA, radio groups don't activate items on enter keypress
-            if (event.key === 'Enter') event.preventDefault()
-          })}
-          onFocus={composeEventHandlers(itemProps.onFocus, () => {
-            /**
-             * Our `RovingFocusGroup` will focus the radio when navigating with arrow keys
-             * and we need to "check" it in that case. We click it to "check" it (instead
-             * of updating `context.value`) so that the radio change event fires.
-             */
-            if (isArrowKeyPressedRef.current) ref.current?.click()
-          })}
-        />
+        <RadioContainer>
+          <Radio
+            disabled={isDisabled}
+            required={context.required}
+            checked={checked}
+            {...radioScope}
+            {...itemProps}
+            name={context.name}
+            ref={composedRefs}
+            onCheck={() => context.onValueChange(itemProps.value)}
+            onKeyDown={composeEventHandlers((event) => {
+              // According to WAI ARIA, radio groups don't activate items on enter keypress
+              if (event.key === 'Enter') event.preventDefault()
+            })}
+            onFocus={composeEventHandlers(itemProps.onFocus, () => {
+              /**
+               * Our `RovingFocusGroup` will focus the radio when navigating with arrow keys
+               * and we need to "check" it in that case. We click it to "check" it (instead
+               * of updating `context.value`) so that the radio change event fires.
+               */
+              if (isArrowKeyPressedRef.current) ref.current?.click()
+            })}
+          />
+        </RadioContainer>
       </RovingFocusGroup.Item>
     )
   }
@@ -230,12 +246,12 @@ RadioGroupIndicator.displayName = INDICATOR_NAME
 
 /* ---------------------------------------------------------------------------------------------- */
 
-
 export {
   createRadioGroupScope,
   //
   RadioGroup,
   RadioGroupItem,
   RadioGroupIndicator,
+  //
 }
 export type { RadioGroupProps, RadioGroupItemProps, RadioGroupIndicatorProps }
