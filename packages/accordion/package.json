@@ -19,6 +19,7 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
+    "@tamagui/collection": "^1.1.11",
     "@tamagui/compose-refs": "^1.1.11",
     "@tamagui/core": "^1.1.11",
     "@tamagui/create-context": "^1.1.11",
