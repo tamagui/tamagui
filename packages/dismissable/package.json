@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dismissable",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -22,16 +22,16 @@
   },
   "dependencies": {
     "@radix-ui/react-use-escape-keydown": "^0.1.0",
-    "@tamagui/compose-refs": "^1.2.2",
-    "@tamagui/core": "^1.2.2",
-    "@tamagui/use-event": "^1.2.2"
+    "@tamagui/compose-refs": "^1.2.3",
+    "@tamagui/core": "^1.2.3",
+    "@tamagui/use-event": "^1.2.3"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.2.2",
+    "@tamagui/build": "^1.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

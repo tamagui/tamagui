@@ -34,5 +34,5 @@
     "zx": "^7.1.1"
   },
   "packageManager": "yarn@3.2.3",
-  "version": "1.2.2"
+  "version": "1.2.3"
 }

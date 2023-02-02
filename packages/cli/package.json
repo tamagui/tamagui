@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "module": "dist/esm",
@@ -36,9 +36,9 @@
     "@callstack/repack-debugger-app": "^1.0.0",
     "@fastify/sensible": "^4.1.0",
     "@fastify/static": "^5.0.2",
-    "@tamagui/build": "^1.2.2",
-    "@tamagui/static": "^1.2.2",
-    "@tamagui/vite-plugin": "^1.2.2",
+    "@tamagui/build": "^1.2.3",
+    "@tamagui/static": "^1.2.3",
+    "@tamagui/vite-plugin": "^1.2.3",
     "@types/compression": "^1.7.2",
     "@types/morgan": "^1.9.3",
     "arg": "^5.0.2",
@@ -72,6 +72,6 @@
     "zx": "^7.1.1"
   },
   "devDependencies": {
-    "@takeout/studio": "^1.2.2"
+    "@takeout/studio": "^1.2.3"
   }
 }

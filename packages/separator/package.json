@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/separator",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "sideEffects": [
     "*.css"
   ],
@@ -21,14 +21,14 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "dependencies": {
-    "@tamagui/core": "^1.2.2"
+    "@tamagui/core": "^1.2.3"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.2.2",
+    "@tamagui/build": "^1.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
