@@ -3,19 +3,6 @@ title: useMedia
 description: Designing for different size screens.
 ---
 
-`@tamagui/core` doesn't provide media capabilities out of the box to native apps. To enable media queries for React Native, you need to provide matchMedia implementation:
-
-```tsx
-import { createMedia } from '@tamagui/react-native-media-driver'
-
-export default createTamagui({
-  media: createMedia({
-    xs: { maxWidth: 660 },
-    // ...
-  }),
-})
-```
-
 Define your media rules in the media object of your `tamagui.config.ts`:
 
 ```tsx line=2-6
