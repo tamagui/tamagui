@@ -1,6 +1,6 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import type { ExtractorOptions, ExtractorParseProps } from '../types.js';
+import type { ExtractorOptions, ExtractorParseProps, TamaguiOptions } from '../types.js';
 import { cleanupBeforeExit } from './getStaticBindingsForScope.js';
 import { TamaguiProjectInfo } from './loadTamagui.js';
 export type Extractor = ReturnType<typeof createExtractor>;

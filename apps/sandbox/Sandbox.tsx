@@ -6,6 +6,7 @@ import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import { H1, Square, TamaguiProvider, XStack, YStack, useMedia, useTheme } from 'tamagui'
 
+import { CodeExamplesInput } from './CodeExamplesInput'
 import config from './tamagui.config'
 
 // import './wdyr'
@@ -56,6 +57,8 @@ export const Sandbox = () => {
       />
 
       <TestUseStyle />
+
+      <CodeExamplesInput />
 
       <YStack fullscreen ai="center" jc="center">
         <Square size={100} bc="red" />

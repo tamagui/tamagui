@@ -635,7 +635,7 @@ export function createExtractor(
           if (!isValidImport(propsWithFileInfo, modulePath, binding.identifier.name)) {
             if (shouldPrintDebug) {
               logger.info(
-                ` - Binding not internal import or from components ${modulePath}`
+                ` - Binding not internal import or from components ${binding.identifier.name} in ${modulePath}`
               )
             }
             return
