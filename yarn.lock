@@ -6202,8 +6202,6 @@ __metadata:
 "@tamagui/types@^1.2.2, @tamagui/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@tamagui/types@workspace:packages/types"
-  dependencies:
-    "@tamagui/build": ^1.2.2
   languageName: unknown
   linkType: soft
 
