@@ -1,0 +1,92 @@
+title: Radio Group
+description: A simple radio group component
+name: radio group
+component: Radio Group
+package: radio group
+---
+
+# Radio Group
+
+<Description>Use in forms to toggle between two states.</Description>
+
+<HeroContainer>
+  <RadioGroupDemo />
+</HeroContainer>
+
+```tsx hero template=RadioGroup
+```
+
+<Highlights
+  features={[
+    `Supports indeterminate state.`, 
+    `Accessible, easy to compose and customize.`,
+    `Sizable & works controlled or uncontrolled.`,
+    `Ability to opt-out to native checkbox on web.`,
+  ]}
+/>
+
+### Usage
+
+```tsx
+import { import {
+  RadioGroup,
+  RadioGroupIndicator,
+  RadioGroupItem,
+} from 'tamagui' } from 'tamagui'
+export default () => (
+  <RadioGroup>
+    <RadioGroupItem value={} size="$4">
+      <RadioGroupIndicator size={} />
+    </RadioGroupItem>
+  <RadioGroup>
+)
+```
+
+### Radio Group props
+
+Radio Group extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'labeledBy',
+      type: 'string',
+      description: `Set aria-labeled-by.`,
+    },
+    {
+      name: 'name',
+      type: 'string',
+      description: `Equivalent to input name.`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `Give it a value (for use in HTML forms).`,
+    },
+    {
+      name: 'checked',
+      type: 'boolean',
+      description: `Control the input.`,
+    },
+    {
+      name: 'defaultChecked',
+      type: 'boolean',
+      description: `Uncontrolled default value.`,
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: `Sets aria-required.`,
+    },
+    {
+      name: 'native',
+      type: 'boolean',
+      description: `Renders native radio group input on web.`,
+      default: false,
+    },
+    {
+      name: 'onCheckedChange',
+      type: '(checked: boolean) => void',
+    },
+  ]}
+/>
