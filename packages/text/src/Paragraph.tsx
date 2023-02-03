@@ -1,4 +1,4 @@
-import { PropTypes, styled } from '@tamagui/core'
+import { GetProps, styled } from '@tamagui/core'
 
 import { SizableText } from './SizableText'
 
@@ -10,4 +10,4 @@ export const Paragraph = styled(SizableText, {
   size: '$true',
 })
 
-export type ParagraphProps = PropTypes<typeof Paragraph>
+export type ParagraphProps = GetProps<typeof Paragraph>

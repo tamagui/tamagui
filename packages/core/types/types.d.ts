@@ -237,7 +237,6 @@ export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B ext
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations'];
 export type UnionableString = string & {};
 export type UnionableNumber = number & {};
-export type PropTypes<A extends TamaguiComponent> = A extends FunctionComponent<infer Props> ? Props : unknown;
 export type GenericFont<Key extends number | string = number | string> = {
     size: {
         [key in Key]: number | Variable;
