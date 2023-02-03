@@ -151,8 +151,8 @@ const CollapsibleContent = React.forwardRef<
   CollapsibleContentElement,
   CollapsibleContentProps
 >((props: ScopedProps<CollapsibleContentProps>, forwardedRef) => {
-  const { forceMount, children, ...contentProps } = props
-  const context = useCollapsibleContext(CONTENT_NAME, props.__scopeCollapsible)
+  const { forceMount, children, __scopeCollapsible, ...contentProps } = props
+  const context = useCollapsibleContext(CONTENT_NAME, __scopeCollapsible)
 
   return (
     <AnimatePresence {...contentProps}>
