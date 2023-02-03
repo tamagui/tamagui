@@ -17,9 +17,8 @@ export type ButtonProps = Omit<TextParentStyles, 'TextComponent'> & GetProps<typ
     iconAfter?: IconProp;
     /**
      * adjust icon relative to size
-     */
-    /**
-     * default: -1
+     *
+     * @default 1
      */
     scaleIcon?: number;
     /**
@@ -207,9 +206,8 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
     iconAfter?: IconProp | undefined;
     /**
      * adjust icon relative to size
-     */
-    /**
-     * default: -1
+     *
+     * @default 1
      */
     scaleIcon?: number | undefined;
     /**
@@ -288,6 +286,8 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         accessibilityLabel?: string | undefined;
         accessibilityRole?: "none" | "button" | "link" | "search" | "image" | "keyboardkey" | "text" | "adjustable" | "imagebutton" | "header" | "summary" | "list" | undefined; /**
          * adjust icon relative to size
+         *
+         * @default 1
          */
         accessibilityState?: import("react-native").AccessibilityState | undefined;
         accessibilityHint?: string | undefined;
@@ -307,14 +307,9 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         target?: any;
         rel?: any;
         download?: any;
-        /**
-         * default: -1
-         */
         href?: string | undefined;
         hrefAttrs?: {
-            target?: "top" | "_blank" | "_self" | "_top" | "blank" | "self" | undefined; /**
-             * make the spacing elements flex
-             */
+            target?: "top" | "_blank" | "_self" | "_top" | "blank" | "self" | undefined;
             rel?: string | undefined;
             download?: boolean | undefined;
         } | undefined;
@@ -333,12 +328,12 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         dangerouslySetInnerHTML?: {
             __html: string;
         } | undefined;
-        animation?: import("@tamagui/core").AnimationProp | null | undefined;
+        animation?: import("@tamagui/core").AnimationProp | null | undefined; /**
+         * adjust internal space relative to icon size
+         */
         animateOnly?: string[] | undefined;
         debug?: boolean | "verbose" | undefined;
-        disabled?: boolean | undefined; /**
-         *
-         */
+        disabled?: boolean | undefined;
         className?: string | undefined;
         themeShallow?: boolean | undefined;
         id?: string | undefined;
