@@ -8,7 +8,7 @@ import type {
 
 export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   sizeTokenIn = '$true',
-  { fonts, theme, props }
+  { fonts, props }
 ) => {
   const family = getVariableValue(props.fontFamily) || '$body'
   const font = fonts[family] || fonts['$body']
@@ -31,7 +31,7 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   const letterSpacing = props.letterSpacing || font.letterSpacing[sizeToken]
   const fontStyle = props.fontStyle || font.style?.[sizeToken]
   const textTransform = props.textTransform || font.transform?.[sizeToken]
-  const color = props.color || font.color?.[sizeToken] || theme.color
+  const color = props.color || font.color?.[sizeToken]
 
   const style = {
     color,
