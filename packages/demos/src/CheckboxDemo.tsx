@@ -6,17 +6,16 @@ export function CheckboxDemo() {
     <YStack w={300} ai="center" space="$3">
       <CheckboxWithLabel size="$2" />
       <CheckboxWithLabel size="$3" />
-      <CheckboxWithLabel size="$4" />
-      <CheckboxWithLabel size="$5" />
+      <CheckboxWithLabel size="$4" defaultChecked />
     </YStack>
   )
 }
 
-function CheckboxWithLabel(props: { size: SizeTokens }) {
+function CheckboxWithLabel(props: { size: SizeTokens, defaultChecked?: boolean }) {
   const id = `checkbox-${props.size.toString().slice(1)}`
   return (
     <XStack w={300} ai="center" space="$4">
-      <Checkbox id={id} size={props.size}>
+      <Checkbox id={id} size={props.size} defaultChecked={props.defaultChecked}>
         <Checkbox.Indicator icon={<CheckIcon />} />
       </Checkbox>
 
