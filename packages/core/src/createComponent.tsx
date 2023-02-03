@@ -497,7 +497,9 @@ export function createComponent<
         } as any)
       }
 
-      if (props.href !== undefined && hrefAttrs !== undefined) {
+      // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
+
+      if (viewProps.href !== undefined && hrefAttrs !== undefined) {
         const { download, rel, target } = hrefAttrs
         if (download != null) {
           viewProps.download = download
@@ -513,7 +515,7 @@ export function createComponent<
       // FOCUS
       // "focusable" indicates that an element may be a keyboard tab-stop.
       // ported from RNW: TODO move into getSplitStyles
-      if (!props.tabIndex) {
+      if (!viewProps.tabIndex) {
         const _focusable = focusable !== undefined ? focusable : accessible
         const role = viewProps.role
         if (_focusable === false) {
