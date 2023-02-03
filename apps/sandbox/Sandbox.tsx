@@ -73,7 +73,10 @@ export const Sandbox = () => {
         <Square size={100} bc="red" />
         {/* <SelectDemo /> */}
 
-        <Button debug="verbose" tabIndex="-1"></Button>
+        <Button unstyled tabIndex="-1">
+          hello world 123
+        </Button>
+        <Button tabIndex="-1">hello world 123</Button>
 
         {/* <SliderDemo /> */}
         {/* <Square tabIndex="0" size={100} bc="$blue10" /> */}
