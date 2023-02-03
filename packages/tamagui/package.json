@@ -46,6 +46,7 @@
     "@tamagui/avatar": "^1.2.3",
     "@tamagui/button": "^1.2.3",
     "@tamagui/card": "^1.2.3",
+    "@tamagui/checkbox": "*",
     "@tamagui/compose-refs": "^1.2.3",
     "@tamagui/core": "^1.2.3",
     "@tamagui/create-context": "^1.2.3",
