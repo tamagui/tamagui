@@ -1,9 +1,9 @@
 import { Collapsible } from '@tamagui/collapsible';
 import { Stack } from '@tamagui/core';
-import { H3 } from '@tamagui/tamagui';
 import * as React from 'react';
+import { H3 } from 'tamagui';
 type Direction = 'ltr' | 'rtl';
-declare const createAccordionScope: import("@tamagui/create-context").CreateScope;
+declare const createAccordionScope: import("tamagui").CreateScope;
 interface AccordionSingleProps extends AccordionImplSingleProps {
     type: 'single';
 }
@@ -79,7 +79,7 @@ interface AccordionItemProps extends Omit<CollapsibleProps, 'open' | 'defaultOpe
 /**
  * `AccordionItem` contains all of the parts of a collapsible section inside of an `Accordion`.
  */
-declare const AccordionItem: React.ForwardRefExoticComponent<AccordionItemProps & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
+declare const AccordionItem: React.ForwardRefExoticComponent<AccordionItemProps & React.RefAttributes<import("tamagui").TamaguiElement>>;
 type PrimitiveHeading3Props = React.ComponentPropsWithoutRef<typeof H3>;
 interface AccordionHeaderProps extends PrimitiveHeading3Props {
 }
@@ -87,7 +87,7 @@ interface AccordionHeaderProps extends PrimitiveHeading3Props {
  * `AccordionHeader` contains the content for the parts of an `AccordionItem` that will be visible
  * whether or not its content is collapsed.
  */
-declare const AccordionHeader: React.ForwardRefExoticComponent<Pick<AccordionHeaderProps, keyof AccordionHeaderProps> & React.RefAttributes<unknown>>;
+declare const AccordionHeader: React.ForwardRefExoticComponent<AccordionHeaderProps & React.RefAttributes<import("tamagui").TamaguiElement>>;
 type CollapsibleTriggerProps = React.ComponentPropsWithoutRef<typeof Collapsible.Trigger>;
 interface AccordionTriggerProps extends CollapsibleTriggerProps {
 }
@@ -95,19 +95,19 @@ interface AccordionTriggerProps extends CollapsibleTriggerProps {
  * `AccordionTrigger` is the trigger that toggles the collapsed state of an `AccordionItem`. It
  * should always be nested inside of an `AccordionHeader`.
  */
-declare const AccordionTrigger: React.ForwardRefExoticComponent<AccordionTriggerProps & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
+declare const AccordionTrigger: React.ForwardRefExoticComponent<AccordionTriggerProps & React.RefAttributes<import("tamagui").TamaguiElement>>;
 type CollapsibleContentProps = React.ComponentPropsWithoutRef<typeof Collapsible.Content>;
 interface AccordionContentProps extends CollapsibleContentProps {
 }
 /**
  * `AccordionContent` contains the collapsible content for an `AccordionItem`.
  */
-declare const AccordionContent: React.ForwardRefExoticComponent<AccordionContentProps & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
+declare const AccordionContent: React.ForwardRefExoticComponent<AccordionContentProps & React.RefAttributes<import("tamagui").TamaguiElement>>;
 declare const Accordion: React.ForwardRefExoticComponent<(AccordionSingleProps | AccordionMultipleProps) & React.RefAttributes<import("react-native").View>> & {
-    Trigger: React.ForwardRefExoticComponent<AccordionTriggerProps & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
-    Header: React.ForwardRefExoticComponent<Pick<AccordionHeaderProps, keyof AccordionHeaderProps> & React.RefAttributes<unknown>>;
-    Content: React.ForwardRefExoticComponent<AccordionContentProps & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
-    Item: React.ForwardRefExoticComponent<AccordionItemProps & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
+    Trigger: React.ForwardRefExoticComponent<AccordionTriggerProps & React.RefAttributes<import("tamagui").TamaguiElement>>;
+    Header: React.ForwardRefExoticComponent<AccordionHeaderProps & React.RefAttributes<import("tamagui").TamaguiElement>>;
+    Content: React.ForwardRefExoticComponent<AccordionContentProps & React.RefAttributes<import("tamagui").TamaguiElement>>;
+    Item: React.ForwardRefExoticComponent<AccordionItemProps & React.RefAttributes<import("tamagui").TamaguiElement>>;
 };
 export { Accordion, createAccordionScope, AccordionItem, AccordionTrigger, AccordionHeader, AccordionContent, };
 export type { AccordionSingleProps, AccordionMultipleProps, AccordionItemProps, AccordionHeaderProps, AccordionTriggerProps, AccordionContentProps, };

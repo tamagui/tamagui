@@ -12,11 +12,11 @@ import {
 } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
-import { YStack } from '@tamagui/stacks/types'
-import { H1, H3 } from '@tamagui/tamagui'
+import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
+import { H1, H3 } from 'tamagui'
 
 type Direction = 'ltr' | 'rtl'
 
@@ -35,11 +35,11 @@ const [Collection, useCollection, createCollectionScope] =
 type ScopedProps<P> = P & { __scopeAccordion?: Scope }
 const [createAccordionContext, createAccordionScope] = createContextScope(
   ACCORDION_NAME,
-  {
+  [
     //@ts-ignore
     createCollectionScope,
     createCollapsibleScope,
-  }
+  ]
 )
 
 const useCollapsibleScope = createCollapsibleScope()
