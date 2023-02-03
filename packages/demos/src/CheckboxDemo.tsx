@@ -11,12 +11,14 @@ export function CheckboxDemo() {
   )
 }
 
-function CheckboxWithLabel(props: { size: SizeTokens, defaultChecked?: boolean }) {
+function CheckboxWithLabel(props: { size: SizeTokens; defaultChecked?: boolean }) {
   const id = `checkbox-${props.size.toString().slice(1)}`
   return (
     <XStack w={300} ai="center" space="$4">
       <Checkbox id={id} size={props.size} defaultChecked={props.defaultChecked}>
-        <Checkbox.Indicator icon={<CheckIcon />} />
+        <Checkbox.Indicator>
+          <CheckIcon />
+        </Checkbox.Indicator>
       </Checkbox>
 
       <Label size={props.size} htmlFor={id}>

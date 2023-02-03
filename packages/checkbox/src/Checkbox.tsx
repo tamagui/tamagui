@@ -6,6 +6,11 @@ import {
   GetProps,
   SizeTokens,
   TamaguiElement,
+  getConfig,
+  isTamaguiComponent,
+  isTamaguiElement,
+  mergeProps,
+  spacedChildren,
   useMediaPropsActive,
   useTheme,
 } from '@tamagui/core'
@@ -122,12 +127,16 @@ export type CheckboxIndicatorProps = CheckboxIndicatorFrameProps & {
    * controlling animation with React animation libraries.
    */
   forceMount?: true
-  icon?: IconProp
 }
 
 const CheckboxIndicator = React.forwardRef<TamaguiElement, CheckboxIndicatorProps>(
   (props: ScopedProps<CheckboxIndicatorProps>, forwardedRef) => {
-    const { __scopeCheckbox, forceMount, icon, ...indicatorProps } = props
+    const {
+      __scopeCheckbox,
+      children: childrenProp,
+      forceMount,
+      ...indicatorProps
+    } = props
     const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox)
     const iconSize =
       (typeof context.size === 'number'
@@ -135,7 +144,15 @@ const CheckboxIndicator = React.forwardRef<TamaguiElement, CheckboxIndicatorProp
         : getFontSize(context.size)) * context.scaleIcon
     const theme = useTheme()
     const getThemedIcon = useGetThemedIcon({ size: iconSize, color: theme.color })
-    const themedIcon = getThemedIcon(icon)
+
+    const childrens = React.Children.toArray(childrenProp)
+    const children = childrens.map((child) => {
+      // TODO: Check if the child supports the common icon props?
+      // ^ this currently passes the size prop anyways. even if it's a <Text />
+      if (!React.isValidElement(child)) return child
+      return getThemedIcon(child)
+    })
+
     if (forceMount || isIndeterminate(context.state) || context.state === true)
       return (
         <CheckboxIndicatorFrame
@@ -146,7 +163,7 @@ const CheckboxIndicator = React.forwardRef<TamaguiElement, CheckboxIndicatorProp
           {...indicatorProps}
           ref={forwardedRef}
         >
-          {themedIcon}
+          {children}
         </CheckboxIndicatorFrame>
       )
 
@@ -361,3 +378,8 @@ export const Checkbox = withStaticProperties(
 Checkbox.displayName = CHECKBOX_NAME
 
 export { createCheckboxScope }
+
+const cloneElementWithPropOrder = (child: any, props: Object) => {
+  const next = mergeProps(child.props, props, false, getConfig().shorthands)[0]
+  return React.cloneElement({ ...child, props: null }, next)
+}

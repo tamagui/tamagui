@@ -126,18 +126,12 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     [x: string]: undefined;
 })>;
 type CheckboxIndicatorFrameProps = GetProps<typeof CheckboxIndicatorFrame>;
-type IndicatorIconProps = {
-    color?: string;
-    size?: number;
-};
-type IconProp = JSX.Element | React.FunctionComponent<IndicatorIconProps> | null;
 export type CheckboxIndicatorProps = CheckboxIndicatorFrameProps & {
     /**
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
     forceMount?: true;
-    icon?: IconProp;
 };
 export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -273,7 +267,6 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
          * controlling animation with React animation libraries.
          */
         forceMount?: true | undefined;
-        icon?: IconProp | undefined;
     }) | Pick<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -331,7 +324,6 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
          * controlling animation with React animation libraries.
          */
         forceMount?: true | undefined;
-        icon?: IconProp | undefined;
     }, string | number>) & React.RefAttributes<TamaguiElement>>;
 };
 export { createCheckboxScope };
