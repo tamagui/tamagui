@@ -30,6 +30,10 @@ export type ButtonProps = Omit<TextParentStyles, 'TextComponent'> & GetProps<typ
      * adjust internal space relative to icon size
      */
     scaleSpace?: number;
+    /**
+     *
+     */
+    unstyled?: boolean;
 };
 export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -46,7 +50,8 @@ export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "disabled" | "size" | "defaultStyle" | "active"> & {
+    readonly defaultStyle?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -65,7 +70,8 @@ export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "disabled" | "size" | "defaultStyle" | "active"> & {
+    readonly defaultStyle?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -84,7 +90,8 @@ export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "disabled" | "size" | "defaultStyle" | "active"> & {
+    readonly defaultStyle?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -104,35 +111,120 @@ export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 } & {
+    readonly defaultStyle?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
 }>;
-export declare const ButtonText: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
+export declare const ButtonText: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
-    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
-}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
-    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
-}>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
-    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
-}, string | number> & {
-    [x: string]: undefined;
+}, "defaultStyle"> & {
+    defaultStyle?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
-}, string | number> & {
-    [x: string]: undefined;
+}, "defaultStyle"> & {
+    defaultStyle?: boolean | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
-}, string | number> & {
-    [x: string]: undefined;
-}>>), TamaguiElement, import("@tamagui/core").TextPropsBase, {
-    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
-} | ({
+}, "defaultStyle"> & {
+    defaultStyle?: boolean | undefined;
+}>>, TamaguiElement, import("@tamagui/core").TextPropsBase, {
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & {
-    [x: string]: undefined;
-})>;
+    defaultStyle?: boolean | undefined;
+}>;
+export declare const buttonStaticConfig: {
+    inlineProps: Set<string>;
+};
+export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"> & Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+} & {
+    readonly backgrounded?: boolean | undefined;
+    readonly radiused?: boolean | undefined;
+    readonly hoverTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined;
+    readonly circular?: boolean | undefined;
+    readonly padded?: boolean | undefined;
+    readonly elevate?: boolean | undefined;
+    readonly bordered?: number | boolean | undefined;
+    readonly transparent?: boolean | undefined;
+    readonly chromeless?: boolean | "all" | undefined;
+}, "disabled" | "size" | "defaultStyle" | "active"> & {
+    readonly defaultStyle?: boolean | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly active?: boolean | undefined;
+    readonly disabled?: boolean | undefined;
+} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+} & {
+    readonly backgrounded?: boolean | undefined;
+    readonly radiused?: boolean | undefined;
+    readonly hoverTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined;
+    readonly circular?: boolean | undefined;
+    readonly padded?: boolean | undefined;
+    readonly elevate?: boolean | undefined;
+    readonly bordered?: number | boolean | undefined;
+    readonly transparent?: boolean | undefined;
+    readonly chromeless?: boolean | "all" | undefined;
+}, "disabled" | "size" | "defaultStyle" | "active"> & {
+    readonly defaultStyle?: boolean | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly active?: boolean | undefined;
+    readonly disabled?: boolean | undefined;
+}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+} & {
+    readonly backgrounded?: boolean | undefined;
+    readonly radiused?: boolean | undefined;
+    readonly hoverTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined;
+    readonly circular?: boolean | undefined;
+    readonly padded?: boolean | undefined;
+    readonly elevate?: boolean | undefined;
+    readonly bordered?: number | boolean | undefined;
+    readonly transparent?: boolean | undefined;
+    readonly chromeless?: boolean | "all" | undefined;
+}, "disabled" | "size" | "defaultStyle" | "active"> & {
+    readonly defaultStyle?: boolean | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly active?: boolean | undefined;
+    readonly disabled?: boolean | undefined;
+}>> & ThemeableProps & {
+    /**
+     * add icon before, passes color and size automatically if Component
+     */
+    icon?: IconProp | undefined;
+    /**
+     * add icon after, passes color and size automatically if Component
+     */
+    iconAfter?: IconProp | undefined;
+    /**
+     * adjust icon relative to size
+     */
+    /**
+     * default: -1
+     */
+    scaleIcon?: number | undefined;
+    /**
+     * make the spacing elements flex
+     */
+    spaceFlex?: number | boolean | undefined;
+    /**
+     * adjust internal space relative to icon size
+     */
+    scaleSpace?: number | undefined;
+    /**
+     *
+     */
+    unstyled?: boolean | undefined;
+} & import("react").RefAttributes<TamaguiElement>, "theme" | "themeInverse"> & ThemeableProps) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>> | null;
 export declare function useButton(propsIn: ButtonProps, { Text }?: {
     Text: any;
 }): {
@@ -244,7 +336,9 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         animation?: import("@tamagui/core").AnimationProp | null | undefined;
         animateOnly?: string[] | undefined;
         debug?: boolean | "verbose" | undefined;
-        disabled?: boolean | undefined;
+        disabled?: boolean | undefined; /**
+         *
+         */
         className?: string | undefined;
         themeShallow?: boolean | undefined;
         id?: string | undefined;
@@ -256,27 +350,27 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         onPress?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         onPressIn?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         onPressOut?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
-        backgroundColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
-        borderBottomColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
-        borderBottomEndRadius?: import("@tamagui/core").RadiusTokens | import("@tamagui/core").ThemeValueFallback | undefined;
-        borderBottomLeftRadius?: import("@tamagui/core").RadiusTokens | import("@tamagui/core").ThemeValueFallback | undefined;
-        borderBottomRightRadius?: import("@tamagui/core").RadiusTokens | import("@tamagui/core").ThemeValueFallback | undefined;
-        borderBottomStartRadius?: import("@tamagui/core").RadiusTokens | import("@tamagui/core").ThemeValueFallback | undefined;
+        backgroundColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | import("react-native").OpaqueColorValue | undefined;
+        borderBottomColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | import("react-native").OpaqueColorValue | undefined;
+        borderBottomEndRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").RadiusTokens | undefined;
+        borderBottomLeftRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").RadiusTokens | undefined;
+        borderBottomRightRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").RadiusTokens | undefined;
+        borderBottomStartRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").RadiusTokens | undefined;
         borderBottomWidth?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
-        borderColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
+        borderColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | import("react-native").OpaqueColorValue | undefined;
         borderEndColor?: import("react-native").ColorValue | undefined;
-        borderLeftColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
+        borderLeftColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | import("react-native").OpaqueColorValue | undefined;
         borderLeftWidth?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
-        borderRadius?: import("@tamagui/core").RadiusTokens | import("@tamagui/core").ThemeValueFallback | undefined;
-        borderRightColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
+        borderRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").RadiusTokens | undefined;
+        borderRightColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | import("react-native").OpaqueColorValue | undefined;
         borderRightWidth?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
         borderStartColor?: import("react-native").ColorValue | undefined;
         borderStyle?: "solid" | "dotted" | "dashed" | undefined;
-        borderTopColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
-        borderTopEndRadius?: import("@tamagui/core").RadiusTokens | import("@tamagui/core").ThemeValueFallback | undefined;
-        borderTopLeftRadius?: import("@tamagui/core").RadiusTokens | import("@tamagui/core").ThemeValueFallback | undefined;
-        borderTopRightRadius?: import("@tamagui/core").RadiusTokens | import("@tamagui/core").ThemeValueFallback | undefined;
-        borderTopStartRadius?: import("@tamagui/core").RadiusTokens | import("@tamagui/core").ThemeValueFallback | undefined;
+        borderTopColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | import("react-native").OpaqueColorValue | undefined;
+        borderTopEndRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").RadiusTokens | undefined;
+        borderTopLeftRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").RadiusTokens | undefined;
+        borderTopRightRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").RadiusTokens | undefined;
+        borderTopStartRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").RadiusTokens | undefined;
         borderTopWidth?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
         borderWidth?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
         opacity?: number | undefined;
@@ -294,7 +388,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         flexGrow?: number | undefined;
         flexShrink?: number | undefined;
         flexWrap?: "nowrap" | "wrap" | "wrap-reverse" | undefined;
-        height?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | undefined;
+        height?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SizeTokens | undefined;
         justifyContent?: "center" | "flex-start" | "flex-end" | "space-between" | "space-around" | "space-evenly" | undefined;
         left?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
         margin?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
@@ -306,10 +400,10 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         marginStart?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
         marginTop?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
         marginVertical?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
-        maxHeight?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | undefined;
-        maxWidth?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | undefined;
-        minHeight?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | undefined;
-        minWidth?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | undefined;
+        maxHeight?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SizeTokens | undefined;
+        maxWidth?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SizeTokens | undefined;
+        minHeight?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SizeTokens | undefined;
+        minWidth?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SizeTokens | undefined;
         overflow?: "visible" | "hidden" | "scroll" | undefined;
         padding?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
         paddingBottom?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
@@ -324,10 +418,10 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         right?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
         start?: string | number | undefined;
         top?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
-        width?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | undefined;
+        width?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SizeTokens | undefined;
         zIndex?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ZIndexTokens | undefined;
         direction?: "inherit" | "ltr" | "rtl" | undefined;
-        shadowColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
+        shadowColor?: import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | import("react-native").OpaqueColorValue | undefined;
         shadowOffset?: import("@tamagui/core").ThemeValueFallback | {
             width: import("@tamagui/core").SpaceTokens;
             height: import("@tamagui/core").SpaceTokens;
@@ -336,7 +430,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             height: number;
         } | undefined;
         shadowOpacity?: number | undefined;
-        shadowRadius?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | undefined;
+        shadowRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SizeTokens | undefined;
         transform?: (import("react-native").PerpectiveTransform | import("react-native").RotateTransform | import("react-native").RotateXTransform | import("react-native").RotateYTransform | import("react-native").RotateZTransform | import("react-native").ScaleTransform | import("react-native").ScaleXTransform | import("react-native").ScaleYTransform | import("react-native").TranslateXTransform | import("react-native").TranslateYTransform | import("react-native").SkewXTransform | import("react-native").SkewYTransform | import("react-native").MatrixTransform)[] | undefined;
         transformMatrix?: number[] | undefined;
         rotation?: number | undefined;
@@ -378,6 +472,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         fullscreen?: boolean | undefined;
+        defaultStyle?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
         active?: boolean | undefined;
         hoverStyle?: Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -395,7 +490,8 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "active"> & {
+        }, "disabled" | "size" | "defaultStyle" | "active"> & {
+            readonly defaultStyle?: boolean | undefined;
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
@@ -415,7 +511,8 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "active"> & {
+        }, "disabled" | "size" | "defaultStyle" | "active"> & {
+            readonly defaultStyle?: boolean | undefined;
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
@@ -435,7 +532,8 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "active"> & {
+        }, "disabled" | "size" | "defaultStyle" | "active"> & {
+            readonly defaultStyle?: boolean | undefined;
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
@@ -455,7 +553,8 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "active"> & {
+        }, "disabled" | "size" | "defaultStyle" | "active"> & {
+            readonly defaultStyle?: boolean | undefined;
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
@@ -475,99 +574,19 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "active"> & {
+        }, "disabled" | "size" | "defaultStyle" | "active"> & {
+            readonly defaultStyle?: boolean | undefined;
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
         }> | null | undefined;
         themeInverse?: boolean | undefined;
         themeReset?: boolean | undefined;
+        /**
+         *
+         */
+        unstyled?: boolean | undefined;
     };
 };
-export declare const buttonStaticConfig: {
-    inlineProps: Set<string>;
-};
-export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"> & Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-} & {
-    readonly backgrounded?: boolean | undefined;
-    readonly radiused?: boolean | undefined;
-    readonly hoverTheme?: boolean | undefined;
-    readonly pressTheme?: boolean | undefined;
-    readonly focusTheme?: boolean | undefined;
-    readonly circular?: boolean | undefined;
-    readonly padded?: boolean | undefined;
-    readonly elevate?: boolean | undefined;
-    readonly bordered?: number | boolean | undefined;
-    readonly transparent?: boolean | undefined;
-    readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
-    readonly size?: import("@tamagui/core").SizeTokens | undefined;
-    readonly active?: boolean | undefined;
-    readonly disabled?: boolean | undefined;
-} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-} & {
-    readonly backgrounded?: boolean | undefined;
-    readonly radiused?: boolean | undefined;
-    readonly hoverTheme?: boolean | undefined;
-    readonly pressTheme?: boolean | undefined;
-    readonly focusTheme?: boolean | undefined;
-    readonly circular?: boolean | undefined;
-    readonly padded?: boolean | undefined;
-    readonly elevate?: boolean | undefined;
-    readonly bordered?: number | boolean | undefined;
-    readonly transparent?: boolean | undefined;
-    readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
-    readonly size?: import("@tamagui/core").SizeTokens | undefined;
-    readonly active?: boolean | undefined;
-    readonly disabled?: boolean | undefined;
-}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-} & {
-    readonly backgrounded?: boolean | undefined;
-    readonly radiused?: boolean | undefined;
-    readonly hoverTheme?: boolean | undefined;
-    readonly pressTheme?: boolean | undefined;
-    readonly focusTheme?: boolean | undefined;
-    readonly circular?: boolean | undefined;
-    readonly padded?: boolean | undefined;
-    readonly elevate?: boolean | undefined;
-    readonly bordered?: number | boolean | undefined;
-    readonly transparent?: boolean | undefined;
-    readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
-    readonly size?: import("@tamagui/core").SizeTokens | undefined;
-    readonly active?: boolean | undefined;
-    readonly disabled?: boolean | undefined;
-}>> & ThemeableProps & {
-    /**
-     * add icon before, passes color and size automatically if Component
-     */
-    icon?: IconProp | undefined;
-    /**
-     * add icon after, passes color and size automatically if Component
-     */
-    iconAfter?: IconProp | undefined;
-    /**
-     * adjust icon relative to size
-     */
-    /**
-     * default: -1
-     */
-    scaleIcon?: number | undefined;
-    /**
-     * make the spacing elements flex
-     */
-    spaceFlex?: number | boolean | undefined;
-    /**
-     * adjust internal space relative to icon size
-     */
-    scaleSpace?: number | undefined;
-} & import("react").RefAttributes<TamaguiElement>, "theme" | "themeInverse"> & ThemeableProps) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>> | null;
 export {};
 //# sourceMappingURL=Button.d.ts.map
