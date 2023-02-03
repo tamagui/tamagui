@@ -35,7 +35,9 @@ import { Checkbox } from 'tamagui'
 
 export default () => (
   <Checkbox size="$4">
-    <Checkbox.Indicator icon={<Check />} />
+    <Checkbox.Indicator>
+      <Check />
+    </Checkbox.Indicator>
   </Checkbox>
 )
 ```
@@ -95,19 +97,3 @@ export default () => (
     },
   ]}
 />
-
-#### Checkbox Indicator
-
-`Checkbox.Indicator` extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
-
-<PropsTable
-  data={[
-    {
-      name: 'icon',
-      type: 'IconProp',
-      description: `The icon to show when indicator is on active or indeterminate state.`,
-    },
-  ]}
-/>
-
-You can optionally pass `asChild` to the indicator if you won't want a wrapper on the icon.
