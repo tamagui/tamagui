@@ -286,55 +286,13 @@ const resolveTokensAndVariants: StyleResolver = (
     const fKey = conf.shorthands[rKey] || rKey
     const val = value[rKey]
 
-    if (isVariable(val)) {
-      res[fKey] = !isWeb || returnVariablesAs === 'value' ? val.val : val.variable
-    } else if (variants[fKey]) {
+    if (fKey in variants) {
       // avoids infinite loop if variant is matching a style prop
       // eg: { variants: { flex: { true: { flex: 2 } } } }
-      if (parentVariantKey === key) {
+      if (parentVariantKey && parentVariantKey === key) {
         res[fKey] = val
       } else {
-        Object.assign(
-          res,
-          Object.fromEntries(
-            resolveVariants(
-              fKey,
-              val,
-              props,
-              defaultProps,
-              theme,
-              variants,
-              fontFamily,
-              conf,
-              returnVariablesAs,
-              staticConfig,
-              key,
-              languageContext,
-              avoidDefaultProps,
-              debug
-            )
-          )
-        )
-      }
-    } else if (typeof val === 'string') {
-      const fVal =
-        val[0] === '$'
-          ? getToken(
-              fKey,
-              val,
-              conf,
-              theme,
-              fontFamily,
-              languageContext,
-              returnVariablesAs,
-              debug
-            )
-          : val
-      res[fKey] = fVal
-    } else {
-      if (isObj(val)) {
-        // sub-objects: media queries, pseudos, shadowOffset
-        res[fKey] = resolveTokensAndVariants(
+        const variantOut = resolveVariants(
           fKey,
           val,
           props,
@@ -350,11 +308,71 @@ const resolveTokensAndVariants: StyleResolver = (
           avoidDefaultProps,
           debug
         )
-      } else {
-        // nullish values cant be tokens, need no extra parsing
-        res[fKey] = val
+
+        const { pressStyle, hoverStyle, focusStyle, enterStyle, exitStyle, ...rest } =
+          Object.fromEntries(variantOut)
+        const subs = { pressStyle, hoverStyle, focusStyle, enterStyle, exitStyle }
+        Object.assign(res, rest)
+        for (const key in subs) {
+          if (subs[key]) {
+            res[key] ??= {}
+            Object.assign(res[key], subs[key])
+          }
+        }
       }
+      continue
     }
+
+    if (isVariable(val)) {
+      res[fKey] = !isWeb || returnVariablesAs === 'value' ? val.val : val.variable
+      continue
+    }
+
+    if (typeof val === 'string') {
+      const fVal =
+        val[0] === '$'
+          ? getToken(
+              fKey,
+              val,
+              conf,
+              theme,
+              fontFamily,
+              languageContext,
+              returnVariablesAs,
+              debug
+            )
+          : val
+      res[fKey] = fVal
+      continue
+    }
+
+    if (isObj(val)) {
+      // sub-objects: media queries, pseudos, shadowOffset
+      res[fKey] ??= {}
+      Object.assign(
+        res[fKey],
+        resolveTokensAndVariants(
+          fKey,
+          val,
+          props,
+          defaultProps,
+          theme,
+          variants,
+          fontFamily,
+          conf,
+          returnVariablesAs,
+          staticConfig,
+          key,
+          languageContext,
+          avoidDefaultProps,
+          debug
+        )
+      )
+    } else {
+      // nullish values cant be tokens, need no extra parsing
+      res[fKey] = val
+    }
+
     if (process.env.NODE_ENV === 'development') {
       if (debug) {
         if (res[fKey]?.[0] === '$') {

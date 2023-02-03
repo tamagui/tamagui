@@ -1,3 +1,4 @@
+- // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
 - check why styled() of a HOC is failing:
 
 const SheetOverlay = styled(Sheet.Overlay, {
