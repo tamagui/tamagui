@@ -64,7 +64,7 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
                 return (
                   <Paragraph
                     col="$color10"
-                    fow="300"
+                    ta="center"
                     w="$4"
                     $sm={{
                       w: '$2',
@@ -81,7 +81,7 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
           </XStack>
         </YStack>
 
-        <YStack space="$2">
+        <YStack space="$4" mt="$2">
           {colorGroups.map((name) => (
             <Paragraph
               theme={name as any}
