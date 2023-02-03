@@ -11,6 +11,7 @@
     "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json"
   },
   "dependencies": {
+    "@tamagui/accordion": "^1.1.11",
     "@tamagui/animations-css": "^1.1.11",
     "@tamagui/animations-motion": "^1.1.11",
     "@tamagui/animations-reanimated": "^1.1.11",

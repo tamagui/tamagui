@@ -1,70 +1,70 @@
-// debug
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
+import { Accordion } from '@tamagui/accordion'
+// debug
+import { Collapsible } from '@tamagui/collapsible'
 import { useState } from 'react'
-import { H1, Square, TamaguiProvider, XStack, YStack, useMedia, useTheme } from 'tamagui'
+import {
+  AnimatePresence,
+  Button,
+  H1,
+  Paragraph,
+  Popover,
+  Spinner,
+  Square,
+  TamaguiProvider,
+  XStack,
+  YStack,
+  useMedia,
+  useTheme,
+} from 'tamagui'
 
 import config from './tamagui.config'
-
-// import './wdyr'
 
 // webpack fix..
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
 
-function TestUseMediaRenders() {
-  const media = useMedia()
-
-  console.warn('render')
-
-  return <H1>{media.sm ? 'sm' : 'not sm'}</H1>
-}
-
-function TestUseTheme() {
-  const u = useTheme()
-  console.log(u.color)
-  return null
-}
-
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light')
+  const [open, setOpen] = useState(false)
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
-      <link href="/fonts/inter.css" rel="stylesheet" />
-      <button
-        style={{
-          position: 'absolute',
-          bottom: 30,
-          left: 20,
-        }}
-        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      >
-        🌗
-      </button>
-
-      <XStack />
-
-      <style
-        type="text/css"
-        dangerouslySetInnerHTML={{
-          __html: `html, body { overflow: hidden; height: 100vh; width: 100vw; }`,
-        }}
-      />
-
-      <YStack fullscreen ai="center" jc="center">
-        <Square size={100} bc="red" />
-        {/* <SelectDemo /> */}
-        {/* <SliderDemo /> */}
-        {/* <Square tabIndex="0" size={100} bc="$blue10" /> */}
-        {/* <Button size="$8"></Button> */}
-        {/* <TestUseMediaRenders /> */}
-        {/* <SliderDemo /> */}
+      <YStack>
+        <Collapsible>
+          <Collapsible.Trigger asChild>
+            <Button>Open Collapsible</Button>
+          </Collapsible.Trigger>
+          <Paragraph>Some paragraph here</Paragraph>
+          <Collapsible.Content>
+            <Paragraph>Some random content here</Paragraph>
+            <Paragraph>Some another random content here</Paragraph>
+          </Collapsible.Content>
+        </Collapsible>
       </YStack>
-
-      {/*  */}
+      <YStack width={'$20'}>
+        <Accordion type="single">
+          <Accordion.Item value="1">
+            <Accordion.Trigger asChild>
+              <Button>First Item</Button>
+            </Accordion.Trigger>
+            <Accordion.Content>
+              <Paragraph>There are some texts in here</Paragraph>
+            </Accordion.Content>
+          </Accordion.Item>
+          <Accordion.Item value="2">
+            <Accordion.Trigger asChild>
+              <Button>Second Item</Button>
+            </Accordion.Trigger>
+            <Accordion.Content>
+              <Paragraph>There are another some texts in here iajsdfo</Paragraph>
+            </Accordion.Content>
+          </Accordion.Item>
+        </Accordion>
+      </YStack>
     </TamaguiProvider>
   )
 }
