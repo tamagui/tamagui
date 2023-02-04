@@ -1,12 +1,4 @@
-weekend:
-  - bugs
-  - theme helpers
-  - @tamagui/style
-  - @tamagui/web
-  - styled(Button)
-  - @tamagui/checkbox
-
-
+- vite exports ssr issues
 - // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
 - check why styled() of a HOC is failing:
 

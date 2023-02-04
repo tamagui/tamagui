@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "../.."
+  },
+  "references": [
+    {
+      "path": "../../packages/core"
+    },
+    {
+      "path": "../../packages/colors"
+    },
+    {
+      "path": "../../packages/tamagui"
+    },
+    {
+      "path": "../../packages/shorthands"
+    },
+    {
+      "path": "../../packages/theme-base"
+    }
+  ]
+}

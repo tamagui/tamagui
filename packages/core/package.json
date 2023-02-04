@@ -27,15 +27,9 @@
     "reset.css"
   ],
   "dependencies": {
-    "@tamagui/compose-refs": "^1.2.4",
-    "@tamagui/constants": "^1.2.4",
-    "@tamagui/helpers": "^1.2.4",
-    "@tamagui/normalize-css-color": "^1.2.4",
     "@tamagui/react-native-use-pressable": "^1.2.4",
     "@tamagui/react-native-use-responder-events": "^1.2.4",
-    "@tamagui/use-did-finish-ssr": "^1.2.4",
-    "@tamagui/use-event": "^1.2.4",
-    "@tamagui/use-force-update": "^1.2.4"
+    "@tamagui/web": "^1.2.4"
   },
   "peerDependencies": {
     "react": "*",

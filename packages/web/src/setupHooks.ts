@@ -1,0 +1,35 @@
+import { RefObject } from 'react'
+
+import {
+  GetStyleResult,
+  TamaguiComponentEvents,
+  TamaguiComponentState,
+  TamaguiElement,
+} from './types'
+
+export const hooks: InternalHooks = {}
+
+// internal hooks setup
+export function setupHooks(next: InternalHooks) {
+  Object.assign(hooks, next)
+}
+
+type InternalHooks = {
+  usePropsTransform?: (
+    elementType: any,
+    props: Record<string, any>,
+    hostRef: RefObject<TamaguiElement>
+  ) => any
+
+  useEvents?: (
+    viewProps: Record<string, any>,
+    events: TamaguiComponentEvents | null,
+    splitStyles: GetStyleResult,
+    setStateShallow: (next: Partial<TamaguiComponentState>) => void
+  ) => any
+
+  getBaseViews?: () => {
+    View: any
+    Text: any
+  }
+}
