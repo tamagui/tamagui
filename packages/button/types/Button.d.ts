@@ -286,15 +286,14 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         onAccessibilityTap?: (() => void) | undefined;
         onMagicTap?: (() => void) | undefined;
         accessibilityIgnoresInvertColors?: boolean | undefined;
+        target?: string | undefined;
         asChild?: boolean | undefined;
         spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
         dangerouslySetInnerHTML?: {
             __html: string;
         } | undefined;
         animation?: import("@tamagui/core").AnimationProp | null | undefined;
-        animateOnly?: string[] | undefined; /**
-         *
-         */
+        animateOnly?: string[] | undefined;
         debug?: boolean | "verbose" | undefined;
         disabled?: boolean | undefined;
         className?: string | undefined;
@@ -303,11 +302,11 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         tag: string | undefined;
         componentName?: string | undefined;
         forceStyle?: "focus" | "hover" | "press" | undefined;
-        onHoverIn?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
-        onHoverOut?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onPress?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         onPressIn?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         onPressOut?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
+        onHoverIn?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
+        onHoverOut?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onMouseEnter?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onMouseLeave?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onMouseDown?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
