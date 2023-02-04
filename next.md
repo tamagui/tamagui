@@ -1,4 +1,12 @@
-- Applying the hoverStyle/pressStyle/onPress props to a Stack component seems to not have an affect on web, but android and ios seem to work as expected. forceStyle set to hover or press updates the styles as expected across all three platforms though, and my onPress callback is triggered on android and ios, just not web
+weekend:
+  - bugs
+  - theme helpers
+  - @tamagui/style
+  - @tamagui/web
+  - styled(Button)
+  - @tamagui/checkbox
+
+
 - // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
 - check why styled() of a HOC is failing:
 
@@ -20,8 +28,6 @@ const SheetOverlay = styled(Sheet.Overlay, {
 1.2
 
 - unstyled
-- animation timing
-- native popover
 
 ---
 

@@ -518,6 +518,10 @@ export type StaticConfig = StaticConfigPublic & {
      * Used internally for handling focus
      */
     isInput?: boolean;
+    /**
+     * Used internally for knowing how to handle when a HOC is in-between styled()
+     */
+    isHOC?: boolean;
 };
 /**
  * --------------------------------------------
