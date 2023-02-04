@@ -2,6 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { useStyle } from '@tamagui/core'
+import { ToggleGroupDemo } from '@tamagui/demos'
 import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import {
@@ -70,14 +71,13 @@ export const Sandbox = () => {
       <CodeExamplesInput />
 
       <YStack fullscreen ai="center" jc="center">
-        <Square size={100} bc="red" />
+        {/* <Square size={100} bc="red" /> */}
         {/* <SelectDemo /> */}
-
-        <Button unstyled tabIndex="-1">
+        {/* <Button unstyled tabIndex="-1">
           hello world 123
         </Button>
-        <Button tabIndex="-1">hello world 123</Button>
-
+        <Button tabIndex="-1">hello world 123</Button> */}
+        <ToggleGroupDemo />
         {/* <SliderDemo /> */}
         {/* <Square tabIndex="0" size={100} bc="$blue10" /> */}
         {/* <Button size="$8"></Button> */}
