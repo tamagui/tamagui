@@ -55,7 +55,9 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
-    readonly chromeless?: boolean | "all" | undefined;
+    readonly chromeless?: boolean | "all" | undefined; /**
+     * Used to disable passing styles down to children.
+     */
 }>>) | (Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -132,6 +134,10 @@ export type CheckboxIndicatorProps = CheckboxIndicatorFrameProps & {
      * controlling animation with React animation libraries.
      */
     forceMount?: true;
+    /**
+     * Used to disable passing styles down to children.
+     */
+    disablePassStyles?: boolean;
 };
 export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -260,13 +266,19 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
         readonly elevate?: boolean | undefined;
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
-        readonly chromeless?: boolean | "all" | undefined;
+        readonly chromeless?: boolean | "all" | undefined; /**
+         * Used to disable passing styles down to children.
+         */
     }>> & {
         /**
          * Used to force mounting when more control is needed. Useful when
          * controlling animation with React animation libraries.
          */
         forceMount?: true | undefined;
+        /**
+         * Used to disable passing styles down to children.
+         */
+        disablePassStyles?: boolean | undefined;
     }) | Pick<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -324,6 +336,10 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
          * controlling animation with React animation libraries.
          */
         forceMount?: true | undefined;
+        /**
+         * Used to disable passing styles down to children.
+         */
+        disablePassStyles?: boolean | undefined;
     }, string | number>) & React.RefAttributes<TamaguiElement>>;
 };
 export { createCheckboxScope };

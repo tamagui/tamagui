@@ -6,20 +6,15 @@ import {
   GetProps,
   SizeTokens,
   TamaguiElement,
-  getConfig,
-  isTamaguiComponent,
-  isTamaguiElement,
-  mergeProps,
-  spacedChildren,
-  useMediaPropsActive,
-  useTheme,
-} from '@tamagui/core'
-import {
   composeEventHandlers,
+  getConfig,
   getVariableValue,
   isWeb,
+  mergeProps,
   styled,
   useComposedRefs,
+  useMediaPropsActive,
+  useTheme,
   withStaticProperties,
 } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
@@ -118,15 +113,16 @@ const CheckboxIndicatorFrame = styled(ThemeableStack, {
 
 type CheckboxIndicatorFrameProps = GetProps<typeof CheckboxIndicatorFrame>
 
-type IndicatorIconProps = { color?: string; size?: number }
-type IconProp = JSX.Element | React.FunctionComponent<IndicatorIconProps> | null
-
 export type CheckboxIndicatorProps = CheckboxIndicatorFrameProps & {
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
    */
   forceMount?: true
+  /**
+   * Used to disable passing styles down to children.
+   */
+  disablePassStyles?: boolean
 }
 
 const CheckboxIndicator = React.forwardRef<TamaguiElement, CheckboxIndicatorProps>(
@@ -135,6 +131,7 @@ const CheckboxIndicator = React.forwardRef<TamaguiElement, CheckboxIndicatorProp
       __scopeCheckbox,
       children: childrenProp,
       forceMount,
+      disablePassStyles,
       ...indicatorProps
     } = props
     const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox)
@@ -147,9 +144,9 @@ const CheckboxIndicator = React.forwardRef<TamaguiElement, CheckboxIndicatorProp
 
     const childrens = React.Children.toArray(childrenProp)
     const children = childrens.map((child) => {
-      // TODO: Check if the child supports the common icon props?
-      // ^ this currently passes the size prop anyways. even if it's a <Text />
-      if (!React.isValidElement(child)) return child
+      if (disablePassStyles || !React.isValidElement(child)) {
+        return child
+      }
       return getThemedIcon(child)
     })
 
