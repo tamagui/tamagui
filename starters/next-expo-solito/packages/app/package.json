@@ -8,12 +8,12 @@
   ],
   "dependencies": {
     "@my/ui": "*",
-    "@tamagui/animations-react-native": "^1.2.4",
-    "@tamagui/colors": "^1.2.4",
-    "@tamagui/font-inter": "^1.2.4",
-    "@tamagui/lucide-icons": "^1.2.4",
-    "@tamagui/shorthands": "^1.2.4",
-    "@tamagui/theme-base": "^1.2.4",
+    "@tamagui/animations-react-native": "^1.2.5",
+    "@tamagui/colors": "^1.2.5",
+    "@tamagui/font-inter": "^1.2.5",
+    "@tamagui/lucide-icons": "^1.2.5",
+    "@tamagui/shorthands": "^1.2.5",
+    "@tamagui/theme-base": "^1.2.5",
     "expo-linking": "^3.2.3",
     "solito": "^2.1.3"
   },
