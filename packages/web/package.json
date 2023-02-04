@@ -1,0 +1,73 @@
+{
+  "name": "@tamagui/web",
+  "version": "1.2.4",
+  "source": "src/index.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
+  "license": "MIT",
+  "author": {
+    "name": "Nate Wienert"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "../../node_modules/.bin/rome check src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "files": [
+    "types",
+    "dist",
+    "src",
+    "reset.css"
+  ],
+  "dependencies": {
+    "@tamagui/compose-refs": "^1.2.4",
+    "@tamagui/constants": "^1.2.4",
+    "@tamagui/helpers": "^1.2.4",
+    "@tamagui/normalize-css-color": "^1.2.4",
+    "@tamagui/use-did-finish-ssr": "^1.2.4",
+    "@tamagui/use-event": "^1.2.4",
+    "@tamagui/use-force-update": "^1.2.4"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.2.4",
+    "@testing-library/react": "^13.4.0",
+    "csstype": "^3.0.10",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.7.4",
+    "vitest": "^0.26.3"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./reset.css": "./reset.css",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./inject-styles": {
+      "types": "./types/inject-styles.d.ts",
+      "import": "./dist/esm/inject-styles.js",
+      "require": "./dist/cjs/inject-styles.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "packages/core"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

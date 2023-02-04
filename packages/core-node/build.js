@@ -17,7 +17,7 @@ async function build() {
     const outPath = path.join(tmpDir, 'core-node')
     await fs.remove(outPath)
     await fs.mkdir(outPath)
-    const inPath = path.join(__dirname, '..', 'core', 'src', 'static.ts')
+    const inPath = path.join(__dirname, '..', 'core', 'src', 'index.ts')
     await Promise.all([
       esbuild.build({
         bundle: true,
