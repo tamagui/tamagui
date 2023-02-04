@@ -1,7 +1,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { useStyle } from '@tamagui/core'
+import { Stack, styled, useStyle } from '@tamagui/core'
 import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import {
@@ -39,6 +39,18 @@ function TestUseTheme() {
   return null
 }
 
+const StyledButton = styled(Button, {
+  backgroundColor: 'red',
+
+  hoverStyle: {
+    backgroundColor: 'green',
+  },
+
+  pressStyle: {
+    backgroundColor: 'blue',
+  },
+})
+
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light')
 
@@ -56,8 +68,6 @@ export const Sandbox = () => {
         🌗
       </button>
 
-      <XStack />
-
       <style
         type="text/css"
         dangerouslySetInnerHTML={{
@@ -65,24 +75,8 @@ export const Sandbox = () => {
         }}
       />
 
-      <TestUseStyle />
-
-      <CodeExamplesInput />
-
       <YStack fullscreen ai="center" jc="center">
-        <Square size={100} bc="red" />
-        {/* <SelectDemo /> */}
-
-        <Button unstyled tabIndex="-1">
-          hello world 123
-        </Button>
-        <Button tabIndex="-1">hello world 123</Button>
-
-        {/* <SliderDemo /> */}
-        {/* <Square tabIndex="0" size={100} bc="$blue10" /> */}
-        {/* <Button size="$8"></Button> */}
-        {/* <TestUseMediaRenders /> */}
-        {/* <SliderDemo /> */}
+        <StyledButton>hi</StyledButton>
       </YStack>
 
       {/*  */}

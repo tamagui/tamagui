@@ -534,7 +534,10 @@ export const getSplitStyles: StyleSplitter = (
     let isMedia = isMediaKey(keyInit)
     let isPseudo = validPseudoKeys[keyInit]
 
+    const isHOCShouldPassThrough = staticConfig.isHOC && (isMedia || isPseudo)
+
     if (
+      isHOCShouldPassThrough ||
       !(
         isMedia ||
         isPseudo ||
@@ -688,15 +691,17 @@ export const getSplitStyles: StyleSplitter = (
               continue
             }
             const curImportance = psuedosUsed[importance] || 0
-            if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-              console.log('Merge pseudo?', { importance, curImportance, pkey, val })
-            }
-            if (importance >= curImportance) {
+            const shouldMerge = importance >= curImportance
+            if (shouldMerge) {
               psuedosUsed[pkey] = importance
               pseudos ||= {}
               pseudos[key] ||= {}
               pseudos[key][pkey] = val
               mergeStyle(styleState, pkey, val)
+            }
+            if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+              // prettier-ignore
+              console.log('Merged pseudo?', shouldMerge, { importance, curImportance, pkey, val)
             }
           }
         }

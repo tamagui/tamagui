@@ -1015,6 +1015,7 @@ export function createComponent<
         Component,
         ...conf,
         neverFlatten: true,
+        isHOC: true,
         defaultProps: {
           ...Component.defaultProps,
           ...conf?.defaultProps,
