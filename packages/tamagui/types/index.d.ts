@@ -25,6 +25,7 @@ export * from '@tamagui/sheet';
 export * from '@tamagui/slider';
 export * from '@tamagui/stacks';
 export * from '@tamagui/switch';
+export * from '@tamagui/toggle-group';
 export * from '@tamagui/text';
 export * from '@tamagui/tooltip';
 export * from '@tamagui/use-controllable-state';
