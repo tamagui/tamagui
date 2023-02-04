@@ -1,0 +1,111 @@
+---
+title: ToggleGroup
+description: A set of two-state buttons that can be toggled on or off.
+name: toggleGroup
+component: ToggleGroup
+package: toggle-group
+---
+
+# ToggleGroup
+
+<Description>A set of two-state buttons that can be toggled on or off.</Description>
+
+<HeroContainer>
+    <ToggleGroupDemo />
+</HeroContainer>
+
+```tsx hero template=ToggleGroup
+
+```
+
+<Highlights
+    features={[
+    `Full keyboard navigation.`,
+    `Supports horizontal/vertical orientation.`,
+    `Support single and multiple pressed buttons.`,
+    `Can be controlled or uncontrolled.`,
+    ]}
+/>
+
+### Usage
+
+```
+import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
+import {ToggleGroup } from 'tamagui'
+
+export function ToggleGroupDemo() {
+  return (
+    <ToggleGroup
+      type="single"
+      defaultValue="center"
+      aria-label="Text alignment"
+    >
+      <ToggleGroup.Item
+        size="$8"
+        value="left"
+        aria-label="Left aligned"
+      >
+        <AlignLeft/>
+      </ToggleGroup.Item>
+      <ToggleGroup.Item
+        value="center"
+        aria-label="Center aligned"
+      >
+        <AlignCenter />
+      </ToggleGroup.Item>
+      <ToggleGroup.Item
+        value="right"
+        aria-label="Right aligned"
+      >
+        <AlignRight />
+      </ToggleGroup.Item>
+    </ToggleGroup>
+  )
+}
+
+```
+
+### ToggleGroup props
+
+ToggleGroup extend Stack views inheriting all the [Tamagui standard props](notion://www.notion.so/docs/intro/props), plus:
+
+<PropsTable
+    data={[
+        {
+            name: 'asChild',
+            type: 'boolean',
+            description: `When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props.`,
+            default: false,
+        },
+        {
+            name: 'type',
+            type: 'enum',
+            description: `Determines whether a single or multiple items can be pressed at a time.`,
+        },
+        {
+            name: 'value',
+            type: 'string',
+            description: `The controlled value of the pressed item when type is "single". Must be used in conjunction with onValueChange.`,
+        },
+        {
+            name: 'defaultValue',
+            type: 'string'
+        },
+        {
+            name: 'orientation',
+            type: 'enum',
+            description: `The orientation of the component, which determines how focus moves: horizontal for left/right arrows and vertical for up/down arrows.`,
+            default:`undefined`
+        },
+        {
+            name: 'disabled',
+            type: 'boolean',
+            description: `When true, prevents the user from interacting with the toggle group and all its items.`,
+            default: false,
+        },
+        {
+            name: 'onCheckedChange',
+            type: '(checked: boolean) => void',
+        },
+    ]}
+/>
