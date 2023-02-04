@@ -299,7 +299,7 @@ const AnimatableSquare = styled(Square, {
 export const MyComponent = ({ isVisible }) => (
   <AnimatePresence enterVariant="fromLeft" exitVariant="fromRight">
     {isVisible && (
-      <Square
+      <AnimatableSquare
         key="my-square"
         animation="bounce"
         backgroundColor="green"
