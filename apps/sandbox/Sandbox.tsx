@@ -16,7 +16,7 @@ import {
   useTheme,
 } from 'tamagui'
 
-import { CodeExamplesInput } from './CodeExamplesInput'
+// import { CodeExamplesInput } from './CodeExamplesInput'
 import config from './tamagui.config'
 
 // import './wdyr'
@@ -67,8 +67,6 @@ export const Sandbox = () => {
       />
 
       <TestUseStyle />
-
-      <CodeExamplesInput />
 
       <YStack fullscreen ai="center" jc="center">
         {/* <Square size={100} bc="red" /> */}
