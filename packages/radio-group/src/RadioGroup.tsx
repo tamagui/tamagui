@@ -12,7 +12,7 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
-import { getSize } from '@tamagui/get-size'
+import { getSize, stepTokenUpOrDown } from '@tamagui/get-size'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -32,6 +32,7 @@ type RadioGroupContextValue = {
   onChange?: (value: string) => void
   name?: string
   native?: boolean
+  accentColor?: string
 }
 const [RadioGroupProvider, useRadioGroupContext] =
   createRadioGroupContext<RadioGroupContextValue>(RADIO_GROUP_NAME)
@@ -96,11 +97,8 @@ type RadioGroupItemContextValue = {
   disabled?: boolean
 }
 
-const [createRadioGroupItemContext, createRadioGroupItemScope] =
-  createContextScope(RADIO_GROUP_ITEM_NAME)
 const [RadioGroupItemProvider, useRadioGroupItemContext] =
   createRadioGroupContext<RadioGroupItemContextValue>(RADIO_GROUP_NAME)
-const useRadioGroupItemScope = createRadioGroupItemScope()
 
 const RadioGroupItemFrame = styled(
   ThemeableStack,
@@ -112,6 +110,8 @@ const RadioGroupItemFrame = styled(
     backgroundColor: '$background',
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: 'transparent',
 
     focusStyle: {
       borderColor: '$borderColorFocus',
@@ -166,8 +166,8 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
         onChange,
         name,
         native,
+        accentColor,
       } = useRadioGroupContext(RADIO_GROUP_ITEM_NAME, __scopeRadioGroup)
-      const radioGroupItemScope = useRadioGroupItemScope(__scopeRadioGroup)
       const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
       const hasConsumerStoppedPropagationRef = React.useRef(false)
       const ref = React.useRef<HTMLButtonElement>(null)
@@ -216,6 +216,7 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
               required={required}
               disabled={isDisabled}
               id={props.id}
+              accentColor={accentColor}
             />
           ) : (
             <>
@@ -294,10 +295,11 @@ interface BubbleInputProps extends Omit<React.HTMLProps<HTMLInputElement>, 'chec
   control: HTMLElement | null
   bubbles: boolean
   isHidden?: boolean
+  accentColor?: string
 }
 
 const BubbleInput = (props: BubbleInputProps) => {
-  const { checked, bubbles = true, control, isHidden, ...inputProps } = props
+  const { checked, bubbles = true, control, isHidden, accentColor, ...inputProps } = props
   const ref = React.useRef<HTMLInputElement>(null)
   const prevChecked = usePrevious(checked)
 
@@ -336,6 +338,7 @@ const BubbleInput = (props: BubbleInputProps) => {
             }
           : {
               appearance: 'auto',
+              accentColor,
             }),
 
         ...props.style,
@@ -379,6 +382,7 @@ type RadioGroupProps = GetProps<typeof RadioGroupFrame> & {
   disabled?: boolean
   name?: string
   native?: boolean
+  accentColor?: string
 }
 
 const RadioGroup = withStaticProperties(
@@ -395,6 +399,7 @@ const RadioGroup = withStaticProperties(
           name,
           orientation,
           native,
+          accentColor,
           ...radioGroupProps
         } = props
         const [value, setValue] = useControllableState({
@@ -412,6 +417,7 @@ const RadioGroup = withStaticProperties(
             disabled={disabled}
             name={name}
             native={native}
+            accentColor={accentColor}
           >
             <RadioGroupFrame
               aria-valuetext={value}

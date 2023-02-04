@@ -80,6 +80,7 @@ type RadioGroupProps = GetProps<typeof RadioGroupFrame> & {
     disabled?: boolean;
     name?: string;
     native?: boolean;
+    accentColor?: string;
 };
 declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -140,6 +141,7 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("react-nat
     disabled?: boolean | undefined;
     name?: string | undefined;
     native?: boolean | undefined;
+    accentColor?: string | undefined;
 } & React.RefAttributes<TamaguiElement>> & {
     Indicator: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
