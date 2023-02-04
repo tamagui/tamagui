@@ -66,13 +66,13 @@ export type TamaguiComponentPropsBase = {
    * Forces the pseudo style state to be on
    */
   forceStyle?: 'hover' | 'press' | 'focus'
-  onHoverIn?: DivAttributes['onMouseEnter']
-  onHoverOut?: DivAttributes['onMouseLeave']
   onPress?: PressableProps['onPress']
   onPressIn?: PressableProps['onPress']
   onPressOut?: PressableProps['onPress']
 
   // WEB ONLY TODO probably remove these in favor of something better
+  onHoverIn?: DivAttributes['onMouseEnter']
+  onHoverOut?: DivAttributes['onMouseLeave']
   onMouseEnter?: DivAttributes['onMouseEnter']
   onMouseLeave?: DivAttributes['onMouseLeave']
   onMouseDown?: DivAttributes['onMouseDown']

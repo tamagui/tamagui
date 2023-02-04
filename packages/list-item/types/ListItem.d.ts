@@ -362,30 +362,34 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         onAccessibilityTap?: (() => void) | undefined;
         onMagicTap?: (() => void) | undefined;
         accessibilityIgnoresInvertColors?: boolean | undefined;
+        target?: string | undefined;
         asChild?: boolean | undefined;
-        spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
+        spaceDirection?: import("@tamagui/core").SpaceDirection | undefined; /**
+         * make the spacing elements flex
+         */
         separator?: React.ReactNode;
         dangerouslySetInnerHTML?: {
             __html: string;
-        } | undefined;
+        } | undefined; /**
+         * adjust internal space relative to icon size
+         */
         animation?: import("@tamagui/core").AnimationProp | null | undefined;
         animateOnly?: string[] | undefined;
         debug?: boolean | "verbose" | undefined;
         disabled?: boolean | undefined;
         className?: string | undefined;
-        /**
-         * subtitle
-         */
         themeShallow?: boolean | undefined;
-        id?: string | undefined;
+        id?: string | undefined; /**
+         * will not wrap text around `children` only, "all" will not wrap title or subTitle
+         */
         tag?: string | undefined;
         componentName?: string | undefined;
         forceStyle?: "focus" | "hover" | "press" | undefined;
-        onHoverIn?: React.MouseEventHandler<HTMLDivElement> | undefined;
-        onHoverOut?: React.MouseEventHandler<HTMLDivElement> | undefined;
         onPress?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         onPressIn?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         onPressOut?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
+        onHoverIn?: React.MouseEventHandler<HTMLDivElement> | undefined;
+        onHoverOut?: React.MouseEventHandler<HTMLDivElement> | undefined;
         onMouseEnter?: React.MouseEventHandler<HTMLDivElement> | undefined;
         onMouseLeave?: React.MouseEventHandler<HTMLDivElement> | undefined;
         onMouseDown?: React.MouseEventHandler<HTMLDivElement> | undefined;

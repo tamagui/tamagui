@@ -59,6 +59,7 @@ export declare const elevate: {
         onAccessibilityTap?: import("@tamagui/web").Variable<any> | (() => void) | undefined;
         onMagicTap?: import("@tamagui/web").Variable<any> | (() => void) | undefined;
         accessibilityIgnoresInvertColors?: boolean | import("@tamagui/web").Variable<any> | undefined;
+        target?: string | import("@tamagui/web").Variable<any> | undefined;
         asChild?: boolean | import("@tamagui/web").Variable<any> | undefined;
         space?: import("@tamagui/web").SpaceTokens | import("@tamagui/web").Variable<any> | null | undefined;
         spaceDirection?: import("@tamagui/web").Variable<any> | import("@tamagui/web").SpaceDirection | undefined;
@@ -78,11 +79,11 @@ export declare const elevate: {
         theme?: string | import("@tamagui/web").Variable<any> | null | undefined;
         componentName?: string | import("@tamagui/web").Variable<any> | undefined;
         forceStyle?: import("@tamagui/web").Variable<any> | "hover" | "press" | "focus" | undefined;
-        onHoverIn?: import("@tamagui/web").Variable<any> | import("react").MouseEventHandler<HTMLDivElement> | undefined;
-        onHoverOut?: import("@tamagui/web").Variable<any> | import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onPress?: ((event: import("react-native").GestureResponderEvent) => void) | import("@tamagui/web").Variable<any> | null | undefined;
         onPressIn?: ((event: import("react-native").GestureResponderEvent) => void) | import("@tamagui/web").Variable<any> | null | undefined;
         onPressOut?: ((event: import("react-native").GestureResponderEvent) => void) | import("@tamagui/web").Variable<any> | null | undefined;
+        onHoverIn?: import("@tamagui/web").Variable<any> | import("react").MouseEventHandler<HTMLDivElement> | undefined;
+        onHoverOut?: import("@tamagui/web").Variable<any> | import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onMouseEnter?: import("@tamagui/web").Variable<any> | import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onMouseLeave?: import("@tamagui/web").Variable<any> | import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onMouseDown?: import("@tamagui/web").Variable<any> | import("react").MouseEventHandler<HTMLDivElement> | undefined;

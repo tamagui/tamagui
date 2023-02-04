@@ -19,7 +19,7 @@ export declare const createSheetContext: <ContextValueType extends object | null
     displayName: string;
 }, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>) => ContextValueType], createSheetScope: import("@tamagui/create-context").CreateScope;
 export declare const SheetProvider: {
-    (props: Required<Pick<SheetProps, "open" | "position" | "snapPoints" | "dismissOnOverlayPress">> & {
+    (props: Required<Pick<SheetProps, "position" | "open" | "snapPoints" | "dismissOnOverlayPress">> & {
         hidden: boolean;
         setPosition: PositionChangeHandler;
         setOpen: React.Dispatch<React.SetStateAction<boolean>>;
