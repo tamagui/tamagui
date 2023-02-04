@@ -1,26 +1,10 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { Stack, Tokens, TokensParsed, getTokens, styled, useStyle } from '@tamagui/core'
-import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
-import {
-  Button,
-  H1,
-  Square,
-  TamaguiProvider,
-  XStack,
-  YStack,
-  useMedia,
-  useTheme,
-} from 'tamagui'
+import { Button, TamaguiProvider, YStack } from 'tamagui'
 
-import { CodeExamplesInput } from './CodeExamplesInput'
 import config from './tamagui.config'
-
-type x2 = TokensParsed['size']
-
-const x = <Stack onLayout={(e) => e.nativeEvent.layout} />
 
 // import './wdyr'
 
@@ -28,32 +12,6 @@ const x = <Stack onLayout={(e) => e.nativeEvent.layout} />
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
-
-function TestUseMediaRenders() {
-  const media = useMedia()
-
-  console.warn('render')
-
-  return <H1>{media.sm ? 'sm' : 'not sm'}</H1>
-}
-
-function TestUseTheme() {
-  const u = useTheme()
-  console.log(u.color)
-  return null
-}
-
-const StyledButton = styled(Button, {
-  backgroundColor: 'red',
-
-  hoverStyle: {
-    backgroundColor: 'green',
-  },
-
-  pressStyle: {
-    backgroundColor: 'blue',
-  },
-})
 
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light')
@@ -80,9 +38,8 @@ export const Sandbox = () => {
       />
 
       <YStack fullscreen ai="center" jc="center">
-        <StyledButton>hi2</StyledButton>
-
-        <XStack paddingEnd={120} h={50} w={200} bc="red" />
+        <Button>hello world</Button>
+        <Button theme="blue">hello world</Button>
       </YStack>
 
       {/*  */}
@@ -90,13 +47,27 @@ export const Sandbox = () => {
   )
 }
 
-function TestUseStyle() {
-  console.log('wtf', Square.staticConfig.validStyles)
-  const style = useStyle(Square, {
-    backgroundColor: 'red',
-  })
+// function TestUseStyle() {
+//   console.log('wtf', Square.staticConfig.validStyles)
+//   const style = useStyle(Square, {
+//     backgroundColor: 'red',
+//   })
 
-  console.log('style', style, Square.staticConfig.validStyles)
+//   console.log('style', style, Square.staticConfig.validStyles)
 
-  return null
-}
+//   return null
+// }
+
+// function TestUseMediaRenders() {
+//   const media = useMedia()
+
+//   console.warn('render')
+
+//   return <H1>{media.sm ? 'sm' : 'not sm'}</H1>
+// }
+
+// function TestUseTheme() {
+//   const u = useTheme()
+//   console.log(u.color)
+//   return null
+// }

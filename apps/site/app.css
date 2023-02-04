@@ -425,7 +425,7 @@ iframe {
 }
 
 .token.comment {
-  color: var(--colorTranslucent);
+  color: var(--color5);
   opacity: 0.6;
 }
 
