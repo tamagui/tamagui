@@ -49,10 +49,22 @@ const RADIO_GROUP_INDICATOR_NAME = 'RadioGroupIndicator'
 
 const RadioIndicatorFrame = styled(ThemeableStack, {
   name: RADIO_GROUP_INDICATOR_NAME,
+
+  variants: {
+    defaultStyle: {
+      true: {
+        w: '60%',
+        h: '60%',
+        br: 999,
+        backgrounded: true,
+      },
+    },
+  } as const,
 })
 
 type RadioIndicatorProps = GetProps<typeof RadioIndicatorFrame> & {
   forceMount?: boolean
+  unstyled?: boolean
 }
 
 type RadioIndicatorElement = TamaguiElement
@@ -60,7 +72,8 @@ type RadioIndicatorElement = TamaguiElement
 const RadioIndicator = RadioIndicatorFrame.extractable(
   React.forwardRef<RadioIndicatorElement, RadioIndicatorProps>(
     (props: ScopedRadioGroupItemProps<RadioIndicatorProps>, forwardedRef) => {
-      const { __scopeRadioGroupItem, forceMount, disabled, ...indicatorProps } = props
+      const { __scopeRadioGroupItem, forceMount, disabled, unstyled, ...indicatorProps } =
+        props
       const { checked } = useRadioGroupItemContext(
         RADIO_GROUP_INDICATOR_NAME,
         __scopeRadioGroupItem
@@ -70,6 +83,7 @@ const RadioIndicator = RadioIndicatorFrame.extractable(
         return (
           <RadioIndicatorFrame
             theme="active"
+            defaultStyle={!unstyled}
             data-state={getState(checked)}
             data-disabled={disabled ? '' : undefined}
             pointerEvents="none"

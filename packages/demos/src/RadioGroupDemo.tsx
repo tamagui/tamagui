@@ -22,7 +22,7 @@ function RadioGroupItemWithLabel(props: {
   return (
     <XStack w={300} ai="center" space="$4">
       <RadioGroup.Item value={props.value} id={id} size={props.size}>
-        <RadioGroup.Indicator h="60%" w="60%" backgrounded br={999} />
+        <RadioGroup.Indicator />
       </RadioGroup.Item>
 
       <Label size={props.size} htmlFor={id}>
