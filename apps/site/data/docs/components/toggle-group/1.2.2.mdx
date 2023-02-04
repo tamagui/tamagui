@@ -29,7 +29,7 @@ package: toggle-group
 
 ### Usage
 
-```
+```tsx
 import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
 import {ToggleGroup } from 'tamagui'
 
@@ -41,7 +41,6 @@ export function ToggleGroupDemo() {
       aria-label="Text alignment"
     >
       <ToggleGroup.Item
-        size="$8"
         value="left"
         aria-label="Left aligned"
       >
@@ -104,8 +103,9 @@ ToggleGroup extend Stack views inheriting all the [Tamagui standard props](notio
             default: false,
         },
         {
-            name: 'onCheckedChange',
-            type: '(checked: boolean) => void',
+            name: 'onValueChange',
+            type: '(value: string[]) => void',
+            description:`Event handler called when the pressed state of an item changes and type is "multiple".`
         },
     ]}
 />
