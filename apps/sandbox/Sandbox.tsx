@@ -18,6 +18,8 @@ import {
 import { CodeExamplesInput } from './CodeExamplesInput'
 import config from './tamagui.config'
 
+const x = <Stack onLayout={(e) => e.nativeEvent.layout} />
+
 // import './wdyr'
 
 // webpack fix..
@@ -76,7 +78,7 @@ export const Sandbox = () => {
       />
 
       <YStack fullscreen ai="center" jc="center">
-        <StyledButton>hi</StyledButton>
+        <StyledButton>hi2</StyledButton>
       </YStack>
 
       {/*  */}

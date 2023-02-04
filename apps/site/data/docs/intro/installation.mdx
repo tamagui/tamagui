@@ -5,9 +5,13 @@ description: How to get Tamagui set up.
 
 Tamagui is a full-featured UI kit built on top of `@tamagui/core`.
 
-The instructions here are for `tamagui`, the complete set of components designed to build universal apps. It's fully tree-shakeable, so your bundler should only add components you import.
+If you want a complete set of components designed to build universal apps, use `tamagui`. If you want to build out your own components and don't want any of the `tamagui` components, you can just use `@tamagui/core`. [See the Design Systems guide](/docs/guides/design-systems) for more on how to configure Core.
 
-If you'd rather build your own design system on top of core you'd just swap out `tamagui` for `@tamagui/core`. [See the Design Systems guide](/docs/guides/design-systems) for more on how to configure Core.
+This document uses `tamagui` as an example, but if you are using `@tamagui/core` you can swap out the import.
+
+#### Saving bundle size for web-only use cases
+
+If you are _only_ targeting the web: `@tamagui/web` is the same library as `@tamagui/core`, except that it drops support for a few React Native specific things, mostly props: namely the `GestureResponderHandlers` and `onLayout` props are absent, and the platform methods on refs like `measureInWindow` are absent. If you are only targeting web, you can swap everything reference of `tamagui` or `@tamagui/core` in this guide with `@tamagui/web`. Note that you can't use `@tamagui/web` with `tamagui` as the full `tamagui` package relies on many of these props.
 
 ### Quick Start
 
