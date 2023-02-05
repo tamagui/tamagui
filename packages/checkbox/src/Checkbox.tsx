@@ -21,15 +21,12 @@ import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
 import { getFontSize } from '@tamagui/font-size'
-import { getSize } from '@tamagui/get-size'
+import { getSize, stepTokenUpOrDown } from '@tamagui/get-size'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-
-const getCheckboxHeight = (val: SizeTokens) =>
-  Math.round(getVariableValue(getSize(val)) * 0.65)
 
 export type CheckedState = boolean | 'indeterminate'
 
@@ -196,11 +193,8 @@ export const CheckboxFrame = styled(ThemeableStack, {
   variants: {
     size: {
       '...size': (val, { tokens }) => {
-        const height = getCheckboxHeight(val)
         const radiusToken = tokens.radius[val] ?? tokens.radius['$true']
         return {
-          width: height,
-          height: height,
           borderRadius: radiusToken,
         }
       },
@@ -237,6 +231,7 @@ export interface CheckboxProps
   value?: string
   native?: boolean
   scaleIcon?: number
+  sizeAdjust?: number
 }
 
 export const Checkbox = withStaticProperties(
@@ -251,6 +246,7 @@ export const Checkbox = withStaticProperties(
           defaultChecked,
           required,
           scaleIcon = 1,
+          sizeAdjust = 0,
           disabled,
           value = 'on',
           onCheckedChange,
@@ -261,7 +257,6 @@ export const Checkbox = withStaticProperties(
         const composedRefs = useComposedRefs(forwardedRef, (node) => setButton(node))
         const hasConsumerStoppedPropagationRef = React.useRef(false)
         const propsActive = useMediaPropsActive(props)
-        const size = propsActive.size || '$true'
         // We set this to true by default so that events bubble to forms without JS (SSR)
         const isFormControl = isWeb
           ? button
@@ -273,6 +268,9 @@ export const Checkbox = withStaticProperties(
           defaultProp: defaultChecked!,
           onChange: onCheckedChange,
         })
+        const size = getVariableValue(
+          stepTokenUpOrDown('size', propsActive.size || '$true', sizeAdjust - 2)
+        )
 
         const labelId = useLabelContext(button)
         const labelledBy = ariaLabelledby || labelId
@@ -314,6 +312,8 @@ export const Checkbox = withStaticProperties(
               ) : (
                 <>
                   <CheckboxFrame
+                    width={size}
+                    height={size}
                     theme={checked ? 'active' : null}
                     tag="button"
                     role="checkbox"
