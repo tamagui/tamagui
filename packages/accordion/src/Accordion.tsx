@@ -370,7 +370,7 @@ const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>
             {...accordionProps}
             data-orientation={orientation}
             ref={composedRef}
-            // TODO: make sure this property is working
+            // web only
             //@ts-ignore
             onKeyDown={handleKeyDown}
           />
