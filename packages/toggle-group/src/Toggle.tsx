@@ -1,4 +1,5 @@
-import { GetProps, composeEventHandlers, styled } from '@tamagui/core'
+import { GetProps, composeEventHandlers, styled, getVariableValue } from '@tamagui/core'
+import { getSize } from '@tamagui/get-size'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -47,6 +48,15 @@ const ToggleFrame = styled(ThemeableStack, {
       },
       unactive: {
         backgroundColor: '$background',
+      },
+    },
+    size: {
+      '...size': (value) => {
+        const size = getVariableValue(getSize(value)) * 0.65
+        return {
+          width: size,
+          height: size,
+        }
       },
     },
   } as const,

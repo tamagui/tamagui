@@ -99,36 +99,37 @@ interface ToggleGroupItemImplProps
   value: string
 }
 
-const ToggleGroupItemImpl = React.forwardRef<
-  ToggleGroupItemImplElement,
-  ToggleGroupItemImplProps
->((props: ScopedProps<ToggleGroupItemImplProps>, forwardedRef) => {
-  const { __scopeToggleGroup, value, ...itemProps } = props
-  const valueContext = useToggleGroupValueContext(
-    TOGGLE_GROUP_ITEM_NAME,
-    __scopeToggleGroup
+const ToggleGroupItemImpl = ToggleGroupItemFrame.extractable(
+  React.forwardRef<ToggleGroupItemImplElement, ToggleGroupItemImplProps>(
+    (props: ScopedProps<ToggleGroupItemImplProps>, forwardedRef) => {
+      const { __scopeToggleGroup, value, ...itemProps } = props
+      const valueContext = useToggleGroupValueContext(
+        TOGGLE_GROUP_ITEM_NAME,
+        __scopeToggleGroup
+      )
+      const singleProps = {
+        role: 'radio',
+        'aria-checked': props.pressed,
+        'aria-pressed': undefined,
+      }
+      const typeProps = valueContext.type === 'single' ? singleProps : undefined
+      return (
+        <Toggle
+          {...typeProps}
+          {...itemProps}
+          ref={forwardedRef}
+          onPressedChange={(pressed) => {
+            if (pressed) {
+              valueContext.onItemActivate(value)
+            } else {
+              valueContext.onItemDeactivate(value)
+            }
+          }}
+        />
+      )
+    }
   )
-  const singleProps = {
-    role: 'radio',
-    'aria-checked': props.pressed,
-    'aria-pressed': undefined,
-  }
-  const typeProps = valueContext.type === 'single' ? singleProps : undefined
-  return (
-    <Toggle
-      {...typeProps}
-      {...itemProps}
-      ref={forwardedRef}
-      onPressedChange={(pressed) => {
-        if (pressed) {
-          valueContext.onItemActivate(value)
-        } else {
-          valueContext.onItemDeactivate(value)
-        }
-      }}
-    />
-  )
-})
+)
 
 /* -----------------------------------------------------------------------------------------------*/
 
