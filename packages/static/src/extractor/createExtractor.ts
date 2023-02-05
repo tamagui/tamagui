@@ -1420,9 +1420,6 @@ export function createExtractor(
             return
           }
 
-          // now update to new values
-          node.attributes = attrs.filter(isAttr).map((x) => x.value)
-
           // before deopt, can still optimize
           const parentFn = findTopmostFunction(traversePath)
           if (parentFn) {
