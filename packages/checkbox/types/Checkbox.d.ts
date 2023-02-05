@@ -55,9 +55,7 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
-    readonly chromeless?: boolean | "all" | undefined; /**
-     * Used to disable passing styles down to children.
-     */
+    readonly chromeless?: boolean | "all" | undefined;
 }>>) | (Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -266,9 +264,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
         readonly elevate?: boolean | undefined;
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
-        readonly chromeless?: boolean | "all" | undefined; /**
-         * Used to disable passing styles down to children.
-         */
+        readonly chromeless?: boolean | "all" | undefined;
     }>> & {
         /**
          * Used to force mounting when more control is needed. Useful when

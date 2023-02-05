@@ -24,7 +24,7 @@ import { getFontSize } from '@tamagui/font-size'
 import { getSize } from '@tamagui/get-size'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { useLabelContext } from '@tamagui/label'
-import { ThemeableStack } from '@tamagui/stacks'
+import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 
@@ -54,6 +54,7 @@ export const BubbleInput = (props: BubbleInputProps) => {
   const { checked, bubbles = true, control, isHidden, ...inputProps } = props
   const ref = React.useRef<HTMLInputElement>(null)
   const prevChecked = usePrevious(checked)
+  const theme = useTheme({ name: 'active' })
   //   const controlSize = useSize(control)
 
   // Bubble checked change to parents (e.g form change event)
@@ -93,6 +94,7 @@ export const BubbleInput = (props: BubbleInputProps) => {
             }
           : {
               appearance: 'auto',
+              accentColor: theme.background.val,
             }),
 
         ...props.style,
@@ -289,80 +291,83 @@ export const Checkbox = withStaticProperties(
         }
 
         return (
-          <CheckboxProvider
-            scope={__scopeCheckbox}
-            state={checked}
-            disabled={disabled}
-            size={size}
-            scaleIcon={scaleIcon}
-          >
-            {isWeb && native ? (
-              <BubbleInput
-                control={button}
-                bubbles={!hasConsumerStoppedPropagationRef.current}
-                name={name}
-                value={value}
-                checked={checked}
-                required={required}
-                disabled={disabled}
-                id={props.id}
-              />
-            ) : (
-              <>
-                <CheckboxFrame
-                  theme={checked ? 'active' : null}
-                  tag="button"
-                  role="checkbox"
-                  aria-labelledby={labelledBy}
-                  aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
-                  aria-required={required}
-                  data-state={getState(checked)}
-                  data-disabled={disabled ? '' : undefined}
+          // YStack is here to provide theme for native input
+          <YStack asChild theme={checkboxProps.theme}>
+            <CheckboxProvider
+              scope={__scopeCheckbox}
+              state={checked}
+              disabled={disabled}
+              size={size}
+              scaleIcon={scaleIcon}
+            >
+              {isWeb && native ? (
+                <BubbleInput
+                  control={button}
+                  bubbles={!hasConsumerStoppedPropagationRef.current}
+                  name={name}
+                  value={value}
+                  checked={checked}
+                  required={required}
                   disabled={disabled}
-                  {...checkboxProps}
-                  ref={composedRefs}
-                  {...(isWeb && {
-                    type: 'button',
-                    value: value,
-                    onKeyDown: composeEventHandlers(
-                      (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
-                      (event) => {
-                        // According to WAI ARIA, Checkboxes don't activate on enter keypress
-                        if (event.key === 'Enter') event.preventDefault()
-                      }
-                    ),
-                  })}
-                  onPress={composeEventHandlers(props.onPress as any, (event) => {
-                    setChecked((prevChecked) =>
-                      isIndeterminate(prevChecked) ? true : !prevChecked
-                    )
-                    if (isFormControl) {
-                      hasConsumerStoppedPropagationRef.current =
-                        event.isPropagationStopped()
-                      // if checkbox is in a form, stop propagation from the button so that we only propagate
-                      // one click event (from the input). We propagate changes from an input so that native
-                      // form validation works and form events reflect checkbox updates.
-                      if (!hasConsumerStoppedPropagationRef.current)
-                        event.stopPropagation()
-                    }
-                  })}
+                  id={props.id}
                 />
-
-                {isWeb && isFormControl ? (
-                  <BubbleInput
-                    isHidden
-                    control={button}
-                    bubbles={!hasConsumerStoppedPropagationRef.current}
-                    name={name}
-                    value={value}
-                    checked={checked}
-                    required={required}
+              ) : (
+                <>
+                  <CheckboxFrame
+                    theme={checked ? 'active' : null}
+                    tag="button"
+                    role="checkbox"
+                    aria-labelledby={labelledBy}
+                    aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
+                    aria-required={required}
+                    data-state={getState(checked)}
+                    data-disabled={disabled ? '' : undefined}
                     disabled={disabled}
+                    {...checkboxProps}
+                    ref={composedRefs}
+                    {...(isWeb && {
+                      type: 'button',
+                      value: value,
+                      onKeyDown: composeEventHandlers(
+                        (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
+                        (event) => {
+                          // According to WAI ARIA, Checkboxes don't activate on enter keypress
+                          if (event.key === 'Enter') event.preventDefault()
+                        }
+                      ),
+                    })}
+                    onPress={composeEventHandlers(props.onPress as any, (event) => {
+                      setChecked((prevChecked) =>
+                        isIndeterminate(prevChecked) ? true : !prevChecked
+                      )
+                      if (isFormControl) {
+                        hasConsumerStoppedPropagationRef.current =
+                          event.isPropagationStopped()
+                        // if checkbox is in a form, stop propagation from the button so that we only propagate
+                        // one click event (from the input). We propagate changes from an input so that native
+                        // form validation works and form events reflect checkbox updates.
+                        if (!hasConsumerStoppedPropagationRef.current)
+                          event.stopPropagation()
+                      }
+                    })}
                   />
-                ) : null}
-              </>
-            )}
-          </CheckboxProvider>
+
+                  {isWeb && isFormControl ? (
+                    <BubbleInput
+                      isHidden
+                      control={button}
+                      bubbles={!hasConsumerStoppedPropagationRef.current}
+                      name={name}
+                      value={value}
+                      checked={checked}
+                      required={required}
+                      disabled={disabled}
+                    />
+                  ) : null}
+                </>
+              )}
+            </CheckboxProvider>
+          </YStack>
         )
       }
     )
