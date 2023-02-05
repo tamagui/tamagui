@@ -297,7 +297,7 @@ export interface ThemeProps {
   componentName?: string
   children?: any
   reset?: boolean
-  debug?: boolean | 'verbose'
+  debug?: DebugProp
   inverse?: boolean
   // on the web, for portals we need to re-insert className
   forceClassName?: boolean
