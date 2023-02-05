@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/collection",
+  "name": "@tamagui/roving-focus",
   "version": "1.2.5",
   "sideEffects": [
     "*.css"
@@ -19,12 +19,12 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
+    "@tamagui/collection": "^1.2.5",
     "@tamagui/compose-refs": "^1.2.5",
     "@tamagui/core": "^1.2.5",
     "@tamagui/create-context": "^1.2.5",
-    "@tamagui/polyfill-dev": "^1.2.5",
-    "@tamagui/stacks": "^1.2.5",
-    "@tamagui/use-controllable-state": "^1.2.5"
+    "@tamagui/use-controllable-state": "^1.2.5",
+    "@tamagui/use-direction": "^1.2.5"
   },
   "peerDependencies": {
     "react": "*",

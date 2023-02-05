@@ -4899,6 +4899,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/collection@^1.2.5, @tamagui/collection@workspace:packages/collection":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/collection@workspace:packages/collection"
+  dependencies:
+    "@tamagui/build": ^1.2.5
+    "@tamagui/compose-refs": ^1.2.5
+    "@tamagui/core": ^1.2.5
+    "@tamagui/create-context": ^1.2.5
+    "@tamagui/polyfill-dev": ^1.2.5
+    "@tamagui/stacks": ^1.2.5
+    "@tamagui/use-controllable-state": ^1.2.5
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/colors@^1.2.5, @tamagui/colors@workspace:packages/colors":
   version: 0.0.0-use.local
   resolution: "@tamagui/colors@workspace:packages/colors"
@@ -5693,6 +5712,25 @@ __metadata:
     react-remove-scroll: ^2.5.5
   peerDependencies:
     react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/roving-focus@workspace:packages/roving-focus":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/roving-focus@workspace:packages/roving-focus"
+  dependencies:
+    "@tamagui/build": ^1.2.5
+    "@tamagui/collection": ^1.2.5
+    "@tamagui/compose-refs": ^1.2.5
+    "@tamagui/core": ^1.2.5
+    "@tamagui/create-context": ^1.2.5
+    "@tamagui/use-controllable-state": ^1.2.5
+    "@tamagui/use-direction": ^1.2.5
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
