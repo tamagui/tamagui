@@ -193,7 +193,7 @@ export const CheckboxFrame = styled(ThemeableStack, {
   variants: {
     size: {
       '...size': (val, { tokens }) => {
-        const radiusToken = tokens.radius[val] ?? tokens.radius['$true']
+        const radiusToken = getVariableValue(getSize(val)) / 6
         return {
           borderRadius: radiusToken,
         }
