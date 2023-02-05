@@ -176,6 +176,7 @@ ToggleGroup.displayName = TOGGLE_GROUP_NAME
 
 type ToggleGroupValueContextValue = {
   type: 'single' | 'multiple'
+  defaultValue?: string| string[]
   value: string[]
   onItemActivate(value: string): void
   onItemDeactivate(value: string): void
@@ -223,6 +224,7 @@ const ToggleGroupImplSingle = React.forwardRef<
       scope={props.__scopeToggleGroup}
       type="single"
       value={value ? [value] : []}
+      defaultValue={value}
       onItemActivate={setValue}
       onItemDeactivate={React.useCallback(() => setValue(''), [setValue])}
     >
@@ -281,6 +283,7 @@ const ToggleGroupImplMultiple = React.forwardRef<
       scope={props.__scopeToggleGroup}
       type="multiple"
       value={value}
+      defaultValue={value}
       onItemActivate={handleButtonActivate}
       onItemDeactivate={handleButtonDeactivate}
     >

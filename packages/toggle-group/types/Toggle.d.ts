@@ -79,7 +79,6 @@ declare const ToggleFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
 }>;
 type ToggleProps = GetProps<typeof ToggleFrame> & {
     defaultValue?: string;
-    onValueChange?: (value: string) => void;
     disabled?: boolean;
     pressed?: boolean;
     defaultPressed?: boolean;
@@ -145,7 +144,6 @@ declare const Toggle: React.ForwardRefExoticComponent<Omit<import("react-native"
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }>> & {
     defaultValue?: string | undefined;
-    onValueChange?: ((value: string) => void) | undefined;
     disabled?: boolean | undefined;
     pressed?: boolean | undefined;
     defaultPressed?: boolean | undefined;

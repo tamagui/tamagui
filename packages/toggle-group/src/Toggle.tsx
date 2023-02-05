@@ -64,7 +64,6 @@ const ToggleFrame = styled(ThemeableStack, {
 
 type ToggleProps = GetProps<typeof ToggleFrame> & {
   defaultValue?: string
-  onValueChange?: (value: string) => void
   disabled?: boolean
   pressed?: boolean
   defaultPressed?: boolean
