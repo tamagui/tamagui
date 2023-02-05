@@ -664,7 +664,7 @@ export function createComponent<
               ? (e) => {
                   unPress()
                   // @ts-ignore
-                  onClick?.(e)
+                  isWeb && onClick?.(e)
                   onPress?.(e)
                 }
               : undefined,
