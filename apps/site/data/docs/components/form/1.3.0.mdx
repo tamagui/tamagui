@@ -1,0 +1,59 @@
+---
+title: Form
+description: A simple form component
+name: form
+component: Form
+package: form
+---
+
+# Form
+
+<Description>Show a modal with configurable layout and accessible actions.</Description>
+
+<HeroContainer>
+  <FormsDemo />
+</HeroContainer>
+
+```tsx hero template=Forms
+
+```
+
+<Highlights
+  features={[
+    `Comes with styling, yet completely customizable and themeable.`,
+    `Accepts animations, themes, size props and more.`,
+    `Accessible with dev-time checks to ensure ARIA props.`,
+  ]}
+/>
+
+### Anatomy
+
+```tsx
+import { Form } from '@tamagui/form' // or from 'tamagui'
+
+export default () => (
+  <Form>
+    {/* ... */}
+    <Form.Trigger />
+  </Form>
+)
+```
+
+### API
+
+#### &lt;Form /&gt;
+
+<PropsTable
+  data={[
+    {
+      name: 'onSubmit',
+      type: '() => void',
+      required: true,
+      description: `Must contain Form.Trigger`,
+    },
+  ]}
+/>
+
+#### &lt;Trigger /&gt;
+
+Just [Tamagui Props](/docs/intro/props).

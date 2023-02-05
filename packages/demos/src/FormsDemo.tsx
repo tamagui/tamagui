@@ -1,21 +1,53 @@
-import { Button, Input, SizeTokens, TextArea, XStack, YStack } from 'tamagui'
+import { useEffect, useState } from 'react'
+import {
+  Button,
+  Form,
+  Input,
+  SizeTokens,
+  Spinner,
+  Text,
+  TextArea,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 export function FormsDemo() {
   return (
-    <YStack w={200} mih={250} overflow="hidden" space="$2" m="$3" p="$2">
+    <YStack mih={250} overflow="hidden" space="$2" m="$3" p="$2">
       <FormDemo size="$2" />
-      <FormDemo size="$3" />
-      <FormDemo size="$4" />
-      <TextArea mih={140} placeholder="Enter your details..." numberOfLines={4} />
     </YStack>
   )
 }
 
 function FormDemo(props: { size: SizeTokens }) {
+  const [submitted, setSubmitted] = useState(false)
+
+  useEffect(() => {
+    if (submitted) {
+      const timer = setTimeout(() => setSubmitted(false), 2000)
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+  }, [submitted])
+
   return (
-    <XStack ai="center" space="$2">
-      <Input f={1} size={props.size} placeholder={`Size ${props.size}...`} />
-      <Button size={props.size}>Go</Button>
-    </XStack>
+    <Form space="$2" ai="center" onSubmit={() => setSubmitted(true)}>
+      <Text>Form {submitted ? 'submitted' : 'unsubmitted'}</Text>
+      <XStack space>
+        <Button
+          backgroundColor="transparent"
+          borderWidth="$0.5"
+          borderColor="$borderColor"
+        >
+          <Text>Other</Text>
+        </Button>
+        <Form.Trigger asChild disabled={submitted}>
+          <Button icon={submitted ? () => <Spinner /> : undefined}>
+            <Text>Submit</Text>
+          </Button>
+        </Form.Trigger>
+      </XStack>
+    </Form>
   )
 }
