@@ -1,6 +1,6 @@
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { composeEventHandlers, withStaticProperties } from '@tamagui/core'
+import { Stack, composeEventHandlers, withStaticProperties } from '@tamagui/core'
 import { useId } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
@@ -30,8 +30,8 @@ const EVENT_OPTIONS = { bubbles: false, cancelable: true }
 
 /* -----------------------------------------------------------------------------------------------*/
 
-type RovingFocusGroupImplElement = React.ElementRef<'div'>
-type PrimitiveDivProps = React.ComponentPropsWithoutRef<'div'>
+type RovingFocusGroupImplElement = React.ElementRef<typeof Stack>
+type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>
 interface RovingFocusGroupImplProps
   extends Omit<PrimitiveDivProps, 'dir'>,
     RovingFocusGroupOptions {
@@ -99,7 +99,7 @@ const RovingFocusGroupImpl = React.forwardRef<
         []
       )}
     >
-      <div
+      <Stack
         tabIndex={isTabbingBackOut || focusableItemsCount === 0 ? -1 : 0}
         data-orientation={orientation}
         {...groupProps}
@@ -149,8 +149,8 @@ const RovingFocusGroupImpl = React.forwardRef<
 
 const ITEM_NAME = 'RovingFocusGroupItem'
 
-type RovingFocusItemElement = React.ElementRef<'div'>
-type PrimitiveSpanProps = React.ComponentPropsWithoutRef<'div'>
+type RovingFocusItemElement = React.ElementRef<typeof Stack>
+type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof Stack>
 interface RovingFocusItemProps extends PrimitiveSpanProps {
   tabStopId?: string
   focusable?: boolean
@@ -190,7 +190,7 @@ const RovingFocusGroupItem = React.forwardRef<
       focusable={focusable}
       active={active}
     >
-      <span
+      <Stack
         tabIndex={isCurrentTabStop ? 0 : -1}
         data-orientation={context.orientation}
         {...itemProps}
