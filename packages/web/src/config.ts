@@ -27,6 +27,7 @@ export const getConfig = () => {
 }
 
 let cached: TokensMerged
+setTimeout(() => console.log('cached', cached), 5000)
 export const getTokens = ({
   prefixed,
 }: {
@@ -37,24 +38,24 @@ export const getTokens = ({
 } = {}): TokensMerged => {
   return (cached ??= {
     size: {
-      ...conf!.tokens,
-      ...conf!.tokensParsed,
+      ...conf!.tokens['size'],
+      ...conf!.tokensParsed['size'],
     },
     space: {
-      ...conf!.tokens,
-      ...conf!.tokensParsed,
+      ...conf!.tokens['space'],
+      ...conf!.tokensParsed['space'],
     },
     radius: {
-      ...conf!.tokens,
-      ...conf!.tokensParsed,
+      ...conf!.tokens['radius'],
+      ...conf!.tokensParsed['radius'],
     },
     zIndex: {
-      ...conf!.tokens,
-      ...conf!.tokensParsed,
+      ...conf!.tokens['zIndex'],
+      ...conf!.tokensParsed['zIndex'],
     },
     color: {
-      ...conf!.tokens,
-      ...conf!.tokensParsed,
+      ...conf!.tokens['color'],
+      ...conf!.tokensParsed['color'],
     },
   } as any)
 }

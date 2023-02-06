@@ -668,20 +668,20 @@ export declare const color: {
     blue12Light: string | Variable<string>;
 };
 export declare const radius: {
-    $0: number;
-    $1: number;
-    $2: number;
-    $3: number;
-    $4: number;
-    $true: number;
-    $5: number;
-    $6: number;
-    $7: number;
-    $8: number;
-    $9: number;
-    $10: number;
-    $11: number;
-    $12: number;
+    0: number;
+    1: number;
+    2: number;
+    3: number;
+    4: number;
+    true: number;
+    5: number;
+    6: number;
+    7: number;
+    8: number;
+    9: number;
+    10: number;
+    11: number;
+    12: number;
 };
 export declare const tokens: {
     color: {
@@ -972,18 +972,18 @@ export declare const tokens: {
     radius: {
         0: Variable<number>;
         1: Variable<number>;
+        4: Variable<number>;
         2: Variable<number>;
         3: Variable<number>;
-        4: Variable<number>;
-        true: Variable<number>;
-        5: Variable<number>;
-        6: Variable<number>;
-        7: Variable<number>;
         8: Variable<number>;
+        true: Variable<number>;
+        12: Variable<number>;
+        5: Variable<number>;
+        7: Variable<number>;
         9: Variable<number>;
         10: Variable<number>;
+        6: Variable<number>;
         11: Variable<number>;
-        12: Variable<number>;
     };
     zIndex: {
         0: Variable<number>;
