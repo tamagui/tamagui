@@ -56,6 +56,11 @@
       "types": "./types/inject-styles.d.ts",
       "import": "./dist/esm/inject-styles.js",
       "require": "./dist/cjs/inject-styles.js"
+    },
+    "./reactNativeTypes": {
+      "types": "./types/reactNativeTypes.d.ts",
+      "import": "./dist/esm/reactNativeTypes.js",
+      "require": "./dist/cjs/reactNativeTypes.js"
     }
   },
   "repository": {
