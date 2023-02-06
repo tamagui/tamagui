@@ -1,4 +1,4 @@
-import { ConfigListener, TamaguiInternalConfig, Tokens } from './types';
+import { ConfigListener, TamaguiInternalConfig, TokensMerged } from './types';
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const setConfigFont: (name: string, font: any, fontParsed: any) => void;
 export declare const getConfig: () => TamaguiInternalConfig<import("./types").CreateTokens<import("./types").VariableVal>, {
@@ -14,13 +14,16 @@ export declare const getConfig: () => TamaguiInternalConfig<import("./types").Cr
         [key: string]: any;
     };
 }, import("./types").GenericFonts>;
-export declare const getTokens: ({ prefixed }?: {
+export declare const getTokens: ({ prefixed, }?: {
+    /**
+     * @deprecated prefixed true and false are merged together, no longer need this property
+     */
     prefixed?: boolean | undefined;
-}) => Tokens;
+}) => TokensMerged;
 /**
  * Note: this is the same as `getTokens`
  */
-export declare const useTokens: () => import("./types").CreateTokens<import("./types").VariableVal>;
+export declare const useTokens: () => TokensMerged;
 export declare const getThemes: () => {
     [x: string]: {
         [x: string]: import("./createVariable").Variable<any>;
