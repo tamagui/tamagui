@@ -170,7 +170,7 @@ async function buildJs() {
           platform: 'node',
         })
       : null,
-    pkgModule
+      pkgModule
       ? esbuildWriteIfChanged({
           entryPoints: files,
           outdir: flatOut ? 'dist' : 'dist/esm',
@@ -187,7 +187,44 @@ async function buildJs() {
           platform: shouldBundle ? 'node' : 'neutral',
         })
       : null,
+    pkgModule
+      ? esbuildWriteIfChanged({
+          entryPoints: files,
+          outExtension: { '.js': '.mjs' },
+          outdir: flatOut ? 'dist' : 'dist/esm',
+          bundle: shouldBundle,
+          sourcemap: true,
+          target: 'node16',
+          keepNames: false,
+          jsx: 'automatic',
+          allowOverwrite: true,
+          format: 'esm',
+          color: true,
+          logLevel: 'error',
+          minify: false,
+          platform: shouldBundle ? 'node' : 'neutral',
+        })
+      : null,
     pkgModuleJSX
+      ? esbuildWriteIfChanged({
+          // only diff is jsx preserve and outdir
+          jsx: 'preserve',
+          outdir: flatOut ? 'dist' : 'dist/jsx',
+          outExtension: { '.js': '.mjs' },
+          entryPoints: files,
+          bundle: shouldBundle,
+          sourcemap: true,
+          allowOverwrite: true,
+          target: 'es2020',
+          keepNames: false,
+          format: 'esm',
+          color: true,
+          logLevel: 'error',
+          minify: false,
+          platform: 'neutral',
+        })
+      : null,
+      pkgModuleJSX
       ? esbuildWriteIfChanged({
           // only diff is jsx preserve and outdir
           jsx: 'preserve',

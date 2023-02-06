@@ -30,12 +30,12 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.js",
+      "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
     },
     "./linear-gradient": {
       "types": "./types/linear-gradient.d.ts",
-      "import": "./dist/esm/linear-gradient.js",
+      "import": "./dist/esm/linear-gradient.mjs",
       "require": "./dist/cjs/linear-gradient.js"
     }
   },
