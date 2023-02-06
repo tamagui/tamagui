@@ -26,6 +26,7 @@
     "@tamagui/compose-refs": "^1.2.5",
     "@tamagui/core": "^1.2.5",
     "@tamagui/create-context": "^1.2.5",
+    "@tamagui/portal": "^1.2.5",
     "@tamagui/remove-scroll": "^1.2.5",
     "@tamagui/scroll-view": "^1.2.5",
     "@tamagui/stacks": "^1.2.5",

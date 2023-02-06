@@ -174,7 +174,7 @@ export interface ThemeProps {
     componentName?: string;
     children?: any;
     reset?: boolean;
-    debug?: boolean | 'verbose';
+    debug?: DebugProp;
     inverse?: boolean;
     forceClassName?: boolean;
     shouldUpdate?: () => boolean;
