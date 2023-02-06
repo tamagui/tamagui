@@ -1420,6 +1420,9 @@ export function createExtractor(
             return
           }
 
+          // now update to new values
+          node.attributes = attrs.filter(isAttr).map((x) => x.value)
+
           // before deopt, can still optimize
           const parentFn = findTopmostFunction(traversePath)
           if (parentFn) {
@@ -1947,15 +1950,6 @@ export function createExtractor(
             throw new Error(`Impossible, no styles`)
           }
 
-          const isNativeNotFlat = !shouldFlatten && target === 'native'
-          if (isNativeNotFlat) {
-            if (shouldPrintDebug) {
-              logger.info(`Disabled flattening except for simple cases on native for now`)
-            }
-            node.attributes = ogAttributes
-            return null
-          }
-
           let getStyleError: any = null
 
           // fix up ternaries, combine final style values
@@ -2080,6 +2074,15 @@ export function createExtractor(
             }
           }
 
+          const isNativeNotFlat = !shouldFlatten && target === 'native'
+          if (isNativeNotFlat) {
+            if (shouldPrintDebug) {
+              logger.info(`Disabled flattening except for simple cases on native for now`)
+            }
+            node.attributes = ogAttributes
+            return null
+          }
+
           if (shouldPrintDebug) {
             // prettier-ignore
             logger.info([` - inlined props (${inlined.size}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : ''].join(' '))
@@ -2101,6 +2104,9 @@ export function createExtractor(
             completeProps,
             staticConfig,
           })
+        } catch (err) {
+          node.attributes = ogAttributes
+          console.error(`err: ${err}`)
         } finally {
           if (debugPropValue) {
             shouldPrintDebug = ogDebug
