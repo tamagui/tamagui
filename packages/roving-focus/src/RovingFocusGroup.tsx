@@ -1,6 +1,6 @@
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { Stack, composeEventHandlers, withStaticProperties } from '@tamagui/core'
+import { Stack, composeEventHandlers, isWeb, withStaticProperties } from '@tamagui/core'
 import { useId } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
@@ -71,7 +71,7 @@ const RovingFocusGroupImpl = React.forwardRef<
   const [focusableItemsCount, setFocusableItemsCount] = React.useState(0)
 
   React.useEffect(() => {
-    const node = ref.current
+    const node = (ref as unknown as React.RefObject<HTMLDivElement>).current
     if (node) {
       node.addEventListener(ENTRY_FOCUS, handleEntryFocus)
       return () => node.removeEventListener(ENTRY_FOCUS, handleEntryFocus)
@@ -104,7 +104,8 @@ const RovingFocusGroupImpl = React.forwardRef<
         data-orientation={orientation}
         {...groupProps}
         ref={composedRefs}
-        style={{ outline: 'none', ...props.style }}
+        // @ts-ignore
+        style={[{ outline: 'none' }, props.style]}
         onMouseDown={composeEventHandlers(props.onMouseDown, () => {
           isClickFocusRef.current = true
         })}
@@ -137,7 +138,7 @@ const RovingFocusGroupImpl = React.forwardRef<
 
           isClickFocusRef.current = false
         })}
-        onBlur={composeEventHandlers(props.onBlur, () => setIsTabbingBackOut(false))}
+        onBlur={composeEventHandlers((props as any).onBlur, () => setIsTabbingBackOut(false))}
       />
     </RovingFocusProvider>
   )
@@ -203,36 +204,41 @@ const RovingFocusGroupItem = React.forwardRef<
           else context.onItemFocus(id)
         })}
         onFocus={composeEventHandlers(props.onFocus, () => context.onItemFocus(id))}
-        onKeyDown={composeEventHandlers(props.onKeyDown, (event) => {
-          if (event.key === 'Tab' && event.shiftKey) {
-            context.onItemShiftTab()
-            return
-          }
+        {...(isWeb && {
+          onKeyDown: composeEventHandlers(
+            (props as React.ComponentProps<'span'>).onKeyDown,
+            (event) => {
+              if (event.key === 'Tab' && event.shiftKey) {
+                context.onItemShiftTab()
+                return
+              }
 
-          if (event.target !== event.currentTarget) return
+              if (event.target !== event.currentTarget) return
 
-          const focusIntent = getFocusIntent(event, context.orientation, context.dir)
+              const focusIntent = getFocusIntent(event, context.orientation, context.dir)
 
-          if (focusIntent !== undefined) {
-            event.preventDefault()
-            const items = getItems().filter((item) => item.focusable)
-            let candidateNodes = items.map((item) => item.ref.current!)
+              if (focusIntent !== undefined) {
+                event.preventDefault()
+                const items = getItems().filter((item) => item.focusable)
+                let candidateNodes = items.map((item) => item.ref.current!)
 
-            if (focusIntent === 'last') candidateNodes.reverse()
-            else if (focusIntent === 'prev' || focusIntent === 'next') {
-              if (focusIntent === 'prev') candidateNodes.reverse()
-              const currentIndex = candidateNodes.indexOf(event.currentTarget)
-              candidateNodes = context.loop
-                ? wrapArray(candidateNodes, currentIndex + 1)
-                : candidateNodes.slice(currentIndex + 1)
+                if (focusIntent === 'last') candidateNodes.reverse()
+                else if (focusIntent === 'prev' || focusIntent === 'next') {
+                  if (focusIntent === 'prev') candidateNodes.reverse()
+                  const currentIndex = candidateNodes.indexOf(event.currentTarget)
+                  candidateNodes = context.loop
+                    ? wrapArray(candidateNodes, currentIndex + 1)
+                    : candidateNodes.slice(currentIndex + 1)
+                }
+
+                /**
+                 * Imperative focus during keydown is risky so we prevent React's batching updates
+                 * to avoid potential bugs. See: https://github.com/facebook/react/issues/20332
+                 */
+                setTimeout(() => focusFirst(candidateNodes))
+              }
             }
-
-            /**
-             * Imperative focus during keydown is risky so we prevent React's batching updates
-             * to avoid potential bugs. See: https://github.com/facebook/react/issues/20332
-             */
-            setTimeout(() => focusFirst(candidateNodes))
-          }
+          ),
         })}
       />
     </Collection.ItemSlot>
