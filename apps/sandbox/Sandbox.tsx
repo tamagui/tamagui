@@ -1,7 +1,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { Stack, styled, useStyle } from '@tamagui/core'
+import { Stack, Tokens, TokensParsed, getTokens, styled, useStyle } from '@tamagui/core'
 import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import {
@@ -17,6 +17,8 @@ import {
 
 import { CodeExamplesInput } from './CodeExamplesInput'
 import config from './tamagui.config'
+
+type x2 = TokensParsed['size']
 
 const x = <Stack onLayout={(e) => e.nativeEvent.layout} />
 

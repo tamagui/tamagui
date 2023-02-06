@@ -143,9 +143,47 @@ export default function Community({ frontmatters }) {
         <Spacer />
 
         <FlatBubbleCard bw={0.5} space>
-          <H3 ta="center">Starter repos</H3>
+          <H3 id="starter-repos" ta="center">
+            Starter repos
+          </H3>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <XStack py="$2" space="$4">
+              <Card
+                f={1}
+                maw={250}
+                jc="center"
+                space="$2"
+                tag="a"
+                href="https://github.com/srikanthkh/tamagui-cna"
+                target="_blank"
+                p="$5"
+              >
+                <GithubIcon />
+                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
+                  create-next-app
+                </H4>
+                <Paragraph cursor="pointer" theme="alt2">
+                  by srikanthkh
+                </Paragraph>
+              </Card>
+              <Card
+                f={1}
+                maw={250}
+                jc="center"
+                space="$2"
+                tag="a"
+                href="https://github.com/srikanthkh/tamagui-cra"
+                target="_blank"
+                p="$5"
+              >
+                <GithubIcon />
+                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
+                  create-react-app
+                </H4>
+                <Paragraph cursor="pointer" theme="alt2">
+                  by srikanthkh
+                </Paragraph>
+              </Card>
               <Card
                 f={1}
                 maw={250}

@@ -668,20 +668,24 @@ export function createComponent<
                   onPress?.(e)
                 }
               : undefined,
-
-            // replicating TouchableWithoutFeedback
-            ...(!isWeb && {
-              cancelable: !props.rejectResponderTermination,
-              disabled: isDisabled,
-              hitSlop: props.hitSlop,
-              delayLongPress: props.delayLongPress,
-              delayPressIn: props.delayPressIn,
-              delayPressOut: props.delayPressOut,
-              focusable: viewProps.focusable ?? true,
-              minPressDuration: 0,
-            }),
           }
         : null
+
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      if (events) {
+        // replicating TouchableWithoutFeedback
+        Object.assign(events, {
+          cancelable: !props.rejectResponderTermination,
+          disabled: isDisabled,
+          hitSlop: props.hitSlop,
+          delayLongPress: props.delayLongPress,
+          delayPressIn: props.delayPressIn,
+          delayPressOut: props.delayPressOut,
+          focusable: viewProps.focusable ?? true,
+          minPressDuration: 0,
+        })
+      }
+    }
 
     // EVENTS native
     hooks.useEvents?.(viewProps, events, splitStyles, setStateShallow)

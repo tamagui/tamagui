@@ -2,7 +2,7 @@ import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useState } from 'react'
 import {
   ScaledSize,
-  useWindowDimensions as useWindowDimensionsRN,
+  useWindowDimensions as useWindowDimensionsRN
 } from 'react-native'
 
 /**
@@ -17,8 +17,11 @@ const initialValue: ScaledSize = {
 }
 
 export function useWindowDimensions() {
-  const [state, setState] = useState(initialValue)
   const current = useWindowDimensionsRN()
+  
+  if (process.env.TAMAGUI_TARGET != 'web') return current
+  
+  const [state, setState] = useState(initialValue)
 
   useIsomorphicLayoutEffect(() => {
     setState(current)
