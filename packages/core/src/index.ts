@@ -181,23 +181,23 @@ setupHooks({
 
   useEvents(viewProps, events, { pseudos }, setStateShallow) {
     if (process.env.TAMAGUI_TARGET === 'native') {
-      if (!events) return
-      // add focus events
       const attachFocus = !!pseudos?.focusStyle
       if (attachFocus) {
         viewProps.onFocus = mergeEvent(viewProps.onFocus, () => {
+          console.log('focusing')
           setStateShallow({ focus: true })
         })
         viewProps.onBlur = mergeEvent(viewProps.onBlur, () => {
           setStateShallow({ focus: false })
         })
       }
+
       // use Pressability to get smooth unPress when you press + hold + move out
       // only ever create once, use .configure() to update later
       const pressability = usePressability(
         events ? { ...events, hitSlop: viewProps.hitSlop } : {}
       )
-      if (events.onPress) {
+      if (events?.onPress) {
         for (const key in pressability) {
           const og = viewProps[key]
           const val = pressability[key]
