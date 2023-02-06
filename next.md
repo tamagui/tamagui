@@ -1,3 +1,5 @@
+- Warning: Unknown event handler property onPress. It will be ignored. - looks like a onPress is always tacked into LabelFrame in Label.tsx
+
 - vite exports ssr issues
 - // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
 - check why styled() of a HOC is failing:
