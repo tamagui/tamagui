@@ -2,8 +2,7 @@ import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useState } from 'react'
 import {
   ScaledSize,
-  useWindowDimensions as useWindowDimensionsRN,
-  Platform
+  useWindowDimensions as useWindowDimensionsRN
 } from 'react-native'
 
 /**
