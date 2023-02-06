@@ -18,7 +18,7 @@ export declare const getTokens: ({ prefixed, }?: {
     /**
      * @deprecated prefixed true and false are merged together, no longer need this property
      */
-    prefixed?: number | undefined;
+    prefixed?: boolean | undefined;
 }) => TokensMerged;
 /**
  * Note: this is the same as `getTokens`

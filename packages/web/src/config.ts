@@ -27,14 +27,13 @@ export const getConfig = () => {
 }
 
 let cached: TokensMerged
-setTimeout(() => console.log('cached', cached), 5000)
 export const getTokens = ({
   prefixed,
 }: {
   /**
    * @deprecated prefixed true and false are merged together, no longer need this property
    */
-  prefixed?: number
+  prefixed?: boolean
 } = {}): TokensMerged => {
   return (cached ??= {
     size: {
