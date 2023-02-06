@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "1.1.11",
+  "version": "1.2.5",
   "bin": {
     "tamagui-build": "tamagui-build.js"
   },
@@ -16,7 +16,7 @@
     "esbuild": "^0.17.5",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
-    "fs-extra": "^10.1.0",
+    "fs-extra": "^11.1.0",
     "lodash.debounce": "^4.0.8",
     "typescript": "^4.7.4"
   },

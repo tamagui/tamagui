@@ -1,6 +1,6 @@
 {
   "name": "create-tamagui",
-  "version": "1.1.11",
+  "version": "1.2.5",
   "bin": "./run.js",
   "main": "dist",
   "files": [
@@ -24,7 +24,7 @@
     "commander": "2.20.0",
     "cpy": "7.3.0",
     "cross-spawn": "6.0.5",
-    "fs-extra": "^10.1.0",
+    "fs-extra": "^11.1.0",
     "got": "10.7.0",
     "prompts": "2.1.0",
     "rimraf": "3.0.0",
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.29.0",
-    "@tamagui/build": "^1.1.11",
+    "@tamagui/build": "^1.2.5",
     "@types/async-retry": "1.4.2",
     "@types/cross-spawn": "^6.0.2",
     "@types/node": "^16.11.9",

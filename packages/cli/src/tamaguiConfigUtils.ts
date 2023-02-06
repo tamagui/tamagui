@@ -69,17 +69,28 @@ async function getTamaguiConfig(options: ResolvedOptions) {
 }
 
 export async function watchTamaguiConfig(options: ResolvedOptions) {
-  if (!options.tamaguiOptions.config) return
-  await generateTamaguiConfig(options)
-  await esbuild.build({
-    entryPoints: [options.tamaguiOptions.config],
-    sourcemap: false,
-    // dont output just use esbuild as a watcher
-    write: false,
-    watch: {
-      onRebuild(err, result) {
-        generateTamaguiConfig(options)
-      },
-    },
-  })
+  console.warn('❌ disabling watch conf')
+  return
+  // if (!options.tamaguiOptions.config) return
+  // await generateTamaguiConfig(options)
+  // const context = await esbuild.context({
+  //   entryPoints: [options.tamaguiOptions.config],
+  //   sourcemap: false,
+  //   // dont output just use esbuild as a watcher
+  //   write: false,
+
+  //   plugins: [
+  //     {
+  //       name: `on-rebuild`,
+  //       setup({ onEnd }) {
+  //         onEnd((res) => {
+  //           generateTamaguiConfig(options)
+  //         })
+  //       },
+  //     },
+  //   ],
+  // })
+
+  // await context.watch()
+  // console.log('done watching')
 }

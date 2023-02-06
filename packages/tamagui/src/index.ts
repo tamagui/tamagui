@@ -77,8 +77,6 @@ export type {
   MediaPropKeys,
   MediaQueries,
   MediaQueryState,
-  RNWTextProps,
-  RNWViewProps,
   Shorthands,
   SizeTokens,
   SpaceTokens,
@@ -158,6 +156,7 @@ export {
   spacedChildren,
   styled,
   themeable,
+  useStyle,
   withStaticProperties,
   // hooks
   useGet,

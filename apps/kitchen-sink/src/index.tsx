@@ -1,30 +1,13 @@
-import '@tamagui/core/reset.css'
-import '@tamagui/polyfill-dev'
+import { AppRegistry, View } from 'react-native'
 
-import { config as configBase } from '@tamagui/config-base'
-import React from 'react'
-import { createRoot } from 'react-dom/client'
-import { Button, TamaguiProvider, createTamagui } from 'tamagui'
+import App from './App'
 
-globalThis['React'] = React
+AppRegistry.registerComponent('main', () => Root)
 
-const config = createTamagui({
-  ...configBase,
-  themeClassNameOnRoot: false,
-})
-
-export type Conf = typeof config
-
-declare module 'tamagui' {
-  interface TamaguiCustomConfig extends Conf {}
-}
-
-const App = () => {
+function Root() {
   return (
-    <TamaguiProvider config={config} defaultTheme="light">
-      <Button>hi</Button>
-    </TamaguiProvider>
+    <>
+      <App />
+    </>
   )
 }
-
-createRoot(document.querySelector('#root')!).render(<App />)

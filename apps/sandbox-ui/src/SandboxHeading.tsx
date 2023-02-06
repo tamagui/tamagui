@@ -1,7 +1,6 @@
-// debug
 import { Text, styled } from '@tamagui/core'
 
-export const Heading = styled(Text, {
+export const SandboxHeading = styled(Text, {
   tag: 'h1',
   color: '$color',
   backgroundColor: '$background',

@@ -33,9 +33,8 @@ export type ButtonProps = Omit<TextParentStyles, 'TextComponent'> &
     iconAfter?: IconProp
     /**
      * adjust icon relative to size
-     */
-    /**
-     * default: -1
+     *
+     * @default 1
      */
     scaleIcon?: number
     /**
@@ -46,6 +45,10 @@ export type ButtonProps = Omit<TextParentStyles, 'TextComponent'> &
      * adjust internal space relative to icon size
      */
     scaleSpace?: number
+    /**
+     *
+     */
+    unstyled?: boolean
   }
 
 const NAME = 'Button'
@@ -53,33 +56,36 @@ const NAME = 'Button'
 export const ButtonFrame = styled(ThemeableStack, {
   name: NAME,
   tag: 'button',
-  focusable: true,
-  hoverTheme: true,
-  pressTheme: true,
-  backgrounded: true,
-  borderWidth: 1,
-  borderColor: 'transparent',
   justifyContent: 'center',
   alignItems: 'center',
   flexWrap: 'nowrap',
   flexDirection: 'row',
-
-  // if we wanted this only when pressable = true, we'd need to merge variants?
   cursor: 'pointer',
 
-  pressStyle: {
-    borderColor: 'transparent',
-  },
-
-  hoverStyle: {
-    borderColor: 'transparent',
-  },
-
-  focusStyle: {
-    borderColor: '$borderColorFocus',
-  },
-
   variants: {
+    defaultStyle: {
+      true: {
+        focusable: true,
+        hoverTheme: true,
+        pressTheme: true,
+        backgrounded: true,
+        borderWidth: 1,
+        borderColor: 'transparent',
+
+        pressStyle: {
+          borderColor: 'transparent',
+        },
+
+        hoverStyle: {
+          borderColor: 'transparent',
+        },
+
+        focusStyle: {
+          borderColor: '$borderColorFocus',
+        },
+      },
+    },
+
     size: {
       '...size': getButtonSized,
     },
@@ -104,19 +110,52 @@ export const ButtonFrame = styled(ThemeableStack, {
   },
 })
 
-// see TODO breaking types
-// type x = GetProps<typeof ButtonFrame>
-// type y = x['size']
-
 export const ButtonText = styled(SizableText, {
-  color: '$color',
+  name: 'ButtonText',
   userSelect: 'none',
   cursor: 'pointer',
   // flexGrow 1 leads to inconsistent native style where text pushes to start of view
   flexGrow: 0,
   flexShrink: 1,
   ellipse: true,
+
+  variants: {
+    defaultStyle: {
+      true: {
+        color: '$color',
+      },
+    },
+  },
 })
+
+const ButtonComponent = forwardRef<TamaguiElement, ButtonProps>(function Button(
+  props,
+  ref
+) {
+  const {
+    props: { unstyled, ...buttonProps },
+  } = useButton(props)
+  return <ButtonFrame defaultStyle={!unstyled} {...buttonProps} ref={ref} />
+})
+
+export const buttonStaticConfig = {
+  inlineProps: new Set([
+    // text props go here (can't really optimize them, but we never fully extract button anyway)
+    // may be able to remove this entirely, as the compiler / runtime have gotten better
+    'color',
+    'fontWeight',
+    'fontSize',
+    'fontFamily',
+    'letterSpacing',
+    'textAlign',
+    'unstyled',
+  ]),
+}
+
+export const Button = ButtonFrame.extractable(
+  themeable(ButtonComponent, ButtonFrame.staticConfig),
+  buttonStaticConfig
+)
 
 export function useButton(
   propsIn: ButtonProps,
@@ -153,7 +192,15 @@ export function useButton(
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = propsActive.space ?? getVariableValue(iconSize) * scaleSpace
-  const contents = wrapChildrenInText(Text, propsActive)
+  const contents = wrapChildrenInText(
+    Text,
+    propsActive,
+    Text === ButtonText
+      ? {
+          defaultStyle: !propsIn.unstyled,
+        }
+      : undefined
+  )
   const inner = spacedChildren({
     // a bit arbitrary but scaling to font size is necessary so long as button does
     space: spaceSize,
@@ -200,29 +247,3 @@ export function useButton(
     props,
   }
 }
-
-const ButtonComponent = forwardRef<TamaguiElement, ButtonProps>(function Button(
-  props,
-  ref
-) {
-  const { props: buttonProps } = useButton(props)
-  return <ButtonFrame {...buttonProps} ref={ref} />
-})
-
-export const buttonStaticConfig = {
-  inlineProps: new Set([
-    // text props go here (can't really optimize them, but we never fully extract button anyway)
-    // may be able to remove this entirely, as the compiler / runtime have gotten better
-    'color',
-    'fontWeight',
-    'fontSize',
-    'fontFamily',
-    'letterSpacing',
-    'textAlign',
-  ]),
-}
-
-export const Button = ButtonFrame.extractable(
-  themeable(ButtonComponent, ButtonFrame.staticConfig),
-  buttonStaticConfig
-)

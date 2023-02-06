@@ -8,10 +8,9 @@ process.env.IS_STATIC = 'is_static'
 
 try {
   const all = {
-    ...require('../dist/static'),
+    ...require('../dist/index'),
     aliasPlugin: require('./esbuildAliasPlugin'),
   }
-  process.env.IS_STATIC = undefined
   Object.assign(exports, all)
 } catch (err) {
   // eslint-disable-next-line no-console

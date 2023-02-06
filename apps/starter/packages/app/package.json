@@ -10,12 +10,12 @@
     "@my/ui": "*",
     "@react-navigation/native": "^6.0.11",
     "@react-navigation/native-stack": "^6.7.0",
-    "@tamagui/animations-react-native": "^1.1.11",
-    "@tamagui/colors": "^1.1.11",
-    "@tamagui/font-inter": "^1.1.11",
-    "@tamagui/lucide-icons": "^1.1.11",
-    "@tamagui/shorthands": "^1.1.11",
-    "@tamagui/theme-base": "^1.1.11",
+    "@tamagui/animations-react-native": "^1.2.5",
+    "@tamagui/colors": "^1.2.5",
+    "@tamagui/font-inter": "^1.2.5",
+    "@tamagui/lucide-icons": "^1.2.5",
+    "@tamagui/shorthands": "^1.2.5",
+    "@tamagui/theme-base": "^1.2.5",
     "expo-linking": "^3.2.3",
     "solito": "^2.1.3"
   }

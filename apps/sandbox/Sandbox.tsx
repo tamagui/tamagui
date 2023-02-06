@@ -1,11 +1,24 @@
-// debug
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
+import { Stack, styled, useStyle } from '@tamagui/core'
+import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
-import { H1, Square, TamaguiProvider, XStack, YStack, useMedia, useTheme } from 'tamagui'
+import {
+  Button,
+  H1,
+  Square,
+  TamaguiProvider,
+  XStack,
+  YStack,
+  useMedia,
+  useTheme,
+} from 'tamagui'
 
+import { CodeExamplesInput } from './CodeExamplesInput'
 import config from './tamagui.config'
+
+const x = <Stack onLayout={(e) => e.nativeEvent.layout} />
 
 // import './wdyr'
 
@@ -28,6 +41,18 @@ function TestUseTheme() {
   return null
 }
 
+const StyledButton = styled(Button, {
+  backgroundColor: 'red',
+
+  hoverStyle: {
+    backgroundColor: 'green',
+  },
+
+  pressStyle: {
+    backgroundColor: 'blue',
+  },
+})
+
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light')
 
@@ -45,8 +70,6 @@ export const Sandbox = () => {
         🌗
       </button>
 
-      <XStack />
-
       <style
         type="text/css"
         dangerouslySetInnerHTML={{
@@ -55,16 +78,21 @@ export const Sandbox = () => {
       />
 
       <YStack fullscreen ai="center" jc="center">
-        <Square size={100} bc="red" />
-        {/* <SelectDemo /> */}
-        {/* <SliderDemo /> */}
-        {/* <Square tabIndex="0" size={100} bc="$blue10" /> */}
-        {/* <Button size="$8"></Button> */}
-        {/* <TestUseMediaRenders /> */}
-        {/* <SliderDemo /> */}
+        <StyledButton>hi2</StyledButton>
       </YStack>
 
       {/*  */}
     </TamaguiProvider>
   )
+}
+
+function TestUseStyle() {
+  console.log('wtf', Square.staticConfig.validStyles)
+  const style = useStyle(Square, {
+    backgroundColor: 'red',
+  })
+
+  console.log('style', style, Square.staticConfig.validStyles)
+
+  return null
 }

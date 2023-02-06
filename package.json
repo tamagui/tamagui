@@ -61,6 +61,7 @@
     "site:prod:profile": "PROFILE=1 yarn site:prod",
     "site:prod:analyze": "ANALYZE=true yarn site:prod",
     "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start",
+    "kitchen-sink:dev": "yarn workspace @tamagui/kitchen-sink dev",
     "kitchen-sink:extract": "yarn workspace @tamagui/kitchen-sink start:extract",
     "kitchen-sink:clean": "yarn workspace @tamagui/kitchen-sink start:clean",
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
@@ -69,6 +70,8 @@
     "sandbox:webpack": "yarn workspace @tamagui/sandbox dev:webpack:extract",
     "sandbox": "yarn workspace @tamagui/sandbox dev",
     "sandbox:extract": "yarn workspace @tamagui/sandbox dev:extract",
+    "sandbox-web": "yarn workspace @tamagui/sandbox-web dev",
+    "sandbox-web:extract": "yarn workspace @tamagui/sandbox-web dev:extract",
     "fix": "yarn manypkg fix"
   },
   "resolutions": {
