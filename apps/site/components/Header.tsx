@@ -94,7 +94,7 @@ export function HeaderContents(props: HeaderProps) {
     >
       <XStack ai="center" space="$4">
         {isHome ? (
-          <YStack my={-20} onPress={setNextTint} px="$3">
+          <YStack debug="verbose" my={-20} onPress={setNextTint} px="$3">
             <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
           </YStack>
         ) : (

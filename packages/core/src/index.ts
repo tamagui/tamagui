@@ -184,7 +184,6 @@ setupHooks({
       const attachFocus = !!pseudos?.focusStyle
       if (attachFocus) {
         viewProps.onFocus = mergeEvent(viewProps.onFocus, () => {
-          console.log('focusing')
           setStateShallow({ focus: true })
         })
         viewProps.onBlur = mergeEvent(viewProps.onBlur, () => {
