@@ -429,13 +429,14 @@ export function createComponent<
 
     // these can ultimately be for DOM, react-native-web views, or animated views
     // so the type is pretty loose
-    let viewProps: Record<string, any>
+    let viewProps = nonTamaguiProps
 
-    // if react-native-web view just pass all props down
-    if (process.env.TAMAGUI_TARGET === 'web' && !isReactNative && !asChild) {
-      viewProps = hooks.usePropsTransform?.(elementType, viewPropsIn, hostRef)
-    } else {
-      viewProps = nonTamaguiProps
+    // hook for transforming props
+    if (process.env.TAMAGUI_TARGET === 'web' && !isReactNative) {
+      const nextProps = hooks.usePropsTransform?.(elementType, nonTamaguiProps, hostRef)
+      if (!asChild) {
+        viewProps = nextProps
+      }
     }
 
     viewProps.ref = useComposedRefs(hostRef as any, forwardedRef)
