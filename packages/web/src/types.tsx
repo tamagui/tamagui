@@ -93,7 +93,7 @@ export type ConfigListener = (conf: TamaguiInternalConfig) => void
 export type VariableVal = number | string | Variable
 export type VariableColorVal = string | Variable
 
-type GenericKey = string | number | symbol
+type GenericKey = string
 
 export interface CreateTokens<Val extends VariableVal = VariableVal> {
   color: { [key: GenericKey]: Val }
@@ -278,7 +278,35 @@ export type ThemeKeys = keyof ThemeDefinition
 export type ThemeParsed = {
   [key in ThemeKeys]: Variable<any>
 }
+
 export type Tokens = TamaguiConfig['tokens']
+
+export type TokensParsed = {
+  size: TokenPrefixed<Tokens['size']>
+  color: TokenPrefixed<Tokens['color']>
+  radius: TokenPrefixed<Tokens['radius']>
+  zIndex: TokenPrefixed<Tokens['zIndex']>
+  space: TokenPrefixed<Tokens['space']>
+}
+
+type TokenPrefixed<A extends { [key: string]: any }> = {
+  [key in Ensure$Prefix<keyof A>]: A[keyof A]
+}
+
+type Ensure$Prefix<A extends string | number | symbol> = A extends string
+  ? A extends `$${string}`
+    ? A
+    : `$${A}`
+  : never
+
+export type TokensMerged = {
+  size: TokensParsed['size'] & Tokens['size']
+  color: TokensParsed['color'] & Tokens['color']
+  radius: TokensParsed['radius'] & Tokens['radius']
+  zIndex: TokensParsed['zIndex'] & Tokens['zIndex']
+  space: TokensParsed['space'] & Tokens['space']
+}
+
 export type Shorthands = TamaguiConfig['shorthands']
 export type Media = TamaguiConfig['media']
 export type Themes = TamaguiConfig['themes']
