@@ -27,6 +27,7 @@
     "@floating-ui/react-dom-interactions": "0.8.1",
     "@floating-ui/react-native": "0.8.0",
     "@radix-ui/react-use-previous": "^0.1.1",
+    "@tamagui/sheet": "^1.2.7",
     "@tamagui/adapt": "^1.2.7",
     "@tamagui/compose-refs": "^1.2.7",
     "@tamagui/core": "^1.2.7",
