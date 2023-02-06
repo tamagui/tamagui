@@ -36,6 +36,7 @@
     "@tamagui/list-item": "^1.2.6",
     "@tamagui/portal": "^1.2.6",
     "@tamagui/separator": "^1.2.6",
+    "@tamagui/sheet": "^1.2.6",
     "@tamagui/stacks": "^1.2.6",
     "@tamagui/text": "^1.2.6",
     "@tamagui/use-controllable-state": "^1.2.6",
