@@ -1,13 +1,12 @@
 import { useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
-import { memo, useEffect, useRef } from 'react'
+import { memo } from 'react'
 import {
   Button,
   ButtonText,
   H1,
   Paragraph,
   Spacer,
-  Square,
   Text,
   Theme,
   VisuallyHidden,

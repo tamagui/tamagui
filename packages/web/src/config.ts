@@ -1,4 +1,4 @@
-import { ConfigListener, TamaguiInternalConfig, Tokens } from './types'
+import { ConfigListener, TamaguiInternalConfig, TokensMerged } from './types'
 
 let conf: TamaguiInternalConfig | null
 
@@ -26,8 +26,38 @@ export const getConfig = () => {
   return conf
 }
 
-export const getTokens = ({ prefixed = true }: { prefixed?: boolean } = {}): Tokens =>
-  prefixed ? conf!.tokensParsed : conf!.tokens
+let cached: TokensMerged
+export const getTokens = ({
+  prefixed,
+}: {
+  /**
+   * @deprecated prefixed true and false are merged together, no longer need this property
+   */
+  prefixed?: number
+} = {}): TokensMerged => {
+  return (cached ??= {
+    size: {
+      ...conf!.tokens,
+      ...conf!.tokensParsed,
+    },
+    space: {
+      ...conf!.tokens,
+      ...conf!.tokensParsed,
+    },
+    radius: {
+      ...conf!.tokens,
+      ...conf!.tokensParsed,
+    },
+    zIndex: {
+      ...conf!.tokens,
+      ...conf!.tokensParsed,
+    },
+    color: {
+      ...conf!.tokens,
+      ...conf!.tokensParsed,
+    },
+  } as any)
+}
 
 /**
  * Note: this is the same as `getTokens`
