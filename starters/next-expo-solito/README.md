@@ -94,6 +94,7 @@ const plugins = [
   'expo-linking',
   'expo-constants',
   'expo-modules-core',
+  'some-native-module,' // add more modules here as necessary
   ]),
   //rest of plugins
 ];
