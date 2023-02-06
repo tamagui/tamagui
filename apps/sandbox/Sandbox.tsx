@@ -1,7 +1,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { Stack, styled, useStyle } from '@tamagui/core'
+import { Stack, getTokens, styled, useStyle } from '@tamagui/core'
 import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import {
@@ -19,6 +19,9 @@ import { CodeExamplesInput } from './CodeExamplesInput'
 import config from './tamagui.config'
 
 const x = <Stack onLayout={(e) => e.nativeEvent.layout} />
+
+const tokens = getTokens()
+console.log(tokens.size['$0'], tokens.size['1'])
 
 // import './wdyr'
 
