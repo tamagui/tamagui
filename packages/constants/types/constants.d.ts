@@ -1,5 +1,6 @@
 import { useLayoutEffect } from 'react';
 export declare const isWeb: boolean;
+export declare const isNative: boolean;
 export declare const isWindowDefined: boolean;
 export declare const isServer: boolean;
 export declare const isClient: boolean;

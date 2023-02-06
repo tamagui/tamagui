@@ -11,6 +11,7 @@ import {
   isWeb,
   styled,
   withStaticProperties,
+  isNative,
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
@@ -193,7 +194,7 @@ export const Switch = withStaticProperties(
           }, [props.id, setChecked])
         }
 
-        if(native && (Platform.OS === 'ios' || Platform.OS === 'android')) {
+        if(native && isNative) {
           return <NativeSwitch {...props} ></NativeSwitch>
         }
 

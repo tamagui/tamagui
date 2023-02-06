@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect } from 'react'
 
 export const isWeb = process.env.TAMAGUI_TARGET === 'web'
+export const isNative = process.env.TAMAGUI_TARGET === 'native'
 export const isWindowDefined = typeof window !== 'undefined'
 export const isServer = isWeb && !isWindowDefined
 export const isClient = isWeb && isWindowDefined
