@@ -306,7 +306,9 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
 }) => {
     props: {
         children: JSX.Element;
-        hitSlop?: import("react-native").Insets | (import("react-native").Insets & number) | undefined;
+        hitSlop?: import("react-native").Insets | (import("react-native").Insets & number) | undefined; /**
+         * adjust icon relative to size
+         */
         pointerEvents?: "box-none" | "none" | "box-only" | "auto" | undefined;
         removeClippedSubviews?: boolean | undefined;
         style?: import("react-native").StyleProp<import("react-native").ViewStyle>;
@@ -363,25 +365,22 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         onMagicTap?: (() => void) | undefined;
         accessibilityIgnoresInvertColors?: boolean | undefined;
         target?: string | undefined;
-        asChild?: boolean | undefined;
-        spaceDirection?: import("@tamagui/core").SpaceDirection | undefined; /**
-         * make the spacing elements flex
+        /**
+         * default: -1
          */
+        asChild?: boolean | undefined;
+        spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
         separator?: React.ReactNode;
         dangerouslySetInnerHTML?: {
             __html: string;
-        } | undefined; /**
-         * adjust internal space relative to icon size
-         */
+        } | undefined;
         animation?: import("@tamagui/core").AnimationProp | null | undefined;
         animateOnly?: string[] | undefined;
         debug?: boolean | "verbose" | undefined;
         disabled?: boolean | undefined;
         className?: string | undefined;
         themeShallow?: boolean | undefined;
-        id?: string | undefined; /**
-         * will not wrap text around `children` only, "all" will not wrap title or subTitle
-         */
+        id?: string | undefined;
         tag?: string | undefined;
         componentName?: string | undefined;
         forceStyle?: "focus" | "hover" | "press" | undefined;
