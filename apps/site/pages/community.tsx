@@ -190,6 +190,24 @@ export default function Community({ frontmatters }) {
                 jc="center"
                 space="$2"
                 tag="a"
+                href="https://github.com/criszz77/luna"
+                target="_blank"
+                p="$5"
+              >
+                <GithubIcon />
+                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
+                  🌘Luna template
+                </H4>
+                <Paragraph cursor="pointer" theme="alt2">
+                  by criszz77
+                </Paragraph>
+              </Card>
+              <Card
+                f={1}
+                maw={250}
+                jc="center"
+                space="$2"
+                tag="a"
                 href="https://github.com/chen-rn/create-universal-app"
                 target="_blank"
                 p="$5"
