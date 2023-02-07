@@ -8,14 +8,20 @@ export declare const createSliderContext: <ContextValueType extends object | nul
         children: import("react").ReactNode;
     }): JSX.Element;
     displayName: string;
-}, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>) => ContextValueType], createSliderScope: import("@tamagui/create-context").CreateScope;
+}, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>, options?: {
+    warn?: boolean | undefined;
+    fallback?: Partial<ContextValueType> | undefined;
+} | undefined) => ContextValueType], createSliderScope: import("@tamagui/create-context").CreateScope;
 export declare const SliderProvider: {
     (props: SliderContextValue & {
         scope: import("@tamagui/create-context").Scope<SliderContextValue>;
         children: import("react").ReactNode;
     }): JSX.Element;
     displayName: string;
-}, useSliderContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SliderContextValue | undefined>) => SliderContextValue;
+}, useSliderContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SliderContextValue | undefined>, options?: {
+    warn?: boolean | undefined;
+    fallback?: Partial<SliderContextValue> | undefined;
+} | undefined) => SliderContextValue;
 export declare const SliderOrientationProvider: {
     (props: {
         startEdge: 'bottom' | 'left' | 'right';
@@ -40,7 +46,16 @@ export declare const SliderOrientationProvider: {
     sizeProp: 'width' | 'height';
     size: number | SizeTokens;
     direction: number;
-} | undefined>) => {
+} | undefined>, options?: {
+    warn?: boolean | undefined;
+    fallback?: Partial<{
+        startEdge: 'bottom' | 'left' | 'right';
+        endEdge: 'top' | 'right' | 'left';
+        sizeProp: 'width' | 'height';
+        size: number | SizeTokens;
+        direction: number;
+    }> | undefined;
+} | undefined) => {
     startEdge: 'bottom' | 'left' | 'right';
     endEdge: 'top' | 'right' | 'left';
     sizeProp: 'width' | 'height';
