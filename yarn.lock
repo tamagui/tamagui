@@ -4746,7 +4746,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@^1.2.12, @tamagui/build@^1.2.3, @tamagui/build@workspace:packages/build":
+"@tamagui/build@^1.2.12, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -4813,16 +4813,16 @@ __metadata:
   resolution: "@tamagui/checkbox@workspace:packages/checkbox"
   dependencies:
     "@radix-ui/react-use-previous": ^0.1.1
-    "@tamagui/build": ^1.2.3
-    "@tamagui/core": ^1.2.3
-    "@tamagui/create-context": ^1.2.3
-    "@tamagui/focusable": ^1.2.3
-    "@tamagui/font-size": ^1.2.3
-    "@tamagui/get-size": ^1.2.3
-    "@tamagui/helpers-tamagui": ^1.2.3
-    "@tamagui/label": ^1.2.3
-    "@tamagui/stacks": ^1.2.3
-    "@tamagui/use-controllable-state": ^1.2.3
+    "@tamagui/build": ^1.2.12
+    "@tamagui/core": ^1.2.12
+    "@tamagui/create-context": ^1.2.12
+    "@tamagui/focusable": ^1.2.12
+    "@tamagui/font-size": ^1.2.12
+    "@tamagui/get-size": ^1.2.12
+    "@tamagui/helpers-tamagui": ^1.2.12
+    "@tamagui/label": ^1.2.12
+    "@tamagui/stacks": ^1.2.12
+    "@tamagui/use-controllable-state": ^1.2.12
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
@@ -5022,7 +5022,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core@^1.2.12, @tamagui/core@^1.2.3, @tamagui/core@workspace:packages/core":
+"@tamagui/core@^1.2.12, @tamagui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
@@ -5042,7 +5042,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/create-context@^1.2.12, @tamagui/create-context@^1.2.3, @tamagui/create-context@workspace:packages/create-context":
+"@tamagui/create-context@^1.2.12, @tamagui/create-context@workspace:packages/create-context":
   version: 0.0.0-use.local
   resolution: "@tamagui/create-context@workspace:packages/create-context"
   dependencies:
@@ -5176,7 +5176,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/focusable@^1.2.12, @tamagui/focusable@^1.2.3, @tamagui/focusable@workspace:packages/focusable":
+"@tamagui/focusable@^1.2.12, @tamagui/focusable@workspace:packages/focusable":
   version: 0.0.0-use.local
   resolution: "@tamagui/focusable@workspace:packages/focusable"
   dependencies:
@@ -5219,7 +5219,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/font-size@^1.2.12, @tamagui/font-size@^1.2.3, @tamagui/font-size@workspace:packages/font-size":
+"@tamagui/font-size@^1.2.12, @tamagui/font-size@workspace:packages/font-size":
   version: 0.0.0-use.local
   resolution: "@tamagui/font-size@workspace:packages/font-size"
   dependencies:
@@ -5258,7 +5258,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/get-size@^1.2.12, @tamagui/get-size@^1.2.3, @tamagui/get-size@workspace:packages/get-size":
+"@tamagui/get-size@^1.2.12, @tamagui/get-size@workspace:packages/get-size":
   version: 0.0.0-use.local
   resolution: "@tamagui/get-size@workspace:packages/get-size"
   dependencies:
@@ -5282,7 +5282,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/helpers-tamagui@^1.2.12, @tamagui/helpers-tamagui@^1.2.3, @tamagui/helpers-tamagui@workspace:packages/helpers-tamagui":
+"@tamagui/helpers-tamagui@^1.2.12, @tamagui/helpers-tamagui@workspace:packages/helpers-tamagui":
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers-tamagui@workspace:packages/helpers-tamagui"
   dependencies:
@@ -5369,7 +5369,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/label@^1.2.12, @tamagui/label@^1.2.3, @tamagui/label@workspace:packages/label":
+"@tamagui/label@^1.2.12, @tamagui/label@workspace:packages/label":
   version: 0.0.0-use.local
   resolution: "@tamagui/label@workspace:packages/label"
   dependencies:
@@ -5980,7 +5980,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/stacks@^1.2.12, @tamagui/stacks@^1.2.3, @tamagui/stacks@workspace:packages/stacks":
+"@tamagui/stacks@^1.2.12, @tamagui/stacks@workspace:packages/stacks":
   version: 0.0.0-use.local
   resolution: "@tamagui/stacks@workspace:packages/stacks"
   dependencies:
@@ -6251,7 +6251,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-controllable-state@^1.2.12, @tamagui/use-controllable-state@^1.2.3, @tamagui/use-controllable-state@workspace:packages/use-controllable-state":
+"@tamagui/use-controllable-state@^1.2.12, @tamagui/use-controllable-state@workspace:packages/use-controllable-state":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-controllable-state@workspace:packages/use-controllable-state"
   dependencies:
