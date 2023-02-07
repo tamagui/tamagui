@@ -83,22 +83,7 @@ yarn
 
 You can also install the native library inside of `packages/app` if you want to get autoimport for that package inside of the `app` folder. However, you need to be careful and install the _exact_ same version in both packages. If the versions mismatch at all, you'll potentially get terrible bugs. This is a classic monorepo issue. I use `lerna-update-wizard` to help with this (you don't need to use Lerna to use that lib).
 
-You may potentially want to have the native module transpiled for the next app. If you get error messages with ```Cannot use import statement outside a module```, you may need to use ```withTM```. To use, first install the library ```yarn add -D next-transpile-modules``` and import it into next.config.js ```import withTM from "next-transpile-modules"```.
-
-Then add the list of modules as the argument to the ```withTM``` plugin, inserting the plugin into the plugins list in [`apps/next/next.config.js`](apps/next/next.config.js#L47) file.
-```ts
-const plugins = [
-  withTM([
-  'solito',
-  'react-native-web',
-  'expo-linking',
-  'expo-constants',
-  'expo-modules-core',
-  'some-native-module,' // add more modules here as necessary
-  ]),
-  //rest of plugins
-];
-```
+You may potentially want to have the native module transpiled for the next app. If you get error messages with ```Cannot use import statement outside a module```, you may need to use `transpilePackages` in your `next.config.js` and add the module to the array there.
 
 ### Deploying to Vercel
 
