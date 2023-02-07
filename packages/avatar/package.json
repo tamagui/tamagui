@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/avatar",
-  "version": "1.2.5",
+  "version": "1.2.12",
   "sideEffects": [
     "*.css"
   ],
@@ -26,16 +26,16 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.js",
+      "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
     }
   },
   "dependencies": {
-    "@tamagui/core": "^1.2.5",
-    "@tamagui/image": "^1.2.5",
-    "@tamagui/shapes": "^1.2.5",
-    "@tamagui/text": "^1.2.5",
-    "@tamagui/use-event": "^1.2.5"
+    "@tamagui/core": "^1.2.12",
+    "@tamagui/image": "^1.2.12",
+    "@tamagui/shapes": "^1.2.12",
+    "@tamagui/text": "^1.2.12",
+    "@tamagui/use-event": "^1.2.12"
   },
   "peerDependencies": {
     "react": "*",
@@ -43,7 +43,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.2.5",
+    "@tamagui/build": "^1.2.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "*"

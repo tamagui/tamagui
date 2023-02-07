@@ -1,8 +1,15 @@
-import { getTokens, getVariable, getVariableValue, useTheme } from '@tamagui/core'
+import {
+  getTokens,
+  getVariable,
+  getVariableValue,
+  useMediaPropsActive,
+  useTheme,
+} from '@tamagui/core'
 import React from 'react'
 
 export function themed<A extends React.FC>(Component: A) {
-  const wrapped = (props: any) => {
+  const wrapped = (propsIn: any) => {
+    const props = useMediaPropsActive(propsIn)
     const theme = useTheme()
     const color = getVariable(
       (props.color in theme ? theme[props.color] : undefined) ||
@@ -15,6 +22,7 @@ export function themed<A extends React.FC>(Component: A) {
         ? getVariableValue(getTokens().size[props.size] || props.size)
         : props.size
 
+    // @ts-ignore
     return <Component {...props} color={color} size={size} />
   }
   return wrapped as unknown as A

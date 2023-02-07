@@ -429,13 +429,14 @@ export function createComponent<
 
     // these can ultimately be for DOM, react-native-web views, or animated views
     // so the type is pretty loose
-    let viewProps: Record<string, any>
+    let viewProps = nonTamaguiProps
 
-    // if react-native-web view just pass all props down
-    if (process.env.TAMAGUI_TARGET === 'web' && !isReactNative && !asChild) {
-      viewProps = hooks.usePropsTransform?.(elementType, viewPropsIn, hostRef)
-    } else {
-      viewProps = nonTamaguiProps
+    // hook for transforming props
+    if (process.env.TAMAGUI_TARGET === 'web' && !isReactNative) {
+      const nextProps = hooks.usePropsTransform?.(elementType, nonTamaguiProps, hostRef)
+      if (!asChild) {
+        viewProps = nextProps
+      }
     }
 
     viewProps.ref = useComposedRefs(hostRef as any, forwardedRef)
@@ -664,24 +665,28 @@ export function createComponent<
               ? (e) => {
                   unPress()
                   // @ts-ignore
-                  onClick?.(e)
+                  isWeb && onClick?.(e)
                   onPress?.(e)
                 }
               : undefined,
-
-            // replicating TouchableWithoutFeedback
-            ...(!isWeb && {
-              cancelable: !props.rejectResponderTermination,
-              disabled: isDisabled,
-              hitSlop: props.hitSlop,
-              delayLongPress: props.delayLongPress,
-              delayPressIn: props.delayPressIn,
-              delayPressOut: props.delayPressOut,
-              focusable: viewProps.focusable ?? true,
-              minPressDuration: 0,
-            }),
           }
         : null
+
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      if (events) {
+        // replicating TouchableWithoutFeedback
+        Object.assign(events, {
+          cancelable: !props.rejectResponderTermination,
+          disabled: isDisabled,
+          hitSlop: props.hitSlop,
+          delayLongPress: props.delayLongPress,
+          delayPressIn: props.delayPressIn,
+          delayPressOut: props.delayPressOut,
+          focusable: viewProps.focusable ?? true,
+          minPressDuration: 0,
+        })
+      }
+    }
 
     // EVENTS native
     hooks.useEvents?.(viewProps, events, splitStyles, setStateShallow)

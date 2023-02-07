@@ -6,14 +6,20 @@ export declare const createSelectContext: <ContextValueType extends object | nul
         children: import("react").ReactNode;
     }): JSX.Element;
     displayName: string;
-}, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>) => ContextValueType], createSelectScope: import("@tamagui/create-context").CreateScope;
+}, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>, options?: {
+    warn?: boolean | undefined;
+    fallback?: Partial<ContextValueType> | undefined;
+} | undefined) => ContextValueType], createSelectScope: import("@tamagui/create-context").CreateScope;
 export declare const SelectProvider: {
     (props: SelectContextValue & {
         scope: import("@tamagui/create-context").Scope<SelectContextValue>;
         children: import("react").ReactNode;
     }): JSX.Element;
     displayName: string;
-}, useSelectContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SelectContextValue | undefined>) => SelectContextValue;
+}, useSelectContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SelectContextValue | undefined>, options?: {
+    warn?: boolean | undefined;
+    fallback?: Partial<SelectContextValue> | undefined;
+} | undefined) => SelectContextValue;
 export declare const ForwardSelectContext: (props: ScopedProps<{
     children?: any;
     context: SelectContextValue;
