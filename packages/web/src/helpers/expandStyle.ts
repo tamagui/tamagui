@@ -8,24 +8,11 @@ import { isWeb } from '@tamagui/constants'
 export function expandStyle(key: string, value: any) {
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (key === 'flex') {
-      // The 'flex' property value in React Native must be a positive integer,
-      // 0, or -1.
-      if (value <= -1) {
-        return [
-          ['flexGrow', 0],
-          ['flexShrink', 1],
-          ['flexBasis', 'auto'],
-        ]
-      }
-      // normalizing to better align with native
-      // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
-      if (value >= 0) {
-        return [
-          ['flexGrow', value],
-          ['flexShrink', 1],
-        ]
-      }
-      return
+      return [
+        ['flexGrow', Math.max(0, value)],
+        ['flexShrink', 1],
+        ['flexBasis', 'auto'],
+      ]
     }
 
     // web only

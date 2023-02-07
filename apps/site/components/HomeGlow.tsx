@@ -1,39 +1,9 @@
-import { useTints } from '@tamagui/logo'
 import { useTint } from '@tamagui/logo'
-import { memo, useEffect, useMemo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { Dimensions } from 'react-native'
-import {
-  ThemeName,
-  YStack,
-  debounce,
-  isClient,
-  useDebounce,
-  useWindowDimensions,
-} from 'tamagui'
+import { ThemeName, YStack, isClient, useDebounce } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
-
-function useIsResizing() {
-  const [isResizing, setIsResizing] = useState(false)
-
-  useEffect(() => {
-    let tm: any
-
-    const handleResize = () => {
-      setIsResizing(true)
-      clearTimeout(tm)
-      tm = setTimeout(() => {
-        setIsResizing(false)
-      }, 300)
-    }
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
-
-  return isResizing
-}
 
 export const HomeGlow = memo(() => {
   const { tints, tint, name, tintIndex } = useTint()

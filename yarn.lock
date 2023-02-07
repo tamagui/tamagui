@@ -4862,7 +4862,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@^1.2.18, @tamagui/build@workspace:packages/build":
+"@tamagui/build@^1.2.12, @tamagui/build@^1.2.18, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -5185,6 +5185,15 @@ __metadata:
     react: ^18.2.0
   peerDependencies:
     react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/create-theme@workspace:packages/create-theme":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/create-theme@workspace:packages/create-theme"
+  dependencies:
+    "@tamagui/build": ^1.2.12
+    "@tamagui/web": ^1.2.12
   languageName: unknown
   linkType: soft
 
@@ -6590,7 +6599,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/web@^1.2.18, @tamagui/web@workspace:packages/web":
+"@tamagui/web@^1.2.12, @tamagui/web@^1.2.18, @tamagui/web@workspace:packages/web":
   version: 0.0.0-use.local
   resolution: "@tamagui/web@workspace:packages/web"
   dependencies:

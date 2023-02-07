@@ -160,7 +160,7 @@ span._display-1adg3ll > span._display-xoduu5 {
 
 .t_dark .hero-blur {
   background: radial-gradient(
-    var(--backgroundStrong) 0%,
+    var(--color6) 0%,
     transparent 72%
   );
 }

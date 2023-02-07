@@ -1,10 +1,10 @@
-import { ThemeName } from '../types';
+import { DebugProp, ThemeName } from '../types';
 export interface ThemeableProps {
     theme?: ThemeName | null;
     themeInverse?: boolean;
     themeReset?: boolean;
     componentName?: string;
-    debug?: boolean | 'verbose';
+    debug?: DebugProp;
 }
 export declare function themeable<Component extends (props: any) => any>(component: Component, opts?: {
     componentName?: string;

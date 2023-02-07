@@ -140,7 +140,6 @@ const HeroContents = memo(() => {
               <NextLink href="/docs/core/configuration">
                 <Tag
                   theme="green_alt2"
-                  bc="$color2"
                   onHoverIn={() => setHovered(0)}
                   active={hovered === 0}
                 >
@@ -151,7 +150,6 @@ const HeroContents = memo(() => {
               <NextLink href="/docs/intro/why-a-compiler">
                 <Tag
                   theme="blue_alt2"
-                  bc="$color2"
                   onHoverIn={() => setHovered(1)}
                   active={hovered === 1}
                 >
@@ -162,7 +160,6 @@ const HeroContents = memo(() => {
               <NextLink href="/docs/components/stacks">
                 <Tag
                   theme="purple_alt2"
-                  bc="$color2"
                   onHoverIn={() => setHovered(2)}
                   active={hovered === 2}
                 >
@@ -192,7 +189,6 @@ const HeroContents = memo(() => {
             ai="center"
             jc="center"
             space="$2"
-            contain="paint layout"
             $xxs={{
               // words web-only
               // @ts-ignore
@@ -303,17 +299,23 @@ const Tag = styled(Text, {
   mx: '$-1',
   cursor: 'pointer',
   color: '$color11',
-  backgroundColor: '$color5',
+  bc: '$color2',
 
   hoverStyle: {
     color: '$color',
-    backgroundColor: '$color5',
+    bc: '$color3',
   },
 
   variants: {
     active: {
       true: {
-        color: '$color10',
+        color: '$color12',
+        bc: '$color5',
+
+        hoverStyle: {
+          color: '$color12',
+          bc: '$color5',
+        },
       },
     },
   },

@@ -25,6 +25,7 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 1.X
 
+- // TODO could be native-only
 - Select id="" + Label focus
 - web forms events bubble
 - theme shouldn't change context ever on web, redo notify()

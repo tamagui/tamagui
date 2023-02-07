@@ -10,6 +10,7 @@ type GeneratedTheme<ExtraKeys extends string = string> = {
 } & {
     backgroundStrong: Variable<string>;
     background: Variable<string>;
+    backgroundSoft: Variable<string>;
     backgroundHover: Variable<string>;
     backgroundPress: Variable<string>;
     backgroundFocus: Variable<string>;
@@ -18,6 +19,8 @@ type GeneratedTheme<ExtraKeys extends string = string> = {
     colorHover: Variable<string>;
     colorPress: Variable<string>;
     colorFocus: Variable<string>;
+    colorTranslucent: Variable<string>;
+    colorMid: Variable<string>;
     shadowColor: Variable<string>;
     shadowColorHover: Variable<string>;
     shadowColorPress: Variable<string>;

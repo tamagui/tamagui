@@ -1,4 +1,6 @@
-import { Variable, createTheme, isWeb } from '@tamagui/core'
+import { Variable, createTheme, getVariableValue, isWeb } from '@tamagui/core'
+
+import { setColorAlpha } from './colorUtils'
 
 // can make configurable
 type AltKeys = 1 | 2
@@ -15,6 +17,7 @@ type GeneratedTheme<ExtraKeys extends string = string> = {
 } & {
   backgroundStrong: Variable<string>
   background: Variable<string>
+  backgroundSoft: Variable<string>
   backgroundHover: Variable<string>
   backgroundPress: Variable<string>
   backgroundFocus: Variable<string>
@@ -23,6 +26,8 @@ type GeneratedTheme<ExtraKeys extends string = string> = {
   colorHover: Variable<string>
   colorPress: Variable<string>
   colorFocus: Variable<string>
+  colorTranslucent: Variable<string>
+  colorMid: Variable<string>
   shadowColor: Variable<string>
   shadowColorHover: Variable<string>
   shadowColorPress: Variable<string>
@@ -229,9 +234,15 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
       return arr[Math.max(0, Math.min(index + (offsets[name][str] || 0), arr.length - 1))]
     }
 
+    const colorTranslucent = setColorAlpha(
+      getVariableValue(get(colors, 0 + str, 'color')),
+      0.5
+    )
+
     const theme: SubTheme = {
       background: get(backgrounds, str),
       backgroundStrong: backgroundStrong || get(backgrounds, str + strongerDir * 2),
+      backgroundSoft: get(backgrounds, str + softerDir * 2),
       backgroundHover: get(backgrounds, str + lighterDir),
       backgroundPress: get(backgrounds, str + darkerDir),
       backgroundFocus: get(backgrounds, str + darkerDir * 2),
@@ -240,6 +251,8 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
       colorHover: get(colors, 1 + str, 'color'),
       colorPress: get(colors, 2 + str, 'color'),
       colorFocus: get(colors, 3 + str, 'color'),
+      colorTranslucent,
+      colorMid: (isLight ? colors : backgrounds)[Math.floor(colors.length / 2)],
       shadowColor: isLight ? 'hsla(0, 0%, 0%, 0.03)' : 'hsla(0, 0%, 0%, 0.2)',
       shadowColorHover: darkColors[!isLight ? 1 : 8],
       shadowColorPress: darkColors[!isLight ? 1 : 8],
