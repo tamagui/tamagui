@@ -51,7 +51,6 @@ export const BubbleInput = (props: BubbleInputProps) => {
   const { checked, bubbles = true, control, isHidden, ...inputProps } = props
   const ref = React.useRef<HTMLInputElement>(null)
   const prevChecked = usePrevious(checked)
-  const theme = useTheme({ name: 'active' })
   //   const controlSize = useSize(control)
 
   // Bubble checked change to parents (e.g form change event)
@@ -91,7 +90,7 @@ export const BubbleInput = (props: BubbleInputProps) => {
             }
           : {
               appearance: 'auto',
-              accentColor: theme.background.val,
+              accentColor: 'var(--color6)',
             }),
 
         ...props.style,
