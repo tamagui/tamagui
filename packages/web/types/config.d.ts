@@ -16,7 +16,7 @@ export declare const getConfig: () => TamaguiInternalConfig<import("./types").Cr
 }, import("./types").GenericFonts>;
 export declare const getTokens: ({ prefixed, }?: {
     /**
-     * @deprecated prefixed true and false are merged together, no longer need this property
+     * Force either with $ or without $ prefix
      */
     prefixed?: boolean | undefined;
 }) => TokensMerged;

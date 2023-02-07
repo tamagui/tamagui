@@ -31,32 +31,35 @@ export const getTokens = ({
   prefixed,
 }: {
   /**
-   * @deprecated prefixed true and false are merged together, no longer need this property
+   * Force either with $ or without $ prefix
    */
   prefixed?: boolean
 } = {}): TokensMerged => {
-  return (cached ??= {
+  if (!conf) throw new Error(`never called createTamagui`)
+  if (prefixed === false) return conf.tokens
+  if (prefixed === true) return conf.tokensParsed
+  return (cached ??= Object.freeze({
     size: {
-      ...conf!.tokens['size'],
-      ...conf!.tokensParsed['size'],
+      ...conf.tokens['size'],
+      ...conf.tokensParsed['size'],
     },
     space: {
-      ...conf!.tokens['space'],
-      ...conf!.tokensParsed['space'],
+      ...conf.tokens['space'],
+      ...conf.tokensParsed['space'],
     },
     radius: {
-      ...conf!.tokens['radius'],
-      ...conf!.tokensParsed['radius'],
+      ...conf.tokens['radius'],
+      ...conf.tokensParsed['radius'],
     },
     zIndex: {
-      ...conf!.tokens['zIndex'],
-      ...conf!.tokensParsed['zIndex'],
+      ...conf.tokens['zIndex'],
+      ...conf.tokensParsed['zIndex'],
     },
     color: {
-      ...conf!.tokens['color'],
-      ...conf!.tokensParsed['color'],
+      ...conf.tokens['color'],
+      ...conf.tokensParsed['color'],
     },
-  } as any)
+  }) as any)
 }
 
 /**
