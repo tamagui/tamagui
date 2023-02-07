@@ -267,9 +267,9 @@ export const Checkbox = withStaticProperties(
           defaultProp: defaultChecked!,
           onChange: onCheckedChange,
         })
-        const size = getVariableValue(
-          stepTokenUpOrDown('size', propsActive.size || '$true', sizeAdjust - 2)
-        )
+
+        const adjustedSizeToken = stepTokenUpOrDown('size', propsActive.size, sizeAdjust)
+        const size = Math.floor(getVariableValue(adjustedSizeToken) * 0.65) + 4
 
         const labelId = useLabelContext(button)
         const labelledBy = ariaLabelledby || labelId
