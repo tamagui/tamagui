@@ -2,6 +2,7 @@
 const { withTamagui } = require('@tamagui/next-plugin')
 const withImages = require('next-images')
 const { join } = require('path')
+const withTM = require('next-transpile-modules')
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 process.env.TAMAGUI_TARGET = 'web'
@@ -11,6 +12,15 @@ const boolVals = {
   true: true,
   false: false,
 }
+
+const transpilePackages = [
+  'solito',
+  'react-native-web',
+  'expo-linking',
+  'expo-constants',
+  'expo-modules-core',
+  // add more native modules here as necessary
+];
 
 const disableExtraction =
   boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
@@ -41,6 +51,7 @@ Remove this log in next.config.js.
 `)
 
 const plugins = [
+  withTM(transpileModules),
   withImages,
   withTamagui({
     config: './tamagui.config.ts',
@@ -74,13 +85,6 @@ module.exports = function () {
         skipDefaultConversion: true,
       },
     },
-    transpilePackages: [
-      'solito',
-      'react-native-web',
-      'expo-linking',
-      'expo-constants',
-      'expo-modules-core',
-    ],
     experimental: {
       // optimizeCss: true,
       scrollRestoration: true,
