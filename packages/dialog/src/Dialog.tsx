@@ -651,6 +651,7 @@ const DialogClose = React.forwardRef<TamaguiElement, DialogCloseProps>(
     return (
       <YStack
         tag="button"
+        accessibilityLabel="Dialog Close"
         {...closeProps}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress as any, () =>

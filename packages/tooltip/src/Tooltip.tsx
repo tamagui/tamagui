@@ -87,7 +87,11 @@ export const Tooltip = withStaticProperties(
       __scopePopover,
       children,
       delay: delayProp,
-      restMs = typeof delayProp === 'undefined' ? 500 : delayProp,
+      restMs = typeof delayProp === 'undefined'
+        ? 500
+        : typeof delayProp === 'number'
+        ? delayProp
+        : 0,
       onOpenChange: onOpenChangeProp,
       ...restProps
     } = props
