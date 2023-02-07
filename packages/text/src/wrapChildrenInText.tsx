@@ -8,7 +8,13 @@ type Props = TextParentStyles & {
   size?: SizeTokens
 }
 
-export function wrapChildrenInText(TextComponent: any, propsIn: Props) {
+export function wrapChildrenInText(
+  TextComponent: any,
+  propsIn: Props & {
+    unstyled?: boolean
+  },
+  extraProps?: Record<string, any>
+) {
   const {
     children,
     textProps,
@@ -34,7 +40,9 @@ export function wrapChildrenInText(TextComponent: any, propsIn: Props) {
   const allChildren = React.Children.toArray(children)
   const nextChildren: any[] = []
   let lastIsString = false
-  const props: any = {}
+  const props = {
+    ...extraProps,
+  }
   // to avoid setting undefined
   if (color) props.color = color
   if (fontFamily) props.fontFamily = fontFamily

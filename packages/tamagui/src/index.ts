@@ -78,8 +78,6 @@ export type {
   MediaPropKeys,
   MediaQueries,
   MediaQueryState,
-  RNWTextProps,
-  RNWViewProps,
   Shorthands,
   SizeTokens,
   SpaceTokens,

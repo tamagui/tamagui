@@ -205,7 +205,7 @@ Note, for `tamagui`, it expects certain things on tokens. Space and size should 
 
 <Notice>
   The compiler will parse your tamagui.config.ts file at build-time. For this reason, we
-  comment keeping it relatively simple. Don't import heavy dependencies, and prefer to
+  recommend keeping it relatively simple. Don't import heavy dependencies, and prefer to
   import `createTamagui` and other helpers directly from @tamagui/core.
 </Notice>
 
@@ -251,12 +251,6 @@ TamaguiProvider takes a few optional properties:
       required: false,
       type: 'boolean',
       description: `By default Tamagui inserts CSS with a useLayoutEffect on load. But if you're not setting up SSR you'll want to use getCSS() instead and enable this prop.`,
-    },
-    {
-      name: 'disableRootThemeClass',
-      required: false,
-      type: 'boolean',
-      description: `Tamagui will insert your current root theme onto the body unless this property is enabled. This typically can be left off.`,
     },
   ]}
 />
