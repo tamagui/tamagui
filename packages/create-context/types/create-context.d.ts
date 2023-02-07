@@ -7,7 +7,7 @@ export declare function createContext<ContextValueType extends object | null>(ro
         children: React.ReactNode;
     }): JSX.Element;
     displayName: string;
-}, (consumerName: string) => ContextValueType];
+}, (consumerName: string) => ContextValueType | undefined];
 type ScopeHook = (scope: Scope) => {
     [__scopeProp: string]: Scope;
 };
@@ -24,6 +24,6 @@ export declare function createContextScope(scopeName: string, createContextScope
         children: React.ReactNode;
     }): JSX.Element;
     displayName: string;
-}, (consumerName: string, scope: Scope<ContextValueType | undefined>) => ContextValueType], CreateScope];
+}, (consumerName: string, scope: Scope<ContextValueType | undefined>) => ContextValueType | undefined], CreateScope];
 export {};
 //# sourceMappingURL=create-context.d.ts.map
