@@ -167,7 +167,6 @@ export const themes = addChildren(baseThemes, (name, themeIn) => {
   function getAltThemes(theme: Theme, inverse: Theme) {
     const alt1 = applyMask(theme, masks.weaker)
     const alt2 = applyMask(alt1, masks.weaker)
-    console.log({ theme, alt1, alt2, stronger: applyMask(theme, masks.stronger) })
     return addChildren({ alt1, alt2 }, (name, theme) => {
       return getComponentThemes(theme as any, inverse)
     })
