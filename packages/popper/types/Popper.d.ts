@@ -55,7 +55,10 @@ export declare const PopperProvider: {
         children: React.ReactNode;
     }): JSX.Element;
     displayName: string;
-}, usePopperContext: (consumerName: string, scope: Scope<PopperContextValue | undefined>) => PopperContextValue;
+}, usePopperContext: (consumerName: string, scope: Scope<PopperContextValue | undefined>, options?: {
+    warn?: boolean | undefined;
+    fallback?: Partial<PopperContextValue> | undefined;
+} | undefined) => PopperContextValue;
 export type PopperProps = {
     size?: SizeTokens;
     children?: React.ReactNode;

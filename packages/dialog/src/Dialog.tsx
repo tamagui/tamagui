@@ -641,7 +641,10 @@ type DialogCloseProps = YStackProps & {
 const DialogClose = React.forwardRef<TamaguiElement, DialogCloseProps>(
   (props: ScopedProps<DialogCloseProps>, forwardedRef) => {
     const { __scopeDialog, displayWhenAdapted, ...closeProps } = props
-    const context = useDialogContext(CLOSE_NAME, __scopeDialog)
+    const context = useDialogContext(CLOSE_NAME, __scopeDialog, {
+      warn: false,
+      fallback: {},
+    })
     const isSheet = useShowDialogSheet(context)
 
     if (isSheet && !displayWhenAdapted) {

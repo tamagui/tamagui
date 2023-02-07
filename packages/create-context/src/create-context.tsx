@@ -19,13 +19,12 @@ export function createContext<ContextValueType extends object | null>(
     return <Context.Provider value={value}>{children}</Context.Provider>
   }
 
-  function useContext(consumerName: string): typeof context {
+  function useContext(consumerName: string): Exclude<typeof context, undefined> {
     const context = React.useContext(Context)
-    if (context) return context
-    if (defaultContext !== undefined) return defaultContext
+    if (context) return context as any
+    if (defaultContext !== undefined) return defaultContext as any
     // if a defaultContext wasn't specified, it's a required context.
-    console.warn(`\`${consumerName}\` must be used within \`${rootComponentName}\``)
-    return {} as any
+    throw new Error(`\`${consumerName}\` must be used within \`${rootComponentName}\``)
   }
 
   Provider.displayName = `${rootComponentName}Provider`
@@ -82,14 +81,27 @@ export function createContextScope(
 
     function useContext(
       consumerName: string,
-      scope: Scope<ContextValueType | undefined>
+      scope: Scope<ContextValueType | undefined>,
+      options?: {
+        warn?: boolean
+        fallback?: Partial<ContextValueType>
+      }
     ) {
       const Context = scope?.[scopeName][index] || BaseContext
       const context = React.useContext(Context)
       if (context) return context
-      if (defaultContext !== undefined) return defaultContext
       // if a defaultContext wasn't specified, it's a required context.
-      console.warn(`\`${consumerName}\` must be used within \`${rootComponentName}\``)
+      if (defaultContext !== undefined) return defaultContext
+      const missingContextMessage = `\`${consumerName}\` must be used within \`${rootComponentName}\``
+      // fallback can be given per-hook as well
+      if (options?.fallback) {
+        if (options?.warn !== false) {
+          console.warn(missingContextMessage)
+        }
+        return options.fallback as ContextValueType
+      } else {
+        throw new Error(missingContextMessage)
+      }
     }
 
     Provider.displayName = `${rootComponentName}Provider`
