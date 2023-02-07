@@ -11,7 +11,7 @@ import {
   useInteractions,
   useRole,
 } from '@floating-ui/react-dom-interactions'
-import { useEvent, useId, withStaticProperties } from '@tamagui/core'
+import { SizeTokens, useEvent, useId, withStaticProperties } from '@tamagui/core'
 import { ScopedProps } from '@tamagui/create-context'
 import { FloatingOverrideContext, UseFloatingFn } from '@tamagui/floating'
 import { stepTokenUpOrDown } from '@tamagui/get-size'
@@ -35,12 +35,13 @@ const TooltipContent = React.forwardRef(
   ) => {
     const popperScope = usePopoverScope(__scopePopover)
     const popper = usePopperContext('PopperContent', popperScope['__scopePopper'])
+    const padding = props.size || popper.size || stepTokenUpOrDown('size', '$true', -2)
     return (
       <PopoverContent
         componentName="TooltipContent"
         disableRemoveScroll
         trapFocus={false}
-        padding={props.size || popper.size || '$2'}
+        padding={padding}
         pointerEvents="none"
         ref={ref}
         {...props}
@@ -136,12 +137,13 @@ export const Tooltip = withStaticProperties(
     const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
     const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
     const contentId = useId()
-    const size = `$${(stepTokenUpOrDown('size', '$true', -2) as any).key}` as any
+    const twoSmallerKey = stepTokenUpOrDown('size', '$true', -2).key
+    const size = `$${twoSmallerKey}`
 
     return (
       <FloatingOverrideContext.Provider value={useFloatingContext}>
         {/* default tooltip to a smaller size */}
-        <Popper size={size} {...popperScope} {...restProps}>
+        <Popper size={size as SizeTokens} {...popperScope} {...restProps}>
           <__PopoverProviderInternal
             scope={__scopePopover}
             popperScope={popperScope.__scopePopper}
