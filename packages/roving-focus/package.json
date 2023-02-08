@@ -24,7 +24,8 @@
     "@tamagui/core": "^1.2.12",
     "@tamagui/create-context": "^1.2.12",
     "@tamagui/use-controllable-state": "^1.2.12",
-    "@tamagui/use-direction": "^1.2.12"
+    "@tamagui/use-direction": "^1.2.12",
+    "@tamagui/use-event": "^1.2.12"
   },
   "peerDependencies": {
     "react": "*",

@@ -1,29 +1,12 @@
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { Stack, composeEventHandlers, isWeb, withStaticProperties } from '@tamagui/core'
+import { Stack, composeEventHandlers, isWeb, useEvent, withStaticProperties } from '@tamagui/core'
 import { useId } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
-
-/**
- * A custom hook that converts a callback to a ref to avoid triggering re-renders when passed as a
- * prop or avoid re-executing effects when passed as a dependency
- */
-function useCallbackRef<T extends (...args: any[]) => any>(callback: T | undefined): T {
-  const callbackRef = React.useRef(callback)
-
-  React.useEffect(() => {
-    callbackRef.current = callback
-  })
-
-  // https://github.com/facebook/react/issues/19240
-  return React.useMemo(() => ((...args) => callbackRef.current?.(...args)) as T, [])
-}
-
-export { useCallbackRef }
 
 const ENTRY_FOCUS = 'rovingFocusGroup.onEntryFocus'
 const EVENT_OPTIONS = { bubbles: false, cancelable: true }
@@ -65,7 +48,7 @@ const RovingFocusGroupImpl = React.forwardRef<
     onChange: onCurrentTabStopIdChange,
   })
   const [isTabbingBackOut, setIsTabbingBackOut] = React.useState(false)
-  const handleEntryFocus = useCallbackRef(onEntryFocus)
+  const handleEntryFocus = useEvent(onEntryFocus)
   const getItems = useCollection(__scopeRovingFocusGroup)
   const isClickFocusRef = React.useRef(false)
   const [focusableItemsCount, setFocusableItemsCount] = React.useState(0)
