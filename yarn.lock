@@ -4746,7 +4746,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@^1.2.12, @tamagui/build@^1.2.13, @tamagui/build@workspace:packages/build":
+"@tamagui/build@^1.2.13, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -4899,17 +4899,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/collection@^1.2.12, @tamagui/collection@workspace:packages/collection":
+"@tamagui/collection@^1.2.13, @tamagui/collection@workspace:packages/collection":
   version: 0.0.0-use.local
   resolution: "@tamagui/collection@workspace:packages/collection"
   dependencies:
-    "@tamagui/build": ^1.2.12
-    "@tamagui/compose-refs": ^1.2.12
-    "@tamagui/core": ^1.2.12
-    "@tamagui/create-context": ^1.2.12
-    "@tamagui/polyfill-dev": ^1.2.12
-    "@tamagui/stacks": ^1.2.12
-    "@tamagui/use-controllable-state": ^1.2.12
+    "@tamagui/build": ^1.2.13
+    "@tamagui/compose-refs": ^1.2.13
+    "@tamagui/core": ^1.2.13
+    "@tamagui/create-context": ^1.2.13
+    "@tamagui/polyfill-dev": ^1.2.13
+    "@tamagui/stacks": ^1.2.13
+    "@tamagui/use-controllable-state": ^1.2.13
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
@@ -4926,7 +4926,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/compose-refs@^1.2.12, @tamagui/compose-refs@^1.2.13, @tamagui/compose-refs@workspace:packages/compose-refs":
+"@tamagui/compose-refs@^1.2.13, @tamagui/compose-refs@workspace:packages/compose-refs":
   version: 0.0.0-use.local
   resolution: "@tamagui/compose-refs@workspace:packages/compose-refs"
   dependencies:
@@ -5018,7 +5018,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core@^1.2.12, @tamagui/core@^1.2.13, @tamagui/core@workspace:packages/core":
+"@tamagui/core@^1.2.13, @tamagui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
@@ -5038,7 +5038,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/create-context@^1.2.12, @tamagui/create-context@^1.2.13, @tamagui/create-context@workspace:packages/create-context":
+"@tamagui/create-context@^1.2.13, @tamagui/create-context@workspace:packages/create-context":
   version: 0.0.0-use.local
   resolution: "@tamagui/create-context@workspace:packages/create-context"
   dependencies:
@@ -5547,7 +5547,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/polyfill-dev@^1.2.12, @tamagui/polyfill-dev@^1.2.13, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
+"@tamagui/polyfill-dev@^1.2.13, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
   version: 0.0.0-use.local
   resolution: "@tamagui/polyfill-dev@workspace:packages/polyfill-dev"
   languageName: unknown
@@ -5719,14 +5719,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/roving-focus@workspace:packages/roving-focus"
   dependencies:
-    "@tamagui/build": ^1.2.12
-    "@tamagui/collection": ^1.2.12
-    "@tamagui/compose-refs": ^1.2.12
-    "@tamagui/core": ^1.2.12
-    "@tamagui/create-context": ^1.2.12
-    "@tamagui/use-controllable-state": ^1.2.12
-    "@tamagui/use-direction": ^1.2.12
-    "@tamagui/use-event": ^1.2.12
+    "@tamagui/build": ^1.2.13
+    "@tamagui/collection": ^1.2.13
+    "@tamagui/compose-refs": ^1.2.13
+    "@tamagui/core": ^1.2.13
+    "@tamagui/create-context": ^1.2.13
+    "@tamagui/use-controllable-state": ^1.2.13
+    "@tamagui/use-direction": ^1.2.13
+    "@tamagui/use-event": ^1.2.13
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
@@ -5996,7 +5996,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/stacks@^1.2.12, @tamagui/stacks@^1.2.13, @tamagui/stacks@workspace:packages/stacks":
+"@tamagui/stacks@^1.2.13, @tamagui/stacks@workspace:packages/stacks":
   version: 0.0.0-use.local
   resolution: "@tamagui/stacks@workspace:packages/stacks"
   dependencies:
@@ -6267,7 +6267,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-controllable-state@^1.2.12, @tamagui/use-controllable-state@^1.2.13, @tamagui/use-controllable-state@workspace:packages/use-controllable-state":
+"@tamagui/use-controllable-state@^1.2.13, @tamagui/use-controllable-state@workspace:packages/use-controllable-state":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-controllable-state@workspace:packages/use-controllable-state"
   dependencies:
@@ -6306,7 +6306,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-direction@^1.2.12, @tamagui/use-direction@^1.2.13, @tamagui/use-direction@workspace:packages/use-direction":
+"@tamagui/use-direction@^1.2.13, @tamagui/use-direction@workspace:packages/use-direction":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-direction@workspace:packages/use-direction"
   dependencies:
@@ -6317,7 +6317,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-event@^1.2.12, @tamagui/use-event@^1.2.13, @tamagui/use-event@workspace:packages/use-event":
+"@tamagui/use-event@^1.2.13, @tamagui/use-event@workspace:packages/use-event":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-event@workspace:packages/use-event"
   dependencies:
