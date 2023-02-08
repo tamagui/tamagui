@@ -81,6 +81,8 @@ export const Sandbox = () => {
 
       <YStack fullscreen ai="center" jc="center">
         <StyledButton>hi2</StyledButton>
+
+        <XStack paddingEnd={120} h={50} w={200} bc="red" />
       </YStack>
 
       {/*  */}
