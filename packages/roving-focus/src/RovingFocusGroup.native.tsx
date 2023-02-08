@@ -1,5 +1,4 @@
-import { Slot, Stack, withStaticProperties } from '@tamagui/core'
-import { createContextScope } from '@tamagui/create-context'
+import { Stack, withStaticProperties } from '@tamagui/core'
 import React from 'react'
 
 import { RovingFocusGroupProps, RovingFocusItemProps } from './RovingFocusGroup'
@@ -24,7 +23,8 @@ const RovingFocusGroup = withStaticProperties(
 
 RovingFocusGroup.displayName = GROUP_NAME
 
-const [_, createRovingFocusGroupScope] = createContextScope(GROUP_NAME)
+const createRovingFocusGroupScope = () => () => ({})
 
 export { RovingFocusGroup, createRovingFocusGroupScope }
 export type { RovingFocusGroupProps, RovingFocusItemProps }
+
