@@ -135,7 +135,7 @@ const CheckboxIndicator = React.forwardRef<TamaguiElement, CheckboxIndicatorProp
     const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox)
     const iconSize =
       (typeof context.size === 'number'
-        ? context.size * 0.5
+        ? context.size * 0.65
         : getFontSize(context.size)) * context.scaleIcon
     const theme = useTheme()
     const getThemedIcon = useGetThemedIcon({ size: iconSize, color: theme.color })
