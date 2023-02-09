@@ -269,7 +269,7 @@ export const Checkbox = withStaticProperties(
         })
 
         const adjustedSizeToken = stepTokenUpOrDown('size', propsActive.size, sizeAdjust)
-        const size = Math.floor(getVariableValue(adjustedSizeToken) * 0.45) + 4
+        const size = Math.floor(getVariableValue(adjustedSizeToken) * 0.5) + 4
 
         const labelId = useLabelContext(button)
         const labelledBy = ariaLabelledby || labelId
