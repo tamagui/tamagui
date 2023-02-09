@@ -108,8 +108,6 @@ const ToggleGroupItemImpl = ToggleGroupItemFrame.extractable(
         __scopeToggleGroup
       )
       const singleProps = {
-        role: 'radio',
-        'aria-checked': props.pressed,
         'aria-pressed': undefined,
       }
       const typeProps = valueContext.type === 'single' ? singleProps : undefined
@@ -338,16 +336,15 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
         orientation = 'horizontal',
         ...toggleGroupProps
       } = props
-      const commonProps = { role: 'group', ...toggleGroupProps }
+      const commonProps = { role: 'togglegroup', ...toggleGroupProps }
       return (
         <ToggleGroupContext scope={__scopeToggleGroup} disabled={disabled}>
           <ToggleGroupImplElementFrame
-            role="togglegroup"
             aria-orientation={orientation}
             ref={forwardedRef}
             orientation={orientation}
             data-disabled={disabled ? '' : undefined}
-            {...toggleGroupProps}
+            {...commonProps}
           />
         </ToggleGroupContext>
       )
