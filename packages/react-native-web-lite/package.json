@@ -1,6 +1,6 @@
 {
   "name": "react-native-web-lite",
-  "version": "1.2.12",
+  "version": "1.2.14",
   "description": "React Native for Web",
   "sideEffects": false,
   "main": "dist/cjs",
@@ -19,7 +19,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "import": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
     "./dist/modules/*": "./dist/esm/modules/*/index.js",
@@ -27,13 +27,13 @@
     "./dist/*": "./dist/cjs/*/index.js"
   },
   "dependencies": {
-    "@tamagui/normalize-css-color": "^1.2.12",
+    "@tamagui/normalize-css-color": "^1.2.14",
     "invariant": "^2.2.4",
-    "react-native-web-internals": "^1.2.12",
+    "react-native-web-internals": "^1.2.14",
     "styleq": "^0.1.2"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.2.12",
+    "@tamagui/build": "^1.2.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

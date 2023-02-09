@@ -245,6 +245,7 @@ export declare const hoverTheme: {
 };
 export declare const pressTheme: {
     true: {
+        cursor: string;
         pressStyle: {
             backgroundColor: string;
             borderColor: string;

@@ -5,7 +5,9 @@ description: How to create and use themes in Tamagui.
 
 Themes map neatly to CSS variables for your components: they should contain colors and other values that you'd want to contextually change at any point in your React tree.
 
-All themes must be of the same type, an object with consistent values. If you just want to dive in and copy a complete theme, check out the [Quick Start](#quick-start).
+All themes must be of the same type: all objects share the same set of keys and key to value types.
+
+If you just want to dive in and copy a complete theme, check out the [Quick Start](#quick-start).
 
 You make a theme with `createTheme`, like so:
 
@@ -129,16 +131,16 @@ You can of course do all of this yourself in your own design system with `styled
 If you are building a component with more than one sub-components, you can follow this pattern:
 
 ```tsx
-import { Text, Stack, styled, GetProps } from '@tamagui/core'
+import { GetProps, Stack, Text, styled } from '@tamagui/core'
 
 const ButtonFrame = styled(Stack, {
   name: 'Button',
-  backgroundColor: '$background'
+  backgroundColor: '$background',
 })
 
 const ButtonText = styled(Text, {
   name: 'ButtonText',
-  color: '$color'
+  color: '$color',
 })
 
 type ButtonProps = GetProps<typeof ButtonFrame>
@@ -147,9 +149,7 @@ type ButtonProps = GetProps<typeof ButtonFrame>
 export const Button = ButtonFrame.extractable(({ children, ...props }: ButtonProps) => {
   return (
     <ButtonFrame {...props}>
-      <ButtonText>
-        {children}
-      </ButtonText>
+      <ButtonText>{children}</ButtonText>
     </ButtonFrame>
   )
 })
