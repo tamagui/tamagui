@@ -192,7 +192,7 @@ export const CheckboxFrame = styled(ThemeableStack, {
   variants: {
     size: {
       '...size': (val, { tokens }) => {
-        const radiusToken = getVariableValue(getSize(val)) / 6
+        const radiusToken = getVariableValue(getSize(val)) / 8
         return {
           borderRadius: radiusToken,
         }
@@ -269,7 +269,7 @@ export const Checkbox = withStaticProperties(
         })
 
         const adjustedSizeToken = stepTokenUpOrDown('size', propsActive.size, sizeAdjust)
-        const size = Math.floor(getVariableValue(adjustedSizeToken) * 0.65) + 4
+        const size = Math.floor(getVariableValue(adjustedSizeToken) * 0.45) + 4
 
         const labelId = useLabelContext(button)
         const labelledBy = ariaLabelledby || labelId
