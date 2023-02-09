@@ -101,4 +101,4 @@ export declare const Popover: React.FC<PopoverProps> & {
         }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
     };
 };
-//# sourceMappingURL=Popover.d.ts.map
+//# sourceMappingURL=Popover.native.d.ts.map
