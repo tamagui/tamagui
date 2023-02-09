@@ -121,7 +121,7 @@ export function HeaderContents(props: HeaderProps) {
           </XGroup>
         </TooltipGroup>
 
-        <YStack $xxs={{ dsp: 'none' }}>
+        <YStack paddingStart={200} $xxs={{ dsp: 'none' }}>
           <SponsorButton tiny />
         </YStack>
 

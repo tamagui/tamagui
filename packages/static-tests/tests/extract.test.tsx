@@ -28,9 +28,20 @@ describe('extract-tests', () => {
     expect(!!style1).toBeTruthy()
     expect(!!style2).toBeTruthy()
     expect(!!style3).toBeTruthy()
-    expect(style1!.rules[0].includes('background-color:red')).toBeTruthy()
-    expect(style2!.rules[0].includes(`transform:rotateY(10deg)`)).toBeTruthy()
-    expect(style3!.rules[0].includes(`box-shadow:0px 0px 10px red`)).toBeTruthy()
+    expect(style1!.rules[0]).toMatchSnapshot()
+    expect(style2!.rules[0]).toMatchSnapshot()
+    expect(style3!.rules[0]).toMatchSnapshot()
+  })
+
+  test('supports RTL properties', () => {
+    const style = {
+      paddingStart: 100,
+      paddingEnd: 10,
+      marginStart: 50,
+      marginEnd: 2,
+    }
+    const styles = getStylesAtomic(style)
+    expect(styles).toMatchSnapshot()
   })
 
   test('expands and resolves shorthand props', () => {

@@ -105,7 +105,7 @@ const generateAtomicStyles = (
 
   const out: StyleObject[] = []
   for (const key in style) {
-    const value = style[key]
+    const value = normalizeValueWithProperty(style[key], key)
     if (value == null || value == undefined) continue
     const hash = presetHashes[value]
       ? value
@@ -134,14 +134,14 @@ const presetHashes = {
   none: true,
 }
 
-const n = normalizeValueWithProperty
-
 export function styleToCSS(style: Record<string, any>) {
   // box-shadow
   const { shadowOffset, shadowRadius, shadowColor } = style
   if (style.shadowRadius !== undefined) {
     const offset = shadowOffset || defaultOffset
-    const shadow = `${n(offset.width)} ${n(offset.height)} ${n(
+    const shadow = `${normalizeValueWithProperty(
+      offset.width
+    )} ${normalizeValueWithProperty(offset.height)} ${normalizeValueWithProperty(
       shadowRadius
     )} ${shadowColor}`
     style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow

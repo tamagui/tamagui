@@ -8,10 +8,10 @@ import { isWeb } from '@tamagui/constants'
 import { getAllSelectors } from './insertStyleRule'
 import { normalizeColor } from './normalizeColor'
 
-const cache = {}
+const colorCache = {}
 
 export function normalizeValueWithProperty(value: any, property?: string): any {
-  const cached = cache[value]
+  const cached = colorCache[value]
   if (cached !== undefined) {
     return cached
   }
@@ -22,14 +22,15 @@ export function normalizeValueWithProperty(value: any, property?: string): any {
   if (
     process.env.TAMAGUI_TARGET === 'web' &&
     typeof value === 'number' &&
-    (property === undefined || !(unitlessNumbers[property] || stringNumbers[property]))
+    (property === undefined ||
+      !(property in unitlessNumbers || property in stringNumbers))
   ) {
     res = `${value}px`
-  } else if (isWeb && property !== undefined && stringNumbers[property]) {
+  } else if (isWeb && property !== undefined && property in stringNumbers) {
     res = `${res}`
   } else if (property && property in colorProps) {
     res = normalizeColor(value)
-    cache[value] = res
+    colorCache[value] = res
   }
   return res
 }

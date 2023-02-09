@@ -23,6 +23,16 @@ describe('getSplitStyles', () => {
     expect(viewProps.accessibilityRequired).toEqual(undefined)
   })
 
+  test(`prop "paddingStart" value 10 becomes "10px"`, () => {
+    const { style } = getSplitStylesStack(
+      {
+        paddingStart: 10,
+      },
+      'input'
+    )
+    expect(style.paddingStart).toEqual('10px')
+  })
+
   // test(`prop "tabIndex" defaults to "0", overrides to "-1" when tag = button`, () => {
   //   expect(
   //     getSplitStylesStack(
