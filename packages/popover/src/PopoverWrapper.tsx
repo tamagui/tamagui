@@ -1,10 +1,18 @@
+import {
+  UseFloatingProps,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useRole,
+} from '@floating-ui/react-dom-interactions'
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { useId } from '@tamagui/core'
+import { FloatingOverrideContext } from '@tamagui/floating'
 import { Popper } from '@tamagui/popper'
 import { PortalHost } from '@tamagui/portal'
 import { ControlledSheet } from '@tamagui/sheet'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import { TamaguiElement, useEvent, withStaticProperties } from '@tamagui/web'
+import { TamaguiElement, isWeb, useEvent, withStaticProperties } from '@tamagui/web'
 import * as React from 'react'
 
 import {
@@ -21,7 +29,7 @@ import {
   ScopedPopoverProps,
   usePopoverScope,
   useSheetBreakpointActive,
-} from './Popover.components'
+} from './Popover'
 
 export const Popover = withStaticProperties(
   ((props: ScopedPopoverProps<PopoverProps>) => {
@@ -55,6 +63,33 @@ export const Popover = withStaticProperties(
     })
 
     const breakpointActive = useSheetBreakpointActive(sheetBreakpoint)
+
+    // Custom floating context to override the Popper on web
+    const useFloatingContext = React.useCallback(
+      (props: UseFloatingProps) => {
+        const floating = useFloating({
+          ...props,
+          open,
+          onOpenChange: setOpen,
+        })
+        const { getReferenceProps, getFloatingProps } = useInteractions([
+          // useFocus(floating.context, {
+          //   enabled: !breakpointActive,
+          //   keyboardOnly: true,
+          // }),
+          useRole(floating.context, { role: 'dialog' }),
+          useDismiss(floating.context, {
+            enabled: !breakpointActive,
+          }),
+        ])
+        return {
+          ...floating,
+          getReferenceProps,
+          getFloatingProps,
+        }
+      },
+      [breakpointActive, open, setOpen]
+    )
 
     const popoverContext = {
       scope: __scopePopover,
@@ -94,7 +129,17 @@ export const Popover = withStaticProperties(
       </Popper>
     )
 
-    return <AdaptProvider>{contents}</AdaptProvider>
+    return (
+      <AdaptProvider>
+        {isWeb ? (
+          <FloatingOverrideContext.Provider value={useFloatingContext as any}>
+            {contents}
+          </FloatingOverrideContext.Provider>
+        ) : (
+          contents
+        )}
+      </AdaptProvider>
+    )
   }) as React.FC<PopoverProps>,
   {
     Anchor: PopoverAnchor,

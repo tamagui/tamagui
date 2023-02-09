@@ -1,6 +1,6 @@
 import { TamaguiElement } from '@tamagui/web';
 import * as React from 'react';
-import { PopoverProps } from './Popover.components';
+import { PopoverProps } from './Popover';
 export declare const Popover: React.FC<PopoverProps> & {
     Anchor: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;
@@ -35,7 +35,7 @@ export declare const Popover: React.FC<PopoverProps> & {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     }>> & React.RefAttributes<HTMLElement | import("react-native").View>>;
-    Content: React.ForwardRefExoticComponent<import("./Popover.components").PopoverContentTypeProps & React.RefAttributes<HTMLElement | import("react-native").View>>;
+    Content: React.ForwardRefExoticComponent<import("./Popover").PopoverContentTypeProps & React.RefAttributes<HTMLElement | import("react-native").View>>;
     Close: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -101,4 +101,4 @@ export declare const Popover: React.FC<PopoverProps> & {
         }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
     };
 };
-//# sourceMappingURL=Popover.native.d.ts.map
+//# sourceMappingURL=PopoverWrapper.d.ts.map
