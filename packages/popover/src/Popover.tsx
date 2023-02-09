@@ -14,7 +14,6 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
-  GestureReponderEvent,
   MediaQueryKey,
   SizeTokens,
   Stack,
@@ -49,12 +48,10 @@ import {
 import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
 import { RemoveScroll, RemoveScrollProps } from '@tamagui/remove-scroll'
 import { ControlledSheet, SheetController } from '@tamagui/sheet'
-import { SizableStack, XStack, YStack, YStackProps, ZStack } from '@tamagui/stacks'
+import {  YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import { useEffect } from 'react'
 import {
-  GestureResponderEvent,
   Platform,
   ScrollView,
   ScrollViewProps,
