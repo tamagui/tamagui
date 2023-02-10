@@ -12,6 +12,7 @@ try {
     aliasPlugin: require('./esbuildAliasPlugin'),
   }
   Object.assign(exports, all)
+  process.env.IS_STATIC = undefined
 } catch (err) {
   // eslint-disable-next-line no-console
   console.log('Error loading @tamagui/core-node', err)
