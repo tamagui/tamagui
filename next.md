@@ -1,3 +1,4 @@
+- <YStack space="$3" $gtSm={{ space: '$6'}}> not working again
 - // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
 - check why styled() of a HOC is failing:
 
