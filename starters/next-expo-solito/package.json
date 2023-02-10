@@ -25,9 +25,7 @@
     "react-native-web": "0.18.9"
   },
   "dependencies": {
-    "@babel/runtime": "^7.18.9"
-  },
-  "devDependencies": {
+    "@babel/runtime": "^7.18.9",
     "@manypkg/cli": "^0.19.1",
     "eslint": "^8.21.0",
     "prettier": "^2.7.1",

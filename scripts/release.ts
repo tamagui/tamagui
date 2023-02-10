@@ -272,6 +272,9 @@ async function run() {
     await new Promise((res) => setTimeout(res, 5 * 1000))
     await spawnify(`yarn upgrade:starters`)
     await spawnify(`yarn fix`)
+    await spawnify(`yarn fix`, {
+      cwd: join(process.cwd(), 'starters/next-expo-solito'),
+    })
     await spawnify(`git commit -am update-starters-v${version}`)
     await spawnify(`git push origin head`)
   } catch (err) {
