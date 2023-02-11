@@ -5229,6 +5229,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/form@^1.2.18, @tamagui/form@workspace:packages/form":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/form@workspace:packages/form"
+  dependencies:
+    "@tamagui/build": ^1.2.18
+    "@tamagui/compose-refs": ^1.2.18
+    "@tamagui/core": ^1.2.18
+    "@tamagui/create-context": ^1.2.18
+    "@tamagui/focusable": ^1.2.18
+    "@tamagui/get-button-sized": ^1.2.18
+    "@tamagui/get-font-sized": ^1.2.18
+    "@tamagui/text": ^1.2.18
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/get-button-sized@^1.2.18, @tamagui/get-button-sized@workspace:packages/get-button-sized":
   version: 0.0.0-use.local
   resolution: "@tamagui/get-button-sized@workspace:packages/get-button-sized"
@@ -22347,6 +22369,7 @@ __metadata:
     "@tamagui/dialog": ^1.2.18
     "@tamagui/fake-react-native": ^1.2.18
     "@tamagui/font-size": ^1.2.18
+    "@tamagui/form": ^1.2.18
     "@tamagui/get-button-sized": ^1.2.18
     "@tamagui/get-font-sized": ^1.2.18
     "@tamagui/get-size": ^1.2.18
