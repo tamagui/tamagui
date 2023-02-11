@@ -5,6 +5,10 @@ import * as React from 'react';
 export type TooltipProps = PopperProps & {
     children?: React.ReactNode;
     onOpenChange?: (open: boolean) => void;
+    focus?: {
+        enabled?: boolean;
+        keyboardOnly?: boolean;
+    };
     groupId?: string;
     restMs?: number;
     delay?: number | {
