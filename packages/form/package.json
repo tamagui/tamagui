@@ -1,0 +1,56 @@
+{
+  "name": "@tamagui/form",
+  "version": "1.2.18",
+  "sideEffects": [
+    "*.css"
+  ],
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "../../node_modules/.bin/rome check src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "dependencies": {
+    "@tamagui/compose-refs": "^1.2.18",
+    "@tamagui/core": "^1.2.18",
+    "@tamagui/create-context": "^1.2.18",
+    "@tamagui/focusable": "^1.2.18",
+    "@tamagui/get-button-sized": "^1.2.18",
+    "@tamagui/get-font-sized": "^1.2.18",
+    "@tamagui/text": "^1.2.18"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*",
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.2.18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
