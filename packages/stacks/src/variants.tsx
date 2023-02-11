@@ -78,6 +78,7 @@ export const hoverTheme = {
 
 export const pressTheme = {
   true: {
+    cursor: 'pointer',
     pressStyle: {
       backgroundColor: '$backgroundPress',
       borderColor: '$borderColorPress',

@@ -28,7 +28,7 @@ Tamagui's optimizing compiler makes advanced optimizations using partial evaluat
 
 Tamagui comes in three parts:
 
-[**Tamagui Core**](#overview-of-tamaguicore) (`@tamagui/core`) is a style library for React Native and web that supports 100% of the React Native API surface in a 0-dependency library. It adds all the [goodies of modern style libraries](#overview) into a cohesive package.
+[**Tamagui Core**](#overview-of-tamaguicore) (`@tamagui/core`) is a style library for React Native and web that supports 100% of the React Native API surface in a library that only depends on React. It adds all the [goodies of modern style libraries](#overview) into a cohesive package.
 
 [**Tamagui Static**](#overview-of-tamaguistatic) (`@tamagui/static`) is an optimizing compiler on top of Core, turning even inline styles sprinkled with logic into atomic CSS and minimal JS, flattening your view tree for maximum performance.
 
@@ -62,8 +62,8 @@ The key to Tamagui's performance gains lie in **view flattening** or tree-flatte
 ##### Highlights
 
 - Works **100% the same across Native and Web**.
-- **Works completely at runtime**, no compiler necessary.
-- **27kb, 0-dependency**. Every React Native API, typed, without bloat on the web.
+- **Works completely at runtime**, no compiler necessary, but optimizes away at compile-time.
+- 22Kb `@tamagui/web`, 31Kb `@tamagui/core`
 - SSR, React Server Component, Concurrent mode support for 100% of the features.
 - Custom typed design systems.
 - Powerful typed variants, including functional variants.

@@ -18,7 +18,7 @@
       "outputs": []
     },
     "clean": {
-      "outputs": []
+      "outputs": ["dist/**"]
     },
     "clean:build": {
       "outputs": []

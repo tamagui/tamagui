@@ -11,7 +11,7 @@ export const stepTokenUpOrDown = (
   shift = 0,
   bounds = [0]
 ): Variable<number> => {
-  const tokens = getTokens()[type]
+  const tokens = getTokens({ prefixed: true })[type]
   const keysOrdered = tokensKeysOrdered.get(tokens) || Object.keys(tokens)
   const min = bounds[0] ?? 0
   const max = bounds[1] ?? keysOrdered.length - 1
@@ -21,8 +21,6 @@ export const stepTokenUpOrDown = (
   }
   const index = Math.min(max, Math.max(min, currentIndex + shift))
   const key = keysOrdered[index]
-  // console.log('keysOrdered', name, keysOrdered, currentIndex, shift, index, key)
-  // TODO
   // @ts-ignore
   return tokens[key] || tokens['$true']
 }

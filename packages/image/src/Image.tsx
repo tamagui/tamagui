@@ -2,10 +2,10 @@ import {
   GetProps,
   RadiusTokens,
   StackProps,
-  getExpandedShorthands,
   isWeb,
   setupReactNative,
   styled,
+  useMediaPropsActive,
 } from '@tamagui/core'
 import React from 'react'
 import { Image as RNImage } from 'react-native'
@@ -37,7 +37,7 @@ type BaseProps = Omit<
 export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>
 
 export const Image: React.FC<ImageProps> = StyledImage.extractable((inProps) => {
-  const props = getExpandedShorthands(inProps)
+  const props = useMediaPropsActive(inProps)
   const { src, ...rest } = props
   const source =
     typeof src === 'string'

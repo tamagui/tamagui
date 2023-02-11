@@ -287,9 +287,7 @@ const getThumbSize = (val?: SizeTokens | number) => {
 export const SliderThumbFrame = styled(ThemeableStack, {
   name: 'SliderThumb',
   position: 'absolute',
-  // TODO not taking up 2
   bordered: 2,
-  // OR THIS
   borderWidth: 2,
   backgrounded: true,
   pressTheme: isWeb,

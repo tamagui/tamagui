@@ -7,7 +7,9 @@ import {
   H2,
   Input,
   Label,
+  Paragraph,
   Sheet,
+  TooltipSimple,
   Unspaced,
   YStack,
 } from 'tamagui'
@@ -67,7 +69,9 @@ export function DialogDemo() {
           </Fieldset>
           <Fieldset space="$4" horizontal>
             <Label w={160} justifyContent="flex-end" htmlFor="username">
-              Food
+              <TooltipSimple label="Pick your favorite" placement="bottom-start">
+                <Paragraph>Food</Paragraph>
+              </TooltipSimple>
             </Label>
             <SelectDemo />
           </Fieldset>
@@ -82,7 +86,7 @@ export function DialogDemo() {
 
           <Unspaced>
             <Dialog.Close asChild>
-              <Button pos="absolute" t="$2" r="$2" size="$3" circular icon={X} />
+              <Button pos="absolute" t="$3" r="$3" size="$2" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

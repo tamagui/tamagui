@@ -1,8 +1,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { useStyle } from '@tamagui/core'
-import { ToggleGroupDemo } from '@tamagui/demos'
+import { Stack, Tokens, TokensParsed, getTokens, styled, useStyle } from '@tamagui/core'
 import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import {
@@ -18,6 +17,10 @@ import {
 
 // import { CodeExamplesInput } from './CodeExamplesInput'
 import config from './tamagui.config'
+
+type x2 = TokensParsed['size']
+
+const x = <Stack onLayout={(e) => e.nativeEvent.layout} />
 
 // import './wdyr'
 
@@ -40,6 +43,18 @@ function TestUseTheme() {
   return null
 }
 
+const StyledButton = styled(Button, {
+  backgroundColor: 'red',
+
+  hoverStyle: {
+    backgroundColor: 'green',
+  },
+
+  pressStyle: {
+    backgroundColor: 'blue',
+  },
+})
+
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light')
 
@@ -57,8 +72,6 @@ export const Sandbox = () => {
         🌗
       </button>
 
-      <XStack />
-
       <style
         type="text/css"
         dangerouslySetInnerHTML={{
@@ -66,21 +79,10 @@ export const Sandbox = () => {
         }}
       />
 
-      <TestUseStyle />
-
       <YStack fullscreen ai="center" jc="center">
-        {/* <Square size={100} bc="red" /> */}
-        {/* <SelectDemo /> */}
-        {/* <Button unstyled tabIndex="-1">
-          hello world 123
-        </Button>
-        <Button tabIndex="-1">hello world 123</Button> */}
-        <ToggleGroupDemo />
-        {/* <SliderDemo /> */}
-        {/* <Square tabIndex="0" size={100} bc="$blue10" /> */}
-        {/* <Button size="$8"></Button> */}
-        {/* <TestUseMediaRenders /> */}
-        {/* <SliderDemo /> */}
+        <StyledButton>hi2</StyledButton>
+
+        <XStack paddingEnd={120} h={50} w={200} bc="red" />
       </YStack>
 
       {/*  */}

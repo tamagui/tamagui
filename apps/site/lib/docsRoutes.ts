@@ -163,6 +163,7 @@ export const docsRoutes = [
 
   {
     pages: [
+      { title: `Community`, route: '/community' },
       { title: `Blog`, route: '/blog' },
       { title: `GitHub`, route: 'https://github.com/tamagui/tamagui' },
       { title: `Twitter`, route: 'https://twitter.com/tamagui_js' },
