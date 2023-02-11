@@ -70,6 +70,8 @@
     "sandbox:webpack": "yarn workspace @tamagui/sandbox dev:webpack:extract",
     "sandbox": "yarn workspace @tamagui/sandbox dev",
     "sandbox:extract": "yarn workspace @tamagui/sandbox dev:extract",
+    "sandbox-web": "yarn workspace @tamagui/sandbox-web dev",
+    "sandbox-web:extract": "yarn workspace @tamagui/sandbox-web dev:extract",
     "fix": "yarn manypkg fix"
   },
   "resolutions": {

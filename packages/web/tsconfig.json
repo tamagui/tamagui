@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "strict": true,
+    
+  },
+  "references": [
+    {
+      "path": "../helpers"
+    },
+    {
+      "path": "../use-force-update"
+    },
+  ]
+}

@@ -29,7 +29,7 @@ package: alert-dialog
 ### Anatomy
 
 ```tsx
-import { AlertDialog } from '@tamagui/alertDialog' // or from 'tamagui'
+import { AlertDialog } from '@tamagui/alert-dialog' // or from 'tamagui'
 
 export default () => (
   <AlertDialog>
@@ -39,7 +39,7 @@ export default () => (
       <AlertDialog.Content>
         <AlertDialog.Title />
         <AlertDialog.Description />
-        <AlertDialog.Close />
+        <AlertDialog.Cancel />
         {/* ... */}
       </AlertDialog.Content>
     </AlertDialog.Portal>
@@ -51,7 +51,7 @@ export default () => (
 
 #### &lt;AlertDialog /&gt;
 
-Contains every component for the AlertDialog. Shares all [Dialog Props](/docs/intro/props), except modal which is on by default. Adds:
+Contains every component for the AlertDialog. Shares all [Dialog Props](/docs/components/dialog#api), except modal which is on by default. Adds:
 
 <PropsTable
   data={[
@@ -127,7 +127,7 @@ Required. Can wrap in VisuallyHidden to hide.
 
 Defaults to Paragraph, see [Paragraph](/docs/components/text).
 
-#### &lt;Close /&gt;
+#### &lt;Cancel /&gt;
 
 Closes the AlertDialog, accepts all YStack props. Recommended to use with your own component and `asChild`.
 
@@ -136,7 +136,7 @@ Closes the AlertDialog, accepts all YStack props. Recommended to use with your o
     {
       name: 'displayWhenAdapted',
       type: 'boolean',
-      description: `By default Close elements hide when Adapt is active. If set to true, they will show when adapted.`,
+      description: `By default Cancel elements hide when Adapt is active. If set to true, they will show when adapted.`,
     },
   ]}
 />
