@@ -57,6 +57,10 @@ const TooltipArrow = React.forwardRef((props: PopoverArrowProps, ref: any) => {
 export type TooltipProps = PopperProps & {
   children?: React.ReactNode
   onOpenChange?: (open: boolean) => void
+  focus?: {
+    enabled?: boolean
+    keyboardOnly?: boolean
+  }
   groupId?: string
   restMs?: number
   delay?:
@@ -94,6 +98,7 @@ export const Tooltip = withStaticProperties(
         ? delayProp
         : 0,
       onOpenChange: onOpenChangeProp,
+      focus,
       ...restProps
     } = props
     const popperScope = usePopoverScope(__scopePopover)
@@ -121,7 +126,7 @@ export const Tooltip = withStaticProperties(
       })
       const { getReferenceProps, getFloatingProps } = useInteractions([
         useHover(floating.context, { delay, restMs }),
-        useFocus(floating.context),
+        useFocus(floating.context, focus),
         useRole(floating.context, { role: 'tooltip' }),
         useDismiss(floating.context),
         useDelayGroup(floating.context, { id }),
