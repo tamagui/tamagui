@@ -1,4 +1,4 @@
-export const docsRoutes = [
+fexport const docsRoutes = [
   {
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
@@ -83,7 +83,7 @@ export const docsRoutes = [
       { title: 'Select', route: '/docs/components/select' },
       { title: 'Slider', route: '/docs/components/slider' },
       { title: 'Switch', route: '/docs/components/switch' },
-      { title: 'Form', route: '/docs/components/form' },
+      // { title: 'Form', route: '/docs/components/form' },
     ],
   },
 
