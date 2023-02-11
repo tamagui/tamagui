@@ -31,3 +31,5 @@ node_modules
 apps/site/out
 
 .tamagui
+
+.idea
