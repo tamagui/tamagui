@@ -8,7 +8,10 @@ package: form
 
 # Form
 
-<Description>Render Form tag for web and specify element which submit it.</Description>
+<Description>
+  Use the Form to wrap input elements, define a trigger element, and get a top level
+  submit callback.
+</Description>
 
 <HeroContainer>
   <FormsDemo />
@@ -20,9 +23,9 @@ package: form
 
 <Highlights
   features={[
-    `Comes with styling, yet completely customizable and themeable.`,
-    `Accepts animations, themes, size props and more.`,
-    `Accessible with dev-time checks to ensure ARIA props.`,
+    `Works on native and web.`,
+    `Outputs accessible forms.`,
+    `Works with every Tamagui prop.`,
   ]}
 />
 
@@ -34,7 +37,9 @@ import { Form } from '@tamagui/form' // or from 'tamagui'
 export default () => (
   <Form>
     {/* ... */}
-    <Form.Trigger />
+    <Form.Trigger>
+      <Button />
+    </Form.Trigger>
   </Form>
 )
 ```
@@ -49,11 +54,13 @@ export default () => (
       name: 'onSubmit',
       type: '() => void',
       required: true,
-      description: `Must contain Form.Trigger`,
+      description: `Must use Form.Trigger to ensure onSubmit will callback.`,
     },
   ]}
 />
 
 #### &lt;Trigger /&gt;
 
-Just [Tamagui Props](/docs/intro/props).
+Wrap this around your submitting element to make the form submit. We recommend using `asChild` to a child element of your choosing for more control.
+
+Accepts [Tamagui Props](/docs/intro/props).

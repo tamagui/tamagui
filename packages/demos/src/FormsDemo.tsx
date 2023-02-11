@@ -1,53 +1,39 @@
+import { stat } from 'fs'
+
 import { useEffect, useState } from 'react'
-import {
-  Button,
-  Form,
-  Input,
-  SizeTokens,
-  Spinner,
-  Text,
-  TextArea,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, Form, H4, SizeTokens, Spinner, XStack, YStack } from 'tamagui'
 
-export function FormsDemo() {
-  return (
-    <YStack mih={250} overflow="hidden" space="$2" m="$3" p="$2">
-      <FormDemo size="$2" />
-    </YStack>
-  )
-}
-
-function FormDemo(props: { size: SizeTokens }) {
-  const [submitted, setSubmitted] = useState(false)
+export function FormsDemo(props: { size: SizeTokens }) {
+  const [status, setStatus] = useState<'off' | 'submitting' | 'submitted'>('off')
 
   useEffect(() => {
-    if (submitted) {
-      const timer = setTimeout(() => setSubmitted(false), 2000)
+    if (status === 'submitting') {
+      const timer = setTimeout(() => setStatus('off'), 2000)
       return () => {
         clearTimeout(timer)
       }
     }
-  }, [submitted])
+  }, [status])
 
   return (
-    <Form space="$2" ai="center" onSubmit={() => setSubmitted(true)}>
-      <Text>Form {submitted ? 'submitted' : 'unsubmitted'}</Text>
-      <XStack space>
-        <Button
-          backgroundColor="transparent"
-          borderWidth="$0.5"
-          borderColor="$borderColor"
-        >
-          <Text>Other</Text>
+    <Form
+      ai="center"
+      miw={300}
+      space
+      onSubmit={() => setStatus('submitting')}
+      bw={1}
+      br="$4"
+      bc="$background"
+      boc="$borderColor"
+      p="$8"
+    >
+      <H4>{status[0].toUpperCase() + status.slice(1)}</H4>
+
+      <Form.Trigger asChild disabled={status !== 'off'}>
+        <Button icon={status === 'submitting' ? () => <Spinner /> : undefined}>
+          Submit
         </Button>
-        <Form.Trigger asChild disabled={submitted}>
-          <Button icon={submitted ? () => <Spinner /> : undefined}>
-            <Text>Submit</Text>
-          </Button>
-        </Form.Trigger>
-      </XStack>
+      </Form.Trigger>
     </Form>
   )
 }
