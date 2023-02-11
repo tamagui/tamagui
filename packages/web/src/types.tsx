@@ -690,7 +690,6 @@ type PropsWebOnly = {
   outlineOffset?: Properties['outlineOffset']
   outlineWidth?: Properties['outlineWidth']
   tabIndex?: string | number
-  role?: string
 }
 
 export type StackStylePropsBase = Omit<
