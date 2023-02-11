@@ -2,6 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { Stack, Tokens, TokensParsed, getTokens, styled, useStyle } from '@tamagui/core'
+import { ToggleGroupDemo } from '@tamagui/demos'
 import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import {
@@ -71,18 +72,18 @@ export const Sandbox = () => {
       >
         🌗
       </button>
-
-      <style
+      {/* <style
         type="text/css"
         dangerouslySetInnerHTML={{
           __html: `html, body { overflow: hidden; height: 100vh; width: 100vw; }`,
         }}
-      />
+      /> */}
 
       <YStack fullscreen ai="center" jc="center">
-        <StyledButton>hi2</StyledButton>
+        <ToggleGroupDemo />
+        {/* <StyledButton>hi2</StyledButton> */}
 
-        <XStack paddingEnd={120} h={50} w={200} bc="red" />
+        {/* <XStack paddingEnd={120} h={50} w={200} bc="red" /> */}
       </YStack>
 
       {/*  */}

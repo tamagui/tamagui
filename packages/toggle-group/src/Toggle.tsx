@@ -1,4 +1,4 @@
-import { GetProps, composeEventHandlers, styled, getVariableValue } from '@tamagui/core'
+import { GetProps, composeEventHandlers, getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-size'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -100,6 +100,16 @@ const Toggle = ToggleFrame.extractable(
             setPressed(!pressed)
           }
         })}
+        onKeyDown={composeEventHandlers(
+          (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
+          (event) => {
+            if ([' ', 'Enter'].includes(event.key)) {
+              if (!props.disabled) {
+                setPressed(!pressed)
+              }
+            }
+          }
+        )}
       />
     )
   })
