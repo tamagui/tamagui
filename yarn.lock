@@ -4923,6 +4923,31 @@ __metadata:
     react-native: "*"
   languageName: unknown
   linkType: soft
+
+"@tamagui/checkbox@^1.2.18, @tamagui/checkbox@workspace:packages/checkbox":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/checkbox@workspace:packages/checkbox"
+  dependencies:
+    "@radix-ui/react-use-previous": ^0.1.1
+    "@tamagui/build": ^1.2.18
+    "@tamagui/core": ^1.2.18
+    "@tamagui/create-context": ^1.2.18
+    "@tamagui/focusable": ^1.2.18
+    "@tamagui/font-size": ^1.2.18
+    "@tamagui/get-size": ^1.2.18
+    "@tamagui/helpers-tamagui": ^1.2.18
+    "@tamagui/label": ^1.2.18
+    "@tamagui/stacks": ^1.2.18
+    "@tamagui/use-controllable-state": ^1.2.18
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/cli-color@^1.2.18, @tamagui/cli-color@workspace:packages/cli-color":
   version: 0.0.0-use.local
   resolution: "@tamagui/cli-color@workspace:packages/cli-color"
   languageName: unknown
@@ -22487,6 +22512,7 @@ __metadata:
     "@tamagui/build": ^1.2.18
     "@tamagui/button": ^1.2.18
     "@tamagui/card": ^1.2.18
+    "@tamagui/checkbox": ^1.2.18
     "@tamagui/compose-refs": ^1.2.18
     "@tamagui/core": ^1.2.18
     "@tamagui/create-context": ^1.2.18
