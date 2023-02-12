@@ -4498,12 +4498,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native@npm:^0.71.0":
-  version: 0.71.0
-  resolution: "@types/react-native@npm:0.71.0"
+"@types/react-native@npm:0.70.8":
+  version: 0.70.8
+  resolution: "@types/react-native@npm:0.70.8"
   dependencies:
     "@types/react": "*"
-  checksum: 58332a3ab0bd239fa4211fd39d5143c8a6ae9c9b6217ebea1a8821eccfcc3b3805d9b69dd18eaf4917e9f656b9b59e2517591501b512ee7bd8cb12efa111a255
+  checksum: e951992178f0a6a2a5bc5312824ad67146594840c03ec51156022eacb23e8db7be7470d0c9ad61828dbae840e531bf0cf553205b9dc290b358091329746fd094
   languageName: node
   linkType: hard
 
@@ -5035,7 +5035,7 @@ __metadata:
     "@tamagui/shorthands": ^1.3.1
     "@tamagui/theme-base": ^1.3.1
     "@types/react": ^18.0.27
-    "@types/react-native": ^0.71.0
+    "@types/react-native": ^0.70.8
     expo-linking: ^3.2.3
     solito: ^2.1.3
   languageName: unknown
@@ -8003,7 +8003,7 @@ __metadata:
     "@react-navigation/native": ^6.0.11
     "@react-navigation/native-stack": ^6.7.0
     "@tamagui/babel-plugin": 1.3.1
-    "@types/react-native": ^0.71.0
+    "@types/react-native": ^0.70.8
     app: "*"
     babel-plugin-module-resolver: ^4.1.0
     babel-plugin-transform-inline-environment-variables: ^0.4.4
