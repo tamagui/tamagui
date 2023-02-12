@@ -96,6 +96,10 @@ export declare const themes: {
         blue10: string;
         blue11: string;
         blue12: string;
+        shadowColor: string;
+        shadowColorHover: string;
+        shadowColorPress: string;
+        shadowColorFocus: string;
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -107,10 +111,6 @@ export declare const themes: {
         colorPress: string;
         colorFocus: string;
         colorTransparent: string;
-        shadowColor: string;
-        shadowColorHover: string;
-        shadowColorPress: string;
-        shadowColorFocus: string;
         borderColor: string;
         borderColorHover: string;
         borderColorPress: string;
@@ -226,6 +226,10 @@ export declare const themes: {
         blue10: string;
         blue11: string;
         blue12: string;
+        shadowColor: string;
+        shadowColorHover: string;
+        shadowColorPress: string;
+        shadowColorFocus: string;
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -237,10 +241,6 @@ export declare const themes: {
         colorPress: string;
         colorFocus: string;
         colorTransparent: string;
-        shadowColor: string;
-        shadowColorHover: string;
-        shadowColorPress: string;
-        shadowColorFocus: string;
         borderColor: string;
         borderColorHover: string;
         borderColorPress: string;

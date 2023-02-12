@@ -34,11 +34,11 @@ export default function Home({ animationCode, compilationExamples }) {
             <Button
               theme="red"
               als="center"
-              elevation="$4"
+              elevation="$3"
               size="$4"
               fontFamily="$silkscreen"
               bc="$color1"
-              borderColor="$color2"
+              borderColor="$borderColor"
               br="$10"
             >
               1.0
