@@ -7,10 +7,8 @@ import {
   SizeTokens,
   TamaguiElement,
   composeEventHandlers,
-  getConfig,
   getVariableValue,
   isWeb,
-  mergeProps,
   styled,
   useComposedRefs,
   useMediaPropsActive,
@@ -24,7 +22,7 @@ import { getFontSize } from '@tamagui/font-size'
 import { getSize, stepTokenUpOrDown } from '@tamagui/get-size'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { useLabelContext } from '@tamagui/label'
-import { ThemeableStack, YStack } from '@tamagui/stacks'
+import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 
@@ -123,47 +121,49 @@ export type CheckboxIndicatorProps = CheckboxIndicatorFrameProps & {
   disablePassStyles?: boolean
 }
 
-const CheckboxIndicator = React.forwardRef<TamaguiElement, CheckboxIndicatorProps>(
-  (props: ScopedProps<CheckboxIndicatorProps>, forwardedRef) => {
-    const {
-      __scopeCheckbox,
-      children: childrenProp,
-      forceMount,
-      disablePassStyles,
-      ...indicatorProps
-    } = props
-    const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox)
-    const iconSize =
-      (typeof context.size === 'number'
-        ? context.size * 0.65
-        : getFontSize(context.size)) * context.scaleIcon
-    const theme = useTheme()
-    const getThemedIcon = useGetThemedIcon({ size: iconSize, color: theme.color })
+const CheckboxIndicator = CheckboxIndicatorFrame.extractable(
+  React.forwardRef<TamaguiElement, CheckboxIndicatorProps>(
+    (props: ScopedProps<CheckboxIndicatorProps>, forwardedRef) => {
+      const {
+        __scopeCheckbox,
+        children: childrenProp,
+        forceMount,
+        disablePassStyles,
+        ...indicatorProps
+      } = props
+      const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox)
+      const iconSize =
+        (typeof context.size === 'number'
+          ? context.size * 0.65
+          : getFontSize(context.size)) * context.scaleIcon
+      const theme = useTheme()
+      const getThemedIcon = useGetThemedIcon({ size: iconSize, color: theme.color })
 
-    const childrens = React.Children.toArray(childrenProp)
-    const children = childrens.map((child) => {
-      if (disablePassStyles || !React.isValidElement(child)) {
-        return child
-      }
-      return getThemedIcon(child)
-    })
+      const childrens = React.Children.toArray(childrenProp)
+      const children = childrens.map((child) => {
+        if (disablePassStyles || !React.isValidElement(child)) {
+          return child
+        }
+        return getThemedIcon(child)
+      })
 
-    if (forceMount || isIndeterminate(context.state) || context.state === true)
-      return (
-        <CheckboxIndicatorFrame
-          theme="active"
-          data-state={getState(context.state)}
-          data-disabled={context.disabled ? '' : undefined}
-          pointerEvents="none"
-          {...indicatorProps}
-          ref={forwardedRef}
-        >
-          {children}
-        </CheckboxIndicatorFrame>
-      )
+      if (forceMount || isIndeterminate(context.state) || context.state === true)
+        return (
+          <CheckboxIndicatorFrame
+            theme="active"
+            data-state={getState(context.state)}
+            data-disabled={context.disabled ? '' : undefined}
+            pointerEvents="none"
+            {...indicatorProps}
+            ref={forwardedRef}
+          >
+            {children}
+          </CheckboxIndicatorFrame>
+        )
 
-    return null
-  }
+      return null
+    }
+  )
 )
 
 CheckboxIndicator.displayName = INDICATOR_NAME
@@ -177,19 +177,24 @@ const CHECKBOX_NAME = 'Checkbox'
 export const CheckboxFrame = styled(ThemeableStack, {
   name: CHECKBOX_NAME,
   tag: 'button',
-  backgroundColor: '$background',
-  alignItems: 'center',
-  justifyContent: 'center',
-  pressTheme: true,
-  focusable: true,
-  borderWidth: 2,
-  borderColor: 'transparent',
-
-  focusStyle: {
-    borderColor: '$borderColorFocus',
-  },
 
   variants: {
+    unstyled: {
+      false: {
+        backgroundColor: '$background',
+        alignItems: 'center',
+        justifyContent: 'center',
+        pressTheme: true,
+        focusable: true,
+        borderWidth: 2,
+        borderColor: 'transparent',
+
+        focusStyle: {
+          borderColor: '$borderColorFocus',
+        },
+      },
+    },
+
     size: {
       '...size': (val, { tokens }) => {
         const radiusToken = getVariableValue(getSize(val)) / 8
@@ -202,6 +207,7 @@ export const CheckboxFrame = styled(ThemeableStack, {
 
   defaultVariants: {
     size: '$true',
+    unstyled: false,
   },
 })
 
@@ -230,6 +236,7 @@ export interface CheckboxProps
   value?: string
   native?: boolean
   scaleIcon?: number
+  scaleSize?: number
   sizeAdjust?: number
 }
 
@@ -245,6 +252,7 @@ export const Checkbox = withStaticProperties(
           defaultChecked,
           required,
           scaleIcon = 1,
+          scaleSize = 0.45,
           sizeAdjust = 0,
           disabled,
           value = 'on',
@@ -268,8 +276,10 @@ export const Checkbox = withStaticProperties(
           onChange: onCheckedChange,
         })
 
-        const adjustedSizeToken = stepTokenUpOrDown('size', propsActive.size, sizeAdjust)
-        const size = Math.floor(getVariableValue(adjustedSizeToken) * 0.5)
+        const adjustedSize = getVariableValue(
+          stepTokenUpOrDown('size', propsActive.size, sizeAdjust)
+        )
+        const size = scaleSize ? Math.round(adjustedSize * scaleSize) : adjustedSize
 
         const labelId = useLabelContext(button)
         const labelledBy = ariaLabelledby || labelId
@@ -288,85 +298,82 @@ export const Checkbox = withStaticProperties(
         }
 
         return (
-          // YStack is here to provide theme for native input
-          <YStack asChild theme={checkboxProps.theme}>
-            <CheckboxProvider
-              scope={__scopeCheckbox}
-              state={checked}
-              disabled={disabled}
-              size={size}
-              scaleIcon={scaleIcon}
-            >
-              {isWeb && native ? (
-                <BubbleInput
-                  control={button}
-                  bubbles={!hasConsumerStoppedPropagationRef.current}
-                  name={name}
-                  value={value}
-                  checked={checked}
-                  required={required}
+          <CheckboxProvider
+            scope={__scopeCheckbox}
+            state={checked}
+            disabled={disabled}
+            size={size}
+            scaleIcon={scaleIcon}
+          >
+            {isWeb && native ? (
+              <BubbleInput
+                control={button}
+                bubbles={!hasConsumerStoppedPropagationRef.current}
+                name={name}
+                value={value}
+                checked={checked}
+                required={required}
+                disabled={disabled}
+                id={props.id}
+              />
+            ) : (
+              <>
+                <CheckboxFrame
+                  width={size}
+                  height={size}
+                  theme={checked ? 'active' : null}
+                  tag="button"
+                  role="checkbox"
+                  aria-labelledby={labelledBy}
+                  aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
+                  aria-required={required}
+                  data-state={getState(checked)}
+                  data-disabled={disabled ? '' : undefined}
                   disabled={disabled}
-                  id={props.id}
-                />
-              ) : (
-                <>
-                  <CheckboxFrame
-                    width={size}
-                    height={size}
-                    theme={checked ? 'active' : null}
-                    tag="button"
-                    role="checkbox"
-                    aria-labelledby={labelledBy}
-                    aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
-                    aria-required={required}
-                    data-state={getState(checked)}
-                    data-disabled={disabled ? '' : undefined}
-                    disabled={disabled}
-                    {...checkboxProps}
-                    ref={composedRefs}
-                    {...(isWeb && {
-                      type: 'button',
-                      value: value,
-                      onKeyDown: composeEventHandlers(
-                        (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
-                        (event) => {
-                          // According to WAI ARIA, Checkboxes don't activate on enter keypress
-                          if (event.key === 'Enter') event.preventDefault()
-                        }
-                      ),
-                    })}
-                    onPress={composeEventHandlers(props.onPress as any, (event) => {
-                      setChecked((prevChecked) =>
-                        isIndeterminate(prevChecked) ? true : !prevChecked
-                      )
-                      if (isFormControl) {
-                        hasConsumerStoppedPropagationRef.current =
-                          event.isPropagationStopped()
-                        // if checkbox is in a form, stop propagation from the button so that we only propagate
-                        // one click event (from the input). We propagate changes from an input so that native
-                        // form validation works and form events reflect checkbox updates.
-                        if (!hasConsumerStoppedPropagationRef.current)
-                          event.stopPropagation()
+                  {...checkboxProps}
+                  ref={composedRefs}
+                  {...(isWeb && {
+                    type: 'button',
+                    value,
+                    onKeyDown: composeEventHandlers(
+                      (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
+                      (event) => {
+                        // According to WAI ARIA, Checkboxes don't activate on enter keypress
+                        if (event.key === 'Enter') event.preventDefault()
                       }
-                    })}
-                  />
+                    ),
+                  })}
+                  onPress={composeEventHandlers(props.onPress as any, (event) => {
+                    setChecked((prevChecked) =>
+                      isIndeterminate(prevChecked) ? true : !prevChecked
+                    )
+                    if (isFormControl) {
+                      hasConsumerStoppedPropagationRef.current =
+                        event.isPropagationStopped()
+                      // if checkbox is in a form, stop propagation from the button so that we only propagate
+                      // one click event (from the input). We propagate changes from an input so that native
+                      // form validation works and form events reflect checkbox updates.
+                      if (!hasConsumerStoppedPropagationRef.current)
+                        event.stopPropagation()
+                    }
+                  })}
+                />
 
-                  {isWeb && isFormControl ? (
-                    <BubbleInput
-                      isHidden
-                      control={button}
-                      bubbles={!hasConsumerStoppedPropagationRef.current}
-                      name={name}
-                      value={value}
-                      checked={checked}
-                      required={required}
-                      disabled={disabled}
-                    />
-                  ) : null}
-                </>
-              )}
-            </CheckboxProvider>
-          </YStack>
+                {isWeb && isFormControl ? (
+                  <BubbleInput
+                    isHidden
+                    control={button}
+                    bubbles={!hasConsumerStoppedPropagationRef.current}
+                    name={name}
+                    value={value}
+                    checked={checked}
+                    required={required}
+                    disabled={disabled}
+                  />
+                ) : null}
+              </>
+            )}
+          </CheckboxProvider>
         )
       }
     )
@@ -379,8 +386,3 @@ export const Checkbox = withStaticProperties(
 Checkbox.displayName = CHECKBOX_NAME
 
 export { createCheckboxScope }
-
-const cloneElementWithPropOrder = (child: any, props: Object) => {
-  const next = mergeProps(child.props, props, false, getConfig().shorthands)[0]
-  return React.cloneElement({ ...child, props: null }, next)
-}
