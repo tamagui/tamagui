@@ -198,6 +198,7 @@ export declare const elevate: {
         outlineOffset?: import("@tamagui/web").Variable<any> | import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
         outlineWidth?: import("@tamagui/web").Variable<any> | import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
         tabIndex?: string | number | import("@tamagui/web").Variable<any> | undefined;
+        role?: string | import("@tamagui/web").Variable<any> | undefined;
         hoverStyle?: (import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>) | import("@tamagui/web").Variable<any> | null | undefined;
         pressStyle?: (import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>) | import("@tamagui/web").Variable<any> | null | undefined;
         focusStyle?: (import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>) | import("@tamagui/web").Variable<any> | null | undefined;
