@@ -1354,7 +1354,6 @@ export type SplitStyleState = TamaguiComponentState & {
   dynamicStylesInline?: boolean
   resolveVariablesAs?: ResolveVariableTypes
   fallbackProps?: Record<string, any>
-  keepVariantsAsProps?: boolean
   hasTextAncestor?: boolean
 
   // for animations
