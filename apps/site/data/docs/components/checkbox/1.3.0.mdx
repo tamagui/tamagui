@@ -87,6 +87,10 @@ export default () => (
       default: false,
     },
     {
+      name: 'onCheckedChange',
+      type: '(checked: boolean) => void',
+    },
+    {
       name: 'sizeAdjust',
       type: 'number',
       description: `Adjust the checkbox size scaling by this number.`,
@@ -103,8 +107,10 @@ export default () => (
       description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
     },
     {
-      name: 'onCheckedChange',
-      type: '(checked: boolean) => void',
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
     },
   ]}
 />
