@@ -178,7 +178,7 @@ export const Sandbox = () => {
 
           {/* <AlertDialogDemo /> */}
 
-          {/* <FormsDemo /> */}
+          {/* <InputsDemo /> */}
 
           {/* <DialogDemo /> */}
 
@@ -281,7 +281,7 @@ export const Sandbox = () => {
           {/* <AnimationsDemo /> */}
           {/* <SheetDemo /> */}
           {/* <DialogDemo /> */}
-          {/* <FormsDemo /> */}
+          {/* <InputsDemo /> */}
           {/* <SelectDemo /> */}
           {/* <ScrollView bc="yellow" p="$1" $gtXs={{ bc: 'blue', p: '$4' }} maxHeight={200}>
           <Square bc="red" size={100} />
