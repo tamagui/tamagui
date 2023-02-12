@@ -4923,8 +4923,6 @@ __metadata:
     react-native: "*"
   languageName: unknown
   linkType: soft
-
-"@tamagui/cli-color@^1.2.18, @tamagui/cli-color@workspace:packages/cli-color":
   version: 0.0.0-use.local
   resolution: "@tamagui/cli-color@workspace:packages/cli-color"
   languageName: unknown

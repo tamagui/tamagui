@@ -15,7 +15,7 @@ import {
   XStack,
   YGroup,
   YStack,
-  useTheme,
+  useTheme
 } from 'tamagui'
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
@@ -129,6 +129,7 @@ const demos = [
       { title: 'Select', route: '/demo/select' },
       { title: 'Slider', route: '/demo/slider' },
       { title: 'Switch', route: '/demo/switch' },
+      { title: 'Checkbox', route: '/demo/checkbox' },
     ],
   },
 
