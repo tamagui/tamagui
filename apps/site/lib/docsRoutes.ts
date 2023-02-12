@@ -1,4 +1,4 @@
-fexport const docsRoutes = [
+export const docsRoutes = [
   {
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
