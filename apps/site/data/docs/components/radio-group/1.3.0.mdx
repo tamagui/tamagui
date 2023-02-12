@@ -1,0 +1,130 @@
+---
+title: RadioGroup
+description: A group of radio buttons
+name: radio-group
+component: RadioGroup
+package: radio-group
+---
+
+# RadioGroup
+
+<Description>Use in a form to allow selecting only one option of multiple.</Description>
+
+<HeroContainer>
+  <RadioGroupDemo />
+</HeroContainer>
+
+```tsx hero template=RadioGroup
+
+```
+
+<Highlights
+  features={[
+    `Accessible, easy to compose and customize.`,
+    `Sizable & works controlled or uncontrolled.`,
+    `Ability to opt-out to native radio button on web.`,
+  ]}
+/>
+
+### Usage
+
+```tsx
+import { RadioGroup } from 'tamagui'
+export default () => (
+  <RadioGroup size="$4" value="foo" space="$1">
+    <RadioGroup.Item id="dummy" value="foo">
+      <RadioGroup.Indicator />
+    </RadioGroup.Item>
+    <RadioGroup.Item id="other" value="bar">
+      <RadioGroup.Indicator />
+    </RadioGroup.Item>
+  </RadioGroup>
+)
+```
+
+### RadioGroup props
+
+RadioGroup extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'name',
+      type: 'string',
+      description: `Equivalent to input name.`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `Give it a value (for use in HTML forms).`,
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: `Sets aria-required.`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `Set aria-disabled on web, and disable touch on native for all children items`,
+    },
+    {
+      name: 'native',
+      type: 'boolean',
+      description: `Renders native radio button on web.`,
+      default: false,
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: string) => void',
+    },
+    {
+      name: 'accentColor',
+      type: 'string',
+      description: 'Sets `accent-color` style when `native` prop is enabled',
+    },
+  ]}
+/>
+
+### RadioGroup.Item props
+
+<PropsTable
+  data={[
+    {
+      name: 'labeledBy',
+      type: 'string',
+      description: `Set aria-labeled-by on web`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `Input value for the radio button.`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `Set aria-disabled on web, and disable touch on native`,
+    },
+    {
+      name: 'id',
+      type: 'string',
+      description: `Id used on the web`,
+    },
+    {
+      name: 'scaleSize',
+      type: 'number',
+      default: '0.5',
+      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
+    },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
+    },
+  ]}
+/>
+
+### RadioGroup.Indicator props
+
+RadioGroup.Indicator extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props). It appears only when the parent Item is checked.

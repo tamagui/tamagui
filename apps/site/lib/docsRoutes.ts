@@ -82,6 +82,7 @@ export const docsRoutes = [
       { title: 'Input & TextArea', route: '/docs/components/inputs' },
       { title: 'Label', route: '/docs/components/label' },
       { title: 'Progress', route: '/docs/components/progress' },
+      { title: 'RadioGroup', route: '/docs/components/radio-group' },
       { title: 'Select', route: '/docs/components/select' },
       { title: 'Slider', route: '/docs/components/slider' },
       { title: 'Switch', route: '/docs/components/switch' },

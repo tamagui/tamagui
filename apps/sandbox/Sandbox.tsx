@@ -2,7 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { Stack, Tokens, TokensParsed, getTokens, styled, useStyle } from '@tamagui/core'
-import { SelectDemo } from '@tamagui/demos'
+import { RadioGroupDemo, SelectDemo } from '@tamagui/demos'
 import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import {
@@ -62,16 +62,6 @@ export const Sandbox = () => {
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
       <link href="/fonts/inter.css" rel="stylesheet" />
-      <button
-        style={{
-          position: 'absolute',
-          bottom: 30,
-          left: 20,
-        }}
-        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      >
-        🌗
-      </button>
 
       <style
         type="text/css"
@@ -82,9 +72,20 @@ export const Sandbox = () => {
 
       <YStack fullscreen ai="center" jc="center">
         <SelectDemo />
+        <RadioGroupDemo />
       </YStack>
 
       {/*  */}
+      <button
+        style={{
+          position: 'absolute',
+          bottom: 30,
+          left: 20,
+        }}
+        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+      >
+        🌗
+      </button>
     </TamaguiProvider>
   )
 }
