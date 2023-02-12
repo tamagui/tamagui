@@ -398,11 +398,14 @@ type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShort
 /**
  * Base style-only props (no media, pseudo):
  */
-type PropsWebOnly = {
+type SharedBaseExtraStyleProps = {
     pointerEvents?: ViewProps['pointerEvents'];
     cursor?: Properties['cursor'];
     contain?: Properties['contain'];
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
+    gap?: number | SpaceTokens;
+    gapColumn?: number | SpaceTokens;
+    gapRow?: number | SpaceTokens;
     userSelect?: Properties['userSelect'];
     outlineColor?: Properties['outlineColor'];
     outlineStyle?: Properties['outlineStyle'];
@@ -411,8 +414,8 @@ type PropsWebOnly = {
     tabIndex?: string | number;
     role?: string;
 };
-export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & PropsWebOnly;
-export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & PropsWebOnly & {
+export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & SharedBaseExtraStyleProps;
+export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & SharedBaseExtraStyleProps & {
     ellipse?: boolean;
     textDecorationDistance?: number;
     textOverflow?: Properties['textOverflow'];
@@ -633,7 +636,6 @@ export type SplitStyleState = TamaguiComponentState & {
     dynamicStylesInline?: boolean;
     resolveVariablesAs?: ResolveVariableTypes;
     fallbackProps?: Record<string, any>;
-    keepVariantsAsProps?: boolean;
     hasTextAncestor?: boolean;
     isExiting?: boolean;
     exitVariant?: string;

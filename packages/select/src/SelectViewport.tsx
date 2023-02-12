@@ -1,4 +1,4 @@
-import { FloatingFocusManager } from '@floating-ui/react-dom-interactions'
+import { FloatingFocusManager } from '@floating-ui/react'
 import { TamaguiElement, isWeb } from '@tamagui/core'
 import { styled } from '@tamagui/core'
 import { PortalItem } from '@tamagui/portal'
@@ -19,7 +19,6 @@ export const SelectViewportFrame = styled(ThemeableStack, {
   backgroundColor: '$background',
   elevate: true,
   bordered: true,
-  overflow: 'scroll',
   userSelect: 'none',
   outlineWidth: 0,
 
@@ -83,7 +82,7 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
             ref={forwardedRef}
             {...floatingProps}
             {...restStyle}
-            overflow={disableScroll ? undefined : overflow}
+            overflow={disableScroll ? undefined : overflow ?? 'scroll'}
           >
             {children}
           </SelectViewportFrame>

@@ -506,15 +506,6 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (
-      (defaultVariants && keyInit in defaultVariants) ||
-      // may want to just: not compile styled() into classnames, always do this, and always pass in all values in extras.props
-      // but we'd want to add styled({ extracted: true }) or something at compile time to save on parsing a bit...
-      (state.keepVariantsAsProps && variants && keyInit in variants)
-    ) {
-      viewProps[keyInit] = valInit
-    }
-
     /**
      * There's (some) reason to this madness: we want to allow returning media/pseudo from variants
      * Say you have a variant hoverable: { true: { hoverStyle: {} } }
@@ -807,7 +798,7 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       // pass to view props
-      if (!(variants && key in variants)) {
+      if (!variants || !(key in variants)) {
         if (!skipProps[key]) {
           viewProps[key] = val
           usedKeys[key] = 1

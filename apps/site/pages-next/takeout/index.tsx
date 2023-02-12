@@ -29,7 +29,7 @@ import {
 } from 'tamagui'
 
 import { ContainerXL } from '../../components/Container'
-import { FormsDemo, StacksDemo } from '../../components/demos'
+import { InputsDemo, StacksDemo } from '../../components/demos'
 import { FlatBubbleCard } from '../../components/FlatBubbleCard'
 import { useHoverGlow } from '../../components/HoverGlow'
 import { MediaPlayer } from '../../components/MediaPlayer'
@@ -440,7 +440,7 @@ const FloatingItemsAbove = () => {
       </YStack>
 
       <YStack scale={0.5} pos="absolute" b={160} l={120}>
-        <Card>{/* <FormsDemo /> */}</Card>
+        <Card>{/* <InputsDemo /> */}</Card>
       </YStack>
     </YStack>
   )
