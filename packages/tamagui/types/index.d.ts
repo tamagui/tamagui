@@ -18,6 +18,7 @@ export * from '@tamagui/popover';
 export * from '@tamagui/popper';
 export * from '@tamagui/portal';
 export * from '@tamagui/progress';
+export * from '@tamagui/radio-group';
 export * from '@tamagui/scroll-view';
 export * from '@tamagui/select';
 export * from '@tamagui/separator';

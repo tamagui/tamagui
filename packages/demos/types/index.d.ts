@@ -21,6 +21,7 @@ export { ListItemDemo } from './ListItemDemo';
 export { LucideIconsDemo } from './LucideIconsDemo';
 export { PopoverDemo } from './PopoverDemo';
 export { ProgressDemo } from './ProgressDemo';
+export { RadioGroupDemo } from './RadioGroupDemo';
 export { SelectDemo } from './SelectDemo';
 export { SeparatorDemo } from './SeparatorDemo';
 export { ShapesDemo } from './ShapesDemo';
