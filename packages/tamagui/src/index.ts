@@ -34,6 +34,7 @@ export * from '@tamagui/use-debounce'
 export * from '@tamagui/use-force-update'
 export * from '@tamagui/use-window-dimensions'
 export * from '@tamagui/visually-hidden'
+export * from '@tamagui/checkbox'
 
 export * from './createTamagui'
 
