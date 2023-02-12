@@ -77,14 +77,14 @@ export const docsRoutes = [
     label: 'Forms',
     pages: [
       { title: 'Button', route: '/docs/components/button' },
-      { title: 'Text Inputs', route: '/docs/components/inputs' },
+      { title: 'Checkbox', route: '/docs/components/checkbox' },
+      { title: 'Form', route: '/docs/components/form' },
+      { title: 'Input & TextArea', route: '/docs/components/inputs' },
       { title: 'Label', route: '/docs/components/label' },
       { title: 'Progress', route: '/docs/components/progress' },
       { title: 'Select', route: '/docs/components/select' },
       { title: 'Slider', route: '/docs/components/slider' },
       { title: 'Switch', route: '/docs/components/switch' },
-      { title: 'Checkbox', route: '/docs/components/checkbox' },
-      // { title: 'Form', route: '/docs/components/form' },
     ],
   },
 
