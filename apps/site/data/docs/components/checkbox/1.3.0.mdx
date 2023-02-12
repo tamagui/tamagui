@@ -97,6 +97,12 @@ export default () => (
       description: `Scale the indicator icon more than usual by this number.`,
     },
     {
+      name: 'scaleSize',
+      type: 'number',
+      default: '0.5',
+      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
+    },
+    {
       name: 'onCheckedChange',
       type: '(checked: boolean) => void',
     },
