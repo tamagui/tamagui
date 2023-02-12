@@ -409,7 +409,6 @@ type PropsWebOnly = {
     outlineOffset?: Properties['outlineOffset'];
     outlineWidth?: Properties['outlineWidth'];
     tabIndex?: string | number;
-    role?: string;
 };
 export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & PropsWebOnly;
 export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & PropsWebOnly & {

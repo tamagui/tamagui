@@ -421,7 +421,6 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         outlineOffset?: import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
         outlineWidth?: import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
         tabIndex?: string | number | undefined;
-        role?: string | undefined;
         rel?: any;
         download?: any;
         onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;

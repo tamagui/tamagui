@@ -440,9 +440,7 @@ const FloatingItemsAbove = () => {
       </YStack>
 
       <YStack scale={0.5} pos="absolute" b={160} l={120}>
-        <Card>
-          <FormsDemo />
-        </Card>
+        <Card>{/* <FormsDemo /> */}</Card>
       </YStack>
     </YStack>
   )

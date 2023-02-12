@@ -83,7 +83,8 @@ export const docsRoutes = [
       { title: 'Select', route: '/docs/components/select' },
       { title: 'Slider', route: '/docs/components/slider' },
       { title: 'Switch', route: '/docs/components/switch' },
-      { title: 'Checkbox', route: '/docs/components/checkbox' },
+      // { title: 'Checkbox', route: '/docs/components/checkbox' },
+      // { title: 'Form', route: '/docs/components/form' },
     ],
   },
 
