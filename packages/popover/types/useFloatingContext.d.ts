@@ -1,4 +1,4 @@
-import type { UseFloatingProps } from '@floating-ui/react-dom-interactions';
+import type { UseFloatingProps } from '@floating-ui/react';
 export declare const useFloatingContext: ({ open, setOpen, breakpointActive }: {
     open: any;
     setOpen: any;
