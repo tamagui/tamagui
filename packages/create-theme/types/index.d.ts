@@ -1,10 +1,18 @@
 import type { Variable } from '@tamagui/web';
+export type ThemeMask = Record<string, string | number>;
+export type Palette = string[];
+export type ShiftMaskProps = {
+    by: number;
+    max: number;
+    min?: number;
+};
+export type MaskOptions = {
+    skip?: Partial<ThemeMask>;
+};
 type GenericTheme = {
     [key: string]: string | Variable;
 };
-export type ThemeMask = Record<string, string | number>;
-export type Palette = string[];
-type CreateMask = <A extends ThemeMask>(template: A) => A;
+type CreateMask = <A extends ThemeMask>(template: A, options: MaskOptions) => A;
 export declare function createTheme<Definition extends ThemeMask, Extras extends Record<string, string> = {}>(palette: Palette, definition: Definition, options?: {
     nonInheritedValues?: Extras;
 }): {
@@ -18,15 +26,10 @@ export declare function addChildren<Theme extends GenericTheme, Themes extends {
 }>(themes: Themes, getChildren: GetChildren): Themes & {
     [key in SubThemeKeys<keyof Themes, keyof ReturnType<GetChildren>>]: Theme;
 };
-export type ShiftMaskProps = {
-    by: number;
-    max: number;
-    min?: number;
-};
-export declare const weakenMask: ({ by, max, min, inverse, }: ShiftMaskProps & {
+export declare const createWeakenMask: ({ by, max, min, inverse, }: ShiftMaskProps & {
     inverse?: boolean | undefined;
 }) => CreateMask;
-export declare const strengthenMask: (props: ShiftMaskProps) => CreateMask;
-export declare function applyMask<Theme extends GenericTheme>(theme: Theme, mask: CreateMask): Theme;
+export declare const createStrengthenMask: (props: ShiftMaskProps) => CreateMask;
+export declare function applyMask<Theme extends GenericTheme>(theme: Theme, mask: CreateMask, options?: MaskOptions): Theme;
 export {};
 //# sourceMappingURL=index.d.ts.map

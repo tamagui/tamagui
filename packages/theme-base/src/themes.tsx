@@ -1,20 +1,25 @@
 import {
+  Palette,
   addChildren,
   applyMask,
+  createStrengthenMask,
   createTheme,
-  strengthenMask,
-  weakenMask,
+  createWeakenMask,
 } from '@tamagui/create-theme'
 
 import { colorTokens, darkColors, lightColors } from './tokens'
 
 const { values } = Object
 
+type ColorName = keyof typeof colorTokens.dark
+
+const lightTransparent = 'rgba(255,255,255,0)'
+const darkTransparent = 'rgba(10,10,10,0)'
+
+// background => foreground
 const palettes = {
   dark: [
-    // setting 0 index to transparent
-    'rgba(255,255,255,0)',
-    // then background => foreground
+    darkTransparent,
     '#090909',
     '#151515',
     '#191919',
@@ -27,9 +32,10 @@ const palettes = {
     '#626262',
     '#a5a5a5',
     '#fff',
+    lightTransparent,
   ],
   light: [
-    'rgba(0,0,0,0)',
+    lightTransparent,
     '#fff',
     '#f4f4f4',
     'hsl(0, 0%, 99.0%)',
@@ -42,30 +48,11 @@ const palettes = {
     'hsl(0, 0%, 52.3%)',
     'hsl(0, 0%, 43.5%)',
     'hsl(0, 0%, 9.0%)',
+    darkTransparent,
   ],
 }
 
-// offset from palette (negative goes backwards from end)
-const template = {
-  background: 2,
-  backgroundHover: 3,
-  backgroundPress: 1,
-  backgroundFocus: 2,
-  backgroundStrong: 1,
-  backgroundTransparent: 0,
-  color: -1,
-  colorHover: -2,
-  colorPress: -3,
-  colorFocus: -4,
-  shadowColor: 1,
-  shadowColorHover: 1,
-  shadowColorPress: 1,
-  shadowColorFocus: 1,
-  borderColor: 3,
-  borderColorHover: 4,
-  borderColorPress: 2,
-  borderColorFocus: 3,
-  placeholderColor: -4,
+const scale = {
   color1: 1,
   color2: 2,
   color3: 3,
@@ -80,8 +67,35 @@ const template = {
   color12: 12,
 }
 
-const colorTemplate = {
-  ...template,
+// templates use the palette and specify index
+// negative goes backwards from end so -1 is the last item
+const template = {
+  ...scale,
+
+  // the background, color, etc keys here work like generics - they make it so you
+  // can publish components for others to use without mandating a specific color scale
+  // the @tamagui/button Button component looks for `$background`, so you set the
+  // dark_red_Button theme to have a stronger background than the dark_red theme.
+  background: 2,
+  backgroundHover: 3,
+  backgroundPress: 1,
+  backgroundFocus: 2,
+  backgroundStrong: 1,
+  backgroundTransparent: 0,
+  color: -2,
+  colorHover: -3,
+  colorPress: -2,
+  colorFocus: -3,
+  colorTransparent: -1,
+  shadowColor: 1,
+  shadowColorHover: 1,
+  shadowColorPress: 1,
+  shadowColorFocus: 1,
+  borderColor: 3,
+  borderColorHover: 4,
+  borderColorPress: 2,
+  borderColorFocus: 3,
+  placeholderColor: -4,
 }
 
 const light = createTheme(palettes.light, template, { nonInheritedValues: lightColors })
@@ -95,12 +109,12 @@ const baseThemes = {
 type Theme = typeof light
 
 const masks = {
-  weaker: weakenMask({
+  weaker: createWeakenMask({
     by: 1,
     min: 1,
     max: palettes.dark.length,
   }),
-  stronger: strengthenMask({
+  stronger: createStrengthenMask({
     by: 1,
     min: 1,
     max: palettes.dark.length,
@@ -109,27 +123,37 @@ const masks = {
 
 export const themes = addChildren(baseThemes, (name, themeIn) => {
   const theme = themeIn as Theme
-
   const inverseName = name === 'light' ? 'dark' : 'light'
   const inverseTheme = baseThemes[inverseName]
-  const palette = palettes[name]
-  const transparent = palette[0]
+  const transparent = (hsl: string, opacity = 0) =>
+    hsl.replace(`%)`, `%, ${opacity})`).replace(`hsl(`, `hsla(`)
 
   // setup colorThemes and their inverses
   const [colorThemes, inverseColorThemes] = [
     colorTokens[name],
     colorTokens[inverseName],
   ].map((colorSet) => {
-    return {
-      blue: createTheme([transparent, ...values(colorSet.blue)], colorTemplate),
-      gray: createTheme([transparent, ...values(colorSet.gray)], colorTemplate),
-      green: createTheme([transparent, ...values(colorSet.green)], colorTemplate),
-      orange: createTheme([transparent, ...values(colorSet.orange)], colorTemplate),
-      pink: createTheme([transparent, ...values(colorSet.pink)], colorTemplate),
-      purple: createTheme([transparent, ...values(colorSet.purple)], colorTemplate),
-      red: createTheme([transparent, ...values(colorSet.red)], colorTemplate),
-      yellow: createTheme([transparent, ...values(colorSet.yellow)], colorTemplate),
-    }
+    return Object.fromEntries(
+      Object.keys(colorSet).map((color) => {
+        const colorPalette = values(colorSet[color as ColorName])
+        // we want a much lighter text color by default so swap them around a bit
+        const first6 = colorPalette.slice(0, 6)
+        const last5 = colorPalette.slice(colorPalette.length - 5)
+        return [
+          color,
+          createTheme(
+            [
+              transparent(colorPalette[0]),
+              ...first6,
+              ...last5,
+              theme.color,
+              transparent(colorPalette[colorPalette.length - 1]),
+            ],
+            template
+          ),
+        ]
+      })
+    ) as Record<ColorName, Theme>
   })
 
   return {
@@ -137,6 +161,7 @@ export const themes = addChildren(baseThemes, (name, themeIn) => {
     ...getComponentThemes(theme, inverseTheme),
     ...addChildren(colorThemes, (colorName, colorTheme) => {
       const inverse = inverseColorThemes[colorName]
+      console.log('color', colorName)
       return {
         ...getAltThemes(colorTheme as any, inverse as any),
         ...getComponentThemes(colorTheme as any, inverse as any),
@@ -145,10 +170,10 @@ export const themes = addChildren(baseThemes, (name, themeIn) => {
   }
 
   function getComponentThemes(theme: Theme, inverse: Theme) {
-    const stronger1 = applyMask(theme, masks.stronger)
-    const stronger2 = applyMask(stronger1, masks.stronger)
-    const inverse1 = applyMask(inverse, masks.weaker)
-    const inverse2 = applyMask(inverse1, masks.weaker)
+    const stronger1 = applyMask(theme, masks.stronger, { skip: scale })
+    const stronger2 = applyMask(stronger1, masks.stronger, { skip: scale })
+    const inverse1 = applyMask(inverse, masks.weaker, { skip: scale })
+    const inverse2 = applyMask(inverse1, masks.weaker, { skip: scale })
     return {
       Button: stronger1,
       DrawerFrame: stronger1,
@@ -160,13 +185,14 @@ export const themes = addChildren(baseThemes, (name, themeIn) => {
       Switch: stronger2,
       SwitchThumb: inverse2,
       TooltipArrow: stronger1,
-      TooltipContent: stronger1,
+      TooltipContent: stronger2,
     }
   }
 
   function getAltThemes(theme: Theme, inverse: Theme) {
-    const alt1 = applyMask(theme, masks.weaker)
-    const alt2 = applyMask(alt1, masks.weaker)
+    const alt1 = applyMask(theme, masks.weaker, { skip: scale })
+    const alt2 = applyMask(alt1, masks.weaker, { skip: scale })
+    console.log('alt', { theme, alt1, alt2 })
     return addChildren({ alt1, alt2 }, (name, theme) => {
       return getComponentThemes(theme as any, inverse)
     })

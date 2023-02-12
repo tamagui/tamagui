@@ -106,6 +106,7 @@ export declare const themes: {
         colorHover: string;
         colorPress: string;
         colorFocus: string;
+        colorTransparent: string;
         shadowColor: string;
         shadowColorHover: string;
         shadowColorPress: string;
@@ -235,6 +236,7 @@ export declare const themes: {
         colorHover: string;
         colorPress: string;
         colorFocus: string;
+        colorTransparent: string;
         shadowColor: string;
         shadowColorHover: string;
         shadowColorPress: string;

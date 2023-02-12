@@ -298,7 +298,7 @@ const Tag = styled(Text, {
   px: '$1',
   mx: '$-1',
   cursor: 'pointer',
-  color: '$color11',
+  color: '$color10',
   bc: '$color2',
 
   hoverStyle: {
@@ -309,7 +309,7 @@ const Tag = styled(Text, {
   variants: {
     active: {
       true: {
-        color: '$color12',
+        color: '$color10',
         bc: '$color5',
 
         hoverStyle: {

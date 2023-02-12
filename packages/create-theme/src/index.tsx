@@ -1,11 +1,12 @@
 import type { Variable } from '@tamagui/web'
 
-type GenericTheme = { [key: string]: string | Variable }
-
 export type ThemeMask = Record<string, string | number>
 export type Palette = string[]
+export type ShiftMaskProps = { by: number; max: number; min?: number }
+export type MaskOptions = { skip?: Partial<ThemeMask> }
 
-type CreateMask = <A extends ThemeMask>(template: A) => A
+type GenericTheme = { [key: string]: string | Variable }
+type CreateMask = <A extends ThemeMask>(template: A, options: MaskOptions) => A
 
 const THEME_INFO = new WeakMap<
   any,
@@ -70,19 +71,21 @@ export function addChildren<
   return out as any
 }
 
-export type ShiftMaskProps = { by: number; max: number; min?: number }
-
-export const weakenMask = ({
+export const createWeakenMask = ({
   by = 1,
   max,
   min = 0,
   inverse,
 }: ShiftMaskProps & { inverse?: boolean }) => {
-  return ((template) => {
+  return ((template, { skip }) => {
     const values = Object.entries(template) // .filter(Number)
     const out = {}
     for (const [key, value] of values) {
       if (typeof value === 'string') continue
+      if (skip && key in skip) {
+        out[key] = value
+        continue
+      }
       const direction = value >= 0 ? 1 : -1
       const next = value + by * direction
       const clamped = next >= 0 ? Math.max(min, next) : Math.min(-min, next)
@@ -92,12 +95,13 @@ export const weakenMask = ({
   }) as CreateMask
 }
 
-export const strengthenMask = (props: ShiftMaskProps) =>
-  weakenMask({ ...props, inverse: true })
+export const createStrengthenMask = (props: ShiftMaskProps) =>
+  createWeakenMask({ ...props, inverse: true })
 
 export function applyMask<Theme extends GenericTheme>(
   theme: Theme,
-  mask: CreateMask
+  mask: CreateMask,
+  options: MaskOptions = {}
 ): Theme {
   const info = THEME_INFO.get(theme)
   if (!info) {
@@ -111,9 +115,8 @@ export function applyMask<Theme extends GenericTheme>(
     return info.cache.get(mask)
   }
 
-  const template = mask(info.definition)
+  const template = mask(info.definition, options)
   const next = createTheme(info.palette, template) as Theme
-  console.log('got', template, 'created', next)
 
   info.cache.set(mask, next)
 
