@@ -8,7 +8,7 @@ package: radio-group
 
 # RadioGroup
 
-<Description>Use in forms to toggle no more that one value at a time</Description>
+<Description>Use in a form to allow selecting only one option of multiple.</Description>
 
 <HeroContainer>
   <RadioGroupDemo />
@@ -109,6 +109,18 @@ RadioGroup extend Stack views inheriting all the [Tamagui standard props](/docs/
       name: 'id',
       type: 'string',
       description: `Id used on the web`,
+    },
+    {
+      name: 'scaleSize',
+      type: 'number',
+      default: '0.5',
+      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
+    },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
     },
   ]}
 />

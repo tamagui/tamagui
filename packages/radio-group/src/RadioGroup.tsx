@@ -49,17 +49,22 @@ const RADIO_GROUP_INDICATOR_NAME = 'RadioGroupIndicator'
 
 const RadioIndicatorFrame = styled(ThemeableStack, {
   name: RADIO_GROUP_INDICATOR_NAME,
+  pointerEvents: 'none',
 
   variants: {
-    defaultStyle: {
-      true: {
+    unstyled: {
+      false: {
         w: '60%',
         h: '60%',
-        br: 999,
-        backgrounded: true,
+        br: 1000,
+        backgroundColor: '$color',
       },
     },
   } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 type RadioIndicatorProps = GetProps<typeof RadioIndicatorFrame> & {
@@ -72,8 +77,7 @@ type RadioIndicatorElement = TamaguiElement
 const RadioIndicator = RadioIndicatorFrame.extractable(
   React.forwardRef<RadioIndicatorElement, RadioIndicatorProps>(
     (props: ScopedRadioGroupItemProps<RadioIndicatorProps>, forwardedRef) => {
-      const { __scopeRadioGroupItem, forceMount, disabled, unstyled, ...indicatorProps } =
-        props
+      const { __scopeRadioGroupItem, forceMount, disabled, ...indicatorProps } = props
       const { checked } = useRadioGroupItemContext(
         RADIO_GROUP_INDICATOR_NAME,
         __scopeRadioGroupItem
@@ -83,10 +87,8 @@ const RadioIndicator = RadioIndicatorFrame.extractable(
         return (
           <RadioIndicatorFrame
             theme="active"
-            defaultStyle={!unstyled}
             data-state={getState(checked)}
             data-disabled={disabled ? '' : undefined}
-            pointerEvents="none"
             {...indicatorProps}
             ref={forwardedRef}
           />
@@ -114,41 +116,45 @@ type RadioGroupItemContextValue = {
 const [RadioGroupItemProvider, useRadioGroupItemContext] =
   createRadioGroupContext<RadioGroupItemContextValue>(RADIO_GROUP_NAME)
 
-const RadioGroupItemFrame = styled(
-  ThemeableStack,
-  {
-    name: RADIO_GROUP_ITEM_NAME,
-    tag: 'button',
+const RadioGroupItemFrame = styled(ThemeableStack, {
+  name: RADIO_GROUP_ITEM_NAME,
+  tag: 'button',
+  debug: 'verbose',
 
-    borderRadius: 9999,
-    backgroundColor: '$background',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: 'transparent',
+  variants: {
+    unstyled: {
+      false: {
+        borderRadius: 9999,
+        backgroundColor: '$background',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 2,
+        borderColor: 'transparent',
 
-    focusStyle: {
-      borderColor: '$borderColorFocus',
-    },
-
-    variants: {
-      size: {
-        '...size': (value, { tokens }) => {
-          const size = getVariableValue(getSize(value)) * 0.5
-          return {
-            width: size,
-            height: size,
-          }
+        focusStyle: {
+          borderColor: '$borderColorFocus',
         },
       },
-    } as const,
-  },
-  {
-    defaultVariants: {
-      size: '$true',
     },
-  }
-)
+
+    size: {
+      '...size': (value, { props }) => {
+        const size = Math.floor(
+          getVariableValue(getSize(value)) * (props['scaleSize'] ?? 0.5)
+        )
+        return {
+          width: size,
+          height: size,
+        }
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    size: '$true',
+    unstyled: false,
+  },
+})
 
 type RadioGroupItemProps = GetProps<typeof RadioGroupItemFrame> & {
   value: string
@@ -238,13 +244,18 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
                 // theme={checked ? 'active' : undefined}
                 data-state={getState(checked)}
                 data-disabled={isDisabled ? '' : undefined}
-                {...itemProps}
                 role="radio"
                 aria-labelledby={labelledBy}
                 aria-checked={checked}
                 aria-required={required}
                 disabled={isDisabled}
                 ref={composedRefs}
+                {...(isWeb && {
+                  type: 'button',
+                  value: value,
+                })}
+                // allow them to override all but the handlers that already compose:
+                {...itemProps}
                 onPress={composeEventHandlers(props.onPress as any, (event) => {
                   if (!checked) {
                     onChange?.(value)
@@ -260,8 +271,6 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
                   }
                 })}
                 {...(isWeb && {
-                  type: 'button',
-                  value: value,
                   onKeyDown: composeEventHandlers(
                     (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
                     (event) => {
