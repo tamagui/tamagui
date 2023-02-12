@@ -545,6 +545,7 @@ export const getSplitStyles: StyleSplitter = (
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       // eslint-disable-next-line no-console
       console.groupCollapsed('  🔹 styles', keyInit, valInit)
+      if (keyInit === 'overflow' && valInit === undefined) debugger
     }
 
     const expanded =

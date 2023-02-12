@@ -1,10 +1,5 @@
-import type { UseFloatingProps } from '@floating-ui/react-dom-interactions'
-import {
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useRole,
-} from '@floating-ui/react-dom-interactions'
+import type { UseFloatingProps } from '@floating-ui/react'
+import { useDismiss, useFloating, useInteractions, useRole } from '@floating-ui/react'
 import React, { useCallback } from 'react'
 
 // Custom floating context to override the Popper on web

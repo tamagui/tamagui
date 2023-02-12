@@ -10,7 +10,7 @@ import {
   useHover,
   useInteractions,
   useRole,
-} from '@floating-ui/react-dom-interactions'
+} from '@floating-ui/react'
 import { SizeTokens, useEvent, useId, withStaticProperties } from '@tamagui/core'
 import { ScopedProps } from '@tamagui/create-context'
 import { FloatingOverrideContext, UseFloatingFn } from '@tamagui/floating'

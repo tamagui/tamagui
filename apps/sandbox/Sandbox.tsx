@@ -2,6 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { Stack, Tokens, TokensParsed, getTokens, styled, useStyle } from '@tamagui/core'
+import { SelectDemo } from '@tamagui/demos'
 import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import {
@@ -80,9 +81,7 @@ export const Sandbox = () => {
       />
 
       <YStack fullscreen ai="center" jc="center">
-        <StyledButton>hi2</StyledButton>
-
-        <XStack paddingEnd={120} h={50} w={200} bc="red" />
+        <SelectDemo />
       </YStack>
 
       {/*  */}
