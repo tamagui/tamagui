@@ -192,6 +192,9 @@ export declare const elevate: {
         cursor?: import("@tamagui/web").Variable<any> | import("csstype").Property.Cursor | undefined;
         contain?: import("@tamagui/web").Variable<any> | import("csstype").Property.Contain | undefined;
         display?: "flex" | "none" | import("@tamagui/web").Variable<any> | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
+        gap?: import("@tamagui/web").SpaceTokens | import("@tamagui/web").Variable<any> | undefined;
+        gapColumn?: import("@tamagui/web").SpaceTokens | import("@tamagui/web").Variable<any> | undefined;
+        gapRow?: import("@tamagui/web").SpaceTokens | import("@tamagui/web").Variable<any> | undefined;
         userSelect?: import("@tamagui/web").Variable<any> | import("csstype").Property.UserSelect | undefined;
         outlineColor?: import("@tamagui/web").Variable<any> | import("csstype").Property.OutlineColor | undefined;
         outlineStyle?: import("@tamagui/web").Variable<any> | import("csstype").Property.OutlineStyle | undefined;
