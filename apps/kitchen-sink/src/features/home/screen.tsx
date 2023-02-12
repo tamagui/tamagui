@@ -15,7 +15,7 @@ import {
   XStack,
   YGroup,
   YStack,
-  useTheme
+  useTheme,
 } from 'tamagui'
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
@@ -123,14 +123,14 @@ const demos = [
     label: 'Forms',
     pages: [
       { title: 'Button', route: '/demo/button' },
+      { title: 'Checkbox', route: '/demo/checkbox' },
       { title: 'Input + Textarea', route: '/demo/inputs' },
       { title: 'Label', route: '/demo/label' },
       { title: 'Progress', route: '/demo/progress' },
-      { title: 'RadioGroup', route: '/demo/radioGroup' },
       { title: 'Select', route: '/demo/select' },
       { title: 'Slider', route: '/demo/slider' },
       { title: 'Switch', route: '/demo/switch' },
-      { title: 'Checkbox', route: '/demo/checkbox' },
+      { title: 'RadioGroup', route: '/demo/radio-group' },
     ],
   },
 
@@ -138,7 +138,7 @@ const demos = [
     label: 'Panels',
     pages: [
       { title: 'AlertDialog', route: '/demo/alert-dialog' },
-      { title: 'Dialog', route: '/demo/dialog' },
+      // { title: 'Dialog', route: '/demo/dialog' },
       // { title: 'Drawer', route: '/demo/drawer' },
       { title: 'Popover', route: '/demo/popover' },
       { title: 'Sheet', route: '/demo/sheet' },
