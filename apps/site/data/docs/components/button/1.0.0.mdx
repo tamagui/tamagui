@@ -60,7 +60,15 @@ Please note that this pattern is a bit antithetical to the multiple-components A
 
 ```tsx
 import { forwardRef } from 'react'
-import { styled, themeable, ButtonFrame, ButtonText, ButtonProps as TamaguiButtonProps, GetProps, useButton } from 'tamagui'
+import {
+  ButtonFrame,
+  ButtonText,
+  GetProps,
+  ButtonProps as TamaguiButtonProps,
+  styled,
+  themeable,
+  useButton,
+} from 'tamagui'
 
 const CustomButtonFrame = styled(ButtonFrame, {
   // ...
@@ -70,14 +78,13 @@ const CustomButtonText = styled(ButtonText, {
   // ...
 })
 
-type CustomButtonProps = GetProps<typeof CustomButtonFrame>;
-type CustomButtonTextProps = GetProps<typeof CustomButtonText>;
+type CustomButtonProps = GetProps<typeof CustomButtonFrame>
+type CustomButtonTextProps = GetProps<typeof CustomButtonText>
 
-export type ButtonProps = TamaguiButtonProps &
-  CustomButtonProps &
-  CustomButtonTextProps;
+export type ButtonProps = TamaguiButtonProps & CustomButtonProps & CustomButtonTextProps
 
-export const Button = themeable(forwardRef<TamaguiElement, ButtonProps>((propsIn, ref) => {
+export const Button = themeable(
+  forwardRef<TamaguiElement, ButtonProps>((propsIn, ref) => {
     const { props } = useButton(propsIn, { Text: CustomButtonText })
     return <CustomButtonFrame {...props} ref={ref} />
   })
@@ -173,6 +180,12 @@ Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/int
       required: false,
       type: `boolean`,
       description: `Forces a circular button.`,
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
     },
   ]}
 />
