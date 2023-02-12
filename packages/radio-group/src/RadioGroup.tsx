@@ -12,6 +12,7 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
+import { registerFocusable } from '@tamagui/focusable'
 import { getSize, stepTokenUpOrDown } from '@tamagui/get-size'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack } from '@tamagui/stacks'
@@ -221,6 +222,19 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
           }
         }
       }, [])
+
+      if (process.env.TAMAGUI_TARGET === 'native') {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        React.useEffect(() => {
+          if (!props.id) return
+          return registerFocusable(props.id, {
+            focusAndSelect: () => {
+              onChange?.(value)
+            },
+            focus: () => {},
+          })
+        }, [props.id, value])
+      }
 
       const isDisabled = disabled || itemDisabled
 

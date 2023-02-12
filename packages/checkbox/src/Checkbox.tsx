@@ -284,7 +284,7 @@ export const Checkbox = withStaticProperties(
         const labelId = useLabelContext(button)
         const labelledBy = ariaLabelledby || labelId
 
-        if (!isWeb) {
+        if (process.env.TAMAGUI_TARGET === 'native') {
           // eslint-disable-next-line react-hooks/rules-of-hooks
           React.useEffect(() => {
             if (!props.id) return
