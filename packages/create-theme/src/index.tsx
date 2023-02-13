@@ -50,15 +50,19 @@ type SubThemeKeys<ParentKeys, ChildKeys> = `${ParentKeys extends string
   ? ParentKeys
   : never}_${ChildKeys extends string ? ChildKeys : never}`
 
+type ChildGetter<Name extends string | number | symbol, Theme extends GenericTheme> = (
+  name: Name,
+  theme: Theme
+) => { [key: string]: Theme }
+
 export function addChildren<
-  Theme extends GenericTheme,
-  Themes extends { [key: string]: Theme },
-  GetChildren extends (name: keyof Themes, theme: Theme) => { [key: string]: Theme }
+  Themes extends { [key: string]: GenericTheme },
+  GetChildren extends ChildGetter<keyof Themes, Themes[keyof Themes]>
 >(
   themes: Themes,
   getChildren: GetChildren
 ): Themes & {
-  [key in SubThemeKeys<keyof Themes, keyof ReturnType<GetChildren>>]: Theme
+  [key in SubThemeKeys<keyof Themes, keyof ReturnType<GetChildren>>]: Themes[keyof Themes]
 } {
   const out = { ...themes }
   for (const key in themes) {
@@ -69,6 +73,11 @@ export function addChildren<
   }
   return out as any
 }
+
+// const x = createTheme([], { bg: 1 })
+// const y = addChildren({ x }, (_, x2) => ({
+//   y: x,
+// }))
 
 export const createWeakenMask = ({
   by = 1,

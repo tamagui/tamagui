@@ -15,7 +15,7 @@ If you are _only_ targeting the web: `@tamagui/web` is the same library as `@tam
 
 ### Quick Start
 
-Try out [create-tamagui](/docs/guides/create-tamagui-app) for a helpful starter template which comes with `@tamagui/shorthands` and `@tamagui/theme-base` for easy default configuration:
+Try out [create-tamagui](/docs/guides/create-tamagui-app) for a helpful starter template which comes with `@tamagui/shorthands` and `@tamagui/themes` for easy default configuration:
 
 ```bash
 npm create tamagui@latest
@@ -50,7 +50,7 @@ From there you'll export default the result of `createTamagui` like so:
 
 ```tsx
 import { shorthands } from '@tamagui/shorthands'
-import { themes, tokens } from '@tamagui/theme-base'
+import { themes, tokens } from '@tamagui/themes'
 import { createFont, createTamagui } from 'tamagui'
 
 export default createTamagui({
@@ -78,10 +78,10 @@ export default createTamagui({
 You'll need to install these packages if you want the Tamagui pre-configured design system:
 
 ```sh
-yarn add @tamagui/shorthands @tamagui/theme-base
+yarn add @tamagui/shorthands @tamagui/themes
 ```
 
-For an even quicker start, you can get a full design system with `@tamagui/config-base`, which we show on the [Configuration](/docs/core/configuration) page. That page also goes into more detail on everything `createTamagui` accepts.
+For an even quicker start, you can get a full design system with `@tamagui/config`, which we show on the [Configuration](/docs/core/configuration) page. That page also goes into more detail on everything `createTamagui` accepts.
 
 ### Root export
 

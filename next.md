@@ -100,7 +100,6 @@ inbox
 - react native pressable in pressable
 - https://github.com/mwood23/nx-tamagui-next-repro
 - https://github.com/necolas/react-native-web/pull/2195/files
-- config-base => design-system
 - https://github.com/tamagui/tamagui/issues/513
 - @twaiter Has anyone used a dialog component on mobile? I havent been able to get Dialog.Closed to work (using a button). Seems like the example on the website doesnt work for mobile either (button not there)
 

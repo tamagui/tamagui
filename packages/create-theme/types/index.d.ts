@@ -19,12 +19,13 @@ export declare function createTheme<Definition extends ThemeMask, Extras extends
     [key in keyof Definition | keyof Extras]: string;
 };
 type SubThemeKeys<ParentKeys, ChildKeys> = `${ParentKeys extends string ? ParentKeys : never}_${ChildKeys extends string ? ChildKeys : never}`;
-export declare function addChildren<Theme extends GenericTheme, Themes extends {
+type ChildGetter<Name extends string | number | symbol, Theme extends GenericTheme> = (name: Name, theme: Theme) => {
     [key: string]: Theme;
-}, GetChildren extends (name: keyof Themes, theme: Theme) => {
-    [key: string]: Theme;
-}>(themes: Themes, getChildren: GetChildren): Themes & {
-    [key in SubThemeKeys<keyof Themes, keyof ReturnType<GetChildren>>]: Theme;
+};
+export declare function addChildren<Themes extends {
+    [key: string]: GenericTheme;
+}, GetChildren extends ChildGetter<keyof Themes, Themes[keyof Themes]>>(themes: Themes, getChildren: GetChildren): Themes & {
+    [key in SubThemeKeys<keyof Themes, keyof ReturnType<GetChildren>>]: Themes[keyof Themes];
 };
 export declare const createWeakenMask: ({ by, max, min, inverseNegatives, }: ShiftMaskProps & {
     inverseNegatives?: boolean | undefined;

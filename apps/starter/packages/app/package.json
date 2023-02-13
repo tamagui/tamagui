@@ -15,7 +15,7 @@
     "@tamagui/font-inter": "^1.4.0",
     "@tamagui/lucide-icons": "^1.4.0",
     "@tamagui/shorthands": "^1.4.0",
-    "@tamagui/theme-base": "^1.4.0",
+    "@tamagui/themes": "^1.4.0",
     "expo-linking": "^3.2.3",
     "solito": "^2.1.3"
   }

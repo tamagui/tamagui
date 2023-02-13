@@ -3174,7 +3174,7 @@ __metadata:
     "@tamagui/font-inter": ^1.4.0
     "@tamagui/react-native-media-driver": ^1.4.0
     "@tamagui/shorthands": ^1.4.0
-    "@tamagui/theme-base": ^1.4.0
+    "@tamagui/themes": ^1.4.0
     tamagui: ^1.4.0
   languageName: unknown
   linkType: soft
@@ -4672,12 +4672,12 @@ __metadata:
     "@tamagui/animations-reanimated": ^1.4.0
     "@tamagui/build": ^1.4.0
     "@tamagui/colors": ^1.4.0
-    "@tamagui/config-base": ^1.4.0
+    "@tamagui/config": ^1.4.0
     "@tamagui/core": ^1.4.0
     "@tamagui/lucide-icons": ^1.4.0
     "@tamagui/polyfill-dev": ^1.4.0
     "@tamagui/static": ^1.4.0
-    "@tamagui/theme-base": ^1.4.0
+    "@tamagui/themes": ^1.4.0
     "@tauri-apps/api": ^1.2.0
     "@tauri-apps/cli": ^1.2.2
     "@types/d3-scale": ^4.0.2
@@ -4863,7 +4863,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@^1.2.12, @tamagui/build@^1.4.0, @tamagui/build@workspace:packages/build":
+"@tamagui/build@^1.4.0, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -5077,7 +5077,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/config-base@^1.4.0, @tamagui/config-base@workspace:packages/config-base":
+"@tamagui/config-base@workspace:packages/config-base":
   version: 0.0.0-use.local
   resolution: "@tamagui/config-base@workspace:packages/config-base"
   dependencies:
@@ -5090,7 +5090,7 @@ __metadata:
     "@tamagui/font-silkscreen": ^1.4.0
     "@tamagui/react-native-media-driver": ^1.4.0
     "@tamagui/shorthands": ^1.4.0
-    "@tamagui/theme-base": ^1.4.0
+    "@tamagui/themes": ^1.4.0
   languageName: unknown
   linkType: soft
 
@@ -5110,6 +5110,23 @@ __metadata:
     "@tamagui/build": ^1.4.0
     "@tamagui/core": ^1.4.0
     "@tamagui/shorthands": ^1.4.0
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/config@^1.4.0, @tamagui/config@workspace:packages/config":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/config@workspace:packages/config"
+  dependencies:
+    "@tamagui/animations-css": ^1.4.0
+    "@tamagui/animations-react-native": ^1.4.0
+    "@tamagui/build": ^1.4.0
+    "@tamagui/colors": ^1.4.0
+    "@tamagui/core": ^1.4.0
+    "@tamagui/font-inter": ^1.4.0
+    "@tamagui/font-silkscreen": ^1.4.0
+    "@tamagui/react-native-media-driver": ^1.4.0
+    "@tamagui/shorthands": ^1.4.0
+    "@tamagui/themes": ^1.4.0
   languageName: unknown
   linkType: soft
 
@@ -5189,12 +5206,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/create-theme@workspace:packages/create-theme":
+"@tamagui/create-theme@^1.4.0, @tamagui/create-theme@workspace:packages/create-theme":
   version: 0.0.0-use.local
   resolution: "@tamagui/create-theme@workspace:packages/create-theme"
   dependencies:
-    "@tamagui/build": ^1.2.12
-    "@tamagui/web": ^1.2.12
+    "@tamagui/build": ^1.4.0
+    "@tamagui/web": ^1.4.0
   languageName: unknown
   linkType: soft
 
@@ -5214,7 +5231,7 @@ __metadata:
     "@tamagui/avatar": ^1.4.0
     "@tamagui/build": ^1.4.0
     "@tamagui/button": ^1.4.0
-    "@tamagui/config-base": ^1.4.0
+    "@tamagui/config": ^1.4.0
     "@tamagui/core": ^1.4.0
     "@tamagui/list-item": ^1.4.0
     "@tamagui/logo": ^1.4.0
@@ -5504,13 +5521,13 @@ __metadata:
     "@tamagui/babel-plugin": ^1.4.0
     "@tamagui/cli": ^1.4.0
     "@tamagui/colors": ^1.4.0
-    "@tamagui/config-base": ^1.4.0
+    "@tamagui/config": ^1.4.0
     "@tamagui/core": ^1.4.0
     "@tamagui/demos": ^1.4.0
     "@tamagui/font-inter": ^1.4.0
     "@tamagui/lucide-icons": ^1.4.0
     "@tamagui/shorthands": ^1.4.0
-    "@tamagui/theme-base": ^1.4.0
+    "@tamagui/themes": ^1.4.0
     "@types/react": ^18.0.15
     "@types/react-native": ^0.70.8
     babel-plugin-transform-inline-environment-variables: ^0.4.4
@@ -5677,7 +5694,7 @@ __metadata:
   dependencies:
     "@tamagui/animate-presence": ^1.4.0
     "@tamagui/colors": ^1.4.0
-    "@tamagui/config-base": ^1.4.0
+    "@tamagui/config": ^1.4.0
     "@tamagui/demos": ^1.4.0
     "@tamagui/font-fira-mono": ^1.4.0
     "@tamagui/font-inter": ^1.4.0
@@ -5688,7 +5705,7 @@ __metadata:
     "@tamagui/next-theme": ^1.4.0
     "@tamagui/remove-scroll": ^1.4.0
     "@tamagui/shorthands": ^1.4.0
-    "@tamagui/theme-base": ^1.4.0
+    "@tamagui/themes": ^1.4.0
     next: ^13.1.4
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -5933,7 +5950,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox-web@workspace:apps/sandbox-web"
   dependencies:
-    "@tamagui/config-base": ^1.4.0
+    "@tamagui/config": ^1.4.0
     "@tamagui/vite-plugin": ^1.4.0
     "@tamagui/web": ^1.4.0
     "@vitejs/plugin-react": ^2.2.0
@@ -5963,7 +5980,7 @@ __metadata:
     "@tamagui/select": ^1.4.0
     "@tamagui/shorthands": ^1.4.0
     "@tamagui/slider": ^1.4.0
-    "@tamagui/theme-base": ^1.4.0
+    "@tamagui/themes": ^1.4.0
     "@tamagui/vite-plugin": ^1.4.0
     "@tamagui/vite-plugin-reanimated": ^1.4.0
     "@vitejs/plugin-react": ^2.2.0
@@ -6120,7 +6137,7 @@ __metadata:
     "@supabase/supabase-auth-helpers": ^1.4.2
     "@tamagui/animate-presence": ^1.4.0
     "@tamagui/colors": ^1.4.0
-    "@tamagui/config-base": ^1.4.0
+    "@tamagui/config": ^1.4.0
     "@tamagui/demos": ^1.4.0
     "@tamagui/font-fira-mono": ^1.4.0
     "@tamagui/font-inter": ^1.4.0
@@ -6132,7 +6149,7 @@ __metadata:
     "@tamagui/next-theme": ^1.4.0
     "@tamagui/remove-scroll": ^1.4.0
     "@tamagui/shorthands": ^1.4.0
-    "@tamagui/theme-base": ^1.4.0
+    "@tamagui/themes": ^1.4.0
     compare-versions: ^4.1.3
     critters: ^0.0.16
     date-fns: ^2.26.0
@@ -6372,13 +6389,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/theme-base@^1.4.0, @tamagui/theme-base@workspace:packages/theme-base":
+"@tamagui/theme-base@workspace:packages/theme-base":
   version: 0.0.0-use.local
   resolution: "@tamagui/theme-base@workspace:packages/theme-base"
   dependencies:
     "@tamagui/build": ^1.4.0
     "@tamagui/colors": ^1.4.0
     "@tamagui/core": ^1.4.0
+    "@tamagui/create-theme": ^1.4.0
+    "@tamagui/create-themes": ^1.4.0
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/themes@^1.4.0, @tamagui/themes@workspace:packages/themes":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/themes@workspace:packages/themes"
+  dependencies:
+    "@tamagui/build": ^1.4.0
+    "@tamagui/colors": ^1.4.0
+    "@tamagui/core": ^1.4.0
+    "@tamagui/create-theme": ^1.4.0
     "@tamagui/create-themes": ^1.4.0
   languageName: unknown
   linkType: soft
@@ -6623,7 +6653,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/web@^1.2.12, @tamagui/web@^1.4.0, @tamagui/web@workspace:packages/web":
+"@tamagui/web@^1.4.0, @tamagui/web@workspace:packages/web":
   version: 0.0.0-use.local
   resolution: "@tamagui/web@workspace:packages/web"
   dependencies:
@@ -8302,7 +8332,7 @@ __metadata:
     "@tamagui/font-inter": ^1.4.0
     "@tamagui/lucide-icons": ^1.4.0
     "@tamagui/shorthands": ^1.4.0
-    "@tamagui/theme-base": ^1.4.0
+    "@tamagui/themes": ^1.4.0
     expo-linking: ^3.2.3
     solito: ^2.1.3
   languageName: unknown

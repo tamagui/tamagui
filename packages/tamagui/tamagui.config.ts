@@ -1,4 +1,4 @@
-import { config } from '@tamagui/config-base'
+import { config } from '@tamagui/config'
 import { createTamagui } from '@tamagui/core'
 
 export default createTamagui(config)
