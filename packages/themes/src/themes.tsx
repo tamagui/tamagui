@@ -92,17 +92,17 @@ const template = {
   colorPress: -1,
   colorFocus: -2,
   colorTransparent: -0,
-  borderColor: 3,
-  borderColorHover: 4,
-  borderColorPress: 2,
-  borderColorFocus: 3,
+  borderColor: 4,
+  borderColorHover: 5,
+  borderColorPress: 3,
+  borderColorFocus: 4,
   placeholderColor: -4,
 }
 
-const lightShadowColor = 'rgba(0,0,0,0.15)'
-const lightShadowColorStrong = 'rgba(0,0,0,0.2)'
-const darkShadowColor = 'rgba(0,0,0,0.3)'
-const darkShadowColorStrong = 'rgba(0,0,0,0.45)'
+const lightShadowColor = 'rgba(0,0,0,0.05)'
+const lightShadowColorStrong = 'rgba(0,0,0,0.1)'
+const darkShadowColor = 'rgba(0,0,0,0.2)'
+const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
 
 const lightShadows = {
   shadowColor: lightShadowColorStrong,
@@ -120,6 +120,11 @@ const darkShadows = {
 
 const lightTemplate = {
   ...template,
+  background: 1,
+  backgroundHover: 2,
+  backgroundPress: 1,
+  backgroundFocus: 1,
+  backgroundStrong: 2,
   ...lightShadows,
 }
 
@@ -180,7 +185,6 @@ const allThemes = addChildren(baseThemes, (name, themeIn) => {
         // we want a much lighter text color by default so swap them around a bit
         const first6 = colorPalette.slice(0, 6)
         const last5 = colorPalette.slice(colorPalette.length - 5)
-        const shadows = isLight ? lightShadows : darkShadows
         const palette = [
           transparent(colorPalette[0]),
           ...first6,
@@ -188,10 +192,7 @@ const allThemes = addChildren(baseThemes, (name, themeIn) => {
           theme.color,
           transparent(colorPalette[colorPalette.length - 1]),
         ]
-        const colorTheme = createTheme(palette, {
-          ...template,
-          ...shadows,
-        })
+        const colorTheme = createTheme(palette, isLight ? lightTemplate : darkTemplate)
         return [color, colorTheme]
       })
     ) as Record<ColorName, Theme>
