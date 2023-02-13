@@ -1,4 +1,4 @@
-import { FloatingOverlay, FloatingPortal } from '@floating-ui/react-dom-interactions'
+import { FloatingOverlay, FloatingPortal } from '@floating-ui/react'
 import { Theme, useIsTouchDevice, useThemeName } from '@tamagui/core'
 import { Dismissable } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'

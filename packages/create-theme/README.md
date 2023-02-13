@@ -2,7 +2,7 @@
 import '@tamagui/theme-base/inter.css' // web-fonts
 import '@tamagui/theme-base/fira-code.css' // web-fonts
 import { shorthands } from '@tamagui/shorthands'
-import { themes, tokens } from '@tamagui/theme-base'
+import { themes, tokens } from '@tamagui/themes'
 import { createTamagui } from 'tamagui'
 
 export default createTamagui({

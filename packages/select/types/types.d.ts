@@ -1,4 +1,4 @@
-import type { ContextData, FloatingContext, ReferenceType } from '@floating-ui/react-dom-interactions';
+import type { ContextData, FloatingContext, ReferenceType } from '@floating-ui/react';
 import type { SizeTokens } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import type { ThemeableStackProps, YStackProps } from '@tamagui/stacks';

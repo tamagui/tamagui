@@ -294,7 +294,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         } | undefined;
         animation?: import("@tamagui/core").AnimationProp | null | undefined;
         animateOnly?: string[] | undefined;
-        debug?: boolean | "verbose" | undefined;
+        debug?: import("@tamagui/core").DebugProp | undefined;
         disabled?: boolean | undefined;
         className?: string | undefined;
         themeShallow?: boolean | undefined;
@@ -415,6 +415,9 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         cursor?: import("csstype").Property.Cursor | undefined;
         contain?: import("csstype").Property.Contain | undefined;
         display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
+        gap?: import("@tamagui/core").SpaceTokens | undefined;
+        gapColumn?: import("@tamagui/core").SpaceTokens | undefined;
+        gapRow?: import("@tamagui/core").SpaceTokens | undefined;
         userSelect?: import("csstype").Property.UserSelect | undefined;
         outlineColor?: import("csstype").Property.OutlineColor | undefined;
         outlineStyle?: import("csstype").Property.OutlineStyle | undefined;

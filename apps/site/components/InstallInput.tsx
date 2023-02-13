@@ -18,7 +18,7 @@ export const InstallInput = memo(() => {
       ai="center"
       als="center"
       elevation="$3"
-      bc="$backgroundSoft"
+      bc="$background"
       br="$10"
     >
       <Paragraph

@@ -1,4 +1,4 @@
-import { autoUpdate, offset, useFloating } from '@floating-ui/react-dom-interactions'
+import { autoUpdate, offset, useFloating } from '@floating-ui/react'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { TamaguiElement, useIsomorphicLayoutEffect } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
@@ -111,6 +111,7 @@ const SelectScrollButtonImpl = React.memo(
       }
 
       const onScroll = (amount: number) => {
+        console.log('on scroll?')
         if (fallback) {
           if (refs.floating.current) {
             refs.floating.current.scrollTop -= amount

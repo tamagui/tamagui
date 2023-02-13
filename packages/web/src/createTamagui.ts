@@ -125,15 +125,17 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     const dedupedThemes: {
       [key: string]: DedupedTheme
     } = {}
-    const existing = new WeakMap<ThemeParsed, DedupedTheme>()
+    const existing = new Map<string, DedupedTheme>()
 
     // first, de-dupe and parse them
     for (const themeName in themes) {
       const rawTheme = themes[themeName] as ThemeParsed
+      // dont force referential equality but may need something more consistent than JSON.stringify
+      const key = JSON.stringify(rawTheme)
 
       // if existing, avoid
-      if (existing.has(rawTheme)) {
-        const e = existing.get(rawTheme)!
+      if (existing.has(key)) {
+        const e = existing.get(key)!
         themes[themeName] = e.theme
         e.names.push(themeName)
         continue
@@ -154,7 +156,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         theme,
       }
 
-      existing.set(rawTheme, dedupedThemes[themeName])
+      existing.set(key, dedupedThemes[themeName])
     }
 
     // then, generate CSS from de-duped

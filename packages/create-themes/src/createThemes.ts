@@ -70,10 +70,14 @@ type GetSubThemes<Name extends string> =
   | `${Name}_SliderThumb`
   | `${Name}_Progress`
   | `${Name}_ProgressIndicator`
+  | `${Name}_RadioGroup`
+  | `${Name}_RadioGroupIndicator`
   | `${Name}_TooltipArrow`
   | `${Name}_TooltipContent`
   | `${Name}_ToggleGroupItem`
   | `${Name}_Toggle`
+  | `${Name}_Checkbox`
+  | `${Name}_CheckboxIndicator`
 
 export type GeneratedThemes<ColorsList extends string, BaseColorList extends string> = {
   [key in
@@ -193,10 +197,14 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
       [`${name}_SliderThumb`, inverted[2]],
       [`${name}_Progress`, altThemes[2][1]],
       [`${name}_ProgressIndicator`, inverted[2]],
+      [`${name}_RadioGroup`, altThemes[1][1]],
+      [`${name}_RadioGroupIndicator`, inverted[2]],
       [`${name}_Switch`, altThemes[1][1]],
       [`${name}_SwitchThumb`, inverted[2]],
       [`${name}_ToggleGroupItem`, altThemes[1][1]],
       [`${name}_Toggle`, inverted[2]],
+      [`${name}_Checkbox`, altThemes[1][1]],
+      [`${name}_CheckboxIndicator`, inverted[2]],
       [`${name}_TooltipArrow`, altThemes[2][1]],
       [`${name}_TooltipContent`, altThemes[2][1]],
       [`${name}_darker`, darkerTheme],
@@ -360,6 +368,10 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
     light_ToggleGroupItem: lightThemes.light_alt2,
     light_Toggle: lightThemes.light,
 
+    light_Checkbox: lightThemes.light_alt2,
+    light_CheckboxIndicator: lightThemes.light,
+    light_RadioGroup: lightThemes.light_alt2,
+    light_RadioGroupIndicator: lightThemes.light,
     // dark
     ...darkThemes,
     dark: darkTheme,
@@ -374,6 +386,10 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
     dark_Button: darkThemes.dark_alt1,
     dark_ToggleGroupItem: darkThemes.dark_alt2,
     dark_Toggle: darkThemes.dark_darker,
+    dark_Checkbox: darkThemes.dark_alt2,
+    dark_CheckboxIndicator: darkThemes.dark_darker,
+    dark_RadioGroup: darkThemes.dark_alt2,
+    dark_RadioGroupIndicator: darkThemes.dark_darker,
   }
 
   const darkEntries = Object.entries(darkTheme)

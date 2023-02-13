@@ -35,8 +35,8 @@ const TitleLink = ({ href, children, ...props }: any) => {
 export const HeroBelow = memo(() => {
   return (
     <>
-      <YStack pos="relative" zi={1000} elevation="$1" py="$4" pt="$6" pb="$10">
-        <YStack fullscreen bc="$color3" zi={-1} o={0.33} />
+      <YStack pos="relative" zi={1000} elevation="$4" py="$4" pt="$6" pb="$10">
+        {/* <YStack fullscreen bc="$color3" zi={-1} o={0.33} /> */}
         <HeroBelowContent />
       </YStack>
     </>
