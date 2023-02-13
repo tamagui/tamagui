@@ -1,11 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
-import {
-  composeEventHandlers,
-  stylePropsView,
-  validPseudoKeys,
-  validStyles,
-} from '@tamagui/helpers'
+import { stylePropsView, validPseudoKeys, validStyles } from '@tamagui/helpers'
 import React, {
   Children,
   Fragment,
@@ -50,7 +45,7 @@ import {
   UseAnimationHook,
   UseAnimationProps,
 } from './types'
-import { Slot, mergeEvent } from './views/Slot'
+import { Slot } from './views/Slot'
 import { useThemedChildren } from './views/Theme'
 
 // let t
@@ -431,12 +426,11 @@ export function createComponent<
     // so the type is pretty loose
     let viewProps = nonTamaguiProps
 
-    // hook for transforming props
-    if (process.env.TAMAGUI_TARGET === 'web' && !isReactNative) {
-      const nextProps = hooks.usePropsTransform?.(elementType, nonTamaguiProps, hostRef)
-      if (!asChild) {
-        viewProps = nextProps
-      }
+    // if react-native-web view just pass all props down
+    if (process.env.TAMAGUI_TARGET === 'web' && !isReactNative && !asChild) {
+      viewProps = hooks.usePropsTransform?.(elementType, nonTamaguiProps, hostRef)
+    } else {
+      viewProps = nonTamaguiProps
     }
 
     viewProps.ref = useComposedRefs(hostRef as any, forwardedRef)

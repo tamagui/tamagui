@@ -31,7 +31,7 @@
   "dependencies": {
     "@tamagui/avatar": "^1.4.0",
     "@tamagui/button": "^1.4.0",
-    "@tamagui/config-base": "^1.4.0",
+    "@tamagui/config": "^1.4.0",
     "@tamagui/core": "^1.4.0",
     "@tamagui/list-item": "^1.4.0",
     "@tamagui/logo": "^1.4.0",

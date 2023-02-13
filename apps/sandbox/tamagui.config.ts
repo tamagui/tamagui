@@ -1,4 +1,4 @@
-import { config } from '@tamagui/config-base'
+import { config } from '@tamagui/config'
 import { createFont, createTamagui } from 'tamagui'
 
 const body_cn = createFont({

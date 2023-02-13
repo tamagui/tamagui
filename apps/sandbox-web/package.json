@@ -8,7 +8,7 @@
     "dev:extract": "EXTRACT=1 yarn dev"
   },
   "dependencies": {
-    "@tamagui/config-base": "^1.4.0",
+    "@tamagui/config": "^1.4.0",
     "@tamagui/web": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
