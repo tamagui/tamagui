@@ -142,12 +142,28 @@ const SandboxFrame = (props: { children: any }) => {
 }
 
 function SandboxDefault() {
+  const [disabled, setDisabled] = useState(false)
+
   const demos = (
     <>
       <SwitchDemo />
       <CheckboxDemo />
       <InputsDemo />
       <ButtonDemo />
+      <YStack
+        disabledStyle={{ bg: 'orange' }}
+        pressStyle={{ bg: 'green' }}
+        hoverStyle={{ bg: 'blue' }}
+        focusStyle={{ bg: 'yellow' }}
+        width={200}
+        height={200}
+        bg="red"
+        disabled={disabled}
+        debug="verbose"
+      />
+      <Button onPress={() => setDisabled(!disabled)} theme="alt2">
+        Change disabled
+      </Button>
     </>
   )
 

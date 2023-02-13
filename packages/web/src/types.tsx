@@ -656,6 +656,7 @@ export type PseudoProps<A> = {
   focusStyle?: A | null
   exitStyle?: A | null
   enterStyle?: A | null
+  disabledStyle?: A | null
 }
 
 export type PseudoPropKeys = keyof PseudoProps<any>
@@ -666,6 +667,7 @@ export type PseudoStyles = {
   focusStyle?: ViewStyle
   enterStyle?: ViewStyle
   exitStyle?: ViewStyle
+  disabledStyle?: ViewStyle
 }
 
 //

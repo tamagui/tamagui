@@ -20,6 +20,7 @@ export type ViewStyleWithPseudos = ViewOrTextStyle & {
   hoverStyle?: ViewOrTextStyle
   pressStyle?: ViewOrTextStyle
   focusStyle?: ViewOrTextStyle
+  disabledStyle?: ViewOrTextStyle
 }
 
 // matching order of the below *0
@@ -27,6 +28,7 @@ const pseudosOrdered = [
   pseudoDescriptors.hoverStyle,
   pseudoDescriptors.pressStyle,
   pseudoDescriptors.focusStyle,
+  pseudoDescriptors.disabledStyle,
 ]
 
 export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
@@ -36,10 +38,16 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
   }
 
   // only for pseudos
-  const { hoverStyle, pressStyle, focusStyle, ...base } = stylesIn
+  const { hoverStyle, pressStyle, focusStyle, disabledStyle, ...base } = stylesIn
   let res: StyleObject[] = []
   // *1 order matched to *0
-  for (const [index, style] of [hoverStyle, pressStyle, focusStyle, base].entries()) {
+  for (const [index, style] of [
+    hoverStyle,
+    pressStyle,
+    focusStyle,
+    disabledStyle,
+    base,
+  ].entries()) {
     if (!style) continue
     const pseudo = pseudosOrdered[index]
     res = [...res, ...getAtomicStyle(style, pseudo)]
@@ -203,7 +211,9 @@ function createAtomicRules(
   pseudo?: PseudoDescriptor
 ): string[] {
   const selector = pseudo
-    ? `${pseudoSelectorPrefixes[pseudo.name]} .${identifier}:${pseudo.name}`
+    ? `${pseudoSelectorPrefixes[pseudo.name]} .${identifier}${
+        pseudo.name === 'disabled' ? '[aria-disabled="true"]' : `:${pseudo.name}`
+      }`
     : `.${identifier}`
   const important = !!pseudo
 

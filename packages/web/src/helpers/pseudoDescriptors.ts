@@ -1,7 +1,12 @@
 // *0 order matches to *1
 
 export const pseudoDescriptors: Record<
-  'hoverStyle' | 'pressStyle' | 'focusStyle' | 'enterStyle' | 'exitStyle',
+  | 'hoverStyle'
+  | 'pressStyle'
+  | 'focusStyle'
+  | 'enterStyle'
+  | 'exitStyle'
+  | 'disabledStyle',
   PseudoDescriptor
 > = {
   hoverStyle: {
@@ -26,6 +31,10 @@ export const pseudoDescriptors: Record<
     name: 'exit',
     stateKey: 'isExiting',
     priority: 5,
+  },
+  disabledStyle: {
+    name: 'disabled',
+    priority: 6,
   },
 }
 

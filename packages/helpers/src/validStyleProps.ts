@@ -169,6 +169,7 @@ export const validPseudoKeys = Object.freeze({
   hoverStyle: true,
   pressStyle: true,
   focusStyle: true,
+  disabledStyle: true,
 })
 
 export const validStyles = Object.freeze({

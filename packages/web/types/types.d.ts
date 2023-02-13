@@ -387,6 +387,7 @@ export type PseudoProps<A> = {
     focusStyle?: A | null;
     exitStyle?: A | null;
     enterStyle?: A | null;
+    disabledStyle?: A | null;
 };
 export type PseudoPropKeys = keyof PseudoProps<any>;
 export type PseudoStyles = {
@@ -395,6 +396,7 @@ export type PseudoStyles = {
     focusStyle?: ViewStyle;
     enterStyle?: ViewStyle;
     exitStyle?: ViewStyle;
+    disabledStyle?: ViewStyle;
 };
 type WithThemeAndShorthands<A extends object> = WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
 type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>;

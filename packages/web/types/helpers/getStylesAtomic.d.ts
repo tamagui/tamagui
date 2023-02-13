@@ -10,6 +10,7 @@ export type ViewStyleWithPseudos = ViewOrTextStyle & {
     hoverStyle?: ViewOrTextStyle;
     pressStyle?: ViewOrTextStyle;
     focusStyle?: ViewOrTextStyle;
+    disabledStyle?: ViewOrTextStyle;
 };
 export declare function getStylesAtomic(stylesIn: ViewStyleWithPseudos): StyleObject[];
 export declare function getAtomicStyle(style: ViewOrTextStyle, pseudo?: PseudoDescriptor): StyleObject[];
