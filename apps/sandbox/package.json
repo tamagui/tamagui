@@ -22,7 +22,7 @@
     "@tamagui/select": "^1.4.0",
     "@tamagui/shorthands": "^1.4.0",
     "@tamagui/slider": "^1.4.0",
-    "@tamagui/theme-base": "^1.4.0",
+    "@tamagui/themes": "^1.4.0",
     "@tamagui/vite-plugin": "^1.4.0",
     "@tamagui/vite-plugin-reanimated": "^1.4.0",
     "react": "^18.2.0",

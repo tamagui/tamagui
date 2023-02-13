@@ -35,7 +35,7 @@
     "@tamagui/font-silkscreen": "^1.4.0",
     "@tamagui/react-native-media-driver": "^1.4.0",
     "@tamagui/shorthands": "^1.4.0",
-    "@tamagui/theme-base": "^1.4.0"
+    "@tamagui/themes": "^1.4.0"
   },
   "devDependencies": {
     "@tamagui/build": "^1.4.0"

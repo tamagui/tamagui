@@ -2659,7 +2659,7 @@ __metadata:
     "@tamagui/font-inter": ^1.4.0
     "@tamagui/react-native-media-driver": ^1.4.0
     "@tamagui/shorthands": ^1.4.0
-    "@tamagui/theme-base": ^1.4.0
+    "@tamagui/themes": ^1.4.0
     tamagui: ^1.4.0
   languageName: unknown
   linkType: soft
@@ -3525,6 +3525,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tamagui/create-theme@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@tamagui/create-theme@npm:1.4.0"
+  dependencies:
+    "@tamagui/web": ^1.4.0
+  checksum: 81370d2073d362c0ea513fc7405cea998e47fb1383cb5c3ec66e286d33402efea1041720a07838693b18a7c4423bfc2aa4dee2f8efead61d88baeb9b4467660d
+  languageName: node
+  linkType: hard
+
 "@tamagui/create-themes@npm:^1.4.0":
   version: 1.4.0
   resolution: "@tamagui/create-themes@npm:1.4.0"
@@ -4212,14 +4221,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/theme-base@npm:^1.4.0":
+"@tamagui/themes@npm:^1.4.0":
   version: 1.4.0
-  resolution: "@tamagui/theme-base@npm:1.4.0"
+  resolution: "@tamagui/themes@npm:1.4.0"
   dependencies:
     "@tamagui/colors": ^1.4.0
     "@tamagui/core": ^1.4.0
+    "@tamagui/create-theme": ^1.4.0
     "@tamagui/create-themes": ^1.4.0
-  checksum: 3910368b23e288f5e97e473379ca71e901ddd1421a60209f0a6099034e3347d7331c962271874603eddfb8299a17847c4e1271c305fdac941c142d56abdd208e
+  checksum: bfb2cae764b571b574fd4b4dcd4801ef9eebb72107985264a502c683b8b3359de78e437c76a73b5025542ca6c8651d088116a52a8ce176b9453187274f4c6f35
   languageName: node
   linkType: hard
 
@@ -5053,7 +5063,7 @@ __metadata:
     "@tamagui/font-inter": ^1.4.0
     "@tamagui/lucide-icons": ^1.4.0
     "@tamagui/shorthands": ^1.4.0
-    "@tamagui/theme-base": ^1.4.0
+    "@tamagui/themes": ^1.4.0
     "@types/react": ^18.0.27
     "@types/react-native": ^0.70.8
     expo-linking: ^3.2.3

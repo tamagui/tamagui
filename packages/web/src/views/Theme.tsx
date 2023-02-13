@@ -60,14 +60,13 @@ export function useThemedChildren(
   )
 
   if (isWeb) {
-    const enableClassName =
-      forceClassName === true || (forceClassName !== false && isNewTheme)
+    const enableClassName = forceClassName ?? (forceClassName !== false && isNewTheme)
     return (
       <span
         className="_dsp_contents"
         {...(theme &&
           enableClassName && {
-            className: `${className} ${forceClassName ? 'forced1' : ''} _dsp_contents`,
+            className: `${className} _dsp_contents`,
             style: {
               // in order to provide currentColor, set color by default
               color: variableToString(theme.color),

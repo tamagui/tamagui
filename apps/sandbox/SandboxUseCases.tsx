@@ -147,12 +147,6 @@ export const Sandbox = () => {
             <StyledSizableText>ok</StyledSizableText>
           </Header>
 
-          {/* <StyledSizableText>ok</StyledSizableText>
-          <StyledSizableText debug="verbose" muted>
-            ok
-          </StyledSizableText>
-          <StyledSizableText color="orange">ok</StyledSizableText> */}
-
           {/* <Button accessibilityRole="link">hi</Button> */}
 
           {/* <TooltipDemo /> */}

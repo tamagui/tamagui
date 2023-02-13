@@ -120,7 +120,6 @@ const [RadioGroupItemProvider, useRadioGroupItemContext] =
 const RadioGroupItemFrame = styled(ThemeableStack, {
   name: RADIO_GROUP_ITEM_NAME,
   tag: 'button',
-  debug: 'verbose',
 
   variants: {
     unstyled: {

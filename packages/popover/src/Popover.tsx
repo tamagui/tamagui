@@ -334,7 +334,7 @@ const PopoverContentImpl = React.forwardRef<
 
     // doesn't show as popover yet on native, must use as sheet
     return (
-      <PortalItem hostName={`${context.scopeKey}SheetContents`}>
+      <PortalItem hostName={`${context.scopeKey}PopoverContents`}>
         {childrenWithoutScrollView}
       </PortalItem>
     )
@@ -466,7 +466,7 @@ export const Popover = withStaticProperties(
 
     const { when, AdaptProvider } = useAdaptParent({
       Contents: React.useCallback(() => {
-        return <PortalHost name={`${id}SheetContents`} />
+        return <PortalHost name={`${id}PopoverContents`} />
       }, []),
     })
 
