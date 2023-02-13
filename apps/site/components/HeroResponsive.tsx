@@ -1,5 +1,5 @@
 import { throttle } from '@github/mini-throttle'
-import { demoMedia } from '@tamagui/config-base'
+import { demoMedia } from '@tamagui/config'
 import { useOnIntersecting } from '@tamagui/demos'
 import { useTint } from '@tamagui/logo'
 import {

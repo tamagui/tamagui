@@ -496,9 +496,6 @@ const FloatingItemsBelow = () => {
           </Slider>
         </Card>
       </YStack>
-
-      {/* <Circle o={0.5} pos="absolute" l={200} t="50%" size={175} bc="$colorMid" />
-      <Square o={0.5} rotate="45deg" pos="absolute" r={200} b="50%" size={175} bc="$colorMid" /> */}
     </YStack>
   )
 }
