@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-css",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "source": "src/index.ts",
   "sideEffects": false,
   "license": "MIT",
@@ -13,11 +13,11 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/core": "^1.4.0",
-    "@tamagui/use-presence": "^1.4.0"
+    "@tamagui/core": "^1.5.0",
+    "@tamagui/use-presence": "^1.5.0"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.4.0"
+    "@tamagui/build": "^1.5.0"
   },
   "scripts": {
     "build": "tamagui-build",

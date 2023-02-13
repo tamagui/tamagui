@@ -294,7 +294,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         } | undefined;
         animation?: import("@tamagui/core").AnimationProp | null | undefined;
         animateOnly?: string[] | undefined;
-        debug?: boolean | "verbose" | undefined;
+        debug?: import("@tamagui/core").DebugProp | undefined;
         disabled?: boolean | undefined;
         className?: string | undefined;
         themeShallow?: boolean | undefined;
