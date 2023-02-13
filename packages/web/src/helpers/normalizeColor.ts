@@ -2,6 +2,7 @@ import { isWeb } from '@tamagui/constants'
 import * as NCC from '@tamagui/normalize-css-color'
 
 export const rgba = NCC.rgba
+export const names = NCC.names
 
 export const normalizeColor = (color?: string | null, opacity = 1) => {
   if (!color) return

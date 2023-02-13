@@ -35,7 +35,6 @@ import type {
   RulesToInsert,
   SpaceTokens,
   SplitStyleState,
-  StackProps,
   StaticConfigParsed,
   TamaguiInternalConfig,
   ThemeParsed,
@@ -52,19 +51,16 @@ import {
   shouldInsertStyleRules,
   updateRules,
 } from './insertStyleRule'
-import { FlatTransforms, mergeTransform, mergeTransforms } from './mergeTransform'
 import {
   normalizeValueWithProperty,
   reverseMapClassNameToValue,
 } from './normalizeValueWithProperty.js'
 import { pseudoDescriptors } from './pseudoDescriptors'
-import { warnOnce } from './warnOnce'
 
 type GetStyleState = {
   style: ViewStyle
   usedKeys: Record<string, number>
   classNames: ClassNamesObject
-  flatTransforms: FlatTransforms
   staticConfig: StaticConfigParsed
   theme: ThemeParsed
   props: Record<string, any>
@@ -213,15 +209,8 @@ export const getSplitStyles: StyleSplitter = (
 
   conf = conf || getConfig()
   const { shorthands } = conf
-  const {
-    defaultVariants,
-    variants,
-    propMapper,
-    isReactNative,
-    deoptProps,
-    inlineProps,
-    inlineWhenUnflattened,
-  } = staticConfig
+  const { variants, propMapper, isReactNative, inlineProps, inlineWhenUnflattened } =
+    staticConfig
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: GetStyleResult['viewProps'] = {}
   let pseudos: PseudoStyles | null = null
@@ -251,7 +240,6 @@ export const getSplitStyles: StyleSplitter = (
   const styleState: GetStyleState = {
     classNames,
     conf,
-    flatTransforms,
     props,
     state,
     staticConfig,
@@ -260,12 +248,6 @@ export const getSplitStyles: StyleSplitter = (
     usedKeys,
     viewProps,
     languageContext,
-  }
-
-  if (process.env.NODE_ENV === 'development') {
-    if (props.selectable) {
-      warnOnce('props.selectable', 'selectable props deprecated, use userSelect')
-    }
   }
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -668,7 +650,7 @@ export const getSplitStyles: StyleSplitter = (
             if (isDisabled) {
               if (!(pkey in usedKeys) && pkey in animatableDefaults) {
                 const defaultVal = animatableDefaults[pkey]
-                mergeStyle(styleState, pkey, defaultVal, true)
+                mergeStyle(styleState, flatTransforms, pkey, defaultVal, true)
               }
               continue
             }
@@ -679,7 +661,7 @@ export const getSplitStyles: StyleSplitter = (
               pseudos ||= {}
               pseudos[key] ||= {}
               pseudos[key][pkey] = val
-              mergeStyle(styleState, pkey, val)
+              mergeStyle(styleState, flatTransforms, pkey, val)
             }
             if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
               // prettier-ignore
@@ -793,7 +775,7 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (key in validStyleProps) {
-        mergeStyle(styleState, key, val)
+        mergeStyle(styleState, flatTransforms, key, val)
         continue
       }
 
@@ -1012,7 +994,8 @@ function getSubStyleProps(
 }
 
 function mergeStyle(
-  { usedKeys, classNames, flatTransforms, viewProps, style }: GetStyleState,
+  { usedKeys, classNames, viewProps, style }: GetStyleState,
+  flatTransforms: FlatTransforms,
   key: string,
   val: any,
   dontSetUsed = false
@@ -1122,3 +1105,27 @@ const animatableDefaults = {
 
 const lowercaseHyphenate = (match: string) => `-${match.toLowerCase()}`
 const hyphenate = (str: string) => str.replace(/[A-Z]/g, lowercaseHyphenate)
+
+export type FlatTransforms = Record<string, any>
+
+const mergeTransform = (obj: ViewStyle, key: string, val: any, backwards = false) => {
+  obj.transform ||= []
+  obj.transform[backwards ? 'unshift' : 'push']({
+    [mapTransformKeys[key] || key]: val,
+  } as any)
+}
+
+const mergeTransforms = (
+  obj: ViewStyle,
+  flatTransforms: FlatTransforms,
+  backwards = false
+) => {
+  Object.entries(flatTransforms).forEach(([key, val]) => {
+    mergeTransform(obj, key, val, backwards)
+  })
+}
+
+const mapTransformKeys = {
+  x: 'translateX',
+  y: 'translateY',
+}

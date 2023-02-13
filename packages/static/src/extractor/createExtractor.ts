@@ -1469,7 +1469,9 @@ export function createExtractor(
 
           // flatten logic!
           // fairly simple check to see if all children are text
-          const hasSpread = node.attributes.some((x) => t.isJSXSpreadAttribute(x))
+          const hasSpread = attrs.some(
+            (x) => x.type === 'attr' && t.isJSXSpreadAttribute(x.value)
+          )
 
           const hasOnlyStringChildren =
             !hasSpread &&
