@@ -4,11 +4,8 @@ import * as NCC from '@tamagui/normalize-css-color'
 export const rgba = NCC.rgba
 export const names = NCC.names
 
-const transparent = `rgba(0,0,0,0)`
-
 export const normalizeColor = (color?: string | null, opacity?: number) => {
   if (!color) return
-  if (color === 'transparent') return transparent
   if (color[0] === '$') return color
   if (isWeb && opacity === 1) return color
   const colorProcessed = NCC.normalizeCSSColor(color)

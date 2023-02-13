@@ -58,7 +58,8 @@ export declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "disabled" | "size" | "unstyled" | "active"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -77,7 +78,8 @@ export declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "disabled" | "size" | "unstyled" | "active"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -96,7 +98,8 @@ export declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "disabled" | "size" | "unstyled" | "active"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -116,6 +119,7 @@ export declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 } & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -362,26 +366,25 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         onAccessibilityTap?: (() => void) | undefined;
         onMagicTap?: (() => void) | undefined;
         accessibilityIgnoresInvertColors?: boolean | undefined;
+        /**
+         * default: -1
+         */
         target?: string | undefined;
         asChild?: boolean | undefined;
-        spaceDirection?: import("@tamagui/core").SpaceDirection | undefined; /**
-         * make the spacing elements flex
-         */
+        spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
         separator?: React.ReactNode;
         dangerouslySetInnerHTML?: {
             __html: string;
-        } | undefined; /**
-         * adjust internal space relative to icon size
-         */
+        } | undefined;
         animation?: import("@tamagui/core").AnimationProp | null | undefined;
         animateOnly?: string[] | undefined;
         debug?: import("@tamagui/core").DebugProp | undefined;
         disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        id?: string | undefined; /**
+        className?: string | undefined; /**
          * will not wrap text around `children` only, "all" will not wrap title or subTitle
          */
+        themeShallow?: boolean | undefined;
+        id?: string | undefined;
         tag?: string | undefined;
         componentName?: string | undefined;
         forceStyle?: "focus" | "hover" | "press" | undefined;
@@ -547,6 +550,7 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         fullscreen?: boolean | undefined;
+        unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
         active?: boolean | undefined;
         hoverStyle?: Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
@@ -564,7 +568,8 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "active"> & {
+        }, "disabled" | "size" | "unstyled" | "active"> & {
+            readonly unstyled?: boolean | undefined;
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
@@ -584,7 +589,8 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "active"> & {
+        }, "disabled" | "size" | "unstyled" | "active"> & {
+            readonly unstyled?: boolean | undefined;
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
@@ -604,7 +610,8 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "active"> & {
+        }, "disabled" | "size" | "unstyled" | "active"> & {
+            readonly unstyled?: boolean | undefined;
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
@@ -624,7 +631,8 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "active"> & {
+        }, "disabled" | "size" | "unstyled" | "active"> & {
+            readonly unstyled?: boolean | undefined;
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
@@ -644,7 +652,8 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "active"> & {
+        }, "disabled" | "size" | "unstyled" | "active"> & {
+            readonly unstyled?: boolean | undefined;
             readonly size?: import("@tamagui/core").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
@@ -672,7 +681,8 @@ export declare const ListItem: ((props: Omit<Omit<TextParentStyles, "TextCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "disabled" | "size" | "unstyled" | "active"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -691,7 +701,8 @@ export declare const ListItem: ((props: Omit<Omit<TextParentStyles, "TextCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "disabled" | "size" | "unstyled" | "active"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -710,7 +721,8 @@ export declare const ListItem: ((props: Omit<Omit<TextParentStyles, "TextCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "disabled" | "size" | "unstyled" | "active"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
