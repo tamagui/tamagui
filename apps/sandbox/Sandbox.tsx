@@ -200,24 +200,7 @@ function SandboxDefault() {
 //   const media = useMedia()
 
 //   console.warn('render')
-// function TestUseStyle() {
-//   console.log('wtf', Square.staticConfig.validStyles)
-//   const style = useStyle(Square, {
-//     backgroundColor: 'red',
-//   })
 
-//   console.log('style', style, Square.staticConfig.validStyles)
-
-//   return null
-// }
-
-// function TestUseMediaRenders() {
-//   const media = useMedia()
-
-//   console.warn('render')
-
-//   return <H1>{media.sm ? 'sm' : 'not sm'}</H1>
-// }
 //   return <H1>{media.sm ? 'sm' : 'not sm'}</H1>
 // }
 
@@ -225,8 +208,6 @@ function SandboxDefault() {
 //   const u = useTheme()
 //   console.log(u.color)
 //   return null
-// }
-<<<<<<< HEAD
 
 const SolitoImageExample = () => (
   <Image
@@ -239,10 +220,3 @@ const SolitoImageExample = () => (
     bc="$color"
   />
 )
-=======
-// function TestUseTheme() {
-//   const u = useTheme()
-//   console.log(u.color)
-//   return null
-// }
->>>>>>> 26c128ed74 (feat(tabs): @tamagui/tabs and the Tab component)

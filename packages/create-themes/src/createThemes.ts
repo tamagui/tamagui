@@ -365,7 +365,7 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
     light_Switch: lightThemes.light_alt2,
     light_SwitchThumb: lightThemes.light,
     light_TabsTrigger: lightThemes.light,
-    light_TabsRovingIndicator: lightThemes.light_alt2,
+    light_TabsRovingIndicator: lightThemes.light,
     light_DrawerFrame: lightThemes.light_alt1,
     light_Checkbox: lightThemes.light_alt2,
     light_CheckboxIndicator: lightThemes.light,
