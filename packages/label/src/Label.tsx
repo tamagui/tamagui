@@ -98,9 +98,10 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>(
     return (
       <LabelProvider id={id} controlRef={controlRef}>
         <LabelFrame
-          // @ts-ignore
           role="label"
           id={id}
+          // @ts-ignore
+          htmlFor={htmlFor}
           {...labelProps}
           ref={composedRefs as any}
           onMouseDown={(event) => {
@@ -114,7 +115,7 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>(
             props.onPress?.(event)
 
             if (isWeb) {
-              if (!controlRef.current || event.defaultPrevented) return
+              if (htmlFor || !controlRef.current || event.defaultPrevented) return
               const isClickingControl = controlRef.current.contains(
                 event.target as any as Node
               )
