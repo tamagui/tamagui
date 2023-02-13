@@ -18,7 +18,8 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "disabled" | "size" | "active" | "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -37,7 +38,8 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "disabled" | "size" | "active" | "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -56,7 +58,8 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "active"> & {
+}, "disabled" | "size" | "active" | "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -331,7 +334,8 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
-    }, "disabled" | "size" | "active"> & {
+    }, "disabled" | "size" | "active" | "unstyled"> & {
+        readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
         readonly active?: boolean | undefined;
         readonly disabled?: boolean | undefined;
@@ -350,7 +354,8 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
-    }, "disabled" | "size" | "active"> & {
+    }, "disabled" | "size" | "active" | "unstyled"> & {
+        readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
         readonly active?: boolean | undefined;
         readonly disabled?: boolean | undefined;
@@ -369,7 +374,8 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
-    }, "disabled" | "size" | "active"> & {
+    }, "disabled" | "size" | "active" | "unstyled"> & {
+        readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
         readonly active?: boolean | undefined;
         readonly disabled?: boolean | undefined;
@@ -406,7 +412,8 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
-    }, "disabled" | "size" | "active"> & {
+    }, "disabled" | "size" | "active" | "unstyled"> & {
+        readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
         readonly active?: boolean | undefined;
         readonly disabled?: boolean | undefined;
@@ -425,7 +432,8 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
-    }, "disabled" | "size" | "active"> & {
+    }, "disabled" | "size" | "active" | "unstyled"> & {
+        readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
         readonly active?: boolean | undefined;
         readonly disabled?: boolean | undefined;
@@ -444,7 +452,8 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
-    }, "disabled" | "size" | "active"> & {
+    }, "disabled" | "size" | "active" | "unstyled"> & {
+        readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
         readonly active?: boolean | undefined;
         readonly disabled?: boolean | undefined;
