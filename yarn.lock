@@ -5926,7 +5926,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/roving-focus@workspace:packages/roving-focus":
+"@tamagui/roving-focus@^1.5.1, @tamagui/roving-focus@workspace:packages/roving-focus":
   version: 0.0.0-use.local
   resolution: "@tamagui/roving-focus@workspace:packages/roving-focus"
   dependencies:
@@ -6352,6 +6352,26 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/tabs@^1.5.1, @tamagui/tabs@workspace:packages/tabs":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/tabs@workspace:packages/tabs"
+  dependencies:
+    "@tamagui/build": ^1.5.1
+    "@tamagui/core": ^1.5.1
+    "@tamagui/create-context": ^1.5.1
+    "@tamagui/roving-focus": ^1.5.1
+    "@tamagui/scroll-view": ^1.5.1
+    "@tamagui/stacks": ^1.5.1
+    "@tamagui/use-controllable-state": ^1.5.1
+    "@tamagui/use-direction": ^1.5.1
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -22613,6 +22633,7 @@ __metadata:
     "@tamagui/slider": ^1.5.1
     "@tamagui/stacks": ^1.5.1
     "@tamagui/switch": ^1.5.1
+    "@tamagui/tabs": ^1.5.1
     "@tamagui/text": ^1.5.1
     "@tamagui/tooltip": ^1.5.1
     "@tamagui/use-controllable-state": ^1.5.1

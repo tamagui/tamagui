@@ -3,8 +3,10 @@ import '@tamagui/polyfill-dev'
 
 import { Stack, Tokens, TokensParsed, getTokens, styled, useStyle } from '@tamagui/core'
 import { RadioGroupDemo, SelectDemo, SwitchDemo } from '@tamagui/demos'
+import { RadioGroupDemo, SelectDemo, SwitchDemo } from '@tamagui/demos'
 import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
+import { Button, TamaguiProvider, YStack } from 'tamagui'
 import { Button, TamaguiProvider, YStack } from 'tamagui'
 
 import config from './tamagui.config'
@@ -64,10 +66,32 @@ export const Sandbox = () => {
 //   const media = useMedia()
 
 //   console.warn('render')
+// function TestUseStyle() {
+//   console.log('wtf', Square.staticConfig.validStyles)
+//   const style = useStyle(Square, {
+//     backgroundColor: 'red',
+//   })
+
+//   console.log('style', style, Square.staticConfig.validStyles)
+
+//   return null
+// }
+
+// function TestUseMediaRenders() {
+//   const media = useMedia()
+
+//   console.warn('render')
 
 //   return <H1>{media.sm ? 'sm' : 'not sm'}</H1>
 // }
+//   return <H1>{media.sm ? 'sm' : 'not sm'}</H1>
+// }
 
+// function TestUseTheme() {
+//   const u = useTheme()
+//   console.log(u.color)
+//   return null
+// }
 // function TestUseTheme() {
 //   const u = useTheme()
 //   console.log(u.color)
