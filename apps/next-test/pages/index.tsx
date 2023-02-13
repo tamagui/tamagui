@@ -1,4 +1,4 @@
-import { FormsDemo } from '@tamagui/demos'
+import { InputsDemo } from '@tamagui/demos'
 import { Separator, Text, YStack, useDidFinishSSR } from 'tamagui'
 
 export default function Home({ animationCode, compilationExamples }) {
@@ -6,7 +6,7 @@ export default function Home({ animationCode, compilationExamples }) {
     <>
       {useDidFinishSSR() ? (
         <YStack>
-          <FormsDemo></FormsDemo>
+          <InputsDemo></InputsDemo>
           <Separator />
         </YStack>
       ) : (

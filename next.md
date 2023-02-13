@@ -1,3 +1,5 @@
+- move packages to have unstyled
+- move packages from /core to /web
 - <YStack space="$3" $gtSm={{ space: '$6'}}> not working again
 - // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
 - check why styled() of a HOC is failing:
@@ -19,12 +21,15 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 1.2
 
-- unstyled
+1.5
+
+- unset: useful for unstyled to usnet the defaultVariatn size
 
 ---
 
 1.X
 
+- // TODO could be native-only
 - Select id="" + Label focus
 - web forms events bubble
 - theme shouldn't change context ever on web, redo notify()
@@ -95,7 +100,6 @@ inbox
 - react native pressable in pressable
 - https://github.com/mwood23/nx-tamagui-next-repro
 - https://github.com/necolas/react-native-web/pull/2195/files
-- config-base => design-system
 - https://github.com/tamagui/tamagui/issues/513
 - @twaiter Has anyone used a dialog component on mobile? I havent been able to get Dialog.Closed to work (using a button). Seems like the example on the website doesnt work for mobile either (button not there)
 

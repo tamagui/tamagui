@@ -1,7 +1,7 @@
-import { ReactComponentWithRef, isWeb, styled } from '@tamagui/core'
+import { ReactComponentWithRef, TamaguiElement, isWeb, styled } from '@tamagui/core'
 import { SizableText, SizableTextProps } from '@tamagui/text'
 import React, { forwardRef } from 'react'
-import { Linking, View } from 'react-native'
+import { Linking } from 'react-native'
 
 export type AnchorProps = SizableTextProps & {
   href?: string
@@ -15,7 +15,7 @@ const AnchorFrame = styled(SizableText, {
   accessibilityRole: 'link',
 })
 
-export const Anchor: ReactComponentWithRef<AnchorProps, HTMLAnchorElement | View> =
+export const Anchor: ReactComponentWithRef<AnchorProps, TamaguiElement> =
   AnchorFrame.extractable(
     forwardRef(({ href, target, ...props }, ref) => {
       return (
@@ -37,5 +37,5 @@ export const Anchor: ReactComponentWithRef<AnchorProps, HTMLAnchorElement | View
           ref={ref as any}
         />
       )
-    }),
+    })
   )

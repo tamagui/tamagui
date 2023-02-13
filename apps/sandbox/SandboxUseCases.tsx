@@ -147,12 +147,6 @@ export const Sandbox = () => {
             <StyledSizableText>ok</StyledSizableText>
           </Header>
 
-          {/* <StyledSizableText>ok</StyledSizableText>
-          <StyledSizableText debug="verbose" muted>
-            ok
-          </StyledSizableText>
-          <StyledSizableText color="orange">ok</StyledSizableText> */}
-
           {/* <Button accessibilityRole="link">hi</Button> */}
 
           {/* <TooltipDemo /> */}
@@ -178,7 +172,7 @@ export const Sandbox = () => {
 
           {/* <AlertDialogDemo /> */}
 
-          {/* <FormsDemo /> */}
+          {/* <InputsDemo /> */}
 
           {/* <DialogDemo /> */}
 
@@ -281,7 +275,7 @@ export const Sandbox = () => {
           {/* <AnimationsDemo /> */}
           {/* <SheetDemo /> */}
           {/* <DialogDemo /> */}
-          {/* <FormsDemo /> */}
+          {/* <InputsDemo /> */}
           {/* <SelectDemo /> */}
           {/* <ScrollView bc="yellow" p="$1" $gtXs={{ bc: 'blue', p: '$4' }} maxHeight={200}>
           <Square bc="red" size={100} />

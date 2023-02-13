@@ -1,12 +1,10 @@
 import type { ViewStyle } from 'react-native';
 import type { ClassNamesObject, DebugProp, GetStyleResult, SplitStyleState, StaticConfigParsed, TamaguiInternalConfig, ThemeParsed } from '../types';
 import { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types';
-import { FlatTransforms } from './mergeTransform';
 type GetStyleState = {
     style: ViewStyle;
     usedKeys: Record<string, number>;
     classNames: ClassNamesObject;
-    flatTransforms: FlatTransforms;
     staticConfig: StaticConfigParsed;
     theme: ThemeParsed;
     props: Record<string, any>;
@@ -27,5 +25,6 @@ export declare const getSplitStyles: StyleSplitter;
 export declare const getSubStyle: (styleState: GetStyleState, subKey: string, styleIn: Object, avoidDefaultProps?: boolean, avoidMergeTransform?: boolean) => ViewStyle;
 export declare const insertSplitStyles: StyleSplitter;
 export declare const useSplitStyles: StyleSplitter;
+export type FlatTransforms = Record<string, any>;
 export {};
 //# sourceMappingURL=getSplitStyles.d.ts.map

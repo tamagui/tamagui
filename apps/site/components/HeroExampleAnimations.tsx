@@ -1,4 +1,4 @@
-import { animations } from '@tamagui/config-base'
+import { animations } from '@tamagui/config'
 import { useIsIntersecting } from '@tamagui/demos'
 import { useTint } from '@tamagui/logo'
 import { ArrowDown } from '@tamagui/lucide-icons'

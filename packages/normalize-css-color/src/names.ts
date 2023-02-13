@@ -5,10 +5,7 @@ export const names = {
   black: 0x000000ff,
 }
 
-if (
-  process.env.INCLUDE_CSS_COLOR_NAMES ||
-  process.env.TAMAGUI_TARGET === 'native'
-) {
+if (process.env.INCLUDE_CSS_COLOR_NAMES || process.env.TAMAGUI_TARGET === 'native') {
   const allNames = require('./names.native').names
   Object.assign(names, allNames)
 }

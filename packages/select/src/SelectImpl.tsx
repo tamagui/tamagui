@@ -14,7 +14,7 @@ import {
   useListNavigation,
   useRole,
   useTypeahead,
-} from '@floating-ui/react-dom-interactions'
+} from '@floating-ui/react'
 import {
   isClient,
   isWeb,
@@ -156,8 +156,8 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         SCROLL_ARROW_THRESHOLD
 
   const interactions = useInteractions([
-    useClick(context, { pointerDown: true }),
-    useDismiss(context, { outsidePointerDown: true }),
+    useClick(context, { event: 'mousedown' }),
+    useDismiss(context, { outsidePress: true }),
     useRole(context, { role: 'listbox' }),
     useInnerOffset(context, {
       enabled: !fallback,

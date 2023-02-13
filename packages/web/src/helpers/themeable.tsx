@@ -1,6 +1,6 @@
 import React, { forwardRef, useId } from 'react'
 
-import { ThemeName } from '../types'
+import { DebugProp, ThemeName } from '../types'
 import { Theme } from '../views/Theme'
 
 export interface ThemeableProps {
@@ -8,7 +8,7 @@ export interface ThemeableProps {
   themeInverse?: boolean
   themeReset?: boolean
   componentName?: string
-  debug?: boolean | 'verbose'
+  debug?: DebugProp
 }
 
 export function themeable<Component extends (props: any) => any>(

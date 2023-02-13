@@ -2,19 +2,11 @@
 
 import '@tamagui/polyfill-dev'
 
-import type { UseFloatingProps } from '@floating-ui/react-dom-interactions'
-import {
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useRole,
-} from '@floating-ui/react-dom-interactions'
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
-  GestureReponderEvent,
   MediaQueryKey,
   SizeTokens,
   Stack,
@@ -49,17 +41,12 @@ import {
 import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
 import { RemoveScroll, RemoveScrollProps } from '@tamagui/remove-scroll'
 import { ControlledSheet, SheetController } from '@tamagui/sheet'
-import { SizableStack, XStack, YStack, YStackProps, ZStack } from '@tamagui/stacks'
+import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import { useEffect } from 'react'
-import {
-  GestureResponderEvent,
-  Platform,
-  ScrollView,
-  ScrollViewProps,
-  View,
-} from 'react-native'
+import { Platform, ScrollView, ScrollViewProps, View } from 'react-native'
+
+import { useFloatingContext } from './useFloatingContext'
 
 const POPOVER_NAME = 'Popover'
 
@@ -347,7 +334,7 @@ const PopoverContentImpl = React.forwardRef<
 
     // doesn't show as popover yet on native, must use as sheet
     return (
-      <PortalItem hostName={`${context.scopeKey}SheetContents`}>
+      <PortalItem hostName={`${context.scopeKey}PopoverContents`}>
         {childrenWithoutScrollView}
       </PortalItem>
     )
@@ -479,7 +466,7 @@ export const Popover = withStaticProperties(
 
     const { when, AdaptProvider } = useAdaptParent({
       Contents: React.useCallback(() => {
-        return <PortalHost name={`${id}SheetContents`} />
+        return <PortalHost name={`${id}PopoverContents`} />
       }, []),
     })
 
@@ -496,32 +483,7 @@ export const Popover = withStaticProperties(
 
     const breakpointActive = useSheetBreakpointActive(sheetBreakpoint)
 
-    // Custom floating context to override the Popper on web
-    const useFloatingContext = React.useCallback(
-      (props: UseFloatingProps) => {
-        const floating = useFloating({
-          ...props,
-          open,
-          onOpenChange: setOpen,
-        })
-        const { getReferenceProps, getFloatingProps } = useInteractions([
-          // useFocus(floating.context, {
-          //   enabled: !breakpointActive,
-          //   keyboardOnly: true,
-          // }),
-          useRole(floating.context, { role: 'dialog' }),
-          useDismiss(floating.context, {
-            enabled: !breakpointActive,
-          }),
-        ])
-        return {
-          ...floating,
-          getReferenceProps,
-          getFloatingProps,
-        }
-      },
-      [breakpointActive, open, setOpen]
-    )
+    const floatingContext = useFloatingContext({ open, setOpen, breakpointActive }) as any
 
     const popoverContext = {
       scope: __scopePopover,
@@ -564,7 +526,7 @@ export const Popover = withStaticProperties(
     return (
       <AdaptProvider>
         {isWeb ? (
-          <FloatingOverrideContext.Provider value={useFloatingContext as any}>
+          <FloatingOverrideContext.Provider value={floatingContext}>
             {contents}
           </FloatingOverrideContext.Provider>
         ) : (

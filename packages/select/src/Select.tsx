@@ -278,8 +278,8 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
           tag="div"
           backgrounded
           pressTheme
-          cursor=""
-          focusTheme
+          hoverTheme
+          cursor="default"
           outlineWidth={0}
           componentName={ITEM_NAME}
           ref={composedRefs}
@@ -290,6 +290,9 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
           data-disabled={disabled ? '' : undefined}
           tabIndex={disabled ? undefined : -1}
           size={context.size}
+          focusStyle={{
+            backgroundColor: '$backgroundHover',
+          }}
           {...itemProps}
           {...selectItemProps}
         />
