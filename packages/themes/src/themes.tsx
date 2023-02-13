@@ -163,7 +163,8 @@ const masks = {
 
 const allThemes = addChildren(baseThemes, (name, themeIn) => {
   const theme = themeIn as Theme
-  const inverseName = name === 'light' ? 'dark' : 'light'
+  const isLight = name === 'light'
+  const inverseName = isLight ? 'dark' : 'light'
   const inverseTheme = baseThemes[inverseName]
   const transparent = (hsl: string, opacity = 0) =>
     hsl.replace(`%)`, `%, ${opacity})`).replace(`hsl(`, `hsla(`)
@@ -179,19 +180,19 @@ const allThemes = addChildren(baseThemes, (name, themeIn) => {
         // we want a much lighter text color by default so swap them around a bit
         const first6 = colorPalette.slice(0, 6)
         const last5 = colorPalette.slice(colorPalette.length - 5)
-        return [
-          color,
-          createTheme(
-            [
-              transparent(colorPalette[0]),
-              ...first6,
-              ...last5,
-              theme.color,
-              transparent(colorPalette[colorPalette.length - 1]),
-            ],
-            template
-          ),
+        const shadows = isLight ? lightShadows : darkShadows
+        const palette = [
+          transparent(colorPalette[0]),
+          ...first6,
+          ...last5,
+          theme.color,
+          transparent(colorPalette[colorPalette.length - 1]),
         ]
+        const colorTheme = createTheme(palette, {
+          ...template,
+          ...shadows,
+        })
+        return [color, colorTheme]
       })
     ) as Record<ColorName, Theme>
   })
