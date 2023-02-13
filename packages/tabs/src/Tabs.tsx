@@ -27,7 +27,7 @@ import type { LayoutRectangle } from 'react-native'
 const TAB_LIST_NAME = 'TabsList'
 
 const TabsListScrollableFrame = styled(ScrollView, {
-  name: `${TAB_LIST_NAME}Frame`,
+  name: TAB_LIST_NAME,
   focusable: true,
   defaultVariants: {
     flexGrow: 0,
@@ -37,7 +37,7 @@ const TabsListScrollableFrame = styled(ScrollView, {
 type TabsListFrameProps = GetProps<typeof TabsListScrollableFrame>
 
 type TabsListProps = TabsListFrameProps & {
-  /** 
+  /**
    * Whether to loop over after reaching the end or start of the items
    * @default true
    */
@@ -81,9 +81,9 @@ TabsList.displayName = TAB_LIST_NAME
 
 const TRIGGER_NAME = 'TabsTrigger'
 
-// Having styled(Button) makes it incompatible with XGroup's border radius
-const TabsTriggerFrame = Button
-// TabsTriggerFrame.name = TRIGGER_NAME
+const TabsTriggerFrame = styled(Button, {
+  name: TRIGGER_NAME,
+})
 
 type TabsTriggerFrameProps = GetProps<typeof TabsTriggerFrame>
 type TabsTriggerProps = TabsTriggerFrameProps & {
@@ -125,9 +125,11 @@ const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
       }
     }, [])
 
-    if (isSelected && context.selectedLayout?.value !== value && layout) {
-      context.onSelectedLayoutChange({ value, layout })
-    }
+    React.useEffect(() => {
+      if (isSelected && context.selectedLayout?.value !== value && layout) {
+        context.onSelectedLayoutChange({ value, layout })
+      }
+    }, [isSelected, context.selectedLayout?.value, value, layout])
 
     const transitionDirection = React.useMemo(() => {
       if (!layout || !context.selectedLayout?.layout) {
@@ -228,7 +230,7 @@ TabsTrigger.displayName = TRIGGER_NAME
 const CONTENT_NAME = 'TabsContent'
 
 const TabsContentFrame = styled(ThemeableStack, {
-  name: `${CONTENT_NAME}Frame`,
+  name: CONTENT_NAME,
 })
 type TabsContentFrameProps = GetProps<typeof TabsContentFrame>
 type TabsContentProps = TabsContentFrameProps & {
@@ -282,7 +284,7 @@ TabsContent.displayName = CONTENT_NAME
 const TABS_HIGHLIGHT_NAME = 'TabsRovingIndicator'
 
 const TabsRovingIndicatorFrame = styled(ThemeableStack, {
-  name: `${TABS_HIGHLIGHT_NAME}Frame`,
+  name: TABS_HIGHLIGHT_NAME,
   position: 'absolute',
   backgrounded: true,
   variants: {
@@ -396,7 +398,7 @@ type TabsContextValue = {
 const [TabsProvider, useTabsContext] = createTabsContext<TabsContextValue>(TABS_NAME)
 
 const TabsFrame = styled(SizableStack, {
-  name: `${TABS_NAME}Frame`,
+  name: TABS_NAME,
 
   // flexDirection: 'column',
 })
@@ -411,7 +413,7 @@ type TabsProps = TabsFrameProps & {
   onValueChange?: (value: string) => void
   /**
    * Used for animating the tabs content
-   * 
+   *
    */
   onDirectionChange?: (value: TransitionDirection) => void
   /**
