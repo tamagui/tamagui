@@ -26,8 +26,8 @@ export declare function addChildren<Theme extends GenericTheme, Themes extends {
 }>(themes: Themes, getChildren: GetChildren): Themes & {
     [key in SubThemeKeys<keyof Themes, keyof ReturnType<GetChildren>>]: Theme;
 };
-export declare const createWeakenMask: ({ by, max, min, inverse, }: ShiftMaskProps & {
-    inverse?: boolean | undefined;
+export declare const createWeakenMask: ({ by, max, min, inverseNegatives, }: ShiftMaskProps & {
+    inverseNegatives?: boolean | undefined;
 }) => CreateMask;
 export declare const createStrengthenMask: (props: ShiftMaskProps) => CreateMask;
 export declare function applyMask<Theme extends GenericTheme>(theme: Theme, mask: CreateMask, options?: MaskOptions): Theme;

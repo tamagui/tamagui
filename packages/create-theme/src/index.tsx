@@ -37,13 +37,12 @@ export function createTheme<
   return theme
 }
 
-const getValue = (palette: Palette, maskValue: string | number) => {
-  if (typeof maskValue === 'string') return maskValue
-  const max = palette.length
-  const index = Math.min(
-    Math.max(0, maskValue < 0 ? max + maskValue : maskValue),
-    max - 1
-  )
+const getValue = (palette: Palette, value: string | number) => {
+  if (typeof value === 'string') return value
+  const max = palette.length - 1
+  const isPositive = value === 0 ? !isMinusZero(value) : value >= 0
+  const next = isPositive ? value : max + value
+  const index = Math.min(Math.max(0, next), max)
   return palette[index]
 }
 
@@ -75,8 +74,8 @@ export const createWeakenMask = ({
   by = 1,
   max,
   min = 0,
-  inverse,
-}: ShiftMaskProps & { inverse?: boolean }) => {
+  inverseNegatives,
+}: ShiftMaskProps & { inverseNegatives?: boolean }) => {
   return ((template, { skip }) => {
     const values = Object.entries(template) // .filter(Number)
     const out = {}
@@ -86,17 +85,26 @@ export const createWeakenMask = ({
         out[key] = value
         continue
       }
-      const direction = value >= 0 ? 1 : -1
-      const next = value + by * direction
-      const clamped = next >= 0 ? Math.max(min, next) : Math.min(-min, next)
+      const isPositive = value === 0 ? !isMinusZero(value) : value >= 0
+      const direction = isPositive ? 1 : -1
+      const invert = inverseNegatives && !isPositive ? -1 : 1
+      const next = value + by * direction * invert
+      const clamped = isPositive
+        ? Math.max(min, Math.min(max, next))
+        : Math.min(-min, Math.max(-max, next))
+
       out[key] = clamped
     }
     return out as typeof template
   }) as CreateMask
 }
 
+function isMinusZero(value) {
+  return 1 / value === -Infinity
+}
+
 export const createStrengthenMask = (props: ShiftMaskProps) =>
-  createWeakenMask({ ...props, inverse: true })
+  createWeakenMask({ ...props, inverseNegatives: true })
 
 export function applyMask<Theme extends GenericTheme>(
   theme: Theme,

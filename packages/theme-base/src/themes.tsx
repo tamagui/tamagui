@@ -87,11 +87,11 @@ const template = {
   backgroundFocus: 2,
   backgroundStrong: 1,
   backgroundTransparent: 0,
-  color: -2,
-  colorHover: -3,
-  colorPress: -2,
-  colorFocus: -3,
-  colorTransparent: -1,
+  color: -1,
+  colorHover: -2,
+  colorPress: -1,
+  colorFocus: -2,
+  colorTransparent: -0,
   borderColor: 3,
   borderColorHover: 4,
   borderColorPress: 2,
@@ -138,16 +138,18 @@ const baseThemes = {
 
 type Theme = typeof light
 
+// avoid transparent ends
+const max = palettes.dark.length - 1
 const masks = {
   weaker: createWeakenMask({
     by: 1,
     min: 1,
-    max: palettes.dark.length,
+    max,
   }),
   stronger: createStrengthenMask({
     by: 1,
     min: 1,
-    max: palettes.dark.length,
+    max,
   }),
 }
 
@@ -202,10 +204,11 @@ export const themes = addChildren(baseThemes, (name, themeIn) => {
   function getComponentThemes(theme: Theme, inverse: Theme) {
     const stronger1 = applyMask(theme, masks.stronger, { skip })
     const stronger2 = applyMask(stronger1, masks.stronger, { skip })
+    console.log('stronger2', { theme, stronger1, stronger2 })
     const inverse1 = applyMask(inverse, masks.weaker, { skip })
     const inverse2 = applyMask(inverse1, masks.weaker, { skip })
     return {
-      Button: stronger1,
+      Button: stronger2,
       DrawerFrame: stronger1,
       SliderTrack: theme,
       SliderTrackActive: stronger2,
