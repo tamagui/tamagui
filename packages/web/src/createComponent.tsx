@@ -1,11 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
-import {
-  composeEventHandlers,
-  stylePropsView,
-  validPseudoKeys,
-  validStyles,
-} from '@tamagui/helpers'
+import { stylePropsView, validPseudoKeys, validStyles } from '@tamagui/helpers'
 import React, {
   Children,
   Fragment,
@@ -50,7 +45,7 @@ import {
   UseAnimationHook,
   UseAnimationProps,
 } from './types'
-import { Slot, mergeEvent } from './views/Slot'
+import { Slot } from './views/Slot'
 import { useThemedChildren } from './views/Theme'
 
 // let t

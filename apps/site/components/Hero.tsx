@@ -79,7 +79,7 @@ const HeroContents = memo(() => {
         ov="hidden"
         space="$3"
         position="relative"
-        pt="$12"
+        pt="$13"
         mb="$4"
         $sm={{
           maxWidth: '100%',

@@ -101,8 +101,8 @@ const template = {
 
 const lightShadowColor = 'rgba(0,0,0,0.15)'
 const lightShadowColorStrong = 'rgba(0,0,0,0.2)'
-const darkShadowColor = 'rgba(0,0,0,0.5)'
-const darkShadowColorStrong = 'rgba(0,0,0,0.7)'
+const darkShadowColor = 'rgba(0,0,0,0.3)'
+const darkShadowColorStrong = 'rgba(0,0,0,0.45)'
 
 const lightShadows = {
   shadowColor: lightShadowColorStrong,
@@ -151,6 +151,11 @@ const masks = {
   }),
   stronger: createStrengthenMask({
     by: 1,
+    min: 1,
+    max,
+  }),
+  stronger2: createStrengthenMask({
+    by: 2,
     min: 1,
     max,
   }),
@@ -228,7 +233,8 @@ const allThemes = addChildren(baseThemes, (name, themeIn) => {
   function getAltThemes(theme: Theme, inverse: Theme) {
     const alt1 = applyMask(theme, masks.weaker, { skip })
     const alt2 = applyMask(alt1, masks.weaker, { skip })
-    return addChildren({ alt1, alt2 }, (name, theme) => {
+    const active = applyMask(theme, masks.stronger2, { skip })
+    return addChildren({ alt1, alt2, active }, (name, theme) => {
       return getComponentThemes(theme as any, inverse)
     })
   }
