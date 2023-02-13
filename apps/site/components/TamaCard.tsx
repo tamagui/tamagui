@@ -24,7 +24,6 @@ export const TamaCard = ({
   //   },
   //   full: true,
   //   scale: 1,
-  //   color: '$colorMid',
   //   background: 'transparent',
   //   opacity: 1,
   //   inverse: true,

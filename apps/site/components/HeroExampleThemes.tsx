@@ -206,11 +206,11 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
               {themes[0].map((color, i) => {
                 const isActive = curColorI === i
                 return (
-                  <Theme key={`${color}${i}`} name={color}>
+                  <Theme key={`${String(color)}${i}`} name={color}>
                     <ActiveCircle
                       onPress={() => updateActiveI([i, curShadeI])}
                       isActive={isActive}
-                      backgroundColor="$colorMid"
+                      backgroundColor="$color5"
                     />
                   </Theme>
                 )
@@ -225,7 +225,7 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
                     return (
                       <ActiveCircle
                         onPress={() => updateActiveI([curColorI, i])}
-                        key={`${name}${i}`}
+                        key={`${String(name)}${i}`}
                         isActive={isActive}
                         opacity={1.2 - (4 - i) / 4}
                         backgroundColor="$colorHover"
