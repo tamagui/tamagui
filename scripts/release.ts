@@ -138,7 +138,13 @@ async function run() {
       )
     }
 
-    console.log((await exec(`git diff`)).stdout)
+    console.log(
+      (
+        await exec(`git diff`, {
+          maxBuffer: 1024 * 500,
+        })
+      ).stdout
+    )
 
     if (!isCI) {
       const { confirmed } = await prompts({
