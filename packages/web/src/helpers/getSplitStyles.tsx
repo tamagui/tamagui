@@ -915,8 +915,8 @@ export const getSplitStyles: StyleSplitter = (
       // eslint-disable-next-line no-console
       console.groupCollapsed('  🔹 styles =>')
       // prettier-ignore
-      const logs = { transforms, viewProps, state, rulesToInsert, parentSplitStyles, flatTransforms, result }
-      for (const key in { ...result, ...logs }) {
+      const logs = { ...result, state, etc: { transforms, viewProps, rulesToInsert, parentSplitStyles, flatTransforms } }
+      for (const key in logs) {
         // eslint-disable-next-line no-console
         console.log(key, logs[key])
       }
