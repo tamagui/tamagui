@@ -38,8 +38,8 @@ const Box = styled(Stack, {
     boxSize: {
       '...size': (value, { tokens }) => {
         return {
-          width: tokens.size[value as keyof typeof tokens.size] ?? value,
-          height: tokens.size[value as keyof typeof tokens.size] ?? value,
+          width: tokens.size[value] ?? value,
+          height: tokens.size[value] ?? value,
         }
       },
     },

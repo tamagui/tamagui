@@ -1,9 +1,6 @@
-import { isWeb } from '@tamagui/constants'
-import { normalizeCSSColor } from '@tamagui/normalize-css-color'
-
 import { getConfig } from '../config'
 import { expandStyle } from './expandStyle'
-import { normalizeColor, rgba } from './normalizeColor'
+import { normalizeShadow } from './normalizeShadow'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
@@ -46,13 +43,19 @@ export function expandStyles(style: Record<string, any>, config = getConfig()) {
 }
 
 export function fixStyles(style: Record<string, any>) {
-  if (style.shadowRadius) {
+  if (
+    style.shadowRadius ||
+    style.shadowColor ||
+    style.shadowOpacity ||
+    style.shadowOffset
+  ) {
     Object.assign(style, normalizeShadow(style))
   }
 
+  // TODO could be native-only
   // ensure border style set by default to solid
   for (const key in borderDefaults) {
-    if (style[key] && !style[borderDefaults[key]]) {
+    if (key in style && !style[borderDefaults[key]]) {
       style[borderDefaults[key]] = 'solid'
     }
   }
@@ -64,44 +67,4 @@ const borderDefaults = {
   borderTopWidth: 'borderTopStyle',
   borderLeftWidth: 'borderLeftStyle',
   borderRightWidth: 'borderRightStyle',
-}
-
-function normalizeShadow({
-  shadowColor,
-  shadowOffset,
-  shadowOpacity,
-  shadowRadius,
-}: Record<string, any>) {
-  const { height, width } = shadowOffset || defaultOffset
-  const colorStr = String(shadowColor || 'black')
-  return {
-    shadowOffset: {
-      width: normalizeValueWithProperty(width || 0),
-      height: normalizeValueWithProperty(height || 0),
-    },
-    shadowRadius: normalizeValueWithProperty(shadowRadius || 0),
-    ...(isWeb && {
-      shadowColor: normalizeColor(colorStr, shadowOpacity),
-    }),
-    ...(process.env.TAMAGUI_TARGET === 'native' &&
-      (() => {
-        // on native fix bug - shadows behave better if turned into non-alpha rgb() + shadowOpacity
-        const val = normalizeCSSColor(colorStr)
-        if (!val) {
-          if (process.env.NODE_ENV === 'development') {
-            // eslint-disable-next-line no-console
-            console.warn('No rgba form', colorStr)
-          }
-          return {
-            shadowColor,
-            shadowOpacity,
-          }
-        }
-        const { r, g, b, a } = rgba(val)
-        return {
-          shadowColor: `rgb(${r},${g},${b})`,
-          shadowOpacity: shadowOpacity ?? a,
-        }
-      })()),
-  }
 }

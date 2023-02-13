@@ -1,7 +1,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { config as configBase } from '@tamagui/config-base'
+import { config as configBase } from '@tamagui/config'
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { TamaguiProvider, createTamagui } from 'tamagui'
