@@ -40,7 +40,6 @@
     }
   },
   "dependencies": {
-    "@tamagui/tabs": "^1.6.3",
     "@tamagui/adapt": "1.6.3",
     "@tamagui/alert-dialog": "1.6.3",
     "@tamagui/animate-presence": "1.6.3",
@@ -79,6 +78,7 @@
     "@tamagui/slider": "1.6.3",
     "@tamagui/stacks": "1.6.3",
     "@tamagui/switch": "1.6.3",
+    "@tamagui/tabs": "^1.6.3",
     "@tamagui/text": "1.6.3",
     "@tamagui/tooltip": "1.6.3",
     "@tamagui/use-controllable-state": "1.6.3",
