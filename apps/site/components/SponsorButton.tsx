@@ -1,5 +1,5 @@
 import { Heart } from '@tamagui/lucide-icons'
-import { Button, Tooltip, TooltipSimple } from 'tamagui'
+import { Button, TooltipSimple } from 'tamagui'
 
 import { NextLink } from './NextLink'
 
@@ -15,9 +15,9 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
         />
       }
       als="center"
-      elevation="$4"
+      elevation="$3"
       borderWidth={props.tiny ? 0 : 1}
-      borderColor="$color5"
+      borderColor="$borderColor"
       size={props.tiny ? '$2' : '$4'}
       fontFamily="$silkscreen"
       bc="$color1"
