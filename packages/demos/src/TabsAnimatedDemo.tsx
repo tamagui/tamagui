@@ -103,7 +103,6 @@ const HighlightTabs = () => {
           highlightMode="select"
           borderRadius="$4"
           animation="100ms"
-          theme="active"
         />
 
         <Tabs.Trigger unstyled value="tab1">
