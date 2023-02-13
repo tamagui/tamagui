@@ -7,6 +7,7 @@ import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import React from 'react'
+import { XGroup } from 'tamagui'
 
 import { Toggle } from './Toggle'
 
@@ -32,7 +33,7 @@ const useToggleGroupItemScope = createToggleGroupItemScope()
 const ToggleGroupItemFrame = styled(
   ThemeableStack,
   {
-    name: TOGGLE_GROUP_ITEM_NAME,
+    name: 'Toggle',
     variants: {
       size: {
         '...size': (value) => {

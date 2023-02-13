@@ -4,8 +4,8 @@ import { Label, Separator, SizeTokens, ToggleGroup, XStack, YStack } from 'tamag
 export function ToggleGroupDemo() {
   return (
     <YStack w={200} ai="center" space="$3">
-      <ToggleGroupComponent type="single" size="$4" />
-      <ToggleGroupComponent type="multiple" size="$4" />
+      <ToggleGroupComponent type="single" size="$6" />
+      <ToggleGroupComponent type="multiple" size="$6" />
     </YStack>
   )
 }

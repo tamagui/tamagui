@@ -6,7 +6,7 @@ import { ToggleGroupDemo } from '@tamagui/demos'
 import { RadioGroupDemo, SelectDemo, SwitchDemo } from '@tamagui/demos'
 import { Moon } from '@tamagui/lucide-icons'
 import { useState } from 'react'
-import { Button, TamaguiProvider, YStack } from 'tamagui'
+import { Button, TamaguiProvider, XGroup, YStack } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -30,10 +30,6 @@ export const Sandbox = () => {
           __html: `html, body { overflow: hidden; height: 100vh; width: 100vw; }`,
         }}
       />
-
-      <YStack fullscreen ai="center" jc="center">
-        <SwitchDemo />
-      </YStack>
 
       {/*  */}
       <button

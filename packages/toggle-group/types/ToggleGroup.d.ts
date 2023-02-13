@@ -1,10 +1,10 @@
 import { GetProps } from '@tamagui/core';
 import { RovingFocusGroup } from '@tamagui/roving-focus';
 import React from 'react';
-declare const createToggleGroupScope: import("@tamagui/create-context").CreateScope;
-declare const ToggleGroupItemFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+declare const createToggleGroupScope: import("tamagui").CreateScope;
+declare const ToggleGroupItemFrame: import("tamagui").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: import("tamagui").SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -18,10 +18,10 @@ declare const ToggleGroupItemFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    readonly size?: import("@tamagui/core").SizeTokens | undefined;
-} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    readonly size?: import("tamagui").SizeTokens | undefined;
+} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: import("tamagui").SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -35,10 +35,10 @@ declare const ToggleGroupItemFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    readonly size?: import("@tamagui/core").SizeTokens | undefined;
-}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    readonly size?: import("tamagui").SizeTokens | undefined;
+}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: import("tamagui").SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -52,10 +52,10 @@ declare const ToggleGroupItemFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "size"> & {
-    readonly size?: import("@tamagui/core").SizeTokens | undefined;
-}>>, import("@tamagui/core").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
+    readonly size?: import("tamagui").SizeTokens | undefined;
+}>>, import("tamagui").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: import("tamagui").SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -69,7 +69,7 @@ declare const ToggleGroupItemFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 } & {
-    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: import("tamagui").SizeTokens | undefined;
 }>;
 type ToggleGroupItemProps = GetProps<typeof ToggleGroupItemFrame> & {
     value: string;
@@ -83,9 +83,9 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
     type: 'multiple';
 }
 declare const ToggleGroup: React.ForwardRefExoticComponent<(ToggleGroupSingleProps | ToggleGroupMultipleProps) & React.RefAttributes<HTMLElement>> & {
-    Item: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    Item: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
-        readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        readonly elevation?: import("tamagui").SizeTokens | undefined;
     } & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
@@ -99,10 +99,10 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<(ToggleGroupSinglePro
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
     }, "size"> & {
-        readonly size?: import("@tamagui/core").SizeTokens | undefined;
-    } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+        readonly size?: import("tamagui").SizeTokens | undefined;
+    } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
-        readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        readonly elevation?: import("tamagui").SizeTokens | undefined;
     } & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
@@ -116,10 +116,10 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<(ToggleGroupSinglePro
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
     }, "size"> & {
-        readonly size?: import("@tamagui/core").SizeTokens | undefined;
-    }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+        readonly size?: import("tamagui").SizeTokens | undefined;
+    }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
-        readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        readonly elevation?: import("tamagui").SizeTokens | undefined;
     } & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
@@ -133,7 +133,7 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<(ToggleGroupSinglePro
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
     }, "size"> & {
-        readonly size?: import("@tamagui/core").SizeTokens | undefined;
+        readonly size?: import("tamagui").SizeTokens | undefined;
     }>> & {
         value: string;
         id?: string | undefined;
@@ -171,9 +171,9 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
     onValueChange?(value: string[]): void;
 }
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>;
-declare const ToggleGroupImplElementFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+declare const ToggleGroupImplElementFrame: import("tamagui").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: import("tamagui").SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -188,9 +188,9 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/core").TamaguiCompon
     readonly chromeless?: boolean | "all" | undefined;
 }, "orientation"> & {
     readonly orientation?: "horizontal" | "vertical" | undefined;
-} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: import("tamagui").SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -205,9 +205,9 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/core").TamaguiCompon
     readonly chromeless?: boolean | "all" | undefined;
 }, "orientation"> & {
     readonly orientation?: "horizontal" | "vertical" | undefined;
-}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: import("tamagui").SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
@@ -222,9 +222,9 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/core").TamaguiCompon
     readonly chromeless?: boolean | "all" | undefined;
 }, "orientation"> & {
     readonly orientation?: "horizontal" | "vertical" | undefined;
-}>>, import("@tamagui/core").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
+}>>, import("tamagui").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: import("tamagui").SizeTokens | undefined;
 } & {
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
