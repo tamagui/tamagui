@@ -1,11 +1,6 @@
 // SEE config-default-node
 
-import {
-  TamaguiInternalConfig,
-  createFont,
-  createTamagui,
-  createTokens,
-} from '@tamagui/core'
+import { createFont, createTamagui, createTokens } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
 
 // basic fallback theme just to have compiler load in decent tate
@@ -167,31 +162,35 @@ export function getDefaultTamaguiConfig() {
     },
   }
 
+  const fonts = {
+    heading: font,
+    body: font,
+  }
+
+  const media = {
+    xs: { maxWidth: 660 },
+    sm: { maxWidth: 800 },
+    md: { maxWidth: 1020 },
+    lg: { maxWidth: 1280 },
+    xl: { maxWidth: 1420 },
+    xxl: { maxWidth: 1600 },
+    gtXs: { minWidth: 660 + 1 },
+    gtSm: { minWidth: 800 + 1 },
+    gtMd: { minWidth: 1020 + 1 },
+    gtLg: { minWidth: 1280 + 1 },
+    short: { maxHeight: 820 },
+    tall: { minHeight: 820 },
+    hoverNone: { hover: 'none' },
+    pointerCoarse: { pointer: 'coarse' },
+  }
+
   return createTamagui({
     shouldAddPrefersColorThemes: true,
     themeClassNameOnRoot: true,
     shorthands,
-    fonts: {
-      heading: font,
-      body: font,
-    },
+    fonts,
     themes,
     tokens,
-    media: {
-      xs: { maxWidth: 660 },
-      sm: { maxWidth: 800 },
-      md: { maxWidth: 1020 },
-      lg: { maxWidth: 1280 },
-      xl: { maxWidth: 1420 },
-      xxl: { maxWidth: 1600 },
-      gtXs: { minWidth: 660 + 1 },
-      gtSm: { minWidth: 800 + 1 },
-      gtMd: { minWidth: 1020 + 1 },
-      gtLg: { minWidth: 1280 + 1 },
-      short: { maxHeight: 820 },
-      tall: { minHeight: 820 },
-      hoverNone: { hover: 'none' },
-      pointerCoarse: { pointer: 'coarse' },
-    },
-  }) as TamaguiInternalConfig
+    media,
+  })
 }
