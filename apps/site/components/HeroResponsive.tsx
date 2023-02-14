@@ -293,7 +293,6 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
         <YStack w={1} h={70} bc="$colorHover" opacity={active ? 0.2 : 0.05} />
         <Button
           accessibilityLabel={`Responsive size ${name}`}
-          bc="$backgroundPress"
           borderWidth={1}
           size="$3"
           circular

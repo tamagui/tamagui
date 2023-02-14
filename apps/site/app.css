@@ -101,11 +101,6 @@ a {
   text-decoration-color: var(--pink12);
 }
 
-article p, article li.font_body {
-  color: var(--gray12) !important;
-  opacity: 0.75 !important;
-}
-
 p.intro-paragraph.large {
   color: var(--gray12) !important;
   opacity: 1 !important;

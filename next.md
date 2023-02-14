@@ -1,3 +1,4 @@
+- add Themes page in docs under Theme, change Theme => Design System
 - move packages to have unstyled
 - move packages from /core to /web
 - <YStack space="$3" $gtSm={{ space: '$6'}}> not working again
