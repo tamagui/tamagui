@@ -155,7 +155,10 @@ type ConfProps<A extends GenericTokens, B extends GenericThemes, C extends Gener
 };
 export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F> ? TamaguiInternalConfig<A, B, C, D, E, F> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
-export type ThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']];
+type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}` ? never : A;
+type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<keyof TamaguiConfig['themes']>];
+type GenericThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']];
+export type ThemeDefinition = BaseThemeDefinitions extends never ? GenericThemeDefinition : BaseThemeDefinitions;
 export type ThemeKeys = keyof ThemeDefinition;
 export type ThemeParsed = {
     [key in ThemeKeys]: Variable<any>;
