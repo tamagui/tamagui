@@ -19254,6 +19254,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"performant-array-to-tree@npm:^1.11.0":
+  version: 1.11.0
+  resolution: "performant-array-to-tree@npm:1.11.0"
+  checksum: 4cdd22a805c347f82fd6ba5d40632ef859f3db07900a3ae8a6dd8f741e8a5f5b06130d5be64412a40f836c176c828777d15016824ad31d5d685c61c4ebdf3aaf
+  languageName: node
+  linkType: hard
+
 "periscopic@npm:^3.0.0":
   version: 3.0.4
   resolution: "periscopic@npm:3.0.4"
@@ -20534,6 +20541,18 @@ __metadata:
     indent-string: ^4.0.0
     strip-indent: ^3.0.0
   checksum: fa1ef20404a2d399235e83cc80bd55a956642e37dd197b4b612ba7327bf87fa32745aeb4a1634b2bab25467164ab4ed9c15be2c307923dd08b0fe7c52431ae6b
+  languageName: node
+  linkType: hard
+
+"reforest@npm:^0.12.1":
+  version: 0.12.1
+  resolution: "reforest@npm:0.12.1"
+  dependencies:
+    performant-array-to-tree: ^1.11.0
+    zustand: ^4.1.0
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 4e17fec080bddad2bcf39ac2b410bda1e3f21b4e0c5179ef5e0bfc0a157326e02c02e24e2a5637f343af74fe2880a42792becec7f782854c57341d9aad026198
   languageName: node
   linkType: hard
 
@@ -22626,6 +22645,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native-web: ^0.18.3
+    reforest: ^0.12.1
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -25029,6 +25049,23 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: f77b3d8d00310def622123df93d4ee654fc6a0096182af8bd60679ddcdfb3474c56c6c7190817c84a2785648cdee9d721c0154eb45698c62176c322fb46fc700
+  languageName: node
+  linkType: hard
+
+"zustand@npm:^4.1.0":
+  version: 4.3.3
+  resolution: "zustand@npm:4.3.3"
+  dependencies:
+    use-sync-external-store: 1.2.0
+  peerDependencies:
+    immer: ">=9.0"
+    react: ">=16.8"
+  peerDependenciesMeta:
+    immer:
+      optional: true
+    react:
+      optional: true
+  checksum: fe0277ab0ce14849dea254cbdcfe83d4614364d38e616875f75ef2419f29085f5b03605efabeb33189a4557e647efaa294e0984c4f642e0566f445a7b207cdd6
   languageName: node
   linkType: hard
 
