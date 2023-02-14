@@ -78,10 +78,8 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 inbox
 
-- So it looks like any import of tamagui (not @tamagui/core) breaks the build on the web. I've created a repro here https://stackblitz.com/edit/vitejs-vite-3sbtgb?file=src/App.tsx.
+
 - bundle size reductions:
-  - remove setColorAlpha in favor of internal core rgba util
-  - expandStyle remove some
   - merge mergeSlotProps and mergeProps
   - move to PROP whitelist rather than style whitelist maybe avoid validStyleProps altogether
   - getStylesAtomic "all webkit prefixed rules, pointer-events"

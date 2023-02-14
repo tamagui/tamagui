@@ -1,7 +1,16 @@
 import { ThemeTint, useTint } from '@tamagui/logo'
 import { FastForward } from '@tamagui/lucide-icons'
 import { memo, useState } from 'react'
-import { Button, H5, Paragraph, ScrollView, XGroup, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  H5,
+  Paragraph,
+  ScrollView,
+  ThemeName,
+  XGroup,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
 import { ContainerLarge } from './Container'
@@ -189,7 +198,6 @@ const CodeExamples = memo(({ examples, title }: any) => {
         <YStack f={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
           <CodeDemoPreParsed
             height={325}
-            theme="Card"
             maxHeight={325}
             f={1}
             language={example.language}

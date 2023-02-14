@@ -425,8 +425,8 @@ iframe {
 }
 
 .token.comment {
-  color: var(--color5);
-  opacity: 0.6;
+  color: var(--color);
+  opacity: 0.4;
 }
 
 .token.atapply .token:not(.rule):not(.important) {
