@@ -1,9 +1,11 @@
 {
   "name": "@tamagui/starter",
   "private": true,
+  "type": "module",
   "scripts": {
     "native": "cd apps/expo && yarn start",
     "watch": "yarn workspaces foreach -pi run watch",
+    "test": "vitest type --run --config ../../packages/vite-plugin-internal/src/vite.config.ts **/*.test.tsx",
     "web": "yarn build && cd apps/next && yarn next",
     "web:extract": "DISABLE_EXTRACTION=false yarn workspace next-app dev",
     "web:prod": "yarn workspace next-app build",
