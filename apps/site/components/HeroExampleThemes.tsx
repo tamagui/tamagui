@@ -210,7 +210,7 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
                     <ActiveCircle
                       onPress={() => updateActiveI([i, curShadeI])}
                       isActive={isActive}
-                      backgroundColor="$color5"
+                      backgroundColor="$color8"
                     />
                   </Theme>
                 )
