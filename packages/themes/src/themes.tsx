@@ -135,12 +135,8 @@ const light = createTheme(palettes.light, lightTemplate, {
 
 const dark = createTheme(palettes.dark, darkTemplate, { nonInheritedValues: darkColors })
 
-type Theme = { [key in keyof typeof light]: string }
 type SubTheme = { [key in keyof typeof lightTemplate]: string }
 
-// the SubTheme is just the values we override in each sub-theme
-// we type these as that initially because otherwise types explode and get huge and TS errors :/
-// but at the end of the file it's very simple to cast the generated themes back to full themes
 const baseThemes: {
   light: SubTheme
   dark: SubTheme
@@ -251,6 +247,10 @@ const allThemes = addChildren(baseThemes, (name, themeIn) => {
   }
 })
 
-export const themes = allThemes as {
-  [key in keyof typeof allThemes]: Theme
+export const themes = {
+  ...allThemes,
+  // bring back the full type, the rest use a subset to avoid clogging up ts,
+  // tamagui will be smart and use the top level themes as the type for useTheme() etc
+  light,
+  dark,
 }

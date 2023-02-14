@@ -272,8 +272,17 @@ export type GenericTamaguiConfig = CreateTamaguiConfig<
   GenericFonts
 >
 
-// since TamaguiConfig will be re-declared, these will all be typed globally
-export type ThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']]
+// try and find the top level types as they can be supersets:
+type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}`
+  ? never
+  : A
+type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<
+  keyof TamaguiConfig['themes']
+>]
+type GenericThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']]
+export type ThemeDefinition = BaseThemeDefinitions extends never
+  ? GenericThemeDefinition
+  : BaseThemeDefinitions
 export type ThemeKeys = keyof ThemeDefinition
 export type ThemeParsed = {
   [key in ThemeKeys]: Variable<any>
