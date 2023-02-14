@@ -100,13 +100,12 @@ const monoFont = createGenericFont(
   }
 )
 
-export const config = {
+const configWithoutThemes = {
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
   animations,
   media,
   shorthands,
-  themes,
   tokens,
   fonts: {
     // noto: notoFont as any,
@@ -115,6 +114,15 @@ export const config = {
     mono: monoFont,
     silkscreen: silkscreenFont,
   },
+}
+
+// explicit type due to
+// "The inferred type of this node exceeds the maximum length the compiler will serialize. An explicit type annotation is needed."
+export const config: typeof configWithoutThemes & {
+  themes: typeof themes
+} = {
+  ...configWithoutThemes,
+  themes,
 }
 
 // @ts-ignore bad types
