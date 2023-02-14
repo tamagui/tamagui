@@ -393,7 +393,6 @@ export function createComponent<
     }
 
     const {
-      hitSlop,
       asChild,
       children,
       onPress,
