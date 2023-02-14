@@ -138,13 +138,7 @@ async function run() {
       )
     }
 
-    console.log(
-      (
-        await exec(`git diff`, {
-          maxBuffer: 1024 * 500,
-        })
-      ).stdout
-    )
+    await spawnify(`git diff`)
 
     if (!isCI) {
       const { confirmed } = await prompts({
@@ -262,6 +256,20 @@ async function run() {
     await spawnify(`yarn install`)
     await spawnify(`yarn fix`)
 
+    await (async () => {
+      const seconds = 5
+      console.log(
+        `Update starters to v${version} in (${seconds}) seconds (give time to propogate)...`
+      )
+      await new Promise((res) => setTimeout(res, seconds * 1000))
+    })()
+
+    await spawnify(`yarn upgrade:starters`)
+    await spawnify(`yarn fix`)
+    await spawnify(`yarn fix`, {
+      cwd: join(process.cwd(), 'starters/next-expo-solito'),
+    })
+
     if (!rePublish) {
       await spawnify(`git add -A`)
       await spawnify(`git commit -m v${version}`)
@@ -270,19 +278,6 @@ async function run() {
       await spawnify(`git push origin v${version}`)
       console.log(`✅ Pushed and versioned\n`)
     }
-
-    const seconds = 5
-    console.log(
-      `Update starters to v${version} in (${seconds}) seconds (give time to propogate)...`
-    )
-    await new Promise((res) => setTimeout(res, 5 * 1000))
-    await spawnify(`yarn upgrade:starters`)
-    await spawnify(`yarn fix`)
-    await spawnify(`yarn fix`, {
-      cwd: join(process.cwd(), 'starters/next-expo-solito'),
-    })
-    await spawnify(`git commit -am update-starters-v${version}`)
-    await spawnify(`git push origin head`)
   } catch (err) {
     console.log('\nError:\n', err)
     process.exit(1)
