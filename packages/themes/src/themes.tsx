@@ -34,7 +34,7 @@ const palettes = {
   light: [
     lightTransparent,
     '#fff',
-    '#f4f4f4',
+    '#f9f9f9',
     'hsl(0, 0%, 99.0%)',
     'hsl(0, 0%, 97.3%)',
     'hsl(0, 0%, 95.1%)',
@@ -99,8 +99,8 @@ const template = {
   placeholderColor: -4,
 }
 
-const lightShadowColor = 'rgba(0,0,0,0.05)'
-const lightShadowColorStrong = 'rgba(0,0,0,0.1)'
+const lightShadowColor = 'rgba(0,0,0,0.02)'
+const lightShadowColorStrong = 'rgba(0,0,0,0.066)'
 const darkShadowColor = 'rgba(0,0,0,0.2)'
 const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
 
@@ -120,11 +120,10 @@ const darkShadows = {
 
 const lightTemplate = {
   ...template,
-  background: 1,
-  backgroundHover: 2,
-  backgroundPress: 1,
-  backgroundFocus: 1,
-  backgroundStrong: 2,
+  borderColor: 3,
+  borderColorHover: 4,
+  borderColorPress: 2,
+  borderColorFocus: 3,
   ...lightShadows,
 }
 
@@ -182,13 +181,18 @@ const allThemes = addChildren(baseThemes, (name, themeIn) => {
     return Object.fromEntries(
       Object.keys(colorSet).map((color) => {
         const colorPalette = Object.values(colorSet[color as ColorName])
-        // we want a much lighter text color by default so swap them around a bit
-        const first6 = colorPalette.slice(0, 6)
-        const last5 = colorPalette.slice(colorPalette.length - 5)
+        // were re-ordering these
+        const [head, tail] = [
+          colorPalette.slice(0, 6),
+          colorPalette.slice(colorPalette.length - 5),
+        ]
+        // add our transparent colors first/last
+        // and make sure the last (foreground) color is white/black rather than colorful
+        // this is mostly for consistency with the older theme-base
         const palette = [
           transparent(colorPalette[0]),
-          ...first6,
-          ...last5,
+          ...head,
+          ...tail,
           theme.color,
           transparent(colorPalette[colorPalette.length - 1]),
         ]
@@ -218,6 +222,7 @@ const allThemes = addChildren(baseThemes, (name, themeIn) => {
     const inverse1 = applyMask(inverse, masks.weaker, { skip })
     const inverse2 = applyMask(inverse1, masks.weaker, { skip })
     return {
+      Card: stronger1,
       Button: stronger2,
       DrawerFrame: stronger1,
       SliderTrack: theme,
