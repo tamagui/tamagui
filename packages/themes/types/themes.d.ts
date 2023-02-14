@@ -3,6 +3,10 @@ declare const lightTemplate: {
     shadowColorHover: string;
     shadowColorPress: string;
     shadowColorFocus: string;
+    borderColor: number;
+    borderColorHover: number;
+    borderColorPress: number;
+    borderColorFocus: number;
     background: number;
     backgroundHover: number;
     backgroundPress: number;
@@ -14,10 +18,6 @@ declare const lightTemplate: {
     colorPress: number;
     colorFocus: number;
     colorTransparent: number;
-    borderColor: number;
-    borderColorHover: number;
-    borderColorPress: number;
-    borderColorFocus: number;
     placeholderColor: number;
     color1: number;
     color2: number;
@@ -137,6 +137,10 @@ export declare const themes: {
         shadowColorHover: string;
         shadowColorPress: string;
         shadowColorFocus: string;
+        borderColor: string;
+        borderColorHover: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -148,10 +152,6 @@ export declare const themes: {
         colorPress: string;
         colorFocus: string;
         colorTransparent: string;
-        borderColor: string;
-        borderColorHover: string;
-        borderColorPress: string;
-        borderColorFocus: string;
         placeholderColor: string;
         color1: string;
         color2: string;
@@ -267,6 +267,10 @@ export declare const themes: {
         shadowColorHover: string;
         shadowColorPress: string;
         shadowColorFocus: string;
+        borderColor: string;
+        borderColorHover: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -278,10 +282,6 @@ export declare const themes: {
         colorPress: string;
         colorFocus: string;
         colorTransparent: string;
-        borderColor: string;
-        borderColorHover: string;
-        borderColorPress: string;
-        borderColorFocus: string;
         placeholderColor: string;
         color1: string;
         color2: string;
@@ -299,6 +299,7 @@ export declare const themes: {
     light_alt1: Theme;
     light_alt2: Theme;
     light_active: Theme;
+    light_Card: Theme;
     light_Button: Theme;
     light_DrawerFrame: Theme;
     light_SliderTrack: Theme;
@@ -310,6 +311,7 @@ export declare const themes: {
     light_SwitchThumb: Theme;
     light_TooltipArrow: Theme;
     light_TooltipContent: Theme;
+    light_alt1_Card: Theme;
     light_alt1_Button: Theme;
     light_alt1_DrawerFrame: Theme;
     light_alt1_SliderTrack: Theme;
@@ -321,6 +323,7 @@ export declare const themes: {
     light_alt1_SwitchThumb: Theme;
     light_alt1_TooltipArrow: Theme;
     light_alt1_TooltipContent: Theme;
+    light_alt2_Card: Theme;
     light_alt2_Button: Theme;
     light_alt2_DrawerFrame: Theme;
     light_alt2_SliderTrack: Theme;
@@ -332,6 +335,7 @@ export declare const themes: {
     light_alt2_SwitchThumb: Theme;
     light_alt2_TooltipArrow: Theme;
     light_alt2_TooltipContent: Theme;
+    light_active_Card: Theme;
     light_active_Button: Theme;
     light_active_DrawerFrame: Theme;
     light_active_SliderTrack: Theme;
@@ -354,6 +358,7 @@ export declare const themes: {
     light_blue_alt1: Theme;
     light_blue_alt2: Theme;
     light_blue_active: Theme;
+    light_blue_Card: Theme;
     light_blue_Button: Theme;
     light_blue_DrawerFrame: Theme;
     light_blue_SliderTrack: Theme;
@@ -365,6 +370,7 @@ export declare const themes: {
     light_blue_SwitchThumb: Theme;
     light_blue_TooltipArrow: Theme;
     light_blue_TooltipContent: Theme;
+    light_blue_alt1_Card: Theme;
     light_blue_alt1_Button: Theme;
     light_blue_alt1_DrawerFrame: Theme;
     light_blue_alt1_SliderTrack: Theme;
@@ -376,6 +382,7 @@ export declare const themes: {
     light_blue_alt1_SwitchThumb: Theme;
     light_blue_alt1_TooltipArrow: Theme;
     light_blue_alt1_TooltipContent: Theme;
+    light_blue_alt2_Card: Theme;
     light_blue_alt2_Button: Theme;
     light_blue_alt2_DrawerFrame: Theme;
     light_blue_alt2_SliderTrack: Theme;
@@ -387,6 +394,7 @@ export declare const themes: {
     light_blue_alt2_SwitchThumb: Theme;
     light_blue_alt2_TooltipArrow: Theme;
     light_blue_alt2_TooltipContent: Theme;
+    light_blue_active_Card: Theme;
     light_blue_active_Button: Theme;
     light_blue_active_DrawerFrame: Theme;
     light_blue_active_SliderTrack: Theme;
@@ -401,6 +409,7 @@ export declare const themes: {
     light_gray_alt1: Theme;
     light_gray_alt2: Theme;
     light_gray_active: Theme;
+    light_gray_Card: Theme;
     light_gray_Button: Theme;
     light_gray_DrawerFrame: Theme;
     light_gray_SliderTrack: Theme;
@@ -412,6 +421,7 @@ export declare const themes: {
     light_gray_SwitchThumb: Theme;
     light_gray_TooltipArrow: Theme;
     light_gray_TooltipContent: Theme;
+    light_gray_alt1_Card: Theme;
     light_gray_alt1_Button: Theme;
     light_gray_alt1_DrawerFrame: Theme;
     light_gray_alt1_SliderTrack: Theme;
@@ -423,6 +433,7 @@ export declare const themes: {
     light_gray_alt1_SwitchThumb: Theme;
     light_gray_alt1_TooltipArrow: Theme;
     light_gray_alt1_TooltipContent: Theme;
+    light_gray_alt2_Card: Theme;
     light_gray_alt2_Button: Theme;
     light_gray_alt2_DrawerFrame: Theme;
     light_gray_alt2_SliderTrack: Theme;
@@ -434,6 +445,7 @@ export declare const themes: {
     light_gray_alt2_SwitchThumb: Theme;
     light_gray_alt2_TooltipArrow: Theme;
     light_gray_alt2_TooltipContent: Theme;
+    light_gray_active_Card: Theme;
     light_gray_active_Button: Theme;
     light_gray_active_DrawerFrame: Theme;
     light_gray_active_SliderTrack: Theme;
@@ -448,6 +460,7 @@ export declare const themes: {
     light_green_alt1: Theme;
     light_green_alt2: Theme;
     light_green_active: Theme;
+    light_green_Card: Theme;
     light_green_Button: Theme;
     light_green_DrawerFrame: Theme;
     light_green_SliderTrack: Theme;
@@ -459,6 +472,7 @@ export declare const themes: {
     light_green_SwitchThumb: Theme;
     light_green_TooltipArrow: Theme;
     light_green_TooltipContent: Theme;
+    light_green_alt1_Card: Theme;
     light_green_alt1_Button: Theme;
     light_green_alt1_DrawerFrame: Theme;
     light_green_alt1_SliderTrack: Theme;
@@ -470,6 +484,7 @@ export declare const themes: {
     light_green_alt1_SwitchThumb: Theme;
     light_green_alt1_TooltipArrow: Theme;
     light_green_alt1_TooltipContent: Theme;
+    light_green_alt2_Card: Theme;
     light_green_alt2_Button: Theme;
     light_green_alt2_DrawerFrame: Theme;
     light_green_alt2_SliderTrack: Theme;
@@ -481,6 +496,7 @@ export declare const themes: {
     light_green_alt2_SwitchThumb: Theme;
     light_green_alt2_TooltipArrow: Theme;
     light_green_alt2_TooltipContent: Theme;
+    light_green_active_Card: Theme;
     light_green_active_Button: Theme;
     light_green_active_DrawerFrame: Theme;
     light_green_active_SliderTrack: Theme;
@@ -495,6 +511,7 @@ export declare const themes: {
     light_orange_alt1: Theme;
     light_orange_alt2: Theme;
     light_orange_active: Theme;
+    light_orange_Card: Theme;
     light_orange_Button: Theme;
     light_orange_DrawerFrame: Theme;
     light_orange_SliderTrack: Theme;
@@ -506,6 +523,7 @@ export declare const themes: {
     light_orange_SwitchThumb: Theme;
     light_orange_TooltipArrow: Theme;
     light_orange_TooltipContent: Theme;
+    light_orange_alt1_Card: Theme;
     light_orange_alt1_Button: Theme;
     light_orange_alt1_DrawerFrame: Theme;
     light_orange_alt1_SliderTrack: Theme;
@@ -517,6 +535,7 @@ export declare const themes: {
     light_orange_alt1_SwitchThumb: Theme;
     light_orange_alt1_TooltipArrow: Theme;
     light_orange_alt1_TooltipContent: Theme;
+    light_orange_alt2_Card: Theme;
     light_orange_alt2_Button: Theme;
     light_orange_alt2_DrawerFrame: Theme;
     light_orange_alt2_SliderTrack: Theme;
@@ -528,6 +547,7 @@ export declare const themes: {
     light_orange_alt2_SwitchThumb: Theme;
     light_orange_alt2_TooltipArrow: Theme;
     light_orange_alt2_TooltipContent: Theme;
+    light_orange_active_Card: Theme;
     light_orange_active_Button: Theme;
     light_orange_active_DrawerFrame: Theme;
     light_orange_active_SliderTrack: Theme;
@@ -542,6 +562,7 @@ export declare const themes: {
     light_pink_alt1: Theme;
     light_pink_alt2: Theme;
     light_pink_active: Theme;
+    light_pink_Card: Theme;
     light_pink_Button: Theme;
     light_pink_DrawerFrame: Theme;
     light_pink_SliderTrack: Theme;
@@ -553,6 +574,7 @@ export declare const themes: {
     light_pink_SwitchThumb: Theme;
     light_pink_TooltipArrow: Theme;
     light_pink_TooltipContent: Theme;
+    light_pink_alt1_Card: Theme;
     light_pink_alt1_Button: Theme;
     light_pink_alt1_DrawerFrame: Theme;
     light_pink_alt1_SliderTrack: Theme;
@@ -564,6 +586,7 @@ export declare const themes: {
     light_pink_alt1_SwitchThumb: Theme;
     light_pink_alt1_TooltipArrow: Theme;
     light_pink_alt1_TooltipContent: Theme;
+    light_pink_alt2_Card: Theme;
     light_pink_alt2_Button: Theme;
     light_pink_alt2_DrawerFrame: Theme;
     light_pink_alt2_SliderTrack: Theme;
@@ -575,6 +598,7 @@ export declare const themes: {
     light_pink_alt2_SwitchThumb: Theme;
     light_pink_alt2_TooltipArrow: Theme;
     light_pink_alt2_TooltipContent: Theme;
+    light_pink_active_Card: Theme;
     light_pink_active_Button: Theme;
     light_pink_active_DrawerFrame: Theme;
     light_pink_active_SliderTrack: Theme;
@@ -589,6 +613,7 @@ export declare const themes: {
     light_purple_alt1: Theme;
     light_purple_alt2: Theme;
     light_purple_active: Theme;
+    light_purple_Card: Theme;
     light_purple_Button: Theme;
     light_purple_DrawerFrame: Theme;
     light_purple_SliderTrack: Theme;
@@ -600,6 +625,7 @@ export declare const themes: {
     light_purple_SwitchThumb: Theme;
     light_purple_TooltipArrow: Theme;
     light_purple_TooltipContent: Theme;
+    light_purple_alt1_Card: Theme;
     light_purple_alt1_Button: Theme;
     light_purple_alt1_DrawerFrame: Theme;
     light_purple_alt1_SliderTrack: Theme;
@@ -611,6 +637,7 @@ export declare const themes: {
     light_purple_alt1_SwitchThumb: Theme;
     light_purple_alt1_TooltipArrow: Theme;
     light_purple_alt1_TooltipContent: Theme;
+    light_purple_alt2_Card: Theme;
     light_purple_alt2_Button: Theme;
     light_purple_alt2_DrawerFrame: Theme;
     light_purple_alt2_SliderTrack: Theme;
@@ -622,6 +649,7 @@ export declare const themes: {
     light_purple_alt2_SwitchThumb: Theme;
     light_purple_alt2_TooltipArrow: Theme;
     light_purple_alt2_TooltipContent: Theme;
+    light_purple_active_Card: Theme;
     light_purple_active_Button: Theme;
     light_purple_active_DrawerFrame: Theme;
     light_purple_active_SliderTrack: Theme;
@@ -636,6 +664,7 @@ export declare const themes: {
     light_red_alt1: Theme;
     light_red_alt2: Theme;
     light_red_active: Theme;
+    light_red_Card: Theme;
     light_red_Button: Theme;
     light_red_DrawerFrame: Theme;
     light_red_SliderTrack: Theme;
@@ -647,6 +676,7 @@ export declare const themes: {
     light_red_SwitchThumb: Theme;
     light_red_TooltipArrow: Theme;
     light_red_TooltipContent: Theme;
+    light_red_alt1_Card: Theme;
     light_red_alt1_Button: Theme;
     light_red_alt1_DrawerFrame: Theme;
     light_red_alt1_SliderTrack: Theme;
@@ -658,6 +688,7 @@ export declare const themes: {
     light_red_alt1_SwitchThumb: Theme;
     light_red_alt1_TooltipArrow: Theme;
     light_red_alt1_TooltipContent: Theme;
+    light_red_alt2_Card: Theme;
     light_red_alt2_Button: Theme;
     light_red_alt2_DrawerFrame: Theme;
     light_red_alt2_SliderTrack: Theme;
@@ -669,6 +700,7 @@ export declare const themes: {
     light_red_alt2_SwitchThumb: Theme;
     light_red_alt2_TooltipArrow: Theme;
     light_red_alt2_TooltipContent: Theme;
+    light_red_active_Card: Theme;
     light_red_active_Button: Theme;
     light_red_active_DrawerFrame: Theme;
     light_red_active_SliderTrack: Theme;
@@ -683,6 +715,7 @@ export declare const themes: {
     light_yellow_alt1: Theme;
     light_yellow_alt2: Theme;
     light_yellow_active: Theme;
+    light_yellow_Card: Theme;
     light_yellow_Button: Theme;
     light_yellow_DrawerFrame: Theme;
     light_yellow_SliderTrack: Theme;
@@ -694,6 +727,7 @@ export declare const themes: {
     light_yellow_SwitchThumb: Theme;
     light_yellow_TooltipArrow: Theme;
     light_yellow_TooltipContent: Theme;
+    light_yellow_alt1_Card: Theme;
     light_yellow_alt1_Button: Theme;
     light_yellow_alt1_DrawerFrame: Theme;
     light_yellow_alt1_SliderTrack: Theme;
@@ -705,6 +739,7 @@ export declare const themes: {
     light_yellow_alt1_SwitchThumb: Theme;
     light_yellow_alt1_TooltipArrow: Theme;
     light_yellow_alt1_TooltipContent: Theme;
+    light_yellow_alt2_Card: Theme;
     light_yellow_alt2_Button: Theme;
     light_yellow_alt2_DrawerFrame: Theme;
     light_yellow_alt2_SliderTrack: Theme;
@@ -716,6 +751,7 @@ export declare const themes: {
     light_yellow_alt2_SwitchThumb: Theme;
     light_yellow_alt2_TooltipArrow: Theme;
     light_yellow_alt2_TooltipContent: Theme;
+    light_yellow_active_Card: Theme;
     light_yellow_active_Button: Theme;
     light_yellow_active_DrawerFrame: Theme;
     light_yellow_active_SliderTrack: Theme;
@@ -730,6 +766,7 @@ export declare const themes: {
     dark_alt1: Theme;
     dark_alt2: Theme;
     dark_active: Theme;
+    dark_Card: Theme;
     dark_Button: Theme;
     dark_DrawerFrame: Theme;
     dark_SliderTrack: Theme;
@@ -741,6 +778,7 @@ export declare const themes: {
     dark_SwitchThumb: Theme;
     dark_TooltipArrow: Theme;
     dark_TooltipContent: Theme;
+    dark_alt1_Card: Theme;
     dark_alt1_Button: Theme;
     dark_alt1_DrawerFrame: Theme;
     dark_alt1_SliderTrack: Theme;
@@ -752,6 +790,7 @@ export declare const themes: {
     dark_alt1_SwitchThumb: Theme;
     dark_alt1_TooltipArrow: Theme;
     dark_alt1_TooltipContent: Theme;
+    dark_alt2_Card: Theme;
     dark_alt2_Button: Theme;
     dark_alt2_DrawerFrame: Theme;
     dark_alt2_SliderTrack: Theme;
@@ -763,6 +802,7 @@ export declare const themes: {
     dark_alt2_SwitchThumb: Theme;
     dark_alt2_TooltipArrow: Theme;
     dark_alt2_TooltipContent: Theme;
+    dark_active_Card: Theme;
     dark_active_Button: Theme;
     dark_active_DrawerFrame: Theme;
     dark_active_SliderTrack: Theme;
@@ -785,6 +825,7 @@ export declare const themes: {
     dark_blue_alt1: Theme;
     dark_blue_alt2: Theme;
     dark_blue_active: Theme;
+    dark_blue_Card: Theme;
     dark_blue_Button: Theme;
     dark_blue_DrawerFrame: Theme;
     dark_blue_SliderTrack: Theme;
@@ -796,6 +837,7 @@ export declare const themes: {
     dark_blue_SwitchThumb: Theme;
     dark_blue_TooltipArrow: Theme;
     dark_blue_TooltipContent: Theme;
+    dark_blue_alt1_Card: Theme;
     dark_blue_alt1_Button: Theme;
     dark_blue_alt1_DrawerFrame: Theme;
     dark_blue_alt1_SliderTrack: Theme;
@@ -807,6 +849,7 @@ export declare const themes: {
     dark_blue_alt1_SwitchThumb: Theme;
     dark_blue_alt1_TooltipArrow: Theme;
     dark_blue_alt1_TooltipContent: Theme;
+    dark_blue_alt2_Card: Theme;
     dark_blue_alt2_Button: Theme;
     dark_blue_alt2_DrawerFrame: Theme;
     dark_blue_alt2_SliderTrack: Theme;
@@ -818,6 +861,7 @@ export declare const themes: {
     dark_blue_alt2_SwitchThumb: Theme;
     dark_blue_alt2_TooltipArrow: Theme;
     dark_blue_alt2_TooltipContent: Theme;
+    dark_blue_active_Card: Theme;
     dark_blue_active_Button: Theme;
     dark_blue_active_DrawerFrame: Theme;
     dark_blue_active_SliderTrack: Theme;
@@ -832,6 +876,7 @@ export declare const themes: {
     dark_gray_alt1: Theme;
     dark_gray_alt2: Theme;
     dark_gray_active: Theme;
+    dark_gray_Card: Theme;
     dark_gray_Button: Theme;
     dark_gray_DrawerFrame: Theme;
     dark_gray_SliderTrack: Theme;
@@ -843,6 +888,7 @@ export declare const themes: {
     dark_gray_SwitchThumb: Theme;
     dark_gray_TooltipArrow: Theme;
     dark_gray_TooltipContent: Theme;
+    dark_gray_alt1_Card: Theme;
     dark_gray_alt1_Button: Theme;
     dark_gray_alt1_DrawerFrame: Theme;
     dark_gray_alt1_SliderTrack: Theme;
@@ -854,6 +900,7 @@ export declare const themes: {
     dark_gray_alt1_SwitchThumb: Theme;
     dark_gray_alt1_TooltipArrow: Theme;
     dark_gray_alt1_TooltipContent: Theme;
+    dark_gray_alt2_Card: Theme;
     dark_gray_alt2_Button: Theme;
     dark_gray_alt2_DrawerFrame: Theme;
     dark_gray_alt2_SliderTrack: Theme;
@@ -865,6 +912,7 @@ export declare const themes: {
     dark_gray_alt2_SwitchThumb: Theme;
     dark_gray_alt2_TooltipArrow: Theme;
     dark_gray_alt2_TooltipContent: Theme;
+    dark_gray_active_Card: Theme;
     dark_gray_active_Button: Theme;
     dark_gray_active_DrawerFrame: Theme;
     dark_gray_active_SliderTrack: Theme;
@@ -879,6 +927,7 @@ export declare const themes: {
     dark_green_alt1: Theme;
     dark_green_alt2: Theme;
     dark_green_active: Theme;
+    dark_green_Card: Theme;
     dark_green_Button: Theme;
     dark_green_DrawerFrame: Theme;
     dark_green_SliderTrack: Theme;
@@ -890,6 +939,7 @@ export declare const themes: {
     dark_green_SwitchThumb: Theme;
     dark_green_TooltipArrow: Theme;
     dark_green_TooltipContent: Theme;
+    dark_green_alt1_Card: Theme;
     dark_green_alt1_Button: Theme;
     dark_green_alt1_DrawerFrame: Theme;
     dark_green_alt1_SliderTrack: Theme;
@@ -901,6 +951,7 @@ export declare const themes: {
     dark_green_alt1_SwitchThumb: Theme;
     dark_green_alt1_TooltipArrow: Theme;
     dark_green_alt1_TooltipContent: Theme;
+    dark_green_alt2_Card: Theme;
     dark_green_alt2_Button: Theme;
     dark_green_alt2_DrawerFrame: Theme;
     dark_green_alt2_SliderTrack: Theme;
@@ -912,6 +963,7 @@ export declare const themes: {
     dark_green_alt2_SwitchThumb: Theme;
     dark_green_alt2_TooltipArrow: Theme;
     dark_green_alt2_TooltipContent: Theme;
+    dark_green_active_Card: Theme;
     dark_green_active_Button: Theme;
     dark_green_active_DrawerFrame: Theme;
     dark_green_active_SliderTrack: Theme;
@@ -926,6 +978,7 @@ export declare const themes: {
     dark_orange_alt1: Theme;
     dark_orange_alt2: Theme;
     dark_orange_active: Theme;
+    dark_orange_Card: Theme;
     dark_orange_Button: Theme;
     dark_orange_DrawerFrame: Theme;
     dark_orange_SliderTrack: Theme;
@@ -937,6 +990,7 @@ export declare const themes: {
     dark_orange_SwitchThumb: Theme;
     dark_orange_TooltipArrow: Theme;
     dark_orange_TooltipContent: Theme;
+    dark_orange_alt1_Card: Theme;
     dark_orange_alt1_Button: Theme;
     dark_orange_alt1_DrawerFrame: Theme;
     dark_orange_alt1_SliderTrack: Theme;
@@ -948,6 +1002,7 @@ export declare const themes: {
     dark_orange_alt1_SwitchThumb: Theme;
     dark_orange_alt1_TooltipArrow: Theme;
     dark_orange_alt1_TooltipContent: Theme;
+    dark_orange_alt2_Card: Theme;
     dark_orange_alt2_Button: Theme;
     dark_orange_alt2_DrawerFrame: Theme;
     dark_orange_alt2_SliderTrack: Theme;
@@ -959,6 +1014,7 @@ export declare const themes: {
     dark_orange_alt2_SwitchThumb: Theme;
     dark_orange_alt2_TooltipArrow: Theme;
     dark_orange_alt2_TooltipContent: Theme;
+    dark_orange_active_Card: Theme;
     dark_orange_active_Button: Theme;
     dark_orange_active_DrawerFrame: Theme;
     dark_orange_active_SliderTrack: Theme;
@@ -973,6 +1029,7 @@ export declare const themes: {
     dark_pink_alt1: Theme;
     dark_pink_alt2: Theme;
     dark_pink_active: Theme;
+    dark_pink_Card: Theme;
     dark_pink_Button: Theme;
     dark_pink_DrawerFrame: Theme;
     dark_pink_SliderTrack: Theme;
@@ -984,6 +1041,7 @@ export declare const themes: {
     dark_pink_SwitchThumb: Theme;
     dark_pink_TooltipArrow: Theme;
     dark_pink_TooltipContent: Theme;
+    dark_pink_alt1_Card: Theme;
     dark_pink_alt1_Button: Theme;
     dark_pink_alt1_DrawerFrame: Theme;
     dark_pink_alt1_SliderTrack: Theme;
@@ -995,6 +1053,7 @@ export declare const themes: {
     dark_pink_alt1_SwitchThumb: Theme;
     dark_pink_alt1_TooltipArrow: Theme;
     dark_pink_alt1_TooltipContent: Theme;
+    dark_pink_alt2_Card: Theme;
     dark_pink_alt2_Button: Theme;
     dark_pink_alt2_DrawerFrame: Theme;
     dark_pink_alt2_SliderTrack: Theme;
@@ -1006,6 +1065,7 @@ export declare const themes: {
     dark_pink_alt2_SwitchThumb: Theme;
     dark_pink_alt2_TooltipArrow: Theme;
     dark_pink_alt2_TooltipContent: Theme;
+    dark_pink_active_Card: Theme;
     dark_pink_active_Button: Theme;
     dark_pink_active_DrawerFrame: Theme;
     dark_pink_active_SliderTrack: Theme;
@@ -1020,6 +1080,7 @@ export declare const themes: {
     dark_purple_alt1: Theme;
     dark_purple_alt2: Theme;
     dark_purple_active: Theme;
+    dark_purple_Card: Theme;
     dark_purple_Button: Theme;
     dark_purple_DrawerFrame: Theme;
     dark_purple_SliderTrack: Theme;
@@ -1031,6 +1092,7 @@ export declare const themes: {
     dark_purple_SwitchThumb: Theme;
     dark_purple_TooltipArrow: Theme;
     dark_purple_TooltipContent: Theme;
+    dark_purple_alt1_Card: Theme;
     dark_purple_alt1_Button: Theme;
     dark_purple_alt1_DrawerFrame: Theme;
     dark_purple_alt1_SliderTrack: Theme;
@@ -1042,6 +1104,7 @@ export declare const themes: {
     dark_purple_alt1_SwitchThumb: Theme;
     dark_purple_alt1_TooltipArrow: Theme;
     dark_purple_alt1_TooltipContent: Theme;
+    dark_purple_alt2_Card: Theme;
     dark_purple_alt2_Button: Theme;
     dark_purple_alt2_DrawerFrame: Theme;
     dark_purple_alt2_SliderTrack: Theme;
@@ -1053,6 +1116,7 @@ export declare const themes: {
     dark_purple_alt2_SwitchThumb: Theme;
     dark_purple_alt2_TooltipArrow: Theme;
     dark_purple_alt2_TooltipContent: Theme;
+    dark_purple_active_Card: Theme;
     dark_purple_active_Button: Theme;
     dark_purple_active_DrawerFrame: Theme;
     dark_purple_active_SliderTrack: Theme;
@@ -1067,6 +1131,7 @@ export declare const themes: {
     dark_red_alt1: Theme;
     dark_red_alt2: Theme;
     dark_red_active: Theme;
+    dark_red_Card: Theme;
     dark_red_Button: Theme;
     dark_red_DrawerFrame: Theme;
     dark_red_SliderTrack: Theme;
@@ -1078,6 +1143,7 @@ export declare const themes: {
     dark_red_SwitchThumb: Theme;
     dark_red_TooltipArrow: Theme;
     dark_red_TooltipContent: Theme;
+    dark_red_alt1_Card: Theme;
     dark_red_alt1_Button: Theme;
     dark_red_alt1_DrawerFrame: Theme;
     dark_red_alt1_SliderTrack: Theme;
@@ -1089,6 +1155,7 @@ export declare const themes: {
     dark_red_alt1_SwitchThumb: Theme;
     dark_red_alt1_TooltipArrow: Theme;
     dark_red_alt1_TooltipContent: Theme;
+    dark_red_alt2_Card: Theme;
     dark_red_alt2_Button: Theme;
     dark_red_alt2_DrawerFrame: Theme;
     dark_red_alt2_SliderTrack: Theme;
@@ -1100,6 +1167,7 @@ export declare const themes: {
     dark_red_alt2_SwitchThumb: Theme;
     dark_red_alt2_TooltipArrow: Theme;
     dark_red_alt2_TooltipContent: Theme;
+    dark_red_active_Card: Theme;
     dark_red_active_Button: Theme;
     dark_red_active_DrawerFrame: Theme;
     dark_red_active_SliderTrack: Theme;
@@ -1114,6 +1182,7 @@ export declare const themes: {
     dark_yellow_alt1: Theme;
     dark_yellow_alt2: Theme;
     dark_yellow_active: Theme;
+    dark_yellow_Card: Theme;
     dark_yellow_Button: Theme;
     dark_yellow_DrawerFrame: Theme;
     dark_yellow_SliderTrack: Theme;
@@ -1125,6 +1194,7 @@ export declare const themes: {
     dark_yellow_SwitchThumb: Theme;
     dark_yellow_TooltipArrow: Theme;
     dark_yellow_TooltipContent: Theme;
+    dark_yellow_alt1_Card: Theme;
     dark_yellow_alt1_Button: Theme;
     dark_yellow_alt1_DrawerFrame: Theme;
     dark_yellow_alt1_SliderTrack: Theme;
@@ -1136,6 +1206,7 @@ export declare const themes: {
     dark_yellow_alt1_SwitchThumb: Theme;
     dark_yellow_alt1_TooltipArrow: Theme;
     dark_yellow_alt1_TooltipContent: Theme;
+    dark_yellow_alt2_Card: Theme;
     dark_yellow_alt2_Button: Theme;
     dark_yellow_alt2_DrawerFrame: Theme;
     dark_yellow_alt2_SliderTrack: Theme;
@@ -1147,6 +1218,7 @@ export declare const themes: {
     dark_yellow_alt2_SwitchThumb: Theme;
     dark_yellow_alt2_TooltipArrow: Theme;
     dark_yellow_alt2_TooltipContent: Theme;
+    dark_yellow_active_Card: Theme;
     dark_yellow_active_Button: Theme;
     dark_yellow_active_DrawerFrame: Theme;
     dark_yellow_active_SliderTrack: Theme;
