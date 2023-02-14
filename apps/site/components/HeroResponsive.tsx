@@ -271,7 +271,7 @@ export const HeroResponsive = memo(() => {
         >
           <XStack pos="absolute" t={0} l={0} r={0} bbw={1} boc="$color" opacity={0.1} />
           <YStack pos="relative" f={1} h="100%" w="100%">
-            <YStack theme="darker" fullscreen className="mask-gradient-down" zi={-1}>
+            <YStack fullscreen className="mask-gradient-down" zi={-1}>
               <YStack fullscreen bottom="auto" height={439} className="bg-grid" />
             </YStack>
           </YStack>
@@ -493,7 +493,7 @@ export const Safari = memo(
 
 const Tab = memo(({ active, children, bc, ...props }: any) => {
   return (
-    <Theme name={active ? null : 'darker'}>
+    <Theme name={active ? null : 'alt1'}>
       <XStack
         btw={1}
         boc={active ? 'transparent' : '$borderColor'}
