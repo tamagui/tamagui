@@ -13,6 +13,7 @@ import {
   XStack,
   YStack,
   styled,
+  useTheme,
 } from 'tamagui'
 
 import { ContainerLarge } from './Container'

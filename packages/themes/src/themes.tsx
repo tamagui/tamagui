@@ -135,11 +135,15 @@ const light = createTheme(palettes.light, lightTemplate, {
 
 const dark = createTheme(palettes.dark, darkTemplate, { nonInheritedValues: darkColors })
 
-type Theme = { [key in keyof typeof lightTemplate]: string }
+type Theme = { [key in keyof typeof light]: string }
+type SubTheme = { [key in keyof typeof lightTemplate]: string }
 
+// the SubTheme is just the values we override in each sub-theme
+// we type these as that initially because otherwise types explode and get huge and TS errors :/
+// but at the end of the file it's very simple to cast the generated themes back to full themes
 const baseThemes: {
-  light: Theme
-  dark: Theme
+  light: SubTheme
+  dark: SubTheme
 } = {
   light,
   dark,
@@ -166,7 +170,7 @@ const masks = {
 }
 
 const allThemes = addChildren(baseThemes, (name, themeIn) => {
-  const theme = themeIn as Theme
+  const theme = themeIn as SubTheme
   const isLight = name === 'light'
   const inverseName = isLight ? 'dark' : 'light'
   const inverseTheme = baseThemes[inverseName]
@@ -199,7 +203,7 @@ const allThemes = addChildren(baseThemes, (name, themeIn) => {
         const colorTheme = createTheme(palette, isLight ? lightTemplate : darkTemplate)
         return [color, colorTheme]
       })
-    ) as Record<ColorName, Theme>
+    ) as Record<ColorName, SubTheme>
   })
 
   const allColorThemes = addChildren(colorThemes, (colorName, colorTheme) => {
@@ -216,7 +220,7 @@ const allThemes = addChildren(baseThemes, (name, themeIn) => {
     ...allColorThemes,
   }
 
-  function getComponentThemes(theme: Theme, inverse: Theme) {
+  function getComponentThemes(theme: SubTheme, inverse: SubTheme) {
     const stronger1 = applyMask(theme, masks.stronger, { skip })
     const stronger2 = applyMask(stronger1, masks.stronger, { skip })
     const inverse1 = applyMask(inverse, masks.weaker, { skip })
@@ -237,7 +241,7 @@ const allThemes = addChildren(baseThemes, (name, themeIn) => {
     }
   }
 
-  function getAltThemes(theme: Theme, inverse: Theme) {
+  function getAltThemes(theme: SubTheme, inverse: SubTheme) {
     const alt1 = applyMask(theme, masks.weaker, { skip })
     const alt2 = applyMask(alt1, masks.weaker, { skip })
     const active = applyMask(theme, masks.stronger2, { skip })
@@ -247,9 +251,6 @@ const allThemes = addChildren(baseThemes, (name, themeIn) => {
   }
 })
 
-export const themes = {
-  ...allThemes,
-  // bring back the full type (the rest use a subset)
-  light,
-  dark,
+export const themes = allThemes as {
+  [key in keyof typeof allThemes]: Theme
 }
