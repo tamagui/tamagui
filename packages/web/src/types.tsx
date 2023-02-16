@@ -453,11 +453,13 @@ export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animatio
 export type UnionableString = string & {}
 export type UnionableNumber = number & {}
 
+export type SizeValue = number | string | Variable
+
 export type GenericFont<Key extends number | string = number | string> = {
-  size: { [key in Key]: number | Variable }
-  lineHeight: Partial<{ [key in Key]: number | Variable }>
-  letterSpacing: Partial<{ [key in Key]: number | Variable }>
-  weight: Partial<{ [key in Key]: number | string | Variable }>
+  size: { [key in Key]: SizeValue }
+  lineHeight: Partial<{ [key in Key]: SizeValue }>
+  letterSpacing: Partial<{ [key in Key]: SizeValue }>
+  weight: Partial<{ [key in Key]: SizeValue }>
   family: string | Variable
   style?: Partial<{ [key in Key]: TextStyle['fontStyle'] | Variable }>
   transform?: Partial<{ [key in Key]: TextStyle['textTransform'] | Variable }>
@@ -469,7 +471,7 @@ export type GenericFont<Key extends number | string = number | string> = {
 }
 
 // media
-export type MediaQueryObject = { [key: string]: string | number | string }
+export type MediaQueryObject = { [key: string]: string | number }
 export type MediaQueryKey = keyof Media
 export type MediaPropKeys = `$${MediaQueryKey}`
 export type MediaQueryState = { [key in MediaQueryKey]: boolean }

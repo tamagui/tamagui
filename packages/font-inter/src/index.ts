@@ -1,30 +1,36 @@
-import { GenericFont, createFont, getVariableValue, isWeb } from '@tamagui/core'
+import {
+  GenericFont,
+  SizeValue,
+  createFont,
+  getVariableValue,
+  isWeb,
+} from '@tamagui/core'
 
 export const createInterFont = <A extends GenericFont<keyof typeof defaultSizes>>(
   font: {
     [Key in keyof Partial<A>]?: Partial<A[Key]>
   } = {},
   {
-    sizeLineHeight = (size) => size + 10,
-    sizeSize = (size) => size * 1,
+    sizeLineHeight = (size: SizeValue) => (typeof size === 'number' ? size + 10 : size),
+    sizeSize = (size: SizeValue) => size,
   }: {
-    sizeLineHeight?: (fontSize: number) => number
-    sizeSize?: (size: number) => number
-  } = {},
+    sizeLineHeight?: (fontSize: SizeValue, forKey: string) => SizeValue
+    sizeSize?: (size: SizeValue, forKey: string) => SizeValue
+  } = {}
 ): A => {
   // merge to allow individual overrides
   const size = Object.fromEntries(
     Object.entries({
       ...defaultSizes,
       ...font.size,
-    }).map(([k, v]) => [k, sizeSize(+v)])
+    }).map(([k, v]) => [k, sizeSize(v, k)])
   )
   return createFont<A>({
     family: isWeb
       ? 'Inter, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
       : 'Inter',
     lineHeight: Object.fromEntries(
-      Object.entries(size).map(([k, v]) => [k, sizeLineHeight(getVariableValue(v))])
+      Object.entries(size).map(([k, v]) => [k, sizeLineHeight(getVariableValue(v), k)])
     ),
     weight: {
       4: '300',
