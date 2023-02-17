@@ -1,3 +1,3 @@
-import React from 'react';
-export declare const TextAncestorContext: React.Context<boolean>;
+/// <reference types="react" />
+export declare const TextAncestorContext: import("react").Context<boolean>;
 //# sourceMappingURL=TextAncestorContext.d.ts.map

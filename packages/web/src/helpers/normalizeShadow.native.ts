@@ -1,7 +1,7 @@
 import { normalizeCSSColor } from '@tamagui/normalize-css-color'
 
-import { defaultOffset } from './expandStyles'
-import { rgba } from './normalizeColor'
+import { defaultOffset } from './expandStyles.js'
+import { rgba } from './normalizeColor.js'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 
 export function normalizeShadow({

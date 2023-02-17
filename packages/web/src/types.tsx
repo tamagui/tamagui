@@ -24,10 +24,10 @@ import type {
   ViewStyle,
 } from 'react-native'
 
-import type { Variable } from './createVariable'
-import type { ResolveVariableTypes } from './helpers/createPropMapper'
-import type { FontLanguageProps } from './views/FontLanguage.types'
-import type { ThemeProviderProps } from './views/ThemeProvider'
+import type { Variable } from './createVariable.js'
+import type { ResolveVariableTypes } from './helpers/createPropMapper.js'
+import type { FontLanguageProps } from './views/FontLanguage.types.js'
+import type { ThemeProviderProps } from './views/ThemeProvider.js'
 
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 

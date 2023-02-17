@@ -1,4 +1,4 @@
-import { Variable, createCSSVariable } from '../createVariable'
+import { Variable, createCSSVariable } from '../createVariable.js'
 
 export const registerCSSVariable = (v: Variable) => {
   tokensValueToVariable.set(v.val, v)

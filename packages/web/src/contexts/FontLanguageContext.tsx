@@ -1,5 +1,5 @@
 import { createContext } from 'react'
 
-import { LanguageContextType } from '../views/FontLanguage.types'
+import type { LanguageContextType } from '../views/FontLanguage.types.js'
 
 export const FontLanguageContext = createContext<LanguageContextType | null>(null)

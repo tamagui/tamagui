@@ -80,6 +80,7 @@ const SheetOverlay = styled(Sheet.Overlay, {
 inbox
 
 
+- // TODO move to validStyleProps to merge
 - bundle size reductions:
   - merge mergeSlotProps and mergeProps
   - move to PROP whitelist rather than style whitelist maybe avoid validStyleProps altogether

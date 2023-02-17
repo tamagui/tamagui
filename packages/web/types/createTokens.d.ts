@@ -1,5 +1,5 @@
-import { Variable } from './createVariable';
-import { CreateTokens } from './types';
+import { Variable } from './createVariable.js';
+import { CreateTokens } from './types.js';
 export declare function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T>;
 type MakeTokens<T> = T extends {
     color: infer E;
