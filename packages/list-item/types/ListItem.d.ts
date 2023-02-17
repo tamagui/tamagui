@@ -366,9 +366,6 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         onAccessibilityTap?: (() => void) | undefined;
         onMagicTap?: (() => void) | undefined;
         accessibilityIgnoresInvertColors?: boolean | undefined;
-        /**
-         * default: -1
-         */
         target?: string | undefined;
         asChild?: boolean | undefined;
         spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
@@ -380,9 +377,7 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         animateOnly?: string[] | undefined;
         debug?: import("@tamagui/core").DebugProp | undefined;
         disabled?: boolean | undefined;
-        className?: string | undefined; /**
-         * will not wrap text around `children` only, "all" will not wrap title or subTitle
-         */
+        className?: string | undefined;
         themeShallow?: boolean | undefined;
         id?: string | undefined;
         tag?: string | undefined;
