@@ -5,9 +5,9 @@
 
 import { isWeb } from '@tamagui/constants'
 
-import { getAllSelectors } from './insertStyleRule'
-import { names, normalizeColor } from './normalizeColor'
-import { normalizeStylePropKeys } from './normalizeStylePropKeys'
+import { getAllSelectors } from './insertStyleRule.js'
+import { names, normalizeColor } from './normalizeColor.js'
+import { normalizeStylePropKeys } from './normalizeStylePropKeys.js'
 
 const colorCache = {}
 

@@ -1,9 +1,9 @@
 import { isWeb } from '@tamagui/constants'
 
-import { getConfig } from '../config'
-import { isDevTools } from '../constants/isDevTools'
-import { Variable, getVariableValue, isVariable } from '../createVariable'
-import {
+import { getConfig } from '../config.js'
+import { isDevTools } from '../constants/isDevTools.js'
+import { Variable, getVariableValue, isVariable } from '../createVariable.js'
+import type {
   DebugProp,
   GenericVariantDefinitions,
   PropMapper,
@@ -11,13 +11,13 @@ import {
   StaticConfigParsed,
   TamaguiInternalConfig,
   VariantSpreadFunction,
-} from '../types'
-import { LanguageContextType } from '../views/FontLanguage.types'
-import { expandStyle } from './expandStyle'
-import { expandStyles } from './expandStyles'
-import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
-import { isObj } from './isObj'
-import { mergeProps } from './mergeProps'
+} from '../types.js'
+import type { LanguageContextType } from '../views/FontLanguage.types.js'
+import { expandStyle } from './expandStyle.js'
+import { expandStyles } from './expandStyles.js'
+import { getFontsForLanguage, getVariantExtras } from './getVariantExtras.js'
+import { isObj } from './isObj.js'
+import { mergeProps } from './mergeProps.js'
 
 export type ResolveVariableTypes =
   | 'auto'
@@ -532,6 +532,8 @@ function resolveVariableValue(
   }
   return valOrVar
 }
+
+// TODO move to validStyleProps to merge
 
 // just specificy the least costly, all else go to `space` (most keys - we can exclude)
 const tokenCategories = {

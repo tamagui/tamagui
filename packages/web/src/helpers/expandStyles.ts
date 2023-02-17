@@ -1,8 +1,8 @@
-import { getConfig } from '../config'
-import { expandStyle } from './expandStyle'
-import { normalizeShadow } from './normalizeShadow'
+import { getConfig } from '../config.js'
+import { expandStyle } from './expandStyle.js'
+import { normalizeShadow } from './normalizeShadow.js'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
-import { pseudoDescriptors } from './pseudoDescriptors'
+import { pseudoDescriptors } from './pseudoDescriptors.js'
 
 let shorthands: Record<string, string> | null = null
 export const defaultOffset = { height: 0, width: 0 }

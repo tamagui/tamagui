@@ -1,11 +1,11 @@
 import { isWeb } from '@tamagui/constants'
 import { Children, cloneElement } from 'react'
 
-import { variableToString } from '../createVariable'
-import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
-import { useServerRef } from '../hooks/useServerHooks'
-import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme'
-import { ThemeProps } from '../types'
+import { variableToString } from '../createVariable.js'
+import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
+import { useServerRef } from '../hooks/useServerHooks.js'
+import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme.js'
+import type { ThemeProps } from '../types.js'
 
 export function Theme(props: ThemeProps) {
   // @ts-expect-error only for internal views

@@ -1,4 +1,4 @@
-import { MatchMedia, MediaQueryList } from '../types'
+import { MatchMedia, MediaQueryList } from '../types.js'
 
 let matchMediaImpl: MatchMedia = matchMediaFallback
 

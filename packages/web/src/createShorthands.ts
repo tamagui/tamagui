@@ -1,4 +1,4 @@
-import { CreateShorthands } from './types'
+import { CreateShorthands } from './types.js'
 
 // just a type helper util
 

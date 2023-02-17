@@ -1,6 +1,6 @@
-import { addTheme } from './addTheme'
-import { activeThemeManagers } from './hooks/useTheme'
-import { ThemeDefinition } from './types'
+import { addTheme } from './addTheme.js'
+import { activeThemeManagers } from './hooks/useTheme.js'
+import type { ThemeDefinition } from './types.js'
 
 export function updateTheme({
   name,

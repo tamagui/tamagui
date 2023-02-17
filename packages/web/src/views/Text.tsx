@@ -2,8 +2,8 @@ import { isWeb } from '@tamagui/constants'
 import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
 import type { Text as TextView } from 'react-native'
 
-import { createComponent } from '../createComponent'
-import { TextProps, TextPropsBase } from '../types'
+import { createComponent } from '../createComponent.js'
+import { TextProps, TextPropsBase } from '../types.js'
 
 const ellipseStyle = {
   maxWidth: '100%',
