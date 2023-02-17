@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sandbox-web",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "type": "module",
   "private": true,
   "scripts": {
@@ -8,13 +8,13 @@
     "dev:extract": "EXTRACT=1 yarn dev"
   },
   "dependencies": {
-    "@tamagui/config": "^1.5.6",
-    "@tamagui/web": "^1.5.6",
+    "@tamagui/config": "^1.5.7",
+    "@tamagui/web": "^1.5.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@tamagui/vite-plugin": "^1.5.6",
+    "@tamagui/vite-plugin": "^1.5.7",
     "@vitejs/plugin-react": "^2.2.0",
     "@vitejs/plugin-react-swc": "^3.0.1",
     "vite": "^4.0.4",
