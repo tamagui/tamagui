@@ -196,7 +196,18 @@ const allThemes = addChildren(baseThemes, (name, themeIn) => {
           theme.color,
           transparent(colorPalette[colorPalette.length - 1]),
         ]
-        const colorTheme = createTheme(palette, isLight ? lightTemplate : darkTemplate)
+        const colorTheme = createTheme(
+          palette,
+          isLight
+            ? {
+                ...lightTemplate,
+                borderColor: 4,
+                borderColorHover: 5,
+                borderColorFocus: 6,
+                borderColorPress: 5,
+              }
+            : darkTemplate
+        )
         return [color, colorTheme]
       })
     ) as Record<ColorName, SubTheme>
