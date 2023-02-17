@@ -181,13 +181,18 @@ export const CheckboxFrame = styled(ThemeableStack, {
   variants: {
     unstyled: {
       false: {
+        size: '$true',
         backgroundColor: '$background',
         alignItems: 'center',
         justifyContent: 'center',
         pressTheme: true,
         focusable: true,
-        borderWidth: 2,
-        borderColor: 'transparent',
+        borderWidth: 1,
+        borderColor: '$borderColor',
+
+        hoverStyle: {
+          borderColor: '$borderColorHover',
+        },
 
         focusStyle: {
           borderColor: '$borderColorFocus',
@@ -206,7 +211,6 @@ export const CheckboxFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: '$true',
     unstyled: false,
   },
 })
