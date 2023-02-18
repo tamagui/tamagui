@@ -1,11 +1,9 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { Stack, Tokens, TokensParsed, getTokens, styled, useStyle } from '@tamagui/core'
-import { RadioGroupDemo, SelectDemo, SwitchDemo } from '@tamagui/demos'
-import { Moon } from '@tamagui/lucide-icons'
+import { CheckboxDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
-import { Button, TamaguiProvider, YStack } from 'tamagui'
+import { TamaguiProvider, YStack } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -32,6 +30,8 @@ export const Sandbox = () => {
 
       <YStack fullscreen ai="center" jc="center">
         <SwitchDemo />
+
+        <CheckboxDemo />
       </YStack>
 
       {/*  */}

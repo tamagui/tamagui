@@ -98,22 +98,29 @@ export function getThemeCSSRules({
       x.startsWith('.t_dark ') ||
       x.startsWith('.t_light ')
     const rootSep = isBaseTheme && config.themeClassNameOnRoot ? '' : ' '
+
     return `:root${rootSep}${x}`
   })
+
   const css = `${selectorsString.join(', ')} {${vars}}`
   cssRuleSets.push(css)
 
-  if (config.shouldAddPrefersColorThemes && isDarkOrLightBase) {
-    // add media prefers for dark/light base
+  const shouldAddLightDarkPrefersMediaQueries =
+    config.shouldAddPrefersColorThemes && isDarkOrLightBase
+
+  if (shouldAddLightDarkPrefersMediaQueries) {
+    const bgString = variableToString(theme.background)
+    const fgString = variableToString(theme.color)
+    const bodySelector = `body{background:${bgString};color:${fgString};}`
     const isDark = themeName.startsWith('dark')
-    cssRuleSets.push(
-      `@media(prefers-color-scheme: ${isDark ? 'dark' : 'light'}) {
-body { background:${variableToString(theme.background)}; color: ${variableToString(
-        theme.color
-      )} }
-:root {${vars} } 
-}`
-    )
+    cssRuleSets.push(`@media(prefers-color-scheme: ${isDark ? 'dark' : 'light'}) {
+  ${bodySelector}
+  :root {${vars} } 
+}`)
+  }
+
+  for (const rule of [...cssRuleSets]) {
+    console.log(`OUT`, themeName, names, rule)
   }
 
   return cssRuleSets
