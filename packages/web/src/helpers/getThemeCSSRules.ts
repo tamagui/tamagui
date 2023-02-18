@@ -41,36 +41,44 @@ export function getThemeCSSRules({
   }
 
   const isDarkOrLightBase = themeName === 'dark' || themeName === 'light'
-  const selectors = names.map((name) => {
-    return `${CNP}${name}`
-  })
+  const selectorsSet = new Set(
+    names.map((name) => {
+      return `${CNP}${name}`
+    })
+  )
 
   // since we dont specify dark/light in classnames we have to do an awkward specificity war
   // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
   if (hasDarkLight) {
     for (const subName of names) {
       const isDark = isDarkOrLightBase || subName.startsWith('dark_')
-      const max = config.maxDarkLightNesting ?? 3
+      const maxDepth = config.maxDarkLightNesting ?? 3
 
       if (!(isDark || subName.startsWith('light_'))) {
         // neither light nor dark subtheme, just generate one selector with :root:root which
         // will override all :root light/dark selectors generated below
-        selectors.push(`:root:root ${CNP}${subName}`)
+        selectorsSet.add(`:root:root ${CNP}${subName}`)
         continue
       }
 
       const childSelector = `${CNP}${subName.replace(isDark ? 'dark_' : 'light_', '')}`
-      const order = isDark ? ['dark', 'light'] : ['light', 'dark']
+
+      // note the sub_theme this lets it be generic! we should do this for any type of themes too even not just light/dark base ones
+      const order = isDark ? ['dark', 'sub_theme'] : ['light', 'sub_theme']
+
       if (isDarkOrLightBase) {
         order.reverse()
       }
       const [stronger, weaker] = order
-      const numSelectors = Math.round(max * 1.5)
+      const numSelectors = Math.round(maxDepth * 1.5)
 
-      for (let pi = 0; pi < numSelectors; pi++) {
-        const isOdd = pi % 2 === 1
-        if (isOdd && pi < 3) continue
-        const parents = new Array(pi + 1).fill(undefined).map((_, psi) => {
+      for (let depth = 0; depth < numSelectors; depth++) {
+        const isOdd = depth % 2 === 1
+
+        // wtf is this continue:
+        if (isOdd && depth < 3) continue
+
+        const parents = new Array(depth + 1).fill(0).map((_, psi) => {
           return `${CNP}${psi % 2 === 0 ? stronger : weaker}`
         })
         let parentSelectors = parents.length > 1 ? parents.slice(1) : parents
@@ -78,18 +86,17 @@ export function getThemeCSSRules({
           const [_first, second, ...rest] = parentSelectors
           parentSelectors = [second, ...rest, second]
         }
-        // avoid .t_light .t_light at the end (make sure child is unique from last parent)
         const lastParentSelector = parentSelectors[parentSelectors.length - 1]
-        selectors.push(
-          `${parentSelectors.join(' ')} ${
-            childSelector === lastParentSelector ? '' : childSelector
-          }`
-        )
+        const nextChildSelector =
+          childSelector === lastParentSelector ? '' : childSelector
+
+        // for light/dark/light:
+        selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
       }
     }
   }
 
-  const shouldAddLightDarkPrefersMediaQueries = config.shouldAddPrefersColorThemes
+  const selectors = [...selectorsSet]
 
   // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
   // this isBaseTheme logic could probably be done more efficiently above
@@ -103,21 +110,24 @@ export function getThemeCSSRules({
   const css = `${selectorsString} {${vars}}`
   cssRuleSets.push(css)
 
-  if (shouldAddLightDarkPrefersMediaQueries) {
+  if (config.shouldAddPrefersColorThemes) {
     const bgString = variableToString(theme.background)
     const fgString = variableToString(theme.color)
     const bodyRules = `body{background:${bgString};color:${fgString};}`
     const isDark = themeName.startsWith('dark')
     const baseName = isDark ? 'dark' : 'light'
-    const noSpecificSelectors = selectors
+    const lessSpecificSelectors = selectors
       .map((x) => {
-        return x == darkSelector || x === lightSelector
-          ? `:root`
-          : x.replace(/^\.t_(dark|light) /, '')
+        if (x == darkSelector || x === lightSelector) return `:root`
+        return x.replace(/^\.t_(dark|light) /, '').trim()
       })
+      .filter(Boolean)
       .join(', ')
-    const themeRules = `${noSpecificSelectors} {${vars}}`
-    const prefersMediaSelectors = `\n@media(prefers-color-scheme:${baseName}){${bodyRules}\n${themeRules}}`
+    const themeRules = `${lessSpecificSelectors} {${vars}}`
+    const prefersMediaSelectors = `@media(prefers-color-scheme:${baseName}){
+  ${bodyRules}
+  ${themeRules}
+}`
     cssRuleSets.push(prefersMediaSelectors)
   }
 
