@@ -1,13 +1,12 @@
 import type { Variable } from '@tamagui/web';
 export type ThemeMask = Record<string, string | number>;
 export type Palette = string[];
-export type ShiftMaskProps = {
-    by: number;
-    max: number;
-    min?: number;
-};
 export type MaskOptions = {
+    palette?: Palette;
     skip?: Partial<ThemeMask>;
+    strength?: number;
+    max?: number;
+    min?: number;
 };
 type GenericTheme = {
     [key: string]: string | Variable;
@@ -27,10 +26,11 @@ export declare function addChildren<Themes extends {
 }, GetChildren extends ChildGetter<keyof Themes, Themes[keyof Themes]>>(themes: Themes, getChildren: GetChildren): Themes & {
     [key in SubThemeKeys<keyof Themes, keyof ReturnType<GetChildren>>]: Themes[keyof Themes];
 };
-export declare const createWeakenMask: ({ by, max, min, inverseNegatives, }: ShiftMaskProps & {
-    inverseNegatives?: boolean | undefined;
+export declare const createShiftMask: ({ inverse }?: {
+    inverse?: boolean | undefined;
 }) => CreateMask;
-export declare const createStrengthenMask: (props: ShiftMaskProps) => CreateMask;
+export declare const createWeakenMask: () => CreateMask;
+export declare const createStrengthenMask: () => CreateMask;
 export declare function applyMask<Theme extends GenericTheme>(theme: Theme, mask: CreateMask, options?: MaskOptions): Theme;
 export {};
 //# sourceMappingURL=index.d.ts.map
