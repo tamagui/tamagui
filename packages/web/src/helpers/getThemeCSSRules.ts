@@ -89,39 +89,45 @@ export function getThemeCSSRules({
     }
   }
 
-  const selectorsString = selectors.map((x) => {
-    // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
-    // this isBaseTheme logic could probably be done more efficiently above
-    const isBaseTheme =
-      x === '.t_dark' ||
-      x === '.t_light' ||
-      x.startsWith('.t_dark ') ||
-      x.startsWith('.t_light ')
-    const rootSep = isBaseTheme && config.themeClassNameOnRoot ? '' : ' '
+  const shouldAddLightDarkPrefersMediaQueries = config.shouldAddPrefersColorThemes
 
-    return `:root${rootSep}${x}`
-  })
+  // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
+  // this isBaseTheme logic could probably be done more efficiently above
+  const selectorsString = selectors
+    .map((x) => {
+      const rootSep = isBaseTheme(x) && config.themeClassNameOnRoot ? '' : ' '
+      return `:root${rootSep}${x}`
+    })
+    .join(', ')
 
-  const css = `${selectorsString.join(', ')} {${vars}}`
+  const css = `${selectorsString} {${vars}}`
   cssRuleSets.push(css)
-
-  const shouldAddLightDarkPrefersMediaQueries =
-    config.shouldAddPrefersColorThemes && isDarkOrLightBase
 
   if (shouldAddLightDarkPrefersMediaQueries) {
     const bgString = variableToString(theme.background)
     const fgString = variableToString(theme.color)
-    const bodySelector = `body{background:${bgString};color:${fgString};}`
+    const bodyRules = `body{background:${bgString};color:${fgString};}`
     const isDark = themeName.startsWith('dark')
-    cssRuleSets.push(`@media(prefers-color-scheme: ${isDark ? 'dark' : 'light'}) {
-  ${bodySelector}
-  :root {${vars} } 
-}`)
-  }
-
-  for (const rule of [...cssRuleSets]) {
-    console.log(`OUT`, themeName, names, rule)
+    const baseName = isDark ? 'dark' : 'light'
+    const noSpecificSelectors = selectors
+      .map((x) => {
+        return x == darkSelector || x === lightSelector
+          ? `:root`
+          : x.replace(/^\.t_(dark|light) /, '')
+      })
+      .join(', ')
+    const themeRules = `${noSpecificSelectors} {${vars}}`
+    const prefersMediaSelectors = `\n@media(prefers-color-scheme:${baseName}){${bodyRules}\n${themeRules}}`
+    cssRuleSets.push(prefersMediaSelectors)
   }
 
   return cssRuleSets
 }
+
+const darkSelector = '.t_dark'
+const lightSelector = '.t_light'
+const isBaseTheme = (x: string) =>
+  x === darkSelector ||
+  x === lightSelector ||
+  x.startsWith('.t_dark ') ||
+  x.startsWith('.t_light ')
