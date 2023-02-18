@@ -160,14 +160,13 @@ export class ThemeManager {
 }
 
 function getNextThemeClassName(name: string, isInverting = false) {
-  const next = `${THEME_CLASSNAME_PREFIX}${name}`
+  const next = `t_sub_theme ${THEME_CLASSNAME_PREFIX}${name}`
   if (isInverting) {
     return (
       next +
       // ensure you invert to base dark as well as specific dark
       // ... logic should likely be elsewhere
-      (next.includes('dark_') ? ` t_dark` : '') +
-      (next.includes('light_') ? ` t_light` : '')
+      (next.includes('dark_') ? ` t_dark` : next.includes('light_') ? ` t_light` : '')
     )
   }
   return next.replace('light_', '').replace('dark_', '')
