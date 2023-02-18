@@ -35,6 +35,7 @@ const [SwitchProvider, useSwitchContext] = createSwitchContext<{
   checked: boolean
   disabled?: boolean
   size: SizeTokens
+  unstyled?: boolean
 }>(SWITCH_NAME)
 
 /* -------------------------------------------------------------------------------------------------
@@ -45,10 +46,16 @@ const THUMB_NAME = 'SwitchThumb'
 
 export const SwitchThumbFrame = styled(ThemeableStack, {
   name: 'SwitchThumb',
-  backgroundColor: '$background',
-  borderRadius: 1000,
 
   variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+        backgroundColor: '$background',
+        borderRadius: 1000,
+      },
+    },
+
     size: {
       '...size': (val) => {
         const size = getSwitchHeight(val)
@@ -61,7 +68,7 @@ export const SwitchThumbFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: '$true',
+    unstyled: false,
   },
 })
 
@@ -71,9 +78,13 @@ export const SwitchThumb = SwitchThumbFrame.extractable(
   React.forwardRef<React.ElementRef<'span'>, SwitchThumbProps>(
     (props: ScopedProps<SwitchThumbProps, 'Switch'>, forwardedRef) => {
       const { __scopeSwitch, ...thumbProps } = props
-      const { size, disabled, checked } = useSwitchContext(THUMB_NAME, __scopeSwitch)
+      const { size, disabled, checked, unstyled } = useSwitchContext(
+        THUMB_NAME,
+        __scopeSwitch
+      )
       return (
         <SwitchThumbFrame
+          unstyled={unstyled}
           size={size}
           data-state={getState(checked)}
           data-disabled={disabled ? '' : undefined}
@@ -98,18 +109,24 @@ SwitchThumb.displayName = THUMB_NAME
  * -----------------------------------------------------------------------------------------------*/
 
 export const SwitchFrame = styled(XStack, {
-  name: 'Switch',
+  name: SWITCH_NAME,
   tag: 'button',
-  borderRadius: 1000,
-  borderWidth: 2,
-  borderColor: 'transparent',
-  backgroundColor: '$background',
-
-  focusStyle: {
-    borderColor: '$borderColorFocus',
-  },
 
   variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+        borderRadius: 1000,
+        borderWidth: 2,
+        borderColor: 'transparent',
+        backgroundColor: '$background',
+
+        focusStyle: {
+          borderColor: '$borderColorFocus',
+        },
+      },
+    },
+
     size: {
       '...size': (val) => {
         const height = getSwitchHeight(val) + 4
@@ -124,7 +141,7 @@ export const SwitchFrame = styled(XStack, {
   } as const,
 
   defaultVariants: {
-    size: '$true',
+    unstyled: false,
   },
 })
 
@@ -155,6 +172,7 @@ export const Switch = withStaticProperties(
           value = 'on',
           onCheckedChange,
           size = '$true',
+          unstyled = false,
           ...switchProps
         } = props
         const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
@@ -195,8 +213,10 @@ export const Switch = withStaticProperties(
             checked={checked}
             disabled={disabled}
             size={size}
+            unstyled={unstyled}
           >
             <SwitchFrame
+              unstyled={unstyled}
               size={size}
               // @ts-ignore
               role="switch"
