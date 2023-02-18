@@ -189,7 +189,8 @@ function getState(
     throw new Error('Cannot reset + set new name')
   }
   if (props.reset && !parentManager?.parentManager) {
-    throw new Error('Cannot reset no grandparent exists')
+    console.warn('Cannot reset no grandparent exists')
+    return null
   }
 
   let result: ThemeManagerState | null = null
