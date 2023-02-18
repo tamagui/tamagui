@@ -1,9 +1,9 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { CheckboxDemo, SwitchDemo } from '@tamagui/demos'
+import { ButtonDemo, CheckboxDemo, InputsDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
-import { TamaguiProvider, YStack } from 'tamagui'
+import { ScrollView, TamaguiProvider, XStack, YStack } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -17,6 +17,18 @@ if (typeof require !== 'undefined') {
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light')
 
+  const demos = (
+    <>
+      <SwitchDemo />
+
+      <CheckboxDemo />
+
+      <InputsDemo />
+
+      <ButtonDemo />
+    </>
+  )
+
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
       <link href="/fonts/inter.css" rel="stylesheet" />
@@ -28,11 +40,19 @@ export const Sandbox = () => {
         }}
       />
 
-      <YStack fullscreen ai="center" jc="center">
-        <SwitchDemo />
+      <XStack bc="$backgroundStrong" fullscreen ai="center" jc="center">
+        <ScrollView horizontal>
+          <YStack>
+            <XStack gap={20} px="$4" flexWrap="wrap">
+              {demos}
+            </XStack>
 
-        <CheckboxDemo />
-      </YStack>
+            <XStack px="$4" theme="blue" gap={20} flexWrap="wrap">
+              {demos}
+            </XStack>
+          </YStack>
+        </ScrollView>
+      </XStack>
 
       {/*  */}
       <button

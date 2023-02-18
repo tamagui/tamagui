@@ -16,7 +16,7 @@ type CreateMask = <A extends ThemeMask>(template: A, options: MaskOptions) => A
 
 const THEME_INFO = new WeakMap<
   any,
-  { palette: Palette; definition: ThemeMask; cache: WeakMap<any, any> }
+  { palette: Palette; definition: ThemeMask; cache: Map<any, any> }
 >()
 
 export function createTheme<
@@ -39,7 +39,7 @@ export function createTheme<
     ) as any),
     ...options?.nonInheritedValues,
   }
-  THEME_INFO.set(theme, { palette, definition, cache: new WeakMap() })
+  THEME_INFO.set(theme, { palette, definition, cache: new Map() })
   return theme
 }
 
@@ -80,13 +80,9 @@ export function addChildren<
   return out as any
 }
 
-// const x = createTheme([], { bg: 1 })
-// const y = addChildren({ x }, (_, x2) => ({
-//   y: x,
-// }))
-
 export const createShiftMask = ({ inverse }: { inverse?: boolean } = {}) => {
   return ((template, { skip, max: maxIn, palette, min = 0, strength = 1 }) => {
+    console.log('strength', strength)
     const values = Object.entries(template)
     const max = maxIn ?? (palette ? Object.values(palette).length - 1 : Infinity)
     const out = {}
@@ -117,6 +113,8 @@ function isMinusZero(value) {
   return 1 / value === -Infinity
 }
 
+const MaskKeyCache = new WeakMap<any, string>()
+
 export function applyMask<Theme extends GenericTheme>(
   theme: Theme,
   mask: CreateMask,
@@ -130,22 +128,40 @@ export function applyMask<Theme extends GenericTheme>(
         : `❌ Err2`
     )
   }
-  if (info.cache.has(mask)) {
-    return info.cache.get(mask)
+
+  const maskKey = MaskKeyCache.get(mask) ?? `${Math.random()}`
+  MaskKeyCache.set(mask, maskKey)
+
+  const key = `${maskKey}${JSON.stringify(options)}`
+
+  if (info.cache.has(key)) {
+    return info.cache.get(key)
   }
 
   const template = mask(info.definition, {
-    ...options,
     palette: info.palette,
+    ...options,
   })
   const next = createTheme(info.palette, template) as Theme
 
-  info.cache.set(mask, next)
+  if (options)
+    console.log(
+      '?',
+      {
+        palette: info.palette,
+        ...options,
+      },
+      template,
+      next
+    )
+
+  info.cache.set(key, next)
 
   return next
 }
 
-// dev time tests!
+// --- tests ---
+
 if (process.env.NODE_ENV === 'development') {
   const palette = ['0', '1', '2', '3', '-3', '-2', '-1', '-0']
   const template = { bg: 1, fg: -1 }
@@ -154,15 +170,20 @@ if (process.env.NODE_ENV === 'development') {
   const weakerMask = createWeakenMask()
 
   const theme = createTheme(palette, template)
-  if (theme.bg !== '1') throw new Error(`invalid`)
-  if (theme.fg !== '-1') throw new Error(`invalid`)
+  if (theme.bg !== '1') throw `❌`
+  if (theme.fg !== '-1') throw `❌`
 
   const str = applyMask(theme, stongerMask)
-  if (str.bg !== '0') throw new Error(`invalid`)
-  if (str.fg !== '-0') throw new Error(`invalid`)
+  if (str.bg !== '0') throw `❌`
+  if (str.fg !== '-0') throw `❌`
 
   const weak = applyMask(theme, weakerMask)
+  if (weak.bg !== '2') throw `❌`
+  if (weak.fg !== '-2') throw `❌`
 
-  if (weak.bg !== '2') throw new Error(`invalid`)
-  if (weak.fg !== '-2') throw new Error(`invalid`)
+  console.warn('start')
+  const weak2 = applyMask(theme, weakerMask, { strength: 2 })
+  console.log('weak2', weak2)
+  if (weak2.bg !== '3') throw `❌`
+  if (weak2.fg !== '-3') throw `❌`
 }

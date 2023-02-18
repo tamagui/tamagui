@@ -6015,7 +6015,8 @@ __metadata:
   resolution: "@tamagui/scroll-view@workspace:packages/scroll-view"
   dependencies:
     "@tamagui/build": ^1.5.9
-    "@tamagui/core": ^1.5.9
+    "@tamagui/stacks": ^1.5.9
+    "@tamagui/web": ^1.5.9
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
