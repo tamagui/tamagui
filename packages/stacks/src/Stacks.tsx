@@ -6,7 +6,7 @@ export type YStackProps = GetProps<typeof YStack>
 export type XStackProps = YStackProps
 export type ZStackProps = YStackProps
 
-const fullscreenStyle = {
+export const fullscreenStyle = {
   position: 'absolute',
   top: 0,
   left: 0,
