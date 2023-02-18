@@ -121,10 +121,11 @@ const darkShadows = {
 
 const lightTemplate = {
   ...template,
-  borderColor: 6,
-  borderColorHover: 5,
-  borderColorFocus: 6,
-  borderColorPress: 5,
+  // our light color palette is... a bit unique
+  borderColor: 7,
+  borderColorHover: 8,
+  borderColorFocus: 8,
+  borderColorPress: 9,
   ...lightShadows,
 }
 
@@ -191,7 +192,19 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
           theme.color,
           transparent(colorPalette[colorPalette.length - 1]),
         ]
-        const colorTheme = createTheme(palette, isLight ? lightTemplate : darkTemplate)
+        const colorTheme = createTheme(
+          palette,
+          isLight
+            ? {
+                ...lightTemplate,
+                // light color themes are a bit less sensitive
+                borderColor: 5,
+                borderColorHover: 6,
+                borderColorFocus: 6,
+                borderColorPress: 7,
+              }
+            : darkTemplate
+        )
         return [color, colorTheme]
       })
     ) as Record<ColorName, SubTheme>
@@ -217,8 +230,6 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
     const inverse1 = applyMask(inverse, masks.weaker, maskOptions)
     const inverse2 = applyMask(inverse1, masks.weaker, maskOptions)
 
-    // if (name === 'dark') debugger
-
     return {
       Card: stronger1,
       Button: stronger2,
@@ -238,9 +249,9 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
   function getAltThemes(theme: SubTheme, inverse: SubTheme) {
     const alt1 = applyMask(theme, masks.weaker, maskOptions)
     const alt2 = applyMask(alt1, masks.weaker, maskOptions)
-    const active = applyMask(theme, isLight ? masks.stronger : masks.weaker, {
+    const active = applyMask(theme, masks.weaker, {
       ...maskOptions,
-      strength: 2,
+      strength: 4,
     })
     return addChildren({ alt1, alt2, active }, (name, theme) => {
       return getComponentThemes(theme as any, inverse)
