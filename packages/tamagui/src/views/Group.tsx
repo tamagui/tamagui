@@ -115,7 +115,11 @@ function createGroup(verticalDefault: boolean) {
           disabled,
           ...(isTamaguiElement(child) ? radiusStyles : { style: radiusStyles }),
         }
-        return cloneElementWithPropOrder(child, props)
+
+        return cloneElementWithPropOrder(
+          child,
+          child['type']['handlesGroupRadius'] === true ? props : {}
+        )
       })
 
       const tree = useTree(
@@ -185,6 +189,7 @@ const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
 
   return <Slot {...propsToPass}>{children}</Slot>
 }
+GroupItem['handlesGroupRadius'] = true
 
 export const YGroup = createGroup(true)
 export const XGroup = createGroup(false)
