@@ -31,16 +31,22 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(NA
 export const LabelFrame = styled(SizableText, {
   name: 'Label',
   tag: 'label',
-  size: '$true',
-  backgroundColor: 'transparent',
-  display: 'flex',
-  alignItems: 'center',
-  userSelect: 'none',
-  cursor: 'default',
-  pressStyle: {
-    color: '$colorPress',
-  },
+
   variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+        backgroundColor: 'transparent',
+        display: 'flex',
+        alignItems: 'center',
+        userSelect: 'none',
+        cursor: 'default',
+        pressStyle: {
+          color: '$colorPress',
+        },
+      },
+    },
+
     size: {
       '...size': (val, extras) => {
         const buttonStyle = getButtonSized(val, extras)
@@ -52,6 +58,10 @@ export const LabelFrame = styled(SizableText, {
       },
     },
   } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 export type LabelProps = GetProps<typeof LabelFrame> & {
