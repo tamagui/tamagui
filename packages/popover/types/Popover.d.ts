@@ -207,13 +207,13 @@ export declare const Popover: React.FC<PopoverProps> & {
         }, "closed"> & {
             readonly closed?: boolean | undefined;
         }>>>) => JSX.Element;
-        ScrollView: React.ForwardRefExoticComponent<((ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof ScrollViewProps>) | Pick<ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof ScrollViewProps> & Omit<{}, string | number> & {
-            [x: string]: undefined;
-        } & import("@tamagui/core").MediaProps<Partial<ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof ScrollViewProps> & Omit<{}, string | number> & {
-            [x: string]: undefined;
-        }>> & import("@tamagui/core").PseudoProps<Partial<ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof ScrollViewProps> & Omit<{}, string | number> & {
-            [x: string]: undefined;
-        }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
+        ScrollView: React.ForwardRefExoticComponent<ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof ScrollViewProps> & Omit<{}, "fullscreen"> & {
+            readonly fullscreen?: boolean | undefined;
+        } & import("@tamagui/core").MediaProps<Partial<ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof ScrollViewProps> & Omit<{}, "fullscreen"> & {
+            readonly fullscreen?: boolean | undefined;
+        }>> & import("@tamagui/core").PseudoProps<Partial<ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof ScrollViewProps> & Omit<{}, "fullscreen"> & {
+            readonly fullscreen?: boolean | undefined;
+        }>> & React.RefAttributes<TamaguiElement>>;
     };
 };
 export {};
