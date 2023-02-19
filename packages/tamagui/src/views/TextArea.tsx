@@ -7,17 +7,23 @@ import { InputFrame } from './Input'
 export const TextAreaFrame = styled(InputFrame, {
   name: 'TextArea',
   multiline: true,
-  numberOfLines: 4,
-  height: 'auto',
 
   variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+        height: 'auto',
+        numberOfLines: 4,
+      },
+    },
+
     size: {
       '...size': textAreaSizeVariant,
     },
   } as const,
 
   defaultVariants: {
-    size: '$true',
+    unstyled: false,
   },
 })
 
