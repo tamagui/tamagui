@@ -509,9 +509,15 @@ export const components = {
   GroupDisabledDemo: () => {
     return (
       <XGroup als="center" disabled>
-        <Button>First</Button>
-        <Button>Second</Button>
-        <Button>Third</Button>
+        <XGroup.Item>
+          <Button>First</Button>
+        </XGroup.Item>
+        <XGroup.Item>
+          <Button>Second</Button>
+        </XGroup.Item>
+        <XGroup.Item>
+          <Button>Third</Button>
+        </XGroup.Item>
       </XGroup>
     )
   },
