@@ -210,7 +210,7 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
                     <ActiveCircle
                       onPress={() => updateActiveI([i, curShadeI])}
                       isActive={isActive}
-                      backgroundColor="$color5"
+                      backgroundColor="$color8"
                     />
                   </Theme>
                 )
@@ -239,7 +239,6 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
         </XStack>
 
         <YStack
-          py="$6"
           my="$3"
           ov="hidden"
           w="100%"
@@ -269,8 +268,9 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
           >
             <XStack
               ai="center"
+              py="$6"
               jc="center"
-              space="$6"
+              space="$5"
               pos="relative"
               px={`calc(50vw + 30px)`}
               x={-45 - 30}
@@ -298,7 +298,7 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
                     >
                       <Theme name={color as any}>
                         <MediaPlayer
-                          elevation="$3"
+                          elevation="$2"
                           pointerEvents="none"
                           alt={alt ? +alt.replace('alt', '') : null}
                         />

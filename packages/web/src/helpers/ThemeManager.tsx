@@ -1,7 +1,7 @@
-import { getThemes, getTokens } from '../config'
-import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
-import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
-import { ThemeParsed, ThemeProps } from '../types'
+import { getThemes, getTokens } from '../config.js'
+import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants.js'
+import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped.js'
+import { ThemeParsed, ThemeProps } from '../types.js'
 
 type ThemeListener = (name: string | null, themeManager: ThemeManager) => void
 
@@ -160,9 +160,14 @@ export class ThemeManager {
 }
 
 function getNextThemeClassName(name: string, isInverting = false) {
-  const next = `${THEME_CLASSNAME_PREFIX}${name}`
+  const next = `t_sub_theme ${THEME_CLASSNAME_PREFIX}${name}`
   if (isInverting) {
-    return next
+    return (
+      next +
+      // ensure you invert to base dark as well as specific dark
+      // ... logic should likely be elsewhere
+      (next.includes('dark_') ? ` t_dark` : next.includes('light_') ? ` t_light` : '')
+    )
   }
   return next.replace('light_', '').replace('dark_', '')
 }
@@ -184,7 +189,8 @@ function getState(
     throw new Error('Cannot reset + set new name')
   }
   if (props.reset && !parentManager?.parentManager) {
-    throw new Error('Cannot reset no grandparent exists')
+    console.warn('Cannot reset no grandparent exists')
+    return null
   }
 
   let result: ThemeManagerState | null = null

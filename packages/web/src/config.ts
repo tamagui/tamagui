@@ -1,4 +1,4 @@
-import { ConfigListener, TamaguiInternalConfig, TokensMerged } from './types'
+import { ConfigListener, TamaguiInternalConfig, TokensMerged } from './types.js'
 
 let conf: TamaguiInternalConfig | null
 

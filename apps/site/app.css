@@ -101,11 +101,6 @@ a {
   text-decoration-color: var(--pink12);
 }
 
-article p, article li.font_body {
-  color: var(--gray12) !important;
-  opacity: 0.75 !important;
-}
-
 p.intro-paragraph.large {
   color: var(--gray12) !important;
   opacity: 1 !important;
@@ -155,6 +150,13 @@ span._display-1adg3ll > span._display-xoduu5 {
     transparent 30%,
     transparent 70%,
     var(--background) 100%
+  );
+}
+
+.hero-blur {
+  background: radial-gradient(
+    var(--color3) 0%,
+    transparent 72%
   );
 }
 
@@ -425,8 +427,8 @@ iframe {
 }
 
 .token.comment {
-  color: var(--color5);
-  opacity: 0.6;
+  color: var(--color);
+  opacity: 0.4;
 }
 
 .token.atapply .token:not(.rule):not(.important) {

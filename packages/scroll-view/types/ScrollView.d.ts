@@ -1,12 +1,12 @@
-import { GetProps } from '@tamagui/core';
-export declare const ScrollView: import("@tamagui/core").TamaguiComponent<(import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps>) | (import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, string | number> & {
-    [x: string]: undefined;
-} & import("@tamagui/core").MediaProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, string | number> & {
-    [x: string]: undefined;
-}>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, string | number> & {
-    [x: string]: undefined;
-}>>), import("@tamagui/core").TamaguiElement, import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps>, {} | {
-    [x: string]: undefined;
+import { GetProps } from '@tamagui/web';
+export declare const ScrollView: import("@tamagui/web").TamaguiComponent<import("react-native").ScrollViewProps & Omit<import("@tamagui/web").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
+    readonly fullscreen?: boolean | undefined;
+} & import("@tamagui/web").MediaProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/web").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
+    readonly fullscreen?: boolean | undefined;
+}>> & import("@tamagui/web").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/web").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
+    readonly fullscreen?: boolean | undefined;
+}>>, import("@tamagui/web").TamaguiElement, import("react-native").ScrollViewProps & Omit<import("@tamagui/web").StackProps, keyof import("react-native").ScrollViewProps>, {
+    readonly fullscreen?: boolean | undefined;
 }>;
 export type ScrollViewProps = GetProps<typeof ScrollView>;
 //# sourceMappingURL=ScrollView.d.ts.map

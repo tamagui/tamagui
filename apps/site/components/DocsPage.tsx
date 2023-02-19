@@ -1,4 +1,5 @@
 import { allDocsRoutes } from '@lib/docsRoutes'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { ThemeTint, useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import * as React from 'react'
@@ -129,6 +130,16 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             width: 230,
           }}
         >
+          <LinearGradient
+            pos="absolute"
+            t={0}
+            l={0}
+            r={0}
+            h={100}
+            w={300}
+            zi={100}
+            colors={['$backgroundStrong', '$backgroundStrong', '$backgroundTransparent']}
+          />
           <ScrollView>
             <ThemeTint>
               <YStack

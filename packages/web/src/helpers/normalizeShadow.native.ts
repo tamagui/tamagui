@@ -1,7 +1,7 @@
 import { normalizeCSSColor } from '@tamagui/normalize-css-color'
 
-import { defaultOffset } from './expandStyles'
-import { rgba } from './normalizeColor'
+import { defaultOffset } from './expandStyles.js'
+import { rgba } from './normalizeColor.js'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 
 export function normalizeShadow({
@@ -12,9 +12,8 @@ export function normalizeShadow({
 }: Record<string, any>) {
   const { height, width } = shadowOffset || defaultOffset
   const colorStr = String(shadowColor || 'black')
-  // on native fix bug - shadows behave better if turned into non-alpha rgb() + shadowOpacity
   const val = normalizeCSSColor(colorStr)
-  if (!val) {
+  if (typeof val !== 'number') {
     throw new Error(`invalid shadow color ${colorStr}`)
   }
   const { r, g, b, a } = rgba(val)

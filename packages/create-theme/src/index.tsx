@@ -2,15 +2,21 @@ import type { Variable } from '@tamagui/web'
 
 export type ThemeMask = Record<string, string | number>
 export type Palette = string[]
-export type ShiftMaskProps = { by: number; max: number; min?: number }
-export type MaskOptions = { skip?: Partial<ThemeMask> }
+
+export type MaskOptions = {
+  palette?: Palette
+  skip?: Partial<ThemeMask>
+  strength?: number
+  max?: number
+  min?: number
+}
 
 type GenericTheme = { [key: string]: string | Variable }
 type CreateMask = <A extends ThemeMask>(template: A, options: MaskOptions) => A
 
 const THEME_INFO = new WeakMap<
   any,
-  { palette: Palette; definition: ThemeMask; cache: WeakMap<any, any> }
+  { palette: Palette; definition: ThemeMask; cache: Map<any, any> }
 >()
 
 export function createTheme<
@@ -33,7 +39,7 @@ export function createTheme<
     ) as any),
     ...options?.nonInheritedValues,
   }
-  THEME_INFO.set(theme, { palette, definition, cache: new WeakMap() })
+  THEME_INFO.set(theme, { palette, definition, cache: new Map() })
   return theme
 }
 
@@ -74,19 +80,10 @@ export function addChildren<
   return out as any
 }
 
-// const x = createTheme([], { bg: 1 })
-// const y = addChildren({ x }, (_, x2) => ({
-//   y: x,
-// }))
-
-export const createWeakenMask = ({
-  by = 1,
-  max,
-  min = 0,
-  inverseNegatives,
-}: ShiftMaskProps & { inverseNegatives?: boolean }) => {
-  return ((template, { skip }) => {
-    const values = Object.entries(template) // .filter(Number)
+export const createShiftMask = ({ inverse }: { inverse?: boolean } = {}) => {
+  return ((template, { skip, max: maxIn, palette, min = 0, strength = 1 }) => {
+    const values = Object.entries(template)
+    const max = maxIn ?? (palette ? Object.values(palette).length - 1 : Infinity)
     const out = {}
     for (const [key, value] of values) {
       if (typeof value === 'string') continue
@@ -96,8 +93,8 @@ export const createWeakenMask = ({
       }
       const isPositive = value === 0 ? !isMinusZero(value) : value >= 0
       const direction = isPositive ? 1 : -1
-      const invert = inverseNegatives && !isPositive ? -1 : 1
-      const next = value + by * direction * invert
+      const invert = inverse ? -1 : 1
+      const next = value + strength * direction * invert
       const clamped = isPositive
         ? Math.max(min, Math.min(max, next))
         : Math.min(-min, Math.max(-max, next))
@@ -108,12 +105,14 @@ export const createWeakenMask = ({
   }) as CreateMask
 }
 
+export const createWeakenMask = () => createShiftMask()
+export const createStrengthenMask = () => createShiftMask({ inverse: true })
+
 function isMinusZero(value) {
   return 1 / value === -Infinity
 }
 
-export const createStrengthenMask = (props: ShiftMaskProps) =>
-  createWeakenMask({ ...props, inverseNegatives: true })
+const MaskKeyCache = new WeakMap<any, string>()
 
 export function applyMask<Theme extends GenericTheme>(
   theme: Theme,
@@ -128,14 +127,49 @@ export function applyMask<Theme extends GenericTheme>(
         : `❌ Err2`
     )
   }
-  if (info.cache.has(mask)) {
-    return info.cache.get(mask)
+
+  const maskKey = MaskKeyCache.get(mask) ?? `${Math.random()}`
+  MaskKeyCache.set(mask, maskKey)
+
+  const key = `${maskKey}${JSON.stringify(options)}`
+
+  if (info.cache.has(key)) {
+    return info.cache.get(key)
   }
 
-  const template = mask(info.definition, options)
+  const template = mask(info.definition, {
+    palette: info.palette,
+    ...options,
+  })
   const next = createTheme(info.palette, template) as Theme
 
-  info.cache.set(mask, next)
+  info.cache.set(key, next)
 
   return next
+}
+
+// --- tests ---
+
+if (process.env.NODE_ENV === 'development') {
+  const palette = ['0', '1', '2', '3', '-3', '-2', '-1', '-0']
+  const template = { bg: 1, fg: -1 }
+
+  const stongerMask = createStrengthenMask()
+  const weakerMask = createWeakenMask()
+
+  const theme = createTheme(palette, template)
+  if (theme.bg !== '1') throw `❌`
+  if (theme.fg !== '-1') throw `❌`
+
+  const str = applyMask(theme, stongerMask)
+  if (str.bg !== '0') throw `❌`
+  if (str.fg !== '-0') throw `❌`
+
+  const weak = applyMask(theme, weakerMask)
+  if (weak.bg !== '2') throw `❌`
+  if (weak.fg !== '-2') throw `❌`
+
+  const weak2 = applyMask(theme, weakerMask, { strength: 2 })
+  if (weak2.bg !== '3') throw `❌`
+  if (weak2.fg !== '-3') throw `❌`
 }

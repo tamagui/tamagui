@@ -1,4 +1,4 @@
-import { DebugProp, ThemeName } from '../types';
+import { DebugProp, ThemeName } from '../types.js';
 export interface ThemeableProps {
     theme?: ThemeName | null;
     themeInverse?: boolean;

@@ -42,7 +42,9 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
                       br="$2"
                       size="$4"
                       h="$4"
+                      bw={1}
                       bc={getVariableValue(color)}
+                      boc="$color7"
                       $sm={{
                         size: '$2',
                       }}

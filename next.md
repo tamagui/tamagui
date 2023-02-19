@@ -1,3 +1,55 @@
+- linear-gradient next.js issue
+
+- check why chromeless bug not overwriting supposedly
+
+- styled(SolitoImage)
+
+-  I'm currently using the Selector on Native, and the animation for pulling up the modal is kind of lagging and I get spammed this error when it happens.
+
+
+- sliderTrackActive can just be slidertrack + active theme
+
+I'm trying to do the following:
+
+const Content = styled(TamaguiPopover.Content, {
+  name: 'PopoverContent',
+  elevate: true,
+  bordered: true,
+  p: '$3',
+  br: '$3',
+  enterStyle: {
+    o: 0,
+    y: -10,
+    x: 0,
+  },
+  exitStyle: {
+    o: 0,
+    y: -10,
+    x: 0,
+  },
+  x: 0,
+  y: 0,
+  o: 1,
+  animation: [
+    'quick',
+    {
+      opacity: {
+        overshootClamping: true,
+      },
+    },
+  ],
+})
+
+export const Popover = withStaticProperties(TamaguiPopover, {
+  Content
+  // ...etc
+})
+
+
+Once I wrap Popover.Content with styled() it looks like the animations no longer work for it. They work fine if applied directly onto the popover as component props if it's imported from tamagui. But once I wrap it, the animations don't seem to work
+
+
+- add Themes page in docs under Theme, change Theme => Design System
 - move packages to have unstyled
 - move packages from /core to /web
 - <YStack space="$3" $gtSm={{ space: '$6'}}> not working again
@@ -78,10 +130,9 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 inbox
 
-- So it looks like any import of tamagui (not @tamagui/core) breaks the build on the web. I've created a repro here https://stackblitz.com/edit/vitejs-vite-3sbtgb?file=src/App.tsx.
+
+- // TODO move to validStyleProps to merge
 - bundle size reductions:
-  - remove setColorAlpha in favor of internal core rgba util
-  - expandStyle remove some
   - merge mergeSlotProps and mergeProps
   - move to PROP whitelist rather than style whitelist maybe avoid validStyleProps altogether
   - getStylesAtomic "all webkit prefixed rules, pointer-events"

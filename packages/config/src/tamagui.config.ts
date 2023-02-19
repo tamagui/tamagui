@@ -104,9 +104,9 @@ export const config = {
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
   animations,
+  themes,
   media,
   shorthands,
-  themes,
   tokens,
   fonts: {
     // noto: notoFont as any,

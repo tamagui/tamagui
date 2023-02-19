@@ -1,7 +1,7 @@
 import { StyleObject } from '@tamagui/helpers'
 
-import { mediaObjectToString } from '../hooks/useMedia'
-import { MediaQueries, PartialStyleObject } from '../types'
+import { mediaObjectToString } from '../hooks/useMedia.js'
+import type { MediaQueries, PartialStyleObject } from '../types.js'
 
 // TODO have this be used by extractMediaStyle in tamagui static
 // not synced to static/constants for now
