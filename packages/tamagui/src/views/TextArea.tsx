@@ -2,7 +2,7 @@ import { GetProps, styled } from '@tamagui/core'
 import { focusableInputHOC } from '@tamagui/focusable'
 
 import { textAreaSizeVariant } from '../helpers/inputHelpers'
-import { InputFrame } from './Input'
+import { InputFrame, defaultStyles } from './Input'
 
 export const TextAreaFrame = styled(InputFrame, {
   name: 'TextArea',
@@ -11,7 +11,7 @@ export const TextAreaFrame = styled(InputFrame, {
   variants: {
     unstyled: {
       false: {
-        size: '$true',
+        ...defaultStyles,
         height: 'auto',
         numberOfLines: 4,
       },
