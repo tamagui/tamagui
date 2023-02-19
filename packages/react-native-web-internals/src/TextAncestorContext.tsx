@@ -10,5 +10,5 @@
 import { Context } from 'react'
 import { createContext } from 'react'
 
-const TextAncestorContext = createContext(false)
+export const TextAncestorContext = createContext(false)
 export default TextAncestorContext as Context<boolean>
