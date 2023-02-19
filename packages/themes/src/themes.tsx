@@ -270,6 +270,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
       TooltipContent: weaker2,
       Input: strongerBorderLighterBackground,
       TextArea: strongerBorderLighterBackground,
+      Tooltip: inverse1,
     }
   }
 })
