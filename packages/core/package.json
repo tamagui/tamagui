@@ -10,7 +10,8 @@
     "name": "Nate Wienert"
   },
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "index.ts"
   ],
   "scripts": {
     "build": "tamagui-build",
