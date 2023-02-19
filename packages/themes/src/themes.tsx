@@ -164,11 +164,6 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
   const transparent = (hsl: string, opacity = 0) =>
     hsl.replace(`%)`, `%, ${opacity})`).replace(`hsl(`, `hsla(`)
 
-  const directSubThemes = {
-    ...getAltThemes(theme, inverseTheme),
-    ...getComponentThemes(theme, inverseTheme),
-  }
-
   // setup colorThemes and their inverses
   const [colorThemes, inverseColorThemes] = [
     colorTokens[name],
@@ -213,10 +208,24 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
   const allColorThemes = addChildren(colorThemes, (colorName, colorTheme) => {
     const inverse = inverseColorThemes[colorName]
     return {
-      ...getAltThemes(colorTheme as any, inverse as any),
-      ...getComponentThemes(colorTheme as any, inverse as any),
+      ...getAltThemes(colorTheme, inverse),
+      ...getComponentThemes(colorTheme, inverse),
     }
   })
+
+  // const x = allColorThemes.pink
+
+  const directSubThemes = {
+    ...getAltThemes(
+      theme,
+      inverseTheme,
+      applyMask(colorThemes.blue, masks.weaker, {
+        ...maskOptions,
+        strength: 4,
+      })
+    ),
+    ...getComponentThemes(theme, inverseTheme),
+  }
 
   return {
     ...directSubThemes,
@@ -225,37 +234,37 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
 
   function getComponentThemes(theme: SubTheme, inverse: SubTheme) {
     const weaker1 = applyMask(theme, masks.weaker, maskOptions)
+    const weaker2 = applyMask(weaker1, masks.weaker, maskOptions)
     const stronger1 = applyMask(theme, masks.stronger, maskOptions)
-    const stronger2 = applyMask(stronger1, masks.stronger, maskOptions)
     const inverse1 = applyMask(inverse, masks.weaker, maskOptions)
     const inverse2 = applyMask(inverse1, masks.weaker, maskOptions)
-
     return {
-      Card: stronger1,
-      Button: stronger2,
-      DrawerFrame: stronger1,
-      SliderTrack: weaker1,
-      SliderTrackActive: stronger2,
+      Card: weaker1,
+      Button: weaker2,
+      DrawerFrame: weaker1,
+      SliderTrack: stronger1,
+      SliderTrackActive: weaker2,
       SliderThumb: inverse1,
-      Progress: stronger1,
+      Progress: weaker1,
       ProgressIndicator: inverse,
-      Switch: weaker1,
+      Switch: stronger1,
       SwitchThumb: inverse2,
-      TooltipArrow: stronger1,
-      TooltipContent: stronger2,
+      TooltipArrow: weaker1,
+      TooltipContent: weaker2,
     }
   }
 
-  function getAltThemes(theme: SubTheme, inverse: SubTheme) {
+  function getAltThemes(theme: SubTheme, inverse: SubTheme, activeTheme?: SubTheme) {
     const alt1 = applyMask(theme, masks.weaker, maskOptions)
     const alt2 = applyMask(alt1, masks.weaker, maskOptions)
-    const active = inverse // ??
-    // applyMask(theme, masks.weaker, {
-    //   ...maskOptions,
-    //   strength: 4,
-    // })
+    const active =
+      activeTheme ??
+      applyMask(theme, masks.weaker, {
+        ...maskOptions,
+        strength: 4,
+      })
     return addChildren({ alt1, alt2, active }, (name, subTheme) => {
-      return getComponentThemes(subTheme as any, name === 'active' ? theme : inverse)
+      return getComponentThemes(subTheme, subTheme === inverse ? theme : inverse)
     })
   }
 })
@@ -267,5 +276,3 @@ export const themes = {
   light: createTheme(palettes.light, lightTemplate, { nonInheritedValues: lightColors }),
   dark: createTheme(palettes.dark, darkTemplate, { nonInheritedValues: darkColors }),
 }
-
-globalThis['themes'] = themes
