@@ -109,7 +109,6 @@ export function setupMediaListeners() {
     function update() {
       const next = !!getMatch().matches
       if (next === mediaState[key]) return
-      console.log(`go`, key, next)
       mediaState = { ...mediaState, [key]: next }
       updateCurrentState()
     }
