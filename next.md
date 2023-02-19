@@ -1,3 +1,5 @@
+- linear-gradient next.js issue
+
 - check why chromeless bug not overwriting supposedly
 
 - styled(SolitoImage)

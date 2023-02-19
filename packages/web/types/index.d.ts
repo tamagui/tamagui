@@ -30,6 +30,7 @@ export * from './helpers/matchMedia.js';
 export * from './helpers/proxyThemeVariables.js';
 export * from './helpers/themeable.js';
 export * from './helpers/withStaticProperties.js';
+export * from './helpers/normalizeColor.js';
 export * from './contexts/ButtonNestingContext.js';
 export * from './hooks/useId.js';
 export * from './hooks/useIsTouchDevice.js';
