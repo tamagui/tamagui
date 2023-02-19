@@ -93,10 +93,10 @@ const template = {
   colorPress: -1,
   colorFocus: -2,
   colorTransparent: -0,
-  borderColor: 5,
-  borderColorHover: 6,
-  borderColorPress: 4,
-  borderColorFocus: 5,
+  borderColor: 4,
+  borderColorHover: 5,
+  borderColorPress: 3,
+  borderColorFocus: 4,
   placeholderColor: -4,
 }
 
@@ -195,8 +195,8 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
                 // light color themes are a bit less sensitive
                 borderColor: 4,
                 borderColorHover: 5,
-                borderColorFocus: 3,
-                borderColorPress: 3,
+                borderColorFocus: 4,
+                borderColorPress: 4,
               }
             : darkTemplate
         )
@@ -208,7 +208,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
   const allColorThemes = addChildren(colorThemes, (colorName, colorTheme) => {
     const inverse = inverseColorThemes[colorName]
     return {
-      ...getAltThemes(colorTheme, inverse),
+      ...getAltThemes(colorTheme, inverse, inverse),
       ...getComponentThemes(colorTheme, inverse),
     }
   })
@@ -221,36 +221,11 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
   const baseSubThemes = {
     ...getAltThemes(theme, inverseTheme, baseActiveTheme),
     ...getComponentThemes(theme, inverseTheme),
-    Button: inverseTheme,
   }
 
   return {
     ...baseSubThemes,
     ...allColorThemes,
-  }
-
-  function getComponentThemes(theme: SubTheme, inverse: SubTheme) {
-    const weaker1 = applyMask(theme, masks.weaker, maskOptions)
-    const weaker2 = applyMask(weaker1, masks.weaker, maskOptions)
-    const stronger1 = applyMask(theme, masks.stronger, maskOptions)
-    const inverse1 = applyMask(inverse, masks.weaker, maskOptions)
-    const inverse2 = applyMask(inverse1, masks.weaker, maskOptions)
-    return {
-      Card: weaker1,
-      Button: weaker2,
-      DrawerFrame: weaker1,
-      SliderTrack: stronger1,
-      SliderTrackActive: weaker2,
-      SliderThumb: inverse1,
-      Progress: weaker1,
-      ProgressIndicator: inverse,
-      Switch: weaker1,
-      SwitchThumb: inverse2,
-      TooltipArrow: weaker1,
-      TooltipContent: weaker2,
-      Input: stronger1,
-      TextArea: stronger1,
-    }
   }
 
   function getAltThemes(theme: SubTheme, inverse: SubTheme, activeTheme?: SubTheme) {
@@ -265,6 +240,37 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
     return addChildren({ alt1, alt2, active }, (name, subTheme) => {
       return getComponentThemes(subTheme, subTheme === inverse ? theme : inverse)
     })
+  }
+
+  function getComponentThemes(theme: SubTheme, inverse: SubTheme) {
+    const weaker1 = applyMask(theme, masks.weaker, maskOptions)
+    const weaker2 = applyMask(weaker1, masks.weaker, maskOptions)
+    const stronger1 = applyMask(theme, masks.stronger, maskOptions)
+    const inverse1 = applyMask(inverse, masks.weaker, maskOptions)
+    const inverse2 = applyMask(inverse1, masks.weaker, maskOptions)
+    const strongerBorderLighterBackground: SubTheme = {
+      ...stronger1,
+      borderColor: weaker1.borderColor,
+      borderColorHover: weaker1.borderColorHover,
+      borderColorPress: weaker1.borderColorPress,
+      borderColorFocus: weaker1.borderColorFocus,
+    }
+    return {
+      Card: weaker1,
+      Button: weaker2,
+      DrawerFrame: weaker1,
+      SliderTrack: stronger1,
+      SliderTrackActive: weaker2,
+      SliderThumb: inverse1,
+      Progress: weaker1,
+      ProgressIndicator: inverse,
+      Switch: weaker1,
+      SwitchThumb: inverse2,
+      TooltipArrow: weaker1,
+      TooltipContent: weaker2,
+      Input: strongerBorderLighterBackground,
+      TextArea: strongerBorderLighterBackground,
+    }
   }
 })
 
