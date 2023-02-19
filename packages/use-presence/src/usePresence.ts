@@ -1,4 +1,4 @@
-import type { PresenceContextProps, UsePresenceResult } from '@tamagui/core'
+import type { PresenceContextProps, UsePresenceResult } from '@tamagui/web'
 import { useContext, useEffect, useId } from 'react'
 
 import { PresenceContext } from './PresenceContext'
