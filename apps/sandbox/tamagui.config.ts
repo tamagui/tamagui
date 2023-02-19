@@ -18,10 +18,12 @@ const body_cn = createFont({
   transform: {},
 })
 
+const { shorthands, ...configRest } = config
+
 const tamaConf = createTamagui({
-  ...config,
+  ...configRest,
   fonts: {
-    ...config.fonts,
+    ...configRest.fonts,
     body_cn,
     alternative: body_cn,
   },
@@ -29,14 +31,14 @@ const tamaConf = createTamagui({
 
   // test out type narrowing
   shorthands: {
-    ...config.shorthands,
-    // b2b2: 'backgroundColor',
+    ...shorthands,
+    b2b2: 'backgroundColor',
   },
 })
 
-export type Conf = typeof tamaConf
+type test = Conf['shorthands']['b2b2']
 
-// type test = Conf['shorthands']['b2b2']
+export type Conf = typeof tamaConf
 
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}

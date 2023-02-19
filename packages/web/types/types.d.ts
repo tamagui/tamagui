@@ -34,6 +34,8 @@ export type TamaguiComponentPropsBase = {
     tag?: string;
     theme?: ThemeName | null;
     componentName?: string;
+    tabIndex?: string | number;
+    role?: string;
     /**
      * Forces the pseudo style state to be on
      */
@@ -106,9 +108,8 @@ type GenericThemes = {
         [key: string]: VariableVal;
     });
 };
-type AllStyleKeys = keyof StackStylePropsBase | keyof TextStylePropsBase;
 export type CreateShorthands = {
-    [key: string]: AllStyleKeys;
+    [key: string]: string;
 };
 export type GenericShorthands = {};
 type GenericMedia = {
@@ -414,8 +415,6 @@ type SharedBaseExtraStyleProps = {
     outlineStyle?: Properties['outlineStyle'];
     outlineOffset?: Properties['outlineOffset'];
     outlineWidth?: Properties['outlineWidth'];
-    tabIndex?: string | number;
-    role?: string;
 };
 export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & SharedBaseExtraStyleProps;
 export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & SharedBaseExtraStyleProps & {

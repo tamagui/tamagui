@@ -1,9 +1,6 @@
 - linear-gradient next.js issue
 
-- styled(SolitoImage)
-
 -  I'm currently using the Selector on Native, and the animation for pulling up the modal is kind of lagging and I get spammed this error when it happens.
-
 
 - sliderTrackActive can just be slidertrack + active theme
 
@@ -43,9 +40,7 @@ export const Popover = withStaticProperties(TamaguiPopover, {
   // ...etc
 })
 
-
 Once I wrap Popover.Content with styled() it looks like the animations no longer work for it. They work fine if applied directly onto the popover as component props if it's imported from tamagui. But once I wrap it, the animations don't seem to work
-
 
 - add Themes page in docs under Theme, change Theme => Design System
 - move packages to have unstyled

@@ -382,6 +382,8 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         id?: string | undefined;
         tag?: string | undefined;
         componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        role?: string | undefined;
         forceStyle?: "focus" | "hover" | "press" | undefined;
         onPress?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         onPressIn?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
@@ -504,8 +506,6 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
         outlineOffset?: import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
         outlineWidth?: import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
-        tabIndex?: string | number | undefined;
-        role?: string | undefined;
         rel?: any;
         download?: any;
         onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
