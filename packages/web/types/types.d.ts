@@ -2,10 +2,10 @@ import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
 import type { ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
 import type { GestureResponderHandlers, Image, PressableProps, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
-import type { Variable } from './createVariable';
-import type { ResolveVariableTypes } from './helpers/createPropMapper';
-import type { FontLanguageProps } from './views/FontLanguage.types';
-import type { ThemeProviderProps } from './views/ThemeProvider';
+import type { Variable } from './createVariable.js';
+import type { ResolveVariableTypes } from './helpers/createPropMapper.js';
+import type { FontLanguageProps } from './views/FontLanguage.types.js';
+import type { ThemeProviderProps } from './views/ThemeProvider.js';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export type TamaguiElement = HTMLElement | View;
 export type DebugProp = boolean | 'break' | 'verbose';
@@ -155,7 +155,10 @@ type ConfProps<A extends GenericTokens, B extends GenericThemes, C extends Gener
 };
 export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F> ? TamaguiInternalConfig<A, B, C, D, E, F> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
-export type ThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']];
+type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}` ? never : A;
+type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<keyof TamaguiConfig['themes']>];
+type GenericThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']];
+export type ThemeDefinition = BaseThemeDefinitions extends never ? GenericThemeDefinition : BaseThemeDefinitions;
 export type ThemeKeys = keyof ThemeDefinition;
 export type ThemeParsed = {
     [key in ThemeKeys]: Variable<any>;

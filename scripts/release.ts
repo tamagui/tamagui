@@ -253,8 +253,8 @@ async function run() {
     console.log(`✅ Published\n`)
 
     // then git tag, commit, push
-    await spawnify(`yarn install`)
     await spawnify(`yarn fix`)
+    await spawnify(`yarn install`)
 
     await (async () => {
       const seconds = 5

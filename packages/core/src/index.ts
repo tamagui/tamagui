@@ -38,21 +38,6 @@ export const Text = WebText as TamaguiComponent<
   TextPropsBase & RNTextProps
 >
 
-const T = styled(Stack, {
-  backgroundColor: 'red',
-  variants: {
-    red: {
-      true: {
-        backgroundColor: 'red',
-      },
-    },
-  },
-})
-
-const T2 = styled(T, {
-  red: true,
-})
-
 // setup internal hooks:
 
 setupHooks({

@@ -1,4 +1,4 @@
-import { defaultOffset } from './expandStyles'
+import { defaultOffset } from './expandStyles.js'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 
 export function normalizeShadow({

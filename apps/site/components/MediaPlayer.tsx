@@ -106,7 +106,7 @@ export const MediaPlayer = memo(
           alignItems: 'stretch',
           contain: 'strict',
           minWidth: 330,
-          minHeight: 200,
+          minHeight: 222,
         }}
       >
         <Theme name={tint}>{contents}</Theme>

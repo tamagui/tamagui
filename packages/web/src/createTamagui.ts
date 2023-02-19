@@ -1,28 +1,28 @@
 import { isRSC, isWeb } from '@tamagui/constants'
 
-import { configListeners, setConfig } from './config'
-import { createVariables, tokensKeysOrdered } from './createVariables'
-import { getThemeCSSRules } from './helpers/getThemeCSSRules'
+import { configListeners, setConfig } from './config.js'
+import { createVariables, tokensKeysOrdered } from './createVariables.js'
+import { getThemeCSSRules } from './helpers/getThemeCSSRules.js'
 import {
   getAllRules,
   listenForSheetChanges,
   scanAllSheets,
-} from './helpers/insertStyleRule'
+} from './helpers/insertStyleRule.js'
 import {
   registerCSSVariable,
   tokensValueToVariable,
   variableToCSS,
-} from './helpers/registerCSSVariable'
-import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes'
-import { configureMedia } from './hooks/useMedia'
-import { parseFont, registerFontVariables } from './insertFont'
-import { Tamagui } from './Tamagui'
+} from './helpers/registerCSSVariable.js'
+import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes.js'
+import { configureMedia } from './hooks/useMedia.js'
+import { parseFont, registerFontVariables } from './insertFont.js'
+import { Tamagui } from './Tamagui.js'
 import {
   CreateTamaguiProps,
   InferTamaguiConfig,
   TamaguiInternalConfig,
   ThemeParsed,
-} from './types'
+} from './types.js'
 
 // config is re-run by the @tamagui/static, dont double validate
 const createdConfigs = new WeakMap<any, boolean>()

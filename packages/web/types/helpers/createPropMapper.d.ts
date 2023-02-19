@@ -1,4 +1,4 @@
-import { PropMapper, SplitStyleState, StaticConfigParsed, TamaguiInternalConfig } from '../types';
+import type { PropMapper, SplitStyleState, StaticConfigParsed, TamaguiInternalConfig } from '../types.js';
 export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both' | 'non-color-value';
 export declare const getReturnVariablesAs: (props: any, state: Partial<SplitStyleState>) => "auto" | "value" | "non-color-value";
 export declare const createPropMapper: (staticConfig: StaticConfigParsed) => PropMapper;

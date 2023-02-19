@@ -50,12 +50,9 @@ export function HeroContainer({
         {demoMultiple ? (
           <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
             <XStack space="$3" px="$8">
-              {/* <Theme name="dark">
-              <Card>{children}</Card>
-            </Theme>
-            <Theme name="light">
-              <Card>{children}</Card>
-            </Theme> */}
+              <Theme reset>
+                <Card>{children}</Card>
+              </Theme>
               <Theme name="blue">
                 <Card>{children}</Card>
               </Theme>
@@ -93,7 +90,7 @@ export function HeroContainer({
 const Card = styled(YStack, {
   ai: 'center',
   jc: 'center',
-  elevation: '$6',
+  elevation: '$1',
   y: 0,
   ov: 'hidden',
   minWidth: 180,

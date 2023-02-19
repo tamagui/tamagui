@@ -24,10 +24,10 @@ import type {
   ViewStyle,
 } from 'react-native'
 
-import type { Variable } from './createVariable'
-import type { ResolveVariableTypes } from './helpers/createPropMapper'
-import type { FontLanguageProps } from './views/FontLanguage.types'
-import type { ThemeProviderProps } from './views/ThemeProvider'
+import type { Variable } from './createVariable.js'
+import type { ResolveVariableTypes } from './helpers/createPropMapper.js'
+import type { FontLanguageProps } from './views/FontLanguage.types.js'
+import type { ThemeProviderProps } from './views/ThemeProvider.js'
 
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 
@@ -272,8 +272,17 @@ export type GenericTamaguiConfig = CreateTamaguiConfig<
   GenericFonts
 >
 
-// since TamaguiConfig will be re-declared, these will all be typed globally
-export type ThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']]
+// try and find the top level types as they can be supersets:
+type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}`
+  ? never
+  : A
+type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<
+  keyof TamaguiConfig['themes']
+>]
+type GenericThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']]
+export type ThemeDefinition = BaseThemeDefinitions extends never
+  ? GenericThemeDefinition
+  : BaseThemeDefinitions
 export type ThemeKeys = keyof ThemeDefinition
 export type ThemeParsed = {
   [key in ThemeKeys]: Variable<any>

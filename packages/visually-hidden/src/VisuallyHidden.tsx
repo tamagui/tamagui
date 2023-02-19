@@ -1,4 +1,4 @@
-import { Stack, styled } from '@tamagui/core'
+import { Stack, styled } from '@tamagui/web'
 
 export const VisuallyHidden = styled(Stack, {
   position: 'absolute',
@@ -17,7 +17,7 @@ export const VisuallyHidden = styled(Stack, {
         width: 'auto',
         height: 'auto',
       },
-    } as const,
+    },
 
     visible: {
       true: {
@@ -30,8 +30,8 @@ export const VisuallyHidden = styled(Stack, {
         opacity: 1,
         pointerEvents: 'auto',
       },
-    } as const,
-  },
+    },
+  } as const,
 })
 
 // @tamgui/core checks for this in spacing

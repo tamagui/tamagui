@@ -129,13 +129,13 @@ export declare const Sheet: React.ForwardRefExoticComponent<{
         __scopeSheet?: import("@tamagui/create-context").Scope<any>;
     } & React.RefAttributes<unknown>>;
     Overlay: ({ __scopeSheet, ...props }: SheetScopedProps<SheetOverlayProps>) => JSX.Element;
-    ScrollView: React.ForwardRefExoticComponent<((import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps>) | Pick<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, string | number> & {
-        [x: string]: undefined;
-    } & import("@tamagui/core").MediaProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, string | number> & {
-        [x: string]: undefined;
-    }>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, string | number> & {
-        [x: string]: undefined;
-    }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
+    ScrollView: React.ForwardRefExoticComponent<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
+        readonly fullscreen?: boolean | undefined;
+    } & import("@tamagui/core").MediaProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
+        readonly fullscreen?: boolean | undefined;
+    }>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
+        readonly fullscreen?: boolean | undefined;
+    }>> & React.RefAttributes<TamaguiElement>>;
 };
 export declare const ControlledSheet: React.FunctionComponent<Omit<SheetProps, "open" | "onOpenChange"> & React.RefAttributes<View>> & {
     Handle: ({ __scopeSheet, ...props }: SheetScopedProps<XStackProps>) => JSX.Element;
@@ -152,13 +152,13 @@ export declare const ControlledSheet: React.FunctionComponent<Omit<SheetProps, "
         __scopeSheet?: import("@tamagui/create-context").Scope<any>;
     } & React.RefAttributes<unknown>>;
     Overlay: ({ __scopeSheet, ...props }: SheetScopedProps<SheetOverlayProps>) => JSX.Element;
-    ScrollView: React.ForwardRefExoticComponent<((import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps>) | Pick<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, string | number> & {
-        [x: string]: undefined;
-    } & import("@tamagui/core").MediaProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, string | number> & {
-        [x: string]: undefined;
-    }>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, string | number> & {
-        [x: string]: undefined;
-    }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
+    ScrollView: React.ForwardRefExoticComponent<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
+        readonly fullscreen?: boolean | undefined;
+    } & import("@tamagui/core").MediaProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
+        readonly fullscreen?: boolean | undefined;
+    }>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
+        readonly fullscreen?: boolean | undefined;
+    }>> & React.RefAttributes<TamaguiElement>>;
 };
 type SheetControllerContextValue = {
     disableDrag?: boolean;

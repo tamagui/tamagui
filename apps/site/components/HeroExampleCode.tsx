@@ -66,12 +66,11 @@ export function HeroExampleCode({
                   accessibilityLabel="See example"
                   onPress={() => setActiveIndex(i)}
                   theme={i === activeIndex ? 'active' : null}
-                  o={i === activeIndex ? 1 : 0.5}
+                  chromeless={i !== activeIndex}
                   key={i}
                   borderRadius={0}
                   size="$3"
                   fontFamily="$silkscreen"
-                  chromeless
                 >
                   {example.name}
                 </Button>

@@ -1,6 +1,6 @@
 /// <reference types="react" />
-import { ThemeManager } from '../helpers/ThemeManager';
-import { ThemeParsed, ThemeProps } from '../types';
+import { ThemeManager } from '../helpers/ThemeManager.js';
+import type { ThemeParsed, ThemeProps } from '../types.js';
 export type ChangedThemeResponse = {
     themeManager: ThemeManager | null;
     name: string;

@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
-import { FontLanguageContext } from '../contexts/FontLanguageContext'
-import { FontLanguageProps } from './FontLanguage.types'
+import { FontLanguageContext } from '../contexts/FontLanguageContext.js'
+import type { FontLanguageProps } from './FontLanguage.types.js'
 
 export const FontLanguage = ({ children, ...props }: FontLanguageProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps

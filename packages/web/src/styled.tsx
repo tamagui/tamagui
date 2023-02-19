@@ -1,8 +1,8 @@
 import { stylePropsAll } from '@tamagui/helpers'
 
-import { createComponent } from './createComponent'
-import { ReactNativeStaticConfigs } from './setupReactNative'
-import {
+import { createComponent } from './createComponent.js'
+import { ReactNativeStaticConfigs } from './setupReactNative.js'
+import type {
   GetProps,
   GetVariantValues,
   MediaProps,
@@ -13,7 +13,7 @@ import {
   TamaguiElement,
   VariantDefinitions,
   VariantSpreadFunction,
-} from './types'
+} from './types.js'
 
 // TODO may be able to use this in the options?: arg below directly
 export type StyledOptions<ParentComponent extends StylableComponent> =

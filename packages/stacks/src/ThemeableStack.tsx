@@ -1,6 +1,6 @@
 import { GetProps, styled } from '@tamagui/core'
 
-import { YStack } from './Stacks'
+import { YStack } from './Stacks.js'
 import {
   bordered,
   circular,
@@ -10,7 +10,7 @@ import {
   padded,
   pressTheme,
   radiused,
-} from './variants'
+} from './variants.js'
 
 const chromelessStyle = {
   backgroundColor: 'transparent',

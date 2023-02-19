@@ -72,8 +72,11 @@ export class TamaguiPlugin {
     const existingLoader = nextJsRules ? rules[startIndex] : undefined
 
     rules.splice(startIndex, 0, {
-      test: this.options.test ?? /\.(jsx?|tsx?)$/,
+      test: this.options.test ?? /\.m?[jt]sx?$/,
       exclude: this.options.exclude,
+      resolve: {
+        fullySpecified: false,
+      },
       use: [
         ...(jsLoader ? [jsLoader] : []),
         ...(existingLoader && nextJsRules ? [].concat(existingLoader.use) : []),

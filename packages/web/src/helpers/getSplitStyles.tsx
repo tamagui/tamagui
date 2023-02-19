@@ -15,15 +15,15 @@ import {
 import { useInsertionEffect } from 'react'
 import type { TextStyle, ViewStyle } from 'react-native'
 
-import { getConfig, getFont } from '../config'
-import { isDevTools } from '../constants/isDevTools'
+import { getConfig, getFont } from '../config.js'
+import { isDevTools } from '../constants/isDevTools.js'
 import {
   getMediaImportanceIfMoreImportant,
   mediaState as globalMediaState,
   mediaKeysWithAndWithout$,
   mediaQueryConfig,
   mergeMediaByImportance,
-} from '../hooks/useMedia'
+} from '../hooks/useMedia.js'
 import type {
   ClassNamesObject,
   DebugProp,
@@ -38,24 +38,27 @@ import type {
   StaticConfigParsed,
   TamaguiInternalConfig,
   ThemeParsed,
-} from '../types'
-import { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types'
-import { createMediaStyle } from './createMediaStyle'
-import { getPropMappedFontFamily } from './createPropMapper'
-import { fixStyles } from './expandStyles'
-import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic'
+} from '../types.js'
+import type {
+  FontLanguageProps,
+  LanguageContextType,
+} from '../views/FontLanguage.types.js'
+import { createMediaStyle } from './createMediaStyle.js'
+import { getPropMappedFontFamily } from './createPropMapper.js'
+import { fixStyles } from './expandStyles.js'
+import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic.js'
 import {
   insertStyleRules,
   insertedTransforms,
   scanAllSheets,
   shouldInsertStyleRules,
   updateRules,
-} from './insertStyleRule'
+} from './insertStyleRule.js'
 import {
   normalizeValueWithProperty,
   reverseMapClassNameToValue,
 } from './normalizeValueWithProperty.js'
-import { pseudoDescriptors } from './pseudoDescriptors'
+import { pseudoDescriptors } from './pseudoDescriptors.js'
 
 type GetStyleState = {
   style: ViewStyle
