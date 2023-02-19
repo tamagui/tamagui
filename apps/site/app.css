@@ -153,6 +153,13 @@ span._display-1adg3ll > span._display-xoduu5 {
   );
 }
 
+.hero-blur {
+  background: radial-gradient(
+    var(--color3) 0%,
+    transparent 72%
+  );
+}
+
 .t_dark .hero-blur {
   background: radial-gradient(
     var(--color6) 0%,
