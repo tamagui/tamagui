@@ -29,6 +29,7 @@
     "react-dom": "^18.2.0",
     "react-native-reanimated": "^2.12.0",
     "react-native-web": "^0.18.3",
+    "solito": "^2.3.0",
     "tamagui": "^1.5.13"
   },
   "devDependencies": {
