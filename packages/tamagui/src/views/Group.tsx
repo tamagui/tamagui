@@ -118,7 +118,7 @@ function createGroup(verticalDefault: boolean) {
 
         return cloneElementWithPropOrder(
           child,
-          child['type']['handlesGroupRadius'] === true ? props : {}
+          child['type']['handlesGroupRadius'] === true ? {} : props
         )
       })
 
