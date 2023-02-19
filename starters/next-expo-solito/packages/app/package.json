@@ -16,7 +16,7 @@
     "@tamagui/themes": "^1.5.13",
     "expo-constants": "^14.0.2",
     "expo-linking": "^3.2.3",
-    "solito": "^2.1.3"
+    "solito": "^2.3.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

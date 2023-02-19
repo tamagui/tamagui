@@ -17,6 +17,6 @@
     "@tamagui/shorthands": "^1.5.13",
     "@tamagui/themes": "^1.5.13",
     "expo-linking": "^3.2.3",
-    "solito": "^2.1.3"
+    "solito": "^2.3.0"
   }
 }

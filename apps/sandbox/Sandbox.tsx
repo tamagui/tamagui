@@ -3,7 +3,8 @@ import '@tamagui/polyfill-dev'
 
 import { ButtonDemo, CheckboxDemo, InputsDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
-import { ScrollView, TamaguiProvider, XStack, YStack } from 'tamagui'
+import { SolitoImage } from 'solito/image'
+import { ScrollView, TamaguiProvider, XStack, YStack, styled } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -14,17 +15,49 @@ if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
 
+/**
+
+the ideal is:
+
+- styled(a, b) - b accepts any subset of a.props
+- returns type where props defined in b become nullable
+
+
+ */
+const Image = styled(
+  SolitoImage,
+  {
+    alt: '',
+    resizeMode: 'contain',
+    src: '',
+    style: {},
+  },
+  {
+    inlineProps: new Set(['width', 'height']),
+    acceptsClassName: true,
+  }
+)
+
+const SolitoImageExample = () => (
+  <Image
+    alt=""
+    style={{}}
+    resizeMode="contain"
+    width={200}
+    height={200}
+    src="/favicon.svg"
+    bc="$color"
+  />
+)
+
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light')
 
   const demos = (
     <>
       <SwitchDemo />
-
       <CheckboxDemo />
-
       <InputsDemo />
-
       <ButtonDemo />
     </>
   )
@@ -43,6 +76,8 @@ export const Sandbox = () => {
       <XStack bc="$backgroundStrong" fullscreen ai="center" jc="center">
         <ScrollView fullscreen horizontal>
           <ScrollView fullscreen>
+            <SolitoImageExample />
+
             <YStack>
               <XStack gap={20} px="$4" flexWrap="wrap">
                 {demos}

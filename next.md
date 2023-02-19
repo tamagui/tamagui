@@ -1,7 +1,5 @@
 - linear-gradient next.js issue
 
-- check why chromeless bug not overwriting supposedly
-
 - styled(SolitoImage)
 
 -  I'm currently using the Selector on Native, and the animation for pulling up the modal is kind of lagging and I get spammed this error when it happens.
