@@ -56,6 +56,13 @@ function getESBuildConfig(
             }
           })
 
+          build.onResolve({ filter: /@tamagui\/web/ }, (args) => {
+            return {
+              path: '@tamagui/core-node',
+              external: true,
+            }
+          })
+
           build.onResolve({ filter: /^(react-native|react-native\/.*)$/ }, (args) => {
             return {
               path: 'react-native-web-lite',
