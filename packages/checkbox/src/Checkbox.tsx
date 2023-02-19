@@ -104,6 +104,7 @@ export const BubbleInput = (props: BubbleInputProps) => {
 const INDICATOR_NAME = 'CheckboxIndicator'
 
 const CheckboxIndicatorFrame = styled(ThemeableStack, {
+  // use Checkbox for easier themes
   name: INDICATOR_NAME,
 })
 
@@ -150,7 +151,6 @@ const CheckboxIndicator = CheckboxIndicatorFrame.extractable(
       if (forceMount || isIndeterminate(context.state) || context.state === true)
         return (
           <CheckboxIndicatorFrame
-            theme="active"
             data-state={getState(context.state)}
             data-disabled={context.disabled ? '' : undefined}
             pointerEvents="none"
@@ -325,7 +325,6 @@ export const Checkbox = withStaticProperties(
                 <CheckboxFrame
                   width={size}
                   height={size}
-                  theme={checked ? 'active' : null}
                   tag="button"
                   role="checkbox"
                   aria-labelledby={labelledBy}
