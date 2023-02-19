@@ -3,7 +3,7 @@
   "version": "1.5.14",
   "sideEffects": [
     "*.css",
-    "*setup.js"
+    "setup.js"
   ],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
