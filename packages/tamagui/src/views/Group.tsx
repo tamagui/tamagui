@@ -97,8 +97,14 @@ function createGroup(verticalDefault: boolean) {
 
       const hasRadius = radius !== undefined
       const disablePassBorderRadius = disablePassBorderRadiusProp ?? !hasRadius
-      const tree = useTree(children)
-console.log(tree.children, Children.toArray(children).length)
+      const tree = useTree(spacedChildren({
+        direction: spaceDirection,
+        separator,
+        space,
+        children
+      }))
+      
+
       return (
         <GroupProvider
           disablePassBorderRadius={disablePassBorderRadius}
@@ -116,12 +122,7 @@ console.log(tree.children, Children.toArray(children).length)
           >
             {wrapScroll(
               activeProps,
-              spacedChildren({
-                direction: spaceDirection,
-                separator,
-                space,
-                children: tree.children,
-              })
+              tree.children
             )}
           </GroupFrame>
         </GroupProvider>
