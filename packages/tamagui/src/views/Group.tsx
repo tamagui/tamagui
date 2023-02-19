@@ -78,14 +78,14 @@ function createGroup(verticalDefault: boolean) {
 
       const {
         __scopeGroup,
-        children,
+        children: childrenProp,
         space,
         size = '$true',
         spaceDirection,
         separator,
         scrollable,
         vertical = verticalDefault,
-        disabled,
+        disabled: disabledProp,
         disablePassBorderRadius: disablePassBorderRadiusProp,
         borderRadius,
         ...restProps
@@ -94,23 +94,45 @@ function createGroup(verticalDefault: boolean) {
       const radius =
         borderRadius ??
         (size ? getVariableValue(getTokens().radius[size]) - 1 : undefined)
-
       const hasRadius = radius !== undefined
       const disablePassBorderRadius = disablePassBorderRadiusProp ?? !hasRadius
-      const tree = useTree(spacedChildren({
-        direction: spaceDirection,
-        separator,
-        space,
-        children
-      }))
-      
+
+      const childrens = Children.toArray(childrenProp)
+      const children = childrens.map((child, i) => {
+        // this block is for backward compatibility, when Group.Item is not provided
+        if (!isValidElement(child)) {
+          return child
+        }
+        const disabled = child.props.disabled ?? disabledProp
+
+        const isFirst = i === 0
+        const isLast = i === childrens.length - 1
+
+        const radiusStyles = disablePassBorderRadius
+          ? null
+          : getBorderRadius({ isFirst, isLast, radius, vertical })
+        const props = {
+          disabled,
+          ...(isTamaguiElement(child) ? radiusStyles : { style: radiusStyles }),
+        }
+        return cloneElementWithPropOrder(child, props)
+      })
+
+      const tree = useTree(
+        spacedChildren({
+          direction: spaceDirection,
+          separator,
+          space,
+          children,
+        })
+      )
 
       return (
         <GroupProvider
           disablePassBorderRadius={disablePassBorderRadius}
           vertical={vertical}
           radius={radius}
-          disabled={disabled}
+          disabled={disabledProp}
           scope={__scopeGroup}
         >
           <GroupFrame
@@ -120,10 +142,7 @@ function createGroup(verticalDefault: boolean) {
             borderRadius={borderRadius}
             {...restProps}
           >
-            {wrapScroll(
-              activeProps,
-              tree.children
-            )}
+            {wrapScroll(activeProps, tree.children)}
           </GroupFrame>
         </GroupProvider>
       )
@@ -202,6 +221,7 @@ const getBorderRadius = ({
   isFirst: boolean
   isLast: boolean
 }) => {
+  // TODO: RTL support would be nice here
   return {
     borderTopLeftRadius: isFirst ? radius : 0,
     borderTopRightRadius: (vertical && isFirst) || (!vertical && isLast) ? radius : 0,
