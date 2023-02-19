@@ -2,6 +2,7 @@ import { Button } from '@tamagui/button'
 import {
   GetProps,
   SizeTokens,
+  Stack,
   composeEventHandlers,
   composeRefs,
   isWeb,
@@ -91,134 +92,136 @@ type TabsTriggerProps = TabsTriggerFrameProps & {
   value: string
 }
 
-const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
-  (props: ScopedProps<TabsTriggerProps>, forwardedRef) => {
-    const { __scopeTabs, value, disabled = false, ...triggerProps } = props
-    const context = useTabsContext(TRIGGER_NAME, __scopeTabs)
-    const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs)
-    const triggerId = makeTriggerId(context.baseId, value)
-    const contentId = makeContentId(context.baseId, value)
-    const isSelected = value === context.value
-    const [layout, setLayout] = React.useState<LayoutRectangle | null>(null)
-    const triggerRef = React.useRef<HTMLButtonElement>(null)
+const TabsTrigger = TabsTriggerFrame.extractable(
+  React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
+    (props: ScopedProps<TabsTriggerProps>, forwardedRef) => {
+      const { __scopeTabs, value, disabled = false, ...triggerProps } = props
+      const context = useTabsContext(TRIGGER_NAME, __scopeTabs)
+      const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs)
+      const triggerId = makeTriggerId(context.baseId, value)
+      const contentId = makeContentId(context.baseId, value)
+      const isSelected = value === context.value
+      const [layout, setLayout] = React.useState<LayoutRectangle | null>(null)
+      const triggerRef = React.useRef<HTMLButtonElement>(null)
 
-    React.useEffect(() => {
-      if (!triggerRef.current || !isWeb) return
+      React.useEffect(() => {
+        if (!triggerRef.current || !isWeb) return
 
-      function getTriggerSize() {
-        if (!triggerRef.current) return
-        setLayout({
-          width: triggerRef.current.offsetWidth,
-          height: triggerRef.current.offsetHeight,
-          x: triggerRef.current.offsetLeft,
-          y: triggerRef.current.offsetTop,
-        })
-      }
-      getTriggerSize()
+        function getTriggerSize() {
+          if (!triggerRef.current) return
+          setLayout({
+            width: triggerRef.current.offsetWidth,
+            height: triggerRef.current.offsetHeight,
+            x: triggerRef.current.offsetLeft,
+            y: triggerRef.current.offsetTop,
+          })
+        }
+        getTriggerSize()
 
-      const observer = new ResizeObserver(getTriggerSize)
-      observer.observe(triggerRef.current)
+        const observer = new ResizeObserver(getTriggerSize)
+        observer.observe(triggerRef.current)
 
-      return () => {
-        if (!triggerRef.current) return
-        observer.unobserve(triggerRef.current)
-      }
-    }, [])
+        return () => {
+          if (!triggerRef.current) return
+          observer.unobserve(triggerRef.current)
+        }
+      }, [])
 
-    React.useEffect(() => {
-      if (isSelected && context.selectedLayout?.value !== value && layout) {
-        context.onSelectedLayoutChange({ value, layout })
-      }
-    }, [isSelected, context.selectedLayout?.value, value, layout])
+      React.useEffect(() => {
+        if (isSelected && context.selectedLayout?.value !== value && layout) {
+          context.onSelectedLayoutChange({ value, layout })
+        }
+      }, [isSelected, context.selectedLayout?.value, value, layout])
 
-    const transitionDirection = React.useMemo(() => {
-      if (!layout || !context.selectedLayout?.layout) {
-        return 0
-      }
-      if (context.orientation === 'vertical') {
-        if (context.selectedLayout.layout.y === layout.y) return 0
-        return context.selectedLayout.layout.y > layout.y ? 1 : -1
-      }
-      if (context.selectedLayout.layout.x === layout.x) return 0
-      return context.selectedLayout.layout.x > layout.x ? 1 : -1
-    }, [context.selectedLayout, context.orientation, layout])
+      const transitionDirection = React.useMemo(() => {
+        if (!layout || !context.selectedLayout?.layout) {
+          return 0
+        }
+        if (context.orientation === 'vertical') {
+          if (context.selectedLayout.layout.y === layout.y) return 0
+          return context.selectedLayout.layout.y > layout.y ? 1 : -1
+        }
+        if (context.selectedLayout.layout.x === layout.x) return 0
+        return context.selectedLayout.layout.x > layout.x ? 1 : -1
+      }, [context.selectedLayout, context.orientation, layout])
 
-    return (
-      <RovingFocusGroup.Item
-        asChild
-        {...rovingFocusGroupScope}
-        focusable={!disabled}
-        active={isSelected}
-      >
-        <TabsTriggerFrame
-          onLayout={(event) => {
-            if (!isWeb) {
-              setLayout(event.nativeEvent.layout)
-            }
-          }}
-          onHoverIn={composeEventHandlers(props.onHoverIn, () => {
-            if (layout) {
-              context.onHoveredLayoutChange({ value, layout })
-            }
-          })}
-          onHoverOut={composeEventHandlers(props.onHoverOut, () => {
-            context.onHoveredLayoutChange(null)
-          })}
-          role="tab"
-          aria-selected={isSelected}
-          aria-controls={contentId}
-          data-state={isSelected ? 'active' : 'inactive'}
-          data-disabled={disabled ? '' : undefined}
-          disabled={disabled}
-          id={triggerId}
-          theme={isSelected ? 'active' : null}
-          size={context.size}
-          {...triggerProps}
-          ref={composeRefs(forwardedRef, triggerRef)}
-          onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
-            // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
-            // but not when the control key is pressed (avoiding MacOS right click)
+      return (
+        <RovingFocusGroup.Item
+          asChild
+          {...rovingFocusGroupScope}
+          focusable={!disabled}
+          active={isSelected}
+        >
+          <TabsTriggerFrame
+            onLayout={(event) => {
+              if (!isWeb) {
+                setLayout(event.nativeEvent.layout)
+              }
+            }}
+            onHoverIn={composeEventHandlers(props.onHoverIn, () => {
+              if (layout) {
+                context.onHoveredLayoutChange({ value, layout })
+              }
+            })}
+            onHoverOut={composeEventHandlers(props.onHoverOut, () => {
+              context.onHoveredLayoutChange(null)
+            })}
+            role="tab"
+            aria-selected={isSelected}
+            aria-controls={contentId}
+            data-state={isSelected ? 'active' : 'inactive'}
+            data-disabled={disabled ? '' : undefined}
+            disabled={disabled}
+            id={triggerId}
+            theme={isSelected ? 'active' : null}
+            size={context.size}
+            {...triggerProps}
+            ref={composeRefs(forwardedRef, triggerRef)}
+            onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
+              // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
+              // but not when the control key is pressed (avoiding MacOS right click)
 
-            const webChecks =
-              !isWeb ||
-              ((event as unknown as React.MouseEvent).button === 0 &&
-                (event as unknown as React.MouseEvent).ctrlKey === false)
-            if (!disabled && !isSelected && webChecks) {
-              context.onChange({ value, transitionDirection })
-            } else {
-              // prevent focus to avoid accidental activation
-              event.preventDefault()
-            }
-          })}
-          {...(isWeb && {
-            type: 'button',
-            onKeyDown: composeEventHandlers(
-              (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
-              (event) => {
-                if ([' ', 'Enter'].includes(event.key)) {
+              const webChecks =
+                !isWeb ||
+                ((event as unknown as React.MouseEvent).button === 0 &&
+                  (event as unknown as React.MouseEvent).ctrlKey === false)
+              if (!disabled && !isSelected && webChecks) {
+                context.onChange({ value, transitionDirection })
+              } else {
+                // prevent focus to avoid accidental activation
+                event.preventDefault()
+              }
+            })}
+            {...(isWeb && {
+              type: 'button',
+              onKeyDown: composeEventHandlers(
+                (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
+                (event) => {
+                  if ([' ', 'Enter'].includes(event.key)) {
+                    context.onChange({ value, transitionDirection })
+                  }
+                }
+              ),
+              onFocus: composeEventHandlers(props.onFocus, (event) => {
+                if (layout) {
+                  context.onFocusedLayoutChange({ layout, value })
+                }
+                // handle "automatic" activation if necessary
+                // ie. activate tab following focus
+                const isAutomaticActivation = context.activationMode !== 'manual'
+                if (!isSelected && !disabled && isAutomaticActivation) {
                   context.onChange({ value, transitionDirection })
                 }
-              }
-            ),
-            onFocus: composeEventHandlers(props.onFocus, (event) => {
-              if (layout) {
-                context.onFocusedLayoutChange({ layout, value })
-              }
-              // handle "automatic" activation if necessary
-              // ie. activate tab following focus
-              const isAutomaticActivation = context.activationMode !== 'manual'
-              if (!isSelected && !disabled && isAutomaticActivation) {
-                context.onChange({ value, transitionDirection })
-              }
-            }),
-            onBlur: composeEventHandlers(props.onFocus, () => {
-              context.onFocusedLayoutChange(null)
-            }),
-          })}
-        />
-      </RovingFocusGroup.Item>
-    )
-  }
+              }),
+              onBlur: composeEventHandlers(props.onFocus, () => {
+                context.onFocusedLayoutChange(null)
+              }),
+            })}
+          />
+        </RovingFocusGroup.Item>
+      )
+    }
+  )
 )
 
 TabsTrigger.displayName = TRIGGER_NAME
@@ -283,11 +286,14 @@ TabsContent.displayName = CONTENT_NAME
 
 const TABS_HIGHLIGHT_NAME = 'TabsRovingIndicator'
 
-const TabsRovingIndicatorFrame = styled(ThemeableStack, {
+const TabsRovingIndicatorFrame = styled(Stack, {
   name: TABS_HIGHLIGHT_NAME,
-  position: 'absolute',
-  backgrounded: true,
   variants: {
+    active: {
+      true: {
+        backgroundColor: '$color8',
+      },
+    },
     enter: {
       true: {
         opacity: 0,
@@ -300,6 +306,8 @@ const TabsRovingIndicatorFrame = styled(ThemeableStack, {
     },
   },
   defaultVariants: {
+    position: 'absolute',
+    backgroundColor: '$color5',
     opacity: 1,
   },
 })
@@ -312,45 +320,40 @@ type TabsRovingIndicatorProps = TabsRovingIndicatorFrameProps & {
   highlightMode?: 'select' | 'hover' | 'focus' | 'hoverOrFocus'
 }
 
-const TabsRovingIndicator = React.forwardRef<HTMLDivElement, TabsRovingIndicatorProps>(
-  (props: ScopedProps<TabsRovingIndicatorProps>, forwardedRef) => {
-    const { __scopeTabs, children, highlightMode = 'select', ...highlightProps } = props
-    const context = useTabsContext(TAB_LIST_NAME, __scopeTabs)
+const TabsRovingIndicator = TabsRovingIndicatorFrame.extractable(
+  React.forwardRef<HTMLDivElement, TabsRovingIndicatorProps>(
+    (props: ScopedProps<TabsRovingIndicatorProps>, forwardedRef) => {
+      const { __scopeTabs, children, highlightMode = 'select', ...highlightProps } = props
+      const context = useTabsContext(TAB_LIST_NAME, __scopeTabs)
 
-    let layoutState = context.selectedLayout
-    if (highlightMode === 'select') {
-      layoutState = context.selectedLayout
-    } else if (highlightMode === 'hoverOrFocus') {
-      layoutState = context.hoveredLayout ?? context.focusedLayout
-    } else if (highlightMode === 'focus') {
-      layoutState = context.focusedLayout
+      let layoutState = context.selectedLayout
+      if (highlightMode === 'select') {
+        layoutState = context.selectedLayout
+      } else if (highlightMode === 'hoverOrFocus') {
+        layoutState = context.hoveredLayout ?? context.focusedLayout
+      } else if (highlightMode === 'focus') {
+        layoutState = context.focusedLayout
+      }
+      const layout = layoutState?.layout
+      if (!layout) return null
+
+      return (
+        <TabsRovingIndicatorFrame
+          theme={highlightMode === 'select' ? 'active' : undefined}
+          active={highlightMode === 'select'}
+          ref={forwardedRef}
+          width={layout.width}
+          height={layout.height}
+          scale={1}
+          x={layout.x}
+          y={layout.y}
+          {...highlightProps}
+        >
+          {children}
+        </TabsRovingIndicatorFrame>
+      )
     }
-    const layout = layoutState?.layout
-    if (!layout) return null
-
-    return (
-      <TabsRovingIndicatorFrame
-        key="highlight"
-        theme={highlightMode === 'select' ? 'active' : undefined}
-        backgroundColor={
-          highlightMode === 'select'
-            ? '$background'
-            : highlightMode === 'focus'
-            ? '$backgroundFocus'
-            : '$backgroundHover'
-        }
-        ref={forwardedRef}
-        width={layout.width}
-        height={layout.height}
-        scale={1}
-        x={layout.x}
-        y={layout.y}
-        {...highlightProps}
-      >
-        {children}
-      </TabsRovingIndicatorFrame>
-    )
-  }
+  )
 )
 
 TabsRovingIndicator.displayName = CONTENT_NAME
