@@ -38,7 +38,7 @@ const TooltipContent = React.forwardRef(
     const padding = props.size || popper.size || stepTokenUpOrDown('size', '$true', -2)
     return (
       <PopoverContent
-        componentName="TooltipContent"
+        componentName="Tooltip"
         disableRemoveScroll
         trapFocus={false}
         padding={padding}
@@ -51,7 +51,7 @@ const TooltipContent = React.forwardRef(
 )
 
 const TooltipArrow = React.forwardRef((props: PopoverArrowProps, ref: any) => {
-  return <PopoverArrow componentName="TooltipArrow" ref={ref} {...props} />
+  return <PopoverArrow componentName="Tooltip" ref={ref} {...props} />
 })
 
 export type TooltipProps = PopperProps & {
