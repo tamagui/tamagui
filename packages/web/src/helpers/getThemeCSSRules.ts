@@ -51,7 +51,7 @@ export function getThemeCSSRules({
   // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
   if (hasDarkLight) {
     for (const subName of names) {
-      const isDark = isDarkOrLightBase || subName.startsWith('dark_')
+      const isDark = themeName === 'dark' || subName.startsWith('dark_')
       const maxDepth = config.maxDarkLightNesting ?? 3
 
       if (!(isDark || subName.startsWith('light_'))) {
@@ -63,35 +63,44 @@ export function getThemeCSSRules({
 
       const childSelector = `${CNP}${subName.replace(isDark ? 'dark_' : 'light_', '')}`
 
-      // note the sub_theme this lets it be generic! we should do this for any type of themes too even not just light/dark base ones
-      const order = isDark ? ['dark', 'sub_theme'] : ['light', 'sub_theme']
+      const [altLightDark, altSubTheme] = [
+        isDark ? ['dark', 'light'] : ['light', 'dark'],
+        isDark ? ['dark', 'sub_theme'] : ['light', 'sub_theme'],
+      ]
 
-      if (isDarkOrLightBase) {
-        order.reverse()
-      }
-      const [stronger, weaker] = order
-      const numSelectors = Math.round(maxDepth * 1.5)
-
-      for (let depth = 0; depth < numSelectors; depth++) {
-        const isOdd = depth % 2 === 1
-
-        // wtf is this continue:
-        if (isOdd && depth < 3) continue
-
-        const parents = new Array(depth + 1).fill(0).map((_, psi) => {
-          return `${CNP}${psi % 2 === 0 ? stronger : weaker}`
-        })
-        let parentSelectors = parents.length > 1 ? parents.slice(1) : parents
-        if (isOdd) {
-          const [_first, second, ...rest] = parentSelectors
-          parentSelectors = [second, ...rest, second]
+      for (const order of [altLightDark, altSubTheme]) {
+        if (isDarkOrLightBase) {
+          order.reverse()
         }
-        const lastParentSelector = parentSelectors[parentSelectors.length - 1]
-        const nextChildSelector =
-          childSelector === lastParentSelector ? '' : childSelector
+        const [stronger, weaker] = order
+        const numSelectors = Math.round(maxDepth * 1.5)
 
-        // for light/dark/light:
-        selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
+        for (let depth = 0; depth < numSelectors; depth++) {
+          const isOdd = depth % 2 === 1
+
+          // wtf is this continue:
+          if (isOdd && depth < 3) {
+            continue
+          }
+
+          const parents = new Array(depth + 1).fill(0).map((_, psi) => {
+            return `${CNP}${psi % 2 === 0 ? stronger : weaker}`
+          })
+
+          let parentSelectors = parents.length > 1 ? parents.slice(1) : parents
+
+          if (isOdd) {
+            const [_first, second, ...rest] = parentSelectors
+            parentSelectors = [second, ...rest, second]
+          }
+
+          const lastParentSelector = parentSelectors[parentSelectors.length - 1]
+          const nextChildSelector =
+            childSelector === lastParentSelector ? '' : childSelector
+
+          // for light/dark/light:
+          selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
+        }
       }
     }
   }

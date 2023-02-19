@@ -90,7 +90,7 @@ export function HeroContainer({
 const Card = styled(YStack, {
   ai: 'center',
   jc: 'center',
-  elevation: '$6',
+  elevation: '$1',
   y: 0,
   ov: 'hidden',
   minWidth: 180,
