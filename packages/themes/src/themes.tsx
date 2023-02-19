@@ -193,10 +193,10 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
             ? {
                 ...lightTemplate,
                 // light color themes are a bit less sensitive
-                borderColor: 5,
-                borderColorHover: 6,
-                borderColorFocus: 5,
-                borderColorPress: 7,
+                borderColor: 4,
+                borderColorHover: 5,
+                borderColorFocus: 3,
+                borderColorPress: 3,
               }
             : darkTemplate
         )
@@ -248,6 +248,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
       SwitchThumb: inverse2,
       TooltipArrow: weaker1,
       TooltipContent: weaker2,
+      Input: stronger1,
     }
   }
 
