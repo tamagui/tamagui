@@ -249,6 +249,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
       TooltipArrow: weaker1,
       TooltipContent: weaker2,
       Input: stronger1,
+      TextArea: stronger1,
     }
   }
 
