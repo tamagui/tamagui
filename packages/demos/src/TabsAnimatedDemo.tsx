@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { AnimatePresence, H5, Paragraph, Tabs, XStack, YStack } from 'tamagui'
+import { AnimatePresence, H5, Tabs, XStack, YStack } from 'tamagui'
 
 export function TabsAnimatedDemo() {
   return (
@@ -41,14 +41,14 @@ const UnderlineTabs = () => {
             animation="100ms"
           />
 
-          <Tabs.Trigger unstyled value="tab1">
-            <Paragraph>Profile</Paragraph>
+          <Tabs.Trigger unstyled color="$color12" value="tab1">
+            Profile
           </Tabs.Trigger>
-          <Tabs.Trigger unstyled value="tab2">
-            <Paragraph>Connections</Paragraph>
+          <Tabs.Trigger unstyled color="$color12" value="tab2">
+            Connections
           </Tabs.Trigger>
-          <Tabs.Trigger unstyled value="tab3">
-            <Paragraph>Notifications</Paragraph>
+          <Tabs.Trigger unstyled color="$color12" value="tab3">
+            Notifications
           </Tabs.Trigger>
         </Tabs.List>
       </YStack>
@@ -105,14 +105,14 @@ const HighlightTabs = () => {
           animation="100ms"
         />
 
-        <Tabs.Trigger unstyled value="tab1">
-          <Paragraph>Profile</Paragraph>
+        <Tabs.Trigger unstyled color="$color12" value="tab1">
+          Profile
         </Tabs.Trigger>
-        <Tabs.Trigger unstyled value="tab2">
-          <Paragraph>Connections</Paragraph>
+        <Tabs.Trigger unstyled color="$color12" value="tab2">
+          Connections
         </Tabs.Trigger>
-        <Tabs.Trigger unstyled value="tab3">
-          <Paragraph>Notifications</Paragraph>
+        <Tabs.Trigger unstyled color="$color12" value="tab3">
+          Notifications
         </Tabs.Trigger>
       </Tabs.List>
       <AnimatePresence exitBeforeEnter>
