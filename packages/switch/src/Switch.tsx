@@ -82,7 +82,6 @@ export const SwitchThumb = SwitchThumbFrame.extractable(
         THUMB_NAME,
         __scopeSwitch
       )
-      console.log('??', checked)
       return (
         <SwitchThumbFrame
           unstyled={unstyled}

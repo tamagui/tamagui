@@ -36,6 +36,7 @@ export const LabelFrame = styled(SizableText, {
     unstyled: {
       false: {
         size: '$true',
+        color: '$color',
         backgroundColor: 'transparent',
         display: 'flex',
         alignItems: 'center',
