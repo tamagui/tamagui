@@ -18,7 +18,7 @@ const darkTransparent = 'rgba(10,10,10,0)'
 const palettes = {
   dark: [
     darkTransparent,
-    '#090909',
+    '#050505',
     '#151515',
     '#191919',
     '#232323',
@@ -93,10 +93,10 @@ const template = {
   colorPress: -1,
   colorFocus: -2,
   colorTransparent: -0,
-  borderColor: 4,
-  borderColorHover: 5,
-  borderColorPress: 3,
-  borderColorFocus: 4,
+  borderColor: 5,
+  borderColorHover: 6,
+  borderColorPress: 4,
+  borderColorFocus: 5,
   placeholderColor: -4,
 }
 
@@ -124,8 +124,8 @@ const lightTemplate = {
   // our light color palette is... a bit unique
   borderColor: 6,
   borderColorHover: 7,
-  borderColorFocus: 7,
-  borderColorPress: 8,
+  borderColorFocus: 5,
+  borderColorPress: 6,
   ...lightShadows,
 }
 
@@ -213,22 +213,19 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
     }
   })
 
-  // const x = allColorThemes.pink
+  const baseActiveTheme = applyMask(colorThemes.blue, masks.weaker, {
+    ...maskOptions,
+    strength: 4,
+  })
 
-  const directSubThemes = {
-    ...getAltThemes(
-      theme,
-      inverseTheme,
-      applyMask(colorThemes.blue, masks.weaker, {
-        ...maskOptions,
-        strength: 4,
-      })
-    ),
+  const baseSubThemes = {
+    ...getAltThemes(theme, inverseTheme, baseActiveTheme),
     ...getComponentThemes(theme, inverseTheme),
+    Button: inverseTheme,
   }
 
   return {
-    ...directSubThemes,
+    ...baseSubThemes,
     ...allColorThemes,
   }
 
@@ -247,7 +244,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
       SliderThumb: inverse1,
       Progress: weaker1,
       ProgressIndicator: inverse,
-      Switch: stronger1,
+      Switch: weaker1,
       SwitchThumb: inverse2,
       TooltipArrow: weaker1,
       TooltipContent: weaker2,

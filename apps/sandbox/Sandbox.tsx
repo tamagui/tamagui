@@ -41,16 +41,26 @@ export const Sandbox = () => {
       />
 
       <XStack bc="$backgroundStrong" fullscreen ai="center" jc="center">
-        <ScrollView horizontal>
-          <YStack>
-            <XStack gap={20} px="$4" flexWrap="wrap">
-              {demos}
-            </XStack>
+        <ScrollView fullscreen horizontal>
+          <ScrollView fullscreen>
+            <YStack>
+              <XStack gap={20} px="$4" flexWrap="wrap">
+                {demos}
+              </XStack>
 
-            <XStack px="$4" theme="blue" gap={20} flexWrap="wrap">
-              {demos}
-            </XStack>
-          </YStack>
+              <XStack theme="alt1" gap={20} px="$4" flexWrap="wrap">
+                {demos}
+              </XStack>
+
+              <XStack px="$4" theme="blue" gap={20} flexWrap="wrap">
+                {demos}
+              </XStack>
+
+              <XStack px="$4" theme="blue_alt1" gap={20} flexWrap="wrap">
+                {demos}
+              </XStack>
+            </YStack>
+          </ScrollView>
         </ScrollView>
       </XStack>
 
