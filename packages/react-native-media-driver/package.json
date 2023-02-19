@@ -13,7 +13,7 @@
   ],
   "sideEffects": true,
   "dependencies": {
-    "@tamagui/core": "^1.5.14",
+    "@tamagui/web": "^1.5.14",
     "css-mediaquery": "^0.1.2"
   },
   "devDependencies": {

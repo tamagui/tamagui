@@ -1,6 +1,6 @@
+import type { MediaQueryList } from '@tamagui/web'
 import mediaQuery from 'css-mediaquery'
 import { Dimensions } from 'react-native'
-import { MediaQueryList } from '@tamagui/core'
 
 type Orientation = 'landscape' | 'portrait'
 
@@ -11,9 +11,7 @@ export class NativeMediaQueryList implements MediaQueryList {
 
   private get orientation(): Orientation {
     const windowDimensions = Dimensions.get('window')
-    return windowDimensions.height > windowDimensions.width
-      ? 'portrait'
-      : 'landscape'
+    return windowDimensions.height > windowDimensions.width ? 'portrait' : 'landscape'
   }
 
   constructor(private query: string) {

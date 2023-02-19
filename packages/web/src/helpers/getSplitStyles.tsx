@@ -46,7 +46,7 @@ import type {
 import { createMediaStyle } from './createMediaStyle.js'
 import { getPropMappedFontFamily } from './createPropMapper.js'
 import { fixStyles } from './expandStyles.js'
-import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic.js'
+import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
   insertStyleRules,
   insertedTransforms,

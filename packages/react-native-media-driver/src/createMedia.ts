@@ -1,11 +1,11 @@
-import { MediaQueryObject, setupMatchMedia } from '@tamagui/core'
+import { MediaQueryObject, setupMatchMedia } from '@tamagui/web'
 
-import { matchMedia } from './matchMedia.native'
+import { matchMedia } from './matchMedia'
 
 export function createMedia<
   A extends {
     [key: string]: MediaQueryObject
-  },
+  }
 >(media: A): A {
   // this should ideally return a diff object that is then passed to createTamagui
   // but works for now we dont really support swapping out media drivers
