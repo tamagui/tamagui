@@ -4,6 +4,7 @@ import {
   getVariable,
   styled,
   themeable,
+  useMediaPropsActive,
   useTheme,
 } from '@tamagui/core'
 import { YStack, YStackProps } from '@tamagui/stacks'
@@ -25,12 +26,12 @@ export const LinearGradient: React.ForwardRefExoticComponent<
   LinearGradientProps & React.RefAttributes<HTMLElement | View>
 > = YStack.extractable(
   themeable(
-    React.forwardRef((props: LinearGradientProps, ref) => {
+    React.forwardRef((propsIn: LinearGradientProps, ref) => {
+      const props = useMediaPropsActive(propsIn)
       const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
       const colors = useThemeColors(colorsProp || [])
       return (
-        // @ts-ignore
-        <LinearGradientFrame ref={ref} {...stackProps}>
+        <LinearGradientFrame ref={ref as any} {...stackProps}>
           <ExpoLinearGradient
             start={start}
             end={end}
