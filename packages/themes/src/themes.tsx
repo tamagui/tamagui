@@ -208,7 +208,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
   const allColorThemes = addChildren(colorThemes, (colorName, colorTheme) => {
     const inverse = inverseColorThemes[colorName]
     return {
-      ...getAltThemes(colorTheme, inverse, inverse),
+      ...getAltThemes(colorTheme, inverse),
       ...getComponentThemes(colorTheme, inverse),
     }
   })
@@ -266,13 +266,14 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
     return {
       Card: weaker1,
       Button: weaker2,
+      Checkbox: weaker2,
       DrawerFrame: weaker1,
       SliderTrack: stronger1,
       SliderTrackActive: weaker2,
       SliderThumb: inverse1,
       Progress: weaker1,
       ProgressIndicator: inverse,
-      Switch: weaker1,
+      Switch: weaker2,
       SwitchThumb: inverse2,
       TooltipArrow: weaker1,
       TooltipContent: weaker2,
