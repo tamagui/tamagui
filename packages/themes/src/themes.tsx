@@ -122,10 +122,10 @@ const darkShadows = {
 const lightTemplate = {
   ...template,
   // our light color palette is... a bit unique
-  borderColor: 7,
-  borderColorHover: 8,
-  borderColorFocus: 8,
-  borderColorPress: 9,
+  borderColor: 6,
+  borderColorHover: 7,
+  borderColorFocus: 7,
+  borderColorPress: 8,
   ...lightShadows,
 }
 
@@ -200,7 +200,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
                 // light color themes are a bit less sensitive
                 borderColor: 5,
                 borderColorHover: 6,
-                borderColorFocus: 6,
+                borderColorFocus: 5,
                 borderColorPress: 7,
               }
             : darkTemplate
@@ -249,12 +249,13 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
   function getAltThemes(theme: SubTheme, inverse: SubTheme) {
     const alt1 = applyMask(theme, masks.weaker, maskOptions)
     const alt2 = applyMask(alt1, masks.weaker, maskOptions)
-    const active = applyMask(theme, masks.weaker, {
-      ...maskOptions,
-      strength: 4,
-    })
-    return addChildren({ alt1, alt2, active }, (name, theme) => {
-      return getComponentThemes(theme as any, inverse)
+    const active = inverse // ??
+    // applyMask(theme, masks.weaker, {
+    //   ...maskOptions,
+    //   strength: 4,
+    // })
+    return addChildren({ alt1, alt2, active }, (name, subTheme) => {
+      return getComponentThemes(subTheme as any, name === 'active' ? theme : inverse)
     })
   }
 })

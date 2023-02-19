@@ -82,10 +82,12 @@ export const SwitchThumb = SwitchThumbFrame.extractable(
         THUMB_NAME,
         __scopeSwitch
       )
+      console.log('??', checked)
       return (
         <SwitchThumbFrame
           unstyled={unstyled}
           size={size}
+          theme={checked ? 'active' : null}
           data-state={getState(checked)}
           data-disabled={disabled ? '' : undefined}
           {...thumbProps}

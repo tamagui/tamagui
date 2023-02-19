@@ -82,7 +82,6 @@ export function addChildren<
 
 export const createShiftMask = ({ inverse }: { inverse?: boolean } = {}) => {
   return ((template, { skip, max: maxIn, palette, min = 0, strength = 1 }) => {
-    console.log('strength', strength)
     const values = Object.entries(template)
     const max = maxIn ?? (palette ? Object.values(palette).length - 1 : Infinity)
     const out = {}
@@ -144,17 +143,6 @@ export function applyMask<Theme extends GenericTheme>(
   })
   const next = createTheme(info.palette, template) as Theme
 
-  if (options)
-    console.log(
-      '?',
-      {
-        palette: info.palette,
-        ...options,
-      },
-      template,
-      next
-    )
-
   info.cache.set(key, next)
 
   return next
@@ -181,9 +169,7 @@ if (process.env.NODE_ENV === 'development') {
   if (weak.bg !== '2') throw `❌`
   if (weak.fg !== '-2') throw `❌`
 
-  console.warn('start')
   const weak2 = applyMask(theme, weakerMask, { strength: 2 })
-  console.log('weak2', weak2)
   if (weak2.bg !== '3') throw `❌`
   if (weak2.fg !== '-3') throw `❌`
 }
