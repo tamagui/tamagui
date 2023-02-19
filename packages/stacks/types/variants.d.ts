@@ -78,6 +78,8 @@ export declare const elevate: {
         tag?: string | import("@tamagui/web").Variable<any> | undefined;
         theme?: string | import("@tamagui/web").Variable<any> | null | undefined;
         componentName?: string | import("@tamagui/web").Variable<any> | undefined;
+        tabIndex?: string | number | import("@tamagui/web").Variable<any> | undefined;
+        role?: string | import("@tamagui/web").Variable<any> | undefined;
         forceStyle?: import("@tamagui/web").Variable<any> | "hover" | "press" | "focus" | undefined;
         onPress?: import("@tamagui/web").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         onPressIn?: import("@tamagui/web").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
@@ -200,8 +202,6 @@ export declare const elevate: {
         outlineStyle?: import("@tamagui/web").Variable<any> | import("csstype").Property.OutlineStyle | undefined;
         outlineOffset?: import("@tamagui/web").Variable<any> | import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
         outlineWidth?: import("@tamagui/web").Variable<any> | import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
-        tabIndex?: string | number | import("@tamagui/web").Variable<any> | undefined;
-        role?: string | import("@tamagui/web").Variable<any> | undefined;
         hoverStyle?: (import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>) | import("@tamagui/web").Variable<any> | null | undefined;
         pressStyle?: (import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>) | import("@tamagui/web").Variable<any> | null | undefined;
         focusStyle?: (import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>) | import("@tamagui/web").Variable<any> | null | undefined;
