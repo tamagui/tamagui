@@ -1,15 +1,8 @@
-import {
-  AnimationDriver,
-  Stack,
-  Text,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/core'
 import { usePresence } from '@tamagui/use-presence'
+import { AnimationDriver, Stack, Text, useIsomorphicLayoutEffect } from '@tamagui/web'
 import { useMemo, useRef } from 'react'
 
-export function createAnimations<A extends Object>(
-  animations: A,
-): AnimationDriver<A> {
+export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
     View: Stack,
     Text: Text,

@@ -4763,8 +4763,8 @@ __metadata:
   resolution: "@tamagui/animate-presence@workspace:packages/animate-presence"
   dependencies:
     "@tamagui/build": ^1.5.15
-    "@tamagui/core": ^1.5.15
     "@tamagui/use-presence": ^1.5.15
+    "@tamagui/web": ^1.5.15
   languageName: unknown
   linkType: soft
 
@@ -4773,17 +4773,8 @@ __metadata:
   resolution: "@tamagui/animations-css@workspace:packages/animations-css"
   dependencies:
     "@tamagui/build": ^1.5.15
-    "@tamagui/core": ^1.5.15
     "@tamagui/use-presence": ^1.5.15
-  languageName: unknown
-  linkType: soft
-
-"@tamagui/animations-motion@^1.5.15, @tamagui/animations-motion@workspace:packages/animations-motion":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/animations-motion@workspace:packages/animations-motion"
-  dependencies:
-    "@tamagui/build": ^1.5.15
-    "@tamagui/core": ^1.5.15
+    "@tamagui/web": ^1.5.15
   languageName: unknown
   linkType: soft
 
@@ -4792,8 +4783,8 @@ __metadata:
   resolution: "@tamagui/animations-react-native@workspace:packages/animations-react-native"
   dependencies:
     "@tamagui/build": ^1.5.15
-    "@tamagui/core": ^1.5.15
     "@tamagui/use-presence": ^1.5.15
+    "@tamagui/web": ^1.5.15
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native: "*"
@@ -4810,8 +4801,8 @@ __metadata:
   dependencies:
     "@tamagui/animations-react-native": ^1.5.15
     "@tamagui/build": ^1.5.15
-    "@tamagui/core": ^1.5.15
     "@tamagui/use-presence": ^1.5.15
+    "@tamagui/web": ^1.5.15
     react-native-reanimated: ^2.12.0
   languageName: unknown
   linkType: soft
@@ -5121,12 +5112,12 @@ __metadata:
     "@tamagui/animations-react-native": ^1.5.15
     "@tamagui/build": ^1.5.15
     "@tamagui/colors": ^1.5.15
-    "@tamagui/core": ^1.5.15
     "@tamagui/font-inter": ^1.5.15
     "@tamagui/font-silkscreen": ^1.5.15
     "@tamagui/react-native-media-driver": ^1.5.15
     "@tamagui/shorthands": ^1.5.15
     "@tamagui/themes": ^1.5.15
+    "@tamagui/web": ^1.5.15
   languageName: unknown
   linkType: soft
 
@@ -5970,7 +5961,6 @@ __metadata:
     "@babel/preset-typescript": ^7.18.6
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
     "@tamagui/animations-css": ^1.5.15
-    "@tamagui/animations-motion": ^1.5.15
     "@tamagui/animations-reanimated": ^1.5.15
     "@tamagui/colors": ^1.5.15
     "@tamagui/core": ^1.5.15
@@ -6410,9 +6400,8 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.5.15
     "@tamagui/colors": ^1.5.15
-    "@tamagui/core": ^1.5.15
     "@tamagui/create-theme": ^1.5.15
-    "@tamagui/create-themes": ^1.5.15
+    "@tamagui/web": ^1.5.15
   languageName: unknown
   linkType: soft
 
