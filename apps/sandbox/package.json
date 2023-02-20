@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@tamagui/animations-css": "^1.5.15",
-    "@tamagui/animations-motion": "^1.5.15",
     "@tamagui/animations-reanimated": "^1.5.15",
     "@tamagui/colors": "^1.5.15",
     "@tamagui/core": "^1.5.15",
