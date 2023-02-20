@@ -123,6 +123,7 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 inbox
 
+- remove defaultVariants in favor of just defaultProps
 
 - // TODO move to validStyleProps to merge
 - bundle size reductions:
