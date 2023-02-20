@@ -10,7 +10,7 @@ import * as ReactDOM from 'react-dom'
 
 import { DismissableBranchProps, DismissableProps } from './DismissableProps'
 
-function dispatchDiscreteCustomEvent<E extends CustomEvent>(
+export function dispatchDiscreteCustomEvent<E extends CustomEvent>(
   target: E['target'],
   event: E
 ) {

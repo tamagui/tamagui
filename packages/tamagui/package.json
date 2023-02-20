@@ -78,6 +78,7 @@
     "@tamagui/stacks": "^1.5.13",
     "@tamagui/switch": "^1.5.13",
     "@tamagui/text": "^1.5.13",
+    "@tamagui/toast": "^1.5.13",
     "@tamagui/tooltip": "^1.5.13",
     "@tamagui/use-controllable-state": "^1.5.13",
     "@tamagui/use-debounce": "^1.5.13",

@@ -1,7 +1,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { ButtonDemo, CheckboxDemo, InputsDemo, SwitchDemo } from '@tamagui/demos'
+import { ButtonDemo, CheckboxDemo, InputsDemo, SwitchDemo, ToastDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { ScrollView, TamaguiProvider, XStack, YStack } from 'tamagui'
 
@@ -19,13 +19,7 @@ export const Sandbox = () => {
 
   const demos = (
     <>
-      <SwitchDemo />
-
-      <CheckboxDemo />
-
-      <InputsDemo />
-
-      <ButtonDemo />
+      <ToastDemo />
     </>
   )
 

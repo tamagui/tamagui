@@ -6423,7 +6423,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/toast@workspace:packages/toast":
+"@tamagui/toast@^1.5.13, @tamagui/toast@workspace:packages/toast":
   version: 0.0.0-use.local
   resolution: "@tamagui/toast@workspace:packages/toast"
   dependencies:
@@ -6439,6 +6439,7 @@ __metadata:
     "@tamagui/text": ^1.5.13
     "@tamagui/use-controllable-state": ^1.5.13
     "@tamagui/visually-hidden": ^1.5.13
+    burnt: ^0.9.0
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native: "*"
@@ -9280,6 +9281,17 @@ __metadata:
   dependencies:
     semver: ^7.0.0
   checksum: 66d204657fe36522822a95b288943ad11b58f5eaede235b11d8c4edaa28ce4800087d44a2681524c340494aadb120a0068011acabe99d30e8f11a7d826d83515
+  languageName: node
+  linkType: hard
+
+"burnt@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "burnt@npm:0.9.0"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: 7a8220b041b78c2e0096e69d8ddddd598d9038035715873bd9a361ab07032e23c668b56a59d8ec59ac9a5d9aea0e17af89e7e331e284793ac44f45c336c024d5
   languageName: node
   linkType: hard
 
@@ -22616,6 +22628,7 @@ __metadata:
     "@tamagui/stacks": ^1.5.13
     "@tamagui/switch": ^1.5.13
     "@tamagui/text": ^1.5.13
+    "@tamagui/toast": ^1.5.13
     "@tamagui/tooltip": ^1.5.13
     "@tamagui/use-controllable-state": ^1.5.13
     "@tamagui/use-debounce": ^1.5.13
