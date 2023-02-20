@@ -5173,6 +5173,7 @@ __metadata:
     "@tamagui/build": ^1.5.15
     "@tamagui/react-native-use-pressable": ^1.5.15
     "@tamagui/react-native-use-responder-events": ^1.5.15
+    "@tamagui/use-event": ^1.5.15
     "@tamagui/web": ^1.5.15
     "@testing-library/react": ^13.4.0
     csstype: ^3.0.10

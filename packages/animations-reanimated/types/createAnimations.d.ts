@@ -1,4 +1,4 @@
-import { AnimationDriver } from '@tamagui/core';
+import { AnimationDriver } from '@tamagui/web';
 import { WithDecayConfig, WithSpringConfig, WithTimingConfig } from 'react-native-reanimated';
 type AnimationsConfig<A extends Object = any> = {
     [Key in keyof A]: AnimationConfig;
