@@ -32,7 +32,8 @@
     "@tamagui/core": "^1.5.16",
     "@tamagui/font-size": "^1.5.16",
     "@tamagui/get-button-sized": "^1.5.16",
-    "@tamagui/helpers-tamagui": "^1.5.16"
+    "@tamagui/helpers-tamagui": "^1.5.16",
+    "@tamagui/text": "^1.5.16"
   },
   "peerDependencies": {
     "react": "*",
