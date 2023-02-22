@@ -31,9 +31,9 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "^1.5.16",
     "@tamagui/create-context": "^1.5.16",
-    "@tamagui/stacks": "^1.5.16"
+    "@tamagui/stacks": "^1.5.16",
+    "@tamagui/web": "^1.5.16"
   },
   "peerDependencies": {
     "react": "*",
