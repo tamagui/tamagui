@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@tamagui/compose-refs": "^1.5.16",
-    "@tamagui/core": "^1.5.16"
+    "@tamagui/web": "^1.5.16"
   },
   "peerDependencies": {
     "react": "*",
