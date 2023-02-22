@@ -27,6 +27,7 @@
     "@tamagui/core": "^1.5.16",
     "@tamagui/create-context": "^1.5.16",
     "@tamagui/get-size": "^1.5.16",
+    "@tamagui/helpers": "^1.5.16",
     "@tamagui/stacks": "^1.5.16",
     "@tamagui/use-controllable-state": "^1.5.16",
     "@tamagui/use-direction": "^1.5.16"

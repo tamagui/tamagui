@@ -4900,6 +4900,7 @@ __metadata:
     "@tamagui/font-size": ^1.5.16
     "@tamagui/get-button-sized": ^1.5.16
     "@tamagui/helpers-tamagui": ^1.5.16
+    "@tamagui/text": ^1.5.16
     react: ^18.2.0
     react-dom: ^18.2.0
     vitest: ^0.26.3
@@ -5767,10 +5768,12 @@ __metadata:
     "@tamagui/core": ^1.5.16
     "@tamagui/create-context": ^1.5.16
     "@tamagui/dismissable": ^1.5.16
+    "@tamagui/floating": ^1.5.16
     "@tamagui/focus-scope": ^1.5.16
     "@tamagui/polyfill-dev": ^1.5.16
     "@tamagui/popper": ^1.5.16
     "@tamagui/portal": ^1.5.16
+    "@tamagui/remove-scroll": ^1.5.16
     "@tamagui/scroll-view": ^1.5.16
     "@tamagui/sheet": ^1.5.16
     "@tamagui/stacks": ^1.5.16
@@ -6207,6 +6210,7 @@ __metadata:
     "@tamagui/core": ^1.5.16
     "@tamagui/create-context": ^1.5.16
     "@tamagui/get-size": ^1.5.16
+    "@tamagui/helpers": ^1.5.16
     "@tamagui/stacks": ^1.5.16
     "@tamagui/use-controllable-state": ^1.5.16
     "@tamagui/use-direction": ^1.5.16
