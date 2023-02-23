@@ -27,11 +27,16 @@ export const getAllFrontmatter = (fromPath: string) => {
       const { data, content } = matter(source)
       return {
         ...data,
-        slug: filePath.replace(`${DATA_PATH}/`, '').replace('.mdx', ''),
+        slug: filePath
+          .replace(`${DATA_PATH.replaceAll('\\', '/')}/`, '')
+          .replace('.mdx', ''),
         readingTime: readingTime(content),
       } as Frontmatter
     })
-    .sort((a, b) => Number(new Date(b.publishedAt || '')) - Number(new Date(a.publishedAt || '')))
+    .sort(
+      (a, b) =>
+        Number(new Date(b.publishedAt || '')) - Number(new Date(a.publishedAt || ''))
+    )
 }
 
 export const getMdxBySlug = async (basePath, slug) => {

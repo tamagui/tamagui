@@ -1,5 +1,6 @@
 export * from './setup';
 export * from '@tamagui/adapt';
+export * from '@tamagui/accordion';
 export * from '@tamagui/alert-dialog';
 export * from '@tamagui/animate-presence';
 export * from '@tamagui/avatar';

@@ -39,6 +39,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/accordion": "^1.1.11",
     "@tamagui/adapt": "^1.1.11",
     "@tamagui/alert-dialog": "^1.1.11",
     "@tamagui/animate-presence": "^1.1.11",
