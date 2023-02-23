@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/radio-group",
-  "version": "1.5.16",
+  "version": "1.5.17",
   "sideEffects": [
     "*.css"
   ],
@@ -24,21 +24,21 @@
   },
   "dependencies": {
     "@radix-ui/react-use-previous": "^0.1.1",
-    "@tamagui/compose-refs": "^1.5.16",
-    "@tamagui/core": "^1.5.16",
-    "@tamagui/create-context": "^1.5.16",
-    "@tamagui/focusable": "^1.5.16",
-    "@tamagui/get-size": "^1.5.16",
-    "@tamagui/label": "^1.5.16",
-    "@tamagui/stacks": "^1.5.16",
-    "@tamagui/use-controllable-state": "^1.5.16"
+    "@tamagui/compose-refs": "^1.5.17",
+    "@tamagui/core": "^1.5.17",
+    "@tamagui/create-context": "^1.5.17",
+    "@tamagui/focusable": "^1.5.17",
+    "@tamagui/get-size": "^1.5.17",
+    "@tamagui/label": "^1.5.17",
+    "@tamagui/stacks": "^1.5.17",
+    "@tamagui/use-controllable-state": "^1.5.17"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.5.16",
+    "@tamagui/build": "^1.5.17",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
