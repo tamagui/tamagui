@@ -3,7 +3,7 @@ import { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
 import { ScopedProps, SelectProps } from './types';
 export type SelectTriggerProps = ListItemProps;
-export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -23,7 +23,7 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
-} & import("@tamagui/core").MediaProps<Partial<Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -43,7 +43,7 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
-}>> & import("@tamagui/core").PseudoProps<Partial<Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -178,25 +178,25 @@ export declare const SelectGroupFrame: import("@tamagui/core").TamaguiComponent<
     [x: string]: undefined;
 })>;
 export type SelectLabelProps = ListItemProps;
-export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<(Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "vertical"> & {
+export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "vertical"> & {
     readonly vertical?: boolean | undefined;
-} & import("@tamagui/core").MediaProps<Partial<Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "vertical"> & {
+} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "vertical"> & {
     readonly vertical?: boolean | undefined;
-}>> & import("@tamagui/core").PseudoProps<Partial<Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "vertical"> & {
+}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "vertical"> & {
     readonly vertical?: boolean | undefined;
-}>>) | (Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
-    readonly vertical?: boolean | undefined;
-}, string | number> & {
-    [x: string]: undefined;
-} & import("@tamagui/core").MediaProps<Partial<Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}>>) | (Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly vertical?: boolean | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/core").PseudoProps<Partial<Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly vertical?: boolean | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), TamaguiElement, Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
+}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    readonly vertical?: boolean | undefined;
+}, string | number> & {
+    [x: string]: undefined;
+}>>), TamaguiElement, Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly vertical?: boolean | undefined;
 } | ({
     readonly vertical?: boolean | undefined;
@@ -319,7 +319,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
     }, string | number> & {
         [x: string]: undefined;
     }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
-    Label: React.ForwardRefExoticComponent<Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    Label: React.ForwardRefExoticComponent<Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     } & {
@@ -339,7 +339,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
         readonly active?: boolean | undefined;
         readonly disabled?: boolean | undefined;
-    } & import("@tamagui/core").MediaProps<Partial<Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     } & {
@@ -359,7 +359,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
         readonly active?: boolean | undefined;
         readonly disabled?: boolean | undefined;
-    }>> & import("@tamagui/core").PseudoProps<Partial<Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     } & {
@@ -397,7 +397,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
     } & React.RefAttributes<TamaguiElement>>;
     ScrollDownButton: React.ForwardRefExoticComponent<import("./types").SelectScrollButtonProps & React.RefAttributes<TamaguiElement>>;
     ScrollUpButton: React.ForwardRefExoticComponent<import("./types").SelectScrollButtonProps & React.RefAttributes<TamaguiElement>>;
-    Trigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    Trigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     } & {
@@ -417,7 +417,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
         readonly active?: boolean | undefined;
         readonly disabled?: boolean | undefined;
-    } & import("@tamagui/core").MediaProps<Partial<Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     } & {
@@ -437,7 +437,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
         readonly active?: boolean | undefined;
         readonly disabled?: boolean | undefined;
-    }>> & import("@tamagui/core").PseudoProps<Partial<Omit<any, string | number | symbol> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     } & {
