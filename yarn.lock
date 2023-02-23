@@ -5466,6 +5466,8 @@ __metadata:
     "@tamagui/core": ^1.5.16
     "@types/react": ^18.0.15
     react: ^18.2.0
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -5929,6 +5931,8 @@ __metadata:
     "@tamagui/build": ^1.5.16
     "@types/react": ^18.0.15
     react: ^18.2.0
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -5939,6 +5943,8 @@ __metadata:
     "@tamagui/build": ^1.5.16
     "@types/react": ^18.0.15
     react: ^18.2.0
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
