@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/scroll-view",
-  "version": "1.5.16",
+  "version": "1.5.17",
   "sideEffects": [
     "*.css"
   ],
@@ -21,15 +21,15 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "dependencies": {
-    "@tamagui/stacks": "^1.5.16",
-    "@tamagui/web": "^1.5.16"
+    "@tamagui/stacks": "^1.5.17",
+    "@tamagui/web": "^1.5.17"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.5.16",
+    "@tamagui/build": "^1.5.17",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
