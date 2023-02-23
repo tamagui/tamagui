@@ -40,7 +40,7 @@ export function registerRequire() {
     ) {
       return rnw
     }
-    if (path === '@tamagui/core') {
+    if (path === '@tamagui/core' || path === '@tamagui/web') {
       return core
     }
     try {
