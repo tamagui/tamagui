@@ -120,8 +120,8 @@ const SelectValue = SelectValueFrame.extractable(
 
       const children = childrenProp ?? context.selectedItem
       const hasChildren = !!children
-      const selectValueChildren =
-        context.value === undefined && placeholder !== undefined ? placeholder : children
+      const isEmptyValue = context.value == null || context.value === ''
+      const selectValueChildren = isEmptyValue ? placeholder ?? children : children
 
       useIsomorphicLayoutEffect(() => {
         onValueNodeHasChildrenChange(hasChildren)
