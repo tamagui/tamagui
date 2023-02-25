@@ -341,6 +341,39 @@ const SquareVariant = createVariantProvider(MySquare)
 
 ---
 
+# Psuedo Element Styles
+
+- display: flex
+- only accepts style props
+
+beforeStyles: [{
+
+}],
+
+afterStyles: [{
+
+}],
+
++++
+
+# Themes
+
+Component themes could force set the actual properties even if they aren't set by the component themselves....
+
+themes.dark_Button = {
+  borderWidth: 1,
+  borderColor: 'red',
+}
+
+===
+
+# Winamp Re-skinability
+
+Themes can completely transform the look and feel, a button could have multiple shadows/reflections in one theme, but be totally flat in another.
+
+
+---
+
 quotes
 
 #stream Kezlar — Today at 3:09 PM
