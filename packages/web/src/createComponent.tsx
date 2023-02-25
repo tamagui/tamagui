@@ -520,11 +520,12 @@ export function createComponent<
       if (isAnimatedReactNativeWeb) {
         viewProps.style = style
       } else if (isReactNative) {
-        const rnwStyle = { $$css: true }
+        // TODO these shouldn't really return from getSplitStyles when in Native mode
+        const cnStyles = { $$css: true }
         for (const name of className.split(' ')) {
-          rnwStyle[name] = name
+          cnStyles[name] = name
         }
-        viewProps.style = [rnwStyle, ...(Array.isArray(style) ? style : [style])]
+        viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
 
         if (process.env.NODE_ENV === 'development') {
           // turn debug data- props into dataSet in dev mode
