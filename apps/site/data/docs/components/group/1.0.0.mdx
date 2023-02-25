@@ -25,16 +25,22 @@ component: Group
   ]}
 />
 
-### Usage
+## Usage
 
 ```tsx
 import { Button, XGroup } from 'tamagui'
 
 export default () => (
   <XGroup>
-    <Button>First</Button>
-    <Button>Second</Button>
-    <Button>Third</Button>
+    <XGroup.Item>
+      <Button>First</Button>
+    </XGroup.Item>
+    <XGroup.Item>
+      <Button>Second</Button>
+    </XGroup.Item>
+    <XGroup.Item>
+      <Button>Third</Button>
+    </XGroup.Item>
   </XGroup>
 )
 ```
@@ -45,7 +51,7 @@ By default, Groups will control the border radius of their children automaticall
 
 This ensures any items inside will get appropriately scaled border radius.
 
-### Sizing
+## Sizing
 
 The `size` property will use your tokens to grab the appropriate radius for borderRadius values which it will pass to the first and last child as style props for borderRadius.
 
@@ -54,14 +60,20 @@ import { Button, XGroup } from 'tamagui'
 
 export default () => (
   <XGroup size="$6">
-    <Button>First</Button>
-    <Button>Second</Button>
-    <Button>Third</Button>
+    <XGroup.Item>
+      <Button>First</Button>
+    </XGroup.Item>
+    <XGroup.Item>
+      <Button>Second</Button>
+    </XGroup.Item>
+    <XGroup.Item>
+      <Button>Third</Button>
+    </XGroup.Item>
   </XGroup>
 )
 ```
 
-### Disabled
+## Disabled
 
 The `disabled` property will pass to children
 
@@ -69,9 +81,11 @@ The `disabled` property will pass to children
   <GroupDisabledDemo />
 </HeroContainer>
 
-### Group API
+## Group API
 
-XGroup and YGroup extend [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
+### Group
+
+`XGroup` and `YGroup` extend [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -101,3 +115,12 @@ XGroup and YGroup extend [YStack](/docs/components/stacks), getting [Tamagui sta
     },
   ]}
 />
+
+### Group.Item
+
+Wrap each of `XGroup` or `YGroup`'s children in one of these. It lets Tamagui apply the needed styles to them.
+
+<Notice>
+  Tamagui still tries to apply the styles even if you don't wrap them in `Group.Item`, but
+  that's for backward compatibility and will probably change after a major release.
+</Notice>

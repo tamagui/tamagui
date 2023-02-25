@@ -33,7 +33,9 @@ export function HomeScreen() {
         </YStack>
 
         <YGroup size="$4">
-          <ColorSchemeListItem />
+          <YGroup.Item>
+            <ColorSchemeListItem />
+          </YGroup.Item>
         </YGroup>
 
         <YStack space="$4" maw={600}>
@@ -42,9 +44,11 @@ export function HomeScreen() {
               <YGroup size="$4" key={i} separator={<Separator />}>
                 {group.pages.map((page) => {
                   return (
-                    <LinkListItem key={page.route} href={page.route} pressTheme size="$4">
-                      {page.title}
-                    </LinkListItem>
+                    <YGroup.Item key={page.route}>
+                      <LinkListItem href={page.route} pressTheme size="$4">
+                        {page.title}
+                      </LinkListItem>
+                    </YGroup.Item>
                   )
                 })}
               </YGroup>
