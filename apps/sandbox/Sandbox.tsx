@@ -4,10 +4,11 @@ import '@tamagui/polyfill-dev'
 import { ButtonDemo, CheckboxDemo, InputsDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
-import { ScrollView, TamaguiProvider, XStack, YStack, styled } from 'tamagui'
+import { Input, ScrollView, TamaguiProvider, XStack, YStack, styled } from 'tamagui'
 
 import config from './tamagui.config'
 
+// useful for debugging why things render:
 // import './wdyr'
 
 // webpack fix..
@@ -16,12 +17,10 @@ if (typeof require !== 'undefined') {
 }
 
 /**
-
 the ideal is:
 
 - styled(a, b) - b accepts any subset of a.props
 - returns type where props defined in b become nullable
-
 
  */
 const Image = styled(
@@ -38,29 +37,28 @@ const Image = styled(
   }
 )
 
-const SolitoImageExample = () => (
-  <Image
-    alt=""
-    style={{}}
-    resizeMode="contain"
-    width={200}
-    height={200}
-    src="/favicon.svg"
-    bc="$color"
-  />
-)
+const StyledInput = styled(Input, {
+  debug: 'verbose',
+
+  focusStyle: {
+    borderWidth: 10,
+    borderColor: 'blue',
+  },
+})
 
 export const Sandbox = () => {
-  const [theme, setTheme] = useState('light')
+  return (
+    <SandboxFrame>
+      {/* keep indent */}
+      {/* <SandboxDefault /> */}
 
-  const demos = (
-    <>
-      <SwitchDemo />
-      <CheckboxDemo />
-      <InputsDemo />
-      <ButtonDemo />
-    </>
+      <StyledInput debug="verbose" />
+    </SandboxFrame>
   )
+}
+
+const SandboxFrame = (props: { children: any }) => {
+  const [theme, setTheme] = useState('light')
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
@@ -73,31 +71,7 @@ export const Sandbox = () => {
         }}
       />
 
-      <XStack bc="$backgroundStrong" fullscreen ai="center" jc="center">
-        <ScrollView fullscreen horizontal>
-          <ScrollView fullscreen>
-            <SolitoImageExample />
-
-            <YStack>
-              <XStack gap={20} px="$4" flexWrap="wrap">
-                {demos}
-              </XStack>
-
-              <XStack theme="alt1" gap={20} px="$4" flexWrap="wrap">
-                {demos}
-              </XStack>
-
-              <XStack px="$4" theme="blue" gap={20} flexWrap="wrap">
-                {demos}
-              </XStack>
-
-              <XStack px="$4" theme="blue_alt1" gap={20} flexWrap="wrap">
-                {demos}
-              </XStack>
-            </YStack>
-          </ScrollView>
-        </ScrollView>
-      </XStack>
+      {props.children}
 
       {/*  */}
       <button
@@ -105,12 +79,49 @@ export const Sandbox = () => {
           position: 'absolute',
           bottom: 30,
           left: 20,
+          fontSize: 30,
         }}
         onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
       >
         🌗
       </button>
     </TamaguiProvider>
+  )
+}
+
+function SandboxDefault() {
+  const demos = (
+    <>
+      <SwitchDemo />
+      <CheckboxDemo />
+      <InputsDemo />
+      <ButtonDemo />
+    </>
+  )
+
+  return (
+    <XStack bc="$backgroundStrong" fullscreen ai="center" jc="center">
+      <ScrollView fullscreen horizontal>
+        <ScrollView fullscreen>
+          <SolitoImageExample />
+
+          <YStack>
+            <XStack gap={20} px="$4" flexWrap="wrap">
+              {demos}
+            </XStack>
+            <XStack theme="alt1" gap={20} px="$4" flexWrap="wrap">
+              {demos}
+            </XStack>
+            <XStack px="$4" theme="blue" gap={20} flexWrap="wrap">
+              {demos}
+            </XStack>
+            <XStack px="$4" theme="blue_alt1" gap={20} flexWrap="wrap">
+              {demos}
+            </XStack>
+          </YStack>
+        </ScrollView>
+      </ScrollView>
+    </XStack>
   )
 }
 
@@ -138,3 +149,15 @@ export const Sandbox = () => {
 //   console.log(u.color)
 //   return null
 // }
+
+const SolitoImageExample = () => (
+  <Image
+    alt=""
+    style={{}}
+    resizeMode="contain"
+    width={40}
+    height={40}
+    src="/favicon.svg"
+    bc="$color"
+  />
+)
