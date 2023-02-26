@@ -1,3 +1,5 @@
+👋
+
 - Card has a good use case for size being passed through context/css vars
 - linear-gradient next.js issue
 
