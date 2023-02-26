@@ -147,13 +147,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("react-
     disabled?: boolean | undefined;
     vertical?: boolean | undefined;
     disablePassBorderRadius?: boolean | undefined;
-<<<<<<< HEAD
-=======
     /**
      * forces the group to use the Group.Item API
      */
     forceUseItem?: boolean | undefined;
->>>>>>> be2fe0f6177f88d24a19ecd868c2a419c9683ecc
 } & {
     __scopeGroup?: Scope;
 } & React.RefAttributes<TamaguiElement>> & {

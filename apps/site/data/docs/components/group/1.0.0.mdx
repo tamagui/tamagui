@@ -22,15 +22,22 @@ component: Group
     'Accepts size prop that works on all styles.',
     'Align vertically or horizontally.',
     'Natural spacing and disabled props.',
+    'Use with or without Item for more control.',
   ]}
 />
 
 ## Usage
 
+Instead of a generic `Group`, Tamagui prefers `XGroup` and `YGroup` for consistency with stacks.
+
+By default, Groups will control the border radius of their children automatically - the first and last children will get their start/end radius set to match group radius. If it's a `YGroup`, it will adjust top/bottom radius. `XGroup` adjusts the left/right radius.
+
+You can use Groups with or without `Group.Item`, depending on if you want to spacing and separators to be handled based on direct children, or on each Item rendered.
+
 ```tsx
 import { Button, XGroup } from 'tamagui'
- 
- // usage with Item components
+
+// usage with Item:
 export default () => (
   <XGroup>
     <XGroup.Item>
@@ -44,8 +51,14 @@ export default () => (
     </XGroup.Item>
   </XGroup>
 )
+```
 
-// usage with direct children
+For a simpler use case and backwards compat, you can also use it without `Group.Item`, which will just apply borders and spacing based on direct children. Note that Group will detect if any `Group.Item` is inside it, and automatically switch modes. If no Item, it spaces direct children:
+
+```tsx
+import { Button, XGroup } from 'tamagui'
+
+// usage without Item:
 export default () => (
   <XGroup>
     <Button>First</Button>
@@ -54,12 +67,6 @@ export default () => (
   </XGroup>
 )
 ```
-
-Instead of a generic `Group`, Tamagui prefers `XGroup` and `YGroup` for consistency with stacks.
-
-By default, Groups will control the border radius of their children automatically - the first and last children will get their start/end radius set to match group radius. If it's a `YGroup`, it will adjust top/bottom radius. `XGroup` adjusts the left/right radius.
-
-This ensures any items inside will get appropriately scaled border radius.
 
 ## Sizing
 
@@ -128,7 +135,7 @@ The `disabled` property will pass to children
       required: false,
       type: 'boolean',
       desctiption: `Can be used to force the group to assume it has Item components as children.`,
-    }
+    },
   ]}
 />
 
@@ -136,7 +143,4 @@ The `disabled` property will pass to children
 
 Wrap each of `XGroup` or `YGroup`'s children in one of these. It lets Tamagui apply the needed styles to them.
 
-<Notice>
-  Tamagui still tries to apply the styles even if you don't wrap them in `Group.Item`, but
-  that's for backward compatibility and will probably change after a major release.
-</Notice>
+Accepts only a `children` prop.

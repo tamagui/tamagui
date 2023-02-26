@@ -133,14 +133,23 @@ function createGroup(verticalDefault: boolean) {
         })
       )
 
+      const onItemMount = React.useCallback(
+        () => setItemChildrenCount((prev) => prev + 1),
+        []
+      )
+      const onItemUnmount = React.useCallback(
+        () => setItemChildrenCount((prev) => prev - 1),
+        []
+      )
+
       return (
         <GroupProvider
           disablePassBorderRadius={disablePassBorderRadius}
           vertical={vertical}
           radius={radius}
           disabled={disabledProp}
-          onItemMount={() => setItemChildrenCount((prev) => prev + 1)}
-          onItemUnmount={() => setItemChildrenCount((prev) => prev - 1)}
+          onItemMount={onItemMount}
+          onItemUnmount={onItemUnmount}
           scope={__scopeGroup}
         >
           <GroupFrame
