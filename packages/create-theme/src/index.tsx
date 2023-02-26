@@ -88,7 +88,6 @@ export const createShiftMask = ({ inverse }: { inverse?: boolean } = {}) => {
     for (const [key, value] of values) {
       if (typeof value === 'string') continue
       if (skip && key in skip) {
-        out[key] = value
         continue
       }
       const isPositive = value === 0 ? !isMinusZero(value) : value >= 0

@@ -151,7 +151,6 @@ const masks = {
 
 const maskOptions: MaskOptions = {
   skip,
-
   // avoids the transparent ends
   max: palettes.light.length - 2,
   min: 1,
@@ -291,3 +290,7 @@ export const themes = {
   light: createTheme(palettes.light, lightTemplate, { nonInheritedValues: lightColors }),
   dark: createTheme(palettes.dark, darkTemplate, { nonInheritedValues: darkColors }),
 }
+
+// if (process.env.NODE_ENV === 'development') {
+//   console.log(JSON.stringify(themes).length)
+// }
