@@ -1,20 +1,20 @@
 import { Activity, Airplay } from '@tamagui/lucide-icons'
-import { Button, ListItem, Separator, XGroup, YGroup, YStack } from 'tamagui'
+import { Button, Group, ListItem, Separator, XGroup, YGroup, YStack } from 'tamagui'
 
 export function GroupDemo() {
   return (
     <YStack p="$3" space="$2" ai="center">
-      <XGroup>
-        <XGroup.Item>
+      <Group>
+        <Group.Item>
           <Button>First</Button>
-        </XGroup.Item>
-        <XGroup.Item>
+        </Group.Item>
+        <Group.Item>
           <Button>Second</Button>
-        </XGroup.Item>
-        <XGroup.Item>
+        </Group.Item>
+        <Group.Item>
           <Button>Third</Button>
-        </XGroup.Item>
-      </XGroup>
+        </Group.Item>
+      </Group>
 
       {/* responsive + size */}
       <XGroup size="$3" $gtSm={{ size: '$5' }}>
@@ -30,6 +30,7 @@ export function GroupDemo() {
         </XGroup.Item>
       </XGroup>
 
+      {/* Separator */}
       <YGroup separator={<Separator />}>
         <YGroup.Item>
           <ListItem title="First" />

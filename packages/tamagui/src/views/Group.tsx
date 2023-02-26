@@ -38,10 +38,16 @@ const [GroupProvider, useGroupContext] = createGroupContext<GroupContextValue>(G
 
 export const GroupFrame = styled(ThemeableStack, {
   name: 'GroupFrame',
-  backgroundColor: '$background',
-  y: 0,
 
   variants: {
+    unstyled: {
+      false: {
+        y: 0,
+        backgroundColor: '$background',
+        size: '$true',
+      },
+    },
+
     size: (val, { tokens }) => {
       const borderRadius = tokens.radius[val] ?? val ?? tokens.radius['$true']
       return {
@@ -51,18 +57,19 @@ export const GroupFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: '$true',
+    unstyled: false,
   },
 })
 
 export type GroupProps = GetProps<typeof GroupFrame> & {
+  axis?: 'horizontal' | 'vertical'
+
   scrollable?: boolean
   /**
    * @default false
    */
   showScrollIndicator?: boolean
   disabled?: boolean
-  vertical?: boolean
   disablePassBorderRadius?: boolean
   /**
    * forces the group to use the Group.Item API
@@ -83,7 +90,7 @@ function createGroup(verticalDefault: boolean) {
         spaceDirection,
         separator,
         scrollable,
-        vertical = verticalDefault,
+        axis = verticalDefault ? 'vertical' : 'horizontal',
         disabled: disabledProp,
         disablePassBorderRadius: disablePassBorderRadiusProp,
         borderRadius,
@@ -91,13 +98,17 @@ function createGroup(verticalDefault: boolean) {
         ...restProps
       } = getExpandedShorthands(activeProps)
 
+      const vertical = axis === 'vertical'
       const [itemChildrenCount, setItemChildrenCount] = useControllableState({
         defaultProp: forceUseItem ? 1 : 0,
       })
       const isUsingItems = itemChildrenCount > 0
+
+      // 1 off given border to adjust for border radius? This should be user controllable
       const radius =
         borderRadius ??
         (size ? getVariableValue(getTokens().radius[size]) - 1 : undefined)
+
       const hasRadius = radius !== undefined
       const disablePassBorderRadius = disablePassBorderRadiusProp ?? !hasRadius
 
@@ -145,7 +156,7 @@ function createGroup(verticalDefault: boolean) {
       return (
         <GroupProvider
           disablePassBorderRadius={disablePassBorderRadius}
-          vertical={vertical}
+          vertical={axis === 'vertical'}
           radius={radius}
           disabled={disabledProp}
           onItemMount={onItemMount}
@@ -155,7 +166,7 @@ function createGroup(verticalDefault: boolean) {
           <GroupFrame
             ref={ref}
             size={size}
-            flexDirection={!vertical ? 'row' : 'column'}
+            flexDirection={axis === 'horizontal' ? 'row' : 'column'}
             borderRadius={borderRadius}
             {...restProps}
           >
@@ -223,20 +234,21 @@ const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
   })
 }
 
-export const YGroup = createGroup(true)
+export const Group = createGroup(true)
+export const YGroup = Group
 export const XGroup = createGroup(false)
 
 const wrapScroll = (
-  { scrollable, vertical, showScrollIndicator = false }: GroupProps,
+  { scrollable, axis, showScrollIndicator = false }: GroupProps,
   children: any
 ) => {
   if (scrollable)
     return (
       <ScrollView
-        {...(vertical && {
+        {...(axis === 'vertical' && {
           showsVerticalScrollIndicator: showScrollIndicator,
         })}
-        {...(!vertical && {
+        {...(axis === 'horizontal' && {
           horizontal: true,
           showsHorizontalScrollIndicator: showScrollIndicator,
         })}
