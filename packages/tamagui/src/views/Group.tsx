@@ -1,6 +1,5 @@
 import {
   GetProps,
-  Slot,
   TamaguiElement,
   UnionableString,
   Variable,
@@ -18,7 +17,7 @@ import {
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import React, { Children, forwardRef, isValidElement, useState } from 'react'
+import React, { Children, cloneElement, forwardRef, isValidElement } from 'react'
 import { ScrollView } from 'react-native'
 import { useIndex, useIndexedChildren } from 'reforest'
 
@@ -198,8 +197,11 @@ const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
       propsToPass.style = radiusStyles
     }
   }
-
-  return <Slot {...propsToPass}>{children}</Slot>
+  return cloneElement(children, {
+    ...children.props,
+    ...propsToPass,
+    style: { ...children.props.style, ...propsToPass.style },
+  })
 }
 
 export const YGroup = createGroup(true)
