@@ -1,10 +1,16 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { ButtonDemo, CheckboxDemo, InputsDemo, SwitchDemo } from '@tamagui/demos'
+import {
+  ButtonDemo,
+  CheckboxDemo,
+  GroupDemo,
+  InputsDemo,
+  SwitchDemo,
+} from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
-import { Input, ScrollView, TamaguiProvider, XStack, YStack, styled } from 'tamagui'
+import { Button, ScrollView, TamaguiProvider, XStack, YStack, styled } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -37,22 +43,13 @@ const Image = styled(
   }
 )
 
-const StyledInput = styled(Input, {
-  debug: 'verbose',
-
-  focusStyle: {
-    borderWidth: 10,
-    borderColor: 'blue',
-  },
-})
-
 export const Sandbox = () => {
   return (
     <SandboxFrame>
       {/* keep indent */}
       {/* <SandboxDefault /> */}
 
-      <StyledInput debug="verbose" />
+      <Button disabled>hi</Button>
     </SandboxFrame>
   )
 }
