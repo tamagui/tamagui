@@ -19,14 +19,7 @@ import { Scope, createContextScope } from '@tamagui/create-context'
 import { ThemeableStack } from '@tamagui/stacks'
 import React, { Children, forwardRef, isValidElement } from 'react'
 import { ScrollView } from 'react-native'
-import {
-  useIndex,
-  useIndexedChildren,
-  useRovingIndex,
-  useTree,
-  useTreeNode,
-  useTreeState,
-} from 'reforest'
+import { useIndex, useIndexedChildren } from 'reforest'
 
 interface GroupContextValue {
   vertical: boolean
@@ -122,7 +115,7 @@ function createGroup(verticalDefault: boolean) {
         )
       })
 
-      const tree = useTree(
+      const indexedChildren = useIndexedChildren(
         spacedChildren({
           direction: spaceDirection,
           separator,
@@ -146,7 +139,7 @@ function createGroup(verticalDefault: boolean) {
             borderRadius={borderRadius}
             {...restProps}
           >
-            {wrapScroll(activeProps, tree.children)}
+            {wrapScroll(activeProps, indexedChildren)}
           </GroupFrame>
         </GroupProvider>
       )
