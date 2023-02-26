@@ -54,7 +54,7 @@ import { Accordion } from 'tamagui';
 
 ## API Reference
 
-### Root
+### Accordion
 
 Contains all the parts of an accordion.
 
@@ -223,6 +223,67 @@ Contains all the parts of a collapsible section.
   ]}
 />
 
+### Header
+
+Wraps an `Accordion.Trigger`. Use the `asChild` prop to update it to the appropriate heading level for your page.
+
+<PropsTable
+  data={[
+    {
+      name: 'asChild',
+      required: false,
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
+    },
+  ]}
+/>
+
+### Trigger
+
+Toggles the collapsed state of its associated item. It should be nested inside of an `Accordion.Header`.
+
+<PropsTable
+  data={[
+    {
+      name: 'asChild',
+      required: false,
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
+    },
+  ]}
+/>
+
+### Content
+
+Contains the collapsible content for an item.
+
+<PropsTable
+  data={[
+    {
+      name: 'asChild',
+      required: false,
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
+    },
+    {
+      name: 'forceMount',
+      type: 'boolean',
+      description: (
+        <span>
+          Used to force mounting when more control is needed. Useful when controlling
+          animation with React animation libraries.
+        </span>
+      ),
+    },
+  ]}
+/>
+
 ## Examples
 
 ### Expanded by default
@@ -256,59 +317,6 @@ Set the `type` prop to `multiple` to enable opening multiple items at once.
   <Accordion.Item value="item-1">…</Accordion.Item>
   <Accordion.Item value="item-2">…</Accordion.Item>
 </Accordion>
-```
-
-### Rotated icon when open
-
-You can add extra decorative elements, such as chevrons, and rotate it when the item is open.
-
-```jsx line=12
-// index.jsx
-import { Accordion } from '@tamagui/accordion';
-import { ChevronDown } from '@tamagui/lucide-icons';
-
-export default () => (
-  <Accordion type="single">
-    <Accordion.Item value="item-1">
-      <Accordion.Header>
-        <Accordion.Trigger>
-          <span>Trigger text</span>
-          <ChevronDown aria-hidden />
-        </Accordion.Trigger>
-      </Accordion.Header>
-      <Accordion.Content>…</Accordion.Content>
-    </Accordion.Item>
-  </Accordion>
-);
-```
-
-### Horizontal orientation
-
-Use the `orientation` prop to create a horizontal accordion.
-
-```jsx line=1
-<Accordion __orientation__="horizontal">
-  <Accordion.Item value="item-1">…</Accordion.Item>
-  <Accordion.Item value="item-2">…</Accordion.Item>
-</Accordion>
-```
-
-### Animating content size
-
-Use the `--radix-accordion-content-width` and/or `--radix-accordion-content-height` CSS variables to animate the size of the content when it opens/closes:
-
-```jsx line=9
-// index.jsx
-import { Accordion } from 'tamagui';
-
-export default () => (
-  <Accordion type="single">
-    <Accordion.Item value="item-1">
-      <Accordion.Header>…</Accordion.Header>
-      <Accordion.Content>…</Accordion.Content>
-    </Accordion.Item>
-  </Accordion>
-);
 ```
 
 ## Accessibility
