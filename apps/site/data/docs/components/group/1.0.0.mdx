@@ -29,7 +29,8 @@ component: Group
 
 ```tsx
 import { Button, XGroup } from 'tamagui'
-
+ 
+ // usage with Item components
 export default () => (
   <XGroup>
     <XGroup.Item>
@@ -41,6 +42,15 @@ export default () => (
     <XGroup.Item>
       <Button>Third</Button>
     </XGroup.Item>
+  </XGroup>
+)
+
+// usage with direct children
+export default () => (
+  <XGroup>
+    <Button>First</Button>
+    <Button>Second</Button>
+    <Button>Third</Button>
   </XGroup>
 )
 ```
@@ -113,6 +123,12 @@ The `disabled` property will pass to children
       type: 'boolean',
       description: `Can be used to force an XGroup to render like a YGroup or vice-versa.`,
     },
+    {
+      name: 'forceUseItem',
+      required: false,
+      type: 'boolean',
+      desctiption: `Can be used to force the group to assume it has Item components as children.`,
+    }
   ]}
 />
 

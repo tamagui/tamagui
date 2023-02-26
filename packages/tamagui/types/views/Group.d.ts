@@ -82,6 +82,10 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
     disabled?: boolean;
     vertical?: boolean;
     disablePassBorderRadius?: boolean;
+    /**
+     * forces the group to use the Group.Item API
+     */
+    forceUseItem?: boolean;
 };
 export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -143,15 +147,16 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("react-
     disabled?: boolean | undefined;
     vertical?: boolean | undefined;
     disablePassBorderRadius?: boolean | undefined;
+    /**
+     * forces the group to use the Group.Item API
+     */
+    forceUseItem?: boolean | undefined;
 } & {
     __scopeGroup?: Scope;
 } & React.RefAttributes<TamaguiElement>> & {
-    Item: {
-        (props: ScopedProps<{
-            children: React.ReactNode;
-        }>): JSX.Element;
-        handlesGroupRadius: boolean;
-    };
+    Item: (props: ScopedProps<{
+        children: React.ReactNode;
+    }>) => JSX.Element;
 };
 export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -213,15 +218,16 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-
     disabled?: boolean | undefined;
     vertical?: boolean | undefined;
     disablePassBorderRadius?: boolean | undefined;
+    /**
+     * forces the group to use the Group.Item API
+     */
+    forceUseItem?: boolean | undefined;
 } & {
     __scopeGroup?: Scope;
 } & React.RefAttributes<TamaguiElement>> & {
-    Item: {
-        (props: ScopedProps<{
-            children: React.ReactNode;
-        }>): JSX.Element;
-        handlesGroupRadius: boolean;
-    };
+    Item: (props: ScopedProps<{
+        children: React.ReactNode;
+    }>) => JSX.Element;
 };
 export {};
 //# sourceMappingURL=Group.d.ts.map

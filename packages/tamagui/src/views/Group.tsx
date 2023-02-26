@@ -17,13 +17,16 @@ import {
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { ThemeableStack } from '@tamagui/stacks'
-import React, { Children, forwardRef, isValidElement } from 'react'
+import { useControllableState } from '@tamagui/use-controllable-state'
+import React, { Children, forwardRef, isValidElement, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { useIndex, useIndexedChildren } from 'reforest'
 
 interface GroupContextValue {
   vertical: boolean
   disablePassBorderRadius: boolean
+  onItemMount: () => void
+  onItemUnmount: () => void
   radius?: number | UnionableString | Variable<any>
   disabled?: boolean
 }
@@ -62,6 +65,10 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
   disabled?: boolean
   vertical?: boolean
   disablePassBorderRadius?: boolean
+  /**
+   * forces the group to use the Group.Item API
+   */
+  forceUseItem?: boolean
 }
 
 function createGroup(verticalDefault: boolean) {
@@ -81,39 +88,42 @@ function createGroup(verticalDefault: boolean) {
         disabled: disabledProp,
         disablePassBorderRadius: disablePassBorderRadiusProp,
         borderRadius,
+        forceUseItem,
         ...restProps
       } = getExpandedShorthands(activeProps)
 
+      const [itemChildrenCount, setItemChildrenCount] = useControllableState({
+        defaultProp: forceUseItem ? 1 : 0,
+      })
+      const isUsingItems = itemChildrenCount > 0
       const radius =
         borderRadius ??
         (size ? getVariableValue(getTokens().radius[size]) - 1 : undefined)
       const hasRadius = radius !== undefined
       const disablePassBorderRadius = disablePassBorderRadiusProp ?? !hasRadius
 
-      const childrens = Children.toArray(childrenProp)
-      const children = childrens.map((child, i) => {
-        // this block is for backward compatibility, when Group.Item is not provided
-        if (!isValidElement(child)) {
-          return child
-        }
-        const disabled = child.props.disabled ?? disabledProp
+      const childrenArray = Children.toArray(childrenProp)
+      const children = isUsingItems
+        ? childrenProp
+        : childrenArray.map((child, i) => {
+            if (!isValidElement(child)) {
+              return child
+            }
+            const disabled = child.props.disabled ?? disabledProp
 
-        const isFirst = i === 0
-        const isLast = i === childrens.length - 1
+            const isFirst = i === 0
+            const isLast = i === childrenArray.length - 1
 
-        const radiusStyles = disablePassBorderRadius
-          ? null
-          : getBorderRadius({ isFirst, isLast, radius, vertical })
-        const props = {
-          disabled,
-          ...(isTamaguiElement(child) ? radiusStyles : { style: radiusStyles }),
-        }
+            const radiusStyles = disablePassBorderRadius
+              ? null
+              : getBorderRadius({ isFirst, isLast, radius, vertical })
+            const props = {
+              disabled,
+              ...(isTamaguiElement(child) ? radiusStyles : { style: radiusStyles }),
+            }
 
-        return cloneElementWithPropOrder(
-          child,
-          child['type']['handlesGroupRadius'] === true ? {} : props
-        )
-      })
+            return cloneElementWithPropOrder(child, props)
+          })
 
       const indexedChildren = useIndexedChildren(
         spacedChildren({
@@ -130,6 +140,8 @@ function createGroup(verticalDefault: boolean) {
           vertical={vertical}
           radius={radius}
           disabled={disabledProp}
+          onItemMount={() => setItemChildrenCount((prev) => prev + 1)}
+          onItemUnmount={() => setItemChildrenCount((prev) => prev - 1)}
           scope={__scopeGroup}
         >
           <GroupFrame
@@ -154,6 +166,13 @@ const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
   const { __scopeGroup, children } = props
   const treeIndex = useIndex()
   const context = useGroupContext('GroupItem', __scopeGroup)
+
+  React.useEffect(() => {
+    context.onItemMount()
+    return () => {
+      context.onItemUnmount()
+    }
+  }, [])
 
   if (!isValidElement(children)) return <>children</>
   const disabled = children.props.disabled ?? context.disabled
@@ -182,7 +201,6 @@ const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
 
   return <Slot {...propsToPass}>{children}</Slot>
 }
-GroupItem['handlesGroupRadius'] = true
 
 export const YGroup = createGroup(true)
 export const XGroup = createGroup(false)
