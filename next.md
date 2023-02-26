@@ -1,4 +1,5 @@
-👋
+
+- can make the sub-color alt themes not define color1=>color12
 
 - Card has a good use case for size being passed through context/css vars
 - linear-gradient next.js issue
