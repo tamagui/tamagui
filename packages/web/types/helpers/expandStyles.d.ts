@@ -1,7 +1,3 @@
-export declare const defaultOffset: {
-    height: number;
-    width: number;
-};
 /**
  * This is what you want to run before Object.assign() a style onto another.
  * It does the following:

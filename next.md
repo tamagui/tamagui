@@ -1,13 +1,9 @@
+👋
+
+- Card has a good use case for size being passed through context/css vars
 - linear-gradient next.js issue
 
-- check why chromeless bug not overwriting supposedly
-
-- styled(SolitoImage)
-
 -  I'm currently using the Selector on Native, and the animation for pulling up the modal is kind of lagging and I get spammed this error when it happens.
-
-
-- sliderTrackActive can just be slidertrack + active theme
 
 I'm trying to do the following:
 
@@ -45,9 +41,7 @@ export const Popover = withStaticProperties(TamaguiPopover, {
   // ...etc
 })
 
-
 Once I wrap Popover.Content with styled() it looks like the animations no longer work for it. They work fine if applied directly onto the popover as component props if it's imported from tamagui. But once I wrap it, the animations don't seem to work
-
 
 - add Themes page in docs under Theme, change Theme => Design System
 - move packages to have unstyled
@@ -121,6 +115,7 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 2.0
 
+- tag="a" should get the typed props of a link
 - much better non-monorepo non-expo general setup experience
 - app dir support (discussions/409)
 - contrastColor (accent color) in themes (discussions/449)
@@ -130,6 +125,7 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 inbox
 
+- remove defaultVariants in favor of just defaultProps
 
 - // TODO move to validStyleProps to merge
 - bundle size reductions:
@@ -343,6 +339,39 @@ const MySquare = styled(Square, {
 
 const SquareVariant = createVariantProvider(MySquare)
 ```
+
+---
+
+# Psuedo Element Styles
+
+- display: flex
+- only accepts style props
+
+beforeStyles: [{
+
+}],
+
+afterStyles: [{
+
+}],
+
++++
+
+# Themes
+
+Component themes could force set the actual properties even if they aren't set by the component themselves....
+
+themes.dark_Button = {
+  borderWidth: 1,
+  borderColor: 'red',
+}
+
+===
+
+# Winamp Re-skinability
+
+Themes can completely transform the look and feel, a button could have multiple shadows/reflections in one theme, but be totally flat in another.
+
 
 ---
 

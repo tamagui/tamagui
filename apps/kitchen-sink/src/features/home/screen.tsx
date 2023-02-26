@@ -1,4 +1,4 @@
-import { variableToString } from '@tamagui/core'
+import { useMedia, variableToString } from '@tamagui/core'
 import { ScrollView } from 'react-native'
 import { ChevronRight, Moon, Sun } from 'sandbox-ui'
 import { UseLinkProps, useLink } from 'solito/link'
@@ -19,6 +19,8 @@ import {
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
 export function HomeScreen() {
+  const media = useMedia()
+
   return (
     <ScrollView>
       <YStack bc="$backgroundStrong" p="$3" pt="$6" pb="$8" f={1} space>
