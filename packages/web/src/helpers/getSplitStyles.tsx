@@ -256,8 +256,9 @@ export const getSplitStyles: StyleSplitter = (
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     // eslint-disable-next-line no-console
     console.groupCollapsed('getSplitStyles (looping backwards)')
+    // prettier-ignore
     // eslint-disable-next-line no-console
-    console.log({ staticConfig, shouldDoClasses, state, IS_STATIC, propKeys })
+    console.log({ props, staticConfig, shouldDoClasses, state, IS_STATIC, propKeys, styleState })
     // eslint-disable-next-line no-console
     console.groupEnd()
   }
@@ -310,8 +311,9 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (keyInit in usedKeys) continue
-    if (keyInit in skipProps) continue
+    if (keyInit in usedKeys || keyInit in skipProps) {
+      continue
+    }
 
     if (typeof valInit === 'string' && valInit[0] === '_') {
       if (keyInit in validStyleProps || keyInit.includes('-')) {
@@ -479,11 +481,9 @@ export const getSplitStyles: StyleSplitter = (
 
         if (isValidClassName || isMediaOrPseudo) {
           usedKeys[keyInit] = 1
-          if (process.env.NODE_ENV === 'development') {
-            if (debug) {
-              // eslint-disable-next-line no-console
-              console.log('tamagui classname props', keyInit, valInit)
-            }
+          if (process.env.NODE_ENV === 'development' && debug) {
+            // eslint-disable-next-line no-console
+            console.log('tamagui classname props', keyInit, valInit)
           }
           mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
           continue
@@ -499,20 +499,28 @@ export const getSplitStyles: StyleSplitter = (
      */
 
     let isMedia = isMediaKey(keyInit)
-    let isPseudo = validPseudoKeys[keyInit]
+    let isPseudo = keyInit in validPseudoKeys
 
     const isHOCShouldPassThrough = staticConfig.isHOC && (isMedia || isPseudo)
+    const shouldPassProp = !(
+      isMedia ||
+      isPseudo ||
+      variants?.[keyInit] ||
+      keyInit in validStyleProps ||
+      keyInit in shorthands
+    )
+    const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (
-      isHOCShouldPassThrough ||
-      !(
-        isMedia ||
-        isPseudo ||
-        variants?.[keyInit] ||
-        validStyleProps[keyInit] ||
-        shorthands[keyInit]
-      )
+      process.env.NODE_ENV === 'development' &&
+      debug === 'verbose' &&
+      shouldPassThrough
     ) {
+      // eslint-disable-next-line no-console
+      console.log('  🔹 skip', keyInit)
+    }
+
+    if (shouldPassThrough) {
       usedKeys[keyInit] = 1
       viewProps[keyInit] = valInit
       continue

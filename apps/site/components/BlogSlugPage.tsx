@@ -148,6 +148,7 @@ export function BlogSlugPage(props: BlogPost) {
                   <Paragraph
                     tag="a"
                     key={frontmatter.slug}
+                    // @ts-ignore
                     href={`/blog/${frontmatter.slug}`}
                   >
                     <YStack space="$2">

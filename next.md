@@ -1,9 +1,9 @@
+👋
+
 - Card has a good use case for size being passed through context/css vars
 - linear-gradient next.js issue
 
 -  I'm currently using the Selector on Native, and the animation for pulling up the modal is kind of lagging and I get spammed this error when it happens.
-
-- sliderTrackActive can just be slidertrack + active theme
 
 I'm trying to do the following:
 
@@ -115,6 +115,7 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 2.0
 
+- tag="a" should get the typed props of a link
 - much better non-monorepo non-expo general setup experience
 - app dir support (discussions/409)
 - contrastColor (accent color) in themes (discussions/449)
