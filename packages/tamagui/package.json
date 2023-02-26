@@ -89,7 +89,6 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-dom": "*",
     "react-native-web": "*"
   },
   "devDependencies": {
@@ -97,7 +96,6 @@
     "@types/node": "^16.11.9",
     "@types/react": "^18.0.15",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "react-native-web": "^0.18.3"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"

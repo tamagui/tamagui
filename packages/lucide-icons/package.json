@@ -25,7 +25,6 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-dom": "*",
     "react-native-svg": ">=12"
   },
   "devDependencies": {
@@ -38,7 +37,6 @@
     "prettier-plugin-import-sort": "^0.0.7",
     "prop-types": "^15.7.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "react-native-svg": "13.4.0",
     "uppercamelcase": "^3.0.0"
   },
