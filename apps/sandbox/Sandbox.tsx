@@ -10,7 +10,16 @@ import {
 } from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
-import { Button, ScrollView, TamaguiProvider, XStack, YStack, styled } from 'tamagui'
+import {
+  Button,
+  Popover,
+  ScrollView,
+  TamaguiProvider,
+  XStack,
+  YStack,
+  styled,
+  withStaticProperties,
+} from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -49,10 +58,57 @@ export const Sandbox = () => {
       {/* keep indent */}
       {/* <SandboxDefault /> */}
 
-      <Button disabled>hi</Button>
+      <TestPopoverContentStyledPlusAnimations />
     </SandboxFrame>
   )
 }
+
+function TestPopoverContentStyledPlusAnimations() {
+  return (
+    <PopoverStyled size="$5">
+      <PopoverStyled.Trigger asChild>
+        <Button>go</Button>
+      </PopoverStyled.Trigger>
+
+      <PopoverStyled.Content>
+        <PopoverStyled.Arrow bw={1} boc="$borderColor" />
+      </PopoverStyled.Content>
+    </PopoverStyled>
+  )
+}
+
+const Content = styled(Popover.Content, {
+  name: 'PopoverContent',
+  elevate: true,
+  bordered: true,
+  p: '$3',
+  br: '$3',
+  enterStyle: {
+    o: 0,
+    y: -10,
+    x: 0,
+  },
+  exitStyle: {
+    o: 0,
+    y: -10,
+    x: 0,
+  },
+  x: 0,
+  y: 0,
+  o: 1,
+  animation: [
+    'quick',
+    {
+      opacity: {
+        overshootClamping: true,
+      },
+    },
+  ],
+})
+
+export const PopoverStyled = withStaticProperties(Popover, {
+  Content,
+})
 
 const SandboxFrame = (props: { children: any }) => {
   const [theme, setTheme] = useState('light')
