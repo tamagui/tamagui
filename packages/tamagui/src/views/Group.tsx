@@ -182,10 +182,15 @@ const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
     }
   }, [])
 
-  if (!isValidElement(children)) return <>children</>
+  if (!isValidElement(children)) {
+    return children as any
+  }
+
   const disabled = children.props.disabled ?? context.disabled
 
-  if (!treeIndex) throw Error('<Group.Item/> should only be used within a <Group/>')
+  if (!treeIndex) {
+    throw Error('<Group.Item/> should only be used within a <Group/>')
+  }
 
   const isFirst = treeIndex.index === 0
   const isLast = treeIndex.index === treeIndex.maxIndex
@@ -193,6 +198,7 @@ const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
   let propsToPass: Record<string, any> = {
     disabled,
   }
+
   if (!context.disablePassBorderRadius) {
     const radiusStyles = getBorderRadius({
       radius: context.radius,
@@ -206,10 +212,14 @@ const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
       propsToPass.style = radiusStyles
     }
   }
+
   return cloneElement(children, {
-    ...children.props,
     ...propsToPass,
-    style: { ...children.props.style, ...propsToPass.style },
+    // @ts-ignore
+    style: {
+      ...children.props?.['style'],
+      ...propsToPass.style,
+    },
   })
 }
 

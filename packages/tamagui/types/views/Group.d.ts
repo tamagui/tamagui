@@ -156,7 +156,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("react-
 } & React.RefAttributes<TamaguiElement>> & {
     Item: (props: ScopedProps<{
         children: React.ReactNode;
-    }>) => JSX.Element;
+    }>) => any;
 };
 export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -227,7 +227,7 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-
 } & React.RefAttributes<TamaguiElement>> & {
     Item: (props: ScopedProps<{
         children: React.ReactNode;
-    }>) => JSX.Element;
+    }>) => any;
 };
 export {};
 //# sourceMappingURL=Group.d.ts.map
