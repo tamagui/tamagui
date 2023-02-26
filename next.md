@@ -183,9 +183,6 @@ inbox
 - maybe regression in closing popover
 - export popover and others internal handles for imperative use
 - grid on homepage linking to various nice components maybe replace features grid or augment
-  - VisuallyHidden, Adapt, FontLanguage, etc
-- Card component minor glitch: border flickers on animation end
-- I'm seeing an issue where setting multiline=true on Input results in broken colors when switching between light & dark themes (doesn't use specified text color). 
 - instead of validStyleProps use validNONStyleProps
     - that way for web all style props pass through automatically
     - also likely smaller bundle size (smart detect `onX`)
@@ -275,22 +272,6 @@ inbox
 
 ---
 
-Make Themes Better
-
-```tsx
-const theme = generateTheme([...colors], createSubtleTheme)
-const theme_alt1 = extendTheme(theme, ...)
-
-export const themes = createThemes({
-  theme,
-  theme_alt1,
-})
-```
-
-<Button size="large" />
-
----
-
 <ThemeOverride />
 <ThemeMutate />
 <Theme values={parent => ({ backgroundColor: parent.backgroundColorHover })} />
@@ -315,6 +296,29 @@ export default () => (
     </ThemeMutate>
   </Theme>
 )
+```
+
+---
+
+<Skeleton />
+
+```tsx
+const Skeleton = styled(Stack, {
+  animation: {
+    name: 'quick',
+    loop: true
+  },
+  enterStyle: {
+    x: '100%',
+  },
+  exitStyle: {
+    x: '-100%',
+  },
+  linearGradient: {
+    to: 'left',
+    colors: ['$color2', '$color3', '$color2']
+  }
+})
 ```
 
 ---
@@ -345,16 +349,9 @@ const SquareVariant = createVariantProvider(MySquare)
 
 # Psuedo Element Styles
 
+- beforeStyles + afterStyles array
 - display: flex
 - only accepts style props
-
-beforeStyles: [{
-
-}],
-
-afterStyles: [{
-
-}],
 
 +++
 
@@ -362,12 +359,17 @@ afterStyles: [{
 
 Component themes could force set the actual properties even if they aren't set by the component themselves....
 
+```tsx
 themes.dark_Button = {
   borderWidth: 1,
   borderColor: 'red',
-}
 
-===
+  // is this doable?
+  beforeStyle: {},
+}
+```
+
+=
 
 # Winamp Re-skinability
 
