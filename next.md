@@ -115,6 +115,7 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 2.0
 
+- Accessibility + RTL
 - tag="a" should get the typed props of a link
 - much better non-monorepo non-expo general setup experience
 - app dir support (discussions/409)

@@ -1,16 +1,7 @@
 import { ThemeTint, useTint } from '@tamagui/logo'
 import { FastForward } from '@tamagui/lucide-icons'
 import { memo, useState } from 'react'
-import {
-  Button,
-  H5,
-  Paragraph,
-  ScrollView,
-  ThemeName,
-  XGroup,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, Paragraph, ScrollView, XGroup, XStack, YStack } from 'tamagui'
 
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
 import { ContainerLarge } from './Container'
@@ -62,18 +53,19 @@ export function HeroExampleCode({
           >
             {examples.map((example, i) => {
               return (
-                <Button
-                  accessibilityLabel="See example"
-                  onPress={() => setActiveIndex(i)}
-                  theme={i === activeIndex ? 'active' : null}
-                  chromeless={i !== activeIndex}
-                  key={i}
-                  borderRadius={0}
-                  size="$3"
-                  fontFamily="$silkscreen"
-                >
-                  {example.name}
-                </Button>
+                <XGroup.Item key={i}>
+                  <Button
+                    accessibilityLabel="See example"
+                    onPress={() => setActiveIndex(i)}
+                    theme={i === activeIndex ? 'active' : null}
+                    chromeless={i !== activeIndex}
+                    borderRadius={0}
+                    size="$3"
+                    fontFamily="$silkscreen"
+                  >
+                    {example.name}
+                  </Button>
+                </XGroup.Item>
               )
             })}
           </XGroup>
@@ -172,22 +164,25 @@ const CodeExamples = memo(({ examples, title }: any) => {
         >
           <XStack px="$4" fs={0} space>
             <XGroup size="$2" bordered>
-              <Button disabled size="$2" fontSize="$4" px="$4">
-                {title}
-              </Button>
+              <XGroup.Item>
+                <Button disabled size="$2" fontSize="$4" px="$4">
+                  {title}
+                </Button>
+              </XGroup.Item>
             </XGroup>
             <XGroup size="$2" bordered>
               {examples.map((example, i) => (
-                <Button
-                  accessibilityLabel="See example"
-                  onPress={() => setActiveIndex(i)}
-                  theme={i === activeIndex ? (tint as any) : 'alt1'}
-                  size="$2"
-                  key={i}
-                  borderRadius="$0"
-                >
-                  {example.name}
-                </Button>
+                <XGroup.Item key={i}>
+                  <Button
+                    accessibilityLabel="See example"
+                    onPress={() => setActiveIndex(i)}
+                    theme={i === activeIndex ? (tint as any) : 'alt1'}
+                    size="$2"
+                    borderRadius="$0"
+                  >
+                    {example.name}
+                  </Button>
+                </XGroup.Item>
               ))}
             </XGroup>
           </XStack>
