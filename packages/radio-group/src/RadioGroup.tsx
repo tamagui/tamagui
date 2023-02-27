@@ -55,8 +55,8 @@ const RadioIndicatorFrame = styled(ThemeableStack, {
   variants: {
     unstyled: {
       false: {
-        w: '60%',
-        h: '60%',
+        w: '40%',
+        h: '40%',
         br: 1000,
         backgroundColor: '$color',
       },
@@ -124,12 +124,17 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
   variants: {
     unstyled: {
       false: {
-        borderRadius: 9999,
+        size: '$true',
+        borderRadius: 1000,
         backgroundColor: '$background',
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 2,
-        borderColor: 'transparent',
+        borderWidth: 1,
+        borderColor: '$borderColor',
+
+        hoverStyle: {
+          borderColor: '$borderColorHover',
+        },
 
         focusStyle: {
           borderColor: '$borderColorFocus',
@@ -151,7 +156,6 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: '$true',
     unstyled: false,
   },
 })

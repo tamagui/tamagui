@@ -1,11 +1,11 @@
 import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
 import * as React from 'react'
 
-import { ButtonNestingContext } from '../contexts/ButtonNestingContext'
-import { TextAncestorContext } from '../contexts/TextAncestorContext'
-import { useMediaListeners } from '../hooks/useMedia'
-import type { TamaguiProviderProps } from '../types'
-import { ThemeProvider } from './ThemeProvider'
+import { ButtonNestingContext } from '../contexts/ButtonNestingContext.js'
+import { TextAncestorContext } from '../contexts/TextAncestorContext.js'
+import { useMediaListeners } from '../hooks/useMedia.js'
+import type { TamaguiProviderProps } from '../types.js'
+import { ThemeProvider } from './ThemeProvider.js'
 
 export function TamaguiProvider({
   children,

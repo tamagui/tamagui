@@ -1,9 +1,9 @@
 import { isWeb } from '@tamagui/constants'
 
-import { getConfig, updateConfig } from './config'
+import { getConfig, updateConfig } from './config.js'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
-import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes'
-import { ThemeDefinition, ThemeParsed } from './types'
+import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes.js'
+import { ThemeDefinition, ThemeParsed } from './types.js'
 
 export function addTheme(props: {
   name: string

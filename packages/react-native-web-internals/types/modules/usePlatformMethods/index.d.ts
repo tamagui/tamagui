@@ -11,8 +11,9 @@ import type { GenericStyleProp } from '../../types.js';
  * Adds non-standard methods to the hode element. This is temporarily until an
  * API like `ReactNative.measure(hostRef, callback)` is added to React Native.
  */
-export default function usePlatformMethods({ pointerEvents, style, }: {
+export declare function usePlatformMethods({ pointerEvents, style, }: {
     style?: GenericStyleProp<unknown>;
     pointerEvents?: any;
 }): (hostNode: any) => void;
+export default usePlatformMethods;
 //# sourceMappingURL=index.d.ts.map

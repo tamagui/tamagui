@@ -11,7 +11,6 @@ import {
   isRSC,
   mergeEvent,
   setupHooks,
-  styled,
 } from '@tamagui/web'
 import { RefObject } from 'react'
 import type { Text as RNText, View as RNView } from 'react-native'
@@ -37,21 +36,6 @@ export const Text = WebText as TamaguiComponent<
   RNText,
   TextPropsBase & RNTextProps
 >
-
-const T = styled(Stack, {
-  backgroundColor: 'red',
-  variants: {
-    red: {
-      true: {
-        backgroundColor: 'red',
-      },
-    },
-  },
-})
-
-const T2 = styled(T, {
-  red: true,
-})
 
 // setup internal hooks:
 

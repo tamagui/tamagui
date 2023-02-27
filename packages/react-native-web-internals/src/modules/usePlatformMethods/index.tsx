@@ -15,7 +15,7 @@ import useStable from '../useStable/index.js'
  * Adds non-standard methods to the hode element. This is temporarily until an
  * API like `ReactNative.measure(hostRef, callback)` is added to React Native.
  */
-export default function usePlatformMethods({
+export function usePlatformMethods({
   pointerEvents,
   style,
 }: {
@@ -36,3 +36,5 @@ export default function usePlatformMethods({
 
   return ref
 }
+
+export default usePlatformMethods

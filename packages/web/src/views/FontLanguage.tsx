@@ -1,4 +1,4 @@
-import { FontLanguageProps } from './FontLanguage.types'
+import type { FontLanguageProps } from './FontLanguage.types.js'
 
 export const FontLanguage = ({ children, ...props }: FontLanguageProps) => {
   return (

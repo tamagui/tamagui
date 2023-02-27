@@ -1,4 +1,4 @@
-import type { PresenceContextProps, UsePresenceResult } from '@tamagui/core';
+import type { PresenceContextProps, UsePresenceResult } from '@tamagui/web';
 export declare function usePresence(): UsePresenceResult;
 /**
  * Similar to `usePresence`, except `useIsPresent` simply returns whether or not the component is present.

@@ -1,18 +1,20 @@
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { GetProps, TamaguiElement, isClient, isWeb } from '@tamagui/core'
 import {
+  GetProps,
+  TamaguiElement,
+  isWeb,
   styled,
   useGet,
+  useId,
   useIsomorphicLayoutEffect,
   withStaticProperties,
 } from '@tamagui/core'
-import { useId } from '@tamagui/core'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
 import { ControlledSheet, SheetController } from '@tamagui/sheet'
-import { XStack, YStack, YStackProps } from '@tamagui/stacks'
+import { XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -118,8 +120,8 @@ const SelectValue = SelectValueFrame.extractable(
 
       const children = childrenProp ?? context.selectedItem
       const hasChildren = !!children
-      const selectValueChildren =
-        context.value === undefined && placeholder !== undefined ? placeholder : children
+      const isEmptyValue = context.value == null || context.value === ''
+      const selectValueChildren = isEmptyValue ? placeholder ?? children : children
 
       useIsomorphicLayoutEffect(() => {
         onValueNodeHasChildrenChange(hasChildren)

@@ -1,9 +1,7 @@
-import React from 'react'
 import { Card, Paragraph, SizableText, Text, XStack, YStack } from 'tamagui'
 
 import { CheckCircle } from './CheckCircle'
 import { ContainerLarge } from './Container'
-import { HomeH2 } from './HomeH2'
 
 const FeatureItem = ({ label, children }) => {
   return (

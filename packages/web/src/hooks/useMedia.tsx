@@ -1,16 +1,16 @@
 import { startTransition, useEffect, useMemo, useSyncExternalStore } from 'react'
 
-import { getConfig } from '../config'
-import { createProxy } from '../helpers/createProxy'
+import { getConfig } from '../config.js'
+import { createProxy } from '../helpers/createProxy.js'
 import { matchMedia } from '../helpers/matchMedia'
-import {
+import type {
   MediaQueries,
   MediaQueryKey,
   MediaQueryObject,
   MediaQueryState,
   TamaguiInternalConfig,
-} from '../types'
-import { useSafeRef } from './useSafeRef'
+} from '../types.js'
+import { useSafeRef } from './useSafeRef.js'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -82,7 +82,7 @@ function unlisten() {
  * *and then* re-render with the actual media query state.
  */
 let configuredKey = ''
-function setupMediaListeners() {
+export function setupMediaListeners() {
   // avoid setting up more than once per config
   const nextKey = JSON.stringify(mediaQueryConfig)
   if (nextKey === configuredKey) return

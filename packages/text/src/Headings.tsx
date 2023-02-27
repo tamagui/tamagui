@@ -1,4 +1,4 @@
-import { styled } from '@tamagui/core'
+import { styled } from '@tamagui/web'
 
 import { Paragraph } from './Paragraph'
 

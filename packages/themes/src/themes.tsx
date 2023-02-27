@@ -1,4 +1,5 @@
 import {
+  MaskOptions,
   addChildren,
   applyMask,
   createStrengthenMask,
@@ -17,7 +18,7 @@ const darkTransparent = 'rgba(10,10,10,0)'
 const palettes = {
   dark: [
     darkTransparent,
-    '#090909',
+    '#050505',
     '#151515',
     '#191919',
     '#232323',
@@ -34,16 +35,16 @@ const palettes = {
   light: [
     lightTransparent,
     '#fff',
-    '#f4f4f4',
-    'hsl(0, 0%, 99.0%)',
+    '#f9f9f9',
     'hsl(0, 0%, 97.3%)',
     'hsl(0, 0%, 95.1%)',
-    'hsl(0, 0%, 93.0%)',
-    'hsl(0, 0%, 90.9%)',
-    'hsl(0, 0%, 80.0%)',
+    'hsl(0, 0%, 94.0%)',
+    'hsl(0, 0%, 92.0%)',
+    'hsl(0, 0%, 89.5%)',
+    'hsl(0, 0%, 81.0%)',
     'hsl(0, 0%, 56.1%)',
-    'hsl(0, 0%, 52.3%)',
-    'hsl(0, 0%, 43.5%)',
+    'hsl(0, 0%, 50.3%)',
+    'hsl(0, 0%, 42.5%)',
     'hsl(0, 0%, 9.0%)',
     darkTransparent,
   ],
@@ -92,17 +93,17 @@ const template = {
   colorPress: -1,
   colorFocus: -2,
   colorTransparent: -0,
-  borderColor: 3,
-  borderColorHover: 4,
-  borderColorPress: 2,
-  borderColorFocus: 3,
+  borderColor: 4,
+  borderColorHover: 5,
+  borderColorPress: 3,
+  borderColorFocus: 4,
   placeholderColor: -4,
 }
 
-const lightShadowColor = 'rgba(0,0,0,0.15)'
-const lightShadowColorStrong = 'rgba(0,0,0,0.2)'
-const darkShadowColor = 'rgba(0,0,0,0.3)'
-const darkShadowColorStrong = 'rgba(0,0,0,0.45)'
+const lightShadowColor = 'rgba(0,0,0,0.02)'
+const lightShadowColorStrong = 'rgba(0,0,0,0.066)'
+const darkShadowColor = 'rgba(0,0,0,0.2)'
+const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
 
 const lightShadows = {
   shadowColor: lightShadowColorStrong,
@@ -120,50 +121,44 @@ const darkShadows = {
 
 const lightTemplate = {
   ...template,
+  // our light color palette is... a bit unique
+  borderColor: 6,
+  borderColorHover: 7,
+  borderColorFocus: 5,
+  borderColorPress: 6,
   ...lightShadows,
 }
 
 const darkTemplate = { ...template, ...darkShadows }
 
-const light = createTheme(palettes.light, lightTemplate, {
-  nonInheritedValues: lightColors,
-})
+const light = createTheme(palettes.light, lightTemplate)
+const dark = createTheme(palettes.dark, darkTemplate)
 
-const dark = createTheme(palettes.dark, darkTemplate, { nonInheritedValues: darkColors })
-
-type Theme = { [key in keyof typeof lightTemplate]: string }
+type SubTheme = typeof light
 
 const baseThemes: {
-  light: Theme
-  dark: Theme
+  light: SubTheme
+  dark: SubTheme
 } = {
   light,
   dark,
 }
 
-// avoid transparent ends
-const max = palettes.dark.length - 1
 const masks = {
-  weaker: createWeakenMask({
-    by: 1,
-    min: 1,
-    max,
-  }),
-  stronger: createStrengthenMask({
-    by: 1,
-    min: 1,
-    max,
-  }),
-  stronger2: createStrengthenMask({
-    by: 2,
-    min: 1,
-    max,
-  }),
+  weaker: createWeakenMask(),
+  stronger: createStrengthenMask(),
 }
 
-const allThemes = addChildren(baseThemes, (name, themeIn) => {
-  const theme = themeIn as Theme
-  const inverseName = name === 'light' ? 'dark' : 'light'
+const maskOptions: MaskOptions = {
+  skip,
+  // avoids the transparent ends
+  max: palettes.light.length - 2,
+  min: 1,
+}
+
+const allThemes = addChildren(baseThemes, (name, theme) => {
+  const isLight = name === 'light'
+  const inverseName = isLight ? 'dark' : 'light'
   const inverseTheme = baseThemes[inverseName]
   const transparent = (hsl: string, opacity = 0) =>
     hsl.replace(`%)`, `%, ${opacity})`).replace(`hsl(`, `hsla(`)
@@ -175,74 +170,127 @@ const allThemes = addChildren(baseThemes, (name, themeIn) => {
   ].map((colorSet) => {
     return Object.fromEntries(
       Object.keys(colorSet).map((color) => {
-        const colorPalette = Object.values(colorSet[color as ColorName])
-        // we want a much lighter text color by default so swap them around a bit
-        const first6 = colorPalette.slice(0, 6)
-        const last5 = colorPalette.slice(colorPalette.length - 5)
-        return [
-          color,
-          createTheme(
-            [
-              transparent(colorPalette[0]),
-              ...first6,
-              ...last5,
-              theme.color,
-              transparent(colorPalette[colorPalette.length - 1]),
-            ],
-            template
-          ),
+        const colorPalette = Object.values(colorSet[color]) as string[]
+        // were re-ordering these
+        const [head, tail] = [
+          colorPalette.slice(0, 6),
+          colorPalette.slice(colorPalette.length - 5),
         ]
+        // add our transparent colors first/last
+        // and make sure the last (foreground) color is white/black rather than colorful
+        // this is mostly for consistency with the older theme-base
+        const palette = [
+          transparent(colorPalette[0]),
+          ...head,
+          ...tail,
+          theme.color,
+          transparent(colorPalette[colorPalette.length - 1]),
+        ]
+        const colorTheme = createTheme(
+          palette,
+          isLight
+            ? {
+                ...lightTemplate,
+                // light color themes are a bit less sensitive
+                borderColor: 4,
+                borderColorHover: 5,
+                borderColorFocus: 4,
+                borderColorPress: 4,
+              }
+            : darkTemplate
+        )
+        return [color, colorTheme]
       })
-    ) as Record<ColorName, Theme>
+    ) as Record<ColorName, SubTheme>
   })
 
   const allColorThemes = addChildren(colorThemes, (colorName, colorTheme) => {
     const inverse = inverseColorThemes[colorName]
     return {
-      ...getAltThemes(colorTheme as any, inverse as any),
-      ...getComponentThemes(colorTheme as any, inverse as any),
+      ...getAltThemes(colorTheme, inverse),
+      ...getComponentThemes(colorTheme, inverse),
     }
   })
 
-  return {
-    ...getAltThemes(theme, inverseTheme),
+  const baseActiveTheme = applyMask(colorThemes.blue, masks.weaker, {
+    ...maskOptions,
+    strength: 4,
+  })
+
+  const baseSubThemes = {
+    ...getAltThemes(theme, inverseTheme, baseActiveTheme),
     ...getComponentThemes(theme, inverseTheme),
+  }
+
+  return {
+    ...baseSubThemes,
     ...allColorThemes,
   }
 
-  function getComponentThemes(theme: Theme, inverse: Theme) {
-    const stronger1 = applyMask(theme, masks.stronger, { skip })
-    const stronger2 = applyMask(stronger1, masks.stronger, { skip })
-    const inverse1 = applyMask(inverse, masks.weaker, { skip })
-    const inverse2 = applyMask(inverse1, masks.weaker, { skip })
-    return {
-      Button: stronger2,
-      DrawerFrame: stronger1,
-      SliderTrack: theme,
-      SliderTrackActive: stronger2,
-      SliderThumb: inverse1,
-      Progress: stronger1,
-      ProgressIndicator: inverse,
-      Switch: stronger2,
-      SwitchThumb: inverse2,
-      TooltipArrow: stronger1,
-      TooltipContent: stronger2,
-    }
+  function getAltThemes(theme: SubTheme, inverse: SubTheme, activeTheme?: SubTheme) {
+    const alt1 = applyMask(theme, masks.weaker, maskOptions)
+    const alt2 = applyMask(alt1, masks.weaker, maskOptions)
+    const active =
+      activeTheme ??
+      applyMask(theme, masks.weaker, {
+        ...maskOptions,
+        strength: 4,
+      })
+    return addChildren({ alt1, alt2, active }, (name, subTheme) => {
+      return getComponentThemes(subTheme, subTheme === inverse ? theme : inverse)
+    })
   }
 
-  function getAltThemes(theme: Theme, inverse: Theme) {
-    const alt1 = applyMask(theme, masks.weaker, { skip })
-    const alt2 = applyMask(alt1, masks.weaker, { skip })
-    const active = applyMask(theme, masks.stronger2, { skip })
-    return addChildren({ alt1, alt2, active }, (name, theme) => {
-      return getComponentThemes(theme as any, inverse)
-    })
+  function getComponentThemes(theme: SubTheme, inverse: SubTheme) {
+    const weaker1 = applyMask(theme, masks.weaker, maskOptions)
+    const weaker2 = applyMask(weaker1, masks.weaker, maskOptions)
+    const stronger1 = applyMask(theme, masks.stronger, maskOptions)
+    const inverse1 = applyMask(inverse, masks.weaker, maskOptions)
+    const inverse2 = applyMask(inverse1, masks.weaker, maskOptions)
+    const strongerBorderLighterBackground: SubTheme = isLight
+      ? {
+          ...stronger1,
+          borderColor: weaker1.borderColor,
+          borderColorHover: weaker1.borderColorHover,
+          borderColorPress: weaker1.borderColorPress,
+          borderColorFocus: weaker1.borderColorFocus,
+        }
+      : {
+          ...theme,
+          borderColor: weaker1.borderColor,
+          borderColorHover: weaker1.borderColorHover,
+          borderColorPress: weaker1.borderColorPress,
+          borderColorFocus: weaker1.borderColorFocus,
+        }
+    return {
+      Card: weaker1,
+      Button: weaker2,
+      Checkbox: weaker2,
+      DrawerFrame: weaker1,
+      SliderTrack: stronger1,
+      SliderTrackActive: weaker2,
+      SliderThumb: inverse1,
+      Progress: weaker1,
+      ProgressIndicator: inverse,
+      Switch: weaker2,
+      SwitchThumb: inverse2,
+      TooltipArrow: weaker1,
+      TooltipContent: weaker2,
+      Input: strongerBorderLighterBackground,
+      TextArea: strongerBorderLighterBackground,
+      Tooltip: inverse1,
+    }
   }
 })
 
 export const themes = {
   ...allThemes,
-  // bring back the full type (the rest use a subset)
-  light,
-  dark,
+  // bring back the full type, the rest use a subset to avoid clogging up ts,
+  // tamagui will be smart and use the top level themes as the type for useTheme() etc
+  light: createTheme(palettes.light, lightTemplate, { nonInheritedValues: lightColors }),
+  dark: createTheme(palettes.dark, darkTemplate, { nonInheritedValues: darkColors }),
 }
+
+// if (process.env.NODE_ENV === 'development') {
+//   console.log(JSON.stringify(themes).length)
+// }

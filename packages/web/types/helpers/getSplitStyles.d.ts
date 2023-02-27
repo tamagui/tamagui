@@ -1,6 +1,6 @@
 import type { ViewStyle } from 'react-native';
-import type { ClassNamesObject, DebugProp, GetStyleResult, SplitStyleState, StaticConfigParsed, TamaguiInternalConfig, ThemeParsed } from '../types';
-import { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types';
+import type { ClassNamesObject, DebugProp, GetStyleResult, SplitStyleState, StaticConfigParsed, TamaguiInternalConfig, ThemeParsed } from '../types.js';
+import type { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types.js';
 type GetStyleState = {
     style: ViewStyle;
     usedKeys: Record<string, number>;

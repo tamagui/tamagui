@@ -1,17 +1,6 @@
 import { Tokens, getConfig } from '@tamagui/core'
 import { useState } from 'react'
-import {
-  Button,
-  H2,
-  H3,
-  H4,
-  ScrollView,
-  Separator,
-  Square,
-  XGroup,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, H2, H3, H4, Separator, Square, XGroup, XStack, YStack } from 'tamagui'
 
 type Section = 'spaceNegative' | keyof Tokens
 
@@ -42,15 +31,16 @@ export function TokensDemo() {
       <XGroup ai="center" als="center">
         {sections.map(({ name, key }) => {
           return (
-            <Button
-              key={key}
-              size="$3"
-              theme={section === key ? 'active' : null}
-              fontFamily="$silkscreen"
-              onPress={() => setSection(key)}
-            >
-              {name}
-            </Button>
+            <XGroup.Item key={key}>
+              <Button
+                size="$3"
+                theme={section === key ? 'active' : null}
+                fontFamily="$silkscreen"
+                onPress={() => setSection(key)}
+              >
+                {name}
+              </Button>
+            </XGroup.Item>
           )
         })}
       </XGroup>
@@ -66,9 +56,7 @@ export function TokensDemo() {
 function SizeSection({ section }: { section: Section }) {
   const allTokens = getConfig().tokens
   const tokens = allTokens[section.startsWith('space') ? 'space' : section]
-  const st = Object.keys(tokens).sort((a, b) =>
-    parseFloat(a) > parseFloat(b) ? 1 : -1,
-  )
+  const st = Object.keys(tokens).sort((a, b) => (parseFloat(a) > parseFloat(b) ? 1 : -1))
   const spaceTokens = st.filter((t) => parseFloat(t) >= 0 && t !== '-0')
   const spaceTokensNegative = st
     .filter((t) => parseFloat(t) < 0 || t === '-0')
@@ -90,12 +78,12 @@ function SizeSection({ section }: { section: Section }) {
                 </YStack>
                 <Square
                   size={tokens[token]?.val}
-                  bc="$color3"
+                  bc="$color5"
                   {...(section === 'spaceNegative' && {
-                    bc: '$red3',
+                    bc: '$red5',
                     size: -tokens[
                       spaceTokensNegative.find(
-                        (t) => parseFloat(t) === -parseFloat(token),
+                        (t) => parseFloat(t) === -parseFloat(token)
                       ) ?? token
                     ]?.val,
                   })}
@@ -107,7 +95,7 @@ function SizeSection({ section }: { section: Section }) {
                 />
               </XStack>
             )
-          },
+          }
         )}
       </YStack>
     </YStack>
