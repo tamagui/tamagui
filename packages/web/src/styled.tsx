@@ -150,7 +150,7 @@ export function styled<
     }
   })()
 
-  const component = createComponent(staticConfigProps, Component)
+  const component = createComponent(staticConfigProps || {}, Component)
 
   // get parent props without pseudos and medias so we can rebuild both with new variants
   // get parent props without pseudos and medias so we can rebuild both with new variants
