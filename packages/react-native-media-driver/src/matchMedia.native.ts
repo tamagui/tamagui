@@ -1,4 +1,7 @@
-import { MatchMedia } from '@tamagui/core'
-import { NativeMediaQueryList } from './mediaQueryList'
+import { MatchMedia } from '@tamagui/web'
 
-export const matchMedia: MatchMedia = (query) => new NativeMediaQueryList(query)
+import { NativeMediaQueryList } from './mediaQueryList.js'
+
+export const matchMedia: MatchMedia = (query) => {
+  return new NativeMediaQueryList(query)
+}

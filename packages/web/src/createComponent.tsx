@@ -208,7 +208,10 @@ export function createComponent<
     stateRef.current ??= {}
 
     const isAnimated = (() => {
-      const next = !!(useAnimations && props.animation)
+      const next = !!(
+        useAnimations &&
+        (props.animation || (props.style && hasAnimatedStyleValue(props.style)))
+      )
       if (next && !stateRef.current.hasAnimated) {
         stateRef.current.hasAnimated = true
       }
@@ -520,11 +523,12 @@ export function createComponent<
       if (isAnimatedReactNativeWeb) {
         viewProps.style = style
       } else if (isReactNative) {
-        const rnwStyle = { $$css: true }
+        // TODO these shouldn't really return from getSplitStyles when in Native mode
+        const cnStyles = { $$css: true }
         for (const name of className.split(' ')) {
-          rnwStyle[name] = name
+          cnStyles[name] = name
         }
-        viewProps.style = [rnwStyle, ...(Array.isArray(style) ? style : [style])]
+        viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
 
         if (process.env.NODE_ENV === 'development') {
           // turn debug data- props into dataSet in dev mode
@@ -1129,3 +1133,10 @@ const AbsoluteFill: any = createComponent({
     pointerEvents: 'box-none',
   },
 })
+
+function hasAnimatedStyleValue(style: Object) {
+  return Object.keys(style).some((k) => {
+    const val = style[k]
+    return val && typeof val === 'object' && '_animation' in val
+  })
+}

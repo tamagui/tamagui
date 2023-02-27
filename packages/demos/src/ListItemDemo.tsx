@@ -1,5 +1,4 @@
 import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/lucide-icons'
-import React from 'react'
 import { ListItem, Separator, XStack, YGroup } from 'tamagui'
 
 export function ListItemDemo() {
@@ -14,16 +13,24 @@ export function ListItemDemo() {
 function ListItemDemo1() {
   return (
     <YGroup als="center" bordered w={240} size="$4">
-      <ListItem hoverTheme icon={Star} title="Star" subTitle="Twinkles" />
-      <ListItem hoverTheme icon={Moon}>
-        Moon
-      </ListItem>
-      <ListItem hoverTheme icon={Sun}>
-        Sun
-      </ListItem>
-      <ListItem hoverTheme icon={Cloud}>
-        Cloud
-      </ListItem>
+      <YGroup.Item>
+        <ListItem hoverTheme icon={Star} title="Star" subTitle="Twinkles" />
+      </YGroup.Item>
+      <YGroup.Item>
+        <ListItem hoverTheme icon={Moon}>
+          Moon
+        </ListItem>
+      </YGroup.Item>
+      <YGroup.Item>
+        <ListItem hoverTheme icon={Sun}>
+          Sun
+        </ListItem>
+      </YGroup.Item>
+      <YGroup.Item>
+        <ListItem hoverTheme icon={Cloud}>
+          Cloud
+        </ListItem>
+      </YGroup.Item>
     </YGroup>
   )
 }
@@ -31,22 +38,26 @@ function ListItemDemo1() {
 function ListItemDemo2() {
   return (
     <YGroup als="center" bordered w={240} size="$5" separator={<Separator />}>
-      <ListItem
-        hoverTheme
-        pressTheme
-        title="Star"
-        subTitle="Subtitle"
-        icon={Star}
-        iconAfter={ChevronRight}
-      />
-      <ListItem
-        hoverTheme
-        pressTheme
-        title="Moon"
-        subTitle="Subtitle"
-        icon={Moon}
-        iconAfter={ChevronRight}
-      />
+      <YGroup.Item>
+        <ListItem
+          hoverTheme
+          pressTheme
+          title="Star"
+          subTitle="Subtitle"
+          icon={Star}
+          iconAfter={ChevronRight}
+        />
+      </YGroup.Item>
+      <YGroup.Item>
+        <ListItem
+          hoverTheme
+          pressTheme
+          title="Moon"
+          subTitle="Subtitle"
+          icon={Moon}
+          iconAfter={ChevronRight}
+        />
+      </YGroup.Item>
     </YGroup>
   )
 }

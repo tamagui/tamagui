@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/logo",
-  "version": "1.5.13",
+  "version": "1.5.20",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -17,16 +17,14 @@
     "watch": "tamagui-build --watch"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": "*"
   },
   "dependencies": {
-    "tamagui": "^1.5.13"
+    "tamagui": "^1.5.20"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.5.13",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@tamagui/build": "^1.5.20",
+    "react": "^18.2.0"
   },
   "publishConfig": {
     "access": "public"

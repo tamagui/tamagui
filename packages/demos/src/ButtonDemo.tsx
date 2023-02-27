@@ -25,12 +25,17 @@ export function ButtonDemo(props) {
         </Button>
       </XStack>
       <XGroup>
-        <Button w="50%" size="$2" disabled o={0.5}>
-          disabled
-        </Button>
-        <Button w="50%" size="$2" chromeless>
-          chromeless
-        </Button>
+        <XGroup.Item>
+          <Button w="50%" size="$2" disabled o={0.5}>
+            disabled
+          </Button>
+        </XGroup.Item>
+
+        <XGroup.Item>
+          <Button w="50%" size="$2" chromeless>
+            chromeless
+          </Button>
+        </XGroup.Item>
       </XGroup>
     </YStack>
   )

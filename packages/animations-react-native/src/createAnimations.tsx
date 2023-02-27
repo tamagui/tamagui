@@ -1,3 +1,4 @@
+import { usePresence } from '@tamagui/use-presence'
 import {
   AnimatedNumberStrategy,
   AnimationDriver,
@@ -7,8 +8,7 @@ import {
   useEvent,
   useIsomorphicLayoutEffect,
   useSafeRef,
-} from '@tamagui/core'
-import { usePresence } from '@tamagui/use-presence'
+} from '@tamagui/web'
 import { useEffect, useMemo } from 'react'
 import { Animated } from 'react-native'
 
@@ -198,9 +198,10 @@ export function createAnimations<A extends AnimationsConfig>(
 
         const animatedStyle = {
           ...Object.fromEntries(
-            Object.entries({
-              ...animateStyles.current,
-            }).map(([k, v]) => [k, animationsState.current!.get(v)?.interopolation || v])
+            Object.entries(animateStyles.current).map(([k, v]) => [
+              k,
+              animationsState.current!.get(v)?.interopolation || v,
+            ])
           ),
           transform: animatedTranforms.current.map((r) => {
             const key = Object.keys(r)[0]

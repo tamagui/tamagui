@@ -1,4 +1,4 @@
-import { GenericFont } from '@tamagui/core';
+import { GenericFont } from '@tamagui/web';
 declare const genericFontSizes: {
     readonly 1: 10;
     readonly 2: 11;

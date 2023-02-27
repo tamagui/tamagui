@@ -62,6 +62,9 @@ export type TamaguiComponentPropsBase = {
   tag?: string
   theme?: ThemeName | null
   componentName?: string
+  tabIndex?: string | number
+  role?: string
+
   /**
    * Forces the pseudo style state to be on
    */
@@ -145,10 +148,9 @@ type GenericThemes = {
       }
 }
 
-type AllStyleKeys = keyof StackStylePropsBase | keyof TextStylePropsBase
-
 export type CreateShorthands = {
-  [key: string]: AllStyleKeys
+  // for some reason using keyof ViewStyle here will cause type circularity on react native 0.71
+  [key: string]: string
 }
 
 export type GenericShorthands = {}
@@ -701,8 +703,6 @@ type SharedBaseExtraStyleProps = {
   outlineStyle?: Properties['outlineStyle']
   outlineOffset?: Properties['outlineOffset']
   outlineWidth?: Properties['outlineWidth']
-  tabIndex?: string | number
-  role?: string
 }
 
 export type StackStylePropsBase = Omit<

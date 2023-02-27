@@ -46,7 +46,7 @@ import type {
 import { createMediaStyle } from './createMediaStyle.js'
 import { getPropMappedFontFamily } from './createPropMapper.js'
 import { fixStyles } from './expandStyles.js'
-import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic.js'
+import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
   insertStyleRules,
   insertedTransforms,
@@ -85,9 +85,9 @@ const skipProps = {
   animateOnly: true,
   debug: true,
   componentName: true,
-  role: true,
   tag: true,
 }
+
 if (process.env.NODE_ENV === 'test') {
   skipProps['data-test-renders'] = true
 }
@@ -240,6 +240,9 @@ export const getSplitStyles: StyleSplitter = (
   // fontFamily is our special baby, ensure we grab the latest set one always
   let fontFamily: string | undefined
 
+  /**
+   * Not the biggest fan of creating this object but it is a nice API
+   */
   const styleState: GetStyleState = {
     classNames,
     conf,
@@ -256,8 +259,9 @@ export const getSplitStyles: StyleSplitter = (
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     // eslint-disable-next-line no-console
     console.groupCollapsed('getSplitStyles (looping backwards)')
+    // prettier-ignore
     // eslint-disable-next-line no-console
-    console.log({ staticConfig, shouldDoClasses, state, IS_STATIC, propKeys })
+    console.log({ props, staticConfig, shouldDoClasses, state, IS_STATIC, propKeys, styleState })
     // eslint-disable-next-line no-console
     console.groupEnd()
   }
@@ -310,8 +314,9 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (keyInit in usedKeys) continue
-    if (keyInit in skipProps) continue
+    if (keyInit in usedKeys || keyInit in skipProps) {
+      continue
+    }
 
     if (typeof valInit === 'string' && valInit[0] === '_') {
       if (keyInit in validStyleProps || keyInit.includes('-')) {
@@ -479,11 +484,9 @@ export const getSplitStyles: StyleSplitter = (
 
         if (isValidClassName || isMediaOrPseudo) {
           usedKeys[keyInit] = 1
-          if (process.env.NODE_ENV === 'development') {
-            if (debug) {
-              // eslint-disable-next-line no-console
-              console.log('tamagui classname props', keyInit, valInit)
-            }
+          if (process.env.NODE_ENV === 'development' && debug) {
+            // eslint-disable-next-line no-console
+            console.log('tamagui classname props', keyInit, valInit)
           }
           mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
           continue
@@ -499,20 +502,28 @@ export const getSplitStyles: StyleSplitter = (
      */
 
     let isMedia = isMediaKey(keyInit)
-    let isPseudo = validPseudoKeys[keyInit]
+    let isPseudo = keyInit in validPseudoKeys
 
     const isHOCShouldPassThrough = staticConfig.isHOC && (isMedia || isPseudo)
+    const shouldPassProp = !(
+      isMedia ||
+      isPseudo ||
+      variants?.[keyInit] ||
+      keyInit in validStyleProps ||
+      keyInit in shorthands
+    )
+    const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (
-      isHOCShouldPassThrough ||
-      !(
-        isMedia ||
-        isPseudo ||
-        variants?.[keyInit] ||
-        validStyleProps[keyInit] ||
-        shorthands[keyInit]
-      )
+      process.env.NODE_ENV === 'development' &&
+      debug === 'verbose' &&
+      shouldPassThrough
     ) {
+      // eslint-disable-next-line no-console
+      console.log('  🔹 skip', keyInit)
+    }
+
+    if (shouldPassThrough) {
       usedKeys[keyInit] = 1
       viewProps[keyInit] = valInit
       continue
@@ -558,7 +569,7 @@ export const getSplitStyles: StyleSplitter = (
       if (val === undefined) continue
 
       isMedia = isMediaKey(key)
-      isPseudo = validPseudoKeys[key]
+      isPseudo = key in validPseudoKeys
       const isMediaOrPseudo = isMedia || isPseudo
 
       if (!isMediaOrPseudo && usedKeys[key]) {
@@ -784,7 +795,7 @@ export const getSplitStyles: StyleSplitter = (
 
       // pass to view props
       if (!variants || !(key in variants)) {
-        if (!skipProps[key]) {
+        if (!(key in skipProps)) {
           viewProps[key] = val
           usedKeys[key] = 1
         }

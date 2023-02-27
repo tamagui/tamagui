@@ -1,6 +1,6 @@
 import { normalizeCSSColor } from '@tamagui/normalize-css-color'
 
-import { defaultOffset } from './expandStyles.js'
+import { defaultOffset } from './defaultOffset.js'
 import { rgba } from './normalizeColor.js'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 
