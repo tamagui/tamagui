@@ -24,7 +24,11 @@ export function Theme(props: ThemeProps) {
 export function useThemedChildren(
   themeState: ChangedThemeResponse,
   children: any,
-  options: { forceClassName?: boolean; shallow?: boolean }
+  options: {
+    forceClassName?: boolean
+    shallow?: boolean
+    passPropsToChildren?: boolean
+  }
 ) {
   const { themeManager, isNewTheme, className, theme } = themeState
   const { shallow, forceClassName } = options
@@ -53,25 +57,35 @@ export function useThemedChildren(
     })
   }
 
+  const shouldAttachClassName =
+    isWeb && (forceClassName ?? (forceClassName !== false && isNewTheme))
+
+  // in order to provide currentColor, set color by default
+  const themeColor = theme && isNewTheme ? variableToString(theme.color) : ''
+
+  if (theme && shouldAttachClassName && options.passPropsToChildren) {
+    next = cloneElement(next, {
+      className: (next.props.className ?? '') + ' ' + className,
+      style: {
+        color: themeColor,
+        ...next.props?.style,
+      },
+    })
+  }
+
   next = (
     <ThemeManagerContext.Provider value={themeManager}>
       {next}
     </ThemeManagerContext.Provider>
   )
 
-  if (isWeb) {
-    const enableClassName = forceClassName ?? (forceClassName !== false && isNewTheme)
+  if (isWeb && !options.passPropsToChildren) {
     return (
       <span
-        className="_dsp_contents"
-        {...(theme &&
-          enableClassName && {
-            className: `${className} _dsp_contents`,
-            style: {
-              // in order to provide currentColor, set color by default
-              color: variableToString(theme.color),
-            },
-          })}
+        className={`${className || ''} _dsp_contents`}
+        style={{
+          color: themeColor,
+        }}
       >
         {next}
       </span>

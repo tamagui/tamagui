@@ -720,6 +720,7 @@ export function createComponent<
 
     content = useThemedChildren(themeState, content, {
       shallow: stateRef.current.themeShallow,
+      passPropsToChildren: true,
     })
 
     if (process.env.TAMAGUI_TARGET === 'web') {
