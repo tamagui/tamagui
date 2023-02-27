@@ -174,65 +174,66 @@ export interface PopoverContentTypeProps
   allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
 }
 
-export const PopoverContent = React.forwardRef<
-  PopoverContentTypeElement,
-  PopoverContentTypeProps
->(function PopoverContent(props: ScopedProps<PopoverContentTypeProps>, forwardedRef) {
-  const {
-    allowPinchZoom,
-    trapFocus,
-    disableRemoveScroll = true,
-    zIndex,
-    ...contentImplProps
-  } = props
-  const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
-  const contentRef = React.useRef<any>(null)
-  const composedRefs = useComposedRefs(forwardedRef, contentRef)
-  const isRightClickOutsideRef = React.useRef(false)
+export const PopoverContent = PopperContentFrame.extractable(
+  React.forwardRef<PopoverContentTypeElement, PopoverContentTypeProps>(
+    function PopoverContent(props: ScopedProps<PopoverContentTypeProps>, forwardedRef) {
+      const {
+        allowPinchZoom,
+        trapFocus,
+        disableRemoveScroll = true,
+        zIndex,
+        ...contentImplProps
+      } = props
+      const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
+      const contentRef = React.useRef<any>(null)
+      const composedRefs = useComposedRefs(forwardedRef, contentRef)
+      const isRightClickOutsideRef = React.useRef(false)
 
-  // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-  React.useEffect(() => {
-    if (!context.open) return
-    const content = contentRef.current
-    if (content) return hideOthers(content)
-  }, [context.open])
+      // aria-hide everything except the content (better supported equivalent to setting aria-modal)
+      React.useEffect(() => {
+        if (!context.open) return
+        const content = contentRef.current
+        if (content) return hideOthers(content)
+      }, [context.open])
 
-  return (
-    <PopoverContentPortal zIndex={zIndex}>
-      <PopoverContentImpl
-        {...contentImplProps}
-        disableRemoveScroll={disableRemoveScroll}
-        ref={composedRefs}
-        // we make sure we're not trapping once it's been closed
-        // (closed !== unmounted when animating out)
-        trapFocus={trapFocus ?? context.open}
-        disableOutsidePointerEvents
-        onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-          event.preventDefault()
-          if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
-        })}
-        onPointerDownOutside={composeEventHandlers(
-          props.onPointerDownOutside,
-          (event) => {
-            const originalEvent = event.detail.originalEvent
-            const ctrlLeftClick =
-              originalEvent.button === 0 && originalEvent.ctrlKey === true
-            const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-            isRightClickOutsideRef.current = isRightClick
-          },
-          { checkDefaultPrevented: false }
-        )}
-        // When focus is trapped, a `focusout` event may still happen.
-        // We make sure we don't trigger our `onDismiss` in such case.
-        onFocusOutside={composeEventHandlers(
-          props.onFocusOutside,
-          (event) => event.preventDefault(),
-          { checkDefaultPrevented: false }
-        )}
-      />
-    </PopoverContentPortal>
+      return (
+        <PopoverContentPortal zIndex={zIndex}>
+          <PopoverContentImpl
+            {...contentImplProps}
+            disableRemoveScroll={disableRemoveScroll}
+            ref={composedRefs}
+            // we make sure we're not trapping once it's been closed
+            // (closed !== unmounted when animating out)
+            trapFocus={trapFocus ?? context.open}
+            disableOutsidePointerEvents
+            onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+              event.preventDefault()
+              if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
+            })}
+            onPointerDownOutside={composeEventHandlers(
+              props.onPointerDownOutside,
+              (event) => {
+                const originalEvent = event.detail.originalEvent
+                const ctrlLeftClick =
+                  originalEvent.button === 0 && originalEvent.ctrlKey === true
+                const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+                isRightClickOutsideRef.current = isRightClick
+              },
+              { checkDefaultPrevented: false }
+            )}
+            // When focus is trapped, a `focusout` event may still happen.
+            // We make sure we don't trigger our `onDismiss` in such case.
+            onFocusOutside={composeEventHandlers(
+              props.onFocusOutside,
+              (event) => event.preventDefault(),
+              { checkDefaultPrevented: false }
+            )}
+          />
+        </PopoverContentPortal>
+      )
+    }
   )
-})
+)
 
 function PopoverContentPortal(props: ScopedProps<PopoverContentTypeProps>) {
   const themeName = useThemeName()
