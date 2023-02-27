@@ -1,6 +1,6 @@
 import type { StyleObject } from '@tamagui/helpers'
 
-import { PartialStyleObject, RulesToInsert } from '../types'
+import { PartialStyleObject, RulesToInsert } from '../types.js'
 
 const allSelectors: Record<string, string> = {}
 const allRules: Record<string, string> = {}

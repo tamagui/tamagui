@@ -1,5 +1,5 @@
 // web-only use platform:
 
-import { MatchMedia } from '@tamagui/core'
+import type { MatchMedia } from '@tamagui/web'
 
 export const matchMedia: MatchMedia = globalThis['matchMedia']

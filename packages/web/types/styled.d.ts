@@ -1,4 +1,4 @@
-import { GetProps, GetVariantValues, MediaProps, PseudoProps, StaticConfig, StylableComponent, TamaguiComponent, TamaguiElement, VariantDefinitions, VariantSpreadFunction } from './types';
+import type { GetProps, GetVariantValues, MediaProps, PseudoProps, StaticConfig, StylableComponent, TamaguiComponent, TamaguiElement, VariantDefinitions, VariantSpreadFunction } from './types.js';
 export type StyledOptions<ParentComponent extends StylableComponent> = GetProps<ParentComponent> & {
     name?: string;
     variants?: VariantDefinitions<ParentComponent> | undefined;

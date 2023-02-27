@@ -321,7 +321,7 @@ const SliderThumb = React.forwardRef<View, SliderThumbProps>(
     const sizeIn = sizeProp ?? context.size ?? '$true'
     const [size, setSize] = React.useState(() => {
       // for SSR
-      const estimatedSize = getVariableValue(getThumbSize(sizeIn).width)
+      const estimatedSize = getVariableValue(getThumbSize(sizeIn).width) as number
       return estimatedSize
     })
 

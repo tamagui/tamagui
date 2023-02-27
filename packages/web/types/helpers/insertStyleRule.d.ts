@@ -1,4 +1,4 @@
-import { PartialStyleObject, RulesToInsert } from '../types';
+import { PartialStyleObject, RulesToInsert } from '../types.js';
 export declare const insertedTransforms: {};
 export declare const getAllSelectors: () => Record<string, string>;
 export declare const getAllRules: () => string[];

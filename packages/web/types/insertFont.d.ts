@@ -1,5 +1,5 @@
-import { DeepVariableObject } from './createVariables';
-import { GenericFont } from './types';
+import { DeepVariableObject } from './createVariables.js';
+import { GenericFont } from './types.js';
 /**
  * Runtime dynamic insert font
  */

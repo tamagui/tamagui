@@ -12,7 +12,6 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
-import { getSize } from '@tamagui/get-size'
 import { getSpace, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
@@ -66,15 +65,21 @@ const NAME = 'ListItem'
 export const ListItemFrame = styled(ThemeableStack, {
   name: NAME,
   tag: 'li',
-  alignItems: 'center',
-  flexWrap: 'nowrap',
-  width: '100%',
-  borderColor: '$borderColor',
-  maxWidth: '100%',
-  overflow: 'hidden',
-  flexDirection: 'row',
 
   variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+        alignItems: 'center',
+        flexWrap: 'nowrap',
+        width: '100%',
+        borderColor: '$borderColor',
+        maxWidth: '100%',
+        overflow: 'hidden',
+        flexDirection: 'row',
+      },
+    },
+
     size: {
       '...size': (val, { tokens }) => {
         return {
@@ -103,7 +108,7 @@ export const ListItemFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: '$true',
+    unstyled: false,
   },
 })
 

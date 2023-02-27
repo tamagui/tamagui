@@ -62,22 +62,26 @@ export function Demo({
         <Popover.Arrow bw={1} boc="$borderColor" />
 
         <YGroup space="$3">
-          <XStack space="$3">
-            <Label size="$3" htmlFor={Name}>
-              Name
-            </Label>
-            <Input size="$3" id={Name} />
-          </XStack>
-          <Popover.Close asChild>
-            <Button
-              size="$3"
-              onPress={() => {
-                /* Custom code goes here, does not interfere with popover closure */
-              }}
-            >
-              Submit
-            </Button>
-          </Popover.Close>
+          <YGroup.Item>
+            <XStack space="$3">
+              <Label size="$3" htmlFor={Name}>
+                Name
+              </Label>
+              <Input size="$3" id={Name} />
+            </XStack>
+          </YGroup.Item>
+          <YGroup.Item>
+            <Popover.Close asChild>
+              <Button
+                size="$3"
+                onPress={() => {
+                  /* Custom code goes here, does not interfere with popover closure */
+                }}
+              >
+                Submit
+              </Button>
+            </Popover.Close>
+          </YGroup.Item>
         </YGroup>
       </Popover.Content>
     </Popover>

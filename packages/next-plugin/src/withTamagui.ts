@@ -129,6 +129,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           safeResolves([
             ['@tamagui/core/reset.css', '@tamagui/core/reset.css'],
             ['@tamagui/core', '@tamagui/core'],
+            ['@tamagui/web', '@tamagui/web'],
             // web specific light react-native-svg, optional, can use svgs but had issues with compat
             ['react-native-svg', '@tamagui/react-native-svg'],
             // fixes https://github.com/kentcdodds/mdx-bundler/issues/143

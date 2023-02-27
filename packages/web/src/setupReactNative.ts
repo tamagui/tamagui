@@ -1,4 +1,4 @@
-import { StaticConfig } from './types'
+import { StaticConfig } from './types.js'
 
 export const ReactNativeStaticConfigs = new WeakMap<any, Partial<StaticConfig> | null>()
 
@@ -14,7 +14,7 @@ export function setupReactNative(rnExports: Record<string, any>) {
       ReactNativeStaticConfigs.set(val, {
         isReactNative: true,
         isText: key === 'Text' || key === 'TextInput',
-        isInput: key === 'TextInput',
+        isInput: key === 'TextInput' || key === 'TextArea',
         inlineProps: key === 'Image' ? new Set(['src', 'width', 'height']) : undefined,
       })
     }

@@ -1,11 +1,10 @@
-import { getConfig } from '../config'
-import { expandStyle } from './expandStyle'
+import { getConfig } from '../config.js'
+import { expandStyle } from './expandStyle.js'
 import { normalizeShadow } from './normalizeShadow'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
-import { pseudoDescriptors } from './pseudoDescriptors'
+import { pseudoDescriptors } from './pseudoDescriptors.js'
 
 let shorthands: Record<string, string> | null = null
-export const defaultOffset = { height: 0, width: 0 }
 
 /**
  * This is what you want to run before Object.assign() a style onto another.

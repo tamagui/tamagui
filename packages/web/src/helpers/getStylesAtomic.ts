@@ -6,11 +6,11 @@
 import { StyleObject, simpleHash } from '@tamagui/helpers'
 import type { TextStyle, ViewStyle } from 'react-native'
 
-import { getConfig } from '../config'
-import { TamaguiInternalConfig } from '../types'
-import { defaultOffset } from './expandStyles'
+import { getConfig } from '../config.js'
+import type { TamaguiInternalConfig } from '../types.js'
+import { defaultOffset } from './defaultOffset.js'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
-import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
+import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors.js'
 
 // refactor this file away next...
 

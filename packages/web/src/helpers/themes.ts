@@ -1,6 +1,6 @@
-import { createVariable, isVariable } from '../createVariable'
-import { GetThemeUnwrapped } from '../hooks/getThemeUnwrapped'
-import { CreateTamaguiProps } from '../types'
+import { createVariable, isVariable } from '../createVariable.js'
+import { GetThemeUnwrapped } from '../hooks/getThemeUnwrapped.js'
+import { CreateTamaguiProps } from '../types.js'
 
 // mutates, freeze after
 // shared by createTamagui so extracted here
@@ -42,23 +42,20 @@ export function proxyThemeToParents(
       return cur.join('_')
     })
 
-  const len = parents.length
+  const numParents = parents.length
 
   // proxy fallback values to parent theme values
   return new Proxy(theme, {
     get(target, key) {
-      if (key === GetThemeUnwrapped) {
-        return theme
-      }
-      if (!len || Reflect.has(target, key)) {
-        return Reflect.get(target, key)
-      }
-      // check parents
-      for (let i = len - 1; i >= 0; i--) {
-        const parent = themes[parents[i]]
-        if (!parent) continue
-        if (Reflect.has(parent, key)) {
-          return Reflect.get(parent, key)
+      if (key === GetThemeUnwrapped) return theme
+      if (numParents && !Reflect.has(target, key)) {
+        // check parents
+        for (let i = numParents - 1; i >= 0; i--) {
+          const parent = themes[parents[i]]
+          if (!parent) continue
+          if (Reflect.has(parent, key)) {
+            return Reflect.get(parent, key)
+          }
         }
       }
       return Reflect.get(target, key)

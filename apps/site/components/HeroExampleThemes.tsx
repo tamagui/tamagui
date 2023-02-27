@@ -1,6 +1,5 @@
 import { useIsIntersecting } from '@tamagui/demos'
-import { useTints } from '@tamagui/logo'
-import { onTintChange, setTintIndex } from '@tamagui/logo'
+import { onTintChange, setTintIndex, useTints } from '@tamagui/logo'
 import { useThemeSetting } from '@tamagui/next-theme'
 import {
   SetStateAction,
@@ -192,12 +191,13 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
               {(['light', 'dark'] as const).map((name, i) => {
                 const isActive = theme === name
                 return (
-                  <ActiveCircle
-                    key={name + i}
-                    backgroundColor={name === 'dark' ? '#000' : '#fff'}
-                    onPress={() => themeSetting.set(name)}
-                    isActive={isActive}
-                  />
+                  <XGroup.Item key={name + i}>
+                    <ActiveCircle
+                      backgroundColor={name === 'dark' ? '#000' : '#fff'}
+                      onPress={() => themeSetting.set(name)}
+                      isActive={isActive}
+                    />
+                  </XGroup.Item>
                 )
               })}
             </XGroup>
@@ -206,40 +206,43 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
               {themes[0].map((color, i) => {
                 const isActive = curColorI === i
                 return (
-                  <Theme key={`${String(color)}${i}`} name={color}>
-                    <ActiveCircle
-                      onPress={() => updateActiveI([i, curShadeI])}
-                      isActive={isActive}
-                      backgroundColor="$color5"
-                    />
-                  </Theme>
+                  <XGroup.Item key={`${String(color)}${i}`}>
+                    <Theme name={color}>
+                      <ActiveCircle
+                        onPress={() => updateActiveI([i, curShadeI])}
+                        isActive={isActive}
+                        backgroundColor="$color8"
+                      />
+                    </Theme>
+                  </XGroup.Item>
                 )
               })}
             </XGroup>
 
             <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">
-              <Theme name={colorName}>
-                <XStack>
-                  {themes[1].map((name, i) => {
-                    const isActive = curShadeI === i
-                    return (
-                      <ActiveCircle
-                        onPress={() => updateActiveI([curColorI, i])}
-                        key={`${String(name)}${i}`}
-                        isActive={isActive}
-                        opacity={1.2 - (4 - i) / 4}
-                        backgroundColor="$colorHover"
-                      />
-                    )
-                  })}
-                </XStack>
-              </Theme>
+              <XGroup.Item>
+                <Theme name={colorName}>
+                  <XStack>
+                    {themes[1].map((name, i) => {
+                      const isActive = curShadeI === i
+                      return (
+                        <ActiveCircle
+                          onPress={() => updateActiveI([curColorI, i])}
+                          key={`${String(name)}${i}`}
+                          isActive={isActive}
+                          opacity={1.2 - (4 - i) / 4}
+                          backgroundColor="$colorHover"
+                        />
+                      )
+                    })}
+                  </XStack>
+                </Theme>
+              </XGroup.Item>
             </XGroup>
           </XStack>
         </XStack>
 
         <YStack
-          py="$6"
           my="$3"
           ov="hidden"
           w="100%"
@@ -269,8 +272,9 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
           >
             <XStack
               ai="center"
+              py="$6"
               jc="center"
-              space="$6"
+              space="$5"
               pos="relative"
               px={`calc(50vw + 30px)`}
               x={-45 - 30}
@@ -298,7 +302,7 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
                     >
                       <Theme name={color as any}>
                         <MediaPlayer
-                          elevation="$3"
+                          elevation="$2"
                           pointerEvents="none"
                           alt={alt ? +alt.replace('alt', '') : null}
                         />

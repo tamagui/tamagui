@@ -77,6 +77,7 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
 
   const external = [
     '@tamagui/core',
+    '@tamagui/web',
     '@tamagui/core-node',
     'react',
     'react-dom',
@@ -109,7 +110,6 @@ Tamagui built config and components:`
   Config     .${sep}${relative(process.cwd(), configOutPath)}
   Components ${[
     ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
-    '@tamagui/core',
   ].join('\n             ')}
 `
   )

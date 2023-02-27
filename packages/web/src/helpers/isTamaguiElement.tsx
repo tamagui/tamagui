@@ -1,7 +1,7 @@
 import { isValidElement } from 'react'
 
-import { TamaguiReactElement } from '../types'
-import { isTamaguiComponent } from './isTamaguiComponent'
+import { TamaguiReactElement } from '../types.js'
+import { isTamaguiComponent } from './isTamaguiComponent.js'
 
 export const isTamaguiElement = (
   child: any,

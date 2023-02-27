@@ -1,4 +1,9 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { createContext } from '@tamagui/create-context'
+import { focusFocusable } from '@tamagui/focusable'
+import { getButtonSized } from '@tamagui/get-button-sized'
+import { getFontSized } from '@tamagui/get-font-sized'
+import { SizableText } from '@tamagui/text'
 import {
   GetProps,
   ReactComponentWithRef,
@@ -6,13 +11,7 @@ import {
   styled,
   themeable,
   useId,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/core'
-import { createContext } from '@tamagui/create-context'
-import { focusFocusable } from '@tamagui/focusable'
-import { getButtonSized } from '@tamagui/get-button-sized'
-import { getFontSized } from '@tamagui/get-font-sized'
-import { SizableText } from '@tamagui/text'
+} from '@tamagui/web'
 import * as React from 'react'
 import { View } from 'react-native'
 
@@ -31,16 +30,23 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(NA
 export const LabelFrame = styled(SizableText, {
   name: 'Label',
   tag: 'label',
-  size: '$true',
-  backgroundColor: 'transparent',
-  display: 'flex',
-  alignItems: 'center',
-  userSelect: 'none',
-  cursor: 'default',
-  pressStyle: {
-    color: '$colorPress',
-  },
+
   variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+        color: '$color',
+        backgroundColor: 'transparent',
+        display: 'flex',
+        alignItems: 'center',
+        userSelect: 'none',
+        cursor: 'default',
+        pressStyle: {
+          color: '$colorPress',
+        },
+      },
+    },
+
     size: {
       '...size': (val, extras) => {
         const buttonStyle = getButtonSized(val, extras)
@@ -52,6 +58,10 @@ export const LabelFrame = styled(SizableText, {
       },
     },
   } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 export type LabelProps = GetProps<typeof LabelFrame> & {

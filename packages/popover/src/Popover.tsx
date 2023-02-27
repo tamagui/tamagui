@@ -32,6 +32,7 @@ import {
   PopperArrow,
   PopperArrowProps,
   PopperContent,
+  PopperContentFrame,
   PopperContentProps,
   PopperProps,
   PopperProvider,
@@ -176,13 +177,13 @@ export interface PopoverContentTypeProps
 export const PopoverContent = React.forwardRef<
   PopoverContentTypeElement,
   PopoverContentTypeProps
->((props: ScopedProps<PopoverContentTypeProps>, forwardedRef) => {
+>(function PopoverContent(props: ScopedProps<PopoverContentTypeProps>, forwardedRef) {
   const {
     allowPinchZoom,
     trapFocus,
     disableRemoveScroll = true,
     zIndex,
-    ...contentModalProps
+    ...contentImplProps
   } = props
   const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
   const contentRef = React.useRef<any>(null)
@@ -199,7 +200,7 @@ export const PopoverContent = React.forwardRef<
   return (
     <PopoverContentPortal zIndex={zIndex}>
       <PopoverContentImpl
-        {...contentModalProps}
+        {...contentImplProps}
         disableRemoveScroll={disableRemoveScroll}
         ref={composedRefs}
         // we make sure we're not trapping once it's been closed
@@ -451,7 +452,7 @@ const PopoverScrollView = React.forwardRef<ScrollView, ScrollViewProps>((props, 
  * -----------------------------------------------------------------------------------------------*/
 
 export const Popover = withStaticProperties(
-  ((props: ScopedProps<PopoverProps>) => {
+  function Popover(props: ScopedProps<PopoverProps>) {
     const {
       __scopePopover,
       children,
@@ -534,7 +535,7 @@ export const Popover = withStaticProperties(
         )}
       </AdaptProvider>
     )
-  }) as React.FC<PopoverProps>,
+  } as React.FC<PopoverProps>,
   {
     Anchor: PopoverAnchor,
     Arrow: PopoverArrow,
@@ -546,8 +547,6 @@ export const Popover = withStaticProperties(
     Sheet: ControlledSheet,
   }
 )
-
-Popover.displayName = POPOVER_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
