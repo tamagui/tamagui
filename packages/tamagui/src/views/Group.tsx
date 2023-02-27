@@ -170,7 +170,7 @@ function createGroup(verticalDefault: boolean) {
             borderRadius={borderRadius}
             {...restProps}
           >
-            {wrapScroll(activeProps, indexedChildren)}
+            {wrapScroll({ ...activeProps, axis }, indexedChildren)}
           </GroupFrame>
         </GroupProvider>
       )
