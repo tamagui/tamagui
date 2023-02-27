@@ -810,6 +810,12 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  if (props.disabled && pseudos?.disabledStyle && !shouldDoClasses) {
+    for (const [key, val] of Object.entries(pseudos.disabledStyle)) {
+      mergeStyle(styleState, flatTransforms, key, val)
+    }
+  }
+
   fixStyles(style)
   if (isWeb) {
     styleToCSS(style)
