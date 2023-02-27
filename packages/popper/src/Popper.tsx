@@ -64,7 +64,7 @@ export type PopperProps = {
   strategy?: Strategy
 }
 
-export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) => {
+export function Popper(props: ScopedProps<PopperProps>) {
   const {
     __scopePopper,
     children,
@@ -158,8 +158,6 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
   )
 }
 
-Popper.displayName = POPPER_NAME
-
 /* -------------------------------------------------------------------------------------------------
  * PopperAnchor
  * -----------------------------------------------------------------------------------------------*/
@@ -172,8 +170,11 @@ export type PopperAnchorProps = YStackProps & {
   virtualRef?: React.RefObject<any>
 }
 
-export const PopperAnchor = React.forwardRef<PopperAnchorRef, PopperAnchorProps>(
-  (props: ScopedProps<PopperAnchorProps>, forwardedRef) => {
+export const PopperAnchor = YStack.extractable(
+  React.forwardRef<PopperAnchorRef, PopperAnchorProps>(function PopperAnchor(
+    props: ScopedProps<PopperAnchorProps>,
+    forwardedRef
+  ) {
     const { __scopePopper, virtualRef, ...anchorProps } = props
     const { anchorRef, getReferenceProps } = usePopperContext(ANCHOR_NAME, __scopePopper)
     const ref = React.useRef<PopperAnchorRef>(null)
@@ -188,10 +189,8 @@ export const PopperAnchor = React.forwardRef<PopperAnchorRef, PopperAnchorProps>
     return (
       <YStack {...(getReferenceProps ? getReferenceProps(stackProps) : stackProps)} />
     )
-  }
+  })
 )
-
-PopperAnchor.displayName = ANCHOR_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * PopperContent
@@ -203,13 +202,19 @@ type PopperContentElement = HTMLElement | View
 
 export type PopperContentProps = SizableStackProps
 
-const PopperContentFrame = styled(ThemeableStack, {
+export const PopperContentFrame = styled(ThemeableStack, {
   name: 'PopperContent',
-  backgroundColor: '$background',
-  alignItems: 'center',
-  radiused: true,
 
   variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+        backgroundColor: '$background',
+        alignItems: 'center',
+        radiused: true,
+      },
+    },
+
     size: {
       '...size': (val, { tokens }) => {
         return {
@@ -221,56 +226,52 @@ const PopperContentFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: '$true',
+    unstyled: false,
   },
 })
 
-export const PopperContent = PopperContentFrame.extractable(
-  React.forwardRef<PopperContentElement, PopperContentProps>(
-    (props: ScopedProps<PopperContentProps>, forwardedRef) => {
-      const { __scopePopper, ...contentProps } = props
-      const { strategy, placement, floating, x, y, getFloatingProps, size, isMounted } =
-        usePopperContext(CONTENT_NAME, __scopePopper)
-      const contentRefs = useComposedRefs<any>(floating, forwardedRef)
+export const PopperContent = React.forwardRef<PopperContentElement, PopperContentProps>(
+  function PopperContent(props: ScopedProps<PopperContentProps>, forwardedRef) {
+    const { __scopePopper, ...contentProps } = props
+    const { strategy, placement, floating, x, y, getFloatingProps, size, isMounted } =
+      usePopperContext(CONTENT_NAME, __scopePopper)
+    const contentRefs = useComposedRefs<any>(floating, forwardedRef)
 
-      const contents = React.useMemo(() => {
-        return (
-          <PopperContentFrame
-            key="popper-content-frame"
-            data-placement={placement}
-            data-strategy={strategy}
-            size={contentProps.size || size}
-            {...contentProps}
-          />
-        )
-      }, [placement, strategy, props])
-
-      // all poppers hidden on ssr by default
-      if (!isMounted) {
-        return null
-      }
-
-      const frameProps = {
-        ref: contentRefs,
-        x: x || 0,
-        y: y || 0,
-        position: strategy,
-      }
-
-      // outer frame because we explicitly dont want animation to apply to this
+    const contents = React.useMemo(() => {
       return (
-        <YStack
-          animateOnly={['transform']}
-          {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}
-        >
-          {contents}
-        </YStack>
+        <PopperContentFrame
+          key="popper-content-frame"
+          data-placement={placement}
+          data-strategy={strategy}
+          size={contentProps.size || size}
+          {...contentProps}
+        />
       )
-    }
-  )
-)
+    }, [placement, strategy, props])
 
-PopperContent.displayName = CONTENT_NAME
+    // all poppers hidden on ssr by default
+    if (!isMounted) {
+      return null
+    }
+
+    const frameProps = {
+      ref: contentRefs,
+      x: x || 0,
+      y: y || 0,
+      position: strategy,
+    }
+
+    // outer frame because we explicitly dont want animation to apply to this
+    return (
+      <YStack
+        animateOnly={['transform']}
+        {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}
+      >
+        {contents}
+      </YStack>
+    )
+  }
+)
 
 /* -------------------------------------------------------------------------------------------------
  * PopperArrow
@@ -287,19 +288,41 @@ export type PopperArrowProps = YStackProps & {
 
 const PopperArrowFrame = styled(YStack, {
   name: 'PopperArrow',
-  borderColor: '$borderColor',
-  backgroundColor: '$background',
-  position: 'relative',
+
+  variants: {
+    unstyled: {
+      false: {
+        borderColor: '$borderColor',
+        backgroundColor: '$background',
+        position: 'relative',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 const PopperArrowOuterFrame = styled(YStack, {
   name: 'PopperArrowOuter',
-  position: 'absolute',
-  zIndex: -1,
-  pointerEvents: 'none',
-  overflow: 'hidden',
-  alignItems: 'center',
-  justifyContent: 'center',
+
+  variants: {
+    unstyled: {
+      false: {
+        position: 'absolute',
+        zIndex: -1,
+        pointerEvents: 'none',
+        overflow: 'hidden',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 const opposites = {
@@ -392,7 +415,5 @@ export const PopperArrow = PopperArrowFrame.extractable(
     )
   })
 )
-
-PopperArrow.displayName = ARROW_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
