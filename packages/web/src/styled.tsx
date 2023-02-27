@@ -83,23 +83,6 @@ export function styled<
       parentStaticConfig?.isReactNative
   )
 
-  // unrecognized, just pass through as default props
-  if (!isTamagui && !isReactNative) {
-    if (process.env.NODE_ENV === 'development') {
-      // TODO variants would need to work through props to support this
-      if (options?.variants) {
-        console.warn(
-          `Warning: wrapping a non-Tamagui element in styled() and passing variants isn't supported (yet).`
-        )
-      }
-    }
-
-    return forwardRef(function styled(props, ref) {
-      // @ts-ignore
-      return <Component ref={ref} {...options} {...props} />
-    }) as StyledComponent
-  }
-
   const staticConfigProps = (() => {
     if (options) {
       const {

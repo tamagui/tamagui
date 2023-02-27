@@ -209,6 +209,7 @@ export function createComponent<
 
     const isAnimated = (() => {
       const next = !!(
+        !staticConfig.isHOC &&
         useAnimations &&
         (props.animation || (props.style && hasAnimatedStyleValue(props.style)))
       )
@@ -379,7 +380,7 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
-    if (!isRSC && isAnimated && useAnimations) {
+    if (!isRSC && isAnimated && useAnimations && !staticConfig.isHOC) {
       const animations = useAnimations({
         props: propsWithAnimation,
         style: splitStylesStyle,
