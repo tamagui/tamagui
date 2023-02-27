@@ -65,20 +65,21 @@ export const Sandbox = () => {
 
 function TestPopoverContentStyledPlusAnimations() {
   return (
-    <PopoverStyled size="$5">
-      <PopoverStyled.Trigger asChild>
+    <Popover size="$5">
+      <Popover.Trigger asChild>
         <Button>go</Button>
-      </PopoverStyled.Trigger>
+      </Popover.Trigger>
 
-      <PopoverStyled.Content>
-        <PopoverStyled.Arrow bw={1} boc="$borderColor" />
-      </PopoverStyled.Content>
-    </PopoverStyled>
+      <PopoverStyledContent debug="verbose">
+        <Popover.Arrow bw={1} boc="$borderColor" />
+      </PopoverStyledContent>
+    </Popover>
   )
 }
 
-const Content = styled(Popover.Content, {
-  name: 'PopoverContent',
+const PopoverStyledContent = styled(Popover.Content, {
+  name: 'PopoverContent2',
+  debug: 'verbose',
   elevate: true,
   bordered: true,
   p: '$3',
@@ -106,9 +107,7 @@ const Content = styled(Popover.Content, {
   ],
 })
 
-export const PopoverStyled = withStaticProperties(Popover, {
-  Content,
-})
+console.log('PopoverStyledContent', PopoverStyledContent)
 
 const SandboxFrame = (props: { children: any }) => {
   const [theme, setTheme] = useState('light')

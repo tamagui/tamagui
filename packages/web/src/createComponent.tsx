@@ -208,7 +208,10 @@ export function createComponent<
     stateRef.current ??= {}
 
     const isAnimated = (() => {
-      const next = !!(useAnimations && props.animation)
+      const next = !!(
+        useAnimations &&
+        (props.animation || (props.style && hasAnimatedStyleValue(props.style)))
+      )
       if (next && !stateRef.current.hasAnimated) {
         stateRef.current.hasAnimated = true
       }
@@ -1130,3 +1133,10 @@ const AbsoluteFill: any = createComponent({
     pointerEvents: 'box-none',
   },
 })
+
+function hasAnimatedStyleValue(style: Object) {
+  return Object.keys(style).some((k) => {
+    const val = style[k]
+    return val && typeof val === 'object' && '_animation' in val
+  })
+}

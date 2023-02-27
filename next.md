@@ -116,6 +116,7 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 2.0
 
+- replace all RN stuff left in tamagui: Image, Input, Spinner, etc
 - Accessibility + RTL
 - tag="a" should get the typed props of a link
 - much better non-monorepo non-expo general setup experience
@@ -383,3 +384,5 @@ quotes
 
 #stream Kezlar — Today at 3:09 PM
 yeah tamagui was definitely a rabbit hole, but once it clicked, it's incredible to use. Took me ~2weeks to migrate from native base but was 500% worth it
+
+
