@@ -1,23 +1,24 @@
 import { Check } from '@tamagui/lucide-icons'
 import React from 'react'
-import { Button, Theme, Toast, ToastProvider, XStack, YStack, isWeb } from 'tamagui'
+import {
+  Button,
+  PortalHost,
+  Toast,
+  ToastProvider,
+  Unspaced,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 export const ToastDemo = () => {
   return (
-    <YStack space ai="center" jc="center">
-      <ToastProvider swipeDirection="left" duration={2000}>
-        <Theme name="red">
-          <Toast.Viewport
-            position={isWeb ? ('fixed' as any) : 'absolute'}
-            left='50%'
-            top={10}
-            mx='auto'
-          />
-        </Theme>
+    <ToastProvider swipeDirection="left" duration={5000}>
+      <Toast.Viewport />
+      <YStack space ai="center" jc="center">
         <SingleToastExample />
         <MultipleToastExample />
-      </ToastProvider>
-    </YStack>
+      </YStack>
+    </ToastProvider>
   )
 }
 
@@ -37,7 +38,7 @@ const SingleToastExample = () => {
           window.clearTimeout(timerRef.current)
           timerRef.current = window.setTimeout(() => {
             setOpen(true)
-          }, 100) // should be more than the animation's duration
+          }, 150) // should be more than the animation's duration - give it a bit more on non-css animation drivers
         }}
       >
         Single Toast
@@ -45,15 +46,16 @@ const SingleToastExample = () => {
       <Toast
         onOpenChange={setOpen}
         open={open}
-        enterStyle={{ y: -20, opacity: 0 }}
-        exitStyle={{ y: -20, opacity: 0 }}
+        enterStyle={{ x: -20, opacity: 0 }}
+        exitStyle={{ x: -20, opacity: 0 }}
         animation="100ms"
         o={1}
-        y={0}
+        x={0}
         br="$10"
         px="$5"
         py="$2"
-        theme="red"
+        my="$1"
+        mx="auto"
       >
         <XStack space ai="center">
           <Check />
@@ -83,15 +85,16 @@ export function MultipleToastExample() {
       {[...Array(savedCount)].map((_, index) => (
         <Toast
           key={index}
-          enterStyle={{ y: -20, opacity: 0 }}
-          exitStyle={{ y: -20, opacity: 0 }}
+          enterStyle={{ x: -20, opacity: 0 }}
+          exitStyle={{ x: -20, opacity: 0 }}
           animation="100ms"
           o={1}
-          y={0}
+          x={0}
           br="$10"
           px="$5"
           py="$2"
           my="$1"
+          mx="auto"
         >
           <XStack space ai="center">
             <Check />
