@@ -21,7 +21,6 @@ export const DocsRouteNavItem = React.memo(function DocsRouteNavItem({
         {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         ai="center"
         jc="flex-end"
-        py="$0.25"
         px="$4"
         opacity={pending ? 0.25 : 1}
         pressStyle={{
