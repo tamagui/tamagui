@@ -1,3 +1,4 @@
+- https://github.com/tamagui/tamagui/issues/568
 - instead of proxying we could just merge all themes on creation with their parents?
 
 
