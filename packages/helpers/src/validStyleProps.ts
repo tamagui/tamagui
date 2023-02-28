@@ -23,10 +23,6 @@ export const stylePropsView = Object.freeze({
   backfaceVisibility: true,
   backgroundColor: true,
   borderBottomColor: true,
-  borderBottomStyle: true,
-  borderTopStyle: true,
-  borderLeftStyle: true,
-  borderRightStyle: true,
   borderBottomEndRadius: true,
   borderBottomLeftRadius: true,
   borderBottomRightRadius: true,
@@ -110,6 +106,12 @@ export const stylePropsView = Object.freeze({
 
   // allow a few web only ones
   ...(process.env.TAMAGUI_TARGET === 'web' && {
+    // RN doesn't support specific border styles per-edge
+    borderBottomStyle: true,
+    borderTopStyle: true,
+    borderLeftStyle: true,
+    borderRightStyle: true,
+
     overflowX: true,
     overflowY: true,
     userSelect: true,
