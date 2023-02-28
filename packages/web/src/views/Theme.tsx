@@ -18,7 +18,7 @@ export function Theme(props: ThemeProps) {
       )
     : props.children
 
-  return useThemedChildren(themeState, children, props)
+  return useThemedChildren(themeState, children, props, isRoot)
 }
 
 export function useThemedChildren(
@@ -28,7 +28,8 @@ export function useThemedChildren(
     forceClassName?: boolean
     shallow?: boolean
     passPropsToChildren?: boolean
-  }
+  },
+  isRoot = false
 ) {
   const { themeManager, isNewTheme, className, theme } = themeState
   const { shallow, forceClassName } = options
@@ -37,7 +38,7 @@ export function useThemedChildren(
     hasEverThemed.current = true
   }
 
-  if (isNewTheme || hasEverThemed.current || forceClassName) {
+  if (isNewTheme || hasEverThemed.current || forceClassName || isRoot) {
     // be sure to memoize shouldReset to avoid reparenting
     let next = Children.toArray(children)
 
@@ -97,6 +98,8 @@ export function useThemedChildren(
         </span>
       )
     }
+
+    return wrapped
   }
 
   return children
