@@ -1,3 +1,5 @@
+- instead of proxying we could just merge all themes on creation with their parents?
+
 
 - can make the sub-color alt themes not define color1=>color12
 
