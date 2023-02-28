@@ -4733,7 +4733,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/accordion@^1.5.19, @tamagui/accordion@workspace:packages/accordion":
+"@tamagui/accordion@^1.5.21, @tamagui/accordion@workspace:packages/accordion":
   version: 0.0.0-use.local
   resolution: "@tamagui/accordion@workspace:packages/accordion"
   dependencies:
