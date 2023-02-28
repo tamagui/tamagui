@@ -5,5 +5,5 @@ export declare function useThemedChildren(themeState: ChangedThemeResponse, chil
     forceClassName?: boolean;
     shallow?: boolean;
     passPropsToChildren?: boolean;
-}): any;
+}, isRoot?: boolean): any;
 //# sourceMappingURL=Theme.d.ts.map

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sheet",
-  "version": "1.5.22",
+  "version": "1.5.23",
   "sideEffects": [
     "*.css"
   ],
@@ -22,23 +22,23 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "dependencies": {
-    "@tamagui/animations-react-native": "^1.5.22",
-    "@tamagui/compose-refs": "^1.5.22",
-    "@tamagui/core": "^1.5.22",
-    "@tamagui/create-context": "^1.5.22",
-    "@tamagui/portal": "^1.5.22",
-    "@tamagui/remove-scroll": "^1.5.22",
-    "@tamagui/scroll-view": "^1.5.22",
-    "@tamagui/stacks": "^1.5.22",
-    "@tamagui/use-constant": "^1.5.22",
-    "@tamagui/use-controllable-state": "^1.5.22"
+    "@tamagui/animations-react-native": "^1.5.23",
+    "@tamagui/compose-refs": "^1.5.23",
+    "@tamagui/core": "^1.5.23",
+    "@tamagui/create-context": "^1.5.23",
+    "@tamagui/portal": "^1.5.23",
+    "@tamagui/remove-scroll": "^1.5.23",
+    "@tamagui/scroll-view": "^1.5.23",
+    "@tamagui/stacks": "^1.5.23",
+    "@tamagui/use-constant": "^1.5.23",
+    "@tamagui/use-controllable-state": "^1.5.23"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.5.22",
+    "@tamagui/build": "^1.5.23",
     "react": "^18.2.0",
     "react-native": "*"
   },
