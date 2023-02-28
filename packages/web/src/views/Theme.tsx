@@ -57,8 +57,7 @@ export function useThemedChildren(
     })
   }
 
-  const shouldAttachClassName =
-    isWeb && (forceClassName ?? (forceClassName !== false && isNewTheme))
+  const shouldAttachClassName = isWeb && (forceClassName || isNewTheme)
 
   // in order to provide currentColor, set color by default
   const themeColor = theme && isNewTheme ? variableToString(theme.color) : ''
@@ -78,6 +77,10 @@ export function useThemedChildren(
       {next}
     </ThemeManagerContext.Provider>
   )
+
+  if (forceClassName === false) {
+    return next
+  }
 
   if (isWeb && !options.passPropsToChildren) {
     return (
