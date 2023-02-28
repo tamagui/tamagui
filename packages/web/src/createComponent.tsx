@@ -720,7 +720,7 @@ export function createComponent<
 
     content = useThemedChildren(themeState, content, {
       shallow: stateRef.current.themeShallow,
-      passPropsToChildren: true,
+      // passPropsToChildren: true,
     })
 
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -1067,7 +1067,6 @@ type CreateSpacerProps = SpacedChildrenProps & { key: string }
 
 function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
   return (
-    // @ts-ignore this one blew up but the types seem better
     <Spacer
       key={key}
       size={space}
@@ -1080,8 +1079,8 @@ function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
 }
 
 function isUnspaced(child: React.ReactNode) {
-  // console.log('unspaced?', child, getMedia())
-  return child?.['type']?.['isVisuallyHidden'] || child?.['type']?.['isUnspaced']
+  const t = child?.['type']
+  return t?.['isVisuallyHidden'] || t?.['isUnspaced']
 }
 
 const DefaultProps = new Map()
@@ -1123,7 +1122,6 @@ function mergeConfigDefaultProps(
 }
 
 const AbsoluteFill: any = createComponent({
-  componentName: 'AbsoluteFill',
   defaultProps: {
     ...stackDefaultStyles,
     flexDirection: 'column',
