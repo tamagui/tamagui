@@ -1,17 +1,6 @@
 import { Tokens, getConfig } from '@tamagui/core'
 import { useState } from 'react'
-import {
-  Button,
-  H2,
-  H3,
-  H4,
-  ScrollView,
-  Separator,
-  Square,
-  XGroup,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, H2, H3, H4, Separator, Square, XGroup, XStack, YStack } from 'tamagui'
 
 type Section = 'spaceNegative' | keyof Tokens
 
@@ -42,15 +31,16 @@ export function TokensDemo() {
       <XGroup ai="center" als="center">
         {sections.map(({ name, key }) => {
           return (
-            <Button
-              key={key}
-              size="$3"
-              theme={section === key ? 'active' : null}
-              fontFamily="$silkscreen"
-              onPress={() => setSection(key)}
-            >
-              {name}
-            </Button>
+            <XGroup.Item key={key}>
+              <Button
+                size="$3"
+                theme={section === key ? 'active' : null}
+                fontFamily="$silkscreen"
+                onPress={() => setSection(key)}
+              >
+                {name}
+              </Button>
+            </XGroup.Item>
           )
         })}
       </XGroup>

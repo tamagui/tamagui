@@ -85,9 +85,9 @@ const skipProps = {
   animateOnly: true,
   debug: true,
   componentName: true,
-  role: true,
   tag: true,
 }
+
 if (process.env.NODE_ENV === 'test') {
   skipProps['data-test-renders'] = true
 }
@@ -240,6 +240,9 @@ export const getSplitStyles: StyleSplitter = (
   // fontFamily is our special baby, ensure we grab the latest set one always
   let fontFamily: string | undefined
 
+  /**
+   * Not the biggest fan of creating this object but it is a nice API
+   */
   const styleState: GetStyleState = {
     classNames,
     conf,
@@ -311,7 +314,13 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (keyInit in usedKeys || keyInit in skipProps) {
+    if (!staticConfig.isHOC) {
+      if (keyInit in skipProps) {
+        continue
+      }
+    }
+
+    if (keyInit in usedKeys) {
       continue
     }
 
@@ -502,6 +511,7 @@ export const getSplitStyles: StyleSplitter = (
     let isPseudo = keyInit in validPseudoKeys
 
     const isHOCShouldPassThrough = staticConfig.isHOC && (isMedia || isPseudo)
+
     const shouldPassProp = !(
       isMedia ||
       isPseudo ||
@@ -566,7 +576,7 @@ export const getSplitStyles: StyleSplitter = (
       if (val === undefined) continue
 
       isMedia = isMediaKey(key)
-      isPseudo = validPseudoKeys[key]
+      isPseudo = key in validPseudoKeys
       const isMediaOrPseudo = isMedia || isPseudo
 
       if (!isMediaOrPseudo && usedKeys[key]) {
@@ -676,7 +686,7 @@ export const getSplitStyles: StyleSplitter = (
             }
             if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
               // prettier-ignore
-              console.log('Merged pseudo?', shouldMerge, { importance, curImportance, pkey, val })
+              console.log('    merge pseudo?', keyInit, shouldMerge, { importance, curImportance, pkey, val })
             }
           }
         }
@@ -792,7 +802,7 @@ export const getSplitStyles: StyleSplitter = (
 
       // pass to view props
       if (!variants || !(key in variants)) {
-        if (!skipProps[key]) {
+        if (!(key in skipProps)) {
           viewProps[key] = val
           usedKeys[key] = 1
         }

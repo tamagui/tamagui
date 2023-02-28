@@ -1,10 +1,25 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { ButtonDemo, CheckboxDemo, InputsDemo, SwitchDemo } from '@tamagui/demos'
+import {
+  ButtonDemo,
+  CheckboxDemo,
+  GroupDemo,
+  InputsDemo,
+  SwitchDemo,
+} from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
-import { Input, ScrollView, TamaguiProvider, XStack, YStack, styled } from 'tamagui'
+import {
+  Button,
+  Popover,
+  ScrollView,
+  TamaguiProvider,
+  XStack,
+  YStack,
+  styled,
+  withStaticProperties,
+} from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -37,25 +52,62 @@ const Image = styled(
   }
 )
 
-const StyledInput = styled(Input, {
-  debug: 'verbose',
-
-  focusStyle: {
-    borderWidth: 10,
-    borderColor: 'blue',
-  },
-})
-
 export const Sandbox = () => {
   return (
     <SandboxFrame>
       {/* keep indent */}
       {/* <SandboxDefault /> */}
 
-      <StyledInput debug="verbose" />
+      <TestPopoverContentStyledPlusAnimations />
     </SandboxFrame>
   )
 }
+
+function TestPopoverContentStyledPlusAnimations() {
+  return (
+    <Popover size="$5">
+      <Popover.Trigger asChild>
+        <Button>go</Button>
+      </Popover.Trigger>
+
+      <PopoverStyledContent debug="verbose">
+        <Popover.Arrow bw={1} boc="$borderColor" />
+      </PopoverStyledContent>
+    </Popover>
+  )
+}
+
+const PopoverStyledContent = styled(Popover.Content, {
+  name: 'PopoverContent2',
+  debug: 'verbose',
+  elevate: true,
+  bordered: true,
+  p: '$3',
+  br: '$3',
+  enterStyle: {
+    o: 0,
+    y: -10,
+    x: 0,
+  },
+  exitStyle: {
+    o: 0,
+    y: -10,
+    x: 0,
+  },
+  x: 0,
+  y: 0,
+  o: 1,
+  animation: [
+    'quick',
+    {
+      opacity: {
+        overshootClamping: true,
+      },
+    },
+  ],
+})
+
+console.log('PopoverStyledContent', PopoverStyledContent)
 
 const SandboxFrame = (props: { children: any }) => {
   const [theme, setTheme] = useState('light')

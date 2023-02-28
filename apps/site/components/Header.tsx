@@ -1,18 +1,19 @@
 import { ThemeToggle } from '@components/ThemeToggle'
-import { LogoWords, TamaguiLogo, getTints } from '@tamagui/logo'
-import { ThemeTint, useTint } from '@tamagui/logo'
+import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
 import { useRouter } from 'next/router'
 import * as React from 'react'
-import { Adapt, TooltipGroup, XGroup } from 'tamagui'
 import {
+  Adapt,
   Button,
   Paragraph,
   ParagraphProps,
   Popover,
   Separator,
   Text,
+  TooltipGroup,
   VisuallyHidden,
+  XGroup,
   XStack,
   YStack,
   isClient,
@@ -115,9 +116,15 @@ export function HeaderContents(props: HeaderProps) {
             ai="center"
             size="$3"
           >
-            <ThemeToggle borderWidth={0} chromeless />
-            <ColorToggleButton borderWidth={0} chromeless />
-            <SeasonToggleButton borderWidth={0} chromeless />
+            <XGroup.Item>
+              <ThemeToggle borderWidth={0} chromeless />
+            </XGroup.Item>
+            <XGroup.Item>
+              <ColorToggleButton borderWidth={0} chromeless />
+            </XGroup.Item>
+            <XGroup.Item>
+              <SeasonToggleButton borderWidth={0} chromeless />
+            </XGroup.Item>
           </XGroup>
         </TooltipGroup>
 

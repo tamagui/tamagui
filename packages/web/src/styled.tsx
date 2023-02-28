@@ -1,4 +1,5 @@
 import { stylePropsAll } from '@tamagui/helpers'
+import { forwardRef } from 'react'
 
 import { createComponent } from './createComponent.js'
 import { ReactNativeStaticConfigs } from './setupReactNative.js'
@@ -71,10 +72,18 @@ export function styled<
     }
   }
 
-  const staticConfigProps = (() => {
-    const parentStaticConfig =
-      'staticConfig' in Component ? (Component.staticConfig as StaticConfig) : null
+  const parentStaticConfig =
+    'staticConfig' in Component ? (Component.staticConfig as StaticConfig) : null
+  const isTamagui = !!parentStaticConfig
 
+  const isReactNative = Boolean(
+    ReactNativeStaticConfigs.has(Component) ||
+      staticExtractionOptions?.isReactNative ||
+      ReactNativeStaticConfigs.has(parentStaticConfig?.Component) ||
+      parentStaticConfig?.isReactNative
+  )
+
+  const staticConfigProps = (() => {
     if (options) {
       const {
         variants,
@@ -86,17 +95,11 @@ export function styled<
       if (defaultVariants) {
         Object.assign(defaultProps, defaultVariants)
       }
-      const isReactNative = Boolean(
-        ReactNativeStaticConfigs.has(Component) ||
-          ReactNativeStaticConfigs.has(parentStaticConfig?.Component) ||
-          parentStaticConfig?.isReactNative ||
-          staticExtractionOptions?.isReactNative
-      )
-      const isTamagui = !isReactNative && !!parentStaticConfig
 
       const Comp = isReactNative
         ? parentStaticConfig?.Component || Component
         : (Component as any)
+
       const nativeConf = (isReactNative && ReactNativeStaticConfigs.get(Comp)) || null
 
       const isText = Boolean(
@@ -128,10 +131,9 @@ export function styled<
 
       return conf
     }
-    return {}
   })()
 
-  const component = createComponent(staticConfigProps, Component)
+  const component = createComponent(staticConfigProps || {}, Component)
 
   // get parent props without pseudos and medias so we can rebuild both with new variants
   // get parent props without pseudos and medias so we can rebuild both with new variants
