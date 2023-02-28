@@ -6475,6 +6475,7 @@ __metadata:
   resolution: "@tamagui/use-did-finish-ssr@workspace:packages/use-did-finish-ssr"
   dependencies:
     "@tamagui/build": ^1.5.21
+    "@tamagui/constants": ^1.5.21
     "@types/react": ^18.0.15
     react: ^18.2.0
     react-native: "*"
