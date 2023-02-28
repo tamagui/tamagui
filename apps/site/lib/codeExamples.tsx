@@ -132,20 +132,18 @@ export const Heading = styled(Text, {
       examples: [
         {
           name: 'app.js',
-          code: `import { Stack } from '@tamagui/core';
-import { Heading } from './Heading';
-
-export default (props) => (
-  <div className={_cn}>
-    <span className={_cn2 + (_cn3 + (props.big ? _cn4 : _cn4))}>Lorem ipsum dolor.</span>
+          code: `import { SandboxHeading, Stack } from '@tamagui/core'
+export const CodeExamplesInput = props => <div className={_cn}>
+    <h1 className={_cn2 + (_cn3 + (props.big ? _cn4 : _cn5))}>
+      Lorem ipsum dolor.
+    </h1>
   </div>
-);
-
-const _cn4 = " _col-b5vn3b _ff-4yewjq";
-const _cn3 = " _ml-0px _mb-0px _mr-0px _mt-0px _col-b5vn3b _tt-3tb9js _ff-4yewjq _fow-3uqci0 _ls-3w5fg8 _fos-3slq2o _lh-3or5x5 _cur-text _ussel-text _ww-break-word _bxs-border-box _dsp-inline  ";
-const _cn2 = "  is_Heading font_heading";
-const _cn = "  is_Stack _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-box _fb-auto _dsp-flex _fs-0 _ai-stretch _w-550px _pr-1aj148u _pl-1aj148u _pr-_gtSm_1aj14ca _pl-_gtSm_1aj14ca ";
-`,
+  
+const _cn5 = " _fos-16px"
+const _cn4 = " _fos-22px"
+const _cn3 = " _bg-180kg62 _col-b5vn3b _mt-0px _mr-0px _mb-0px _ml-0px _ww-break-word _bxs-border-box _ff-System _dsp-inline  "
+const _cn2 = "  font_System"
+const _cn = "  is_Stack _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-box _fb-auto _dsp-flex _fs-0 _ai-stretch  _w-550px _pr-1aj14ca _pl-1aj14ca  _pr-_gtSm_lrpixp _pl-_gtSm_lrpixp"`,
           language: 'tsx',
         },
         {

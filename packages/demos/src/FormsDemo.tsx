@@ -1,21 +1,39 @@
-import { Button, Input, SizeTokens, TextArea, XStack, YStack } from 'tamagui'
+import { stat } from 'fs'
 
-export function FormsDemo() {
-  return (
-    <YStack w={200} mih={250} overflow="hidden" space="$2" m="$3" p="$2">
-      <FormDemo size="$2" />
-      <FormDemo size="$3" />
-      <FormDemo size="$4" />
-      <TextArea mih={140} placeholder="Enter your details..." numberOfLines={4} />
-    </YStack>
-  )
-}
+import { useEffect, useState } from 'react'
+import { Button, Form, H4, SizeTokens, Spinner, XStack, YStack } from 'tamagui'
 
-function FormDemo(props: { size: SizeTokens }) {
+export function FormsDemo(props: { size: SizeTokens }) {
+  const [status, setStatus] = useState<'off' | 'submitting' | 'submitted'>('off')
+
+  useEffect(() => {
+    if (status === 'submitting') {
+      const timer = setTimeout(() => setStatus('off'), 2000)
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+  }, [status])
+
   return (
-    <XStack ai="center" space="$2">
-      <Input f={1} size={props.size} placeholder={`Size ${props.size}...`} />
-      <Button size={props.size}>Go</Button>
-    </XStack>
+    <Form
+      ai="center"
+      miw={300}
+      space
+      onSubmit={() => setStatus('submitting')}
+      bw={1}
+      br="$4"
+      bc="$background"
+      boc="$borderColor"
+      p="$8"
+    >
+      <H4>{status[0].toUpperCase() + status.slice(1)}</H4>
+
+      <Form.Trigger asChild disabled={status !== 'off'}>
+        <Button icon={status === 'submitting' ? () => <Spinner /> : undefined}>
+          Submit
+        </Button>
+      </Form.Trigger>
+    </Form>
   )
 }

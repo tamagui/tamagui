@@ -1,18 +1,16 @@
-import { variableToString } from '@tamagui/core'
+import { useMedia, variableToString } from '@tamagui/core'
 import { ScrollView } from 'react-native'
 import { ChevronRight, Moon, Sun } from 'sandbox-ui'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
   H1,
-  H2,
   ListItem,
   ListItemProps,
   Paragraph,
   Separator,
   Spacer,
   Switch,
-  TextArea,
   YGroup,
   YStack,
   useTheme,
@@ -21,6 +19,8 @@ import {
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
 export function HomeScreen() {
+  const media = useMedia()
+
   return (
     <ScrollView>
       <YStack bc="$backgroundStrong" p="$3" pt="$6" pb="$8" f={1} space>
@@ -123,12 +123,14 @@ const demos = [
     label: 'Forms',
     pages: [
       { title: 'Button', route: '/demo/button' },
+      { title: 'Checkbox', route: '/demo/checkbox' },
       { title: 'Input + Textarea', route: '/demo/inputs' },
       { title: 'Label', route: '/demo/label' },
       { title: 'Progress', route: '/demo/progress' },
       { title: 'Select', route: '/demo/select' },
       { title: 'Slider', route: '/demo/slider' },
       { title: 'Switch', route: '/demo/switch' },
+      { title: 'RadioGroup', route: '/demo/radio-group' },
     ],
   },
 
@@ -136,7 +138,7 @@ const demos = [
     label: 'Panels',
     pages: [
       { title: 'AlertDialog', route: '/demo/alert-dialog' },
-      { title: 'Dialog', route: '/demo/dialog' },
+      // { title: 'Dialog', route: '/demo/dialog' },
       // { title: 'Drawer', route: '/demo/drawer' },
       { title: 'Popover', route: '/demo/popover' },
       { title: 'Sheet', route: '/demo/sheet' },

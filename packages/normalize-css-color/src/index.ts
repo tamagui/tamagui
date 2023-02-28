@@ -9,9 +9,14 @@
  */
 
 import { names } from './names'
+export { names } from './names'
 
 export function normalizeCSSColor(color: string): number | null {
   let match: RegExpExecArray | null = null
+
+  if (color in names) {
+    return names[color]
+  }
 
   if (typeof color === 'number') {
     if (color >>> 0 === color && color >= 0 && color <= 0xffffffff) {
@@ -23,10 +28,6 @@ export function normalizeCSSColor(color: string): number | null {
   // Ordered based on occurrences on Facebook codebase
   if ((match = matchers.hex6.exec(color))) {
     return parseInt(match[1] + 'ff', 16) >>> 0
-  }
-
-  if (color in names) {
-    return names[color]
   }
 
   if ((match = matchers.rgb.exec(color))) {

@@ -12,7 +12,6 @@ import { createServer } from 'vite'
 
 import { watchTamaguiConfig } from './tamaguiConfigUtils.js'
 import { ResolvedOptions } from './types.js'
-import { closeEvent } from './utils.js'
 
 const resolve =
   'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
@@ -36,12 +35,8 @@ export const studio = async (options: ResolvedOptions) => {
   })
 
   // these can be lazy loaded (eventually should put in own process)
-  await Promise.all([
-    server.listen(),
-    //
-    watchTamaguiConfig(options),
-    // generateTypes(options),
-  ])
+  const serverPromise = server.listen()
+  const configWatchPromise = watchTamaguiConfig(options)
 
   const info = server.httpServer?.address() as AddressInfo
   console.log('devServerInfo', info)
@@ -63,9 +58,19 @@ export const studio = async (options: ResolvedOptions) => {
 
   app.use('/', proxy(`${info.address}:${info.port}`))
 
-  app.listen(port)
+  const appServer = app.listen(port)
 
   console.log(`Listening on`, chalk.green(`http://localhost:${port}`))
 
-  await closeEvent(server)
+  const longRunning = [
+    serverPromise,
+    configWatchPromise,
+    new Promise((res) => appServer.on('close', res)),
+  ]
+
+  setInterval(() => {
+    console.log(longRunning)
+  }, 10_000)
+
+  await Promise.allSettled(longRunning)
 }

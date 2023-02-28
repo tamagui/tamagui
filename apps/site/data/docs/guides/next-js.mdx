@@ -39,6 +39,8 @@ You'll want to set up a `_document.tsx` and gather both the `react-native-web` s
   ensure Tamagui styles override built-in `react-native-web` ones.
 </Notice>
 
+Note that we only are importing `react-native` here because if you use `tamagui` views like Input or Image they rely on React Native Image/Input (and therefore on the web, `react-native-web`). If you are just using core, or aren't using Image or Input in `tamagui`, you can forego the entire `AppRegistry` import and setup here. We're working on making even `tamagui` completely de-coupled from RN/RNW by building their own image and input components eventually.
+
 ```tsx
 import NextDocument, { Head, Html, Main, NextScript } from 'next/document'
 import { Children } from 'react'

@@ -1,4 +1,4 @@
-import { MediaQueryObject } from '@tamagui/core';
+import { MediaQueryObject } from '@tamagui/web';
 export declare function createMedia<A extends {
     [key: string]: MediaQueryObject;
 }>(media: A): A;

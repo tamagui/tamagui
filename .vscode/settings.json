@@ -7,5 +7,7 @@
     "**/*.code-search": true,
     "**/.tamagui": true,
     "**/.next": true,
-  }
+  },
+  "editor.tabCompletion": "on",
+  "diffEditor.codeLens": true
 }

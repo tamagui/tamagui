@@ -635,7 +635,7 @@ export function createExtractor(
           if (!isValidImport(propsWithFileInfo, modulePath, binding.identifier.name)) {
             if (shouldPrintDebug) {
               logger.info(
-                ` - Binding not internal import or from components ${modulePath}`
+                ` - Binding not internal import or from components ${binding.identifier.name} in ${modulePath}`
               )
             }
             return
@@ -1420,9 +1420,6 @@ export function createExtractor(
             return
           }
 
-          // now update to new values
-          node.attributes = attrs.filter(isAttr).map((x) => x.value)
-
           // before deopt, can still optimize
           const parentFn = findTopmostFunction(traversePath)
           if (parentFn) {
@@ -1472,7 +1469,9 @@ export function createExtractor(
 
           // flatten logic!
           // fairly simple check to see if all children are text
-          const hasSpread = node.attributes.some((x) => t.isJSXSpreadAttribute(x))
+          const hasSpread = attrs.some(
+            (x) => x.type === 'attr' && t.isJSXSpreadAttribute(x.value)
+          )
 
           const hasOnlyStringChildren =
             !hasSpread &&
@@ -1634,6 +1633,30 @@ export function createExtractor(
             pressIn: false,
           }
 
+          function splitVariants(style: any) {
+            const variants = {}
+            const styles = {}
+            for (const key in style) {
+              if (staticConfig.variants?.[key]) {
+                variants[key] = style[key]
+              } else {
+                styles[key] = style[key]
+              }
+            }
+            return {
+              variants,
+              styles,
+            }
+          }
+
+          function expandStylesWithoutVariants(style: any) {
+            const { variants, styles } = splitVariants(style)
+            return {
+              ...expandStyles(styles),
+              ...variants,
+            }
+          }
+
           // evaluates all static attributes into a simple object
           let foundStaticProps = {}
           for (const key in attrs) {
@@ -1792,44 +1815,14 @@ export function createExtractor(
           // merge styles, leave undefined values
           let prev: ExtractedAttr | null = null
 
-          function splitVariants(style: any) {
-            const variants = {}
-            const styles = {}
-            for (const key in style) {
-              if (staticConfig.variants?.[key]) {
-                variants[key] = style[key]
-              } else {
-                styles[key] = style[key]
-              }
-            }
-            return {
-              variants,
-              styles,
-            }
-          }
-
-          function expandStylesWithoutVariants(style: any) {
-            const { variants, styles } = splitVariants(style)
-            return {
-              ...expandStyles(styles),
-              ...variants,
-            }
-          }
-
           function mergeStyles(
             prev: ViewStyle & PseudoStyles,
-            nextIn: ViewStyle & PseudoStyles
+            next: ViewStyle & PseudoStyles
           ) {
-            const next = expandStylesWithoutVariants(nextIn)
             for (const key in next) {
               // merge pseudos
               if (pseudoDescriptors[key]) {
                 prev[key] = prev[key] || {}
-                if (shouldPrintDebug) {
-                  if (!next[key] || !prev[key]) {
-                    logger.info(['warn: missing', key, prev, next].join(' '))
-                  }
-                }
                 Object.assign(prev[key], next[key])
               } else {
                 prev[key] = next[key]
@@ -1848,7 +1841,7 @@ export function createExtractor(
                 // de-opt if non-style
                 !validStyles[key] &&
                 !pseudoDescriptors[key] &&
-                !key.startsWith('data-')
+                !(key.startsWith('data-') || key.startsWith('aria-'))
 
               if (shouldKeepOriginalAttr) {
                 if (shouldPrintDebug) {
@@ -1954,15 +1947,6 @@ export function createExtractor(
 
           if (!completeStyles) {
             throw new Error(`Impossible, no styles`)
-          }
-
-          const isNativeNotFlat = !shouldFlatten && target === 'native'
-          if (isNativeNotFlat) {
-            if (shouldPrintDebug) {
-              logger.info(`Disabled flattening except for simple cases on native for now`)
-            }
-            node.attributes = ogAttributes
-            return null
           }
 
           let getStyleError: any = null
@@ -2089,9 +2073,19 @@ export function createExtractor(
             }
           }
 
+          const isNativeNotFlat = !shouldFlatten && target === 'native'
+          if (isNativeNotFlat) {
+            if (shouldPrintDebug) {
+              logger.info(`Disabled flattening except for simple cases on native for now`)
+            }
+            node.attributes = ogAttributes
+            return null
+          }
+
           if (shouldPrintDebug) {
             // prettier-ignore
-            logger.info([` ❊❊ inline props (${inlined.size}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : ''].join(' '))
+            logger.info([` - inlined props (${inlined.size}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : ''].join(' '))
+            logger.info(`  - shouldFlatten/isFlattened: ${shouldFlatten}`)
             logger.info(`  - attrs (end):\n ${logLines(attrs.map(attrStr).join(', '))}`)
           }
 
@@ -2109,6 +2103,9 @@ export function createExtractor(
             completeProps,
             staticConfig,
           })
+        } catch (err) {
+          node.attributes = ogAttributes
+          console.error(`err: ${err}`)
         } finally {
           if (debugPropValue) {
             shouldPrintDebug = ogDebug

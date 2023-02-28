@@ -11,6 +11,7 @@ export * from '@tamagui/compose-refs'
 export * from '@tamagui/create-context'
 export * from '@tamagui/dialog'
 export * from '@tamagui/font-size'
+export * from '@tamagui/form'
 export * from '@tamagui/helpers-tamagui'
 export * from '@tamagui/image'
 export * from '@tamagui/label'
@@ -19,6 +20,7 @@ export * from '@tamagui/popover'
 export * from '@tamagui/popper'
 export * from '@tamagui/portal'
 export * from '@tamagui/progress'
+export * from '@tamagui/radio-group'
 export * from '@tamagui/scroll-view'
 export * from '@tamagui/select'
 export * from '@tamagui/separator'
@@ -34,6 +36,7 @@ export * from '@tamagui/use-debounce'
 export * from '@tamagui/use-force-update'
 export * from '@tamagui/use-window-dimensions'
 export * from '@tamagui/visually-hidden'
+export * from '@tamagui/checkbox'
 
 export * from './createTamagui'
 
@@ -43,7 +46,6 @@ export * from './viewTypes'
 export * from './views/Anchor'
 export * from './views/EnsureFlexed'
 export * from './views/Fieldset'
-export * from './views/Form'
 export * from './views/Grid'
 export * from './views/Input'
 export * from './views/Group'
@@ -78,8 +80,6 @@ export type {
   MediaPropKeys,
   MediaQueries,
   MediaQueryState,
-  RNWTextProps,
-  RNWViewProps,
   Shorthands,
   SizeTokens,
   SpaceTokens,
@@ -159,6 +159,7 @@ export {
   spacedChildren,
   styled,
   themeable,
+  useStyle,
   withStaticProperties,
   // hooks
   useGet,

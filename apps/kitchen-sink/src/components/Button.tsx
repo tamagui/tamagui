@@ -14,7 +14,7 @@ const ButtonFrame = styled(
     variants: {
       size: {
         '...space': (value, { tokens }) => ({
-          py: tokens.space[value as keyof typeof tokens.space] ?? value,
+          py: tokens.space[value as any] ?? value,
         }),
       },
       centered: {

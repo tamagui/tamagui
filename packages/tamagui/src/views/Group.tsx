@@ -64,8 +64,7 @@ function createGroup(verticalDefault: boolean) {
     } = getExpandedShorthands(activeProps)
 
     const radius =
-      borderRadius ??
-      (size ? getVariableValue(getTokens(true).radius[size]) - 1 : undefined)
+      borderRadius ?? (size ? getVariableValue(getTokens().radius[size]) - 1 : undefined)
 
     const hasRadius = radius !== undefined
     const disablePassBorderRadius = disablePassBorderRadiusProp ?? !hasRadius

@@ -17,7 +17,10 @@ export declare const createSheetContext: <ContextValueType extends object | null
         children: React.ReactNode;
     }): JSX.Element;
     displayName: string;
-}, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>) => ContextValueType], createSheetScope: import("@tamagui/create-context").CreateScope;
+}, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>, options?: {
+    warn?: boolean | undefined;
+    fallback?: Partial<ContextValueType> | undefined;
+} | undefined) => ContextValueType], createSheetScope: import("@tamagui/create-context").CreateScope;
 export declare const SheetProvider: {
     (props: Required<Pick<SheetProps, "position" | "open" | "snapPoints" | "dismissOnOverlayPress">> & {
         hidden: boolean;
@@ -33,6 +36,9 @@ export declare const SheetProvider: {
         children: React.ReactNode;
     }): JSX.Element;
     displayName: string;
-}, useSheetContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SheetContextValue | undefined>) => SheetContextValue;
+}, useSheetContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SheetContextValue | undefined>, options?: {
+    warn?: boolean | undefined;
+    fallback?: Partial<SheetContextValue> | undefined;
+} | undefined) => SheetContextValue;
 export {};
 //# sourceMappingURL=SheetContext.d.ts.map

@@ -77,9 +77,12 @@ export const docsRoutes = [
     label: 'Forms',
     pages: [
       { title: 'Button', route: '/docs/components/button' },
-      { title: 'Text Inputs', route: '/docs/components/inputs' },
+      { title: 'Checkbox', route: '/docs/components/checkbox' },
+      { title: 'Form', route: '/docs/components/form' },
+      { title: 'Input & TextArea', route: '/docs/components/inputs' },
       { title: 'Label', route: '/docs/components/label' },
       { title: 'Progress', route: '/docs/components/progress' },
+      { title: 'RadioGroup', route: '/docs/components/radio-group' },
       { title: 'Select', route: '/docs/components/select' },
       { title: 'Slider', route: '/docs/components/slider' },
       { title: 'Switch', route: '/docs/components/switch' },
@@ -162,6 +165,7 @@ export const docsRoutes = [
 
   {
     pages: [
+      { title: `Community`, route: '/community' },
       { title: `Blog`, route: '/blog' },
       { title: `GitHub`, route: 'https://github.com/tamagui/tamagui' },
       { title: `Twitter`, route: 'https://twitter.com/tamagui_js' },

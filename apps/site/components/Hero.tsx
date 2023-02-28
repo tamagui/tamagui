@@ -7,13 +7,13 @@ import {
   H1,
   Paragraph,
   Spacer,
-  Square,
   Text,
   Theme,
   VisuallyHidden,
   XStack,
   YStack,
   styled,
+  useTheme,
 } from 'tamagui'
 
 import { ContainerLarge } from './Container'
@@ -22,11 +22,29 @@ import { useHeroHovered } from './heroState'
 import { InstallInput } from './InstallInput'
 import { TwitterIcon } from './TwitterIcon'
 
+// function useAlwaysConcurrent() {
+//   const inputRef = useRef<HTMLInputElement>(null)
+
+//   useEffect(() => {
+//     const input = inputRef.current
+//     if (!input) return
+//     setInterval(() => {
+//       console.log('writing in the input')
+//       input.value = `${Math.random()}`
+//     }, 16)
+//   }, [inputRef])
+
+//   return <input ref={inputRef} />
+// }
+
 export function Hero() {
   const { tint, name } = useTint()
 
+  // const element = useAlwaysConcurrent()
+
   return (
     <Theme className={`${name}-season`} name={tint as any}>
+      {/* {element} */}
       <YStack
         o={0.5}
         zi={-1}
@@ -62,7 +80,7 @@ const HeroContents = memo(() => {
         ov="hidden"
         space="$3"
         position="relative"
-        pt="$12"
+        pt="$13"
         mb="$4"
         $sm={{
           maxWidth: '100%',
@@ -123,7 +141,6 @@ const HeroContents = memo(() => {
               <NextLink href="/docs/core/configuration">
                 <Tag
                   theme="green_alt2"
-                  bc="$color2"
                   onHoverIn={() => setHovered(0)}
                   active={hovered === 0}
                 >
@@ -134,7 +151,6 @@ const HeroContents = memo(() => {
               <NextLink href="/docs/intro/why-a-compiler">
                 <Tag
                   theme="blue_alt2"
-                  bc="$color2"
                   onHoverIn={() => setHovered(1)}
                   active={hovered === 1}
                 >
@@ -145,7 +161,6 @@ const HeroContents = memo(() => {
               <NextLink href="/docs/components/stacks">
                 <Tag
                   theme="purple_alt2"
-                  bc="$color2"
                   onHoverIn={() => setHovered(2)}
                   active={hovered === 2}
                 >
@@ -175,7 +190,6 @@ const HeroContents = memo(() => {
             ai="center"
             jc="center"
             space="$2"
-            contain="paint layout"
             $xxs={{
               // words web-only
               // @ts-ignore
@@ -259,7 +273,6 @@ const Subtitle = styled(Paragraph, {
   color: '$gray10',
   size: '$6',
   fontFamily: '$silkscreen',
-  className: 'font-smooth',
   ta: 'left',
   ls: -1,
 
@@ -286,18 +299,24 @@ const Tag = styled(Text, {
   px: '$1',
   mx: '$-1',
   cursor: 'pointer',
-  color: '$color11',
-  backgroundColor: '$color5',
+  color: '$color10',
+  bc: '$color2',
 
   hoverStyle: {
     color: '$color',
-    backgroundColor: '$color5',
+    bc: '$color3',
   },
 
   variants: {
     active: {
       true: {
         color: '$color10',
+        bc: '$color5',
+
+        hoverStyle: {
+          color: '$color12',
+          bc: '$color5',
+        },
       },
     },
   },

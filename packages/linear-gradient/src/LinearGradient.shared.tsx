@@ -4,11 +4,12 @@ import {
   getVariable,
   styled,
   themeable,
+  useMediaPropsActive,
   useTheme,
 } from '@tamagui/core'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
-import { StyleSheet, View } from 'react-native'
+import type { View, ViewStyle } from 'react-native'
 
 import {
   LinearGradient as ExpoLinearGradient,
@@ -25,18 +26,18 @@ export const LinearGradient: React.ForwardRefExoticComponent<
   LinearGradientProps & React.RefAttributes<HTMLElement | View>
 > = YStack.extractable(
   themeable(
-    React.forwardRef((props: LinearGradientProps, ref) => {
+    React.forwardRef((propsIn: LinearGradientProps, ref) => {
+      const props = useMediaPropsActive(propsIn)
       const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
       const colors = useThemeColors(colorsProp || [])
       return (
-        // @ts-ignore
-        <LinearGradientFrame ref={ref} {...stackProps}>
+        <LinearGradientFrame ref={ref as any} {...stackProps}>
           <ExpoLinearGradient
             start={start}
             end={end}
             colors={colors}
             locations={locations}
-            style={StyleSheet.absoluteFill}
+            style={absoluteFill}
           >
             {children}
           </ExpoLinearGradient>
@@ -45,6 +46,14 @@ export const LinearGradient: React.ForwardRefExoticComponent<
     })
   )
 ) as any
+
+const absoluteFill: ViewStyle = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+}
 
 const LinearGradientFrame = styled(YStack, {
   name: 'LinearGradient',

@@ -1,3 +1,4 @@
+import type { TamaguiOptions } from '@tamagui/types';
 export declare function readTamaguiOptions({ cwd }: {
     cwd: string;
 }): Promise<{

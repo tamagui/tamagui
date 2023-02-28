@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/label",
-  "version": "1.1.11",
+  "version": "1.5.19",
   "sideEffects": [
     "*.css"
   ],
@@ -26,28 +26,26 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.js",
+      "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "^1.1.11",
-    "@tamagui/core": "^1.1.11",
-    "@tamagui/create-context": "^1.1.11",
-    "@tamagui/focusable": "^1.1.11",
-    "@tamagui/get-button-sized": "^1.1.11",
-    "@tamagui/get-font-sized": "^1.1.11",
-    "@tamagui/text": "^1.1.11"
+    "@tamagui/compose-refs": "^1.5.19",
+    "@tamagui/create-context": "^1.5.19",
+    "@tamagui/focusable": "^1.5.19",
+    "@tamagui/get-button-sized": "^1.5.19",
+    "@tamagui/get-font-sized": "^1.5.19",
+    "@tamagui/text": "^1.5.19",
+    "@tamagui/web": "^1.5.19"
   },
   "peerDependencies": {
     "react": "*",
-    "react-dom": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.1.11",
+    "@tamagui/build": "^1.5.19",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "react-native": "*"
   },
   "publishConfig": {

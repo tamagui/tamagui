@@ -1,4 +1,4 @@
-import { getElevation } from './Stacks'
+import { getElevation } from './getElevation'
 
 export const elevate = {
   true: (_: boolean, extras: any) => {
@@ -78,6 +78,7 @@ export const hoverTheme = {
 
 export const pressTheme = {
   true: {
+    cursor: 'pointer',
     pressStyle: {
       backgroundColor: '$backgroundPress',
       borderColor: '$borderColorPress',

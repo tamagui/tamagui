@@ -10,9 +10,10 @@ import {
   useHover,
   useInteractions,
   useRole,
-} from '@floating-ui/react-dom-interactions'
-import { useEvent, useId, withStaticProperties } from '@tamagui/core'
+} from '@floating-ui/react'
+import { SizeTokens, useEvent, useId, withStaticProperties } from '@tamagui/core'
 import { ScopedProps } from '@tamagui/create-context'
+import { FloatingOverrideContext, UseFloatingFn } from '@tamagui/floating'
 import { stepTokenUpOrDown } from '@tamagui/get-size'
 import {
   PopoverAnchor,
@@ -24,15 +25,7 @@ import {
   __PopoverProviderInternal,
   usePopoverScope,
 } from '@tamagui/popover'
-import {
-  Popper,
-  PopperProps,
-  usePopperContext,
-} from '@tamagui/popper'
-import {
-  FloatingOverrideContext,
-  UseFloatingFn
-} from '@tamagui/floating'
+import { Popper, PopperProps, usePopperContext } from '@tamagui/popper'
 import * as React from 'react'
 
 const TooltipContent = React.forwardRef(
@@ -42,12 +35,13 @@ const TooltipContent = React.forwardRef(
   ) => {
     const popperScope = usePopoverScope(__scopePopover)
     const popper = usePopperContext('PopperContent', popperScope['__scopePopper'])
+    const padding = props.size || popper.size || stepTokenUpOrDown('size', '$true', -2)
     return (
       <PopoverContent
-        componentName="TooltipContent"
+        componentName="Tooltip"
         disableRemoveScroll
         trapFocus={false}
-        padding={props.size || popper.size || '$2'}
+        padding={padding}
         pointerEvents="none"
         ref={ref}
         {...props}
@@ -57,12 +51,16 @@ const TooltipContent = React.forwardRef(
 )
 
 const TooltipArrow = React.forwardRef((props: PopoverArrowProps, ref: any) => {
-  return <PopoverArrow componentName="TooltipArrow" ref={ref} {...props} />
+  return <PopoverArrow componentName="Tooltip" ref={ref} {...props} />
 })
 
 export type TooltipProps = PopperProps & {
   children?: React.ReactNode
   onOpenChange?: (open: boolean) => void
+  focus?: {
+    enabled?: boolean
+    keyboardOnly?: boolean
+  }
   groupId?: string
   restMs?: number
   delay?:
@@ -93,9 +91,14 @@ export const Tooltip = withStaticProperties(
     const {
       __scopePopover,
       children,
-      restMs = 500,
       delay: delayProp,
+      restMs = typeof delayProp === 'undefined'
+        ? 500
+        : typeof delayProp === 'number'
+        ? delayProp
+        : 0,
       onOpenChange: onOpenChangeProp,
+      focus,
       ...restProps
     } = props
     const popperScope = usePopoverScope(__scopePopover)
@@ -123,7 +126,7 @@ export const Tooltip = withStaticProperties(
       })
       const { getReferenceProps, getFloatingProps } = useInteractions([
         useHover(floating.context, { delay, restMs }),
-        useFocus(floating.context),
+        useFocus(floating.context, focus),
         useRole(floating.context, { role: 'tooltip' }),
         useDismiss(floating.context),
         useDelayGroup(floating.context, { id }),
@@ -139,12 +142,13 @@ export const Tooltip = withStaticProperties(
     const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
     const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
     const contentId = useId()
-    const size = `$${(stepTokenUpOrDown('size', '$true', -2) as any).key}` as any
+    const twoSmallerKey = stepTokenUpOrDown('size', '$true', -2).key
+    const size = `$${twoSmallerKey}`
 
     return (
       <FloatingOverrideContext.Provider value={useFloatingContext}>
         {/* default tooltip to a smaller size */}
-        <Popper size={size} {...popperScope} {...restProps}>
+        <Popper size={size as SizeTokens} {...popperScope} {...restProps}>
           <__PopoverProviderInternal
             scope={__scopePopover}
             popperScope={popperScope.__scopePopper}

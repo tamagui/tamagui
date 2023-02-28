@@ -13,7 +13,7 @@ import {
 const colorGroups = ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red']
 
 export function ColorsDemo() {
-  const colors = getTokens().color
+  const colors = getTokens({ prefixed: false }).color
   const [colorsLight, colorsDark] = [getColors(colors), getColors(colors, true)]
 
   return (
@@ -42,7 +42,9 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
                       br="$2"
                       size="$4"
                       h="$4"
+                      bw={1}
                       bc={getVariableValue(color)}
+                      boc="$color7"
                       $sm={{
                         size: '$2',
                       }}
@@ -64,7 +66,7 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
                 return (
                   <Paragraph
                     col="$color10"
-                    fow="300"
+                    ta="center"
                     w="$4"
                     $sm={{
                       w: '$2',
@@ -81,7 +83,7 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
           </XStack>
         </YStack>
 
-        <YStack space="$2">
+        <YStack space="$4" mt="$2">
           {colorGroups.map((name) => (
             <Paragraph
               theme={name as any}
@@ -111,7 +113,7 @@ function getColors(colors: Record<string, Variable>, dark = false) {
       .filter(
         (color) =>
           color.startsWith(group) &&
-          (dark ? color.endsWith('Dark') : !color.endsWith('Dark')),
+          (dark ? color.endsWith('Dark') : !color.endsWith('Dark'))
       )
       .map((key) => colors[key])
   })

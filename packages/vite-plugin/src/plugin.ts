@@ -8,14 +8,12 @@ import type { Plugin } from 'vite'
 export function tamaguiPlugin(
   options: TamaguiOptions & {
     useReactNativeWebLite?: boolean
-  },
+  }
 ): Plugin {
-  const components = [
-    ...new Set([...options.components, 'tamagui', '@tamagui/core']),
-  ]
+  const components = [...new Set([...options.components, 'tamagui', '@tamagui/core'])]
   const noExternalSSR = new RegExp(
     `${components.join('|')}|react-native|expo-linear-gradient`,
-    'ig',
+    'ig'
   )
 
   const plugin: Plugin = {
@@ -36,13 +34,11 @@ export function tamaguiPlugin(
           _WORKLET: false,
           ...(process.env.NODE_ENV !== 'test' && {
             'process.env.TAMAGUI_TARGET': JSON.stringify(
-              process.env.TAMAGUI_TARGET || 'web',
+              process.env.TAMAGUI_TARGET || 'web'
             ),
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || env.mode),
             'process.env.ENABLE_RSC': JSON.stringify(process.env.ENABLE_RSC || ''),
-            'process.env.ENABLE_STEPS': JSON.stringify(
-              process.env.ENABLE_STEPS || '',
-            ),
+            'process.env.ENABLE_STEPS': JSON.stringify(process.env.ENABLE_STEPS || ''),
             'process.env.IS_STATIC': JSON.stringify(false),
           }),
         },
@@ -98,8 +94,7 @@ export function tamaguiPlugin(
             '.mjs',
           ],
           alias: {
-            'react-native/Libraries/Renderer/shims/ReactFabric':
-              '@tamagui/proxy-worm',
+            'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
             'react-native/Libraries/Utilities/codegenNativeComponent':
               '@tamagui/proxy-worm',
             'react-native-svg': '@tamagui/react-native-svg',

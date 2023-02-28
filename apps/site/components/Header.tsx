@@ -49,8 +49,8 @@ export function Header(props: HeaderProps) {
   return (
     <>
       <XStack
-        className={`ease-out all ms200 blur-light ${
-          isScrolled ? 'hover-highlights' : ''
+        className={`ease-out all ms200 ${
+          isScrolled ? 'blur-light hover-highlights ' : ''
         }`}
         bbc="$borderColor"
         zi={50000}
@@ -63,7 +63,7 @@ export function Header(props: HeaderProps) {
         elevation={isScrolled ? '$1' : 0}
         py={isScrolled ? '$0' : '$2'}
       >
-        <YStack o={isScrolled ? 0.9 : 0.5} fullscreen bc="$background" />
+        <YStack o={isScrolled ? 0.9 : 0} fullscreen bc="$background" />
         <ContainerLarge>
           <ThemeTint>
             <HeaderContents floating {...props} />
@@ -121,7 +121,7 @@ export function HeaderContents(props: HeaderProps) {
           </XGroup>
         </TooltipGroup>
 
-        <YStack $xxs={{ dsp: 'none' }}>
+        <YStack paddingStart={200} $xxs={{ dsp: 'none' }}>
           <SponsorButton tiny />
         </YStack>
 

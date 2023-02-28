@@ -287,9 +287,7 @@ const getThumbSize = (val?: SizeTokens | number) => {
 export const SliderThumbFrame = styled(ThemeableStack, {
   name: 'SliderThumb',
   position: 'absolute',
-  // TODO not taking up 2
   bordered: 2,
-  // OR THIS
   borderWidth: 2,
   backgrounded: true,
   pressTheme: isWeb,
@@ -323,7 +321,7 @@ const SliderThumb = React.forwardRef<View, SliderThumbProps>(
     const sizeIn = sizeProp ?? context.size ?? '$true'
     const [size, setSize] = React.useState(() => {
       // for SSR
-      const estimatedSize = getVariableValue(getThumbSize(sizeIn).width)
+      const estimatedSize = getVariableValue(getThumbSize(sizeIn).width) as number
       return estimatedSize
     })
 

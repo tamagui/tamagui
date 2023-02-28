@@ -1,3 +1,6 @@
 /// <reference types="react" />
-export declare function FormsDemo(): JSX.Element;
+import { SizeTokens } from 'tamagui';
+export declare function FormsDemo(props: {
+    size: SizeTokens;
+}): JSX.Element;
 //# sourceMappingURL=FormsDemo.d.ts.map

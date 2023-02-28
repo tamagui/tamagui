@@ -16,17 +16,16 @@ export async function getOptions({
   debug,
 }: Partial<UserOptions> = {}): Promise<ResolvedOptions> {
   const tsConfigFilePath = join(root, tsconfigPath)
-  ensure(
-    await fs.pathExists(tsConfigFilePath),
-    `No tsconfig found: ${tsConfigFilePath}`,
-  )
+  ensure(await fs.pathExists(tsConfigFilePath), `No tsconfig found: ${tsConfigFilePath}`)
   const dotDir = join(root, '.tamagui')
   const pkgJson = await readJSON(join(root, 'package.json'))
+
+  console.log('host', host)
 
   return {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     root,
-    host,
+    host: host || '127.0.0.1',
     pkgJson,
     debug,
     tsconfigPath,
@@ -54,9 +53,7 @@ const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')]
 let cachedPath = ''
 async function getDefaultTamaguiConfigPath() {
   if (cachedPath) return cachedPath
-  const existingPaths = await Promise.all(
-    defaultPaths.map((path) => pathExists(path)),
-  )
+  const existingPaths = await Promise.all(defaultPaths.map((path) => pathExists(path)))
   const existing = existingPaths.findIndex((x) => !!x)
   const found = defaultPaths[existing]
   if (!found) {
@@ -68,7 +65,7 @@ async function getDefaultTamaguiConfigPath() {
 
 let cached: TamaguiProjectInfo | null = null
 export const loadTamagui = async (
-  opts: Partial<TamaguiOptions>,
+  opts: Partial<TamaguiOptions>
 ): Promise<TamaguiProjectInfo> => {
   return (cached ??= await loadTamaguiStatic({
     config: await getDefaultTamaguiConfigPath(),
@@ -77,10 +74,12 @@ export const loadTamagui = async (
   }))
 }
 
-export function closeEvent(server: ViteDevServer): Promise<void> {
-  return new Promise((resolve) => {
-    server.ws.on('close', () => {
-      return resolve()
-    })
-  })
+const disposers = new Set<Function>()
+
+export function registerDispose(cb: () => void) {
+  disposers.add(cb)
+}
+
+export function disposeAll() {
+  disposers.forEach((cb) => cb())
 }

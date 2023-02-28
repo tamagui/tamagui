@@ -140,7 +140,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
     const wePrefer = colorScheme || 'light'
 
     // avoid running this because it causes full page reflow
-    if (userPrefers !== wePrefer) {
+    if (userPrefers !== wePrefer || wePrefer === 'dark') {
       document.documentElement.style.setProperty('color-scheme', colorScheme)
     }
   }, [enableColorScheme, theme, resolvedTheme, forcedTheme])

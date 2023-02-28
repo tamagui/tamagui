@@ -1,8 +1,7 @@
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { NextLink } from 'components/NextLink'
 import React, { useEffect, useState } from 'react'
-import { ScrollView } from 'react-native'
-import { Circle, H4, Paragraph, Separator, XStack, YStack } from 'tamagui'
+import { Circle, H4, Paragraph, ScrollView, XStack, YStack } from 'tamagui'
 
 import { LinkProps } from './Link'
 
@@ -56,24 +55,23 @@ export function QuickNav() {
         width: 230,
         flexShrink: 0,
         zIndex: 1,
-        // @ts-ignore
-        position: 'absolute',
-        right: -200,
+        position: 'fixed' as any,
+        left: '50%',
+        marginLeft: 430,
         marginTop: 60,
       }}
     >
-      <ScrollView>
-        <YStack
-          tag="nav"
-          aria-labelledby="site-quick-nav-heading"
-          px="$5"
-          display={headings.length === 0 ? 'none' : 'block'}
-          space
-        >
-          <H4 size="$2" o={0.5} id="site-quick-nav-heading">
-            Quick nav
-          </H4>
-
+      <YStack
+        tag="nav"
+        aria-labelledby="site-quick-nav-heading"
+        px="$5"
+        display={headings.length === 0 ? 'none' : 'block'}
+        space
+      >
+        <H4 size="$2" o={0.5} id="site-quick-nav-heading">
+          Quick nav
+        </H4>
+        <ScrollView maxHeight="calc(100vh - var(--space-25))">
           <ul style={{ margin: 0, padding: 0 }}>
             {/* loading ... {headings.length === 0 && (
               <YStack tag="li">
@@ -93,8 +91,8 @@ export function QuickNav() {
               )
             })}
           </ul>
-        </YStack>
-      </ScrollView>
+        </ScrollView>
+      </YStack>
     </YStack>
   )
 }

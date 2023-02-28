@@ -22,6 +22,36 @@ describe('getSplitStyles', () => {
     expect(viewProps.required).toEqual(false)
     expect(viewProps.accessibilityRequired).toEqual(undefined)
   })
+
+  test(`prop "paddingStart" value 10 becomes "10px"`, () => {
+    const { style } = getSplitStylesStack(
+      {
+        paddingStart: 10,
+      },
+      'input'
+    )
+    expect(style.paddingStart).toEqual('10px')
+  })
+
+  // test(`prop "tabIndex" defaults to "0", overrides to "-1" when tag = button`, () => {
+  //   expect(
+  //     getSplitStylesStack(
+  //       {
+  //         focusable: true,
+  //       },
+  //       'button'
+  //     )['tabIndex']
+  //   ).toEqual('0')
+
+  //   expect(
+  //     getSplitStylesStack(
+  //       {
+  //         tabIndex: '-1',
+  //       },
+  //       'button'
+  //     )['tabIndex']
+  //   ).toEqual('-1')
+  // })
 })
 
 function getSplitStylesStack(props: Record<string, any>, tag?: string) {

@@ -8,7 +8,7 @@ import type {
 
 export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   sizeTokenIn = '$true',
-  { fonts, theme, props }
+  { fonts, props }
 ) => {
   const family = getVariableValue(props.fontFamily) || '$body'
   const font = fonts[family] || fonts['$body']
@@ -31,7 +31,7 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   const letterSpacing = props.letterSpacing || font.letterSpacing[sizeToken]
   const fontStyle = props.fontStyle || font.style?.[sizeToken]
   const textTransform = props.textTransform || font.transform?.[sizeToken]
-  const color = props.color || font.color?.[sizeToken] || theme.color
+  const color = props.color || font.color?.[sizeToken]
 
   const style = {
     color,
@@ -64,7 +64,7 @@ function getDefaultSizeToken(font: GenericFont) {
   }
 
   // use either font.size if it has true set, or fallback to tokens.size mapping to the same
-  const sizeTokens = '$true' in font.size ? font.size : getTokens(true).size
+  const sizeTokens = '$true' in font.size ? font.size : getTokens().size
   const sizeDefault = sizeTokens['$true']
   const sizeDefaultSpecific = sizeDefault
     ? Object.keys(sizeTokens).find(

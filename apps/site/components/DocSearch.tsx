@@ -107,7 +107,7 @@ const docSearchCSS = `
 .DocSearch-NoResults,
 .DocSearch-Footer,
 .DocSearch-Reset {
-  color: var(--colorTranslucent);
+  color: var(--color5);
 }
 
 .DocSearch-Input {

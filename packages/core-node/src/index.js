@@ -8,11 +8,11 @@ process.env.IS_STATIC = 'is_static'
 
 try {
   const all = {
-    ...require('../dist/static'),
+    ...require('../dist/index'),
     aliasPlugin: require('./esbuildAliasPlugin'),
   }
-  process.env.IS_STATIC = undefined
   Object.assign(exports, all)
+  process.env.IS_STATIC = undefined
 } catch (err) {
   // eslint-disable-next-line no-console
   console.log('Error loading @tamagui/core-node', err)

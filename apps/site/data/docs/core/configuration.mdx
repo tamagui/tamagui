@@ -7,10 +7,10 @@ Create a `tamagui.config.ts` in the root of your app to set up your design syste
 
 ## Quick Start
 
-You can use `@tamagui/config-base` a totally complete config out of the box, the same one this site uses.
+You can use `@tamagui/config` a totally complete config out of the box, the same one this site uses.
 
 ```tsx
-import { config } from '@tamagui/config-base'
+import { config } from '@tamagui/config'
 import { createTamagui, setupReactNative } from '@tamagui/core'
 import * as ReactNative from 'react-native'
 
@@ -31,16 +31,16 @@ declare module '@tamagui/core' {
 export default appConfig
 ```
 
-[The source](https://github.com/tamagui/tamagui/blob/master/packages/config-base/src/tamagui.config.ts) and [type output](https://github.com/tamagui/tamagui/blob/master/packages/config-base/types/tamagui.config.d.ts) of that config is also useful as a reference for building your own custom config.
+[The source](https://github.com/tamagui/tamagui/blob/master/packages/config/src/tamagui.config.ts) and [type output](https://github.com/tamagui/tamagui/blob/master/packages/config/types/tamagui.config.d.ts) of that config is also useful as a reference for building your own custom config.
 
 ---
 
-Another quick start that gives a bit more customization is using `@tamagui/shorthands` for our preset shorthands, and `@tamagui/theme-base` for the same themes and tokens used for this site. Then you'll just want to bring along any fonts, media queries, and animations you need.
+Another quick start that gives a bit more customization is using `@tamagui/shorthands` for our preset shorthands, and `@tamagui/themes` for the same themes and tokens used for this site. Then you'll just want to bring along any fonts, media queries, and animations you need.
 
 ```tsx
 import { createTamagui } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
-import { themes, tokens } from '@tamagui/theme-base'
+import { themes, tokens } from '@tamagui/themes'
 
 const appConfig = createTamagui({
   themes,
@@ -155,7 +155,7 @@ const config = createTamagui({
   // `createMedia` call here by passing the media object directly.
 
   // If targeting React Native, add this driver and `createMedia` call.
-  // `tamagui` and `config-base` do this for you automatically.
+  // `tamagui` and `config` do this for you automatically.
   media: createMedia({
     sm: { maxWidth: 860 },
     gtSm: { minWidth: 860 + 1 },
@@ -205,7 +205,7 @@ Note, for `tamagui`, it expects certain things on tokens. Space and size should 
 
 <Notice>
   The compiler will parse your tamagui.config.ts file at build-time. For this reason, we
-  comment keeping it relatively simple. Don't import heavy dependencies, and prefer to
+  recommend keeping it relatively simple. Don't import heavy dependencies, and prefer to
   import `createTamagui` and other helpers directly from @tamagui/core.
 </Notice>
 
@@ -252,12 +252,6 @@ TamaguiProvider takes a few optional properties:
       type: 'boolean',
       description: `By default Tamagui inserts CSS with a useLayoutEffect on load. But if you're not setting up SSR you'll want to use getCSS() instead and enable this prop.`,
     },
-    {
-      name: 'disableRootThemeClass',
-      required: false,
-      type: 'boolean',
-      description: `Tamagui will insert your current root theme onto the body unless this property is enabled. This typically can be left off.`,
-    },
   ]}
 />
 
@@ -276,6 +270,25 @@ If using Next.js, see how to do this in the [Next.js guide](/docs/guides/next-js
   Make sure the style tag you insert with the `getCSS` styles is inserted after any
   `react-native-web` style tags to ensure Tamagui can override the built-in styles.
 </Notice>
+
+### Setup media query driver
+
+`@tamagui/core` doesn't provide media capabilities out of the box to native apps, while on the web it uses native media queries. To enable media queries for React Native, you need to provide matchMedia implementation:
+
+```
+yarn add @tamagui/react-native-media-driver
+```
+
+```tsx
+import { createMedia } from '@tamagui/react-native-media-driver'
+
+export default createTamagui({
+  media: createMedia({
+    xs: { maxWidth: 660 },
+    // ...
+  }),
+})
+```
 
 ## Tokens
 
@@ -383,7 +396,7 @@ This will change all special style properties that map to token/theme values to 
 
 Themes live one level below tokens. Tokens are your variables, where themes use those tokens to create consistent, generic properties that you then typically use in shareable components. Themes should generally only deal with colors.
 
-Tamagui components in general expect a set of theme keys to be defined like the following, but you can deviate if you create your own design system. See [the source for the website](https://github.com/tamagui/tamagui/blob/master/apps/site/constants/themes.ts) for a fuller example.
+Tamagui components in general expect a set of theme keys to be defined like the following, but you can deviate if you create your own design system.
 
 ```tsx
 const light = {

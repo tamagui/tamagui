@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.1.11",
+  "version": "1.5.19",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -10,7 +10,8 @@
     "name": "Nate Wienert"
   },
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "index.ts"
   ],
   "scripts": {
     "build": "tamagui-build",
@@ -27,26 +28,19 @@
     "reset.css"
   ],
   "dependencies": {
-    "@tamagui/compose-refs": "^1.1.11",
-    "@tamagui/constants": "^1.1.11",
-    "@tamagui/helpers": "^1.1.11",
-    "@tamagui/normalize-css-color": "^1.1.11",
-    "@tamagui/react-native-use-pressable": "^1.1.11",
-    "@tamagui/react-native-use-responder-events": "^1.1.11",
-    "@tamagui/use-did-finish-ssr": "^1.1.11",
-    "@tamagui/use-event": "^1.1.11",
-    "@tamagui/use-force-update": "^1.1.11"
+    "@tamagui/react-native-use-pressable": "^1.5.19",
+    "@tamagui/react-native-use-responder-events": "^1.5.19",
+    "@tamagui/use-event": "^1.5.19",
+    "@tamagui/web": "^1.5.19"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.1.11",
+    "@tamagui/build": "^1.5.19",
     "@testing-library/react": "^13.4.0",
     "csstype": "^3.0.10",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "typescript": "^4.7.4",
     "vitest": "^0.26.3"
   },
@@ -55,13 +49,18 @@
     "./reset.css": "./reset.css",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.js",
+      "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
-      "import": "./dist/esm/inject-styles.js",
+      "import": "./dist/esm/inject-styles.mjs",
       "require": "./dist/cjs/inject-styles.js"
+    },
+    "./reactNativeTypes": {
+      "types": "./types/reactNativeTypes.d.ts",
+      "import": "./dist/esm/reactNativeTypes.js",
+      "require": "./dist/cjs/reactNativeTypes.js"
     }
   },
   "repository": {

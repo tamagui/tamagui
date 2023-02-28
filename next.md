@@ -1,37 +1,134 @@
-- sheet background animation regression
+👋
 
+- Card has a good use case for size being passed through context/css vars
+- linear-gradient next.js issue
+
+-  I'm currently using the Selector on Native, and the animation for pulling up the modal is kind of lagging and I get spammed this error when it happens.
+
+I'm trying to do the following:
+
+const Content = styled(TamaguiPopover.Content, {
+  name: 'PopoverContent',
+  elevate: true,
+  bordered: true,
+  p: '$3',
+  br: '$3',
+  enterStyle: {
+    o: 0,
+    y: -10,
+    x: 0,
+  },
+  exitStyle: {
+    o: 0,
+    y: -10,
+    x: 0,
+  },
+  x: 0,
+  y: 0,
+  o: 1,
+  animation: [
+    'quick',
+    {
+      opacity: {
+        overshootClamping: true,
+      },
+    },
+  ],
+})
+
+export const Popover = withStaticProperties(TamaguiPopover, {
+  Content
+  // ...etc
+})
+
+Once I wrap Popover.Content with styled() it looks like the animations no longer work for it. They work fine if applied directly onto the popover as component props if it's imported from tamagui. But once I wrap it, the animations don't seem to work
+
+- add Themes page in docs under Theme, change Theme => Design System
+- move packages to have unstyled
+- move packages from /core to /web
+- <YStack space="$3" $gtSm={{ space: '$6'}}> not working again
+- // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
+- check why styled() of a HOC is failing:
+
+const SheetOverlay = styled(Sheet.Overlay, {
+  backgroundColor: '$bgoverlay',
+})
+
+- sheet background animation regression
 - https://github.com/tamagui/tamagui/issues/478
 - default light mode theme + not changing
 - deprecate ThemeProvider defaultTheme in favor of theme={}
-
-- unset
 - hoverTheme={false} works, make hoverStyle={false} to unset
-
-
-- // maybe style shouldn't used usedKeys?
 - test keyboardavoidingview > scrollView - collapsing tamagui
-- sync with rnw 19
 - check into shadow/elevation not showing
 - survey https://tripetto.app or gforms
 
-1.0.X
+---
 
-- optimizing packages/app in starter
-- react native pressable in pressable
+1.2
+
+1.5
+
+- unset: useful for unstyled to usnet the defaultVariatn size
+
+---
+
+1.X
+
+- // TODO could be native-only
+- Select id="" + Label focus
+- web forms events bubble
+- theme shouldn't change context ever on web, redo notify()
+  - instead of passing ThemeManager in context just pass a UID
+    - useChangeTheme can then do listen(UID)
+- vertical slider native can be janky
+- react native action sheet hooks/logic adapt
+- testing native - https://maestro.mobile.dev
+- app dir support experimental
+- styled('div')
+- tooltip auto pass down accessibilityLabel
+- accessibility keyboard navigation (Menu component potentially)
+- createTamagui({ webOnly: true }) - avoids console warning on Text
+  - goes hand in hand with `@tamagui/style` separate from core
+- test: useMedia, reanimated, re-renders (mount, on hover, etc), render time ms
+- CD on github
+- home page sponsors with sizing and better logos
+  - https://github.com/JamesIves/github-sponsors-readme-action
+- algolia not indexing some new content
+- keyboard search select bug
+- variants intellisense autocomplete not suggesting, but types are right
+- canary release channel
+- improve native integration test
+- kitchen-sink in Snack demo link
+- `tamagui` cli basic version
+- VisuallyHidden + mediaquery + space
+- re-render tests:
+  - useMedia, component w/ media + style, media + css-style, media + space
+  - useTheme, component with theme used in style
+
 - createThemes accepts array not object
 - <Theme name="dark_orange" /> type 
 - site _app has t_unmounted helper, move that into tamagui proper
 - SimpleTooltip no sub theme looks bad on dark mode
-- looks like maybe memory issue with portal related things dialog or something
-  - was issue on ios 14 devices
-  - test low memory
-- So it looks like any import of tamagui (not @tamagui/core) breaks the build on the web. I've created a repro here https://stackblitz.com/edit/vitejs-vite-3sbtgb?file=src/App.tsx.
-- warn not to styled(Button)
-- vite fails https://github.com/tamagui/tamagui/issues/479
 
+---
+
+2.0
+
+- tag="a" should get the typed props of a link
+- much better non-monorepo non-expo general setup experience
+- app dir support (discussions/409)
+- contrastColor (accent color) in themes (discussions/449)
+- all: unset
+
+---
+
+inbox
+
+- remove defaultVariants in favor of just defaultProps
+
+- // TODO move to validStyleProps to merge
 - bundle size reductions:
-  - remove setColorAlpha in favor of internal core rgba util
-  - expandStyle remove some
   - merge mergeSlotProps and mergeProps
   - move to PROP whitelist rather than style whitelist maybe avoid validStyleProps altogether
   - getStylesAtomic "all webkit prefixed rules, pointer-events"
@@ -47,67 +144,9 @@
   - normalizeColor etc
   - createPropMapper
 
----
-
-1.2
-
-- Select id="" + Label focus
-- web forms events bubble
-- revisit animations loops
-- all: unset or way to unstyle things (unstyle: true)
-- theme shouldn't change context ever on web, redo notify()
-  - instead of passing ThemeManager in context just pass a UID
-    - useChangeTheme can then do listen(UID)
-
-- vertical slider native can be janky
-- react native action sheet hooks/logic adapt
-- testing native - https://maestro.mobile.dev
-- app dir support experimental
-- styled('div')
-- tooltip auto pass down accessibilityLabel
-
----
-
-1.3
-
-- accessibility keyboard navigation (Menu component potentially)
-- createTamagui({ webOnly: true }) - avoids console warning on Text
-  - goes hand in hand with `@tamagui/style` separate from core
-- test: useMedia, reanimated, re-renders (mount, on hover, etc), render time ms
-- CD on github
-- home page sponsors with sizing and better logos
-  - https://github.com/JamesIves/github-sponsors-readme-action
-- algolia not indexing some new content
-- keyboard search select bug
-- variants intellisense autocomplete not suggesting, but types are right
-- canary release channel
-- improve native integration test
-- kitchen-sink in Snack demo link
-- `tamagui` cli basic version
-
----
-
-1.4
-
-- VisuallyHidden + mediaquery + space
-- re-render tests:
-  - useMedia, component w/ media + style, media + css-style, media + space
-  - useTheme, component with theme used in style
-
----
-
-2.0
-
-- app dir support (discussions/409)
-- contrastColor (accent color) in themes (discussions/449)
-
----
-
-inbox
-
+- react native pressable in pressable
 - https://github.com/mwood23/nx-tamagui-next-repro
 - https://github.com/necolas/react-native-web/pull/2195/files
-- config-base => design-system
 - https://github.com/tamagui/tamagui/issues/513
 - @twaiter Has anyone used a dialog component on mobile? I havent been able to get Dialog.Closed to work (using a button). Seems like the example on the website doesnt work for mobile either (button not there)
 
@@ -300,6 +339,39 @@ const MySquare = styled(Square, {
 
 const SquareVariant = createVariantProvider(MySquare)
 ```
+
+---
+
+# Psuedo Element Styles
+
+- display: flex
+- only accepts style props
+
+beforeStyles: [{
+
+}],
+
+afterStyles: [{
+
+}],
+
++++
+
+# Themes
+
+Component themes could force set the actual properties even if they aren't set by the component themselves....
+
+themes.dark_Button = {
+  borderWidth: 1,
+  borderColor: 'red',
+}
+
+===
+
+# Winamp Re-skinability
+
+Themes can completely transform the look and feel, a button could have multiple shadows/reflections in one theme, but be totally flat in another.
+
 
 ---
 

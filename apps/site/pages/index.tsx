@@ -34,11 +34,11 @@ export default function Home({ animationCode, compilationExamples }) {
             <Button
               theme="red"
               als="center"
-              elevation="$4"
-              borderColor="$color5"
+              elevation="$3"
               size="$4"
               fontFamily="$silkscreen"
               bc="$color1"
+              borderColor="$borderColor"
               br="$10"
             >
               1.0
@@ -46,9 +46,7 @@ export default function Home({ animationCode, compilationExamples }) {
           </NextLink>
         </XStack>
       </ContainerLarge>
-      <TintSection btw={1} bbw={1} boc="$borderColor" index={1} p={0}>
-        <HeroBelow />
-      </TintSection>
+      <HeroBelow />
       <TintSection index={2} contain="paint layout" zi={1000}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleCode examples={compilationExamples} />
