@@ -50,7 +50,7 @@ const palettes = {
   ],
 }
 
-const colorScale = {
+const templateColors = {
   color1: 1,
   color2: 2,
   color3: 3,
@@ -65,13 +65,17 @@ const colorScale = {
   color12: 12,
 }
 
-// we can use subset of our template as a "skip" so it doesn't get adjusted with masks
-const skip = {
-  ...colorScale,
+const templateShadows = {
   shadowColor: 1,
   shadowColorHover: 1,
   shadowColorPress: 2,
   shadowColorFocus: 2,
+}
+
+// we can use subset of our template as a "skip" so it doesn't get adjusted with masks
+const skip = {
+  ...templateColors,
+  ...templateShadows,
 }
 
 // templates use the palette and specify index
@@ -149,6 +153,7 @@ const masks = {
   stronger: createStrengthenMask(),
 }
 
+// default mask options for most uses
 const maskOptions: MaskOptions = {
   skip,
   // avoids the transparent ends
@@ -228,15 +233,19 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
   }
 
   function getAltThemes(theme: SubTheme, inverse: SubTheme, activeTheme?: SubTheme) {
-    const alt1 = applyMask(theme, masks.weaker, maskOptions)
-    const alt2 = applyMask(alt1, masks.weaker, maskOptions)
+    const maskOptionsAlt = {
+      ...maskOptions,
+      skip: templateShadows,
+    }
+    const alt1 = applyMask(theme, masks.weaker, maskOptionsAlt)
+    const alt2 = applyMask(alt1, masks.weaker, maskOptionsAlt)
     const active =
       activeTheme ??
       applyMask(theme, masks.weaker, {
         ...maskOptions,
         strength: 4,
       })
-    return addChildren({ alt1, alt2, active }, (name, subTheme) => {
+    return addChildren({ alt1, alt2, active }, (_, subTheme) => {
       return getComponentThemes(subTheme, subTheme === inverse ? theme : inverse)
     })
   }
