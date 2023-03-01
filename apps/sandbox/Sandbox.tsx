@@ -114,6 +114,7 @@ console.log('PopoverStyledContent', PopoverStyledContent)
 
 const SandboxFrame = (props: { children: any }) => {
   const [theme, setTheme] = useState('light')
+  const [open, setOpen] = useState(false)
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
