@@ -27,20 +27,20 @@
     "@floating-ui/react-dom": "^1.2.2",
     "@floating-ui/react-native": "^0.9.0",
     "@radix-ui/react-use-previous": "^0.1.1",
-    "@tamagui/adapt": "^1.5.24",
-    "@tamagui/compose-refs": "^1.5.24",
-    "@tamagui/core": "^1.5.24",
-    "@tamagui/create-context": "^1.5.24",
-    "@tamagui/dismissable": "^1.5.24",
-    "@tamagui/focus-scope": "^1.5.24",
-    "@tamagui/list-item": "^1.5.24",
-    "@tamagui/portal": "^1.5.24",
-    "@tamagui/separator": "^1.5.24",
-    "@tamagui/sheet": "^1.5.24",
-    "@tamagui/stacks": "^1.5.24",
-    "@tamagui/text": "^1.5.24",
-    "@tamagui/use-controllable-state": "^1.5.24",
-    "@tamagui/use-event": "^1.5.24"
+    "@tamagui/adapt": "1.5.24",
+    "@tamagui/compose-refs": "1.5.24",
+    "@tamagui/core": "1.5.24",
+    "@tamagui/create-context": "1.5.24",
+    "@tamagui/dismissable": "1.5.24",
+    "@tamagui/focus-scope": "1.5.24",
+    "@tamagui/list-item": "1.5.24",
+    "@tamagui/portal": "1.5.24",
+    "@tamagui/separator": "1.5.24",
+    "@tamagui/sheet": "1.5.24",
+    "@tamagui/stacks": "1.5.24",
+    "@tamagui/text": "1.5.24",
+    "@tamagui/use-controllable-state": "1.5.24",
+    "@tamagui/use-event": "1.5.24"
   },
   "peerDependencies": {
     "react": "*",
@@ -48,7 +48,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.5.24",
+    "@tamagui/build": "1.5.24",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "*"

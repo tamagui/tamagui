@@ -31,14 +31,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "^1.5.24",
-    "@tamagui/stacks": "^1.5.24"
+    "@tamagui/core": "1.5.24",
+    "@tamagui/stacks": "1.5.24"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.5.24",
+    "@tamagui/build": "1.5.24",
     "expo-linear-gradient": "^12.0.1",
     "react": "^18.2.0"
   },

@@ -21,14 +21,14 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "dependencies": {
-    "@tamagui/stacks": "^1.5.24",
-    "@tamagui/web": "^1.5.24"
+    "@tamagui/stacks": "1.5.24",
+    "@tamagui/web": "1.5.24"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.5.24",
+    "@tamagui/build": "1.5.24",
     "react": "^18.2.0"
   },
   "publishConfig": {
