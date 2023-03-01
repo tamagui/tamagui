@@ -58,7 +58,8 @@ async function run() {
             name,
             cwd,
             json: await fs.readJSON(path.join(cwd, 'package.json')),
-            location,
+            path: path.join(cwd, 'package.json'),
+            directory: location,
           }
         })
     )
@@ -137,7 +138,7 @@ async function run() {
 
     if (!skipVersion) {
       await Promise.all(
-        packageJsons.map(async ({ json, location }) => {
+        packageJsons.map(async ({ json, path }) => {
           const next = { ...json }
 
           next.version = version
@@ -156,8 +157,8 @@ async function run() {
               }
             }
           }
-          const out = JSON.stringify(next, null, 2)
-          await writeJSON(location, out)
+
+          await writeJSON(path, next, { spaces: 2 })
         })
       )
     }
