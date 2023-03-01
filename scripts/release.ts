@@ -129,7 +129,7 @@ async function run() {
       await spawnify(`yarn test`)
     }
 
-    if (!dirty) {
+    if (!dirty && !dryRun) {
       const out = await exec(`git status --porcelain`)
       if (out.stdout) {
         throw new Error(`Has unsaved git changes: ${out.stdout}`)
@@ -161,6 +161,8 @@ async function run() {
           await writeJSON(path, next, { spaces: 2 })
         })
       )
+
+      await spawnify(`yarn install`) // update yarn.lock now
     }
 
     if (dryRun) {
