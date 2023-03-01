@@ -366,7 +366,6 @@ const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>
       >
         <Collection.Slot scope={__scopeAccordion}>
           <YStack
-            tag="div"
             {...accordionProps}
             data-orientation={orientation}
             ref={composedRef}
