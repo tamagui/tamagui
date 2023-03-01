@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { promisify } from 'node:util'
 import path from 'path'
 
-import fs from 'fs-extra'
+import fs, { readJSON, writeJSON } from 'fs-extra'
 import _ from 'lodash'
 import prompts from 'prompts'
 
@@ -22,8 +22,10 @@ const skipVersion = rePublish || process.argv.includes('--skip-version')
 const patch = process.argv.includes('--patch')
 const dirty = process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
-const skipTest = process.argv.includes('--skip-test')
+const skipTest =
+  process.argv.includes('--skip-test') || process.argv.includes('--skip-tests')
 const skipBuild = process.argv.includes('--skip-build')
+const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = process.argv.includes('--ci')
 
@@ -56,6 +58,7 @@ async function run() {
             name,
             cwd,
             json: await fs.readJSON(path.join(cwd, 'package.json')),
+            location,
           }
         })
     )
@@ -133,9 +136,35 @@ async function run() {
     }
 
     if (!skipVersion) {
-      await spawnify(
-        `yarn lerna version ${version} --ignore-changes --ignore-scripts --yes --no-push --no-git-tag-version`
+      await Promise.all(
+        packageJsons.map(async ({ json, location }) => {
+          const next = { ...json }
+
+          next.version = version
+
+          for (const field of [
+            'dependencies',
+            'devDependencies',
+            'optionalDependencies',
+            'peerDependencies',
+          ]) {
+            const nextDeps = next[field]
+            if (!nextDeps) continue
+            for (const depName in nextDeps) {
+              if (packageJsons.some((p) => p.name === depName)) {
+                nextDeps[depName] = version
+              }
+            }
+          }
+          const out = JSON.stringify(next, null, 2)
+          await writeJSON(location, out)
+        })
       )
+    }
+
+    if (dryRun) {
+      console.log(`Dry run, exiting before publish`)
+      return
     }
 
     await spawnify(`git diff`)
