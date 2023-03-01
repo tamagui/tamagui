@@ -12,6 +12,7 @@ import {
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
 import {
+  Accordion,
   Button,
   Popover,
   ScrollView,
@@ -61,7 +62,7 @@ export const Sandbox = () => {
 
       {/* <TestPopoverContentStyledPlusAnimations /> */}
 
-      <ProgressDemo />
+      <Accordion />
     </SandboxFrame>
   )
 }
