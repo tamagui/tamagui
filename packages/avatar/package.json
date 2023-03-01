@@ -31,18 +31,18 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "^1.5.24",
-    "@tamagui/image": "^1.5.24",
-    "@tamagui/shapes": "^1.5.24",
-    "@tamagui/text": "^1.5.24",
-    "@tamagui/use-event": "^1.5.24"
+    "@tamagui/core": "1.5.24",
+    "@tamagui/image": "1.5.24",
+    "@tamagui/shapes": "1.5.24",
+    "@tamagui/text": "1.5.24",
+    "@tamagui/use-event": "1.5.24"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.5.24",
+    "@tamagui/build": "1.5.24",
     "react": "^18.2.0",
     "react-native": "*"
   },

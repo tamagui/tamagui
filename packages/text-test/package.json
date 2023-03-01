@@ -10,7 +10,7 @@
     "test": "vitest --config ../vite-plugin-internal/src/vite.config.ts --run"
   },
   "devDependencies": {
-    "@tamagui/text": "^1.5.24",
+    "@tamagui/text": "1.5.24",
     "vitest": "^0.26.3"
   }
 }
