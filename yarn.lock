@@ -5579,6 +5579,7 @@ __metadata:
     "@tamagui/stacks": 1.6.0
     "@tamagui/use-constant": 1.6.0
     "@tamagui/use-controllable-state": 1.6.0
+    "@tamagui/use-keyboard-visible": 1.6.0
     react: ^18.2.0
     react-native: "*"
   peerDependencies:
@@ -6015,7 +6016,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-keyboard-visible@workspace:packages/use-keyboard-visible":
+"@tamagui/use-keyboard-visible@1.6.0, @tamagui/use-keyboard-visible@workspace:packages/use-keyboard-visible":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-keyboard-visible@workspace:packages/use-keyboard-visible"
   dependencies:
