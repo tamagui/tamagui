@@ -18,7 +18,8 @@ To support dark mode, update your app.json to app.config.ts and set "userInterfa
 ### Update Babel / Metro
 
 ```bash
-yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables react-native-reanimated
+yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
+npx expo install react-native-reanimated
 ```
 
 Update your `babel.config.js` to include the `@tamagui/babel-plugin`,  `transform-inline-environment-variables` and `react-native-reanimated` plugins:
