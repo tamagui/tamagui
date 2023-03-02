@@ -3,6 +3,7 @@ import {
   GetProps,
   SizeTokens,
   Stack,
+  Theme,
   composeEventHandlers,
   composeRefs,
   isWeb,
@@ -146,79 +147,80 @@ const TabsTrigger = TabsTriggerFrame.extractable(
       }, [context.selectedLayout, context.orientation, layout])
 
       return (
-        <RovingFocusGroup.Item
-          asChild
-          {...rovingFocusGroupScope}
-          focusable={!disabled}
-          active={isSelected}
-        >
-          <TabsTriggerFrame
-            onLayout={(event) => {
-              if (!isWeb) {
-                setLayout(event.nativeEvent.layout)
-              }
-            }}
-            onHoverIn={composeEventHandlers(props.onHoverIn, () => {
-              if (layout) {
-                context.onHoveredLayoutChange({ value, layout })
-              }
-            })}
-            onHoverOut={composeEventHandlers(props.onHoverOut, () => {
-              context.onHoveredLayoutChange(null)
-            })}
-            role="tab"
-            aria-selected={isSelected}
-            aria-controls={contentId}
-            data-state={isSelected ? 'active' : 'inactive'}
-            data-disabled={disabled ? '' : undefined}
-            disabled={disabled}
-            id={triggerId}
-            theme={isSelected ? 'active' : null}
-            size={context.size}
-            {...triggerProps}
-            ref={composeRefs(forwardedRef, triggerRef)}
-            onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
-              // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
-              // but not when the control key is pressed (avoiding MacOS right click)
+        <Theme forceClassName name={isSelected ? 'active' : null}>
+          <RovingFocusGroup.Item
+            asChild
+            {...rovingFocusGroupScope}
+            focusable={!disabled}
+            active={isSelected}
+          >
+            <TabsTriggerFrame
+              onLayout={(event) => {
+                if (!isWeb) {
+                  setLayout(event.nativeEvent.layout)
+                }
+              }}
+              onHoverIn={composeEventHandlers(props.onHoverIn, () => {
+                if (layout) {
+                  context.onHoveredLayoutChange({ value, layout })
+                }
+              })}
+              onHoverOut={composeEventHandlers(props.onHoverOut, () => {
+                context.onHoveredLayoutChange(null)
+              })}
+              role="tab"
+              aria-selected={isSelected}
+              aria-controls={contentId}
+              data-state={isSelected ? 'active' : 'inactive'}
+              data-disabled={disabled ? '' : undefined}
+              disabled={disabled}
+              id={triggerId}
+              size={context.size}
+              {...triggerProps}
+              ref={composeRefs(forwardedRef, triggerRef)}
+              onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
+                // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
+                // but not when the control key is pressed (avoiding MacOS right click)
 
-              const webChecks =
-                !isWeb ||
-                ((event as unknown as React.MouseEvent).button === 0 &&
-                  (event as unknown as React.MouseEvent).ctrlKey === false)
-              if (!disabled && !isSelected && webChecks) {
-                context.onChange({ value, transitionDirection })
-              } else {
-                // prevent focus to avoid accidental activation
-                event.preventDefault()
-              }
-            })}
-            {...(isWeb && {
-              type: 'button',
-              onKeyDown: composeEventHandlers(
-                (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
-                (event) => {
-                  if ([' ', 'Enter'].includes(event.key)) {
+                const webChecks =
+                  !isWeb ||
+                  ((event as unknown as React.MouseEvent).button === 0 &&
+                    (event as unknown as React.MouseEvent).ctrlKey === false)
+                if (!disabled && !isSelected && webChecks) {
+                  context.onChange({ value, transitionDirection })
+                } else {
+                  // prevent focus to avoid accidental activation
+                  event.preventDefault()
+                }
+              })}
+              {...(isWeb && {
+                type: 'button',
+                onKeyDown: composeEventHandlers(
+                  (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
+                  (event) => {
+                    if ([' ', 'Enter'].includes(event.key)) {
+                      context.onChange({ value, transitionDirection })
+                    }
+                  }
+                ),
+                onFocus: composeEventHandlers(props.onFocus, (event) => {
+                  if (layout) {
+                    context.onFocusedLayoutChange({ layout, value })
+                  }
+                  // handle "automatic" activation if necessary
+                  // ie. activate tab following focus
+                  const isAutomaticActivation = context.activationMode !== 'manual'
+                  if (!isSelected && !disabled && isAutomaticActivation) {
                     context.onChange({ value, transitionDirection })
                   }
-                }
-              ),
-              onFocus: composeEventHandlers(props.onFocus, (event) => {
-                if (layout) {
-                  context.onFocusedLayoutChange({ layout, value })
-                }
-                // handle "automatic" activation if necessary
-                // ie. activate tab following focus
-                const isAutomaticActivation = context.activationMode !== 'manual'
-                if (!isSelected && !disabled && isAutomaticActivation) {
-                  context.onChange({ value, transitionDirection })
-                }
-              }),
-              onBlur: composeEventHandlers(props.onFocus, () => {
-                context.onFocusedLayoutChange(null)
-              }),
-            })}
-          />
-        </RovingFocusGroup.Item>
+                }),
+                onBlur: composeEventHandlers(props.onFocus, () => {
+                  context.onFocusedLayoutChange(null)
+                }),
+              })}
+            />
+          </RovingFocusGroup.Item>
+        </Theme>
       )
     }
   )

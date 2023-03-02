@@ -10,6 +10,8 @@ import {
   ProgressDemo,
   SelectDemo,
   SwitchDemo,
+  TabsAnimatedDemo,
+  TabsDemo,
 } from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
@@ -59,7 +61,7 @@ export const Sandbox = () => {
   return (
     <SandboxFrame>
       {/* keep indent */}
-      {/* <SandboxDefault /> */}
+      <SandboxDefault />
 
       {/* <TestPopoverContentStyledPlusAnimations /> */}
 
@@ -152,10 +154,8 @@ const SandboxFrame = (props: { children: any }) => {
 function SandboxDefault() {
   const demos = (
     <>
-      <SwitchDemo />
-      <CheckboxDemo />
-      <InputsDemo />
-      <ButtonDemo />
+      <TabsDemo />
+      <TabsAnimatedDemo />
     </>
   )
 
