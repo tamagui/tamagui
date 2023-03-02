@@ -13,9 +13,8 @@ import {
 } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
-import { createRovingFocusGroupScope } from '@tamagui/roving-focus'
-import { RovingFocusGroup } from '@tamagui/roving-focus'
-import { ScrollView } from '@tamagui/scroll-view'
+import { Group, useGroupItem } from '@tamagui/group'
+import { RovingFocusGroup, createRovingFocusGroupScope } from '@tamagui/roving-focus'
 import { SizableStack, ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
@@ -28,15 +27,17 @@ import type { LayoutRectangle } from 'react-native'
 
 const TAB_LIST_NAME = 'TabsList'
 
-const TabsListScrollableFrame = styled(ScrollView, {
+const TabsListFrame = styled(Group, {
   name: TAB_LIST_NAME,
   focusable: true,
-  defaultVariants: {
-    flexGrow: 0,
-  },
+  // defaultVariants: {
+  //   flexGrow: 0,
+  // },
+
+  backgroundColor: 'transparent',
 })
 
-type TabsListFrameProps = GetProps<typeof TabsListScrollableFrame>
+type TabsListFrameProps = GetProps<typeof TabsListFrame>
 
 type TabsListProps = TabsListFrameProps & {
   /**
@@ -60,16 +61,15 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
         loop={loop}
         {...rovingFocusGroupScope}
       >
-        <TabsListScrollableFrame
+        <TabsListFrame
           role="tablist"
           aria-orientation={context.orientation}
           ref={forwardedRef}
-          horizontal={context.orientation === 'horizontal'}
-          flexDirection={context.orientation === 'horizontal' ? 'row' : 'column'}
+          axis={context.orientation}
           {...listProps}
         >
           {children}
-        </TabsListScrollableFrame>
+        </TabsListFrame>
       </RovingFocusGroup>
     )
   }
@@ -83,9 +83,11 @@ TabsList.displayName = TAB_LIST_NAME
 
 const TRIGGER_NAME = 'TabsTrigger'
 
-const TabsTriggerFrame = styled(Button, {
-  name: TRIGGER_NAME,
-})
+const TabsTriggerFrame = Button
+// TODO: find a way to use this - currently this messes with the group item radius on next.js
+// styled(Button, {
+//   name: TRIGGER_NAME,
+// })
 
 type TabsTriggerFrameProps = GetProps<typeof TabsTriggerFrame>
 type TabsTriggerProps = TabsTriggerFrameProps & {
@@ -93,7 +95,8 @@ type TabsTriggerProps = TabsTriggerFrameProps & {
   value: string
 }
 
-const TabsTrigger = TabsTriggerFrame.extractable(
+const TabsTrigger =
+  // TabsTriggerFrame.extractable(
   React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
     (props: ScopedProps<TabsTriggerProps>, forwardedRef) => {
       const { __scopeTabs, value, disabled = false, ...triggerProps } = props
@@ -104,7 +107,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
       const isSelected = value === context.value
       const [layout, setLayout] = React.useState<LayoutRectangle | null>(null)
       const triggerRef = React.useRef<HTMLButtonElement>(null)
-
+      const groupItemProps = useGroupItem({ disabled })
       React.useEffect(() => {
         if (!triggerRef.current || !isWeb) return
 
@@ -218,13 +221,14 @@ const TabsTrigger = TabsTriggerFrame.extractable(
                   context.onFocusedLayoutChange(null)
                 }),
               })}
+              {...groupItemProps}
             />
           </RovingFocusGroup.Item>
         </Theme>
       )
     }
   )
-)
+// )
 
 TabsTrigger.displayName = TRIGGER_NAME
 

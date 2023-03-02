@@ -27,7 +27,7 @@ const UnderlineTabs = () => {
       ai="center"
     >
       <YStack borderColor="$color3" borderRightWidth="$0.5" mr="$2">
-        <Tabs.List aria-label="Manage your account" flexDirection="column">
+        <YStack>
           <Tabs.RovingIndicator
             highlightMode="hoverOrFocus"
             width="$0.5"
@@ -40,17 +40,18 @@ const UnderlineTabs = () => {
             right={0}
             animation="100ms"
           />
-
-          <Tabs.Trigger unstyled color="$color12" value="tab1">
-            Profile
-          </Tabs.Trigger>
-          <Tabs.Trigger unstyled color="$color12" value="tab2">
-            Connections
-          </Tabs.Trigger>
-          <Tabs.Trigger unstyled color="$color12" value="tab3">
-            Notifications
-          </Tabs.Trigger>
-        </Tabs.List>
+          <Tabs.List aria-label="Manage your account" flexDirection="column">
+            <Tabs.Trigger unstyled color="$color12" value="tab1">
+              Profile
+            </Tabs.Trigger>
+            <Tabs.Trigger unstyled color="$color12" value="tab2">
+              Connections
+            </Tabs.Trigger>
+            <Tabs.Trigger unstyled color="$color12" value="tab3">
+              Notifications
+            </Tabs.Trigger>
+          </Tabs.List>
+        </YStack>
       </YStack>
       <AnimatePresence exitBeforeEnter>
         <Tabs.Content
@@ -93,7 +94,7 @@ const HighlightTabs = () => {
       br="$4"
       flexDirection="column"
     >
-      <Tabs.List aria-label="Manage your account">
+      <YStack>
         <Tabs.RovingIndicator
           highlightMode="hoverOrFocus"
           borderRadius="$4"
@@ -104,17 +105,18 @@ const HighlightTabs = () => {
           borderRadius="$4"
           animation="100ms"
         />
-
-        <Tabs.Trigger unstyled color="$color12" value="tab1">
-          Profile
-        </Tabs.Trigger>
-        <Tabs.Trigger unstyled color="$color12" value="tab2">
-          Connections
-        </Tabs.Trigger>
-        <Tabs.Trigger unstyled color="$color12" value="tab3">
-          Notifications
-        </Tabs.Trigger>
-      </Tabs.List>
+        <Tabs.List aria-label="Manage your account">
+          <Tabs.Trigger unstyled color="$color12" value="tab1">
+            Profile
+          </Tabs.Trigger>
+          <Tabs.Trigger unstyled color="$color12" value="tab2">
+            Connections
+          </Tabs.Trigger>
+          <Tabs.Trigger unstyled color="$color12" value="tab3">
+            Notifications
+          </Tabs.Trigger>
+        </Tabs.List>
+      </YStack>
       <AnimatePresence exitBeforeEnter>
         <Tabs.Content
           value={currentTab}

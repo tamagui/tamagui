@@ -4976,7 +4976,27 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 "@tamagui/helpers-node@1.6.3, @tamagui/helpers-node@workspace:packages/helpers-node":
+=======
+"@tamagui/group@1.6.0, @tamagui/group@workspace:packages/group":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/group@workspace:packages/group"
+  dependencies:
+    "@tamagui/build": 1.6.0
+    "@tamagui/core": 1.6.0
+    "@tamagui/create-context": 1.6.0
+    "@tamagui/stacks": 1.6.0
+    "@tamagui/use-controllable-state": 1.6.0
+    react: ^18.2.0
+    reforest: ^0.12.1
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/helpers-node@1.6.0, @tamagui/helpers-node@workspace:packages/helpers-node":
+>>>>>>> ccd274f8a8 (separate group package, tab + group integration)
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers-node@workspace:packages/helpers-node"
   dependencies:
@@ -20902,6 +20922,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
+<<<<<<< HEAD
     "@tamagui/adapt": 1.6.3
     "@tamagui/alert-dialog": 1.6.3
     "@tamagui/animate-presence": 1.6.3
@@ -20950,6 +20971,57 @@ __metadata:
     "@tamagui/use-force-update": 1.6.3
     "@tamagui/use-window-dimensions": 1.6.3
     "@tamagui/visually-hidden": 1.6.3
+=======
+    "@tamagui/adapt": 1.6.0
+    "@tamagui/alert-dialog": 1.6.0
+    "@tamagui/animate-presence": 1.6.0
+    "@tamagui/avatar": 1.6.0
+    "@tamagui/build": 1.6.0
+    "@tamagui/button": 1.6.0
+    "@tamagui/card": 1.6.0
+    "@tamagui/checkbox": 1.6.0
+    "@tamagui/compose-refs": 1.6.0
+    "@tamagui/core": 1.6.0
+    "@tamagui/create-context": 1.6.0
+    "@tamagui/dialog": 1.6.0
+    "@tamagui/fake-react-native": 1.6.0
+    "@tamagui/focusable": 1.6.0
+    "@tamagui/font-size": 1.6.0
+    "@tamagui/form": 1.6.0
+    "@tamagui/get-button-sized": 1.6.0
+    "@tamagui/get-font-sized": 1.6.0
+    "@tamagui/get-size": 1.6.0
+    "@tamagui/group": 1.6.0
+    "@tamagui/helpers": 1.6.0
+    "@tamagui/helpers-tamagui": 1.6.0
+    "@tamagui/image": 1.6.0
+    "@tamagui/label": 1.6.0
+    "@tamagui/linear-gradient": 1.6.0
+    "@tamagui/list-item": 1.6.0
+    "@tamagui/popover": 1.6.0
+    "@tamagui/popper": 1.6.0
+    "@tamagui/portal": 1.6.0
+    "@tamagui/progress": 1.6.0
+    "@tamagui/radio-group": 1.6.0
+    "@tamagui/react-native-media-driver": 1.6.0
+    "@tamagui/scroll-view": 1.6.0
+    "@tamagui/select": 1.6.0
+    "@tamagui/separator": 1.6.0
+    "@tamagui/shapes": 1.6.0
+    "@tamagui/sheet": 1.6.0
+    "@tamagui/slider": 1.6.0
+    "@tamagui/stacks": 1.6.0
+    "@tamagui/switch": 1.6.0
+    "@tamagui/tabs": 1.6.0
+    "@tamagui/text": 1.6.0
+    "@tamagui/tooltip": 1.6.0
+    "@tamagui/use-controllable-state": 1.6.0
+    "@tamagui/use-debounce": 1.6.0
+    "@tamagui/use-event": 1.6.0
+    "@tamagui/use-force-update": 1.6.0
+    "@tamagui/use-window-dimensions": 1.6.0
+    "@tamagui/visually-hidden": 1.6.0
+>>>>>>> ccd274f8a8 (separate group package, tab + group integration)
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
     react: ^18.2.0
