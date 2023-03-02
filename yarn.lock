@@ -6015,6 +6015,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/use-keyboard-visible@workspace:packages/use-keyboard-visible":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-keyboard-visible@workspace:packages/use-keyboard-visible"
+  dependencies:
+    "@tamagui/build": 1.6.0
+    react: ^18.2.0
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/use-presence@1.6.0, @tamagui/use-presence@workspace:packages/use-presence":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-presence@workspace:packages/use-presence"
