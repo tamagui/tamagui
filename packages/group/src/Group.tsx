@@ -1,5 +1,6 @@
 import {
   GetProps,
+  Slot,
   TamaguiElement,
   UnionableString,
   Variable,
@@ -17,7 +18,7 @@ import {
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import React, { Children, cloneElement, forwardRef, isValidElement } from 'react'
+import React, { Children, forwardRef, isValidElement } from 'react'
 import { ScrollView } from 'react-native'
 import { useIndex, useIndexedChildren } from 'reforest'
 
@@ -102,7 +103,7 @@ function createGroup(verticalDefault: boolean) {
       const [itemChildrenCount, setItemChildrenCount] = useControllableState({
         defaultProp: forceUseItem ? 1 : 0,
       })
-      const isUsingItems = itemChildrenCount > 0
+      const isUsingItems = true // itemChildrenCount > 0
 
       // 1 off given border to adjust for border radius? This should be user controllable
       const radius =
@@ -112,6 +113,7 @@ function createGroup(verticalDefault: boolean) {
       const hasRadius = radius !== undefined
       const disablePassBorderRadius = disablePassBorderRadiusProp ?? !hasRadius
 
+      if (!isUsingItems) console.log('screw up!')
       const childrenArray = Children.toArray(childrenProp)
       const children = isUsingItems
         ? childrenProp
@@ -183,6 +185,26 @@ function createGroup(verticalDefault: boolean) {
 
 const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
   const { __scopeGroup, children } = props
+  const groupItemProps = useGroupItem(
+    { disabled: isValidElement(children) ? children.props.disabled : undefined },
+    __scopeGroup
+  )
+
+  if (!isValidElement(children)) {
+    return children as any
+  }
+
+  if (isTamaguiElement(children)) return React.cloneElement(children, groupItemProps)
+
+  return React.cloneElement(children, {
+    style: {
+      ...children.props?.['style'],
+      ...groupItemProps,
+    },
+  } as any)
+}
+
+export const useGroupItem = (childrenProps: { disabled: boolean }, __scopeGroup?: Scope) => {
   const treeIndex = useIndex()
   const context = useGroupContext('GroupItem', __scopeGroup)
 
@@ -193,12 +215,6 @@ const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
     }
   }, [])
 
-  if (!isValidElement(children)) {
-    return children as any
-  }
-
-  const disabled = children.props.disabled ?? context.disabled
-
   if (!treeIndex) {
     throw Error('<Group.Item/> should only be used within a <Group/>')
   }
@@ -206,32 +222,22 @@ const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
   const isFirst = treeIndex.index === 0
   const isLast = treeIndex.index === treeIndex.maxIndex
 
+  const disabled = childrenProps.disabled ?? context.disabled
+
   let propsToPass: Record<string, any> = {
     disabled,
   }
 
   if (!context.disablePassBorderRadius) {
-    const radiusStyles = getBorderRadius({
+    const borderRadius = getBorderRadius({
       radius: context.radius,
       isFirst,
       isLast,
       vertical: context.vertical,
     })
-    if (isTamaguiElement(children)) {
-      propsToPass = { ...propsToPass, ...radiusStyles }
-    } else {
-      propsToPass.style = radiusStyles
-    }
+    return { ...propsToPass, ...borderRadius }
   }
-
-  return cloneElement(children, {
-    ...propsToPass,
-    // @ts-ignore
-    style: {
-      ...children.props?.['style'],
-      ...propsToPass.style,
-    },
-  })
+  return propsToPass
 }
 
 export const Group = createGroup(true)

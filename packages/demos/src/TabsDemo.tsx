@@ -1,4 +1,4 @@
-import { H5, SizeTokens, Tabs, XGroup, XStack, YGroup, YStack } from 'tamagui'
+import { H5, SizeTokens, Tabs, XStack, YStack } from 'tamagui'
 
 export function TabsDemo() {
   return (
@@ -28,12 +28,10 @@ const HorizontalTabs = ({ size }: { size?: SizeTokens }) => {
       height={150}
       br="$4"
     >
-      <Tabs.List aria-label="Manage your account" m="$2">
-        <XGroup>
-          <Tabs.Trigger value="tab1">Profile</Tabs.Trigger>
-          <Tabs.Trigger value="tab2">Connections</Tabs.Trigger>
-          <Tabs.Trigger value="tab3">Notifications</Tabs.Trigger>
-        </XGroup>
+      <Tabs.List aria-label="Manage your account" margin="$2">
+        <Tabs.Trigger value="tab1">Profile</Tabs.Trigger>
+        <Tabs.Trigger value="tab2">Connections</Tabs.Trigger>
+        <Tabs.Trigger value="tab3">Notifications</Tabs.Trigger>
       </Tabs.List>
       <Tabs.Content value="tab1" key="tab1" p="$2" ai="center" jc="center" f={1}>
         <H5 ta="center">Profile</H5>
@@ -58,12 +56,10 @@ const VerticalTabs = ({ size }: { size?: SizeTokens }) => {
       width={400}
       br="$4"
     >
-      <Tabs.List aria-label="Manage your account" space="$2" m="$2">
-        <YGroup>
-          <Tabs.Trigger value="tab1">Profile</Tabs.Trigger>
-          <Tabs.Trigger value="tab2">Connections</Tabs.Trigger>
-          <Tabs.Trigger value="tab3">Notifications</Tabs.Trigger>
-        </YGroup>
+      <Tabs.List aria-label="Manage your account" margin="$2">
+        <Tabs.Trigger value="tab1">Profile</Tabs.Trigger>
+        <Tabs.Trigger value="tab2">Connections</Tabs.Trigger>
+        <Tabs.Trigger value="tab3">Notifications</Tabs.Trigger>
       </Tabs.List>
       <Tabs.Content value="tab1" key="tab1" p="$2" ai="center" jc="center" f={1}>
         <H5 ta="center">Profile</H5>
