@@ -10,7 +10,6 @@ export { CardDemo } from './CardDemo';
 export { DialogDemo } from './DialogDemo';
 export { AddThemeDemo } from './AddThemeDemo';
 export { UpdateThemeDemo } from './UpdateThemeDemo';
-export { FeatherIconsDemo } from './FeatherIconsDemo';
 export { FormsDemo } from './FormsDemo';
 export { InputsDemo } from './InputsDemo';
 export { GroupDemo } from './GroupDemo';

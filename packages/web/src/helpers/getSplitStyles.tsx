@@ -314,7 +314,13 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (keyInit in usedKeys || keyInit in skipProps) {
+    if (!staticConfig.isHOC) {
+      if (keyInit in skipProps) {
+        continue
+      }
+    }
+
+    if (keyInit in usedKeys) {
       continue
     }
 
@@ -505,6 +511,7 @@ export const getSplitStyles: StyleSplitter = (
     let isPseudo = keyInit in validPseudoKeys
 
     const isHOCShouldPassThrough = staticConfig.isHOC && (isMedia || isPseudo)
+
     const shouldPassProp = !(
       isMedia ||
       isPseudo ||
@@ -679,7 +686,7 @@ export const getSplitStyles: StyleSplitter = (
             }
             if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
               // prettier-ignore
-              console.log('Merged pseudo?', shouldMerge, { importance, curImportance, pkey, val })
+              console.log('    merge pseudo?', keyInit, shouldMerge, { importance, curImportance, pkey, val })
             }
           }
         }
