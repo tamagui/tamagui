@@ -5568,7 +5568,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/sheet@workspace:packages/sheet"
   dependencies:
-<<<<<<< HEAD
     "@tamagui/animations-react-native": 1.6.1
     "@tamagui/build": 1.6.1
     "@tamagui/compose-refs": 1.6.1
@@ -5580,20 +5579,7 @@ __metadata:
     "@tamagui/stacks": 1.6.1
     "@tamagui/use-constant": 1.6.1
     "@tamagui/use-controllable-state": 1.6.1
-=======
-    "@tamagui/animations-react-native": 1.6.0
-    "@tamagui/build": 1.6.0
-    "@tamagui/compose-refs": 1.6.0
-    "@tamagui/core": 1.6.0
-    "@tamagui/create-context": 1.6.0
-    "@tamagui/portal": 1.6.0
-    "@tamagui/remove-scroll": 1.6.0
-    "@tamagui/scroll-view": 1.6.0
-    "@tamagui/stacks": 1.6.0
-    "@tamagui/use-constant": 1.6.0
-    "@tamagui/use-controllable-state": 1.6.0
-    "@tamagui/use-keyboard-visible": 1.6.0
->>>>>>> 2f97738ae32a26ce92fc97486321b22a19647f6b
+    "@tamagui/use-keyboard-visible": 1.6.1
     react: ^18.2.0
     react-native: "*"
   peerDependencies:
@@ -6030,22 +6016,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/use-presence@1.6.1, @tamagui/use-presence@workspace:packages/use-presence":
-=======
-"@tamagui/use-keyboard-visible@1.6.0, @tamagui/use-keyboard-visible@workspace:packages/use-keyboard-visible":
+"@tamagui/use-keyboard-visible@1.6.1, @tamagui/use-keyboard-visible@workspace:packages/use-keyboard-visible":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-keyboard-visible@workspace:packages/use-keyboard-visible"
   dependencies:
-    "@tamagui/build": 1.6.0
+    "@tamagui/build": 1.6.1
     react: ^18.2.0
   peerDependencies:
     react: "*"
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-presence@1.6.0, @tamagui/use-presence@workspace:packages/use-presence":
->>>>>>> 2f97738ae32a26ce92fc97486321b22a19647f6b
+"@tamagui/use-presence@1.6.1, @tamagui/use-presence@workspace:packages/use-presence":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-presence@workspace:packages/use-presence"
   dependencies:

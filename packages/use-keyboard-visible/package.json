@@ -26,11 +26,12 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.6.0",
+    "@tamagui/build": "1.6.1",
     "react": "^18.2.0"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   },
   "publishConfig": {
     "access": "public"

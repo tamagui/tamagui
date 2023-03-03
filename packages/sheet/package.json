@@ -22,7 +22,6 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "dependencies": {
-    "@tamagui/use-keyboard-visible": "1.6.1",
     "@tamagui/animations-react-native": "1.6.1",
     "@tamagui/compose-refs": "1.6.1",
     "@tamagui/core": "1.6.1",
@@ -32,7 +31,8 @@
     "@tamagui/scroll-view": "1.6.1",
     "@tamagui/stacks": "1.6.1",
     "@tamagui/use-constant": "1.6.1",
-    "@tamagui/use-controllable-state": "1.6.1"
+    "@tamagui/use-controllable-state": "1.6.1",
+    "@tamagui/use-keyboard-visible": "1.6.1"
   },
   "peerDependencies": {
     "react": "*",
