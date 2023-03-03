@@ -22,6 +22,7 @@
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
   "dependencies": {
+    "@tamagui/use-keyboard-visible": "1.6.1",
     "@tamagui/animations-react-native": "1.6.1",
     "@tamagui/compose-refs": "1.6.1",
     "@tamagui/core": "1.6.1",
