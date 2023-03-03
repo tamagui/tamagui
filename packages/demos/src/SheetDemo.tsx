@@ -2,7 +2,7 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { Sheet } from '@tamagui/sheet'
 import { SheetProps } from '@tamagui/sheet/types/types'
 import { useState } from 'react'
-import { Button, H1, H2, Paragraph, XStack } from 'tamagui'
+import { Button, H1, H2, Input, Paragraph, XStack } from 'tamagui'
 
 export const SheetDemo = () => {
   const [position, setPosition] = useState(0)
@@ -34,7 +34,7 @@ export const SheetDemo = () => {
         <Sheet.Handle />
         <Sheet.Frame f={1} p="$4" jc="center" ai="center" space="$5">
           <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
-
+          <Input w={200} />
           {modal && (
             <>
               <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
