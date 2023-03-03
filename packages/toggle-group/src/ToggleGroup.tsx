@@ -333,7 +333,6 @@ type ToggleGroupImplElement = TamaguiElement
 const ToggleGroupImplElementFrame = styled(ThemeableStack, {
   name: TOGGLE_GROUP_NAME,
   backgroundColor: '$background',
-  borderRadius: 4,
   borderColor: '$borderColor',
   borderWidth: 2,
   variants: {
