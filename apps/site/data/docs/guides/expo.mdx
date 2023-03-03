@@ -3,6 +3,11 @@ title: Expo Guide
 description: How to set up Tamagui with Expo
 ---
 
+<Notice>
+  Notice: Expo by itself is not suited for the web. If you need web support, "npm create
+  tamagui" gives you Expo + Next which gives a great web setup.
+</Notice>
+
 ### Installing Tamagui in Expo
 
 This guide assumes Expo was configured with TypeScript support
@@ -22,7 +27,7 @@ yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variabl
 npx expo install react-native-reanimated
 ```
 
-Update your `babel.config.js` to include the `@tamagui/babel-plugin`,  `transform-inline-environment-variables` and `react-native-reanimated` plugins:
+Update your `babel.config.js` to include the `@tamagui/babel-plugin`, `transform-inline-environment-variables` and `react-native-reanimated` plugins:
 
 ```js
 process.env.TAMAGUI_TARGET = "native"; // Don't forget to specify your TAMAGUI_TARGET here
@@ -61,10 +66,10 @@ yarn add tamagui expo-font @tamagui/font-inter @tamagui/theme-base @tamagui/anim
 
 Other font package options included with Tamagui:
 
-- [font-silkscreen](https://github.com/tamagui/tamagui/tree/master/packages/font-silkscreen) 
+- [font-silkscreen](https://github.com/tamagui/tamagui/tree/master/packages/font-silkscreen)
 - [font-fira-mono](https://github.com/tamagui/tamagui/tree/master/packages/font-fira-mono)
 
-Create a `tamagui.config.ts` file in the project root 
+Create a `tamagui.config.ts` file in the project root
 
 ```tsx
 import { createInterFont } from "@tamagui/font-inter";
@@ -139,8 +144,6 @@ export default config;
 
 ```
 
-
-
 ### Add Tamagui provider and theme support
 
 Add this to your `App.tsx`
@@ -184,20 +187,15 @@ export default function App() {
 }
 ```
 
-
-
 ### First time starting Expo
 
 The first time running your project with Tamagui, be sure to clear the cache:
 
 ```bash
- expo start -c 
+ expo start -c
 ```
 
-
-
 ### Other resources
-
 
 If you'd like to get a good idea of a set up with Expo, try out `npm create tamagui` which generates a managed expo project.
 
