@@ -3,7 +3,7 @@ import { H5, Tabs, XStack, YStack } from 'tamagui'
 export function TabsDemo() {
   return (
     <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
-      <YStack space px="$8">
+      <YStack space px="$4">
         <HorizontalTabs />
         <VerticalTabs />
       </YStack>
