@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tabs",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -17,20 +17,20 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/core": "1.6.0",
-    "@tamagui/create-context": "1.6.0",
-    "@tamagui/roving-focus": "1.6.0",
-    "@tamagui/scroll-view": "1.6.0",
-    "@tamagui/stacks": "1.6.0",
-    "@tamagui/use-controllable-state": "1.6.0",
-    "@tamagui/use-direction": "1.6.0"
+    "@tamagui/core": "1.6.1",
+    "@tamagui/create-context": "1.6.1",
+    "@tamagui/roving-focus": "1.6.1",
+    "@tamagui/scroll-view": "1.6.1",
+    "@tamagui/stacks": "1.6.1",
+    "@tamagui/use-controllable-state": "1.6.1",
+    "@tamagui/use-direction": "1.6.1"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.6.0",
+    "@tamagui/build": "1.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

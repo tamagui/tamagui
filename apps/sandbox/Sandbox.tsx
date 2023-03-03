@@ -7,6 +7,7 @@ import {
   GroupDemo,
   InputsDemo,
   ProgressDemo,
+  SelectDemo,
   SwitchDemo,
   TabsAnimatedDemo,
   TabsDemo,
