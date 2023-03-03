@@ -4615,6 +4615,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/config-base@workspace:packages/config-base":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/config-base@workspace:packages/config-base"
+  dependencies:
+    "@tamagui/animations-css": 1.6.2
+    "@tamagui/animations-react-native": 1.6.2
+    "@tamagui/build": 1.6.2
+    "@tamagui/colors": 1.6.2
+    "@tamagui/core": 1.6.2
+    "@tamagui/font-inter": 1.6.2
+    "@tamagui/font-silkscreen": 1.6.2
+    "@tamagui/react-native-media-driver": 1.6.2
+    "@tamagui/shorthands": 1.6.2
+    "@tamagui/theme-base": 1.6.2
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/config-default-node@1.6.2, @tamagui/config-default-node@workspace:packages/config-default-node":
   version: 0.0.0-use.local
   resolution: "@tamagui/config-default-node@workspace:packages/config-default-node"
@@ -4733,7 +4750,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/create-themes@workspace:packages/create-themes":
+"@tamagui/create-themes@1.6.2, @tamagui/create-themes@workspace:packages/create-themes":
   version: 0.0.0-use.local
   resolution: "@tamagui/create-themes@workspace:packages/create-themes"
   dependencies:
@@ -5858,6 +5875,17 @@ __metadata:
     react: ^18.2.0
   peerDependencies:
     react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/theme-base@1.6.2, @tamagui/theme-base@workspace:packages/theme-base":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/theme-base@workspace:packages/theme-base"
+  dependencies:
+    "@tamagui/build": 1.6.2
+    "@tamagui/colors": 1.6.2
+    "@tamagui/core": 1.6.2
+    "@tamagui/create-themes": 1.6.2
   languageName: unknown
   linkType: soft
 
