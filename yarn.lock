@@ -6025,6 +6025,7 @@ __metadata:
     react: ^18.2.0
   peerDependencies:
     react: "*"
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
