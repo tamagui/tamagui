@@ -89,23 +89,40 @@ const TabsTriggerFrame = Button
 //   name: TRIGGER_NAME,
 // })
 
+type TabTriggerLayout = LayoutRectangle
+
 type TabsTriggerFrameProps = GetProps<typeof TabsTriggerFrame>
 type TabsTriggerProps = TabsTriggerFrameProps & {
   /** The value for the tabs state to be changed to after activation of the trigger */
   value: string
+
+  /** Used for making custom indicators when trigger is selected */
+  onSelectedLayoutChange?: (layout: TabTriggerLayout | null) => void
+  /** Used for making custom indicators when trigger is hovered */
+  onHoveredLayoutChange?: (layout: TabTriggerLayout | null) => void
+  /** Used for making custom indicators when trigger is focused */
+  onFocusedLayoutChange?: (layout: TabTriggerLayout | null) => void
 }
 
 const TabsTrigger =
   // TabsTriggerFrame.extractable(
   React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
     (props: ScopedProps<TabsTriggerProps>, forwardedRef) => {
-      const { __scopeTabs, value, disabled = false, ...triggerProps } = props
+      const {
+        __scopeTabs,
+        value,
+        disabled = false,
+        onSelectedLayoutChange,
+        onHoveredLayoutChange,
+        onFocusedLayoutChange,
+        ...triggerProps
+      } = props
       const context = useTabsContext(TRIGGER_NAME, __scopeTabs)
       const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs)
       const triggerId = makeTriggerId(context.baseId, value)
       const contentId = makeContentId(context.baseId, value)
       const isSelected = value === context.value
-      const [layout, setLayout] = React.useState<LayoutRectangle | null>(null)
+      const [layout, setLayout] = React.useState<TabTriggerLayout | null>(null)
       const triggerRef = React.useRef<HTMLButtonElement>(null)
       const groupItemProps = useGroupItem({ disabled })
       React.useEffect(() => {
@@ -131,23 +148,11 @@ const TabsTrigger =
         }
       }, [])
 
-      React.useEffect(() => {
-        if (isSelected && context.selectedLayout?.value !== value && layout) {
-          context.onSelectedLayoutChange({ value, layout })
+      React.useLayoutEffect(() => {
+        if (isSelected && layout) {
+          onSelectedLayoutChange?.(layout)
         }
-      }, [isSelected, context.selectedLayout?.value, value, layout])
-
-      const transitionDirection = React.useMemo(() => {
-        if (!layout || !context.selectedLayout?.layout) {
-          return 0
-        }
-        if (context.orientation === 'vertical') {
-          if (context.selectedLayout.layout.y === layout.y) return 0
-          return context.selectedLayout.layout.y > layout.y ? 1 : -1
-        }
-        if (context.selectedLayout.layout.x === layout.x) return 0
-        return context.selectedLayout.layout.x > layout.x ? 1 : -1
-      }, [context.selectedLayout, context.orientation, layout])
+      }, [isSelected, value, layout])
 
       return (
         <Theme forceClassName name={isSelected ? 'active' : null}>
@@ -165,11 +170,11 @@ const TabsTrigger =
               }}
               onHoverIn={composeEventHandlers(props.onHoverIn, () => {
                 if (layout) {
-                  context.onHoveredLayoutChange({ value, layout })
+                  onHoveredLayoutChange?.(layout)
                 }
               })}
               onHoverOut={composeEventHandlers(props.onHoverOut, () => {
-                context.onHoveredLayoutChange(null)
+                onHoveredLayoutChange?.(null)
               })}
               role="tab"
               aria-selected={isSelected}
@@ -190,7 +195,7 @@ const TabsTrigger =
                   ((event as unknown as React.MouseEvent).button === 0 &&
                     (event as unknown as React.MouseEvent).ctrlKey === false)
                 if (!disabled && !isSelected && webChecks) {
-                  context.onChange({ value, transitionDirection })
+                  context.onChange(value)
                 } else {
                   // prevent focus to avoid accidental activation
                   event.preventDefault()
@@ -202,23 +207,23 @@ const TabsTrigger =
                   (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
                   (event) => {
                     if ([' ', 'Enter'].includes(event.key)) {
-                      context.onChange({ value, transitionDirection })
+                      context.onChange(value)
                     }
                   }
                 ),
                 onFocus: composeEventHandlers(props.onFocus, (event) => {
                   if (layout) {
-                    context.onFocusedLayoutChange({ layout, value })
+                    onFocusedLayoutChange?.(layout)
                   }
                   // handle "automatic" activation if necessary
                   // ie. activate tab following focus
                   const isAutomaticActivation = context.activationMode !== 'manual'
                   if (!isSelected && !disabled && isAutomaticActivation) {
-                    context.onChange({ value, transitionDirection })
+                    context.onChange(value)
                   }
                 }),
                 onBlur: composeEventHandlers(props.onFocus, () => {
-                  context.onFocusedLayoutChange(null)
+                  onFocusedLayoutChange?.(null)
                 }),
               })}
               {...groupItemProps}
@@ -287,96 +292,10 @@ const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
 TabsContent.displayName = CONTENT_NAME
 
 /* -------------------------------------------------------------------------------------------------
- * TabsRovingIndicator
- * -----------------------------------------------------------------------------------------------*/
-
-const TABS_HIGHLIGHT_NAME = 'TabsRovingIndicator'
-
-const TabsRovingIndicatorFrame = styled(Stack, {
-  name: TABS_HIGHLIGHT_NAME,
-  variants: {
-    active: {
-      true: {
-        backgroundColor: '$color8',
-      },
-    },
-    enter: {
-      true: {
-        opacity: 0,
-      },
-    },
-    exit: {
-      true: {
-        opacity: 0,
-      },
-    },
-  },
-  defaultVariants: {
-    position: 'absolute',
-    backgroundColor: '$color5',
-    opacity: 1,
-  },
-})
-type TabsRovingIndicatorFrameProps = GetProps<typeof TabsRovingIndicatorFrame>
-type TabsRovingIndicatorProps = TabsRovingIndicatorFrameProps & {
-  /**
-   * Determines when should the indicator appear. hover, focus and hoverOrFocus only appear on web.
-   * @default select
-   */
-  highlightMode?: 'select' | 'hover' | 'focus' | 'hoverOrFocus'
-}
-
-const TabsRovingIndicator = TabsRovingIndicatorFrame.extractable(
-  React.forwardRef<HTMLDivElement, TabsRovingIndicatorProps>(
-    (props: ScopedProps<TabsRovingIndicatorProps>, forwardedRef) => {
-      const { __scopeTabs, children, highlightMode = 'select', ...highlightProps } = props
-      const context = useTabsContext(TAB_LIST_NAME, __scopeTabs)
-
-      let layoutState = context.selectedLayout
-      if (highlightMode === 'select') {
-        layoutState = context.selectedLayout
-      } else if (highlightMode === 'hoverOrFocus') {
-        layoutState = context.hoveredLayout ?? context.focusedLayout
-      } else if (highlightMode === 'focus') {
-        layoutState = context.focusedLayout
-      }
-      const layout = layoutState?.layout
-      if (!layout) return null
-
-      return (
-        <TabsRovingIndicatorFrame
-          theme={highlightMode === 'select' ? 'active' : undefined}
-          active={highlightMode === 'select'}
-          ref={forwardedRef}
-          width={layout.width}
-          height={layout.height}
-          scale={1}
-          x={layout.x}
-          y={layout.y}
-          {...highlightProps}
-        >
-          {children}
-        </TabsRovingIndicatorFrame>
-      )
-    }
-  )
-)
-
-TabsRovingIndicator.displayName = CONTENT_NAME
-TabsRovingIndicator['isUnspaced'] = true
-
-/* -------------------------------------------------------------------------------------------------
  * Tabs
  * -----------------------------------------------------------------------------------------------*/
 
 const TABS_NAME = 'Tabs'
-
-/**
- * -1: from left or top
- * 0: no state
- * 1: from right or bottom
- */
-type TransitionDirection = -1 | 0 | 1
 
 type ScopedProps<P> = P & { __scopeTabs?: Scope }
 const [createTabsContext, createTabsScope] = createContextScope(TABS_NAME, [
@@ -384,32 +303,19 @@ const [createTabsContext, createTabsScope] = createContextScope(TABS_NAME, [
 ])
 const useRovingFocusGroupScope = createRovingFocusGroupScope()
 
-type LayoutState = {
-  value: string
-  layout: LayoutRectangle
-}
 type TabsContextValue = {
   baseId: string
   value?: string
-  onChange: (args: { value: string; transitionDirection: TransitionDirection }) => void
+  onChange: (value: string) => void
   orientation?: TabsProps['orientation']
   dir?: TabsProps['dir']
   activationMode?: TabsProps['activationMode']
-  selectedLayout: LayoutState | null
-  onSelectedLayoutChange: (value: LayoutState | null) => void
-  hoveredLayout: LayoutState | null
-  onHoveredLayoutChange: (value: LayoutState | null) => void
-  focusedLayout: LayoutState | null
-  onFocusedLayoutChange: (value: LayoutState | null) => void
-  size: SizeTokens
 }
 
 const [TabsProvider, useTabsContext] = createTabsContext<TabsContextValue>(TABS_NAME)
 
 const TabsFrame = styled(SizableStack, {
   name: TABS_NAME,
-
-  // flexDirection: 'column',
 })
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>
 type TabsFrameProps = GetProps<typeof TabsFrame>
@@ -420,11 +326,6 @@ type TabsProps = TabsFrameProps & {
   defaultValue?: string
   /** A function called when a new tab is selected */
   onValueChange?: (value: string) => void
-  /**
-   * Used for animating the tabs content
-   *
-   */
-  onDirectionChange?: (value: TransitionDirection) => void
   /**
    * The orientation the tabs are layed out.
    * Mainly so arrow navigation is done accordingly (left & right vs. up & down)
@@ -449,7 +350,6 @@ export const Tabs = withStaticProperties(
         __scopeTabs,
         value: valueProp,
         onValueChange,
-        onDirectionChange,
         defaultValue,
         orientation = 'horizontal',
         dir,
@@ -463,37 +363,16 @@ export const Tabs = withStaticProperties(
         onChange: onValueChange,
         defaultProp: defaultValue ?? '',
       })
-      const handleOnChange = React.useCallback<TabsContextValue['onChange']>(
-        (newState) => {
-          if (onDirectionChange) {
-            onDirectionChange?.(newState.transitionDirection)
-            // user needs to receive the direction first to animate it properly
-            setTimeout(() => setValue(newState.value), 0)
-          } else {
-            setValue(newState.value)
-          }
-        },
-        []
-      )
-      const [hoveredLayout, setHoveredLayout] = React.useState<LayoutState | null>(null)
-      const [selectedLayout, setSelectedLayout] = React.useState<LayoutState | null>(null)
-      const [focusedLayout, setFocusedLayout] = React.useState<LayoutState | null>(null)
 
       return (
         <TabsProvider
           scope={__scopeTabs}
           baseId={useId()}
           value={value}
-          onChange={handleOnChange}
+          onChange={setValue}
           orientation={orientation}
           dir={direction}
           activationMode={activationMode}
-          hoveredLayout={hoveredLayout}
-          onHoveredLayoutChange={setHoveredLayout}
-          selectedLayout={selectedLayout}
-          onSelectedLayoutChange={setSelectedLayout}
-          focusedLayout={focusedLayout}
-          onFocusedLayoutChange={setFocusedLayout}
           size={size}
         >
           <TabsFrame
@@ -511,7 +390,6 @@ export const Tabs = withStaticProperties(
     List: TabsList,
     Trigger: TabsTrigger,
     Content: TabsContent,
-    RovingIndicator: TabsRovingIndicator,
   }
 )
 
@@ -527,4 +405,10 @@ function makeContentId(baseId: string, value: string) {
   return `${baseId}-content-${value}`
 }
 
-export type { TabsProps, TabsListProps, TabsTriggerProps, TabsContentProps }
+export type {
+  TabsProps,
+  TabsListProps,
+  TabsTriggerProps,
+  TabsContentProps,
+  TabTriggerLayout,
+}
