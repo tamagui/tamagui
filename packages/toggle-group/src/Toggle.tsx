@@ -88,7 +88,8 @@ const Toggle = ToggleFrame.extractable(
 
     return (
       <ToggleFrame
-        press={pressed ? 'active' : 'unactive'}
+        // press={pressed ? 'active' : 'unactive'}
+        theme={pressed?"active":null}
         aria-pressed={pressed}
         data-state={pressed ? 'on' : 'off'}
         data-disabled={props.disabled ? '' : undefined}
