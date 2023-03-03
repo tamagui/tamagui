@@ -2250,7 +2250,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/config@npm:7.0.3, @expo/config@npm:~7.0.0, @expo/config@npm:~7.0.2":
+"@expo/config@npm:7.0.3, @expo/config@npm:~7.0.2":
   version: 7.0.3
   resolution: "@expo/config@npm:7.0.3"
   dependencies:
@@ -5037,14 +5037,14 @@ __metadata:
     expo-dev-client: ~2.0.1
     expo-font: ^11.0.1
     expo-linear-gradient: ^12.0.1
-    expo-linking: ~3.2.3
+    expo-linking: ^3.2.3
     expo-splash-screen: ~0.17.5
     expo-status-bar: ~1.4.2
     expo-updates: ~0.15.6
     metro-runtime: "*"
-    react: 18.1.0
+    react: ^18.2.0
     react-dom: ^18.2.0
-    react-native: 0.70.5
+    react-native: "*"
     react-native-gesture-handler: ^2.8.0
     react-native-safe-area-context: ^4.4.1
     react-native-screens: ^3.18.2
@@ -5580,6 +5580,7 @@ __metadata:
     "@tamagui/stacks": 1.6.1
     "@tamagui/use-constant": 1.6.1
     "@tamagui/use-controllable-state": 1.6.1
+    "@tamagui/use-keyboard-visible": 1.6.1
     react: ^18.2.0
     react-native: "*"
   peerDependencies:
@@ -6013,6 +6014,19 @@ __metadata:
     react: ^18.2.0
   peerDependencies:
     react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/use-keyboard-visible@1.6.1, @tamagui/use-keyboard-visible@workspace:packages/use-keyboard-visible":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-keyboard-visible@workspace:packages/use-keyboard-visible"
+  dependencies:
+    "@tamagui/build": 1.6.1
+    react: ^18.2.0
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -11236,8 +11250,8 @@ __metadata:
     expo: ~47.0.12
     expo-constants: ^14.0.2
     expo-dev-client: ~2.0.1
-    expo-font: ~11.0.1
-    expo-linear-gradient: ~12.0.1
+    expo-font: ^11.0.1
+    expo-linear-gradient: ^12.0.1
     expo-splash-screen: ~0.17.5
     expo-status-bar: ~1.4.2
     expo-updates: ~0.15.6
@@ -11286,18 +11300,6 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: fc89991204d61cd01535098c95f5d1cefd7ef0a0bc8aa0f6ee49b0146a2fe18962ab020271438c0e88ee70ffb9d6391221c1e78c5419eb62bb19f3d07105be99
-  languageName: node
-  linkType: hard
-
-"expo-constants@npm:~13.2.0":
-  version: 13.2.4
-  resolution: "expo-constants@npm:13.2.4"
-  dependencies:
-    "@expo/config": ~7.0.0
-    uuid: ^3.3.2
-  peerDependencies:
-    expo: "*"
-  checksum: c0a1e330f252b39cf901e24dcd17cfab09f9f6dba15f52a50e1ac6d4236c27ccef2a288d99a23ee0d365e98f36cb7e6a1b6acf89209dd74996aeb7133478207c
   languageName: node
   linkType: hard
 
@@ -11416,7 +11418,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-linear-gradient@npm:^12.0.1, expo-linear-gradient@npm:~12.0.1":
+"expo-linear-gradient@npm:^12.0.1":
   version: 12.0.1
   resolution: "expo-linear-gradient@npm:12.0.1"
   peerDependencies:
@@ -11435,19 +11437,6 @@ __metadata:
     qs: ^6.9.1
     url-parse: ^1.5.9
   checksum: ff4beff24a971fce24baa5423bab7ef0caabda64f87c9c55d32c409cd8f0e48ea46cc08ab1e54978e51476d7a6dadca05a5ba4ab74e982063d64ddfc8230cb5e
-  languageName: node
-  linkType: hard
-
-"expo-linking@npm:~3.2.3":
-  version: 3.2.4
-  resolution: "expo-linking@npm:3.2.4"
-  dependencies:
-    "@types/qs": ^6.5.3
-    expo-constants: ~13.2.0
-    invariant: ^2.2.4
-    qs: ^6.9.1
-    url-parse: ^1.5.9
-  checksum: 7053609979f5bce5ca17267ff7a614b224c3d1176e4b73bd3a4a66229ff1ed9e995e7a5b074bb49840550661d617ff19b7460936a2a302534675f7c995b4a624
   languageName: node
   linkType: hard
 

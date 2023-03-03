@@ -31,7 +31,8 @@
     "@tamagui/scroll-view": "1.6.1",
     "@tamagui/stacks": "1.6.1",
     "@tamagui/use-constant": "1.6.1",
-    "@tamagui/use-controllable-state": "1.6.1"
+    "@tamagui/use-controllable-state": "1.6.1",
+    "@tamagui/use-keyboard-visible": "1.6.1"
   },
   "peerDependencies": {
     "react": "*",
