@@ -16,9 +16,6 @@
     },
     {
       "path": "../../packages/shorthands"
-    },
-    {
-      "path": "../../packages/theme-base"
     }
   ]
 }
