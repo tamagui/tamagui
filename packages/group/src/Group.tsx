@@ -1,6 +1,5 @@
 import {
   GetProps,
-  Slot,
   TamaguiElement,
   UnionableString,
   Variable,
@@ -204,7 +203,10 @@ const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
   } as any)
 }
 
-export const useGroupItem = (childrenProps: { disabled: boolean }, __scopeGroup?: Scope) => {
+export const useGroupItem = (
+  childrenProps: { disabled: boolean },
+  __scopeGroup?: Scope
+) => {
   const treeIndex = useIndex()
   const context = useGroupContext('GroupItem', __scopeGroup)
 
