@@ -1,5 +1,5 @@
 import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
-import { Label, Separator, SizeTokens, ToggleGroup, XStack, YStack } from 'tamagui'
+import { Label, Separator, SizeTokens, ToggleGroup, XStack, YStack, XGroup} from 'tamagui'
 
 export function ToggleGroupDemo() {
   return (
@@ -18,6 +18,7 @@ function ToggleGroupComponent(props: { size: SizeTokens; type: 'single' | 'multi
         {props.type === 'single'?'Single':'Multiple'}
       </Label>
       <Separator mih={20} vertical />
+      <XGroup>
       <ToggleGroup id={id} type={props.type}>
         <ToggleGroup.Item size={props.size} value="left" aria-label="Left aligned">
           <AlignLeft />
@@ -29,6 +30,7 @@ function ToggleGroupComponent(props: { size: SizeTokens; type: 'single' | 'multi
           <AlignRight />
         </ToggleGroup.Item>
       </ToggleGroup>
+      </XGroup>
     </XStack>
   )
 }
