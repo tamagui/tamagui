@@ -2,6 +2,7 @@ import { GetProps, SizeTokens } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import { RovingFocusGroup } from '@tamagui/roving-focus';
 import * as React from 'react';
+import type { LayoutRectangle } from 'react-native';
 declare const TabsListFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -563,10 +564,17 @@ declare const TabsTriggerFrame: (props: Omit<Omit<import("@tamagui/text").TextPa
     scaleSpace?: number | undefined;
     unstyled?: boolean | undefined;
 } & React.RefAttributes<import("@tamagui/core").TamaguiElement>, "theme" | "themeInverse"> & import("@tamagui/core").ThemeableProps) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
+type TabTriggerLayout = LayoutRectangle;
 type TabsTriggerFrameProps = GetProps<typeof TabsTriggerFrame>;
 type TabsTriggerProps = TabsTriggerFrameProps & {
     /** The value for the tabs state to be changed to after activation of the trigger */
     value: string;
+    /** Used for making custom indicators when trigger is selected */
+    onSelectedLayoutChange?: (layout: TabTriggerLayout | null) => void;
+    /** Used for making custom indicators when trigger is hovered */
+    onHoveredLayoutChange?: (layout: TabTriggerLayout | null) => void;
+    /** Used for making custom indicators when trigger is focused */
+    onFocusedLayoutChange?: (layout: TabTriggerLayout | null) => void;
 };
 declare const TabsContentFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -579,7 +587,10 @@ declare const TabsContentFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
     readonly padded?: boolean | undefined;
-    readonly elevate?: boolean | undefined;
+    readonly elevate?: boolean | undefined; /**
+     * Whether to loop over after reaching the end or start of the items
+     * @default true
+     */
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
@@ -692,12 +703,6 @@ type TabsContentProps = TabsContentFrameProps & {
      */
     forceMount?: true;
 };
-/**
- * -1: from left or top
- * 0: no state
- * 1: from right or bottom
- */
-type TransitionDirection = -1 | 0 | 1;
 declare const TabsFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -794,11 +799,6 @@ type TabsProps = TabsFrameProps & {
     /** A function called when a new tab is selected */
     onValueChange?: (value: string) => void;
     /**
-     * Used for animating the tabs content
-     *
-     */
-    onDirectionChange?: (value: TransitionDirection) => void;
-    /**
      * The orientation the tabs are layed out.
      * Mainly so arrow navigation is done accordingly (left & right vs. up & down)
      * @defaultValue horizontal
@@ -854,11 +854,6 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     defaultValue?: string | undefined;
     /** A function called when a new tab is selected */
     onValueChange?: ((value: string) => void) | undefined;
-    /**
-     * Used for animating the tabs content
-     *
-     */
-    onDirectionChange?: ((value: TransitionDirection) => void) | undefined;
     /**
      * The orientation the tabs are layed out.
      * Mainly so arrow navigation is done accordingly (left & right vs. up & down)
@@ -920,11 +915,6 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     defaultValue?: string | undefined;
     /** A function called when a new tab is selected */
     onValueChange?: ((value: string) => void) | undefined;
-    /**
-     * Used for animating the tabs content
-     *
-     */
-    onDirectionChange?: ((value: TransitionDirection) => void) | undefined;
     /**
      * The orientation the tabs are layed out.
      * Mainly so arrow navigation is done accordingly (left & right vs. up & down)
@@ -1367,7 +1357,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
          */
         loop?: boolean | undefined;
     }, string | number>) & React.RefAttributes<HTMLDivElement>>;
-    Trigger: React.ForwardRefExoticComponent<Pick<TabsTriggerProps, "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "hitSlop" | "pointerEvents" | "removeClippedSubviews" | "style" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityState" | "accessibilityHint" | "accessibilityValue" | "onAccessibilityAction" | "accessibilityLabelledBy" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityLanguage" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "elevation" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "size" | "unstyled" | "fullscreen" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless" | `$${string}` | `$${number}` | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "cursor" | "contain" | "gap" | "gapColumn" | "gapRow" | "userSelect" | "outlineColor" | "outlineStyle" | "outlineOffset" | "outlineWidth" | "fontFamily" | "fontSize" | "space" | "color" | "textShadowColor" | "lineHeight" | "fontWeight" | "letterSpacing" | "key" | "textAlign" | "allowFontScaling" | "ellipsizeMode" | "lineBreakMode" | "numberOfLines" | "onTextLayout" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "maxFontSizeMultiplier" | "adjustsFontSizeToFit" | "minimumFontScale" | "suppressHighlighting" | "disabled" | "selectable" | "selectionColor" | "textBreakStrategy" | "dataDetectorType" | "android_hyphenationFrequency" | "fontStyle" | "textDecorationLine" | "textDecorationStyle" | "textDecorationColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "fontVariant" | "writingDirection" | "textAlignVertical" | "includeFontPadding" | "ellipse" | "textDecorationDistance" | "textOverflow" | "whiteSpace" | "wordWrap" | "target" | "asChild" | "spaceDirection" | "separator" | "dangerouslySetInnerHTML" | "animation" | "animateOnly" | "className" | "themeShallow" | "id" | "tag" | "tabIndex" | "role" | "forceStyle" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "value" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs" | "textProps" | "noTextWrap" | "defaultStyle" | "active" | keyof import("@tamagui/core").ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & React.RefAttributes<HTMLButtonElement>>;
+    Trigger: React.ForwardRefExoticComponent<Pick<TabsTriggerProps, "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "hitSlop" | "pointerEvents" | "removeClippedSubviews" | "style" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityState" | "accessibilityHint" | "accessibilityValue" | "onAccessibilityAction" | "accessibilityLabelledBy" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityLanguage" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "elevation" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "size" | "unstyled" | "fullscreen" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless" | `$${string}` | `$${number}` | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "cursor" | "contain" | "gap" | "gapColumn" | "gapRow" | "userSelect" | "outlineColor" | "outlineStyle" | "outlineOffset" | "outlineWidth" | "fontFamily" | "fontSize" | "space" | "color" | "textShadowColor" | "lineHeight" | "fontWeight" | "letterSpacing" | "key" | "textAlign" | "allowFontScaling" | "ellipsizeMode" | "lineBreakMode" | "numberOfLines" | "onTextLayout" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "maxFontSizeMultiplier" | "adjustsFontSizeToFit" | "minimumFontScale" | "suppressHighlighting" | "disabled" | "selectable" | "selectionColor" | "textBreakStrategy" | "dataDetectorType" | "android_hyphenationFrequency" | "fontStyle" | "textDecorationLine" | "textDecorationStyle" | "textDecorationColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "fontVariant" | "writingDirection" | "textAlignVertical" | "includeFontPadding" | "ellipse" | "textDecorationDistance" | "textOverflow" | "whiteSpace" | "wordWrap" | "target" | "asChild" | "spaceDirection" | "separator" | "dangerouslySetInnerHTML" | "animation" | "animateOnly" | "className" | "themeShallow" | "id" | "tag" | "tabIndex" | "role" | "forceStyle" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "value" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs" | "textProps" | "noTextWrap" | "defaultStyle" | "active" | keyof import("@tamagui/core").ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "onSelectedLayoutChange" | "onHoveredLayoutChange" | "onFocusedLayoutChange"> & React.RefAttributes<HTMLButtonElement>>;
     Content: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -1379,7 +1369,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly focusTheme?: boolean | undefined;
         readonly circular?: boolean | undefined;
         readonly padded?: boolean | undefined;
-        readonly elevate?: boolean | undefined;
+        readonly elevate?: boolean | undefined; /**
+         * Whether to loop over after reaching the end or start of the items
+         * @default true
+         */
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
@@ -1481,25 +1474,6 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
          */
         forceMount?: true | undefined;
     }, string | number>) & React.RefAttributes<HTMLDivElement>>;
-    RovingIndicator: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "active" | "enter" | "exit"> & {
-        active?: boolean | undefined;
-        enter?: boolean | undefined;
-        exit?: boolean | undefined;
-    } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "active" | "enter" | "exit"> & {
-        active?: boolean | undefined;
-        enter?: boolean | undefined;
-        exit?: boolean | undefined;
-    }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "active" | "enter" | "exit"> & {
-        active?: boolean | undefined;
-        enter?: boolean | undefined;
-        exit?: boolean | undefined;
-    }>> & {
-        /**
-         * Determines when should the indicator appear. hover, focus and hoverOrFocus only appear on web.
-         * @default select
-         */
-        highlightMode?: "hover" | "focus" | "select" | "hoverOrFocus" | undefined;
-    } & React.RefAttributes<HTMLDivElement>>;
 };
-export type { TabsProps, TabsListProps, TabsTriggerProps, TabsContentProps };
+export type { TabsProps, TabsListProps, TabsTriggerProps, TabsContentProps, TabTriggerLayout, };
 //# sourceMappingURL=Tabs.d.ts.map
