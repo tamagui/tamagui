@@ -1,3 +1,6 @@
+- @tamagui/change-animation-driver
+  - would be good for the website to show and test animations across all drivers
+
 - https://github.com/tamagui/tamagui/issues/568
 - instead of proxying we could just merge all themes on creation with their parents?
 
