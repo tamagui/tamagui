@@ -8003,13 +8003,13 @@ __metadata:
     babel-plugin-module-resolver: ^4.1.0
     babel-plugin-transform-inline-environment-variables: ^0.4.4
     expo: ^47.0.12
-    expo-constants: ^14.0.2
-    expo-dev-client: ^2.0.1
-    expo-font: ^11.0.1
-    expo-linear-gradient: ^12.0.1
-    expo-splash-screen: ^0.17.5
-    expo-status-bar: ^1.4.2
-    expo-updates: ^0.15.6
+    expo-constants: ~14.0.2
+    expo-dev-client: ~2.0.1
+    expo-font: ~11.0.1
+    expo-linear-gradient: ~12.0.1
+    expo-splash-screen: ~0.17.5
+    expo-status-bar: ~1.4.2
+    expo-updates: ~0.15.6
     metro-minify-terser: ^0.74.1
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -8071,7 +8071,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-dev-client@npm:^2.0.1":
+"expo-dev-client@npm:~2.0.1":
   version: 2.0.1
   resolution: "expo-dev-client@npm:2.0.1"
   dependencies:
@@ -8147,7 +8147,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-font@npm:^11.0.1, expo-font@npm:~11.0.1":
+"expo-font@npm:~11.0.1":
   version: 11.0.1
   resolution: "expo-font@npm:11.0.1"
   dependencies:
@@ -8174,7 +8174,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-linear-gradient@npm:^12.0.1":
+"expo-linear-gradient@npm:~12.0.1":
   version: 12.0.1
   resolution: "expo-linear-gradient@npm:12.0.1"
   peerDependencies:
@@ -8230,7 +8230,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-splash-screen@npm:^0.17.5":
+"expo-splash-screen@npm:~0.17.5":
   version: 0.17.5
   resolution: "expo-splash-screen@npm:0.17.5"
   dependencies:
@@ -8242,10 +8242,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-status-bar@npm:^1.4.2":
-  version: 1.4.2
-  resolution: "expo-status-bar@npm:1.4.2"
-  checksum: ec61ceb71a4d72592c12f05ca6988a84fea55b77d2cd384d4c6bdb41002b98ef19a5f5af7c327a9e569f0e4754cc75af4d4da6131a9bb781cb4dd8e8bd2f0387
+"expo-status-bar@npm:~1.4.2":
+  version: 1.4.4
+  resolution: "expo-status-bar@npm:1.4.4"
+  checksum: 8d36b821ff2804aed3158f339cc396f0525f365763913881b9b11e6e85e83f21ddbc3a2ede660ae8ce6d6df1a6cda825ad996c3c45f195cbc89091da7605f7e0
   languageName: node
   linkType: hard
 
@@ -8265,7 +8265,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-updates@npm:^0.15.6":
+"expo-updates@npm:~0.15.6":
   version: 0.15.6
   resolution: "expo-updates@npm:0.15.6"
   dependencies:
