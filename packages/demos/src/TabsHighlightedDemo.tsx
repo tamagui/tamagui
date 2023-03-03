@@ -12,7 +12,7 @@ import {
 
 export function TabsHighlightedDemo() {
   return (
-    <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
+    <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start" px="$4">
       <HighlightTabs />
     </XStack>
   )
