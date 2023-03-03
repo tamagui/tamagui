@@ -1,29 +1,22 @@
-import { H5, SizeTokens, Tabs, XStack, YStack } from 'tamagui'
+import { H5, Tabs, XStack, YStack } from 'tamagui'
 
 export function TabsDemo() {
   return (
     <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
-      <XStack space="$3" px="$8">
-        <YStack space>
-          <HorizontalTabs />
-          <VerticalTabs />
-        </YStack>
-        {/* <YStack space>
-          <HorizontalTabs size="$2" />
-          <VerticalTabs size="$2" />
-        </YStack> */}
-      </XStack>
+      <YStack space px="$8">
+        <HorizontalTabs />
+        <VerticalTabs />
+      </YStack>
     </XStack>
   )
 }
 
-const HorizontalTabs = ({ size }: { size?: SizeTokens }) => {
+const HorizontalTabs = () => {
   return (
     <Tabs
       defaultValue="tab1"
       orientation="horizontal"
       flexDirection="column"
-      size={size}
       width={400}
       height={150}
       br="$4"
@@ -46,13 +39,12 @@ const HorizontalTabs = ({ size }: { size?: SizeTokens }) => {
   )
 }
 
-const VerticalTabs = ({ size }: { size?: SizeTokens }) => {
+const VerticalTabs = () => {
   return (
     <Tabs
       defaultValue="tab1"
       flexDirection="row"
       orientation="vertical"
-      size={size}
       width={400}
       br="$4"
     >
