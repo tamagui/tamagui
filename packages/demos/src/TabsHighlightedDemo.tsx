@@ -74,7 +74,7 @@ const HighlightTabs = () => {
     setSelectionIndicatorLayout(newSize)
   }
 
-  const intentIndicatorLayout = focusIndicatorLayout || hoverIndicatorLayout
+  const intentIndicatorLayout = hoverIndicatorLayout || focusIndicatorLayout
 
   /**
    * -1: from left
@@ -107,7 +107,12 @@ const HighlightTabs = () => {
       flexDirection="column"
       activationMode="manual"
     >
-      <YStack>
+      <Tabs.List
+        scrollable
+        loop={false}
+        aria-label="Manage your account"
+        disablePassBorderRadius
+      >
         {intentIndicatorLayout && (
           <TabsRovingIndicator
             width={intentIndicatorLayout.width}
@@ -126,39 +131,38 @@ const HighlightTabs = () => {
             y={selectionIndicatorLayout.y}
           />
         )}
-        <Tabs.List loop={false} aria-label="Manage your account">
-          <Tabs.Trigger
-            unstyled
-            color="$color12"
-            value="tab1"
-            onSelectedLayoutChange={handleUpdateSelectionIndicator}
-            onHoveredLayoutChange={setHoverIndicatorLayout}
-            onFocusedLayoutChange={setFocusIndicatorLayout}
-          >
-            Profile
-          </Tabs.Trigger>
-          <Tabs.Trigger
-            unstyled
-            color="$color12"
-            value="tab2"
-            onSelectedLayoutChange={handleUpdateSelectionIndicator}
-            onHoveredLayoutChange={setHoverIndicatorLayout}
-            onFocusedLayoutChange={setFocusIndicatorLayout}
-          >
-            Connections
-          </Tabs.Trigger>
-          <Tabs.Trigger
-            unstyled
-            color="$color12"
-            value="tab3"
-            onSelectedLayoutChange={handleUpdateSelectionIndicator}
-            onHoveredLayoutChange={setHoverIndicatorLayout}
-            onFocusedLayoutChange={setFocusIndicatorLayout}
-          >
-            Notifications
-          </Tabs.Trigger>
-        </Tabs.List>
-      </YStack>
+        <Tabs.Trigger
+          unstyled
+          color="$color12"
+          value="tab1"
+          onSelectedLayoutChange={handleUpdateSelectionIndicator}
+          onHoveredLayoutChange={setHoverIndicatorLayout}
+          onFocusedLayoutChange={setFocusIndicatorLayout}
+        >
+          Profile
+        </Tabs.Trigger>
+        <Tabs.Trigger
+          unstyled
+          color="$color12"
+          value="tab2"
+          onSelectedLayoutChange={handleUpdateSelectionIndicator}
+          onHoveredLayoutChange={setHoverIndicatorLayout}
+          onFocusedLayoutChange={setFocusIndicatorLayout}
+        >
+          Connections
+        </Tabs.Trigger>
+        <Tabs.Trigger
+          unstyled
+          color="$color12"
+          value="tab3"
+          onSelectedLayoutChange={handleUpdateSelectionIndicator}
+          onHoveredLayoutChange={setHoverIndicatorLayout}
+          onFocusedLayoutChange={setFocusIndicatorLayout}
+        >
+          Notifications
+        </Tabs.Trigger>
+      </Tabs.List>
+
       <AnimatePresence
         exitBeforeEnter
         enterVariant={enterVariant}
