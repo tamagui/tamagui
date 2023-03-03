@@ -34,7 +34,7 @@ export const SheetDemo = () => {
         <Sheet.Handle />
         <Sheet.Frame f={1} p="$4" jc="center" ai="center" space="$5">
           <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
-          <Input />
+          <Input w={200} />
           {modal && (
             <>
               <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
