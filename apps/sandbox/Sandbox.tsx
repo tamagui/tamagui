@@ -7,6 +7,7 @@ import {
   GroupDemo,
   InputsDemo,
   ProgressDemo,
+  SelectDemo,
   SwitchDemo,
 } from '@tamagui/demos'
 import { useState } from 'react'
@@ -61,7 +62,7 @@ export const Sandbox = () => {
 
       {/* <TestPopoverContentStyledPlusAnimations /> */}
 
-      <ProgressDemo />
+      <SelectDemo />
     </SandboxFrame>
   )
 }
