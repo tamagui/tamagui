@@ -8,13 +8,13 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import {
   GetProps,
+  SizeTokens,
   Theme,
   composeEventHandlers,
   composeRefs,
   isWeb,
   styled,
   useId,
-  useIsomorphicLayoutEffect,
   withStaticProperties,
 } from '@tamagui/web'
 import * as React from 'react'
@@ -95,12 +95,11 @@ type TabsTriggerProps = TabsTriggerFrameProps & {
   /** The value for the tabs state to be changed to after activation of the trigger */
   value: string
 
-  /** Used for making custom indicators when trigger is selected */
-  onSelectedLayoutChange?: (layout: TabTriggerLayout | null) => void
-  /** Used for making custom indicators when trigger is hovered */
-  onHoveredLayoutChange?: (layout: TabTriggerLayout | null) => void
-  /** Used for making custom indicators when trigger is focused */
-  onFocusedLayoutChange?: (layout: TabTriggerLayout | null) => void
+  /** Used for making custom indicators when trigger interacted with */
+  onInteraction?: (
+    type: 'select' | 'focus' | 'hover',
+    layout: TabTriggerLayout | null
+  ) => void
 }
 
 const TabsTrigger =
@@ -111,9 +110,7 @@ const TabsTrigger =
         __scopeTabs,
         value,
         disabled = false,
-        onSelectedLayoutChange,
-        onHoveredLayoutChange,
-        onFocusedLayoutChange,
+        onInteraction,
         ...triggerProps
       } = props
       const context = useTabsContext(TRIGGER_NAME, __scopeTabs)
@@ -147,9 +144,9 @@ const TabsTrigger =
         }
       }, [])
 
-      useIsomorphicLayoutEffect(() => {
+      React.useEffect(() => {
         if (isSelected && layout) {
-          onSelectedLayoutChange?.(layout)
+          onInteraction?.('select', layout)
         }
       }, [isSelected, value, layout])
 
@@ -169,11 +166,11 @@ const TabsTrigger =
               }}
               onHoverIn={composeEventHandlers(props.onHoverIn, () => {
                 if (layout) {
-                  onHoveredLayoutChange?.(layout)
+                  onInteraction?.('hover', layout)
                 }
               })}
               onHoverOut={composeEventHandlers(props.onHoverOut, () => {
-                onHoveredLayoutChange?.(null)
+                onInteraction?.('hover', null)
               })}
               role="tab"
               aria-selected={isSelected}
@@ -212,7 +209,7 @@ const TabsTrigger =
                 ),
                 onFocus: composeEventHandlers(props.onFocus, (event) => {
                   if (layout) {
-                    onFocusedLayoutChange?.(layout)
+                    onInteraction?.('focus', layout)
                   }
                   // handle "automatic" activation if necessary
                   // ie. activate tab following focus
@@ -222,7 +219,7 @@ const TabsTrigger =
                   }
                 }),
                 onBlur: composeEventHandlers(props.onFocus, () => {
-                  onFocusedLayoutChange?.(null)
+                  onInteraction?.('focus', null)
                 }),
               })}
               {...groupItemProps}
@@ -309,6 +306,7 @@ type TabsContextValue = {
   orientation?: TabsProps['orientation']
   dir?: TabsProps['dir']
   activationMode?: TabsProps['activationMode']
+  size: SizeTokens
 }
 
 const [TabsProvider, useTabsContext] = createTabsContext<TabsContextValue>(TABS_NAME)

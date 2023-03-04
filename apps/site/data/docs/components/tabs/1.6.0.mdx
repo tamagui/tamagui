@@ -118,19 +118,9 @@ Extends [Button](/docs/components/button), adding:
       description: `The value for the tabs state to be changed to after activation of the trigger`,
     },
     {
-      name: 'onSelectedLayoutChange',
-      type: '(layout: TabTriggerSizeState | null) => void',
-      description: `Used for making custom indicators when trigger is selected`,
-    },
-    {
-      name: 'onHoveredLayoutChange',
-      type: '(layout: TabTriggerSizeState | null) => void',
-      description: `Used for making custom indicators when trigger is hovered`,
-    },
-    {
-      name: 'onFocusedLayoutChange',
-      type: '(layout: TabTriggerSizeState | null) => void',
-      description: `Used for making custom indicators when trigger is focused`,
+      name: 'onInteraction',
+      type: `(type: 'select' | 'focus' | 'hover', layout: TabTriggerLayout | null) => void`,
+      description: `Used for making custom indicators when trigger interacted with`,
     },
   ]}
 />
@@ -155,26 +145,15 @@ Where each tab's content will be shown. Extends [ThemeableStack](/docs/component
   ]}
 />
 
-## Advanced Demos
+## Advanced Demo
 
-Some demos of advanced usage of animations with [AnimatePresence](/docs/core/animations#animatepresence-and-exitstyle) and [Trigger](#trigger) events
-
-### Underlined Tab
+Here is a demo with more advanced animations using [AnimatePresence](/docs/core/animations#animatepresence-and-exitstyle) and [Trigger](#trigger) events
 
 <HeroContainer noPad>
-  <TabsUnderlinedDemo />
+  <TabsAdvancedDemo />
 </HeroContainer>
 
-```tsx hero template=TabsUnderlined
+```tsx hero template=TabsAdvanced
 
 ```
 
-### Highlighted Tab
-
-<HeroContainer noPad>
-  <TabsHighlightedDemo />
-</HeroContainer>
-
-```tsx hero template=TabsHighlighted
-
-```

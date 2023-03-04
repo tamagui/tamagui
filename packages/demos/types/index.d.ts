@@ -38,7 +38,6 @@ export { TooltipDemo } from './TooltipDemo';
 export { ColorsDemo } from './ColorsDemo';
 export { TokensDemo } from './TokensDemo';
 export { TabsDemo } from './TabsDemo';
-export { TabsHighlightedDemo } from './TabsHighlightedDemo';
-export { TabsUnderlinedDemo } from './TabsUnderlinedDemo';
+export { TabsAdvancedDemo } from './TabsAdvancedDemo';
 export * from './useOnIntersecting';
 //# sourceMappingURL=index.d.ts.map
