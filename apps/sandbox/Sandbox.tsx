@@ -11,8 +11,7 @@ import {
   SelectDemo,
   SwitchDemo,
   TabsDemo,
-  TabsHighlightedDemo,
-  TabsUnderlinedDemo,
+  TabsAdvancedDemo,
 } from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
@@ -155,8 +154,7 @@ const SandboxFrame = (props: { children: any }) => {
 function SandboxDefault() {
   const demos = (
     <>
-      <TabsUnderlinedDemo />
-      <TabsHighlightedDemo />
+      <TabsAdvancedDemo />
     </>
   )
 
