@@ -19,7 +19,7 @@ export default class Document extends NextDocument {
 
   render() {
     return (
-      <Html>
+      <Html lang="en">
         <Head>
           <meta name="docsearch:language" content="en" />
           <meta name="docsearch:version" content="1.0.0,latest" />
