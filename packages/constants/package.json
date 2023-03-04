@@ -21,6 +21,14 @@
     "@tamagui/build": "1.6.3",
     "react": "^18.2.0"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "peerDependencies": {
     "react": "*"
   },
