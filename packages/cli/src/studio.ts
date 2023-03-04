@@ -20,12 +20,22 @@ export const studio = async (options: ResolvedOptions) => {
   const { default: getPort } = await import('get-port')
   const { paths } = options
   const root = dirname(resolve('@takeout/studio/entry'))
+
+  const [serverPort, vitePort] = await Promise.all([
+    getPort({
+      port: 1421,
+    }),
+    getPort({
+      port: 1422,
+    }),
+  ])
+
   const server = await createServer({
     root,
     server: {
       // open: true,
       host: options.host,
-      port: 1420,
+      port: vitePort,
     },
     plugins: [
       tamaguiPlugin({
@@ -35,15 +45,11 @@ export const studio = async (options: ResolvedOptions) => {
   })
 
   // these can be lazy loaded (eventually should put in own process)
-  const serverPromise = server.listen()
+  await server.listen()
+
   const configWatchPromise = watchTamaguiConfig(options)
 
   const info = server.httpServer?.address() as AddressInfo
-  console.log('devServerInfo', info)
-
-  const port = await getPort({
-    port: info.port + 1,
-  })
 
   const app = express()
 
@@ -56,21 +62,14 @@ export const studio = async (options: ResolvedOptions) => {
     res.status(200).json(conf)
   })
 
-  app.use('/', proxy(`${info.address}:${info.port}`))
+  app.use('/', proxy(`${info.address}:${vitePort}`))
 
-  const appServer = app.listen(port)
+  const appServer = app.listen(serverPort)
 
-  console.log(`Listening on`, chalk.green(`http://localhost:${port}`))
+  console.log(`Listening on`, chalk.green(`http://localhost:${serverPort}`))
 
-  const longRunning = [
-    serverPromise,
+  await Promise.allSettled([
     configWatchPromise,
     new Promise((res) => appServer.on('close', res)),
-  ]
-
-  setInterval(() => {
-    console.log(longRunning)
-  }, 10_000)
-
-  await Promise.allSettled(longRunning)
+  ])
 }
