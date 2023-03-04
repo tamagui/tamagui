@@ -156,6 +156,7 @@ export const LogoIcon = ({ downscale = 2 }: any) => {
         width={450 / 8 / downscale}
         height={420 / 8 / downscale}
         src={`/tamagui-icon.svg`}
+        alt="Tamagui logo (pixelated duck)"
       />
     </YStack>
   )
