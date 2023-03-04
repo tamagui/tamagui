@@ -30,34 +30,13 @@ package: toggle-group
 ### Usage
 
 ```tsx
-import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
 import {ToggleGroup } from 'tamagui'
 
 export default () => {
   return (
-    <ToggleGroup
-      type="single"
-      defaultValue="center"
-      aria-label="Text alignment"
-    >
-      <ToggleGroup.Item
-        value="left"
-        aria-label="Left aligned"
-      >
-        <AlignLeft/>
-      </ToggleGroup.Item>
-      <ToggleGroup.Item
-        value="center"
-        aria-label="Center aligned"
-      >
-        <AlignCenter />
-      </ToggleGroup.Item>
-      <ToggleGroup.Item
-        value="right"
-        aria-label="Right aligned"
-      >
-        <AlignRight />
-      </ToggleGroup.Item>
+    <ToggleGroup type="single">
+        <ToggleGroup.Item value="dummy"></ToggleGroup.Item>
+        <ToggleGroup.Item value="other"></ToggleGroup.Item>
     </ToggleGroup>
   )
 }
