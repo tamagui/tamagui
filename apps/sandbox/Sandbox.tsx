@@ -6,6 +6,8 @@ import {
   CheckboxDemo,
   GroupDemo,
   InputsDemo,
+  ProgressDemo,
+  SelectDemo,
   SwitchDemo,
 } from '@tamagui/demos'
 import { useState } from 'react'
@@ -58,7 +60,9 @@ export const Sandbox = () => {
       {/* keep indent */}
       {/* <SandboxDefault /> */}
 
-      <TestPopoverContentStyledPlusAnimations />
+      {/* <TestPopoverContentStyledPlusAnimations /> */}
+
+      <SelectDemo />
     </SandboxFrame>
   )
 }
@@ -119,7 +123,9 @@ const SandboxFrame = (props: { children: any }) => {
       <style
         type="text/css"
         dangerouslySetInnerHTML={{
-          __html: `html, body { overflow: hidden; height: 100vh; width: 100vw; }`,
+          __html: `
+            html, body, #root { overflow: hidden; height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; }
+          `,
         }}
       />
 

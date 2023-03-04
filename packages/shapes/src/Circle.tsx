@@ -1,4 +1,4 @@
-import { GetProps, styled } from '@tamagui/core'
+import { GetProps, styled } from '@tamagui/web'
 
 import { Square } from './Square'
 

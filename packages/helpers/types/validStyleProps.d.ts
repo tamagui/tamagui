@@ -17,6 +17,10 @@ export declare const validStylesOnBaseProps: Readonly<{
     placeholderTextColor: true;
 }>;
 export declare const stylePropsView: Readonly<{
+    borderBottomStyle?: true | undefined;
+    borderTopStyle?: true | undefined;
+    borderLeftStyle?: true | undefined;
+    borderRightStyle?: true | undefined;
     overflowX?: true | undefined;
     overflowY?: true | undefined;
     userSelect?: true | undefined;
@@ -46,10 +50,6 @@ export declare const stylePropsView: Readonly<{
     backfaceVisibility: true;
     backgroundColor: true;
     borderBottomColor: true;
-    borderBottomStyle: true;
-    borderTopStyle: true;
-    borderLeftStyle: true;
-    borderRightStyle: true;
     borderBottomEndRadius: true;
     borderBottomLeftRadius: true;
     borderBottomRightRadius: true;
@@ -180,6 +180,10 @@ export declare const stylePropsText: Readonly<{
     textShadowOffset: true;
     textShadowRadius: true;
     textTransform: true;
+    borderBottomStyle?: true | undefined;
+    borderTopStyle?: true | undefined;
+    borderLeftStyle?: true | undefined;
+    borderRightStyle?: true | undefined;
     overflowX?: true | undefined;
     overflowY?: true | undefined;
     contain?: true | undefined;
@@ -207,10 +211,6 @@ export declare const stylePropsText: Readonly<{
     backfaceVisibility: true;
     backgroundColor: true;
     borderBottomColor: true;
-    borderBottomStyle: true;
-    borderTopStyle: true;
-    borderLeftStyle: true;
-    borderRightStyle: true;
     borderBottomEndRadius: true;
     borderBottomLeftRadius: true;
     borderBottomRightRadius: true;
@@ -315,6 +315,10 @@ export declare const stylePropsAll: Readonly<{
     textShadowOffset: true;
     textShadowRadius: true;
     textTransform: true;
+    borderBottomStyle?: true | undefined;
+    borderTopStyle?: true | undefined;
+    borderLeftStyle?: true | undefined;
+    borderRightStyle?: true | undefined;
     overflowX?: true | undefined;
     overflowY?: true | undefined;
     contain?: true | undefined;
@@ -342,10 +346,6 @@ export declare const stylePropsAll: Readonly<{
     backfaceVisibility: true;
     backgroundColor: true;
     borderBottomColor: true;
-    borderBottomStyle: true;
-    borderTopStyle: true;
-    borderLeftStyle: true;
-    borderRightStyle: true;
     borderBottomEndRadius: true;
     borderBottomLeftRadius: true;
     borderBottomRightRadius: true;
@@ -433,6 +433,10 @@ export declare const validPseudoKeys: Readonly<{
     focusStyle: true;
 }>;
 export declare const validStyles: Readonly<{
+    borderBottomStyle?: true | undefined;
+    borderTopStyle?: true | undefined;
+    borderLeftStyle?: true | undefined;
+    borderRightStyle?: true | undefined;
     overflowX?: true | undefined;
     overflowY?: true | undefined;
     userSelect?: true | undefined;
@@ -462,10 +466,6 @@ export declare const validStyles: Readonly<{
     backfaceVisibility: true;
     backgroundColor: true;
     borderBottomColor: true;
-    borderBottomStyle: true;
-    borderTopStyle: true;
-    borderLeftStyle: true;
-    borderRightStyle: true;
     borderBottomEndRadius: true;
     borderBottomLeftRadius: true;
     borderBottomRightRadius: true;
