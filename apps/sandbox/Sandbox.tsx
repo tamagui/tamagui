@@ -7,6 +7,7 @@ import {
   GroupDemo,
   InputsDemo,
   SwitchDemo,
+  ToggleGroupDemo
 } from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
@@ -145,7 +146,8 @@ const SandboxFrame = (props: { children: any }) => {
       /> */}
 
       <YStack fullscreen ai="center" jc="center">
-        <ToggleGroupDemo />
+        <SandboxDefault/>
+        {/* <ToggleGroupDemo /> */}
         {/* <StyledButton>hi2</StyledButton> */}
 
         {/* <XStack paddingEnd={120} h={50} w={200} bc="red" /> */}
@@ -163,6 +165,7 @@ function SandboxDefault() {
       <CheckboxDemo />
       <InputsDemo />
       <ButtonDemo />
+      <ToggleGroupDemo />
     </>
   )
 
