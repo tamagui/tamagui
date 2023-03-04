@@ -1,3 +1,8 @@
+import { getFontSize } from '@tamagui/font-size'
+import { getButtonSized } from '@tamagui/get-button-sized'
+import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
+import { ThemeableStack } from '@tamagui/stacks'
+import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
 import {
   ButtonNestingContext,
   GetProps,
@@ -9,12 +14,7 @@ import {
   styled,
   themeable,
   useMediaPropsActive,
-} from '@tamagui/core'
-import { getFontSize } from '@tamagui/font-size'
-import { getButtonSized } from '@tamagui/get-button-sized'
-import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
-import { ThemeableStack } from '@tamagui/stacks'
-import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
+} from '@tamagui/web'
 import { FunctionComponent, forwardRef, useContext } from 'react'
 
 type ButtonIconProps = { color?: string; size?: number }

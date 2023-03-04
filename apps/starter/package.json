@@ -1,7 +1,6 @@
 {
   "name": "@tamagui/starter",
   "private": true,
-  "type": "module",
   "scripts": {
     "native": "cd apps/expo && yarn start",
     "watch": "yarn workspaces foreach -pi run watch",
@@ -37,5 +36,5 @@
     "zx": "^7.1.1"
   },
   "packageManager": "yarn@3.2.3",
-  "version": "1.5.20"
+  "version": "1.6.3"
 }

@@ -46,9 +46,9 @@ export const HeroBelow = memo(() => {
 export const HeroBelowContent = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
 
-  const greenTheme = hovered === 0 ? 'green_alt2' : 'green'
-  const blueTheme = hovered === 1 ? 'blue_alt2' : 'blue'
-  const purpleTheme = hovered === 2 ? 'purple_alt2' : 'purple'
+  const greenTheme = hovered === 0 ? 'green_alt1' : 'green'
+  const blueTheme = hovered === 1 ? 'blue_alt1' : 'blue'
+  const purpleTheme = hovered === 2 ? 'purple_alt1' : 'purple'
 
   return (
     <ContainerLarge>

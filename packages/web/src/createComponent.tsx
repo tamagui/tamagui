@@ -209,6 +209,7 @@ export function createComponent<
 
     const isAnimated = (() => {
       const next = !!(
+        !staticConfig.isHOC &&
         useAnimations &&
         (props.animation || (props.style && hasAnimatedStyleValue(props.style)))
       )
@@ -379,7 +380,7 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
-    if (!isRSC && isAnimated && useAnimations) {
+    if (!isRSC && isAnimated && useAnimations && !staticConfig.isHOC) {
       const animations = useAnimations({
         props: propsWithAnimation,
         style: splitStylesStyle,
@@ -719,6 +720,7 @@ export function createComponent<
 
     content = useThemedChildren(themeState, content, {
       shallow: stateRef.current.themeShallow,
+      // passPropsToChildren: true,
     })
 
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -1065,7 +1067,6 @@ type CreateSpacerProps = SpacedChildrenProps & { key: string }
 
 function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
   return (
-    // @ts-ignore this one blew up but the types seem better
     <Spacer
       key={key}
       size={space}
@@ -1078,8 +1079,8 @@ function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
 }
 
 function isUnspaced(child: React.ReactNode) {
-  // console.log('unspaced?', child, getMedia())
-  return child?.['type']?.['isVisuallyHidden'] || child?.['type']?.['isUnspaced']
+  const t = child?.['type']
+  return t?.['isVisuallyHidden'] || t?.['isUnspaced']
 }
 
 const DefaultProps = new Map()
@@ -1121,7 +1122,6 @@ function mergeConfigDefaultProps(
 }
 
 const AbsoluteFill: any = createComponent({
-  componentName: 'AbsoluteFill',
   defaultProps: {
     ...stackDefaultStyles,
     flexDirection: 'column',

@@ -1,3 +1,5 @@
+import { isWeb } from '@tamagui/constants'
+
 import { getConfig } from '../config.js'
 import { expandStyle } from './expandStyle.js'
 import { normalizeShadow } from './normalizeShadow'
@@ -60,10 +62,12 @@ export function fixStyles(style: Record<string, any>) {
   }
 }
 
+// native doesn't support specific border edge style
+const nativeStyle = isWeb ? null : 'borderStyle'
 const borderDefaults = {
   borderWidth: 'borderStyle',
-  borderBottomWidth: 'borderBottomStyle',
-  borderTopWidth: 'borderTopStyle',
-  borderLeftWidth: 'borderLeftStyle',
-  borderRightWidth: 'borderRightStyle',
+  borderBottomWidth: nativeStyle || 'borderBottomStyle',
+  borderTopWidth: nativeStyle || 'borderTopStyle',
+  borderLeftWidth: nativeStyle || 'borderLeftStyle',
+  borderRightWidth: nativeStyle || 'borderRightStyle',
 }
