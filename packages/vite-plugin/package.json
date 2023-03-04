@@ -2,7 +2,6 @@
   "name": "@tamagui/vite-plugin",
   "version": "1.6.3",
   "types": "./types/index.d.ts",
-  "type": "module",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "license": "MIT",
