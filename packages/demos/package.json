@@ -7,7 +7,6 @@
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
-  "type": "module",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
   "files": [
