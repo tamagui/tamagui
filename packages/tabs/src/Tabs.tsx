@@ -1,16 +1,4 @@
 import { Button } from '@tamagui/button'
-import {
-  GetProps,
-  SizeTokens,
-  Stack,
-  Theme,
-  composeEventHandlers,
-  composeRefs,
-  isWeb,
-  styled,
-  useId,
-  withStaticProperties,
-} from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { Group, useGroupItem } from '@tamagui/group'
@@ -18,6 +6,17 @@ import { RovingFocusGroup, createRovingFocusGroupScope } from '@tamagui/roving-f
 import { SizableStack, ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
+import {
+  GetProps,
+  Theme,
+  composeEventHandlers,
+  composeRefs,
+  isWeb,
+  styled,
+  useId,
+  useIsomorphicLayoutEffect,
+  withStaticProperties,
+} from '@tamagui/web'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'
 
@@ -148,7 +147,7 @@ const TabsTrigger =
         }
       }, [])
 
-      React.useLayoutEffect(() => {
+      useIsomorphicLayoutEffect(() => {
         if (isSelected && layout) {
           onSelectedLayoutChange?.(layout)
         }

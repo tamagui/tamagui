@@ -103,15 +103,16 @@ const HighlightTabs = () => {
       onValueChange={setCurrentTab}
       orientation="horizontal"
       br="$4"
+      p="$2"
       height={150}
       flexDirection="column"
       activationMode="manual"
     >
       <Tabs.List
-        scrollable
         loop={false}
         aria-label="Manage your account"
         disablePassBorderRadius
+        overflow="visible"
       >
         {intentIndicatorLayout && (
           <TabsRovingIndicator
@@ -121,20 +122,23 @@ const HighlightTabs = () => {
             y={intentIndicatorLayout.y}
           />
         )}
+
         {selectionIndicatorLayout && (
           <TabsRovingIndicator
             theme="active"
             active
             width={selectionIndicatorLayout.width}
-            height={selectionIndicatorLayout.height}
+            height={2}
             x={selectionIndicatorLayout.x}
-            y={selectionIndicatorLayout.y}
+            y={40}
           />
         )}
+
         <Tabs.Trigger
           unstyled
           color="$color12"
           value="tab1"
+          size="$3"
           onSelectedLayoutChange={handleUpdateSelectionIndicator}
           onHoveredLayoutChange={setHoverIndicatorLayout}
           onFocusedLayoutChange={setFocusIndicatorLayout}
@@ -144,6 +148,7 @@ const HighlightTabs = () => {
         <Tabs.Trigger
           unstyled
           color="$color12"
+          size="$3"
           value="tab2"
           onSelectedLayoutChange={handleUpdateSelectionIndicator}
           onHoveredLayoutChange={setHoverIndicatorLayout}
@@ -154,6 +159,7 @@ const HighlightTabs = () => {
         <Tabs.Trigger
           unstyled
           color="$color12"
+          size="$3"
           value="tab3"
           onSelectedLayoutChange={handleUpdateSelectionIndicator}
           onHoveredLayoutChange={setHoverIndicatorLayout}
@@ -163,17 +169,19 @@ const HighlightTabs = () => {
         </Tabs.Trigger>
       </Tabs.List>
 
-      <AnimatePresence
-        exitBeforeEnter
-        enterVariant={enterVariant}
-        exitVariant={exitVariant}
-      >
-        <AnimatedYStack key={currentTab} animation="100ms" x={0} o={1}>
-          <Tabs.Content value={currentTab} forceMount p="$2">
-            <H5 ta="center">{currentTab}</H5>
-          </Tabs.Content>
-        </AnimatedYStack>
-      </AnimatePresence>
+      <YStack f={1}>
+        <AnimatePresence
+          exitBeforeEnter
+          enterVariant={enterVariant}
+          exitVariant={exitVariant}
+        >
+          <AnimatedYStack key={currentTab} animation="100ms" x={0} o={1} f={1}>
+            <Tabs.Content value={currentTab} forceMount p="$2" f={1} jc="center">
+              <H5 ta="center">{currentTab}</H5>
+            </Tabs.Content>
+          </AnimatedYStack>
+        </AnimatePresence>
+      </YStack>
     </Tabs>
   )
 }
