@@ -21,14 +21,15 @@ const ToggleFrame = styled(ThemeableStack, {
   justifyContent: 'center',
   display: 'flex',
   borderColor: '$borderColor',
-  padding: 5,
-  borderWidth: 1,
+  padding: '$2',
+  borderWidth: '$0.25',
   hoverStyle: {
     backgroundColor: '$backgroundHover',
   },
   focusStyle: {
-    outlineWidth: '1px',
-    outlineStyle: 'auto',
+    outlineWidth: '$1',
+    outlineStyle: 'solid',
+    outlineOffset:`-2px`
   },
   variants: {
     orientation: {
