@@ -24,7 +24,7 @@ export function ProgressDemo() {
         </Progress>
       </YStack>
 
-      <XStack ai="center" space pos="absolute" b={10} l={20} $xxs={{ dsp: 'none' }}>
+      <XStack ai="center" space pos="absolute" b="$3" l="$4" $xxs={{ dsp: 'none' }}>
         <Slider
           size="$2"
           w={130}
@@ -36,7 +36,7 @@ export function ProgressDemo() {
             setSize(val)
           }}
         >
-          <Slider.Track>
+          <Slider.Track bw={1} boc="$color5">
             <Slider.TrackActive />
           </Slider.Track>
           <Slider.Thumb circular index={0} />

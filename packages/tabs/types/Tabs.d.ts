@@ -62,7 +62,7 @@ declare const TabsListFrame: import("@tamagui/web").TamaguiComponent<(Omit<impor
     scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
-    disablePassBorderRadius?: boolean | undefined;
+    disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
     forceUseItem?: boolean | undefined;
 } & {
     __scopeGroup?: Scope<any>;
@@ -156,7 +156,7 @@ declare const TabsListFrame: import("@tamagui/web").TamaguiComponent<(Omit<impor
     scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
-    disablePassBorderRadius?: boolean | undefined;
+    disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
     forceUseItem?: boolean | undefined;
 } & {
     __scopeGroup?: Scope<any>;
@@ -252,7 +252,7 @@ declare const TabsListFrame: import("@tamagui/web").TamaguiComponent<(Omit<impor
     scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
-    disablePassBorderRadius?: boolean | undefined;
+    disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
     forceUseItem?: boolean | undefined;
 } & {
     __scopeGroup?: Scope<any>;
@@ -348,7 +348,7 @@ declare const TabsListFrame: import("@tamagui/web").TamaguiComponent<(Omit<impor
     scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
-    disablePassBorderRadius?: boolean | undefined;
+    disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
     forceUseItem?: boolean | undefined;
 } & {
     __scopeGroup?: Scope<any>;
@@ -444,7 +444,7 @@ declare const TabsListFrame: import("@tamagui/web").TamaguiComponent<(Omit<impor
     scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
-    disablePassBorderRadius?: boolean | undefined;
+    disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
     forceUseItem?: boolean | undefined;
 } & {
     __scopeGroup?: Scope<any>;
@@ -983,7 +983,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         scrollable?: boolean | undefined;
         showScrollIndicator?: boolean | undefined;
         disabled?: boolean | undefined;
-        disablePassBorderRadius?: boolean | undefined;
+        disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
         forceUseItem?: boolean | undefined;
     } & {
         __scopeGroup?: Scope<any>;
@@ -1114,7 +1114,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         scrollable?: boolean | undefined;
         showScrollIndicator?: boolean | undefined;
         disabled?: boolean | undefined;
-        disablePassBorderRadius?: boolean | undefined;
+        disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
         forceUseItem?: boolean | undefined;
     } & {
         __scopeGroup?: Scope<any>;
@@ -1210,7 +1210,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         scrollable?: boolean | undefined;
         showScrollIndicator?: boolean | undefined;
         disabled?: boolean | undefined;
-        disablePassBorderRadius?: boolean | undefined;
+        disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
         forceUseItem?: boolean | undefined;
     } & {
         __scopeGroup?: Scope<any>;
@@ -1306,7 +1306,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         scrollable?: boolean | undefined;
         showScrollIndicator?: boolean | undefined;
         disabled?: boolean | undefined;
-        disablePassBorderRadius?: boolean | undefined;
+        disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
         forceUseItem?: boolean | undefined;
     } & {
         __scopeGroup?: Scope<any>;

@@ -21,9 +21,11 @@ import React, { Children, forwardRef, isValidElement } from 'react'
 import { ScrollView } from 'react-native'
 import { useIndex, useIndexedChildren } from 'reforest'
 
+type DisablePassBorderRadius = boolean | 'bottom' | 'top' | 'start' | 'end'
+
 interface GroupContextValue {
   vertical: boolean
-  disablePassBorderRadius: boolean
+  disablePassBorderRadius: DisablePassBorderRadius
   onItemMount: () => void
   onItemUnmount: () => void
   radius?: number | UnionableString | Variable<any>
@@ -42,9 +44,9 @@ export const GroupFrame = styled(ThemeableStack, {
   variants: {
     unstyled: {
       false: {
+        size: '$true',
         y: 0,
         backgroundColor: '$background',
-        size: '$true',
       },
     },
 
@@ -70,7 +72,7 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
    */
   showScrollIndicator?: boolean
   disabled?: boolean
-  disablePassBorderRadius?: boolean
+  disablePassBorderRadius?: DisablePassBorderRadius
   /**
    * forces the group to use the Group.Item API
    */
@@ -125,9 +127,16 @@ function createGroup(verticalDefault: boolean) {
             const isFirst = i === 0
             const isLast = i === childrenArray.length - 1
 
-            const radiusStyles = disablePassBorderRadius
-              ? null
-              : getBorderRadius({ isFirst, isLast, radius, vertical })
+            const radiusStyles =
+              disablePassBorderRadius === true
+                ? null
+                : getBorderRadius({
+                    isFirst,
+                    isLast,
+                    radius,
+                    vertical,
+                    disable: disablePassBorderRadius,
+                  })
             const props = {
               disabled,
               ...(isTamaguiElement(child) ? radiusStyles : { style: radiusStyles }),
@@ -193,7 +202,9 @@ const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
     return children as any
   }
 
-  if (isTamaguiElement(children)) return React.cloneElement(children, groupItemProps)
+  if (isTamaguiElement(children)) {
+    return React.cloneElement(children, groupItemProps)
+  }
 
   return React.cloneElement(children, {
     style: {
@@ -230,12 +241,13 @@ export const useGroupItem = (
     disabled,
   }
 
-  if (!context.disablePassBorderRadius) {
+  if (context.disablePassBorderRadius !== true) {
     const borderRadius = getBorderRadius({
       radius: context.radius,
       isFirst,
       isLast,
       vertical: context.vertical,
+      disable: context.disablePassBorderRadius,
     })
     return { ...propsToPass, ...borderRadius }
   }
@@ -272,18 +284,31 @@ const getBorderRadius = ({
   isLast,
   radius,
   vertical,
+  disable,
 }: {
   radius: any
   vertical: boolean
   isFirst: boolean
   isLast: boolean
+  disable: DisablePassBorderRadius
 }) => {
   // TODO: RTL support would be nice here
   return {
-    borderTopLeftRadius: isFirst ? radius : 0,
-    borderTopRightRadius: (vertical && isFirst) || (!vertical && isLast) ? radius : 0,
-    borderBottomLeftRadius: (vertical && isLast) || (!vertical && isFirst) ? radius : 0,
-    borderBottomRightRadius: isLast ? radius : 0,
+    borderTopLeftRadius: isFirst && disable !== 'top' && disable !== 'start' ? radius : 0,
+    borderTopRightRadius:
+      disable !== 'top' &&
+      disable !== 'end' &&
+      ((vertical && isFirst) || (!vertical && isLast))
+        ? radius
+        : 0,
+    borderBottomLeftRadius:
+      disable !== 'bottom' &&
+      disable !== 'start' &&
+      ((vertical && isLast) || (!vertical && isFirst))
+        ? radius
+        : 0,
+    borderBottomRightRadius:
+      isLast && disable !== 'bottom' && disable !== 'end' ? radius : 0,
   }
 }
 
