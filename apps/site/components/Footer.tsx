@@ -33,7 +33,7 @@ export const Footer = () => {
             >
               homepage
             </Text>
-            <NextLink href="/">
+            <NextLink href="/" aria-label="Homepage">
               <TamaguiLogo showWords downscale={1} />
             </NextLink>
             <Paragraph mt="$2" size="$3">

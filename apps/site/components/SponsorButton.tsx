@@ -24,6 +24,7 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
       br="$10"
       circular={props.tiny ? true : false}
       chromeless={props.tiny ? true : false}
+      accessibilityLabel="Support OSS development of Tamagui"
     >
       {props.tiny ? '' : 'Sponsor'}
     </Button>
