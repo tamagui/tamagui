@@ -42,14 +42,6 @@ const ToggleFrame = styled(ThemeableStack, {
         spaceDirection: 'vertical',
       },
     },
-    press: {
-      active: {
-        backgroundColor: '$backgroundPress',
-      },
-      unactive: {
-        backgroundColor: '$background',
-      },
-    },
     size: {
       '...size': (value) => {
         const size = getVariableValue(getSize(value)) * 0.65
@@ -89,7 +81,6 @@ const Toggle = ToggleFrame.extractable(
 
     return (
       <ToggleFrame
-        // press={pressed ? 'active' : 'unactive'}
         theme={pressed?"active":null}
         aria-pressed={pressed}
         data-state={pressed ? 'on' : 'off'}
