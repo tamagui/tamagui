@@ -3,7 +3,6 @@
   "version": "1.6.3",
   "module": "dist/esm",
   "private": true,
-  "type": "module",
   "license": "MIT",
   "author": {
     "name": "Nate Wienert"
