@@ -1,6 +1,7 @@
 import { GetProps, TamaguiElement } from '@tamagui/core';
 import { Scope } from '@tamagui/create-context';
 import React from 'react';
+type DisablePassBorderRadius = boolean | 'bottom' | 'top' | 'start' | 'end';
 type ScopedProps<P> = P & {
     __scopeGroup?: Scope;
 };
@@ -85,7 +86,7 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
      */
     showScrollIndicator?: boolean;
     disabled?: boolean;
-    disablePassBorderRadius?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
     /**
      * forces the group to use the Group.Item API
      */
@@ -156,7 +157,7 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("react-n
      */
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
-    disablePassBorderRadius?: boolean | undefined;
+    disablePassBorderRadius?: DisablePassBorderRadius | undefined;
     /**
      * forces the group to use the Group.Item API
      */
@@ -230,7 +231,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("react-
      */
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
-    disablePassBorderRadius?: boolean | undefined;
+    disablePassBorderRadius?: DisablePassBorderRadius | undefined;
     /**
      * forces the group to use the Group.Item API
      */
@@ -304,7 +305,7 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-
      */
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
-    disablePassBorderRadius?: boolean | undefined;
+    disablePassBorderRadius?: DisablePassBorderRadius | undefined;
     /**
      * forces the group to use the Group.Item API
      */
