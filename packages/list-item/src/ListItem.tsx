@@ -114,21 +114,41 @@ export const ListItemFrame = styled(ThemeableStack, {
 
 export const ListItemText = styled(SizableText, {
   name: 'ListItemText',
-  color: '$color',
-  userSelect: 'none',
-  flexGrow: 1,
-  flexShrink: 1,
-  ellipse: true,
-  cursor: 'default',
+
+  variants: {
+    unstyled: {
+      false: {
+        color: '$color',
+        userSelect: 'none',
+        flexGrow: 1,
+        flexShrink: 1,
+        ellipse: true,
+        cursor: 'default',
+      },
+    },
+  },
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 export const ListItemSubtitle = styled(ListItemText, {
   name: 'ListItemSubtitle',
-  color: '$colorPress',
-  marginTop: '$-2',
-  opacity: 0.65,
-  maxWidth: '100%',
-  size: '$3',
+
+  variants: {
+    unstyled: {
+      false: {
+        opacity: 0.5,
+        maxWidth: '100%',
+        size: '$3',
+      },
+    },
+  },
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 export const ListItemTitle = styled(ListItemText, {
@@ -197,12 +217,11 @@ export const useListItem = (
             </>
           ) : null}
           {/* helper for common title/subtitle pttern */}
-          {title || subTitle ? (
+          {!!(title || subTitle) ? (
             <YStack flex={1}>
               {noTextWrap === 'all' ? title : <Title size={size}>{title}</Title>}
               {subTitle ? (
                 <>
-                  <Spacer flex size={spaceSize * 0.333} />
                   {typeof subTitle === 'string' && noTextWrap !== 'all' ? (
                     // TODO can use theme but we need to standardize to alt themes
                     // or standardize on subtle colors in themes
