@@ -349,6 +349,6 @@ declare const createToast: (options: CreateToastOptions) => {
     show: (showOptions: Pick<CreateNativeToastsOptions, 'title' | 'body' | 'preset' | 'duration'>) => void;
     hide: () => void;
 };
-export { createToastScope, ToastProvider, Toast, createToast, };
-export type { ToastProviderProps, ToastViewportProps, ToastProps, ToastTitleProps, ToastDescriptionProps, ToastActionProps, ToastCloseProps, };
+export { Toast, ToastProvider, createToast, createToastScope, };
+export type { ToastActionProps, ToastCloseProps, ToastDescriptionProps, ToastProps, ToastProviderProps, ToastTitleProps, ToastViewportProps, };
 //# sourceMappingURL=Toast.d.ts.map

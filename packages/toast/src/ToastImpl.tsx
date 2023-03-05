@@ -117,7 +117,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
     } = props
     const isPresent = useIsPresent()
     const context = useToastProviderContext(TOAST_NAME, __scopeToast)
-    const [node, setNode] = React.useState<HTMLElement | null>(null)
+    const [node, setNode] = React.useState<TamaguiElement | null>(null)
     const composedRefs = useComposedRefs(forwardedRef, (node) => setNode(node))
     const pointerStartRef = React.useRef<{ x: number; y: number } | null>(null)
     const swipeDeltaRef = React.useRef<{ x: number; y: number } | null>(null)
@@ -134,7 +134,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       // focus viewport if focus is within toast to read the remaining toast
       // count to SR users and ensure focus isn't lost
       if (isWeb) {
-        const isFocusInToast = node?.contains(document.activeElement)
+        const isFocusInToast = (node as HTMLDivElement)?.contains(document.activeElement)
         if (isFocusInToast) context.viewport?.focus()
       }
       onClose()
@@ -152,7 +152,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
 
     React.useEffect(() => {
       if (!isWeb) return
-      const viewport = context.viewport
+      const viewport = context.viewport as HTMLElement
       if (viewport) {
         const handleResume = () => {
           startTimer(closeTimerRemainingTimeRef.current)
@@ -189,16 +189,16 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
     }, [onToastAdd, onToastRemove])
 
     const announceTextContent = React.useMemo(() => {
-      return node ? getAnnounceTextContent(node) : null
+      if (!isWeb) return null
+      return node ? getAnnounceTextContent(node as HTMLDivElement) : null
     }, [node])
 
     // writing this logic in here since the frame doesn't seem to care about onPointerMove
     const handlePointerMove = React.useCallback(
-      (event: PointerEvent) => {
-        console.log('onPointerMove', event.nativeEvent)
+      (event: globalThis.PointerEvent) => {
         if (!pointerStartRef.current) return
-        const x = event.nativeEvent.clientX - pointerStartRef.current.x
-        const y = event.nativeEvent.clientY - pointerStartRef.current.y
+        const x = event.clientX - pointerStartRef.current.x
+        const y = event.clientY - pointerStartRef.current.y
         const hasSwipeMoveStarted = Boolean(swipeDeltaRef.current)
         const isHorizontalSwipe = ['left', 'right'].includes(context.swipeDirection)
         const clamp = ['left', 'up'].includes(context.swipeDirection)
@@ -206,7 +206,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
           : Math.max
         const clampedX = isHorizontalSwipe ? clamp(0, x) : 0
         const clampedY = !isHorizontalSwipe ? clamp(0, y) : 0
-        const moveStartBuffer = event.nativeEvent.pointerType === 'touch' ? 10 : 2
+        const moveStartBuffer = event.pointerType === 'touch' ? 10 : 2
         const delta = { x: clampedX, y: clampedY }
         const eventDetail = { originalEvent: event, delta }
         if (hasSwipeMoveStarted) {
@@ -230,8 +230,10 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
     )
     React.useEffect(() => {
       if (!isWeb) return
-      node?.addEventListener('pointermove', handlePointerMove)
-      return () => node?.removeEventListener('pointermove', handlePointerMove)
+
+      const htmlNode = node as HTMLElement | null
+      htmlNode?.addEventListener('pointermove', handlePointerMove)
+      return () => htmlNode?.removeEventListener('pointermove', handlePointerMove)
     }, [node])
 
     // if (!context.viewport) return null
@@ -297,71 +299,73 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                   onPressIn={composeEventHandlers(
                     props.onPressIn ?? undefined,
                     (event) => {
-                      console.log(event)
                       if (isWeb) {
-                        if (event.button !== 0) return
+                        const webEvent = event as unknown as React.MouseEvent
+                        if (webEvent.button !== 0) return
                         pointerStartRef.current = {
-                          x: event.clientX,
-                          y: event.clientY,
+                          x: webEvent.clientX,
+                          y: webEvent.clientY,
                         }
                       } else {
                         pointerStartRef.current = {
-                          x: event.nativeEvent.clientX,
+                          x: event.nativeEvent.locationX,
                           y: event.nativeEvent.locationY,
                         }
                       }
-                      console.log('onPressIn', event)
                     }
                   )}
-                  onPointerMove={handlePointerMove}
+                  // onPointerMove={handlePointerMove}
                   onPressOut={composeEventHandlers(
                     props.onPressOut ?? undefined,
                     (event) => {
-                      console.log('onPressOut')
                       const delta = swipeDeltaRef.current
-                      const target = event.target as HTMLElement
-                      if (target.hasPointerCapture(event.nativeEvent.identifier)) {
-                        target.releasePointerCapture(event.pointerId)
-                      }
-                      swipeDeltaRef.current = null
-                      pointerStartRef.current = null
-                      if (delta) {
-                        const toast = event.currentTarget
-                        const eventDetail = { originalEvent: event, delta }
-                        if (
-                          isDeltaInDirection(
-                            delta,
-                            context.swipeDirection,
-                            context.swipeThreshold
-                          )
-                        ) {
-                          handleAndDispatchCustomEvent(
-                            TOAST_SWIPE_END,
-                            onSwipeEnd,
-                            eventDetail,
+                      console.log(event)
+                      if (isWeb) {
+                        const target = event.target as unknown as HTMLElement
+
+                        // if (target.hasPointerCapture(event.pointerId)) {
+                        //   target.releasePointerCapture(event.pointerId)
+                        // }
+                        swipeDeltaRef.current = null
+                        pointerStartRef.current = null
+                        if (delta) {
+                          const toast = event.currentTarget
+                          const eventDetail = { originalEvent: event, delta }
+                          if (
+                            isDeltaInDirection(
+                              delta,
+                              context.swipeDirection,
+                              context.swipeThreshold
+                            )
+                          ) {
+                            handleAndDispatchCustomEvent(
+                              TOAST_SWIPE_END,
+                              onSwipeEnd,
+                              eventDetail,
+                              {
+                                discrete: true,
+                              }
+                            )
+                          } else {
+                            handleAndDispatchCustomEvent(
+                              TOAST_SWIPE_CANCEL,
+                              onSwipeCancel,
+                              eventDetail,
+                              {
+                                discrete: true,
+                              }
+                            )
+                          }
+                          // Prevent click event from triggering on items within the toast when
+                          // pointer up is part of a swipe gesture
+                          toast.addEventListener(
+                            'click',
+                            (event) => event.preventDefault(),
                             {
-                              discrete: true,
-                            }
-                          )
-                        } else {
-                          handleAndDispatchCustomEvent(
-                            TOAST_SWIPE_CANCEL,
-                            onSwipeCancel,
-                            eventDetail,
-                            {
-                              discrete: true,
+                              once: true,
                             }
                           )
                         }
-                        // Prevent click event from triggering on items within the toast when
-                        // pointer up is part of a swipe gesture
-                        toast.addEventListener(
-                          'click',
-                          (event) => event.preventDefault(),
-                          {
-                            once: true,
-                          }
-                        )
                       }
                     }
                   )}

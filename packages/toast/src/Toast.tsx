@@ -17,6 +17,7 @@ import { ToastOptions as BurntToastOptions } from 'burnt/build/types'
 import * as React from 'react'
 
 import { ToastAnnounceExclude } from './Announce'
+import { TOAST_NAME } from './constants'
 import { createNativeToast } from './createNativeToast'
 import {
   ScopedProps,
@@ -32,7 +33,6 @@ import {
   useToastInteractiveContext,
 } from './ToastImpl'
 import { ToastViewport, ToastViewportProps } from './Viewport'
-import { TOAST_NAME } from './constants'
 
 /* -------------------------------------------------------------------------------------------------
  * ToastTitle
@@ -187,32 +187,43 @@ const ToastComponent = React.forwardRef<TamaguiElement, ToastProps>(
             onPause={onPause}
             onResume={onResume}
             onSwipeStart={composeEventHandlers(props.onSwipeStart, (event) => {
-              console.log('SwipeStart')
-              event.currentTarget.setAttribute('data-swipe', 'start')
+              if (isWeb) {
+                const target = event.currentTarget as HTMLDivElement
+                target.setAttribute('data-swipe', 'start')
+              }
             })}
             onSwipeMove={composeEventHandlers(props.onSwipeMove, (event) => {
-              console.log('SwipeMove')
-              const { x, y } = event.detail.delta
-              event.currentTarget.setAttribute('data-swipe', 'move')
-              event.currentTarget.style.setProperty('--toast-swipe-move-x', `${x}px`)
-              event.currentTarget.style.setProperty('--toast-swipe-move-y', `${y}px`)
+              if (isWeb) {
+                const { x, y } = event.detail.delta
+
+                const target = event.currentTarget as HTMLDivElement
+                target.setAttribute('data-swipe', 'move')
+                target.style.setProperty('--toast-swipe-move-x', `${x}px`)
+                target.style.setProperty('--toast-swipe-move-y', `${y}px`)
+              }
             })}
             onSwipeCancel={composeEventHandlers(props.onSwipeCancel, (event) => {
-              console.log('SwipeCancel')
-              event.currentTarget.setAttribute('data-swipe', 'cancel')
-              event.currentTarget.style.removeProperty('--toast-swipe-move-x')
-              event.currentTarget.style.removeProperty('--toast-swipe-move-y')
-              event.currentTarget.style.removeProperty('--toast-swipe-end-x')
-              event.currentTarget.style.removeProperty('--toast-swipe-end-y')
+              if (isWeb) {
+                const target = event.currentTarget as HTMLDivElement
+
+                target.setAttribute('data-swipe', 'cancel')
+                target.style.removeProperty('--toast-swipe-move-x')
+                target.style.removeProperty('--toast-swipe-move-y')
+                target.style.removeProperty('--toast-swipe-end-x')
+                target.style.removeProperty('--toast-swipe-end-y')
+              }
             })}
             onSwipeEnd={composeEventHandlers(props.onSwipeEnd, (event) => {
-              console.log('SwipeEnd')
-              const { x, y } = event.detail.delta
-              event.currentTarget.setAttribute('data-swipe', 'end')
-              event.currentTarget.style.removeProperty('--toast-swipe-move-x')
-              event.currentTarget.style.removeProperty('--toast-swipe-move-y')
-              event.currentTarget.style.setProperty('--toast-swipe-end-x', `${x}px`)
-              event.currentTarget.style.setProperty('--toast-swipe-end-y', `${y}px`)
+              if (isWeb) {
+                const target = event.currentTarget as HTMLDivElement
+
+                const { x, y } = event.detail.delta
+                target.setAttribute('data-swipe', 'end')
+                target.style.removeProperty('--toast-swipe-move-x')
+                target.style.removeProperty('--toast-swipe-move-y')
+                target.style.setProperty('--toast-swipe-end-x', `${x}px`)
+                target.style.setProperty('--toast-swipe-end-y', `${y}px`)
+              }
               setOpen(false)
             })}
           />
@@ -278,18 +289,18 @@ const createToast = (options: CreateToastOptions) => {
 /* ---------------------------------------------------------------------------------------------- */
 
 export {
-  createToastScope,
+  Toast,
   //
   ToastProvider,
-  Toast,
   createToast,
+  createToastScope,
 }
 export type {
-  ToastProviderProps,
-  ToastViewportProps,
-  ToastProps,
-  ToastTitleProps,
-  ToastDescriptionProps,
   ToastActionProps,
   ToastCloseProps,
+  ToastDescriptionProps,
+  ToastProps,
+  ToastProviderProps,
+  ToastTitleProps,
+  ToastViewportProps,
 }
