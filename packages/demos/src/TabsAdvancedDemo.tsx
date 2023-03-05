@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   AnimatePresence,
   H5,
@@ -7,69 +7,20 @@ import {
   TabTriggerLayout,
   Tabs,
   TabsTriggerProps,
-  XStack,
   YStack,
   styled,
 } from 'tamagui'
 
-export function TabsAdvancedDemo() {
-  return (
-    <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start" px="$4">
-      <TabsAdvanced />
-    </XStack>
-  )
-}
-
-const TabsRovingIndicator = styled(Stack, {
-  name: 'TabsRovingIndicator',
-  variants: {
-    active: {
-      true: {
-        backgroundColor: '$color8',
-      },
-    },
-    variants: {
-      active: {
-        true: {
-          backgroundColor: '$color8',
-        },
-      },
-      enter: {
-        true: {
-          opacity: 0,
-        },
-      },
-      exit: {
-        true: {
-          opacity: 0,
-        },
-      },
-    },
-  },
-  defaultVariants: {
-    position: 'absolute',
-    backgroundColor: '$color5',
-    opacity: 1,
-    animation: '100ms',
-    borderRadius: '$4',
-  },
-})
-
-const AnimatedYStack = styled(YStack, {
-  variants: {
-    isLeft: { true: { x: -25, opacity: 0 } },
-    isRight: { true: { x: 25, opacity: 0 } },
-    defaultFade: { true: { opacity: 0 } },
-  } as const,
-})
-
-const TabsAdvanced = () => {
+export const TabsAdvancedDemo = () => {
   const [currentTab, setCurrentTab] = useState('tab1')
+
   // Layout of the trigger user might intend to select (hovering / focusing)
   const [IntentIndicator, setIntentIndicator] = useState<TabTriggerLayout | null>(null)
+
   // Layout of the trigger user selected
   const [selectIndicator, setSelectIndicator] = useState<TabTriggerLayout | null>(null)
   const prevSelectionIndicatorLayout = useRef<TabTriggerLayout | null>(null)
+
   const handleUpdateSelectionIndicator = (newSize: TabTriggerLayout | null) => {
     prevSelectionIndicatorLayout.current = selectIndicator
     setSelectIndicator(newSize)
@@ -77,10 +28,10 @@ const TabsAdvanced = () => {
 
   /**
    * -1: from left
-   * 0: n/a
-   * 1: from right
+   *  0: n/a
+   *  1: from right
    */
-  const direction = useMemo(() => {
+  const direction = (() => {
     if (
       !selectIndicator ||
       !prevSelectionIndicatorLayout.current ||
@@ -89,7 +40,7 @@ const TabsAdvanced = () => {
       return 0
     }
     return selectIndicator.x > prevSelectionIndicatorLayout.current.x ? 1 : -1
-  }, [selectIndicator])
+  })()
 
   const enterVariant =
     direction === 1 ? 'isLeft' : direction === -1 ? 'isRight' : 'defaultFade'
@@ -109,9 +60,9 @@ const TabsAdvanced = () => {
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      br="$2"
-      size="$4"
-      p="$1.5"
+      br="$4"
+      size="$3"
+      p="$2"
       height={150}
       flexDirection="column"
       activationMode="manual"
@@ -138,10 +89,10 @@ const TabsAdvanced = () => {
               theme="active"
               active
               width={selectIndicator.width}
-              height="$0.5"
+              height="$0.25"
               x={selectIndicator.x}
               borderRadius={0}
-              bottom={-4}
+              bottom={-2}
             />
           )}
 
@@ -157,19 +108,41 @@ const TabsAdvanced = () => {
         </Tabs.List>
       </YStack>
 
-      <YStack f={1}>
-        <AnimatePresence
-          exitBeforeEnter
-          enterVariant={enterVariant}
-          exitVariant={exitVariant}
-        >
-          <AnimatedYStack key={currentTab} animation="100ms" x={0} o={1} f={1}>
-            <Tabs.Content value={currentTab} forceMount p="$2" f={1} jc="center">
-              <H5 ta="center">{currentTab}</H5>
-            </Tabs.Content>
-          </AnimatedYStack>
-        </AnimatePresence>
-      </YStack>
+      <AnimatePresence
+        exitBeforeEnter
+        enterVariant={enterVariant}
+        exitVariant={exitVariant}
+      >
+        <AnimatedYStack key={currentTab} animation="100ms" x={0} o={1} f={1}>
+          <Tabs.Content value={currentTab} forceMount f={1} jc="center">
+            <H5 ta="center">{currentTab}</H5>
+          </Tabs.Content>
+        </AnimatedYStack>
+      </AnimatePresence>
     </Tabs>
   )
 }
+
+const TabsRovingIndicator = styled(Stack, {
+  position: 'absolute',
+  backgroundColor: '$color5',
+  opacity: 1,
+  animation: '100ms',
+  borderRadius: '$4',
+
+  variants: {
+    active: {
+      true: {
+        backgroundColor: '$color8',
+      },
+    },
+  },
+})
+
+const AnimatedYStack = styled(YStack, {
+  variants: {
+    isLeft: { true: { x: -25, opacity: 0 } },
+    isRight: { true: { x: 25, opacity: 0 } },
+    defaultFade: { true: { opacity: 0 } },
+  } as const,
+})
