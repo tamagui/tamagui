@@ -8,7 +8,8 @@ import outdent from 'outdent'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath } from 'vite'
 
-const { createExtractor, extractToClassNames, getPragmaOptions } = Static['default']
+const { createExtractor, extractToClassNames, getPragmaOptions } =
+  Static['default'] || Static
 
 const styleUpdateEvent = (fileId: string) => `tamagui-style-update:${fileId}`
 const GLOBAL_CSS_VIRTUAL_PATH = '__tamagui_global_css__.css'
