@@ -1,4 +1,4 @@
-import { Button } from '@tamagui/button'
+import { Button, ButtonProps } from '@tamagui/button'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { Group, useGroupItem } from '@tamagui/group'
@@ -91,7 +91,7 @@ const TabsTriggerFrame = Button
 type TabTriggerLayout = LayoutRectangle
 type InteractionType = 'select' | 'focus' | 'hover'
 
-type TabsTriggerFrameProps = GetProps<typeof TabsTriggerFrame>
+type TabsTriggerFrameProps = ButtonProps
 type TabsTriggerProps = TabsTriggerFrameProps & {
   /** The value for the tabs state to be changed to after activation of the trigger */
   value: string
