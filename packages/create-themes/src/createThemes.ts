@@ -75,7 +75,6 @@ type GetSubThemes<Name extends string> =
   | `${Name}_TooltipArrow`
   | `${Name}_TooltipContent`
   | `${Name}_TabsTrigger`
-  | `${Name}_TabsRovingIndicator`
   | `${Name}_Checkbox`
   | `${Name}_CheckboxIndicator`
 
@@ -206,7 +205,6 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
       [`${name}_TooltipArrow`, altThemes[2][1]],
       [`${name}_TooltipContent`, altThemes[2][1]],
       [`${name}_TabsTrigger`, altThemes[1][1]],
-      [`${name}_TabsRovingIndicator`, altThemes[1][1]],
       [`${name}_darker`, darkerTheme],
       [`${name}_active`, activeTheme],
     ]
@@ -365,7 +363,6 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
     light_Switch: lightThemes.light_alt2,
     light_SwitchThumb: lightThemes.light,
     light_TabsTrigger: lightThemes.light,
-    light_TabsRovingIndicator: lightThemes.light,
     light_DrawerFrame: lightThemes.light_alt1,
     light_Checkbox: lightThemes.light_alt2,
     light_CheckboxIndicator: lightThemes.light,
@@ -383,7 +380,6 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
     dark_Switch: darkThemes.dark_alt2,
     dark_SwitchThumb: darkThemes.dark_darker,
     dark_TabsTrigger: darkThemes.dark,
-    dark_TabsRovingIndicator: darkThemes.dark,
     dark_Button: darkThemes.dark_alt1,
     dark_Checkbox: darkThemes.dark_alt2,
     dark_CheckboxIndicator: darkThemes.dark_darker,
