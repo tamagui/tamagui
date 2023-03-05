@@ -77,6 +77,7 @@ export const ListItemFrame = styled(ThemeableStack, {
         maxWidth: '100%',
         overflow: 'hidden',
         flexDirection: 'row',
+        backgroundColor: '$backgroundStrong',
       },
     },
 

@@ -4410,7 +4410,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@1.6.3, @tamagui/build@^1.5.1, @tamagui/build@^1.6.3, @tamagui/build@workspace:packages/build":
+"@tamagui/build@1.6.3, @tamagui/build@^1.6.3, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -4711,7 +4711,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core@1.6.3, @tamagui/core@^1.5.1, @tamagui/core@^1.6.3, @tamagui/core@workspace:packages/core":
+"@tamagui/core@1.6.3, @tamagui/core@^1.6.3, @tamagui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
@@ -4730,11 +4730,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/create-context@1.6.3, @tamagui/create-context@^1.5.1, @tamagui/create-context@workspace:packages/create-context":
-=======
 "@tamagui/create-context@1.6.3, @tamagui/create-context@workspace:packages/create-context":
->>>>>>> a33fe58245 (fix up deps and yarn.lock)
   version: 0.0.0-use.local
   resolution: "@tamagui/create-context@workspace:packages/create-context"
   dependencies:
@@ -4980,20 +4976,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-"@tamagui/helpers-node@1.6.3, @tamagui/helpers-node@workspace:packages/helpers-node":
-=======
-"@tamagui/group@1.6.0, @tamagui/group@workspace:packages/group":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/group@workspace:packages/group"
-  dependencies:
-    "@tamagui/build": 1.6.0
-    "@tamagui/core": 1.6.0
-    "@tamagui/create-context": 1.6.0
-    "@tamagui/stacks": 1.6.0
-    "@tamagui/use-controllable-state": 1.6.0
-=======
 "@tamagui/group@1.6.3, @tamagui/group@workspace:packages/group":
   version: 0.0.0-use.local
   resolution: "@tamagui/group@workspace:packages/group"
@@ -5003,7 +4985,6 @@ __metadata:
     "@tamagui/create-context": 1.6.3
     "@tamagui/stacks": 1.6.3
     "@tamagui/use-controllable-state": 1.6.3
->>>>>>> a33fe58245 (fix up deps and yarn.lock)
     react: ^18.2.0
     reforest: ^0.12.1
   peerDependencies:
@@ -5011,8 +4992,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/helpers-node@1.6.0, @tamagui/helpers-node@workspace:packages/helpers-node":
->>>>>>> ccd274f8a8 (separate group package, tab + group integration)
+"@tamagui/helpers-node@1.6.3, @tamagui/helpers-node@workspace:packages/helpers-node":
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers-node@workspace:packages/helpers-node"
   dependencies:
@@ -5465,11 +5445,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/roving-focus@^1.5.1, @tamagui/roving-focus@workspace:packages/roving-focus":
-=======
 "@tamagui/roving-focus@1.6.3, @tamagui/roving-focus@workspace:packages/roving-focus":
->>>>>>> a33fe58245 (fix up deps and yarn.lock)
   version: 0.0.0-use.local
   resolution: "@tamagui/roving-focus@workspace:packages/roving-focus"
   dependencies:
@@ -5551,7 +5527,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/scroll-view@1.6.3, @tamagui/scroll-view@^1.5.1, @tamagui/scroll-view@workspace:packages/scroll-view":
+"@tamagui/scroll-view@1.6.3, @tamagui/scroll-view@workspace:packages/scroll-view":
   version: 0.0.0-use.local
   resolution: "@tamagui/scroll-view@workspace:packages/scroll-view"
   dependencies:
@@ -5742,7 +5718,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/stacks@1.6.3, @tamagui/stacks@^1.5.1, @tamagui/stacks@workspace:packages/stacks":
+"@tamagui/stacks@1.6.3, @tamagui/stacks@workspace:packages/stacks":
   version: 0.0.0-use.local
   resolution: "@tamagui/stacks@workspace:packages/stacks"
   dependencies:
@@ -5886,20 +5862,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/tabs@^1.6.3, @tamagui/tabs@workspace:packages/tabs":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/tabs@workspace:packages/tabs"
-  dependencies:
-    "@tamagui/build": ^1.5.1
-    "@tamagui/core": ^1.5.1
-    "@tamagui/create-context": ^1.5.1
-    "@tamagui/roving-focus": ^1.5.1
-    "@tamagui/scroll-view": ^1.5.1
-    "@tamagui/stacks": ^1.5.1
-    "@tamagui/use-controllable-state": ^1.5.1
-    "@tamagui/use-direction": ^1.5.1
-=======
 "@tamagui/tabs@1.6.3, @tamagui/tabs@workspace:packages/tabs":
   version: 0.0.0-use.local
   resolution: "@tamagui/tabs@workspace:packages/tabs"
@@ -5913,7 +5875,6 @@ __metadata:
     "@tamagui/use-controllable-state": 1.6.3
     "@tamagui/use-direction": 1.6.3
     "@tamagui/web": 1.6.3
->>>>>>> a33fe58245 (fix up deps and yarn.lock)
     react: ^18.2.0
     react-dom: ^18.2.0
   peerDependencies:
@@ -6050,7 +6011,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-controllable-state@1.6.3, @tamagui/use-controllable-state@^1.5.1, @tamagui/use-controllable-state@workspace:packages/use-controllable-state":
+"@tamagui/use-controllable-state@1.6.3, @tamagui/use-controllable-state@workspace:packages/use-controllable-state":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-controllable-state@workspace:packages/use-controllable-state"
   dependencies:
@@ -6088,11 +6049,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/use-direction@1.6.3, @tamagui/use-direction@^1.5.1, @tamagui/use-direction@workspace:packages/use-direction":
-=======
 "@tamagui/use-direction@1.6.3, @tamagui/use-direction@workspace:packages/use-direction":
->>>>>>> a33fe58245 (fix up deps and yarn.lock)
   version: 0.0.0-use.local
   resolution: "@tamagui/use-direction@workspace:packages/use-direction"
   dependencies:
@@ -20970,7 +20927,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
-<<<<<<< HEAD
     "@tamagui/adapt": 1.6.3
     "@tamagui/alert-dialog": 1.6.3
     "@tamagui/animate-presence": 1.6.3
@@ -20990,10 +20946,6 @@ __metadata:
     "@tamagui/get-button-sized": 1.6.3
     "@tamagui/get-font-sized": 1.6.3
     "@tamagui/get-size": 1.6.3
-<<<<<<< HEAD
-=======
-    "@tamagui/group": 1.6.3
->>>>>>> a33fe58245 (fix up deps and yarn.lock)
     "@tamagui/helpers": 1.6.3
     "@tamagui/helpers-tamagui": 1.6.3
     "@tamagui/image": 1.6.3
@@ -21014,11 +20966,7 @@ __metadata:
     "@tamagui/slider": 1.6.3
     "@tamagui/stacks": 1.6.3
     "@tamagui/switch": 1.6.3
-<<<<<<< HEAD
-    "@tamagui/tabs": ^1.6.3
-=======
     "@tamagui/tabs": 1.6.3
->>>>>>> a33fe58245 (fix up deps and yarn.lock)
     "@tamagui/text": 1.6.3
     "@tamagui/tooltip": 1.6.3
     "@tamagui/use-controllable-state": 1.6.3
@@ -21027,57 +20975,6 @@ __metadata:
     "@tamagui/use-force-update": 1.6.3
     "@tamagui/use-window-dimensions": 1.6.3
     "@tamagui/visually-hidden": 1.6.3
-=======
-    "@tamagui/adapt": 1.6.0
-    "@tamagui/alert-dialog": 1.6.0
-    "@tamagui/animate-presence": 1.6.0
-    "@tamagui/avatar": 1.6.0
-    "@tamagui/build": 1.6.0
-    "@tamagui/button": 1.6.0
-    "@tamagui/card": 1.6.0
-    "@tamagui/checkbox": 1.6.0
-    "@tamagui/compose-refs": 1.6.0
-    "@tamagui/core": 1.6.0
-    "@tamagui/create-context": 1.6.0
-    "@tamagui/dialog": 1.6.0
-    "@tamagui/fake-react-native": 1.6.0
-    "@tamagui/focusable": 1.6.0
-    "@tamagui/font-size": 1.6.0
-    "@tamagui/form": 1.6.0
-    "@tamagui/get-button-sized": 1.6.0
-    "@tamagui/get-font-sized": 1.6.0
-    "@tamagui/get-size": 1.6.0
-    "@tamagui/group": 1.6.0
-    "@tamagui/helpers": 1.6.0
-    "@tamagui/helpers-tamagui": 1.6.0
-    "@tamagui/image": 1.6.0
-    "@tamagui/label": 1.6.0
-    "@tamagui/linear-gradient": 1.6.0
-    "@tamagui/list-item": 1.6.0
-    "@tamagui/popover": 1.6.0
-    "@tamagui/popper": 1.6.0
-    "@tamagui/portal": 1.6.0
-    "@tamagui/progress": 1.6.0
-    "@tamagui/radio-group": 1.6.0
-    "@tamagui/react-native-media-driver": 1.6.0
-    "@tamagui/scroll-view": 1.6.0
-    "@tamagui/select": 1.6.0
-    "@tamagui/separator": 1.6.0
-    "@tamagui/shapes": 1.6.0
-    "@tamagui/sheet": 1.6.0
-    "@tamagui/slider": 1.6.0
-    "@tamagui/stacks": 1.6.0
-    "@tamagui/switch": 1.6.0
-    "@tamagui/tabs": 1.6.0
-    "@tamagui/text": 1.6.0
-    "@tamagui/tooltip": 1.6.0
-    "@tamagui/use-controllable-state": 1.6.0
-    "@tamagui/use-debounce": 1.6.0
-    "@tamagui/use-event": 1.6.0
-    "@tamagui/use-force-update": 1.6.0
-    "@tamagui/use-window-dimensions": 1.6.0
-    "@tamagui/visually-hidden": 1.6.0
->>>>>>> ccd274f8a8 (separate group package, tab + group integration)
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
     react: ^18.2.0
@@ -21724,11 +21621,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>":
   version: 4.9.4
-  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=d73830"
+  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=23ec76"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 37f6e2c3c5e2aa5934b85b0fddbf32eeac8b1bacf3a5b51d01946936d03f5377fe86255d4e5a4ae628fd0cd553386355ad362c57f13b4635064400f3e8e05b9d
+  checksum: 3e2ab0772908676d9b9cb83398c70003a3b08e1c6b3b122409df9f4b520f2fdaefa20c3d7d57dce283fed760ac94b3ce94d4a7fa875127b67852904425a1f0dc
   languageName: node
   linkType: hard
 
