@@ -6,7 +6,7 @@ component: Tabs
 package: tabs
 ---
 
-# Tabs
+# Tabs <Beta />
 
 <Description>Use in pages to manage sub-pages.</Description>
 
@@ -27,25 +27,27 @@ package: tabs
   ]}
 />
 
+Note: Tabs have landed on v1.7 and may not fully redy for runtime. Send us your feedback and we'll address is. We're marking it Beta a such as there may be hopefully minimal breaking changes so some of the API.
+
 ## Usage
 
 ```tsx
 import { Tabs } from 'tamagui'
 
 export default () => (
-<Tabs defaultValue="tab1" width={400}>
-  <Tabs.List space>
-    <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
-    <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
-  </Tabs.List>
+  <Tabs defaultValue="tab1" width={400}>
+    <Tabs.List space>
+      <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+      <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+    </Tabs.List>
 
-  <Tabs.Content value="tab1">
-    <H5>Tab 1</H5>
-  </Tabs.Content>
-  <Tabs.Content value="tab2">
-    <H5>Tab 2</H5>
-  </Tabs.Content>
-</Tabs>
+    <Tabs.Content value="tab1">
+      <H5>Tab 1</H5>
+    </Tabs.Content>
+    <Tabs.Content value="tab2">
+      <H5>Tab 2</H5>
+    </Tabs.Content>
+  </Tabs>
 )
 ```
 

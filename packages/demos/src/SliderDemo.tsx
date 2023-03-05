@@ -15,7 +15,7 @@ function SimpleSlider({ children, ...props }: SliderProps) {
       <Slider.Track>
         <Slider.TrackActive />
       </Slider.Track>
-      <Slider.Thumb bordered circular elevate index={0} />
+      <Slider.Thumb index={0} circular elevate />
       {children}
     </Slider>
   )

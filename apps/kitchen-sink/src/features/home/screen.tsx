@@ -1,4 +1,4 @@
-import { useMedia, variableToString } from '@tamagui/core'
+import { variableToString } from '@tamagui/core'
 import { ScrollView } from 'react-native'
 import { ChevronRight, Moon, Sun } from 'sandbox-ui'
 import { UseLinkProps, useLink } from 'solito/link'
@@ -19,11 +19,9 @@ import {
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
 export function HomeScreen() {
-  const media = useMedia()
-
   return (
     <ScrollView>
-      <YStack bc="$backgroundStrong" p="$3" pt="$6" pb="$8" f={1} space>
+      <YStack bc="$background" p="$3" pt="$6" pb="$8" f={1} space>
         <H1 fontFamily="$heading" size="$9">
           Demos
         </H1>
@@ -158,6 +156,7 @@ const demos = [
       { title: 'Image', route: '/demo/image' },
       { title: 'ListItem', route: '/demo/list-item' },
       { title: 'Tabs', route: '/demo/tabs' },
+      { title: 'Tabs Advanced', route: '/demo/tabs-advanced' },
     ],
   },
 

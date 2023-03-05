@@ -31,7 +31,10 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<im
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
-    readonly padded?: boolean | undefined;
+    readonly padded?: boolean | undefined; /**
+     * Whether to loop over after reaching the end or start of the items
+     * @default true
+     */
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
@@ -383,10 +386,6 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly pressTheme?: boolean | undefined;
         readonly focusTheme?: boolean | undefined;
         readonly circular?: boolean | undefined;
-        /**
-         * Whether to loop over after reaching the end or start of the items
-         * @default true
-         */
         readonly padded?: boolean | undefined;
         readonly elevate?: boolean | undefined;
         readonly bordered?: number | boolean | undefined;
@@ -414,7 +413,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly unstyled?: boolean | undefined;
         readonly size?: any;
     }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
-        readonly fullscreen?: boolean | undefined;
+        readonly fullscreen?: boolean | undefined; /** Used for making custom indicators when trigger interacted with */
         readonly elevation?: SizeTokens | undefined;
     } & {
         readonly backgrounded?: boolean | undefined;
@@ -455,7 +454,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly pressTheme?: boolean | undefined;
         readonly focusTheme?: boolean | undefined;
         readonly circular?: boolean | undefined;
-        readonly padded?: boolean | undefined;
+        readonly padded?: boolean | undefined; /**
+         * Whether to loop over after reaching the end or start of the items
+         * @default true
+         */
         readonly elevate?: boolean | undefined;
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
@@ -506,7 +508,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly pressTheme?: boolean | undefined;
         readonly focusTheme?: boolean | undefined;
         readonly circular?: boolean | undefined;
-        readonly padded?: boolean | undefined;
+        readonly padded?: boolean | undefined; /**
+         * Whether to loop over after reaching the end or start of the items
+         * @default true
+         */
         readonly elevate?: boolean | undefined;
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
