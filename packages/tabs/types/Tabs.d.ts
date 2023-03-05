@@ -517,7 +517,9 @@ declare const TabsTriggerFrame: (props: Omit<Omit<import("@tamagui/text").TextPa
     readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
-    readonly pressTheme?: boolean | undefined;
+    readonly pressTheme?: boolean | undefined; /**
+     * The direction of navigation between toolbar items.
+     */
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
     readonly padded?: boolean | undefined;
@@ -565,12 +567,13 @@ declare const TabsTriggerFrame: (props: Omit<Omit<import("@tamagui/text").TextPa
     unstyled?: boolean | undefined;
 } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "theme" | "themeInverse"> & import("@tamagui/web").ThemeableProps) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
 type TabTriggerLayout = LayoutRectangle;
+type InteractionType = 'select' | 'focus' | 'hover';
 type TabsTriggerFrameProps = GetProps<typeof TabsTriggerFrame>;
 type TabsTriggerProps = TabsTriggerFrameProps & {
     /** The value for the tabs state to be changed to after activation of the trigger */
     value: string;
     /** Used for making custom indicators when trigger interacted with */
-    onInteraction?: (type: 'select' | 'focus' | 'hover', layout: TabTriggerLayout | null) => void;
+    onInteraction?: (type: InteractionType, layout: TabTriggerLayout | null) => void;
 };
 declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -720,7 +723,7 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly size?: SizeTokens | undefined;
 }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined; /** Used for making custom indicators when trigger interacted with */
 }, "size" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
@@ -831,7 +834,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     readonly size?: SizeTokens | undefined;
 }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: SizeTokens | undefined;
+    readonly elevation?: SizeTokens | undefined; /** Used for making custom indicators when trigger interacted with */
 }, "size" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
