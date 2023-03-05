@@ -97,13 +97,13 @@ export const TabsAdvancedDemo = () => {
           )}
 
           <Tabs.Trigger value="tab1" onInteraction={handleOnInteraction}>
-            <SizableText fontFamily="$body">Profile</SizableText>
+            <SizableText>Profile</SizableText>
           </Tabs.Trigger>
           <Tabs.Trigger value="tab2" onInteraction={handleOnInteraction}>
-            <SizableText fontFamily="$body">Connections</SizableText>
+            <SizableText>Connections</SizableText>
           </Tabs.Trigger>
           <Tabs.Trigger value="tab3" onInteraction={handleOnInteraction}>
-            <SizableText fontFamily="$body">Notifications</SizableText>
+            <SizableText>Notifications</SizableText>
           </Tabs.Trigger>
         </Tabs.List>
       </YStack>
