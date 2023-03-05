@@ -1,9 +1,9 @@
-import { Button, ButtonProps } from '@tamagui/button'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
-import { Group, useGroupItem } from '@tamagui/group'
+import { getButtonSized } from '@tamagui/get-button-sized'
+import { Group, GroupProps, useGroupItem } from '@tamagui/group'
 import { RovingFocusGroup, createRovingFocusGroupScope } from '@tamagui/roving-focus'
-import { SizableStack, ThemeableStack } from '@tamagui/stacks'
+import { SizableStack, ThemeableStack, ThemeableStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import {
@@ -32,11 +32,9 @@ const TabsListFrame = styled(Group, {
   // defaultVariants: {
   //   flexGrow: 0,
   // },
-
-  backgroundColor: 'transparent',
 })
 
-type TabsListFrameProps = GetProps<typeof TabsListFrame>
+type TabsListFrameProps = GroupProps
 
 type TabsListProps = TabsListFrameProps & {
   /**
@@ -82,29 +80,61 @@ TabsList.displayName = TAB_LIST_NAME
 
 const TRIGGER_NAME = 'TabsTrigger'
 
-const TabsTriggerFrame = Button
-// TODO: find a way to use this - currently this messes with the group item radius on next.js
-// styled(Button, {
-//   name: TRIGGER_NAME,
-// })
+const TabsTriggerFrame = styled(ThemeableStack, {
+  name: TRIGGER_NAME,
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexWrap: 'nowrap',
+  flexDirection: 'row',
+  cursor: 'pointer',
+
+  variants: {
+    size: {
+      '...size': getButtonSized,
+    },
+    disabled: {
+      true: {
+        pointerEvents: 'none',
+      },
+    },
+    theme: {
+      Button: {
+        focusable: true,
+        hoverTheme: true,
+        pressTheme: true,
+        backgrounded: true,
+        borderWidth: 1,
+        borderColor: 'transparent',
+
+        pressStyle: {
+          borderColor: 'transparent',
+        },
+
+        hoverStyle: {
+          borderColor: 'transparent',
+        },
+
+        focusStyle: {
+          borderColor: '$borderColorFocus',
+        },
+      },
+    },
+  },
+})
 
 type TabTriggerLayout = LayoutRectangle
 type InteractionType = 'select' | 'focus' | 'hover'
 
-type TabsTriggerFrameProps = ButtonProps
+type TabsTriggerFrameProps = ThemeableStackProps
 type TabsTriggerProps = TabsTriggerFrameProps & {
   /** The value for the tabs state to be changed to after activation of the trigger */
   value: string
 
   /** Used for making custom indicators when trigger interacted with */
-  onInteraction?: (
-    type: InteractionType,
-    layout: TabTriggerLayout | null
-  ) => void
+  onInteraction?: (type: InteractionType, layout: TabTriggerLayout | null) => void
 }
 
-const TabsTrigger =
-  // TabsTriggerFrame.extractable(
+const TabsTrigger = TabsTriggerFrame.extractable(
   React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
     (props: ScopedProps<TabsTriggerProps>, forwardedRef) => {
       const {
@@ -180,6 +210,7 @@ const TabsTrigger =
               data-disabled={disabled ? '' : undefined}
               disabled={disabled}
               id={triggerId}
+              // @ts-ignore
               size={context.size}
               {...triggerProps}
               ref={composeRefs(forwardedRef, triggerRef)}
@@ -230,7 +261,7 @@ const TabsTrigger =
       )
     }
   )
-// )
+)
 
 TabsTrigger.displayName = TRIGGER_NAME
 
