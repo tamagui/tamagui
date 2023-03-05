@@ -4,6 +4,7 @@ import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { PortalProvider } from '@tamagui/portal'
 import * as React from 'react'
+import { isContext } from 'vm'
 
 /* -------------------------------------------------------------------------------------------------
  * ToastProvider
@@ -86,30 +87,32 @@ const ToastProvider: React.FC<ToastProviderProps> = (
   const isClosePausedRef = React.useRef(false)
 
   return (
-    <Collection.Provider scope={__scopeToast}>
-      <ToastProviderProvider
-        scope={__scopeToast}
-        id={id}
-        label={label}
-        duration={duration}
-        swipeDirection={swipeDirection}
-        swipeThreshold={swipeThreshold}
-        toastCount={toastCount}
-        viewport={viewport}
-        onViewportChange={setViewport}
-        onToastAdd={React.useCallback(() => {
-          setToastCount((prevCount) => prevCount + 1)
-        }, [])}
-        onToastRemove={React.useCallback(() => {
-          setToastCount((prevCount) => prevCount - 1)
-        }, [])}
-        isFocusedToastEscapeKeyDownRef={isFocusedToastEscapeKeyDownRef}
-        isClosePausedRef={isClosePausedRef}
-        portalHostViewport={portalHostViewport}
-      >
-        {children}
-      </ToastProviderProvider>
-    </Collection.Provider>
+    <PortalProvider shouldAddRootHost={false}>
+      <Collection.Provider scope={__scopeToast}>
+        <ToastProviderProvider
+          scope={__scopeToast}
+          id={id}
+          label={label}
+          duration={duration}
+          swipeDirection={swipeDirection}
+          swipeThreshold={swipeThreshold}
+          toastCount={toastCount}
+          viewport={viewport}
+          onViewportChange={setViewport}
+          onToastAdd={React.useCallback(() => {
+            setToastCount((prevCount) => prevCount + 1)
+          }, [])}
+          onToastRemove={React.useCallback(() => {
+            setToastCount((prevCount) => prevCount - 1)
+          }, [])}
+          isFocusedToastEscapeKeyDownRef={isFocusedToastEscapeKeyDownRef}
+          isClosePausedRef={isClosePausedRef}
+          portalHostViewport={portalHostViewport}
+        >
+          {children}
+        </ToastProviderProvider>
+      </Collection.Provider>
+    </PortalProvider>
   )
 }
 

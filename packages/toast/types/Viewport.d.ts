@@ -5,7 +5,11 @@ declare const VIEWPORT_PAUSE = "toast.viewportPause";
 declare const VIEWPORT_RESUME = "toast.viewportResume";
 declare const ToastViewportFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: import("@tamagui/core").SizeTokens | undefined; /**
+     * An author-localized label for the toast viewport to provide context for screen reader users
+     * when navigating page landmarks. The available `{hotkey}` placeholder will be replaced for you.
+     * @defaultValue 'Notifications ({hotkey})'
+     */
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -49,10 +53,18 @@ type ToastViewportProps = ToastViewportFrameProps & {
      * @defaultValue 'Notifications ({hotkey})'
      */
     label?: string;
+    /**
+     * Used to reference the viewport if you want to have multiple viewports in the same provider.
+     */
+    name?: string;
 };
 declare const ToastViewport: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly elevation?: import("@tamagui/core").SizeTokens | undefined; /**
+     * An author-localized label for the toast viewport to provide context for screen reader users
+     * when navigating page landmarks. The available `{hotkey}` placeholder will be replaced for you.
+     * @defaultValue 'Notifications ({hotkey})'
+     */
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -71,6 +83,10 @@ declare const ToastViewport: React.ForwardRefExoticComponent<((Omit<import("reac
      * @defaultValue 'Notifications ({hotkey})'
      */
     label?: string | undefined;
+    /**
+     * Used to reference the viewport if you want to have multiple viewports in the same provider.
+     */
+    name?: string | undefined;
 }) | Pick<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -98,6 +114,10 @@ declare const ToastViewport: React.ForwardRefExoticComponent<((Omit<import("reac
      * @defaultValue 'Notifications ({hotkey})'
      */
     label?: string | undefined;
+    /**
+     * Used to reference the viewport if you want to have multiple viewports in the same provider.
+     */
+    name?: string | undefined;
 }, string | number>) & React.RefAttributes<HTMLDivElement>>;
 export { ToastViewport, ToastViewportProps, VIEWPORT_DEFAULT_HOTKEY, VIEWPORT_PAUSE, VIEWPORT_RESUME, };
 //# sourceMappingURL=Viewport.d.ts.map

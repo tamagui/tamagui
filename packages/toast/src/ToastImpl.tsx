@@ -59,6 +59,10 @@ interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
    * controlling animation with React animation libraries.
    */
   forceMount?: true
+  /**
+   * Used to reference a specific viewport if you're using multiple ones.
+   */
+  viewportName?: string
 }
 
 type SwipeEvent = { currentTarget: EventTarget & TamaguiElement } & Omit<
@@ -90,6 +94,7 @@ type ToastImplProps = ToastImplPrivateProps &
     onSwipeMove?(event: SwipeEvent): void
     onSwipeCancel?(event: SwipeEvent): void
     onSwipeEnd?(event: SwipeEvent): void
+    viewportName?: string
   }
 
 const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
@@ -107,6 +112,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       onSwipeMove,
       onSwipeCancel,
       onSwipeEnd,
+      viewportName,
       ...toastProps
     } = props
     const isPresent = useIsPresent()
@@ -249,7 +255,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
             handleClose()
           }}
         >
-          <PortalItem hostName={context.id}>
+          <PortalItem hostName={viewportName ?? context.id}>
             <Collection.ItemSlot scope={__scopeToast}>
               <Dismissable
                 // asChild

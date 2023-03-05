@@ -8,18 +8,19 @@ import {
   Unspaced,
   XStack,
   YStack,
+  isWeb,
 } from 'tamagui'
 
 export const ToastDemo = () => {
+  // <ToastProvider swipeDirection="left" duration={5000}>
+  //   {isWeb && <Toast.Viewport />}
   return (
-    <ToastProvider swipeDirection="left" duration={5000}>
-      <Toast.Viewport />
-      <YStack space ai="center" jc="center">
-        <SingleToastExample />
-        <MultipleToastExample />
-      </YStack>
-    </ToastProvider>
+    <YStack space ai="center" jc="center">
+      <SingleToastExample />
+      <MultipleToastExample />
+    </YStack>
   )
+  // </ToastProvider>
 }
 
 const SingleToastExample = () => {

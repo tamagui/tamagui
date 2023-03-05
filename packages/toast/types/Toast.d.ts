@@ -166,6 +166,7 @@ declare const Toast: ((props: Omit<ToastProps & React.RefAttributes<TamaguiEleme
     }>> & {
         hotkey?: string[] | undefined;
         label?: string | undefined;
+        name?: string | undefined;
     }) | Pick<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -184,6 +185,7 @@ declare const Toast: ((props: Omit<ToastProps & React.RefAttributes<TamaguiEleme
     }>> & {
         hotkey?: string[] | undefined;
         label?: string | undefined;
+        name?: string | undefined;
     }, string | number>) & React.RefAttributes<HTMLDivElement>>;
     Title: React.ForwardRefExoticComponent<((Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNTextProps & Omit<{}, "size"> & {
         readonly size?: import("@tamagui/core").FontSizeTokens | undefined;

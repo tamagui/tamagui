@@ -1,5 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { GetProps, Stack, isWeb, styled } from '@tamagui/core'
+import { GetProps, Stack, Text, isWeb, styled } from '@tamagui/core'
 import { PortalHost } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
@@ -39,6 +39,10 @@ type ToastViewportProps = ToastViewportFrameProps & {
    * @defaultValue 'Notifications ({hotkey})'
    */
   label?: string
+  /**
+   * Used to reference the viewport if you want to have multiple viewports in the same provider.
+   */
+  name?: string
 }
 
 const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
@@ -47,6 +51,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
       __scopeToast,
       hotkey = VIEWPORT_DEFAULT_HOTKEY,
       label = 'Notifications ({hotkey})',
+      name,
       ...viewportProps
     } = props
     const context = useToastProviderContext(VIEWPORT_NAME, __scopeToast)
@@ -216,8 +221,8 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
          * the list instead of the viewport so it announces number of items remaining.
          */}
         <Collection.Slot scope={__scopeToast}>
-          <ToastViewportFrame>
-            <PortalHost name={context.id} />
+          <ToastViewportFrame ref={composedRefs} {...viewportProps}>
+            <PortalHost name={name ?? context.id} />
           </ToastViewportFrame>
         </Collection.Slot>
         {hasToasts && (

@@ -79,6 +79,10 @@ interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
      * controlling animation with React animation libraries.
      */
     forceMount?: true;
+    /**
+     * Used to reference a specific viewport if you're using multiple ones.
+     */
+    viewportName?: string;
 }
 type SwipeEvent = {
     currentTarget: EventTarget & TamaguiElement;
@@ -118,6 +122,7 @@ type ToastImplProps = ToastImplPrivateProps & ToastImplFrameProps & {
     onSwipeMove?(event: SwipeEvent): void;
     onSwipeCancel?(event: SwipeEvent): void;
     onSwipeEnd?(event: SwipeEvent): void;
+    viewportName?: string;
 };
 declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps & Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -184,6 +189,7 @@ declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps &
     onSwipeMove?(event: SwipeEvent): void;
     onSwipeCancel?(event: SwipeEvent): void;
     onSwipeEnd?(event: SwipeEvent): void;
+    viewportName?: string | undefined;
 } & React.RefAttributes<TamaguiElement>>;
 export { ToastImpl, ToastImplFrame, ToastImplProps, useToastInteractiveContext };
 export type { ToastProps };
