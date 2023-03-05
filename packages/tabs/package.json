@@ -17,8 +17,8 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/button": "1.6.3",
     "@tamagui/create-context": "1.6.3",
+    "@tamagui/get-button-sized": "1.6.3",
     "@tamagui/group": "1.6.3",
     "@tamagui/roving-focus": "1.6.3",
     "@tamagui/stacks": "1.6.3",
