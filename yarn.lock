@@ -5905,8 +5905,8 @@ __metadata:
   resolution: "@tamagui/tabs@workspace:packages/tabs"
   dependencies:
     "@tamagui/build": 1.6.3
-    "@tamagui/button": 1.6.3
     "@tamagui/create-context": 1.6.3
+    "@tamagui/get-button-sized": 1.6.3
     "@tamagui/group": 1.6.3
     "@tamagui/roving-focus": 1.6.3
     "@tamagui/stacks": 1.6.3
