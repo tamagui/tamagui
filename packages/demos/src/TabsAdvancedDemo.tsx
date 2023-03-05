@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react'
 import {
   AnimatePresence,
   H5,
+  SizableText,
   Stack,
   TabTriggerLayout,
   Tabs,
@@ -108,9 +109,10 @@ const TabsAdvanced = () => {
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      br="$4"
-      p="$2"
-      height={150} 
+      br="$2"
+      size="$4"
+      p="$1.5"
+      height={150}
       flexDirection="column"
       activationMode="manual"
     >
@@ -120,6 +122,7 @@ const TabsAdvanced = () => {
           aria-label="Manage your account"
           disablePassBorderRadius
           overflow="visible"
+          pb="$1.5"
         >
           {IntentIndicator && (
             <TabsRovingIndicator
@@ -142,32 +145,14 @@ const TabsAdvanced = () => {
             />
           )}
 
-          <Tabs.Trigger
-            unstyled
-            color="$color12"
-            value="tab1"
-            size="$3"
-            onInteraction={handleOnInteraction}
-          >
-            Profile
+          <Tabs.Trigger value="tab1" onInteraction={handleOnInteraction}>
+            <SizableText fontFamily="$body">Profile</SizableText>
           </Tabs.Trigger>
-          <Tabs.Trigger
-            unstyled
-            color="$color12"
-            size="$3"
-            value="tab2"
-            onInteraction={handleOnInteraction}
-          >
-            Connections
+          <Tabs.Trigger value="tab2" onInteraction={handleOnInteraction}>
+            <SizableText fontFamily="$body">Connections</SizableText>
           </Tabs.Trigger>
-          <Tabs.Trigger
-            unstyled
-            color="$color12"
-            size="$3"
-            value="tab3"
-            onInteraction={handleOnInteraction}
-          >
-            Notifications
+          <Tabs.Trigger value="tab3" onInteraction={handleOnInteraction}>
+            <SizableText fontFamily="$body">Notifications</SizableText>
           </Tabs.Trigger>
         </Tabs.List>
       </YStack>

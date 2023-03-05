@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, H5, Tabs, XStack } from 'tamagui'
+import { Button, H5, SizableText, Tabs, XStack } from 'tamagui'
 
 const demos = ['horizontal', 'vertical'] as const
 
@@ -31,14 +31,14 @@ const HorizontalTabs = () => {
       br="$4"
     >
       <Tabs.List disablePassBorderRadius="bottom" aria-label="Manage your account">
-        <Tabs.Trigger f={1} value="tab1">
-          Profile
+        <Tabs.Trigger theme="Button" f={1} value="tab1">
+          <SizableText fontFamily="$body">Profile</SizableText>
         </Tabs.Trigger>
-        <Tabs.Trigger f={1} value="tab2">
-          Connections
+        <Tabs.Trigger theme="Button" f={1} value="tab2">
+          <SizableText fontFamily="$body">Connections</SizableText>
         </Tabs.Trigger>
-        <Tabs.Trigger f={1} value="tab3">
-          Notifications
+        <Tabs.Trigger theme="Button" f={1} value="tab3">
+          <SizableText fontFamily="$body">Notifications</SizableText>
         </Tabs.Trigger>
       </Tabs.List>
 
@@ -67,9 +67,15 @@ const VerticalTabs = () => {
       br="$4"
     >
       <Tabs.List disablePassBorderRadius="end" aria-label="Manage your account">
-        <Tabs.Trigger value="tab1">Profile</Tabs.Trigger>
-        <Tabs.Trigger value="tab2">Connections</Tabs.Trigger>
-        <Tabs.Trigger value="tab3">Notifications</Tabs.Trigger>
+        <Tabs.Trigger theme="Button" value="tab1">
+          <SizableText fontFamily="$body">Profile</SizableText>
+        </Tabs.Trigger>
+        <Tabs.Trigger theme="Button" value="tab2">
+          <SizableText fontFamily="$body">Connections</SizableText>
+        </Tabs.Trigger>
+        <Tabs.Trigger theme="Button" value="tab3">
+          <SizableText fontFamily="$body">Notifications</SizableText>
+        </Tabs.Trigger>
       </Tabs.List>
       <Tabs.Content value="tab1" key="tab1" p="$2" ai="center" jc="center" f={1}>
         <H5 ta="center">Profile</H5>
