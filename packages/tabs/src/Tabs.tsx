@@ -89,6 +89,7 @@ const TabsTriggerFrame = Button
 // })
 
 type TabTriggerLayout = LayoutRectangle
+type InteractionType = 'select' | 'focus' | 'hover'
 
 type TabsTriggerFrameProps = GetProps<typeof TabsTriggerFrame>
 type TabsTriggerProps = TabsTriggerFrameProps & {
@@ -97,7 +98,7 @@ type TabsTriggerProps = TabsTriggerFrameProps & {
 
   /** Used for making custom indicators when trigger interacted with */
   onInteraction?: (
-    type: 'select' | 'focus' | 'hover',
+    type: InteractionType,
     layout: TabTriggerLayout | null
   ) => void
 }
