@@ -50,7 +50,7 @@ export default () => (
 
 ## Advanced Demo
 
-Here is a demo with more advanced animations using [AnimatePresence](/docs/core/animations#animatepresence-and-exitstyle) and [Trigger](#trigger) events
+Here is a demo with more advanced animations using [AnimatePresence](/docs/core/animations#animatepresence-and-exitstyle) and [Trigger](#trigger)'s `onInteraction` prop.
 
 <HeroContainer noPad>
   <TabsAdvancedDemo />
@@ -131,7 +131,7 @@ Extends [Button](/docs/components/button), adding:
     },
     {
       name: 'onInteraction',
-      type: `(type: 'select' | 'focus' | 'hover', layout: TabTriggerLayout | null) => void`,
+      type: `(type: InteractionType, layout: TabTriggerLayout | null) => void`,
       description: `Used for making custom indicators when trigger interacted with`,
     },
   ]}
