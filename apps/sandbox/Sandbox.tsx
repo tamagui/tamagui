@@ -6,6 +6,7 @@ import {
   CheckboxDemo,
   GroupDemo,
   InputsDemo,
+  ListItemDemo,
   ProgressDemo,
   SelectDemo,
   SwitchDemo,
@@ -62,7 +63,8 @@ export const Sandbox = () => {
 
       {/* <TestPopoverContentStyledPlusAnimations /> */}
 
-      <SelectDemo />
+      {/* <SelectDemo /> */}
+      <ListItemDemo />
     </SandboxFrame>
   )
 }
