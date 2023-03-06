@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context'
-import { Toast, ToastProvider } from 'sandbox-ui'
+import { Toast, ToastProvider, YStack } from 'sandbox-ui'
 
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
@@ -50,7 +50,15 @@ export default function App() {
 }
 
 const SafeToastViewport = () => {
-  const safeAreaInsets = useSafeAreaInsets()
-
-  return <Toast.Viewport style={safeAreaInsets} />
+  const { left, top, bottom, right } = useSafeAreaInsets()
+  return (
+    <>
+      <Toast.Viewport name="topleft" top={top} left={left} />
+      <Toast.Viewport name="top" top={top} left={left} right={right} mx="auto" />
+      <Toast.Viewport name="topright" top={top} right={right} />
+      <Toast.Viewport name="bottomleft" bottom={bottom} left={left} />
+      <Toast.Viewport name="bottom" bottom={bottom} left={left} right={right} mx="auto" />
+      <Toast.Viewport name="bottomright" bottom={bottom} right={right} />
+    </>
+  )
 }

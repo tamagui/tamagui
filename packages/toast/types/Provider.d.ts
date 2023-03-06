@@ -28,7 +28,6 @@ type ToastProviderContextValue = {
     onToastRemove(): void;
     isFocusedToastEscapeKeyDownRef: React.MutableRefObject<boolean>;
     isClosePausedRef: React.MutableRefObject<boolean>;
-    portalHostViewport?: string;
 };
 type ScopedProps<P> = P & {
     __scopeToast?: Scope;
@@ -70,8 +69,14 @@ interface ToastProviderProps {
      * @defaultValue 50
      */
     swipeThreshold?: number;
-    portalHostViewport?: string;
+    /**
+     * @defaultValue unique generated identifier
+     */
     id?: string;
+    /**
+     * If on, will add default viewports with names: default, top, topleft, topright, bottom, bottomleft, bottomright
+     */
+    shouldAddDefaultViewports?: boolean;
 }
 declare const ToastProvider: React.FC<ToastProviderProps>;
 export { ToastProvider, useToastProviderContext, Collection, useCollection, createToastScope, createToastContext, };

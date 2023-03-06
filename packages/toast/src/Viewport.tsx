@@ -1,3 +1,4 @@
+import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { GetProps, Stack, Text, isWeb, styled } from '@tamagui/core'
 import { PortalHost } from '@tamagui/portal'
@@ -20,7 +21,6 @@ const VIEWPORT_RESUME = 'toast.viewportResume'
 const ToastViewportFrame = styled(YStack, {
   name: VIEWPORT_NAME,
   pointerEvents: 'box-none',
-  fullscreen: true,
   // @ts-ignore
   position: isWeb ? 'fixed' : 'absolute',
   maxWidth: '100%',
@@ -222,7 +222,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
          */}
         <Collection.Slot scope={__scopeToast}>
           <ToastViewportFrame ref={composedRefs} {...viewportProps}>
-            <PortalHost name={name ?? context.id} />
+            <PortalHost name={name ?? "default"} />
           </ToastViewportFrame>
         </Collection.Slot>
         {hasToasts && (

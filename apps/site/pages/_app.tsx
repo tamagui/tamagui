@@ -12,7 +12,7 @@ import NextHead from 'next/head'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 import { Suspense, startTransition, useMemo } from 'react'
-import { TamaguiProvider, isClient } from 'tamagui'
+import { TamaguiProvider, Toast, ToastProvider, isClient } from 'tamagui'
 
 import { Header } from '../components/Header'
 import { SearchProvider } from '../components/Search'
@@ -82,7 +82,50 @@ export default function App(props: AppProps) {
           <SearchProvider>
             <Suspense fallback={null}>
               {useMemo(() => {
-                return <ContentInner {...props} />
+                return (
+                  <ToastProvider>
+                    <ContentInner {...props} />
+
+                    {/* default viewport */}
+                    <Toast.Viewport
+                      flexDirection="column-reverse"
+                      name="default"
+                      top="$2"
+                      left="$2"
+                      right="$2"
+                      mx="auto"
+                    />
+                    <Toast.Viewport
+                      flexDirection="column-reverse"
+                      name="topleft"
+                      top="$2"
+                      left="$2"
+                    />
+                    <Toast.Viewport
+                      flexDirection="column-reverse"
+                      name="top"
+                      top="$2"
+                      left="$2"
+                      right="$2"
+                      mx="auto"
+                    />
+                    <Toast.Viewport
+                      flexDirection="column-reverse"
+                      name="topright"
+                      top="$2"
+                      right="$2"
+                    />
+                    <Toast.Viewport name="bottomleft" bottom="$2" left="$2" />
+                    <Toast.Viewport
+                      name="bottom"
+                      bottom="$2"
+                      left="$2"
+                      right="$2"
+                      mx="auto"
+                    />
+                    <Toast.Viewport name="bottomright" bottom="$2" right="$2" />
+                  </ToastProvider>
+                )
               }, [props])}
             </Suspense>
           </SearchProvider>

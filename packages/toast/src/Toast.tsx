@@ -175,60 +175,58 @@ const ToastComponent = React.forwardRef<TamaguiElement, ToastProps>(
     const onPause = useEvent(props.onPause)
     const onResume = useEvent(props.onResume)
 
+    if (!forceMount && !open) return null
+
     return (
-      <AnimatePresence>
-        {(forceMount || open) && (
-          <ToastImpl
-            key={id}
-            open={open}
-            {...toastProps}
-            ref={forwardedRef}
-            onClose={() => setOpen(false)}
-            onPause={onPause}
-            onResume={onResume}
-            onSwipeStart={composeEventHandlers(props.onSwipeStart, (event) => {
-              if (isWeb) {
-                const target = event.currentTarget as HTMLDivElement
-                target.setAttribute('data-swipe', 'start')
-              }
-            })}
-            onSwipeMove={composeEventHandlers(props.onSwipeMove, (event) => {
-              if (isWeb) {
-                const { x, y } = event.detail.delta
+      <ToastImpl
+        id={id}
+        open={open}
+        {...toastProps}
+        ref={forwardedRef}
+        onClose={() => setOpen(false)}
+        onPause={onPause}
+        onResume={onResume}
+        onSwipeStart={composeEventHandlers(props.onSwipeStart, (event) => {
+          if (isWeb) {
+            const target = event.currentTarget as HTMLDivElement
+            target.setAttribute('data-swipe', 'start')
+          }
+        })}
+        onSwipeMove={composeEventHandlers(props.onSwipeMove, (event) => {
+          if (isWeb) {
+            const { x, y } = event.detail.delta
 
-                const target = event.currentTarget as HTMLDivElement
-                target.setAttribute('data-swipe', 'move')
-                target.style.setProperty('--toast-swipe-move-x', `${x}px`)
-                target.style.setProperty('--toast-swipe-move-y', `${y}px`)
-              }
-            })}
-            onSwipeCancel={composeEventHandlers(props.onSwipeCancel, (event) => {
-              if (isWeb) {
-                const target = event.currentTarget as HTMLDivElement
+            const target = event.currentTarget as HTMLDivElement
+            target.setAttribute('data-swipe', 'move')
+            target.style.setProperty('--toast-swipe-move-x', `${x}px`)
+            target.style.setProperty('--toast-swipe-move-y', `${y}px`)
+          }
+        })}
+        onSwipeCancel={composeEventHandlers(props.onSwipeCancel, (event) => {
+          if (isWeb) {
+            const target = event.currentTarget as HTMLDivElement
 
-                target.setAttribute('data-swipe', 'cancel')
-                target.style.removeProperty('--toast-swipe-move-x')
-                target.style.removeProperty('--toast-swipe-move-y')
-                target.style.removeProperty('--toast-swipe-end-x')
-                target.style.removeProperty('--toast-swipe-end-y')
-              }
-            })}
-            onSwipeEnd={composeEventHandlers(props.onSwipeEnd, (event) => {
-              if (isWeb) {
-                const target = event.currentTarget as HTMLDivElement
+            target.setAttribute('data-swipe', 'cancel')
+            target.style.removeProperty('--toast-swipe-move-x')
+            target.style.removeProperty('--toast-swipe-move-y')
+            target.style.removeProperty('--toast-swipe-end-x')
+            target.style.removeProperty('--toast-swipe-end-y')
+          }
+        })}
+        onSwipeEnd={composeEventHandlers(props.onSwipeEnd, (event) => {
+          if (isWeb) {
+            const target = event.currentTarget as HTMLDivElement
 
-                const { x, y } = event.detail.delta
-                target.setAttribute('data-swipe', 'end')
-                target.style.removeProperty('--toast-swipe-move-x')
-                target.style.removeProperty('--toast-swipe-move-y')
-                target.style.setProperty('--toast-swipe-end-x', `${x}px`)
-                target.style.setProperty('--toast-swipe-end-y', `${y}px`)
-              }
-              setOpen(false)
-            })}
-          />
-        )}
-      </AnimatePresence>
+            const { x, y } = event.detail.delta
+            target.setAttribute('data-swipe', 'end')
+            target.style.removeProperty('--toast-swipe-move-x')
+            target.style.removeProperty('--toast-swipe-move-y')
+            target.style.setProperty('--toast-swipe-end-x', `${x}px`)
+            target.style.setProperty('--toast-swipe-end-y', `${y}px`)
+          }
+          setOpen(false)
+        })}
+      />
     )
   })
 )

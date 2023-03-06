@@ -1,7 +1,7 @@
 // from https://github.com/gorhom/react-native-portal
 // MIT License Copyright (c) 2020 Mo Gorhom
 // fixing SSR issue
-
+import { AnimatePresence } from '@tamagui/animate-presence'
 import {
   spacedChildren,
   useDidFinishSSR,
@@ -315,7 +315,7 @@ const PortalHostComponent = (props: PortalHostProps) => {
   }
 
   //#region render
-  return <>{state.map((item) => item.node)}</>
+  return <AnimatePresence>{state.map((item) => item.node)}</AnimatePresence>
   //#endregion
 }
 

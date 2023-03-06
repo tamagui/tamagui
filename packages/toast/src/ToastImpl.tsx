@@ -1,4 +1,4 @@
-import { useIsPresent } from '@tamagui/animate-presence'
+import { AnimatePresence, useIsPresent } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
@@ -257,8 +257,8 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
             handleClose()
           }}
         >
-          <PortalItem hostName={viewportName ?? context.id}>
-            <Collection.ItemSlot scope={__scopeToast}>
+          <PortalItem hostName={viewportName ?? 'default'} key={props.id}>
+            <Collection.ItemSlot key={props.id} scope={__scopeToast}>
               <Dismissable
                 // asChild
                 onEscapeKeyDown={composeEventHandlers(onEscapeKeyDown, () => {
@@ -285,7 +285,6 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                     onKeyDown: composeEventHandlers(
                       (props as any).onKeyDown,
                       (event: KeyboardEvent) => {
-                        console.log('onKeyDown')
                         if (event.key !== 'Escape') return
                         onEscapeKeyDown?.(event)
                         onEscapeKeyDown?.(event)
@@ -319,7 +318,6 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                     props.onPressOut ?? undefined,
                     (event) => {
                       const delta = swipeDeltaRef.current
-                      console.log(event)
                       if (isWeb) {
                         const target = event.target as unknown as HTMLElement
 
