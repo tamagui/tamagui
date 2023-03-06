@@ -1,11 +1,17 @@
-interface CreateNativeToastsOptions {
-    title: string;
-    body?: string;
-    actions?: {
-        title: string;
-        action: () => any;
-    }[];
-    preset: 'done' | 'error';
-    duration: number;
+import { ToastOptions as BurntToastOptions } from 'burnt/build/types';
+export interface CreateNativeToastsOptions {
+    /**
+     * Body of the toast
+     */
+    message?: BurntToastOptions['message'];
+    /**
+     * Only supported on native iOS driver
+     */
+    preset?: BurntToastOptions['preset'];
+    /**
+     * Duration of toast
+     */
+    duration?: BurntToastOptions['duration'];
 }
+export type CreateNativeToastsOptionsFn = (title: string, options: CreateNativeToastsOptions) => void;
 //# sourceMappingURL=types.d.ts.map

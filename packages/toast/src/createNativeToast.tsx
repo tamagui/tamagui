@@ -1,10 +1,6 @@
-export const createNativeToast = ({
-  title,
-  duration,
-  preset,
-  actions,
-  body,
-}: CreateNativeToastsOptions) => {
+import { CreateNativeToastsOptionsFn } from './types'
+
+export const createNativeToast: CreateNativeToastsOptionsFn = (title, { message }) => {
   if (!('Notification' in window)) {
     throw Error('This browser does not support desktop notification')
   }
@@ -13,7 +9,7 @@ export const createNativeToast = ({
 
   const showNotification = () => {
     new Notification(title, {
-      body,
+      body: message,
     })
   }
 

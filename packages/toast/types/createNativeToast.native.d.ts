@@ -1,2 +1,3 @@
-export declare const createNativeToast: ({ title, body, duration, preset }: CreateNativeToastsOptions) => void;
+import { CreateNativeToastsOptionsFn } from './types';
+export declare const createNativeToast: CreateNativeToastsOptionsFn;
 //# sourceMappingURL=createNativeToast.native.d.ts.map

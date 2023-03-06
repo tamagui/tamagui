@@ -1,4 +1,3 @@
-import { AnimatePresence } from '@tamagui/animate-presence'
 import {
   GetProps,
   TamaguiElement,
@@ -13,18 +12,16 @@ import {
 import { YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import { ToastOptions as BurntToastOptions } from 'burnt/build/types'
 import * as React from 'react'
 
 import { ToastAnnounceExclude } from './Announce'
 import { TOAST_NAME } from './constants'
-import { createNativeToast } from './createNativeToast'
+import { createToast } from './createToast'
 import {
   ScopedProps,
   ToastProvider,
   ToastProviderProps,
   createToastScope,
-  useToastProviderContext,
 } from './Provider'
 import {
   ToastImpl,
@@ -243,46 +240,6 @@ const Toast = withStaticProperties(
     Close: ToastClose,
   }
 )
-
-/* ---------------------------------------------------------------------------------------------- */
-
-interface CreateToastOptions {
-  native: boolean | ('web' | 'mobile')[]
-}
-interface ToastOptions extends BurntToastOptions {
-  additionalInfo?: Record<string, any>
-}
-
-const createToast = (options: CreateToastOptions) => {
-  const context = useToastProviderContext('useToast', undefined)
-  const [toasts, setToasts] = React.useState<any[]>([])
-
-  return {
-    toastCount: context.toastCount,
-    toasts: options.native ? [] : toasts,
-    show: (
-      showOptions: Pick<
-        CreateNativeToastsOptions,
-        'title' | 'body' | 'preset' | 'duration'
-      >
-    ) => {
-      const id = toasts.length ? toasts[toasts.length - 1].id + 1 : 1
-      // context.onToastAdd()
-      setToasts([...toasts, { id, ...showOptions }])
-      if (
-        options.native === true ||
-        (Array.isArray(options.native) &&
-          ((isWeb && options.native.includes('web')) ||
-            (!isWeb && options.native.includes('mobile'))))
-      ) {
-        createNativeToast(showOptions)
-      }
-    },
-    hide: () => {
-      // context.onToastRemove()
-    },
-  }
-}
 
 /* ---------------------------------------------------------------------------------------------- */
 

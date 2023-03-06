@@ -45,9 +45,19 @@ const ToastImplFrame = styled(ThemeableStack, {
         backgroundColor: '$color6',
       },
     },
+    unstyled: {
+      false: {
+        borderRadius: '$10',
+        paddingHorizontal: '$5',
+        paddingVertical: '$2',
+        marginHorizontal: "auto",
+        marginVertical: '$1',
+      },
+    },
   },
   defaultVariants: {
     backgrounded: true,
+    unstyled: false,
   },
 })
 interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
@@ -126,6 +136,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
     const closeTimerRemainingTimeRef = React.useRef(duration)
     const closeTimerRef = React.useRef(0)
     const { onToastAdd, onToastRemove } = context
+    const [position, setPosition] = React.useState({ x: 0, y: 0 })
     const handleClose = useEvent(() => {
       if (!isPresent) {
         // already removed from the react tree
@@ -211,6 +222,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
         const eventDetail = { originalEvent: event, delta }
         if (hasSwipeMoveStarted) {
           swipeDeltaRef.current = delta
+          setPosition(delta)
           handleAndDispatchCustomEvent(TOAST_SWIPE_MOVE, onSwipeMove, eventDetail, {
             discrete: false,
           })

@@ -1,5 +1,6 @@
 import { GetProps, TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
+import { createToast } from './createToast';
 import { ToastProvider, ToastProviderProps, createToastScope } from './Provider';
 import { ToastProps } from './ToastImpl';
 import { ToastViewportProps } from './Viewport';
@@ -339,15 +340,6 @@ declare const Toast: ((props: Omit<ToastProps & React.RefAttributes<TamaguiEleme
     }, string | number> & {
         [x: string]: undefined;
     }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
-};
-interface CreateToastOptions {
-    native: boolean | ('web' | 'mobile')[];
-}
-declare const createToast: (options: CreateToastOptions) => {
-    toastCount: number;
-    toasts: any[];
-    show: (showOptions: Pick<CreateNativeToastsOptions, 'title' | 'body' | 'preset' | 'duration'>) => void;
-    hide: () => void;
 };
 export { Toast, ToastProvider, createToast, createToastScope, };
 export type { ToastActionProps, ToastCloseProps, ToastDescriptionProps, ToastProps, ToastProviderProps, ToastTitleProps, ToastViewportProps, };

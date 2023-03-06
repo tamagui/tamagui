@@ -1,9 +1,14 @@
 import * as Burnt from 'burnt'
 
-export const createNativeToast = ({ title, body, duration, preset }: CreateNativeToastsOptions) => {
+import { CreateNativeToastsOptions, CreateNativeToastsOptionsFn } from './types'
+
+export const createNativeToast: CreateNativeToastsOptionsFn = (
+  title,
+  { message, duration, preset = 'done' }: CreateNativeToastsOptions
+) => {
   Burnt.toast({
     title,
-    message: body ?? "",
+    message: message ?? '',
     preset,
     duration,
   })

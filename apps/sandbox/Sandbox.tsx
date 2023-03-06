@@ -84,12 +84,37 @@ export const Sandbox = () => {
           🌗
         </button>
 
-        <Toast.Viewport name="topleft" top={0} left={0} />
-        <Toast.Viewport name="top" top={0} left={0} right={0} mx="auto" />
-        <Toast.Viewport name="topright" top={0} right={0} />
-        <Toast.Viewport name="bottomleft" bottom={0} left={0} />
-        <Toast.Viewport name="bottom" bottom={0} left={0} right={0} mx="auto" />
-        <Toast.Viewport name="bottomright" bottom={0} right={0} />
+        <Toast.Viewport
+          flexDirection="column-reverse"
+          name="default"
+          top="$2"
+          left="$2"
+          right="$2"
+          mx="auto"
+        />
+        <Toast.Viewport
+          flexDirection="column-reverse"
+          name="top-left"
+          top="$2"
+          left="$2"
+        />
+        <Toast.Viewport
+          flexDirection="column-reverse"
+          name="top-center"
+          top="$2"
+          left="$2"
+          right="$2"
+          mx="auto"
+        />
+        <Toast.Viewport
+          flexDirection="column-reverse"
+          name="top-right"
+          top="$2"
+          right="$2"
+        />
+        <Toast.Viewport name="bottom-left" bottom="$2" left="$2" />
+        <Toast.Viewport name="bottom-center" bottom="$2" left="$2" right="$2" mx="auto" />
+        <Toast.Viewport name="bottom-right" bottom="$2" right="$2" />
       </ToastProvider>
     </TamaguiProvider>
   )

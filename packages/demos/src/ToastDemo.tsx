@@ -1,6 +1,80 @@
 import { Check } from '@tamagui/lucide-icons'
 import React from 'react'
-import { Button, Toast, ToastProvider, XStack, YStack } from 'tamagui'
+import { Button, Toast, ToastProvider, XStack, YStack, createToast } from 'tamagui'
+
+const { ImperativeToastProvider, useToasts } = createToast({ native: false })
+
+export const ToastDemo = () => {
+  return (
+    <YStack space>
+      <ImperativeToastProvider>
+        <ImperativeDemo />
+      </ImperativeToastProvider>
+      <DeclarativeDemo />
+    </YStack>
+  )
+}
+
+const ImperativeDemo = () => {
+  const { toasts, show } = useToasts()
+
+  return (
+    <YStack>
+      <YStack space>
+        <Button
+          onPress={() => {
+            show('Saved successfully!', {
+              message: 'Data saved successfully!',
+              native: true,
+            })
+          }}
+        >
+          Imperative Native
+        </Button>
+        <Button
+          onPress={() => {
+            show('Saved successfully!', { message: 'Data saved successfully!' })
+          }}
+        >
+          Imperative
+        </Button>
+      </YStack>
+
+      {/* non native only: */}
+      {toasts.map((toast, idx) => (
+        <Toast
+          key={idx}
+          animation="100ms"
+          enterStyle={{ o: 0, scale: 0.9 }}
+          exitStyle={{ o: 0, scale: 0.9 }}
+          o={1}
+          scale={1}
+        >
+          <Toast.Title>{toast.title}</Toast.Title>
+          <Toast.Description>{toast.options.message}</Toast.Description>
+        </Toast>
+      ))}
+    </YStack>
+  )
+}
+const DeclarativeDemo = () => {
+  return (
+    <XStack space ai="center" jc="center">
+      <YStack space>
+        <XStack space jc="center">
+          <DeclarativeMultipleToastDemo name="top-left" />
+          <DeclarativeMultipleToastDemo name="top-center" />
+          <DeclarativeMultipleToastDemo name="top-right" />
+        </XStack>
+        <XStack space jc="center">
+          <DeclarativeMultipleToastDemo name="bottom-left" />
+          <DeclarativeMultipleToastDemo name="bottom-center" />
+          <DeclarativeMultipleToastDemo name="bottom-right" />
+        </XStack>
+      </YStack>
+    </XStack>
+  )
+}
 
 // App is wrapped inside this provider
 const MyToastProvider = ({ children }: { children: React.ReactNode }) => {
@@ -16,10 +90,10 @@ const MyToastProvider = ({ children }: { children: React.ReactNode }) => {
         right="$2"
         mx="auto"
       />
-      <Toast.Viewport flexDirection="column-reverse" name="topleft" top="$2" left="$2" />
+      <Toast.Viewport flexDirection="column-reverse" name="top-left" top="$2" left="$2" />
       <Toast.Viewport
         flexDirection="column-reverse"
-        name="top"
+        name="top-center"
         top="$2"
         left="$2"
         right="$2"
@@ -27,37 +101,18 @@ const MyToastProvider = ({ children }: { children: React.ReactNode }) => {
       />
       <Toast.Viewport
         flexDirection="column-reverse"
-        name="topright"
+        name="top-right"
         top="$2"
         right="$2"
       />
-      <Toast.Viewport name="bottomleft" bottom="$2" left="$2" />
-      <Toast.Viewport name="bottom" bottom="$2" left="$2" right="$2" mx="auto" />
-      <Toast.Viewport name="bottomright" bottom="$2" right="$2" />
+      <Toast.Viewport name="bottom-left" bottom="$2" left="$2" />
+      <Toast.Viewport name="bottom-center" bottom="$2" left="$2" right="$2" mx="auto" />
+      <Toast.Viewport name="bottom-right" bottom="$2" right="$2" />
     </ToastProvider>
   )
 }
 
-export const ToastDemo = () => {
-  return (
-    <XStack space ai="center" jc="center">
-      <YStack space>
-        <XStack space jc="center">
-          <MultipleToastExample name="topleft" />
-          <MultipleToastExample name="top" />
-          <MultipleToastExample name="topright" />
-        </XStack>
-        <XStack space jc="center">
-          <MultipleToastExample name="bottomleft" />
-          <MultipleToastExample name="bottom" />
-          <MultipleToastExample name="bottomright" />
-        </XStack>
-      </YStack>
-    </XStack>
-  )
-}
-
-export function MultipleToastExample({ name }: { name?: string }) {
+export function DeclarativeMultipleToastDemo({ name }: { name?: string }) {
   const [savedCount, setSavedCount] = React.useState(0)
 
   return (
@@ -67,7 +122,7 @@ export function MultipleToastExample({ name }: { name?: string }) {
           setSavedCount((old) => old + 1)
         }}
       >
-        {name}
+        Declarative {name}
       </Button>
 
       {[...Array(savedCount)].map((_, index) => (
@@ -79,11 +134,6 @@ export function MultipleToastExample({ name }: { name?: string }) {
           animation="100ms"
           opacity={1}
           scale={1}
-          br="$10"
-          px="$5"
-          py="$2"
-          my="$1"
-          mx="auto"
         >
           <XStack space ai="center">
             <Check />
@@ -101,7 +151,7 @@ export function MultipleToastExample({ name }: { name?: string }) {
   )
 }
 
-const SingleToastExample = ({ name }: { name?: string }) => {
+const DeclarativeSingleToastDemo = ({ name }: { name?: string }) => {
   const [open, setOpen] = React.useState(false)
   const timerRef = React.useRef(0)
 
@@ -132,11 +182,6 @@ const SingleToastExample = ({ name }: { name?: string }) => {
         animation="100ms"
         opacity={1}
         scale={1}
-        br="$10"
-        px="$5"
-        py="$2"
-        my="$1"
-        mx="auto"
       >
         <XStack space ai="center">
           <Check />

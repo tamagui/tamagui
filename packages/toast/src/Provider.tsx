@@ -68,10 +68,6 @@ interface ToastProviderProps {
    * @defaultValue unique generated identifier
    */
   id?: string
-  /**
-   * If on, will add default viewports with names: default, top, topleft, topright, bottom, bottomleft, bottomright
-   */
-  shouldAddDefaultViewports?: boolean
 }
 
 const ToastProvider: React.FC<ToastProviderProps> = (
@@ -84,7 +80,6 @@ const ToastProvider: React.FC<ToastProviderProps> = (
     duration = 5000,
     swipeDirection = 'right',
     swipeThreshold = 50,
-    shouldAddDefaultViewports = false,
     children,
   } = props
   const id = providedId ?? useId()
@@ -116,48 +111,6 @@ const ToastProvider: React.FC<ToastProviderProps> = (
           isClosePausedRef={isClosePausedRef}
         >
           {children}
-
-          {shouldAddDefaultViewports && (
-            <>
-              <ToastViewport
-                flexDirection="column-reverse"
-                name="default"
-                top={0}
-                left={0}
-                right={0}
-                marginHorizontal="auto"
-              />
-              <ToastViewport
-                flexDirection="column-reverse"
-                name="topleft"
-                top={0}
-                left={0}
-              />
-              <ToastViewport
-                flexDirection="column-reverse"
-                name="top"
-                top={0}
-                left={0}
-                right={0}
-                marginHorizontal="auto"
-              />
-              <ToastViewport
-                flexDirection="column-reverse"
-                name="topright"
-                top={0}
-                right={0}
-              />
-              <ToastViewport name="bottomleft" bottom={0} left={0} />
-              <ToastViewport
-                name="bottom"
-                bottom={0}
-                left={0}
-                right={0}
-                marginHorizontal="auto"
-              />
-              <ToastViewport name="bottomright" bottom={0} right={0} />
-            </>
-          )}
         </ToastProviderProvider>
       </Collection.Provider>
     </PortalProvider>

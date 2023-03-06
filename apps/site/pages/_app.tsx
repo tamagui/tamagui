@@ -86,44 +86,7 @@ export default function App(props: AppProps) {
                   <ToastProvider>
                     <ContentInner {...props} />
 
-                    {/* default viewport */}
-                    <Toast.Viewport
-                      flexDirection="column-reverse"
-                      name="default"
-                      top="$2"
-                      left="$2"
-                      right="$2"
-                      mx="auto"
-                    />
-                    <Toast.Viewport
-                      flexDirection="column-reverse"
-                      name="topleft"
-                      top="$2"
-                      left="$2"
-                    />
-                    <Toast.Viewport
-                      flexDirection="column-reverse"
-                      name="top"
-                      top="$2"
-                      left="$2"
-                      right="$2"
-                      mx="auto"
-                    />
-                    <Toast.Viewport
-                      flexDirection="column-reverse"
-                      name="topright"
-                      top="$2"
-                      right="$2"
-                    />
-                    <Toast.Viewport name="bottomleft" bottom="$2" left="$2" />
-                    <Toast.Viewport
-                      name="bottom"
-                      bottom="$2"
-                      left="$2"
-                      right="$2"
-                      mx="auto"
-                    />
-                    <Toast.Viewport name="bottomright" bottom="$2" right="$2" />
+                    <ToastViewports />
                   </ToastProvider>
                 )
               }, [props])}
@@ -154,6 +117,39 @@ function ContentInner({ Component, pageProps }: AppProps) {
       {!isTest && !isResponsiveDemo && <Header disableNew={isHome || isBlog} />}
       <Component {...pageProps} />
       {!isTest && !isDocs && !isDemo && !isStudio && <Footer />}
+    </>
+  )
+}
+
+function ToastViewports() {
+  return (
+    <>
+      <Toast.Viewport
+        flexDirection="column-reverse"
+        name="default"
+        top="$2"
+        left="$2"
+        right="$2"
+        mx="auto"
+      />
+      <Toast.Viewport flexDirection="column-reverse" name="top-left" top="$2" left="$2" />
+      <Toast.Viewport
+        flexDirection="column-reverse"
+        name="top-center"
+        top="$2"
+        left="$2"
+        right="$2"
+        mx="auto"
+      />
+      <Toast.Viewport
+        flexDirection="column-reverse"
+        name="top-right"
+        top="$2"
+        right="$2"
+      />
+      <Toast.Viewport name="bottom-left" bottom="$2" left="$2" />
+      <Toast.Viewport name="bottom-center" bottom="$2" left="$2" right="$2" mx="auto" />
+      <Toast.Viewport name="bottom-right" bottom="$2" right="$2" />
     </>
   )
 }

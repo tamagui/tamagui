@@ -73,10 +73,6 @@ interface ToastProviderProps {
      * @defaultValue unique generated identifier
      */
     id?: string;
-    /**
-     * If on, will add default viewports with names: default, top, topleft, topright, bottom, bottomleft, bottomright
-     */
-    shouldAddDefaultViewports?: boolean;
 }
 declare const ToastProvider: React.FC<ToastProviderProps>;
 export { ToastProvider, useToastProviderContext, Collection, useCollection, createToastScope, createToastContext, };
