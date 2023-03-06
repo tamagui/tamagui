@@ -218,7 +218,7 @@ export const useListItem = (
             </>
           ) : null}
           {/* helper for common title/subtitle pttern */}
-          {!!(title || subTitle) ? (
+          {title || subTitle ? (
             <YStack flex={1}>
               {noTextWrap === 'all' ? title : <Title size={size}>{title}</Title>}
               {subTitle ? (
