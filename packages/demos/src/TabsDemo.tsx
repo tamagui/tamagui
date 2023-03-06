@@ -68,13 +68,13 @@ const VerticalTabs = () => {
     >
       <Tabs.List disablePassBorderRadius="end" aria-label="Manage your account">
         <Tabs.Trigger theme="Button" value="tab1">
-          <SizableText fontFamily="$body">Profile</SizableText>
+          <SizableText>Profile</SizableText>
         </Tabs.Trigger>
         <Tabs.Trigger theme="Button" value="tab2">
-          <SizableText fontFamily="$body">Connections</SizableText>
+          <SizableText>Connections</SizableText>
         </Tabs.Trigger>
         <Tabs.Trigger theme="Button" value="tab3">
-          <SizableText fontFamily="$body">Notifications</SizableText>
+          <SizableText>Notifications</SizableText>
         </Tabs.Trigger>
       </Tabs.List>
       <Tabs.Content value="tab1" key="tab1" p="$2" ai="center" jc="center" f={1}>
