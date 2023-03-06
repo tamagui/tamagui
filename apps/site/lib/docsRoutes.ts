@@ -109,6 +109,7 @@ export const docsRoutes = [
       { title: 'Group', route: '/docs/components/group' },
       { title: 'Image', route: '/docs/components/image' },
       { title: 'ListItem', route: '/docs/components/list-item' },
+      { title: 'Tabs', route: '/docs/components/tabs' },
     ],
   },
 
