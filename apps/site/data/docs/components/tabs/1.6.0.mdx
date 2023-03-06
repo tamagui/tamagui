@@ -1,0 +1,189 @@
+---
+title: Tabs
+description: Vertical and horizontal accessible tabs.
+name: tabs
+component: Tabs
+package: tabs
+---
+
+# Tabs
+
+<Description>Use in pages to manage sub-pages.</Description>
+
+<HeroContainer>
+  <TabsDemo />
+</HeroContainer>
+
+```tsx hero template=Tabs
+
+```
+
+<Highlights
+  features={[
+    `Accessible, easy to compose and customize`,
+    `Style and animate both triggers and content`,
+    `Sizable & works controlled or uncontrolled`,
+  ]}
+/>
+
+## Usage
+
+```tsx
+import { Tabs } from 'tamagui'
+
+export default () => (
+<Tabs defaultValue="tab1" width={400}>
+  <Tabs.List space>
+    <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+    <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+  </Tabs.List>
+
+  <Tabs.Content value="tab1">
+    <H5>Tab 1</H5>
+  </Tabs.Content>
+  <Tabs.Content value="tab2">
+    <H5>Tab 2</H5>
+  </Tabs.Content>
+</Tabs>
+)
+```
+
+
+
+## API
+
+### Tabs
+
+Contains every component for the tabs:
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      type: 'SizeTokens',
+      description: `Set the size of itself and pass to all inner elements`,
+    },
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      description: `Tabs children API components`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `The value for the selected tab, if controlled`,
+    },
+    {
+      name: 'defaultValue',
+      type: 'string',
+      description: `The value of the tab to select by default, if uncontrolled`,
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: string) => void',
+      description: `A function called when a new tab is selected`,
+    },
+    {
+      name: 'onDirectionChange',
+      type: '(value: -1 | 0 | 1) => void',
+      description: `Used for animating the tabs content`,
+    },
+    {
+      name: 'orientation',
+      type: '"horizontal" | "vertical"',
+      default: 'horizontal',
+      description: `The orientation the tabs are layed out`,
+    },
+    {
+      name: 'dir',
+      type: '"ltr" | "rtl"',
+      description: `The direction of navigation between toolbar items`,
+    },
+    {
+      name: 'activationMode',
+      type: '"manual" | "automatic"',
+      default: 'automatic',
+      description: `Whether a tab is activated automatically or manually. Only supported in web`,
+    },
+  ]}
+/>
+
+### List
+
+Container for the trigger buttons. Extends [ScrollView](/docs/components/scroll-view) to give scroll support when overflowed.
+
+<PropsTable
+  data={[
+    {
+      name: 'loop',
+      type: 'boolean',
+      default: 'true',
+      description: `Whether to loop over after reaching the end or start of the items`,
+    },
+  ]}
+/>
+
+### Trigger
+
+Extends [Button](/docs/components/button), adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'value',
+      type: 'string',
+      description: `The value for the tabs state to be changed to after activation of the trigger`,
+    },
+  ]}
+/>
+
+### Content
+
+Where each tab's content will be shown. Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'value',
+      type: 'string',
+      description: `Will show the content when the value matches the state of Tabs root`,
+    },
+    {
+      name: 'forceMount',
+      type: 'boolean',
+      default: 'false',
+      description: `Used to force mounting when more control is needed. Useful when controlling animation with Tamagui animations`,
+    },
+  ]}
+/>
+
+### RovingIndicator
+
+Used as an animatable indicator that can be shown upon selection, hover and focus. You may use several of these and combine `highlightMode`s to achieve the effect you want. Check [Animated Demo](#animated-demo) to see how it works action. Extends [ThemeableStack](/docs/components/stacks#themeablestack).
+
+<Notice>
+  You probably want to use `unstyled` on your [Trigger](#trigger) to disable hover/focus/active state on triggers if you use this component.
+</Notice>
+
+<PropsTable
+  data={[
+    {
+      name: 'highlightMode',
+      type: '"select" | "hover" | "focus" | "hoverOrFocus"',
+      default: 'select',
+      description: `Determines when should the indicator appear. hover, focus and hoverOrFocus only appear on web`,
+    },
+  ]}
+/>
+
+## Animated Demo
+
+Animation on triggers achieved using [RovingIndicator](#rovingindicator) and the content animation is achieved using [AnimatePresence](/docs/core/animations#animatepresence-and-exitstyle) and controlled tab values.
+
+<HeroContainer noPad>
+  <TabsAnimatedDemo />
+</HeroContainer>
+
+```tsx hero template=TabsAnimated
+
+```

@@ -5429,7 +5429,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/roving-focus@workspace:packages/roving-focus":
+"@tamagui/roving-focus@^1.5.1, @tamagui/roving-focus@workspace:packages/roving-focus":
   version: 0.0.0-use.local
   resolution: "@tamagui/roving-focus@workspace:packages/roving-focus"
   dependencies:
@@ -5846,7 +5846,31 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 "@tamagui/test-design-system@1.6.3, @tamagui/test-design-system@workspace:packages/test-design-system":
+=======
+"@tamagui/tabs@^1.5.1, @tamagui/tabs@workspace:packages/tabs":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/tabs@workspace:packages/tabs"
+  dependencies:
+    "@tamagui/build": ^1.5.1
+    "@tamagui/core": ^1.5.1
+    "@tamagui/create-context": ^1.5.1
+    "@tamagui/roving-focus": ^1.5.1
+    "@tamagui/scroll-view": ^1.5.1
+    "@tamagui/stacks": ^1.5.1
+    "@tamagui/use-controllable-state": ^1.5.1
+    "@tamagui/use-direction": ^1.5.1
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/test-design-system@^1.5.1, @tamagui/test-design-system@workspace:packages/test-design-system":
+>>>>>>> 26c128ed74 (feat(tabs): @tamagui/tabs and the Tab component)
   version: 0.0.0-use.local
   resolution: "@tamagui/test-design-system@workspace:packages/test-design-system"
   dependencies:
@@ -20882,6 +20906,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
+<<<<<<< HEAD
     "@tamagui/adapt": 1.6.3
     "@tamagui/alert-dialog": 1.6.3
     "@tamagui/animate-presence": 1.6.3
@@ -20929,6 +20954,55 @@ __metadata:
     "@tamagui/use-force-update": 1.6.3
     "@tamagui/use-window-dimensions": 1.6.3
     "@tamagui/visually-hidden": 1.6.3
+=======
+    "@tamagui/adapt": ^1.5.1
+    "@tamagui/alert-dialog": ^1.5.1
+    "@tamagui/animate-presence": ^1.5.1
+    "@tamagui/avatar": ^1.5.1
+    "@tamagui/build": ^1.5.1
+    "@tamagui/button": ^1.5.1
+    "@tamagui/card": ^1.5.1
+    "@tamagui/checkbox": ^1.5.1
+    "@tamagui/compose-refs": ^1.5.1
+    "@tamagui/core": ^1.5.1
+    "@tamagui/create-context": ^1.5.1
+    "@tamagui/dialog": ^1.5.1
+    "@tamagui/fake-react-native": ^1.5.1
+    "@tamagui/font-size": ^1.5.1
+    "@tamagui/form": ^1.5.1
+    "@tamagui/get-button-sized": ^1.5.1
+    "@tamagui/get-font-sized": ^1.5.1
+    "@tamagui/get-size": ^1.5.1
+    "@tamagui/helpers": ^1.5.1
+    "@tamagui/helpers-tamagui": ^1.5.1
+    "@tamagui/image": ^1.5.1
+    "@tamagui/label": ^1.5.1
+    "@tamagui/linear-gradient": ^1.5.1
+    "@tamagui/list-item": ^1.5.1
+    "@tamagui/popover": ^1.5.1
+    "@tamagui/popper": ^1.5.1
+    "@tamagui/portal": ^1.5.1
+    "@tamagui/progress": ^1.5.1
+    "@tamagui/radio-group": ^1.5.1
+    "@tamagui/react-native-media-driver": ^1.5.1
+    "@tamagui/scroll-view": ^1.5.1
+    "@tamagui/select": ^1.5.1
+    "@tamagui/separator": ^1.5.1
+    "@tamagui/shapes": ^1.5.1
+    "@tamagui/sheet": ^1.5.1
+    "@tamagui/slider": ^1.5.1
+    "@tamagui/stacks": ^1.5.1
+    "@tamagui/switch": ^1.5.1
+    "@tamagui/tabs": ^1.5.1
+    "@tamagui/text": ^1.5.1
+    "@tamagui/tooltip": ^1.5.1
+    "@tamagui/use-controllable-state": ^1.5.1
+    "@tamagui/use-debounce": ^1.5.1
+    "@tamagui/use-event": ^1.5.1
+    "@tamagui/use-force-update": ^1.5.1
+    "@tamagui/use-window-dimensions": ^1.5.1
+    "@tamagui/visually-hidden": ^1.5.1
+>>>>>>> 26c128ed74 (feat(tabs): @tamagui/tabs and the Tab component)
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
     react: ^18.2.0

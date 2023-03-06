@@ -28,6 +28,7 @@ export * from '@tamagui/slider';
 export * from '@tamagui/stacks';
 export * from '@tamagui/switch';
 export * from '@tamagui/text';
+export * from '@tamagui/tabs';
 export * from '@tamagui/tooltip';
 export * from '@tamagui/use-controllable-state';
 export * from '@tamagui/use-debounce';
