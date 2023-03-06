@@ -77,7 +77,7 @@ export type SwitchThumbProps = GetProps<typeof SwitchThumbFrame>
 export const SwitchThumb = SwitchThumbFrame.extractable(
   React.forwardRef<React.ElementRef<'span'>, SwitchThumbProps>(
     (props: ScopedProps<SwitchThumbProps, 'Switch'>, forwardedRef) => {
-      const { __scopeSwitch, size ...thumbProps } = props
+      const { __scopeSwitch, size, ...thumbProps } = props
       const { size, disabled, checked, unstyled } = useSwitchContext(
         THUMB_NAME,
         __scopeSwitch
