@@ -1,3 +1,9 @@
+- input wrapping:
+  - https://discord.com/channels/909986013848412191/1037853103074050248/1082445770021683241
+
+- dark mode list item subtitle isn't visible?
+  - https://discord.com/channels/909986013848412191/1082735552509522083/1082735552509522083
+
 - beatgig https://discord.com/channels/909986013848412191/1081351448731856977
 
 - @tamagui/change-animation-driver
