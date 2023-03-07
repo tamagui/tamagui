@@ -541,14 +541,12 @@ export const Select = withStaticProperties(
       prop: openProp,
       defaultProp: defaultOpen || false,
       onChange: onOpenChange,
-      strategy: 'most-recent-wins',
     })
 
     const [value, setValue] = useControllableState({
       prop: valueProp,
       defaultProp: defaultValue || '',
       onChange: onValueChange,
-      strategy: 'most-recent-wins',
       transition: true,
     })
 

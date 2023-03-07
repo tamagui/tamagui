@@ -12,7 +12,7 @@
     "apps/starter/packages/*",
     "takeout/*"
   ],
-  "packageManager": "yarn@3.3.0",
+  "packageManager": "yarn@3.4.1",
   "scripts": {
     "vercel:build": "yarn build:js && cd apps/site && yarn ci:build",
     "install:ci": "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 yarn install",
@@ -98,13 +98,13 @@
     }
   },
   "dependencies": {
-    "@lerna-lite/cli": "^1.6.0",
     "@manypkg/cli": "^0.19.1",
     "@monorepo-utils/workspaces-to-typescript-project-references": "^2.7.4",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^16.11.9",
     "@types/react": "^18.0.15",
     "import-sort-style-module": "^6.0.0",
+    "kitchen-sink": "^0.1.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.1",
     "pretty-quick": "^3.1.2",

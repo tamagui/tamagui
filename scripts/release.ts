@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { promisify } from 'node:util'
 import path from 'path'
 
-import fs from 'fs-extra'
+import fs, { readJSON, writeJSON } from 'fs-extra'
 import _ from 'lodash'
 import prompts from 'prompts'
 
@@ -22,8 +22,10 @@ const skipVersion = rePublish || process.argv.includes('--skip-version')
 const patch = process.argv.includes('--patch')
 const dirty = process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
-const skipTest = process.argv.includes('--skip-test')
+const skipTest =
+  process.argv.includes('--skip-test') || process.argv.includes('--skip-tests')
 const skipBuild = process.argv.includes('--skip-build')
+const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = process.argv.includes('--ci')
 
@@ -46,20 +48,22 @@ async function run() {
     location: string
   }[]
 
-  const packageJsons = (
-    await Promise.all(
-      packagePaths
-        .filter((i) => i.location !== '.' && !i.name.startsWith('@takeout'))
-        .map(async ({ name, location }) => {
-          const cwd = path.join(process.cwd(), location)
-          return {
-            name,
-            cwd,
-            json: await fs.readJSON(path.join(cwd, 'package.json')),
-          }
-        })
-    )
+  const allPackageJsons = await Promise.all(
+    packagePaths
+      .filter((i) => i.location !== '.' && !i.name.startsWith('@takeout'))
+      .map(async ({ name, location }) => {
+        const cwd = path.join(process.cwd(), location)
+        return {
+          name,
+          cwd,
+          json: await fs.readJSON(path.join(cwd, 'package.json')),
+          path: path.join(cwd, 'package.json'),
+          directory: location,
+        }
+      })
   )
+
+  const packageJsons = allPackageJsons
     .filter((x) => {
       return !x.json.private
     })
@@ -125,7 +129,7 @@ async function run() {
       await spawnify(`yarn test`)
     }
 
-    if (!dirty) {
+    if (!dirty && !dryRun) {
       const out = await exec(`git status --porcelain`)
       if (out.stdout) {
         throw new Error(`Has unsaved git changes: ${out.stdout}`)
@@ -133,9 +137,37 @@ async function run() {
     }
 
     if (!skipVersion) {
-      await spawnify(
-        `yarn lerna version ${version} --ignore-changes --ignore-scripts --yes --no-push --no-git-tag-version`
+      await Promise.all(
+        allPackageJsons.map(async ({ json, path }) => {
+          const next = { ...json }
+
+          next.version = version
+
+          for (const field of [
+            'dependencies',
+            'devDependencies',
+            'optionalDependencies',
+            'peerDependencies',
+          ]) {
+            const nextDeps = next[field]
+            if (!nextDeps) continue
+            for (const depName in nextDeps) {
+              if (packageJsons.some((p) => p.name === depName)) {
+                nextDeps[depName] = version
+              }
+            }
+          }
+
+          await writeJSON(path, next, { spaces: 2 })
+        })
       )
+
+      await spawnify(`yarn install`) // update yarn.lock now
+    }
+
+    if (dryRun) {
+      console.log(`Dry run, exiting before publish`)
+      return
     }
 
     await spawnify(`git diff`)

@@ -23,6 +23,7 @@ import { RemoveScroll } from '@tamagui/remove-scroll'
 import { XStack, XStackProps, YStack, YStackProps } from '@tamagui/stacks'
 import { useConstant } from '@tamagui/use-constant'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import { useKeyboardVisible } from '@tamagui/use-keyboard-visible'
 import React, {
   FunctionComponent,
   RefAttributes,
@@ -261,6 +262,7 @@ const SheetImplementation = themeable(
     }
 
     const disableDrag = disableDragProp ?? controller?.disableDrag
+    const keyboardIsVisible = useKeyboardVisible();
     const themeName = useThemeName()
     const contentRef = React.useRef<TamaguiElement>(null)
     const scrollBridge = useConstant<ScrollBridge>(() => ({
@@ -594,10 +596,12 @@ const SheetImplementation = themeable(
       if (!next) return
       setFrameSize((prev) => {
         const isBigChange = Math.abs(prev - next) > 20
-        setIsResizing(isBigChange)
+        if (!keyboardIsVisible) {
+          setIsResizing(isBigChange)
+        }
         return next
       })
-    }, [])
+    }, [keyboardIsVisible])
 
     const removeScrollEnabled = forceRemoveScrollEnabled ?? (open && modal)
 

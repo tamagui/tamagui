@@ -17,6 +17,8 @@ export { CardDemo } from '@tamagui/demos'
 export { AvatarDemo } from '@tamagui/demos'
 export { ProgressDemo } from '@tamagui/demos'
 export { ListItemDemo } from '@tamagui/demos'
+export { TabsDemo } from '@tamagui/demos'
+export { TabsAdvancedDemo } from '@tamagui/demos'
 
 export { TooltipDemo } from '@tamagui/demos'
 export { PopoverDemo } from '@tamagui/demos'

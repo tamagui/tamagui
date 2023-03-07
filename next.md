@@ -1,51 +1,15 @@
+- beatgig https://discord.com/channels/909986013848412191/1081351448731856977
+
+- @tamagui/change-animation-driver
+  - would be good for the website to show and test animations across all drivers
+
 - https://github.com/tamagui/tamagui/issues/568
 - instead of proxying we could just merge all themes on creation with their parents?
-
-
-- can make the sub-color alt themes not define color1=>color12
 
 - Card has a good use case for size being passed through context/css vars
 - linear-gradient next.js issue
 
 -  I'm currently using the Selector on Native, and the animation for pulling up the modal is kind of lagging and I get spammed this error when it happens.
-
-I'm trying to do the following:
-
-const Content = styled(TamaguiPopover.Content, {
-  name: 'PopoverContent',
-  elevate: true,
-  bordered: true,
-  p: '$3',
-  br: '$3',
-  enterStyle: {
-    o: 0,
-    y: -10,
-    x: 0,
-  },
-  exitStyle: {
-    o: 0,
-    y: -10,
-    x: 0,
-  },
-  x: 0,
-  y: 0,
-  o: 1,
-  animation: [
-    'quick',
-    {
-      opacity: {
-        overshootClamping: true,
-      },
-    },
-  ],
-})
-
-export const Popover = withStaticProperties(TamaguiPopover, {
-  Content
-  // ...etc
-})
-
-Once I wrap Popover.Content with styled() it looks like the animations no longer work for it. They work fine if applied directly onto the popover as component props if it's imported from tamagui. But once I wrap it, the animations don't seem to work
 
 - add Themes page in docs under Theme, change Theme => Design System
 - move packages to have unstyled
@@ -61,17 +25,10 @@ const SheetOverlay = styled(Sheet.Overlay, {
 - sheet background animation regression
 - https://github.com/tamagui/tamagui/issues/478
 - default light mode theme + not changing
-- deprecate ThemeProvider defaultTheme in favor of theme={}
 - hoverTheme={false} works, make hoverStyle={false} to unset
 - test keyboardavoidingview > scrollView - collapsing tamagui
 - check into shadow/elevation not showing
 - survey https://tripetto.app or gforms
-
----
-
-1.2
-
-1.5
 
 - unset: useful for unstyled to usnet the defaultVariatn size
 

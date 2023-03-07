@@ -95,9 +95,16 @@ export const docsRoutes = [
       { title: 'AlertDialog', route: '/docs/components/alert-dialog' },
       { title: 'Dialog', route: '/docs/components/dialog' },
       { title: 'Popover', route: '/docs/components/popover' },
-      // { title: 'Portal', route: '/docs/components/portal' },
       { title: 'Sheet', route: '/docs/components/sheet' },
       { title: 'Tooltip', route: '/docs/components/tooltip' },
+    ],
+  },
+
+  {
+    label: 'Organize',
+    pages: [
+      { title: 'Group', route: '/docs/components/group' },
+      { title: 'Tabs', route: '/docs/components/tabs' },
     ],
   },
 
@@ -107,7 +114,6 @@ export const docsRoutes = [
       { title: 'Accordion', route: '/docs/components/accordion' },
       { title: 'Avatar', route: '/docs/components/avatar' },
       { title: 'Card', route: '/docs/components/card' },
-      { title: 'Group', route: '/docs/components/group' },
       { title: 'Image', route: '/docs/components/image' },
       { title: 'ListItem', route: '/docs/components/list-item' },
     ],
