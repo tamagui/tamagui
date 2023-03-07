@@ -140,9 +140,10 @@ export const ListItemSubtitle = styled(ListItemText, {
   variants: {
     unstyled: {
       false: {
-        opacity: 0.5,
+        opacity: 0.6,
         maxWidth: '100%',
         size: '$3',
+        color: '$color',
       },
     },
   },
