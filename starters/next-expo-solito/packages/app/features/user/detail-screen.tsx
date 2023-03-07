@@ -1,24 +1,31 @@
-import { Button, Paragraph, YStack } from '@my/ui'
-import { ChevronLeft } from '@tamagui/lucide-icons'
-import React from 'react'
-import { createParam } from 'solito'
-import { TextLink } from 'solito/link'
+import { Button, Paragraph, XGroup, YStack } from '@my/ui'
+import React, { useState } from 'react'
 import { useLink } from 'solito/link'
 
-const { useParam } = createParam<{ id: string }>()
+const tabs = ['1', '2', '3'] as const
 
 export function UserDetailScreen() {
-  const [id] = useParam('id')
   const link = useLink({
     href: '/',
   })
+  const [selectedTab, setSelectedTab] = useState('selectedTab')
 
   return (
     <YStack f={1} jc="center" ai="center" space>
-      <Paragraph ta="center" fow="800">{`User ID: ${id}`}</Paragraph>
-      <Button {...link} icon={ChevronLeft}>
-        Go Home
-      </Button>
+      {
+        // TabBar
+        <XGroup theme={'blue'}>
+          {tabs.map((tab) => (
+            <Button
+              backgroundColor={selectedTab === tab ? '$color8' : undefined}
+              hoverStyle={{ backgroundColor: '$color7' }}
+              key={tab + 'tabbutton'}
+            >
+              {tab}
+            </Button>
+          ))}
+        </XGroup>
+      }
     </YStack>
   )
 }
