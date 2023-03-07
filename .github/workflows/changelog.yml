@@ -8,7 +8,7 @@ on:
 jobs:
   tagged-release:
     name: Changelog
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     # needs: release
 
     steps:
