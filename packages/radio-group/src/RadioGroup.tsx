@@ -54,6 +54,7 @@ const RadioIndicatorFrame = styled(ThemeableStack, {
 
   variants: {
     unstyled: {
+      true: {},
       false: {
         w: '40%',
         h: '40%',
@@ -123,6 +124,7 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
 
   variants: {
     unstyled: {
+      true: {},
       false: {
         size: '$true',
         borderRadius: 1000,

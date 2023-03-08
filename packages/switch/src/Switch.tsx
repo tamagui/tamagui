@@ -49,6 +49,7 @@ export const SwitchThumbFrame = styled(ThemeableStack, {
 
   variants: {
     unstyled: {
+      true: {},
       false: {
         size: '$true',
         backgroundColor: '$background',
@@ -117,6 +118,7 @@ export const SwitchFrame = styled(XStack, {
 
   variants: {
     unstyled: {
+      true: {},
       false: {
         // size: '$true',
         // borderRadius: 1000,

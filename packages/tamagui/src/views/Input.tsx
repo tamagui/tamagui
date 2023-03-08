@@ -40,6 +40,7 @@ export const InputFrame = styled(
 
     variants: {
       unstyled: {
+      true: {},
         false: defaultStyles,
       },
 

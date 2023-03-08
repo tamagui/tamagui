@@ -68,6 +68,7 @@ export const ListItemFrame = styled(ThemeableStack, {
 
   variants: {
     unstyled: {
+      true: {},
       false: {
         size: '$true',
         alignItems: 'center',
@@ -118,6 +119,7 @@ export const ListItemText = styled(SizableText, {
 
   variants: {
     unstyled: {
+      true: {},
       false: {
         color: '$color',
         userSelect: 'none',
@@ -139,6 +141,7 @@ export const ListItemSubtitle = styled(ListItemText, {
 
   variants: {
     unstyled: {
+      true: {},
       false: {
         opacity: 0.6,
         maxWidth: '100%',

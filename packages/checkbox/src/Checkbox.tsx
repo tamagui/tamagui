@@ -180,6 +180,7 @@ export const CheckboxFrame = styled(ThemeableStack, {
 
   variants: {
     unstyled: {
+      true: {},
       false: {
         size: '$true',
         backgroundColor: '$background',

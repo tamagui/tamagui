@@ -33,6 +33,7 @@ export const LabelFrame = styled(SizableText, {
 
   variants: {
     unstyled: {
+      true: {},
       false: {
         size: '$true',
         color: '$color',

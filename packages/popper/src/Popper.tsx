@@ -207,6 +207,7 @@ export const PopperContentFrame = styled(ThemeableStack, {
 
   variants: {
     unstyled: {
+      true: {},
       false: {
         size: '$true',
         backgroundColor: '$background',
@@ -291,6 +292,7 @@ const PopperArrowFrame = styled(YStack, {
 
   variants: {
     unstyled: {
+      true: {},
       false: {
         borderColor: '$borderColor',
         backgroundColor: '$background',
@@ -309,6 +311,7 @@ const PopperArrowOuterFrame = styled(YStack, {
 
   variants: {
     unstyled: {
+      true: {},
       false: {
         position: 'absolute',
         zIndex: -1,

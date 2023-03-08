@@ -43,6 +43,7 @@ export const GroupFrame = styled(ThemeableStack, {
 
   variants: {
     unstyled: {
+      true: {},
       false: {
         size: '$true',
         y: 0,
