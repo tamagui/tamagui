@@ -87,6 +87,7 @@ export const SwitchThumb = SwitchThumbFrame.extractable(
       const size = sizeProp ?? sizeContext
       return (
         <SwitchThumbFrame
+          unstyled={unstyled}
           size={size}
           theme={checked ? 'active' : null}
           data-state={getState(checked)}
@@ -118,11 +119,11 @@ export const SwitchFrame = styled(XStack, {
   variants: {
     unstyled: {
       false: {
-        // size: '$true',
-        // borderRadius: 1000,
-        // borderWidth: 2,
-        // borderColor: 'transparent',
-        // backgroundColor: '$background',
+        size: '$true',
+        borderRadius: 1000,
+        borderWidth: 2,
+        borderColor: 'transparent',
+        backgroundColor: '$background',
 
         focusStyle: {
           borderColor: '$borderColorFocus',
