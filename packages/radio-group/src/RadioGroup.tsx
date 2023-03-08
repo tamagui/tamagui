@@ -131,6 +131,7 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
         justifyContent: 'center',
         borderWidth: 1,
         borderColor: '$borderColor',
+        padding: 0,
 
         hoverStyle: {
           borderColor: '$borderColorHover',
