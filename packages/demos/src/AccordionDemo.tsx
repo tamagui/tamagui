@@ -1,11 +1,25 @@
-import { Accordion, Paragraph } from 'tamagui'
+import { ChevronDown } from '@tamagui/lucide-icons'
+import { Accordion, Paragraph, Square } from 'tamagui'
 
 export function AccordionDemo() {
   return (
-    <Accordion orientation="horizontal" width="$20" type="multiple">
+    <Accordion overflow="hidden" width="$20" type="multiple">
       <Accordion.Item value="a1">
-        <Accordion.Trigger>
-          <Paragraph>1. Take a cold shower</Paragraph>
+        <Accordion.Trigger
+          focusStyle={{
+            borderColor: '#fdfdfd',
+          }}
+          flexDirection="row"
+          justifyContent="space-between"
+        >
+          {({ open }) => (
+            <>
+              <Paragraph>1. Take a cold shower</Paragraph>
+              <Square animation={'quick'} rotate={open ? '180deg' : '0deg'}>
+                <ChevronDown />
+              </Square>
+            </>
+          )}
         </Accordion.Trigger>
         <Accordion.Content>
           <Paragraph>
@@ -16,8 +30,21 @@ export function AccordionDemo() {
       </Accordion.Item>
 
       <Accordion.Item value="a2">
-        <Accordion.Trigger>
-          <Paragraph>2: Eat 4 eggs</Paragraph>
+        <Accordion.Trigger
+          focusStyle={{
+            borderColor: '#fdfdfd',
+          }}
+          flexDirection="row"
+          justifyContent="space-between"
+        >
+          {({ open }) => (
+            <>
+              <Paragraph>2. Eat 4 eggs</Paragraph>
+              <Square animation={'quick'} rotate={open ? '180deg' : '0deg'}>
+                <ChevronDown />
+              </Square>
+            </>
+          )}
         </Accordion.Trigger>
         <Accordion.Content>
           <Paragraph>
