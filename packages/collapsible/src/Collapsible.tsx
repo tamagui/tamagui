@@ -14,6 +14,7 @@ import type { Scope } from '@tamagui/create-context'
 import { ThemeableStack, ThemeableStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
+import type { ReactNode } from 'react'
 import { AnimatePresence } from 'tamagui'
 
 /* -------------------------------------------------------------------------------------------------
@@ -93,7 +94,9 @@ _Collapsible.displayName = COLLAPSIBLE_NAME
 const TRIGGER_NAME = 'CollapsibleTrigger'
 
 type CollapsibleTriggerElement = TamaguiElement
-interface CollapsibleTriggerProps extends StackProps {}
+interface CollapsibleTriggerProps extends StackProps {
+  children: ReactNode | ((props: { open: boolean }) => ReactNode)
+}
 
 const CollapsibleTriggerFrame = styled(ThemeableStack, {
   name: TRIGGER_NAME,
@@ -110,7 +113,7 @@ const CollapsibleTrigger = React.forwardRef<
   CollapsibleTriggerElement,
   CollapsibleTriggerProps
 >((props: ScopedProps<CollapsibleTriggerProps>, forwardedRef) => {
-  const { __scopeCollapsible, ...triggerProps } = props
+  const { __scopeCollapsible, children, ...triggerProps } = props
   const context = useCollapsibleContext(TRIGGER_NAME, __scopeCollapsible)
 
   return (
@@ -124,7 +127,9 @@ const CollapsibleTrigger = React.forwardRef<
       {...triggerProps}
       ref={forwardedRef}
       onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
-    />
+    >
+      {typeof children === 'function' ? children({ open: context.open }) : children}
+    </CollapsibleTriggerFrame>
   )
 })
 
@@ -152,6 +157,7 @@ const CollapsibleContentFrame = styled(ThemeableStack, {
   flexDirection: 'column',
   name: CONTENT_NAME,
   padded: true,
+  focusable: true,
 })
 
 const CollapsibleContent = React.forwardRef<

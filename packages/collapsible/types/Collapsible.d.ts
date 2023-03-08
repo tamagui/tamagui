@@ -2,6 +2,7 @@ import { AnimatePresenceProps } from '@tamagui/animate-presence/types/types';
 import { StackProps, TamaguiElement } from '@tamagui/core';
 import { ThemeableStackProps } from '@tamagui/stacks';
 import * as React from 'react';
+import type { ReactNode } from 'react';
 declare const createCollapsibleScope: import("tamagui").CreateScope;
 interface CollapsibleProps extends StackProps {
     defaultOpen?: boolean;
@@ -10,6 +11,9 @@ interface CollapsibleProps extends StackProps {
     onOpenChange?(open: boolean): void;
 }
 interface CollapsibleTriggerProps extends StackProps {
+    children: ReactNode | ((props: {
+        open: boolean;
+    }) => ReactNode);
 }
 declare const CollapsibleTrigger: React.ForwardRefExoticComponent<CollapsibleTriggerProps & React.RefAttributes<TamaguiElement>>;
 interface CollapsibleContentProps extends AnimatePresenceProps, ThemeableStackProps {
