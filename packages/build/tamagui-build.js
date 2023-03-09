@@ -158,6 +158,7 @@ async function buildJs() {
           outdir: flatOut ? 'dist' : 'dist/cjs',
           bundle: shouldBundle,
           sourcemap: true,
+          sourcesContent: false,
           target: 'node14',
           keepNames: false,
           format: 'cjs',
@@ -170,12 +171,13 @@ async function buildJs() {
           platform: 'node',
         })
       : null,
-      pkgModule
+    pkgModule
       ? esbuildWriteIfChanged({
           entryPoints: files,
           outdir: flatOut ? 'dist' : 'dist/esm',
           bundle: shouldBundle,
           sourcemap: true,
+          sourcesContent: false,
           target: 'node16',
           keepNames: false,
           jsx: 'automatic',
@@ -194,6 +196,7 @@ async function buildJs() {
           outdir: flatOut ? 'dist' : 'dist/esm',
           bundle: shouldBundle,
           sourcemap: true,
+          sourcesContent: false,
           target: 'node16',
           keepNames: false,
           jsx: 'automatic',
@@ -214,6 +217,7 @@ async function buildJs() {
           entryPoints: files,
           bundle: shouldBundle,
           sourcemap: true,
+          sourcesContent: false,
           allowOverwrite: true,
           target: 'es2020',
           keepNames: false,
@@ -224,7 +228,7 @@ async function buildJs() {
           platform: 'neutral',
         })
       : null,
-      pkgModuleJSX
+    pkgModuleJSX
       ? esbuildWriteIfChanged({
           // only diff is jsx preserve and outdir
           jsx: 'preserve',
@@ -232,6 +236,7 @@ async function buildJs() {
           entryPoints: files,
           bundle: shouldBundle,
           sourcemap: true,
+          sourcesContent: false,
           allowOverwrite: true,
           target: 'es2020',
           keepNames: false,
