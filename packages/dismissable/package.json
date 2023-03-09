@@ -20,6 +20,14 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "dependencies": {
     "@radix-ui/react-use-escape-keydown": "^0.1.0",
     "@tamagui/compose-refs": "1.7.3",
