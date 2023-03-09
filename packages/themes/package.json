@@ -24,11 +24,6 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
-    },
-    "./v2": {
-      "types": "./types/v2/index.d.ts",
-      "import": "./dist/esm/v2/index.mjs",
-      "require": "./dist/cjs/v2/index.js"
     }
   },
   "dependencies": {
