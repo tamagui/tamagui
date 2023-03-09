@@ -245,7 +245,7 @@ async function run() {
 
     if (rePublish) {
       // if all successful, re-tag as latest
-      for (const chunk of _.chunk(packageJsons, 20)) {
+      for (const chunk of _.chunk(packageJsons, 15)) {
         await Promise.all(
           chunk.map(async ({ name, cwd }) => {
             console.log(`Release ${name}`)
@@ -262,7 +262,7 @@ async function run() {
       }
     } else {
       // if all successful, re-tag as latest
-      for (const chunk of _.chunk(packageJsons, 20)) {
+      for (const chunk of _.chunk(packageJsons, 15)) {
         await Promise.all(
           chunk.map(async ({ name, cwd }) => {
             console.log(`Release ${name}`)
@@ -270,12 +270,18 @@ async function run() {
               await spawnify(`npm dist-tag remove ${name}@${version} prepub`, {
                 cwd,
               })
+            } catch (err) {
+              // ok
+              // @ts-ignore
+              console.error(`Dist-tag prepub remove fail ${name}:`)
+            }
+            try {
               await spawnify(`npm dist-tag add ${name}@${version} latest`, {
                 cwd,
               })
             } catch (err) {
               // @ts-ignore
-              console.error(`Publish fail ${name}:`, err.message, err.stack)
+              console.error(`Dist-tag latest fail ${name}:`, err.message, err.stack)
             }
           })
         )
