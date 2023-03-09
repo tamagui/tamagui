@@ -16,6 +16,14 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "dependencies": {
     "@tamagui/create-context": "1.7.4",
     "@tamagui/get-button-sized": "1.7.4",
