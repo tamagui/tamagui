@@ -3,7 +3,7 @@ import React from 'react';
 import { CreateNativeToastsOptions } from './types';
 type NativeValue = boolean | ('web' | 'mobile');
 interface CreateToastOptions {
-    native: NativeValue;
+    native?: NativeValue;
 }
 interface ToastOptions extends CreateNativeToastsOptions {
     /**
@@ -15,15 +15,18 @@ interface ToastOptions extends CreateNativeToastsOptions {
 type ScopedProps<P> = P & {
     __scopeToast?: Scope;
 };
-declare const createToast: (options: CreateToastOptions) => {
+declare const createToast: (options?: CreateToastOptions) => {
     ImperativeToastProvider: ({ __scopeToast, children, }: ScopedProps<{
         children: React.ReactNode;
     }>) => JSX.Element;
-    useToasts: () => {
-        toasts: {
+    useToast: () => {
+        /**
+         * The toast to get and show if not using native
+         */
+        currentToast: ({
             title: string;
-            options: CreateNativeToastsOptions;
-        }[];
+            id: string;
+        } & CreateNativeToastsOptions) | null;
         show(title: string, showOptions?: ToastOptions): void;
     };
 };

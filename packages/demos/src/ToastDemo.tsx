@@ -2,7 +2,7 @@ import { Check } from '@tamagui/lucide-icons'
 import React from 'react'
 import { Button, Toast, ToastProvider, XStack, YStack, createToast } from 'tamagui'
 
-const { ImperativeToastProvider, useToasts } = createToast({ native: false })
+const { ImperativeToastProvider, useToast } = createToast()
 
 export const ToastDemo = () => {
   return (
@@ -16,7 +16,7 @@ export const ToastDemo = () => {
 }
 
 const ImperativeDemo = () => {
-  const { toasts, show } = useToasts()
+  const { show, currentToast } = useToast()
 
   return (
     <YStack>
@@ -40,20 +40,21 @@ const ImperativeDemo = () => {
         </Button>
       </YStack>
 
-      {/* non native only: */}
-      {toasts.map((toast, idx) => (
+      {/* non-native only: */}
+      {!!currentToast && (
         <Toast
-          key={idx}
+          key={currentToast.id}
           animation="100ms"
-          enterStyle={{ o: 0, scale: 0.9 }}
-          exitStyle={{ o: 0, scale: 0.9 }}
-          o={1}
+          enterStyle={{ opacity: 0, scale: 0.6, y: -25 }}
+          exitStyle={{ opacity: 0, scale: 1, y: -20 }}
+          y={0}
+          opacity={1}
           scale={1}
         >
-          <Toast.Title>{toast.title}</Toast.Title>
-          <Toast.Description>{toast.options.message}</Toast.Description>
+          <Toast.Title>{currentToast.title}</Toast.Title>
+          <Toast.Description>{currentToast.message}</Toast.Description>
         </Toast>
-      ))}
+      )}
     </YStack>
   )
 }
@@ -129,20 +130,19 @@ export function DeclarativeMultipleToastDemo({ name }: { name?: string }) {
         <Toast
           viewportName={name}
           key={index}
-          enterStyle={{ scale: 0.9, opacity: 0 }}
-          exitStyle={{ scale: 0.9, opacity: 0 }}
-          animation="100ms"
+          enterStyle={{ opacity: 0, scale: 0.6, y: -25 }}
+          exitStyle={{ opacity: 0, scale: 1, y: -20 }}
+          y={0}
           opacity={1}
           scale={1}
+          animation="100ms"
         >
           <XStack space ai="center">
             <Check />
 
             <YStack>
-              <Toast.Title size="$4">Successfully saved!</Toast.Title>
-              <Toast.Description size="$1">
-                We've got your data. Toast #{index}
-              </Toast.Description>
+              <Toast.Title>Successfully saved!</Toast.Title>
+              <Toast.Description>We've got your data. Toast #{index}</Toast.Description>
             </YStack>
           </XStack>
         </Toast>
@@ -177,18 +177,19 @@ const DeclarativeSingleToastDemo = ({ name }: { name?: string }) => {
         viewportName={name}
         onOpenChange={setOpen}
         open={open}
-        enterStyle={{ scale: 0.9, opacity: 0 }}
-        exitStyle={{ scale: 0.9, opacity: 0 }}
-        animation="100ms"
+        enterStyle={{ opacity: 0, scale: 0.6, y: -25 }}
+        exitStyle={{ opacity: 0, scale: 1, y: -20 }}
+        y={0}
         opacity={1}
         scale={1}
+        animation="100ms"
       >
         <XStack space ai="center">
           <Check />
 
           <YStack>
-            <Toast.Title size="$4">Subscribed!</Toast.Title>
-            <Toast.Description size="$1">We'll be in touch.</Toast.Description>
+            <Toast.Title>Subscribed!</Toast.Title>
+            <Toast.Description>We'll be in touch.</Toast.Description>
           </YStack>
         </XStack>
       </Toast>

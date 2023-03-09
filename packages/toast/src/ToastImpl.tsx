@@ -1,4 +1,4 @@
-import { AnimatePresence, useIsPresent } from '@tamagui/animate-presence'
+import { useIsPresent } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,

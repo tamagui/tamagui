@@ -42,7 +42,7 @@ const ToastTitleFrame = styled(SizableText, {
   variants: {
     unstyled: {
       false: {
-        size: '$6',
+        size: '$4',
       },
     },
   },
@@ -70,6 +70,17 @@ const DESCRIPTION_NAME = 'ToastDescription'
 
 const ToastDescriptionFrame = styled(Paragraph, {
   name: DESCRIPTION_NAME,
+  variants: {
+    unstyled: {
+      false: {
+        size: '$1',
+      },
+    },
+  },
+  defaultVariants: {
+    unstyled: false,
+  },
+
 })
 type ToastDescriptionFrameProps = GetProps<typeof ToastDescriptionFrame>
 type ToastDescriptionProps = ToastDescriptionFrameProps & {}

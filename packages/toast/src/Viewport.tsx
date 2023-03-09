@@ -222,7 +222,13 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
          */}
         <Collection.Slot scope={__scopeToast}>
           <ToastViewportFrame ref={composedRefs} {...viewportProps}>
-            <PortalHost name={name ?? "default"} />
+            <PortalHost
+            // TODO: user should be able to control AnimatePresence
+              render={(children) => (
+                <AnimatePresence>{children}</AnimatePresence>
+              )}
+              name={name ?? 'default'}
+            />
           </ToastViewportFrame>
         </Collection.Slot>
         {hasToasts && (

@@ -1,13 +1,13 @@
 import { isWeb } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
-import React from 'react'
+import React, { useRef } from 'react'
 
 import { createNativeToast } from './createNativeToast'
 import { CreateNativeToastsOptions, CreateNativeToastsOptionsFn } from './types'
 
 type NativeValue = boolean | ('web' | 'mobile')
 interface CreateToastOptions {
-  native: NativeValue
+  native?: NativeValue
 }
 interface ToastOptions extends CreateNativeToastsOptions {
   /**
@@ -19,7 +19,7 @@ interface ToastOptions extends CreateNativeToastsOptions {
 type ScopedProps<P> = P & { __scopeToast?: Scope }
 
 interface ImperativeToastContextValue {
-  toasts: { title: string; options: CreateNativeToastsOptions }[]
+  currentToast: ({ title: string; id: string } & CreateNativeToastsOptions) | null
   addToast: CreateNativeToastsOptionsFn
 }
 
@@ -29,33 +29,41 @@ const [createImperativeToastContext, createImperativeToastScope] =
 const [ImperativeToastProvider, useToastProviderContext] =
   createImperativeToastContext<ImperativeToastContextValue>('ImperativeToastProvider')
 
-const createToast = (options: CreateToastOptions) => {
+const createToast = (options = {} as CreateToastOptions) => {
   return {
     ImperativeToastProvider: ({
       __scopeToast,
       children,
     }: ScopedProps<{ children: React.ReactNode }>) => {
-      const [toasts, setToasts] = React.useState<ImperativeToastContextValue['toasts']>(
-        []
-      )
+      const counterRef = useRef(0)
+      const [toast, setToast] =
+        React.useState<ImperativeToastContextValue['currentToast']>(null)
       const addToast = React.useCallback<CreateNativeToastsOptionsFn>(
         (title, options) => {
-          setToasts((prev) => [...prev, { title, options: options ?? {} }])
+          counterRef.current++
+          setToast({ title, id: counterRef.current.toString(), ...options })
         },
-        [setToasts]
+        [setToast]
       )
 
       return (
-        <ImperativeToastProvider scope={__scopeToast} addToast={addToast} toasts={toasts}>
+        <ImperativeToastProvider
+          scope={__scopeToast}
+          addToast={addToast}
+          currentToast={toast}
+        >
           {children}
         </ImperativeToastProvider>
       )
     },
-    useToasts: () => {
+    useToast: () => {
       const context = useToastProviderContext('useToast', undefined)
 
       return {
-        toasts: context.toasts,
+        /**
+         * The toast to get and show if not using native
+         */
+        currentToast: context.currentToast,
         show(title: string, showOptions?: ToastOptions) {
           const native = showOptions?.native || options.native
           if (
