@@ -6,7 +6,6 @@
   "module": "dist/esm",
   "sideEffects": false,
   "files": [
-    "src",
     "types",
     "dist"
   ],

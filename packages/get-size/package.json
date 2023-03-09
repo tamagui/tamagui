@@ -5,7 +5,6 @@
   "main": "dist/cjs/index",
   "module": "dist/esm/index",
   "files": [
-    "src",
     "types",
     "dist"
   ],

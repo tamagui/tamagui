@@ -4,7 +4,6 @@
   "main": "./src/index.js",
   "types": "./types/static.d.ts",
   "files": [
-    "src",
     "types",
     "dist"
   ],

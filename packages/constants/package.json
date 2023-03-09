@@ -5,7 +5,6 @@
   "main": "dist/cjs/constants",
   "module": "dist/esm/constants",
   "files": [
-    "src",
     "types",
     "dist"
   ],

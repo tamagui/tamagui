@@ -13,7 +13,6 @@
     "access": "public"
   },
   "files": [
-    "src",
     "types",
     "dist"
   ],

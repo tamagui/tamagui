@@ -5,7 +5,6 @@
   "types": "./types/index.d.ts",
   "main": "./dist",
   "files": [
-    "src",
     "types",
     "dist"
   ],

@@ -9,7 +9,6 @@
   "module:jsx": "dist/jsx",
   "license": "MIT",
   "files": [
-    "src",
     "types",
     "dist"
   ],

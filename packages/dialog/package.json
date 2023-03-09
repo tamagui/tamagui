@@ -10,7 +10,6 @@
     "*.css"
   ],
   "files": [
-    "src",
     "types",
     "dist"
   ],
