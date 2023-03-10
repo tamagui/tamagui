@@ -3,29 +3,24 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
   TamaguiElement,
+  Theme,
   composeEventHandlers,
+  getAnimationDriver,
   isWeb,
   styled,
   useEvent,
+  useThemeName
 } from '@tamagui/core'
 import {
   Dismissable,
-  DismissableProps,
-  dispatchDiscreteCustomEvent,
+  DismissableProps
 } from '@tamagui/dismissable'
 import { PortalItem } from '@tamagui/portal'
 import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
-import { PointerEvent } from 'react-native'
+import { Animated, GestureResponderEvent, PanResponder } from 'react-native'
 
 import { ToastAnnounce } from './Announce'
-import {
-  TOAST_NAME,
-  TOAST_SWIPE_CANCEL,
-  TOAST_SWIPE_END,
-  TOAST_SWIPE_MOVE,
-  TOAST_SWIPE_START,
-} from './constants'
 import {
   Collection,
   ScopedProps,
@@ -34,11 +29,10 @@ import {
   useToastProviderContext,
 } from './Provider'
 import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './Viewport'
+import { TOAST_NAME } from './constants'
 
 const ToastImplFrame = styled(ThemeableStack, {
   name: 'ToastImpl',
-  //   x: 'var(--toast-swipe-move-x)',
-  //   y: 'var(--toast-swipe-move-y)',
   variants: {
     backgrounded: {
       true: {
@@ -50,7 +44,7 @@ const ToastImplFrame = styled(ThemeableStack, {
         borderRadius: '$10',
         paddingHorizontal: '$5',
         paddingVertical: '$2',
-        marginHorizontal: "auto",
+        marginHorizontal: 'auto',
         marginVertical: '$1',
       },
     },
@@ -75,10 +69,7 @@ interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
   viewportName?: string
 }
 
-type SwipeEvent = { currentTarget: EventTarget & TamaguiElement } & Omit<
-  CustomEvent<{ originalEvent: React.PointerEvent; delta: { x: number; y: number } }>,
-  'currentTarget'
->
+type SwipeEvent = GestureResponderEvent
 
 const [ToastInteractiveProvider, useToastInteractiveContext] = createToastContext(
   TOAST_NAME,
@@ -129,14 +120,11 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
     const context = useToastProviderContext(TOAST_NAME, __scopeToast)
     const [node, setNode] = React.useState<TamaguiElement | null>(null)
     const composedRefs = useComposedRefs(forwardedRef, (node) => setNode(node))
-    const pointerStartRef = React.useRef<{ x: number; y: number } | null>(null)
-    const swipeDeltaRef = React.useRef<{ x: number; y: number } | null>(null)
     const duration = durationProp || context.duration
     const closeTimerStartTimeRef = React.useRef(0)
     const closeTimerRemainingTimeRef = React.useRef(duration)
     const closeTimerRef = React.useRef(0)
     const { onToastAdd, onToastRemove } = context
-    const [position, setPosition] = React.useState({ x: 0, y: 0 })
     const handleClose = useEvent(() => {
       if (!isPresent) {
         // already removed from the react tree
@@ -160,22 +148,22 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       },
       [handleClose]
     )
+    const handleResume = React.useCallback(() => {
+      startTimer(closeTimerRemainingTimeRef.current)
+      onResume?.()
+    }, [onResume, startTimer])
+    const handlePause = React.useCallback(() => {
+      const elapsedTime = new Date().getTime() - closeTimerStartTimeRef.current
+      closeTimerRemainingTimeRef.current =
+        closeTimerRemainingTimeRef.current - elapsedTime
+      window.clearTimeout(closeTimerRef.current)
+      onPause?.()
+    }, [onPause])
 
     React.useEffect(() => {
       if (!isWeb) return
       const viewport = context.viewport as HTMLElement
       if (viewport) {
-        const handleResume = () => {
-          startTimer(closeTimerRemainingTimeRef.current)
-          onResume?.()
-        }
-        const handlePause = () => {
-          const elapsedTime = new Date().getTime() - closeTimerStartTimeRef.current
-          closeTimerRemainingTimeRef.current =
-            closeTimerRemainingTimeRef.current - elapsedTime
-          window.clearTimeout(closeTimerRef.current)
-          onPause?.()
-        }
         viewport.addEventListener(VIEWPORT_PAUSE, handlePause)
         viewport.addEventListener(VIEWPORT_RESUME, handleResume)
         return () => {
@@ -204,51 +192,78 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       return node ? getAnnounceTextContent(node as HTMLDivElement) : null
     }, [node])
 
-    // writing this logic in here since the frame doesn't seem to care about onPointerMove
-    const handlePointerMove = React.useCallback(
-      (event: globalThis.PointerEvent) => {
-        if (!pointerStartRef.current) return
-        const x = event.clientX - pointerStartRef.current.x
-        const y = event.clientY - pointerStartRef.current.y
-        const hasSwipeMoveStarted = Boolean(swipeDeltaRef.current)
-        const isHorizontalSwipe = ['left', 'right'].includes(context.swipeDirection)
-        const clamp = ['left', 'up'].includes(context.swipeDirection)
-          ? Math.min
-          : Math.max
-        const clampedX = isHorizontalSwipe ? clamp(0, x) : 0
-        const clampedY = !isHorizontalSwipe ? clamp(0, y) : 0
-        const moveStartBuffer = event.pointerType === 'touch' ? 10 : 2
-        const delta = { x: clampedX, y: clampedY }
-        const eventDetail = { originalEvent: event, delta }
-        if (hasSwipeMoveStarted) {
-          swipeDeltaRef.current = delta
-          setPosition(delta)
-          handleAndDispatchCustomEvent(TOAST_SWIPE_MOVE, onSwipeMove, eventDetail, {
-            discrete: false,
-          })
-        } else if (isDeltaInDirection(delta, context.swipeDirection, moveStartBuffer)) {
-          swipeDeltaRef.current = delta
-          handleAndDispatchCustomEvent(TOAST_SWIPE_START, onSwipeStart, eventDetail, {
-            discrete: false,
-          })
-          ;(event.target as HTMLElement).setPointerCapture(event.pointerId)
-        } else if (Math.abs(x) > moveStartBuffer || Math.abs(y) > moveStartBuffer) {
-          // User is swiping in wrong direction so we disable swipe gesture
-          // for the current pointer down interaction
-          pointerStartRef.current = null
-        }
-      },
-      [context.swipeDirection]
+    const isHorizontalSwipe = ['left', 'right', 'horizontal'].includes(
+      context.swipeDirection
     )
-    React.useEffect(() => {
-      if (!isWeb) return
 
-      const htmlNode = node as HTMLElement | null
-      htmlNode?.addEventListener('pointermove', handlePointerMove)
-      return () => htmlNode?.removeEventListener('pointermove', handlePointerMove)
-    }, [node])
+    const driver = getAnimationDriver()
+    if (!driver) {
+      throw new Error('Must set animations in tamagui.config.ts')
+    }
 
-    // if (!context.viewport) return null
+    const { useAnimatedNumber, useAnimatedNumberStyle } = driver
+
+    const animatedNumber = useAnimatedNumber(0)
+
+    // temp until reanimated useAnimatedNumber fix
+    const AnimatedView = (driver['NumberView'] ?? driver.View) as typeof Animated.View
+
+    const animatedStyles = useAnimatedNumberStyle(animatedNumber, (val) => {
+      return {
+        transform: [isHorizontalSwipe ? { translateX: val } : { translateY: val }],
+      }
+    })
+
+    const panResponder = React.useMemo(() => {
+      return PanResponder.create({
+        onMoveShouldSetPanResponder: (e) => {
+          onSwipeStart?.(e)
+          return true
+        },
+        onPanResponderGrant: (e) => {
+          if (!isWeb) {
+            handlePause?.()
+          }
+        },
+        onPanResponderMove: (e, { dy, dx }) => {
+          let y = 0
+          let x = 0
+          if (context.swipeDirection === 'horizontal') x = dx
+          else if (context.swipeDirection === 'left') x = Math.min(0, dx)
+          else if (context.swipeDirection === 'right') x = Math.max(0, dx)
+          else if (context.swipeDirection === 'vertical') y = dy
+          else if (context.swipeDirection === 'up') y = Math.min(0, dy)
+          else if (context.swipeDirection === 'down') y = Math.max(0, dy)
+
+          onSwipeMove?.(e)
+
+          const delta = { x, y }
+          animatedNumber.setValue(isHorizontalSwipe ? x : y, { type: 'direct' })
+          if (isDeltaInDirection(delta, context.swipeDirection, context.swipeThreshold)) {
+            onSwipeEnd?.(e)
+          }
+        },
+        onPanResponderEnd: (e, { dx, dy }) => {
+          if (
+            !isDeltaInDirection(
+              { x: dx, y: dy },
+              context.swipeDirection,
+              context.swipeThreshold
+            )
+          ) {
+            if (!isWeb) {
+              handleResume?.()
+            }
+            onSwipeCancel?.(e)
+            animatedNumber.setValue(0, { type: 'spring' })
+          }
+        },
+      })
+    }, [handlePause, handleResume])
+
+    // need to get the theme name from context and apply it again since portals don't retain the theme
+    const themeName = useThemeName()
+
     return (
       <>
         {announceTextContent && (
@@ -270,118 +285,50 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
           }}
         >
           <PortalItem hostName={viewportName ?? 'default'} key={props.id}>
-            <Collection.ItemSlot key={props.id} scope={__scopeToast}>
-              <Dismissable
-                // asChild
-                onEscapeKeyDown={composeEventHandlers(onEscapeKeyDown, () => {
-                  if (!context.isFocusedToastEscapeKeyDownRef.current) {
-                    handleClose()
-                  }
-                  context.isFocusedToastEscapeKeyDownRef.current = false
-                })}
-              >
-                <ToastImplFrame
-                  // Ensure toasts are announced as status list or status when focused
-                  role="status"
-                  aria-live="off"
-                  aria-atomic
-                  tabIndex={0}
-                  data-state={open ? 'open' : 'closed'}
-                  data-swipe-direction={context.swipeDirection}
-                  pointerEvents="auto"
-                  //   touchAction="none"
-                  userSelect="none"
-                  {...toastProps}
-                  ref={composedRefs}
-                  {...(isWeb && {
-                    onKeyDown: composeEventHandlers(
-                      (props as any).onKeyDown,
-                      (event: KeyboardEvent) => {
-                        if (event.key !== 'Escape') return
-                        onEscapeKeyDown?.(event)
-                        onEscapeKeyDown?.(event)
-                        if (!event.defaultPrevented) {
-                          context.isFocusedToastEscapeKeyDownRef.current = true
-                          handleClose()
-                        }
-                      }
-                    ),
+            <Theme name={themeName}>
+              <Collection.ItemSlot key={props.id} scope={__scopeToast}>
+                <Dismissable
+                  // asChild
+                  onEscapeKeyDown={composeEventHandlers(onEscapeKeyDown, () => {
+                    if (!context.isFocusedToastEscapeKeyDownRef.current) {
+                      handleClose()
+                    }
+                    context.isFocusedToastEscapeKeyDownRef.current = false
                   })}
-                  onPressIn={composeEventHandlers(
-                    props.onPressIn ?? undefined,
-                    (event) => {
-                      if (isWeb) {
-                        const webEvent = event as unknown as React.MouseEvent
-                        if (webEvent.button !== 0) return
-                        pointerStartRef.current = {
-                          x: webEvent.clientX,
-                          y: webEvent.clientY,
-                        }
-                      } else {
-                        pointerStartRef.current = {
-                          x: event.nativeEvent.locationX,
-                          y: event.nativeEvent.locationY,
-                        }
-                      }
-                    }
-                  )}
-                  // onPointerMove={handlePointerMove}
-                  onPressOut={composeEventHandlers(
-                    props.onPressOut ?? undefined,
-                    (event) => {
-                      const delta = swipeDeltaRef.current
-                      if (isWeb) {
-                        const target = event.target as unknown as HTMLElement
-
-                        // if (target.hasPointerCapture(event.pointerId)) {
-                        //   target.releasePointerCapture(event.pointerId)
-                        // }
-                        swipeDeltaRef.current = null
-                        pointerStartRef.current = null
-                        if (delta) {
-                          const toast = event.currentTarget
-                          const eventDetail = { originalEvent: event, delta }
-                          if (
-                            isDeltaInDirection(
-                              delta,
-                              context.swipeDirection,
-                              context.swipeThreshold
-                            )
-                          ) {
-                            handleAndDispatchCustomEvent(
-                              TOAST_SWIPE_END,
-                              onSwipeEnd,
-                              eventDetail,
-                              {
-                                discrete: true,
-                              }
-                            )
-                          } else {
-                            handleAndDispatchCustomEvent(
-                              TOAST_SWIPE_CANCEL,
-                              onSwipeCancel,
-                              eventDetail,
-                              {
-                                discrete: true,
-                              }
-                            )
-                          }
-                          // Prevent click event from triggering on items within the toast when
-                          // pointer up is part of a swipe gesture
-                          toast.addEventListener(
-                            'click',
-                            (event) => event.preventDefault(),
-                            {
-                              once: true,
+                >
+                  <AnimatedView {...panResponder?.panHandlers} style={[animatedStyles]}>
+                    <ToastImplFrame
+                      // Ensure toasts are announced as status list or status when focused
+                      role="status"
+                      aria-live="off"
+                      aria-atomic
+                      tabIndex={0}
+                      data-state={open ? 'open' : 'closed'}
+                      data-swipe-direction={context.swipeDirection}
+                      pointerEvents="auto"
+                      // touchAction="none"
+                      userSelect="none"
+                      {...toastProps}
+                      ref={composedRefs}
+                      {...(isWeb && {
+                        onKeyDown: composeEventHandlers(
+                          (props as any).onKeyDown,
+                          (event: KeyboardEvent) => {
+                            if (event.key !== 'Escape') return
+                            onEscapeKeyDown?.(event)
+                            onEscapeKeyDown?.(event)
+                            if (!event.defaultPrevented) {
+                              context.isFocusedToastEscapeKeyDownRef.current = true
+                              handleClose()
                             }
-                          )
-                        }
-                      }
-                    }
-                  )}
-                />
-              </Dismissable>
-            </Collection.ItemSlot>
+                          }
+                        ),
+                      })}
+                    />
+                  </AnimatedView>
+                </Dismissable>
+              </Collection.ItemSlot>
+            </Theme>
           </PortalItem>
         </ToastInteractiveProvider>
       </>
@@ -401,27 +348,6 @@ ToastImpl.propTypes = {
 
 /* ---------------------------------------------------------------------------------------------- */
 
-function handleAndDispatchCustomEvent<
-  E extends CustomEvent,
-  ReactEvent extends React.SyntheticEvent
->(
-  name: string,
-  handler: ((event: E) => void) | undefined,
-  detail: { originalEvent: ReactEvent } & (E extends CustomEvent<infer D> ? D : never),
-  { discrete }: { discrete: boolean }
-) {
-  const currentTarget = detail.originalEvent.currentTarget as HTMLElement
-  const event = new CustomEvent(name, { bubbles: true, cancelable: true, detail })
-  if (handler)
-    currentTarget.addEventListener(name, handler as EventListener, { once: true })
-
-  if (discrete) {
-    dispatchDiscreteCustomEvent(currentTarget, event)
-  } else {
-    currentTarget.dispatchEvent(event)
-  }
-}
-
 const isDeltaInDirection = (
   delta: { x: number; y: number },
   direction: SwipeDirection,
@@ -430,7 +356,7 @@ const isDeltaInDirection = (
   const deltaX = Math.abs(delta.x)
   const deltaY = Math.abs(delta.y)
   const isDeltaX = deltaX > deltaY
-  if (direction === 'left' || direction === 'right') {
+  if (direction === 'left' || direction === 'right' || direction === 'horizontal') {
     return isDeltaX && deltaX > threshold
   } else {
     return !isDeltaX && deltaY > threshold
@@ -471,3 +397,4 @@ function isHTMLElement(node: any): node is HTMLElement {
 
 export { ToastImpl, ToastImplFrame, ToastImplProps, useToastInteractiveContext }
 export type { ToastProps }
+

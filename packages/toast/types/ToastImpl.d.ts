@@ -1,6 +1,7 @@
 import { GetProps, TamaguiElement } from '@tamagui/core';
 import { DismissableProps } from '@tamagui/dismissable';
 import * as React from 'react';
+import { GestureResponderEvent } from 'react-native';
 declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -88,15 +89,7 @@ interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
      */
     viewportName?: string;
 }
-type SwipeEvent = {
-    currentTarget: EventTarget & TamaguiElement;
-} & Omit<CustomEvent<{
-    originalEvent: React.PointerEvent;
-    delta: {
-        x: number;
-        y: number;
-    };
-}>, 'currentTarget'>;
+type SwipeEvent = GestureResponderEvent;
 declare const useToastInteractiveContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<{
     onClose(): void;
 } | undefined>, options?: {

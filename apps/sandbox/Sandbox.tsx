@@ -38,7 +38,7 @@ export const Sandbox = () => {
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
-      <ToastProvider>
+      <ToastProvider swipeDirection='vertical'>
         <link href="/fonts/inter.css" rel="stylesheet" />
 
         <style
@@ -83,38 +83,13 @@ export const Sandbox = () => {
         >
           🌗
         </button>
-
         <Toast.Viewport
           flexDirection="column-reverse"
-          name="default"
           top="$2"
-          left="$2"
-          right="$2"
+          left="50%"
+          x="-50%"
           mx="auto"
         />
-        <Toast.Viewport
-          flexDirection="column-reverse"
-          name="top-left"
-          top="$2"
-          left="$2"
-        />
-        <Toast.Viewport
-          flexDirection="column-reverse"
-          name="top-center"
-          top="$2"
-          left="$2"
-          right="$2"
-          mx="auto"
-        />
-        <Toast.Viewport
-          flexDirection="column-reverse"
-          name="top-right"
-          top="$2"
-          right="$2"
-        />
-        <Toast.Viewport name="bottom-left" bottom="$2" left="$2" />
-        <Toast.Viewport name="bottom-center" bottom="$2" left="$2" right="$2" mx="auto" />
-        <Toast.Viewport name="bottom-right" bottom="$2" right="$2" />
       </ToastProvider>
     </TamaguiProvider>
   )

@@ -1,6 +1,6 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { GetProps, Stack, Text, isWeb, styled } from '@tamagui/core'
+import { GetProps, Stack, TamaguiElement, Text, isWeb, styled } from '@tamagui/core'
 import { PortalHost } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
@@ -56,7 +56,6 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
     } = props
     const context = useToastProviderContext(VIEWPORT_NAME, __scopeToast)
     const getItems = useCollection(__scopeToast)
-    const wrapperRef = React.useRef<HTMLDivElement>(null)
     const headFocusProxyRef = React.useRef<FocusProxyElement>(null)
     const tailFocusProxyRef = React.useRef<FocusProxyElement>(null)
     const ref = React.useRef<HTMLDivElement>(null)
@@ -85,13 +84,12 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
 
     React.useEffect(() => {
       if (!isWeb) return
-      const wrapper = wrapperRef.current
-      const viewport = ref.current
-      if (hasToasts && wrapper && viewport) {
+      const wrapper = ref.current
+      if (hasToasts && wrapper) {
         const handlePause = () => {
           if (!context.isClosePausedRef.current) {
             const pauseEvent = new CustomEvent(VIEWPORT_PAUSE)
-            viewport.dispatchEvent(pauseEvent)
+            wrapper.dispatchEvent(pauseEvent)
             context.isClosePausedRef.current = true
           }
         }
@@ -99,7 +97,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
         const handleResume = () => {
           if (context.isClosePausedRef.current) {
             const resumeEvent = new CustomEvent(VIEWPORT_RESUME)
-            viewport.dispatchEvent(resumeEvent)
+            wrapper.dispatchEvent(resumeEvent)
             context.isClosePausedRef.current = false
           }
         }
@@ -112,14 +110,11 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
         }
 
         const handlePointerLeaveResume = () => {
-          if (isWeb) {
-            const isFocusInside = wrapper.contains(document.activeElement)
-            if (!isFocusInside) handleResume()
-          } else {
-            handleResume()
-          }
+          const isFocusInside = wrapper.contains(document.activeElement)
+          if (!isFocusInside) handleResume()
         }
         // Toasts are not in the viewport React tree so we need to bind DOM events
+
         wrapper.addEventListener('focusin', handlePause)
         wrapper.addEventListener('focusout', handleFocusOutResume)
         wrapper.addEventListener('pointermove', handlePause)
@@ -223,10 +218,8 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
         <Collection.Slot scope={__scopeToast}>
           <ToastViewportFrame ref={composedRefs} {...viewportProps}>
             <PortalHost
-            // TODO: user should be able to control AnimatePresence
-              render={(children) => (
-                <AnimatePresence>{children}</AnimatePresence>
-              )}
+              // TODO: user should be able to control this prop to customize AnimatePresence
+              render={(children) => <AnimatePresence>{children}</AnimatePresence>}
               name={name ?? 'default'}
             />
           </ToastViewportFrame>
@@ -273,9 +266,11 @@ const FocusProxy = React.forwardRef<FocusProxyElement, ScopedProps<FocusProxyPro
         // Avoid page scrolling when focus is on the focus proxy
         position={isWeb ? ('fixed' as any) : 'absolute'}
         onFocus={(event) => {
+          if (!isWeb) return
           const prevFocusedElement = event.relatedTarget as HTMLElement | null
-          const isFocusFromOutsideViewport =
-            !context.viewport?.contains(prevFocusedElement)
+          const isFocusFromOutsideViewport = !(context.viewport as HTMLElement)?.contains(
+            prevFocusedElement
+          )
           if (isFocusFromOutsideViewport) onFocusFromOutsideViewport()
         }}
       />
@@ -287,7 +282,7 @@ FocusProxy.displayName = FOCUS_PROXY_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
-function focusFirst(candidates: HTMLElement[]) {
+function focusFirst(candidates: TamaguiElement[]) {
   if (!isWeb) return
   const previouslyFocusedElement = document.activeElement
   return candidates.some((candidate) => {
@@ -308,10 +303,11 @@ function focusFirst(candidates: HTMLElement[]) {
  * See: https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker
  * Credit: https://github.com/discord/focus-layers/blob/master/src/util/wrapFocus.tsx#L1
  */
-function getTabbableCandidates(container: HTMLElement) {
+function getTabbableCandidates(container: TamaguiElement) {
   if (!isWeb) return []
+  const containerHtml = container as HTMLElement
   const nodes: HTMLElement[] = []
-  const walker = document.createTreeWalker(container, NodeFilter.SHOW_ELEMENT, {
+  const walker = document.createTreeWalker(containerHtml, NodeFilter.SHOW_ELEMENT, {
     acceptNode: (node: any) => {
       const isHiddenInput = node.tagName === 'INPUT' && node.type === 'hidden'
       if (node.disabled || node.hidden || isHiddenInput) return NodeFilter.FILTER_SKIP

@@ -50,46 +50,16 @@ export default function App() {
 }
 
 const SafeToastViewport = () => {
-  const { left, top, bottom, right } = useSafeAreaInsets()
+  const { left, top, right } = useSafeAreaInsets()
   return (
     <>
       <Toast.Viewport
         flexDirection="column-reverse"
-        name="default"
         top={top}
         left={left}
         right={right}
         mx="auto"
       />
-      <Toast.Viewport
-        flexDirection="column-reverse"
-        name="top-left"
-        top={top}
-        left={left}
-      />
-      <Toast.Viewport
-        flexDirection="column-reverse"
-        name="top-center"
-        top={top}
-        left={left}
-        right={right}
-        mx="auto"
-      />
-      <Toast.Viewport
-        flexDirection="column-reverse"
-        name="top-right"
-        top={top}
-        right={right}
-      />
-      <Toast.Viewport name="bottom-left" bottom={bottom} left={left} />
-      <Toast.Viewport
-        name="bottom-center"
-        bottom={bottom}
-        left={left}
-        right={right}
-        mx="auto"
-      />
-      <Toast.Viewport name="bottom-right" bottom={bottom} right={right} />
     </>
   )
 }

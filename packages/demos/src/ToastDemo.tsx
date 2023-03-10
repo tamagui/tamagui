@@ -10,7 +10,7 @@ export const ToastDemo = () => {
       <ImperativeToastProvider>
         <ImperativeDemo />
       </ImperativeToastProvider>
-      <DeclarativeDemo />
+      <DeclarativeMultipleToastDemo />
     </YStack>
   )
 }
@@ -85,30 +85,11 @@ const MyToastProvider = ({ children }: { children: React.ReactNode }) => {
 
       <Toast.Viewport
         flexDirection="column-reverse"
-        name="default"
         top="$2"
         left="$2"
         right="$2"
         mx="auto"
       />
-      <Toast.Viewport flexDirection="column-reverse" name="top-left" top="$2" left="$2" />
-      <Toast.Viewport
-        flexDirection="column-reverse"
-        name="top-center"
-        top="$2"
-        left="$2"
-        right="$2"
-        mx="auto"
-      />
-      <Toast.Viewport
-        flexDirection="column-reverse"
-        name="top-right"
-        top="$2"
-        right="$2"
-      />
-      <Toast.Viewport name="bottom-left" bottom="$2" left="$2" />
-      <Toast.Viewport name="bottom-center" bottom="$2" left="$2" right="$2" mx="auto" />
-      <Toast.Viewport name="bottom-right" bottom="$2" right="$2" />
     </ToastProvider>
   )
 }
@@ -128,6 +109,7 @@ export function DeclarativeMultipleToastDemo({ name }: { name?: string }) {
 
       {[...Array(savedCount)].map((_, index) => (
         <Toast
+          duration={1000}
           viewportName={name}
           key={index}
           enterStyle={{ opacity: 0, scale: 0.6, y: -25 }}
@@ -196,3 +178,32 @@ const DeclarativeSingleToastDemo = ({ name }: { name?: string }) => {
     </YStack>
   )
 }
+
+/*
+ <Toast.Viewport
+        flexDirection="column-reverse"
+        name="default"
+        top="$2"
+        left="$2"
+        right="$2"
+        mx="auto"
+      />
+      <Toast.Viewport flexDirection="column-reverse" name="top-left" top="$2" left="$2" />
+      <Toast.Viewport
+        flexDirection="column-reverse"
+        name="top-center"
+        top="$2"
+        left="$2"
+        right="$2"
+        mx="auto"
+      />
+      <Toast.Viewport
+        flexDirection="column-reverse"
+        name="top-right"
+        top="$2"
+        right="$2"
+      />
+      <Toast.Viewport name="bottom-left" bottom="$2" left="$2" />
+      <Toast.Viewport name="bottom-center" bottom="$2" left="$2" right="$2" mx="auto" />
+      <Toast.Viewport name="bottom-right" bottom="$2" right="$2" />
+*/

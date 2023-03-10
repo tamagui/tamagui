@@ -1,5 +1,1 @@
 export const TOAST_NAME = 'Toast'
-export const TOAST_SWIPE_START = 'toast.swipeStart'
-export const TOAST_SWIPE_MOVE = 'toast.swipeMove'
-export const TOAST_SWIPE_CANCEL = 'toast.swipeCancel'
-export const TOAST_SWIPE_END = 'toast.swipeEnd'
