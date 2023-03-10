@@ -10,8 +10,8 @@ import {
   ProgressDemo,
   SelectDemo,
   SwitchDemo,
-  TabsDemo,
   TabsAdvancedDemo,
+  TabsDemo,
 } from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
@@ -20,6 +20,7 @@ import {
   Popover,
   ScrollView,
   TamaguiProvider,
+  ToastProvider,
   XStack,
   YStack,
   styled,
@@ -122,32 +123,33 @@ const SandboxFrame = (props: { children: any }) => {
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
-      <ToastProvider swipeDirection='horizontal'>
+      <ToastProvider swipeDirection="horizontal">
         <link href="/fonts/inter.css" rel="stylesheet" />
 
-      <style
-        type="text/css"
-        dangerouslySetInnerHTML={{
-          __html: `
+        <style
+          type="text/css"
+          dangerouslySetInnerHTML={{
+            __html: `
             html, body, #root { overflow: hidden; height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; }
           `,
-        }}
-      />
+          }}
+        />
 
-      {props.children}
+        {props.children}
 
-      {/*  */}
-      <button
-        style={{
-          position: 'absolute',
-          bottom: 30,
-          left: 20,
-          fontSize: 30,
-        }}
-        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      >
-        🌗
-      </button>
+        {/*  */}
+        <button
+          style={{
+            position: 'absolute',
+            bottom: 30,
+            left: 20,
+            fontSize: 30,
+          }}
+          onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+        >
+          🌗
+        </button>
+      </ToastProvider>
     </TamaguiProvider>
   )
 }
