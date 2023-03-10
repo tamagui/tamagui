@@ -282,7 +282,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
           }}
         >
           <PortalItem hostName={viewportName ?? 'default'}>
-            <Theme name={themeName} key={props.id}>
+            <Theme forceClassName name={themeName} key={props.id}>
               <Collection.ItemSlot scope={__scopeToast}>
                 <Dismissable
                   // asChild
