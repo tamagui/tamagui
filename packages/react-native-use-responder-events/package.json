@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-use-responder-events",
-  "version": "1.5.13",
+  "version": "1.7.6",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -17,12 +17,21 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "dependencies": {
-    "react": "^18.2.0"
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "peerDependencies": {
+    "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.5.13",
-    "@types/react": "^18.0.15"
+    "@tamagui/build": "1.7.6",
+    "@types/react": "^18.0.15",
+    "react": "^18.2.0"
   },
   "publishConfig": {
     "access": "public"

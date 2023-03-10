@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/visually-hidden",
-  "version": "1.5.13",
+  "version": "1.7.6",
   "sideEffects": [
     "*.css"
   ],
@@ -22,17 +22,23 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "dependencies": {
-    "@tamagui/web": "^1.5.13"
+    "@tamagui/web": "1.7.6"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.5.13",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@tamagui/build": "1.7.6",
+    "react": "^18.2.0"
   },
   "publishConfig": {
     "access": "public"

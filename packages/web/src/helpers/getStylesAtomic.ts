@@ -8,7 +8,7 @@ import type { TextStyle, ViewStyle } from 'react-native'
 
 import { getConfig } from '../config.js'
 import type { TamaguiInternalConfig } from '../types.js'
-import { defaultOffset } from './expandStyles.js'
+import { defaultOffset } from './defaultOffset.js'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors.js'
 

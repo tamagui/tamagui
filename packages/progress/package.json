@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/progress",
-  "version": "1.5.13",
+  "version": "1.7.6",
   "sideEffects": [
     "*.css"
   ],
@@ -22,22 +22,28 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "dependencies": {
-    "@tamagui/compose-refs": "^1.5.13",
-    "@tamagui/core": "^1.5.13",
-    "@tamagui/create-context": "^1.5.13",
-    "@tamagui/get-size": "^1.5.13",
-    "@tamagui/stacks": "^1.5.13"
+    "@tamagui/compose-refs": "1.7.6",
+    "@tamagui/core": "1.7.6",
+    "@tamagui/create-context": "1.7.6",
+    "@tamagui/get-size": "1.7.6",
+    "@tamagui/stacks": "1.7.6"
   },
   "peerDependencies": {
     "react": "*",
-    "react-dom": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.5.13",
+    "@tamagui/build": "1.7.6",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "react-native": "*"
   },
   "publishConfig": {

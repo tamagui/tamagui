@@ -165,8 +165,8 @@ const resolveVariants: StyleResolver = (
       if (staticConfig.validStyles?.[key]) {
         return null
       }
-      if (value === false) {
-        // don't warn on missing false values, common to only use true
+      if (typeof value === 'boolean') {
+        // don't warn on missing boolean values, common to only one of true/false
         return null
       }
       const name = staticConfig.componentName || '[UnnamedComponent]'

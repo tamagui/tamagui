@@ -9,7 +9,7 @@ platform :ios, podfile_properties['ios.deploymentTarget'] || '13.0'
 install! 'cocoapods',
   :deterministic_uuids => false
 
-target 'myapp' do
+target 'kitchensink' do
   use_expo_modules!
   config = use_native_modules!
 

@@ -1,15 +1,13 @@
+import { ScopedProps } from '@tamagui/create-context'
+import { ThemeableStack } from '@tamagui/stacks'
 import {
   GetProps,
-  SizeTokens,
+  TamaguiElement,
   isTamaguiElement,
   styled,
-  themeable,
   withStaticProperties,
-} from '@tamagui/core'
-import { ScopedProps, createContextScope } from '@tamagui/create-context'
-import { ThemeableStack } from '@tamagui/stacks'
+} from '@tamagui/web'
 import React, { cloneElement, forwardRef } from 'react'
-import { View } from 'react-native'
 
 // const CARD_NAME = 'CARD'
 
@@ -77,12 +75,11 @@ export const CardBackground = styled(ThemeableStack, {
 
 export type CardHeaderProps = GetProps<typeof CardHeader>
 export type CardFooterProps = GetProps<typeof CardFooter>
-
 export type CardProps = GetProps<typeof CardFrame>
 
 export const Card = withStaticProperties(
   CardFrame.extractable(
-    forwardRef<HTMLElement | View, ScopedProps<CardProps, 'Card'>>(
+    forwardRef<TamaguiElement, ScopedProps<CardProps, 'Card'>>(
       ({ size, __scopeCard, children, ...props }, ref) => {
         return (
           // <CardProvider scope={__scopeCard} size={size}>

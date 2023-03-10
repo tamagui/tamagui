@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "myapp",
-    "slug": "myapp",
-    "scheme": "myapp",
+    "name": "kitchensink",
+    "slug": "kitchensink",
+    "scheme": "kitchensink",
     "version": "1.0.0",
     "jsEngine": "jsc",
     "orientation": "portrait",
@@ -16,15 +16,13 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.natew.myapp"
+      "bundleIdentifier": "com.natew.kitchensink"
     },
     "android": {
-      "package": "com.tamagui.myapp",
+      "package": "com.tamagui.kitchensink",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

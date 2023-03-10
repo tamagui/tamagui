@@ -1,4 +1,9 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { createContext } from '@tamagui/create-context'
+import { focusFocusable } from '@tamagui/focusable'
+import { getButtonSized } from '@tamagui/get-button-sized'
+import { getFontSized } from '@tamagui/get-font-sized'
+import { SizableText } from '@tamagui/text'
 import {
   GetProps,
   ReactComponentWithRef,
@@ -6,13 +11,7 @@ import {
   styled,
   themeable,
   useId,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/core'
-import { createContext } from '@tamagui/create-context'
-import { focusFocusable } from '@tamagui/focusable'
-import { getButtonSized } from '@tamagui/get-button-sized'
-import { getFontSized } from '@tamagui/get-font-sized'
-import { SizableText } from '@tamagui/text'
+} from '@tamagui/web'
 import * as React from 'react'
 import { View } from 'react-native'
 
@@ -109,7 +108,7 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>(
     return (
       <LabelProvider id={id} controlRef={controlRef}>
         <LabelFrame
-          role="label"
+          role="heading"
           id={id}
           // @ts-ignore
           htmlFor={htmlFor}

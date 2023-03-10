@@ -208,7 +208,11 @@ export function createComponent<
     stateRef.current ??= {}
 
     const isAnimated = (() => {
-      const next = !!(useAnimations && props.animation)
+      const next = !!(
+        !staticConfig.isHOC &&
+        useAnimations &&
+        (props.animation || (props.style && hasAnimatedStyleValue(props.style)))
+      )
       if (next && !stateRef.current.hasAnimated) {
         stateRef.current.hasAnimated = true
       }
@@ -376,7 +380,7 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
-    if (!isRSC && isAnimated && useAnimations) {
+    if (!isRSC && isAnimated && useAnimations && !staticConfig.isHOC) {
       const animations = useAnimations({
         props: propsWithAnimation,
         style: splitStylesStyle,
@@ -520,11 +524,12 @@ export function createComponent<
       if (isAnimatedReactNativeWeb) {
         viewProps.style = style
       } else if (isReactNative) {
-        const rnwStyle = { $$css: true }
+        // TODO these shouldn't really return from getSplitStyles when in Native mode
+        const cnStyles = { $$css: true }
         for (const name of className.split(' ')) {
-          rnwStyle[name] = name
+          cnStyles[name] = name
         }
-        viewProps.style = [rnwStyle, ...(Array.isArray(style) ? style : [style])]
+        viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
 
         if (process.env.NODE_ENV === 'development') {
           // turn debug data- props into dataSet in dev mode
@@ -715,6 +720,7 @@ export function createComponent<
 
     content = useThemedChildren(themeState, content, {
       shallow: stateRef.current.themeShallow,
+      // passPropsToChildren: true,
     })
 
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -1061,7 +1067,6 @@ type CreateSpacerProps = SpacedChildrenProps & { key: string }
 
 function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
   return (
-    // @ts-ignore this one blew up but the types seem better
     <Spacer
       key={key}
       size={space}
@@ -1074,8 +1079,8 @@ function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
 }
 
 function isUnspaced(child: React.ReactNode) {
-  // console.log('unspaced?', child, getMedia())
-  return child?.['type']?.['isVisuallyHidden'] || child?.['type']?.['isUnspaced']
+  const t = child?.['type']
+  return t?.['isVisuallyHidden'] || t?.['isUnspaced']
 }
 
 const DefaultProps = new Map()
@@ -1117,7 +1122,6 @@ function mergeConfigDefaultProps(
 }
 
 const AbsoluteFill: any = createComponent({
-  componentName: 'AbsoluteFill',
   defaultProps: {
     ...stackDefaultStyles,
     flexDirection: 'column',
@@ -1129,3 +1133,10 @@ const AbsoluteFill: any = createComponent({
     pointerEvents: 'box-none',
   },
 })
+
+function hasAnimatedStyleValue(style: Object) {
+  return Object.keys(style).some((k) => {
+    const val = style[k]
+    return val && typeof val === 'object' && '_animation' in val
+  })
+}

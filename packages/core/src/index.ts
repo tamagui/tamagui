@@ -11,7 +11,6 @@ import {
   isRSC,
   mergeEvent,
   setupHooks,
-  styled,
 } from '@tamagui/web'
 import { RefObject } from 'react'
 import type { Text as RNText, View as RNView } from 'react-native'

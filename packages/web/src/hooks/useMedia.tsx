@@ -2,8 +2,8 @@ import { startTransition, useEffect, useMemo, useSyncExternalStore } from 'react
 
 import { getConfig } from '../config.js'
 import { createProxy } from '../helpers/createProxy.js'
-import { matchMedia } from '../helpers/matchMedia.js'
-import {
+import { matchMedia } from '../helpers/matchMedia'
+import type {
   MediaQueries,
   MediaQueryKey,
   MediaQueryObject,
@@ -82,7 +82,7 @@ function unlisten() {
  * *and then* re-render with the actual media query state.
  */
 let configuredKey = ''
-function setupMediaListeners() {
+export function setupMediaListeners() {
   // avoid setting up more than once per config
   const nextKey = JSON.stringify(mediaQueryConfig)
   if (nextKey === configuredKey) return

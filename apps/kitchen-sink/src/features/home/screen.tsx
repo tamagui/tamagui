@@ -1,4 +1,4 @@
-import { styled, variableToString } from '@tamagui/core'
+import { variableToString } from '@tamagui/core'
 import { ScrollView } from 'react-native'
 import { ChevronRight, Moon, Sun } from 'sandbox-ui'
 import { UseLinkProps, useLink } from 'solito/link'
@@ -11,8 +11,6 @@ import {
   Separator,
   Spacer,
   Switch,
-  TextArea,
-  XStack,
   YGroup,
   YStack,
   useTheme,
@@ -23,7 +21,7 @@ import { useThemeControl } from '../../useKitchenSinkTheme'
 export function HomeScreen() {
   return (
     <ScrollView>
-      <YStack bc="$backgroundStrong" p="$3" pt="$6" pb="$8" f={1} space>
+      <YStack bc="$background" p="$3" pt="$6" pb="$8" f={1} space>
         <H1 fontFamily="$heading" size="$9">
           Demos
         </H1>
@@ -33,7 +31,9 @@ export function HomeScreen() {
         </YStack>
 
         <YGroup size="$4">
-          <ColorSchemeListItem />
+          <YGroup.Item>
+            <ColorSchemeListItem />
+          </YGroup.Item>
         </YGroup>
 
         <YStack space="$4" maw={600}>
@@ -42,9 +42,11 @@ export function HomeScreen() {
               <YGroup size="$4" key={i} separator={<Separator />}>
                 {group.pages.map((page) => {
                   return (
-                    <LinkListItem key={page.route} href={page.route} pressTheme size="$4">
-                      {page.title}
-                    </LinkListItem>
+                    <YGroup.Item key={page.route}>
+                      <LinkListItem href={page.route} pressTheme size="$4">
+                        {page.title}
+                      </LinkListItem>
+                    </YGroup.Item>
                   )
                 })}
               </YGroup>
@@ -154,6 +156,8 @@ const demos = [
       { title: 'Group', route: '/demo/group' },
       { title: 'Image', route: '/demo/image' },
       { title: 'ListItem', route: '/demo/list-item' },
+      { title: 'Tabs', route: '/demo/tabs' },
+      { title: 'Tabs Advanced', route: '/demo/tabs-advanced' },
     ],
   },
 

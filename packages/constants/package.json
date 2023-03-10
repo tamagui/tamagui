@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/constants",
-  "version": "1.5.13",
+  "version": "1.7.6",
   "types": "./types/constants.d.ts",
   "main": "dist/cjs/constants",
   "module": "dist/esm/constants",
@@ -18,13 +18,19 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.5.13",
-    "react": "^18.2.0",
-    "react-native": "*"
+    "@tamagui/build": "1.7.6",
+    "react": "^18.2.0"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
   },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"

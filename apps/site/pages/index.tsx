@@ -23,29 +23,13 @@ export default function Home({ animationCode, compilationExamples }) {
   return (
     <>
       <HomeGlow />
-      <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
+      <TitleAndMetaTags
+        title="Tamagui — React Native + Web UI kit"
+        description="Write less, run faster. Styles, optimizing compiler & UI kit that unify React Native + Web."
+      />
       <TintSection index={0} p={0}>
         <Hero />
       </TintSection>
-      <ContainerLarge fd="column" pos="relative" zi={2000}>
-        <XStack als="center" pos="absolute" y={-26} jc="center" ai="center" space>
-          <MailingListSignup />
-          <NextLink href="/blog/version-one">
-            <Button
-              theme="red"
-              als="center"
-              elevation="$3"
-              size="$4"
-              fontFamily="$silkscreen"
-              bc="$color1"
-              borderColor="$borderColor"
-              br="$10"
-            >
-              1.0
-            </Button>
-          </NextLink>
-        </XStack>
-      </ContainerLarge>
       <HeroBelow />
       <TintSection index={2} contain="paint layout" zi={1000}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />

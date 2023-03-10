@@ -4,5 +4,6 @@ export declare function Theme(props: ThemeProps): any;
 export declare function useThemedChildren(themeState: ChangedThemeResponse, children: any, options: {
     forceClassName?: boolean;
     shallow?: boolean;
-}): any;
+    passPropsToChildren?: boolean;
+}, isRoot?: boolean): any;
 //# sourceMappingURL=Theme.d.ts.map

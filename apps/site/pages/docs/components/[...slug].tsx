@@ -55,7 +55,7 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
       )} */}
       <MDXProvider frontmatter={frontmatter}>
         <ThemeTint disable={!isTinted}>
-          <Component components={components} />
+          <Component components={components as any} />
         </ThemeTint>
       </MDXProvider>
       <QuickNav key={frontmatter.slug} />

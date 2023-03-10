@@ -1,14 +1,16 @@
+import { useAsyncStorage } from '@react-native-async-storage/async-storage'
 import { NavigationContainer } from '@react-navigation/native'
 // causes metro bundle issue it seems:
 // import * as Linking from 'expo-linking'
 import React, { useMemo } from 'react'
-import { AsyncStorage, Linking, Platform } from 'react-native'
+import { Linking, Platform } from 'react-native'
 
 const PERSISTENCE_KEY = 'NAVIGATION_STATE_V4'
 
 export function NavigationProvider({ children }: { children: React.ReactNode }) {
   const [isReady, setIsReady] = React.useState(false)
   const [initialState, setInitialState] = React.useState()
+  const storage = useAsyncStorage(PERSISTENCE_KEY)
 
   React.useEffect(() => {
     const restoreState = async () => {
@@ -17,7 +19,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
 
         if (Platform.OS !== 'web' && initialUrl == null) {
           // Only restore state if there's no deep link and we're not on web
-          const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY)
+          const savedStateString = await storage.getItem()
           const state = savedStateString ? JSON.parse(savedStateString) : undefined
 
           if (state !== undefined) {
@@ -56,9 +58,9 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
   return (
     <NavigationContainer
       initialState={initialState}
-      onStateChange={(state) =>
-        AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
-      }
+      onStateChange={(state) => {
+        storage.setItem(JSON.stringify(state))
+      }}
       linking={linking}
     >
       {children}

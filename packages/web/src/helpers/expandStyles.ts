@@ -1,11 +1,12 @@
+import { isWeb } from '@tamagui/constants'
+
 import { getConfig } from '../config.js'
 import { expandStyle } from './expandStyle.js'
-import { normalizeShadow } from './normalizeShadow.js'
+import { normalizeShadow } from './normalizeShadow'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { pseudoDescriptors } from './pseudoDescriptors.js'
 
 let shorthands: Record<string, string> | null = null
-export const defaultOffset = { height: 0, width: 0 }
 
 /**
  * This is what you want to run before Object.assign() a style onto another.
@@ -61,10 +62,12 @@ export function fixStyles(style: Record<string, any>) {
   }
 }
 
+// native doesn't support specific border edge style
+const nativeStyle = isWeb ? null : 'borderStyle'
 const borderDefaults = {
   borderWidth: 'borderStyle',
-  borderBottomWidth: 'borderBottomStyle',
-  borderTopWidth: 'borderTopStyle',
-  borderLeftWidth: 'borderLeftStyle',
-  borderRightWidth: 'borderRightStyle',
+  borderBottomWidth: nativeStyle || 'borderBottomStyle',
+  borderTopWidth: nativeStyle || 'borderTopStyle',
+  borderLeftWidth: nativeStyle || 'borderLeftStyle',
+  borderRightWidth: nativeStyle || 'borderRightStyle',
 }

@@ -1,5 +1,5 @@
-import { GetProps, Text, styled } from '@tamagui/core'
 import { getFontSized } from '@tamagui/get-font-sized'
+import { GetProps, Text, styled } from '@tamagui/web'
 
 export const SizableText = styled(Text, {
   name: 'SizableText',
