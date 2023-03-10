@@ -83,15 +83,15 @@ export default function App(props: AppProps) {
             <Suspense fallback={null}>
               {useMemo(() => {
                 return (
-                  <ToastProvider>
+                  <ToastProvider swipeDirection='horizontal'>
                     <ContentInner {...props} />
 
                     <Toast.Viewport
                       flexDirection="column-reverse"
                       name="default"
                       top="$2"
-                      left="$2"
-                      right="$2"
+                      left="50%"
+                      x="-50%"
                       mx="auto"
                     />
                   </ToastProvider>

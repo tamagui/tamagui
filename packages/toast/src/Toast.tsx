@@ -9,7 +9,7 @@ import {
   useId,
   withStaticProperties,
 } from '@tamagui/core'
-import { YStack } from '@tamagui/stacks'
+import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -39,6 +39,7 @@ const TITLE_NAME = 'ToastTitle'
 
 const ToastTitleFrame = styled(SizableText, {
   name: TITLE_NAME,
+  color: '$color',
   variants: {
     unstyled: {
       false: {
@@ -68,8 +69,9 @@ ToastTitle.displayName = TITLE_NAME
 
 const DESCRIPTION_NAME = 'ToastDescription'
 
-const ToastDescriptionFrame = styled(Paragraph, {
+const ToastDescriptionFrame = styled(SizableText, {
   name: DESCRIPTION_NAME,
+  color: '$color11',
   variants: {
     unstyled: {
       false: {
@@ -138,7 +140,7 @@ ToastAction.displayName = ACTION_NAME
 
 const CLOSE_NAME = 'ToastClose'
 
-const ToastCloseFrame = styled(YStack, {
+const ToastCloseFrame = styled(ThemeableStack, {
   name: CLOSE_NAME,
   tag: 'button',
 })
@@ -193,7 +195,7 @@ const ToastComponent = React.forwardRef<TamaguiElement, ToastProps>(
         onClose={() => setOpen(false)}
         onPause={onPause}
         onResume={onResume}
-        onSwipeEnd={composeEventHandlers(props.onSwipeEnd, () => {
+        onSwipeEnd={composeEventHandlers(props.onSwipeEnd, (event) => {
           setOpen(false)
         })}
       />

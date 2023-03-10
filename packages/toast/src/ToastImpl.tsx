@@ -18,6 +18,7 @@ import * as React from 'react'
 import { Animated, GestureResponderEvent, PanResponder } from 'react-native'
 
 import { ToastAnnounce } from './Announce'
+import { TOAST_NAME } from './constants'
 import {
   Collection,
   ScopedProps,
@@ -26,7 +27,6 @@ import {
   useToastProviderContext,
 } from './Provider'
 import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './Viewport'
-import { TOAST_NAME } from './constants'
 
 const ToastImplFrame = styled(ThemeableStack, {
   name: 'ToastImpl',
@@ -52,18 +52,23 @@ const ToastImplFrame = styled(ThemeableStack, {
   },
 })
 interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
+  /**
+   * The controlled open state of the dialog. Must be used in conjunction with `onOpenChange`.
+   */
   open?: boolean
+  /**
+   * The open state of the dialog when it is initially rendered. Use when you do not need to control its open state.
+   */
   defaultOpen?: boolean
+  /**
+   * Event handler called when the open state of the dialog changes.
+   */
   onOpenChange?(open: boolean): void
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
    */
   forceMount?: true
-  /**
-   * Used to reference a specific viewport if you're using multiple ones.
-   */
-  viewportName?: string
 }
 
 type SwipeEvent = GestureResponderEvent
@@ -79,19 +84,52 @@ type ToastImplPrivateProps = { open: boolean; onClose(): void }
 type ToastImplFrameProps = GetProps<typeof ToastImplFrame>
 type ToastImplProps = ToastImplPrivateProps &
   ToastImplFrameProps & {
+    /**
+     * Control the sensitivity of the toast for accessibility purposes.
+     * For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.
+     */
     type?: 'foreground' | 'background'
     /**
-     * Time in milliseconds that toast should remain visible for. Overrides value
-     * given to `ToastProvider`.
+     * Time in milliseconds that toast should remain visible for. Overrides value given to `ToastProvider`.
      */
     duration?: number
+    /**
+     * Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.
+     */
     onEscapeKeyDown?: DismissableProps['onEscapeKeyDown']
+    /**
+     * Event handler called when the dismiss timer is paused.
+     * On web, this occurs when the pointer is moved over the viewport, the viewport is focused or when the window is blurred.
+     * On mobile, this occurs when the toast is touched.
+     */
     onPause?(): void
+    /**
+     * Event handler called when the dismiss timer is resumed.
+     * On web, this occurs when the pointer is moved away from the viewport, the viewport is blurred or when the window is focused.
+     * On mobile, this occurs when the toast is released.
+     */
     onResume?(): void
+    /**
+     * Event handler called when starting a swipe interaction. It can be prevented by calling `event.preventDefault`.
+     */
     onSwipeStart?(event: SwipeEvent): void
+    /**
+     * Event handler called during a swipe interaction. It can be prevented by calling `event.preventDefault`.
+     */
     onSwipeMove?(event: SwipeEvent): void
+    /**
+     * Event handler called at the cancellation of a swipe interaction. It can be prevented by calling `event.preventDefault`.
+     */
     onSwipeCancel?(event: SwipeEvent): void
+    /**
+     * Event handler called at the end of a swipe interaction. It can be prevented by calling `event.preventDefault`.
+     */
     onSwipeEnd?(event: SwipeEvent): void
+    /**
+     * The viewport's name to send the toast to. Used when using multiple viewports and want to forward toasts to different ones.
+     *
+     * @default "default"
+     */
     viewportName?: string
   }
 
@@ -275,24 +313,25 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
           </ToastAnnounce>
         )}
 
-        <ToastInteractiveProvider
-          scope={__scopeToast}
-          onClose={() => {
-            handleClose()
-          }}
-        >
-          <PortalItem hostName={viewportName ?? 'default'}>
-            <Theme forceClassName name={themeName} key={props.id}>
-              <Collection.ItemSlot scope={__scopeToast}>
-                <Dismissable
-                  // asChild
-                  onEscapeKeyDown={composeEventHandlers(onEscapeKeyDown, () => {
-                    if (!context.isFocusedToastEscapeKeyDownRef.current) {
-                      handleClose()
-                    }
-                    context.isFocusedToastEscapeKeyDownRef.current = false
-                  })}
-                >
+        <PortalItem hostName={viewportName ?? 'default'}>
+          <Collection.ItemSlot scope={__scopeToast} key={props.id}>
+            <ToastInteractiveProvider
+              scope={__scopeToast}
+              onClose={() => {
+                console.log('hellooow')
+                handleClose()
+              }}
+            >
+              <Dismissable
+                // asChild
+                onEscapeKeyDown={composeEventHandlers(onEscapeKeyDown, () => {
+                  if (!context.isFocusedToastEscapeKeyDownRef.current) {
+                    handleClose()
+                  }
+                  context.isFocusedToastEscapeKeyDownRef.current = false
+                })}
+              >
+                <Theme forceClassName name={themeName}>
                   <AnimatedView {...panResponder?.panHandlers} style={[animatedStyles]}>
                     <ToastImplFrame
                       // Ensure toasts are announced as status list or status when focused
@@ -323,11 +362,11 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                       })}
                     />
                   </AnimatedView>
-                </Dismissable>
-              </Collection.ItemSlot>
-            </Theme>
-          </PortalItem>
-        </ToastInteractiveProvider>
+                </Theme>
+              </Dismissable>
+            </ToastInteractiveProvider>
+          </Collection.ItemSlot>
+        </PortalItem>
       </>
     )
   }
@@ -394,4 +433,3 @@ function isHTMLElement(node: any): node is HTMLElement {
 
 export { ToastImpl, ToastImplFrame, ToastImplProps, useToastInteractiveContext }
 export type { ToastProps }
-

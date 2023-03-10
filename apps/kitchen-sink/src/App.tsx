@@ -1,12 +1,8 @@
 import { useFonts } from 'expo-font'
 import { useMemo, useState } from 'react'
 import { Appearance } from 'react-native'
-import {
-  SafeAreaProvider,
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context'
-import { Toast, ToastProvider, YStack } from 'sandbox-ui'
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Toast, ToastProvider } from 'sandbox-ui'
 
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
@@ -38,7 +34,7 @@ export default function App() {
     <SafeAreaProvider>
       <ThemeContext.Provider value={themeContext}>
         <Provider defaultTheme={theme as any}>
-          <ToastProvider>
+          <ToastProvider swipeDirection="horizontal">
             {children}
 
             <SafeToastViewport />

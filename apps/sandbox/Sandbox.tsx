@@ -38,7 +38,7 @@ export const Sandbox = () => {
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
-      <ToastProvider swipeDirection='vertical'>
+      <ToastProvider swipeDirection='horizontal'>
         <link href="/fonts/inter.css" rel="stylesheet" />
 
         <style
