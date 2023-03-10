@@ -9,12 +9,9 @@ import {
   isWeb,
   styled,
   useEvent,
-  useThemeName
+  useThemeName,
 } from '@tamagui/core'
-import {
-  Dismissable,
-  DismissableProps
-} from '@tamagui/dismissable'
+import { Dismissable, DismissableProps } from '@tamagui/dismissable'
 import { PortalItem } from '@tamagui/portal'
 import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
@@ -284,9 +281,9 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
             handleClose()
           }}
         >
-          <PortalItem hostName={viewportName ?? 'default'} key={props.id}>
-            <Theme name={themeName}>
-              <Collection.ItemSlot key={props.id} scope={__scopeToast}>
+          <PortalItem hostName={viewportName ?? 'default'}>
+            <Theme name={themeName} key={props.id}>
+              <Collection.ItemSlot scope={__scopeToast}>
                 <Dismissable
                   // asChild
                   onEscapeKeyDown={composeEventHandlers(onEscapeKeyDown, () => {
