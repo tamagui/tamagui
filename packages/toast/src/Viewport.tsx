@@ -1,6 +1,6 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { GetProps, Stack, TamaguiElement, Text, isWeb, styled } from '@tamagui/core'
+import { GetProps, TamaguiElement, isWeb, styled } from '@tamagui/core'
 import { PortalHost } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
@@ -18,13 +18,26 @@ const VIEWPORT_DEFAULT_HOTKEY = ['F8']
 const VIEWPORT_PAUSE = 'toast.viewportPause'
 const VIEWPORT_RESUME = 'toast.viewportResume'
 
+const ToastViewportWrapperFrame = styled(YStack, {
+  name: 'ViewportWrapper',
+  pointerEvents: 'box-none',
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  // @ts-ignore
+  position: isWeb ? 'fixed' : 'absolute',
+  maxWidth: '100%',
+  tabIndex: 0,
+  zIndex: 100000,
+})
+
 const ToastViewportFrame = styled(YStack, {
   name: VIEWPORT_NAME,
   pointerEvents: 'box-none',
   // @ts-ignore
   position: isWeb ? 'fixed' : 'absolute',
   maxWidth: '100%',
-  zIndex: 100000,
 })
 type ToastViewportFrameProps = GetProps<typeof ToastViewportFrame>
 type ToastViewportProps = ToastViewportFrameProps & {
@@ -58,12 +71,14 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
     const getItems = useCollection(__scopeToast)
     const headFocusProxyRef = React.useRef<FocusProxyElement>(null)
     const tailFocusProxyRef = React.useRef<FocusProxyElement>(null)
+    const wrapperRef = React.useRef<HTMLDivElement>(null)
     const ref = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref, context.onViewportChange)
     const hotkeyLabel = hotkey.join('+').replace(/Key/g, '').replace(/Digit/g, '')
     const hasToasts = context.toastCount > 0
 
     React.useEffect(() => {
+      if (!isWeb) return
       const handleKeyDown = (event: KeyboardEvent) => {
         // we use `event.code` as it is consistent regardless of meta keys that were pressed.
         // for example, `event.key` for `Control+Alt+t` is `†` and `t !== †`
@@ -71,25 +86,23 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
           (key) => (event as any)[key] || event.code === key
         )
         if (isHotkeyPressed) ref.current?.focus()
+        console.log(isHotkeyPressed)
       }
-      if (isWeb) {
-        document.addEventListener('keydown', handleKeyDown)
-      }
+      document.addEventListener('keydown', handleKeyDown)
       return () => {
-        if (isWeb) {
-          document.removeEventListener('keydown', handleKeyDown)
-        }
+        document.removeEventListener('keydown', handleKeyDown)
       }
     }, [hotkey])
 
     React.useEffect(() => {
       if (!isWeb) return
-      const wrapper = ref.current
-      if (hasToasts && wrapper) {
+      const wrapper = wrapperRef.current
+      const viewport = ref.current
+      if (hasToasts && wrapper && viewport) {
         const handlePause = () => {
           if (!context.isClosePausedRef.current) {
             const pauseEvent = new CustomEvent(VIEWPORT_PAUSE)
-            wrapper.dispatchEvent(pauseEvent)
+            viewport.dispatchEvent(pauseEvent)
             context.isClosePausedRef.current = true
           }
         }
@@ -97,7 +110,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
         const handleResume = () => {
           if (context.isClosePausedRef.current) {
             const resumeEvent = new CustomEvent(VIEWPORT_RESUME)
-            wrapper.dispatchEvent(resumeEvent)
+            viewport.dispatchEvent(resumeEvent)
             context.isClosePausedRef.current = false
           }
         }
@@ -199,7 +212,16 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
     }, [getItems, getSortedTabbableCandidates])
 
     return (
-      <>
+      <ToastViewportWrapperFrame
+        ref={wrapperRef}
+        role="region"
+        aria-label={label.replace('{hotkey}', hotkeyLabel)}
+        // // Ensure virtual cursor from landmarks menus triggers focus/blur for pause/resume
+        tabIndex={-1}
+        // // incase list has size when empty (e.g. padding), we remove pointer events so
+        // // it doesn't prevent interactions with page elements that it overlays
+        // pointerEvents={hasToasts ? undefined : 'none'}
+      >
         {hasToasts && (
           <FocusProxy
             ref={headFocusProxyRef}
@@ -235,7 +257,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
             }}
           />
         )}
-      </>
+      </ToastViewportWrapperFrame>
     )
   }
 )
