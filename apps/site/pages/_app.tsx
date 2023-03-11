@@ -12,7 +12,7 @@ import NextHead from 'next/head'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 import { Suspense, startTransition, useMemo } from 'react'
-import { TamaguiProvider, ToastViewport, ToastProvider, isClient } from 'tamagui'
+import { TamaguiProvider, ToastProvider, ToastViewport, isClient } from 'tamagui'
 
 import { Header } from '../components/Header'
 import { SearchProvider } from '../components/Search'
@@ -83,16 +83,14 @@ export default function App(props: AppProps) {
             <Suspense fallback={null}>
               {useMemo(() => {
                 return (
-                  <ToastProvider swipeDirection='horizontal'>
+                  <ToastProvider swipeDirection="horizontal">
                     <ContentInner {...props} />
 
                     <ToastViewport
                       flexDirection="column-reverse"
-                      name="default"
                       top="$2"
-                      left="50%"
-                      x="-50%"
-                      mx="auto"
+                      left={0}
+                      right={0}
                     />
                   </ToastProvider>
                 )

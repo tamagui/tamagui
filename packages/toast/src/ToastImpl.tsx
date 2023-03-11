@@ -17,8 +17,8 @@ import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { Animated, GestureResponderEvent, PanResponder } from 'react-native'
 
-import { ToastAnnounce } from './ToastAnnounce'
 import { TOAST_NAME } from './constants'
+import { ToastAnnounce } from './ToastAnnounce'
 import {
   Collection,
   ScopedProps,
@@ -332,7 +332,10 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
               })}
             >
               <Theme forceClassName name={themeName}>
-                <AnimatedView {...panResponder?.panHandlers} style={[animatedStyles]}>
+                <AnimatedView
+                  {...panResponder?.panHandlers}
+                  style={[{ margin: 'auto' }, animatedStyles]}
+                >
                   <Collection.ItemSlot scope={__scopeToast}>
                     <ToastImplFrame
                       // Ensure toasts are announced as status list or status when focused
