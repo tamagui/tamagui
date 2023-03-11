@@ -47,11 +47,127 @@ export default () => (
 )
 ```
 
+Or alternatively, use the `createToast` API:
+
+```tsx
+import { Toast, ToastProvider, createToast } from '@tamagui/toast'
+import { Button } from '@tamagui/button'
+
+export const { ImperativeToastProvider, useToast } = createToast()
+
+export default () => (
+  <ToastProvider>
+    <ImperativeToastProvider>
+      <ToastHandler />
+      <MyPage />
+    </ImperativeToastProvider>
+
+    <ToastViewport />
+  </ToastProvider>
+)
+
+const ToastHandler = () => {
+  const { currentToast } = useToast()
+  if (!currentToast) return
+
+  return (
+    <Toast key={currentToast.id}>
+      <Toast.Title>{currentToast.title}</Toast.Title>
+      <Toast.Description>{currentToast.message}</Toast.Description>
+    </Toast>
+  )
+}
+
+const MyPage = () => {
+  const { show } = useToast()
+
+  return (
+    <Button
+      onPress={() => show("Done!", { message: "Form submitted successfully." })}
+    >
+      Show Toast
+    </Button>
+  )
+}
+```
+
 ## API
+
+### ToastProvider
+
+Your toasts should be wrapped within a `ToastProvider`. This is usually done at the root of your application.
+
+<PropsTable
+  data={[
+    {
+      name: 'label',
+      required: false,
+      type: 'string',
+      description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
+      default: 'Notification',
+    },
+    {
+      name: 'duration',
+      required: false,
+      type: 'number',
+      description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
+      default: 5000,
+    },
+    {
+      name: 'swipeDirection',
+      required: false,
+      type: 'SwipeDirection',
+      description: `Direction of pointer swipe that should close the toast.`,
+      default: 'right',
+    },
+    {
+      name: 'swipeThreshold',
+      required: false,
+      type: 'number',
+      description: `Distance in pixels that the swipe must pass before a close is triggered.`,
+      default: 50,
+    },
+    {
+      name: 'id',
+      required: false,
+      type: 'string',
+      default: 'A unique generated ID',
+    },
+  ]}
+/>
+
+### ToastViewport
+
+The portal for toasts to be directed to. Should be inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks/1.0.0), adds:
+
+<PropsTable
+  data={[
+    {
+      name: 'hotkey',
+      type: 'string[]',
+      default: "['F8']",
+      required: false,
+      description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
+    },
+    {
+      name: 'label',
+      type: 'string',
+      default: 'Notifications ({hotkey})',
+      required: false,
+      description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
+    },
+    {
+      name: 'name',
+      type: 'string',
+      required: false,
+      description: `Used to reference the viewport if you want to have multiple viewports in the same provider.`,
+    },
+  ]}
+/>
 
 ### Toast
 
-Contains the Title, Description, Action and Close component. Extends [Stack](/docs/components/stack#api) and adds:
+Contains the Title, Description, Action and Close component. Should be inside [ToastProvider](#toastprovider). Extends [Stack](/docs/components/stack#api) and adds:
 
 <PropsTable
   data={[
@@ -143,90 +259,60 @@ Contains the Title, Description, Action and Close component. Extends [Stack](/do
   ]}
 />
 
-### ToastProvider
+#### Toast.Title
 
-Your toasts should be wrapped within a `ToastProvider`. This is usually done at the root of your application.
+Should be inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext).
+
+#### Toast.Description
+
+Should be inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext).
+
+#### Toast.Close
+
+Should be inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
+
+#### Toast.Action
+
+Should be inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
+
+### createToast
+
+An alternative way to work with toasts. 
 
 <PropsTable
+  title="Arguments"
   data={[
     {
-      name: 'label',
-      required: false,
-      type: 'string',
-      description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
-      default: 'Notification',
-    },
-    {
-      name: 'duration',
-      required: false,
-      type: 'number',
-      description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
-      default: 5000,
-    },
-    {
-      name: 'swipeDirection',
-      required: false,
-      type: 'SwipeDirection',
-      description: `Direction of pointer swipe that should close the toast.`,
-      default: 'right',
-    },
-    {
-      name: 'swipeThreshold',
-      required: false,
-      type: 'number',
-      description: `Distance in pixels that the swipe must pass before a close is triggered.`,
-      default: 50,
-    },
-    {
-      name: 'id',
-      required: false,
-      type: 'string',
-      default: 'A unique generated ID',
+      name: 'native',
+      type: "boolean | 'web' | 'mobile'",
+      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
+      default: 'false',
     },
   ]}
 />
 
-### Viewport
+This function, then returns the following:
 
-The portal for toasts to be directed to. Beyond [Stack Props](/docs/components/stacks/1.0.0), adds:
+#### ImperativeToastProvider
+
+Wrap children within this provider so that they can use `useToast()`. Takes no params.
+
+#### useToast
+
+You may export this hook to use it throughout your app.
 
 <PropsTable
+  title="Returns"
   data={[
     {
-      name: 'hotkey',
-      type: 'string[]',
-      default: "['F8']",
-      required: false,
-      description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
+      name: 'currentToast',
+      type: 'ToastData | null',
+      description: `The information about the current toast to showm such as title, message, duration, etc.`,
     },
     {
-      name: 'label',
-      type: 'string',
-      default: 'Notifications ({hotkey})',
-      required: false,
-      description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
-    },
-    {
-      name: 'name',
-      type: 'string',
-      required: false,
-      description: `Used to reference the viewport if you want to have multiple viewports in the same provider.`,
+      name: `show`,
+      type: '(title: string, showOptions?: ToastOptions): void',
+      description: 'Call it to show a new toast.',
     },
   ]}
 />
-
-### Title
-
-Extends [SizableText](/docs/components/text/1.0.0#sizabletext).
-
-### Description
-
-Extends [SizableText](/docs/components/text/1.0.0#sizabletext).
-
-### Close
-
-Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
-
-### Action
-
-Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.

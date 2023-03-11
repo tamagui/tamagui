@@ -5,7 +5,7 @@ import React, { useRef } from 'react'
 import { createNativeToast } from './createNativeToast'
 import { CreateNativeToastsOptions, CreateNativeToastsOptionsFn } from './types'
 
-type NativeValue = boolean | ('web' | 'mobile')
+type NativeValue = boolean | 'web' | 'mobile'
 interface CreateToastOptions {
   native?: NativeValue
 }
@@ -18,8 +18,10 @@ interface ToastOptions extends CreateNativeToastsOptions {
 }
 type ScopedProps<P> = P & { __scopeToast?: Scope }
 
+type ToastData = { title: string; id: string } & CreateNativeToastsOptions
+
 interface ImperativeToastContextValue {
-  currentToast: ({ title: string; id: string } & CreateNativeToastsOptions) | null
+  currentToast: ToastData | null
   addToast: CreateNativeToastsOptionsFn
 }
 

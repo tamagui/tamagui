@@ -1,7 +1,7 @@
 import { Scope } from '@tamagui/create-context';
 import React from 'react';
 import { CreateNativeToastsOptions } from './types';
-type NativeValue = boolean | ('web' | 'mobile');
+type NativeValue = boolean | 'web' | 'mobile';
 interface CreateToastOptions {
     native?: NativeValue;
 }
@@ -15,6 +15,10 @@ interface ToastOptions extends CreateNativeToastsOptions {
 type ScopedProps<P> = P & {
     __scopeToast?: Scope;
 };
+type ToastData = {
+    title: string;
+    id: string;
+} & CreateNativeToastsOptions;
 declare const createToast: (options?: CreateToastOptions) => {
     ImperativeToastProvider: ({ __scopeToast, children, }: ScopedProps<{
         children: React.ReactNode;
@@ -23,10 +27,7 @@ declare const createToast: (options?: CreateToastOptions) => {
         /**
          * The toast to get and show if not using native
          */
-        currentToast: ({
-            title: string;
-            id: string;
-        } & CreateNativeToastsOptions) | null;
+        currentToast: ToastData | null;
         show(title: string, showOptions?: ToastOptions): void;
     };
 };
