@@ -314,25 +314,26 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
         )}
 
         <PortalItem hostName={viewportName ?? 'default'}>
-          <Collection.ItemSlot scope={__scopeToast} key={props.id}>
-            <ToastInteractiveProvider
-              scope={__scopeToast}
-              onClose={() => {
-                console.log('hellooow')
-                handleClose()
-              }}
+          <ToastInteractiveProvider
+            key={props.id}
+            scope={__scopeToast}
+            onClose={() => {
+              console.log('hellooow')
+              handleClose()
+            }}
+          >
+            <Dismissable
+              // asChild
+              onEscapeKeyDown={composeEventHandlers(onEscapeKeyDown, () => {
+                if (!context.isFocusedToastEscapeKeyDownRef.current) {
+                  handleClose()
+                }
+                context.isFocusedToastEscapeKeyDownRef.current = false
+              })}
             >
-              <Dismissable
-                // asChild
-                onEscapeKeyDown={composeEventHandlers(onEscapeKeyDown, () => {
-                  if (!context.isFocusedToastEscapeKeyDownRef.current) {
-                    handleClose()
-                  }
-                  context.isFocusedToastEscapeKeyDownRef.current = false
-                })}
-              >
-                <Theme forceClassName name={themeName}>
-                  <AnimatedView {...panResponder?.panHandlers} style={[animatedStyles]}>
+              <Theme forceClassName name={themeName}>
+                <AnimatedView {...panResponder?.panHandlers} style={[animatedStyles]}>
+                  <Collection.ItemSlot scope={__scopeToast}>
                     <ToastImplFrame
                       // Ensure toasts are announced as status list or status when focused
                       role="status"
@@ -361,11 +362,11 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                         ),
                       })}
                     />
-                  </AnimatedView>
-                </Theme>
-              </Dismissable>
-            </ToastInteractiveProvider>
-          </Collection.ItemSlot>
+                  </Collection.ItemSlot>
+                </AnimatedView>
+              </Theme>
+            </Dismissable>
+          </ToastInteractiveProvider>
         </PortalItem>
       </>
     )
