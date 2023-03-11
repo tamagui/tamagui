@@ -1,6 +1,6 @@
 import { CheckCircle2 } from '@tamagui/lucide-icons'
 import React from 'react'
-import { Button, Text, Toast, XStack, YStack } from 'tamagui'
+import { Button, Toast, XStack, YStack } from 'tamagui'
 
 export const ToastDemo = () => {
   const [savedCount, setSavedCount] = React.useState(0)
@@ -14,7 +14,6 @@ export const ToastDemo = () => {
       >
         Show toast
       </Button>
-      {/* TODO: this demo looks so much better with the `quick` animation - but for some reason it gets buggy and doesn't remove the toasts from the DOM... */}
       {[...Array(savedCount)].map((_, index) => (
         <Toast
           key={index}
@@ -28,7 +27,7 @@ export const ToastDemo = () => {
         >
           <XStack space ai="center">
             <YStack
-              animation="100ms"
+              animation="quick"
               enterStyle={{ scale: 0, rotate: '-100deg', x: 10 }}
               x={0}
               scale={1}
@@ -38,10 +37,10 @@ export const ToastDemo = () => {
             </YStack>
 
             <YStack>
-              <Toast.Title enterStyle={{ x: 40 }} x={0} animation="100ms">
+              <Toast.Title enterStyle={{ x: 40 }} x={0} animation="quick">
                 Successfully saved!
               </Toast.Title>
-              <Toast.Description enterStyle={{ x: 20 }} x={0} animation="100ms">
+              <Toast.Description enterStyle={{ x: 20 }} x={0} animation="quick">
                 Don't worry... We've got your data.
               </Toast.Description>
             </YStack>

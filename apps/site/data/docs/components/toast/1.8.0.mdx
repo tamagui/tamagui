@@ -25,6 +25,7 @@ package: toast
     `Supports closing via swipe gesture`,
     `Easily animatable with Tamagui's animation drivers`,
     `Can be controlled or uncontrolled`,
+    `Native toasts included for Android, iOS and web`,
   ]}
 />
 
@@ -47,7 +48,83 @@ export default () => (
 )
 ```
 
-Or alternatively, use the `createToast` API:
+## Usage
+
+### Single Toast
+
+```tsx
+export default () => {
+  const [open, setOpen] = React.useState(false)
+  const timerRef = React.useRef(0)
+
+  React.useEffect(() => {
+    return () => clearTimeout(timerRef.current)
+  }, [])
+
+  return (
+    <YStack ai="center">
+      <Button
+        onPress={() => {
+          setOpen(false)
+          window.clearTimeout(timerRef.current)
+          timerRef.current = window.setTimeout(() => {
+            setOpen(true)
+          }, 150)
+        }}
+      >
+        Single Toast
+      </Button>
+      <Toast
+        onOpenChange={setOpen}
+        open={open}
+        animation="100ms"
+        enterStyle={{ x: -20, opacity: 0 }}
+        exitStyle={{ x: -20, opacity: 0 }}
+        opacity={1}
+        x={0}
+      >
+        <Toast.Title>Subscribed!</Toast.Title>
+        <Toast.Description>We'll be in touch.</Toast.Description>
+      </Toast>
+    </YStack>
+  )
+}
+```
+
+### Duplicate Toasts
+
+```tsx
+export default () => {
+  const [savedCount, setSavedCount] = React.useState(0)
+
+  return (
+    <YStack ai="center">
+      <Button
+        onPress={() => {
+          setSavedCount((old) => old + 1)
+        }}
+      >
+        Show toast
+      </Button>
+      {[...Array(savedCount)].map((_, index) => (
+        <Toast
+          key={index}
+          animation="100ms"
+          enterStyle={{ x: -20, opacity: 0 }}
+          exitStyle={{ x: -20, opacity: 0 }}
+          opacity={1}
+          x={0}
+        >
+          <Toast.Title>Subscribed!</Toast.Title>
+          <Toast.Description>We'll be in touch.</Toast.Description>
+        </Toast>
+      ))}
+    </YStack>
+  )
+}
+```
+
+### Using `createToast`
 
 ```tsx
 import { Toast, ToastProvider, createToast } from '@tamagui/toast'
@@ -58,7 +135,7 @@ export const { ImperativeToastProvider, useToast } = createToast()
 export default () => (
   <ToastProvider>
     <ImperativeToastProvider>
-      <ToastHandler />
+      <CurrentToast />
       <MyPage />
     </ImperativeToastProvider>
 
@@ -66,10 +143,10 @@ export default () => (
   </ToastProvider>
 )
 
-const ToastHandler = () => {
+const CurrentToast = () => {
   const { currentToast } = useToast()
-  if (!currentToast) return
 
+  if (!currentToast) return
   return (
     <Toast key={currentToast.id}>
       <Toast.Title>{currentToast.title}</Toast.Title>
@@ -277,7 +354,7 @@ Should be inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0)
 
 ### createToast
 
-An alternative way to work with toasts. 
+An alternative way to work with toasts.
 
 <PropsTable
   title="Arguments"
@@ -285,7 +362,7 @@ An alternative way to work with toasts.
     {
       name: 'native',
       type: "boolean | 'web' | 'mobile'",
-      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
+      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
       default: 'false',
     },
   ]}

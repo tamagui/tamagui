@@ -7,6 +7,9 @@ import { CreateNativeToastsOptions, CreateNativeToastsOptionsFn } from './types'
 
 type NativeValue = boolean | 'web' | 'mobile'
 interface CreateToastOptions {
+  /**
+   * Will show a native toast if is true or is set to the current platform. On iOS, it wraps `SPIndicator` and `SPAlert`. On Android, it wraps `ToastAndroid`. On web, it wraps Notification API. Mobile's native features are handled by `burnt`.
+   */
   native?: NativeValue
 }
 interface ToastOptions extends CreateNativeToastsOptions {
@@ -14,6 +17,9 @@ interface ToastOptions extends CreateNativeToastsOptions {
    * Used when need custom data
    */
   additionalInfo?: Record<string, any>
+  /**
+   * Overrides the native option on `createToast()`
+   */
   native?: NativeValue
 }
 type ScopedProps<P> = P & { __scopeToast?: Scope }
