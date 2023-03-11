@@ -1,4 +1,3 @@
-import { isContext } from 'vm'
 
 import { createCollection } from '@tamagui/collection'
 import { TamaguiElement, useId } from '@tamagui/core'
@@ -7,7 +6,6 @@ import { createContextScope } from '@tamagui/create-context'
 import { PortalProvider } from '@tamagui/portal'
 import * as React from 'react'
 
-import { ToastViewport } from './Viewport'
 
 /* -------------------------------------------------------------------------------------------------
  * ToastProvider
@@ -130,11 +128,7 @@ ToastProvider.propTypes = {
 ToastProvider.displayName = PROVIDER_NAME
 
 export {
-  ToastProvider,
-  useToastProviderContext,
-  Collection,
-  useCollection,
-  createToastScope,
-  createToastContext,
+  Collection, ToastProvider, createToastContext, createToastScope, useCollection, useToastProviderContext
 }
-export type { ScopedProps, ToastProviderProps, SwipeDirection }
+export type { ScopedProps, SwipeDirection, ToastProviderProps }
+

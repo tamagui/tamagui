@@ -17,7 +17,7 @@ import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { Animated, GestureResponderEvent, PanResponder } from 'react-native'
 
-import { ToastAnnounce } from './Announce'
+import { ToastAnnounce } from './ToastAnnounce'
 import { TOAST_NAME } from './constants'
 import {
   Collection,
@@ -25,8 +25,8 @@ import {
   SwipeDirection,
   createToastContext,
   useToastProviderContext,
-} from './Provider'
-import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './Viewport'
+} from './ToastProvider'
+import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport'
 
 const ToastImplFrame = styled(ThemeableStack, {
   name: 'ToastImpl',

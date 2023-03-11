@@ -11,7 +11,7 @@ import {
   ScopedProps,
   useCollection,
   useToastProviderContext,
-} from './Provider'
+} from './ToastProvider'
 
 const VIEWPORT_NAME = 'ToastViewport'
 const VIEWPORT_DEFAULT_HOTKEY = ['F8']

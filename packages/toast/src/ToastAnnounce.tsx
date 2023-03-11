@@ -11,7 +11,7 @@ import { Portal } from '@tamagui/portal'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
 
-import { ScopedProps, useToastProviderContext } from './Provider'
+import { ScopedProps, useToastProviderContext } from './ToastProvider'
 import { TOAST_NAME } from './constants'
 
 const ToastAnnounceExcludeFrame = styled(Stack, {

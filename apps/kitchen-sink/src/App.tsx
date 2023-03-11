@@ -2,7 +2,7 @@ import { useFonts } from 'expo-font'
 import { useMemo, useState } from 'react'
 import { Appearance } from 'react-native'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
-import { Toast, ToastProvider } from 'sandbox-ui'
+import { ToastViewport, ToastProvider } from 'sandbox-ui'
 
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
@@ -49,7 +49,7 @@ const SafeToastViewport = () => {
   const { left, top, right } = useSafeAreaInsets()
   return (
     <>
-      <Toast.Viewport
+      <ToastViewport
         flexDirection="column-reverse"
         top={top}
         left={left}

@@ -75,6 +75,6 @@ interface ToastProviderProps {
     id?: string;
 }
 declare const ToastProvider: React.FC<ToastProviderProps>;
-export { ToastProvider, useToastProviderContext, Collection, useCollection, createToastScope, createToastContext, };
-export type { ScopedProps, ToastProviderProps, SwipeDirection };
-//# sourceMappingURL=Provider.d.ts.map
+export { Collection, ToastProvider, createToastContext, createToastScope, useCollection, useToastProviderContext };
+export type { ScopedProps, SwipeDirection, ToastProviderProps };
+//# sourceMappingURL=ToastProvider.d.ts.map

@@ -12,7 +12,7 @@ import NextHead from 'next/head'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 import { Suspense, startTransition, useMemo } from 'react'
-import { TamaguiProvider, Toast, ToastProvider, isClient } from 'tamagui'
+import { TamaguiProvider, ToastViewport, ToastProvider, isClient } from 'tamagui'
 
 import { Header } from '../components/Header'
 import { SearchProvider } from '../components/Search'
@@ -86,7 +86,7 @@ export default function App(props: AppProps) {
                   <ToastProvider swipeDirection='horizontal'>
                     <ContentInner {...props} />
 
-                    <Toast.Viewport
+                    <ToastViewport
                       flexDirection="column-reverse"
                       name="default"
                       top="$2"

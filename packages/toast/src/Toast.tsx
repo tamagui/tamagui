@@ -2,34 +2,33 @@ import {
   GetProps,
   TamaguiElement,
   composeEventHandlers,
-  isWeb,
   styled,
   themeable,
   useEvent,
   useId,
   withStaticProperties,
 } from '@tamagui/core'
-import { ThemeableStack, YStack } from '@tamagui/stacks'
-import { Paragraph, SizableText } from '@tamagui/text'
+import { ThemeableStack } from '@tamagui/stacks'
+import { SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 
-import { ToastAnnounceExclude } from './Announce'
 import { TOAST_NAME } from './constants'
 import { createToast } from './createToast'
-import {
-  ScopedProps,
-  ToastProvider,
-  ToastProviderProps,
-  createToastScope,
-} from './Provider'
+import { ToastAnnounceExclude } from './ToastAnnounce'
 import {
   ToastImpl,
   ToastImplFrame,
   ToastProps,
   useToastInteractiveContext,
 } from './ToastImpl'
-import { ToastViewport, ToastViewportProps } from './Viewport'
+import {
+  ScopedProps,
+  ToastProvider,
+  ToastProviderProps,
+  createToastScope,
+} from './ToastProvider'
+import { ToastViewport, ToastViewportProps } from './ToastViewport'
 
 /* -------------------------------------------------------------------------------------------------
  * ToastTitle
@@ -208,7 +207,6 @@ ToastComponent.displayName = TOAST_NAME
 const Toast = withStaticProperties(
   themeable(ToastComponent, ToastImplFrame.staticConfig),
   {
-    Viewport: ToastViewport,
     Title: ToastTitle,
     Description: ToastDescription,
     Action: ToastAction,
@@ -220,9 +218,11 @@ const Toast = withStaticProperties(
 
 export {
   Toast,
-  //
   ToastProvider,
+  ToastViewport,
+  //
   createToast,
+  //
   createToastScope,
 }
 export type {
