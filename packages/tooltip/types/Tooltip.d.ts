@@ -24,7 +24,22 @@ export declare const TooltipGroup: ({ children, delay }: {
     children?: any;
     delay: Delay;
 }) => JSX.Element;
-export declare const Tooltip: React.FC<TooltipProps> & {
+export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
+    children?: React.ReactNode;
+    onOpenChange?: ((open: boolean) => void) | undefined;
+    focus?: {
+        enabled?: boolean | undefined;
+        keyboardOnly?: boolean | undefined;
+    } | undefined;
+    groupId?: string | undefined;
+    restMs?: number | undefined;
+    delay?: number | {
+        open?: number | undefined;
+        close?: number | undefined;
+    } | undefined;
+} & {
+    __scopePopover?: import("@tamagui/create-context").Scope<any>;
+} & React.RefAttributes<unknown>> & {
     Anchor: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;

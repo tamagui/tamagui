@@ -16,7 +16,7 @@
     "@tamagui/vite-plugin": "1.7.6",
     "@vitejs/plugin-react": "^2.2.0",
     "@vitejs/plugin-react-swc": "^3.0.1",
-    "vite": "^4.0.4",
+    "vite": "^4.1.4",
     "vite-plugin-environment": "^1.1.3"
   }
 }

@@ -10,8 +10,8 @@ import {
   ProgressDemo,
   SelectDemo,
   SwitchDemo,
-  TabsDemo,
   TabsAdvancedDemo,
+  TabsDemo,
 } from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
@@ -26,6 +26,7 @@ import {
   withStaticProperties,
 } from 'tamagui'
 
+import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
 import config from './tamagui.config'
 
 // useful for debugging why things render:
@@ -60,13 +61,10 @@ const Image = styled(
 export const Sandbox = () => {
   return (
     <SandboxFrame>
-      {/* keep indent */}
-      <SandboxDefault />
+      {/* this comment keeps indent */}
+      {/* <SandboxDefault /> */}
 
-      {/* <TestPopoverContentStyledPlusAnimations /> */}
-
-      {/* <SelectDemo /> */}
-      <ListItemDemo />
+      <SandboxCustomStyledAnimatedTooltip />
     </SandboxFrame>
   )
 }
