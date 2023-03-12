@@ -14,6 +14,7 @@ import {
   composeRefs,
   isWeb,
   styled,
+  useEvent,
   useId,
   withStaticProperties,
 } from '@tamagui/web'
@@ -152,6 +153,12 @@ const TabsTrigger = TabsTriggerFrame.extractable(
       const [layout, setLayout] = React.useState<TabTriggerLayout | null>(null)
       const triggerRef = React.useRef<HTMLButtonElement>(null)
       const groupItemProps = useGroupItem({ disabled })
+
+      React.useEffect(() => {
+        context.registerTrigger()
+        return () => context.unregisterTrigger()
+      }, [])
+
       React.useEffect(() => {
         if (!triggerRef.current || !isWeb) return
 
@@ -173,7 +180,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
           if (!triggerRef.current) return
           observer.unobserve(triggerRef.current)
         }
-      }, [])
+      }, [context.triggersCount])
 
       React.useEffect(() => {
         if (isSelected && layout) {
@@ -339,6 +346,9 @@ type TabsContextValue = {
   dir?: TabsProps['dir']
   activationMode?: TabsProps['activationMode']
   size: SizeTokens
+  registerTrigger: () => void
+  unregisterTrigger: () => void
+  triggersCount: number
 }
 
 const [TabsProvider, useTabsContext] = createTabsContext<TabsContextValue>(TABS_NAME)
@@ -392,6 +402,9 @@ export const Tabs = withStaticProperties(
         onChange: onValueChange,
         defaultProp: defaultValue ?? '',
       })
+      const [triggersCount, setTriggersCount] = React.useState(0)
+      const registerTrigger = useEvent(() => setTriggersCount((v) => v + 1))
+      const unregisterTrigger = useEvent(() => setTriggersCount((v) => v - 1))
 
       return (
         <TabsProvider
@@ -403,6 +416,9 @@ export const Tabs = withStaticProperties(
           dir={direction}
           activationMode={activationMode}
           size={size}
+          registerTrigger={registerTrigger}
+          triggersCount={triggersCount}
+          unregisterTrigger={unregisterTrigger}
         >
           <TabsFrame
             direction={direction}
