@@ -11,6 +11,6 @@
   },
   "devDependencies": {
     "@tamagui/text": "1.7.6",
-    "vitest": "^0.26.3"
+    "vitest": "^0.29.2"
   }
 }
