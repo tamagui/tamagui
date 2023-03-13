@@ -1,7 +1,6 @@
 {
   "name": "@tamagui/text-test",
   "version": "1.7.6",
-  "type": "module",
   "main": "dist/cjs",
   "private": true,
   "module": "dist/esm",
