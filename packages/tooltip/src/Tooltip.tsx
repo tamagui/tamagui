@@ -25,29 +25,36 @@ import {
   __PopoverProviderInternal,
   usePopoverScope,
 } from '@tamagui/popover'
-import { Popper, PopperProps, usePopperContext } from '@tamagui/popper'
+import {
+  Popper,
+  PopperContentFrame,
+  PopperProps,
+  usePopperContext,
+} from '@tamagui/popper'
 import * as React from 'react'
 
-const TooltipContent = React.forwardRef(
-  (
-    { __scopePopover, ...props }: ScopedProps<PopoverContentProps, 'Popover'>,
-    ref: any
-  ) => {
-    const popperScope = usePopoverScope(__scopePopover)
-    const popper = usePopperContext('PopperContent', popperScope['__scopePopper'])
-    const padding = props.size || popper.size || stepTokenUpOrDown('size', '$true', -2)
-    return (
-      <PopoverContent
-        componentName="Tooltip"
-        disableRemoveScroll
-        trapFocus={false}
-        padding={padding}
-        pointerEvents="none"
-        ref={ref}
-        {...props}
-      />
-    )
-  }
+const TooltipContent = PopperContentFrame.extractable(
+  React.forwardRef(
+    (
+      { __scopePopover, ...props }: ScopedProps<PopoverContentProps, 'Popover'>,
+      ref: any
+    ) => {
+      const popperScope = usePopoverScope(__scopePopover)
+      const popper = usePopperContext('PopperContent', popperScope['__scopePopper'])
+      const padding = props.size || popper.size || stepTokenUpOrDown('size', '$true', -2)
+      return (
+        <PopoverContent
+          componentName="Tooltip"
+          disableRemoveScroll
+          trapFocus={false}
+          padding={padding}
+          pointerEvents="none"
+          ref={ref}
+          {...props}
+        />
+      )
+    }
+  )
 )
 
 const TooltipArrow = React.forwardRef((props: PopoverArrowProps, ref: any) => {
