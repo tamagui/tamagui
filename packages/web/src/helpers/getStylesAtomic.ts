@@ -127,6 +127,16 @@ const generateAtomicStyles = (
     out.push(styleObject)
   }
 
+  if (process.env.NODE_ENV === 'development' && process.env.TAMAGUI_DEBUG) {
+    // when Animated.Value gets passed into Tamagui problems are caused this helps debug
+    if (
+      out.find((x) => x.property === 'transform' && x.value.includes(`[object Object]`))
+    ) {
+      // rome-ignore lint/suspicious/noDebugger: only dev
+      debugger
+    }
+  }
+
   return out
 }
 
