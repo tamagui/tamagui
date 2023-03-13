@@ -41,6 +41,7 @@ export const dev = async (options: ResolvedOptions) => {
   async function getBundleCode() {
     // build app
     const buildOutput = await build({
+      // @ts-ignore
       plugins,
       appType: 'custom',
       root: join(root, 'src/index.ts'),
