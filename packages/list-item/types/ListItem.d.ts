@@ -537,9 +537,9 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
-        circular?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        circular?: boolean | undefined;
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;

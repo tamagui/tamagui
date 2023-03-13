@@ -551,7 +551,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
     Viewport: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-    }, "transparent" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
+    }, "transparent" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "circular" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
         readonly hoverTheme?: boolean | undefined;
@@ -566,7 +566,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-    }, "transparent" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
+    }, "transparent" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "circular" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
         readonly hoverTheme?: boolean | undefined;
@@ -581,7 +581,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-    }, "transparent" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
+    }, "transparent" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "circular" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
         readonly hoverTheme?: boolean | undefined;

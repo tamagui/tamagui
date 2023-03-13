@@ -31,10 +31,7 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<im
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
-    readonly padded?: boolean | undefined; /**
-     * Whether to loop over after reaching the end or start of the items
-     * @default true
-     */
+    readonly padded?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
@@ -151,7 +148,8 @@ type TabsContentProps = TabsContentFrameProps & {
 declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-}, "size" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+}, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -162,7 +160,8 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
 } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-}, "size" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+}, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -173,10 +172,11 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
 }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-}, "size" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+}, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
-    readonly focusTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined; /** The value for the tabs state to be changed to after activation of the trigger */
     readonly circular?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
@@ -185,6 +185,7 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -198,6 +199,7 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -211,6 +213,7 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -224,6 +227,7 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -262,7 +266,8 @@ type TabsProps = TabsFrameProps & {
 export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-}, "size" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+}, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -273,7 +278,8 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
 } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-}, "size" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+}, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -284,10 +290,11 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
 }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-}, "size" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+}, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
-    readonly focusTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined; /** The value for the tabs state to be changed to after activation of the trigger */
     readonly circular?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
@@ -318,6 +325,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -331,6 +339,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -344,6 +353,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -413,7 +423,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly unstyled?: boolean | undefined;
         readonly size?: any;
     }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
-        readonly fullscreen?: boolean | undefined; /** Used for making custom indicators when trigger interacted with */
+        readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
         readonly backgrounded?: boolean | undefined;
@@ -454,10 +464,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly pressTheme?: boolean | undefined;
         readonly focusTheme?: boolean | undefined;
         readonly circular?: boolean | undefined;
-        readonly padded?: boolean | undefined; /**
-         * Whether to loop over after reaching the end or start of the items
-         * @default true
-         */
+        readonly padded?: boolean | undefined;
         readonly elevate?: boolean | undefined;
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
@@ -508,10 +515,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly pressTheme?: boolean | undefined;
         readonly focusTheme?: boolean | undefined;
         readonly circular?: boolean | undefined;
-        readonly padded?: boolean | undefined; /**
-         * Whether to loop over after reaching the end or start of the items
-         * @default true
-         */
+        readonly padded?: boolean | undefined;
         readonly elevate?: boolean | undefined;
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;

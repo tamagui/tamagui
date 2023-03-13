@@ -898,9 +898,7 @@ export function createComponent<
 }
 
 // for elements to avoid spacing
-export const Unspaced = (props: { children?: any }) => {
-  return props.children
-}
+export const Unspaced = (props: { children?: any }) => props.children
 Unspaced['isUnspaced'] = true
 
 // dont used styled() here to avoid circular deps
