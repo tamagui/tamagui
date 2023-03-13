@@ -26,6 +26,7 @@ import {
   withStaticProperties,
 } from 'tamagui'
 
+import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
 import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
 import config from './tamagui.config'
 
@@ -64,7 +65,8 @@ export const Sandbox = () => {
       {/* this comment keeps indent */}
       {/* <SandboxDefault /> */}
 
-      <SandboxCustomStyledAnimatedTooltip />
+      {/* <SandboxCustomStyledAnimatedTooltip /> */}
+      <SandboxCustomStyledAnimatedPopover />
     </SandboxFrame>
   )
 }
