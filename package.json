@@ -10,7 +10,8 @@
     "packages/*",
     "apps/starter/apps/*",
     "apps/starter/packages/*",
-    "takeout/*"
+    "takeout/*",
+    "starters/expo-router-starter"
   ],
   "packageManager": "yarn@3.4.1",
   "scripts": {
@@ -89,7 +90,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-refresh": "0.14.0",
-    "react-native-web": "0.18.9"
+    "react-native-web": "0.18.9",
+    "metro": "^0.73.7",
+    "metro-resolver": "^0.73.7"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {
@@ -113,6 +116,10 @@
     "turbo": "^1.6.3",
     "typescript": "^4.7.4",
     "ultra-runner": "^3.10.5"
+  },
+  "overrides": {
+    "metro": "^0.73.7",
+    "metro-resolver": "^0.73.7"
   },
   "stableVersion": "0.0.0"
 }
