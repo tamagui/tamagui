@@ -1,7 +1,6 @@
 {
   "name": "@tamagui/starter",
   "private": true,
-  "type": "module",
   "scripts": {
     "native": "cd apps/expo && yarn start",
     "watch": "yarn workspaces foreach -pi run watch",
