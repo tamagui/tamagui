@@ -2,7 +2,6 @@
   "name": "@tamagui/static-tests",
   "version": "1.7.6",
   "module": "dist/esm/index.js",
-  "type": "module",
   "scripts": {
     "build": "true",
     "pretest": "node -r esbuild-register ./tests/lib/preTest.js",
