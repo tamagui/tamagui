@@ -651,7 +651,7 @@ const SheetImplementation = themeable(
               // causes lots of bugs on touch web on site
               removeScrollBar={false}
             >
-              {isResizing ? <></> : frameComponent}
+              {frameComponent}
             </RemoveScroll>
           </AnimatedView>
         </SheetProvider>
