@@ -55,20 +55,40 @@ You can pass icons as either elements or components. If passing components, Tama
 ListItem only supports a limited subset of text props directly, and doesn't accept `hoverStyle` text props. If you need more control, you can do a simple customization:
 
 ```tsx
-import { forwardRef } from 'React'
+import { forwardRef } from 'react'
 import { styled, themeable, ListItemFrame, ListItemText, useListItem, ListItemProps } from 'tamagui'
 
-const CustomListItemFrame = styled(ButtonFrame, {
-  // ...
-})
+const CustomListItemFrame = styled(ListItemFrame, {
+  backgroundColor: "orange", // or "$color", etc.
+});
 
-const CustomListItemText = styled(ButtonText, {
-  // ...
-})
+const CustomListItemTitle = styled(ListItemTitle, {
+  color: "blue",
+});
+
+const CustomListItemSubtitle = styled(ListItemSubtitle, {
+  color: "pink",
+});
+
+const CustomListItemText = styled(ListItemText, {
+  color: "red",
+});
 
 export const ListItem = themeable(forwardRef<TamaguiElement, ListItemProps>((propsIn, ref) => {
-  const { props } = useListItem(propsIn, { Text: CustomListItemText })
+  const { props } = useListItem(propsIn, { Title: CustomListItemTitle, Text: CustomListItemText, Subtitle: CustomListItemSubtitle })
   return <CustomListItemFrame {...props} ref={ref} />
+})
+```
+
+There are 3 different components you can customize: `ListItemText`, `ListItemSubtitle` and `ListItemTitle`. You can include whichever one you want to customize specifically.
+
+If you only want to customize the the text pieces, you don't have to include `CustomListItemFrame`:
+
+```
+// all the text changes from above, with a default ListItemFrame
+export const ListItem = themeable(forwardRef<TamaguiElement, ListItemProps>((propsIn, ref) => {
+  const { props } = useListItem(propsIn, { Title: CustomListItemTitle, Text: CustomListItemText, Subtitle: CustomListItemSubtitle })
+  return <ListItemFrame {...props} ref={ref} />
 })
 ```
 
