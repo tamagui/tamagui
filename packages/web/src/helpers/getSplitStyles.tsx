@@ -29,13 +29,13 @@ import type {
   DebugProp,
   GetStyleResult,
   MediaQueryKey,
-  PartialStyleObject,
   PseudoPropKeys,
   PseudoStyles,
   RulesToInsert,
   SpaceTokens,
   SplitStyleState,
   StaticConfigParsed,
+  StyleObject,
   TamaguiInternalConfig,
   ThemeParsed,
 } from '../types.js'
@@ -752,7 +752,7 @@ export const getSplitStyles: StyleSplitter = (
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
             if (!usedKeys[fullKey]) {
               usedKeys[fullKey] = 1
-              addStyleToInsertRules(rulesToInsert, out)
+              addStyleToInsertRules(rulesToInsert, out as any)
               mergeClassName(transforms, classNames, fullKey, out.identifier, true)
             }
           }
@@ -909,7 +909,7 @@ export const getSplitStyles: StyleSplitter = (
             identifier,
             rules: [rule],
             property: namespace,
-          })
+          } as StyleObject)
         }
         classNames[namespace] = identifier
       }
@@ -1099,10 +1099,7 @@ export const useSplitStyles: StyleSplitter = (...args) => {
   return res
 }
 
-function addStyleToInsertRules(
-  rulesToInsert: RulesToInsert,
-  styleObject: PartialStyleObject
-) {
+function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleObject) {
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (!shouldInsertStyleRules(styleObject)) {
       return

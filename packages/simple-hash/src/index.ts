@@ -4,6 +4,10 @@ export const simpleHash = (str: string, hashMin = 10) => {
   const len = str.length
   for (let i = 0; i < len; i++) {
     const char = str.charCodeAt(i)
+    // . => d0t
+    if (char === 46) {
+      valids += 'd0t'
+    }
     // dont do more than 10 non-hashed to avoid getting too girthy
     if (isValidCSSCharCode(char) && len <= hashMin) {
       valids += str[i]

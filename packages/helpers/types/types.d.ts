@@ -5,4 +5,5 @@ export type StyleObject = {
     identifier: string;
     rules: string[];
 };
+export type MediaStyleObject = Omit<StyleObject, 'value'>;
 //# sourceMappingURL=types.d.ts.map

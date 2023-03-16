@@ -101,7 +101,7 @@ const generateAtomicStyles = (
     if (presetHashes[value]) {
       hash = value as string
     } else {
-      hash = simpleHash(value)
+      hash = simpleHash(`${value}`)
     }
 
     const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
