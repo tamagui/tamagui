@@ -68,10 +68,10 @@ export function getDefaultTamaguiConfig() {
   type SizeKeys = `${keyof Sizes extends `${infer K}` ? K : never}`
 
   const spaces = Object.entries(size).map(([k, v]) => {
-    return [k, sizeToSpace(v)]
+    return [k, sizeToSpace(v)] as const
   })
 
-  const spacesNegative = spaces.map(([k, v]) => [`$-${(k as string).slice(1)}`, -v])
+  const spacesNegative = spaces.slice(1).map(([k, v]) => [`$-${k.slice(1)}`, -v])
 
   const space: {
     [Key in `$-{SizeKeys}` | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number

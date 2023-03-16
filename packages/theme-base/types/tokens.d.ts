@@ -35,7 +35,7 @@ type Sizes = {
     [Key in SizeKeysIn extends `$${infer Key}` ? Key : SizeKeysIn]: number;
 };
 type SizeKeys = `${keyof Sizes extends `${infer K}` ? K : never}`;
-type SizeKeysWithNegatives = `-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}` | SizeKeys;
+type SizeKeysWithNegatives = Exclude<`-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}`, '-0'> | SizeKeys;
 export declare const space: {
     [Key in SizeKeysWithNegatives]: Key extends keyof Sizes ? Sizes[Key] : number;
 };
@@ -908,7 +908,6 @@ export declare const tokens: {
         18: Variable<number>;
         19: Variable<number>;
         20: Variable<number>;
-        "-0": Variable<number>;
         [-0.25]: Variable<number>;
         [-0.5]: Variable<number>;
         [-0.75]: Variable<number>;

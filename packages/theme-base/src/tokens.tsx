@@ -69,7 +69,7 @@ type Sizes = {
 type SizeKeys = `${keyof Sizes extends `${infer K}` ? K : never}`
 
 const spaces = Object.entries(size).map(([k, v]) => {
-  return [k, sizeToSpace(v)]
+  return [k, sizeToSpace(v)] as const
 })
 
 // a bit odd but keeping backward compat for values >8 while fixing below
@@ -82,10 +82,10 @@ function sizeToSpace(v: number) {
   return Math.floor(v * 0.7 - 12)
 }
 
-const spacesNegative = spaces.map(([k, v]) => [`-${(k as string).slice(1)}`, -v])
+const spacesNegative = spaces.slice(1).map(([k, v]) => [`-${k.slice(1)}`, -v])
 
 type SizeKeysWithNegatives =
-  | `-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}`
+  | Exclude<`-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}`, '-0'>
   | SizeKeys
 
 export const space: {
