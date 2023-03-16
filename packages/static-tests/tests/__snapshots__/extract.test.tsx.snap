@@ -1,6 +1,6 @@
 // Vitest Snapshot v1
 
-exports[`extract-tests > converts a style object to class names 1`] = `"._bg-12svx2e{background-color:rgba(255,0,0,1.00);}"`;
+exports[`extract-tests > converts a style object to class names 1`] = `"._bg-d0t12svx2e{background-color:rgba(255,0,0,1.00);}"`;
 
 exports[`extract-tests > converts a style object to class names 2`] = `"._transform-1lcp8y4{transform:rotateY(10deg);}"`;
 
