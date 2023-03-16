@@ -29,6 +29,8 @@ import type { ResolveVariableTypes } from './helpers/createPropMapper.js'
 import type { FontLanguageProps } from './views/FontLanguage.types.js'
 import type { ThemeProviderProps } from './views/ThemeProvider.js'
 
+export type { StyleObject, MediaStyleObject } from '@tamagui/helpers'
+
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 
 export type TamaguiElement = HTMLElement | View
@@ -1465,8 +1467,7 @@ export type GestureReponderEvent = Exclude<
   ? Event
   : never
 
-export type PartialStyleObject = Pick<StyleObject, 'identifier' | 'property' | 'rules'>
-export type RulesToInsert = PartialStyleObject[]
+export type RulesToInsert = StyleObject[]
 
 export type GetStyleResult = {
   pseudos?: PseudoStyles

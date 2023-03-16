@@ -1,6 +1,4 @@
-import type { StyleObject } from '@tamagui/helpers'
-
-import { PartialStyleObject, RulesToInsert } from '../types.js'
+import type { RulesToInsert, StyleObject } from '../types.js'
 
 const allSelectors: Record<string, string> = {}
 const allRules: Record<string, string> = {}
@@ -210,7 +208,7 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
 
 const IS_STATIC = process.env.IS_STATIC === 'is_static'
 
-export function shouldInsertStyleRules(styleObject: PartialStyleObject) {
+export function shouldInsertStyleRules(styleObject: StyleObject) {
   if (IS_STATIC) {
     return true
   }

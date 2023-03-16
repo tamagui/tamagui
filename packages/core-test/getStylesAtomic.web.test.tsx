@@ -1,7 +1,7 @@
-import { createTamagui, getStylesAtomic } from '@tamagui/core-node'
 import { beforeAll, expect, test } from 'vitest'
 
 import config from '../config-default-node'
+import { createTamagui, getStylesAtomic } from '../core/src'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())
@@ -26,4 +26,14 @@ test(`should expand webkit user-select`, () => {
       },
     ]
   `)
+})
+
+test(`should handle decimal placement differently`, () => {
+  const out = getStylesAtomic({
+    left: 1.11,
+    right: 11.1,
+  })
+
+  expect(out[0].identifier).toBe(`_l-1d0t11px1a`)
+  expect(out[1].identifier).toBe(`_r-11d0t1px1a`)
 })
