@@ -10,7 +10,7 @@ export async function subset({
   targetFormat,
 }: {
   outputDir: string
-  targetFormat: string
+  targetFormat: 'woff2' | 'sfnt' | 'woff' | 'truetype'
   inputFiles: string[]
   characters: string
 }) {
@@ -39,6 +39,8 @@ const characters = {
 }
 
 const base = [
+  'Regular',
+  'Italic',
   'Thin',
   'ExtraLight',
   'Light',
@@ -48,7 +50,7 @@ const base = [
   'ExtraBold',
   'Black',
 ].map((f) => `Inter-${f}`)
-const italics = base.map((b) => `${b}Italic`)
+const italics = base.slice(2).map((b) => `${b}Italic`)
 
 const inputFiles = [...base, ...italics].map((f) => join('tmp', `${f}.otf`))
 
