@@ -47,28 +47,17 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
   return res
 }
 
-const cache = new Map()
-
 export function getAtomicStyle(
   style: ViewOrTextStyle,
   pseudo?: PseudoDescriptor
 ): StyleObject[] {
   if (!style) return []
-  const key = JSON.stringify(style) + (pseudo ? JSON.stringify(pseudo) : '')
-  if (cache.has(key)) {
-    return cache.get(key)
-  }
-  if (cache.size > 800) {
-    cache.clear()
-  }
   if (process.env.NODE_ENV === 'development') {
     if (!style || typeof style !== 'object') {
       throw new Error(`Wrong style type: "${typeof style}": ${style}`)
     }
   }
-  const out = generateAtomicStyles(style, pseudo)
-  cache.set(key, out)
-  return out
+  return generateAtomicStyles(style, pseudo)
 }
 
 let conf: TamaguiInternalConfig
@@ -107,11 +96,13 @@ const generateAtomicStyles = (
   for (const key in style) {
     const value = normalizeValueWithProperty(style[key], key)
     if (value == null || value == undefined) continue
-    const hash = presetHashes[value]
-      ? value
-      : typeof value === 'string'
-      ? simpleHash(value)
-      : `${value}`.replace('.', 'dot')
+
+    let hash: string
+    if (presetHashes[value]) {
+      hash = value as string
+    } else {
+      hash = simpleHash(value)
+    }
 
     const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
     const shortProp = conf.inverseShorthands[key] || key
