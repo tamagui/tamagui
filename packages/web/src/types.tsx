@@ -886,7 +886,7 @@ export type StaticConfigPublic = {
   acceptsClassName?: boolean
 }
 
-export type StaticConfig = StaticConfigPublic & {
+type StaticConfigBase = StaticConfigPublic & {
   Component?: FunctionComponent<any> & StaticComponentObject
 
   variants?: GenericVariantDefinitions
@@ -932,6 +932,10 @@ export type StaticConfig = StaticConfigPublic & {
    * Used internally for knowing how to handle when a HOC is in-between styled()
    */
   isHOC?: boolean
+}
+
+export type StaticConfig = StaticConfigBase & {
+  parentStaticConfig?: StaticConfigBase
 }
 
 /**
