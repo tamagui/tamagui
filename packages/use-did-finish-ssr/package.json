@@ -32,7 +32,7 @@
     "@tamagui/build": "1.7.8",
     "@types/react": "^18.0.15",
     "react": "^18.2.0",
-    "react-native": "*"
+    "react-native": "^0.71.4"
   },
   "peerDependencies": {
     "react": "*",
