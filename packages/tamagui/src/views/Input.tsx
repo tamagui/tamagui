@@ -1,4 +1,4 @@
-import { GetProps, setupReactNative, styled } from '@tamagui/core'
+import { GetProps, setupReactNative, styled, } from '@tamagui/core'
 import { focusableInputHOC } from '@tamagui/focusable'
 import { TextInput } from 'react-native'
 
@@ -46,6 +46,16 @@ export const InputFrame = styled(
       size: {
         '...size': inputSizeVariant,
       },
+      focusable: {
+        true: {},
+        false: {
+          focusStyle: {
+            borderWidth: "$0.5",
+            borderColor: "$borderColor",
+            marginHorizontal: "$0"
+          }
+        }
+      }
     } as const,
 
     defaultVariants: {

@@ -19,31 +19,39 @@ export declare const defaultStyles: {
         readonly marginHorizontal: -1;
     };
 };
-export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "focusable" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
-} & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+    readonly focusable?: boolean | undefined;
+} & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "focusable" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
-}>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+    readonly focusable?: boolean | undefined;
+}>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "focusable" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly focusable?: boolean | undefined;
 }>>, import("@tamagui/core").TamaguiElement, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly focusable?: boolean | undefined;
 }>;
 export type InputProps = GetProps<typeof InputFrame>;
-export declare const Input: import("@tamagui/core").TamaguiComponent<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+export declare const Input: import("@tamagui/core").TamaguiComponent<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "focusable" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
-} & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+    readonly focusable?: boolean | undefined;
+} & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "focusable" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
-}>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+    readonly focusable?: boolean | undefined;
+}>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "focusable" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly focusable?: boolean | undefined;
 }>>, import("@tamagui/core").TamaguiElement, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly focusable?: boolean | undefined;
 }>;
 //# sourceMappingURL=Input.d.ts.map
