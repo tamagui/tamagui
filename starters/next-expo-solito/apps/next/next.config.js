@@ -63,9 +63,6 @@ module.exports = function () {
     typescript: {
       ignoreBuildErrors: true,
     },
-    images: {
-      disableStaticImages: true,
-    },
     modularizeImports: {
       '@tamagui/lucide-icons': {
         transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
