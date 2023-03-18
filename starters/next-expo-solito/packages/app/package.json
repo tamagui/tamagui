@@ -14,12 +14,12 @@
     "@tamagui/lucide-icons": "^1.7.8",
     "@tamagui/shorthands": "^1.7.8",
     "@tamagui/themes": "^1.7.8",
-    "expo-constants": "^14.0.2",
+    "expo-constants": "^14.2.1",
     "expo-linking": "^3.2.3",
     "solito": "^2.3.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
-    "@types/react-native": "^0.70.8"
+    "@types/react-native": "^0.71.3"
   }
 }

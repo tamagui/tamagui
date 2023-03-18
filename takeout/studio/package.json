@@ -38,7 +38,7 @@
     "lodash-es": "^4.17.21",
     "react-draggable": "^4.4.5",
     "react-hotkeys-hook": "^3.4.6",
-    "react-native": "*",
+    "react-native": "^0.71.4",
     "tamagui": "^1.7.8",
     "ts-morph": "^15.1.0",
     "valtio": "^1.6.1"

@@ -33,7 +33,7 @@
     "next": "^13.1.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "*",
+    "react-native": "^0.71.4",
     "react-native-web-lite": "1.7.8",
     "tamagui": "1.7.8"
   },

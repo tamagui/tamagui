@@ -19,6 +19,7 @@ import {
   Button,
   Popover,
   ScrollView,
+  Stack,
   TamaguiProvider,
   XStack,
   YStack,
@@ -58,6 +59,8 @@ const Image = styled(
     acceptsClassName: true,
   }
 )
+
+const X = <Stack gap />
 
 export const Sandbox = () => {
   return (
