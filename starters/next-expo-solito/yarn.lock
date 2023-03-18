@@ -5326,7 +5326,7 @@ __metadata:
     "@types/react-native": ^0.71.3
     expo-constants: ^14.2.1
     expo-linking: ^3.2.3
-    solito: ^2.3.0
+    solito: ^3.0.0
   languageName: unknown
   linkType: soft
 
@@ -14426,10 +14426,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solito@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "solito@npm:2.3.0"
-  checksum: b03455bf0b0e355e3d83c1c67f3b1ae78183cd5f70ec3d5415c011be86a12b742439426412a09cd58b5c13c684874bd4ce4d5a13e55cb22af5ef7a4a35b9c3b8
+"solito@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "solito@npm:3.0.0"
+  checksum: e2dfd1a6755c0c50e7e0f8756b4a724e70e07ba80d170ce7cd4517f8e39d8457f492c05f76b4517088f265ae497ac34f25b5c69429b6eef7d7c5451b339ad65a
   languageName: node
   linkType: hard
 
