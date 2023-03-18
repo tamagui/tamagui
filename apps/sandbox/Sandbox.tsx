@@ -17,6 +17,7 @@ import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
 import {
   Button,
+  Input,
   Popover,
   ScrollView,
   Stack,
@@ -60,6 +61,11 @@ const Image = styled(
   }
 )
 
+const StyledInput = styled(Input, {
+  unstyled: true,
+  debug: 'verbose',
+})
+
 const X = <Stack gap />
 
 export const Sandbox = () => {
@@ -68,8 +74,11 @@ export const Sandbox = () => {
       {/* this comment keeps indent */}
       {/* <SandboxDefault /> */}
 
+      <StyledInput w={100} h={100} />
+
+      {/* TODO */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}
-      <SandboxCustomStyledAnimatedPopover />
+      {/* <SandboxCustomStyledAnimatedPopover /> */}
     </SandboxFrame>
   )
 }

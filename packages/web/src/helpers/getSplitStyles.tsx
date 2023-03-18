@@ -482,7 +482,7 @@ export const getSplitStyles: StyleSplitter = (
       if (valInit && valInit[0] === '_') {
         // if valid style key (or pseudo like color-hover):
         // this conditional and esp the pseudo check rarely runs so not a perf issue
-        const isValidClassName = validStyles[keyInit]
+        const isValidClassName = keyInit in validStyles
         const isMediaOrPseudo =
           !isValidClassName &&
           keyInit.includes(PROP_SPLIT) &&
@@ -510,12 +510,18 @@ export const getSplitStyles: StyleSplitter = (
     let isMedia = isMediaKey(keyInit)
     let isPseudo = keyInit in validPseudoKeys
 
-    const isHOCShouldPassThrough = staticConfig.isHOC && (isMedia || isPseudo)
+    const isVariant = variants && keyInit in variants
+    const parentHasVariant =
+      staticConfig.parentStaticConfig &&
+      staticConfig.parentStaticConfig.variants &&
+      keyInit in staticConfig.parentStaticConfig
+    const isHOCShouldPassThrough =
+      staticConfig.isHOC && (isMedia || isPseudo || isVariant)
 
     const shouldPassProp = !(
       isMedia ||
       isPseudo ||
-      variants?.[keyInit] ||
+      isVariant ||
       keyInit in validStyleProps ||
       keyInit in shorthands
     )
@@ -533,7 +539,14 @@ export const getSplitStyles: StyleSplitter = (
     if (shouldPassThrough) {
       usedKeys[keyInit] = 1
       viewProps[keyInit] = valInit
-      continue
+
+      // if it's a variant here, we have a two layer variant...
+      // aka styled(Input, { unstyled: true, variants: { unstyled: {} } })
+      // which now has it's own unstyled + the child unstyled...
+      // so *don't* skip applying the styles, but also pass `unstyled` to children
+      if (!parentHasVariant) {
+        continue
+      }
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
