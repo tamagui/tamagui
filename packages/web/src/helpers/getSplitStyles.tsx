@@ -929,11 +929,20 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  // now we need to reverse viewProps because order is important for wrapped tamagui children:
+  // techcnically we could just do this when it is HOC/has parentStaticConfig I think... but safer this way
+  const nextViewProps = {}
+  const ks = Object.keys(viewProps)
+  const l = ks.length
+  for (let i = l - 1; i >= 0; i--) {
+    nextViewProps[ks[i]] = viewProps[ks[i]]
+  }
+
   const result = {
     space,
     hasMedia,
     fontFamily,
-    viewProps,
+    viewProps: nextViewProps,
     style,
     pseudos,
     classNames,
