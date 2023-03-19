@@ -40,7 +40,7 @@ interface ToastViewportProps extends PrimitiveOrderedListProps {
      */
     label?: string;
 }
-declare const ToastViewport: React.ForwardRefExoticComponent<Pick<ToastViewportProps, keyof ToastViewportProps> & React.RefAttributes<TamaguiElement>>;
+declare const ToastViewport: React.ForwardRefExoticComponent<Omit<ToastViewportProps, "ref"> & React.RefAttributes<TamaguiElement>>;
 type ToastElement = ToastImplElement;
 interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
     open?: boolean;
@@ -52,7 +52,7 @@ interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
      */
     forceMount?: true;
 }
-declare const Toast: React.ForwardRefExoticComponent<Pick<ToastProps, keyof ToastProps> & React.RefAttributes<TamaguiElement>>;
+declare const Toast: React.ForwardRefExoticComponent<Omit<ToastProps, "ref"> & React.RefAttributes<TamaguiElement>>;
 type SwipeEvent = {
     currentTarget: EventTarget & ToastElement;
 } & Omit<CustomEvent<{
@@ -85,10 +85,10 @@ interface ToastImplProps extends ToastImplPrivateProps, PrimitiveListItemProps {
 type PrimitiveDivProps = any;
 interface ToastTitleProps extends PrimitiveDivProps {
 }
-declare const ToastTitle: React.ForwardRefExoticComponent<Pick<ToastTitleProps, string | number> & React.RefAttributes<TamaguiElement>>;
+declare const ToastTitle: React.ForwardRefExoticComponent<Omit<ToastTitleProps, "ref"> & React.RefAttributes<TamaguiElement>>;
 interface ToastDescriptionProps extends PrimitiveDivProps {
 }
-declare const ToastDescription: React.ForwardRefExoticComponent<Pick<ToastDescriptionProps, string | number> & React.RefAttributes<TamaguiElement>>;
+declare const ToastDescription: React.ForwardRefExoticComponent<Omit<ToastDescriptionProps, "ref"> & React.RefAttributes<TamaguiElement>>;
 interface ToastActionProps extends ToastCloseProps {
     /**
      * A short description for an alternate way to carry out the action. For screen reader users
@@ -98,18 +98,18 @@ interface ToastActionProps extends ToastCloseProps {
      */
     altText: string;
 }
-declare const ToastAction: React.ForwardRefExoticComponent<Pick<ToastActionProps, keyof ToastActionProps> & React.RefAttributes<TamaguiElement>>;
+declare const ToastAction: React.ForwardRefExoticComponent<Omit<ToastActionProps, "ref"> & React.RefAttributes<TamaguiElement>>;
 type PrimitiveButtonProps = any;
 interface ToastCloseProps extends PrimitiveButtonProps {
 }
-declare const ToastClose: React.ForwardRefExoticComponent<Pick<ToastCloseProps, string | number> & React.RefAttributes<TamaguiElement>>;
+declare const ToastClose: React.ForwardRefExoticComponent<Omit<ToastCloseProps, "ref"> & React.RefAttributes<TamaguiElement>>;
 declare const Provider: React.FC<ToastProviderProps>;
-declare const Viewport: React.ForwardRefExoticComponent<Pick<ToastViewportProps, keyof ToastViewportProps> & React.RefAttributes<TamaguiElement>>;
-declare const Root: React.ForwardRefExoticComponent<Pick<ToastProps, keyof ToastProps> & React.RefAttributes<TamaguiElement>>;
-declare const Title: React.ForwardRefExoticComponent<Pick<ToastTitleProps, string | number> & React.RefAttributes<TamaguiElement>>;
-declare const Description: React.ForwardRefExoticComponent<Pick<ToastDescriptionProps, string | number> & React.RefAttributes<TamaguiElement>>;
-declare const Action: React.ForwardRefExoticComponent<Pick<ToastActionProps, keyof ToastActionProps> & React.RefAttributes<TamaguiElement>>;
-declare const Close: React.ForwardRefExoticComponent<Pick<ToastCloseProps, string | number> & React.RefAttributes<TamaguiElement>>;
+declare const Viewport: React.ForwardRefExoticComponent<Omit<ToastViewportProps, "ref"> & React.RefAttributes<TamaguiElement>>;
+declare const Root: React.ForwardRefExoticComponent<Omit<ToastProps, "ref"> & React.RefAttributes<TamaguiElement>>;
+declare const Title: React.ForwardRefExoticComponent<Omit<ToastTitleProps, "ref"> & React.RefAttributes<TamaguiElement>>;
+declare const Description: React.ForwardRefExoticComponent<Omit<ToastDescriptionProps, "ref"> & React.RefAttributes<TamaguiElement>>;
+declare const Action: React.ForwardRefExoticComponent<Omit<ToastActionProps, "ref"> & React.RefAttributes<TamaguiElement>>;
+declare const Close: React.ForwardRefExoticComponent<Omit<ToastCloseProps, "ref"> & React.RefAttributes<TamaguiElement>>;
 export { ToastProvider, ToastViewport, Toast, ToastTitle, ToastDescription, ToastAction, ToastClose, Provider, Viewport, Root, Title, Description, Action, Close, };
 export type { ToastProviderProps, ToastViewportProps, ToastProps, ToastTitleProps, ToastDescriptionProps, ToastActionProps, ToastCloseProps, };
 //# sourceMappingURL=Toast.d.ts.map

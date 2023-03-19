@@ -56,7 +56,7 @@ declare const AvatarFallback: React.ForwardRefExoticComponent<((Omit<import("rea
     readonly elevation?: SizeTokens | undefined;
 }>> & {
     delayMs?: number | undefined;
-}) | Pick<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}) | Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, string | number> & {
@@ -73,7 +73,7 @@ declare const AvatarFallback: React.ForwardRefExoticComponent<((Omit<import("rea
     [x: string]: undefined;
 }>> & {
     delayMs?: number | undefined;
-}, string | number>) & React.RefAttributes<TamaguiElement>>;
+}, "ref">) & React.RefAttributes<TamaguiElement>>;
 export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -264,7 +264,7 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
 }, "size" | "circular"> & {
     readonly circular?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
-}>>) | Pick<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}>>) | Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -324,7 +324,7 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
     readonly size?: SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>, string | number>) & React.RefAttributes<TamaguiElement>> & {
+}>>, "ref">) & React.RefAttributes<TamaguiElement>> & {
     Image: React.ForwardRefExoticComponent<Partial<ImageProps> & {
         onLoadingStatusChange?: ((status: ImageLoadingStatus) => void) | undefined;
     } & React.RefAttributes<TamaguiElement>>;
@@ -339,7 +339,7 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
         readonly elevation?: SizeTokens | undefined;
     }>> & {
         delayMs?: number | undefined;
-    }) | Pick<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    }) | Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     }, string | number> & {
@@ -356,7 +356,7 @@ declare const Avatar: React.ForwardRefExoticComponent<((Omit<import("react-nativ
         [x: string]: undefined;
     }>> & {
         delayMs?: number | undefined;
-    }, string | number>) & React.RefAttributes<TamaguiElement>>;
+    }, "ref">) & React.RefAttributes<TamaguiElement>>;
 };
 export { createAvatarScope, Avatar, AvatarImage, AvatarFallback };
 export type { AvatarProps, AvatarImageProps, AvatarFallbackProps };
