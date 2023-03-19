@@ -29,7 +29,7 @@
     "clean:build": "turbo run clean:build",
     "clean:ts": "tsc -b --clean tsconfig.build.json",
     "clean": "turbo run clean:build",
-    "lint": "turbo run lint --filter=!next-app",
+    "lint": "yarn workspaces foreach -p --exclude next-app --exclude tamagui-monorepo run lint",
     "lint:fix": "turbo run lint:fix --filter=!next-app",
     "format": "node -r esbuild-register ./scripts/format.ts",
     "pretty": "pretty-quick",
