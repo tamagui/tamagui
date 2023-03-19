@@ -5865,7 +5865,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/toast@workspace:packages/toast":
+"@tamagui/toast@1.7.11, @tamagui/toast@workspace:packages/toast":
   version: 0.0.0-use.local
   resolution: "@tamagui/toast@workspace:packages/toast"
   dependencies:
@@ -5881,6 +5881,7 @@ __metadata:
     "@tamagui/text": 1.7.11
     "@tamagui/use-controllable-state": 1.7.11
     "@tamagui/visually-hidden": 1.7.11
+    burnt: ^0.9.0
     react: ^18.2.0
     react-native: ^0.71.4
   peerDependencies:
@@ -8653,6 +8654,17 @@ __metadata:
   version: 1.0.3
   resolution: "builtins@npm:1.0.3"
   checksum: 47ce94f7eee0e644969da1f1a28e5f29bd2e48b25b2bbb61164c345881086e29464ccb1fb88dbc155ea26e8b1f5fc8a923b26c8c1ed0935b67b644d410674513
+  languageName: node
+  linkType: hard
+
+"burnt@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "burnt@npm:0.9.0"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: 7a8220b041b78c2e0096e69d8ddddd598d9038035715873bd9a361ab07032e23c668b56a59d8ec59ac9a5d9aea0e17af89e7e331e284793ac44f45c336c024d5
   languageName: node
   linkType: hard
 
@@ -20840,6 +20852,7 @@ __metadata:
     "@tamagui/switch": 1.7.11
     "@tamagui/tabs": 1.7.11
     "@tamagui/text": 1.7.11
+    "@tamagui/toast": 1.7.11
     "@tamagui/tooltip": 1.7.11
     "@tamagui/use-controllable-state": 1.7.11
     "@tamagui/use-debounce": 1.7.11

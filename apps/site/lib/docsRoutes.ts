@@ -97,6 +97,7 @@ export const docsRoutes = [
       { title: 'Popover', route: '/docs/components/popover' },
       { title: 'Sheet', route: '/docs/components/sheet' },
       { title: 'Tooltip', route: '/docs/components/tooltip' },
+      { title: 'Toast', route: '/docs/components/toast' },
     ],
   },
 
