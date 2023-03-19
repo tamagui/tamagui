@@ -7,6 +7,7 @@ export const isClient = isWeb && isWindowDefined
 
 // may want to move to VITE_RSC_BUILD
 export const isRSC = process.env.ENABLE_RSC
+
 // causing troubles, was used for vite SSR but disabling until fixed
 // ? // note this is statically analyzed so no funny business, just access it without optional chaining
 //   // @ts-ignore

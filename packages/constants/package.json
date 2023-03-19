@@ -1,9 +1,9 @@
 {
   "name": "@tamagui/constants",
   "version": "1.7.10",
-  "types": "./types/constants.d.ts",
-  "main": "dist/cjs/constants",
-  "module": "dist/esm/constants",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
   "files": [
     "src",
     "types",
