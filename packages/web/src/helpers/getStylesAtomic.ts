@@ -6,20 +6,12 @@
 import { StyleObject, simpleHash } from '@tamagui/helpers'
 
 import { getConfig } from '../config.js'
-import type { TamaguiInternalConfig, TextStyleProps } from '../types.js'
+import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types.js'
 import { defaultOffset } from './defaultOffset.js'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors.js'
 
 // refactor this file away next...
-
-type ViewOrTextStyle = TextStyleProps
-
-export type ViewStyleWithPseudos = ViewOrTextStyle & {
-  hoverStyle?: ViewOrTextStyle
-  pressStyle?: ViewOrTextStyle
-  focusStyle?: ViewOrTextStyle
-}
 
 // matching order of the below *0
 const pseudosOrdered = [
@@ -47,7 +39,7 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
 }
 
 export function getAtomicStyle(
-  style: ViewOrTextStyle,
+  style: ViewStyleWithPseudos,
   pseudo?: PseudoDescriptor
 ): StyleObject[] {
   if (!style) return []
@@ -62,7 +54,7 @@ export function getAtomicStyle(
 let conf: TamaguiInternalConfig
 
 const generateAtomicStyles = (
-  styleIn: ViewOrTextStyle,
+  styleIn: ViewStyleWithPseudos,
   pseudo?: PseudoDescriptor
 ): StyleObject[] => {
   conf = conf || getConfig()

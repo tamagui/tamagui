@@ -37,7 +37,9 @@ import type {
   StaticConfigParsed,
   StyleObject,
   TamaguiInternalConfig,
+  TextStyleProps,
   ThemeParsed,
+  ViewStyleWithPseudos,
 } from '../types.js'
 import type {
   FontLanguageProps,
@@ -61,7 +63,7 @@ import {
 import { pseudoDescriptors } from './pseudoDescriptors.js'
 
 type GetStyleState = {
-  style: ViewStyle
+  style: TextStyleProps
   usedKeys: Record<string, number>
   classNames: ClassNamesObject
   staticConfig: StaticConfigParsed
@@ -227,7 +229,7 @@ export const getSplitStyles: StyleSplitter = (
   const shouldDoClasses =
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
 
-  let style: ViewStyle | TextStyle = {}
+  let style: ViewStyleWithPseudos = {}
   const flatTransforms: FlatTransforms = {}
 
   const len = propKeys.length
@@ -759,6 +761,7 @@ export const getSplitStyles: StyleSplitter = (
               }
             }
           }
+
           const mediaStyles = getStylesAtomic(mediaStyle)
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
@@ -789,7 +792,7 @@ export const getSplitStyles: StyleSplitter = (
               usedKeys
             )
             if (key === 'fontFamily') {
-              fontFamily = mediaStyle[key]
+              fontFamily = mediaStyle.fontFamily as string
             }
           }
         }
@@ -831,10 +834,10 @@ export const getSplitStyles: StyleSplitter = (
   // native: swap out the right family based on weight/style
   if (process.env.TAMAGUI_TARGET === 'native') {
     if ('fontFamily' in style && style.fontFamily) {
-      const faceInfo = getFont(style.fontFamily)?.face
+      const faceInfo = getFont(style.fontFamily as string)?.face
       if (faceInfo) {
         const overrideFace =
-          faceInfo[style.fontWeight!]?.[style.fontStyle || 'normal']?.val
+          faceInfo[style.fontWeight as string]?.[style.fontStyle || 'normal']?.val
         if (overrideFace) {
           style.fontFamily = overrideFace
           fontFamily = overrideFace
@@ -1067,9 +1070,9 @@ export const getSubStyle = (
   styleIn: Object,
   avoidDefaultProps?: boolean,
   avoidMergeTransform?: boolean
-): ViewStyle => {
+): TextStyleProps => {
   const { staticConfig, theme, props, state, conf, languageContext } = styleState
-  const styleOut: ViewStyle = {}
+  const styleOut: TextStyleProps = {}
 
   for (let key in styleIn) {
     const val = styleIn[key]
@@ -1148,7 +1151,12 @@ const hyphenate = (str: string) => str.replace(/[A-Z]/g, lowercaseHyphenate)
 
 export type FlatTransforms = Record<string, any>
 
-const mergeTransform = (obj: ViewStyle, key: string, val: any, backwards = false) => {
+const mergeTransform = (
+  obj: TextStyleProps,
+  key: string,
+  val: any,
+  backwards = false
+) => {
   obj.transform ||= []
   obj.transform[backwards ? 'unshift' : 'push']({
     [mapTransformKeys[key] || key]: val,
@@ -1156,7 +1164,7 @@ const mergeTransform = (obj: ViewStyle, key: string, val: any, backwards = false
 }
 
 const mergeTransforms = (
-  obj: ViewStyle,
+  obj: TextStyleProps,
   flatTransforms: FlatTransforms,
   backwards = false
 ) => {
