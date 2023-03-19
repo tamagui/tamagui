@@ -30,6 +30,7 @@ import {
 
 import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
 import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
+import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
 import config from './tamagui.config'
 
 // useful for debugging why things render:
@@ -61,11 +62,6 @@ const Image = styled(
   }
 )
 
-const StyledInput = styled(Input, {
-  unstyled: true,
-  debug: 'verbose',
-})
-
 const X = <Stack gap />
 
 export const Sandbox = () => {
@@ -74,7 +70,7 @@ export const Sandbox = () => {
       {/* this comment keeps indent */}
       {/* <SandboxDefault /> */}
 
-      <StyledInput w={100} h={100} />
+      <SandboxStyledOverridePseudo />
 
       {/* TODO */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}
