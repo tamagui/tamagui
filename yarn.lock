@@ -5688,7 +5688,7 @@ __metadata:
     esbuild-register: ^3.4.2
     playwright: ^1.29.0
     prettier: ^2.8.1
-    turbo: ^1.6.3
+    turbo: ^1.8.3
     typescript: ^4.7.4
     vitest: ^0.26.3
     wait-port: ^0.3.0
@@ -21019,7 +21019,7 @@ __metadata:
     pretty-quick: ^3.1.2
     prompts: 2.1.0
     rome: ^11.0.0
-    turbo: ^1.6.3
+    turbo: ^1.8.3
     typescript: ^4.7.4
     ultra-runner: ^3.10.5
   languageName: unknown
@@ -21572,7 +21572,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"turbo@npm:^1.6.3":
+"turbo@npm:^1.8.3":
   version: 1.8.3
   resolution: "turbo@npm:1.8.3"
   dependencies:
