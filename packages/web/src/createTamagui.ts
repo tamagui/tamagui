@@ -200,6 +200,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   const shorthands = configIn.shorthands || {}
 
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    // abuse shorthands for remapping the native style gap keys
+    shorthands.gapRow ??= 'rowGap'
+    shorthands.gapColumn ??= 'columnGap'
+  }
+
   const config: TamaguiInternalConfig = {
     fontLanguages: [],
     animations: {} as any,

@@ -17,6 +17,8 @@ export declare const validStylesOnBaseProps: Readonly<{
     placeholderTextColor: true;
 }>;
 export declare const stylePropsView: Readonly<{
+    columnGap?: true | undefined;
+    rowGap?: true | undefined;
     borderBottomStyle?: true | undefined;
     borderTopStyle?: true | undefined;
     borderLeftStyle?: true | undefined;
@@ -33,6 +35,8 @@ export declare const stylePropsView: Readonly<{
     outlineStyle?: true | undefined;
     outlineOffset?: true | undefined;
     outlineWidth?: true | undefined;
+    gapColumn?: true | undefined;
+    gapRow?: true | undefined;
     x: true;
     y: true;
     scale: true;
@@ -89,8 +93,6 @@ export declare const stylePropsView: Readonly<{
     flexShrink: true;
     flexWrap: true;
     gap: true;
-    gapColumn: true;
-    gapRow: true;
     height: true;
     justifyContent: true;
     left: true;
@@ -180,6 +182,8 @@ export declare const stylePropsText: Readonly<{
     textShadowOffset: true;
     textShadowRadius: true;
     textTransform: true;
+    columnGap?: true | undefined;
+    rowGap?: true | undefined;
     borderBottomStyle?: true | undefined;
     borderTopStyle?: true | undefined;
     borderLeftStyle?: true | undefined;
@@ -194,6 +198,8 @@ export declare const stylePropsText: Readonly<{
     outlineStyle?: true | undefined;
     outlineOffset?: true | undefined;
     outlineWidth?: true | undefined;
+    gapColumn?: true | undefined;
+    gapRow?: true | undefined;
     x: true;
     y: true;
     scale: true;
@@ -250,8 +256,6 @@ export declare const stylePropsText: Readonly<{
     flexShrink: true;
     flexWrap: true;
     gap: true;
-    gapColumn: true;
-    gapRow: true;
     height: true;
     justifyContent: true;
     left: true;
@@ -315,6 +319,8 @@ export declare const stylePropsAll: Readonly<{
     textShadowOffset: true;
     textShadowRadius: true;
     textTransform: true;
+    columnGap?: true | undefined;
+    rowGap?: true | undefined;
     borderBottomStyle?: true | undefined;
     borderTopStyle?: true | undefined;
     borderLeftStyle?: true | undefined;
@@ -329,6 +335,8 @@ export declare const stylePropsAll: Readonly<{
     outlineStyle?: true | undefined;
     outlineOffset?: true | undefined;
     outlineWidth?: true | undefined;
+    gapColumn?: true | undefined;
+    gapRow?: true | undefined;
     x: true;
     y: true;
     scale: true;
@@ -385,8 +393,6 @@ export declare const stylePropsAll: Readonly<{
     flexShrink: true;
     flexWrap: true;
     gap: true;
-    gapColumn: true;
-    gapRow: true;
     height: true;
     justifyContent: true;
     left: true;
@@ -433,6 +439,8 @@ export declare const validPseudoKeys: Readonly<{
     focusStyle: true;
 }>;
 export declare const validStyles: Readonly<{
+    columnGap?: true | undefined;
+    rowGap?: true | undefined;
     borderBottomStyle?: true | undefined;
     borderTopStyle?: true | undefined;
     borderLeftStyle?: true | undefined;
@@ -449,6 +457,8 @@ export declare const validStyles: Readonly<{
     outlineStyle?: true | undefined;
     outlineOffset?: true | undefined;
     outlineWidth?: true | undefined;
+    gapColumn?: true | undefined;
+    gapRow?: true | undefined;
     x: true;
     y: true;
     scale: true;
@@ -505,8 +515,6 @@ export declare const validStyles: Readonly<{
     flexShrink: true;
     flexWrap: true;
     gap: true;
-    gapColumn: true;
-    gapRow: true;
     height: true;
     justifyContent: true;
     left: true;

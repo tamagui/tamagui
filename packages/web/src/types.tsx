@@ -935,6 +935,14 @@ export type StaticConfig = StaticConfigBase & {
   parentStaticConfig?: StaticConfigBase
 }
 
+export type ViewStyleWithPseudos =
+  | TextStyleProps
+  | (TextStyleProps & {
+      hoverStyle?: TextStyleProps
+      pressStyle?: TextStyleProps
+      focusStyle?: TextStyleProps
+    })
+
 /**
  * --------------------------------------------
  *   variants
