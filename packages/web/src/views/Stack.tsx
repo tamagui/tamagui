@@ -1,10 +1,12 @@
-import type { View } from 'react-native'
-
 import { stackDefaultStyles } from '../constants/constants.js'
 import { createComponent } from '../createComponent.js'
 import type { StackProps, StackPropsBase } from '../types.js'
 
-export const Stack = createComponent<StackProps, View, StackPropsBase>({
+export const Stack = createComponent<
+  StackProps,
+  React.Component<StackProps>,
+  StackPropsBase
+>({
   componentName: 'Stack',
   acceptsClassName: true,
   defaultProps: {

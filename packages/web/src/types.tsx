@@ -13,11 +13,8 @@ import type {
 } from 'react'
 import type {
   GestureResponderHandlers,
-  Image,
   PressableProps,
   TextProps as ReactTextProps,
-  Text,
-  TextInput,
   TextStyle,
   View,
   ViewProps,
@@ -29,7 +26,7 @@ import type { ResolveVariableTypes } from './helpers/createPropMapper.js'
 import type { FontLanguageProps } from './views/FontLanguage.types.js'
 import type { ThemeProviderProps } from './views/ThemeProvider.js'
 
-export type { StyleObject, MediaStyleObject } from '@tamagui/helpers'
+export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
 
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 
@@ -952,10 +949,6 @@ export type StylableComponent =
   | ForwardRefExoticComponent<any>
   | ReactComponentWithRef<any, any>
   | (new (props: any) => any)
-  | typeof View
-  | typeof Text
-  | typeof TextInput
-  | typeof Image
 
 export type GetStyledVariants<A extends TamaguiComponent> = A extends TamaguiComponent<
   any,

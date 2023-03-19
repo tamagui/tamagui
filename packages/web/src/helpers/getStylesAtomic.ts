@@ -4,17 +4,16 @@
  */
 
 import { StyleObject, simpleHash } from '@tamagui/helpers'
-import type { TextStyle, ViewStyle } from 'react-native'
 
 import { getConfig } from '../config.js'
-import type { TamaguiInternalConfig } from '../types.js'
+import type { TamaguiInternalConfig, TextStyleProps } from '../types.js'
 import { defaultOffset } from './defaultOffset.js'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
 import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors.js'
 
 // refactor this file away next...
 
-type ViewOrTextStyle = ViewStyle | TextStyle
+type ViewOrTextStyle = TextStyleProps
 
 export type ViewStyleWithPseudos = ViewOrTextStyle & {
   hoverStyle?: ViewOrTextStyle
@@ -63,7 +62,7 @@ export function getAtomicStyle(
 let conf: TamaguiInternalConfig
 
 const generateAtomicStyles = (
-  styleIn: ViewStyle & TextStyle,
+  styleIn: ViewOrTextStyle,
   pseudo?: PseudoDescriptor
 ): StyleObject[] => {
   conf = conf || getConfig()
