@@ -525,7 +525,7 @@ export const getSplitStyles: StyleSplitter = (
       keyInit in validStyleProps ||
       keyInit in shorthands
     )
-    const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
+    const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough || parentHasVariant
 
     if (
       process.env.NODE_ENV === 'development' &&
@@ -544,7 +544,7 @@ export const getSplitStyles: StyleSplitter = (
       // aka styled(Input, { unstyled: true, variants: { unstyled: {} } })
       // which now has it's own unstyled + the child unstyled...
       // so *don't* skip applying the styles, but also pass `unstyled` to children
-      if (!parentHasVariant) {
+      if (!isVariant) {
         continue
       }
     }
