@@ -1,6 +1,6 @@
 {
   "name": "sandbox-ui",
-  "version": "1.7.10",
+  "version": "1.7.11",
   "sideEffects": [
     "*.css"
   ],
@@ -18,10 +18,10 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/lucide-icons": "1.7.10",
-    "tamagui": "1.7.10"
+    "@tamagui/lucide-icons": "1.7.11",
+    "tamagui": "1.7.11"
   },
   "devDependencies": {
-    "@tamagui/build": "1.7.10"
+    "@tamagui/build": "1.7.11"
   }
 }
