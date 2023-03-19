@@ -2,7 +2,7 @@ import { Label, RadioGroup, SizeTokens, ThemeableStack, XStack, YStack } from 't
 
 export function RadioGroupDemo() {
   return (
-    <RadioGroup name="form">
+    <RadioGroup defaultValue="3" name="form">
       <YStack w={300} ai="center" space="$2">
         <RadioGroupItemWithLabel size="$3" value="2" label="Second value" />
         <RadioGroupItemWithLabel size="$4" value="3" label="Third value" />

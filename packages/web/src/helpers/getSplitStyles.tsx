@@ -533,7 +533,7 @@ export const getSplitStyles: StyleSplitter = (
       shouldPassThrough
     ) {
       // eslint-disable-next-line no-console
-      console.log('  🔹 skip', keyInit)
+      console.log(`  🔹 pass through ${keyInit}`)
     }
 
     if (shouldPassThrough) {
