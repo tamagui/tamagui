@@ -4986,6 +4986,7 @@ __metadata:
     "@types/react": ^18.0.15
     "@types/react-native": ^0.71.3
     babel-plugin-transform-inline-environment-variables: ^0.4.4
+    burnt: ^0.10.0
     expo: ~47.0.12
     expo-dev-client: ~2.0.1
     expo-font: ^11.0.1
@@ -5865,7 +5866,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/toast@workspace:packages/toast":
+"@tamagui/toast@1.7.11, @tamagui/toast@workspace:packages/toast":
   version: 0.0.0-use.local
   resolution: "@tamagui/toast@workspace:packages/toast"
   dependencies:
@@ -5881,6 +5882,7 @@ __metadata:
     "@tamagui/text": 1.7.11
     "@tamagui/use-controllable-state": 1.7.11
     "@tamagui/visually-hidden": 1.7.11
+    burnt: ^0.10.0
     react: ^18.2.0
     react-native: ^0.71.4
   peerDependencies:
@@ -8653,6 +8655,19 @@ __metadata:
   version: 1.0.3
   resolution: "builtins@npm:1.0.3"
   checksum: 47ce94f7eee0e644969da1f1a28e5f29bd2e48b25b2bbb61164c345881086e29464ccb1fb88dbc155ea26e8b1f5fc8a923b26c8c1ed0935b67b644d410674513
+  languageName: node
+  linkType: hard
+
+"burnt@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "burnt@npm:0.10.0"
+  dependencies:
+    sf-symbols-typescript: ^1.0.0
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: b33a84b0a57be34cc37d18f50710d46fb72e8d8eb2c5d5ae687a22dad41a1c6a42a49d507a71065480b5286729c887e3ee281f47af1325321f63fdc15e3af913
   languageName: node
   linkType: hard
 
@@ -19873,6 +19888,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sf-symbols-typescript@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "sf-symbols-typescript@npm:1.0.0"
+  checksum: ab7f427b6145ba308e9ab0357e86a8b32c4bd2ed7d5bba983812483b6f8320097121a7dac1855d344cf8b5a6e45ef9b7e8f121ad640fc7821f3fd433a8280567
+  languageName: node
+  linkType: hard
+
 "shallow-clone@npm:^3.0.0":
   version: 3.0.1
   resolution: "shallow-clone@npm:3.0.1"
@@ -20840,6 +20862,7 @@ __metadata:
     "@tamagui/switch": 1.7.11
     "@tamagui/tabs": 1.7.11
     "@tamagui/text": 1.7.11
+    "@tamagui/toast": 1.7.11
     "@tamagui/tooltip": 1.7.11
     "@tamagui/use-controllable-state": 1.7.11
     "@tamagui/use-debounce": 1.7.11

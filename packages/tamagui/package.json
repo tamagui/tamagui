@@ -80,6 +80,7 @@
     "@tamagui/switch": "1.7.11",
     "@tamagui/tabs": "1.7.11",
     "@tamagui/text": "1.7.11",
+    "@tamagui/toast": "1.7.11",
     "@tamagui/tooltip": "1.7.11",
     "@tamagui/use-controllable-state": "1.7.11",
     "@tamagui/use-debounce": "1.7.11",

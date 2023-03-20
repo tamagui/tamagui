@@ -29,6 +29,7 @@
     "@tamagui/lucide-icons": "1.7.11",
     "@tamagui/shorthands": "1.7.11",
     "@tamagui/themes": "1.7.11",
+    "burnt": "^0.10.0",
     "expo": "~47.0.12",
     "expo-dev-client": "~2.0.1",
     "expo-font": "^11.0.1",

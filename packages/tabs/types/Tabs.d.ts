@@ -396,6 +396,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly pressTheme?: boolean | undefined;
         readonly focusTheme?: boolean | undefined;
         readonly circular?: boolean | undefined;
+        /**
+         * Whether to loop over after reaching the end or start of the items
+         * @default true
+         */
         readonly padded?: boolean | undefined;
         readonly elevate?: boolean | undefined;
         readonly bordered?: number | boolean | undefined;
