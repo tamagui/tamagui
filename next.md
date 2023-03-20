@@ -1,6 +1,4 @@
- - gap type issue
-
-- be able to use System fonts on iOS / Android
+- WARN  Sending onAnimatedValueUpdate with no listeners registered
 
 - add codesandbox for most components
 
