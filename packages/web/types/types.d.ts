@@ -409,16 +409,17 @@ type SharedBaseExtraStyleProps = {
     contain?: Properties['contain'];
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
     gap?: number | SpaceTokens;
-    gapColumn?: number | SpaceTokens;
-    gapRow?: number | SpaceTokens;
+    columnGap?: number | SpaceTokens;
+    rowGap?: number | SpaceTokens;
     userSelect?: Properties['userSelect'];
     outlineColor?: Properties['outlineColor'];
     outlineStyle?: Properties['outlineStyle'];
     outlineOffset?: Properties['outlineOffset'];
     outlineWidth?: Properties['outlineWidth'];
 };
-export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & SharedBaseExtraStyleProps;
-export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & SharedBaseExtraStyleProps & {
+type OverrideRNStyleProps = 'display' | 'backfaceVisibility' | 'elevation' | 'gap' | 'columnGap' | 'rowGap';
+export type StackStylePropsBase = Omit<ViewStyle, OverrideRNStyleProps> & TransformStyleProps & SharedBaseExtraStyleProps;
+export type TextStylePropsBase = Omit<TextStyle, OverrideRNStyleProps> & TransformStyleProps & SharedBaseExtraStyleProps & {
     ellipse?: boolean;
     textDecorationDistance?: number;
     textOverflow?: Properties['textOverflow'];
