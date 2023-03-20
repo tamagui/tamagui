@@ -1,3 +1,9 @@
+ - gap type issue
+
+- be able to use System fonts on iOS / Android
+
+- add codesandbox for most components
+
 - @tamagui/change-animation-driver
   - would be good for the website to show and test animations across all drivers
 
