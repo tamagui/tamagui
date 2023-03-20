@@ -6,7 +6,7 @@ component: Toast
 package: toast
 ---
 
-# Toast
+# Toast <Beta />
 
 <Description>Use to show feedback to user interactions</Description>
 
@@ -24,10 +24,13 @@ package: toast
     `Pause closing on hover, focus, window blur and mobile touch`,
     `Supports closing via swipe gesture`,
     `Easily animatable with Tamagui's animation drivers`,
-    `Can be controlled or uncontrolled`,
     `Native toasts included for Android, iOS and web`,
   ]}
 />
+
+## Install
+
+For native support, run `yarn add burnt` to add `burnt`, then rebuild your React Native app. React Native requires sub-dependencies with native dependencies always be hoisted to your apps package.json and Toast relies on the amazing [Burnt](https://github.com/nandorojo/burnt) library by Fernando Rojo to provide it's native functionality.
 
 ## Anatomy
 
@@ -127,8 +130,8 @@ export default () => {
 ### Using `createToast`
 
 ```tsx
-import { Toast, ToastProvider, createToast } from '@tamagui/toast'
 import { Button } from '@tamagui/button'
+import { Toast, ToastProvider, createToast } from '@tamagui/toast'
 
 export const { ImperativeToastProvider, useToast } = createToast()
 
@@ -159,9 +162,7 @@ const MyPage = () => {
   const { show } = useToast()
 
   return (
-    <Button
-      onPress={() => show("Done!", { message: "Form submitted successfully." })}
-    >
+    <Button onPress={() => show('Done!', { message: 'Form submitted successfully.' })}>
       Show Toast
     </Button>
   )

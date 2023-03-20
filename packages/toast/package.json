@@ -42,7 +42,7 @@
     "@tamagui/text": "1.7.11",
     "@tamagui/use-controllable-state": "1.7.11",
     "@tamagui/visually-hidden": "1.7.11",
-    "burnt": "^0.9.0"
+    "burnt": "^0.10.0"
   },
   "peerDependencies": {
     "react": "*",
