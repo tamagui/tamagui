@@ -12,8 +12,8 @@ beforeAll(() => {
 describe('getSplitStyles', () => {
   test(`prop "accessibilityRequired" becomes "aria-required" and "required"`, () => {
     const { style } = getSplitStylesStack({
-      gapColumn: 10,
-      gapRow: 10,
+      columnGap: 10,
+      rowGap: 10,
     })
 
     expect(style.columnGap).toBe(10)
