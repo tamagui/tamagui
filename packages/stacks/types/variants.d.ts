@@ -195,8 +195,8 @@ export declare const elevate: {
         contain?: import("@tamagui/web").Variable<any> | import("csstype").Property.Contain | undefined;
         display?: "flex" | "none" | import("@tamagui/web").Variable<any> | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
         gap?: import("@tamagui/web").Variable<any> | import("@tamagui/web").SpaceTokens | undefined;
-        gapColumn?: import("@tamagui/web").Variable<any> | import("@tamagui/web").SpaceTokens | undefined;
-        gapRow?: import("@tamagui/web").Variable<any> | import("@tamagui/web").SpaceTokens | undefined;
+        columnGap?: import("@tamagui/web").Variable<any> | import("@tamagui/web").SpaceTokens | undefined;
+        rowGap?: import("@tamagui/web").Variable<any> | import("@tamagui/web").SpaceTokens | undefined;
         userSelect?: import("@tamagui/web").Variable<any> | import("csstype").Property.UserSelect | undefined;
         outlineColor?: import("@tamagui/web").Variable<any> | import("csstype").Property.OutlineColor | undefined;
         outlineStyle?: import("@tamagui/web").Variable<any> | import("csstype").Property.OutlineStyle | undefined;

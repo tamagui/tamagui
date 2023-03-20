@@ -368,7 +368,6 @@ export declare const config: {
             18: import("@tamagui/web").Variable<number>;
             19: import("@tamagui/web").Variable<number>;
             20: import("@tamagui/web").Variable<number>;
-            "-0": import("@tamagui/web").Variable<number>;
             "-0.25": import("@tamagui/web").Variable<number>;
             "-0.5": import("@tamagui/web").Variable<number>;
             "-0.75": import("@tamagui/web").Variable<number>;

@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const { withTamagui } = require('@tamagui/next-plugin')
-const withImages = require('next-images')
 const { join } = require('path')
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
@@ -41,7 +40,6 @@ Remove this log in next.config.js.
 `)
 
 const plugins = [
-  withImages,
   withTamagui({
     config: './tamagui.config.ts',
     components: ['tamagui', '@my/ui'],
@@ -64,9 +62,6 @@ module.exports = function () {
   let config = {
     typescript: {
       ignoreBuildErrors: true,
-    },
-    images: {
-      disableStaticImages: true,
     },
     modularizeImports: {
       '@tamagui/lucide-icons': {

@@ -281,7 +281,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
          * Used to disable passing styles down to children.
          */
         disablePassStyles?: boolean | undefined;
-    }) | Pick<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    }) | Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
@@ -342,7 +342,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
          * Used to disable passing styles down to children.
          */
         disablePassStyles?: boolean | undefined;
-    }, string | number>) & React.RefAttributes<TamaguiElement>>;
+    }, "ref">) & React.RefAttributes<TamaguiElement>>;
 };
 export { createCheckboxScope };
 //# sourceMappingURL=Checkbox.d.ts.map

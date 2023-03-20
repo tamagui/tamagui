@@ -12,9 +12,9 @@ export function extendStaticConfig(
     return parseStaticConfig(config)
   }
 
-  const parentStaticConf = parent.staticConfig as StaticConfig
+  const parentStaticConfig = parent.staticConfig as StaticConfig
   const variants = {
-    ...parentStaticConf.variants,
+    ...parentStaticConfig.variants,
   }
 
   // merge variants... can we type this?
@@ -32,30 +32,31 @@ export function extendStaticConfig(
   }
 
   // include our own
-  const parentNames = [...(parentStaticConf.parentNames || [])]
-  if (parentStaticConf.componentName) {
-    parentNames.push(parentStaticConf.componentName)
+  const parentNames = [...(parentStaticConfig.parentNames || [])]
+  if (parentStaticConfig.componentName) {
+    parentNames.push(parentStaticConfig.componentName)
   }
 
   const deoptProps = config.deoptProps || new Set<string>()
   // deoptProps.add('style')
 
   return parseStaticConfig({
-    ...parentStaticConf,
+    ...parentStaticConfig,
     ...config,
+    parentStaticConfig,
     deoptProps,
     variants,
     parentNames,
     validStyles: config.validStyles
       ? {
-          ...parentStaticConf.validStyles,
+          ...parentStaticConfig.validStyles,
           ...config.validStyles,
         }
-      : parentStaticConf.validStyles || stylePropsView,
+      : parentStaticConfig.validStyles || stylePropsView,
     defaultProps: mergeProps(
       {
-        ...parentStaticConf.defaultProps,
-        ...parentStaticConf.defaultVariants,
+        ...parentStaticConfig.defaultProps,
+        ...parentStaticConfig.defaultVariants,
       },
       {
         ...config.defaultProps,

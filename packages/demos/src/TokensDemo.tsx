@@ -57,9 +57,9 @@ function SizeSection({ section }: { section: Section }) {
   const allTokens = getConfig().tokens
   const tokens = allTokens[section.startsWith('space') ? 'space' : section]
   const st = Object.keys(tokens).sort((a, b) => (parseFloat(a) > parseFloat(b) ? 1 : -1))
-  const spaceTokens = st.filter((t) => parseFloat(t) >= 0 && t !== '-0')
+  const spaceTokens = st.filter((t) => parseFloat(t) >= 0)
   const spaceTokensNegative = st
-    .filter((t) => parseFloat(t) < 0 || t === '-0')
+    .filter((t) => parseFloat(t) < 0)
     .sort((a, b) => (parseFloat(a) > parseFloat(b) ? -1 : 1))
 
   return (

@@ -37,6 +37,7 @@ export { ThemeInverseDemo } from './ThemeInverseDemo';
 export { TooltipDemo } from './TooltipDemo';
 export { ColorsDemo } from './ColorsDemo';
 export { TokensDemo } from './TokensDemo';
+export { ToastDemo } from './ToastDemo';
 export { TabsDemo } from './TabsDemo';
 export { TabsAdvancedDemo } from './TabsAdvancedDemo';
 export * from './useOnIntersecting';

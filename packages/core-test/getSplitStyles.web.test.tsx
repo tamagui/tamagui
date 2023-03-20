@@ -1,9 +1,9 @@
 process.env.TAMAGUI_TARGET = 'web'
 
-import { Stack, createTamagui, getSplitStyles } from '@tamagui/core-node'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default-node'
+import { Stack, createTamagui, getSplitStyles } from '../core/src'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())
@@ -24,13 +24,13 @@ describe('getSplitStyles', () => {
   })
 
   test(`prop "paddingStart" value 10 becomes "10px"`, () => {
-    const { style } = getSplitStylesStack(
+    const out = getSplitStylesStack(
       {
         paddingStart: 10,
       },
       'input'
     )
-    expect(style.paddingStart).toEqual('10px')
+    expect(out.rulesToInsert[0]?.value).toEqual('10px')
   })
 
   // test(`prop "tabIndex" defaults to "0", overrides to "-1" when tag = button`, () => {
@@ -57,8 +57,8 @@ describe('getSplitStyles', () => {
 function getSplitStylesStack(props: Record<string, any>, tag?: string) {
   return getSplitStyles(
     props,
-    Stack.staticConfig as any,
-    {},
+    Stack.staticConfig,
+    {} as any,
     {
       hover: false,
       press: false,

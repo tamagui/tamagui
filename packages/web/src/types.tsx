@@ -13,11 +13,8 @@ import type {
 } from 'react'
 import type {
   GestureResponderHandlers,
-  Image,
   PressableProps,
   TextProps as ReactTextProps,
-  Text,
-  TextInput,
   TextStyle,
   View,
   ViewProps,
@@ -28,6 +25,8 @@ import type { Variable } from './createVariable.js'
 import type { ResolveVariableTypes } from './helpers/createPropMapper.js'
 import type { FontLanguageProps } from './views/FontLanguage.types.js'
 import type { ThemeProviderProps } from './views/ThemeProvider.js'
+
+export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
 
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 
@@ -696,8 +695,8 @@ type SharedBaseExtraStyleProps = {
   contain?: Properties['contain']
   display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
   gap?: number | SpaceTokens
-  gapColumn?: number | SpaceTokens
-  gapRow?: number | SpaceTokens
+  columnGap?: number | SpaceTokens
+  rowGap?: number | SpaceTokens
   userSelect?: Properties['userSelect']
   outlineColor?: Properties['outlineColor']
   outlineStyle?: Properties['outlineStyle']
@@ -705,14 +704,19 @@ type SharedBaseExtraStyleProps = {
   outlineWidth?: Properties['outlineWidth']
 }
 
-export type StackStylePropsBase = Omit<
-  ViewStyle,
-  'display' | 'backfaceVisibility' | 'elevation'
-> &
+type OverrideRNStyleProps =
+  | 'display'
+  | 'backfaceVisibility'
+  | 'elevation'
+  | 'gap'
+  | 'columnGap'
+  | 'rowGap'
+
+export type StackStylePropsBase = Omit<ViewStyle, OverrideRNStyleProps> &
   TransformStyleProps &
   SharedBaseExtraStyleProps
 
-export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> &
+export type TextStylePropsBase = Omit<TextStyle, OverrideRNStyleProps> &
   TransformStyleProps &
   SharedBaseExtraStyleProps & {
     ellipse?: boolean
@@ -884,7 +888,7 @@ export type StaticConfigPublic = {
   acceptsClassName?: boolean
 }
 
-export type StaticConfig = StaticConfigPublic & {
+type StaticConfigBase = StaticConfigPublic & {
   Component?: FunctionComponent<any> & StaticComponentObject
 
   variants?: GenericVariantDefinitions
@@ -932,6 +936,18 @@ export type StaticConfig = StaticConfigPublic & {
   isHOC?: boolean
 }
 
+export type StaticConfig = StaticConfigBase & {
+  parentStaticConfig?: StaticConfigBase
+}
+
+export type ViewStyleWithPseudos =
+  | TextStyleProps
+  | (TextStyleProps & {
+      hoverStyle?: TextStyleProps
+      pressStyle?: TextStyleProps
+      focusStyle?: TextStyleProps
+    })
+
 /**
  * --------------------------------------------
  *   variants
@@ -946,10 +962,6 @@ export type StylableComponent =
   | ForwardRefExoticComponent<any>
   | ReactComponentWithRef<any, any>
   | (new (props: any) => any)
-  | typeof View
-  | typeof Text
-  | typeof TextInput
-  | typeof Image
 
 export type GetStyledVariants<A extends TamaguiComponent> = A extends TamaguiComponent<
   any,
@@ -1465,8 +1477,7 @@ export type GestureReponderEvent = Exclude<
   ? Event
   : never
 
-export type PartialStyleObject = Pick<StyleObject, 'identifier' | 'property' | 'rules'>
-export type RulesToInsert = PartialStyleObject[]
+export type RulesToInsert = StyleObject[]
 
 export type GetStyleResult = {
   pseudos?: PseudoStyles
