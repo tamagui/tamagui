@@ -38,9 +38,9 @@ test(`should handle decimal placement differently`, () => {
   expect(out[1].identifier).toBe(`_r-11d0t1px1a`)
 })
 
-test(`should turn gapColumn into gap-column`, () => {
+test(`should turn columnGap into gap-column`, () => {
   const out = getStylesAtomic({
-    gapColumn: 10,
+    columnGap: 10,
   })
-  expect(out[0].rules.includes(`gap-column:10px`))
+  expect(out[0].rules.includes(`column-gap:10px`))
 })
