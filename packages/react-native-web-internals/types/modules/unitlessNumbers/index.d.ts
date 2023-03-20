@@ -25,8 +25,8 @@ export declare const unitlessNumbers: {
     flexNegative: boolean;
     fontWeight: boolean;
     gap: boolean;
-    gapColumn: boolean;
-    gapRow: boolean;
+    columnGap: boolean;
+    rowGap: boolean;
     gridRow: boolean;
     gridRowEnd: boolean;
     gridRowGap: boolean;

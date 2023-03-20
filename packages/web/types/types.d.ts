@@ -1,11 +1,12 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
 import type { ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
-import type { GestureResponderHandlers, Image, PressableProps, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
+import type { GestureResponderHandlers, PressableProps, TextProps as ReactTextProps, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import type { Variable } from './createVariable.js';
 import type { ResolveVariableTypes } from './helpers/createPropMapper.js';
 import type { FontLanguageProps } from './views/FontLanguage.types.js';
 import type { ThemeProviderProps } from './views/ThemeProvider.js';
+export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export type TamaguiElement = HTMLElement | View;
 export type DebugProp = boolean | 'break' | 'verbose';
@@ -408,16 +409,17 @@ type SharedBaseExtraStyleProps = {
     contain?: Properties['contain'];
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
     gap?: number | SpaceTokens;
-    gapColumn?: number | SpaceTokens;
-    gapRow?: number | SpaceTokens;
+    columnGap?: number | SpaceTokens;
+    rowGap?: number | SpaceTokens;
     userSelect?: Properties['userSelect'];
     outlineColor?: Properties['outlineColor'];
     outlineStyle?: Properties['outlineStyle'];
     outlineOffset?: Properties['outlineOffset'];
     outlineWidth?: Properties['outlineWidth'];
 };
-export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & SharedBaseExtraStyleProps;
-export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & SharedBaseExtraStyleProps & {
+type OverrideRNStyleProps = 'display' | 'backfaceVisibility' | 'elevation' | 'gap' | 'columnGap' | 'rowGap';
+export type StackStylePropsBase = Omit<ViewStyle, OverrideRNStyleProps> & TransformStyleProps & SharedBaseExtraStyleProps;
+export type TextStylePropsBase = Omit<TextStyle, OverrideRNStyleProps> & TransformStyleProps & SharedBaseExtraStyleProps & {
     ellipse?: boolean;
     textDecorationDistance?: number;
     textOverflow?: Properties['textOverflow'];
@@ -519,7 +521,7 @@ export type StaticConfigPublic = {
      */
     acceptsClassName?: boolean;
 };
-export type StaticConfig = StaticConfigPublic & {
+type StaticConfigBase = StaticConfigPublic & {
     Component?: FunctionComponent<any> & StaticComponentObject;
     variants?: GenericVariantDefinitions;
     /**
@@ -559,12 +561,20 @@ export type StaticConfig = StaticConfigPublic & {
      */
     isHOC?: boolean;
 };
+export type StaticConfig = StaticConfigBase & {
+    parentStaticConfig?: StaticConfigBase;
+};
+export type ViewStyleWithPseudos = TextStyleProps | (TextStyleProps & {
+    hoverStyle?: TextStyleProps;
+    pressStyle?: TextStyleProps;
+    focusStyle?: TextStyleProps;
+});
 /**
  * --------------------------------------------
  *   variants
  * --------------------------------------------
  */
-export type StylableComponent = TamaguiComponent | ComponentType<any> | ForwardRefExoticComponent<any> | ReactComponentWithRef<any, any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
+export type StylableComponent = TamaguiComponent | ComponentType<any> | ForwardRefExoticComponent<any> | ReactComponentWithRef<any, any> | (new (props: any) => any);
 export type GetStyledVariants<A extends TamaguiComponent> = A extends TamaguiComponent<any, any, any, infer Variants> ? Variants : never;
 export type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer BaseProps> ? BaseProps : never;
 export type GetProps<A extends StylableComponent> = A extends TamaguiComponent<infer Props> ? Props : A extends TamaguiReactElement<infer Props> ? Props : A extends ComponentType<infer Props> ? GetGenericComponentTamaguiProps<Props> : A extends new (props: infer Props) => any ? GetGenericComponentTamaguiProps<Props> : {};
@@ -707,8 +717,7 @@ export type UseAnimationHook = (props: {
     style?: StackStylePropsBase | StackStylePropsBase[];
 };
 export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
-export type PartialStyleObject = Pick<StyleObject, 'identifier' | 'property' | 'rules'>;
-export type RulesToInsert = PartialStyleObject[];
+export type RulesToInsert = StyleObject[];
 export type GetStyleResult = {
     pseudos?: PseudoStyles;
     style: ViewStyle;
@@ -735,5 +744,4 @@ export type TamaguiComponentEvents = {
     onMouseLeave?: ((e: any) => void) | undefined;
     onPressOut: ((e: any) => void) | undefined;
 };
-export {};
 //# sourceMappingURL=types.d.ts.map

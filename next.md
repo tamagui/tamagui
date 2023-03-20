@@ -1,10 +1,6 @@
-- input wrapping:
-  - https://discord.com/channels/909986013848412191/1037853103074050248/1082445770021683241
+- WARN  Sending onAnimatedValueUpdate with no listeners registered
 
-- dark mode list item subtitle isn't visible?
-  - https://discord.com/channels/909986013848412191/1082735552509522083/1082735552509522083
-
-- beatgig https://discord.com/channels/909986013848412191/1081351448731856977
+- add codesandbox for most components
 
 - @tamagui/change-animation-driver
   - would be good for the website to show and test animations across all drivers

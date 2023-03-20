@@ -17,9 +17,12 @@ import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
 import {
   Button,
+  Input,
   Popover,
   ScrollView,
+  Stack,
   TamaguiProvider,
+  ToastProvider,
   XStack,
   YStack,
   styled,
@@ -28,6 +31,7 @@ import {
 
 import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
 import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
+import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
 import config from './tamagui.config'
 
 // useful for debugging why things render:
@@ -59,14 +63,19 @@ const Image = styled(
   }
 )
 
+const X = <Stack gap />
+
 export const Sandbox = () => {
   return (
     <SandboxFrame>
       {/* this comment keeps indent */}
       {/* <SandboxDefault /> */}
 
+      <SandboxStyledOverridePseudo />
+
+      {/* TODO */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}
-      <SandboxCustomStyledAnimatedPopover />
+      {/* <SandboxCustomStyledAnimatedPopover /> */}
     </SandboxFrame>
   )
 }
@@ -122,31 +131,33 @@ const SandboxFrame = (props: { children: any }) => {
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
-      <link href="/fonts/inter.css" rel="stylesheet" />
+      <ToastProvider swipeDirection="horizontal">
+        <link href="/fonts/inter.css" rel="stylesheet" />
 
-      <style
-        type="text/css"
-        dangerouslySetInnerHTML={{
-          __html: `
+        <style
+          type="text/css"
+          dangerouslySetInnerHTML={{
+            __html: `
             html, body, #root { overflow: hidden; height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; }
           `,
-        }}
-      />
+          }}
+        />
 
-      {props.children}
+        {props.children}
 
-      {/*  */}
-      <button
-        style={{
-          position: 'absolute',
-          bottom: 30,
-          left: 20,
-          fontSize: 30,
-        }}
-        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      >
-        🌗
-      </button>
+        {/*  */}
+        <button
+          style={{
+            position: 'absolute',
+            bottom: 30,
+            left: 20,
+            fontSize: 30,
+          }}
+          onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+        >
+          🌗
+        </button>
+      </ToastProvider>
     </TamaguiProvider>
   )
 }

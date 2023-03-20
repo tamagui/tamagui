@@ -1,7 +1,7 @@
 // from https://github.com/gorhom/react-native-portal
 // MIT License Copyright (c) 2020 Mo Gorhom
 // fixing SSR issue
-
+import { AnimatePresence } from '@tamagui/animate-presence'
 import {
   spacedChildren,
   useDidFinishSSR,
@@ -275,10 +275,18 @@ export interface PortalHostProps {
   name: string
 
   forwardProps?: Record<string, any>
+
+  /**
+   * Useful when trying to animate children with AnimatePresence.
+   *
+   * Not a part of gorhom/react-native-portal
+   */
+  render?: (children: React.ReactNode) => React.ReactElement
 }
+const defaultRenderer: PortalHostProps['render'] = (children) => <>{children}</>
 
 const PortalHostComponent = (props: PortalHostProps) => {
-  const { name, forwardProps } = props
+  const { name, forwardProps, render = defaultRenderer } = props
   const isServer = !useDidFinishSSR()
   const state = usePortalState(name)
   const { registerHost, deregisterHost } = usePortal(props.name)
@@ -295,27 +303,25 @@ const PortalHostComponent = (props: PortalHostProps) => {
   //#endregion
 
   if (forwardProps) {
-    return (
-      <>
-        {state.map((item) => {
-          let next = item.node
+    return render(
+      state.map((item) => {
+        let next = item.node
 
-          if (forwardProps) {
-            return React.Children.map(next, (child) => {
-              return React.isValidElement(child)
-                ? React.cloneElement(child, { key: child.key, ...forwardProps })
-                : child
-            })
-          }
+        if (forwardProps) {
+          return React.Children.map(next, (child) => {
+            return React.isValidElement(child)
+              ? React.cloneElement(child, { key: child.key, ...forwardProps })
+              : child
+          })
+        }
 
-          return next
-        })}
-      </>
+        return next
+      })
     )
   }
 
   //#region render
-  return <>{state.map((item) => item.node)}</>
+  return render(state.map((item) => item.node))
   //#endregion
 }
 

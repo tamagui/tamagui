@@ -29,15 +29,17 @@ import type {
   DebugProp,
   GetStyleResult,
   MediaQueryKey,
-  PartialStyleObject,
   PseudoPropKeys,
   PseudoStyles,
   RulesToInsert,
   SpaceTokens,
   SplitStyleState,
   StaticConfigParsed,
+  StyleObject,
   TamaguiInternalConfig,
+  TextStyleProps,
   ThemeParsed,
+  ViewStyleWithPseudos,
 } from '../types.js'
 import type {
   FontLanguageProps,
@@ -61,7 +63,7 @@ import {
 import { pseudoDescriptors } from './pseudoDescriptors.js'
 
 type GetStyleState = {
-  style: ViewStyle
+  style: TextStyleProps
   usedKeys: Record<string, number>
   classNames: ClassNamesObject
   staticConfig: StaticConfigParsed
@@ -227,7 +229,7 @@ export const getSplitStyles: StyleSplitter = (
   const shouldDoClasses =
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
 
-  let style: ViewStyle | TextStyle = {}
+  let style: ViewStyleWithPseudos = {}
   const flatTransforms: FlatTransforms = {}
 
   const len = propKeys.length
@@ -482,7 +484,7 @@ export const getSplitStyles: StyleSplitter = (
       if (valInit && valInit[0] === '_') {
         // if valid style key (or pseudo like color-hover):
         // this conditional and esp the pseudo check rarely runs so not a perf issue
-        const isValidClassName = validStyles[keyInit]
+        const isValidClassName = keyInit in validStyles
         const isMediaOrPseudo =
           !isValidClassName &&
           keyInit.includes(PROP_SPLIT) &&
@@ -510,16 +512,22 @@ export const getSplitStyles: StyleSplitter = (
     let isMedia = isMediaKey(keyInit)
     let isPseudo = keyInit in validPseudoKeys
 
-    const isHOCShouldPassThrough = staticConfig.isHOC && (isMedia || isPseudo)
+    const isVariant = variants && keyInit in variants
+    const parentHasVariant =
+      staticConfig.parentStaticConfig &&
+      staticConfig.parentStaticConfig.variants &&
+      keyInit in staticConfig.parentStaticConfig
+    const isHOCShouldPassThrough =
+      staticConfig.isHOC && (isMedia || isPseudo || isVariant)
 
     const shouldPassProp = !(
       isMedia ||
       isPseudo ||
-      variants?.[keyInit] ||
+      isVariant ||
       keyInit in validStyleProps ||
       keyInit in shorthands
     )
-    const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
+    const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough || parentHasVariant
 
     if (
       process.env.NODE_ENV === 'development' &&
@@ -527,13 +535,20 @@ export const getSplitStyles: StyleSplitter = (
       shouldPassThrough
     ) {
       // eslint-disable-next-line no-console
-      console.log('  🔹 skip', keyInit)
+      console.log(`  🔹 pass through ${keyInit}`)
     }
 
     if (shouldPassThrough) {
       usedKeys[keyInit] = 1
       viewProps[keyInit] = valInit
-      continue
+
+      // if it's a variant here, we have a two layer variant...
+      // aka styled(Input, { unstyled: true, variants: { unstyled: {} } })
+      // which now has it's own unstyled + the child unstyled...
+      // so *don't* skip applying the styles, but also pass `unstyled` to children
+      if (!isVariant) {
+        continue
+      }
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -746,13 +761,14 @@ export const getSplitStyles: StyleSplitter = (
               }
             }
           }
+
           const mediaStyles = getStylesAtomic(mediaStyle)
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
             if (!usedKeys[fullKey]) {
               usedKeys[fullKey] = 1
-              addStyleToInsertRules(rulesToInsert, out)
+              addStyleToInsertRules(rulesToInsert, out as any)
               mergeClassName(transforms, classNames, fullKey, out.identifier, true)
             }
           }
@@ -776,7 +792,7 @@ export const getSplitStyles: StyleSplitter = (
               usedKeys
             )
             if (key === 'fontFamily') {
-              fontFamily = mediaStyle[key]
+              fontFamily = mediaStyle.fontFamily as string
             }
           }
         }
@@ -818,10 +834,10 @@ export const getSplitStyles: StyleSplitter = (
   // native: swap out the right family based on weight/style
   if (process.env.TAMAGUI_TARGET === 'native') {
     if ('fontFamily' in style && style.fontFamily) {
-      const faceInfo = getFont(style.fontFamily)?.face
+      const faceInfo = getFont(style.fontFamily as string)?.face
       if (faceInfo) {
         const overrideFace =
-          faceInfo[style.fontWeight!]?.[style.fontStyle || 'normal']?.val
+          faceInfo[style.fontWeight as string]?.[style.fontStyle || 'normal']?.val
         if (overrideFace) {
           style.fontFamily = overrideFace
           fontFamily = overrideFace
@@ -909,18 +925,27 @@ export const getSplitStyles: StyleSplitter = (
             identifier,
             rules: [rule],
             property: namespace,
-          })
+          } as StyleObject)
         }
         classNames[namespace] = identifier
       }
     }
   }
 
+  // now we need to reverse viewProps because order is important for wrapped tamagui children:
+  // techcnically we could just do this when it is HOC/has parentStaticConfig I think... but safer this way
+  const nextViewProps = {}
+  const ks = Object.keys(viewProps)
+  const l = ks.length
+  for (let i = l - 1; i >= 0; i--) {
+    nextViewProps[ks[i]] = viewProps[ks[i]]
+  }
+
   const result = {
     space,
     hasMedia,
     fontFamily,
-    viewProps,
+    viewProps: nextViewProps,
     style,
     pseudos,
     classNames,
@@ -1045,9 +1070,9 @@ export const getSubStyle = (
   styleIn: Object,
   avoidDefaultProps?: boolean,
   avoidMergeTransform?: boolean
-): ViewStyle => {
+): TextStyleProps => {
   const { staticConfig, theme, props, state, conf, languageContext } = styleState
-  const styleOut: ViewStyle = {}
+  const styleOut: TextStyleProps = {}
 
   for (let key in styleIn) {
     const val = styleIn[key]
@@ -1099,10 +1124,7 @@ export const useSplitStyles: StyleSplitter = (...args) => {
   return res
 }
 
-function addStyleToInsertRules(
-  rulesToInsert: RulesToInsert,
-  styleObject: PartialStyleObject
-) {
+function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleObject) {
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (!shouldInsertStyleRules(styleObject)) {
       return
@@ -1129,7 +1151,12 @@ const hyphenate = (str: string) => str.replace(/[A-Z]/g, lowercaseHyphenate)
 
 export type FlatTransforms = Record<string, any>
 
-const mergeTransform = (obj: ViewStyle, key: string, val: any, backwards = false) => {
+const mergeTransform = (
+  obj: TextStyleProps,
+  key: string,
+  val: any,
+  backwards = false
+) => {
   obj.transform ||= []
   obj.transform[backwards ? 'unshift' : 'push']({
     [mapTransformKeys[key] || key]: val,
@@ -1137,7 +1164,7 @@ const mergeTransform = (obj: ViewStyle, key: string, val: any, backwards = false
 }
 
 const mergeTransforms = (
-  obj: ViewStyle,
+  obj: TextStyleProps,
   flatTransforms: FlatTransforms,
   backwards = false
 ) => {
