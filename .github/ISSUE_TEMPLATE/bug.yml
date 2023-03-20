@@ -25,8 +25,8 @@ body:
     label: Reproduction
     render: markdown
     description: |
-      - If this is a bug with Tamagui, fork this CodeSandbox to reproduce the issue.
-      - If this is a bug with the Starter, fork this CodeSandbox to reproduce the issue.
+      - If this is a bug with Tamagui, fork [this CodeSandbox](https://codesandbox.io/p/sandbox/github/tamagui/tamagui/starters/expo-next-solito) to reproduce the issue.
+      - If this is a bug with the Starter, fork [this CodeSandbox](https://codesandbox.io/p/sandbox/github/tamagui/tamagui/apps/starter) to reproduce the issue.
       - For native-only bugs, please fork this repo and use `apps/kitchen-sink` to reproduce the bug. Once reproduced, submit a PR with the title `[Issue] ...`
   validations:
     required: true
