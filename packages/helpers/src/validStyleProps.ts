@@ -126,27 +126,6 @@ export const stylePropsView = Object.freeze({
     outlineOffset: true,
     outlineWidth: true,
   }),
-
-  ...(process.env.TAMAGUI_TARGET === 'native' && {
-    // RN doesn't support specific border styles per-edge
-    borderBottomStyle: true,
-    borderTopStyle: true,
-    borderLeftStyle: true,
-    borderRightStyle: true,
-
-    overflowX: true,
-    overflowY: true,
-    userSelect: true,
-    cursor: true,
-    contain: true,
-    pointerEvents: true,
-    boxSizing: true,
-    boxShadow: true,
-    outlineColor: true,
-    outlineStyle: true,
-    outlineOffset: true,
-    outlineWidth: true,
-  }),
 })
 
 export const stylePropsTextOnly = Object.freeze({
