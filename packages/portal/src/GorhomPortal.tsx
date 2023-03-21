@@ -1,18 +1,10 @@
 // from https://github.com/gorhom/react-native-portal
 // MIT License Copyright (c) 2020 Mo Gorhom
 // fixing SSR issue
-import { AnimatePresence } from '@tamagui/animate-presence'
-import {
-  spacedChildren,
-  useDidFinishSSR,
-  useEvent,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/core'
+import { useDidFinishSSR, useEvent, useIsomorphicLayoutEffect } from '@tamagui/core'
 import React, {
   ReactNode,
-  cloneElement,
   createContext,
-  isValidElement,
   memo,
   startTransition,
   useCallback,
@@ -21,7 +13,6 @@ import React, {
   useId,
   useMemo,
   useReducer,
-  useRef,
 } from 'react'
 
 interface PortalType {
