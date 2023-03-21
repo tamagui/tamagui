@@ -79,6 +79,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
 
     React.useEffect(() => {
       if (!isWeb) return
+      if (context.toastCount === 0) return
       const handleKeyDown = (event: KeyboardEvent) => {
         // we use `event.code` as it is consistent regardless of meta keys that were pressed.
         // for example, `event.key` for `Control+Alt+t` is `†` and `t !== †`
@@ -86,7 +87,6 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
           (key) => (event as any)[key] || event.code === key
         )
         if (isHotkeyPressed) ref.current?.focus()
-        console.log(isHotkeyPressed)
       }
       document.addEventListener('keydown', handleKeyDown)
       return () => {
@@ -96,6 +96,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
 
     React.useEffect(() => {
       if (!isWeb) return
+      if (context.toastCount === 0) return
       const wrapper = wrapperRef.current
       const viewport = ref.current
       if (hasToasts && wrapper && viewport) {
@@ -166,6 +167,8 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
 
     React.useEffect(() => {
       if (!isWeb) return
+      if (context.toastCount === 0) return
+
       const viewport = ref.current
       // We programmatically manage tabbing as we are unable to influence
       // the source order with portals, this allows us to reverse the

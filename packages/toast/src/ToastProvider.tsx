@@ -1,11 +1,9 @@
-
 import { createCollection } from '@tamagui/collection'
 import { TamaguiElement, useId } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { PortalProvider } from '@tamagui/portal'
 import * as React from 'react'
-
 
 /* -------------------------------------------------------------------------------------------------
  * ToastProvider
@@ -87,31 +85,29 @@ const ToastProvider: React.FC<ToastProviderProps> = (
   const isClosePausedRef = React.useRef(false)
 
   return (
-    <PortalProvider shouldAddRootHost={false} rootHostName="default">
-      <Collection.Provider scope={__scopeToast}>
-        <ToastProviderProvider
-          scope={__scopeToast}
-          id={id}
-          label={label}
-          duration={duration}
-          swipeDirection={swipeDirection}
-          swipeThreshold={swipeThreshold}
-          toastCount={toastCount}
-          viewport={viewport}
-          onViewportChange={setViewport}
-          onToastAdd={React.useCallback(() => {
-            setToastCount((prevCount) => prevCount + 1)
-          }, [])}
-          onToastRemove={React.useCallback(() => {
-            setToastCount((prevCount) => prevCount - 1)
-          }, [])}
-          isFocusedToastEscapeKeyDownRef={isFocusedToastEscapeKeyDownRef}
-          isClosePausedRef={isClosePausedRef}
-        >
-          {children}
-        </ToastProviderProvider>
-      </Collection.Provider>
-    </PortalProvider>
+    <Collection.Provider scope={__scopeToast}>
+      <ToastProviderProvider
+        scope={__scopeToast}
+        id={id}
+        label={label}
+        duration={duration}
+        swipeDirection={swipeDirection}
+        swipeThreshold={swipeThreshold}
+        toastCount={toastCount}
+        viewport={viewport}
+        onViewportChange={setViewport}
+        onToastAdd={React.useCallback(() => {
+          setToastCount((prevCount) => prevCount + 1)
+        }, [])}
+        onToastRemove={React.useCallback(() => {
+          setToastCount((prevCount) => prevCount - 1)
+        }, [])}
+        isFocusedToastEscapeKeyDownRef={isFocusedToastEscapeKeyDownRef}
+        isClosePausedRef={isClosePausedRef}
+      >
+        {children}
+      </ToastProviderProvider>
+    </Collection.Provider>
   )
 }
 
@@ -128,7 +124,11 @@ ToastProvider.propTypes = {
 ToastProvider.displayName = PROVIDER_NAME
 
 export {
-  Collection, ToastProvider, createToastContext, createToastScope, useCollection, useToastProviderContext
+  Collection,
+  ToastProvider,
+  createToastContext,
+  createToastScope,
+  useCollection,
+  useToastProviderContext,
 }
 export type { ScopedProps, SwipeDirection, ToastProviderProps }
-
