@@ -12,7 +12,8 @@ export const stepTokenUpOrDown = (
   bounds = [0]
 ): Variable<number> => {
   const tokens = getTokens({ prefixed: true })[type]
-  const keysOrdered = tokensKeysOrdered.get(tokens) || Object.keys(tokens)
+  const maybeTokenizedKeysOrdered = tokensKeysOrdered.get(tokens) || Object.keys(tokens);
+  const keysOrdered = maybeTokenizedKeysOrdered.map((maybeTokenizedKey) => maybeTokenizedKey.charAt(0) === "$" ? maybeTokenizedKey : `$${maybeTokenizedKey}`);
   const min = bounds[0] ?? 0
   const max = bounds[1] ?? keysOrdered.length - 1
   const currentIndex = keysOrdered.indexOf(name)
