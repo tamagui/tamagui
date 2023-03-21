@@ -26,6 +26,7 @@ export function wrapChildrenInText(
     fontWeight,
     letterSpacing,
     textAlign,
+    fontStyle,
   } = propsIn
 
   if (noTextWrap || !children) {
@@ -43,6 +44,7 @@ export function wrapChildrenInText(
   const props = {
     ...extraProps,
   }
+
   // to avoid setting undefined
   if (color) props.color = color
   if (fontFamily) props.fontFamily = fontFamily
@@ -51,6 +53,7 @@ export function wrapChildrenInText(
   if (letterSpacing) props.letterSpacing = letterSpacing
   if (textAlign) props.textAlign = textAlign
   if (size) props.size = size
+  if (fontStyle) props.fontStyle = fontStyle
 
   function concatStringChildren() {
     if (!lastIsString) return
