@@ -92,7 +92,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
       return () => {
         document.removeEventListener('keydown', handleKeyDown)
       }
-    }, [hotkey])
+    }, [hotkey, context.toastCount])
 
     React.useEffect(() => {
       if (!isWeb) return
@@ -144,7 +144,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
           window.removeEventListener('focus', handleResume)
         }
       }
-    }, [hasToasts, context.isClosePausedRef])
+    }, [hasToasts, context.isClosePausedRef, context.toastCount])
 
     const getSortedTabbableCandidates = React.useCallback(
       ({ tabbingDirection }: { tabbingDirection: 'forwards' | 'backwards' }) => {
@@ -212,7 +212,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
         viewport.addEventListener('keydown', handleKeyDown)
         return () => viewport.removeEventListener('keydown', handleKeyDown)
       }
-    }, [getItems, getSortedTabbableCandidates])
+    }, [getItems, getSortedTabbableCandidates, context.toastCount])
 
     return (
       <ToastViewportWrapperFrame
