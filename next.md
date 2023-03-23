@@ -1,3 +1,4 @@
+- styled(X) should inherit `name` attribute
 - bounty: sheet breakpoints different on web/native
 - rythm: vite builds breaking
 - app dir support
