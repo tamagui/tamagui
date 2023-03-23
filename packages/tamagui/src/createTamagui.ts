@@ -8,20 +8,7 @@ export const createTamagui: typeof createTamaguiCore =
   process.env.NODE_ENV !== 'development'
     ? createTamaguiCore
     : (conf) => {
-        const sizeTokenKeys = [
-          '$0',
-          '$1',
-          '$2',
-          '$3',
-          '$4',
-          '$5',
-          '$6',
-          '$7',
-          '$8',
-          '$9',
-          '$10',
-          '$true',
-        ]
+        const sizeTokenKeys = ['$true']
 
         const hasKeys = (expectedKeys: string[], obj: Record<any, any>) => {
           return expectedKeys.every((k) => typeof obj[k] !== 'undefined')
@@ -35,17 +22,29 @@ export const createTamagui: typeof createTamaguiCore =
           if (!tokenSet) {
             throw new Error(
               `Expected tokens for "${name}" in ${Object.keys(
-                tamaguiConfig.tokensParsed,
-              ).join(', ')}`,
+                tamaguiConfig.tokensParsed
+              ).join(', ')}`
             )
           }
           if (!hasKeys(sizeTokenKeys, tokenSet)) {
             throw new Error(`
-createTamagui() missing definition for expected tokens.${name}:
+createTamagui() missing expected tokens.${name}:
 
 Received: ${Object.keys(tokenSet).join(', ')}
 
 Expected: ${sizeTokenKeys.join(', ')}
+
+Tamagui expects a "true" key that is the same value as your default size. This is so 
+it can size things up or down from the defaults without assuming which keys you use.
+
+Please define a "true" or "$true" key on your size and space tokens like so (example):
+
+size: {
+  sm: 2,
+  md: 10,
+  true: 10, // this means "md" is your default size
+  lg: 20,
+}
 
 `)
           }
