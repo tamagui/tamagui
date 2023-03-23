@@ -4281,7 +4281,7 @@ __metadata:
     "@tamagui/build": 1.9.1
     "@tamagui/use-presence": 1.9.1
     "@tamagui/web": 1.9.1
-    react-native-reanimated: ^2.14.4
+    react-native-reanimated: ^3.0.2
   languageName: unknown
   linkType: soft
 
@@ -5000,6 +5000,7 @@ __metadata:
     react-dom: ^18.2.0
     react-native: ^0.71.4
     react-native-gesture-handler: ^2.8.0
+    react-native-reanimated: ^3.0.2
     react-native-safe-area-context: ^4.4.1
     react-native-screens: ^3.18.2
     react-native-svg: 13.4.0
@@ -5430,7 +5431,7 @@ __metadata:
     mini-css-extract-plugin: ^2.7.2
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-native-reanimated: ^2.14.4
+    react-native-reanimated: ^3.0.2
     react-native-web: ^0.18.3
     react-refresh: ^0.14.0
     solito: ^2.3.0

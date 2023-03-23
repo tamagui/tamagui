@@ -3,7 +3,7 @@
   "compilerOptions": {
     "composite": true,
     "module": "ESNext",
-    "moduleResolution": "Node16",
+    "moduleResolution": "node",
     "rootDir": "../.."
   },
   "include": [

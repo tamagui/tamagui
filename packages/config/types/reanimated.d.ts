@@ -1,6 +1,5 @@
 export * from './media';
 export * from './createGenericFont';
-export { animations } from './animations';
 export declare const config: {
     shouldAddPrefersColorThemes: boolean;
     themeClassNameOnRoot: boolean;
@@ -42245,4 +42244,4 @@ export declare const config: {
         silkscreen: import("@tamagui/web").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
     };
 };
-//# sourceMappingURL=index.d.ts.map
+//# sourceMappingURL=reanimated.d.ts.map

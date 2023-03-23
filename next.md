@@ -1,3 +1,7 @@
+- bounty: sheet breakpoints different on web/native
+- rythm: vite builds breaking
+- app dir support
+
 - WARN  Sending onAnimatedValueUpdate with no listeners registered
 
 - add codesandbox for most components

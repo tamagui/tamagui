@@ -20,6 +20,16 @@
   },
   "exports": {
     "./package.json": "./package.json",
+    "./reanimated": {
+      "types": "./types/reanimated.d.ts",
+      "import": "./dist/esm/reanimated.mjs",
+      "require": "./dist/cjs/reanimated.js"
+    },
+    "./animations": {
+      "types": "./types/animations.d.ts",
+      "import": "./dist/esm/animations.mjs",
+      "require": "./dist/cjs/animations.js"
+    },
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",

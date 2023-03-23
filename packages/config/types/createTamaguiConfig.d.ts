@@ -1,10 +1,9 @@
-export * from './media';
-export * from './createGenericFont';
-export { animations } from './animations';
-export declare const config: {
+import type { AnimationDriver } from '@tamagui/web';
+export * from './animations';
+export declare function createTamaguiConfig(animations: AnimationDriver): {
     shouldAddPrefersColorThemes: boolean;
     themeClassNameOnRoot: boolean;
-    animations: import("@tamagui/web").AnimationDriver<{
+    animations: AnimationDriver<{
         [key: string]: any;
     }>;
     themes: {
@@ -42245,4 +42244,4 @@ export declare const config: {
         silkscreen: import("@tamagui/web").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
     };
 };
-//# sourceMappingURL=index.d.ts.map
+//# sourceMappingURL=createTamaguiConfig.d.ts.map
