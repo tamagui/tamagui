@@ -2684,6 +2684,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:3.0.0":
+  version: 3.0.0
+  resolution: "@hookform/resolvers@npm:3.0.0"
+  peerDependencies:
+    react-hook-form: ^7.0.0
+  checksum: 72c1282c1b847be074c5233e72f357de832eca41543bad9a2efb6279a14baa0bbbf55f0255e6d2dbcb34fbd07bb974f71e471e3cc89a138e001cf2ce5e28da76
+  languageName: node
+  linkType: hard
+
 "@jest/create-cache-key-function@npm:^29.0.3":
   version: 29.5.0
   resolution: "@jest/create-cache-key-function@npm:29.5.0"
@@ -5309,6 +5318,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/react-hook-form@workspace:packages/react-hook-form":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/react-hook-form@workspace:packages/react-hook-form"
+  dependencies:
+    "@tamagui/build": 1.9.0
+    "@tamagui/form": 1.9.0
+    "@tamagui/web": 1.9.0
+    react: ^18.2.0
+    react-hook-form: ^7.43.0
+  peerDependencies:
+    react: "*"
+    react-hook-form: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/react-native-media-driver@1.9.0, @tamagui/react-native-media-driver@workspace:packages/react-native-media-driver":
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-media-driver@workspace:packages/react-native-media-driver"
@@ -5388,6 +5412,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox-web@workspace:apps/sandbox-web"
   dependencies:
+    "@hookform/resolvers": 3.0.0
     "@tamagui/config": 1.9.0
     "@tamagui/vite-plugin": 1.9.0
     "@tamagui/web": 1.9.0
@@ -5397,6 +5422,7 @@ __metadata:
     react-dom: ^18.2.0
     vite: ^4.0.4
     vite-plugin-environment: ^1.1.3
+    yup: 1.0.2
   languageName: unknown
   linkType: soft
 
@@ -18175,6 +18201,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"property-expr@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "property-expr@npm:2.0.5"
+  checksum: 4ebe82ce45aaf1527e96e2ab84d75d25217167ec3ff6378cf83a84fb4abc746e7c65768a79d275881602ae82f168f9a6dfaa7f5e331d0fcc83d692770bcce5f1
+  languageName: node
+  linkType: hard
+
 "property-information@npm:^6.0.0":
   version: 6.2.0
   resolution: "property-information@npm:6.2.0"
@@ -18419,6 +18452,15 @@ __metadata:
   peerDependencies:
     react: ">=17.0.0"
   checksum: 4258eabdbbf74aaebc38ad1fd7cfdc1984d2a844a2247b39a341c55c1beb02d5e855e6473ec5683205a52b2251d0f7dffa07cd8100f402dd2698af88b932d946
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.43.0":
+  version: 7.43.7
+  resolution: "react-hook-form@npm:7.43.7"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: c1679fc5119f3f910f30424b846f9a05ecbc9cce1c7408e4e8eb907aa5a4366d5228a7b41d818868c85017f2be4e1854a1536ba5c1cddf2c27818bd045df9589
   languageName: node
   linkType: hard
 
@@ -21091,6 +21133,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tiny-case@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "tiny-case@npm:1.0.3"
+  checksum: 3f7a30c39d5b0e1bc097b0b271bec14eb5b836093db034f35a0de26c14422380b50dc12bfd37498cf35b192f5df06f28a710712c87ead68872a9e37ad6f6049d
+  languageName: node
+  linkType: hard
+
 "tiny-glob@npm:^0.2.9":
   version: 0.2.9
   resolution: "tiny-glob@npm:0.2.9"
@@ -21217,6 +21266,13 @@ __metadata:
   version: 3.0.0
   resolution: "toml@npm:3.0.0"
   checksum: 5d7f1d8413ad7780e9bdecce8ea4c3f5130dd53b0a4f2e90b93340979a137739879d7b9ce2ce05c938b8cc828897fe9e95085197342a1377dd8850bf5125f15f
+  languageName: node
+  linkType: hard
+
+"toposort@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "toposort@npm:2.0.2"
+  checksum: d64c74b570391c9432873f48e231b439ee56bc49f7cb9780b505cfdf5cb832f808d0bae072515d93834dd6bceca5bb34448b5b4b408335e4d4716eaf68195dcb
   languageName: node
   linkType: hard
 
@@ -21436,7 +21492,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^2.0.0":
+"type-fest@npm:^2.0.0, type-fest@npm:^2.19.0":
   version: 2.19.0
   resolution: "type-fest@npm:2.19.0"
   checksum: a4ef07ece297c9fba78fc1bd6d85dff4472fe043ede98bd4710d2615d15776902b595abf62bd78339ed6278f021235fb28a96361f8be86ed754f778973a0d278
@@ -23025,6 +23081,18 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: f77b3d8d00310def622123df93d4ee654fc6a0096182af8bd60679ddcdfb3474c56c6c7190817c84a2785648cdee9d721c0154eb45698c62176c322fb46fc700
+  languageName: node
+  linkType: hard
+
+"yup@npm:1.0.2":
+  version: 1.0.2
+  resolution: "yup@npm:1.0.2"
+  dependencies:
+    property-expr: ^2.0.5
+    tiny-case: ^1.0.3
+    toposort: ^2.0.2
+    type-fest: ^2.19.0
+  checksum: 1cb9c490853739aa0c576c87a81008dd3612985dd2da5ff6127b77640465fa906bb47ed30a7c97824b4a3f525010b2d7f614ebbd442b02e16433675c4d66f0b8
   languageName: node
   linkType: hard
 
