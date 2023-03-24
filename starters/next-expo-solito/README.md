@@ -40,7 +40,7 @@ You can add other folders inside of `packages/` if you know what you're doing an
 
 - Next.js local dev: `yarn web`
 
-To run with optimizer on in dev mode (just for testing, it's faster to leave it off): `yarn web:extract`. To build for production `yarn:prod`.
+To run with optimizer on in dev mode (just for testing, it's faster to leave it off): `yarn web:extract`. To build for production `yarn web:prod`.
 
 To see debug output to verify the compiler, add `// debug` as a comment to the top of any file.
 
