@@ -132,7 +132,8 @@ export default () => {
 #### Multiple Toast
 
 <Notice>
-To use multiple toasts, you should pass `multipleToasts` to your `ToastViewport`. Otherwise there'll be issues when swipe-dismissing or animating toasts.
+  To use multiple toasts, you should pass `multipleToasts` to your `ToastViewport`.
+  Otherwise there'll be issues when swipe-dismissing or animating toasts.
 </Notice>
 
 ```tsx
@@ -395,3 +396,101 @@ Used when using the imperative API.
     },
   ]}
 />
+
+## FAQ
+
+#### How to change the placement of toasts?
+
+##### Native toasts
+
+- iOS (burnt): Supports top or bottom placements. Adjustable by passing `from` to `burntOptions`:
+
+```tsx
+<ToastImperativeProvider options={{ burntOptions: { from: 'bottom' } }}>
+```
+
+- Android (burnt): Not supported.
+- Web (Notification API): Not supported.
+
+##### Non-native toasts
+
+You should change the positioning of your [`<ToastViewport>`](#toastviewport). For instance, if you want them to appear from top right:
+
+```tsx
+<ToastViewport
+  flexDirection="column-reverse"
+  top={0}
+  right={0}
+/>
+```
+
+Or for bottom center:
+
+```tsx
+<ToastViewport
+  flexDirection="column"
+  bottom={0}
+  left={0}
+  right={0}
+/>
+```
+
+<Notice theme="blue">
+  When using multiple toasts, you can change the order of toasts by setting
+  `flexDirection` to `column` or `column-reverse`. Or even have them stack horizontally
+  using `row` or `row-reverse`.
+</Notice>
+
+#### How to show non-native toasts within safe area on mobile?
+
+Install `react-native-safe-area-context` if you haven't, wrap your app inside `<SafeAreaProvider>`, and use the safe area insets to position the viewport inside the safe area.
+
+```tsx
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+const SafeToastViewport = () => {
+  const { left, top, right } = useSafeAreaInsets()
+  return (
+    <ToastViewport
+      flexDirection="column-reverse"
+      top={top}
+      left={left}
+      right={right}
+    />
+  )
+}
+
+```
+
+#### Can I have multiple viewports?
+
+Yes, but you will have to name them and then reference the viewport name on the `<Toast>` component. for instance:
+
+```tsx
+
+const App = () => {
+  return (
+    <ToastProvider>
+      <ToastViewport /> // name will be "default"
+      <ToastViewport name="viewport-custom" />
+    </ToastProvider>
+  )
+}
+
+
+const MyComponent = () => {
+  return (
+    <Toast> // goes to default viewport
+      // ...
+    </Toast>
+  )
+}
+
+const MyComponent2 = () => {
+  return (
+    <Toast viewportName="viewport-custom">
+      // ...
+    </Toast>
+  )
+}
+```
