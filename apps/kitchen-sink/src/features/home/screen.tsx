@@ -78,12 +78,13 @@ const LinkListItem = ({
   )
 }
 
-const ColorSchemeListItem = () => {
+const ColorSchemeListItem = (props: ListItemProps) => {
   const theme = useThemeControl()
   const checked = theme.value === 'light'
 
   return (
     <ListItem
+      {...props}
       pressTheme
       paddingVertical={0}
       onPress={() => {
