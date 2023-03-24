@@ -176,7 +176,7 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
-    readonly focusTheme?: boolean | undefined; /** The value for the tabs state to be changed to after activation of the trigger */
+    readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
@@ -294,7 +294,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
-    readonly focusTheme?: boolean | undefined; /** The value for the tabs state to be changed to after activation of the trigger */
+    readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;

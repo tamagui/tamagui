@@ -1,16 +1,27 @@
-import { CreateNativeToastsOptions, CreateNativeToastsOptionsFn } from './types'
+import { BaseToastOptions as BurntToastOptions } from 'burnt/build/types'
 
-export const createNativeToast: CreateNativeToastsOptionsFn = (
+import {
+  CreateNativeToastsFn,
+  HideNativeToastsFn
+} from './types'
+
+export const createNativeToast: CreateNativeToastsFn = (
   title,
-  { message, duration, preset = 'done' }: CreateNativeToastsOptions
+  { message, duration, burntOptions }
 ) => {
   // import inline to allow lazy usage of native dependecy:
-  const Burnt = require('burnt')
+  const Burnt: { toast: (options: BurntToastOptions) => any } = require('burnt')
 
   Burnt.toast({
     title,
-    message: message ?? '',
-    preset,
-    duration,
+    message,
+    duration: duration ? duration * 1000 : undefined,
+    ...burntOptions,
   })
+  return true
+}
+
+export const hideNativeToast: HideNativeToastsFn = () => {
+  const Burnt: { dismissAllAlerts: () => any } = require('burnt')
+  Burnt.dismissAllAlerts()
 }

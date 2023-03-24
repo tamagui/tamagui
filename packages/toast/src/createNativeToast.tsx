@@ -1,25 +1,49 @@
-import { CreateNativeToastsOptionsFn } from './types'
+import { CreateNativeToastsFn, HideNativeToastsFn } from './types'
 
-export const createNativeToast: CreateNativeToastsOptionsFn = (title, { message }) => {
+export const createNativeToast: CreateNativeToastsFn = (
+  title,
+  { message, notificationOptions }
+) => {
   if (!('Notification' in window)) {
-    throw Error('This browser does not support desktop notification')
+    console.error('This browser does not support notifications')
+    return false
   }
 
-  if (Notification.permission === 'denied') return {}
-
+  if (Notification.permission === 'denied') false
   const showNotification = () => {
-    new Notification(title, {
+    const notification = new Notification(title, {
       body: message,
+      ...notificationOptions,
     })
+
+    return notification
   }
 
   if (Notification.permission === 'granted') {
-    showNotification()
+    const notification = showNotification()
+    return {
+      nativeToastRef: notification,
+    }
   } else {
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
-        showNotification()
+        const notification = showNotification()
+        return {
+          nativeToastRef: notification,
+        }
       }
     })
+  }
+  return true
+}
+
+export const hideNativeToast: HideNativeToastsFn = (ref) => {
+  if (!('Notification' in window)) {
+    console.error('This browser does not support notifications')
+    return
+  }
+
+  if (ref) {
+    ref.close()
   }
 }
