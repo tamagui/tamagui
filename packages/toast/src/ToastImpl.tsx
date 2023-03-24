@@ -318,7 +318,6 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
             key={props.id}
             scope={__scopeToast}
             onClose={() => {
-              console.log('hellooow')
               handleClose()
             }}
           >
