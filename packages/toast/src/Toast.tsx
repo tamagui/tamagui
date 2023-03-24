@@ -14,7 +14,6 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 
 import { TOAST_NAME } from './constants'
-import { createToast } from './createToast'
 import { ToastAnnounceExclude } from './ToastAnnounce'
 import {
   ToastImpl,
@@ -182,8 +181,9 @@ const ToastComponent = React.forwardRef<TamaguiElement, ToastProps>(
     const id = useId()
     const onPause = useEvent(props.onPause)
     const onResume = useEvent(props.onResume)
-
-    if (!forceMount && !open) return null
+    const shouldShow = forceMount || open
+    
+    if (!shouldShow) return null
 
     return (
       <ToastImpl
@@ -220,8 +220,6 @@ export {
   Toast,
   ToastProvider,
   ToastViewport,
-  //
-  createToast,
   //
   createToastScope,
 }

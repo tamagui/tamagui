@@ -158,6 +158,10 @@ type ToastImplProps = ToastImplPrivateProps & ToastImplFrameProps & {
      * @default "default"
      */
     viewportName?: string;
+    /**
+     *
+     */
+    id?: string;
 };
 declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps & Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -261,6 +265,10 @@ declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps &
      * @default "default"
      */
     viewportName?: string | undefined;
+    /**
+     *
+     */
+    id?: string | undefined;
 } & React.RefAttributes<TamaguiElement>>;
 export { ToastImpl, ToastImplFrame, ToastImplProps, useToastInteractiveContext };
 export type { ToastProps };
