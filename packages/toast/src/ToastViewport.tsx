@@ -56,6 +56,10 @@ type ToastViewportProps = ToastViewportFrameProps & {
    * Used to reference the viewport if you want to have multiple viewports in the same provider.
    */
   name?: string
+  /**
+   * Pass this when you want to have multiple/duplicated toasts.
+   */
+  multipleToasts?: boolean
 }
 
 const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
@@ -65,6 +69,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
       hotkey = VIEWPORT_DEFAULT_HOTKEY,
       label = 'Notifications ({hotkey})',
       name,
+      multipleToasts,
       ...viewportProps
     } = props
     const context = useToastProviderContext(VIEWPORT_NAME, __scopeToast)
@@ -243,8 +248,11 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
         <Collection.Slot scope={__scopeToast}>
           <ToastViewportFrame ref={composedRefs} {...viewportProps}>
             <PortalHost
-              // TODO: user should be able to control this prop to customize AnimatePresence
-              render={(children) => <AnimatePresence>{children}</AnimatePresence>}
+              render={(children) => (
+                <AnimatePresence exitBeforeEnter={!multipleToasts}>
+                  {children}
+                </AnimatePresence>
+              )}
               name={name ?? 'default'}
             />
           </ToastViewportFrame>
