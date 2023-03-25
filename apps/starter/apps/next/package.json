@@ -23,7 +23,6 @@
   "devDependencies": {
     "@tamagui/next-plugin": "1.9.0",
     "@types/node": "^16.11.9",
-    "critters": "^0.0.16",
     "eslint-config-next": "^13.0.4"
   }
 }
