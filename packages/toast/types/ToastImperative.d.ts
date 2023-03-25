@@ -13,7 +13,7 @@ interface ShowToastOptions extends CreateNativeToastOptions {
      */
     additionalInfo?: Record<string, any>;
     /**
-     * Overrides the native option on `createToast()`
+     * Overrides the native option on `ToastImperativeProvider`
      */
     native?: ToastNativeValue;
 }
