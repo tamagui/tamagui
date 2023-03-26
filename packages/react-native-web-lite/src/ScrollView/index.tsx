@@ -161,7 +161,7 @@ class ScrollView extends React.Component<any> {
     let contentSizeChangeProps = {}
     if (onContentSizeChange) {
       contentSizeChangeProps = {
-        onLayout: this._handleContentOnLayout,
+        onLayout: this._handleContentOnLayout.bind(this),
       }
     }
 
@@ -224,7 +224,7 @@ class ScrollView extends React.Component<any> {
         this.scrollResponderHandleStartShouldSetResponderCapture.bind(this),
       onScrollShouldSetResponder:
         this.scrollResponderHandleScrollShouldSetResponder.bind(this),
-      onScroll: this._handleScroll,
+      onScroll: this._handleScroll.bind(this),
       onResponderGrant: this.scrollResponderHandleResponderGrant.bind(this),
       onResponderTerminationRequest:
         this.scrollResponderHandleTerminationRequest.bind(this),
