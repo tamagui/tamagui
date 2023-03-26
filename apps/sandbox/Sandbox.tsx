@@ -16,9 +16,7 @@ import {
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
 import {
-  Button,
   Input,
-  Popover,
   ScrollView,
   Stack,
   TamaguiProvider,
@@ -29,9 +27,9 @@ import {
   withStaticProperties,
 } from 'tamagui'
 
-import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
-import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
-import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
+// import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
+// import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
+// import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
 import config from './tamagui.config'
 
 // useful for debugging why things render:
@@ -63,15 +61,13 @@ const Image = styled(
   }
 )
 
-const X = <Stack gap />
-
 export const Sandbox = () => {
   return (
     <SandboxFrame>
       {/* this comment keeps indent */}
       {/* <SandboxDefault /> */}
 
-      <SandboxStyledOverridePseudo />
+      {/* <SandboxStyledOverridePseudo /> */}
 
       {/* <YStack
         {...{
@@ -89,58 +85,36 @@ export const Sandbox = () => {
         }}
       /> */}
 
+      <YStack
+        animation={[
+          'bouncy',
+          {
+            opacity: {
+              delay: 0,
+            },
+            y: {
+              delay: 10_000,
+            },
+          },
+        ]}
+        hoverStyle={{
+          y: 5,
+          opacity: 0,
+        }}
+        y={0}
+        opacity={1}
+        ai="center"
+        width={40}
+        height={40}
+        bc="$red10"
+      />
+
       {/* TODO */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}
       {/* <SandboxCustomStyledAnimatedPopover /> */}
     </SandboxFrame>
   )
 }
-
-function TestPopoverContentStyledPlusAnimations() {
-  return (
-    <Popover size="$5">
-      <Popover.Trigger asChild>
-        <Button>go</Button>
-      </Popover.Trigger>
-
-      <PopoverStyledContent debug="verbose">
-        <Popover.Arrow bw={1} boc="$borderColor" />
-      </PopoverStyledContent>
-    </Popover>
-  )
-}
-
-const PopoverStyledContent = styled(Popover.Content, {
-  name: 'PopoverContent2',
-  debug: 'verbose',
-  elevate: true,
-  bordered: true,
-  p: '$3',
-  br: '$3',
-  enterStyle: {
-    o: 0,
-    y: -10,
-    x: 0,
-  },
-  exitStyle: {
-    o: 0,
-    y: -10,
-    x: 0,
-  },
-  x: 0,
-  y: 0,
-  o: 1,
-  animation: [
-    'quick',
-    {
-      opacity: {
-        overshootClamping: true,
-      },
-    },
-  ],
-})
-
-console.log('PopoverStyledContent', PopoverStyledContent)
 
 const SandboxFrame = (props: { children: any }) => {
   const [theme, setTheme] = useState('light')
