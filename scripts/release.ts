@@ -10,6 +10,9 @@ import prompts from 'prompts'
 
 import { spawnify } from './spawnify'
 
+// avoid emitter error
+process.setMaxListeners(0)
+
 // --resume would be cool here where it stores the last failed step somewhere and tries resuming
 
 const exec = promisify(proc.exec)
