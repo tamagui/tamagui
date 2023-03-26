@@ -1,3 +1,4 @@
+// debug
 import { Input, TamaguiProvider, YStack, styled } from 'tamagui'
 
 const TransparentInput = styled(Input, {
