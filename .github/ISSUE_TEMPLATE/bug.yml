@@ -27,6 +27,7 @@ body:
     description: |
       - If this is a bug with Tamagui, fork [this CodeSandbox](https://codesandbox.io/p/sandbox/github/tamagui/tamagui/tree/master/starters/next-expo-solito) to reproduce the issue.
       - If this is a bug with the Starter, fork [this CodeSandbox](https://codesandbox.io/p/sandbox/github/tamagui/tamagui/tree/master/apps/starter) to reproduce the issue.
+      - If you need a simple webpack repo to fork, try [this one](https://github.com/tamagui/issue-template-webpack) and run `yarn upgrade` to update tamagui to latest.
       - For native-only bugs, please fork this repo and use `apps/kitchen-sink` to reproduce the bug. Once reproduced, submit a PR with the title `[Issue] ...`
   validations:
     required: true
