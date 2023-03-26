@@ -45,7 +45,7 @@ export default () => {
 
 ### ToggleGroup props
 
-ToggleGroup extend Stack views inheriting all the [Tamagui standard props](notion://www.notion.so/docs/intro/props), plus:
+ToggleGroup extends the [Group](/docs/components/group) component. You can disable passing border radius to children by passing `disablePassBorderRadius`. plus:
 
 <PropsTable
     data={[
@@ -88,6 +88,12 @@ ToggleGroup extend Stack views inheriting all the [Tamagui standard props](notio
             type: '(value: string[]) => void',
             description:`Event handler called when the pressed state of an item changes and type is "multiple".`
         },
+         {
+            name: 'loop',
+            type: 'boolean',
+            description: `Whether or not to loop over after reaching the end or start of the items. Used mainly for managing keyboard navigation.`,
+            default: `true`,
+        },
     ]}
 />
 
@@ -106,12 +112,12 @@ ToggleGroup extend Stack views inheriting all the [Tamagui standard props](notio
         {
             name: 'value',
             type: 'string',
-            description: `The controlled value of the pressed item when type is "single". Must be used in conjunction with onValueChange.`,
+            description: `The controlled value of the pressed item when type is "single".`,
         },
         {
             name: 'disabled',
             type: 'boolean',
-            description: `When true, prevents the user from interacting with the toggle group and all its items.`,
+            description: `When true, prevents the user from interacting with the toggle group item.`,
             default: `false`,
         }
     ]}
