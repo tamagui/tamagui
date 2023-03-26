@@ -3,7 +3,7 @@ import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/themes'
 
-import { animations } from './animations'
+import { animations } from './animations.css'
 import { createGenericFont } from './createGenericFont'
 import { media, mediaQueryDefaultActive } from './media'
 

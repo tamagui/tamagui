@@ -73,6 +73,22 @@ export const Sandbox = () => {
 
       <SandboxStyledOverridePseudo />
 
+      {/* <YStack
+        {...{
+          borderRadius: 3,
+          backgroundColor: 'red',
+          width: 100,
+          height: 100,
+          hoverStyle: { backgroundColor: 'var(--light-grey)' },
+          animateOnly: ['background-color'],
+          tag: 'button',
+          borderColor: 'black',
+          borderWidth: 1,
+          borderStyle: 'solid',
+          animation: 'quick',
+        }}
+      /> */}
+
       {/* TODO */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}
       {/* <SandboxCustomStyledAnimatedPopover /> */}

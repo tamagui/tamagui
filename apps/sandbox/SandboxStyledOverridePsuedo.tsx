@@ -2,13 +2,13 @@ import { Input, TamaguiProvider, YStack, styled } from 'tamagui'
 
 const TransparentInput = styled(Input, {
   debug: 'verbose',
-  borderColor: 'transparent',
-  borderWidth: 0,
+  borderColor: 'red',
+  borderWidth: 2,
   outlineColor: 'transparent',
   hoverStyle: {
-    borderColor: 'red',
+    borderColor: 'green',
     outlineColor: 'transparent',
-    borderWidth: 0,
+    borderWidth: 5,
   },
   focusStyle: {
     borderColor: 'blue',
