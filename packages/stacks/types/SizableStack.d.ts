@@ -2,7 +2,8 @@ import { GetProps } from '@tamagui/core';
 export declare const SizableStack: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-}, "size" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+}, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "circular"> & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -13,7 +14,8 @@ export declare const SizableStack: import("@tamagui/core").TamaguiComponent<Omit
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-}, "size" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+}, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "circular"> & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -24,7 +26,8 @@ export declare const SizableStack: import("@tamagui/core").TamaguiComponent<Omit
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-}, "size" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
+}, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "circular"> & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
@@ -36,6 +39,7 @@ export declare const SizableStack: import("@tamagui/core").TamaguiComponent<Omit
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
+    readonly unstyled?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;

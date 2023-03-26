@@ -78,12 +78,13 @@ const LinkListItem = ({
   )
 }
 
-const ColorSchemeListItem = () => {
+const ColorSchemeListItem = (props: ListItemProps) => {
   const theme = useThemeControl()
   const checked = theme.value === 'light'
 
   return (
     <ListItem
+      {...props}
       pressTheme
       paddingVertical={0}
       onPress={() => {
@@ -144,6 +145,7 @@ const demos = [
       // { title: 'Drawer', route: '/demo/drawer' },
       { title: 'Popover', route: '/demo/popover' },
       { title: 'Sheet', route: '/demo/sheet' },
+      { title: 'Toast', route: '/demo/toast' },
     ],
   },
 

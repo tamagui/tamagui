@@ -310,6 +310,7 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
 }) => {
     props: {
         children: JSX.Element;
+        fontStyle?: "normal" | "italic" | undefined;
         hitSlop?: import("react-native").Insets | (import("react-native").Insets & number) | undefined;
         pointerEvents?: "box-none" | "none" | "box-only" | "auto" | undefined;
         removeClippedSubviews?: boolean | undefined;
@@ -499,8 +500,8 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         contain?: import("csstype").Property.Contain | undefined;
         display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
         gap?: import("@tamagui/core").SpaceTokens | undefined;
-        gapColumn?: import("@tamagui/core").SpaceTokens | undefined;
-        gapRow?: import("@tamagui/core").SpaceTokens | undefined;
+        columnGap?: import("@tamagui/core").SpaceTokens | undefined;
+        rowGap?: import("@tamagui/core").SpaceTokens | undefined;
         userSelect?: import("csstype").Property.UserSelect | undefined;
         outlineColor?: import("csstype").Property.OutlineColor | undefined;
         outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
@@ -537,9 +538,9 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
-        circular?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        circular?: boolean | undefined;
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;

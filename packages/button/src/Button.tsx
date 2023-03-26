@@ -146,6 +146,7 @@ export const buttonStaticConfig = {
     'fontWeight',
     'fontSize',
     'fontFamily',
+    'fontStyle',
     'letterSpacing',
     'textAlign',
     'unstyled',
@@ -180,8 +181,10 @@ export function useButton(
     letterSpacing,
     fontSize,
     fontFamily,
+    fontStyle,
     textAlign,
     textProps,
+
     ...rest
   } = propsIn
 

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-test",
-  "version": "1.7.2",
+  "version": "1.9.4",
   "private": true,
   "source": "src",
   "scripts": {
@@ -16,28 +16,28 @@
     "next:start": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start --port 3333"
   },
   "dependencies": {
-    "@tamagui/animate-presence": "1.7.2",
-    "@tamagui/colors": "1.7.2",
-    "@tamagui/config": "1.7.2",
-    "@tamagui/demos": "1.7.2",
-    "@tamagui/font-fira-mono": "1.7.2",
-    "@tamagui/font-inter": "1.7.2",
-    "@tamagui/font-silkscreen": "1.7.2",
-    "@tamagui/logo": "1.7.2",
-    "@tamagui/lucide-icons": "1.7.2",
-    "@tamagui/menu": "1.7.2",
-    "@tamagui/next-theme": "1.7.2",
-    "@tamagui/remove-scroll": "1.7.2",
-    "@tamagui/shorthands": "1.7.2",
-    "@tamagui/themes": "1.7.2",
+    "@tamagui/animate-presence": "1.9.4",
+    "@tamagui/colors": "1.9.4",
+    "@tamagui/config": "1.9.4",
+    "@tamagui/demos": "1.9.4",
+    "@tamagui/font-fira-mono": "1.9.4",
+    "@tamagui/font-inter": "1.9.4",
+    "@tamagui/font-silkscreen": "1.9.4",
+    "@tamagui/logo": "1.9.4",
+    "@tamagui/lucide-icons": "1.9.4",
+    "@tamagui/menu": "1.9.4",
+    "@tamagui/next-theme": "1.9.4",
+    "@tamagui/remove-scroll": "1.9.4",
+    "@tamagui/shorthands": "1.9.4",
+    "@tamagui/themes": "1.9.4",
     "next": "^13.1.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "*",
-    "react-native-web-lite": "1.7.2",
-    "tamagui": "1.7.2"
+    "react-native": "^0.71.4",
+    "react-native-web-lite": "1.9.4",
+    "tamagui": "1.9.4"
   },
   "devDependencies": {
-    "tamagui-loader": "1.7.2"
+    "tamagui-loader": "1.9.4"
   }
 }

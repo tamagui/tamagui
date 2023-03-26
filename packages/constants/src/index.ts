@@ -7,13 +7,15 @@ export const isClient = isWeb && isWindowDefined
 
 // may want to move to VITE_RSC_BUILD
 export const isRSC = process.env.ENABLE_RSC
-  ? // note this is statically analyzed so no funny business, just access it without optional chaining
-    // @ts-ignore
-    import.meta.env
-    ? // @ts-ignore
-      import.meta.env.SSR
-    : false
-  : false
+
+// causing troubles, was used for vite SSR but disabling until fixed
+// ? // note this is statically analyzed so no funny business, just access it without optional chaining
+//   // @ts-ignore
+//   import.meta.env
+//   ? // @ts-ignore
+//     import.meta.env.SSR
+//   : false
+// : false
 
 const idFn = () => {}
 export const useIsomorphicLayoutEffect = isRSC

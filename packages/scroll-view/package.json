@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/scroll-view",
-  "version": "1.7.2",
+  "version": "1.9.4",
   "sideEffects": [
     "*.css"
   ],
@@ -20,15 +20,23 @@
     "lint": "../../node_modules/.bin/rome check src",
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "dependencies": {
-    "@tamagui/stacks": "1.7.2",
-    "@tamagui/web": "1.7.2"
+    "@tamagui/stacks": "1.9.4",
+    "@tamagui/web": "1.9.4"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.7.2",
+    "@tamagui/build": "1.9.4",
     "react": "^18.2.0"
   },
   "publishConfig": {

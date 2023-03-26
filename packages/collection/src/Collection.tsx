@@ -1,10 +1,10 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { Slot } from '@tamagui/core'
+import { Slot, TamaguiElement, isWeb } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import React from 'react'
 
 type SlotProps = React.ComponentPropsWithoutRef<typeof Slot>
-type CollectionElement = HTMLElement
+type CollectionElement = TamaguiElement
 interface CollectionProps extends SlotProps {
   scope: any
 }
@@ -14,7 +14,9 @@ interface CollectionProps extends SlotProps {
 // This is because we encountered issues with generic types that cannot be statically analysed
 // due to creating them dynamically via createCollection.
 
-function createCollection<ItemElement extends HTMLElement, ItemData = {}>(name: string) {
+function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
+  name: string
+) {
   /* -----------------------------------------------------------------------------------------------
    * CollectionProvider
    * ---------------------------------------------------------------------------------------------*/
@@ -111,7 +113,11 @@ function createCollection<ItemElement extends HTMLElement, ItemData = {}>(name: 
     const context = useCollectionContext(name + 'CollectionConsumer', scope)
 
     const getItems = React.useCallback(() => {
-      const collectionNode = context.collectionRef.current
+      if (!isWeb) {
+        return []
+      }
+
+      const collectionNode = context.collectionRef.current as HTMLElement
       if (!collectionNode) return []
       const orderedNodes = Array.from(
         collectionNode.querySelectorAll(`[${ITEM_DATA_ATTR}]`)
@@ -119,7 +125,8 @@ function createCollection<ItemElement extends HTMLElement, ItemData = {}>(name: 
       const items = Array.from(context.itemMap.values())
       const orderedItems = items.sort(
         (a, b) =>
-          orderedNodes.indexOf(a.ref.current!) - orderedNodes.indexOf(b.ref.current!)
+          orderedNodes.indexOf(a.ref.current! as HTMLElement) -
+          orderedNodes.indexOf(b.ref.current! as HTMLElement)
       )
       return orderedItems
     }, [context.collectionRef, context.itemMap])

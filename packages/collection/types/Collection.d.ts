@@ -1,15 +1,15 @@
-import { Slot } from '@tamagui/core';
+import { Slot, TamaguiElement } from '@tamagui/core';
 import React from 'react';
 type SlotProps = React.ComponentPropsWithoutRef<typeof Slot>;
 interface CollectionProps extends SlotProps {
     scope: any;
 }
-declare function createCollection<ItemElement extends HTMLElement, ItemData = {}>(name: string): readonly [{
+declare function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(name: string): readonly [{
     readonly Provider: React.FC<{
         children?: React.ReactNode;
         scope: any;
     }>;
-    readonly Slot: React.ForwardRefExoticComponent<CollectionProps & React.RefAttributes<HTMLElement>>;
+    readonly Slot: React.ForwardRefExoticComponent<CollectionProps & React.RefAttributes<TamaguiElement>>;
     readonly ItemSlot: React.ForwardRefExoticComponent<React.PropsWithoutRef<ItemData & {
         children: React.ReactNode;
         scope: any;

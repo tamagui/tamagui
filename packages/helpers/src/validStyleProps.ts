@@ -62,8 +62,8 @@ export const stylePropsView = Object.freeze({
   flexShrink: true,
   flexWrap: true,
   gap: true,
-  gapColumn: true,
-  gapRow: true,
+  columnGap: true,
+  rowGap: true,
   height: true,
   justifyContent: true,
   left: true,
@@ -105,6 +105,7 @@ export const stylePropsView = Object.freeze({
   ...stylePropsTransform,
 
   // allow a few web only ones
+
   ...(process.env.TAMAGUI_TARGET === 'web' && {
     // RN doesn't support specific border styles per-edge
     borderBottomStyle: true,

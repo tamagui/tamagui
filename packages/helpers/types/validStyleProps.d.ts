@@ -89,8 +89,8 @@ export declare const stylePropsView: Readonly<{
     flexShrink: true;
     flexWrap: true;
     gap: true;
-    gapColumn: true;
-    gapRow: true;
+    columnGap: true;
+    rowGap: true;
     height: true;
     justifyContent: true;
     left: true;
@@ -250,8 +250,8 @@ export declare const stylePropsText: Readonly<{
     flexShrink: true;
     flexWrap: true;
     gap: true;
-    gapColumn: true;
-    gapRow: true;
+    columnGap: true;
+    rowGap: true;
     height: true;
     justifyContent: true;
     left: true;
@@ -385,8 +385,8 @@ export declare const stylePropsAll: Readonly<{
     flexShrink: true;
     flexWrap: true;
     gap: true;
-    gapColumn: true;
-    gapRow: true;
+    columnGap: true;
+    rowGap: true;
     height: true;
     justifyContent: true;
     left: true;
@@ -505,8 +505,8 @@ export declare const validStyles: Readonly<{
     flexShrink: true;
     flexWrap: true;
     gap: true;
-    gapColumn: true;
-    gapRow: true;
+    columnGap: true;
+    rowGap: true;
     height: true;
     justifyContent: true;
     left: true;

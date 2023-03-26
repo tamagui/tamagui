@@ -117,7 +117,7 @@ export function styled<
         variants,
         defaultProps,
         defaultVariants,
-        componentName: name,
+        componentName: name || parentStaticConfig?.componentName,
         isReactNative,
         isText,
         acceptsClassName,

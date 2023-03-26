@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/themes",
-  "version": "1.7.2",
+  "version": "1.9.4",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -24,20 +24,15 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
-    },
-    "./v2": {
-      "types": "./types/v2/index.d.ts",
-      "import": "./dist/esm/v2/index.mjs",
-      "require": "./dist/cjs/v2/index.js"
     }
   },
   "dependencies": {
-    "@tamagui/colors": "1.7.2",
-    "@tamagui/create-theme": "1.7.2",
-    "@tamagui/web": "1.7.2"
+    "@tamagui/colors": "1.9.4",
+    "@tamagui/create-theme": "1.9.4",
+    "@tamagui/web": "1.9.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.7.2"
+    "@tamagui/build": "1.9.4"
   },
   "publishConfig": {
     "access": "public"

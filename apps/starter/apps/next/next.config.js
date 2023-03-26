@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const { withTamagui } = require('@tamagui/next-plugin')
-const withImages = require('next-images')
 const { join } = require('path')
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
@@ -16,7 +15,6 @@ const disableExtraction =
   boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
 
 const plugins = [
-  withImages,
   withTamagui({
     config: './tamagui.config.ts',
     components: ['tamagui', '@my/ui'],

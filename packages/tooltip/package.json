@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tooltip",
-  "version": "1.7.2",
+  "version": "1.9.4",
   "sideEffects": [
     "*.css"
   ],
@@ -22,28 +22,36 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "dependencies": {
     "@floating-ui/react": "^0.19.1",
-    "@tamagui/compose-refs": "1.7.2",
-    "@tamagui/core": "1.7.2",
-    "@tamagui/create-context": "1.7.2",
-    "@tamagui/floating": "1.7.2",
-    "@tamagui/get-size": "1.7.2",
-    "@tamagui/polyfill-dev": "1.7.2",
-    "@tamagui/popover": "1.7.2",
-    "@tamagui/popper": "1.7.2",
-    "@tamagui/stacks": "1.7.2",
-    "@tamagui/text": "1.7.2",
-    "@tamagui/use-controllable-state": "1.7.2"
+    "@tamagui/compose-refs": "1.9.4",
+    "@tamagui/core": "1.9.4",
+    "@tamagui/create-context": "1.9.4",
+    "@tamagui/floating": "1.9.4",
+    "@tamagui/get-size": "1.9.4",
+    "@tamagui/polyfill-dev": "1.9.4",
+    "@tamagui/popover": "1.9.4",
+    "@tamagui/popper": "1.9.4",
+    "@tamagui/stacks": "1.9.4",
+    "@tamagui/text": "1.9.4",
+    "@tamagui/use-controllable-state": "1.9.4"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.7.2",
+    "@tamagui/build": "1.9.4",
     "react": "^18.2.0",
-    "react-native": "*"
+    "react-native": "^0.71.4"
   },
   "publishConfig": {
     "access": "public"

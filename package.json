@@ -18,7 +18,7 @@
     "install:ci": "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 yarn install",
     "postinstall": "manypkg check",
     "check": "manypkg check",
-    "build": "turbo run build --continue=false --filter=!next-app",
+    "build": "turbo run build --filter=!next-app",
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "./scripts/build-js.sh",
     "build:types": "SKIP_JS=1 yarn build",
@@ -89,7 +89,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-refresh": "0.14.0",
-    "react-native-web": "0.18.9"
+    "react-native-web": "0.18.10"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {
@@ -99,18 +99,16 @@
   },
   "dependencies": {
     "@manypkg/cli": "^0.19.1",
-    "@monorepo-utils/workspaces-to-typescript-project-references": "^2.7.4",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^16.11.9",
     "@types/react": "^18.0.15",
     "import-sort-style-module": "^6.0.0",
-    "kitchen-sink": "^0.1.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.1",
     "pretty-quick": "^3.1.2",
     "prompts": "2.1.0",
     "rome": "^11.0.0",
-    "turbo": "^1.6.3",
+    "turbo": "^1.8.3",
     "typescript": "^4.7.4",
     "ultra-runner": "^3.10.5"
   },

@@ -10,21 +10,28 @@ import {
   ProgressDemo,
   SelectDemo,
   SwitchDemo,
-  TabsDemo
+  TabsAdvancedDemo,
+  TabsDemo,
 } from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
 import {
   Button,
+  Input,
   Popover,
   ScrollView,
+  Stack,
   TamaguiProvider,
+  ToastProvider,
   XStack,
   YStack,
   styled,
   withStaticProperties,
 } from 'tamagui'
 
+import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
+import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
+import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
 import config from './tamagui.config'
 
 // useful for debugging why things render:
@@ -56,16 +63,35 @@ const Image = styled(
   }
 )
 
+const X = <Stack gap />
+
 export const Sandbox = () => {
   return (
     <SandboxFrame>
-      {/* keep indent */}
-      <SandboxDefault />
+      {/* this comment keeps indent */}
+      {/* <SandboxDefault /> */}
 
-      {/* <TestPopoverContentStyledPlusAnimations /> */}
+      <SandboxStyledOverridePseudo />
 
-      {/* <SelectDemo /> */}
-      <ListItemDemo />
+      {/* <YStack
+        {...{
+          borderRadius: 3,
+          backgroundColor: 'red',
+          width: 100,
+          height: 100,
+          hoverStyle: { backgroundColor: 'var(--light-grey)' },
+          animateOnly: ['background-color'],
+          tag: 'button',
+          borderColor: 'black',
+          borderWidth: 1,
+          borderStyle: 'solid',
+          animation: 'quick',
+        }}
+      /> */}
+
+      {/* TODO */}
+      {/* <SandboxCustomStyledAnimatedTooltip /> */}
+      {/* <SandboxCustomStyledAnimatedPopover /> */}
     </SandboxFrame>
   )
 }
@@ -121,47 +147,33 @@ const SandboxFrame = (props: { children: any }) => {
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
-      <link href="/fonts/inter.css" rel="stylesheet" />
+      <ToastProvider swipeDirection="horizontal">
+        <link href="/fonts/inter.css" rel="stylesheet" />
 
-      <style
-        type="text/css"
-        dangerouslySetInnerHTML={{
-          __html: `
+        <style
+          type="text/css"
+          dangerouslySetInnerHTML={{
+            __html: `
             html, body, #root { overflow: hidden; height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; }
           `,
-        }}
-      />
+          }}
+        />
 
-      {props.children}
+        {props.children}
 
-      {/*  */}
-      <button
-        style={{
-          position: 'absolute',
-          bottom: 30,
-          left: 20,
-          fontSize: 30,
-        }}
-        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      >
-        🌗
-      </button>
-      {/* <style
-        type="text/css"
-        dangerouslySetInnerHTML={{
-          __html: `html, body { overflow: hidden; height: 100vh; width: 100vw; }`,
-        }}
-      /> */}
-
-      <YStack fullscreen ai="center" jc="center">
-        <SandboxDefault/>
-        {/* <ToggleGroupDemo /> */}
-        {/* <StyledButton>hi2</StyledButton> */}
-
-        {/* <XStack paddingEnd={120} h={50} w={200} bc="red" /> */}
-      </YStack>
-
-      {/*  */}
+        {/*  */}
+        <button
+          style={{
+            position: 'absolute',
+            bottom: 30,
+            left: 20,
+            fontSize: 30,
+          }}
+          onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+        >
+          🌗
+        </button>
+      </ToastProvider>
     </TamaguiProvider>
   )
 }

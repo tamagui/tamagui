@@ -418,8 +418,8 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         contain?: import("csstype").Property.Contain | undefined;
         display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
         gap?: import("@tamagui/web").SpaceTokens | undefined;
-        gapColumn?: import("@tamagui/web").SpaceTokens | undefined;
-        gapRow?: import("@tamagui/web").SpaceTokens | undefined;
+        columnGap?: import("@tamagui/web").SpaceTokens | undefined;
+        rowGap?: import("@tamagui/web").SpaceTokens | undefined;
         userSelect?: import("csstype").Property.UserSelect | undefined;
         outlineColor?: import("csstype").Property.OutlineColor | undefined;
         outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
@@ -456,9 +456,9 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
-        circular?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        circular?: boolean | undefined;
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;

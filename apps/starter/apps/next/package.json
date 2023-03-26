@@ -1,6 +1,6 @@
 {
   "name": "next-app",
-  "version": "1.7.2",
+  "version": "1.9.4",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,21 +10,19 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tamagui/next-theme": "1.7.2",
+    "@tamagui/next-theme": "1.9.4",
     "app": "*",
     "next": "^13.1.4",
     "raf": "^3.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "*",
+    "react-native": "^0.71.4",
     "react-native-web": "^0.18.3",
-    "react-native-web-lite": "1.7.2"
+    "react-native-web-lite": "1.9.4"
   },
   "devDependencies": {
-    "@tamagui/next-plugin": "1.7.2",
+    "@tamagui/next-plugin": "1.9.4",
     "@types/node": "^16.11.9",
-    "critters": "^0.0.16",
-    "eslint-config-next": "^13.0.4",
-    "next-images": "^1.8.4"
+    "eslint-config-next": "^13.0.4"
   }
 }

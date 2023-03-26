@@ -337,14 +337,6 @@ const SheetImplementation = themeable(
       scrollBridge.paneY = value
     })
 
-    const [isResizing, setIsResizing] = useState(true)
-    useIsomorphicLayoutEffect(() => {
-      if (!isResizing) {
-        setIsResizing(true)
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [modal])
-
     function stopSpring() {
       animatedNumber.stop()
       if (scrollBridge.onFinishAnimate) {
@@ -393,10 +385,7 @@ const SheetImplementation = themeable(
       const toValue = isHidden || position === -1 ? hiddenValue : positions[position]
       if (at.current === toValue) return
       stopSpring()
-      if (isHidden || isResizing) {
-        if (isResizing) {
-          setIsResizing(false)
-        }
+      if (isHidden) {
         animatedNumber.setValue(toValue, {
           type: 'timing',
           duration: 0,
@@ -594,13 +583,7 @@ const SheetImplementation = themeable(
         next += 100
       }
       if (!next) return
-      setFrameSize((prev) => {
-        const isBigChange = Math.abs(prev - next) > 20
-        if (!keyboardIsVisible) {
-          setIsResizing(isBigChange)
-        }
-        return next
-      })
+      setFrameSize(() => next)
     }, [keyboardIsVisible])
 
     const removeScrollEnabled = forceRemoveScrollEnabled ?? (open && modal)
@@ -622,7 +605,7 @@ const SheetImplementation = themeable(
           setOpen={setOpen}
           scrollBridge={scrollBridge}
         >
-          {isResizing || shouldHideParentSheet ? null : overlayComponent}
+          {shouldHideParentSheet ? null : overlayComponent}
 
           <AnimatedView
             ref={ref}
@@ -651,7 +634,7 @@ const SheetImplementation = themeable(
               // causes lots of bugs on touch web on site
               removeScrollBar={false}
             >
-              {isResizing ? <></> : frameComponent}
+              {frameComponent}
             </RemoveScroll>
           </AnimatedView>
         </SheetProvider>
