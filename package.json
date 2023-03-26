@@ -12,7 +12,7 @@
     "apps/starter/packages/*",
     "takeout/*"
   ],
-  "packageManager": "yarn@3.4.1",
+  "packageManager": "yarn@3.5.0",
   "scripts": {
     "vercel:build": "yarn build:js && cd apps/site && yarn ci:build",
     "install:ci": "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 yarn install",
