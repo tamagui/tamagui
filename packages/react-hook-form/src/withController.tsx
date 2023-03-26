@@ -1,6 +1,7 @@
 import { forwardRef } from 'react'
 import { Controller, ControllerRenderProps, FieldValues } from 'react-hook-form'
 
+import { useField } from './fieldContext'
 import { WithControllerProps } from './types'
 
 export function withController<TProps, TFieldValues extends FieldValues = FieldValues>(
@@ -8,14 +9,15 @@ export function withController<TProps, TFieldValues extends FieldValues = FieldV
   mapProps: Partial<Record<keyof ControllerRenderProps, keyof TProps>> = {}
 ) {
   return forwardRef(function controlled<Values extends TFieldValues = TFieldValues>(
-    props: WithControllerProps<TProps, Values>,
+    props: WithControllerProps<Partial<TProps>, Values>,
     ref
   ) {
+    const { name: nameContext } = useField()
     const { name, rules, shouldUnregister, defaultValue, ...propsComponent } = props
 
     return (
       <Controller
-        name={name}
+        name={name ?? nameContext}
         rules={rules}
         shouldUnregister={shouldUnregister}
         defaultValue={defaultValue}

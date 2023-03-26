@@ -1,6 +1,7 @@
-import { Checkbox, CheckboxProps, InputProps, RadioGroup, RadioGroupProps, Select, SelectProps, Slider, SliderProps, Switch, SwitchProps, TextAreaProps, Form, FormProps as FormDefaultProps } from '@tamagui/tamagui/types';
+import { Checkbox, CheckboxProps, Form, FormProps as FormDefaultProps, InputProps, RadioGroup, RadioGroupProps, Select, SelectProps, Slider, SliderProps, Switch, SwitchProps, TextAreaProps } from '@tamagui/tamagui/types';
 import { MutableRefObject } from 'react';
 import { ControllerProps, FieldPath, FieldValues, SubmitHandler, UseFormProps, UseFormReturn } from 'react-hook-form';
+import { FieldControlled } from './Field';
 import { MessageProps } from './Message';
 import { ValueProps } from './Value';
 import { withController } from './withController';
@@ -22,7 +23,10 @@ export type StaticProps<TFieldValues extends FieldValues = FieldValues> = {
     Trigger: typeof Form.Trigger;
     Message: ExtractWithController<MessageProps, TFieldValues>;
     Value: ExtractWithController<ValueProps, TFieldValues>;
+    Field: typeof FieldControlled<TFieldValues>;
 };
-export type WithControllerProps<TProps, TFieldValues extends FieldValues = FieldValues> = Omit<TProps, 'name'> & Omit<ControllerProps<TFieldValues, FieldPath<TFieldValues>>, 'render' | 'control'>;
+export type WithControllerProps<TProps, TFieldValues extends FieldValues = FieldValues> = Omit<TProps, 'name'> & Omit<ControllerProps<TFieldValues, FieldPath<TFieldValues>>, 'render' | 'control' | 'name'> & {
+    name?: FieldPath<TFieldValues>;
+};
 export {};
 //# sourceMappingURL=types.d.ts.map

@@ -1,20 +1,51 @@
-import { Button } from '@tamagui/button'
+import { Button, ButtonFrame } from '@tamagui/button'
 import { Check } from '@tamagui/lucide-icons'
-import { FRef, createForm } from '@tamagui/react-hook-form'
+import { FRef, createForm, withController } from '@tamagui/react-hook-form'
 import { ForwardedRef, useRef, useState } from 'react'
-import { Label, SizableStack, SizableText, Stack, XStack } from 'tamagui'
+import { Label, SizableStack, SizableText, Stack, XGroup, XStack, styled } from 'tamagui'
 import { YStack } from 'tamagui'
 
 interface SignUpValues {
   pseudo: ''
   description: ''
-  age: number[],
-  theme: "",
-  level: "",
-  cgu: false,
+  age: number[]
+  theme: ''
+  level: ''
+  cgu: false
+  prefer: "cat" | "dog" | ""
 }
 
-const Form = createForm<SignUpValues>();
+const ButtonThemed = styled(ButtonFrame, {
+  variants: {
+    selected: {
+      true: {
+        backgroundColor: '$backgroundHover',
+      },
+    },
+  },
+})
+
+type CustomFieldProps = { value: string; onChange: (e: string) => void, id?: string }
+const CustomField = ({ onChange, value, id }: CustomFieldProps) => {
+  return (
+    <XGroup id={id}>
+      <XGroup.Item>
+        <ButtonThemed flex={1} selected={value === 'dog'} onPress={() => onChange('dog')}>
+          Dog
+        </ButtonThemed>
+      </XGroup.Item>
+      <XGroup.Item>
+        <ButtonThemed flex={1} selected={value === 'cat'} onPress={() => onChange('cat')}>
+          Cat
+        </ButtonThemed>
+      </XGroup.Item>
+    </XGroup>
+  )
+}
+
+const CustomFieldControlled = withController<CustomFieldProps, SignUpValues>(CustomField)
+
+const Form = createForm<SignUpValues>()
 
 export const FormHookFormDemo = () => {
   const [values, setValues] = useState<SignUpValues>()
@@ -28,7 +59,7 @@ export const FormHookFormDemo = () => {
         formRef.current?.reset()
       }}
       space="$4"
-      defaultValues={{ pseudo: '', description: '', age: [] }}
+      defaultValues={{ pseudo: '', description: '', age: [], prefer: '' }}
     >
       <YStack>
         <Label htmlFor="pseudo">Pseudo</Label>
@@ -50,14 +81,13 @@ export const FormHookFormDemo = () => {
         <Form.Message name="description" />
       </YStack>
 
-      <YStack>
+      <Form.Field name="age">
         <XStack alignItems="center" justifyContent="space-between">
           <Label htmlFor="age">Age</Label>
-          <Form.Value name="age" />
+          <Form.Value />
         </XStack>
         <Form.Slider
           id="age"
-          name="age"
           max={100}
           step={1}
           rules={{ required: 'Required field' }}
@@ -69,8 +99,8 @@ export const FormHookFormDemo = () => {
           </Form.Slider.Track>
           <Form.Slider.Thumb index={0} circular elevate />
         </Form.Slider>
-        <Form.Message name="age" />
-      </YStack>
+        <Form.Message />
+      </Form.Field>
 
       <YStack>
         <Label htmlFor="theme">Dark mode</Label>
@@ -108,6 +138,11 @@ export const FormHookFormDemo = () => {
             </Label>
           </XStack>
         </Form.RadioGroup>
+      </YStack>
+
+      <YStack>
+        <Label htmlFor='prefer'>What do you prefer?</Label>
+        <CustomFieldControlled id="prefer" name="prefer" />
       </YStack>
 
       <YStack>
