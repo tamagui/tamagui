@@ -41,14 +41,14 @@
     "@tamagui/stacks": "1.9.2",
     "@tamagui/text": "1.9.2",
     "@tamagui/use-controllable-state": "1.9.2",
-    "@tamagui/visually-hidden": "1.9.2",
-    "burnt": "^0.10.0"
+    "@tamagui/visually-hidden": "1.9.2"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
+    "burnt": "^0.10.0",
     "@tamagui/build": "1.9.2",
     "react": "^18.2.0",
     "react-native": "^0.71.4"
