@@ -1,5 +1,10 @@
-import { config } from '@tamagui/config'
+import { config as configType } from '@tamagui/config'
+import { config as reanimatedConfig } from '@tamagui/config/reanimated'
 import { createFont, createTamagui } from 'tamagui'
+
+type Config = typeof configType
+
+const config: Config = reanimatedConfig
 
 const body_cn = createFont({
   family: 'noto_cn',

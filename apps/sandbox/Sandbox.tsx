@@ -2,6 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import {
+  AnimationsDemo,
   ButtonDemo,
   CheckboxDemo,
   GroupDemo,
@@ -71,7 +72,9 @@ export const Sandbox = () => {
       {/* this comment keeps indent */}
       {/* <SandboxDefault /> */}
 
-      <SandboxStyledOverridePseudo />
+      {/* <SandboxStyledOverridePseudo /> */}
+
+      <AnimationsDemo />
 
       {/* TODO */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}
@@ -96,7 +99,6 @@ function TestPopoverContentStyledPlusAnimations() {
 
 const PopoverStyledContent = styled(Popover.Content, {
   name: 'PopoverContent2',
-  debug: 'verbose',
   elevate: true,
   bordered: true,
   p: '$3',
@@ -123,8 +125,6 @@ const PopoverStyledContent = styled(Popover.Content, {
     },
   ],
 })
-
-console.log('PopoverStyledContent', PopoverStyledContent)
 
 const SandboxFrame = (props: { children: any }) => {
   const [theme, setTheme] = useState('light')

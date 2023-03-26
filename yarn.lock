@@ -1244,7 +1244,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-object-assign@npm:^7.16.7":
+"@babel/plugin-transform-object-assign@npm:^7.10.4, @babel/plugin-transform-object-assign@npm:^7.16.7":
   version: 7.18.6
   resolution: "@babel/plugin-transform-object-assign@npm:7.18.6"
   dependencies:
@@ -5405,6 +5405,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox@workspace:apps/sandbox"
   dependencies:
+    "@babel/plugin-proposal-export-namespace-from": ^7.18.9
     "@babel/preset-react": ^7.18.6
     "@babel/preset-typescript": ^7.18.6
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
@@ -5441,6 +5442,7 @@ __metadata:
     thread-loader: ^3.0.4
     url-loader: ^4.1.1
     vite: ^4.0.4
+    vite-plugin-babel: ^1.1.3
     vite-plugin-environment: ^1.1.3
     webpack: ^5.74.0
     webpack-bundle-analyzer: ^4.5.0
@@ -16387,6 +16389,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mockdate@npm:^3.0.2":
+  version: 3.0.5
+  resolution: "mockdate@npm:3.0.5"
+  checksum: 72b66786d9e072379693f80bf9fb82eb5153c9741030a4294184e3ccaf952d0713fae8966f77780580cf902f8ec7ccc95577b0ad47980d255e2ffb71fc7ca49c
+  languageName: node
+  linkType: hard
+
 "module-alias@npm:^2.0.0":
   version: 2.2.2
   resolution: "module-alias@npm:2.2.2"
@@ -18466,9 +18475,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:2.14.4":
-  version: 2.14.4
-  resolution: "react-native-reanimated@npm:2.14.4"
+"react-native-reanimated@npm:2.3.0-beta.1":
+  version: 2.3.0-beta.1
+  resolution: "react-native-reanimated@npm:2.3.0-beta.1"
+  dependencies:
+    "@babel/plugin-transform-object-assign": ^7.10.4
+    invariant: ^2.2.4
+    lodash.isequal: ^4.5.0
+    mockdate: ^3.0.2
+    react-native-screens: ^3.4.0
+    string-hash-64: ^1.0.3
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-gesture-handler: "*"
+  checksum: 204a9b98c166813fc3309169c8d54018f7b6ce00d7469bc76d8e976d1d12d635c1158f74dd7193e1a1a17c7e12e3ad89924371af796f3d01e24743c80c2ca828
+  languageName: node
+  linkType: hard
+
+"react-native-reanimated@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "react-native-reanimated@npm:3.0.2"
   dependencies:
     "@babel/plugin-transform-object-assign": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
@@ -18481,7 +18508,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: ec24225a145a8636065b464660256bed99ba5f50c7f6c74899838f5563e59a342ea217c285a06be8bdd5549e2faaf1ebdac6986011a767ba814a4cf469ed9bdb
+  checksum: 7635d6d490eecdf74d3b3560e0696df14c8528f58b4c79d680bb623053e6a13e51e05f62aa9d40e1d53e9b2c90d67ac77ff1f4128400f14ab4a524ef3dec036b
   languageName: node
   linkType: hard
 
@@ -18495,7 +18522,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-screens@npm:^3.18.2":
+"react-native-screens@npm:^3.18.2, react-native-screens@npm:^3.4.0":
   version: 3.20.0
   resolution: "react-native-screens@npm:3.20.0"
   dependencies:
@@ -22137,6 +22164,16 @@ __metadata:
   bin:
     vite-node: vite-node.mjs
   checksum: ae290288cbd5e79580365a5128f7ba4cbe088c27dbb014bd1dab3e1c0955c04a6add13bed5db923ddb8fd4eb1d75394fdf0e72ebf270f1a1007dd3e9b7049387
+  languageName: node
+  linkType: hard
+
+"vite-plugin-babel@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "vite-plugin-babel@npm:1.1.3"
+  peerDependencies:
+    "@babel/core": ^7.0.0
+    vite: ^2.7.0 || ^3.0.0 || ^4.0.0
+  checksum: 1d092122bc896de8f0cff7d27c27092a92475823419ad1c57408dd9f5b5886cc10861999de74fe62536689c2c2db144e7f616c48db2c752abc4d7e969b8caa34
   languageName: node
   linkType: hard
 
