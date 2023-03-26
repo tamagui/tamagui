@@ -1,5 +1,5 @@
 /// <reference types="react" />
-export declare const TextAreaControlled: import("react").ForwardRefExoticComponent<Omit<import("react-native").TextInputProps & Omit<import("tamagui").TextProps, keyof import("react-native").TextInputProps> & Omit<{
+export declare const TextAreaControlled: import("react").ForwardRefExoticComponent<Omit<import("./types").WithControllerProps<import("react-native").TextInputProps & Omit<import("tamagui").TextProps, keyof import("react-native").TextInputProps> & Omit<{
     readonly unstyled?: boolean | undefined;
     readonly size?: import("tamagui").SizeTokens | undefined;
 }, "size" | "unstyled"> & {
@@ -17,5 +17,5 @@ export declare const TextAreaControlled: import("react").ForwardRefExoticCompone
 }, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("tamagui").SizeTokens | undefined;
-}>> & import("react").RefAttributes<import("tamagui").TamaguiElement> & Omit<import("react-hook-form").ControllerProps<import("react-hook-form").FieldValues, string>, "render" | "control">, "ref"> & import("react").RefAttributes<unknown>>;
+}>> & import("react").RefAttributes<import("tamagui").TamaguiElement>, import("react-hook-form").FieldValues>, "ref"> & import("react").RefAttributes<unknown>>;
 //# sourceMappingURL=Textarea.d.ts.map

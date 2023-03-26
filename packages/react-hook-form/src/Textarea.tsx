@@ -1,5 +1,5 @@
-import { TextArea as TextAreaDefault } from 'tamagui'
+import { TextArea } from 'tamagui'
 
 import { withController } from './withController'
 
-export const TextAreaControlled = withController(TextAreaDefault, { onChange: 'onChangeText' })
+export const TextAreaControlled = withController(TextArea, { onChange: 'onChangeText' })

@@ -1,4 +1,5 @@
 /// <reference types="react" />
-import { ControllerProps, ControllerRenderProps } from 'react-hook-form';
-export declare function withController<TProps>(Component: React.JSXElementConstructor<TProps>, mapProps?: Partial<Record<keyof ControllerRenderProps, keyof TProps>>): import("react").ForwardRefExoticComponent<import("react").PropsWithoutRef<TProps & Omit<ControllerProps<import("react-hook-form").FieldValues, string>, "render" | "control">> & import("react").RefAttributes<unknown>>;
+import { ControllerRenderProps, FieldValues } from 'react-hook-form';
+import { WithControllerProps } from './types';
+export declare function withController<TProps, TFieldValues extends FieldValues = FieldValues>(Component: React.JSXElementConstructor<TProps>, mapProps?: Partial<Record<keyof ControllerRenderProps, keyof TProps>>): import("react").ForwardRefExoticComponent<import("react").PropsWithoutRef<WithControllerProps<TProps, TFieldValues>> & import("react").RefAttributes<unknown>>;
 //# sourceMappingURL=withController.d.ts.map

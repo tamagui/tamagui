@@ -4703,6 +4703,7 @@ __metadata:
     "@tamagui/popover": 1.9.0
     "@tamagui/progress": 1.9.0
     "@tamagui/radio-group": 1.9.0
+    "@tamagui/react-hook-form": 1.9.0
     "@tamagui/select": 1.9.0
     "@tamagui/sheet": 1.9.0
     "@tamagui/slider": 1.9.0
@@ -5318,7 +5319,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/react-hook-form@workspace:packages/react-hook-form":
+"@tamagui/react-hook-form@1.9.0, @tamagui/react-hook-form@workspace:packages/react-hook-form":
   version: 0.0.0-use.local
   resolution: "@tamagui/react-hook-form@workspace:packages/react-hook-form"
   dependencies:

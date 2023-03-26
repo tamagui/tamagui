@@ -1,11 +1,12 @@
-import { RadioGroup as RadioGroupDefault, withStaticProperties } from 'tamagui'
+import { withStaticProperties } from '@tamagui/web'
+import { RadioGroup } from '@tamagui/radio-group'
 
 import { withController } from './withController'
 
-const { Item, Indicator } = RadioGroupDefault
+const { Item, Indicator } = RadioGroup
 
 export const RadioGroupControlled = withStaticProperties(
-  withController(RadioGroupDefault, {
+  withController(RadioGroup, {
     onChange: 'onValueChange',
   }),
   { Item, Indicator }

@@ -1,18 +1,24 @@
-import { Text, TextProps } from '@tamagui/web'
-import { useEffect, useMemo } from 'react'
+import { SizableText } from '@tamagui/text'
+import { GetProps, styled } from '@tamagui/web'
+import { useMemo } from 'react'
 import {
-  UseFormStateProps,
-  useController,
   useFormContext,
   useFormState,
-  useWatch,
+  FieldValues,
 } from 'react-hook-form'
 
-export const Message = ({ name, ...props }: TextProps & { name: string }) => {
+const MessageText = styled(SizableText, {
+  name: "FormMessageText",
+  color: "red"
+})
+
+export type MessageProps = GetProps<typeof MessageText> & { name: keyof FieldValues }
+
+export const Message = ({ name, ...props }: MessageProps) => {
   const { control } = useFormContext()
   const { errors } = useFormState({ control, name })
   return useMemo(
-    () => (errors[name]?.message ? <Text {...props}>{errors[name]?.message}</Text> : null),
+    () => (errors[name]?.message ? <MessageText {...props}>{errors[name]?.message}</MessageText> : null),
     [errors[name]?.message]
   )
 }

@@ -1,11 +1,12 @@
-import { Switch as SwitchDefault, withStaticProperties } from 'tamagui'
+import { withStaticProperties } from '@tamagui/web'
+import { Switch } from '@tamagui/switch'
 
 import { withController } from './withController'
 
-const { Thumb } = SwitchDefault;
+const { Thumb } = Switch;
 
 export const SwitchControlled = withStaticProperties(
-  withController(SwitchDefault, {
+  withController(Switch, {
     onChange: 'onCheckedChange',
     value: 'checked',
   }),

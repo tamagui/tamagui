@@ -1,19 +1,15 @@
-import { composeEventHandlers, composeRefs } from '@tamagui/web'
 import { forwardRef } from 'react'
-import {
-  Controller,
-  ControllerProps,
-  ControllerRenderProps,
-  useFormContext,
-} from 'react-hook-form'
+import { Controller, ControllerRenderProps, FieldValues } from 'react-hook-form'
 
-export function withController<TProps>(
+import { WithControllerProps } from './types'
+
+export function withController<TProps, TFieldValues extends FieldValues = FieldValues>(
   Component: React.JSXElementConstructor<TProps>,
   mapProps: Partial<Record<keyof ControllerRenderProps, keyof TProps>> = {}
 ) {
-  return forwardRef(function controlled(
-    props: TProps & Omit<ControllerProps, 'render' | 'control'>,
-    ref,
+  return forwardRef(function controlled<Values extends TFieldValues = TFieldValues>(
+    props: WithControllerProps<TProps, Values>,
+    ref
   ) {
     const { name, rules, shouldUnregister, defaultValue, ...propsComponent } = props
 
@@ -23,14 +19,14 @@ export function withController<TProps>(
         rules={rules}
         shouldUnregister={shouldUnregister}
         defaultValue={defaultValue}
-        render={({ field: { ref: innerRef, ...field }, fieldState}) => {
+        render={({ field: { ref: innerRef, ...field } }) => {
           const propsMapped = Object.keys(field).reduce((acc, keyFrom) => {
             const keyTo = mapProps[keyFrom]
             const propFrom = field[keyFrom]
             acc[keyTo ?? keyFrom] = propFrom
             return acc
           }, {})
-          return <Component {...(propsComponent as TProps)} {...propsMapped} />
+          return <Component ref={ref} {...(propsComponent as TProps)} {...propsMapped} />
         }}
       />
     )

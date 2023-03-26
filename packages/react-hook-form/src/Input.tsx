@@ -1,5 +1,5 @@
-import { Input as InputDefault } from 'tamagui'
+import { Input } from 'tamagui'
 
 import { withController } from './withController'
 
-export const InputControlled = withController(InputDefault, { onChange: 'onChangeText' })
+export const InputControlled = withController(Input, { onChange: 'onChangeText' })

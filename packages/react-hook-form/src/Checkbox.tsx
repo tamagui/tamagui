@@ -1,10 +1,13 @@
-import { Checkbox as CheckboxDefault, withStaticProperties } from 'tamagui'
+import { withStaticProperties } from '@tamagui/web'
+import { Checkbox } from '@tamagui/checkbox'
 
 import { withController } from './withController'
 
-const { Indicator } = CheckboxDefault
+const { Indicator } = Checkbox
 
 export const CheckboxControlled = withStaticProperties(
-  withController(CheckboxDefault, { onChange: 'onCheckedChange' }),
-  { Indicator }
+  withController(Checkbox, { onChange: 'onCheckedChange' }),
+  {
+    Indicator,
+  }
 )

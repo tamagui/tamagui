@@ -1,4 +1,5 @@
-import { Select as SelectDefault, withStaticProperties } from 'tamagui'
+import { withStaticProperties } from '@tamagui/web'
+import { Select } from '@tamagui/select'
 
 import { withController } from './withController'
 
@@ -11,9 +12,16 @@ const {
   Item,
   ItemText,
   ItemIndicator,
-} = SelectDefault
+  ScrollUpButton,
+  ScrollDownButton,
+  Label,
+  Sheet,
+  Adapt,
+  Icon,
+} = Select
+
 export const SelectControlled = withStaticProperties(
-  withController(SelectDefault, { onChange: "onValueChange"}),
+  withController(Select, { onChange: "onValueChange"}),
   {
     Trigger,
     Value,
@@ -21,7 +29,13 @@ export const SelectControlled = withStaticProperties(
     Viewport,
     Group,
     Item,
+    Label,
     ItemText,
     ItemIndicator,
+    ScrollUpButton,
+    ScrollDownButton,
+    Sheet,
+    Adapt,
+    Icon,
   }
 )

@@ -1,13 +1,6 @@
-import { Form as FormDefault, FormProps as FormDefaultProps } from '@tamagui/form'
-import { withStaticProperties } from '@tamagui/web'
-import { PropsWithChildren } from 'react'
-import {
-  FieldValues,
-  FormProvider,
-  SubmitHandler,
-  UseFormProps,
-  useForm,
-} from 'react-hook-form'
+import { Form as FormDefault } from '@tamagui/form'
+import { useIsomorphicLayoutEffect, withStaticProperties } from '@tamagui/web'
+import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 
 import { CheckboxControlled } from './Checkbox'
 import { InputControlled } from './Input'
@@ -17,12 +10,27 @@ import { SelectControlled } from './Select'
 import { SliderControlled } from './Slider'
 import { SwitchControlled } from './Switch'
 import { TextAreaControlled } from './Textarea'
+import { FormProps, StaticProps } from './types'
+import { Value } from './Value'
 
-export type FormProps = UseFormProps &
-  Omit<FormDefaultProps, 'onSubmit'> & { onSubmit: SubmitHandler<FieldValues> }
+const defaultStaticProps = {
+  Checkbox: CheckboxControlled,
+  Input: InputControlled,
+  RadioGroup: RadioGroupControlled,
+  Select: SelectControlled,
+  Slider: SliderControlled,
+  Switch: SwitchControlled,
+  TextArea: TextAreaControlled,
+  Trigger: FormDefault.Trigger,
+  Message: Message,
+  Value: Value,
+}
 
-export const Form = withStaticProperties(
-  ({
+export function createForm<TValues extends FieldValues = FieldValues>() {
+  return withStaticProperties<
+    (params: FormProps<TValues>) => JSX.Element,
+    StaticProps<TValues>
+  >(function FormComponent({
     children,
     onSubmit,
     mode,
@@ -37,9 +45,10 @@ export const Form = withStaticProperties(
     shouldUseNativeValidation,
     criteriaMode,
     delayError,
+    fRef,
     ...formProps
-  }: PropsWithChildren<FormProps>) => {
-    const form = useForm({
+  }) {
+    const form = useForm<TValues>({
       mode,
       reValidateMode,
       defaultValues,
@@ -53,7 +62,13 @@ export const Form = withStaticProperties(
       criteriaMode,
       delayError,
     })
-    console.log(formProps)
+
+    useIsomorphicLayoutEffect(() => {
+      if (fRef) {
+        fRef.current = form
+      }
+    }, [form])
+
     return (
       <FormProvider {...form}>
         <FormDefault
@@ -64,15 +79,5 @@ export const Form = withStaticProperties(
       </FormProvider>
     )
   },
-  {
-    Checkbox: CheckboxControlled,
-    Input: InputControlled,
-    RadioGroup: RadioGroupControlled,
-    Select: SelectControlled,
-    Slider: SliderControlled,
-    Switch: SwitchControlled,
-    TextArea: TextAreaControlled,
-    Trigger: FormDefault.Trigger,
-    Message,
-  }
-)
+  defaultStaticProps as unknown as StaticProps<TValues>)
+}

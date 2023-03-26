@@ -1,22 +1,22 @@
 /// <reference types="react" />
-export declare const SwitchControlled: import("react").ForwardRefExoticComponent<Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+export declare const SwitchControlled: import("react").ForwardRefExoticComponent<Omit<import("./types").WithControllerProps<Omit<import("react-native").ViewProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("tamagui").SizeTokens | undefined;
+    readonly elevation?: import("@tamagui/web").SizeTokens | undefined;
 }, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-    readonly size?: import("tamagui").SizeTokens | undefined;
-} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    readonly size?: import("@tamagui/web").SizeTokens | undefined;
+} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("tamagui").SizeTokens | undefined;
+    readonly elevation?: import("@tamagui/web").SizeTokens | undefined;
 }, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-    readonly size?: import("tamagui").SizeTokens | undefined;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    readonly size?: import("@tamagui/web").SizeTokens | undefined;
+}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
-    readonly elevation?: import("tamagui").SizeTokens | undefined;
+    readonly elevation?: import("@tamagui/web").SizeTokens | undefined;
 }, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-    readonly size?: import("tamagui").SizeTokens | undefined;
+    readonly size?: import("@tamagui/web").SizeTokens | undefined;
 }>> & {
     labeledBy?: string | undefined;
     name?: string | undefined;
@@ -25,10 +25,10 @@ export declare const SwitchControlled: import("react").ForwardRefExoticComponent
     defaultChecked?: boolean | undefined;
     required?: boolean | undefined;
     onCheckedChange?(checked: boolean): void;
-} & import("react").RefAttributes<HTMLButtonElement | import("react-native").View> & Omit<import("react-hook-form").ControllerProps<import("react-hook-form").FieldValues, string>, "render" | "control">, "ref"> & import("react").RefAttributes<unknown>> & {
-    Thumb: import("react").ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+} & import("react").RefAttributes<import("react-native").View | HTMLButtonElement>, import("react-hook-form").FieldValues>, "ref"> & import("react").RefAttributes<unknown>> & {
+    Thumb: import("react").ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
-        readonly elevation?: import("tamagui").SizeTokens | undefined;
+        readonly elevation?: import("@tamagui/web").SizeTokens | undefined;
     } & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
@@ -43,10 +43,10 @@ export declare const SwitchControlled: import("react").ForwardRefExoticComponent
         readonly chromeless?: boolean | "all" | undefined;
     }, "size" | "unstyled"> & {
         readonly unstyled?: boolean | undefined;
-        readonly size?: import("tamagui").SizeTokens | undefined;
-    } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+        readonly size?: import("@tamagui/web").SizeTokens | undefined;
+    } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
-        readonly elevation?: import("tamagui").SizeTokens | undefined;
+        readonly elevation?: import("@tamagui/web").SizeTokens | undefined;
     } & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
@@ -61,10 +61,10 @@ export declare const SwitchControlled: import("react").ForwardRefExoticComponent
         readonly chromeless?: boolean | "all" | undefined;
     }, "size" | "unstyled"> & {
         readonly unstyled?: boolean | undefined;
-        readonly size?: import("tamagui").SizeTokens | undefined;
-    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("tamagui").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+        readonly size?: import("@tamagui/web").SizeTokens | undefined;
+    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
-        readonly elevation?: import("tamagui").SizeTokens | undefined;
+        readonly elevation?: import("@tamagui/web").SizeTokens | undefined;
     } & {
         readonly backgrounded?: boolean | undefined;
         readonly radiused?: boolean | undefined;
@@ -79,7 +79,7 @@ export declare const SwitchControlled: import("react").ForwardRefExoticComponent
         readonly chromeless?: boolean | "all" | undefined;
     }, "size" | "unstyled"> & {
         readonly unstyled?: boolean | undefined;
-        readonly size?: import("tamagui").SizeTokens | undefined;
+        readonly size?: import("@tamagui/web").SizeTokens | undefined;
     }>> & import("react").RefAttributes<HTMLSpanElement>>;
 };
 //# sourceMappingURL=Switch.d.ts.map

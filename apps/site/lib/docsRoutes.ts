@@ -146,7 +146,10 @@ export const docsRoutes = [
   },
 
   {
-    pages: [{ title: 'Lucide Icons', route: '/docs/components/lucide-icons' }],
+    pages: [
+      { title: 'Lucide Icons', route: '/docs/components/lucide-icons' },
+      { title: 'react-hook-form', route: '/docs/components/react-hook-form' },
+    ],
   },
 
   {

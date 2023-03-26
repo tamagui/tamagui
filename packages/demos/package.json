@@ -38,6 +38,7 @@
     "@tamagui/popover": "1.9.0",
     "@tamagui/progress": "1.9.0",
     "@tamagui/radio-group": "1.9.0",
+    "@tamagui/react-hook-form": "1.9.0",
     "@tamagui/select": "1.9.0",
     "@tamagui/sheet": "1.9.0",
     "@tamagui/slider": "1.9.0",
