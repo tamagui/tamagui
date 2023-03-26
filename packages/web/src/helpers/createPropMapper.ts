@@ -27,11 +27,7 @@ export type ResolveVariableTypes =
   | 'non-color-value'
 
 export const getReturnVariablesAs = (props: any, state: Partial<SplitStyleState>) => {
-  return !!props.animation || state.resolveVariablesAs === 'value'
-    ? isWeb
-      ? 'non-color-value'
-      : 'value'
-    : 'auto'
+  return !!props.animation || state.resolveVariablesAs === 'value' ? 'value' : 'auto'
 }
 
 export const createPropMapper = (staticConfig: StaticConfigParsed) => {

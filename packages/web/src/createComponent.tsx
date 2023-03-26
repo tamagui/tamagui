@@ -235,15 +235,14 @@ export function createComponent<
       }
     }
 
-    const isReactNative = Boolean(
-      staticConfig.isReactNative || (isAnimated && tamaguiConfig.animations.isReactNative)
-    )
+    const isAnimatedReactNative = isAnimated && tamaguiConfig.animations.isReactNative
+    const isReactNative = Boolean(staticConfig.isReactNative || isAnimatedReactNative)
 
     if (process.env.NODE_ENV === 'development') {
       if (debugProp) {
         // prettier-ignore
         const name = `${componentName || Component?.displayName || Component?.name || '[Unnamed Component]'}`
-        const type = isReactNative ? '(rnw)' : ''
+        const type = isAnimatedReactNative ? '(animated)' : isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type}`
         console.group(`%c ${banner}`, 'background: yellow;')
