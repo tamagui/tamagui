@@ -80,7 +80,7 @@ export const onConfiguredOnce = (cb: ConfigListener) => {
 }
 
 export const updateConfig = (key: string, value: any) => {
-  Object.assign(key, value)
+  Object.assign(conf![key], value)
 }
 
 // searches by value name or token name
