@@ -1,19 +1,19 @@
 {
   "name": "@tamagui/sandbox-web",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "private": true,
   "scripts": {
     "dev": "NODE_ENV=development TAMAGUI_TARGET=web vite --host --clearScreen false",
     "dev:extract": "EXTRACT=1 yarn dev"
   },
   "dependencies": {
-    "@tamagui/config": "1.9.3",
-    "@tamagui/web": "1.9.3",
+    "@tamagui/config": "1.9.4",
+    "@tamagui/web": "1.9.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@tamagui/vite-plugin": "1.9.3",
+    "@tamagui/vite-plugin": "1.9.4",
     "@vitejs/plugin-react": "^2.2.0",
     "@vitejs/plugin-react-swc": "^3.0.1",
     "vite": "^4.0.4",
