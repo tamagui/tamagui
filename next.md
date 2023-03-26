@@ -1,11 +1,16 @@
+- input wrapping:
+  - https://discord.com/channels/909986013848412191/1037853103074050248/1082445770021683241
+
+- dark mode list item subtitle isn't visible?
+  - https://discord.com/channels/909986013848412191/1082735552509522083/1082735552509522083
+
+- beatgig https://discord.com/channels/909986013848412191/1081351448731856977
+
 - @tamagui/change-animation-driver
   - would be good for the website to show and test animations across all drivers
 
 - https://github.com/tamagui/tamagui/issues/568
 - instead of proxying we could just merge all themes on creation with their parents?
-
-
-- can make the sub-color alt themes not define color1=>color12
 
 - Card has a good use case for size being passed through context/css vars
 - linear-gradient next.js issue

@@ -23,7 +23,10 @@ export default function Home({ animationCode, compilationExamples }) {
   return (
     <>
       <HomeGlow />
-      <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
+      <TitleAndMetaTags
+        title="Tamagui — React Native + Web UI kit"
+        description="Write less, run faster. Styles, optimizing compiler & UI kit that unify React Native + Web."
+      />
       <TintSection index={0} p={0}>
         <Hero />
       </TintSection>

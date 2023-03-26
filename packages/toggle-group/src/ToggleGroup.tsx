@@ -1,4 +1,5 @@
 import { GetProps, getVariableValue, styled, withStaticProperties } from '@tamagui/core'
+import { Group, GroupProps, useGroupItem } from '@tamagui/group'
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { getSize } from '@tamagui/get-size'
 import { createRovingFocusGroupScope } from '@tamagui/roving-focus'
@@ -7,7 +8,6 @@ import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import React from 'react'
-import { XGroup } from 'tamagui'
 
 import { Toggle } from './Toggle'
 
@@ -31,7 +31,7 @@ const [ToggleGroupItemProvider, useToggleGroupItemContext] =
 const useToggleGroupItemScope = createToggleGroupItemScope()
 
 const ToggleGroupItemFrame = styled(
-  ThemeableStack,
+  Group,
   {
     name: 'Toggle',
     variants: {
@@ -330,7 +330,7 @@ type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGr
 type TamaguiElement = HTMLElement
 type ToggleGroupImplElement = TamaguiElement
 
-const ToggleGroupImplElementFrame = styled(ThemeableStack, {
+const ToggleGroupImplElementFrame = styled(Group, {
   name: TOGGLE_GROUP_NAME,
   backgroundColor: '$background',
   variants: {
@@ -347,7 +347,7 @@ const ToggleGroupImplElementFrame = styled(ThemeableStack, {
   } as const,
 })
 
-type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & {
+type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & GroupProps & {
   disabled?: boolean
   orientation?: RovingFocusGroupProps['orientation']
   rovingFocus?: boolean

@@ -6,10 +6,11 @@ import {
   CheckboxDemo,
   GroupDemo,
   InputsDemo,
+  ListItemDemo,
   ProgressDemo,
   SelectDemo,
   SwitchDemo,
-  ToggleGroupDemo
+  TabsDemo
 } from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
@@ -59,11 +60,12 @@ export const Sandbox = () => {
   return (
     <SandboxFrame>
       {/* keep indent */}
-      {/* <SandboxDefault /> */}
+      <SandboxDefault />
 
       {/* <TestPopoverContentStyledPlusAnimations /> */}
 
-      <SelectDemo />
+      {/* <SelectDemo /> */}
+      <ListItemDemo />
     </SandboxFrame>
   )
 }
@@ -167,11 +169,7 @@ const SandboxFrame = (props: { children: any }) => {
 function SandboxDefault() {
   const demos = (
     <>
-      <SwitchDemo />
-      <CheckboxDemo />
-      <InputsDemo />
-      <ButtonDemo />
-      <ToggleGroupDemo />
+      <TabsAdvancedDemo />
     </>
   )
 
@@ -224,7 +222,6 @@ function SandboxDefault() {
 //   const u = useTheme()
 //   console.log(u.color)
 //   return null
-// }
 
 const SolitoImageExample = () => (
   <Image

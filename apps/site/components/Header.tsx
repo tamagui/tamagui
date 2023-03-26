@@ -154,7 +154,7 @@ export function HeaderContents(props: HeaderProps) {
         pointerEvents="none"
         ai="center"
       >
-        <NextLink href="/">
+        <NextLink href="/" aria-label="Homepage">
           <XStack
             cursor={isHome ? 'default' : 'pointer'}
             pointerEvents="auto"

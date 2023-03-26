@@ -77,14 +77,16 @@ export type SwitchThumbProps = GetProps<typeof SwitchThumbFrame>
 export const SwitchThumb = SwitchThumbFrame.extractable(
   React.forwardRef<React.ElementRef<'span'>, SwitchThumbProps>(
     (props: ScopedProps<SwitchThumbProps, 'Switch'>, forwardedRef) => {
-      const { __scopeSwitch, ...thumbProps } = props
-      const { size, disabled, checked, unstyled } = useSwitchContext(
-        THUMB_NAME,
-        __scopeSwitch
-      )
+      const { __scopeSwitch, size: sizeProp, ...thumbProps } = props
+      const {
+        size: sizeContext,
+        disabled,
+        checked,
+        unstyled,
+      } = useSwitchContext(THUMB_NAME, __scopeSwitch)
+      const size = sizeProp ?? sizeContext
       return (
         <SwitchThumbFrame
-          unstyled={unstyled}
           size={size}
           theme={checked ? 'active' : null}
           data-state={getState(checked)}
@@ -116,11 +118,11 @@ export const SwitchFrame = styled(XStack, {
   variants: {
     unstyled: {
       false: {
-        size: '$true',
-        borderRadius: 1000,
-        borderWidth: 2,
-        borderColor: 'transparent',
-        backgroundColor: '$background',
+        // size: '$true',
+        // borderRadius: 1000,
+        // borderWidth: 2,
+        // borderColor: 'transparent',
+        // backgroundColor: '$background',
 
         focusStyle: {
           borderColor: '$borderColorFocus',

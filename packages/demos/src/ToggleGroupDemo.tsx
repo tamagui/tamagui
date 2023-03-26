@@ -33,7 +33,7 @@ function ToggleGroupComponent(props: { size: SizeTokens; type: 'single' | 'multi
       </Label>
       <Separator mih={20} vertical />
       <ToggleGroup id={id} type={props.type}>
-        <XGroup elevation={10} size="$2">
+        {/* <XGroup elevation={10} size="$2"> */}
           <ToggleGroup.Item size={props.size} value="left" aria-label="Left aligned">
             <AlignLeft />
           </ToggleGroup.Item>
@@ -43,7 +43,7 @@ function ToggleGroupComponent(props: { size: SizeTokens; type: 'single' | 'multi
           <ToggleGroup.Item size={props.size} value="right" aria-label="Right aligned">
             <AlignRight />
           </ToggleGroup.Item>
-        </XGroup>
+        {/* </XGroup> */}
       </ToggleGroup>
     </XStack>
   )
