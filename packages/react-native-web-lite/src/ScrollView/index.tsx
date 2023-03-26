@@ -192,7 +192,7 @@ class ScrollView extends React.Component<any> {
         {...contentSizeChangeProps}
         // @ts-ignore
         collapsable={false}
-        ref={this._setInnerViewRef}
+        ref={this._setInnerViewRef.bind(this)}
         style={[
           horizontal && styles.contentContainerHorizontal,
           centerContent && styles.contentContainerCenterContent,
@@ -237,7 +237,7 @@ class ScrollView extends React.Component<any> {
     invariant(ScrollViewClass !== undefined, 'ScrollViewClass must not be undefined')
 
     const scrollView = (
-      <ScrollViewClass {...props} ref={this._setScrollNodeRef}>
+      <ScrollViewClass {...props} ref={this._setScrollNodeRef.bind(this)}>
         {contentContainer}
       </ScrollViewClass>
     )
