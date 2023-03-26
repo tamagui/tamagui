@@ -80,6 +80,7 @@ export const onConfiguredOnce = (cb: ConfigListener) => {
 }
 
 export const updateConfig = (key: string, value: any) => {
+  // for usage internally only
   Object.assign(conf![key], value)
 }
 
