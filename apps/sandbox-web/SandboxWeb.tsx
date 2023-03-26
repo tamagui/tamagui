@@ -1,13 +1,20 @@
 import '@tamagui/web/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { Stack, TamaguiProvider } from '@tamagui/web'
+import { createSilkscreenFont } from '@tamagui/font-silkscreen'
+import { Stack, TamaguiProvider, addFont, createFont } from '@tamagui/web'
 import { useState } from 'react'
+import { Button, SizableText, Text } from 'tamagui'
 
 import config from './tamagui.config'
 
+//
+
+const mySilk = createSilkscreenFont()
+
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light')
+  const [fontFamily, setFontFamily] = useState('$body')
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
@@ -30,8 +37,23 @@ export const Sandbox = () => {
       />
 
       <Stack ai="center" jc="center" f={1} bc="red">
-        <Stack onMoveShouldSetResponder={() => true}>hi</Stack>
+        <SizableText fontFamily={fontFamily} size={'$15'}>
+          Good job
+        </SizableText>
       </Stack>
+      <Button
+        onPress={() => {
+          addFont({
+            fontFamilyName: 'mySilk',
+            fontFamily: mySilk,
+            insertCSS: true,
+            update: true,
+          })
+          setFontFamily('$mySilk')
+        }}
+      >
+        Change font family
+      </Button>
 
       {/*  */}
     </TamaguiProvider>
