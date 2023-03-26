@@ -1,7 +1,7 @@
 import { GetProps, getVariableValue, styled, withStaticProperties } from '@tamagui/core'
-import { Group, GroupProps, useGroupItem } from '@tamagui/group'
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { getSize } from '@tamagui/get-size'
+import { Group, GroupProps, useGroupItem } from '@tamagui/group'
 import { createRovingFocusGroupScope } from '@tamagui/roving-focus'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { ThemeableStack } from '@tamagui/stacks'
@@ -31,7 +31,7 @@ const [ToggleGroupItemProvider, useToggleGroupItemContext] =
 const useToggleGroupItemScope = createToggleGroupItemScope()
 
 const ToggleGroupItemFrame = styled(
-  Group,
+  ThemeableStack,
   {
     name: 'Toggle',
     variants: {
@@ -77,6 +77,8 @@ const ToggleGroupItem = ToggleGroupItemFrame.extractable(
       const disabled = context.disabled || props.disabled
       const commonProps = { ...props, pressed, disabled }
       const ref = React.useRef<HTMLDivElement>(null)
+      const groupItemProps = useGroupItem({ disabled })
+
       return (
         <ToggleGroupItemProvider scope={__scopeToggleGroup}>
           {context.rovingFocus ? (
@@ -91,6 +93,7 @@ const ToggleGroupItem = ToggleGroupItemFrame.extractable(
                 focusable={!disabled}
                 disabled={disabled}
                 ref={ref}
+                {...groupItemProps}
               >
                 <ToggleGroupItemImpl {...commonProps} ref={forwardedRef} />
               </ToggleGroupItemFrame>
@@ -347,13 +350,14 @@ const ToggleGroupImplElementFrame = styled(Group, {
   } as const,
 })
 
-type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & GroupProps & {
-  disabled?: boolean
-  orientation?: RovingFocusGroupProps['orientation']
-  rovingFocus?: boolean
-  dir?: RovingFocusGroupProps['dir']
-  loop?: RovingFocusGroupProps['loop']
-}
+type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> &
+  GroupProps & {
+    disabled?: boolean
+    orientation?: RovingFocusGroupProps['orientation']
+    rovingFocus?: boolean
+    dir?: RovingFocusGroupProps['dir']
+    loop?: RovingFocusGroupProps['loop']
+  }
 
 const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
   React.forwardRef<ToggleGroupImplElement, ToggleGroupImplProps>(
@@ -387,6 +391,7 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
               <ToggleGroupImplElementFrame
                 aria-orientation={orientation}
                 orientation={orientation}
+                axis={orientation}
                 ref={forwardedRef}
                 data-disabled={disabled ? '' : undefined}
                 {...commonProps}
