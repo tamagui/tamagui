@@ -131,6 +131,10 @@ type ToastImplProps = ToastImplPrivateProps &
      * @default "default"
      */
     viewportName?: string
+    /**
+     * 
+     */
+    id?: string
   }
 
 const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
@@ -162,15 +166,15 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
     const { onToastAdd, onToastRemove } = context
     const handleClose = useEvent(() => {
       if (!isPresent) {
-        // already removed from the react tree
-        return
-      }
-      // focus viewport if focus is within toast to read the remaining toast
-      // count to SR users and ensure focus isn't lost
-      if (isWeb) {
-        const isFocusInToast = (node as HTMLDivElement)?.contains(document.activeElement)
-        if (isFocusInToast) context.viewport?.focus()
-      }
+          // already removed from the react tree
+          return
+        }
+        // focus viewport if focus is within toast to read the remaining toast
+        // count to SR users and ensure focus isn't lost
+        if (isWeb) {
+          const isFocusInToast = (node as HTMLDivElement)?.contains(document.activeElement)
+          if (isFocusInToast) context.viewport?.focus()
+        }
       onClose()
     })
 
@@ -318,7 +322,6 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
             key={props.id}
             scope={__scopeToast}
             onClose={() => {
-              console.log('hellooow')
               handleClose()
             }}
           >

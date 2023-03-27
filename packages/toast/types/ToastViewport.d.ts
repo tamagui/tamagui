@@ -53,6 +53,10 @@ type ToastViewportProps = ToastViewportFrameProps & {
      * Used to reference the viewport if you want to have multiple viewports in the same provider.
      */
     name?: string;
+    /**
+     * Pass this when you want to have multiple/duplicated toasts.
+     */
+    multipleToasts?: boolean;
 };
 declare const ToastViewport: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
@@ -79,6 +83,10 @@ declare const ToastViewport: React.ForwardRefExoticComponent<((Omit<import("reac
      * Used to reference the viewport if you want to have multiple viewports in the same provider.
      */
     name?: string | undefined;
+    /**
+     * Pass this when you want to have multiple/duplicated toasts.
+     */
+    multipleToasts?: boolean | undefined;
 }) | Omit<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -110,6 +118,10 @@ declare const ToastViewport: React.ForwardRefExoticComponent<((Omit<import("reac
      * Used to reference the viewport if you want to have multiple viewports in the same provider.
      */
     name?: string | undefined;
+    /**
+     * Pass this when you want to have multiple/duplicated toasts.
+     */
+    multipleToasts?: boolean | undefined;
 }, "ref">) & React.RefAttributes<HTMLDivElement>>;
 export { ToastViewport, ToastViewportProps, VIEWPORT_DEFAULT_HOTKEY, VIEWPORT_PAUSE, VIEWPORT_RESUME, };
 //# sourceMappingURL=ToastViewport.d.ts.map
