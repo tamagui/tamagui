@@ -25,7 +25,7 @@ export function addFont(props: {
     }
   }
 
-  config.fonts[fontFamilyNameIn] = props.fontFamily
+  config.fonts[fontFamilyNameIn] = fontFamilyIn
 
   const sep =
     process.env.NODE_ENV === 'development' ? config.cssStyleSeparator || ' ' : ''
@@ -36,12 +36,13 @@ export function addFont(props: {
   if (isWeb) {
     const fontFamilyToken = createVariables(fontFamilyIn, 'f', true)
     const parsedFontFamily = parseFont(fontFamilyToken)
-    config.fontsParsed[`$${fontFamilyNameIn}`] = parsedFontFamily
+    const fontFamilyNameParsed = `$${fontFamilyNameIn}`
+    config.fontsParsed[fontFamilyNameParsed] = parsedFontFamily
 
     if (props.insertCSS) {
-      const [ff_name, ff_language] = fontFamilyNameIn.includes('_')
-        ? fontFamilyNameIn.split('_')
-        : [fontFamilyNameIn]
+      const [ff_name, ff_language] = fontFamilyNameParsed.includes('_')
+        ? fontFamilyNameParsed.split('_')
+        : [fontFamilyNameParsed]
       const fontVars = registerFontVariables(parsedFontFamily)
       const fontDeclaration = {
         [fontFamilyNameIn]: {
