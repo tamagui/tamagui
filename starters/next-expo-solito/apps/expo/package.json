@@ -17,6 +17,7 @@
     "@types/react-native": "^0.71.3",
     "app": "*",
     "babel-plugin-module-resolver": "^4.1.0",
+    "burnt": "^0.10.0",
     "expo": "^48.0.7",
     "expo-constants": "^14.2.1",
     "expo-dev-client": "^2.1.5",

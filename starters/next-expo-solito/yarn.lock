@@ -6031,6 +6031,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"burnt@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "burnt@npm:0.10.0"
+  dependencies:
+    sf-symbols-typescript: ^1.0.0
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: b33a84b0a57be34cc37d18f50710d46fb72e8d8eb2c5d5ae687a22dad41a1c6a42a49d507a71065480b5286729c887e3ee281f47af1325321f63fdc15e3af913
+  languageName: node
+  linkType: hard
+
 "bytes@npm:3.0.0":
   version: 3.0.0
   resolution: "bytes@npm:3.0.0"
@@ -8321,6 +8334,7 @@ __metadata:
     app: "*"
     babel-plugin-module-resolver: ^4.1.0
     babel-plugin-transform-inline-environment-variables: ^0.4.4
+    burnt: ^0.10.0
     expo: ^48.0.7
     expo-constants: ^14.2.1
     expo-dev-client: ^2.1.5
@@ -14223,6 +14237,13 @@ __metadata:
   version: 1.2.0
   resolution: "setprototypeof@npm:1.2.0"
   checksum: be18cbbf70e7d8097c97f713a2e76edf84e87299b40d085c6bf8b65314e994cc15e2e317727342fa6996e38e1f52c59720b53fe621e2eb593a6847bf0356db89
+  languageName: node
+  linkType: hard
+
+"sf-symbols-typescript@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "sf-symbols-typescript@npm:1.0.0"
+  checksum: ab7f427b6145ba308e9ab0357e86a8b32c4bd2ed7d5bba983812483b6f8320097121a7dac1855d344cf8b5a6e45ef9b7e8f121ad640fc7821f3fd433a8280567
   languageName: node
   linkType: hard
 
