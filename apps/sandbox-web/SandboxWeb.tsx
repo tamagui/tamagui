@@ -1,8 +1,9 @@
 import '@tamagui/web/reset.css'
 import '@tamagui/polyfill-dev'
 
+import { addFont } from '@tamagui/add-font'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
-import { Stack, TamaguiProvider, addFont, createFont } from '@tamagui/web'
+import { Stack, TamaguiProvider, createFont } from '@tamagui/web'
 import { useState } from 'react'
 import { Button, SizableText, Text } from 'tamagui'
 

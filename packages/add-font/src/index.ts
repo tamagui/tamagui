@@ -1,9 +1,11 @@
 import { isWeb } from '@tamagui/constants'
-
-import { getConfig } from './config.js'
-import { createVariables } from './createVariables.js'
-import { parseFont, registerFontVariables } from './insertFont.js'
-import { CreateTamaguiProps } from './types.js'
+import {
+  createVariables,
+  getConfig,
+  parseFont,
+  registerFontVariables,
+} from '@tamagui/web'
+import type { CreateTamaguiProps } from '@tamagui/web'
 
 export function addFont(props: {
   fontFamilyName: string
