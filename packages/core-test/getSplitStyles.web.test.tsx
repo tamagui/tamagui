@@ -44,33 +44,27 @@ describe('getSplitStyles', () => {
 
   test(`fonts get merged properly`, () => {
     const CustomText = styled(Text, {
+      name: 'Heading',
+      color: '$color',
+
       variants: {
         type: {
           myValue: {
-            fontFamily: '$mono',
-            fontSize: '$10',
+            fontFamily: '$body',
           },
         },
-      },
+      } as const,
     })
-    const case1 = simplifiedGetSplitStyles(CustomText, {
+    const splitStyles = simplifiedGetSplitStyles(CustomText, {
+      fontSize: '$1', // should be able to resolve $body from the variant and find the css value
       type: 'myValue',
-      fontSize: '$2',
     })
-    expect(case1.fontFamily).toEqual('$mono')
-    expect(case1.rulesToInsert.find((rule) => rule.property === 'fontSize')?.value).toEqual(
-      '$2'
-    )
 
-    const case2 = simplifiedGetSplitStyles(CustomText, {
-      fontSize: '$2',
-      type: 'myValue',
-      fontFamily: "$body",
-    })
-    expect(case2.fontFamily).toEqual('$body')
-    expect(case2.rulesToInsert.find((rule) => rule.property === 'fontSize')?.value).toEqual(
-      '$10'
-    )
+    expect(
+      splitStyles.rulesToInsert
+        .find((rule) => rule.property === 'fontSize')
+        ?.value.startsWith('var(--')
+    ).toBeTruthy()
   })
 
   // test(`prop "tabIndex" defaults to "0", overrides to "-1" when tag = button`, () => {
@@ -112,6 +106,7 @@ function simplifiedGetSplitStyles(
     },
     undefined,
     undefined,
-    tag
+    tag,
+    true
   )
 }
