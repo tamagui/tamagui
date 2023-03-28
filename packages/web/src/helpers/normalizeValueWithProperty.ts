@@ -49,7 +49,6 @@ const unitlessNumbers = {
   columnCount: true,
   flex: true,
   flexGrow: true,
-  flexBasis: true,
   flexOrder: true,
   flexPositive: true,
   flexShrink: true,

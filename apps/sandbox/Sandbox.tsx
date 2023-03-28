@@ -94,9 +94,11 @@ export const Heading = styled(Text, {
 export const Sandbox = () => {
   return (
     <SandboxFrame>
-      <Heading type="myVariant" debug="verbose" fontSize="$5">
+      {/* <Heading type="myVariant" debug="verbose" fontSize="$5">
         H1
-      </Heading>
+      </Heading> */}
+
+      <YStack debug="verbose" w={100} h={100} bc="red" flexBasis={200} />
 
       {/* <Button2 ok debug="verbose">
         hi
@@ -123,7 +125,7 @@ export const Sandbox = () => {
         }}
       /> */}
 
-      <YStack
+      {/* <YStack
         animation={[
           'bouncy',
           {
@@ -145,7 +147,7 @@ export const Sandbox = () => {
         width={40}
         height={40}
         bc="$red10"
-      />
+      /> */}
 
       {/* TODO */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}
