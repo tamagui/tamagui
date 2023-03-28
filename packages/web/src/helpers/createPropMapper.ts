@@ -60,7 +60,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
       defaultProps.fontFamily ||
       propsIn.fontFamily ||
       '$body'
-
+     
     const variantValue = resolveVariants(
       key,
       value,
@@ -454,7 +454,6 @@ const getToken = (
       case 'letterSpacing':
       case 'fontWeight':
         valOrVar = fontsParsed[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
-        console.warn('??', { fontFamily, fontShorthand, key, value, valOrVar })
         hasSet = true
         break
     }
