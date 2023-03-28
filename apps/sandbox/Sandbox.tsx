@@ -16,6 +16,7 @@ import {
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
 import {
+  Button,
   Input,
   ScrollView,
   Stack,
@@ -61,9 +62,25 @@ const Image = styled(
   }
 )
 
+const Button2 = styled(Button, {
+  variants: {
+    ok: {
+      true: {
+        pressStyle: {
+          backgroundColor: 'red',
+        },
+      },
+    },
+  },
+})
+
 export const Sandbox = () => {
   return (
     <SandboxFrame>
+      <Button2 ok debug="verbose">
+        hi
+      </Button2>
+
       {/* this comment keeps indent */}
       {/* <SandboxDefault /> */}
 
