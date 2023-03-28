@@ -182,10 +182,10 @@ const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"color\\": \\"rgba(255,0,0,1.00)\\",
     \\"fontFamily\\": \\"Inter\\",
+    \\"display\\": \\"flex\\",
     \\"letterSpacing\\": 0,
     \\"fontSize\\": 14,
-    \\"lineHeight\\": 23,
-    \\"display\\": \\"flex\\"
+    \\"lineHeight\\": 23
   }
 });
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
