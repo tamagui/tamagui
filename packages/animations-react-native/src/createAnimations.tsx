@@ -101,11 +101,15 @@ export function useAnimatedNumber(
 }
 
 export function useAnimatedNumberReaction(
-  value: UniversalAnimatedNumber<Animated.Value>,
-  cb: (current: number) => void
+  {
+    value,
+  }: {
+    value: UniversalAnimatedNumber<Animated.Value>
+  },
+  onValue: (current: number) => void
 ) {
   const onChange = useEvent((current) => {
-    cb(current.value)
+    onValue(current.value)
   })
 
   useEffect(() => {

@@ -223,7 +223,7 @@ export const Sheet = withStaticProperties(
 )
 
 const SheetImplementation = themeable(
-  forwardRef<View, SheetProps>(function SheetImplementation(props, ref) {
+  forwardRef<View, SheetProps>(function SheetImplementation(props, forwardedRef) {
     const parentSheet = useContext(ParentSheetContext)
     const { isHidden, controller } = useSheetContoller()
 
@@ -256,13 +256,16 @@ const SheetImplementation = themeable(
       }
     }
 
+    const sheetRef = useRef<View>(null)
+    const ref = useComposedRefs(forwardedRef, sheetRef)
+
     const driver = getAnimationDriver()
     if (!driver) {
       throw new Error('Must set animations in tamagui.config.ts')
     }
 
     const disableDrag = disableDragProp ?? controller?.disableDrag
-    const keyboardIsVisible = useKeyboardVisible();
+    const keyboardIsVisible = useKeyboardVisible()
     const themeName = useThemeName()
     const contentRef = React.useRef<TamaguiElement>(null)
     const scrollBridge = useConstant<ScrollBridge>(() => ({
@@ -332,10 +335,17 @@ const SheetImplementation = themeable(
     // native only fix
     const at = useRef(0)
 
-    useAnimatedNumberReaction(animatedNumber, (value) => {
-      at.current = value
-      scrollBridge.paneY = value
-    })
+    useAnimatedNumberReaction(
+      {
+        value: animatedNumber,
+        hostRef: sheetRef,
+      },
+      (value) => {
+        if (!driver.isReactNative) return
+        at.current = value
+        scrollBridge.paneY = value
+      }
+    )
 
     function stopSpring() {
       animatedNumber.stop()
@@ -576,15 +586,18 @@ const SheetImplementation = themeable(
       [zIndex]
     )
 
-    const handleLayout = useCallback((e) => {
-      let next = e.nativeEvent?.layout.height
-      if (isWeb && isTouchable && !open) {
-        // temp fix ios bug where it doesn't go below dynamic bottom...
-        next += 100
-      }
-      if (!next) return
-      setFrameSize(() => next)
-    }, [keyboardIsVisible])
+    const handleLayout = useCallback(
+      (e) => {
+        let next = e.nativeEvent?.layout.height
+        if (isWeb && isTouchable && !open) {
+          // temp fix ios bug where it doesn't go below dynamic bottom...
+          next += 100
+        }
+        if (!next) return
+        setFrameSize(() => next)
+      },
+      [keyboardIsVisible]
+    )
 
     const removeScrollEnabled = forceRemoveScrollEnabled ?? (open && modal)
 
@@ -612,6 +625,8 @@ const SheetImplementation = themeable(
             {...panResponder?.panHandlers}
             onLayout={handleLayout}
             pointerEvents={open && !shouldHideParentSheet ? 'auto' : 'none'}
+            //  @ts-ignore
+            animation={props.animation}
             style={[
               {
                 position: 'absolute',

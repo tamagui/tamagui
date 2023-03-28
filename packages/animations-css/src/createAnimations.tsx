@@ -1,6 +1,12 @@
 import { usePresence } from '@tamagui/use-presence'
-import { AnimationDriver, Stack, Text, useIsomorphicLayoutEffect } from '@tamagui/web'
-import { useMemo, useRef } from 'react'
+import {
+  AnimationDriver,
+  Stack,
+  Text,
+  UniversalAnimatedNumber,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/web'
+import { useMemo, useRef, useState } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
@@ -9,24 +15,41 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     animations,
     usePresence,
 
-    useAnimatedNumber(initial) {
-      const val = useRef(initial)
+    useAnimatedNumber(initial): UniversalAnimatedNumber<number> {
+      const [val, setVal] = useState(initial)
+
       return {
         getInstance() {
           return val
         },
         getValue() {
-          return val.current
+          return val
         },
         setValue(next) {
-          val.current = next
+          setVal(next)
         },
         stop() {},
       }
     },
 
-    useAnimatedNumberReaction(val, reaction) {
-      // TODO use event listeners, would need access to the corresponsing node...
+    useAnimatedNumberReaction({ hostRef, value }, onValue) {
+      // doesn't make much sense given value the animated value is a state in this driver, but this is compatible
+      useIsomorphicLayoutEffect(() => {
+        if (!hostRef.current) return
+        const onTransitionEvent = (e: TransitionEvent) => {
+          onValue(value.getValue())
+        }
+
+        const node = hostRef.current as HTMLElement
+        node.addEventListener('transitionstart', onTransitionEvent)
+        node.addEventListener('transitioncancel', onTransitionEvent)
+        node.addEventListener('transitionend', onTransitionEvent)
+        return () => {
+          node.removeEventListener('transitionstart', onTransitionEvent)
+          node.removeEventListener('transitioncancel', onTransitionEvent)
+          node.removeEventListener('transitionend', onTransitionEvent)
+        }
+      }, [hostRef, onValue])
     },
 
     useAnimatedNumberStyle(val, getStyle) {

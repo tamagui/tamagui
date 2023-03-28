@@ -1445,8 +1445,11 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     val: V,
     getStyle: (current: any) => any
   ) => any
-  useAnimatedNumberReaction: (
-    val: UniversalAnimatedNumber<any>,
+  useAnimatedNumberReaction: <V extends UniversalAnimatedNumber<any>>(
+    opts: {
+      value: V
+      hostRef: RefObject<HTMLElement | View>
+    },
     onValue: (current: number) => void
   ) => void
   animations: A
