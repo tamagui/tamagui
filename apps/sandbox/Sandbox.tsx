@@ -21,6 +21,7 @@ import {
   ScrollView,
   Stack,
   TamaguiProvider,
+  Text,
   ToastProvider,
   XStack,
   YStack,
@@ -74,12 +75,32 @@ const Button2 = styled(Button, {
   },
 })
 
+export const Heading = styled(Text, {
+  name: 'Heading',
+  color: '$color',
+
+  variants: {
+    type: {
+      myVariant: {
+        fontFamily: '$myFont',
+        fontSize: '$24',
+        lh: '$24',
+        fow: '$bold',
+      },
+    },
+  } as const,
+})
+
 export const Sandbox = () => {
   return (
     <SandboxFrame>
-      <Button2 ok debug="verbose">
+      <Heading type="myVariant" debug="verbose" fontSize="$5">
+        H1
+      </Heading>
+
+      {/* <Button2 ok debug="verbose">
         hi
-      </Button2>
+      </Button2> */}
 
       {/* this comment keeps indent */}
       {/* <SandboxDefault /> */}
