@@ -60,7 +60,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
       defaultProps.fontFamily ||
       propsIn.fontFamily ||
       '$body'
-
+     
     const variantValue = resolveVariants(
       key,
       value,
