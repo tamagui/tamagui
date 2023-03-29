@@ -60,7 +60,20 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
       defaultProps.fontFamily ||
       propsIn.fontFamily ||
       '$body'
-     
+
+    if (
+      process.env.NODE_ENV === 'development' &&
+      fontFamily &&
+      fontFamily[0] === '$' &&
+      !(fontFamily in conf.fontsParsed)
+    ) {
+      console.warn(
+        `Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(
+          conf.fontsParsed
+        ).join(', ')}`
+      )
+    }
+
     const variantValue = resolveVariants(
       key,
       value,

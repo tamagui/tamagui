@@ -82,8 +82,8 @@ export const Heading = styled(Text, {
   variants: {
     type: {
       myVariant: {
-        fontFamily: '$myFont',
-        fontSize: '$24',
+        fontFamily: '$body',
+        fontSize: 20,
         lh: '$24',
         fow: '$bold',
       },
@@ -94,11 +94,11 @@ export const Heading = styled(Text, {
 export const Sandbox = () => {
   return (
     <SandboxFrame>
-      {/* <Heading type="myVariant" debug="verbose" fontSize="$5">
+      <Heading type="myVariant" fontSize="$8">
         H1
-      </Heading> */}
+      </Heading>
 
-      <YStack debug="verbose" w={100} h={100} bc="red" flexBasis={200} />
+      {/* <YStack debug="verbose" w={100} h={100} bc="red" flexBasis={200} /> */}
 
       {/* <Button2 ok debug="verbose">
         hi
