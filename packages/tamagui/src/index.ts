@@ -124,6 +124,7 @@ export {
   Unspaced,
   // context,
   TextAncestorContext,
+  AnimationDriverProvider,
   // constants
   isChrome,
   isClient,

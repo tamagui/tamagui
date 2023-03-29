@@ -1,7 +1,23 @@
-import { CheckCircle, Clipboard, Paintbrush } from '@tamagui/lucide-icons'
-import { forwardRef, useEffect, useRef, useState } from 'react'
+import {
+  CheckCircle,
+  Clipboard,
+  Film,
+  Paintbrush,
+  Timer,
+  Waves,
+} from '@tamagui/lucide-icons'
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, TooltipSimple, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  H6,
+  SizableText,
+  Switch,
+  Text,
+  TooltipSimple,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { setTinted, toggleTinted } from '../hooks/setTinted'
 import { useClipboard } from '../lib/useClipboard'
@@ -69,22 +85,21 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               r: '$7',
             }}
           >
-            <Button
-              accessibilityLabel="Show or hide code"
-              size="$2"
-              onPress={() => setIsCollapsed((x) => !x)}
-            >
-              {isCollapsed ? 'Show code' : 'Hide code'}
-            </Button>
-
-            <TooltipSimple label="Toggle tint on/off">
               <Button
-                accessibilityLabel="Toggle tint on/off"
+                accessibilityLabel="Show or hide code"
                 size="$2"
-                onPress={toggleTinted}
-                icon={Paintbrush}
-              />
-            </TooltipSimple>
+                onPress={() => setIsCollapsed((x) => !x)}
+              >
+                {isCollapsed ? 'Show code' : 'Hide code'}
+              </Button>
+              <TooltipSimple label="Toggle tint on/off">
+                <Button
+                  accessibilityLabel="Toggle tint on/off"
+                  size="$2"
+                  onPress={toggleTinted}
+                  icon={Paintbrush}
+                />
+              </TooltipSimple>
           </XStack>
         )}
 

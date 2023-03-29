@@ -107,6 +107,7 @@ export declare const Sheet: React.ForwardRefExoticComponent<{
     dismissOnSnapToBottom?: boolean | undefined;
     forceRemoveScrollEnabled?: boolean | undefined;
     animationConfig?: import("@tamagui/core").AnimatedNumberStrategy | undefined;
+    animation?: import("@tamagui/core").AnimationProp | undefined;
     handleDisableScroll?: boolean | undefined;
     disableDrag?: boolean | undefined;
     modal?: boolean | undefined;

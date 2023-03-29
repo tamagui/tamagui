@@ -1,4 +1,4 @@
-import { AnimatedNumberStrategy } from '@tamagui/core'
+import { AnimatedNumberStrategy, AnimationProp } from '@tamagui/core'
 import type { ScopedProps } from '@tamagui/create-context'
 import type { PortalProps } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
@@ -18,6 +18,10 @@ export type SheetProps = ScopedProps<
     dismissOnSnapToBottom?: boolean
     forceRemoveScrollEnabled?: boolean
     animationConfig?: AnimatedNumberStrategy
+    /**
+     * Pass if you're using the CSS animation driver
+     */
+    animation?: AnimationProp
     handleDisableScroll?: boolean
     disableDrag?: boolean
     modal?: boolean
