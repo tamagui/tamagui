@@ -1,6 +1,6 @@
 {
   "name": "vanilla",
-  "version": "1.9.13",
+  "version": "1.9.14",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
