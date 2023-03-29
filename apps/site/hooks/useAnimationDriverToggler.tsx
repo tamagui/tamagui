@@ -15,6 +15,7 @@ export const useAnimationDriverToggler = () => {
 const AnimationDriverTogglerContext = createContext<{
   driverName: (typeof ANIMATION_DRIVERS)[number]
   nextDriver: () => void
+  setDriverName: (driverName: (typeof ANIMATION_DRIVERS)[number]) => void
 }>(null as any)
 
 export const AnimationDriverTogglerContextProvider = ({
@@ -49,7 +50,9 @@ export const AnimationDriverTogglerContextProvider = ({
   }, [driverName])
 
   return (
-    <AnimationDriverTogglerContext.Provider value={{ driverName, nextDriver }}>
+    <AnimationDriverTogglerContext.Provider
+      value={{ driverName, nextDriver, setDriverName }}
+    >
       <AnimationDriverProvider driver={driver} key={driverName}>
         {children}
       </AnimationDriverProvider>
