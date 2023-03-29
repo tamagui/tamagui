@@ -124,8 +124,7 @@ const Card = styled(YStack, {
 
 const AnimationControl = () => {
   const animationDriverToggler = useAnimationDriverToggler()
-  // TODO: patch this for prod and show it again
-  return null
+
   return (
     <TooltipSimple label={`${animationDriverToggler.driverName} animation driver`}>
       <XStack zIndex={100000000} space="$2" ai="center">
