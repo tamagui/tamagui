@@ -454,7 +454,6 @@ const getToken = (
       case 'letterSpacing':
       case 'fontWeight':
         valOrVar = fontsParsed[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
-        console.warn('??', { fontFamily, fontShorthand, key, value, valOrVar })
         hasSet = true
         break
     }
