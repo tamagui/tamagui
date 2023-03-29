@@ -1,13 +1,12 @@
 import * as Config from '@tamagui/config'
+import { addTheme, updateTheme } from '@tamagui/load-theme'
 import React, { useState } from 'react'
 import {
   Button,
   Square,
   Theme,
   YStack,
-  addTheme,
   getVariableValue,
-  updateTheme,
   useForceUpdate,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
