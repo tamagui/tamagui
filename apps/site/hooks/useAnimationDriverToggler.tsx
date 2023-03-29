@@ -9,14 +9,17 @@ import tamaConf from '../tamagui.config'
 const ANIMATION_DRIVERS = ['css', 'react-native'] as const
 
 export const useAnimationDriverToggler = () => {
-  return useContext(AnimationDriverTogglerContext)
+  const contextValue = useContext(AnimationDriverTogglerContext)
+  if (!contextValue)
+    throw new Error('Should be used within the AnimationDriverTogglerContext provider')
+  return contextValue
 }
 
 const AnimationDriverTogglerContext = createContext<{
   driverName: (typeof ANIMATION_DRIVERS)[number]
   nextDriver: () => void
   setDriverName: (driverName: (typeof ANIMATION_DRIVERS)[number]) => void
-}>(null as any)
+} | null>(null)
 
 export const AnimationDriverTogglerContextProvider = ({
   children,

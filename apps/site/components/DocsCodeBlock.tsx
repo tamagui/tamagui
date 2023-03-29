@@ -20,7 +20,6 @@ import {
 } from 'tamagui'
 
 import { setTinted, toggleTinted } from '../hooks/setTinted'
-import { useAnimationDriverToggler } from '../hooks/useAnimationDriverToggler'
 import { useClipboard } from '../lib/useClipboard'
 import { Code } from './Code'
 import { ErrorBoundary } from './ErrorBoundary'
@@ -35,9 +34,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     isHero = false,
     isCollapsible = false,
     isHighlightingLines,
-    showAnimationDriverControl = true,
   } = props
-  const animationDriverToggler = useAnimationDriverToggler()
   const [isCollapsed, setIsCollapsed] = useState(isHero || isCollapsible)
   const [code, setCode] = useState(undefined)
   const preRef = useRef<any>(null)
@@ -81,38 +78,13 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             position="absolute"
             display="inline-flex"
             alignItems="center"
-            justifyContent="space-between"
+            justifyContent="flex-end"
             top={-70}
             r="$6"
-            l="$6"
             $gtMd={{
               r: '$7',
-              l: '$7',
             }}
           >
-            <XStack space="$2">
-              {animationDriverToggler && showAnimationDriverControl && (
-                <TooltipSimple
-                  label={`${animationDriverToggler.driverName} animation driver`}
-                >
-                  <XStack space="$2" ai="center">
-                    <Timer size={16} />
-                    <Switch
-                      size="$1"
-                      theme="Switch"
-                      checked={animationDriverToggler.driverName === 'react-native'}
-                      onCheckedChange={(val) =>
-                        animationDriverToggler.setDriverName(val ? 'react-native' : 'css')
-                      }
-                    >
-                      <Switch.Thumb />
-                    </Switch>
-                    <Waves size={16} />
-                  </XStack>
-                </TooltipSimple>
-              )}
-            </XStack>
-            <XStack space="$2">
               <Button
                 accessibilityLabel="Show or hide code"
                 size="$2"
@@ -128,7 +100,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   icon={Paintbrush}
                 />
               </TooltipSimple>
-            </XStack>
           </XStack>
         )}
 
