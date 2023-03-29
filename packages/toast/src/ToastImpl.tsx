@@ -5,9 +5,9 @@ import {
   TamaguiElement,
   Theme,
   composeEventHandlers,
-  getAnimationDriver,
   isWeb,
   styled,
+  useAnimationDriver,
   useEvent,
   useThemeName,
 } from '@tamagui/core'
@@ -235,7 +235,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       context.swipeDirection
     )
 
-    const driver = getAnimationDriver()
+    const driver = useAnimationDriver()
     if (!driver) {
       throw new Error('Must set animations in tamagui.config.ts')
     }

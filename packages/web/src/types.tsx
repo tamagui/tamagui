@@ -1414,6 +1414,7 @@ type AnimationConfig = {
 
 // includes a very limited adapter between various impls for number => style
 // this is useful only in limited scenarios like `Sheet`, but necessary in those cases
+// TODO: make css driver compatible with this?
 
 export type AnimatedNumberStrategy =
   // only values shared between reanimated/react-native for now

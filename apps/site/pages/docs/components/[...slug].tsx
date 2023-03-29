@@ -11,6 +11,7 @@ import React, { useEffect, useState } from 'react'
 import { DocsPage } from '../../../components/DocsPage'
 import type { Frontmatter } from '../../../frontmatter'
 import { listeners } from '../../../hooks/setTinted'
+import { AnimationDriverTogglerContextProvider } from 'hooks/useAnimationDriverToggler'
 
 type Doc = {
   frontmatter: Frontmatter
@@ -55,7 +56,9 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
       )} */}
       <MDXProvider frontmatter={frontmatter}>
         <ThemeTint disable={!isTinted}>
-          <Component components={components as any} />
+          <AnimationDriverTogglerContextProvider>
+            <Component components={components as any} />
+          </AnimationDriverTogglerContextProvider>
         </ThemeTint>
       </MDXProvider>
       <QuickNav key={frontmatter.slug} />

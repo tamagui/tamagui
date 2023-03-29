@@ -1,9 +1,10 @@
-import { CheckCircle, Clipboard, Paintbrush } from '@tamagui/lucide-icons'
-import { forwardRef, useEffect, useRef, useState } from 'react'
+import { CheckCircle, Clipboard, Film, Paintbrush } from '@tamagui/lucide-icons'
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { Button, TooltipSimple, XStack, YStack } from 'tamagui'
 
 import { setTinted, toggleTinted } from '../hooks/setTinted'
+import { useAnimationDriverToggler } from '../hooks/useAnimationDriverToggler'
 import { useClipboard } from '../lib/useClipboard'
 import { Code } from './Code'
 import { ErrorBoundary } from './ErrorBoundary'
@@ -19,6 +20,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     isCollapsible = false,
     isHighlightingLines,
   } = props
+  const animationDriverToggler = useAnimationDriverToggler()
   const [isCollapsed, setIsCollapsed] = useState(isHero || isCollapsible)
   const [code, setCode] = useState(undefined)
   const preRef = useRef<any>(null)
@@ -85,6 +87,18 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 icon={Paintbrush}
               />
             </TooltipSimple>
+            {animationDriverToggler && (
+              <TooltipSimple
+                label={`Animation driver: ${animationDriverToggler.driverName}`}
+              >
+                <Button
+                  accessibilityLabel={`Animation driver: ${animationDriverToggler.driverName}`}
+                  size="$2"
+                  onPress={animationDriverToggler.nextDriver}
+                  icon={Film}
+                />
+              </TooltipSimple>
+            )}
           </XStack>
         )}
 

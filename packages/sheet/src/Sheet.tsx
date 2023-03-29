@@ -5,13 +5,13 @@ import {
   Slot,
   TamaguiElement,
   Theme,
-  getAnimationDriver,
   isClient,
   isTouchable,
   isWeb,
   mergeEvent,
   styled,
   themeable,
+  useAnimationDriver,
   useDidFinishSSR,
   useEvent,
   useIsomorphicLayoutEffect,
@@ -259,7 +259,7 @@ const SheetImplementation = themeable(
     const sheetRef = useRef<View>(null)
     const ref = useComposedRefs(forwardedRef, sheetRef)
 
-    const driver = getAnimationDriver()
+    const driver = useAnimationDriver()
     if (!driver) {
       throw new Error('Must set animations in tamagui.config.ts')
     }

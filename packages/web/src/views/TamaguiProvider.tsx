@@ -6,6 +6,7 @@ import { TextAncestorContext } from '../contexts/TextAncestorContext.js'
 import { useMediaListeners } from '../hooks/useMedia.js'
 import type { TamaguiProviderProps } from '../types.js'
 import { ThemeProvider } from './ThemeProvider.js'
+import { AnimationDriverContext } from '../contexts/AnimationDriverContext.js'
 
 export function TamaguiProvider({
   children,
@@ -51,14 +52,18 @@ export function TamaguiProvider({
   return (
     <ButtonNestingContext.Provider value={false}>
       <TextAncestorContext.Provider value={false}>
-        <ThemeProvider
-          themeClassNameOnRoot={config.themeClassNameOnRoot}
-          disableRootThemeClass={config.disableRootThemeClass}
-          {...themePropsProvider}
-          defaultTheme={themePropsProvider.defaultTheme ?? Object.keys(config.themes)[0]}
-        >
-          {children}
-        </ThemeProvider>
+        <AnimationDriverContext.Provider value={config.animations}>
+          <ThemeProvider
+            themeClassNameOnRoot={config.themeClassNameOnRoot}
+            disableRootThemeClass={config.disableRootThemeClass}
+            {...themePropsProvider}
+            defaultTheme={
+              themePropsProvider.defaultTheme ?? Object.keys(config.themes)[0]
+            }
+          >
+            {children}
+          </ThemeProvider>
+        </AnimationDriverContext.Provider>
       </TextAncestorContext.Provider>
     </ButtonNestingContext.Provider>
   )
