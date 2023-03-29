@@ -1,6 +1,6 @@
 {
   "name": "@my/ui",
-  "version": "1.9.13",
+  "version": "1.9.14",
   "sideEffects": [
     "*.css"
   ],
@@ -17,14 +17,14 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/animations-react-native": "1.9.13",
-    "@tamagui/font-inter": "1.9.13",
-    "@tamagui/react-native-media-driver": "1.9.13",
-    "@tamagui/shorthands": "1.9.13",
-    "@tamagui/themes": "1.9.13",
-    "tamagui": "1.9.13"
+    "@tamagui/animations-react-native": "1.9.14",
+    "@tamagui/font-inter": "1.9.14",
+    "@tamagui/react-native-media-driver": "1.9.14",
+    "@tamagui/shorthands": "1.9.14",
+    "@tamagui/themes": "1.9.14",
+    "tamagui": "1.9.14"
   },
   "devDependencies": {
-    "@tamagui/build": "1.9.13"
+    "@tamagui/build": "1.9.14"
   }
 }
