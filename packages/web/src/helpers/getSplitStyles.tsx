@@ -362,10 +362,10 @@ export const getSplitStyles: StyleSplitter = (
       const styleLen = styles.length
       for (let j = styleLen; j >= 0; j--) {
         const cur = styles[j]
-        if (!cur) return
+        if (!cur) continue
         for (const key in cur) {
           if (!isMainStyle && usedKeys[key]) {
-            return
+            continue
           }
           usedKeys[key] = 1
           style[key] = cur[key]
