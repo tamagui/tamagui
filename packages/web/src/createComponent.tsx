@@ -24,6 +24,7 @@ import { getAllSelectors } from './helpers/insertStyleRule.js'
 import { mergeProps } from './helpers/mergeProps.js'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables.js'
 import { useShallowSetState } from './helpers/useShallowSetState.js'
+import { useAnimationDriver } from './hooks/useAnimationDriver.js'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia.js'
 import { useServerRef, useServerState } from './hooks/useServerHooks.js'
 import { useThemeWithState } from './hooks/useTheme.js'
@@ -46,6 +47,8 @@ import {
   UseAnimationProps,
 } from './types'
 import { Slot } from './views/Slot.js'
+import { Stack } from './views/Stack.js'
+import { Text } from './views/Text.js'
 import { useThemedChildren } from './views/Theme.js'
 
 // let t
@@ -170,18 +173,62 @@ export function createComponent<
     const debugProp = props['debug'] as DebugProp
     const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
+
+    // conditional but if ever true stays true
+    // [animated, inversed]
+    const stateRef = useRef(
+      undefined as any as {
+        hasAnimated?: boolean
+        themeShallow?: boolean
+        didAccessThemeVariableValue?: boolean
+      }
+    )
+    stateRef.current ??= {}
+
+    /**
+     * Component state for tracking animations, pseudos
+     */
+    const animationsConfig = useAnimationDriver()
+    const useAnimations = animationsConfig?.useAnimations as UseAnimationHook | undefined
+    const isAnimated = (() => {
+      const next = !!(
+        !staticConfig.isHOC &&
+        useAnimations &&
+        (props.animation || (props.style && hasAnimatedStyleValue(props.style)))
+      )
+      if (next && !stateRef.current.hasAnimated) {
+        stateRef.current.hasAnimated = true
+      }
+      return next || stateRef.current.hasAnimated
+    })()
     const componentClassName = props.asChild
       ? ''
       : props.componentName
       ? `is_${props.componentName}`
       : defaultComponentClassName
+    const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
+    const languageContext = isRSC ? null : useContext(FontLanguageContext)
+    const isDisabled = props.disabled ?? props.accessibilityState?.disabled
 
-    /**
-     * Component state for tracking animations, pseudos
-     */
-    const animationsConfig = tamaguiConfig.animations
-    const useAnimations = animationsConfig?.useAnimations as UseAnimationHook | undefined
-    const avoidClassesWhileAnimating = animationsConfig.isReactNative
+    const isTaggable = !Component || typeof Component === 'string'
+    // default to tag, fallback to component (when both strings)
+    const element = isWeb
+      ? isTaggable
+        ? props.tag || defaultTag || Component
+        : Component
+      : Component
+
+    const BaseTextComponent = BaseText || element || 'span'
+    const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
+
+    AnimatedText = animationsConfig ? animationsConfig.Text : BaseTextComponent
+    AnimatedView = animationsConfig ? animationsConfig.View : BaseViewComponent
+
+    let elementType = isText
+      ? (isAnimated ? AnimatedText : null) || BaseTextComponent
+      : (isAnimated ? AnimatedView : null) || BaseViewComponent
+
+    const avoidClassesWhileAnimating = animationsConfig?.isReactNative
     const hasEnterStyle = !!props.enterStyle
     const needsMount = Boolean(
       (isWeb ? isClient : true) && (hasEnterStyle || props.animation)
@@ -196,31 +243,8 @@ export function createComponent<
     const setState = states[1]
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
-    // conditional but if ever true stays true
-    // [animated, inversed]
-    const stateRef = useRef(
-      undefined as any as {
-        hasAnimated?: boolean
-        themeShallow?: boolean
-        didAccessThemeVariableValue?: boolean
-      }
-    )
-    stateRef.current ??= {}
-
-    const isAnimated = (() => {
-      const next = !!(
-        !staticConfig.isHOC &&
-        useAnimations &&
-        (props.animation || (props.style && hasAnimatedStyleValue(props.style)))
-      )
-      if (next && !stateRef.current.hasAnimated) {
-        stateRef.current.hasAnimated = true
-      }
-      return next || stateRef.current.hasAnimated
-    })()
-
-    const usePresence = tamaguiConfig.animations?.usePresence
-    const presence = !isRSC && isAnimated ? usePresence() : null
+    const usePresence = animationsConfig?.usePresence
+    const presence = !isRSC && isAnimated && usePresence ? usePresence() : null
 
     // set enter/exit variants onto our new props object
     if (isAnimated && presence) {
@@ -235,7 +259,7 @@ export function createComponent<
       }
     }
 
-    const isAnimatedReactNative = isAnimated && tamaguiConfig.animations.isReactNative
+    const isAnimatedReactNative = isAnimated && animationsConfig?.isReactNative
     const isReactNative = Boolean(staticConfig.isReactNative || isAnimatedReactNative)
 
     if (process.env.NODE_ENV === 'development') {
@@ -269,24 +293,6 @@ export function createComponent<
       debug: props.debug,
       shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
     })!
-
-    const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
-    const languageContext = isRSC ? null : useContext(FontLanguageContext)
-    const isDisabled = props.disabled ?? props.accessibilityState?.disabled
-
-    const isTaggable = !Component || typeof Component === 'string'
-    // default to tag, fallback to component (when both strings)
-    const element = isWeb
-      ? isTaggable
-        ? props.tag || defaultTag || Component
-        : Component
-      : Component
-
-    const BaseTextComponent = BaseText || element || 'span'
-    const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
-    let elementType = isText
-      ? (isAnimated ? AnimatedText : null) || BaseTextComponent
-      : (isAnimated ? AnimatedView : null) || BaseViewComponent
 
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
@@ -771,11 +777,6 @@ export function createComponent<
     // one time only setup
     if (!tamaguiConfig) {
       tamaguiConfig = conf
-
-      if (tamaguiConfig.animations) {
-        AnimatedText = tamaguiConfig.animations.Text
-        AnimatedView = tamaguiConfig.animations.View
-      }
 
       if (!initialTheme) {
         const next = conf.themes[Object.keys(conf.themes)[0]]
