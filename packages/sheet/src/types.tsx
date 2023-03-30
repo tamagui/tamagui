@@ -27,6 +27,7 @@ export type SheetProps = ScopedProps<
     modal?: boolean
     zIndex?: number
     portalProps?: PortalProps
+    disableKeyboardMove?: boolean
   },
   'Sheet'
 >

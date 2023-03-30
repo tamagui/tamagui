@@ -40,6 +40,7 @@ import React, {
 import {
   Animated,
   GestureResponderEvent,
+  Keyboard,
   PanResponder,
   PanResponderGestureState,
   View,
@@ -244,6 +245,7 @@ const SheetImplementation = themeable(
       disableDrag: disableDragProp,
       modal = false,
       zIndex = parentSheet.zIndex + 1,
+      disableKeyboardMove = false,
       portalProps,
     } = props
 
@@ -567,6 +569,28 @@ const SheetImplementation = themeable(
         transform: [{ translateY }],
       }
     })
+
+    const sizeBeforeKeyboard = useRef<number | null>(null)
+    useEffect(() => {
+      if (isWeb || disableKeyboardMove) return
+      const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
+        if (sizeBeforeKeyboard.current !== null) return
+        sizeBeforeKeyboard.current = animatedNumber.getValue()
+        animatedNumber.setValue(
+          Math.max(animatedNumber.getValue() - e.endCoordinates.height, 0)
+        )
+      })
+      const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+        if (sizeBeforeKeyboard.current === null) return
+        animatedNumber.setValue(sizeBeforeKeyboard.current)
+        sizeBeforeKeyboard.current = null
+      })
+
+      return () => {
+        keyboardDidHideListener.remove()
+        keyboardDidShowListener.remove()
+      }
+    }, [])
 
     // temp until reanimated useAnimatedNumber fix
     const AnimatedView = (driver['NumberView'] ?? driver.View) as typeof Animated.View
