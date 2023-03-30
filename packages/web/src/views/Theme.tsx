@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import { Children, cloneElement, isValidElement } from 'react'
+import { Children, cloneElement, isValidElement, useEffect, useLayoutEffect } from 'react'
 
 import { variableToString } from '../createVariable.js'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
@@ -56,6 +56,10 @@ export function useThemedChildren(
           : child
       })
     }
+
+    useLayoutEffect(() => {
+      console.warn(`changed theme manager`)
+    }, [themeManager])
 
     // tried this but themes css doesn't fully like it
     // if (shouldAttachClassName && options.passPropsToChildren) {

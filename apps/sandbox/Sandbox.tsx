@@ -21,7 +21,6 @@ import {
   ScrollView,
   Stack,
   TamaguiProvider,
-  Text,
   ToastProvider,
   XStack,
   YStack,
@@ -29,6 +28,7 @@ import {
   withStaticProperties,
 } from 'tamagui'
 
+import { SandboxThemeChange } from './SandboxThemeChange'
 // import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
 // import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
 // import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
@@ -75,81 +75,15 @@ const Button2 = styled(Button, {
   },
 })
 
-export const Heading = styled(Text, {
-  name: 'Heading',
-  color: '$color',
-
-  variants: {
-    type: {
-      myVariant: {
-        fontFamily: '$body',
-        fontSize: 20,
-        lh: '$24',
-        fow: '$bold',
-      },
-    },
-  } as const,
-})
-
 export const Sandbox = () => {
   return (
     <SandboxFrame>
-      <Heading type="myVariant" fontSize="$8">
-        H1
-      </Heading>
-
-      {/* <YStack debug="verbose" w={100} h={100} bc="red" flexBasis={200} /> */}
-
-      {/* <Button2 ok debug="verbose">
-        hi
-      </Button2> */}
-
       {/* this comment keeps indent */}
-      {/* <SandboxDefault /> */}
 
+      <SandboxThemeChange />
+
+      {/* TODO fix/convert into tests */}
       {/* <SandboxStyledOverridePseudo /> */}
-
-      {/* <YStack
-        {...{
-          borderRadius: 3,
-          backgroundColor: 'red',
-          width: 100,
-          height: 100,
-          hoverStyle: { backgroundColor: 'var(--light-grey)' },
-          animateOnly: ['background-color'],
-          tag: 'button',
-          borderColor: 'black',
-          borderWidth: 1,
-          borderStyle: 'solid',
-          animation: 'quick',
-        }}
-      /> */}
-
-      {/* <YStack
-        animation={[
-          'bouncy',
-          {
-            opacity: {
-              delay: 0,
-            },
-            y: {
-              delay: 10_000,
-            },
-          },
-        ]}
-        hoverStyle={{
-          y: 5,
-          opacity: 0,
-        }}
-        y={0}
-        opacity={1}
-        ai="center"
-        width={40}
-        height={40}
-        bc="$red10"
-      /> */}
-
-      {/* TODO */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}
       {/* <SandboxCustomStyledAnimatedPopover /> */}
     </SandboxFrame>

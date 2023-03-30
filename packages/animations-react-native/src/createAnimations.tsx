@@ -308,7 +308,7 @@ export function createAnimations<A extends AnimationsConfig>(
       }, args)
 
       if (process.env.NODE_ENV === 'development') {
-        if (props['debug']) {
+        if (props['debug'] === 'verbose') {
           // eslint-disable-next-line no-console
           console.log(`Returning animated`, res)
         }

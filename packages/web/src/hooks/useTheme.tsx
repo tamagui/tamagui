@@ -221,7 +221,21 @@ export const useChangeThemeEffect = (
   }
 
   // run inline in render
-  updateState()
+  if (disableUpdate?.() !== true) {
+    const manager = themeManager //updatingManager || themeManager
+    const next = manager.getState(props, parentManager)
+    const shouldChange = manager.getStateShouldChange(next, isNewTheme ? state : null)
+    if (shouldChange) {
+      console.warn('SHOULD CHANGE')
+      // setThemeState(createState)
+    } else {
+      if (!next && parentManager?.state.name !== state.name) {
+        // were changing back to parent state
+        console.warn('??')
+        setThemeState(createState)
+      }
+    }
+  }
 
   return {
     ...state,
@@ -243,6 +257,10 @@ export const useChangeThemeEffect = (
     //   _.notify()
     // }
 
+    if (_ !== prev?.themeManager) {
+      console.warn(`changing theme manager`, { _, isNewTheme })
+    }
+
     // only inverse relies on this for ssr
     const mounted = !props.inverse ? true : root || prev?.mounted
     return {
@@ -251,24 +269,6 @@ export const useChangeThemeEffect = (
       state: { ..._.state },
       themeManager: _,
       mounted,
-    }
-  }
-
-  function updateState(updatingManager?: ThemeManager) {
-    if (disableUpdate?.()) {
-      return
-    }
-    const manager = updatingManager ?? themeManager
-    const next = manager.getState(props, parentManager)
-    const shouldChange = manager.getStateShouldChange(next, isNewTheme ? state : null)
-    // console.log(`got it`, next, isNewTheme, shouldChange, { ...updatingManager?.state })
-    if (shouldChange) {
-      setThemeState(createState)
-    } else {
-      if (!next && parentManager?.state.name !== state.name) {
-        // were changing back to parent state
-        setThemeState(createState)
-      }
     }
   }
 }
