@@ -91,7 +91,7 @@ export function HeroContainer({
           display="inline-flex"
           alignItems="center"
           justifyContent="space-between"
-          bottom={16}
+          top={16}
           l="$3"
           $gtMd={{
             l: '$4',
