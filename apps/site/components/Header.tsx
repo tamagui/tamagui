@@ -123,12 +123,12 @@ export function HeaderContents(props: HeaderProps) {
               <ColorToggleButton borderWidth={0} chromeless />
             </XGroup.Item>
             <XGroup.Item>
-              <SeasonToggleButton borderWidth={0} chromeless />
+              <SeasonToggleButton $xs={{ display: 'none' }} borderWidth={0} chromeless />
             </XGroup.Item>
           </XGroup>
         </TooltipGroup>
 
-        <YStack paddingStart={200} $xxs={{ dsp: 'none' }}>
+        <YStack paddingStart={200}>
           <SponsorButton tiny />
         </YStack>
 
@@ -206,12 +206,7 @@ export function HeaderContents(props: HeaderProps) {
             <SearchButton size="$2" br="$10" elevation="$4" />
 
             <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
-              <YStack
-                $xs={{ maw: 0, mah: 0, ov: 'hidden', mr: '$-6' }}
-                p="$2"
-                opacity={0.7}
-                hoverStyle={{ opacity: 1 }}
-              >
+              <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
                   <Text>Github</Text>
                 </VisuallyHidden>
