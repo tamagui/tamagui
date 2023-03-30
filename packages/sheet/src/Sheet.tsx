@@ -245,7 +245,7 @@ const SheetImplementation = themeable(
       disableDrag: disableDragProp,
       modal = false,
       zIndex = parentSheet.zIndex + 1,
-      disableKeyboardMove = false,
+      moveOnKeyboardChange = false,
       portalProps,
     } = props
 
@@ -572,7 +572,7 @@ const SheetImplementation = themeable(
 
     const sizeBeforeKeyboard = useRef<number | null>(null)
     useEffect(() => {
-      if (isWeb || disableKeyboardMove) return
+      if (isWeb || !moveOnKeyboardChange) return
       const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
         if (sizeBeforeKeyboard.current !== null) return
         sizeBeforeKeyboard.current = animatedNumber.getValue()
