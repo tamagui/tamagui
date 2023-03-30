@@ -1,9 +1,13 @@
 /// <reference types="vitest" />
 
+// import 'vitest-axe/extend-expect'
+
 // import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
+// import { expect } from 'vitest'
+// import matchers from 'vitest-axe/matchers'
 
 export default defineConfig({
   plugins: [
@@ -23,7 +27,6 @@ export default defineConfig({
   //     plugins: [esbuildCommonjs(['@tamagui/core-node'])],
   //   },
   // },
-  // @ts-ignore
   test: {
     // setupFiles: [join(__dirname, 'setup.ts')],
     environment: 'happy-dom',

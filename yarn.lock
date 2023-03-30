@@ -4524,6 +4524,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/components-test@workspace:packages/components-test":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/components-test@workspace:packages/components-test"
+  dependencies:
+    "@testing-library/react": ^13.4.0
+    csstype: ^3.0.10
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    typescript: ^4.7.4
+    vitest: ^0.26.3
+    vitest-axe: ^0.1.0
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/compose-refs@1.14.3, @tamagui/compose-refs@workspace:packages/compose-refs":
   version: 0.0.0-use.local
   resolution: "@tamagui/compose-refs@workspace:packages/compose-refs"
@@ -6117,6 +6131,7 @@ __metadata:
     "@vitejs/plugin-react": ^2.2.0
     happy-dom: ^8.1.3
     vitest: ^0.26.3
+    vitest-axe: ^0.1.0
     vitest-mock-process: ^1.0.4
   languageName: unknown
   linkType: soft
@@ -8162,7 +8177,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axe-core@npm:^4.6.2":
+"axe-core@npm:^4.4.2, axe-core@npm:^4.6.2":
   version: 4.6.3
   resolution: "axe-core@npm:4.6.3"
   checksum: d0c46be92b9707c48b88a53cd5f471b155a2bfc8bf6beffb514ecd14e30b4863e340b5fc4f496d82a3c562048088c1f3ff5b93b9b3b026cb9c3bfacfd535da10
@@ -8978,7 +8993,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^5.2.0":
+"chalk@npm:^5.0.1, chalk@npm:^5.2.0":
   version: 5.2.0
   resolution: "chalk@npm:5.2.0"
   checksum: 03d8060277de6cf2fd567dc25fcf770593eb5bb85f460ce443e49255a30ff1242edd0c90a06a03803b0466ff0687a939b41db1757bec987113e83de89a003caa
@@ -10324,7 +10339,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dom-accessibility-api@npm:^0.5.9":
+"dom-accessibility-api@npm:^0.5.14, dom-accessibility-api@npm:^0.5.9":
   version: 0.5.16
   resolution: "dom-accessibility-api@npm:0.5.16"
   checksum: 005eb283caef57fc1adec4d5df4dd49189b628f2f575af45decb210e04d634459e3f1ee64f18b41e2dcf200c844bc1d9279d80807e686a30d69a4756151ad248
@@ -16248,6 +16263,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"min-indent@npm:^1.0.0":
+  version: 1.0.1
+  resolution: "min-indent@npm:1.0.1"
+  checksum: bfc6dd03c5eaf623a4963ebd94d087f6f4bbbfd8c41329a7f09706b0cb66969c4ddd336abeb587bc44bc6f08e13bf90f0b374f9d71f9f01e04adc2cd6f083ef1
+  languageName: node
+  linkType: hard
+
 "mini-css-extract-plugin@npm:^2.7.2":
   version: 2.7.5
   resolution: "mini-css-extract-plugin@npm:2.7.5"
@@ -18864,6 +18886,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"redent@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "redent@npm:3.0.0"
+  dependencies:
+    indent-string: ^4.0.0
+    strip-indent: ^3.0.0
+  checksum: fa1ef20404a2d399235e83cc80bd55a956642e37dd197b4b612ba7327bf87fa32745aeb4a1634b2bab25467164ab4ed9c15be2c307923dd08b0fe7c52431ae6b
+  languageName: node
+  linkType: hard
+
 "reforest@npm:^0.12.1":
   version: 0.12.3
   resolution: "reforest@npm:0.12.3"
@@ -20619,6 +20651,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"strip-indent@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "strip-indent@npm:3.0.0"
+  dependencies:
+    min-indent: ^1.0.0
+  checksum: 18f045d57d9d0d90cd16f72b2313d6364fd2cb4bf85b9f593523ad431c8720011a4d5f08b6591c9d580f446e78855c5334a30fb91aa1560f5d9f95ed1b4a0530
+  languageName: node
+  linkType: hard
+
 "strip-json-comments@npm:^3.1.1":
   version: 3.1.1
   resolution: "strip-json-comments@npm:3.1.1"
@@ -22236,6 +22277,22 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 1088cdc0c89ab835aab07a0a114397b749e8dfb20f4b94241ba179d9c371b72d31e13782b22893860c3d65da596e43b24fce5e023f79cfde427f42549f2e1844
+  languageName: node
+  linkType: hard
+
+"vitest-axe@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "vitest-axe@npm:0.1.0"
+  dependencies:
+    aria-query: ^5.0.0
+    axe-core: ^4.4.2
+    chalk: ^5.0.1
+    dom-accessibility-api: ^0.5.14
+    lodash-es: ^4.17.21
+    redent: ^3.0.0
+  peerDependencies:
+    vitest: ">=0.16.0"
+  checksum: 151921edc5d379f03b9c0f930f34661acc6a3be7648c0664ba53a14a4befcfccf87da303d536102aa9ef5a5097a46956452819f3c6c448530ad10c2964871b5c
   languageName: node
   linkType: hard
 
