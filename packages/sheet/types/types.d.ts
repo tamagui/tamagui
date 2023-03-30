@@ -25,6 +25,10 @@ export type SheetProps = ScopedProps<{
     modal?: boolean;
     zIndex?: number;
     portalProps?: PortalProps;
+    /**
+     * Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible
+     */
+    moveOnKeyboardChange?: boolean;
 }, 'Sheet'>;
 export type PositionChangeHandler = (position: number) => void;
 type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>;
