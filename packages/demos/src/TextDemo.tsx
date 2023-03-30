@@ -5,7 +5,7 @@ export function TextDemo() {
   return (
     <YStack space="$2" ai="center">
       <SizableText size="$3">SizableText</SizableText>
-      <Text>Basic Unstyled Font</Text>
+      <Text>Unstyled Text</Text>
       <XStack space>
         <SizableText theme="alt1" size="$3">
           alt1
