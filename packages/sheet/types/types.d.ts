@@ -26,7 +26,7 @@ export type SheetProps = ScopedProps<{
     zIndex?: number;
     portalProps?: PortalProps;
     /**
-     * Native-only flag that will make the sheet go up when the mobile keyboard opens.
+     * Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible
      */
     moveOnKeyboardChange?: boolean;
 }, 'Sheet'>;
