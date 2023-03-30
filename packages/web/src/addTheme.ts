@@ -5,7 +5,7 @@ import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes.js'
 import { ThemeDefinition, ThemeParsed } from './types.js'
 
-/** @deprecated import from @tamagui/load-theme instead */
+/** @deprecated import from @tamagui/add-theme instead */
 export function addTheme(props: {
   name: string
   theme: Partial<Record<keyof ThemeDefinition, any>>

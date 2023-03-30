@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/load-theme",
+  "name": "@tamagui/add-theme",
   "version": "1.9.16",
   "sideEffects": false,
   "source": "src/index.ts",

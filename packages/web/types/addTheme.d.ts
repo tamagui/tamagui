@@ -1,5 +1,5 @@
 import { ThemeDefinition } from './types.js';
-/** @deprecated import from @tamagui/load-theme instead */
+/** @deprecated import from @tamagui/add-theme instead */
 export declare function addTheme(props: {
     name: string;
     theme: Partial<Record<keyof ThemeDefinition, any>>;

@@ -2,7 +2,7 @@ import { addTheme } from './addTheme.js'
 import { activeThemeManagers } from './hooks/useTheme.js'
 import type { ThemeDefinition } from './types.js'
 
-/** @deprecated import from @tamagui/load-theme instead */
+/** @deprecated import from @tamagui/add-theme instead */
 export function updateTheme({
   name,
   theme,
