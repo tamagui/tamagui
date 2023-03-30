@@ -10,12 +10,12 @@ export type BurntToastOptions = {
     /**
      * Defaults to `done`.
      */
-    preset?: "done" | "error" | "none";
+    preset?: 'done' | 'error' | 'none';
     /**
      * Duration in seconds.
      */
     duration?: number;
-    haptic?: "success" | "warning" | "error" | "none";
+    haptic?: 'success' | 'warning' | 'error' | 'none';
     /**
      * Defaults to `true`.
      */
@@ -24,7 +24,7 @@ export type BurntToastOptions = {
      * Change the presentation side.
      * @platform ios
      */
-    from?: "top" | "bottom";
+    from?: 'top' | 'bottom';
     layout?: BurntLayout;
 };
 export interface CreateNativeToastOptions {
