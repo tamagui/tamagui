@@ -113,6 +113,7 @@ export declare const Sheet: React.ForwardRefExoticComponent<{
     modal?: boolean | undefined;
     zIndex?: number | undefined;
     portalProps?: import("@tamagui/portal").PortalProps | undefined;
+    moveOnKeyboardChange?: boolean | undefined;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & React.RefAttributes<View>> & {
