@@ -10,6 +10,9 @@ import prompts from 'prompts'
 
 import { spawnify } from './spawnify'
 
+// avoid emitter error
+process.setMaxListeners(0)
+
 // --resume would be cool here where it stores the last failed step somewhere and tries resuming
 
 const exec = promisify(proc.exec)
@@ -194,11 +197,12 @@ async function run() {
             console.log(`Publish ${name}`)
 
             // check if already published first as its way faster for re-runs
+            let versionsOut = ''
             try {
-              const out = await spawnify(`npm view ${name} versions --json`, {
+              versionsOut = await spawnify(`npm view ${name} versions --json`, {
                 avoidLog: true,
               })
-              const allVersions = JSON.parse(out.trim())
+              const allVersions = JSON.parse(versionsOut.trim().replaceAll(`\n`, ''))
               const latest = allVersions[allVersions.length - 1]
 
               if (latest === nextVersion) {
@@ -209,6 +213,9 @@ async function run() {
               if (`${err}`.includes(`404`)) {
                 // fails if never published before, ok
               } else {
+                if (`${err}`.includes(`Unexpected token`)) {
+                  console.log(`Bad JSON? ${versionsOut}`)
+                }
                 throw err
               }
             }

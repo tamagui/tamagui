@@ -107,11 +107,13 @@ export declare const Sheet: React.ForwardRefExoticComponent<{
     dismissOnSnapToBottom?: boolean | undefined;
     forceRemoveScrollEnabled?: boolean | undefined;
     animationConfig?: import("@tamagui/core").AnimatedNumberStrategy | undefined;
+    animation?: import("@tamagui/core").AnimationProp | undefined;
     handleDisableScroll?: boolean | undefined;
     disableDrag?: boolean | undefined;
     modal?: boolean | undefined;
     zIndex?: number | undefined;
     portalProps?: import("@tamagui/portal").PortalProps | undefined;
+    moveOnKeyboardChange?: boolean | undefined;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & React.RefAttributes<View>> & {

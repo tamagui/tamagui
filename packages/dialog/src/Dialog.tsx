@@ -778,10 +778,9 @@ const Dialog = withStaticProperties(
       onChange: onOpenChange,
     })
 
-    const onOpenToggle = React.useCallback(
-      () => setOpen((prevOpen) => !prevOpen),
-      [setOpen]
-    )
+    const onOpenToggle = React.useCallback(() => {
+      setOpen((prevOpen) => !prevOpen)
+    }, [setOpen])
 
     const context = {
       scope: __scopeDialog,

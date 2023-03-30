@@ -10,7 +10,7 @@ package: toast
 
 <Description>Use to show feedback to user interactions</Description>
 
-<HeroContainer>
+<HeroContainer showAnimationDriverControl>
   <ToastDemo />
 </HeroContainer>
 
@@ -30,12 +30,12 @@ package: toast
 
 ## Install
 
-For native support, run `yarn add burnt` to add `burnt`, then rebuild your React Native app. React Native requires sub-dependencies with native dependencies always be hoisted to your apps package.json and Toast relies on the amazing [Burnt](https://github.com/nandorojo/burnt) library by Fernando Rojo to provide it's native functionality.
+For native support, run `yarn add burnt` to add `burnt`, then rebuild your React Native app. React Native requires sub-dependencies with native dependencies always be hoisted to your apps package.json and Toast relies on the amazing [Burnt](https://github.com/nandorojo/burnt) library by Fernando Rojo to provide its native functionality.
 
 ## Anatomy
 
 ```tsx
-import { Toast, ToastProvider } from '@tamagui/toast'
+import { Toast, ToastProvider, ToastViewport } from '@tamagui/toast'
 
 export default () => (
   <ToastProvider>

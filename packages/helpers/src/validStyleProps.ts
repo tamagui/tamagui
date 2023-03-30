@@ -126,37 +126,21 @@ export const stylePropsView = Object.freeze({
     outlineOffset: true,
     outlineWidth: true,
   }),
-
-  ...(process.env.TAMAGUI_TARGET === 'native' && {
-    // RN doesn't support specific border styles per-edge
-    borderBottomStyle: true,
-    borderTopStyle: true,
-    borderLeftStyle: true,
-    borderRightStyle: true,
-
-    overflowX: true,
-    overflowY: true,
-    userSelect: true,
-    cursor: true,
-    contain: true,
-    pointerEvents: true,
-    boxSizing: true,
-    boxShadow: true,
-    outlineColor: true,
-    outlineStyle: true,
-    outlineOffset: true,
-    outlineWidth: true,
-  }),
 })
 
-export const stylePropsTextOnly = Object.freeze({
-  color: true,
+export const stylePropsFont = Object.freeze({
   fontFamily: true,
   fontSize: true,
   fontStyle: true,
   fontWeight: true,
   letterSpacing: true,
   lineHeight: true,
+  textTransform: true,
+})
+
+export const stylePropsTextOnly = Object.freeze({
+  color: true,
+  ...stylePropsFont,
   textAlign: true,
   textDecorationLine: true,
   textDecorationStyle: true,
@@ -164,7 +148,6 @@ export const stylePropsTextOnly = Object.freeze({
   textShadowColor: true,
   textShadowOffset: true,
   textShadowRadius: true,
-  textTransform: true,
 
   // allow some web only ones
   ...(process.env.TAMAGUI_TARGET === 'web' && {

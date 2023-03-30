@@ -7,7 +7,7 @@ import {
   styled,
   useMediaPropsActive,
 } from '@tamagui/core'
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { Image as RNImage } from 'react-native'
 
 setupReactNative({
@@ -36,14 +36,34 @@ type BaseProps = Omit<
 
 export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>
 
-export const Image: React.FC<ImageProps> = StyledImage.extractable((inProps) => {
-  const props = useMediaPropsActive(inProps)
-  const { src, ...rest } = props
-  const source =
-    typeof src === 'string'
-      ? { uri: src, ...(isWeb && { width: props.width, height: props.height }) }
-      : src
+type RNImageType = typeof RNImage
 
-  // must set defaultSource to allow SSR, default it to the same as src
-  return <StyledImage source={source} {...(rest as any)} />
-})
+type ImageType = React.FC<ImageProps> & {
+  getSize: RNImageType['getSize']
+  getSizeWithHeaders: RNImageType['getSizeWithHeaders']
+  prefetch: RNImageType['prefetch']
+  prefetchWithMetadata: RNImageType['prefetchWithMetadata']
+  abortPrefetch: RNImageType['abortPrefetch']
+  queryCache: RNImageType['queryCache']
+}
+
+export const Image = StyledImage.extractable(
+  forwardRef((inProps: ImageProps, ref) => {
+    const props = useMediaPropsActive(inProps)
+    const { src, ...rest } = props
+    const source =
+      typeof src === 'string'
+        ? { uri: src, ...(isWeb && { width: props.width, height: props.height }) }
+        : src
+
+    // must set defaultSource to allow SSR, default it to the same as src
+    return <StyledImage ref={ref} source={source} {...(rest as any)} />
+  })
+) as any as ImageType
+
+Image.getSize = RNImage.getSize
+Image.getSizeWithHeaders = RNImage.getSizeWithHeaders
+Image.prefetch = RNImage.prefetch
+Image.prefetchWithMetadata = RNImage.prefetchWithMetadata
+Image.abortPrefetch = RNImage.abortPrefetch
+Image.queryCache = RNImage.queryCache

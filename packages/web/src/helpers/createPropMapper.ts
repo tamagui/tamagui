@@ -27,11 +27,7 @@ export type ResolveVariableTypes =
   | 'non-color-value'
 
 export const getReturnVariablesAs = (props: any, state: Partial<SplitStyleState>) => {
-  return !!props.animation || state.resolveVariablesAs === 'value'
-    ? isWeb
-      ? 'non-color-value'
-      : 'value'
-    : 'auto'
+  return !!props.animation || state.resolveVariablesAs === 'value' ? 'value' : 'auto'
 }
 
 export const createPropMapper = (staticConfig: StaticConfigParsed) => {
@@ -64,6 +60,19 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
       defaultProps.fontFamily ||
       propsIn.fontFamily ||
       '$body'
+
+    if (
+      process.env.NODE_ENV === 'development' &&
+      fontFamily &&
+      fontFamily[0] === '$' &&
+      !(fontFamily in conf.fontsParsed)
+    ) {
+      console.warn(
+        `Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(
+          conf.fontsParsed
+        ).join(', ')}`
+      )
+    }
 
     const variantValue = resolveVariants(
       key,

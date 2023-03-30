@@ -495,6 +495,9 @@ export function createExtractor(
           // skip fontFamily its basically a "variant", important for theme use to be value always
           'fontFamily',
           'name',
+          'focusStyle',
+          'hoverStyle',
+          'pressStyle',
         ])
 
         // for now dont parse variants, spreads, etc

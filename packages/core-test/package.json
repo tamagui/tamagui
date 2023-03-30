@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-test",
-  "version": "1.8.1",
+  "version": "1.9.17",
   "module": "dist/esm",
   "private": true,
   "license": "MIT",
@@ -11,7 +11,7 @@
     "build": "true",
     "test:web": "TAMAGUI_TARGET=web vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.web.test.tsx",
     "test:native": "TAMAGUI_TARGET=native vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.native.test.tsx",
-    "test": "yarn test:native"
+    "test": "yarn test:native && yarn test:web"
   },
   "devDependencies": {
     "@testing-library/react": "^13.4.0",

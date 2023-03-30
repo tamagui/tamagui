@@ -18,10 +18,10 @@ import { SolitoImage } from 'solito/image'
 import {
   Button,
   Input,
-  Popover,
   ScrollView,
   Stack,
   TamaguiProvider,
+  Text,
   ToastProvider,
   XStack,
   YStack,
@@ -29,9 +29,9 @@ import {
   withStaticProperties,
 } from 'tamagui'
 
-import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
-import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
-import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
+// import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
+// import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
+// import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
 import config from './tamagui.config'
 
 // useful for debugging why things render:
@@ -63,15 +63,91 @@ const Image = styled(
   }
 )
 
-const X = <Stack gap />
+const Button2 = styled(Button, {
+  variants: {
+    ok: {
+      true: {
+        pressStyle: {
+          backgroundColor: 'red',
+        },
+      },
+    },
+  },
+})
+
+export const Heading = styled(Text, {
+  name: 'Heading',
+  color: '$color',
+
+  variants: {
+    type: {
+      myVariant: {
+        fontFamily: '$body',
+        fontSize: 20,
+        lh: '$24',
+        fow: '$bold',
+      },
+    },
+  } as const,
+})
 
 export const Sandbox = () => {
   return (
     <SandboxFrame>
+      <Heading type="myVariant" fontSize="$8">
+        H1
+      </Heading>
+
+      {/* <YStack debug="verbose" w={100} h={100} bc="red" flexBasis={200} /> */}
+
+      {/* <Button2 ok debug="verbose">
+        hi
+      </Button2> */}
+
       {/* this comment keeps indent */}
       {/* <SandboxDefault /> */}
 
-      <SandboxStyledOverridePseudo />
+      {/* <SandboxStyledOverridePseudo /> */}
+
+      {/* <YStack
+        {...{
+          borderRadius: 3,
+          backgroundColor: 'red',
+          width: 100,
+          height: 100,
+          hoverStyle: { backgroundColor: 'var(--light-grey)' },
+          animateOnly: ['background-color'],
+          tag: 'button',
+          borderColor: 'black',
+          borderWidth: 1,
+          borderStyle: 'solid',
+          animation: 'quick',
+        }}
+      /> */}
+
+      {/* <YStack
+        animation={[
+          'bouncy',
+          {
+            opacity: {
+              delay: 0,
+            },
+            y: {
+              delay: 10_000,
+            },
+          },
+        ]}
+        hoverStyle={{
+          y: 5,
+          opacity: 0,
+        }}
+        y={0}
+        opacity={1}
+        ai="center"
+        width={40}
+        height={40}
+        bc="$red10"
+      /> */}
 
       {/* TODO */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}
@@ -79,52 +155,6 @@ export const Sandbox = () => {
     </SandboxFrame>
   )
 }
-
-function TestPopoverContentStyledPlusAnimations() {
-  return (
-    <Popover size="$5">
-      <Popover.Trigger asChild>
-        <Button>go</Button>
-      </Popover.Trigger>
-
-      <PopoverStyledContent debug="verbose">
-        <Popover.Arrow bw={1} boc="$borderColor" />
-      </PopoverStyledContent>
-    </Popover>
-  )
-}
-
-const PopoverStyledContent = styled(Popover.Content, {
-  name: 'PopoverContent2',
-  debug: 'verbose',
-  elevate: true,
-  bordered: true,
-  p: '$3',
-  br: '$3',
-  enterStyle: {
-    o: 0,
-    y: -10,
-    x: 0,
-  },
-  exitStyle: {
-    o: 0,
-    y: -10,
-    x: 0,
-  },
-  x: 0,
-  y: 0,
-  o: 1,
-  animation: [
-    'quick',
-    {
-      opacity: {
-        overshootClamping: true,
-      },
-    },
-  ],
-})
-
-console.log('PopoverStyledContent', PopoverStyledContent)
 
 const SandboxFrame = (props: { children: any }) => {
   const [theme, setTheme] = useState('light')

@@ -56,6 +56,10 @@ type ToastViewportProps = ToastViewportFrameProps & {
    * Used to reference the viewport if you want to have multiple viewports in the same provider.
    */
   name?: string
+  /**
+   * Pass this when you want to have multiple/duplicated toasts.
+   */
+  multipleToasts?: boolean
 }
 
 const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
@@ -65,6 +69,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
       hotkey = VIEWPORT_DEFAULT_HOTKEY,
       label = 'Notifications ({hotkey})',
       name,
+      multipleToasts,
       ...viewportProps
     } = props
     const context = useToastProviderContext(VIEWPORT_NAME, __scopeToast)
@@ -79,6 +84,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
 
     React.useEffect(() => {
       if (!isWeb) return
+      if (context.toastCount === 0) return
       const handleKeyDown = (event: KeyboardEvent) => {
         // we use `event.code` as it is consistent regardless of meta keys that were pressed.
         // for example, `event.key` for `Control+Alt+t` is `†` and `t !== †`
@@ -86,16 +92,16 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
           (key) => (event as any)[key] || event.code === key
         )
         if (isHotkeyPressed) ref.current?.focus()
-        console.log(isHotkeyPressed)
       }
       document.addEventListener('keydown', handleKeyDown)
       return () => {
         document.removeEventListener('keydown', handleKeyDown)
       }
-    }, [hotkey])
+    }, [hotkey, context.toastCount])
 
     React.useEffect(() => {
       if (!isWeb) return
+      if (context.toastCount === 0) return
       const wrapper = wrapperRef.current
       const viewport = ref.current
       if (hasToasts && wrapper && viewport) {
@@ -143,7 +149,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
           window.removeEventListener('focus', handleResume)
         }
       }
-    }, [hasToasts, context.isClosePausedRef])
+    }, [hasToasts, context.isClosePausedRef, context.toastCount])
 
     const getSortedTabbableCandidates = React.useCallback(
       ({ tabbingDirection }: { tabbingDirection: 'forwards' | 'backwards' }) => {
@@ -166,6 +172,8 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
 
     React.useEffect(() => {
       if (!isWeb) return
+      if (context.toastCount === 0) return
+
       const viewport = ref.current
       // We programmatically manage tabbing as we are unable to influence
       // the source order with portals, this allows us to reverse the
@@ -209,7 +217,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
         viewport.addEventListener('keydown', handleKeyDown)
         return () => viewport.removeEventListener('keydown', handleKeyDown)
       }
-    }, [getItems, getSortedTabbableCandidates])
+    }, [getItems, getSortedTabbableCandidates, context.toastCount])
 
     return (
       <ToastViewportWrapperFrame
@@ -240,8 +248,11 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
         <Collection.Slot scope={__scopeToast}>
           <ToastViewportFrame ref={composedRefs} {...viewportProps}>
             <PortalHost
-              // TODO: user should be able to control this prop to customize AnimatePresence
-              render={(children) => <AnimatePresence>{children}</AnimatePresence>}
+              render={(children) => (
+                <AnimatePresence exitBeforeEnter={!multipleToasts}>
+                  {children}
+                </AnimatePresence>
+              )}
               name={name ?? 'default'}
             />
           </ToastViewportFrame>

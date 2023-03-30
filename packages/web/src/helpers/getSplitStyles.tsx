@@ -6,6 +6,7 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import {
+  stylePropsFont,
   stylePropsText,
   stylePropsTransform,
   validPseudoKeys,
@@ -295,11 +296,20 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  // loop backwards so we can skip already-used props
-  for (let i = len - 1; i >= 0; i--) {
-    let keyInit = propKeys[i]
-    if (keyInit === 'className') continue // handled above
-    let valInit = props[keyInit]
+  /**
+   * Need to process these after done with flattening the rest of the props + variants/mediam when we have the final font family.
+   *
+   * We use this because fonts are grouped together and cannot be processed correctly without the correct font family.
+   */
+  const specialProps: [string, any][] = []
+
+  function processProp(
+    keyInit: string,
+    valInit: any,
+    special = false,
+    fontFamilyOverride: any = null
+  ) {
+    if (keyInit === 'className') return // handled above
 
     // normalize shorthands up front
     if (keyInit in shorthands) {
@@ -312,18 +322,18 @@ export const getSplitStyles: StyleSplitter = (
         keyInit = 'selectable'
         valInit = valInit === 'none' ? false : true
       } else if (keyInit.startsWith('data-') || keyInit.startsWith('aria-')) {
-        continue
+        return
       }
     }
 
     if (!staticConfig.isHOC) {
       if (keyInit in skipProps) {
-        continue
+        return
       }
     }
 
     if (keyInit in usedKeys) {
-      continue
+      return
     }
 
     if (typeof valInit === 'string' && valInit[0] === '_') {
@@ -334,7 +344,7 @@ export const getSplitStyles: StyleSplitter = (
           style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
         }
         usedKeys[keyInit] = 1
-        continue
+        return
       }
     }
 
@@ -342,12 +352,12 @@ export const getSplitStyles: StyleSplitter = (
       for (const key in valInit) {
         viewProps[`data-${hyphenate(key)}`] = valInit[key]
       }
-      continue
+      return
     }
 
     const isMainStyle = keyInit === 'style'
     if (isMainStyle || keyInit.startsWith('_style')) {
-      if (!valInit) continue
+      if (!valInit) return
       const styles = Array.isArray(valInit) ? valInit : [valInit]
       const styleLen = styles.length
       for (let j = styleLen; j >= 0; j--) {
@@ -361,7 +371,7 @@ export const getSplitStyles: StyleSplitter = (
           style[key] = cur[key]
         }
       }
-      continue
+      return
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -383,14 +393,14 @@ export const getSplitStyles: StyleSplitter = (
           viewProps.disabled = true
         }
         if (!variants?.disabled) {
-          continue
+          return
         }
       }
 
       if (keyInit === 'testID') {
         usedKeys[keyInit] = 1
         viewProps[isReactNative ? 'testId' : 'data-testid'] = valInit
-        continue
+        return
       }
 
       if (keyInit === 'id' || keyInit === 'nativeID') {
@@ -400,7 +410,7 @@ export const getSplitStyles: StyleSplitter = (
         } else {
           viewProps.id = valInit
         }
-        continue
+        return
       }
 
       let didUseKeyInit = false
@@ -410,7 +420,7 @@ export const getSplitStyles: StyleSplitter = (
         if (accessibilityDirectMap[keyInit] || keyInit.startsWith('accessibility')) {
           viewProps[keyInit] = valInit
           usedKeys[keyInit] = 1
-          continue
+          return
         }
       } else {
         didUseKeyInit = true
@@ -425,7 +435,7 @@ export const getSplitStyles: StyleSplitter = (
               } else {
                 viewProps.role = accessibilityRoleToWebRole[valInit] || valInit
               }
-              continue
+              return
             }
             case 'accessibilityLabelledBy':
             case 'accessibilityFlowTo':
@@ -433,17 +443,17 @@ export const getSplitStyles: StyleSplitter = (
             case 'accessibilityDescribedBy': {
               viewProps[`aria-${keyInit.replace('accessibility', '').toLowerCase()}`] =
                 processIDRefList(valInit)
-              continue
+              return
             }
             case 'accessibilityKeyShortcuts': {
               if (Array.isArray(valInit)) {
                 viewProps['aria-keyshortcuts'] = valInit.join(' ')
               }
-              continue
+              return
             }
             case 'accessibilityLiveRegion': {
               viewProps['aria-live'] = valInit === 'none' ? 'off' : valInit
-              continue
+              return
             }
             case 'accessibilityReadOnly': {
               viewProps['aria-readonly'] = valInit
@@ -455,7 +465,7 @@ export const getSplitStyles: StyleSplitter = (
               ) {
                 viewProps.readOnly = true
               }
-              continue
+              return
             }
             case 'accessibilityRequired': {
               viewProps['aria-required'] = valInit
@@ -467,7 +477,7 @@ export const getSplitStyles: StyleSplitter = (
               ) {
                 viewProps.required = valInit
               }
-              continue
+              return
             }
             default: {
               didUseKeyInit = false
@@ -478,7 +488,7 @@ export const getSplitStyles: StyleSplitter = (
 
       if (didUseKeyInit) {
         usedKeys[keyInit] = 1
-        continue
+        return
       }
 
       if (valInit && valInit[0] === '_') {
@@ -497,7 +507,7 @@ export const getSplitStyles: StyleSplitter = (
             console.log('tamagui classname props', keyInit, valInit)
           }
           mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
-          continue
+          return
         }
       }
     }
@@ -513,12 +523,6 @@ export const getSplitStyles: StyleSplitter = (
     let isPseudo = keyInit in validPseudoKeys
 
     const isVariant = variants && keyInit in variants
-    const parentHasVariant =
-      staticConfig.parentStaticConfig &&
-      staticConfig.parentStaticConfig.variants &&
-      keyInit in staticConfig.parentStaticConfig
-    const isHOCShouldPassThrough =
-      staticConfig.isHOC && (isMedia || isPseudo || isVariant)
 
     const shouldPassProp = !(
       isMedia ||
@@ -527,6 +531,11 @@ export const getSplitStyles: StyleSplitter = (
       keyInit in validStyleProps ||
       keyInit in shorthands
     )
+
+    const parentHasVariant =
+      staticConfig.parentStaticConfig?.variants &&
+      keyInit in staticConfig.parentStaticConfig
+    const isHOCShouldPassThrough = staticConfig.isHOC && (isMedia || isPseudo)
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough || parentHasVariant
 
     if (
@@ -547,7 +556,7 @@ export const getSplitStyles: StyleSplitter = (
       // which now has it's own unstyled + the child unstyled...
       // so *don't* skip applying the styles, but also pass `unstyled` to children
       if (!isVariant) {
-        continue
+        return
       }
     }
 
@@ -563,7 +572,7 @@ export const getSplitStyles: StyleSplitter = (
             keyInit,
             valInit,
             theme,
-            props,
+            special ? { ...props, fontFamily: fontFamilyOverride } : props,
             state,
             languageContext,
             undefined,
@@ -584,11 +593,14 @@ export const getSplitStyles: StyleSplitter = (
       // eslint-disable-next-line no-console
       console.groupEnd()
     }
-
-    if (!expanded) continue
+    if (!expanded) return
 
     for (const [key, val] of expanded) {
       if (val === undefined) continue
+      if (key in stylePropsFont && !special && key !== 'fontFamily') {
+        specialProps.push([key, val])
+        continue
+      }
 
       isMedia = isMediaKey(key)
       isPseudo = key in validPseudoKeys
@@ -824,6 +836,19 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
     }
+  }
+
+  // loop backwards so we can skip already-used props
+  for (let i = len - 1; i >= 0; i--) {
+    const keyInit = propKeys[i]
+    const valInit = props[keyInit]
+    processProp(keyInit, valInit)
+  }
+  // loop the special props once again
+  // this one doesn't need to be backwards since it was pushed in the backwards loop (is already reversed)
+  for (let i = 0; i < specialProps.length; i++) {
+    const [key, value] = specialProps[i]
+    processProp(key, value, true, fontFamily)
   }
 
   fixStyles(style)

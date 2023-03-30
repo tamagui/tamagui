@@ -310,6 +310,7 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
 }) => {
     props: {
         children: JSX.Element;
+        fontStyle?: "normal" | "italic" | undefined;
         hitSlop?: import("react-native").Insets | (import("react-native").Insets & number) | undefined;
         pointerEvents?: "box-none" | "none" | "box-only" | "auto" | undefined;
         removeClippedSubviews?: boolean | undefined;

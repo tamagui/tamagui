@@ -1,52 +1,112 @@
-import { CheckCircle2 } from '@tamagui/lucide-icons'
+import { Check } from '@tamagui/lucide-icons'
 import React from 'react'
-import { Button, Toast, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Checkbox,
+  Label,
+  Toast,
+  ToastImperativeProvider,
+  ToastNativePlatform,
+  XStack,
+  YStack,
+  useToast,
+} from 'tamagui'
 
 export const ToastDemo = () => {
-  const [savedCount, setSavedCount] = React.useState(0)
+  const [native, setNative] = React.useState<ToastNativePlatform[]>([])
 
   return (
-    <YStack ai="center">
+    <YStack space="$5">
+      <ToastImperativeProvider options={{ native }}>
+        <ToastControl />
+        <CurrentToast />
+      </ToastImperativeProvider>
+
+      <NativeOptions native={native} setNative={setNative} />
+    </YStack>
+  )
+}
+
+const CurrentToast = () => {
+  const { currentToast } = useToast()
+
+  if (!currentToast || currentToast.isHandledNatively) return null
+  return (
+    <Toast
+      key={currentToast.id}
+      duration={currentToast.duration}
+      enterStyle={{ opacity: 0, scale: 0.5, y: -25 }}
+      exitStyle={{ opacity: 0, scale: 1, y: -20 }}
+      y={0}
+      opacity={1}
+      scale={1}
+      animation="100ms"
+    >
+      <YStack>
+        <Toast.Title>{currentToast.title}</Toast.Title>
+        {!!currentToast.message && (
+          <Toast.Description>{currentToast.message}</Toast.Description>
+        )}
+      </YStack>
+    </Toast>
+  )
+}
+
+const ToastControl = () => {
+  const toast = useToast()
+  return (
+    <XStack space="$2" jc="center">
       <Button
         onPress={() => {
-          setSavedCount((old) => old + 1)
+          toast.show('Successfully saved!', {
+            message: "Don't worry, we've got your data.",
+          })
         }}
       >
-        Show toast
+        Show
       </Button>
-      {[...Array(savedCount)].map((_, index) => (
-        <Toast
-          key={index}
-          duration={4000}
-          enterStyle={{ opacity: 0, scale: 0.5, y: -25 }}
-          exitStyle={{ opacity: 0, scale: 1, y: -20 }}
-          y={0}
-          opacity={1}
-          scale={1}
-          animation="100ms"
-        >
-          <XStack space ai="center">
-            <YStack
-              animation="quick"
-              enterStyle={{ scale: 0, rotate: '-100deg', x: 10 }}
-              x={0}
-              scale={1}
-              rotate="0deg"
-            >
-              <CheckCircle2 />
-            </YStack>
+      <Button
+        onPress={() => {
+          toast.hide()
+        }}
+      >
+        Hide
+      </Button>
+    </XStack>
+  )
+}
 
-            <YStack>
-              <Toast.Title enterStyle={{ x: 40 }} x={0} animation="quick">
-                Successfully saved!
-              </Toast.Title>
-              <Toast.Description enterStyle={{ x: 20 }} x={0} animation="quick">
-                Don't worry... We've got your data.
-              </Toast.Description>
-            </YStack>
-          </XStack>
-        </Toast>
+const NativeOptions = ({
+  native,
+  setNative,
+}: {
+  native: ToastNativePlatform[]
+  setNative: (native: ToastNativePlatform[]) => void
+}) => {
+  const supportedNativePlatforms: ToastNativePlatform[] = ['web', 'mobile']
+
+  return (
+    <XStack space>
+      {supportedNativePlatforms.map((platform) => (
+        <XStack ai="center" space="$2" key={platform}>
+          <Checkbox
+            id={platform}
+            checked={native?.includes(platform)}
+            onCheckedChange={(checked) => {
+              if (checked) setNative([...native, platform])
+              else setNative(native.filter((val) => val !== platform))
+            }}
+            size="$3"
+          >
+            <Checkbox.Indicator>
+              <Check />
+            </Checkbox.Indicator>
+          </Checkbox>
+          <Label size="$3" htmlFor={platform}>
+            Native {platform} toast
+          </Label>
+        </XStack>
       ))}
-    </YStack>
+    </XStack>
   )
 }
