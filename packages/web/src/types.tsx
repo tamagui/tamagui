@@ -1414,6 +1414,7 @@ type AnimationConfig = {
 
 // includes a very limited adapter between various impls for number => style
 // this is useful only in limited scenarios like `Sheet`, but necessary in those cases
+// TODO: make css driver compatible with this?
 
 export type AnimatedNumberStrategy =
   // only values shared between reanimated/react-native for now
@@ -1445,8 +1446,11 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     val: V,
     getStyle: (current: any) => any
   ) => any
-  useAnimatedNumberReaction: (
-    val: UniversalAnimatedNumber<any>,
+  useAnimatedNumberReaction: <V extends UniversalAnimatedNumber<any>>(
+    opts: {
+      value: V
+      hostRef: RefObject<HTMLElement | View>
+    },
     onValue: (current: number) => void
   ) => void
   animations: A

@@ -1,4 +1,32 @@
-import { BaseToastOptions as BurntToastOptions } from 'burnt/build/types';
+type BurntLayout = {
+    iconSize?: {
+        width: number;
+        height: number;
+    };
+};
+export type BurntToastOptions = {
+    title: string;
+    message?: string;
+    /**
+     * Defaults to `done`.
+     */
+    preset?: 'done' | 'error' | 'none';
+    /**
+     * Duration in seconds.
+     */
+    duration?: number;
+    haptic?: 'success' | 'warning' | 'error' | 'none';
+    /**
+     * Defaults to `true`.
+     */
+    shouldDismissByDrag?: boolean;
+    /**
+     * Change the presentation side.
+     * @platform ios
+     */
+    from?: 'top' | 'bottom';
+    layout?: BurntLayout;
+};
 export interface CreateNativeToastOptions {
     /**
      * Body of the toast
@@ -31,4 +59,5 @@ export type CreateNativeToastsFn = (title: string, options: CreateNativeToastOpt
 export type HideNativeToastsFn = (ref?: NativeToastRef) => void;
 export type ToastNativePlatform = 'web' | 'mobile' | 'android' | 'ios';
 export type ToastNativeValue = boolean | ToastNativePlatform | ToastNativePlatform[];
+export {};
 //# sourceMappingURL=types.d.ts.map

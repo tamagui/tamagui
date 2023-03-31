@@ -1,16 +1,16 @@
 {
   "name": "next-app",
-  "version": "1.9.4",
+  "version": "1.9.18",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "cd ../.. && yarn build && cd next && next build",
+    "build": "cd ../.. && yarn build && cd apps/next && next build",
     "start": "next start",
     "serve": "NODE_ENV=production next start --port 8151",
     "lint": "next lint"
   },
   "dependencies": {
-    "@tamagui/next-theme": "1.9.4",
+    "@tamagui/next-theme": "1.9.18",
     "app": "*",
     "next": "^13.1.4",
     "raf": "^3.4.1",
@@ -18,10 +18,10 @@
     "react-dom": "^18.2.0",
     "react-native": "^0.71.4",
     "react-native-web": "^0.18.3",
-    "react-native-web-lite": "1.9.4"
+    "react-native-web-lite": "1.9.18"
   },
   "devDependencies": {
-    "@tamagui/next-plugin": "1.9.4",
+    "@tamagui/next-plugin": "1.9.18",
     "@types/node": "^16.11.9",
     "eslint-config-next": "^13.0.4"
   }

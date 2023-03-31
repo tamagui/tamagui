@@ -7,7 +7,7 @@ Let's take a quick look through some of the useful other exports in `@tamagui/co
 
 ## Constants
 
-[Constants are re-exported from @tamagui/constants](https://github.com/tamagui/tamagui/blob/master/packages/constants/src/constants.ts):
+[Constants are re-exported from @tamagui/constants](https://github.com/tamagui/tamagui/blob/master/packages/constants/src/index.ts):
 
 - `isWeb` - `process.env.TAMAGUI_TARGET === 'web'`. Should be true both for SSR and Client side web targets.
 - `isWindowDefined` - `typeof window === 'undefined'`
@@ -47,7 +47,7 @@ This will ensure `isTamaguiElement` is true for the wrapped component elements, 
 ### getTokens
 
 ```tsx
-;() => TokensParsed
+() => TokensParsed
 ```
 
 Returns the parsed Tamagui config object of all your tokens, can be used at runtime to get values from tokens.
@@ -55,7 +55,7 @@ Returns the parsed Tamagui config object of all your tokens, can be used at runt
 ### getExpandedShorthands
 
 ```tsx
-;(props: Object) => Object
+(props: Object) => Object
 ```
 
 Take props, returns new object with all shorthand props expanded.

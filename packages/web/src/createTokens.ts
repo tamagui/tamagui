@@ -37,6 +37,7 @@ type MakeTokens<T> = T extends {
   : never
 
 // test
+// TODO move to tests
 const tokens = createTokens({
   size: { 0: 1 },
   space: { 0: 1 },

@@ -13,7 +13,9 @@ type AnimationConfig = SpringConfig | TimingConfig;
 export declare const AnimatedView: Animated.AnimatedComponent<typeof import("react-native").View>;
 export declare const AnimatedText: Animated.AnimatedComponent<typeof import("react-native").Text>;
 export declare function useAnimatedNumber(initial: number): UniversalAnimatedNumber<Animated.Value>;
-export declare function useAnimatedNumberReaction(value: UniversalAnimatedNumber<Animated.Value>, cb: (current: number) => void): void;
+export declare function useAnimatedNumberReaction({ value, }: {
+    value: UniversalAnimatedNumber<Animated.Value>;
+}, onValue: (current: number) => void): void;
 export declare function useAnimatedNumberStyle<V extends UniversalAnimatedNumber<Animated.Value>>(value: V, getStyle: (value: any) => any): any;
 export declare function createAnimations<A extends AnimationsConfig>(animations: A): AnimationDriver<A>;
 export {};

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "1.9.4",
+  "version": "1.9.18",
   "bin": {
     "tamagui-build": "tamagui-build.js"
   },
@@ -11,7 +11,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
     "chokidar": "^3.5.2",
     "esbuild": "^0.17.5",
     "execa": "^5.0.0",
@@ -19,9 +20,6 @@
     "fs-extra": "^11.1.0",
     "lodash.debounce": "^4.0.8",
     "typescript": "^4.7.4"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "^9.0.13"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }

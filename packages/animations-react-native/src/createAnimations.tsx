@@ -101,11 +101,15 @@ export function useAnimatedNumber(
 }
 
 export function useAnimatedNumberReaction(
-  value: UniversalAnimatedNumber<Animated.Value>,
-  cb: (current: number) => void
+  {
+    value,
+  }: {
+    value: UniversalAnimatedNumber<Animated.Value>
+  },
+  onValue: (current: number) => void
 ) {
   const onChange = useEvent((current) => {
-    cb(current.value)
+    onValue(current.value)
   })
 
   useEffect(() => {
@@ -144,21 +148,16 @@ export function createAnimations<A extends AnimationsConfig>(
       const mergedStyles = style
       const animateStyles = useSafeRef<Record<string, Animated.Value>>({})
       const animatedTranforms = useSafeRef<{ [key: string]: Animated.Value }[]>([])
-
-      const animationsState = useSafeRef<
-        WeakMap<
+      const animationsState = useSafeRef(
+        new WeakMap<
           Animated.Value,
           {
             interopolation: Animated.AnimatedInterpolation<any>
             current?: number | undefined
           }
-        >
-      >(null as any)
-      if (!animationsState.current) {
-        animationsState.current = new WeakMap()
-      }
+        >()
+      )
 
-      // const args = [JSON.stringify(mergedStyles)]
       const args = [
         JSON.stringify(mergedStyles),
         JSON.stringify(state),
@@ -257,11 +256,23 @@ export function createAnimations<A extends AnimationsConfig>(
 
             runners.push(() => {
               value.stopAnimation()
-              Animated[animationConfig.type || 'spring'](value, {
-                toValue: val,
-                useNativeDriver: !isWeb,
-                ...animationConfig,
-              }).start(({ finished }) => {
+
+              function getAnimation() {
+                return Animated[animationConfig.type || 'spring'](value, {
+                  toValue: val,
+                  useNativeDriver: !isWeb,
+                  ...animationConfig,
+                })
+              }
+
+              const animation = animationConfig.delay
+                ? Animated.sequence([
+                    Animated.delay(animationConfig.delay),
+                    getAnimation(),
+                  ])
+                : getAnimation()
+
+              animation.start(({ finished }) => {
                 if (finished) {
                   resolve()
                 }
@@ -334,9 +345,10 @@ function getAnimationConfig(
   }
   let type = ''
   let extraConf: any
+  const shortKey = transformShorthands[key]
   if (Array.isArray(animation)) {
     type = animation[0] as string
-    const conf = animation[1] && animation[1][key]
+    const conf = animation[1]?.[key] ?? animation[1]?.[shortKey]
     if (conf) {
       if (typeof conf === 'string') {
         type = conf
@@ -346,7 +358,7 @@ function getAnimationConfig(
       }
     }
   } else {
-    const val = animation?.[key]
+    const val = animation?.[key] ?? animation?.[shortKey]
     type = val?.type
     extraConf = val
   }
@@ -358,6 +370,14 @@ function getAnimationConfig(
     ...found,
     ...extraConf,
   }
+}
+
+// try both combos
+const transformShorthands = {
+  x: 'translateX',
+  y: 'translateY',
+  translateX: 'x',
+  translateY: 'y',
 }
 
 function getValue(input: number | string) {

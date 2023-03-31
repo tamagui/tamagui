@@ -697,7 +697,10 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     usePresence: () => UsePresenceResult;
     useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>;
     useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(val: V, getStyle: (current: any) => any) => any;
-    useAnimatedNumberReaction: (val: UniversalAnimatedNumber<any>, onValue: (current: number) => void) => void;
+    useAnimatedNumberReaction: <V extends UniversalAnimatedNumber<any>>(opts: {
+        value: V;
+        hostRef: RefObject<HTMLElement | View>;
+    }, onValue: (current: number) => void) => void;
     animations: A;
     View?: any;
     Text?: any;

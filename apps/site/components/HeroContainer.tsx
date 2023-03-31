@@ -1,6 +1,12 @@
 import { ThemeTint } from '@tamagui/logo'
+import { Timer, Waves } from '@tamagui/lucide-icons'
+import {
+  AnimationDriverTogglerContextProvider,
+  useAnimationDriverToggler,
+} from 'hooks/useAnimationDriverToggler'
 import React from 'react'
-import { Theme, XStack, YStack, styled } from 'tamagui'
+import { Theme, TooltipSimple, XStack, YStack, styled } from 'tamagui'
+import { Switch } from 'tamagui'
 
 import { ErrorBoundary } from './ErrorBoundary'
 
@@ -13,6 +19,7 @@ export function HeroContainer({
   alignItems,
   minimal,
   tinted,
+  showAnimationDriverControl = false,
 }: {
   minimal?: boolean
   demoMultiple?: boolean
@@ -22,6 +29,7 @@ export function HeroContainer({
   noScroll?: boolean
   alignItems?: any
   tinted?: boolean
+  showAnimationDriverControl?: boolean
 }) {
   const contents = (
     <YStack
@@ -46,37 +54,52 @@ export function HeroContainer({
         mx: smaller ? 0 : '$-4',
       }}
     >
-      <ErrorBoundary>
-        {demoMultiple ? (
-          <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
-            <XStack space="$3" px="$8">
-              <Theme reset>
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="blue">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="red">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="pink">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="orange">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="green">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="yellow">
-                <Card>{children}</Card>
-              </Theme>
+      <AnimationDriverTogglerContextProvider>
+        <ErrorBoundary>
+          {demoMultiple ? (
+            <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
+              <XStack space="$3" px="$8">
+                <Theme reset>
+                  <Card>{children}</Card>
+                </Theme>
+                <Theme name="blue">
+                  <Card>{children}</Card>
+                </Theme>
+                <Theme name="red">
+                  <Card>{children}</Card>
+                </Theme>
+                <Theme name="pink">
+                  <Card>{children}</Card>
+                </Theme>
+                <Theme name="orange">
+                  <Card>{children}</Card>
+                </Theme>
+                <Theme name="green">
+                  <Card>{children}</Card>
+                </Theme>
+                <Theme name="yellow">
+                  <Card>{children}</Card>
+                </Theme>
+              </XStack>
             </XStack>
-          </XStack>
-        ) : (
-          children
-        )}
-      </ErrorBoundary>
+          ) : (
+            children
+          )}
+        </ErrorBoundary>
+        <XStack
+          position="absolute"
+          display="inline-flex"
+          alignItems="center"
+          justifyContent="space-between"
+          top={16}
+          l="$3"
+          $gtMd={{
+            l: '$4',
+          }}
+        >
+          {showAnimationDriverControl && <AnimationControl />}
+        </XStack>
+      </AnimationDriverTogglerContextProvider>
     </YStack>
   )
 
@@ -98,3 +121,26 @@ const Card = styled(YStack, {
   minHeight: 220,
   br: '$4',
 })
+
+const AnimationControl = () => {
+  const animationDriverToggler = useAnimationDriverToggler()
+
+  return (
+    <TooltipSimple label={`${animationDriverToggler.driverName} animation driver`}>
+      <XStack zIndex={100000000} space="$2" ai="center">
+        <Timer size={14} opacity={0.6} />
+        <Switch
+          size="$1"
+          theme="Switch"
+          checked={animationDriverToggler.driverName === 'react-native'}
+          onCheckedChange={(val) =>
+            animationDriverToggler.setDriverName(val ? 'react-native' : 'css')
+          }
+        >
+          <Switch.Thumb />
+        </Switch>
+        <Waves size={14} opacity={0.6} />
+      </XStack>
+    </TooltipSimple>
+  )
+}
