@@ -4,7 +4,6 @@ import { Paragraph, SizableText, Text, XStack, YStack } from 'tamagui'
 export function TextDemo() {
   return (
     <YStack space="$2" ai="center">
-      <Text>Text</Text>
       <SizableText size="$3">SizableText</SizableText>
       <XStack space>
         <SizableText theme="alt1" size="$3">
