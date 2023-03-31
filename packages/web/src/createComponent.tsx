@@ -183,7 +183,7 @@ export function createComponent<
         didAccessThemeVariableValue?: boolean
       }
     )
-    stateRef.current ??= {}
+    stateRef.current ||= {}
 
     /**
      * Component state for tracking animations, pseudos

@@ -39,11 +39,12 @@ export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
 }
 
 export const useThemeWithState = (props: ThemeProps) => {
-  const keys = useServerRef([])
+  const keys = useServerRef<string[]>([])
 
   const changedTheme = useChangeThemeEffect(
     props,
     false,
+    keys.current,
     isClient
       ? () => {
           return props.shouldUpdate?.() ?? keys.current.length === 0
@@ -122,11 +123,17 @@ export function getThemeProxied({
       }
       const val = themeManager.getValue(key)
       const currentKeys = keys?.current
+
+      console.log('gettting', key, currentKeys)
+
       if (val && currentKeys) {
+        debugger
         return new Proxy(val as any, {
           // when they touch the actual value we only track it
           // if its a variable (web), its ignored!
           get(_, subkey) {
+            console.log('getting sub key', subkey)
+
             if (subkey === 'val' && !currentKeys.includes(keyString)) {
               currentKeys.push(keyString)
             }
@@ -134,6 +141,7 @@ export function getThemeProxied({
           },
         })
       }
+
       return val
     },
   })
@@ -144,6 +152,7 @@ export const activeThemeManagers = new Set<ThemeManager>()
 export const useChangeThemeEffect = (
   props: ThemeProps,
   root = false,
+  keys?: string[],
   disableUpdate?: () => boolean
 ): ChangedThemeResponse => {
   if (isRSC) {
@@ -179,32 +188,6 @@ export const useChangeThemeEffect = (
 
   const [themeState, setThemeState] = useState<State>(createState)
   const { isNewTheme, state, themeManager, mounted } = themeState
-
-  if (!isServer) {
-    useEffect(() => {
-      if (disable) return
-      // SSR safe inverse (because server can't know prefers scheme)
-      // could be done through fancy selectors like how we do prefers-media
-      // but may be a bit of explosion of selectors
-      if (props.inverse && !mounted) {
-        setThemeState({ ...themeState, mounted: true })
-        return
-      }
-      activeThemeManagers.add(themeManager)
-      // const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
-      //   // console.log('hi', props, state, name, manager)
-      //   if (state.theme !== manager.state.theme) {
-      //     console.warn('now update to', manager.state.name)
-      //     updateState(manager)
-      //   }
-      // })
-      return () => {
-        activeThemeManagers.delete(themeManager)
-        // disposeChangeListener?.()
-      }
-    }, [disable, state, isNewTheme, debug])
-  }
-
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
   const shouldReturnParentState = hasNoThemeUpdatingProps(props) || isInversingOnMount
 
@@ -220,14 +203,21 @@ export const useChangeThemeEffect = (
     }
   }
 
+  let updateChildrenKey = -1
+
   // run inline in render
   if (disableUpdate?.() !== true) {
     const manager = themeManager //updatingManager || themeManager
     const next = manager.getState(props, parentManager)
     const shouldChange = manager.getStateShouldChange(next, isNewTheme ? state : null)
+
     if (shouldChange) {
-      console.warn('SHOULD CHANGE')
-      // setThemeState(createState)
+      if (isNewTheme && next && next.name !== state.name) {
+        console.warn('OPTIMISZED CHANGE')
+        updateChildrenKey = Math.random()
+      } else {
+        setThemeState(createState)
+      }
     } else {
       if (!next && parentManager?.state.name !== state.name) {
         // were changing back to parent state
@@ -235,6 +225,47 @@ export const useChangeThemeEffect = (
         setThemeState(createState)
       }
     }
+  }
+
+  if (!isServer) {
+    useEffect(() => {
+      if (disable) return
+      // SSR safe inverse (because server can't know prefers scheme)
+      // could be done through fancy selectors like how we do prefers-media
+      // but may be a bit of explosion of selectors
+      if (props.inverse && !mounted) {
+        setThemeState({ ...themeState, mounted: true })
+        return
+      }
+      activeThemeManagers.add(themeManager)
+
+      return () => {
+        activeThemeManagers.delete(themeManager)
+      }
+    }, [disable, state, isNewTheme, debug])
+
+    // listen for parent chang + notify children change
+    useEffect(() => {
+      if (updateChildrenKey !== -1) {
+        console.warn(`notify`)
+        themeManager.notify()
+      }
+
+      const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
+        console.log('PARENT CHANGED', { name })
+
+        console.log('are we listening?', themeManager, keys)
+
+        if (state.theme !== manager.state.theme) {
+          console.warn('now update to', manager.state.name)
+          // updateState(manager)
+        }
+      })
+
+      return () => {
+        disposeChangeListener?.()
+      }
+    }, [updateChildrenKey])
   }
 
   return {

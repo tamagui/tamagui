@@ -21,5 +21,5 @@ export declare function getThemeProxied({ theme, themeManager, keys, }: Partial<
     keys?: React.RefObject<string[]>;
 }): ThemeParsed;
 export declare const activeThemeManagers: Set<ThemeManager>;
-export declare const useChangeThemeEffect: (props: ThemeProps, root?: boolean, disableUpdate?: () => boolean) => ChangedThemeResponse;
+export declare const useChangeThemeEffect: (props: ThemeProps, root?: boolean, keys?: string[], disableUpdate?: () => boolean) => ChangedThemeResponse;
 //# sourceMappingURL=useTheme.d.ts.map

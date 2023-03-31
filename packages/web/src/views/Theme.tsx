@@ -11,6 +11,7 @@ export function Theme(props: ThemeProps) {
   // @ts-expect-error only for internal views
   if (props.disable) return props.children
   const isRoot = !!props['_isRoot']
+  console.log('render Theme')
   const themeState = useChangeThemeEffect(props, isRoot)
   const children = props['data-themeable']
     ? Children.map(props.children, (child) =>
