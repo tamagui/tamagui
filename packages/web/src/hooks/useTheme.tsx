@@ -122,7 +122,7 @@ export function getThemeProxied(
       // auto convert variables to plain
       const keyString = key[0] === '$' ? key.slice(1) : key
 
-      const val = themeManager.getValue(key)
+      const val = themeManager.getValue(keyString)
 
       if (val && keys) {
         console.warn('??')

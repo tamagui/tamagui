@@ -19,7 +19,7 @@ export function SandboxThemeChange() {
         {useMemo(
           () => (
             <>
-              <SandboxThemeChildStatic />
+              {/* <SandboxThemeChildStatic /> */}
               <SandboxThemeChildDynamic />
             </>
           ),
