@@ -1,12 +1,12 @@
-import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
+import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons';
 import {
   Label,
   Separator,
   SizeTokens,
   ToggleGroup,
   XStack,
-  YStack,
-} from 'tamagui'
+  YStack
+} from 'tamagui';
 
 export function ToggleGroupDemo() {
   return (
@@ -24,7 +24,7 @@ export function ToggleGroupDemo() {
 }
 
 function ToggleGroupComponent(props: { size: SizeTokens; type: 'single' | 'multiple' }) {
-  const id = `switch-${props.size.toString().slice(1)}`
+  const id = `switch-${props.size.toString().slice(1)}-${props.type}`
   return (
     <XStack w={200} ai="center" space="$4">
       <Label pr="$0" miw={90} jc="flex-end" size={props.size} htmlFor={id}>
@@ -32,7 +32,7 @@ function ToggleGroupComponent(props: { size: SizeTokens; type: 'single' | 'multi
       </Label>
       <Separator mih={20} vertical />
       <ToggleGroup id={id} type={props.type} elevation={10} size={props.size}>
-        <ToggleGroup.Item value="left" aria-label="Left aligned">
+        <ToggleGroup.Item value="left" aria-label="Left aligned" flexDirection='row'>
           <AlignLeft />
         </ToggleGroup.Item>
         <ToggleGroup.Item value="center" aria-label="Center aligned">
