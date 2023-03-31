@@ -5906,7 +5906,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/toggle-group@workspace:packages/toggle-group"
   dependencies:
-    "@tamagui/build": ^1.9.18
+    "@tamagui/build": 1.9.18
     "@tamagui/create-context": ^1.9.18
     "@tamagui/focusable": ^1.9.18
     "@tamagui/font-size": ^1.9.18
@@ -5919,12 +5919,8 @@ __metadata:
     "@tamagui/use-direction": ^1.9.18
     "@tamagui/web": ^1.9.18
     react: ^18.2.0
-    react-dom: ^18.2.0
-    react-native: "*"
   peerDependencies:
     react: "*"
-    react-dom: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
