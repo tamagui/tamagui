@@ -1,4 +1,6 @@
+import { getFontSize } from '@tamagui/font-size'
 import { getSize } from '@tamagui/get-size'
+import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import {
@@ -7,6 +9,7 @@ import {
   composeEventHandlers,
   getVariableValue,
   styled,
+  useTheme
 } from '@tamagui/web'
 import * as React from 'react'
 
@@ -72,9 +75,11 @@ type ToggleProps = GetProps<typeof ToggleFrame> & {
 const Toggle = ToggleFrame.extractable(
   React.forwardRef<ToggleElement, ToggleProps>((props, forwardedRef) => {
     const {
+      children: childrenProp,
       pressed: pressedProp,
       defaultPressed = false,
       onPressedChange,
+      size,
       ...buttonProps
     } = props
 
@@ -82,6 +87,18 @@ const Toggle = ToggleFrame.extractable(
       prop: pressedProp,
       onChange: onPressedChange,
       defaultProp: defaultPressed,
+    })
+
+    const iconSize = (typeof size === 'number' ? size * 0.65 : getFontSize(size)) * 1
+    const theme = useTheme()
+    const getThemedIcon = useGetThemedIcon({ size: iconSize, color: theme.color })
+
+    const childrens = React.Children.toArray(childrenProp)
+    const children = childrens.map((child) => {
+      if (!React.isValidElement(child)) {
+        return child
+      }
+      return getThemedIcon(child)
     })
 
     return (
@@ -107,7 +124,9 @@ const Toggle = ToggleFrame.extractable(
               }
             }
           )}
-        />
+        >
+          {children}
+        </ToggleFrame>
       </Theme>
     )
   })
@@ -118,3 +137,4 @@ Toggle.displayName = NAME
 
 export { Toggle }
 export type { ToggleProps }
+

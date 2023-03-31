@@ -1,15 +1,11 @@
 import { Scope, createContextScope } from '@tamagui/create-context'
+import { registerFocusable } from '@tamagui/focusable'
 import { Group, GroupProps, useGroupItem } from '@tamagui/group'
 import { RovingFocusGroup, createRovingFocusGroupScope } from '@tamagui/roving-focus'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import {
-  GetProps,
-  SizeTokens,
-  styled,
-  withStaticProperties
-} from '@tamagui/web'
+import { GetProps, SizeTokens, isWeb, styled, withStaticProperties } from '@tamagui/web'
 import React from 'react'
 
 import { Toggle } from './Toggle'
@@ -179,6 +175,18 @@ const ToggleGroup = withStaticProperties(
   React.forwardRef<ToggleGroupElement, ToggleGroupSingleProps | ToggleGroupMultipleProps>(
     (props, forwardedRef) => {
       const { type, ...toggleGroupProps } = props
+
+      if (!isWeb) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        React.useEffect(() => {
+          if (!props.id) return
+          return registerFocusable(props.id, {
+            // TODO: would be nice to focus on the first child later - could be done with reforest
+            // for now leaving it empty
+            focus: () => {},
+          })
+        }, [props.id])
+      }
 
       if (type === 'single') {
         const singleProps = toggleGroupProps as ToggleGroupImplSingleProps
@@ -423,9 +431,6 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
   )
 )
 
-export {
-  ToggleGroup,
-  createToggleGroupScope
-}
+export { ToggleGroup, createToggleGroupScope }
 export type { ToggleGroupItemProps, ToggleGroupMultipleProps, ToggleGroupSingleProps }
 
