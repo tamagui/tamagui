@@ -232,7 +232,7 @@ async function run() {
                 console.log('Already published, skipping')
                 return
               }
-              console.log(`Error publishing!`, `${err.message}`)
+              console.log(`Error publishing!`, `${err}`)
               erroredPackages.push(pkg)
             }
           })
