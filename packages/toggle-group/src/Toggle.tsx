@@ -1,7 +1,13 @@
 import { getSize } from '@tamagui/get-size'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import { GetProps, composeEventHandlers, getVariableValue, styled } from '@tamagui/web'
+import {
+  GetProps,
+  Theme,
+  composeEventHandlers,
+  getVariableValue,
+  styled,
+} from '@tamagui/web'
 import * as React from 'react'
 
 /* -------------------------------------------------------------------------------------------------
@@ -29,7 +35,8 @@ const ToggleFrame = styled(ThemeableStack, {
   focusStyle: {
     outlineWidth: '$1',
     outlineStyle: 'solid',
-    outlineOffset:`-2px`
+    outlineOffset: `-2px`,
+    outlineColor: '$color',
   },
   variants: {
     orientation: {
@@ -78,29 +85,30 @@ const Toggle = ToggleFrame.extractable(
     })
 
     return (
-      <ToggleFrame
-        theme={pressed?"active":null}
-        aria-pressed={pressed}
-        data-state={pressed ? 'on' : 'off'}
-        data-disabled={props.disabled ? '' : undefined}
-        {...buttonProps}
-        ref={forwardedRef}
-        onPress={composeEventHandlers(props.onPress, () => {
-          if (!props.disabled) {
-            setPressed(!pressed)
-          }
-        })}
-        onKeyDown={composeEventHandlers(
-          (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
-          (event) => {
-            if ([' ', 'Enter'].includes(event.key)) {
-              if (!props.disabled) {
-                setPressed(!pressed)
+      <Theme forceClassName name={pressed ? 'active' : null}>
+        <ToggleFrame
+          aria-pressed={pressed}
+          data-state={pressed ? 'on' : 'off'}
+          data-disabled={props.disabled ? '' : undefined}
+          {...buttonProps}
+          ref={forwardedRef}
+          onPress={composeEventHandlers(props.onPress, () => {
+            if (!props.disabled) {
+              setPressed(!pressed)
+            }
+          })}
+          onKeyDown={composeEventHandlers(
+            (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
+            (event) => {
+              if ([' ', 'Enter'].includes(event.key)) {
+                if (!props.disabled) {
+                  setPressed(!pressed)
+                }
               }
             }
-          }
-        )}
-      />
+          )}
+        />
+      </Theme>
     )
   })
 )
@@ -110,4 +118,3 @@ Toggle.displayName = NAME
 
 export { Toggle }
 export type { ToggleProps }
-
