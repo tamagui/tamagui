@@ -4210,19 +4210,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/add-font@workspace:packages/add-font":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/add-font@workspace:packages/add-font"
-  dependencies:
-    "@tamagui/build": 1.9.18
-    "@tamagui/constants": 1.9.18
-    "@tamagui/web": 1.9.18
-    react: ^18.2.0
-  peerDependencies:
-    react: "*"
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/alert-dialog@1.9.18, @tamagui/alert-dialog@workspace:packages/alert-dialog":
   version: 0.0.0-use.local
   resolution: "@tamagui/alert-dialog@workspace:packages/alert-dialog"
@@ -4359,6 +4346,15 @@ __metadata:
     tamagui-build: tamagui-build.js
   languageName: unknown
   linkType: soft
+
+"@tamagui/build@npm:1.9.17":
+  version: 1.9.17
+  resolution: "@tamagui/build@npm:1.9.17"
+  bin:
+    tamagui-build: tamagui-build.js
+  checksum: 62357ba415f4473f1e7a0aa69852e53911818bac5861be3cdce480292ea64f7a0e2c9570cf58e36f518da3281bcb12e2e555600500b6885072e0b62474f2ec67
+  languageName: node
+  linkType: hard
 
 "@tamagui/button@1.9.18, @tamagui/button@workspace:packages/button":
   version: 0.0.0-use.local
@@ -4548,6 +4544,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/compose-refs@npm:1.9.17":
+  version: 1.9.17
+  resolution: "@tamagui/compose-refs@npm:1.9.17"
+  peerDependencies:
+    react: "*"
+  checksum: d8c01266d52a7f65cbb7e6da6890ae1e2224385a058076e5d23120c62ba259ec58f040dc3d310ab1d1fdeef04649cee2cb4f1e4c359c129f4b08f2c34e8adaaf
+  languageName: node
+  linkType: hard
+
 "@tamagui/config-base@workspace:packages/config-base":
   version: 0.0.0-use.local
   resolution: "@tamagui/config-base@workspace:packages/config-base"
@@ -4611,6 +4616,15 @@ __metadata:
     react: "*"
   languageName: unknown
   linkType: soft
+
+"@tamagui/constants@npm:1.9.17":
+  version: 1.9.17
+  resolution: "@tamagui/constants@npm:1.9.17"
+  peerDependencies:
+    react: "*"
+  checksum: cd4820b1f9a3f8a0546680103dc099f63836e5f6ee72b8303415911abb893208a23dadbaeaba82f0a2c3f28bc67eaae8e9500325a28284d492ae260aaa2cfd53
+  languageName: node
+  linkType: hard
 
 "@tamagui/core-node@1.9.18, @tamagui/core-node@workspace:packages/core-node":
   version: 0.0.0-use.local
@@ -4973,6 +4987,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/helpers@npm:1.9.17":
+  version: 1.9.17
+  resolution: "@tamagui/helpers@npm:1.9.17"
+  dependencies:
+    "@tamagui/simple-hash": 1.9.17
+  checksum: 69df6974b6c2080c5fc50807f889e42ff2e0593358e5d027bff59b6197ec25bda9b74805ef3308a3886a727a7cf25f9b90fbb92f562514126b5ff1d3b8d075e0
+  languageName: node
+  linkType: hard
+
 "@tamagui/image@1.9.18, @tamagui/image@workspace:packages/image":
   version: 0.0.0-use.local
   resolution: "@tamagui/image@workspace:packages/image"
@@ -5204,6 +5227,13 @@ __metadata:
     "@tamagui/build": 1.9.18
   languageName: unknown
   linkType: soft
+
+"@tamagui/normalize-css-color@npm:1.9.17":
+  version: 1.9.17
+  resolution: "@tamagui/normalize-css-color@npm:1.9.17"
+  checksum: 72659ae77f90243721987b57fbd525e71bf329ff59e94829996930bc487aab90e8ee6b8ac3349544c7d637f135bb3213e63b517d75e6061e76f01b4e7a66d272
+  languageName: node
+  linkType: hard
 
 "@tamagui/polyfill-dev@1.9.18, @tamagui/polyfill-dev@^1.9.18, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
   version: 0.0.0-use.local
@@ -5585,6 +5615,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/simple-hash@npm:1.9.17":
+  version: 1.9.17
+  resolution: "@tamagui/simple-hash@npm:1.9.17"
+  checksum: 9167b2ee1c5e099502cfda2ad9b54003117843f105e00eadf40e7e6502d8314d4cbe33d070a060546662fcee76bb1cdf5323ff247fd9d83daca779591faed002
+  languageName: node
+  linkType: hard
+
 "@tamagui/site@workspace:apps/site":
   version: 0.0.0-use.local
   resolution: "@tamagui/site@workspace:apps/site"
@@ -5876,9 +5913,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/theme@workspace:packages/theme"
   dependencies:
-    "@tamagui/build": 1.9.17
-    "@tamagui/constants": 1.9.17
-    "@tamagui/web": 1.9.17
+    "@tamagui/build": 1.9.18
+    "@tamagui/constants": 1.9.18
+    "@tamagui/web": 1.9.18
     react: ^18.2.0
   peerDependencies:
     react: "*"
@@ -6008,6 +6045,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/use-did-finish-ssr@npm:1.9.17":
+  version: 1.9.17
+  resolution: "@tamagui/use-did-finish-ssr@npm:1.9.17"
+  dependencies:
+    "@tamagui/constants": 1.9.17
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 1405431756091b78ec89edb06123b6f726a48dcb83b8852d9eeabe3b2083056d36ae478fc07f6f44adbfb1097a09d77fef0909cd6145f0b6c6dd0e156c805e59
+  languageName: node
+  linkType: hard
+
 "@tamagui/use-direction@1.9.18, @tamagui/use-direction@workspace:packages/use-direction":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-direction@workspace:packages/use-direction"
@@ -6030,6 +6079,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/use-event@npm:1.9.17":
+  version: 1.9.17
+  resolution: "@tamagui/use-event@npm:1.9.17"
+  peerDependencies:
+    react: "*"
+  checksum: 47472d659faf9cee34f75ec40f5a17337b5e10facdf64631a9734936610fd5c1a5f2a3efc54ff85db4d36008e451977a991ea4f49456311e34dfe06d70ae4a1b
+  languageName: node
+  linkType: hard
+
 "@tamagui/use-force-update@1.9.18, @tamagui/use-force-update@workspace:packages/use-force-update":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-force-update@workspace:packages/use-force-update"
@@ -6040,6 +6098,15 @@ __metadata:
     react: "*"
   languageName: unknown
   linkType: soft
+
+"@tamagui/use-force-update@npm:1.9.17":
+  version: 1.9.17
+  resolution: "@tamagui/use-force-update@npm:1.9.17"
+  peerDependencies:
+    react: "*"
+  checksum: 3d7892fc8c224fe700483f656c6b36e271a8ac86e03f1cac6e00cffadcf8de1690c66df2d8f41ae4d2de97843ad3e2148e2cc035e08d22e64ffc4114652e5451
+  languageName: node
+  linkType: hard
 
 "@tamagui/use-keyboard-visible@1.9.18, @tamagui/use-keyboard-visible@workspace:packages/use-keyboard-visible":
   version: 0.0.0-use.local
@@ -6163,6 +6230,23 @@ __metadata:
     react: "*"
   languageName: unknown
   linkType: soft
+
+"@tamagui/web@npm:1.9.17":
+  version: 1.9.17
+  resolution: "@tamagui/web@npm:1.9.17"
+  dependencies:
+    "@tamagui/compose-refs": 1.9.17
+    "@tamagui/constants": 1.9.17
+    "@tamagui/helpers": 1.9.17
+    "@tamagui/normalize-css-color": 1.9.17
+    "@tamagui/use-did-finish-ssr": 1.9.17
+    "@tamagui/use-event": 1.9.17
+    "@tamagui/use-force-update": 1.9.17
+  peerDependencies:
+    react: "*"
+  checksum: a90e4cd286dbb0dea2fd0111769a9750b29ed8ccc31c9342f57ee3c9c30f16ad875d2b5c4ff51cba6f9cc6f705ebed0c88647c2a828f43eed7ce4cbe5addc0fa
+  languageName: node
+  linkType: hard
 
 "@tauri-apps/api@npm:^1.2.0":
   version: 1.2.0
