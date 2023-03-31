@@ -1,7 +1,7 @@
-import { GetProps, composeEventHandlers, getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-size'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import { GetProps, composeEventHandlers, getVariableValue, styled } from '@tamagui/web'
 import * as React from 'react'
 
 /* -------------------------------------------------------------------------------------------------
@@ -60,7 +60,6 @@ type ToggleProps = GetProps<typeof ToggleFrame> & {
   pressed?: boolean
   defaultPressed?: boolean
   onPressedChange?(pressed: boolean): void
-  onClick?: (e: React.MouseEvent<HTMLElement>) => void
 }
 
 const Toggle = ToggleFrame.extractable(
@@ -69,7 +68,6 @@ const Toggle = ToggleFrame.extractable(
       pressed: pressedProp,
       defaultPressed = false,
       onPressedChange,
-      onClick,
       ...buttonProps
     } = props
 
@@ -87,7 +85,7 @@ const Toggle = ToggleFrame.extractable(
         data-disabled={props.disabled ? '' : undefined}
         {...buttonProps}
         ref={forwardedRef}
-        onClick={composeEventHandlers(props.onClick, () => {
+        onPress={composeEventHandlers(props.onPress, () => {
           if (!props.disabled) {
             setPressed(!pressed)
           }
@@ -112,3 +110,4 @@ Toggle.displayName = NAME
 
 export { Toggle }
 export type { ToggleProps }
+

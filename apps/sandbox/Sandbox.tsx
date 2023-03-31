@@ -12,6 +12,7 @@ import {
   SwitchDemo,
   TabsAdvancedDemo,
   TabsDemo,
+  ToggleGroupDemo,
 } from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
@@ -71,8 +72,8 @@ export const Sandbox = () => {
       {/* this comment keeps indent */}
       {/* <SandboxDefault /> */}
 
-      <SandboxStyledOverridePseudo />
-
+      {/* <SandboxStyledOverridePseudo /> */}
+<ToggleGroupDemo />
       {/* <YStack
         {...{
           borderRadius: 3,

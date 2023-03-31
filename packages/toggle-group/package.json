@@ -31,9 +31,13 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "^1.2.2",
     "@tamagui/create-context": "^1.2.2",
-    "@tamagui/stacks": "^1.2.2"
+    "@tamagui/group": "^1.2.2",
+    "@tamagui/roving-focus": "^1.2.2",
+    "@tamagui/stacks": "^1.2.2",
+    "@tamagui/use-controllable-state": "^1.2.2",
+    "@tamagui/use-direction": "^1.2.2",
+    "@tamagui/web": "^1.2.2"
   },
   "peerDependencies": {
     "react": "*",

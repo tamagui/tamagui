@@ -31,14 +31,14 @@ function ToggleGroupComponent(props: { size: SizeTokens; type: 'single' | 'multi
         {props.type === 'single' ? 'Single' : 'Multiple'}
       </Label>
       <Separator mih={20} vertical />
-      <ToggleGroup id={id} type={props.type} elevation={10} size="$2">
-        <ToggleGroup.Item size={props.size} value="left" aria-label="Left aligned">
+      <ToggleGroup id={id} type={props.type} elevation={10} size={props.size}>
+        <ToggleGroup.Item value="left" aria-label="Left aligned">
           <AlignLeft />
         </ToggleGroup.Item>
-        <ToggleGroup.Item size={props.size} value="center" aria-label="Center aligned">
+        <ToggleGroup.Item value="center" aria-label="Center aligned">
           <AlignCenter />
         </ToggleGroup.Item>
-        <ToggleGroup.Item size={props.size} value="right" aria-label="Right aligned">
+        <ToggleGroup.Item value="right" aria-label="Right aligned">
           <AlignRight />
         </ToggleGroup.Item>
       </ToggleGroup>

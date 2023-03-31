@@ -4330,7 +4330,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@1.9.4, @tamagui/build@^1.9.4, @tamagui/build@workspace:packages/build":
+"@tamagui/build@1.9.4, @tamagui/build@^1.2.2, @tamagui/build@^1.9.4, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -4650,7 +4650,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/create-context@1.9.4, @tamagui/create-context@workspace:packages/create-context":
+"@tamagui/create-context@1.9.4, @tamagui/create-context@^1.2.2, @tamagui/create-context@workspace:packages/create-context":
   version: 0.0.0-use.local
   resolution: "@tamagui/create-context@workspace:packages/create-context"
   dependencies:
@@ -4896,7 +4896,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/group@1.9.4, @tamagui/group@workspace:packages/group":
+"@tamagui/group@1.9.4, @tamagui/group@^1.2.2, @tamagui/group@workspace:packages/group":
   version: 0.0.0-use.local
   resolution: "@tamagui/group@workspace:packages/group"
   dependencies:
@@ -5366,7 +5366,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/roving-focus@1.9.4, @tamagui/roving-focus@workspace:packages/roving-focus":
+"@tamagui/roving-focus@1.9.4, @tamagui/roving-focus@^1.2.2, @tamagui/roving-focus@workspace:packages/roving-focus":
   version: 0.0.0-use.local
   resolution: "@tamagui/roving-focus@workspace:packages/roving-focus"
   dependencies:
@@ -5638,7 +5638,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/stacks@1.9.4, @tamagui/stacks@workspace:packages/stacks":
+"@tamagui/stacks@1.9.4, @tamagui/stacks@^1.2.2, @tamagui/stacks@workspace:packages/stacks":
   version: 0.0.0-use.local
   resolution: "@tamagui/stacks@workspace:packages/stacks"
   dependencies:
@@ -5890,6 +5890,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/toggle-group@workspace:packages/toggle-group":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/toggle-group@workspace:packages/toggle-group"
+  dependencies:
+    "@tamagui/build": ^1.2.2
+    "@tamagui/create-context": ^1.2.2
+    "@tamagui/group": ^1.2.2
+    "@tamagui/roving-focus": ^1.2.2
+    "@tamagui/stacks": ^1.2.2
+    "@tamagui/use-controllable-state": ^1.2.2
+    "@tamagui/use-direction": ^1.2.2
+    "@tamagui/web": ^1.2.2
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/tooltip@1.9.4, @tamagui/tooltip@workspace:packages/tooltip":
   version: 0.0.0-use.local
   resolution: "@tamagui/tooltip@workspace:packages/tooltip"
@@ -5932,7 +5954,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-controllable-state@1.9.4, @tamagui/use-controllable-state@workspace:packages/use-controllable-state":
+"@tamagui/use-controllable-state@1.9.4, @tamagui/use-controllable-state@^1.2.2, @tamagui/use-controllable-state@workspace:packages/use-controllable-state":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-controllable-state@workspace:packages/use-controllable-state"
   dependencies:
@@ -5970,7 +5992,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-direction@1.9.4, @tamagui/use-direction@workspace:packages/use-direction":
+"@tamagui/use-direction@1.9.4, @tamagui/use-direction@^1.2.2, @tamagui/use-direction@workspace:packages/use-direction":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-direction@workspace:packages/use-direction"
   dependencies:
@@ -6104,7 +6126,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/web@1.9.4, @tamagui/web@workspace:packages/web":
+"@tamagui/web@1.9.4, @tamagui/web@^1.2.2, @tamagui/web@workspace:packages/web":
   version: 0.0.0-use.local
   resolution: "@tamagui/web@workspace:packages/web"
   dependencies:
