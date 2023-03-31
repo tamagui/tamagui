@@ -1,5 +1,5 @@
-import { addTheme, updateTheme } from '@tamagui/add-theme'
 import * as Config from '@tamagui/config'
+import { addTheme, updateTheme } from '@tamagui/theme'
 import React, { useState } from 'react'
 import {
   Button,

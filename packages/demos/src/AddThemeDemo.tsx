@@ -1,4 +1,4 @@
-import { addTheme } from '@tamagui/add-theme'
+import { addTheme } from '@tamagui/theme'
 import { useState } from 'react'
 import { Button, H3, Square, Theme, YStack } from 'tamagui'
 
