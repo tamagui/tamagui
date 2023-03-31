@@ -11,7 +11,7 @@ package: toggle-group
 <Description>A set of two-state buttons that can be toggled on or off.</Description>
 
 <HeroContainer>
-    <ToggleGroupDemo />
+  <ToggleGroupDemo />
 </HeroContainer>
 
 ```tsx hero template=ToggleGroup
@@ -19,12 +19,12 @@ package: toggle-group
 ```
 
 <Highlights
-    features={[
+  features={[
     `Full keyboard navigation.`,
     `Supports horizontal/vertical orientation.`,
     `Support single and multiple pressed buttons.`,
     `Can be controlled or uncontrolled.`,
-    ]}
+  ]}
 />
 
 ### Usage
@@ -48,53 +48,59 @@ export default () => {
 ToggleGroup extends the [Group](/docs/components/group) component. You can disable passing border radius to children by passing `disablePassBorderRadius`. plus:
 
 <PropsTable
-    data={[
-        {
-            name: 'asChild',
-            type: 'boolean',
-            description: `When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props.`,
-            default: `false`,
-        },
-        {
-            name: 'type',
-            type: 'enum',
-            description: `Determines whether a single or multiple items can be pressed at a time.`,
-        },
-        {
-            name: 'value',
-            type: 'string',
-            description: `The controlled value of the pressed item when type is "single". Must be used in conjunction with onValueChange.`,
-        },
-        {
-            name: 'defaultValue',
-            description:'The values of the items to show as pressed when initially rendered.',
-            type: 'string',
-            default:``
-        },
-        {
-            name: 'orientation',
-            type: 'enum',
-            description: `The orientation of the component, which determines how focus moves: horizontal for left/right arrows and vertical for up/down arrows.`,
-            default:`horizontal`
-        },
-        {
-            name: 'disabled',
-            type: 'boolean',
-            description: `When true, prevents the user from interacting with the toggle group and all its items.`,
-            default: `false`,
-        },
-        {
-            name: 'onValueChange',
-            type: '(value: string[]) => void',
-            description:`Event handler called when the pressed state of an item changes and type is "multiple".`
-        },
-         {
-            name: 'loop',
-            type: 'boolean',
-            description: `Whether or not to loop over after reaching the end or start of the items. Used mainly for managing keyboard navigation.`,
-            default: `true`,
-        },
-    ]}
+  data={[
+    {
+      name: 'asChild',
+      type: 'boolean',
+      description: `When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props.`,
+      default: `false`,
+    },
+    {
+      name: 'type',
+      type: 'enum',
+      description: `Determines whether a single or multiple items can be pressed at a time.`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `The controlled value of the pressed item when type is "single". Must be used in conjunction with onValueChange.`,
+    },
+    {
+      name: 'defaultValue',
+      description: 'The values of the items to show as pressed when initially rendered.',
+      type: 'string',
+      default: ``,
+    },
+    {
+      name: 'orientation',
+      type: 'enum',
+      description: `The orientation of the component, which determines how focus moves: horizontal for left/right arrows and vertical for up/down arrows.`,
+      default: `horizontal`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `When true, prevents the user from interacting with the toggle group and all its items.`,
+      default: `false`,
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: string[]) => void',
+      description: `Event handler called when the pressed state of an item changes and type is "multiple".`,
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      description: `Whether or not to loop over after reaching the end or start of the items. Used mainly for managing keyboard navigation.`,
+      default: `true`,
+    },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
+    },
+  ]}
 />
 
 ### ToggleGroup Item props
@@ -102,23 +108,29 @@ ToggleGroup extends the [Group](/docs/components/group) component. You can disab
 ToggleGroup extend Stack views inheriting all the [Tamagui standard props](notion://www.notion.so/docs/intro/props), plus:
 
 <PropsTable
-    data={[
-        {
-            name: 'asChild',
-            type: 'boolean',
-            description: `When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props.`,
-            default: `false`,
-        },
-        {
-            name: 'value',
-            type: 'string',
-            description: `The controlled value of the pressed item when type is "single".`,
-        },
-        {
-            name: 'disabled',
-            type: 'boolean',
-            description: `When true, prevents the user from interacting with the toggle group item.`,
-            default: `false`,
-        }
-    ]}
+  data={[
+    {
+      name: 'asChild',
+      type: 'boolean',
+      description: `When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props.`,
+      default: `false`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `The controlled value of the pressed item when type is "single".`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `When true, prevents the user from interacting with the toggle group item.`,
+      default: `false`,
+    },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
+    },
+  ]}
 />
