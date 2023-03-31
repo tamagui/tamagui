@@ -1,4 +1,4 @@
-export declare const useAnimationDriver: () => import("..").AnimationDriver<{
+export declare const useAnimationDriver: () => import("../types.js").AnimationDriver<{
     [key: string]: any;
-}> | null;
+}>;
 //# sourceMappingURL=useAnimationDriver.d.ts.map
