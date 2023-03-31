@@ -9,7 +9,7 @@ import {
   composeEventHandlers,
   getVariableValue,
   styled,
-  useTheme
+  useTheme,
 } from '@tamagui/web'
 import * as React from 'react'
 
@@ -25,23 +25,28 @@ type ToggleElement = TamaguiButtonElement
 
 const ToggleFrame = styled(ThemeableStack, {
   name: NAME,
-  backgroundColor: '$background',
-  alignItems: 'center',
-  justifyContent: 'center',
-  display: 'flex',
-  borderColor: '$borderColor',
-  padding: '$2',
-  borderWidth: '$0.25',
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-  },
-  focusStyle: {
-    outlineWidth: '$1',
-    outlineStyle: 'solid',
-    outlineOffset: `-2px`,
-    outlineColor: '$color',
-  },
+
   variants: {
+    unstyled: {
+      false: {
+        backgroundColor: '$background',
+        alignItems: 'center',
+        justifyContent: 'center',
+        display: 'flex',
+        borderColor: '$borderColor',
+        padding: '$2',
+        borderWidth: '$0.25',
+        hoverStyle: {
+          backgroundColor: '$backgroundHover',
+        },
+        focusStyle: {
+          outlineWidth: '$1',
+          outlineStyle: 'solid',
+          outlineOffset: `-2px`,
+          outlineColor: '$color',
+        },
+      },
+    },
     orientation: {
       horizontal: {
         flexDirection: 'row',
@@ -62,6 +67,9 @@ const ToggleFrame = styled(ThemeableStack, {
       },
     },
   } as const,
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 type ToggleProps = GetProps<typeof ToggleFrame> & {
@@ -137,4 +145,3 @@ Toggle.displayName = NAME
 
 export { Toggle }
 export type { ToggleProps }
-

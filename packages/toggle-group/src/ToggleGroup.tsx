@@ -347,19 +347,26 @@ type ToggleGroupImplElement = TamaguiElement
 
 const ToggleGroupImplElementFrame = styled(Group, {
   name: TOGGLE_GROUP_NAME,
-  backgroundColor: '$background',
   variants: {
-    orientation: {
-      vertical: {
-        flexDirection: 'column',
-        spaceDirection: 'vertical',
+    unstyled: {
+      false: {
+        backgroundColor: '$background',
       },
-      horizontal: {
-        flexDirection: 'row',
-        spaceDirection: 'horizontal',
+      orientation: {
+        vertical: {
+          flexDirection: 'column',
+          spaceDirection: 'vertical',
+        },
+        horizontal: {
+          flexDirection: 'row',
+          spaceDirection: 'horizontal',
+        },
       },
     },
-  } as const,
+    defaultVariants: {
+      unstyled: false,
+    },
+  },
 })
 
 type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> &
@@ -433,4 +440,3 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
 
 export { ToggleGroup, createToggleGroupScope }
 export type { ToggleGroupItemProps, ToggleGroupMultipleProps, ToggleGroupSingleProps }
-
