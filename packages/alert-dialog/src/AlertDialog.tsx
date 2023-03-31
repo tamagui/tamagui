@@ -32,6 +32,7 @@ import {
   DialogTriggerProps,
   DialogWarningProvider,
   createDialogScope,
+  DialogOverlayFrame,
 } from '@tamagui/dialog'
 import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -113,12 +114,14 @@ const OVERLAY_NAME = 'AlertDialogOverlay'
 
 interface AlertDialogOverlayProps extends DialogOverlayProps {}
 
-const AlertDialogOverlay = React.forwardRef<TamaguiElement, AlertDialogOverlayProps>(
-  (props: ScopedProps<AlertDialogOverlayProps>, forwardedRef) => {
-    const { __scopeAlertDialog, ...overlayProps } = props
-    const dialogScope = useDialogScope(__scopeAlertDialog)
-    return <DialogOverlay {...dialogScope} {...overlayProps} ref={forwardedRef} />
-  }
+const AlertDialogOverlay = DialogOverlayFrame.extractable(
+  React.forwardRef<TamaguiElement, AlertDialogOverlayProps>(
+    (props: ScopedProps<AlertDialogOverlayProps>, forwardedRef) => {
+      const { __scopeAlertDialog, ...overlayProps } = props
+      const dialogScope = useDialogScope(__scopeAlertDialog)
+      return <DialogOverlay {...dialogScope} {...overlayProps} ref={forwardedRef} />
+    }
+  )
 )
 
 AlertDialogOverlay.displayName = OVERLAY_NAME
