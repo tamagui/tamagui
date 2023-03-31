@@ -4,6 +4,7 @@ import { useContext, useEffect, useMemo, useState } from 'react'
 
 import { getConfig } from '../config.js'
 import { isDevTools } from '../constants/isDevTools.js'
+import { isVariable } from '../createVariable.js'
 import { createProxy } from '../helpers/createProxy.js'
 import {
   ThemeManager,
@@ -78,7 +79,7 @@ export const useThemeWithState = (props: ThemeProps) => {
   }
 
   const proxiedTheme = useMemo(() => {
-    return getThemeProxied(changedTheme as any)
+    return getThemeProxied(changedTheme as any, keys.current)
   }, [theme, isNewTheme, name, className, themeManager])
 
   return {
@@ -87,14 +88,15 @@ export const useThemeWithState = (props: ThemeProps) => {
   }
 }
 
-export function getThemeProxied({
-  theme,
-  themeManager,
-  keys,
-}: Partial<ChangedThemeResponse> & {
-  theme: ThemeParsed
-  keys?: React.RefObject<string[]>
-}) {
+export function getThemeProxied(
+  {
+    theme,
+    themeManager,
+  }: Partial<ChangedThemeResponse> & {
+    theme: ThemeParsed
+  },
+  keys?: string[]
+) {
   return createProxy(theme, {
     has(_, key) {
       if (typeof key === 'string') {
@@ -116,26 +118,22 @@ export function getThemeProxied({
       ) {
         return Reflect.get(_, key)
       }
-      const keyString = key
+
       // auto convert variables to plain
-      if (key[0] === '$') {
-        key = key.slice(1)
-      }
+      const keyString = key[0] === '$' ? key.slice(1) : key
+
       const val = themeManager.getValue(key)
-      const currentKeys = keys?.current
 
-      console.log('gettting', key, currentKeys)
-
-      if (val && currentKeys) {
-        debugger
+      if (val && keys) {
+        console.warn('??')
         return new Proxy(val as any, {
           // when they touch the actual value we only track it
           // if its a variable (web), its ignored!
           get(_, subkey) {
-            console.log('getting sub key', subkey)
-
-            if (subkey === 'val' && !currentKeys.includes(keyString)) {
-              currentKeys.push(keyString)
+            console.log('huh', keyString, subkey)
+            if (subkey === 'val' && !keys.includes(keyString)) {
+              console.warn('TRACK', subkey)
+              keys.push(keyString)
             }
             return Reflect.get(val as any, subkey)
           },

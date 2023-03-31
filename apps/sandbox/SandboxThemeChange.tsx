@@ -35,5 +35,7 @@ const SandboxThemeChildStatic = memo(() => {
 })
 
 const SandboxThemeChildDynamic = memo(() => {
-  return <Square debug animation="bouncy" size={100} backgroundColor="$color10" />
+  return (
+    <Square debug="verbose" animation="bouncy" size={100} backgroundColor="$color10" />
+  )
 })
