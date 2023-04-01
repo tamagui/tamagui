@@ -1,3 +1,8 @@
+- slider track - light theme blends in with bg i think
+
+- lets make forms use outline for 2px borders on focusStyle
+  - on native it can just get a darker border but stay 1px
+
 - force fix version
 - move to use-roving-index
 
