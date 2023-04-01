@@ -1,3 +1,6 @@
+- force fix version
+- move to use-roving-index
+
 - WARN  Sending onAnimatedValueUpdate with no listeners registered
 
 - add codesandbox for most components

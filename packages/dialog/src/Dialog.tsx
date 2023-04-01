@@ -239,7 +239,10 @@ DialogPortal.displayName = PORTAL_NAME
 
 const OVERLAY_NAME = 'DialogOverlay'
 
-const DialogOverlayFrame = styled(ThemeableStack, {
+/**
+ * exported for internal use with extractable()
+ */
+export const DialogOverlayFrame = styled(ThemeableStack, {
   name: OVERLAY_NAME,
   backgrounded: true,
   fullscreen: true,
@@ -253,23 +256,25 @@ interface DialogOverlayProps extends YStackProps {
   forceMount?: true
 }
 
-const DialogOverlay = React.forwardRef<TamaguiElement, DialogOverlayProps>(
-  ({ __scopeDialog, ...props }: ScopedProps<DialogOverlayProps>, forwardedRef) => {
-    const portalContext = usePortalContext(OVERLAY_NAME, __scopeDialog)
-    const { forceMount = portalContext.forceMount, ...overlayProps } = props
-    const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
-    const showSheet = useShowDialogSheet(context)
+const DialogOverlay = DialogOverlayFrame.extractable(
+  React.forwardRef<TamaguiElement, DialogOverlayProps>(
+    ({ __scopeDialog, ...props }: ScopedProps<DialogOverlayProps>, forwardedRef) => {
+      const portalContext = usePortalContext(OVERLAY_NAME, __scopeDialog)
+      const { forceMount = portalContext.forceMount, ...overlayProps } = props
+      const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
+      const showSheet = useShowDialogSheet(context)
 
-    if (!forceMount) {
-      if (!context.modal || showSheet) {
-        return null
+      if (!forceMount) {
+        if (!context.modal || showSheet) {
+          return null
+        }
       }
+
+      return <DialogOverlayImpl context={context} {...overlayProps} ref={forwardedRef} />
     }
-
-    return <DialogOverlayImpl context={context} {...overlayProps} ref={forwardedRef} />
-  }
+  ),
+  
 )
-
 DialogOverlay.displayName = OVERLAY_NAME
 
 type DialogOverlayImplProps = GetProps<typeof DialogOverlayFrame> & {

@@ -42,6 +42,8 @@ const nextVersion = `1.${minorVersion}.${patchVersion}`
 
 if (!skipVersion) {
   console.log('Publishing version:', nextVersion, '\n')
+} else {
+  console.log(`Re-publishing ${curVersion}`)
 }
 
 async function run() {
@@ -120,7 +122,8 @@ async function run() {
     await spawnify(`yarn install`)
 
     if (!skipBuild) {
-      await Promise.all([checkDistDirs(), spawnify(`yarn build`)])
+      await spawnify(`yarn build`)
+      await checkDistDirs()
     }
 
     console.log('run checks')
@@ -232,7 +235,7 @@ async function run() {
                 console.log('Already published, skipping')
                 return
               }
-              console.log(`Error publishing!`, `${err.message}`)
+              console.log(`Error publishing!`, `${err}`)
               erroredPackages.push(pkg)
             }
           })

@@ -1,7 +1,8 @@
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { createTamagui } from '../core/src'
+import { createTamagui } from '../web/src'
+import { ThemeManager } from '../web/src/helpers/ThemeManager'
 
 const conf = getDefaultTamaguiConfig()
 

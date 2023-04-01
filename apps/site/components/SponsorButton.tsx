@@ -10,7 +10,7 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
       icon={
         <Heart
           style={{ marginBottom: -1 }}
-          size={props.tiny ? 8 : 10}
+          size={props.tiny ? 12 : 14}
           color="var(--red10)"
         />
       }
@@ -18,7 +18,7 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
       elevation="$3"
       borderWidth={props.tiny ? 0 : 1}
       borderColor="$borderColor"
-      size={props.tiny ? '$2' : '$4'}
+      size={props.tiny ? '$3' : '$4'}
       fontFamily="$silkscreen"
       bc="$color1"
       br="$10"
