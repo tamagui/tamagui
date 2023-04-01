@@ -1,3 +1,6 @@
+- Card unstyled
+- light/dark theme buttons bad colors (contrast + pressStyle borders)
+
 - slider track - light theme blends in with bg i think
 
 - lets make forms use outline for 2px borders on focusStyle

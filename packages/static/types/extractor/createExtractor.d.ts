@@ -1,5 +1,6 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
+import type { TamaguiProjectInfo } from '@tamagui/web';
 import type { ExtractorOptions, ExtractorParseProps, TamaguiOptions } from '../types.js';
 import { cleanupBeforeExit } from './getStaticBindingsForScope.js';
 export type Extractor = ReturnType<typeof createExtractor>;
@@ -9,9 +10,21 @@ export declare function createExtractor({ logger }?: ExtractorOptions): {
         logger: import("../types.js").Logger;
     };
     cleanupBeforeExit: typeof cleanupBeforeExit;
-    loadTamagui: (props: TamaguiOptions) => Promise<any>;
-    loadTamaguiSync: (props: TamaguiOptions) => any;
-    getTamagui(): any;
+    loadTamagui: (props: TamaguiOptions) => Promise<TamaguiProjectInfo>;
+    loadTamaguiSync: (props: TamaguiOptions) => TamaguiProjectInfo;
+    getTamagui(): import("@tamagui/web").TamaguiInternalConfig<import("@tamagui/web").CreateTokens<import("@tamagui/web").VariableVal>, {
+        [key: string]: Partial<import("@tamagui/web").TamaguiBaseTheme> & {
+            [key: string]: import("@tamagui/web").VariableVal;
+        };
+    }, import("@tamagui/web").GenericShorthands, {
+        [key: string]: {
+            [key: string]: string | number;
+        };
+    }, {
+        [key: string]: string | any[] | {
+            [key: string]: any;
+        };
+    }, import("@tamagui/web").GenericFonts> | undefined;
     parseSync: (f: FileOrPath, props: ExtractorParseProps) => {
         styled: number;
         flattened: number;
