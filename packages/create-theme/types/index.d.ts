@@ -3,7 +3,7 @@ export type ThemeMask = Record<string, string | number>;
 export type Palette = string[];
 export type MaskOptions = {
     palette?: Palette;
-    skip?: Partial<ThemeMask>;
+    override?: Partial<ThemeMask>;
     strength?: number;
     max?: number;
     min?: number;

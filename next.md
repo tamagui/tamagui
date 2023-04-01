@@ -1,3 +1,5 @@
+- themes: outlined, contrast
+
 - Card unstyled
 - light/dark theme buttons bad colors (contrast + pressStyle borders)
 

@@ -9,6 +9,8 @@ import {
 
 import { colorTokens, darkColors, lightColors } from './tokens'
 
+console.time('ok')
+
 type ColorName = keyof typeof colorTokens.dark
 
 const lightTransparent = 'rgba(255,255,255,0)'
@@ -72,16 +74,29 @@ const templateShadows = {
   shadowColorFocus: 2,
 }
 
-// we can use subset of our template as a "skip" so it doesn't get adjusted with masks
-const skip = {
+// we can use subset of our template as a "override" so it doesn't get adjusted with masks
+// we want to skip over templateColor + templateShadows
+const toSkip = {
   ...templateColors,
   ...templateShadows,
+}
+
+const override = Object.fromEntries(Object.entries(toSkip).map(([k]) => [k, 0]))
+const overrideShadows = Object.fromEntries(
+  Object.entries(templateShadows).map(([k]) => [k, 0])
+)
+const overrideWithColors = {
+  ...override,
+  color: 0,
+  colorHover: 0,
+  colorFocus: 0,
+  colorPress: 0,
 }
 
 // templates use the palette and specify index
 // negative goes backwards from end so -1 is the last item
 const template = {
-  ...skip,
+  ...toSkip,
   // the background, color, etc keys here work like generics - they make it so you
   // can publish components for others to use without mandating a specific color scale
   // the @tamagui/button Button component looks for `$background`, so you set the
@@ -155,7 +170,7 @@ const masks = {
 
 // default mask options for most uses
 const maskOptions: MaskOptions = {
-  skip,
+  override,
   // avoids the transparent ends
   max: palettes.light.length - 2,
   min: 1,
@@ -217,10 +232,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
     }
   })
 
-  const baseActiveTheme = applyMask(colorThemes.blue, masks.weaker, {
-    ...maskOptions,
-    strength: 4,
-  })
+  const baseActiveTheme = applyMask(inverseTheme, masks.stronger)
 
   const baseSubThemes = {
     ...getAltThemes(theme, inverseTheme, baseActiveTheme),
@@ -235,7 +247,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
   function getAltThemes(theme: SubTheme, inverse: SubTheme, activeTheme?: SubTheme) {
     const maskOptionsAlt = {
       ...maskOptions,
-      skip: templateShadows,
+      override: overrideShadows,
     }
     const alt1 = applyMask(theme, masks.weaker, maskOptionsAlt)
     const alt2 = applyMask(alt1, masks.weaker, maskOptionsAlt)
@@ -252,7 +264,10 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
 
   function getComponentThemes(theme: SubTheme, inverse: SubTheme) {
     const weaker1 = applyMask(theme, masks.weaker, maskOptions)
-    const weaker2 = applyMask(weaker1, masks.weaker, maskOptions)
+    const weaker2 = applyMask(weaker1, masks.weaker, {
+      ...maskOptions,
+      override: overrideWithColors,
+    })
     const stronger1 = applyMask(theme, masks.stronger, maskOptions)
     const inverse1 = applyMask(inverse, masks.weaker, maskOptions)
     const inverse2 = applyMask(inverse1, masks.weaker, maskOptions)
@@ -303,3 +318,5 @@ export const themes = {
 // if (process.env.NODE_ENV === 'development') {
 //   console.log(JSON.stringify(themes).length)
 // }
+
+console.timeEnd('ok')
