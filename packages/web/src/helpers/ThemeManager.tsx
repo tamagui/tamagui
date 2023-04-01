@@ -41,8 +41,9 @@ export class ThemeManager {
     }
     if (!parentManager) {
       if (process.env.NODE_ENV !== 'production') {
-        console.trace()
-        throw new Error(`No parent manager given`)
+        throw new Error(
+          `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions.`
+        )
       }
       throw `❌`
     }
@@ -172,17 +173,10 @@ function getNextThemeClassName(name: string, isInverting = false) {
   return next.replace('light_', '').replace('dark_', '')
 }
 
-const cache = new WeakMap<ThemeProps, [ThemeManager, ThemeManagerState | null]>()
-
 function getState(
   props: ThemeProps,
   parentManager?: ThemeManager | null
 ): ThemeManagerState | null {
-  const cached = cache.get(props)
-  if (cached && cached[0] === parentManager) {
-    return cached[1]
-  }
-
   const themes = getThemes()
 
   if (props.name && props.reset) {
@@ -259,27 +253,24 @@ function getState(
     const found = potentials.find((t) => t in themes)
 
     // eslint-disable-next-line no-console
-    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose')
+    if (process.env.NODE_ENV === 'development' && props.debug)
       console.log('getState found', found, 'from', potentials, 'parentName', parentName)
 
     if (found) {
       // optimization return null if not changed
-      if (found === parentName) {
-        break
-      }
-      result = {
-        name: found,
-        theme: getThemeUnwrapped(themes[found]),
-        className: getNextThemeClassName(found, props.inverse),
-        parentName,
+      if (found !== parentName) {
+        result = {
+          name: found,
+          theme: getThemeUnwrapped(themes[found]),
+          className: getNextThemeClassName(found, props.inverse),
+          parentName,
+        }
       }
       break
     }
   }
 
-  if (parentManager) {
-    cache.set(props, [parentManager, result])
-  }
+  console.log('returning', result)
 
   return result
 }

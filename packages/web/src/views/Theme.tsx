@@ -1,5 +1,13 @@
 import { isWeb } from '@tamagui/constants'
-import { Children, cloneElement, isValidElement, useEffect, useLayoutEffect } from 'react'
+import {
+  Children,
+  cloneElement,
+  isValidElement,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+} from 'react'
 
 import { variableToString } from '../createVariable.js'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
@@ -11,7 +19,8 @@ export function Theme(props: ThemeProps) {
   // @ts-expect-error only for internal views
   if (props.disable) return props.children
   const isRoot = !!props['_isRoot']
-  console.log('render Theme')
+  const id = useId()
+  console.log(`render Theme ${props['debug']} ${id} ${props.name}`)
   const themeState = useChangeThemeEffect(props, isRoot)
   const children = props['data-themeable']
     ? Children.map(props.children, (child) =>
@@ -39,7 +48,14 @@ export function useThemedChildren(
     hasEverThemed.current = true
   }
 
-  if (isNewTheme || hasEverThemed.current || forceClassName || isRoot) {
+  const shouldRenderChildrenWithTheme =
+    isNewTheme || hasEverThemed.current || forceClassName || isRoot
+
+  return useMemo(() => {
+    if (!shouldRenderChildrenWithTheme) {
+      return children
+    }
+
     // be sure to memoize shouldReset to avoid reparenting
     let next = Children.toArray(children)
 
@@ -57,10 +73,6 @@ export function useThemedChildren(
           : child
       })
     }
-
-    useLayoutEffect(() => {
-      console.warn(`changed theme manager`)
-    }, [themeManager])
 
     // tried this but themes css doesn't fully like it
     // if (shouldAttachClassName && options.passPropsToChildren) {
@@ -105,7 +117,5 @@ export function useThemedChildren(
     }
 
     return wrapped
-  }
-
-  return children
+  }, [themeManager, children, theme, isNewTheme, className])
 }

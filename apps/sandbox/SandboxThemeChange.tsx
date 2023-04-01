@@ -4,7 +4,7 @@ import { Button, Square, Theme, YStack } from 'tamagui'
 export function SandboxThemeChange() {
   const [theme, setTheme] = useState('pink' as any)
 
-  console.warn(`🖤 render`)
+  console.warn(`🖤 render --theme ${theme}`)
 
   return (
     <YStack fullscreen ai="center" jc="center" gap="$5">
@@ -15,27 +15,20 @@ export function SandboxThemeChange() {
       >
         Change Theme
       </Button>
-      <Theme name={theme}>
-        {useMemo(
-          () => (
-            <>
-              {/* <SandboxThemeChildStatic /> */}
-              <SandboxThemeChildDynamic />
-            </>
-          ),
-          []
-        )}
+      <Theme debug="THEME" name={theme}>
+        <SandboxThemeChildStatic />
+        <SandboxThemeChildDynamic />
       </Theme>
     </YStack>
   )
 }
 
 const SandboxThemeChildStatic = memo(() => {
-  return <Square debug size={100} backgroundColor="$color10" />
+  return <Square debug="static" size={100} backgroundColor="$color10" />
 })
 
 const SandboxThemeChildDynamic = memo(() => {
   return (
-    <Square debug="verbose" animation="bouncy" size={100} backgroundColor="$color10" />
+    <Square debug="dynamic" animation="bouncy" size={100} backgroundColor="$color10" />
   )
 })
