@@ -391,7 +391,6 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> &
     rovingFocus?: boolean
     dir?: RovingFocusGroupProps['dir']
     loop?: RovingFocusGroupProps['loop']
-    scaleSize?: number
     sizeAdjust?: number
   }
 
@@ -407,7 +406,6 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
         loop = true,
         unstyled = false,
         size: sizeProp = '$true',
-        scaleSize = 0.45,
         sizeAdjust = 0,
         ...toggleGroupProps
       } = props
@@ -421,7 +419,7 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
       const adjustedSize = getVariableValue(
         stepTokenUpOrDown('size', props.size, sizeAdjust)
       )
-      const size = scaleSize ? Math.round(adjustedSize * scaleSize) : adjustedSize
+      const size = Math.round(adjustedSize * 0.45)
 
       return (
         <ToggleGroupContext
