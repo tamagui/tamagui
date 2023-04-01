@@ -532,7 +532,6 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & Group
     rovingFocus?: boolean;
     dir?: RovingFocusGroupProps['dir'];
     loop?: RovingFocusGroupProps['loop'];
-    scaleSize?: number;
     sizeAdjust?: number;
 };
 export { ToggleGroup, createToggleGroupScope };
