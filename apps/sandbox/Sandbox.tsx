@@ -98,8 +98,6 @@ export const Sandbox = () => {
         H1
       </Heading>
 
-      {/* <YStack debug="verbose" w={100} h={100} bc="red" flexBasis={200} /> */}
-
       {/* <Button2 ok debug="verbose">
         hi
       </Button2> */}
