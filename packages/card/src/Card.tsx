@@ -20,9 +20,6 @@ import React, { cloneElement, forwardRef } from 'react'
 
 export const CardFrame = styled(ThemeableStack, {
   name: 'Card',
-  backgroundColor: '$background',
-  position: 'relative',
-  overflow: 'hidden',
 
   variants: {
     size: {
@@ -32,18 +29,24 @@ export const CardFrame = styled(ThemeableStack, {
         }
       },
     },
+
+    unstyled: {
+      false: {
+        backgrounded: true,
+        position: 'relative',
+        overflow: 'hidden',
+        size: '$true',
+      },
+    },
   } as const,
 
   defaultVariants: {
-    size: '$true',
+    unstyled: false,
   },
 })
 
 export const CardHeader = styled(ThemeableStack, {
   name: 'CardHeader',
-  zIndex: 10,
-  backgroundColor: 'transparent',
-  marginBottom: 'auto',
 
   variants: {
     size: {
@@ -53,24 +56,57 @@ export const CardHeader = styled(ThemeableStack, {
         }
       },
     },
+
+    unstyled: {
+      false: {
+        zIndex: 10,
+        marginBottom: 'auto',
+      },
+    },
   } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 export const CardFooter = styled(CardHeader, {
   name: 'CardFooter',
-  zIndex: 5,
-  flexDirection: 'row',
-  marginTop: 'auto',
-  marginBottom: 0,
+
+  variants: {
+    unstyled: {
+      false: {
+        zIndex: 5,
+        flexDirection: 'row',
+        marginTop: 'auto',
+        marginBottom: 0,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 export const CardBackground = styled(ThemeableStack, {
   name: 'CardBackground',
-  zIndex: 0,
-  fullscreen: true,
-  overflow: 'hidden',
-  pointerEvents: 'none',
-  padding: 0,
+
+  variants: {
+    unstyled: {
+      false: {
+        zIndex: 0,
+        fullscreen: true,
+        overflow: 'hidden',
+        pointerEvents: 'none',
+        padding: 0,
+      },
+    },
+  },
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 export type CardHeaderProps = GetProps<typeof CardHeader>
