@@ -17,6 +17,14 @@ const resolve =
   'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
 
 export const studio = async (options: ResolvedOptions) => {
+  process.env.TAMAGUI_TARGET = 'web'
+
+  process.stdout.on('error', function (err) {
+    if (err.code == 'EPIPE') {
+      process.exit(0)
+    }
+  })
+
   const { default: getPort } = await import('get-port')
   const { paths } = options
   const root = dirname(resolve('@takeout/studio/entry'))
@@ -55,9 +63,9 @@ export const studio = async (options: ResolvedOptions) => {
 
   app.disable('x-powered-by')
   app.use(express.static(paths.dotDir, { maxAge: '2h' }))
-  app.use(morgan('tiny'))
+  // app.use(morgan('tiny'))
 
-  app.get('/conf', async (req, res) => {
+  app.get('/conf.json', async (req, res) => {
     const conf = await fs.readJSON(paths.conf)
     res.status(200).json(conf)
   })

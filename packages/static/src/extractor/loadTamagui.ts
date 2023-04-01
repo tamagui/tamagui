@@ -7,8 +7,13 @@ import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { Color, colorLog } from '@tamagui/cli-color'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
-import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/core-node'
 import { createTamagui } from '@tamagui/core-node'
+import type {
+  LoadedComponents,
+  StaticConfigParsed,
+  TamaguiInternalConfig,
+  TamaguiProjectInfo,
+} from '@tamagui/web'
 import esbuild from 'esbuild'
 import { ensureDir, existsSync, removeSync, writeFileSync } from 'fs-extra'
 
@@ -16,26 +21,6 @@ import { SHOULD_DEBUG } from '../constants.js'
 import { getNameToPaths, registerRequire, unregisterRequire } from '../require.js'
 import { babelParse } from './babelParse.js'
 import { bundle } from './bundle.js'
-
-type NameToPaths = {
-  [key: string]: Set<string>
-}
-
-export type LoadedComponents = {
-  moduleName: string
-  nameToInfo: Record<
-    string,
-    {
-      staticConfig: StaticConfigParsed
-    }
-  >
-}
-
-export type TamaguiProjectInfo = {
-  components: LoadedComponents[]
-  tamaguiConfig: TamaguiInternalConfig
-  nameToPaths: NameToPaths
-}
 
 type Props = {
   components: string[]

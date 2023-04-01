@@ -20,8 +20,6 @@ export async function getOptions({
   const dotDir = join(root, '.tamagui')
   const pkgJson = await readJSON(join(root, 'package.json'))
 
-  console.log('host', host)
-
   return {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     root,
