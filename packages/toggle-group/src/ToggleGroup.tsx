@@ -1,14 +1,24 @@
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
+import { getFontSize } from '@tamagui/font-size'
+import { stepTokenUpOrDown } from '@tamagui/get-size'
 import { Group, GroupProps, useGroupItem } from '@tamagui/group'
+import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { RovingFocusGroup, createRovingFocusGroupScope } from '@tamagui/roving-focus'
-import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import { GetProps, SizeTokens, isWeb, styled, withStaticProperties } from '@tamagui/web'
+import {
+  GetProps,
+  SizeTokens,
+  getVariableValue,
+  isWeb,
+  styled,
+  useTheme,
+  withStaticProperties,
+} from '@tamagui/web'
 import React from 'react'
 
-import { Toggle } from './Toggle'
+import { Toggle, ToggleFrame, ToggleProps } from './Toggle'
 
 const TOGGLE_GROUP_NAME = 'ToggleGroup'
 const [createToggleGroupContext, createToggleGroupScope] = createContextScope(
@@ -29,19 +39,19 @@ const [ToggleGroupItemProvider, useToggleGroupItemContext] =
   createToggleGroupContext<ToggleGroupItemContextValue>(TOGGLE_GROUP_NAME)
 const useToggleGroupItemScope = createToggleGroupItemScope()
 
-const ToggleGroupItemFrame = styled(ThemeableStack, {
-  name: TOGGLE_GROUP_ITEM_NAME,
-})
-
 type ToggleGroupItemElement = ToggleGroupItemImplElement
 
-type ToggleGroupItemProps = GetProps<typeof ToggleGroupItemFrame> & {
+type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
   value: string
   id?: string
   disabled?: boolean
   size?: SizeTokens
+  /**
+   * Used to disable passing styles down to children.
+   */
+  disablePassStyles?: boolean
 }
-const ToggleGroupItem = ToggleGroupItemFrame.extractable(
+const ToggleGroupItem = ToggleFrame.extractable(
   React.forwardRef<ToggleGroupItemElement, ToggleGroupItemProps>(
     (props: ScopedProps<ToggleGroupItemProps>, forwardedRef) => {
       const valueContext = useToggleGroupValueContext(
@@ -56,9 +66,33 @@ const ToggleGroupItem = ToggleGroupItemFrame.extractable(
       const rovingFocusGroupScope = useRovingFocusGroupScope(props.__scopeToggleGroup)
       const pressed = valueContext.value.includes(props.value)
       const disabled = context.disabled || props.disabled || false
-      const commonProps = { ...props, pressed, disabled }
       const ref = React.useRef<HTMLDivElement>(null)
       const groupItemProps = useGroupItem({ disabled })
+      const size = props.size ?? context.size
+
+      const sizeProps: Record<string, any> = {
+        width: undefined,
+        height: undefined,
+        padding: getVariableValue(size) * 0.6,
+      }
+      if (props.orientation === 'horizontal')
+        sizeProps.height = getVariableValue(size) * 2.4
+      else sizeProps.width = getVariableValue(size) * 2.4
+
+      const iconSize = (typeof size === 'number' ? size * 0.7 : getFontSize(size)) * 1.2
+
+      const theme = useTheme()
+      const getThemedIcon = useGetThemedIcon({ size: iconSize, color: theme.color })
+
+      const childrens = React.Children.toArray(props.children)
+      const children = childrens.map((child) => {
+        if (props.disablePassStyles || !React.isValidElement(child)) {
+          return child
+        }
+        return getThemedIcon(child)
+      })
+
+      const commonProps = { ...props, pressed, disabled, ...sizeProps, children }
 
       return (
         <ToggleGroupItemProvider scope={__scopeToggleGroup}>
@@ -69,33 +103,20 @@ const ToggleGroupItem = ToggleGroupItemFrame.extractable(
               focusable={!disabled}
               active={pressed}
             >
-              <ToggleGroupItemFrame
+              <ToggleFrame
                 asChild
                 focusable={!disabled}
                 disabled={disabled}
                 ref={ref}
                 {...groupItemProps}
               >
-                <ToggleGroupItemImpl
-                  size={props.size}
-                  {...commonProps}
-                  ref={forwardedRef}
-                />
-              </ToggleGroupItemFrame>
+                <ToggleGroupItemImpl {...commonProps} ref={forwardedRef} />
+              </ToggleFrame>
             </RovingFocusGroup.Item>
           ) : (
-            <ToggleGroupItemFrame
-              asChild
-              focusable={!disabled}
-              disabled={disabled}
-              ref={ref}
-            >
-              <ToggleGroupItemImpl
-                size={props.size}
-                {...commonProps}
-                ref={forwardedRef}
-              />
-            </ToggleGroupItemFrame>
+            <ToggleFrame asChild focusable={!disabled} disabled={disabled} ref={ref}>
+              <ToggleGroupItemImpl {...commonProps} ref={forwardedRef} />
+            </ToggleFrame>
           )}
         </ToggleGroupItemProvider>
       )
@@ -107,9 +128,10 @@ ToggleGroupItem.displayName = TOGGLE_GROUP_ITEM_NAME
 /* -----------------------------------------------------------------------------------------------*/
 
 type ToggleGroupItemImplElement = React.ElementRef<typeof Toggle>
-type ToggleProps = React.ComponentPropsWithoutRef<typeof Toggle>
-interface ToggleGroupItemImplProps
-  extends Omit<ToggleProps, 'defaultPressed' | 'onPressedChange'> {
+type ToggleGroupItemImplProps = Omit<
+  ToggleProps,
+  'defaultPressed' | 'onPressedChange' | 'size'
+> & {
   /**
    * A string value for the toggle group item. All items within a toggle group should use a unique value.
    */
@@ -117,7 +139,7 @@ interface ToggleGroupItemImplProps
   size?: SizeTokens
 }
 
-const ToggleGroupItemImpl = ToggleGroupItemFrame.extractable(
+const ToggleGroupItemImpl = ToggleFrame.extractable(
   React.forwardRef<ToggleGroupItemImplElement, ToggleGroupItemImplProps>(
     (props: ScopedProps<ToggleGroupItemImplProps>, forwardedRef) => {
       const { __scopeToggleGroup, value, ...itemProps } = props
@@ -129,16 +151,11 @@ const ToggleGroupItemImpl = ToggleGroupItemFrame.extractable(
         'aria-pressed': undefined,
       }
       const typeProps = valueContext.type === 'single' ? singleProps : undefined
-      const context = useToggleGroupContext(
-        TOGGLE_GROUP_ITEM_NAME,
-        props.__scopeToggleGroup
-      )
-      const size = props.size ?? context.size
+
       return (
         <Toggle
           {...typeProps}
           {...itemProps}
-          size={size}
           ref={forwardedRef}
           onPressedChange={(pressed) => {
             if (pressed) {
@@ -171,36 +188,36 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
   type: 'multiple'
 }
 
+type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps
+
 const ToggleGroup = withStaticProperties(
-  React.forwardRef<ToggleGroupElement, ToggleGroupSingleProps | ToggleGroupMultipleProps>(
-    (props, forwardedRef) => {
-      const { type, ...toggleGroupProps } = props
+  React.forwardRef<ToggleGroupElement, ToggleGroupProps>((props, forwardedRef) => {
+    const { type, ...toggleGroupProps } = props
 
-      if (!isWeb) {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        React.useEffect(() => {
-          if (!props.id) return
-          return registerFocusable(props.id, {
-            // TODO: would be nice to focus on the first child later - could be done with reforest
-            // for now leaving it empty
-            focus: () => {},
-          })
-        }, [props.id])
-      }
-
-      if (type === 'single') {
-        const singleProps = toggleGroupProps as ToggleGroupImplSingleProps
-        return <ToggleGroupImplSingle {...singleProps} ref={forwardedRef} />
-      }
-
-      if (type === 'multiple') {
-        const multipleProps = toggleGroupProps as ToggleGroupImplMultipleProps
-        return <ToggleGroupImplMultiple {...multipleProps} ref={forwardedRef} />
-      }
-
-      throw new Error(`Missing prop \`type\` expected on \`${TOGGLE_GROUP_NAME}\``)
+    if (!isWeb) {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      React.useEffect(() => {
+        if (!props.id) return
+        return registerFocusable(props.id, {
+          // TODO: would be nice to focus on the first child later - could be done with reforest
+          // for now leaving it empty
+          focus: () => {},
+        })
+      }, [props.id])
     }
-  ),
+
+    if (type === 'single') {
+      const singleProps = toggleGroupProps as ToggleGroupImplSingleProps
+      return <ToggleGroupImplSingle {...singleProps} ref={forwardedRef} />
+    }
+
+    if (type === 'multiple') {
+      const multipleProps = toggleGroupProps as ToggleGroupImplMultipleProps
+      return <ToggleGroupImplMultiple {...multipleProps} ref={forwardedRef} />
+    }
+
+    throw new Error(`Missing prop \`type\` expected on \`${TOGGLE_GROUP_NAME}\``)
+  }),
   {
     Item: ToggleGroupItem,
   }
@@ -352,30 +369,30 @@ const ToggleGroupImplElementFrame = styled(Group, {
       false: {
         backgroundColor: '$background',
       },
-      orientation: {
-        vertical: {
-          flexDirection: 'column',
-          spaceDirection: 'vertical',
-        },
-        horizontal: {
-          flexDirection: 'row',
-          spaceDirection: 'horizontal',
-        },
+    },
+    orientation: {
+      vertical: {
+        flexDirection: 'column',
+        spaceDirection: 'vertical',
+      },
+      horizontal: {
+        flexDirection: 'row',
+        spaceDirection: 'horizontal',
       },
     },
-    defaultVariants: {
-      unstyled: false,
-    },
+  } as const,
+  defaultVariants: {
+    unstyled: false,
   },
 })
 
 type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> &
   GroupProps & {
-    disabled?: boolean
-    orientation?: RovingFocusGroupProps['orientation']
     rovingFocus?: boolean
     dir?: RovingFocusGroupProps['dir']
     loop?: RovingFocusGroupProps['loop']
+    scaleSize?: number
+    sizeAdjust?: number
   }
 
 const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
@@ -388,7 +405,10 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
         dir,
         rovingFocus = true,
         loop = true,
-        size,
+        unstyled = false,
+        size: sizeProp = '$true',
+        scaleSize = 0.45,
+        sizeAdjust = 0,
         ...toggleGroupProps
       } = props
       const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeToggleGroup)
@@ -396,9 +416,13 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
       const commonProps = {
         role: 'togglegroup',
         dir: direction,
-        size,
         ...toggleGroupProps,
       }
+      const adjustedSize = getVariableValue(
+        stepTokenUpOrDown('size', props.size, sizeAdjust)
+      )
+      const size = scaleSize ? Math.round(adjustedSize * scaleSize) : adjustedSize
+
       return (
         <ToggleGroupContext
           scope={__scopeToggleGroup}
@@ -420,6 +444,7 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
                 axis={orientation}
                 ref={forwardedRef}
                 data-disabled={disabled ? '' : undefined}
+                unstyled={unstyled}
                 {...commonProps}
               />
             </RovingFocusGroup>
@@ -429,6 +454,7 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
               ref={forwardedRef}
               orientation={orientation}
               data-disabled={disabled ? '' : undefined}
+              unstyled={unstyled}
               {...commonProps}
             />
           )}
@@ -439,4 +465,9 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
 )
 
 export { ToggleGroup, createToggleGroupScope }
-export type { ToggleGroupItemProps, ToggleGroupMultipleProps, ToggleGroupSingleProps }
+export type {
+  ToggleGroupItemProps,
+  ToggleGroupMultipleProps,
+  ToggleGroupSingleProps,
+  ToggleGroupProps,
+}
