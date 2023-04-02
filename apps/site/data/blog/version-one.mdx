@@ -360,7 +360,7 @@ Tamagui now fully works [with Vite 3 and 4](/docs/guides/vite), both with the co
 
 ```tsx
 import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 
 const tamaguiCompilerConfig = {
@@ -372,10 +372,7 @@ const tamaguiCompilerConfig = {
 export default defineConfig({
   clearScreen: false,
   plugins: [
-    react({
-      fastRefresh: true,
-      jsxPure: true,
-    }),
+    react(),
     tamaguiPlugin(tamaguiCompilerConfig),
     tamaguiExtractPlugin(tamaguiCompilerConfig),
   ],

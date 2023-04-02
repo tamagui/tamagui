@@ -3,6 +3,7 @@ import { AddressInfo } from 'net'
 import { dirname } from 'path'
 
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import viteReactPlugin from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
 import express from 'express'
 import proxy from 'express-http-proxy'
@@ -40,14 +41,16 @@ export const studio = async (options: ResolvedOptions) => {
   const server = await createServer({
     root,
     server: {
-      // open: true,
       host: options.host,
       port: vitePort,
+      hmr: true,
+      cors: true,
     },
     plugins: [
       tamaguiPlugin({
         components: ['tamagui'],
       }),
+      viteReactPlugin(),
     ],
   })
 

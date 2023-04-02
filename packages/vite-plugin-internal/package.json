@@ -21,9 +21,8 @@
     "@tamagui/build": "1.9.22",
     "@tamagui/config-default-node": "1.9.22",
     "@tamagui/vite-plugin": "1.9.22",
-    "@vitejs/plugin-react": "^2.2.0",
     "happy-dom": "^8.1.3",
-    "vitest": "^0.26.3",
+    "vitest": "^0.29.8",
     "vitest-mock-process": "^1.0.4"
   }
 }

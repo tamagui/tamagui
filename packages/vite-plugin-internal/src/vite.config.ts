@@ -2,17 +2,13 @@
 
 // import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
     // viteCommonjs(),
-    react({
-      jsxRuntime: 'automatic',
-      fastRefresh: true,
-      jsxPure: true,
-    }),
+    react({}),
     tamaguiPlugin({
       components: ['tamagui'],
       config: './tamagui.config.ts',
