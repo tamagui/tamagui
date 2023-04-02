@@ -60,7 +60,6 @@ export const CardHeader = styled(ThemeableStack, {
     unstyled: {
       false: {
         zIndex: 10,
-        marginBottom: 'auto',
       },
     },
   } as const,

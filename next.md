@@ -1,3 +1,13 @@
+- lets make .extractable into .extends() and deprecate it
+
+- in card : `if (isTamaguiElement(child) && !child.props.size) {` lets convert to context?
+  - can we come up with a nicer pattern to avoid having to rewrite from styled() to component here? like some sort of standard way to provide context between components?... thinking out loud:
+    - we could have a generic ComponentContext internally in createComponent
+    - we can export a createVariantContext()
+    - `const CardVariants = createVariantContext<{ size: number }>()`
+    - then in Card or any parent you can do `<CardVariants size={} />`
+    - finally, in `styled({ variantContext: CardVariants })`
+
 - themes: outlined, contrast
 
 - Card unstyled
@@ -32,6 +42,8 @@
 - <YStack space="$3" $gtSm={{ space: '$6'}}> not working again
 - // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
 - check why styled() of a HOC is failing:
+
+- Separator orientation="vertical" deprecate boolean `vertical`
 
 const SheetOverlay = styled(Sheet.Overlay, {
   backgroundColor: '$bgoverlay',
