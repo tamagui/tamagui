@@ -13,19 +13,11 @@
   ],
   "scripts": {
     "dev": "cd ../.. && yarn studio",
-    "tauri": "tauri",
+    "tauri": "tauri dev",
     "build:takeout": "tamagui-build",
     "watch:takeout": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
-  },
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
-    }
   },
   "dependencies": {
     "@tamagui/animations-reanimated": "^1.9.22",
