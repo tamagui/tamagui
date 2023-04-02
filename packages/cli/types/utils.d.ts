@@ -1,4 +1,5 @@
-import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/static';
+import type { TamaguiOptions } from '@tamagui/static';
+import type { TamaguiProjectInfo } from '@tamagui/web';
 import { ResolvedOptions, UserOptions } from './types.js';
 export declare function getOptions({ root, tsconfigPath, tamaguiOptions, host, debug, }?: Partial<UserOptions>): Promise<ResolvedOptions>;
 export declare function ensure(condition: boolean, message: string): void;

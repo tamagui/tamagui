@@ -48,7 +48,7 @@ export async function generateTamaguiConfig(options: ResolvedOptions) {
   }
 
   // remove stuff we dont need to send
-  const { Provider, fontsParsed, getCSS, tokensParsed, themeConfig, ...cleanedConfig } =
+  const { fontsParsed, getCSS, tokensParsed, themeConfig, ...cleanedConfig } =
     config.tamaguiConfig
 
   await fs.writeJSON(

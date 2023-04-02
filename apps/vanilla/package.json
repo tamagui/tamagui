@@ -17,6 +17,6 @@
     "@babel/runtime": "^7.19.4",
     "@tsconfig/react-native": "^2.0.2",
     "metro-react-native-babel-preset": "0.73.7",
-    "typescript": "^4.7.4"
+    "typescript": "^5.0.3"
   }
 }
