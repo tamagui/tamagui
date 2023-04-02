@@ -30,9 +30,6 @@ const TAB_LIST_NAME = 'TabsList'
 const TabsListFrame = styled(Group, {
   name: TAB_LIST_NAME,
   focusable: true,
-  // defaultVariants: {
-  //   flexGrow: 0,
-  // },
 })
 
 type TabsListFrameProps = GroupProps
@@ -88,16 +85,19 @@ const TabsTriggerFrame = styled(ThemeableStack, {
   flexWrap: 'nowrap',
   flexDirection: 'row',
   cursor: 'pointer',
+  backgroundColor: '$background',
 
   variants: {
     size: {
       '...size': getButtonSized,
     },
+
     disabled: {
       true: {
         pointerEvents: 'none',
       },
     },
+
     theme: {
       Button: {
         focusable: true,
@@ -126,7 +126,7 @@ const TabsTriggerFrame = styled(ThemeableStack, {
 type TabTriggerLayout = LayoutRectangle
 type InteractionType = 'select' | 'focus' | 'hover'
 
-type TabsTriggerFrameProps = ThemeableStackProps
+type TabsTriggerFrameProps = GetProps<typeof TabsTriggerFrame>
 type TabsTriggerProps = TabsTriggerFrameProps & {
   /** The value for the tabs state to be changed to after activation of the trigger */
   value: string
