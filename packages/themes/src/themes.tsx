@@ -10,7 +10,7 @@ import {
 
 import { colorTokens, darkColors, lightColors } from './tokens'
 
-console.time('ok')
+console.time('createThemes()')
 
 type ColorName = keyof typeof colorTokens.dark
 
@@ -316,4 +316,4 @@ export const themes = {
 //   console.log(JSON.stringify(themes).length)
 // }
 
-console.timeEnd('ok')
+console.timeEnd('createThemes()')
