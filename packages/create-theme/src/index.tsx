@@ -88,8 +88,9 @@ export const createShiftMask = ({ inverse }: { inverse?: boolean } = {}) => {
     for (const [key, value] of values) {
       if (typeof value === 'string') continue
       if (typeof override?.[key] === 'number') {
-        const overrideVal = override[key] as number
-        out[key] = value + overrideVal
+        const overrideShift = override[key] as number
+        console.log('override it', key, overrideShift, value)
+        out[key] = value + overrideShift
         continue
       }
       const isPositive = value === 0 ? !isMinusZero(value) : value >= 0

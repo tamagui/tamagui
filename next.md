@@ -1,3 +1,24 @@
+- site polish: 
+  - make the text selection match the theme
+  - make the link underline match the theme
+
+
+
+- tabs 
+  - advanced demo is weird it has a bg and a separator
+  - prevSelectionIndicatorLayout should be state not ref to avoid concurrency issues
+  - disablePassBorderRadius feels like a weird thing to need by default
+  - IntentIndicator lowercase
+    - maybe make all state go into one useState({ intentAt, activeAt, tab })
+  - Trigger => Item
+  - TabsTriggerFrame variant theme Button is weird does that do anythig?
+
+- website toggle for css/spring doesn't animate? we can keep it outside of the provider ideally so its always spring
+
+
+- <Select native> (web)
+- unstyled for Select, Tabs
+
 - lets make .extractable into .extends() and deprecate it
 
 - in card : `if (isTamaguiElement(child) && !child.props.size) {` lets convert to context?
@@ -22,6 +43,9 @@
 - move to use-roving-index
 
 - WARN  Sending onAnimatedValueUpdate with no listeners registered
+
+- add JSDoc help with links to docs for components
+  - also can we somehow make intellisense sort the props in a way we want by default? itd be ncie to have style props after the others
 
 - add codesandbox for most components
 
