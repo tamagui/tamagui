@@ -230,7 +230,6 @@ export const Switch = withStaticProperties(
               data-state={getState(checked)}
               data-disabled={disabled ? '' : undefined}
               disabled={disabled}
-              theme={checked ? 'active' : null}
               themeShallow
               // @ts-ignore
               tabIndex={disabled ? undefined : 0}

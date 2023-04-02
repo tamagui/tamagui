@@ -232,10 +232,8 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
     }
   })
 
-  const baseActiveTheme = applyMask(inverseTheme, masks.stronger)
-
   const baseSubThemes = {
-    ...getAltThemes(theme, inverseTheme, baseActiveTheme),
+    ...getAltThemes(theme, inverseTheme, inverseTheme),
     ...getComponentThemes(theme, inverseTheme),
   }
 
@@ -251,12 +249,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
     }
     const alt1 = applyMask(theme, masks.weaker, maskOptionsAlt)
     const alt2 = applyMask(alt1, masks.weaker, maskOptionsAlt)
-    const active =
-      activeTheme ??
-      applyMask(theme, masks.weaker, {
-        ...maskOptions,
-        strength: 4,
-      })
+    const active = activeTheme ?? inverse
     return addChildren({ alt1, alt2, active }, (_, subTheme) => {
       return getComponentThemes(subTheme, subTheme === inverse ? theme : inverse)
     })
@@ -286,6 +279,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
           borderColorPress: weaker1.borderColorPress,
           borderColorFocus: weaker1.borderColorFocus,
         }
+
     return {
       Card: weaker1,
       Button: weaker2,
