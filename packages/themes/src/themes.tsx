@@ -5,6 +5,7 @@ import {
   createStrengthenMask,
   createTheme,
   createWeakenMask,
+  skipMask,
 } from '@tamagui/create-theme'
 
 import { colorTokens, darkColors, lightColors } from './tokens'
@@ -164,6 +165,7 @@ const baseThemes: {
 }
 
 const masks = {
+  skip: skipMask,
   weaker: createWeakenMask(),
   stronger: createStrengthenMask(),
 }
@@ -171,6 +173,7 @@ const masks = {
 // default mask options for most uses
 const maskOptions: MaskOptions = {
   override,
+  skip: toSkip,
   // avoids the transparent ends
   max: palettes.light.length - 2,
   min: 1,
@@ -273,7 +276,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
           borderColorFocus: weaker1.borderColorFocus,
         }
       : {
-          ...theme,
+          ...applyMask(theme, masks.skip, maskOptions),
           borderColor: weaker1.borderColor,
           borderColorHover: weaker1.borderColorHover,
           borderColorPress: weaker1.borderColorPress,

@@ -4,6 +4,7 @@ export type Palette = string[];
 export type MaskOptions = {
     palette?: Palette;
     override?: Partial<ThemeMask>;
+    skip?: Partial<ThemeMask>;
     strength?: number;
     max?: number;
     min?: number;
@@ -26,6 +27,7 @@ export declare function addChildren<Themes extends {
 }, GetChildren extends ChildGetter<keyof Themes, Themes[keyof Themes]>>(themes: Themes, getChildren: GetChildren): Themes & {
     [key in SubThemeKeys<keyof Themes, keyof ReturnType<GetChildren>>]: Themes[keyof Themes];
 };
+export declare const skipMask: CreateMask;
 export declare const createShiftMask: ({ inverse }?: {
     inverse?: boolean | undefined;
 }) => CreateMask;

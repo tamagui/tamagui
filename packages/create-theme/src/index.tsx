@@ -6,6 +6,7 @@ export type Palette = string[]
 export type MaskOptions = {
   palette?: Palette
   override?: Partial<ThemeMask>
+  skip?: Partial<ThemeMask>
   strength?: number
   max?: number
   min?: number
@@ -80,8 +81,16 @@ export function addChildren<
   return out as any
 }
 
+export const skipMask: CreateMask = (template, { skip }) => {
+  if (!skip) return template
+  return Object.fromEntries(
+    Object.entries(template).filter(([k]) => !(k in skip))
+  ) as typeof template
+}
+
 export const createShiftMask = ({ inverse }: { inverse?: boolean } = {}) => {
-  return ((template, { override, max: maxIn, palette, min = 0, strength = 1 }) => {
+  return ((template, opts) => {
+    const { override, max: maxIn, palette, min = 0, strength = 1 } = opts
     const values = Object.entries(template)
     const max = maxIn ?? (palette ? Object.values(palette).length - 1 : Infinity)
     const out = {}
@@ -102,7 +111,8 @@ export const createShiftMask = ({ inverse }: { inverse?: boolean } = {}) => {
 
       out[key] = clamped
     }
-    return out as typeof template
+
+    return skipMask(out, opts) as typeof template
   }) as CreateMask
 }
 

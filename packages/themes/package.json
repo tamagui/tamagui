@@ -11,7 +11,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
+    "generate": "node -r esbuild-register ./src/generate.ts",
+    "build": "tamagui-build && yarn generate",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
@@ -20,6 +21,11 @@
   },
   "exports": {
     "./package.json": "./package.json",
+    "./generated.json": {
+      "types": "./generated.d.ts",
+      "import": "./generated.json",
+      "require": "./generated.json"
+    },
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
