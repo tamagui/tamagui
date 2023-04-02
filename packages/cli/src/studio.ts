@@ -7,7 +7,6 @@ import chalk from 'chalk'
 import express from 'express'
 import proxy from 'express-http-proxy'
 import fs from 'fs-extra'
-import morgan from 'morgan'
 import { createServer } from 'vite'
 
 import { watchTamaguiConfig } from './tamaguiConfigUtils.js'

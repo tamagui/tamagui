@@ -36,6 +36,7 @@
     "@callstack/repack-debugger-app": "^1.0.0",
     "@fastify/sensible": "^4.1.0",
     "@fastify/static": "^5.0.2",
+    "@takeout/studio": "1.5.24",
     "@tamagui/build": "1.9.22",
     "@tamagui/static": "1.9.22",
     "@tamagui/vite-plugin": "1.9.22",
@@ -70,8 +71,5 @@
     "vite": "^4.0.4",
     "ws": "^8.7.0",
     "zx": "^7.1.1"
-  },
-  "devDependencies": {
-    "@takeout/studio": "1.5.24"
   }
 }
