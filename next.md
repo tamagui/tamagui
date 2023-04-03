@@ -1,52 +1,52 @@
 Ali:
 
-- Studio
-  - Bring back next saas stuff
-  - Sponsor => Github auth Account
-  - Web Filesystemapi to access to folder
-  - Host on vercel
-  - plugins automatically watch and build
-    - babel-plugin, webpack-loader, vite all share @tamagui/static
-      - @tamagui/static just needs to add a call to the watch that studio.ts uses
-    - if weird or hard:
-      - `tama studio` comment out and instead
-        - `tama studio --serve` add flag and hide vite stuff behind there
-        - `tama studio` just builds once
-        - `tama studio --watch` watches
+- [ ] Studio
+  - [x] Bring back next saas stuff
+  - [ ] Sponsor => Github auth Account
+  - [ ] Web Filesystemapi to access to folder
+  - [ ] Host on vercel
+  - [ ] plugins automatically watch and build
+    - [ ] babel-plugin, webpack-loader, vite all share @tamagui/static
+      - [ ] @tamagui/static just needs to add a call to the watch that studio.ts uses
+    - [ ] if weird or hard:
+      - [ ] `tama studio` comment out and instead
+        - [ ] `tama studio --serve` add flag and hide vite stuff behind there
+        - [ ] `tama studio` just builds once
+        - [ ] `tama studio --watch` watches
 
-- check if bug:
-  - one shouldn't work <YStack onPress><Pressable onPress /></YStack>
-  - should work <YStack><Pressable onPress /></YStack>
-- document keyboard avoiding view in `Sheet.mdx`
-- input bug 
-  - https://discord.com/channels/909986013848412191/1091749199378387065/1091909256023904377
-- Toasts starter
-- Studio get running
-- RadioGroup needs a press stlye color for the indicator
-- @tamagui/change-animation-driver document
-- Switch for animation driver on website doesn't animate
-  - lets keep it as a spring
-- Disable warning ENV + configuration.md docs
-- lets make forms use outline for 2px borders on focusStyle
-  - on native it can stay 1px
-  - (nate) make focusStyle border darker
-- WARN  Sending onAnimatedValueUpdate with no listeners registered
-- <YStack space="$3" $gtSm={{ space: '$6'}}> not working again (likely fixed)
-- bezier on css animations
-- tabs 
-  - advanced demo is weird it has a bg and a separator
-  - prevSelectionIndicatorLayout should be state not ref to avoid concurrency issues
-  - disablePassBorderRadius feels like a weird thing to need by default
-  - IntentIndicator lowercase
-    - maybe make all state go into one useState({ intentAt, activeAt, tab })
-  - Trigger => Tab (deprecate)
-  - TabsTriggerFrame variant theme Button is weird does that do anythig?
-- lets make Card.extractable into Card.stylable() and deprecate it
-  - and document on styled() page
-- Card unstyled
-- <Select native> (web)
-- unstyled for Select, Tabs
-- go through the docs and remove shorthands - use full forms
+- [ ] check if bug:
+  - [ ] one shouldn't work <YStack onPress><Pressable onPress /></YStack>
+  - [ ] should work <YStack><Pressable onPress /></YStack>
+- [ ] document keyboard avoiding view in `Sheet.mdx`
+- [ ] input bug 
+  - [ ] https://discord.com/channels/909986013848412191/1091749199378387065/1091909256023904377
+- [ ] Toasts starter
+- [ ] Studio get running
+- [ ] RadioGroup needs a press style color for the indicator
+- [ ] @tamagui/change-animation-driver document
+- [x] Switch for animation driver on website doesn't animate
+  - [ ] lets keep it as a spring
+- [ ] Disable warning ENV + configuration.md docs
+- [ ] lets make forms use outline for 2px borders on focusStyle
+  - [ ] on native it can stay 1px
+  - [ ] (nate) make focusStyle border darker
+- [ ] WARN  Sending onAnimatedValueUpdate with no listeners registered
+- [ ] <YStack space="$3" $gtSm={{ space: '$6'}}> not working again (likely fixed)
+- [ ] bezier on css animations
+- [ ] tabs 
+  - [ ] advanced demo is weird it has a bg and a separator
+  - [ ] prevSelectionIndicatorLayout should be state not ref to avoid concurrency issues
+  - [ ] disablePassBorderRadius feels like a weird thing to need by default
+  - [ ] IntentIndicator lowercase
+    - [ ] maybe make all state go into one useState({ intentAt, activeAt, tab })
+  - [ ] Trigger => Tab (deprecate)
+  - [ ] TabsTriggerFrame variant theme Button is weird does that do anythig?
+- [ ] lets make Card.extractable into Card.stylable() and deprecate it
+  - [ ] and document on styled() page
+- [ ] Card unstyled
+- [ ] <Select native> (web)
+- [ ] unstyled for Select, Tabs
+- [ ] go through the docs and remove shorthands - [ ] use full forms
 
 ---
 
