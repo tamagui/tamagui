@@ -1,27 +1,61 @@
-- RadioGroup needs a press stlye color for the indicator
+Ali:
 
-- site polish: 
-  - make the text selection match the theme
-  - make the link underline match the theme
+- Studio
+  - Sponsor => Github auth Account
+  - Web Filesystemapi to access to folder
+
+  - Github sponsor => access to repo
+  - Repo publish private cli + studio packages
+  - Build .app tauri
+  - test publishing under github
 
 
-
+- check if bug:
+  - one shouldn't work <YStack onPress><Pressable onPress /></YStack>
+  - should work <YStack><Pressable onPress /></YStack>
+- input bug 
+  - https://discord.com/channels/909986013848412191/1091749199378387065/1091909256023904377
+- Toasts starter
+- Studio get running
+- @tamagui/change-animation-driver document
+- Switch for animation driver on website doesn't animate
+  - lets keep it as a spring
+- Disable warning ENV + configuration.md docs
+- lets make forms use outline for 2px borders on focusStyle
+  - on native it can stay 1px
+  - (nate) make focusStyle border darker
+- WARN  Sending onAnimatedValueUpdate with no listeners registered
+- <YStack space="$3" $gtSm={{ space: '$6'}}> not working again (likely fixed)
 - tabs 
   - advanced demo is weird it has a bg and a separator
   - prevSelectionIndicatorLayout should be state not ref to avoid concurrency issues
   - disablePassBorderRadius feels like a weird thing to need by default
   - IntentIndicator lowercase
     - maybe make all state go into one useState({ intentAt, activeAt, tab })
-  - Trigger => Item
+  - Trigger => Tab (deprecate)
   - TabsTriggerFrame variant theme Button is weird does that do anythig?
-
-- website toggle for css/spring doesn't animate? we can keep it outside of the provider ideally so its always spring
-
-
+- lets make Card.extractable into Card.stylable() and deprecate it
+  - and document on styled() page
+- Card unstyled
 - <Select native> (web)
 - unstyled for Select, Tabs
 
-- lets make .extractable into .extends() and deprecate it
+---
+
+Nate:
+
+- refactor getSplitStyles to share getSubStyle / logic with main style logic
+
+---
+
+- RadioGroup needs a press stlye color for the indicator
+
+- site polish: 
+  - make the text selection match the theme
+  - make the link underline match the theme
+
+- website toggle for css/spring doesn't animate? we can keep it outside of the provider ideally so its always spring
+
 
 - in card : `if (isTamaguiElement(child) && !child.props.size) {` lets convert to context?
   - can we come up with a nicer pattern to avoid having to rewrite from styled() to component here? like some sort of standard way to provide context between components?... thinking out loud:
@@ -31,28 +65,39 @@
     - then in Card or any parent you can do `<CardVariants size={} />`
     - finally, in `styled({ variantContext: CardVariants })`
 
+    <CardVariants.Provider size="$10">
+      <Card />
+    </CardVariants.Provider>
+
+    .for_Card.size_10 .is_Card { ... }
+
+    <Variants skeleton>
+      <Card />
+    </Variants>
+
+    variants: {
+      skeleton: {
+        true: {
+          beforeStyle: [
+            {
+              background: 'grey',
+            }
+          ]
+        }
+      }
+    }
+
 - themes: outlined, contrast
 
-- Card unstyled
+
 - light/dark theme buttons bad colors (contrast + pressStyle borders)
 
 - slider track - light theme blends in with bg i think
-
-- lets make forms use outline for 2px borders on focusStyle
-  - on native it can just get a darker border but stay 1px
-
-- force fix version
-- move to use-roving-index
-
-- WARN  Sending onAnimatedValueUpdate with no listeners registered
 
 - add JSDoc help with links to docs for components
   - also can we somehow make intellisense sort the props in a way we want by default? itd be ncie to have style props after the others
 
 - add codesandbox for most components
-
-- @tamagui/change-animation-driver
-  - would be good for the website to show and test animations across all drivers
 
 - https://github.com/tamagui/tamagui/issues/568
 - instead of proxying we could just merge all themes on creation with their parents?
@@ -65,7 +110,6 @@
 - add Themes page in docs under Theme, change Theme => Design System
 - move packages to have unstyled
 - move packages from /core to /web
-- <YStack space="$3" $gtSm={{ space: '$6'}}> not working again
 - // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
 - check why styled() of a HOC is failing:
 
