@@ -43,8 +43,8 @@ For native support on mobile, run `yarn add burnt` to add `burnt`, then rebuild 
 To display the toast natively, you should either pass an array of native platforms (`native: ["ios", "web"]`), a single platform or `true` for all platforms.
 
 ```tsx
-import { Button } from '@tamagui/button'
-import { Toast, ToastProvider, ToastImperativeProvider, useToast } from '@tamagui/toast'
+import { Button } from 'tamagui' // or @tamagui/button
+import { Toast, ToastProvider, ToastImperativeProvider, useToast } from 'tamagui' // or @tamagui/toast
 
 export default () => (
   <ToastProvider>

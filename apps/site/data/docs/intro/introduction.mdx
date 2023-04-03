@@ -15,7 +15,7 @@ The highest level part of Tamagui is `tamagui` itself, a complete UI kit built o
 After [configuring](/docs/core/configuration), use `@tamagui/core` as simply as:
 
 ```tsx
-import { Stack, Text } from '@tamagui/core'
+import { Stack, Text } from 'tamagui' // or '@tamagui/core'
 
 export const App = () => (
   <Stack backgroundColor="red" borderRadius={10}>
@@ -28,7 +28,7 @@ Core also includes a `styled` utility with a `variants` field that is a very qui
 props by letting you quickly type both the key and the value of the prop you expect:
 
 ```tsx
-import { Stack, Theme, styled } from '@tamagui/core'
+import { Stack, Theme, styled } from 'tamagui' // or '@tamagui/core'
 
 export const AvatarCircle = styled(Stack, {
   // use direct values
@@ -71,7 +71,7 @@ Variants can also take functions to catch either all values or specific types of
 You can nest styled components multiple times:
 
 ```tsx
-import { styled, Stack } from '@tamagui/core'
+import { styled, Stack } from 'tamagui' // or '@tamagui/core'
 
 const const SizedHorizontal = styled(Stack, {
   variants: {
@@ -106,7 +106,7 @@ const const SizedButton = styled(SizedHorizontal, {
 Tamagui has the nice feature of fully-deterministic rendering based on the order of their definition, where the last key of the style object wins. This works both on props and styled() calls:
 
 ```tsx
-import { styled } from '@tamagui/core'
+import { styled } from 'tamagui' // or '@tamagui/core'
 
 import { SizedButton } from './example-above'
 
