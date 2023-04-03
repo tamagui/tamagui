@@ -177,18 +177,15 @@ const maskOptions: MaskOptions = {
   min: 1,
 }
 
-const allThemes = addChildren(baseThemes, (name, theme) => {
-  const isLight = name === 'light'
-  const inverseName = isLight ? 'dark' : 'light'
-  const inverseTheme = baseThemes[inverseName]
-  const transparent = (hsl: string, opacity = 0) =>
-    hsl.replace(`%)`, `%, ${opacity})`).replace(`hsl(`, `hsla(`)
+const transparent = (hsl: string, opacity = 0) =>
+  hsl.replace(`%)`, `%, ${opacity})`).replace(`hsl(`, `hsla(`)
 
-  // setup colorThemes and their inverses
-  const [colorThemes, inverseColorThemes] = [
-    colorTokens[name],
-    colorTokens[inverseName],
-  ].map((colorSet) => {
+// setup colorThemes and their inverses
+const [lightColorThemes, darkColorThemes] = [colorTokens.light, colorTokens.dark].map(
+  (colorSet, i) => {
+    const isLight = i === 0
+    const theme = baseThemes[isLight ? 'light' : 'dark']
+
     return Object.fromEntries(
       Object.keys(colorSet).map((color) => {
         const colorPalette = Object.values(colorSet[color]) as string[]
@@ -207,6 +204,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
           theme.color,
           transparent(colorPalette[colorPalette.length - 1]),
         ]
+
         const colorTheme = createTheme(
           palette,
           isLight
@@ -220,90 +218,101 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
               }
             : darkTemplate
         )
+
         return [color, colorTheme]
       })
     ) as Record<ColorName, SubTheme>
-  })
+  }
+)
+
+const allThemes = addChildren(baseThemes, (name, theme) => {
+  const isLight = name === 'light'
+  const inverseName = isLight ? 'dark' : 'light'
+  const inverseTheme = baseThemes[inverseName]
+  const colorThemes = isLight ? lightColorThemes : darkColorThemes
+  const inverseColorThemes = isLight ? darkColorThemes : lightColorThemes
 
   const allColorThemes = addChildren(colorThemes, (colorName, colorTheme) => {
     const inverse = inverseColorThemes[colorName]
     return {
-      ...getAltThemes(colorTheme, inverse, null, colorName),
-      ...getComponentThemes(colorTheme, inverse),
+      ...getAltThemes(colorTheme, inverse, isLight),
+      ...getComponentThemes(colorTheme, inverse, isLight),
     }
   })
 
   const baseSubThemes = {
-    ...getAltThemes(theme, inverseTheme, inverseTheme),
-    ...getComponentThemes(theme, inverseTheme),
+    ...getAltThemes(theme, inverseTheme, isLight, inverseTheme),
+    ...getComponentThemes(theme, inverseTheme, isLight),
   }
 
   return {
     ...baseSubThemes,
     ...allColorThemes,
   }
-
-  function getAltThemes(theme: SubTheme, inverse: SubTheme, activeTheme?: SubTheme, x) {
-    const maskOptionsAlt = {
-      ...maskOptions,
-      override: overrideShadows,
-    }
-    const alt1 = applyMask(theme, masks.weaker, maskOptionsAlt)
-    const alt2 = applyMask(alt1, masks.weaker, maskOptionsAlt)
-    const active = activeTheme ?? inverse
-    if (x === 'red') {
-      debugger
-    }
-    return addChildren({ alt1, alt2, active }, (_, subTheme) => {
-      return getComponentThemes(subTheme, subTheme === inverse ? theme : inverse)
-    })
-  }
-
-  function getComponentThemes(theme: SubTheme, inverse: SubTheme) {
-    const weaker1 = applyMask(theme, masks.weaker, maskOptions)
-    const weaker2 = applyMask(weaker1, masks.weaker, {
-      ...maskOptions,
-      override: overrideWithColors,
-    })
-    const stronger1 = applyMask(theme, masks.stronger, maskOptions)
-    const inverse1 = applyMask(inverse, masks.weaker, maskOptions)
-    const inverse2 = applyMask(inverse1, masks.weaker, maskOptions)
-    const strongerBorderLighterBackground: SubTheme = isLight
-      ? {
-          ...stronger1,
-          borderColor: weaker1.borderColor,
-          borderColorHover: weaker1.borderColorHover,
-          borderColorPress: weaker1.borderColorPress,
-          borderColorFocus: weaker1.borderColorFocus,
-        }
-      : {
-          ...applyMask(theme, masks.skip, maskOptions),
-          borderColor: weaker1.borderColor,
-          borderColorHover: weaker1.borderColorHover,
-          borderColorPress: weaker1.borderColorPress,
-          borderColorFocus: weaker1.borderColorFocus,
-        }
-
-    return {
-      Card: weaker1,
-      Button: weaker2,
-      Checkbox: weaker2,
-      DrawerFrame: weaker1,
-      SliderTrack: stronger1,
-      SliderTrackActive: weaker2,
-      SliderThumb: inverse1,
-      Progress: weaker1,
-      ProgressIndicator: inverse,
-      Switch: weaker2,
-      SwitchThumb: inverse2,
-      TooltipArrow: weaker1,
-      TooltipContent: weaker2,
-      Input: strongerBorderLighterBackground,
-      TextArea: strongerBorderLighterBackground,
-      Tooltip: inverse1,
-    }
-  }
 })
+
+function getAltThemes(
+  theme: SubTheme,
+  inverse: SubTheme,
+  isLight: boolean,
+  activeTheme?: SubTheme
+) {
+  const maskOptionsAlt = {
+    ...maskOptions,
+    override: overrideShadows,
+  }
+  const alt1 = applyMask(theme, masks.weaker, maskOptionsAlt)
+  const alt2 = applyMask(alt1, masks.weaker, maskOptionsAlt)
+  const active = activeTheme ?? inverse
+  return addChildren({ alt1, alt2, active }, (_, subTheme) => {
+    return getComponentThemes(subTheme, subTheme === inverse ? theme : inverse, isLight)
+  })
+}
+
+function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean) {
+  const weaker1 = applyMask(theme, masks.weaker, maskOptions)
+  const weaker2 = applyMask(weaker1, masks.weaker, {
+    ...maskOptions,
+    override: overrideWithColors,
+  })
+  const stronger1 = applyMask(theme, masks.stronger, maskOptions)
+  const inverse1 = applyMask(inverse, masks.weaker, maskOptions)
+  const inverse2 = applyMask(inverse1, masks.weaker, maskOptions)
+  const strongerBorderLighterBackground: SubTheme = isLight
+    ? {
+        ...stronger1,
+        borderColor: weaker1.borderColor,
+        borderColorHover: weaker1.borderColorHover,
+        borderColorPress: weaker1.borderColorPress,
+        borderColorFocus: weaker1.borderColorFocus,
+      }
+    : {
+        ...applyMask(theme, masks.skip, maskOptions),
+        borderColor: weaker1.borderColor,
+        borderColorHover: weaker1.borderColorHover,
+        borderColorPress: weaker1.borderColorPress,
+        borderColorFocus: weaker1.borderColorFocus,
+      }
+
+  return {
+    Card: weaker1,
+    Button: weaker2,
+    Checkbox: weaker2,
+    DrawerFrame: weaker1,
+    SliderTrack: stronger1,
+    SliderTrackActive: weaker2,
+    SliderThumb: inverse1,
+    Progress: weaker1,
+    ProgressIndicator: inverse,
+    Switch: weaker2,
+    SwitchThumb: inverse2,
+    TooltipArrow: weaker1,
+    TooltipContent: weaker2,
+    Input: strongerBorderLighterBackground,
+    TextArea: strongerBorderLighterBackground,
+    Tooltip: inverse1,
+  }
+}
 
 export const themes = {
   ...allThemes,
