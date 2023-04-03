@@ -1,11 +1,3 @@
-import { Text, Stack } from 'tamagui'
-import { Link } from 'expo-router'
+import { HomeScreen } from 'app/features/home/screen'
 
-export default function App() {
-  return (
-    <Stack padding={50}>
-      <Text>This is another index.ts</Text>
-      <Link href="/home">Go to Home</Link>
-    </Stack>
-  )
-}
+export default HomeScreen
