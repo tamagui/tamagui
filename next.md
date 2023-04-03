@@ -22,10 +22,10 @@ Ali:
   - [ ] https://discord.com/channels/909986013848412191/1091749199378387065/1091909256023904377
 - [ ] Toasts starter
 - [ ] Studio get running
-- [ ] RadioGroup needs a press style color for the indicator
+- [x] RadioGroup needs a press style color for the indicator
 - [ ] @tamagui/change-animation-driver document
 - [x] Switch for animation driver on website doesn't animate
-  - [ ] lets keep it as a spring
+  - [x] lets keep it as a spring
 - [ ] Disable warning ENV + configuration.md docs
 - [ ] lets make forms use outline for 2px borders on focusStyle
   - [ ] on native it can stay 1px
@@ -37,16 +37,21 @@ Ali:
   - [ ] advanced demo is weird it has a bg and a separator
   - [ ] prevSelectionIndicatorLayout should be state not ref to avoid concurrency issues
   - [ ] disablePassBorderRadius feels like a weird thing to need by default
-  - [ ] IntentIndicator lowercase
-    - [ ] maybe make all state go into one useState({ intentAt, activeAt, tab })
-  - [ ] Trigger => Tab (deprecate)
-  - [ ] TabsTriggerFrame variant theme Button is weird does that do anythig?
+    - change Group's disablePassBorderRadius to something else - perhaps the negation, passBorderRadius? i'm not sure. what do you think about this @natew 
+    alternatively we could have disablePassBorderRadius default to true only on Tabs.List. but then overriding it would feel awkward (having to pass disablePassBorderRadius={false})
+  - [x] IntentIndicator lowercase
+    - [x] maybe make all state go into one useState({ intentAt, activeAt, tab })
+  - [x] Trigger => Tab (deprecate)
+  - [x] TabsTriggerFrame variant theme Button is weird does that do anythig?
 - [ ] lets make Card.extractable into Card.stylable() and deprecate it
   - [ ] and document on styled() page
 - [ ] Card unstyled
 - [ ] <Select native> (web)
-- [ ] unstyled for Select, Tabs
-- [ ] go through the docs and remove shorthands - [ ] use full forms
+- [ ] unstyled for 
+  - [ ] Select
+  - [x] Tabs
+- [ ] go through the docs and remove shorthands - use full forms
+- [x] go through the docs and change usage imports to tamagui instead of other packages (e.g. @tamagui/stack -> tamagui)
 
 ---
 
