@@ -1,16 +1,20 @@
-import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import { UserProvider } from '@supabase/supabase-auth-helpers/react'
+import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { MyUserContextProvider } from 'hooks/useUser'
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { useState } from 'react'
 
 export function getUserLayout(page) {
   return <UserLayout>{page}</UserLayout>
 }
 
 function UserLayout({ children }) {
-  return children
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient())
+  
   return (
-    <UserProvider supabaseClient={supabaseClient}>
-      <MyUserContextProvider supabaseClient={supabaseClient}>{children}</MyUserContextProvider>
-    </UserProvider>
+    <SessionContextProvider supabaseClient={supabaseClient}>
+      <MyUserContextProvider supabaseClient={supabaseClient}>
+        {children}
+      </MyUserContextProvider>
+    </SessionContextProvider>
   )
 }

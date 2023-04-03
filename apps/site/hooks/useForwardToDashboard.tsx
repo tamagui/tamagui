@@ -1,9 +1,9 @@
-import { useUser } from '@supabase/supabase-auth-helpers/react'
+import { useUser } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
 export function useForwardToDashboard() {
-  const { user } = useUser()
+  const user = useUser()
   const router = useRouter()
 
   useEffect(() => {
