@@ -11,7 +11,7 @@ You can use `@tamagui/config` a totally complete config out of the box, the same
 
 ```tsx
 import { config } from '@tamagui/config'
-import { createTamagui, setupReactNative } from '@tamagui/core'
+import { createTamagui, setupReactNative } from 'tamagui' // or '@tamagui/core'
 import * as ReactNative from 'react-native'
 
 // if using only @tamagui/core with `react-native` components
@@ -38,7 +38,7 @@ export default appConfig
 Another quick start that gives a bit more customization is using `@tamagui/shorthands` for our preset shorthands, and `@tamagui/themes` for the same themes and tokens used for this site. Then you'll just want to bring along any fonts, media queries, and animations you need.
 
 ```tsx
-import { createTamagui } from '@tamagui/core'
+import { createTamagui } from 'tamagui' // or '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/themes'
 
@@ -76,7 +76,7 @@ And if you want even shorter, like this:
 You can achieve that by writing variants (see [an example at bottom of page](#example-of-shorthands-an-variants)).
 
 ```tsx
-import { createFont, createTamagui, createTokens } from '@tamagui/core'
+import { createFont, createTamagui, createTokens } from 'tamagui' // or '@tamagui/core'
 import { createMedia } from '@tamagui/react-native-media-driver'
 
 const interFont = createFont({

@@ -107,8 +107,8 @@ Beyond the [Tamagui Props](/docs/intro/props), stacks have two variants
 Adds a variety of helpers that automatically apply theme values when set to true. Useful for creating higher level components by wrapping with `styled()`:
 
 ```tsx
-import { styled } from '@tamagui/core'
-import { ThemeableStack } from '@tamagui/stacks' // or tamagui
+import { styled } from 'tamagui' // or @tamagui/core
+import { ThemeableStack } from 'tamagui' // or @tamagui/stacks
 
 const MyCard = styled(ThemeableStack, {
   hoverTheme: true,
