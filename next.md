@@ -5,6 +5,14 @@ Ali:
   - Sponsor => Github auth Account
   - Web Filesystemapi to access to folder
   - Host on vercel
+  - plugins automatically watch and build
+    - babel-plugin, webpack-loader, vite all share @tamagui/static
+      - @tamagui/static just needs to add a call to the watch that studio.ts uses
+    - if weird or hard:
+      - `tama studio` comment out and instead
+        - `tama studio --serve` add flag and hide vite stuff behind there
+        - `tama studio` just builds once
+        - `tama studio --watch` watches
 
 - check if bug:
   - one shouldn't work <YStack onPress><Pressable onPress /></YStack>
