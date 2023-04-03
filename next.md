@@ -17,10 +17,12 @@ Ali:
 - check if bug:
   - one shouldn't work <YStack onPress><Pressable onPress /></YStack>
   - should work <YStack><Pressable onPress /></YStack>
+- document keyboard avoiding view in `Sheet.mdx`
 - input bug 
   - https://discord.com/channels/909986013848412191/1091749199378387065/1091909256023904377
 - Toasts starter
 - Studio get running
+- RadioGroup needs a press stlye color for the indicator
 - @tamagui/change-animation-driver document
 - Switch for animation driver on website doesn't animate
   - lets keep it as a spring
@@ -30,6 +32,7 @@ Ali:
   - (nate) make focusStyle border darker
 - WARN  Sending onAnimatedValueUpdate with no listeners registered
 - <YStack space="$3" $gtSm={{ space: '$6'}}> not working again (likely fixed)
+- bezier on css animations
 - tabs 
   - advanced demo is weird it has a bg and a separator
   - prevSelectionIndicatorLayout should be state not ref to avoid concurrency issues
@@ -51,8 +54,6 @@ Nate:
 - refactor getSplitStyles to share getSubStyle / logic with main style logic
 
 ---
-
-- RadioGroup needs a press stlye color for the indicator
 
 - site polish: 
   - make the text selection match the theme
