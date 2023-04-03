@@ -6,7 +6,7 @@ description: Extend and build custom and optimizable components.
 Create a new component by extending an existing one:
 
 ```tsx
-import { GetProps, Stack, styled } from '@tamagui/core'
+import { GetProps, Stack, styled } from 'tamagui' // or '@tamagui/core'
 
 export const Circle = styled(Stack, {
   name: 'Circle', // useful for debugging, and Component themes
@@ -28,7 +28,7 @@ Note, `tamagui` and `@tamagui/core` both export many of the same helpers, like s
 If using just `core` but passing in React Native components, be sure to run `setupReactNative` once first, typically near your entry file:
 
 ```tsx
-import { setupReactNative, styled } from '@tamagui/core'
+import { setupReactNative, styled } from 'tamagui' // or '@tamagui/core'
 import { Image } from 'react-native'
 
 // this allows tamagui to optimize for react-native components
@@ -51,7 +51,7 @@ You can pass any prop that is supported by the component you are extending, even
 Let's add some variants:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
+import { Stack, styled } from 'tamagui' // or '@tamagui/core'
 
 export const Circle = styled(Stack, {
   borderRadius: 100_000_000,
@@ -103,7 +103,7 @@ The `styled()` function supports Tamagui views, React Native views, and any othe
 If it does accept `className`, you can opt-in to className, CSS media queries, and compile-time optimization by adding `acceptsClassName`:
 
 ```tsx
-import { styled } from '@tamagui/core'
+import { styled } from 'tamagui' // or '@tamagui/core'
 import { SomeCustomComponent } from 'some-library'
 
 export const TamaguiCustomComponent = styled(SomeCustomComponent, {
