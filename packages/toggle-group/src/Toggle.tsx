@@ -35,10 +35,7 @@ const ToggleFrame = styled(ThemeableStack, {
           backgroundColor: '$backgroundPress',
         },
         focusStyle: {
-          outlineWidth: '2px',
-          outlineStyle: 'solid',
-          outlineOffset: '-2px',
-          outlineColor: '$borderColorFocus',
+          borderColor: '$borderColorFocus',
           backgroundColor: '$backgroundFocus',
         },
       },
