@@ -39,7 +39,7 @@ function ToggleGroupComponent(props: {
         id={id}
         type={props.type}
         size={props.size}
-        disableDeactivation={props.type === "single"}
+        disableDeactivation={props.type === "single" ? true : undefined}
       >
         <ToggleGroup.Item value="left" aria-label="Left aligned">
           <AlignLeft />
