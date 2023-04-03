@@ -46,6 +46,7 @@ Ali:
 - Card unstyled
 - <Select native> (web)
 - unstyled for Select, Tabs
+- go through the docs and remove shorthands - use full forms
 
 ---
 
