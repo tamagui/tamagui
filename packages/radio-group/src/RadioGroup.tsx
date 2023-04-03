@@ -135,10 +135,17 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
 
         hoverStyle: {
           borderColor: '$borderColorHover',
+          background: '$backgroundHover',
         },
 
         focusStyle: {
+          borderColor: '$borderColorHover',
+          background: '$backgroundHover',
+        },
+
+        pressStyle: {
           borderColor: '$borderColorFocus',
+          background: '$backgroundFocus',
         },
       },
     },
