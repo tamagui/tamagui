@@ -1,18 +1,18 @@
 import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
-import { Label, Separator, SizeTokens, ToggleGroup, XStack, YStack } from 'tamagui'
+import { Label, SizeTokens, ToggleGroup, XStack, YStack } from 'tamagui'
 
 export function ToggleGroupDemo() {
   return (
-    <YStack w={500} ai="center" space="$3">
-      <XStack w={400} ai="center" space="$4">
-        <ToggleGroupComponent type="single" size="$4" orientation="horizontal" />
-        <ToggleGroupComponent type="single" size="$2" orientation="horizontal" />
-      </XStack>
-      <XStack w={400} ai="center" space="$4">
+    <XStack ai="center" space="$10">
+      <YStack ai="center" space="$6">
+        <ToggleGroupComponent type="single" size="$3" orientation="horizontal" />
         <ToggleGroupComponent type="multiple" size="$4" orientation="horizontal" />
-        <ToggleGroupComponent type="multiple" size="$2" orientation="horizontal" />
+      </YStack>
+      <XStack ai="center" space="$6">
+        <ToggleGroupComponent type="single" size="$3" orientation="vertical" />
+        <ToggleGroupComponent type="multiple" size="$4" orientation="vertical" />
       </XStack>
-    </YStack>
+    </XStack>
   )
 }
 
@@ -23,11 +23,16 @@ function ToggleGroupComponent(props: {
 }) {
   const id = `switch-${props.size.toString().slice(1)}-${props.type}`
   return (
-    <XStack ai="center" space="$4">
-      <Label pr="$0" miw={90} jc="flex-end" size={props.size} htmlFor={id}>
+    <XStack
+      flexDirection={props.orientation === 'horizontal' ? 'row' : 'column'}
+      ai="center"
+      jc="center"
+      space="$4"
+    >
+      <Label pr="$0"  jc="flex-end" size={props.size} htmlFor={id}>
         {props.type === 'single' ? 'Single' : 'Multiple'}
       </Label>
-      <Separator mih={20} vertical />
+      {/* <Separator vertical={props.orientation === 'horizontal'} /> */}
 
       <ToggleGroup
         orientation={props.orientation}
