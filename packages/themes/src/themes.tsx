@@ -10,8 +10,6 @@ import {
 
 import { colorTokens, darkColors, lightColors } from './tokens'
 
-console.time('createThemes()')
-
 type ColorName = keyof typeof colorTokens.dark
 
 const lightTransparent = 'rgba(255,255,255,0)'
@@ -230,7 +228,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
   const allColorThemes = addChildren(colorThemes, (colorName, colorTheme) => {
     const inverse = inverseColorThemes[colorName]
     return {
-      ...getAltThemes(colorTheme, inverse),
+      ...getAltThemes(colorTheme, inverse, null, colorName),
       ...getComponentThemes(colorTheme, inverse),
     }
   })
@@ -245,7 +243,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
     ...allColorThemes,
   }
 
-  function getAltThemes(theme: SubTheme, inverse: SubTheme, activeTheme?: SubTheme) {
+  function getAltThemes(theme: SubTheme, inverse: SubTheme, activeTheme?: SubTheme, x) {
     const maskOptionsAlt = {
       ...maskOptions,
       override: overrideShadows,
@@ -253,6 +251,9 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
     const alt1 = applyMask(theme, masks.weaker, maskOptionsAlt)
     const alt2 = applyMask(alt1, masks.weaker, maskOptionsAlt)
     const active = activeTheme ?? inverse
+    if (x === 'red') {
+      debugger
+    }
     return addChildren({ alt1, alt2, active }, (_, subTheme) => {
       return getComponentThemes(subTheme, subTheme === inverse ? theme : inverse)
     })
@@ -315,5 +316,3 @@ export const themes = {
 // if (process.env.NODE_ENV === 'development') {
 //   console.log(JSON.stringify(themes).length)
 // }
-
-console.timeEnd('createThemes()')

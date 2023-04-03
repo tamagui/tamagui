@@ -119,7 +119,6 @@ export const ListItemText = styled(SizableText, {
   variants: {
     unstyled: {
       false: {
-        selectable: true,
         color: '$color',
         flexGrow: 1,
         flexShrink: 1,
@@ -140,7 +139,6 @@ export const ListItemSubtitle = styled(ListItemText, {
   variants: {
     unstyled: {
       false: {
-        selectable: true,
         opacity: 0.6,
         maxWidth: '100%',
         size: '$3',
