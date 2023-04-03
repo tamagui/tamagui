@@ -1,14 +1,10 @@
 Ali:
 
 - Studio
+  - Bring back next saas stuff
   - Sponsor => Github auth Account
   - Web Filesystemapi to access to folder
-
-  - Github sponsor => access to repo
-  - Repo publish private cli + studio packages
-  - Build .app tauri
-  - test publishing under github
-
+  - Host on vercel
 
 - check if bug:
   - one shouldn't work <YStack onPress><Pressable onPress /></YStack>
