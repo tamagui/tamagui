@@ -4663,7 +4663,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/create-context@1.9.22, @tamagui/create-context@workspace:packages/create-context":
+"@tamagui/create-context@1.9.22, @tamagui/create-context@^1.9.22, @tamagui/create-context@workspace:packages/create-context":
   version: 0.0.0-use.local
   resolution: "@tamagui/create-context@workspace:packages/create-context"
   dependencies:
@@ -4797,7 +4797,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/focusable@1.9.22, @tamagui/focusable@workspace:packages/focusable":
+"@tamagui/focusable@1.9.22, @tamagui/focusable@^1.9.22, @tamagui/focusable@workspace:packages/focusable":
   version: 0.0.0-use.local
   resolution: "@tamagui/focusable@workspace:packages/focusable"
   dependencies:
@@ -4838,7 +4838,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/font-size@1.9.22, @tamagui/font-size@workspace:packages/font-size":
+"@tamagui/font-size@1.9.22, @tamagui/font-size@^1.9.22, @tamagui/font-size@workspace:packages/font-size":
   version: 0.0.0-use.local
   resolution: "@tamagui/font-size@workspace:packages/font-size"
   dependencies:
@@ -4895,7 +4895,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/get-size@1.9.22, @tamagui/get-size@workspace:packages/get-size":
+"@tamagui/get-size@1.9.22, @tamagui/get-size@^1.9.22, @tamagui/get-size@workspace:packages/get-size":
   version: 0.0.0-use.local
   resolution: "@tamagui/get-size@workspace:packages/get-size"
   dependencies:
@@ -4909,7 +4909,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/group@1.9.22, @tamagui/group@workspace:packages/group":
+"@tamagui/group@1.9.22, @tamagui/group@^1.9.22, @tamagui/group@workspace:packages/group":
   version: 0.0.0-use.local
   resolution: "@tamagui/group@workspace:packages/group"
   dependencies:
@@ -4935,7 +4935,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/helpers-tamagui@1.9.22, @tamagui/helpers-tamagui@workspace:packages/helpers-tamagui":
+"@tamagui/helpers-tamagui@1.9.22, @tamagui/helpers-tamagui@^1.9.22, @tamagui/helpers-tamagui@workspace:packages/helpers-tamagui":
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers-tamagui@workspace:packages/helpers-tamagui"
   dependencies:
@@ -5379,7 +5379,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/roving-focus@1.9.22, @tamagui/roving-focus@workspace:packages/roving-focus":
+"@tamagui/roving-focus@1.9.22, @tamagui/roving-focus@^1.9.22, @tamagui/roving-focus@workspace:packages/roving-focus":
   version: 0.0.0-use.local
   resolution: "@tamagui/roving-focus@workspace:packages/roving-focus"
   dependencies:
@@ -5651,7 +5651,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/stacks@1.9.22, @tamagui/stacks@workspace:packages/stacks":
+"@tamagui/stacks@1.9.22, @tamagui/stacks@^1.9.22, @tamagui/stacks@workspace:packages/stacks":
   version: 0.0.0-use.local
   resolution: "@tamagui/stacks@workspace:packages/stacks"
   dependencies:
@@ -5902,6 +5902,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/toggle-group@1.9.22, @tamagui/toggle-group@workspace:packages/toggle-group":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/toggle-group@workspace:packages/toggle-group"
+  dependencies:
+    "@tamagui/build": 1.9.22
+    "@tamagui/create-context": ^1.9.22
+    "@tamagui/focusable": ^1.9.22
+    "@tamagui/font-size": ^1.9.22
+    "@tamagui/get-size": ^1.9.22
+    "@tamagui/group": ^1.9.22
+    "@tamagui/helpers-tamagui": ^1.9.22
+    "@tamagui/roving-focus": ^1.9.22
+    "@tamagui/stacks": ^1.9.22
+    "@tamagui/use-controllable-state": ^1.9.22
+    "@tamagui/use-direction": ^1.9.22
+    "@tamagui/web": ^1.9.22
+    react: ^18.2.0
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/tooltip@1.9.22, @tamagui/tooltip@workspace:packages/tooltip":
   version: 0.0.0-use.local
   resolution: "@tamagui/tooltip@workspace:packages/tooltip"
@@ -5944,7 +5966,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-controllable-state@1.9.22, @tamagui/use-controllable-state@workspace:packages/use-controllable-state":
+"@tamagui/use-controllable-state@1.9.22, @tamagui/use-controllable-state@^1.9.22, @tamagui/use-controllable-state@workspace:packages/use-controllable-state":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-controllable-state@workspace:packages/use-controllable-state"
   dependencies:
@@ -5982,7 +6004,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-direction@1.9.22, @tamagui/use-direction@workspace:packages/use-direction":
+"@tamagui/use-direction@1.9.22, @tamagui/use-direction@^1.9.22, @tamagui/use-direction@workspace:packages/use-direction":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-direction@workspace:packages/use-direction"
   dependencies:
@@ -6116,7 +6138,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/web@1.9.22, @tamagui/web@workspace:packages/web":
+"@tamagui/web@1.9.22, @tamagui/web@^1.9.22, @tamagui/web@workspace:packages/web":
   version: 0.0.0-use.local
   resolution: "@tamagui/web@workspace:packages/web"
   dependencies:
@@ -20850,6 +20872,7 @@ __metadata:
     "@tamagui/tabs": 1.9.22
     "@tamagui/text": 1.9.22
     "@tamagui/toast": 1.9.22
+    "@tamagui/toggle-group": 1.9.22
     "@tamagui/tooltip": 1.9.22
     "@tamagui/use-controllable-state": 1.9.22
     "@tamagui/use-debounce": 1.9.22

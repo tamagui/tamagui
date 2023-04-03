@@ -1,0 +1,56 @@
+{
+  "name": "@tamagui/toggle-group",
+  "version": "1.9.22",
+  "sideEffects": [
+    "*.css"
+  ],
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "../../node_modules/.bin/rome check src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "dependencies": {
+    "@tamagui/create-context": "^1.9.22",
+    "@tamagui/focusable": "^1.9.22",
+    "@tamagui/font-size": "^1.9.22",
+    "@tamagui/get-size": "^1.9.22",
+    "@tamagui/group": "^1.9.22",
+    "@tamagui/helpers-tamagui": "^1.9.22",
+    "@tamagui/roving-focus": "^1.9.22",
+    "@tamagui/stacks": "^1.9.22",
+    "@tamagui/use-controllable-state": "^1.9.22",
+    "@tamagui/use-direction": "^1.9.22",
+    "@tamagui/web": "^1.9.22"
+  },
+  "peerDependencies": {
+    "react": "*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.9.22",
+    "react": "^18.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

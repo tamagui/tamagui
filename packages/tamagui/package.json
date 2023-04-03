@@ -81,6 +81,7 @@
     "@tamagui/tabs": "1.9.22",
     "@tamagui/text": "1.9.22",
     "@tamagui/toast": "1.9.22",
+    "@tamagui/toggle-group": "1.9.22",
     "@tamagui/tooltip": "1.9.22",
     "@tamagui/use-controllable-state": "1.9.22",
     "@tamagui/use-debounce": "1.9.22",
