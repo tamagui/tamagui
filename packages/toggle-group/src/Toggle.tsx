@@ -35,8 +35,8 @@ const ToggleFrame = styled(ThemeableStack, {
           backgroundColor: '$backgroundPress',
         },
         focusStyle: {
-          borderColor: '$borderColorFocus',
-          backgroundColor: '$backgroundFocus',
+          borderColor: '$borderColorPress',
+          backgroundColor: '$backgroundPress',
         },
       },
     },
@@ -45,6 +45,10 @@ const ToggleFrame = styled(ThemeableStack, {
         zIndex: 1,
         hoverStyle: {
           backgroundColor: '$background',
+        },
+        focusStyle: {
+          borderColor: '$borderColorPress',
+          backgroundColor: '$backgroundPress',
         },
       },
     },
