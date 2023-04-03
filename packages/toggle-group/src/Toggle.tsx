@@ -35,10 +35,11 @@ const ToggleFrame = styled(ThemeableStack, {
           backgroundColor: '$backgroundPress',
         },
         focusStyle: {
-          outlineWidth: '1px',
+          outlineWidth: '2px',
           outlineStyle: 'solid',
-          outlineOffset: '-3px',
-          outlineColor: '$colorFocus',
+          outlineOffset: '-2px',
+          outlineColor: '$borderColorFocus',
+          backgroundColor: '$backgroundFocus',
         },
       },
     },
@@ -100,23 +101,24 @@ const Toggle = ToggleFrame.extractable(
           data-disabled={props.disabled ? '' : undefined}
           {...buttonProps}
           ref={forwardedRef}
-          onPress={composeEventHandlers(props.onPress ?? undefined, () => {
+          onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
             if (!props.disabled) {
               setPressed(!pressed)
             }
           })}
-          {...(isWeb && {
-            onKeyDown: composeEventHandlers(
-              (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
-              (event) => {
-                if ([' ', 'Enter'].includes(event.key)) {
-                  if (!props.disabled) {
-                    setPressed(!pressed)
-                  }
-                }
-              }
-            ),
-          })}
+          // caught by onPress - no need for this
+          // {...(isWeb && {
+          //   onKeyDown: composeEventHandlers(
+          //     (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
+          //     (event) => {
+          //       if ([' ', 'Enter'].includes(event.key)) {
+          //         if (!props.disabled) {
+          //           setPressed(!pressed)
+          //         }
+          //       }
+          //     }
+          //   ),
+          // })}
         />
       </Theme>
     )
