@@ -12,6 +12,7 @@ import {
   SwitchDemo,
   TabsAdvancedDemo,
   TabsDemo,
+  ToggleGroupDemo,
 } from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'

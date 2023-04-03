@@ -41,5 +41,6 @@ export { ToastDemo } from './ToastDemo';
 export { ToastDuplicateDemo } from './ToastDuplicateDemo';
 export { TabsDemo } from './TabsDemo';
 export { TabsAdvancedDemo } from './TabsAdvancedDemo';
+export { ToggleGroupDemo } from './ToggleGroupDemo';
 export * from './useOnIntersecting';
 //# sourceMappingURL=index.d.ts.map
