@@ -15,25 +15,38 @@ type ToggleElement = TamaguiButtonElement
 
 const ToggleFrame = styled(ThemeableStack, {
   name: NAME,
+  tag: 'button',
 
   variants: {
     unstyled: {
       false: {
+        pressTheme: true,
         backgroundColor: '$background',
         alignItems: 'center',
         justifyContent: 'center',
         display: 'flex',
         borderColor: '$borderColor',
-        borderWidth: '0.5px',
-        margin: '-0.5px',
+        borderWidth: '1px',
+        margin: '-1px',
         hoverStyle: {
           backgroundColor: '$backgroundHover',
+        },
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
         },
         focusStyle: {
           outlineWidth: '1px',
           outlineStyle: 'solid',
-          outlineOffset: '-2px',
+          outlineOffset: '-3px',
           outlineColor: '$colorFocus',
+        },
+      },
+    },
+    active: {
+      true: {
+        zIndex: 1,
+        hoverStyle: {
+          backgroundColor: '$background',
         },
       },
     },
@@ -81,6 +94,7 @@ const Toggle = ToggleFrame.extractable(
     return (
       <Theme forceClassName name={pressed ? 'active' : null}>
         <ToggleFrame
+          active={pressed}
           aria-pressed={pressed}
           data-state={pressed ? 'on' : 'off'}
           data-disabled={props.disabled ? '' : undefined}

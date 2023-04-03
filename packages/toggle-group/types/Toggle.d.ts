@@ -15,8 +15,9 @@ declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<Omit<import("
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "orientation"> & {
+}, "unstyled" | "active" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
+    readonly active?: boolean | undefined;
     readonly orientation?: "horizontal" | "vertical" | undefined;
 } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -33,8 +34,9 @@ declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<Omit<import("
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "orientation"> & {
+}, "unstyled" | "active" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
+    readonly active?: boolean | undefined;
     readonly orientation?: "horizontal" | "vertical" | undefined;
 }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -51,8 +53,9 @@ declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<Omit<import("
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "orientation"> & {
+}, "unstyled" | "active" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
+    readonly active?: boolean | undefined;
     readonly orientation?: "horizontal" | "vertical" | undefined;
 }>>, import("@tamagui/web").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
@@ -71,6 +74,7 @@ declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<Omit<import("
     readonly chromeless?: boolean | "all" | undefined;
 } & {
     readonly unstyled?: boolean | undefined;
+    readonly active?: boolean | undefined;
     readonly orientation?: "horizontal" | "vertical" | undefined;
 }>;
 type ToggleFrameProps = GetProps<typeof ToggleFrame>;
@@ -96,8 +100,9 @@ declare const Toggle: React.ForwardRefExoticComponent<Omit<import("react-native"
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "orientation"> & {
+}, "unstyled" | "active" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
+    readonly active?: boolean | undefined;
     readonly orientation?: "horizontal" | "vertical" | undefined;
 } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -114,8 +119,9 @@ declare const Toggle: React.ForwardRefExoticComponent<Omit<import("react-native"
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "orientation"> & {
+}, "unstyled" | "active" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
+    readonly active?: boolean | undefined;
     readonly orientation?: "horizontal" | "vertical" | undefined;
 }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -132,8 +138,9 @@ declare const Toggle: React.ForwardRefExoticComponent<Omit<import("react-native"
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "orientation"> & {
+}, "unstyled" | "active" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
+    readonly active?: boolean | undefined;
     readonly orientation?: "horizontal" | "vertical" | undefined;
 }>> & {
     defaultValue?: string | undefined;
