@@ -253,6 +253,10 @@ interface ToggleGroupImplSingleProps extends ToggleGroupImplProps {
    * The callback that fires when the value of the toggle group changes.
    */
   onValueChange?(value: string): void
+  /**
+   * Won't let the user turn the active item off.
+   */
+  disableDeactivation?: boolean
 }
 
 const ToggleGroupImplSingle = React.forwardRef<
@@ -263,6 +267,7 @@ const ToggleGroupImplSingle = React.forwardRef<
     value: valueProp,
     defaultValue,
     onValueChange = () => {},
+    disableDeactivation = false,
     ...toggleGroupSingleProps
   } = props
 
@@ -279,7 +284,7 @@ const ToggleGroupImplSingle = React.forwardRef<
       value={value ? [value] : []}
       defaultValue={value}
       onItemActivate={setValue}
-      onItemDeactivate={React.useCallback(() => setValue(''), [setValue])}
+      onItemDeactivate={React.useCallback(() => disableDeactivation ? null : setValue(''), [setValue, disableDeactivation])}
     >
       <ToggleGroupImpl {...toggleGroupSingleProps} ref={forwardedRef} />
     </ToggleGroupValueProvider>

@@ -105,6 +105,10 @@ interface ToggleGroupImplSingleProps extends ToggleGroupImplProps {
      * The callback that fires when the value of the toggle group changes.
      */
     onValueChange?(value: string): void;
+    /**
+     * Won't let the user turn the active item off.
+     */
+    disableDeactivation?: boolean;
 }
 interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
     /**
@@ -181,9 +185,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
-    scrollable?: boolean | undefined; /**
-     * The callback that fires when the state of the toggle group changes.
-     */
+    scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
     disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
@@ -283,9 +285,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
-    scrollable?: boolean | undefined; /**
-     * The callback that fires when the state of the toggle group changes.
-     */
+    scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
     disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
@@ -385,9 +385,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
-    scrollable?: boolean | undefined; /**
-     * The callback that fires when the state of the toggle group changes.
-     */
+    scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
     disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
@@ -487,9 +485,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
-    scrollable?: boolean | undefined; /**
-     * The callback that fires when the state of the toggle group changes.
-     */
+    scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
     disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
