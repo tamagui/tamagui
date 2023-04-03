@@ -1,7 +1,7 @@
 import { createAnimations as createAnimationsCss } from '@tamagui/animations-css'
+import { AnimationDriver } from '@tamagui/web/types'
 // import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'
 import { createContext, useContext, useMemo, useState } from 'react'
-import { AnimationDriverProvider } from 'tamagui'
 
 // import { createAnimations as createAnimationsReactNative } from '@tamagui/animations-react-native'
 import tamaConf from '../tamagui.config'
@@ -17,6 +17,7 @@ export const useAnimationDriverToggler = () => {
 
 const AnimationDriverTogglerContext = createContext<{
   driverName: (typeof ANIMATION_DRIVERS)[number]
+  driver: AnimationDriver
   nextDriver: () => void
   setDriverName: (driverName: (typeof ANIMATION_DRIVERS)[number]) => void
 } | null>(null)
@@ -47,18 +48,16 @@ export const AnimationDriverTogglerContextProvider = ({
         tooltip: 'ease-in 400ms',
       })
 
-    if (driverName === 'react-native') return tamaConf.animations
+    // if (driverName === 'react-native')
+    return tamaConf.animations
     // if (driverName === 'reanimated') return createAnimationsReanimated({})
-    return null
   }, [driverName])
 
   return (
     <AnimationDriverTogglerContext.Provider
-      value={{ driverName, nextDriver, setDriverName }}
+      value={{ driverName, nextDriver, setDriverName, driver }}
     >
-      <AnimationDriverProvider driver={driver} key={driverName}>
-        {children}
-      </AnimationDriverProvider>
+      {children}
     </AnimationDriverTogglerContext.Provider>
   )
 }
