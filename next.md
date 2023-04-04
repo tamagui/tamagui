@@ -1,3 +1,6 @@
+- https://github.com/tamagui/tamagui/pull/765 
+- getVariableValue(props.fontFamily) doesn't look right
+
 - slider track - light theme blends in with bg i think
 
 - lets make forms use outline for 2px borders on focusStyle
