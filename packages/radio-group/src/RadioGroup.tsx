@@ -50,7 +50,6 @@ const RADIO_GROUP_INDICATOR_NAME = 'RadioGroupIndicator'
 
 const RadioIndicatorFrame = styled(ThemeableStack, {
   name: RADIO_GROUP_INDICATOR_NAME,
-  pointerEvents: 'none',
 
   variants: {
     unstyled: {
@@ -59,6 +58,10 @@ const RadioIndicatorFrame = styled(ThemeableStack, {
         h: '40%',
         br: 1000,
         backgroundColor: '$color',
+        pressTheme: true,
+        pressStyle: {
+          backgroundColor: '$colorTransparent',
+        },
       },
     },
   } as const,
