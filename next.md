@@ -1,4 +1,9 @@
+- https://github.com/tamagui/tamagui/pull/765 
+- getVariableValue(props.fontFamily) doesn't look right
+
 - slider track - light theme blends in with bg i think
+
+- createInterFont the default weight/letterSpacing should use `true` rather than `4` key (small change just need to test make sure it doens't break)
 
 - lets make forms use outline for 2px borders on focusStyle
   - on native it can just get a darker border but stay 1px

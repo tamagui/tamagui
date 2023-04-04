@@ -1,6 +1,8 @@
 import { GenericFont, createFont, getVariableValue, isWeb } from '@tamagui/core'
 
-export const createInterFont = <A extends GenericFont<keyof typeof defaultSizes>>(
+export const createInterFont = <
+  A extends GenericFont = GenericFont<keyof typeof defaultSizes>
+>(
   font: {
     [Key in keyof Partial<A>]?: Partial<A[Key]>
   } = {},
@@ -10,7 +12,7 @@ export const createInterFont = <A extends GenericFont<keyof typeof defaultSizes>
   }: {
     sizeLineHeight?: (fontSize: number) => number
     sizeSize?: (size: number) => number
-  } = {},
+  } = {}
 ): A => {
   // merge to allow individual overrides
   const size = Object.fromEntries(
