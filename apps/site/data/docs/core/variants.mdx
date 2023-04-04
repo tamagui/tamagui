@@ -8,7 +8,7 @@ Variants let you create typed props quickly on your styled() components.
 Here's an example:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
+import { Stack, styled } from 'tamagui' // or '@tamagui/core'
 
 export const Circle = styled(Stack, {
   borderRadius: 100_000_000,
@@ -59,7 +59,7 @@ We're showing off a few different styles of variants here. We'll expand on them 
 If you need more complex types, or simply prefer a shorter syntax, you can use a single function instead of using the object syntax for variants:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
+import { Stack, styled } from 'tamagui' // or '@tamagui/core'
 
 export const MyStack = styled(Stack, {
   variants: {
@@ -89,7 +89,7 @@ You can use a pseudo Typescript syntax for other variants:
 Example:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
+import { Stack, styled } from 'tamagui' // or '@tamagui/core'
 
 export const ColorfulStack = styled(Stack, {
   variants: {
@@ -231,7 +231,7 @@ const Square = styled(Stack, {
 Much like a dynamic variant, except it lets you use it alongside the other typed variants you need. Use '...' and it will grab all variants that don't match:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
+import { Stack, styled } from 'tamagui' // or '@tamagui/core'
 
 export const ColorfulStack = styled(Stack, {
   variants: {

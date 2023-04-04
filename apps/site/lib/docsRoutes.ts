@@ -86,6 +86,7 @@ export const docsRoutes = [
       { title: 'Select', route: '/docs/components/select' },
       { title: 'Slider', route: '/docs/components/slider' },
       { title: 'Switch', route: '/docs/components/switch' },
+      {title:'ToggleGroup', route:'/docs/components/toggle-group'}
     ],
   },
 

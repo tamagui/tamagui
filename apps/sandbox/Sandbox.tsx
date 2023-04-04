@@ -12,6 +12,7 @@ import {
   SwitchDemo,
   TabsAdvancedDemo,
   TabsDemo,
+  ToggleGroupDemo,
 } from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
@@ -97,8 +98,6 @@ export const Sandbox = () => {
       <Heading type="myVariant" fontSize="$8">
         H1
       </Heading>
-
-      {/* <YStack debug="verbose" w={100} h={100} bc="red" flexBasis={200} /> */}
 
       {/* <Button2 ok debug="verbose">
         hi

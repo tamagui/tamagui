@@ -15,7 +15,7 @@ export const TabsAdvancedDemo = () => {
   const [currentTab, setCurrentTab] = useState('tab1')
 
   // Layout of the trigger user might intend to select (hovering / focusing)
-  const [IntentIndicator, setIntentIndicator] = useState<TabTriggerLayout | null>(null)
+  const [intentIndicator, setIntentIndicator] = useState<TabTriggerLayout | null>(null)
 
   // Layout of the trigger user selected
   const [selectIndicator, setSelectIndicator] = useState<TabTriggerLayout | null>(null)
@@ -75,12 +75,12 @@ export const TabsAdvancedDemo = () => {
           overflow="visible"
           pb="$1.5"
         >
-          {IntentIndicator && (
+          {intentIndicator && (
             <TabsRovingIndicator
-              width={IntentIndicator.width}
-              height={IntentIndicator.height}
-              x={IntentIndicator.x}
-              y={IntentIndicator.y}
+              width={intentIndicator.width}
+              height={intentIndicator.height}
+              x={intentIndicator.x}
+              y={intentIndicator.y}
             />
           )}
 

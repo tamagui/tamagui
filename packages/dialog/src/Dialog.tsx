@@ -21,7 +21,7 @@ import { Dismissable, DismissableProps } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
 import { PortalHost, PortalItem, PortalItemProps } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
-import { ControlledSheet, SheetController } from '@tamagui/sheet'
+import { ControlledSheet, SheetController, SheetOverlayFrame } from '@tamagui/sheet'
 import { ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -239,10 +239,11 @@ DialogPortal.displayName = PORTAL_NAME
 
 const OVERLAY_NAME = 'DialogOverlay'
 
-const DialogOverlayFrame = styled(ThemeableStack, {
+/**
+ * exported for internal use with extractable()
+ */
+export const DialogOverlayFrame = styled(SheetOverlayFrame, {
   name: OVERLAY_NAME,
-  backgrounded: true,
-  fullscreen: true,
 })
 
 interface DialogOverlayProps extends YStackProps {
@@ -253,23 +254,24 @@ interface DialogOverlayProps extends YStackProps {
   forceMount?: true
 }
 
-const DialogOverlay = React.forwardRef<TamaguiElement, DialogOverlayProps>(
-  ({ __scopeDialog, ...props }: ScopedProps<DialogOverlayProps>, forwardedRef) => {
-    const portalContext = usePortalContext(OVERLAY_NAME, __scopeDialog)
-    const { forceMount = portalContext.forceMount, ...overlayProps } = props
-    const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
-    const showSheet = useShowDialogSheet(context)
+const DialogOverlay = DialogOverlayFrame.extractable(
+  React.forwardRef<TamaguiElement, DialogOverlayProps>(
+    ({ __scopeDialog, ...props }: ScopedProps<DialogOverlayProps>, forwardedRef) => {
+      const portalContext = usePortalContext(OVERLAY_NAME, __scopeDialog)
+      const { forceMount = portalContext.forceMount, ...overlayProps } = props
+      const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
+      const showSheet = useShowDialogSheet(context)
 
-    if (!forceMount) {
-      if (!context.modal || showSheet) {
-        return null
+      if (!forceMount) {
+        if (!context.modal || showSheet) {
+          return null
+        }
       }
+
+      return <DialogOverlayImpl context={context} {...overlayProps} ref={forwardedRef} />
     }
-
-    return <DialogOverlayImpl context={context} {...overlayProps} ref={forwardedRef} />
-  }
+  )
 )
-
 DialogOverlay.displayName = OVERLAY_NAME
 
 type DialogOverlayImplProps = GetProps<typeof DialogOverlayFrame> & {

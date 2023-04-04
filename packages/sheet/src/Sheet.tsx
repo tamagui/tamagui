@@ -20,7 +20,7 @@ import {
 } from '@tamagui/core'
 import { Portal } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
-import { XStack, XStackProps, YStack, YStackProps } from '@tamagui/stacks'
+import { ThemeableStack, XStack, XStackProps, YStack, YStackProps } from '@tamagui/stacks'
 import { useConstant } from '@tamagui/use-constant'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useKeyboardVisible } from '@tamagui/use-keyboard-visible'
@@ -108,10 +108,10 @@ export const SheetHandle = SheetHandleFrame.extractable(
 
 const SHEET_OVERLAY_NAME = 'SheetOverlay'
 
-export const SheetOverlayFrame = styled(YStack, {
+export const SheetOverlayFrame = styled(ThemeableStack, {
   name: SHEET_OVERLAY_NAME,
-  backgroundColor: '$color10',
   fullscreen: true,
+  backgrounded: true,
   opacity: 0.5,
   zIndex: 0,
 

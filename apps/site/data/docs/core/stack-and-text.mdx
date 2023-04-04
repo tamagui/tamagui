@@ -14,7 +14,7 @@ See [the Props docs](/docs/intro/props) for the full list of properties.
 You can use them directly:
 
 ```tsx
-import { Stack, Text } from '@tamagui/core'
+import { Stack, Text } from 'tamagui' // or '@tamagui/core'
 
 export default () => (
   <Stack margin={10}>
@@ -26,7 +26,7 @@ export default () => (
 Or use them [with styled](/docs/core/styled) to create your own base level design system:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
+import { Stack, styled } from 'tamagui' // or '@tamagui/core'
 
 export const Circle = styled(Stack, {
   borderRadius: 100_000_000,

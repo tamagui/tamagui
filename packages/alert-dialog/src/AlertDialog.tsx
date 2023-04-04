@@ -22,6 +22,7 @@ import {
   DialogDescription,
   DialogDescriptionProps,
   DialogOverlay,
+  DialogOverlayFrame,
   DialogOverlayProps,
   DialogPortal,
   DialogPortalProps,
@@ -111,14 +112,20 @@ AlertDialogPortal.displayName = PORTAL_NAME
 
 const OVERLAY_NAME = 'AlertDialogOverlay'
 
+const AlertDialogOverlayFrame = styled(DialogOverlayFrame, {
+  name: OVERLAY_NAME,
+})
+
 interface AlertDialogOverlayProps extends DialogOverlayProps {}
 
-const AlertDialogOverlay = React.forwardRef<TamaguiElement, AlertDialogOverlayProps>(
-  (props: ScopedProps<AlertDialogOverlayProps>, forwardedRef) => {
-    const { __scopeAlertDialog, ...overlayProps } = props
-    const dialogScope = useDialogScope(__scopeAlertDialog)
-    return <DialogOverlay {...dialogScope} {...overlayProps} ref={forwardedRef} />
-  }
+const AlertDialogOverlay = AlertDialogOverlayFrame.extractable(
+  React.forwardRef<TamaguiElement, AlertDialogOverlayProps>(
+    (props: ScopedProps<AlertDialogOverlayProps>, forwardedRef) => {
+      const { __scopeAlertDialog, ...overlayProps } = props
+      const dialogScope = useDialogScope(__scopeAlertDialog)
+      return <DialogOverlay {...dialogScope} {...overlayProps} ref={forwardedRef} />
+    }
+  )
 )
 
 AlertDialogOverlay.displayName = OVERLAY_NAME

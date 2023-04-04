@@ -561,6 +561,9 @@ const tokenCategories = {
     maxWidth: true,
     maxHeight: true,
   },
+  zIndex: {
+    zIndex: true,
+  },
   color: {
     color: true,
     backgroundColor: true,
