@@ -14,9 +14,6 @@ Ali:
         - [ ] `tama studio` just builds once
         - [ ] `tama studio --watch` watches
 
-- [ ] check if bug:
-  - [ ] one shouldn't work <YStack onPress><Pressable onPress /></YStack>
-  - [ ] should work <YStack><Pressable onPress /></YStack>
 - [ ] document keyboard avoiding view in `Sheet.mdx`
 - [ ] input bug 
   - [ ] https://discord.com/channels/909986013848412191/1091749199378387065/1091909256023904377
@@ -59,6 +56,10 @@ Nate:
 
 - refactor getSplitStyles to share getSubStyle / logic with main style logic
 
+- [x] check if bug:
+  - one shouldn't work `<YStack onPress><Pressable onPress /></YStack>` - ali: I confirm this works
+  - should work `<YStack><Pressable onPress /></YStack>` - ali: I confirm this works
+  - result: Pressable is not supported on web since we don't implement usePressability and Pressability - moving it to your section
 ---
 
 - site polish: 
