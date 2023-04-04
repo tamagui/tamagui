@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toggle-group",
-  "version": "1.10.1",
+  "version": "1.11.0",
   "sideEffects": [
     "*.css"
   ],
@@ -31,23 +31,23 @@
     }
   },
   "dependencies": {
-    "@tamagui/create-context": "1.10.1",
-    "@tamagui/focusable": "1.10.1",
-    "@tamagui/font-size": "1.10.1",
-    "@tamagui/get-size": "1.10.1",
-    "@tamagui/group": "1.10.1",
-    "@tamagui/helpers-tamagui": "1.10.1",
-    "@tamagui/roving-focus": "1.10.1",
-    "@tamagui/stacks": "1.10.1",
-    "@tamagui/use-controllable-state": "1.10.1",
-    "@tamagui/use-direction": "1.10.1",
-    "@tamagui/web": "1.10.1"
+    "@tamagui/create-context": "1.11.0",
+    "@tamagui/focusable": "1.11.0",
+    "@tamagui/font-size": "1.11.0",
+    "@tamagui/get-size": "1.11.0",
+    "@tamagui/group": "1.11.0",
+    "@tamagui/helpers-tamagui": "1.11.0",
+    "@tamagui/roving-focus": "1.11.0",
+    "@tamagui/stacks": "1.11.0",
+    "@tamagui/use-controllable-state": "1.11.0",
+    "@tamagui/use-direction": "1.11.0",
+    "@tamagui/web": "1.11.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.10.1",
+    "@tamagui/build": "1.11.0",
     "react": "^18.2.0"
   },
   "publishConfig": {
