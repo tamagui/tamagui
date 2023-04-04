@@ -1,4 +1,5 @@
 import type { ThemeDefinition } from './types.js';
+/** @deprecated import from @tamagui/theme instead */
 export declare function updateTheme({ name, theme, }: {
     name: string;
     theme: Partial<Record<keyof ThemeDefinition, any>>;

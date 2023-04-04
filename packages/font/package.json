@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/add-font",
+  "name": "@tamagui/font",
   "version": "1.10.1",
   "sideEffects": false,
   "source": "src/index.ts",

@@ -1,8 +1,8 @@
-import { addTheme } from './addTheme.js'
-import { activeThemeManagers } from './hooks/useTheme.js'
-import type { ThemeDefinition } from './types.js'
+import { activeThemeManagers } from '@tamagui/web'
+import type { ThemeDefinition } from '@tamagui/web'
 
-/** @deprecated import from @tamagui/theme instead */
+import { addTheme } from './addTheme.js'
+
 export function updateTheme({
   name,
   theme,
