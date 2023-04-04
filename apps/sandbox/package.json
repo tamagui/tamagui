@@ -3,7 +3,7 @@
   "version": "1.9.22",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development TAMAGUI_TARGET=web vite --host --clearScreen false",
+    "dev": "NODE_ENV=development TAMAGUI_TARGET=web tama dev",
     "dev:extract": "EXTRACT=1 yarn dev",
     "dev:webpack": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
     "dev:webpack:extract": "DISABLE_EXTRACTION=false NODE_ENV=development webpack serve",
@@ -12,6 +12,7 @@
   "dependencies": {
     "@tamagui/animations-css": "1.9.22",
     "@tamagui/animations-reanimated": "1.9.22",
+    "@tamagui/cli": "1.9.22",
     "@tamagui/colors": "1.9.22",
     "@tamagui/core": "1.9.22",
     "@tamagui/demos": "1.9.22",
