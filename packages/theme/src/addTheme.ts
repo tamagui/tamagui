@@ -1,11 +1,13 @@
 import { isWeb } from '@tamagui/constants'
+import {
+  ensureThemeVariable,
+  getConfig,
+  getThemeCSSRules,
+  proxyThemeToParents,
+  updateConfig,
+} from '@tamagui/web'
+import type { ThemeDefinition, ThemeParsed } from '@tamagui/web'
 
-import { getConfig, updateConfig } from './config.js'
-import { getThemeCSSRules } from './helpers/getThemeCSSRules'
-import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes.js'
-import { ThemeDefinition, ThemeParsed } from './types.js'
-
-/** @deprecated import from @tamagui/theme instead */
 export function addTheme(props: {
   name: string
   theme: Partial<Record<keyof ThemeDefinition, any>>
