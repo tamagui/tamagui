@@ -37,6 +37,7 @@
     "@tamagui/next-theme": "1.9.22",
     "@tamagui/remove-scroll": "1.9.22",
     "@tamagui/shorthands": "1.9.22",
+    "@tamagui/site-shared": "1.9.22",
     "@tamagui/themes": "1.9.22",
     "compare-versions": "^4.1.3",
     "date-fns": "^2.26.0",

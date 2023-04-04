@@ -8,7 +8,11 @@ export function useForwardToDashboard() {
 
   useEffect(() => {
     if (user) {
-      router.replace('/studio')
+      router.replace(
+        process.env.NODE_ENV === 'production'
+          ? 'https://studio.tamagui.dev/'
+          : 'http://localhost:1421/'
+      )
     }
   }, [user])
 }

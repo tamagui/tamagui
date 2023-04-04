@@ -20,12 +20,15 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@supabase/auth-helpers-react": "^0.3.1",
+    "@supabase/supabase-js": "^2.14.0",
     "@tamagui/animations-reanimated": "^1.9.22",
     "@tamagui/colors": "^1.9.22",
     "@tamagui/config": "^1.9.22",
     "@tamagui/core": "^1.9.22",
     "@tamagui/lucide-icons": "^1.9.22",
     "@tamagui/polyfill-dev": "^1.9.22",
+    "@tamagui/site-shared": "1.9.22",
     "@tamagui/themes": "^1.9.22",
     "@tauri-apps/api": "^1.2.0",
     "@types/d3-scale": "^4.0.2",

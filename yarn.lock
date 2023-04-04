@@ -3980,6 +3980,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@supabase/gotrue-js@npm:^2.18.1":
+  version: 2.20.0
+  resolution: "@supabase/gotrue-js@npm:2.20.0"
+  dependencies:
+    cross-fetch: ^3.1.5
+  checksum: 2a3c6e7f98b804bc7551f0d35ac4bdb08acae6426b9da4f27bb2e7bccf47f49c936106222f1a29d60133c6645a2fffb718225599ff2b177277a6eadac6f4b686
+  languageName: node
+  linkType: hard
+
 "@supabase/postgrest-js@npm:^1.1.1":
   version: 1.5.0
   resolution: "@supabase/postgrest-js@npm:1.5.0"
@@ -4020,6 +4029,20 @@ __metadata:
     "@supabase/storage-js": ^2.3.1
     cross-fetch: ^3.1.5
   checksum: 059ff0e15d85668fd5a7ba2fb4f3d89df98e9eeca44991a81e3d3735e55d8c8d75194cc02b560eff93184f34ea2f33dbe818a88d7000f8e2ba64d1a2273c39e9
+  languageName: node
+  linkType: hard
+
+"@supabase/supabase-js@npm:^2.14.0":
+  version: 2.14.0
+  resolution: "@supabase/supabase-js@npm:2.14.0"
+  dependencies:
+    "@supabase/functions-js": ^2.1.0
+    "@supabase/gotrue-js": ^2.18.1
+    "@supabase/postgrest-js": ^1.1.1
+    "@supabase/realtime-js": ^2.7.1
+    "@supabase/storage-js": ^2.3.1
+    cross-fetch: ^3.1.5
+  checksum: 23269e92ac49d54316f2882ee8042f152080f0e056dba098af1812c264f0277fb127c8467d706eab3e2fb75974c9a8eed0ff2a9aa9424d6df226ea4270d0cc77
   languageName: node
   linkType: hard
 
@@ -4174,6 +4197,8 @@ __metadata:
   dependencies:
     "@babel/preset-react": ^7.18.6
     "@babel/preset-typescript": ^7.18.6
+    "@supabase/auth-helpers-react": ^0.3.1
+    "@supabase/supabase-js": ^2.14.0
     "@tamagui/animations-reanimated": ^1.9.22
     "@tamagui/build": ^1.9.22
     "@tamagui/colors": ^1.9.22
@@ -4181,6 +4206,7 @@ __metadata:
     "@tamagui/core": ^1.9.22
     "@tamagui/lucide-icons": ^1.9.22
     "@tamagui/polyfill-dev": ^1.9.22
+    "@tamagui/site-shared": 1.9.22
     "@tamagui/static": ^1.9.22
     "@tamagui/themes": ^1.9.22
     "@tauri-apps/api": ^1.2.0
@@ -5593,6 +5619,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/site-shared@1.9.22, @tamagui/site-shared@workspace:packages/site-shared":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/site-shared@workspace:packages/site-shared"
+  dependencies:
+    "@supabase/auth-helpers-react": ^0.3.1
+    "@supabase/supabase-js": ^2.14.0
+    "@tamagui/build": 1.9.22
+    react: ^18.2.0
+    tamagui: 1.9.22
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/site@workspace:apps/site":
   version: 0.0.0-use.local
   resolution: "@tamagui/site@workspace:apps/site"
@@ -5618,6 +5658,7 @@ __metadata:
     "@tamagui/next-theme": 1.9.22
     "@tamagui/remove-scroll": 1.9.22
     "@tamagui/shorthands": 1.9.22
+    "@tamagui/site-shared": 1.9.22
     "@tamagui/themes": 1.9.22
     compare-versions: ^4.1.3
     date-fns: ^2.26.0

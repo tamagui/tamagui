@@ -154,10 +154,10 @@ export default function SignInPage() {
 
           <YStack space="$2">
             <Paragraph
+              tag="button"
               ta="center"
               size="$2"
               cursor="pointer"
-              href="#"
               className="text-zinc-200 text-accent-9 hover:underline cursor-pointer"
               onPress={() => {
                 if (showPasswordInput) setPassword('')

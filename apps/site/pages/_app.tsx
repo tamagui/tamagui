@@ -5,13 +5,16 @@ import '../app.css'
 import '../public/fonts/fonts.css'
 
 import { Footer } from '@components/Footer'
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { SessionContextProvider, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { ThemeTint, setTintFamily } from '@tamagui/logo'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
+import { useSharedAuth } from '@tamagui/site-shared'
 import { AppProps } from 'next/app'
 import NextHead from 'next/head'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
-import { Suspense, startTransition, useMemo } from 'react'
+import { Suspense, startTransition, useEffect, useMemo, useState } from 'react'
 import { TamaguiProvider, ToastProvider, ToastViewport, isClient } from 'tamagui'
 
 import { Header } from '../components/Header'
@@ -53,7 +56,17 @@ if (typeof navigator !== 'undefined') {
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
-
+  const [supabaseClient] = useState(() =>
+    createBrowserSupabaseClient({
+      cookieOptions: {
+        domain: 'localhost',
+        maxAge: '100000000',
+        path: '/',
+        sameSite: 'Lax',
+        secure: 'secure',
+      },
+    })
+  )
   // useMemo below to avoid re-render on dark/light change
   return (
     <>
@@ -65,48 +78,52 @@ export default function App(props: AppProps) {
           __html: `document.documentElement.classList.add('t_unmounted')`,
         }}
       />
-
-      <NextThemeProvider
-        onChangeTheme={(next) => {
-          startTransition(() => {
-            setTheme(next)
-          })
-        }}
+      <SessionContextProvider
+        initialSession={(props as any).initialSession}
+        supabaseClient={supabaseClient}
       >
-        <TamaguiProvider
-          config={config}
-          disableInjectCSS
-          disableRootThemeClass
-          defaultTheme={theme}
+        <NextThemeProvider
+          onChangeTheme={(next) => {
+            startTransition(() => {
+              setTheme(next)
+            })
+          }}
         >
-          <SearchProvider>
-            <Suspense fallback={null}>
-              {useMemo(() => {
-                return (
-                  <ToastProvider swipeDirection="horizontal">
-                    <ContentInner {...props} />
+          <TamaguiProvider
+            config={config}
+            disableInjectCSS
+            disableRootThemeClass
+            defaultTheme={theme}
+          >
+            <SearchProvider>
+              <Suspense fallback={null}>
+                {useMemo(() => {
+                  return (
+                    <ToastProvider swipeDirection="horizontal">
+                      <ContentInner {...props} />
 
-                    <ToastViewport
-                      flexDirection="column-reverse"
-                      top="$2"
-                      left={0}
-                      right={0}
-                    />
-                    <ToastViewport
-                      multipleToasts
-                      name="viewport-multiple"
-                      flexDirection="column-reverse"
-                      top="$2"
-                      left={0}
-                      right={0}
-                    />
-                  </ToastProvider>
-                )
-              }, [props])}
-            </Suspense>
-          </SearchProvider>
-        </TamaguiProvider>
-      </NextThemeProvider>
+                      <ToastViewport
+                        flexDirection="column-reverse"
+                        top="$2"
+                        left={0}
+                        right={0}
+                      />
+                      <ToastViewport
+                        multipleToasts
+                        name="viewport-multiple"
+                        flexDirection="column-reverse"
+                        top="$2"
+                        left={0}
+                        right={0}
+                      />
+                    </ToastProvider>
+                  )
+                }, [props])}
+              </Suspense>
+            </SearchProvider>
+          </TamaguiProvider>
+        </NextThemeProvider>
+      </SessionContextProvider>
     </>
   )
 }
@@ -125,11 +142,15 @@ function ContentInner({ Component, pageProps }: AppProps) {
 
   const disableNew = isHome || isBlog
 
+  const supabase = useSupabaseClient()
+  useSharedAuth(supabase)
+
   return getLayout(
     <>
       {!isTest && !isResponsiveDemo && <Header disableNew={isHome || isBlog} />}
       <Component {...pageProps} />
       {!isTest && !isDocs && !isDemo && !isStudio && <Footer />}
-    </>
+    </>,
+    pageProps
   )
 }

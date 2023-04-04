@@ -50,7 +50,6 @@ export const studio = async (options: ResolvedOptions, isRemote = true) => {
         hmr: true,
         cors: true,
       },
-      envPrefix: "VITE_",
       plugins: [
         tamaguiPlugin({
           components: ['tamagui'],

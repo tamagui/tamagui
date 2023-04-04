@@ -212,13 +212,13 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
       products: [],
     },
   }
-  const products = await getActiveProductsWithPrices()
-  return {
-    props: {
-      products,
-    },
-    revalidate: 60,
-  }
+  // const products = await getActiveProductsWithPrices()
+  // return {
+  //   props: {
+  //     products,
+  //   },
+  //   revalidate: 60,
+  // }
 }
 
 const allFeatures = [

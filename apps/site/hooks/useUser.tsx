@@ -1,4 +1,4 @@
-import { User, useSession } from '@supabase/auth-helpers-react'
+import { User, useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { SupabaseClient } from '@supabase/supabase-js'
 import {
   createContext,
@@ -21,14 +21,13 @@ type UserContextType = {
 export const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export interface Props {
-  supabaseClient: SupabaseClient
   [propName: string]: any
 }
 
 export const MyUserContextProvider = (props: Props) => {
   const forceUpdate = useReducer((x) => (x + 1) % Number.MAX_SAFE_INTEGER, 0)[1]
-  const { supabaseClient: supabase } = props
   const session = useSession()
+  const supabase = useSupabaseClient()
 
   const [isLoadingData, setIsloadingData] = useState(false)
   const [userDetails, setUserDetails] = useState<any>(null)
