@@ -1,4 +1,7 @@
+- docs for `@tamagui/font` and `@tamagui/theme`
+
 - https://github.com/tamagui/tamagui/pull/765 
+
 - getVariableValue(props.fontFamily) doesn't look right
 
 - slider track - light theme blends in with bg i think
