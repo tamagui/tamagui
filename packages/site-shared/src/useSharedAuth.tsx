@@ -11,6 +11,7 @@ export const useSharedAuth = (
   opts?: {
     onAuthenticated?: (session: Session) => void
     onUnauthenticated?: () => void
+    onError?: () => void
   }
 ) => {
   useEffect(() => {
@@ -30,8 +31,9 @@ export const useSharedAuth = (
           if (session.error) throw new Error(session.error.message)
           if (!session.data.session) throw new Error('No session found.')
           await opts?.onAuthenticated?.(session.data.session)
-        } catch {
-          await opts?.onUnauthenticated?.()
+        } catch (error) {
+          console.error(error)
+          await opts?.onError?.()
         }
       } else {
         await opts?.onUnauthenticated?.()
