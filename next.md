@@ -1,3 +1,7 @@
+- document `unstyled` prop for components
+
+- `defaultUnstyled` option in createTamagui
+
 - docs for `@tamagui/font` and `@tamagui/theme`
 
 - https://github.com/tamagui/tamagui/pull/765 
