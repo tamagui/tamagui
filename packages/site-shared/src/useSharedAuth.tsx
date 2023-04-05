@@ -1,4 +1,4 @@
-import { SupabaseClient } from '@supabase/auth-helpers-react'
+import { Session, SupabaseClient } from '@supabase/auth-helpers-react'
 import { useEffect, useState } from 'react'
 
 const ACCESS_TOKEN_COOKIE = 'tamagui-access-token'
@@ -9,7 +9,7 @@ const REFRESH_TOKEN_COOKIE = 'tamagui-refresh-token'
 export const useSharedAuth = (
   supabase: SupabaseClient,
   opts?: {
-    onAuthenticated?: () => void
+    onAuthenticated?: (session: Session) => void
     onUnauthenticated?: () => void
   }
 ) => {
@@ -25,12 +25,16 @@ export const useSharedAuth = (
             access_token: accessTokenCookie[1],
             refresh_token: refreshTokenCookie[1],
           })
-          opts?.onAuthenticated?.()
+          supabase.auth.getUser()
+          const session = await supabase.auth.getSession()
+          if (session.error) throw new Error(session.error.message)
+          if (!session.data.session) throw new Error('No session found.')
+          await opts?.onAuthenticated?.(session.data.session)
         } catch {
-          opts?.onUnauthenticated?.()
+          await opts?.onUnauthenticated?.()
         }
       } else {
-        opts?.onUnauthenticated?.()
+        await opts?.onUnauthenticated?.()
       }
     }
     updateAuthIfAvailable()

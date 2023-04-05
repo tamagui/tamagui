@@ -4218,6 +4218,7 @@ __metadata:
     color2k: ^1.2.4
     d3-scale: ^3.3.0
     esbuild-loader: ^2.20.0
+    graphql-tag: ^2.12.6
     hsluv: ^0.1.0
     lodash-es: ^4.17.21
     react-draggable: ^4.4.5
@@ -5623,13 +5624,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/site-shared@workspace:packages/site-shared"
   dependencies:
-    "@supabase/auth-helpers-react": ^0.3.1
-    "@supabase/supabase-js": ^2.14.0
     "@tamagui/build": 1.9.22
-    react: ^18.2.0
-    tamagui: 1.9.22
-  peerDependencies:
-    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -12833,7 +12828,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql-tag@npm:^2.10.1":
+"graphql-tag@npm:^2.10.1, graphql-tag@npm:^2.12.6":
   version: 2.12.6
   resolution: "graphql-tag@npm:2.12.6"
   dependencies:

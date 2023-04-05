@@ -1,9 +1,9 @@
-import { SupabaseClient } from '@supabase/auth-helpers-react';
+import { Session, SupabaseClient } from '@supabase/auth-helpers-react';
 /**
  * used to share auth between tamagui.dev and other apps
  */
 export declare const useSharedAuth: (supabase: SupabaseClient, opts?: {
-    onAuthenticated?: () => void;
-    onUnauthenticated?: () => void;
-}) => void;
+    onAuthenticated?: ((session: Session) => void) | undefined;
+    onUnauthenticated?: (() => void) | undefined;
+} | undefined) => void;
 //# sourceMappingURL=useSharedAuth.d.ts.map

@@ -36,6 +36,7 @@
     "@types/uuid": "^8.3.4",
     "color2k": "^1.2.4",
     "d3-scale": "^3.3.0",
+    "graphql-tag": "^2.12.6",
     "hsluv": "^0.1.0",
     "lodash-es": "^4.17.21",
     "react-draggable": "^4.4.5",
