@@ -79,7 +79,7 @@ const items = [
   { name: 'Honeydew' },
   { name: 'Starfruit' },
   { name: 'Blueberry' },
-  { name: 'Rasberry' },
+  { name: 'Raspberry' },
   { name: 'Strawberry' },
   { name: 'Mango' },
   { name: 'Pineapple' },
