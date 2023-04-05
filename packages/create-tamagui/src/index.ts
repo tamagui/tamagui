@@ -40,8 +40,8 @@ const program = new Commander.Command(packageJson.name)
   .option('--use-pnpm', `Explicitly tell the CLI to bootstrap the app using pnpm`)
   .option(
     `--template <template>, -t <template>`,
-    'Currently, the only option is `next-expo-solito`, which is set by default.',
-    'next-expo-solito'
+    'Choose from one of the available templates: next-expo-router, next-expo-solito',
+    'next-expo-router'
   )
   .allowUnknownOption()
   .usage(
