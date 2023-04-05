@@ -23,7 +23,7 @@
     "@stripe/stripe-js": "^1.29.0",
     "@supabase/auth-helpers-nextjs": "^0.5.6",
     "@supabase/auth-helpers-react": "^0.3.1",
-    "@supabase/supabase-js": "^2.13.1",
+    "@supabase/supabase-js": "^2.14.0",
     "@tamagui/animate-presence": "1.9.22",
     "@tamagui/colors": "1.9.22",
     "@tamagui/config": "1.9.22",

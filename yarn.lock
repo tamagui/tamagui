@@ -3970,16 +3970,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/gotrue-js@npm:^2.16.0":
-  version: 2.18.0
-  resolution: "@supabase/gotrue-js@npm:2.18.0"
-  dependencies:
-    cross-fetch: ^3.1.5
-    crypto-js: ^4.1.1
-  checksum: 0f4c98b8d770320123513fdf3cedd883ec462425a6d88db89ec9b30e8bbf5f822ec222ab4541cf2b344749909be854703187a1b2cd13f0f61035823c186648a8
-  languageName: node
-  linkType: hard
-
 "@supabase/gotrue-js@npm:^2.18.1":
   version: 2.20.0
   resolution: "@supabase/gotrue-js@npm:2.20.0"
@@ -4015,20 +4005,6 @@ __metadata:
   dependencies:
     cross-fetch: ^3.1.5
   checksum: b502bc0735f06df091b40839e37f7a795563c1a6be918bbd7a2dab45299d625bde825dd24e396c8dca08eaa3bf247c5159dd5018277cc9fb90310c62cc88148c
-  languageName: node
-  linkType: hard
-
-"@supabase/supabase-js@npm:^2.13.1":
-  version: 2.13.1
-  resolution: "@supabase/supabase-js@npm:2.13.1"
-  dependencies:
-    "@supabase/functions-js": ^2.1.0
-    "@supabase/gotrue-js": ^2.16.0
-    "@supabase/postgrest-js": ^1.1.1
-    "@supabase/realtime-js": ^2.7.1
-    "@supabase/storage-js": ^2.3.1
-    cross-fetch: ^3.1.5
-  checksum: 059ff0e15d85668fd5a7ba2fb4f3d89df98e9eeca44991a81e3d3735e55d8c8d75194cc02b560eff93184f34ea2f33dbe818a88d7000f8e2ba64d1a2273c39e9
   languageName: node
   linkType: hard
 
@@ -5638,7 +5614,7 @@ __metadata:
     "@stripe/stripe-js": ^1.29.0
     "@supabase/auth-helpers-nextjs": ^0.5.6
     "@supabase/auth-helpers-react": ^0.3.1
-    "@supabase/supabase-js": ^2.13.1
+    "@supabase/supabase-js": ^2.14.0
     "@tamagui/animate-presence": 1.9.22
     "@tamagui/colors": 1.9.22
     "@tamagui/config": 1.9.22
@@ -9763,13 +9739,6 @@ __metadata:
   version: 0.0.2
   resolution: "crypt@npm:0.0.2"
   checksum: baf4c7bbe05df656ec230018af8cf7dbe8c14b36b98726939cef008d473f6fe7a4fad906cfea4062c93af516f1550a3f43ceb4d6615329612c6511378ed9fe34
-  languageName: node
-  linkType: hard
-
-"crypto-js@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "crypto-js@npm:4.1.1"
-  checksum: b3747c12ee3a7632fab3b3e171ea50f78b182545f0714f6d3e7e2858385f0f4101a15f2517e033802ce9d12ba50a391575ff4638c9de3dd9b2c4bc47768d5425
   languageName: node
   linkType: hard
 
