@@ -17,6 +17,7 @@ type BaseProps = Omit<StyledImageProps, 'source' | 'width' | 'height' | 'style' 
     width: number | string;
     height: number | string;
     src: string | StyledImageProps['source'];
+    alt?: string;
 };
 export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>;
 type RNImageType = typeof RNImage;
