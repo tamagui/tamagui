@@ -7,6 +7,7 @@ import type {
 } from '@tamagui/core'
 
 export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
+  // rome-ignore lint/style/useDefaultParameterLast: <explanation>
   sizeTokenIn = '$true',
   { fonts, props }
 ) => {
@@ -60,6 +61,7 @@ const cache = new WeakMap<any, FontSizeTokens>()
 
 function getDefaultSizeToken(font: GenericFont) {
   if (typeof font === 'object' && cache.has(font)) {
+    // rome-ignore lint/style/noNonNullAssertion: <explanation>
     return cache.get(font)!
   }
 

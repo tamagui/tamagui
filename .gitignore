@@ -33,3 +33,5 @@ apps/site/out
 .tamagui
 
 .idea
+
+.env
