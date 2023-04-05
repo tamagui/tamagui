@@ -1,3 +1,10 @@
+- font-family is being output to DOM on text element
+- font weights in css are generating extra variables with "undefined" value if not filled in
+- add defaultSize and defaultFontFamily to createTamagui
+  - all instances of $true can become getConfig().defaultSize
+  - all instances of $body can become getConfig().defaultFontFamily
+  - remove the validation in createTamagui that enforces the keys
+
 Ali:
 
 - [ ] Studio
