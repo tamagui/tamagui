@@ -240,6 +240,8 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
     }
   })
 
+  console.log('inverseTheme', inverseName, inverseTheme)
+
   const baseSubThemes = {
     ...getAltThemes(theme, inverseTheme, isLight, inverseTheme),
     ...getComponentThemes(theme, inverseTheme, isLight),
@@ -264,6 +266,7 @@ function getAltThemes(
   const alt1 = applyMask(theme, masks.weaker, maskOptionsAlt)
   const alt2 = applyMask(alt1, masks.weaker, maskOptionsAlt)
   const active = activeTheme ?? inverse
+
   return addChildren({ alt1, alt2, active }, (_, subTheme) => {
     return getComponentThemes(subTheme, subTheme === inverse ? theme : inverse, isLight)
   })

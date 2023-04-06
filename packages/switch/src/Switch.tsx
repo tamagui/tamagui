@@ -88,8 +88,8 @@ export const SwitchThumb = SwitchThumbFrame.extractable(
       return (
         <SwitchThumbFrame
           unstyled={unstyled}
-          size={size}
           theme={checked ? 'active' : null}
+          size={size}
           data-state={getState(checked)}
           data-disabled={disabled ? '' : undefined}
           {...thumbProps}
@@ -222,6 +222,8 @@ export const Switch = withStaticProperties(
             <SwitchFrame
               unstyled={unstyled}
               size={size}
+              theme={checked ? 'active' : null}
+              themeShallow
               // @ts-ignore
               role="switch"
               aria-checked={checked}
@@ -230,7 +232,6 @@ export const Switch = withStaticProperties(
               data-state={getState(checked)}
               data-disabled={disabled ? '' : undefined}
               disabled={disabled}
-              themeShallow
               // @ts-ignore
               tabIndex={disabled ? undefined : 0}
               // @ts-ignore

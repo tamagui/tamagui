@@ -21,6 +21,7 @@ import {
   Input,
   ScrollView,
   Stack,
+  Switch,
   TamaguiProvider,
   Text,
   ToastProvider,
@@ -98,6 +99,8 @@ export const Sandbox = () => {
       <Heading type="myVariant" fontSize="$8">
         H1
       </Heading>
+
+      <SwitchDemo />
 
       {/* <Button2 ok debug="verbose">
         hi
