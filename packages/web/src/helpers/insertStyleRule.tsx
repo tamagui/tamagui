@@ -68,6 +68,7 @@ export function scanAllSheets() {
   if (!isClient) return
 
   const sheets = document.styleSheets || []
+  const prev = lastScannedSheets
   const current = new Set(sheets as any as CSSStyleSheet[])
   if (document.styleSheets) {
     for (const sheet of current) {
@@ -76,8 +77,8 @@ export function scanAllSheets() {
     lastScannedSheets = current
   }
 
-  if (lastScannedSheets) {
-    for (const sheet of lastScannedSheets) {
+  if (prev) {
+    for (const sheet of prev) {
       if (sheet && !current.has(sheet)) {
         updateSheetStyles(sheet, true)
       }
