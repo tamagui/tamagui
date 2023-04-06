@@ -44,11 +44,13 @@ To display the toast natively, you should either pass an array of native platfor
 
 ```tsx
 import { Button } from 'tamagui' // or @tamagui/button
-import { Toast, ToastProvider, ToastImperativeProvider, useToast } from 'tamagui' // or @tamagui/toast
+import { Toast, ToastImperativeProvider, ToastProvider, useToast } from 'tamagui' // or @tamagui/toast
+
+const options = { native: 'mobile' }
 
 export default () => (
   <ToastProvider>
-    <ToastImperativeProvider options={{ native: "mobile" }}>
+    <ToastImperativeProvider options={options}>
       <CurrentToast />
       <MyPage />
     </ToastImperativeProvider>
@@ -417,22 +419,13 @@ Used when using the imperative API.
 You should change the positioning of your [`<ToastViewport>`](#toastviewport). For instance, if you want them to appear from top right:
 
 ```tsx
-<ToastViewport
-  flexDirection="column-reverse"
-  top={0}
-  right={0}
-/>
+<ToastViewport flexDirection="column-reverse" top={0} right={0} />
 ```
 
 Or for bottom center:
 
 ```tsx
-<ToastViewport
-  flexDirection="column"
-  bottom={0}
-  left={0}
-  right={0}
-/>
+<ToastViewport flexDirection="column" bottom={0} left={0} right={0} />
 ```
 
 <Notice theme="blue">
@@ -451,15 +444,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 const SafeToastViewport = () => {
   const { left, top, right } = useSafeAreaInsets()
   return (
-    <ToastViewport
-      flexDirection="column-reverse"
-      top={top}
-      left={left}
-      right={right}
-    />
+    <ToastViewport flexDirection="column-reverse" top={top} left={left} right={right} />
   )
 }
-
 ```
 
 #### Can I have multiple viewports?
@@ -467,7 +454,6 @@ const SafeToastViewport = () => {
 Yes, but you will have to name them and then reference the viewport name on the `<Toast>` component. for instance:
 
 ```tsx
-
 const App = () => {
   return (
     <ToastProvider>
@@ -477,20 +463,11 @@ const App = () => {
   )
 }
 
-
 const MyComponent = () => {
-  return (
-    <Toast> // goes to default viewport
-      // ...
-    </Toast>
-  )
+  return <Toast> // goes to default viewport // ...</Toast>
 }
 
 const MyComponent2 = () => {
-  return (
-    <Toast viewportName="viewport-custom">
-      // ...
-    </Toast>
-  )
+  return <Toast viewportName="viewport-custom">// ...</Toast>
 }
 ```
