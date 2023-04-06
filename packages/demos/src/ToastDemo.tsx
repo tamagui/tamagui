@@ -55,7 +55,7 @@ const CurrentToast = () => {
 const ToastControl = () => {
   const toast = useToast()
   return (
-    <XStack space="$2" jc="center">
+    <XStack space="$2" justifyContent="center">
       <Button
         onPress={() => {
           toast.show('Successfully saved!', {
@@ -88,7 +88,7 @@ const NativeOptions = ({
   return (
     <XStack space>
       {supportedNativePlatforms.map((platform) => (
-        <XStack ai="center" space="$2" key={platform}>
+        <XStack alignItems="center" space="$2" key={platform}>
           <Checkbox
             id={platform}
             checked={native?.includes(platform)}

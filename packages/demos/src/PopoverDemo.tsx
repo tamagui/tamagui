@@ -12,7 +12,7 @@ import {
 
 export function PopoverDemo() {
   return (
-    <XStack space="$2" f={1} jc="center" ai="center">
+    <XStack space="$2" flex={1} justifyContent="center" alignItems="center">
       <Demo placement="left" Icon={ChevronLeft} Name="left-popover" />
       <Demo placement="bottom" Icon={ChevronDown} Name="bottom-popover" />
       <Demo placement="top" Icon={ChevronUp} Name="top-popover" />
@@ -42,13 +42,13 @@ export function Demo({
       </Adapt>
 
       <Popover.Content
-        bw={1}
-        boc="$borderColor"
-        enterStyle={{ x: 0, y: -10, o: 0 }}
-        exitStyle={{ x: 0, y: -10, o: 0 }}
+        borderWidth={1}
+        borderColor="$borderColor"
+        enterStyle={{ x: 0, y: -10, opacity: 0 }}
+        exitStyle={{ x: 0, y: -10, opacity: 0 }}
         x={0}
         y={0}
-        o={1}
+        opacity={1}
         animation={[
           'quick',
           {
@@ -59,7 +59,7 @@ export function Demo({
         ]}
         elevate
       >
-        <Popover.Arrow bw={1} boc="$borderColor" />
+        <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
 
         <YGroup space="$3">
           <YGroup.Item>

@@ -2,7 +2,7 @@ import { Slider, SliderProps, Spacer, XStack } from 'tamagui'
 
 export function SliderDemo() {
   return (
-    <XStack height={200} ai="center" space="$8">
+    <XStack height={200} alignItems="center" space="$8">
       <SimpleSlider height={200} orientation="vertical" />
       <SimpleSlider width={200} />
     </XStack>
