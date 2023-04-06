@@ -22,7 +22,7 @@ export const TabsAdvancedDemo = () => {
     <>
       {demo === 'underline' ? <TabsAdvancedUnderline /> : <TabsAdvancedBackground />}
 
-      <XStack ai="center" space pos="absolute" b="$3" l="$4" $xxs={{ dsp: 'none' }}>
+      <XStack alignItems="center" space position="absolute" bottom="$3" left="$4" $xxs={{ display: 'none' }}>
         <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demo}
         </Button>
@@ -90,7 +90,7 @@ const TabsAdvancedBackground = () => {
       onValueChange={setCurrentTab}
       orientation="horizontal"
       size="$3"
-      p="$2"
+      padding="$2"
       height={150}
       flexDirection="column"
       activationMode="manual"
@@ -135,9 +135,9 @@ const TabsAdvancedBackground = () => {
         enterVariant={enterVariant}
         exitVariant={exitVariant}
       >
-        <AnimatedYStack key={currentTab} animation="100ms" x={0} o={1} f={1}>
-          <Tabs.Content value={currentTab} forceMount f={1} jc="center">
-            <H5 ta="center">{currentTab}</H5>
+        <AnimatedYStack key={currentTab} animation="100ms" x={0} opacity={1} flex={1}>
+          <Tabs.Content value={currentTab} forceMount flex={1} justifyContent="center">
+            <H5 textAlign="center">{currentTab}</H5>
           </Tabs.Content>
         </AnimatedYStack>
       </AnimatePresence>
@@ -204,7 +204,7 @@ const TabsAdvancedUnderline = () => {
       onValueChange={setCurrentTab}
       orientation="horizontal"
       size="$3"
-      p="$2"
+      padding="$2"
       height={150}
       flexDirection="column"
       activationMode="manual"
@@ -216,7 +216,7 @@ const TabsAdvancedUnderline = () => {
           disablePassBorderRadius
           borderBottomLeftRadius={0}
           borderBottomRightRadius={0}
-          pb="$1.5"
+          paddingBottom="$1.5"
         >
           {intentAt && (
             <TabsRovingIndicator
@@ -257,9 +257,9 @@ const TabsAdvancedUnderline = () => {
         enterVariant={enterVariant}
         exitVariant={exitVariant}
       >
-        <AnimatedYStack key={currentTab} animation="100ms" x={0} o={1} f={1}>
-          <Tabs.Content value={currentTab} forceMount f={1} jc="center">
-            <H5 ta="center">{currentTab}</H5>
+        <AnimatedYStack key={currentTab} animation="100ms" x={0} opacity={1} flex={1}>
+          <Tabs.Content value={currentTab} forceMount flex={1} justifyContent="center">
+            <H5 textAlign="center">{currentTab}</H5>
           </Tabs.Content>
         </AnimatedYStack>
       </AnimatePresence>
