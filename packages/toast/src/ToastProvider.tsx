@@ -102,6 +102,17 @@ const ToastProvider: React.FC<ToastProviderProps> = (
   const isFocusedToastEscapeKeyDownRef = React.useRef(false)
   const isClosePausedRef = React.useRef(false)
 
+  // memo context to avoid expensive re-renders
+  const options = React.useMemo(() => {
+    return {
+      duration,
+      burntOptions,
+      native,
+      notificationOptions,
+    }
+    // nested simple object so JSON.stringify
+  }, [JSON.stringify([duration, burntOptions, native, notificationOptions])])
+
   return (
     <Collection.Provider scope={__scopeToast}>
       <ToastProviderProvider
@@ -123,16 +134,7 @@ const ToastProvider: React.FC<ToastProviderProps> = (
         isFocusedToastEscapeKeyDownRef={isFocusedToastEscapeKeyDownRef}
         isClosePausedRef={isClosePausedRef}
       >
-        <ToastImperativeProvider
-          options={{
-            duration,
-            burntOptions,
-            native,
-            notificationOptions,
-          }}
-        >
-          {children}
-        </ToastImperativeProvider>
+        <ToastImperativeProvider options={options}>{children}</ToastImperativeProvider>
       </ToastProviderProvider>
     </Collection.Provider>
   )
