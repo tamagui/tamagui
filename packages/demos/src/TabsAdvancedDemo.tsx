@@ -94,12 +94,15 @@ const TabsAdvancedBackground = () => {
       onValueChange={setCurrentTab}
       orientation="horizontal"
       size="$3"
-      p="$2"
+      padding="$2"
       height={150}
       flexDirection="column"
       activationMode="manual"
+      backgroundColor="$backgroundStrong"
+      borderRadius="$2"
+      position="relative"
     >
-      <Tabs.List loop={false} aria-label="Manage your account" disablePassBorderRadius>
+      <YStack>
         {intentAt && (
           <TabsRovingIndicator
             width={intentAt.width}
@@ -109,7 +112,6 @@ const TabsAdvancedBackground = () => {
             opacity={0.4}
           />
         )}
-
         {activeAt && (
           <TabsRovingIndicator
             theme="active"
@@ -119,17 +121,24 @@ const TabsAdvancedBackground = () => {
             y={activeAt.y}
           />
         )}
-
-        <Tabs.Trigger value="tab1" onInteraction={handleOnInteraction}>
-          <SizableText>Profile</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger value="tab2" onInteraction={handleOnInteraction}>
-          <SizableText>Connections</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger value="tab3" onInteraction={handleOnInteraction}>
-          <SizableText>Notifications</SizableText>
-        </Tabs.Trigger>
-      </Tabs.List>
+        <Tabs.List
+          loop={false}
+          aria-label="Manage your account"
+          
+          space
+          backgroundColor="transparent"
+        >
+          <Tabs.Trigger value="tab1" onInteraction={handleOnInteraction}>
+            <SizableText>Profile</SizableText>
+          </Tabs.Trigger>
+          <Tabs.Trigger value="tab2" onInteraction={handleOnInteraction}>
+            <SizableText>Connections</SizableText>
+          </Tabs.Trigger>
+          <Tabs.Trigger value="tab3" onInteraction={handleOnInteraction}>
+            <SizableText>Notifications</SizableText>
+          </Tabs.Trigger>
+        </Tabs.List>
+      </YStack>
 
       <AnimatePresence
         exitBeforeEnter
@@ -205,31 +214,22 @@ const TabsAdvancedUnderline = () => {
       onValueChange={setCurrentTab}
       orientation="horizontal"
       size="$3"
-      p="$2"
       height={150}
       flexDirection="column"
       activationMode="manual"
+      backgroundColor="$backgroundStrong"
+      borderRadius="$2"
     >
-      <Tabs.List
-        loop={false}
-        aria-label="Manage your account"
-        disablePassBorderRadius
-        borderBottomLeftRadius={0}
-        borderBottomRightRadius={0}
-        pb="$1.5"
-        borderColor="$color3"
-        borderBottomWidth="$0.5"
-      >
+      <YStack>
         {intentAt && (
           <TabsRovingIndicator
             width={intentAt.width}
             height="$0.25"
             x={intentAt.x}
-            borderRadius={0}
-            bottom={-3}
+            
+            bottom={0}
           />
         )}
-
         {activeAt && (
           <TabsRovingIndicator
             theme="active"
@@ -237,21 +237,32 @@ const TabsAdvancedUnderline = () => {
             width={activeAt.width}
             height="$0.25"
             x={activeAt.x}
-            borderRadius={0}
-            bottom={-3}
+            
+            bottom={0}
           />
         )}
-
-        <Tabs.Trigger value="tab1" onInteraction={handleOnInteraction}>
-          <SizableText>Profile</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger value="tab2" onInteraction={handleOnInteraction}>
-          <SizableText>Connections</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger value="tab3" onInteraction={handleOnInteraction}>
-          <SizableText>Notifications</SizableText>
-        </Tabs.Trigger>
-      </Tabs.List>
+        <Tabs.List
+          loop={false}
+          aria-label="Manage your account"
+          
+          borderBottomLeftRadius={0}
+          borderBottomRightRadius={0}
+          paddingBottom="$1.5"
+          borderColor="$color3"
+          borderBottomWidth="$0.5"
+          backgroundColor="transparent"
+        >
+          <Tabs.Trigger paddingHorizontal="$4" value="tab1" onInteraction={handleOnInteraction}>
+            <SizableText>Profile</SizableText>
+          </Tabs.Trigger>
+          <Tabs.Trigger paddingHorizontal="$4" value="tab2" onInteraction={handleOnInteraction}>
+            <SizableText>Connections</SizableText>
+          </Tabs.Trigger>
+          <Tabs.Trigger paddingHorizontal="$4" value="tab3" onInteraction={handleOnInteraction}>
+            <SizableText>Notifications</SizableText>
+          </Tabs.Trigger>
+        </Tabs.List>
+      </YStack>
 
       <AnimatePresence
         exitBeforeEnter
