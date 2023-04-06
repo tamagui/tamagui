@@ -240,8 +240,6 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
     }
   })
 
-  console.log('inverseTheme', inverseName, inverseTheme)
-
   const baseSubThemes = {
     ...getAltThemes(theme, inverseTheme, isLight, inverseTheme),
     ...getComponentThemes(theme, inverseTheme, isLight),
