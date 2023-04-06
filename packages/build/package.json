@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "1.9.22",
+  "version": "1.11.2",
   "bin": {
     "tamagui-build": "tamagui-build.js"
   },
@@ -11,7 +11,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "devDependencies": {
+  "dependencies": {
     "@types/fs-extra": "^9.0.13",
     "chokidar": "^3.5.2",
     "esbuild": "^0.17.5",

@@ -1,9 +1,31 @@
+<<<<<<< HEAD
 - font-family is being output to DOM on text element
 - font weights in css are generating extra variables with "undefined" value if not filled in
 - add defaultSize and defaultFontFamily to createTamagui
   - all instances of $true can become getConfig().defaultSize
   - all instances of $body can become getConfig().defaultFontFamily
   - remove the validation in createTamagui that enforces the keys
+=======
+- document `unstyled` prop for components
+
+- `defaultUnstyled` option in createTamagui
+
+- docs for `@tamagui/font` and `@tamagui/theme`
+
+- https://github.com/tamagui/tamagui/pull/765 
+
+- getVariableValue(props.fontFamily) doesn't look right
+
+- slider track - light theme blends in with bg i think
+
+- createInterFont the default weight/letterSpacing should use `true` rather than `4` key (small change just need to test make sure it doens't break)
+
+- lets make forms use outline for 2px borders on focusStyle
+  - on native it can just get a darker border but stay 1px
+
+- force fix version
+- move to use-roving-index
+>>>>>>> master
 
 Ali:
 
@@ -130,6 +152,9 @@ Nate:
 - move packages to have unstyled
 - move packages from /core to /web
 - // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
+
+----
+
 - check why styled() of a HOC is failing:
 
 - Separator orientation="vertical" deprecate boolean `vertical`

@@ -48,7 +48,7 @@ Note that Heading, and H1-H6 all default to the `heading` font family that must 
 Because [Paragraph](/docs/components/text#paragraph) extends [SizableText](/docs/components/text#sizabletext), you get automatic styles based on your font theme. Let's see how `SizableText` defines the size variant, roughly, which gives a good idea of how Tamagui works, and how you could create or change your own headings at a lower level.
 
 ```tsx
-import { Text } from '@tamagui/core'
+import { Text } from 'tamagui' // or '@tamagui/core'
 
 const SizableText = styled(Text, {
   name: 'SizableText',
