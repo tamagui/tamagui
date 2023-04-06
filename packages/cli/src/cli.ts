@@ -15,7 +15,7 @@ import { disposeAll, getOptions } from './utils.js'
 const COMMAND_MAP = {
   build: {
     shorthands: ['b'],
-    description: 'Use to pre-build a Tamagui component directory',
+    description: `Use to pre-build a Tamagui component directory`,
     flags: {
       '--help': Boolean,
       '--debug': Boolean,
