@@ -1,13 +1,13 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import {
   AnimatePresence,
   Button,
   H5,
   SizableText,
   Stack,
-  TabTriggerLayout,
+  TabLayout,
   Tabs,
-  TabsTriggerProps,
+  TabsTabProps,
   XStack,
   YStack,
   styled,
@@ -39,17 +39,17 @@ const TabsAdvancedBackground = () => {
   const [tabState, setTabState] = useState<{
     currentTab: string
     /**
-     * Layout of the trigger user might intend to select (hovering / focusing)
+     * Layout of the Tab user might intend to select (hovering / focusing)
      */
-    intentAt: TabTriggerLayout | null
+    intentAt: TabLayout | null
     /**
-     * Layout of the trigger user selected
+     * Layout of the Tab user selected
      */
-    activeAt: TabTriggerLayout | null
+    activeAt: TabLayout | null
     /**
      * Used to get the direction of activation for animating the active indicator
      */
-    prevActiveAt: TabTriggerLayout | null
+    prevActiveAt: TabLayout | null
   }>({
     activeAt: null,
     currentTab: 'tab1',
@@ -80,7 +80,7 @@ const TabsAdvancedBackground = () => {
   const exitVariant =
     direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
 
-  const handleOnInteraction: TabsTriggerProps['onInteraction'] = (type, layout) => {
+  const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
     if (type === 'select') {
       setActiveIndicator(layout)
     } else {
@@ -129,15 +129,15 @@ const TabsAdvancedBackground = () => {
           space
           backgroundColor="transparent"
         >
-          <Tabs.Trigger unstyled value="tab1" onInteraction={handleOnInteraction}>
+          <Tabs.Tab unstyled value="tab1" onInteraction={handleOnInteraction}>
             <SizableText>Profile</SizableText>
-          </Tabs.Trigger>
-          <Tabs.Trigger unstyled value="tab2" onInteraction={handleOnInteraction}>
+          </Tabs.Tab>
+          <Tabs.Tab unstyled value="tab2" onInteraction={handleOnInteraction}>
             <SizableText>Connections</SizableText>
-          </Tabs.Trigger>
-          <Tabs.Trigger unstyled value="tab3" onInteraction={handleOnInteraction}>
+          </Tabs.Tab>
+          <Tabs.Tab unstyled value="tab3" onInteraction={handleOnInteraction}>
             <SizableText>Notifications</SizableText>
-          </Tabs.Trigger>
+          </Tabs.Tab>
         </Tabs.List>
       </YStack>
 
@@ -160,17 +160,17 @@ const TabsAdvancedUnderline = () => {
   const [tabState, setTabState] = useState<{
     currentTab: string
     /**
-     * Layout of the trigger user might intend to select (hovering / focusing)
+     * Layout of the Tab user might intend to select (hovering / focusing)
      */
-    intentAt: TabTriggerLayout | null
+    intentAt: TabLayout | null
     /**
-     * Layout of the trigger user selected
+     * Layout of the Tab user selected
      */
-    activeAt: TabTriggerLayout | null
+    activeAt: TabLayout | null
     /**
      * Used to get the direction of activation for animating the active indicator
      */
-    prevActiveAt: TabTriggerLayout | null
+    prevActiveAt: TabLayout | null
   }>({
     activeAt: null,
     currentTab: 'tab1',
@@ -201,7 +201,7 @@ const TabsAdvancedUnderline = () => {
   const exitVariant =
     direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
 
-  const handleOnInteraction: TabsTriggerProps['onInteraction'] = (type, layout) => {
+  const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
     if (type === 'select') {
       setActiveIndicator(layout)
     } else {
@@ -251,15 +251,15 @@ const TabsAdvancedUnderline = () => {
           borderBottomWidth="$0.5"
           backgroundColor="transparent"
         >
-          <Tabs.Trigger unstyled padding="$5" value="tab1" onInteraction={handleOnInteraction}>
+          <Tabs.Tab unstyled padding="$5" value="tab1" onInteraction={handleOnInteraction}>
             <SizableText>Profile</SizableText>
-          </Tabs.Trigger>
-          <Tabs.Trigger unstyled padding="$5" value="tab2" onInteraction={handleOnInteraction}>
+          </Tabs.Tab>
+          <Tabs.Tab unstyled padding="$5" value="tab2" onInteraction={handleOnInteraction}>
             <SizableText>Connections</SizableText>
-          </Tabs.Trigger>
-          <Tabs.Trigger unstyled padding="$5" value="tab3" onInteraction={handleOnInteraction}>
+          </Tabs.Tab>
+          <Tabs.Tab unstyled padding="$5" value="tab3" onInteraction={handleOnInteraction}>
             <SizableText>Notifications</SizableText>
-          </Tabs.Trigger>
+          </Tabs.Tab>
         </Tabs.List>
       </YStack>
 
