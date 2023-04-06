@@ -41,7 +41,7 @@ import { Button } from 'tamagui' // or @tamagui/button
 import { Toast, ToastProvider, useToast } from 'tamagui' // or @tamagui/toast
 
 export default () => (
-  <ToastProvider native={["mobile"]}>
+  <ToastProvider native={['mobile']}>
     <CurrentToast />
     <MyPage />
     <ToastViewport />
@@ -118,7 +118,7 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
       name: 'native',
       required: false,
       type: 'boolean | ToastNativePlatform | ToastNativePlatform[]',
-      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`
+      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
     },
     {
       name: `burntOptions`,
@@ -131,7 +131,7 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
       required: false,
       type: `NotificationOptions`,
       description: `Options for the notification API if you're using native toasts on web`,
-    }
+    },
   ]}
 />
 
@@ -325,22 +325,13 @@ Non-native toasts:
 You should change the positioning of your [`<ToastViewport>`](#toastviewport). For instance, if you want them to appear from top right:
 
 ```tsx
-<ToastViewport
-  flexDirection="column-reverse"
-  top={0}
-  right={0}
-/>
+<ToastViewport flexDirection="column-reverse" top={0} right={0} />
 ```
 
 Or for bottom center:
 
 ```tsx
-<ToastViewport
-  flexDirection="column"
-  bottom={0}
-  left={0}
-  right={0}
-/>
+<ToastViewport flexDirection="column" bottom={0} left={0} right={0} />
 ```
 
 <Notice theme="blue">
@@ -359,15 +350,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 const SafeToastViewport = () => {
   const { left, top, right } = useSafeAreaInsets()
   return (
-    <ToastViewport
-      flexDirection="column-reverse"
-      top={top}
-      left={left}
-      right={right}
-    />
+    <ToastViewport flexDirection="column-reverse" top={top} left={left} right={right} />
   )
 }
-
 ```
 
 #### Can I send toasts to different toast viewports?
@@ -375,31 +360,21 @@ const SafeToastViewport = () => {
 Yes, but you will have to name them and then reference the viewport name on the `<Toast>` component. for instance:
 
 ```tsx
-
 const App = () => {
   return (
     <ToastProvider>
-      <ToastViewport /> // name will be "default"
+      <ToastViewport /> {/* name will be "default" */}
       <ToastViewport name="viewport-custom" />
     </ToastProvider>
   )
 }
 
-
 const MyComponent = () => {
-  return (
-    <Toast> // goes to default viewport
-      // ...
-    </Toast>
-  )
+  return <Toast>{/* goes to default viewport */}</Toast>
 }
 
 const MyComponent2 = () => {
-  return (
-    <Toast viewportName="viewport-custom">
-      // ...
-    </Toast>
-  )
+  return <Toast viewportName="viewport-custom" />
 }
 ```
 
@@ -448,7 +423,7 @@ export default () => {
 }
 ```
 
-##### Multiple Toast
+##### Multiple Toasts
 
 <Notice>
   To use multiple toasts, you should pass `multipleToasts` to your `ToastViewport`.
