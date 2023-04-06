@@ -10,22 +10,8 @@ export function UserDetailScreen() {
   const [selectedTab, setSelectedTab] = useState('selectedTab')
 
   return (
-    <YStack f={1} jc="center" ai="center" space>
-         <Button {...link}>Home</Button>
-      {
-        // TabBar
-        <XGroup theme={'blue'}>
-          {tabs.map((tab) => (
-            <Button
-              backgroundColor={selectedTab === tab ? '$color8' : undefined}
-              hoverStyle={{ backgroundColor: '$color7' }}
-              key={tab + 'tabbutton'}
-            >
-              {tab}
-            </Button>
-          ))}
-        </XGroup>
-      }
+    <YStack debug f={1} jc="center" ai="center" space>
+      <Button {...link}>Home</Button>
     </YStack>
-  ) 
+  )
 }
