@@ -11,7 +11,14 @@ export function TabsDemo() {
     <>
       {demo === 'horizontal' ? <HorizontalTabs /> : <VerticalTabs />}
 
-      <XStack ai="center" space pos="absolute" b="$3" l="$4" $xxs={{ dsp: 'none' }}>
+      <XStack
+        alignItems="center"
+        space
+        position="absolute"
+        bottom="$3"
+        left="$4"
+        $xxs={{ display: 'none' }}
+      >
         <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demo}
         </Button>
@@ -28,29 +35,50 @@ const HorizontalTabs = () => {
       flexDirection="column"
       width={400}
       height={150}
-      br="$4"
+      borderRadius="$4"
     >
       <Tabs.List disablePassBorderRadius="bottom" aria-label="Manage your account">
-        <Tabs.Trigger theme="Button" f={1} value="tab1">
+        <Tabs.Trigger theme="Button" flex={1} value="tab1">
           <SizableText fontFamily="$body">Profile</SizableText>
         </Tabs.Trigger>
-        <Tabs.Trigger theme="Button" f={1} value="tab2">
+        <Tabs.Trigger theme="Button" flex={1} value="tab2">
           <SizableText fontFamily="$body">Connections</SizableText>
         </Tabs.Trigger>
-        <Tabs.Trigger theme="Button" f={1} value="tab3">
+        <Tabs.Trigger theme="Button" flex={1} value="tab3">
           <SizableText fontFamily="$body">Notifications</SizableText>
         </Tabs.Trigger>
       </Tabs.List>
 
-      <Tabs.Content value="tab1" key="tab1" p="$5" ai="center" jc="center" f={1}>
+      <Tabs.Content
+        value="tab1"
+        key="tab1"
+        padding="$5"
+        alignItems="center"
+        justifyContent="center"
+        flex={1}
+      >
         <H5>Profile</H5>
       </Tabs.Content>
 
-      <Tabs.Content value="tab2" key="tab2" p="$5" ai="center" jc="center" f={1}>
+      <Tabs.Content
+        value="tab2"
+        key="tab2"
+        padding="$5"
+        alignItems="center"
+        justifyContent="center"
+        flex={1}
+      >
         <H5>Connections</H5>
       </Tabs.Content>
 
-      <Tabs.Content value="tab3" key="tab3" p="$5" ai="center" jc="center" f={1}>
+      <Tabs.Content
+        value="tab3"
+        key="tab3"
+        padding="$5"
+        alignItems="center"
+        justifyContent="center"
+        flex={1}
+      >
         <H5>Notifications</H5>
       </Tabs.Content>
     </Tabs>
@@ -64,7 +92,7 @@ const VerticalTabs = () => {
       flexDirection="row"
       orientation="vertical"
       width={400}
-      br="$4"
+      borderRadius="$4"
     >
       <Tabs.List disablePassBorderRadius="end" aria-label="Manage your account">
         <Tabs.Trigger theme="Button" value="tab1">
@@ -77,14 +105,35 @@ const VerticalTabs = () => {
           <SizableText>Notifications</SizableText>
         </Tabs.Trigger>
       </Tabs.List>
-      <Tabs.Content value="tab1" key="tab1" p="$2" ai="center" jc="center" f={1}>
-        <H5 ta="center">Profile</H5>
+      <Tabs.Content
+        value="tab1"
+        key="tab1"
+        padding="$2"
+        alignItems="center"
+        justifyContent="center"
+        flex={1}
+      >
+        <H5 textAlign="center">Profile</H5>
       </Tabs.Content>
-      <Tabs.Content value="tab2" key="tab2" p="$2" ai="center" jc="center" f={1}>
-        <H5 ta="center">Connections</H5>
+      <Tabs.Content
+        value="tab2"
+        key="tab2"
+        padding="$2"
+        alignItems="center"
+        justifyContent="center"
+        flex={1}
+      >
+        <H5 textAlign="center">Connections</H5>
       </Tabs.Content>
-      <Tabs.Content value="tab3" key="tab3" p="$2" ai="center" jc="center" f={1}>
-        <H5 ta="center">Notifications</H5>
+      <Tabs.Content
+        value="tab3"
+        key="tab3"
+        padding="$2"
+        alignItems="center"
+        justifyContent="center"
+        flex={1}
+      >
+        <H5 textAlign="center">Notifications</H5>
       </Tabs.Content>
     </Tabs>
   )

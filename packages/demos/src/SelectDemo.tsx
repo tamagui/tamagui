@@ -7,7 +7,7 @@ export function SelectDemo() {
   const [val, setVal] = useState('apple')
   return (
     <Select id="food" value={val} onValueChange={setVal}>
-      <Select.Trigger w={180} iconAfter={ChevronDown}>
+      <Select.Trigger width={180} iconAfter={ChevronDown}>
         <Select.Value placeholder="Something" />
       </Select.Trigger>
 
@@ -23,8 +23,8 @@ export function SelectDemo() {
       </Adapt>
 
       <Select.Content zIndex={200000}>
-        <Select.ScrollUpButton ai="center" jc="center" pos="relative" w="100%" h="$3">
-          <YStack zi={10}>
+        <Select.ScrollUpButton alignItems="center" justifyContent="center" position="relative" width="100%" height="$3">
+          <YStack zIndex={10}>
             <ChevronUp size={20} />
           </YStack>
           <LinearGradient
@@ -32,7 +32,7 @@ export function SelectDemo() {
             end={[0, 1]}
             fullscreen
             colors={['$background', '$backgroundTransparent']}
-            br="$4"
+            borderRadius="$4"
           />
         </Select.ScrollUpButton>
 
@@ -43,7 +43,7 @@ export function SelectDemo() {
               return (
                 <Select.Item index={i} key={item.name} value={item.name.toLowerCase()}>
                   <Select.ItemText>{item.name}</Select.ItemText>
-                  <Select.ItemIndicator ml="auto">
+                  <Select.ItemIndicator marginLeft="auto">
                     <Check size={16} />
                   </Select.ItemIndicator>
                 </Select.Item>
@@ -52,8 +52,8 @@ export function SelectDemo() {
           </Select.Group>
         </Select.Viewport>
 
-        <Select.ScrollDownButton ai="center" jc="center" pos="relative" w="100%" h="$3">
-          <YStack zi={10}>
+        <Select.ScrollDownButton alignItems="center" justifyContent="center" position="relative" width="100%" height="$3">
+          <YStack zIndex={10}>
             <ChevronDown size={20} />
           </YStack>
           <LinearGradient
@@ -61,7 +61,7 @@ export function SelectDemo() {
             end={[0, 1]}
             fullscreen
             colors={['$backgroundTransparent', '$background']}
-            br="$4"
+            borderRadius="$4"
           />
         </Select.ScrollDownButton>
       </Select.Content>
