@@ -4,7 +4,6 @@ import {
   SizableText,
   Switch,
   Toast,
-  ToastImperativeProvider,
   XStack,
   YStack,
   useToast,
@@ -14,11 +13,9 @@ export const ToastDemo = () => {
   const [native, setNative] = React.useState<boolean>(false)
 
   return (
-    <YStack space="$5" alignItems="center">
-      <ToastImperativeProvider options={{ native }}>
-        <ToastControl />
-        <CurrentToast />
-      </ToastImperativeProvider>
+    <YStack space alignItems="center">
+      <ToastControl native={native} />
+      <CurrentToast />
 
       <NativeOptions native={native} setNative={setNative} />
     </YStack>
@@ -50,7 +47,7 @@ const CurrentToast = () => {
   )
 }
 
-const ToastControl = () => {
+const ToastControl = ({ native }: { native: boolean }) => {
   const toast = useToast()
   return (
     <XStack space="$2" jc="center">
@@ -58,6 +55,7 @@ const ToastControl = () => {
         onPress={() => {
           toast.show('Successfully saved!', {
             message: "Don't worry, we've got your data.",
+            native,
           })
         }}
       >
