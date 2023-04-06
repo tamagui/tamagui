@@ -1,13 +1,5 @@
 import React from 'react'
-import {
-  Button,
-  SizableText,
-  Switch,
-  Toast,
-  XStack,
-  YStack,
-  useToast,
-} from 'tamagui'
+import { Button, SizableText, Switch, Toast, XStack, YStack, useToast } from 'tamagui'
 
 export const ToastDemo = () => {
   const [native, setNative] = React.useState<boolean>(false)
@@ -89,7 +81,16 @@ const NativeOptions = ({
         checked={!!native}
         onCheckedChange={(val) => setNative(val)}
       >
-        <Switch.Thumb />
+        <Switch.Thumb
+          animation={[
+            'quick',
+            {
+              transform: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+        />
       </Switch>
 
       <SizableText size="$1">Native</SizableText>
