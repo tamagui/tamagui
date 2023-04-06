@@ -93,7 +93,7 @@ const TabsAdvancedBackground = () => {
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      size="$3"
+      size="$4"
       padding="$2"
       height={150}
       flexDirection="column"
@@ -219,7 +219,7 @@ const TabsAdvancedUnderline = () => {
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      size="$3"
+      size="$4"
       height={150}
       flexDirection="column"
       activationMode="manual"

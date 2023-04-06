@@ -1,5 +1,13 @@
 import { useState } from 'react'
-import { Button, H5, SizableText, Tabs, TabsContentProps, XStack } from 'tamagui'
+import {
+  Button,
+  H5,
+  Separator,
+  SizableText,
+  Tabs,
+  TabsContentProps,
+  XStack,
+} from 'tamagui'
 
 const demos = ['horizontal', 'vertical'] as const
 const demosTitle: Record<(typeof demos)[number], string> = {
@@ -40,8 +48,15 @@ const HorizontalTabs = () => {
       width={400}
       height={150}
       borderRadius="$4"
+      borderWidth="$0.25"
+      overflow="hidden"
+      borderColor="$borderColor"
     >
-      <Tabs.List disablePassBorderRadius="bottom" aria-label="Manage your account">
+      <Tabs.List
+        separator={<Separator vertical />}
+        disablePassBorderRadius="bottom"
+        aria-label="Manage your account"
+      >
         <Tabs.Tab flex={1} value="tab1">
           <SizableText fontFamily="$body">Profile</SizableText>
         </Tabs.Tab>
@@ -52,7 +67,7 @@ const HorizontalTabs = () => {
           <SizableText fontFamily="$body">Notifications</SizableText>
         </Tabs.Tab>
       </Tabs.List>
-
+      <Separator />
       <TabsContent value="tab1">
         <H5>Profile</H5>
       </TabsContent>
@@ -76,8 +91,15 @@ const VerticalTabs = () => {
       orientation="vertical"
       width={400}
       borderRadius="$4"
+      borderWidth="$0.25"
+      overflow="hidden"
+      borderColor="$borderColor"
     >
-      <Tabs.List disablePassBorderRadius="end" aria-label="Manage your account">
+      <Tabs.List
+        disablePassBorderRadius="end"
+        aria-label="Manage your account"
+        separator={<Separator />}
+      >
         <Tabs.Tab value="tab1">
           <SizableText>Profile</SizableText>
         </Tabs.Tab>
@@ -88,6 +110,7 @@ const VerticalTabs = () => {
           <SizableText>Notifications</SizableText>
         </Tabs.Tab>
       </Tabs.List>
+      <Separator vertical />
       <TabsContent value="tab1">
         <H5 textAlign="center">Profile</H5>
       </TabsContent>
@@ -110,11 +133,11 @@ const TabsContent = (props: TabsContentProps) => {
       alignItems="center"
       justifyContent="center"
       flex={1}
-      borderColor="$borderColor"
+      borderColor="$background"
       borderRadius="$2"
       borderTopLeftRadius={0}
       borderTopRightRadius={0}
-      borderWidth="$1"
+      borderWidth="$2"
       {...props}
     >
       {props.children}

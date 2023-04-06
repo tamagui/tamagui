@@ -103,22 +103,18 @@ const TabsTriggerFrame = styled(ThemeableStack, {
     },
     unstyled: {
       false: {
-        hoverTheme: true,
-        pressTheme: true,
-        backgrounded: true,
-        borderWidth: 1,
-        borderColor: 'transparent',
+        backgroundColor: '$background',
 
         pressStyle: {
-          borderColor: 'transparent',
+          backgroundColor: '$backgroundPress',
         },
 
         hoverStyle: {
-          borderColor: 'transparent',
+          backgroundColor: '$backgroundHover',
         },
 
         focusStyle: {
-          borderColor: '$borderColorFocus',
+          backgroundColor: '$backgroundFocus',
         },
       },
     },
