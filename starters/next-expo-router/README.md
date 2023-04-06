@@ -1,4 +1,4 @@
-# Tamagui + Solito + Next + Expo Monorepo
+# Tamagui + Expo router + Solito + Next Monorepo
 
 ```sh
 npm create tamagui
@@ -6,7 +6,7 @@ npm create tamagui
 
 ## 🔦 About
 
-This monorepo is a starter for an Expo + Next.js + Tamagui + Solito app.
+This monorepo is a starter for an Expo Router + Next.js + Tamagui + Solito app.
 
 Many thanks to [@FernandoTheRojo](https://twitter.com/fernandotherojo) for the Solito starter monorepo which this was forked from. Check out his [talk about using expo + next together at Next.js Conf 2021](https://www.youtube.com/watch?v=0lnbdRweJtA).
 
@@ -14,9 +14,9 @@ Many thanks to [@FernandoTheRojo](https://twitter.com/fernandotherojo) for the S
 
 - [Tamagui](https://tamagui.dev) 🪄
 - [solito](https://solito.dev) for cross-platform navigation
+- [expo-router](https://expo.github.io/router/docs/) for having same routing concepts between web and native
 - Expo SDK
 - Next.js
-- React Navigation
 
 ## 🗂 Folder layout
 
@@ -30,7 +30,6 @@ The main apps are:
   - `app` you'll be importing most files from `app/`
     - `features` (don't use a `screens` folder. organize by feature.)
     - `provider` (all the providers that wrap the app, and some no-ops for Web.)
-    - `navigation` Next.js has a `pages/` folder. React Native doesn't. This folder contains navigation-related code for RN. You may use it for any navigation code, such as custom links.
 
 You can add other folders inside of `packages/` if you know what you're doing and have a good reason to.
 
@@ -45,7 +44,6 @@ To run with optimizer on in dev mode (just for testing, it's faster to leave it 
 To see debug output to verify the compiler, add `// debug` as a comment to the top of any file.
 
 - Expo local dev: `yarn native`
-
 
 ## Developing
 
@@ -83,7 +81,7 @@ yarn
 
 You can also install the native library inside of `packages/app` if you want to get autoimport for that package inside of the `app` folder. However, you need to be careful and install the _exact_ same version in both packages. If the versions mismatch at all, you'll potentially get terrible bugs. This is a classic monorepo issue. I use `lerna-update-wizard` to help with this (you don't need to use Lerna to use that lib).
 
-You may potentially want to have the native module transpiled for the next app. If you get error messages with ```Cannot use import statement outside a module```, you may need to use `transpilePackages` in your `next.config.js` and add the module to the array there.
+You may potentially want to have the native module transpiled for the next app. If you get error messages with `Cannot use import statement outside a module`, you may need to use `transpilePackages` in your `next.config.js` and add the module to the array there.
 
 ### Deploying to Vercel
 
