@@ -46,7 +46,6 @@ export function listenForSheetChanges() {
 
   const mo = new MutationObserver((entries) => {
     for (const entry of entries) {
-      console.log(`entry`, entry)
       if (
         (entry instanceof HTMLStyleElement && entry.sheet) ||
         (entry instanceof HTMLLinkElement && entry.href.endsWith('.css'))
@@ -68,8 +67,6 @@ export function scanAllSheets() {
   if (process.env.NODE_ENV === 'test') return
   if (!isClient) return
 
-  console.time('scanAllSheets')
-
   const sheets = document.styleSheets || []
   const current = new Set(sheets as any as CSSStyleSheet[])
   if (document.styleSheets) {
@@ -86,8 +83,6 @@ export function scanAllSheets() {
       }
     }
   }
-
-  console.timeEnd('scanAllSheets')
 }
 
 function track(id: string, remove = false) {
@@ -111,8 +106,6 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
   const cacheKey = `${rules.length}${firstSelector}${lastSelector}`
   const lastScanned = scannedCache.get(sheet)
 
-  console.warn(`SCAN`)
-
   if (!remove) {
     // avoid re-scanning
     if (lastScanned === cacheKey) {
@@ -133,7 +126,6 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
       fails++
       if (fails > 5) {
         // conservatively bail out of non-tamagui sheets
-        console.warn(`BAIL NOT TAMAGUI`, sheet)
         return
       }
       continue
@@ -149,7 +141,6 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
         delete allSelectors[identifier]
       }
     } else if (!(identifier in allSelectors)) {
-      console.log(`ADD`, identifier)
       const isTransform = identifier.startsWith('_transform')
       const shouldInsert = isTransform
         ? addTransform(identifier, cssRule.cssText, cssRule)
@@ -157,8 +148,6 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
       if (shouldInsert) {
         allSelectors[identifier] = cssRule.cssText
       }
-    } else {
-      console.warn(`????`, identifier)
     }
   }
 
@@ -212,7 +201,6 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
 
   for (const { identifier, rules } of rulesToInsert) {
     if (!shouldInsertStyleRules(identifier)) {
-      console.log(`skip`, identifier)
       continue
     }
 
@@ -244,7 +232,6 @@ export function shouldInsertStyleRules(identifier: string) {
     return true
   }
   const total = totalSelectorsInserted.get(identifier)
-  console.log(`found?`, identifier, total)
   // note, -1, we are being conservative and leaving some in
   return total === undefined || total < 2
 }
