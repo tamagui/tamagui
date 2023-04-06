@@ -28,33 +28,22 @@ package: toast
   ]}
 />
 
-## Usage
-
-### Imperative API
-
-This API offers a nice imperative interface, support for native toasts with a lot of control.
-
-#### Installation
+## Installation
 
 For native support on mobile, run `yarn add burnt` to add `burnt`, then rebuild your React Native app. React Native requires sub-dependencies with native dependencies always be hoisted to your apps package.json and Toast relies on the amazing [Burnt](https://github.com/nandorojo/burnt) library by Fernando Rojo to provide its native functionality.
 
-#### Usage
+## Usage
 
 To display the toast natively, you should either pass an array of native platforms (`native: ["ios", "web"]`), a single platform or `true` for all platforms.
 
 ```tsx
 import { Button } from 'tamagui' // or @tamagui/button
-import { Toast, ToastImperativeProvider, ToastProvider, useToast } from 'tamagui' // or @tamagui/toast
-
-const options = { native: 'mobile' }
+import { Toast, ToastProvider, useToast } from 'tamagui' // or @tamagui/toast
 
 export default () => (
-  <ToastProvider>
-    <ToastImperativeProvider options={options}>
-      <CurrentToast />
-      <MyPage />
-    </ToastImperativeProvider>
-
+  <ToastProvider native={['mobile']}>
+    <CurrentToast />
+    <MyPage />
     <ToastViewport />
   </ToastProvider>
 )
@@ -79,92 +68,6 @@ const MyPage = () => {
     <Button onPress={() => show('Done!', { message: 'Form submitted successfully.' })}>
       Show Toast
     </Button>
-  )
-}
-```
-
-### Barebone API
-
-<Notice>
-  This API does not support native toasts. For native toasts, use the [Imperative
-  API](#imperative-api).
-</Notice>
-
-#### Single Toast
-
-```tsx
-export default () => {
-  const [open, setOpen] = React.useState(false)
-  const timerRef = React.useRef(0)
-
-  React.useEffect(() => {
-    return () => clearTimeout(timerRef.current)
-  }, [])
-
-  return (
-    <YStack ai="center">
-      <Button
-        onPress={() => {
-          setOpen(false)
-          window.clearTimeout(timerRef.current)
-          timerRef.current = window.setTimeout(() => {
-            setOpen(true)
-          }, 150)
-        }}
-      >
-        Single Toast
-      </Button>
-      <Toast
-        onOpenChange={setOpen}
-        open={open}
-        animation="100ms"
-        enterStyle={{ x: -20, opacity: 0 }}
-        exitStyle={{ x: -20, opacity: 0 }}
-        opacity={1}
-        x={0}
-      >
-        <Toast.Title>Subscribed!</Toast.Title>
-        <Toast.Description>We'll be in touch.</Toast.Description>
-      </Toast>
-    </YStack>
-  )
-}
-```
-
-#### Multiple Toast
-
-<Notice>
-  To use multiple toasts, you should pass `multipleToasts` to your `ToastViewport`.
-  Otherwise there'll be issues when swipe-dismissing or animating toasts.
-</Notice>
-
-```tsx
-export default () => {
-  const [savedCount, setSavedCount] = React.useState(0)
-
-  return (
-    <YStack ai="center">
-      <Button
-        onPress={() => {
-          setSavedCount((old) => old + 1)
-        }}
-      >
-        Show toast
-      </Button>
-      {[...Array(savedCount)].map((_, index) => (
-        <Toast
-          key={index}
-          animation="100ms"
-          enterStyle={{ x: -20, opacity: 0 }}
-          exitStyle={{ x: -20, opacity: 0 }}
-          opacity={1}
-          x={0}
-        >
-          <Toast.Title>Subscribed!</Toast.Title>
-          <Toast.Description>We'll be in touch.</Toast.Description>
-        </Toast>
-      ))}
-    </YStack>
   )
 }
 ```
@@ -211,12 +114,30 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
       type: 'string',
       default: 'A unique generated ID',
     },
+    {
+      name: 'native',
+      required: false,
+      type: 'boolean | ToastNativePlatform | ToastNativePlatform[]',
+      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
+    },
+    {
+      name: `burntOptions`,
+      required: false,
+      type: `Omit<BurntToastOptions, 'title' | 'message' | 'duration'>`,
+      description: `Options for the burnt package if you're using native toasts on mobile`,
+    },
+    {
+      name: `notificationOptions`,
+      required: false,
+      type: `NotificationOptions`,
+      description: `Options for the notification API if you're using native toasts on web`,
+    },
   ]}
 />
 
 ### ToastViewport
 
-The portal for toasts to be directed to. Should be inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks/1.0.0), adds:
+The portal for toasts to be directed to. Should be used inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks/1.0.0), adds:
 
 <PropsTable
   data={[
@@ -251,7 +172,7 @@ The portal for toasts to be directed to. Should be inside [ToastProvider](#toast
 
 ### Toast
 
-Contains the Title, Description, Action and Close component. Should be inside [ToastProvider](#toastprovider). Extends [Stack](/docs/components/stack#api) and adds:
+Contains the Title, Description, Action and Close component. Should be used inside [ToastProvider](#toastprovider). Extends [Stack](/docs/components/stack#api) and adds:
 
 <PropsTable
   data={[
@@ -345,38 +266,23 @@ Contains the Title, Description, Action and Close component. Should be inside [T
 
 #### Toast.Title
 
-Should be inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext).
+Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext).
 
 #### Toast.Description
 
-Should be inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext).
+Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext).
 
 #### Toast.Close
 
-Should be inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
+Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
 
 #### Toast.Action
 
-Should be inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
-
-### ToastImperativeProvider
-
-Wrap components within this provider to use `useToast()` inside them.
-
-<PropsTable
-  data={[
-    {
-      name: 'options',
-      type: 'ToastImperativeOptions',
-      required: false,
-      description: `Used to provide defaults to imperative API. Options can be overwritten when calling \`show()\`.`,
-    },
-  ]}
-/>
+Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
 
 ### useToast
 
-Used when using the imperative API.
+Should be used inside [ToastProvider](#toastprovider).
 
 <PropsTable
   title="Returns"
@@ -403,18 +309,18 @@ Used when using the imperative API.
 
 #### How to change the placement of toasts?
 
-##### Native toasts
+Native toasts:
 
 - iOS (burnt): Supports top or bottom placements. Adjustable by passing `from` to `burntOptions`:
 
 ```tsx
-<ToastImperativeProvider options={{ burntOptions: { from: 'bottom' } }}>
+<ToastProvider burntOptions={{ from: 'bottom' }}>
 ```
 
 - Android (burnt): Not supported.
 - Web (Notification API): Not supported.
 
-##### Non-native toasts
+Non-native toasts:
 
 You should change the positioning of your [`<ToastViewport>`](#toastviewport). For instance, if you want them to appear from top right:
 
@@ -449,7 +355,7 @@ const SafeToastViewport = () => {
 }
 ```
 
-#### Can I have multiple viewports?
+#### Can I send toasts to different toast viewports?
 
 Yes, but you will have to name them and then reference the viewport name on the `<Toast>` component. for instance:
 
@@ -457,17 +363,100 @@ Yes, but you will have to name them and then reference the viewport name on the 
 const App = () => {
   return (
     <ToastProvider>
-      <ToastViewport /> // name will be "default"
+      <ToastViewport /> {/* name will be "default" */}
       <ToastViewport name="viewport-custom" />
     </ToastProvider>
   )
 }
 
 const MyComponent = () => {
-  return <Toast> // goes to default viewport // ...</Toast>
+  return <Toast>{/* goes to default viewport */}</Toast>
 }
 
 const MyComponent2 = () => {
-  return <Toast viewportName="viewport-custom">// ...</Toast>
+  return <Toast viewportName="viewport-custom" />
+}
+```
+
+#### How can I have more control over toasts?
+
+You will have to opt-out of the native toasts and only use custom ones. Here are some examples:
+
+##### Single Toast
+
+```tsx
+export default () => {
+  const [open, setOpen] = React.useState(false)
+  const timerRef = React.useRef(0)
+
+  React.useEffect(() => {
+    return () => clearTimeout(timerRef.current)
+  }, [])
+
+  return (
+    <YStack ai="center">
+      <Button
+        onPress={() => {
+          setOpen(false)
+          window.clearTimeout(timerRef.current)
+          timerRef.current = window.setTimeout(() => {
+            setOpen(true)
+          }, 150)
+        }}
+      >
+        Single Toast
+      </Button>
+      <Toast
+        onOpenChange={setOpen}
+        open={open}
+        animation="100ms"
+        enterStyle={{ x: -20, opacity: 0 }}
+        exitStyle={{ x: -20, opacity: 0 }}
+        opacity={1}
+        x={0}
+      >
+        <Toast.Title>Subscribed!</Toast.Title>
+        <Toast.Description>We'll be in touch.</Toast.Description>
+      </Toast>
+    </YStack>
+  )
+}
+```
+
+##### Multiple Toasts
+
+<Notice>
+  To use multiple toasts, you should pass `multipleToasts` to your `ToastViewport`.
+  Otherwise there'll be issues when swipe-dismissing or animating toasts.
+</Notice>
+
+```tsx
+export default () => {
+  const [savedCount, setSavedCount] = React.useState(0)
+
+  return (
+    <YStack ai="center">
+      <Button
+        onPress={() => {
+          setSavedCount((old) => old + 1)
+        }}
+      >
+        Show toast
+      </Button>
+      {[...Array(savedCount)].map((_, index) => (
+        <Toast
+          key={index}
+          animation="100ms"
+          enterStyle={{ x: -20, opacity: 0 }}
+          exitStyle={{ x: -20, opacity: 0 }}
+          opacity={1}
+          x={0}
+        >
+          <Toast.Title>Subscribed!</Toast.Title>
+          <Toast.Description>We'll be in touch.</Toast.Description>
+        </Toast>
+      ))}
+    </YStack>
+  )
 }
 ```

@@ -25,6 +25,9 @@
       "complexity": {
         "useSimplifiedLogicExpression": "off",
         "useOptionalChain": "off"
+      },
+      "a11y": {
+        "noHeaderScope": "off"
       }
     }
   },
