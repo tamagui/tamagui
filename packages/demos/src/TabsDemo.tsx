@@ -42,15 +42,15 @@ const HorizontalTabs = () => {
       borderRadius="$4"
     >
       <Tabs.List disablePassBorderRadius="bottom" aria-label="Manage your account">
-        <Tabs.Trigger flex={1} value="tab1">
+        <Tabs.Tab flex={1} value="tab1">
           <SizableText fontFamily="$body">Profile</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger flex={1} value="tab2">
+        </Tabs.Tab>
+        <Tabs.Tab flex={1} value="tab2">
           <SizableText fontFamily="$body">Connections</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger flex={1} value="tab3">
+        </Tabs.Tab>
+        <Tabs.Tab flex={1} value="tab3">
           <SizableText fontFamily="$body">Notifications</SizableText>
-        </Tabs.Trigger>
+        </Tabs.Tab>
       </Tabs.List>
 
       <TabsContent value="tab1">
@@ -78,15 +78,15 @@ const VerticalTabs = () => {
       borderRadius="$4"
     >
       <Tabs.List disablePassBorderRadius="end" aria-label="Manage your account">
-        <Tabs.Trigger value="tab1">
+        <Tabs.Tab value="tab1">
           <SizableText>Profile</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger value="tab2">
+        </Tabs.Tab>
+        <Tabs.Tab value="tab2">
           <SizableText>Connections</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger value="tab3">
+        </Tabs.Tab>
+        <Tabs.Tab value="tab3">
           <SizableText>Notifications</SizableText>
-        </Tabs.Trigger>
+        </Tabs.Tab>
       </Tabs.List>
       <TabsContent value="tab1">
         <H5 textAlign="center">Profile</H5>
