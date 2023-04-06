@@ -98,22 +98,23 @@ const TabsAdvancedBackground = () => {
       height={150}
       flexDirection="column"
       activationMode="manual"
-      backgroundColor="$backgroundStrong"
-      borderRadius="$2"
+      backgroundColor="$background"
+      borderRadius="$4"
       position="relative"
     >
       <YStack>
         {intentAt && (
           <TabsRovingIndicator
+            borderRadius="$4"
             width={intentAt.width}
             height={intentAt.height}
             x={intentAt.x}
             y={intentAt.y}
-            opacity={0.4}
           />
         )}
         {activeAt && (
           <TabsRovingIndicator
+            borderRadius="$4"
             theme="active"
             width={activeAt.width}
             height={activeAt.height}
@@ -122,19 +123,19 @@ const TabsAdvancedBackground = () => {
           />
         )}
         <Tabs.List
+          disablePassBorderRadius
           loop={false}
           aria-label="Manage your account"
-          
           space
           backgroundColor="transparent"
         >
-          <Tabs.Trigger value="tab1" onInteraction={handleOnInteraction}>
+          <Tabs.Trigger unstyled value="tab1" onInteraction={handleOnInteraction}>
             <SizableText>Profile</SizableText>
           </Tabs.Trigger>
-          <Tabs.Trigger value="tab2" onInteraction={handleOnInteraction}>
+          <Tabs.Trigger unstyled value="tab2" onInteraction={handleOnInteraction}>
             <SizableText>Connections</SizableText>
           </Tabs.Trigger>
-          <Tabs.Trigger value="tab3" onInteraction={handleOnInteraction}>
+          <Tabs.Trigger unstyled value="tab3" onInteraction={handleOnInteraction}>
             <SizableText>Notifications</SizableText>
           </Tabs.Trigger>
         </Tabs.List>
@@ -217,16 +218,15 @@ const TabsAdvancedUnderline = () => {
       height={150}
       flexDirection="column"
       activationMode="manual"
-      backgroundColor="$backgroundStrong"
-      borderRadius="$2"
+      backgroundColor="$background"
+      borderRadius="$4"
     >
       <YStack>
         {intentAt && (
           <TabsRovingIndicator
             width={intentAt.width}
-            height="$0.25"
+            height="$0.5"
             x={intentAt.x}
-            
             bottom={0}
           />
         )}
@@ -235,16 +235,15 @@ const TabsAdvancedUnderline = () => {
             theme="active"
             active
             width={activeAt.width}
-            height="$0.25"
+            height="$0.5"
             x={activeAt.x}
-            
             bottom={0}
           />
         )}
         <Tabs.List
+          disablePassBorderRadius
           loop={false}
           aria-label="Manage your account"
-          
           borderBottomLeftRadius={0}
           borderBottomRightRadius={0}
           paddingBottom="$1.5"
@@ -252,13 +251,13 @@ const TabsAdvancedUnderline = () => {
           borderBottomWidth="$0.5"
           backgroundColor="transparent"
         >
-          <Tabs.Trigger paddingHorizontal="$4" value="tab1" onInteraction={handleOnInteraction}>
+          <Tabs.Trigger unstyled padding="$5" value="tab1" onInteraction={handleOnInteraction}>
             <SizableText>Profile</SizableText>
           </Tabs.Trigger>
-          <Tabs.Trigger paddingHorizontal="$4" value="tab2" onInteraction={handleOnInteraction}>
+          <Tabs.Trigger unstyled padding="$5" value="tab2" onInteraction={handleOnInteraction}>
             <SizableText>Connections</SizableText>
           </Tabs.Trigger>
-          <Tabs.Trigger paddingHorizontal="$4" value="tab3" onInteraction={handleOnInteraction}>
+          <Tabs.Trigger unstyled padding="$5" value="tab3" onInteraction={handleOnInteraction}>
             <SizableText>Notifications</SizableText>
           </Tabs.Trigger>
         </Tabs.List>
@@ -282,14 +281,13 @@ const TabsAdvancedUnderline = () => {
 const TabsRovingIndicator = styled(Stack, {
   position: 'absolute',
   backgroundColor: '$color5',
-  opacity: 1,
+  opacity: 0.7,
   animation: '100ms',
-  borderRadius: '$4',
 
   variants: {
     active: {
       true: {
-        backgroundColor: '$color8',
+        backgroundColor: '$color6',
       },
     },
   },

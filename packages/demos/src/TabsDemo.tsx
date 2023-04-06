@@ -15,7 +15,14 @@ export function TabsDemo() {
     <>
       {demo === 'horizontal' ? <HorizontalTabs /> : <VerticalTabs />}
 
-      <XStack ai="center" space pos="absolute" b="$3" l="$4" $xxs={{ dsp: 'none' }}>
+      <XStack
+        alignItems="center"
+        space
+        position="absolute"
+        bottom="$3"
+        left="$4"
+        $xxs={{ display: 'none' }}
+      >
         <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demosTitle[demo]}
         </Button>
@@ -32,16 +39,16 @@ const HorizontalTabs = () => {
       flexDirection="column"
       width={400}
       height={150}
-      br="$4"
+      borderRadius="$4"
     >
       <Tabs.List disablePassBorderRadius="bottom" aria-label="Manage your account">
-        <Tabs.Trigger theme="Button" f={1} value="tab1">
+        <Tabs.Trigger flex={1} value="tab1">
           <SizableText fontFamily="$body">Profile</SizableText>
         </Tabs.Trigger>
-        <Tabs.Trigger theme="Button" f={1} value="tab2">
+        <Tabs.Trigger flex={1} value="tab2">
           <SizableText fontFamily="$body">Connections</SizableText>
         </Tabs.Trigger>
-        <Tabs.Trigger theme="Button" f={1} value="tab3">
+        <Tabs.Trigger flex={1} value="tab3">
           <SizableText fontFamily="$body">Notifications</SizableText>
         </Tabs.Trigger>
       </Tabs.List>
@@ -68,27 +75,27 @@ const VerticalTabs = () => {
       flexDirection="row"
       orientation="vertical"
       width={400}
-      br="$4"
+      borderRadius="$4"
     >
       <Tabs.List disablePassBorderRadius="end" aria-label="Manage your account">
-        <Tabs.Trigger theme="Button" value="tab1">
+        <Tabs.Trigger value="tab1">
           <SizableText>Profile</SizableText>
         </Tabs.Trigger>
-        <Tabs.Trigger theme="Button" value="tab2">
+        <Tabs.Trigger value="tab2">
           <SizableText>Connections</SizableText>
         </Tabs.Trigger>
-        <Tabs.Trigger theme="Button" value="tab3">
+        <Tabs.Trigger value="tab3">
           <SizableText>Notifications</SizableText>
         </Tabs.Trigger>
       </Tabs.List>
       <TabsContent value="tab1">
-        <H5 ta="center">Profile</H5>
+        <H5 textAlign="center">Profile</H5>
       </TabsContent>
       <TabsContent value="tab2">
-        <H5 ta="center">Connections</H5>
+        <H5 textAlign="center">Connections</H5>
       </TabsContent>
       <TabsContent value="tab3">
-        <H5 ta="center">Notifications</H5>
+        <H5 textAlign="center">Notifications</H5>
       </TabsContent>
     </Tabs>
   )
@@ -99,10 +106,10 @@ const TabsContent = (props: TabsContentProps) => {
     <Tabs.Content
       backgroundColor="$background"
       key="tab3"
-      p="$2"
-      ai="center"
-      jc="center"
-      f={1}
+      padding="$2"
+      alignItems="center"
+      justifyContent="center"
+      flex={1}
       borderColor="$borderColor"
       borderRadius="$2"
       borderTopLeftRadius={0}
