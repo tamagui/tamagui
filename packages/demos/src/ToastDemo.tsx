@@ -42,7 +42,7 @@ const CurrentToast = () => {
 const ToastControl = ({ native }: { native: boolean }) => {
   const toast = useToast()
   return (
-    <XStack space="$2" jc="center">
+    <XStack space="$2" justifyContent="center">
       <Button
         onPress={() => {
           toast.show('Successfully saved!', {

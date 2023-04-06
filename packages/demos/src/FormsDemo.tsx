@@ -17,15 +17,15 @@ export function FormsDemo(props: { size: SizeTokens }) {
 
   return (
     <Form
-      ai="center"
-      miw={300}
+      alignItems="center"
+      minWidth={300}
       space
       onSubmit={() => setStatus('submitting')}
-      bw={1}
-      br="$4"
-      bc="$background"
-      boc="$borderColor"
-      p="$8"
+      borderWidth={1}
+      borderRadius="$4"
+      backgroundColor="$background"
+      borderColor="$borderColor"
+      padding="$8"
     >
       <H4>{status[0].toUpperCase() + status.slice(1)}</H4>
 

@@ -6,7 +6,7 @@ export const ToastDuplicateDemo = () => {
   const [savedCount, setSavedCount] = React.useState(0)
 
   return (
-    <YStack ai="center">
+    <YStack alignItems="center">
       <Button
         onPress={() => {
           setSavedCount((old) => old + 1)
@@ -26,7 +26,7 @@ export const ToastDuplicateDemo = () => {
           scale={1}
           animation="100ms"
         >
-          <XStack space ai="center">
+          <XStack space alignItems="center">
             <YStack>
               <CheckCircle2 />
             </YStack>
