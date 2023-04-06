@@ -88,6 +88,7 @@ const TabsTriggerFrame = styled(ThemeableStack, {
   flexWrap: 'nowrap',
   flexDirection: 'row',
   cursor: 'pointer',
+  focusable: true,
 
   variants: {
     size: {
@@ -98,9 +99,8 @@ const TabsTriggerFrame = styled(ThemeableStack, {
         pointerEvents: 'none',
       },
     },
-    theme: {
-      Button: {
-        focusable: true,
+    unstyled: {
+      false: {
         hoverTheme: true,
         pressTheme: true,
         backgrounded: true,
@@ -120,13 +120,13 @@ const TabsTriggerFrame = styled(ThemeableStack, {
         },
       },
     },
-  },
+  } as const,
 })
 
 type TabTriggerLayout = LayoutRectangle
 type InteractionType = 'select' | 'focus' | 'hover'
 
-type TabsTriggerFrameProps = ThemeableStackProps
+type TabsTriggerFrameProps = GetProps<typeof TabsTriggerFrame>
 type TabsTriggerProps = TabsTriggerFrameProps & {
   /** The value for the tabs state to be changed to after activation of the trigger */
   value: string
@@ -143,6 +143,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
         value,
         disabled = false,
         onInteraction,
+        unstyled = false,
         ...triggerProps
       } = props
       const context = useTabsContext(TRIGGER_NAME, __scopeTabs)
@@ -210,6 +211,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
               onHoverOut={composeEventHandlers(props.onHoverOut, () => {
                 onInteraction?.('hover', null)
               })}
+              unstyled={unstyled}
               role="tab"
               aria-selected={isSelected}
               aria-controls={contentId}
