@@ -1,7 +1,11 @@
 import { useState } from 'react'
-import { Button, H5, SizableText, Tabs, XStack } from 'tamagui'
+import { Button, H5, SizableText, Tabs, TabsContentProps, XStack } from 'tamagui'
 
 const demos = ['horizontal', 'vertical'] as const
+const demosTitle: Record<(typeof demos)[number], string> = {
+  horizontal: 'Horizontal',
+  vertical: 'Vertical',
+}
 
 export function TabsDemo() {
   const [demoIndex, setDemoIndex] = useState(0)
@@ -13,7 +17,7 @@ export function TabsDemo() {
 
       <XStack ai="center" space pos="absolute" b="$3" l="$4" $xxs={{ dsp: 'none' }}>
         <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
-          {demo}
+          {demosTitle[demo]}
         </Button>
       </XStack>
     </>
@@ -42,17 +46,17 @@ const HorizontalTabs = () => {
         </Tabs.Trigger>
       </Tabs.List>
 
-      <Tabs.Content value="tab1" key="tab1" p="$5" ai="center" jc="center" f={1}>
+      <TabsContent value="tab1">
         <H5>Profile</H5>
-      </Tabs.Content>
+      </TabsContent>
 
-      <Tabs.Content value="tab2" key="tab2" p="$5" ai="center" jc="center" f={1}>
+      <TabsContent value="tab2">
         <H5>Connections</H5>
-      </Tabs.Content>
+      </TabsContent>
 
-      <Tabs.Content value="tab3" key="tab3" p="$5" ai="center" jc="center" f={1}>
+      <TabsContent value="tab3">
         <H5>Notifications</H5>
-      </Tabs.Content>
+      </TabsContent>
     </Tabs>
   )
 }
@@ -77,15 +81,36 @@ const VerticalTabs = () => {
           <SizableText>Notifications</SizableText>
         </Tabs.Trigger>
       </Tabs.List>
-      <Tabs.Content value="tab1" key="tab1" p="$2" ai="center" jc="center" f={1}>
+      <TabsContent value="tab1">
         <H5 ta="center">Profile</H5>
-      </Tabs.Content>
-      <Tabs.Content value="tab2" key="tab2" p="$2" ai="center" jc="center" f={1}>
+      </TabsContent>
+      <TabsContent value="tab2">
         <H5 ta="center">Connections</H5>
-      </Tabs.Content>
-      <Tabs.Content value="tab3" key="tab3" p="$2" ai="center" jc="center" f={1}>
+      </TabsContent>
+      <TabsContent value="tab3">
         <H5 ta="center">Notifications</H5>
-      </Tabs.Content>
+      </TabsContent>
     </Tabs>
+  )
+}
+
+const TabsContent = (props: TabsContentProps) => {
+  return (
+    <Tabs.Content
+      backgroundColor="$background"
+      key="tab3"
+      p="$2"
+      ai="center"
+      jc="center"
+      f={1}
+      borderColor="$borderColor"
+      borderRadius="$2"
+      borderTopLeftRadius={0}
+      borderTopRightRadius={0}
+      borderWidth="$1"
+      {...props}
+    >
+      {props.children}
+    </Tabs.Content>
   )
 }

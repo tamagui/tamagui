@@ -14,6 +14,10 @@ import {
 } from 'tamagui'
 
 const demos = ['background', 'underline'] as const
+const demosTitle: Record<(typeof demos)[number], string> = {
+  background: 'Background Indicator',
+  underline: 'Underline Indicator',
+}
 
 export const TabsAdvancedDemo = () => {
   const [demoIndex, setDemoIndex] = useState(0)
@@ -24,7 +28,7 @@ export const TabsAdvancedDemo = () => {
 
       <XStack ai="center" space pos="absolute" b="$3" l="$4" $xxs={{ dsp: 'none' }}>
         <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
-          {demo}
+          {demosTitle[demo]}
         </Button>
       </XStack>
     </>
@@ -95,17 +99,14 @@ const TabsAdvancedBackground = () => {
       flexDirection="column"
       activationMode="manual"
     >
-      <Tabs.List
-        loop={false}
-        aria-label="Manage your account"
-        disablePassBorderRadius
-      >
+      <Tabs.List loop={false} aria-label="Manage your account" disablePassBorderRadius>
         {intentAt && (
           <TabsRovingIndicator
             width={intentAt.width}
             height={intentAt.height}
             x={intentAt.x}
             y={intentAt.y}
+            opacity={0.4}
           />
         )}
 
@@ -209,48 +210,48 @@ const TabsAdvancedUnderline = () => {
       flexDirection="column"
       activationMode="manual"
     >
-      <YStack borderColor="$color3" borderBottomWidth="$0.5">
-        <Tabs.List
-          loop={false}
-          aria-label="Manage your account"
-          disablePassBorderRadius
-          borderBottomLeftRadius={0}
-          borderBottomRightRadius={0}
-          pb="$1.5"
-        >
-          {intentAt && (
-            <TabsRovingIndicator
-              width={intentAt.width}
-              height="$0.25"
-              x={intentAt.x}
-              borderRadius={0}
-              bottom={-3}
-            />
-          )}
+      <Tabs.List
+        loop={false}
+        aria-label="Manage your account"
+        disablePassBorderRadius
+        borderBottomLeftRadius={0}
+        borderBottomRightRadius={0}
+        pb="$1.5"
+        borderColor="$color3"
+        borderBottomWidth="$0.5"
+      >
+        {intentAt && (
+          <TabsRovingIndicator
+            width={intentAt.width}
+            height="$0.25"
+            x={intentAt.x}
+            borderRadius={0}
+            bottom={-3}
+          />
+        )}
 
-          {activeAt && (
-            <TabsRovingIndicator
-              theme="active"
-              active
-              width={activeAt.width}
-              height="$0.25"
-              x={activeAt.x}
-              borderRadius={0}
-              bottom={-3}
-            />
-          )}
+        {activeAt && (
+          <TabsRovingIndicator
+            theme="active"
+            active
+            width={activeAt.width}
+            height="$0.25"
+            x={activeAt.x}
+            borderRadius={0}
+            bottom={-3}
+          />
+        )}
 
-          <Tabs.Trigger value="tab1" onInteraction={handleOnInteraction}>
-            <SizableText>Profile</SizableText>
-          </Tabs.Trigger>
-          <Tabs.Trigger value="tab2" onInteraction={handleOnInteraction}>
-            <SizableText>Connections</SizableText>
-          </Tabs.Trigger>
-          <Tabs.Trigger value="tab3" onInteraction={handleOnInteraction}>
-            <SizableText>Notifications</SizableText>
-          </Tabs.Trigger>
-        </Tabs.List>
-      </YStack>
+        <Tabs.Trigger value="tab1" onInteraction={handleOnInteraction}>
+          <SizableText>Profile</SizableText>
+        </Tabs.Trigger>
+        <Tabs.Trigger value="tab2" onInteraction={handleOnInteraction}>
+          <SizableText>Connections</SizableText>
+        </Tabs.Trigger>
+        <Tabs.Trigger value="tab3" onInteraction={handleOnInteraction}>
+          <SizableText>Notifications</SizableText>
+        </Tabs.Trigger>
+      </Tabs.List>
 
       <AnimatePresence
         exitBeforeEnter
