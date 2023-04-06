@@ -76,8 +76,8 @@ const AppInner = () => {
       }
       const { isSponsoring, tierIncludesStudio } = await checkForSponsorship(githubLogin)
       if (!isSponsoring) {
-        alert(`You are not a tamagui sponsor. Sponsor the project to access Studio.`)
-        location.href = `https://github.com/sponsors/natew`
+        // alert(`You are not a tamagui sponsor. Sponsor the project to access Studio.`)
+        // location.href = `https://github.com/sponsors/natew`
       } else if (!tierIncludesStudio) {
         alert(
           `You are a sponsor, but your tier doesn't include Studio access. Please get a tier that includes Studio.`

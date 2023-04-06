@@ -15,7 +15,7 @@ import { disposeAll, getOptions } from './utils.js'
 const COMMAND_MAP = {
   build: {
     shorthands: ['b'],
-    description: `Use to pre-build a Tamagui component directory`,
+    description: 'Use to pre-build a Tamagui component directory',
     flags: {
       '--help': Boolean,
       '--debug': Boolean,
@@ -74,7 +74,7 @@ const COMMAND_MAP = {
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
-      await studio(options, !flags["--local"])
+      await studio(options, !flags['--local'])
     },
   },
 }
