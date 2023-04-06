@@ -1,22 +1,20 @@
-import { Check } from '@tamagui/lucide-icons'
 import React from 'react'
 import {
   Button,
-  Checkbox,
-  Label,
+  SizableText,
+  Switch,
   Toast,
   ToastImperativeProvider,
-  ToastNativePlatform,
   XStack,
   YStack,
   useToast,
 } from 'tamagui'
 
 export const ToastDemo = () => {
-  const [native, setNative] = React.useState<ToastNativePlatform[]>([])
+  const [native, setNative] = React.useState<boolean>(false)
 
   return (
-    <YStack space="$5">
+    <YStack space="$5" alignItems="center">
       <ToastImperativeProvider options={{ native }}>
         <ToastControl />
         <CurrentToast />
@@ -80,33 +78,23 @@ const NativeOptions = ({
   native,
   setNative,
 }: {
-  native: ToastNativePlatform[]
-  setNative: (native: ToastNativePlatform[]) => void
+  native: boolean
+  setNative: (native: boolean) => void
 }) => {
-  const supportedNativePlatforms: ToastNativePlatform[] = ['web', 'mobile']
-
   return (
-    <XStack space>
-      {supportedNativePlatforms.map((platform) => (
-        <XStack ai="center" space="$2" key={platform}>
-          <Checkbox
-            id={platform}
-            checked={native?.includes(platform)}
-            onCheckedChange={(checked) => {
-              if (checked) setNative([...native, platform])
-              else setNative(native.filter((val) => val !== platform))
-            }}
-            size="$3"
-          >
-            <Checkbox.Indicator>
-              <Check />
-            </Checkbox.Indicator>
-          </Checkbox>
-          <Label size="$3" htmlFor={platform}>
-            Native {platform} toast
-          </Label>
-        </XStack>
-      ))}
+    <XStack space="$3">
+      <SizableText size="$1">Custom</SizableText>
+
+      <Switch
+        theme="active"
+        size="$1"
+        checked={!!native}
+        onCheckedChange={(val) => setNative(val)}
+      >
+        <Switch.Thumb />
+      </Switch>
+
+      <SizableText size="$1">Native</SizableText>
     </XStack>
   )
 }
