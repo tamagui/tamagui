@@ -103,30 +103,35 @@ const TabsAdvancedBackground = () => {
       position="relative"
     >
       <YStack>
-        {intentAt && (
-          <TabsRovingIndicator
-            borderRadius="$4"
-            width={intentAt.width}
-            height={intentAt.height}
-            x={intentAt.x}
-            y={intentAt.y}
-          />
-        )}
-        {activeAt && (
-          <TabsRovingIndicator
-            borderRadius="$4"
-            theme="active"
-            width={activeAt.width}
-            height={activeAt.height}
-            x={activeAt.x}
-            y={activeAt.y}
-          />
-        )}
+        <AnimatePresence>
+          {intentAt && (
+            <TabsRovingIndicator
+              borderRadius="$4"
+              width={intentAt.width}
+              height={intentAt.height}
+              x={intentAt.x}
+              y={intentAt.y}
+            />
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {activeAt && (
+            <TabsRovingIndicator
+              borderRadius="$4"
+              theme="active"
+              width={activeAt.width}
+              height={activeAt.height}
+              x={activeAt.x}
+              y={activeAt.y}
+            />
+          )}
+        </AnimatePresence>
+
         <Tabs.List
           disablePassBorderRadius
           loop={false}
           aria-label="Manage your account"
-          space
+          space="$2"
           backgroundColor="transparent"
         >
           <Tabs.Tab unstyled value="tab1" onInteraction={handleOnInteraction}>
@@ -222,24 +227,28 @@ const TabsAdvancedUnderline = () => {
       borderRadius="$4"
     >
       <YStack>
-        {intentAt && (
-          <TabsRovingIndicator
-            width={intentAt.width}
-            height="$0.5"
-            x={intentAt.x}
-            bottom={0}
-          />
-        )}
-        {activeAt && (
-          <TabsRovingIndicator
-            theme="active"
-            active
-            width={activeAt.width}
-            height="$0.5"
-            x={activeAt.x}
-            bottom={0}
-          />
-        )}
+        <AnimatePresence>
+          {intentAt && (
+            <TabsRovingIndicator
+              width={intentAt.width}
+              height="$0.5"
+              x={intentAt.x}
+              bottom={0}
+            />
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {activeAt && (
+            <TabsRovingIndicator
+              theme="active"
+              active
+              width={activeAt.width}
+              height="$0.5"
+              x={activeAt.x}
+              bottom={0}
+            />
+          )}
+        </AnimatePresence>
         <Tabs.List
           disablePassBorderRadius
           loop={false}
@@ -251,13 +260,28 @@ const TabsAdvancedUnderline = () => {
           borderBottomWidth="$0.5"
           backgroundColor="transparent"
         >
-          <Tabs.Tab unstyled padding="$5" value="tab1" onInteraction={handleOnInteraction}>
+          <Tabs.Tab
+            unstyled
+            padding="$5"
+            value="tab1"
+            onInteraction={handleOnInteraction}
+          >
             <SizableText>Profile</SizableText>
           </Tabs.Tab>
-          <Tabs.Tab unstyled padding="$5" value="tab2" onInteraction={handleOnInteraction}>
+          <Tabs.Tab
+            unstyled
+            padding="$5"
+            value="tab2"
+            onInteraction={handleOnInteraction}
+          >
             <SizableText>Connections</SizableText>
           </Tabs.Tab>
-          <Tabs.Tab unstyled padding="$5" value="tab3" onInteraction={handleOnInteraction}>
+          <Tabs.Tab
+            unstyled
+            padding="$5"
+            value="tab3"
+            onInteraction={handleOnInteraction}
+          >
             <SizableText>Notifications</SizableText>
           </Tabs.Tab>
         </Tabs.List>
@@ -283,11 +307,17 @@ const TabsRovingIndicator = styled(Stack, {
   backgroundColor: '$color5',
   opacity: 0.7,
   animation: '100ms',
-
+  enterStyle: {
+    opacity: 0,
+  },
+  exitStyle: {
+    opacity: 0,
+  },
   variants: {
     active: {
       true: {
-        backgroundColor: '$color6',
+        backgroundColor: '$color8',
+        opacity: 0.6,
       },
     },
   },
