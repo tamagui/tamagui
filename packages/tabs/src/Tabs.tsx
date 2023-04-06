@@ -245,6 +245,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
                   (event) => {
                     if ([' ', 'Enter'].includes(event.key)) {
                       context.onChange(value)
+                      event.preventDefault()
                     }
                   }
                 ),
