@@ -7,6 +7,7 @@ import {
   Tabs,
   TabsContentProps,
   XStack,
+  YStack,
 } from 'tamagui'
 
 const demos = ['horizontal', 'vertical'] as const
@@ -20,7 +21,7 @@ export function TabsDemo() {
   const demo = demos[demoIndex]
 
   return (
-    <>
+    <YStack paddingHorizontal="$4" position='unset'>
       {demo === 'horizontal' ? <HorizontalTabs /> : <VerticalTabs />}
 
       <XStack
@@ -35,7 +36,7 @@ export function TabsDemo() {
           {demosTitle[demo]}
         </Button>
       </XStack>
-    </>
+    </YStack>
   )
 }
 
