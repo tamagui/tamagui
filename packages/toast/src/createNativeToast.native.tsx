@@ -17,6 +17,6 @@ export const createNativeToast: CreateNativeToastsFn = (
 }
 
 export const hideNativeToast: HideNativeToastsFn = () => {
-  const Burnt: { dismissAllAlerts: () => any } = require('burnt')
+  const Burnt = require('burnt') as typeof import('burnt')
   Burnt.dismissAllAlerts()
 }
