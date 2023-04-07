@@ -151,9 +151,9 @@ const TabsAdvancedBackground = () => {
         enterVariant={enterVariant}
         exitVariant={exitVariant}
       >
-        <AnimatedYStack key={currentTab} animation="100ms" x={0} o={1} f={1}>
-          <Tabs.Content value={currentTab} forceMount f={1} jc="center">
-            <H5 ta="center">{currentTab}</H5>
+        <AnimatedYStack key={currentTab} animation="100ms" x={0} opacity={1} flex={1}>
+          <Tabs.Content value={currentTab} forceMount flex={1} justifyContent="center">
+            <H5 textAlign="center">{currentTab}</H5>
           </Tabs.Content>
         </AnimatedYStack>
       </AnimatePresence>
@@ -292,9 +292,9 @@ const TabsAdvancedUnderline = () => {
         enterVariant={enterVariant}
         exitVariant={exitVariant}
       >
-        <AnimatedYStack key={currentTab} animation="100ms" x={0} o={1} f={1}>
-          <Tabs.Content value={currentTab} forceMount f={1} jc="center">
-            <H5 ta="center">{currentTab}</H5>
+        <AnimatedYStack key={currentTab} animation="100ms" x={0} opacity={1} flex={1}>
+          <Tabs.Content value={currentTab} forceMount flex={1} justifyContent="center">
+            <H5 textAlign="center">{currentTab}</H5>
           </Tabs.Content>
         </AnimatedYStack>
       </AnimatePresence>
