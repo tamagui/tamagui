@@ -505,8 +505,8 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         userSelect?: import("csstype").Property.UserSelect | undefined;
         outlineColor?: import("csstype").Property.OutlineColor | undefined;
         outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
-        outlineOffset?: import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
-        outlineWidth?: import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
+        outlineOffset?: import("@tamagui/core").SpaceTokens | undefined;
+        outlineWidth?: import("@tamagui/core").SpaceTokens | undefined;
         rel?: any;
         download?: any;
         onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
