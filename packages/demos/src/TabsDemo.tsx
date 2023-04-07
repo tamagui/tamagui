@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, H5, SizableText, Tabs, XStack } from 'tamagui'
+import { Button, H5, SizableText, Tabs, XStack, YStack } from 'tamagui'
 
 const demos = ['horizontal', 'vertical'] as const
 
@@ -8,7 +8,7 @@ export function TabsDemo() {
   const demo = demos[demoIndex]
 
   return (
-    <>
+    <YStack paddingHorizontal="$4" position='unset'>
       {demo === 'horizontal' ? <HorizontalTabs /> : <VerticalTabs />}
 
       <XStack
@@ -23,7 +23,7 @@ export function TabsDemo() {
           {demo}
         </Button>
       </XStack>
-    </>
+    </YStack>
   )
 }
 
