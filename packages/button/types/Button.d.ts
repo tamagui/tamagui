@@ -423,8 +423,8 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         userSelect?: import("csstype").Property.UserSelect | undefined;
         outlineColor?: import("csstype").Property.OutlineColor | undefined;
         outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
-        outlineOffset?: import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
-        outlineWidth?: import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
+        outlineOffset?: import("@tamagui/web").SpaceTokens | undefined;
+        outlineWidth?: import("@tamagui/web").SpaceTokens | undefined;
         rel?: any;
         download?: any;
         onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
