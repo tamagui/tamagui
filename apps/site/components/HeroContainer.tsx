@@ -62,7 +62,15 @@ export function HeroContainer({
       }}
     >
       <AnimationDriverTogglerContextProvider>
-        <HeroContainerInner demoMultiple={demoMultiple}>{children}</HeroContainerInner>
+        <XStack
+          maxHeight="100%"
+          maxWidth="100%"
+          // @ts-expect-error
+          position="unset"
+          justifyContent={demoMultiple ? 'flex-start' : undefined}
+        >
+          <HeroContainerInner demoMultiple={demoMultiple}>{children}</HeroContainerInner>
+        </XStack>
         <XStack
           position="absolute"
           display="inline-flex"
@@ -70,6 +78,7 @@ export function HeroContainer({
           justifyContent="space-between"
           top={16}
           l="$3"
+          $xxs={{ display: 'none' }}
           $gtMd={{
             l: '$4',
           }}
@@ -135,30 +144,28 @@ const HeroContainerInner = ({
     <AnimationDriverProvider driver={driver} key={driverName}>
       <ErrorBoundary>
         {demoMultiple ? (
-          <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
-            <XStack space="$3" px="$8">
-              <Theme reset>
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="blue">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="red">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="pink">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="orange">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="green">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="yellow">
-                <Card>{children}</Card>
-              </Theme>
-            </XStack>
+          <XStack space="$3" px="$8">
+            <Theme reset>
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="blue">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="red">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="pink">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="orange">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="green">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="yellow">
+              <Card>{children}</Card>
+            </Theme>
           </XStack>
         ) : (
           children
