@@ -28,7 +28,7 @@ export const defaultStyles = {
 
   focusStyle: {
     outlineColor: '$borderColorFocus',
-    outlineWidth: '2',
+    outlineWidth: 2,
     outlineStyle: 'solid',
     borderColor: '$borderColorFocus',
   },

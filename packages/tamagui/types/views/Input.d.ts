@@ -15,7 +15,7 @@ export declare const defaultStyles: {
     };
     readonly focusStyle: {
         readonly outlineColor: "$borderColorFocus";
-        readonly outlineWidth: "2";
+        readonly outlineWidth: 2;
         readonly outlineStyle: "solid";
         readonly borderColor: "$borderColorFocus";
     };
