@@ -15,6 +15,7 @@ export function SandboxThemeChange() {
 
 export function Inner(props: { children?: any }) {
   const [theme, setTheme] = useState('pink' as any)
+  console.log('theme now', theme)
 
   return (
     <YStack ai="center" jc="center" gap="$5">

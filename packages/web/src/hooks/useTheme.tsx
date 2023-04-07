@@ -226,7 +226,7 @@ export const useChangeThemeEffect = (
           const shouldChange = themeManager.getStateShouldChange(next, state)
 
           if (shouldChange) {
-            themeManager.updateState(next)
+            themeManager.updateState(next, true)
           }
 
           if (shouldChange) {
@@ -234,7 +234,6 @@ export const useChangeThemeEffect = (
           } else {
             if (!next && parentManager?.state.name !== state.name) {
               // were changing back to parent state
-              debugger
               setThemeState(createState)
             }
           }
@@ -243,6 +242,7 @@ export const useChangeThemeEffect = (
 
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
         if (keys?.length) {
+          debugger
           setThemeState(createState)
         }
       })
@@ -264,17 +264,13 @@ export const useChangeThemeEffect = (
       return prev
     }
 
-    // // returns previous theme manager if no change
-    const themeManager =
-      prev?.themeManager || new ThemeManager(props, root ? 'root' : parentManager)
+    //  returns previous theme manager if no change
+    const themeManager = new ThemeManager(props, root ? 'root' : parentManager)
 
     const isNewTheme = Boolean(
       themeManager !== parentManager ||
         (prev && themeManager.state.name !== prev.state.name)
     )
-
-    // // returns previous theme manager if no change
-    // const _ =  new ThemeManager(props, root ? 'root' : parentManager)
 
     // only inverse relies on this for ssr
     const mounted = !props.inverse ? true : root || prev?.mounted
