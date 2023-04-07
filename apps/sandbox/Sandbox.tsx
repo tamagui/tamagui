@@ -62,21 +62,21 @@ const Button2 = styled(Button, {
   },
 })
 
-export const Heading = styled(Text, {
-  name: 'Heading',
-  color: '$color',
+// export const Heading = styled(Text, {
+//   name: 'Heading',
+//   color: '$color',
 
-  variants: {
-    type: {
-      myVariant: {
-        fontFamily: '$body',
-        fontSize: 20,
-        lh: '$24',
-        fow: '$bold',
-      },
-    },
-  } as const,
-})
+//   variants: {
+//     type: {
+//       myVariant: {
+//         fontFamily: '$body',
+//         fontSize: 20,
+//         lh: '$24',
+//         fow: '$bold',
+//       },
+//     },
+//   } as const,
+// })
 
 export const MyInput = styled(Input, {
   borderColor: 'red',
@@ -92,12 +92,6 @@ export const Sandbox = () => {
 
   return (
     <SandboxFrame>
-      <MyInput />
-
-      {/* <Button2 ok debug="verbose">
-        hi
-      </Button2> */}
-
       {/* this comment keeps indent */}
 
       <SandboxThemeChange />
