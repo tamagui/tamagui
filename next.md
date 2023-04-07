@@ -1,3 +1,4 @@
+- Switch unstyled - make it so it doesn't do any theme stuff
 
 - font-family is being output to DOM on text element
 - font weights in css are generating extra variables with "undefined" value if not filled in

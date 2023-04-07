@@ -96,8 +96,6 @@ export const Sandbox = () => {
     <SandboxFrame>
       <MyInput />
 
-      <SwitchDemo />
-
       {/* <Button2 ok debug="verbose">
         hi
       </Button2> */}
