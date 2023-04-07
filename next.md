@@ -47,8 +47,8 @@ Ali:
 - [ ] document keyboard avoiding view in `Sheet.mdx`
 - [ ] input bug 
   - [ ] https://discord.com/channels/909986013848412191/1091749199378387065/1091909256023904377
-- [ ] Toasts starter
-- [ ] Studio get running
+- [x] Toasts starter
+- [x] Studio get running
 - [x] RadioGroup needs a press style color for the indicator
 - [ ] @tamagui/change-animation-driver document
 - [x] Switch for animation driver on website doesn't animate
@@ -58,7 +58,7 @@ Ali:
   - [x] on native it can stay 1px
   - [ ] (nate) make focusStyle border darker
 - [ ] WARN  Sending onAnimatedValueUpdate with no listeners registered
-- [ ] <YStack space="$3" $gtSm={{ space: '$6'}}> not working again (likely fixed)
+- [x] `<YStack space="$3" $gtSm={{ space: '$6'}}>` not working again (likely fixed)
 - [ ] bezier on css animations
 - [x] tabs 
   - [x] advanced demo is weird it has a bg and a separator
@@ -72,11 +72,12 @@ Ali:
   - [x] TabsTriggerFrame variant theme Button is weird does that do anythig?
 - [ ] lets make Card.extractable into Card.stylable() and deprecate it
   - [ ] and document on styled() page
-- [ ] Card unstyled
-- [ ] <Select native> (web)
+- [ ] `<Select native>` (web)
+- [ ] `<RadioGroup native>` (web)
 - [ ] unstyled for 
   - [ ] Select
   - [x] Tabs
+  - [ ] Card
 - [x] go through the docs and remove shorthands - use full forms
 - [x] go through the docs and change usage imports to tamagui instead of other packages (e.g. @tamagui/stack -> tamagui)
 
