@@ -64,8 +64,11 @@ export const GroupFrame = styled(ThemeableStack, {
 })
 
 export type GroupProps = GetProps<typeof GroupFrame> & {
+  /**
+   * @deprecated use `orientation` instead
+   */
   axis?: 'horizontal' | 'vertical'
-
+  orientation?: 'horizontal' | 'vertical'
   scrollable?: boolean
   /**
    * @default false
@@ -93,6 +96,7 @@ function createGroup(verticalDefault: boolean) {
         separator,
         scrollable,
         axis = verticalDefault ? 'vertical' : 'horizontal',
+        orientation = axis,
         disabled: disabledProp,
         disablePassBorderRadius: disablePassBorderRadiusProp,
         borderRadius,
@@ -100,7 +104,7 @@ function createGroup(verticalDefault: boolean) {
         ...restProps
       } = getExpandedShorthands(activeProps)
 
-      const vertical = axis === 'vertical'
+      const vertical = orientation === 'vertical'
       const [itemChildrenCount, setItemChildrenCount] = useControllableState({
         defaultProp: forceUseItem ? 1 : 0,
       })
@@ -166,7 +170,7 @@ function createGroup(verticalDefault: boolean) {
       return (
         <GroupProvider
           disablePassBorderRadius={disablePassBorderRadius}
-          vertical={axis === 'vertical'}
+          vertical={orientation === 'vertical'}
           radius={radius}
           disabled={disabledProp}
           onItemMount={onItemMount}
@@ -176,11 +180,11 @@ function createGroup(verticalDefault: boolean) {
           <GroupFrame
             ref={ref}
             size={size}
-            flexDirection={axis === 'horizontal' ? 'row' : 'column'}
+            flexDirection={orientation === 'horizontal' ? 'row' : 'column'}
             borderRadius={borderRadius}
             {...restProps}
           >
-            {wrapScroll({ ...activeProps, axis }, indexedChildren)}
+            {wrapScroll({ ...activeProps, orientation }, indexedChildren)}
           </GroupFrame>
         </GroupProvider>
       )
@@ -259,16 +263,16 @@ export const YGroup = Group
 export const XGroup = createGroup(false)
 
 const wrapScroll = (
-  { scrollable, axis, showScrollIndicator = false }: GroupProps,
+  { scrollable, orientation, showScrollIndicator = false }: GroupProps,
   children: any
 ) => {
   if (scrollable)
     return (
       <ScrollView
-        {...(axis === 'vertical' && {
+        {...(orientation === 'vertical' && {
           showsVerticalScrollIndicator: showScrollIndicator,
         })}
-        {...(axis === 'horizontal' && {
+        {...(orientation === 'horizontal' && {
           horizontal: true,
           showsHorizontalScrollIndicator: showScrollIndicator,
         })}

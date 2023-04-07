@@ -1126,12 +1126,6 @@ export const getSubStyle = (
   return styleOut
 }
 
-export const insertSplitStyles: StyleSplitter = (...args) => {
-  const res = getSplitStyles(...args)
-  insertStyleRules(res.rulesToInsert)
-  return res
-}
-
 // on native no need to insert any css
 const useInsertEffectCompat = isWeb
   ? useInsertionEffect || useIsomorphicLayoutEffect
@@ -1151,7 +1145,7 @@ export const useSplitStyles: StyleSplitter = (...args) => {
 
 function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleObject) {
   if (process.env.TAMAGUI_TARGET === 'web') {
-    if (!shouldInsertStyleRules(styleObject)) {
+    if (!shouldInsertStyleRules(styleObject.identifier)) {
       return
     }
     updateRules(styleObject.identifier, styleObject.rules)

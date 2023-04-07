@@ -13,7 +13,7 @@ export function ThemeInverseDemo() {
 
 function Buttons() {
   return (
-    <YStack bc="$background" p="$3" br="$3" space>
+    <YStack backgroundColor="$background" padding="$3" borderRadius="$3" space>
       <Button>Dark</Button>
       <Button themeInverse>Inversed</Button>
       <Button theme="alt1">Alt1 Dark</Button>

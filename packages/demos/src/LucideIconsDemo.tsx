@@ -19,7 +19,7 @@ export function LucideIconsDemo() {
     const icons = lucideIcons.filter((x) => x.key.startsWith(search.toLowerCase()))
     return icons.slice(0, 835).map(({ Icon, name }) => {
       return (
-        <YStack h={size} ai="center" jc="center" key={name}>
+        <YStack height={size} alignItems="center" justifyContent="center" key={name}>
           <Icon size={size * 0.25} />
           <Spacer />
           <Paragraph size="$2" o={0.5}>
@@ -31,10 +31,10 @@ export function LucideIconsDemo() {
   }, [search])
 
   return (
-    <YStack als="stretch" p="$4" pb="$0" space>
+    <YStack alignSelf="stretch" padding="$4" paddingBottom="$0" space>
       <Input value={searchRaw} onChangeText={setSearch} placeholder="Search..." />
 
-      <YStack h={420}>
+      <YStack height={420}>
         <ScrollView>
           <Grid itemMinWidth={size}>{iconsMemo}</Grid>
         </ScrollView>
