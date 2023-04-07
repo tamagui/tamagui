@@ -175,13 +175,15 @@ export function createComponent<
 
     // conditional but if ever true stays true
     // [animated, inversed]
-    const stateRef = useRef(
-      undefined as any as {
-        hasAnimated?: boolean
-        themeShallow?: boolean
-        didAccessThemeVariableValue?: boolean
-      }
-    )
+    const stateRef = isRSC
+      ? { current: {} }
+      : useRef(
+          undefined as any as {
+            hasAnimated?: boolean
+            themeShallow?: boolean
+            didAccessThemeVariableValue?: boolean
+          }
+        )
     stateRef.current ??= {}
 
     /**
