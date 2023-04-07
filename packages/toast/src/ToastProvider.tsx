@@ -2,8 +2,10 @@ import { createCollection } from '@tamagui/collection'
 import { TamaguiElement, useId } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
-import { PortalProvider } from '@tamagui/portal'
 import * as React from 'react'
+
+import { ToastImperativeProvider, ToastNativeValue } from './ToastImperative'
+import { BurntToastOptions } from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * ToastProvider
@@ -64,6 +66,19 @@ interface ToastProviderProps {
    * @defaultValue unique generated identifier
    */
   id?: string
+  /**
+   * Will show a native toast if is true or is set to the current platform. On iOS, it wraps `SPIndicator` and `SPAlert`. On Android, it wraps `ToastAndroid`. On web, it wraps Notification API. Mobile's native features are handled by `burnt`.
+   * Only works with the imperative `useToast` hook.
+   */
+  native?: ToastNativeValue
+  /**
+   * Options for the burnt package if you're using native toasts on mobile
+   */
+  burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
+  /**
+   * Options for the notification API if you're using native toasts on web
+   */
+  notificationOptions?: NotificationOptions
 }
 
 const ToastProvider: React.FC<ToastProviderProps> = (
@@ -72,6 +87,9 @@ const ToastProvider: React.FC<ToastProviderProps> = (
   const {
     __scopeToast,
     id: providedId,
+    burntOptions,
+    native,
+    notificationOptions,
     label = 'Notification',
     duration = 5000,
     swipeDirection = 'right',
@@ -83,6 +101,17 @@ const ToastProvider: React.FC<ToastProviderProps> = (
   const [toastCount, setToastCount] = React.useState(0)
   const isFocusedToastEscapeKeyDownRef = React.useRef(false)
   const isClosePausedRef = React.useRef(false)
+
+  // memo context to avoid expensive re-renders
+  const options = React.useMemo(() => {
+    return {
+      duration,
+      burntOptions,
+      native,
+      notificationOptions,
+    }
+    // nested simple object so JSON.stringify
+  }, [JSON.stringify([duration, burntOptions, native, notificationOptions])])
 
   return (
     <Collection.Provider scope={__scopeToast}>
@@ -105,7 +134,7 @@ const ToastProvider: React.FC<ToastProviderProps> = (
         isFocusedToastEscapeKeyDownRef={isFocusedToastEscapeKeyDownRef}
         isClosePausedRef={isClosePausedRef}
       >
-        {children}
+        <ToastImperativeProvider options={options}>{children}</ToastImperativeProvider>
       </ToastProviderProvider>
     </Collection.Provider>
   )

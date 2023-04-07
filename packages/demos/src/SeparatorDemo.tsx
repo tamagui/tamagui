@@ -3,15 +3,15 @@ import { Paragraph, Separator, XStack, YStack } from 'tamagui'
 
 export function SeparatorDemo() {
   return (
-    <YStack w="100%" maw={300} mx={15}>
+    <YStack width="100%" maxWidth={300} marginHorizontal={15}>
       <Paragraph fontWeight="800">Tamagui</Paragraph>
       <Paragraph>A cross-platform component library.</Paragraph>
-      <Separator my={15} />
-      <XStack h={20} ai="center">
+      <Separator marginVertical={15} />
+      <XStack height={20} alignItems="center">
         <Paragraph>Blog</Paragraph>
-        <Separator als="stretch" vertical mx={15} />
+        <Separator alignSelf="stretch" vertical marginHorizontal={15} />
         <Paragraph>Docs</Paragraph>
-        <Separator als="stretch" vertical mx={15} />
+        <Separator alignSelf="stretch" vertical marginHorizontal={15} />
         <Paragraph>Source</Paragraph>
       </XStack>
     </YStack>

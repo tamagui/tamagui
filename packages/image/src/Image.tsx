@@ -29,8 +29,8 @@ type BaseProps = Omit<
   StyledImageProps,
   'source' | 'width' | 'height' | 'style' | 'onLayout'
 > & {
-  width: number | string
-  height: number | string
+  width: number
+  height: number
   src: string | StyledImageProps['source']
 }
 

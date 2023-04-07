@@ -724,8 +724,8 @@ type SharedBaseExtraStyleProps = {
   userSelect?: Properties['userSelect']
   outlineColor?: Properties['outlineColor']
   outlineStyle?: Properties['outlineStyle']
-  outlineOffset?: Properties['outlineOffset']
-  outlineWidth?: Properties['outlineWidth']
+  outlineOffset?: number | SpaceTokens
+  outlineWidth?: number | SpaceTokens
 }
 
 type OverrideRNStyleProps =

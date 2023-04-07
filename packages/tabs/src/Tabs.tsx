@@ -42,32 +42,34 @@ type TabsListProps = TabsListFrameProps & {
   loop?: boolean
 }
 
-const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
-  (props: ScopedProps<TabsListProps>, forwardedRef) => {
-    const { __scopeTabs, loop = true, children, ...listProps } = props
-    const context = useTabsContext(TAB_LIST_NAME, __scopeTabs)
-    const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs)
+const TabsList = TabsListFrame.extractable(
+  React.forwardRef<HTMLDivElement, TabsListProps>(
+    (props: ScopedProps<TabsListProps>, forwardedRef) => {
+      const { __scopeTabs, loop = true, children, ...listProps } = props
+      const context = useTabsContext(TAB_LIST_NAME, __scopeTabs)
+      const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs)
 
-    return (
-      <RovingFocusGroup
-        asChild
-        orientation={context.orientation}
-        dir={context.dir}
-        loop={loop}
-        {...rovingFocusGroupScope}
-      >
-        <TabsListFrame
-          role="tablist"
-          aria-orientation={context.orientation}
-          ref={forwardedRef}
-          axis={context.orientation}
-          {...listProps}
+      return (
+        <RovingFocusGroup
+          asChild
+          orientation={context.orientation}
+          dir={context.dir}
+          loop={loop}
+          {...rovingFocusGroupScope}
         >
-          {children}
-        </TabsListFrame>
-      </RovingFocusGroup>
-    )
-  }
+          <TabsListFrame
+            role="tablist"
+            aria-orientation={context.orientation}
+            ref={forwardedRef}
+            axis={context.orientation}
+            {...listProps}
+          >
+            {children}
+          </TabsListFrame>
+        </RovingFocusGroup>
+      )
+    }
+  )
 )
 
 TabsList.displayName = TAB_LIST_NAME
@@ -86,6 +88,7 @@ const TabsTriggerFrame = styled(ThemeableStack, {
   flexDirection: 'row',
   cursor: 'pointer',
   backgroundColor: '$background',
+  focusable: true,
 
   variants: {
     size: {
@@ -97,20 +100,49 @@ const TabsTriggerFrame = styled(ThemeableStack, {
         pointerEvents: 'none',
       },
     },
+    unstyled: {
+      false: {
+        backgroundColor: '$background',
+
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
+        },
+
+        hoverStyle: {
+          backgroundColor: '$backgroundHover',
+        },
+
+        focusStyle: {
+          backgroundColor: '$backgroundFocus',
+        },
+      },
+    },
+  } as const,
+  defaultVariants: {
+    unstyled: false,
   },
 })
 
-type TabTriggerLayout = LayoutRectangle
+/**
+ * @deprecated Use `TabLayout` instead
+ */
+type TabsTriggerLayout = LayoutRectangle
+type TabLayout = LayoutRectangle
 type InteractionType = 'select' | 'focus' | 'hover'
 
 type TabsTriggerFrameProps = GetProps<typeof TabsTriggerFrame>
+/**
+ * @deprecated use `TabTabsProps` instead
+ */
 type TabsTriggerProps = TabsTriggerFrameProps & {
   /** The value for the tabs state to be changed to after activation of the trigger */
   value: string
 
   /** Used for making custom indicators when trigger interacted with */
-  onInteraction?: (type: InteractionType, layout: TabTriggerLayout | null) => void
+  onInteraction?: (type: InteractionType, layout: TabLayout | null) => void
 }
+
+type TabsTabProps = TabsTriggerProps
 
 const TabsTrigger = TabsTriggerFrame.extractable(
   React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
@@ -127,7 +159,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
       const triggerId = makeTriggerId(context.baseId, value)
       const contentId = makeContentId(context.baseId, value)
       const isSelected = value === context.value
-      const [layout, setLayout] = React.useState<TabTriggerLayout | null>(null)
+      const [layout, setLayout] = React.useState<TabLayout | null>(null)
       const triggerRef = React.useRef<HTMLButtonElement>(null)
       const groupItemProps = useGroupItem({ disabled })
 
@@ -220,6 +252,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
                   (event) => {
                     if ([' ', 'Enter'].includes(event.key)) {
                       context.onChange(value)
+                      event.preventDefault()
                     }
                   }
                 ),
@@ -270,35 +303,37 @@ type TabsContentProps = TabsContentFrameProps & {
   forceMount?: true
 }
 
-const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
-  (props: ScopedProps<TabsContentProps>, forwardedRef) => {
-    const { __scopeTabs, value, forceMount, children, ...contentProps } = props
-    const context = useTabsContext(CONTENT_NAME, __scopeTabs)
-    const isSelected = value === context.value
-    const show = forceMount || isSelected
+const TabsContent = TabsContentFrame.extractable(
+  React.forwardRef<HTMLDivElement, TabsContentProps>(
+    (props: ScopedProps<TabsContentProps>, forwardedRef) => {
+      const { __scopeTabs, value, forceMount, children, ...contentProps } = props
+      const context = useTabsContext(CONTENT_NAME, __scopeTabs)
+      const isSelected = value === context.value
+      const show = forceMount || isSelected
 
-    const triggerId = makeTriggerId(context.baseId, value)
-    const contentId = makeContentId(context.baseId, value)
+      const triggerId = makeTriggerId(context.baseId, value)
+      const contentId = makeContentId(context.baseId, value)
 
-    if (!show) return null
-    return (
-      <TabsContentFrame
-        key={value}
-        data-state={isSelected ? 'active' : 'inactive'}
-        data-orientation={context.orientation}
-        role="tabpanel"
-        aria-labelledby={triggerId}
-        // @ts-ignore
-        hidden={!show}
-        id={contentId}
-        tabIndex={0}
-        {...contentProps}
-        ref={forwardedRef}
-      >
-        {children}
-      </TabsContentFrame>
-    )
-  }
+      if (!show) return null
+      return (
+        <TabsContentFrame
+          key={value}
+          data-state={isSelected ? 'active' : 'inactive'}
+          data-orientation={context.orientation}
+          role="tabpanel"
+          aria-labelledby={triggerId}
+          // @ts-ignore
+          hidden={!show}
+          id={contentId}
+          tabIndex={0}
+          {...contentProps}
+          ref={forwardedRef}
+        >
+          {children}
+        </TabsContentFrame>
+      )
+    }
+  )
 )
 
 TabsContent.displayName = CONTENT_NAME
@@ -360,61 +395,66 @@ type TabsProps = TabsFrameProps & {
 }
 
 export const Tabs = withStaticProperties(
-  React.forwardRef<HTMLDivElement, TabsProps>(
-    (props: ScopedProps<TabsProps>, forwardedRef) => {
-      const {
-        __scopeTabs,
-        value: valueProp,
-        onValueChange,
-        defaultValue,
-        orientation = 'horizontal',
-        dir,
-        activationMode = 'automatic',
-        size = '$true',
-        ...tabsProps
-      } = props
-      const direction = useDirection(dir)
-      const [value, setValue] = useControllableState({
-        prop: valueProp,
-        onChange: onValueChange,
-        defaultProp: defaultValue ?? '',
-      })
-      const [triggersCount, setTriggersCount] = React.useState(0)
-      const registerTrigger = useEvent(() => setTriggersCount((v) => v + 1))
-      const unregisterTrigger = useEvent(() => setTriggersCount((v) => v - 1))
+  TabsFrame.extractable(
+    React.forwardRef<HTMLDivElement, TabsProps>(
+      (props: ScopedProps<TabsProps>, forwardedRef) => {
+        const {
+          __scopeTabs,
+          value: valueProp,
+          onValueChange,
+          defaultValue,
+          orientation = 'horizontal',
+          dir,
+          activationMode = 'automatic',
+          size = '$true',
+          ...tabsProps
+        } = props
+        const direction = useDirection(dir)
+        const [value, setValue] = useControllableState({
+          prop: valueProp,
+          onChange: onValueChange,
+          defaultProp: defaultValue ?? '',
+        })
+        const [triggersCount, setTriggersCount] = React.useState(0)
+        const registerTrigger = useEvent(() => setTriggersCount((v) => v + 1))
+        const unregisterTrigger = useEvent(() => setTriggersCount((v) => v - 1))
 
-      return (
-        <TabsProvider
-          scope={__scopeTabs}
-          baseId={useId()}
-          value={value}
-          onChange={setValue}
-          orientation={orientation}
-          dir={direction}
-          activationMode={activationMode}
-          size={size}
-          registerTrigger={registerTrigger}
-          triggersCount={triggersCount}
-          unregisterTrigger={unregisterTrigger}
-        >
-          <TabsFrame
-            direction={direction}
-            //   dir={direction}
-            data-orientation={orientation}
-            {...tabsProps}
-            ref={forwardedRef}
-          />
-        </TabsProvider>
-      )
-    }
+        return (
+          <TabsProvider
+            scope={__scopeTabs}
+            baseId={useId()}
+            value={value}
+            onChange={setValue}
+            orientation={orientation}
+            dir={direction}
+            activationMode={activationMode}
+            size={size}
+            registerTrigger={registerTrigger}
+            triggersCount={triggersCount}
+            unregisterTrigger={unregisterTrigger}
+          >
+            <TabsFrame
+              direction={direction}
+              //   dir={direction}
+              data-orientation={orientation}
+              {...tabsProps}
+              ref={forwardedRef}
+            />
+          </TabsProvider>
+        )
+      }
+    )
   ),
   {
     List: TabsList,
+    /**
+     * @deprecated Use Tabs.Tab instead
+     */
     Trigger: TabsTrigger,
+    Tab: TabsTrigger,
     Content: TabsContent,
   }
 )
-
 Tabs.displayName = TABS_NAME
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -431,6 +471,8 @@ export type {
   TabsProps,
   TabsListProps,
   TabsTriggerProps,
+  TabsTriggerLayout,
+  TabsTabProps,
   TabsContentProps,
-  TabTriggerLayout,
+  TabLayout,
 }
