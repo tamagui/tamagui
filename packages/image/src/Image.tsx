@@ -1,6 +1,7 @@
 import {
   GetProps,
   RadiusTokens,
+  SizeTokens,
   StackProps,
   isWeb,
   setupReactNative,
@@ -29,8 +30,8 @@ type BaseProps = Omit<
   StyledImageProps,
   'source' | 'width' | 'height' | 'style' | 'onLayout'
 > & {
-  width: number
-  height: number
+  width: number | SizeTokens
+  height: number | SizeTokens
   src: string | StyledImageProps['source']
 }
 
