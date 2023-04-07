@@ -8,7 +8,7 @@ export type StyledOptions<ParentComponent extends StylableComponent> = GetProps<
 };
 type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer P> ? P : GetProps<A>;
 type GetVariantProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, any, infer V> ? V : {};
-export declare function styled<ParentComponent extends StylableComponent, Variants extends VariantDefinitions<ParentComponent> | void = VariantDefinitions<ParentComponent> | void>(Component: ParentComponent, options?: GetProps<ParentComponent> & {
+export declare function styled<ParentComponent extends StylableComponent, Variants extends VariantDefinitions<ParentComponent> | void = VariantDefinitions<ParentComponent> | void>(ComponentIn: ParentComponent, options?: GetProps<ParentComponent> & {
     name?: string;
     variants?: Variants | undefined;
     defaultVariants?: {
