@@ -4389,7 +4389,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/change-animation-driver@workspace:packages/change-animation-driver":
+"@tamagui/change-animation-driver@1.11.2, @tamagui/change-animation-driver@workspace:packages/change-animation-driver":
   version: 0.0.0-use.local
   resolution: "@tamagui/change-animation-driver@workspace:packages/change-animation-driver"
   dependencies:
@@ -5414,6 +5414,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox-web@workspace:apps/sandbox-web"
   dependencies:
+    "@tamagui/change-animation-driver": 1.11.2
     "@tamagui/config": 1.11.2
     "@tamagui/vite-plugin": 1.11.2
     "@tamagui/web": 1.11.2

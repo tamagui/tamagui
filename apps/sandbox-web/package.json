@@ -7,6 +7,7 @@
     "dev:extract": "EXTRACT=1 yarn dev"
   },
   "dependencies": {
+    "@tamagui/change-animation-driver": "1.11.2",
     "@tamagui/config": "1.11.2",
     "@tamagui/web": "1.11.2",
     "react": "^18.2.0",

@@ -20,6 +20,8 @@ export {
   getTokens,
   onConfiguredOnce,
   updateConfig,
+  setConfig,
+  configListeners,
 } from './config.js'
 
 export * from './constants/constants.js'

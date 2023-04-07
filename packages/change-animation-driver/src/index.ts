@@ -1,17 +1,8 @@
 import { getConfig } from '@tamagui/web'
-import type { CreateTamaguiProps } from '@tamagui/web'
-import { configListeners, setConfig } from '@tamagui/web/types/config'
+// import type { CreateTamaguiProps } from '@tamagui/web'
+import { configListeners, setConfig } from '@tamagui/web'
 
-export function changeAnimationDriver(props: {
-  animations: CreateTamaguiProps['animations']
-}) {
+export function changeAnimationDriver(animations: any) {
   const config = getConfig()
-  config['animations'] = props.animations!
-
-  // TODO: are these lines needed?
-  setConfig(config)
-  if (configListeners.size) {
-    configListeners.forEach((cb) => cb(config))
-    configListeners.clear()
-  }
+  config['animations'].animations = animations.animations!
 }

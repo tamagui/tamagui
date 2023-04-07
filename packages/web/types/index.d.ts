@@ -13,7 +13,7 @@ export * from './updateTheme.js';
 export * from './styled.js';
 export * from './types.js';
 export * from './setupReactNative.js';
-export { getConfig, getThemes, getTokens, onConfiguredOnce, updateConfig, } from './config.js';
+export { getConfig, getThemes, getTokens, onConfiguredOnce, updateConfig, setConfig, configListeners, } from './config.js';
 export * from './constants/constants.js';
 export * from './helpers/useShallowSetState.js';
 export * from './helpers/getVariantExtras.js';
