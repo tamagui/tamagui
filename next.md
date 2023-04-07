@@ -32,8 +32,8 @@ Ali:
 - [ ] moti driver
 - [ ] Studio
   - [x] Bring back next saas stuff
-  - [ ] Sponsor => Github auth Account
-  - [ ] Web Filesystemapi to access to folder
+  - [x] Sponsor => Github auth Account
+  - [x] Web Filesystemapi to access to folder
   - [ ] Host on vercel
   - [ ] plugins automatically watch and build
     - [ ] babel-plugin, webpack-loader, vite all share @tamagui/static
@@ -72,12 +72,13 @@ Ali:
   - [x] TabsTriggerFrame variant theme Button is weird does that do anythig?
 - [ ] lets make Card.extractable into Card.stylable() and deprecate it
   - [ ] and document on styled() page
-- [ ] `<Select native>` (web)
-- [ ] `<RadioGroup native>` (web)
-- [ ] unstyled for 
-  - [ ] Select
+- native component modes
+  - [ ] `RadioGroup`, `Select` native (web)
+  - [ ] `Switch` native (mobile)
+- [x] unstyled for 
+  - [x] Select (was already done)
   - [x] Tabs
-  - [ ] Card
+  - [x] Card (was already done)
 - [x] go through the docs and remove shorthands - use full forms
 - [x] go through the docs and change usage imports to tamagui instead of other packages (e.g. @tamagui/stack -> tamagui)
 
