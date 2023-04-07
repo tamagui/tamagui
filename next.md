@@ -1,3 +1,5 @@
+- bug: inputs rendering twice due to focusableInputHOC, if you remove that it doesnt, this is due to styled() + how it determines ComponentIn and grabs the component
+
 - document `unstyled` prop for components
 
 - `defaultUnstyled` option in createTamagui

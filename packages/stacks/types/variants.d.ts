@@ -200,8 +200,8 @@ export declare const elevate: {
         userSelect?: import("@tamagui/web").Variable<any> | import("csstype").Property.UserSelect | undefined;
         outlineColor?: import("@tamagui/web").Variable<any> | import("csstype").Property.OutlineColor | undefined;
         outlineStyle?: import("@tamagui/web").Variable<any> | import("csstype").Property.OutlineStyle | undefined;
-        outlineOffset?: import("@tamagui/web").Variable<any> | import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
-        outlineWidth?: import("@tamagui/web").Variable<any> | import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
+        outlineOffset?: import("@tamagui/web").Variable<any> | import("@tamagui/web").SpaceTokens | undefined;
+        outlineWidth?: import("@tamagui/web").Variable<any> | import("@tamagui/web").SpaceTokens | undefined;
         hoverStyle?: (import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>) | import("@tamagui/web").Variable<any> | null | undefined;
         pressStyle?: (import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>) | import("@tamagui/web").Variable<any> | null | undefined;
         focusStyle?: (import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>>) | import("@tamagui/web").Variable<any> | null | undefined;

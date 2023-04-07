@@ -10,6 +10,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useRef,
 } from 'react'
 
@@ -262,12 +263,14 @@ export function createComponent<
     const isReactNative = Boolean(staticConfig.isReactNative || isAnimatedReactNative)
 
     if (process.env.NODE_ENV === 'development') {
+      const id = useId()
+
       if (debugProp) {
         // prettier-ignore
         const name = `${componentName || Component?.displayName || Component?.name || '[Unnamed Component]'}`
         const type = isAnimatedReactNative ? '(animated)' : isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
-        const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type}`
+        const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${id}`
         console.group(`%c ${banner}`, 'background: yellow;')
         if (!isServer) {
           console.log('state', state)

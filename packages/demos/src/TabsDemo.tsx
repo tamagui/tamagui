@@ -21,7 +21,8 @@ export function TabsDemo() {
   const demo = demos[demoIndex]
 
   return (
-    <YStack paddingHorizontal="$4" position='unset'>
+    // web only fix for position relative
+    <YStack paddingHorizontal="$4" position={'unset' as any}>
       {demo === 'horizontal' ? <HorizontalTabs /> : <VerticalTabs />}
 
       <XStack
