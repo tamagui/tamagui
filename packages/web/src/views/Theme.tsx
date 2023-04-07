@@ -1,13 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import {
-  Children,
-  cloneElement,
-  isValidElement,
-  useEffect,
-  useId,
-  useLayoutEffect,
-  useMemo,
-} from 'react'
+import { Children, cloneElement, isValidElement, useId, useMemo } from 'react'
 
 import { variableToString } from '../createVariable.js'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
@@ -20,7 +12,6 @@ export function Theme(props: ThemeProps) {
   if (props.disable) return props.children
   const isRoot = !!props['_isRoot']
   const id = useId()
-  console.log(`render Theme ${props['debug']} ${id} ${props.name}`)
   const themeState = useChangeThemeEffect(props, isRoot)
   const children = props['data-themeable']
     ? Children.map(props.children, (child) =>
@@ -41,7 +32,7 @@ export function useThemedChildren(
   },
   isRoot = false
 ) {
-  const { themeManager, isNewTheme, className, theme } = themeState
+  const { themeManager, className, theme, isNewTheme } = themeState
   const { shallow, forceClassName } = options
   const hasEverThemed = useServerRef(false)
   if (isNewTheme) {
@@ -92,6 +83,10 @@ export function useThemedChildren(
     //   })
     // }
 
+    if (isNewTheme) {
+      console.warn(`Theme 🎉 ${className}`)
+    }
+
     const wrapped = (
       <ThemeManagerContext.Provider value={themeManager}>
         {next}
@@ -110,7 +105,7 @@ export function useThemedChildren(
       }
 
       return (
-        <span className={`${className || ''} _dsp_contents`} style={colorStyle}>
+        <span className={`${className || ''} _dsp_contents is_Theme`} style={colorStyle}>
           {wrapped}
         </span>
       )

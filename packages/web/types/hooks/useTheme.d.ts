@@ -1,18 +1,18 @@
 import { ThemeManager } from '../helpers/ThemeManager.js';
 import type { ThemeParsed, ThemeProps } from '../types.js';
 export type ChangedThemeResponse = {
+    isNewTheme: boolean;
     themeManager: ThemeManager | null;
     name: string;
-    isNewTheme?: boolean;
     theme?: ThemeParsed | null;
     className?: string;
 };
 export declare const useTheme: (props?: ThemeProps) => ThemeParsed;
 export declare const useThemeWithState: (props: ThemeProps) => {
     theme: ThemeParsed;
+    isNewTheme: boolean;
     themeManager: ThemeManager | null;
     name: string;
-    isNewTheme?: boolean | undefined;
     className?: string | undefined;
 } | null;
 export declare function getThemeProxied({ theme, themeManager, }: Partial<ChangedThemeResponse> & {

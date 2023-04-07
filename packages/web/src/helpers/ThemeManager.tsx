@@ -270,8 +270,6 @@ function getState(
     }
   }
 
-  console.log('returning', result)
-
   return result
 }
 
