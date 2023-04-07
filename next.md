@@ -54,15 +54,15 @@ Ali:
 - [x] Switch for animation driver on website doesn't animate
   - [x] lets keep it as a spring
 - [ ] Disable warning ENV + configuration.md docs
-- [ ] lets make forms use outline for 2px borders on focusStyle
-  - [ ] on native it can stay 1px
+- [x] lets make forms use outline for 2px borders on focusStyle
+  - [x] on native it can stay 1px
   - [ ] (nate) make focusStyle border darker
 - [ ] WARN  Sending onAnimatedValueUpdate with no listeners registered
 - [ ] <YStack space="$3" $gtSm={{ space: '$6'}}> not working again (likely fixed)
 - [ ] bezier on css animations
-- [ ] tabs 
-  - [ ] advanced demo is weird it has a bg and a separator
-  - [ ] prevSelectionIndicatorLayout should be state not ref to avoid concurrency issues
+- [x] tabs 
+  - [x] advanced demo is weird it has a bg and a separator
+  - [x] prevSelectionIndicatorLayout should be state not ref to avoid concurrency issues
   - [ ] disablePassBorderRadius feels like a weird thing to need by default
     - change Group's disablePassBorderRadius to something else - perhaps the negation, passBorderRadius? i'm not sure. what do you think about this @natew 
     alternatively we could have disablePassBorderRadius default to true only on Tabs.List. but then overriding it would feel awkward (having to pass disablePassBorderRadius={false})
@@ -77,7 +77,7 @@ Ali:
 - [ ] unstyled for 
   - [ ] Select
   - [x] Tabs
-- [ ] go through the docs and remove shorthands - use full forms
+- [x] go through the docs and remove shorthands - use full forms
 - [x] go through the docs and change usage imports to tamagui instead of other packages (e.g. @tamagui/stack -> tamagui)
 
 ---
