@@ -3,7 +3,7 @@ import { Label, RadioGroup, SizeTokens, ThemeableStack, XStack, YStack } from 't
 export function RadioGroupDemo() {
   return (
     <RadioGroup defaultValue="3" name="form">
-      <YStack w={300} ai="center" space="$2">
+      <YStack width={300} alignItems="center" space="$2">
         <RadioGroupItemWithLabel size="$3" value="2" label="Second value" />
         <RadioGroupItemWithLabel size="$4" value="3" label="Third value" />
         <RadioGroupItemWithLabel size="$5" value="4" label="Fourth value" />
@@ -19,7 +19,7 @@ function RadioGroupItemWithLabel(props: {
 }) {
   const id = `radiogroup-${props.value}`
   return (
-    <XStack w={300} ai="center" space="$4">
+    <XStack width={300} alignItems="center" space="$4">
       <RadioGroup.Item value={props.value} id={id} size={props.size}>
         <RadioGroup.Indicator />
       </RadioGroup.Item>

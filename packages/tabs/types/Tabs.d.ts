@@ -526,6 +526,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly size?: any;
     }>> & {
         axis?: "horizontal" | "vertical" | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
         scrollable?: boolean | undefined;
         showScrollIndicator?: boolean | undefined;
         disabled?: boolean | undefined;

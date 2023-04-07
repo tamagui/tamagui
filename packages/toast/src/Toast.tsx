@@ -15,6 +15,7 @@ import * as React from 'react'
 
 import { TOAST_NAME } from './constants'
 import { ToastAnnounceExclude } from './ToastAnnounce'
+import { ToastNativePlatform, ToastNativeValue, useToast } from './ToastImperative.js'
 import {
   ToastImpl,
   ToastImplFrame,
@@ -182,7 +183,7 @@ const ToastComponent = React.forwardRef<TamaguiElement, ToastProps>(
     const onPause = useEvent(props.onPause)
     const onResume = useEvent(props.onResume)
     const shouldShow = forceMount || open
-    
+
     if (!shouldShow) return null
 
     return (
@@ -222,6 +223,8 @@ export {
   ToastViewport,
   //
   createToastScope,
+  // imperative
+  useToast,
 }
 export type {
   ToastActionProps,
@@ -231,4 +234,7 @@ export type {
   ToastProviderProps,
   ToastTitleProps,
   ToastViewportProps,
+  // imperative
+  ToastNativeValue,
+  ToastNativePlatform,
 }

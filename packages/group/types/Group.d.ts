@@ -79,7 +79,11 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<i
     readonly size?: any;
 }>;
 export type GroupProps = GetProps<typeof GroupFrame> & {
+    /**
+     * @deprecated use `orientation` instead
+     */
     axis?: 'horizontal' | 'vertical';
+    orientation?: 'horizontal' | 'vertical';
     scrollable?: boolean;
     /**
      * @default false
@@ -150,7 +154,11 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("react-n
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> & {
+    /**
+     * @deprecated use `orientation` instead
+     */
     axis?: "horizontal" | "vertical" | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
     scrollable?: boolean | undefined;
     /**
      * @default false
@@ -224,7 +232,11 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("react-
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> & {
+    /**
+     * @deprecated use `orientation` instead
+     */
     axis?: "horizontal" | "vertical" | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
     scrollable?: boolean | undefined;
     /**
      * @default false
@@ -298,7 +310,11 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("react-
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> & {
+    /**
+     * @deprecated use `orientation` instead
+     */
     axis?: "horizontal" | "vertical" | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
     scrollable?: boolean | undefined;
     /**
      * @default false
