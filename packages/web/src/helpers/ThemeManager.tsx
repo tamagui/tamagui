@@ -252,10 +252,6 @@ function getState(
 
     const found = potentials.find((t) => t in themes)
 
-    // eslint-disable-next-line no-console
-    if (process.env.NODE_ENV === 'development' && props.debug)
-      console.log('getState found', found, 'from', potentials, 'parentName', parentName)
-
     if (found) {
       // optimization return null if not changed
       if (found !== parentName) {

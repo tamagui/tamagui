@@ -16,7 +16,7 @@ export function SandboxThemeChange() {
         Change Theme
       </Button>
       {/* @ts-ignore */}
-      <Theme debug="THEME" name={theme}>
+      <Theme name={theme}>
         <SandboxThemeChildStatic />
         <SandboxThemeChildDynamic />
       </Theme>

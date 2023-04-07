@@ -65,28 +65,6 @@ export function useThemedChildren(
       })
     }
 
-    // tried this but themes css doesn't fully like it
-    // if (shouldAttachClassName && options.passPropsToChildren) {
-    //   next = next.map((child: any) => {
-    //     const childStyle = child.props?.style
-    //     console.log('pass it down', className, child.props.className || '')
-    //     const newProps = {
-    //       className: (child.props.className || '') + ' ' + className,
-    //       style: Array.isArray(childStyle)
-    //         ? [colorStyle, ...childStyle]
-    //         : {
-    //             ...colorStyle,
-    //             ...childStyle,
-    //           },
-    //     }
-    //     return isValidElement(child) ? cloneElement(child as any, newProps) : child
-    //   })
-    // }
-
-    if (isNewTheme) {
-      console.warn(`Theme 🎉 ${className}`)
-    }
-
     const wrapped = (
       <ThemeManagerContext.Provider value={themeManager}>
         {next}
