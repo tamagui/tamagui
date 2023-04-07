@@ -78,7 +78,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         for (const skey in configIn.tokens[key]) {
           const val = configIn.tokens[key][skey]
           registerCSSVariable(val)
-          declarations.push(variableToCSS(val, skey === 'zIndex'))
+          declarations.push(variableToCSS(val, key === 'zIndex'))
         }
       }
 
@@ -197,7 +197,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       return [k, val]
     })
   )
-
+  
   const shorthands = configIn.shorthands || {}
 
   const config: TamaguiInternalConfig = {

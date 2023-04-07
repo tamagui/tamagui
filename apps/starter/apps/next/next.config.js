@@ -41,6 +41,12 @@ const plugins = [
 module.exports = function () {
   /** @type {import('next').NextConfig} */
   let config = {
+    webpack(webpackConfig, options) {
+      // for testing prod faster
+      webpackConfig.optimization.minimize = false
+      return webpackConfig
+    },
+
     typescript: {
       ignoreBuildErrors: true,
     },

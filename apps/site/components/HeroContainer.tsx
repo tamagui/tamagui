@@ -5,14 +5,21 @@ import {
   useAnimationDriverToggler,
 } from 'hooks/useAnimationDriverToggler'
 import React from 'react'
-import { Theme, TooltipSimple, XStack, YStack, styled } from 'tamagui'
+import {
+  AnimationDriverProvider,
+  Theme,
+  TooltipSimple,
+  XStack,
+  YStack,
+  styled,
+} from 'tamagui'
 import { Switch } from 'tamagui'
 
 import { ErrorBoundary } from './ErrorBoundary'
 
 export function HeroContainer({
   children,
-  demoMultiple,
+  demoMultiple = false,
   smaller,
   noPad,
   noScroll,
@@ -55,37 +62,15 @@ export function HeroContainer({
       }}
     >
       <AnimationDriverTogglerContextProvider>
-        <ErrorBoundary>
-          {demoMultiple ? (
-            <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
-              <XStack space="$3" px="$8">
-                <Theme reset>
-                  <Card>{children}</Card>
-                </Theme>
-                <Theme name="blue">
-                  <Card>{children}</Card>
-                </Theme>
-                <Theme name="red">
-                  <Card>{children}</Card>
-                </Theme>
-                <Theme name="pink">
-                  <Card>{children}</Card>
-                </Theme>
-                <Theme name="orange">
-                  <Card>{children}</Card>
-                </Theme>
-                <Theme name="green">
-                  <Card>{children}</Card>
-                </Theme>
-                <Theme name="yellow">
-                  <Card>{children}</Card>
-                </Theme>
-              </XStack>
-            </XStack>
-          ) : (
-            children
-          )}
-        </ErrorBoundary>
+        <XStack
+          maxHeight="100%"
+          maxWidth="100%"
+          // @ts-expect-error
+          position="unset"
+          justifyContent={demoMultiple ? 'flex-start' : undefined}
+        >
+          <HeroContainerInner demoMultiple={demoMultiple}>{children}</HeroContainerInner>
+        </XStack>
         <XStack
           position="absolute"
           display="inline-flex"
@@ -93,6 +78,7 @@ export function HeroContainer({
           justifyContent="space-between"
           top={16}
           l="$3"
+          $xxs={{ display: 'none' }}
           $gtMd={{
             l: '$4',
           }}
@@ -137,10 +123,54 @@ const AnimationControl = () => {
             animationDriverToggler.setDriverName(val ? 'react-native' : 'css')
           }
         >
-          <Switch.Thumb />
+          <Switch.Thumb animation="quick" />
         </Switch>
         <Waves size={14} opacity={0.6} />
       </XStack>
     </TooltipSimple>
+  )
+}
+
+const HeroContainerInner = ({
+  children,
+  demoMultiple,
+}: {
+  children: React.ReactNode
+  demoMultiple: boolean
+}) => {
+  const { driver, driverName } = useAnimationDriverToggler()
+
+  return (
+    <AnimationDriverProvider driver={driver} key={driverName}>
+      <ErrorBoundary>
+        {demoMultiple ? (
+          <XStack space="$3" px="$8">
+            <Theme reset>
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="blue">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="red">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="pink">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="orange">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="green">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="yellow">
+              <Card>{children}</Card>
+            </Theme>
+          </XStack>
+        ) : (
+          children
+        )}
+      </ErrorBoundary>
+    </AnimationDriverProvider>
   )
 }

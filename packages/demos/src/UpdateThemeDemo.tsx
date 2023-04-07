@@ -1,13 +1,12 @@
 import * as Config from '@tamagui/config'
+import { addTheme, updateTheme } from '@tamagui/theme'
 import React, { useState } from 'react'
 import {
   Button,
   Square,
   Theme,
   YStack,
-  addTheme,
   getVariableValue,
-  updateTheme,
   useForceUpdate,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
@@ -31,7 +30,7 @@ export function UpdateThemeDemo() {
   }, [])
 
   return (
-    <YStack ai="center" space>
+    <YStack alignItems="center" space>
       <Theme name={theme ?? null}>
         <Square borderRadius="$8" size={100} backgroundColor="$color" />
       </Theme>

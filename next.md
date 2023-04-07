@@ -1,4 +1,18 @@
+- bug: inputs rendering twice due to focusableInputHOC, if you remove that it doesnt, this is due to styled() + how it determines ComponentIn and grabs the component
+
+- document `unstyled` prop for components
+
+- `defaultUnstyled` option in createTamagui
+
+- docs for `@tamagui/font` and `@tamagui/theme`
+
+- https://github.com/tamagui/tamagui/pull/765 
+
+- getVariableValue(props.fontFamily) doesn't look right
+
 - slider track - light theme blends in with bg i think
+
+- createInterFont the default weight/letterSpacing should use `true` rather than `4` key (small change just need to test make sure it doens't break)
 
 - lets make forms use outline for 2px borders on focusStyle
   - on native it can just get a darker border but stay 1px
@@ -26,6 +40,9 @@
 - move packages from /core to /web
 - <YStack space="$3" $gtSm={{ space: '$6'}}> not working again
 - // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
+
+----
+
 - check why styled() of a HOC is failing:
 
 const SheetOverlay = styled(Sheet.Overlay, {

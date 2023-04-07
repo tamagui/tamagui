@@ -10,6 +10,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useRef,
 } from 'react'
 
@@ -20,7 +21,6 @@ import { TextAncestorContext } from './contexts/TextAncestorContext.js'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable.js'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig.js'
 import { useSplitStyles } from './helpers/getSplitStyles.js'
-import { getAllSelectors } from './helpers/insertStyleRule.js'
 import { mergeProps } from './helpers/mergeProps.js'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables.js'
 import { useShallowSetState } from './helpers/useShallowSetState.js'
@@ -263,12 +263,14 @@ export function createComponent<
     const isReactNative = Boolean(staticConfig.isReactNative || isAnimatedReactNative)
 
     if (process.env.NODE_ENV === 'development') {
+      const id = useId()
+
       if (debugProp) {
         // prettier-ignore
         const name = `${componentName || Component?.displayName || Component?.name || '[Unnamed Component]'}`
         const type = isAnimatedReactNative ? '(animated)' : isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
-        const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type}`
+        const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${id}`
         console.group(`%c ${banner}`, 'background: yellow;')
         if (!isServer) {
           console.log('state', state)
@@ -760,7 +762,7 @@ export function createComponent<
         console.groupEnd()
         if (typeof window !== 'undefined') {
           // prettier-ignore
-          console.log({ state, themeState, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, staticConfig, tamaguiConfig, shouldForcePseudo, classNamesFull: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
+          console.log({ state, themeState, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, staticConfig, tamaguiConfig, shouldForcePseudo })
         }
         console.groupEnd()
       }

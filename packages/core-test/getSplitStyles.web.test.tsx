@@ -90,6 +90,14 @@ describe('getSplitStyles', () => {
     ).toEqual('var(--f-si-1)')
   })
 
+  test(`z-index resolves to respective tokens`, () => {
+    const styles = simplifiedGetSplitStyles(Text, {
+      zIndex: '$1',
+    })
+    expect(styles.rulesToInsert[0].property === 'zIndex').toBeTruthy()
+    expect(styles.rulesToInsert[0].value).toEqual('var(--zIndex-2)')
+  })
+
   // this test is failing:
   // TODO: support this - might need the getSplitStyles refactor (unifying getSubStyle)
   // + write another similar test for pseudos

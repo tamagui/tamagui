@@ -14,7 +14,13 @@ export * from './styled.js'
 export * from './types.js'
 export * from './setupReactNative.js'
 
-export { getConfig, getThemes, getTokens, onConfiguredOnce } from './config.js'
+export {
+  getConfig,
+  getThemes,
+  getTokens,
+  onConfiguredOnce,
+  updateConfig,
+} from './config.js'
 
 export * from './constants/constants.js'
 
@@ -30,6 +36,8 @@ export * from './helpers/expandStyles.js'
 export * from './helpers/isTamaguiElement.js'
 export * from './helpers/isTamaguiComponent.js'
 export * from './helpers/matchMedia'
+export * from './helpers/themes.js'
+export * from './helpers/getThemeCSSRules.js'
 export * from './helpers/proxyThemeVariables.js'
 export * from './helpers/themeable.js'
 export * from './helpers/withStaticProperties.js'

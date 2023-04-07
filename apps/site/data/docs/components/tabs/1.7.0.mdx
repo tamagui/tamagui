@@ -10,7 +10,7 @@ package: tabs
 
 <Description>Use in pages to manage sub-pages.</Description>
 
-<HeroContainer showAnimationDriverControl>
+<HeroContainer>
   <TabsDemo />
 </HeroContainer>
 
@@ -37,8 +37,8 @@ import { Tabs } from 'tamagui'
 export default () => (
   <Tabs defaultValue="tab1" width={400}>
     <Tabs.List space>
-      <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
-      <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+      <Tabs.Tab value="tab1">Tab 1</Tabs.Tab>
+      <Tabs.Tab value="tab2">Tab 2</Tabs.Tab>
     </Tabs.List>
 
     <Tabs.Content value="tab1">
@@ -55,7 +55,7 @@ export default () => (
 
 Here is a demo with more advanced animations using [AnimatePresence](/docs/core/animations#animatepresence-and-exitstyle) and [Trigger](#trigger)'s `onInteraction` prop.
 
-<HeroContainer noPad>
+<HeroContainer noPad showAnimationDriverControl>
   <TabsAdvancedDemo />
 </HeroContainer>
 
@@ -136,6 +136,11 @@ Extends [Button](/docs/components/button), adding:
       name: 'onInteraction',
       type: `(type: InteractionType, layout: TabTriggerLayout | null) => void`,
       description: `Used for making custom indicators when trigger interacted with`,
+    },
+    {
+      name: 'unstyled',
+      type: `boolean`,
+      description: `When true, remove all default tamagui styling`,
     },
   ]}
 />

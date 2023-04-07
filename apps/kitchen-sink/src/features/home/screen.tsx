@@ -134,6 +134,7 @@ const demos = [
       { title: 'Slider', route: '/demo/slider' },
       { title: 'Switch', route: '/demo/switch' },
       { title: 'RadioGroup', route: '/demo/radio-group' },
+      { title: 'ToggleGroup', route: '/demo/toggle-group' },
     ],
   },
 

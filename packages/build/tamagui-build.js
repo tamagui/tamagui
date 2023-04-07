@@ -19,6 +19,7 @@ const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
+const declarationToRoot = !!process.argv.includes('--declaration-root')
 
 const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
@@ -127,7 +128,10 @@ async function buildTsc() {
     // typescripts build cache messes up when doing declarationOnly
     await fs.remove('tsconfig.tsbuildinfo')
     await fs.ensureDir(targetDir)
-    const cmd = `tsc --baseUrl . --outDir ${targetDir} --rootDir src --emitDeclarationOnly --declarationMap`
+
+    const declarationToRootFlag = declarationToRoot ? ' --declarationDir ./' : ''
+    const cmd = `tsc --baseUrl . --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
+
     // console.log('\x1b[2m$', `npx ${cmd}`)
     await exec('npx', cmd.split(' '))
   } catch (err) {
@@ -170,7 +174,7 @@ async function buildJs() {
           platform: 'node',
         })
       : null,
-      pkgModule
+    pkgModule
       ? esbuildWriteIfChanged({
           entryPoints: files,
           outdir: flatOut ? 'dist' : 'dist/esm',
@@ -224,7 +228,7 @@ async function buildJs() {
           platform: 'neutral',
         })
       : null,
-      pkgModuleJSX
+    pkgModuleJSX
       ? esbuildWriteIfChanged({
           // only diff is jsx preserve and outdir
           jsx: 'preserve',

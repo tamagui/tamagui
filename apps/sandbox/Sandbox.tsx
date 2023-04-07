@@ -1,31 +1,18 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import {
-  ButtonDemo,
-  CheckboxDemo,
-  GroupDemo,
-  InputsDemo,
-  ListItemDemo,
-  ProgressDemo,
-  SelectDemo,
-  SwitchDemo,
-  TabsAdvancedDemo,
-  TabsDemo,
-} from '@tamagui/demos'
+import { TabsAdvancedDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
 import {
   Button,
   Input,
   ScrollView,
-  Stack,
   TamaguiProvider,
   ToastProvider,
   XStack,
   YStack,
   styled,
-  withStaticProperties,
 } from 'tamagui'
 
 import { SandboxThemeChange } from './SandboxThemeChange'
@@ -75,9 +62,42 @@ const Button2 = styled(Button, {
   },
 })
 
+export const Heading = styled(Text, {
+  name: 'Heading',
+  color: '$color',
+
+  variants: {
+    type: {
+      myVariant: {
+        fontFamily: '$body',
+        fontSize: 20,
+        lh: '$24',
+        fow: '$bold',
+      },
+    },
+  } as const,
+})
+
+export const MyInput = styled(Input, {
+  borderColor: 'red',
+  borderWidth: '$2',
+  focusStyle: {
+    borderColor: 'blue',
+    borderWidth: '$2',
+  },
+})
+
 export const Sandbox = () => {
+  console.log(`render once`)
+
   return (
     <SandboxFrame>
+      <MyInput />
+
+      {/* <Button2 ok debug="verbose">
+        hi
+      </Button2> */}
+
       {/* this comment keeps indent */}
 
       <SandboxThemeChange />

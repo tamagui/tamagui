@@ -4,11 +4,11 @@ import { Square } from 'tamagui'
 export function AnimationsTimingDemo() {
   return (
     <Square
-      bc="$pink10"
+      backgroundColor="$pink10"
       animation="100ms"
       elevation="$4"
       size={110}
-      br="$9"
+      borderRadius="$9"
       hoverStyle={{
         scale: 1.2,
       }}

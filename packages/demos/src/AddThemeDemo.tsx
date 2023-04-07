@@ -1,11 +1,12 @@
+import { addTheme } from '@tamagui/theme'
 import { useState } from 'react'
-import { Button, H3, Square, Theme, YStack, addTheme } from 'tamagui'
+import { Button, H3, Square, Theme, YStack } from 'tamagui'
 
 export function AddThemeDemo() {
   const [theme, setTheme] = useState<any>()
 
   return (
-    <YStack ai="center" space>
+    <YStack alignItems="center" space>
       <H3>Theme: {theme ?? 'none'}</H3>
 
       <Theme name={theme ?? 'red'}>

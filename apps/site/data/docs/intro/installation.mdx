@@ -114,9 +114,13 @@ TamaguiProvider has optional props, [see the docs for them here](/docs/core/conf
 
 While `@tamagui/core` doesn't require any extra installation, if you are using `tamagui`, you may need to add a couple dependencies to your app and rebuild it to use certain components. This is because `tamagui` bundles many components together into one cohesive package.
 
-For example, the Toast package requires `burnt` be added directly to your apps package.json.
+Unfortunately Metro doesn't support dynamic import _or_ lazy evaluation of require, so you'll need to add this dependency if you are using `tamagui`:
 
-Tamagui loads these native packages lazily, so you don't need to do anything right away.
+```sh
+yarn add burnt --dev
+```
+
+If you want to use toast on native, add it without `--dev`.
 
 ### Done!
 
