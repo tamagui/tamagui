@@ -1,5 +1,6 @@
+import { useToast } from '@tamagui/toast'
 import React from 'react'
-import { Button, SizableText, Switch, Toast, XStack, YStack, useToast } from 'tamagui'
+import { Button, SizableText, Switch, Toast, XStack, YStack } from 'tamagui'
 
 export const ToastDemo = () => {
   const [native, setNative] = React.useState<boolean>(false)

@@ -1,6 +1,7 @@
 import { CheckCircle2 } from '@tamagui/lucide-icons'
+import { Toast } from '@tamagui/toast'
 import React from 'react'
-import { Button, Toast, XStack, YStack } from 'tamagui'
+import { Button, XStack, YStack } from 'tamagui'
 
 export const ToastDuplicateDemo = () => {
   const [savedCount, setSavedCount] = React.useState(0)

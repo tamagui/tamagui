@@ -4698,6 +4698,7 @@ __metadata:
     "@tamagui/sheet": 1.12.2
     "@tamagui/slider": 1.12.2
     "@tamagui/stacks": 1.12.2
+    "@tamagui/toast": 1.12.2
     react: ^18.2.0
     react-dom: ^18.2.0
     tamagui: 1.12.2
@@ -5431,6 +5432,7 @@ __metadata:
     "@tamagui/shorthands": 1.12.2
     "@tamagui/slider": 1.12.2
     "@tamagui/themes": 1.12.2
+    "@tamagui/toast": 1.12.2
     "@tamagui/vite-plugin": 1.12.2
     "@tamagui/vite-plugin-reanimated": 1.12.2
     "@vitejs/plugin-react": ^2.2.0
@@ -5596,6 +5598,7 @@ __metadata:
     "@tamagui/remove-scroll": 1.12.2
     "@tamagui/shorthands": 1.12.2
     "@tamagui/themes": 1.12.2
+    "@tamagui/toast": 1.12.2
     compare-versions: ^4.1.3
     date-fns: ^2.26.0
     glob: ^7.1.6
@@ -19610,7 +19613,7 @@ __metadata:
   resolution: "sandbox-ui@workspace:apps/sandbox-ui"
   dependencies:
     "@tamagui/build": 1.12.2
-    "@tamagui/lucide-icons": 1.12.2
+    "@tamagui/toast": 1.12.2
     tamagui: 1.12.2
   languageName: unknown
   linkType: soft
@@ -20884,7 +20887,6 @@ __metadata:
     "@tamagui/switch": 1.12.2
     "@tamagui/tabs": 1.12.2
     "@tamagui/text": 1.12.2
-    "@tamagui/toast": 1.12.2
     "@tamagui/toggle-group": 1.12.2
     "@tamagui/tooltip": 1.12.2
     "@tamagui/use-controllable-state": 1.12.2

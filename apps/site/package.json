@@ -36,6 +36,7 @@
     "@tamagui/remove-scroll": "1.12.2",
     "@tamagui/shorthands": "1.12.2",
     "@tamagui/themes": "1.12.2",
+    "@tamagui/toast": "1.12.2",
     "compare-versions": "^4.1.3",
     "date-fns": "^2.26.0",
     "glob": "^7.1.6",
