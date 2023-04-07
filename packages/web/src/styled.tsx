@@ -45,7 +45,7 @@ export function styled<
   ParentComponent extends StylableComponent,
   Variants extends VariantDefinitions<ParentComponent> | void = VariantDefinitions<ParentComponent> | void
 >(
-  Component: ParentComponent,
+  ComponentIn: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
   options?: GetProps<ParentComponent> & {
     name?: string
@@ -58,14 +58,14 @@ export function styled<
 ) {
   // validate not using a variant over an existing valid style
   if (process.env.NODE_ENV !== 'production') {
-    if (!Component) {
+    if (!ComponentIn) {
       throw new Error(`No component given to styled()`)
     }
     if (options?.variants) {
       for (const key in options.variants) {
         if (key in stylePropsAll) {
           console.error(
-            `Invalid variant key overlaps with style key: ${key}. Tamagui prevents defining variants that use valid style keys to reduce implementation complexity.`
+            `Invalid variant key overlaps with style key: ${key}. Tamagui prevents defining variants that use valid style keys to reduce complexity and confusion.`
           )
         }
       }
@@ -73,8 +73,15 @@ export function styled<
   }
 
   const parentStaticConfig =
-    'staticConfig' in Component ? (Component.staticConfig as StaticConfig) : null
-  const isTamagui = !!parentStaticConfig
+    'staticConfig' in ComponentIn ? (ComponentIn.staticConfig as StaticConfig) : null
+
+  const isPlainStyledComponent =
+    !!parentStaticConfig &&
+    !(parentStaticConfig.isReactNative || parentStaticConfig.isHOC)
+
+  const Component: any = isPlainStyledComponent
+    ? ComponentIn
+    : parentStaticConfig?.Component || ComponentIn
 
   const isReactNative = Boolean(
     ReactNativeStaticConfigs.has(Component) ||
@@ -96,21 +103,19 @@ export function styled<
         Object.assign(defaultProps, defaultVariants)
       }
 
-      const Comp = isReactNative
-        ? parentStaticConfig?.Component || Component
-        : (Component as any)
-
-      const nativeConf = (isReactNative && ReactNativeStaticConfigs.get(Comp)) || null
+      const nativeConf =
+        (isReactNative && ReactNativeStaticConfigs.get(Component)) || null
 
       const isText = Boolean(
         staticExtractionOptions?.isText || parentStaticConfig?.isText
       )
-      const acceptsClassName = acceptsClassNameProp ?? (isTamagui || isReactNative)
+      const acceptsClassName =
+        acceptsClassNameProp ?? (isPlainStyledComponent || isReactNative)
 
       const conf: Partial<StaticConfig> = {
         ...staticExtractionOptions,
-        ...(!isTamagui && {
-          Component: Comp,
+        ...(!isPlainStyledComponent && {
+          Component,
         }),
         // this type gets messed up by options?: Partial<GetProps<ParentComponent>> above
         // take away the Partial<> and it's fine
