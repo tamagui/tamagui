@@ -4389,6 +4389,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/change-animation-driver@workspace:packages/change-animation-driver":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/change-animation-driver@workspace:packages/change-animation-driver"
+  dependencies:
+    "@tamagui/build": 1.11.2
+    "@tamagui/constants": 1.11.2
+    "@tamagui/web": 1.11.2
+    react: ^18.2.0
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/checkbox@1.11.2, @tamagui/checkbox@workspace:packages/checkbox":
   version: 0.0.0-use.local
   resolution: "@tamagui/checkbox@workspace:packages/checkbox"
