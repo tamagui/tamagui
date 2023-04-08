@@ -44,11 +44,13 @@
     "@tamagui/visually-hidden": "1.12.2"
   },
   "peerDependencies": {
+    "burnt": "^0.10.0",
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "1.12.2",
+    "burnt": "^0.10.0",
     "react": "^18.2.0",
     "react-native": "^0.71.4"
   },
