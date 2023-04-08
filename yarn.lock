@@ -5913,6 +5913,7 @@ __metadata:
     react: ^18.2.0
     react-native: ^0.71.4
   peerDependencies:
+    burnt: ^0.10.0
     react: "*"
     react-native: "*"
   languageName: unknown
