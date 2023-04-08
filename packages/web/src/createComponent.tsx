@@ -732,7 +732,7 @@ export function createComponent<
     })
 
     if (process.env.NODE_ENV === 'development') {
-      if (true) {
+      if (props['debug'] === 'visualize') {
         content = (
           <>
             {content}

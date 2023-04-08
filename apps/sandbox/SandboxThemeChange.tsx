@@ -5,9 +5,9 @@ export function SandboxThemeChange() {
   return (
     <>
       <Inner>
-        {/* <Inner>
+        <Inner>
           <Inner />
-        </Inner> */}
+        </Inner>
       </Inner>
     </>
   )
@@ -17,7 +17,16 @@ export function Inner(props: { children?: any }) {
   const [theme, setTheme] = useState('yellow' as any)
 
   return (
-    <YStack ai="center" jc="center" gap="$5">
+    <YStack bw={1} boc="red" p="$4" ai="center" jc="center" gap="$5">
+      <pre>
+        <code>
+          <b>Inner</b>{' '}
+          {JSON.stringify({
+            theme,
+          })}
+        </code>
+      </pre>
+
       <Button
         onPress={() => {
           setTheme(theme === 'yellow' ? 'blue' : 'yellow')
@@ -27,7 +36,7 @@ export function Inner(props: { children?: any }) {
       </Button>
 
       {/* @ts-ignore */}
-      <Theme name={theme}>
+      <Theme debug="visualize" name={theme}>
         <SandboxThemeChildStatic />
         <SandboxThemeChildDynamic />
         {props.children}
@@ -37,10 +46,12 @@ export function Inner(props: { children?: any }) {
 }
 
 const SandboxThemeChildStatic = memo(() => {
-  return <Square size={20} backgroundColor="$color10" />
+  return <Square debug="visualize" size={20} backgroundColor="$color10" />
 })
 
 const SandboxThemeChildDynamic = memo(() => {
   console.log('render dynamic')
-  return <Square debug animation="bouncy" size={20} backgroundColor="$color10" />
+  return (
+    <Square debug="visualize" animation="bouncy" size={20} backgroundColor="$color10" />
+  )
 })

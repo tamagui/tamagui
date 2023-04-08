@@ -172,15 +172,3 @@ function SandboxDefault() {
 //   const u = useTheme()
 //   console.log(u.color)
 //   return null
-
-const SolitoImageExample = () => (
-  <Image
-    alt=""
-    style={{}}
-    resizeMode="contain"
-    width={40}
-    height={40}
-    src="/favicon.svg"
-    bc="$color"
-  />
-)

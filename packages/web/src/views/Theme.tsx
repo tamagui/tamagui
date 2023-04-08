@@ -23,7 +23,7 @@ export function Theme(props: ThemeProps) {
     : props.children
 
   if (process.env.NODE_ENV === 'development') {
-    if (true) {
+    if (props['debug'] === 'visualize') {
       children = (
         <div style={{ display: 'inline', border: '1px solid #ccc' }}>
           <code>
