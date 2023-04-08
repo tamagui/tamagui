@@ -54,14 +54,17 @@ export class ThemeManager {
     if (hasNoThemeUpdatingProps(props)) {
       return parentManager
     }
+
     if (parentManager) {
       this.parentManager = parentManager
     }
+
     const updatedState = this.getStateIfChanged(props)
     if (updatedState) {
       this.state = updatedState
       return
     }
+
     return parentManager || this
   }
 
@@ -77,6 +80,7 @@ export class ThemeManager {
       }
       const nextState = this.getStateIfChanged(props)
       if (nextState) {
+        this.props = props
         this.state = nextState
         return true
       }
@@ -84,6 +88,7 @@ export class ThemeManager {
     if (shouldFlush) {
       // reset any derived state
       this._allKeys = null
+      console.warn(`now it is, notify`, this, { ...this.state })
       notify && this.notify()
       return this.state
     }

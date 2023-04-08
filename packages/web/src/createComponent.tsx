@@ -731,6 +731,24 @@ export function createComponent<
       // passPropsToChildren: true,
     })
 
+    if (process.env.NODE_ENV === 'development') {
+      if (true) {
+        content = (
+          <>
+            {content}{' '}
+            <code>
+              <pre>
+                {JSON.stringify({
+                  name: themeState.themeManager?.state.name,
+                  parent: themeState.themeManager?.state.parentName,
+                })}
+              </pre>
+            </code>
+          </>
+        )
+      }
+    }
+
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (events || isAnimatedReactNativeWeb) {
         content = (

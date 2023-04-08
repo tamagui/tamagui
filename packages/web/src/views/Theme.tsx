@@ -11,13 +11,31 @@ export function Theme(props: ThemeProps) {
   // @ts-expect-error only for internal views
   if (props.disable) return props.children
   const isRoot = !!props['_isRoot']
-  const id = useId()
   const themeState = useChangeThemeEffect(props, isRoot)
-  const children = props['data-themeable']
+
+  let children = props['data-themeable']
     ? Children.map(props.children, (child) =>
         cloneElement(child, { ['data-themeable']: true })
       )
     : props.children
+
+  if (process.env.NODE_ENV === 'development') {
+    if (true) {
+      children = (
+        <div style={{ display: 'inline', border: '1px solid #ccc' }}>
+          <code>
+            <pre>
+              &lt;Theme /&gt;&nbsp;
+              {JSON.stringify({
+                themeState: themeState.themeManager?.state.name,
+              })}
+            </pre>
+          </code>
+          {children}
+        </div>
+      )
+    }
+  }
 
   return useThemedChildren(themeState, children, props, isRoot)
 }

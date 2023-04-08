@@ -198,6 +198,7 @@ export const useChangeThemeEffect = (
 
   if (!isServer) {
     useEffect(() => {
+      if (!isNewTheme) return
       if (!themeManager) return
       if (disable) return
       // SSR safe inverse (because server can't know prefers scheme)
@@ -212,7 +213,7 @@ export const useChangeThemeEffect = (
       return () => {
         activeThemeManagers.delete(themeManager)
       }
-    }, [themeManager, disable, state, debug])
+    }, [isNewTheme, themeManager, disable, state, debug])
 
     // listen for parent change + notify children change
     useLayoutEffect(() => {
@@ -223,6 +224,7 @@ export const useChangeThemeEffect = (
           const shouldChange = themeManager.getStateShouldChange(next, state)
 
           if (shouldChange) {
+            console.log(`changing`, next)
             themeManager.updateState(next, true)
           }
 
@@ -238,16 +240,10 @@ export const useChangeThemeEffect = (
       }
 
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
-        if (process.env.NODE_ENV === 'development' && props['debug']) {
-          console.log(`parent changed theme`, {
-            props,
-            name,
-            manager,
-            parentManager,
-            keys: [...(keys || [])],
-          })
-        }
         if (keys?.length) {
+          if (process.env.NODE_ENV === 'development' && props['debug'] && keys?.length) {
+            console.log(`onChangeTheme`, { props, name, manager, parentManager, keys })
+          }
           setThemeState(createState)
         }
       })
@@ -279,20 +275,20 @@ export const useChangeThemeEffect = (
 
     // only inverse relies on this for ssr
     const mounted = !props.inverse ? true : root || prev?.mounted
-    const state = { ...themeManager.state }
-
-    if (process.env.NODE_ENV === 'development' && props['debug']) {
-      console.groupCollapsed(` 🔷 useChangeThemeEffect createState`)
-      console.log({ parentManager, state, isNewTheme, mounted, themeManager, prev })
-      console.groupEnd()
-    }
-
-    return {
-      // ThemeManager returns parentManager if no change
+    const state = isNewTheme ? { ...themeManager.state } : { ...parentManager!.state }
+    const response = {
       state,
       themeManager,
       isNewTheme,
       mounted,
     }
+
+    if (process.env.NODE_ENV === 'development' && props['debug']) {
+      console.groupCollapsed(` 🔷 useChangeThemeEffect createState`)
+      console.log({ props, parentManager, themeManager, prev, response })
+      console.groupEnd()
+    }
+
+    return response
   }
 }

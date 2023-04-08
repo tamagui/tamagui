@@ -3,7 +3,6 @@ import '@tamagui/polyfill-dev'
 
 import { TabsAdvancedDemo } from '@tamagui/demos'
 import { useState } from 'react'
-import { SolitoImage } from 'solito/image'
 import {
   Button,
   Input,
@@ -28,27 +27,6 @@ import config from './tamagui.config'
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
-
-/**
-the ideal is:
-
-- styled(a, b) - b accepts any subset of a.props
-- returns type where props defined in b become nullable
-
- */
-const Image = styled(
-  SolitoImage,
-  {
-    alt: '',
-    resizeMode: 'contain',
-    src: '',
-    style: {},
-  },
-  {
-    inlineProps: new Set(['width', 'height']),
-    acceptsClassName: true,
-  }
-)
 
 const Button2 = styled(Button, {
   variants: {
@@ -151,8 +129,6 @@ function SandboxDefault() {
     <XStack bc="$backgroundStrong" fullscreen ai="center" jc="center">
       <ScrollView fullscreen horizontal>
         <ScrollView fullscreen>
-          <SolitoImageExample />
-
           <YStack>
             <XStack gap={20} px="$4" flexWrap="wrap">
               {demos}
