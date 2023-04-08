@@ -1,9 +1,16 @@
+- relative sizing first class (and relative color)
+  - add `defaultSize`, and `defaultColor`
+  - add `relative()` helpers
+
+- missing docs on useToastController().options
+
 - bug android 
   - I've been working on integrating our component library to mobile and ran into a snag with the android build. IOS builds seamlessly and Android throws this error when trying to use Select component:
   - https://discord.com/channels/909986013848412191/1072289484755976312/1093994167601999912
 
 - bug: android styling is different, repro:
   - https://github.com/lostpebble/tamagui-setup-project
+
 
 - bug: inputs rendering twice due to focusableInputHOC, if you remove that it doesnt, this is due to styled() + how it determines ComponentIn and grabs the component
 

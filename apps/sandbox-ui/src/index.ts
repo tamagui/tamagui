@@ -3,6 +3,8 @@ export * from '@tamagui/lucide-icons'
 // @ts-ignore
 export * from 'tamagui'
 // @ts-ignore
+export * from '@tamagui/toast'
+// @ts-ignore
 export * from './SandboxHeading'
 
 // // test breaking import

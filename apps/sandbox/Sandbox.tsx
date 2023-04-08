@@ -2,6 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { TabsAdvancedDemo } from '@tamagui/demos'
+import { Toast, ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
 import {
@@ -10,7 +11,6 @@ import {
   ScrollView,
   TamaguiProvider,
   Text,
-  ToastProvider,
   XStack,
   YStack,
   styled,

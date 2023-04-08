@@ -80,7 +80,6 @@
     "@tamagui/switch": "1.12.2",
     "@tamagui/tabs": "1.12.2",
     "@tamagui/text": "1.12.2",
-    "@tamagui/toast": "1.12.2",
     "@tamagui/toggle-group": "1.12.2",
     "@tamagui/tooltip": "1.12.2",
     "@tamagui/use-controllable-state": "1.12.2",

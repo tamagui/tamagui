@@ -1,6 +1,5 @@
 import { isWeb } from '@tamagui/core'
-import { Scope, createContextScope } from '@tamagui/create-context'
-import React, { useRef } from 'react'
+import React, { createContext, useContext, useMemo, useRef } from 'react'
 import { Platform } from 'react-native'
 
 import { createNativeToast } from './createNativeToast'
@@ -11,7 +10,7 @@ import {
   ToastNativeValue,
 } from './types'
 
-interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, "message"> {
+interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message'> {
   /**
    * Will show a native toast if is true or is set to the current platform. On iOS, it wraps `SPIndicator` and `SPAlert`. On Android, it wraps `ToastAndroid`. On web, it wraps Notification API. Mobile's native features are handled by `burnt`.
    */
@@ -27,46 +26,47 @@ interface ShowToastOptions extends CreateNativeToastOptions {
    */
   native?: ToastNativeValue
 }
-type ScopedProps<P> = P & { __scopeToast?: Scope }
 
 type ToastData = { title: string; id: string } & CreateNativeToastOptions & {
     isHandledNatively: boolean
   }
 
-interface ImperativeToastContextValue {
-  currentToast: ToastData | null
+interface ToastContextI {
   nativeToast: NativeToastRef | null
+
+  /**
+   * Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).
+   */
   showToast: (title: string, options?: ShowToastOptions) => boolean
+
+  /**
+   * Call it to hide the currently displayed toast.
+   *
+   * _NOTE_: does not work on Android native toasts
+   *
+   * _NOTE_: hides the last toast on web notification toasts
+   */
   hideToast: () => void
+
   options?: ToastImperativeOptions
 }
 
-const [createImperativeToastContext, createImperativeToastScope] =
-  createContextScope('ImperativeToast')
+const ToastContext = createContext<ToastContextI>({} as any)
+const ToastCurrentContext = createContext<ToastData | null>(null)
 
-const [ToastImperativeProviderProvider, useToastProviderContext] =
-  createImperativeToastContext<ImperativeToastContextValue>('ToastImperativeProvider')
+export const useToastController = () => {
+  return useContext(ToastContext)
+}
 
-const useToast = () => {
-  const context = useToastProviderContext('useToast', undefined)
+export const useToastState = () => {
+  return useContext(ToastCurrentContext)
+}
 
+/** @deprecated use `useToastController` and `useToastState` instead to avoid performance pitfalls */
+export const useToast = () => {
   return {
-    /**
-     * The currently displaying toast
-     */
-    currentToast: context.currentToast,
-    /**
-     * Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).
-     */
-    show: context.showToast,
-    /**
-     * Call it to hide the currently displayed toast.
-     * 
-     * _NOTE_: does not work on Android native toasts
-     * 
-     * _NOTE_: hides the last toast on web notification toasts
-     */
-    hide: context.hideToast,
+    ...useToastController(),
+    currentToast: useToastState(),
   }
 }
 
@@ -77,17 +77,19 @@ interface ToastImperativeProviderProps {
    */
   options: ToastImperativeOptions
 }
-const ToastImperativeProvider = ({
+
+export const ToastImperativeProvider = ({
   children,
   options,
-  __scopeToast,
-}: ScopedProps<ToastImperativeProviderProps>) => {
+}: ToastImperativeProviderProps) => {
   const counterRef = useRef(0)
-  const [toast, setToast] =
-    React.useState<ImperativeToastContextValue['currentToast']>(null)
+
+  const [toast, setToast] = React.useState<ToastCurrentContextI['currentToast']>(null)
+
   const [lastNativeToastRef, setLastNativeToastRef] =
-    React.useState<ImperativeToastContextValue['nativeToast']>(null)
-  const showToast = React.useCallback<ImperativeToastContextValue['showToast']>(
+    React.useState<ToastContextI['nativeToast']>(null)
+
+  const showToast = React.useCallback<ToastContextI['showToast']>(
     (title, showToastOptions) => {
       const native = showToastOptions?.native ?? options.native
       const isWebNative = Array.isArray(native)
@@ -132,19 +134,24 @@ const ToastImperativeProvider = ({
     setToast(null)
   }, [setToast, lastNativeToastRef])
 
+  const contextValue = useMemo(() => {
+    return {
+      showToast,
+      hideToast,
+      nativeToast: lastNativeToastRef,
+      options,
+    }
+  }, [showToast, hideToast, lastNativeToastRef, JSON.stringify(options || null)])
+
+  const currentContextValue = useMemo(() => {}, [])
+
   return (
-    <ToastImperativeProviderProvider
-      scope={__scopeToast}
-      showToast={showToast}
-      hideToast={hideToast}
-      currentToast={toast}
-      nativeToast={lastNativeToastRef}
-      options={options}
-    >
-      {children}
-    </ToastImperativeProviderProvider>
+    <ToastContext.Provider value={contextValue}>
+      <ToastCurrentContext.Provider value={toast}>
+        {children}
+      </ToastCurrentContext.Provider>
+    </ToastContext.Provider>
   )
 }
 
-export { ToastImperativeProvider, useToast }
 export type { ToastImperativeProviderProps, ToastNativePlatform, ToastNativeValue }

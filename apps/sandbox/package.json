@@ -21,6 +21,7 @@
     "@tamagui/shorthands": "1.12.2",
     "@tamagui/slider": "1.12.2",
     "@tamagui/themes": "1.12.2",
+    "@tamagui/toast": "1.12.2",
     "@tamagui/vite-plugin": "1.12.2",
     "@tamagui/vite-plugin-reanimated": "1.12.2",
     "react": "^18.2.0",
