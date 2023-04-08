@@ -72,7 +72,8 @@ export const useToast = () => {
 
 interface ToastImperativeProviderProps {
   children: React.ReactNode
-  /**
+  /**ToastCurrentContextI
+   *
    * Used to provide defaults to imperative API. Options can be overwritten when calling `show()`.
    */
   options: ToastImperativeOptions
@@ -84,7 +85,7 @@ export const ToastImperativeProvider = ({
 }: ToastImperativeProviderProps) => {
   const counterRef = useRef(0)
 
-  const [toast, setToast] = React.useState<ToastCurrentContextI['currentToast']>(null)
+  const [toast, setToast] = React.useState<ToastData | null>(null)
 
   const [lastNativeToastRef, setLastNativeToastRef] =
     React.useState<ToastContextI['nativeToast']>(null)
