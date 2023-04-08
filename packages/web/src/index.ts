@@ -22,6 +22,8 @@ export {
   updateConfig,
   setConfig,
   configListeners,
+  getAnimations,
+  setAnimations,
 } from './config.js'
 
 export * from './constants/constants.js'

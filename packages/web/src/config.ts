@@ -1,6 +1,19 @@
 import { ConfigListener, TamaguiInternalConfig, TokensMerged } from './types.js'
 
 let conf: TamaguiInternalConfig | null
+// this is the only source of truth for animations configs
+let animations: TamaguiInternalConfig['animations']['animations'] | null
+
+export const getAnimations = () => {
+  if (!animations) throw new Error('never called createTamagui')
+  return animations
+}
+
+export const setAnimations = (
+  next: TamaguiInternalConfig['animations']['animations']
+) => {
+  animations = next
+}
 
 export const setConfig = (next: TamaguiInternalConfig) => {
   conf = next

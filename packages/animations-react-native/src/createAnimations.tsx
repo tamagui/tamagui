@@ -9,6 +9,7 @@ import {
   useIsomorphicLayoutEffect,
   useSafeRef,
 } from '@tamagui/web'
+import { getAnimations } from '@tamagui/web'
 import { useEffect, useMemo } from 'react'
 import { Animated } from 'react-native'
 
@@ -142,7 +143,7 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimatedNumberReaction,
     useAnimatedNumberStyle,
     usePresence,
-    useAnimations({ props, onDidAnimate, style, state, presence }) {
+    useAnimations: ({ props, onDidAnimate, style, state, presence }) => {
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
       const mergedStyles = style
@@ -189,7 +190,7 @@ export function createAnimations<A extends AnimationsConfig>(
             const tkey = Object.keys(transform)[0]
             const currentTransform = animatedTranforms.current[index]?.[tkey]
             animatedTranforms.current[index] = {
-              [tkey]: update.call(this, tkey, currentTransform, transform[tkey]),
+              [tkey]: update(tkey, currentTransform, transform[tkey]),
             }
             animatedTranforms.current = [...animatedTranforms.current]
           }
@@ -248,7 +249,7 @@ export function createAnimations<A extends AnimationsConfig>(
           if (value) {
             const animationConfig = getAnimationConfig(
               key,
-              this.animations,
+              getAnimations() as AnimationsConfig,
               props.animation
             )
 

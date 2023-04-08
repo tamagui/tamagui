@@ -1,4 +1,10 @@
 import { ConfigListener, TamaguiInternalConfig, TokensMerged } from './types.js';
+export declare const getAnimations: () => {
+    [key: string]: string | any[] | {
+        [key: string]: any;
+    };
+};
+export declare const setAnimations: (next: TamaguiInternalConfig['animations']['animations']) => void;
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const setConfigFont: (name: string, font: any, fontParsed: any) => void;
 export declare const getConfig: () => TamaguiInternalConfig<import("./types.js").CreateTokens<import("./types.js").VariableVal>, {

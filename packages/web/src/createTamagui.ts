@@ -1,6 +1,6 @@
 import { isRSC, isWeb } from '@tamagui/constants'
 
-import { configListeners, setConfig } from './config.js'
+import { configListeners, setAnimations, setConfig } from './config.js'
 import { createVariables, tokensKeysOrdered } from './createVariables.js'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules.js'
 import {
@@ -197,7 +197,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       return [k, val]
     })
   )
-  
+
+  if (configIn.animations?.animations) {
+    setAnimations(configIn.animations.animations)
+  }
+
   const shorthands = configIn.shorthands || {}
 
   const config: TamaguiInternalConfig = {

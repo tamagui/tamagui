@@ -188,9 +188,7 @@ export function createComponent<
      * Component state for tracking animations, pseudos
      */
     const animationsConfig = useAnimationDriver()
-    const useAnimations = animationsConfig?.useAnimations.bind(animationsConfig) as
-      | UseAnimationHook
-      | undefined
+    const useAnimations = animationsConfig?.useAnimations as UseAnimationHook | undefined
     const isAnimated = (() => {
       const next = !!(
         !staticConfig.isHOC &&

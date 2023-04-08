@@ -1,2 +1,3 @@
-export declare function changeAnimationDriver(animations: any): void;
+import { TamaguiInternalConfig } from '@tamagui/web';
+export declare function changeAnimationDriver(animations: TamaguiInternalConfig['animations']): void;
 //# sourceMappingURL=index.d.ts.map
