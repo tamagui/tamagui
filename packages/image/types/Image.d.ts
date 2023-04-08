@@ -1,4 +1,4 @@
-import { GetProps, RadiusTokens, SizeTokens, StackProps } from '@tamagui/core';
+import { GetProps, RadiusTokens, StackProps } from '@tamagui/core';
 import React from 'react';
 import { Image as RNImage } from 'react-native';
 declare const StyledImage: import("@tamagui/core").TamaguiComponent<(import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>) | (import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & Omit<{}, string | number> & {
@@ -13,9 +13,7 @@ declare const StyledImage: import("@tamagui/core").TamaguiComponent<(import("rea
 type StyledImageProps = Omit<GetProps<typeof StyledImage>, 'borderRadius'> & {
     borderRadius?: RadiusTokens;
 };
-type BaseProps = Omit<StyledImageProps, 'source' | 'width' | 'height' | 'style' | 'onLayout'> & {
-    width: number | SizeTokens;
-    height: number | SizeTokens;
+type BaseProps = Omit<StyledImageProps, 'source' | 'style' | 'onLayout'> & {
     src: string | StyledImageProps['source'];
 };
 export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>;
