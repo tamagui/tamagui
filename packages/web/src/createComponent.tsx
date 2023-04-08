@@ -735,12 +735,14 @@ export function createComponent<
       if (true) {
         content = (
           <>
-            {content}{' '}
+            {content}
             <code>
               <pre>
                 {JSON.stringify({
                   name: themeState.themeManager?.state.name,
                   parent: themeState.themeManager?.state.parentName,
+                  id: themeState.themeManager?.id,
+                  isNew: themeState.isNewTheme,
                 })}
               </pre>
             </code>

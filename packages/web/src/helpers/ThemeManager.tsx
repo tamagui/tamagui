@@ -26,7 +26,10 @@ export function hasNoThemeUpdatingProps(props: ThemeProps) {
   return !(props.name || props.componentName || props.inverse || props.reset)
 }
 
+let uid = 0
+
 export class ThemeManager {
+  id = uid++
   themeListeners = new Set<ThemeListener>()
   parentManager: ThemeManager | null = null
   state: ThemeManagerState = emptyState

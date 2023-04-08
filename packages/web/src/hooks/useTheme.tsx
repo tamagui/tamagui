@@ -196,6 +196,14 @@ export const useChangeThemeEffect = (
     }
   }
 
+  function getThemeManagerNextStateIfChanged(manager = themeManager) {
+    const next = manager.getState(props, parentManager)
+    if (!next) return
+    if (disableUpdate?.() === true) return
+    if (!manager.getStateShouldChange(next, state)) return
+    return next
+  }
+
   if (!isServer) {
     useEffect(() => {
       if (!isNewTheme) return
@@ -217,29 +225,16 @@ export const useChangeThemeEffect = (
 
     // listen for parent change + notify children change
     useLayoutEffect(() => {
-      const next = themeManager.getState(props, parentManager)
+      const nextState = getThemeManagerNextStateIfChanged()
 
-      if (next) {
-        if (disableUpdate?.() !== true) {
-          const shouldChange = themeManager.getStateShouldChange(next, state)
-
-          if (shouldChange) {
-            console.log(`changing`, next)
-            themeManager.updateState(next, true)
-          }
-
-          if (shouldChange) {
-            setThemeState(createState)
-          } else {
-            if (!next && parentManager?.state.name !== state.name) {
-              // were changing back to parent state
-              setThemeState(createState)
-            }
-          }
-        }
+      if (nextState) {
+        themeManager.updateState(nextState, true)
+        // do we still need this
+        setThemeState(createState)
       }
 
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
+        console.log(`got change`, manager.id, name)
         if (keys?.length) {
           if (process.env.NODE_ENV === 'development' && props['debug'] && keys?.length) {
             console.log(`onChangeTheme`, { props, name, manager, parentManager, keys })
@@ -266,7 +261,25 @@ export const useChangeThemeEffect = (
     }
 
     //  returns previous theme manager if no change
-    const themeManager = new ThemeManager(props, root ? 'root' : parentManager)
+    let themeManager: ThemeManager
+
+    if (prev?.themeManager) {
+      themeManager = prev.themeManager
+      const nextState = getThemeManagerNextStateIfChanged()
+
+      if (nextState) {
+        console.warn(`got a new state`, themeManager.id, nextState)
+      }
+
+      if (prev.isNewTheme) {
+        // just update in place
+      } else {
+        console.log(`should create new one now`)
+        themeManager = new ThemeManager(props, root ? 'root' : parentManager)
+      }
+    } else {
+      themeManager = new ThemeManager(props, root ? 'root' : parentManager)
+    }
 
     const isNewTheme = Boolean(
       themeManager !== parentManager ||

@@ -9,7 +9,10 @@ import type { ThemeProps } from '../types.js'
 
 export function Theme(props: ThemeProps) {
   // @ts-expect-error only for internal views
-  if (props.disable) return props.children
+  if (props.disable) {
+    return props.children
+  }
+
   const isRoot = !!props['_isRoot']
   const themeState = useChangeThemeEffect(props, isRoot)
 
@@ -27,7 +30,10 @@ export function Theme(props: ThemeProps) {
             <pre>
               &lt;Theme /&gt;&nbsp;
               {JSON.stringify({
-                themeState: themeState.themeManager?.state.name,
+                name: themeState.themeManager?.state.name,
+                parent: themeState.themeManager?.state.parentName,
+                id: themeState.themeManager?.id,
+                isNew: themeState.isNewTheme,
               })}
             </pre>
           </code>
