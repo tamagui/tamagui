@@ -1,5 +1,4 @@
 import { User, useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
-import { SupabaseClient } from '@supabase/supabase-js'
 import {
   createContext,
   useCallback,
