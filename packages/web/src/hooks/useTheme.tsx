@@ -196,8 +196,23 @@ export const useChangeThemeEffect = (
     }
   }
 
+  function getNextThemeManagerState(manager = themeManager) {
+    console.log(
+      `GET`,
+      props,
+      parentManager === themeManager,
+      parentManager?.state,
+      themeManager.state
+    )
+
+    return manager.getState(
+      props,
+      parentManager === themeManager ? parentManager.parentManager : parentManager
+    )
+  }
+
   function getThemeManagerNextStateIfChanged(manager = themeManager) {
-    const next = manager.getState(props, parentManager)
+    const next = getNextThemeManagerState()
     if (!next) return
     if (disableUpdate?.() === true) return
     if (!manager.getStateShouldChange(next, state)) return
@@ -225,11 +240,23 @@ export const useChangeThemeEffect = (
 
     // listen for parent change + notify children change
     useLayoutEffect(() => {
-      const nextState = getThemeManagerNextStateIfChanged()
+      const nextState = getThemeManagerNextStateIfChanged(themeManager)
+
+      console.log(
+        `huh?`,
+        themeManager.id,
+        themeState,
+        nextState,
+        props,
+        getNextThemeManagerState(themeManager)
+      )
 
       if (nextState) {
-        themeManager.updateState(nextState, true)
-        // do we still need this
+        if (isNewTheme) {
+          // if it's a new theme we can just update + publish to children
+          themeManager.updateState(nextState, true)
+        }
+        // if not we will be creating a whole new themeManager
         setThemeState(createState)
       }
 
@@ -246,7 +273,7 @@ export const useChangeThemeEffect = (
       return () => {
         disposeChangeListener?.()
       }
-    }, [props.componentName, props.inverse, props.name, props.reset])
+    }, [isNewTheme, props.componentName, props.inverse, props.name, props.reset])
   }
 
   return {
@@ -265,7 +292,8 @@ export const useChangeThemeEffect = (
 
     if (prev?.themeManager) {
       themeManager = prev.themeManager
-      const nextState = getThemeManagerNextStateIfChanged()
+
+      const nextState = getThemeManagerNextStateIfChanged(themeManager)
 
       if (nextState) {
         console.warn(`got a new state`, themeManager.id, nextState)

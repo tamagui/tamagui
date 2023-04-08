@@ -46,12 +46,14 @@ export function Inner(props: { children?: any }) {
 }
 
 const SandboxThemeChildStatic = memo(() => {
+  // @ts-ignore
   return <Square debug="visualize" size={20} backgroundColor="$color10" />
 })
 
 const SandboxThemeChildDynamic = memo(() => {
   console.log('render dynamic')
   return (
+    // @ts-ignore
     <Square debug="visualize" animation="bouncy" size={20} backgroundColor="$color10" />
   )
 })

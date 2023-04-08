@@ -190,8 +190,11 @@ function getState(
   if (props.name && props.reset) {
     throw new Error('Cannot reset + set new name')
   }
+
   if (props.reset && !parentManager?.parentManager) {
-    console.warn('Cannot reset no grandparent exists')
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('Cannot reset no grandparent exists')
+    }
     return null
   }
 
