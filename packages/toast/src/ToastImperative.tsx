@@ -62,6 +62,14 @@ export const useToastState = () => {
   return useContext(ToastCurrentContext)
 }
 
+/** @deprecated use `useToastController` and `useToastState` instead to avoid performance pitfalls */
+export const useToast = () => {
+  return {
+    ...useToastController(),
+    currentToast: useToastState(),
+  }
+}
+
 interface ToastImperativeProviderProps {
   children: React.ReactNode
   /**

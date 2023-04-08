@@ -1,3 +1,9 @@
+- relative sizing first class (and relative color)
+  - add `defaultSize`, and `defaultColor`
+  - add `relative()` helpers
+
+- missing docs on useToastController().options
+
 - bug: inputs rendering twice due to focusableInputHOC, if you remove that it doesnt, this is due to styled() + how it determines ComponentIn and grabs the component
 
 - document `unstyled` prop for components
