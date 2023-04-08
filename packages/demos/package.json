@@ -42,6 +42,7 @@
     "@tamagui/sheet": "1.12.2",
     "@tamagui/slider": "1.12.2",
     "@tamagui/stacks": "1.12.2",
+    "@tamagui/toast": "1.12.2",
     "tamagui": "1.12.2"
   },
   "peerDependencies": {
