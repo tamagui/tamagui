@@ -34,19 +34,12 @@ export const InstallInput = memo(() => {
       <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
         <Button
           accessibilityLabel={installScript}
+          debug="verbose"
           size="$3"
           borderRadius="$8"
           mr="$-6"
           x={-1}
-          // TODO broken in latest
-          icon={
-            hasCopied ? (
-              <Check size={16} color="var(--colorHover)" />
-            ) : (
-              <Copy size={16} color="var(--colorHover)" />
-            )
-          }
-          aria-label="Copy the install snippet to Clipboard"
+          icon={hasCopied ? Check : Copy}
           onPress={onCopy}
         />
       </TooltipSimple>

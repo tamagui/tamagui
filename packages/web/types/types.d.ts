@@ -199,7 +199,7 @@ export interface ThemeProps {
     componentName?: string;
     children?: any;
     reset?: boolean;
-    debug?: DebugProp;
+    debug?: DebugProp | any;
     inverse?: boolean;
     forceClassName?: boolean;
     shouldUpdate?: () => boolean;

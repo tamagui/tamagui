@@ -62,20 +62,13 @@ export const useThemeWithState = (props: ThemeProps) => {
 
   const { themeManager, theme, name, className } = changedTheme
 
-  if (process.env.NODE_ENV === 'development') {
-    // ensure we aren't creating too many ThemeManagers
-    // prettier-ignore
-    if (isWeb && className === themeManager?.parentManager?.state.className) {
-      console.error('Should always change, duplicating ThemeMananger bug', themeManager)
+  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+    console.groupCollapsed('  🔹 useTheme =>', name)
+    const logs = { ...props, name, className, ...(isDevTools && { theme }) }
+    for (const key in logs) {
+      console.log('  ', key, logs[key])
     }
-    if (props.debug === 'verbose') {
-      console.groupCollapsed('  🔹 useTheme =>', name)
-      const logs = { ...props, name, className, ...(isDevTools && { theme }) }
-      for (const key in logs) {
-        console.log('  ', key, logs[key])
-      }
-      console.groupEnd()
-    }
+    console.groupEnd()
   }
 
   if (!changedTheme.theme) {
@@ -117,7 +110,6 @@ export function getThemeProxied(
         return theme
       }
       if (
-        key === 'undefined' ||
         key === '__proto__' ||
         key === '$typeof' ||
         typeof key !== 'string' ||
@@ -128,7 +120,6 @@ export function getThemeProxied(
 
       // auto convert variables to plain
       const keyString = key[0] === '$' ? key.slice(1) : key
-
       const val = themeManager.getValue(keyString)
 
       if (val && keys) {
@@ -189,8 +180,14 @@ export const useChangeThemeEffect = (
 
   if (shouldReturnParentState) {
     if (!parentManager) throw 'impossible'
-    // prettier-ignore
-    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') console.log('useTheme hasNoThemeUpdatingProps', parentManager.state.name, 'isInversingOnMount', isInversingOnMount)
+    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+      console.log(
+        'useTheme hasNoThemeUpdatingProps',
+        parentManager.state.name,
+        'isInversingOnMount',
+        isInversingOnMount
+      )
+    }
     return {
       isNewTheme: false,
       ...parentManager.state,
@@ -241,8 +238,16 @@ export const useChangeThemeEffect = (
       }
 
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
+        if (process.env.NODE_ENV === 'development' && props['debug']) {
+          console.log(`parent changed theme`, {
+            props,
+            name,
+            manager,
+            parentManager,
+            keys: [...(keys || [])],
+          })
+        }
         if (keys?.length) {
-          debugger
           setThemeState(createState)
         }
       })
@@ -275,6 +280,12 @@ export const useChangeThemeEffect = (
     // only inverse relies on this for ssr
     const mounted = !props.inverse ? true : root || prev?.mounted
     const state = { ...themeManager.state }
+
+    if (process.env.NODE_ENV === 'development' && props['debug']) {
+      console.groupCollapsed(` 🔷 useChangeThemeEffect createState`)
+      console.log({ parentManager, state, isNewTheme, mounted, themeManager, prev })
+      console.groupEnd()
+    }
 
     return {
       // ThemeManager returns parentManager if no change

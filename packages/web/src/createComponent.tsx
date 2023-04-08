@@ -185,6 +185,8 @@ export function createComponent<
     )
     stateRef.current ||= {}
 
+    const hostRef = useServerRef<TamaguiElement>(null)
+
     /**
      * Component state for tracking animations, pseudos
      */
@@ -290,9 +292,10 @@ export function createComponent<
       componentName,
       reset: props.reset,
       inverse: props.themeInverse,
-      // @ts-expect-error
+      // @ts-ignore this is internal use only
       disable: props['data-themeable'],
-      debug: props.debug,
+      debug:
+        process.env.NODE_ENV === 'development' && props.debug ? { hostRef } : undefined,
       shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
     })!
 
@@ -341,8 +344,6 @@ export function createComponent<
       enabled: shouldListenForMedia,
       keys: noClassNames && isMediaSpaced ? (splitStyles.hasMedia as any) : null,
     })
-
-    const hostRef = useServerRef<TamaguiElement>(null)
 
     // animation setup
     const isAnimatedReactNativeWeb = isAnimated && avoidClassesWhileAnimating

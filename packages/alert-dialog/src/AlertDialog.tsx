@@ -33,7 +33,6 @@ import {
   DialogTriggerProps,
   DialogWarningProvider,
   createDialogScope,
-  DialogOverlayFrame,
 } from '@tamagui/dialog'
 import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'

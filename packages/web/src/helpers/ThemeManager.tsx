@@ -212,9 +212,20 @@ function getState(
       ? max // component name only don't search upwards
       : 0
 
-  // prettier-ignore
   // eslint-disable-next-line no-console
-  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') [ console.groupCollapsed('ThemeManager.getState()', props, { parentName,   parentBaseTheme,   base,   min,   max,   isParentAComponentTheme }), console.trace(), console.groupEnd() ]
+  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+    console.groupCollapsed('ThemeManager.getState()')
+    console.log({
+      parentName,
+      parentBaseTheme,
+      base,
+      min,
+      max,
+      isParentAComponentTheme,
+    })
+    console.trace()
+    console.groupEnd()
+  }
 
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
