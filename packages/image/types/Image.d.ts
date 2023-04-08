@@ -13,9 +13,7 @@ declare const StyledImage: import("@tamagui/core").TamaguiComponent<(import("rea
 type StyledImageProps = Omit<GetProps<typeof StyledImage>, 'borderRadius'> & {
     borderRadius?: RadiusTokens;
 };
-type BaseProps = Omit<StyledImageProps, 'source' | 'width' | 'height' | 'style' | 'onLayout'> & {
-    width: number;
-    height: number;
+type BaseProps = Omit<StyledImageProps, 'source' | 'style' | 'onLayout'> & {
     src: string | StyledImageProps['source'];
 };
 export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>;

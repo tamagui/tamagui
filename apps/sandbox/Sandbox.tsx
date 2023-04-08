@@ -2,13 +2,13 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { TabsAdvancedDemo } from '@tamagui/demos'
+import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
 import {
   Button,
   Input,
   ScrollView,
   TamaguiProvider,
-  ToastProvider,
   XStack,
   YStack,
   styled,
