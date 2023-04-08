@@ -16,7 +16,7 @@ interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message
    */
   native?: ToastNativeValue
 }
-interface ShowToastOptions extends CreateNativeToastOptions {
+interface ShowOptions extends CreateNativeToastOptions {
   /**
    * Used when need custom data
    */
@@ -37,7 +37,7 @@ interface ToastContextI {
   /**
    * Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).
    */
-  showToast: (title: string, options?: ShowToastOptions) => boolean
+  show: (title: string, options?: ShowOptions) => boolean
 
   /**
    * Call it to hide the currently displayed toast.
@@ -46,7 +46,7 @@ interface ToastContextI {
    *
    * _NOTE_: hides the last toast on web notification toasts
    */
-  hideToast: () => void
+  hide: () => void
 
   options?: ToastImperativeOptions
 }
@@ -72,8 +72,7 @@ export const useToast = () => {
 
 interface ToastImperativeProviderProps {
   children: React.ReactNode
-  /**ToastCurrentContextI
-   *
+  /**
    * Used to provide defaults to imperative API. Options can be overwritten when calling `show()`.
    */
   options: ToastImperativeOptions
@@ -90,9 +89,9 @@ export const ToastImperativeProvider = ({
   const [lastNativeToastRef, setLastNativeToastRef] =
     React.useState<ToastContextI['nativeToast']>(null)
 
-  const showToast = React.useCallback<ToastContextI['showToast']>(
-    (title, showToastOptions) => {
-      const native = showToastOptions?.native ?? options.native
+  const show = React.useCallback<ToastContextI['show']>(
+    (title, showOptions) => {
+      const native = showOptions?.native ?? options.native
       const isWebNative = Array.isArray(native)
         ? native.includes('web')
         : native === 'web'
@@ -114,7 +113,7 @@ export const ToastImperativeProvider = ({
         (Platform.OS === 'ios' && isIosNative)
 
       if (isHandledNatively) {
-        const nativeToastResult = createNativeToast(title, showToastOptions ?? {})
+        const nativeToastResult = createNativeToast(title, showOptions ?? {})
         if (typeof nativeToastResult === 'object' && nativeToastResult.nativeToastRef) {
           setLastNativeToastRef(nativeToastResult.nativeToastRef)
         }
@@ -123,26 +122,26 @@ export const ToastImperativeProvider = ({
       setToast({
         title,
         id: counterRef.current.toString(),
-        ...showToastOptions,
+        ...showOptions,
         isHandledNatively,
       })
       return true
     },
     [setToast, options.native]
   )
-  const hideToast = React.useCallback(() => {
+  const hide = React.useCallback(() => {
     lastNativeToastRef?.close()
     setToast(null)
   }, [setToast, lastNativeToastRef])
 
   const contextValue = useMemo(() => {
     return {
-      showToast,
-      hideToast,
+      show,
+      hide,
       nativeToast: lastNativeToastRef,
       options,
     }
-  }, [showToast, hideToast, lastNativeToastRef, JSON.stringify(options || null)])
+  }, [show, hide, lastNativeToastRef, JSON.stringify(options || null)])
 
   const currentContextValue = useMemo(() => {}, [])
 

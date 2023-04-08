@@ -6,7 +6,7 @@ interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message
      */
     native?: ToastNativeValue;
 }
-interface ShowToastOptions extends CreateNativeToastOptions {
+interface ShowOptions extends CreateNativeToastOptions {
     /**
      * Used when need custom data
      */
@@ -27,7 +27,7 @@ interface ToastContextI {
     /**
      * Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).
      */
-    showToast: (title: string, options?: ShowToastOptions) => boolean;
+    show: (title: string, options?: ShowOptions) => boolean;
     /**
      * Call it to hide the currently displayed toast.
      *
@@ -35,7 +35,7 @@ interface ToastContextI {
      *
      * _NOTE_: hides the last toast on web notification toasts
      */
-    hideToast: () => void;
+    hide: () => void;
     options?: ToastImperativeOptions;
 }
 export declare const useToastController: () => ToastContextI;
@@ -47,7 +47,7 @@ export declare const useToast: () => {
     /**
      * Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).
      */
-    showToast: (title: string, options?: ShowToastOptions) => boolean;
+    show: (title: string, options?: ShowOptions) => boolean;
     /**
      * Call it to hide the currently displayed toast.
      *
@@ -55,13 +55,12 @@ export declare const useToast: () => {
      *
      * _NOTE_: hides the last toast on web notification toasts
      */
-    hideToast: () => void;
+    hide: () => void;
     options?: ToastImperativeOptions | undefined;
 };
 interface ToastImperativeProviderProps {
     children: React.ReactNode;
-    /**ToastCurrentContextI
-     *
+    /**
      * Used to provide defaults to imperative API. Options can be overwritten when calling `show()`.
      */
     options: ToastImperativeOptions;
