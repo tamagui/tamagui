@@ -19,7 +19,7 @@ type BaseProps = Omit<StyledImageProps, 'width' | 'height' | 'style' | 'onLayout
     /**
      * @deprecated use `source` instead to disambiguate width/height style from width/height of the actual image
      */
-    src: string | StyledImageProps['source'];
+    src?: string | StyledImageProps['source'];
 };
 export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>;
 type RNImageType = typeof RNImage;
