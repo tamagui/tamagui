@@ -41,6 +41,7 @@ export const getSizedElevation = (
     shadowColor: theme.shadowColor,
     shadowRadius,
     shadowOffset: { height, width: 0 },
+    elevation: Math.ceil(2 * height),
   }
   return shadow
 }
