@@ -209,12 +209,12 @@ function getState(
   // components look for most specific, fallback upwards
   const base = parentName.split(THEME_NAME_SEPARATOR)
   const lastSegment = base[base.length - 1]
-  const isParentAComponentTheme =
+  const isParentComponentTheme =
     parentName && lastSegment[0].toUpperCase() === lastSegment[0]
-  if (isParentAComponentTheme) {
+  if (isParentComponentTheme) {
     base.pop() // always remove componentName they can't nest
   }
-  const parentBaseTheme = isParentAComponentTheme
+  const parentBaseTheme = isParentComponentTheme
     ? base.slice(0, base.length).join(THEME_NAME_SEPARATOR)
     : parentName
   const max = base.length
@@ -224,7 +224,7 @@ function getState(
       : 0
 
   // eslint-disable-next-line no-console
-  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+  if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
     console.groupCollapsed('ThemeManager.getState()')
     console.log({
       parentName,
@@ -232,10 +232,8 @@ function getState(
       base,
       min,
       max,
-      isParentAComponentTheme,
+      isParentComponentTheme,
     })
-    console.trace()
-    console.groupEnd()
   }
 
   for (let i = max; i >= min; i--) {
@@ -259,12 +257,8 @@ function getState(
     if (componentName) {
       // components only look for component themes
       if (nextName) {
-        potentials.push(
-          `${prefix.slice(
-            0,
-            prefix.indexOf(THEME_NAME_SEPARATOR)
-          )}_${nextName}_${componentName}`
-        )
+        const beforeSeparator = prefix.slice(0, prefix.indexOf(THEME_NAME_SEPARATOR))
+        potentials.push(`${beforeSeparator}_${nextName}_${componentName}`)
       }
       potentials.push(`${prefix}_${componentName}`)
       if (nextName) {
@@ -274,18 +268,27 @@ function getState(
 
     const found = potentials.find((t) => t in themes)
 
-    if (found) {
-      // optimization return null if not changed
-      if (found !== parentName) {
-        result = {
-          name: found,
-          theme: getThemeUnwrapped(themes[found]),
-          className: getNextThemeClassName(found, props.inverse),
-          parentName,
-        }
-      }
-      break
+    if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
+      console.log(' - ', { found, potentials })
     }
+
+    if (found) {
+      return {
+        name: found,
+        theme: getThemeUnwrapped(themes[found]),
+        className: getNextThemeClassName(found, props.inverse),
+        parentName,
+      }
+    }
+  }
+
+  // eslint-disable-next-line no-console
+  if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
+    console.log({
+      result,
+    })
+    console.trace()
+    console.groupEnd()
   }
 
   return result

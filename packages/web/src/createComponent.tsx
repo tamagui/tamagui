@@ -742,6 +742,7 @@ export function createComponent<
                   name: themeState.themeManager?.state.name,
                   parent: themeState.themeManager?.state.parentName,
                   id: themeState.themeManager?.id,
+                  parentId: themeState.themeManager?.parentManager?.id,
                   isNew: themeState.isNewTheme,
                 })}
               </pre>

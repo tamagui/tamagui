@@ -197,22 +197,26 @@ export const useChangeThemeEffect = (
   }
 
   function getNextThemeManagerState(manager = themeManager) {
-    console.log(
-      `GET`,
-      props,
-      parentManager === themeManager,
-      parentManager?.state,
-      themeManager.state
-    )
-
-    return manager.getState(
+    const next = manager.getState(
       props,
       parentManager === themeManager ? parentManager.parentManager : parentManager
     )
+    console.log(
+      `GET`,
+      parentManager === themeManager,
+      parentManager?.state,
+      manager.state,
+      {
+        props,
+        next,
+      }
+    )
+
+    return next
   }
 
   function getThemeManagerNextStateIfChanged(manager = themeManager) {
-    const next = getNextThemeManagerState()
+    const next = getNextThemeManagerState(manager)
     if (!next) return
     if (disableUpdate?.() === true) return
     if (!manager.getStateShouldChange(next, state)) return
@@ -245,9 +249,7 @@ export const useChangeThemeEffect = (
       console.log(
         `huh?`,
         themeManager.id,
-        themeState,
-        nextState,
-        props,
+        { themeState, nextState, props },
         getNextThemeManagerState(themeManager)
       )
 
