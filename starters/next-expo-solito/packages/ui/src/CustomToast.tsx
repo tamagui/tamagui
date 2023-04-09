@@ -1,5 +1,5 @@
-import { useToast, YStack } from 'tamagui'
-import { Toast } from '@tamagui/toast'
+import { YStack } from 'tamagui'
+import { Toast, useToast } from '@tamagui/toast'
 
 export const CustomToast = () => {
   const { currentToast } = useToast()
