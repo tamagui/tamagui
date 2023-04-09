@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@my/ui": "*",
     "@tamagui/next-theme": "1.12.2",
     "app": "*",
     "next": "^13.1.4",

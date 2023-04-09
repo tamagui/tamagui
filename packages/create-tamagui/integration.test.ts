@@ -27,43 +27,53 @@ const dir = isLocalDev ? `/tmp/test` : join(tmpdir(), `cta-test-${Date.now()}`)
 
 const oneMinute = 1000 * 60
 
+let didFailInBeforeAll = false
+
 test.beforeAll(async () => {
-  // 15 m
-  test.setTimeout(oneMinute * 15)
+  try {
+    // 15 m
+    test.setTimeout(oneMinute * 15)
 
-  const tamaguiBin = join(PACKAGE_ROOT, `dist`, `index.js`)
+    const tamaguiBin = join(PACKAGE_ROOT, `dist`, `index.js`)
 
-  console.log(`Making test app in`, dir)
+    console.log(`Making test app in`, dir)
 
-  // let me re-run fast locally
-  const dirExists = existsSync(dir)
+    // let me re-run fast locally
+    const dirExists = existsSync(dir)
 
-  if (!dirExists) {
+    if (dirExists) {
+      // clear it from old tests
+      await fs.remove(dir)
+    }
+
     await fs.ensureDir(dir)
+
+    cd(dir)
+
+    if (!dirExists) {
+      await $`node ${tamaguiBin} test-app`
+    }
+
+    cd(`test-app`)
+
+    server = $`yarn web:extract`
+
+    server.catch((err) => {
+      console.warn(`server err ${err}`)
+    })
+
+    await waitPort({
+      port: 3000,
+      host: 'localhost',
+    })
+
+    // pre-warm
+    await fetch(`http://localhost:3000`)
+    await sleep(2000)
+  } catch (err) {
+    didFailInBeforeAll = true
+    throw err
   }
-
-  cd(dir)
-
-  if (!dirExists) {
-    await $`node ${tamaguiBin} test-app`
-  }
-
-  cd(`test-app`)
-
-  server = $`yarn web:extract`
-
-  server.catch((err) => {
-    console.warn(`server err ${err}`)
-  })
-
-  await waitPort({
-    port: 3000,
-    host: 'localhost',
-  })
-
-  // pre-warm
-  await fetch(`http://localhost:3000`)
-  await sleep(2000)
 })
 
 test.afterAll(async () => {
@@ -74,6 +84,11 @@ test.afterAll(async () => {
     server?.kill(),
     sleep(oneMinute).then(() => console.log(`timed out server kill`)),
   ])
+
+  if (didFailInBeforeAll) {
+    console.log(`\n ⚠️ Failed during test, leaving behind tmp dir for debugging\n`)
+    return
+  }
 
   if (isLocalDev) {
     // next complains if we delete too soon i think

@@ -16609,6 +16609,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "next-app@workspace:apps/starter/apps/next"
   dependencies:
+    "@my/ui": "*"
     "@tamagui/next-plugin": 1.12.2
     "@tamagui/next-theme": 1.12.2
     "@types/node": ^16.11.9
