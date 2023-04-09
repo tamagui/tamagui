@@ -38,21 +38,13 @@ test.beforeAll(async () => {
 
     console.log(`Making test app in`, dir)
 
-    // let me re-run fast locally
-    const dirExists = existsSync(dir)
-
-    if (dirExists) {
-      // clear it from old tests
-      await fs.remove(dir)
-    }
-
+    // clear it from old tests
+    await fs.remove(dir)
     await fs.ensureDir(dir)
 
     cd(dir)
 
-    if (!dirExists) {
-      await $`node ${tamaguiBin} test-app`
-    }
+    await $`node ${tamaguiBin} test-app`
 
     cd(`test-app`)
 
