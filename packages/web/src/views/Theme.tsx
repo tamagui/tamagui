@@ -68,6 +68,8 @@ export function useThemedChildren(
     isNewTheme || hasEverThemed.current || forceClassName || isRoot
 
   return useMemo(() => {
+    // console.warn(`re-render Theme`)
+
     if (!shouldRenderChildrenWithTheme) {
       return children
     }
@@ -115,5 +117,12 @@ export function useThemedChildren(
     }
 
     return wrapped
-  }, [themeManager, children, theme, isNewTheme, className])
+  }, [
+    shouldRenderChildrenWithTheme,
+    themeManager,
+    children,
+    theme,
+    isNewTheme,
+    className,
+  ])
 }

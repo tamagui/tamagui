@@ -92,6 +92,7 @@ export function HeaderContents(props: HeaderProps) {
       pos="relative"
       py={props.floating ? 0 : '$2'}
       zi={50000}
+      debug="verbose"
     >
       <XStack ai="center" space="$4">
         {isHome ? (

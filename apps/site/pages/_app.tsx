@@ -7,13 +7,13 @@ import '../public/fonts/fonts.css'
 import { Footer } from '@components/Footer'
 import { ThemeTint, setTintFamily } from '@tamagui/logo'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
+import { ToastProvider, ToastViewport } from '@tamagui/toast'
 import { AppProps } from 'next/app'
 import NextHead from 'next/head'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 import { Suspense, startTransition, useMemo } from 'react'
 import { TamaguiProvider, isClient } from 'tamagui'
-import {ToastProvider, ToastViewport} from '@tamagui/toast'
 
 import { Header } from '../components/Header'
 import { SearchProvider } from '../components/Search'
@@ -83,6 +83,7 @@ export default function App(props: AppProps) {
           <SearchProvider>
             <Suspense fallback={null}>
               {useMemo(() => {
+                console.warn(`???????????????????`)
                 return (
                   <ToastProvider swipeDirection="horizontal">
                     <ContentInner {...props} />

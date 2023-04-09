@@ -91,7 +91,7 @@ export class ThemeManager {
     if (shouldFlush) {
       // reset any derived state
       this._allKeys = null
-      console.warn(`now it is, notify`, this, { ...this.state })
+      console.warn(`notify()`, this.id)
       notify && this.notify()
       return this.state
     }
@@ -273,12 +273,13 @@ function getState(
     }
 
     if (found) {
-      return {
+      result = {
         name: found,
         theme: getThemeUnwrapped(themes[found]),
         className: getNextThemeClassName(found, props.inverse),
         parentName,
       }
+      break
     }
   }
 

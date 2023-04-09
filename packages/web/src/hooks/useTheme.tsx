@@ -201,17 +201,6 @@ export const useChangeThemeEffect = (
       props,
       parentManager === themeManager ? parentManager.parentManager : parentManager
     )
-    console.log(
-      `GET`,
-      parentManager === themeManager,
-      parentManager?.state,
-      manager.state,
-      {
-        props,
-        next,
-      }
-    )
-
     return next
   }
 
@@ -246,13 +235,6 @@ export const useChangeThemeEffect = (
     useLayoutEffect(() => {
       const nextState = getThemeManagerNextStateIfChanged(themeManager)
 
-      console.log(
-        `huh?`,
-        themeManager.id,
-        { themeState, nextState, props },
-        getNextThemeManagerState(themeManager)
-      )
-
       if (nextState) {
         if (isNewTheme) {
           // if it's a new theme we can just update + publish to children
@@ -263,7 +245,6 @@ export const useChangeThemeEffect = (
       }
 
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
-        console.log(`got change`, manager.id, name)
         if (keys?.length) {
           if (process.env.NODE_ENV === 'development' && props['debug'] && keys?.length) {
             console.log(`onChangeTheme`, { props, name, manager, parentManager, keys })
@@ -291,6 +272,7 @@ export const useChangeThemeEffect = (
 
     //  returns previous theme manager if no change
     let themeManager: ThemeManager
+    let shouldCreateNewThemeManager = false
 
     if (prev?.themeManager) {
       themeManager = prev.themeManager
@@ -299,13 +281,9 @@ export const useChangeThemeEffect = (
 
       if (nextState) {
         console.warn(`got a new state`, themeManager.id, nextState)
-      }
-
-      if (prev.isNewTheme) {
-        // just update in place
-      } else {
-        console.log(`should create new one now`)
-        themeManager = new ThemeManager(props, root ? 'root' : parentManager)
+        if (!prev.isNewTheme) {
+          themeManager = new ThemeManager(props, root ? 'root' : parentManager)
+        }
       }
     } else {
       themeManager = new ThemeManager(props, root ? 'root' : parentManager)
