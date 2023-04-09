@@ -32,7 +32,7 @@ type BaseProps = Omit<StyledImageProps, 'width' | 'height' | 'style' | 'onLayout
   height: string | number | SizeTokens | ThemeValueFallback
 
   /**
-   * @deprecated use `source` instead
+   * @deprecated use `source` instead to disambiguate width/height style from width/height of the actual image
    */
   src: string | StyledImageProps['source']
 }
@@ -59,11 +59,16 @@ export const Image = StyledImage.extractable(
 
     if (process.env.NODE_ENV === 'development') {
       if (typeof src === 'string') {
-        if (!hasWarned) {
-          hasWarned = true
-          console.warn(`Warning: The "src" prop on Image is deprecated, so doing <Image src="" /> is no longer valid.
-
-This is because you must specify width/height for images on React Native. Use the existing <Image source={{ uri: '', width: 100, height: 100 }} /> prop instead.`)
+        if (
+          (typeof props.width === 'string' && props.width[0] !== '$') ||
+          (typeof props.height === 'string' && props.height[0] !== '$')
+        ) {
+          if (!hasWarned) {
+            hasWarned = true
+            console.warn(
+              `React Native expects a numerical width/height. If you want to use a percent you must define the "source" prop with width, height, and uri.`
+            )
+          }
         }
       }
     }
