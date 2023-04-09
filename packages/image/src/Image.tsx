@@ -58,15 +58,17 @@ export const Image = StyledImage.extractable(
     const { src, source, ...rest } = props
 
     if (process.env.NODE_ENV === 'development') {
-      if (
-        typeof src === 'string' &&
-        (typeof props.width === 'number' || typeof props.height === 'number')
-      ) {
-        if (!hasWarned) {
-          hasWarned = true
-          console.warn(
-            `React Native expects a numerical width/height. If you want to use a percent use the "source" prop instead.`
-          )
+      if (typeof src === 'string') {
+        if (
+          (typeof props.width === 'string' && props.width[0] !== '$') ||
+          (typeof props.height === 'string' && props.height[0] !== '$')
+        ) {
+          if (!hasWarned) {
+            hasWarned = true
+            console.warn(
+              `React Native expects a numerical width/height. If you want to use a percent you must define the "source" prop with width, height, and uri.`
+            )
+          }
         }
       }
     }
