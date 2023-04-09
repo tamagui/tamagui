@@ -1,6 +1,6 @@
 {
   "name": "next-app",
-  "version": "1.13.0",
+  "version": "1.13.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@my/ui": "*",
-    "@tamagui/next-theme": "1.13.0",
+    "@tamagui/next-theme": "1.13.1",
     "app": "*",
     "next": "^13.1.4",
     "raf": "^3.4.1",
@@ -19,10 +19,10 @@
     "react-dom": "^18.2.0",
     "react-native": "^0.71.4",
     "react-native-web": "^0.18.3",
-    "react-native-web-lite": "1.13.0"
+    "react-native-web-lite": "1.13.1"
   },
   "devDependencies": {
-    "@tamagui/next-plugin": "1.13.0",
+    "@tamagui/next-plugin": "1.13.1",
     "@types/node": "^16.11.9",
     "eslint-config-next": "^13.0.4"
   }
