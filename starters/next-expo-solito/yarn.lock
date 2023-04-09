@@ -2852,6 +2852,7 @@ __metadata:
     "@tamagui/react-native-media-driver": ^1.12.2
     "@tamagui/shorthands": ^1.12.2
     "@tamagui/themes": ^1.12.2
+    "@tamagui/toast": ^1.12.2
     tamagui: ^1.12.2
   languageName: unknown
   linkType: soft
@@ -4457,7 +4458,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/toast@npm:1.12.2":
+"@tamagui/toast@npm:1.12.2, @tamagui/toast@npm:^1.12.2":
   version: 1.12.2
   resolution: "@tamagui/toast@npm:1.12.2"
   dependencies:
