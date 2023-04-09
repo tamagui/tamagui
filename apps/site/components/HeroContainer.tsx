@@ -38,6 +38,10 @@ export function HeroContainer({
   tinted?: boolean
   showAnimationDriverControl?: boolean
 }) {
+  const demo = (
+    <HeroContainerInner demoMultiple={demoMultiple}>{children}</HeroContainerInner>
+  )
+
   const contents = (
     <YStack
       className={(minimal ? '' : 'hero-gradient') + (noScroll ? '' : ' hero-scroll')}
@@ -62,15 +66,19 @@ export function HeroContainer({
       }}
     >
       <AnimationDriverTogglerContextProvider>
-        <XStack
-          maxHeight="100%"
-          maxWidth="100%"
-          // @ts-expect-error
-          position="unset"
-          justifyContent={demoMultiple ? 'flex-start' : undefined}
-        >
-          <HeroContainerInner demoMultiple={demoMultiple}>{children}</HeroContainerInner>
-        </XStack>
+        {demoMultiple ? (
+          <XStack
+            maxHeight="100%"
+            maxWidth="100%"
+            // @ts-expect-error
+            position="unset"
+            justifyContent="flex-start"
+          >
+            {demo}
+          </XStack>
+        ) : (
+          demo
+        )}
         <XStack
           position="absolute"
           display="inline-flex"
