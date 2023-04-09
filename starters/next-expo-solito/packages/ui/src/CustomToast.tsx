@@ -1,9 +1,13 @@
-import { useToast, Toast, YStack } from '@my/ui'
+import { useToast, YStack } from 'tamagui'
+import { Toast } from '@tamagui/toast'
 
 export const CustomToast = () => {
   const { currentToast } = useToast()
 
-  if (!currentToast || currentToast.isHandledNatively) return null
+  if (!currentToast || currentToast.isHandledNatively) {
+    return null
+  }
+
   return (
     <Toast
       key={currentToast.id}
