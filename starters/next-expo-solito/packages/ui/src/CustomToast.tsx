@@ -1,8 +1,8 @@
 import { YStack } from 'tamagui'
-import { Toast, useToastState } from '@tamagui/toast'
+import { Toast, useToast } from '@tamagui/toast'
 
 export const CustomToast = () => {
-  const currentToast = useToastState()
+  const { currentToast } = useToast()
 
   if (!currentToast || currentToast.isHandledNatively) {
     return null
