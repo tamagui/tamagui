@@ -1,7 +1,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { TabsAdvancedDemo } from '@tamagui/demos'
+import { TabsAdvancedDemo, TooltipDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
 import {
@@ -9,6 +9,7 @@ import {
   Input,
   ScrollView,
   TamaguiProvider,
+  Theme,
   XStack,
   YStack,
   styled,
