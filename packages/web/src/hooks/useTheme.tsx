@@ -239,7 +239,14 @@ export const useChangeThemeEffect = (
       return () => {
         disposeChangeListener?.()
       }
-    }, [isNewTheme, props.componentName, props.inverse, props.name, props.reset])
+    }, [
+      parentManager,
+      isNewTheme,
+      props.componentName,
+      props.inverse,
+      props.name,
+      props.reset,
+    ])
   }
 
   if (shouldReturnParentState) {
@@ -267,6 +274,10 @@ export const useChangeThemeEffect = (
     let themeManager: ThemeManager
     let state: ThemeManagerState | undefined
 
+    const getNewThemeManager = () => {
+      return new ThemeManager(props, root ? 'root' : parentManager)
+    }
+
     if (prev?.themeManager) {
       themeManager = prev.themeManager
 
@@ -275,14 +286,14 @@ export const useChangeThemeEffect = (
       if (nextState) {
         state = nextState
 
-        if (!prev.isNewTheme) {
-          themeManager = new ThemeManager(props, root ? 'root' : parentManager)
+        if (!prev.isNewTheme || !isWeb) {
+          themeManager = getNewThemeManager()
         } else {
           themeManager.updateState(nextState, true)
         }
       }
     } else {
-      themeManager = new ThemeManager(props, root ? 'root' : parentManager)
+      themeManager = getNewThemeManager()
     }
 
     const isNewTheme = Boolean(

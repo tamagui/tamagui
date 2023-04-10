@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import { Children, cloneElement, isValidElement, useId, useMemo } from 'react'
+import { Children, cloneElement, isValidElement, useEffect, useId, useMemo } from 'react'
 
 import { variableToString } from '../createVariable.js'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
@@ -66,6 +66,10 @@ export function useThemedChildren(
 
   const shouldRenderChildrenWithTheme =
     isNewTheme || hasEverThemed.current || forceClassName || isRoot
+
+  useEffect(() => {
+    console.log('new thememanager', themeManager?.state.name)
+  }, [themeManager])
 
   return useMemo(() => {
     // console.warn(`re-render Theme`)
