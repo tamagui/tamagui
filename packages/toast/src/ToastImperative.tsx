@@ -32,8 +32,6 @@ type ToastData = { title: string; id: string } & CreateNativeToastOptions & {
   }
 
 interface ToastContextI {
-  nativeToast: NativeToastRef | null
-
   /**
    * Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).
    */
@@ -48,6 +46,9 @@ interface ToastContextI {
    */
   hide: () => void
 
+  /**
+   * The options you've passed to `ToastProvider`. You shouldn't try to change this.
+   */
   options?: ToastImperativeOptions
 }
 
@@ -87,7 +88,7 @@ export const ToastImperativeProvider = ({
   const [toast, setToast] = React.useState<ToastData | null>(null)
 
   const [lastNativeToastRef, setLastNativeToastRef] =
-    React.useState<ToastContextI['nativeToast']>(null)
+    React.useState<NativeToastRef | null>(null)
 
   const show = React.useCallback<ToastContextI['show']>(
     (title, showOptions) => {
@@ -138,12 +139,9 @@ export const ToastImperativeProvider = ({
     return {
       show,
       hide,
-      nativeToast: lastNativeToastRef,
       options,
     }
   }, [show, hide, lastNativeToastRef, JSON.stringify(options || null)])
-
-  const currentContextValue = useMemo(() => {}, [])
 
   return (
     <ToastContext.Provider value={contextValue}>

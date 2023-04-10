@@ -1,5 +1,5 @@
 import React from 'react';
-import { CreateNativeToastOptions, NativeToastRef, ToastNativePlatform, ToastNativeValue } from './types';
+import { CreateNativeToastOptions, ToastNativePlatform, ToastNativeValue } from './types';
 interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message'> {
     /**
      * Will show a native toast if is true or is set to the current platform. On iOS, it wraps `SPIndicator` and `SPAlert`. On Android, it wraps `ToastAndroid`. On web, it wraps Notification API. Mobile's native features are handled by `burnt`.
@@ -23,7 +23,6 @@ type ToastData = {
     isHandledNatively: boolean;
 };
 interface ToastContextI {
-    nativeToast: NativeToastRef | null;
     /**
      * Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).
      */
@@ -36,6 +35,9 @@ interface ToastContextI {
      * _NOTE_: hides the last toast on web notification toasts
      */
     hide: () => void;
+    /**
+     * The options you've passed to `ToastProvider`. You shouldn't try to change this.
+     */
     options?: ToastImperativeOptions;
 }
 export declare const useToastController: () => ToastContextI;
@@ -43,7 +45,6 @@ export declare const useToastState: () => ToastData | null;
 /** @deprecated use `useToastController` and `useToastState` instead to avoid performance pitfalls */
 export declare const useToast: () => {
     currentToast: ToastData | null;
-    nativeToast: NativeToastRef | null;
     /**
      * Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).
      */
@@ -56,6 +57,9 @@ export declare const useToast: () => {
      * _NOTE_: hides the last toast on web notification toasts
      */
     hide: () => void;
+    /**
+     * The options you've passed to `ToastProvider`. You shouldn't try to change this.
+     */
     options?: ToastImperativeOptions | undefined;
 };
 interface ToastImperativeProviderProps {
