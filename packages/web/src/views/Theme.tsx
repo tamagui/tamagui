@@ -67,10 +67,6 @@ export function useThemedChildren(
   const shouldRenderChildrenWithTheme =
     isNewTheme || hasEverThemed.current || forceClassName || isRoot
 
-  useEffect(() => {
-    console.log('new thememanager', themeManager?.state.name)
-  }, [themeManager])
-
   return useMemo(() => {
     // console.warn(`re-render Theme`)
 
