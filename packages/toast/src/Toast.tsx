@@ -15,7 +15,13 @@ import * as React from 'react'
 
 import { TOAST_NAME } from './constants'
 import { ToastAnnounceExclude } from './ToastAnnounce'
-import { ToastNativePlatform, ToastNativeValue, useToast } from './ToastImperative.js'
+import {
+  ToastNativePlatform,
+  ToastNativeValue,
+  useToast,
+  useToastController,
+  useToastState,
+} from './ToastImperative.js'
 import {
   ToastImpl,
   ToastImplFrame,
@@ -229,6 +235,8 @@ export {
   createToastScope,
   // imperative
   useToast,
+  useToastController,
+  useToastState,
 }
 export type {
   ToastActionProps,
