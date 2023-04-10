@@ -180,14 +180,6 @@ export const useChangeThemeEffect = (
 
   if (shouldReturnParentState) {
     if (!parentManager) throw 'impossible'
-    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-      console.log(
-        'useTheme hasNoThemeUpdatingProps',
-        parentManager.state.name,
-        'isInversingOnMount',
-        isInversingOnMount
-      )
-    }
     return {
       isNewTheme: false,
       ...parentManager.state,
@@ -244,11 +236,7 @@ export const useChangeThemeEffect = (
         setThemeState(createState)
       }
 
-      console.warn(`listen to`, parentManager?.id, state.name)
-
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
-        console.log(`got update`, parentManager?.id, state.name, keys?.length, isNewTheme)
-
         if (keys?.length || isNewTheme) {
           if (process.env.NODE_ENV === 'development' && props['debug'] && keys?.length) {
             console.log(`onChangeTheme`, { props, name, manager, parentManager, keys })
@@ -271,7 +259,6 @@ export const useChangeThemeEffect = (
 
   function createState(prev?: State): State {
     if (prev && disableUpdate?.()) {
-      console.warn(`disabling`, prev?.state.name)
       return prev
     }
 
@@ -287,11 +274,9 @@ export const useChangeThemeEffect = (
       if (nextState) {
         state = nextState
 
-        console.warn(`got a new state`, themeManager.id, nextState)
         if (!prev.isNewTheme) {
           themeManager = new ThemeManager(props, root ? 'root' : parentManager)
         } else {
-          // notify()?
           themeManager.updateState(nextState, true)
         }
       }
