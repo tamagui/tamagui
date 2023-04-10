@@ -9,10 +9,11 @@ export declare const useTint: () => {
     readonly setTintIndex: (next: number) => void;
     readonly setNextTintFamily: () => void;
     readonly setNextTint: () => void;
-    readonly name: "tamagui" | "xmas";
+    readonly name: "tamagui" | "xmas" | "easter";
     readonly families: {
         tamagui: string[];
         xmas: string[];
+        easter: string[];
     };
 };
 export declare const ThemeTint: (props: {
