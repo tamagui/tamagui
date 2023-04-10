@@ -89,7 +89,6 @@ export class ThemeManager {
     if (shouldFlush) {
       // reset any derived state
       this._allKeys = null
-      console.warn(`notify()`, this.id)
       notify && this.notify()
       return this.state
     }

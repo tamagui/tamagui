@@ -83,7 +83,6 @@ export default function App(props: AppProps) {
           <SearchProvider>
             <Suspense fallback={null}>
               {useMemo(() => {
-                console.warn(`???????????????????`)
                 return (
                   <ToastProvider swipeDirection="horizontal">
                     <ContentInner {...props} />
