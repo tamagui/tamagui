@@ -10,6 +10,7 @@ import { SessionContextProvider, useSupabaseClient } from '@supabase/auth-helper
 import { ThemeTint, setTintFamily } from '@tamagui/logo'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { useSharedAuth } from '@tamagui/site-shared'
+import { MyUserContextProvider } from 'hooks/useUser'
 import { AppProps } from 'next/app'
 import NextHead from 'next/head'
 import { useRouter } from 'next/router'
@@ -82,47 +83,49 @@ export default function App(props: AppProps) {
         initialSession={(props as any).initialSession}
         supabaseClient={supabaseClient}
       >
-        <NextThemeProvider
-          onChangeTheme={(next) => {
-            startTransition(() => {
-              setTheme(next)
-            })
-          }}
-        >
-          <TamaguiProvider
-            config={config}
-            disableInjectCSS
-            disableRootThemeClass
-            defaultTheme={theme}
+        <MyUserContextProvider>
+          <NextThemeProvider
+            onChangeTheme={(next) => {
+              startTransition(() => {
+                setTheme(next)
+              })
+            }}
           >
-            <SearchProvider>
-              <Suspense fallback={null}>
-                {useMemo(() => {
-                  return (
-                    <ToastProvider swipeDirection="horizontal">
-                      <ContentInner {...props} />
+            <TamaguiProvider
+              config={config}
+              disableInjectCSS
+              disableRootThemeClass
+              defaultTheme={theme}
+            >
+              <SearchProvider>
+                <Suspense fallback={null}>
+                  {useMemo(() => {
+                    return (
+                      <ToastProvider swipeDirection="horizontal">
+                        <ContentInner {...props} />
 
-                      <ToastViewport
-                        flexDirection="column-reverse"
-                        top="$2"
-                        left={0}
-                        right={0}
-                      />
-                      <ToastViewport
-                        multipleToasts
-                        name="viewport-multiple"
-                        flexDirection="column-reverse"
-                        top="$2"
-                        left={0}
-                        right={0}
-                      />
-                    </ToastProvider>
-                  )
-                }, [props])}
-              </Suspense>
-            </SearchProvider>
-          </TamaguiProvider>
-        </NextThemeProvider>
+                        <ToastViewport
+                          flexDirection="column-reverse"
+                          top="$2"
+                          left={0}
+                          right={0}
+                        />
+                        <ToastViewport
+                          multipleToasts
+                          name="viewport-multiple"
+                          flexDirection="column-reverse"
+                          top="$2"
+                          left={0}
+                          right={0}
+                        />
+                      </ToastProvider>
+                    )
+                  }, [props])}
+                </Suspense>
+              </SearchProvider>
+            </TamaguiProvider>
+          </NextThemeProvider>
+        </MyUserContextProvider>
       </SessionContextProvider>
     </>
   )
