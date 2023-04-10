@@ -58,7 +58,6 @@ export function QuickNav() {
         position: 'fixed' as any,
         left: '50%',
         marginLeft: 430,
-        marginTop: 60,
       }}
     >
       <YStack
