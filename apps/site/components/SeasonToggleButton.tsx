@@ -13,8 +13,14 @@ export const SeasonToggleButton = (props: ButtonProps) => {
         {...props}
         aria-label="Toggle theme"
       >
-        <Text>{[<TamaguiLogo downscale={2.5} />, '🎅🏻'][name === 'tamagui' ? 0 : 1]}</Text>
+        <Text>{options[name]}</Text>
       </Button>
     </TooltipSimple>
   )
+}
+
+const options = {
+  tamagui: <TamaguiLogo downscale={2.5} />,
+  easter: '🐣',
+  xmas: '🎅🏻',
 }
