@@ -314,7 +314,14 @@ export const HeroExampleThemes = memo(function HeroExampleThemes() {
             </XStack>
           </XStack>
 
-          <YStack pe="none" fullscreen ai="center" jc="center" $xs={{ scale: 0.8 }}>
+          <YStack
+            className="media-player-main-demo"
+            pe="none"
+            fullscreen
+            ai="center"
+            jc="center"
+            $xs={{ scale: 0.8 }}
+          >
             <Theme name={colorName}>
               <MediaPlayer
                 elevation="$3"

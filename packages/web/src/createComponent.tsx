@@ -12,6 +12,7 @@ import React, {
   useEffect,
   useId,
   useRef,
+  useState,
 } from 'react'
 
 import { onConfiguredOnce } from './config.js'
@@ -183,7 +184,9 @@ export function createComponent<
         didAccessThemeVariableValue?: boolean
       }
     )
-    stateRef.current ??= {}
+    stateRef.current ||= {}
+
+    const hostRef = useServerRef<TamaguiElement>(null)
 
     /**
      * Component state for tracking animations, pseudos
@@ -290,9 +293,10 @@ export function createComponent<
       componentName,
       reset: props.reset,
       inverse: props.themeInverse,
-      // @ts-expect-error
+      // @ts-ignore this is internal use only
       disable: props['data-themeable'],
-      debug: props.debug,
+      debug:
+        process.env.NODE_ENV === 'development' && props.debug ? { hostRef } : undefined,
       shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
     })!
 
@@ -341,8 +345,6 @@ export function createComponent<
       enabled: shouldListenForMedia,
       keys: noClassNames && isMediaSpaced ? (splitStyles.hasMedia as any) : null,
     })
-
-    const hostRef = useServerRef<TamaguiElement>(null)
 
     // animation setup
     const isAnimatedReactNativeWeb = isAnimated && avoidClassesWhileAnimating
@@ -729,6 +731,37 @@ export function createComponent<
       shallow: stateRef.current.themeShallow,
       // passPropsToChildren: true,
     })
+
+    if (process.env.NODE_ENV === 'development') {
+      if (props['debug'] === 'visualize') {
+        const [onChangeCount, setOnChangeCount] = useState(0)
+
+        useEffect(() => {
+          themeState.themeManager?.onChangeTheme((name, manager) => {
+            setOnChangeCount((p) => ++p)
+            console.warn(`🖤`, name)
+          })
+        }, [themeState.themeManager])
+
+        content = (
+          <>
+            {content}
+            <code>
+              <pre>
+                {JSON.stringify({
+                  name: themeState.themeManager?.state.name,
+                  parent: themeState.themeManager?.state.parentName,
+                  id: themeState.themeManager?.id,
+                  parentId: themeState.themeManager?.parentManager?.id,
+                  isNew: themeState.isNewTheme,
+                  onChangeCount,
+                })}
+              </pre>
+            </code>
+          </>
+        )
+      }
+    }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (events || isAnimatedReactNativeWeb) {

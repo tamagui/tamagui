@@ -9,7 +9,7 @@ import type { ThemeProviderProps } from './views/ThemeProvider.js';
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export type TamaguiElement = HTMLElement | View;
-export type DebugProp = boolean | 'break' | 'verbose';
+export type DebugProp = boolean | 'break' | 'verbose' | 'visualize';
 type DivAttributes = HTMLAttributes<HTMLDivElement>;
 export type TamaguiReactElement<P = any> = React.ReactElement<P> & {
     type: TamaguiComponent;
@@ -199,7 +199,7 @@ export interface ThemeProps {
     componentName?: string;
     children?: any;
     reset?: boolean;
-    debug?: DebugProp;
+    debug?: DebugProp | any;
     inverse?: boolean;
     forceClassName?: boolean;
     shouldUpdate?: () => boolean;

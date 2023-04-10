@@ -29,7 +29,8 @@ const tamaguiOptions = {
 
 console.log('disableExtraction', disableExtraction)
 
-module.exports = /** @type { import('webpack').Configuration } */ {
+/** @type { import('webpack').Configuration } */
+module.exports = {
   context: __dirname,
   stats: 'normal', // 'detailed'
   mode: NODE_ENV,
@@ -51,6 +52,7 @@ module.exports = /** @type { import('webpack').Configuration } */ {
   devServer: {
     client: {
       overlay: false,
+      logging: 'warn',
     },
     hot: true,
     static: {

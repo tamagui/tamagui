@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import { Children, cloneElement, isValidElement } from 'react'
+import { Children, cloneElement, isValidElement, useEffect, useId, useMemo } from 'react'
 
 import { variableToString } from '../createVariable.js'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
@@ -9,14 +9,40 @@ import type { ThemeProps } from '../types.js'
 
 export function Theme(props: ThemeProps) {
   // @ts-expect-error only for internal views
-  if (props.disable) return props.children
+  if (props.disable) {
+    return props.children
+  }
+
   const isRoot = !!props['_isRoot']
   const themeState = useChangeThemeEffect(props, isRoot)
-  const children = props['data-themeable']
+
+  let children = props['data-themeable']
     ? Children.map(props.children, (child) =>
         cloneElement(child, { ['data-themeable']: true })
       )
     : props.children
+
+  if (process.env.NODE_ENV === 'development') {
+    if (props['debug'] === 'visualize') {
+      children = (
+        <div style={{ display: 'inline', border: '1px solid #ccc' }}>
+          <code>
+            <pre>
+              &lt;Theme /&gt;&nbsp;
+              {JSON.stringify({
+                name: themeState.themeManager?.state.name,
+                parent: themeState.themeManager?.state.parentName,
+                id: themeState.themeManager?.id,
+                parentId: themeState.themeManager?.parentManager?.id,
+                isNew: themeState.isNewTheme,
+              })}
+            </pre>
+          </code>
+          {children}
+        </div>
+      )
+    }
+  }
 
   return useThemedChildren(themeState, children, props, isRoot)
 }
@@ -31,14 +57,23 @@ export function useThemedChildren(
   },
   isRoot = false
 ) {
-  const { themeManager, isNewTheme, className, theme } = themeState
+  const { themeManager, className, theme, isNewTheme } = themeState
   const { shallow, forceClassName } = options
   const hasEverThemed = useServerRef(false)
   if (isNewTheme) {
     hasEverThemed.current = true
   }
 
-  if (isNewTheme || hasEverThemed.current || forceClassName || isRoot) {
+  const shouldRenderChildrenWithTheme =
+    isNewTheme || hasEverThemed.current || forceClassName || isRoot
+
+  return useMemo(() => {
+    // console.warn(`re-render Theme`)
+
+    if (!shouldRenderChildrenWithTheme) {
+      return children
+    }
+
     // be sure to memoize shouldReset to avoid reparenting
     let next = Children.toArray(children)
 
@@ -56,24 +91,6 @@ export function useThemedChildren(
           : child
       })
     }
-
-    // tried this but themes css doesn't fully like it
-    // if (shouldAttachClassName && options.passPropsToChildren) {
-    //   next = next.map((child: any) => {
-    //     const childStyle = child.props?.style
-    //     console.log('pass it down', className, child.props.className || '')
-    //     const newProps = {
-    //       className: (child.props.className || '') + ' ' + className,
-    //       style: Array.isArray(childStyle)
-    //         ? [colorStyle, ...childStyle]
-    //         : {
-    //             ...colorStyle,
-    //             ...childStyle,
-    //           },
-    //     }
-    //     return isValidElement(child) ? cloneElement(child as any, newProps) : child
-    //   })
-    // }
 
     const wrapped = (
       <ThemeManagerContext.Provider value={themeManager}>
@@ -93,14 +110,19 @@ export function useThemedChildren(
       }
 
       return (
-        <span className={`${className || ''} _dsp_contents`} style={colorStyle}>
+        <span className={`${className || ''} _dsp_contents is_Theme`} style={colorStyle}>
           {wrapped}
         </span>
       )
     }
 
     return wrapped
-  }
-
-  return children
+  }, [
+    shouldRenderChildrenWithTheme,
+    themeManager,
+    children,
+    theme,
+    isNewTheme,
+    className,
+  ])
 }

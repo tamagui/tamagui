@@ -26,7 +26,10 @@ export function hasNoThemeUpdatingProps(props: ThemeProps) {
   return !(props.name || props.componentName || props.inverse || props.reset)
 }
 
+let uid = 0
+
 export class ThemeManager {
+  id = uid++
   themeListeners = new Set<ThemeListener>()
   parentManager: ThemeManager | null = null
   state: ThemeManagerState = emptyState
@@ -41,26 +44,28 @@ export class ThemeManager {
     }
     if (!parentManager) {
       if (process.env.NODE_ENV !== 'production') {
-        console.trace()
-        throw new Error(`No parent manager given`)
+        throw new Error(
+          `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions.`
+        )
       }
       throw `❌`
     }
-    // copy over listeners
-    this.themeListeners = parentManager.themeListeners
 
     // no change no props
     if (hasNoThemeUpdatingProps(props)) {
       return parentManager
     }
+
     if (parentManager) {
       this.parentManager = parentManager
     }
+
     const updatedState = this.getStateIfChanged(props)
     if (updatedState) {
       this.state = updatedState
       return
     }
+
     return parentManager || this
   }
 
@@ -76,6 +81,7 @@ export class ThemeManager {
       }
       const nextState = this.getStateIfChanged(props)
       if (nextState) {
+        this.props = props
         this.state = nextState
         return true
       }
@@ -172,24 +178,20 @@ function getNextThemeClassName(name: string, isInverting = false) {
   return next.replace('light_', '').replace('dark_', '')
 }
 
-const cache = new WeakMap<ThemeProps, [ThemeManager, ThemeManagerState | null]>()
-
 function getState(
   props: ThemeProps,
   parentManager?: ThemeManager | null
 ): ThemeManagerState | null {
-  const cached = cache.get(props)
-  if (cached && cached[0] === parentManager) {
-    return cached[1]
-  }
-
   const themes = getThemes()
 
   if (props.name && props.reset) {
     throw new Error('Cannot reset + set new name')
   }
+
   if (props.reset && !parentManager?.parentManager) {
-    console.warn('Cannot reset no grandparent exists')
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('Cannot reset no grandparent exists')
+    }
     return null
   }
 
@@ -204,12 +206,12 @@ function getState(
   // components look for most specific, fallback upwards
   const base = parentName.split(THEME_NAME_SEPARATOR)
   const lastSegment = base[base.length - 1]
-  const isParentAComponentTheme =
+  const isParentComponentTheme =
     parentName && lastSegment[0].toUpperCase() === lastSegment[0]
-  if (isParentAComponentTheme) {
+  if (isParentComponentTheme) {
     base.pop() // always remove componentName they can't nest
   }
-  const parentBaseTheme = isParentAComponentTheme
+  const parentBaseTheme = isParentComponentTheme
     ? base.slice(0, base.length).join(THEME_NAME_SEPARATOR)
     : parentName
   const max = base.length
@@ -218,9 +220,18 @@ function getState(
       ? max // component name only don't search upwards
       : 0
 
-  // prettier-ignore
   // eslint-disable-next-line no-console
-  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') [ console.groupCollapsed('ThemeManager.getState()', props, { parentName,   parentBaseTheme,   base,   min,   max,   isParentAComponentTheme }), console.trace(), console.groupEnd() ]
+  if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
+    console.groupCollapsed('ThemeManager.getState()')
+    console.log({
+      parentName,
+      parentBaseTheme,
+      base,
+      min,
+      max,
+      isParentComponentTheme,
+    })
+  }
 
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
@@ -243,12 +254,8 @@ function getState(
     if (componentName) {
       // components only look for component themes
       if (nextName) {
-        potentials.push(
-          `${prefix.slice(
-            0,
-            prefix.indexOf(THEME_NAME_SEPARATOR)
-          )}_${nextName}_${componentName}`
-        )
+        const beforeSeparator = prefix.slice(0, prefix.indexOf(THEME_NAME_SEPARATOR))
+        potentials.push(`${beforeSeparator}_${nextName}_${componentName}`)
       }
       potentials.push(`${prefix}_${componentName}`)
       if (nextName) {
@@ -258,15 +265,11 @@ function getState(
 
     const found = potentials.find((t) => t in themes)
 
-    // eslint-disable-next-line no-console
-    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose')
-      console.log('getState found', found, 'from', potentials, 'parentName', parentName)
+    if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
+      console.log(' - ', { found, potentials })
+    }
 
     if (found) {
-      // optimization return null if not changed
-      if (found === parentName) {
-        break
-      }
       result = {
         name: found,
         theme: getThemeUnwrapped(themes[found]),
@@ -277,8 +280,13 @@ function getState(
     }
   }
 
-  if (parentManager) {
-    cache.set(props, [parentManager, result])
+  // eslint-disable-next-line no-console
+  if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
+    console.log({
+      result,
+    })
+    console.trace()
+    console.groupEnd()
   }
 
   return result
