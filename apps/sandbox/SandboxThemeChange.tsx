@@ -1,12 +1,12 @@
 import { memo, useMemo, useState } from 'react'
-import { Button, Square, Theme, YStack } from 'tamagui'
+import { Button, Card, Square, Theme, YStack } from 'tamagui'
 
 export function SandboxThemeChange() {
   return (
     <>
       <Inner>
         <Inner>
-          <Inner />
+          <Card debug="verbose" w={100} h={100} />
         </Inner>
       </Inner>
     </>
