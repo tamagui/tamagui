@@ -32,7 +32,7 @@ export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 
 export type TamaguiElement = HTMLElement | View
 
-export type DebugProp = boolean | 'break' | 'verbose' | 'visalize'
+export type DebugProp = boolean | 'break' | 'verbose' | 'visualize'
 
 // base props that are accepted by createComponent (additional to react-native-web)
 
