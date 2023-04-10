@@ -2,13 +2,12 @@ import {
   Anchor,
   Button,
   H1,
-  Input,
   Paragraph,
   Separator,
   Sheet,
   XStack,
   YStack,
-  useToast,
+  useToastController,
 } from '@my/ui'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
@@ -18,7 +17,6 @@ export function HomeScreen() {
   const linkProps = useLink({
     href: '/user/nate',
   })
-  const toast = useToast()
 
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
@@ -59,7 +57,7 @@ export function HomeScreen() {
 function SheetDemo() {
   const [open, setOpen] = useState(false)
   const [position, setPosition] = useState(0)
-  const toast = useToast()
+  const toast = useToastController()
   return (
     <>
       <Button
