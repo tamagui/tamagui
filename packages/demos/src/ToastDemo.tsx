@@ -3,7 +3,7 @@ import React from 'react'
 import { Button, SizableText, Switch, XStack, YStack } from 'tamagui'
 
 export const ToastDemo = () => {
-  const [native, setNative] = React.useState<boolean>(false)
+  const [native, setNative] = React.useState(false)
 
   return (
     <YStack space alignItems="center">
