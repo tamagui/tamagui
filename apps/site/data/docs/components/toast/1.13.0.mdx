@@ -306,6 +306,11 @@ Used to control the display of toasts. Should be used inside [ToastProvider](#to
       type: '(): void',
       description: `Call it to hide the currently displayed toast.`,
     },
+    {
+      name: 'options',
+      type: `ToastImperativeOptions`,
+      descriptions: `The options you've passed to \`ToastProvider\`. You shouldn't try to change this.`
+    }
   ]}
 />
 
