@@ -244,8 +244,12 @@ export const useChangeThemeEffect = (
         setThemeState(createState)
       }
 
+      console.warn(`listen to`, parentManager?.id, state.name)
+
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
-        if (keys?.length) {
+        console.log(`got update`, parentManager?.id, state.name, keys?.length, isNewTheme)
+
+        if (keys?.length || isNewTheme) {
           if (process.env.NODE_ENV === 'development' && props['debug'] && keys?.length) {
             console.log(`onChangeTheme`, { props, name, manager, parentManager, keys })
           }
@@ -267,12 +271,13 @@ export const useChangeThemeEffect = (
 
   function createState(prev?: State): State {
     if (prev && disableUpdate?.()) {
+      console.warn(`disabling`, prev?.state.name)
       return prev
     }
 
     //  returns previous theme manager if no change
     let themeManager: ThemeManager
-    let shouldCreateNewThemeManager = false
+    let state: ThemeManagerState | undefined
 
     if (prev?.themeManager) {
       themeManager = prev.themeManager
@@ -280,9 +285,14 @@ export const useChangeThemeEffect = (
       const nextState = getThemeManagerNextStateIfChanged(themeManager)
 
       if (nextState) {
+        state = nextState
+
         console.warn(`got a new state`, themeManager.id, nextState)
         if (!prev.isNewTheme) {
           themeManager = new ThemeManager(props, root ? 'root' : parentManager)
+        } else {
+          // notify()?
+          themeManager.updateState(nextState, true)
         }
       }
     } else {
@@ -296,7 +306,11 @@ export const useChangeThemeEffect = (
 
     // only inverse relies on this for ssr
     const mounted = !props.inverse ? true : root || prev?.mounted
-    const state = isNewTheme ? { ...themeManager.state } : { ...parentManager!.state }
+
+    if (!state) {
+      state = isNewTheme ? { ...themeManager.state } : { ...parentManager!.state }
+    }
+
     const response = {
       state,
       themeManager,
