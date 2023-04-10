@@ -8,11 +8,7 @@ export function useForwardToDashboard() {
 
   useEffect(() => {
     if (user) {
-      router.replace(
-        process.env.NODE_ENV === 'production'
-          ? 'https://studio.tamagui.dev/'
-          : 'http://localhost:1421/'
-      )
+      router.replace(process.env.NEXT_PUBLIC_STUDIO_ADDRESS!)
     }
   }, [user])
 }

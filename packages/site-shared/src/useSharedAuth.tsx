@@ -22,18 +22,16 @@ export const useSharedAuth = (
 
       if (accessTokenCookie && refreshTokenCookie) {
         try {
-          await supabase.auth.setSession({
+          const response = await supabase.auth.setSession({
             access_token: accessTokenCookie[1],
             refresh_token: refreshTokenCookie[1],
           })
-          supabase.auth.getUser()
-          const session = await supabase.auth.getSession()
-          if (session.error) throw new Error(session.error.message)
-          if (!session.data.session) throw new Error('No session found.')
-          await opts?.onAuthenticated?.(session.data.session)
+          if (response.error) throw new Error(response.error.message)
+          if (!response.data.session) throw new Error('No session found.')
+          await opts?.onAuthenticated?.(response.data.session)
         } catch (error) {
           console.error(error)
-          await opts?.onError?.()
+          await opts?.onUnauthenticated?.()
         }
       } else {
         await opts?.onUnauthenticated?.()

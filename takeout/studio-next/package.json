@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "^0.5.9",
-    "@supabase/auth-helpers-react": "^0.3.1",
     "@supabase/supabase-js": "^2.14.0",
     "@tamagui/animations-reanimated": "^1.11.2",
     "@tamagui/colors": "^1.11.2",
@@ -18,6 +17,7 @@
     "@tamagui/core": "^1.11.2",
     "@tamagui/lucide-icons": "^1.11.2",
     "@tamagui/next-plugin": "^1.11.2",
+    "@tamagui/next-theme": "^1.11.2",
     "@tamagui/polyfill-dev": "^1.11.2",
     "@tamagui/site-shared": "^1.11.2",
     "@tamagui/themes": "^1.11.2",
