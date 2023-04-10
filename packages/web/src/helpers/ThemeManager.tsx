@@ -50,8 +50,6 @@ export class ThemeManager {
       }
       throw `❌`
     }
-    // copy over listeners
-    this.themeListeners = parentManager.themeListeners
 
     // no change no props
     if (hasNoThemeUpdatingProps(props)) {

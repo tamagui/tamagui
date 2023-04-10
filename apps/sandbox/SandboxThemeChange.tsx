@@ -6,7 +6,7 @@ export function SandboxThemeChange() {
     <>
       <Inner>
         <Inner>
-          <Card debug="verbose" w={100} h={100} />
+          <Card debug="visualize" w={100} h={100} />
         </Inner>
       </Inner>
     </>

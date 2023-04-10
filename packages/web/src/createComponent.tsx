@@ -12,6 +12,7 @@ import React, {
   useEffect,
   useId,
   useRef,
+  useState,
 } from 'react'
 
 import { onConfiguredOnce } from './config.js'
@@ -733,6 +734,15 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug'] === 'visualize') {
+        // const [onChangeCount, setOnChangeCount] = useState(0)
+
+        // useEffect(() => {
+        //   themeState.themeManager?.onChangeTheme((name, manager) => {
+        //     setOnChangeCount((p) => ++p)
+        //     console.warn(`🖤`, name)
+        //   })
+        // }, [themeState.themeManager])
+
         content = (
           <>
             {content}
@@ -744,6 +754,7 @@ export function createComponent<
                   id: themeState.themeManager?.id,
                   parentId: themeState.themeManager?.parentManager?.id,
                   isNew: themeState.isNewTheme,
+                  // onChangeCount,
                 })}
               </pre>
             </code>
