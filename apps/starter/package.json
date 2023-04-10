@@ -10,7 +10,7 @@
     "web:prod": "yarn workspace next-app build",
     "web:prod:serve": "yarn workspace next-app serve",
     "postinstall": "yarn build",
-    "build": "yarn workspaces foreach --exclude next-app -pi run build",
+    "build": "yarn workspaces foreach --exclude next-app run build",
     "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader && manypkg upgrade react-native-web-lite"
   },
   "resolutions": {
@@ -36,5 +36,5 @@
     "zx": "^7.1.1"
   },
   "packageManager": "yarn@3.2.3",
-  "version": "1.11.2"
+  "version": "1.13.4"
 }

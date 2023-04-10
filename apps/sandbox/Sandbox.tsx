@@ -1,33 +1,19 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import {
-  ButtonDemo,
-  CheckboxDemo,
-  GroupDemo,
-  InputsDemo,
-  ListItemDemo,
-  ProgressDemo,
-  SelectDemo,
-  SwitchDemo,
-  TabsAdvancedDemo,
-  TabsDemo,
-  ToggleGroupDemo,
-} from '@tamagui/demos'
+import { TabsAdvancedDemo } from '@tamagui/demos'
+import { Toast, ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
 import { SolitoImage } from 'solito/image'
 import {
   Button,
   Input,
   ScrollView,
-  Stack,
   TamaguiProvider,
   Text,
-  ToastProvider,
   XStack,
   YStack,
   styled,
-  withStaticProperties,
 } from 'tamagui'
 
 // import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
@@ -92,12 +78,21 @@ export const Heading = styled(Text, {
   } as const,
 })
 
+export const MyInput = styled(Input, {
+  borderColor: 'red',
+  borderWidth: '$2',
+  focusStyle: {
+    borderColor: 'blue',
+    borderWidth: '$2',
+  },
+})
+
 export const Sandbox = () => {
+  console.log(`render once`)
+
   return (
     <SandboxFrame>
-      <Heading type="myVariant" fontSize="$8">
-        H1
-      </Heading>
+      <MyInput />
 
       {/* <Button2 ok debug="verbose">
         hi

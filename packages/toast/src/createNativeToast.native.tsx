@@ -5,7 +5,7 @@ export const createNativeToast: CreateNativeToastsFn = (
   { message, duration, burntOptions }
 ) => {
   // import inline to allow lazy usage of native dependecy:
-  const Burnt: { toast: (options: BurntToastOptions) => any } = require('burnt')
+  const Burnt = require('burnt') as typeof import('burnt')
 
   Burnt.toast({
     title,
@@ -17,6 +17,6 @@ export const createNativeToast: CreateNativeToastsFn = (
 }
 
 export const hideNativeToast: HideNativeToastsFn = () => {
-  const Burnt: { dismissAllAlerts: () => any } = require('burnt')
+  const Burnt = require('burnt') as typeof import('burnt')
   Burnt.dismissAllAlerts()
 }

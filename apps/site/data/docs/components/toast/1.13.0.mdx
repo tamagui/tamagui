@@ -36,15 +36,15 @@ Run the following command:
 yarn add @tamagui/toast burnt
 ```
 
-then, rebuild your React Native app. React Native requires sub-dependencies with native dependencies always be hoisted to your apps package.json and Toast relies on the amazing [Burnt](https://github.com/nandorojo/burnt) library by Fernando Rojo to provide its native functionality.
+then, if targetin native, rebuild your React Native app. React Native requires sub-dependencies with native dependencies always be hoisted to your apps package.json and Toast relies on the amazing [Burnt](https://github.com/nandorojo/burnt) library by Fernando Rojo to provide its native functionality.
 
 ## Usage
 
 To display the toast natively, you should either pass an array of native platforms (`native: ["ios", "web"]`), a single platform or `true` for all platforms.
 
 ```tsx
+import { Toast, ToastProvider, useToastController, useToastState } from '@tamagui/toast'
 import { Button } from 'tamagui' // or @tamagui/button
-import { Toast, ToastProvider, useToast } from '@tamagui/toast'
 
 export default () => (
   <ToastProvider native={['mobile']}>
@@ -55,20 +55,23 @@ export default () => (
 )
 
 const CurrentToast = () => {
-  const { currentToast } = useToast()
+  const toast = useToastState()
 
   // only show the component if it's present and not handled by native toast
-  if (!currentToast || currentToast.isHandledNatively) return null
+  if (!toast || toast.isHandledNatively) {
+    return null
+  }
+
   return (
-    <Toast key={currentToast.id}>
-      <Toast.Title>{currentToast.title}</Toast.Title>
-      <Toast.Description>{currentToast.message}</Toast.Description>
+    <Toast key={toast.id}>
+      <Toast.Title>{toast.title}</Toast.Title>
+      <Toast.Description>{toast.message}</Toast.Description>
     </Toast>
   )
 }
 
 const MyPage = () => {
-  const { show } = useToast()
+  const { show } = useToastController()
 
   return (
     <Button onPress={() => show('Done!', { message: 'Form submitted successfully.' })}>
@@ -286,18 +289,13 @@ Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1
 
 Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
 
-### useToast
+### useToastController
 
-Should be used inside [ToastProvider](#toastprovider).
+Used to control the display of toasts. Should be used inside [ToastProvider](#toastprovider).
 
 <PropsTable
   title="Returns"
   data={[
-    {
-      name: 'currentToast',
-      type: 'ToastData | null',
-      description: `The information about the current toast to show such as title, message, duration, etc.`,
-    },
     {
       name: `show`,
       type: '(title: string, showOptions?: ShowToastOptions): void',
@@ -307,6 +305,32 @@ Should be used inside [ToastProvider](#toastprovider).
       name: `hide`,
       type: '(): void',
       description: `Call it to hide the currently displayed toast.`,
+    },
+  ]}
+/>
+
+### useToastState
+
+Used to render out your toast contents. Should be used inside [ToastProvider](#toastprovider).
+
+<PropsTable
+  title="Hook for rendering toast"
+  data={[
+    {
+      name: `title`,
+      type: 'string',
+    },
+    {
+      name: `id`,
+      type: 'string',
+    },
+    {
+      name: `message`,
+      type: 'string',
+    },
+    {
+      name: `duration`,
+      type: 'number',
     },
   ]}
 />

@@ -1,14 +1,28 @@
 import { useState } from 'react'
-import { Button, H5, SizableText, Tabs, XStack } from 'tamagui'
+import {
+  Button,
+  H5,
+  Separator,
+  SizableText,
+  Tabs,
+  TabsContentProps,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 const demos = ['horizontal', 'vertical'] as const
+const demosTitle: Record<(typeof demos)[number], string> = {
+  horizontal: 'Horizontal',
+  vertical: 'Vertical',
+}
 
 export function TabsDemo() {
   const [demoIndex, setDemoIndex] = useState(0)
   const demo = demos[demoIndex]
 
   return (
-    <>
+    // web only fix for position relative
+    <YStack paddingHorizontal="$4" position={'unset' as any}>
       {demo === 'horizontal' ? <HorizontalTabs /> : <VerticalTabs />}
 
       <XStack
@@ -20,10 +34,10 @@ export function TabsDemo() {
         $xxs={{ display: 'none' }}
       >
         <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
-          {demo}
+          {demosTitle[demo]}
         </Button>
       </XStack>
-    </>
+    </YStack>
   )
 }
 
@@ -36,51 +50,37 @@ const HorizontalTabs = () => {
       width={400}
       height={150}
       borderRadius="$4"
+      borderWidth="$0.25"
+      overflow="hidden"
+      borderColor="$borderColor"
     >
-      <Tabs.List disablePassBorderRadius="bottom" aria-label="Manage your account">
-        <Tabs.Trigger theme="Button" flex={1} value="tab1">
+      <Tabs.List
+        separator={<Separator vertical />}
+        disablePassBorderRadius="bottom"
+        aria-label="Manage your account"
+      >
+        <Tabs.Tab flex={1} value="tab1">
           <SizableText fontFamily="$body">Profile</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger theme="Button" flex={1} value="tab2">
+        </Tabs.Tab>
+        <Tabs.Tab flex={1} value="tab2">
           <SizableText fontFamily="$body">Connections</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger theme="Button" flex={1} value="tab3">
+        </Tabs.Tab>
+        <Tabs.Tab flex={1} value="tab3">
           <SizableText fontFamily="$body">Notifications</SizableText>
-        </Tabs.Trigger>
+        </Tabs.Tab>
       </Tabs.List>
-
-      <Tabs.Content
-        value="tab1"
-        key="tab1"
-        padding="$5"
-        alignItems="center"
-        justifyContent="center"
-        flex={1}
-      >
+      <Separator />
+      <TabsContent value="tab1">
         <H5>Profile</H5>
-      </Tabs.Content>
+      </TabsContent>
 
-      <Tabs.Content
-        value="tab2"
-        key="tab2"
-        padding="$5"
-        alignItems="center"
-        justifyContent="center"
-        flex={1}
-      >
+      <TabsContent value="tab2">
         <H5>Connections</H5>
-      </Tabs.Content>
+      </TabsContent>
 
-      <Tabs.Content
-        value="tab3"
-        key="tab3"
-        padding="$5"
-        alignItems="center"
-        justifyContent="center"
-        flex={1}
-      >
+      <TabsContent value="tab3">
         <H5>Notifications</H5>
-      </Tabs.Content>
+      </TabsContent>
     </Tabs>
   )
 }
@@ -93,48 +93,56 @@ const VerticalTabs = () => {
       orientation="vertical"
       width={400}
       borderRadius="$4"
+      borderWidth="$0.25"
+      overflow="hidden"
+      borderColor="$borderColor"
     >
-      <Tabs.List disablePassBorderRadius="end" aria-label="Manage your account">
-        <Tabs.Trigger theme="Button" value="tab1">
+      <Tabs.List
+        disablePassBorderRadius="end"
+        aria-label="Manage your account"
+        separator={<Separator />}
+      >
+        <Tabs.Tab value="tab1">
           <SizableText>Profile</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger theme="Button" value="tab2">
+        </Tabs.Tab>
+        <Tabs.Tab value="tab2">
           <SizableText>Connections</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger theme="Button" value="tab3">
+        </Tabs.Tab>
+        <Tabs.Tab value="tab3">
           <SizableText>Notifications</SizableText>
-        </Tabs.Trigger>
+        </Tabs.Tab>
       </Tabs.List>
-      <Tabs.Content
-        value="tab1"
-        key="tab1"
-        padding="$2"
-        alignItems="center"
-        justifyContent="center"
-        flex={1}
-      >
+      <Separator vertical />
+      <TabsContent value="tab1">
         <H5 textAlign="center">Profile</H5>
-      </Tabs.Content>
-      <Tabs.Content
-        value="tab2"
-        key="tab2"
-        padding="$2"
-        alignItems="center"
-        justifyContent="center"
-        flex={1}
-      >
+      </TabsContent>
+      <TabsContent value="tab2">
         <H5 textAlign="center">Connections</H5>
-      </Tabs.Content>
-      <Tabs.Content
-        value="tab3"
-        key="tab3"
-        padding="$2"
-        alignItems="center"
-        justifyContent="center"
-        flex={1}
-      >
+      </TabsContent>
+      <TabsContent value="tab3">
         <H5 textAlign="center">Notifications</H5>
-      </Tabs.Content>
+      </TabsContent>
     </Tabs>
+  )
+}
+
+const TabsContent = (props: TabsContentProps) => {
+  return (
+    <Tabs.Content
+      backgroundColor="$background"
+      key="tab3"
+      padding="$2"
+      alignItems="center"
+      justifyContent="center"
+      flex={1}
+      borderColor="$background"
+      borderRadius="$2"
+      borderTopLeftRadius={0}
+      borderTopRightRadius={0}
+      borderWidth="$2"
+      {...props}
+    >
+      {props.children}
+    </Tabs.Content>
   )
 }

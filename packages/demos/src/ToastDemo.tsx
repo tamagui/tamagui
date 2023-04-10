@@ -1,8 +1,9 @@
+import { Toast, useToastController, useToastState } from '@tamagui/toast'
 import React from 'react'
-import { Button, SizableText, Switch, Toast, XStack, YStack, useToast } from 'tamagui'
+import { Button, SizableText, Switch, XStack, YStack } from 'tamagui'
 
 export const ToastDemo = () => {
-  const [native, setNative] = React.useState<boolean>(false)
+  const [native, setNative] = React.useState(false)
 
   return (
     <YStack space alignItems="center">
@@ -15,7 +16,7 @@ export const ToastDemo = () => {
 }
 
 const CurrentToast = () => {
-  const { currentToast } = useToast()
+  const currentToast = useToastState()
 
   if (!currentToast || currentToast.isHandledNatively) return null
   return (
@@ -40,7 +41,7 @@ const CurrentToast = () => {
 }
 
 const ToastControl = ({ native }: { native: boolean }) => {
-  const toast = useToast()
+  const toast = useToastController()
   return (
     <XStack space="$2" justifyContent="center">
       <Button
