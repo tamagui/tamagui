@@ -1,15 +1,4 @@
-import {
-  Anchor,
-  Button,
-  H1,
-  Input,
-  Paragraph,
-  Separator,
-  Sheet,
-  XStack,
-  YStack,
-  useToast,
-} from '@my/ui'
+import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, useToast } from '@my/ui'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
 import { useLink } from 'solito/link'
@@ -18,7 +7,6 @@ export function HomeScreen() {
   const linkProps = useLink({
     href: '/user/nate',
   })
-  const toast = useToast()
 
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
@@ -87,7 +75,7 @@ function SheetDemo() {
             onPress={() => {
               setOpen(false)
               toast.show('Sheet closed!', {
-                message: "Just showing how toast works...",
+                message: 'Just showing how toast works...',
               })
             }}
           />

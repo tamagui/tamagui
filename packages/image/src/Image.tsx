@@ -28,13 +28,13 @@ type StyledImageProps = Omit<GetProps<typeof StyledImage>, 'borderRadius'> & {
 }
 
 type BaseProps = Omit<StyledImageProps, 'width' | 'height' | 'style' | 'onLayout'> & {
-  width: string | number | SizeTokens | ThemeValueFallback
-  height: string | number | SizeTokens | ThemeValueFallback
+  width?: string | number | SizeTokens | ThemeValueFallback
+  height?: string | number | SizeTokens | ThemeValueFallback
 
   /**
    * @deprecated use `source` instead to disambiguate width/height style from width/height of the actual image
    */
-  src: string | StyledImageProps['source']
+  src?: string | StyledImageProps['source']
 }
 
 export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>
