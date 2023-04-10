@@ -170,7 +170,7 @@ describe('ThemeManager', () => {
     })
     expect(newState).toMatchInlineSnapshot(`
       {
-        "className": "t_dark",
+        "className": "t_sub_theme t_dark",
         "name": "dark",
         "parentName": "",
         "theme": {
@@ -179,14 +179,14 @@ describe('ThemeManager', () => {
             "key": "color-2",
             "name": "background",
             "val": "#000",
-            "variable": "",
+            "variable": "var(--background)",
           },
           "color": {
             "isVar": true,
             "key": "color-1",
             "name": "color",
             "val": "#fff",
-            "variable": "",
+            "variable": "var(--color)",
           },
         },
       }
@@ -286,21 +286,22 @@ describe('ThemeManager', () => {
     expect(c.state.name).toBe('dark_red_alt2')
   })
 
-  test('Ignored dup themes', () => {
-    const a = new ThemeManager(
-      {
-        name: 'dark',
-      },
-      'root'
-    )
-    const b = new ThemeManager(
-      {
-        name: 'dark',
-      },
-      a
-    )
-    expect(b === a).toBe(true)
-  })
+  // we no longer de-dupe like this, do it in useTheme
+  // test('Ignored dup themes', () => {
+  //   const a = new ThemeManager(
+  //     {
+  //       name: 'dark',
+  //     },
+  //     'root'
+  //   )
+  //   const b = new ThemeManager(
+  //     {
+  //       name: 'dark',
+  //     },
+  //     a
+  //   )
+  //   expect(b === a).toBe(true)
+  // })
 
   test('Nested component themes fallback to grandparents', () => {
     const parent = new ThemeManager(
@@ -409,7 +410,7 @@ describe('ThemeManager', () => {
       },
       parent
     )
-    expect(child.state.className).toBe('t_red_alt2')
+    expect(child.state.className).toBe('t_sub_theme t_red_alt2')
 
     const child2 = new ThemeManager(
       {
@@ -423,7 +424,7 @@ describe('ThemeManager', () => {
       },
       child2
     )
-    expect(child3.state.className).toBe('t_red_alt2')
+    expect(child3.state.className).toBe('t_sub_theme t_red_alt2')
   })
 
   test('Finds component dark_red + Button', () => {
@@ -440,7 +441,7 @@ describe('ThemeManager', () => {
       },
       parent
     )
-    expect(child.state.className).toBe('t_red_Button')
+    expect(child.state.className).toBe('t_sub_theme t_red_Button')
     expect(child.state.name).toBe('dark_red_Button')
   })
 
