@@ -4,6 +4,7 @@ import {
   StackProps,
   VariantSpreadExtras,
   getVariableValue,
+  isAndroid,
   isVariable,
 } from '@tamagui/core'
 
@@ -41,7 +42,11 @@ export const getSizedElevation = (
     shadowColor: theme.shadowColor,
     shadowRadius,
     shadowOffset: { height, width: 0 },
-    elevation: 2 * height,
+    ...(isAndroid
+      ? {
+          elevation: 2 * height,
+        }
+      : {}),
   }
   return shadow
 }

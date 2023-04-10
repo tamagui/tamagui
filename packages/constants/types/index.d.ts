@@ -8,4 +8,6 @@ export declare const useIsomorphicLayoutEffect: typeof useLayoutEffect;
 export declare const isChrome: boolean;
 export declare const isWebTouchable: boolean;
 export declare const isTouchable: boolean;
+export declare const isAndroid: boolean;
+export declare const isIos: boolean;
 //# sourceMappingURL=index.d.ts.map

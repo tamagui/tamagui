@@ -9,5 +9,5 @@ export const useIsomorphicLayoutEffect = useLayoutEffect
 export const isChrome = false
 export const isWebTouchable = false
 export const isTouchable = true
-export const isAndroid = false
+export const isAndroid = true
 export const isIos = false
