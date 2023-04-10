@@ -44,58 +44,10 @@ const App = () => {
     <SessionContextProvider supabaseClient={supabaseClient}>
       <TamaguiProvider config={config} defaultTheme="light">
         <link href="/fonts/inter.css" rel="stylesheet" />
-        <AppInner />
+        <Studio />
       </TamaguiProvider>
     </SessionContextProvider>
   )
-}
-
-const AppInner = () => {
-  const [loading, setLoading] = useState(true)
-  const supabase = useSupabaseClient()
-  const user = useUser()
-
-  useSharedAuth(supabase, {
-    onUnauthenticated: () => {
-      location.href = (import.meta as any).env.DEV
-        ? 'http://localhost:5005/signin'
-        : 'https://tamagui.dev/signin'
-    },
-    onAuthenticated: async (session) => {
-      const githubLogin = session.user?.identities?.find(
-        (identity) => identity.provider === 'github'
-      )?.identity_data?.user_name
-      if (!githubLogin) {
-        alert(
-          "You haven't used GitHub to log in. Please log in with GitHub and try again."
-        )
-        await supabase.auth.signOut()
-        location.href = (import.meta as any).env.DEV
-          ? 'http://localhost:5005/signin'
-          : 'https://tamagui.dev/signin'
-      }
-      const { isSponsoring, tierIncludesStudio } = await checkForSponsorship(githubLogin)
-      if (!isSponsoring) {
-        // alert(`You are not a tamagui sponsor. Sponsor the project to access Studio.`)
-        // location.href = `https://github.com/sponsors/natew`
-      } else if (!tierIncludesStudio) {
-        alert(
-          `You are a sponsor, but your tier doesn't include Studio access. Please get a tier that includes Studio.`
-        )
-        location.href = `https://github.com/sponsors/natew`
-      }
-      setLoading(false)
-    },
-  })
-
-  if (loading) {
-    return (
-      <YStack flex={1} ai="center" jc="center">
-        <H1>loading user data...</H1>
-      </YStack>
-    )
-  }
-  return <Studio />
 }
 
 createRoot(document.querySelector('#root')!).render(<App />)
