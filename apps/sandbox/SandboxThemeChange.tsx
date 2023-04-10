@@ -39,6 +39,11 @@ export function Inner(props: { children?: any }) {
       <Theme debug="visualize" name={theme}>
         <SandboxThemeChildStatic />
         <SandboxThemeChildDynamic />
+
+        <Button debug="visualize" themeInverse>
+          inverse
+        </Button>
+
         {props.children}
       </Theme>
     </YStack>

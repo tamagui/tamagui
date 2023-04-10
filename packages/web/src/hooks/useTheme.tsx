@@ -178,16 +178,6 @@ export const useChangeThemeEffect = (
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
   const shouldReturnParentState = isInversingOnMount
 
-  if (shouldReturnParentState) {
-    if (!parentManager) throw 'impossible'
-    return {
-      isNewTheme: false,
-      ...parentManager.state,
-      className: isInversingOnMount ? '' : parentManager.state.className,
-      themeManager: parentManager,
-    }
-  }
-
   function getNextThemeManagerState(manager = themeManager) {
     const next = manager.getState(
       props,
@@ -206,9 +196,6 @@ export const useChangeThemeEffect = (
 
   if (!isServer) {
     useEffect(() => {
-      if (!isNewTheme) return
-      if (!themeManager) return
-      if (disable) return
       // SSR safe inverse (because server can't know prefers scheme)
       // could be done through fancy selectors like how we do prefers-media
       // but may be a bit of explosion of selectors
@@ -216,12 +203,16 @@ export const useChangeThemeEffect = (
         setThemeState({ ...themeState, mounted: true })
         return
       }
+
+      if (!isNewTheme) return
+      if (!themeManager) return
+
       activeThemeManagers.add(themeManager)
 
       return () => {
         activeThemeManagers.delete(themeManager)
       }
-    }, [isNewTheme, themeManager, disable, state, debug])
+    }, [isNewTheme, themeManager, state, debug])
 
     // listen for parent change + notify children change
     useLayoutEffect(() => {
@@ -249,6 +240,16 @@ export const useChangeThemeEffect = (
         disposeChangeListener?.()
       }
     }, [isNewTheme, props.componentName, props.inverse, props.name, props.reset])
+  }
+
+  if (shouldReturnParentState) {
+    if (!parentManager) throw 'impossible'
+    return {
+      isNewTheme: false,
+      ...parentManager.state,
+      className: isInversingOnMount ? '' : parentManager.state.className,
+      themeManager: parentManager,
+    }
   }
 
   return {
