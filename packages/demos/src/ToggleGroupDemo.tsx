@@ -3,16 +3,18 @@ import { Label, SizeTokens, ToggleGroup, XStack, YStack } from 'tamagui'
 
 export function ToggleGroupDemo() {
   return (
-    <XStack alignItems="center" space="$10">
-      <YStack alignItems="center" space="$6">
-        <ToggleGroupComponent type="single" size="$3" orientation="horizontal" />
-        <ToggleGroupComponent type="multiple" size="$4" orientation="horizontal" />
-      </YStack>
-      <XStack alignItems="center" space="$6">
-        <ToggleGroupComponent type="single" size="$3" orientation="vertical" />
-        <ToggleGroupComponent type="multiple" size="$4" orientation="vertical" />
+    <YStack paddingHorizontal="$4">
+      <XStack alignItems="center" space="$10">
+        <YStack alignItems="center" space="$6">
+          <ToggleGroupComponent type="single" size="$3" orientation="horizontal" />
+          <ToggleGroupComponent type="multiple" size="$4" orientation="horizontal" />
+        </YStack>
+        <XStack alignItems="center" space="$6">
+          <ToggleGroupComponent type="single" size="$3" orientation="vertical" />
+          <ToggleGroupComponent type="multiple" size="$4" orientation="vertical" />
+        </XStack>
       </XStack>
-    </XStack>
+    </YStack>
   )
 }
 
@@ -29,7 +31,7 @@ function ToggleGroupComponent(props: {
       justifyContent="center"
       space="$4"
     >
-      <Label paddingRight="$0"  justifyContent="flex-end" size={props.size} htmlFor={id}>
+      <Label paddingRight="$0" justifyContent="flex-end" size={props.size} htmlFor={id}>
         {props.type === 'single' ? 'Single' : 'Multiple'}
       </Label>
       {/* <Separator vertical={props.orientation === 'horizontal'} /> */}
@@ -39,7 +41,7 @@ function ToggleGroupComponent(props: {
         id={id}
         type={props.type}
         size={props.size}
-        disableDeactivation={props.type === "single" ? true : undefined}
+        disableDeactivation={props.type === 'single' ? true : undefined}
       >
         <ToggleGroup.Item value="left" aria-label="Left aligned">
           <AlignLeft />

@@ -1,4 +1,4 @@
-import { GetProps, RadiusTokens, StackProps } from '@tamagui/core';
+import { GetProps, RadiusTokens, SizeTokens, StackProps, ThemeValueFallback } from '@tamagui/core';
 import React from 'react';
 import { Image as RNImage } from 'react-native';
 declare const StyledImage: import("@tamagui/core").TamaguiComponent<(import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>) | (import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & Omit<{}, string | number> & {
@@ -13,10 +13,13 @@ declare const StyledImage: import("@tamagui/core").TamaguiComponent<(import("rea
 type StyledImageProps = Omit<GetProps<typeof StyledImage>, 'borderRadius'> & {
     borderRadius?: RadiusTokens;
 };
-type BaseProps = Omit<StyledImageProps, 'source' | 'width' | 'height' | 'style' | 'onLayout'> & {
-    width: number | string;
-    height: number | string;
-    src: string | StyledImageProps['source'];
+type BaseProps = Omit<StyledImageProps, 'width' | 'height' | 'style' | 'onLayout'> & {
+    width?: string | number | SizeTokens | ThemeValueFallback;
+    height?: string | number | SizeTokens | ThemeValueFallback;
+    /**
+     * @deprecated use `source` instead to disambiguate width/height style from width/height of the actual image
+     */
+    src?: string | StyledImageProps['source'];
 };
 export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>;
 type RNImageType = typeof RNImage;

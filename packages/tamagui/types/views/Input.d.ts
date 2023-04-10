@@ -14,9 +14,10 @@ export declare const defaultStyles: {
         readonly borderColor: "$borderColorHover";
     };
     readonly focusStyle: {
+        readonly outlineColor: "$borderColorFocus";
+        readonly outlineWidth: 2;
+        readonly outlineStyle: "solid";
         readonly borderColor: "$borderColorFocus";
-        readonly borderWidth: 2;
-        readonly marginHorizontal: -1;
     };
 };
 export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {

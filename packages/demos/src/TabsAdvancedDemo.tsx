@@ -1,19 +1,23 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import {
   AnimatePresence,
   Button,
   H5,
   SizableText,
   Stack,
-  TabTriggerLayout,
+  TabLayout,
   Tabs,
-  TabsTriggerProps,
+  TabsTabProps,
   XStack,
   YStack,
   styled,
 } from 'tamagui'
 
 const demos = ['background', 'underline'] as const
+const demosTitle: Record<(typeof demos)[number], string> = {
+  background: 'Background Indicator',
+  underline: 'Underline Indicator',
+}
 
 export const TabsAdvancedDemo = () => {
   const [demoIndex, setDemoIndex] = useState(0)
@@ -22,9 +26,9 @@ export const TabsAdvancedDemo = () => {
     <>
       {demo === 'underline' ? <TabsAdvancedUnderline /> : <TabsAdvancedBackground />}
 
-      <XStack alignItems="center" space position="absolute" bottom="$3" left="$4" $xxs={{ display: 'none' }}>
+      <XStack ai="center" space pos="absolute" b="$3" l="$4" $xxs={{ dsp: 'none' }}>
         <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
-          {demo}
+          {demosTitle[demo]}
         </Button>
       </XStack>
     </>
@@ -35,17 +39,17 @@ const TabsAdvancedBackground = () => {
   const [tabState, setTabState] = useState<{
     currentTab: string
     /**
-     * Layout of the trigger user might intend to select (hovering / focusing)
+     * Layout of the Tab user might intend to select (hovering / focusing)
      */
-    intentAt: TabTriggerLayout | null
+    intentAt: TabLayout | null
     /**
-     * Layout of the trigger user selected
+     * Layout of the Tab user selected
      */
-    activeAt: TabTriggerLayout | null
+    activeAt: TabLayout | null
     /**
      * Used to get the direction of activation for animating the active indicator
      */
-    prevActiveAt: TabTriggerLayout | null
+    prevActiveAt: TabLayout | null
   }>({
     activeAt: null,
     currentTab: 'tab1',
@@ -76,7 +80,7 @@ const TabsAdvancedBackground = () => {
   const exitVariant =
     direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
 
-  const handleOnInteraction: TabsTriggerProps['onInteraction'] = (type, layout) => {
+  const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
     if (type === 'select') {
       setActiveIndicator(layout)
     } else {
@@ -89,46 +93,58 @@ const TabsAdvancedBackground = () => {
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      size="$3"
+      size="$4"
       padding="$2"
       height={150}
       flexDirection="column"
       activationMode="manual"
+      backgroundColor="$background"
+      borderRadius="$4"
+      position="relative"
     >
-      <Tabs.List
-        loop={false}
-        aria-label="Manage your account"
-        disablePassBorderRadius
-      >
-        {intentAt && (
-          <TabsRovingIndicator
-            width={intentAt.width}
-            height={intentAt.height}
-            x={intentAt.x}
-            y={intentAt.y}
-          />
-        )}
+      <YStack>
+        <AnimatePresence>
+          {intentAt && (
+            <TabsRovingIndicator
+              borderRadius="$4"
+              width={intentAt.width}
+              height={intentAt.height}
+              x={intentAt.x}
+              y={intentAt.y}
+            />
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {activeAt && (
+            <TabsRovingIndicator
+              borderRadius="$4"
+              theme="active"
+              width={activeAt.width}
+              height={activeAt.height}
+              x={activeAt.x}
+              y={activeAt.y}
+            />
+          )}
+        </AnimatePresence>
 
-        {activeAt && (
-          <TabsRovingIndicator
-            theme="active"
-            width={activeAt.width}
-            height={activeAt.height}
-            x={activeAt.x}
-            y={activeAt.y}
-          />
-        )}
-
-        <Tabs.Trigger value="tab1" onInteraction={handleOnInteraction}>
-          <SizableText>Profile</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger value="tab2" onInteraction={handleOnInteraction}>
-          <SizableText>Connections</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger value="tab3" onInteraction={handleOnInteraction}>
-          <SizableText>Notifications</SizableText>
-        </Tabs.Trigger>
-      </Tabs.List>
+        <Tabs.List
+          disablePassBorderRadius
+          loop={false}
+          aria-label="Manage your account"
+          space="$2"
+          backgroundColor="transparent"
+        >
+          <Tabs.Tab unstyled value="tab1" onInteraction={handleOnInteraction}>
+            <SizableText>Profile</SizableText>
+          </Tabs.Tab>
+          <Tabs.Tab unstyled value="tab2" onInteraction={handleOnInteraction}>
+            <SizableText>Connections</SizableText>
+          </Tabs.Tab>
+          <Tabs.Tab unstyled value="tab3" onInteraction={handleOnInteraction}>
+            <SizableText>Notifications</SizableText>
+          </Tabs.Tab>
+        </Tabs.List>
+      </YStack>
 
       <AnimatePresence
         exitBeforeEnter
@@ -149,17 +165,17 @@ const TabsAdvancedUnderline = () => {
   const [tabState, setTabState] = useState<{
     currentTab: string
     /**
-     * Layout of the trigger user might intend to select (hovering / focusing)
+     * Layout of the Tab user might intend to select (hovering / focusing)
      */
-    intentAt: TabTriggerLayout | null
+    intentAt: TabLayout | null
     /**
-     * Layout of the trigger user selected
+     * Layout of the Tab user selected
      */
-    activeAt: TabTriggerLayout | null
+    activeAt: TabLayout | null
     /**
      * Used to get the direction of activation for animating the active indicator
      */
-    prevActiveAt: TabTriggerLayout | null
+    prevActiveAt: TabLayout | null
   }>({
     activeAt: null,
     currentTab: 'tab1',
@@ -190,7 +206,7 @@ const TabsAdvancedUnderline = () => {
   const exitVariant =
     direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
 
-  const handleOnInteraction: TabsTriggerProps['onInteraction'] = (type, layout) => {
+  const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
     if (type === 'select') {
       setActiveIndicator(layout)
     } else {
@@ -203,52 +219,71 @@ const TabsAdvancedUnderline = () => {
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      size="$3"
-      padding="$2"
+      size="$4"
       height={150}
       flexDirection="column"
       activationMode="manual"
+      backgroundColor="$background"
+      borderRadius="$4"
     >
-      <YStack borderColor="$color3" borderBottomWidth="$0.5">
-        <Tabs.List
-          loop={false}
-          aria-label="Manage your account"
-          disablePassBorderRadius
-          borderBottomLeftRadius={0}
-          borderBottomRightRadius={0}
-          paddingBottom="$1.5"
-        >
+      <YStack>
+        <AnimatePresence>
           {intentAt && (
             <TabsRovingIndicator
               width={intentAt.width}
-              height="$0.25"
+              height="$0.5"
               x={intentAt.x}
-              borderRadius={0}
-              bottom={-3}
+              bottom={0}
             />
           )}
-
+        </AnimatePresence>
+        <AnimatePresence>
           {activeAt && (
             <TabsRovingIndicator
               theme="active"
               active
               width={activeAt.width}
-              height="$0.25"
+              height="$0.5"
               x={activeAt.x}
-              borderRadius={0}
-              bottom={-3}
+              bottom={0}
             />
           )}
-
-          <Tabs.Trigger value="tab1" onInteraction={handleOnInteraction}>
+        </AnimatePresence>
+        <Tabs.List
+          disablePassBorderRadius
+          loop={false}
+          aria-label="Manage your account"
+          borderBottomLeftRadius={0}
+          borderBottomRightRadius={0}
+          paddingBottom="$1.5"
+          borderColor="$color3"
+          borderBottomWidth="$0.5"
+          backgroundColor="transparent"
+        >
+          <Tabs.Tab
+            unstyled
+            padding="$5"
+            value="tab1"
+            onInteraction={handleOnInteraction}
+          >
             <SizableText>Profile</SizableText>
-          </Tabs.Trigger>
-          <Tabs.Trigger value="tab2" onInteraction={handleOnInteraction}>
+          </Tabs.Tab>
+          <Tabs.Tab
+            unstyled
+            padding="$5"
+            value="tab2"
+            onInteraction={handleOnInteraction}
+          >
             <SizableText>Connections</SizableText>
-          </Tabs.Trigger>
-          <Tabs.Trigger value="tab3" onInteraction={handleOnInteraction}>
+          </Tabs.Tab>
+          <Tabs.Tab
+            unstyled
+            padding="$5"
+            value="tab3"
+            onInteraction={handleOnInteraction}
+          >
             <SizableText>Notifications</SizableText>
-          </Tabs.Trigger>
+          </Tabs.Tab>
         </Tabs.List>
       </YStack>
 
@@ -270,14 +305,19 @@ const TabsAdvancedUnderline = () => {
 const TabsRovingIndicator = styled(Stack, {
   position: 'absolute',
   backgroundColor: '$color5',
-  opacity: 1,
+  opacity: 0.7,
   animation: '100ms',
-  borderRadius: '$4',
-
+  enterStyle: {
+    opacity: 0,
+  },
+  exitStyle: {
+    opacity: 0,
+  },
   variants: {
     active: {
       true: {
         backgroundColor: '$color8',
+        opacity: 0.6,
       },
     },
   },

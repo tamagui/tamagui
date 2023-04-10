@@ -157,10 +157,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly padded?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
-    readonly transparent?: boolean | undefined; /**
-     * The value of the item that is pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
     readonly unstyled?: boolean | undefined;
@@ -181,10 +178,14 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined; /**
+     * The value of the items that are pressed when initially rendered. Use
+     * `defaultValue` if you do not need to control the state of a toggle group.
+     */
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
     scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -203,9 +204,9 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     userSelect?: import("csstype").Property.UserSelect | undefined;
     outlineColor?: import("csstype").Property.OutlineColor | undefined;
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
-    outlineOffset?: import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
-    outlineWidth?: import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
-} | keyof import("@tamagui/web").TamaguiComponentPropsBase | "unstyled" | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "size" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    outlineOffset?: import("@tamagui/web").SpaceTokens | undefined;
+    outlineWidth?: import("@tamagui/web").SpaceTokens | undefined;
+} | keyof import("@tamagui/web").TamaguiComponentPropsBase | "unstyled" | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "orientation" | "size" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -221,7 +222,10 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined; /**
+     * The value of the items that are pressed when initially rendered. Use
+     * `defaultValue` if you do not need to control the state of a toggle group.
+     */
     readonly size?: any;
 }>> | "axis" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup" | keyof React.RefAttributes<import("@tamagui/web").TamaguiElement>> & Omit<{}, "unstyled" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
@@ -257,10 +261,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly padded?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
-    readonly transparent?: boolean | undefined; /**
-     * The value of the item that is pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
     readonly unstyled?: boolean | undefined;
@@ -281,10 +282,14 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined; /**
+     * The value of the items that are pressed when initially rendered. Use
+     * `defaultValue` if you do not need to control the state of a toggle group.
+     */
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
     scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -303,9 +308,9 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     userSelect?: import("csstype").Property.UserSelect | undefined;
     outlineColor?: import("csstype").Property.OutlineColor | undefined;
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
-    outlineOffset?: import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
-    outlineWidth?: import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
-} | keyof import("@tamagui/web").TamaguiComponentPropsBase | "unstyled" | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "size" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    outlineOffset?: import("@tamagui/web").SpaceTokens | undefined;
+    outlineWidth?: import("@tamagui/web").SpaceTokens | undefined;
+} | keyof import("@tamagui/web").TamaguiComponentPropsBase | "unstyled" | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "orientation" | "size" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -321,7 +326,10 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined; /**
+     * The value of the items that are pressed when initially rendered. Use
+     * `defaultValue` if you do not need to control the state of a toggle group.
+     */
     readonly size?: any;
 }>> | "axis" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup" | keyof React.RefAttributes<import("@tamagui/web").TamaguiElement>> & Omit<{}, "unstyled" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
@@ -357,10 +365,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly padded?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
-    readonly transparent?: boolean | undefined; /**
-     * The value of the item that is pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
     readonly unstyled?: boolean | undefined;
@@ -381,10 +386,14 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined; /**
+     * The value of the items that are pressed when initially rendered. Use
+     * `defaultValue` if you do not need to control the state of a toggle group.
+     */
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
     scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -403,9 +412,9 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     userSelect?: import("csstype").Property.UserSelect | undefined;
     outlineColor?: import("csstype").Property.OutlineColor | undefined;
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
-    outlineOffset?: import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
-    outlineWidth?: import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
-} | keyof import("@tamagui/web").TamaguiComponentPropsBase | "unstyled" | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "size" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    outlineOffset?: import("@tamagui/web").SpaceTokens | undefined;
+    outlineWidth?: import("@tamagui/web").SpaceTokens | undefined;
+} | keyof import("@tamagui/web").TamaguiComponentPropsBase | "unstyled" | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "orientation" | "size" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -421,7 +430,10 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined; /**
+     * The value of the items that are pressed when initially rendered. Use
+     * `defaultValue` if you do not need to control the state of a toggle group.
+     */
     readonly size?: any;
 }>> | "axis" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup" | keyof React.RefAttributes<import("@tamagui/web").TamaguiElement>> & Omit<{}, "unstyled" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
@@ -457,10 +469,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly padded?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
-    readonly transparent?: boolean | undefined; /**
-     * The value of the item that is pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
     readonly unstyled?: boolean | undefined;
@@ -481,10 +490,14 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined; /**
+     * The value of the items that are pressed when initially rendered. Use
+     * `defaultValue` if you do not need to control the state of a toggle group.
+     */
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
     scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -503,9 +516,9 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     userSelect?: import("csstype").Property.UserSelect | undefined;
     outlineColor?: import("csstype").Property.OutlineColor | undefined;
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
-    outlineOffset?: import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
-    outlineWidth?: import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
-} | keyof import("@tamagui/web").TamaguiComponentPropsBase | "unstyled" | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "size" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    outlineOffset?: import("@tamagui/web").SpaceTokens | undefined;
+    outlineWidth?: import("@tamagui/web").SpaceTokens | undefined;
+} | keyof import("@tamagui/web").TamaguiComponentPropsBase | "unstyled" | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "orientation" | "size" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -521,7 +534,10 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined; /**
+     * The value of the items that are pressed when initially rendered. Use
+     * `defaultValue` if you do not need to control the state of a toggle group.
+     */
     readonly size?: any;
 }>> | "axis" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup" | keyof React.RefAttributes<import("@tamagui/web").TamaguiElement>>, {
     readonly unstyled?: boolean | undefined;
