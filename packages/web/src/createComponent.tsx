@@ -51,6 +51,7 @@ import { Slot } from './views/Slot.js'
 import { Stack } from './views/Stack.js'
 import { Text } from './views/Text.js'
 import { useThemedChildren } from './views/Theme.js'
+import { ThemeDebug } from './views/ThemeDebug.js'
 
 // let t
 // import { timer } from '@tamagui/timer'
@@ -744,21 +745,13 @@ export function createComponent<
         }, [themeState.themeManager])
 
         content = (
-          <>
+          <ThemeDebug
+            themeState={themeState}
+            themeProps={props}
+            onChangeCount={onChangeCount}
+          >
             {content}
-            <code>
-              <pre>
-                {JSON.stringify({
-                  name: themeState.themeManager?.state.name,
-                  parent: themeState.themeManager?.state.parentName,
-                  id: themeState.themeManager?.id,
-                  parentId: themeState.themeManager?.parentManager?.id,
-                  isNew: themeState.isNewTheme,
-                  onChangeCount,
-                })}
-              </pre>
-            </code>
-          </>
+          </ThemeDebug>
         )
       }
     }

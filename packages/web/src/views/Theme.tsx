@@ -5,7 +5,8 @@ import { variableToString } from '../createVariable.js'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
 import { useServerRef } from '../hooks/useServerHooks.js'
 import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme.js'
-import type { ThemeProps } from '../types.js'
+import type { DebugProp, ThemeProps } from '../types.js'
+import { ThemeDebug } from './ThemeDebug'
 
 export function Theme(props: ThemeProps) {
   // @ts-expect-error only for internal views
@@ -25,21 +26,9 @@ export function Theme(props: ThemeProps) {
   if (process.env.NODE_ENV === 'development') {
     if (props['debug'] === 'visualize') {
       children = (
-        <div style={{ display: 'inline', border: '1px solid #ccc' }}>
-          <code>
-            <pre>
-              &lt;Theme /&gt;&nbsp;
-              {JSON.stringify({
-                name: themeState.themeManager?.state.name,
-                parent: themeState.themeManager?.state.parentName,
-                id: themeState.themeManager?.id,
-                parentId: themeState.themeManager?.parentManager?.id,
-                isNew: themeState.isNewTheme,
-              })}
-            </pre>
-          </code>
+        <ThemeDebug themeState={themeState} themeProps={props}>
           {children}
-        </div>
+        </ThemeDebug>
       )
     }
   }
@@ -50,15 +39,16 @@ export function Theme(props: ThemeProps) {
 export function useThemedChildren(
   themeState: ChangedThemeResponse,
   children: any,
-  options: {
+  props: {
     forceClassName?: boolean
     shallow?: boolean
     passPropsToChildren?: boolean
+    debug?: DebugProp
   },
   isRoot = false
 ) {
   const { themeManager, className, theme, isNewTheme } = themeState
-  const { shallow, forceClassName } = options
+  const { shallow, forceClassName } = props
   const hasEverThemed = useServerRef(false)
   if (isNewTheme) {
     hasEverThemed.current = true
@@ -68,8 +58,6 @@ export function useThemedChildren(
     isNewTheme || hasEverThemed.current || forceClassName || isRoot
 
   return useMemo(() => {
-    // console.warn(`re-render Theme`)
-
     if (!shouldRenderChildrenWithTheme) {
       return children
     }
@@ -102,7 +90,7 @@ export function useThemedChildren(
       return wrapped
     }
 
-    if (isWeb && !options.passPropsToChildren) {
+    if (isWeb && !props.passPropsToChildren) {
       // in order to provide currentColor, set color by default
       const themeColor = theme && isNewTheme ? variableToString(theme.color) : ''
       const colorStyle = {
@@ -118,6 +106,8 @@ export function useThemedChildren(
 
     return wrapped
   }, [
+    forceClassName,
+    props.passPropsToChildren,
     shouldRenderChildrenWithTheme,
     themeManager,
     children,

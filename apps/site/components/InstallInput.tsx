@@ -34,7 +34,6 @@ export const InstallInput = memo(() => {
       <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
         <Button
           accessibilityLabel={installScript}
-          debug="verbose"
           size="$3"
           borderRadius="$8"
           mr="$-6"

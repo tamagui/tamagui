@@ -165,9 +165,9 @@ export class ThemeManager {
   }
 }
 
-function getNextThemeClassName(name: string, isInverting = false) {
+function getNextThemeClassName(name: string, props: ThemeProps) {
   const next = `t_sub_theme ${THEME_CLASSNAME_PREFIX}${name}`
-  if (isInverting) {
+  if (props.inverse || props.forceClassName) {
     return (
       next +
       // ensure you invert to base dark as well as specific dark
@@ -273,7 +273,7 @@ function getState(
       result = {
         name: found,
         theme: getThemeUnwrapped(themes[found]),
-        className: getNextThemeClassName(found, props.inverse),
+        className: getNextThemeClassName(found, props),
         parentName,
       }
       break
