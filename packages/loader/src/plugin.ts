@@ -1,4 +1,5 @@
 import type { TamaguiOptions } from '@tamagui/static'
+import { watchTamaguiConfig } from '@tamagui/static'
 import type { Compiler, RuleSetRule } from 'webpack'
 
 type PluginOptions = TamaguiOptions & {
@@ -18,6 +19,22 @@ export class TamaguiPlugin {
   ) {}
 
   apply(compiler: Compiler) {
+    // studio
+    watchTamaguiConfig(this.options)
+
+    // if we're ever gonna watch with webpack instead of esbuild for watchTamaguiConfig, this is the way...
+    // const tamaguiConfigPath = path.resolve(
+    //   resolvedOptions.tamaguiOptions.config ?? (await getDefaultTamaguiConfigPath({}))
+    // )
+    // compiler.hooks.watchRun.tap(this.pluginName, async (compiler) => {
+    //   if (compiler.modifiedFiles && compiler.modifiedFiles.has(tamaguiConfigPath)) {
+    //     await updateTamaguiGeneratedFiles({
+    //       config: resolvedOptions.tamaguiOptions.config,
+    //       components: resolvedOptions.tamaguiOptions.components,
+    //     })
+    //   }
+    // })
+
     // mark as side effect
     compiler.hooks.normalModuleFactory.tap(this.pluginName, (nmf) => {
       nmf.hooks.createModule.tap(
