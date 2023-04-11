@@ -7322,7 +7322,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/wicg-file-system-access@npm:^2020.9.6":
+"@types/wicg-file-system-access@npm:^2020.9.2, @types/wicg-file-system-access@npm:^2020.9.6":
   version: 2020.9.6
   resolution: "@types/wicg-file-system-access@npm:2020.9.6"
   checksum: 2dbf33ee55684d4ed0607ae4b470e0147806b15ec047563c59d94e6ac13be7bed904cc7eece5e4be7c0d58a4de0b0635089f7cd5b7738372e436c760b0719241
@@ -12369,7 +12369,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fetch-blob@npm:^3.1.2, fetch-blob@npm:^3.1.4":
+"fetch-blob@npm:^3.0.0, fetch-blob@npm:^3.1.2, fetch-blob@npm:^3.1.4":
   version: 3.2.0
   resolution: "fetch-blob@npm:3.2.0"
   dependencies:
@@ -12404,6 +12404,21 @@ __metadata:
   peerDependencies:
     webpack: ^4.0.0 || ^5.0.0
   checksum: faf43eecf233f4897b0150aaa874eeeac214e4f9de49738a9e0ef734a30b5260059e85b7edadf852b98e415f875bd5f12587768a93fd52aaf2e479ecf95fab20
+  languageName: node
+  linkType: hard
+
+"file-system-access@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "file-system-access@npm:1.0.4"
+  dependencies:
+    "@types/wicg-file-system-access": ^2020.9.2
+    fetch-blob: ^3.0.0
+    node-domexception: ^1.0.0
+    web-streams-polyfill: ^3.1.0
+  dependenciesMeta:
+    web-streams-polyfill:
+      optional: true
+  checksum: 7daab766aab035a4815bf33ce6aa05560491610612e9c0c5fbd7a1756852a547bec22cc58e83192fa4ecc435b519eff2c574b69c8e71691fc717d4f30f65925e
   languageName: node
   linkType: hard
 
@@ -21346,6 +21361,7 @@ __metadata:
     esbuild-loader: ^2.20.0
     eslint: 8.37.0
     eslint-config-next: 13.2.4
+    file-system-access: ^1.0.4
     graphql-tag: ^2.12.6
     hsluv: ^0.1.0
     lodash-es: ^4.17.21
@@ -23182,7 +23198,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-streams-polyfill@npm:^3.0.3":
+"web-streams-polyfill@npm:^3.0.3, web-streams-polyfill@npm:^3.1.0":
   version: 3.2.1
   resolution: "web-streams-polyfill@npm:3.2.1"
   checksum: b119c78574b6d65935e35098c2afdcd752b84268e18746606af149e3c424e15621b6f1ff0b42b2676dc012fc4f0d313f964b41a4b5031e525faa03997457da02

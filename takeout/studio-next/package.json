@@ -32,6 +32,7 @@
     "d3-scale": "^3.3.0",
     "eslint": "8.37.0",
     "eslint-config-next": "13.2.4",
+    "file-system-access": "^1.0.4",
     "graphql-tag": "^2.12.6",
     "hsluv": "^0.1.0",
     "lodash-es": "^4.17.21",
