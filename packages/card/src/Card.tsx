@@ -56,6 +56,10 @@ export const CardHeader = styled(ThemeableStack, {
       },
     },
   } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 export const CardFooter = styled(CardHeader, {
