@@ -330,7 +330,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         borderRightColor?: import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallback | import("react-native").OpaqueColorValue | undefined;
         borderRightWidth?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
         borderStartColor?: import("react-native").ColorValue | undefined;
-        borderStyle?: "solid" | "dotted" | "dashed" | undefined;
+        borderStyle?: "solid" | "dashed" | "dotted" | undefined;
         borderTopColor?: import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallback | import("react-native").OpaqueColorValue | undefined;
         borderTopEndRadius?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").RadiusTokens | undefined;
         borderTopLeftRadius?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").RadiusTokens | undefined;
@@ -369,7 +369,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         maxWidth?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SizeTokens | undefined;
         minHeight?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SizeTokens | undefined;
         minWidth?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SizeTokens | undefined;
-        overflow?: "visible" | "hidden" | "scroll" | undefined;
+        overflow?: "hidden" | "visible" | "scroll" | undefined;
         padding?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
         paddingBottom?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
         paddingEnd?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
@@ -423,8 +423,8 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         userSelect?: import("csstype").Property.UserSelect | undefined;
         outlineColor?: import("csstype").Property.OutlineColor | undefined;
         outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
-        outlineOffset?: import("csstype").Property.OutlineOffset<0 | (string & {})> | undefined;
-        outlineWidth?: import("csstype").Property.OutlineWidth<0 | (string & {})> | undefined;
+        outlineOffset?: import("@tamagui/web").SpaceTokens | undefined;
+        outlineWidth?: import("@tamagui/web").SpaceTokens | undefined;
         rel?: any;
         download?: any;
         onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;

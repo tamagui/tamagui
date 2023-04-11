@@ -30,7 +30,7 @@ export function UpdateThemeDemo() {
   }, [])
 
   return (
-    <YStack ai="center" space>
+    <YStack alignItems="center" space>
       <Theme name={theme ?? null}>
         <Square borderRadius="$8" size={100} backgroundColor="$color" />
       </Theme>

@@ -223,14 +223,6 @@ export function createAnimations<A extends AnimationsConfig>(
           const [val, type] = getValue(valIn)
           const value = animated || new Animated.Value(val)
 
-          // this optimization seems to work for web but not native...
-          if (isWeb) {
-            if (animated && val === animated['_value']) {
-              // avoid running again for same value
-              return value
-            }
-          }
-
           let interpolateArgs: any
           if (type) {
             const curInterpolation = animationsState.current.get(value)

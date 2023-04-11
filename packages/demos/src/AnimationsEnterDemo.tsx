@@ -28,13 +28,13 @@ export function AnimationsEnterDemo(props: any) {
         opacity={1}
         scale={1}
         y={0}
-        bc="$pink10"
-        br="$9"
+        backgroundColor="$pink10"
+        borderRadius="$9"
       >
         {props.children ?? <LogoIcon downscale={0.75} />}
       </Square>
 
-      <Button size="$3" mt="$4" onPress={() => setKey(Math.random())}>
+      <Button size="$3" marginTop="$4" onPress={() => setKey(Math.random())}>
         Re-mount
       </Button>
     </>
