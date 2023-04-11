@@ -45,7 +45,7 @@ export default function TakeoutPurchasePage({ products }: Props) {
   const containerRef = useRef(null)
   const router = useRouter()
   const [priceIdLoading, setPriceIdLoading] = useState<string>()
-  const { user, isLoading, subscription } = useUser()
+  const { user, isLoading } = useUser()
 
   useIsomorphicLayoutEffect(() => {
     setThemeName(resolvedTheme as any)
@@ -56,9 +56,9 @@ export default function TakeoutPurchasePage({ products }: Props) {
     if (!user) {
       return router.push('/login')
     }
-    if (subscription) {
-      return router.push('/account')
-    }
+    // if (subscription) {
+    //   return router.push('/account')
+    // }
 
     try {
       const { sessionId } = await postData({
