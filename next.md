@@ -60,7 +60,8 @@ Ali:
         - [ ] `tama studio --serve` add flag and hide vite stuff behind there
         - [ ] `tama studio` just builds once
         - [ ] `tama studio --watch` watches
-
+- [ ] https://discord.com/channels/909986013848412191/1095303038786342983/1095303038786342983
+- [ ] https://github.com/chakra-ui/chakra-ui/issues/183#issuecomment-1503061828
 - [ ] document keyboard avoiding view in `Sheet.mdx`
 - [ ] input bug 
   - [ ] https://discord.com/channels/909986013848412191/1091749199378387065/1091909256023904377
