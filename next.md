@@ -44,6 +44,9 @@
 - move to use-roving-index
 >>>>>>> master
 
+support new RN props:
+https://reactnative.dev/blog/2023/01/12/version-071#web-inspired-props-for-accessibility-styles-and-events
+
 Ali:
 
 - [ ] moti driver
