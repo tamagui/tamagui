@@ -1,19 +1,30 @@
 import { readFileSync } from 'fs'
 /* eslint-disable no-console */
-import { basename, dirname, extname, join, relative, resolve, sep } from 'path'
+import path, { basename, dirname, extname, join, relative, resolve, sep } from 'path'
 
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { Color, colorLog } from '@tamagui/cli-color'
+import { ResolvedOptions } from '@tamagui/cli/types/types'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/core-node'
 import { createTamagui } from '@tamagui/core-node'
+import { getVariableValue } from '@tamagui/core-node'
+import type {
+  LoadedComponents,
+  StaticConfigParsed,
+  TamaguiInternalConfig,
+  TamaguiProjectInfo,
+} from '@tamagui/web'
 import esbuild from 'esbuild'
 import { ensureDir, existsSync, removeSync, writeFileSync } from 'fs-extra'
+import fs from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants.js'
+import { getOptions } from '../generateConfigJson.js'
 import { getNameToPaths, registerRequire, unregisterRequire } from '../require.js'
+import { TamaguiOptions } from '../types.js'
 import { babelParse } from './babelParse.js'
 import { bundle } from './bundle.js'
 
@@ -43,6 +54,15 @@ type Props = {
   forceExports?: boolean
 }
 
+const external = [
+  '@tamagui/core',
+  '@tamagui/web',
+  '@tamagui/core-node',
+  'react',
+  'react-dom',
+  'react-native-svg',
+]
+
 const cache = {}
 
 // TODO needs a plugin for webpack / vite to run this once at startup and not again until changed...
@@ -61,126 +81,11 @@ export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
     resolver = res
   })
 
-  const tmpDir = join(process.cwd(), '.tamagui')
-  const configOutPath = join(tmpDir, `tamagui.config.cjs`)
-  const baseComponents = props.components.filter((x) => x !== '@tamagui/core')
-
-  const componentOutPaths = baseComponents.map((componentModule) =>
-    join(
-      tmpDir,
-      `${componentModule
-        .split(sep)
-        .join('-')
-        .replace(/[^a-z0-9]+/gi, '')}-components.config.cjs`
-    )
-  )
-
-  const external = [
-    '@tamagui/core',
-    '@tamagui/web',
-    '@tamagui/core-node',
-    'react',
-    'react-dom',
-    'react-native-svg',
-  ]
-  const configEntry = props.config ? join(process.cwd(), props.config) : ''
-
-  if (
-    process.env.NODE_ENV === 'development' &&
-    process.env.DEBUG?.startsWith('tamagui')
-  ) {
-    console.log(`Building config entry`, configEntry)
-  }
-
-  // build them to node-compat versions
-  try {
-    await ensureDir(tmpDir)
-  } catch {
-    //
-  }
-
-  colorLog(
-    Color.FgYellow,
-    `
-Tamagui built config and components:`
-  )
-  colorLog(
-    Color.Dim,
-    `
-  Config     .${sep}${relative(process.cwd(), configOutPath)}
-  Components ${[
-    ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
-  ].join('\n             ')}
-`
-  )
-
-  await Promise.all([
-    props.config
-      ? bundle({
-          entryPoints: [configEntry],
-          external,
-          outfile: configOutPath,
-        })
-      : null,
-    ...baseComponents.map((componentModule, i) => {
-      return bundle({
-        entryPoints: [componentModule],
-        resolvePlatformSpecificEntries: true,
-        external,
-        outfile: componentOutPaths[i],
-      })
-    }),
-  ])
-
   try {
     registerRequire()
-    const out = require(configOutPath)
-    const config = out.default || out
+    const bundleInfo = await bundleConfig(props)
 
-    if (!config) {
-      throw new Error(`No config: ${config}`)
-    }
-
-    let components = loadComponents({
-      ...props,
-      components: componentOutPaths,
-    })
-
-    if (!components) {
-      throw new Error(`No components found: ${componentOutPaths.join(', ')}`)
-    }
-
-    // map from built back to original module names
-    for (const component of components) {
-      component.moduleName =
-        baseComponents[componentOutPaths.indexOf(component.moduleName)]
-      if (!component.moduleName) {
-        throw new Error(`Tamagui internal err`)
-      }
-    }
-
-    // always load core so we can optimize if directly importing
-    const coreComponents = loadComponents({
-      ...props,
-      components: ['@tamagui/core-node'],
-    })
-    if (coreComponents) {
-      coreComponents[0].moduleName = '@tamagui/core'
-      components = [...components, ...coreComponents]
-    }
-
-    if (
-      process.env.NODE_ENV === 'development' &&
-      process.env.DEBUG?.startsWith('tamagui')
-    ) {
-      console.log('Loaded components', components)
-    }
-
-    cache[key] = {
-      components,
-      nameToPaths: {},
-      tamaguiConfig: config,
-    }
+    cache[key] = bundleInfo
 
     // init core-node
     createTamagui(cache[key].tamaguiConfig)
@@ -511,4 +416,204 @@ function getTamaguiComponent(
   if (staticConfig) {
     return Component
   }
+}
+
+async function bundleConfig(props: Props) {
+  const configEntry = props.config ? join(process.cwd(), props.config) : ''
+  const tmpDir = join(process.cwd(), '.tamagui')
+  const configOutPath = join(tmpDir, `tamagui.config.cjs`)
+  const baseComponents = props.components.filter((x) => x !== '@tamagui/core')
+  const componentOutPaths = baseComponents.map((componentModule) =>
+    join(
+      tmpDir,
+      `${componentModule
+        .split(sep)
+        .join('-')
+        .replace(/[^a-z0-9]+/gi, '')}-components.config.cjs`
+    )
+  )
+
+  if (
+    process.env.NODE_ENV === 'development' &&
+    process.env.DEBUG?.startsWith('tamagui')
+  ) {
+    console.log(`Building config entry`, configEntry)
+  }
+
+  // build them to node-compat versions
+  try {
+    await ensureDir(tmpDir)
+  } catch {
+    //
+  }
+
+  colorLog(
+    Color.FgYellow,
+    `
+Tamagui built config and components:`
+  )
+  colorLog(
+    Color.Dim,
+    `
+  Config     .${sep}${relative(process.cwd(), configOutPath)}
+  Components ${[
+    ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
+  ].join('\n             ')}
+`
+  )
+
+  await Promise.all([
+    props.config
+      ? bundle({
+          entryPoints: [configEntry],
+          external,
+          outfile: configOutPath,
+        })
+      : null,
+    ...baseComponents.map((componentModule, i) => {
+      return bundle({
+        entryPoints: [componentModule],
+        resolvePlatformSpecificEntries: true,
+        external,
+        outfile: componentOutPaths[i],
+      })
+    }),
+  ])
+
+  // get around node.js's module cache to get the new config...
+  delete require.cache[path.resolve(configOutPath)]
+  const out = require(configOutPath)
+  const config = out.default || out
+  console.log(`got config from ${configOutPath}...`, config.media)
+  if (!config) {
+    throw new Error(`No config: ${config}`)
+  }
+
+  let components = loadComponents({
+    ...props,
+    components: componentOutPaths,
+  })
+
+  if (!components) {
+    throw new Error(`No components found: ${componentOutPaths.join(', ')}`)
+  }
+
+  // map from built back to original module names
+  for (const component of components) {
+    component.moduleName = baseComponents[componentOutPaths.indexOf(component.moduleName)]
+
+    // if (!component.moduleName) {
+    //   throw new Error(`Tamagui internal err`)
+    // }
+  }
+
+  // always load core so we can optimize if directly importing
+  const coreComponents = loadComponents({
+    ...props,
+    components: ['@tamagui/core-node'],
+  })
+  if (coreComponents) {
+    coreComponents[0].moduleName = '@tamagui/core'
+    components = [...components, ...coreComponents]
+  }
+
+  if (
+    process.env.NODE_ENV === 'development' &&
+    process.env.DEBUG?.startsWith('tamagui')
+  ) {
+    console.log('Loaded components', components)
+  }
+  return {
+    components,
+    nameToPaths: {},
+    tamaguiConfig: config,
+  }
+}
+
+async function getTamaguiConfig(options: ResolvedOptions) {
+  return bundleConfig(options.tamaguiOptions)
+}
+
+export async function generateTamaguiConfig(options: ResolvedOptions) {
+  await ensureDir(options.paths.dotDir)
+  const config = await getTamaguiConfig(options)
+  const { components, nameToPaths } = config
+  const { themes, tokens } = config.tamaguiConfig
+  console.log(config.tamaguiConfig.media)
+
+  // reduce down to usable, smaller json
+
+  // slim themes, add name
+  for (const key in themes) {
+    const theme = themes[key]
+    // @ts-ignore
+    theme.id = key
+    for (const tkey in theme) {
+      theme[tkey] = getVariableValue(theme[tkey])
+    }
+  }
+
+  // flatten variables
+  for (const key in tokens) {
+    const token = tokens[key]
+    for (const tkey in token) {
+      token[tkey] = getVariableValue(token[tkey])
+    }
+  }
+
+  // remove bulky stuff in components
+  for (const component of components) {
+    for (const _ in component.nameToInfo) {
+      delete component.nameToInfo[_].staticConfig['validStyles']
+      delete component.nameToInfo[_].staticConfig['parentStaticConfig']
+    }
+  }
+
+  // set to array
+  for (const key in nameToPaths) {
+    // @ts-ignore
+    nameToPaths[key] = [...nameToPaths[key]]
+  }
+
+  // remove stuff we dont need to send
+  const { fontsParsed, getCSS, tokensParsed, themeConfig, ...cleanedConfig } =
+    config.tamaguiConfig
+
+  await fs.writeJSON(
+    options.paths.conf,
+    {
+      ...config,
+      tamaguiConfig: cleanedConfig,
+    },
+    {
+      spaces: 2,
+    }
+  )
+}
+
+export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
+  const options = await getOptions({ tamaguiOptions })
+
+  if (!options.tamaguiOptions.config) return
+
+  await generateTamaguiConfig(options)
+  const context = await esbuild.context({
+    entryPoints: [options.tamaguiOptions.config],
+    sourcemap: false,
+    // dont output just use esbuild as a watcher
+    write: false,
+
+    plugins: [
+      {
+        name: `on-rebuild`,
+        setup({ onEnd }) {
+          onEnd((res) => {
+            generateTamaguiConfig(options)
+          })
+        },
+      },
+    ],
+  })
+
+  await context.watch()
 }
