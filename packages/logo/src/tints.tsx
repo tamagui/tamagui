@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react'
 import { ThemeName } from 'tamagui'
 
-const families = Object.freeze({
+const familiesValues = {
   tamagui: ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red'],
   xmas: ['red', 'green', 'red', 'green', 'red', 'green', 'red'],
-}) as {
-  [key in 'tamagui' | 'xmas']: ThemeName[]
+  easter: ['yellow', 'pink', 'yellow', 'pink', 'yellow', 'pink', 'yellow'],
+}
+
+type Family = keyof typeof familiesValues
+
+const familiesNames = Object.keys(familiesValues) as any as Family[]
+
+const families = familiesValues as {
+  [key in Family]: ThemeName[]
 }
 
 type TintFamily = keyof typeof families
@@ -39,7 +46,7 @@ export const setTintFamily = (next: TintFamily) => {
 }
 
 export const setNextTintFamily = () => {
-  setTintFamily(fam === 'tamagui' ? 'xmas' : 'tamagui')
+  setTintFamily(familiesNames[(familiesNames.indexOf(fam) + 1) % familiesNames.length])
 }
 
 type ChangeHandler = (next: TintFamily) => void

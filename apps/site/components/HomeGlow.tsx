@@ -29,7 +29,7 @@ export const HomeGlow = memo(() => {
     return (
       <>
         {tints.map((cur, i) => {
-          const isDouble = name === 'xmas'
+          const isDouble = name === 'xmas' || name === 'easter'
           const active = isDouble ? i == 0 || i == 1 : cur === tint
           const isOpposite = isDouble && cur === 'green' && tint !== cur
           return (

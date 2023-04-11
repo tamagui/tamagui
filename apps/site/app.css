@@ -281,6 +281,15 @@ pre {
   );
 }
 
+.easter-season .rainbow {
+  background-image: -webkit-linear-gradient(
+    -220deg,
+    var(--pink10),
+    var(--yellow10),
+    var(--pink10)
+  );
+}
+
 .clip-text {
   background-clip: text;
   -webkit-background-clip: text;

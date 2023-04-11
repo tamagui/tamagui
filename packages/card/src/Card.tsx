@@ -9,33 +9,24 @@ import {
 } from '@tamagui/web'
 import React, { cloneElement, forwardRef } from 'react'
 
-// const CARD_NAME = 'CARD'
-
-// type CardContextValue = {
-//   size?: SizeTokens
-// }
-
-// const [createCardContext, createCardScope] = createContextScope(CARD_NAME)
-// const [CardProvider, useCardContext] = createCardContext<CardContextValue>(CARD_NAME)
-
 export const CardFrame = styled(ThemeableStack, {
   name: 'Card',
 
   variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+        backgroundColor: '$background',
+        position: 'relative',
+        overflow: 'hidden',
+      },
+    },
+
     size: {
       '...size': (val, { tokens }) => {
         return {
           borderRadius: tokens.radius[val] ?? val,
         }
-      },
-    },
-
-    unstyled: {
-      false: {
-        backgrounded: true,
-        position: 'relative',
-        overflow: 'hidden',
-        size: '$true',
       },
     },
   } as const,
@@ -49,17 +40,19 @@ export const CardHeader = styled(ThemeableStack, {
   name: 'CardHeader',
 
   variants: {
+    unstyled: {
+      false: {
+        zIndex: 10,
+        backgroundColor: 'transparent',
+        marginBottom: 'auto',
+      },
+    },
+
     size: {
       '...size': (val, { tokens }) => {
         return {
           padding: tokens.space[val] ?? val,
         }
-      },
-    },
-
-    unstyled: {
-      false: {
-        zIndex: 10,
       },
     },
   } as const,
@@ -101,7 +94,7 @@ export const CardBackground = styled(ThemeableStack, {
         padding: 0,
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     unstyled: false,
@@ -117,7 +110,6 @@ export const Card = withStaticProperties(
     forwardRef<TamaguiElement, ScopedProps<CardProps, 'Card'>>(
       ({ size, __scopeCard, children, ...props }, ref) => {
         return (
-          // <CardProvider scope={__scopeCard} size={size}>
           <CardFrame ref={ref} {...props}>
             {React.Children.map(children, (child) => {
               if (isTamaguiElement(child) && !child.props.size) {
@@ -128,7 +120,6 @@ export const Card = withStaticProperties(
               return child
             })}
           </CardFrame>
-          // </CardProvider>
         )
       }
     )
@@ -139,5 +130,3 @@ export const Card = withStaticProperties(
     Background: CardBackground,
   }
 )
-
-// export { createCardScope, useCardContext }

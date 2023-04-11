@@ -1,13 +1,12 @@
-import { Scope } from '@tamagui/create-context';
 import React from 'react';
-import { CreateNativeToastOptions, ToastNativePlatform, ToastNativeValue } from './types';
-interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, "message"> {
+import { CreateNativeToastOptions, NativeToastRef, ToastNativePlatform, ToastNativeValue } from './types';
+interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message'> {
     /**
      * Will show a native toast if is true or is set to the current platform. On iOS, it wraps `SPIndicator` and `SPAlert`. On Android, it wraps `ToastAndroid`. On web, it wraps Notification API. Mobile's native features are handled by `burnt`.
      */
     native?: ToastNativeValue;
 }
-interface ShowToastOptions extends CreateNativeToastOptions {
+interface ShowOptions extends CreateNativeToastOptions {
     /**
      * Used when need custom data
      */
@@ -17,24 +16,18 @@ interface ShowToastOptions extends CreateNativeToastOptions {
      */
     native?: ToastNativeValue;
 }
-type ScopedProps<P> = P & {
-    __scopeToast?: Scope;
-};
 type ToastData = {
     title: string;
     id: string;
 } & CreateNativeToastOptions & {
     isHandledNatively: boolean;
 };
-declare const useToast: () => {
-    /**
-     * The currently displaying toast
-     */
-    currentToast: ToastData | null;
+interface ToastContextI {
+    nativeToast: NativeToastRef | null;
     /**
      * Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).
      */
-    show: (title: string, options?: ShowToastOptions) => boolean;
+    show: (title: string, options?: ShowOptions) => boolean;
     /**
      * Call it to hide the currently displayed toast.
      *
@@ -43,6 +36,27 @@ declare const useToast: () => {
      * _NOTE_: hides the last toast on web notification toasts
      */
     hide: () => void;
+    options?: ToastImperativeOptions;
+}
+export declare const useToastController: () => ToastContextI;
+export declare const useToastState: () => ToastData | null;
+/** @deprecated use `useToastController` and `useToastState` instead to avoid performance pitfalls */
+export declare const useToast: () => {
+    currentToast: ToastData | null;
+    nativeToast: NativeToastRef | null;
+    /**
+     * Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).
+     */
+    show: (title: string, options?: ShowOptions) => boolean;
+    /**
+     * Call it to hide the currently displayed toast.
+     *
+     * _NOTE_: does not work on Android native toasts
+     *
+     * _NOTE_: hides the last toast on web notification toasts
+     */
+    hide: () => void;
+    options?: ToastImperativeOptions | undefined;
 };
 interface ToastImperativeProviderProps {
     children: React.ReactNode;
@@ -51,7 +65,6 @@ interface ToastImperativeProviderProps {
      */
     options: ToastImperativeOptions;
 }
-declare const ToastImperativeProvider: ({ children, options, __scopeToast, }: ScopedProps<ToastImperativeProviderProps>) => JSX.Element;
-export { ToastImperativeProvider, useToast };
+export declare const ToastImperativeProvider: ({ children, options, }: ToastImperativeProviderProps) => JSX.Element;
 export type { ToastImperativeProviderProps, ToastNativePlatform, ToastNativeValue };
 //# sourceMappingURL=ToastImperative.d.ts.map
