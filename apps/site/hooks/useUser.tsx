@@ -11,9 +11,9 @@ import {
 type UserContextType = {
   accessToken: string | null
   user: User | null
-  userDetails: any | null
+  // userDetails: any | null
   isLoading: boolean
-  subscription: any | null
+  // subscription: any | null
   signout: () => void
 }
 
@@ -32,44 +32,47 @@ export const MyUserContextProvider = (props: Props) => {
   const [userDetails, setUserDetails] = useState<any>(null)
   const [subscription, setSubscription] = useState<any>(null)
 
-  const getUserDetails = () => supabase.from('users').select('*').single()
+  // const getUserDetails = () => supabase.from('users').select('*').single()
 
-  const getSubscription = () =>
-    supabase
-      .from('subscriptions')
-      .select('*, prices(*, products(*))')
-      .in('status', ['trialing', 'active'])
-      .single()
+  // const getSubscription = () =>
+  //   supabase
+  //     .from('subscriptions')
+  //     .select('*, prices(*, products(*))')
+  //     .in('status', ['trialing', 'active'])
+  //     .single()
 
   const isLoadingUser = !!session?.user
 
   useEffect(() => {
     if (session?.user && !isLoadingData && !userDetails && !subscription) {
       setIsloadingData(true)
-      Promise.allSettled([getUserDetails(), getSubscription()]).then((results) => {
-        const userDetailsPromise = results[0]
-        const subscriptionPromise = results[1]
+      Promise.allSettled([
+        // getUserDetails(),
+        // getSubscription()
+      ]).then((results) => {
+        // const userDetailsPromise = results[0]
+        // const subscriptionPromise = results[1]
 
-        if (userDetailsPromise.status === 'fulfilled')
-          setUserDetails(userDetailsPromise.value.data)
+        // if (userDetailsPromise.status === 'fulfilled')
+        // setUserDetails(userDetailsPromise.value.data)
 
-        if (subscriptionPromise.status === 'fulfilled')
-          setSubscription(subscriptionPromise.value.data)
+        // if (subscriptionPromise.status === 'fulfilled')
+        // setSubscription(subscriptionPromise.value.data)
 
         setIsloadingData(false)
       })
     } else if (!session?.user && !isLoadingUser && !isLoadingData) {
       setUserDetails(null)
-      setSubscription(null)
+      // setSubscription(null)
     }
   }, [session?.user, isLoadingUser])
 
   const value = {
     accessToken: session?.access_token ?? null,
     user: session?.user ?? null,
-    userDetails,
+    // userDetails,
     isLoading: isLoadingUser || isLoadingData,
-    subscription,
+    // subscription,
     signout: useCallback(async () => {
       await supabase.auth.signOut()
       forceUpdate()
