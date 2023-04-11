@@ -44,7 +44,8 @@
     "react-native": "^0.71.4",
     "tamagui": "^1.12.1",
     "ts-morph": "^15.1.0",
-    "valtio": "^1.10.3"
+    "use-valtio": "^0.0.2",
+    "valtio": "^1.10.4"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.18.6",
