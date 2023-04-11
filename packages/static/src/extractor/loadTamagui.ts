@@ -426,20 +426,20 @@ async function bundleConfig(props: Props) {
     //
   }
 
-  colorLog(
-    Color.FgYellow,
-    `
-Tamagui built config and components:`
-  )
-  colorLog(
-    Color.Dim,
-    `
-  Config     .${sep}${relative(process.cwd(), configOutPath)}
-  Components ${[
-    ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
-  ].join('\n             ')}
-`
-  )
+//   colorLog(
+//     Color.FgYellow,
+//     `
+// Tamagui built config and components:`
+//   )
+//   colorLog(
+//     Color.Dim,
+//     `
+//   Config     .${sep}${relative(process.cwd(), configOutPath)}
+//   Components ${[
+//     ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
+//   ].join('\n             ')}
+// `
+//   )
 
   await Promise.all([
     props.config
@@ -463,7 +463,6 @@ Tamagui built config and components:`
   delete require.cache[path.resolve(configOutPath)]
   const out = require(configOutPath)
   const config = out.default || out
-  console.log(`got config from ${configOutPath}...`, config.media)
   if (!config) {
     throw new Error(`No config: ${config}`)
   }
@@ -518,7 +517,6 @@ export async function generateTamaguiConfig(options: ResolvedOptions) {
   const config = await getTamaguiConfig(options)
   const { components, nameToPaths } = config
   const { themes, tokens } = config.tamaguiConfig
-  console.log(config.tamaguiConfig.media)
 
   // reduce down to usable, smaller json
 
