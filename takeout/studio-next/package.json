@@ -53,6 +53,7 @@
     "@tamagui/build": "^1.11.2",
     "@tamagui/static": "^1.11.2",
     "@tauri-apps/cli": "^1.2.2",
+    "@types/wicg-file-system-access": "^2020.9.6",
     "babel-polyfill": "^6.26.0",
     "esbuild-loader": "^2.20.0",
     "react-refresh": "^0.14.0"

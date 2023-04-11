@@ -7322,6 +7322,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/wicg-file-system-access@npm:^2020.9.6":
+  version: 2020.9.6
+  resolution: "@types/wicg-file-system-access@npm:2020.9.6"
+  checksum: 2dbf33ee55684d4ed0607ae4b470e0147806b15ec047563c59d94e6ac13be7bed904cc7eece5e4be7c0d58a4de0b0635089f7cd5b7738372e436c760b0719241
+  languageName: node
+  linkType: hard
+
 "@types/ws@npm:^8.5.1":
   version: 8.5.4
   resolution: "@types/ws@npm:8.5.4"
@@ -21332,6 +21339,7 @@ __metadata:
     "@types/react": 18.0.33
     "@types/react-dom": 18.0.11
     "@types/uuid": ^8.3.4
+    "@types/wicg-file-system-access": ^2020.9.6
     babel-polyfill: ^6.26.0
     color2k: ^1.2.4
     d3-scale: ^3.3.0
