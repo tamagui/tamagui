@@ -170,7 +170,7 @@ async function buildJs() {
           jsx: 'automatic',
           logLevel: 'error',
           plugins: shouldBundleNodeModules ? [] : [externalPlugin],
-          minify: true,
+          minify: process.env.MINIFY ? true : false,
           platform: 'node',
         })
       : null,
@@ -187,7 +187,7 @@ async function buildJs() {
           format: 'esm',
           color: true,
           logLevel: 'error',
-          minify: true,
+          minify: process.env.MINIFY ? true : false,
           platform: shouldBundle ? 'node' : 'neutral',
         })
       : null,
@@ -205,7 +205,7 @@ async function buildJs() {
           format: 'esm',
           color: true,
           logLevel: 'error',
-          minify: true,
+          minify: process.env.MINIFY ? true : false,
           platform: shouldBundle ? 'node' : 'neutral',
         })
       : null,
@@ -224,7 +224,7 @@ async function buildJs() {
           format: 'esm',
           color: true,
           logLevel: 'error',
-          minify: true,
+          minify: process.env.MINIFY ? true : false,
           platform: 'neutral',
         })
       : null,
@@ -242,7 +242,7 @@ async function buildJs() {
           format: 'esm',
           color: true,
           logLevel: 'error',
-          minify: true,
+          minify: process.env.MINIFY ? true : false,
           platform: 'neutral',
         })
       : null,
