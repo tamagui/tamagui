@@ -1,12 +1,10 @@
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { MyUserContextProvider } from 'hooks/useUser'
-import { useState } from 'react'
 
 export function getUserLayout(page) {
   return <UserLayout>{page}</UserLayout>
 }
 
+// TODO: this is already used in app.tsx... remove this?
 function UserLayout({ children }) {
   return (
     <MyUserContextProvider>

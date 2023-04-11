@@ -1,10 +1,12 @@
 import { ThemeToggle } from '@components/ThemeToggle'
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
+import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import {
   Adapt,
+  Avatar,
   Button,
   Paragraph,
   ParagraphProps,
@@ -82,6 +84,7 @@ export function HeaderContents(props: HeaderProps) {
   const isInSubApp =
     router.pathname.startsWith('/takeout') || router.pathname.startsWith('/studio')
   const { setNextTint } = useTint()
+  const user = useUser()
 
   return (
     <XStack
@@ -176,22 +179,28 @@ export function HeaderContents(props: HeaderProps) {
       >
         {isInSubApp ? (
           <XStack ai="center" space="$2">
-            <NextLink href="/signin">
-              <Paragraph
-                fontFamily="$silkscreen"
-                px="$3"
-                py="$2"
-                cursor="pointer"
-                size="$3"
-                o={0.7}
-                hoverStyle={{ opacity: 1 }}
-                $xxs={{
-                  display: 'none',
-                }}
-              >
-                Login
-              </Paragraph>
-            </NextLink>
+            {user ? (
+              <Avatar circular size="$2">
+                <Avatar.Image src={user.userDetails.avatar_url} />
+              </Avatar>
+            ) : (
+              <NextLink href="/signin">
+                <Paragraph
+                  fontFamily="$silkscreen"
+                  px="$3"
+                  py="$2"
+                  cursor="pointer"
+                  size="$3"
+                  o={0.7}
+                  hoverStyle={{ opacity: 1 }}
+                  $xxs={{
+                    display: 'none',
+                  }}
+                >
+                  Login
+                </Paragraph>
+              </NextLink>
+            )}
 
             <NextLink href="/takeout/purchase">
               <Button fontFamily="$silkscreen" size="$3">

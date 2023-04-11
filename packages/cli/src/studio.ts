@@ -84,7 +84,7 @@ export const studio = async (options: ResolvedOptions, isRemote = true) => {
   } else {
     console.log(
       `Open `,
-      chalk.green(`https://studio.tamagui.dev/load`),
+      chalk.green(`https://studio.tamagui.dev`),
       ` to load studio`
     )
   }

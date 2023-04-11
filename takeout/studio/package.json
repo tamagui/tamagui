@@ -28,6 +28,7 @@
     "@tamagui/core": "^1.12.1",
     "@tamagui/lucide-icons": "^1.12.1",
     "@tamagui/polyfill-dev": "^1.12.1",
+    "@tamagui/site-shared": "^1.12.1",
     "@tamagui/themes": "^1.12.1",
     "@tauri-apps/api": "^1.2.0",
     "@types/d3-scale": "^4.0.2",
