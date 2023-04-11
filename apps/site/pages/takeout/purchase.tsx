@@ -55,7 +55,7 @@ export default function TakeoutPurchasePage({ products }: Props) {
   const handleCheckout = async (price: Price) => {
     setPriceIdLoading(price.id)
     if (!user) {
-      return router.push('/signin')
+      return router.push('/login')
     }
     if (subscription) {
       return router.push('/account')
@@ -156,7 +156,7 @@ export default function TakeoutPurchasePage({ products }: Props) {
                   <Spacer />
                   <Separator />
                   <Spacer />
-                  <Link href="/signin" passHref legacyBehavior>
+                  <Link href="/login" passHref legacyBehavior>
                     <Button
                       theme={level.highlight ? 'blue' : null}
                       br="$10"

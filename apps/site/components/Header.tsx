@@ -191,7 +191,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                 <Avatar.Image src={user.userDetails.avatar_url} />
               </Avatar>
             ) : (
-              <NextLink href="/signin">
+              <NextLink href="/login">
                 <Paragraph
                   fontFamily="$silkscreen"
                   px="$3"
