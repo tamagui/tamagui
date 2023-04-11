@@ -3999,6 +3999,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@supabase/auth-helpers-nextjs@npm:^0.5.6":
+  version: 0.5.6
+  resolution: "@supabase/auth-helpers-nextjs@npm:0.5.6"
+  dependencies:
+    "@supabase/auth-helpers-shared": 0.3.0
+  peerDependencies:
+    "@supabase/supabase-js": ^2.0.4
+  checksum: 7802eb3897f9f334a3f1fbdaa6b456516a595a9ed2465a76151cd28a50a8835737193c8a6ca85e90f6347aaea5ed2356f147dfabb3b4e5d7c6a0d8cab0cf2d00
+  languageName: node
+  linkType: hard
+
 "@supabase/auth-helpers-nextjs@npm:^0.5.9":
   version: 0.5.9
   resolution: "@supabase/auth-helpers-nextjs@npm:0.5.9"
@@ -4016,6 +4027,15 @@ __metadata:
   peerDependencies:
     "@supabase/supabase-js": ^2.0.4
   checksum: 7974d1f913e95fb331ca84868d8bbee5806a2b381b67a1c7f69da7d2bbd5fe0e005df82572960d4e425ae7e9cdcad684095ae96566e4e2a6132e5de908756c85
+  languageName: node
+  linkType: hard
+
+"@supabase/auth-helpers-shared@npm:0.3.0":
+  version: 0.3.0
+  resolution: "@supabase/auth-helpers-shared@npm:0.3.0"
+  peerDependencies:
+    "@supabase/supabase-js": ^2.0.4
+  checksum: 8a52bb7b7c81ed652848faca404f26357dfa27e80522cd93f43b1fbd9c5aba4c49558f12c1b67c8bb4c7e803c0d611cef9e98c01328f15e73692eb86d132cabc
   languageName: node
   linkType: hard
 
@@ -5756,7 +5776,7 @@ __metadata:
     "@github/mini-throttle": ^2.1.0
     "@next/bundle-analyzer": ^12.2.0
     "@stripe/stripe-js": ^1.29.0
-    "@supabase/auth-helpers-nextjs": ^0.5.9
+    "@supabase/auth-helpers-nextjs": ^0.5.6
     "@supabase/auth-helpers-react": ^0.3.1
     "@supabase/supabase-auth-helpers": ^1.4.2
     "@supabase/supabase-js": ^2.14.0
@@ -7111,6 +7131,17 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: e752df961105e5127652460504785897ca6e77259e0da8f233f694f9e8f451cde7fa0709d4456ade0ff600c8ce909cfe29f9b08b9c247fa9b734e126ec53edd7
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:18.0.33":
+  version: 18.0.33
+  resolution: "@types/react@npm:18.0.33"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: 4fbd2b2b6a26378bdfde121081a6406ec2d39e4ba87ea5f6897ab7bb2198713165e6fd703ad4ed7ba1d4f23ef54a4c9f108f3105c7ed8e136411ee6bdebc5669
   languageName: node
   linkType: hard
 
@@ -11174,7 +11205,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-next@npm:13.2.4":
+"eslint-config-next@npm:13.2.4, eslint-config-next@npm:^13.0.4":
   version: 13.2.4
   resolution: "eslint-config-next@npm:13.2.4"
   dependencies:
@@ -17131,7 +17162,7 @@ __metadata:
     "@tamagui/next-theme": 1.14.3
     "@types/node": ^16.11.9
     app: "*"
-    eslint-config-next: 13.2.4
+    eslint-config-next: ^13.0.4
     next: ^13.1.4
     raf: ^3.4.1
     react: ^18.2.0
@@ -17179,7 +17210,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:^13.1.4":
+"next@npm:13.2.4, next@npm:^13.1.4":
   version: 13.2.4
   resolution: "next@npm:13.2.4"
   dependencies:
@@ -21304,8 +21335,8 @@ __metadata:
     "@tauri-apps/cli": ^1.2.2
     "@types/d3-scale": ^4.0.2
     "@types/lodash-es": ^4.17.6
-    "@types/node": ^16.11.9
-    "@types/react": ^18.0.15
+    "@types/node": 18.15.11
+    "@types/react": 18.0.33
     "@types/react-dom": 18.0.11
     "@types/uuid": ^8.3.4
     babel-polyfill: ^6.26.0
@@ -21317,16 +21348,16 @@ __metadata:
     graphql-tag: ^2.12.6
     hsluv: ^0.1.0
     lodash-es: ^4.17.21
-    next: ^13.1.4
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    next: 13.2.4
+    react: 18.2.0
+    react-dom: 18.2.0
     react-draggable: ^4.4.5
     react-hotkeys-hook: ^3.4.6
     react-native: ^0.71.4
     react-refresh: ^0.14.0
     tamagui: ^1.11.2
     ts-morph: ^15.1.0
-    typescript: ^5.0.3
+    typescript: 5.0.3
     valtio: ^1.10.3
   languageName: unknown
   linkType: soft
