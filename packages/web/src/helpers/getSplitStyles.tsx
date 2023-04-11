@@ -881,14 +881,6 @@ export const getSplitStyles: StyleSplitter = (
   // always do this at the very end to preserve the order strictly (animations, origin)
   // and allow proper merging of all pseudos before applying
   if (flatTransforms) {
-    if (process.env.NODE_ENV === 'development' && debug) {
-      // eslint-disable-next-line no-console
-      console.log(
-        'Merging flat transforms, transform before',
-        [...(style.transform || [])],
-        flatTransforms
-      )
-    }
     mergeTransforms(style, flatTransforms, true)
   }
 

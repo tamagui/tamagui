@@ -7,16 +7,14 @@ import '../public/fonts/fonts.css'
 import { Footer } from '@components/Footer'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, useSupabaseClient } from '@supabase/auth-helpers-react'
-import { ThemeTint, setTintFamily } from '@tamagui/logo'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { useSharedAuth } from '@tamagui/site-shared'
+import { ToastProvider, ToastViewport } from '@tamagui/toast'
+import { TamaguiProvider } from '@tamagui/web'
 import { MyUserContextProvider } from 'hooks/useUser'
 import { AppProps } from 'next/app'
-import NextHead from 'next/head'
 import { useRouter } from 'next/router'
-import Script from 'next/script'
-import { Suspense, startTransition, useEffect, useMemo, useState } from 'react'
-import { TamaguiProvider, ToastProvider, ToastViewport, isClient } from 'tamagui'
+import { Suspense, startTransition, useMemo, useState } from 'react'
 
 import { Header } from '../components/Header'
 import { SearchProvider } from '../components/Search'
@@ -151,7 +149,7 @@ function ContentInner({ Component, pageProps }: AppProps) {
   return getLayout(
     <>
       {!isTest && !isResponsiveDemo && <Header disableNew={isHome || isBlog} />}
-      <Component {...pageProps} />
+      {getLayout(<Component {...pageProps} />)}
       {!isTest && !isDocs && !isDemo && !isStudio && <Footer />}
     </>,
     pageProps

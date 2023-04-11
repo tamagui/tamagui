@@ -1,22 +1,25 @@
 declare const families: {
     tamagui: string[];
     xmas: string[];
+    easter: string[];
 };
 type TintFamily = keyof typeof families;
 export declare function getTints(): {
-    name: "tamagui" | "xmas";
+    name: "tamagui" | "xmas" | "easter";
     tints: string[];
     families: {
         tamagui: string[];
         xmas: string[];
+        easter: string[];
     };
 };
 export declare function useTints(): {
-    name: "tamagui" | "xmas";
+    name: "tamagui" | "xmas" | "easter";
     tints: string[];
     families: {
         tamagui: string[];
         xmas: string[];
+        easter: string[];
     };
 };
 export declare const setTintFamily: (next: TintFamily) => void;

@@ -12,6 +12,7 @@ import React, {
   useEffect,
   useId,
   useRef,
+  useState,
 } from 'react'
 
 import { onConfiguredOnce } from './config.js'
@@ -50,6 +51,7 @@ import { Slot } from './views/Slot.js'
 import { Stack } from './views/Stack.js'
 import { Text } from './views/Text.js'
 import { useThemedChildren } from './views/Theme.js'
+import { ThemeDebug } from './views/ThemeDebug.js'
 
 // let t
 // import { timer } from '@tamagui/timer'
@@ -176,16 +178,16 @@ export function createComponent<
 
     // conditional but if ever true stays true
     // [animated, inversed]
-    const stateRef = isRSC
-      ? { current: {} }
-      : useRef(
-          undefined as any as {
-            hasAnimated?: boolean
-            themeShallow?: boolean
-            didAccessThemeVariableValue?: boolean
-          }
-        )
-    stateRef.current ??= {}
+    const stateRef = useRef(
+      undefined as any as {
+        hasAnimated?: boolean
+        themeShallow?: boolean
+        didAccessThemeVariableValue?: boolean
+      }
+    )
+    stateRef.current ||= {}
+
+    const hostRef = useServerRef<TamaguiElement>(null)
 
     /**
      * Component state for tracking animations, pseudos
@@ -292,9 +294,10 @@ export function createComponent<
       componentName,
       reset: props.reset,
       inverse: props.themeInverse,
-      // @ts-expect-error
+      // @ts-ignore this is internal use only
       disable: props['data-themeable'],
-      debug: props.debug,
+      debug:
+        process.env.NODE_ENV === 'development' && props.debug ? { hostRef } : undefined,
       shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
     })!
 
@@ -343,8 +346,6 @@ export function createComponent<
       enabled: shouldListenForMedia,
       keys: noClassNames && isMediaSpaced ? (splitStyles.hasMedia as any) : null,
     })
-
-    const hostRef = useServerRef<TamaguiElement>(null)
 
     // animation setup
     const isAnimatedReactNativeWeb = isAnimated && avoidClassesWhileAnimating
@@ -731,6 +732,29 @@ export function createComponent<
       shallow: stateRef.current.themeShallow,
       // passPropsToChildren: true,
     })
+
+    if (process.env.NODE_ENV === 'development') {
+      if (props['debug'] === 'visualize') {
+        const [onChangeCount, setOnChangeCount] = useState(0)
+
+        useEffect(() => {
+          themeState.themeManager?.onChangeTheme((name, manager) => {
+            setOnChangeCount((p) => ++p)
+            console.warn(`🖤`, name)
+          })
+        }, [themeState.themeManager])
+
+        content = (
+          <ThemeDebug
+            themeState={themeState}
+            themeProps={props}
+            onChangeCount={onChangeCount}
+          >
+            {content}
+          </ThemeDebug>
+        )
+      }
+    }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (events || isAnimatedReactNativeWeb) {

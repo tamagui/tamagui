@@ -27,7 +27,7 @@ import { Stack } from '@tamagui/core'
       },
     }
   )
-  console.log('output', output)
+
   expect(output?.js).toMatchSnapshot()
   expect(output?.styles).toMatchSnapshot()
 })

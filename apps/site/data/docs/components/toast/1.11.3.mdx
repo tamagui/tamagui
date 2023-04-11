@@ -30,7 +30,13 @@ package: toast
 
 ## Installation
 
-For native support on mobile, run `yarn add burnt` to add `burnt`, then rebuild your React Native app. React Native requires sub-dependencies with native dependencies always be hoisted to your apps package.json and Toast relies on the amazing [Burnt](https://github.com/nandorojo/burnt) library by Fernando Rojo to provide its native functionality.
+Run the following command:
+
+```
+yarn add @tamagui/toast burnt
+```
+
+then, rebuild your React Native app. React Native requires sub-dependencies with native dependencies always be hoisted to your apps package.json and Toast relies on the amazing [Burnt](https://github.com/nandorojo/burnt) library by Fernando Rojo to provide its native functionality.
 
 ## Usage
 
@@ -38,7 +44,7 @@ To display the toast natively, you should either pass an array of native platfor
 
 ```tsx
 import { Button } from 'tamagui' // or @tamagui/button
-import { Toast, ToastProvider, useToast } from 'tamagui' // or @tamagui/toast
+import { Toast, ToastProvider, useToast } from '@tamagui/toast'
 
 export default () => (
   <ToastProvider native={['mobile']}>

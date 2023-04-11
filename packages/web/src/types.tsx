@@ -32,7 +32,7 @@ export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 
 export type TamaguiElement = HTMLElement | View
 
-export type DebugProp = boolean | 'break' | 'verbose'
+export type DebugProp = boolean | 'break' | 'verbose' | 'visualize'
 
 /**
  * For static / studio
@@ -359,7 +359,7 @@ export interface ThemeProps {
   componentName?: string
   children?: any
   reset?: boolean
-  debug?: DebugProp
+  debug?: DebugProp | any
   inverse?: boolean
   // on the web, for portals we need to re-insert className
   forceClassName?: boolean

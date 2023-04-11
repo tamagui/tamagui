@@ -15,7 +15,13 @@ import * as React from 'react'
 
 import { TOAST_NAME } from './constants'
 import { ToastAnnounceExclude } from './ToastAnnounce'
-import { ToastNativePlatform, ToastNativeValue, useToast } from './ToastImperative.js'
+import {
+  ToastNativePlatform,
+  ToastNativeValue,
+  useToast,
+  useToastController,
+  useToastState,
+} from './ToastImperative.js'
 import {
   ToastImpl,
   ToastImplFrame,
@@ -38,10 +44,10 @@ const TITLE_NAME = 'ToastTitle'
 
 const ToastTitleFrame = styled(SizableText, {
   name: TITLE_NAME,
-  color: '$color',
   variants: {
     unstyled: {
       false: {
+        color: '$color',
         size: '$4',
       },
     },
@@ -50,6 +56,7 @@ const ToastTitleFrame = styled(SizableText, {
     unstyled: false,
   },
 })
+
 type PrimitiveDivProps = GetProps<typeof ToastTitleFrame>
 type ToastTitleProps = PrimitiveDivProps & {}
 
@@ -70,18 +77,21 @@ const DESCRIPTION_NAME = 'ToastDescription'
 
 const ToastDescriptionFrame = styled(SizableText, {
   name: DESCRIPTION_NAME,
-  color: '$color11',
+
   variants: {
     unstyled: {
       false: {
+        color: '$color11',
         size: '$1',
       },
     },
   },
+
   defaultVariants: {
     unstyled: false,
   },
 })
+
 type ToastDescriptionFrameProps = GetProps<typeof ToastDescriptionFrame>
 type ToastDescriptionProps = ToastDescriptionFrameProps & {}
 
@@ -225,6 +235,8 @@ export {
   createToastScope,
   // imperative
   useToast,
+  useToastController,
+  useToastState,
 }
 export type {
   ToastActionProps,

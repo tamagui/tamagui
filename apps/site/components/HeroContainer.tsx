@@ -7,13 +7,13 @@ import {
 import React from 'react'
 import {
   AnimationDriverProvider,
+  Switch,
   Theme,
   TooltipSimple,
   XStack,
   YStack,
   styled,
 } from 'tamagui'
-import { Switch } from 'tamagui'
 
 import { ErrorBoundary } from './ErrorBoundary'
 
@@ -38,6 +38,10 @@ export function HeroContainer({
   tinted?: boolean
   showAnimationDriverControl?: boolean
 }) {
+  const demo = (
+    <HeroContainerInner demoMultiple={demoMultiple}>{children}</HeroContainerInner>
+  )
+
   const contents = (
     <YStack
       className={(minimal ? '' : 'hero-gradient') + (noScroll ? '' : ' hero-scroll')}
@@ -62,29 +66,37 @@ export function HeroContainer({
       }}
     >
       <AnimationDriverTogglerContextProvider>
-        <XStack
-          maxHeight="100%"
-          maxWidth="100%"
-          // @ts-expect-error
-          position="unset"
-          justifyContent={demoMultiple ? 'flex-start' : undefined}
-        >
-          <HeroContainerInner demoMultiple={demoMultiple}>{children}</HeroContainerInner>
-        </XStack>
-        <XStack
-          position="absolute"
-          display="inline-flex"
-          alignItems="center"
-          justifyContent="space-between"
-          top={16}
-          l="$3"
-          $xxs={{ display: 'none' }}
-          $gtMd={{
-            l: '$4',
-          }}
-        >
-          {showAnimationDriverControl && <AnimationControl />}
-        </XStack>
+        {demoMultiple ? (
+          <XStack
+            mah="100%"
+            maw="100%"
+            miw="100%"
+            // @ts-expect-error
+            position="unset"
+            justifyContent="flex-start"
+          >
+            {demo}
+          </XStack>
+        ) : (
+          demo
+        )}
+
+        {showAnimationDriverControl && (
+          <XStack
+            position="absolute"
+            display="inline-flex"
+            alignItems="center"
+            justifyContent="space-between"
+            top={16}
+            l="$3"
+            $xxs={{ display: 'none' }}
+            $gtMd={{
+              l: '$4',
+            }}
+          >
+            <AnimationControl />
+          </XStack>
+        )}
       </AnimationDriverTogglerContextProvider>
     </YStack>
   )
