@@ -42,6 +42,8 @@
 
 - force fix version
 - move to use-roving-index
+- cli
+  - `tamagui doctor` command to check for version mismatch
 >>>>>>> master
 
 support new RN props:
