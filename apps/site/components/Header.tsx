@@ -114,15 +114,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         )}
 
         <TooltipGroup delay={tooltipDelay}>
-          <XGroup
-            ov="hidden"
-            boc="$color2"
-            bw={1}
-            mah={32}
-            bc="transparent"
-            ai="center"
-            size="$3"
-          >
+          <XGroup boc="$color2" bw={1} mah={32} bc="transparent" ai="center" size="$3">
             <XGroup.Item>
               <ThemeToggle borderWidth={0} chromeless />
             </XGroup.Item>
