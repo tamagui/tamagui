@@ -27,6 +27,13 @@ export default defineConfig({
   //     plugins: [esbuildCommonjs(['@tamagui/core-node'])],
   //   },
   // },
+
+  resolve: {
+    alias: {
+      '@tamagui/web': require.resolve(`@tamagui/web`),
+    },
+  },
+
   test: {
     // setupFiles: [join(__dirname, 'setup.ts')],
     environment: 'happy-dom',
