@@ -168,12 +168,15 @@ export function styled<
         // add in pseudos
         PseudoProps<Partial<OurPropsBase>>
 
-  type StyledComponent = TamaguiComponent<
-    Props,
-    TamaguiElement,
-    ParentPropsBase,
-    ParentVariants & OurVariants
-  >
+  type StyledComponent = ParentComponent &
+    TamaguiComponent<Props, TamaguiElement, ParentPropsBase, ParentVariants & OurVariants>
+
+  for (const key in ComponentIn) {
+    if (key in component) {
+      continue
+    }
+    ;(component as typeof ComponentIn)[key] = ComponentIn[key]
+  }
 
   return component as StyledComponent
 }
