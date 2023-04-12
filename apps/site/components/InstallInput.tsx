@@ -38,15 +38,7 @@ export const InstallInput = memo(() => {
           borderRadius="$8"
           mr="$-6"
           x={-1}
-          // TODO broken in latest
-          icon={
-            hasCopied ? (
-              <Check size={16} color="var(--colorHover)" />
-            ) : (
-              <Copy size={16} color="var(--colorHover)" />
-            )
-          }
-          aria-label="Copy the install snippet to Clipboard"
+          icon={hasCopied ? Check : Copy}
           onPress={onCopy}
         />
       </TooltipSimple>

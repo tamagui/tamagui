@@ -67,7 +67,12 @@ export function Header(props: HeaderProps) {
         <YStack o={isScrolled ? 0.9 : 0} fullscreen bc="$background" />
         <ContainerLarge>
           <ThemeTint>
-            <HeaderContents floating {...props} />
+            {React.useMemo(
+              () => (
+                <HeaderContents floating {...props} />
+              ),
+              [props]
+            )}
           </ThemeTint>
         </ContainerLarge>
       </XStack>
@@ -76,7 +81,9 @@ export function Header(props: HeaderProps) {
   )
 }
 
-export function HeaderContents(props: HeaderProps) {
+const tooltipDelay = { open: 3000, close: 100 }
+
+export const HeaderContents = React.memo((props: HeaderProps) => {
   const router = useRouter()
   const isHome = router.pathname === '/'
   const isInSubApp =
@@ -106,16 +113,8 @@ export function HeaderContents(props: HeaderProps) {
           </NextLink>
         )}
 
-        <TooltipGroup delay={{ open: 3000, close: 100 }}>
-          <XGroup
-            ov="hidden"
-            boc="$color2"
-            bw={1}
-            mah={32}
-            bc="transparent"
-            ai="center"
-            size="$3"
-          >
+        <TooltipGroup delay={tooltipDelay}>
+          <XGroup boc="$color2" bw={1} mah={32} bc="transparent" ai="center" size="$3">
             <XGroup.Item>
               <ThemeToggle borderWidth={0} chromeless />
             </XGroup.Item>
@@ -220,7 +219,7 @@ export function HeaderContents(props: HeaderProps) {
       </XStack>
     </XStack>
   )
-}
+})
 
 const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
   return (

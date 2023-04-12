@@ -1,21 +1,21 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { TabsAdvancedDemo } from '@tamagui/demos'
-import { Toast, ToastProvider } from '@tamagui/toast'
+import { TabsAdvancedDemo, TooltipDemo } from '@tamagui/demos'
+import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
-import { SolitoImage } from 'solito/image'
 import {
   Button,
   Input,
   ScrollView,
   TamaguiProvider,
-  Text,
+  Theme,
   XStack,
   YStack,
   styled,
 } from 'tamagui'
 
+import { SandboxThemeChange } from './SandboxThemeChange'
 // import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
 // import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
 // import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
@@ -29,27 +29,6 @@ if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
 
-/**
-the ideal is:
-
-- styled(a, b) - b accepts any subset of a.props
-- returns type where props defined in b become nullable
-
- */
-const Image = styled(
-  SolitoImage,
-  {
-    alt: '',
-    resizeMode: 'contain',
-    src: '',
-    style: {},
-  },
-  {
-    inlineProps: new Set(['width', 'height']),
-    acceptsClassName: true,
-  }
-)
-
 const Button2 = styled(Button, {
   variants: {
     ok: {
@@ -62,21 +41,21 @@ const Button2 = styled(Button, {
   },
 })
 
-export const Heading = styled(Text, {
-  name: 'Heading',
-  color: '$color',
+// export const Heading = styled(Text, {
+//   name: 'Heading',
+//   color: '$color',
 
-  variants: {
-    type: {
-      myVariant: {
-        fontFamily: '$body',
-        fontSize: 20,
-        lh: '$24',
-        fow: '$bold',
-      },
-    },
-  } as const,
-})
+//   variants: {
+//     type: {
+//       myVariant: {
+//         fontFamily: '$body',
+//         fontSize: 20,
+//         lh: '$24',
+//         fow: '$bold',
+//       },
+//     },
+//   } as const,
+// })
 
 export const MyInput = styled(Input, {
   borderColor: 'red',
@@ -92,58 +71,12 @@ export const Sandbox = () => {
 
   return (
     <SandboxFrame>
-      <MyInput />
-
-      {/* <Button2 ok debug="verbose">
-        hi
-      </Button2> */}
-
       {/* this comment keeps indent */}
-      {/* <SandboxDefault /> */}
 
+      <SandboxThemeChange />
+
+      {/* TODO fix/convert into tests */}
       {/* <SandboxStyledOverridePseudo /> */}
-
-      {/* <YStack
-        {...{
-          borderRadius: 3,
-          backgroundColor: 'red',
-          width: 100,
-          height: 100,
-          hoverStyle: { backgroundColor: 'var(--light-grey)' },
-          animateOnly: ['background-color'],
-          tag: 'button',
-          borderColor: 'black',
-          borderWidth: 1,
-          borderStyle: 'solid',
-          animation: 'quick',
-        }}
-      /> */}
-
-      {/* <YStack
-        animation={[
-          'bouncy',
-          {
-            opacity: {
-              delay: 0,
-            },
-            y: {
-              delay: 10_000,
-            },
-          },
-        ]}
-        hoverStyle={{
-          y: 5,
-          opacity: 0,
-        }}
-        y={0}
-        opacity={1}
-        ai="center"
-        width={40}
-        height={40}
-        bc="$red10"
-      /> */}
-
-      {/* TODO */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}
       {/* <SandboxCustomStyledAnimatedPopover /> */}
     </SandboxFrame>
@@ -197,8 +130,6 @@ function SandboxDefault() {
     <XStack bc="$backgroundStrong" fullscreen ai="center" jc="center">
       <ScrollView fullscreen horizontal>
         <ScrollView fullscreen>
-          <SolitoImageExample />
-
           <YStack>
             <XStack gap={20} px="$4" flexWrap="wrap">
               {demos}
@@ -242,15 +173,3 @@ function SandboxDefault() {
 //   const u = useTheme()
 //   console.log(u.color)
 //   return null
-
-const SolitoImageExample = () => (
-  <Image
-    alt=""
-    style={{}}
-    resizeMode="contain"
-    width={40}
-    height={40}
-    src="/favicon.svg"
-    bc="$color"
-  />
-)

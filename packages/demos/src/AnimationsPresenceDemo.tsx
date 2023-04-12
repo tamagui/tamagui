@@ -32,10 +32,17 @@ export function AnimationsPresenceDemo() {
   const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
 
   return (
-    <XStack overflow="hidden" backgroundColor="#000" position="relative" height={300} width="100%" alignItems="center">
+    <XStack
+      overflow="hidden"
+      backgroundColor="#000"
+      position="relative"
+      height={300}
+      width="100%"
+      alignItems="center"
+    >
       <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
         <YStackEnterable key={page} animation="bouncy" fullscreen x={0} opacity={1}>
-          <Image src={images[imageIndex]} width={780} height={300} />
+          <Image source={{ uri: images[imageIndex], width: 780, height: 300 }} />
         </YStackEnterable>
       </AnimatePresence>
 

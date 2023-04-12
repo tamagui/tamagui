@@ -1,22 +1,37 @@
 import { isWeb } from '@tamagui/constants'
-import { Children, cloneElement, isValidElement } from 'react'
+import { Children, cloneElement, isValidElement, useEffect, useId, useMemo } from 'react'
 
 import { variableToString } from '../createVariable.js'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
 import { useServerRef } from '../hooks/useServerHooks.js'
 import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme.js'
-import type { ThemeProps } from '../types.js'
+import type { DebugProp, ThemeProps } from '../types.js'
+import { ThemeDebug } from './ThemeDebug'
 
 export function Theme(props: ThemeProps) {
   // @ts-expect-error only for internal views
-  if (props.disable) return props.children
+  if (props.disable) {
+    return props.children
+  }
+
   const isRoot = !!props['_isRoot']
   const themeState = useChangeThemeEffect(props, isRoot)
-  const children = props['data-themeable']
+
+  let children = props['data-themeable']
     ? Children.map(props.children, (child) =>
         cloneElement(child, { ['data-themeable']: true })
       )
     : props.children
+
+  if (process.env.NODE_ENV === 'development') {
+    if (props['debug'] === 'visualize') {
+      children = (
+        <ThemeDebug themeState={themeState} themeProps={props}>
+          {children}
+        </ThemeDebug>
+      )
+    }
+  }
 
   return useThemedChildren(themeState, children, props, isRoot)
 }
@@ -24,21 +39,29 @@ export function Theme(props: ThemeProps) {
 export function useThemedChildren(
   themeState: ChangedThemeResponse,
   children: any,
-  options: {
+  props: {
     forceClassName?: boolean
     shallow?: boolean
     passPropsToChildren?: boolean
+    debug?: DebugProp
   },
   isRoot = false
 ) {
-  const { themeManager, isNewTheme, className, theme } = themeState
-  const { shallow, forceClassName } = options
+  const { themeManager, className, theme, isNewTheme } = themeState
+  const { shallow, forceClassName } = props
   const hasEverThemed = useServerRef(false)
   if (isNewTheme) {
     hasEverThemed.current = true
   }
 
-  if (isNewTheme || hasEverThemed.current || forceClassName || isRoot) {
+  const shouldRenderChildrenWithTheme =
+    isNewTheme || hasEverThemed.current || forceClassName || isRoot
+
+  return useMemo(() => {
+    if (!shouldRenderChildrenWithTheme) {
+      return children
+    }
+
     // be sure to memoize shouldReset to avoid reparenting
     let next = Children.toArray(children)
 
@@ -57,24 +80,6 @@ export function useThemedChildren(
       })
     }
 
-    // tried this but themes css doesn't fully like it
-    // if (shouldAttachClassName && options.passPropsToChildren) {
-    //   next = next.map((child: any) => {
-    //     const childStyle = child.props?.style
-    //     console.log('pass it down', className, child.props.className || '')
-    //     const newProps = {
-    //       className: (child.props.className || '') + ' ' + className,
-    //       style: Array.isArray(childStyle)
-    //         ? [colorStyle, ...childStyle]
-    //         : {
-    //             ...colorStyle,
-    //             ...childStyle,
-    //           },
-    //     }
-    //     return isValidElement(child) ? cloneElement(child as any, newProps) : child
-    //   })
-    // }
-
     const wrapped = (
       <ThemeManagerContext.Provider value={themeManager}>
         {next}
@@ -85,7 +90,7 @@ export function useThemedChildren(
       return wrapped
     }
 
-    if (isWeb && !options.passPropsToChildren) {
+    if (isWeb && !props.passPropsToChildren) {
       // in order to provide currentColor, set color by default
       const themeColor = theme && isNewTheme ? variableToString(theme.color) : ''
       const colorStyle = {
@@ -93,14 +98,21 @@ export function useThemedChildren(
       }
 
       return (
-        <span className={`${className || ''} _dsp_contents`} style={colorStyle}>
+        <span className={`${className || ''} _dsp_contents is_Theme`} style={colorStyle}>
           {wrapped}
         </span>
       )
     }
 
     return wrapped
-  }
-
-  return children
+  }, [
+    forceClassName,
+    props.passPropsToChildren,
+    shouldRenderChildrenWithTheme,
+    themeManager,
+    children,
+    theme,
+    isNewTheme,
+    className,
+  ])
 }

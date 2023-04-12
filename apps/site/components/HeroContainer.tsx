@@ -7,13 +7,13 @@ import {
 import React from 'react'
 import {
   AnimationDriverProvider,
+  Switch,
   Theme,
   TooltipSimple,
   XStack,
   YStack,
   styled,
 } from 'tamagui'
-import { Switch } from 'tamagui'
 
 import { ErrorBoundary } from './ErrorBoundary'
 
@@ -68,8 +68,9 @@ export function HeroContainer({
       <AnimationDriverTogglerContextProvider>
         {demoMultiple ? (
           <XStack
-            maxHeight="100%"
-            maxWidth="100%"
+            mah="100%"
+            maw="100%"
+            miw="100%"
             // @ts-expect-error
             position="unset"
             justifyContent="flex-start"
@@ -79,20 +80,23 @@ export function HeroContainer({
         ) : (
           demo
         )}
-        <XStack
-          position="absolute"
-          display="inline-flex"
-          alignItems="center"
-          justifyContent="space-between"
-          top={16}
-          l="$3"
-          $xxs={{ display: 'none' }}
-          $gtMd={{
-            l: '$4',
-          }}
-        >
-          {showAnimationDriverControl && <AnimationControl />}
-        </XStack>
+
+        {showAnimationDriverControl && (
+          <XStack
+            position="absolute"
+            display="inline-flex"
+            alignItems="center"
+            justifyContent="space-between"
+            top={16}
+            l="$3"
+            $xxs={{ display: 'none' }}
+            $gtMd={{
+              l: '$4',
+            }}
+          >
+            <AnimationControl />
+          </XStack>
+        )}
       </AnimationDriverTogglerContextProvider>
     </YStack>
   )
@@ -116,11 +120,19 @@ const Card = styled(YStack, {
   br: '$4',
 })
 
+const niceNames = {
+  'react-native': 'React Native',
+  css: 'css',
+}
+
 const AnimationControl = () => {
   const animationDriverToggler = useAnimationDriverToggler()
 
   return (
-    <TooltipSimple label={`${animationDriverToggler.driverName} animation driver`}>
+    <TooltipSimple
+      placement="top"
+      label={`Animations: ${niceNames[animationDriverToggler.driverName]}`}
+    >
       <XStack zIndex={100000000} space="$2" ai="center">
         <Timer size={14} opacity={0.6} />
         <Switch
@@ -153,9 +165,6 @@ const HeroContainerInner = ({
       <ErrorBoundary>
         {demoMultiple ? (
           <XStack space="$3" px="$8">
-            <Theme reset>
-              <Card>{children}</Card>
-            </Theme>
             <Theme name="blue">
               <Card>{children}</Card>
             </Theme>
