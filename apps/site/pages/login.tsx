@@ -50,6 +50,9 @@ export default function SignInPage() {
       } else {
         const { error } = await supabaseClient.auth.signInWithOtp({
           email,
+          options: {
+            emailRedirectTo: `${location.origin}/login`,
+          },
         })
         if (error) throw error
         setMessage({
@@ -66,7 +69,12 @@ export default function SignInPage() {
 
   const handleOAuthSignIn = async (provider: Provider) => {
     setLoading(true)
-    const { error } = await supabaseClient.auth.signInWithOAuth({ provider })
+    const { error } = await supabaseClient.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${location.origin}/login`,
+      },
+    })
     if (error) {
       setMessage({ type: 'error', content: error.message })
     }
