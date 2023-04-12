@@ -23,9 +23,14 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "types": "./types/default.d.ts",
+      "import": "./dist/esm/default.mjs",
+      "require": "./dist/cjs/default.js"
+    },
+    "./headless": {
+      "types": "./types/headless.d.ts",
+      "import": "./dist/esm/headless.mjs",
+      "require": "./dist/cjs/headless.js"
     }
   },
   "dependencies": {

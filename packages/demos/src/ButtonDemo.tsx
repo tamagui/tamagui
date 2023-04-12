@@ -1,5 +1,14 @@
+import { ButtonProps, Button as TamaguiButton } from '@tamagui/button'
 import { Activity, Airplay } from '@tamagui/lucide-icons'
-import { Button, XGroup, XStack, YStack } from 'tamagui'
+import { XGroup, XStack, YStack } from 'tamagui'
+
+const Button = ({ children, ...props }: ButtonProps) => {
+  return (
+    <TamaguiButton {...props}>
+      <TamaguiButton.Text size={props.size}>{children}</TamaguiButton.Text>
+    </TamaguiButton>
+  )
+}
 
 export function ButtonDemo(props) {
   return (
