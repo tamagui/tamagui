@@ -186,9 +186,9 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       >
         {isInSubApp ? (
           <XStack ai="center" space="$2">
-            {user ? (
+            {user.user ? (
               <Avatar circular size="$2">
-                <Avatar.Image src={user.userDetails.avatar_url} />
+                <Avatar.Image src={user.user.user_metadata.avatar_url} />
               </Avatar>
             ) : (
               <NextLink href="/login">
