@@ -120,11 +120,19 @@ const Card = styled(YStack, {
   br: '$4',
 })
 
+const niceNames = {
+  'react-native': 'React Native',
+  css: 'css',
+}
+
 const AnimationControl = () => {
   const animationDriverToggler = useAnimationDriverToggler()
 
   return (
-    <TooltipSimple label={`${animationDriverToggler.driverName} animation driver`}>
+    <TooltipSimple
+      placement="top"
+      label={`Animations: ${niceNames[animationDriverToggler.driverName]}`}
+    >
       <XStack zIndex={100000000} space="$2" ai="center">
         <Timer size={14} opacity={0.6} />
         <Switch
