@@ -19,7 +19,6 @@ import {
   XStack,
   YStack,
   isClient,
-  useMedia,
 } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
@@ -133,14 +132,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         <YStack paddingStart={200}>
           <SponsorButton tiny />
         </YStack>
-
-        {!props.disableNew && <AlphaButton />}
-
-        {isInSubApp && (
-          <NextLink href="/">
-            <Button size="$2">Back to Tamagui</Button>
-          </NextLink>
-        )}
       </XStack>
 
       <XStack
@@ -241,25 +232,27 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      <NextLink prefetch={false} href="/blog">
+      <NextLink prefetch={false} href="/studio">
         <HeadAnchor
-          $md={{
+          $sm={{
             display: forceShowAllLinks ? 'flex' : 'none',
           }}
         >
-          Blog
+          Studio
         </HeadAnchor>
       </NextLink>
 
-      <NextLink prefetch={false} href="/community">
-        <HeadAnchor
-          $md={{
-            display: forceShowAllLinks ? 'flex' : 'none',
-          }}
-        >
-          More
-        </HeadAnchor>
-      </NextLink>
+      {forceShowAllLinks && (
+        <NextLink prefetch={false} href="/blog">
+          <HeadAnchor>Blog</HeadAnchor>
+        </NextLink>
+      )}
+
+      {forceShowAllLinks && (
+        <NextLink prefetch={false} href="/community">
+          <HeadAnchor>Community</HeadAnchor>
+        </NextLink>
+      )}
 
       {showExtra && (
         <NextLink prefetch={false} href="/studio">
@@ -278,31 +271,19 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
 
 const SmallMenu = React.memo(() => {
   const { router, open, setOpen } = useDocsMenu()
-  // const isDocs = router.pathname.startsWith('/docs')
-  const media = useMedia()
-
-  if (media.gtMd) {
-    return null
-  }
 
   return (
     <Popover open={open} onOpenChange={setOpen} size="$5" stayInFrame={{ padding: 20 }}>
       <Popover.Trigger asChild>
-        <YStack
-          $gtMd={{
-            display: 'none',
-          }}
+        <Button
+          size="$3"
+          chromeless
+          noTextWrap
+          onPress={() => setOpen(!open)}
+          theme={open ? 'alt1' : undefined}
         >
-          <Button
-            size="$3"
-            chromeless
-            noTextWrap
-            onPress={() => setOpen(!open)}
-            theme={open ? 'alt1' : undefined}
-          >
-            <Menu size={16} color="var(--color)" />
-          </Button>
-        </YStack>
+          <Menu size={16} color="var(--color)" />
+        </Button>
       </Popover.Trigger>
 
       <Adapt platform="touch" when="sm">
