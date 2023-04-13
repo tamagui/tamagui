@@ -61,7 +61,9 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     readonly size?: any;
 } & ({} | {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 declare const SliderTrack: React.ForwardRefExoticComponent<SliderTrackProps & React.RefAttributes<SliderTrackElement>>;
 export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "onLayout" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -120,7 +122,9 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     readonly size?: any;
 } & ({} | {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 type SliderTrackActiveProps = GetProps<typeof SliderTrackActiveFrame>;
 declare const SliderTrackActive: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "children" | "onLayout" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -239,6 +243,8 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     readonly chromeless?: boolean | "all" | undefined;
 } & {
     readonly size?: SizeTokens | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 interface SliderThumbProps extends SizableStackProps {
     index: number;

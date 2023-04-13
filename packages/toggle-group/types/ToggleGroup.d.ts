@@ -154,7 +154,10 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
-    readonly padded?: boolean | undefined;
+    readonly padded?: boolean | undefined; /**
+     * The value of the item that is pressed when initially rendered. Use
+     * `defaultValue` if you do not need to control the state of a toggle group.
+     */
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
@@ -178,10 +181,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined; /**
-     * The value of the items that are pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
@@ -222,10 +222,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined; /**
-     * The value of the items that are pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> | "axis" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup" | keyof React.RefAttributes<import("@tamagui/web").TamaguiElement>> & Omit<{}, "unstyled" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
@@ -258,7 +255,10 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
-    readonly padded?: boolean | undefined;
+    readonly padded?: boolean | undefined; /**
+     * The value of the item that is pressed when initially rendered. Use
+     * `defaultValue` if you do not need to control the state of a toggle group.
+     */
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
@@ -282,10 +282,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined; /**
-     * The value of the items that are pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
@@ -326,10 +323,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined; /**
-     * The value of the items that are pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> | "axis" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup" | keyof React.RefAttributes<import("@tamagui/web").TamaguiElement>> & Omit<{}, "unstyled" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
@@ -362,7 +356,10 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
-    readonly padded?: boolean | undefined;
+    readonly padded?: boolean | undefined; /**
+     * The value of the item that is pressed when initially rendered. Use
+     * `defaultValue` if you do not need to control the state of a toggle group.
+     */
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
@@ -386,10 +383,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined; /**
-     * The value of the items that are pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
@@ -430,10 +424,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined; /**
-     * The value of the items that are pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> | "axis" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup" | keyof React.RefAttributes<import("@tamagui/web").TamaguiElement>> & Omit<{}, "unstyled" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
@@ -466,7 +457,10 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
-    readonly padded?: boolean | undefined;
+    readonly padded?: boolean | undefined; /**
+     * The value of the item that is pressed when initially rendered. Use
+     * `defaultValue` if you do not need to control the state of a toggle group.
+     */
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
@@ -490,10 +484,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined; /**
-     * The value of the items that are pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
@@ -534,14 +525,18 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }, "unstyled" | "size"> & {
-    readonly unstyled?: boolean | undefined; /**
-     * The value of the items that are pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> | "axis" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup" | keyof React.RefAttributes<import("@tamagui/web").TamaguiElement>>, {
     readonly unstyled?: boolean | undefined;
     readonly orientation?: "horizontal" | "vertical" | undefined;
+}, {
+    displayName: string | undefined;
+    Item: (props: {
+        children: React.ReactNode;
+    } & {
+        __scopeGroup?: Scope<any>;
+    }) => any;
 }>;
 type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & GroupProps & {
     rovingFocus?: boolean;

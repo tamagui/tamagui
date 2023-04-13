@@ -71,6 +71,8 @@ export declare const Square: import("@tamagui/web").TamaguiComponent<Omit<import
 } & {
     readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export type SquareProps = GetProps<typeof Square>;
 //# sourceMappingURL=Square.d.ts.map

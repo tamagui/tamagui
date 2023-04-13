@@ -19,6 +19,8 @@ export declare const Fieldset: import("@tamagui/core").TamaguiComponent<Omit<imp
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     readonly horizontal?: boolean | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export type FieldsetProps = GetProps<typeof Fieldset>;
 //# sourceMappingURL=Fieldset.d.ts.map

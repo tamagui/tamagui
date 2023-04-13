@@ -21,6 +21,8 @@ export declare const DirectionalYStack: import("@tamagui/core").TamaguiComponent
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     readonly orientation?: "vertical" | "horizontal" | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export declare const SliderFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "onLayout" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -50,6 +52,8 @@ export declare const SliderFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
     readonly size?: any;
+}, {
+    displayName: string | undefined;
 }>;
 export declare const SliderImpl: React.ForwardRefExoticComponent<SliderImplProps & React.RefAttributes<View>>;
 //# sourceMappingURL=SliderImpl.d.ts.map

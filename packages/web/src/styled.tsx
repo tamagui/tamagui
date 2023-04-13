@@ -172,7 +172,10 @@ export function styled<
         PseudoProps<Partial<OurPropsBase>>
 
   type ParentStaticProperties = {
-    [Key in keyof ParentComponent]: ParentComponent[Key]
+    [Key in Exclude<
+      keyof ParentComponent,
+      'defaultProps' | 'propTypes' | '$$typeof' | 'staticConfig' | 'extractable'
+    >]: ParentComponent[Key]
   }
 
   type StyledComponent = TamaguiComponent<
