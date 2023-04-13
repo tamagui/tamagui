@@ -1,98 +1,19 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { TabsAdvancedDemo, TooltipDemo } from '@tamagui/demos'
+import { SwitchDemo, TabsAdvancedDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
-import {
-  Button,
-  Checkbox,
-  Input,
-  ScrollView,
-  Square,
-  TamaguiProvider,
-  Theme,
-  XStack,
-  YStack,
-  styled,
-} from 'tamagui'
+import { ScrollView, TamaguiProvider, XStack, YStack } from 'tamagui'
 
-import { SandboxThemeChange } from './SandboxThemeChange'
-// import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
-// import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
-// import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
 import config from './tamagui.config'
 
 // useful for debugging why things render:
 // import './wdyr'
 
-// webpack fix..
 if (typeof require !== 'undefined') {
-  globalThis['React'] = require('react')
+  globalThis['React'] = require('react') // webpack
 }
-
-const Button2 = styled(Button, {
-  variants: {
-    ok: {
-      true: {
-        pressStyle: {
-          backgroundColor: 'red',
-        },
-      },
-    },
-  },
-})
-
-// export const Heading = styled(Text, {
-//   name: 'Heading',
-//   color: '$color',
-
-//   variants: {
-//     type: {
-//       myVariant: {
-//         fontFamily: '$body',
-//         fontSize: 20,
-//         lh: '$24',
-//         fow: '$bold',
-//       },
-//     },
-//   } as const,
-// })
-
-export const MyInput = styled(Input, {
-  borderColor: 'red',
-  borderWidth: '$2',
-  focusStyle: {
-    borderColor: 'blue',
-    borderWidth: '$2',
-  },
-})
-
-export const MyCheckbox = styled(Checkbox, {
-  name: 'MyComponent',
-  borderWidth: 2,
-  debug: 'verbose',
-
-  variants: {
-    disabled: {
-      true: {
-        opacity: 0.5,
-      },
-    },
-    variant: {
-      white: (_, { props: { checked } }) => ({
-        borderColor: '#f00',
-        hoverStyle: {
-          borderColor: 'red',
-          borderWidth: 10,
-        },
-        pressStyle: {
-          borderColor: 'green',
-        },
-      }),
-    },
-  } as const,
-})
 
 export const Sandbox = () => {
   console.log(`render once`)
@@ -101,11 +22,10 @@ export const Sandbox = () => {
     <SandboxFrame>
       {/* this comment keeps indent */}
 
-      {/* <SandboxThemeChange /> */}
-
-      <MyCheckbox theme="blue" variant="white" debug="verbose"></MyCheckbox>
+      <SwitchDemo />
 
       {/* TODO fix/convert into tests */}
+      {/* <SandboxThemeChange /> */}
       {/* <SandboxStyledOverridePseudo /> */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}
       {/* <SandboxCustomStyledAnimatedPopover /> */}
@@ -132,7 +52,6 @@ const SandboxFrame = (props: { children: any }) => {
 
         {props.children}
 
-        {/*  */}
         <button
           style={{
             position: 'absolute',
@@ -179,27 +98,3 @@ function SandboxDefault() {
     </XStack>
   )
 }
-
-// function TestUseStyle() {
-//   console.log('wtf', Square.staticConfig.validStyles)
-//   const style = useStyle(Square, {
-//     backgroundColor: 'red',
-//   })
-
-//   console.log('style', style, Square.staticConfig.validStyles)
-
-//   return null
-// }
-
-// function TestUseMediaRenders() {
-//   const media = useMedia()
-
-//   console.warn('render')
-
-//   return <H1>{media.sm ? 'sm' : 'not sm'}</H1>
-// }
-
-// function TestUseTheme() {
-//   const u = useTheme()
-//   console.log(u.color)
-//   return null

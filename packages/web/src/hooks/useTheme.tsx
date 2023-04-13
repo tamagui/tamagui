@@ -156,7 +156,20 @@ export const useChangeThemeEffect = (
       themeManager: null,
     }
   }
-  const parentManager = useContext(ThemeManagerContext)
+
+  let parentManager = useContext(ThemeManagerContext)
+
+  // components never inherit from components
+  // example <Switch><Switch.Thumb /></Switch>
+  // the Switch theme shouldn't be considered parent of Thumb
+  while (true) {
+    if (parentManager?.isComponent) {
+      console.log(`go to aprent`, parentManager)
+      parentManager = parentManager.parentManager
+    } else {
+      break
+    }
+  }
 
   const {
     debug,
@@ -228,10 +241,11 @@ export const useChangeThemeEffect = (
       }
 
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
-        if (keys?.length || isNewTheme) {
-          if (process.env.NODE_ENV === 'development' && props['debug'] && keys?.length) {
-            console.log(`onChangeTheme`, { props, name, manager, parentManager, keys })
-          }
+        const shouldUpdate = keys?.length || isNewTheme
+        if (process.env.NODE_ENV === 'development' && props['debug'] && keys?.length) {
+          console.log(`onChangeTheme`, shouldUpdate, { props, name, manager, keys })
+        }
+        if (shouldUpdate) {
           setThemeState(createState)
         }
       })

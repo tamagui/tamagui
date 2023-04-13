@@ -17,6 +17,7 @@ export declare function hasNoThemeUpdatingProps(props: ThemeProps): boolean;
 export declare class ThemeManager {
     props: ThemeProps;
     id: number;
+    isComponent: boolean;
     themeListeners: Set<ThemeListener>;
     parentManager: ThemeManager | null;
     state: ThemeManagerState;

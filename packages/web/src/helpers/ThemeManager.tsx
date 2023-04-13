@@ -30,6 +30,7 @@ let uid = 0
 
 export class ThemeManager {
   id = uid++
+  isComponent = false
   themeListeners = new Set<ThemeListener>()
   parentManager: ThemeManager | null = null
   state: ThemeManagerState = emptyState
@@ -60,9 +61,7 @@ export class ThemeManager {
       this.parentManager = parentManager
     }
 
-    const updatedState = this.getStateIfChanged(props)
-    if (updatedState) {
-      this.state = updatedState
+    if (this.updateState(props, false)) {
       return
     }
 
@@ -73,7 +72,7 @@ export class ThemeManager {
     props: ThemeProps & { forceTheme?: ThemeParsed } = this.props || {},
     notify = true
   ) {
-    const shouldFlush = (() => {
+    const isChanging = (() => {
       if (props.forceTheme) {
         this.state.theme = props.forceTheme
         this.state.name = props.name || ''
@@ -86,9 +85,13 @@ export class ThemeManager {
         return true
       }
     })()
-    if (shouldFlush) {
-      // reset any derived state
+
+    if (isChanging) {
+      const names = this.state.name.split('_')
+      const lastName = names[names.length - 1][0]
+      this.isComponent = lastName[0] === lastName[0].toUpperCase()
       this._allKeys = null
+      console.warn(`notify`)
       notify && this.notify()
       return this.state
     }

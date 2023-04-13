@@ -17,10 +17,11 @@ export function ThemeDebug({
       <div
         style={{
           whiteSpace: 'pre',
-          background: 'green',
-          display: 'inline',
+          background: 'var(--background)',
+          display: 'inline-block',
           border: '1px solid #ccc',
           margin: 20,
+          color: 'red',
         }}
       >
         <code>
