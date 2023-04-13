@@ -37,12 +37,12 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Rect
-        x="1"
-        y="5"
-        width="22"
-        height="14"
-        rx="7"
-        ry="7"
+        width="20"
+        height="12"
+        x="2"
+        y="6"
+        rx="6"
+        ry="6"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
@@ -52,7 +52,7 @@ const Icon = (props) => {
       <_Circle
         cx="8"
         cy="12"
-        r="3"
+        r="2"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"

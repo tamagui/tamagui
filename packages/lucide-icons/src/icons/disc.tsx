@@ -49,7 +49,7 @@ const Icon = (props) => {
       <_Circle
         cx="12"
         cy="12"
-        r="3"
+        r="2"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"

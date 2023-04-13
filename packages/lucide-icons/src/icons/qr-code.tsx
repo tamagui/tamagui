@@ -37,10 +37,10 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Rect
-        x="3"
-        y="3"
         width="5"
         height="5"
+        x="3"
+        y="3"
         rx="1"
         fill="none"
         stroke={`${color}`}
@@ -49,10 +49,10 @@ const Icon = (props) => {
         strokeLinejoin="round"
       />
       <Rect
+        width="5"
+        height="5"
         x="16"
         y="3"
-        width="5"
-        height="5"
         rx="1"
         fill="none"
         stroke={`${color}`}
@@ -61,10 +61,10 @@ const Icon = (props) => {
         strokeLinejoin="round"
       />
       <Rect
-        x="3"
-        y="16"
         width="5"
         height="5"
+        x="3"
+        y="16"
         rx="1"
         fill="none"
         stroke={`${color}`}
