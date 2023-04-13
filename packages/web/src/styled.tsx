@@ -110,7 +110,10 @@ export function styled<
         staticExtractionOptions?.isText || parentStaticConfig?.isText
       )
       const acceptsClassName =
-        acceptsClassNameProp ?? (isPlainStyledComponent || isReactNative)
+        acceptsClassNameProp ??
+        (isPlainStyledComponent ||
+          isReactNative ||
+          (parentStaticConfig?.isHOC && parentStaticConfig?.acceptsClassName))
 
       const conf: Partial<StaticConfig> = {
         ...staticExtractionOptions,
