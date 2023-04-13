@@ -108,6 +108,10 @@ if (process.env.TAMAGUI_TARGET === 'native') {
     contain: true,
     boxSizing: true,
     boxShadow: true,
+    outlineStyle: true,
+    outlineOffset: true,
+    outlineWidth: true,
+    outlineColor: true,
   })
 }
 
