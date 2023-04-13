@@ -1,9 +1,13 @@
+import '@testing-library/jest-dom'
+import 'vitest-axe/extend-expect'
+
 import { Checkbox } from '@tamagui/checkbox'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { Stack, TamaguiProvider, createTamagui } from '@tamagui/core'
-import { RenderResult, render } from '@testing-library/react'
+import { RenderResult, fireEvent, render } from '@testing-library/react'
 import * as React from 'react'
-import { beforeEach, describe, test } from 'vitest'
+import { beforeEach, describe, expect, it, vitest } from 'vitest'
+import { axe } from 'vitest-axe'
 
 process.env.TAMAGUI_TARGET = 'web'
 
@@ -13,7 +17,7 @@ function CheckboxTest(props: React.ComponentProps<typeof Checkbox>) {
   return (
     <TamaguiProvider config={conf} defaultTheme="light">
       <Stack>
-        <Checkbox aria-label="basic checkbox">
+        <Checkbox {...props} aria-label="basic checkbox">
           <Checkbox.Indicator data-testid={INDICATOR_TEST_ID} />
         </Checkbox>
       </Stack>
@@ -43,97 +47,96 @@ describe('given a default Checkbox', () => {
 
   beforeEach(() => {
     rendered = render(<CheckboxTest />)
-    console.log(rendered)
     checkbox = rendered.getByRole(CHECKBOX_ROLE)
     indicator = rendered.queryByTestId(INDICATOR_TEST_ID)
   })
 
-  test('should have no accessibility violations', async () => {
-    // expect(await axe(rendered.container)).toHaveNoViolations()
+  it('should have no accessibility violations', async () => {
+    expect(await axe(rendered.container)).toHaveNoViolations()
   })
 
-  //   describe('when clicking the checkbox', () => {
-  //     beforeEach(async () => {
-  //       fireEvent.click(checkbox)
-  //       indicator = rendered.queryByTestId(INDICATOR_TEST_ID)
-  //     })
+  describe('when clicking the checkbox', () => {
+    beforeEach(async () => {
+      fireEvent.click(checkbox)
+      indicator = rendered.queryByTestId(INDICATOR_TEST_ID)
+    })
 
-  //     test('should render a visible indicator', () => {
-  //       // expect(indicator).toBeVisible()
-  //     })
+    it('should render a visible indicator', () => {
+      expect(indicator).toBeVisible()
+    })
 
-  //     describe('and clicking the checkbox again', () => {
-  //       beforeEach(async () => {
-  //         fireEvent.click(checkbox)
-  //       })
+    describe('and clicking the checkbox again', () => {
+      beforeEach(async () => {
+        fireEvent.click(checkbox)
+      })
 
-  //       test('should remove the indicator', () => {
-  //         // expect(indicator).not.toBeInTheDocument()
-  //       })
-  //     })
-  //   })
-  // })
+      it('should remove the indicator', () => {
+        expect(indicator).not.toBeInTheDocument()
+      })
+    })
+  })
+})
 
-  // describe('given a disabled Checkbox', () => {
-  //   let rendered: RenderResult
+describe('given a disabled Checkbox', () => {
+  let rendered: RenderResult
 
-  //   beforeEach(() => {
-  //     rendered = render(<CheckboxTest disabled />)
-  //   })
+  beforeEach(() => {
+    rendered = render(<CheckboxTest disabled />)
+  })
 
-  //   test('should have no accessibility violations', async () => {
-  //     // expect(await axe(rendered.container)).toHaveNoViolations()
-  //   })
-  // })
+  it('should have no accessibility violations', async () => {
+    expect(await axe(rendered.container)).toHaveNoViolations()
+  })
+})
 
-  // describe('given an uncontrolled `checked` Checkbox', () => {
-  //   let rendered: RenderResult
-  //   let checkbox: HTMLElement
-  //   let indicator: HTMLElement | null
-  //   const onCheckedChange = vitest.fn()
+describe('given an uncontrolled `checked` Checkbox', () => {
+  let rendered: RenderResult
+  let checkbox: HTMLElement
+  let indicator: HTMLElement | null
+  const onCheckedChange = vitest.fn()
 
-  //   beforeEach(() => {
-  //     rendered = render(<CheckboxTest defaultChecked onCheckedChange={onCheckedChange} />)
-  //     checkbox = rendered.getByRole(CHECKBOX_ROLE)
-  //     indicator = rendered.queryByTestId(INDICATOR_TEST_ID)
-  //   })
+  beforeEach(() => {
+    rendered = render(<CheckboxTest defaultChecked onCheckedChange={onCheckedChange} />)
+    checkbox = rendered.getByRole(CHECKBOX_ROLE)
+    indicator = rendered.queryByTestId(INDICATOR_TEST_ID)
+  })
 
-  //   test('should have no accessibility violations', async () => {
-  //     // expect(await axe(rendered.container)).toHaveNoViolations()
-  //   })
+  it('should have no accessibility violations', async () => {
+    expect(await axe(rendered.container)).toHaveNoViolations()
+  })
 
-  //   describe('when clicking the checkbox', () => {
-  //     beforeEach(async () => {
-  //       fireEvent.click(checkbox)
-  //     })
+  describe('when clicking the checkbox', () => {
+    beforeEach(async () => {
+      fireEvent.click(checkbox)
+    })
 
-  //     test('should remove the indicator', () => {
-  //       // expect(indicator).not.toBeInTheDocument()
-  //     })
+    it('should remove the indicator', () => {
+      expect(indicator).not.toBeInTheDocument()
+    })
 
-  //     test('should call `onCheckedChange` prop', () => {
-  //       expect(onCheckedChange).toHaveBeenCalled()
-  //     })
-  //   })
-  // })
+    it('should call `onCheckedChange` prop', () => {
+      expect(onCheckedChange).toHaveBeenCalled()
+    })
+  })
+})
 
-  // describe('given a controlled `checked` Checkbox', () => {
-  //   let rendered: RenderResult
-  //   let checkbox: HTMLElement
-  //   const onCheckedChange = vitest.fn()
+describe('given a controlled `checked` Checkbox', () => {
+  let rendered: RenderResult
+  let checkbox: HTMLElement
+  const onCheckedChange = vitest.fn()
 
-  //   beforeEach(() => {
-  //     rendered = render(<CheckboxTest checked onCheckedChange={onCheckedChange} />)
-  //     checkbox = rendered.getByRole(CHECKBOX_ROLE)
-  //   })
+  beforeEach(() => {
+    rendered = render(<CheckboxTest checked onCheckedChange={onCheckedChange} />)
+    checkbox = rendered.getByRole(CHECKBOX_ROLE)
+  })
 
-  //   describe('when clicking the checkbox', () => {
-  //     beforeEach(() => {
-  //       fireEvent.click(checkbox)
-  //     })
+  describe('when clicking the checkbox', () => {
+    beforeEach(() => {
+      fireEvent.click(checkbox)
+    })
 
-  //     test('should call `onCheckedChange` prop', () => {
-  //       expect(onCheckedChange).toHaveBeenCalled()
-  //     })
-  //   })
+    it('should call `onCheckedChange` prop', () => {
+      expect(onCheckedChange).toHaveBeenCalled()
+    })
+  })
 })
