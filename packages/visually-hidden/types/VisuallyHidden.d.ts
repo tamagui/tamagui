@@ -10,5 +10,7 @@ export declare const VisuallyHidden: import("@tamagui/web").TamaguiComponent<Omi
 }>>, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackPropsBase, {
     readonly preserveDimensions?: boolean | undefined;
     readonly visible?: boolean | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 //# sourceMappingURL=VisuallyHidden.d.ts.map

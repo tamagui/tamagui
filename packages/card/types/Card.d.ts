@@ -72,6 +72,8 @@ export declare const CardFrame: import("@tamagui/web").TamaguiComponent<Omit<imp
 } & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export declare const CardHeader: import("@tamagui/web").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -145,6 +147,8 @@ export declare const CardHeader: import("@tamagui/web").TamaguiComponent<Omit<im
 } & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export declare const CardFooter: import("@tamagui/web").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -226,6 +230,8 @@ export declare const CardFooter: import("@tamagui/web").TamaguiComponent<Omit<im
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
 } & {
     readonly unstyled?: boolean | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export declare const CardBackground: import("@tamagui/web").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -295,6 +301,8 @@ export declare const CardBackground: import("@tamagui/web").TamaguiComponent<Omi
     readonly chromeless?: boolean | "all" | undefined;
 } & {
     readonly unstyled?: boolean | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export type CardHeaderProps = GetProps<typeof CardHeader>;
 export type CardFooterProps = GetProps<typeof CardFooter>;
@@ -428,6 +436,8 @@ export declare const Card: React.ForwardRefExoticComponent<Omit<import("react-na
     } & {
         readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/web").SizeTokens | undefined;
+    }, {
+        displayName: string | undefined;
     }>;
     Footer: import("@tamagui/web").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -509,6 +519,8 @@ export declare const Card: React.ForwardRefExoticComponent<Omit<import("react-na
         readonly size?: import("@tamagui/web").SizeTokens | undefined;
     } & {
         readonly unstyled?: boolean | undefined;
+    }, {
+        displayName: string | undefined;
     }>;
     Background: import("@tamagui/web").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -578,6 +590,8 @@ export declare const Card: React.ForwardRefExoticComponent<Omit<import("react-na
         readonly chromeless?: boolean | "all" | undefined;
     } & {
         readonly unstyled?: boolean | undefined;
+    }, {
+        displayName: string | undefined;
     }>;
 };
 //# sourceMappingURL=Card.d.ts.map

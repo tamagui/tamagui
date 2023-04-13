@@ -71,6 +71,8 @@ declare const RadioGroupFrame: import("@tamagui/core").TamaguiComponent<Omit<imp
     readonly chromeless?: boolean | "all" | undefined;
 } & {
     readonly orientation?: "horizontal" | "vertical" | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 type RadioGroupProps = GetProps<typeof RadioGroupFrame> & {
     value?: string;

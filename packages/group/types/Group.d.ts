@@ -77,6 +77,8 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<i
 } & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
+}, {
+    displayName: string | undefined;
 }>;
 export type GroupProps = GetProps<typeof GroupFrame> & {
     /**

@@ -114,6 +114,8 @@ export declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<Omit<i
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export declare const ButtonText: import("@tamagui/web").TamaguiComponent<Omit<import("react-native").TextProps, "children" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendsBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
@@ -131,6 +133,8 @@ export declare const ButtonText: import("@tamagui/web").TamaguiComponent<Omit<im
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
 } & {
     defaultStyle?: boolean | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export declare const buttonStaticConfig: {
     inlineProps: Set<string>;

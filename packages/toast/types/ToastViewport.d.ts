@@ -35,7 +35,9 @@ declare const ToastViewportFrame: import("@tamagui/core").TamaguiComponent<(Omit
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 type ToastViewportFrameProps = GetProps<typeof ToastViewportFrame>;
 type ToastViewportProps = ToastViewportFrameProps & {
     /**

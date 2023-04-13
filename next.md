@@ -6,6 +6,11 @@
   - all instances of $true can become getConfig().defaultSize
   - all instances of $body can become getConfig().defaultFontFamily
   - remove the validation in createTamagui that enforces the keys
+
+- <Select /> light mode the hover style is barely visible
+  - todo in themes branch
+  - it should have pure white bg
+
 - relative sizing first class (and relative color)
   - add `defaultSize`, and `defaultColor`
   - add `relative()` helpers
@@ -44,7 +49,6 @@
 - move to use-roving-index
 - cli
   - `tamagui doctor` command to check for version mismatch
->>>>>>> master
 
 support new RN props:
 https://reactnative.dev/blog/2023/01/12/version-071#web-inspired-props-for-accessibility-styles-and-events

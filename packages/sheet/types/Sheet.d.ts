@@ -24,6 +24,8 @@ export declare const SheetHandleFrame: import("@tamagui/core").TamaguiComponent<
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     readonly open?: boolean | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export declare const SheetHandle: ({ __scopeSheet, ...props }: SheetScopedProps<XStackProps>) => JSX.Element;
 export declare const SheetOverlayFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
@@ -94,6 +96,8 @@ export declare const SheetOverlayFrame: import("@tamagui/core").TamaguiComponent
     readonly chromeless?: boolean | "all" | undefined;
 } & {
     readonly closed?: boolean | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export type SheetOverlayProps = GetProps<typeof SheetOverlayFrame>;
 export declare const SheetOverlay: ({ __scopeSheet, ...props }: SheetScopedProps<SheetOverlayProps>) => JSX.Element;
@@ -129,7 +133,9 @@ export declare const SheetFrameFrame: import("@tamagui/core").TamaguiComponent<(
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 export declare const SheetFrame: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;

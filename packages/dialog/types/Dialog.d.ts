@@ -76,7 +76,9 @@ export declare const DialogPortalFrame: import("@tamagui/core").TamaguiComponent
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 declare const DialogPortal: React.FC<DialogPortalProps>;
 /**
  * exported for internal use with extractable()
@@ -119,7 +121,9 @@ export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponen
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly backgrounded?: boolean | undefined;
+    readonly backgrounded?: boolean | undefined; /**
+     * exported for internal use with extractable()
+     */
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
@@ -208,7 +212,9 @@ export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponen
     readonly closed?: boolean | undefined;
 } & ({} | {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 interface DialogOverlayProps extends YStackProps {
     /**
      * Used to force mounting when more control is needed. Useful when
@@ -285,6 +291,8 @@ declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly chromeless?: boolean | "all" | undefined;
 } & {
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>;
 interface DialogContentProps extends DialogContentFrameProps, Omit<DialogContentTypeProps, 'context'> {
@@ -1041,7 +1049,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 } | {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 type DialogTitleProps = GetProps<typeof DialogTitleFrame>;
 declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
@@ -1810,7 +1820,9 @@ declare const DialogDescriptionFrame: import("@tamagui/core").TamaguiComponent<(
     [x: string]: undefined;
 } | {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 type DialogDescriptionProps = GetProps<typeof DialogDescriptionFrame>;
 declare const DialogDescription: React.ForwardRefExoticComponent<((Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
@@ -2742,7 +2754,9 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            readonly backgrounded?: boolean | undefined;
+            readonly backgrounded?: boolean | undefined; /**
+             * exported for internal use with extractable()
+             */
             readonly radiused?: boolean | undefined;
             readonly hoverTheme?: boolean | undefined;
             readonly pressTheme?: boolean | undefined;

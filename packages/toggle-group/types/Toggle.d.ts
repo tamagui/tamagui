@@ -76,6 +76,8 @@ declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<Omit<import("
     readonly unstyled?: boolean | undefined;
     readonly active?: boolean | undefined;
     readonly orientation?: "horizontal" | "vertical" | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 type ToggleFrameProps = GetProps<typeof ToggleFrame>;
 type ToggleProps = ToggleFrameProps & {
