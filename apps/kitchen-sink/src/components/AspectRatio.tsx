@@ -7,7 +7,7 @@ const AspectRatioFrame = styled(Box, {
 
   variants: {
     ratio: {
-      ':number': (value: number) => {
+      ':number': (value) => {
         return {
           aspectRatio: value,
         }
@@ -19,7 +19,11 @@ const AspectRatioFrame = styled(Box, {
   } as const,
 })
 
+const x = <AspectRatioFrame />
+
 export type AspectRatioProps = GetProps<typeof AspectRatioFrame>
+
+type y = AspectRatioProps
 
 const AspectRatio = AspectRatioFrame.extractable(
   ({ children, ...props }: AspectRatioProps) => {
