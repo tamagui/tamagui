@@ -1109,6 +1109,11 @@ export const getSubStyle = (
       languageContext,
       avoidDefaultProps
     )
+    if (!staticConfig.isHOC) {
+      if (key in skipProps) {
+        continue
+      }
+    }
     if (!expanded) continue
     for (const [skey, sval] of expanded) {
       if (!avoidMergeTransform && skey in stylePropsTransform) {
