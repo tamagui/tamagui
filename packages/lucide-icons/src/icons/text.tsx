@@ -14,7 +14,6 @@ import {
   Stop,
   Svg,
   Symbol,
-  Text,
   Use,
   Circle as _Circle,
 } from 'react-native-svg'
