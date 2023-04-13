@@ -44,7 +44,7 @@ export const getSizedElevation = (
     shadowOffset: { height, width: 0 },
     ...(isAndroid
       ? {
-          elevation: 2 * height,
+          elevationAndroid: 2 * height,
         }
       : {}),
   }

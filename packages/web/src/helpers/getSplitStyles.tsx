@@ -876,6 +876,10 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
     }
+    if ('elevationAndroid' in style) {
+      style['elevation'] = style.elevationAndroid
+      delete style.elevationAndroid
+    }
   }
 
   // always do this at the very end to preserve the order strictly (animations, origin)
