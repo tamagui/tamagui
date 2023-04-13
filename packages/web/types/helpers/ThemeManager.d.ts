@@ -32,7 +32,8 @@ export declare class ThemeManager {
     get allKeys(): Set<string>;
     getValue(key: string, state?: ThemeManagerState): string | number | import("../createVariable.js").Variable<any> | undefined;
     notify(): void;
-    onChangeTheme(cb: ThemeListener): () => void;
+    _listeningIds?: Set<number>;
+    onChangeTheme(cb: ThemeListener, debugId?: number): () => void;
 }
 export {};
 //# sourceMappingURL=ThemeManager.d.ts.map

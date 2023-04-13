@@ -11,7 +11,7 @@ import {
   useInteractions,
   useRole,
 } from '@floating-ui/react'
-import { SizeTokens, useEvent, useId, withStaticProperties } from '@tamagui/core'
+import { SizeTokens, useEvent, withStaticProperties } from '@tamagui/core'
 import { ScopedProps } from '@tamagui/create-context'
 import { FloatingOverrideContext, UseFloatingFn } from '@tamagui/floating'
 import { stepTokenUpOrDown } from '@tamagui/get-size'
@@ -151,7 +151,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
   const useFloatingContext = React.useCallback(useFloatingFn, [id, delay, open])
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
-  const contentId = useId()
+  const contentId = React.useId()
   const twoSmallerKey = stepTokenUpOrDown('size', '$true', -2).key
   const size = `$${twoSmallerKey}`
 

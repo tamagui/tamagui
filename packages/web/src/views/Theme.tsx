@@ -24,7 +24,7 @@ export function Theme(props: ThemeProps) {
     : props.children
 
   if (process.env.NODE_ENV === 'development') {
-    if (true) {
+    if (props['debug'] === 'visualize') {
       children = (
         <ThemeDebug themeState={themeState} themeProps={props}>
           {children}

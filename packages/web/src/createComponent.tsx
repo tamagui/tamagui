@@ -735,21 +735,8 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug'] === 'visualize') {
-        const [onChangeCount, setOnChangeCount] = useState(0)
-
-        useEffect(() => {
-          themeState.themeManager?.onChangeTheme((name, manager) => {
-            setOnChangeCount((p) => ++p)
-            console.warn(`🖤`, name)
-          })
-        }, [themeState.themeManager])
-
         content = (
-          <ThemeDebug
-            themeState={themeState}
-            themeProps={props}
-            onChangeCount={onChangeCount}
-          >
+          <ThemeDebug themeState={themeState} themeProps={props}>
             {content}
           </ThemeDebug>
         )

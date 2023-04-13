@@ -45,7 +45,7 @@ const SandboxFrame = (props: { children: any }) => {
           type="text/css"
           dangerouslySetInnerHTML={{
             __html: `
-            html, body, #root { overflow: hidden; height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; }
+            html, body, #root { height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; }
           `,
           }}
         />
@@ -54,7 +54,7 @@ const SandboxFrame = (props: { children: any }) => {
 
         <button
           style={{
-            position: 'absolute',
+            position: 'fixed',
             bottom: 30,
             left: 20,
             fontSize: 30,

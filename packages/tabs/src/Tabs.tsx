@@ -15,7 +15,6 @@ import {
   isWeb,
   styled,
   useEvent,
-  useId,
   withStaticProperties,
 } from '@tamagui/web'
 import * as React from 'react'
@@ -423,7 +422,7 @@ export const Tabs = withStaticProperties(
         return (
           <TabsProvider
             scope={__scopeTabs}
-            baseId={useId()}
+            baseId={React.useId()}
             value={value}
             onChange={setValue}
             orientation={orientation}

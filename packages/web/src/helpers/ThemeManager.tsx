@@ -160,7 +160,14 @@ export class ThemeManager {
     this.themeListeners.forEach((cb) => cb(this.state.name, this))
   }
 
-  onChangeTheme(cb: ThemeListener) {
+  _listeningIds?: Set<number>
+
+  onChangeTheme(cb: ThemeListener, debugId?: number) {
+    if (process.env.NODE_ENV === 'development' && debugId) {
+      this._listeningIds ??= new Set()
+      this._listeningIds.add(debugId)
+    }
+
     this.themeListeners.add(cb)
     return () => {
       this.themeListeners.delete(cb)

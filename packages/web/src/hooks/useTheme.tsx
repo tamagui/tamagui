@@ -164,7 +164,6 @@ export const useChangeThemeEffect = (
   // the Switch theme shouldn't be considered parent of Thumb
   while (true) {
     if (parentManager?.isComponent) {
-      console.log(`go to aprent`, parentManager)
       parentManager = parentManager.parentManager
     } else {
       break
@@ -241,14 +240,17 @@ export const useChangeThemeEffect = (
       }
 
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
-        const shouldUpdate = keys?.length || isNewTheme
+        const shouldUpdate = Boolean(keys?.length || isNewTheme)
+
+        console.warn('??', themeManager.id, shouldUpdate)
+
         if (process.env.NODE_ENV === 'development' && props['debug'] && keys?.length) {
           console.log(`onChangeTheme`, shouldUpdate, { props, name, manager, keys })
         }
         if (shouldUpdate) {
           setThemeState(createState)
         }
-      })
+      }, themeManager.id)
 
       return () => {
         disposeChangeListener?.()
