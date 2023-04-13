@@ -38,6 +38,7 @@
     "@fastify/static": "^5.0.2",
     "@tamagui/build": "1.14.4",
     "@tamagui/static": "1.14.4",
+    "@tamagui/types": "1.14.4",
     "@tamagui/vite-plugin": "1.14.4",
     "@types/compression": "^1.7.2",
     "@types/morgan": "^1.9.3",

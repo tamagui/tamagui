@@ -1,22 +1,23 @@
 import { readFileSync } from 'fs'
-/* eslint-disable no-console */
 import path, { basename, dirname, extname, join, relative, resolve, sep } from 'path'
 
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { Color, colorLog } from '@tamagui/cli-color'
-import { ResolvedOptions } from '@tamagui/cli/types/types'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import { createTamagui, getVariableValue } from '@tamagui/core-node'
-import type {
-  LoadedComponents,
-  StaticConfigParsed,
-  TamaguiInternalConfig,
-  TamaguiProjectInfo,
-} from '@tamagui/web'
+import { CLIResolvedOptions, CLIUserOptions } from '@tamagui/types'
+import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
-import fs, { ensureDir, existsSync, removeSync, writeFileSync } from 'fs-extra'
+import fs, {
+  ensureDir,
+  existsSync,
+  pathExists,
+  readJSON,
+  removeSync,
+  writeFileSync,
+} from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants.js'
 import { getNameToPaths, registerRequire, unregisterRequire } from '../require.js'
@@ -526,11 +527,11 @@ Tamagui built config and components:`
   }
 }
 
-async function getTamaguiConfig(options: ResolvedOptions) {
+async function getTamaguiConfig(options: CLIResolvedOptions) {
   return bundleConfig(options.tamaguiOptions)
 }
 
-export async function generateTamaguiConfig(options: ResolvedOptions) {
+export async function generateTamaguiConfig(options: CLIResolvedOptions) {
   await ensureDir(options.paths.dotDir)
   const config = await getTamaguiConfig(options)
   const { components, nameToPaths } = config
@@ -585,6 +586,53 @@ export async function generateTamaguiConfig(options: ResolvedOptions) {
       spaces: 2,
     }
   )
+}
+
+const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')]
+let cachedPath = ''
+async function getDefaultTamaguiConfigPath() {
+  if (cachedPath) return cachedPath
+  const existingPaths = await Promise.all(defaultPaths.map((path) => pathExists(path)))
+  const existing = existingPaths.findIndex((x) => !!x)
+  const found = defaultPaths[existing]
+  if (!found) {
+    throw new Error(`No found tamagui.config.ts`)
+  }
+  cachedPath = found
+  return found
+}
+
+export async function getOptions({
+  root = process.cwd(),
+  tsconfigPath = 'tsconfig.json',
+  tamaguiOptions,
+  host,
+  debug,
+}: Partial<CLIUserOptions> = {}): Promise<CLIResolvedOptions> {
+  const tsConfigFilePath = join(root, tsconfigPath)
+  if (!(await fs.pathExists(tsConfigFilePath)))
+    throw new Error(`No tsconfig found: ${tsConfigFilePath}`)
+  const dotDir = join(root, '.tamagui')
+  const pkgJson = await readJSON(join(root, 'package.json'))
+
+  return {
+    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+    root,
+    host: host || '127.0.0.1',
+    pkgJson,
+    debug,
+    tsconfigPath,
+    tamaguiOptions: {
+      components: ['tamagui'],
+      config: await getDefaultTamaguiConfigPath(),
+      ...tamaguiOptions,
+    },
+    paths: {
+      dotDir,
+      conf: join(dotDir, 'tamagui.config.json'),
+      types: join(dotDir, 'types.json'),
+    },
+  }
 }
 
 export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {

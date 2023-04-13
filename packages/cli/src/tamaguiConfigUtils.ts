@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 import { getVariableValue } from '@tamagui/core-node'
+import { CLIResolvedOptions } from '@tamagui/types'
 import esbuild from 'esbuild'
 import fs, { ensureDir } from 'fs-extra'
 
-import { ResolvedOptions } from './types.js'
 import { loadTamagui } from './utils.js'
 
-export async function generateTamaguiConfig(options: ResolvedOptions) {
+export async function generateTamaguiConfig(options: CLIResolvedOptions) {
   await ensureDir(options.paths.dotDir)
   const config = await getTamaguiConfig(options)
   const { components, nameToPaths } = config
@@ -34,10 +34,10 @@ export async function generateTamaguiConfig(options: ResolvedOptions) {
   }
 
   // remove bulky stuff in components
-  for (const key in components) {
-    const component = components[key]
+  for (const component of components) {
     for (const _ in component.nameToInfo) {
       delete component.nameToInfo[_].staticConfig['validStyles']
+      delete component.nameToInfo[_].staticConfig['parentStaticConfig']
     }
   }
 
@@ -47,50 +47,46 @@ export async function generateTamaguiConfig(options: ResolvedOptions) {
     nameToPaths[key] = [...nameToPaths[key]]
   }
 
-  // cleanup other stuff
-  // @ts-ignore
-  delete config.tamaguiConfig['Provider']
-  // @ts-ignore
-  delete config.tamaguiConfig['fontsParsed']
-  // @ts-ignore
-  delete config.tamaguiConfig['getCSS']
-  // @ts-ignore
-  delete config.tamaguiConfig['tokensParsed']
-  // @ts-ignore
-  delete config.tamaguiConfig['themeConfig']
+  // remove stuff we dont need to send
+  const { fontsParsed, getCSS, tokensParsed, themeConfig, ...cleanedConfig } =
+    config.tamaguiConfig
 
-  await fs.writeJSON(options.paths.conf, config, {
-    spaces: 2,
-  })
+  await fs.writeJSON(
+    options.paths.conf,
+    {
+      ...config,
+      tamaguiConfig: cleanedConfig,
+    },
+    {
+      spaces: 2,
+    }
+  )
 }
 
-async function getTamaguiConfig(options: ResolvedOptions) {
+async function getTamaguiConfig(options: CLIResolvedOptions) {
   return loadTamagui(options.tamaguiOptions)
 }
 
-export async function watchTamaguiConfig(options: ResolvedOptions) {
-  console.warn('❌ disabling watch conf')
-  return
-  // if (!options.tamaguiOptions.config) return
-  // await generateTamaguiConfig(options)
-  // const context = await esbuild.context({
-  //   entryPoints: [options.tamaguiOptions.config],
-  //   sourcemap: false,
-  //   // dont output just use esbuild as a watcher
-  //   write: false,
+export async function watchTamaguiConfig(options: CLIResolvedOptions) {
+  if (!options.tamaguiOptions.config) return
+  await generateTamaguiConfig(options)
+  const context = await esbuild.context({
+    entryPoints: [options.tamaguiOptions.config],
+    sourcemap: false,
+    // dont output just use esbuild as a watcher
+    write: false,
 
-  //   plugins: [
-  //     {
-  //       name: `on-rebuild`,
-  //       setup({ onEnd }) {
-  //         onEnd((res) => {
-  //           generateTamaguiConfig(options)
-  //         })
-  //       },
-  //     },
-  //   ],
-  // })
+    plugins: [
+      {
+        name: `on-rebuild`,
+        setup({ onEnd }) {
+          onEnd((res) => {
+            generateTamaguiConfig(options)
+          })
+        },
+      },
+    ],
+  })
 
-  // await context.watch()
-  // console.log('done watching')
+  await context.watch()
 }

@@ -2,12 +2,11 @@ import { writeFile } from 'fs'
 import { basename, dirname, join, resolve } from 'path'
 
 import { createExtractor, extractToClassNames, loadTamagui } from '@tamagui/static'
+import { CLIResolvedOptions } from '@tamagui/types'
 import chokidar from 'chokidar'
 import { readFile } from 'fs-extra'
 
-import { ResolvedOptions } from './types.js'
-
-export const build = async (options: ResolvedOptions) => {
+export const build = async (options: CLIResolvedOptions) => {
   // const tamagui = await loadTamagui(options.tamaguiOptions)
 
   const entry = options.pkgJson.source
