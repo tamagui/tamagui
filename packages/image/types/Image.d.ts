@@ -9,6 +9,16 @@ declare const StyledImage: import("@tamagui/core").TamaguiComponent<(import("rea
     [x: string]: undefined;
 }>>), import("@tamagui/core").TamaguiElement, import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>, {} | {
     [x: string]: undefined;
+}, {
+    prototype: RNImage;
+    getSize: typeof RNImage.getSize;
+    getSizeWithHeaders: typeof RNImage.getSizeWithHeaders;
+    prefetch: typeof RNImage.prefetch;
+    prefetchWithMetadata: typeof RNImage.prefetchWithMetadata;
+    abortPrefetch: typeof RNImage.abortPrefetch | undefined;
+    queryCache: typeof RNImage.queryCache | undefined;
+    resolveAssetSource: typeof RNImage.resolveAssetSource;
+    contextType: React.Context<any> | undefined;
 }>;
 type StyledImageProps = Omit<GetProps<typeof StyledImage>, 'borderRadius'> & {
     borderRadius?: RadiusTokens;

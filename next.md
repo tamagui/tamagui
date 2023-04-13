@@ -1,3 +1,7 @@
+- <Select /> light mode the hover style is barely visible
+  - todo in themes branch
+  - it should have pure white bg
+
 - relative sizing first class (and relative color)
   - add `defaultSize`, and `defaultColor`
   - add `relative()` helpers
