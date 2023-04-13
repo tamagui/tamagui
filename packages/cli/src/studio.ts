@@ -2,6 +2,7 @@ import { createRequire } from 'module'
 import { AddressInfo } from 'net'
 import { dirname } from 'path'
 
+import { CLIResolvedOptions } from '@tamagui/types'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import viteReactPlugin from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
@@ -11,12 +12,11 @@ import fs from 'fs-extra'
 import { createServer } from 'vite'
 
 import { watchTamaguiConfig } from './tamaguiConfigUtils.js'
-import { ResolvedOptions } from './types.js'
 
 const resolve =
   'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
 
-export const studio = async (options: ResolvedOptions, isRemote = true) => {
+export const studio = async (options: CLIResolvedOptions, isRemote = true) => {
   process.env.TAMAGUI_TARGET = 'web'
 
   const configWatchPromise = watchTamaguiConfig(options)
@@ -82,11 +82,7 @@ export const studio = async (options: ResolvedOptions, isRemote = true) => {
 
     console.log(`Listening on`, chalk.green(`http://localhost:${serverPort}`))
   } else {
-    console.log(
-      `Open `,
-      chalk.green(`https://studio.tamagui.dev`),
-      ` to load studio`
-    )
+    console.log(`Open `, chalk.green(`https://studio.tamagui.dev`), ` to load studio`)
   }
 
   await Promise.allSettled([configWatchPromise, localServerPromise])

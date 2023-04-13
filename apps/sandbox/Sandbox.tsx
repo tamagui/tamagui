@@ -1,7 +1,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { TabsAdvancedDemo, TooltipDemo } from '@tamagui/demos'
+import { TabsAdvancedDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
 import {
@@ -9,17 +9,12 @@ import {
   Checkbox,
   Input,
   ScrollView,
-  Square,
-  Stack,
-  Switch,
   TamaguiProvider,
-  Theme,
   XStack,
   YStack,
   styled,
 } from 'tamagui'
 
-import { SandboxThemeChange } from './SandboxThemeChange'
 // import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
 // import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
 // import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'

@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 import { getVariableValue } from '@tamagui/core-node'
+import { CLIResolvedOptions } from '@tamagui/types'
 import esbuild from 'esbuild'
 import fs, { ensureDir } from 'fs-extra'
 
-import { ResolvedOptions } from './types.js'
 import { loadTamagui } from './utils.js'
 
-export async function generateTamaguiConfig(options: ResolvedOptions) {
+export async function generateTamaguiConfig(options: CLIResolvedOptions) {
   await ensureDir(options.paths.dotDir)
   const config = await getTamaguiConfig(options)
   const { components, nameToPaths } = config
@@ -63,11 +63,11 @@ export async function generateTamaguiConfig(options: ResolvedOptions) {
   )
 }
 
-async function getTamaguiConfig(options: ResolvedOptions) {
+async function getTamaguiConfig(options: CLIResolvedOptions) {
   return loadTamagui(options.tamaguiOptions)
 }
 
-export async function watchTamaguiConfig(options: ResolvedOptions) {
+export async function watchTamaguiConfig(options: CLIResolvedOptions) {
   if (!options.tamaguiOptions.config) return
   await generateTamaguiConfig(options)
   const context = await esbuild.context({

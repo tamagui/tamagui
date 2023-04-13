@@ -1,5 +1,5 @@
-import { ResolvedOptions } from '../types.js';
-export declare function createDevServer(options: ResolvedOptions, { indexJson, getIndexBundle, }: {
+import { CLIResolvedOptions } from '@tamagui/types';
+export declare function createDevServer(options: CLIResolvedOptions, { indexJson, getIndexBundle, }: {
     indexJson: Object;
     getIndexBundle: () => Promise<string>;
 }): Promise<() => Promise<void>>;

@@ -1,7 +1,6 @@
 import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import type { StyleObject } from '@tamagui/helpers'
-// @ts-ignore
 import type { TamaguiOptions } from '@tamagui/types'
 import type { LoadedComponents, PseudoStyles, StaticConfig } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'

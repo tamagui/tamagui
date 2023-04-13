@@ -5,9 +5,9 @@ import path, { basename, dirname, extname, join, resolve, sep } from 'path'
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
-import { ResolvedOptions, UserOptions } from '@tamagui/cli/types/types'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import { createTamagui, getVariableValue } from '@tamagui/core-node'
+import { CLIResolvedOptions, CLIUserOptions } from '@tamagui/types'
 import type {
   LoadedComponents,
   StaticConfigParsed,
@@ -511,11 +511,11 @@ async function bundleConfig(props: Props) {
   }
 }
 
-async function getTamaguiConfig(options: ResolvedOptions) {
+async function getTamaguiConfig(options: CLIResolvedOptions) {
   return bundleConfig(options.tamaguiOptions)
 }
 
-export async function generateTamaguiConfig(options: ResolvedOptions) {
+export async function generateTamaguiConfig(options: CLIResolvedOptions) {
   await ensureDir(options.paths.dotDir)
   const config = await getTamaguiConfig(options)
   const { components, nameToPaths } = config
@@ -591,7 +591,7 @@ export async function getOptions({
   tamaguiOptions,
   host,
   debug,
-}: Partial<UserOptions> = {}): Promise<ResolvedOptions> {
+}: Partial<CLIUserOptions> = {}): Promise<CLIResolvedOptions> {
   const tsConfigFilePath = join(root, tsconfigPath)
   if (!(await fs.pathExists(tsConfigFilePath)))
     throw new Error(`No tsconfig found: ${tsConfigFilePath}`)
