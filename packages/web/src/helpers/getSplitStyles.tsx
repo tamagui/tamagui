@@ -1,4 +1,5 @@
 import {
+  isAndroid,
   isClient,
   isRSC,
   isServer,
@@ -314,6 +315,11 @@ export const getSplitStyles: StyleSplitter = (
     // normalize shorthands up front
     if (keyInit in shorthands) {
       keyInit = shorthands[keyInit]
+    }
+
+    if (!isAndroid) {
+      // only works in android
+      if (keyInit === 'elevationAndroid') return
     }
 
     if (process.env.TAMAGUI_TARGET === 'native') {
