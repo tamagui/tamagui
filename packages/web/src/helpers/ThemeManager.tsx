@@ -30,18 +30,22 @@ let uid = 0
 
 export class ThemeManager {
   id = uid++
+  isComponent = false
   themeListeners = new Set<ThemeListener>()
   parentManager: ThemeManager | null = null
   state: ThemeManagerState = emptyState
 
   constructor(
     public props: ThemeProps = {},
-    parentManager?: ThemeManager | 'root' | null | undefined
+    parentManagerIn?: ThemeManager | 'root' | null | undefined
   ) {
-    if (parentManager === 'root') {
+    if (parentManagerIn === 'root') {
       this.updateState(props, false)
       return
     }
+
+    const parentManager = getNonComponentParentManager(parentManagerIn)
+
     if (!parentManager) {
       if (process.env.NODE_ENV !== 'production') {
         throw new Error(
@@ -60,9 +64,7 @@ export class ThemeManager {
       this.parentManager = parentManager
     }
 
-    const updatedState = this.getStateIfChanged(props)
-    if (updatedState) {
-      this.state = updatedState
+    if (this.updateState(props, false)) {
       return
     }
 
@@ -71,9 +73,9 @@ export class ThemeManager {
 
   updateState(
     props: ThemeProps & { forceTheme?: ThemeParsed } = this.props || {},
-    notify = true
+    shouldNotify = true
   ) {
-    const shouldFlush = (() => {
+    const isChanging = (() => {
       if (props.forceTheme) {
         this.state.theme = props.forceTheme
         this.state.name = props.name || ''
@@ -86,10 +88,22 @@ export class ThemeManager {
         return true
       }
     })()
-    if (shouldFlush) {
-      // reset any derived state
+
+    if (isChanging) {
+      const names = this.state.name.split('_')
+      const lastName = names[names.length - 1][0]
+      this.isComponent = lastName[0] === lastName[0].toUpperCase()
       this._allKeys = null
-      notify && this.notify()
+
+      if (process.env.NODE_ENV === 'development') {
+        this['_numChangeEventsSent'] ??= 0
+        this['_numChangeEventsSent']++
+      }
+
+      if (shouldNotify) {
+        this.notify()
+      }
+
       return this.state
     }
   }
@@ -157,7 +171,14 @@ export class ThemeManager {
     this.themeListeners.forEach((cb) => cb(this.state.name, this))
   }
 
-  onChangeTheme(cb: ThemeListener) {
+  onChangeTheme(cb: ThemeListener, debugId?: number) {
+    if (process.env.NODE_ENV === 'development' && debugId) {
+      // @ts-ignore
+      this._listeningIds ??= new Set()
+      // @ts-ignore
+      this._listeningIds.add(debugId)
+    }
+
     this.themeListeners.add(cb)
     return () => {
       this.themeListeners.delete(cb)
@@ -224,6 +245,7 @@ function getState(
   if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
     console.groupCollapsed('ThemeManager.getState()')
     console.log({
+      props,
       parentName,
       parentBaseTheme,
       base,
@@ -282,7 +304,7 @@ function getState(
 
   // eslint-disable-next-line no-console
   if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
-    console.log({
+    console.warn('ThemeManager.getState():', {
       result,
     })
     console.trace()
@@ -296,4 +318,19 @@ const inverseThemeName = (themeName: string) => {
   return themeName.startsWith('light')
     ? themeName.replace(/^light/, 'dark')
     : themeName.replace(/^dark/, 'light')
+}
+
+export function getNonComponentParentManager(themeManager?: ThemeManager | null) {
+  // components never inherit from components
+  // example <Switch><Switch.Thumb /></Switch>
+  // the Switch theme shouldn't be considered parent of Thumb
+  let res = themeManager
+  while (res) {
+    if (res?.isComponent) {
+      res = res.parentManager
+    } else {
+      break
+    }
+  }
+  return res
 }

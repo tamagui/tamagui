@@ -9,6 +9,7 @@ import { createProxy } from '../helpers/createProxy.js'
 import {
   ThemeManager,
   ThemeManagerState,
+  getNonComponentParentManager,
   hasNoThemeUpdatingProps,
 } from '../helpers/ThemeManager.js'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
@@ -156,7 +157,8 @@ export const useChangeThemeEffect = (
       themeManager: null,
     }
   }
-  const parentManager = useContext(ThemeManagerContext)
+
+  const parentManager = getNonComponentParentManager(useContext(ThemeManagerContext))
 
   const {
     debug,
@@ -186,11 +188,14 @@ export const useChangeThemeEffect = (
     return next
   }
 
-  function getThemeManagerNextStateIfChanged(manager = themeManager) {
+  function getThemeManagerNextStateIfChanged(
+    manager = themeManager,
+    forceShouldChange = false
+  ) {
     const next = getNextThemeManagerState(manager)
     if (!next) return
     if (disableUpdate?.() === true) return
-    if (!manager.getStateShouldChange(next, state)) return
+    if (!forceShouldChange && !manager.getStateShouldChange(next, state)) return
     return next
   }
 
@@ -228,13 +233,14 @@ export const useChangeThemeEffect = (
       }
 
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
-        if (keys?.length || isNewTheme) {
-          if (process.env.NODE_ENV === 'development' && props['debug'] && keys?.length) {
-            console.log(`onChangeTheme`, { props, name, manager, parentManager, keys })
+        const shouldUpdate = Boolean(keys?.length || isNewTheme)
+        if (shouldUpdate) {
+          if (process.env.NODE_ENV === 'development' && props['debug']) {
+            console.log(`onChangeTheme`, shouldUpdate, { props, name, manager, keys })
           }
           setThemeState(createState)
         }
-      })
+      }, themeManager.id)
 
       return () => {
         disposeChangeListener?.()
@@ -281,7 +287,15 @@ export const useChangeThemeEffect = (
     if (prev?.themeManager) {
       themeManager = prev.themeManager
 
-      const nextState = getThemeManagerNextStateIfChanged(themeManager)
+      // this could be a bit better, problem is on toggling light/dark the state is actually
+      // showing light even when the last was dark. but technically allso onChangeTheme should
+      // basically always call on a change, so i'm wondering if we even need the shouldUpdate
+      // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
+      // which is correct, potentially in the future we can avoid forceChange and just know to
+      // update if keys.length is set + onChangeTheme called
+      const forceChange = Boolean(keys?.length)
+
+      const nextState = getThemeManagerNextStateIfChanged(themeManager, forceChange)
 
       if (nextState) {
         state = nextState
