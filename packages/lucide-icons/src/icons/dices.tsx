@@ -37,10 +37,10 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Rect
-        x="2"
-        y="10"
         width="12"
         height="12"
+        x="2"
+        y="10"
         rx="2"
         ry="2"
         fill="none"

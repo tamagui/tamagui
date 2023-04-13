@@ -38,8 +38,8 @@ const Icon = (props) => {
     >
       <Line
         x1="22"
-        y1="2"
         x2="11"
+        y1="2"
         y2="13"
         fill="none"
         stroke={`${color}`}
