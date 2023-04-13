@@ -287,7 +287,14 @@ export const useChangeThemeEffect = (
     if (prev?.themeManager) {
       themeManager = prev.themeManager
 
+      // this could be a bit better, problem is on toggling light/dark the state is actually
+      // showing light even when the last was dark. but technically allso onChangeTheme should
+      // basically always call on a change, so i'm wondering if we even need the shouldUpdate
+      // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
+      // which is correct, potentially in the future we can avoid forceChange and just know to
+      // update if keys.length is set + onChangeTheme called
       const forceChange = Boolean(keys?.length)
+
       const nextState = getThemeManagerNextStateIfChanged(themeManager, forceChange)
 
       if (nextState) {
