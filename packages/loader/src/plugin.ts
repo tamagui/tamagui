@@ -1,5 +1,4 @@
 import type { TamaguiOptions } from '@tamagui/static'
-import { watchTamaguiConfig } from '@tamagui/static'
 import type { Compiler, RuleSetRule } from 'webpack'
 
 type PluginOptions = TamaguiOptions & {
@@ -19,22 +18,6 @@ export class TamaguiPlugin {
   ) {}
 
   apply(compiler: Compiler) {
-    // studio
-    watchTamaguiConfig(this.options)
-
-    // if we're ever gonna watch with webpack instead of esbuild for watchTamaguiConfig, this is the way...
-    // const tamaguiConfigPath = path.resolve(
-    //   resolvedOptions.tamaguiOptions.config ?? (await getDefaultTamaguiConfigPath({}))
-    // )
-    // compiler.hooks.watchRun.tap(this.pluginName, async (compiler) => {
-    //   if (compiler.modifiedFiles && compiler.modifiedFiles.has(tamaguiConfigPath)) {
-    //     await updateTamaguiGeneratedFiles({
-    //       config: resolvedOptions.tamaguiOptions.config,
-    //       components: resolvedOptions.tamaguiOptions.components,
-    //     })
-    //   }
-    // })
-
     // mark as side effect
     compiler.hooks.normalModuleFactory.tap(this.pluginName, (nmf) => {
       nmf.hooks.createModule.tap(
@@ -66,7 +49,7 @@ export class TamaguiPlugin {
       compiler.options.resolve.mainFields = Array.isArray(mainFields)
         ? mainFields
         : [mainFields]
-      // mainFields.unshift('module:jsx')
+      mainFields.unshift('module:jsx')
     }
 
     if (!compiler.options.module) {
@@ -88,47 +71,46 @@ export class TamaguiPlugin {
     const startIndex = nextJsRules ? nextJsRules + 1 : 0
     const existingLoader = nextJsRules ? rules[startIndex] : undefined
 
-    if (!existingLoader)
-      rules.splice(startIndex, 0, {
-        test: this.options.test ?? /\.m?[jt]sx?$/,
-        exclude: this.options.exclude,
-        resolve: {
-          fullySpecified: false,
-        },
-        use: [
-          ...(jsLoader ? [jsLoader] : []),
-          ...(existingLoader && nextJsRules ? [].concat(existingLoader.use) : []),
-          ...(!(jsLoader || existingLoader)
-            ? [
-                {
-                  loader: require.resolve('esbuild-loader'),
-                  options: {
-                    target: 'es2021',
-                    keepNames: true,
-                    loader: {
-                      '.tsx': 'tsx',
-                      '.png': 'copy',
-                      '.jpg': 'copy',
-                      '.gif': 'copy',
-                    },
+    rules.splice(startIndex, 0, {
+      test: this.options.test ?? /\.m?[jt]sx?$/,
+      exclude: this.options.exclude,
+      resolve: {
+        fullySpecified: false,
+      },
+      use: [
+        ...(jsLoader ? [jsLoader] : []),
+        ...(existingLoader && nextJsRules ? [].concat(existingLoader.use) : []),
+        ...(!(jsLoader || existingLoader)
+          ? [
+              {
+                loader: require.resolve('esbuild-loader'),
+                options: {
+                  target: 'es2021',
+                  keepNames: true,
+                  loader: {
+                    '.tsx': 'tsx',
+                    '.png': 'copy',
+                    '.jpg': 'copy',
+                    '.gif': 'copy',
+                  },
 
-                    tsconfigRaw: {
-                      module: this.options.commonjs ? 'commonjs' : 'esnext',
-                      isolatedModules: true,
-                      jsx: 'preserve',
-                      resolveJsonModule: true,
-                    },
+                  tsconfigRaw: {
+                    module: this.options.commonjs ? 'commonjs' : 'esnext',
+                    isolatedModules: true,
+                    jsx: 'preserve',
+                    resolveJsonModule: true,
                   },
                 },
-              ]
-            : []),
-          {
-            loader: require.resolve('tamagui-loader'),
-            options: {
-              ...this.options,
-            },
+              },
+            ]
+          : []),
+        {
+          loader: require.resolve('tamagui-loader'),
+          options: {
+            ...this.options,
           },
-        ],
-      })
+        },
+      ],
+    })
   }
 }
