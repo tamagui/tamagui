@@ -21,13 +21,19 @@ export function addTheme(props: {
       throw new Error('No config')
     }
     const theme = config.themes[props.name]
+    if (props.update && !theme) {
+      throw new Error(`Update theme failed! Theme ${props.name} does not exist`)
+    }
     if (!props.update && theme) {
       return { theme }
     }
   }
 
   const { name: themeName, theme: themeIn, insertCSS } = props
-  const theme = { ...themeIn } as ThemeParsed
+  const theme = {
+    ...(props.update ? config.themes[themeName] ?? {} : {}),
+    ...themeIn,
+  } as ThemeParsed
   for (const key in theme) {
     ensureThemeVariable(theme, key)
   }
