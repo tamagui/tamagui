@@ -168,17 +168,25 @@ export function styled<
         // add in pseudos
         PseudoProps<Partial<OurPropsBase>>
 
-  type StyledComponent = ParentComponent &
-    TamaguiComponent<Props, TamaguiElement, ParentPropsBase, ParentVariants & OurVariants>
-
-  for (const key in ComponentIn) {
-    if (key in component) {
-      continue
-    }
-    ;(component as typeof ComponentIn)[key] = ComponentIn[key]
+  type ParentStaticProperties = {
+    [Key in keyof ParentComponent]: ParentComponent[Key]
   }
 
-  return component as StyledComponent
+  type StyledComponent = TamaguiComponent<
+    Props,
+    TamaguiElement,
+    ParentPropsBase,
+    ParentVariants & OurVariants,
+    ParentStaticProperties
+  >
+
+  for (const key in ComponentIn) {
+    if (key in component) continue
+    // @ts-expect-error assigning static properties over
+    component[key] = ComponentIn[key]
+  }
+
+  return component as any as StyledComponent
 }
 
 // sanity check types
