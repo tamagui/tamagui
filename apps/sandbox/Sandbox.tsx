@@ -6,8 +6,10 @@ import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
 import {
   Button,
+  Checkbox,
   Input,
   ScrollView,
+  Square,
   TamaguiProvider,
   Theme,
   XStack,
@@ -66,6 +68,32 @@ export const MyInput = styled(Input, {
   },
 })
 
+export const MyCheckbox = styled(Checkbox, {
+  name: 'MyComponent',
+  borderWidth: 2,
+  debug: 'verbose',
+
+  variants: {
+    disabled: {
+      true: {
+        opacity: 0.5,
+      },
+    },
+    variant: {
+      white: (_, { props: { checked } }) => ({
+        borderColor: '#f00',
+        hoverStyle: {
+          borderColor: 'red',
+          borderWidth: 10,
+        },
+        pressStyle: {
+          borderColor: 'green',
+        },
+      }),
+    },
+  } as const,
+})
+
 export const Sandbox = () => {
   console.log(`render once`)
 
@@ -73,7 +101,9 @@ export const Sandbox = () => {
     <SandboxFrame>
       {/* this comment keeps indent */}
 
-      <SandboxThemeChange />
+      {/* <SandboxThemeChange /> */}
+
+      <MyCheckbox theme="blue" variant="white" debug="verbose"></MyCheckbox>
 
       {/* TODO fix/convert into tests */}
       {/* <SandboxStyledOverridePseudo /> */}
