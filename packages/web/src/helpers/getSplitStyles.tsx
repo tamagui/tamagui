@@ -108,6 +108,10 @@ if (process.env.TAMAGUI_TARGET === 'native') {
     contain: true,
     boxSizing: true,
     boxShadow: true,
+    outlineStyle: true,
+    outlineOffset: true,
+    outlineWidth: true,
+    outlineColor: true,
   })
 }
 
@@ -1105,6 +1109,11 @@ export const getSubStyle = (
       languageContext,
       avoidDefaultProps
     )
+    if (!staticConfig.isHOC) {
+      if (key in skipProps) {
+        continue
+      }
+    }
     if (!expanded) continue
     for (const [skey, sval] of expanded) {
       if (!avoidMergeTransform && skey in stylePropsTransform) {
