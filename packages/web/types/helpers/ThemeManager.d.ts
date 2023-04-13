@@ -17,13 +17,14 @@ export declare function hasNoThemeUpdatingProps(props: ThemeProps): boolean;
 export declare class ThemeManager {
     props: ThemeProps;
     id: number;
+    isComponent: boolean;
     themeListeners: Set<ThemeListener>;
     parentManager: ThemeManager | null;
     state: ThemeManagerState;
-    constructor(props?: ThemeProps, parentManager?: ThemeManager | 'root' | null | undefined);
+    constructor(props?: ThemeProps, parentManagerIn?: ThemeManager | 'root' | null | undefined);
     updateState(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
-    }, notify?: boolean): ThemeManagerState | undefined;
+    }, shouldNotify?: boolean): ThemeManagerState | undefined;
     getStateIfChanged(props?: ThemeProps, state?: ThemeManagerState | null, parentManager?: ThemeManager | null): ThemeManagerState | null | undefined;
     getStateShouldChange(nextState: ThemeManagerState | null, state?: ThemeManagerState | null): boolean;
     getState(props?: ThemeProps, parentManager?: ThemeManager | null): ThemeManagerState | null;
@@ -31,7 +32,8 @@ export declare class ThemeManager {
     get allKeys(): Set<string>;
     getValue(key: string, state?: ThemeManagerState): string | number | import("../createVariable.js").Variable<any> | undefined;
     notify(): void;
-    onChangeTheme(cb: ThemeListener): () => void;
+    onChangeTheme(cb: ThemeListener, debugId?: number): () => void;
 }
+export declare function getNonComponentParentManager(themeManager?: ThemeManager | null): ThemeManager | null | undefined;
 export {};
 //# sourceMappingURL=ThemeManager.d.ts.map

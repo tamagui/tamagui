@@ -5,7 +5,6 @@ import {
   styled,
   themeable,
   useEvent,
-  useId,
   withStaticProperties,
 } from '@tamagui/core'
 import { ThemeableStack } from '@tamagui/stacks'
@@ -189,7 +188,7 @@ const ToastComponent = React.forwardRef<TamaguiElement, ToastProps>(
       onChange: onOpenChange,
     })
 
-    const id = useId()
+    const id = React.useId()
     const onPause = useEvent(props.onPause)
     const onResume = useEvent(props.onResume)
     const shouldShow = forceMount || open

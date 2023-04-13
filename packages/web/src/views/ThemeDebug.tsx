@@ -1,3 +1,6 @@
+import { useForceUpdate } from '@tamagui/use-force-update'
+import { useEffect, useState } from 'react'
+
 import { ChangedThemeResponse } from '../hooks/useTheme.js'
 import { ThemeProps } from '../types.js'
 
@@ -5,22 +8,37 @@ export function ThemeDebug({
   themeState,
   themeProps,
   children,
-  onChangeCount,
 }: {
   themeState: ChangedThemeResponse
   themeProps: ThemeProps
-  onChangeCount?: number
   children: any
 }) {
   if (process.env.NODE_ENV === 'development') {
+    const [onChangeCount, setOnChangeCount] = useState(0)
+    const rerender = useForceUpdate()
+
+    useEffect(() => {
+      themeState.themeManager?.parentManager?.onChangeTheme((name, manager) => {
+        setOnChangeCount((p) => ++p)
+        console.warn(`theme changed`, name)
+      })
+    }, [themeState.themeManager])
+
+    useEffect(() => {
+      // to refresh _listeningIds every so often
+      const tm = setInterval(rerender, 100)
+      return () => clearTimeout(tm)
+    }, [])
+
     return (
       <div
         style={{
           whiteSpace: 'pre',
-          background: 'green',
-          display: 'inline',
+          background: 'var(--background)',
+          display: 'inline-block',
           border: '1px solid #ccc',
           margin: 20,
+          color: 'red',
         }}
       >
         <code>
@@ -36,6 +54,10 @@ export function ThemeDebug({
               parentId: themeState.themeManager?.parentManager?.id,
               isNew: themeState.isNewTheme,
               onChangeCount,
+              listening: [...(themeState.themeManager?.['_listeningIds'] || [])].join(
+                ','
+              ),
+              _numChangeEventsSent: themeState.themeManager?.['_numChangeEventsSent'],
             },
             null,
             2
