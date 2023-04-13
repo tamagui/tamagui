@@ -121,13 +121,14 @@ export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponen
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    readonly backgrounded?: boolean | undefined; /**
-     * exported for internal use with extractable()
-     */
+    readonly backgrounded?: boolean | undefined;
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
-    readonly focusTheme?: boolean | undefined;
+    readonly focusTheme?: boolean | undefined; /**
+     * Used to force mounting when more control is needed. Useful when
+     * controlling animation with React animation libraries.
+     */
     readonly circular?: boolean | undefined;
     readonly padded?: boolean | undefined;
     readonly elevate?: boolean | undefined;
@@ -2754,13 +2755,14 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
         } & {
-            readonly backgrounded?: boolean | undefined; /**
-             * exported for internal use with extractable()
-             */
+            readonly backgrounded?: boolean | undefined;
             readonly radiused?: boolean | undefined;
             readonly hoverTheme?: boolean | undefined;
             readonly pressTheme?: boolean | undefined;
-            readonly focusTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined; /**
+             * Used to force mounting when more control is needed. Useful when
+             * controlling animation with React animation libraries.
+             */
             readonly circular?: boolean | undefined;
             readonly padded?: boolean | undefined;
             readonly elevate?: boolean | undefined;

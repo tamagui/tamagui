@@ -11,7 +11,6 @@ import {
   spacedChildren,
   styled,
   useGet,
-  useId,
   useMedia,
   useThemeName,
   withStaticProperties,
@@ -763,10 +762,11 @@ const Dialog = withStaticProperties(
       allowPinchZoom = false,
     } = props
 
-    const scopeId = useId()
-    const contentId = useId()
-    const titleId = useId()
-    const descriptionId = useId()
+    const baseId = React.useId()
+    const scopeId = `scope-${baseId}`
+    const contentId = `content-${baseId}`
+    const titleId = `title-${baseId}`
+    const descriptionId = `description-${baseId}`
     const scopeKey = __scopeDialog ? Object.keys(__scopeDialog)[0] : scopeId
     const sheetContentsName = getSheetContentsName({ scopeKey, contentId })
     const triggerRef = React.useRef<HTMLButtonElement>(null)
