@@ -1,4 +1,6 @@
+/// <reference types="react" />
 import { GetProps } from '@tamagui/core';
+import { TextInput } from 'react-native';
 export declare const defaultStyles: {
     readonly size: "$true";
     readonly fontFamily: "$body";
@@ -32,6 +34,10 @@ export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import
 }>>, import("@tamagui/core").TamaguiElement, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
+}, {
+    contextType: import("react").Context<any> | undefined;
+    prototype: TextInput;
+    State: import("react-native").TextInputState;
 }>;
 export type InputProps = GetProps<typeof InputFrame>;
 export declare const Input: import("@tamagui/core").TamaguiComponent<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
@@ -46,5 +52,9 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<import("rea
 }>>, import("@tamagui/core").TamaguiElement, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
+}, {
+    contextType: import("react").Context<any> | undefined;
+    prototype: TextInput;
+    State: import("react-native").TextInputState;
 }>;
 //# sourceMappingURL=Input.d.ts.map

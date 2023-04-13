@@ -33,7 +33,9 @@ export declare const SkeletonFrame: import("@tamagui/core").TamaguiComponent<(Om
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 export type SkeletonProps = GetProps<typeof SkeletonFrame>;
 export declare const Skeleton: import("react").ForwardRefExoticComponent<import("react").RefAttributes<TamaguiElement>>;
 export declare const SkeletonShine: (props: LinearGradientProps) => JSX.Element;

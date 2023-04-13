@@ -6,5 +6,7 @@ export declare const EnsureFlexed: import("@tamagui/core").TamaguiComponent<(Omi
     [x: string]: undefined;
 }>>), import("@tamagui/core").TamaguiElement, Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNTextProps, {} | {
     [x: string]: undefined;
+}, {
+    displayName: string | undefined;
 }>;
 //# sourceMappingURL=EnsureFlexed.d.ts.map

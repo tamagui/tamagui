@@ -9,6 +9,8 @@ export declare const FormFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>), TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {} | {
     [x: string]: undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export type FormFrameProps = GetProps<typeof FormFrame> & {
     onSubmit: () => void;

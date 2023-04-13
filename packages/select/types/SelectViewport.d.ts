@@ -68,6 +68,8 @@ export declare const SelectViewportFrame: import("@tamagui/core").TamaguiCompone
     readonly chromeless?: boolean | "all" | undefined;
 } & {
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export declare const SelectViewport: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;

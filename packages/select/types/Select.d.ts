@@ -111,7 +111,9 @@ export declare const SelectIcon: import("@tamagui/core").TamaguiComponent<(Omit<
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 export interface SelectItemProps extends ListItemProps {
     value: string;
     index: number;
@@ -143,7 +145,9 @@ export declare const SelectItemTextFrame: import("@tamagui/core").TamaguiCompone
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 export declare const SelectGroupFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -176,7 +180,9 @@ export declare const SelectGroupFrame: import("@tamagui/core").TamaguiComponent<
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 export type SelectLabelProps = ListItemProps;
 export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "vertical"> & {
     readonly vertical?: boolean | undefined;
@@ -202,7 +208,9 @@ export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<(
     readonly vertical?: boolean | undefined;
 } & {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) & {
     Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
         Contents: {
@@ -273,7 +281,9 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
     } & {
         [x: string]: undefined;
-    })>;
+    }), {
+        displayName: string | undefined;
+    }>;
     Item: React.ForwardRefExoticComponent<SelectItemProps & React.RefAttributes<TamaguiElement>>;
     ItemIndicator: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;
