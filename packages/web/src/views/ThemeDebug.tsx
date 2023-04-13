@@ -18,7 +18,7 @@ export function ThemeDebug({
     const rerender = useForceUpdate()
 
     useEffect(() => {
-      themeState.themeManager?.onChangeTheme((name, manager) => {
+      themeState.themeManager?.parentManager?.onChangeTheme((name, manager) => {
         setOnChangeCount((p) => ++p)
         console.warn(`theme changed`, name)
       })
@@ -26,12 +26,8 @@ export function ThemeDebug({
 
     useEffect(() => {
       // to refresh _listeningIds every so often
-      const tm = setInterval(() => {
-        rerender()
-      }, 100)
-      return () => {
-        clearTimeout(tm)
-      }
+      const tm = setInterval(rerender, 100)
+      return () => clearTimeout(tm)
     }, [])
 
     return (
@@ -58,7 +54,10 @@ export function ThemeDebug({
               parentId: themeState.themeManager?.parentManager?.id,
               isNew: themeState.isNewTheme,
               onChangeCount,
-              listening: [...(themeState.themeManager?._listeningIds || [])].join(','),
+              listening: [...(themeState.themeManager?.['_listeningIds'] || [])].join(
+                ','
+              ),
+              _numChangeEventsSent: themeState.themeManager?.['_numChangeEventsSent'],
             },
             null,
             2

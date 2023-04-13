@@ -9,6 +9,7 @@ import { createProxy } from '../helpers/createProxy.js'
 import {
   ThemeManager,
   ThemeManagerState,
+  getNonComponentParentManager,
   hasNoThemeUpdatingProps,
 } from '../helpers/ThemeManager.js'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
@@ -157,18 +158,7 @@ export const useChangeThemeEffect = (
     }
   }
 
-  let parentManager = useContext(ThemeManagerContext)
-
-  // components never inherit from components
-  // example <Switch><Switch.Thumb /></Switch>
-  // the Switch theme shouldn't be considered parent of Thumb
-  while (true) {
-    if (parentManager?.isComponent) {
-      parentManager = parentManager.parentManager
-    } else {
-      break
-    }
-  }
+  const parentManager = getNonComponentParentManager(useContext(ThemeManagerContext))
 
   const {
     debug,
@@ -198,11 +188,14 @@ export const useChangeThemeEffect = (
     return next
   }
 
-  function getThemeManagerNextStateIfChanged(manager = themeManager) {
+  function getThemeManagerNextStateIfChanged(
+    manager = themeManager,
+    forceShouldChange = false
+  ) {
     const next = getNextThemeManagerState(manager)
     if (!next) return
     if (disableUpdate?.() === true) return
-    if (!manager.getStateShouldChange(next, state)) return
+    if (!forceShouldChange && !manager.getStateShouldChange(next, state)) return
     return next
   }
 
@@ -241,13 +234,10 @@ export const useChangeThemeEffect = (
 
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
         const shouldUpdate = Boolean(keys?.length || isNewTheme)
-
-        console.warn('??', themeManager.id, shouldUpdate)
-
-        if (process.env.NODE_ENV === 'development' && props['debug'] && keys?.length) {
-          console.log(`onChangeTheme`, shouldUpdate, { props, name, manager, keys })
-        }
         if (shouldUpdate) {
+          if (process.env.NODE_ENV === 'development' && props['debug']) {
+            console.log(`onChangeTheme`, shouldUpdate, { props, name, manager, keys })
+          }
           setThemeState(createState)
         }
       }, themeManager.id)
@@ -297,7 +287,8 @@ export const useChangeThemeEffect = (
     if (prev?.themeManager) {
       themeManager = prev.themeManager
 
-      const nextState = getThemeManagerNextStateIfChanged(themeManager)
+      const forceChange = Boolean(keys?.length)
+      const nextState = getThemeManagerNextStateIfChanged(themeManager, forceChange)
 
       if (nextState) {
         state = nextState
