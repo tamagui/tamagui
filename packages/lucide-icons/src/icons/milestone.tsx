@@ -45,7 +45,7 @@ const Icon = (props) => {
         strokeLinejoin="round"
       />
       <Path
-        d="M12 13v9"
+        d="M12 13v8"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
@@ -53,7 +53,7 @@ const Icon = (props) => {
         strokeLinejoin="round"
       />
       <Path
-        d="M12 2v4"
+        d="M12 3v3"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
