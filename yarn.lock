@@ -5862,7 +5862,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/theme@workspace:packages/theme":
+"@tamagui/theme@^1.14.5, @tamagui/theme@workspace:packages/theme":
   version: 0.0.0-use.local
   resolution: "@tamagui/theme@workspace:packages/theme"
   dependencies:
@@ -20890,6 +20890,7 @@ __metadata:
     "@tamagui/switch": 1.14.5
     "@tamagui/tabs": 1.14.5
     "@tamagui/text": 1.14.5
+    "@tamagui/theme": ^1.14.5
     "@tamagui/toggle-group": 1.14.5
     "@tamagui/tooltip": 1.14.5
     "@tamagui/use-controllable-state": 1.14.5
