@@ -3044,10 +3044,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/env@npm:13.2.4":
-  version: 13.2.4
-  resolution: "@next/env@npm:13.2.4"
-  checksum: 4123e08a79e66d6144006972027a9ceb8f3fdd782c4a869df1eb3b91b59ad9f4a44082d3f8e421f4df5214c6bc7190b52b94881369452d65eb4580485f33b9e6
+"@next/env@npm:13.3.0":
+  version: 13.3.0
+  resolution: "@next/env@npm:13.3.0"
+  checksum: 17dbea6d019df98f8abebadcaed635d792c69368389c7869ca023acfba240294368a58eda761fb8047403b84e82edf25ea2af45afe06cc1807a25de42e256dd3
   languageName: node
   linkType: hard
 
@@ -3060,93 +3060,65 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/swc-android-arm-eabi@npm:13.2.4":
-  version: 13.2.4
-  resolution: "@next/swc-android-arm-eabi@npm:13.2.4"
-  conditions: os=android & cpu=arm
-  languageName: node
-  linkType: hard
-
-"@next/swc-android-arm64@npm:13.2.4":
-  version: 13.2.4
-  resolution: "@next/swc-android-arm64@npm:13.2.4"
-  conditions: os=android & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@next/swc-darwin-arm64@npm:13.2.4":
-  version: 13.2.4
-  resolution: "@next/swc-darwin-arm64@npm:13.2.4"
+"@next/swc-darwin-arm64@npm:13.3.0":
+  version: 13.3.0
+  resolution: "@next/swc-darwin-arm64@npm:13.3.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-x64@npm:13.2.4":
-  version: 13.2.4
-  resolution: "@next/swc-darwin-x64@npm:13.2.4"
+"@next/swc-darwin-x64@npm:13.3.0":
+  version: 13.3.0
+  resolution: "@next/swc-darwin-x64@npm:13.3.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@next/swc-freebsd-x64@npm:13.2.4":
-  version: 13.2.4
-  resolution: "@next/swc-freebsd-x64@npm:13.2.4"
-  conditions: os=freebsd & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@next/swc-linux-arm-gnueabihf@npm:13.2.4":
-  version: 13.2.4
-  resolution: "@next/swc-linux-arm-gnueabihf@npm:13.2.4"
-  conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
-"@next/swc-linux-arm64-gnu@npm:13.2.4":
-  version: 13.2.4
-  resolution: "@next/swc-linux-arm64-gnu@npm:13.2.4"
+"@next/swc-linux-arm64-gnu@npm:13.3.0":
+  version: 13.3.0
+  resolution: "@next/swc-linux-arm64-gnu@npm:13.3.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-musl@npm:13.2.4":
-  version: 13.2.4
-  resolution: "@next/swc-linux-arm64-musl@npm:13.2.4"
+"@next/swc-linux-arm64-musl@npm:13.3.0":
+  version: 13.3.0
+  resolution: "@next/swc-linux-arm64-musl@npm:13.3.0"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-gnu@npm:13.2.4":
-  version: 13.2.4
-  resolution: "@next/swc-linux-x64-gnu@npm:13.2.4"
+"@next/swc-linux-x64-gnu@npm:13.3.0":
+  version: 13.3.0
+  resolution: "@next/swc-linux-x64-gnu@npm:13.3.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-musl@npm:13.2.4":
-  version: 13.2.4
-  resolution: "@next/swc-linux-x64-musl@npm:13.2.4"
+"@next/swc-linux-x64-musl@npm:13.3.0":
+  version: 13.3.0
+  resolution: "@next/swc-linux-x64-musl@npm:13.3.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-win32-arm64-msvc@npm:13.2.4":
-  version: 13.2.4
-  resolution: "@next/swc-win32-arm64-msvc@npm:13.2.4"
+"@next/swc-win32-arm64-msvc@npm:13.3.0":
+  version: 13.3.0
+  resolution: "@next/swc-win32-arm64-msvc@npm:13.3.0"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-win32-ia32-msvc@npm:13.2.4":
-  version: 13.2.4
-  resolution: "@next/swc-win32-ia32-msvc@npm:13.2.4"
+"@next/swc-win32-ia32-msvc@npm:13.3.0":
+  version: 13.3.0
+  resolution: "@next/swc-win32-ia32-msvc@npm:13.3.0"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@next/swc-win32-x64-msvc@npm:13.2.4":
-  version: 13.2.4
-  resolution: "@next/swc-win32-x64-msvc@npm:13.2.4"
+"@next/swc-win32-x64-msvc@npm:13.3.0":
+  version: 13.3.0
+  resolution: "@next/swc-win32-x64-msvc@npm:13.3.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4024,14 +3996,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/auth-helpers-nextjs@npm:^0.5.9":
-  version: 0.5.9
-  resolution: "@supabase/auth-helpers-nextjs@npm:0.5.9"
+"@supabase/auth-helpers-nextjs@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@supabase/auth-helpers-nextjs@npm:0.6.0"
   dependencies:
     "@supabase/auth-helpers-shared": 0.3.3
   peerDependencies:
     "@supabase/supabase-js": ^2.0.4
-  checksum: 80e941d083c2d9b981e0d1259e5e304a3f1cfebdb59949073ebd0f8b68ca31aeda36630deae18d3bbc62dad5fe426a028aaed545978b4946913eaa3245b7cee3
+  checksum: 88b1a92ee9ed44e04f81368461def946a0d19397076111b2a6d559a950f3fa579187e882a8e16c888a9086a1999eec63a8265efde7dba56eeb6e1a3fce11d9fd
   languageName: node
   linkType: hard
 
@@ -4082,12 +4054,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/gotrue-js@npm:^2.18.1":
-  version: 2.20.0
-  resolution: "@supabase/gotrue-js@npm:2.20.0"
+"@supabase/gotrue-js@npm:^2.22.0":
+  version: 2.22.1
+  resolution: "@supabase/gotrue-js@npm:2.22.1"
   dependencies:
     cross-fetch: ^3.1.5
-  checksum: 2a3c6e7f98b804bc7551f0d35ac4bdb08acae6426b9da4f27bb2e7bccf47f49c936106222f1a29d60133c6645a2fffb718225599ff2b177277a6eadac6f4b686
+  checksum: a2f66c5ded3e1da111eb7e141c6dbf010c4c222dd7821f123b4d2945e36fd0eabfcd7e428d7736b66e54e347576d2a73359fd670fad4453faf7f7424c079046e
   languageName: node
   linkType: hard
 
@@ -4119,14 +4091,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/realtime-js@npm:^2.7.1":
-  version: 2.7.1
-  resolution: "@supabase/realtime-js@npm:2.7.1"
+"@supabase/realtime-js@npm:^2.7.2":
+  version: 2.7.2
+  resolution: "@supabase/realtime-js@npm:2.7.2"
   dependencies:
     "@types/phoenix": ^1.5.4
     "@types/websocket": ^1.0.3
     websocket: ^1.0.34
-  checksum: 6a68d00752e54066c8add86524455d669d0db6a411b3ade9781c774f049ca966900b57870859896868c7a54a66aaac9520cf44592b5b59927b70a667c510df8e
+  checksum: 0d6071991dfeeafcbfada30f39f6ed76ae83aefbdede611788879d493f7500c796050e0bef0bd589b9cf79cce0e170defe8a1d364e8cec3c8783cc4ac5314a3c
   languageName: node
   linkType: hard
 
@@ -4139,12 +4111,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/storage-js@npm:^2.3.1":
-  version: 2.3.1
-  resolution: "@supabase/storage-js@npm:2.3.1"
+"@supabase/storage-js@npm:^2.5.1":
+  version: 2.5.1
+  resolution: "@supabase/storage-js@npm:2.5.1"
   dependencies:
     cross-fetch: ^3.1.5
-  checksum: b502bc0735f06df091b40839e37f7a795563c1a6be918bbd7a2dab45299d625bde825dd24e396c8dca08eaa3bf247c5159dd5018277cc9fb90310c62cc88148c
+  checksum: bff8673f7c5fb967385bff812e5dec22ad85df6982f3dc2745f46ecd2a0ede280684490adea752b647a995c1d3b33895921d87c2f0e3dd61d5704964a5b59bbd
   languageName: node
   linkType: hard
 
@@ -4172,17 +4144,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/supabase-js@npm:^2.14.0":
-  version: 2.14.0
-  resolution: "@supabase/supabase-js@npm:2.14.0"
+"@supabase/supabase-js@npm:^2.20.0":
+  version: 2.20.0
+  resolution: "@supabase/supabase-js@npm:2.20.0"
   dependencies:
     "@supabase/functions-js": ^2.1.0
-    "@supabase/gotrue-js": ^2.18.1
+    "@supabase/gotrue-js": ^2.22.0
     "@supabase/postgrest-js": ^1.1.1
-    "@supabase/realtime-js": ^2.7.1
-    "@supabase/storage-js": ^2.3.1
+    "@supabase/realtime-js": ^2.7.2
+    "@supabase/storage-js": ^2.5.1
     cross-fetch: ^3.1.5
-  checksum: 23269e92ac49d54316f2882ee8042f152080f0e056dba098af1812c264f0277fb127c8467d706eab3e2fb75974c9a8eed0ff2a9aa9424d6df226ea4270d0cc77
+  checksum: 6795d2cfe6c1f009a9f0499368f731266e80f9113487a77a91e4e1bfd9b7e97c410b10579d3fc99362486c3cc27b822375a0ab0ced684ef2a73cfac9b7304438
   languageName: node
   linkType: hard
 
@@ -4336,47 +4308,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@takeout/studio@1.5.24, @takeout/studio@workspace:takeout/studio":
-  version: 0.0.0-use.local
-  resolution: "@takeout/studio@workspace:takeout/studio"
-  dependencies:
-    "@babel/preset-react": ^7.18.6
-    "@babel/preset-typescript": ^7.18.6
-    "@supabase/auth-helpers-react": ^0.3.1
-    "@supabase/supabase-js": ^2.14.0
-    "@tamagui/animations-reanimated": ^1.15.0
-    "@tamagui/build": ^1.15.0
-    "@tamagui/colors": ^1.15.0
-    "@tamagui/config": ^1.15.0
-    "@tamagui/core": ^1.15.0
-    "@tamagui/lucide-icons": ^1.15.0
-    "@tamagui/polyfill-dev": ^1.15.0
-    "@tamagui/static": ^1.15.0
-    "@tamagui/themes": ^1.15.0
-    "@tauri-apps/api": ^1.2.0
-    "@tauri-apps/cli": ^1.2.2
-    "@types/d3-scale": ^4.0.2
-    "@types/lodash-es": ^4.17.6
-    "@types/uuid": ^8.3.4
-    babel-polyfill: ^6.26.0
-    color2k: ^1.2.4
-    d3-scale: ^3.3.0
-    esbuild-loader: ^2.20.0
-    graphql-tag: ^2.12.6
-    hsluv: ^0.1.0
-    lodash-es: ^4.17.21
-    react-draggable: ^4.4.5
-    react-hotkeys-hook: ^3.4.6
-    react-native: ^0.71.4
-    react-refresh: ^0.14.0
-    tamagui: ^1.15.0
-    ts-morph: ^15.1.0
-    use-valtio: ^0.0.2
-    valtio: ^1.10.4
-    vite: ^4.2.1
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/accordion@workspace:packages/accordion":
   version: 0.0.0-use.local
   resolution: "@tamagui/accordion@workspace:packages/accordion"
@@ -4466,7 +4397,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/animations-reanimated@1.15.0, @tamagui/animations-reanimated@^1.15.0, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
+"@tamagui/animations-reanimated@1.15.0, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:packages/animations-reanimated"
   dependencies:
@@ -4617,7 +4548,6 @@ __metadata:
     "@callstack/repack-debugger-app": ^1.0.0
     "@fastify/sensible": ^4.1.0
     "@fastify/static": ^5.0.2
-    "@takeout/studio": 1.5.24
     "@tamagui/build": 1.15.0
     "@tamagui/static": 1.15.0
     "@tamagui/types": 1.15.0
@@ -4711,7 +4641,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/colors@1.15.0, @tamagui/colors@^1.15.0, @tamagui/colors@workspace:packages/colors":
+"@tamagui/colors@1.15.0, @tamagui/colors@workspace:packages/colors":
   version: 0.0.0-use.local
   resolution: "@tamagui/colors@workspace:packages/colors"
   dependencies:
@@ -4782,7 +4712,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/config@1.15.0, @tamagui/config@^1.15.0, @tamagui/config@workspace:packages/config":
+"@tamagui/config@1.15.0, @tamagui/config@workspace:packages/config":
   version: 0.0.0-use.local
   resolution: "@tamagui/config@workspace:packages/config"
   dependencies:
@@ -5296,7 +5226,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/lucide-icons@1.15.0, @tamagui/lucide-icons@^1.15.0, @tamagui/lucide-icons@workspace:packages/lucide-icons":
+"@tamagui/lucide-icons@1.15.0, @tamagui/lucide-icons@workspace:packages/lucide-icons":
   version: 0.0.0-use.local
   resolution: "@tamagui/lucide-icons@workspace:packages/lucide-icons"
   dependencies:
@@ -5347,12 +5277,12 @@ __metadata:
     esm-resolve: ^1.0.8
     file-loader: ^6.2.0
     html-webpack-plugin: ^5.5.0
-    next: ^13.1.4
+    next: ^13.3.0
     tamagui-loader: 1.15.0
     thread-loader: ^3.0.4
     url-loader: ^4.1.1
   peerDependencies:
-    next: 13.1.4
+    next: ">=13"
   languageName: unknown
   linkType: soft
 
@@ -5374,7 +5304,7 @@ __metadata:
     "@tamagui/remove-scroll": 1.15.0
     "@tamagui/shorthands": 1.15.0
     "@tamagui/themes": 1.15.0
-    next: ^13.1.4
+    next: ^13.3.0
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native: ^0.71.4
@@ -5404,7 +5334,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/polyfill-dev@1.15.0, @tamagui/polyfill-dev@^1.15.0, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
+"@tamagui/polyfill-dev@1.15.0, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
   version: 0.0.0-use.local
   resolution: "@tamagui/polyfill-dev@workspace:packages/polyfill-dev"
   languageName: unknown
@@ -5786,10 +5716,10 @@ __metadata:
     "@github/mini-throttle": ^2.1.0
     "@next/bundle-analyzer": ^12.2.0
     "@stripe/stripe-js": ^1.29.0
-    "@supabase/auth-helpers-nextjs": ^0.5.9
+    "@supabase/auth-helpers-nextjs": ^0.6.0
     "@supabase/auth-helpers-react": ^0.3.1
     "@supabase/supabase-auth-helpers": ^1.4.2
-    "@supabase/supabase-js": ^2.14.0
+    "@supabase/supabase-js": ^2.20.0
     "@tamagui/animate-presence": 1.15.0
     "@tamagui/colors": 1.15.0
     "@tamagui/config": 1.15.0
@@ -5813,7 +5743,7 @@ __metadata:
     hast-util-to-html: ^8.0.3
     hast-util-to-string: ^2.0.0
     mdx-bundler: ^9.0.1
-    next: ^13.1.4
+    next: ^13.3.0
     next-plugin-preact: ^3.0.7
     next-remote-watch: ^1.0.0
     nextjs-progressbar: ^0.0.14
@@ -5925,7 +5855,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/static@1.15.0, @tamagui/static@^1.15.0, @tamagui/static@workspace:packages/static":
+"@tamagui/static@1.15.0, @tamagui/static@workspace:packages/static":
   version: 0.0.0-use.local
   resolution: "@tamagui/static@workspace:packages/static"
   dependencies:
@@ -6083,7 +6013,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/themes@1.15.0, @tamagui/themes@^1.15.0, @tamagui/themes@workspace:packages/themes":
+"@tamagui/themes@1.15.0, @tamagui/themes@workspace:packages/themes":
   version: 0.0.0-use.local
   resolution: "@tamagui/themes@workspace:packages/themes"
   dependencies:
@@ -9015,6 +8945,15 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: b33a84b0a57be34cc37d18f50710d46fb72e8d8eb2c5d5ae687a22dad41a1c6a42a49d507a71065480b5286729c887e3ee281f47af1325321f63fdc15e3af913
+  languageName: node
+  linkType: hard
+
+"busboy@npm:1.6.0":
+  version: 1.6.0
+  resolution: "busboy@npm:1.6.0"
+  dependencies:
+    streamsearch: ^1.1.0
+  checksum: 32801e2c0164e12106bf236291a00795c3c4e4b709ae02132883fe8478ba2ae23743b11c5735a0aae8afe65ac4b6ca4568b91f0d9fed1fdbc32ede824a73746e
   languageName: node
   linkType: hard
 
@@ -17383,7 +17322,7 @@ __metadata:
     "@types/node": ^16.11.9
     app: "*"
     eslint-config-next: 13.2.4
-    next: ^13.1.4
+    next: ^13.3.0
     raf: ^3.4.1
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -17430,47 +17369,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:^13.1.4":
-  version: 13.2.4
-  resolution: "next@npm:13.2.4"
+"next@npm:^13.3.0":
+  version: 13.3.0
+  resolution: "next@npm:13.3.0"
   dependencies:
-    "@next/env": 13.2.4
-    "@next/swc-android-arm-eabi": 13.2.4
-    "@next/swc-android-arm64": 13.2.4
-    "@next/swc-darwin-arm64": 13.2.4
-    "@next/swc-darwin-x64": 13.2.4
-    "@next/swc-freebsd-x64": 13.2.4
-    "@next/swc-linux-arm-gnueabihf": 13.2.4
-    "@next/swc-linux-arm64-gnu": 13.2.4
-    "@next/swc-linux-arm64-musl": 13.2.4
-    "@next/swc-linux-x64-gnu": 13.2.4
-    "@next/swc-linux-x64-musl": 13.2.4
-    "@next/swc-win32-arm64-msvc": 13.2.4
-    "@next/swc-win32-ia32-msvc": 13.2.4
-    "@next/swc-win32-x64-msvc": 13.2.4
+    "@next/env": 13.3.0
+    "@next/swc-darwin-arm64": 13.3.0
+    "@next/swc-darwin-x64": 13.3.0
+    "@next/swc-linux-arm64-gnu": 13.3.0
+    "@next/swc-linux-arm64-musl": 13.3.0
+    "@next/swc-linux-x64-gnu": 13.3.0
+    "@next/swc-linux-x64-musl": 13.3.0
+    "@next/swc-win32-arm64-msvc": 13.3.0
+    "@next/swc-win32-ia32-msvc": 13.3.0
+    "@next/swc-win32-x64-msvc": 13.3.0
     "@swc/helpers": 0.4.14
+    busboy: 1.6.0
     caniuse-lite: ^1.0.30001406
     postcss: 8.4.14
     styled-jsx: 5.1.1
   peerDependencies:
-    "@opentelemetry/api": ^1.4.0
+    "@opentelemetry/api": ^1.1.0
     fibers: ">= 3.1.0"
     node-sass: ^6.0.0 || ^7.0.0
     react: ^18.2.0
     react-dom: ^18.2.0
     sass: ^1.3.0
   dependenciesMeta:
-    "@next/swc-android-arm-eabi":
-      optional: true
-    "@next/swc-android-arm64":
-      optional: true
     "@next/swc-darwin-arm64":
       optional: true
     "@next/swc-darwin-x64":
-      optional: true
-    "@next/swc-freebsd-x64":
-      optional: true
-    "@next/swc-linux-arm-gnueabihf":
       optional: true
     "@next/swc-linux-arm64-gnu":
       optional: true
@@ -17497,7 +17425,7 @@ __metadata:
       optional: true
   bin:
     next: dist/bin/next
-  checksum: 8531dee41b60181b582f5ee80858907b102f083ef8808ff9352d589dd39e6b3a96f7a11b3776a03eef3a28430cff768336fa2e3ff2c6f8fcd699fbc891749051
+  checksum: 24e0e013e867a825ff7d1f49587e696147ea8f9ff42946121fe0dce25f9bcc9b1d5941425fa7cef3b8c0e6f1c3daa7f09f758ac5a8aa15aa66c3b31a07465081
   languageName: node
   linkType: hard
 
@@ -21339,6 +21267,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"streamsearch@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "streamsearch@npm:1.1.0"
+  checksum: 1cce16cea8405d7a233d32ca5e00a00169cc0e19fbc02aa839959985f267335d435c07f96e5e0edd0eadc6d39c98d5435fb5bbbdefc62c41834eadc5622ad942
+  languageName: node
+  linkType: hard
+
 "strict-uri-encode@npm:^2.0.0":
   version: 2.0.0
   resolution: "strict-uri-encode@npm:2.0.0"
@@ -21567,8 +21502,8 @@ __metadata:
   dependencies:
     "@babel/preset-react": ^7.18.6
     "@babel/preset-typescript": ^7.18.6
-    "@supabase/auth-helpers-nextjs": ^0.5.9
-    "@supabase/supabase-js": ^2.14.0
+    "@supabase/auth-helpers-nextjs": ^0.6.0
+    "@supabase/supabase-js": ^2.20.0
     "@tamagui/animations-reanimated": 1.15.0
     "@tamagui/build": 1.15.0
     "@tamagui/colors": 1.15.0
@@ -21600,7 +21535,7 @@ __metadata:
     graphql-tag: ^2.12.6
     hsluv: ^0.1.0
     lodash-es: ^4.17.21
-    next: ^13.1.4
+    next: ^13.3.0
     react: ^18.2.0
     react-dom: ^18.2.0
     react-draggable: ^4.4.5
@@ -21821,7 +21756,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"tamagui@1.15.0, tamagui@^1.15.0, tamagui@workspace:packages/tamagui":
+"tamagui@1.15.0, tamagui@workspace:packages/tamagui":
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:

@@ -241,12 +241,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
   })
 
   const baseSubThemes = {
-    ...getAltThemes(
-      theme,
-      inverseTheme,
-      isLight,
-      process.env.ACTIVE_THEME_INVERSE ? inverseTheme : undefined
-    ),
+    ...getAltThemes(theme, inverseTheme, isLight, inverseTheme),
     ...getComponentThemes(theme, inverseTheme, isLight),
   }
 

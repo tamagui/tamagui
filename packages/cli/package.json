@@ -36,7 +36,6 @@
     "@callstack/repack-debugger-app": "^1.0.0",
     "@fastify/sensible": "^4.1.0",
     "@fastify/static": "^5.0.2",
-    "@takeout/studio": "1.5.24",
     "@tamagui/build": "1.15.0",
     "@tamagui/static": "1.15.0",
     "@tamagui/types": "1.15.0",
