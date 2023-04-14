@@ -13,7 +13,6 @@ export async function generateTamaguiConfig(options: CLIResolvedOptions) {
   const config = await getTamaguiConfig(options)
   const { components, nameToPaths } = config
   const { themes, tokens } = config.tamaguiConfig
-  console.log(config.tamaguiConfig.media)
 
   // reduce down to usable, smaller json
 

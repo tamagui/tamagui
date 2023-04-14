@@ -126,7 +126,6 @@ export async function bundleConfig(props: Props) {
   delete require.cache[path.resolve(configOutPath)]
   const out = require(configOutPath)
   const config = out.default || out
-  console.log(`got config from ${configOutPath}...`, config.media)
   if (!config) {
     throw new Error(`No config: ${config}`)
   }
