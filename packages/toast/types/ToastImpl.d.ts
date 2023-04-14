@@ -74,6 +74,8 @@ declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<Omit<impo
 } & {
     backgrounded?: boolean | undefined;
     unstyled?: boolean | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
     /**

@@ -124,7 +124,9 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     readonly chromeless?: boolean | "all" | undefined;
 } & ({} | {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 type CheckboxIndicatorFrameProps = GetProps<typeof CheckboxIndicatorFrame>;
 export type CheckboxIndicatorProps = CheckboxIndicatorFrameProps & {
     /**
@@ -209,6 +211,8 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omi
 } & {
     readonly unstyled?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 declare const createCheckboxScope: import("@tamagui/create-context").CreateScope;
 type CheckboxFrameProps = GetProps<typeof CheckboxFrame>;

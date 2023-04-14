@@ -87,6 +87,8 @@ declare const TabsTriggerFrame: import("@tamagui/web").TamaguiComponent<Omit<imp
     readonly size?: SizeTokens | undefined;
     readonly disabled?: boolean | undefined;
     readonly unstyled?: boolean | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 /**
  * @deprecated Use `TabLayout` instead
@@ -218,7 +220,9 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<im
     readonly chromeless?: boolean | "all" | undefined;
 } & ({} | {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 type TabsContentFrameProps = GetProps<typeof TabsContentFrame>;
 type TabsContentProps = TabsContentFrameProps & {
     /** Will show the content when the value matches the state of Tabs root */
@@ -263,6 +267,9 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
     readonly elevate?: boolean | undefined;
+    /**
+     * @deprecated use `TabTabsProps` instead
+     */
     readonly bordered?: number | boolean | undefined;
     readonly size?: SizeTokens | undefined;
 }>>) | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
@@ -321,7 +328,9 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly size?: SizeTokens | undefined;
 } & ({} | {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>;
 type TabsFrameProps = GetProps<typeof TabsFrame>;
 type TabsProps = TabsFrameProps & {
@@ -381,6 +390,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
     readonly elevate?: boolean | undefined;
+    /**
+     * @deprecated use `TabTabsProps` instead
+     */
     readonly bordered?: number | boolean | undefined;
     readonly size?: SizeTokens | undefined;
 }>> & {

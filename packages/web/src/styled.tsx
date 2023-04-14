@@ -110,7 +110,10 @@ export function styled<
         staticExtractionOptions?.isText || parentStaticConfig?.isText
       )
       const acceptsClassName =
-        acceptsClassNameProp ?? (isPlainStyledComponent || isReactNative)
+        acceptsClassNameProp ??
+        (isPlainStyledComponent ||
+          isReactNative ||
+          (parentStaticConfig?.isHOC && parentStaticConfig?.acceptsClassName))
 
       const conf: Partial<StaticConfig> = {
         ...staticExtractionOptions,
@@ -168,14 +171,28 @@ export function styled<
         // add in pseudos
         PseudoProps<Partial<OurPropsBase>>
 
+  type ParentStaticProperties = {
+    [Key in Exclude<
+      keyof ParentComponent,
+      'defaultProps' | 'propTypes' | '$$typeof' | 'staticConfig' | 'extractable'
+    >]: ParentComponent[Key]
+  }
+
   type StyledComponent = TamaguiComponent<
     Props,
     TamaguiElement,
     ParentPropsBase,
-    ParentVariants & OurVariants
+    ParentVariants & OurVariants,
+    ParentStaticProperties
   >
 
-  return component as StyledComponent
+  for (const key in ComponentIn) {
+    if (key in component) continue
+    // @ts-expect-error assigning static properties over
+    component[key] = ComponentIn[key]
+  }
+
+  return component as any as StyledComponent
 }
 
 // sanity check types

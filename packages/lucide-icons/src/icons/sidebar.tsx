@@ -37,10 +37,10 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Rect
-        x="3"
-        y="3"
         width="18"
         height="18"
+        x="3"
+        y="3"
         rx="2"
         ry="2"
         fill="none"
@@ -51,8 +51,8 @@ const Icon = (props) => {
       />
       <Line
         x1="9"
-        y1="3"
         x2="9"
+        y1="3"
         y2="21"
         fill="none"
         stroke={`${color}`}

@@ -108,6 +108,10 @@ if (process.env.TAMAGUI_TARGET === 'native') {
     contain: true,
     boxSizing: true,
     boxShadow: true,
+    outlineStyle: true,
+    outlineOffset: true,
+    outlineWidth: true,
+    outlineColor: true,
   })
 }
 
@@ -606,7 +610,7 @@ export const getSplitStyles: StyleSplitter = (
       isPseudo = key in validPseudoKeys
       const isMediaOrPseudo = isMedia || isPseudo
 
-      if (!isMediaOrPseudo && usedKeys[key]) {
+      if (!isMediaOrPseudo && key in usedKeys) {
         if (process.env.NODE_ENV === 'developmnet' && debug === 'verbose') {
           console.log(`Used media/pseudo ${key}`)
         }
@@ -650,6 +654,7 @@ export const getSplitStyles: StyleSplitter = (
           const pseudoStyles = getAtomicStyle(pseudoStyleObject, descriptor)
           for (const psuedoStyle of pseudoStyles) {
             const fullKey = `${psuedoStyle.property}${PROP_SPLIT}${descriptor.name}`
+
             if (!usedKeys[fullKey]) {
               usedKeys[fullKey] = 1
               addStyleToInsertRules(rulesToInsert, psuedoStyle)
@@ -663,7 +668,7 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
         } else {
-          if (usedKeys[key]) {
+          if (key in usedKeys) {
             continue
           }
 
@@ -692,6 +697,7 @@ export const getSplitStyles: StyleSplitter = (
           psuedosUsed ||= {}
 
           const importance = descriptor.priority
+
           for (const pkey in pseudoStyleObject) {
             const val = pseudoStyleObject[pkey]
             // when disabled ensure the default value is set for future animations to align
@@ -1103,6 +1109,11 @@ export const getSubStyle = (
       languageContext,
       avoidDefaultProps
     )
+    if (!staticConfig.isHOC) {
+      if (key in skipProps) {
+        continue
+      }
+    }
     if (!expanded) continue
     for (const [skey, sval] of expanded) {
       if (!avoidMergeTransform && skey in stylePropsTransform) {

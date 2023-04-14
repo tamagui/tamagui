@@ -1,70 +1,30 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { TabsAdvancedDemo, TooltipDemo } from '@tamagui/demos'
+import { AnimationsDemo, SwitchDemo, TabsAdvancedDemo, TabsDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
-import {
-  Button,
-  Input,
-  ScrollView,
-  TamaguiProvider,
-  Theme,
-  XStack,
-  YStack,
-  styled,
-} from 'tamagui'
+import { Button, ScrollView, TamaguiProvider, Theme, XStack, YStack } from 'tamagui'
 
-import { SandboxThemeChange } from './SandboxThemeChange'
-// import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
-// import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
-// import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
 import config from './tamagui.config'
 
 // useful for debugging why things render:
 // import './wdyr'
 
-// webpack fix..
 if (typeof require !== 'undefined') {
-  globalThis['React'] = require('react')
+  globalThis['React'] = require('react') // webpack
 }
 
-const Button2 = styled(Button, {
-  variants: {
-    ok: {
-      true: {
-        pressStyle: {
-          backgroundColor: 'red',
-        },
-      },
-    },
-  },
-})
+const SandboxAnimationThemeChange = () => {
+  const [x, setX] = useState('blue')
 
-// export const Heading = styled(Text, {
-//   name: 'Heading',
-//   color: '$color',
-
-//   variants: {
-//     type: {
-//       myVariant: {
-//         fontFamily: '$body',
-//         fontSize: 20,
-//         lh: '$24',
-//         fow: '$bold',
-//       },
-//     },
-//   } as const,
-// })
-
-export const MyInput = styled(Input, {
-  borderColor: 'red',
-  borderWidth: '$2',
-  focusStyle: {
-    borderColor: 'blue',
-    borderWidth: '$2',
-  },
-})
+  return (
+    <Theme name={x as any}>
+      <Button onPress={() => setX(x === 'blue' ? 'red' : 'blue')}>cahnge</Button>
+      <AnimationsDemo />
+    </Theme>
+  )
+}
 
 export const Sandbox = () => {
   console.log(`render once`)
@@ -73,9 +33,12 @@ export const Sandbox = () => {
     <SandboxFrame>
       {/* this comment keeps indent */}
 
-      <SandboxThemeChange />
+      {/* <SwitchDemo /> */}
+
+      <SandboxAnimationThemeChange />
 
       {/* TODO fix/convert into tests */}
+      {/* <SandboxThemeChange /> */}
       {/* <SandboxStyledOverridePseudo /> */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}
       {/* <SandboxCustomStyledAnimatedPopover /> */}
@@ -95,17 +58,16 @@ const SandboxFrame = (props: { children: any }) => {
           type="text/css"
           dangerouslySetInnerHTML={{
             __html: `
-            html, body, #root { overflow: hidden; height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; }
+            html, body, #root { height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; }
           `,
           }}
         />
 
         {props.children}
 
-        {/*  */}
         <button
           style={{
-            position: 'absolute',
+            position: 'fixed',
             bottom: 30,
             left: 20,
             fontSize: 30,
@@ -149,27 +111,3 @@ function SandboxDefault() {
     </XStack>
   )
 }
-
-// function TestUseStyle() {
-//   console.log('wtf', Square.staticConfig.validStyles)
-//   const style = useStyle(Square, {
-//     backgroundColor: 'red',
-//   })
-
-//   console.log('style', style, Square.staticConfig.validStyles)
-
-//   return null
-// }
-
-// function TestUseMediaRenders() {
-//   const media = useMedia()
-
-//   console.warn('render')
-
-//   return <H1>{media.sm ? 'sm' : 'not sm'}</H1>
-// }
-
-// function TestUseTheme() {
-//   const u = useTheme()
-//   console.log(u.color)
-//   return null

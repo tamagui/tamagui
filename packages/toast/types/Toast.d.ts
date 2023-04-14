@@ -28,7 +28,9 @@ declare const ToastTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<im
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 type PrimitiveDivProps = GetProps<typeof ToastTitleFrame>;
 type ToastTitleProps = PrimitiveDivProps & {};
 declare const ToastDescriptionFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
@@ -55,7 +57,9 @@ declare const ToastDescriptionFrame: import("@tamagui/core").TamaguiComponent<(O
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 type ToastDescriptionFrameProps = GetProps<typeof ToastDescriptionFrame>;
 type ToastDescriptionProps = ToastDescriptionFrameProps & {};
 type ToastActionProps = ToastCloseProps & {
@@ -180,7 +184,9 @@ declare const ToastCloseFrame: import("@tamagui/core").TamaguiComponent<(Omit<im
     readonly chromeless?: boolean | "all" | undefined;
 } & ({} | {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 type ToastCloseFrameProps = GetProps<typeof ToastCloseFrame>;
 type ToastCloseProps = ToastCloseFrameProps & {};
 declare const Toast: ((props: Omit<ToastProps & React.RefAttributes<TamaguiElement>, "theme" | "themeInverse"> & import("@tamagui/core").ThemeableProps) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & {

@@ -440,7 +440,7 @@ export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStyle
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyleProps;
 export type ViewOrTextProps = WithThemeShorthandsPseudosMediaAnimation<Omit<TextStylePropsBase, keyof StackStylePropsBase> & StackStylePropsBase>;
-export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject;
+export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject & ParentStaticProperties;
 type StaticComponentObject = {
     staticConfig: StaticConfigParsed;
     extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X;

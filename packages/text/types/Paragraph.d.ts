@@ -23,6 +23,8 @@ export declare const Paragraph: import("@tamagui/web").TamaguiComponent<(Omit<im
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
 } & {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 export type ParagraphProps = GetProps<typeof Paragraph>;
 //# sourceMappingURL=Paragraph.d.ts.map

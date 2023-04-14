@@ -5,7 +5,7 @@ import { H1, Spacer, YStack } from 'tamagui'
 const { useParam } = createParam<{ id: string }>()
 
 const nameMap = {
-  Inputs: 'Forms',
+  Inputs: 'Inputs',
 }
 
 const NativeDemos = {
@@ -45,8 +45,8 @@ export function DemoScreen() {
   const DemoComponent = NativeDemos[demoName] ?? NotFound
 
   return (
-    <YStack bc="$backgroundStrong" f={1} jc="center" ai="center" space>
-      <YStack miw={200} maw={340} ai="center" bc="$background" p="$10" br="$6">
+    <YStack outlineStyle="solid" outlineColor='red' outlineWidth="$2" bc="red" f={1} jc="center" ai="center" space>
+      <YStack miw={200} maw={340} ai="center" bc="red" p="$10" br="$6">
         <DemoComponent />
       </YStack>
     </YStack>

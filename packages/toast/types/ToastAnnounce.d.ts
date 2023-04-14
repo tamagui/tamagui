@@ -10,6 +10,8 @@ declare const ToastAnnounceExcludeFrame: import("@tamagui/core").TamaguiComponen
     [x: string]: undefined;
 }>>), TamaguiElement, Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {} | {
     [x: string]: undefined;
+}, {
+    displayName: string | undefined;
 }>;
 type ToastAnnounceExcludeFrameProps = GetProps<typeof ToastAnnounceExcludeFrame>;
 type ToastAnnounceExcludeProps = ToastAnnounceExcludeFrameProps & {

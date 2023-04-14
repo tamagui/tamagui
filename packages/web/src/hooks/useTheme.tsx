@@ -9,6 +9,7 @@ import { createProxy } from '../helpers/createProxy.js'
 import {
   ThemeManager,
   ThemeManagerState,
+  getNonComponentParentManager,
   hasNoThemeUpdatingProps,
 } from '../helpers/ThemeManager.js'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
@@ -156,7 +157,8 @@ export const useChangeThemeEffect = (
       themeManager: null,
     }
   }
-  const parentManager = useContext(ThemeManagerContext)
+
+  const parentManager = getNonComponentParentManager(useContext(ThemeManagerContext))
 
   const {
     debug,
@@ -178,19 +180,15 @@ export const useChangeThemeEffect = (
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
   const shouldReturnParentState = isInversingOnMount
 
-  function getNextThemeManagerState(manager = themeManager) {
-    const next = manager.getState(
-      props,
-      parentManager === themeManager ? parentManager.parentManager : parentManager
-    )
-    return next
-  }
-
-  function getThemeManagerNextStateIfChanged(manager = themeManager) {
-    const next = getNextThemeManagerState(manager)
+  function getShouldUpdateTheme(
+    manager = themeManager,
+    nextState?: ThemeManagerState | null,
+    forceShouldChange = false
+  ) {
+    const next = nextState || manager.getState(props, parentManager)
     if (!next) return
     if (disableUpdate?.() === true) return
-    if (!manager.getStateShouldChange(next, state)) return
+    if (!forceShouldChange && !manager.getStateShouldChange(next, state)) return
     return next
   }
 
@@ -216,25 +214,32 @@ export const useChangeThemeEffect = (
 
     // listen for parent change + notify children change
     useLayoutEffect(() => {
-      const nextState = getThemeManagerNextStateIfChanged(themeManager)
+      const nextState = getShouldUpdateTheme(themeManager)
 
       if (nextState) {
         if (isNewTheme) {
           // if it's a new theme we can just update + publish to children
           themeManager.updateState(nextState, true)
         }
+
         // if not we will be creating a whole new themeManager
         setThemeState(createState)
+      } else {
+        if (isNewTheme) {
+          // need to revert to parent
+          setThemeState(createState)
+        }
       }
 
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
-        if (keys?.length || isNewTheme) {
-          if (process.env.NODE_ENV === 'development' && props['debug'] && keys?.length) {
-            console.log(`onChangeTheme`, { props, name, manager, parentManager, keys })
+        const shouldUpdate = Boolean(keys?.length || isNewTheme)
+        if (shouldUpdate) {
+          if (process.env.NODE_ENV === 'development' && props['debug']) {
+            console.log(`onChangeTheme`, shouldUpdate, { props, name, manager, keys })
           }
           setThemeState(createState)
         }
-      })
+      }, themeManager.id)
 
       return () => {
         disposeChangeListener?.()
@@ -247,6 +252,16 @@ export const useChangeThemeEffect = (
       props.name,
       props.reset,
     ])
+
+    if (process.env.NODE_ENV === 'development') {
+      useEffect(() => {
+        globalThis['TamaguiThemeManagers'] ??= new Set()
+        globalThis['TamaguiThemeManagers'].add(themeManager)
+        return () => {
+          globalThis['TamaguiThemeManagers'].delete(themeManager)
+        }
+      }, [themeManager])
+    }
   }
 
   if (shouldReturnParentState) {
@@ -281,7 +296,16 @@ export const useChangeThemeEffect = (
     if (prev?.themeManager) {
       themeManager = prev.themeManager
 
-      const nextState = getThemeManagerNextStateIfChanged(themeManager)
+      // this could be a bit better, problem is on toggling light/dark the state is actually
+      // showing light even when the last was dark. but technically allso onChangeTheme should
+      // basically always call on a change, so i'm wondering if we even need the shouldUpdate
+      // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
+      // which is correct, potentially in the future we can avoid forceChange and just know to
+      // update if keys.length is set + onChangeTheme called
+      const forceChange = Boolean(keys?.length)
+
+      const next = themeManager.getState(props, parentManager)
+      const nextState = getShouldUpdateTheme(themeManager, next, forceChange)
 
       if (nextState) {
         state = nextState
@@ -291,15 +315,19 @@ export const useChangeThemeEffect = (
         } else {
           themeManager.updateState(nextState, true)
         }
+      } else {
+        if (prev.isNewTheme) {
+          // reset to parent
+          if (parentManager && !next) {
+            themeManager = parentManager
+          }
+        }
       }
     } else {
       themeManager = getNewThemeManager()
     }
 
-    const isNewTheme = Boolean(
-      themeManager !== parentManager ||
-        (prev && themeManager.state.name !== prev.state.name)
-    )
+    const isNewTheme = Boolean(themeManager !== parentManager)
 
     // only inverse relies on this for ssr
     const mounted = !props.inverse ? true : root || prev?.mounted
@@ -316,8 +344,19 @@ export const useChangeThemeEffect = (
     }
 
     if (process.env.NODE_ENV === 'development' && props['debug']) {
-      console.groupCollapsed(` 🔷 useChangeThemeEffect createState`)
-      console.log({ props, parentManager, themeManager, prev, response })
+      console.groupCollapsed(` 🔷 ${themeManager.id} useChangeThemeEffect createState`)
+      const parentState = { ...parentManager?.state }
+      const parentId = parentManager?.id
+      const themeManagerState = { ...themeManager.state }
+      console.log({
+        props,
+        parentState,
+        parentId,
+        themeManager,
+        prev,
+        response,
+        themeManagerState,
+      })
       console.groupEnd()
     }
 
