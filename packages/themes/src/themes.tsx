@@ -241,7 +241,12 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
   })
 
   const baseSubThemes = {
-    ...getAltThemes(theme, inverseTheme, isLight, inverseTheme),
+    ...getAltThemes(
+      theme,
+      inverseTheme,
+      isLight,
+      process.env.ACTIVE_THEME_INVERSE ? inverseTheme : undefined
+    ),
     ...getComponentThemes(theme, inverseTheme, isLight),
   }
 
@@ -263,7 +268,14 @@ function getAltThemes(
   }
   const alt1 = applyMask(theme, masks.weaker, maskOptionsAlt)
   const alt2 = applyMask(alt1, masks.weaker, maskOptionsAlt)
-  const active = activeTheme ?? inverse
+  const active =
+    activeTheme ??
+    (process.env.ACTIVE_THEME_INVERSE
+      ? inverse
+      : applyMask(theme, masks.weaker, {
+          ...maskOptions,
+          strength: 4,
+        }))
 
   return addChildren({ alt1, alt2, active }, (_, subTheme) => {
     return getComponentThemes(subTheme, subTheme === inverse ? theme : inverse, isLight)
