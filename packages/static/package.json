@@ -76,7 +76,7 @@
     "react-native-web": "^0.18.3",
     "react-test-renderer": "^18.2.0",
     "style-loader": "^3.3.1",
-    "typescript": "^5.0.3",
+    "typescript": "^5.0.4",
     "vitest": "^0.26.3",
     "webpack": "^5.74.0"
   },
