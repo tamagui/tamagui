@@ -5,6 +5,7 @@ import {
   createStrengthenMask,
   createTheme,
   createWeakenMask,
+  skipMask,
 } from '@tamagui/create-theme'
 
 import { colorTokens, darkColors, lightColors } from './tokens'
@@ -72,16 +73,29 @@ const templateShadows = {
   shadowColorFocus: 2,
 }
 
-// we can use subset of our template as a "skip" so it doesn't get adjusted with masks
-const skip = {
+// we can use subset of our template as a "override" so it doesn't get adjusted with masks
+// we want to skip over templateColor + templateShadows
+const toSkip = {
   ...templateColors,
   ...templateShadows,
+}
+
+const override = Object.fromEntries(Object.entries(toSkip).map(([k]) => [k, 0]))
+const overrideShadows = Object.fromEntries(
+  Object.entries(templateShadows).map(([k]) => [k, 0])
+)
+const overrideWithColors = {
+  ...override,
+  color: 0,
+  colorHover: 0,
+  colorFocus: 0,
+  colorPress: 0,
 }
 
 // templates use the palette and specify index
 // negative goes backwards from end so -1 is the last item
 const template = {
-  ...skip,
+  ...toSkip,
   // the background, color, etc keys here work like generics - they make it so you
   // can publish components for others to use without mandating a specific color scale
   // the @tamagui/button Button component looks for `$background`, so you set the
@@ -149,30 +163,29 @@ const baseThemes: {
 }
 
 const masks = {
+  skip: skipMask,
   weaker: createWeakenMask(),
   stronger: createStrengthenMask(),
 }
 
 // default mask options for most uses
 const maskOptions: MaskOptions = {
-  skip,
+  override,
+  skip: toSkip,
   // avoids the transparent ends
   max: palettes.light.length - 2,
   min: 1,
 }
 
-const allThemes = addChildren(baseThemes, (name, theme) => {
-  const isLight = name === 'light'
-  const inverseName = isLight ? 'dark' : 'light'
-  const inverseTheme = baseThemes[inverseName]
-  const transparent = (hsl: string, opacity = 0) =>
-    hsl.replace(`%)`, `%, ${opacity})`).replace(`hsl(`, `hsla(`)
+const transparent = (hsl: string, opacity = 0) =>
+  hsl.replace(`%)`, `%, ${opacity})`).replace(`hsl(`, `hsla(`)
 
-  // setup colorThemes and their inverses
-  const [colorThemes, inverseColorThemes] = [
-    colorTokens[name],
-    colorTokens[inverseName],
-  ].map((colorSet) => {
+// setup colorThemes and their inverses
+const [lightColorThemes, darkColorThemes] = [colorTokens.light, colorTokens.dark].map(
+  (colorSet, i) => {
+    const isLight = i === 0
+    const theme = baseThemes[isLight ? 'light' : 'dark']
+
     return Object.fromEntries(
       Object.keys(colorSet).map((color) => {
         const colorPalette = Object.values(colorSet[color]) as string[]
@@ -191,6 +204,7 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
           theme.color,
           transparent(colorPalette[colorPalette.length - 1]),
         ]
+
         const colorTheme = createTheme(
           palette,
           isLight
@@ -204,93 +218,114 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
               }
             : darkTemplate
         )
+
         return [color, colorTheme]
       })
     ) as Record<ColorName, SubTheme>
-  })
+  }
+)
+
+const allThemes = addChildren(baseThemes, (name, theme) => {
+  const isLight = name === 'light'
+  const inverseName = isLight ? 'dark' : 'light'
+  const inverseTheme = baseThemes[inverseName]
+  const colorThemes = isLight ? lightColorThemes : darkColorThemes
+  const inverseColorThemes = isLight ? darkColorThemes : lightColorThemes
 
   const allColorThemes = addChildren(colorThemes, (colorName, colorTheme) => {
     const inverse = inverseColorThemes[colorName]
     return {
-      ...getAltThemes(colorTheme, inverse),
-      ...getComponentThemes(colorTheme, inverse),
+      ...getAltThemes(colorTheme, inverse, isLight),
+      ...getComponentThemes(colorTheme, inverse, isLight),
     }
   })
 
-  const baseActiveTheme = applyMask(colorThemes.blue, masks.weaker, {
-    ...maskOptions,
-    strength: 4,
-  })
-
   const baseSubThemes = {
-    ...getAltThemes(theme, inverseTheme, baseActiveTheme),
-    ...getComponentThemes(theme, inverseTheme),
+    ...getAltThemes(
+      theme,
+      inverseTheme,
+      isLight,
+      process.env.ACTIVE_THEME_INVERSE ? inverseTheme : undefined
+    ),
+    ...getComponentThemes(theme, inverseTheme, isLight),
   }
 
   return {
     ...baseSubThemes,
     ...allColorThemes,
   }
-
-  function getAltThemes(theme: SubTheme, inverse: SubTheme, activeTheme?: SubTheme) {
-    const maskOptionsAlt = {
-      ...maskOptions,
-      skip: templateShadows,
-    }
-    const alt1 = applyMask(theme, masks.weaker, maskOptionsAlt)
-    const alt2 = applyMask(alt1, masks.weaker, maskOptionsAlt)
-    const active =
-      activeTheme ??
-      applyMask(theme, masks.weaker, {
-        ...maskOptions,
-        strength: 4,
-      })
-    return addChildren({ alt1, alt2, active }, (_, subTheme) => {
-      return getComponentThemes(subTheme, subTheme === inverse ? theme : inverse)
-    })
-  }
-
-  function getComponentThemes(theme: SubTheme, inverse: SubTheme) {
-    const weaker1 = applyMask(theme, masks.weaker, maskOptions)
-    const weaker2 = applyMask(weaker1, masks.weaker, maskOptions)
-    const stronger1 = applyMask(theme, masks.stronger, maskOptions)
-    const inverse1 = applyMask(inverse, masks.weaker, maskOptions)
-    const inverse2 = applyMask(inverse1, masks.weaker, maskOptions)
-    const strongerBorderLighterBackground: SubTheme = isLight
-      ? {
-          ...stronger1,
-          borderColor: weaker1.borderColor,
-          borderColorHover: weaker1.borderColorHover,
-          borderColorPress: weaker1.borderColorPress,
-          borderColorFocus: weaker1.borderColorFocus,
-        }
-      : {
-          ...theme,
-          borderColor: weaker1.borderColor,
-          borderColorHover: weaker1.borderColorHover,
-          borderColorPress: weaker1.borderColorPress,
-          borderColorFocus: weaker1.borderColorFocus,
-        }
-    return {
-      Card: weaker1,
-      Button: weaker2,
-      Checkbox: weaker2,
-      DrawerFrame: weaker1,
-      SliderTrack: stronger1,
-      SliderTrackActive: weaker2,
-      SliderThumb: inverse1,
-      Progress: weaker1,
-      ProgressIndicator: inverse,
-      Switch: weaker2,
-      SwitchThumb: inverse2,
-      TooltipArrow: weaker1,
-      TooltipContent: weaker2,
-      Input: strongerBorderLighterBackground,
-      TextArea: strongerBorderLighterBackground,
-      Tooltip: inverse1,
-    }
-  }
 })
+
+function getAltThemes(
+  theme: SubTheme,
+  inverse: SubTheme,
+  isLight: boolean,
+  activeTheme?: SubTheme
+) {
+  const maskOptionsAlt = {
+    ...maskOptions,
+    override: overrideShadows,
+  }
+  const alt1 = applyMask(theme, masks.weaker, maskOptionsAlt)
+  const alt2 = applyMask(alt1, masks.weaker, maskOptionsAlt)
+  const active =
+    activeTheme ??
+    (process.env.ACTIVE_THEME_INVERSE
+      ? inverse
+      : applyMask(theme, masks.weaker, {
+          ...maskOptions,
+          strength: 4,
+        }))
+
+  return addChildren({ alt1, alt2, active }, (_, subTheme) => {
+    return getComponentThemes(subTheme, subTheme === inverse ? theme : inverse, isLight)
+  })
+}
+
+function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean) {
+  const weaker1 = applyMask(theme, masks.weaker, maskOptions)
+  const weaker2 = applyMask(weaker1, masks.weaker, {
+    ...maskOptions,
+    override: overrideWithColors,
+  })
+  const stronger1 = applyMask(theme, masks.stronger, maskOptions)
+  const inverse1 = applyMask(inverse, masks.weaker, maskOptions)
+  const inverse2 = applyMask(inverse1, masks.weaker, maskOptions)
+  const strongerBorderLighterBackground: SubTheme = isLight
+    ? {
+        ...stronger1,
+        borderColor: weaker1.borderColor,
+        borderColorHover: weaker1.borderColorHover,
+        borderColorPress: weaker1.borderColorPress,
+        borderColorFocus: weaker1.borderColorFocus,
+      }
+    : {
+        ...applyMask(theme, masks.skip, maskOptions),
+        borderColor: weaker1.borderColor,
+        borderColorHover: weaker1.borderColorHover,
+        borderColorPress: weaker1.borderColorPress,
+        borderColorFocus: weaker1.borderColorFocus,
+      }
+
+  return {
+    Card: weaker1,
+    Button: weaker2,
+    Checkbox: weaker2,
+    DrawerFrame: weaker1,
+    SliderTrack: stronger1,
+    SliderTrackActive: weaker2,
+    SliderThumb: inverse1,
+    Progress: weaker1,
+    ProgressIndicator: inverse,
+    Switch: weaker2,
+    SwitchThumb: inverse2,
+    TooltipArrow: weaker1,
+    TooltipContent: weaker2,
+    Input: strongerBorderLighterBackground,
+    TextArea: strongerBorderLighterBackground,
+    Tooltip: inverse1,
+  }
+}
 
 export const themes = {
   ...allThemes,
