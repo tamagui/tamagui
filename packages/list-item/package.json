@@ -17,7 +17,7 @@
   "scripts": {
     "build": "tamagui-build",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
