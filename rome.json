@@ -3,9 +3,11 @@
     "enabled": true,
     "rules": {
       "correctness": {
-        "noUnnecessaryContinue": "off"
+        "noUnnecessaryContinue": "off",
+        "noConstructorReturn": "off"
       },
       "suspicious": {
+        "noEmptyInterface": "off",
         "noExplicitAny": "off",
         "noArrayIndexKey": "off",
         "noDoubleEquals": "off"
@@ -14,6 +16,9 @@
         "noNonNullAssertion": "off",
         "noArguments": "off",
         "noUnusedTemplateLiteral": "off",
+        "useDefaultParameterLast": "off",
+        "useConst": "off",
+        "useEnumInitializers": "off",
         "useTemplate": "off"
       },
       "security": {

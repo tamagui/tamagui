@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "TAMAGUI_TARGET=web next dev",
     "gen": "TAMAGUI_TARGET=web next build",
-    "start": "TAMAGUI_TARGET=web next start",
-    "lint": "TAMAGUI_TARGET=web next lint"
+    "start": "TAMAGUI_TARGET=web next start"
   },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "^0.5.9",
