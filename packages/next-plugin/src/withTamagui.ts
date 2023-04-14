@@ -375,7 +375,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             []
           )
 
-          // temporary condition just to get app dir working
           if (!isAppDir) {
             cssRules.unshift({
               test: tamaguiOptions.includeCSSTest ?? /\.tamagui\.css$/,
