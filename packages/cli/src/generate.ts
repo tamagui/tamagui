@@ -1,25 +1,25 @@
 #!/usr/bin/env node
 
+import { CLIResolvedOptions } from '@tamagui/types'
 import fs from 'fs-extra'
 import { Project } from 'ts-morph'
 
-import { ResolvedOptions } from './types.js'
 import { loadTamagui } from './utils.js'
 
-export async function generateTypes(options: ResolvedOptions) {
+export async function generateTypes(options: CLIResolvedOptions) {
   const types = await getTypes(options)
   await fs.writeJSON(options.paths.types, types, {
     spaces: 2,
   })
 }
 
-export async function getTypes(options: ResolvedOptions) {
+export async function getTypes(options: CLIResolvedOptions) {
   const tamagui = await loadTamagui(options.tamaguiOptions)
 
   const uniqueViewExportingPaths = new Set(
     Object.keys(tamagui.nameToPaths).map((name) => {
       return `${[...tamagui.nameToPaths[name]][0]}.ts*`
-    }),
+    })
   )
 
   const project = new Project({
@@ -51,7 +51,7 @@ export async function getTypes(options: ResolvedOptions) {
             }),
         ]
       })
-    }),
+    })
   )
 
   // console.log(
