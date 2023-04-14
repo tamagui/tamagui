@@ -1,5 +1,7 @@
 /// <reference types="vitest" />
 
+import { join } from 'path'
+
 // import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react-swc'
@@ -19,10 +21,19 @@ export default defineConfig({
   //     plugins: [esbuildCommonjs(['@tamagui/core-node'])],
   //   },
   // },
-  // @ts-ignore
+
+  resolve: {
+    alias: {
+      '@tamagui/web': require.resolve(`@tamagui/web`),
+    },
+  },
+
   test: {
-    // setupFiles: [join(__dirname, 'setup.ts')],
-    environment: 'happy-dom',
+    // for compat with some jest libs (like @testing-library/jest-dom)
+    globals: true,
+    setupFiles: [join(__dirname, 'test-setup.ts')],
+    // happy-dom has issues with components-test
+    environment: 'jsdom',
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     deps: {
       inline: ['react-native-web', /tamagui/],
