@@ -9,10 +9,12 @@ import type { Plugin } from 'vite'
 export function tamaguiPlugin(
   options: TamaguiOptions & {
     useReactNativeWebLite?: boolean
+    disableWatchTamaguiConfig?: boolean
   }
 ): Plugin {
-  // studio
-  watchTamaguiConfig(options)
+  if (!options.disableWatchTamaguiConfig) {
+    watchTamaguiConfig(options)
+  }
 
   const components = [...new Set([...options.components, 'tamagui', '@tamagui/core'])]
   const noExternalSSR = new RegExp(

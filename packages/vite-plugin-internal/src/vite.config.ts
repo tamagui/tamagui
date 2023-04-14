@@ -14,6 +14,7 @@ export default defineConfig({
     tamaguiPlugin({
       components: ['tamagui'],
       config: './tamagui.config.ts',
+      disableWatchTamaguiConfig: true,
     }),
   ],
   // optimizeDeps: {
