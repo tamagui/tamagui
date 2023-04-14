@@ -4,14 +4,7 @@ import { focusFocusable } from '@tamagui/focusable'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { SizableText } from '@tamagui/text'
-import {
-  GetProps,
-  ReactComponentWithRef,
-  isWeb,
-  styled,
-  themeable,
-  useId,
-} from '@tamagui/web'
+import { GetProps, ReactComponentWithRef, isWeb, styled, themeable } from '@tamagui/web'
 import * as React from 'react'
 import { View } from 'react-native'
 
@@ -74,7 +67,7 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>(
     const controlRef = React.useRef<HTMLElement | null>(null)
     const ref = React.useRef<any>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
-    const backupId = useId()
+    const backupId = React.useId()
     const id = idProp ?? backupId
 
     if (isWeb) {

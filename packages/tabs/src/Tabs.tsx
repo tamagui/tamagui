@@ -15,7 +15,6 @@ import {
   isWeb,
   styled,
   useEvent,
-  useId,
   withStaticProperties,
 } from '@tamagui/web'
 import * as React from 'react'
@@ -198,7 +197,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
       }, [isSelected, value, layout])
 
       return (
-        <Theme forceClassName name={isSelected ? 'active' : null}>
+        <Theme name={isSelected ? 'active' : null}>
           <RovingFocusGroup.Item
             asChild
             {...rovingFocusGroupScope}
@@ -422,7 +421,7 @@ export const Tabs = withStaticProperties(
         return (
           <TabsProvider
             scope={__scopeTabs}
-            baseId={useId()}
+            baseId={React.useId()}
             value={value}
             onChange={setValue}
             orientation={orientation}

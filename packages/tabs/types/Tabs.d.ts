@@ -267,6 +267,9 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
     readonly elevate?: boolean | undefined;
+    /**
+     * @deprecated use `TabTabsProps` instead
+     */
     readonly bordered?: number | boolean | undefined;
     readonly size?: SizeTokens | undefined;
 }>>) | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
@@ -387,6 +390,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
     readonly elevate?: boolean | undefined;
+    /**
+     * @deprecated use `TabTabsProps` instead
+     */
     readonly bordered?: number | boolean | undefined;
     readonly size?: SizeTokens | undefined;
 }>> & {

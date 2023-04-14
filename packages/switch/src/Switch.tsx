@@ -223,7 +223,6 @@ export const Switch = withStaticProperties(
               unstyled={unstyled}
               size={size}
               theme={checked ? 'active' : null}
-              themeShallow
               // @ts-ignore
               role="switch"
               aria-checked={checked}

@@ -36,11 +36,8 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Line
-        x1="16.5"
-        y1="9.4"
-        x2="7.5"
-        y2="4.21"
+      <Path
+        d="M16.5 9.4 7.55 4.24"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
@@ -65,8 +62,8 @@ const Icon = (props) => {
       />
       <Line
         x1="12"
-        y1="22"
         x2="12"
+        y1="22"
         y2="12"
         fill="none"
         stroke={`${color}`}
