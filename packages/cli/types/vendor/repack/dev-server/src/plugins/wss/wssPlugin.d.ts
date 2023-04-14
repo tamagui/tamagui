@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import type { Server } from '../../types';
 import { WebSocketApiServer } from './servers/WebSocketApiServer';
 import { WebSocketDebuggerServer } from './servers/WebSocketDebuggerServer';
@@ -23,6 +22,6 @@ declare module 'fastify' {
 declare const _default: import("fastify").FastifyPluginAsync<{
     options: Server.Options;
     delegate: Server.Delegate;
-}, import("http").Server>;
+}>;
 export default _default;
 //# sourceMappingURL=wssPlugin.d.ts.map

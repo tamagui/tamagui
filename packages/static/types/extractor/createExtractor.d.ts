@@ -12,19 +12,7 @@ export declare function createExtractor({ logger }?: ExtractorOptions): {
     cleanupBeforeExit: typeof cleanupBeforeExit;
     loadTamagui: (props: TamaguiOptions) => Promise<TamaguiProjectInfo>;
     loadTamaguiSync: (props: TamaguiOptions) => TamaguiProjectInfo;
-    getTamagui(): import("@tamagui/web").TamaguiInternalConfig<import("@tamagui/web").CreateTokens<import("@tamagui/web").VariableVal>, {
-        [key: string]: Partial<import("@tamagui/web").TamaguiBaseTheme> & {
-            [key: string]: import("@tamagui/web").VariableVal;
-        };
-    }, import("@tamagui/web").GenericShorthands, {
-        [key: string]: {
-            [key: string]: string | number;
-        };
-    }, {
-        [key: string]: string | any[] | {
-            [key: string]: any;
-        };
-    }, import("@tamagui/web").GenericFonts> | undefined;
+    getTamagui(): import("@tamagui/web").TamaguiInternalConfig | undefined;
     parseSync: (f: FileOrPath, props: ExtractorParseProps) => {
         styled: number;
         flattened: number;
