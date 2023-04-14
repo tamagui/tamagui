@@ -12,8 +12,8 @@ export function AlertDialogDemo() {
           key="overlay"
           animation="quick"
           opacity={0.5}
-          enterStyle={{opacity:0 }}
-          exitStyle={{opacity:0 }}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
         />
         <AlertDialog.Content
           bordered
