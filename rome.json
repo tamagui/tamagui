@@ -11,6 +11,7 @@
         "noDoubleEquals": "off"
       },
       "style": {
+        "noNonNullAssertion": "off",
         "noArguments": "off",
         "noUnusedTemplateLiteral": "off",
         "useTemplate": "off"
@@ -25,6 +26,9 @@
       "complexity": {
         "useSimplifiedLogicExpression": "off",
         "useOptionalChain": "off"
+      },
+      "a11y": {
+        "noHeaderScope": "off"
       }
     }
   },
