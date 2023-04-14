@@ -11,8 +11,6 @@ import { WebSocketHMRServer } from './servers/WebSocketHMRServer'
 import { WebSocketMessageServer } from './servers/WebSocketMessageServer'
 import { WebSocketRouter } from './WebSocketRouter'
 
-console.log('HermesInspectorProxy disabled')
-
 declare module 'fastify' {
   interface FastifyInstance {
     wss: {

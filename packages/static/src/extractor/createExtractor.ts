@@ -4,14 +4,13 @@ import { basename, relative } from 'path'
 import traverse, { NodePath, TraverseOptions } from '@babel/traverse'
 import * as t from '@babel/types'
 import {
-  PseudoStyles,
-  StaticConfigParsed,
   expandStyles,
   getSplitStyles,
   mediaQueryConfig,
   proxyThemeVariables,
   pseudoDescriptors,
 } from '@tamagui/core-node'
+import type { PseudoStyles, StaticConfigParsed, TamaguiProjectInfo } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
 import { createDOMProps } from 'react-native-web-internals'
 
@@ -43,7 +42,7 @@ import {
   getStaticBindingsForScope,
 } from './getStaticBindingsForScope.js'
 import { literalToAst } from './literalToAst.js'
-import { TamaguiProjectInfo, loadTamagui, loadTamaguiSync } from './loadTamagui.js'
+import { loadTamagui, loadTamaguiSync } from './loadTamagui.js'
 import { logLines } from './logLines.js'
 import { normalizeTernaries } from './normalizeTernaries.js'
 import { removeUnusedHooks } from './removeUnusedHooks.js'

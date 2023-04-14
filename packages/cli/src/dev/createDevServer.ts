@@ -1,11 +1,12 @@
 import { readFile } from 'fs/promises'
 
-import { ResolvedOptions } from '../types.js'
+import { CLIResolvedOptions } from '@tamagui/types'
+
 import { DEFAULT_PORT } from '../utils/constants.js'
 import { Server, createServer } from '../vendor/repack/dev-server/src'
 
 export async function createDevServer(
-  options: ResolvedOptions,
+  options: CLIResolvedOptions,
   {
     indexJson,
     getIndexBundle,

@@ -2,16 +2,16 @@ import { readFile } from 'fs/promises'
 import { AddressInfo } from 'net'
 import { join } from 'path'
 
+import { CLIResolvedOptions } from '@tamagui/types'
 import chalk from 'chalk'
 import fs from 'fs-extra'
 import { build, createServer } from 'vite'
 
 import { createDevServer } from './dev/createDevServer.js'
 import { watchTamaguiConfig } from './tamaguiConfigUtils.js'
-import { ResolvedOptions } from './types.js'
 import { registerDispose } from './utils.js'
 
-export const dev = async (options: ResolvedOptions) => {
+export const dev = async (options: CLIResolvedOptions) => {
   const { root, mode, paths } = options
 
   process.chdir(process.cwd())
