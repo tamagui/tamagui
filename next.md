@@ -1,3 +1,8 @@
+- automate adding sponsor label on discord when sponsored
+  - if possible we can automate adding a private chat room if they fill our something on their account
+
+- arrow on popover doesnt render border color
+
 - Switch unstyled - make it so it doesn't do any theme stuff
 
 - font-family is being output to DOM on text element
