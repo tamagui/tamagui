@@ -31,13 +31,9 @@ import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport'
 const ToastImplFrame = styled(ThemeableStack, {
   name: 'ToastImpl',
   variants: {
-    backgrounded: {
-      true: {
-        backgroundColor: '$color6',
-      },
-    },
     unstyled: {
       false: {
+        backgroundColor: '$color6',
         borderRadius: '$10',
         paddingHorizontal: '$5',
         paddingVertical: '$2',
@@ -45,9 +41,8 @@ const ToastImplFrame = styled(ThemeableStack, {
         marginVertical: '$1',
       },
     },
-  },
+  } as const,
   defaultVariants: {
-    backgrounded: true,
     unstyled: false,
   },
 })

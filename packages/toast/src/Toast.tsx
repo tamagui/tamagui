@@ -50,7 +50,7 @@ const ToastTitleFrame = styled(SizableText, {
         size: '$4',
       },
     },
-  },
+  } as const,
   defaultVariants: {
     unstyled: false,
   },
@@ -84,7 +84,7 @@ const ToastDescriptionFrame = styled(SizableText, {
         size: '$1',
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     unstyled: false,
