@@ -15,11 +15,15 @@ interface ShowOptions extends CreateNativeToastOptions {
      * Overrides the native option on `ToastImperativeProvider`
      */
     native?: ToastNativeValue;
+    /**
+     * Which viewport to send this toast to. This is only intended to be used with custom toasts and you should wire it up when creating the toast.
+     */
+    viewportName?: string | 'default';
 }
 type ToastData = {
     title: string;
     id: string;
-} & CreateNativeToastOptions & {
+} & ShowOptions & {
     isHandledNatively: boolean;
 };
 interface ToastContextI {
