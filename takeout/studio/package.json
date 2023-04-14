@@ -21,11 +21,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/animations-reanimated": "^1.14.7",
+    "@tamagui/animations-reanimated": "^1.14.8",
     "@tamagui/colors": "^1.14.8",
     "@tamagui/config": "^1.14.8",
     "@tamagui/core": "^1.14.8",
-    "@tamagui/lucide-icons": "^1.14.7",
+    "@tamagui/lucide-icons": "^1.14.8",
     "@tamagui/polyfill-dev": "^1.14.8",
     "@tamagui/themes": "^1.14.8",
     "@tauri-apps/api": "^1.2.0",
