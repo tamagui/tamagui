@@ -209,6 +209,10 @@ function getState(
     throw new Error('Cannot reset + set new name')
   }
 
+  if (!props.name && !props.inverse && !props.reset && !props.componentName) {
+    return null
+  }
+
   if (props.reset && !parentManager?.parentManager) {
     if (process.env.NODE_ENV === 'development') {
       console.warn('Cannot reset no grandparent exists')
@@ -288,7 +292,7 @@ function getState(
     const found = potentials.find((t) => t in themes)
 
     if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
-      console.log(' - ', { found, potentials })
+      console.log(' - ', { found, potentials, parentManager })
     }
 
     if (found) {

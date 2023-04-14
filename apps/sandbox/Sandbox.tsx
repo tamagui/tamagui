@@ -1,10 +1,10 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { SwitchDemo, TabsAdvancedDemo } from '@tamagui/demos'
+import { SwitchDemo, TabsAdvancedDemo, TabsDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
-import { ScrollView, TamaguiProvider, XStack, YStack } from 'tamagui'
+import { ScrollView, TamaguiProvider, Theme, XStack, YStack } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -22,7 +22,11 @@ export const Sandbox = () => {
     <SandboxFrame>
       {/* this comment keeps indent */}
 
-      <SwitchDemo />
+      {/* <SwitchDemo /> */}
+
+      <Theme name="blue">
+        <TabsDemo />
+      </Theme>
 
       {/* TODO fix/convert into tests */}
       {/* <SandboxThemeChange /> */}

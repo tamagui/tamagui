@@ -198,7 +198,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
       }, [isSelected, value, layout])
 
       return (
-        <Theme forceClassName name={isSelected ? 'active' : null}>
+        <Theme name={isSelected ? 'active' : null}>
           <RovingFocusGroup.Item
             asChild
             {...rovingFocusGroupScope}
