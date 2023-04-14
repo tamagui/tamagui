@@ -26,6 +26,7 @@ import type {
   TamaguiOptionsWithFileInfo,
   Ternary,
 } from '../types.js'
+import { TamaguiProjectInfo } from './bundleConfig.js'
 import { createEvaluator, createSafeEvaluator } from './createEvaluator.js'
 import { evaluateAstNode } from './evaluateAstNode.js'
 import {
@@ -43,7 +44,7 @@ import {
   getStaticBindingsForScope,
 } from './getStaticBindingsForScope.js'
 import { literalToAst } from './literalToAst.js'
-import { TamaguiProjectInfo, loadTamagui, loadTamaguiSync } from './loadTamagui.js'
+import { loadTamagui, loadTamaguiSync } from './loadTamagui.js'
 import { logLines } from './logLines.js'
 import { normalizeTernaries } from './normalizeTernaries.js'
 import { removeUnusedHooks } from './removeUnusedHooks.js'

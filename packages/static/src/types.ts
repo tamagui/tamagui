@@ -4,8 +4,8 @@ import type { PseudoStyles, StaticConfig } from '@tamagui/core-node'
 import type { StyleObject } from '@tamagui/helpers'
 import type { TamaguiOptions } from '@tamagui/types'
 import type { ViewStyle } from 'react-native'
+import { LoadedComponents } from './extractor/bundleConfig'
 
-import { LoadedComponents } from './index.js'
 
 // @ts-ignore
 export type { TamaguiOptions } from '@tamagui/types'
