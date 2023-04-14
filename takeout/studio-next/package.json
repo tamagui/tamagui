@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "TAMAGUI_TARGET=web next dev",
-    "build": "TAMAGUI_TARGET=web next build",
+    "gen": "TAMAGUI_TARGET=web next build",
     "start": "TAMAGUI_TARGET=web next start",
     "lint": "TAMAGUI_TARGET=web next lint"
   },
