@@ -57,6 +57,7 @@ export function QuickNav() {
         zIndex: 1,
         position: 'fixed' as any,
         left: '50%',
+        top: 105,
         marginLeft: 430,
       }}
     >

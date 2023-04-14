@@ -1,7 +1,6 @@
-import { SupabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import { createClient } from '@supabase/supabase-js'
+import { SupabaseClient, createClient } from '@supabase/supabase-js'
 import Stripe from 'stripe'
-import { Customer, Price, Product, UserDetails } from 'types'
+import { Price, Product } from 'types'
 
 import { toDateTime } from './helpers'
 import { stripe } from './stripe'
@@ -25,7 +24,7 @@ const upsertProductRecord = async (product: Stripe.Product) => {
     metadata: product.metadata,
   }
 
-  const { error } = await supabaseAdmin.from<Product>('products').upsert([productData])
+  const { error } = await supabaseAdmin.from('products').upsert([productData])
   if (error) throw error
   console.log(`Product inserted/updated: ${product.id}`)
 }
@@ -45,14 +44,14 @@ const upsertPriceRecord = async (price: Stripe.Price) => {
     metadata: price.metadata,
   }
 
-  const { error } = await supabaseAdmin.from<Price>('prices').upsert([priceData])
+  const { error } = await supabaseAdmin.from('prices').upsert([priceData])
   if (error) throw error
   console.log(`Price inserted/updated: ${price.id}`)
 }
 
 const createOrRetrieveCustomer = async ({ email, uuid }: { email: string; uuid: string }) => {
   const { data, error } = await supabaseAdmin
-    .from<Customer>('customers')
+    .from('customers')
     .select('stripe_customer_id')
     .eq('id', uuid)
     .single()
@@ -87,7 +86,7 @@ const copyBillingDetailsToCustomer = async (uuid: string, payment_method: Stripe
   //@ts-ignore
   await stripe.customers.update(customer, { name, phone, address })
   const { error } = await supabaseAdmin
-    .from<UserDetails>('users')
+    .from('users')
     .update({
       billing_address: address,
       payment_method: payment_method[payment_method.type],
@@ -103,7 +102,7 @@ const manageSubscriptionStatusChange = async (
 ) => {
   // Get customer's UUID from mapping table.
   const { data: customerData, error: noCustomerError } = await supabaseAdmin
-    .from<Customer>('customers')
+    .from('customers')
     .select('id')
     .eq('stripe_customer_id', customerId)
     .single()
