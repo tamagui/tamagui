@@ -6,7 +6,6 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
@@ -14,13 +13,15 @@
   ],
   "scripts": {
     "dev": "cd ../.. && yarn studio",
-    "tauri": "tauri",
+    "tauri": "tauri dev",
     "build:takeout": "tamagui-build",
     "watch:takeout": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@supabase/auth-helpers-react": "^0.3.1",
+    "@supabase/supabase-js": "^2.14.0",
     "@tamagui/animations-reanimated": "^1.14.9",
     "@tamagui/colors": "^1.14.9",
     "@tamagui/config": "^1.14.9",
@@ -34,6 +35,7 @@
     "@types/uuid": "^8.3.4",
     "color2k": "^1.2.4",
     "d3-scale": "^3.3.0",
+    "graphql-tag": "^2.12.6",
     "hsluv": "^0.1.0",
     "lodash-es": "^4.17.21",
     "react-draggable": "^4.4.5",
@@ -41,7 +43,8 @@
     "react-native": "^0.71.4",
     "tamagui": "^1.14.9",
     "ts-morph": "^15.1.0",
-    "valtio": "^1.6.1"
+    "use-valtio": "^0.0.2",
+    "valtio": "^1.10.4"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.18.6",
@@ -52,6 +55,6 @@
     "babel-polyfill": "^6.26.0",
     "esbuild-loader": "^2.20.0",
     "react-refresh": "^0.14.0",
-    "vite": "^4.0.4"
+    "vite": "^4.2.1"
   }
 }
