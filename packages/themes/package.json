@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/themes",
-  "version": "1.14.4",
+  "version": "1.14.9",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -11,7 +11,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
+    "generate": "node -r esbuild-register ./src/generate.ts",
+    "build": "tamagui-build && yarn generate",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
     "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
@@ -20,6 +21,11 @@
   },
   "exports": {
     "./package.json": "./package.json",
+    "./generated.json": {
+      "types": "./generated.d.ts",
+      "import": "./generated.json",
+      "require": "./generated.json"
+    },
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
@@ -27,12 +33,12 @@
     }
   },
   "dependencies": {
-    "@tamagui/colors": "1.14.4",
-    "@tamagui/create-theme": "1.14.4",
-    "@tamagui/web": "1.14.4"
+    "@tamagui/colors": "1.14.9",
+    "@tamagui/create-theme": "1.14.9",
+    "@tamagui/web": "1.14.9"
   },
   "devDependencies": {
-    "@tamagui/build": "1.14.4"
+    "@tamagui/build": "1.14.9"
   },
   "publishConfig": {
     "access": "public"

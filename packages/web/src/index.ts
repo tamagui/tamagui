@@ -8,8 +8,6 @@ export * from './createTokens.js'
 export * from './createVariable.js'
 export * from './createVariables.js'
 export * from './insertFont.js'
-export * from './addTheme.js'
-export * from './updateTheme.js'
 export * from './styled.js'
 export * from './types.js'
 export * from './setupReactNative.js'
@@ -45,7 +43,6 @@ export * from './helpers/normalizeColor.js'
 
 export * from './contexts/ButtonNestingContext.js'
 
-export * from './hooks/useId.js'
 export * from './hooks/useIsTouchDevice.js'
 
 export {

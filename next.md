@@ -1,3 +1,12 @@
+- Switch unstyled - make it so it doesn't do any theme stuff
+
+- font-family is being output to DOM on text element
+- font weights in css are generating extra variables with "undefined" value if not filled in
+- add defaultSize and defaultFontFamily to createTamagui
+  - all instances of $true can become getConfig().defaultSize
+  - all instances of $body can become getConfig().defaultFontFamily
+  - remove the validation in createTamagui that enforces the keys
+
 - <Select /> light mode the hover style is barely visible
   - todo in themes branch
   - it should have pure white bg
@@ -18,6 +27,7 @@
 
 - bug: inputs rendering twice due to focusableInputHOC, if you remove that it doesnt, this is due to styled() + how it determines ComponentIn and grabs the component
 
+
 - document `unstyled` prop for components
 
 - `defaultUnstyled` option in createTamagui
@@ -37,13 +47,129 @@
 
 - force fix version
 - move to use-roving-index
+- cli
+  - `tamagui doctor` command to check for version mismatch
 
-- WARN  Sending onAnimatedValueUpdate with no listeners registered
+support new RN props:
+https://reactnative.dev/blog/2023/01/12/version-071#web-inspired-props-for-accessibility-styles-and-events
+
+Ali:
+
+- [ ] moti driver
+- [ ] Studio
+  - [x] Bring back next saas stuff
+  - [x] Sponsor => Github auth Account
+  - [x] Web Filesystemapi to access to folder
+  - [ ] Host on vercel
+  - [ ] plugins automatically watch and build
+    - [ ] babel-plugin, webpack-loader, vite all share @tamagui/static
+      - [ ] @tamagui/static just needs to add a call to the watch that studio.ts uses
+    - [ ] if weird or hard:
+      - [ ] `tama studio` comment out and instead
+        - [ ] `tama studio --serve` add flag and hide vite stuff behind there
+        - [ ] `tama studio` just builds once
+        - [ ] `tama studio --watch` watches
+- [ ] skipProps on getSplitStyle working with width={} but not styled()'s width:
+- [ ] https://discord.com/channels/909986013848412191/1095303038786342983/1095303038786342983
+- [x] https://github.com/chakra-ui/chakra-ui/issues/183#issuecomment-1503061828
+- [ ] document keyboard avoiding view in `Sheet.mdx`
+- [ ] input bug 
+  - [ ] https://discord.com/channels/909986013848412191/1091749199378387065/1091909256023904377
+- [x] Toasts starter
+- [x] Studio get running
+- [x] RadioGroup needs a press style color for the indicator
+- [ ] @tamagui/change-animation-driver document
+- [x] Switch for animation driver on website doesn't animate
+  - [x] lets keep it as a spring
+- [ ] Disable warning ENV + configuration.md docs
+- [x] lets make forms use outline for 2px borders on focusStyle
+  - [x] on native it can stay 1px
+  - [ ] (nate) make focusStyle border darker
+- [ ] WARN  Sending onAnimatedValueUpdate with no listeners registered
+- [x] `<YStack space="$3" $gtSm={{ space: '$6'}}>` not working again (likely fixed)
+- [ ] bezier on css animations
+- [x] tabs 
+  - [x] advanced demo is weird it has a bg and a separator
+  - [x] prevSelectionIndicatorLayout should be state not ref to avoid concurrency issues
+  - [ ] disablePassBorderRadius feels like a weird thing to need by default
+    - change Group's disablePassBorderRadius to something else - perhaps the negation, passBorderRadius? i'm not sure. what do you think about this @natew 
+    alternatively we could have disablePassBorderRadius default to true only on Tabs.List. but then overriding it would feel awkward (having to pass disablePassBorderRadius={false})
+  - [x] IntentIndicator lowercase
+    - [x] maybe make all state go into one useState({ intentAt, activeAt, tab })
+  - [x] Trigger => Tab (deprecate)
+  - [x] TabsTriggerFrame variant theme Button is weird does that do anythig?
+- [ ] lets make Card.extractable into Card.stylable() and deprecate it
+  - [ ] and document on styled() page
+- native component modes
+  - [ ] `RadioGroup`, `Select` native (web)
+  - [ ] `Switch` native (mobile)
+- [x] unstyled for 
+  - [x] Select (was already done)
+  - [x] Tabs
+  - [x] Card (was already done)
+- [x] go through the docs and remove shorthands - use full forms
+- [x] go through the docs and change usage imports to tamagui instead of other packages (e.g. @tamagui/stack -> tamagui)
+
+---
+
+Nate:
+
+- refactor getSplitStyles to share getSubStyle / logic with main style logic
+
+- [x] check if bug:
+  - one shouldn't work `<YStack onPress><Pressable onPress /></YStack>` - ali: I confirm this works
+  - should work `<YStack><Pressable onPress /></YStack>` - ali: I confirm this works
+  - result: Pressable is not supported on web since we don't implement usePressability and Pressability - moving it to your section
+---
+
+- site polish: 
+  - make the text selection match the theme
+  - make the link underline match the theme
+
+- website toggle for css/spring doesn't animate? we can keep it outside of the provider ideally so its always spring
+
+
+- in card : `if (isTamaguiElement(child) && !child.props.size) {` lets convert to context?
+  - can we come up with a nicer pattern to avoid having to rewrite from styled() to component here? like some sort of standard way to provide context between components?... thinking out loud:
+    - we could have a generic ComponentContext internally in createComponent
+    - we can export a createVariantContext()
+    - `const CardVariants = createVariantContext<{ size: number }>()`
+    - then in Card or any parent you can do `<CardVariants size={} />`
+    - finally, in `styled({ variantContext: CardVariants })`
+
+    <CardVariants.Provider size="$10">
+      <Card />
+    </CardVariants.Provider>
+
+    .for_Card.size_10 .is_Card { ... }
+
+    <Variants skeleton>
+      <Card />
+    </Variants>
+
+    variants: {
+      skeleton: {
+        true: {
+          beforeStyle: [
+            {
+              background: 'grey',
+            }
+          ]
+        }
+      }
+    }
+
+- themes: outlined, contrast
+
+
+- light/dark theme buttons bad colors (contrast + pressStyle borders)
+
+- slider track - light theme blends in with bg i think
+
+- add JSDoc help with links to docs for components
+  - also can we somehow make intellisense sort the props in a way we want by default? itd be ncie to have style props after the others
 
 - add codesandbox for most components
-
-- @tamagui/change-animation-driver
-  - would be good for the website to show and test animations across all drivers
 
 - https://github.com/tamagui/tamagui/issues/568
 - instead of proxying we could just merge all themes on creation with their parents?
@@ -56,12 +182,13 @@
 - add Themes page in docs under Theme, change Theme => Design System
 - move packages to have unstyled
 - move packages from /core to /web
-- <YStack space="$3" $gtSm={{ space: '$6'}}> not working again
 - // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
 
 ----
 
 - check why styled() of a HOC is failing:
+
+- Separator orientation="vertical" deprecate boolean `vertical`
 
 const SheetOverlay = styled(Sheet.Overlay, {
   backgroundColor: '$bgoverlay',
@@ -145,7 +272,6 @@ inbox
   - styled(), extendStaticConfig can just merge options rather than de-structure re-structure
   - remove mergeConfigDefaultProps
   - ThemeManager move to functional not class
-  - move addTheme/updateTheme out of core
   - may be able to remove proxyThemeVariables
   - getVariantExtras looks easy to slim
   - reverseMapClassNameToValue / unitlessNumbers

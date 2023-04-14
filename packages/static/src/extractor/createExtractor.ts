@@ -4,14 +4,13 @@ import { basename, relative } from 'path'
 import traverse, { NodePath, TraverseOptions } from '@babel/traverse'
 import * as t from '@babel/types'
 import {
-  PseudoStyles,
-  StaticConfigParsed,
   expandStyles,
   getSplitStyles,
   mediaQueryConfig,
   proxyThemeVariables,
   pseudoDescriptors,
 } from '@tamagui/core-node'
+import type { PseudoStyles, StaticConfigParsed } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
 import { createDOMProps } from 'react-native-web-internals'
 

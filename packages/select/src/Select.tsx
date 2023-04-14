@@ -6,7 +6,6 @@ import {
   isWeb,
   styled,
   useGet,
-  useId,
   useIsomorphicLayoutEffect,
   withStaticProperties,
 } from '@tamagui/core'
@@ -189,7 +188,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
     } = props
     const context = useSelectContext(ITEM_NAME, __scopeSelect)
     const isSelected = context.value === value
-    const textId = useId()
+    const textId = React.useId()
 
     const {
       selectedIndex,
@@ -419,7 +418,7 @@ type SelectGroupProps = GetProps<typeof SelectGroupFrame>
 const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
   (props: ScopedProps<SelectGroupProps>, forwardedRef) => {
     const { __scopeSelect, ...groupProps } = props
-    const groupId = useId()
+    const groupId = React.useId()
     return (
       <SelectGroupContextProvider scope={__scopeSelect} id={groupId || ''}>
         <SelectGroupFrame
@@ -522,7 +521,7 @@ export const Select = withStaticProperties(
       dir,
     } = props
 
-    const id = useId()
+    const id = React.useId()
     const scopeKey = __scopeSelect ? Object.keys(__scopeSelect)[0] ?? id : id
 
     const { when, AdaptProvider } = useAdaptParent({

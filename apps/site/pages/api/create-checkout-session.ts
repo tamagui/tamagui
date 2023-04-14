@@ -1,26 +1,29 @@
-import {
-  getUser,
-  withAuthRequired,
-} from '@supabase/supabase-auth-helpers/nextjs'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { getURL } from '../../lib/helpers'
 import { stripe } from '../../lib/stripe'
 import { createOrRetrieveCustomer } from '../../lib/supabaseAdmin'
 
-const createCheckoutSession = async (
-  req: NextApiRequest,
-  res: NextApiResponse,
-) => {
+const createCheckoutSession = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
+    const supabase = createServerSupabaseClient({ req, res })
+    const {
+      data: { session: authSession },
+    } = await supabase.auth.getSession()
+
+    if (!authSession)
+      return res.status(401).json({
+        error: 'not_authenticated',
+        description: 'The user does not have an active session or is not authenticated',
+      })
+
     const { price, quantity = 1, metadata = {} } = req.body
 
     try {
-      const { user } = await getUser({ req, res })
-
       const customer = await createOrRetrieveCustomer({
-        uuid: user?.id || '',
-        email: user?.email || '',
+        uuid: authSession.user.id || '',
+        email: authSession.user.email || '',
       })
 
       const session = await stripe.checkout.sessions.create({
@@ -54,4 +57,4 @@ const createCheckoutSession = async (
   }
 }
 
-export default withAuthRequired(createCheckoutSession)
+export default createCheckoutSession

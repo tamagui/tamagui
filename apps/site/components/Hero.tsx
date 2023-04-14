@@ -301,7 +301,7 @@ const Tag = styled(Text, {
   px: '$1',
   mx: '$-1',
   cursor: 'pointer',
-  color: '$color10',
+  color: '$color',
   bc: '$color2',
 
   hoverStyle: {

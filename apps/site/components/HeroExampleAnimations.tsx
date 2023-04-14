@@ -210,9 +210,6 @@ export const ExampleAnimations = memo(() => {
             return (
               <ListItem
                 key={item.name}
-                {...(isActive && {
-                  bc: '$backgroundHover',
-                })}
                 theme={isActive ? 'active' : 'alt2'}
                 px="$4"
                 py="$2"
