@@ -1,9 +1,11 @@
 import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
+import type { PseudoStyles, StaticConfig } from '@tamagui/core-node'
 import type { StyleObject } from '@tamagui/helpers'
 import type { TamaguiOptions } from '@tamagui/types'
-import type { LoadedComponents, PseudoStyles, StaticConfig } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
+import { LoadedComponents } from './extractor/bundleConfig'
+
 
 // @ts-ignore
 export type { TamaguiOptions } from '@tamagui/types'

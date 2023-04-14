@@ -1,10 +1,15 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { AnimationsDemo, SwitchDemo, TabsAdvancedDemo, TabsDemo } from '@tamagui/demos'
+import { TabsAdvancedDemo } from '@tamagui/demos'
+// import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
+// import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
+// import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
+import { AnimationsDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
-import { Button, ScrollView, TamaguiProvider, Theme, XStack, YStack } from 'tamagui'
+import { Button, ScrollView, TamaguiProvider, XStack, YStack } from 'tamagui'
+import { Theme } from 'tamagui'
 
 import config from './tamagui.config'
 

@@ -1,12 +1,10 @@
 import { join } from 'path'
 
-import type { TamaguiOptions } from '@tamagui/static'
+import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/static'
 import { loadTamagui as loadTamaguiStatic } from '@tamagui/static'
 import { CLIResolvedOptions, CLIUserOptions } from '@tamagui/types'
-import type { TamaguiProjectInfo } from '@tamagui/web'
 import chalk from 'chalk'
 import fs, { pathExists, readJSON } from 'fs-extra'
-import { ViteDevServer } from 'vite'
 
 export async function getOptions({
   root = process.cwd(),

@@ -10,7 +10,7 @@ import {
   proxyThemeVariables,
   pseudoDescriptors,
 } from '@tamagui/core-node'
-import type { PseudoStyles, StaticConfigParsed, TamaguiProjectInfo } from '@tamagui/web'
+import type { PseudoStyles, StaticConfigParsed } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
 import { createDOMProps } from 'react-native-web-internals'
 
@@ -25,6 +25,7 @@ import type {
   TamaguiOptionsWithFileInfo,
   Ternary,
 } from '../types.js'
+import { TamaguiProjectInfo } from './bundleConfig.js'
 import { createEvaluator, createSafeEvaluator } from './createEvaluator.js'
 import { evaluateAstNode } from './evaluateAstNode.js'
 import {
