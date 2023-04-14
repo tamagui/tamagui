@@ -415,6 +415,8 @@ function getTamaguiComponent(
   }
 }
 
+let loggedOutputInfo = false
+
 async function bundleConfig(props: Props) {
   const configEntry = props.config ? join(process.cwd(), props.config) : ''
   const tmpDir = join(process.cwd(), '.tamagui')
@@ -444,20 +446,23 @@ async function bundleConfig(props: Props) {
     //
   }
 
-  colorLog(
-    Color.FgYellow,
-    `
-Tamagui built config and components:`
-  )
-  colorLog(
-    Color.Dim,
-    `
-  Config     .${sep}${relative(process.cwd(), configOutPath)}
-  Components ${[
-    ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
-  ].join('\n             ')}
-`
-  )
+  if (!loggedOutputInfo) {
+    loggedOutputInfo = true
+    colorLog(
+      Color.FgYellow,
+      `
+      Tamagui built config and components:`
+    )
+    colorLog(
+      Color.Dim,
+      `
+        Config     .${sep}${relative(process.cwd(), configOutPath)}
+        Components ${[
+          ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
+        ].join('\n             ')}
+        `
+    )
+  }
 
   await Promise.all([
     props.config
