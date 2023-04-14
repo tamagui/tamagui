@@ -376,12 +376,13 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           )
 
           // temporary condition just to get app dir working
-          if (!isAppDir){
+          if (!isAppDir) {
             cssRules.unshift({
               test: tamaguiOptions.includeCSSTest ?? /\.tamagui\.css$/,
               sideEffects: true,
               use: cssLoader,
-            })}
+            })
+          }
         }
 
         webpackConfig.plugins.push(
@@ -392,6 +393,8 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               // console.log(`shouldExclude`, res, path)
               return res
             },
+            disableEsbuildLoader: isAppDir,
+            disableModuleJSXEntry: isAppDir,
             ...tamaguiOptions,
           })
         )

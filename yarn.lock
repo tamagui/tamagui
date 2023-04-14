@@ -1334,7 +1334,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx-self@npm:^7.0.0":
+"@babel/plugin-transform-react-jsx-self@npm:^7.0.0, @babel/plugin-transform-react-jsx-self@npm:^7.18.6":
   version: 7.21.0
   resolution: "@babel/plugin-transform-react-jsx-self@npm:7.21.0"
   dependencies:
@@ -1345,7 +1345,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx-source@npm:^7.0.0":
+"@babel/plugin-transform-react-jsx-source@npm:^7.0.0, @babel/plugin-transform-react-jsx-source@npm:^7.19.6":
   version: 7.19.6
   resolution: "@babel/plugin-transform-react-jsx-source@npm:7.19.6"
   dependencies:
@@ -4168,23 +4168,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-arm64@npm:1.3.49":
-  version: 1.3.49
-  resolution: "@swc/core-darwin-arm64@npm:1.3.49"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "@swc/core-darwin-x64@npm:1.3.40":
   version: 1.3.40
   resolution: "@swc/core-darwin-x64@npm:1.3.40"
-  conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@swc/core-darwin-x64@npm:1.3.49":
-  version: 1.3.49
-  resolution: "@swc/core-darwin-x64@npm:1.3.49"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -4196,23 +4182,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm-gnueabihf@npm:1.3.49":
-  version: 1.3.49
-  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.3.49"
-  conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
 "@swc/core-linux-arm64-gnu@npm:1.3.40":
   version: 1.3.40
   resolution: "@swc/core-linux-arm64-gnu@npm:1.3.40"
-  conditions: os=linux & cpu=arm64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-arm64-gnu@npm:1.3.49":
-  version: 1.3.49
-  resolution: "@swc/core-linux-arm64-gnu@npm:1.3.49"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
@@ -4224,23 +4196,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-musl@npm:1.3.49":
-  version: 1.3.49
-  resolution: "@swc/core-linux-arm64-musl@npm:1.3.49"
-  conditions: os=linux & cpu=arm64 & libc=musl
-  languageName: node
-  linkType: hard
-
 "@swc/core-linux-x64-gnu@npm:1.3.40":
   version: 1.3.40
   resolution: "@swc/core-linux-x64-gnu@npm:1.3.40"
-  conditions: os=linux & cpu=x64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-x64-gnu@npm:1.3.49":
-  version: 1.3.49
-  resolution: "@swc/core-linux-x64-gnu@npm:1.3.49"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
@@ -4252,23 +4210,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-musl@npm:1.3.49":
-  version: 1.3.49
-  resolution: "@swc/core-linux-x64-musl@npm:1.3.49"
-  conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
 "@swc/core-win32-arm64-msvc@npm:1.3.40":
   version: 1.3.40
   resolution: "@swc/core-win32-arm64-msvc@npm:1.3.40"
-  conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@swc/core-win32-arm64-msvc@npm:1.3.49":
-  version: 1.3.49
-  resolution: "@swc/core-win32-arm64-msvc@npm:1.3.49"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
@@ -4280,23 +4224,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-win32-ia32-msvc@npm:1.3.49":
-  version: 1.3.49
-  resolution: "@swc/core-win32-ia32-msvc@npm:1.3.49"
-  conditions: os=win32 & cpu=ia32
-  languageName: node
-  linkType: hard
-
 "@swc/core-win32-x64-msvc@npm:1.3.40":
   version: 1.3.40
   resolution: "@swc/core-win32-x64-msvc@npm:1.3.40"
-  conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@swc/core-win32-x64-msvc@npm:1.3.49":
-  version: 1.3.49
-  resolution: "@swc/core-win32-x64-msvc@npm:1.3.49"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4337,50 +4267,6 @@ __metadata:
     "@swc/core-win32-x64-msvc":
       optional: true
   checksum: 3ec2919784dfac7a535976e43771c85ed8048fae036ba922d379b1f64ea1cbfe614cc4124553fc268a19c5246311a3d887b9a92c6bcde6b03f2ad1957ad77246
-  languageName: node
-  linkType: hard
-
-"@swc/core@npm:^1.3.42":
-  version: 1.3.49
-  resolution: "@swc/core@npm:1.3.49"
-  dependencies:
-    "@swc/core-darwin-arm64": 1.3.49
-    "@swc/core-darwin-x64": 1.3.49
-    "@swc/core-linux-arm-gnueabihf": 1.3.49
-    "@swc/core-linux-arm64-gnu": 1.3.49
-    "@swc/core-linux-arm64-musl": 1.3.49
-    "@swc/core-linux-x64-gnu": 1.3.49
-    "@swc/core-linux-x64-musl": 1.3.49
-    "@swc/core-win32-arm64-msvc": 1.3.49
-    "@swc/core-win32-ia32-msvc": 1.3.49
-    "@swc/core-win32-x64-msvc": 1.3.49
-  peerDependencies:
-    "@swc/helpers": ^0.5.0
-  dependenciesMeta:
-    "@swc/core-darwin-arm64":
-      optional: true
-    "@swc/core-darwin-x64":
-      optional: true
-    "@swc/core-linux-arm-gnueabihf":
-      optional: true
-    "@swc/core-linux-arm64-gnu":
-      optional: true
-    "@swc/core-linux-arm64-musl":
-      optional: true
-    "@swc/core-linux-x64-gnu":
-      optional: true
-    "@swc/core-linux-x64-musl":
-      optional: true
-    "@swc/core-win32-arm64-msvc":
-      optional: true
-    "@swc/core-win32-ia32-msvc":
-      optional: true
-    "@swc/core-win32-x64-msvc":
-      optional: true
-  peerDependenciesMeta:
-    "@swc/helpers":
-      optional: true
-  checksum: 7234f38451dd765ea94cb44236f261603014e27bff6ecd133d9ba8a2d39314e9949e43bb77ffccd21f5e6c942ad7acf444de8972744ca24ac8f3ccecaea849a1
   languageName: node
   linkType: hard
 
@@ -4426,19 +4312,8 @@ __metadata:
   dependencies:
     "@babel/preset-react": ^7.18.6
     "@babel/preset-typescript": ^7.18.6
-<<<<<<< HEAD
     "@supabase/auth-helpers-react": ^0.3.1
     "@supabase/supabase-js": ^2.14.0
-    "@tamagui/animations-reanimated": ^1.14.4
-    "@tamagui/build": ^1.14.4
-    "@tamagui/colors": ^1.14.4
-    "@tamagui/config": ^1.14.4
-    "@tamagui/core": ^1.14.4
-    "@tamagui/lucide-icons": ^1.14.4
-    "@tamagui/polyfill-dev": ^1.14.4
-    "@tamagui/static": ^1.14.4
-    "@tamagui/themes": ^1.14.4
-=======
     "@tamagui/animations-reanimated": ^1.14.9
     "@tamagui/build": ^1.14.9
     "@tamagui/colors": ^1.14.9
@@ -4448,7 +4323,6 @@ __metadata:
     "@tamagui/polyfill-dev": ^1.14.9
     "@tamagui/static": ^1.14.9
     "@tamagui/themes": ^1.14.9
->>>>>>> master
     "@tauri-apps/api": ^1.2.0
     "@tauri-apps/cli": ^1.2.2
     "@types/d3-scale": ^4.0.2
@@ -4562,11 +4436,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/animations-reanimated@1.14.4, @tamagui/animations-reanimated@^1.11.2, @tamagui/animations-reanimated@^1.14.4, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
-=======
-"@tamagui/animations-reanimated@1.14.9, @tamagui/animations-reanimated@^1.14.9, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
->>>>>>> master
+"@tamagui/animations-reanimated@1.14.9, @tamagui/animations-reanimated@^1.11.2, @tamagui/animations-reanimated@^1.14.9, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:packages/animations-reanimated"
   dependencies:
@@ -4623,11 +4493,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/build@1.14.4, @tamagui/build@^1.11.2, @tamagui/build@^1.14.4, @tamagui/build@workspace:packages/build":
-=======
-"@tamagui/build@1.14.9, @tamagui/build@^1.14.9, @tamagui/build@workspace:packages/build":
->>>>>>> master
+"@tamagui/build@1.14.9, @tamagui/build@^1.11.2, @tamagui/build@^1.14.9, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -4724,6 +4590,7 @@ __metadata:
     "@takeout/studio": 1.5.24
     "@tamagui/build": 1.14.9
     "@tamagui/static": 1.14.9
+    "@tamagui/types": 1.14.9
     "@tamagui/vite-plugin": 1.14.9
     "@types/compression": ^1.7.2
     "@types/morgan": ^1.9.3
@@ -4814,11 +4681,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/colors@1.14.4, @tamagui/colors@^1.11.2, @tamagui/colors@^1.14.4, @tamagui/colors@workspace:packages/colors":
-=======
-"@tamagui/colors@1.14.9, @tamagui/colors@^1.14.9, @tamagui/colors@workspace:packages/colors":
->>>>>>> master
+"@tamagui/colors@1.14.9, @tamagui/colors@^1.11.2, @tamagui/colors@^1.14.9, @tamagui/colors@workspace:packages/colors":
   version: 0.0.0-use.local
   resolution: "@tamagui/colors@workspace:packages/colors"
   dependencies:
@@ -4873,11 +4736,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/config@1.14.4, @tamagui/config@^1.11.2, @tamagui/config@^1.14.4, @tamagui/config@workspace:packages/config":
-=======
-"@tamagui/config@1.14.9, @tamagui/config@^1.14.9, @tamagui/config@workspace:packages/config":
->>>>>>> master
+"@tamagui/config@1.14.9, @tamagui/config@^1.11.2, @tamagui/config@^1.14.9, @tamagui/config@workspace:packages/config":
   version: 0.0.0-use.local
   resolution: "@tamagui/config@workspace:packages/config"
   dependencies:
@@ -4937,11 +4796,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/core@1.14.4, @tamagui/core@^1.11.2, @tamagui/core@^1.14.4, @tamagui/core@workspace:packages/core":
-=======
-"@tamagui/core@1.14.9, @tamagui/core@^1.14.9, @tamagui/core@workspace:packages/core":
->>>>>>> master
+"@tamagui/core@1.14.9, @tamagui/core@^1.11.2, @tamagui/core@^1.14.9, @tamagui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
@@ -5395,11 +5250,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/lucide-icons@1.14.4, @tamagui/lucide-icons@^1.11.2, @tamagui/lucide-icons@^1.14.4, @tamagui/lucide-icons@workspace:packages/lucide-icons":
-=======
-"@tamagui/lucide-icons@1.14.9, @tamagui/lucide-icons@^1.14.9, @tamagui/lucide-icons@workspace:packages/lucide-icons":
->>>>>>> master
+"@tamagui/lucide-icons@1.14.9, @tamagui/lucide-icons@^1.11.2, @tamagui/lucide-icons@^1.14.9, @tamagui/lucide-icons@workspace:packages/lucide-icons":
   version: 0.0.0-use.local
   resolution: "@tamagui/lucide-icons@workspace:packages/lucide-icons"
   dependencies:
@@ -5434,11 +5285,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/next-plugin@1.14.4, @tamagui/next-plugin@^1.11.2, @tamagui/next-plugin@workspace:packages/next-plugin":
-=======
-"@tamagui/next-plugin@1.14.9, @tamagui/next-plugin@workspace:packages/next-plugin":
->>>>>>> master
+"@tamagui/next-plugin@1.14.9, @tamagui/next-plugin@^1.11.2, @tamagui/next-plugin@workspace:packages/next-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/next-plugin@workspace:packages/next-plugin"
   dependencies:
@@ -5491,11 +5338,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/next-theme@1.14.4, @tamagui/next-theme@^1.11.2, @tamagui/next-theme@workspace:packages/next-theme":
-=======
-"@tamagui/next-theme@1.14.9, @tamagui/next-theme@workspace:packages/next-theme":
->>>>>>> master
+"@tamagui/next-theme@1.14.9, @tamagui/next-theme@^1.11.2, @tamagui/next-theme@workspace:packages/next-theme":
   version: 0.0.0-use.local
   resolution: "@tamagui/next-theme@workspace:packages/next-theme"
   dependencies:
@@ -5515,11 +5358,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/polyfill-dev@1.14.4, @tamagui/polyfill-dev@^1.11.2, @tamagui/polyfill-dev@^1.14.4, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
-=======
-"@tamagui/polyfill-dev@1.14.9, @tamagui/polyfill-dev@^1.14.9, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
->>>>>>> master
+"@tamagui/polyfill-dev@1.14.9, @tamagui/polyfill-dev@^1.11.2, @tamagui/polyfill-dev@^1.14.9, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
   version: 0.0.0-use.local
   resolution: "@tamagui/polyfill-dev@workspace:packages/polyfill-dev"
   languageName: unknown
@@ -5724,8 +5563,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-=======
 "@tamagui/sandbox-web@workspace:apps/sandbox-web":
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox-web@workspace:apps/sandbox-web"
@@ -5734,15 +5571,14 @@ __metadata:
     "@tamagui/vite-plugin": 1.14.9
     "@tamagui/web": 1.14.9
     "@vitejs/plugin-react": ^2.2.0
-    "@vitejs/plugin-react-swc": ^3.0.1
+    "@vitejs/plugin-react-swc": ^3.2.0
     react: ^18.2.0
     react-dom: ^18.2.0
-    vite: ^4.0.4
+    vite: ^4.2.1
     vite-plugin-environment: ^1.1.3
   languageName: unknown
   linkType: soft
 
->>>>>>> master
 "@tamagui/sandbox@workspace:apps/sandbox":
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox@workspace:apps/sandbox"
@@ -5750,22 +5586,6 @@ __metadata:
     "@babel/preset-react": ^7.18.6
     "@babel/preset-typescript": ^7.18.6
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
-<<<<<<< HEAD
-    "@tamagui/animations-css": 1.14.4
-    "@tamagui/animations-reanimated": 1.14.4
-    "@tamagui/colors": 1.14.4
-    "@tamagui/core": 1.14.4
-    "@tamagui/demos": 1.14.4
-    "@tamagui/font-inter": 1.14.4
-    "@tamagui/lucide-icons": 1.14.4
-    "@tamagui/select": 1.14.4
-    "@tamagui/shorthands": 1.14.4
-    "@tamagui/slider": 1.14.4
-    "@tamagui/themes": 1.14.4
-    "@tamagui/toast": 1.14.4
-    "@tamagui/vite-plugin": 1.14.4
-    "@tamagui/vite-plugin-reanimated": 1.14.4
-=======
     "@tamagui/animations-css": 1.14.9
     "@tamagui/animations-reanimated": 1.14.9
     "@tamagui/colors": 1.14.9
@@ -5780,9 +5600,7 @@ __metadata:
     "@tamagui/toast": 1.14.9
     "@tamagui/vite-plugin": 1.14.9
     "@tamagui/vite-plugin-reanimated": 1.14.9
-    "@vitejs/plugin-react": ^2.2.0
->>>>>>> master
-    "@vitejs/plugin-react-swc": ^3.0.1
+    "@vitejs/plugin-react-swc": ^3.2.0
     babel-polyfill: ^6.26.0
     css-loader: ^5.2.4
     esbuild-loader: ^2.20.0
@@ -5800,7 +5618,7 @@ __metadata:
     tamagui-loader: 1.14.9
     thread-loader: ^3.0.4
     url-loader: ^4.1.1
-    vite: ^4.0.4
+    vite: ^4.2.1
     vite-plugin-environment: ^1.1.3
     webpack: ^5.74.0
     webpack-bundle-analyzer: ^4.5.0
@@ -5924,7 +5742,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/site-shared@workspace:packages/site-shared"
   dependencies:
-    "@tamagui/build": 1.14.4
+    "@tamagui/build": 1.14.9
     "@types/babel-core": ^6.25.7
     vite: ^4.2.1
   languageName: unknown
@@ -5941,25 +5759,7 @@ __metadata:
     "@supabase/auth-helpers-nextjs": ^0.5.9
     "@supabase/auth-helpers-react": ^0.3.1
     "@supabase/supabase-auth-helpers": ^1.4.2
-<<<<<<< HEAD
     "@supabase/supabase-js": ^2.14.0
-    "@tamagui/animate-presence": 1.14.4
-    "@tamagui/colors": 1.14.4
-    "@tamagui/config": 1.14.4
-    "@tamagui/demos": 1.14.4
-    "@tamagui/font-fira-mono": 1.14.4
-    "@tamagui/font-inter": 1.14.4
-    "@tamagui/font-silkscreen": 1.14.4
-    "@tamagui/logo": 1.14.4
-    "@tamagui/lucide-icons": 1.14.4
-    "@tamagui/menu": 1.14.4
-    "@tamagui/next-plugin": 1.14.4
-    "@tamagui/next-theme": 1.14.4
-    "@tamagui/remove-scroll": 1.14.4
-    "@tamagui/shorthands": 1.14.4
-    "@tamagui/themes": 1.14.4
-    "@tamagui/toast": 1.14.4
-=======
     "@tamagui/animate-presence": 1.14.9
     "@tamagui/colors": 1.14.9
     "@tamagui/config": 1.14.9
@@ -5976,7 +5776,6 @@ __metadata:
     "@tamagui/shorthands": 1.14.9
     "@tamagui/themes": 1.14.9
     "@tamagui/toast": 1.14.9
->>>>>>> master
     compare-versions: ^4.1.3
     date-fns: ^2.29.3
     glob: ^7.1.6
@@ -6003,14 +5802,9 @@ __metadata:
     rehype-slug: ^5.0.1
     seamless-scroll-polyfill: ^1.2.3
     stripe: ^9.1.0
-<<<<<<< HEAD
     supabase: ^1.47.2
-    tamagui: 1.14.4
-    tamagui-loader: 1.14.4
-=======
     tamagui: 1.14.9
     tamagui-loader: 1.14.9
->>>>>>> master
     unified: ^10.1.2
     unist-util-visit: ^2.0.3
     webpack-stats-plugin: ^1.1.0
@@ -6101,11 +5895,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/static@1.14.4, @tamagui/static@^1.11.2, @tamagui/static@^1.14.4, @tamagui/static@workspace:packages/static":
-=======
-"@tamagui/static@1.14.9, @tamagui/static@^1.14.9, @tamagui/static@workspace:packages/static":
->>>>>>> master
+"@tamagui/static@1.14.9, @tamagui/static@^1.11.2, @tamagui/static@^1.14.9, @tamagui/static@workspace:packages/static":
   version: 0.0.0-use.local
   resolution: "@tamagui/static@workspace:packages/static"
   dependencies:
@@ -6220,13 +6010,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/text-test@workspace:packages/text-test"
   dependencies:
-<<<<<<< HEAD
-    "@tamagui/text": 1.14.4
-    vitest: ^0.29.8
-=======
     "@tamagui/text": 1.14.9
-    vitest: ^0.26.3
->>>>>>> master
+    vitest: ^0.29.8
   languageName: unknown
   linkType: soft
 
@@ -6268,11 +6053,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/themes@1.14.4, @tamagui/themes@^1.11.2, @tamagui/themes@^1.14.4, @tamagui/themes@workspace:packages/themes":
-=======
-"@tamagui/themes@1.14.9, @tamagui/themes@^1.14.9, @tamagui/themes@workspace:packages/themes":
->>>>>>> master
+"@tamagui/themes@1.14.9, @tamagui/themes@^1.11.2, @tamagui/themes@^1.14.9, @tamagui/themes@workspace:packages/themes":
   version: 0.0.0-use.local
   resolution: "@tamagui/themes@workspace:packages/themes"
   dependencies:
@@ -6508,44 +6289,25 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin-internal@workspace:packages/vite-plugin-internal"
   dependencies:
-<<<<<<< HEAD
-    "@tamagui/build": 1.14.4
-    "@tamagui/config-default-node": 1.14.4
-    "@tamagui/vite-plugin": 1.14.4
-    "@vitejs/plugin-react-swc": ^3.2.0
-=======
     "@tamagui/build": 1.14.9
     "@tamagui/config-default-node": 1.14.9
     "@tamagui/vite-plugin": 1.14.9
     "@vitejs/plugin-react": ^2.2.0
->>>>>>> master
+    "@vitejs/plugin-react-swc": ^3.2.0
     happy-dom: ^8.1.3
     vitest: ^0.29.8
     vitest-mock-process: ^1.0.4
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@tamagui/vite-plugin-reanimated@npm:1.14.4":
-  version: 1.14.4
-  resolution: "@tamagui/vite-plugin-reanimated@npm:1.14.4"
+"@tamagui/vite-plugin-reanimated@npm:1.14.9":
+  version: 1.14.9
+  resolution: "@tamagui/vite-plugin-reanimated@npm:1.14.9"
   dependencies:
     "@babel/core": ^7.19.6
-  checksum: 37462c3e0fe6ca6141138f93040bb0a463251ab60b44d74e00d5284ed6aa6cde38757375dd38ffdb55af412916b3b2f5403ea254030f3363d02d6a90fd686633
+  checksum: 1d1ce838baca918315740ddb22df915acc77e1c21f544cf52339b2cc617b1e7402699665684ddc6eb3ec55ad2f34e6b3c2e7dc18ea4d7eb73ce61f4a6cfea338
   languageName: node
   linkType: hard
-=======
-"@tamagui/vite-plugin-reanimated@1.14.9, @tamagui/vite-plugin-reanimated@workspace:packages/vite-plugin-reanimated":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/vite-plugin-reanimated@workspace:packages/vite-plugin-reanimated"
-  dependencies:
-    "@babel/core": ^7.19.6
-    "@tamagui/build": 1.14.9
-    "@types/babel-core": ^6.25.7
-    vite: ^4.0.4
-  languageName: unknown
-  linkType: soft
->>>>>>> master
 
 "@tamagui/vite-plugin@1.14.9, @tamagui/vite-plugin@workspace:packages/vite-plugin":
   version: 0.0.0-use.local
@@ -7675,17 +7437,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-react-swc@npm:^3.0.1":
-  version: 3.3.0
-  resolution: "@vitejs/plugin-react-swc@npm:3.3.0"
-  dependencies:
-    "@swc/core": ^1.3.42
-  peerDependencies:
-    vite: ^4
-  checksum: f2a5f4ef47d9200d0bbfd64637b347eaa3acfae7b2294e84afd469941c015fb1bfe8569e1cb9aa9151c7636fd43edbafb177f7903242f5240235b403b3e4a62e
-  languageName: node
-  linkType: hard
-
 "@vitejs/plugin-react-swc@npm:^3.2.0":
   version: 3.2.0
   resolution: "@vitejs/plugin-react-swc@npm:3.2.0"
@@ -7694,6 +7445,23 @@ __metadata:
   peerDependencies:
     vite: ^4
   checksum: 9df519fee5e6a9d8e7e15d037954d0acd1ee5d408fe7eef9d88f03172eb840b7300fc84b26fd93213b309c376a8712e88d6348179ad91c815d55cb6324f9d4ab
+  languageName: node
+  linkType: hard
+
+"@vitejs/plugin-react@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@vitejs/plugin-react@npm:2.2.0"
+  dependencies:
+    "@babel/core": ^7.19.6
+    "@babel/plugin-transform-react-jsx": ^7.19.0
+    "@babel/plugin-transform-react-jsx-development": ^7.18.6
+    "@babel/plugin-transform-react-jsx-self": ^7.18.6
+    "@babel/plugin-transform-react-jsx-source": ^7.19.6
+    magic-string: ^0.26.7
+    react-refresh: ^0.14.0
+  peerDependencies:
+    vite: ^3.0.0
+  checksum: cc85ab31b4689ab137c4b1e65383dccce494371523eb164c579096e513a2abbaa7efb49ba08655fae9f6692f5b7b2602ad339bdce4ae5982fc08fe444fb8a4e5
   languageName: node
   linkType: hard
 
@@ -15776,6 +15544,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"magic-string@npm:^0.26.7":
+  version: 0.26.7
+  resolution: "magic-string@npm:0.26.7"
+  dependencies:
+    sourcemap-codec: ^1.4.8
+  checksum: 89b0d60cbb32bbf3d1e23c46ea93db082d18a8230b972027aecb10a40bba51be519ecce0674f995571e3affe917b76b09f59d8dbc9a1b2c9c4102a2b6e8a2b01
+  languageName: node
+  linkType: hard
+
 "magic-string@npm:^0.27.0":
   version: 0.27.0
   resolution: "magic-string@npm:0.27.0"
@@ -21061,6 +20838,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sourcemap-codec@npm:^1.4.8":
+  version: 1.4.8
+  resolution: "sourcemap-codec@npm:1.4.8"
+  checksum: b57981c05611afef31605732b598ccf65124a9fcb03b833532659ac4d29ac0f7bfacbc0d6c5a28a03e84c7510e7e556d758d0bb57786e214660016fb94279316
+  languageName: node
+  linkType: hard
+
 "space-separated-tokens@npm:^2.0.0":
   version: 2.0.2
   resolution: "space-separated-tokens@npm:2.0.2"
@@ -21763,11 +21547,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"tamagui@1.14.4, tamagui@^1.11.2, tamagui@^1.14.4, tamagui@workspace:packages/tamagui":
-=======
-"tamagui@1.14.9, tamagui@^1.14.9, tamagui@workspace:packages/tamagui":
->>>>>>> master
+"tamagui@1.14.9, tamagui@^1.11.2, tamagui@^1.14.9, tamagui@workspace:packages/tamagui":
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
@@ -23188,7 +22968,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^4.0.4, vite@npm:^4.2.1":
+"vite@npm:^4.2.1":
   version: 4.2.1
   resolution: "vite@npm:4.2.1"
   dependencies:
