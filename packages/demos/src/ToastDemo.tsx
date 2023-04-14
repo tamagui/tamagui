@@ -29,6 +29,7 @@ const CurrentToast = () => {
       opacity={1}
       scale={1}
       animation="100ms"
+      viewportName={currentToast.viewportName}
     >
       <YStack>
         <Toast.Title>{currentToast.title}</Toast.Title>
