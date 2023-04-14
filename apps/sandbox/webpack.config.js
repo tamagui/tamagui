@@ -47,6 +47,7 @@ module.exports = {
       // 'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
       'react-native-reanimated': require.resolve('react-native-reanimated'),
       'react-native-reanimated$': require.resolve('react-native-reanimated'),
+      'react-native-svg': '@tamagui/react-native-svg',
     },
   },
   devServer: {

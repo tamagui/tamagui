@@ -40,9 +40,10 @@ export const Sandbox = () => {
 
       {/* <SwitchDemo /> */}
 
-      <SandboxAnimationThemeChange />
+      <Button outlined>hello</Button>
 
       {/* TODO fix/convert into tests */}
+      {/* <SandboxAnimationThemeChange /> */}
       {/* <SandboxThemeChange /> */}
       {/* <SandboxStyledOverridePseudo /> */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}

@@ -1,3 +1,9 @@
+- XGroup + borderRadius doesn't set radius (see studio/header)
+
+- yarn release --canary
+
+- Popover trigger="hover"
+
 - automate adding sponsor label on discord when sponsored
   - if possible we can automate adding a private chat room if they fill our something on their account
 
@@ -465,9 +471,9 @@ const Skeleton = styled(Stack, {
 
 ```tsx
 export default () => (
-  <SquareVariant skeleton>
+  <MySquare.Variant skeleton>
     <MySquare />
-  </SquareVariant>
+  </MySquare.Variant>
 )
 
 const MySquare = styled(Square, {
@@ -479,8 +485,12 @@ const MySquare = styled(Square, {
     }
   }
 })
+```
 
-const SquareVariant = createVariantProvider(MySquare)
+and if you want multiple:
+
+```tsx
+const SkeletonVariants = composeVariantProviders(MySquare)
 ```
 
 ---

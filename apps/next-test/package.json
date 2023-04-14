@@ -30,7 +30,7 @@
     "@tamagui/remove-scroll": "1.15.0",
     "@tamagui/shorthands": "1.15.0",
     "@tamagui/themes": "1.15.0",
-    "next": "^13.1.4",
+    "next": "^13.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "^0.71.4",
