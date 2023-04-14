@@ -1,10 +1,10 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { SwitchDemo, TabsAdvancedDemo, TabsDemo } from '@tamagui/demos'
+import { AnimationsDemo, SwitchDemo, TabsAdvancedDemo, TabsDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
-import { ScrollView, TamaguiProvider, Theme, XStack, YStack } from 'tamagui'
+import { Button, ScrollView, TamaguiProvider, Theme, XStack, YStack } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -13,6 +13,17 @@ import config from './tamagui.config'
 
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react') // webpack
+}
+
+const SandboxAnimationThemeChange = () => {
+  const [x, setX] = useState('blue')
+
+  return (
+    <Theme name={x}>
+      <Button onPress={() => setX(x === 'blue' ? 'red' : 'blue')}>cahnge</Button>
+      <AnimationsDemo />
+    </Theme>
+  )
 }
 
 export const Sandbox = () => {
@@ -24,9 +35,7 @@ export const Sandbox = () => {
 
       {/* <SwitchDemo /> */}
 
-      <Theme name="blue">
-        <TabsDemo />
-      </Theme>
+      <SandboxAnimationThemeChange />
 
       {/* TODO fix/convert into tests */}
       {/* <SandboxThemeChange /> */}

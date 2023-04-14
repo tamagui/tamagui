@@ -231,18 +231,15 @@ export const useChangeThemeEffect = (
         }
       }
 
-      const disposeChangeListener = themeManager.parentManager?.onChangeTheme(
-        (name, manager) => {
-          const shouldUpdate = Boolean(keys?.length || isNewTheme)
-          if (shouldUpdate) {
-            if (process.env.NODE_ENV === 'development' && props['debug']) {
-              console.log(`onChangeTheme`, shouldUpdate, { props, name, manager, keys })
-            }
-            setThemeState(createState)
+      const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
+        const shouldUpdate = Boolean(keys?.length || isNewTheme)
+        if (shouldUpdate) {
+          if (process.env.NODE_ENV === 'development' && props['debug']) {
+            console.log(`onChangeTheme`, shouldUpdate, { props, name, manager, keys })
           }
-        },
-        themeManager.id
-      )
+          setThemeState(createState)
+        }
+      }, themeManager.id)
 
       return () => {
         disposeChangeListener?.()
