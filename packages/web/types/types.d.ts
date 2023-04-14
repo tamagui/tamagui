@@ -10,6 +10,23 @@ export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export type TamaguiElement = HTMLElement | View;
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize';
+/**
+ * For static / studio
+ */
+type NameToPaths = {
+    [key: string]: Set<string>;
+};
+export type LoadedComponents = {
+    moduleName: string;
+    nameToInfo: Record<string, {
+        staticConfig: StaticConfigParsed;
+    }>;
+};
+export type TamaguiProjectInfo = {
+    components: LoadedComponents[];
+    tamaguiConfig: TamaguiInternalConfig;
+    nameToPaths: NameToPaths;
+};
 type DivAttributes = HTMLAttributes<HTMLDivElement>;
 export type TamaguiReactElement<P = any> = React.ReactElement<P> & {
     type: TamaguiComponent;

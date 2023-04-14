@@ -29,9 +29,6 @@ const TAB_LIST_NAME = 'TabsList'
 const TabsListFrame = styled(Group, {
   name: TAB_LIST_NAME,
   focusable: true,
-  // defaultVariants: {
-  //   flexGrow: 0,
-  // },
 })
 
 type TabsListFrameProps = GroupProps
@@ -89,12 +86,14 @@ const TabsTriggerFrame = styled(ThemeableStack, {
   flexWrap: 'nowrap',
   flexDirection: 'row',
   cursor: 'pointer',
+  backgroundColor: '$background',
   focusable: true,
 
   variants: {
     size: {
       '...size': getButtonSized,
     },
+
     disabled: {
       true: {
         pointerEvents: 'none',

@@ -24,6 +24,7 @@ export type WithTamaguiProps = TamaguiOptions & {
 
 export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
   return (nextConfig: any = {}) => {
+    const isAppDir = nextConfig.experimental.appDir
     return {
       ...nextConfig,
       webpack: (webpackConfig: any, options: any) => {
@@ -374,11 +375,14 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             []
           )
 
-          cssRules.unshift({
-            test: tamaguiOptions.includeCSSTest ?? /\.tamagui\.css$/,
-            sideEffects: true,
-            use: cssLoader,
-          })
+          // temporary condition just to get app dir working
+          if (!isAppDir) {
+            cssRules.unshift({
+              test: tamaguiOptions.includeCSSTest ?? /\.tamagui\.css$/,
+              sideEffects: true,
+              use: cssLoader,
+            })
+          }
         }
 
         webpackConfig.plugins.push(
@@ -389,6 +393,8 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               // console.log(`shouldExclude`, res, path)
               return res
             },
+            disableEsbuildLoader: isAppDir,
+            disableModuleJSXEntry: isAppDir,
             ...tamaguiOptions,
           })
         )

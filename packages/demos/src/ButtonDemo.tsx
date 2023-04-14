@@ -3,19 +3,19 @@ import { Button, XGroup, XStack, YStack } from 'tamagui'
 
 export function ButtonDemo(props) {
   return (
-    <YStack padding="$3" space {...props}>
+    <YStack padding="$3" space="$3" {...props}>
       <Button>Plain</Button>
       <Button alignSelf="center" icon={Airplay} size="$6">
         Large
       </Button>
-      <XGroup size="$3">
-        <Button width="50%" theme="alt2">
+      <XStack space="$2" justifyContent="center">
+        <Button size="$3" theme="alt2">
           Alt2
         </Button>
-        <Button width="50%" theme="yellow">
+        <Button size="$3" theme="yellow">
           Yellow
         </Button>
-      </XGroup>
+      </XStack>
       <XStack space="$2">
         <Button themeInverse size="$3">
           Small Inverse

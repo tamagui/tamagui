@@ -73,3 +73,35 @@ export interface TamaguiOptions {
   inlineProps?: Set<string>
   forceExtractStyleDefinitions?: boolean
 }
+
+// for cli
+
+export type CLIUserOptions = {
+  root?: string
+  host?: string
+  tsconfigPath?: string
+  tamaguiOptions: Partial<TamaguiOptions>
+  debug?: boolean | 'verbose'
+}
+
+export type CLIResolvedOptions = {
+  root: string
+  port?: number
+  host?: string
+  mode: 'development' | 'production'
+  debug?: UserOptions['debug']
+  tsconfigPath: string
+  tamaguiOptions: TamaguiOptions
+  pkgJson: {
+    name?: string
+    main?: string
+    module?: string
+    source?: string
+    exports?: Record<string, Record<string, string>>
+  }
+  paths: {
+    dotDir: string
+    conf: string
+    types: string
+  }
+}
