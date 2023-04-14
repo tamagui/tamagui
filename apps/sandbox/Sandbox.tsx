@@ -19,7 +19,7 @@ const SandboxAnimationThemeChange = () => {
   const [x, setX] = useState('blue')
 
   return (
-    <Theme name={x}>
+    <Theme name={x as any}>
       <Button onPress={() => setX(x === 'blue' ? 'red' : 'blue')}>cahnge</Button>
       <AnimationsDemo />
     </Theme>
