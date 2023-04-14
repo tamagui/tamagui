@@ -43,7 +43,7 @@
     "react-native": "^0.71.4",
     "tamagui": "^1.11.2",
     "ts-morph": "^15.1.0",
-    "typescript": "^5.0.3",
+    "typescript": "^5.0.4",
     "use-valtio": "^0.0.2",
     "valtio": "^1.10.4"
   },
