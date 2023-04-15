@@ -137,7 +137,6 @@ const AnimationControl = () => {
         <Timer size={14} opacity={0.6} />
         <Switch
           size="$1"
-          theme="Switch"
           checked={animationDriverToggler.driverName === 'react-native'}
           onCheckedChange={(val) =>
             animationDriverToggler.setDriverName(val ? 'react-native' : 'css')

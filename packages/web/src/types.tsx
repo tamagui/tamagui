@@ -34,6 +34,30 @@ export type TamaguiElement = HTMLElement | View
 
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize'
 
+/**
+ * For static / studio
+ */
+
+type NameToPaths = {
+  [key: string]: Set<string>
+}
+
+export type LoadedComponents = {
+  moduleName: string
+  nameToInfo: Record<
+    string,
+    {
+      staticConfig: StaticConfigParsed
+    }
+  >
+}
+
+export type TamaguiProjectInfo = {
+  components: LoadedComponents[]
+  tamaguiConfig: TamaguiInternalConfig
+  nameToPaths: NameToPaths
+}
+
 // base props that are accepted by createComponent (additional to react-native-web)
 
 type DivAttributes = HTMLAttributes<HTMLDivElement>

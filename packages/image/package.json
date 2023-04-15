@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/image",
-  "version": "1.14.4",
+  "version": "1.15.1",
   "sideEffects": [
     "*.css"
   ],
@@ -18,19 +18,19 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.14.4"
+    "@tamagui/core": "1.15.1"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.14.4",
+    "@tamagui/build": "1.15.1",
     "react": "^18.2.0",
     "react-native": "^0.71.4"
   },

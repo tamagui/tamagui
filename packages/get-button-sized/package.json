@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/get-button-sized",
-  "version": "1.14.4",
+  "version": "1.15.1",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -13,19 +13,19 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/get-size": "1.14.4",
-    "@tamagui/web": "1.14.4"
+    "@tamagui/get-size": "1.15.1",
+    "@tamagui/web": "1.15.1"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.14.4",
+    "@tamagui/build": "1.15.1",
     "@types/react": "^18.0.15",
     "react": "^18.2.0"
   },

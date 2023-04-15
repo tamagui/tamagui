@@ -66,7 +66,7 @@
     "kitchen-sink:clean": "yarn workspace @tamagui/kitchen-sink start:clean",
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink web",
-    "studio": "cd apps/site && ../../node_modules/.bin/tama studio",
+    "studio": "yarn workspace studio-next dev",
     "sandbox:webpack": "yarn workspace @tamagui/sandbox dev:webpack:extract",
     "sandbox": "yarn workspace @tamagui/sandbox dev",
     "sandbox:extract": "yarn workspace @tamagui/sandbox dev:extract",
@@ -84,7 +84,6 @@
     "@types/react-native": "0.70.8",
     "esbuild": "0.17.5",
     "react-native": "0.70.5",
-    "typescript": "4.9.4",
     "webpack": "5.74.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -107,9 +106,9 @@
     "prettier": "^2.8.1",
     "pretty-quick": "^3.1.2",
     "prompts": "2.1.0",
-    "rome": "^11.0.0",
+    "rome": "^12.0.0",
     "turbo": "^1.8.3",
-    "typescript": "^4.7.4",
+    "typescript": "^5.0.4",
     "ultra-runner": "^3.10.5"
   },
   "stableVersion": "0.0.0"

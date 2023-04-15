@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-base",
-  "version": "1.14.4",
+  "version": "1.15.1",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -14,7 +14,7 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -27,18 +27,18 @@
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.14.4",
-    "@tamagui/animations-react-native": "1.14.4",
-    "@tamagui/colors": "1.14.4",
-    "@tamagui/core": "1.14.4",
-    "@tamagui/font-inter": "1.14.4",
-    "@tamagui/font-silkscreen": "1.14.4",
-    "@tamagui/react-native-media-driver": "1.14.4",
-    "@tamagui/shorthands": "1.14.4",
-    "@tamagui/theme-base": "1.14.4"
+    "@tamagui/animations-css": "1.15.1",
+    "@tamagui/animations-react-native": "1.15.1",
+    "@tamagui/colors": "1.15.1",
+    "@tamagui/core": "1.15.1",
+    "@tamagui/font-inter": "1.15.1",
+    "@tamagui/font-silkscreen": "1.15.1",
+    "@tamagui/react-native-media-driver": "1.15.1",
+    "@tamagui/shorthands": "1.15.1",
+    "@tamagui/theme-base": "1.15.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.14.4"
+    "@tamagui/build": "1.15.1"
   },
   "publishConfig": {
     "access": "public"

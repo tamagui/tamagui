@@ -1,19 +1,7 @@
 import { ConfigListener, TamaguiInternalConfig, TokensMerged } from './types.js';
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const setConfigFont: (name: string, font: any, fontParsed: any) => void;
-export declare const getConfig: () => TamaguiInternalConfig<import("./types.js").CreateTokens<import("./types.js").VariableVal>, {
-    [key: string]: Partial<import("./types.js").TamaguiBaseTheme> & {
-        [key: string]: import("./types.js").VariableVal;
-    };
-}, import("./types.js").GenericShorthands, {
-    [key: string]: {
-        [key: string]: string | number;
-    };
-}, {
-    [key: string]: string | any[] | {
-        [key: string]: any;
-    };
-}, import("./types.js").GenericFonts>;
+export declare const getConfig: () => TamaguiInternalConfig;
 export declare const getTokens: ({ prefixed, }?: {
     /**
      * Force either with $ or without $ prefix

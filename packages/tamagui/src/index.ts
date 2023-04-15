@@ -6,6 +6,7 @@ export * from '@tamagui/animate-presence'
 export * from '@tamagui/avatar'
 export * from '@tamagui/button'
 export * from '@tamagui/card'
+export * from '@tamagui/checkbox'
 export * from '@tamagui/compose-refs'
 export * from '@tamagui/create-context'
 export * from '@tamagui/dialog'
@@ -29,16 +30,16 @@ export * from '@tamagui/sheet'
 export * from '@tamagui/slider'
 export * from '@tamagui/stacks'
 export * from '@tamagui/switch'
-export * from '@tamagui/toggle-group'
-export * from '@tamagui/text'
 export * from '@tamagui/tabs'
+export * from '@tamagui/text'
+export * from '@tamagui/theme'
+export * from '@tamagui/toggle-group'
 export * from '@tamagui/tooltip'
 export * from '@tamagui/use-controllable-state'
 export * from '@tamagui/use-debounce'
 export * from '@tamagui/use-force-update'
 export * from '@tamagui/use-window-dimensions'
 export * from '@tamagui/visually-hidden'
-export * from '@tamagui/checkbox'
 
 export * from './createTamagui'
 
@@ -51,7 +52,6 @@ export * from './views/Fieldset'
 export * from './views/Grid'
 export * from './views/Input'
 export * from './views/Layouts'
-// export * from './views/Skeleton'
 export * from './views/Spinner'
 export * from './views/TextArea'
 
@@ -137,8 +137,6 @@ export {
   createFont,
   createShorthands,
   createTheme,
-  addTheme,
-  updateTheme,
   createTokens,
   createVariable,
   getConfig,

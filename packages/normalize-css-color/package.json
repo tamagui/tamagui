@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/normalize-css-color",
-  "version": "1.14.4",
+  "version": "1.15.1",
   "sideEffects": [
     "*.css"
   ],
@@ -16,13 +16,11 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.14.4"
+    "@tamagui/build": "1.15.1"
   },
   "exports": {
     "./package.json": "./package.json",

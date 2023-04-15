@@ -1,0 +1,35 @@
+{
+  "name": "@tamagui/site-shared",
+  "version": "1.15.1",
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "../../node_modules/.bin/rome check src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.15.1",
+    "@types/babel-core": "^6.25.7",
+    "vite": "^4.2.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

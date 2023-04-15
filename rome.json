@@ -3,16 +3,22 @@
     "enabled": true,
     "rules": {
       "correctness": {
-        "noUnnecessaryContinue": "off"
+        "noUnnecessaryContinue": "off",
+        "noConstructorReturn": "off"
       },
       "suspicious": {
+        "noEmptyInterface": "off",
         "noExplicitAny": "off",
         "noArrayIndexKey": "off",
         "noDoubleEquals": "off"
       },
       "style": {
+        "noNonNullAssertion": "off",
         "noArguments": "off",
         "noUnusedTemplateLiteral": "off",
+        "useDefaultParameterLast": "off",
+        "useConst": "off",
+        "useEnumInitializers": "off",
         "useTemplate": "off"
       },
       "security": {
@@ -25,6 +31,9 @@
       "complexity": {
         "useSimplifiedLogicExpression": "off",
         "useOptionalChain": "off"
+      },
+      "a11y": {
+        "noHeaderScope": "off"
       }
     }
   },

@@ -8,6 +8,7 @@ import { disposeAll, getOptions } from './utils.js'
   process.on(_, () => {
     process.stdout.write(`bye\n`)
     disposeAll()
+    process.exit()
   })
 })
 
@@ -61,14 +62,19 @@ const COMMAND_MAP = {
   studio: {
     shorthands: ['s'],
     description: `Studio`,
-    flags: {},
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+      '--local': Boolean,
+    },
     async run() {
       const { _, ...flags } = arg(this.flags)
       const { studio } = await import('./studio.js')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
-      await studio(options)
+      await studio(options, !flags['--local'])
     },
   },
 }

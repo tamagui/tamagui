@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popover",
-  "version": "1.14.4",
+  "version": "1.15.1",
   "sideEffects": [
     "*.css"
   ],
@@ -18,7 +18,7 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -32,30 +32,30 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.19.1",
-    "@tamagui/adapt": "1.14.4",
-    "@tamagui/animate-presence": "1.14.4",
-    "@tamagui/aria-hidden": "1.14.4",
-    "@tamagui/compose-refs": "1.14.4",
-    "@tamagui/core": "1.14.4",
-    "@tamagui/create-context": "1.14.4",
-    "@tamagui/dismissable": "1.14.4",
-    "@tamagui/floating": "1.14.4",
-    "@tamagui/focus-scope": "1.14.4",
-    "@tamagui/polyfill-dev": "1.14.4",
-    "@tamagui/popper": "1.14.4",
-    "@tamagui/portal": "1.14.4",
-    "@tamagui/remove-scroll": "1.14.4",
-    "@tamagui/scroll-view": "1.14.4",
-    "@tamagui/sheet": "1.14.4",
-    "@tamagui/stacks": "1.14.4",
-    "@tamagui/use-controllable-state": "1.14.4"
+    "@tamagui/adapt": "1.15.1",
+    "@tamagui/animate-presence": "1.15.1",
+    "@tamagui/aria-hidden": "1.15.1",
+    "@tamagui/compose-refs": "1.15.1",
+    "@tamagui/core": "1.15.1",
+    "@tamagui/create-context": "1.15.1",
+    "@tamagui/dismissable": "1.15.1",
+    "@tamagui/floating": "1.15.1",
+    "@tamagui/focus-scope": "1.15.1",
+    "@tamagui/polyfill-dev": "1.15.1",
+    "@tamagui/popper": "1.15.1",
+    "@tamagui/portal": "1.15.1",
+    "@tamagui/remove-scroll": "1.15.1",
+    "@tamagui/scroll-view": "1.15.1",
+    "@tamagui/sheet": "1.15.1",
+    "@tamagui/stacks": "1.15.1",
+    "@tamagui/use-controllable-state": "1.15.1"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.14.4",
+    "@tamagui/build": "1.15.1",
     "react": "^18.2.0",
     "react-native": "^0.71.4"
   },

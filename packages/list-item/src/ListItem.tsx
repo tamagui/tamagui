@@ -77,7 +77,7 @@ export const ListItemFrame = styled(ThemeableStack, {
         maxWidth: '100%',
         overflow: 'hidden',
         flexDirection: 'row',
-        backgroundColor: '$backgroundStrong',
+        backgroundColor: '$background',
       },
     },
 
@@ -120,7 +120,6 @@ export const ListItemText = styled(SizableText, {
     unstyled: {
       false: {
         color: '$color',
-        userSelect: 'none',
         flexGrow: 1,
         flexShrink: 1,
         ellipse: true,

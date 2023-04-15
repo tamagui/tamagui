@@ -1,5 +1,5 @@
 import { createCollection } from '@tamagui/collection'
-import { TamaguiElement, useId } from '@tamagui/core'
+import { TamaguiElement } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import * as React from 'react'
@@ -96,7 +96,7 @@ const ToastProvider: React.FC<ToastProviderProps> = (
     swipeThreshold = 50,
     children,
   } = props
-  const id = providedId ?? useId()
+  const id = providedId ?? React.useId()
   const [viewport, setViewport] = React.useState<TamaguiElement | null>(null)
   const [toastCount, setToastCount] = React.useState(0)
   const isFocusedToastEscapeKeyDownRef = React.useRef(false)

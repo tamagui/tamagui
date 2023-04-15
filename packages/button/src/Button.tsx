@@ -82,6 +82,9 @@ export const ButtonFrame = styled(ThemeableStack, {
 
         focusStyle: {
           borderColor: '$borderColorFocus',
+          outlineColor: '$borderColorFocus',
+          outlineStyle: 'solid',
+          outlineWidth: 2,
         },
       },
     },

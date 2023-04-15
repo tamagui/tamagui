@@ -45,7 +45,7 @@ export default function TakeoutPurchasePage({ products }: Props) {
   const containerRef = useRef(null)
   const router = useRouter()
   const [priceIdLoading, setPriceIdLoading] = useState<string>()
-  const { user, isLoading, subscription } = useUser()
+  const { user, isLoading } = useUser()
 
   useIsomorphicLayoutEffect(() => {
     setThemeName(resolvedTheme as any)
@@ -54,11 +54,11 @@ export default function TakeoutPurchasePage({ products }: Props) {
   const handleCheckout = async (price: Price) => {
     setPriceIdLoading(price.id)
     if (!user) {
-      return router.push('/signin')
+      return router.push('/login')
     }
-    if (subscription) {
-      return router.push('/account')
-    }
+    // if (subscription) {
+    //   return router.push('/account')
+    // }
 
     try {
       const { sessionId } = await postData({
@@ -154,7 +154,7 @@ export default function TakeoutPurchasePage({ products }: Props) {
                   <Spacer />
                   <Separator />
                   <Spacer />
-                  <NextLink href="/signin">
+                  <NextLink href="/login">
                     <Button
                       theme={level.highlight ? 'blue' : null}
                       br="$10"
@@ -212,13 +212,13 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
       products: [],
     },
   }
-  const products = await getActiveProductsWithPrices()
-  return {
-    props: {
-      products,
-    },
-    revalidate: 60,
-  }
+  // const products = await getActiveProductsWithPrices()
+  // return {
+  //   props: {
+  //     products,
+  //   },
+  //   revalidate: 60,
+  // }
 }
 
 const allFeatures = [

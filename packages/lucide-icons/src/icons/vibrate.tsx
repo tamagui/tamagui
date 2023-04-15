@@ -53,10 +53,10 @@ const Icon = (props) => {
         strokeLinejoin="round"
       />
       <Rect
-        x="8"
-        y="5"
         width="8"
         height="14"
+        x="8"
+        y="5"
         rx="1"
         fill="none"
         stroke={`${color}`}

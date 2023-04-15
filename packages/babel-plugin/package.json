@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/babel-plugin",
-  "version": "1.14.4",
+  "version": "1.15.1",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -18,7 +18,7 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -27,12 +27,12 @@
     "@babel/helper-plugin-utils": "^7.19.0",
     "@babel/template": "7.18.10",
     "@babel/traverse": "^7.19.6",
-    "@tamagui/simple-hash": "1.14.4",
-    "@tamagui/static": "1.14.4"
+    "@tamagui/simple-hash": "1.15.1",
+    "@tamagui/static": "1.15.1"
   },
   "devDependencies": {
     "@babel/types": "^7.19.4",
-    "@tamagui/build": "1.14.4"
+    "@tamagui/build": "1.15.1"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }

@@ -222,7 +222,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         children?: React.ReactNode;
         zIndex?: number | undefined;
     } & {
-        __scopeSelect?: import("@tamagui/create-context").Scope<any>;
+        __scopeSelect?: import("@tamagui/create-context").Scope;
     } & import("@tamagui/focus-scope").FocusScopeProps) => JSX.Element | null;
     Group: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;

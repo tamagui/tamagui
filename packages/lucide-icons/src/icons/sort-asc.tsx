@@ -37,7 +37,7 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Path
-        d="M11 5h4"
+        d="M11 11h4"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
@@ -45,7 +45,7 @@ const Icon = (props) => {
         strokeLinejoin="round"
       />
       <Path
-        d="M11 9h7"
+        d="M11 15h7"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
@@ -53,7 +53,7 @@ const Icon = (props) => {
         strokeLinejoin="round"
       />
       <Path
-        d="M11 13h10"
+        d="M11 19h10"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
@@ -61,7 +61,7 @@ const Icon = (props) => {
         strokeLinejoin="round"
       />
       <Path
-        d="m3 17 3 3 3-3"
+        d="M9 7 6 4 3 7"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
@@ -69,7 +69,7 @@ const Icon = (props) => {
         strokeLinejoin="round"
       />
       <Path
-        d="M6 18V4"
+        d="M6 6v14"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"

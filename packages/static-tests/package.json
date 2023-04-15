@@ -1,11 +1,11 @@
 {
   "name": "@tamagui/static-tests",
-  "version": "1.14.4",
+  "version": "1.15.1",
   "module": "dist/esm/index.js",
   "scripts": {
     "build": "true",
     "pretest": "node -r esbuild-register ./tests/lib/preTest.js",
-    "test": "INCLUDE_CSS_COLOR_NAMES=1 vitest --config ../vite-plugin-internal/src/vite.config.ts --run --dom"
+    "test": "INCLUDE_CSS_COLOR_NAMES=1 vitest --config ../vite-plugin-internal/src/vite.config.ts --run"
   },
   "tests": {
     "parallel": true
@@ -18,7 +18,7 @@
     "@babel/plugin-syntax-typescript": "^7.18.6",
     "@babel/types": "^7.19.4",
     "@dish/babel-preset": "^0.0.6",
-    "@tamagui/test-design-system": "1.14.4",
+    "@tamagui/test-design-system": "1.15.1",
     "@testing-library/react": "^13.4.0",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",
@@ -35,7 +35,7 @@
     "react-native-web": "^0.18.3",
     "react-test-renderer": "^18.2.0",
     "style-loader": "^3.3.1",
-    "typescript": "^4.7.4",
+    "typescript": "^5.0.4",
     "vitest": "^0.26.3",
     "webpack": "^5.74.0"
   },

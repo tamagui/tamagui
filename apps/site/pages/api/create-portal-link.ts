@@ -1,7 +1,4 @@
-import {
-  getUser,
-  withAuthRequired,
-} from '@supabase/supabase-auth-helpers/nextjs'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { getURL } from '../../lib/helpers'
@@ -10,12 +7,21 @@ import { createOrRetrieveCustomer } from '../../lib/supabaseAdmin'
 
 const createPortalLink = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
+    const supabase = createServerSupabaseClient({ req, res })
+    const {
+      data: { session: authSession },
+    } = await supabase.auth.getSession()
+
+    if (!authSession)
+      return res.status(401).json({
+        error: 'not_authenticated',
+        description: 'The user does not have an active session or is not authenticated',
+      })
+
     try {
-      const { user } = await getUser({ req, res })
-      if (!user) throw Error('Could not get user')
       const customer = await createOrRetrieveCustomer({
-        uuid: user.id || '',
-        email: user.email || '',
+        uuid: authSession.user.id || '',
+        email: authSession.user.email || '',
       })
 
       if (!customer) throw Error('Could not get customer')
@@ -35,4 +41,4 @@ const createPortalLink = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default withAuthRequired(createPortalLink)
+export default createPortalLink
