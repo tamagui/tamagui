@@ -19,11 +19,9 @@ export declare const Paragraph: import("@tamagui/web").TamaguiComponent<(Omit<im
     [x: string]: undefined;
 }>>), import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
-} | ({
-    readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
 } & {
     [x: string]: undefined;
-}), {
+}, {
     displayName: string | undefined;
 }>;
 export type ParagraphProps = GetProps<typeof Paragraph>;

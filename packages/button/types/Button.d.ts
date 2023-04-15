@@ -49,7 +49,7 @@ export declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<Omit<i
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "defaultStyle" | "active"> & {
+}, "disabled" | "defaultStyle" | "size" | "active"> & {
     readonly defaultStyle?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
     readonly active?: boolean | undefined;
@@ -69,7 +69,7 @@ export declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<Omit<i
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "defaultStyle" | "active"> & {
+}, "disabled" | "defaultStyle" | "size" | "active"> & {
     readonly defaultStyle?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
     readonly active?: boolean | undefined;
@@ -89,7 +89,7 @@ export declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<Omit<i
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "defaultStyle" | "active"> & {
+}, "disabled" | "defaultStyle" | "size" | "active"> & {
     readonly defaultStyle?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
     readonly active?: boolean | undefined;
@@ -154,7 +154,7 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "defaultStyle" | "active"> & {
+}, "disabled" | "defaultStyle" | "size" | "active"> & {
     readonly defaultStyle?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
     readonly active?: boolean | undefined;
@@ -174,7 +174,7 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "defaultStyle" | "active"> & {
+}, "disabled" | "defaultStyle" | "size" | "active"> & {
     readonly defaultStyle?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
     readonly active?: boolean | undefined;
@@ -194,7 +194,7 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "size" | "defaultStyle" | "active"> & {
+}, "disabled" | "defaultStyle" | "size" | "active"> & {
     readonly defaultStyle?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
     readonly active?: boolean | undefined;
@@ -486,7 +486,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "defaultStyle" | "active"> & {
+        }, "disabled" | "defaultStyle" | "size" | "active"> & {
             readonly defaultStyle?: boolean | undefined;
             readonly size?: import("@tamagui/web").SizeTokens | undefined;
             readonly active?: boolean | undefined;
@@ -507,7 +507,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "defaultStyle" | "active"> & {
+        }, "disabled" | "defaultStyle" | "size" | "active"> & {
             readonly defaultStyle?: boolean | undefined;
             readonly size?: import("@tamagui/web").SizeTokens | undefined;
             readonly active?: boolean | undefined;
@@ -528,7 +528,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "defaultStyle" | "active"> & {
+        }, "disabled" | "defaultStyle" | "size" | "active"> & {
             readonly defaultStyle?: boolean | undefined;
             readonly size?: import("@tamagui/web").SizeTokens | undefined;
             readonly active?: boolean | undefined;
@@ -549,7 +549,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "defaultStyle" | "active"> & {
+        }, "disabled" | "defaultStyle" | "size" | "active"> & {
             readonly defaultStyle?: boolean | undefined;
             readonly size?: import("@tamagui/web").SizeTokens | undefined;
             readonly active?: boolean | undefined;
@@ -570,7 +570,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "size" | "defaultStyle" | "active"> & {
+        }, "disabled" | "defaultStyle" | "size" | "active"> & {
             readonly defaultStyle?: boolean | undefined;
             readonly size?: import("@tamagui/web").SizeTokens | undefined;
             readonly active?: boolean | undefined;

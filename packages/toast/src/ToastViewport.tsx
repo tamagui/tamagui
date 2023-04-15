@@ -29,8 +29,7 @@ const ToastViewportWrapperFrame = styled(YStack, {
         bottom: 0,
         left: 0,
         right: 0,
-        // @ts-ignore
-        position: isWeb ? 'fixed' : 'absolute',
+        position: isWeb ? ('fixed' as any) : 'absolute',
         maxWidth: '100%',
         tabIndex: 0,
         zIndex: 100000,

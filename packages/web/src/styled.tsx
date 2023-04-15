@@ -16,14 +16,6 @@ import type {
   VariantSpreadFunction,
 } from './types.js'
 
-// TODO may be able to use this in the options?: arg below directly
-export type StyledOptions<ParentComponent extends StylableComponent> =
-  GetProps<ParentComponent> & {
-    name?: string
-    variants?: VariantDefinitions<ParentComponent> | undefined
-    defaultVariants?: { [key: string]: any }
-  }
-
 type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<
   any,
   any,
@@ -41,6 +33,14 @@ type GetVariantProps<A extends StylableComponent> = A extends TamaguiComponent<
   ? V
   : {}
 
+type GetVariantAcceptedValues<V> = V extends Object
+  ? {
+      [Key in keyof V]?: V[Key] extends VariantSpreadFunction<any, infer Val>
+        ? Val
+        : GetVariantValues<keyof V[Key]>
+    }
+  : undefined
+
 export function styled<
   ParentComponent extends StylableComponent,
   Variants extends VariantDefinitions<ParentComponent> | void = VariantDefinitions<ParentComponent> | void
@@ -51,7 +51,7 @@ export function styled<
     name?: string
     variants?: Variants | undefined
     // thought i had this typed, but can't get it linked
-    defaultVariants?: { [key: string]: any }
+    defaultVariants?: GetVariantAcceptedValues<Variants>
     acceptsClassName?: boolean
   },
   staticExtractionOptions?: Partial<StaticConfig>
@@ -148,18 +148,9 @@ export function styled<
   type ParentPropsBase = GetBaseProps<ParentComponent>
   type ParentVariants = GetVariantProps<ParentComponent>
 
-  type OurVariants = Variants extends void
-    ? {}
-    : {
-        [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<
-          any,
-          infer Val
-        >
-          ? Val
-          : GetVariantValues<keyof Variants[Key]>
-      }
+  type OurVariantProps = GetVariantAcceptedValues<Variants>
 
-  type VariantProps = Omit<ParentVariants, keyof OurVariants> & OurVariants
+  type VariantProps = Omit<ParentVariants, keyof OurVariantProps> & OurVariantProps
   type OurPropsBase = ParentPropsBase & VariantProps
 
   type Props = Variants extends void
@@ -182,7 +173,7 @@ export function styled<
     Props,
     TamaguiElement,
     ParentPropsBase,
-    ParentVariants & OurVariants,
+    ParentVariants & OurVariantProps,
     ParentStaticProperties
   >
 

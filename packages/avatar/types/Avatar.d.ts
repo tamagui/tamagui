@@ -36,12 +36,9 @@ export declare const AvatarFallbackFrame: import("@tamagui/core").TamaguiCompone
 }>>), TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-} | ({
-    readonly fullscreen?: boolean | undefined;
-    readonly elevation?: SizeTokens | undefined;
 } & {
     [x: string]: undefined;
-}), {
+}, {
     displayName: string | undefined;
 }>;
 type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & {
@@ -208,9 +205,9 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<(Omit
 } & {
     readonly circular?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
-} & ({} | {
+} & {
     [x: string]: undefined;
-}), {
+}, {
     displayName: string | undefined;
 }>;
 type AvatarProps = GetProps<typeof AvatarFrame>;
