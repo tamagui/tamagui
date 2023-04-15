@@ -4,9 +4,9 @@ import React, { useState } from 'react'
 import { useLink } from 'solito/link'
 
 export function HomeScreen() {
-  const linkProps = useLink({
-    href: '/user/nate',
-  })
+  // const linkProps = useLink({
+  //   href: '/user/nate',
+  // })
 
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
@@ -36,7 +36,11 @@ export function HomeScreen() {
       </YStack>
 
       <XStack>
-        <Button {...linkProps}>Link to user</Button>
+        <Button
+        // {...linkProps}
+        >
+          Link to user
+        </Button>
       </XStack>
 
       <SheetDemo />
