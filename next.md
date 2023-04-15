@@ -1,3 +1,5 @@
+force
+
 - add test that builds site for prod + checks for header text / no errors
 
 - Button and other similar ones - make the hover/press/focusStyle zIndex 2, 3, 4 (or all 2) by default
