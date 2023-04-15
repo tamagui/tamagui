@@ -41,6 +41,7 @@ export const useSharedAuth = (
   }, [supabase])
   useEffect(() => {
     const listener = supabase.auth.onAuthStateChange((event, session) => {
+      // @ts-expect-error
       if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
         // delete cookies on sign out
         const expires = new Date(0).toUTCString()
