@@ -302,7 +302,7 @@ async function run() {
       }
 
       // adding in a bit of delay to avoid too many requests errors
-      await new Promise((res) => setTimeout(res, 1000))
+      await new Promise((res) => setTimeout(res, 2000))
     }
 
     console.log(`✅ Published\n`)
