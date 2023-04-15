@@ -68,7 +68,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
       __scopeToast,
       hotkey = VIEWPORT_DEFAULT_HOTKEY,
       label = 'Notifications ({hotkey})',
-      name,
+      name = 'default',
       multipleToasts,
       ...viewportProps
     } = props
@@ -78,7 +78,14 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
     const tailFocusProxyRef = React.useRef<FocusProxyElement>(null)
     const wrapperRef = React.useRef<HTMLDivElement>(null)
     const ref = React.useRef<HTMLDivElement>(null)
-    const composedRefs = useComposedRefs(forwardedRef, ref, context.onViewportChange)
+    const onViewportChange = React.useCallback(
+      (el: TamaguiElement) => {
+        if (context.viewports[name] !== el)
+          context.onViewportChange(name, el)
+      },
+      [name, context.viewports]
+    )
+    const composedRefs = useComposedRefs(forwardedRef, ref, onViewportChange)
     const hotkeyLabel = hotkey.join('+').replace(/Key/g, '').replace(/Digit/g, '')
     const hasToasts = context.toastCount > 0
 
