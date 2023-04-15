@@ -259,7 +259,7 @@ async function run() {
 
     if (rePublish) {
       // if all successful, re-tag as latest
-      for (const chunk of _.chunk(packageJsons, 15)) {
+      for (const chunk of _.chunk(packageJsons, 5)) {
         await Promise.all(
           chunk.map(async ({ name, cwd }) => {
             console.log(`Release ${name}`)
@@ -276,7 +276,7 @@ async function run() {
       }
     } else {
       // if all successful, re-tag as latest
-      for (const chunk of _.chunk(packageJsons, 15)) {
+      for (const chunk of _.chunk(packageJsons, 5)) {
         await Promise.all(
           chunk.map(async ({ name, cwd }) => {
             console.log(`Release ${name}`)
@@ -300,6 +300,9 @@ async function run() {
           })
         )
       }
+
+      // adding in a bit of delay to avoid too many requests errors
+      await new Promise((res) => setTimeout(res, 1000))
     }
 
     console.log(`✅ Published\n`)
