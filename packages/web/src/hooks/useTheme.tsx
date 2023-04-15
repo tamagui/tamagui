@@ -158,13 +158,17 @@ export const useChangeThemeEffect = (
     }
   }
 
-  const parentManager = getNonComponentParentManager(useContext(ThemeManagerContext))
-
   const {
     debug,
     // @ts-expect-error internal use only
     disable,
   } = props
+
+  let parentManager = useContext(ThemeManagerContext)
+
+  if (!disable) {
+    parentManager = getNonComponentParentManager(parentManager)
+  }
 
   if (disable) {
     if (!parentManager) throw `❌`
@@ -210,7 +214,7 @@ export const useChangeThemeEffect = (
       return () => {
         activeThemeManagers.delete(themeManager)
       }
-    }, [isNewTheme, themeManager, state, debug])
+    }, [isNewTheme, themeManager, state])
 
     // listen for parent change + notify children change
     useLayoutEffect(() => {

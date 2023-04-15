@@ -33,8 +33,8 @@ export const TestFontTokensInVariants = styled(TamaguiText, {
     // },
   } as const,
 
-  defaultVariants: {
-    type: 'regular',
-    size: 'normal',
-  },
+  // defaultVariants: {
+  //   type: 'regular',
+  //   size: 'normal',
+  // },
 })
