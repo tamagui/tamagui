@@ -273,15 +273,15 @@ function getAltThemes({
     (process.env.ACTIVE_THEME_INVERSE
       ? inverse
       : (() => {
-          const theme = applyMask(theme, masks.stronger, {
+          const _ = applyMask(theme, masks.stronger, {
             ...maskOptions,
             strength: 2,
           })
           // no hoverStyle
-          theme.borderColorHover = theme.borderColor
-          theme.backgroundHover = theme.background
-          theme.colorHover = theme.color
-          return theme
+          _.borderColorHover = _.borderColor
+          _.backgroundHover = _.background
+          _.colorHover = _.color
+          return _
         })())
 
   return addChildren({ alt1, alt2, active }, (_, subTheme) => {

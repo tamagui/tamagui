@@ -119,7 +119,6 @@ export const createShiftMask = ({ inverse }: { inverse?: boolean } = {}) => {
 
 export const createWeakenMask = () => createShiftMask()
 export const createStrengthenMask = () => createShiftMask({ inverse: true })
-export const createContrastMask = () => createShiftMask({ adjustContrast: 1 })
 
 function isMinusZero(value) {
   return 1 / value === -Infinity
