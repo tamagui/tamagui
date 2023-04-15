@@ -106,7 +106,6 @@ const ToastProvider: React.FC<ToastProviderProps> = (
 
   const handleViewportChange = React.useCallback(
     (name: string, viewport: TamaguiElement | null) => {
-      console.log({ name, viewport })
       setViewports((prev) => ({ ...prev, [name]: viewport }))
     },
     []

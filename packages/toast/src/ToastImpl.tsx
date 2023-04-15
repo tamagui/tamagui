@@ -34,11 +34,6 @@ const ToastImplFrame = styled(ThemeableStack, {
     unstyled: {
       false: {
         focusable: true,
-        focusStyle: {
-          outlineStyle: 'solid',
-          outlineWidth: 1,
-          outlineColor: 'red',
-        },
         backgroundColor: '$color6',
         borderRadius: '$10',
         paddingHorizontal: '$5',
@@ -194,12 +189,10 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       [handleClose]
     )
     const handleResume = React.useCallback(() => {
-      console.log('resume')
       startTimer(closeTimerRemainingTimeRef.current)
       onResume?.()
     }, [onResume, startTimer])
     const handlePause = React.useCallback(() => {
-      console.log('pause')
       const elapsedTime = new Date().getTime() - closeTimerStartTimeRef.current
       closeTimerRemainingTimeRef.current =
         closeTimerRemainingTimeRef.current - elapsedTime
