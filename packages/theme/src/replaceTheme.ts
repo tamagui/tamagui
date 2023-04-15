@@ -3,14 +3,14 @@ import type { ThemeDefinition } from '@tamagui/web'
 
 import { _mutateTheme } from './_mutateTheme.js'
 
-export function updateTheme({
+export function replaceTheme({
   name,
   theme,
 }: {
   name: string
   theme: Partial<Record<keyof ThemeDefinition, any>>
 }) {
-  const next = _mutateTheme({ name, theme, insertCSS: true, mutationType: 'update' })
+  const next = _mutateTheme({ name, theme, insertCSS: true, mutationType: 'replace' })
 
   if (process.env.TAMAGUI_TARGET === 'native') {
     activeThemeManagers.forEach((manager) => {
