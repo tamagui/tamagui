@@ -24,8 +24,8 @@ type ToastProviderContextValue = {
     swipeDirection: SwipeDirection;
     swipeThreshold: number;
     toastCount: number;
-    viewport: TamaguiElement | null;
-    onViewportChange(viewport: TamaguiElement): void;
+    viewports: Record<string, TamaguiElement | null>;
+    onViewportChange(name: string, viewport: TamaguiElement): void;
     onToastAdd(): void;
     onToastRemove(): void;
     isFocusedToastEscapeKeyDownRef: React.MutableRefObject<boolean>;
