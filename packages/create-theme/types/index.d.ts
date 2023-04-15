@@ -33,7 +33,6 @@ export declare const createShiftMask: ({ inverse }?: {
 }) => CreateMask;
 export declare const createWeakenMask: () => CreateMask;
 export declare const createStrengthenMask: () => CreateMask;
-export declare const createContrastMask: () => CreateMask;
 export declare function applyMask<Theme extends GenericTheme>(theme: Theme, mask: CreateMask, options?: MaskOptions): Theme;
 export {};
 //# sourceMappingURL=index.d.ts.map

@@ -181,30 +181,36 @@ export async function getOptions({
 }
 
 export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
-  const options = await getOptions({ tamaguiOptions })
+  try {
+    const options = await getOptions({ tamaguiOptions })
 
-  if (!options.tamaguiOptions.config) return
+    if (!options.tamaguiOptions.config) return
 
-  await generateTamaguiConfig(options)
-  const context = await esbuild.context({
-    entryPoints: [options.tamaguiOptions.config],
-    sourcemap: false,
-    // dont output just use esbuild as a watcher
-    write: false,
+    await generateTamaguiConfig(options)
+    const context = await esbuild.context({
+      entryPoints: [options.tamaguiOptions.config],
+      sourcemap: false,
+      // dont output just use esbuild as a watcher
+      write: false,
 
-    plugins: [
-      {
-        name: `on-rebuild`,
-        setup({ onEnd }) {
-          onEnd((res) => {
-            generateTamaguiConfig(options)
-          })
+      plugins: [
+        {
+          name: `on-rebuild`,
+          setup({ onEnd }) {
+            onEnd((res) => {
+              generateTamaguiConfig(options)
+            })
+          },
         },
-      },
-    ],
-  })
+      ],
+    })
 
-  await context.watch()
+    await context.watch()
+  } catch (err) {
+    console.warn(
+      `Warning watching config error, you may need to restart on config changes: ${err}`
+    )
+  }
 }
 
 const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')]
