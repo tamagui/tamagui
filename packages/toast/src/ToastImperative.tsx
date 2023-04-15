@@ -19,8 +19,13 @@ interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message
 interface ShowOptions extends CreateNativeToastOptions {
   /**
    * Used when need custom data
+   * @deprecated Use `customData` instead
    */
   additionalInfo?: Record<string, any>
+  /**
+   * Used when need custom data
+   */
+  customData?: Record<string, any>
   /**
    * Overrides the native option on `ToastImperativeProvider`
    */
@@ -147,8 +152,6 @@ export const ToastImperativeProvider = ({
       options,
     }
   }, [show, hide, lastNativeToastRef, JSON.stringify(options || null)])
-
-  const currentContextValue = useMemo(() => {}, [])
 
   return (
     <ToastContext.Provider value={contextValue}>
