@@ -365,8 +365,11 @@ const SheetImplementation = themeable(
       }
     }, [setPosition, shouldSetPositionOpen])
 
+    const maxSnapPoint = snapPoints.reduce((prev, cur) => Math.max(prev, cur))
+    const screenSize = frameSize / (maxSnapPoint / 100)
+
     const positions = useMemo(
-      () => snapPoints.map((point) => getPercentSize(point, frameSize)),
+      () => snapPoints.map((point) => getPercentSize(point, screenSize)),
       [frameSize, snapPoints]
     )
 
@@ -393,7 +396,7 @@ const SheetImplementation = themeable(
       if (isHidden && open) return
       if (!current) return
       if (frameSize === 0) return
-      const hiddenValue = frameSize === 0 ? HIDDEN_SIZE : frameSize
+      const hiddenValue = frameSize === 0 ? HIDDEN_SIZE : screenSize
       const toValue = isHidden || position === -1 ? hiddenValue : positions[position]
       if (at.current === toValue) return
       stopSpring()
@@ -656,7 +659,7 @@ const SheetImplementation = themeable(
                 position: 'absolute',
                 zIndex,
                 width: '100%',
-                height: '100%',
+                height: `${maxSnapPoint}%`,
                 opacity,
               },
               animatedStyle,
@@ -719,15 +722,16 @@ export const ControlledSheet = Sheet as FunctionComponent<
 
 /* -------------------------------------------------------------------------------------------------*/
 
-function getPercentSize(point?: number, frameSize?: number) {
-  if (!frameSize) return 0
+function getPercentSize(point?: number, screenSize?: number) {
+  if (!screenSize) return 0
   if (point === undefined) {
     // eslint-disable-next-line no-console
     console.warn('No snapPoint')
     return 0
   }
   const pct = point / 100
-  const next = Math.round(frameSize - pct * frameSize)
+  const next = Math.round(screenSize - pct * screenSize)
+  
   return next
 }
 
