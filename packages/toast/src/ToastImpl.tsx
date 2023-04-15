@@ -153,7 +153,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       onSwipeMove,
       onSwipeCancel,
       onSwipeEnd,
-      viewportName,
+      viewportName = 'default',
       ...toastProps
     } = props
     const isPresent = useIsPresent()
@@ -165,6 +165,11 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
     const closeTimerRemainingTimeRef = React.useRef(duration)
     const closeTimerRef = React.useRef(0)
     const { onToastAdd, onToastRemove } = context
+
+    const viewport = React.useMemo(() => {
+      return context.viewports[viewportName] as HTMLElement | null | undefined
+    }, [context.viewports, viewportName])
+
     const handleClose = useEvent(() => {
       if (!isPresent) {
         // already removed from the react tree
@@ -174,7 +179,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       // count to SR users and ensure focus isn't lost
       if (isWeb) {
         const isFocusInToast = (node as HTMLDivElement)?.contains(document.activeElement)
-        if (isFocusInToast) context.viewport?.focus()
+        if (isFocusInToast) viewport?.focus()
       }
       onClose()
     })
@@ -204,7 +209,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
 
     React.useEffect(() => {
       if (!isWeb) return
-      const viewport = context.viewport as HTMLElement
+
       if (viewport) {
         viewport.addEventListener(VIEWPORT_PAUSE, handlePause)
         viewport.addEventListener(VIEWPORT_RESUME, handleResume)
@@ -213,7 +218,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
           viewport.removeEventListener(VIEWPORT_RESUME, handleResume)
         }
       }
-    }, [context.viewport, duration, onPause, onResume, startTimer])
+    }, [viewport, duration, onPause, onResume, startTimer])
 
     // start timer when toast opens or duration changes.
     // we include `open` in deps because closed !== unmounted when animating
