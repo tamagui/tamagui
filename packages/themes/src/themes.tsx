@@ -235,7 +235,15 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
   const allColorThemes = addChildren(colorThemes, (colorName, colorTheme) => {
     const inverse = inverseColorThemes[colorName]
     return {
-      ...getAltThemes({ theme: colorTheme, inverse, isLight }),
+      ...getAltThemes({
+        theme: colorTheme,
+        inverse,
+        isLight,
+        activeTheme: applyMask(colorTheme, masks.weaker, {
+          ...maskOptions,
+          strength: 3,
+        }),
+      }),
       ...getComponentThemes(colorTheme, inverse, isLight),
     }
   })
