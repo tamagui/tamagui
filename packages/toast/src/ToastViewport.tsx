@@ -80,8 +80,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
     const ref = React.useRef<HTMLDivElement>(null)
     const onViewportChange = React.useCallback(
       (el: TamaguiElement) => {
-        if (context.viewports[name] !== el)
-          context.onViewportChange(name, el)
+        if (context.viewports[name] !== el) context.onViewportChange(name, el)
       },
       [name, context.viewports]
     )
@@ -239,6 +238,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
       >
         {hasToasts && (
           <FocusProxy
+            viewportName={name}
             ref={headFocusProxyRef}
             onFocusFromOutsideViewport={() => {
               const tabbableCandidates = getSortedTabbableCandidates({
@@ -266,6 +266,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
         </Collection.Slot>
         {hasToasts && (
           <FocusProxy
+            viewportName={name}
             ref={tailFocusProxyRef}
             onFocusFromOutsideViewport={() => {
               const tabbableCandidates = getSortedTabbableCandidates({
@@ -290,12 +291,15 @@ type FocusProxyElement = React.ElementRef<typeof VisuallyHidden>
 type VisuallyHiddenProps = GetProps<typeof VisuallyHidden>
 interface FocusProxyProps extends VisuallyHiddenProps {
   onFocusFromOutsideViewport(): void
+  viewportName: string
 }
 
 const FocusProxy = React.forwardRef<FocusProxyElement, ScopedProps<FocusProxyProps>>(
   (props, forwardedRef) => {
-    const { __scopeToast, onFocusFromOutsideViewport, ...proxyProps } = props
+    const { __scopeToast, onFocusFromOutsideViewport, viewportName, ...proxyProps } =
+      props
     const context = useToastProviderContext(FOCUS_PROXY_NAME, __scopeToast)
+    const viewport = context.viewports[viewportName] as HTMLElement
 
     return (
       <VisuallyHidden
@@ -308,9 +312,7 @@ const FocusProxy = React.forwardRef<FocusProxyElement, ScopedProps<FocusProxyPro
         onFocus={(event) => {
           if (!isWeb) return
           const prevFocusedElement = event.relatedTarget as HTMLElement | null
-          const isFocusFromOutsideViewport = !(context.viewport as HTMLElement)?.contains(
-            prevFocusedElement
-          )
+          const isFocusFromOutsideViewport = !viewport?.contains(prevFocusedElement)
           if (isFocusFromOutsideViewport) onFocusFromOutsideViewport()
         }}
       />
