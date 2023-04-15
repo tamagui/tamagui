@@ -268,7 +268,7 @@ export const getSplitStyles: StyleSplitter = (
     console.groupCollapsed('getSplitStyles (looping backwards)')
     // prettier-ignore
     // eslint-disable-next-line no-console
-    console.log({ props, staticConfig, shouldDoClasses, state, IS_STATIC, propKeys, styleState })
+    console.log({ props, staticConfig, shouldDoClasses, state, IS_STATIC, propKeys, styleState, theme: { ...theme } })
     // eslint-disable-next-line no-console
     console.groupEnd()
   }

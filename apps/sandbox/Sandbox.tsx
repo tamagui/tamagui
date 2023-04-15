@@ -40,6 +40,8 @@ export const Sandbox = () => {
 
       {/* <SwitchDemo /> */}
 
+      <Button theme="orange">hi</Button>
+
       {/* TODO fix/convert into tests */}
       {/* <SandboxAnimationThemeChange /> */}
       {/* <SandboxThemeChange /> */}

@@ -342,5 +342,5 @@ export function getNonComponentParentManager(themeManager?: ThemeManager | null)
       break
     }
   }
-  return res
+  return res || null
 }
