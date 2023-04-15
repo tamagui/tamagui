@@ -26,8 +26,10 @@ const patch = process.argv.includes('--patch')
 const dirty = process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
 const skipTest =
-  process.argv.includes('--skip-test') || process.argv.includes('--skip-tests')
-const skipBuild = process.argv.includes('--skip-build')
+  rePublish ||
+  process.argv.includes('--skip-test') ||
+  process.argv.includes('--skip-tests')
+const skipBuild = rePublish || process.argv.includes('--skip-build')
 const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = process.argv.includes('--ci')
@@ -39,6 +41,11 @@ const patchVersion = patch ? curPatch + plusVersion : 0
 const curMinor = +curVersion.split('.')[1] || 0
 const minorVersion = curMinor + (!patch ? plusVersion : 0)
 const nextVersion = `1.${minorVersion}.${patchVersion}`
+
+const sleep = (ms) => {
+  console.log(`Sleeping ${ms}ms`)
+  return new Promise((res) => setTimeout(res, ms))
+}
 
 if (!skipVersion) {
   console.log('Publishing version:', nextVersion, '\n')
@@ -119,7 +126,9 @@ async function run() {
 
     console.log('install and build')
 
-    await spawnify(`yarn install`)
+    if (!rePublish) {
+      await spawnify(`yarn install`)
+    }
 
     if (!skipBuild) {
       await spawnify(`yarn build`)
@@ -135,7 +144,7 @@ async function run() {
       await spawnify(`yarn test`)
     }
 
-    if (!dirty && !dryRun) {
+    if (!dirty && !dryRun && !rePublish) {
       const out = await exec(`git status --porcelain`)
       if (out.stdout) {
         throw new Error(`Has unsaved git changes: ${out.stdout}`)
@@ -174,7 +183,9 @@ async function run() {
       return
     }
 
-    await spawnify(`git diff`)
+    if (!rePublish) {
+      await spawnify(`git diff`)
+    }
 
     if (!isCI) {
       const { confirmed } = await prompts({
@@ -190,8 +201,9 @@ async function run() {
 
     if (!skipPublish && !rePublish) {
       const erroredPackages: { name: string }[] = []
+
       // publish with tag
-      for (const chunk of _.chunk(packageJsons, 6)) {
+      for (const [chunkNum, chunk] of _.chunk(packageJsons, 6).entries()) {
         await Promise.all(
           chunk.map(async (pkg) => {
             const { cwd, name } = pkg
@@ -239,6 +251,11 @@ async function run() {
           })
         )
 
+        if (chunkNum % 8 === 0) {
+          // adding in a bit of delay to avoid too many requests errors
+          await sleep(5000)
+        }
+
         if (erroredPackages.length) {
           console.warn(
             `❌ Error pre-publishing packages:\n`,
@@ -251,15 +268,11 @@ async function run() {
       }
     }
 
-    await (async () => {
-      const seconds = 10
-      console.log(`Waiting ${seconds} seconds (npm giving us too many request errors)...`)
-      await new Promise((res) => setTimeout(res, seconds * 1000))
-    })()
+    await sleep(10 * 1000)
 
     if (rePublish) {
       // if all successful, re-tag as latest
-      for (const chunk of _.chunk(packageJsons, 5)) {
+      for (const [chunkNum, chunk] of _.chunk(packageJsons, 5).entries()) {
         await Promise.all(
           chunk.map(async ({ name, cwd }) => {
             console.log(`Release ${name}`)
@@ -273,10 +286,15 @@ async function run() {
             }
           })
         )
+
+        if (chunkNum % 15 === 0) {
+          // adding in a bit of delay to avoid too many requests errors
+          await sleep(5000)
+        }
       }
     } else {
       // if all successful, re-tag as latest
-      for (const chunk of _.chunk(packageJsons, 5)) {
+      for (const [chunkNum, chunk] of _.chunk(packageJsons, 5).entries()) {
         await Promise.all(
           chunk.map(async ({ name, cwd }) => {
             console.log(`Release ${name}`)
@@ -299,10 +317,12 @@ async function run() {
             }
           })
         )
-      }
 
-      // adding in a bit of delay to avoid too many requests errors
-      await new Promise((res) => setTimeout(res, 2000))
+        if (chunkNum % 15 === 0) {
+          // adding in a bit of delay to avoid too many requests errors
+          await sleep(5000)
+        }
+      }
     }
 
     console.log(`✅ Published\n`)
@@ -311,13 +331,7 @@ async function run() {
     await spawnify(`yarn fix`)
     await spawnify(`yarn install`)
 
-    await (async () => {
-      const seconds = 10
-      console.log(
-        `Update starters to v${version} in (${seconds}) seconds (give time to propogate)...`
-      )
-      await new Promise((res) => setTimeout(res, seconds * 1000))
-    })()
+    await sleep(10 * 1000)
 
     await spawnify(`yarn upgrade:starters`)
     await spawnify(`yarn fix`)
