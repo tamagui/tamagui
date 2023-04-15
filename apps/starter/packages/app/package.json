@@ -1,5 +1,5 @@
 {
-  "version": "1.15.7",
+  "version": "1.15.8",
   "name": "app",
   "main": "index.ts",
   "private": true,
@@ -10,12 +10,12 @@
     "@my/ui": "*",
     "@react-navigation/native": "^6.0.11",
     "@react-navigation/native-stack": "^6.7.0",
-    "@tamagui/animations-react-native": "1.15.7",
-    "@tamagui/colors": "1.15.7",
-    "@tamagui/font-inter": "1.15.7",
-    "@tamagui/lucide-icons": "1.15.7",
-    "@tamagui/shorthands": "1.15.7",
-    "@tamagui/themes": "1.15.7",
+    "@tamagui/animations-react-native": "1.15.8",
+    "@tamagui/colors": "1.15.8",
+    "@tamagui/font-inter": "1.15.8",
+    "@tamagui/lucide-icons": "1.15.8",
+    "@tamagui/shorthands": "1.15.8",
+    "@tamagui/themes": "1.15.8",
     "expo-linking": "^3.2.3",
     "solito": "^2.3.0"
   }
