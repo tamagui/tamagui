@@ -15,28 +15,29 @@ export function LucideIconsDemo() {
 
   const size = 100
 
-  const iconsMemo = useMemo(() => {
-    const icons = lucideIcons.filter((x) => x.key.startsWith(search.toLowerCase()))
-    return icons.slice(0, 835).map(({ Icon, name }) => {
-      return (
-        <YStack h={size + 20} ai="center" jc="center" key={name}>
-          <Icon size={size * 0.25} />
-          <Spacer />
-          <Paragraph
-            h="$6"
-            ww="break-word"
-            maw="100%"
-            ta="center"
-            px="$2"
-            size="$1"
-            o={0.5}
-          >
-            {name}
-          </Paragraph>
-        </YStack>
-      )
-    })
-  }, [search])
+  const iconsMemo = useMemo(
+    () =>
+      lucideIcons
+        .filter((x) => x.key.startsWith(search.toLowerCase()))
+        .map(({ Icon, name }) => (
+          <YStack h={size + 20} ai="center" jc="center" key={name}>
+            <Icon size={size * 0.25} />
+            <Spacer />
+            <Paragraph
+              h="$6"
+              ww="break-word"
+              maw="100%"
+              ta="center"
+              px="$2"
+              size="$1"
+              o={0.5}
+            >
+              {name}
+            </Paragraph>
+          </YStack>
+        )),
+    [search]
+  )
 
   return (
     <YStack miw="100%" padding="$4" paddingBottom="$0" space>
