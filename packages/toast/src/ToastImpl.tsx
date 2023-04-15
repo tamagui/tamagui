@@ -33,6 +33,12 @@ const ToastImplFrame = styled(ThemeableStack, {
   variants: {
     unstyled: {
       false: {
+        focusable: true,
+        focusStyle: {
+          outlineStyle: 'solid',
+          outlineWidth: 1,
+          outlineColor: 'red',
+        },
         backgroundColor: '$color6',
         borderRadius: '$10',
         paddingHorizontal: '$5',
@@ -127,7 +133,7 @@ type ToastImplProps = ToastImplPrivateProps &
      */
     viewportName?: string
     /**
-     * 
+     *
      */
     id?: string
   }
@@ -161,15 +167,15 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
     const { onToastAdd, onToastRemove } = context
     const handleClose = useEvent(() => {
       if (!isPresent) {
-          // already removed from the react tree
-          return
-        }
-        // focus viewport if focus is within toast to read the remaining toast
-        // count to SR users and ensure focus isn't lost
-        if (isWeb) {
-          const isFocusInToast = (node as HTMLDivElement)?.contains(document.activeElement)
-          if (isFocusInToast) context.viewport?.focus()
-        }
+        // already removed from the react tree
+        return
+      }
+      // focus viewport if focus is within toast to read the remaining toast
+      // count to SR users and ensure focus isn't lost
+      if (isWeb) {
+        const isFocusInToast = (node as HTMLDivElement)?.contains(document.activeElement)
+        if (isFocusInToast) context.viewport?.focus()
+      }
       onClose()
     })
 
@@ -183,10 +189,12 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       [handleClose]
     )
     const handleResume = React.useCallback(() => {
+      console.log('resume')
       startTimer(closeTimerRemainingTimeRef.current)
       onResume?.()
     }, [onResume, startTimer])
     const handlePause = React.useCallback(() => {
+      console.log('pause')
       const elapsedTime = new Date().getTime() - closeTimerStartTimeRef.current
       closeTimerRemainingTimeRef.current =
         closeTimerRemainingTimeRef.current - elapsedTime
@@ -340,7 +348,6 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                       role="status"
                       aria-live="off"
                       aria-atomic
-                      tabIndex={0}
                       data-state={open ? 'open' : 'closed'}
                       data-swipe-direction={context.swipeDirection}
                       pointerEvents="auto"
