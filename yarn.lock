@@ -4303,8 +4303,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@takeout/font-noto-emoji@workspace:takeout/font-noto-emoji"
   dependencies:
-    "@tamagui/build": ^1.15.2
-    "@tamagui/core": ^1.15.3
+    "@tamagui/build": ^1.15.4
+    "@tamagui/core": ^1.15.4
   languageName: unknown
   linkType: soft
 
@@ -4454,7 +4454,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@1.15.4, @tamagui/build@^1.15.2, @tamagui/build@workspace:packages/build":
+"@tamagui/build@1.15.4, @tamagui/build@^1.15.4, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -4772,7 +4772,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core@1.15.4, @tamagui/core@^1.15.3, @tamagui/core@workspace:packages/core":
+"@tamagui/core@1.15.4, @tamagui/core@^1.15.4, @tamagui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:

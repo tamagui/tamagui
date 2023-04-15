@@ -193,7 +193,7 @@ async function run() {
     if (!skipPublish && !rePublish) {
       const erroredPackages: { name: string }[] = []
       // publish with tag
-      for (const chunk of _.chunk(packageJsons, 4)) {
+      for (const chunk of _.chunk(packageJsons, 6)) {
         await Promise.all(
           chunk.map(async (pkg) => {
             const { cwd, name } = pkg
@@ -253,6 +253,12 @@ async function run() {
       }
     }
 
+    await (async () => {
+      const seconds = 10
+      console.log(`Waiting ${seconds} seconds (npm giving us too many request errors)...`)
+      await new Promise((res) => setTimeout(res, seconds * 1000))
+    })()
+
     if (rePublish) {
       // if all successful, re-tag as latest
       for (const chunk of _.chunk(packageJsons, 15)) {
@@ -305,7 +311,7 @@ async function run() {
     await spawnify(`yarn install`)
 
     await (async () => {
-      const seconds = 5
+      const seconds = 10
       console.log(
         `Update starters to v${version} in (${seconds}) seconds (give time to propogate)...`
       )
