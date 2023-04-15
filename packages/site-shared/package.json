@@ -29,8 +29,5 @@
     "@tamagui/build": "1.15.4",
     "@types/babel-core": "^6.25.7",
     "vite": "^4.2.1"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

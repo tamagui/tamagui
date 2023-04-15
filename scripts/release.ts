@@ -167,8 +167,6 @@ async function run() {
           await writeJSON(path, next, { spaces: 2 })
         })
       )
-
-      await spawnify(`yarn install`) // update yarn.lock now
     }
 
     if (dryRun) {
