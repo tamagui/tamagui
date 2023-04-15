@@ -56,15 +56,16 @@ const NAME = 'Button'
 export const ButtonFrame = styled(ThemeableStack, {
   name: NAME,
   tag: 'button',
-  justifyContent: 'center',
-  alignItems: 'center',
-  flexWrap: 'nowrap',
-  flexDirection: 'row',
-  cursor: 'pointer',
 
   variants: {
-    defaultStyle: {
-      true: {
+    unstyled: {
+      false: {
+        size: '$true',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexWrap: 'nowrap',
+        flexDirection: 'row',
+        cursor: 'pointer',
         focusable: true,
         hoverTheme: true,
         pressTheme: true,
@@ -109,25 +110,29 @@ export const ButtonFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: '$true',
+    unstyled: false,
   },
 })
 
 export const ButtonText = styled(SizableText, {
   name: 'ButtonText',
-  userSelect: 'none',
-  cursor: 'pointer',
-  // flexGrow 1 leads to inconsistent native style where text pushes to start of view
-  flexGrow: 0,
-  flexShrink: 1,
-  ellipse: true,
 
   variants: {
-    defaultStyle: {
-      true: {
+    unstyled: {
+      false: {
+        userSelect: 'none',
+        cursor: 'pointer',
+        // flexGrow 1 leads to inconsistent native style where text pushes to start of view
+        flexGrow: 0,
+        flexShrink: 1,
+        ellipse: true,
         color: '$color',
       },
     },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
   },
 })
 
@@ -135,10 +140,8 @@ const ButtonComponent = forwardRef<TamaguiElement, ButtonProps>(function Button(
   props,
   ref
 ) {
-  const {
-    props: { unstyled, ...buttonProps },
-  } = useButton(props)
-  return <ButtonFrame defaultStyle={!unstyled} {...buttonProps} ref={ref} />
+  const { props: buttonProps } = useButton(props)
+  return <ButtonFrame {...buttonProps} ref={ref} />
 })
 
 export const buttonStaticConfig = {
@@ -203,7 +206,7 @@ export function useButton(
     propsActive,
     Text === ButtonText
       ? {
-          defaultStyle: !propsIn.unstyled,
+          unstyled: propsIn.unstyled,
         }
       : undefined
   )

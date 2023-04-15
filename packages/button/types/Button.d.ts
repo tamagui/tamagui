@@ -49,8 +49,8 @@ export declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<Omit<i
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "defaultStyle" | "size" | "active"> & {
-    readonly defaultStyle?: boolean | undefined;
+}, "disabled" | "unstyled" | "size" | "active"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -69,8 +69,8 @@ export declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<Omit<i
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "defaultStyle" | "size" | "active"> & {
-    readonly defaultStyle?: boolean | undefined;
+}, "disabled" | "unstyled" | "size" | "active"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -89,8 +89,8 @@ export declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<Omit<i
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "defaultStyle" | "size" | "active"> & {
-    readonly defaultStyle?: boolean | undefined;
+}, "disabled" | "unstyled" | "size" | "active"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -110,7 +110,7 @@ export declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<Omit<i
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 } & {
-    readonly defaultStyle?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -119,20 +119,20 @@ export declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<Omit<i
 }>;
 export declare const ButtonText: import("@tamagui/web").TamaguiComponent<Omit<import("react-native").TextProps, "children" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendsBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
-}, "defaultStyle"> & {
-    defaultStyle?: boolean | undefined;
+}, "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
 } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendsBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
-}, "defaultStyle"> & {
-    defaultStyle?: boolean | undefined;
+}, "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
 }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendsBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
-}, "defaultStyle"> & {
-    defaultStyle?: boolean | undefined;
+}, "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
 }>>, TamaguiElement, import("@tamagui/web").TextPropsBase, {
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
 } & {
-    defaultStyle?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
 }, {
     displayName: string | undefined;
 }>;
@@ -154,8 +154,8 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "defaultStyle" | "size" | "active"> & {
-    readonly defaultStyle?: boolean | undefined;
+}, "disabled" | "unstyled" | "size" | "active"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -174,8 +174,8 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "defaultStyle" | "size" | "active"> & {
-    readonly defaultStyle?: boolean | undefined;
+}, "disabled" | "unstyled" | "size" | "active"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -194,8 +194,8 @@ export declare const Button: (props: Omit<Omit<TextParentStyles, "TextComponent"
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "disabled" | "defaultStyle" | "size" | "active"> & {
-    readonly defaultStyle?: boolean | undefined;
+}, "disabled" | "unstyled" | "size" | "active"> & {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
@@ -343,7 +343,7 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         borderTopWidth?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
         borderWidth?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
         opacity?: number | undefined;
-        alignContent?: "center" | "flex-start" | "flex-end" | "space-between" | "space-around" | "stretch" | undefined;
+        alignContent?: "center" | "flex-start" | "flex-end" | "stretch" | "space-between" | "space-around" | undefined;
         alignItems?: import("react-native").FlexAlignType | undefined;
         alignSelf?: "auto" | import("react-native").FlexAlignType | undefined;
         aspectRatio?: number | undefined;
@@ -468,7 +468,10 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         fullscreen?: boolean | undefined;
-        defaultStyle?: boolean | undefined;
+        /**
+         *
+         */
+        unstyled?: boolean | undefined;
         size?: import("@tamagui/web").SizeTokens | undefined;
         active?: boolean | undefined;
         hoverStyle?: Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
@@ -486,8 +489,8 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "defaultStyle" | "size" | "active"> & {
-            readonly defaultStyle?: boolean | undefined;
+        }, "disabled" | "unstyled" | "size" | "active"> & {
+            readonly unstyled?: boolean | undefined;
             readonly size?: import("@tamagui/web").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
@@ -507,8 +510,8 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "defaultStyle" | "size" | "active"> & {
-            readonly defaultStyle?: boolean | undefined;
+        }, "disabled" | "unstyled" | "size" | "active"> & {
+            readonly unstyled?: boolean | undefined;
             readonly size?: import("@tamagui/web").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
@@ -528,8 +531,8 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "defaultStyle" | "size" | "active"> & {
-            readonly defaultStyle?: boolean | undefined;
+        }, "disabled" | "unstyled" | "size" | "active"> & {
+            readonly unstyled?: boolean | undefined;
             readonly size?: import("@tamagui/web").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
@@ -549,8 +552,8 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "defaultStyle" | "size" | "active"> & {
-            readonly defaultStyle?: boolean | undefined;
+        }, "disabled" | "unstyled" | "size" | "active"> & {
+            readonly unstyled?: boolean | undefined;
             readonly size?: import("@tamagui/web").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
@@ -570,18 +573,14 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
             readonly bordered?: number | boolean | undefined;
             readonly transparent?: boolean | undefined;
             readonly chromeless?: boolean | "all" | undefined;
-        }, "disabled" | "defaultStyle" | "size" | "active"> & {
-            readonly defaultStyle?: boolean | undefined;
+        }, "disabled" | "unstyled" | "size" | "active"> & {
+            readonly unstyled?: boolean | undefined;
             readonly size?: import("@tamagui/web").SizeTokens | undefined;
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
         }> | null | undefined;
         themeInverse?: boolean | undefined;
         themeReset?: boolean | undefined;
-        /**
-         *
-         */
-        unstyled?: boolean | undefined;
     };
 };
 export {};
