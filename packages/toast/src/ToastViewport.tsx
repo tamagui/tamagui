@@ -132,8 +132,8 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
           const isFocusInside = wrapper.contains(document.activeElement)
           if (!isFocusInside) handleResume()
         }
-        // Toasts are not in the viewport React tree so we need to bind DOM events
 
+        // Toasts are not in the viewport React tree so we need to bind DOM events
         wrapper.addEventListener('focusin', handlePause)
         wrapper.addEventListener('focusout', handleFocusOutResume)
         wrapper.addEventListener('pointermove', handlePause)
