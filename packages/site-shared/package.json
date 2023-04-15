@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/site-shared",
-  "version": "1.15.0",
+  "version": "1.15.1",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -25,7 +25,7 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.15.0",
+    "@tamagui/build": "1.15.1",
     "@types/babel-core": "^6.25.7",
     "vite": "^4.2.1"
   },
