@@ -181,6 +181,10 @@ export async function getOptions({
 }
 
 export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
+  if (process.env.TAMAGUI_ENABLE_STUDIO !== '1') {
+    return
+  }
+
   try {
     const options = await getOptions({ tamaguiOptions })
 
