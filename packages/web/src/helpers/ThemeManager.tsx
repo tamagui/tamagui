@@ -188,7 +188,13 @@ export class ThemeManager {
 
 function getNextThemeClassName(name: string, props: ThemeProps) {
   const next = `t_sub_theme ${THEME_CLASSNAME_PREFIX}${name}`
-  if (props.inverse || props.forceClassName) {
+  if (
+    props.inverse ||
+    props.forceClassName ||
+    // light and dark inverse each other so force classname
+    name === 'light' ||
+    name === 'dark'
+  ) {
     return (
       next +
       // ensure you invert to base dark as well as specific dark
