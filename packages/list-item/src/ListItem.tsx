@@ -145,7 +145,7 @@ export const ListItemSubtitle = styled(ListItemText, {
         color: '$color',
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     unstyled: false,
