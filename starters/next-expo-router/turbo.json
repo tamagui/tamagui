@@ -1,0 +1,9 @@
+{
+  "pipeline": {
+    "build": {
+      "extends": "",
+      "dependsOn": ["^build"],
+      "outputs": [".next/**"]
+    }
+  }
+}
