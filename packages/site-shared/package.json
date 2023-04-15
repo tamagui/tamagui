@@ -2,6 +2,7 @@
   "name": "@tamagui/site-shared",
   "version": "1.15.2",
   "source": "src/index.ts",
+  "private": true,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
