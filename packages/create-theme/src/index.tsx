@@ -13,7 +13,8 @@ export type MaskOptions = {
 }
 
 type GenericTheme = { [key: string]: string | Variable }
-type CreateMask = <A extends ThemeMask>(template: A, options: MaskOptions) => A
+
+export type CreateMask = <A extends ThemeMask>(template: A, options: MaskOptions) => A
 
 const THEME_INFO = new WeakMap<
   any,
@@ -118,6 +119,7 @@ export const createShiftMask = ({ inverse }: { inverse?: boolean } = {}) => {
 
 export const createWeakenMask = () => createShiftMask()
 export const createStrengthenMask = () => createShiftMask({ inverse: true })
+export const createContrastMask = () => createShiftMask({ adjustContrast: 1 })
 
 function isMinusZero(value) {
   return 1 / value === -Infinity
