@@ -5611,6 +5611,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/site@workspace:apps/site"
   dependencies:
+    "@babel/preset-react": ^7.18.6
+    "@babel/preset-typescript": ^7.18.6
     "@docsearch/react": ^3.0.0
     "@github/mini-throttle": ^2.1.0
     "@next/bundle-analyzer": ^12.2.0
@@ -5620,8 +5622,11 @@ __metadata:
     "@supabase/supabase-auth-helpers": ^1.4.2
     "@supabase/supabase-js": ^2.20.0
     "@tamagui/animate-presence": 1.15.15
+    "@tamagui/animations-reanimated": 1.15.15
+    "@tamagui/build": 1.15.15
     "@tamagui/colors": 1.15.15
     "@tamagui/config": 1.15.15
+    "@tamagui/core": 1.15.15
     "@tamagui/demos": 1.15.15
     "@tamagui/font-fira-mono": 1.15.15
     "@tamagui/font-inter": 1.15.15
@@ -5631,16 +5636,38 @@ __metadata:
     "@tamagui/menu": 1.15.15
     "@tamagui/next-plugin": 1.15.15
     "@tamagui/next-theme": 1.15.15
+    "@tamagui/polyfill-dev": 1.15.15
     "@tamagui/remove-scroll": 1.15.15
     "@tamagui/shorthands": 1.15.15
+    "@tamagui/site-shared": 1.15.15
+    "@tamagui/static": 1.15.15
     "@tamagui/themes": 1.15.15
     "@tamagui/toast": 1.15.15
+    "@tauri-apps/api": ^1.2.0
+    "@tauri-apps/cli": ^1.2.2
+    "@types/d3-scale": ^4.0.2
+    "@types/lodash-es": ^4.17.6
+    "@types/node": ^16.11.9
+    "@types/react": ^18.0.15
+    "@types/react-dom": 18.0.11
+    "@types/uuid": ^8.3.4
+    "@types/wicg-file-system-access": ^2020.9.6
+    babel-polyfill: ^6.26.0
+    color2k: ^1.2.4
     compare-versions: ^4.1.3
+    d3-scale: ^3.3.0
     date-fns: ^2.29.3
+    esbuild-loader: ^2.20.0
+    eslint: 8.37.0
+    eslint-config-next: 13.2.4
+    file-system-access: ^1.0.4
     glob: ^7.1.6
+    graphql-tag: ^2.12.6
     gray-matter: ^4.0.2
     hast-util-to-html: ^8.0.3
     hast-util-to-string: ^2.0.0
+    hsluv: ^0.1.0
+    lodash-es: ^4.17.21
     mdx-bundler: ^9.0.1
     next: ^13.3.0
     next-plugin-preact: ^3.0.7
@@ -5651,8 +5678,11 @@ __metadata:
     preact-render-to-string: ^5.2.4
     react: ^18.2.0
     react-dom: ^18.2.0
+    react-draggable: ^4.4.5
+    react-hotkeys-hook: ^3.4.6
     react-native: ^0.71.4
     react-native-web-lite: 1.15.15
+    react-refresh: ^0.14.0
     reading-time: 1.3.0
     refractor: ^4.7.0
     rehype: ^12.0.1
@@ -5664,8 +5694,12 @@ __metadata:
     supabase: ^1.47.2
     tamagui: 1.15.15
     tamagui-loader: 1.15.15
+    ts-morph: ^15.1.0
+    typescript: ^5.0.4
     unified: ^10.1.2
     unist-util-visit: ^2.0.3
+    use-valtio: ^0.0.2
+    valtio: ^1.10.4
     webpack-stats-plugin: ^1.1.0
   languageName: unknown
   linkType: soft
