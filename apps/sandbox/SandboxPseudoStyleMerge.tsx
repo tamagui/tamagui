@@ -1,3 +1,4 @@
+// debug
 import {
   Stack,
   Tooltip as TamaguiTooltip,
@@ -9,6 +10,7 @@ import {
 } from 'tamagui'
 
 const CustomYStack = styled(YStack, {
+  debug: 'verbose',
   backgroundColor: 'yellow',
   hoverStyle: {
     backgroundColor: 'red',
@@ -21,6 +23,7 @@ export function SandboxPseudoStyleMerge() {
       <CustomYStack
         width={100}
         height={100}
+        debug="verbose"
         hoverStyle={{
           scale: 2,
         }}
