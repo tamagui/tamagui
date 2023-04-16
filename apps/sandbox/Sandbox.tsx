@@ -11,6 +11,7 @@ import { useState } from 'react'
 import { Button, ScrollView, TamaguiProvider, XStack, YStack } from 'tamagui'
 import { Theme } from 'tamagui'
 
+import { SandboxThemeChange } from './SandboxThemeChange'
 import config from './tamagui.config'
 
 // useful for debugging why things render:
@@ -40,11 +41,9 @@ export const Sandbox = () => {
 
       {/* <SwitchDemo /> */}
 
-      <Button theme="orange">hi</Button>
-
       {/* TODO fix/convert into tests */}
       {/* <SandboxAnimationThemeChange /> */}
-      {/* <SandboxThemeChange /> */}
+      <SandboxThemeChange />
       {/* <SandboxStyledOverridePseudo /> */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}
       {/* <SandboxCustomStyledAnimatedPopover /> */}

@@ -289,13 +289,16 @@ export function createComponent<
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
+    // internal use only
+    const disableTheme = props['data-disable-theme']
+
     const themeState = useThemeWithState({
       name: props.theme,
       componentName,
       reset: props.reset,
       inverse: props.themeInverse,
       // @ts-ignore this is internal use only
-      disable: props['data-themeable'],
+      disable: disableTheme,
       debug:
         process.env.NODE_ENV === 'development' && props.debug ? { hostRef } : undefined,
       shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
