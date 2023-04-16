@@ -41,13 +41,15 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "resolveJsonModule": true,
-    "incremental": true
+    "incremental": true,
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
     "tamagui.config.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
