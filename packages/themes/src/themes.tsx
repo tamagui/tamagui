@@ -239,10 +239,6 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
         theme: colorTheme,
         inverse,
         isLight,
-        activeTheme: applyMask(colorTheme, masks.weaker, {
-          ...maskOptions,
-          strength: 3,
-        }),
       }),
       ...getComponentThemes(colorTheme, inverse, isLight),
     }
@@ -276,15 +272,20 @@ function getAltThemes({
   }
   const alt1 = applyMask(theme, masks.weaker, maskOptionsAlt)
   const alt2 = applyMask(alt1, masks.weaker, maskOptionsAlt)
+  const stronger = applyMask(theme, masks.stronger, {
+    ...maskOptionsAlt,
+    strength: 3,
+  })
   const active =
     activeTheme ??
     (process.env.ACTIVE_THEME_INVERSE
       ? inverse
       : (() => {
-          const _ = applyMask(theme, masks.stronger, {
+          const _ = applyMask(theme, masks.weaker, {
             ...maskOptions,
-            strength: 2,
+            strength: 1,
           })
+          _.background = alt2.background
           // no hoverStyle
           _.borderColorHover = _.borderColor
           _.backgroundHover = _.background
