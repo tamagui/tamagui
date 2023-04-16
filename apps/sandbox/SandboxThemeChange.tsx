@@ -3,6 +3,12 @@ import { Button, Card, Square, Theme, YStack } from 'tamagui'
 
 export function SandboxThemeChange() {
   return (
+    <Button debug="visualize" themeInverse>
+      inverse
+    </Button>
+  )
+
+  return (
     <>
       <Inner>
         <Inner>

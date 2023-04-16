@@ -27,7 +27,15 @@ export default React.forwardRef<HTMLPreElement, CodeBlockProps>(function CodeBlo
   _props,
   forwardedRef
 ) {
-  const { language, value, line = '0', className = '', mode, showLineNumbers, ...props } = _props
+  const {
+    language,
+    value,
+    line = '0',
+    className = '',
+    mode,
+    showLineNumbers,
+    ...props
+  } = _props
   let result: any = refractor.highlight(value, language)
   result = highlightLine(result, rangeParser(line))
   result = highlightWord(result)
@@ -38,7 +46,12 @@ export default React.forwardRef<HTMLPreElement, CodeBlockProps>(function CodeBlo
   // }
 
   return (
-    <Pre ref={forwardedRef} className={classes} data-line-numbers={showLineNumbers} {...props}>
+    <Pre
+      ref={forwardedRef}
+      className={classes}
+      data-line-numbers={showLineNumbers}
+      {...props}
+    >
       <Code className={classes} dangerouslySetInnerHTML={{ __html: result }} />
     </Pre>
   )

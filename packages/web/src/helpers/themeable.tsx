@@ -24,7 +24,7 @@ export function themeable<Component extends (props: any) => any>(
         inverse={themeInverse}
         componentName={componentName || opts?.componentName}
         name={(theme as any) || null}
-        data-themeable
+        disable-child-theme
         debug={props.debug}
         reset={props.themeReset}
       >

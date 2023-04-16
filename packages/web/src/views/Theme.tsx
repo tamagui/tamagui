@@ -17,9 +17,9 @@ export function Theme(props: ThemeProps) {
   const isRoot = !!props['_isRoot']
   const themeState = useChangeThemeEffect(props, isRoot)
 
-  let children = props['data-themeable']
+  let children = props['disable-child-theme']
     ? Children.map(props.children, (child) =>
-        cloneElement(child, { ['data-themeable']: true })
+        cloneElement(child, { ['data-disable-theme']: true })
       )
     : props.children
 

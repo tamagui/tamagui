@@ -187,12 +187,13 @@ export const useChangeThemeEffect = (
   function getShouldUpdateTheme(
     manager = themeManager,
     nextState?: ThemeManagerState | null,
+    prevState: ThemeManagerState = state,
     forceShouldChange = false
   ) {
     const next = nextState || manager.getState(props, parentManager)
     if (!next) return
     if (disableUpdate?.() === true) return
-    if (!forceShouldChange && !manager.getStateShouldChange(next, state)) return
+    if (!forceShouldChange && !manager.getStateShouldChange(next, prevState)) return
     return next
   }
 
@@ -307,9 +308,8 @@ export const useChangeThemeEffect = (
       // which is correct, potentially in the future we can avoid forceChange and just know to
       // update if keys.length is set + onChangeTheme called
       const forceChange = Boolean(keys?.length)
-
       const next = themeManager.getState(props, parentManager)
-      const nextState = getShouldUpdateTheme(themeManager, next, forceChange)
+      const nextState = getShouldUpdateTheme(themeManager, next, prev.state, forceChange)
 
       if (nextState) {
         state = nextState

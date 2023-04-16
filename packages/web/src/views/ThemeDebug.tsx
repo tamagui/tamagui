@@ -16,6 +16,11 @@ export function ThemeDebug({
   themeProps: ThemeProps
   children: any
 }) {
+  // disabled
+  if (themeProps['disable-child-theme']) {
+    return children
+  }
+
   if (process.env.NODE_ENV === 'development') {
     const [onChangeCount, setOnChangeCount] = useState(0)
     const rerender = useForceUpdate()
@@ -82,7 +87,7 @@ export function ThemeDebug({
           node
         )}
 
-        <div>{id}</div>
+        <div style={{ color: 'red' }}>{id}</div>
 
         {children}
       </>
