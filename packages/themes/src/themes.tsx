@@ -8,7 +8,7 @@ import {
   skipMask,
 } from '@tamagui/create-theme'
 
-import { colorTokens, darkColors, lightColors } from './tokens'
+import { colorTokens, darkColors, lightColors, tokens } from './tokens'
 
 type ColorName = keyof typeof colorTokens.dark
 
@@ -281,16 +281,14 @@ function getAltThemes({
     (process.env.ACTIVE_THEME_INVERSE
       ? inverse
       : (() => {
-          const _ = applyMask(theme, masks.weaker, {
+          return applyMask(theme, masks.weaker, {
             ...maskOptions,
-            strength: 1,
+            strength: 3,
+            skip: {
+              ...maskOptions.skip,
+              color: 1,
+            },
           })
-          _.background = alt2.background
-          // no hoverStyle
-          _.borderColorHover = _.borderColor
-          _.backgroundHover = _.background
-          _.colorHover = _.color
-          return _
         })())
 
   return addChildren({ alt1, alt2, active }, (_, subTheme) => {
