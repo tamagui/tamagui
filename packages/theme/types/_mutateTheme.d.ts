@@ -28,5 +28,5 @@ export declare function _mutateTheme(props: {
 } | {
     theme: any;
     cssRules: string[];
-};
+} | undefined;
 //# sourceMappingURL=_mutateTheme.d.ts.map

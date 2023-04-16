@@ -26,5 +26,5 @@ export declare function replaceTheme({ name, theme, }: {
 } | {
     theme: any;
     cssRules: string[];
-};
+} | undefined;
 //# sourceMappingURL=replaceTheme.d.ts.map

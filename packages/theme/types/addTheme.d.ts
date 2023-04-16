@@ -27,5 +27,5 @@ export declare function addTheme(props: {
 } | {
     theme: any;
     cssRules: string[];
-};
+} | undefined;
 //# sourceMappingURL=addTheme.d.ts.map

@@ -1,4 +1,4 @@
-import { isWeb } from '@tamagui/constants'
+import { isServer, isWeb } from '@tamagui/constants'
 import {
   ensureThemeVariable,
   getConfig,
@@ -14,6 +14,12 @@ export function _mutateTheme(props: {
   insertCSS?: boolean
   mutationType?: 'replace' | 'update'
 }) {
+  if (isServer) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('Theme mutation is not supported on server side')
+    }
+    return
+  }
   const config = getConfig()
   const { name: themeName, theme: themeIn, insertCSS, mutationType } = props
 
