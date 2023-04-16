@@ -173,7 +173,7 @@ const ButtonTextComponent = ButtonTextFrame.extractable(
       useEffect(() => {
         const unregister = context.registerButtonText()
         return () => unregister()
-      })
+      }, [context.registerButtonText])
 
       return <ButtonTextFrame size={props.size ?? context.size} {...props} ref={ref} />
     }
