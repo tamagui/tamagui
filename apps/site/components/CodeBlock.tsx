@@ -52,6 +52,7 @@ export default React.forwardRef<HTMLPreElement, CodeBlockProps>(function CodeBlo
       data-line-numbers={showLineNumbers}
       {...props}
     >
+      {/* @ts-expect-error */}
       <Code className={classes} dangerouslySetInnerHTML={{ __html: result }} />
     </Pre>
   )

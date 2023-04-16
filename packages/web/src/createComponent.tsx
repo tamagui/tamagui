@@ -612,6 +612,8 @@ export function createComponent<
         (isWeb && noClassNames && 'hoverStyle' in props)
     )
 
+    if (props['debug']) console.log('isHoverable', isHoverable)
+
     const events: TamaguiComponentEvents | null =
       shouldAttach && !isRSC && !isDisabled && !asChild
         ? {
@@ -632,9 +634,7 @@ export function createComponent<
                     if (state.pressIn) {
                       next.press = true
                     }
-                    if (isHoverable || state.pressIn) {
-                      setStateShallow(next)
-                    }
+                    setStateShallow(next)
                     onHoverIn?.(e)
                     onMouseEnter?.(e)
                   }
@@ -650,9 +650,7 @@ export function createComponent<
                       next.press = false
                       next.pressIn = false
                     }
-                    if (Object.keys(next).length) {
-                      setStateShallow(next)
-                    }
+                    setStateShallow(next)
                     onHoverOut?.(e)
                     onMouseLeave?.(e)
                   }

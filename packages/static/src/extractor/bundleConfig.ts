@@ -124,7 +124,9 @@ export async function bundleConfig(props: Props) {
 
   // get around node.js's module cache to get the new config...
   delete require.cache[path.resolve(configOutPath)]
+
   const out = require(configOutPath)
+
   const config = out.default || out
   if (!config) {
     throw new Error(`No config: ${config}`)

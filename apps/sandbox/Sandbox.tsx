@@ -1,14 +1,15 @@
+// debug
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { TabsAdvancedDemo } from '@tamagui/demos'
+import { SwitchDemo, TabsAdvancedDemo } from '@tamagui/demos'
 // import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
 // import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
 // import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
 import { AnimationsDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
-import { Button, ScrollView, TamaguiProvider, XStack, YStack } from 'tamagui'
+import { Button, ScrollView, Separator, TamaguiProvider, XStack, YStack } from 'tamagui'
 import { Theme } from 'tamagui'
 
 import { SandboxThemeChange } from './SandboxThemeChange'
@@ -32,6 +33,34 @@ const SandboxAnimationThemeChange = () => {
   )
 }
 
+const SandboxActiveTheme = () => {
+  return (
+    <>
+      <Button theme="active" hoverStyle={{ scale: 2 }} animation="quick">
+        active
+      </Button>
+
+      <Button debug="verbose" hoverStyle={{ scale: 1 }} animation="quick">
+        regular
+      </Button>
+
+      <SwitchDemo />
+
+      <Theme name="blue">
+        <Button theme="active" hoverStyle={{ scale: 1 }} animation="quick">
+          active
+        </Button>
+
+        <Button hoverStyle={{ scale: 1 }} animation="quick">
+          regular
+        </Button>
+
+        <SwitchDemo />
+      </Theme>
+    </>
+  )
+}
+
 export const Sandbox = () => {
   console.log(`render once`)
 
@@ -41,9 +70,11 @@ export const Sandbox = () => {
 
       {/* <SwitchDemo /> */}
 
+      <SandboxActiveTheme />
+
       {/* TODO fix/convert into tests */}
       {/* <SandboxAnimationThemeChange /> */}
-      <SandboxThemeChange />
+      {/* <SandboxThemeChange /> */}
       {/* <SandboxStyledOverridePseudo /> */}
       {/* <SandboxCustomStyledAnimatedTooltip /> */}
       {/* <SandboxCustomStyledAnimatedPopover /> */}
@@ -68,7 +99,17 @@ const SandboxFrame = (props: { children: any }) => {
           }}
         />
 
-        {props.children}
+        <XStack fullscreen backgroundColor="red">
+          <YStack f={1} h="100%" bg="$background">
+            {props.children}
+          </YStack>
+          <Separator vertical />
+          <Theme name="dark">
+            <YStack f={1} h="100%" bg="$background">
+              {props.children}
+            </YStack>
+          </Theme>
+        </XStack>
 
         <button
           style={{
