@@ -189,6 +189,7 @@ export function useButton(
     fontFamily,
     fontStyle,
     textAlign,
+    unstyled = false,
     textProps,
 
     ...rest
@@ -206,7 +207,7 @@ export function useButton(
     propsActive,
     Text === ButtonText
       ? {
-          unstyled: propsIn.unstyled,
+          unstyled,
         }
       : undefined
   )

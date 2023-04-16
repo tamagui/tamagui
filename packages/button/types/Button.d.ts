@@ -468,10 +468,6 @@ export declare function useButton(propsIn: ButtonProps, { Text }?: {
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         fullscreen?: boolean | undefined;
-        /**
-         *
-         */
-        unstyled?: boolean | undefined;
         size?: import("@tamagui/web").SizeTokens | undefined;
         active?: boolean | undefined;
         hoverStyle?: Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
