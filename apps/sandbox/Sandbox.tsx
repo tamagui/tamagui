@@ -2,7 +2,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { SwitchDemo, TabsAdvancedDemo } from '@tamagui/demos'
+import { ButtonDemo, ButtonNewDemo, SwitchDemo, TabsAdvancedDemo } from '@tamagui/demos'
 // import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
 // import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
 // import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
@@ -53,8 +53,8 @@ export const Sandbox = () => {
 
       {/* <SwitchDemo /> */}
 
-      <SandboxPseudoStyleMerge />
-
+      {/* <ButtonDemo /> */}
+      <ButtonNewDemo />
       {/* TODO fix/convert into tests */}
       {/* <SandboxAnimationThemeChange /> */}
       {/* <SandboxThemeChange /> */}
