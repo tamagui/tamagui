@@ -50,7 +50,7 @@ type ToastData = {
     id: string;
 } & ShowOptions & {
     isHandledNatively: boolean;
-};
+} & CustomData;
 interface ToastContextI {
     nativeToast: NativeToastRef | null;
     /**
