@@ -1,6 +1,6 @@
 import { Button, Popover, styled } from 'tamagui'
 
-function TestPopoverContentStyledPlusAnimations() {
+export default function TestPopoverContentStyledPlusAnimations() {
   return (
     <Popover size="$5">
       <Popover.Trigger asChild>

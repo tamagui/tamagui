@@ -17,7 +17,7 @@ import {
   useThemeName,
 } from 'tamagui'
 
-import config from './tamagui.config'
+import config from '../tamagui.config'
 
 // import '@tamagui/core/reset.css'
 // import './wdyr'
@@ -30,7 +30,8 @@ if (typeof require !== 'undefined') {
 // eslint-disable-next-line no-console
 console.log('[Sandbox] getMedia().sm', getMedia().sm)
 
-function ThemeChangeRenderTest() {
+// TODO: extract the use cases
+export default function ThemeChangeRenderTest() {
   const [theme, setTheme] = useState('blue')
   console.log('theme', theme)
 
@@ -182,7 +183,7 @@ export const Sandbox = () => {
 
           <Button
             onPress={async () => {
-              await import('./SandboxSecondPage')
+              await import('./SecondPage')
               console.log(`loaded (not navigating)`)
             }}
           >

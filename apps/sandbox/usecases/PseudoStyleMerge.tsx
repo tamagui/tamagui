@@ -17,7 +17,7 @@ const CustomYStack = styled(YStack, {
   },
 })
 
-export function SandboxPseudoStyleMerge() {
+export default function SandboxPseudoStyleMerge() {
   return (
     <Stack f={1} ai="center" jc="center">
       <CustomYStack

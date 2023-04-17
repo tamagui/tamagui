@@ -10,7 +10,7 @@ export const MyOverlay = styled(AlertDialog.Overlay, {
 
 export const MyAlert = AlertDialog
 
-export const SandboxOverlayStyled = () => {
+export default function SandboxOverlayStyled() {
   return (
     <XStack p="$10" space>
       <WorkingExample />

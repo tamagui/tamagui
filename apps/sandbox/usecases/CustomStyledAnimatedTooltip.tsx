@@ -50,7 +50,7 @@ const TriggerText = styled(Text, {
   color: '$color10',
 })
 
-export function SandboxCustomStyledAnimatedTooltip() {
+export default function SandboxCustomStyledAnimatedTooltip() {
   return (
     <Stack f={1} ai="center" jc="center" gap="$5">
       <Stack theme="red">

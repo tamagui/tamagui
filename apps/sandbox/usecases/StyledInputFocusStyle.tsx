@@ -1,6 +1,6 @@
 import { Input, styled } from 'tamagui'
 
-function TestStyledInputFocusStyle() {
+export default function TestStyledInputFocusStyle() {
   const StyledInput = styled(Input, {
     focusStyle: {
       borderWidth: 10,
