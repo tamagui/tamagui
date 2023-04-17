@@ -26,6 +26,11 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
+    },
+    "./headless": {
+      "types": "./types/headless.d.ts",
+      "import": "./dist/esm/headless.mjs",
+      "require": "./dist/cjs/headless.js"
     }
   },
   "dependencies": {
