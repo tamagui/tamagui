@@ -5,7 +5,16 @@ import { useUser } from 'hooks/useUser'
 import Link from 'next/link'
 import React from 'react'
 import { FormEvent, useEffect, useRef, useState } from 'react'
-import { Button, Input, Paragraph, Separator, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  EnsureFlexed,
+  Input,
+  Paragraph,
+  Separator,
+  Spinner,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { GithubIcon } from '../components/GithubIcon'
 import { Notice } from '../components/Notice'
@@ -13,6 +22,11 @@ import { useForwardToDashboard } from '../hooks/useForwardToDashboard'
 import { getUserLayout } from '../lib/getUserLayout'
 import { getURL } from '../lib/helpers'
 
+const loginPageUrl = `${
+  process.env.NODE_ENV === 'production'
+    ? 'https://tamagui.dev/login'
+    : 'http://localhost:5005/login'
+}`
 export default function SignInPage() {
   const supabaseClient = useSupabaseClient()
   const [email, setEmail] = useState('')
@@ -51,7 +65,7 @@ export default function SignInPage() {
         const { error } = await supabaseClient.auth.signInWithOtp({
           email,
           options: {
-            emailRedirectTo: `${location.origin}/login`,
+            emailRedirectTo: loginPageUrl,
           },
         })
         if (error) throw error
@@ -72,7 +86,7 @@ export default function SignInPage() {
     const { error } = await supabaseClient.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${location.origin}/login`,
+        redirectTo: loginPageUrl,
       },
     })
     if (error) {
@@ -205,7 +219,18 @@ export default function SignInPage() {
       </YStack>
     )
 
-  return <div className="m-6">...</div>
+  return (
+    <YStack
+      zIndex={10000000}
+      backgroundColor="$background"
+      justifyContent="center"
+      pos="absolute"
+      fullscreen
+      alignItems="center"
+    >
+      <Spinner size="large" />
+    </YStack>
+  )
 }
 
 SignInPage.getLayout = getUserLayout

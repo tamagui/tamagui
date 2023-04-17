@@ -143,8 +143,8 @@ function ContentInner({ Component, pageProps }: AppProps) {
 
   const disableNew = isHome || isBlog
 
-  const supabase = useSupabaseClient()
-  useSharedAuth(supabase)
+  // const supabase = useSupabaseClient()
+  // useSharedAuth(supabase)
 
   return getLayout(
     <>
