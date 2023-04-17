@@ -1,13 +1,5 @@
 import { Text, styled } from 'tamagui'
 
-export function SandboxVariantFontFamily() {
-  return (
-    <Heading type="myVariant" fontSize="$8">
-      H1
-    </Heading>
-  )
-}
-
 export const Heading = styled(Text, {
   name: 'Heading',
   color: '$color',
@@ -23,3 +15,11 @@ export const Heading = styled(Text, {
     },
   } as const,
 })
+
+export default function SandboxVariantFontFamily() {
+  return (
+    <Heading data-testid="heading" type="myVariant" fontSize="$1">
+      H1
+    </Heading>
+  )
+}

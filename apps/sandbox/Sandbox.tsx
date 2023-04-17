@@ -2,19 +2,21 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { ButtonDemo, ButtonNewDemo, SwitchDemo, TabsAdvancedDemo } from '@tamagui/demos'
-// import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
-// import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
-// import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
+import { ButtonNewDemo, TabsAdvancedDemo } from '@tamagui/demos'
 import { AnimationsDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
-import { Button, ScrollView, Separator, TamaguiProvider, XStack, YStack } from 'tamagui'
-import { Theme } from 'tamagui'
+import {
+  Button,
+  ScrollView,
+  Separator,
+  TamaguiProvider,
+  Theme,
+  XStack,
+  YStack,
+} from 'tamagui'
 
-import { SandboxThemeChange } from './SandboxThemeChange'
 import config from './tamagui.config'
-import { SandboxPseudoStyleMerge } from './SandboxPseudoStyleMerge'
 
 // useful for debugging why things render:
 // import './wdyr'
@@ -28,7 +30,7 @@ const SandboxAnimationThemeChange = () => {
 
   return (
     <Theme name={x as any}>
-      <Button onPress={() => setX(x === 'blue' ? 'red' : 'blue')}>cahnge</Button>
+      <Button onPress={() => setX(x === 'blue' ? 'red' : 'blue')}>Change</Button>
       <AnimationsDemo />
     </Theme>
   )
@@ -45,6 +47,9 @@ const SandboxActiveTheme = () => {
 }
 
 export const Sandbox = () => {
+  const componentName = new URLSearchParams(window.location.search).get('test')
+  const Component = componentName ? require(`./usecases/${componentName}`).default : SandboxInner
+
   console.log(`render once`)
 
   return (
@@ -54,7 +59,7 @@ export const Sandbox = () => {
       {/* <SwitchDemo /> */}
 
       {/* <ButtonDemo /> */}
-      <ButtonNewDemo />
+      <Component />
       {/* TODO fix/convert into tests */}
       {/* <SandboxAnimationThemeChange /> */}
       {/* <SandboxThemeChange /> */}
@@ -63,6 +68,10 @@ export const Sandbox = () => {
       {/* <SandboxCustomStyledAnimatedPopover /> */}
     </SandboxFrame>
   )
+}
+
+const SandboxInner = () => {
+  return <ButtonNewDemo />
 }
 
 const SandboxFrame = (props: { children: any }) => {
