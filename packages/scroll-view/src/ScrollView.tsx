@@ -6,22 +6,15 @@ setupReactNative({
   ScrollView: ScrollViewNative,
 })
 
-export const ScrollView = styled(
-  ScrollViewNative,
-  {
-    name: 'ScrollView',
-    scrollEnabled: true,
+export const ScrollView = styled(ScrollViewNative, {
+  name: 'ScrollView',
+  scrollEnabled: true,
 
-    variants: {
-      fullscreen: {
-        true: fullscreenStyle,
-      },
-    } as const,
-  },
-  {
-    // this maybe not necesssary since setupReactNative is called?
-    isReactNative: true,
-  }
-)
+  variants: {
+    fullscreen: {
+      true: fullscreenStyle,
+    },
+  } as const,
+})
 
 export type ScrollViewProps = GetProps<typeof ScrollView>

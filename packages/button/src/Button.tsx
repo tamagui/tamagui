@@ -276,6 +276,7 @@ function useButton(
     fontFamily,
     fontStyle,
     textAlign,
+    unstyled = false,
     textProps,
 
     ...rest
@@ -293,7 +294,7 @@ function useButton(
     propsActive,
     Text === ButtonTextFrame
       ? {
-          unstyled: propsIn.unstyled,
+          unstyled,
         }
       : undefined
   )

@@ -14,6 +14,7 @@ import { Theme } from 'tamagui'
 
 import { SandboxThemeChange } from './SandboxThemeChange'
 import config from './tamagui.config'
+import { SandboxPseudoStyleMerge } from './SandboxPseudoStyleMerge'
 
 // useful for debugging why things render:
 // import './wdyr'
@@ -39,24 +40,6 @@ const SandboxActiveTheme = () => {
       <Button theme="active" hoverStyle={{ scale: 2 }} animation="quick">
         active
       </Button>
-
-      <Button debug="verbose" hoverStyle={{ scale: 1 }} animation="quick">
-        regular
-      </Button>
-
-      <SwitchDemo />
-
-      <Theme name="blue">
-        <Button theme="active" hoverStyle={{ scale: 1 }} animation="quick">
-          active
-        </Button>
-
-        <Button hoverStyle={{ scale: 1 }} animation="quick">
-          regular
-        </Button>
-
-        <SwitchDemo />
-      </Theme>
     </>
   )
 }
@@ -69,8 +52,6 @@ export const Sandbox = () => {
       {/* this comment keeps indent */}
 
       {/* <SwitchDemo /> */}
-
-      {/* <SandboxActiveTheme /> */}
 
       {/* <ButtonDemo /> */}
       <ButtonNewDemo />

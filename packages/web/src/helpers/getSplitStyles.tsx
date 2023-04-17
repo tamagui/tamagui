@@ -655,7 +655,7 @@ export const getSplitStyles: StyleSplitter = (
           for (const psuedoStyle of pseudoStyles) {
             const fullKey = `${psuedoStyle.property}${PROP_SPLIT}${descriptor.name}`
 
-            if (!usedKeys[fullKey]) {
+            if (!(fullKey in usedKeys)) {
               usedKeys[fullKey] = 1
               addStyleToInsertRules(rulesToInsert, psuedoStyle)
               mergeClassName(
@@ -710,6 +710,7 @@ export const getSplitStyles: StyleSplitter = (
             }
             const curImportance = psuedosUsed[importance] || 0
             const shouldMerge = importance >= curImportance
+
             if (shouldMerge) {
               psuedosUsed[pkey] = importance
               pseudos ||= {}
