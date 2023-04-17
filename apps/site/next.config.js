@@ -85,6 +85,7 @@ const plugins = [
 module.exports = function (name, { defaultConfig }) {
   /** @type {import('next').NextConfig} */
   let config = {
+    output: 'export',
     // runtime: 'experimental-edge',
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     swcMinify: true,

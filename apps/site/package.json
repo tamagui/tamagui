@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "./scripts/dev.sh",
     "clean:build": "./scripts/clean.sh",
-    "ci:build": "yarn next:build && yarn next:export",
+    "ci:build": "yarn next:build",
     "ci:build:no-extract": "DISABLE_EXTRACTION=true yarn ci:build",
     "ci:build:debug": "DEBUG=tamagui yarn ci:build",
     "dev:analyze": "ANALYZE=true yarn dev",
