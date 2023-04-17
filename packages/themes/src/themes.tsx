@@ -102,7 +102,7 @@ const template = {
   // dark_red_Button theme to have a stronger background than the dark_red theme.
   background: 2,
   backgroundHover: 3,
-  backgroundPress: 1,
+  backgroundPress: 4,
   backgroundFocus: 2,
   backgroundStrong: 1,
   backgroundTransparent: 0,
