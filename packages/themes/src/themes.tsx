@@ -139,6 +139,11 @@ const darkShadows = {
 
 const lightTemplate = {
   ...template,
+
+  background: 2,
+  backgroundHover: 2,
+  backgroundPress: 3,
+
   // our light color palette is... a bit unique
   borderColor: 6,
   borderColorHover: 7,
@@ -272,10 +277,7 @@ function getAltThemes({
   }
   const alt1 = applyMask(theme, masks.weaker, maskOptionsAlt)
   const alt2 = applyMask(alt1, masks.weaker, maskOptionsAlt)
-  const stronger = applyMask(theme, masks.stronger, {
-    ...maskOptionsAlt,
-    strength: 3,
-  })
+
   const active =
     activeTheme ??
     (process.env.ACTIVE_THEME_INVERSE
@@ -322,6 +324,7 @@ function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean
       }
 
   return {
+    ListItem: stronger1,
     Card: weaker1,
     Button: weaker2,
     Checkbox: weaker2,

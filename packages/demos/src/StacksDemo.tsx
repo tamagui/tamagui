@@ -3,7 +3,7 @@ import { XStack, YStack, ZStack } from 'tamagui'
 
 export function StacksDemo() {
   return (
-    <XStack maxWidth={250} padding="$2" alignSelf="center" space>
+    <XStack maw={250} miw={250} p="$2" als="center" space>
       <YStack
         flex={1}
         space="$2"
