@@ -15,6 +15,7 @@ import * as React from 'react'
 import { TOAST_NAME } from './constants'
 import { ToastAnnounceExclude } from './ToastAnnounce'
 import {
+  CustomData,
   ToastNativePlatform,
   ToastNativeValue,
   useToast,
@@ -248,4 +249,5 @@ export type {
   // imperative
   ToastNativeValue,
   ToastNativePlatform,
+  CustomData,
 }
