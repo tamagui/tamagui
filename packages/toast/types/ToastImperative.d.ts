@@ -26,7 +26,7 @@ interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message
 export interface CustomData {
     [key: string]: any;
 }
-interface ShowOptions extends CreateNativeToastOptions {
+type ShowOptions = CreateNativeToastOptions & CustomData & {
     /**
      * Used when need custom data
      * @deprecated Use `customData` instead
@@ -44,13 +44,13 @@ interface ShowOptions extends CreateNativeToastOptions {
      * Which viewport to send this toast to. This is only intended to be used with custom toasts and you should wire it up when creating the toast.
      */
     viewportName?: string | 'default';
-}
+};
 type ToastData = {
     title: string;
     id: string;
 } & ShowOptions & {
     isHandledNatively: boolean;
-} & CustomData;
+};
 interface ToastContextI {
     nativeToast: NativeToastRef | null;
     /**
