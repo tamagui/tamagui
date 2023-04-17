@@ -61,7 +61,7 @@ type ShowOptions = CreateNativeToastOptions &
 
 type ToastData = { title: string; id: string } & ShowOptions & {
     isHandledNatively: boolean
-  }
+  } & CustomData
 
 interface ToastContextI {
   nativeToast: NativeToastRef | null
