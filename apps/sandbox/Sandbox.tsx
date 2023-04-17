@@ -2,7 +2,13 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { ButtonDemo, ButtonNewDemo, SwitchDemo, TabsAdvancedDemo } from '@tamagui/demos'
+import {
+  ButtonDemo,
+  ButtonHeadlessDemo,
+  ButtonNewDemo,
+  SwitchDemo,
+  TabsAdvancedDemo,
+} from '@tamagui/demos'
 // import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
 // import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
 // import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
@@ -12,9 +18,9 @@ import { useState } from 'react'
 import { Button, ScrollView, Separator, TamaguiProvider, XStack, YStack } from 'tamagui'
 import { Theme } from 'tamagui'
 
+import { SandboxPseudoStyleMerge } from './SandboxPseudoStyleMerge'
 import { SandboxThemeChange } from './SandboxThemeChange'
 import config from './tamagui.config'
-import { SandboxPseudoStyleMerge } from './SandboxPseudoStyleMerge'
 
 // useful for debugging why things render:
 // import './wdyr'
@@ -54,7 +60,9 @@ export const Sandbox = () => {
       {/* <SwitchDemo /> */}
 
       {/* <ButtonDemo /> */}
+      <ButtonDemo />
       <ButtonNewDemo />
+      <ButtonHeadlessDemo />
       {/* TODO fix/convert into tests */}
       {/* <SandboxAnimationThemeChange /> */}
       {/* <SandboxThemeChange /> */}

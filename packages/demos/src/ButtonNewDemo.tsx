@@ -7,7 +7,7 @@ export function ButtonNewDemo(props) {
       <Button>
         <Button.Text>Plain</Button.Text>
       </Button>
-      <Button alignSelf="center" size="$6" space="$2">
+      <Button alignSelf="center" size="$6" space="$1">
         <Button.Icon>
           <Airplay />
         </Button.Icon>
