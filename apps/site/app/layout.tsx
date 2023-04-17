@@ -4,6 +4,7 @@ import React from 'react'
 
 import SupabaseProvider from './SupabaseProvider'
 import { TamaguiProvider } from './TamaguiProvider'
+import { ToastProvider } from './ToastProvider'
 
 // export const metadata = {
 //   title: 'Create Next App',
@@ -15,7 +16,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <SupabaseProvider>
-          <TamaguiProvider>{children}</TamaguiProvider>
+          <TamaguiProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </TamaguiProvider>
         </SupabaseProvider>
       </body>
     </html>
