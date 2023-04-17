@@ -55,15 +55,16 @@ if (typeof navigator !== 'undefined') {
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
+
   const [supabaseClient] = useState(() =>
     createBrowserSupabaseClient({
-      cookieOptions: {
-        domain: 'localhost',
-        maxAge: '100000000',
-        path: '/',
-        sameSite: 'Lax',
-        secure: 'secure',
-      },
+      // cookieOptions: {
+      //   domain: 'localhost',
+      //   maxAge: '100000000',
+      //   path: '/',
+      //   sameSite: 'Lax',
+      //   secure: 'secure',
+      // },
     })
   )
   // useMemo below to avoid re-render on dark/light change
@@ -78,7 +79,7 @@ export default function App(props: AppProps) {
         }}
       />
       <SessionContextProvider
-        initialSession={(props as any).initialSession}
+        initialSession={props.pageProps.initialSession}
         supabaseClient={supabaseClient}
       >
         <MyUserContextProvider>
