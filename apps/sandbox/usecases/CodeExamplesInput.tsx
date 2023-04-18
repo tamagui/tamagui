@@ -1,4 +1,4 @@
-import { SandboxHeading, Stack } from 'sandbox-ui'
+import { SandboxHeading, Stack } from '@tamagui/sandbox-ui'
 
 export const CodeExamplesInput = (props) => (
   <Stack px="$2" w={550} $gtSm={{ px: '$6' }}>

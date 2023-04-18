@@ -1,10 +1,10 @@
 {
-  "name": "sandbox-ui",
+  "name": "@tamagui/sandbox-ui",
   "version": "1.15.15",
+  "private": true,
   "sideEffects": [
     "*.css"
   ],
-  "private": true,
   "types": "./types/index",
   "main": "dist/cjs",
   "module": "dist/esm",
