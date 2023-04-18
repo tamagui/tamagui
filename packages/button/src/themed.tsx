@@ -196,7 +196,7 @@ const ButtonIcon = (props: ScopedProps<ButtonIconComponentProps>) => {
   return getThemedIcon(children)
 }
 
-const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>((props) => {
+const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>((props, ref) => {
   const { props: buttonProps } = useButton(props)
   const [buttonTextCount, setButtonTextCount] = useState(0)
 
@@ -214,6 +214,7 @@ const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>((pr
       color={props.color}
       hasTextComponent={hasTextComponent}
       registerButtonText={registerButtonText}
+      ref={ref}
     >
       <ButtonFrame {...(hasTextComponent ? props : buttonProps)} />
     </ButtonProvider>
@@ -323,12 +324,30 @@ function useButton(
   }
 }
 
+const buttonStaticConfig = {
+  inlineProps: new Set([
+    // text props go here (can't really optimize them, but we never fully extract button anyway)
+    // may be able to remove this entirely, as the compiler / runtime have gotten better
+    'color',
+    'fontWeight',
+    'fontSize',
+    'fontFamily',
+    'fontStyle',
+    'letterSpacing',
+    'textAlign',
+    'unstyled',
+  ]),
+}
+
 export {
   Button,
+  createButtonScope,
+
+  // old api
   ButtonFrame,
   ButtonTextFrame as ButtonText,
-  createButtonScope,
   useButton,
+  buttonStaticConfig,
 }
 
 export type { ButtonProps }

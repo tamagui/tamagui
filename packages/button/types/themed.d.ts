@@ -2596,6 +2596,9 @@ declare function useButton(propsIn: ButtonProps, { Text }?: {
         focusable?: undefined;
     };
 };
-export { Button, ButtonFrame, ButtonTextFrame as ButtonText, createButtonScope, useButton, };
+declare const buttonStaticConfig: {
+    inlineProps: Set<string>;
+};
+export { Button, createButtonScope, ButtonFrame, ButtonTextFrame as ButtonText, useButton, buttonStaticConfig, };
 export type { ButtonProps };
 //# sourceMappingURL=themed.d.ts.map
