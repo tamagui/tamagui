@@ -87,6 +87,7 @@ module.exports = {
                 loader: 'esbuild-loader',
                 options: {
                   target: 'es2020',
+                  loader: 'tsx',
                   minify: false,
                 },
               },
