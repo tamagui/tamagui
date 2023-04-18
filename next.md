@@ -1,3 +1,5 @@
+- add check-dependency-version-consistency to starter / tamagui cli
+
 - <Code /> in site types break because of variant may need to revert defaultVariants inference
 
 - add test that builds site for prod + checks for header text / no errors

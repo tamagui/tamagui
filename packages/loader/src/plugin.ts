@@ -98,8 +98,8 @@ export class TamaguiPlugin {
       },
     }
 
-    // app dir
     if (nextJsRules === -1) {
+      // app dir or not next.js
       existing.unshift({
         test: this.options.test ?? /\.m?[jt]sx?$/,
         exclude: this.options.exclude,
@@ -126,7 +126,5 @@ export class TamaguiPlugin {
         ],
       })
     }
-
-    console.log(prettifyWebpackConfig(compiler.options.module.rules))
   }
 }
