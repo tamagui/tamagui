@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "@bunchtogether/vite-plugin-flow": "^1.0.2",
-    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
@@ -34,7 +33,7 @@
     "@tamagui/proxy-worm": "1.15.15",
     "@tamagui/react-native-svg": "1.15.15",
     "@tamagui/static": "1.15.15",
-    "esbuild": "^0.17.16",
+    "esbuild": "^0.17.17",
     "fs-extra": "^11.1.0",
     "lodash": "^4.17.21",
     "micromatch": ">=4.0.0",

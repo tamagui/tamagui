@@ -28,7 +28,7 @@
     "babel-loader": "^8.2.5",
     "css-loader": "^5.2.4",
     "dedent": "^0.7.0",
-    "esbuild-loader": "^2.20.0",
+    "esbuild-loader": "^3.0.1",
     "null-loader": "^4.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

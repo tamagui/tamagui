@@ -103,7 +103,7 @@
     "@tauri-apps/cli": "^1.2.2",
     "@types/wicg-file-system-access": "^2020.9.6",
     "babel-polyfill": "^6.26.0",
-    "esbuild-loader": "^2.20.0",
+    "esbuild-loader": "^3.0.1",
     "next-plugin-preact": "^3.0.7",
     "next-remote-watch": "^1.0.0",
     "react-refresh": "^0.14.0",
