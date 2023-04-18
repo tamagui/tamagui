@@ -48,7 +48,9 @@ const SandboxActiveTheme = () => {
 
 export const Sandbox = () => {
   const componentName = new URLSearchParams(window.location.search).get('test')
-  const Component = componentName ? require(`./usecases/${componentName}`).default : SandboxInner
+  const Component = componentName
+    ? require(`./usecases/${componentName}`).default
+    : SandboxInner
 
   console.log(`render once`)
 
