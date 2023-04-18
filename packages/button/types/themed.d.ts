@@ -467,6 +467,7 @@ type ButtonProps = Omit<TextParentStyles, 'TextComponent'> & GetProps<typeof But
      */
     scaleSpace?: number;
 };
+declare const createButtonScope: import("@tamagui/create-context").CreateScope;
 type ScopedProps<P> = P & {
     __scopeButton?: Scope;
 };
@@ -556,7 +557,7 @@ declare const ButtonTextFrame: import("@tamagui/web").TamaguiComponent<(((Omit<i
 type ButtonIconComponentProps = {
     children: React.ReactNode;
 } & Pick<ButtonProps, 'scaleIcon'>;
-declare const Button: ((props: ScopedProps<GetProps<typeof ButtonFrame>>) => JSX.Element) & {
+declare const Button: ((props: Omit<ScopedProps<ButtonProps>, "theme" | "themeInverse"> & ThemeableProps) => JSX.Element) & {
     Text: import("react").ForwardRefExoticComponent<(Omit<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendsBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{}, "size"> & {
         readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
     } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendsBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{}, "size"> & {
@@ -753,20 +754,13 @@ declare function useButton(propsIn: ButtonProps, { Text }?: {
         forceStyle?: "focus" | "hover" | "press" | undefined;
         onPress?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         onPressIn?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
-        onPressOut?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined; /**
-         * add icon after, passes color and size automatically if Component
-         * @deprecated Use the new Button API
-         */
+        onPressOut?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         onHoverIn?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onHoverOut?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onMouseEnter?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onMouseLeave?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onMouseDown?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onMouseUp?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
-        /**
-         * make the spacing elements flex
-         * @deprecated Use the new Button API
-         */
         onFocus?: ((event: import("react").FocusEvent<HTMLDivElement, Element>) => void) | undefined;
         onScroll?: ((event: import("react").UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
         backgroundColor?: import("@tamagui/web").ColorTokens | import("react-native").OpaqueColorValue | import("@tamagui/web").ThemeValueFallback | undefined;
@@ -2034,6 +2028,6 @@ declare function useButton(propsIn: ButtonProps, { Text }?: {
         focusable?: undefined;
     };
 };
-export { Button, ButtonFrame, ButtonTextFrame as ButtonText, useButton };
+export { Button, ButtonFrame, ButtonTextFrame as ButtonText, createButtonScope, useButton, };
 export type { ButtonProps };
-//# sourceMappingURL=Default.d.ts.map
+//# sourceMappingURL=themed.d.ts.map

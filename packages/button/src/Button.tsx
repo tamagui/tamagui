@@ -8,6 +8,7 @@ import {
   TamaguiElement,
   styled,
   themeable,
+  useMediaPropsActive,
   withStaticProperties,
 } from '@tamagui/web'
 import { forwardRef } from 'react'
@@ -45,8 +46,10 @@ const ButtonIcon = (props: {
 }
 
 const ButtonComponent = forwardRef<TamaguiElement, GetProps<typeof ButtonFrame>>(
-  function Button(props, ref) {
-    return <ButtonFrame {...props} ref={ref} />
+  function Button(propsIn, ref) {
+    const propsActive = useMediaPropsActive(propsIn)
+
+    return <ButtonFrame {...propsActive} ref={ref} />
   }
 )
 
@@ -65,11 +68,14 @@ const buttonStaticConfig = {
   ]),
 }
 
-const ButtonImpl = ButtonFrame.extractable(ButtonComponent)
-const Button = withStaticProperties(ButtonImpl, {
-  Text: ButtonTextComponent,
-  Icon: ButtonIcon,
-})
+const Button = withStaticProperties(
+  // ButtonComponent,
+  ButtonFrame.extractable(ButtonComponent),
+  {
+    Text: ButtonTextComponent,
+    Icon: ButtonIcon,
+  }
+)
 
 type ButtonProps = GetProps<typeof Button>
 

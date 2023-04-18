@@ -14,6 +14,7 @@ import {
   isRSC,
   spacedChildren,
   styled,
+  themeable,
   useMediaPropsActive,
   withStaticProperties,
 } from '@tamagui/web'
@@ -31,7 +32,7 @@ import {
   BUTTON_NAME,
   BUTTON_TEXT_NAME,
   Button as HeadlessButton,
-} from '../Button'
+} from './Button'
 
 const ButtonFrame = styled(HeadlessButton, {
   variants: {
@@ -195,33 +196,31 @@ const ButtonIcon = (props: ScopedProps<ButtonIconComponentProps>) => {
   return getThemedIcon(children)
 }
 
-const ButtonComponent = ButtonFrame.extractable(
-  (props: ScopedProps<GetProps<typeof ButtonFrame>>) => {
-    const { props: buttonProps } = useButton(props)
-    const [buttonTextCount, setButtonTextCount] = useState(0)
+const ButtonComponent = ButtonFrame.extractable((props: ScopedProps<ButtonProps>) => {
+  const { props: buttonProps } = useButton(props)
+  const [buttonTextCount, setButtonTextCount] = useState(0)
 
-    const registerButtonText = useCallback(() => {
-      setButtonTextCount((prev) => prev + 1)
-      return () => setButtonTextCount((prev) => prev - 1)
-    }, [setButtonTextCount])
+  const registerButtonText = useCallback(() => {
+    setButtonTextCount((prev) => prev + 1)
+    return () => setButtonTextCount((prev) => prev - 1)
+  }, [setButtonTextCount])
 
-    const hasTextComponent = buttonTextCount > 0
+  const hasTextComponent = buttonTextCount > 0
 
-    return (
-      <ButtonProvider
-        scope={props.__scopeButton}
-        size={props.size ?? '$true'}
-        color={props.color}
-        hasTextComponent={hasTextComponent}
-        registerButtonText={registerButtonText}
-      >
-        <ButtonFrame {...(hasTextComponent ? props : buttonProps)} />
-      </ButtonProvider>
-    )
-  }
-)
+  return (
+    <ButtonProvider
+      scope={props.__scopeButton}
+      size={props.size ?? '$true'}
+      color={props.color}
+      hasTextComponent={hasTextComponent}
+      registerButtonText={registerButtonText}
+    >
+      <ButtonFrame {...(hasTextComponent ? props : buttonProps)} />
+    </ButtonProvider>
+  )
+})
 
-const Button = withStaticProperties(ButtonComponent, {
+const Button = withStaticProperties(themeable(ButtonComponent), {
   Text: ButtonText,
   Icon: ButtonIcon,
 })
@@ -324,6 +323,12 @@ function useButton(
   }
 }
 
-export { Button, ButtonFrame, ButtonTextFrame as ButtonText, useButton }
+export {
+  Button,
+  ButtonFrame,
+  ButtonTextFrame as ButtonText,
+  createButtonScope,
+  useButton,
+}
 
 export type { ButtonProps }
