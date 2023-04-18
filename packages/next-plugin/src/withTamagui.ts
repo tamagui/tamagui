@@ -392,8 +392,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               // console.log(`shouldExclude`, res, path)
               return res
             },
-            // disableEsbuildLoader: isAppDir,
-            // disableModuleJSXEntry: isAppDir,
             ...tamaguiOptions,
           })
         )
