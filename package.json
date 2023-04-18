@@ -81,7 +81,6 @@
     "react-native-reanimated": "2.14.4",
     "@types/node": "16.11.9",
     "@types/react-native": "0.70.8",
-    "esbuild": "0.17.5",
     "react-native": "0.70.5",
     "webpack": "5.74.0",
     "react": "18.2.0",
