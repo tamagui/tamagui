@@ -622,6 +622,14 @@ export const getSplitStyles: StyleSplitter = (
         viewProps[key] = props[key] ?? val
       }
 
+      // have to run this logic again here
+      const isHOCShouldPassThrough = staticConfig.isHOC && isMediaOrPseudo
+      if (isHOCShouldPassThrough && !(key in usedKeys)) {
+        usedKeys[key] = 1
+        viewProps[key] = val
+        continue
+      }
+
       // pseudo
       if (isPseudo) {
         if (!val) continue
