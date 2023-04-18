@@ -6,7 +6,6 @@
       "cache": false
     },
     "build": {
-      "dependsOn": ["^build"],
       "inputs": [
         "tsconfig.json",
         "package.json",
