@@ -5,7 +5,7 @@ env:
 on:
   push:
     branches-ignore:
-      - main
+      - master
 jobs:
   Deploy-Preview:
     runs-on: ubuntu-latest
