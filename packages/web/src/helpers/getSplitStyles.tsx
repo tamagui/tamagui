@@ -317,12 +317,11 @@ export const getSplitStyles: StyleSplitter = (
       keyInit = shorthands[keyInit]
     }
 
-    if (!isAndroid) {
-      // only works in android
-      if (keyInit === 'elevationAndroid') return
-    }
-
     if (process.env.TAMAGUI_TARGET === 'native') {
+      if (!isAndroid) {
+        // only works in android
+        if (keyInit === 'elevationAndroid') return
+      }
       // map userSelect to native prop
       if (keyInit === 'userSelect') {
         keyInit = 'selectable'
@@ -882,9 +881,11 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
     }
-    if ('elevationAndroid' in style) {
-      style['elevation'] = style.elevationAndroid
-      delete style.elevationAndroid
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      if ('elevationAndroid' in style) {
+        style['elevation'] = style.elevationAndroid
+        delete style.elevationAndroid
+      }
     }
   }
 
