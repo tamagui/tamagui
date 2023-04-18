@@ -23,6 +23,7 @@
     "moduleResolution": "node",
     "isolatedModules": true,
     "jsx": "preserve",
+    "noImplicitThis": true,
     "resolveJsonModule": true,
     "incremental": true,
     "strictNullChecks": true
