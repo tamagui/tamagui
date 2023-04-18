@@ -2,28 +2,14 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { ButtonNewDemo, TabsAdvancedDemo } from '@tamagui/demos'
-import { AnimationsDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
-import {
-  Button,
-  ScrollView,
-  Separator,
-  TamaguiProvider,
-  Theme,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Separator, Square, TamaguiProvider, Theme, XStack, YStack } from 'tamagui'
 
 import config from './tamagui.config'
 
 // useful for debugging why things render:
 // import './wdyr'
-
-if (typeof require !== 'undefined') {
-  globalThis['React'] = require('react') // webpack
-}
 
 export const Sandbox = () => {
   const componentName = new URLSearchParams(window.location.search).get('test')
@@ -31,28 +17,16 @@ export const Sandbox = () => {
     ? require(`./usecases/${componentName}`).default
     : SandboxInner
 
-  console.log(`render once`)
-
   return (
     <SandboxFrame>
       {/* this comment keeps indent */}
-
-      {/* <SwitchDemo /> */}
-
-      {/* <ButtonDemo /> */}
       <Component />
-      {/* TODO fix/convert into tests */}
-      {/* <SandboxAnimationThemeChange /> */}
-      {/* <SandboxThemeChange /> */}
-      {/* <SandboxStyledOverridePseudo /> */}
-      {/* <SandboxCustomStyledAnimatedTooltip /> */}
-      {/* <SandboxCustomStyledAnimatedPopover /> */}
     </SandboxFrame>
   )
 }
 
 const SandboxInner = () => {
-  return <ButtonNewDemo />
+  return <Square animation="bouncy" size={100} bc="red" />
 }
 
 const SandboxFrame = (props: { children: any }) => {
@@ -73,12 +47,12 @@ const SandboxFrame = (props: { children: any }) => {
         />
 
         <XStack fullscreen backgroundColor="red">
-          <YStack f={1} h="100%" bg="$background">
+          <YStack ai="center" jc="center" f={1} h="100%" bg="$background">
             {props.children}
           </YStack>
           <Separator vertical />
           <Theme name="dark">
-            <YStack f={1} h="100%" bg="$background">
+            <YStack ai="center" jc="center" f={1} h="100%" bg="$background">
               {props.children}
             </YStack>
           </Theme>
@@ -97,36 +71,5 @@ const SandboxFrame = (props: { children: any }) => {
         </button>
       </ToastProvider>
     </TamaguiProvider>
-  )
-}
-
-function SandboxDefault() {
-  const demos = (
-    <>
-      <TabsAdvancedDemo />
-    </>
-  )
-
-  return (
-    <XStack bc="$backgroundStrong" fullscreen ai="center" jc="center">
-      <ScrollView fullscreen horizontal>
-        <ScrollView fullscreen>
-          <YStack>
-            <XStack gap={20} px="$4" flexWrap="wrap">
-              {demos}
-            </XStack>
-            <XStack theme="alt1" gap={20} px="$4" flexWrap="wrap">
-              {demos}
-            </XStack>
-            <XStack px="$4" theme="blue" gap={20} flexWrap="wrap">
-              {demos}
-            </XStack>
-            <XStack px="$4" theme="blue_alt1" gap={20} flexWrap="wrap">
-              {demos}
-            </XStack>
-          </YStack>
-        </ScrollView>
-      </ScrollView>
-    </XStack>
   )
 }
