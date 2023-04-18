@@ -11,6 +11,10 @@ import config from './tamagui.config'
 // useful for debugging why things render:
 // import './wdyr'
 
+if (typeof require !== 'undefined') {
+  globalThis['React'] = require('react') // webpack
+}
+
 export const Sandbox = () => {
   const componentName = new URLSearchParams(window.location.search).get('test')
   const Component = componentName
@@ -31,6 +35,7 @@ const SandboxInner = () => {
 
 const SandboxFrame = (props: { children: any }) => {
   const [theme, setTheme] = useState('light')
+  const splitView = new URLSearchParams(window.location.search).get('splitView')
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
@@ -46,16 +51,21 @@ const SandboxFrame = (props: { children: any }) => {
           }}
         />
 
-        <XStack fullscreen backgroundColor="red">
+        <XStack fullscreen>
           <YStack ai="center" jc="center" f={1} h="100%" bg="$background">
             {props.children}
           </YStack>
-          <Separator vertical />
-          <Theme name="dark">
-            <YStack ai="center" jc="center" f={1} h="100%" bg="$background">
-              {props.children}
-            </YStack>
-          </Theme>
+
+          {splitView ? (
+            <>
+              <Separator vertical />
+              <Theme name="dark">
+                <YStack ai="center" jc="center" f={1} h="100%" bg="$background">
+                  {props.children}
+                </YStack>
+              </Theme>
+            </>
+          ) : null}
         </XStack>
 
         <button
