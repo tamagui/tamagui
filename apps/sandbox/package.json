@@ -3,9 +3,9 @@
   "version": "1.15.21",
   "private": true,
   "scripts": {
-    "dev:vite": "NODE_ENV=development TAMAGUI_TARGET=web vite --host --clearScreen false",
+    "dev": "TAMAGUI_ENABLE_STUDIO=1 NODE_ENV=development TAMAGUI_TARGET=web vite --host --clearScreen false",
     "dev:vite:extract": "EXTRACT=1 yarn dev",
-    "dev": "DISABLE_EXTRACTION=true TAMAGUI_TARGET=web NODE_ENV=development webpack serve",
+    "dev:webpack": "TAMAGUI_ENABLE_STUDIO=1 DISABLE_EXTRACTION=true TAMAGUI_TARGET=web NODE_ENV=development webpack serve",
     "dev:extract": "DISABLE_EXTRACTION=false TAMAGUI_TARGET=web NODE_ENV=development webpack serve",
     "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
     "test": "node -r esbuild-register ../../node_modules/.bin/playwright test",
