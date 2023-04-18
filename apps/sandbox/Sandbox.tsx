@@ -25,27 +25,6 @@ if (typeof require !== 'undefined') {
   globalThis['React'] = require('react') // webpack
 }
 
-const SandboxAnimationThemeChange = () => {
-  const [x, setX] = useState('blue')
-
-  return (
-    <Theme name={x as any}>
-      <Button onPress={() => setX(x === 'blue' ? 'red' : 'blue')}>Change</Button>
-      <AnimationsDemo />
-    </Theme>
-  )
-}
-
-const SandboxActiveTheme = () => {
-  return (
-    <>
-      <Button theme="active" hoverStyle={{ scale: 2 }} animation="quick">
-        active
-      </Button>
-    </>
-  )
-}
-
 export const Sandbox = () => {
   const componentName = new URLSearchParams(window.location.search).get('test')
   const Component = componentName
