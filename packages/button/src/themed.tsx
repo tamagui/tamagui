@@ -196,7 +196,7 @@ const ButtonIcon = (props: ScopedProps<ButtonIconComponentProps>) => {
   return getThemedIcon(children)
 }
 
-const ButtonComponent = ButtonFrame.extractable((props: ScopedProps<ButtonProps>) => {
+const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>((props) => {
   const { props: buttonProps } = useButton(props)
   const [buttonTextCount, setButtonTextCount] = useState(0)
 
@@ -220,7 +220,7 @@ const ButtonComponent = ButtonFrame.extractable((props: ScopedProps<ButtonProps>
   )
 })
 
-const Button = withStaticProperties(themeable(ButtonComponent), {
+const Button = withStaticProperties(ButtonFrame.extractable(themeable(ButtonComponent)), {
   Text: ButtonText,
   Icon: ButtonIcon,
 })
