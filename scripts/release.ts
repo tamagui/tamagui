@@ -287,41 +287,42 @@ async function run() {
           })
         )
 
-        if (chunkNum % 15 === 0) {
+        if (chunkNum % 10 === 0) {
           // adding in a bit of delay to avoid too many requests errors
           await sleep(5000)
         }
       }
     } else {
       // if all successful, re-tag as latest
-      for (const [chunkNum, chunk] of _.chunk(packageJsons, 5).entries()) {
+      for (const chunk of _.chunk(packageJsons, 10)) {
         await Promise.all(
           chunk.map(async ({ name, cwd }) => {
-            console.log(`Release ${name}`)
-            try {
-              await spawnify(`npm dist-tag remove ${name}@${version} prepub`, {
-                cwd,
-              })
-            } catch (err) {
-              // ok
-              // @ts-ignore
-              console.error(`Dist-tag prepub remove fail ${name}:`)
-            }
             try {
               await spawnify(`npm dist-tag add ${name}@${version} latest`, {
                 cwd,
               })
             } catch (err) {
-              // @ts-ignore
-              console.error(`Dist-tag latest fail ${name}:`, err.message, err.stack)
+              console.error(`dist-tag latest fail ${name}:`, err)
             }
           })
         )
+      }
 
-        if (chunkNum % 15 === 0) {
-          // adding in a bit of delay to avoid too many requests errors
-          await sleep(5000)
-        }
+      await sleep(5000)
+
+      // then remove old prepub tag
+      for (const chunk of _.chunk(packageJsons, 10)) {
+        await Promise.all(
+          chunk.map(async ({ name, cwd }) => {
+            try {
+              await spawnify(`npm dist-tag remove ${name}@${version} prepub`, {
+                cwd,
+              })
+            } catch (err) {
+              console.error(`Dist-tag prepub remove fail ${name}`, err)
+            }
+          })
+        )
       }
     }
 
