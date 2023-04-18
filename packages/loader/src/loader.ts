@@ -33,6 +33,9 @@ export const loader = async function loader(
     const threaded = this.emitFile === undefined
     const options: TamaguiOptions = { ...this.getOptions() }
     const sourcePath = `${this.resourcePath}`
+
+    if (sourcePath.includes(`HeroResponsive`)) console.log('load?', sourcePath, sourceIn)
+
     const { shouldDisable, shouldPrintDebug } = getPragmaOptions({
       source,
       path: sourcePath,

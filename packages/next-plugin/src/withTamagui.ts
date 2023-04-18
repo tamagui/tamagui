@@ -386,14 +386,14 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         webpackConfig.plugins.push(
           new TamaguiPlugin({
-            commonjs: isServer,
+            isServer,
             exclude: (path: string) => {
               const res = shouldExclude(path, options.dir)
               // console.log(`shouldExclude`, res, path)
               return res
             },
-            disableEsbuildLoader: isAppDir,
-            disableModuleJSXEntry: isAppDir,
+            // disableEsbuildLoader: isAppDir,
+            // disableModuleJSXEntry: isAppDir,
             ...tamaguiOptions,
           })
         )
