@@ -51,7 +51,8 @@ export function styled<
     name?: string
     variants?: Variants | undefined
     // thought i had this typed, but can't get it linked
-    defaultVariants?: GetVariantAcceptedValues<Variants>
+    // this causes issues with 3+ levels of inheritance: GetVariantAcceptedValues<Variants>
+    defaultVariants?: { [key: string]: any }
     acceptsClassName?: boolean
   },
   staticExtractionOptions?: Partial<StaticConfig>

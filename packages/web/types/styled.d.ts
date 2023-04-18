@@ -7,7 +7,9 @@ type GetVariantAcceptedValues<V> = V extends Object ? {
 export declare function styled<ParentComponent extends StylableComponent, Variants extends VariantDefinitions<ParentComponent> | void = VariantDefinitions<ParentComponent> | void>(ComponentIn: ParentComponent, options?: GetProps<ParentComponent> & {
     name?: string;
     variants?: Variants | undefined;
-    defaultVariants?: GetVariantAcceptedValues<Variants>;
+    defaultVariants?: {
+        [key: string]: any;
+    };
     acceptsClassName?: boolean;
 }, staticExtractionOptions?: Partial<StaticConfig>): TamaguiComponent<Variants extends void ? GetProps<ParentComponent> : GetBaseProps<ParentComponent> & Omit<GetVariantProps<ParentComponent>, keyof GetVariantAcceptedValues<Variants>> & GetVariantAcceptedValues<Variants> & MediaProps<Partial<GetBaseProps<ParentComponent> & Omit<GetVariantProps<ParentComponent>, keyof GetVariantAcceptedValues<Variants>> & GetVariantAcceptedValues<Variants>>> & PseudoProps<Partial<GetBaseProps<ParentComponent> & Omit<GetVariantProps<ParentComponent>, keyof GetVariantAcceptedValues<Variants>> & GetVariantAcceptedValues<Variants>>>, TamaguiElement, GetBaseProps<ParentComponent>, GetVariantProps<ParentComponent> & GetVariantAcceptedValues<Variants>, { [Key in Exclude<keyof ParentComponent, "defaultProps" | "propTypes" | "staticConfig" | "extractable" | "$$typeof">]: ParentComponent[Key]; }>;
 export {};
