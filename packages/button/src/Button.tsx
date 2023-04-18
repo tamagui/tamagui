@@ -53,21 +53,6 @@ const ButtonComponent = forwardRef<TamaguiElement, GetProps<typeof ButtonFrame>>
   }
 )
 
-const buttonStaticConfig = {
-  inlineProps: new Set([
-    // text props go here (can't really optimize them, but we never fully extract button anyway)
-    // may be able to remove this entirely, as the compiler / runtime have gotten better
-    'color',
-    'fontWeight',
-    'fontSize',
-    'fontFamily',
-    'fontStyle',
-    'letterSpacing',
-    'textAlign',
-    'unstyled',
-  ]),
-}
-
 const Button = withStaticProperties(
   // ButtonComponent,
   ButtonFrame.extractable(ButtonComponent),
@@ -89,7 +74,6 @@ export {
   ButtonFrame,
   ButtonTextFrame as ButtonText,
   ButtonTextComponent,
-  buttonStaticConfig,
 }
 
 export type { ButtonProps }

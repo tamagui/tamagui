@@ -4,36 +4,44 @@ import { Button, XGroup, XStack, YStack } from 'tamagui'
 export function ButtonDemo(props) {
   return (
     <YStack padding="$3" space="$3" {...props}>
-      <Button>Plain</Button>
-      <Button alignSelf="center" icon={Airplay} size="$6">
-        Large
+      <Button>
+        <Button.Text>Plain</Button.Text>
+      </Button>
+      <Button alignSelf="center" size="$6" space="$1">
+        <Button.Icon>
+          <Airplay />
+        </Button.Icon>
+        <Button.Text>Large</Button.Text>
       </Button>
       <XStack space="$2" justifyContent="center">
         <Button size="$3" theme="alt2">
-          Alt2
+          <Button.Text>Alt2</Button.Text>
         </Button>
         <Button size="$3" theme="yellow">
-          Yellow
+          <Button.Text>Yellow</Button.Text>
         </Button>
       </XStack>
       <XStack space="$2">
         <Button themeInverse size="$3">
-          Small Inverse
+          <Button.Text>Small Inverse</Button.Text>
         </Button>
-        <Button iconAfter={Activity} size="$3">
-          After
+        <Button size="$3" space="$2">
+          <Button.Text>After</Button.Text>
+          <Button.Icon>
+            <Activity />
+          </Button.Icon>
         </Button>
       </XStack>
       <XGroup>
         <XGroup.Item>
           <Button width="50%" size="$2" disabled opacity={0.5}>
-            disabled
+            <Button.Text>disabled</Button.Text>
           </Button>
         </XGroup.Item>
 
         <XGroup.Item>
           <Button width="50%" size="$2" chromeless>
-            chromeless
+            <Button.Text>chromeless</Button.Text>
           </Button>
         </XGroup.Item>
       </XGroup>
