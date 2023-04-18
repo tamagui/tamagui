@@ -3,12 +3,13 @@
   "version": "1.15.14",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development TAMAGUI_TARGET=web vite --host --clearScreen false",
-    "dev:extract": "EXTRACT=1 yarn dev",
-    "dev:webpack": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
-    "dev:webpack:extract": "DISABLE_EXTRACTION=true TAMAGUI_TARGET=web NODE_ENV=development webpack serve",
+    "dev:vite": "NODE_ENV=development TAMAGUI_TARGET=web vite --host --clearScreen false",
+    "dev:vite:extract": "EXTRACT=1 yarn dev",
+    "dev": "DISABLE_EXTRACTION=true TAMAGUI_TARGET=web NODE_ENV=development webpack serve",
+    "dev:extract": "DISABLE_EXTRACTION=false TAMAGUI_TARGET=web NODE_ENV=development webpack serve",
     "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
-    "test": "node -r esbuild-register ../../node_modules/.bin/playwright test"
+    "test": "node -r esbuild-register ../../node_modules/.bin/playwright test",
+    "test:debug": "yarn test --debug"
   },
   "dependencies": {
     "@tamagui/animations-css": "1.15.14",

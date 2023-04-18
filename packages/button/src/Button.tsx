@@ -329,6 +329,7 @@ function useButton(
         borderColor: '$background',
       },
     }),
+    unstyled,
     tag,
     ...rest,
     children: isRSC ? (
