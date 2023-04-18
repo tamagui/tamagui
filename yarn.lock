@@ -5422,6 +5422,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/sandbox-ui@workspace:packages/sandbox-ui":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/sandbox-ui@workspace:packages/sandbox-ui"
+  dependencies:
+    "@tamagui/build": 1.15.15
+    "@tamagui/toast": 1.15.15
+    tamagui: 1.15.15
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/sandbox@workspace:apps/sandbox":
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox@workspace:apps/sandbox"
@@ -20227,16 +20237,6 @@ __metadata:
   checksum: cab8f25ae6f1434abee8d80023d7e72b598cf1327164ddab31003c51215526801e40b66c5e65d658a0af1e9d6478cadcb4c745f4bd6751f97d8644786c0978b0
   languageName: node
   linkType: hard
-
-"sandbox-ui@workspace:apps/sandbox-ui":
-  version: 0.0.0-use.local
-  resolution: "sandbox-ui@workspace:apps/sandbox-ui"
-  dependencies:
-    "@tamagui/build": 1.15.15
-    "@tamagui/toast": 1.15.15
-    tamagui: 1.15.15
-  languageName: unknown
-  linkType: soft
 
 "sax@npm:>=0.6.0, sax@npm:^1.2.4":
   version: 1.2.4
