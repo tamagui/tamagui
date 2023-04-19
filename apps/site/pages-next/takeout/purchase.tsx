@@ -206,20 +206,20 @@ export default function TakeoutPurchasePage({ products }: Props) {
 
 TakeoutPurchasePage.getLayout = getUserLayout
 
-export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
-  return {
-    props: {
-      products: [],
-    },
-  }
-  // const products = await getActiveProductsWithPrices()
-  // return {
-  //   props: {
-  //     products,
-  //   },
-  //   revalidate: 60,
-  // }
-}
+// export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
+//   return {
+//     props: {
+//       products: [],
+//     },
+//   }
+//   // const products = await getActiveProductsWithPrices()
+//   // return {
+//   //   props: {
+//   //     products,
+//   //   },
+//   //   revalidate: 60,
+//   // }
+// }
 
 const allFeatures = [
   { title: '20 screens' },

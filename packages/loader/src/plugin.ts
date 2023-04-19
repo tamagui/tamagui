@@ -99,6 +99,15 @@ export class TamaguiPlugin {
     }
 
     if (nextJsRules === -1) {
+      existing.push({
+        test: /\/jsx\/.*\.m?[jt]sx?$/,
+        exclude: this.options.exclude,
+        resolve: {
+          fullySpecified: false,
+        },
+        use: [esbuildLoader],
+      })
+
       // app dir or not next.js
       existing.push({
         test: this.options.test ?? /\.m?[jt]sx?$/,
@@ -106,7 +115,7 @@ export class TamaguiPlugin {
         resolve: {
           fullySpecified: false,
         },
-        use: [esbuildLoader, tamaguiLoader],
+        use: [tamaguiLoader],
       })
     } else if (!this.options.disableEsbuildLoader) {
       const startIndex = nextJsRules ? nextJsRules + 1 : 0
