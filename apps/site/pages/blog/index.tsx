@@ -5,6 +5,7 @@ import { NextLink } from 'components/NextLink'
 import { format, parseISO } from 'date-fns'
 import { H2, Paragraph, Spacer, XStack } from 'tamagui'
 
+import { getBlogLayout } from '@components/layouts/BlogLayout'
 import { ContainerLarge } from '../../components/Container'
 import { TamaguiCard } from '../../components/TamaguiCard'
 
@@ -38,6 +39,8 @@ export default function Blog({ frontmatters }) {
     </>
   )
 }
+
+Blog.getLayout = getBlogLayout
 
 export function getStaticProps() {
   const frontmatters = getAllFrontmatter('blog')

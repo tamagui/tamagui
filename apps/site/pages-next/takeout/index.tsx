@@ -4,7 +4,10 @@
 // import '@takeout/font-noto-emoji/css/300.css'
 
 import { Header } from '@components/Header'
+import { getDefaultLayout } from '@components/layouts/DefaultLayout'
+import { getPurchaseLayout } from '@components/layouts/PurchaseLayout'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { withSupabase } from '@lib/withSupabase'
 // import { createNotoFont } from '@tamagui/font-noto-emoji'
 import { SwitchDemo } from '@tamagui/demos'
 import { useTint } from '@tamagui/logo'
@@ -38,7 +41,6 @@ import { useHoverGlow } from '../../components/HoverGlow'
 import { MediaPlayer } from '../../components/MediaPlayer'
 import { NotoIcon } from '../../components/NotoIcon'
 import { TamaCard } from '../../components/TamaCard'
-import { getUserLayout } from '../../lib/getUserLayout'
 
 // lazy load this on page load
 // insertFont('noto', createNotoFont())
@@ -201,7 +203,7 @@ export default function TakeoutPage() {
   )
 }
 
-TakeoutPage.getLayout = getUserLayout
+TakeoutPage.getLayout = (page) => getPurchaseLayout
 
 const Hero = () => {
   const { resolvedTheme: themeName } = useThemeSetting()

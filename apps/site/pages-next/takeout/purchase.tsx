@@ -3,7 +3,10 @@
 // import '@tamagui/font-inter/css/900.css'
 
 import { Header } from '@components/Header'
+import { getDefaultLayout } from '@components/layouts/DefaultLayout'
+import { getPurchaseLayout } from '@components/layouts/PurchaseLayout'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { withSupabase } from '@lib/withSupabase'
 import { CheckCircle, XCircle } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { GetStaticPropsResult } from 'next'
@@ -30,7 +33,6 @@ import {
 import { ContainerLarge } from '../../components/Container'
 import { FlatBubbleCard } from '../../components/FlatBubbleCard'
 import { useUser } from '../../hooks/useUser'
-import { getUserLayout } from '../../lib/getUserLayout'
 import { postData } from '../../lib/helpers'
 import { getStripe } from '../../lib/stripeClient'
 import { getActiveProductsWithPrices } from '../../lib/supabaseClient'
@@ -207,7 +209,7 @@ export default function TakeoutPurchasePage({ products }: Props) {
   )
 }
 
-TakeoutPurchasePage.getLayout = getUserLayout
+TakeoutPurchasePage.getLayout = getPurchaseLayout
 
 // export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
 //   return {

@@ -1,3 +1,4 @@
+import { getBlogLayout } from '@components/layouts/BlogLayout'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
 import { getMDXComponent } from 'mdx-bundler/client'
@@ -20,6 +21,8 @@ export default function BlogSlug(props: BlogPost) {
     </TamaguiExamples.Provider>
   )
 }
+
+BlogSlug.getLayout = getBlogLayout
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('blog')
