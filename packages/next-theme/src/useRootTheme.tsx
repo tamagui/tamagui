@@ -1,19 +1,17 @@
-import * as React from 'react'
 import { useLayoutEffect, useState } from 'react'
 
-// note this only works for light being default for now...
-
-export const useRootTheme = () => {
-  const [val, setVal] = useState('light')
+export const useRootTheme = ({ initial = 'light' }: { initial?: 'dark' | 'light' }) => {
+  const [val, setVal] = useState(initial)
 
   if (typeof document !== 'undefined') {
     useLayoutEffect(() => {
       // @ts-ignore
       const classes = [...document.documentElement.classList]
-      const isDark = classes.includes('t_dark')
-      React.startTransition(() => {
-        setVal(isDark ? 'dark' : 'light')
-      })
+      const isInitial = classes.includes(`t_${initial}`)
+      if (!isInitial) {
+        const opposite = initial === 'light' ? 'dark' : 'light'
+        setVal(opposite)
+      }
     }, [])
   }
 
