@@ -9,8 +9,8 @@
     "esModuleInterop": true,
     "preserveSymlinks": true,
     "incremental": true,
-    "jsx": "react",
-    "module": "ESNext",
+    "jsx": "react-jsx",
+    "module": "system",
     "moduleResolution": "node",
     "noEmitOnError": false,
     "noImplicitAny": false,
@@ -25,9 +25,9 @@
     "skipLibCheck": true,
     "sourceMap": false,
     "strictNullChecks": true,
-    "target": "es2019",
+    "target": "es2020",
     "types": ["node"],
-    "lib": ["es2021", "dom", "esnext"]
+    "lib": ["dom", "esnext"]
   },
   "exclude": ["_"],
   "typeAcquisition": {
