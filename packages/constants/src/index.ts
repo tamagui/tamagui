@@ -31,11 +31,13 @@ export const isWebTouchable =
 
 export const isTouchable = !isWeb || isWebTouchable
 
+if (!process.env.TAMAGUI_TARGET) {
+  // eslint-disable-next-line no-console
+  console.warn(`⚠️ Must set TAMAGUI_TARGET`)
+}
+
 if (process.env.NODE_ENV === 'development') {
-  if (!process.env.TAMAGUI_TARGET) {
-    // eslint-disable-next-line no-console
-    console.warn(`Must set TAMAGUI_TARGET to "web" or "native"`)
-  } else if (
+  if (
     isClient &&
     process.env.TAMAGUI_TARGET !== 'web' &&
     process.env.TAMAGUI_IGNORE_TARGET !== '1'
