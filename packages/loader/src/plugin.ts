@@ -100,7 +100,7 @@ export class TamaguiPlugin {
 
     if (nextJsRules === -1) {
       // app dir or not next.js
-      existing.unshift({
+      existing.push({
         test: this.options.test ?? /\.m?[jt]sx?$/,
         exclude: this.options.exclude,
         resolve: {
