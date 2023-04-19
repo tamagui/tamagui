@@ -4,9 +4,7 @@
     "src"
   ],
   "compilerOptions": {
-    "composite": true,
-    "esModuleInterop": true,
-    "jsx": "preserve"
+    "composite": true
   },
   "references": []
 }
