@@ -1,3 +1,6 @@
+import { get } from 'http'
+
+import { getDocLayout } from '@components/layouts/DocLayout'
 import { components } from '@components/MDXComponents'
 import { MDXProvider } from '@components/MDXProvider'
 import { QuickNav } from '@components/QuickNav'
@@ -12,9 +15,9 @@ import { DocsPage } from '../../../components/DocsPage'
 import type { Frontmatter } from '../../../frontmatter'
 import { listeners } from '../../../hooks/setTinted'
 
-const getPathFragment = (path:string)=>{
-  const [_, fragment] = path.split("#")
-return fragment
+const getPathFragment = (path: string) => {
+  const [_, fragment] = path.split('#')
+  return fragment
 }
 
 type Doc = {
@@ -39,7 +42,9 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
 
   useEffect(() => {
     const fragment = getPathFragment(router.asPath)
-    let pathWithVersion = `${router.pathname}/${frontmatter.version}${fragment ? `#${fragment}` : ""}`
+    let pathWithVersion = `${router.pathname}/${frontmatter.version}${
+      fragment ? `#${fragment}` : ''
+    }`
     if (Array.isArray(router.query.slug)) {
       pathWithVersion = pathWithVersion.replace('[...slug]', router.query.slug[0])
     }
@@ -69,7 +74,7 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
   )
 }
 
-DocComponentsPage.getLayout = (page) => <DocsPage>{page}</DocsPage>
+DocComponentsPage.getLayout = getDocLayout
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('docs/components')
