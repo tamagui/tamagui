@@ -1,4 +1,5 @@
 import { Hero } from '@components/Hero'
+import { getDefaultLayout } from '@components/layouts/DefaultLayout'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
@@ -67,6 +68,8 @@ export default function Home({ animationCode, compilationExamples }) {
     </>
   )
 }
+
+Home.getLayout = getDefaultLayout satisfies GetLayout
 
 export async function getStaticProps() {
   return {
