@@ -3,9 +3,11 @@
 
 // import '@takeout/font-noto-emoji/css/300.css'
 
+import { Header } from '@components/Header'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
-// import { createNotoFont } from '@takeout/font-noto-emoji'
+// import { createNotoFont } from '@tamagui/font-noto-emoji'
 import { SwitchDemo } from '@tamagui/demos'
+import { useTint } from '@tamagui/logo'
 import { useThemeSetting } from '@tamagui/next-theme'
 import Head from 'next/head'
 import {
@@ -26,10 +28,11 @@ import {
   YStack,
   insertFont,
   useComposedRefs,
+  useIsomorphicLayoutEffect,
 } from 'tamagui'
 
 import { ContainerXL } from '../../components/Container'
-import { InputsDemo, StacksDemo } from '../../components/demos'
+import { FormsDemo, StacksDemo } from '../../components/demos'
 import { FlatBubbleCard } from '../../components/FlatBubbleCard'
 import { useHoverGlow } from '../../components/HoverGlow'
 import { MediaPlayer } from '../../components/MediaPlayer'
@@ -41,18 +44,18 @@ import { getUserLayout } from '../../lib/getUserLayout'
 // insertFont('noto', createNotoFont())
 
 export default function TakeoutPage() {
-  const { resolvedTheme: themeName } = useThemeSetting()!
-  // const { tint, setTintIndex } = useTint()
+  const { resolvedTheme: themeName } = useThemeSetting()
+  const { setTintIndex, tintIndex } = useTint()
 
   // if logged in already go to dashboard
   // useForwardToDashboard()
 
-  // useIsomorphicLayoutEffect(() => {
-  //   setTintIndex('pink')
-  //   return () => {
-  //     setTintIndex(tint)
-  //   }
-  // }, [])
+  useIsomorphicLayoutEffect(() => {
+    setTintIndex(3)
+    return () => {
+      setTintIndex(tintIndex)
+    }
+  }, [])
 
   return (
     <Theme name={themeName as any}>
@@ -63,6 +66,8 @@ export default function TakeoutPage() {
       </Head>
 
       <YStack>
+        <Header floating />
+
         <YStack
           o={0.45}
           pos="absolute"
@@ -199,7 +204,7 @@ export default function TakeoutPage() {
 TakeoutPage.getLayout = getUserLayout
 
 const Hero = () => {
-  const { resolvedTheme: themeName } = useThemeSetting()!
+  const { resolvedTheme: themeName } = useThemeSetting()
 
   const glow = useHoverGlow({
     resist: 40,
@@ -296,6 +301,7 @@ const Hero = () => {
           mx="$8"
           pos="relative"
           zi={1000000000}
+          debug="verbose"
           flexWrap="wrap"
           justifyContent="space-between"
           ref={belowGlow.parentRef as any}
@@ -401,7 +407,7 @@ const Ribbon = ({ id, color }: { id: string; color: string }) => {
             V 67 
             Z
             "
-        ></animate>
+        />
       </path>
     </svg>
   )
@@ -440,7 +446,9 @@ const FloatingItemsAbove = () => {
       </YStack>
 
       <YStack scale={0.5} pos="absolute" b={160} l={120}>
-        <Card>{/* <InputsDemo /> */}</Card>
+        <Card>
+          <FormsDemo size="$4" />
+        </Card>
       </YStack>
     </YStack>
   )
@@ -496,6 +504,9 @@ const FloatingItemsBelow = () => {
           </Slider>
         </Card>
       </YStack>
+
+      {/* <Circle o={0.5} pos="absolute" l={200} t="50%" size={175} bc="$colorMid" />
+      <Square o={0.5} rotate="45deg" pos="absolute" r={200} b="50%" size={175} bc="$colorMid" /> */}
     </YStack>
   )
 }
@@ -521,6 +532,7 @@ const demoIcons = [
   '🔄',
   '⏸',
   '▶',
+  '⏩',
   '⏩',
   '📶',
   '➕',

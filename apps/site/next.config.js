@@ -98,7 +98,7 @@ module.exports = function (name, { defaultConfig }) {
       },
     },
     experimental: {
-      appDir: true,
+      // appDir: true,
       // optimizeCss: true,
       esmExternals: true,
       forceSwcTransforms: true,
