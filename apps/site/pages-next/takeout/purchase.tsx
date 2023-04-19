@@ -2,13 +2,14 @@
 // import '@tamagui/font-inter/css/200.css'
 // import '@tamagui/font-inter/css/900.css'
 
+import { Header } from '@components/Header'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { CheckCircle, XCircle } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
-import { NextLink } from 'components/NextLink'
 import { GetStaticPropsResult } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {
   Button,
   H1,
@@ -40,7 +41,7 @@ interface Props {
 }
 
 export default function TakeoutPurchasePage({ products }: Props) {
-  const { resolvedTheme } = useThemeSetting()!
+  const { resolvedTheme } = useThemeSetting()
   const [themeName, setThemeName] = useState<ThemeName>(resolvedTheme as any)
   const containerRef = useRef(null)
   const router = useRouter()
@@ -80,6 +81,7 @@ export default function TakeoutPurchasePage({ products }: Props) {
       <TitleAndMetaTags title="Tamagui TAKEOUT" description="What's up with Tamagui." />
 
       <YStack bc="$backgroundStrong">
+        <Header floating />
         <Spacer size="$7" />
 
         <H1
@@ -154,18 +156,19 @@ export default function TakeoutPurchasePage({ products }: Props) {
                   <Spacer />
                   <Separator />
                   <Spacer />
-                  <NextLink href="/login">
+                  <Link href="/login" passHref legacyBehavior>
                     <Button
                       theme={level.highlight ? 'blue' : null}
                       br="$10"
                       bw={2}
                       fontFamily="$silkscreen"
                       size="$6"
+                      tag="a"
                       textAlign="center"
                     >
                       Purchase
                     </Button>
-                  </NextLink>
+                  </Link>
                 </FlatBubbleCard>
               )
             })}

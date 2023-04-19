@@ -5,12 +5,12 @@ import '../app.css'
 import '../public/fonts/fonts.css'
 
 import { Footer } from '@components/Footer'
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { SessionContextProvider, useSupabaseClient } from '@supabase/auth-helpers-react'
+// import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+// import { SessionContextProvider, useSupabaseClient } from '@supabase/auth-helpers-react'
+// import { useSharedAuth } from '@tamagui/site-shared'
+// import { MyUserContextProvider } from 'hooks/useUser'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
-import { useSharedAuth } from '@tamagui/site-shared'
 import { ToastProvider, ToastViewport } from '@tamagui/toast'
-import { MyUserContextProvider } from 'hooks/useUser'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { Suspense, startTransition, useMemo, useState } from 'react'
@@ -56,17 +56,17 @@ if (typeof navigator !== 'undefined') {
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
 
-  const [supabaseClient] = useState(() =>
-    createBrowserSupabaseClient({
-      // cookieOptions: {
-      //   domain: 'localhost',
-      //   maxAge: '100000000',
-      //   path: '/',
-      //   sameSite: 'Lax',
-      //   secure: 'secure',
-      // },
-    })
-  )
+  // const [supabaseClient] = useState(() =>
+  //   createBrowserSupabaseClient({
+  //     // cookieOptions: {
+  //     //   domain: 'localhost',
+  //     //   maxAge: '100000000',
+  //     //   path: '/',
+  //     //   sameSite: 'Lax',
+  //     //   secure: 'secure',
+  //     // },
+  //   })
+  // )
   // useMemo below to avoid re-render on dark/light change
   return (
     <>
@@ -78,54 +78,54 @@ export default function App(props: AppProps) {
           __html: `document.documentElement.classList.add('t_unmounted')`,
         }}
       />
-      <SessionContextProvider
+      {/* <SessionContextProvider
         initialSession={props.pageProps.initialSession}
         supabaseClient={supabaseClient}
+      > */}
+      {/* <MyUserContextProvider> */}
+      <NextThemeProvider
+        onChangeTheme={(next) => {
+          startTransition(() => {
+            setTheme(next)
+          })
+        }}
       >
-        <MyUserContextProvider>
-          <NextThemeProvider
-            onChangeTheme={(next) => {
-              startTransition(() => {
-                setTheme(next)
-              })
-            }}
-          >
-            <TamaguiProvider
-              config={config}
-              disableInjectCSS
-              disableRootThemeClass
-              defaultTheme={theme}
-            >
-              <SearchProvider>
-                <Suspense fallback={null}>
-                  {useMemo(() => {
-                    return (
-                      <ToastProvider swipeDirection="horizontal">
-                        <ContentInner {...props} />
+        <TamaguiProvider
+          config={config}
+          disableInjectCSS
+          disableRootThemeClass
+          defaultTheme={theme}
+        >
+          <SearchProvider>
+            <Suspense fallback={null}>
+              {useMemo(() => {
+                return (
+                  <ToastProvider swipeDirection="horizontal">
+                    <ContentInner {...props} />
 
-                        <ToastViewport
-                          flexDirection="column-reverse"
-                          top="$2"
-                          left={0}
-                          right={0}
-                        />
-                        <ToastViewport
-                          multipleToasts
-                          name="viewport-multiple"
-                          flexDirection="column-reverse"
-                          top="$2"
-                          left={0}
-                          right={0}
-                        />
-                      </ToastProvider>
-                    )
-                  }, [props])}
-                </Suspense>
-              </SearchProvider>
-            </TamaguiProvider>
-          </NextThemeProvider>
-        </MyUserContextProvider>
-      </SessionContextProvider>
+                    <ToastViewport
+                      flexDirection="column-reverse"
+                      top="$2"
+                      left={0}
+                      right={0}
+                    />
+                    <ToastViewport
+                      multipleToasts
+                      name="viewport-multiple"
+                      flexDirection="column-reverse"
+                      top="$2"
+                      left={0}
+                      right={0}
+                    />
+                  </ToastProvider>
+                )
+              }, [props])}
+            </Suspense>
+          </SearchProvider>
+        </TamaguiProvider>
+      </NextThemeProvider>
+      {/* </MyUserContextProvider> */}
+      {/* </SessionContextProvider> */}
     </>
   )
 }
