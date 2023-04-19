@@ -218,9 +218,9 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<im
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-} & {
+} & ({} | {
     [x: string]: undefined;
-}, {
+}), {
     displayName: string | undefined;
 }>;
 type TabsContentFrameProps = GetProps<typeof TabsContentFrame>;
@@ -326,9 +326,9 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly size?: SizeTokens | undefined;
-} & {
+} & ({} | {
     [x: string]: undefined;
-}, {
+}), {
     displayName: string | undefined;
 }>;
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>;

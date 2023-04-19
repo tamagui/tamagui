@@ -131,9 +131,9 @@ export declare const Circle: import("@tamagui/web").TamaguiComponent<(Omit<impor
 } & {
     readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
-} & {
+} & ({} | {
     [x: string]: undefined;
-}, {
+}), {
     displayName: string | undefined;
 }>;
 export type CircleProps = GetProps<typeof Circle>;
