@@ -1,3 +1,4 @@
+import { getDocLayout } from '@components/layouts/DocLayout'
 import { components } from '@components/MDXComponents'
 import { QuickNav } from '@components/QuickNav'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
@@ -7,7 +8,6 @@ import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
 import { Spacer } from 'tamagui'
 
-import { DocsPage } from '../../../components/DocsPage'
 import { HomeH1 } from '../../../components/HomeH2'
 import { SubTitle } from '../../../components/SubTitle'
 import type { Frontmatter } from '../../../frontmatter'
@@ -36,7 +36,7 @@ export default function DocGuidesPage({ frontmatter, code }: Doc) {
   )
 }
 
-DocGuidesPage.getLayout = (page) => <DocsPage>{page}</DocsPage>
+DocGuidesPage.getLayout = getDocLayout
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('docs/guides')

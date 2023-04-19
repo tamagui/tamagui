@@ -1,3 +1,4 @@
+import { getDocLayout } from '@components/layouts/DocLayout'
 import { components } from '@components/MDXComponents'
 import { QuickNav } from '@components/QuickNav'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
@@ -39,7 +40,7 @@ export default function DocIntroPage({ frontmatter, code, examples }: Doc) {
   )
 }
 
-DocIntroPage.getLayout = (page) => <DocsPage>{page}</DocsPage>
+DocIntroPage.getLayout = getDocLayout
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('docs/intro')
