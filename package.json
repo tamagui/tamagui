@@ -14,6 +14,7 @@
   ],
   "packageManager": "yarn@3.5.0",
   "scripts": {
+    "git-crypt-unlock": "./scripts/git-crypt-unlock.sh",
     "vercel:build": "yarn build:js && cd apps/site && yarn ci:build",
     "install:ci": "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 yarn install",
     "postinstall": "manypkg check",
