@@ -6,6 +6,7 @@ import '../app.css'
 import '../public/fonts/fonts.css'
 
 import { Footer } from '@components/Footer'
+import ProtectedLayout from '@protected/layout'
 // import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 // import { SessionContextProvider, useSupabaseClient } from '@supabase/auth-helpers-react'
 // import { useSharedAuth } from '@tamagui/site-shared'
@@ -13,10 +14,12 @@ import { Footer } from '@components/Footer'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { ToastProvider, ToastViewport } from '@tamagui/toast'
 import { AppProps } from 'next/app'
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-import { Suspense, startTransition, useMemo, useState } from 'react'
+import React, { Suspense, startTransition, useMemo, useState } from 'react'
 import { TamaguiProvider } from 'tamagui'
 
+import { ToastProvider as StudioToastProvider } from '../app/ToastProvider'
 import { Header } from '../components/Header'
 import { SearchProvider } from '../components/Search'
 import config from '../tamagui.config'
@@ -97,32 +100,7 @@ export default function App(props: AppProps) {
           disableRootThemeClass
           defaultTheme={theme}
         >
-          <SearchProvider>
-            <Suspense fallback={null}>
-              {useMemo(() => {
-                return (
-                  <ToastProvider swipeDirection="horizontal">
-                    <ContentInner {...props} />
-
-                    <ToastViewport
-                      flexDirection="column-reverse"
-                      top="$2"
-                      left={0}
-                      right={0}
-                    />
-                    <ToastViewport
-                      multipleToasts
-                      name="viewport-multiple"
-                      flexDirection="column-reverse"
-                      top="$2"
-                      left={0}
-                      right={0}
-                    />
-                  </ToastProvider>
-                )
-              }, [props])}
-            </Suspense>
-          </SearchProvider>
+          <ContentInner {...props} />
         </TamaguiProvider>
       </NextThemeProvider>
       {/* </MyUserContextProvider> */}
@@ -130,6 +108,30 @@ export default function App(props: AppProps) {
     </>
   )
 }
+
+const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <SearchProvider>
+      <Suspense fallback={null}>
+        <ToastProvider swipeDirection="horizontal">
+          {children}
+
+          <ToastViewport flexDirection="column-reverse" top="$2" left={0} right={0} />
+          <ToastViewport
+            multipleToasts
+            name="viewport-multiple"
+            flexDirection="column-reverse"
+            top="$2"
+            left={0}
+            right={0}
+          />
+        </ToastProvider>
+      </Suspense>
+    </SearchProvider>
+  )
+}
+
+const StudioLayout = dynamic(() => import('@protected/studio/layout'), { ssr: false })
 
 function ContentInner({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -147,13 +149,28 @@ function ContentInner({ Component, pageProps }: AppProps) {
 
   // const supabase = useSupabaseClient()
   // useSharedAuth(supabase)
+  if (isStudio) {
+    return (
+      <StudioToastProvider>
+        <StudioLayout>
+          <Component {...pageProps} />
+        </StudioLayout>
+      </StudioToastProvider>
+    )
+  }
 
-  return getLayout(
-    <>
-      {!isTest && !isResponsiveDemo && <Header disableNew={isHome || isBlog} />}
-      <Component {...pageProps} />
-      {!isTest && !isDocs && !isDemo && !isStudio && <Footer />}
-    </>,
-    pageProps
-  )
+  return useMemo(() => {
+    return (
+      <DefaultLayout>
+        {getLayout(
+          <>
+            {!isTest && !isResponsiveDemo && <Header disableNew={isHome || isBlog} />}
+            <Component {...pageProps} />
+            {!isTest && !isDocs && !isDemo && !isStudio && <Footer />}
+          </>,
+          pageProps
+        )}
+      </DefaultLayout>
+    )
+  }, [pageProps])
 }
