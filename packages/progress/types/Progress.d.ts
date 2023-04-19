@@ -116,9 +116,9 @@ export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComp
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-} & {
+} & ({} | {
     [x: string]: undefined;
-}, {
+}), {
     displayName: string | undefined;
 }>;
 declare const ProgressIndicator: React.ForwardRefExoticComponent<ProgressIndicatorProps & React.RefAttributes<TamaguiElement>>;

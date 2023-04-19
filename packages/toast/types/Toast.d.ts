@@ -166,9 +166,9 @@ declare const ToastCloseFrame: import("@tamagui/core").TamaguiComponent<(Omit<im
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-} & {
+} & ({} | {
     [x: string]: undefined;
-}, {
+}), {
     displayName: string | undefined;
 }>;
 type ToastCloseFrameProps = GetProps<typeof ToastCloseFrame>;

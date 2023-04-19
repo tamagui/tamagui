@@ -206,9 +206,9 @@ export declare const ListItemTitle: import("@tamagui/core").TamaguiComponent<(Om
     readonly size?: FontSizeTokens | undefined;
 } & {
     unstyled?: boolean | undefined;
-} & {
+} & ({} | {
     [x: string]: undefined;
-}, {
+}), {
     displayName: string | undefined;
 }>;
 export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title, }?: {

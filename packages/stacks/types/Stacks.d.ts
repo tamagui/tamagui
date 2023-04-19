@@ -66,9 +66,12 @@ export declare const ZStack: import("@tamagui/core").TamaguiComponent<(Omit<impo
 }>>), import("@tamagui/core").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes.js").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+} | ({
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     [x: string]: undefined;
-}, {
+}), {
     displayName: string | undefined;
 }>;
 //# sourceMappingURL=Stacks.d.ts.map

@@ -4,7 +4,16 @@ import '@tamagui/polyfill-dev'
 
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
-import { Separator, Square, TamaguiProvider, Theme, XStack, YStack } from 'tamagui'
+import {
+  Paragraph,
+  Separator,
+  Square,
+  TamaguiProvider,
+  Theme,
+  XStack,
+  YStack,
+  styled,
+} from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -29,7 +38,19 @@ export const Sandbox = () => {
   )
 }
 
+const StyledP = styled(Paragraph, {
+  variants: {
+    test: {
+      true: {
+        bg: 'red',
+      },
+    },
+  } as const,
+})
+
 const SandboxInner = () => {
+  return <StyledP test>hello</StyledP>
+
   return <Square animation="bouncy" size={100} bc="red" />
 }
 
