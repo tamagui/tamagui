@@ -2,7 +2,7 @@ import { useLayoutEffect, useState } from 'react'
 
 type ColorScheme = 'dark' | 'light'
 
-export const useRootTheme = ({ fallback = 'light' }: { fallback?: ColorScheme }) => {
+export const useRootTheme = ({ fallback = 'light' }: { fallback?: ColorScheme } = {}) => {
   const [val, setVal] = useState<ColorScheme>(fallback)
 
   if (typeof document !== 'undefined') {
