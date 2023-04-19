@@ -16,6 +16,9 @@ const tamaguiConfig = {
 
 export default defineConfig({
   clearScreen: true,
+  server: {
+    port: 9000,
+  },
   plugins: [
     react(),
     tamaguiPlugin(tamaguiConfig),
