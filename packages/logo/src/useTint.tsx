@@ -56,6 +56,7 @@ export const useTint = () => {
 
 export const ThemeTint = (props: { children: any; disable?: boolean }) => {
   const curTint = useTint().tint
+
   return (
     <Theme name={props.disable ? null : curTint}>
       {/*  */}
