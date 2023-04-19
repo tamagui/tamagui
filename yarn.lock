@@ -4925,6 +4925,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/git-crypt@workspace:packages/git-crypt":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/git-crypt@workspace:packages/git-crypt"
+  bin:
+    git-crypt: ./git-crypt
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/group@1.15.18, @tamagui/group@workspace:packages/group":
   version: 0.0.0-use.local
   resolution: "@tamagui/group@workspace:packages/group"
@@ -5451,7 +5459,6 @@ __metadata:
     esbuild-loader: ^3.0.1
     esbuild-register: ^3.4.2
     file-loader: ^6.2.0
-    git-crypt: ^0.0.1
     html-webpack-plugin: ^5.5.0
     mini-css-extract-plugin: ^2.7.2
     playwright: ^1.29.0
@@ -12888,15 +12895,6 @@ __metadata:
   version: 1.0.0
   resolution: "getenv@npm:1.0.0"
   checksum: 19ae5cad603a1cf1bcb8fa3bed48e00d062eb0572a4404c02334b67f3b3499f238383082b064bb42515e9e25c2b08aef1a3e3d2b6852347721aa8b174825bd56
-  languageName: node
-  linkType: hard
-
-"git-crypt@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "git-crypt@npm:0.0.1"
-  bin:
-    git-crypt: bin/git-crypt
-  checksum: b7eab6e1e094095064cacce6bc7611d38462f45f8ca44a8bcbcc94944e56800aa5b5ec7b3274d285fda31f02443251de8c5d89fe2b1cfed2a459eb739e108dfb
   languageName: node
   linkType: hard
 

@@ -26,7 +26,6 @@
     "@tamagui/toast": "1.15.18",
     "@tamagui/vite-plugin": "1.15.18",
     "@tamagui/vite-plugin-reanimated": "1.14.9",
-    "git-crypt": "^0.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native-reanimated": "^2.14.4",
