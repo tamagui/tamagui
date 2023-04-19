@@ -9,7 +9,6 @@ export const metadata: Metadata = {
   title: 'Studio',
   description: 'Tamagui Studio',
   icons: ['/favicon.svg'],
-  
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

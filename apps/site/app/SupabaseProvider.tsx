@@ -1,8 +1,6 @@
 'use client'
 
-import { Session, SupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { useSharedAuth } from '@tamagui/site-shared'
+import { Session, SupabaseClient, createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
 
