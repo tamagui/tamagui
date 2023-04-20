@@ -284,7 +284,10 @@ const ToggleGroupImplSingle = React.forwardRef<
       value={value ? [value] : []}
       defaultValue={value}
       onItemActivate={setValue}
-      onItemDeactivate={React.useCallback(() => disableDeactivation ? null : setValue(''), [setValue, disableDeactivation])}
+      onItemDeactivate={React.useCallback(
+        () => (disableDeactivation ? null : setValue('')),
+        [setValue, disableDeactivation]
+      )}
     >
       <ToggleGroupImpl {...toggleGroupSingleProps} ref={forwardedRef} />
     </ToggleGroupValueProvider>
@@ -369,12 +372,14 @@ type ToggleGroupImplElement = TamaguiElement
 
 const ToggleGroupImplElementFrame = styled(Group, {
   name: TOGGLE_GROUP_NAME,
+
   variants: {
     unstyled: {
       false: {
         backgroundColor: '$background',
       },
     },
+
     orientation: {
       vertical: {
         flexDirection: 'column',
@@ -386,6 +391,7 @@ const ToggleGroupImplElementFrame = styled(Group, {
       },
     },
   } as const,
+
   defaultVariants: {
     unstyled: false,
   },
