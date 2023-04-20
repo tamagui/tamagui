@@ -548,7 +548,9 @@ export const getSplitStyles: StyleSplitter = (
       shouldPassThrough
     ) {
       // eslint-disable-next-line no-console
-      console.log(`  🔹 pass through ${keyInit}`)
+      console.groupCollapsed(`  🔹 pass through ${keyInit}`)
+      console.log({ variants, parentHasVariant, isVariant, shouldPassProp })
+      console.groupEnd()
     }
 
     if (shouldPassThrough) {
@@ -567,6 +569,7 @@ export const getSplitStyles: StyleSplitter = (
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       // eslint-disable-next-line no-console
       console.groupCollapsed('  🔹 styles', keyInit, valInit)
+      console.log({ isVariant, shouldPassProp, isHOCShouldPassThrough, parentHasVariant })
     }
 
     const expanded =
@@ -624,9 +627,11 @@ export const getSplitStyles: StyleSplitter = (
 
       // have to run this logic again here
       const isHOCShouldPassThrough = staticConfig.isHOC && isMediaOrPseudo
-      if (isHOCShouldPassThrough && !(key in usedKeys)) {
-        usedKeys[key] = 1
-        viewProps[key] = val
+      if (isHOCShouldPassThrough) {
+        if (!(key in usedKeys)) {
+          usedKeys[key] = 1
+          viewProps[key] = val
+        }
         continue
       }
 
@@ -793,6 +798,7 @@ export const getSplitStyles: StyleSplitter = (
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
+
             if (!usedKeys[fullKey]) {
               usedKeys[fullKey] = 1
               addStyleToInsertRules(rulesToInsert, out as any)
