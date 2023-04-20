@@ -7,7 +7,7 @@ export function ButtonDemo(props) {
       <Button>
         <Button.Text>Plain</Button.Text>
       </Button>
-      <Button alignSelf="center" size="$6" space="$1">
+      <Button alignSelf="center" size="$6" space="$1.5">
         <Button.Icon>
           <Airplay />
         </Button.Icon>
@@ -25,7 +25,7 @@ export function ButtonDemo(props) {
         <Button themeInverse size="$3">
           <Button.Text>Small Inverse</Button.Text>
         </Button>
-        <Button size="$3" space="$2">
+        <Button size="$3" space="$1.5">
           <Button.Text>After</Button.Text>
           <Button.Icon>
             <Activity />
