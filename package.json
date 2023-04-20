@@ -107,7 +107,7 @@
     "pretty-quick": "^3.1.2",
     "prompts": "2.1.0",
     "rome": "^12.0.0",
-    "turbo": "^1.8.3",
+    "turbo": "^1.9.3",
     "typescript": "^5.0.4",
     "ultra-runner": "^3.10.5"
   },
