@@ -1,4 +1,4 @@
-FROM amazonlinux:2
+FROM amd64/amazonlinux:2
 
 RUN yum update -y && \
     yum install -y git && \
