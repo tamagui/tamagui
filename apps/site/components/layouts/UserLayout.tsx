@@ -8,11 +8,9 @@ import { DefaultLayout } from './DefaultLayout'
 export const getUserLayout: GetLayout = (page, pageProps) =>
   withSupabase(
     <DefaultLayout>
-      <UserGuard>
-        <Header disableNew minimal />
-        {page}
-        <Footer />
-      </UserGuard>
+      <Header disableNew minimal />
+      <UserGuard>{page}</UserGuard>
+      <Footer />
     </DefaultLayout>,
     pageProps
   )
