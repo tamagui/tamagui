@@ -4992,6 +4992,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/git-crypt@workspace:packages/git-crypt":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/git-crypt@workspace:packages/git-crypt"
+  bin:
+    git-crypt: ./git-crypt
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/group@1.15.21, @tamagui/group@workspace:packages/group":
   version: 0.0.0-use.local
   resolution: "@tamagui/group@workspace:packages/group"
