@@ -8,7 +8,7 @@ import {
   useReducer,
   useState,
 } from 'react'
-import { Spinner } from 'tamagui'
+import { Spinner, YStack } from 'tamagui'
 import { UserAccessStatus } from 'types'
 type UserContextType = {
   accessToken: string | null
@@ -115,6 +115,11 @@ export const UserGuard = ({ children }: { children: React.ReactNode }) => {
     }
   }, [user, isLoading, router])
 
-  if (!user) return <Spinner />
+  if (!user)
+    return (
+      <YStack ai="center" flex={1} jc="center">
+        <Spinner size="large" />
+      </YStack>
+    )
   return <>{children}</>
 }
