@@ -1,4 +1,5 @@
 import { User, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useRouter } from 'next/router'
 import {
   createContext,
   useCallback,
@@ -7,8 +8,8 @@ import {
   useReducer,
   useState,
 } from 'react'
+import { Spinner } from 'tamagui'
 import { UserAccessStatus } from 'types'
-
 type UserContextType = {
   accessToken: string | null
   user: User | null
@@ -102,4 +103,18 @@ export const useUser = () => {
     throw new Error(`useUser must be used within a MyUserContextProvider.`)
   }
   return context
+}
+
+export const UserGuard = ({ children }: { children: React.ReactNode }) => {
+  const { user, isLoading } = useUser()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!user && !isLoading && router.isReady) {
+      router.push('/login')
+    }
+  }, [user, isLoading, router])
+
+  if (!user) return <Spinner />
+  return <>{children}</>
 }

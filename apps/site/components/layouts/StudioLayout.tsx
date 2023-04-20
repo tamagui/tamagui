@@ -4,7 +4,7 @@ import { withSupabase } from '@lib/withSupabase'
 import { WhitelistNotice } from '@protected/studio/(loaded)/(sponsor-protected)/SponsorshipRequired'
 import { Lock } from '@tamagui/lucide-icons'
 import { ButtonLink } from 'app/Link'
-import { MyUserContextProvider, useUser } from 'hooks/useUser'
+import { MyUserContextProvider, UserGuard, useUser } from 'hooks/useUser'
 import dynamic from 'next/dynamic'
 import { H2, Paragraph, Spinner, YStack } from 'tamagui'
 
@@ -17,23 +17,17 @@ export const getStudioLayout: GetLayout = (page, pageProps) =>
     <MyUserContextProvider>
       <StudioToastProvider>
         <StudioLayout>
-          <UserLoadingGuard>
+          <UserGuard>
             <GithubConnectionGuard>
               <SponsorshipGuard>{page}</SponsorshipGuard>
             </GithubConnectionGuard>
-          </UserLoadingGuard>
+          </UserGuard>
         </StudioLayout>
       </StudioToastProvider>
     </MyUserContextProvider>,
     pageProps
   )
 
-const UserLoadingGuard = ({ children }: { children: React.ReactNode }) => {
-  const { isLoading } = useUser()
-
-  if (isLoading) return <Spinner />
-  return <>{children}</>
-}
 const GithubConnectionGuard = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUser()
 
