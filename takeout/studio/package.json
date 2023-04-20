@@ -1,0 +1,28 @@
+{
+  "name": "@takeout/studio",
+  "version": "1.5.24",
+  "source": "src/index.ts",
+  "private": true,
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "dev": "cd ../.. && yarn site",
+    "tauri": "tauri dev",
+    "build:takeout": "tamagui-build",
+    "watch:takeout": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.2.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.2.2"
+  }
+}

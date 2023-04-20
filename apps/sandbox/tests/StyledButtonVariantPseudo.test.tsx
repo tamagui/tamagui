@@ -19,9 +19,9 @@ test(`hover HOC + variant + pseudos work`, async ({ page }) => {
 })
 
 test(`press HOC + variant + pseudos work`, async ({ page }) => {
-  const button = page.locator('button#test')
+  const button = page.locator('button')
 
-  button.click({
+  const promise = button.click({
     delay: 1000,
     force: true,
   })
@@ -33,4 +33,6 @@ test(`press HOC + variant + pseudos work`, async ({ page }) => {
   })
 
   expect(pressStyles.backgroundColor).toBe(`rgb(255, 0, 0)`)
+
+  await promise
 })
