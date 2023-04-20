@@ -1,0 +1,88 @@
+---
+title: Phosphor Icons
+description: Cross-platform compatible SVG based icons.
+---
+
+# Phosphor Icons
+
+<Description>Cross-platform compatible SVG based icons.</Description>
+
+<HeroContainer noPad>
+  <PhosphorIconsDemo />
+</HeroContainer>
+
+### Usage
+
+Add `@tamagui/phosphor-icons` to your package.json and import them directly for use as React elements:
+
+```tsx
+import { Button } from 'tamagui'
+import { Plus } from '@tamagui/phosphor-icons'
+
+// Button will automatically pass size/theme to icon
+export default () => (
+  <Button icon={Plus}>
+    Hello world
+  </Button>
+)
+
+// or you can control it
+export default () => (
+  <Button icon={<Plus size="$4" />}>
+    Hello world
+  </Button>
+)
+```
+
+### Context Usage
+
+Globally apply styles to icons by using `IconContextProvider`.
+
+```tsx
+import { IconContextProvider } from '@tamagui/phosphor-icons'
+import { Plus } from '@tamagui/phosphor-icons'
+
+const App = ({children}: {children: ReactNode}) => {
+  return (
+    <Provider defaultTheme="light">
+      <IconContextProvider weight="duotone" color="$color2">
+        {children}
+      </IconContextProvider>
+    </Provider>
+  )
+}
+
+// somewhere else in the app...
+<Plus />
+```
+
+Plus will render as a `duotone` icon by default a color of `$color2`. You override the context at the call-site of each component:
+
+```tsx
+// Plus will render as thin now
+<Plus weight="thin" />
+```
+
+Use multiple contexts to render buttons of varying styles in certain parts of your app.
+
+```tsx
+import { Plus, Minus, Alien } from '@tamagui/phosphor-icons'
+
+const Page = () => {
+  return (
+    <YStack>
+      <IconContextProvider weight="duotone" color="$color2">
+        <Plus />
+        <Minus />
+      </IconContextProvider>
+      <IconContextProvider weight="thin" color="$color2">
+        <Alien />
+      </IconContextProvider>
+    </YStack>
+    )
+}
+```
+
+### Credit
+
+The great [Phosphor Icons](https://phosphor.dev/) library!

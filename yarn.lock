@@ -3164,6 +3164,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@phosphor-icons/core@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@phosphor-icons/core@npm:2.0.2"
+  checksum: f956b678a98ce6b8ae6444d35370a618116bb40f779f0589aafae18365ce736ef9053a1a52c86ad6ce29cf96cfa6ea20fce16ea574727daca95f2561aa7aca55
+  languageName: node
+  linkType: hard
+
 "@pkgr/utils@npm:^2.3.1":
   version: 2.3.1
   resolution: "@pkgr/utils@npm:2.3.1"
@@ -4396,7 +4403,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@1.15.21, @tamagui/build@workspace:packages/build":
+"@tamagui/build@1.15.21, @tamagui/build@^1.0.2, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -4713,7 +4720,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core@1.15.21, @tamagui/core@workspace:packages/core":
+"@tamagui/core@1.15.21, @tamagui/core@^1.0.2, @tamagui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
@@ -5274,6 +5281,30 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/phosphor-icons@1.15.21, @tamagui/phosphor-icons@workspace:packages/phosphor-icons":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/phosphor-icons@workspace:packages/phosphor-icons"
+  dependencies:
+    "@phosphor-icons/core": ^2.0.2
+    "@tamagui/build": ^1.0.2
+    "@tamagui/core": ^1.0.2
+    camelcase: ^6.0.0
+    cheerio: ^1.0.0-rc.5
+    glob: ^7.1.6
+    prettier: ^2.8.1
+    prettier-plugin-import-sort: ^0.0.7
+    prop-types: ^15.7.2
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-native-svg: 13.4.0
+    uppercamelcase: ^3.0.0
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native-svg: ">=12"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/polyfill-dev@1.15.21, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
   version: 0.0.0-use.local
   resolution: "@tamagui/polyfill-dev@workspace:packages/polyfill-dev"
@@ -5693,6 +5724,7 @@ __metadata:
     "@tamagui/menu": 1.15.21
     "@tamagui/next-plugin": 1.15.21
     "@tamagui/next-theme": 1.15.21
+    "@tamagui/phosphor-icons": 1.15.21
     "@tamagui/polyfill-dev": 1.15.21
     "@tamagui/remove-scroll": 1.15.21
     "@tamagui/shorthands": 1.15.21
