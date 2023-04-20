@@ -7,7 +7,6 @@ import {
   SizeTokens,
   TamaguiElement,
   styled,
-  themeable,
   useMediaPropsActive,
   withStaticProperties,
 } from '@tamagui/web'
@@ -53,13 +52,10 @@ const ButtonComponent = forwardRef<TamaguiElement, GetProps<typeof ButtonFrame>>
   }
 )
 
-const Button = withStaticProperties(
-  ButtonFrame.extractable(themeable(ButtonComponent, ButtonFrame.staticConfig)),
-  {
-    Text: ButtonTextComponent,
-    Icon: ButtonIcon,
-  }
-)
+const Button = withStaticProperties(ButtonFrame.extractable(ButtonComponent), {
+  Text: ButtonTextComponent,
+  Icon: ButtonIcon,
+})
 
 type ButtonProps = GetProps<typeof Button>
 
