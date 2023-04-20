@@ -28,6 +28,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     </ToastProviderOG>
   )
 }
+
 const ToastHandler = () => {
   const toast = useToastState()
   if (!toast) return null
@@ -35,7 +36,8 @@ const ToastHandler = () => {
   return (
     <Toast
       key={toast.id}
-      duration={toast.duration}
+      // duration={toast.duration}
+      duration={1000 * 10000}
       animation="quick"
       enterStyle={{ opacity: 0, scale: 0.5, y: -25 }}
       exitStyle={{ opacity: 0, scale: 1, y: -20 }}
