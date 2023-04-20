@@ -5,12 +5,10 @@ import { getAllFrontmatter } from '@lib/mdx'
 import { useTint } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
-import { format, parseISO } from 'date-fns'
 import { useMemo } from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
-  EnsureFlexed,
   H1,
   H2,
   H3,
@@ -90,7 +88,11 @@ export default function Community({ frontmatters }) {
                           theme="alt2"
                           fow="300"
                         >
-                          {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')}
+                          {Intl.DateTimeFormat('en-US', {
+                            weekday: 'short',
+                            year: 'numeric',
+                            day: 'numeric',
+                          }).format(new Date(frontmatter.publishedAt || ''))}
                         </Paragraph>
                         <Paragraph cursor="inherit" theme="alt2" size="$4" fow="300">
                           &nbsp;by {authors[frontmatter.by].name}
