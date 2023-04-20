@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sandbox-ui",
-  "version": "1.15.19",
+  "version": "1.15.20",
   "private": true,
   "sideEffects": [
     "*.css"
@@ -18,10 +18,10 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/toast": "1.15.19",
-    "tamagui": "1.15.19"
+    "@tamagui/toast": "1.15.20",
+    "tamagui": "1.15.20"
   },
   "devDependencies": {
-    "@tamagui/build": "1.15.19"
+    "@tamagui/build": "1.15.20"
   }
 }
