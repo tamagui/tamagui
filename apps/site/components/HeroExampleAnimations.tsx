@@ -204,7 +204,7 @@ export const ExampleAnimations = memo(() => {
       <Separator vertical />
 
       <YStack pos="relative" $sm={{ display: 'none' }} width="40%">
-        <YStack f={1} theme="alt2" bc="$backgroundPress">
+        <YStack f={1} theme="alt2" bc="$color3">
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
             return (
@@ -216,9 +216,6 @@ export const ExampleAnimations = memo(() => {
                 title={item.name}
                 subTitle={item.description}
                 cursor="pointer"
-                hoverStyle={{
-                  bc: '$backgroundHover',
-                }}
                 onPress={() => {
                   setAnimationI(i)
                   next()

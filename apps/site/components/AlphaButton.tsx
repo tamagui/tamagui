@@ -2,12 +2,6 @@ import { NextLink } from 'components/NextLink'
 import { Button, ButtonText, Spacer, Text, XStack, useMedia } from 'tamagui'
 
 export const AlphaButton = () => {
-  const media = useMedia()
-
-  if (media.md) {
-    return null
-  }
-
   return (
     <NextLink href="/blog/version-one">
       <Button
@@ -21,7 +15,7 @@ export const AlphaButton = () => {
         px="$2"
         br="$10"
         scale={0.85}
-        $sm={{ dsp: 'none' }}
+        $md={{ dsp: 'none' }}
         space="$2"
       >
         <Button hoverTheme={false} size="$1" themeInverse br="$8" px="$1.5">
