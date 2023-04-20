@@ -5,7 +5,7 @@ import { UserAccessStatus } from 'types'
 
 const usernameWhitelist = ['natew', 'alitnk']
 
-export const handler: NextApiHandler = async (req, res) => {
+const handler: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient({ req, res })
 
   const {
