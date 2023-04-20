@@ -225,7 +225,7 @@ const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>(
 )
 
 const Button = withStaticProperties(
-  ButtonFrame.extractable(themeable(ButtonComponent, { componentName: BUTTON_NAME })),
+  ButtonFrame.extractable(themeable(ButtonComponent, ButtonFrame.staticConfig)),
   {
     Text: ButtonText,
     Icon: ButtonIcon,
