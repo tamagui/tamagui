@@ -142,7 +142,7 @@ const [ButtonProvider, useButtonContext] =
 type ScopedProps<P> = P & { __scopeButton?: Scope }
 
 const ButtonTextFrame = styled(HeadlessButton.Text, {
-  name: BUTTON_NAME,
+  name: BUTTON_TEXT_NAME,
   variants: {
     unstyled: {
       false: {
@@ -173,7 +173,7 @@ const ButtonText = ButtonTextFrame.extractable(
       }, [context.registerButtonText])
 
       return (
-        <ButtonTextFrame ref={ref} size={context.size} {...props}>
+        <ButtonTextFrame ref={ref} color={context.color} size={context.size} {...props}>
           {props.children}
         </ButtonTextFrame>
       )
@@ -347,13 +347,9 @@ const buttonStaticConfig = {
 
 export {
   Button,
-  createButtonScope,
-
   // old api
   ButtonFrame,
-  ButtonTextFrame as ButtonText,
-  useButton,
-  buttonStaticConfig,
+  ButtonTextFrame as ButtonText, buttonStaticConfig, createButtonScope, useButton
 }
 
 export type { ButtonProps }
