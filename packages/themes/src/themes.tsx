@@ -141,8 +141,8 @@ const lightTemplate = {
   ...template,
 
   background: 2,
-  backgroundHover: 2,
-  backgroundPress: 3,
+  backgroundHover: 3,
+  backgroundPress: 4,
 
   // our light color palette is... a bit unique
   borderColor: 6,

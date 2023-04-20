@@ -6,16 +6,36 @@ interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message
      */
     native?: ToastNativeValue;
 }
-interface ShowOptions extends CreateNativeToastOptions {
+/**
+ * Override this in your application to get custom toast fields.
+ *
+ * e.g.
+ * ```ts
+ * declare module '@tamagui/toast' {
+ *   interface CustomData {
+ *     preset: 'error' | 'success'
+ *     isUrgent: true
+ *   }
+ * }
+ *```
+ * You will get auto-completion:
+ * ```ts
+ * toast.show("Message", { preset: 'error', isUrgent: true })
+ * ```
+ */
+export interface CustomData {
+    [key: string]: any;
+}
+type ShowOptions = CreateNativeToastOptions & CustomData & {
     /**
      * Used when need custom data
      * @deprecated Use `customData` instead
      */
-    additionalInfo?: Record<string, any>;
+    additionalInfo?: CustomData;
     /**
      * Used when need custom data
      */
-    customData?: Record<string, any>;
+    customData?: CustomData;
     /**
      * Overrides the native option on `ToastImperativeProvider`
      */
@@ -24,13 +44,13 @@ interface ShowOptions extends CreateNativeToastOptions {
      * Which viewport to send this toast to. This is only intended to be used with custom toasts and you should wire it up when creating the toast.
      */
     viewportName?: string | 'default';
-}
+};
 type ToastData = {
     title: string;
     id: string;
 } & ShowOptions & {
     isHandledNatively: boolean;
-};
+} & CustomData;
 interface ToastContextI {
     nativeToast: NativeToastRef | null;
     /**

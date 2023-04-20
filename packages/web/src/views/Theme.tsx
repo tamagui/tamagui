@@ -90,12 +90,14 @@ export function useThemedChildren(
       return wrapped
     }
 
-    if (isWeb && !props.passPropsToChildren) {
+    if (isWeb && !props.passPropsToChildren && shouldRenderChildrenWithTheme) {
       // in order to provide currentColor, set color by default
       const themeColor = theme && isNewTheme ? variableToString(theme.color) : ''
-      const colorStyle = {
-        color: themeColor,
-      }
+      const colorStyle = themeColor
+        ? {
+            color: themeColor,
+          }
+        : undefined
 
       return (
         <span className={`${className || ''} _dsp_contents is_Theme`} style={colorStyle}>

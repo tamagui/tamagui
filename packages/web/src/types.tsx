@@ -58,6 +58,74 @@ export type TamaguiProjectInfo = {
   nameToPaths: NameToPaths
 }
 
+// from react-native Accessibility.d.ts
+export type Role =
+  | 'alert'
+  | 'alertdialog'
+  | 'application'
+  | 'article'
+  | 'banner'
+  | 'button'
+  | 'cell'
+  | 'checkbox'
+  | 'columnheader'
+  | 'combobox'
+  | 'complementary'
+  | 'contentinfo'
+  | 'definition'
+  | 'dialog'
+  | 'directory'
+  | 'document'
+  | 'feed'
+  | 'figure'
+  | 'form'
+  | 'grid'
+  | 'group'
+  | 'heading'
+  | 'img'
+  | 'link'
+  | 'list'
+  | 'listitem'
+  | 'log'
+  | 'main'
+  | 'marquee'
+  | 'math'
+  | 'menu'
+  | 'menubar'
+  | 'menuitem'
+  | 'meter'
+  | 'navigation'
+  | 'none'
+  | 'note'
+  | 'option'
+  | 'presentation'
+  | 'progressbar'
+  | 'radio'
+  | 'radiogroup'
+  | 'region'
+  | 'row'
+  | 'rowgroup'
+  | 'rowheader'
+  | 'scrollbar'
+  | 'searchbox'
+  | 'separator'
+  | 'slider'
+  | 'spinbutton'
+  | 'status'
+  | 'summary'
+  | 'switch'
+  | 'tab'
+  | 'table'
+  | 'tablist'
+  | 'tabpanel'
+  | 'term'
+  | 'timer'
+  | 'toolbar'
+  | 'tooltip'
+  | 'tree'
+  | 'treegrid'
+  | 'treeitem'
+
 // base props that are accepted by createComponent (additional to react-native-web)
 
 type DivAttributes = HTMLAttributes<HTMLDivElement>
@@ -86,7 +154,7 @@ export type TamaguiComponentPropsBase = {
   theme?: ThemeName | null
   componentName?: string
   tabIndex?: string | number
-  role?: string
+  role?: Role
 
   /**
    * Forces the pseudo style state to be on

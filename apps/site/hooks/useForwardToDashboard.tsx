@@ -8,7 +8,7 @@ export function useForwardToDashboard() {
 
   useEffect(() => {
     if (user) {
-      router.replace(process.env.NEXT_PUBLIC_STUDIO_ADDRESS!)
+      router.replace('/studio')
     }
   }, [user])
 }

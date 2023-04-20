@@ -1,5 +1,4 @@
 import { stylePropsAll } from '@tamagui/helpers'
-import { forwardRef } from 'react'
 
 import { createComponent } from './createComponent.js'
 import { ReactNativeStaticConfigs } from './setupReactNative.js'
@@ -50,7 +49,6 @@ export function styled<
   options?: GetProps<ParentComponent> & {
     name?: string
     variants?: Variants | undefined
-    // thought i had this typed, but can't get it linked
     defaultVariants?: GetVariantAcceptedValues<Variants>
     acceptsClassName?: boolean
   },
@@ -148,7 +146,7 @@ export function styled<
   type ParentPropsBase = GetBaseProps<ParentComponent>
   type ParentVariants = GetVariantProps<ParentComponent>
 
-  type OurVariantProps = GetVariantAcceptedValues<Variants>
+  type OurVariantProps = Variants extends void ? {} : GetVariantAcceptedValues<Variants>
 
   type VariantProps = Omit<ParentVariants, keyof OurVariantProps> & OurVariantProps
   type OurPropsBase = ParentPropsBase & VariantProps
@@ -186,7 +184,8 @@ export function styled<
   return component as any as StyledComponent
 }
 
-// sanity check types
+// sanity check types:
+
 // import { Stack } from './views/Stack'
 // const X = styled(Stack, {
 //   variants: {
@@ -208,3 +207,61 @@ export function styled<
 // })
 // // type variants = GetStyledVariants<typeof X>
 // const y = <X disabled size="$10" />
+
+// sanity check more complex types:
+
+// import { Paragraph } from '../../text/src/Paragraph'
+// import { Text } from './views/Text.js'
+// import { getFontSized } from '../../get-font-sized/src'
+// import { SizableText } from '../../text/src/SizableText'
+// const Text1 = styled(Text, {
+//   name: 'SizableText',
+//   fontFamily: '$body',
+
+//   variants: {
+//     size: getFontSized,
+//   } as const,
+
+//   defaultVariants: {
+//     size: '$true',
+//   },
+// })
+
+// const Test2 = styled(Text1, {
+//   tag: 'p',
+//   userSelect: 'auto',
+//   color: '$color',
+// })
+
+// const Test3 = styled(Test2, {
+//   tag: 'p',
+//   userSelect: 'auto',
+//   color: '$color',
+
+//   variants: {
+//     ork: {
+//       true: {}
+//     }
+//   }
+// })
+
+// const Test = styled(Paragraph, {
+//   tag: 'p',
+//   userSelect: 'auto',
+//   color: '$color',
+
+//   variants: {
+//     someting: {
+//       true: {},
+//     },
+//   } as const,
+// })
+
+// type X = typeof Paragraph
+// type Props1 = GetProps<typeof Paragraph>
+// type z = typeof Text1
+// type ParentV = GetVariantProps<typeof Text1>
+// type Props = GetProps<typeof Test>
+
+// const y = <Test someting>sadad</Test>
+// const z = <Test3 someting="$true" ork>sadad</Test3>

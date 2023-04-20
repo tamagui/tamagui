@@ -59,9 +59,9 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
     readonly size?: any;
-} & {
+} & ({} | {
     [x: string]: undefined;
-}, {
+}), {
     displayName: string | undefined;
 }>;
 declare const SliderTrack: React.ForwardRefExoticComponent<SliderTrackProps & React.RefAttributes<SliderTrackElement>>;
@@ -120,9 +120,9 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     readonly orientation?: "vertical" | "horizontal" | undefined;
 } & {
     readonly size?: any;
-} & {
+} & ({} | {
     [x: string]: undefined;
-}, {
+}), {
     displayName: string | undefined;
 }>;
 type SliderTrackActiveProps = GetProps<typeof SliderTrackActiveFrame>;

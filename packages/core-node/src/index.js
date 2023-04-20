@@ -8,7 +8,9 @@ process.env.IS_STATIC = 'is_static'
 
 try {
   const all = {
+    // @ts-ignore
     ...require('../dist/index'),
+    // @ts-ignore
     aliasPlugin: require('./esbuildAliasPlugin'),
   }
   Object.assign(exports, all)

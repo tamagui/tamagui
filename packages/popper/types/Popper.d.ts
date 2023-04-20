@@ -22,11 +22,13 @@ type PopperContextValue = UseFloatingReturn & {
     };
 };
 export declare const PopperProvider: {
-    (props: Omit<import("@tamagui/floating").ComputePositionReturn, "x" | "y"> & {
+    (props: {
+        placement: Placement;
+        strategy: Strategy;
+        middlewareData: import("@tamagui/floating").MiddlewareData;
         x: number | null;
         y: number | null;
         isPositioned: boolean;
-    } & {
         update: () => void;
         reference: (node: import("@tamagui/floating").ReferenceType | null) => void;
         floating: (node: HTMLElement | null) => void;

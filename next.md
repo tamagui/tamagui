@@ -1,5 +1,3 @@
-- <Code /> in site types break because of variant may need to revert defaultVariants inference
-
 - add test that builds site for prod + checks for header text / no errors
 
 - Button and other similar ones - make the hover/press/focusStyle zIndex 2, 3, 4 (or all 2) by default
@@ -44,10 +42,7 @@
 
 - bug: inputs rendering twice due to focusableInputHOC, if you remove that it doesnt, this is due to styled() + how it determines ComponentIn and grabs the component
 
-
 - document `unstyled` prop for components
-
-- `defaultUnstyled` option in createTamagui
 
 - docs for `@tamagui/font` and `@tamagui/theme`
 

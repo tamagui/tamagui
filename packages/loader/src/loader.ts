@@ -23,16 +23,21 @@ process.env.TAMAGUI_TARGET = 'web'
 
 export const loader = async function loader(
   this: LoaderContext<TamaguiOptions>,
-  sourceIn: Buffer | string
+  sourceIn: Buffer | string,
+  info
 ) {
   this.cacheable(true)
   const callback = this.async()
-  const source = sourceIn.toString()
+
+  // next app dir is giving us pre-compiled source, sourcesContent gives us the original JSX we need
+  // likely this is not best practice but Tamagui loader should always run first
+  const source = (info?.sourcesContent ?? sourceIn).toString()
 
   try {
     const threaded = this.emitFile === undefined
     const options: TamaguiOptions = { ...this.getOptions() }
     const sourcePath = `${this.resourcePath}`
+
     const { shouldDisable, shouldPrintDebug } = getPragmaOptions({
       source,
       path: sourcePath,
