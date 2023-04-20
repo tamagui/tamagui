@@ -1,3 +1,4 @@
+import { getDefaultLayout } from '@components/layouts/DefaultLayout'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
@@ -395,6 +396,8 @@ export default function Community({ frontmatters }) {
     </CommunityLayout>
   )
 }
+
+Community.getLayout = getDefaultLayout
 
 function GoldSponsor(props: {
   name: string
