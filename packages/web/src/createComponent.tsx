@@ -275,9 +275,13 @@ export function createComponent<
         const type = isAnimatedReactNative ? '(animated)' : isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${id}`
-        console.group(`%c ${banner}`, 'background: yellow;')
+        const parentsLog = (conf: StaticConfig) =>
+          conf.parentNames ? ` (${conf.parentNames?.join(' > ')})` : ''
+        console.group(`%c ${banner}${parentsLog(staticConfig)}`, 'background: yellow;')
         if (!isServer) {
+          console.log('props', props)
           console.log('state', state)
+          console.log('staticConfig', staticConfig)
         }
       }
     }
@@ -290,7 +294,7 @@ export function createComponent<
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
     // internal use only
-    const disableTheme = props['data-disable-theme']
+    const disableTheme = props['data-disable-theme'] || staticConfig.isHOC
 
     const themeState = useThemeWithState({
       name: props.theme,
@@ -441,6 +445,10 @@ export function createComponent<
     // these can ultimately be for DOM, react-native-web views, or animated views
     // so the type is pretty loose
     let viewProps = nonTamaguiProps
+
+    if (staticConfig.isHOC && _themeProp) {
+      viewProps.theme = _themeProp
+    }
 
     // if react-native-web view just pass all props down
     if (process.env.TAMAGUI_TARGET === 'web' && !isReactNative && !asChild) {
