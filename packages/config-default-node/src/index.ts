@@ -154,6 +154,14 @@ export function getDefaultTamaguiConfig() {
       background: 'darkred',
       color: 'white',
     },
+    dark_red_alt1_ListItem: {
+      background: 'red',
+      color: 'red',
+    },
+    dark_red_active_ListItem: {
+      background: 'darkred',
+      color: 'red',
+    },
     dark_red_Button: {
       background: 'darkred',
       color: '#ccc',

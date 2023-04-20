@@ -500,4 +500,21 @@ describe('ThemeManager', () => {
     )
     expect(child.state.name).toBe('dark_red_alt2')
   })
+
+  test('Component name + name + name', () => {
+    const parent = new ThemeManager(
+      {
+        name: 'dark_red_alt1',
+      },
+      'root'
+    )
+    const child = new ThemeManager(
+      {
+        name: 'active',
+        componentName: 'ListItem',
+      },
+      parent
+    )
+    expect(child.state.name).toBe('dark_red_active_ListItem')
+  })
 })
