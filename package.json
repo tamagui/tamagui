@@ -34,7 +34,7 @@
     "format": "node -r esbuild-register ./scripts/format.ts",
     "pretty": "pretty-quick",
     "test": "CLEANUP=1 turbo run --concurrency=1 test",
-    "test:ci": "yarn test",
+    "test:ci": "turbo test --concurrency=1",
     "test:demos": "yarn workspace @tamagui/demos test",
     "release": "node -r esbuild-register ./scripts/release.ts",
     "setup": "node -r esbuild-register ./scripts/setup.ts",
