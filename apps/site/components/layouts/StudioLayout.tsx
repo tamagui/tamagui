@@ -17,15 +17,23 @@ export const getStudioLayout: GetLayout = (page, pageProps) =>
     <MyUserContextProvider>
       <StudioToastProvider>
         <StudioLayout>
-          <GithubConnectionGuard>
-            <SponsorshipGuard>{page}</SponsorshipGuard>
-          </GithubConnectionGuard>
+          <UserLoadingGuard>
+            <GithubConnectionGuard>
+              <SponsorshipGuard>{page}</SponsorshipGuard>
+            </GithubConnectionGuard>
+          </UserLoadingGuard>
         </StudioLayout>
       </StudioToastProvider>
     </MyUserContextProvider>,
     pageProps
   )
 
+const UserLoadingGuard = ({ children }: { children: React.ReactNode }) => {
+  const { isLoading } = useUser()
+
+  if (isLoading) return <Spinner />
+  return <>{children}</>
+}
 const GithubConnectionGuard = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUser()
 
@@ -42,9 +50,9 @@ const GithubConnectionGuard = ({ children }: { children: React.ReactNode }) => {
 }
 
 const SponsorshipGuard = ({ children }: { children: React.ReactNode }) => {
-  const { isLoading, accessStatus } = useUser()
+  const { accessStatus } = useUser()
 
-  if (isLoading || !accessStatus) {
+  if (!accessStatus) {
     return <Spinner />
   }
 
