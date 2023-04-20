@@ -79,7 +79,7 @@ const SandboxFrame = (props: { children: any }) => {
           ) : null}
         </XStack>
 
-        <button
+        <div
           style={{
             position: 'fixed',
             bottom: 30,
@@ -89,7 +89,7 @@ const SandboxFrame = (props: { children: any }) => {
           onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
         >
           🌗
-        </button>
+        </div>
       </ToastProvider>
     </TamaguiProvider>
   )
