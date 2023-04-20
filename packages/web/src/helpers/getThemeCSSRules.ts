@@ -52,9 +52,10 @@ export function getThemeCSSRules({
   if (hasDarkLight) {
     for (const subName of names) {
       const isDark = themeName === 'dark' || subName.startsWith('dark_')
+      const isLight = themeName === 'light' || themeName.startsWith('light_')
       const maxDepth = config.maxDarkLightNesting ?? 3
 
-      if (!(isDark || subName.startsWith('light_'))) {
+      if (!(isDark || isLight)) {
         // neither light nor dark subtheme, just generate one selector with :root:root which
         // will override all :root light/dark selectors generated below
         selectorsSet.add(`:root:root ${CNP}${subName}`)
