@@ -23,6 +23,7 @@ test(`press HOC + variant + pseudos work`, async ({ page }) => {
 
   button.click({
     delay: 1000,
+    force: true,
   })
 
   await new Promise((res) => setTimeout(res, 300))
