@@ -90,7 +90,7 @@ export function useThemedChildren(
       return wrapped
     }
 
-    if (isWeb && !props.passPropsToChildren && shouldRenderChildrenWithTheme) {
+    if (isWeb && !props.passPropsToChildren) {
       // in order to provide currentColor, set color by default
       const themeColor = theme && isNewTheme ? variableToString(theme.color) : ''
       const colorStyle = themeColor
