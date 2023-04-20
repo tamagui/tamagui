@@ -127,6 +127,9 @@ export const SwitchFrame = styled(XStack, {
 
         focusStyle: {
           borderColor: '$borderColorFocus',
+          outlineColor: '$borderColorFocus',
+          outlineStyle: 'solid',
+          outlineWidth: 1,
         },
       },
     },
