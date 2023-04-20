@@ -9,7 +9,6 @@ const handler: NextApiHandler = async (req, res) => {
   )
 
   const config = JSON.parse(defaultConfigFile.toString())
-  console.log(config)
   res.json(config)
 }
 
