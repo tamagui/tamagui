@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/git-crypt",
-  "version": "1.15.22",
+  "version": "1.15.23",
   "bin": "./git-crypt",
   "publishConfig": {
     "access": "public"
