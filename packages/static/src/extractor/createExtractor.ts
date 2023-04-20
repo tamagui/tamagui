@@ -244,6 +244,14 @@ export function createExtractor(
 
     tm.mark('load-tamagui', !!shouldPrintDebug)
 
+    if (!tamaguiConfig.themes) {
+      console.error(
+        `⛔️ Error: Missing "themes" in your tamagui.config file, this may be due to duplicated dependency versions. Try running "npx check-dependency-version-consistency ." to see if there are mis-matches, or search your lockfile.`
+      )
+      console.log(`  Got config:`, tamaguiConfig)
+      process.exit(0)
+    }
+
     const firstThemeName = Object.keys(tamaguiConfig.themes)[0]
     const firstTheme = tamaguiConfig.themes[firstThemeName]
 
