@@ -513,7 +513,11 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
         {...props}
       >
         <Circle size={16} bc={bc}>
-          <Image width={12} height={12} src={favicon.src} />
+          <Image
+            width={12}
+            height={12}
+            source={{ uri: favicon.src, width: 12, height: 12 }}
+          />
         </Circle>
         <Spacer size="$2" />
         <Paragraph o={active ? 1 : 0.5} cursor="default" size="$1" ellipse>
