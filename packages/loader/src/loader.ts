@@ -28,10 +28,7 @@ export const loader = async function loader(
 ) {
   this.cacheable(true)
   const callback = this.async()
-
-  // next app dir is giving us pre-compiled source, sourcesContent gives us the original JSX we need
-  // likely this is not best practice but Tamagui loader should always run first
-  const source = (info?.sourcesContent ?? sourceIn).toString()
+  const source = sourceIn.toString()
 
   try {
     const threaded = this.emitFile === undefined
