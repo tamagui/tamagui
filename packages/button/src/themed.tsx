@@ -35,6 +35,7 @@ import {
 } from './Button'
 
 const ButtonFrame = styled(HeadlessButton, {
+  name: BUTTON_NAME,
   variants: {
     unstyled: {
       false: {
@@ -141,6 +142,7 @@ const [ButtonProvider, useButtonContext] =
 type ScopedProps<P> = P & { __scopeButton?: Scope }
 
 const ButtonTextFrame = styled(HeadlessButton.Text, {
+  name: BUTTON_NAME,
   variants: {
     unstyled: {
       false: {
@@ -196,35 +198,39 @@ const ButtonIcon = (props: ScopedProps<ButtonIconComponentProps>) => {
   return getThemedIcon(children)
 }
 
-const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>((props, ref) => {
-  const { props: buttonProps } = useButton(props)
-  const [buttonTextCount, setButtonTextCount] = useState(0)
+const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>(
+  (props, ref) => {
+    const { props: buttonProps } = useButton(props)
+    const [buttonTextCount, setButtonTextCount] = useState(0)
 
-  const registerButtonText = useCallback(() => {
-    setButtonTextCount((prev) => prev + 1)
-    return () => setButtonTextCount((prev) => prev - 1)
-  }, [setButtonTextCount])
+    const registerButtonText = useCallback(() => {
+      setButtonTextCount((prev) => prev + 1)
+      return () => setButtonTextCount((prev) => prev - 1)
+    }, [setButtonTextCount])
 
-  const hasTextComponent = buttonTextCount > 0
+    const hasTextComponent = buttonTextCount > 0
 
-  return (
-    <ButtonProvider
-      scope={props.__scopeButton}
-      size={props.size ?? '$true'}
-      color={props.color}
-      hasTextComponent={hasTextComponent}
-      registerButtonText={registerButtonText}
-      ref={ref}
-    >
-      <ButtonFrame {...(hasTextComponent ? props : buttonProps)} />
-    </ButtonProvider>
-  )
-})
+    return (
+      <ButtonProvider
+        scope={props.__scopeButton}
+        size={props.size ?? '$true'}
+        color={props.color}
+        hasTextComponent={hasTextComponent}
+        registerButtonText={registerButtonText}
+      >
+        <ButtonFrame ref={ref} {...(hasTextComponent ? props : buttonProps)} />
+      </ButtonProvider>
+    )
+  }
+)
 
-const Button = withStaticProperties(ButtonFrame.extractable(themeable(ButtonComponent)), {
-  Text: ButtonText,
-  Icon: ButtonIcon,
-})
+const Button = withStaticProperties(
+  ButtonFrame.extractable(themeable(ButtonComponent, { componentName: BUTTON_NAME })),
+  {
+    Text: ButtonText,
+    Icon: ButtonIcon,
+  }
+)
 
 /**
  * @deprecated this API is deprecated. please migrate to the new button API. https://tamagui.dev/docs/components/button

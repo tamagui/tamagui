@@ -4,8 +4,8 @@ import '@tamagui/polyfill-dev'
 
 import {
   ButtonDemo,
+  ButtonDeprecatedDemo,
   ButtonHeadlessDemo,
-  ButtonNewDemo,
   SwitchDemo,
   TabsAdvancedDemo,
 } from '@tamagui/demos'
@@ -60,9 +60,11 @@ export const Sandbox = () => {
       {/* <SwitchDemo /> */}
 
       {/* <ButtonDemo /> */}
-      <ButtonDemo />
-      <ButtonNewDemo />
-      <ButtonHeadlessDemo />
+      <Theme name="red">
+        <ButtonDemo />
+        <ButtonDeprecatedDemo />
+        <ButtonHeadlessDemo />
+      </Theme>
       {/* TODO fix/convert into tests */}
       {/* <SandboxAnimationThemeChange /> */}
       {/* <SandboxThemeChange /> */}
