@@ -2,6 +2,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
+import { ToggleGroupDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
 import {
@@ -38,19 +39,8 @@ export const Sandbox = () => {
   )
 }
 
-const StyledP = styled(Paragraph, {
-  variants: {
-    test: {
-      true: {
-        bg: 'red',
-      },
-    },
-  } as const,
-})
-
 const SandboxInner = () => {
-  return <StyledP test>hello</StyledP>
-
+  return <ToggleGroupDemo />
   return <Square animation="bouncy" size={100} bc="red" />
 }
 

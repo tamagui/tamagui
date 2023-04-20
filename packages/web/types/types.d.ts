@@ -27,6 +27,7 @@ export type TamaguiProjectInfo = {
     tamaguiConfig: TamaguiInternalConfig;
     nameToPaths: NameToPaths;
 };
+export type Role = 'alert' | 'alertdialog' | 'application' | 'article' | 'banner' | 'button' | 'cell' | 'checkbox' | 'columnheader' | 'combobox' | 'complementary' | 'contentinfo' | 'definition' | 'dialog' | 'directory' | 'document' | 'feed' | 'figure' | 'form' | 'grid' | 'group' | 'heading' | 'img' | 'link' | 'list' | 'listitem' | 'log' | 'main' | 'marquee' | 'math' | 'menu' | 'menubar' | 'menuitem' | 'meter' | 'navigation' | 'none' | 'note' | 'option' | 'presentation' | 'progressbar' | 'radio' | 'radiogroup' | 'region' | 'row' | 'rowgroup' | 'rowheader' | 'scrollbar' | 'searchbox' | 'separator' | 'slider' | 'spinbutton' | 'status' | 'summary' | 'switch' | 'tab' | 'table' | 'tablist' | 'tabpanel' | 'term' | 'timer' | 'toolbar' | 'tooltip' | 'tree' | 'treegrid' | 'treeitem';
 type DivAttributes = HTMLAttributes<HTMLDivElement>;
 export type TamaguiReactElement<P = any> = React.ReactElement<P> & {
     type: TamaguiComponent;
@@ -53,7 +54,7 @@ export type TamaguiComponentPropsBase = {
     theme?: ThemeName | null;
     componentName?: string;
     tabIndex?: string | number;
-    role?: string;
+    role?: Role;
     /**
      * Forces the pseudo style state to be on
      */

@@ -198,7 +198,8 @@ export const useChangeThemeEffect = (
   }
 
   if (!isServer) {
-    useEffect(() => {
+    // listen for parent change + notify children change
+    useLayoutEffect(() => {
       // SSR safe inverse (because server can't know prefers scheme)
       // could be done through fancy selectors like how we do prefers-media
       // but may be a bit of explosion of selectors
@@ -207,18 +208,12 @@ export const useChangeThemeEffect = (
         return
       }
 
-      if (!isNewTheme) return
-      if (!themeManager) return
-
-      activeThemeManagers.add(themeManager)
-
-      return () => {
-        activeThemeManagers.delete(themeManager)
+      if (process.env.NODE_ENV === 'development') {
+        if (isNewTheme && themeManager) {
+          activeThemeManagers.add(themeManager)
+        }
       }
-    }, [isNewTheme, themeManager, state])
 
-    // listen for parent change + notify children change
-    useLayoutEffect(() => {
       const nextState = getShouldUpdateTheme(themeManager)
 
       if (nextState) {
@@ -248,6 +243,10 @@ export const useChangeThemeEffect = (
 
       return () => {
         disposeChangeListener?.()
+
+        if (process.env.NODE_ENV === 'development') {
+          activeThemeManagers.delete(themeManager)
+        }
       }
     }, [
       parentManager,
@@ -338,6 +337,10 @@ export const useChangeThemeEffect = (
 
     if (!state) {
       state = isNewTheme ? { ...themeManager.state } : { ...parentManager!.state }
+    }
+
+    if (state.name === prev?.state.name) {
+      return prev
     }
 
     const response = {

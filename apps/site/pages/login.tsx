@@ -1,3 +1,6 @@
+import { getAuthLayout } from '@components/layouts/AuthLayout'
+import { getDefaultLayout } from '@components/layouts/DefaultLayout'
+import { withSupabase } from '@lib/withSupabase'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { AuthError, Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/logo'
@@ -19,7 +22,6 @@ import {
 import { GithubIcon } from '../components/GithubIcon'
 import { Notice } from '../components/Notice'
 import { useForwardToDashboard } from '../hooks/useForwardToDashboard'
-import { getUserLayout } from '../lib/getUserLayout'
 import { getURL } from '../lib/helpers'
 
 const loginPageUrl = `${
@@ -233,4 +235,4 @@ export default function SignInPage() {
   )
 }
 
-SignInPage.getLayout = getUserLayout
+SignInPage.getLayout = getAuthLayout

@@ -16,8 +16,7 @@
   "scripts": {
     "git-crypt-unlock": "./scripts/git-crypt-unlock.sh",
     "vercel:build": "yarn build:js && cd apps/site && yarn ci:build",
-    "install:ci": "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 yarn install",
-    "postinstall": "manypkg check && yarn git-crypt-unlock",
+    "postinstall": "yarn check-deps && manypkg check && yarn git-crypt-unlock",
     "check": "manypkg check",
     "build": "turbo run build --filter=!next-app",
     "build:force": "yarn clean:build && yarn build --force",
@@ -71,22 +70,23 @@
     "sandbox:extract": "yarn workspace @tamagui/sandbox dev:extract",
     "sandbox-web": "yarn workspace @tamagui/sandbox-web dev",
     "sandbox-web:extract": "yarn workspace @tamagui/sandbox-web dev:extract",
+    "check-deps": "check-dependency-version-consistency .",
     "fix": "yarn manypkg fix"
   },
   "resolutions": {
-    "@floating-ui/react-dom": "1.2.2",
-    "@floating-ui/react": "0.19.1",
-    "@floating-ui/react-native": "0.9.0",
+    "@floating-ui/react-dom": "^1.2.2",
+    "@floating-ui/react": "^0.19.1",
+    "@floating-ui/react-native": "^0.9.0",
     "react-native-svg": "13.4.0",
-    "react-native-reanimated": "2.14.4",
-    "@types/node": "16.11.9",
-    "@types/react-native": "0.70.8",
-    "react-native": "0.70.5",
-    "webpack": "5.74.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-refresh": "0.14.0",
-    "react-native-web": "0.18.10"
+    "react-native-reanimated": "^2.14.4",
+    "@types/node": "^16.11.9",
+    "@types/react-native": "^0.71.3",
+    "react-native": "^0.71.4",
+    "webpack": "^5.74.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-refresh": "^0.14.0",
+    "react-native-web": "^0.18.10"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {
@@ -99,6 +99,7 @@
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^16.11.9",
     "@types/react": "^18.0.15",
+    "check-dependency-version-consistency": "^3.0.3",
     "import-sort-style-module": "^6.0.0",
     "npm-run-all": "^4.1.5",
     "p-map": "^5.5.0",

@@ -991,7 +991,7 @@ export const getSplitStyles: StyleSplitter = (
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (isDevTools) {
       // eslint-disable-next-line no-console
-      console.groupCollapsed('  🔹 styles =>')
+      console.groupCollapsed('  🔹 =>')
       // prettier-ignore
       const logs = { ...result, state, etc: { transforms, viewProps, rulesToInsert, parentSplitStyles, flatTransforms } }
       for (const key in logs) {

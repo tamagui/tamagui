@@ -1,4 +1,5 @@
-import { User, useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { User, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useRouter } from 'next/router'
 import {
   createContext,
   useCallback,
@@ -7,13 +8,15 @@ import {
   useReducer,
   useState,
 } from 'react'
-
+import { Spinner, YStack } from 'tamagui'
+import { UserAccessStatus } from 'types'
 type UserContextType = {
   accessToken: string | null
   user: User | null
-  // userDetails: any | null
+  userDetails: any | null
   isLoading: boolean
   // subscription: any | null
+  accessStatus: UserAccessStatus | null
   signout: () => void
 }
 
@@ -23,16 +26,24 @@ export interface Props {
   [propName: string]: any
 }
 
+const getAccessDetails = async () => {
+  const res = await fetch('/api/access-check')
+  const data = await res.json()
+  if (res.status !== 200) throw new Error(data.error)
+  return data as UserAccessStatus
+}
+
 export const MyUserContextProvider = (props: Props) => {
   const forceUpdate = useReducer((x) => (x + 1) % Number.MAX_SAFE_INTEGER, 0)[1]
-  const session = useSession()
+  const { isLoading: isLoadingUser, session } = useSessionContext()
   const supabase = useSupabaseClient()
 
   const [isLoadingData, setIsloadingData] = useState(false)
   const [userDetails, setUserDetails] = useState<any>(null)
-  const [subscription, setSubscription] = useState<any>(null)
+  // const [subscription, setSubscription] = useState<any>(null)
+  const [accessStatus, setAccessStatus] = useState<UserAccessStatus | null>(null)
 
-  // const getUserDetails = () => supabase.from('users').select('*').single()
+  const getUserDetails = () => supabase.from('users').select('*').single()
 
   // const getSubscription = () =>
   //   supabase
@@ -40,20 +51,24 @@ export const MyUserContextProvider = (props: Props) => {
   //     .select('*, prices(*, products(*))')
   //     .in('status', ['trialing', 'active'])
   //     .single()
-  const isLoadingUser = !!session?.user
 
   useEffect(() => {
-    if (session?.user && !isLoadingData && !userDetails && !subscription) {
+    if (session?.user && !isLoadingData && !userDetails) {
       setIsloadingData(true)
       Promise.allSettled([
-        // getUserDetails(),
+        getUserDetails(),
+        getAccessDetails(),
         // getSubscription()
       ]).then((results) => {
-        // const userDetailsPromise = results[0]
-        // const subscriptionPromise = results[1]
+        const userDetailsPromise = results[0]
+        const accessDetailsPromise = results[1]
+        // const subscriptionPromise = results[2]
 
-        // if (userDetailsPromise.status === 'fulfilled')
-        // setUserDetails(userDetailsPromise.value.data)
+        if (userDetailsPromise.status === 'fulfilled')
+          setUserDetails(userDetailsPromise.value.data)
+
+        if (accessDetailsPromise.status === 'fulfilled')
+          setAccessStatus(accessDetailsPromise.value)
 
         // if (subscriptionPromise.status === 'fulfilled')
         // setSubscription(subscriptionPromise.value.data)
@@ -69,8 +84,9 @@ export const MyUserContextProvider = (props: Props) => {
   const value = {
     accessToken: session?.access_token ?? null,
     user: session?.user ?? null,
-    // userDetails,
+    userDetails,
     isLoading: isLoadingUser || isLoadingData,
+    accessStatus,
     // subscription,
     signout: useCallback(async () => {
       await supabase.auth.signOut()
@@ -87,4 +103,23 @@ export const useUser = () => {
     throw new Error(`useUser must be used within a MyUserContextProvider.`)
   }
   return context
+}
+
+export const UserGuard = ({ children }: { children: React.ReactNode }) => {
+  const { user, isLoading } = useUser()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!user && !isLoading && router.isReady) {
+      router.push('/login')
+    }
+  }, [user, isLoading, router])
+
+  if (!user)
+    return (
+      <YStack ai="center" flex={1} jc="center">
+        <Spinner size="large" />
+      </YStack>
+    )
+  return <>{children}</>
 }

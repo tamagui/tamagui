@@ -1,10 +1,10 @@
 import { Hero } from '@components/Hero'
+import { getDefaultLayout } from '@components/layouts/DefaultLayout'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
-import { Button, XStack, YStack } from 'tamagui'
+import { YStack } from 'tamagui'
 
-import { ContainerLarge } from '../components/Container'
 import { HeroBelow } from '../components/HeroBelow'
 import { HeroExampleAnimations } from '../components/HeroExampleAnimations'
 import { HeroExampleCode } from '../components/HeroExampleCode'
@@ -14,8 +14,6 @@ import { HeroPerformance } from '../components/HeroPerformance'
 import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { HomeGlow } from '../components/HomeGlow'
-import { MailingListSignup } from '../components/MailingListSignup'
-import { NextLink } from '../components/NextLink'
 import { HomeSection, SectionTinted, TintSection } from '../components/TintSection'
 import { getCompilationExamples } from '../lib/getCompilationExamples'
 
@@ -70,6 +68,8 @@ export default function Home({ animationCode, compilationExamples }) {
     </>
   )
 }
+
+Home.getLayout = getDefaultLayout satisfies GetLayout
 
 export async function getStaticProps() {
   return {
