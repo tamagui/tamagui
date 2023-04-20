@@ -422,8 +422,8 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
       } = props
       const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeToggleGroup)
       const direction = useDirection(dir)
-      const commonProps = {
-        role: 'togglegroup',
+      const commonProps: ToggleGroupImplProps = {
+        role: 'group',
         dir: direction,
         ...toggleGroupProps,
       }

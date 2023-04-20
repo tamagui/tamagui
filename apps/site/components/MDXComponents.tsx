@@ -65,7 +65,6 @@ const Table = ({ heading, children, ...props }) => {
   return (
     <TableFrame className="no-scrollbar" overflow={'scroll' as any} {...props}>
       {!!heading && (
-        // @ts-expect-error
         <TableCell size="$4" bc="$color1" fow="500" color="$color9">
           {heading}
         </TableCell>

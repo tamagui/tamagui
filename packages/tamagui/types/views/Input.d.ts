@@ -35,9 +35,9 @@ export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }, {
-    contextType: import("react").Context<any> | undefined;
     prototype: TextInput;
     State: import("react-native").TextInputState;
+    contextType: import("react").Context<any> | undefined;
 }>;
 export type InputProps = GetProps<typeof InputFrame>;
 export declare const Input: import("@tamagui/core").TamaguiComponent<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
@@ -53,8 +53,8 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<import("rea
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }, {
-    contextType: import("react").Context<any> | undefined;
     prototype: TextInput;
     State: import("react-native").TextInputState;
+    contextType: import("react").Context<any> | undefined;
 }>;
 //# sourceMappingURL=Input.d.ts.map
