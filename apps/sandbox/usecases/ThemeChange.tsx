@@ -1,18 +1,14 @@
 import { memo, useMemo, useState } from 'react'
 import { Button, Card, Square, Theme, YStack } from 'tamagui'
 
-export default function  SandboxThemeChange() {
-  return (
-    <Button debug="visualize" themeInverse>
-      inverse
-    </Button>
-  )
+export default function SandboxThemeChange() {
+  return <Button themeInverse>inverse</Button>
 
   return (
     <>
       <Inner>
         <Inner>
-          <Card debug="visualize" w={100} h={100} />
+          <Card w={100} h={100} />
         </Inner>
       </Inner>
     </>
@@ -42,13 +38,11 @@ export function Inner(props: { children?: any }) {
       </Button>
 
       {/* @ts-ignore */}
-      <Theme debug="visualize" name={theme}>
+      <Theme name={theme}>
         <SandboxThemeChildStatic />
         <SandboxThemeChildDynamic />
 
-        <Button debug="visualize" themeInverse>
-          inverse
-        </Button>
+        <Button themeInverse>inverse</Button>
 
         {props.children}
       </Theme>
@@ -58,13 +52,13 @@ export function Inner(props: { children?: any }) {
 
 const SandboxThemeChildStatic = memo(() => {
   // @ts-ignore
-  return <Square debug="visualize" size={20} backgroundColor="$color10" />
+  return <Square size={20} backgroundColor="$color10" />
 })
 
 const SandboxThemeChildDynamic = memo(() => {
   console.log('render dynamic')
   return (
     // @ts-ignore
-    <Square debug="visualize" animation="bouncy" size={20} backgroundColor="$color10" />
+    <Square animation="bouncy" size={20} backgroundColor="$color10" />
   )
 })
