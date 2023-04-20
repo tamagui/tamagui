@@ -1,3 +1,6 @@
+- also – I use the RNW Modal component often. However, I'm not able to use Popover, Tooltip, etc. inside of one. 
+  - may need to detect somehow if inside Modal and use it?
+
 - theme on animations demo home widget is breaking
 
 - add test that builds site for prod + checks for header text / no errors
