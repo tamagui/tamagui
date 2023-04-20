@@ -4250,6 +4250,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@takeout/studio@workspace:takeout/studio":
+  version: 0.0.0-use.local
+  resolution: "@takeout/studio@workspace:takeout/studio"
+  dependencies:
+    "@tauri-apps/api": ^1.2.0
+    "@tauri-apps/cli": ^1.2.2
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/accordion@workspace:packages/accordion":
   version: 0.0.0-use.local
   resolution: "@tamagui/accordion@workspace:packages/accordion"
