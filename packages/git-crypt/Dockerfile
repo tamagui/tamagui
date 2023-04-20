@@ -7,3 +7,5 @@ RUN yum update -y && \
     cd git-crypt && \
     make && \
     make install
+
+RUN chmod +x /usr/local/bin/git-crypt
