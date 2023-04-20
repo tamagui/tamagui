@@ -68,7 +68,7 @@ const ButtonFrame = styled(HeadlessTamaguiButton, {
   } as const,
 })
 
-const MyButton = withStaticProperties(themeable(ButtonFrame), {
+const MyButton = withStaticProperties(themeable(ButtonFrame, ButtonFrame.staticConfig), {
   Text: ButtonFrame.Text,
   Icon: ButtonFrame.Icon,
 })
@@ -79,9 +79,10 @@ const Button = ButtonFrame.extractable(
     GetProps<typeof MyButton> & {
       color?: ColorTokens
       icon?: React.NamedExoticComponent<IconProps>
+      iconAfter?: React.NamedExoticComponent<IconProps>
     }
   >((props, ref) => {
-    const { color, icon: Icon, size = '$3', ...buttonProps } = props
+    const { color, icon: Icon, iconAfter: IconAfter, size = '$3', ...buttonProps } = props
     const iconSize = typeof size === 'number' ? size * 0.5 : getFontSize(size)
     const getThemedIcon = useGetThemedIcon({ color, size: iconSize })
     return (
@@ -90,6 +91,7 @@ const Button = ButtonFrame.extractable(
         <MyButton.Text color={color} size={props.size as FontSizeTokens}>
           {props.children}
         </MyButton.Text>
+        {IconAfter && <MyButton.Icon>{getThemedIcon(IconAfter)}</MyButton.Icon>}
       </MyButton>
     )
   })
@@ -113,7 +115,7 @@ export function ButtonHeadlessDemo(props) {
         <Button themeInverse size="$3">
           Small Inverse
         </Button>
-        <Button size="$3" space="$2" icon={Activity}>
+        <Button size="$3" space="$1.5" iconAfter={Activity}>
           After
         </Button>
       </XStack>
