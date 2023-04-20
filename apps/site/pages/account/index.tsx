@@ -1,5 +1,6 @@
 import { Container } from '@components/Container'
 import { getAuthLayout } from '@components/layouts/AuthLayout'
+import { getUserLayout } from '@components/layouts/UserLayout'
 import { Star } from '@tamagui/lucide-icons'
 import { ButtonLink } from 'app/Link'
 import { useUser } from 'hooks/useUser'
@@ -136,4 +137,4 @@ const ConnectionsContent = () => {
   )
 }
 
-Page.getLayout = getAuthLayout
+Page.getLayout = getUserLayout
