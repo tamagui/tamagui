@@ -133,9 +133,11 @@ export default function Community({ frontmatters }) {
                       borderColor: '$color',
                     }}
                     o={0.5}
-                    width={1466 * 0.25}
-                    height={776 * 0.25}
-                    src={'/sponsors/design-kit.jpg'}
+                    source={{
+                      uri: '/sponsors/design-kit.jpg',
+                      width: 1466 * 0.25,
+                      height: 776 * 0.25,
+                    }}
                   />
                 </YStack>
               </NextLink>
@@ -423,9 +425,11 @@ function GoldSponsor(props: {
         >
           <Image
             accessibilityLabel={props.name}
-            width={props.imageWidth}
-            height={props.imageHeight}
-            src={props.image}
+            source={{
+              uri: props.image,
+              height: props.imageHeight,
+              width: props.imageWidth,
+            }}
           />
           <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
             {props.name}

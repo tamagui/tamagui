@@ -40,7 +40,7 @@ export const TamaguiProvider = ({ children }: { children: React.ReactNode }) => 
     <NextThemeProvider
       onChangeTheme={(next) => {
         startTransition(() => {
-          setTheme(next)
+          setTheme(next as any)
         })
       }}
     >
