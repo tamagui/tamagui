@@ -20,17 +20,22 @@ export function LucideIconsDemo() {
       lucideIcons
         .filter((x) => x.key.startsWith(search.toLowerCase()))
         .map(({ Icon, name }) => (
-          <YStack h={size + 20} ai="center" jc="center" key={name}>
+          <YStack
+            height={size + 20}
+            alignItems="center"
+            justifyContent="center"
+            key={name}
+          >
             <Icon size={size * 0.25} />
             <Spacer />
             <Paragraph
-              h="$6"
-              ww="break-word"
-              maw="100%"
-              ta="center"
-              px="$2"
+              height="$6"
+              wordWrap="break-word"
+              maxWidth="100%"
+              textAlign="center"
+              paddingHorizontal="$2"
               size="$1"
-              o={0.5}
+              opacity={0.5}
             >
               {name}
             </Paragraph>
@@ -40,7 +45,7 @@ export function LucideIconsDemo() {
   )
 
   return (
-    <YStack miw="100%" padding="$4" paddingBottom="$0" space>
+    <YStack minWidth="100%" padding="$4" paddingBottom="$0" space>
       <Input value={searchRaw} onChangeText={setSearch} placeholder="Search..." />
 
       <YStack height={420}>

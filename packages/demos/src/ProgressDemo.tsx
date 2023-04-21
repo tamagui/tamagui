@@ -24,7 +24,14 @@ export function ProgressDemo() {
         </Progress>
       </YStack>
 
-      <XStack ai="center" space position="absolute" bottom="$3" left="$4" $xxs={{ display: 'none' }}>
+      <XStack
+        alignItems="center"
+        space
+        position="absolute"
+        bottom="$3"
+        left="$4"
+        $xxs={{ display: 'none' }}
+      >
         <Slider
           size="$2"
           width={130}

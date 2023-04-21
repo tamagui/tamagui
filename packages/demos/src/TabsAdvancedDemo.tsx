@@ -26,7 +26,14 @@ export const TabsAdvancedDemo = () => {
     <>
       {demo === 'underline' ? <TabsAdvancedUnderline /> : <TabsAdvancedBackground />}
 
-      <XStack ai="center" space pos="absolute" b="$3" l="$4" $xxs={{ dsp: 'none' }}>
+      <XStack
+        alignItems="center"
+        space
+        position="absolute"
+        bottom="$3"
+        left="$4"
+        $xxs={{ display: 'none' }}
+      >
         <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demosTitle[demo]}
         </Button>
