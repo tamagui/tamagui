@@ -124,7 +124,7 @@ export default function SignInPage() {
               <YStack space="$2">
                 <Input
                   autoComplete="email"
-                  keyboardType="email-address"
+                  inputMode="email"
                   placeholder="Email"
                   // @ts-ignore
                   onSubmitEditing={handleSignin}
