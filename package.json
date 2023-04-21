@@ -80,7 +80,7 @@
     "react-native-svg": "13.4.0",
     "@types/node": "^16.11.9",
     "@types/react-native": "^0.71.3",
-    "react-native": "^0.71.4",
+    "react-native": "0.71.6",
     "webpack": "^5.74.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
