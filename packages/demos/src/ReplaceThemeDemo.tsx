@@ -1,6 +1,5 @@
-import * as Config from '@tamagui/config'
 import { addTheme, replaceTheme } from '@tamagui/theme'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
   Button,
   Square,
@@ -29,10 +28,9 @@ export function ReplaceThemeDemo() {
 
   return (
     <YStack alignItems="center" space>
-      <XStack gap={'$5'}>
+      <XStack gap="$5">
         <Theme name={theme ?? null}>
           <Square borderRadius="$8" size={100} backgroundColor="$color" />
-          <Square borderRadius="$8" size={100} backgroundColor="$color2" />
         </Theme>
       </XStack>
 
