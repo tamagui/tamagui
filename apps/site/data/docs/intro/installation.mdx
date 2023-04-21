@@ -39,7 +39,9 @@ Be sure to set the environment variable `TAMAGUI_TARGET` to the string `web` or 
 }
 ```
 
-Or for native you'd do something like this:
+### Native
+
+For native you'd do something like this:
 
 ```sh
 TAMAGUI_TARGET=native react-native start
@@ -47,6 +49,38 @@ TAMAGUI_TARGET=native react-native start
 
 ```sh
 TAMAGUI_TARGET=native expo start
+```
+
+You'll also need to indicate to Metro and babel to inline TAMAGUI_TARGET like so:
+
+```bash
+yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
+```
+
+Add `@tamagui/babel-plugin` to your `babel.config.js` plugins:
+
+```js
+// ensure TAMAGUI_TARGET is set
+process.env.TAMAGUI_TARGET = 'native'
+
+module.exports = {
+  plugins: [
+    [
+      '@tamagui/babel-plugin',
+      {
+        components: ['tamagui'],
+        config: './tamagui.config.ts',
+        importsWhitelist: ['constants.js', 'colors.js'],
+        logTimings: true,
+        disableExtraction: process.env.NODE_ENV === 'development',
+      }
+    ],
+    // be sure to set TAMAGUI_TARGET
+    ['transform-inline-environment-variables', {
+      include: ['TAMAGUI_TARGET']
+    }]
+  ]
+}
 ```
 
 If you're targeting a native app and installing `tamagui` (not core), you'll need to [set up `expo-linear-gradient` first](https://github.com/expo/expo/tree/sdk-47/packages/expo-linear-gradient) as Metro will try and find it even if you don't import it.
