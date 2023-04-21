@@ -246,7 +246,7 @@ export function createExtractor(
 
     if (!tamaguiConfig.themes) {
       console.error(
-        `⛔️ Error: Missing "themes" in your tamagui.config file, this may be due to duplicated dependency versions. Try running "npx check-dependency-version-consistency ." to see if there are mis-matches, or search your lockfile.`
+        `⛔️ Error: Missing "themes" in your tamagui.config file, this may be due to duplicated dependency versions. Try out https://github.com/bmish/check-dependency-version-consistency to see if there are mis-matches, or search your lockfile.`
       )
       console.log(`  Got config:`, tamaguiConfig)
       process.exit(0)
