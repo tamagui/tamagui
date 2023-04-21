@@ -1,3 +1,10 @@
+Ali Studio:
+  - make it remember dark/light choice (localStorage)
+  - toast more padding from right/bottom
+  - Themes
+    - if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
+  - 
+
 - $web / $native make them work as media queries
 
 - also – I use the RNW Modal component often. However, I'm not able to use Popover, Tooltip, etc. inside of one. 
