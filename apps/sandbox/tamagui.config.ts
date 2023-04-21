@@ -1,5 +1,5 @@
 import { config } from '@tamagui/config'
-import { createFont, createTamagui } from 'tamagui'
+import { Longhands, createFont, createTamagui } from 'tamagui'
 
 const body_cn = createFont({
   family: 'noto_cn',
@@ -33,10 +33,8 @@ const tamaConf = createTamagui({
   shorthands: {
     ...shorthands,
     b2b2: 'backgroundColor',
-  } as const,
+  },
 })
-
-type test = Conf['shorthands']['b2b2']
 
 export type Conf = typeof tamaConf
 

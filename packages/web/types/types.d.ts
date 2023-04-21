@@ -404,7 +404,8 @@ export type ThemeValueFallback = UnionableString | Variable;
 export type WithThemeValues<T extends object> = {
     [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback;
 };
-export type Longhands = TamaguiConfig['shorthands'][keyof TamaguiConfig['shorthands']];
+type NarrowShorthands = Narrow<Shorthands>;
+export type Longhands = NarrowShorthands[keyof NarrowShorthands];
 export type OmitLonghands<R extends Record<string, any>> = TamaguiConfig['onlyAllowShorthands'] extends true ? Omit<R, Longhands> : R;
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
@@ -773,4 +774,14 @@ export type TamaguiComponentEvents = {
     onMouseLeave?: ((e: any) => void) | undefined;
     onPressOut: ((e: any) => void) | undefined;
 };
+/**
+ * Narrow copied from ts-toolbelt
+ * https://github.com/millsp/ts-toolbelt/blob/master/sources/Function/Narrow.ts
+ */
+export type Try<A1 extends any, A2 extends any, Catch = never> = A1 extends A2 ? A1 : Catch;
+type Narrowable = string | number | bigint | boolean;
+type NarrowRaw<A> = (A extends [] ? [] : never) | (A extends Narrowable ? A : never) | {
+    [K in keyof A]: A[K] extends Function ? A[K] : NarrowRaw<A[K]>;
+};
+export type Narrow<A extends any> = Try<A, [], NarrowRaw<A>>;
 //# sourceMappingURL=types.d.ts.map
