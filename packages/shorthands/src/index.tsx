@@ -83,7 +83,7 @@ export const shorthands = {
   t: 'top',
   w: 'width',
   zi: 'zIndex',
-} as const
+}
 
 // add in some just for compiler output
 shorthands['bls'] = 'borderLeftStyle'
