@@ -1,4 +1,11 @@
-import { GetProps, setupReactNative, styled } from '@tamagui/core'
+import {
+  ColorStyleProp,
+  GetProps,
+  ModifyTamaguiComponentStyleProps,
+  TamaguiComponent,
+  setupReactNative,
+  styled,
+} from '@tamagui/core'
 import { focusableInputHOC } from '@tamagui/focusable'
 import { TextInput } from 'react-native'
 
@@ -34,7 +41,7 @@ export const defaultStyles = {
   },
 } as const
 
-export const InputFrame = styled(
+const InputFramePreTyped = styled(
   TextInput,
   {
     name: 'Input',
@@ -58,6 +65,15 @@ export const InputFrame = styled(
   }
 )
 
-export type InputProps = GetProps<typeof InputFrame>
+type InputFrameType = ModifyTamaguiComponentStyleProps<
+  typeof InputFramePreTyped,
+  {
+    placeholderTextColor?: ColorStyleProp
+  }
+>
+
+export const InputFrame = InputFramePreTyped as InputFrameType
+
+export type InputProps = GetProps<InputFrameType>
 
 export const Input = focusableInputHOC(InputFrame)

@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { GetProps } from '@tamagui/core';
+import { ColorStyleProp, GetProps, ModifyTamaguiComponentStyleProps, TamaguiComponent } from '@tamagui/core';
 import { TextInput } from 'react-native';
 export declare const defaultStyles: {
     readonly size: "$true";
@@ -22,7 +22,7 @@ export declare const defaultStyles: {
         readonly borderColor: "$borderColorFocus";
     };
 };
-export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+declare const InputFramePreTyped: TamaguiComponent<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
@@ -39,8 +39,10 @@ export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import
     State: import("react-native").TextInputState;
     contextType: import("react").Context<any> | undefined;
 }>;
-export type InputProps = GetProps<typeof InputFrame>;
-export declare const Input: import("@tamagui/core").TamaguiComponent<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+type InputFrameType = ModifyTamaguiComponentStyleProps<typeof InputFramePreTyped, {
+    placeholderTextColor?: ColorStyleProp;
+}>;
+export declare const InputFrame: TamaguiComponent<Omit<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
@@ -49,7 +51,9 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<import("rea
 }>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
-}>>, import("@tamagui/core").TamaguiElement, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, {
+}>>, "placeholderTextColor"> & {
+    placeholderTextColor?: ColorStyleProp | undefined;
+}, import("@tamagui/core").TamaguiElement, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }, {
@@ -57,4 +61,25 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<import("rea
     State: import("react-native").TextInputState;
     contextType: import("react").Context<any> | undefined;
 }>;
+export type InputProps = GetProps<InputFrameType>;
+export declare const Input: TamaguiComponent<Omit<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+} & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+}>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+}>>, "placeholderTextColor"> & {
+    placeholderTextColor?: ColorStyleProp | undefined;
+}, import("@tamagui/core").TamaguiElement, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, {
+    readonly unstyled?: boolean | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
+}, {
+    prototype: TextInput;
+    State: import("react-native").TextInputState;
+    contextType: import("react").Context<any> | undefined;
+}>;
+export {};
 //# sourceMappingURL=Input.d.ts.map
