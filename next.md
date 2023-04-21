@@ -3,20 +3,13 @@ Ali Studio:
   - toast more padding from right/bottom
   - Themes
     - if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
-  - 
 
 - $web / $native make them work as media queries
 
 - also – I use the RNW Modal component often. However, I'm not able to use Popover, Tooltip, etc. inside of one. 
   - may need to detect somehow if inside Modal and use it?
 
-- theme on animations demo home widget is breaking
-
 - add test that builds site for prod + checks for header text / no errors
-
-- Button and other similar ones - make the hover/press/focusStyle zIndex 2, 3, 4 (or all 2) by default
-
-- XGroup + borderRadius doesn't set radius (see studio/header)
 
 - yarn release --canary
 
@@ -66,13 +59,13 @@ Ali Studio:
 
 - slider track - light theme blends in with bg i think
 
+- Button and other similar ones - make the hover/press/focusStyle zIndex 2, 3, 4 (or all 2) by default
+
 - createInterFont the default weight/letterSpacing should use `true` rather than `4` key (small change just need to test make sure it doens't break)
 
 - lets make forms use outline for 2px borders on focusStyle
   - on native it can just get a darker border but stay 1px
 
-- force fix version
-- move to use-roving-index
 - cli
   - `tamagui doctor` command to check for version mismatch
 
