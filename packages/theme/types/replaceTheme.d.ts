@@ -1,8 +1,7 @@
 import type { ThemeDefinition } from '@tamagui/web';
-export declare function addTheme(props: {
+export declare function replaceTheme({ name, theme, }: {
     name: string;
     theme: Partial<Record<keyof ThemeDefinition, any>>;
-    insertCSS?: boolean;
 }): {
     theme: {
         [x: string]: import("@tamagui/web").Variable<any>;
@@ -28,4 +27,4 @@ export declare function addTheme(props: {
     theme: any;
     cssRules: string[];
 } | undefined;
-//# sourceMappingURL=addTheme.d.ts.map
+//# sourceMappingURL=replaceTheme.d.ts.map
