@@ -1,4 +1,3 @@
-// debug
 import {
   Stack,
   Tooltip as TamaguiTooltip,

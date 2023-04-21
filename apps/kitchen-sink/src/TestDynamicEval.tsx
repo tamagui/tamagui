@@ -1,4 +1,3 @@
-// debug
 import { useTheme } from '@tamagui/core'
 import { SafeAreaView, ScrollView } from 'react-native'
 

@@ -1,4 +1,3 @@
-// debug
 import '@tamagui/polyfill-dev'
 
 import { useMemo, useState } from 'react'

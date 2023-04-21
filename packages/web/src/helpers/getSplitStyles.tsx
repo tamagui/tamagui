@@ -14,7 +14,6 @@ import {
   validStylesOnBaseProps,
 } from '@tamagui/helpers'
 import { useInsertionEffect } from 'react'
-import type { TextStyle, ViewStyle } from 'react-native'
 
 import { getConfig, getFont } from '../config.js'
 import { isDevTools } from '../constants/isDevTools.js'
@@ -300,6 +299,20 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  function passDownProp(key: string, val: any, shouldMergeObject = false) {
+    if (shouldMergeObject) {
+      viewProps[key] ||= {}
+      // we are going backwards to apply in front
+      viewProps[key] = {
+        ...val,
+        ...viewProps[key],
+      }
+    } else {
+      usedKeys[key] = 1
+      viewProps[key] = val
+    }
+  }
+
   /**
    * Need to process these after done with flattening the rest of the props + variants/mediam when we have the final font family.
    *
@@ -525,6 +538,7 @@ export const getSplitStyles: StyleSplitter = (
 
     let isMedia = isMediaKey(keyInit)
     let isPseudo = keyInit in validPseudoKeys
+    let isMediaOrPseudo = isMedia || isPseudo
 
     const isVariant = variants && keyInit in variants
 
@@ -539,7 +553,7 @@ export const getSplitStyles: StyleSplitter = (
     const parentHasVariant =
       staticConfig.parentStaticConfig?.variants &&
       keyInit in staticConfig.parentStaticConfig
-    const isHOCShouldPassThrough = staticConfig.isHOC && (isMedia || isPseudo)
+    const isHOCShouldPassThrough = staticConfig.isHOC && isMediaOrPseudo
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough || parentHasVariant
 
     if (
@@ -549,13 +563,12 @@ export const getSplitStyles: StyleSplitter = (
     ) {
       // eslint-disable-next-line no-console
       console.groupCollapsed(`  🔹 pass through ${keyInit}`)
-      console.log({ variants, parentHasVariant, isVariant, shouldPassProp })
+      console.log({ valInit, variants, parentHasVariant, isVariant, shouldPassProp })
       console.groupEnd()
     }
 
     if (shouldPassThrough) {
-      usedKeys[keyInit] = 1
-      viewProps[keyInit] = valInit
+      passDownProp(keyInit, valInit, isMediaOrPseudo)
 
       // if it's a variant here, we have a two layer variant...
       // aka styled(Input, { unstyled: true, variants: { unstyled: {} } })
@@ -572,19 +585,18 @@ export const getSplitStyles: StyleSplitter = (
       console.log({ isVariant, shouldPassProp, isHOCShouldPassThrough, parentHasVariant })
     }
 
-    const expanded =
-      isMedia || isPseudo
-        ? [[keyInit, valInit]]
-        : propMapper(
-            keyInit,
-            valInit,
-            theme,
-            special ? { ...props, fontFamily: fontFamilyOverride } : props,
-            state,
-            languageContext,
-            undefined,
-            debug
-          )
+    const expanded = isMediaOrPseudo
+      ? [[keyInit, valInit]]
+      : propMapper(
+          keyInit,
+          valInit,
+          theme,
+          special ? { ...props, fontFamily: fontFamilyOverride } : props,
+          state,
+          languageContext,
+          undefined,
+          debug
+        )
 
     if (!fontFamily) {
       fontFamily = getPropMappedFontFamily(expanded)
@@ -611,7 +623,7 @@ export const getSplitStyles: StyleSplitter = (
 
       isMedia = isMediaKey(key)
       isPseudo = key in validPseudoKeys
-      const isMediaOrPseudo = isMedia || isPseudo
+      isMediaOrPseudo = isMedia || isPseudo
 
       if (!isMediaOrPseudo && key in usedKeys) {
         if (process.env.NODE_ENV === 'developmnet' && debug === 'verbose') {
@@ -628,10 +640,7 @@ export const getSplitStyles: StyleSplitter = (
       // have to run this logic again here
       const isHOCShouldPassThrough = staticConfig.isHOC && isMediaOrPseudo
       if (isHOCShouldPassThrough) {
-        if (!(key in usedKeys)) {
-          usedKeys[key] = 1
-          viewProps[key] = val
-        }
+        passDownProp(key, val, true)
         continue
       }
 
