@@ -30,7 +30,7 @@
     "@tamagui/shorthands": "1.15.29",
     "@tamagui/themes": "1.15.29",
     "burnt": "^0.10.0",
-    "expo": "~47.0.12",
+    "expo": "^48.0.11",
     "expo-dev-client": "~2.0.1",
     "expo-font": "^11.0.1",
     "expo-linear-gradient": "^12.0.1",

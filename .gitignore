@@ -29,6 +29,7 @@ node_modules
 .vercel
 
 apps/site/out
+apps/kitchen-sink/ios
 
 .tamagui
 
