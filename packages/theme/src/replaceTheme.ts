@@ -17,7 +17,7 @@ export function replaceTheme({
       if (manager.state.name === name) {
         manager.updateState({
           name,
-          forceTheme: next.theme,
+          forceTheme: next?.theme,
         })
       }
     })
