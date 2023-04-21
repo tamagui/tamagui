@@ -58,9 +58,8 @@ const headingFont = createInterFont(
 
 const bodyFont = createInterFont(
   {
-    family: systemFamily,
     weight: {
-      1: '500',
+      1: '400',
       7: '600',
     },
   },
