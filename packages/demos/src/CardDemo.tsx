@@ -12,7 +12,7 @@ export function CardDemo() {
         hoverStyle={{ scale: 0.925 }}
         pressStyle={{ scale: 0.875 }}
       />
-      <DemoCard size="$5" w={250} h={300} />
+      <DemoCard size="$5" width={250} height={300} />
     </XStack>
   )
 }
