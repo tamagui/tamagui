@@ -1,5 +1,14 @@
+Ali todos:
+- get new starter ready
+- supabase local -> staging -> prod and migrations setup
+- select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646
+- low prio: better way to document the "faq" section -> update all docs to use same heading titles, etc.
+- low prio: toast viewport issue
+- double render on new button - waiting for fernando's opinion
+
 Ali Studio:
   - make it remember dark/light choice (localStorage)
+  - animations page
   - toast more padding from right/bottom
   - Themes
     - if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
