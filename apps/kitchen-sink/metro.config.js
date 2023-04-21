@@ -33,6 +33,8 @@ config.server = {
   }, // ...
 }
 
+config.resolver.disableHierarchicalLookup = true
+
 console.log('config', config)
 
 module.exports = config
