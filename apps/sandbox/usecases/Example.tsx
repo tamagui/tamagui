@@ -1,4 +1,3 @@
-// debug
 import { Stack } from '@tamagui/core'
 import { Heading } from '@tamagui/sandbox-ui'
 

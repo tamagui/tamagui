@@ -38,7 +38,6 @@ export const MediaPlayer = memo(
       () => (
         <Card
           overflow="visible"
-          // debug
           bordered
           br="$7"
           pointerEvents={pointerEvents}

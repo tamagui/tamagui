@@ -13,6 +13,12 @@ Ali Studio:
   - Themes
     - if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
 
+--------
+
+# Backlog
+
+- we should check that things merge properly for regular styled() views the same as `StyledButtonVariantPseudoMerge`, basically try it with regular styled definition. Also try it with inherited styled(styled())
+
 - $web / $native make them work as media queries
 
 - also – I use the RNW Modal component often. However, I'm not able to use Popover, Tooltip, etc. inside of one. 
