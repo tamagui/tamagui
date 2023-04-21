@@ -1,3 +1,5 @@
+- $web / $native make them work as media queries
+
 - also – I use the RNW Modal component often. However, I'm not able to use Popover, Tooltip, etc. inside of one. 
   - may need to detect somehow if inside Modal and use it?
 

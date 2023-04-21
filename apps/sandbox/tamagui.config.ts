@@ -33,7 +33,7 @@ const tamaConf = createTamagui({
   shorthands: {
     ...shorthands,
     b2b2: 'backgroundColor',
-  },
+  } as const,
 })
 
 type test = Conf['shorthands']['b2b2']

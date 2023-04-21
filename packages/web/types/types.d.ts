@@ -146,7 +146,8 @@ export interface TamaguiCustomConfig {
 }
 export interface TamaguiConfig extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>, TamaguiCustomConfig {
 }
-export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = {
+type OnlyAllowShorthandsSetting = boolean | undefined;
+export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting> = {
     fonts: RemoveLanguagePostfixes<F>;
     fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[];
     tokens: A;
@@ -158,6 +159,7 @@ export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes
     shorthands: C;
     media: D;
     animations: AnimationDriver<E>;
+    onlyAllowShorthands: G;
 };
 type GetLanguagePostfix<Set> = Set extends string ? Set extends `${string}_${infer Postfix}` ? Postfix : never : never;
 type OmitLanguagePostfix<Set> = Set extends string ? Set extends `${infer Prefix}_${string}` ? Prefix : Set : never;
@@ -165,15 +167,16 @@ type RemoveLanguagePostfixes<F extends GenericFonts> = {
     [Key in OmitLanguagePostfix<keyof F>]: F[Key];
 };
 type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>;
-type ConfProps<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = {
+type ConfProps<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting> = {
     tokens: A;
     themes: B;
     shorthands?: C;
     media?: D;
     animations?: AnimationDriver<E>;
     fonts: F;
+    onlyAllowShorthands?: G;
 };
-export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F> ? TamaguiInternalConfig<A, B, C, D, E, F> : unknown;
+export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer G> ? TamaguiInternalConfig<A, B, C, D, E, F, G> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}` ? never : A;
 type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<keyof TamaguiConfig['themes']>];
@@ -272,8 +275,12 @@ export type CreateTamaguiProps = {
     maxDarkLightNesting?: number;
     shouldAddPrefersColorThemes?: boolean;
     themeClassNameOnRoot?: boolean;
+    /**
+     * Only allow shorthands when enabled
+     */
+    onlyAllowShorthands?: OnlyAllowShorthandsSetting;
 };
-export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F>, 'tokens'> & {
+export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F, G>, 'tokens'> & {
     tokens: Tokenify<A>;
     tokensParsed: Tokenify<A>;
     themeConfig: any;
@@ -397,6 +404,8 @@ export type ThemeValueFallback = UnionableString | Variable;
 export type WithThemeValues<T extends object> = {
     [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback;
 };
+export type Longhands = TamaguiConfig['shorthands'][keyof TamaguiConfig['shorthands']];
+export type OmitLonghands<R extends Record<string, any>> = TamaguiConfig['onlyAllowShorthands'] extends true ? Omit<R, Longhands> : R;
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };
@@ -415,7 +424,7 @@ export type PseudoStyles = {
     enterStyle?: ViewStyle;
     exitStyle?: ViewStyle;
 };
-type WithThemeAndShorthands<A extends object> = WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
+type WithThemeAndShorthands<A extends object> = WithThemeValues<OmitLonghands<A>> & WithShorthands<WithThemeValues<A>>;
 type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>;
 type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>;
 /**
@@ -457,7 +466,6 @@ export type TextNonStyleProps = Omit<ReactTextProps, 'children' | OmitRemovedNon
 export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStylePropsBase>;
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyleProps;
-export type ViewOrTextProps = WithThemeShorthandsPseudosMediaAnimation<Omit<TextStylePropsBase, keyof StackStylePropsBase> & StackStylePropsBase>;
 export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject & ParentStaticProperties;
 type StaticComponentObject = {
     staticConfig: StaticConfigParsed;

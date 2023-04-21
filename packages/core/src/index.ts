@@ -1,10 +1,12 @@
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
-import {
+import type {
   StackProps,
   StackPropsBase,
   TamaguiComponent,
   TextProps,
   TextPropsBase,
+} from '@tamagui/web'
+import {
   Stack as WebStack,
   Text as WebText,
   composeEventHandlers,
@@ -12,7 +14,7 @@ import {
   mergeEvent,
   setupHooks,
 } from '@tamagui/web'
-import { RefObject } from 'react'
+import type { RefObject } from 'react'
 import type { Text as RNText, View as RNView } from 'react-native'
 
 import { useElementLayout } from './hooks/useElementLayout'

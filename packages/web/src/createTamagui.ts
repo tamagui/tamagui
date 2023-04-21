@@ -197,10 +197,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       return [k, val]
     })
   )
-  
+
   const shorthands = configIn.shorthands || {}
 
   const config: TamaguiInternalConfig = {
+    onlyAllowShorthands: false,
     fontLanguages: [],
     animations: {} as any,
     media: {},
@@ -208,7 +209,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     // already processed by createTokens()
     tokens: configIn.tokens as any,
     // vite made this into a function if it wasn't set
-    shorthands: { ...shorthands },
+    shorthands,
     inverseShorthands: shorthands
       ? Object.fromEntries(Object.entries(shorthands).map(([k, v]) => [v, k]))
       : {},

@@ -280,13 +280,16 @@ export interface TamaguiConfig
   extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>,
     TamaguiCustomConfig {}
 
+type OnlyAllowShorthandsSetting = boolean | undefined
+
 export type CreateTamaguiConfig<
   A extends GenericTokens,
   B extends GenericThemes,
   C extends GenericShorthands = GenericShorthands,
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
-  F extends GenericFonts = GenericFonts
+  F extends GenericFonts = GenericFonts,
+  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting
 > = {
   fonts: RemoveLanguagePostfixes<F>
   fontLanguages: GetLanguagePostfixes<F> extends never
@@ -302,6 +305,7 @@ export type CreateTamaguiConfig<
   shorthands: C
   media: D
   animations: AnimationDriver<E>
+  onlyAllowShorthands: G
 }
 
 type GetLanguagePostfix<Set> = Set extends string
@@ -334,7 +338,8 @@ type ConfProps<
   C extends GenericShorthands = GenericShorthands,
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
-  F extends GenericFonts = GenericFonts
+  F extends GenericFonts = GenericFonts,
+  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting
 > = {
   tokens: A
   themes: B
@@ -342,6 +347,7 @@ type ConfProps<
   media?: D
   animations?: AnimationDriver<E>
   fonts: F
+  onlyAllowShorthands?: G
 }
 
 export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
@@ -350,9 +356,10 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   infer C,
   infer D,
   infer E,
-  infer F
+  infer F,
+  infer G
 >
-  ? TamaguiInternalConfig<A, B, C, D, E, F>
+  ? TamaguiInternalConfig<A, B, C, D, E, F, G>
   : unknown
 
 // for use in creation functions so it doesnt get overwritten
@@ -515,6 +522,11 @@ export type CreateTamaguiProps = {
 
   // only if you put the theme classname on the html element we have to generate diff
   themeClassNameOnRoot?: boolean
+
+  /**
+   * Only allow shorthands when enabled
+   */
+  onlyAllowShorthands?: OnlyAllowShorthandsSetting
 }
 
 // this is the config generated via createTamagui()
@@ -524,9 +536,10 @@ export type TamaguiInternalConfig<
   C extends GenericShorthands = GenericShorthands,
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
-  F extends GenericFonts = GenericFonts
+  F extends GenericFonts = GenericFonts,
+  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
-  Omit<CreateTamaguiConfig<A, B, C, D, E, F>, 'tokens'> & {
+  Omit<CreateTamaguiConfig<A, B, C, D, E, F, G>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit
     // animations: E //AnimationDriver<E>
     // with $ prefixes for fast lookups (one time cost at startup vs every render)
@@ -733,6 +746,11 @@ export type WithThemeValues<T extends object> = {
     : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback
 }
 
+export type Longhands = TamaguiConfig['shorthands'][keyof TamaguiConfig['shorthands']]
+
+export type OmitLonghands<R extends Record<string, any>> =
+  TamaguiConfig['onlyAllowShorthands'] extends true ? Omit<R, Longhands> : R
+
 // adds shorthand props
 export type WithShorthands<StyleProps> = {
   [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps
@@ -762,7 +780,7 @@ export type PseudoStyles = {
 //
 // add both theme and shorthands
 //
-type WithThemeAndShorthands<A extends object> = WithThemeValues<A> &
+type WithThemeAndShorthands<A extends object> = WithThemeValues<OmitLonghands<A>> &
   WithShorthands<WithThemeValues<A>>
 
 //
@@ -837,8 +855,10 @@ export type StackNonStyleProps = Omit<
 
 export type StackStyleProps =
   WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>
+
 export type StackPropsBase = StackNonStyleProps &
   WithThemeAndShorthands<StackStylePropsBase>
+
 export type StackProps = StackNonStyleProps & StackStyleProps
 
 //
@@ -856,11 +876,6 @@ export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStyle
 
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>
 export type TextProps = TextNonStyleProps & TextStyleProps
-
-// could actually infer from parent
-export type ViewOrTextProps = WithThemeShorthandsPseudosMediaAnimation<
-  Omit<TextStylePropsBase, keyof StackStylePropsBase> & StackStylePropsBase
->
 
 //
 // StaticComponent

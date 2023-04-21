@@ -2,8 +2,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { useIsIntersecting } from '@tamagui/demos'
 import { useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
-import React, { memo } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import {
   Button,
   Card,
@@ -15,7 +14,6 @@ import {
   H6,
   Heading,
   Paragraph,
-  Spacer,
   TextProps,
   XStack,
   YStack,

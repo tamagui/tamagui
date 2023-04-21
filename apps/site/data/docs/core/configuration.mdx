@@ -11,8 +11,8 @@ You can use `@tamagui/config` a totally complete config out of the box, the same
 
 ```tsx
 import { config } from '@tamagui/config'
-import { createTamagui, setupReactNative } from 'tamagui' // or '@tamagui/core'
 import * as ReactNative from 'react-native'
+import { createTamagui, setupReactNative } from 'tamagui' // or '@tamagui/core'
 
 // if using only @tamagui/core with `react-native` components
 // if using `tamagui` this isn't necessary
@@ -38,9 +38,9 @@ export default appConfig
 Another quick start that gives a bit more customization is using `@tamagui/shorthands` for our preset shorthands, and `@tamagui/themes` for the same themes and tokens used for this site. Then you'll just want to bring along any fonts, media queries, and animations you need.
 
 ```tsx
-import { createTamagui } from 'tamagui' // or '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/themes'
+import { createTamagui } from 'tamagui' // or '@tamagui/core'
 
 const appConfig = createTamagui({
   themes,
@@ -76,8 +76,8 @@ And if you want even shorter, like this:
 You can achieve that by writing variants (see [an example at bottom of page](#example-of-shorthands-an-variants)).
 
 ```tsx
-import { createFont, createTamagui, createTokens } from 'tamagui' // or '@tamagui/core'
 import { createMedia } from '@tamagui/react-native-media-driver'
+import { createFont, createTamagui, createTokens } from 'tamagui' // or '@tamagui/core'
 
 const interFont = createFont({
   family: 'Inter, Helvetica, Arial, sans-serif',
@@ -167,11 +167,12 @@ const config = createTamagui({
   // optional:
 
   // add custom shorthand props
+  // note: as const in important, without it you may see breaking types
   shorthands: {
     px: 'paddingHorizontal',
     f: 'flex',
     w: 'width',
-  },
+  } as const,
 
   // Experimental / advanced, only for overriding the core component styles
   // Prefer to use styled() for building your own, only useful for edge cases.
