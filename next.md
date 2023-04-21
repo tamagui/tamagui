@@ -381,7 +381,6 @@ inbox
 - <Select.SearchInput />
 - <Text fontSize="parent" />
 - <UL /> <LI /> <OL />
-- Text numberOfLines / context fix
 - hoverStyle={{ [XStack]: {} }}
 - <List.Section /> see (https://developer.apple.com/documentation/swiftui/list Section)
 - <GradientText /> can work native with 
