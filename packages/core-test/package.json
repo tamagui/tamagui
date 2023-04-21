@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-test",
-  "version": "1.15.29",
+  "version": "1.15.30",
   "module": "dist/esm",
   "private": true,
   "license": "MIT",

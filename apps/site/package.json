@@ -42,7 +42,7 @@
     "@tamagui/polyfill-dev": "1.15.30",
     "@tamagui/remove-scroll": "1.15.30",
     "@tamagui/shorthands": "1.15.30",
-    "@tamagui/site-shared": "1.15.29",
+    "@tamagui/site-shared": "1.15.30",
     "@tamagui/themes": "1.15.30",
     "@tamagui/toast": "1.15.30",
     "@tauri-apps/api": "^1.2.0",
