@@ -32,7 +32,7 @@ test(`animation + pseudo + variant with pseudo should merge`, async ({ page }) =
     force: true,
   })
 
-  await new Promise((res) => setTimeout(res, 1000))
+  await new Promise((res) => setTimeout(res, 1200))
 
   const pressStyles = await button.evaluate((el) => {
     return window.getComputedStyle(el)
