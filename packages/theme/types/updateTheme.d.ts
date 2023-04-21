@@ -26,5 +26,5 @@ export declare function updateTheme({ name, theme, }: {
 } | {
     theme: any;
     cssRules: string[];
-};
+} | undefined;
 //# sourceMappingURL=updateTheme.d.ts.map

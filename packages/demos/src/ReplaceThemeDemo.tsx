@@ -1,5 +1,5 @@
 import * as Config from '@tamagui/config'
-import { addTheme, updateTheme } from '@tamagui/theme'
+import { addTheme, replaceTheme } from '@tamagui/theme'
 import React, { useState } from 'react'
 import {
   Button,
@@ -7,28 +7,24 @@ import {
   Theme,
   XStack,
   YStack,
-  getVariableValue,
   useForceUpdate,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
 
-const colors = Config.config.tokens.color
-const colorKeys = Object.keys(colors)
-
-export function UpdateThemeDemo() {
+export function ReplaceThemeDemo() {
   const [theme, setTheme] = useState<any>()
   const update = useForceUpdate()
 
   useIsomorphicLayoutEffect(() => {
     addTheme({
-      name: 'custom',
+      name: 'mytheme',
       insertCSS: true,
       theme: {
         color: 'red',
-        color2: 'blue',
+        color2: 'green',
       },
     })
-    setTheme('custom')
+    setTheme('mytheme')
   }, [])
 
   return (
@@ -42,19 +38,16 @@ export function UpdateThemeDemo() {
 
       <Button
         onPress={() => {
-          const randomColor = getVariableValue(
-            colors[colorKeys[Math.floor(Math.random() * colorKeys.length)]]
-          )
-          updateTheme({
-            name: 'custom',
+          replaceTheme({
+            name: 'mytheme',
             theme: {
-              color: randomColor,
+              color: 'blue',
             },
           })
           update()
         }}
       >
-        Set to random color
+        Replace theme to only have $color: blue
       </Button>
     </YStack>
   )

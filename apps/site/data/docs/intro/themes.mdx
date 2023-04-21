@@ -348,7 +348,7 @@ export const themes: Themes = allThemes
 
 ## Dynamic Themes
 
-Sometimes you want to defer loading themes, or change existing theme values at runtime. Tamagui exports two helpers for this in the package `@tamagui/theme` which exports `addTheme` and `updateTheme`.
+Sometimes you want to defer loading themes, or change existing theme values at runtime. Tamagui exports three helpers for this in the package `@tamagui/theme` which exports `addTheme`, `updateTheme`, and `replaceTheme`.
 
 ### addTheme
 
@@ -369,3 +369,18 @@ Sometimes you want to defer loading themes, or change existing theme values at r
 ```tsx hero template=UpdateTheme
 
 ```
+
+### replaceTheme
+
+<HeroContainer>
+  <ReplaceThemeDemo />
+</HeroContainer>
+
+```tsx hero template=ReplaceTheme
+
+```
+
+### Note:
+
+- dynamic themes are only works on the client side and will be ignored on the server side.
+- difference between `updateTheme` ad `replaceTheme` as its name implies, `replaceTheme` will replace the entire theme, while `updateTheme` will only update the values that are passed in.
