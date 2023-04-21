@@ -60,22 +60,11 @@ yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variabl
 Add `@tamagui/babel-plugin` to your `babel.config.js` plugins:
 
 ```js
-// ensure TAMAGUI_TARGET is set
+// just to ensure TAMAGUI_TARGET is set
 process.env.TAMAGUI_TARGET = 'native'
 
 module.exports = {
   plugins: [
-    [
-      '@tamagui/babel-plugin',
-      {
-        components: ['tamagui'],
-        config: './tamagui.config.ts',
-        importsWhitelist: ['constants.js', 'colors.js'],
-        logTimings: true,
-        disableExtraction: process.env.NODE_ENV === 'development',
-      }
-    ],
-    // be sure to set TAMAGUI_TARGET
     ['transform-inline-environment-variables', {
       include: ['TAMAGUI_TARGET']
     }]
