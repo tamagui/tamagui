@@ -489,6 +489,7 @@ Shorthands are defined directly on your `createTamagui` call, rather than being 
 Here's an example of a partial shorthands configuration:
 
 ```tsx
+// the as const ensures types work with the optional `onlyAllowShorthands` option
 const shorthands = {
   ac: 'alignContent',
   ai: 'alignItems',
@@ -546,6 +547,13 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
       type: 'number',
       default: 3,
       description: `(Advanced) On the web, tamagui treats "dark" and "light" themes as special and generates extra CSS to avoid having to re-render the entire page. This CSS relies on specificity hacks that multiply by your sub-themes. This prop sets the maxiumum number of nested dark/light themes you can do. Defaults to 3 for a balance, but can be higher if you nest them deeply.`,
+    },
+    {
+      name: 'onlyAllowShorthands',
+      required: false,
+      type: 'boolean',
+      default: false,
+      description: `Will remove the type for the long-form versions of any shorthands you define.`,
     },
   ]}
 />
