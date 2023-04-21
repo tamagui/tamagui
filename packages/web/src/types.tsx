@@ -740,6 +740,8 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
 
 export type ThemeValueFallback = UnionableString | Variable
 
+export type ColorStyleProp = ThemeValueFallback | ColorTokens
+
 export type WithThemeValues<T extends object> = {
   [K in keyof T]: ThemeValueGet<K> extends never
     ? T[K]
@@ -1620,6 +1622,15 @@ export type TamaguiComponentEvents = {
   onMouseLeave?: ((e: any) => void) | undefined
   onPressOut: ((e: any) => void) | undefined
 }
+
+export type ModifyTamaguiComponentStyleProps<
+  Comp extends TamaguiComponent,
+  ChangedProps extends Object
+> = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E>
+  ? A extends Object
+    ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E>
+    : never
+  : never
 
 /**
  * Narrow copied from ts-toolbelt
