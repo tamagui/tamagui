@@ -8,6 +8,7 @@ const fg = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
 const { dirname } = require('path')
+const { getTsconfig } = require('get-tsconfig')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -119,9 +120,8 @@ async function buildTsc() {
     return
   }
 
-  if (!(await fs.pathExists(`tsconfig.json`))) {
-    throw new Error(`No tsconfig.json found`)
-  }
+  const config = getTsconfig()
+  const baseUrl = config.compilerOptions?.baseUrl || '.'
 
   const targetDir = 'types'
   try {
@@ -130,7 +130,7 @@ async function buildTsc() {
     await fs.ensureDir(targetDir)
 
     const declarationToRootFlag = declarationToRoot ? ' --declarationDir ./' : ''
-    const cmd = `tsc --baseUrl . --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
+    const cmd = `tsc --baseUrl ${baseUrl} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
 
     // console.log('\x1b[2m$', `npx ${cmd}`)
     await exec('npx', cmd.split(' '))
