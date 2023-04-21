@@ -4511,6 +4511,7 @@ __metadata:
     execa: ^5.0.0
     fast-glob: ^3.2.11
     fs-extra: ^11.1.0
+    get-tsconfig: ^4.5.0
     lodash.debounce: ^4.0.8
     typescript: ^5.0.4
   bin:
@@ -13105,7 +13106,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-tsconfig@npm:^4.4.0":
+"get-tsconfig@npm:^4.4.0, get-tsconfig@npm:^4.5.0":
   version: 4.5.0
   resolution: "get-tsconfig@npm:4.5.0"
   checksum: 687ee2bd69a5a07db2e2edeb4d6c41c3debb38f6281a66beb643e3f5b520252e27fcbbb5702bdd9a5f05dcf8c1d2e0150a4d8a960ad75cbdea74e06a51e91b02
