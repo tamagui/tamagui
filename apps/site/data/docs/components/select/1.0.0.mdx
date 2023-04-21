@@ -52,6 +52,11 @@ export default () => (
 )
 ```
 
+<Notice>
+  Note that Select only works on Native using the Adapt component to adapt it to a Sheet.
+  See below for docs.
+</Notice>
+
 ### API
 
 #### &lt;Select /&gt;
@@ -203,6 +208,8 @@ Extends [Paragraph](/docs/components/text). Used inside Item to provide unselect
 #### &lt;Sheet /&gt;
 
 When used alongside `<Adapt />`, Select will render as a sheet when that breakpoint is active.
+
+This is the only way to render a Select on Native for now, as mobile apps tend to show Select very differently from web and Tamagui wants to present the right abstractions for each platform.
 
 See [Sheet](/docs/components/sheet) for more props.
 
