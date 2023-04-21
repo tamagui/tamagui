@@ -127,5 +127,5 @@ dist/
 # @end expo-cli
 
 # since it's managed workflow
-ios
-android
+./ios
+./android
