@@ -4411,7 +4411,7 @@ __metadata:
     "@tamagui/use-presence": 1.15.28
     "@tamagui/web": 1.15.28
     moti: ^0.25.1
-    react-native-reanimated: 2.12.0
+    react-native-reanimated: 2.14.4
   languageName: unknown
   linkType: soft
 
@@ -4438,7 +4438,7 @@ __metadata:
     "@tamagui/build": 1.15.28
     "@tamagui/use-presence": 1.15.28
     "@tamagui/web": 1.15.28
-    react-native-reanimated: 2.12.0
+    react-native-reanimated: 2.14.4
   languageName: unknown
   linkType: soft
 
@@ -5197,7 +5197,7 @@ __metadata:
     react-dom: 18.2.0
     react-native: 0.71.3
     react-native-gesture-handler: ~2.9.0
-    react-native-reanimated: ~2.14.4
+    react-native-reanimated: 2.14.4
     react-native-safe-area-context: 4.5.0
     react-native-screens: ~3.20.0
     react-native-svg: 13.4.0
@@ -5625,7 +5625,7 @@ __metadata:
     playwright: ^1.29.0
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-native-reanimated: 2.12.0
+    react-native-reanimated: 2.14.4
     react-native-web: ^0.18.10
     react-refresh: ^0.14.0
     solito: ^2.3.0
@@ -6919,13 +6919,6 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 8fabee5d01715e338f426715325121d6c4b7a9694dee716ab61c874e0aaccee9a0fff7ccc3c9d7e37a8feeaab7c783c17aaa9943efbc8849c5e79ecd7eaf02ab
-  languageName: node
-  linkType: hard
-
-"@types/invariant@npm:^2.2.35":
-  version: 2.2.35
-  resolution: "@types/invariant@npm:2.2.35"
-  checksum: af1b624057c89789ed0917838fea3d42bb0c101cc22b829a24d8777c678be3bc79d6ae05992a13bdf607b94731262467a2e62a809602ea1f7eea5e8c2242660d
   languageName: node
   linkType: hard
 
@@ -19502,13 +19495,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:2.12.0":
-  version: 2.12.0
-  resolution: "react-native-reanimated@npm:2.12.0"
+"react-native-reanimated@npm:2.14.4":
+  version: 2.14.4
+  resolution: "react-native-reanimated@npm:2.14.4"
   dependencies:
     "@babel/plugin-transform-object-assign": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
-    "@types/invariant": ^2.2.35
+    convert-source-map: ^1.7.0
     invariant: ^2.2.4
     lodash.isequal: ^4.5.0
     setimmediate: ^1.0.5
@@ -19517,7 +19510,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: ef94d7888ad77859a9cf13156a88d6b7f2d96622bf8f7a19415fd3b7f2a588a1a78214711ce77259bfc45ceb5112c43cad8b96b034dc3ab749a1e0a835a923d0
+  checksum: ec24225a145a8636065b464660256bed99ba5f50c7f6c74899838f5563e59a342ea217c285a06be8bdd5549e2faaf1ebdac6986011a767ba814a4cf469ed9bdb
   languageName: node
   linkType: hard
 
@@ -19536,25 +19529,6 @@ __metadata:
     react-native: "*"
     react-native-gesture-handler: "*"
   checksum: 204a9b98c166813fc3309169c8d54018f7b6ce00d7469bc76d8e976d1d12d635c1158f74dd7193e1a1a17c7e12e3ad89924371af796f3d01e24743c80c2ca828
-  languageName: node
-  linkType: hard
-
-"react-native-reanimated@npm:~2.14.4":
-  version: 2.14.4
-  resolution: "react-native-reanimated@npm:2.14.4"
-  dependencies:
-    "@babel/plugin-transform-object-assign": ^7.16.7
-    "@babel/preset-typescript": ^7.16.7
-    convert-source-map: ^1.7.0
-    invariant: ^2.2.4
-    lodash.isequal: ^4.5.0
-    setimmediate: ^1.0.5
-    string-hash-64: ^1.0.3
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-    react: "*"
-    react-native: "*"
-  checksum: ec24225a145a8636065b464660256bed99ba5f50c7f6c74899838f5563e59a342ea217c285a06be8bdd5549e2faaf1ebdac6986011a767ba814a4cf469ed9bdb
   languageName: node
   linkType: hard
 
