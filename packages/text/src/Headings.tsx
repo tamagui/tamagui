@@ -1,4 +1,4 @@
-import { styled } from '@tamagui/web'
+import { GetProps, styled } from '@tamagui/web'
 
 import { Paragraph } from './Paragraph'
 
@@ -10,6 +10,8 @@ export const Heading = styled(Paragraph, {
   size: '$8',
   margin: 0,
 })
+
+export type HeadingProps = GetProps<typeof Heading>
 
 export const H1 = styled(Heading, {
   name: 'H1',

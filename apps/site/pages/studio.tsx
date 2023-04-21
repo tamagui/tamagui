@@ -1,57 +1,28 @@
 // much nicer waves:
 // https://codepen.io/bsehovac/pen/LQVzxJ
 
-// import '@takeout/font-noto-emoji/css/300.css'
-
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
-// import { createNotoFont } from '@takeout/font-noto-emoji'
-import { SwitchDemo } from '@tamagui/demos'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { ContainerXL } from 'components/Container'
-import { InputsDemo, StacksDemo } from 'components/demos'
-import { FlatBubbleCard } from 'components/FlatBubbleCard'
-import { useHoverGlow } from 'components/HoverGlow'
-import { MediaPlayer } from 'components/MediaPlayer'
-import { NotoIcon } from 'components/NotoIcon'
+import { HoverGlowProps, useHoverGlow } from 'components/HoverGlow'
+import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { TamaCard } from 'components/TamaCard'
-import { getUserLayout } from 'lib/getUserLayout'
 import Head from 'next/head'
 import {
   Button,
-  Card,
-  Circle,
   H1,
   H2,
-  H3,
-  Image,
-  Paragraph,
+  HeadingProps,
   Separator,
-  Slider,
   Spacer,
-  Spinner,
   Theme,
   XStack,
   YStack,
-  insertFont,
   useComposedRefs,
 } from 'tamagui'
 
-// lazy load this on page load
-// insertFont('noto', createNotoFont())
-
-export default function TakeoutPage() {
+export default function StudioSplashPage() {
   const { resolvedTheme: themeName } = useThemeSetting()!
-  // const { tint, setTintIndex } = useTint()
-
-  // if logged in already go to dashboard
-  // useForwardToDashboard()
-
-  // useIsomorphicLayoutEffect(() => {
-  //   setTintIndex('pink')
-  //   return () => {
-  //     setTintIndex(tint)
-  //   }
-  // }, [])
 
   return (
     <Theme name={themeName as any}>
@@ -93,7 +64,7 @@ export default function TakeoutPage() {
   )
 }
 
-TakeoutPage.getLayout = getUserLayout
+StudioSplashPage.getLayout = getDefaultLayout
 
 const Hero = () => {
   const { resolvedTheme: themeName } = useThemeSetting()!
@@ -138,7 +109,165 @@ const Hero = () => {
     },
   })
 
-  const parentRef = useComposedRefs(glow.parentRef, glint.parentRef)
+  type LetterConf = {
+    letter: string
+    glow: HoverGlowProps
+    props: HeadingProps
+  }
+
+  const lettersConf: LetterConf[] = [
+    {
+      letter: 'S',
+      props: {
+        rotate: '-20deg',
+        fontSize: 380,
+        theme: 'red',
+      },
+      glow: {
+        resist: 98,
+        inverse: true,
+        offset: {
+          x: -100,
+          y: 0,
+        },
+      },
+    },
+
+    {
+      letter: 't',
+      props: {
+        rotate: '20deg',
+        zIndex: 20,
+        fontSize: 320,
+        theme: 'yellow',
+      },
+      glow: {
+        resist: 90,
+        offset: {
+          x: 70,
+          y: 0,
+        },
+      },
+    },
+
+    {
+      letter: 'U',
+      props: {
+        rotate: '-5deg',
+        fontSize: 420,
+        theme: 'green',
+      },
+      glow: {
+        resist: 95,
+        offset: {
+          x: 200,
+          y: 0,
+        },
+      },
+    },
+
+    {
+      letter: 'd',
+      props: {
+        rotate: '3deg',
+        fontSize: 310,
+        theme: 'blue',
+      },
+      glow: {
+        resist: 92,
+        inverse: true,
+        offset: {
+          x: 350,
+          y: 0,
+        },
+      },
+    },
+
+    {
+      letter: 'i',
+      props: {
+        rotate: '-20deg',
+        fontSize: 380,
+        theme: 'purple',
+      },
+      glow: {
+        resist: 95,
+        inverse: true,
+        offset: {
+          x: 590,
+          y: 0,
+        },
+      },
+    },
+
+    {
+      letter: 'O',
+      props: {
+        rotate: '10deg',
+        fontSize: 300,
+        theme: 'pink',
+      },
+      glow: {
+        resist: 85,
+        offset: {
+          x: 600,
+          y: 0,
+        },
+      },
+    },
+  ]
+
+  const letters = lettersConf.map(
+    ({ glow, letter, props: { scale, rotate, zIndex, ...headingProps } }) => {
+      const Glow = useHoverGlow({
+        resist: 90,
+        size: 500,
+        strategy: 'plain',
+        color: 'transparent',
+        background: 'transparent',
+        opacity: 1,
+        ...glow,
+        offset: {
+          x: glow.offset!.x! - 150,
+          y: glow.offset!.y! - 100,
+        },
+        style: {
+          transform: `rotate(${rotate})`,
+        },
+      })
+
+      const Component = (
+        <YStack key={letter} pos="relative" scale={scale} zIndex={zIndex}>
+          <Glow.Component>
+            <H1
+              color="$color9"
+              cursor="default"
+              fos={320}
+              lh={300}
+              fow="900"
+              rotate={rotate}
+              ls={-8}
+              zIndex={5}
+              {...headingProps}
+            >
+              {letter}
+            </H1>
+          </Glow.Component>
+        </YStack>
+      )
+
+      return {
+        Component,
+        Glow,
+      }
+    }
+  )
+
+  const parentRef = useComposedRefs(
+    glow.parentRef,
+    glint.parentRef,
+    ...letters.map((l) => l.Glow.parentRef)
+  )
 
   return (
     <YStack
@@ -152,23 +281,14 @@ const Hero = () => {
       ref={parentRef as any}
     >
       <YStack>
-        {glow.element}
-        {glint.element}
-        <YStack ai="center" py={220} pb={150} pos="relative">
-          <H1
-            color="$color"
-            cursor="default"
-            fos={320}
-            lh={300}
-            fow="900"
-            fontFamily="$inter"
-            ls={-8}
-            pos="relative"
-            zIndex={5}
-            className="fade-text"
-          >
-            Studio
-          </H1>
+        {glow.Component()}
+        {glint.Component()}
+        <YStack ai="center" pb={150} pos="relative">
+          <YStack h={600} w="100%">
+            {letters.map(({ Component }) => {
+              return Component
+            })}
+          </YStack>
 
           <Spacer size="$12" />
 
@@ -198,7 +318,7 @@ const Hero = () => {
           justifyContent="space-between"
           ref={belowGlow.parentRef as any}
         >
-          {belowGlow.element}
+          {belowGlow.Component()}
           <TamaCard icon="🧑‍💻" title="Monorepo">
             A large monorepo with complete design system, auth screen, and much more.
           </TamaCard>

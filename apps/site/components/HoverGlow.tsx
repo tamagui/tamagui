@@ -25,12 +25,12 @@ interface BoundedCursorProps {
 
 type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
-type HoverGlowProps = BoundedCursorProps & {
+export type HoverGlowProps = BoundedCursorProps & {
   background?: string
   opacity?: number
   borderRadius?: number
   blurPct?: number
-  strategy?: 'blur' | 'radial-gradient'
+  strategy?: 'blur' | 'radial-gradient' | 'plain'
   glowProps?: DivProps
   style?: DivProps['style']
   restingStyle?: DivProps['style']
@@ -117,6 +117,10 @@ height: ${parentBounds.height}`
     const width = bounds.width || size || fullSize
     const height = bounds.height || size || fullSize
     const restingStyleNow = isResting && restingStyle ? restingStyle : {}
+    const finalTransform = restingStyleNow.transform
+      ? `${transform} ${restingStyleNow.transform}`
+      : `${transform} ${style?.transform || ''}`
+
     return {
       position: 'absolute',
       top: '0px',
@@ -133,42 +137,45 @@ height: ${parentBounds.height}`
       borderRadius,
       height: `${height}px`,
       width: `${width}px`,
+      transformStyle: 'preserve-3d',
       // nice fade in effect after first measure/show
       transition: transform
         ? 'transform linear 100ms, opacity ease-in 300ms'
         : 'opacity ease-in 300ms',
       ...restingStyleNow,
-      transform: restingStyleNow.transform
-        ? `${transform} ${restingStyleNow.transform}`
-        : transform,
+
+      transform: finalTransform,
       ...(props.debug && {
         background: 'yellow',
         opacity: 0.8,
         filter: 'none',
       }),
-      ...style,
     }
   }
 
   const parentRef = (ref?: HTMLElement | null) => setParentNode(ref || undefined)
 
-  const element = (
+  type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+
+  const Component = (divProps?: DivProps) => (
     <div
       className="hoverglow"
       {...glowProps}
       ref={elementRef}
       style={getStyle(transformRef.current)}
+      {...divProps}
     >
       {props.debug ? crosshair : null}
+      {divProps?.children}
     </div>
   )
 
   if (process.env.NODE_ENV === 'development' && props.debug) {
     return {
       parentRef,
-      element: (
+      Component: (props?: DivProps) => (
         <>
-          {element}
+          {Component(props)}
           {crosshair}
           <div
             style={{
@@ -200,7 +207,7 @@ height: ${parentBounds.height}`
 
   return {
     parentRef,
-    element,
+    Component,
   }
 }
 
@@ -350,11 +357,7 @@ export const useRelativePositionedItem = (
           x,
           y,
         },
-        transform: `
-        translateX(${x}px)
-        translateY(${y}px)
-        translateZ(0px)
-      `,
+        transform: `translateX(${x}px) translateY(${y}px) translateZ(0px)`,
       })
     },
     [
