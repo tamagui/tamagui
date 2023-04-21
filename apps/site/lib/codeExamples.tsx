@@ -120,7 +120,7 @@ export const Heading = styled(Text, {
     c: 'color',
     bc: 'backgroundColor',
     fs: 'fontSize',
-  },
+  } as const,
   // ...the rest of your configuration
 })`,
         },

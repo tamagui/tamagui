@@ -104,6 +104,8 @@ export type {
   ThemeKeys,
   ThemeName,
   ThemeParsed,
+  Longhands,
+  StackProps,
   ThemeProps,
   Themes,
   ThemeValueFallback,
