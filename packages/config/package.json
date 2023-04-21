@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@tamagui/animations-css": "1.15.28",
+    "@tamagui/animations-moti": "1.15.28",
     "@tamagui/animations-react-native": "1.15.28",
     "@tamagui/colors": "1.15.28",
     "@tamagui/font-inter": "1.15.28",

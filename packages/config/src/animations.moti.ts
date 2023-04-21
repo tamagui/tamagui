@@ -1,8 +1,6 @@
 import { createAnimations } from '@tamagui/animations-moti'
-import { config } from '@tamagui/config'
-import { createTamagui } from 'tamagui'
 
-const animations = createAnimations({
+export const animations = createAnimations({
   bouncy: {
     type: 'spring',
     damping: 9,
@@ -32,13 +30,3 @@ const animations = createAnimations({
     stiffness: 100,
   },
 })
-
-const tamaConf = createTamagui({ ...config })
-
-export type Conf = typeof tamaConf
-
-declare module 'tamagui' {
-  interface TamaguiCustomConfig extends Conf {}
-}
-
-export default tamaConf
