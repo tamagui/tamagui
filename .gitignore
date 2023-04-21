@@ -41,3 +41,5 @@ apps/site/out
 .env.test.localp
 .env.production.local
 
+apps/kitchen-sink/ios
+apps/kitchen-sink/android
