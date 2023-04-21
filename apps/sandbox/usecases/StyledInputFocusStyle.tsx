@@ -8,5 +8,5 @@ export default function TestStyledInputFocusStyle() {
     },
   })
 
-  return <StyledInput debug="verbose" />
+  return <StyledInput />
 }
