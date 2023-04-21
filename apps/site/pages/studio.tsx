@@ -8,6 +8,7 @@ import { HoverGlowProps, useHoverGlow } from 'components/HoverGlow'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { TamaCard } from 'components/TamaCard'
 import Head from 'next/head'
+import { useEffect, useState } from 'react'
 import {
   Button,
   H1,
@@ -15,17 +16,14 @@ import {
   HeadingProps,
   Separator,
   Spacer,
-  Theme,
   XStack,
   YStack,
   useComposedRefs,
 } from 'tamagui'
 
 export default function StudioSplashPage() {
-  const { resolvedTheme: themeName } = useThemeSetting()!
-
   return (
-    <Theme name={themeName as any}>
+    <>
       <TitleAndMetaTags title="Tamagui TAKEOUT" description="What's up with Tamagui." />
 
       <Head>
@@ -60,7 +58,7 @@ export default function StudioSplashPage() {
           <Hero />
         </ContainerXL>
       </YStack>
-    </Theme>
+    </>
   )
 }
 
@@ -130,6 +128,9 @@ const Hero = () => {
           x: -100,
           y: 0,
         },
+        style: {
+          transition: `all ease-out 1000ms`,
+        },
       },
     },
 
@@ -142,10 +143,13 @@ const Hero = () => {
         theme: 'yellow',
       },
       glow: {
-        resist: 90,
+        resist: 94,
         offset: {
           x: 70,
           y: 0,
+        },
+        style: {
+          transition: `all ease-out 1000ms`,
         },
       },
     },
@@ -158,10 +162,13 @@ const Hero = () => {
         theme: 'green',
       },
       glow: {
-        resist: 95,
+        resist: 96,
         offset: {
           x: 200,
           y: 0,
+        },
+        style: {
+          transition: `all ease-out 1000ms`,
         },
       },
     },
@@ -174,11 +181,14 @@ const Hero = () => {
         theme: 'blue',
       },
       glow: {
-        resist: 92,
+        resist: 93,
         inverse: true,
         offset: {
-          x: 350,
+          x: 380,
           y: 0,
+        },
+        style: {
+          transition: `all ease-out 1000ms`,
         },
       },
     },
@@ -191,11 +201,14 @@ const Hero = () => {
         theme: 'purple',
       },
       glow: {
-        resist: 95,
+        resist: 97,
         inverse: true,
         offset: {
           x: 590,
           y: 0,
+        },
+        style: {
+          transition: `all ease-out 1000ms`,
         },
       },
     },
@@ -208,10 +221,13 @@ const Hero = () => {
         theme: 'pink',
       },
       glow: {
-        resist: 85,
+        resist: 92,
         offset: {
           x: 600,
           y: 0,
+        },
+        style: {
+          transition: `all ease-out 1000ms`,
         },
       },
     },
@@ -229,10 +245,14 @@ const Hero = () => {
         ...glow,
         offset: {
           x: glow.offset!.x! - 150,
-          y: glow.offset!.y! - 100,
+          y: glow.offset!.y! - 180,
         },
         style: {
+          ...glow.style,
           transform: `rotate(${rotate})`,
+        },
+        restingStyle: {
+          rotate: '0deg',
         },
       })
 
@@ -269,6 +289,13 @@ const Hero = () => {
     ...letters.map((l) => l.Glow.parentRef)
   )
 
+  const [hovered, setHovered] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
   return (
     <YStack
       ai="center"
@@ -283,7 +310,13 @@ const Hero = () => {
       <YStack>
         {glow.Component()}
         {glint.Component()}
-        <YStack ai="center" pb={150} pos="relative">
+        <YStack
+          // onMouseEnter={() => setHovered(true)}
+          // onMouseLeave={() => setHovered(false)}
+          ai="center"
+          pb={150}
+          pos="relative"
+        >
           <YStack h={600} w="100%">
             {letters.map(({ Component }) => {
               return Component

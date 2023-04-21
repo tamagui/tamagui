@@ -68,8 +68,8 @@ const Hero = () => {
       ref={parentRef as any}
     >
       <YStack>
-        {glow.element}
-        {glint.element}
+        {glow.Component()}
+        {glint.Component()}
         <YStack ai="center" py={220} pos="relative">
           <H1
             color="$color"

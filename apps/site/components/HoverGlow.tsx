@@ -108,7 +108,7 @@ height: ${parentBounds.height}`
   useIsomorphicLayoutEffect(() => {
     recalculate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(restingStyle)])
+  }, [JSON.stringify({ restingStyle, style })])
 
   const getStyle = (transform: string, isResting = true): CSSProperties => {
     const bounds = getGlowBounds()
@@ -117,9 +117,6 @@ height: ${parentBounds.height}`
     const width = bounds.width || size || fullSize
     const height = bounds.height || size || fullSize
     const restingStyleNow = isResting && restingStyle ? restingStyle : {}
-    const finalTransform = restingStyleNow.transform
-      ? `${transform} ${restingStyleNow.transform}`
-      : `${transform} ${style?.transform || ''}`
 
     return {
       position: 'absolute',
@@ -142,9 +139,11 @@ height: ${parentBounds.height}`
       transition: transform
         ? 'transform linear 100ms, opacity ease-in 300ms'
         : 'opacity ease-in 300ms',
+      ...style,
       ...restingStyleNow,
-
-      transform: finalTransform,
+      transform: restingStyleNow.transform
+        ? `${transform} ${restingStyleNow.transform}`
+        : `${transform} ${style?.transform || ''}`,
       ...(props.debug && {
         background: 'yellow',
         opacity: 0.8,
@@ -378,6 +377,7 @@ export const useRelativePositionedItem = (
   const setInitialPosition = useCallback(() => {
     const bounds = getParentBounds()
     if (!bounds) return
+    console.log('set initial')
     callback({
       x: bounds.width / 2 + offX,
       y: bounds.height / 2 + offY,
@@ -405,6 +405,7 @@ export const useRelativePositionedItem = (
     const handleMove = async (e: MouseEvent) => {
       if (!state.current.tracking) return
       const [x, y] = await getOffset(e, parentNode)
+      console.log('move', x, y)
       callback({
         x: x + offX,
         y: y + offY,
