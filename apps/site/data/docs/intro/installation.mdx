@@ -41,6 +41,8 @@ Be sure to set the environment variable `TAMAGUI_TARGET` to the string `web` or 
 
 ### Native
 
+#### Babel
+
 For native you'd do something like this:
 
 ```sh
@@ -72,7 +74,30 @@ module.exports = {
 }
 ```
 
+#### Linear Gradients
+
 If you're targeting a native app and installing `tamagui` (not core), you'll need to [set up `expo-linear-gradient` first](https://github.com/expo/expo/tree/sdk-47/packages/expo-linear-gradient) as Metro will try and find it even if you don't import it.
+
+#### Media Queries
+
+This is also documented in Configuration, but worth noting twice.
+
+`@tamagui/core` doesn't provide media capabilities out of the box to native apps, while on the web it uses native media queries. To enable media queries for React Native, you need to provide matchMedia implementation:
+
+```
+yarn add @tamagui/react-native-media-driver
+```
+
+```tsx
+import { createMedia } from '@tamagui/react-native-media-driver'
+
+export default createTamagui({
+  media: createMedia({
+    xs: { maxWidth: 660 },
+    // ...
+  }),
+})
+```
 
 ### Config file
 
