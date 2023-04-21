@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/shorthands",
-  "version": "1.15.27",
+  "version": "1.15.28",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -28,7 +28,7 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.15.27"
+    "@tamagui/build": "1.15.28"
   },
   "publishConfig": {
     "access": "public"
