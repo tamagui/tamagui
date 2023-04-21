@@ -3639,7 +3639,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/core@npm:^6.4.8":
+"@react-navigation/core@npm:^6.2.2":
   version: 6.4.8
   resolution: "@react-navigation/core@npm:6.4.8"
   dependencies:
@@ -3683,18 +3683,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native@npm:^6.0.11":
-  version: 6.1.6
-  resolution: "@react-navigation/native@npm:6.1.6"
+"@react-navigation/native@npm:6.0.11":
+  version: 6.0.11
+  resolution: "@react-navigation/native@npm:6.0.11"
   dependencies:
-    "@react-navigation/core": ^6.4.8
+    "@react-navigation/core": ^6.2.2
     escape-string-regexp: ^4.0.0
     fast-deep-equal: ^3.1.3
     nanoid: ^3.1.23
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 7d54fe80a39d163819fbf646d2c9c907f4ac967446527d81debf450aebeabaaad2428d7004c725015ed535c57cc99f2f8a1ca96b383c87bdcaaff9fcb567549a
+  checksum: 0dab07c8144d0b50cfbbd52f2a2da7dd9284d67ed1fd638691eed04fd035881f40233e88998d6337804af573c93bd484c641344b7fd19c4395d698463fb8972b
   languageName: node
   linkType: hard
 
@@ -5164,7 +5164,7 @@ __metadata:
     "@babel/core": ^7.20.0
     "@react-native-async-storage/async-storage": 1.17.11
     "@react-native/polyfills": ^2.0.0
-    "@react-navigation/native": ^6.0.11
+    "@react-navigation/native": 6.0.11
     "@react-navigation/native-stack": ^6.7.0
     "@rnx-kit/metro-config": ^1.3.5
     "@rnx-kit/metro-resolver-symlinks": ^0.1.26
