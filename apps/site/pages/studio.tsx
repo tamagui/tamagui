@@ -1,12 +1,9 @@
-// much nicer waves:
-// https://codepen.io/bsehovac/pen/LQVzxJ
-
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { ContainerXL } from 'components/Container'
-import { HoverGlowProps, useHoverGlow } from 'components/HoverGlow'
+import { DivProps, HoverGlowProps, useHoverGlow } from 'components/HoverGlow'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
-import { TamaCard } from 'components/TamaCard'
+// import { TamaCard } from 'components/TamaCard'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import {
@@ -43,9 +40,10 @@ export default function StudioSplashPage() {
           <YStack fullscreen pe="none" zIndex={100} className="themes-fader" />
         </YStack>
         <YStack
-          o={0.45}
+          o={0.25}
           pos="absolute"
           fullscreen
+          scaleX="200%"
           rotateX="-180deg"
           y={800}
           rotate="20deg"
@@ -111,6 +109,7 @@ const Hero = () => {
     letter: string
     glow: HoverGlowProps
     props: HeadingProps
+    underlayStyle?: DivProps['style']
   }
 
   const lettersConf: LetterConf[] = [
@@ -125,12 +124,16 @@ const Hero = () => {
         resist: 98,
         inverse: true,
         offset: {
-          x: -100,
+          x: -120,
           y: 0,
         },
         style: {
           transition: `all ease-out 1000ms`,
         },
+      },
+      underlayStyle: {
+        // marginBottom: -10,
+        transform: `scale(1) translateY(30%) translateX(-20%)`,
       },
     },
 
@@ -152,6 +155,10 @@ const Hero = () => {
           transition: `all ease-out 1000ms`,
         },
       },
+      underlayStyle: {
+        transform: `scale(0.5) translateY(30%)`,
+        opacity: 0.1,
+      },
     },
 
     {
@@ -164,12 +171,15 @@ const Hero = () => {
       glow: {
         resist: 96,
         offset: {
-          x: 200,
+          x: 170,
           y: 0,
         },
         style: {
           transition: `all ease-out 1000ms`,
         },
+      },
+      underlayStyle: {
+        transform: `scale(1.25) translateY(50%) translateX(-10%)`,
       },
     },
 
@@ -191,12 +201,16 @@ const Hero = () => {
           transition: `all ease-out 1000ms`,
         },
       },
+      underlayStyle: {
+        borderRadius: 0,
+        transform: `scale(0.5) translateY(30%)`,
+      },
     },
 
     {
       letter: 'i',
       props: {
-        rotate: '-20deg',
+        rotate: '-16deg',
         fontSize: 380,
         theme: 'purple',
       },
@@ -204,7 +218,7 @@ const Hero = () => {
         resist: 97,
         inverse: true,
         offset: {
-          x: 590,
+          x: 560,
           y: 0,
         },
         style: {
@@ -223,29 +237,46 @@ const Hero = () => {
       glow: {
         resist: 92,
         offset: {
-          x: 600,
+          x: 630,
           y: 0,
         },
         style: {
           transition: `all ease-out 1000ms`,
         },
       },
+      underlayStyle: {
+        borderRadius: 20,
+        transform: `rotate(-20deg) scale(0.75) translateX(40%) translateY(60%)`,
+      },
     },
   ]
 
   const letters = lettersConf.map(
-    ({ glow, letter, props: { scale, rotate, zIndex, ...headingProps } }) => {
+    ({
+      underlayStyle,
+      glow,
+      letter,
+      props: { scale, rotate, zIndex, ...headingProps },
+    }) => {
+      const colorVar = `var(--${headingProps.theme}8)`
+
       const Glow = useHoverGlow({
         resist: 90,
-        size: 500,
-        strategy: 'plain',
-        color: 'transparent',
-        background: 'transparent',
+        size: Number(headingProps.fontSize) * 0.5,
+        strategy: 'plain-underlay',
+        underlayStyle: {
+          transform: `rotate(${rotate}) scale(0.75) translateX(20%) translateY(20%)`,
+          opacity: 0.3,
+          borderRadius: 100,
+          ...underlayStyle,
+        },
+        background: colorVar,
+        // background: `rgb(from ${colorVar} r g b / 50%) `,
         opacity: 1,
         ...glow,
         offset: {
-          x: glow.offset!.x! - 150,
-          y: glow.offset!.y! - 180,
+          x: glow.offset!.x! - 300,
+          y: glow.offset!.y! - 260,
         },
         style: {
           ...glow.style,
@@ -261,6 +292,7 @@ const Hero = () => {
           <Glow.Component>
             <H1
               color="$color9"
+              className="mix-blend"
               cursor="default"
               fos={320}
               lh={300}
@@ -299,6 +331,7 @@ const Hero = () => {
   return (
     <YStack
       ai="center"
+      minHeight={1180}
       scale={0.4}
       $gtXs={{ scale: 0.5, py: '$2' }}
       $gtSm={{ scale: 0.7, py: '$4' }}
@@ -328,21 +361,30 @@ const Hero = () => {
           <XStack maw={790} space="$8" separator={<Separator vertical />}>
             <YStack jc="center" space>
               <Button
-                size="$6"
+                theme="red"
+                size="$7"
                 fontWeight="800"
-                borderColor="$borderColor"
-                bc="$backgroundStrong"
+                borderColor="$color"
+                bw={2}
+                bc="transparent"
+                color="$color"
               >
-                Sponsor for access
+                Coming soon
               </Button>
             </YStack>
-            <H2 als="center" fontFamily="$body" size="$9" fow="200" theme="alt1">
-              Preview your design system, themes, fonts and components.
+            <H2 als="center" size="$9" className="rainbow clip-text">
+              A new way to design system.
             </H2>
           </XStack>
         </YStack>
 
-        <XStack
+        <Spacer />
+
+        <YStack ai="center" als="center" f={1} w="100%">
+          <Button size="$6">Sponsor for early access</Button>
+        </YStack>
+
+        {/* <XStack
           mx="$8"
           px="$8"
           pos="relative"
@@ -372,7 +414,7 @@ const Hero = () => {
           <TamaCard icon="🛠" title="Icons">
             3 new icon packs that fully support sizing, themes, and tree shaking.
           </TamaCard>
-        </XStack>
+        </XStack> */}
       </YStack>
     </YStack>
   )

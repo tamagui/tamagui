@@ -624,3 +624,7 @@ input, textarea {
     #333
   );  
 }
+
+.mix-blend {
+  mix-blend-mode: difference;
+}

@@ -17,6 +17,9 @@ Ali Studio:
 
 # Backlog
 
+- $web / $native make them work as media queries
+- $dark / $light to make adjustments based on mode
+
 - <Sheet native />
   - https://github.com/dominicstop/react-native-ios-modal
   - we'd want expo module + snap points
@@ -25,8 +28,6 @@ Ali Studio:
  - plus `native` prop https://reactnative.dev/docs/actionsheetios
 
 - we should check that things merge properly for regular styled() views the same as `StyledButtonVariantPseudoMerge`, basically try it with regular styled definition. Also try it with inherited styled(styled())
-
-- $web / $native make them work as media queries
 
 - also – I use the RNW Modal component often. However, I'm not able to use Popover, Tooltip, etc. inside of one. 
   - may need to detect somehow if inside Modal and use it?

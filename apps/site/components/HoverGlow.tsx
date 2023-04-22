@@ -23,17 +23,18 @@ interface BoundedCursorProps {
   disableUpdates?: boolean
 }
 
-type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+export type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
 export type HoverGlowProps = BoundedCursorProps & {
   background?: string
   opacity?: number
   borderRadius?: number
   blurPct?: number
-  strategy?: 'blur' | 'radial-gradient' | 'plain'
+  strategy?: 'blur' | 'radial-gradient' | 'plain' | 'plain-underlay'
   glowProps?: DivProps
   style?: DivProps['style']
   restingStyle?: DivProps['style']
+  underlayStyle?: DivProps['style']
 }
 
 export function useHoverGlow(props: HoverGlowProps) {
@@ -50,6 +51,7 @@ export function useHoverGlow(props: HoverGlowProps) {
     scale,
     size,
     restingStyle,
+    underlayStyle,
   } = props
   const elementRef = useRef<HTMLDivElement>(null)
   const transformRef = useRef('')
@@ -131,6 +133,9 @@ height: ${parentBounds.height}`
         background: color,
         filter: `blur(${blurPct}px)`,
       }),
+      ...(strategy === 'plain' && {
+        background,
+      }),
       borderRadius,
       height: `${height}px`,
       width: `${width}px`,
@@ -166,6 +171,17 @@ height: ${parentBounds.height}`
     >
       {props.debug ? crosshair : null}
       {divProps?.children}
+      {strategy === 'plain-underlay' && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: -1,
+            background,
+            ...underlayStyle,
+          }}
+        />
+      )}
     </div>
   )
 
