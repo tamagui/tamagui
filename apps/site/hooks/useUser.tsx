@@ -121,5 +121,6 @@ export const UserGuard = ({ children }: { children: React.ReactNode }) => {
         <Spinner size="large" />
       </YStack>
     )
+
   return <>{children}</>
 }

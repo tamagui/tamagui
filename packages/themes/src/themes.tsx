@@ -76,7 +76,6 @@ const templateShadows = {
 // we can use subset of our template as a "override" so it doesn't get adjusted with masks
 // we want to skip over templateColor + templateShadows
 const toSkip = {
-  ...templateColors,
   ...templateShadows,
 }
 
@@ -95,6 +94,7 @@ const overrideWithColors = {
 // templates use the palette and specify index
 // negative goes backwards from end so -1 is the last item
 const template = {
+  ...templateColors,
   ...toSkip,
   // the background, color, etc keys here work like generics - they make it so you
   // can publish components for others to use without mandating a specific color scale
@@ -303,6 +303,11 @@ function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean
   const weaker2 = applyMask(weaker1, masks.weaker, {
     ...maskOptions,
     override: overrideWithColors,
+    skip: {
+      ...maskOptions.skip,
+      // skip colors too just for component sub themes
+      ...templateColors,
+    },
   })
   const stronger1 = applyMask(theme, masks.stronger, maskOptions)
   const inverse1 = applyMask(inverse, masks.weaker, maskOptions)
