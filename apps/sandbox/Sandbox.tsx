@@ -3,6 +3,8 @@ import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
 import { SelectDemo } from '@tamagui/demos'
+import { ToggleGroupDemo } from '@tamagui/demos'
+import * as Demos from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, lazy, useState } from 'react'
 import {
@@ -25,15 +27,13 @@ if (typeof require !== 'undefined') {
 }
 
 export const Sandbox = () => {
-  const componentName = new URLSearchParams(window.location.search).get('test')
-  const demoName = new URLSearchParams(window.location.search).get('demo')
-  const Component = componentName
-    ? // vite wants a .js ending here, but webpack doesn't :/
-      lazy(() => import(`./usecases/${componentName}`))
-    : demoName
-    ? Demos[`${demoName}Demo`]
+  const demoComponentName = new URLSearchParams(window.location.search).get('demo')
+  const useCaseComponentName = new URLSearchParams(window.location.search).get('test')
+  const Component = demoComponentName
+    ? Demos[demoComponentName]
+    : useCaseComponentName
+    ? require(`./usecases/${useCaseComponentName}`).default
     : SandboxInner
-
   return (
     <SandboxFrame>
       <Suspense fallback="Loading...">
