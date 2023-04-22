@@ -21,6 +21,7 @@ interface BoundedCursorProps {
   limitToParentSize?: boolean
   debug?: boolean
   disableUpdates?: boolean
+  recenterOnRest?: boolean
 }
 
 export type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
@@ -258,6 +259,7 @@ export const useRelativePositionedItem = (
     initialOffset = { x: 0, y: 0 },
     full,
     inverse,
+    recenterOnRest,
     debug,
     throttle = 16,
     disableUpdates,
@@ -431,8 +433,10 @@ export const useRelativePositionedItem = (
     const trackMouse = (val: boolean) => () => {
       state.current.tracking = val
       if (!val) {
-        // reset to center on mouseleave
-        setInitialPosition()
+        if (recenterOnRest) {
+          // reset to center on mouseleave
+          setInitialPosition()
+        }
       }
     }
 
