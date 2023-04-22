@@ -3,7 +3,7 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 
-import { isWeb } from '@tamagui/constants'
+import { isAndroid, isWeb } from '@tamagui/constants'
 
 export function expandStyle(key: string, value: any) {
   if (process.env.TAMAGUI_TARGET === 'web') {
@@ -23,6 +23,12 @@ export function expandStyle(key: string, value: any) {
       case 'writingDirection': {
         return [['direction', value]]
       }
+    }
+  }
+
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    if (isAndroid && key === 'elevationAndroid') {
+      return [['elevation', value]]
     }
   }
 

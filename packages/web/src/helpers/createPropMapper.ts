@@ -1,4 +1,4 @@
-import { isWeb } from '@tamagui/constants'
+import { isAndroid, isWeb } from '@tamagui/constants'
 
 import { getConfig } from '../config.js'
 import { isDevTools } from '../constants/isDevTools.js'
@@ -49,6 +49,12 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
     debug
   ) => {
     conf ||= getConfig()
+
+    if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
+      if (key === 'elevationAndroid') {
+        return
+      }
+    }
 
     const props = state.fallbackProps || propsIn
     const returnVariablesAs = getReturnVariablesAs(props, state)
