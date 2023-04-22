@@ -1,0 +1,10 @@
+{
+  "name": "@tamagui/git-crypt",
+  "version": "1.15.32",
+  "bin": {
+    "git-crypt-bin": "./git-crypt-bin"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

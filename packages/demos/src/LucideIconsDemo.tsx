@@ -15,31 +15,37 @@ export function LucideIconsDemo() {
 
   const size = 100
 
-  const iconsMemo = useMemo(() => {
-    const icons = lucideIcons.filter((x) => x.key.startsWith(search.toLowerCase()))
-    return icons.slice(0, 835).map(({ Icon, name }) => {
-      return (
-        <YStack h={size + 20} ai="center" jc="center" key={name}>
-          <Icon size={size * 0.25} />
-          <Spacer />
-          <Paragraph
-            h="$6"
-            ww="break-word"
-            maw="100%"
-            ta="center"
-            px="$2"
-            size="$1"
-            o={0.5}
+  const iconsMemo = useMemo(
+    () =>
+      lucideIcons
+        .filter((x) => x.key.startsWith(search.toLowerCase()))
+        .map(({ Icon, name }) => (
+          <YStack
+            height={size + 20}
+            alignItems="center"
+            justifyContent="center"
+            key={name}
           >
-            {name}
-          </Paragraph>
-        </YStack>
-      )
-    })
-  }, [search])
+            <Icon size={size * 0.25} />
+            <Spacer />
+            <Paragraph
+              height="$6"
+              wordWrap="break-word"
+              maxWidth="100%"
+              textAlign="center"
+              paddingHorizontal="$2"
+              size="$1"
+              opacity={0.5}
+            >
+              {name}
+            </Paragraph>
+          </YStack>
+        )),
+    [search]
+  )
 
   return (
-    <YStack miw="100%" padding="$4" paddingBottom="$0" space>
+    <YStack minWidth="100%" padding="$4" paddingBottom="$0" space>
       <Input value={searchRaw} onChangeText={setSearch} placeholder="Search..." />
 
       <YStack height={420}>

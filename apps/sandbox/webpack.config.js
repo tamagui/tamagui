@@ -21,7 +21,7 @@ console.log('disableExtraction', disableExtraction, process.env.DISABLE_EXTRACTI
 
 const tamaguiOptions = {
   config: './tamagui.config.ts',
-  components: ['tamagui', 'sandbox-ui'],
+  components: ['tamagui', '@tamagui/sandbox-ui'],
   importsWhitelist: ['constants.js'],
   disableExtraction,
   // disableExtractFoundComponents: true,
@@ -47,6 +47,7 @@ module.exports = {
       // 'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
       'react-native-reanimated': require.resolve('react-native-reanimated'),
       'react-native-reanimated$': require.resolve('react-native-reanimated'),
+      'react-native-svg': '@tamagui/react-native-svg',
     },
   },
   devServer: {

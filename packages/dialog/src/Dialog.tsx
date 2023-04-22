@@ -11,7 +11,6 @@ import {
   spacedChildren,
   styled,
   useGet,
-  useId,
   useMedia,
   useThemeName,
   withStaticProperties,
@@ -43,6 +42,11 @@ interface DialogProps {
   modal?: boolean
 
   /**
+   * Used to disable the remove scroll functionality when open
+   */
+  disableRemoveScroll?: boolean
+
+  /**
    * @see https://github.com/theKashey/react-remove-scroll#usage
    */
   allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
@@ -51,6 +55,7 @@ interface DialogProps {
 type NonNull<A> = Exclude<A, void | null>
 
 type DialogContextValue = {
+  disableRemoveScroll?: boolean
   triggerRef: React.RefObject<TamaguiElement>
   contentRef: React.RefObject<TamaguiElement>
   contentId: string
@@ -349,7 +354,7 @@ const DialogContent = DialogContentFrame.extractable(
         <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
       )
 
-      if (!isWeb) {
+      if (!isWeb || context.disableRemoveScroll) {
         return contents
       }
 
@@ -761,12 +766,14 @@ const Dialog = withStaticProperties(
       onOpenChange,
       modal = true,
       allowPinchZoom = false,
+      disableRemoveScroll = false,
     } = props
 
-    const scopeId = useId()
-    const contentId = useId()
-    const titleId = useId()
-    const descriptionId = useId()
+    const baseId = React.useId()
+    const scopeId = `scope-${baseId}`
+    const contentId = `content-${baseId}`
+    const titleId = `title-${baseId}`
+    const descriptionId = `description-${baseId}`
     const scopeKey = __scopeDialog ? Object.keys(__scopeDialog)[0] : scopeId
     const sheetContentsName = getSheetContentsName({ scopeKey, contentId })
     const triggerRef = React.useRef<HTMLButtonElement>(null)
@@ -816,7 +823,11 @@ const Dialog = withStaticProperties(
 
     return (
       <AdaptProvider>
-        <DialogProvider {...context} sheetBreakpoint={when}>
+        <DialogProvider
+          {...context}
+          sheetBreakpoint={when}
+          disableRemoveScroll={disableRemoveScroll}
+        >
           <DialogSheetController onOpenChange={setOpen} __scopeDialog={__scopeDialog}>
             {children}
           </DialogSheetController>

@@ -15,7 +15,6 @@ import {
   validStylesOnBaseProps,
 } from '@tamagui/helpers'
 import { useInsertionEffect } from 'react'
-import type { TextStyle, ViewStyle } from 'react-native'
 
 import { getConfig, getFont } from '../config.js'
 import { isDevTools } from '../constants/isDevTools.js'
@@ -109,6 +108,10 @@ if (process.env.TAMAGUI_TARGET === 'native') {
     contain: true,
     boxSizing: true,
     boxShadow: true,
+    outlineStyle: true,
+    outlineOffset: true,
+    outlineWidth: true,
+    outlineColor: true,
   })
 }
 
@@ -265,7 +268,7 @@ export const getSplitStyles: StyleSplitter = (
     console.groupCollapsed('getSplitStyles (looping backwards)')
     // prettier-ignore
     // eslint-disable-next-line no-console
-    console.log({ props, staticConfig, shouldDoClasses, state, IS_STATIC, propKeys, styleState })
+    console.log({ props, staticConfig, shouldDoClasses, state, IS_STATIC, propKeys, styleState, theme: { ...theme } })
     // eslint-disable-next-line no-console
     console.groupEnd()
   }
@@ -294,6 +297,20 @@ export const getSplitStyles: StyleSplitter = (
       } else if (cn) {
         className += ` ${cn}`
       }
+    }
+  }
+
+  function passDownProp(key: string, val: any, shouldMergeObject = false) {
+    if (shouldMergeObject) {
+      viewProps[key] ||= {}
+      // we are going backwards to apply in front
+      viewProps[key] = {
+        ...val,
+        ...viewProps[key],
+      }
+    } else {
+      usedKeys[key] = 1
+      viewProps[key] = val
     }
   }
 
@@ -526,6 +543,7 @@ export const getSplitStyles: StyleSplitter = (
 
     let isMedia = isMediaKey(keyInit)
     let isPseudo = keyInit in validPseudoKeys
+    let isMediaOrPseudo = isMedia || isPseudo
 
     const isVariant = variants && keyInit in variants
 
@@ -540,7 +558,7 @@ export const getSplitStyles: StyleSplitter = (
     const parentHasVariant =
       staticConfig.parentStaticConfig?.variants &&
       keyInit in staticConfig.parentStaticConfig
-    const isHOCShouldPassThrough = staticConfig.isHOC && (isMedia || isPseudo)
+    const isHOCShouldPassThrough = staticConfig.isHOC && isMediaOrPseudo
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough || parentHasVariant
 
     if (
@@ -549,12 +567,13 @@ export const getSplitStyles: StyleSplitter = (
       shouldPassThrough
     ) {
       // eslint-disable-next-line no-console
-      console.log(`  🔹 pass through ${keyInit}`)
+      console.groupCollapsed(`  🔹 pass through ${keyInit}`)
+      console.log({ valInit, variants, parentHasVariant, isVariant, shouldPassProp })
+      console.groupEnd()
     }
 
     if (shouldPassThrough) {
-      usedKeys[keyInit] = 1
-      viewProps[keyInit] = valInit
+      passDownProp(keyInit, valInit, isMediaOrPseudo)
 
       // if it's a variant here, we have a two layer variant...
       // aka styled(Input, { unstyled: true, variants: { unstyled: {} } })
@@ -568,21 +587,21 @@ export const getSplitStyles: StyleSplitter = (
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       // eslint-disable-next-line no-console
       console.groupCollapsed('  🔹 styles', keyInit, valInit)
+      console.log({ isVariant, shouldPassProp, isHOCShouldPassThrough, parentHasVariant })
     }
 
-    const expanded =
-      isMedia || isPseudo
-        ? [[keyInit, valInit]]
-        : propMapper(
-            keyInit,
-            valInit,
-            theme,
-            special ? { ...props, fontFamily: fontFamilyOverride } : props,
-            state,
-            languageContext,
-            undefined,
-            debug
-          )
+    const expanded = isMediaOrPseudo
+      ? [[keyInit, valInit]]
+      : propMapper(
+          keyInit,
+          valInit,
+          theme,
+          special ? { ...props, fontFamily: fontFamilyOverride } : props,
+          state,
+          languageContext,
+          undefined,
+          debug
+        )
 
     if (!fontFamily) {
       fontFamily = getPropMappedFontFamily(expanded)
@@ -609,9 +628,9 @@ export const getSplitStyles: StyleSplitter = (
 
       isMedia = isMediaKey(key)
       isPseudo = key in validPseudoKeys
-      const isMediaOrPseudo = isMedia || isPseudo
+      isMediaOrPseudo = isMedia || isPseudo
 
-      if (!isMediaOrPseudo && usedKeys[key]) {
+      if (!isMediaOrPseudo && key in usedKeys) {
         if (process.env.NODE_ENV === 'developmnet' && debug === 'verbose') {
           console.log(`Used media/pseudo ${key}`)
         }
@@ -621,6 +640,13 @@ export const getSplitStyles: StyleSplitter = (
       if (inlineProps?.has(key) || inlineWhenUnflattened?.has(key)) {
         usedKeys[key] = 1
         viewProps[key] = props[key] ?? val
+      }
+
+      // have to run this logic again here
+      const isHOCShouldPassThrough = staticConfig.isHOC && isMediaOrPseudo
+      if (isHOCShouldPassThrough) {
+        passDownProp(key, val, true)
+        continue
       }
 
       // pseudo
@@ -655,7 +681,8 @@ export const getSplitStyles: StyleSplitter = (
           const pseudoStyles = getAtomicStyle(pseudoStyleObject, descriptor)
           for (const psuedoStyle of pseudoStyles) {
             const fullKey = `${psuedoStyle.property}${PROP_SPLIT}${descriptor.name}`
-            if (!usedKeys[fullKey]) {
+
+            if (!(fullKey in usedKeys)) {
               usedKeys[fullKey] = 1
               addStyleToInsertRules(rulesToInsert, psuedoStyle)
               mergeClassName(
@@ -668,7 +695,7 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
         } else {
-          if (usedKeys[key]) {
+          if (key in usedKeys) {
             continue
           }
 
@@ -697,6 +724,7 @@ export const getSplitStyles: StyleSplitter = (
           psuedosUsed ||= {}
 
           const importance = descriptor.priority
+
           for (const pkey in pseudoStyleObject) {
             const val = pseudoStyleObject[pkey]
             // when disabled ensure the default value is set for future animations to align
@@ -709,6 +737,7 @@ export const getSplitStyles: StyleSplitter = (
             }
             const curImportance = psuedosUsed[importance] || 0
             const shouldMerge = importance >= curImportance
+
             if (shouldMerge) {
               psuedosUsed[pkey] = importance
               pseudos ||= {}
@@ -783,6 +812,7 @@ export const getSplitStyles: StyleSplitter = (
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
+
             if (!usedKeys[fullKey]) {
               usedKeys[fullKey] = 1
               addStyleToInsertRules(rulesToInsert, out as any)
@@ -992,7 +1022,7 @@ export const getSplitStyles: StyleSplitter = (
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (isDevTools) {
       // eslint-disable-next-line no-console
-      console.groupCollapsed('  🔹 styles =>')
+      console.groupCollapsed('  🔹 =>')
       // prettier-ignore
       const logs = { ...result, state, etc: { transforms, viewProps, rulesToInsert, parentSplitStyles, flatTransforms } }
       for (const key in logs) {
@@ -1119,6 +1149,11 @@ export const getSubStyle = (
       languageContext,
       avoidDefaultProps
     )
+    if (!staticConfig.isHOC) {
+      if (key in skipProps) {
+        continue
+      }
+    }
     if (!expanded) continue
     for (const [skey, sval] of expanded) {
       if (!avoidMergeTransform && skey in stylePropsTransform) {

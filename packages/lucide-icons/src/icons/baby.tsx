@@ -37,7 +37,7 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Path
-        d="M9 12h0"
+        d="M9 12h.01"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
@@ -45,7 +45,7 @@ const Icon = (props) => {
         strokeLinejoin="round"
       />
       <Path
-        d="M15 12h0"
+        d="M15 12h.01"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"

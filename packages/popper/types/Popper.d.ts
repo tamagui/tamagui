@@ -22,11 +22,13 @@ type PopperContextValue = UseFloatingReturn & {
     };
 };
 export declare const PopperProvider: {
-    (props: Omit<import("@tamagui/floating").ComputePositionReturn, "x" | "y"> & {
+    (props: {
+        placement: Placement;
+        strategy: Strategy;
+        middlewareData: import("@tamagui/floating").MiddlewareData;
         x: number | null;
         y: number | null;
         isPositioned: boolean;
-    } & {
         update: () => void;
         reference: (node: import("@tamagui/floating").ReferenceType | null) => void;
         floating: (node: HTMLElement | null) => void;
@@ -168,6 +170,8 @@ export declare const PopperContentFrame: import("@tamagui/core").TamaguiComponen
 } & {
     readonly unstyled?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;

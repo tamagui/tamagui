@@ -80,7 +80,14 @@ export function PropsTable({
                   ai: 'flex-start',
                 }}
               >
-                <Paragraph size="$3" o={0.8} fontFamily="$mono" overflow="hidden" ellipse mr="auto">
+                <Paragraph
+                  size="$3"
+                  o={0.8}
+                  fontFamily="$mono"
+                  overflow="hidden"
+                  ellipse
+                  mr="auto"
+                >
                   {type}
                 </Paragraph>
 
@@ -90,6 +97,7 @@ export function PropsTable({
                       <Paragraph o={0.5} size="$2">
                         Default:&nbsp;
                       </Paragraph>
+                      {/* @ts-ignore */}
                       <Code my="$-1" bc="$backgroundPress">
                         {defaultValue}
                       </Code>

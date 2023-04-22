@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import { ResolvedOptions } from './types.js'
+import { CLIResolvedOptions } from '@tamagui/types'
 
-export const test = async (options: ResolvedOptions) => {
+export const test = async (options: CLIResolvedOptions) => {
   const { dev } = await import('./dev.js')
 
   // failing on startup "Tamagui error bundling components require() of ES Module"

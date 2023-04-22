@@ -23,7 +23,8 @@ process.env.TAMAGUI_TARGET = 'web'
 
 export const loader = async function loader(
   this: LoaderContext<TamaguiOptions>,
-  sourceIn: Buffer | string
+  sourceIn: Buffer | string,
+  info
 ) {
   this.cacheable(true)
   const callback = this.async()
@@ -33,6 +34,7 @@ export const loader = async function loader(
     const threaded = this.emitFile === undefined
     const options: TamaguiOptions = { ...this.getOptions() }
     const sourcePath = `${this.resourcePath}`
+
     const { shouldDisable, shouldPrintDebug } = getPragmaOptions({
       source,
       path: sourcePath,

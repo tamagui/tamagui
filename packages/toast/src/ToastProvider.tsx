@@ -1,5 +1,5 @@
 import { createCollection } from '@tamagui/collection'
-import { TamaguiElement, useId } from '@tamagui/core'
+import { TamaguiElement } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import * as React from 'react'
@@ -24,8 +24,8 @@ type ToastProviderContextValue = {
   swipeDirection: SwipeDirection
   swipeThreshold: number
   toastCount: number
-  viewport: TamaguiElement | null
-  onViewportChange(viewport: TamaguiElement): void
+  viewports: Record<string, TamaguiElement | null>
+  onViewportChange(name: string, viewport: TamaguiElement): void
   onToastAdd(): void
   onToastRemove(): void
   isFocusedToastEscapeKeyDownRef: React.MutableRefObject<boolean>
@@ -96,11 +96,20 @@ const ToastProvider: React.FC<ToastProviderProps> = (
     swipeThreshold = 50,
     children,
   } = props
-  const id = providedId ?? useId()
-  const [viewport, setViewport] = React.useState<TamaguiElement | null>(null)
+  const id = providedId ?? React.useId()
+  const [viewports, setViewports] = React.useState<
+    ToastProviderContextValue['viewports']
+  >({})
   const [toastCount, setToastCount] = React.useState(0)
   const isFocusedToastEscapeKeyDownRef = React.useRef(false)
   const isClosePausedRef = React.useRef(false)
+
+  const handleViewportChange = React.useCallback(
+    (name: string, viewport: TamaguiElement | null) => {
+      setViewports((prev) => ({ ...prev, [name]: viewport }))
+    },
+    []
+  )
 
   // memo context to avoid expensive re-renders
   const options = React.useMemo(() => {
@@ -123,8 +132,8 @@ const ToastProvider: React.FC<ToastProviderProps> = (
         swipeDirection={swipeDirection}
         swipeThreshold={swipeThreshold}
         toastCount={toastCount}
-        viewport={viewport}
-        onViewportChange={setViewport}
+        viewports={viewports}
+        onViewportChange={handleViewportChange}
         onToastAdd={React.useCallback(() => {
           setToastCount((prevCount) => prevCount + 1)
         }, [])}

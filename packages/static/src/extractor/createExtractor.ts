@@ -4,14 +4,13 @@ import { basename, relative } from 'path'
 import traverse, { NodePath, TraverseOptions } from '@babel/traverse'
 import * as t from '@babel/types'
 import {
-  PseudoStyles,
-  StaticConfigParsed,
   expandStyles,
   getSplitStyles,
   mediaQueryConfig,
   proxyThemeVariables,
   pseudoDescriptors,
 } from '@tamagui/core-node'
+import type { PseudoStyles, StaticConfigParsed } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
 import { createDOMProps } from 'react-native-web-internals'
 
@@ -26,6 +25,7 @@ import type {
   TamaguiOptionsWithFileInfo,
   Ternary,
 } from '../types.js'
+import { TamaguiProjectInfo } from './bundleConfig.js'
 import { createEvaluator, createSafeEvaluator } from './createEvaluator.js'
 import { evaluateAstNode } from './evaluateAstNode.js'
 import {
@@ -43,7 +43,7 @@ import {
   getStaticBindingsForScope,
 } from './getStaticBindingsForScope.js'
 import { literalToAst } from './literalToAst.js'
-import { TamaguiProjectInfo, loadTamagui, loadTamaguiSync } from './loadTamagui.js'
+import { loadTamagui, loadTamaguiSync } from './loadTamagui.js'
 import { logLines } from './logLines.js'
 import { normalizeTernaries } from './normalizeTernaries.js'
 import { removeUnusedHooks } from './removeUnusedHooks.js'
@@ -243,6 +243,14 @@ export function createExtractor(
     }
 
     tm.mark('load-tamagui', !!shouldPrintDebug)
+
+    if (!tamaguiConfig.themes) {
+      console.error(
+        `⛔️ Error: Missing "themes" in your tamagui.config file, this may be due to duplicated dependency versions. Try out https://github.com/bmish/check-dependency-version-consistency to see if there are mis-matches, or search your lockfile.`
+      )
+      console.log(`  Got config:`, tamaguiConfig)
+      process.exit(0)
+    }
 
     const firstThemeName = Object.keys(tamaguiConfig.themes)[0]
     const firstTheme = tamaguiConfig.themes[firstThemeName]

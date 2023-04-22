@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toast",
-  "version": "1.14.3",
+  "version": "1.15.32",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -18,7 +18,7 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -31,17 +31,17 @@
     }
   },
   "dependencies": {
-    "@tamagui/animate-presence": "1.14.3",
-    "@tamagui/compose-refs": "1.14.3",
-    "@tamagui/core": "1.14.3",
-    "@tamagui/create-context": "1.14.3",
-    "@tamagui/dismissable": "1.14.3",
-    "@tamagui/polyfill-dev": "1.14.3",
-    "@tamagui/portal": "1.14.3",
-    "@tamagui/stacks": "1.14.3",
-    "@tamagui/text": "1.14.3",
-    "@tamagui/use-controllable-state": "1.14.3",
-    "@tamagui/visually-hidden": "1.14.3"
+    "@tamagui/animate-presence": "1.15.32",
+    "@tamagui/compose-refs": "1.15.32",
+    "@tamagui/core": "1.15.32",
+    "@tamagui/create-context": "1.15.32",
+    "@tamagui/dismissable": "1.15.32",
+    "@tamagui/polyfill-dev": "1.15.32",
+    "@tamagui/portal": "1.15.32",
+    "@tamagui/stacks": "1.15.32",
+    "@tamagui/text": "1.15.32",
+    "@tamagui/use-controllable-state": "1.15.32",
+    "@tamagui/visually-hidden": "1.15.32"
   },
   "peerDependencies": {
     "burnt": "^0.10.0",
@@ -49,7 +49,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.14.3",
+    "@tamagui/build": "1.15.32",
     "burnt": "^0.10.0",
     "react": "^18.2.0",
     "react-native": "^0.71.4"

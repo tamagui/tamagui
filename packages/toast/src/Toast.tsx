@@ -5,7 +5,6 @@ import {
   styled,
   themeable,
   useEvent,
-  useId,
   withStaticProperties,
 } from '@tamagui/core'
 import { ThemeableStack } from '@tamagui/stacks'
@@ -16,6 +15,7 @@ import * as React from 'react'
 import { TOAST_NAME } from './constants'
 import { ToastAnnounceExclude } from './ToastAnnounce'
 import {
+  CustomData,
   ToastNativePlatform,
   ToastNativeValue,
   useToast,
@@ -51,7 +51,7 @@ const ToastTitleFrame = styled(SizableText, {
         size: '$4',
       },
     },
-  },
+  } as const,
   defaultVariants: {
     unstyled: false,
   },
@@ -85,7 +85,7 @@ const ToastDescriptionFrame = styled(SizableText, {
         size: '$1',
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     unstyled: false,
@@ -189,7 +189,7 @@ const ToastComponent = React.forwardRef<TamaguiElement, ToastProps>(
       onChange: onOpenChange,
     })
 
-    const id = useId()
+    const id = React.useId()
     const onPause = useEvent(props.onPause)
     const onResume = useEvent(props.onResume)
     const shouldShow = forceMount || open
@@ -249,4 +249,5 @@ export type {
   // imperative
   ToastNativeValue,
   ToastNativePlatform,
+  CustomData,
 }

@@ -87,6 +87,8 @@ declare const TabsTriggerFrame: import("@tamagui/web").TamaguiComponent<Omit<imp
     readonly size?: SizeTokens | undefined;
     readonly disabled?: boolean | undefined;
     readonly unstyled?: boolean | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 /**
  * @deprecated Use `TabLayout` instead
@@ -218,7 +220,9 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<im
     readonly chromeless?: boolean | "all" | undefined;
 } & ({} | {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 type TabsContentFrameProps = GetProps<typeof TabsContentFrame>;
 type TabsContentProps = TabsContentFrameProps & {
     /** Will show the content when the value matches the state of Tabs root */
@@ -321,7 +325,9 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly size?: SizeTokens | undefined;
 } & ({} | {
     [x: string]: undefined;
-})>;
+}), {
+    displayName: string | undefined;
+}>;
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>;
 type TabsFrameProps = GetProps<typeof TabsFrame>;
 type TabsProps = TabsFrameProps & {

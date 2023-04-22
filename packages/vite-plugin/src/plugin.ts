@@ -1,4 +1,5 @@
 import type { TamaguiOptions } from '@tamagui/static'
+import { watchTamaguiConfig } from '@tamagui/static'
 import type { Plugin } from 'vite'
 
 /**
@@ -8,8 +9,13 @@ import type { Plugin } from 'vite'
 export function tamaguiPlugin(
   options: TamaguiOptions & {
     useReactNativeWebLite?: boolean
+    disableWatchTamaguiConfig?: boolean
   }
 ): Plugin {
+  if (!options.disableWatchTamaguiConfig) {
+    watchTamaguiConfig(options)
+  }
+
   const components = [...new Set([...options.components, 'tamagui', '@tamagui/core'])]
   const noExternalSSR = new RegExp(
     `${components.join('|')}|react-native|expo-linear-gradient`,

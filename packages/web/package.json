@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "1.14.3",
+  "version": "1.15.32",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -16,7 +16,7 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -27,23 +27,23 @@
     "reset.css"
   ],
   "dependencies": {
-    "@tamagui/compose-refs": "1.14.3",
-    "@tamagui/constants": "1.14.3",
-    "@tamagui/helpers": "1.14.3",
-    "@tamagui/normalize-css-color": "1.14.3",
-    "@tamagui/use-did-finish-ssr": "1.14.3",
-    "@tamagui/use-event": "1.14.3",
-    "@tamagui/use-force-update": "1.14.3"
+    "@tamagui/compose-refs": "1.15.32",
+    "@tamagui/constants": "1.15.32",
+    "@tamagui/helpers": "1.15.32",
+    "@tamagui/normalize-css-color": "1.15.32",
+    "@tamagui/use-did-finish-ssr": "1.15.32",
+    "@tamagui/use-event": "1.15.32",
+    "@tamagui/use-force-update": "1.15.32"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.14.3",
+    "@tamagui/build": "1.15.32",
     "@testing-library/react": "^13.4.0",
     "csstype": "^3.0.10",
     "react": "^18.2.0",
-    "typescript": "^4.7.4",
+    "typescript": "^5.0.4",
     "vitest": "^0.26.3"
   },
   "exports": {

@@ -125,7 +125,7 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
 
     if (!response) {
       fails++
-      if (fails > 5) {
+      if (fails > 20) {
         // conservatively bail out of non-tamagui sheets
         return
       }

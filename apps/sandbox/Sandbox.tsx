@@ -1,90 +1,53 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { TabsAdvancedDemo, TooltipDemo } from '@tamagui/demos'
+import * as Demos from '@tamagui/demos'
+import { ToggleGroupDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
 import {
   Button,
-  Input,
-  ScrollView,
+  Separator,
+  Square,
   TamaguiProvider,
   Theme,
   XStack,
   YStack,
-  styled,
 } from 'tamagui'
 
-import { SandboxThemeChange } from './SandboxThemeChange'
-// import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
-// import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
-// import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
 import config from './tamagui.config'
 
 // useful for debugging why things render:
 // import './wdyr'
 
-// webpack fix..
 if (typeof require !== 'undefined') {
-  globalThis['React'] = require('react')
+  globalThis['React'] = require('react') // webpack
 }
 
-const Button2 = styled(Button, {
-  variants: {
-    ok: {
-      true: {
-        pressStyle: {
-          backgroundColor: 'red',
-        },
-      },
-    },
-  },
-})
-
-// export const Heading = styled(Text, {
-//   name: 'Heading',
-//   color: '$color',
-
-//   variants: {
-//     type: {
-//       myVariant: {
-//         fontFamily: '$body',
-//         fontSize: 20,
-//         lh: '$24',
-//         fow: '$bold',
-//       },
-//     },
-//   } as const,
-// })
-
-export const MyInput = styled(Input, {
-  borderColor: 'red',
-  borderWidth: '$2',
-  focusStyle: {
-    borderColor: 'blue',
-    borderWidth: '$2',
-  },
-})
-
 export const Sandbox = () => {
-  console.log(`render once`)
+  const componentName = new URLSearchParams(window.location.search).get('test')
+  const demoName = new URLSearchParams(window.location.search).get('demo')
+  const Component = componentName
+    ? require(`./usecases/${componentName}`).default
+    : demoName
+    ? Demos[`${demoName}Demo`]
+    : SandboxInner
 
   return (
     <SandboxFrame>
       {/* this comment keeps indent */}
-
-      <SandboxThemeChange />
-
-      {/* TODO fix/convert into tests */}
-      {/* <SandboxStyledOverridePseudo /> */}
-      {/* <SandboxCustomStyledAnimatedTooltip /> */}
-      {/* <SandboxCustomStyledAnimatedPopover /> */}
+      <Component />
     </SandboxFrame>
   )
 }
 
+const SandboxInner = () => {
+  return <Square animation="bouncy" size={100} bc="red" />
+}
+
 const SandboxFrame = (props: { children: any }) => {
   const [theme, setTheme] = useState('light')
+  const splitView = new URLSearchParams(window.location.search).get('splitView')
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
@@ -95,17 +58,31 @@ const SandboxFrame = (props: { children: any }) => {
           type="text/css"
           dangerouslySetInnerHTML={{
             __html: `
-            html, body, #root { overflow: hidden; height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; }
+            html, body, #root { height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; }
           `,
           }}
         />
 
-        {props.children}
+        <XStack fullscreen>
+          <YStack ai="center" jc="center" f={1} h="100%" bg="$background">
+            {props.children}
+          </YStack>
 
-        {/*  */}
-        <button
+          {splitView ? (
+            <>
+              <Separator vertical />
+              <Theme name="dark">
+                <YStack ai="center" jc="center" f={1} h="100%" bg="$background">
+                  {props.children}
+                </YStack>
+              </Theme>
+            </>
+          ) : null}
+        </XStack>
+
+        <div
           style={{
-            position: 'absolute',
+            position: 'fixed',
             bottom: 30,
             left: 20,
             fontSize: 30,
@@ -113,63 +90,8 @@ const SandboxFrame = (props: { children: any }) => {
           onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
         >
           🌗
-        </button>
+        </div>
       </ToastProvider>
     </TamaguiProvider>
   )
 }
-
-function SandboxDefault() {
-  const demos = (
-    <>
-      <TabsAdvancedDemo />
-    </>
-  )
-
-  return (
-    <XStack bc="$backgroundStrong" fullscreen ai="center" jc="center">
-      <ScrollView fullscreen horizontal>
-        <ScrollView fullscreen>
-          <YStack>
-            <XStack gap={20} px="$4" flexWrap="wrap">
-              {demos}
-            </XStack>
-            <XStack theme="alt1" gap={20} px="$4" flexWrap="wrap">
-              {demos}
-            </XStack>
-            <XStack px="$4" theme="blue" gap={20} flexWrap="wrap">
-              {demos}
-            </XStack>
-            <XStack px="$4" theme="blue_alt1" gap={20} flexWrap="wrap">
-              {demos}
-            </XStack>
-          </YStack>
-        </ScrollView>
-      </ScrollView>
-    </XStack>
-  )
-}
-
-// function TestUseStyle() {
-//   console.log('wtf', Square.staticConfig.validStyles)
-//   const style = useStyle(Square, {
-//     backgroundColor: 'red',
-//   })
-
-//   console.log('style', style, Square.staticConfig.validStyles)
-
-//   return null
-// }
-
-// function TestUseMediaRenders() {
-//   const media = useMedia()
-
-//   console.warn('render')
-
-//   return <H1>{media.sm ? 'sm' : 'not sm'}</H1>
-// }
-
-// function TestUseTheme() {
-//   const u = useTheme()
-//   console.log(u.color)
-//   return null

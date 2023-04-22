@@ -36,8 +36,6 @@ const program = new Commander.Command(packageJson.name)
   .action((name) => {
     projectPath = name
   })
-  .option('--use-npm', `Explicitly tell the CLI to bootstrap the app using npm`)
-  .option('--use-pnpm', `Explicitly tell the CLI to bootstrap the app using pnpm`)
   .option(
     `--template <template>, -t <template>`,
     'Currently, the only option is `next-expo-solito`, which is set by default.',
@@ -58,7 +56,7 @@ if (process.argv.includes('--version')) {
   process.exit(0)
 }
 
-const packageManager = program.useNpm ? 'npm' : program.usePnpm ? 'pnpm' : 'yarn'
+const packageManager = 'yarn'
 const DOWNLOAD_URL = 'https://codeload.github.com/tamagui/starters/tar.gz/main'
 
 export function downloadAndExtractExample(

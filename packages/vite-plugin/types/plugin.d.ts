@@ -5,5 +5,6 @@ import type { Plugin } from 'vite';
  */
 export declare function tamaguiPlugin(options: TamaguiOptions & {
     useReactNativeWebLite?: boolean;
+    disableWatchTamaguiConfig?: boolean;
 }): Plugin;
 //# sourceMappingURL=plugin.d.ts.map

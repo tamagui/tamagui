@@ -2,21 +2,19 @@ import '@tamagui/core/reset.css'
 
 // import '../lib/wdyr'
 import '../app.css'
+import '../app/(protected)/studio/studio.css'
 import '../public/fonts/fonts.css'
 
-import { Footer } from '@components/Footer'
-import { ThemeTint, setTintFamily } from '@tamagui/logo'
+// import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+// import { SessionContextProvider, useSupabaseClient } from '@supabase/auth-helpers-react'
+// import { useSharedAuth } from '@tamagui/site-shared'
+// import { MyUserContextProvider } from 'hooks/useUser'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
-import { ToastProvider, ToastViewport } from '@tamagui/toast'
 import { AppProps } from 'next/app'
-import NextHead from 'next/head'
 import { useRouter } from 'next/router'
-import Script from 'next/script'
-import { Suspense, startTransition, useMemo } from 'react'
-import { TamaguiProvider, isClient } from 'tamagui'
+import { startTransition, useMemo } from 'react'
+import { TamaguiProvider } from 'tamagui'
 
-import { Header } from '../components/Header'
-import { SearchProvider } from '../components/Search'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
@@ -55,7 +53,6 @@ if (typeof navigator !== 'undefined') {
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
 
-  // useMemo below to avoid re-render on dark/light change
   return (
     <>
       <script
@@ -70,7 +67,7 @@ export default function App(props: AppProps) {
       <NextThemeProvider
         onChangeTheme={(next) => {
           startTransition(() => {
-            setTheme(next)
+            setTheme(next as any)
           })
         }}
       >
@@ -80,32 +77,7 @@ export default function App(props: AppProps) {
           disableRootThemeClass
           defaultTheme={theme}
         >
-          <SearchProvider>
-            <Suspense fallback={null}>
-              {useMemo(() => {
-                return (
-                  <ToastProvider swipeDirection="horizontal">
-                    <ContentInner {...props} />
-
-                    <ToastViewport
-                      flexDirection="column-reverse"
-                      top="$2"
-                      left={0}
-                      right={0}
-                    />
-                    <ToastViewport
-                      multipleToasts
-                      name="viewport-multiple"
-                      flexDirection="column-reverse"
-                      top="$2"
-                      left={0}
-                      right={0}
-                    />
-                  </ToastProvider>
-                )
-              }, [props])}
-            </Suspense>
-          </SearchProvider>
+          <ContentInner {...props} />
         </TamaguiProvider>
       </NextThemeProvider>
     </>
@@ -113,24 +85,10 @@ export default function App(props: AppProps) {
 }
 
 function ContentInner({ Component, pageProps }: AppProps) {
-  const router = useRouter()
-  const isResponsiveDemo = router.pathname.startsWith('/responsive-demo')
-  const isHome = router.pathname === '/'
-  const isDocs = router.pathname.startsWith('/docs')
-  const isBlog = router.pathname.startsWith('/blog')
-  const isStudio = router.pathname.startsWith('/studio')
-  const isDemo = router.pathname.startsWith('/responsive-demo')
-  const isTest = router.pathname.startsWith('/test')
   // @ts-ignore
   const getLayout = Component.getLayout || ((page) => page)
 
-  const disableNew = isHome || isBlog
-
-  return (
-    <>
-      {!isTest && !isResponsiveDemo && <Header disableNew={isHome || isBlog} />}
-      {getLayout(<Component {...pageProps} />)}
-      {!isTest && !isDocs && !isDemo && !isStudio && <Footer />}
-    </>
-  )
+  return useMemo(() => {
+    return getLayout(<Component {...pageProps} />, pageProps)
+  }, [pageProps])
 }

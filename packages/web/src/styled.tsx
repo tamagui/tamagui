@@ -1,5 +1,4 @@
 import { stylePropsAll } from '@tamagui/helpers'
-import { forwardRef } from 'react'
 
 import { createComponent } from './createComponent.js'
 import { ReactNativeStaticConfigs } from './setupReactNative.js'
@@ -15,14 +14,6 @@ import type {
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types.js'
-
-// TODO may be able to use this in the options?: arg below directly
-export type StyledOptions<ParentComponent extends StylableComponent> =
-  GetProps<ParentComponent> & {
-    name?: string
-    variants?: VariantDefinitions<ParentComponent> | undefined
-    defaultVariants?: { [key: string]: any }
-  }
 
 type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<
   any,
@@ -41,6 +32,14 @@ type GetVariantProps<A extends StylableComponent> = A extends TamaguiComponent<
   ? V
   : {}
 
+type GetVariantAcceptedValues<V> = V extends Object
+  ? {
+      [Key in keyof V]?: V[Key] extends VariantSpreadFunction<any, infer Val>
+        ? Val
+        : GetVariantValues<keyof V[Key]>
+    }
+  : undefined
+
 export function styled<
   ParentComponent extends StylableComponent,
   Variants extends VariantDefinitions<ParentComponent> | void = VariantDefinitions<ParentComponent> | void
@@ -50,8 +49,7 @@ export function styled<
   options?: GetProps<ParentComponent> & {
     name?: string
     variants?: Variants | undefined
-    // thought i had this typed, but can't get it linked
-    defaultVariants?: { [key: string]: any }
+    defaultVariants?: GetVariantAcceptedValues<Variants>
     acceptsClassName?: boolean
   },
   staticExtractionOptions?: Partial<StaticConfig>
@@ -110,7 +108,10 @@ export function styled<
         staticExtractionOptions?.isText || parentStaticConfig?.isText
       )
       const acceptsClassName =
-        acceptsClassNameProp ?? (isPlainStyledComponent || isReactNative)
+        acceptsClassNameProp ??
+        (isPlainStyledComponent ||
+          isReactNative ||
+          (parentStaticConfig?.isHOC && parentStaticConfig?.acceptsClassName))
 
       const conf: Partial<StaticConfig> = {
         ...staticExtractionOptions,
@@ -145,18 +146,9 @@ export function styled<
   type ParentPropsBase = GetBaseProps<ParentComponent>
   type ParentVariants = GetVariantProps<ParentComponent>
 
-  type OurVariants = Variants extends void
-    ? {}
-    : {
-        [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<
-          any,
-          infer Val
-        >
-          ? Val
-          : GetVariantValues<keyof Variants[Key]>
-      }
+  type OurVariantProps = Variants extends void ? {} : GetVariantAcceptedValues<Variants>
 
-  type VariantProps = Omit<ParentVariants, keyof OurVariants> & OurVariants
+  type VariantProps = Omit<ParentVariants, keyof OurVariantProps> & OurVariantProps
   type OurPropsBase = ParentPropsBase & VariantProps
 
   type Props = Variants extends void
@@ -168,17 +160,32 @@ export function styled<
         // add in pseudos
         PseudoProps<Partial<OurPropsBase>>
 
+  type ParentStaticProperties = {
+    [Key in Exclude<
+      keyof ParentComponent,
+      'defaultProps' | 'propTypes' | '$$typeof' | 'staticConfig' | 'extractable'
+    >]: ParentComponent[Key]
+  }
+
   type StyledComponent = TamaguiComponent<
     Props,
     TamaguiElement,
     ParentPropsBase,
-    ParentVariants & OurVariants
+    ParentVariants & OurVariantProps,
+    ParentStaticProperties
   >
 
-  return component as StyledComponent
+  for (const key in ComponentIn) {
+    if (key in component) continue
+    // @ts-expect-error assigning static properties over
+    component[key] = ComponentIn[key]
+  }
+
+  return component as any as StyledComponent
 }
 
-// sanity check types
+// sanity check types:
+
 // import { Stack } from './views/Stack'
 // const X = styled(Stack, {
 //   variants: {
@@ -200,3 +207,61 @@ export function styled<
 // })
 // // type variants = GetStyledVariants<typeof X>
 // const y = <X disabled size="$10" />
+
+// sanity check more complex types:
+
+// import { Paragraph } from '../../text/src/Paragraph'
+// import { Text } from './views/Text.js'
+// import { getFontSized } from '../../get-font-sized/src'
+// import { SizableText } from '../../text/src/SizableText'
+// const Text1 = styled(Text, {
+//   name: 'SizableText',
+//   fontFamily: '$body',
+
+//   variants: {
+//     size: getFontSized,
+//   } as const,
+
+//   defaultVariants: {
+//     size: '$true',
+//   },
+// })
+
+// const Test2 = styled(Text1, {
+//   tag: 'p',
+//   userSelect: 'auto',
+//   color: '$color',
+// })
+
+// const Test3 = styled(Test2, {
+//   tag: 'p',
+//   userSelect: 'auto',
+//   color: '$color',
+
+//   variants: {
+//     ork: {
+//       true: {}
+//     }
+//   }
+// })
+
+// const Test = styled(Paragraph, {
+//   tag: 'p',
+//   userSelect: 'auto',
+//   color: '$color',
+
+//   variants: {
+//     someting: {
+//       true: {},
+//     },
+//   } as const,
+// })
+
+// type X = typeof Paragraph
+// type Props1 = GetProps<typeof Paragraph>
+// type z = typeof Text1
+// type ParentV = GetVariantProps<typeof Text1>
+// type Props = GetProps<typeof Test>
+
+// const y = <Test someting>sadad</Test>
+// const z = <Test3 someting="$true" ork>sadad</Test3>

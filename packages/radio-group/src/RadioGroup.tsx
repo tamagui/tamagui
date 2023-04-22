@@ -54,14 +54,11 @@ const RadioIndicatorFrame = styled(ThemeableStack, {
   variants: {
     unstyled: {
       false: {
-        w: '40%',
-        h: '40%',
-        br: 1000,
+        width: '33%',
+        height: '33%',
+        borderRadius: 1000,
         backgroundColor: '$color',
         pressTheme: true,
-        pressStyle: {
-          backgroundColor: '$colorTransparent',
-        },
       },
     },
   } as const,
@@ -90,7 +87,6 @@ const RadioIndicator = RadioIndicatorFrame.extractable(
       if (forceMount || checked) {
         return (
           <RadioIndicatorFrame
-            theme="active"
             data-state={getState(checked)}
             data-disabled={disabled ? '' : undefined}
             {...indicatorProps}

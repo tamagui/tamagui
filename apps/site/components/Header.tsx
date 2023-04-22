@@ -1,10 +1,12 @@
 import { ThemeToggle } from '@components/ThemeToggle'
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
+// import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import {
   Adapt,
+  Avatar,
   Button,
   Paragraph,
   ParagraphProps,
@@ -89,6 +91,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
   const isInSubApp =
     router.pathname.startsWith('/takeout') || router.pathname.startsWith('/studio')
   const { setNextTint } = useTint()
+  // const user = useUser()
 
   return (
     <XStack
@@ -173,49 +176,53 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         pointerEvents="auto"
         tag="nav"
       >
-        {isInSubApp ? (
+        <XStack ai="center" space="$3">
+          <HeaderLinks {...props} />
+
+          <SearchButton size="$2" br="$10" elevation="$4" />
+
+          <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
+            <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
+              <VisuallyHidden>
+                <Text>Github</Text>
+              </VisuallyHidden>
+              <GithubIcon width={23} />
+            </YStack>
+          </NextLink>
+
+          <SmallMenu />
+        </XStack>
+        {/* 
           <XStack ai="center" space="$2">
-            <NextLink href="/signin">
-              <Paragraph
-                fontFamily="$silkscreen"
-                px="$3"
-                py="$2"
-                cursor="pointer"
-                size="$3"
-                o={0.7}
-                hoverStyle={{ opacity: 1 }}
-                $xxs={{
-                  display: 'none',
-                }}
-              >
-                Login
-              </Paragraph>
-            </NextLink>
+            {user.user ? (
+              <Avatar circular size="$2">
+                <Avatar.Image src={user.user.user_metadata.avatar_url} />
+              </Avatar>
+            ) : (
+              <NextLink href="/login">
+                <Paragraph
+                  fontFamily="$silkscreen"
+                  px="$3"
+                  py="$2"
+                  cursor="pointer"
+                  size="$3"
+                  o={0.7}
+                  hoverStyle={{ opacity: 1 }}
+                  $xxs={{
+                    display: 'none',
+                  }}
+                >
+                  Login
+                </Paragraph>
+              </NextLink>
+            )}
 
             <NextLink href="/takeout/purchase">
               <Button fontFamily="$silkscreen" size="$3">
                 Purchase
               </Button>
             </NextLink>
-          </XStack>
-        ) : (
-          <XStack ai="center" space="$3">
-            <HeaderLinks {...props} />
-
-            <SearchButton size="$2" br="$10" elevation="$4" />
-
-            <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
-              <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
-                <VisuallyHidden>
-                  <Text>Github</Text>
-                </VisuallyHidden>
-                <GithubIcon width={23} />
-              </YStack>
-            </NextLink>
-
-            <SmallMenu />
-          </XStack>
-        )}
+          </XStack> */}
       </XStack>
     </XStack>
   )

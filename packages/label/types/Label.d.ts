@@ -20,6 +20,8 @@ export declare const LabelFrame: import("@tamagui/web").TamaguiComponent<Omit<im
 } & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 export type LabelProps = GetProps<typeof LabelFrame> & {
     htmlFor?: string;

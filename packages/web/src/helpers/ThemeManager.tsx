@@ -30,18 +30,22 @@ let uid = 0
 
 export class ThemeManager {
   id = uid++
+  isComponent = false
   themeListeners = new Set<ThemeListener>()
   parentManager: ThemeManager | null = null
   state: ThemeManagerState = emptyState
 
   constructor(
     public props: ThemeProps = {},
-    parentManager?: ThemeManager | 'root' | null | undefined
+    parentManagerIn?: ThemeManager | 'root' | null | undefined
   ) {
-    if (parentManager === 'root') {
+    if (parentManagerIn === 'root') {
       this.updateState(props, false)
       return
     }
+
+    const parentManager = getNonComponentParentManager(parentManagerIn)
+
     if (!parentManager) {
       if (process.env.NODE_ENV !== 'production') {
         throw new Error(
@@ -60,9 +64,7 @@ export class ThemeManager {
       this.parentManager = parentManager
     }
 
-    const updatedState = this.getStateIfChanged(props)
-    if (updatedState) {
-      this.state = updatedState
+    if (this.updateState(props, false)) {
       return
     }
 
@@ -71,9 +73,9 @@ export class ThemeManager {
 
   updateState(
     props: ThemeProps & { forceTheme?: ThemeParsed } = this.props || {},
-    notify = true
+    shouldNotify = true
   ) {
-    const shouldFlush = (() => {
+    const isChanging = (() => {
       if (props.forceTheme) {
         this.state.theme = props.forceTheme
         this.state.name = props.name || ''
@@ -86,10 +88,22 @@ export class ThemeManager {
         return true
       }
     })()
-    if (shouldFlush) {
-      // reset any derived state
+
+    if (isChanging) {
+      const names = this.state.name.split('_')
+      const lastName = names[names.length - 1][0]
+      this.isComponent = lastName[0] === lastName[0].toUpperCase()
       this._allKeys = null
-      notify && this.notify()
+
+      if (process.env.NODE_ENV === 'development') {
+        this['_numChangeEventsSent'] ??= 0
+        this['_numChangeEventsSent']++
+      }
+
+      if (shouldNotify) {
+        this.notify()
+      }
+
       return this.state
     }
   }
@@ -157,7 +171,14 @@ export class ThemeManager {
     this.themeListeners.forEach((cb) => cb(this.state.name, this))
   }
 
-  onChangeTheme(cb: ThemeListener) {
+  onChangeTheme(cb: ThemeListener, debugId?: number) {
+    if (process.env.NODE_ENV === 'development' && debugId) {
+      // @ts-ignore
+      this._listeningIds ??= new Set()
+      // @ts-ignore
+      this._listeningIds.add(debugId)
+    }
+
     this.themeListeners.add(cb)
     return () => {
       this.themeListeners.delete(cb)
@@ -167,7 +188,13 @@ export class ThemeManager {
 
 function getNextThemeClassName(name: string, props: ThemeProps) {
   const next = `t_sub_theme ${THEME_CLASSNAME_PREFIX}${name}`
-  if (props.inverse || props.forceClassName) {
+  if (
+    props.inverse ||
+    props.forceClassName ||
+    // light and dark inverse each other so force classname
+    name === 'light' ||
+    name === 'dark'
+  ) {
     return (
       next +
       // ensure you invert to base dark as well as specific dark
@@ -186,6 +213,10 @@ function getState(
 
   if (props.name && props.reset) {
     throw new Error('Cannot reset + set new name')
+  }
+
+  if (!props.name && !props.inverse && !props.reset && !props.componentName) {
+    return null
   }
 
   if (props.reset && !parentManager?.parentManager) {
@@ -224,6 +255,7 @@ function getState(
   if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
     console.groupCollapsed('ThemeManager.getState()')
     console.log({
+      props,
       parentName,
       parentBaseTheme,
       base,
@@ -235,10 +267,11 @@ function getState(
 
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
+
     if (props.inverse) {
       prefix = inverseThemeName(prefix)
     }
-    const potentials: string[] = []
+    let potentials: string[] = []
     if (prefix && prefix !== parentBaseTheme) {
       potentials.push(prefix)
     }
@@ -259,14 +292,18 @@ function getState(
       }
       potentials.push(`${prefix}_${componentName}`)
       if (nextName) {
-        potentials.unshift(`${prefix}_${nextName}_${componentName}`)
+        // do this one and one level up
+        const prefixLessOne = base.slice(0, i - 1).join(THEME_NAME_SEPARATOR)
+        const lessSpecific = `${prefixLessOne}_${nextName}_${componentName}`
+        const moreSpecific = `${prefix}_${nextName}_${componentName}`
+        potentials = [moreSpecific, lessSpecific, ...potentials]
       }
     }
 
     const found = potentials.find((t) => t in themes)
 
     if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
-      console.log(' - ', { found, potentials })
+      console.log(' - ', { found, potentials, parentManager })
     }
 
     if (found) {
@@ -282,7 +319,7 @@ function getState(
 
   // eslint-disable-next-line no-console
   if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
-    console.log({
+    console.warn('ThemeManager.getState():', {
       result,
     })
     console.trace()
@@ -296,4 +333,19 @@ const inverseThemeName = (themeName: string) => {
   return themeName.startsWith('light')
     ? themeName.replace(/^light/, 'dark')
     : themeName.replace(/^dark/, 'light')
+}
+
+export function getNonComponentParentManager(themeManager?: ThemeManager | null) {
+  // components never inherit from components
+  // example <Switch><Switch.Thumb /></Switch>
+  // the Switch theme shouldn't be considered parent of Thumb
+  let res = themeManager
+  while (res) {
+    if (res?.isComponent) {
+      res = res.parentManager
+    } else {
+      break
+    }
+  }
+  return res || null
 }

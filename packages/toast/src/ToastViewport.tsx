@@ -20,25 +20,46 @@ const VIEWPORT_RESUME = 'toast.viewportResume'
 
 const ToastViewportWrapperFrame = styled(YStack, {
   name: 'ViewportWrapper',
-  pointerEvents: 'box-none',
-  top: 0,
-  bottom: 0,
-  left: 0,
-  right: 0,
-  // @ts-ignore
-  position: isWeb ? 'fixed' : 'absolute',
-  maxWidth: '100%',
-  tabIndex: 0,
-  zIndex: 100000,
+
+  variants: {
+    unstyled: {
+      false: {
+        pointerEvents: 'box-none',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        position: isWeb ? ('fixed' as any) : 'absolute',
+        maxWidth: '100%',
+        tabIndex: 0,
+        zIndex: 100000,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 const ToastViewportFrame = styled(YStack, {
   name: VIEWPORT_NAME,
-  pointerEvents: 'box-none',
-  // @ts-ignore
-  position: isWeb ? 'fixed' : 'absolute',
-  maxWidth: '100%',
+
+  variants: {
+    unstyled: {
+      false: {
+        pointerEvents: 'box-none',
+        position: isWeb ? ('fixed' as any) : 'absolute',
+        maxWidth: '100%',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
+
 type ToastViewportFrameProps = GetProps<typeof ToastViewportFrame>
 type ToastViewportProps = ToastViewportFrameProps & {
   /**
@@ -68,7 +89,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
       __scopeToast,
       hotkey = VIEWPORT_DEFAULT_HOTKEY,
       label = 'Notifications ({hotkey})',
-      name,
+      name = 'default',
       multipleToasts,
       ...viewportProps
     } = props
@@ -78,7 +99,13 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
     const tailFocusProxyRef = React.useRef<FocusProxyElement>(null)
     const wrapperRef = React.useRef<HTMLDivElement>(null)
     const ref = React.useRef<HTMLDivElement>(null)
-    const composedRefs = useComposedRefs(forwardedRef, ref, context.onViewportChange)
+    const onViewportChange = React.useCallback(
+      (el: TamaguiElement) => {
+        if (context.viewports[name] !== el) context.onViewportChange(name, el)
+      },
+      [name, context.viewports]
+    )
+    const composedRefs = useComposedRefs(forwardedRef, ref, onViewportChange)
     const hotkeyLabel = hotkey.join('+').replace(/Key/g, '').replace(/Digit/g, '')
     const hasToasts = context.toastCount > 0
 
@@ -132,8 +159,8 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
           const isFocusInside = wrapper.contains(document.activeElement)
           if (!isFocusInside) handleResume()
         }
-        // Toasts are not in the viewport React tree so we need to bind DOM events
 
+        // Toasts are not in the viewport React tree so we need to bind DOM events
         wrapper.addEventListener('focusin', handlePause)
         wrapper.addEventListener('focusout', handleFocusOutResume)
         wrapper.addEventListener('pointermove', handlePause)
@@ -232,6 +259,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
       >
         {hasToasts && (
           <FocusProxy
+            viewportName={name}
             ref={headFocusProxyRef}
             onFocusFromOutsideViewport={() => {
               const tabbableCandidates = getSortedTabbableCandidates({
@@ -259,6 +287,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
         </Collection.Slot>
         {hasToasts && (
           <FocusProxy
+            viewportName={name}
             ref={tailFocusProxyRef}
             onFocusFromOutsideViewport={() => {
               const tabbableCandidates = getSortedTabbableCandidates({
@@ -283,12 +312,15 @@ type FocusProxyElement = React.ElementRef<typeof VisuallyHidden>
 type VisuallyHiddenProps = GetProps<typeof VisuallyHidden>
 interface FocusProxyProps extends VisuallyHiddenProps {
   onFocusFromOutsideViewport(): void
+  viewportName: string
 }
 
 const FocusProxy = React.forwardRef<FocusProxyElement, ScopedProps<FocusProxyProps>>(
   (props, forwardedRef) => {
-    const { __scopeToast, onFocusFromOutsideViewport, ...proxyProps } = props
+    const { __scopeToast, onFocusFromOutsideViewport, viewportName, ...proxyProps } =
+      props
     const context = useToastProviderContext(FOCUS_PROXY_NAME, __scopeToast)
+    const viewport = context.viewports[viewportName] as HTMLElement
 
     return (
       <VisuallyHidden
@@ -301,9 +333,7 @@ const FocusProxy = React.forwardRef<FocusProxyElement, ScopedProps<FocusProxyPro
         onFocus={(event) => {
           if (!isWeb) return
           const prevFocusedElement = event.relatedTarget as HTMLElement | null
-          const isFocusFromOutsideViewport = !(context.viewport as HTMLElement)?.contains(
-            prevFocusedElement
-          )
+          const isFocusFromOutsideViewport = !viewport?.contains(prevFocusedElement)
           if (isFocusFromOutsideViewport) onFocusFromOutsideViewport()
         }}
       />

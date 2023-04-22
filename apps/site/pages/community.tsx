@@ -1,15 +1,14 @@
+import { getDefaultLayout } from '@components/layouts/DefaultLayout'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { useTint } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
-import { format, parseISO } from 'date-fns'
 import { useMemo } from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
-  EnsureFlexed,
   H1,
   H2,
   H3,
@@ -89,7 +88,11 @@ export default function Community({ frontmatters }) {
                           theme="alt2"
                           fow="300"
                         >
-                          {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')}
+                          {Intl.DateTimeFormat('en-US', {
+                            weekday: 'short',
+                            year: 'numeric',
+                            day: 'numeric',
+                          }).format(new Date(frontmatter.publishedAt || ''))}
                         </Paragraph>
                         <Paragraph cursor="inherit" theme="alt2" size="$4" fow="300">
                           &nbsp;by {authors[frontmatter.by].name}
@@ -130,9 +133,11 @@ export default function Community({ frontmatters }) {
                       borderColor: '$color',
                     }}
                     o={0.5}
-                    width={1466 * 0.25}
-                    height={776 * 0.25}
-                    src={'/sponsors/design-kit.jpg'}
+                    source={{
+                      uri: '/sponsors/design-kit.jpg',
+                      width: 1466 * 0.25,
+                      height: 776 * 0.25,
+                    }}
                   />
                 </YStack>
               </NextLink>
@@ -396,6 +401,8 @@ export default function Community({ frontmatters }) {
   )
 }
 
+Community.getLayout = getDefaultLayout
+
 function GoldSponsor(props: {
   name: string
   link: string
@@ -418,9 +425,11 @@ function GoldSponsor(props: {
         >
           <Image
             accessibilityLabel={props.name}
-            width={props.imageWidth}
-            height={props.imageHeight}
-            src={props.image}
+            source={{
+              uri: props.image,
+              height: props.imageHeight,
+              width: props.imageWidth,
+            }}
           />
           <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
             {props.name}

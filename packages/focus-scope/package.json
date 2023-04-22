@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focus-scope",
-  "version": "1.14.3",
+  "version": "1.15.32",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -16,19 +16,19 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.14.3",
-    "@tamagui/use-event": "1.14.3"
+    "@tamagui/compose-refs": "1.15.32",
+    "@tamagui/use-event": "1.15.32"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.14.3",
+    "@tamagui/build": "1.15.32",
     "react": "^18.2.0"
   },
   "publishConfig": {

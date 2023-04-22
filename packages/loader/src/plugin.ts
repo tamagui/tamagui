@@ -1,11 +1,18 @@
-import type { TamaguiOptions } from '@tamagui/static'
+import { TamaguiOptions, watchTamaguiConfig } from '@tamagui/static'
 import type { Compiler, RuleSetRule } from 'webpack'
 
 type PluginOptions = TamaguiOptions & {
-  commonjs?: boolean
+  isServer?: boolean
   exclude?: RuleSetRule['exclude']
   test?: RuleSetRule['test']
   jsLoader?: any
+  disableEsbuildLoader?: boolean
+  disableModuleJSXEntry?: boolean
+  disableWatchConfig?: boolean
+}
+
+function prettifyWebpackConfig(config) {
+  return require('prettyjson').render(config)
 }
 
 export class TamaguiPlugin {
@@ -18,6 +25,8 @@ export class TamaguiPlugin {
   ) {}
 
   apply(compiler: Compiler) {
+    if (!this.options.disableWatchConfig) watchTamaguiConfig(this.options)
+
     // mark as side effect
     compiler.hooks.normalModuleFactory.tap(this.pluginName, (nmf) => {
       nmf.hooks.createModule.tap(
@@ -49,7 +58,7 @@ export class TamaguiPlugin {
       compiler.options.resolve.mainFields = Array.isArray(mainFields)
         ? mainFields
         : [mainFields]
-      mainFields.unshift('module:jsx')
+      if (!this.options.disableModuleJSXEntry) mainFields.unshift('module:jsx')
     }
 
     if (!compiler.options.module) {
@@ -68,49 +77,63 @@ export class TamaguiPlugin {
       (x) => x?.use && x.use.loader === 'next-swc-loader' && x.issuerLayer !== 'api'
     )
 
-    const startIndex = nextJsRules ? nextJsRules + 1 : 0
-    const existingLoader = nextJsRules ? rules[startIndex] : undefined
-
-    rules.splice(startIndex, 0, {
-      test: this.options.test ?? /\.m?[jt]sx?$/,
-      exclude: this.options.exclude,
-      resolve: {
-        fullySpecified: false,
-      },
-      use: [
-        ...(jsLoader ? [jsLoader] : []),
-        ...(existingLoader && nextJsRules ? [].concat(existingLoader.use) : []),
-        ...(!(jsLoader || existingLoader)
-          ? [
-              {
-                loader: require.resolve('esbuild-loader'),
-                options: {
-                  target: 'es2021',
-                  keepNames: true,
-                  loader: {
-                    '.tsx': 'tsx',
-                    '.png': 'copy',
-                    '.jpg': 'copy',
-                    '.gif': 'copy',
-                  },
-
-                  tsconfigRaw: {
-                    module: this.options.commonjs ? 'commonjs' : 'esnext',
-                    isolatedModules: true,
-                    jsx: 'preserve',
-                    resolveJsonModule: true,
-                  },
-                },
-              },
-            ]
-          : []),
-        {
-          loader: require.resolve('tamagui-loader'),
-          options: {
-            ...this.options,
-          },
+    const esbuildLoader = {
+      loader: require.resolve('esbuild-loader'),
+      options: {
+        target: 'es2021',
+        keepNames: true,
+        loader: 'tsx',
+        tsconfigRaw: {
+          module: this.options.isServer ? 'commonjs' : 'esnext',
+          isolatedModules: true,
+          resolveJsonModule: true,
         },
-      ],
-    })
+      },
+    }
+
+    const tamaguiLoader = {
+      loader: require.resolve('tamagui-loader'),
+      options: {
+        ...this.options,
+      },
+    }
+
+    if (nextJsRules === -1) {
+      existing.push({
+        test: /\/jsx\/.*\.m?[jt]sx?$/,
+        exclude: this.options.exclude,
+        resolve: {
+          fullySpecified: false,
+        },
+        use: [esbuildLoader],
+      })
+
+      // app dir or not next.js
+      existing.push({
+        test: this.options.test ?? /\.m?[jt]sx?$/,
+        exclude: this.options.exclude,
+        resolve: {
+          fullySpecified: false,
+        },
+        use: [tamaguiLoader],
+      })
+    } else if (!this.options.disableEsbuildLoader) {
+      const startIndex = nextJsRules ? nextJsRules + 1 : 0
+      const existingLoader = nextJsRules ? rules[startIndex] : undefined
+
+      rules.splice(startIndex, 0, {
+        test: this.options.test ?? /\.m?[jt]sx?$/,
+        exclude: this.options.exclude,
+        resolve: {
+          fullySpecified: false,
+        },
+        use: [
+          ...(jsLoader ? [jsLoader] : []),
+          ...(existingLoader && nextJsRules ? [].concat(existingLoader.use) : []),
+          ...(!(jsLoader || existingLoader) ? [esbuildLoader] : []),
+          tamaguiLoader,
+        ],
+      })
+    }
   }
 }

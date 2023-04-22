@@ -17,9 +17,8 @@ declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<Omit<impo
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "backgrounded" | "unstyled"> & {
-    backgrounded?: boolean | undefined;
-    unstyled?: boolean | undefined;
+}, "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -35,9 +34,8 @@ declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<Omit<impo
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "backgrounded" | "unstyled"> & {
-    backgrounded?: boolean | undefined;
-    unstyled?: boolean | undefined;
+}, "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -53,9 +51,8 @@ declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<Omit<impo
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "backgrounded" | "unstyled"> & {
-    backgrounded?: boolean | undefined;
-    unstyled?: boolean | undefined;
+}, "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
 }>>, TamaguiElement, Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -72,8 +69,9 @@ declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<Omit<impo
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 } & {
-    backgrounded?: boolean | undefined;
-    unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
+}, {
+    displayName: string | undefined;
 }>;
 interface ToastProps extends Omit<ToastImplProps, keyof ToastImplPrivateProps> {
     /**
@@ -178,9 +176,8 @@ declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps &
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "backgrounded" | "unstyled"> & {
-    backgrounded?: boolean | undefined;
-    unstyled?: boolean | undefined;
+}, "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -196,9 +193,8 @@ declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps &
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "backgrounded" | "unstyled"> & {
-    backgrounded?: boolean | undefined;
-    unstyled?: boolean | undefined;
+}, "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -214,9 +210,8 @@ declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps &
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "backgrounded" | "unstyled"> & {
-    backgrounded?: boolean | undefined;
-    unstyled?: boolean | undefined;
+}, "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
 }>> & {
     /**
      * Control the sensitivity of the toast for accessibility purposes.

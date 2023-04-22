@@ -14,6 +14,7 @@ export const defaultProps = {
   ref: true,
   suppressHydrationWarning: true,
   testID: true,
+  id: true,
 }
 
 export const accessibilityProps = {

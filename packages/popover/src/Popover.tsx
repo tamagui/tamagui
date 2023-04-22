@@ -16,7 +16,6 @@ import {
   isWeb,
   useEvent,
   useGet,
-  useId,
   useMedia,
   useThemeName,
   withStaticProperties,
@@ -463,7 +462,7 @@ export const Popover = withStaticProperties(
       ...restProps
     } = props
 
-    const internalId = useId()
+    const internalId = React.useId()
     const id = __scopePopover ? Object.keys(__scopePopover)[0] : internalId
 
     const { when, AdaptProvider } = useAdaptParent({
@@ -492,7 +491,7 @@ export const Popover = withStaticProperties(
       scopeKey: id,
       popperScope: popperScope.__scopePopper,
       sheetBreakpoint,
-      contentId: useId(),
+      contentId: React.useId(),
       triggerRef,
       open,
       breakpointActive,

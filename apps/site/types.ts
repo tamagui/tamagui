@@ -69,3 +69,11 @@ export interface Subscription {
   trial_end?: string
   prices?: Price
 }
+
+export type UserAccessStatus = {
+  isWhitelisted: boolean
+  isSponsor: boolean
+  access: {
+    studio: boolean
+  }
+}

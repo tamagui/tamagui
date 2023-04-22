@@ -2,10 +2,6 @@
 const { withTamagui } = require('@tamagui/next-plugin')
 const { join } = require('path')
 
-process.env.IGNORE_TS_CONFIG_PATHS = 'true'
-process.env.TAMAGUI_TARGET = 'web'
-process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = '1'
-
 const boolVals = {
   true: true,
   false: false,

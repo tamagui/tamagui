@@ -5,6 +5,7 @@ export type Palette = string[]
 
 export type MaskOptions = {
   palette?: Palette
+  override?: Partial<ThemeMask>
   skip?: Partial<ThemeMask>
   strength?: number
   max?: number
@@ -12,7 +13,8 @@ export type MaskOptions = {
 }
 
 type GenericTheme = { [key: string]: string | Variable }
-type CreateMask = <A extends ThemeMask>(template: A, options: MaskOptions) => A
+
+export type CreateMask = <A extends ThemeMask>(template: A, options: MaskOptions) => A
 
 const THEME_INFO = new WeakMap<
   any,
@@ -80,14 +82,24 @@ export function addChildren<
   return out as any
 }
 
+export const skipMask: CreateMask = (template, { skip }) => {
+  if (!skip) return template
+  return Object.fromEntries(
+    Object.entries(template).filter(([k]) => !(k in skip))
+  ) as typeof template
+}
+
 export const createShiftMask = ({ inverse }: { inverse?: boolean } = {}) => {
-  return ((template, { skip, max: maxIn, palette, min = 0, strength = 1 }) => {
+  return ((template, opts) => {
+    const { override, max: maxIn, palette, min = 0, strength = 1 } = opts
     const values = Object.entries(template)
     const max = maxIn ?? (palette ? Object.values(palette).length - 1 : Infinity)
     const out = {}
     for (const [key, value] of values) {
       if (typeof value === 'string') continue
-      if (skip && key in skip) {
+      if (typeof override?.[key] === 'number') {
+        const overrideShift = override[key] as number
+        out[key] = value + overrideShift
         continue
       }
       const isPositive = value === 0 ? !isMinusZero(value) : value >= 0
@@ -100,7 +112,8 @@ export const createShiftMask = ({ inverse }: { inverse?: boolean } = {}) => {
 
       out[key] = clamped
     }
-    return out as typeof template
+
+    return skipMask(out, opts) as typeof template
   }) as CreateMask
 }
 
@@ -110,8 +123,6 @@ export const createStrengthenMask = () => createShiftMask({ inverse: true })
 function isMinusZero(value) {
   return 1 / value === -Infinity
 }
-
-const MaskKeyCache = new WeakMap<any, string>()
 
 export function applyMask<Theme extends GenericTheme>(
   theme: Theme,
@@ -127,22 +138,11 @@ export function applyMask<Theme extends GenericTheme>(
     )
   }
 
-  const maskKey = MaskKeyCache.get(mask) ?? `${Math.random()}`
-  MaskKeyCache.set(mask, maskKey)
-
-  const key = `${maskKey}${JSON.stringify(options)}`
-
-  if (info.cache.has(key)) {
-    return info.cache.get(key)
-  }
-
   const template = mask(info.definition, {
     palette: info.palette,
     ...options,
   })
   const next = createTheme(info.palette, template) as Theme
-
-  info.cache.set(key, next)
 
   return next
 }

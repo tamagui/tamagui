@@ -5,6 +5,7 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
+  GetProps,
   H1,
   H2,
   H3,
@@ -133,7 +134,7 @@ const TableCell = styled(Paragraph, {
         bc: '$yellow2',
       },
     },
-  },
+  } as const,
 })
 
 const TableCol = styled(ThemeableStack, {

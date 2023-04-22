@@ -3,6 +3,7 @@ export type ThemeMask = Record<string, string | number>;
 export type Palette = string[];
 export type MaskOptions = {
     palette?: Palette;
+    override?: Partial<ThemeMask>;
     skip?: Partial<ThemeMask>;
     strength?: number;
     max?: number;
@@ -11,7 +12,7 @@ export type MaskOptions = {
 type GenericTheme = {
     [key: string]: string | Variable;
 };
-type CreateMask = <A extends ThemeMask>(template: A, options: MaskOptions) => A;
+export type CreateMask = <A extends ThemeMask>(template: A, options: MaskOptions) => A;
 export declare function createTheme<Definition extends ThemeMask, Extras extends Record<string, string> = {}>(palette: Palette, definition: Definition, options?: {
     nonInheritedValues?: Extras;
 }): {
@@ -26,6 +27,7 @@ export declare function addChildren<Themes extends {
 }, GetChildren extends ChildGetter<keyof Themes, Themes[keyof Themes]>>(themes: Themes, getChildren: GetChildren): Themes & {
     [key in SubThemeKeys<keyof Themes, keyof ReturnType<GetChildren>>]: Themes[keyof Themes];
 };
+export declare const skipMask: CreateMask;
 export declare const createShiftMask: ({ inverse }?: {
     inverse?: boolean | undefined;
 }) => CreateMask;

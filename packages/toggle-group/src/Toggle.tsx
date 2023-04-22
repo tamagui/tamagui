@@ -35,8 +35,10 @@ const ToggleFrame = styled(ThemeableStack, {
           backgroundColor: '$backgroundPress',
         },
         focusStyle: {
-          borderColor: '$borderColorPress',
-          backgroundColor: '$backgroundPress',
+          borderColor: '$borderColorFocus',
+          outlineColor: '$borderColorFocus',
+          outlineWidth: 2,
+          outlineStyle: 'solid',
         },
       },
     },
@@ -94,7 +96,7 @@ const Toggle = ToggleFrame.extractable(
     })
 
     return (
-      <Theme forceClassName name={pressed ? 'active' : null}>
+      <Theme name={pressed ? 'active' : null}>
         <ToggleFrame
           active={!props.unstyled ? pressed : undefined}
           aria-pressed={pressed}

@@ -1,8 +1,5 @@
-import { SupabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import {
-  User,
-  useUser as useSupaUser,
-} from '@supabase/supabase-auth-helpers/react'
+import { User, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useRouter } from 'next/router'
 import {
   createContext,
   useCallback,
@@ -11,72 +8,86 @@ import {
   useReducer,
   useState,
 } from 'react'
-import { UserDetails } from 'types'
-import { Subscription } from 'types'
-
+import { Spinner, YStack } from 'tamagui'
+import { UserAccessStatus } from 'types'
 type UserContextType = {
   accessToken: string | null
   user: User | null
-  userDetails: UserDetails | null
+  userDetails: any | null
   isLoading: boolean
-  subscription: Subscription | null
+  // subscription: any | null
+  accessStatus: UserAccessStatus | null
   signout: () => void
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export interface Props {
-  supabaseClient: SupabaseClient
   [propName: string]: any
+}
+
+const getAccessDetails = async () => {
+  const res = await fetch('/api/access-check')
+  const data = await res.json()
+  if (res.status !== 200) throw new Error(data.error)
+  return data as UserAccessStatus
 }
 
 export const MyUserContextProvider = (props: Props) => {
   const forceUpdate = useReducer((x) => (x + 1) % Number.MAX_SAFE_INTEGER, 0)[1]
-  const { supabaseClient: supabase } = props
-  const { user, accessToken, isLoading: isLoadingUser } = useSupaUser()
+  const { isLoading: isLoadingUser, session } = useSessionContext()
+  const supabase = useSupabaseClient()
+
   const [isLoadingData, setIsloadingData] = useState(false)
-  const [userDetails, setUserDetails] = useState<UserDetails | null>(null)
-  const [subscription, setSubscription] = useState<Subscription | null>(null)
+  const [userDetails, setUserDetails] = useState<any>(null)
+  // const [subscription, setSubscription] = useState<any>(null)
+  const [accessStatus, setAccessStatus] = useState<UserAccessStatus | null>(null)
 
-  const getUserDetails = () =>
-    supabase.from<UserDetails>('users').select('*').single()
+  const getUserDetails = () => supabase.from('users').select('*').single()
 
-  const getSubscription = () =>
-    supabase
-      .from<Subscription>('subscriptions')
-      .select('*, prices(*, products(*))')
-      .in('status', ['trialing', 'active'])
-      .single()
+  // const getSubscription = () =>
+  //   supabase
+  //     .from('subscriptions')
+  //     .select('*, prices(*, products(*))')
+  //     .in('status', ['trialing', 'active'])
+  //     .single()
 
   useEffect(() => {
-    if (user && !isLoadingData && !userDetails && !subscription) {
+    if (session?.user && !isLoadingData && !userDetails) {
       setIsloadingData(true)
-      Promise.allSettled([getUserDetails(), getSubscription()]).then(
-        (results) => {
-          const userDetailsPromise = results[0]
-          const subscriptionPromise = results[1]
+      Promise.allSettled([
+        getUserDetails(),
+        getAccessDetails(),
+        // getSubscription()
+      ]).then((results) => {
+        const userDetailsPromise = results[0]
+        const accessDetailsPromise = results[1]
+        // const subscriptionPromise = results[2]
 
-          if (userDetailsPromise.status === 'fulfilled')
-            setUserDetails(userDetailsPromise.value.data)
+        if (userDetailsPromise.status === 'fulfilled')
+          setUserDetails(userDetailsPromise.value.data)
 
-          if (subscriptionPromise.status === 'fulfilled')
-            setSubscription(subscriptionPromise.value.data)
+        if (accessDetailsPromise.status === 'fulfilled')
+          setAccessStatus(accessDetailsPromise.value)
 
-          setIsloadingData(false)
-        },
-      )
-    } else if (!user && !isLoadingUser && !isLoadingData) {
+        // if (subscriptionPromise.status === 'fulfilled')
+        // setSubscription(subscriptionPromise.value.data)
+
+        setIsloadingData(false)
+      })
+    } else if (!session?.user && !isLoadingUser && !isLoadingData) {
       setUserDetails(null)
-      setSubscription(null)
+      // setSubscription(null)
     }
-  }, [user, isLoadingUser])
+  }, [session?.user, isLoadingUser])
 
   const value = {
-    accessToken,
-    user,
+    accessToken: session?.access_token ?? null,
+    user: session?.user ?? null,
     userDetails,
     isLoading: isLoadingUser || isLoadingData,
-    subscription,
+    accessStatus,
+    // subscription,
     signout: useCallback(async () => {
       await supabase.auth.signOut()
       forceUpdate()
@@ -92,4 +103,23 @@ export const useUser = () => {
     throw new Error(`useUser must be used within a MyUserContextProvider.`)
   }
   return context
+}
+
+export const UserGuard = ({ children }: { children: React.ReactNode }) => {
+  const { user, isLoading } = useUser()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!user && !isLoading && router.isReady) {
+      router.push('/login')
+    }
+  }, [user, isLoading, router])
+
+  if (!user)
+    return (
+      <YStack ai="center" flex={1} jc="center">
+        <Spinner size="large" />
+      </YStack>
+    )
+  return <>{children}</>
 }
