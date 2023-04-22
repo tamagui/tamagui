@@ -17,6 +17,15 @@ Ali Studio:
 
 # Backlog
 
+- `tama doctor`
+  - probably use @manypky internally
+    - https://github.com/Thinkmill/manypkg/blob/main/packages/cli/src/run.ts
+  - scan all package.json in monorepo
+  - make sure all tamagui versions match
+  - watch for non @tamagui stuff like loader
+  - auto run this whenever compiler is run as well on startup
+  - output nice message
+
 - <Sheet native />
   - https://github.com/dominicstop/react-native-ios-modal
   - we'd want expo module + snap points
