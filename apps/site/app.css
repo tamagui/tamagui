@@ -604,27 +604,6 @@ input, textarea {
   transform: background-color ease-in 1000ms;
 }
 
-.t_light .fade-text {
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-image: -webkit-linear-gradient(
-    -220deg,
-    var(--blue10),
-    var(--red10)
-  );  
-}
-
-.t_dark .fade-text {
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-image: -webkit-linear-gradient(
-    #fff,
-    #333
-  );  
-}
-
 .mix-blend {
   mix-blend-mode: difference;
 }
