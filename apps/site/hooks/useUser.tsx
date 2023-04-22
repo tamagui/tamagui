@@ -109,17 +109,18 @@ export const UserGuard = ({ children }: { children: React.ReactNode }) => {
   const { user, isLoading } = useUser()
   const router = useRouter()
 
-  useEffect(() => {
-    if (!user && !isLoading && router.isReady) {
-      router.push('/login')
-    }
-  }, [user, isLoading, router])
+  // useEffect(() => {
+  //   if (!user && !isLoading && router.isReady) {
+  //     router.push('/login')
+  //   }
+  // }, [user, isLoading, router])
 
-  if (!user)
-    return (
-      <YStack ai="center" flex={1} jc="center">
-        <Spinner size="large" />
-      </YStack>
-    )
+  // if (!user)
+  //   return (
+  //     <YStack ai="center" flex={1} jc="center">
+  //       <Spinner size="large" />
+  //     </YStack>
+  //   )
+
   return <>{children}</>
 }

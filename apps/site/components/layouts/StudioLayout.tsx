@@ -9,11 +9,17 @@ import dynamic from 'next/dynamic'
 import { H2, Paragraph, Spinner, YStack } from 'tamagui'
 
 import { ToastProvider as StudioToastProvider } from '../../app/ToastProvider'
+import StudioSplashPage from '../../pages/studio/splash'
+import { getDefaultLayout } from './DefaultLayout'
 
 const StudioLayout = dynamic(() => import('@protected/studio/layout'), { ssr: false })
 
-export const getStudioLayout: GetLayout = (page, pageProps) =>
-  withSupabase(
+export const getStudioLayout: GetLayout = (page, pageProps) => {
+  if (pageProps.unauthenticated) {
+    return getDefaultLayout(<StudioSplashPage />, pageProps)
+  }
+
+  return withSupabase(
     <MyUserContextProvider>
       <StudioToastProvider>
         <StudioLayout>
@@ -27,6 +33,7 @@ export const getStudioLayout: GetLayout = (page, pageProps) =>
     </MyUserContextProvider>,
     pageProps
   )
+}
 
 const GithubConnectionGuard = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUser()
