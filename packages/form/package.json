@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/form",
-  "version": "1.15.31",
+  "version": "1.15.32",
   "sideEffects": [
     "*.css"
   ],
@@ -31,19 +31,19 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.15.31",
-    "@tamagui/core": "1.15.31",
-    "@tamagui/create-context": "1.15.31",
-    "@tamagui/focusable": "1.15.31",
-    "@tamagui/get-button-sized": "1.15.31",
-    "@tamagui/get-font-sized": "1.15.31",
-    "@tamagui/text": "1.15.31"
+    "@tamagui/compose-refs": "1.15.32",
+    "@tamagui/core": "1.15.32",
+    "@tamagui/create-context": "1.15.32",
+    "@tamagui/focusable": "1.15.32",
+    "@tamagui/get-button-sized": "1.15.32",
+    "@tamagui/get-font-sized": "1.15.32",
+    "@tamagui/text": "1.15.32"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.15.31",
+    "@tamagui/build": "1.15.32",
     "react": "^18.2.0"
   },
   "publishConfig": {
