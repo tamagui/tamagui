@@ -27,6 +27,7 @@ interface BoundedCursorProps {
   debug?: boolean
   disableUpdates?: boolean
   recenterOnRest?: boolean
+  useResizeObserverRect?: boolean
 }
 
 export type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
@@ -280,6 +281,7 @@ export const useRelativePositionedItem = (
     disableUpdates,
     initialParentBounds,
     initialRelativeToParentBounds,
+    useResizeObserverRect,
   } = props
   const [parentNode, setParentNode] = useState<HTMLElement>()
   const state = useRef({
@@ -289,12 +291,13 @@ export const useRelativePositionedItem = (
   const relativeToParentNode = findRelativePositionedParent(props.itemRef?.current)
   const getRelativeToParentBounds = useGetBounds({
     node: relativeToParentNode,
-
+    useResizeObserverRect,
     defaultBounds: initialRelativeToParentBounds,
   })
   const getParentBounds = useGetBounds({
     node: parentNode,
     defaultBounds: initialParentBounds,
+    useResizeObserverRect,
     onDidUpdate: () => {
       setInitialPosition()
     },
@@ -545,10 +548,12 @@ const useGetBounds = ({
   node,
   onDidUpdate,
   defaultBounds,
+  useResizeObserverRect,
 }: {
   node?: HTMLElement | null
   onDidUpdate?: (props: Bounds) => void
   defaultBounds?: Bounds
+  useResizeObserverRect?: boolean
 }) => {
   const state = useRef<DOMRect>()
 
@@ -567,7 +572,13 @@ const useGetBounds = ({
     const ro = new ResizeObserver(
       throttleFn(([entry]) => {
         if (!entry) return
-        update(node.getBoundingClientRect())
+
+        // fixes safari vs chrome diff (dont ask me)
+        const rect = useResizeObserverRect
+          ? entry.contentRect
+          : node.getBoundingClientRect()
+
+        update(rect)
       }, 40)
     )
 
@@ -638,3 +649,7 @@ const crosshair =
       />
     </div>
   ) : null
+
+export const IS_SAFARI =
+  typeof navigator !== 'undefined' &&
+  /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
