@@ -192,13 +192,13 @@ export default function SignInPage() {
               Or sign in with {showPasswordInput ? 'magic link' : 'password'}
             </Paragraph>
 
-            <Paragraph theme="alt2" ta="center" size="$2">
+            {/* <Paragraph theme="alt2" ta="center" size="$2">
               Don't have an account?
               {` `}
               <Link href="/signup" style={{ fontWeight: '800' }}>
                 Sign up.
               </Link>
-            </Paragraph>
+            </Paragraph> */}
           </YStack>
 
           <XStack mx="$4" jc="center" space ai="center">

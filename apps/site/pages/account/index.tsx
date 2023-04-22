@@ -1,6 +1,7 @@
 import { Container } from '@components/Container'
 import { getAuthLayout } from '@components/layouts/AuthLayout'
 import { getUserLayout } from '@components/layouts/UserLayout'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Star } from '@tamagui/lucide-icons'
 import { ButtonLink } from 'app/Link'
 import { useUser } from 'hooks/useUser'
@@ -22,7 +23,11 @@ import {
 
 export default function Page() {
   const { isLoading, userDetails, accessStatus } = useUser()
-  if (isLoading) return <Spinner my="$10" />
+  const supabaseClient = useSupabaseClient()
+
+  if (isLoading) {
+    return <Spinner my="$10" />
+  }
 
   return (
     <Container>
@@ -39,6 +44,14 @@ export default function Page() {
       <YStack>
         <UserSettings />
       </YStack>
+
+      <Button
+        onPress={() => {
+          supabaseClient.auth.signOut()
+        }}
+      >
+        Logout
+      </Button>
     </Container>
   )
 }
