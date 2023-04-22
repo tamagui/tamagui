@@ -2,6 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { ToggleGroupDemo } from '@tamagui/demos'
+import * as Demos from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
 import {
@@ -25,11 +26,13 @@ if (typeof require !== 'undefined') {
 }
 
 export const Sandbox = () => {
-  const componentName = new URLSearchParams(window.location.search).get('test')
-  const Component = componentName
-    ? require(`./usecases/${componentName}`).default
+  const demoComponentName = new URLSearchParams(window.location.search).get('demo')
+  const useCaseComponentName = new URLSearchParams(window.location.search).get('test')
+  const Component = demoComponentName
+    ? Demos[demoComponentName]
+    : useCaseComponentName
+    ? require(`./usecases/${useCaseComponentName}`).default
     : SandboxInner
-
   return (
     <SandboxFrame>
       {/* this comment keeps indent */}
