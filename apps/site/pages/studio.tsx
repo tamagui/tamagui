@@ -1,4 +1,5 @@
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { ThemeTint } from '@tamagui/logo'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { ContainerXL } from 'components/Container'
 import { DivProps, HoverGlowProps, useHoverGlow } from 'components/HoverGlow'
@@ -8,25 +9,31 @@ import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import {
   Button,
+  EnsureFlexed,
   H1,
   H2,
   HeadingProps,
   Separator,
   Spacer,
+  Theme,
   XStack,
   YStack,
   useComposedRefs,
 } from 'tamagui'
 
+import { Features } from '../components/Features'
+import { NextLink } from '../components/NextLink'
+
 export default function StudioSplashPage() {
   return (
     <>
-      <TitleAndMetaTags title="Tamagui TAKEOUT" description="What's up with Tamagui." />
+      <TitleAndMetaTags title="Tamagui Studio" description="Tamagui Studio" />
 
       <Head>
         <link href="/fonts/inter-takeout.css" rel="stylesheet" />
       </Head>
 
+      <YStack fullscreen o={0.05} className="bg-grid" />
       <YStack>
         <YStack
           o={0.45}
@@ -54,6 +61,33 @@ export default function StudioSplashPage() {
 
         <ContainerXL mt="$-5">
           <Hero />
+
+          <XStack ov="hidden" maw="100%">
+            <YStack p="$8" maw="50%">
+              <EnsureFlexed />
+              <Features
+                size="$5"
+                items={[
+                  `Preview your complete design system.`,
+                  `Reloads your real tamagui.config.ts in realtime.`,
+                  `Visualize media queries, tokens and more.`,
+                  `View and edit color palettes with accessibility grades.`,
+                ]}
+              />
+            </YStack>
+            <YStack p="$8" maw="50%">
+              <EnsureFlexed />
+              <Features
+                size="$5"
+                items={[
+                  `Extracts all types of styling syntax into atomic CSS.`,
+                  `Removes a high % of inline styles with partial evaluation and hoisting.`,
+                  `Reduces tree depth, flattening expensive styled components into div or View.`,
+                  `Evaluates useMedia and useTheme hooks, turning logical expressions into media queries and CSS variables.`,
+                ]}
+              />
+            </YStack>
+          </XStack>
         </ContainerXL>
       </YStack>
     </>
@@ -61,6 +95,153 @@ export default function StudioSplashPage() {
 }
 
 StudioSplashPage.getLayout = getDefaultLayout
+
+type LetterConf = {
+  letter: string
+  glow: HoverGlowProps
+  props: HeadingProps
+  underlayStyle?: DivProps['style']
+}
+
+const lettersConf: LetterConf[] = [
+  {
+    letter: 'S',
+    props: {
+      rotate: '-20deg',
+      fontSize: 380,
+      theme: 'red',
+    },
+    glow: {
+      resist: 98,
+      inverse: true,
+      offset: {
+        x: -120,
+        y: 0,
+      },
+      style: {
+        transition: `all ease-out 1000ms`,
+      },
+    },
+    underlayStyle: {
+      // marginBottom: -10,
+      transform: `scale(1) translateY(30%) translateX(-20%)`,
+    },
+  },
+
+  {
+    letter: 't',
+    props: {
+      rotate: '20deg',
+      zIndex: 20,
+      fontSize: 320,
+      theme: 'yellow',
+    },
+    glow: {
+      resist: 94,
+      offset: {
+        x: 70,
+        y: 0,
+      },
+      style: {
+        transition: `all ease-out 1000ms`,
+      },
+    },
+    underlayStyle: {
+      transform: `scale(0.5) translateY(-20%)`,
+      opacity: 0.1,
+      borderRadius: 60,
+    },
+  },
+
+  {
+    letter: 'U',
+    props: {
+      rotate: '-5deg',
+      fontSize: 420,
+      theme: 'green',
+    },
+    glow: {
+      resist: 96,
+      offset: {
+        x: 170,
+        y: 0,
+      },
+      style: {
+        transition: `all ease-out 1000ms`,
+      },
+    },
+    underlayStyle: {
+      transform: `scale(1.25) translateY(50%) translateX(-10%)`,
+    },
+  },
+
+  {
+    letter: 'd',
+    props: {
+      rotate: '3deg',
+      fontSize: 310,
+      theme: 'blue',
+    },
+    glow: {
+      resist: 93,
+      inverse: true,
+      offset: {
+        x: 380,
+        y: 0,
+      },
+      style: {
+        transition: `all ease-out 1000ms`,
+      },
+    },
+    underlayStyle: {
+      borderRadius: 0,
+      transform: `scale(0.5) translateY(30%)`,
+    },
+  },
+
+  {
+    letter: 'i',
+    props: {
+      rotate: '-16deg',
+      fontSize: 380,
+      theme: 'purple',
+    },
+    glow: {
+      resist: 97,
+      inverse: true,
+      offset: {
+        x: 560,
+        y: 0,
+      },
+      style: {
+        transition: `all ease-out 1000ms`,
+      },
+    },
+  },
+
+  {
+    letter: 'O',
+    props: {
+      rotate: '10deg',
+      fontSize: 300,
+      theme: 'pink',
+    },
+    glow: {
+      resist: 92,
+      offset: {
+        x: 630,
+        y: 0,
+      },
+      style: {
+        transition: `all ease-out 1000ms`,
+      },
+    },
+    underlayStyle: {
+      borderRadius: 20,
+      transform: `rotate(-20deg) scale(0.75) translateX(40%) translateY(60%)`,
+    },
+  },
+]
 
 const Hero = () => {
   const { resolvedTheme: themeName } = useThemeSetting()!
@@ -77,7 +258,6 @@ const Hero = () => {
   })
 
   const glint = useHoverGlow({
-    // debug: true,
     resist: 56,
     size: 500,
     strategy: 'blur',
@@ -91,165 +271,6 @@ const Hero = () => {
     background: 'transparent',
     inverse: true,
   })
-
-  const belowGlow = useHoverGlow({
-    resist: 40,
-    // debug: true,
-    size: 500,
-    strategy: 'blur',
-    blurPct: 200,
-    color: 'var(--blue10)',
-    opacity: 0.25,
-    offset: {
-      // y: 300,
-    },
-  })
-
-  type LetterConf = {
-    letter: string
-    glow: HoverGlowProps
-    props: HeadingProps
-    underlayStyle?: DivProps['style']
-  }
-
-  const lettersConf: LetterConf[] = [
-    {
-      letter: 'S',
-      props: {
-        rotate: '-20deg',
-        fontSize: 380,
-        theme: 'red',
-      },
-      glow: {
-        resist: 98,
-        inverse: true,
-        offset: {
-          x: -120,
-          y: 0,
-        },
-        style: {
-          transition: `all ease-out 1000ms`,
-        },
-      },
-      underlayStyle: {
-        // marginBottom: -10,
-        transform: `scale(1) translateY(30%) translateX(-20%)`,
-      },
-    },
-
-    {
-      letter: 't',
-      props: {
-        rotate: '20deg',
-        zIndex: 20,
-        fontSize: 320,
-        theme: 'yellow',
-      },
-      glow: {
-        resist: 94,
-        offset: {
-          x: 70,
-          y: 0,
-        },
-        style: {
-          transition: `all ease-out 1000ms`,
-        },
-      },
-      underlayStyle: {
-        transform: `scale(0.5) translateY(30%)`,
-        opacity: 0.1,
-      },
-    },
-
-    {
-      letter: 'U',
-      props: {
-        rotate: '-5deg',
-        fontSize: 420,
-        theme: 'green',
-      },
-      glow: {
-        resist: 96,
-        offset: {
-          x: 170,
-          y: 0,
-        },
-        style: {
-          transition: `all ease-out 1000ms`,
-        },
-      },
-      underlayStyle: {
-        transform: `scale(1.25) translateY(50%) translateX(-10%)`,
-      },
-    },
-
-    {
-      letter: 'd',
-      props: {
-        rotate: '3deg',
-        fontSize: 310,
-        theme: 'blue',
-      },
-      glow: {
-        resist: 93,
-        inverse: true,
-        offset: {
-          x: 380,
-          y: 0,
-        },
-        style: {
-          transition: `all ease-out 1000ms`,
-        },
-      },
-      underlayStyle: {
-        borderRadius: 0,
-        transform: `scale(0.5) translateY(30%)`,
-      },
-    },
-
-    {
-      letter: 'i',
-      props: {
-        rotate: '-16deg',
-        fontSize: 380,
-        theme: 'purple',
-      },
-      glow: {
-        resist: 97,
-        inverse: true,
-        offset: {
-          x: 560,
-          y: 0,
-        },
-        style: {
-          transition: `all ease-out 1000ms`,
-        },
-      },
-    },
-
-    {
-      letter: 'O',
-      props: {
-        rotate: '10deg',
-        fontSize: 300,
-        theme: 'pink',
-      },
-      glow: {
-        resist: 92,
-        offset: {
-          x: 630,
-          y: 0,
-        },
-        style: {
-          transition: `all ease-out 1000ms`,
-        },
-      },
-      underlayStyle: {
-        borderRadius: 20,
-        transform: `rotate(-20deg) scale(0.75) translateX(40%) translateY(60%)`,
-      },
-    },
-  ]
 
   const letters = lettersConf.map(
     ({
@@ -275,8 +296,8 @@ const Hero = () => {
         opacity: 1,
         ...glow,
         offset: {
-          x: glow.offset!.x! - 300,
-          y: glow.offset!.y! - 260,
+          x: glow.offset!.x! - 290,
+          y: glow.offset!.y! - 230,
         },
         style: {
           ...glow.style,
@@ -321,22 +342,14 @@ const Hero = () => {
     ...letters.map((l) => l.Glow.parentRef)
   )
 
-  const [hovered, setHovered] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
   return (
     <YStack
       ai="center"
-      minHeight={1180}
       scale={0.4}
-      $gtXs={{ scale: 0.5, py: '$2' }}
-      $gtSm={{ scale: 0.7, py: '$4' }}
-      $gtMd={{ scale: 0.9, py: '$6' }}
-      $gtLg={{ scale: 1, py: '$8' }}
+      $gtXs={{ scale: 0.5 }}
+      $gtSm={{ scale: 0.7 }}
+      $gtMd={{ scale: 0.9 }}
+      $gtLg={{ scale: 1 }}
       pos="relative"
       ref={parentRef as any}
     >
@@ -356,32 +369,34 @@ const Hero = () => {
             })}
           </YStack>
 
+          <YStack ai="center" als="center" f={1} w="100%">
+            <ThemeTint>
+              <NextLink target="_blank" href="https://github.com/sponsors/natew">
+                <Button
+                  bg="$color10"
+                  color="$color1"
+                  hoverStyle={{
+                    bg: '$color9',
+                  }}
+                  pressStyle={{
+                    bg: '$color8',
+                  }}
+                  size="$6"
+                  borderRadius="$10"
+                >
+                  Sponsor for early access
+                </Button>
+              </NextLink>
+            </ThemeTint>
+          </YStack>
+
           <Spacer size="$12" />
 
           <XStack maw={790} space="$8" separator={<Separator vertical />}>
-            <YStack jc="center" space>
-              <Button
-                theme="red"
-                size="$7"
-                fontWeight="800"
-                borderColor="$color"
-                bw={2}
-                bc="transparent"
-                color="$color"
-              >
-                Coming soon
-              </Button>
-            </YStack>
-            <H2 als="center" size="$9" className="rainbow clip-text">
+            <H2 als="center" size="$9" fow="900">
               A new way to design system.
             </H2>
           </XStack>
-        </YStack>
-
-        <Spacer />
-
-        <YStack ai="center" als="center" f={1} w="100%">
-          <Button size="$6">Sponsor for early access</Button>
         </YStack>
 
         {/* <XStack

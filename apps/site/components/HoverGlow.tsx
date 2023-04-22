@@ -423,7 +423,6 @@ export const useRelativePositionedItem = (
     const handleMove = async (e: MouseEvent) => {
       if (!state.current.tracking) return
       const [x, y] = await getOffset(e, parentNode)
-      console.log('move', x, y)
       callback({
         x: x + offX,
         y: y + offY,

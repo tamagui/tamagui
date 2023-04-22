@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import {
   Adapt,
-  Avatar,
   Button,
   Paragraph,
   ParagraphProps,
@@ -21,7 +20,6 @@ import {
   isClient,
 } from 'tamagui'
 
-import { AlphaButton } from './AlphaButton'
 import { ColorToggleButton } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { DocsMenuContents } from './DocsMenuContents'
