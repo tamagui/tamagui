@@ -550,10 +550,6 @@ input, textarea {
   text-align: right;
 }
 
-.themes-fader { 
-  background: linear-gradient(to right, var(--backgroundStrong), transparent 10%, transparent 90%, var(--backgroundStrong));
-}
-
 .docs-nav-item:hover .sidebar-indicator,
 .docs-nav-item:hover .name {
   opacity: 1 !important;
@@ -602,4 +598,8 @@ input, textarea {
 
 .transition-bg-color {
   transform: background-color ease-in 1000ms;
+}
+
+.mix-blend {
+  mix-blend-mode: difference;
 }

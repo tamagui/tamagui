@@ -21,19 +21,21 @@ interface BoundedCursorProps {
   limitToParentSize?: boolean
   debug?: boolean
   disableUpdates?: boolean
+  recenterOnRest?: boolean
 }
 
-type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+export type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
-type HoverGlowProps = BoundedCursorProps & {
+export type HoverGlowProps = BoundedCursorProps & {
   background?: string
   opacity?: number
   borderRadius?: number
   blurPct?: number
-  strategy?: 'blur' | 'radial-gradient'
+  strategy?: 'blur' | 'radial-gradient' | 'plain' | 'plain-underlay'
   glowProps?: DivProps
   style?: DivProps['style']
   restingStyle?: DivProps['style']
+  underlayStyle?: DivProps['style']
 }
 
 export function useHoverGlow(props: HoverGlowProps) {
@@ -50,6 +52,7 @@ export function useHoverGlow(props: HoverGlowProps) {
     scale,
     size,
     restingStyle,
+    underlayStyle,
   } = props
   const elementRef = useRef<HTMLDivElement>(null)
   const transformRef = useRef('')
@@ -108,7 +111,7 @@ height: ${parentBounds.height}`
   useIsomorphicLayoutEffect(() => {
     recalculate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(restingStyle)])
+  }, [JSON.stringify({ restingStyle, style })])
 
   const getStyle = (transform: string, isResting = true): CSSProperties => {
     const bounds = getGlowBounds()
@@ -117,6 +120,7 @@ height: ${parentBounds.height}`
     const width = bounds.width || size || fullSize
     const height = bounds.height || size || fullSize
     const restingStyleNow = isResting && restingStyle ? restingStyle : {}
+
     return {
       position: 'absolute',
       top: '0px',
@@ -130,45 +134,64 @@ height: ${parentBounds.height}`
         background: color,
         filter: `blur(${blurPct}px)`,
       }),
+      ...(strategy === 'plain' && {
+        background,
+      }),
       borderRadius,
       height: `${height}px`,
       width: `${width}px`,
+      transformStyle: 'preserve-3d',
       // nice fade in effect after first measure/show
       transition: transform
         ? 'transform linear 100ms, opacity ease-in 300ms'
         : 'opacity ease-in 300ms',
+      ...style,
       ...restingStyleNow,
       transform: restingStyleNow.transform
         ? `${transform} ${restingStyleNow.transform}`
-        : transform,
+        : `${transform} ${style?.transform || ''}`,
       ...(props.debug && {
         background: 'yellow',
         opacity: 0.8,
         filter: 'none',
       }),
-      ...style,
     }
   }
 
   const parentRef = (ref?: HTMLElement | null) => setParentNode(ref || undefined)
 
-  const element = (
+  type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+
+  const Component = (divProps?: DivProps) => (
     <div
       className="hoverglow"
       {...glowProps}
       ref={elementRef}
       style={getStyle(transformRef.current)}
+      {...divProps}
     >
       {props.debug ? crosshair : null}
+      {divProps?.children}
+      {strategy === 'plain-underlay' && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: -1,
+            background,
+            ...underlayStyle,
+          }}
+        />
+      )}
     </div>
   )
 
   if (process.env.NODE_ENV === 'development' && props.debug) {
     return {
       parentRef,
-      element: (
+      Component: (props?: DivProps) => (
         <>
-          {element}
+          {Component(props)}
           {crosshair}
           <div
             style={{
@@ -200,7 +223,7 @@ height: ${parentBounds.height}`
 
   return {
     parentRef,
-    element,
+    Component,
   }
 }
 
@@ -236,6 +259,7 @@ export const useRelativePositionedItem = (
     initialOffset = { x: 0, y: 0 },
     full,
     inverse,
+    recenterOnRest,
     debug,
     throttle = 16,
     disableUpdates,
@@ -350,11 +374,7 @@ export const useRelativePositionedItem = (
           x,
           y,
         },
-        transform: `
-        translateX(${x}px)
-        translateY(${y}px)
-        translateZ(0px)
-      `,
+        transform: `translateX(${x}px) translateY(${y}px) translateZ(0px)`,
       })
     },
     [
@@ -375,6 +395,7 @@ export const useRelativePositionedItem = (
   const setInitialPosition = useCallback(() => {
     const bounds = getParentBounds()
     if (!bounds) return
+    console.log('set initial')
     callback({
       x: bounds.width / 2 + offX,
       y: bounds.height / 2 + offY,
@@ -411,8 +432,10 @@ export const useRelativePositionedItem = (
     const trackMouse = (val: boolean) => () => {
       state.current.tracking = val
       if (!val) {
-        // reset to center on mouseleave
-        setInitialPosition()
+        if (recenterOnRest) {
+          // reset to center on mouseleave
+          setInitialPosition()
+        }
       }
     }
 

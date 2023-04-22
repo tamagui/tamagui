@@ -1,9 +1,8 @@
 import React from 'react'
-import { H3, Paragraph, XStack, YStack, useComposedRefs } from 'tamagui'
+import { H3, Paragraph, SizableText, XStack, YStack, useComposedRefs } from 'tamagui'
 
 import { FancyCard, OuterSubtleBorder } from './FancyCard'
 import { useHoverGlow } from './HoverGlow'
-import { NotoIcon } from './NotoIcon'
 
 export const TamaCard = ({
   title,
@@ -97,7 +96,7 @@ export const TamaCard = ({
             {footer}
           </YStack>
 
-          {!!icon && <NotoIcon size="$11">{icon}</NotoIcon>}
+          <SizableText>{icon}</SizableText>
         </XStack>
       </FancyCard>
     </YStack>
