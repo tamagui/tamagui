@@ -80,10 +80,10 @@ export default function StudioSplashPage() {
               <Features
                 size="$5"
                 items={[
-                  `Extracts all types of styling syntax into atomic CSS.`,
-                  `Removes a high % of inline styles with partial evaluation and hoisting.`,
-                  `Reduces tree depth, flattening expensive styled components into div or View.`,
-                  `Evaluates useMedia and useTheme hooks, turning logical expressions into media queries and CSS variables.`,
+                  `View and edit animations across every driver.`,
+                  `Visualize themes on your components across every pseudo state.`,
+                  `(Coming soon) Edit themes in your app in realtime.`,
+                  `(Coming soon) Sync your tokens and components with Figma.`,
                 ]}
               />
             </YStack>
