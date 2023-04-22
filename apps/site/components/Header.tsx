@@ -232,7 +232,7 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
 
       <NextLink prefetch={false} href="/studio">
         <HeadAnchor
-          $sm={{
+          $md={{
             display: forceShowAllLinks ? 'flex' : 'none',
           }}
         >
