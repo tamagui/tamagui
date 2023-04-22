@@ -5102,7 +5102,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/git-crypt@workspace:packages/git-crypt"
   bin:
-    git-crypt: ./git-crypt-bin
+    git-crypt-bin: ./git-crypt-bin
   languageName: unknown
   linkType: soft
 
