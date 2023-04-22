@@ -1,18 +1,18 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
+import * as Demos from '@tamagui/demos'
 import { ToggleGroupDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { useState } from 'react'
 import {
-  Paragraph,
+  Button,
   Separator,
   Square,
   TamaguiProvider,
   Theme,
   XStack,
   YStack,
-  styled,
 } from 'tamagui'
 
 import config from './tamagui.config'
@@ -26,8 +26,11 @@ if (typeof require !== 'undefined') {
 
 export const Sandbox = () => {
   const componentName = new URLSearchParams(window.location.search).get('test')
+  const demoName = new URLSearchParams(window.location.search).get('demo')
   const Component = componentName
     ? require(`./usecases/${componentName}`).default
+    : demoName
+    ? Demos[`${demoName}Demo`]
     : SandboxInner
 
   return (
@@ -39,7 +42,6 @@ export const Sandbox = () => {
 }
 
 const SandboxInner = () => {
-  return <ToggleGroupDemo />
   return <Square animation="bouncy" size={100} bc="red" />
 }
 
