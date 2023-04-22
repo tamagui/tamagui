@@ -344,17 +344,17 @@ iframe {
   contain: paint;
   background-position: center center;
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEWBgYFHcEyMaNnGAAAAAnRSTlP/AOW3MEoAAAAQSURBVHgBY4CA+v9AMBJIALryrr41QoYVAAAAAElFTkSuQmCC");
-  opacity: 0.1;
+  opacity: 0.12;
 }
 
-.t_dark .bg-grid { opacity: 0.125; }
+.t_dark .bg-grid { opacity: 0.11; }
 
 .tamagui-icon {
   pointer-events: none;
 }
 
 @media (prefer-color-scheme: dark) {
-  .bg-grid { opacity: 0.125; }
+  .bg-grid { opacity: 0.11; }
 
   .tamagui-icon {
     filter: invert(100%);
