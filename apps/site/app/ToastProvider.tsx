@@ -44,6 +44,7 @@ const ToastHandler = () => {
       y={0}
       opacity={1}
       scale={1}
+      m="$4"
       {...toast.customData}
     >
       <Toast.Title>{toast.title}</Toast.Title>
