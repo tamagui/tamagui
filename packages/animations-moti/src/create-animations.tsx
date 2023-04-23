@@ -1,8 +1,9 @@
+import useConsoleLog from '@beatgig/hooks/use-log'
 import { PresenceContext, usePresence } from '@tamagui/use-presence'
 import { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
-import { MotiText, MotiTransition, MotiView, useMotify } from 'moti'
+import { MotiTransition, useMotify } from 'moti'
 import { useContext, useMemo } from 'react'
-import {
+import Animated, {
   useAnimatedReaction,
   useDerivedValue,
   useSharedValue,
@@ -12,8 +13,8 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
   animations: A
 ): AnimationDriver<A> {
   return {
-    View: MotiView,
-    Text: MotiText,
+    View: Animated.View,
+    Text: Animated.Text,
     animations,
     usePresence,
 
@@ -73,28 +74,32 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
         : props.animation
 
       let animate = style
-      let nonAnimatedStyle: object | undefined
+      const nonAnimatedStyle: object | undefined = { ...style }
 
-      if (props.animateOnly) {
-        nonAnimatedStyle = { ...style }
-        animate = {}
-        props.animateOnly.join(' ').forEach((nonAnimatedKey) => {
-          if (!style[nonAnimatedKey]) return
-          animate[nonAnimatedKey] = style[nonAnimatedKey]
-          delete style[nonAnimatedKey]
-        })
-      }
+      const animateOnly = props.animateOnly ?? ['opacity', 'transform']
 
+      animate = {}
+      animateOnly.forEach((nonAnimatedKey) => {
+        if (!style[nonAnimatedKey]) return
+        animate[nonAnimatedKey] = style[nonAnimatedKey]
+        delete style[nonAnimatedKey]
+      })
+
+      const animateStr = JSON.stringify(animate)
       const moti = useMotify({
-        animate,
+        // without this, the driver breaks on native
+        // stringifying -> parsing fixes that
+        animate: useMemo(() => JSON.parse(animateStr), [animateStr]),
         transition: animations[animationKey as keyof typeof animations],
         onDidAnimate,
         usePresenceValue: presence as any,
         presenceContext: useContext(PresenceContext),
       })
 
+      useConsoleLog('[moti-driver]', animate)
+
       return {
-        style: nonAnimatedStyle ? [nonAnimatedStyle, moti.style] : moti.style,
+        style: [nonAnimatedStyle, moti.style],
       }
     },
   }

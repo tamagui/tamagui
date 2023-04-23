@@ -2,7 +2,6 @@
   "name": "@tamagui/animations-moti",
   "version": "1.15.28",
   "source": "src/index.ts",
-  "sideEffects": true,
   "license": "MIT",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -30,5 +29,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "sideEffects": [
+    "./index.tsx",
+    "./polyfill.ts"
+  ]
 }

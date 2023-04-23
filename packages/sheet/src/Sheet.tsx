@@ -567,6 +567,7 @@ const SheetImplementation = themeable(
     })
 
     const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
+      'worklet'
       const translateY = frameSize === 0 ? HIDDEN_SIZE : val
       return {
         transform: [{ translateY }],
@@ -731,7 +732,7 @@ function getPercentSize(point?: number, screenSize?: number) {
   }
   const pct = point / 100
   const next = Math.round(screenSize - pct * screenSize)
-  
+
   return next
 }
 
