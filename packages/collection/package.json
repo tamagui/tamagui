@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/collection",
-  "version": "1.15.32",
+  "version": "1.15.33",
   "sideEffects": [
     "*.css"
   ],
@@ -27,18 +27,18 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.15.32",
-    "@tamagui/core": "1.15.32",
-    "@tamagui/create-context": "1.15.32",
-    "@tamagui/polyfill-dev": "1.15.32",
-    "@tamagui/stacks": "1.15.32",
-    "@tamagui/use-controllable-state": "1.15.32"
+    "@tamagui/compose-refs": "1.15.33",
+    "@tamagui/core": "1.15.33",
+    "@tamagui/create-context": "1.15.33",
+    "@tamagui/polyfill-dev": "1.15.33",
+    "@tamagui/stacks": "1.15.33",
+    "@tamagui/use-controllable-state": "1.15.33"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.15.32",
+    "@tamagui/build": "1.15.33",
     "react": "^18.2.0"
   },
   "publishConfig": {
