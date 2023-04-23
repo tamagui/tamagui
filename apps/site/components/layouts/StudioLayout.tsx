@@ -1,5 +1,3 @@
-import { access } from 'fs'
-
 import { withSupabase } from '@lib/withSupabase'
 import { WhitelistNotice } from '@protected/studio/(loaded)/(sponsor-protected)/SponsorshipRequired'
 import { Lock } from '@tamagui/lucide-icons'
@@ -9,16 +7,10 @@ import dynamic from 'next/dynamic'
 import { H2, Paragraph, Spinner, YStack } from 'tamagui'
 
 import { ToastProvider as StudioToastProvider } from '../../app/ToastProvider'
-import StudioSplashPage from '../../pages/studio/splash'
-import { getDefaultLayout } from './DefaultLayout'
 
 const StudioLayout = dynamic(() => import('@protected/studio/layout'), { ssr: false })
 
 export const getStudioLayout: GetLayout = (page, pageProps) => {
-  if (pageProps.unauthenticated) {
-    return getDefaultLayout(<StudioSplashPage />, pageProps)
-  }
-
   return withSupabase(
     <MyUserContextProvider>
       <StudioToastProvider>
