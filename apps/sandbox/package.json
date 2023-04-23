@@ -10,6 +10,7 @@
     "dev:extract": "DISABLE_EXTRACTION=false TAMAGUI_TARGET=web NODE_ENV=development webpack serve",
     "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
     "test": "node -r esbuild-register ../../node_modules/.bin/playwright test",
+    "screenshot": "node -r esbuild-register ../../node_modules/.bin/playwright test --config ./playwright-screenshot.config.ts",
     "test:debug": "yarn test --debug"
   },
   "dependencies": {
