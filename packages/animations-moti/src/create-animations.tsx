@@ -1,4 +1,3 @@
-import useConsoleLog from '@beatgig/hooks/use-log'
 import { PresenceContext, usePresence } from '@tamagui/use-presence'
 import { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import { MotiTransition, useMotify } from 'moti'
@@ -95,8 +94,6 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
         usePresenceValue: presence as any,
         presenceContext: useContext(PresenceContext),
       })
-
-      useConsoleLog('[moti-driver]', animate)
 
       return {
         style: [nonAnimatedStyle, moti.style],
