@@ -17,6 +17,12 @@ Ali Studio:
 
 # Backlog
 
+- @ali make animations SSR properly
+  - disable them during SSR (make sure css variables are used), then on hydration turn it on
+  - make sure enterStyle still works
+
+- @ali Popover doesn't re-enable pointer events until the animation fully completes
+
 - `tama doctor`
   - probably use @manypky internally
     - https://github.com/Thinkmill/manypkg/blob/main/packages/cli/src/run.ts
