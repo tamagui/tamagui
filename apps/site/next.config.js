@@ -123,7 +123,7 @@ module.exports = function (name, { defaultConfig }) {
                 value: 'studio.tamagui.dev',
               },
             ],
-            destination: '/studio',
+            destination: '/studio/:path*',
           },
         ],
       }
