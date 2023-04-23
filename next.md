@@ -1,4 +1,19 @@
 Ali todos:
+- site:
+  - github auth redirects to localhost in prod
+  - splash page loads slow on a fresh session because its running supabase before
+    - lets just make `/studio` the splash, and then `studio.tamagui.dev` the studio
+    - see next config rewrites()
+  - studio.tamagui.dev seems like its only SSR and not hydrating?
+  - fix fonts pane up:
+    - multiple "Ag" with each weight
+    - the initial view should show them as nice cards sort of like small view but bigger
+    - vertical scroll broke (see new SidePane something off there)
+  - media query pane
+    - "xxs" and other keys should be bold, more v height spacing
+    - make the rulers always go to the furthest one but be faded out past their final point
+    - make the left marker, add an end marker, and make it and the bottom marker all a bit brighter white
+    - lets split out max and min into separate sections (just vertically with a header)
 - get new starter ready
 - supabase local -> staging -> prod and migrations setup
 - select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646
