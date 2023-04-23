@@ -1,4 +1,4 @@
-import { TamaguiOptions, watchTamaguiConfig } from '@tamagui/static'
+import { TamaguiOptions } from '@tamagui/static'
 import type { Compiler, RuleSetRule } from 'webpack'
 
 type PluginOptions = TamaguiOptions & {
@@ -11,10 +11,6 @@ type PluginOptions = TamaguiOptions & {
   disableWatchConfig?: boolean
 }
 
-function prettifyWebpackConfig(config) {
-  return require('prettyjson').render(config)
-}
-
 export class TamaguiPlugin {
   pluginName = 'TamaguiPlugin'
 
@@ -25,8 +21,6 @@ export class TamaguiPlugin {
   ) {}
 
   apply(compiler: Compiler) {
-    if (!this.options.disableWatchConfig) watchTamaguiConfig(this.options)
-
     // mark as side effect
     compiler.hooks.normalModuleFactory.tap(this.pluginName, (nmf) => {
       nmf.hooks.createModule.tap(
