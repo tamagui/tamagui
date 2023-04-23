@@ -605,6 +605,10 @@ input, textarea {
   mix-blend-mode: difference;
 }
 
+.mix-blend-screen {
+  mix-blend-mode: screen;
+}
+
 .text-3d {
   text-shadow: 1px 1px 1px var(--color10),
         1px 2px 1px var(--color10),

@@ -21,7 +21,8 @@ Ali Studio:
   - disable them during SSR (make sure css variables are used), then on hydration turn it on
   - make sure enterStyle still works
 
-- @ali Popover doesn't re-enable pointer events until the animation fully completes
+- @ali Modal doesn't re-enable pointer events until the animation fully completes (popover too?)
+  - https://github.com/tamagui/tamagui/issues/985
 
 - `tama doctor`
   - probably use @manypky internally
