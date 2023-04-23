@@ -328,9 +328,9 @@ export function createExtractor(
         )
         if (shouldPrintDebug === 'verbose') {
           logger.info(
-            `import ${names.join(
+            ` - import ${isValidComponent ? '✅' : '⇣'} - ${names.join(
               ', '
-            )} from ${moduleName} isValidComponent ${isValidComponent}`
+            )} from '${moduleName}'`
           )
         }
         if (isValidComponent) {
@@ -342,7 +342,7 @@ export function createExtractor(
 
     if (shouldPrintDebug) {
       logger.info(
-        `file: ${sourcePath} ${JSON.stringify({ doesUseValidImport, hasImportedTheme })}`
+        `${JSON.stringify({ doesUseValidImport, hasImportedTheme }, null, 2)}\n`
       )
     }
 
